@@ -30,19 +30,20 @@ namespace OfficeOpenXml.Style
         internal ExcelTextFont(IPictureRelationDocument pictureRelationDocument, XmlNamespaceManager namespaceManager, XmlNode rootNode, string path, string[] schemaNodeOrder, Action initXml=null)
             : base(namespaceManager, rootNode)
         {
-            AddSchemaNodeOrder(schemaNodeOrder, new string[] { "bodyPr", "lstStyle","p", "pPr", "defRPr", "solidFill","highlight", "uFill", "latin","ea", "cs","sym","hlinkClick","hlinkMouseOver","rtl", "r", "rPr", "t" });
-            _rootNode = rootNode;
-            _pictureRelationDocument = pictureRelationDocument;
-            _initXml = initXml;
+            this.AddSchemaNodeOrder(schemaNodeOrder, new string[] { "bodyPr", "lstStyle","p", "pPr", "defRPr", "solidFill","highlight", "uFill", "latin","ea", "cs","sym","hlinkClick","hlinkMouseOver","rtl", "r", "rPr", "t" });
+            this._rootNode = rootNode;
+            this._pictureRelationDocument = pictureRelationDocument;
+            this._initXml = initXml;
             if (path != "")
             {
                 XmlNode node = rootNode.SelectSingleNode(path, namespaceManager);
                 if (node != null)
                 {
-                    TopNode = node;
+                    this.TopNode = node;
                 }
             }
-            _path = path;
+
+            this._path = path;
         }
         string _fontLatinPath = "a:latin/@typeface";
         /// <summary>
@@ -52,12 +53,12 @@ namespace OfficeOpenXml.Style
         {
             get
             {
-                return GetXmlNodeString(_fontLatinPath);
+                return this.GetXmlNodeString(this._fontLatinPath);
             }
             set
             {
-                CreateTopNode();
-                SetXmlNodeString(_fontLatinPath, value);
+                this.CreateTopNode();
+                this.SetXmlNodeString(this._fontLatinPath, value);
             }
         }
         string _fontEaPath = "a:ea/@typeface";
@@ -68,12 +69,12 @@ namespace OfficeOpenXml.Style
         {
             get
             {
-                return GetXmlNodeString(_fontEaPath);
+                return this.GetXmlNodeString(this._fontEaPath);
             }
             set
             {
-                CreateTopNode();
-                SetXmlNodeString(_fontEaPath, value);
+                this.CreateTopNode();
+                this.SetXmlNodeString(this._fontEaPath, value);
             }
         }
         string _fontCsPath = "a:cs/@typeface";
@@ -84,12 +85,12 @@ namespace OfficeOpenXml.Style
         {
             get
             {
-                return GetXmlNodeString(_fontCsPath);
+                return this.GetXmlNodeString(this._fontCsPath);
             }
             set
             {
-                CreateTopNode();
-                SetXmlNodeString(_fontCsPath, value);
+                this.CreateTopNode();
+                this.SetXmlNodeString(this._fontCsPath, value);
             }
         }
 
@@ -98,18 +99,18 @@ namespace OfficeOpenXml.Style
         /// </summary>
         protected internal void CreateTopNode()
         {
-            if (_path!="" && TopNode==_rootNode)
+            if (this._path!="" && this.TopNode== this._rootNode)
             {
-                _initXml?.Invoke();
-                CreateNode(_path);
-                TopNode = _rootNode.SelectSingleNode(_path, NameSpaceManager);
-                CreateNode("../../../a:bodyPr");
-                CreateNode("../../../a:lstStyle");
+                this._initXml?.Invoke();
+                this.CreateNode(this._path);
+                this.TopNode = this._rootNode.SelectSingleNode(this._path, this.NameSpaceManager);
+                this.CreateNode("../../../a:bodyPr");
+                this.CreateNode("../../../a:lstStyle");
             }
-            else if (TopNode.ParentNode?.ParentNode?.ParentNode?.LocalName == "rich")
+            else if (this.TopNode.ParentNode?.ParentNode?.ParentNode?.LocalName == "rich")
             {
-                CreateNode("../../../a:bodyPr");
-                CreateNode("../../../a:lstStyle");
+                this.CreateNode("../../../a:bodyPr");
+                this.CreateNode("../../../a:lstStyle");
             }
         }
         string _boldPath = "@b";
@@ -120,12 +121,12 @@ namespace OfficeOpenXml.Style
         {
             get
             {
-                return GetXmlNodeBool(_boldPath);
+                return this.GetXmlNodeBool(this._boldPath);
             }
             set
             {
-                CreateTopNode();
-                SetXmlNodeString(_boldPath, value ? "1" : "0");
+                this.CreateTopNode();
+                this.SetXmlNodeString(this._boldPath, value ? "1" : "0");
             }
         }
         string _underLinePath = "@u";
@@ -136,25 +137,25 @@ namespace OfficeOpenXml.Style
         {
             get
             {
-                return GetXmlNodeString(_underLinePath).TranslateUnderline();
+                return this.GetXmlNodeString(this._underLinePath).TranslateUnderline();
             }
             set
             {
-                CreateTopNode();
-                SetXmlNodeString(_underLinePath, value.TranslateUnderlineText());
+                this.CreateTopNode();
+                this.SetXmlNodeString(this._underLinePath, value.TranslateUnderlineText());
             }
         }
 
         internal void SetFromXml(XmlElement copyFromElement)
         {
-            CreateTopNode();
+            this.CreateTopNode();
             foreach (XmlAttribute a in copyFromElement.Attributes)
             {
-                ((XmlElement)TopNode).SetAttribute(a.Name, a.NamespaceURI, a.Value);
+                ((XmlElement)this.TopNode).SetAttribute(a.Name, a.NamespaceURI, a.Value);
             }
-            if(copyFromElement.HasChildNodes && !TopNode.HasChildNodes)
+            if(copyFromElement.HasChildNodes && !this.TopNode.HasChildNodes)
             {
-                TopNode.InnerXml = copyFromElement.InnerXml;
+                this.TopNode.InnerXml = copyFromElement.InnerXml;
             }
         }
 
@@ -166,7 +167,7 @@ namespace OfficeOpenXml.Style
         {
             get
             {
-                string col = GetXmlNodeString(_underLineColorPath);
+                string col = this.GetXmlNodeString(this._underLineColorPath);
                 if (col == "")
                 {
                     return Color.Empty;
@@ -178,8 +179,8 @@ namespace OfficeOpenXml.Style
             }
             set
             {
-                CreateTopNode();
-                SetXmlNodeString(_underLineColorPath, value.ToArgb().ToString("X").Substring(2, 6));
+                this.CreateTopNode();
+                this.SetXmlNodeString(this._underLineColorPath, value.ToArgb().ToString("X").Substring(2, 6));
             }
         }
         string _italicPath = "@i";
@@ -190,12 +191,12 @@ namespace OfficeOpenXml.Style
         {
             get
             {
-                return GetXmlNodeBool(_italicPath);
+                return this.GetXmlNodeBool(this._italicPath);
             }
             set
             {
-                CreateTopNode();
-                SetXmlNodeString(_italicPath, value ? "1" : "0");
+                this.CreateTopNode();
+                this.SetXmlNodeString(this._italicPath, value ? "1" : "0");
             }
         }
         string _strikePath = "@strike";
@@ -206,12 +207,12 @@ namespace OfficeOpenXml.Style
         {
             get
             {
-                return GetXmlNodeString(_strikePath).TranslateStrikeType();
+                return this.GetXmlNodeString(this._strikePath).TranslateStrikeType();
             }
             set
             {
-                CreateTopNode();
-                SetXmlNodeString(_strikePath, value.TranslateStrikeTypeText());
+                this.CreateTopNode();
+                this.SetXmlNodeString(this._strikePath, value.TranslateStrikeTypeText());
             }
         }
         string _sizePath = "@sz";
@@ -222,12 +223,12 @@ namespace OfficeOpenXml.Style
         {
             get
             {
-                return GetXmlNodeInt(_sizePath) / 100;
+                return this.GetXmlNodeInt(this._sizePath) / 100;
             }
             set
             {
-                CreateTopNode();
-                SetXmlNodeString(_sizePath, ((int)(value * 100)).ToString());
+                this.CreateTopNode();
+                this.SetXmlNodeString(this._sizePath, ((int)(value * 100)).ToString());
             }
         }
         ExcelDrawingFill _fill;
@@ -238,11 +239,11 @@ namespace OfficeOpenXml.Style
         {
             get
             {
-                if (_fill == null)
+                if (this._fill == null)
                 {
-                    _fill = new ExcelDrawingFill(_pictureRelationDocument, NameSpaceManager, _rootNode, _path, SchemaNodeOrder, CreateTopNode);
+                    this._fill = new ExcelDrawingFill(this._pictureRelationDocument, this.NameSpaceManager, this._rootNode, this._path, this.SchemaNodeOrder, this.CreateTopNode);
                 }
-                return _fill;
+                return this._fill;
             }
         }
         string _colorPath = "a:solidFill/a:srgbClr/@val";
@@ -258,7 +259,7 @@ namespace OfficeOpenXml.Style
         {
             get
             {
-                string col = GetXmlNodeString(_colorPath);
+                string col = this.GetXmlNodeString(this._colorPath);
                 if (col == "")
                 {
                     return Color.Empty;
@@ -270,8 +271,8 @@ namespace OfficeOpenXml.Style
             }
             set
             {
-                Fill.Style = eFillStyle.SolidFill;
-                Fill.SolidFill.Color.SetRgbColor(value);
+                this.Fill.Style = eFillStyle.SolidFill;
+                this.Fill.SolidFill.Color.SetRgbColor(value);
             }
         }
         string _kernPath = "@kern";
@@ -282,12 +283,12 @@ namespace OfficeOpenXml.Style
         {
             get
             {
-                return GetXmlNodeFontSize(_kernPath);
+                return this.GetXmlNodeFontSize(this._kernPath);
             }
             set
             {
-                CreateTopNode();
-                SetXmlNodeFontSize(_kernPath, value, "Kerning");
+                this.CreateTopNode();
+                this.SetXmlNodeFontSize(this._kernPath, value, "Kerning");
             }
         }
 
@@ -302,9 +303,9 @@ namespace OfficeOpenXml.Style
         /// <param name="strikeout"></param>
         public void SetFromFont(string name, float size, bool bold = false, bool italic = false, bool underline = false, bool strikeout = false)
         {
-            LatinFont = name;
-            ComplexFont = name;
-            Size = size;
+            this.LatinFont = name;
+            this.ComplexFont = name;
+            this.Size = size;
             if (bold)
             {
                 this.Bold = bold;

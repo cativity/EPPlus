@@ -30,7 +30,7 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions.RefAndLookup
             ValidateArguments(arguments, 1);
             string? address = ArgToAddress(arguments, 0);
             ExcelAddressBase adr;
-            if (ExcelAddressBase.IsValidAddress(address) || ExcelAddressBase.IsTableAddress(address))
+            if (ExcelCellBase.IsValidAddress(address) || ExcelAddressBase.IsTableAddress(address))
             {
                 adr = new ExcelAddressBase(address);
             }

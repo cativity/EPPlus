@@ -43,7 +43,7 @@ namespace EPPlusTest.ExcelUtilities
         [TestInitialize]
         public void Setup()
         {
-            _matcher = new WildCardValueMatcher();
+            this._matcher = new WildCardValueMatcher();
         }
 
         [TestMethod]
@@ -51,7 +51,7 @@ namespace EPPlusTest.ExcelUtilities
         {
             string? string1 = "a?c?";
             string? string2 = "abcd";
-            int result = _matcher.IsMatch(string1, string2);
+            int result = this._matcher.IsMatch(string1, string2);
             Assert.AreEqual(0, result);
         }
 
@@ -60,7 +60,7 @@ namespace EPPlusTest.ExcelUtilities
         {
             string? string1 = "a*c.";
             string? string2 = "abcc.";
-            int result = _matcher.IsMatch(string1, string2);
+            int result = this._matcher.IsMatch(string1, string2);
             Assert.AreEqual(0, result);
         }
 
@@ -69,9 +69,9 @@ namespace EPPlusTest.ExcelUtilities
         {
             string? string1 = "a*c";
             string? string2 = "abc";
-            int result1 = _matcher.IsMatch("a~*c", string1);
+            int result1 = this._matcher.IsMatch("a~*c", string1);
             Assert.AreEqual(0, result1);
-            int result2 = _matcher.IsMatch("a~*c", string2);
+            int result2 = this._matcher.IsMatch("a~*c", string2);
 
             Assert.AreEqual(-1, result2);
         }
@@ -81,9 +81,9 @@ namespace EPPlusTest.ExcelUtilities
         {
             string? string1 = "a*cde";
             string? string2 = "abcd";
-            int result1 = _matcher.IsMatch("a~*c*", string1);
+            int result1 = this._matcher.IsMatch("a~*c*", string1);
             Assert.AreEqual(0, result1);
-            int result2 = _matcher.IsMatch("a~*c*", string2);
+            int result2 = this._matcher.IsMatch("a~*c*", string2);
 
             Assert.AreEqual(-1, result2);
         }
@@ -93,9 +93,9 @@ namespace EPPlusTest.ExcelUtilities
         {
             string? string1 = "a?c";
             string? string2 = "abc";
-            int result1 = _matcher.IsMatch("a~?c", string1);
+            int result1 = this._matcher.IsMatch("a~?c", string1);
             Assert.AreEqual(0, result1);
-            int result2 = _matcher.IsMatch("a~?c", string2);
+            int result2 = this._matcher.IsMatch("a~?c", string2);
 
             Assert.AreEqual(-1, result2);
         }
@@ -105,9 +105,9 @@ namespace EPPlusTest.ExcelUtilities
         {
             string? string1 = "a?cde";
             string? string2 = "abcde";
-            int result1 = _matcher.IsMatch("a~?c?e", string1);
+            int result1 = this._matcher.IsMatch("a~?c?e", string1);
             Assert.AreEqual(0, result1);
-            int result2 = _matcher.IsMatch("a~?c?e", string2);
+            int result2 = this._matcher.IsMatch("a~?c?e", string2);
 
             Assert.AreEqual(-1, result2);
         }

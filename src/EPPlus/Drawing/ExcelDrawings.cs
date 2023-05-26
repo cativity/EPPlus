@@ -51,14 +51,14 @@ namespace OfficeOpenXml.Drawing
 
             internal bool Comparer(byte[] compareImg)
             {
-                if (compareImg.Length != image.Length)
+                if (compareImg.Length != this.image.Length)
                 {
                     return false;
                 }
 
-                for (int i = 0; i < image.Length; i++)
+                for (int i = 0; i < this.image.Length; i++)
                 {
-                    if (image[i] != compareImg[i])
+                    if (this.image[i] != compareImg[i])
                     {
                         return false;
                     }
@@ -67,30 +67,30 @@ namespace OfficeOpenXml.Drawing
             }
         }
         internal ExcelPackage _package;
-        internal Packaging.ZipPackageRelationship _drawingRelation = null;
+        internal ZipPackageRelationship _drawingRelation = null;
         internal string _seriesTemplateXml;
         internal ExcelDrawings(ExcelPackage xlPackage, ExcelWorksheet sheet)
         {
             xlPackage.Workbook.LoadAllDrawings(sheet.Name);
 
-            _package = xlPackage;
-            Worksheet = sheet;
+            this._package = xlPackage;
+            this.Worksheet = sheet;
 
-            _drawingsXml = new XmlDocument();
-            _drawingsXml.PreserveWhitespace = true;
-            _drawingsList = new List<ExcelDrawing>();
-            _drawingNames = new Dictionary<string, int>(StringComparer.OrdinalIgnoreCase);
-            CreateNSM();
+            this._drawingsXml = new XmlDocument();
+            this._drawingsXml.PreserveWhitespace = true;
+            this._drawingsList = new List<ExcelDrawing>();
+            this._drawingNames = new Dictionary<string, int>(StringComparer.OrdinalIgnoreCase);
+            this.CreateNSM();
             XmlNode node = sheet.WorksheetXml.SelectSingleNode("//d:drawing", sheet.NameSpaceManager);
             if (node != null && sheet != null)
             {
-                _drawingRelation = sheet.Part.GetRelationship(node.Attributes["r:id"].Value);
-                _uriDrawing = UriHelper.ResolvePartUri(sheet.WorksheetUri, _drawingRelation.TargetUri);
+                this._drawingRelation = sheet.Part.GetRelationship(node.Attributes["r:id"].Value);
+                this._uriDrawing = UriHelper.ResolvePartUri(sheet.WorksheetUri, this._drawingRelation.TargetUri);
 
-                _part = xlPackage.ZipPackage.GetPart(_uriDrawing);
-                XmlHelper.LoadXmlSafe(_drawingsXml, _part.GetStream());
+                this._part = xlPackage.ZipPackage.GetPart(this._uriDrawing);
+                XmlHelper.LoadXmlSafe(this._drawingsXml, this._part.GetStream());
 
-                AddDrawings();
+                this.AddDrawings();
             }
         }
 
@@ -103,12 +103,12 @@ namespace OfficeOpenXml.Drawing
         {
             get
             {
-                return _drawingsXml;
+                return this._drawingsXml;
             }
         }
         private void AddDrawings()
         {
-            XmlNodeList list = _drawingsXml.SelectNodes("//*[self::xdr:oneCellAnchor or self::xdr:twoCellAnchor or self::xdr:absoluteAnchor]", NameSpaceManager);
+            XmlNodeList list = this._drawingsXml.SelectNodes("//*[self::xdr:oneCellAnchor or self::xdr:twoCellAnchor or self::xdr:absoluteAnchor]", this.NameSpaceManager);
 
             foreach (XmlNode node in list)
             {
@@ -127,10 +127,10 @@ namespace OfficeOpenXml.Drawing
                 }
                 if (dr != null)
                 {
-                    _drawingsList.Add(dr);
-                    if (!_drawingNames.ContainsKey(dr.Name))
+                    this._drawingsList.Add(dr);
+                    if (!this._drawingNames.ContainsKey(dr.Name))
                     {
-                        _drawingNames.Add(dr.Name, _drawingsList.Count - 1);
+                        this._drawingNames.Add(dr.Name, this._drawingsList.Count - 1);
                     }
                 }
             }
@@ -144,25 +144,25 @@ namespace OfficeOpenXml.Drawing
         private void CreateNSM()
         {
             NameTable nt = new NameTable();
-            NameSpaceManager = new XmlNamespaceManager(nt);
-            NameSpaceManager.AddNamespace("d", ExcelPackage.schemaMain);
-            NameSpaceManager.AddNamespace("a", ExcelPackage.schemaDrawings);
-            NameSpaceManager.AddNamespace("xdr", ExcelPackage.schemaSheetDrawings);
-            NameSpaceManager.AddNamespace("c", ExcelPackage.schemaChart);
-            NameSpaceManager.AddNamespace("r", ExcelPackage.schemaRelationships);
-            NameSpaceManager.AddNamespace("cs", ExcelPackage.schemaChartStyle);
-            NameSpaceManager.AddNamespace("mc", ExcelPackage.schemaMarkupCompatibility);
-            NameSpaceManager.AddNamespace("c14", ExcelPackage.schemaChart14);
-            NameSpaceManager.AddNamespace("mc", ExcelPackage.schemaMc2006);
-            NameSpaceManager.AddNamespace("cx", ExcelPackage.schemaChartExMain);
-            NameSpaceManager.AddNamespace("cx1", ExcelPackage.schemaChartEx2015_9_8);
-            NameSpaceManager.AddNamespace("cx2", ExcelPackage.schemaChartEx2015_10_21);
-            NameSpaceManager.AddNamespace("x14", ExcelPackage.schemaMainX14);
-            NameSpaceManager.AddNamespace("x15", ExcelPackage.schemaMainX15);
-            NameSpaceManager.AddNamespace("sle", ExcelPackage.schemaSlicer2010);
-            NameSpaceManager.AddNamespace("sle15", ExcelPackage.schemaSlicer);
-            NameSpaceManager.AddNamespace("a14", ExcelPackage.schemaDrawings2010);
-            NameSpaceManager.AddNamespace("asvg", "http://schemas.microsoft.com/office/drawing/2016/SVG/main");
+            this.NameSpaceManager = new XmlNamespaceManager(nt);
+            this.NameSpaceManager.AddNamespace("d", ExcelPackage.schemaMain);
+            this.NameSpaceManager.AddNamespace("a", ExcelPackage.schemaDrawings);
+            this.NameSpaceManager.AddNamespace("xdr", ExcelPackage.schemaSheetDrawings);
+            this.NameSpaceManager.AddNamespace("c", ExcelPackage.schemaChart);
+            this.NameSpaceManager.AddNamespace("r", ExcelPackage.schemaRelationships);
+            this.NameSpaceManager.AddNamespace("cs", ExcelPackage.schemaChartStyle);
+            this.NameSpaceManager.AddNamespace("mc", ExcelPackage.schemaMarkupCompatibility);
+            this.NameSpaceManager.AddNamespace("c14", ExcelPackage.schemaChart14);
+            this.NameSpaceManager.AddNamespace("mc", ExcelPackage.schemaMc2006);
+            this.NameSpaceManager.AddNamespace("cx", ExcelPackage.schemaChartExMain);
+            this.NameSpaceManager.AddNamespace("cx1", ExcelPackage.schemaChartEx2015_9_8);
+            this.NameSpaceManager.AddNamespace("cx2", ExcelPackage.schemaChartEx2015_10_21);
+            this.NameSpaceManager.AddNamespace("x14", ExcelPackage.schemaMainX14);
+            this.NameSpaceManager.AddNamespace("x15", ExcelPackage.schemaMainX15);
+            this.NameSpaceManager.AddNamespace("sle", ExcelPackage.schemaSlicer2010);
+            this.NameSpaceManager.AddNamespace("sle15", ExcelPackage.schemaSlicer);
+            this.NameSpaceManager.AddNamespace("a14", ExcelPackage.schemaDrawings2010);
+            this.NameSpaceManager.AddNamespace("asvg", "http://schemas.microsoft.com/office/drawing/2016/SVG/main");
         }
         internal XmlNamespaceManager NameSpaceManager { get; private set; } = null;
         #endregion
@@ -173,13 +173,13 @@ namespace OfficeOpenXml.Drawing
         /// <returns>The enumerator</returns>
         IEnumerator IEnumerable.GetEnumerator()
         {
-            return (_drawingsList.GetEnumerator());
+            return (this._drawingsList.GetEnumerator());
         }
         #region IEnumerable<ExcelDrawing> Members
 
         IEnumerator<ExcelDrawing> IEnumerable<ExcelDrawing>.GetEnumerator()
         {
-            return (_drawingsList.GetEnumerator());
+            return (this._drawingsList.GetEnumerator());
         }
 
         #endregion
@@ -193,7 +193,7 @@ namespace OfficeOpenXml.Drawing
         {
             get
             {
-                return (_drawingsList[PositionID]);
+                return (this._drawingsList[PositionID]);
             }
         }
 
@@ -206,9 +206,9 @@ namespace OfficeOpenXml.Drawing
         {
             get
             {
-                if (_drawingNames.ContainsKey(Name))
+                if (this._drawingNames.ContainsKey(Name))
                 {
-                    return _drawingsList[_drawingNames[Name]];
+                    return this._drawingsList[this._drawingNames[Name]];
                 }
                 else
                 {
@@ -223,22 +223,22 @@ namespace OfficeOpenXml.Drawing
         {
             get
             {
-                if (_drawingsList == null)
+                if (this._drawingsList == null)
                 {
                     return 0;
                 }
                 else
                 {
-                    return _drawingsList.Count;
+                    return this._drawingsList.Count;
                 }
             }
         }
-        Packaging.ZipPackagePart _part = null;
-        internal Packaging.ZipPackagePart Part
+        ZipPackagePart _part = null;
+        internal ZipPackagePart Part
         {
             get
             {
-                return _part;
+                return this._part;
             }
         }
         Uri _uriDrawing = null;
@@ -250,16 +250,16 @@ namespace OfficeOpenXml.Drawing
         {
             get
             {
-                return _uriDrawing;
+                return this._uriDrawing;
             }
         }
-        ExcelPackage IPictureRelationDocument.Package => _package;
+        ExcelPackage IPictureRelationDocument.Package => this._package;
 
-        Dictionary<string, HashInfo> IPictureRelationDocument.Hashes => _hashes;
+        Dictionary<string, HashInfo> IPictureRelationDocument.Hashes => this._hashes;
 
-        ZipPackagePart IPictureRelationDocument.RelatedPart => _part;
+        ZipPackagePart IPictureRelationDocument.RelatedPart => this._part;
 
-        Uri IPictureRelationDocument.RelatedUri => _uriDrawing;
+        Uri IPictureRelationDocument.RelatedUri => this._uriDrawing;
         #endregion
         #region Add functions
         /// <summary>
@@ -278,27 +278,27 @@ namespace OfficeOpenXml.Drawing
                 throw new InvalidOperationException("For stock charts please use the AddStockChart method.");
             }
 
-            return AddAllChartTypes(Name, ChartType, PivotTableSource, DrawingType);
+            return this.AddAllChartTypes(Name, ChartType, PivotTableSource, DrawingType);
         }
 
         internal ExcelChart AddAllChartTypes(string Name, eChartType ChartType, ExcelPivotTable PivotTableSource, eEditAs DrawingType = eEditAs.TwoCell)
         {
-            if (_drawingNames.ContainsKey(Name))
+            if (this._drawingNames.ContainsKey(Name))
             {
                 throw new Exception("Name already exists in the drawings collection");
             }
 
-            if (Worksheet is ExcelChartsheet && _drawingsList.Count > 0)
+            if (this.Worksheet is ExcelChartsheet && this._drawingsList.Count > 0)
             {
                 throw new InvalidOperationException("Chart Worksheets can't have more than one chart");
             }
 
-            XmlElement drawNode = CreateDrawingXml(DrawingType);
+            XmlElement drawNode = this.CreateDrawingXml(DrawingType);
 
             ExcelChart? chart = ExcelChart.GetNewChart(this, drawNode, ChartType, null, PivotTableSource);
             chart.Name = Name;
-            _drawingsList.Add(chart);
-            _drawingNames.Add(Name, _drawingsList.Count - 1);
+            this._drawingsList.Add(chart);
+            this._drawingNames.Add(Name, this._drawingsList.Count - 1);
             return chart;
         }
 
@@ -311,7 +311,7 @@ namespace OfficeOpenXml.Drawing
         /// <returns>The chart</returns>
         public ExcelChart AddChart(string Name, eChartType ChartType)
         {
-            return AddChart(Name, ChartType, null);
+            return this.AddChart(Name, ChartType, null);
         }
         /// <summary>
         /// Adds a new chart to the worksheet.
@@ -321,7 +321,7 @@ namespace OfficeOpenXml.Drawing
         /// <returns>The chart</returns>
         public ExcelChartEx AddExtendedChart(string Name, eChartExType ChartType)
         {
-            return (ExcelChartEx)AddAllChartTypes(Name, (eChartType)ChartType, null);
+            return (ExcelChartEx)this.AddAllChartTypes(Name, (eChartType)ChartType, null);
         }
         /// <summary>
         /// Adds a new sunburst chart to the worksheet.
@@ -330,7 +330,7 @@ namespace OfficeOpenXml.Drawing
         /// <returns>The chart</returns>
         public ExcelSunburstChart AddSunburstChart(string Name)
         {
-            return (ExcelSunburstChart)AddAllChartTypes(Name, eChartType.Sunburst, null);
+            return (ExcelSunburstChart)this.AddAllChartTypes(Name, eChartType.Sunburst, null);
         }
         /// <summary>
         /// Adds a new treemap chart to the worksheet.
@@ -339,7 +339,7 @@ namespace OfficeOpenXml.Drawing
         /// <returns>The chart</returns>
         public ExcelTreemapChart AddTreemapChart(string Name)
         {
-            return (ExcelTreemapChart)AddAllChartTypes(Name, eChartType.Treemap, null);
+            return (ExcelTreemapChart)this.AddAllChartTypes(Name, eChartType.Treemap, null);
         }
         /// <summary>
         /// Adds a new box &amp; whisker chart to the worksheet.
@@ -348,7 +348,7 @@ namespace OfficeOpenXml.Drawing
         /// <returns>The chart</returns>
         public ExcelBoxWhiskerChart AddBoxWhiskerChart(string Name)
         {
-            return (ExcelBoxWhiskerChart)AddAllChartTypes(Name, eChartType.BoxWhisker, null);
+            return (ExcelBoxWhiskerChart)this.AddAllChartTypes(Name, eChartType.BoxWhisker, null);
         }
         /// <summary>
         /// Adds a new Histogram or Pareto chart to the worksheet.
@@ -358,7 +358,7 @@ namespace OfficeOpenXml.Drawing
         /// <returns>The chart</returns>
         public ExcelHistogramChart AddHistogramChart(string Name, bool AddParetoLine = false)
         {
-            return (ExcelHistogramChart)AddAllChartTypes(Name, AddParetoLine ? eChartType.Pareto : eChartType.Histogram, null);
+            return (ExcelHistogramChart)this.AddAllChartTypes(Name, AddParetoLine ? eChartType.Pareto : eChartType.Histogram, null);
         }
         /// <summary>
         /// Adds a waterfall chart to the worksheet.
@@ -367,7 +367,7 @@ namespace OfficeOpenXml.Drawing
         /// <returns>The chart</returns>
         public ExcelWaterfallChart AddWaterfallChart(string Name)
         {
-            return (ExcelWaterfallChart)AddAllChartTypes(Name, eChartType.Waterfall, null);
+            return (ExcelWaterfallChart)this.AddAllChartTypes(Name, eChartType.Waterfall, null);
         }
         /// <summary>
         /// Adds a funnel chart to the worksheet.
@@ -376,7 +376,7 @@ namespace OfficeOpenXml.Drawing
         /// <returns>The chart</returns>
         public ExcelFunnelChart AddFunnelChart(string Name)
         {
-            return (ExcelFunnelChart)AddAllChartTypes(Name, eChartType.Funnel, null);
+            return (ExcelFunnelChart)this.AddAllChartTypes(Name, eChartType.Funnel, null);
         }
         /// <summary>
         /// Adds a region map chart to the worksheet.
@@ -386,7 +386,7 @@ namespace OfficeOpenXml.Drawing
         /// <returns>The chart</returns>
         public ExcelRegionMapChart AddRegionMapChart(string Name)
         {
-            return (ExcelRegionMapChart)AddAllChartTypes(Name, eChartType.RegionMap, null);
+            return (ExcelRegionMapChart)this.AddAllChartTypes(Name, eChartType.RegionMap, null);
         }
         /// <summary>
         /// Adds a new extended chart to the worksheet.
@@ -398,7 +398,7 @@ namespace OfficeOpenXml.Drawing
         /// <returns>The chart</returns>
         public ExcelChartEx AddExtendedChart(string Name, eChartExType ChartType, ExcelPivotTable PivotTableSource)
         {
-            return (ExcelChartEx)AddAllChartTypes(Name, (eChartType)ChartType, PivotTableSource);
+            return (ExcelChartEx)this.AddAllChartTypes(Name, (eChartType)ChartType, PivotTableSource);
         }
         /// <summary>
         /// Adds a new stock chart to the worksheet.
@@ -423,46 +423,46 @@ namespace OfficeOpenXml.Drawing
                     {
                         throw (new InvalidOperationException("Range must contain 4 columns with the Category serie to the left and the High Price, Low Price and Close Price series"));
                     }
-                    return AddStockChart(Name,
-                        ws.Cells[startRow, startCol, endRow, startCol],
-                        ws.Cells[startRow, startCol + 1, endRow, startCol + 1],
-                        ws.Cells[startRow, startCol + 2, endRow, startCol + 2],
-                        ws.Cells[startRow, startCol + 3, endRow, startCol + 3]);
+                    return this.AddStockChart(Name,
+                                              ws.Cells[startRow, startCol, endRow, startCol],
+                                              ws.Cells[startRow, startCol + 1, endRow, startCol + 1],
+                                              ws.Cells[startRow, startCol + 2, endRow, startCol + 2],
+                                              ws.Cells[startRow, startCol + 3, endRow, startCol + 3]);
                 case eStockChartType.StockOHLC:
                     if (Range.Columns != 5)
                     {
                         throw (new InvalidOperationException("Range must contain 5 columns with the Category serie to the left and the Opening Price, High Price, Low Price and Close Price series"));
                     }
-                    return AddStockChart(Name,
-                        ws.Cells[startRow, startCol, endRow, startCol],
-                        ws.Cells[startRow, startCol + 2, endRow, startCol + 2],
-                        ws.Cells[startRow, startCol + 3, endRow, startCol + 3],
-                        ws.Cells[startRow, startCol + 4, endRow, startCol + 4],
-                        ws.Cells[startRow, startCol + 1, endRow, startCol + 1]);
+                    return this.AddStockChart(Name,
+                                              ws.Cells[startRow, startCol, endRow, startCol],
+                                              ws.Cells[startRow, startCol + 2, endRow, startCol + 2],
+                                              ws.Cells[startRow, startCol + 3, endRow, startCol + 3],
+                                              ws.Cells[startRow, startCol + 4, endRow, startCol + 4],
+                                              ws.Cells[startRow, startCol + 1, endRow, startCol + 1]);
                 case eStockChartType.StockVHLC:
                     if (Range.Columns != 5)
                     {
                         throw (new InvalidOperationException("Range must contain 5 columns with the Category serie to the left and the Volume, High Price, Low Price and Close Price series"));
                     }
-                    return AddStockChart(Name,
-                        ws.Cells[startRow, startCol, endRow, startCol],
-                        ws.Cells[startRow, startCol + 2, endRow, startCol + 2],
-                        ws.Cells[startRow, startCol + 3, endRow, startCol + 3],
-                        ws.Cells[startRow, startCol + 4, endRow, startCol + 4],
-                        null,
-                        ws.Cells[startRow, startCol + 1, endRow, startCol + 1]);
+                    return this.AddStockChart(Name,
+                                              ws.Cells[startRow, startCol, endRow, startCol],
+                                              ws.Cells[startRow, startCol + 2, endRow, startCol + 2],
+                                              ws.Cells[startRow, startCol + 3, endRow, startCol + 3],
+                                              ws.Cells[startRow, startCol + 4, endRow, startCol + 4],
+                                              null,
+                                              ws.Cells[startRow, startCol + 1, endRow, startCol + 1]);
                 case eStockChartType.StockVOHLC:
                     if (Range.Columns != 6)
                     {
                         throw (new InvalidOperationException("Range must contain 6 columns with the Category serie to the left and the Volume, Opening Price, High Price, Low Price and Close Price series"));
                     }
-                    return AddStockChart(Name,
-                        ws.Cells[startRow, startCol, endRow, startCol],
-                        ws.Cells[startRow, startCol + 3, endRow, startCol + 3],
-                        ws.Cells[startRow, startCol + 4, endRow, startCol + 4],
-                        ws.Cells[startRow, startCol + 5, endRow, startCol + 5],
-                        ws.Cells[startRow, startCol + 2, endRow, startCol + 2],
-                        ws.Cells[startRow, startCol + 1, endRow, startCol + 1]);
+                    return this.AddStockChart(Name,
+                                              ws.Cells[startRow, startCol, endRow, startCol],
+                                              ws.Cells[startRow, startCol + 3, endRow, startCol + 3],
+                                              ws.Cells[startRow, startCol + 4, endRow, startCol + 4],
+                                              ws.Cells[startRow, startCol + 5, endRow, startCol + 5],
+                                              ws.Cells[startRow, startCol + 2, endRow, startCol + 2],
+                                              ws.Cells[startRow, startCol + 1, endRow, startCol + 1]);
                 default:
                     throw new InvalidOperationException("Unknown eStockChartType");
             }
@@ -485,7 +485,7 @@ namespace OfficeOpenXml.Drawing
 
             eChartType chartType = ExcelStockChart.GetChartType(OpenSerie, VolumeSerie);
 
-            ExcelStockChart? chart = (ExcelStockChart)AddAllChartTypes(Name, chartType, null);
+            ExcelStockChart? chart = (ExcelStockChart)this.AddAllChartTypes(Name, chartType, null);
             if (CategorySerie.Rows > 1)
             {
                 if (CategorySerie.Offset(1, 0, 1, 1).Value is string)
@@ -529,7 +529,7 @@ namespace OfficeOpenXml.Drawing
         {
             eChartType chartType = ExcelStockChart.GetChartType(OpenSerie, VolumeSerie);
 
-            ExcelStockChart? chart = (ExcelStockChart)AddAllChartTypes(Name, chartType, null);
+            ExcelStockChart? chart = (ExcelStockChart)this.AddAllChartTypes(Name, chartType, null);
             ExcelStockChart.SetStockChartSeries(chart, chartType, CategorySerie, HighSerie, LowSerie, CloseSerie, OpenSerie, VolumeSerie);
             return chart;
         }
@@ -562,7 +562,7 @@ namespace OfficeOpenXml.Drawing
         /// <returns>The chart</returns>
         public ExcelLineChart AddLineChart(string Name, eLineChartType ChartType)
         {
-            return (ExcelLineChart)AddAllChartTypes(Name, (eChartType)ChartType, null);
+            return (ExcelLineChart)this.AddAllChartTypes(Name, (eChartType)ChartType, null);
         }
         /// <summary>
         /// Adds a new linechart to the worksheet.
@@ -573,7 +573,7 @@ namespace OfficeOpenXml.Drawing
         /// <returns>The chart</returns>
         public ExcelLineChart AddLineChart(string Name, eLineChartType ChartType, ExcelPivotTable PivotTableSource)
         {
-            return (ExcelLineChart)AddAllChartTypes(Name, (eChartType)ChartType, PivotTableSource);
+            return (ExcelLineChart)this.AddAllChartTypes(Name, (eChartType)ChartType, PivotTableSource);
         }
         /// <summary>
         /// Add a new area chart to the worksheet.
@@ -583,7 +583,7 @@ namespace OfficeOpenXml.Drawing
         /// <returns>The chart</returns>
         public ExcelAreaChart AddAreaChart(string Name, eAreaChartType ChartType)
         {
-            return (ExcelAreaChart)AddAllChartTypes(Name, (eChartType)ChartType, null);
+            return (ExcelAreaChart)this.AddAllChartTypes(Name, (eChartType)ChartType, null);
         }
         /// <summary>
         /// Adds a new area chart to the worksheet.
@@ -594,7 +594,7 @@ namespace OfficeOpenXml.Drawing
         /// <returns>The chart</returns>
         public ExcelAreaChart AddAreaChart(string Name, eAreaChartType ChartType, ExcelPivotTable PivotTableSource)
         {
-            return (ExcelAreaChart)AddAllChartTypes(Name, (eChartType)ChartType, PivotTableSource);
+            return (ExcelAreaChart)this.AddAllChartTypes(Name, (eChartType)ChartType, PivotTableSource);
         }
         /// <summary>
         /// Adds a new barchart to the worksheet.
@@ -604,7 +604,7 @@ namespace OfficeOpenXml.Drawing
         /// <returns>The chart</returns>
         public ExcelBarChart AddBarChart(string Name, eBarChartType ChartType)
         {
-            return (ExcelBarChart)AddAllChartTypes(Name, (eChartType)ChartType, null);
+            return (ExcelBarChart)this.AddAllChartTypes(Name, (eChartType)ChartType, null);
         }
         /// <summary>
         /// Adds a new column- or bar- chart to the worksheet.
@@ -615,7 +615,7 @@ namespace OfficeOpenXml.Drawing
         /// <returns>The chart</returns>
         public ExcelBarChart AddBarChart(string Name, eBarChartType ChartType, ExcelPivotTable PivotTableSource)
         {
-            return (ExcelBarChart)AddAllChartTypes(Name, (eChartType)ChartType, PivotTableSource);
+            return (ExcelBarChart)this.AddAllChartTypes(Name, (eChartType)ChartType, PivotTableSource);
         }
         /// <summary>
         /// Adds a new pie chart to the worksheet.
@@ -625,7 +625,7 @@ namespace OfficeOpenXml.Drawing
         /// <returns>The chart</returns>    
         public ExcelPieChart AddPieChart(string Name, ePieChartType ChartType)
         {
-            return (ExcelPieChart)AddAllChartTypes(Name, (eChartType)ChartType, null);
+            return (ExcelPieChart)this.AddAllChartTypes(Name, (eChartType)ChartType, null);
         }
         /// <summary>
         /// Adds a new pie chart to the worksheet.
@@ -636,7 +636,7 @@ namespace OfficeOpenXml.Drawing
         /// <returns>The chart</returns>
         public ExcelPieChart AddPieChart(string Name, ePieChartType ChartType, ExcelPivotTable PivotTableSource)
         {
-            return (ExcelPieChart)AddAllChartTypes(Name, (eChartType)ChartType, PivotTableSource);
+            return (ExcelPieChart)this.AddAllChartTypes(Name, (eChartType)ChartType, PivotTableSource);
         }
         /// <summary>
         /// Adds a new doughnut chart to the worksheet.
@@ -647,7 +647,7 @@ namespace OfficeOpenXml.Drawing
         /// <returns>The chart</returns>
         public ExcelDoughnutChart AddDoughnutChart(string Name, eDoughnutChartType ChartType, ExcelPivotTable PivotTableSource)
         {
-            return (ExcelDoughnutChart)AddAllChartTypes(Name, (eChartType)ChartType, PivotTableSource);
+            return (ExcelDoughnutChart)this.AddAllChartTypes(Name, (eChartType)ChartType, PivotTableSource);
         }
         /// <summary>
         /// Adds a new doughnut chart to the worksheet.
@@ -657,7 +657,7 @@ namespace OfficeOpenXml.Drawing
         /// <returns>The chart</returns>    
         public ExcelDoughnutChart AddDoughnutChart(string Name, eDoughnutChartType ChartType)
         {
-            return (ExcelDoughnutChart)AddAllChartTypes(Name, (eChartType)ChartType, null);
+            return (ExcelDoughnutChart)this.AddAllChartTypes(Name, (eChartType)ChartType, null);
         }
         /// <summary>
         /// Adds a new line chart to the worksheet.
@@ -667,7 +667,7 @@ namespace OfficeOpenXml.Drawing
         /// <returns>The chart</returns>    
         public ExcelOfPieChart AddOfPieChart(string Name, eOfPieChartType ChartType)
         {
-            return (ExcelOfPieChart)AddAllChartTypes(Name, (eChartType)ChartType, null);
+            return (ExcelOfPieChart)this.AddAllChartTypes(Name, (eChartType)ChartType, null);
         }
         /// <summary>
         /// Add a new pie of pie or bar of pie chart to the worksheet.
@@ -678,7 +678,7 @@ namespace OfficeOpenXml.Drawing
         /// <returns>The chart</returns>
         public ExcelOfPieChart AddOfPieChart(string Name, eOfPieChartType ChartType, ExcelPivotTable PivotTableSource)
         {
-            return (ExcelOfPieChart)AddAllChartTypes(Name, (eChartType)ChartType, PivotTableSource);
+            return (ExcelOfPieChart)this.AddAllChartTypes(Name, (eChartType)ChartType, PivotTableSource);
         }
         /// <summary>
         /// Adds a new bubble chart to the worksheet.
@@ -688,7 +688,7 @@ namespace OfficeOpenXml.Drawing
         /// <returns>The chart</returns>    
         public ExcelBubbleChart AddBubbleChart(string Name, eBubbleChartType ChartType)
         {
-            return (ExcelBubbleChart)AddAllChartTypes(Name, (eChartType)ChartType, null);
+            return (ExcelBubbleChart)this.AddAllChartTypes(Name, (eChartType)ChartType, null);
         }
         /// <summary>
         /// Adds a new bubble chart to the worksheet.
@@ -699,7 +699,7 @@ namespace OfficeOpenXml.Drawing
         /// <returns>The chart</returns>
         public ExcelBubbleChart AddBubbleChart(string Name, eBubbleChartType ChartType, ExcelPivotTable PivotTableSource)
         {
-            return (ExcelBubbleChart)AddAllChartTypes(Name, (eChartType)ChartType, PivotTableSource);
+            return (ExcelBubbleChart)this.AddAllChartTypes(Name, (eChartType)ChartType, PivotTableSource);
         }
         /// <summary>
         /// Adds a new scatter chart to the worksheet.
@@ -710,7 +710,7 @@ namespace OfficeOpenXml.Drawing
         /// <returns>The chart</returns>
         public ExcelScatterChart AddScatterChart(string Name, eScatterChartType ChartType, ExcelPivotTable PivotTableSource)
         {
-            return (ExcelScatterChart)AddAllChartTypes(Name, (eChartType)ChartType, PivotTableSource);
+            return (ExcelScatterChart)this.AddAllChartTypes(Name, (eChartType)ChartType, PivotTableSource);
         }
         /// <summary>
         /// Adds a new scatter chart to the worksheet.
@@ -720,7 +720,7 @@ namespace OfficeOpenXml.Drawing
         /// <returns>The chart</returns>    
         public ExcelScatterChart AddScatterChart(string Name, eScatterChartType ChartType)
         {
-            return (ExcelScatterChart)AddAllChartTypes(Name, (eChartType)ChartType, null);
+            return (ExcelScatterChart)this.AddAllChartTypes(Name, (eChartType)ChartType, null);
         }
         /// <summary>
         /// Adds a new radar chart to the worksheet.
@@ -731,7 +731,7 @@ namespace OfficeOpenXml.Drawing
         /// <returns>The chart</returns>
         public ExcelRadarChart AddRadarChart(string Name, eRadarChartType ChartType, ExcelPivotTable PivotTableSource)
         {
-            return (ExcelRadarChart)AddAllChartTypes(Name, (eChartType)ChartType, PivotTableSource);
+            return (ExcelRadarChart)this.AddAllChartTypes(Name, (eChartType)ChartType, PivotTableSource);
         }
         /// <summary>
         /// Adds a new radar chart to the worksheet.
@@ -741,7 +741,7 @@ namespace OfficeOpenXml.Drawing
         /// <returns>The chart</returns>    
         public ExcelRadarChart AddRadarChart(string Name, eRadarChartType ChartType)
         {
-            return (ExcelRadarChart)AddAllChartTypes(Name, (eChartType)ChartType, null);
+            return (ExcelRadarChart)this.AddAllChartTypes(Name, (eChartType)ChartType, null);
         }
         /// <summary>
         /// Adds a new surface chart to the worksheet.
@@ -752,7 +752,7 @@ namespace OfficeOpenXml.Drawing
         /// <returns>The chart</returns>
         public ExcelSurfaceChart AddSurfaceChart(string Name, eSurfaceChartType ChartType, ExcelPivotTable PivotTableSource)
         {
-            return (ExcelSurfaceChart)AddAllChartTypes(Name, (eChartType)ChartType, PivotTableSource);
+            return (ExcelSurfaceChart)this.AddAllChartTypes(Name, (eChartType)ChartType, PivotTableSource);
         }
         /// <summary>
         /// Adds a new surface chart to the worksheet.
@@ -762,7 +762,7 @@ namespace OfficeOpenXml.Drawing
         /// <returns>The chart</returns>    
         public ExcelSurfaceChart AddSurfaceChart(string Name, eSurfaceChartType ChartType)
         {
-            return (ExcelSurfaceChart)AddAllChartTypes(Name, (eChartType)ChartType, null);
+            return (ExcelSurfaceChart)this.AddAllChartTypes(Name, (eChartType)ChartType, null);
         }
         /// <summary>
         /// Adds a picture to the worksheet
@@ -772,7 +772,7 @@ namespace OfficeOpenXml.Drawing
         /// <returns>A picture object</returns>
         public ExcelPicture AddPicture(string Name, FileInfo ImageFile)
         {
-            return AddPicture(Name, ImageFile, null);
+            return this.AddPicture(Name, ImageFile, null);
         }
         /// <summary>
         /// Adds a picture to the worksheet
@@ -783,12 +783,12 @@ namespace OfficeOpenXml.Drawing
         /// <returns>A picture object</returns>
         public ExcelPicture AddPicture(string Name, FileInfo ImageFile, Uri Hyperlink)
         {
-            ValidatePictureFile(Name, ImageFile);
-            XmlElement drawNode = CreateDrawingXml(eEditAs.OneCell);
+            this.ValidatePictureFile(Name, ImageFile);
+            XmlElement drawNode = this.CreateDrawingXml(eEditAs.OneCell);
             ePictureType type = PictureStore.GetPictureType(ImageFile.Extension);
             ExcelPicture? pic = new ExcelPicture(this, drawNode, Hyperlink, type);
             pic.LoadImage(new FileStream(ImageFile.FullName, FileMode.Open, FileAccess.Read), type);
-            AddPicture(Name, pic);
+            this.AddPicture(Name, pic);
             return pic;
         }
         /// <summary>
@@ -799,7 +799,7 @@ namespace OfficeOpenXml.Drawing
         /// <returns>A picture object</returns>
         public ExcelPicture AddPicture(string Name, Stream PictureStream)
         {
-            return AddImageInternal(Name, PictureStream, null, null);
+            return this.AddImageInternal(Name, PictureStream, null, null);
         }
         /// <summary>
         /// Adds a picture to the worksheet from a stream. EPPlus will identify the type of image automatically.
@@ -810,7 +810,7 @@ namespace OfficeOpenXml.Drawing
         /// <returns>A picture object</returns>
         public ExcelPicture AddPicture(string Name, Stream PictureStream, Uri Hyperlink)
         {
-            return AddImageInternal(Name, PictureStream, null, Hyperlink);
+            return this.AddImageInternal(Name, PictureStream, null, Hyperlink);
         }
         /// <summary>
         /// Adds a picture to the worksheet
@@ -822,7 +822,7 @@ namespace OfficeOpenXml.Drawing
         [Obsolete("This overload is deprecated, please use AddPicture(string, Stream) instead.")]
         public ExcelPicture AddPicture(string Name, Stream PictureStream, ePictureType? PictureType)
         {
-            return AddPicture(Name, PictureStream, PictureType, null);
+            return this.AddPicture(Name, PictureStream, PictureType, null);
         }
         /// <summary>
         /// Adds a picture to the worksheet
@@ -835,7 +835,7 @@ namespace OfficeOpenXml.Drawing
         [Obsolete("This overload is deprecated, please use AddPicture(string, Stream, Uri) instead.")]
         public ExcelPicture AddPicture(string Name, Stream pictureStream, ePictureType? pictureType, Uri Hyperlink)
         {
-            return AddImageInternal(Name, pictureStream, pictureType, Hyperlink);
+            return this.AddImageInternal(Name, pictureStream, pictureType, Hyperlink);
         }
 
         private ExcelPicture AddImageInternal(string Name, Stream pictureStream, ePictureType? pictureType, Uri Hyperlink)
@@ -854,20 +854,20 @@ namespace OfficeOpenXml.Drawing
                 pictureType = ImageReader.GetPictureType(pictureStream, true);
             }
 
-            XmlElement drawNode = CreateDrawingXml(eEditAs.OneCell);
+            XmlElement drawNode = this.CreateDrawingXml(eEditAs.OneCell);
             ExcelPicture? pic = new ExcelPicture(this, drawNode, Hyperlink, pictureType.Value);
             pic.LoadImage(pictureStream, pictureType.Value);
-            AddPicture(Name, pic);
+            this.AddPicture(Name, pic);
             return pic;
         }
 
         internal ExcelGroupShape AddGroupDrawing()
         {
-            XmlElement drawNode = CreateDrawingXml(eEditAs.OneCell);
+            XmlElement drawNode = this.CreateDrawingXml(eEditAs.OneCell);
             ExcelGroupShape? grp = new ExcelGroupShape(this, drawNode);
             grp.Name = $"Group {grp.Id}";
-            _drawingsList.Add(grp);
-            _drawingNames.Add(grp.Name, _drawingsList.Count - 1);
+            this._drawingsList.Add(grp);
+            this._drawingNames.Add(grp.Name, this._drawingsList.Count - 1);
             return grp;
         }
         #region AddPictureAsync
@@ -880,7 +880,7 @@ namespace OfficeOpenXml.Drawing
         /// <returns>A picture object</returns>
         public async Task<ExcelPicture> AddPictureAsync(string Name, FileInfo ImageFile)
         {
-            return await AddPictureAsync(Name, ImageFile, null);
+            return await this.AddPictureAsync(Name, ImageFile, null);
         }
         /// <summary>
         /// Adds a picture to the worksheet
@@ -891,12 +891,12 @@ namespace OfficeOpenXml.Drawing
         /// <returns>A picture object</returns>
         public async Task<ExcelPicture> AddPictureAsync(string Name, FileInfo ImageFile, Uri Hyperlink)
         {
-            ValidatePictureFile(Name, ImageFile);
-            XmlElement drawNode = CreateDrawingXml(eEditAs.OneCell);
+            this.ValidatePictureFile(Name, ImageFile);
+            XmlElement drawNode = this.CreateDrawingXml(eEditAs.OneCell);
             ePictureType type = PictureStore.GetPictureType(ImageFile.Extension);
             ExcelPicture? pic = new ExcelPicture(this, drawNode, Hyperlink, type);
             await pic.LoadImageAsync(new FileStream(ImageFile.FullName, FileMode.Open, FileAccess.Read), type);
-            AddPicture(Name, pic);
+            this.AddPicture(Name, pic);
             return pic;
         }
         /// <summary>
@@ -907,7 +907,7 @@ namespace OfficeOpenXml.Drawing
         /// <returns>A picture object</returns>
         public async Task<ExcelPicture> AddPictureAsync(string Name, string ImagePath)
         {
-            return await AddPictureAsync(Name, new FileInfo(ImagePath), null);
+            return await this.AddPictureAsync(Name, new FileInfo(ImagePath), null);
         }
         /// <summary>
         /// Adds a picture to the worksheet
@@ -918,7 +918,7 @@ namespace OfficeOpenXml.Drawing
         /// <returns>A picture object</returns>
         public async Task<ExcelPicture> AddPictureAsync(string Name, string ImagePath, Uri Hyperlink)
         {
-            return await AddPictureAsync(Name, new FileInfo(ImagePath), Hyperlink);
+            return await this.AddPictureAsync(Name, new FileInfo(ImagePath), Hyperlink);
         }
         /// <summary>
         /// Adds a picture to the worksheet from a stream. EPPlus will identify the type of image automatically.
@@ -928,7 +928,7 @@ namespace OfficeOpenXml.Drawing
         /// <returns>A picture object</returns>
         public async Task<ExcelPicture> AddPictureAsync(string Name, Stream PictureStream)
         {
-            return await AddPictureInternalAsync(Name, PictureStream, null, null);
+            return await this.AddPictureInternalAsync(Name, PictureStream, null, null);
         }
         /// <summary>
         /// Adds a picture to the worksheet from a stream. EPPlus will identify the type of image automatically.
@@ -939,7 +939,7 @@ namespace OfficeOpenXml.Drawing
         /// <returns>A picture object</returns>
         public async Task<ExcelPicture> AddPictureAsync(string Name, Stream PictureStream, Uri Hyperlink)
         {
-            return await AddPictureInternalAsync(Name, PictureStream, null, Hyperlink);
+            return await this.AddPictureInternalAsync(Name, PictureStream, null, Hyperlink);
         }
         /// <summary>
         /// Adds a picture to the worksheet
@@ -951,7 +951,7 @@ namespace OfficeOpenXml.Drawing
         [Obsolete("This overload is deprecated, please use AddPictureAsync(string, Stream) instead.")]
         public async Task<ExcelPicture> AddPictureAsync(string Name, Stream PictureStream, ePictureType? PictureType)
         {
-            return await AddPictureInternalAsync(Name, PictureStream, PictureType, null);
+            return await this.AddPictureInternalAsync(Name, PictureStream, PictureType, null);
         }
         /// <summary>
         /// Adds a picture to the worksheet
@@ -964,7 +964,7 @@ namespace OfficeOpenXml.Drawing
         [Obsolete("This overload is deprecated, please use AddPictureAsync(string, Stream, Uri) instead.")]
         public async Task<ExcelPicture> AddPictureAsync(string Name, Stream pictureStream, ePictureType? pictureType, Uri Hyperlink)
         {
-            return await AddPictureInternalAsync(Name, pictureStream, pictureType, Hyperlink);
+            return await this.AddPictureInternalAsync(Name, pictureStream, pictureType, Hyperlink);
         }
         private async Task<ExcelPicture> AddPictureInternalAsync(string Name, Stream pictureStream, ePictureType? pictureType, Uri Hyperlink)
         {
@@ -977,7 +977,7 @@ namespace OfficeOpenXml.Drawing
                 throw (new IOException("Stream must be readable and seekable"));
             }
 
-            XmlElement drawNode = CreateDrawingXml(eEditAs.OneCell);
+            XmlElement drawNode = this.CreateDrawingXml(eEditAs.OneCell);
             if (pictureType == null)
             {
                 pictureType = await ImageReader.GetPictureTypeAsync(pictureStream);
@@ -985,7 +985,7 @@ namespace OfficeOpenXml.Drawing
 
             ExcelPicture? pic = new ExcelPicture(this, drawNode, Hyperlink, pictureType.Value);
             await pic.LoadImageAsync(pictureStream, pictureType.Value);
-            AddPicture(Name, pic);
+            this.AddPicture(Name, pic);
             return pic;
 
         }
@@ -994,8 +994,8 @@ namespace OfficeOpenXml.Drawing
         private void AddPicture(string Name, ExcelPicture pic)
         {
             pic.Name = Name;
-            _drawingsList.Add(pic);
-            _drawingNames.Add(Name, _drawingsList.Count - 1);
+            this._drawingsList.Add(pic);
+            this._drawingNames.Add(Name, this._drawingsList.Count - 1);
         }
         /// <summary>
         /// Adds a picture to the worksheet
@@ -1007,7 +1007,7 @@ namespace OfficeOpenXml.Drawing
         {
             if (string.IsNullOrEmpty(ImagePath) == false)
             {
-                return AddPicture(Name, new FileInfo(ImagePath), null);
+                return this.AddPicture(Name, new FileInfo(ImagePath), null);
             }
             throw (new Exception("AddPicture: Image path can't be null"));
         }
@@ -1022,13 +1022,13 @@ namespace OfficeOpenXml.Drawing
         {
             if (string.IsNullOrEmpty(ImagePath) == false)
             {
-                return AddPicture(Name, new FileInfo(ImagePath), Hyperlink);
+                return this.AddPicture(Name, new FileInfo(ImagePath), Hyperlink);
             }
             throw (new Exception("AddPicture: Image path can't be null"));
         }
         private void ValidatePictureFile(string Name, FileInfo ImageFile)
         {
-            if (Worksheet is ExcelChartsheet && _drawingsList.Count > 0)
+            if (this.Worksheet is ExcelChartsheet && this._drawingsList.Count > 0)
             {
                 throw new InvalidOperationException("Chart worksheets can't have more than one drawing");
             }
@@ -1041,7 +1041,7 @@ namespace OfficeOpenXml.Drawing
                 throw new FileNotFoundException("Cant find file.", ImageFile.FullName);
             }
 
-            if (_drawingNames.ContainsKey(Name))
+            if (this._drawingNames.ContainsKey(Name))
             {
                 throw new Exception("Name already exists in the drawings collection");
             }
@@ -1055,7 +1055,7 @@ namespace OfficeOpenXml.Drawing
         /// <returns>The new chart</returns>
         public ExcelChart AddChartFromTemplate(FileInfo crtxFile, string name)
         {
-            return AddChartFromTemplate(crtxFile, name, null);
+            return this.AddChartFromTemplate(crtxFile, name, null);
         }
         /// <summary>
         /// Adds a new chart using an crtx template
@@ -1074,7 +1074,7 @@ namespace OfficeOpenXml.Drawing
             try
             {
                 fs = crtxFile.Open(FileMode.Open, FileAccess.Read, FileShare.Read);
-                return AddChartFromTemplate(fs, name);
+                return this.AddChartFromTemplate(fs, name);
             }
             catch
             {
@@ -1097,7 +1097,7 @@ namespace OfficeOpenXml.Drawing
         /// <returns>The new chart</returns>
         public ExcelChart AddChartFromTemplate(Stream crtxStream, string name)
         {
-            return AddChartFromTemplate(crtxStream, name, null);
+            return this.AddChartFromTemplate(crtxStream, name, null);
         }
         /// <summary>
         /// Adds a new chart using an crtx template
@@ -1108,7 +1108,7 @@ namespace OfficeOpenXml.Drawing
         /// <returns>The new chart</returns>
         public ExcelChart AddChartFromTemplate(Stream crtxStream, string name, ExcelPivotTable pivotTableSource)
         {
-            if (Worksheet is ExcelChartsheet && _drawingsList.Count > 0)
+            if (this.Worksheet is ExcelChartsheet && this._drawingsList.Count > 0)
             {
                 throw new InvalidOperationException("Chart worksheets can't have more than one drawing");
             }
@@ -1117,20 +1117,20 @@ namespace OfficeOpenXml.Drawing
             {
                 throw new InvalidDataException("Crtx file is corrupt.");
             }
-            XmlHelper? chartXmlHelper = XmlHelperFactory.Create(NameSpaceManager, chartXml.DocumentElement);
+            XmlHelper? chartXmlHelper = XmlHelperFactory.Create(this.NameSpaceManager, chartXml.DocumentElement);
             XmlNode? serNode = chartXmlHelper.GetNode("/c:chartSpace/c:chart/c:plotArea/*[substring(name(), string-length(name()) - 4) = 'Chart']/c:ser");
             if (serNode != null)
             {
-                _seriesTemplateXml = serNode.InnerXml;
+                this._seriesTemplateXml = serNode.InnerXml;
                 serNode.ParentNode.RemoveChild(serNode);
             }
-            XmlElement drawNode = CreateDrawingXml(eEditAs.TwoCell);
+            XmlElement drawNode = this.CreateDrawingXml(eEditAs.TwoCell);
             eChartType? chartType = ExcelChart.GetChartTypeFromNodeName(GetChartNodeName(chartXmlHelper));
             ExcelChart? chart = ExcelChart.GetNewChart(this, drawNode, chartType, null, pivotTableSource, chartXml);
 
             chart.Name = name;
-            _drawingsList.Add(chart);
-            _drawingNames.Add(name, _drawingsList.Count - 1);
+            this._drawingsList.Add(chart);
+            this._drawingNames.Add(name, this._drawingsList.Count - 1);
             eChartStyle chartStyle = chart.Style;
             if (chartStyle == eChartStyle.None)
             {
@@ -1165,20 +1165,20 @@ namespace OfficeOpenXml.Drawing
 
         public ExcelShape AddShape(string Name, eShapeStyle Style)
         {
-            if (Worksheet is ExcelChartsheet && _drawingsList.Count > 0)
+            if (this.Worksheet is ExcelChartsheet && this._drawingsList.Count > 0)
             {
                 throw new InvalidOperationException("Chart worksheets can't have more than one drawing");
             }
-            if (_drawingNames.ContainsKey(Name))
+            if (this._drawingNames.ContainsKey(Name))
             {
                 throw new Exception("Name already exists in the drawings collection");
             }
-            XmlElement drawNode = CreateDrawingXml();
+            XmlElement drawNode = this.CreateDrawingXml();
 
             ExcelShape shape = new ExcelShape(this, drawNode, Style);
             shape.Name = Name;
-            _drawingsList.Add(shape);
-            _drawingNames.Add(Name, _drawingsList.Count - 1);
+            this._drawingsList.Add(shape);
+            this._drawingNames.Add(Name, this._drawingsList.Count - 1);
             return shape;
         }
         #region Add Slicers
@@ -1189,7 +1189,7 @@ namespace OfficeOpenXml.Drawing
         /// <returns>The slicer drawing</returns>
         public ExcelTableSlicer AddTableSlicer(ExcelTableColumn TableColumn)
         {
-            if (Worksheet is ExcelChartsheet && _drawingsList.Count > 0)
+            if (this.Worksheet is ExcelChartsheet && this._drawingsList.Count > 0)
             {
                 throw new InvalidOperationException("Chart worksheets can't have more than one drawing");
             }
@@ -1198,15 +1198,15 @@ namespace OfficeOpenXml.Drawing
             {
                 TableColumn.Table.AutoFilter.Columns.AddValueFilterColumn(TableColumn.Position);
             }
-            XmlElement drawNode = CreateDrawingXml();
+            XmlElement drawNode = this.CreateDrawingXml();
             ExcelTableSlicer? slicer = new ExcelTableSlicer(this, drawNode, TableColumn)
             {
                 EditAs = eEditAs.OneCell,
             };
             slicer.SetSize(192, 260);
 
-            _drawingsList.Add(slicer);
-            _drawingNames.Add(slicer.Name, _drawingsList.Count - 1);
+            this._drawingsList.Add(slicer);
+            this._drawingNames.Add(slicer.Name, this._drawingsList.Count - 1);
 
             return slicer;
         }
@@ -1217,7 +1217,7 @@ namespace OfficeOpenXml.Drawing
         /// <returns>The slicer drawing</returns>
         internal ExcelPivotTableSlicer AddPivotTableSlicer(ExcelPivotTableField Field)
         {
-            if (Worksheet is ExcelChartsheet && _drawingsList.Count > 0)
+            if (this.Worksheet is ExcelChartsheet && this._drawingsList.Count > 0)
             {
                 throw new InvalidOperationException("Chart worksheets can't have more than one drawing");
             }
@@ -1229,14 +1229,14 @@ namespace OfficeOpenXml.Drawing
             {
                 Field._pivotTable.ChangeCacheId(0); //Slicers can for some reason not have a cache id of 0.
             }
-            XmlElement drawNode = CreateDrawingXml();
+            XmlElement drawNode = this.CreateDrawingXml();
             ExcelPivotTableSlicer? slicer = new ExcelPivotTableSlicer(this, drawNode, Field)
             {
                 EditAs = eEditAs.OneCell,
             };
             slicer.SetSize(192, 260);
-            _drawingsList.Add(slicer);
-            _drawingNames.Add(slicer.Name, _drawingsList.Count - 1);
+            this._drawingsList.Add(slicer);
+            this._drawingNames.Add(slicer.Name, this._drawingsList.Count - 1);
 
             return slicer;
         }
@@ -1277,22 +1277,22 @@ namespace OfficeOpenXml.Drawing
         /// <returns>The shape object</returns>
         public ExcelShape AddShape(string Name, ExcelShape Source)
         {
-            if (Worksheet is ExcelChartsheet && _drawingsList.Count > 0)
+            if (this.Worksheet is ExcelChartsheet && this._drawingsList.Count > 0)
             {
                 throw new InvalidOperationException("Chart worksheets can't have more than one drawing");
             }
-            if (_drawingNames.ContainsKey(Name))
+            if (this._drawingNames.ContainsKey(Name))
             {
                 throw new Exception("Name already exists in the drawings collection");
             }
-            XmlElement drawNode = CreateDrawingXml();
+            XmlElement drawNode = this.CreateDrawingXml();
             drawNode.InnerXml = Source.TopNode.InnerXml;
 
             ExcelShape shape = new ExcelShape(this, drawNode);
             shape.Name = Name;
             shape.Style = Source.Style;
-            _drawingsList.Add(shape);
-            _drawingNames.Add(Name, _drawingsList.Count - 1);
+            this._drawingsList.Add(shape);
+            this._drawingNames.Add(Name, this._drawingsList.Count - 1);
             return shape;
         }
         #region Form Controls
@@ -1306,21 +1306,21 @@ namespace OfficeOpenXml.Drawing
         /// <exception cref="ArgumentException">Drawing names must be unique</exception>
         public ExcelControl AddControl(string Name, eControlType ControlType)
         {
-            if (Worksheet is ExcelChartsheet && _drawingsList.Count > 0)
+            if (this.Worksheet is ExcelChartsheet && this._drawingsList.Count > 0)
             {
                 throw new InvalidOperationException("Chart worksheets can't have more than one drawing");
             }
-            if (_drawingNames.ContainsKey(Name))
+            if (this._drawingNames.ContainsKey(Name))
             {
                 throw new ArgumentException("Name already exists in the drawings collection");
             }
 
-            XmlElement drawNode = CreateDrawingXml(eEditAs.TwoCell, true);
+            XmlElement drawNode = this.CreateDrawingXml(eEditAs.TwoCell, true);
 
             ExcelControl control = ControlFactory.CreateControl(ControlType, this, drawNode, Name);
             control.EditAs = ExcelControl.GetControlEditAs(ControlType);
-            _drawingsList.Add(control);
-            _drawingNames.Add(Name, _drawingsList.Count - 1);
+            this._drawingsList.Add(control);
+            this._drawingNames.Add(Name, this._drawingsList.Count - 1);
             return control;
         }
         /// <summary>
@@ -1330,7 +1330,7 @@ namespace OfficeOpenXml.Drawing
         /// <returns>The button form control</returns>
         public ExcelControlButton AddButtonControl(string Name)
         {
-            return (ExcelControlButton)AddControl(Name, eControlType.Button);
+            return (ExcelControlButton)this.AddControl(Name, eControlType.Button);
         }
         /// <summary>
         /// Adds a checkbox form control to the worksheet
@@ -1339,7 +1339,7 @@ namespace OfficeOpenXml.Drawing
         /// <returns>The checkbox form control</returns>
         public ExcelControlCheckBox AddCheckBoxControl(string Name)
         {
-            return (ExcelControlCheckBox)AddControl(Name, eControlType.CheckBox);
+            return (ExcelControlCheckBox)this.AddControl(Name, eControlType.CheckBox);
         }
         /// <summary>
         /// Adds a radio button form control to the worksheet
@@ -1348,7 +1348,7 @@ namespace OfficeOpenXml.Drawing
         /// <returns>The radio button form control</returns>
         public ExcelControlRadioButton AddRadioButtonControl(string Name)
         {
-            return (ExcelControlRadioButton)AddControl(Name, eControlType.RadioButton);
+            return (ExcelControlRadioButton)this.AddControl(Name, eControlType.RadioButton);
         }
         /// <summary>
         /// Adds a list box form control to the worksheet
@@ -1357,7 +1357,7 @@ namespace OfficeOpenXml.Drawing
         /// <returns>The list box form control</returns>
         public ExcelControlListBox AddListBoxControl(string Name)
         {
-            return (ExcelControlListBox)AddControl(Name, eControlType.ListBox);
+            return (ExcelControlListBox)this.AddControl(Name, eControlType.ListBox);
         }
         /// <summary>
         /// Adds a drop-down form control to the worksheet
@@ -1366,7 +1366,7 @@ namespace OfficeOpenXml.Drawing
         /// <returns>The drop-down form control</returns>
         public ExcelControlDropDown AddDropDownControl(string Name)
         {
-            return (ExcelControlDropDown)AddControl(Name, eControlType.DropDown);
+            return (ExcelControlDropDown)this.AddControl(Name, eControlType.DropDown);
         }
         /// <summary>
         /// Adds a group box form control to the worksheet
@@ -1375,7 +1375,7 @@ namespace OfficeOpenXml.Drawing
         /// <returns>The group box form control</returns>
         public ExcelControlGroupBox AddGroupBoxControl(string Name)
         {
-            return (ExcelControlGroupBox)AddControl(Name, eControlType.GroupBox);
+            return (ExcelControlGroupBox)this.AddControl(Name, eControlType.GroupBox);
         }
         /// <summary>
         /// Adds a label form control to the worksheet
@@ -1384,7 +1384,7 @@ namespace OfficeOpenXml.Drawing
         /// <returns>The label form control</returns>
         public ExcelControlLabel AddLabelControl(string Name)
         {
-            return (ExcelControlLabel)AddControl(Name, eControlType.Label);
+            return (ExcelControlLabel)this.AddControl(Name, eControlType.Label);
         }
         /// <summary>
         /// Adds a spin button control to the worksheet
@@ -1393,7 +1393,7 @@ namespace OfficeOpenXml.Drawing
         /// <returns>The spin button form control</returns>
         public ExcelControlSpinButton AddSpinButtonControl(string Name)
         {
-            return (ExcelControlSpinButton)AddControl(Name, eControlType.SpinButton);
+            return (ExcelControlSpinButton)this.AddControl(Name, eControlType.SpinButton);
         }
         /// <summary>
         /// Adds a scroll bar control to the worksheet
@@ -1402,45 +1402,45 @@ namespace OfficeOpenXml.Drawing
         /// <returns>The scroll bar form control</returns>
         public ExcelControlScrollBar AddScrollBarControl(string Name)
         {
-            return (ExcelControlScrollBar)AddControl(Name, eControlType.ScrollBar);
+            return (ExcelControlScrollBar)this.AddControl(Name, eControlType.ScrollBar);
         }
         #endregion
         private XmlElement CreateDrawingXml(eEditAs topNodeType = eEditAs.TwoCell, bool asAlterniveContent = false)
         {
-            if (DrawingXml.DocumentElement == null)
+            if (this.DrawingXml.DocumentElement == null)
             {
-                DrawingXml.LoadXml(string.Format("<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"yes\"?><xdr:wsDr xmlns:xdr=\"{0}\" xmlns:a=\"{1}\" />", ExcelPackage.schemaSheetDrawings, ExcelPackage.schemaDrawings));
-                Packaging.ZipPackage package = Worksheet._package.ZipPackage;
+                this.DrawingXml.LoadXml(string.Format("<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"yes\"?><xdr:wsDr xmlns:xdr=\"{0}\" xmlns:a=\"{1}\" />", ExcelPackage.schemaSheetDrawings, ExcelPackage.schemaDrawings));
+                ZipPackage package = this.Worksheet._package.ZipPackage;
 
                 //Check for existing part, issue #100
-                int id = Worksheet.SheetId;
+                int id = this.Worksheet.SheetId;
                 do
                 {
-                    _uriDrawing = new Uri(string.Format("/xl/drawings/drawing{0}.xml", id++), UriKind.Relative);
+                    this._uriDrawing = new Uri(string.Format("/xl/drawings/drawing{0}.xml", id++), UriKind.Relative);
                 }
-                while (package.PartExists(_uriDrawing));
+                while (package.PartExists(this._uriDrawing));
 
-                _part = package.CreatePart(_uriDrawing, "application/vnd.openxmlformats-officedocument.drawing+xml", _package.Compression);
+                this._part = package.CreatePart(this._uriDrawing, "application/vnd.openxmlformats-officedocument.drawing+xml", this._package.Compression);
 
-                StreamWriter streamChart = new StreamWriter(_part.GetStream(FileMode.Create, FileAccess.Write));
-                DrawingXml.Save(streamChart);
+                StreamWriter streamChart = new StreamWriter(this._part.GetStream(FileMode.Create, FileAccess.Write));
+                this.DrawingXml.Save(streamChart);
                 streamChart.Close();
                 ZipPackage.Flush();
 
-                _drawingRelation = Worksheet.Part.CreateRelationship(UriHelper.GetRelativeUri(Worksheet.WorksheetUri, _uriDrawing), Packaging.TargetMode.Internal, ExcelPackage.schemaRelationships + "/drawing");
-                XmlElement e = (XmlElement)Worksheet.CreateNode("d:drawing");
-                e.SetAttribute("id", ExcelPackage.schemaRelationships, _drawingRelation.Id);
+                this._drawingRelation = this.Worksheet.Part.CreateRelationship(UriHelper.GetRelativeUri(this.Worksheet.WorksheetUri, this._uriDrawing), TargetMode.Internal, ExcelPackage.schemaRelationships + "/drawing");
+                XmlElement e = (XmlElement)this.Worksheet.CreateNode("d:drawing");
+                e.SetAttribute("id", ExcelPackage.schemaRelationships, this._drawingRelation.Id);
 
                 ZipPackage.Flush();
             }
-            XmlNode colNode = _drawingsXml.SelectSingleNode("//xdr:wsDr", NameSpaceManager);
+            XmlNode colNode = this._drawingsXml.SelectSingleNode("//xdr:wsDr", this.NameSpaceManager);
             XmlElement drawNode;
 
             string? topElementname = $"{topNodeType.ToEnumString()}Anchor";
-            drawNode = _drawingsXml.CreateElement("xdr", topElementname, ExcelPackage.schemaSheetDrawings);
+            drawNode = this._drawingsXml.CreateElement("xdr", topElementname, ExcelPackage.schemaSheetDrawings);
             if (asAlterniveContent)
             {
-                XmlElement? acNode = (XmlElement)_drawingsXml.CreateElement("mc", "AlternateContent", ExcelPackage.schemaMarkupCompatibility);
+                XmlElement? acNode = (XmlElement)this._drawingsXml.CreateElement("mc", "AlternateContent", ExcelPackage.schemaMarkupCompatibility);
                 acNode.SetAttribute("xmlns:mc", ExcelPackage.schemaMarkupCompatibility);
                 acNode.InnerXml = "<mc:Choice Requires=\"a14\" xmlns:a14=\"http://schemas.microsoft.com/office/drawing/2010/main\"></mc:Choice><mc:Fallback/>";
                 acNode.FirstChild.AppendChild(drawNode);
@@ -1453,14 +1453,14 @@ namespace OfficeOpenXml.Drawing
             if (topNodeType == eEditAs.OneCell || topNodeType == eEditAs.TwoCell)
             {
                 //Add from position Element;
-                XmlElement fromNode = _drawingsXml.CreateElement("xdr", "from", ExcelPackage.schemaSheetDrawings);
+                XmlElement fromNode = this._drawingsXml.CreateElement("xdr", "from", ExcelPackage.schemaSheetDrawings);
                 drawNode.AppendChild(fromNode);
                 fromNode.InnerXml = "<xdr:col>0</xdr:col><xdr:colOff>0</xdr:colOff><xdr:row>0</xdr:row><xdr:rowOff>0</xdr:rowOff>";
             }
             else
             {
                 //Add from position Element;
-                XmlElement posNode = _drawingsXml.CreateElement("xdr", "pos", ExcelPackage.schemaSheetDrawings);
+                XmlElement posNode = this._drawingsXml.CreateElement("xdr", "pos", ExcelPackage.schemaSheetDrawings);
                 posNode.SetAttribute("x", "0");
                 posNode.SetAttribute("y", "0");
                 drawNode.AppendChild(posNode);
@@ -1469,14 +1469,14 @@ namespace OfficeOpenXml.Drawing
             if (topNodeType == eEditAs.TwoCell)
             {
                 //Add to position Element;
-                XmlElement toNode = _drawingsXml.CreateElement("xdr", "to", ExcelPackage.schemaSheetDrawings);
+                XmlElement toNode = this._drawingsXml.CreateElement("xdr", "to", ExcelPackage.schemaSheetDrawings);
                 drawNode.AppendChild(toNode);
                 toNode.InnerXml = "<xdr:col>10</xdr:col><xdr:colOff>0</xdr:colOff><xdr:row>10</xdr:row><xdr:rowOff>0</xdr:rowOff>";
             }
             else
             {
                 //Add from position Element;
-                XmlElement posNode = _drawingsXml.CreateElement("xdr", "ext", ExcelPackage.schemaSheetDrawings);
+                XmlElement posNode = this._drawingsXml.CreateElement("xdr", "ext", ExcelPackage.schemaSheetDrawings);
                 posNode.SetAttribute("cx", "6072876");
                 posNode.SetAttribute("cy", "9299263");
                 drawNode.AppendChild(posNode);
@@ -1492,30 +1492,32 @@ namespace OfficeOpenXml.Drawing
         /// <param name="Index">The index of the drawing</param>
         public void Remove(int Index)
         {
-            if (Worksheet is ExcelChartsheet && _drawingsList.Count > 0)
+            if (this.Worksheet is ExcelChartsheet && this._drawingsList.Count > 0)
             {
                 throw new InvalidOperationException("Can' remove charts from chart worksheets");
             }
-            RemoveDrawing(Index);
+
+            this.RemoveDrawing(Index);
         }
 
         internal void RemoveDrawing(int Index, bool DeleteXmlNode = true)
         {
-            ExcelDrawing? draw = _drawingsList[Index];
+            ExcelDrawing? draw = this._drawingsList[Index];
             if (DeleteXmlNode)
             {
                 draw.DeleteMe();
             }
-            _drawingNames.Remove(draw.Name);
-            _drawingsList.Remove(draw);
-            ReIndexNames(Index, -1);
+
+            this._drawingNames.Remove(draw.Name);
+            this._drawingsList.Remove(draw);
+            this.ReIndexNames(Index, -1);
         }
 
         internal void ReIndexNames(int Index, int increase)
         {
-            for (int i = _drawingsList.Count-1; i >= Index; i--)
+            for (int i = this._drawingsList.Count-1; i >= Index; i--)
             {
-                _drawingNames[_drawingsList[i].Name] = i;
+                this._drawingNames[this._drawingsList[i].Name] = i;
             }
         }
 
@@ -1525,7 +1527,7 @@ namespace OfficeOpenXml.Drawing
         /// <param name="Drawing">The drawing</param>
         public void Remove(ExcelDrawing Drawing)
         {
-            Remove(_drawingNames[Drawing.Name]);
+            this.Remove(this._drawingNames[Drawing.Name]);
         }
         /// <summary>
         /// Removes a drawing.
@@ -1533,33 +1535,34 @@ namespace OfficeOpenXml.Drawing
         /// <param name="Name">The name of the drawing</param>
         public void Remove(string Name)
         {
-            Remove(_drawingNames[Name]);
+            this.Remove(this._drawingNames[Name]);
         }
         /// <summary>
         /// Removes all drawings from the collection
         /// </summary>
         public void Clear()
         {
-            if (Worksheet is ExcelChartsheet && _drawingsList.Count > 0)
+            if (this.Worksheet is ExcelChartsheet && this._drawingsList.Count > 0)
             {
                 throw new InvalidOperationException("Can' remove charts from chart worksheets");
             }
-            ClearDrawings();
+
+            this.ClearDrawings();
         }
 
         internal void ClearDrawings()
         {
-            while (Count > 0)
+            while (this.Count > 0)
             {
-                RemoveDrawing(0);
+                this.RemoveDrawing(0);
             }
         }
         #endregion
         #region BringToFront & SendToBack
         internal void BringToFront(ExcelDrawing drawing)
         {
-            int index = _drawingsList.IndexOf(drawing);
-            int endIndex = _drawingsList.Count - 1;
+            int index = this._drawingsList.IndexOf(drawing);
+            int endIndex = this._drawingsList.Count - 1;
             if (index == endIndex)
             {
                 return;
@@ -1571,19 +1574,19 @@ namespace OfficeOpenXml.Drawing
             parentNode.InsertAfter(drawing.TopNode, parentNode.LastChild);
 
             //Move in list 
-            _drawingsList.RemoveAt(index);
-            _drawingsList.Insert(endIndex, drawing);
+            this._drawingsList.RemoveAt(index);
+            this._drawingsList.Insert(endIndex, drawing);
 
             //Reindex dictionary
-            _drawingNames[drawing.Name] = endIndex;
+            this._drawingNames[drawing.Name] = endIndex;
             for (int i = index + 0; i < endIndex; i++)
             {
-                _drawingNames[_drawingsList[i].Name]--;
+                this._drawingNames[this._drawingsList[i].Name]--;
             }
         }
         internal void SendToBack(ExcelDrawing drawing)
         {
-            int index = _drawingsList.IndexOf(drawing);
+            int index = this._drawingsList.IndexOf(drawing);
             if (index == 0)
             {
                 return;
@@ -1595,14 +1598,14 @@ namespace OfficeOpenXml.Drawing
             parentNode.InsertBefore(drawing.TopNode, parentNode.FirstChild);
 
             //Move in list 
-            _drawingsList.RemoveAt(index);
-            _drawingsList.Insert(0, drawing);
+            this._drawingsList.RemoveAt(index);
+            this._drawingsList.Insert(0, drawing);
 
             //Reindex dictionary
-            _drawingNames[drawing.Name] = 0;
+            this._drawingNames[drawing.Name] = 0;
             for (int i = 1; i <= index; i++)
             {
-                _drawingNames[_drawingsList[i].Name]++;
+                this._drawingNames[this._drawingsList[i].Name]++;
             }
         }
         #endregion
@@ -1610,11 +1613,11 @@ namespace OfficeOpenXml.Drawing
         {
             int ix = 0;
             //Now set the size for all drawings depending on the editAs property.
-            foreach (OfficeOpenXml.Drawing.ExcelDrawing d in this)
+            foreach (ExcelDrawing d in this)
             {
-                if (d.EditAs != Drawing.eEditAs.TwoCell)
+                if (d.EditAs != eEditAs.TwoCell)
                 {
-                    if (d.EditAs == Drawing.eEditAs.Absolute)
+                    if (d.EditAs == eEditAs.Absolute)
                     {
                         d.SetPixelLeft(pos[ix, 0]);
                     }
@@ -1650,7 +1653,7 @@ namespace OfficeOpenXml.Drawing
         }
         internal double[,] GetDrawingWidths()
         {
-            double[,] pos = new double[Count, 2];
+            double[,] pos = new double[this.Count, 2];
             int ix = 0;
             //Save the size for all drawings
             foreach (ExcelDrawing d in this)
@@ -1662,7 +1665,7 @@ namespace OfficeOpenXml.Drawing
         }
         internal double[,] GetDrawingHeight()
         {
-            double[,] pos = new double[Count, 2];
+            double[,] pos = new double[this.Count, 2];
             int ix = 0;
             //Save the size for all drawings
             foreach (ExcelDrawing d in this)
@@ -1677,22 +1680,23 @@ namespace OfficeOpenXml.Drawing
         /// </summary>
         public void Dispose()
         {
-            _drawingsXml = null;
-            _part = null;
-            _drawingNames.Clear();
-            _drawingNames = null;
-            _drawingRelation = null;
-            foreach (ExcelDrawing? d in _drawingsList)
+            this._drawingsXml = null;
+            this._part = null;
+            this._drawingNames.Clear();
+            this._drawingNames = null;
+            this._drawingRelation = null;
+            foreach (ExcelDrawing? d in this._drawingsList)
             {
                 d.Dispose();
             }
-            _drawingsList.Clear();
-            _drawingsList = null;
+
+            this._drawingsList.Clear();
+            this._drawingsList = null;
         }
 
         internal ExcelDrawing GetById(int id)
         {
-            foreach (ExcelDrawing? d in _drawingsList)
+            foreach (ExcelDrawing? d in this._drawingsList)
             {
                 if (d.Id == id)
                 {

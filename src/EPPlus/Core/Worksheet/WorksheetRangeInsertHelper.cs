@@ -215,7 +215,7 @@ namespace OfficeOpenXml.Core.Worksheet
 
         private static void InsertConditionalFormatting(ExcelRangeBase range, eShiftTypeInsert shift, ExcelAddressBase effectedAddress, ExcelWorksheet ws, bool isTable)
         {
-            List<IExcelConditionalFormattingRule>? delCF = new List<ConditionalFormatting.Contracts.IExcelConditionalFormattingRule>();
+            List<IExcelConditionalFormattingRule>? delCF = new List<IExcelConditionalFormattingRule>();
             //Update Conditional formatting references
             foreach (IExcelConditionalFormattingRule? cf in ws.ConditionalFormatting)
             {

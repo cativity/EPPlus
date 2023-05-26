@@ -23,9 +23,9 @@ namespace OfficeOpenXml.Style.Dxf
         internal ExcelDxfGradientFillColor(ExcelStyles styles, double position, Action<eStyleClass, eStyleProperty, object> callback)
             : base(styles, callback)
         {
-            Position = position;
+            this.Position = position;
             eStyleClass styleClass = position==0 ? eStyleClass.FillGradientColor1 : eStyleClass.FillGradientColor2;
-            Color = new ExcelDxfColor(styles, styleClass, callback);
+            this.Color = new ExcelDxfColor(styles, styleClass, callback);
         }
         /// <summary>
         /// The position of the color 
@@ -46,7 +46,7 @@ namespace OfficeOpenXml.Style.Dxf
         {
             get
             {
-                return Color.HasValue;
+                return this.Color.HasValue;
             }
         }
 
@@ -54,7 +54,7 @@ namespace OfficeOpenXml.Style.Dxf
         {
             get
             {
-                return Position.ToString() + "|" + Color.Id;
+                return this.Position.ToString() + "|" + this.Color.Id;
             }
         }
 
@@ -63,14 +63,14 @@ namespace OfficeOpenXml.Style.Dxf
         /// </summary>
         public override void Clear()
         {
-            Color.Clear();
+            this.Color.Clear();
         }
 
         internal override DxfStyleBase Clone()
         {
-            return new ExcelDxfGradientFillColor(_styles, Position, _callback)
+            return new ExcelDxfGradientFillColor(this._styles, this.Position, this._callback)
             {
-                Color = (ExcelDxfColor)Color.Clone()
+                Color = (ExcelDxfColor)this.Color.Clone()
             };
         }
 
@@ -78,12 +78,12 @@ namespace OfficeOpenXml.Style.Dxf
         {
             XmlNode? node = helper.CreateNode(path + "d:stop", false, true);
             XmlHelper? stopHelper = XmlHelperFactory.Create(helper.NameSpaceManager, node);
-            SetValue(stopHelper, "@position", Position / 100);
-            SetValueColor(stopHelper, "d:color", Color);
+            SetValue(stopHelper, "@position", this.Position / 100);
+            SetValueColor(stopHelper, "d:color", this.Color);
         }
         internal override void SetStyle()
         {
-            Color.SetStyle();
+            this.Color.SetStyle();
         }
     }
 }

@@ -32,7 +32,7 @@ namespace OfficeOpenXml.DataValidation.Formulas
 
         }
 
-        internal override bool HasValue => _value == null ? false : true;
+        internal override bool HasValue => this._value == null ? false : true;
 
         private T _value;
         /// <summary>
@@ -42,18 +42,18 @@ namespace OfficeOpenXml.DataValidation.Formulas
         {
             get
             {
-                return _value;
+                return this._value;
             }
             set
             {
-                State = FormulaState.Value;
-                _value = value;
+                this.State = FormulaState.Value;
+                this._value = value;
             }
         }
 
         internal override void ResetValue()
         {
-            Value = default(T);
+            this.Value = default(T);
         }
 
     }

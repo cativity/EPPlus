@@ -33,30 +33,30 @@ namespace OfficeOpenXml.FormulaParsing.ExpressionGraph
 
         public ExpressionCompiler(IExpressionConverter expressionConverter, ICompileStrategyFactory compileStrategyFactory)
         {
-            _expressionConverter = expressionConverter;
-            _compileStrategyFactory = compileStrategyFactory;
+            this._expressionConverter = expressionConverter;
+            this._compileStrategyFactory = compileStrategyFactory;
         }
 
         public CompileResult Compile(IEnumerable<Expression> expressions)
         {
-            _expressions = expressions;
-            return PerformCompilation();
+            this._expressions = expressions;
+            return this.PerformCompilation();
         }
         public CompileResult Compile(string worksheet, int row, int column, IEnumerable<Expression> expressions)
         {
-            _expressions = expressions;
-            return PerformCompilation(worksheet, row, column);
+            this._expressions = expressions;
+            return this.PerformCompilation(worksheet, row, column);
         }
 
         private CompileResult PerformCompilation(string worksheet="", int row=-1, int column=-1)
         {
-            IEnumerable<Expression>? compiledExpressions = HandleGroupedExpressions();
+            IEnumerable<Expression>? compiledExpressions = this.HandleGroupedExpressions();
             while(compiledExpressions.Any(x => x.Operator != null))
             {
-                int prec = FindLowestPrecedence();
-                compiledExpressions = HandlePrecedenceLevel(prec);
+                int prec = this.FindLowestPrecedence();
+                compiledExpressions = this.HandlePrecedenceLevel(prec);
             }
-            if (_expressions.Any())
+            if (this._expressions.Any())
             {
                 return compiledExpressions.First().Compile();
             }
@@ -65,13 +65,13 @@ namespace OfficeOpenXml.FormulaParsing.ExpressionGraph
 
         private IEnumerable<Expression> HandleGroupedExpressions()
         {
-            if (!_expressions.Any())
+            if (!this._expressions.Any())
             {
                 return Enumerable.Empty<Expression>();
             }
 
-            Expression? first = _expressions.First();
-            IEnumerable<Expression>? groupedExpressions = _expressions.Where(x => x.IsGroupedExpression);
+            Expression? first = this._expressions.First();
+            IEnumerable<Expression>? groupedExpressions = this._expressions.Where(x => x.IsGroupedExpression);
             foreach(Expression? groupedExpression in groupedExpressions)
             {
                 CompileResult? result = groupedExpression.Compile();
@@ -80,7 +80,7 @@ namespace OfficeOpenXml.FormulaParsing.ExpressionGraph
                     continue;
                 }
 
-                Expression? newExp = _expressionConverter.FromCompileResult(result);
+                Expression? newExp = this._expressionConverter.FromCompileResult(result);
                 newExp.Operator = groupedExpression.Operator;
                 newExp.Prev = groupedExpression.Prev;
                 newExp.Next = groupedExpression.Next;
@@ -97,22 +97,22 @@ namespace OfficeOpenXml.FormulaParsing.ExpressionGraph
                     first = newExp;
                 }
             }
-            return RefreshList(first);
+            return this.RefreshList(first);
         }
 
         private IEnumerable<Expression> HandlePrecedenceLevel(int precedence)
         {
-            Expression? first = _expressions.First();
-            IEnumerable<Expression>? expressionsToHandle = _expressions.Where(x => x.Operator != null && x.Operator.Precedence == precedence);
+            Expression? first = this._expressions.First();
+            IEnumerable<Expression>? expressionsToHandle = this._expressions.Where(x => x.Operator != null && x.Operator.Precedence == precedence);
             Expression? last = expressionsToHandle.Last();
             Expression? expression = expressionsToHandle.First();
             do
             {
-                CompileStrategy.CompileStrategy? strategy = _compileStrategyFactory.Create(expression);
+                CompileStrategy.CompileStrategy? strategy = this._compileStrategyFactory.Create(expression);
                 Expression? compiledExpression = strategy.Compile();
                 if(compiledExpression is ExcelErrorExpression)
                 {
-                    return RefreshList(compiledExpression);
+                    return this.RefreshList(compiledExpression);
                 }
                 if (expression == first)
                 {
@@ -122,12 +122,12 @@ namespace OfficeOpenXml.FormulaParsing.ExpressionGraph
                 expression = compiledExpression;
             }
             while (expression != null && expression.Operator != null && expression.Operator.Precedence == precedence);
-            return RefreshList(first);
+            return this.RefreshList(first);
         }
 
         private int FindLowestPrecedence()
         {
-            return _expressions.Where(x => x.Operator != null).Min(x => x.Operator.Precedence);
+            return this._expressions.Where(x => x.Operator != null).Min(x => x.Operator.Precedence);
         }
 
         private IEnumerable<Expression> RefreshList(Expression first)
@@ -140,7 +140,8 @@ namespace OfficeOpenXml.FormulaParsing.ExpressionGraph
                 resultList.Add(exp.Next);
                 exp = exp.Next;
             }
-            _expressions = resultList;
+
+            this._expressions = resultList;
             return resultList;
         }
     }

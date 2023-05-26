@@ -22,19 +22,19 @@ namespace OfficeOpenXml.Utils.TypeConversion
 
         public ValueWrapper(object obj)
         {
-            _object = obj;
+            this._object = obj;
         }
 
         public bool IsString
         {
             get
             {
-                if (_object == null)
+                if (this._object == null)
                 {
                     return false;
                 }
 
-                return _object is string;
+                return this._object is string;
             }
         }
 
@@ -42,12 +42,12 @@ namespace OfficeOpenXml.Utils.TypeConversion
         {
             get
             {
-                if (_object == null)
+                if (this._object == null)
                 {
                     return false;
                 }
 
-                return _object is string && _object.ToString().Trim() == string.Empty;
+                return this._object is string && this._object.ToString().Trim() == string.Empty;
             }
         }
 
@@ -55,12 +55,12 @@ namespace OfficeOpenXml.Utils.TypeConversion
         {
             get
             {
-                if(_object == null)
+                if(this._object == null)
                 {
                     return false;
                 }
 
-                return NumericTypeConversions.IsNumeric(_object.GetType());
+                return NumericTypeConversions.IsNumeric(this._object.GetType());
             }
         }
 
@@ -68,7 +68,7 @@ namespace OfficeOpenXml.Utils.TypeConversion
         {
             get
             {
-                return _object is DateTime;
+                return this._object is DateTime;
             }
         }
 
@@ -76,33 +76,33 @@ namespace OfficeOpenXml.Utils.TypeConversion
         {
             get
             {
-                return _object is TimeSpan;
+                return this._object is TimeSpan;
             }
         }
 
         public DateTime ToDateTime()
         {
-            return (DateTime)_object;
+            return (DateTime)this._object;
         }
 
         public TimeSpan ToTimeSpan()
         {
-            return (TimeSpan)_object;
+            return (TimeSpan)this._object;
         }
 
         public double ToDouble()
         {
-            return Convert.ToDouble(_object);
+            return Convert.ToDouble(this._object);
         }
 
         public override string ToString()
         {
-            return _object.ToString();
+            return this._object.ToString();
         }
 
         public object Object
         {
-            get { return _object; }
+            get { return this._object; }
         }
     }
 }

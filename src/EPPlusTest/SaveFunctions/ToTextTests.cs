@@ -17,58 +17,58 @@ namespace EPPlusTest.SaveFunctions
         [TestInitialize]
         public void Initialize()
         {
-            _package = new ExcelPackage();
-            _sheet = _package.Workbook.Worksheets.Add("test");
+            this._package = new ExcelPackage();
+            this._sheet = this._package.Workbook.Worksheets.Add("test");
         }
 
         [TestCleanup]
         public void Cleanup()
         {
-            _package.Dispose();
+            this._package.Dispose();
         }
 
         [TestMethod]
         public void ToTextTextDefault()
         {
-            _sheet.Cells["A1"].Value = "h1";
-            _sheet.Cells["B1"].Value = "h2";
-            string? text = _sheet.Cells["A1:B1"].ToText();
+            this._sheet.Cells["A1"].Value = "h1";
+            this._sheet.Cells["B1"].Value = "h2";
+            string? text = this._sheet.Cells["A1:B1"].ToText();
             Assert.AreEqual("h1,h2", text);
         }
 
         [TestMethod]
         public void ToTextTextMultilines()
         {
-            _sheet.Cells["A1"].Value = "h1";
-            _sheet.Cells["B1"].Value = "h2";
-            _sheet.Cells["A2"].Value = 1;
-            _sheet.Cells["B2"].Value = 2;
-            string? text = _sheet.Cells["A1:B2"].ToText();
+            this._sheet.Cells["A1"].Value = "h1";
+            this._sheet.Cells["B1"].Value = "h2";
+            this._sheet.Cells["A2"].Value = 1;
+            this._sheet.Cells["B2"].Value = 2;
+            string? text = this._sheet.Cells["A1:B2"].ToText();
             Assert.AreEqual("h1,h2" + Environment.NewLine + "1,2", text);
         }
 
         [TestMethod]
         public void ToTextTextTextQualifier()
         {
-            _sheet.Cells["A1"].Value = "h1";
-            _sheet.Cells["B1"].Value = "h2";
-            _sheet.Cells["A2"].Value = 1;
-            _sheet.Cells["B2"].Value = 2;
+            this._sheet.Cells["A1"].Value = "h1";
+            this._sheet.Cells["B1"].Value = "h2";
+            this._sheet.Cells["A2"].Value = 1;
+            this._sheet.Cells["B2"].Value = 2;
             ExcelOutputTextFormat? format = new ExcelOutputTextFormat
             {
                 TextQualifier = '\''
             };
-            string? text = _sheet.Cells["A1:B2"].ToText(format);
+            string? text = this._sheet.Cells["A1:B2"].ToText(format);
             Assert.AreEqual("'h1','h2'" + Environment.NewLine + "1,2", text);
         }
         [TestMethod]
         public void ToTextTextQualifierWithNumericContaingSeparator()
         {
-            _sheet.Cells["A10"].Value = "h1";
-            _sheet.Cells["B10"].Value = "h2";
-            _sheet.Cells["A11"].Value = 1;
-            _sheet.Cells["B11"].Value = 2;
-            _sheet.Cells["A11:B11"].Style.Numberformat.Format = "#,##0.00";
+            this._sheet.Cells["A10"].Value = "h1";
+            this._sheet.Cells["B10"].Value = "h2";
+            this._sheet.Cells["A11"].Value = 1;
+            this._sheet.Cells["B11"].Value = 2;
+            this._sheet.Cells["A11:B11"].Style.Numberformat.Format = "#,##0.00";
             ExcelOutputTextFormat? format = new ExcelOutputTextFormat
             {
                 TextQualifier = '\"',
@@ -76,21 +76,21 @@ namespace EPPlusTest.SaveFunctions
                 UseCellFormat = true,
                 Culture = new System.Globalization.CultureInfo("sv-SE")
             };
-            string? text = _sheet.Cells["A10:B11"].ToText(format);
+            string? text = this._sheet.Cells["A10:B11"].ToText(format);
             Assert.AreEqual("\"h1\",\"h2\"" + Environment.NewLine + "\"1,00\",\"2,00\"", text);
         }
 
         [TestMethod]
         public void ToTextTextIgnoreHeaders()
         {
-            _sheet.Cells["A1"].Value = 1;
-            _sheet.Cells["B1"].Value = 2;
+            this._sheet.Cells["A1"].Value = 1;
+            this._sheet.Cells["B1"].Value = 2;
             ExcelOutputTextFormat? format = new ExcelOutputTextFormat
             {
                 TextQualifier = '\'',
                 FirstRowIsHeader = false
             };
-            string? text = _sheet.Cells["A1:B1"].ToText(format);
+            string? text = this._sheet.Cells["A1:B1"].ToText(format);
             Assert.AreEqual("1,2", text);
         }
     }

@@ -33,11 +33,11 @@ namespace OfficeOpenXml.Drawing.Chart
         internal ExcelChartErrorBars(ExcelChartSerieWithErrorBars chartSerie, XmlNode topNode) :
             base(chartSerie.NameSpaceManager, topNode)
         {
-            _chartSerie = chartSerie;
-            AddSchemaNodeOrder(new string[]{ "errDir", "errBarType", "errValType", "noEndCap", "plus", "minus", "val", "spPr" }, ExcelDrawing._schemaNodeOrderSpPr);
-            if (TopNode.LocalName != "errBars")
+            this._chartSerie = chartSerie;
+            this.AddSchemaNodeOrder(new string[]{ "errDir", "errBarType", "errValType", "noEndCap", "plus", "minus", "val", "spPr" }, ExcelDrawing._schemaNodeOrderSpPr);
+            if (this.TopNode.LocalName != "errBars")
             {
-                TopNode = chartSerie.CreateNode("c:errBars", false, true);
+                this.TopNode = chartSerie.CreateNode("c:errBars", false, true);
             }
         }
         string _directionPath = "c:errDir/@val";
@@ -48,27 +48,28 @@ namespace OfficeOpenXml.Drawing.Chart
         {
             get
             {
-                ValidateNotDeleted();
-                return GetXmlNodeString(_directionPath).ToEnum(eErrorBarDirection.Y);
+                this.ValidateNotDeleted();
+                return this.GetXmlNodeString(this._directionPath).ToEnum(eErrorBarDirection.Y);
             }
             set
             {
-                ValidateNotDeleted();
-                if(_chartSerie._chart.IsTypeBubble() || _chartSerie._chart.IsTypeScatter() || _chartSerie._chart.IsTypeArea())
+                this.ValidateNotDeleted();
+                if(this._chartSerie._chart.IsTypeBubble() || this._chartSerie._chart.IsTypeScatter() || this._chartSerie._chart.IsTypeArea())
                 {
-                    if(value!=Direction)
+                    if(value!= this.Direction)
                     {
                         throw new InvalidOperationException("Can't change direction for this chart type. Please use ErrorBars or ErrorBarsX property to determine the direction.");
                     }
                     return;
                 }
-                SetDirection(value);
+
+                this.SetDirection(value);
             }
         }
 
         internal void SetDirection(eErrorBarDirection value)
         {
-            SetXmlNodeString(_directionPath, value.ToEnumString());
+            this.SetXmlNodeString(this._directionPath, value.ToEnumString());
         }
 
         string _barTypePath = "c:errBarType/@val";
@@ -79,13 +80,13 @@ namespace OfficeOpenXml.Drawing.Chart
         {
             get
             {
-                ValidateNotDeleted();
-                return GetXmlNodeString(_barTypePath).ToEnum(eErrorBarType.Both);
+                this.ValidateNotDeleted();
+                return this.GetXmlNodeString(this._barTypePath).ToEnum(eErrorBarType.Both);
             }
             set
             {
-                ValidateNotDeleted();
-                SetXmlNodeString(_barTypePath, value.ToEnumString());
+                this.ValidateNotDeleted();
+                this.SetXmlNodeString(this._barTypePath, value.ToEnumString());
             }
         }
         string _valueTypePath = "c:errValType/@val";
@@ -96,13 +97,13 @@ namespace OfficeOpenXml.Drawing.Chart
         {
             get
             {
-                ValidateNotDeleted();
-                return GetXmlNodeString(_valueTypePath).TranslateErrorValueType();
+                this.ValidateNotDeleted();
+                return this.GetXmlNodeString(this._valueTypePath).TranslateErrorValueType();
             }
             set
             {
-                ValidateNotDeleted();
-                SetXmlNodeString(_valueTypePath, value.ToEnumString());
+                this.ValidateNotDeleted();
+                this.SetXmlNodeString(this._valueTypePath, value.ToEnumString());
             }
         }        
         string _noEndCapPath = "c:noEndCap/@val";
@@ -113,13 +114,13 @@ namespace OfficeOpenXml.Drawing.Chart
         {
             get
             {
-                ValidateNotDeleted();
-                return GetXmlNodeBool(_noEndCapPath, true);
+                this.ValidateNotDeleted();
+                return this.GetXmlNodeBool(this._noEndCapPath, true);
             }
             set
             {
-                ValidateNotDeleted();
-                SetXmlNodeBool(_noEndCapPath, value, true);
+                this.ValidateNotDeleted();
+                this.SetXmlNodeBool(this._noEndCapPath, value, true);
             }
         }
 
@@ -131,19 +132,19 @@ namespace OfficeOpenXml.Drawing.Chart
         {
             get
             {
-                ValidateNotDeleted();
-                return GetXmlNodeDoubleNull(_valuePath);
+                this.ValidateNotDeleted();
+                return this.GetXmlNodeDoubleNull(this._valuePath);
             }
             set
             {
-                ValidateNotDeleted();
+                this.ValidateNotDeleted();
                 if (value == null)
                 {
-                    DeleteNode(_valuePath, true);
+                    this.DeleteNode(this._valuePath, true);
                 }
                 else
                 {
-                    SetXmlNodeString(_valuePath, value.Value.ToString("R15", CultureInfo.InvariantCulture));
+                    this.SetXmlNodeString(this._valuePath, value.Value.ToString("R15", CultureInfo.InvariantCulture));
                 }
             }
         }
@@ -156,12 +157,12 @@ namespace OfficeOpenXml.Drawing.Chart
         {
             get
             {
-                ValidateNotDeleted();
-                if (_plus==null)
+                this.ValidateNotDeleted();
+                if (this._plus==null)
                 {
-                    _plus = new ExcelChartNumericSource(NameSpaceManager, TopNode, _plusNodePath, SchemaNodeOrder);
+                    this._plus = new ExcelChartNumericSource(this.NameSpaceManager, this.TopNode, this._plusNodePath, this.SchemaNodeOrder);
                 }
-                return _plus;
+                return this._plus;
             }
         }
         string _minusNodePath = "c:minus";
@@ -173,12 +174,12 @@ namespace OfficeOpenXml.Drawing.Chart
         {
             get
             {
-                ValidateNotDeleted();
-                if (_minus == null)
+                this.ValidateNotDeleted();
+                if (this._minus == null)
                 {
-                    _minus = new ExcelChartNumericSource(NameSpaceManager, TopNode, _minusNodePath, SchemaNodeOrder);
+                    this._minus = new ExcelChartNumericSource(this.NameSpaceManager, this.TopNode, this._minusNodePath, this.SchemaNodeOrder);
                 }
-                return _minus;
+                return this._minus;
             }
         }
         ExcelDrawingFill _fill = null;
@@ -189,12 +190,12 @@ namespace OfficeOpenXml.Drawing.Chart
         {
             get
             {
-                ValidateNotDeleted();
-                if (_fill == null)
+                this.ValidateNotDeleted();
+                if (this._fill == null)
                 {
-                    _fill = new ExcelDrawingFill(_chartSerie._chart, NameSpaceManager, TopNode, "c:spPr", SchemaNodeOrder);
+                    this._fill = new ExcelDrawingFill(this._chartSerie._chart, this.NameSpaceManager, this.TopNode, "c:spPr", this.SchemaNodeOrder);
                 }
-                return _fill;
+                return this._fill;
             }
         }
         ExcelDrawingBorder _border = null;
@@ -205,12 +206,12 @@ namespace OfficeOpenXml.Drawing.Chart
         {
             get
             {
-                ValidateNotDeleted();
-                if (_border == null)
+                this.ValidateNotDeleted();
+                if (this._border == null)
                 {
-                    _border = new ExcelDrawingBorder(_chartSerie._chart, NameSpaceManager, TopNode, "c:spPr/a:ln", SchemaNodeOrder);
+                    this._border = new ExcelDrawingBorder(this._chartSerie._chart, this.NameSpaceManager, this.TopNode, "c:spPr/a:ln", this.SchemaNodeOrder);
                 }
-                return _border;
+                return this._border;
             }
         }
 
@@ -222,12 +223,12 @@ namespace OfficeOpenXml.Drawing.Chart
         {
             get
             {
-                ValidateNotDeleted();
-                if (_effect == null)
+                this.ValidateNotDeleted();
+                if (this._effect == null)
                 {
-                    _effect = new ExcelDrawingEffectStyle(_chartSerie._chart, NameSpaceManager, TopNode, "c:spPr/a:effectLst", SchemaNodeOrder);
+                    this._effect = new ExcelDrawingEffectStyle(this._chartSerie._chart, this.NameSpaceManager, this.TopNode, "c:spPr/a:effectLst", this.SchemaNodeOrder);
                 }
-                return _effect;
+                return this._effect;
             }
         }
         ExcelDrawing3D _threeD = null;
@@ -238,24 +239,24 @@ namespace OfficeOpenXml.Drawing.Chart
         {
             get
             {
-                ValidateNotDeleted();
-                if (_threeD == null)
+                this.ValidateNotDeleted();
+                if (this._threeD == null)
                 {
-                    _threeD = new ExcelDrawing3D(NameSpaceManager, TopNode, "c:spPr", SchemaNodeOrder);
+                    this._threeD = new ExcelDrawing3D(this.NameSpaceManager, this.TopNode, "c:spPr", this.SchemaNodeOrder);
                 }
-                return _threeD;
+                return this._threeD;
             }
         }
         private void ValidateNotDeleted()
         {
-            if(TopNode==null)
+            if(this.TopNode==null)
             {
                 throw new InvalidOperationException("The error bar has been deleted.");
             }
         }
         void IDrawingStyleBase.CreatespPr()
         {
-            CreatespPrNode();
+            this.CreatespPrNode();
         }
 
         /// <summary>
@@ -263,12 +264,12 @@ namespace OfficeOpenXml.Drawing.Chart
         /// </summary>
         public void Remove()
         {
-            DeleteNode(".");
-            if(_chartSerie.ErrorBars==this)
+            this.DeleteNode(".");
+            if(this._chartSerie.ErrorBars==this)
             {
-                _chartSerie.ErrorBars = null;
+                this._chartSerie.ErrorBars = null;
             }
-            if(_chartSerie is ExcelChartSerieWithHorizontalErrorBars errorBarsSerie)
+            if(this._chartSerie is ExcelChartSerieWithHorizontalErrorBars errorBarsSerie)
             {
                 if (errorBarsSerie.ErrorBarsX == this)
                 {

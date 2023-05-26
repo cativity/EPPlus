@@ -32,19 +32,19 @@ namespace OfficeOpenXml.FormulaParsing.ExpressionGraph
         public IntegerExpression(string expression, bool negate)
             : base(expression)
         {
-            _negate = negate;
+            this._negate = negate;
         }
 
         public IntegerExpression(double val)
             : base(val.ToString(CultureInfo.InvariantCulture))
         {
-            _compiledValue = Math.Floor(val);
+            this._compiledValue = Math.Floor(val);
         }
 
         public override CompileResult Compile()
         {
-            double result = _compiledValue ?? double.Parse(ExpressionString, CultureInfo.InvariantCulture);
-            result = _negate ? result * -1 : result;
+            double result = this._compiledValue ?? double.Parse(this.ExpressionString, CultureInfo.InvariantCulture);
+            result = this._negate ? result * -1 : result;
             return new CompileResult(result, DataType.Integer);
         }
     }

@@ -579,11 +579,11 @@ namespace OfficeOpenXml.Packaging.Ionic.Zip
                                      String directoryPathInArchive,
                                      bool recurseDirectories)
         {
-            _AddOrUpdateSelectedFiles(selectionCriteria,
-                                      directoryOnDisk,
-                                      directoryPathInArchive,
-                                      recurseDirectories,
-                                      false);
+            this._AddOrUpdateSelectedFiles(selectionCriteria,
+                                           directoryOnDisk,
+                                           directoryPathInArchive,
+                                           recurseDirectories,
+                                           false);
         }
 
         /// <summary>
@@ -631,11 +631,11 @@ namespace OfficeOpenXml.Packaging.Ionic.Zip
                                      String directoryPathInArchive,
                                      bool recurseDirectories)
         {
-            _AddOrUpdateSelectedFiles(selectionCriteria,
-                                      directoryOnDisk,
-                                      directoryPathInArchive,
-                                      recurseDirectories,
-                                      true);
+            this._AddOrUpdateSelectedFiles(selectionCriteria,
+                                           directoryOnDisk,
+                                           directoryPathInArchive,
+                                           recurseDirectories,
+                                           true);
         }
 
 
@@ -671,22 +671,21 @@ namespace OfficeOpenXml.Packaging.Ionic.Zip
                 directoryOnDisk = directoryOnDisk.Substring(0, directoryOnDisk.Length - 1);
             }
 
-            if (Verbose)
+            if (this.Verbose)
             {
                 this.StatusMessageTextWriter.WriteLine("adding selection '{0}' from dir '{1}'...",
                                                        selectionCriteria, directoryOnDisk);
             }
 
-            Ionic.FileSelector ff = new Ionic.FileSelector(selectionCriteria,
-                                                           AddDirectoryWillTraverseReparsePoints);
+            FileSelector ff = new FileSelector(selectionCriteria, this.AddDirectoryWillTraverseReparsePoints);
             ReadOnlyCollection<string>? itemsToAdd = ff.SelectFiles(directoryOnDisk, recurseDirectories);
 
-            if (Verbose)
+            if (this.Verbose)
             {
                 this.StatusMessageTextWriter.WriteLine("found {0} files...", itemsToAdd.Count);
             }
 
-            OnAddStarted();
+            this.OnAddStarted();
 
             AddOrUpdateAction action = (wantUpdate) ? AddOrUpdateAction.AddOrUpdate : AddOrUpdateAction.AddOnly;
             foreach (string? item in itemsToAdd)
@@ -713,11 +712,11 @@ namespace OfficeOpenXml.Packaging.Ionic.Zip
                 else
                 {
                     // this adds "just" the directory, without recursing to the contained files
-                    AddOrUpdateDirectoryImpl(item, dirInArchive, action, false, 0);
+                    this.AddOrUpdateDirectoryImpl(item, dirInArchive, action, false, 0);
                 }
             }
 
-            OnAddCompleted();
+            this.OnAddCompleted();
         }
 
 
@@ -824,8 +823,7 @@ namespace OfficeOpenXml.Packaging.Ionic.Zip
         /// <returns>a collection of ZipEntry objects that conform to the inclusion spec</returns>
         public ICollection<ZipEntry> SelectEntries(String selectionCriteria)
         {
-            Ionic.FileSelector ff = new Ionic.FileSelector(selectionCriteria,
-                                                           AddDirectoryWillTraverseReparsePoints);
+            FileSelector ff = new FileSelector(selectionCriteria, this.AddDirectoryWillTraverseReparsePoints);
             return ff.SelectEntries(this);
         }
 
@@ -897,8 +895,7 @@ namespace OfficeOpenXml.Packaging.Ionic.Zip
         /// <returns>a collection of ZipEntry objects that conform to the inclusion spec</returns>
         public ICollection<ZipEntry> SelectEntries(String selectionCriteria, string directoryPathInArchive)
         {
-            Ionic.FileSelector ff = new Ionic.FileSelector(selectionCriteria,
-                                                           AddDirectoryWillTraverseReparsePoints);
+            FileSelector ff = new FileSelector(selectionCriteria, this.AddDirectoryWillTraverseReparsePoints);
             return ff.SelectEntries(this, directoryPathInArchive);
         }
 
@@ -1067,9 +1064,9 @@ namespace OfficeOpenXml.Packaging.Ionic.Zip
         /// <seealso cref="ExtractSelectedEntries(String,ExtractExistingFileAction)"/>
         public void ExtractSelectedEntries(String selectionCriteria)
         {
-            foreach (ZipEntry e in SelectEntries(selectionCriteria))
+            foreach (ZipEntry e in this.SelectEntries(selectionCriteria))
             {
-                e.Password = _Password; // possibly null
+                e.Password = this._Password; // possibly null
                 e.Extract();
             }
         }
@@ -1111,9 +1108,9 @@ namespace OfficeOpenXml.Packaging.Ionic.Zip
         /// </param>
         internal void ExtractSelectedEntries(String selectionCriteria, ExtractExistingFileAction extractExistingFile)
         {
-            foreach (ZipEntry e in SelectEntries(selectionCriteria))
+            foreach (ZipEntry e in this.SelectEntries(selectionCriteria))
             {
-                e.Password = _Password; // possibly null
+                e.Password = this._Password; // possibly null
                 e.Extract(extractExistingFile);
             }
         }
@@ -1163,9 +1160,9 @@ namespace OfficeOpenXml.Packaging.Ionic.Zip
         /// <seealso cref="ExtractSelectedEntries(String,String,String,ExtractExistingFileAction)"/>
         public void ExtractSelectedEntries(String selectionCriteria, String directoryPathInArchive)
         {
-            foreach (ZipEntry e in SelectEntries(selectionCriteria, directoryPathInArchive))
+            foreach (ZipEntry e in this.SelectEntries(selectionCriteria, directoryPathInArchive))
             {
-                e.Password = _Password; // possibly null
+                e.Password = this._Password; // possibly null
                 e.Extract();
             }
         }
@@ -1199,9 +1196,9 @@ namespace OfficeOpenXml.Packaging.Ionic.Zip
         /// </param>
         public void ExtractSelectedEntries(String selectionCriteria, string directoryInArchive, string extractDirectory)
         {
-            foreach (ZipEntry e in SelectEntries(selectionCriteria, directoryInArchive))
+            foreach (ZipEntry e in this.SelectEntries(selectionCriteria, directoryInArchive))
             {
-                e.Password = _Password; // possibly null
+                e.Password = this._Password; // possibly null
                 e.Extract(extractDirectory);
             }
         }
@@ -1256,9 +1253,9 @@ namespace OfficeOpenXml.Packaging.Ionic.Zip
         ///
         internal void ExtractSelectedEntries(String selectionCriteria, string directoryPathInArchive, string extractDirectory, ExtractExistingFileAction extractExistingFile)
         {
-            foreach (ZipEntry e in SelectEntries(selectionCriteria, directoryPathInArchive))
+            foreach (ZipEntry e in this.SelectEntries(selectionCriteria, directoryPathInArchive))
             {
-                e.Password = _Password; // possibly null
+                e.Password = this._Password; // possibly null
                 e.Extract(extractDirectory, extractExistingFile);
             }
         }
@@ -1284,7 +1281,7 @@ namespace OfficeOpenXml.Packaging.Ionic
             // swap forward slashes in the entry.FileName for backslashes
             string transformedFileName = entry.FileName.Replace("/", "\\");
 
-            return _Evaluate(transformedFileName);
+            return this._Evaluate(transformedFileName);
         }
     }
 
@@ -1293,7 +1290,7 @@ namespace OfficeOpenXml.Packaging.Ionic
     {
         internal override bool Evaluate(ZipEntry entry)
         {
-            return _Evaluate(entry.UncompressedSize);
+            return this._Evaluate(entry.UncompressedSize);
         }
     }
 
@@ -1302,7 +1299,7 @@ namespace OfficeOpenXml.Packaging.Ionic
         internal override bool Evaluate(ZipEntry entry)
         {
             DateTime x;
-            switch (Which)
+            switch (this.Which)
             {
                 case WhichTime.atime:
                     x = entry.AccessedTime;
@@ -1315,7 +1312,7 @@ namespace OfficeOpenXml.Packaging.Ionic
                     break;
                 default: throw new ArgumentException("??time");
             }
-            return _Evaluate(x);
+            return this._Evaluate(x);
         }
     }
 
@@ -1324,11 +1321,11 @@ namespace OfficeOpenXml.Packaging.Ionic
     {
         internal override bool Evaluate(ZipEntry entry)
         {
-            bool result = (ObjectType == 'D')
+            bool result = (this.ObjectType == 'D')
                 ? entry.IsDirectory
                 : !entry.IsDirectory;
 
-            if (Operator != ComparisonOperator.EqualTo)
+            if (this.Operator != ComparisonOperator.EqualTo)
             {
                 result = !result;
             }
@@ -1343,7 +1340,7 @@ namespace OfficeOpenXml.Packaging.Ionic
         internal override bool Evaluate(ZipEntry entry)
         {
             FileAttributes fileAttrs = entry.Attributes;
-            return _Evaluate(fileAttrs);
+            return this._Evaluate(fileAttrs);
         }
     }
 #endif
@@ -1352,8 +1349,8 @@ namespace OfficeOpenXml.Packaging.Ionic
     {
         internal override bool Evaluate(ZipEntry entry)
         {
-            bool result = Left.Evaluate(entry);
-            switch (Conjunction)
+            bool result = this.Left.Evaluate(entry);
+            switch (this.Conjunction)
             {
                 case LogicalConjunction.AND:
                     if (result)
@@ -1370,7 +1367,7 @@ namespace OfficeOpenXml.Packaging.Ionic
 
                     break;
                 case LogicalConjunction.XOR:
-                    result ^= Right.Evaluate(entry);
+                    result ^= this.Right.Evaluate(entry);
                     break;
             }
             return result;
@@ -1383,7 +1380,7 @@ namespace OfficeOpenXml.Packaging.Ionic
     {
         private bool Evaluate(ZipEntry entry)
         {
-            bool result = _Criterion.Evaluate(entry);
+            bool result = this._Criterion.Evaluate(entry);
             return result;
         }
 

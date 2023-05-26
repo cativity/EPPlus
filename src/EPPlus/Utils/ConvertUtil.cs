@@ -544,7 +544,7 @@ namespace OfficeOpenXml.Utils
             }
             else if (type == "str")
             {
-                return ConvertUtil.ExcelDecodeString(xr.ReadElementContentAsString());
+                return ExcelDecodeString(xr.ReadElementContentAsString());
             }
             else if (type == "b")
             {
@@ -553,7 +553,7 @@ namespace OfficeOpenXml.Utils
             else if (type == "e")
             {
                 string? v = xr.ReadElementContentAsString();
-                return ExcelErrorValue.Parse(ConvertUtil._invariantTextInfo.ToUpper(v));
+                return ExcelErrorValue.Parse(_invariantTextInfo.ToUpper(v));
             }
             else
             {

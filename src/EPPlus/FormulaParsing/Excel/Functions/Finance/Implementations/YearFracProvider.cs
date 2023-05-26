@@ -11,7 +11,7 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Finance.Implementations
     {
         public YearFracProvider(ParsingContext context)
         {
-            _context = context;
+            this._context = context;
         }
 
         private readonly ParsingContext _context;
@@ -19,7 +19,7 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Finance.Implementations
         {
             Yearfrac? func = new Yearfrac();
             List<FunctionArgument>? args = new List<FunctionArgument> { new FunctionArgument(date1.ToOADate()), new FunctionArgument(date2.ToOADate()), new FunctionArgument((int)basis) };
-            CompileResult? result = func.Execute(args, _context);
+            CompileResult? result = func.Execute(args, this._context);
             return result.ResultNumeric;
         }
     }

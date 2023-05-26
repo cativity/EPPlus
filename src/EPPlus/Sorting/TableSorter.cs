@@ -22,21 +22,21 @@ namespace OfficeOpenXml.Sorting
     {
         public TableSorter(ExcelTable table)
         {
-            _table = table;
+            this._table = table;
         }
 
         private readonly ExcelTable _table;
 
         public void Sort(TableSortOptions options)
         {
-            _table.DataRange.Sort(options, _table);
+            this._table.DataRange.Sort(options, this._table);
         }
 
         public void Sort(Action<TableSortOptions> configuration)
         {
-            TableSortOptions? options = new TableSortOptions(_table);
+            TableSortOptions? options = new TableSortOptions(this._table);
             configuration(options);
-            Sort(options);
+            this.Sort(options);
         }
     }
 }

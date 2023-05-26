@@ -40,11 +40,11 @@ namespace OfficeOpenXml
         {
             get
             {
-                return GetXmlNodeString("@name");
+                return this.GetXmlNodeString("@name");
             }
             set
             {
-                SetXmlNodeString("@name",value);
+                this.SetXmlNodeString("@name",value);
             }
         }
         ExcelAddress _address=null;
@@ -55,16 +55,16 @@ namespace OfficeOpenXml
         { 
             get
             {
-                if(_address==null)
+                if(this._address==null)
                 {
-                    _address=new ExcelAddress(GetXmlNodeString("@sqref"));
+                    this._address=new ExcelAddress(this.GetXmlNodeString("@sqref"));
                 }
-                return _address;
+                return this._address;
             }
             set
             {
-                SetXmlNodeString("@sqref", SqRefUtility.ToSqRefAddress(value.Address));
-                _address=value;
+                this.SetXmlNodeString("@sqref", SqRefUtility.ToSqRefAddress(value.Address));
+                this._address=value;
             }
         }
         /// <summary>
@@ -79,8 +79,8 @@ namespace OfficeOpenXml
             rnd.GetBytes(bySalt);
             
             //Default SHA512 and 10000 spins
-            Algorithm=eProtectedRangeAlgorithm.SHA512;
-            SpinCount = SpinCount < 100000 ? 100000 : SpinCount;
+            this.Algorithm=eProtectedRangeAlgorithm.SHA512;
+            this.SpinCount = this.SpinCount < 100000 ? 100000 : this.SpinCount;
 
             //Combine salt and password and calculate the initial hash
 #if Core 
@@ -94,15 +94,16 @@ namespace OfficeOpenXml
             byte[]? hash = hp.ComputeHash(buffer);
 
             //Now iterate the number of spinns.
-            for (int i = 0; i < SpinCount; i++)
+            for (int i = 0; i < this.SpinCount; i++)
             {
                 buffer=new byte[hash.Length+4];
                 Array.Copy(hash, buffer, hash.Length);
                 Array.Copy(BitConverter.GetBytes(i), 0, buffer, hash.Length, 4);
                 hash = hp.ComputeHash(buffer);
             }
-            Salt = Convert.ToBase64String(bySalt);
-            Hash = Convert.ToBase64String(hash);            
+
+            this.Salt = Convert.ToBase64String(bySalt);
+            this.Hash = Convert.ToBase64String(hash);            
         }
         /// <summary>
         /// The security descriptor defines user accounts who may edit this range without providing a password to access the range.
@@ -111,51 +112,51 @@ namespace OfficeOpenXml
         {
             get
             {
-                return GetXmlNodeString("@securityDescriptor");
+                return this.GetXmlNodeString("@securityDescriptor");
             }
             set
             {
-                SetXmlNodeString("@securityDescriptor",value);
+                this.SetXmlNodeString("@securityDescriptor",value);
             }
         }
         internal int SpinCount
         {
             get
             {
-                return GetXmlNodeInt("@spinCount");
+                return this.GetXmlNodeInt("@spinCount");
             }
             set
             {
-                SetXmlNodeString("@spinCount",value.ToString(CultureInfo.InvariantCulture));
+                this.SetXmlNodeString("@spinCount",value.ToString(CultureInfo.InvariantCulture));
             }
         }
         internal string Salt
         {
             get
             {
-                return GetXmlNodeString("@saltValue");
+                return this.GetXmlNodeString("@saltValue");
             }
             set
             {
-                SetXmlNodeString("@saltValue", value);
+                this.SetXmlNodeString("@saltValue", value);
             }
         }
         internal string Hash
         {
             get
             {
-                return GetXmlNodeString("@hashValue");
+                return this.GetXmlNodeString("@hashValue");
             }
             set
             {
-                SetXmlNodeString("@hashValue", value);
+                this.SetXmlNodeString("@hashValue", value);
             }
         }
         internal eProtectedRangeAlgorithm Algorithm
         {
             get
             {
-                string? v=GetXmlNodeString("@algorithmName");
+                string? v= this.GetXmlNodeString("@algorithmName");
                 return (eProtectedRangeAlgorithm)Enum.Parse(typeof(eProtectedRangeAlgorithm), v.Replace("-", ""));
             }
             set
@@ -169,7 +170,8 @@ namespace OfficeOpenXml
                 {
                     v=v.Insert(6,"-");
                 }
-                SetXmlNodeString("@algorithmName", v);
+
+                this.SetXmlNodeString("@algorithmName", v);
             }
         }
     }

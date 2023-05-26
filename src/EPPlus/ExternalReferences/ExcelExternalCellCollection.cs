@@ -29,8 +29,8 @@ namespace OfficeOpenXml.ExternalReferences
 
         internal ExcelExternalCellCollection(CellStore<object> values, CellStore<int> metaData)
         {
-            _values = values;
-            _metaData = metaData;
+            this._values = values;
+            this._metaData = metaData;
         }
         /// <summary>
         /// An indexer to access the the external cell values 
@@ -67,8 +67,8 @@ namespace OfficeOpenXml.ExternalReferences
                 {
                     Row = row,
                     Column = column,
-                    Value = _values.GetValue(row, column),
-                    MetaDataReference = _metaData.GetValue(row, column)
+                    Value = this._values.GetValue(row, column),
+                    MetaDataReference = this._metaData.GetValue(row, column)
                 };
             }
     }
@@ -79,17 +79,17 @@ namespace OfficeOpenXml.ExternalReferences
     {
         get 
         {
-            if (_valuesEnum == null)
+            if (this._valuesEnum == null)
             {
                 return null;
             }
 
             return new ExcelExternalCellValue()
             {
-                Row = _valuesEnum.Row,
-                Column = _valuesEnum.Column,
-                Value = _valuesEnum.Value,
-                MetaDataReference = _metaData.GetValue(_valuesEnum.Row, _valuesEnum.Column)
+                Row = this._valuesEnum.Row,
+                Column = this._valuesEnum.Column,
+                Value = this._valuesEnum.Value,
+                MetaDataReference = this._metaData.GetValue(this._valuesEnum.Row, this._valuesEnum.Column)
             };
         }
     }
@@ -101,7 +101,7 @@ namespace OfficeOpenXml.ExternalReferences
         {
             get
             {
-                return Current;
+                return this.Current;
             }
         }
         /// <summary>
@@ -109,7 +109,7 @@ namespace OfficeOpenXml.ExternalReferences
         /// </summary>
         public void Dispose()
         {
-            _valuesEnum.Dispose();
+            this._valuesEnum.Dispose();
         }
         /// <summary>
         /// Get the enumerator for this collection
@@ -117,7 +117,7 @@ namespace OfficeOpenXml.ExternalReferences
         /// <returns></returns>
         public IEnumerator<ExcelExternalCellValue> GetEnumerator()
         {
-            Reset();
+            this.Reset();
             return this;
         }
         /// <summary>
@@ -126,20 +126,20 @@ namespace OfficeOpenXml.ExternalReferences
         /// <returns>true if more items exists</returns>
         public bool MoveNext()
         {
-            if (_valuesEnum == null)
+            if (this._valuesEnum == null)
             {
                 this.Reset();
             }
 
-            return _valuesEnum.Next();
+            return this._valuesEnum.Next();
         }
         /// <summary>
         /// Resets the enumeration
         /// </summary>
         public void Reset()
         {
-            _valuesEnum = new CellStoreEnumerator<object>(_values);
-            _valuesEnum.Init();
+            this._valuesEnum = new CellStoreEnumerator<object>(this._values);
+            this._valuesEnum.Init();
         }
         /// <summary>
         /// Get the enumerator for this collection
@@ -151,11 +151,11 @@ namespace OfficeOpenXml.ExternalReferences
         }
         internal CellStoreEnumerator<object> GetCellStore(int fromRow, int fromCol, int toRow, int toCol)
         {
-            return new CellStoreEnumerator<object>(_values, fromRow, fromCol, toRow, toCol);
+            return new CellStoreEnumerator<object>(this._values, fromRow, fromCol, toRow, toCol);
         }
         internal object GetValue(int row, int col)
         {
-            return _values.GetValue(row, col);
+            return this._values.GetValue(row, col);
         }
 
     }

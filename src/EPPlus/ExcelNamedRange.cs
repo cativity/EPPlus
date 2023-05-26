@@ -34,18 +34,18 @@ namespace OfficeOpenXml
         internal ExcelNamedRange(string name, ExcelWorksheet nameSheet , ExcelWorksheet sheet, string address, int index, bool allowRelativeAddress = false) :
             base(sheet, address)
         {
-            Name = name;
-            _sheet = nameSheet;
-            Index = index;
-            AllowRelativeAddress = allowRelativeAddress;
+            this.Name = name;
+            this._sheet = nameSheet;
+            this.Index = index;
+            this.AllowRelativeAddress = allowRelativeAddress;
         }
         internal ExcelNamedRange(string name,ExcelWorkbook wb, ExcelWorksheet nameSheet, int index, bool allowRelativeAddress = false) :
             base(wb, nameSheet, name, true)
         {
-            Name = name;
-            _sheet = nameSheet;
-            Index = index;
-            AllowRelativeAddress = allowRelativeAddress;
+            this.Name = name;
+            this._sheet = nameSheet;
+            this.Index = index;
+            this.AllowRelativeAddress = allowRelativeAddress;
         }
 
         /// <summary>
@@ -63,17 +63,17 @@ namespace OfficeOpenXml
         {
             get
             {
-                if (_sheet == null)
+                if (this._sheet == null)
                 {
                     return -1;
                 }
                 else
                 {
-                    return _sheet.IndexInList;
+                    return this._sheet.IndexInList;
                 }
             }
         }
-        internal ExcelWorksheet LocalSheet => _sheet;
+        internal ExcelWorksheet LocalSheet => this._sheet;
 
         internal int Index
         {
@@ -104,7 +104,7 @@ namespace OfficeOpenXml
         /// <returns>The name of the range</returns>
         public override string ToString()
         {
-            return Name;
+            return this.Name;
         }
         /// <summary>
         /// Returns true if the name is equal to the obj
@@ -115,9 +115,9 @@ namespace OfficeOpenXml
         {
             if(obj is ExcelNamedRange name)
             {
-                return name.Name.Equals(Name, StringComparison.OrdinalIgnoreCase) && 
-                       name.LocalSheetId == LocalSheetId && 
-                       name._workbook == _workbook;
+                return name.Name.Equals(this.Name, StringComparison.OrdinalIgnoreCase) && 
+                       name.LocalSheetId == this.LocalSheetId && 
+                       name._workbook == this._workbook;
             }
             else
             {

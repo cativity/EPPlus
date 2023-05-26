@@ -27,9 +27,9 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Finance
         public override CompileResult Execute(IEnumerable<FunctionArgument> arguments, ParsingContext context)
         {
             ValidateArguments(arguments, 3);
-            System.DateTime settlementDate = System.DateTime.FromOADate(ArgToInt(arguments, 0));
-            System.DateTime maturityDate = System.DateTime.FromOADate(ArgToInt(arguments, 1));
-            double discount = ArgToDecimal(arguments, 2);
+            System.DateTime settlementDate = System.DateTime.FromOADate(this.ArgToInt(arguments, 0));
+            System.DateTime maturityDate = System.DateTime.FromOADate(this.ArgToInt(arguments, 1));
+            double discount = this.ArgToDecimal(arguments, 2);
             if (settlementDate >= maturityDate)
             {
                 return this.CreateResult(eErrorType.Num);
@@ -44,7 +44,7 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Finance
             double nDaysInPeriod = finDays.GetDaysBetweenDates(settlementDate, maturityDate);
             if(nDaysInPeriod > 366)
             {
-                return CreateResult(eErrorType.Num);
+                return this.CreateResult(eErrorType.Num);
             }
             else if(nDaysInPeriod > 182)
             {
@@ -55,12 +55,12 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Finance
                 double term2 = System.Math.Sqrt(tmp);
                 double term3 = 2d * fullYearFactor - 1d;
                 double result = 2d * (term2 - fullYearFactor) / term3;
-                return CreateResult(result, DataType.Decimal);
+                return this.CreateResult(result, DataType.Decimal);
             }
             else
             {
                 double result = (365d * discount) / (360d - (discount * nDaysInPeriod));
-                return CreateResult(result, DataType.Decimal);
+                return this.CreateResult(result, DataType.Decimal);
             }
         }
     }

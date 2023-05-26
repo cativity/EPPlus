@@ -24,7 +24,7 @@ namespace OfficeOpenXml.FormulaParsing.ExpressionGraph
         public FunctionArgumentExpression(Expression function)
             : base(false)
         {
-            _function = function;
+            this._function = function;
         }
 
         public override bool IsGroupedExpression
@@ -38,7 +38,7 @@ namespace OfficeOpenXml.FormulaParsing.ExpressionGraph
             set
             {
                 base.IgnoreCircularReference = value;
-                foreach(Expression? childExpression in Children)
+                foreach(Expression? childExpression in this.Children)
                 {
                     childExpression.IgnoreCircularReference = value;
                 }
@@ -47,7 +47,7 @@ namespace OfficeOpenXml.FormulaParsing.ExpressionGraph
 
         public override Expression PrepareForNextChild()
         {
-            return _function.PrepareForNextChild();
+            return this._function.PrepareForNextChild();
         }
     }
 }

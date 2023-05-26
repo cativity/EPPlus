@@ -48,7 +48,7 @@ namespace EPPlusTest.FormulaParsing
         public void Setup()
         {
             ExcelDataProvider? provider = A.Fake<ExcelDataProvider>();
-            _parser = new FormulaParser(provider);
+            this._parser = new FormulaParser(provider);
 
         }
 
@@ -63,9 +63,9 @@ namespace EPPlusTest.FormulaParsing
         {
             ILexer? lexer = A.Fake<ILexer>();
             A.CallTo(() => lexer.Tokenize("ABC")).Returns(Enumerable.Empty<Token>());
-            _parser.Configure(x => x.SetLexer(lexer));
+            this._parser.Configure(x => x.SetLexer(lexer));
 
-            _parser.Parse("ABC");
+            this._parser.Parse("ABC");
 
             A.CallTo(() => lexer.Tokenize("ABC")).MustHaveHappened();
         }
@@ -79,14 +79,14 @@ namespace EPPlusTest.FormulaParsing
             IExpressionGraphBuilder? graphBuilder = A.Fake<IExpressionGraphBuilder>();
             A.CallTo(() => graphBuilder.Build(tokens)).Returns(new ExGraph());
 
-            _parser.Configure(config =>
-                {
-                    config
-                        .SetLexer(lexer)
-                        .SetGraphBuilder(graphBuilder);
-                });
+            this._parser.Configure(config =>
+            {
+                config
+                    .SetLexer(lexer)
+                    .SetGraphBuilder(graphBuilder);
+            });
 
-            _parser.Parse("ABC");
+            this._parser.Parse("ABC");
 
             A.CallTo(() => graphBuilder.Build(tokens)).MustHaveHappened();
         }
@@ -104,7 +104,7 @@ namespace EPPlusTest.FormulaParsing
             IExpressionCompiler? compiler = A.Fake<IExpressionCompiler>();
             A.CallTo(() => compiler.Compile(expectedGraph.Expressions)).Returns(new CompileResult(0, DataType.Integer));
 
-            _parser.Configure(config =>
+            this._parser.Configure(config =>
             {
                 config
                     .SetLexer(lexer)
@@ -112,7 +112,7 @@ namespace EPPlusTest.FormulaParsing
                     .SetExpresionCompiler(compiler);
             });
 
-            _parser.Parse("ABC");
+            this._parser.Parse("ABC");
 
             A.CallTo(() => compiler.Compile(expectedGraph.Expressions)).MustHaveHappened();
         }
@@ -130,7 +130,7 @@ namespace EPPlusTest.FormulaParsing
         [TestMethod, ExpectedException(typeof(ArgumentException))]
         public void ParseAtShouldThrowIfAddressIsNull()
         {
-            _parser.ParseAt(null);
+            this._parser.ParseAt(null);
         }
     }
 }

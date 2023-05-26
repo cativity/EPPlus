@@ -53,10 +53,11 @@ namespace OfficeOpenXml.ConditionalFormatting
     {
         if (itemElementNode==null) //Set default values and create attributes if needed
         {
-            TimePeriod = eExcelConditionalFormattingTimePeriodType.LastWeek;
-            Formula = string.Format(
-              "AND(TODAY()-ROUNDDOWN({0},0)>=(WEEKDAY(TODAY())),TODAY()-ROUNDDOWN({0},0)<(WEEKDAY(TODAY())+7))",
-              Address.Start.Address);
+            this.TimePeriod = eExcelConditionalFormattingTimePeriodType.LastWeek;
+
+            this.Formula = string.Format(
+                                         "AND(TODAY()-ROUNDDOWN({0},0)>=(WEEKDAY(TODAY())),TODAY()-ROUNDDOWN({0},0)<(WEEKDAY(TODAY())+7))",
+                                         this.Address.Start.Address);
         }
     }
 

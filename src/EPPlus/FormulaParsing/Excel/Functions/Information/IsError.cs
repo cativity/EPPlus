@@ -31,7 +31,7 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Information
         {
             if (arguments == null || arguments.Count() == 0)
             {
-                return CreateResult(false, DataType.Boolean);
+                return this.CreateResult(false, DataType.Boolean);
             }
             foreach (FunctionArgument? argument in arguments)
             {
@@ -40,23 +40,23 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Information
                     IRangeInfo? r = (IRangeInfo)argument.Value;
                     if (ExcelErrorValue.Values.IsErrorValue(r.GetValue(r.Address._fromRow, r.Address._fromCol)))
                     {
-                        return CreateResult(true, DataType.Boolean);
+                        return this.CreateResult(true, DataType.Boolean);
                     }
                 }
                 else
                 {
                     if (ExcelErrorValue.Values.IsErrorValue(argument.Value))
                     {
-                        return CreateResult(true, DataType.Boolean);
+                        return this.CreateResult(true, DataType.Boolean);
                     }
                 }                
             }
-            return CreateResult(false, DataType.Boolean);
+            return this.CreateResult(false, DataType.Boolean);
         }
 
         public override CompileResult HandleError(string errorCode)
         {
-            return CreateResult(true, DataType.Boolean);
+            return this.CreateResult(true, DataType.Boolean);
         }
     }
 }

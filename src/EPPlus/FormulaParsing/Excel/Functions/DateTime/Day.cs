@@ -29,9 +29,9 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions.DateTime
         {
             ValidateArguments(arguments, 1);
             object? dateObj = GetFirstValue(arguments);
-            System.DateTime date = ParseDate(arguments, dateObj);
+            System.DateTime date = this.ParseDate(arguments, dateObj);
 
-            return CreateResult(date.Day, DataType.Integer);
+            return this.CreateResult(date.Day, DataType.Integer);
         }
     }
 }

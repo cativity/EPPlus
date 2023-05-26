@@ -33,12 +33,12 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Math
                 return this.CreateResult(0d, DataType.Decimal);
             }
 
-            double number = ArgToDecimal(arguments, 0, context.Configuration.PrecisionAndRoundingStrategy);
-            int nDigits = ArgToInt(arguments, 1);
+            double number = this.ArgToDecimal(arguments, 0, context.Configuration.PrecisionAndRoundingStrategy);
+            int nDigits = this.ArgToInt(arguments, 1);
             double result = (number >= 0) 
                 ? System.Math.Ceiling(number * System.Math.Pow(10, nDigits)) / System.Math.Pow(10, nDigits)
                 : System.Math.Floor(number * System.Math.Pow(10, nDigits)) / System.Math.Pow(10, nDigits);
-            return CreateResult(result, DataType.Decimal);
+            return this.CreateResult(result, DataType.Decimal);
         }
     }
 }

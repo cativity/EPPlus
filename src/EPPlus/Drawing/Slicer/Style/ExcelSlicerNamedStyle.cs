@@ -33,20 +33,20 @@ namespace OfficeOpenXml.Drawing.Slicer.Style
         XmlNode _tableStyleNode;
         internal ExcelSlicerNamedStyle(XmlNamespaceManager nameSpaceManager, XmlNode topNode, XmlNode tableStyleNode, ExcelStyles styles) : base(nameSpaceManager, topNode)
         {
-            _styles = styles;
+            this._styles = styles;
             if (tableStyleNode == null)
             {
                 //TODO: Create table styles node with 
             }
             else
             {
-                _tableStyleNode = tableStyleNode;
+                this._tableStyleNode = tableStyleNode;
                 foreach (XmlNode node in tableStyleNode.ChildNodes)
                 {
                     if (node is XmlElement e)
                     {
                         eTableStyleElement type = e.GetAttribute("type").ToEnum(eTableStyleElement.WholeTable);
-                        _dicTable.Add(type, new ExcelSlicerTableStyleElement(nameSpaceManager, node, styles, type));
+                        this._dicTable.Add(type, new ExcelSlicerTableStyleElement(nameSpaceManager, node, styles, type));
                     }
                 }
             }
@@ -57,31 +57,31 @@ namespace OfficeOpenXml.Drawing.Slicer.Style
                     if (node is XmlElement e)
                     {
                         eSlicerStyleElement type = e.GetAttribute("type").ToEnum(eSlicerStyleElement.SelectedItemWithData);
-                        _dicSlicer.Add(type, new ExcelSlicerStyleElement(nameSpaceManager, node, styles, type));
+                        this._dicSlicer.Add(type, new ExcelSlicerStyleElement(nameSpaceManager, node, styles, type));
                     }
                 }
             }
         }
         private ExcelSlicerTableStyleElement GetTableStyleElement(eTableStyleElement element)
         {
-            if (_dicTable.ContainsKey(element))
+            if (this._dicTable.ContainsKey(element))
             {
-                return _dicTable[element];
+                return this._dicTable[element];
             }
             ExcelSlicerTableStyleElement item;
-            item = new ExcelSlicerTableStyleElement(NameSpaceManager, _tableStyleNode, _styles, element);
-            _dicTable.Add(element, item);
+            item = new ExcelSlicerTableStyleElement(this.NameSpaceManager, this._tableStyleNode, this._styles, element);
+            this._dicTable.Add(element, item);
             return item;
         }
         private ExcelSlicerStyleElement GetSlicerStyleElement(eSlicerStyleElement element)
         {
-            if (_dicSlicer.ContainsKey(element))
+            if (this._dicSlicer.ContainsKey(element))
             {
-                return _dicSlicer[element];
+                return this._dicSlicer[element];
             }
             ExcelSlicerStyleElement item;
-            item = new ExcelSlicerStyleElement(NameSpaceManager, TopNode, _styles, element);
-            _dicSlicer.Add(element, item);
+            item = new ExcelSlicerStyleElement(this.NameSpaceManager, this.TopNode, this._styles, element);
+            this._dicSlicer.Add(element, item);
             return item;
         }
 
@@ -92,15 +92,16 @@ namespace OfficeOpenXml.Drawing.Slicer.Style
         {
             get
             {
-                return GetXmlNodeString("@name");
+                return this.GetXmlNodeString("@name");
             }
             set
             {
-                if (_styles.SlicerStyles.ExistsKey(value) || _styles.TableStyles.ExistsKey(value))
+                if (this._styles.SlicerStyles.ExistsKey(value) || this._styles.TableStyles.ExistsKey(value))
                 {
                     throw new InvalidOperationException("Name already exists in the collection");
                 }
-                SetXmlNodeString("@name", value);
+
+                this.SetXmlNodeString("@name", value);
             }
         }
         /// <summary>
@@ -110,7 +111,7 @@ namespace OfficeOpenXml.Drawing.Slicer.Style
         {
             get
             {
-                return GetTableStyleElement(eTableStyleElement.WholeTable);
+                return this.GetTableStyleElement(eTableStyleElement.WholeTable);
             }
         }
         /// <summary>
@@ -120,7 +121,7 @@ namespace OfficeOpenXml.Drawing.Slicer.Style
         {
             get
             {
-                return GetTableStyleElement(eTableStyleElement.HeaderRow);
+                return this.GetTableStyleElement(eTableStyleElement.HeaderRow);
             }
         }
         /// <summary>
@@ -130,7 +131,7 @@ namespace OfficeOpenXml.Drawing.Slicer.Style
         {
             get
             {
-                return GetSlicerStyleElement(eSlicerStyleElement.SelectedItemWithData);
+                return this.GetSlicerStyleElement(eSlicerStyleElement.SelectedItemWithData);
             }
         }
         /// <summary>
@@ -140,7 +141,7 @@ namespace OfficeOpenXml.Drawing.Slicer.Style
         {
             get
             {
-                return GetSlicerStyleElement(eSlicerStyleElement.SelectedItemWithNoData);
+                return this.GetSlicerStyleElement(eSlicerStyleElement.SelectedItemWithNoData);
             }
         }
 
@@ -151,7 +152,7 @@ namespace OfficeOpenXml.Drawing.Slicer.Style
         {
             get
             {
-                return GetSlicerStyleElement(eSlicerStyleElement.UnselectedItemWithData);
+                return this.GetSlicerStyleElement(eSlicerStyleElement.UnselectedItemWithData);
             }
         }
         /// <summary>
@@ -161,7 +162,7 @@ namespace OfficeOpenXml.Drawing.Slicer.Style
         {
             get
             {
-                return GetSlicerStyleElement(eSlicerStyleElement.UnselectedItemWithNoData);
+                return this.GetSlicerStyleElement(eSlicerStyleElement.UnselectedItemWithNoData);
             }
         }
         /// <summary>
@@ -171,7 +172,7 @@ namespace OfficeOpenXml.Drawing.Slicer.Style
         {
             get
             {
-                return GetSlicerStyleElement(eSlicerStyleElement.HoveredSelectedItemWithData);
+                return this.GetSlicerStyleElement(eSlicerStyleElement.HoveredSelectedItemWithData);
             }
         }
         /// <summary>
@@ -181,7 +182,7 @@ namespace OfficeOpenXml.Drawing.Slicer.Style
         {
             get
             {
-                return GetSlicerStyleElement(eSlicerStyleElement.HoveredSelectedItemWithNoData);
+                return this.GetSlicerStyleElement(eSlicerStyleElement.HoveredSelectedItemWithNoData);
             }
         }
 
@@ -192,7 +193,7 @@ namespace OfficeOpenXml.Drawing.Slicer.Style
         {
             get
             {
-                return GetSlicerStyleElement(eSlicerStyleElement.HoveredUnselectedItemWithData);
+                return this.GetSlicerStyleElement(eSlicerStyleElement.HoveredUnselectedItemWithData);
             }
         }
         /// <summary>
@@ -202,7 +203,7 @@ namespace OfficeOpenXml.Drawing.Slicer.Style
         {
             get
             {
-                return GetSlicerStyleElement(eSlicerStyleElement.HoveredUnselectedItemWithNoData);
+                return this.GetSlicerStyleElement(eSlicerStyleElement.HoveredUnselectedItemWithNoData);
             }
         }
 
@@ -210,18 +211,18 @@ namespace OfficeOpenXml.Drawing.Slicer.Style
         {
             foreach (ExcelSlicerTableStyleElement? s in templateStyle._dicTable.Values)
             {
-                ExcelSlicerTableStyleElement? element = GetTableStyleElement(s.Type);
+                ExcelSlicerTableStyleElement? element = this.GetTableStyleElement(s.Type);
                 element.Style = (ExcelDxfSlicerStyle)s.Style.Clone();
             }
             foreach (ExcelSlicerStyleElement? s in templateStyle._dicSlicer.Values)
             {
-                ExcelSlicerStyleElement? element = GetSlicerStyleElement(s.Type);
+                ExcelSlicerStyleElement? element = this.GetSlicerStyleElement(s.Type);
                 element.Style = (ExcelDxfSlicerStyle)s.Style.Clone();
             }
         }
         internal void SetFromTemplate(eSlicerStyle templateStyle)
         {
-            LoadTableTemplate("SlicerStyles", templateStyle.ToString());
+            this.LoadTableTemplate("SlicerStyles", templateStyle.ToString());
         }
         private void LoadTableTemplate(string folder, string styleName)
         {
@@ -251,15 +252,15 @@ namespace OfficeOpenXml.Drawing.Slicer.Style
                             eSlicerStyleElement? slicerType= elem.GetAttribute("name").ToEnum<eSlicerStyleElement>();
                             if(slicerType.HasValue)
                             {
-                                ExcelSlicerStyleElement? se = GetSlicerStyleElement(slicerType.Value);
-                                ExcelDxfSlicerStyle? dxf = new ExcelDxfSlicerStyle(NameSpaceManager, elem.FirstChild, _styles, null);
+                                ExcelSlicerStyleElement? se = this.GetSlicerStyleElement(slicerType.Value);
+                                ExcelDxfSlicerStyle? dxf = new ExcelDxfSlicerStyle(this.NameSpaceManager, elem.FirstChild, this._styles, null);
                                 se.Style = dxf;
                             }
                         }
                         else
                         {
-                            ExcelSlicerTableStyleElement? te = GetTableStyleElement(tblType.Value);
-                            ExcelDxfSlicerStyle? dxf = new ExcelDxfSlicerStyle(NameSpaceManager, elem.FirstChild, _styles, null);
+                            ExcelSlicerTableStyleElement? te = this.GetTableStyleElement(tblType.Value);
+                            ExcelDxfSlicerStyle? dxf = new ExcelDxfSlicerStyle(this.NameSpaceManager, elem.FirstChild, this._styles, null);
                             te.Style = dxf;
                         }
                     }

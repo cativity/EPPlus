@@ -25,7 +25,7 @@ namespace OfficeOpenXml.VBA
         /// </summary>
         public ExcelVbaReferenceControl()
         {
-            ReferenceRecordID = 0x2F;
+            this.ReferenceRecordID = 0x2F;
         }
         /// <summary>
         /// LibIdExternal 
@@ -37,11 +37,11 @@ namespace OfficeOpenXml.VBA
         {
             get
             {
-                return LibIdExtended;
+                return this.LibIdExtended;
             }
             set
             {
-                LibIdExtended = value;
+                this.LibIdExtended = value;
             }
         }
 

@@ -32,8 +32,8 @@ namespace OfficeOpenXml.Filter
         /// <param name="value">The value to be filtered.</param>
         public ExcelFilterValueItem(string value)
         {
-            Value = value;
-            Utils.ConvertUtil.TryParseNumericString(value, out _valueDouble, CultureInfo.InvariantCulture);
+            this.Value = value;
+            Utils.ConvertUtil.TryParseNumericString(value, out this._valueDouble, CultureInfo.InvariantCulture);
             }
         /// <summary>
         /// A value to be filtered.

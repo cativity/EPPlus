@@ -25,10 +25,10 @@ namespace OfficeOpenXml.LoadFunctions
     {
         public LoadFunctionBase(ExcelRangeBase range, LoadFunctionFunctionParamsBase parameters)
         {
-            Range = range;
-            PrintHeaders = parameters.PrintHeaders;
-            TableStyle = parameters.TableStyle;
-            TableName = parameters.TableName?.Trim();
+            this.Range = range;
+            this.PrintHeaders = parameters.PrintHeaders;
+            this.TableStyle = parameters.TableStyle;
+            this.TableName = parameters.TableName?.Trim();
         }
 
         /// <summary>
@@ -78,8 +78,8 @@ namespace OfficeOpenXml.LoadFunctions
         /// <returns></returns>
         internal ExcelRangeBase Load()
         {
-            int nRows = PrintHeaders ? GetNumberOfRows() + 1 : GetNumberOfRows();
-            int nCols = GetNumberOfColumns();
+            int nRows = this.PrintHeaders ? this.GetNumberOfRows() + 1 : this.GetNumberOfRows();
+            int nCols = this.GetNumberOfColumns();
             object[,]? values = new object[nRows, nCols];
 
             //if(Range.Worksheet._values.Capacity < values.Length)
@@ -87,27 +87,27 @@ namespace OfficeOpenXml.LoadFunctions
             //    Range.Worksheet._values.Capacity = values.Length;
             //}
 
-            LoadInternal(values, out Dictionary<int, FormulaCell> formulaCells, out Dictionary<int, string> columnFormats);
-            ExcelWorksheet? ws = Range.Worksheet;
+            this.LoadInternal(values, out Dictionary<int, FormulaCell> formulaCells, out Dictionary<int, string> columnFormats);
+            ExcelWorksheet? ws = this.Range.Worksheet;
             if(formulaCells != null && formulaCells.Keys.Count > 0)
             {
-                SetValuesAndFormulas(nRows, nCols, values, formulaCells, ws);
+                this.SetValuesAndFormulas(nRows, nCols, values, formulaCells, ws);
             }
             else
             {
-                ws.SetRangeValueInner(Range._fromRow, Range._fromCol, Range._fromRow + nRows - 1, Range._fromCol + nCols - 1, values, true);
+                ws.SetRangeValueInner(this.Range._fromRow, this.Range._fromCol, this.Range._fromRow + nRows - 1, this.Range._fromCol + nCols - 1, values, true);
             }
 
 
             //Must have at least 1 row, if header is shown
-            if (nRows == 1 && PrintHeaders)
+            if (nRows == 1 && this.PrintHeaders)
             {
                 nRows++;
             }
             // set number formats
             foreach (int col in columnFormats.Keys)
             {
-                ws.Cells[Range._fromRow, Range._fromCol + col, Range._fromRow + nRows - 1, Range._fromCol + col].Style.Numberformat.Format = columnFormats[col];
+                ws.Cells[this.Range._fromRow, this.Range._fromCol + col, this.Range._fromRow + nRows - 1, this.Range._fromCol + col].Style.Numberformat.Format = columnFormats[col];
             }
 
             if(nRows==0)
@@ -115,17 +115,17 @@ namespace OfficeOpenXml.LoadFunctions
                 return null;
             }
 
-            ExcelRange? r = ws.Cells[Range._fromRow, Range._fromCol, Range._fromRow + nRows - 1, Range._fromCol + nCols - 1];
+            ExcelRange? r = ws.Cells[this.Range._fromRow, this.Range._fromCol, this.Range._fromRow + nRows - 1, this.Range._fromCol + nCols - 1];
 
-            if (TableStyle.HasValue)
+            if (this.TableStyle.HasValue)
             {
-                ExcelTable? tbl = ws.Tables.Add(r, TableName);
-                tbl.ShowHeader = PrintHeaders;
-                tbl.TableStyle = TableStyle.Value;
-                tbl.ShowFirstColumn = ShowFirstColumn;
-                tbl.ShowLastColumn = ShowLastColumn;
-                tbl.ShowTotal = ShowTotal;
-                PostProcessTable(tbl, r);
+                ExcelTable? tbl = ws.Tables.Add(r, this.TableName);
+                tbl.ShowHeader = this.PrintHeaders;
+                tbl.TableStyle = this.TableStyle.Value;
+                tbl.ShowFirstColumn = this.ShowFirstColumn;
+                tbl.ShowLastColumn = this.ShowLastColumn;
+                tbl.ShowTotal = this.ShowTotal;
+                this.PostProcessTable(tbl, r);
             }
             return r;
         }
@@ -137,16 +137,16 @@ namespace OfficeOpenXml.LoadFunctions
                 if (formulaCells.ContainsKey(col))
                 {
                     int row = 0;
-                    if (PrintHeaders)
+                    if (this.PrintHeaders)
                     {
                         object? header = values[0, col];
-                        ws.SetValue(Range._fromRow, Range._fromCol + col, header);
+                        ws.SetValue(this.Range._fromRow, this.Range._fromCol + col, header);
                         row++;
                     }
                     FormulaCell? columnFormula = formulaCells[col];
-                    int fromRow = Range._fromRow + row;
-                    int rangeCol = Range._fromCol + col;
-                    int toRow = Range._fromRow + nRows - 1;
+                    int fromRow = this.Range._fromRow + row;
+                    int rangeCol = this.Range._fromCol + col;
+                    int toRow = this.Range._fromRow + nRows - 1;
                     ExcelRange? formulaRange = ws.Cells[fromRow, rangeCol, toRow, rangeCol];
                     if (!string.IsNullOrEmpty(columnFormula.Formula))
                     {
@@ -165,9 +165,9 @@ namespace OfficeOpenXml.LoadFunctions
                         object? item = values[ix, col];
                         columnValues[ix, 0] = item;
                     }
-                    int fromRow = Range._fromRow;
-                    int rangeCol = Range._fromCol + col;
-                    int toRow = Range._fromRow + nRows - 1;
+                    int fromRow = this.Range._fromRow;
+                    int rangeCol = this.Range._fromCol + col;
+                    int toRow = this.Range._fromRow + nRows - 1;
                     ws.SetRangeValueInner(fromRow, rangeCol, toRow, rangeCol, columnValues, true);
                 }
 

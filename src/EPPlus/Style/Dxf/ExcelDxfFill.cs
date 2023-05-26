@@ -28,9 +28,9 @@ namespace OfficeOpenXml.Style.Dxf
         internal ExcelDxfFill(ExcelStyles styles, Action<eStyleClass, eStyleProperty, object> callback)
             : base(styles, callback)
         {
-            PatternColor = new ExcelDxfColor(styles, eStyleClass.FillPatternColor, callback);
-            BackgroundColor = new ExcelDxfColor(styles, eStyleClass.FillBackgroundColor, callback);
-            Gradient = null;
+            this.PatternColor = new ExcelDxfColor(styles, eStyleClass.FillPatternColor, callback);
+            this.BackgroundColor = new ExcelDxfColor(styles, eStyleClass.FillBackgroundColor, callback);
+            this.Gradient = null;
         }
         ExcelFillStyle? _patternType;
         /// <summary>
@@ -40,16 +40,17 @@ namespace OfficeOpenXml.Style.Dxf
         { 
             get
             {
-                return _patternType;
+                return this._patternType;
             }
             set
             {
-                if(Style==eDxfFillStyle.GradientFill)
+                if(this.Style==eDxfFillStyle.GradientFill)
                 {
                     throw new InvalidOperationException("Cant set Pattern Type when Style is set to GradientFill");
                 }
-                _patternType = value;
-                _callback?.Invoke(eStyleClass.Fill, eStyleProperty.PatternType, value);
+
+                this._patternType = value;
+                this._callback?.Invoke(eStyleClass.Fill, eStyleProperty.PatternType, value);
             }
         }
         /// <summary>
@@ -67,13 +68,13 @@ namespace OfficeOpenXml.Style.Dxf
         {
             get
             {
-                if (Style == eDxfFillStyle.PatternFill)
+                if (this.Style == eDxfFillStyle.PatternFill)
                 {
-                    return GetAsString(PatternType) + "|" + (PatternColor == null ? "" : PatternColor.Id) + "|" + (BackgroundColor == null ? "" : BackgroundColor.Id);
+                    return GetAsString(this.PatternType) + "|" + (this.PatternColor == null ? "" : this.PatternColor.Id) + "|" + (this.BackgroundColor == null ? "" : this.BackgroundColor.Id);
                 }
                 else
                 {
-                    return Gradient.Id;
+                    return this.Gradient.Id;
                 }
             }
         }
@@ -84,22 +85,22 @@ namespace OfficeOpenXml.Style.Dxf
         {
             get
             {
-                return Gradient==null ? eDxfFillStyle.PatternFill : eDxfFillStyle.GradientFill;
+                return this.Gradient==null ? eDxfFillStyle.PatternFill : eDxfFillStyle.GradientFill;
             }
             set
             {
-                if(value==eDxfFillStyle.PatternFill && Gradient!=null)
+                if(value==eDxfFillStyle.PatternFill && this.Gradient!=null)
                 {
-                    PatternColor = new ExcelDxfColor(_styles, eStyleClass.FillPatternColor, _callback);
-                    BackgroundColor = new ExcelDxfColor(_styles, eStyleClass.FillBackgroundColor, _callback);
-                    Gradient = null;
+                    this.PatternColor = new ExcelDxfColor(this._styles, eStyleClass.FillPatternColor, this._callback);
+                    this.BackgroundColor = new ExcelDxfColor(this._styles, eStyleClass.FillBackgroundColor, this._callback);
+                    this.Gradient = null;
                 }
-                else if(value == eDxfFillStyle.GradientFill && Gradient == null)
+                else if(value == eDxfFillStyle.GradientFill && this.Gradient == null)
                 {
-                    PatternType = null;
-                    PatternColor = null;
-                    BackgroundColor = null;
-                    Gradient = new ExcelDxfGradientFill(_styles, _callback); 
+                    this.PatternType = null;
+                    this.PatternColor = null;
+                    this.BackgroundColor = null;
+                    this.Gradient = new ExcelDxfGradientFill(this._styles, this._callback); 
                 }
             }
         }
@@ -119,15 +120,15 @@ namespace OfficeOpenXml.Style.Dxf
         internal override void CreateNodes(XmlHelper helper, string path)
         {
             helper.CreateNode(path);
-            if(Style==eDxfFillStyle.PatternFill)
+            if(this.Style==eDxfFillStyle.PatternFill)
             {
-                SetValueEnum(helper, path + "/d:patternFill/@patternType", PatternType);
-                SetValueColor(helper, path + "/d:patternFill/d:fgColor", PatternColor);
-                SetValueColor(helper, path + "/d:patternFill/d:bgColor", BackgroundColor);
+                SetValueEnum(helper, path + "/d:patternFill/@patternType", this.PatternType);
+                SetValueColor(helper, path + "/d:patternFill/d:fgColor", this.PatternColor);
+                SetValueColor(helper, path + "/d:patternFill/d:bgColor", this.BackgroundColor);
             }
             else
             {
-                Gradient.CreateNodes(helper, path);
+                this.Gradient.CreateNodes(helper, path);
             }
         }
         /// <summary>
@@ -137,15 +138,13 @@ namespace OfficeOpenXml.Style.Dxf
         {
             get 
             {
-                if(Style==eDxfFillStyle.PatternFill)
+                if(this.Style==eDxfFillStyle.PatternFill)
                 {
-                    return PatternType != null ||
-                            PatternColor.HasValue ||
-                            BackgroundColor.HasValue;
+                    return this.PatternType != null || this.PatternColor.HasValue || this.BackgroundColor.HasValue;
                 }
                 else
                 {
-                    return Gradient.HasValue;
+                    return this.Gradient.HasValue;
                 }
             }
         }
@@ -154,15 +153,15 @@ namespace OfficeOpenXml.Style.Dxf
         /// </summary>
         public override void Clear()
         {
-            if (Style == eDxfFillStyle.PatternFill)
+            if (this.Style == eDxfFillStyle.PatternFill)
             {
-                PatternType = null;
-                PatternColor.Clear();
-                BackgroundColor.Clear();
+                this.PatternType = null;
+                this.PatternColor.Clear();
+                this.BackgroundColor.Clear();
             }
             else
             {
-                Gradient.Clear();
+                this.Gradient.Clear();
             }
         }
         /// <summary>
@@ -171,21 +170,21 @@ namespace OfficeOpenXml.Style.Dxf
         /// <returns>A new instance of the object</returns>
         internal override DxfStyleBase Clone()
         {
-            return new ExcelDxfFill(_styles, _callback) {PatternType=PatternType, PatternColor=(ExcelDxfColor)PatternColor?.Clone(), BackgroundColor= (ExcelDxfColor)BackgroundColor?.Clone(), Gradient=(ExcelDxfGradientFill)Gradient?.Clone()};
+            return new ExcelDxfFill(this._styles, this._callback) {PatternType= this.PatternType, PatternColor=(ExcelDxfColor)this.PatternColor?.Clone(), BackgroundColor= (ExcelDxfColor)this.BackgroundColor?.Clone(), Gradient=(ExcelDxfGradientFill)this.Gradient?.Clone()};
         }
         internal override void SetStyle()
         {
-            if (_callback != null)
+            if (this._callback != null)
             {
-                if (Style == eDxfFillStyle.PatternFill)
+                if (this.Style == eDxfFillStyle.PatternFill)
                 {
-                    _callback?.Invoke(eStyleClass.Fill, eStyleProperty.PatternType, _patternType);
-                    PatternColor.SetStyle();
-                    BackgroundColor.SetStyle();
+                    this._callback?.Invoke(eStyleClass.Fill, eStyleProperty.PatternType, this._patternType);
+                    this.PatternColor.SetStyle();
+                    this.BackgroundColor.SetStyle();
                 }
                 else
                 {
-                    Gradient.SetStyle();
+                    this.Gradient.SetStyle();
                 }
             }
         }
@@ -193,18 +192,18 @@ namespace OfficeOpenXml.Style.Dxf
         {
             if (helper.ExistsNode("d:fill/d:patternFill"))
             {
-                PatternType = GetPatternTypeEnum(helper.GetXmlNodeString("d:fill/d:patternFill/@patternType"));
-                BackgroundColor = GetColor(helper, "d:fill/d:patternFill/d:bgColor/", eStyleClass.FillBackgroundColor);
-                PatternColor = GetColor(helper, "d:fill/d:patternFill/d:fgColor/", eStyleClass.FillPatternColor);
-                Gradient = null;
+                this.PatternType = GetPatternTypeEnum(helper.GetXmlNodeString("d:fill/d:patternFill/@patternType"));
+                this.BackgroundColor = this.GetColor(helper, "d:fill/d:patternFill/d:bgColor/", eStyleClass.FillBackgroundColor);
+                this.PatternColor = this.GetColor(helper, "d:fill/d:patternFill/d:fgColor/", eStyleClass.FillPatternColor);
+                this.Gradient = null;
             }
             else if (helper.ExistsNode("d:fill/d:gradientFill"))
             {
-                PatternType = null;
-                BackgroundColor = null;
-                PatternColor = null;
-                Gradient = new ExcelDxfGradientFill(_styles, _callback);
-                Gradient.SetValuesFromXml(helper);
+                this.PatternType = null;
+                this.BackgroundColor = null;
+                this.PatternColor = null;
+                this.Gradient = new ExcelDxfGradientFill(this._styles, this._callback);
+                this.Gradient.SetValuesFromXml(helper);
             }
         }
         internal static ExcelFillStyle? GetPatternTypeEnum(string patternType)

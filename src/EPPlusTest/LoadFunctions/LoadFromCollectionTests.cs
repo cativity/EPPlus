@@ -104,8 +104,8 @@ namespace EPPlusTest.LoadFunctions
             {
                 get
                 {
-                    ExcelHyperLink? url = new ExcelHyperLink("mailto:" + EMailAddress);
-                    url.Display = Name;
+                    ExcelHyperLink? url = new ExcelHyperLink("mailto:" + this.EMailAddress);
+                    url.Display = this.Name;
                     return url;
                 }
             }

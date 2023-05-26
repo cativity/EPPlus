@@ -22,11 +22,11 @@ namespace OfficeOpenXml.VBA
         ExcelVbaProject _project;
         internal ExcelVbaModuleCollection (ExcelVbaProject project)
 	    {
-            _project=project;
+            this._project=project;
 	    }
         internal void Add(ExcelVBAModule Item)
         {
-            _list.Add(Item);
+            this._list.Add(Item);
         }
         /// <summary>
         /// Adds a new VBA Module
@@ -44,7 +44,7 @@ namespace OfficeOpenXml.VBA
             m.Type = eModuleType.Module;
             m.Attributes._list.Add(new ExcelVbaModuleAttribute() { Name = "VB_Name", Value = Name, DataType = eAttributeDataType.String });
             m.Type = eModuleType.Module;
-            _list.Add(m);
+            this._list.Add(m);
             return m;
         }
         /// <summary>
@@ -70,7 +70,7 @@ namespace OfficeOpenXml.VBA
             //m.Code = _project.GetBlankClassModule(Name, Exposed);
             m.Private = !Exposed;
             //m.ClassID=
-            _list.Add(m);
+            this._list.Add(m);
             return m;
         }
     }

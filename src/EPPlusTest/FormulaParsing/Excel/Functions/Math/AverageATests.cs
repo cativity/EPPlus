@@ -103,7 +103,7 @@ namespace EPPlusTest.FormulaParsing.Excel.Functions.Math
 			EpplusExcelDataProvider.RangeInfo? rangeInfo2 = new EpplusExcelDataProvider.RangeInfo(worksheet, 1, 4, 1, 4);
 			EpplusExcelDataProvider.RangeInfo? rangeInfo3 = new EpplusExcelDataProvider.RangeInfo(worksheet, 1, 5, 1, 6);
 			ParsingContext? context = ParsingContext.Create();
-			RangeAddress? address = new OfficeOpenXml.FormulaParsing.ExcelUtilities.RangeAddress();
+			RangeAddress? address = new RangeAddress();
 			address.FromRow = address.ToRow = address.FromCol = address.ToCol = 2;
 			context.Scopes.NewScope(address);
 			CompileResult? result = average.Execute(new FunctionArgument[]

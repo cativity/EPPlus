@@ -30,7 +30,7 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Logical
             ValidateArguments(arguments, 1);
             for (int x = 0; x < arguments.Count(); x++)
             {
-                if (ArgToBool(arguments, x))
+                if (this.ArgToBool(arguments, x))
                 {
                     return new CompileResult(true, DataType.Boolean);
                 }

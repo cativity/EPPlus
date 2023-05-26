@@ -41,7 +41,7 @@ namespace OfficeOpenXml.Packaging.Ionic.Zip
         /// </summary>
         internal bool AttributesIndicateDirectory
         {
-            get { return ((_InternalFileAttrs == 0) && ((_ExternalFileAttrs & 0x0010) == 0x0010)); }
+            get { return ((this._InternalFileAttrs == 0) && ((this._ExternalFileAttrs & 0x0010) == 0x0010)); }
         }
 
 
@@ -70,7 +70,7 @@ namespace OfficeOpenXml.Packaging.Ionic.Zip
         {
             get
             {
-                StringBuilder? builder = new System.Text.StringBuilder();
+                StringBuilder? builder = new StringBuilder();
                 builder
                     .Append(string.Format("          ZipEntry: {0}\n", this.FileName))
                     .Append(string.Format("   Version Made By: {0}\n", this._VersionMadeBy))
@@ -104,7 +104,7 @@ namespace OfficeOpenXml.Packaging.Ionic.Zip
                     .Append(string.Format("         Bit Field: 0x{0:X4}\n", this._BitField))
                     .Append(string.Format("        Encrypted?: {0}\n", this._sourceIsEncrypted))
                     .Append(string.Format("          Timeblob: 0x{0:X8}\n", this._TimeBlob))
-                        .Append(string.Format("              Time: {0}\n", Ionic.Zip.SharedUtilities.PackedToDateTime(this._TimeBlob)));
+                        .Append(string.Format("              Time: {0}\n", SharedUtilities.PackedToDateTime(this._TimeBlob)));
 
                 builder.Append(string.Format("         Is Zip64?: {0}\n", this._InputUsesZip64));
                 if (!string.IsNullOrEmpty(this._Comment))
@@ -196,17 +196,17 @@ namespace OfficeOpenXml.Packaging.Ionic.Zip
                                               Dictionary<String,Object> previouslySeen)
         {
             System.IO.Stream s = zf.ReadStream;
-            System.Text.Encoding expectedEncoding = (zf.AlternateEncodingUsage == ZipOption.Always)
+            Encoding expectedEncoding = (zf.AlternateEncodingUsage == ZipOption.Always)
                 ? zf.AlternateEncoding
                 : ZipFile.DefaultEncoding;
 
-            int signature = Ionic.Zip.SharedUtilities.ReadSignature(s);
+            int signature = SharedUtilities.ReadSignature(s);
             // return null if this is not a local file header signature
             if (IsNotValidZipDirEntrySig(signature))
             {
                 s.Seek(-4, System.IO.SeekOrigin.Current);
                 // workitem 10178
-                Ionic.Zip.SharedUtilities.Workaround_Ladybug318918(s);
+                SharedUtilities.Workaround_Ladybug318918(s);
 
                 // Getting "not a ZipDirEntry signature" here is not always wrong or an
                 // error.  This can happen when walking through a zipfile.  After the
@@ -244,7 +244,7 @@ namespace OfficeOpenXml.Packaging.Ionic.Zip
                 zde._BitField = (short)(block[i++] + block[i++] * 256);
                 zde._CompressionMethod = (Int16)(block[i++] + block[i++] * 256);
                 zde._TimeBlob = block[i++] + block[i++] * 256 + block[i++] * 256 * 256 + block[i++] * 256 * 256 * 256;
-                zde._LastModified = Ionic.Zip.SharedUtilities.PackedToDateTime(zde._TimeBlob);
+                zde._LastModified = SharedUtilities.PackedToDateTime(zde._TimeBlob);
                 zde._timestamp |= ZipEntryTimestamp.DOS;
 
                 zde._Crc32 = block[i++] + block[i++] * 256 + block[i++] * 256 * 256 + block[i++] * 256 * 256 * 256;
@@ -274,11 +274,11 @@ namespace OfficeOpenXml.Packaging.Ionic.Zip
             if ((zde._BitField & 0x0800) == 0x0800)
             {
                 // UTF-8 is in use
-                zde._FileNameInArchive = Ionic.Zip.SharedUtilities.Utf8StringFromBuffer(block);
+                zde._FileNameInArchive = SharedUtilities.Utf8StringFromBuffer(block);
             }
             else
             {
-                zde._FileNameInArchive = Ionic.Zip.SharedUtilities.StringFromBuffer(block, expectedEncoding);
+                zde._FileNameInArchive = SharedUtilities.StringFromBuffer(block, expectedEncoding);
             }
 
             // workitem 10330
@@ -353,7 +353,7 @@ namespace OfficeOpenXml.Packaging.Ionic.Zip
 
             // workitem 12744
             zde.AlternateEncoding = ((zde._BitField & 0x0800) == 0x0800)
-                ? System.Text.Encoding.UTF8
+                ? Encoding.UTF8
                 :expectedEncoding;
 
             zde.AlternateEncodingUsage = ZipOption.Always;
@@ -366,11 +366,11 @@ namespace OfficeOpenXml.Packaging.Ionic.Zip
                 if ((zde._BitField & 0x0800) == 0x0800)
                 {
                     // UTF-8 is in use
-                    zde._Comment = Ionic.Zip.SharedUtilities.Utf8StringFromBuffer(block);
+                    zde._Comment = SharedUtilities.Utf8StringFromBuffer(block);
                 }
                 else
                 {
-                    zde._Comment = Ionic.Zip.SharedUtilities.StringFromBuffer(block, expectedEncoding);
+                    zde._Comment = SharedUtilities.StringFromBuffer(block, expectedEncoding);
                 }
             }
             //zde._LengthOfDirEntry = bytesRead;

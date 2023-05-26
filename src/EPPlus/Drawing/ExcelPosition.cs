@@ -26,10 +26,10 @@ namespace OfficeOpenXml.Drawing
         internal ExcelPosition(XmlNamespaceManager ns, XmlNode node, SetWidthCallback setWidthCallback) :
             base(ns, node)
         {
-            _node = node;
-            _ns = ns;
-            _setWidthCallback = setWidthCallback;
-            Load();
+            this._node = node;
+            this._ns = ns;
+            this._setWidthCallback = setWidthCallback;
+            this.Load();
         }
         const string colPath = "xdr:col";
         int _column, _row, _columnOff, _rowOff;        
@@ -40,12 +40,12 @@ namespace OfficeOpenXml.Drawing
         {
             get
             {
-                return _column;
+                return this._column;
             }
             set
             {
-                _column = value;
-                _setWidthCallback?.Invoke();
+                this._column = value;
+                this._setWidthCallback?.Invoke();
             }
         }
         const string rowPath = "xdr:row";
@@ -56,12 +56,12 @@ namespace OfficeOpenXml.Drawing
         {
             get
             {
-                return _row;
+                return this._row;
             }
             set
             {
-                _row = value;
-                _setWidthCallback?.Invoke();
+                this._row = value;
+                this._setWidthCallback?.Invoke();
             }
         }
         const string colOffPath = "xdr:colOff";
@@ -76,12 +76,12 @@ namespace OfficeOpenXml.Drawing
         {
             get
             {
-                return _columnOff;
+                return this._columnOff;
             }
             set
             {
-                _columnOff = value;
-                _setWidthCallback?.Invoke();
+                this._columnOff = value;
+                this._setWidthCallback?.Invoke();
             }
         }
         const string rowOffPath = "xdr:rowOff";
@@ -96,27 +96,27 @@ namespace OfficeOpenXml.Drawing
         {
             get
             {
-                return _rowOff;
+                return this._rowOff;
             }
             set
             {
-                _rowOff = value;
-                _setWidthCallback?.Invoke();
+                this._rowOff = value;
+                this._setWidthCallback?.Invoke();
             }
         }
         public void Load()
-        {            
-            _column = GetXmlNodeInt(colPath);
-            _columnOff = GetXmlNodeInt(colOffPath);
-            _row = GetXmlNodeInt(rowPath);
-            _rowOff = GetXmlNodeInt(rowOffPath);
+        {
+            this._column = this.GetXmlNodeInt(colPath);
+            this._columnOff = this.GetXmlNodeInt(colOffPath);
+            this._row = this.GetXmlNodeInt(rowPath);
+            this._rowOff = this.GetXmlNodeInt(rowOffPath);
         }
         public void UpdateXml()
         {
-            SetXmlNodeString(colPath, _column.ToString());
-            SetXmlNodeString(colOffPath, _columnOff.ToString());
-            SetXmlNodeString(rowPath, _row.ToString());
-            SetXmlNodeString(rowOffPath, _rowOff.ToString());
+            this.SetXmlNodeString(colPath, this._column.ToString());
+            this.SetXmlNodeString(colOffPath, this._columnOff.ToString());
+            this.SetXmlNodeString(rowPath, this._row.ToString());
+            this.SetXmlNodeString(rowOffPath, this._rowOff.ToString());
         }
     }
 }

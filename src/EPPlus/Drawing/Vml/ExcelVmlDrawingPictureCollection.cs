@@ -32,25 +32,25 @@ namespace OfficeOpenXml.Drawing.Vml
         {            
             if (uri == null)
             {
-                VmlDrawingXml.LoadXml(CreateVmlDrawings());
-                _images = new List<ExcelVmlDrawingPicture>();
+                this.VmlDrawingXml.LoadXml(CreateVmlDrawings());
+                this._images = new List<ExcelVmlDrawingPicture>();
             }
             else
             {
-                AddDrawingsFromXml();
+                this.AddDrawingsFromXml();
             }
         }
 
         private void AddDrawingsFromXml()
         {
-            XmlNodeList? nodes = VmlDrawingXml.SelectNodes("//v:shape", NameSpaceManager);
-            _images = new List<ExcelVmlDrawingPicture>();
+            XmlNodeList? nodes = this.VmlDrawingXml.SelectNodes("//v:shape", this.NameSpaceManager);
+            this._images = new List<ExcelVmlDrawingPicture>();
             foreach (XmlNode node in nodes)
             {
-                ExcelVmlDrawingPicture? img = new ExcelVmlDrawingPicture(node, NameSpaceManager, _ws);
-                ZipPackageRelationship? rel = Part.GetRelationship(img.RelId);
+                ExcelVmlDrawingPicture? img = new ExcelVmlDrawingPicture(node, this.NameSpaceManager, this._ws);
+                ZipPackageRelationship? rel = this.Part.GetRelationship(img.RelId);
                 img.ImageUri = UriHelper.ResolvePartUri(rel.SourceUri, rel.TargetUri);
-                _images.Add(img);
+                this._images.Add(img);
             }
         }
 
@@ -75,16 +75,16 @@ namespace OfficeOpenXml.Drawing.Vml
         }
         internal ExcelVmlDrawingPicture Add(string id, Uri uri, string name, double width, double height)
         {
-            XmlNode node = AddImage(id, uri, name, width, height);
-            ExcelVmlDrawingPicture? draw = new ExcelVmlDrawingPicture(node, NameSpaceManager, _ws);
+            XmlNode node = this.AddImage(id, uri, name, width, height);
+            ExcelVmlDrawingPicture? draw = new ExcelVmlDrawingPicture(node, this.NameSpaceManager, this._ws);
             draw.ImageUri = uri;
-            _images.Add(draw);
+            this._images.Add(draw);
             return draw;
         }
         private XmlNode AddImage(string id, Uri targeUri, string Name, double width, double height)
         {
-            XmlElement? node = VmlDrawingXml.CreateElement("v", "shape", ExcelPackage.schemaMicrosoftVml);
-            VmlDrawingXml.DocumentElement.AppendChild(node);
+            XmlElement? node = this.VmlDrawingXml.CreateElement("v", "shape", ExcelPackage.schemaMicrosoftVml);
+            this.VmlDrawingXml.DocumentElement.AppendChild(node);
             node.SetAttribute("id", id);
             node.SetAttribute("o:type", "#_x0000_t75");
             node.SetAttribute("style", string.Format("position:absolute;margin-left:0;margin-top:0;width:{0}pt;height:{1}pt;z-index:1", width.ToString(CultureInfo.InvariantCulture), height.ToString(CultureInfo.InvariantCulture)));
@@ -101,7 +101,7 @@ namespace OfficeOpenXml.Drawing.Vml
         {
             get
             {
-                return _images[Index] as ExcelVmlDrawingPicture;
+                return this._images[Index] as ExcelVmlDrawingPicture;
             }
         }
         /// <summary>
@@ -111,7 +111,7 @@ namespace OfficeOpenXml.Drawing.Vml
         {
             get
             {
-                return _images.Count;
+                return this._images.Count;
             }
         }
 
@@ -122,31 +122,32 @@ namespace OfficeOpenXml.Drawing.Vml
         /// <returns></returns>
         internal string GetNewId()
         {
-            if (_nextID == 0)
+            if (this._nextID == 0)
             {
                 foreach (ExcelVmlDrawingComment draw in this)
                 {
                     if (draw.Id.Length > 3 && draw.Id.StartsWith("vml", StringComparison.OrdinalIgnoreCase))
                     {
                         int id;
-                        if (int.TryParse(draw.Id.Substring(3, draw.Id.Length - 3), System.Globalization.NumberStyles.Number, CultureInfo.InvariantCulture, out id))
+                        if (int.TryParse(draw.Id.Substring(3, draw.Id.Length - 3), NumberStyles.Number, CultureInfo.InvariantCulture, out id))
                         {
-                            if (id > _nextID)
+                            if (id > this._nextID)
                             {
-                                _nextID = id;
+                                this._nextID = id;
                             }
                         }
                     }
                 }
             }
-            _nextID++;
-            return "vml" + _nextID.ToString();
+
+            this._nextID++;
+            return "vml" + this._nextID.ToString();
         }
         #region IEnumerable Members
 
         IEnumerator IEnumerable.GetEnumerator() 
         {
-            return _images.GetEnumerator();
+            return this._images.GetEnumerator();
         }
 
         #endregion

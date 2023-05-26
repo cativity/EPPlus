@@ -29,12 +29,12 @@ namespace OfficeOpenXml.Drawing.Style.ThreeD
         private readonly Action<bool> _initParent;
         internal ExcelDrawing3DBevel(XmlNamespaceManager nameSpaceManager, XmlNode topNode, string[] schemaNodeOrder, string path, Action<bool> initParent) : base(nameSpaceManager, topNode)
         {
-            SchemaNodeOrder = schemaNodeOrder;
-            _path = path;
-            _widthPath = string.Format(_widthPath, path);
-            _heightPath = string.Format(_heightPath, path);
-            _typePath = string.Format(_typePath, path);
-            _initParent = initParent;
+            this.SchemaNodeOrder = schemaNodeOrder;
+            this._path = path;
+            this._widthPath = string.Format(this._widthPath, path);
+            this._heightPath = string.Format(this._heightPath, path);
+            this._typePath = string.Format(this._typePath, path);
+            this._initParent = initParent;
         }
         /// <summary>
         /// The width of the bevel in points (pt)
@@ -43,30 +43,30 @@ namespace OfficeOpenXml.Drawing.Style.ThreeD
         {
             get
             {
-                return GetXmlNodeEmuToPtNull(_widthPath) ?? 6;
+                return this.GetXmlNodeEmuToPtNull(this._widthPath) ?? 6;
             }
             set
             {
-                if (!_isInit)
+                if (!this._isInit)
                 {
                     this.InitXml();
                 }
 
-                SetXmlNodeEmuToPt(_widthPath, value);
+                this.SetXmlNodeEmuToPt(this._widthPath, value);
             }
         }
 
         private void InitXml()
         {
-            if (_isInit==false)
+            if (this._isInit==false)
             {
-                _isInit = true;
-                if (!ExistsNode(_typePath))
+                this._isInit = true;
+                if (!this.ExistsNode(this._typePath))
                 {
-                    _initParent(false);
-                    Height = 6;
-                    Width = 6;
-                    BevelType = eBevelPresetType.Circle;
+                    this._initParent(false);
+                    this.Height = 6;
+                    this.Width = 6;
+                    this.BevelType = eBevelPresetType.Circle;
                 }
             }
         }
@@ -78,16 +78,16 @@ namespace OfficeOpenXml.Drawing.Style.ThreeD
         {
             get
             {
-                return GetXmlNodeEmuToPtNull(_heightPath) ?? 6;
+                return this.GetXmlNodeEmuToPtNull(this._heightPath) ?? 6;
             }
             set
             {
-                if(!_isInit)
+                if(!this._isInit)
                 {
                     this.InitXml();
                 }
 
-                SetXmlNodeEmuToPt(_heightPath, value);
+                this.SetXmlNodeEmuToPt(this._heightPath, value);
             }
         }
         /// <summary>
@@ -97,24 +97,24 @@ namespace OfficeOpenXml.Drawing.Style.ThreeD
         {
             get
             {
-                return GetXmlNodeString(_typePath).ToEnum(eBevelPresetType.Circle);
+                return this.GetXmlNodeString(this._typePath).ToEnum(eBevelPresetType.Circle);
             }
             set
             {
                 if(value==eBevelPresetType.None)
                 {
-                    DeleteNode(_typePath);
-                    DeleteNode(_heightPath);
-                    DeleteNode(_widthPath);
+                    this.DeleteNode(this._typePath);
+                    this.DeleteNode(this._heightPath);
+                    this.DeleteNode(this._widthPath);
                 }
                 else
                 {
-                    if (!_isInit)
+                    if (!this._isInit)
                     {
                         this.InitXml();
                     }
 
-                    SetXmlNodeString(_typePath, value.ToEnumString());
+                    this.SetXmlNodeString(this._typePath, value.ToEnumString());
                 }
             }
         }

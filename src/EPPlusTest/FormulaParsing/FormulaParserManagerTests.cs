@@ -57,10 +57,10 @@ namespace EPPlusTest.FormulaParsing
         {
             public MyModule()
             {
-                Functions = new Dictionary<string, ExcelFunction>();
-                Functions.Add("MyFunction", new MyFunction());
+                this.Functions = new Dictionary<string, ExcelFunction>();
+                this.Functions.Add("MyFunction", new MyFunction());
 
-                CustomCompilers = new Dictionary<Type, FunctionCompiler>();
+                this.CustomCompilers = new Dictionary<Type, FunctionCompiler>();
             }
             public IDictionary<string, ExcelFunction> Functions { get; }
             public IDictionary<Type, FunctionCompiler> CustomCompilers { get; }

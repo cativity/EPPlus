@@ -40,12 +40,12 @@ namespace OfficeOpenXml.Drawing.Chart
         internal ExcelChartAxis(ExcelChart chart, XmlNamespaceManager nameSpaceManager, XmlNode topNode, string nsPrefix) :
             base(nameSpaceManager, topNode)
         {
-            _chart = chart;
-            _nsPrefix = nsPrefix;
-            _formatPath = $"{_nsPrefix}:numFmt/@formatCode";
-            _sourceLinkedPath = $"{_nsPrefix}:numFmt/@sourceLinked";
-            _minorGridlinesPath = $"{nsPrefix}:minorGridlines";
-            _majorGridlinesPath = $"{nsPrefix}:majorGridlines";
+            this._chart = chart;
+            this._nsPrefix = nsPrefix;
+            this._formatPath = $"{this._nsPrefix}:numFmt/@formatCode";
+            this._sourceLinkedPath = $"{this._nsPrefix}:numFmt/@sourceLinked";
+            this._minorGridlinesPath = $"{nsPrefix}:minorGridlines";
+            this._majorGridlinesPath = $"{nsPrefix}:majorGridlines";
         }
         internal abstract string Id
         {
@@ -115,18 +115,18 @@ namespace OfficeOpenXml.Drawing.Chart
         {
             get
             {
-                return GetXmlNodeString(_formatPath);
+                return this.GetXmlNodeString(this._formatPath);
             }
             set
             {
-                SetXmlNodeString(_formatPath, value);
+                this.SetXmlNodeString(this._formatPath, value);
                 if (string.IsNullOrEmpty(value))
                 {
-                    SourceLinked = true;
+                    this.SourceLinked = true;
                 }
                 else
                 {
-                    SourceLinked = false;
+                    this.SourceLinked = false;
                 }
             }
         }
@@ -137,11 +137,11 @@ namespace OfficeOpenXml.Drawing.Chart
         {
             get
             {
-                return GetXmlNodeBool(_sourceLinkedPath);
+                return this.GetXmlNodeBool(this._sourceLinkedPath);
             }
             set
             {
-                SetXmlNodeBool(_sourceLinkedPath, value);
+                this.SetXmlNodeBool(this._sourceLinkedPath, value);
             }
         }
         /// <summary>
@@ -160,11 +160,11 @@ namespace OfficeOpenXml.Drawing.Chart
         {
             get
             {
-                if (_fill == null)
+                if (this._fill == null)
                 {
-                    _fill = new ExcelDrawingFill(_chart, NameSpaceManager, TopNode, $"{_nsPrefix}:spPr", SchemaNodeOrder);
+                    this._fill = new ExcelDrawingFill(this._chart, this.NameSpaceManager, this.TopNode, $"{this._nsPrefix}:spPr", this.SchemaNodeOrder);
                 }
-                return _fill;
+                return this._fill;
             }
         }
         ExcelDrawingBorder _border = null;
@@ -175,11 +175,11 @@ namespace OfficeOpenXml.Drawing.Chart
         {
             get
             {
-                if (_border == null)
+                if (this._border == null)
                 {
-                    _border = new ExcelDrawingBorder(_chart, NameSpaceManager, TopNode, $"{_nsPrefix}:spPr/a:ln", SchemaNodeOrder);
+                    this._border = new ExcelDrawingBorder(this._chart, this.NameSpaceManager, this.TopNode, $"{this._nsPrefix}:spPr/a:ln", this.SchemaNodeOrder);
                 }
-                return _border;
+                return this._border;
             }
         }
         ExcelDrawingEffectStyle _effect = null;
@@ -190,11 +190,11 @@ namespace OfficeOpenXml.Drawing.Chart
         {
             get
             {
-                if (_effect == null)
+                if (this._effect == null)
                 {
-                    _effect = new ExcelDrawingEffectStyle(_chart, NameSpaceManager, TopNode, $"{_nsPrefix}:spPr/a:effectLst", SchemaNodeOrder);
+                    this._effect = new ExcelDrawingEffectStyle(this._chart, this.NameSpaceManager, this.TopNode, $"{this._nsPrefix}:spPr/a:effectLst", this.SchemaNodeOrder);
                 }
-                return _effect;
+                return this._effect;
             }
         }
         ExcelDrawing3D _threeD = null;
@@ -205,11 +205,11 @@ namespace OfficeOpenXml.Drawing.Chart
         {
             get
             {
-                if (_threeD == null)
+                if (this._threeD == null)
                 {
-                    _threeD = new ExcelDrawing3D(NameSpaceManager, TopNode, $"{_nsPrefix}:spPr", SchemaNodeOrder);
+                    this._threeD = new ExcelDrawing3D(this.NameSpaceManager, this.TopNode, $"{this._nsPrefix}:spPr", this.SchemaNodeOrder);
                 }
-                return _threeD;
+                return this._threeD;
             }
         }
 
@@ -221,11 +221,11 @@ namespace OfficeOpenXml.Drawing.Chart
         {
             get
             {
-                if (_font == null)
+                if (this._font == null)
                 {
-                    _font = new ExcelTextFont(_chart, NameSpaceManager, TopNode, $"{_nsPrefix}:txPr/a:p/a:pPr/a:defRPr", SchemaNodeOrder);
+                    this._font = new ExcelTextFont(this._chart, this.NameSpaceManager, this.TopNode, $"{this._nsPrefix}:txPr/a:p/a:pPr/a:defRPr", this.SchemaNodeOrder);
                 }
-                return _font;
+                return this._font;
             }
         }
         ExcelTextBody _textBody = null;
@@ -236,16 +236,16 @@ namespace OfficeOpenXml.Drawing.Chart
         {
             get
             {
-                if (_textBody == null)
+                if (this._textBody == null)
                 {
-                    _textBody = new ExcelTextBody(NameSpaceManager, TopNode, $"{_nsPrefix}:txPr/a:bodyPr", SchemaNodeOrder);
+                    this._textBody = new ExcelTextBody(this.NameSpaceManager, this.TopNode, $"{this._nsPrefix}:txPr/a:bodyPr", this.SchemaNodeOrder);
                 }
-                return _textBody;
+                return this._textBody;
             }
         }
         void IDrawingStyleBase.CreatespPr()
         {
-            CreatespPrNode($"{_nsPrefix}:spPr");
+            this.CreatespPrNode($"{this._nsPrefix}:spPr");
         }
 
         /// <summary>
@@ -283,7 +283,7 @@ namespace OfficeOpenXml.Drawing.Chart
         {
             get
             {                                
-                return GetTitle();
+                return this.GetTitle();
             }
         }
 
@@ -372,11 +372,11 @@ namespace OfficeOpenXml.Drawing.Chart
         { 
             get 
             { 
-                if (_majorGridlines == null) 
-                {  
-                    _majorGridlines = new ExcelDrawingBorder(_chart, NameSpaceManager, TopNode,$"{_majorGridlinesPath}/{_nsPrefix}:spPr/a:ln", SchemaNodeOrder); 
+                if (this._majorGridlines == null) 
+                {
+                    this._majorGridlines = new ExcelDrawingBorder(this._chart, this.NameSpaceManager, this.TopNode,$"{this._majorGridlinesPath}/{this._nsPrefix}:spPr/a:ln", this.SchemaNodeOrder); 
                 } 
-                return _majorGridlines; 
+                return this._majorGridlines; 
             } 
         }
         ExcelDrawingEffectStyle _majorGridlineEffects = null;
@@ -387,11 +387,11 @@ namespace OfficeOpenXml.Drawing.Chart
         {
             get
             {
-                if (_majorGridlineEffects == null)
+                if (this._majorGridlineEffects == null)
                 {
-                    _majorGridlineEffects = new ExcelDrawingEffectStyle(_chart, NameSpaceManager, TopNode, $"{_majorGridlinesPath}/{_nsPrefix}:spPr/a:effectLst", SchemaNodeOrder);
+                    this._majorGridlineEffects = new ExcelDrawingEffectStyle(this._chart, this.NameSpaceManager, this.TopNode, $"{this._majorGridlinesPath}/{this._nsPrefix}:spPr/a:effectLst", this.SchemaNodeOrder);
                 }
-                return _majorGridlineEffects;
+                return this._majorGridlineEffects;
             }
         }
 
@@ -404,11 +404,11 @@ namespace OfficeOpenXml.Drawing.Chart
         { 
             get 
             { 
-                if (_minorGridlines == null) 
-                {  
-                    _minorGridlines = new ExcelDrawingBorder(_chart, NameSpaceManager, TopNode,$"{_minorGridlinesPath}/{_nsPrefix}:spPr/a:ln", SchemaNodeOrder); 
+                if (this._minorGridlines == null) 
+                {
+                    this._minorGridlines = new ExcelDrawingBorder(this._chart, this.NameSpaceManager, this.TopNode,$"{this._minorGridlinesPath}/{this._nsPrefix}:spPr/a:ln", this.SchemaNodeOrder); 
                 } 
-                return _minorGridlines; 
+                return this._minorGridlines; 
             } 
         }
         ExcelDrawingEffectStyle _minorGridlineEffects = null;
@@ -419,11 +419,11 @@ namespace OfficeOpenXml.Drawing.Chart
         {
             get
             {
-                if (_minorGridlineEffects == null)
+                if (this._minorGridlineEffects == null)
                 {
-                    _minorGridlineEffects = new ExcelDrawingEffectStyle(_chart, NameSpaceManager, TopNode, $"{_minorGridlinesPath}/{_nsPrefix}:spPr/a:effectLst", SchemaNodeOrder);
+                    this._minorGridlineEffects = new ExcelDrawingEffectStyle(this._chart, this.NameSpaceManager, this.TopNode, $"{this._minorGridlinesPath}/{this._nsPrefix}:spPr/a:effectLst", this.SchemaNodeOrder);
                 }
-                return _minorGridlineEffects;
+                return this._minorGridlineEffects;
             }
         }
         /// <summary>
@@ -433,7 +433,7 @@ namespace OfficeOpenXml.Drawing.Chart
         {
             get
             {
-                return ExistsNode(_majorGridlinesPath);
+                return this.ExistsNode(this._majorGridlinesPath);
             }
         }
         /// <summary>
@@ -443,15 +443,15 @@ namespace OfficeOpenXml.Drawing.Chart
         {
             get
             {
-                return ExistsNode(_minorGridlinesPath);
+                return this.ExistsNode(this._minorGridlinesPath);
             }
         }        
         /// <summary> 
         /// Removes Major and Minor gridlines from the Axis 
         /// </summary> 
         public void RemoveGridlines()
-        { 
-            RemoveGridlines(true,true); 
+        {
+            this.RemoveGridlines(true,true); 
         }
         /// <summary>
         ///  Removes gridlines from the Axis
@@ -461,15 +461,15 @@ namespace OfficeOpenXml.Drawing.Chart
         public void RemoveGridlines(bool removeMajor, bool removeMinor)
         { 
             if (removeMajor) 
-            { 
-                DeleteNode(_majorGridlinesPath); 
-                _majorGridlines = null; 
+            {
+                this.DeleteNode(this._majorGridlinesPath);
+                this._majorGridlines = null; 
             } 
   
             if (removeMinor) 
-            { 
-                DeleteNode(_minorGridlinesPath);    
-                _minorGridlines = null; 
+            {
+                this.DeleteNode(this._minorGridlinesPath);
+                this._minorGridlines = null; 
             } 
         }
         /// <summary>
@@ -481,13 +481,13 @@ namespace OfficeOpenXml.Drawing.Chart
         {
             if(addMajor)
             {
-                CreateNode(_majorGridlinesPath);
-                _chart.ApplyStyleOnPart(this, _chart._styleManager?.Style?.GridlineMajor);
+                this.CreateNode(this._majorGridlinesPath);
+                this._chart.ApplyStyleOnPart(this, this._chart._styleManager?.Style?.GridlineMajor);
             }
             if (addMinor)
             {
-                CreateNode(_minorGridlinesPath);
-                _chart.ApplyStyleOnPart(this, _chart._styleManager?.Style?.GridlineMinor);
+                this.CreateNode(this._minorGridlinesPath);
+                this._chart.ApplyStyleOnPart(this, this._chart._styleManager?.Style?.GridlineMinor);
             }
         }
         /// <summary>
@@ -496,15 +496,15 @@ namespace OfficeOpenXml.Drawing.Chart
         /// <param name="title"></param>
         public void AddTitle(string title)
         {
-            Title.Text = title;
-            _chart.ApplyStyleOnPart(Title, _chart._styleManager?.Style?.AxisTitle);
+            this.Title.Text = title;
+            this._chart.ApplyStyleOnPart(this.Title, this._chart._styleManager?.Style?.AxisTitle);
         }
         /// <summary>
         /// Removes the axis title
         /// </summary>
         public void RemoveTitle()
         {
-            DeleteNode($"{_nsPrefix}:title");
+            this.DeleteNode($"{this._nsPrefix}:title");
         }
         /// <summary>
         /// 
@@ -512,40 +512,40 @@ namespace OfficeOpenXml.Drawing.Chart
         /// <param name="type"></param>
         internal void ChangeAxisType(eAxisType type)
         {
-            string[]? children = XmlHelper.CopyToSchemaNodeOrder(ExcelChartAxisStandard._schemaNodeOrderDateShared, ExcelChartAxisStandard._schemaNodeOrderDate);
-            RenameNode(TopNode, "c", "dateAx", children);            
+            string[]? children = CopyToSchemaNodeOrder(ExcelChartAxisStandard._schemaNodeOrderDateShared, ExcelChartAxisStandard._schemaNodeOrderDate);
+            this.RenameNode(this.TopNode, "c", "dateAx", children);            
         }
         #endregion
         internal XmlNode AddTitleNode()
         {
-            XmlNode? node = TopNode.SelectSingleNode($"{_nsPrefix}:title", NameSpaceManager);
+            XmlNode? node = this.TopNode.SelectSingleNode($"{this._nsPrefix}:title", this.NameSpaceManager);
             if (node == null)
             {
-                node = CreateNode($"{_nsPrefix}:title");
-                if (_chart._isChartEx == false)
+                node = this.CreateNode($"{this._nsPrefix}:title");
+                if (this._chart._isChartEx == false)
                 {
-                    node.InnerXml = ExcelChartTitle.GetInitXml(_nsPrefix);
+                    node.InnerXml = ExcelChartTitle.GetInitXml(this._nsPrefix);
                 }
             }
             return node;
         }
         void IStyleMandatoryProperties.SetMandatoryProperties()
         {
-            TextBody.Anchor = eTextAnchoringType.Center;
-            TextBody.AnchorCenter = true;
-            TextBody.WrapText = eTextWrappingType.Square;
-            TextBody.VerticalTextOverflow = eTextVerticalOverflow.Ellipsis;
-            TextBody.ParagraphSpacing = true;
-            TextBody.Rotation = 0;
+            this.TextBody.Anchor = eTextAnchoringType.Center;
+            this.TextBody.AnchorCenter = true;
+            this.TextBody.WrapText = eTextWrappingType.Square;
+            this.TextBody.VerticalTextOverflow = eTextVerticalOverflow.Ellipsis;
+            this.TextBody.ParagraphSpacing = true;
+            this.TextBody.Rotation = 0;
 
-            if (Font.Kerning == 0)
+            if (this.Font.Kerning == 0)
             {
                 this.Font.Kerning = 12;
             }
 
-            Font.Bold = Font.Bold; //Must be set
+            this.Font.Bold = this.Font.Bold; //Must be set
 
-            CreatespPrNode($"{_nsPrefix}:spPr");
+            this.CreatespPrNode($"{this._nsPrefix}:spPr");
         }
     }
 }

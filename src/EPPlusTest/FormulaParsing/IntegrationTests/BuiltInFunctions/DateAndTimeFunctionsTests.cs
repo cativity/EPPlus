@@ -47,20 +47,20 @@ namespace EPPlusTest.FormulaParsing.IntegrationTests.BuiltInFunctions
         [TestInitialize]
         public void Setup()
         {
-            _excelPackage = new ExcelPackage();
-            _parser = new FormulaParser(_excelPackage);
+            this._excelPackage = new ExcelPackage();
+            this._parser = new FormulaParser(this._excelPackage);
         }
 
         [TestCleanup]
         public void Cleanup()
         {
-            _excelPackage.Dispose();
+            this._excelPackage.Dispose();
         }
 
         [TestMethod]
         public void DateShouldReturnCorrectResult()
         {
-            object? result = _parser.Parse("Date(2012, 2, 2)");
+            object? result = this._parser.Parse("Date(2012, 2, 2)");
             Assert.AreEqual(new DateTime(2012, 2, 2).ToOADate(), result);
         }
 
@@ -80,35 +80,35 @@ namespace EPPlusTest.FormulaParsing.IntegrationTests.BuiltInFunctions
         [TestMethod]
         public void TodayShouldReturnAResult()
         {
-            object? result = _parser.Parse("Today()");
+            object? result = this._parser.Parse("Today()");
             Assert.IsInstanceOfType(DateTime.FromOADate((double)result), typeof(DateTime));
         }
 
         [TestMethod]
         public void NowShouldReturnAResult()
         {
-            object? result = _parser.Parse("now()");
+            object? result = this._parser.Parse("now()");
             Assert.IsInstanceOfType(DateTime.FromOADate((double)result), typeof(DateTime));
         }
 
         [TestMethod]
         public void DayShouldReturnCorrectResult()
         {
-            object? result = _parser.Parse("Day(Date(2012, 4, 2))");
+            object? result = this._parser.Parse("Day(Date(2012, 4, 2))");
             Assert.AreEqual(2, result);
         }
 
         [TestMethod]
         public void MonthShouldReturnCorrectResult()
         {
-            object? result = _parser.Parse("Month(Date(2012, 4, 2))");
+            object? result = this._parser.Parse("Month(Date(2012, 4, 2))");
             Assert.AreEqual(4, result);
         }
 
         [TestMethod]
         public void YearShouldReturnCorrectResult()
         {
-            object? result = _parser.Parse("Year(Date(2012, 2, 2))");
+            object? result = this._parser.Parse("Year(Date(2012, 2, 2))");
             Assert.AreEqual(2012, result);
         }
 
@@ -116,98 +116,98 @@ namespace EPPlusTest.FormulaParsing.IntegrationTests.BuiltInFunctions
         public void TimeShouldReturnCorrectResult()
         {
             double expectedResult = ((double)(12 * 60 * 60 + 13 * 60 + 14))/((double)(24 * 60 * 60));
-            object? result = _parser.Parse("Time(12, 13, 14)");
+            object? result = this._parser.Parse("Time(12, 13, 14)");
             Assert.AreEqual(expectedResult, result);
         }
 
         [TestMethod]
         public void HourShouldReturnCorrectResult()
         {
-            object? result = _parser.Parse("HOUR(Time(12, 13, 14))");
+            object? result = this._parser.Parse("HOUR(Time(12, 13, 14))");
             Assert.AreEqual(12, result);
         }
 
         [TestMethod]
         public void MinuteShouldReturnCorrectResult()
         {
-            object? result = _parser.Parse("minute(Time(12, 13, 14))");
+            object? result = this._parser.Parse("minute(Time(12, 13, 14))");
             Assert.AreEqual(13, result);
         }
 
         [TestMethod]
         public void SecondShouldReturnCorrectResult()
         {
-            object? result = _parser.Parse("Second(Time(12, 13, 59))");
+            object? result = this._parser.Parse("Second(Time(12, 13, 59))");
             Assert.AreEqual(59, result);
         }
 
         [TestMethod]
         public void SecondShouldReturnCorrectResultWhenParsingString()
         {
-            object? result = _parser.Parse("Second(\"10:12:14\")");
+            object? result = this._parser.Parse("Second(\"10:12:14\")");
             Assert.AreEqual(14, result);
         }
 
         [TestMethod]
         public void MinuteShouldReturnCorrectResultWhenParsingString()
         {
-            object? result = _parser.Parse("Minute(\"10:12:14 AM\")");
+            object? result = this._parser.Parse("Minute(\"10:12:14 AM\")");
             Assert.AreEqual(12, result);
         }
 
         [TestMethod]
         public void HourShouldReturnCorrectResultWhenParsingString()
         {
-            object? result = _parser.Parse("Hour(\"10:12:14\")");
+            object? result = this._parser.Parse("Hour(\"10:12:14\")");
             Assert.AreEqual(10, result);
         }
 
         [TestMethod]
         public void DaysShouldReturnCorrectResult()
         {
-            object? result = _parser.Parse("Days(Date(2015, 2, 2), Date(2015, 1, 1))");
+            object? result = this._parser.Parse("Days(Date(2015, 2, 2), Date(2015, 1, 1))");
             Assert.AreEqual(32d, result);
         }
 
         [TestMethod]
         public void Day360ShouldReturnCorrectResult()
         {
-            object? result = _parser.Parse("Days360(Date(2012, 4, 2), Date(2012, 5, 2))");
+            object? result = this._parser.Parse("Days360(Date(2012, 4, 2), Date(2012, 5, 2))");
             Assert.AreEqual(30, result);
         }
 
         [TestMethod]
         public void YearfracShouldReturnAResult()
         {
-            object? result = _parser.Parse("Yearfrac(Date(2012, 4, 2), Date(2012, 5, 2))");
+            object? result = this._parser.Parse("Yearfrac(Date(2012, 4, 2), Date(2012, 5, 2))");
             Assert.IsInstanceOfType(result, typeof(double));
         }
 
         [TestMethod]
         public void IsoWeekNumShouldReturnAResult()
         {
-            object? result = _parser.Parse("IsoWeekNum(Date(2012, 4, 2))");
+            object? result = this._parser.Parse("IsoWeekNum(Date(2012, 4, 2))");
             Assert.IsInstanceOfType(result, typeof(int));
         }
 
         [TestMethod]
         public void EomonthShouldReturnAResult()
         {
-            object? result = _parser.Parse("Eomonth(Date(2013, 2, 2), 3)");
+            object? result = this._parser.Parse("Eomonth(Date(2013, 2, 2), 3)");
             Assert.IsInstanceOfType(result, typeof(double));
         }
 
         [TestMethod]
         public void WorkdayShouldReturnAResult()
         {
-            object? result = _parser.Parse("Workday(Date(2013, 2, 2), 3)");
+            object? result = this._parser.Parse("Workday(Date(2013, 2, 2), 3)");
             Assert.IsInstanceOfType(result, typeof(double));
         }
 
         [TestMethod]
         public void DateNotEqualToStringShouldBeTrue()
         {
-            object? result = _parser.Parse("TODAY() <> \"\"");
+            object? result = this._parser.Parse("TODAY() <> \"\"");
             Assert.IsTrue((bool)result);
         }
 

@@ -23,22 +23,23 @@ namespace OfficeOpenXml.Drawing.Chart
         internal ExcelChartDataLabelStandard(ExcelChart chart, XmlNamespaceManager ns, XmlNode node, string nodeName, string[] schemaNodeOrder)
            : base(chart, ns, node, nodeName, "c")
         {
-            AddSchemaNodeOrder(schemaNodeOrder, new string[] { "idx", "spPr", "txPr", "dLbl", "dLblPos", "showLegendKey", "showVal", "showCatName", "showSerName", "showPercent", "showBubbleSize", "separator", "showLeaderLines" }, new int[] { 0, schemaNodeOrder.Length });
-            AddSchemaNodeOrder(SchemaNodeOrder, ExcelDrawing._schemaNodeOrderSpPr);
+            this.AddSchemaNodeOrder(schemaNodeOrder, new string[] { "idx", "spPr", "txPr", "dLbl", "dLblPos", "showLegendKey", "showVal", "showCatName", "showSerName", "showPercent", "showBubbleSize", "separator", "showLeaderLines" }, new int[] { 0, schemaNodeOrder.Length });
+            this.AddSchemaNodeOrder(this.SchemaNodeOrder, ExcelDrawing._schemaNodeOrderSpPr);
             if(nodeName=="dLbl")
             {
-                TopNode = node;
+                this.TopNode = node;
             }
             else
             {
                 string? fullNodeName = "c:" + nodeName;
-                XmlNode? topNode = GetNode(fullNodeName);
+                XmlNode? topNode = this.GetNode(fullNodeName);
                 if (topNode == null)
                 {
-                    topNode = CreateNode(fullNodeName);
+                    topNode = this.CreateNode(fullNodeName);
                     topNode.InnerXml = "<c:showLegendKey val=\"0\" /><c:showVal val=\"0\" /><c:showCatName val=\"0\" /><c:showSerName val=\"0\" /><c:showPercent val=\"0\" /><c:showBubbleSize val=\"0\" /> <c:separator>\r\n</c:separator><c:showLeaderLines val=\"0\" />";
                 }
-                TopNode = topNode;
+
+                this.TopNode = topNode;
             }
         }
 
@@ -50,15 +51,16 @@ namespace OfficeOpenXml.Drawing.Chart
         {
             get
             {
-                return GetPosEnum(GetXmlNodeString(positionPath));
+                return GetPosEnum(this.GetXmlNodeString(positionPath));
             }
             set
             {
-                if (ForbiddDataLabelPosition(_chart))
+                if (ForbiddDataLabelPosition(this._chart))
                 {
                     throw (new InvalidOperationException("Can't set data label position on a 3D-chart"));
                 }
-                SetXmlNodeString(positionPath, GetPosText(value));
+
+                this.SetXmlNodeString(positionPath, GetPosText(value));
             }
         }
         internal static bool ForbiddDataLabelPosition(ExcelChart _chart)
@@ -74,11 +76,11 @@ namespace OfficeOpenXml.Drawing.Chart
         {
             get
             {
-                return GetXmlNodeBool(showValPath);
+                return this.GetXmlNodeBool(showValPath);
             }
             set
             {
-                SetXmlNodeString(showValPath, value ? "1" : "0");
+                this.SetXmlNodeString(showValPath, value ? "1" : "0");
             }
         }
         const string showCatPath = "c:showCatName/@val";
@@ -89,11 +91,11 @@ namespace OfficeOpenXml.Drawing.Chart
         {
             get
             {
-                return GetXmlNodeBool(showCatPath);
+                return this.GetXmlNodeBool(showCatPath);
             }
             set
             {
-                SetXmlNodeString(showCatPath, value ? "1" : "0");
+                this.SetXmlNodeString(showCatPath, value ? "1" : "0");
             }
         }
         const string showSerPath = "c:showSerName/@val";
@@ -104,11 +106,11 @@ namespace OfficeOpenXml.Drawing.Chart
         {
             get
             {
-                return GetXmlNodeBool(showSerPath);
+                return this.GetXmlNodeBool(showSerPath);
             }
             set
             {
-                SetXmlNodeString(showSerPath, value ? "1" : "0");
+                this.SetXmlNodeString(showSerPath, value ? "1" : "0");
             }
         }
         const string showPerentPath = "c:showPercent/@val";
@@ -119,11 +121,11 @@ namespace OfficeOpenXml.Drawing.Chart
         {
             get
             {
-                return GetXmlNodeBool(showPerentPath);
+                return this.GetXmlNodeBool(showPerentPath);
             }
             set
             {
-                SetXmlNodeString(showPerentPath, value ? "1" : "0");
+                this.SetXmlNodeString(showPerentPath, value ? "1" : "0");
             }
         }
         const string showLeaderLinesPath = "c:showLeaderLines/@val";
@@ -134,11 +136,11 @@ namespace OfficeOpenXml.Drawing.Chart
         {
             get
             {
-                return GetXmlNodeBool(showLeaderLinesPath);
+                return this.GetXmlNodeBool(showLeaderLinesPath);
             }
             set
             {
-                SetXmlNodeString(showLeaderLinesPath, value ? "1" : "0");
+                this.SetXmlNodeString(showLeaderLinesPath, value ? "1" : "0");
             }
         }
         const string showBubbleSizePath = "c:showBubbleSize/@val";
@@ -149,11 +151,11 @@ namespace OfficeOpenXml.Drawing.Chart
         {
             get
             {
-                return GetXmlNodeBool(showBubbleSizePath);
+                return this.GetXmlNodeBool(showBubbleSizePath);
             }
             set
             {
-                SetXmlNodeString(showBubbleSizePath, value ? "1" : "0");
+                this.SetXmlNodeString(showBubbleSizePath, value ? "1" : "0");
             }
         }
         const string showLegendKeyPath = "c:showLegendKey/@val";
@@ -164,11 +166,11 @@ namespace OfficeOpenXml.Drawing.Chart
         {
             get
             {
-                return GetXmlNodeBool(showLegendKeyPath);
+                return this.GetXmlNodeBool(showLegendKeyPath);
             }
             set
             {
-                SetXmlNodeString(showLegendKeyPath, value ? "1" : "0");
+                this.SetXmlNodeString(showLegendKeyPath, value ? "1" : "0");
             }
         }
         const string separatorPath = "c:separator";
@@ -179,17 +181,17 @@ namespace OfficeOpenXml.Drawing.Chart
         {
             get
             {
-                return GetXmlNodeString(separatorPath);
+                return this.GetXmlNodeString(separatorPath);
             }
             set
             {
                 if (string.IsNullOrEmpty(value))
                 {
-                    DeleteNode(separatorPath);
+                    this.DeleteNode(separatorPath);
                 }
                 else
                 {
-                    SetXmlNodeString(separatorPath, value);
+                    this.SetXmlNodeString(separatorPath, value);
                 }
             }
         }

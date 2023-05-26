@@ -29,7 +29,7 @@ namespace OfficeOpenXml.FormulaParsing.ExpressionGraph.FunctionCompilers
         public override CompileResult Compile(IEnumerable<Expression> children)
         {
             List<FunctionArgument>? args = new List<FunctionArgument>();
-            Function.BeforeInvoke(Context);
+            this.Function.BeforeInvoke(this.Context);
             foreach (Expression? child in children)
             {
                 try
@@ -39,15 +39,15 @@ namespace OfficeOpenXml.FormulaParsing.ExpressionGraph.FunctionCompilers
                 }
                 catch (ExcelErrorValueException efe)
                 {
-                    return ((ErrorHandlingFunction)Function).HandleError(efe.ErrorValue.ToString());
+                    return ((ErrorHandlingFunction)this.Function).HandleError(efe.ErrorValue.ToString());
                 }
                 catch// (Exception e)
                 {
-                    return ((ErrorHandlingFunction)Function).HandleError(ExcelErrorValue.Values.Value);
+                    return ((ErrorHandlingFunction)this.Function).HandleError(ExcelErrorValue.Values.Value);
                 }
                 
             }
-            return Function.Execute(args, Context);
+            return this.Function.Execute(args, this.Context);
         }
     }
 }

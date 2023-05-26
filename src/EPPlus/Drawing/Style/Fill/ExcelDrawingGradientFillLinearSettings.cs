@@ -23,8 +23,8 @@ namespace OfficeOpenXml.Drawing.Style.Fill
         }
         internal ExcelDrawingGradientFillLinearSettings(XmlHelper xml)
         {
-            Angel = xml.GetXmlNodeAngel("a:lin/@ang");
-            Scaled = xml.GetXmlNodeBool("a:lin/@scaled", false);
+            this.Angel = xml.GetXmlNodeAngel("a:lin/@ang");
+            this.Scaled = xml.GetXmlNodeBool("a:lin/@scaled", false);
         }
 
         /// <summary>

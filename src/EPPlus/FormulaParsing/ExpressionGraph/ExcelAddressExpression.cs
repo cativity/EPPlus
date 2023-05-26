@@ -51,10 +51,10 @@ namespace OfficeOpenXml.FormulaParsing.ExpressionGraph
             Require.That(excelDataProvider).Named("excelDataProvider").IsNotNull();
             Require.That(parsingContext).Named("parsingContext").IsNotNull();
             Require.That(rangeAddressFactory).Named("rangeAddressFactory").IsNotNull();
-            _excelDataProvider = excelDataProvider;
-            _parsingContext = parsingContext;
-            _rangeAddressFactory = rangeAddressFactory;
-            _negate = negate;
+            this._excelDataProvider = excelDataProvider;
+            this._parsingContext = parsingContext;
+            this._rangeAddressFactory = rangeAddressFactory;
+            this._negate = negate;
         }
 
         public override bool IsGroupedExpression
@@ -73,21 +73,21 @@ namespace OfficeOpenXml.FormulaParsing.ExpressionGraph
 
         public override CompileResult Compile()
         {
-            if(HasCircularReference && !IgnoreCircularReference)
+            if(this.HasCircularReference && !this.IgnoreCircularReference)
             {
-                if(_parsingContext.Configuration.AllowCircularReferences)
+                if(this._parsingContext.Configuration.AllowCircularReferences)
                 {
                     return CompileResult.Empty;
                 }
-                throw new CircularReferenceException("Circular reference occurred at " + _parsingContext.Scopes.Current.Address.Address);
+                throw new CircularReferenceException("Circular reference occurred at " + this._parsingContext.Scopes.Current.Address.Address);
             }
-            ExcelAddressCache? cache = _parsingContext.AddressCache;
+            ExcelAddressCache? cache = this._parsingContext.AddressCache;
             int cacheId = cache.GetNewId();
-            if(!cache.Add(cacheId, ExpressionString))
+            if(!cache.Add(cacheId, this.ExpressionString))
             {
                 throw new InvalidOperationException("Catastropic error occurred, address caching failed");
             }
-                CompileResult? compileResult = CompileRangeValues();
+                CompileResult? compileResult = this.CompileRangeValues();
             compileResult.ExcelAddressReferenceId = cacheId;
             return compileResult;
         }
@@ -95,7 +95,7 @@ namespace OfficeOpenXml.FormulaParsing.ExpressionGraph
         private CompileResult CompileRangeValues()
         {
             ParsingScope? c = this._parsingContext.Scopes.Current;
-            IRangeInfo? resultRange = _excelDataProvider.GetRange(c.Address.Worksheet, c.Address.FromRow, c.Address.FromCol, ExpressionString);
+            IRangeInfo? resultRange = this._excelDataProvider.GetRange(c.Address.Worksheet, c.Address.FromRow, c.Address.FromCol, this.ExpressionString);
             if (resultRange == null)
             {
                 if (resultRange.IsRef)
@@ -110,7 +110,7 @@ namespace OfficeOpenXml.FormulaParsing.ExpressionGraph
             }
             else
             {
-                return CompileSingleCell(resultRange);
+                return this.CompileSingleCell(resultRange);
             }
         }
 
@@ -127,7 +127,7 @@ namespace OfficeOpenXml.FormulaParsing.ExpressionGraph
             }
             CompileResultFactory? factory = new CompileResultFactory();
             CompileResult? compileResult = factory.Create(cell.Value);
-            if (_negate && compileResult.IsNumeric)
+            if (this._negate && compileResult.IsNumeric)
             {
                 compileResult = new CompileResult(compileResult.ResultNumeric * -1, compileResult.DataType);
             }

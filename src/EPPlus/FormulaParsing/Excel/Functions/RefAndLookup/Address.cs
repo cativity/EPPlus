@@ -30,8 +30,8 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions.RefAndLookup
         public override CompileResult Execute(IEnumerable<FunctionArgument> arguments, ParsingContext context)
         {
             ValidateArguments(arguments, 2);
-            int row = ArgToInt(arguments, 0);
-            int col = ArgToInt(arguments, 1);
+            int row = this.ArgToInt(arguments, 0);
+            int col = this.ArgToInt(arguments, 1);
             if (row < 0 && col < 0)
             {
                 return this.CreateResult(eErrorType.Value);
@@ -41,7 +41,7 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions.RefAndLookup
             string? worksheetSpec = string.Empty;
             if (arguments.Count() > 2)
             {
-                int arg3 = ArgToInt(arguments, 2);
+                int arg3 = this.ArgToInt(arguments, 2);
                 if (arg3 < 1 || arg3 > 4)
                 {
                     return this.CreateResult(eErrorType.Value);
@@ -66,7 +66,7 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions.RefAndLookup
                 }
             }
             IndexToAddressTranslator? translator = new IndexToAddressTranslator(context.ExcelDataProvider, referenceType);
-            return CreateResult(worksheetSpec + translator.ToAddress(col, row), DataType.ExcelAddress);
+            return this.CreateResult(worksheetSpec + translator.ToAddress(col, row), DataType.ExcelAddress);
         }
     }
 }

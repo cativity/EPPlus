@@ -66,12 +66,12 @@ namespace OfficeOpenXml.Export.HtmlExport
         /// </summary>
         public void ResetToDefault()
         {
-            Include = ePictureInclude.Exclude;
-            Position = ePicturePosition.Relative;
-            AddMarginLeft = false;
-            AddMarginTop = false;
-            KeepOriginalSize = false;
-            CssExclude.ResetToDefault();
+            this.Include = ePictureInclude.Exclude;
+            this.Position = ePicturePosition.Relative;
+            this.AddMarginLeft = false;
+            this.AddMarginTop = false;
+            this.KeepOriginalSize = false;
+            this.CssExclude.ResetToDefault();
         }
         /// <summary>
         /// Copy the values from another settings object.
@@ -79,12 +79,12 @@ namespace OfficeOpenXml.Export.HtmlExport
         /// <param name="copy">The object to copy.</param>
         public void Copy(HtmlPictureSettings copy)
         {
-            Include = copy.Include;
-            Position = copy.Position;
-            AddMarginLeft = copy.AddMarginLeft;
-            AddMarginTop = copy.AddMarginTop;
-            KeepOriginalSize = copy.KeepOriginalSize;
-            CssExclude.Copy(copy.CssExclude);
+            this.Include = copy.Include;
+            this.Position = copy.Position;
+            this.AddMarginLeft = copy.AddMarginLeft;
+            this.AddMarginTop = copy.AddMarginTop;
+            this.KeepOriginalSize = copy.KeepOriginalSize;
+            this.CssExclude.Copy(copy.CssExclude);
         }
     }
 }

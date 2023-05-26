@@ -29,19 +29,19 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Finance
         public override CompileResult Execute(IEnumerable<FunctionArgument> arguments, ParsingContext context)
         {
             ValidateArguments(arguments, 4);
-            double rate = ArgToDecimal(arguments, 0);
-            int per = ArgToInt(arguments, 1);
-            int nPer = ArgToInt(arguments, 2);
-            double presentValue = ArgToDecimal(arguments, 3);
+            double rate = this.ArgToDecimal(arguments, 0);
+            int per = this.ArgToInt(arguments, 1);
+            int nPer = this.ArgToInt(arguments, 2);
+            double presentValue = this.ArgToDecimal(arguments, 3);
             double fv = 0d;
             if (arguments.Count() >= 5)
             {
-                fv = ArgToDecimal(arguments, 4);
+                fv = this.ArgToDecimal(arguments, 4);
             }
             PmtDue type = PmtDue.EndOfPeriod;
             if (arguments.Count() >= 6)
             {
-                type = (PmtDue)ArgToInt(arguments, 5);
+                type = (PmtDue)this.ArgToInt(arguments, 5);
             }
             FinanceCalcResult<double>? result = PpmtImpl.Ppmt(rate, per, nPer, presentValue, fv, type);
             if (result.HasError)
@@ -49,7 +49,7 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Finance
                 return this.CreateResult(result.ExcelErrorType);
             }
 
-            return CreateResult(result.Result, DataType.Decimal);
+            return this.CreateResult(result.Result, DataType.Decimal);
         }
 
         private static double GetInterest(double rate, double remainingAmount)

@@ -28,12 +28,12 @@ namespace OfficeOpenXml.Export.ToCollection
         private ToCollectionConversionFailureStrategy _failureStrategy;
         internal ToCollectionRow(List<string> headers, ExcelWorkbook workbook, ToCollectionConversionFailureStrategy failureStrategy)
         {
-            _workbook = workbook;
-            _failureStrategy = failureStrategy;
-            Headers = headers;
+            this._workbook = workbook;
+            this._failureStrategy = failureStrategy;
+            this.Headers = headers;
             for(int i = 0; i < headers.Count; i++)
             {
-                _headers.Add(headers[i], i);
+                this._headers.Add(headers[i], i);
             }
         }
 
@@ -55,11 +55,11 @@ namespace OfficeOpenXml.Export.ToCollection
         {
             get
             {
-                if (index < 0 || index >= _cellValues.Count)
+                if (index < 0 || index >= this._cellValues.Count)
                 {
                     throw (new ArgumentOutOfRangeException("index"));
                 }
-                return _cellValues[index];
+                return this._cellValues[index];
             }
         }
         /// <summary>
@@ -71,15 +71,15 @@ namespace OfficeOpenXml.Export.ToCollection
         {
             get
             {
-                if (_headers.Count == 0)
+                if (this._headers.Count == 0)
                 {
                     throw (new ArgumentException($"This range has no headers. Please specify headers or use GetValue<T>(int)."));
                 }
-                if (_headers.ContainsKey(columnName) == false)
+                if (this._headers.ContainsKey(columnName) == false)
                 {
                     throw (new ArgumentException($"Column name {columnName} does not exist in the range."));
                 }
-                return this[_headers[columnName]];
+                return this[this._headers[columnName]];
             }
         }
         /// <summary>
@@ -91,19 +91,19 @@ namespace OfficeOpenXml.Export.ToCollection
         /// <exception cref="EPPlusDataTypeConvertionException">Returned if the data type conversion fails and <see cref="ToCollectionOptions.ConversionFailureStrategy"/> is set to Exception</exception>
         public T GetValue<T>(int index)
         {
-            if(index < 0 || index >= _cellValues.Count)
+            if(index < 0 || index >= this._cellValues.Count)
             {
                 throw(new ArgumentOutOfRangeException("index"));
             }
             try
             {
-                return ConvertUtil.GetTypedCellValue<T>(_cellValues[index]._value);
+                return ConvertUtil.GetTypedCellValue<T>(this._cellValues[index]._value);
             }
             catch (Exception ex)
             {
-                if(_failureStrategy==ToCollectionConversionFailureStrategy.Exception)
+                if(this._failureStrategy==ToCollectionConversionFailureStrategy.Exception)
                 {
-                    throw new EPPlusDataTypeConvertionException($"Failure to convert value {_cellValues[index]._value} for index {index}", ex);
+                    throw new EPPlusDataTypeConvertionException($"Failure to convert value {this._cellValues[index]._value} for index {index}", ex);
                 }
                 return default;
             }
@@ -117,15 +117,15 @@ namespace OfficeOpenXml.Export.ToCollection
         /// <exception cref="EPPlusDataTypeConvertionException">Returned if the data type conversion fails and <see cref="ToCollectionOptions.ConversionFailureStrategy"/> is set to Exception</exception>
         public T GetValue<T>(string columnName)
         {
-            if(_headers.Count==0)
+            if(this._headers.Count==0)
             {
                 throw (new ArgumentException($"This range has no headers. Please specify headers or use GetValue<T>(int)."));
             }
-            if (_headers.ContainsKey(columnName)==false)
+            if (this._headers.ContainsKey(columnName)==false)
             {
                 throw (new ArgumentException($"Column name {columnName} does not exist in the range."));
             }
-            return GetValue<T>(_headers[columnName]);
+            return this.GetValue<T>(this._headers[columnName]);
         }
         /// <summary>
         /// Returns formatted value of the cell at the column index within the row of the range.
@@ -134,12 +134,12 @@ namespace OfficeOpenXml.Export.ToCollection
         /// <returns>The formatted value</returns>
         public string GetText(int index)
         {
-            if (index < 0 || index >= _cellValues.Count)
+            if (index < 0 || index >= this._cellValues.Count)
             {
                 throw (new ArgumentOutOfRangeException("index"));
             }
 
-            return ValueToTextHandler.GetFormattedText(_cellValues[index]._value, _workbook, _cellValues[index]._styleId, false);
+            return ValueToTextHandler.GetFormattedText(this._cellValues[index]._value, this._workbook, this._cellValues[index]._styleId, false);
         }
         /// <summary>
         /// Returns formatted value of the cell at the column index within the row of the range.
@@ -148,16 +148,16 @@ namespace OfficeOpenXml.Export.ToCollection
         /// <returns>The formatted value</returns>
         public string GetText(string columnName)
         {
-            if (_headers.Count == 0)
+            if (this._headers.Count == 0)
             {
                 throw (new ArgumentException($"This range has no headers. Please specify headers or use GetValue<T>(int)."));
             }
-            if (_headers.ContainsKey(columnName) == false)
+            if (this._headers.ContainsKey(columnName) == false)
             {
                 throw (new ArgumentException($"Column name {columnName} does not exist in the range."));
             }
             
-            return GetText(_headers[columnName]);
+            return this.GetText(this._headers[columnName]);
         }
 
         List<MappedProperty> _members;
@@ -170,24 +170,24 @@ namespace OfficeOpenXml.Export.ToCollection
         public void Automap<T>(T item)
             where T : class
         {
-            if(_members==null)
+            if(this._members==null)
             {
-                _members = ToCollectionAutomap.GetAutomapList<T>(Headers);
+                this._members = ToCollectionAutomap.GetAutomapList<T>(this.Headers);
             }
 
-            foreach (MappedProperty? m in _members)
+            foreach (MappedProperty? m in this._members)
             {
-                if (m.Index < _cellValues.Count)
+                if (m.Index < this._cellValues.Count)
                 {
                     try
                     {
-                        m.PropertyInfo.SetValue(item, _cellValues[m.Index]._value, null);
+                        m.PropertyInfo.SetValue(item, this._cellValues[m.Index]._value, null);
                     }
                     catch(Exception ex)
                     {
-                        if (_failureStrategy == ToCollectionConversionFailureStrategy.Exception)
+                        if (this._failureStrategy == ToCollectionConversionFailureStrategy.Exception)
                         {
-                            EPPlusDataTypeConvertionException? dtcExeption = new EPPlusDataTypeConvertionException($"Can not convert item {_cellValues[m.Index]._value} to datatype {m.PropertyInfo.DeclaringType}", ex);
+                            EPPlusDataTypeConvertionException? dtcExeption = new EPPlusDataTypeConvertionException($"Can not convert item {this._cellValues[m.Index]._value} to datatype {m.PropertyInfo.DeclaringType}", ex);
                             throw dtcExeption;
                         }
                         else

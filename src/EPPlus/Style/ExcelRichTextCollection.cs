@@ -31,20 +31,21 @@ namespace OfficeOpenXml.Style
         internal ExcelRichTextCollection(XmlNamespaceManager ns, XmlNode topNode, ExcelWorksheet ws) :
             base(ns, topNode)
         {
-            XmlNodeList? nl = topNode.SelectNodes("d:r", NameSpaceManager);
+            XmlNodeList? nl = topNode.SelectNodes("d:r", this.NameSpaceManager);
             if (nl != null)
             {
                 foreach (XmlNode n in nl)
                 {
-                    _list.Add(new ExcelRichText(ns, n,this));
+                    this._list.Add(new ExcelRichText(ns, n,this));
                 }
             }
-            _ws = ws;
+
+            this._ws = ws;
         }
         internal ExcelRichTextCollection(XmlNamespaceManager ns, XmlNode topNode, ExcelRangeBase cells) :
             this(ns, topNode, cells._worksheet)
         {
-            _cells = cells;
+            this._cells = cells;
 
         }        
         /// <summary>
@@ -56,8 +57,8 @@ namespace OfficeOpenXml.Style
         {
             get
             {
-                ExcelRichText? item=_list[Index];
-                if(_cells!=null)
+                ExcelRichText? item= this._list[Index];
+                if(this._cells!=null)
                 {
                     item.SetCallback(this.UpdateCells);
                 }
@@ -72,7 +73,7 @@ namespace OfficeOpenXml.Style
         {
             get
             {
-                return _list.Count;
+                return this._list.Count;
             }
         }
         /// <summary>
@@ -88,7 +89,7 @@ namespace OfficeOpenXml.Style
                 Text += "\n";
             }
 
-            return Insert(_list.Count, Text);
+            return this.Insert(this._list.Count, Text);
         }
 
         /// <summary>
@@ -104,29 +105,29 @@ namespace OfficeOpenXml.Style
                 throw new ArgumentException("Text can't be null","text");
             }
 
-            ConvertRichtext();
+            this.ConvertRichtext();
             XmlDocument doc;
-            if (TopNode is XmlDocument)
+            if (this.TopNode is XmlDocument)
             {
-                doc = TopNode as XmlDocument;
+                doc = this.TopNode as XmlDocument;
             }
             else
             {
-                doc = TopNode.OwnerDocument;
+                doc = this.TopNode.OwnerDocument;
             }
             XmlElement? node = doc.CreateElement("d", "r", ExcelPackage.schemaMain);
-            if (index < _list.Count)
+            if (index < this._list.Count)
             {
-                TopNode.InsertBefore(node, TopNode.ChildNodes[index]);
+                this.TopNode.InsertBefore(node, this.TopNode.ChildNodes[index]);
             }
             else
             {
-                TopNode.AppendChild(node);
+                this.TopNode.AppendChild(node);
             }
-            ExcelRichText? rt = new ExcelRichText(NameSpaceManager, node, this);
-            if (_list.Count > 0)
+            ExcelRichText? rt = new ExcelRichText(this.NameSpaceManager, node, this);
+            if (this._list.Count > 0)
             {
-                ExcelRichText prevItem = _list[index < _list.Count ? index : _list.Count - 1];
+                ExcelRichText prevItem = this._list[index < this._list.Count ? index : this._list.Count - 1];
                 rt.FontName = prevItem.FontName;
                 rt.Size = prevItem.Size;
                 if (prevItem.Color.IsEmpty)
@@ -142,45 +143,46 @@ namespace OfficeOpenXml.Style
                 rt.Italic = prevItem.Italic;
                 rt.UnderLine = prevItem.UnderLine;
             }
-            else if (_cells == null)
+            else if (this._cells == null)
             {                
                 rt.FontName = "Calibri";
                 rt.Size = 11;
             }
             else
             {
-                ExcelStyle? style = _cells.Offset(0, 0).Style;
+                ExcelStyle? style = this._cells.Offset(0, 0).Style;
                 rt.FontName = style.Font.Name;
                 rt.Size = style.Font.Size;
                 rt.Bold = style.Font.Bold;
                 rt.Italic = style.Font.Italic;
-                _cells.SetIsRichTextFlag(true);
+                this._cells.SetIsRichTextFlag(true);
             }
             rt.Text = text;
             rt.PreserveSpace = true;
-            if (_cells != null)
+            if (this._cells != null)
             {
-                rt.SetCallback(UpdateCells);
-                UpdateCells();
+                rt.SetCallback(this.UpdateCells);
+                this.UpdateCells();
             }
-            _list.Insert(index, rt);
+
+            this._list.Insert(index, rt);
             return rt;
         }
 
         internal void ConvertRichtext()
         {
-            if (_cells == null)
+            if (this._cells == null)
             {
                 return;
             }
 
-            bool isRt = _cells.Worksheet._flags.GetFlagValue(_cells._fromRow, _cells._fromCol, CellFlags.RichText);
-            if (Count == 1 && isRt == false)
+            bool isRt = this._cells.Worksheet._flags.GetFlagValue(this._cells._fromRow, this._cells._fromCol, CellFlags.RichText);
+            if (this.Count == 1 && isRt == false)
             {
-                _cells.Worksheet._flags.SetFlagValue(_cells._fromRow, _cells._fromCol, true, CellFlags.RichText);
-                int s = _cells.Worksheet.GetStyleInner(_cells._fromRow, _cells._fromCol);
+                this._cells.Worksheet._flags.SetFlagValue(this._cells._fromRow, this._cells._fromCol, true, CellFlags.RichText);
+                int s = this._cells.Worksheet.GetStyleInner(this._cells._fromRow, this._cells._fromCol);
                 //var fnt = cell.Style.Font;
-                ExcelFont? fnt = _cells.Worksheet.Workbook.Styles.GetStyleObject(s, _cells.Worksheet.PositionId, ExcelAddressBase.GetAddress(_cells._fromRow, _cells._fromCol)).Font;
+                ExcelFont? fnt = this._cells.Worksheet.Workbook.Styles.GetStyleObject(s, this._cells.Worksheet.PositionId, ExcelCellBase.GetAddress(this._cells._fromRow, this._cells._fromCol)).Font;
                 this[0].PreserveSpace = true;
                 this[0].Bold = fnt.Bold;
                 this[0].FontName = fnt.Name;
@@ -197,19 +199,19 @@ namespace OfficeOpenXml.Style
         }
         internal void UpdateCells()
         {
-            _cells.SetValueRichText(TopNode.InnerXml);
+            this._cells.SetValueRichText(this.TopNode.InnerXml);
         }
         /// <summary>
         /// Clear the collection
         /// </summary>
         public void Clear()
         {
-            _list.Clear();
-            TopNode.RemoveAll();
-            if (_cells != null)
+            this._list.Clear();
+            this.TopNode.RemoveAll();
+            if (this._cells != null)
             {
-                _cells.DeleteMe(_cells, false, true, true, true, false, true, false, false, false);
-                _cells.SetIsRichTextFlag(false);
+                this._cells.DeleteMe(this._cells, false, true, true, true, false, true, false, false, false);
+                this._cells.SetIsRichTextFlag(false);
             }
         }
         /// <summary>
@@ -218,9 +220,9 @@ namespace OfficeOpenXml.Style
         /// <param name="Index"></param>
         public void RemoveAt(int Index)
         {
-            TopNode.RemoveChild(_list[Index].TopNode);
-            _list.RemoveAt(Index);
-            if (_cells != null && _list.Count==0)
+            this.TopNode.RemoveChild(this._list[Index].TopNode);
+            this._list.RemoveAt(Index);
+            if (this._cells != null && this._list.Count==0)
             {
                 this._cells.SetIsRichTextFlag(false);
             }
@@ -231,10 +233,10 @@ namespace OfficeOpenXml.Style
         /// <param name="Item"></param>
         public void Remove(ExcelRichText Item)
         {
-            TopNode.RemoveChild(Item.TopNode);
-            _list.Remove(Item);
-            UpdateCells();
-            if (_cells != null && _list.Count == 0)
+            this.TopNode.RemoveChild(Item.TopNode);
+            this._list.Remove(Item);
+            this.UpdateCells();
+            if (this._cells != null && this._list.Count == 0)
             {
                 this._cells.SetIsRichTextFlag(false);
             }
@@ -247,7 +249,7 @@ namespace OfficeOpenXml.Style
             get
             {
                 StringBuilder sb=new StringBuilder();
-                foreach (ExcelRichText? item in _list)
+                foreach (ExcelRichText? item in this._list)
                 {
                     sb.Append(item.Text);
                 }
@@ -257,18 +259,18 @@ namespace OfficeOpenXml.Style
             {
                 if (string.IsNullOrEmpty(value))
                 {
-                    Clear();
+                    this.Clear();
                 }
-                else if (Count == 0)
+                else if (this.Count == 0)
                 {
-                    Add(value);
+                    this.Add(value);
                 }
                 else
                 {
                     this[0].Text = value;
-                    for (int ix = 1; ix < Count; ix++)
+                    for (int ix = 1; ix < this.Count; ix++)
                     {
-                        RemoveAt(ix);
+                        this.RemoveAt(ix);
                     }
                 }
             }
@@ -281,7 +283,7 @@ namespace OfficeOpenXml.Style
             get
             {
                 StringBuilder? sb=new StringBuilder();
-                foreach(ExcelRichText? item in _list)
+                foreach(ExcelRichText? item in this._list)
                 {
                     item.WriteHtmlText(sb);
                 }
@@ -292,7 +294,7 @@ namespace OfficeOpenXml.Style
 
         IEnumerator<ExcelRichText> IEnumerable<ExcelRichText>.GetEnumerator()
         {
-            return _list.Select(x => { x.SetCallback(UpdateCells); return x; }).GetEnumerator();
+            return this._list.Select(x => { x.SetCallback(this.UpdateCells); return x; }).GetEnumerator();
         }
 
         #endregion
@@ -301,7 +303,7 @@ namespace OfficeOpenXml.Style
 
         System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator()
         {
-            return _list.Select(x => { x.SetCallback(UpdateCells); return x; }).GetEnumerator();
+            return this._list.Select(x => { x.SetCallback(this.UpdateCells); return x; }).GetEnumerator();
         }
 
         #endregion

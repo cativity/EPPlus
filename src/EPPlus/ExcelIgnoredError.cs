@@ -24,7 +24,7 @@ namespace OfficeOpenXml
     {
         internal ExcelIgnoredError(XmlNamespaceManager nsm, XmlNode topNode, ExcelAddressBase address) : base(nsm, topNode)
         {
-            SetXmlNodeString("@sqref", address.AddressSpaceSeparated);
+            this.SetXmlNodeString("@sqref", address.AddressSpaceSeparated);
         }
         /// <summary>
         /// Ignore errors when numbers are formatted as text or are preceded by an apostrophe
@@ -33,11 +33,11 @@ namespace OfficeOpenXml
         {
             get
             {
-                return GetXmlNodeBool("@numberStoredAsText");
+                return this.GetXmlNodeBool("@numberStoredAsText");
             }
             set
             {
-                SetXmlNodeBool("@numberStoredAsText", value);
+                this.SetXmlNodeBool("@numberStoredAsText", value);
             }
         }
         /// <summary>
@@ -47,11 +47,11 @@ namespace OfficeOpenXml
         {
             get
             {
-                return GetXmlNodeBool("@calculatedColumn");
+                return this.GetXmlNodeBool("@calculatedColumn");
             }
             set
             {
-                SetXmlNodeBool("@calculatedColumn", value);
+                this.SetXmlNodeBool("@calculatedColumn", value);
             }
         }
 
@@ -63,11 +63,11 @@ namespace OfficeOpenXml
         {
             get
             {
-                return GetXmlNodeBool("@emptyCellReference");
+                return this.GetXmlNodeBool("@emptyCellReference");
             }
             set
             {
-                SetXmlNodeBool("@emptyCellReference", value);
+                this.SetXmlNodeBool("@emptyCellReference", value);
             }
         }
 
@@ -78,11 +78,11 @@ namespace OfficeOpenXml
         {
             get
             {
-                return GetXmlNodeBool("@evalError");
+                return this.GetXmlNodeBool("@evalError");
             }
             set
             {
-                SetXmlNodeBool("@evalError", value);
+                this.SetXmlNodeBool("@evalError", value);
             }
         }
         /// <summary>
@@ -92,11 +92,11 @@ namespace OfficeOpenXml
         {
             get
             {
-                return GetXmlNodeBool("@formula");
+                return this.GetXmlNodeBool("@formula");
             }
             set
             {
-                SetXmlNodeBool("@formula", value);
+                this.SetXmlNodeBool("@formula", value);
             }
         }
         /// <summary>
@@ -106,11 +106,11 @@ namespace OfficeOpenXml
         {
             get
             {
-                return GetXmlNodeBool("@formulaRange");
+                return this.GetXmlNodeBool("@formulaRange");
             }
             set
             {
-                SetXmlNodeBool("@formulaRange", value);
+                this.SetXmlNodeBool("@formulaRange", value);
             }
         }
         /// <summary>
@@ -120,11 +120,11 @@ namespace OfficeOpenXml
         {
             get
             {
-                return GetXmlNodeBool("@listDataValidation");
+                return this.GetXmlNodeBool("@listDataValidation");
             }
             set
             {
-                SetXmlNodeBool("@listDataValidation", value);
+                this.SetXmlNodeBool("@listDataValidation", value);
             }
         }
         /// <summary>
@@ -134,7 +134,7 @@ namespace OfficeOpenXml
         {
             get
             {
-                return new ExcelAddressBase(GetXmlNodeString("@sqref"));
+                return new ExcelAddressBase(this.GetXmlNodeString("@sqref"));
             }
         }
         /// <summary>
@@ -144,11 +144,11 @@ namespace OfficeOpenXml
         {
             get
             {
-                return GetXmlNodeBool("@twoDigitTextYear");
+                return this.GetXmlNodeBool("@twoDigitTextYear");
             }
             set
             {
-                SetXmlNodeBool("@twoDigitTextYear", value);
+                this.SetXmlNodeBool("@twoDigitTextYear", value);
             }
         }
         /// <summary>
@@ -158,11 +158,11 @@ namespace OfficeOpenXml
         {
             get
             {
-                return GetXmlNodeBool("@unlockedFormula");
+                return this.GetXmlNodeBool("@unlockedFormula");
             }
             set
             {
-                SetXmlNodeBool("@unlockedFormula", value);
+                this.SetXmlNodeBool("@unlockedFormula", value);
             }
         }
     }

@@ -53,8 +53,8 @@ namespace OfficeOpenXml.ConditionalFormatting
     {
         if (itemElementNode==null) //Set default values and create attributes if needed
         {
-            AboveAverage = true;
-            EqualAverage = false;
+            this.AboveAverage = true;
+            this.EqualAverage = false;
         }
     }
 

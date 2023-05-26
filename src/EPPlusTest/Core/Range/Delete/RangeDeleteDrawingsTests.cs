@@ -27,12 +27,12 @@ namespace EPPlusTest.Core.Range.Delete
         {
             //Setup
             ExcelWorksheet? ws = _pck.Workbook.Worksheets.Add("DrawingsDeleteEntireRow");
-            ExcelShape? shape1 = ws.Drawings.AddShape("Shape1", OfficeOpenXml.Drawing.eShapeStyle.Rect);
+            ExcelShape? shape1 = ws.Drawings.AddShape("Shape1", eShapeStyle.Rect);
 
-            ExcelShape? shape2 = ws.Drawings.AddShape("DeletedShape", OfficeOpenXml.Drawing.eShapeStyle.Rect);
+            ExcelShape? shape2 = ws.Drawings.AddShape("DeletedShape", eShapeStyle.Rect);
             shape2.SetPosition(2, 0, 11, 0);
 
-            ExcelShape? shape3 = ws.Drawings.AddShape("Shape3", OfficeOpenXml.Drawing.eShapeStyle.Rect);
+            ExcelShape? shape3 = ws.Drawings.AddShape("Shape3", eShapeStyle.Rect);
             shape3.SetPosition(5, 0, 22, 0);
 
             //Act
@@ -52,13 +52,13 @@ namespace EPPlusTest.Core.Range.Delete
         {
             //Setup
             ExcelWorksheet? ws = _pck.Workbook.Worksheets.Add("DrawingsDeletePartialRow");
-            ExcelShape? shape1 = ws.Drawings.AddShape("Shape1", OfficeOpenXml.Drawing.eShapeStyle.Rect);
+            ExcelShape? shape1 = ws.Drawings.AddShape("Shape1", eShapeStyle.Rect);
             shape1.SetPosition(0, 5, 0, 0);
 
-            ExcelShape? shape2 = ws.Drawings.AddShape("PartialShape", OfficeOpenXml.Drawing.eShapeStyle.Rect);
+            ExcelShape? shape2 = ws.Drawings.AddShape("PartialShape", eShapeStyle.Rect);
             shape2.SetPosition(2, 5, 11, 0);
 
-            ExcelShape? shape3 = ws.Drawings.AddShape("Shape3", OfficeOpenXml.Drawing.eShapeStyle.Rect);
+            ExcelShape? shape3 = ws.Drawings.AddShape("Shape3", eShapeStyle.Rect);
             shape3.SetPosition(5, 5, 22, 0);
 
             //Act
@@ -95,9 +95,9 @@ namespace EPPlusTest.Core.Range.Delete
             ExcelPicture? pic = ws.Drawings.AddPicture("Picture1_OneCell", Properties.Resources.Test1);
             pic.SetPosition(11, 0, 1, 0);
 
-            ExcelLineChart? chart = ws.Drawings.AddLineChart("Chart1_TwoCellAbsolute", OfficeOpenXml.Drawing.Chart.eLineChartType.Line);
+            ExcelLineChart? chart = ws.Drawings.AddLineChart("Chart1_TwoCellAbsolute", eLineChartType.Line);
             chart.SetPosition(22, 0, 1, 0);
-            chart.EditAs = OfficeOpenXml.Drawing.eEditAs.Absolute;
+            chart.EditAs = eEditAs.Absolute;
 
             //Act
             ws.DeleteColumn(1, 1);
@@ -116,12 +116,12 @@ namespace EPPlusTest.Core.Range.Delete
         {
             //Setup
             ExcelWorksheet? ws = _pck.Workbook.Worksheets.Add("DrawingsDeleteEntireColumn");
-            ExcelShape? shape1 = ws.Drawings.AddShape("Shape1", OfficeOpenXml.Drawing.eShapeStyle.Rect);
+            ExcelShape? shape1 = ws.Drawings.AddShape("Shape1", eShapeStyle.Rect);
 
-            ExcelShape? shape2 = ws.Drawings.AddShape("DeletedShape", OfficeOpenXml.Drawing.eShapeStyle.Rect);
+            ExcelShape? shape2 = ws.Drawings.AddShape("DeletedShape", eShapeStyle.Rect);
             shape2.SetPosition(11, 0, 2, 0);
 
-            ExcelShape? shape3 = ws.Drawings.AddShape("Shape3", OfficeOpenXml.Drawing.eShapeStyle.Rect);
+            ExcelShape? shape3 = ws.Drawings.AddShape("Shape3", eShapeStyle.Rect);
             shape3.SetPosition(22, 0, 5, 0);
 
             IExcelDataValidationInt? dv = ws.DataValidations.AddIntegerValidation("C1:D5");
@@ -184,13 +184,13 @@ namespace EPPlusTest.Core.Range.Delete
         {
             //Setup
             ExcelWorksheet? ws = _pck.Workbook.Worksheets.Add("DrawingsInsertRangeDownFull");
-            ExcelShape? shape = ws.Drawings.AddShape("Shape1_TwoCell", OfficeOpenXml.Drawing.eShapeStyle.Rect);
+            ExcelShape? shape = ws.Drawings.AddShape("Shape1_TwoCell", eShapeStyle.Rect);
             shape.SetPosition(2, 0, 0, 0);
 
             ExcelPicture? pic = ws.Drawings.AddPicture("Picture1_OneCell", Properties.Resources.Test1);
             pic.SetPosition(2, 0, 11, 0);
 
-            ExcelLineChart? chart = ws.Drawings.AddLineChart("Chart1_TwoCellAbsolute", OfficeOpenXml.Drawing.Chart.eLineChartType.Line);
+            ExcelLineChart? chart = ws.Drawings.AddLineChart("Chart1_TwoCellAbsolute", eLineChartType.Line);
             chart.SetPosition(2, 0, 22, 0);
             chart.EditAs = eEditAs.Absolute;
 
@@ -211,13 +211,13 @@ namespace EPPlusTest.Core.Range.Delete
         {
             //Setup
             ExcelWorksheet? ws = _pck.Workbook.Worksheets.Add("DrawingsDeleteRangeLeftFull");
-            ExcelShape? shape = ws.Drawings.AddShape("Shape1_TwoCell", OfficeOpenXml.Drawing.eShapeStyle.Rect);
+            ExcelShape? shape = ws.Drawings.AddShape("Shape1_TwoCell", eShapeStyle.Rect);
             shape.SetPosition(2, 0, 1, 0);
 
             ExcelPicture? pic = ws.Drawings.AddPicture("Picture1_OneCell", Properties.Resources.Test1);
             pic.SetPosition(2, 0, 11, 0);
 
-            ExcelLineChart? chart = ws.Drawings.AddLineChart("Chart1_TwoCellAbsolute", OfficeOpenXml.Drawing.Chart.eLineChartType.Line);
+            ExcelLineChart? chart = ws.Drawings.AddLineChart("Chart1_TwoCellAbsolute", eLineChartType.Line);
             chart.SetPosition(2, 0, 22, 0);
             chart.EditAs = eEditAs.Absolute;
 
@@ -239,14 +239,14 @@ namespace EPPlusTest.Core.Range.Delete
         {
             //Setup
             ExcelWorksheet? ws = _pck.Workbook.Worksheets.Add("DrawingsDeleteRangeUpPart");
-            ExcelShape? shape = ws.Drawings.AddShape("Shape1_TwoCell", OfficeOpenXml.Drawing.eShapeStyle.Rect);
+            ExcelShape? shape = ws.Drawings.AddShape("Shape1_TwoCell", eShapeStyle.Rect);
 
             ExcelPicture? pic = ws.Drawings.AddPicture("Picture1_OneCell", Properties.Resources.Test1);
             pic.SetPosition(0, 0, 11, 0);
 
-            ExcelLineChart? chart = ws.Drawings.AddLineChart("Chart1_TwoCellAbsolute", OfficeOpenXml.Drawing.Chart.eLineChartType.Line);
+            ExcelLineChart? chart = ws.Drawings.AddLineChart("Chart1_TwoCellAbsolute", eLineChartType.Line);
             chart.SetPosition(0, 0, 22, 0);
-            chart.EditAs = OfficeOpenXml.Drawing.eEditAs.Absolute;
+            chart.EditAs = eEditAs.Absolute;
 
             //Act
             ws.Cells["A1:I1"].Delete(eShiftTypeDelete.Up);
@@ -267,7 +267,7 @@ namespace EPPlusTest.Core.Range.Delete
         {
             //Setup
             ExcelWorksheet? ws = _pck.Workbook.Worksheets.Add("DrawingsDeleteRangeUpPartOff");
-            ExcelShape? shape = ws.Drawings.AddShape("Shape1_TwoCell", OfficeOpenXml.Drawing.eShapeStyle.Rect);
+            ExcelShape? shape = ws.Drawings.AddShape("Shape1_TwoCell", eShapeStyle.Rect);
 
             shape.SetPosition(5, 5, 11, 5);
 
@@ -286,7 +286,7 @@ namespace EPPlusTest.Core.Range.Delete
         {
             //Setup
             ExcelWorksheet? ws = _pck.Workbook.Worksheets.Add("DrawingsDeleteRangeLeftPartOff");
-            ExcelShape? shape = ws.Drawings.AddShape("Shape1_TwoCell", OfficeOpenXml.Drawing.eShapeStyle.Rect);
+            ExcelShape? shape = ws.Drawings.AddShape("Shape1_TwoCell", eShapeStyle.Rect);
 
             shape.SetPosition(5, 5, 5, 5);
 
@@ -305,14 +305,14 @@ namespace EPPlusTest.Core.Range.Delete
         {
             //Setup
             ExcelWorksheet? ws = _pck.Workbook.Worksheets.Add("DrawingsDeleteRangeLeftPart");
-            ExcelShape? shape = ws.Drawings.AddShape("Shape1_TwoCell", OfficeOpenXml.Drawing.eShapeStyle.Rect);
+            ExcelShape? shape = ws.Drawings.AddShape("Shape1_TwoCell", eShapeStyle.Rect);
 
             ExcelPicture? pic = ws.Drawings.AddPicture("Picture1_OneCell", Properties.Resources.Test1);
             pic.SetPosition(0, 0, 11, 0);
 
-            ExcelLineChart? chart = ws.Drawings.AddLineChart("Chart1_TwoCellAbsolute", OfficeOpenXml.Drawing.Chart.eLineChartType.Line);
+            ExcelLineChart? chart = ws.Drawings.AddLineChart("Chart1_TwoCellAbsolute", eLineChartType.Line);
             chart.SetPosition(0, 0, 22, 0);
-            chart.EditAs = OfficeOpenXml.Drawing.eEditAs.Absolute;
+            chart.EditAs = eEditAs.Absolute;
 
             //Act
             ws.Cells["A1:A2"].Delete(eShiftTypeDelete.Left);

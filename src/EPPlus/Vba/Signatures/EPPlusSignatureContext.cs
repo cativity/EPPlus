@@ -30,12 +30,12 @@ namespace OfficeOpenXml.VBA.Signatures
         }
         public EPPlusSignatureContext(ExcelVbaSignatureType signatureType)
         {
-            _signatureType = signatureType;
+            this._signatureType = signatureType;
         }
 
         private readonly ExcelVbaSignatureType _signatureType;
 
-        public ExcelVbaSignatureType SignatureType => _signatureType;
+        public ExcelVbaSignatureType SignatureType => this._signatureType;
 
         public string AlgorithmIdentifierOId
         {
@@ -46,7 +46,7 @@ namespace OfficeOpenXml.VBA.Signatures
         {
             get
             {
-                switch (AlgorithmIdentifierOId)
+                switch (this.AlgorithmIdentifierOId)
                 {
                     case HashAlgorithmOids.MD5:
                         return VbaSignatureHashAlgorithm.MD5;
@@ -65,19 +65,19 @@ namespace OfficeOpenXml.VBA.Signatures
                 switch (value)
                 {
                     case VbaSignatureHashAlgorithm.MD5:
-                        AlgorithmIdentifierOId = HashAlgorithmOids.MD5;
+                        this.AlgorithmIdentifierOId = HashAlgorithmOids.MD5;
                         break;
                     case VbaSignatureHashAlgorithm.SHA256:
-                        AlgorithmIdentifierOId = HashAlgorithmOids.SHA256;
+                        this.AlgorithmIdentifierOId = HashAlgorithmOids.SHA256;
                         break;
                     case VbaSignatureHashAlgorithm.SHA384:
-                        AlgorithmIdentifierOId = HashAlgorithmOids.SHA384;
+                        this.AlgorithmIdentifierOId = HashAlgorithmOids.SHA384;
                         break;
                     case VbaSignatureHashAlgorithm.SHA512:
-                        AlgorithmIdentifierOId = HashAlgorithmOids.SHA512;
+                        this.AlgorithmIdentifierOId = HashAlgorithmOids.SHA512;
                         break;
                     default:
-                        AlgorithmIdentifierOId = HashAlgorithmOids.SHA1;
+                        this.AlgorithmIdentifierOId = HashAlgorithmOids.SHA1;
                         break;
                 }
             }
@@ -96,12 +96,12 @@ namespace OfficeOpenXml.VBA.Signatures
 
         public HashAlgorithm GetHashAlgorithm()
         {
-            if (string.IsNullOrEmpty(AlgorithmIdentifierOId))
+            if (string.IsNullOrEmpty(this.AlgorithmIdentifierOId))
             {
                 return this.GetHashAlgorithmDefault();
             }
 
-            switch(AlgorithmIdentifierOId)
+            switch(this.AlgorithmIdentifierOId)
             {
                 case HashAlgorithmOids.MD5:
                     return MD5.Create();
@@ -120,7 +120,7 @@ namespace OfficeOpenXml.VBA.Signatures
 
         private HashAlgorithm GetHashAlgorithmDefault()
         {
-            switch(_signatureType)
+            switch(this._signatureType)
             {                
                 case ExcelVbaSignatureType.Legacy:
                     return MD5.Create();
@@ -131,19 +131,19 @@ namespace OfficeOpenXml.VBA.Signatures
 
         public byte[] GetHashAlgorithmBytes()
         {
-            if (string.IsNullOrEmpty(AlgorithmIdentifierOId))
+            if (string.IsNullOrEmpty(this.AlgorithmIdentifierOId))
             {
-                switch (_signatureType)
+                switch (this._signatureType)
                 {
                     case ExcelVbaSignatureType.Legacy:
-                        AlgorithmIdentifierOId = HashAlgorithmOids.MD5;
+                        this.AlgorithmIdentifierOId = HashAlgorithmOids.MD5;
                         break;
                     default:
-                        AlgorithmIdentifierOId = HashAlgorithmOids.SHA1;
+                        this.AlgorithmIdentifierOId = HashAlgorithmOids.SHA1;
                         break;
                 }
             }
-            switch (AlgorithmIdentifierOId)
+            switch (this.AlgorithmIdentifierOId)
             {
                 case HashAlgorithmOids.MD5:
                     return new byte[] { 0x2A, 0x86, 0x48, 0x86, 0xF7, 0x0D, 0x02, 0x05 };
@@ -162,7 +162,7 @@ namespace OfficeOpenXml.VBA.Signatures
 
         public byte[] GetIndirectDataContentOidBytes()
         {
-            switch (_signatureType)
+            switch (this._signatureType)
             {
                 case ExcelVbaSignatureType.Legacy:
                     return new byte[] { 0x2B, 0x06, 0x01, 0x04, 0x01, 0x82, 0x37, 0x02, 0x01, 0x1D };

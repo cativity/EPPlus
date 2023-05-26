@@ -27,34 +27,34 @@ namespace OfficeOpenXml.Drawing.Chart
         internal ExcelOfPieChart(ExcelDrawings drawings, XmlNode node, eChartType type, bool isPivot, ExcelGroupShape parent = null) :
             base(drawings, node, type, isPivot, parent)
         {
-                SetTypeProperties();
+            this.SetTypeProperties();
         }
         internal ExcelOfPieChart(ExcelDrawings drawings, XmlNode node, eChartType? type, ExcelChart topChart, ExcelPivotTable PivotTableSource, XmlDocument chartXml, ExcelGroupShape parent = null) :
             base(drawings, node, type, topChart, PivotTableSource, chartXml, parent)
         {
-            SetTypeProperties();
+            this.SetTypeProperties();
         }
 
         internal ExcelOfPieChart(ExcelDrawings drawings, XmlNode node, Uri uriChart, Packaging.ZipPackagePart part, XmlDocument chartXml, XmlNode chartNode, ExcelGroupShape parent = null) :
            base(drawings, node, uriChart, part, chartXml, chartNode, parent)
         {
-            SetTypeProperties();
+            this.SetTypeProperties();
         }
         internal ExcelOfPieChart(ExcelChart topChart, XmlNode chartNode, ExcelGroupShape parent = null) :
            base(topChart, chartNode, parent)
         {
-            SetTypeProperties();
+            this.SetTypeProperties();
         }
 
         private void SetTypeProperties()
         {
-            if (ChartType == eChartType.BarOfPie)
+            if (this.ChartType == eChartType.BarOfPie)
             {
-                OfPieType = ePieType.Bar;
+                this.OfPieType = ePieType.Bar;
             }
             else
             {
-                OfPieType = ePieType.Pie;
+                this.OfPieType = ePieType.Pie;
             }
         }
 
@@ -66,7 +66,7 @@ namespace OfficeOpenXml.Drawing.Chart
         {
             get
             {
-                if (_chartXmlHelper.GetXmlNodeString(pieTypePath) == "bar")
+                if (this._chartXmlHelper.GetXmlNodeString(pieTypePath) == "bar")
                 {
                     return ePieType.Bar;
                 }
@@ -77,8 +77,8 @@ namespace OfficeOpenXml.Drawing.Chart
             }
             internal set
             {
-                _chartXmlHelper.CreateNode(pieTypePath, true);
-                _chartXmlHelper.SetXmlNodeString(pieTypePath, value == ePieType.Bar ? "bar" : "pie");
+                this._chartXmlHelper.CreateNode(pieTypePath, true);
+                this._chartXmlHelper.SetXmlNodeString(pieTypePath, value == ePieType.Bar ? "bar" : "pie");
             }
         }
 
@@ -90,18 +90,18 @@ namespace OfficeOpenXml.Drawing.Chart
         {
             get
             {
-                return _chartXmlHelper.GetXmlNodeInt(_gapWidthPath);
+                return this._chartXmlHelper.GetXmlNodeInt(this._gapWidthPath);
             }
             set
             {
-                _chartXmlHelper.SetXmlNodeString(_gapWidthPath, value.ToString(CultureInfo.InvariantCulture));
+                this._chartXmlHelper.SetXmlNodeString(this._gapWidthPath, value.ToString(CultureInfo.InvariantCulture));
             }
         }
         internal override eChartType GetChartType(string name)
         {
             if (name == "ofPieChart")
             {
-                if (OfPieType==ePieType.Bar)
+                if (this.OfPieType==ePieType.Bar)
                 {
                     return eChartType.BarOfPie;
                 }

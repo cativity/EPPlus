@@ -51,7 +51,7 @@ namespace EPPlusTest.Excel.Functions
         {
             If? func = new If();
             IEnumerable<FunctionArgument>? args = FunctionsHelper.CreateArgs(true, "A", "B");
-            CompileResult? result = func.Execute(args, _parsingContext);
+            CompileResult? result = func.Execute(args, this._parsingContext);
             Assert.AreEqual("A", result.Result);
         }
 
@@ -68,7 +68,7 @@ namespace EPPlusTest.Excel.Functions
         {
             Not? func = new Not();
             IEnumerable<FunctionArgument>? args = FunctionsHelper.CreateArgs(true);
-            CompileResult? result = func.Execute(args, _parsingContext);
+            CompileResult? result = func.Execute(args, this._parsingContext);
             Assert.IsFalse((bool)result.Result);
         }
 
@@ -77,7 +77,7 @@ namespace EPPlusTest.Excel.Functions
         {
             Not? func = new Not();
             IEnumerable<FunctionArgument>? args = FunctionsHelper.CreateArgs(0);
-            CompileResult? result = func.Execute(args, _parsingContext);
+            CompileResult? result = func.Execute(args, this._parsingContext);
             Assert.IsTrue((bool)result.Result);
         }
 
@@ -86,7 +86,7 @@ namespace EPPlusTest.Excel.Functions
         {
             Not? func = new Not();
             IEnumerable<FunctionArgument>? args = FunctionsHelper.CreateArgs(1);
-            CompileResult? result = func.Execute(args, _parsingContext);
+            CompileResult? result = func.Execute(args, this._parsingContext);
             Assert.IsFalse((bool)result.Result);
         }
 
@@ -139,7 +139,7 @@ namespace EPPlusTest.Excel.Functions
         {
             And? func = new And();
             IEnumerable<FunctionArgument>? args = FunctionsHelper.CreateArgs(true, true, true);
-            CompileResult? result = func.Execute(args, _parsingContext);
+            CompileResult? result = func.Execute(args, this._parsingContext);
             Assert.IsTrue((bool)result.Result);
         }
 
@@ -148,7 +148,7 @@ namespace EPPlusTest.Excel.Functions
         {
             And? func = new And();
             IEnumerable<FunctionArgument>? args = FunctionsHelper.CreateArgs(true, true, 1, true, 1);
-            CompileResult? result = func.Execute(args, _parsingContext);
+            CompileResult? result = func.Execute(args, this._parsingContext);
             Assert.IsTrue((bool)result.Result);
         }
 
@@ -157,7 +157,7 @@ namespace EPPlusTest.Excel.Functions
         {
             And? func = new And();
             IEnumerable<FunctionArgument>? args = FunctionsHelper.CreateArgs(true, false, true);
-            CompileResult? result = func.Execute(args, _parsingContext);
+            CompileResult? result = func.Execute(args, this._parsingContext);
             Assert.IsFalse((bool)result.Result);
         }
 
@@ -166,7 +166,7 @@ namespace EPPlusTest.Excel.Functions
         {
             And? func = new And();
             IEnumerable<FunctionArgument>? args = FunctionsHelper.CreateArgs(true, 0, true);
-            CompileResult? result = func.Execute(args, _parsingContext);
+            CompileResult? result = func.Execute(args, this._parsingContext);
             Assert.IsFalse((bool)result.Result);
         }
 
@@ -175,7 +175,7 @@ namespace EPPlusTest.Excel.Functions
         {
             Or? func = new Or();
             IEnumerable<FunctionArgument>? args = FunctionsHelper.CreateArgs(true, false, false);
-            CompileResult? result = func.Execute(args, _parsingContext);
+            CompileResult? result = func.Execute(args, this._parsingContext);
             Assert.IsTrue((bool)result.Result);
         }
 
@@ -184,7 +184,7 @@ namespace EPPlusTest.Excel.Functions
         {
             Or? func = new Or();
             IEnumerable<FunctionArgument>? args = FunctionsHelper.CreateArgs("true", "FALSE", false);
-            CompileResult? result = func.Execute(args, _parsingContext);
+            CompileResult? result = func.Execute(args, this._parsingContext);
             Assert.IsTrue((bool)result.Result);
         }
 

@@ -35,7 +35,7 @@ namespace OfficeOpenXml.Core.Worksheet.Core.Worksheet.Fonts.GenericMeasurements
                 return TextMeasurement.Empty;
             }
 
-            return MeasureTextInternal(text, fontKey, font.Style, font.Size);
+            return this.MeasureTextInternal(text, fontKey, font.Style, font.Size);
         }
 
         public bool ValidForEnvironment()

@@ -62,14 +62,14 @@ namespace OfficeOpenXml.Compatibility
         {
             get
             {
-                return excelPackage._worksheetAdd==1;
+                return this.excelPackage._worksheetAdd==1;
             }
             set
             {
-                excelPackage._worksheetAdd = value ? 1 : 0;
-                if(excelPackage._workbook!=null && excelPackage._workbook._worksheets!=null)
+                this.excelPackage._worksheetAdd = value ? 1 : 0;
+                if(this.excelPackage._workbook!=null && this.excelPackage._workbook._worksheets!=null)
                 {
-                    excelPackage.Workbook.Worksheets.ReindexWorksheetDictionary();
+                    this.excelPackage.Workbook.Worksheets.ReindexWorksheetDictionary();
 
                 }
             }

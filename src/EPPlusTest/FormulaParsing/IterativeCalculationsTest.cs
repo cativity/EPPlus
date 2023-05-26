@@ -18,15 +18,15 @@ namespace EPPlusTest.FormulaParsing
         [TestInitialize]
         public void Initialize()
         {
-            _package = new ExcelPackage();
-            _sheet = _package.Workbook.Worksheets.Add("test");
+            this._package = new ExcelPackage();
+            this._sheet = this._package.Workbook.Worksheets.Add("test");
         }
 
         [TestCleanup]
         public void Cleanup()
         {
-            _sheet = null;
-            _package.Dispose();
+            this._sheet = null;
+            this._package.Dispose();
         }
 
         //[TestMethod]

@@ -29,7 +29,7 @@ namespace OfficeOpenXml.FormulaParsing.ExpressionGraph.FunctionCompilers
         public override CompileResult Compile(IEnumerable<Expression> children)
         {
             List<FunctionArgument>? args = new List<FunctionArgument>();
-            Function.BeforeInvoke(Context);
+            this.Function.BeforeInvoke(this.Context);
             for(int x = 0; x < children.Count(); x++)
             {
                 Expression? child = children.ElementAt(x);
@@ -47,7 +47,7 @@ namespace OfficeOpenXml.FormulaParsing.ExpressionGraph.FunctionCompilers
                     BuildFunctionArguments(null, DataType.Unknown, args);
                 } 
             }
-            return Function.Execute(args, Context);
+            return this.Function.Execute(args, this.Context);
         }
     }
 }

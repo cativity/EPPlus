@@ -152,7 +152,7 @@ namespace EPPlusTest.Drawing.Grouping
         public void Group_ShapeAndChart()
         {
             _ws = _pck.Workbook.Worksheets.Add("ShapeAndChart");
-            ExcelLineChart? chart = _ws.Drawings.AddLineChart("LineChart 1", OfficeOpenXml.Drawing.Chart.eLineChartType.Line);
+            ExcelLineChart? chart = _ws.Drawings.AddLineChart("LineChart 1", eLineChartType.Line);
 
             ExcelShape? shape = _ws.Drawings.AddShape("Shape 1", eShapeStyle.Octagon);
             shape.SetPosition(200, 200);

@@ -284,7 +284,7 @@ namespace EPPlusTest.Export.HtmlExport
             tbl.Columns[0].TotalsRowLabel = "Total";
 
             IExcelHtmlTableExporter? exporter = tbl.CreateHtmlExporter();
-            exporter.Settings.Culture = new System.Globalization.CultureInfo("en-US");
+            exporter.Settings.Culture = new CultureInfo("en-US");
             string? html = exporter.GetSinglePage();
 
             File.WriteAllText($"{path}\\table-{tbl.StyleName}-CellStyle.html", html);

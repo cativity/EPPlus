@@ -29,7 +29,7 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Statistical
         public override CompileResult Execute(IEnumerable<FunctionArgument> arguments, ParsingContext context)
         {
             ValidateArguments(arguments, 1);
-            IEnumerable<ExcelDoubleCellValue>? numbers = ArgsToDoubleEnumerable(true, arguments, context, true);
+            IEnumerable<ExcelDoubleCellValue>? numbers = this.ArgsToDoubleEnumerable(true, arguments, context, true);
             double n = (double)numbers.Count();
             if (n < 4)
             {
@@ -39,7 +39,7 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Statistical
             double stdev = Stdev.StandardDeviation(numbers.Select(x => x.Value));
             if(stdev == 0d)
             {
-                return CreateResult(eErrorType.Div0);
+                return this.CreateResult(eErrorType.Div0);
             }
             double part1 = (n * (n + 1)) / ((n - 1) * (n - 2) * (n - 3));
             double avg = numbers.Select(x => x.Value).Average();
@@ -50,7 +50,7 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Statistical
             }
             part2 /= System.Math.Pow(stdev, 4);
             double result = part1 * part2 - (3 * System.Math.Pow(n - 1, 2)) / ((n - 2) * (n - 3));
-            return CreateResult(result, DataType.Decimal);
+            return this.CreateResult(result, DataType.Decimal);
         }
     }
 }

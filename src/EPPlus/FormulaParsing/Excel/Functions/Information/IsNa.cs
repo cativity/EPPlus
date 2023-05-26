@@ -29,16 +29,16 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Information
         {
             if (arguments == null || arguments.Count() == 0)
             {
-                return CreateResult(false, DataType.Boolean);
+                return this.CreateResult(false, DataType.Boolean);
             }
 
             object? v = GetFirstValue(arguments);
 
             if (v is ExcelErrorValue && ((ExcelErrorValue)v).Type==eErrorType.NA)
             {
-                return CreateResult(true, DataType.Boolean);
+                return this.CreateResult(true, DataType.Boolean);
             }
-            return CreateResult(false, DataType.Boolean);
+            return this.CreateResult(false, DataType.Boolean);
         }
     }
 }

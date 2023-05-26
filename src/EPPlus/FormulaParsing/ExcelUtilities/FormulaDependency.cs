@@ -21,9 +21,9 @@ namespace OfficeOpenXml.FormulaParsing.ExcelUtilities
     public class FormulaDependency
     {
         public FormulaDependency(ParsingScope scope)
-	    {   
-            ScopeId = scope.ScopeId;
-            Address = scope.Address;
+	    {
+            this.ScopeId = scope.ScopeId;
+            this.Address = scope.Address;
 	    }
         public Guid ScopeId { get; private set; }
 
@@ -35,20 +35,22 @@ namespace OfficeOpenXml.FormulaParsing.ExcelUtilities
 
         public virtual void AddReferenceFrom(RangeAddress rangeAddress)
         {
-            if (Address.CollidesWith(rangeAddress) || _references.Exists(x => x.CollidesWith(rangeAddress)))
+            if (this.Address.CollidesWith(rangeAddress) || this._references.Exists(x => x.CollidesWith(rangeAddress)))
             {
                 throw new CircularReferenceException("Circular reference detected at " + rangeAddress.ToString());
             }
-            _referencedBy.Add(rangeAddress);
+
+            this._referencedBy.Add(rangeAddress);
         }
 
         public virtual void AddReferenceTo(RangeAddress rangeAddress)
         {
-            if (Address.CollidesWith(rangeAddress) || _referencedBy.Exists(x => x.CollidesWith(rangeAddress)))
+            if (this.Address.CollidesWith(rangeAddress) || this._referencedBy.Exists(x => x.CollidesWith(rangeAddress)))
             {
                 throw new CircularReferenceException("Circular reference detected at " + rangeAddress.ToString());
             }
-            _references.Add(rangeAddress);
+
+            this._references.Add(rangeAddress);
         }
     }
 }

@@ -31,18 +31,18 @@ namespace OfficeOpenXml.DataValidation.Formulas
                 double dValue;
                 if (double.TryParse(value, NumberStyles.Any, CultureInfo.InvariantCulture, out dValue))
                 {
-                    Value = dValue;
+                    this.Value = dValue;
                 }
                 else
                 {
-                    ExcelFormula = value;
+                    this.ExcelFormula = value;
                 }
             }
         }
 
         protected override string GetValueAsString()
         {
-            return Value.HasValue ? Value.Value.ToString("R15", CultureInfo.InvariantCulture) : string.Empty;
+            return this.Value.HasValue ? this.Value.Value.ToString("R15", CultureInfo.InvariantCulture) : string.Empty;
         }
     }
 }

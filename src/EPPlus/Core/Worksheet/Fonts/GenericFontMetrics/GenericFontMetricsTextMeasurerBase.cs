@@ -83,7 +83,7 @@ namespace OfficeOpenXml.Core.Worksheet.Fonts.GenericFontMetrics
             }
             width *= size;
             widthEA *= size;
-            float sf = _fontScaleFactors.GetScaleFactor(fontKey, width);
+            float sf = this._fontScaleFactors.GetScaleFactor(fontKey, width);
             width *= sf;
             width += widthEA;
             float height = sFont.LineHeight1em * size;

@@ -31,8 +31,8 @@ namespace OfficeOpenXml.LoadFunctions
 
         public LoadFromCollectionColumns(BindingFlags bindingFlags, List<string> sortOrderColumns)
         {
-            _bindingFlags = bindingFlags;
-            _sortOrderColumns = sortOrderColumns;
+            this._bindingFlags = bindingFlags;
+            this._sortOrderColumns = sortOrderColumns;
         }
 
         private readonly BindingFlags _bindingFlags;
@@ -49,7 +49,7 @@ namespace OfficeOpenXml.LoadFunctions
                 t = ut;
             }
 
-            bool sort=SetupInternal(t, result, null);
+            bool sort= this.SetupInternal(t, result, null);
             if (sort)
             {
                 ReindexAndSortColumns(result);
@@ -72,7 +72,7 @@ namespace OfficeOpenXml.LoadFunctions
         private bool SetupInternal(Type type, List<ColumnInfo> result, List<int> sortOrderListArg, string path = null, string headerPrefix = null)
         {
             bool sort = false;
-            PropertyInfo[]? members = type.GetProperties(_bindingFlags);
+            PropertyInfo[]? members = type.GetProperties(this._bindingFlags);
             if (type.HasMemberWithPropertyOfType<EpplusTableColumnAttribute>())
             {
                 sort = true;
@@ -80,7 +80,7 @@ namespace OfficeOpenXml.LoadFunctions
                 foreach (PropertyInfo? member in members)
                 {
                     string? hPrefix = default(string);
-                    List<int>? sortOrderList = LoadFromCollectionColumns<T>.CopyList(sortOrderListArg);
+                    List<int>? sortOrderList = CopyList(sortOrderListArg);
                     if (member.HasPropertyOfType<EpplusIgnore>())
                     {
                         continue;
@@ -99,9 +99,9 @@ namespace OfficeOpenXml.LoadFunctions
                         {
                             hPrefix = headerPrefix;
                         }
-                        if(_sortOrderColumns != null && _sortOrderColumns.IndexOf(memberPath) > -1)
+                        if(this._sortOrderColumns != null && this._sortOrderColumns.IndexOf(memberPath) > -1)
                         {
-                            attrOrder = _sortOrderColumns.IndexOf(memberPath);
+                            attrOrder = this._sortOrderColumns.IndexOf(memberPath);
                         }
                         else
                         {
@@ -119,15 +119,16 @@ namespace OfficeOpenXml.LoadFunctions
                             sortOrderList.Add(attrOrder);
                             if (attrOrder < SortOrderOffset)
                             {
-                                sortOrderList[0] = _sortOrderColumns.IndexOf(memberPath);
+                                sortOrderList[0] = this._sortOrderColumns.IndexOf(memberPath);
                             }
                         }
-                        SetupInternal(member.PropertyType, result, sortOrderList, memberPath, hPrefix);
+
+                        this.SetupInternal(member.PropertyType, result, sortOrderList, memberPath, hPrefix);
                         sortOrderList.RemoveAt(sortOrderList.Count - 1);
                         continue;
                     }
                     string? header = default(string);
-                    int sortOrderColumnsIndex = _sortOrderColumns != null ? _sortOrderColumns.IndexOf(memberPath) : -1;
+                    int sortOrderColumnsIndex = this._sortOrderColumns != null ? this._sortOrderColumns.IndexOf(memberPath) : -1;
                     int sortOrder = sortOrderColumnsIndex > -1 ? sortOrderColumnsIndex : SortOrderOffset;
                     string? numberFormat = string.Empty;
                     RowFunctions rowFunction = RowFunctions.None;
@@ -201,9 +202,9 @@ namespace OfficeOpenXml.LoadFunctions
                             mp = $"{path}.{member.Name}";
                         }
                         List<int>? colInfoSortOrderList = new List<int>();
-                        int sortOrderColumnsIndex = _sortOrderColumns != null ? _sortOrderColumns.IndexOf(mp) : -1;
+                        int sortOrderColumnsIndex = this._sortOrderColumns != null ? this._sortOrderColumns.IndexOf(mp) : -1;
                         int sortOrder = sortOrderColumnsIndex > -1 ? sortOrderColumnsIndex : SortOrderOffset;
-                        List<int>? sortOrderList = LoadFromCollectionColumns<T>.CopyList(sortOrderListArg);
+                        List<int>? sortOrderList = CopyList(sortOrderListArg);
                         EpplusTableColumnAttribute? epplusColumnAttr = member.GetFirstAttributeOfType<EpplusTableColumnAttribute>();
                         if (epplusColumnAttr != null)
                         {

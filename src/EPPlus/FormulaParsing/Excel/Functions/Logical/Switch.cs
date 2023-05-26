@@ -33,7 +33,7 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Logical
         }
         public Switch(CompileResultFactory compileResultFactory)
         {
-            _compileResultFactory = compileResultFactory;
+            this._compileResultFactory = compileResultFactory;
         }
 
         private readonly CompileResultFactory _compileResultFactory;
@@ -48,7 +48,7 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Logical
                 object? candidate = arguments.ElementAt(x).Value;
                 if(IsMatch(expression, candidate))
                 {
-                    return _compileResultFactory.Create(arguments.ElementAt(x + 1).Value);
+                    return this._compileResultFactory.Create(arguments.ElementAt(x + 1).Value);
                 }
             }
             if (arguments.Count() % 2 == 0)

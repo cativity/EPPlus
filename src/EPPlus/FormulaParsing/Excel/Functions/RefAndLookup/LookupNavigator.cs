@@ -32,9 +32,9 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions.RefAndLookup
             Require.That(arguments).Named("arguments").IsNotNull();
             Require.That(parsingContext).Named("parsingContext").IsNotNull();
             Require.That(parsingContext.ExcelDataProvider).Named("parsingContext.ExcelDataProvider").IsNotNull();
-            Direction = direction;
-            Arguments = arguments;
-            ParsingContext = parsingContext;
+            this.Direction = direction;
+            this.Arguments = arguments;
+            this.ParsingContext = parsingContext;
         }
 
         public abstract int Index

@@ -31,51 +31,51 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Database
 
         public IEnumerable<ExcelDatabaseField> Fields
         {
-            get { return _fields; }
+            get { return this._fields; }
         }
 
         public ExcelDatabase(ExcelDataProvider dataProvider, string range)
         {
-            _dataProvider = dataProvider;
+            this._dataProvider = dataProvider;
             ExcelAddressBase? address = new ExcelAddressBase(range);
-            _fromCol = address._fromCol;
-            _toCol = address._toCol;
-            _fieldRow = address._fromRow;
-            _endRow = address._toRow;
-            _worksheet = address.WorkSheetName;
-            _rowIndex = _fieldRow;
-            Initialize();
+            this._fromCol = address._fromCol;
+            this._toCol = address._toCol;
+            this._fieldRow = address._fromRow;
+            this._endRow = address._toRow;
+            this._worksheet = address.WorkSheetName;
+            this._rowIndex = this._fieldRow;
+            this.Initialize();
         }
 
         private void Initialize()
         {
             int fieldIx = 0;
-            for (int colIndex = _fromCol; colIndex <= _toCol; colIndex++)
+            for (int colIndex = this._fromCol; colIndex <= this._toCol; colIndex++)
             {
-                object? nameObj = GetCellValue(_fieldRow, colIndex);
+                object? nameObj = this.GetCellValue(this._fieldRow, colIndex);
                 string? name = nameObj != null ? nameObj.ToString().ToLower(CultureInfo.InvariantCulture) : string.Empty;
-                _fields.Add(new ExcelDatabaseField(name, fieldIx++));
+                this._fields.Add(new ExcelDatabaseField(name, fieldIx++));
             }
         }
 
         private object GetCellValue(int row, int col)
         {
-            return _dataProvider.GetRangeValue(_worksheet, row, col);
+            return this._dataProvider.GetRangeValue(this._worksheet, row, col);
         }
 
         public bool HasMoreRows
         {
-            get { return _rowIndex < _endRow; }
+            get { return this._rowIndex < this._endRow; }
         }
 
         public ExcelDatabaseRow Read()
         {
             ExcelDatabaseRow? retVal = new ExcelDatabaseRow();
-            _rowIndex++;
-            foreach (ExcelDatabaseField? field in Fields)
+            this._rowIndex++;
+            foreach (ExcelDatabaseField? field in this.Fields)
             {
-                int colIndex = _fromCol + field.ColIndex;
-                object? val = GetCellValue(_rowIndex, colIndex);
+                int colIndex = this._fromCol + field.ColIndex;
+                object? val = this.GetCellValue(this._rowIndex, colIndex);
                 retVal[field.FieldName] = val;
             }
             return retVal;

@@ -25,8 +25,8 @@ namespace OfficeOpenXml.Drawing.Slicer.Style
         ExcelStyles _styles;
         internal ExcelSlicerStyleElement(XmlNamespaceManager nameSpaceManager, XmlNode topNode, ExcelStyles styles, eSlicerStyleElement type) : base(nameSpaceManager, topNode)
         {
-            _styles = styles;
-            Type = type;
+            this._styles = styles;
+            this.Type = type;
         }
         ExcelDxfSlicerStyle _style = null;
         /// <summary>
@@ -36,15 +36,15 @@ namespace OfficeOpenXml.Drawing.Slicer.Style
         {
             get
             {
-                if (_style == null)
+                if (this._style == null)
                 {
-                    _style = _styles.GetDxfSlicer(GetXmlNodeIntNull("@dxfId"));
+                    this._style = this._styles.GetDxfSlicer(this.GetXmlNodeIntNull("@dxfId"));
                 }
-                return _style;
+                return this._style;
             }
             internal set
             {
-                _style = value;
+                this._style = value;
             }
         }
         /// <summary>
@@ -56,14 +56,14 @@ namespace OfficeOpenXml.Drawing.Slicer.Style
         }
         internal virtual void CreateNode()
         {
-            if(TopNode.LocalName!= "slicerStyleElement")
+            if(this.TopNode.LocalName!= "slicerStyleElement")
             {
-                TopNode = CreateNode("x14:slicerStyleElements");
-                TopNode = CreateNode("x14:slicerStyleElement", false, true);
+                this.TopNode = this.CreateNode("x14:slicerStyleElements");
+                this.TopNode = this.CreateNode("x14:slicerStyleElement", false, true);
             }
 
-            SetXmlNodeString("@type", Type.ToEnumString());
-            SetXmlNodeInt("@dxfId", Style.DxfId);
+            this.SetXmlNodeString("@type", this.Type.ToEnumString());
+            this.SetXmlNodeInt("@dxfId", this.Style.DxfId);
         }
     }
 }

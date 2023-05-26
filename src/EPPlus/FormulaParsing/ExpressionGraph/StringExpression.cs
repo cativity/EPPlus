@@ -27,7 +27,7 @@ namespace OfficeOpenXml.FormulaParsing.ExpressionGraph
 
         public override CompileResult Compile()
         {
-            return new CompileResult(ExpressionString, DataType.String);
+            return new CompileResult(this.ExpressionString, DataType.String);
         }
     }
 }

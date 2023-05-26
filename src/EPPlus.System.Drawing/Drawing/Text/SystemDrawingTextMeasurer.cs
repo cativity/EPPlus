@@ -8,7 +8,7 @@ namespace OfficeOpenXml.SystemDrawing.Text
     {
         public SystemDrawingTextMeasurer()
         {
-            _stringFormat = StringFormat.GenericDefault;
+            this._stringFormat = StringFormat.GenericDefault;
         }
 
         private readonly StringFormat _stringFormat;
@@ -48,26 +48,26 @@ namespace OfficeOpenXml.SystemDrawing.Text
             }
             FontStyle style = ToFontStyle(font.Style);
             Font? dFont = new Font(font.FontFamily, font.Size, style);
-            SizeF size = g.MeasureString(text, dFont, 10000, _stringFormat);
+            SizeF size = g.MeasureString(text, dFont, 10000, this._stringFormat);
             return new TextMeasurement(size.Width * dpiCorrectX, size.Height * dpiCorrectY);
         }
         bool? _validForEnvironment=null;
         public bool ValidForEnvironment()
         {
-            if(_validForEnvironment.HasValue==false)
+            if(this._validForEnvironment.HasValue==false)
             {
                 try
                 {
                     Graphics? g=Graphics.FromHwnd(IntPtr.Zero);
                     g.MeasureString("d",new Font("Calibri", 11, FontStyle.Regular));
-                    _validForEnvironment = true;
+                    this._validForEnvironment = true;
                 }
                 catch 
-                { 
-                    _validForEnvironment = false;
+                {
+                    this._validForEnvironment = false;
                 }
             }
-            return _validForEnvironment.Value;
+            return this._validForEnvironment.Value;
         }
     }
 }

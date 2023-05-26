@@ -38,9 +38,9 @@ namespace OfficeOpenXml.FormulaParsing.ExpressionGraph
         public FunctionExpression(string expression, ParsingContext parsingContext, bool isNegated)
             : base(expression)
         {
-            _parsingContext = parsingContext;
-            _functionCompilerFactory = new FunctionCompilerFactory(parsingContext.Configuration.FunctionRepository, parsingContext);
-            _isNegated = isNegated;
+            this._parsingContext = parsingContext;
+            this._functionCompilerFactory = new FunctionCompilerFactory(parsingContext.Configuration.FunctionRepository, parsingContext);
+            this._isNegated = isNegated;
             base.AddChild(new FunctionArgumentExpression(this));
         }
 
@@ -57,7 +57,7 @@ namespace OfficeOpenXml.FormulaParsing.ExpressionGraph
         {
             try
             {
-                string? funcName = ExpressionString;
+                string? funcName = this.ExpressionString;
 
                 // older versions of Excel (pre 2007) adds "_xlfn." in front of some function names for compatibility reasons.
                 // EPPlus implements most of these functions, so we just remove this.
@@ -66,36 +66,37 @@ namespace OfficeOpenXml.FormulaParsing.ExpressionGraph
                     funcName = funcName.Replace("_xlfn.", string.Empty);
                 }
 
-                ExcelFunction? function = _parsingContext.Configuration.FunctionRepository.GetFunction(funcName);
+                ExcelFunction? function = this._parsingContext.Configuration.FunctionRepository.GetFunction(funcName);
                 if (function == null)
                 {
                     // Handle unrecognized func name
-                    FunctionsPipeline? pipeline = new FunctionsPipeline(_parsingContext, Children);
+                    FunctionsPipeline? pipeline = new FunctionsPipeline(this._parsingContext, this.Children);
                     function = pipeline.FindFunction(funcName);
                     if(function == null)
                     {
-                        if (_parsingContext.Debug)
+                        if (this._parsingContext.Debug)
                         {
-                            _parsingContext.Configuration.Logger.Log(_parsingContext, string.Format("'{0}' is not a supported function", funcName));
+                            this._parsingContext.Configuration.Logger.Log(this._parsingContext, string.Format("'{0}' is not a supported function", funcName));
                         }
                         return new CompileResult(ExcelErrorValue.Create(eErrorType.Name), DataType.ExcelError);
                     }
                 }
-                if (_parsingContext.Debug)
+                if (this._parsingContext.Debug)
                 {
-                    _parsingContext.Configuration.Logger.LogFunction(funcName);
+                    this._parsingContext.Configuration.Logger.LogFunction(funcName);
                 }
-                FunctionCompiler? compiler = _functionCompilerFactory.Create(function);
-                CompileResult? result = compiler.Compile(HasChildren ? Children : Enumerable.Empty<Expression>());
-                if (_isNegated)
+                FunctionCompiler? compiler = this._functionCompilerFactory.Create(function);
+                CompileResult? result = compiler.Compile(this.HasChildren ? this.Children : Enumerable.Empty<Expression>());
+                if (this._isNegated)
                 {
                     if (!result.IsNumeric)
                     {
-                        if (_parsingContext.Debug)
+                        if (this._parsingContext.Debug)
                         {
                             string? msg = string.Format("Trying to negate a non-numeric value ({0}) in function '{1}'",
                                                         result.Result, funcName);
-                            _parsingContext.Configuration.Logger.Log(_parsingContext, msg);
+
+                            this._parsingContext.Configuration.Logger.Log(this._parsingContext, msg);
                         }
                         return new CompileResult(ExcelErrorValue.Create(eErrorType.Value), DataType.ExcelError);
                     }
@@ -105,9 +106,9 @@ namespace OfficeOpenXml.FormulaParsing.ExpressionGraph
             }
             catch (ExcelErrorValueException e)
             {
-                if (_parsingContext.Debug)
+                if (this._parsingContext.Debug)
                 {
-                    _parsingContext.Configuration.Logger.Log(_parsingContext, e);
+                    this._parsingContext.Configuration.Logger.Log(this._parsingContext, e);
                 }
                 return new CompileResult(e.ErrorValue, DataType.ExcelError);
             }
@@ -130,7 +131,7 @@ namespace OfficeOpenXml.FormulaParsing.ExpressionGraph
         {
             get
             {
-                return (Children.Any() && Children.First().Children.Any());
+                return (this.Children.Any() && this.Children.First().Children.Any());
             }
         }
 
@@ -141,7 +142,7 @@ namespace OfficeOpenXml.FormulaParsing.ExpressionGraph
         /// <returns></returns>
         public override Expression AddChild(Expression child)
         {
-            Children.Last().AddChild(child);
+            this.Children.Last().AddChild(child);
             return child;
         }
     }

@@ -30,11 +30,11 @@ namespace OfficeOpenXml.Drawing
         private readonly Action<bool> _initParent;
         internal ExcelDrawingSphereCoordinate(XmlNamespaceManager nameSpaceManager, XmlNode topNode, string path, Action<bool> initParent) : base(nameSpaceManager, topNode)
         {
-            _path = path;
-            _latPath = string.Format(_latPath, path);
-            _lonPath = string.Format(_lonPath, path);
-            _revPath = string.Format(_revPath, path);
-            _initParent = initParent;
+            this._path = path;
+            this._latPath = string.Format(this._latPath, path);
+            this._lonPath = string.Format(this._lonPath, path);
+            this._revPath = string.Format(this._revPath, path);
+            this._initParent = initParent;
         }
         /// <summary>
         /// The latitude value of the rotation
@@ -43,12 +43,12 @@ namespace OfficeOpenXml.Drawing
         {
             get
             {
-                return GetXmlNodeAngel(_latPath);
+                return this.GetXmlNodeAngel(this._latPath);
             }
             set
             {
-                InitXml();
-                SetXmlNodeAngel(_latPath, value, "Latitude");
+                this.InitXml();
+                this.SetXmlNodeAngel(this._latPath, value, "Latitude");
             }
         }
         /// <summary>
@@ -58,12 +58,12 @@ namespace OfficeOpenXml.Drawing
         {
             get
             {
-                return GetXmlNodeAngel(_lonPath);
+                return this.GetXmlNodeAngel(this._lonPath);
             }
             set
             {
-                InitXml();
-                SetXmlNodeAngel(_lonPath, value, "Longitude");
+                this.InitXml();
+                this.SetXmlNodeAngel(this._lonPath, value, "Longitude");
             }
         }
         /// <summary>
@@ -73,12 +73,12 @@ namespace OfficeOpenXml.Drawing
         {
             get
             {
-                return GetXmlNodeAngel(_revPath);
+                return this.GetXmlNodeAngel(this._revPath);
             }
             set
             {
-                InitXml();
-                SetXmlNodeAngel(_revPath, value, "Revolution");
+                this.InitXml();
+                this.SetXmlNodeAngel(this._revPath, value, "Revolution");
             }
         }
         bool isInit = false;
@@ -87,15 +87,15 @@ namespace OfficeOpenXml.Drawing
         /// </summary>
         private void InitXml()
         {
-            if(isInit==false)
+            if(this.isInit==false)
             {
-                isInit = true;
-                if (!ExistsNode(_latPath))
+                this.isInit = true;
+                if (!this.ExistsNode(this._latPath))
                 {
-                    _initParent(false);
-                    Latitude = 0;
-                    Longitude = 0;
-                    Revolution = 0;
+                    this._initParent(false);
+                    this.Latitude = 0;
+                    this.Longitude = 0;
+                    this.Revolution = 0;
                 }
             }
         }

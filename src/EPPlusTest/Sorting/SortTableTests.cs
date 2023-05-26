@@ -148,7 +148,7 @@ namespace EPPlusTest.Sorting
             ws.Cells["K2"].Value = 5;
             ws.Cells["J3"].Value = 4;
 
-            tbl.Columns[8].TotalsRowFunction = OfficeOpenXml.Table.RowFunctions.Sum;
+            tbl.Columns[8].TotalsRowFunction = RowFunctions.Sum;
             tbl.Columns[9].TotalsRowFormula = string.Format("SUM([{0}])", tbl.Columns[9].Name);
             tbl.Columns[14].CalculatedColumnFormula = "TestTable[[#This Row],[123]]+TestTable[[#This Row],[Column2]]";
             ws.Cells["B2"].Value = 1;

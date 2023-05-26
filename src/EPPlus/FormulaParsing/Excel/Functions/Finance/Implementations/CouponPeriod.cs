@@ -21,8 +21,8 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Finance.Implementations
     {
         public CouponPeriod(FinancialDay start, FinancialDay end)
         {
-            Start = start;
-            End = end;
+            this.Start = start;
+            this.End = end;
         }
 
         public FinancialDay Start { get; }

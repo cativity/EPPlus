@@ -311,7 +311,7 @@ namespace OfficeOpenXml.Packaging.Ionic.Zip
         public ZipInputStream(String fileName)
         {
             Stream stream = File.Open(fileName, FileMode.Open, FileAccess.Read, FileShare.Read );
-            _Init(stream, false, fileName);
+            this._Init(stream, false, fileName);
         }
 
 
@@ -336,22 +336,22 @@ namespace OfficeOpenXml.Packaging.Ionic.Zip
         /// </param>
         public ZipInputStream(Stream stream, bool leaveOpen)
         {
-            _Init(stream, leaveOpen, null);
+            this._Init(stream, leaveOpen, null);
         }
 
         private void _Init(Stream stream, bool leaveOpen, string name)
         {
-            _inputStream = stream;
-            if (!_inputStream.CanRead)
+            this._inputStream = stream;
+            if (!this._inputStream.CanRead)
             {
                 throw new ZipException("The stream must be readable.");
             }
 
-            _container= new ZipContainer(this);
+            this._container= new ZipContainer(this);
 
-            _leaveUnderlyingStreamOpen = leaveOpen;
-            _findRequired= true;
-            _name = name ?? "(stream)";
+            this._leaveUnderlyingStreamOpen = leaveOpen;
+            this._findRequired= true;
+            this._name = name ?? "(stream)";
         }
 
 
@@ -364,7 +364,7 @@ namespace OfficeOpenXml.Packaging.Ionic.Zip
         /// <returns>a string representation of the instance.</returns>
         public override String ToString()
         {
-            return String.Format ("ZipInputStream::{0}(leaveOpen({1})))", _name, _leaveUnderlyingStreamOpen);
+            return String.Format ("ZipInputStream::{0}(leaveOpen({1})))", this._name, this._leaveUnderlyingStreamOpen);
         }
         /// <summary>
         ///   Size of the work buffer to use for the ZLIB codec during decompression.
@@ -440,12 +440,13 @@ namespace OfficeOpenXml.Packaging.Ionic.Zip
         {
             set
             {
-                if (_closed)
+                if (this._closed)
                 {
-                    _exceptionPending = true;
-                    throw new System.InvalidOperationException("The stream has been closed.");
+                    this._exceptionPending = true;
+                    throw new InvalidOperationException("The stream has been closed.");
                 }
-                _Password = value;
+
+                this._Password = value;
             }
         }
 
@@ -454,9 +455,9 @@ namespace OfficeOpenXml.Packaging.Ionic.Zip
         {
             // Seek to the correct posn in the file, and open a
             // stream that can be read.
-            _crcStream= _currentEntry.InternalOpenReader(_Password);
-            _LeftToRead = _crcStream.Length;
-            _needSetup = false;
+            this._crcStream= this._currentEntry.InternalOpenReader(this._Password);
+            this._LeftToRead = this._crcStream.Length;
+            this._needSetup = false;
         }
 
 
@@ -465,7 +466,7 @@ namespace OfficeOpenXml.Packaging.Ionic.Zip
         {
             get
             {
-                return _inputStream;
+                return this._inputStream;
             }
         }
 
@@ -494,34 +495,34 @@ namespace OfficeOpenXml.Packaging.Ionic.Zip
         /// <returns>the number of bytes read, after decryption and decompression.</returns>
         public override int Read(byte[] buffer, int offset, int count)
         {
-            if (_closed)
+            if (this._closed)
             {
-                _exceptionPending = true;
-                throw new System.InvalidOperationException("The stream has been closed.");
+                this._exceptionPending = true;
+                throw new InvalidOperationException("The stream has been closed.");
             }
 
-            if (_needSetup)
+            if (this._needSetup)
             {
                 this.SetupStream();
             }
 
-            if (_LeftToRead == 0)
+            if (this._LeftToRead == 0)
             {
                 return 0;
             }
 
-            int len = (_LeftToRead > count) ? count : (int)_LeftToRead;
-            int n = _crcStream.Read(buffer, offset, len);
+            int len = (this._LeftToRead > count) ? count : (int)this._LeftToRead;
+            int n = this._crcStream.Read(buffer, offset, len);
 
-            _LeftToRead -= n;
+            this._LeftToRead -= n;
 
-            if (_LeftToRead == 0)
+            if (this._LeftToRead == 0)
             {
-                int CrcResult = _crcStream.Crc;
-                _currentEntry.VerifyCrcAfterExtract(CrcResult);
-                _inputStream.Seek(_endOfEntry, SeekOrigin.Begin);
+                int CrcResult = this._crcStream.Crc;
+                this._currentEntry.VerifyCrcAfterExtract(CrcResult);
+                this._inputStream.Seek(this._endOfEntry, SeekOrigin.Begin);
                 // workitem 10178
-                SharedUtilities.Workaround_Ladybug318918(_inputStream);
+                SharedUtilities.Workaround_Ladybug318918(this._inputStream);
             }
 
             return n;
@@ -565,38 +566,38 @@ namespace OfficeOpenXml.Packaging.Ionic.Zip
         ///
         public ZipEntry GetNextEntry()
         {
-            if (_findRequired)
+            if (this._findRequired)
             {
                 // find the next signature
-                long d = SharedUtilities.FindSignature(_inputStream, ZipConstants.ZipEntrySignature);
+                long d = SharedUtilities.FindSignature(this._inputStream, ZipConstants.ZipEntrySignature);
                 if (d == -1)
                 {
                     return null;
                 }
 
                 // back up 4 bytes: ReadEntry assumes the file pointer is positioned before the entry signature
-                _inputStream.Seek(-4, SeekOrigin.Current);
+                this._inputStream.Seek(-4, SeekOrigin.Current);
                 // workitem 10178
-                SharedUtilities.Workaround_Ladybug318918(_inputStream);
+                SharedUtilities.Workaround_Ladybug318918(this._inputStream);
             }
             // workitem 10923
-            else if (_firstEntry)
+            else if (this._firstEntry)
             {
                 // we've already read one entry.
                 // Seek to the end of it.
-                _inputStream.Seek(_endOfEntry, SeekOrigin.Begin);   
-                SharedUtilities.Workaround_Ladybug318918(_inputStream);
+                this._inputStream.Seek(this._endOfEntry, SeekOrigin.Begin);   
+                SharedUtilities.Workaround_Ladybug318918(this._inputStream);
             }
 
-            _currentEntry = ZipEntry.ReadEntry(_container, !_firstEntry);
+            this._currentEntry = ZipEntry.ReadEntry(this._container, !this._firstEntry);
             // ReadEntry leaves the file position after all the entry
             // data and the optional bit-3 data descriptpr.  This is
             // where the next entry would normally start.
-            _endOfEntry = _inputStream.Position;
-            _firstEntry = true;
-            _needSetup = true;
-            _findRequired= false;
-            return _currentEntry;
+            this._endOfEntry = this._inputStream.Position;
+            this._firstEntry = true;
+            this._needSetup = true;
+            this._findRequired= false;
+            return this._currentEntry;
         }
 
 
@@ -633,7 +634,7 @@ namespace OfficeOpenXml.Packaging.Ionic.Zip
         /// </param>
         protected override void Dispose(bool disposing)
         {
-            if (_closed)
+            if (this._closed)
             {
                 return;
             }
@@ -644,21 +645,22 @@ namespace OfficeOpenXml.Packaging.Ionic.Zip
                 // exception is thrown, Close() is invoked.  But we don't want to
                 // try to write anything in that case.  Eventually the exception
                 // will be propagated to the application.
-                if (_exceptionPending)
+                if (this._exceptionPending)
                 {
                     return;
                 }
 
-                if (!_leaveUnderlyingStreamOpen)
+                if (!this._leaveUnderlyingStreamOpen)
                 {
 #if NETCF
                     _inputStream.Close();
 #else
-                    _inputStream.Dispose();
+                    this._inputStream.Dispose();
 #endif
                 }
             }
-            _closed= true;
+
+            this._closed= true;
         }
 
 
@@ -670,7 +672,7 @@ namespace OfficeOpenXml.Packaging.Ionic.Zip
         /// <summary>
         /// Returns the value of <c>CanSeek</c> for the underlying (wrapped) stream.
         /// </summary>
-        public override bool CanSeek  { get { return _inputStream.CanSeek; } }
+        public override bool CanSeek  { get { return this._inputStream.CanSeek; } }
 
         /// <summary>
         /// Always returns false.
@@ -680,7 +682,7 @@ namespace OfficeOpenXml.Packaging.Ionic.Zip
         /// <summary>
         /// Returns the length of the underlying stream.
         /// </summary>
-        public override long Length   { get { return _inputStream.Length; }}
+        public override long Length   { get { return this._inputStream.Length; }}
 
         /// <summary>
         /// Gets or sets the position of the underlying stream.
@@ -690,8 +692,8 @@ namespace OfficeOpenXml.Packaging.Ionic.Zip
         /// </remarks>
         public override long Position
         {
-            get { return _inputStream.Position;}
-            set { Seek(value, SeekOrigin.Begin); }
+            get { return this._inputStream.Position;}
+            set { this.Seek(value, SeekOrigin.Begin); }
         }
 
         /// <summary>
@@ -739,10 +741,10 @@ namespace OfficeOpenXml.Packaging.Ionic.Zip
         /// <returns>The new position</returns>
         public override long Seek(long offset, SeekOrigin origin)
         {
-            _findRequired= true;
-            long x = _inputStream.Seek(offset, origin);
+            this._findRequired= true;
+            long x = this._inputStream.Seek(offset, origin);
             // workitem 10178
-            SharedUtilities.Workaround_Ladybug318918(_inputStream);
+            SharedUtilities.Workaround_Ladybug318918(this._inputStream);
             return x;
         }
 

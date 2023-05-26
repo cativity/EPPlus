@@ -26,7 +26,7 @@ namespace OfficeOpenXml.Drawing
        internal ExcelView3D(XmlNamespaceManager ns, XmlNode node)
            : base(ns,node)
        {
-           SchemaNodeOrder = new string[] { "rotX", "hPercent", "rotY", "depthPercent","rAngAx", "perspective"};
+           this.SchemaNodeOrder = new string[] { "rotX", "hPercent", "rotY", "depthPercent","rAngAx", "perspective"};
        }
        const string perspectivePath = "c:perspective/@val";
        /// <summary>
@@ -36,11 +36,11 @@ namespace OfficeOpenXml.Drawing
        {
            get
            {
-               return GetXmlNodeInt(perspectivePath);
+               return this.GetXmlNodeInt(perspectivePath);
            }
            set
            {
-               SetXmlNodeString(perspectivePath, value.ToString(CultureInfo.InvariantCulture));
+               this.SetXmlNodeString(perspectivePath, value.ToString(CultureInfo.InvariantCulture));
            }
        }
        const string rotXPath = "c:rotX/@val";
@@ -51,12 +51,12 @@ namespace OfficeOpenXml.Drawing
        {
            get
            {
-               return GetXmlNodeDecimal(rotXPath);
+               return this.GetXmlNodeDecimal(rotXPath);
            }
            set
            {
-               CreateNode(rotXPath);
-               SetXmlNodeString(rotXPath, value.ToString(CultureInfo.InvariantCulture));
+               this.CreateNode(rotXPath);
+               this.SetXmlNodeString(rotXPath, value.ToString(CultureInfo.InvariantCulture));
            }
        }
        const string rotYPath = "c:rotY/@val";
@@ -67,12 +67,12 @@ namespace OfficeOpenXml.Drawing
        {
            get
            {
-               return GetXmlNodeDecimal(rotYPath);
+               return this.GetXmlNodeDecimal(rotYPath);
            }
            set
            {
-               CreateNode(rotYPath);
-               SetXmlNodeString(rotYPath, value.ToString(CultureInfo.InvariantCulture));
+               this.CreateNode(rotYPath);
+               this.SetXmlNodeString(rotYPath, value.ToString(CultureInfo.InvariantCulture));
            }
        }
        const string rAngAxPath = "c:rAngAx/@val";
@@ -83,11 +83,11 @@ namespace OfficeOpenXml.Drawing
        {
            get
            {
-               return GetXmlNodeBool(rAngAxPath);
+               return this.GetXmlNodeBool(rAngAxPath);
            }
            set
            {
-               SetXmlNodeBool(rAngAxPath, value);
+               this.SetXmlNodeBool(rAngAxPath, value);
            }
        }
        const string depthPercentPath = "c:depthPercent/@val";
@@ -98,7 +98,7 @@ namespace OfficeOpenXml.Drawing
        {
            get
            {
-               return GetXmlNodeInt(depthPercentPath);
+               return this.GetXmlNodeInt(depthPercentPath);
            }
            set
            {
@@ -106,7 +106,8 @@ namespace OfficeOpenXml.Drawing
                {
                    throw(new ArgumentOutOfRangeException("Value must be between 0 and 2000"));
                }
-               SetXmlNodeString(depthPercentPath, value.ToString());
+
+               this.SetXmlNodeString(depthPercentPath, value.ToString());
            }
        }
        const string heightPercentPath = "c:hPercent/@val";
@@ -117,7 +118,7 @@ namespace OfficeOpenXml.Drawing
        {
            get
            {
-               return GetXmlNodeInt(heightPercentPath);
+               return this.GetXmlNodeInt(heightPercentPath);
            }
            set
            {
@@ -125,7 +126,8 @@ namespace OfficeOpenXml.Drawing
                {
                    throw (new ArgumentOutOfRangeException("Value must be between 5 and 500"));
                }
-               SetXmlNodeString(heightPercentPath, value.ToString());
+
+               this.SetXmlNodeString(heightPercentPath, value.ToString());
            }
        }
     }

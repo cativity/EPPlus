@@ -28,8 +28,8 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Engineering
         public override CompileResult Execute(IEnumerable<FunctionArgument> arguments, ParsingContext context)
         {
             ValidateArguments(arguments, 2);
-            double real = ArgToDecimal(arguments, 0);
-            double img = ArgToDecimal(arguments, 1);
+            double real = this.ArgToDecimal(arguments, 0);
+            double img = this.ArgToDecimal(arguments, 1);
             string? suffix = "i";
             if(arguments.Count() > 2)
             {
@@ -45,7 +45,7 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Engineering
                 result += "+";
             }
             result += img.ToString() + suffix;
-            return CreateResult(result, DataType.String);
+            return this.CreateResult(result, DataType.String);
         }
     }
 }

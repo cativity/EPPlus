@@ -35,7 +35,7 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Text
 
             string? result = context.ExcelDataProvider.GetFormat(value, format);
 
-            return CreateResult(result, DataType.String);
+            return this.CreateResult(result, DataType.String);
         }
     }
 }

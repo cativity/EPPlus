@@ -44,7 +44,7 @@ namespace OfficeOpenXml.Packaging.Ionic.Zlib
         public ZlibCodec compressor;
 
         public WorkItem(int size,
-                        Ionic.Zlib.CompressionLevel compressLevel,
+                        CompressionLevel compressLevel,
                         CompressionStrategy strategy,
                         int ix)
         {
@@ -97,16 +97,16 @@ namespace OfficeOpenXml.Packaging.Ionic.Zlib
     ///
     /// </remarks>
     /// <seealso cref="Ionic.Zlib.DeflateStream" />
-    public class ParallelDeflateOutputStream : System.IO.Stream
+    public class ParallelDeflateOutputStream : Stream
     {
 
         private static readonly int IO_BUFFER_SIZE_DEFAULT = 64 * 1024;  // 128k
         private static readonly int BufferPairsPerCore = 4;
 
-        private System.Collections.Generic.List<WorkItem> _pool;
+        private List<WorkItem> _pool;
         private bool                        _leaveOpen;
         private bool                        emitting;
-        private System.IO.Stream            _outStream;
+        private Stream            _outStream;
         private int                         _maxBufferPairs;
         private int                         _bufferSize = IO_BUFFER_SIZE_DEFAULT;
         private AutoResetEvent              _newlyCompressedBlob;
@@ -120,12 +120,12 @@ namespace OfficeOpenXml.Packaging.Ionic.Zlib
         private int                         _lastWritten;
         private int                         _latestCompressed;
         private int                         _Crc32;
-        private Ionic.Crc.CRC32             _runningCrc;
+        private Crc.CRC32             _runningCrc;
         private object                      _latestLock = new object();
-        private System.Collections.Generic.Queue<int>     _toWrite;
-        private System.Collections.Generic.Queue<int>     _toFill;
+        private Queue<int>     _toWrite;
+        private Queue<int>     _toFill;
         private Int64                       _totalBytesProcessed;
-        private Ionic.Zlib.CompressionLevel _compressLevel;
+        private CompressionLevel _compressLevel;
         private volatile Exception          _pendingException;
         private bool                        _handlingException;
         private object                      _eLock = new Object();  // protects _pendingException
@@ -219,7 +219,7 @@ namespace OfficeOpenXml.Packaging.Ionic.Zlib
         /// </code>
         /// </example>
         /// <param name="stream">The stream to which compressed data will be written.</param>
-        public ParallelDeflateOutputStream(System.IO.Stream stream)
+        public ParallelDeflateOutputStream(Stream stream)
             : this(stream, CompressionLevel.Default, CompressionStrategy.Default, false)
         {
         }
@@ -233,7 +233,7 @@ namespace OfficeOpenXml.Packaging.Ionic.Zlib
         /// </remarks>
         /// <param name="stream">The stream to which compressed data will be written.</param>
         /// <param name="level">A tuning knob to trade speed for effectiveness.</param>
-        public ParallelDeflateOutputStream(System.IO.Stream stream, CompressionLevel level)
+        public ParallelDeflateOutputStream(Stream stream, CompressionLevel level)
             : this(stream, level, CompressionStrategy.Default, false)
         {
         }
@@ -250,7 +250,7 @@ namespace OfficeOpenXml.Packaging.Ionic.Zlib
         /// <param name="leaveOpen">
         ///    true if the application would like the stream to remain open after inflation/deflation.
         /// </param>
-        public ParallelDeflateOutputStream(System.IO.Stream stream, bool leaveOpen)
+        public ParallelDeflateOutputStream(Stream stream, bool leaveOpen)
             : this(stream, CompressionLevel.Default, CompressionStrategy.Default, leaveOpen)
         {
         }
@@ -268,7 +268,7 @@ namespace OfficeOpenXml.Packaging.Ionic.Zlib
         /// <param name="leaveOpen">
         ///    true if the application would like the stream to remain open after inflation/deflation.
         /// </param>
-        public ParallelDeflateOutputStream(System.IO.Stream stream, CompressionLevel level, bool leaveOpen)
+        public ParallelDeflateOutputStream(Stream stream, CompressionLevel level, bool leaveOpen)
             : this(stream, CompressionLevel.Default, CompressionStrategy.Default, leaveOpen)
         {
         }
@@ -292,17 +292,17 @@ namespace OfficeOpenXml.Packaging.Ionic.Zlib
         /// <param name="leaveOpen">
         ///    true if the application would like the stream to remain open after inflation/deflation.
         /// </param>
-        public ParallelDeflateOutputStream(System.IO.Stream stream,
+        public ParallelDeflateOutputStream(Stream stream,
                                            CompressionLevel level,
                                            CompressionStrategy strategy,
                                            bool leaveOpen)
         {
-            TraceOutput(TraceBits.Lifecycle | TraceBits.Session, "-------------------------------------------------------");
-            TraceOutput(TraceBits.Lifecycle | TraceBits.Session, "Create {0:X8}", this.GetHashCode());
-            _outStream = stream;
-            _compressLevel= level;
-            Strategy = strategy;
-            _leaveOpen = leaveOpen;
+            this.TraceOutput(TraceBits.Lifecycle | TraceBits.Session, "-------------------------------------------------------");
+            this.TraceOutput(TraceBits.Lifecycle | TraceBits.Session, "Create {0:X8}", this.GetHashCode());
+            this._outStream = stream;
+            this._compressLevel= level;
+            this.Strategy = strategy;
+            this._leaveOpen = leaveOpen;
             this.MaxBufferPairs = 16; // default
         }
 
@@ -392,7 +392,7 @@ namespace OfficeOpenXml.Packaging.Ionic.Zlib
         {
             get
             {
-                return _maxBufferPairs;
+                return this._maxBufferPairs;
             }
             set
             {
@@ -402,7 +402,7 @@ namespace OfficeOpenXml.Packaging.Ionic.Zlib
                                                 "Value must be 4 or greater.");
                 }
 
-                _maxBufferPairs = value;
+                this._maxBufferPairs = value;
             }
         }
 
@@ -448,7 +448,7 @@ namespace OfficeOpenXml.Packaging.Ionic.Zlib
         /// </remarks>
         public int BufferSize
         {
-            get { return _bufferSize;}
+            get { return this._bufferSize;}
             set
             {
                 if (value < 1024)
@@ -457,7 +457,7 @@ namespace OfficeOpenXml.Packaging.Ionic.Zlib
                                                           "BufferSize must be greater than 1024 bytes");
                 }
 
-                _bufferSize = value;
+                this._bufferSize = value;
             }
         }
 
@@ -467,7 +467,7 @@ namespace OfficeOpenXml.Packaging.Ionic.Zlib
         /// <remarks>
         /// This value is meaningful only after a call to Close().
         /// </remarks>
-        public int Crc32 { get { return _Crc32; } }
+        public int Crc32 { get { return this._Crc32; } }
 
 
         /// <summary>
@@ -476,28 +476,28 @@ namespace OfficeOpenXml.Packaging.Ionic.Zlib
         /// <remarks>
         /// This value is meaningful only after a call to Close().
         /// </remarks>
-        public Int64 BytesProcessed { get { return _totalBytesProcessed; } }
+        public Int64 BytesProcessed { get { return this._totalBytesProcessed; } }
 
 
         private void _InitializePoolOfWorkItems()
         {
-            _toWrite = new Queue<int>();
-            _toFill = new Queue<int>();
-            _pool = new System.Collections.Generic.List<WorkItem>();
+            this._toWrite = new Queue<int>();
+            this._toFill = new Queue<int>();
+            this._pool = new List<WorkItem>();
             int nTasks = BufferPairsPerCore * Environment.ProcessorCount;
-            nTasks = Math.Min(nTasks, _maxBufferPairs);
+            nTasks = Math.Min(nTasks, this._maxBufferPairs);
             for(int i=0; i < nTasks; i++)
             {
-                _pool.Add(new WorkItem(_bufferSize, _compressLevel, Strategy, i));
-                _toFill.Enqueue(i);
+                this._pool.Add(new WorkItem(this._bufferSize, this._compressLevel, this.Strategy, i));
+                this._toFill.Enqueue(i);
             }
 
-            _newlyCompressedBlob = new AutoResetEvent(false);
-            _runningCrc = new Ionic.Crc.CRC32();
-            _currentlyFilling = -1;
-            _lastFilled = -1;
-            _lastWritten = -1;
-            _latestCompressed = -1;
+            this._newlyCompressedBlob = new AutoResetEvent(false);
+            this._runningCrc = new Crc.CRC32();
+            this._currentlyFilling = -1;
+            this._lastFilled = -1;
+            this._lastWritten = -1;
+            this._latestCompressed = -1;
         }
 
 
@@ -536,17 +536,17 @@ namespace OfficeOpenXml.Packaging.Ionic.Zlib
             //   2. fills a work buffer; when full, flip state to 'Filled',
             //   3. if more data to be written,  goto step 1
 
-            if (_isClosed)
+            if (this._isClosed)
             {
                 throw new InvalidOperationException();
             }
 
             // dispense any exceptions that occurred on the BG threads
-            if (_pendingException != null)
+            if (this._pendingException != null)
             {
-                _handlingException = true;
-                Exception? pe = _pendingException;
-                _pendingException = null;
+                this._handlingException = true;
+                Exception? pe = this._pendingException;
+                this._pendingException = null;
                 throw pe;
             }
 
@@ -555,36 +555,37 @@ namespace OfficeOpenXml.Packaging.Ionic.Zlib
                 return;
             }
 
-            if (!_firstWriteDone)
+            if (!this._firstWriteDone)
             {
                 // Want to do this on first Write, first session, and not in the
                 // constructor.  We want to allow MaxBufferPairs to
                 // change after construction, but before first Write.
-                _InitializePoolOfWorkItems();
-                _firstWriteDone = true;
+                this._InitializePoolOfWorkItems();
+                this._firstWriteDone = true;
             }
 
 
             do
             {
                 // may need to make buffers available
-                EmitPendingBuffers(false, mustWait);
+                this.EmitPendingBuffers(false, mustWait);
 
                 mustWait = false;
                 // use current buffer, or get a new buffer to fill
                 int ix = -1;
-                if (_currentlyFilling >= 0)
+                if (this._currentlyFilling >= 0)
                 {
-                    ix = _currentlyFilling;
-                    TraceOutput(TraceBits.WriteTake,
-                                "Write    notake   wi({0}) lf({1})",
-                                ix,
-                                _lastFilled);
+                    ix = this._currentlyFilling;
+
+                    this.TraceOutput(TraceBits.WriteTake,
+                                     "Write    notake   wi({0}) lf({1})",
+                                     ix,
+                                     this._lastFilled);
                 }
                 else
                 {
-                    TraceOutput(TraceBits.WriteTake, "Write    take?");
-                    if (_toFill.Count == 0)
+                    this.TraceOutput(TraceBits.WriteTake, "Write    take?");
+                    if (this._toFill.Count == 0)
                     {
                         // no available buffers, so... need to emit
                         // compressed buffers.
@@ -592,28 +593,29 @@ namespace OfficeOpenXml.Packaging.Ionic.Zlib
                         continue;
                     }
 
-                    ix = _toFill.Dequeue();
-                    TraceOutput(TraceBits.WriteTake,
-                                "Write    take     wi({0}) lf({1})",
-                                ix,
-                                _lastFilled);
-                    ++_lastFilled; // TODO: consider rollover?
+                    ix = this._toFill.Dequeue();
+
+                    this.TraceOutput(TraceBits.WriteTake,
+                                     "Write    take     wi({0}) lf({1})",
+                                     ix,
+                                     this._lastFilled);
+                    ++this._lastFilled; // TODO: consider rollover?
                 }
 
-                WorkItem workitem = _pool[ix];
+                WorkItem workitem = this._pool[ix];
 
                 int limit = ((workitem.buffer.Length - workitem.inputBytesAvailable) > count)
                     ? count
                     : (workitem.buffer.Length - workitem.inputBytesAvailable);
 
-                workitem.ordinal = _lastFilled;
+                workitem.ordinal = this._lastFilled;
 
-                TraceOutput(TraceBits.Write,
-                            "Write    lock     wi({0}) ord({1}) iba({2})",
-                            workitem.index,
-                            workitem.ordinal,
-                            workitem.inputBytesAvailable
-                            );
+                this.TraceOutput(TraceBits.Write,
+                                 "Write    lock     wi({0}) ord({1}) iba({2})",
+                                 workitem.index,
+                                 workitem.ordinal,
+                                 workitem.inputBytesAvailable
+                                );
 
                 // copy from the provided buffer to our workitem, starting at
                 // the tail end of whatever data we might have in there currently.
@@ -632,18 +634,18 @@ namespace OfficeOpenXml.Packaging.Ionic.Zlib
                     // method is documented as not multi-thread safe, so
                     // we can assume Write() calls come in from only one
                     // thread.
-                    TraceOutput(TraceBits.Write,
-                                "Write    QUWI     wi({0}) ord({1}) iba({2}) nf({3})",
-                                workitem.index,
-                                workitem.ordinal,
-                                workitem.inputBytesAvailable );
+                    this.TraceOutput(TraceBits.Write,
+                                     "Write    QUWI     wi({0}) ord({1}) iba({2}) nf({3})",
+                                     workitem.index,
+                                     workitem.ordinal,
+                                     workitem.inputBytesAvailable );
 
-                    if (!ThreadPool.QueueUserWorkItem( _DeflateOne, workitem ))
+                    if (!ThreadPool.QueueUserWorkItem(this._DeflateOne, workitem ))
                     {
                         throw new Exception("Cannot enqueue workitem");
                     }
 
-                    _currentlyFilling = -1; // will get a new buffer next time
+                    this._currentlyFilling = -1; // will get a new buffer next time
                 }
                 else
                 {
@@ -657,7 +659,7 @@ namespace OfficeOpenXml.Packaging.Ionic.Zlib
             }
             while (count > 0);  // until no more to write
 
-            TraceOutput(TraceBits.WriteEnter, "Write    exit");
+            this.TraceOutput(TraceBits.WriteEnter, "Write    exit");
             return;
         }
 
@@ -670,7 +672,7 @@ namespace OfficeOpenXml.Packaging.Ionic.Zlib
             // and then stop.
             byte[] buffer = new byte[128];
             ZlibCodec? compressor = new ZlibCodec();
-            int rc = compressor.InitializeDeflate(_compressLevel, false);
+            int rc = compressor.InitializeDeflate(this._compressLevel, false);
             compressor.InputBuffer = null;
             compressor.NextIn = 0;
             compressor.AvailableBytesIn = 0;
@@ -686,50 +688,50 @@ namespace OfficeOpenXml.Packaging.Ionic.Zlib
 
             if (buffer.Length - compressor.AvailableBytesOut > 0)
             {
-                TraceOutput(TraceBits.EmitBegin,
-                            "Emit     begin    flush bytes({0})",
-                            buffer.Length - compressor.AvailableBytesOut);
+                this.TraceOutput(TraceBits.EmitBegin,
+                                 "Emit     begin    flush bytes({0})",
+                                 buffer.Length - compressor.AvailableBytesOut);
 
-                _outStream.Write(buffer, 0, buffer.Length - compressor.AvailableBytesOut);
+                this._outStream.Write(buffer, 0, buffer.Length - compressor.AvailableBytesOut);
 
-                TraceOutput(TraceBits.EmitDone,
-                            "Emit     done     flush");
+                this.TraceOutput(TraceBits.EmitDone,
+                                 "Emit     done     flush");
             }
 
             compressor.EndDeflate();
 
-            _Crc32 = _runningCrc.Crc32Result;
+            this._Crc32 = this._runningCrc.Crc32Result;
         }
 
 
         private void _Flush(bool lastInput)
         {
-            if (_isClosed)
+            if (this._isClosed)
             {
                 throw new InvalidOperationException();
             }
 
-            if (emitting)
+            if (this.emitting)
             {
                 return;
             }
 
             // compress any partial buffer
-            if (_currentlyFilling >= 0)
+            if (this._currentlyFilling >= 0)
             {
-                WorkItem workitem = _pool[_currentlyFilling];
-                _DeflateOne(workitem);
-                _currentlyFilling = -1; // get a new buffer next Write()
+                WorkItem workitem = this._pool[this._currentlyFilling];
+                this._DeflateOne(workitem);
+                this._currentlyFilling = -1; // get a new buffer next Write()
             }
 
             if (lastInput)
             {
-                EmitPendingBuffers(true, false);
-                _FlushFinish();
+                this.EmitPendingBuffers(true, false);
+                this._FlushFinish();
             }
             else
             {
-                EmitPendingBuffers(false, false);
+                this.EmitPendingBuffers(false, false);
             }
         }
 
@@ -740,19 +742,19 @@ namespace OfficeOpenXml.Packaging.Ionic.Zlib
         /// </summary>
         public override void Flush()
         {
-            if (_pendingException != null)
+            if (this._pendingException != null)
             {
-                _handlingException = true;
-                Exception? pe = _pendingException;
-                _pendingException = null;
+                this._handlingException = true;
+                Exception? pe = this._pendingException;
+                this._pendingException = null;
                 throw pe;
             }
-            if (_handlingException)
+            if (this._handlingException)
             {
                 return;
             }
 
-            _Flush(false);
+            this._Flush(false);
         }
 
 
@@ -765,34 +767,35 @@ namespace OfficeOpenXml.Packaging.Ionic.Zlib
         /// </remarks>
         public override void Close()
         {
-            TraceOutput(TraceBits.Session, "Close {0:X8}", this.GetHashCode());
+            this.TraceOutput(TraceBits.Session, "Close {0:X8}", this.GetHashCode());
 
-            if (_pendingException != null)
+            if (this._pendingException != null)
             {
-                _handlingException = true;
-                Exception? pe = _pendingException;
-                _pendingException = null;
+                this._handlingException = true;
+                Exception? pe = this._pendingException;
+                this._pendingException = null;
                 throw pe;
             }
 
-            if (_handlingException)
+            if (this._handlingException)
             {
                 return;
             }
 
-            if (_isClosed)
+            if (this._isClosed)
             {
                 return;
             }
 
-            _Flush(true);
+            this._Flush(true);
 
-            if (!_leaveOpen)
+            if (!this._leaveOpen)
             {
-                _outStream.Close();
-                _outStream.Dispose();
+                this._outStream.Close();
+                this._outStream.Dispose();
             }
-            _isClosed = true;
+
+            this._isClosed = true;
         }
 
 
@@ -812,10 +815,10 @@ namespace OfficeOpenXml.Packaging.Ionic.Zlib
         /// </remarks>
         new public void Dispose()
         {
-            TraceOutput(TraceBits.Lifecycle, "Dispose  {0:X8}", this.GetHashCode());
-            Close();
-            _pool = null;
-            Dispose(true);
+            this.TraceOutput(TraceBits.Lifecycle, "Dispose  {0:X8}", this.GetHashCode());
+            this.Close();
+            this._pool = null;
+            this.Dispose(true);
         }
 
 
@@ -872,32 +875,32 @@ namespace OfficeOpenXml.Packaging.Ionic.Zlib
         /// </example>
         public void Reset(Stream stream)
         {
-            TraceOutput(TraceBits.Session, "-------------------------------------------------------");
-            TraceOutput(TraceBits.Session, "Reset {0:X8} firstDone({1})", this.GetHashCode(), _firstWriteDone);
+            this.TraceOutput(TraceBits.Session, "-------------------------------------------------------");
+            this.TraceOutput(TraceBits.Session, "Reset {0:X8} firstDone({1})", this.GetHashCode(), this._firstWriteDone);
 
-            if (!_firstWriteDone)
+            if (!this._firstWriteDone)
             {
                 return;
             }
 
             // reset all status
-            _toWrite.Clear();
-            _toFill.Clear();
-            foreach (WorkItem? workitem in _pool)
+            this._toWrite.Clear();
+            this._toFill.Clear();
+            foreach (WorkItem? workitem in this._pool)
             {
-                _toFill.Enqueue(workitem.index);
+                this._toFill.Enqueue(workitem.index);
                 workitem.ordinal = -1;
             }
 
-            _firstWriteDone = false;
-            _totalBytesProcessed = 0L;
-            _runningCrc = new Ionic.Crc.CRC32();
-            _isClosed= false;
-            _currentlyFilling = -1;
-            _lastFilled = -1;
-            _lastWritten = -1;
-            _latestCompressed = -1;
-            _outStream = stream;
+            this._firstWriteDone = false;
+            this._totalBytesProcessed = 0L;
+            this._runningCrc = new Crc.CRC32();
+            this._isClosed= false;
+            this._currentlyFilling = -1;
+            this._lastFilled = -1;
+            this._lastWritten = -1;
+            this._latestCompressed = -1;
+            this._outStream = stream;
         }
 
 
@@ -913,12 +916,12 @@ namespace OfficeOpenXml.Packaging.Ionic.Zlib
             // method invokes this method AGAIN.  This can lead to a deadlock.
             // Therefore, failfast if re-entering.
 
-            if (emitting)
+            if (this.emitting)
             {
                 return;
             }
 
-            emitting = true;
+            this.emitting = true;
             if (doAll || mustWait)
             {
                 this._newlyCompressedBlob.WaitOne();
@@ -932,37 +935,37 @@ namespace OfficeOpenXml.Packaging.Ionic.Zlib
 
                 do
                 {
-                    if (Monitor.TryEnter(_toWrite, millisecondsToWait))
+                    if (Monitor.TryEnter(this._toWrite, millisecondsToWait))
                     {
                         nextToWrite = -1;
                         try
                         {
-                            if (_toWrite.Count > 0)
+                            if (this._toWrite.Count > 0)
                             {
                                 nextToWrite = this._toWrite.Dequeue();
                             }
                         }
                         finally
                         {
-                            Monitor.Exit(_toWrite);
+                            Monitor.Exit(this._toWrite);
                         }
 
                         if (nextToWrite >= 0)
                         {
-                            WorkItem workitem = _pool[nextToWrite];
-                            if (workitem.ordinal != _lastWritten + 1)
+                            WorkItem workitem = this._pool[nextToWrite];
+                            if (workitem.ordinal != this._lastWritten + 1)
                             {
                                 // out of order. requeue and try again.
-                                TraceOutput(TraceBits.EmitSkip,
-                                            "Emit     skip     wi({0}) ord({1}) lw({2}) fs({3})",
-                                            workitem.index,
-                                            workitem.ordinal,
-                                            _lastWritten,
-                                            firstSkip);
+                                this.TraceOutput(TraceBits.EmitSkip,
+                                                 "Emit     skip     wi({0}) ord({1}) lw({2}) fs({3})",
+                                                 workitem.index,
+                                                 workitem.ordinal,
+                                                 this._lastWritten,
+                                                 firstSkip);
 
-                                lock(_toWrite)
+                                lock(this._toWrite)
                                 {
-                                    _toWrite.Enqueue(nextToWrite);
+                                    this._toWrite.Enqueue(nextToWrite);
                                 }
 
                                 if (firstSkip == nextToWrite)
@@ -970,7 +973,7 @@ namespace OfficeOpenXml.Packaging.Ionic.Zlib
                                     // We went around the list once.
                                     // None of the items in the list is the one we want.
                                     // Now wait for a compressor to signal again.
-                                    _newlyCompressedBlob.WaitOne();
+                                    this._newlyCompressedBlob.WaitOne();
                                     firstSkip = -1;
                                 }
                                 else if (firstSkip == -1)
@@ -983,26 +986,26 @@ namespace OfficeOpenXml.Packaging.Ionic.Zlib
 
                             firstSkip = -1;
 
-                            TraceOutput(TraceBits.EmitBegin,
-                                        "Emit     begin    wi({0}) ord({1})              cba({2})",
-                                        workitem.index,
-                                        workitem.ordinal,
-                                        workitem.compressedBytesAvailable);
+                            this.TraceOutput(TraceBits.EmitBegin,
+                                             "Emit     begin    wi({0}) ord({1})              cba({2})",
+                                             workitem.index,
+                                             workitem.ordinal,
+                                             workitem.compressedBytesAvailable);
 
-                            _outStream.Write(workitem.compressed, 0, workitem.compressedBytesAvailable);
-                            _runningCrc.Combine(workitem.crc, workitem.inputBytesAvailable);
-                            _totalBytesProcessed += workitem.inputBytesAvailable;
+                            this._outStream.Write(workitem.compressed, 0, workitem.compressedBytesAvailable);
+                            this._runningCrc.Combine(workitem.crc, workitem.inputBytesAvailable);
+                            this._totalBytesProcessed += workitem.inputBytesAvailable;
                             workitem.inputBytesAvailable = 0;
 
-                            TraceOutput(TraceBits.EmitDone,
-                                        "Emit     done     wi({0}) ord({1})              cba({2}) mtw({3})",
-                                        workitem.index,
-                                        workitem.ordinal,
-                                        workitem.compressedBytesAvailable,
-                                        millisecondsToWait);
+                            this.TraceOutput(TraceBits.EmitDone,
+                                             "Emit     done     wi({0}) ord({1})              cba({2}) mtw({3})",
+                                             workitem.index,
+                                             workitem.ordinal,
+                                             workitem.compressedBytesAvailable,
+                                             millisecondsToWait);
 
-                            _lastWritten = workitem.ordinal;
-                            _toFill.Enqueue(workitem.index);
+                            this._lastWritten = workitem.ordinal;
+                            this._toFill.Enqueue(workitem.index);
 
                             // don't wait next time through
                             if (millisecondsToWait == -1)
@@ -1018,9 +1021,9 @@ namespace OfficeOpenXml.Packaging.Ionic.Zlib
                 } while (nextToWrite >= 0);
 
             //} while (doAll && (_lastWritten != _latestCompressed));
-            } while (doAll && (_lastWritten != _latestCompressed || _lastWritten != _lastFilled));
+            } while (doAll && (this._lastWritten != this._latestCompressed || this._lastWritten != this._lastFilled));
 
-            emitting = false;
+            this.emitting = false;
         }
 
 
@@ -1205,7 +1208,7 @@ namespace OfficeOpenXml.Packaging.Ionic.Zlib
             try
             {
                 int myItem = workitem.index;
-                Ionic.Crc.CRC32 crc = new Ionic.Crc.CRC32();
+                Crc.CRC32 crc = new Crc.CRC32();
 
                 // calc CRC on the buffer
                 crc.SlurpBlock(workitem.buffer, 0, workitem.inputBytesAvailable);
@@ -1215,32 +1218,34 @@ namespace OfficeOpenXml.Packaging.Ionic.Zlib
 
                 // update status
                 workitem.crc = crc.Crc32Result;
-                TraceOutput(TraceBits.Compress,
-                            "Compress          wi({0}) ord({1}) len({2})",
-                            workitem.index,
-                            workitem.ordinal,
-                            workitem.compressedBytesAvailable
-                            );
 
-                lock(_latestLock)
+                this.TraceOutput(TraceBits.Compress,
+                                 "Compress          wi({0}) ord({1}) len({2})",
+                                 workitem.index,
+                                 workitem.ordinal,
+                                 workitem.compressedBytesAvailable
+                                );
+
+                lock(this._latestLock)
                 {
-                    if (workitem.ordinal > _latestCompressed)
+                    if (workitem.ordinal > this._latestCompressed)
                     {
                         this._latestCompressed = workitem.ordinal;
                     }
                 }
-                lock (_toWrite)
+                lock (this._toWrite)
                 {
-                    _toWrite.Enqueue(workitem.index);
+                    this._toWrite.Enqueue(workitem.index);
                 }
-                _newlyCompressedBlob.Set();
+
+                this._newlyCompressedBlob.Set();
             }
-            catch (System.Exception exc1)
+            catch (Exception exc1)
             {
-                lock(_eLock)
+                lock(this._eLock)
                 {
                     // expose the exception to the main thread
-                    if (_pendingException!=null)
+                    if (this._pendingException!=null)
                     {
                         this._pendingException = exc1;
                     }
@@ -1280,9 +1285,9 @@ namespace OfficeOpenXml.Packaging.Ionic.Zlib
         [System.Diagnostics.ConditionalAttribute("Trace")]
         private void TraceOutput(TraceBits bits, string format, params object[] varParams)
         {
-            if ((bits & _DesiredTrace) != 0)
+            if ((bits & this._DesiredTrace) != 0)
             {
-                lock(_outputLock)
+                lock(this._outputLock)
                 {
                     int tid = Thread.CurrentThread.GetHashCode();
 #if !SILVERLIGHT
@@ -1355,7 +1360,7 @@ namespace OfficeOpenXml.Packaging.Ionic.Zlib
         /// </remarks>
         public override bool CanWrite
         {
-            get { return _outStream.CanWrite; }
+            get { return this._outStream.CanWrite; }
         }
 
         /// <summary>
@@ -1378,7 +1383,7 @@ namespace OfficeOpenXml.Packaging.Ionic.Zlib
         /// </remarks>
         public override long Position
         {
-            get { return _outStream.Position; }
+            get { return this._outStream.Position; }
             set { throw new NotSupportedException(); }
         }
 
@@ -1416,7 +1421,7 @@ namespace OfficeOpenXml.Packaging.Ionic.Zlib
         ///   THIS METHOD ACTUALLY DID ANYTHING.
         /// </param>
         /// <returns>nothing. It always throws.</returns>
-        public override long Seek(long offset, System.IO.SeekOrigin origin)
+        public override long Seek(long offset, SeekOrigin origin)
         {
             throw new NotSupportedException();
         }

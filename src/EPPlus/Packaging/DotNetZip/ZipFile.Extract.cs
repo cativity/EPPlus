@@ -149,7 +149,7 @@ namespace OfficeOpenXml.Packaging.Ionic.Zip
         ///
         public void ExtractAll(string path)
         {
-            _InternalExtractAll(path, true);
+            this._InternalExtractAll(path, true);
         }
 
 
@@ -218,44 +218,45 @@ namespace OfficeOpenXml.Packaging.Ionic.Zip
         /// <seealso cref="ExtractSelectedEntries(String,ExtractExistingFileAction)"/>
         internal void ExtractAll(string path, ExtractExistingFileAction extractExistingFile)
         {
-            ExtractExistingFile = extractExistingFile;
-            _InternalExtractAll(path, true);
+            this.ExtractExistingFile = extractExistingFile;
+            this._InternalExtractAll(path, true);
         }
 
 
         private void _InternalExtractAll(string path, bool overrideExtractExistingProperty)
         {
-            bool header = Verbose;
-            _inExtractAll = true;
+            bool header = this.Verbose;
+            this._inExtractAll = true;
             try
             {
-                OnExtractAllStarted(path);
+                this.OnExtractAllStarted(path);
 
                 int n = 0;
-                foreach (ZipEntry e in _entries.Values)
+                foreach (ZipEntry e in this._entries.Values)
                 {
                     if (header)
                     {
-                        StatusMessageTextWriter.WriteLine("\n{1,-22} {2,-8} {3,4}   {4,-8}  {0}",
-                                  "Name", "Modified", "Size", "Ratio", "Packed");
-                        StatusMessageTextWriter.WriteLine(new System.String('-', 72));
+                        this.StatusMessageTextWriter.WriteLine("\n{1,-22} {2,-8} {3,4}   {4,-8}  {0}",
+                                                               "Name", "Modified", "Size", "Ratio", "Packed");
+
+                        this.StatusMessageTextWriter.WriteLine(new String('-', 72));
                         header = false;
                     }
-                    if (Verbose)
+                    if (this.Verbose)
                     {
-                        StatusMessageTextWriter.WriteLine("{1,-22} {2,-8} {3,4:F0}%   {4,-8} {0}",
-                                  e.FileName,
-                                  e.LastModified.ToString("yyyy-MM-dd HH:mm:ss"),
-                                  e.UncompressedSize,
-                                  e.CompressionRatio,
-                                  e.CompressedSize);
+                        this.StatusMessageTextWriter.WriteLine("{1,-22} {2,-8} {3,4:F0}%   {4,-8} {0}",
+                                                               e.FileName,
+                                                               e.LastModified.ToString("yyyy-MM-dd HH:mm:ss"),
+                                                               e.UncompressedSize,
+                                                               e.CompressionRatio,
+                                                               e.CompressedSize);
                         if (!String.IsNullOrEmpty(e.Comment))
                         {
                             this.StatusMessageTextWriter.WriteLine("  Comment: {0}", e.Comment);
                         }
                     }
-                    e.Password = _Password;  // this may be null
-                    OnExtractEntry(n, true, e, path);
+                    e.Password = this._Password;  // this may be null
+                    this.OnExtractEntry(n, true, e, path);
                     if (overrideExtractExistingProperty)
                     {
                         e.ExtractExistingFile = this.ExtractExistingFile;
@@ -263,21 +264,21 @@ namespace OfficeOpenXml.Packaging.Ionic.Zip
 
                     e.Extract(path);
                     n++;
-                    OnExtractEntry(n, false, e, path);
-                    if (_extractOperationCanceled)
+                    this.OnExtractEntry(n, false, e, path);
+                    if (this._extractOperationCanceled)
                     {
                         break;
                     }
                 }
 
-                if (!_extractOperationCanceled)
+                if (!this._extractOperationCanceled)
                 {
                     // workitem 8264:
                     // now, set times on directory entries, again.
                     // The problem is, extracting a file changes the times on the parent
                     // directory.  So after all files have been extracted, we have to
                     // run through the directories again.
-                    foreach (ZipEntry e in _entries.Values)
+                    foreach (ZipEntry e in this._entries.Values)
                     {
                         // check if it is a directory
                         if ((e.IsDirectory) || (e.FileName.EndsWith("/")))
@@ -289,14 +290,14 @@ namespace OfficeOpenXml.Packaging.Ionic.Zip
                             e._SetTimes(outputFile, false);
                         }
                     }
-                    OnExtractAllCompleted(path);
+
+                    this.OnExtractAllCompleted(path);
                 }
 
             }
             finally
             {
-
-                _inExtractAll = false;
+                this._inExtractAll = false;
             }
         }
 

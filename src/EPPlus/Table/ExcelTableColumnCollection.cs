@@ -30,16 +30,16 @@ namespace OfficeOpenXml.Table
         internal int _maxId = 1;
         internal ExcelTableColumnCollection(ExcelTable table)
         {
-            Table = table;
+            this.Table = table;
             foreach(XmlNode node in table.TableXml.SelectNodes("//d:table/d:tableColumns/d:tableColumn",table.NameSpaceManager))
             {
-                ExcelTableColumn? item = new ExcelTableColumn(table.NameSpaceManager, node, table, _cols.Count);
-                _cols.Add(item);
-                _colNames.Add(_cols[_cols.Count - 1].Name, _cols.Count - 1);
+                ExcelTableColumn? item = new ExcelTableColumn(table.NameSpaceManager, node, table, this._cols.Count);
+                this._cols.Add(item);
+                this._colNames.Add(this._cols[this._cols.Count - 1].Name, this._cols.Count - 1);
                 int id = item.Id;
-                if (id>=_maxId)
+                if (id>= this._maxId)
                 {
-                    _maxId = id+1;
+                    this._maxId = id+1;
                 }
             }
         }
@@ -58,7 +58,7 @@ namespace OfficeOpenXml.Table
         {
             get
             {
-                return _cols.Count;
+                return this._cols.Count;
             }
         }
         /// <summary>
@@ -70,11 +70,11 @@ namespace OfficeOpenXml.Table
         {
             get
             {
-                if (Index < 0 || Index >= _cols.Count)
+                if (Index < 0 || Index >= this._cols.Count)
                 {
                     throw (new ArgumentOutOfRangeException("Column index out of range"));
                 }
-                return _cols[Index] as ExcelTableColumn;
+                return this._cols[Index] as ExcelTableColumn;
             }
         }
         /// <summary>
@@ -86,9 +86,9 @@ namespace OfficeOpenXml.Table
         {
             get
             {
-                if (_colNames.ContainsKey(Name))
+                if (this._colNames.ContainsKey(Name))
                 {
-                    return _cols[_colNames[Name]];
+                    return this._cols[this._colNames[Name]];
                 }
                 else
                 {
@@ -99,16 +99,16 @@ namespace OfficeOpenXml.Table
 
         IEnumerator<ExcelTableColumn> IEnumerable<ExcelTableColumn>.GetEnumerator()
         {
-            return _cols.GetEnumerator();
+            return this._cols.GetEnumerator();
         }
 
         System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator()
         {
-            return _cols.GetEnumerator();
+            return this._cols.GetEnumerator();
         }
         internal string GetUniqueName(string name)
         {            
-            if (_colNames.ContainsKey(name))
+            if (this._colNames.ContainsKey(name))
             {
                 string? newName = name;
                 int i = 2;
@@ -116,7 +116,7 @@ namespace OfficeOpenXml.Table
                 {
                     newName = name+(i++).ToString(CultureInfo.InvariantCulture);
                 }
-                while (_colNames.ContainsKey(newName));
+                while (this._colNames.ContainsKey(newName));
                 return newName;
             }
             return name;
@@ -128,7 +128,7 @@ namespace OfficeOpenXml.Table
         /// <returns>The added range</returns>
         public ExcelRangeBase Add(int columns = 1)
         {
-            return Insert(int.MaxValue, columns);
+            return this.Insert(int.MaxValue, columns);
         }
         /// <summary>
         /// Inserts one or more columns before the specified position in the table.
@@ -138,24 +138,24 @@ namespace OfficeOpenXml.Table
         /// <returns>The inserted range</returns>
         public ExcelRangeBase Insert(int position, int columns = 1)
         {
-            lock(Table)
+            lock(this.Table)
             {
-                ExcelRangeBase? range = Table.InsertColumn(position, columns);
+                ExcelRangeBase? range = this.Table.InsertColumn(position, columns);
                 XmlNode refNode;
-                if (position >= _cols.Count)
+                if (position >= this._cols.Count)
                 {
-                    refNode = _cols[_cols.Count - 1].TopNode;
-                    position = _cols.Count;
+                    refNode = this._cols[this._cols.Count - 1].TopNode;
+                    position = this._cols.Count;
                 }
                 else
                 {
-                    refNode = _cols[position].TopNode;
+                    refNode = this._cols[position].TopNode;
                 }
                 for (int i = position; i < position + columns; i++)
                 {
-                    XmlElement? node = Table.TableXml.CreateElement("tableColumn", ExcelPackage.schemaMain);
+                    XmlElement? node = this.Table.TableXml.CreateElement("tableColumn", ExcelPackage.schemaMain);
 
-                    if (i >= _cols.Count)
+                    if (i >= this._cols.Count)
                     {
                         refNode.ParentNode.AppendChild(node);
                     }
@@ -163,16 +163,17 @@ namespace OfficeOpenXml.Table
                     {
                         refNode.ParentNode.InsertBefore(node, refNode);
                     }
-                    ExcelTableColumn? item = new ExcelTableColumn(Table.NameSpaceManager, node, Table, i);
-                    item.Name = GetUniqueName($"Column{i + 1}");
-                    item.Id = _maxId++;
-                    _cols.Insert(i, item);
+                    ExcelTableColumn? item = new ExcelTableColumn(this.Table.NameSpaceManager, node, this.Table, i);
+                    item.Name = this.GetUniqueName($"Column{i + 1}");
+                    item.Id = this._maxId++;
+                    this._cols.Insert(i, item);
                 }
-                for (int i = position; i < _cols.Count; i++)
+                for (int i = position; i < this._cols.Count; i++)
                 {
-                    _cols[i].Position = i;
+                    this._cols[i].Position = i;
                 }
-                _colNames = _cols.ToDictionary(x => x.Name, y => y.Position);
+
+                this._colNames = this._cols.ToDictionary(x => x.Name, y => y.Position);
                 return range;
             }
         }
@@ -184,7 +185,7 @@ namespace OfficeOpenXml.Table
         /// <returns>The inserted range</returns>
         public ExcelRangeBase Delete(int position, int columns = 1)
         {
-            lock (Table)
+            lock (this.Table)
             {
                 if (position < 0)
                 {
@@ -195,25 +196,26 @@ namespace OfficeOpenXml.Table
                     throw new ArgumentException("columns", "columns can't be negative");
                 }
 
-                if (Table.Address._toCol < Table.Address._fromCol + position + columns - 1)
+                if (this.Table.Address._toCol < this.Table.Address._fromCol + position + columns - 1)
                 {
                     throw new InvalidOperationException("Delete will exceed the number of columns in the table");
                 }
 
                 for (int i = position + columns - 1; i >= position; i--)
                 {
-                    XmlNode? n = Table.Columns[i].TopNode;
+                    XmlNode? n = this.Table.Columns[i].TopNode;
                     n.ParentNode.RemoveChild(n);
-                    Table.Columns._colNames.Remove(_cols[i].Name);
-                    Table.Columns._cols.RemoveAt(i);
+                    this.Table.Columns._colNames.Remove(this._cols[i].Name);
+                    this.Table.Columns._cols.RemoveAt(i);
                 }
-                for (int i = position; i < _cols.Count; i++)
+                for (int i = position; i < this._cols.Count; i++)
                 {
-                    _cols[i].Position = i;
+                    this._cols[i].Position = i;
                 }
-                _colNames = _cols.ToDictionary(x => x.Name, y => y.Position);
 
-                ExcelRangeBase? range = Table.DeleteColumn(position, columns);
+                this._colNames = this._cols.ToDictionary(x => x.Name, y => y.Position);
+
+                ExcelRangeBase? range = this.Table.DeleteColumn(position, columns);
                 return range;
             }
         }

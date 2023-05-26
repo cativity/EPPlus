@@ -29,7 +29,7 @@ namespace OfficeOpenXml.Drawing.Chart.Style
         Dictionary<string, HashInfo> _hashes = new Dictionary<string, HashInfo>();
         internal ExcelChartStyle(XmlNamespaceManager nsm, XmlNode topNode, ExcelChartStyleManager manager) : base(nsm, topNode)
         {
-            _manager = manager;            
+            this._manager = manager;            
         }
         ExcelChartStyleEntry _axisTitle = null;
         /// <summary>
@@ -39,11 +39,11 @@ namespace OfficeOpenXml.Drawing.Chart.Style
         {
             get
             {
-                if (_axisTitle == null)
+                if (this._axisTitle == null)
                 {
-                    _axisTitle = new ExcelChartStyleEntry(NameSpaceManager, TopNode, "cs:axisTitle", this);
+                    this._axisTitle = new ExcelChartStyleEntry(this.NameSpaceManager, this.TopNode, "cs:axisTitle", this);
                 }
-                return _axisTitle;
+                return this._axisTitle;
             }
         }
         ExcelChartStyleEntry _categoryAxis = null;
@@ -54,11 +54,11 @@ namespace OfficeOpenXml.Drawing.Chart.Style
         {
             get
             {
-                if (_categoryAxis == null)
+                if (this._categoryAxis == null)
                 {
-                    _categoryAxis = new ExcelChartStyleEntry(NameSpaceManager, TopNode, "cs:categoryAxis", this);
+                    this._categoryAxis = new ExcelChartStyleEntry(this.NameSpaceManager, this.TopNode, "cs:categoryAxis", this);
                 }
-                return _categoryAxis;
+                return this._categoryAxis;
             }
         }
         ExcelChartStyleEntry _chartArea = null;
@@ -69,11 +69,11 @@ namespace OfficeOpenXml.Drawing.Chart.Style
         {
             get
             {
-                if (_chartArea == null)
+                if (this._chartArea == null)
                 {
-                    _chartArea = new ExcelChartStyleEntry(NameSpaceManager, TopNode, "cs:chartArea", this);
+                    this._chartArea = new ExcelChartStyleEntry(this.NameSpaceManager, this.TopNode, "cs:chartArea", this);
                 }
-                return _chartArea;
+                return this._chartArea;
             }
         }
         ExcelChartStyleEntry _dataLabel = null;
@@ -84,11 +84,11 @@ namespace OfficeOpenXml.Drawing.Chart.Style
         {
             get
             {
-                if (_dataLabel == null)
+                if (this._dataLabel == null)
                 {
-                    _dataLabel = new ExcelChartStyleEntry(NameSpaceManager, TopNode, "cs:dataLabel", this);
+                    this._dataLabel = new ExcelChartStyleEntry(this.NameSpaceManager, this.TopNode, "cs:dataLabel", this);
                 }
-                return _dataLabel;
+                return this._dataLabel;
             }
         }
         ExcelChartStyleEntry _dataLabelCallout = null;
@@ -99,11 +99,11 @@ namespace OfficeOpenXml.Drawing.Chart.Style
         {
             get
             {
-                if (_dataLabelCallout == null)
+                if (this._dataLabelCallout == null)
                 {
-                    _dataLabelCallout = new ExcelChartStyleEntry(NameSpaceManager, TopNode, "cs:dataLabelCallout", this);
+                    this._dataLabelCallout = new ExcelChartStyleEntry(this.NameSpaceManager, this.TopNode, "cs:dataLabelCallout", this);
                 }
-                return _dataLabelCallout;
+                return this._dataLabelCallout;
             }
         }
         ExcelChartStyleEntry _dataPoint = null;
@@ -114,11 +114,11 @@ namespace OfficeOpenXml.Drawing.Chart.Style
         {
             get
             {
-                if (_dataPoint == null)
+                if (this._dataPoint == null)
                 {
-                    _dataPoint = new ExcelChartStyleEntry(NameSpaceManager, TopNode, "cs:dataPoint", this);
+                    this._dataPoint = new ExcelChartStyleEntry(this.NameSpaceManager, this.TopNode, "cs:dataPoint", this);
                 }
-                return _dataPoint;
+                return this._dataPoint;
             }
         }
         ExcelChartStyleEntry _dataPoint3D = null;
@@ -129,11 +129,11 @@ namespace OfficeOpenXml.Drawing.Chart.Style
         {
             get
             {
-                if (_dataPoint3D == null)
+                if (this._dataPoint3D == null)
                 {
-                    _dataPoint3D = new ExcelChartStyleEntry(NameSpaceManager, TopNode, "cs:dataPoint3D", this);
+                    this._dataPoint3D = new ExcelChartStyleEntry(this.NameSpaceManager, this.TopNode, "cs:dataPoint3D", this);
                 }
-                return _dataPoint3D;
+                return this._dataPoint3D;
             }
         }
         ExcelChartStyleEntry _dataPointLine = null;
@@ -144,11 +144,11 @@ namespace OfficeOpenXml.Drawing.Chart.Style
         {
             get
             {
-                if (_dataPointLine == null)
+                if (this._dataPointLine == null)
                 {
-                    _dataPointLine = new ExcelChartStyleEntry(NameSpaceManager, TopNode, "cs:dataPointLine", this);
+                    this._dataPointLine = new ExcelChartStyleEntry(this.NameSpaceManager, this.TopNode, "cs:dataPointLine", this);
                 }
-                return _dataPointLine;
+                return this._dataPointLine;
             }
         }
         ExcelChartStyleEntry _dataPointMarker = null;
@@ -159,11 +159,11 @@ namespace OfficeOpenXml.Drawing.Chart.Style
         {
             get
             {
-                if (_dataPointMarker == null)
+                if (this._dataPointMarker == null)
                 {
-                    _dataPointMarker = new ExcelChartStyleEntry(NameSpaceManager, TopNode, "cs:dataPointMarker", this);
+                    this._dataPointMarker = new ExcelChartStyleEntry(this.NameSpaceManager, this.TopNode, "cs:dataPointMarker", this);
                 }
-                return _dataPointMarker;
+                return this._dataPointMarker;
             }
         }
         ExcelChartStyleMarkerLayout _dataPointMarkerLayout = null;
@@ -174,16 +174,17 @@ namespace OfficeOpenXml.Drawing.Chart.Style
         {
             get
             {
-                if (_dataPointMarkerLayout == null)
+                if (this._dataPointMarkerLayout == null)
                 {
-                    XmlNode? node = GetNode("cs:dataPointMarkerLayout");
+                    XmlNode? node = this.GetNode("cs:dataPointMarkerLayout");
                     if(node == null)
                     {
                         throw new InvalidOperationException("Invalid Chartstyle xml: dataPointMarkerLayout element missing");
                     }
-                    _dataPointMarkerLayout = new ExcelChartStyleMarkerLayout(NameSpaceManager, node);
+
+                    this._dataPointMarkerLayout = new ExcelChartStyleMarkerLayout(this.NameSpaceManager, node);
                 }
-                return _dataPointMarkerLayout;
+                return this._dataPointMarkerLayout;
             }
         }
         ExcelChartStyleEntry _dataPointWireframe = null;
@@ -194,11 +195,11 @@ namespace OfficeOpenXml.Drawing.Chart.Style
         {
             get
             {
-                if (_dataPointWireframe == null)
+                if (this._dataPointWireframe == null)
                 {
-                    _dataPointWireframe = new ExcelChartStyleEntry(NameSpaceManager, TopNode, "cs:dataPointWireframe", this);
+                    this._dataPointWireframe = new ExcelChartStyleEntry(this.NameSpaceManager, this.TopNode, "cs:dataPointWireframe", this);
                 }
-                return _dataPointWireframe;
+                return this._dataPointWireframe;
             }
         }
         ExcelChartStyleEntry _dataTable = null;
@@ -209,11 +210,11 @@ namespace OfficeOpenXml.Drawing.Chart.Style
         {
             get
             {
-                if (_dataTable == null)
+                if (this._dataTable == null)
                 {
-                    _dataTable = new ExcelChartStyleEntry(NameSpaceManager, TopNode, "cs:dataTable", this);
+                    this._dataTable = new ExcelChartStyleEntry(this.NameSpaceManager, this.TopNode, "cs:dataTable", this);
                 }
-                return _dataTable;
+                return this._dataTable;
             }
         }
         ExcelChartStyleEntry _downBar = null;
@@ -224,11 +225,11 @@ namespace OfficeOpenXml.Drawing.Chart.Style
         {
             get
             {
-                if (_downBar == null)
+                if (this._downBar == null)
                 {
-                    _downBar = new ExcelChartStyleEntry(NameSpaceManager, TopNode, "cs:downBar", this);
+                    this._downBar = new ExcelChartStyleEntry(this.NameSpaceManager, this.TopNode, "cs:downBar", this);
                 }
-                return _downBar;
+                return this._downBar;
             }
         }
         ExcelChartStyleEntry _dropLine = null;
@@ -239,11 +240,11 @@ namespace OfficeOpenXml.Drawing.Chart.Style
         {
             get
             {
-                if (_dropLine == null)
+                if (this._dropLine == null)
                 {
-                    _dropLine = new ExcelChartStyleEntry(NameSpaceManager, TopNode, "cs:dropLine", this);
+                    this._dropLine = new ExcelChartStyleEntry(this.NameSpaceManager, this.TopNode, "cs:dropLine", this);
                 }
-                return _dropLine;
+                return this._dropLine;
             }
         }
         ExcelChartStyleEntry _errorBar = null;
@@ -254,11 +255,11 @@ namespace OfficeOpenXml.Drawing.Chart.Style
         {
             get
             {
-                if (_errorBar == null)
+                if (this._errorBar == null)
                 {
-                    _errorBar = new ExcelChartStyleEntry(NameSpaceManager, TopNode, "cs:errorBar", this);
+                    this._errorBar = new ExcelChartStyleEntry(this.NameSpaceManager, this.TopNode, "cs:errorBar", this);
                 }
-                return _errorBar;
+                return this._errorBar;
             }
         }
         ExcelChartStyleEntry _floor = null;
@@ -269,11 +270,11 @@ namespace OfficeOpenXml.Drawing.Chart.Style
         {
             get
             {
-                if (_floor == null)
+                if (this._floor == null)
                 {
-                    _floor = new ExcelChartStyleEntry(NameSpaceManager, TopNode, "cs:floor", this);
+                    this._floor = new ExcelChartStyleEntry(this.NameSpaceManager, this.TopNode, "cs:floor", this);
                 }
-                return _floor;
+                return this._floor;
             }
         }
         ExcelChartStyleEntry _gridlineMajor = null;
@@ -284,11 +285,11 @@ namespace OfficeOpenXml.Drawing.Chart.Style
         {
             get
             {
-                if (_gridlineMajor == null)
+                if (this._gridlineMajor == null)
                 {
-                    _gridlineMajor = new ExcelChartStyleEntry(NameSpaceManager, TopNode, "cs:gridlineMajor", this);
+                    this._gridlineMajor = new ExcelChartStyleEntry(this.NameSpaceManager, this.TopNode, "cs:gridlineMajor", this);
                 }
-                return _gridlineMajor;
+                return this._gridlineMajor;
             }
         }
         ExcelChartStyleEntry _gridlineMinor = null;
@@ -299,11 +300,11 @@ namespace OfficeOpenXml.Drawing.Chart.Style
         {
             get
             {
-                if (_gridlineMinor == null)
+                if (this._gridlineMinor == null)
                 {
-                    _gridlineMinor = new ExcelChartStyleEntry(NameSpaceManager, TopNode, "cs:gridlineMinor", this);
+                    this._gridlineMinor = new ExcelChartStyleEntry(this.NameSpaceManager, this.TopNode, "cs:gridlineMinor", this);
                 }
-                return _gridlineMinor;
+                return this._gridlineMinor;
             }
         }
         ExcelChartStyleEntry _hiLoLine = null;
@@ -314,11 +315,11 @@ namespace OfficeOpenXml.Drawing.Chart.Style
         {
             get
             {
-                if (_hiLoLine == null)
+                if (this._hiLoLine == null)
                 {
-                    _hiLoLine = new ExcelChartStyleEntry(NameSpaceManager, TopNode, "cs:hiLoLine", this);
+                    this._hiLoLine = new ExcelChartStyleEntry(this.NameSpaceManager, this.TopNode, "cs:hiLoLine", this);
                 }
-                return _hiLoLine;
+                return this._hiLoLine;
             }
         }
         ExcelChartStyleEntry _leaderLine = null;
@@ -329,11 +330,11 @@ namespace OfficeOpenXml.Drawing.Chart.Style
         {
             get
             {
-                if (_leaderLine == null)
+                if (this._leaderLine == null)
                 {
-                    _leaderLine = new ExcelChartStyleEntry(NameSpaceManager, TopNode, "cs:leaderLine", this);
+                    this._leaderLine = new ExcelChartStyleEntry(this.NameSpaceManager, this.TopNode, "cs:leaderLine", this);
                 }
-                return _leaderLine;
+                return this._leaderLine;
             }
         }
         /// <summary>
@@ -347,11 +348,11 @@ namespace OfficeOpenXml.Drawing.Chart.Style
         {
             get
             {
-                if (_legend == null)
+                if (this._legend == null)
                 {
-                    _legend = new ExcelChartStyleEntry(NameSpaceManager, TopNode, "cs:legend", this);
+                    this._legend = new ExcelChartStyleEntry(this.NameSpaceManager, this.TopNode, "cs:legend", this);
                 }
-                return _legend;
+                return this._legend;
             }
         }
         ExcelChartStyleEntry _plotArea = null;
@@ -362,11 +363,11 @@ namespace OfficeOpenXml.Drawing.Chart.Style
         {
             get
             {
-                if (_plotArea == null)
+                if (this._plotArea == null)
                 {
-                    _plotArea = new ExcelChartStyleEntry(NameSpaceManager, TopNode, "cs:plotArea", this);
+                    this._plotArea = new ExcelChartStyleEntry(this.NameSpaceManager, this.TopNode, "cs:plotArea", this);
                 }
-                return _plotArea;
+                return this._plotArea;
             }
         }
         ExcelChartStyleEntry _plotArea3D = null;
@@ -377,11 +378,11 @@ namespace OfficeOpenXml.Drawing.Chart.Style
         {
             get
             {
-                if (_plotArea3D == null)
+                if (this._plotArea3D == null)
                 {
-                    _plotArea3D = new ExcelChartStyleEntry(NameSpaceManager, TopNode, "cs:plotArea3D", this);
+                    this._plotArea3D = new ExcelChartStyleEntry(this.NameSpaceManager, this.TopNode, "cs:plotArea3D", this);
                 }
-                return _plotArea3D;
+                return this._plotArea3D;
             }
         }
         ExcelChartStyleEntry _seriesAxis = null;
@@ -392,11 +393,11 @@ namespace OfficeOpenXml.Drawing.Chart.Style
         {
             get
             {
-                if (_seriesAxis == null)
+                if (this._seriesAxis == null)
                 {
-                    _seriesAxis = new ExcelChartStyleEntry(NameSpaceManager, TopNode, "cs:seriesAxis", this);
+                    this._seriesAxis = new ExcelChartStyleEntry(this.NameSpaceManager, this.TopNode, "cs:seriesAxis", this);
                 }
-                return _seriesAxis;
+                return this._seriesAxis;
             }
         }
         ExcelChartStyleEntry _seriesLine = null;
@@ -407,11 +408,11 @@ namespace OfficeOpenXml.Drawing.Chart.Style
         {
             get
             {
-                if (_seriesLine == null)
+                if (this._seriesLine == null)
                 {
-                    _seriesLine = new ExcelChartStyleEntry(NameSpaceManager, TopNode, "cs:seriesLine", this);
+                    this._seriesLine = new ExcelChartStyleEntry(this.NameSpaceManager, this.TopNode, "cs:seriesLine", this);
                 }
-                return _seriesLine;
+                return this._seriesLine;
             }
         }
         ExcelChartStyleEntry _title = null;
@@ -422,11 +423,11 @@ namespace OfficeOpenXml.Drawing.Chart.Style
         {
             get
             {
-                if (_title == null)
+                if (this._title == null)
                 {
-                    _title = new ExcelChartStyleEntry(NameSpaceManager, TopNode, "cs:title", this);
+                    this._title = new ExcelChartStyleEntry(this.NameSpaceManager, this.TopNode, "cs:title", this);
                 }
-                return _title;
+                return this._title;
             }
         }
         ExcelChartStyleEntry _trendline = null;
@@ -437,11 +438,11 @@ namespace OfficeOpenXml.Drawing.Chart.Style
         {
             get
             {
-                if (_trendline == null)
+                if (this._trendline == null)
                 {
-                    _trendline = new ExcelChartStyleEntry(NameSpaceManager, TopNode, "cs:trendline", this);
+                    this._trendline = new ExcelChartStyleEntry(this.NameSpaceManager, this.TopNode, "cs:trendline", this);
                 }
-                return _trendline;
+                return this._trendline;
             }
         }
         ExcelChartStyleEntry _trendlineLabel = null;
@@ -452,11 +453,11 @@ namespace OfficeOpenXml.Drawing.Chart.Style
         {
             get
             {
-                if (_trendlineLabel == null)
+                if (this._trendlineLabel == null)
                 {
-                    _trendlineLabel = new ExcelChartStyleEntry(NameSpaceManager, TopNode, "cs:trendlineLabel", this);
+                    this._trendlineLabel = new ExcelChartStyleEntry(this.NameSpaceManager, this.TopNode, "cs:trendlineLabel", this);
                 }
-                return _trendlineLabel;
+                return this._trendlineLabel;
             }
         }
         ExcelChartStyleEntry _upBar = null;
@@ -467,11 +468,11 @@ namespace OfficeOpenXml.Drawing.Chart.Style
         {
             get
             {
-                if (_upBar == null)
+                if (this._upBar == null)
                 {
-                    _upBar = new ExcelChartStyleEntry(NameSpaceManager, TopNode, "cs:upBar", this);
+                    this._upBar = new ExcelChartStyleEntry(this.NameSpaceManager, this.TopNode, "cs:upBar", this);
                 }
-                return _upBar;
+                return this._upBar;
             }
         }
         ExcelChartStyleEntry _valueAxis = null;
@@ -482,11 +483,11 @@ namespace OfficeOpenXml.Drawing.Chart.Style
         {
             get
             {
-                if (_valueAxis == null)
+                if (this._valueAxis == null)
                 {
-                    _valueAxis = new ExcelChartStyleEntry(NameSpaceManager, TopNode, "cs:valueAxis", this);
+                    this._valueAxis = new ExcelChartStyleEntry(this.NameSpaceManager, this.TopNode, "cs:valueAxis", this);
                 }
-                return _valueAxis;
+                return this._valueAxis;
             }
         }
         ExcelChartStyleEntry _wall = null;
@@ -497,11 +498,11 @@ namespace OfficeOpenXml.Drawing.Chart.Style
         {
             get
             {
-                if (_wall == null)
+                if (this._wall == null)
                 {
-                    _wall = new ExcelChartStyleEntry(NameSpaceManager, TopNode, "cs:wall", this);
+                    this._wall = new ExcelChartStyleEntry(this.NameSpaceManager, this.TopNode, "cs:wall", this);
                 }
-                return _wall;
+                return this._wall;
             }
         }
 
@@ -512,20 +513,20 @@ namespace OfficeOpenXml.Drawing.Chart.Style
         {
             get
             {
-                return GetXmlNodeInt("@id");
+                return this.GetXmlNodeInt("@id");
             }
             internal set
             {
-                SetXmlNodeString("@id", value.ToString(CultureInfo.InvariantCulture));
+                this.SetXmlNodeString("@id", value.ToString(CultureInfo.InvariantCulture));
             }
         }
 
-        ExcelPackage IPictureRelationDocument.Package => _manager._chart._drawings._package;
+        ExcelPackage IPictureRelationDocument.Package => this._manager._chart._drawings._package;
 
-        Dictionary<string, HashInfo> IPictureRelationDocument.Hashes => _hashes;
+        Dictionary<string, HashInfo> IPictureRelationDocument.Hashes => this._hashes;
 
-        ZipPackagePart IPictureRelationDocument.RelatedPart => _manager.StylePart;
+        ZipPackagePart IPictureRelationDocument.RelatedPart => this._manager.StylePart;
 
-        Uri IPictureRelationDocument.RelatedUri => _manager.StyleUri;
+        Uri IPictureRelationDocument.RelatedUri => this._manager.StyleUri;
     }
 }

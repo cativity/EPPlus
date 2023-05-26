@@ -23,7 +23,7 @@ namespace OfficeOpenXml.ExcelXMLWriter
 
         public ExtLstHelper(string xml)
         {
-            ParseIntialXmlToList(xml);
+            this.ParseIntialXmlToList(xml);
         }
 
         private void ParseIntialXmlToList(string xml)
@@ -38,17 +38,17 @@ namespace OfficeOpenXml.ExcelXMLWriter
                 string extNodesOnly = xml.Substring(contentStart, end - contentStart - "</ExtLst>".Length);
 
                 string[] strLst = { "</ext>" };
-                listOfExts = extNodesOnly.Split(strLst, StringSplitOptions.RemoveEmptyEntries).ToList();
+                this.listOfExts = extNodesOnly.Split(strLst, StringSplitOptions.RemoveEmptyEntries).ToList();
 
-                for (int i = 0; i < listOfExts.Count; i++)
+                for (int i = 0; i < this.listOfExts.Count; i++)
                 {
-                    int startOfUri = listOfExts[i].LastIndexOf("{");
-                    int endOfUri = listOfExts[i].LastIndexOf("}") + 1;
+                    int startOfUri = this.listOfExts[i].LastIndexOf("{");
+                    int endOfUri = this.listOfExts[i].LastIndexOf("}") + 1;
 
-                    string uri = listOfExts[i].Substring(startOfUri, endOfUri - startOfUri);
+                    string uri = this.listOfExts[i].Substring(startOfUri, endOfUri - startOfUri);
 
-                    uriToIndex.Add(uri, i);
-                    listOfExts[i] += "</ext>";
+                    this.uriToIndex.Add(uri, i);
+                    this.listOfExts[i] += "</ext>";
                 }
             }
         }
@@ -65,38 +65,40 @@ namespace OfficeOpenXml.ExcelXMLWriter
             int indexOfNode = -1;
             if (uriOfNodeBefore != "")
             {
-                indexOfNode = uriToIndex[uriOfNodeBefore];
+                indexOfNode = this.uriToIndex[uriOfNodeBefore];
             }
 
-            List<string> keys = new List<string>(uriToIndex.Keys);
+            List<string> keys = new List<string>(this.uriToIndex.Keys);
 
             if (indexOfNode == -1)
             {
-                listOfExts.Insert(0, content);
+                this.listOfExts.Insert(0, content);
                 foreach (string key in keys)
                 {
-                    uriToIndex[key] += 1;
+                    this.uriToIndex[key] += 1;
                 }
-                uriToIndex.Add(uri, 0);
+
+                this.uriToIndex.Add(uri, 0);
             }
             else
             {
-                if (indexOfNode + 1 > listOfExts.Count)
+                if (indexOfNode + 1 > this.listOfExts.Count)
                 {
-                    listOfExts.Add(content);
+                    this.listOfExts.Add(content);
                 }
                 else
                 {
-                    listOfExts.Insert(indexOfNode + 1, content);
+                    this.listOfExts.Insert(indexOfNode + 1, content);
                     foreach (string key in keys)
                     {
-                        if (indexOfNode + 1 >= uriToIndex[key])
+                        if (indexOfNode + 1 >= this.uriToIndex[key])
                         {
-                            uriToIndex[key] += 1;
+                            this.uriToIndex[key] += 1;
                         }
                     }
                 }
-                uriToIndex.Add(uri, indexOfNode + 1);
+
+                this.uriToIndex.Add(uri, indexOfNode + 1);
             }
         }
 
@@ -104,9 +106,9 @@ namespace OfficeOpenXml.ExcelXMLWriter
         {
             string extLstString = "<extLst>";
 
-            for (int i = 0; i < listOfExts.Count; i++)
+            for (int i = 0; i < this.listOfExts.Count; i++)
             {
-                extLstString += listOfExts[i];
+                extLstString += this.listOfExts[i];
             }
 
             extLstString += "</extLst>";

@@ -29,20 +29,20 @@ namespace OfficeOpenXml.FormulaParsing.LexicalAnalysis
 
         public Lexer(ISourceCodeTokenizer tokenizer, ISyntacticAnalyzer analyzer)
         {
-            _tokenizer = tokenizer;
-            _analyzer = analyzer;
+            this._tokenizer = tokenizer;
+            this._analyzer = analyzer;
         }
 
         private readonly ISourceCodeTokenizer _tokenizer;
         private readonly ISyntacticAnalyzer _analyzer;
         public IEnumerable<Token> Tokenize(string input)
         {
-            return Tokenize(input, null);
+            return this.Tokenize(input, null);
         }
         public IEnumerable<Token> Tokenize(string input, string worksheet)
         {
-            IEnumerable<Token>? tokens = _tokenizer.Tokenize(input, worksheet);
-            _analyzer.Analyze(tokens);
+            IEnumerable<Token>? tokens = this._tokenizer.Tokenize(input, worksheet);
+            this._analyzer.Analyze(tokens);
             return tokens;
         }
     }

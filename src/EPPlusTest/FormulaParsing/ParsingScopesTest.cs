@@ -46,54 +46,54 @@ namespace EPPlusTest.FormulaParsing
         [TestInitialize]
         public void Setup()
         {
-            _lifeTimeEventHandler = A.Fake<IParsingLifetimeEventHandler>();
-            _parsingScopes = new ParsingScopes(_lifeTimeEventHandler);
+            this._lifeTimeEventHandler = A.Fake<IParsingLifetimeEventHandler>();
+            this._parsingScopes = new ParsingScopes(this._lifeTimeEventHandler);
         }
 
         [TestMethod]
         public void CreatedScopeShouldBeCurrentScope()
         {
-            using ParsingScope? scope = _parsingScopes.NewScope(RangeAddress.Empty);
-            Assert.AreEqual(_parsingScopes.Current, scope);
+            using ParsingScope? scope = this._parsingScopes.NewScope(RangeAddress.Empty);
+            Assert.AreEqual(this._parsingScopes.Current, scope);
         }
 
         [TestMethod]
         public void CurrentScopeShouldHandleNestedScopes()
         {
-            using (ParsingScope? scope1 = _parsingScopes.NewScope(RangeAddress.Empty))
+            using (ParsingScope? scope1 = this._parsingScopes.NewScope(RangeAddress.Empty))
             {
-                Assert.AreEqual(_parsingScopes.Current, scope1);
-                using (ParsingScope? scope2 = _parsingScopes.NewScope(RangeAddress.Empty))
+                Assert.AreEqual(this._parsingScopes.Current, scope1);
+                using (ParsingScope? scope2 = this._parsingScopes.NewScope(RangeAddress.Empty))
                 {
-                    Assert.AreEqual(_parsingScopes.Current, scope2);
+                    Assert.AreEqual(this._parsingScopes.Current, scope2);
                 }
-                Assert.AreEqual(_parsingScopes.Current, scope1);
+                Assert.AreEqual(this._parsingScopes.Current, scope1);
             }
-            Assert.IsNull(_parsingScopes.Current);
+            Assert.IsNull(this._parsingScopes.Current);
         }
 
         [TestMethod]
         public void CurrentScopeShouldBeNullWhenScopeHasTerminated()
         {
-            using (ParsingScope? scope = _parsingScopes.NewScope(RangeAddress.Empty))
+            using (ParsingScope? scope = this._parsingScopes.NewScope(RangeAddress.Empty))
             { }
-            Assert.IsNull(_parsingScopes.Current);
+            Assert.IsNull(this._parsingScopes.Current);
         }
 
         [TestMethod]
         public void NewScopeShouldSetParentOnCreatedScopeIfParentScopeExisted()
         {
-            using ParsingScope? scope1 = _parsingScopes.NewScope(RangeAddress.Empty);
-            using ParsingScope? scope2 = _parsingScopes.NewScope(RangeAddress.Empty);
+            using ParsingScope? scope1 = this._parsingScopes.NewScope(RangeAddress.Empty);
+            using ParsingScope? scope2 = this._parsingScopes.NewScope(RangeAddress.Empty);
             Assert.AreEqual(scope1, scope2.Parent);
         }
 
         [TestMethod]
         public void LifetimeEventHandlerShouldBeCalled()
         {
-            using (ParsingScope? scope = _parsingScopes.NewScope(RangeAddress.Empty))
+            using (ParsingScope? scope = this._parsingScopes.NewScope(RangeAddress.Empty))
             { }
-            A.CallTo(() => _lifeTimeEventHandler.ParsingCompleted()).MustHaveHappened();
+            A.CallTo(() => this._lifeTimeEventHandler.ParsingCompleted()).MustHaveHappened();
         }
     }
 }

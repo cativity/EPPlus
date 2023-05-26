@@ -41,13 +41,13 @@ namespace EPPlusTest.DataValidation.Formulas
         [TestInitialize]
         public void Setup()
         {
-            SetupTestData();
+            this.SetupTestData();
         }
 
         [TestCleanup]
         public void Cleanup()
         {
-            CleanupTestData();
+            this.CleanupTestData();
         }
 
         [TestMethod]

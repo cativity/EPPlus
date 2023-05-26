@@ -21,18 +21,18 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Operators
     {
         public OperatorsDict()
         {
-            Add("+", Operator.Plus);
-            Add("-", Operator.Minus);
-            Add("*", Operator.Multiply);
-            Add("/", Operator.Divide);
-            Add("^", Operator.Exp);
-            Add("=", Operator.Eq);
-            Add(">", Operator.GreaterThan);
-            Add(">=", Operator.GreaterThanOrEqual);
-            Add("<", Operator.LessThan);
-            Add("<=", Operator.LessThanOrEqual);
-            Add("<>", Operator.NotEqualsTo);
-            Add("&", Operator.Concat);
+            this.Add("+", Operator.Plus);
+            this.Add("-", Operator.Minus);
+            this.Add("*", Operator.Multiply);
+            this.Add("/", Operator.Divide);
+            this.Add("^", Operator.Exp);
+            this.Add("=", Operator.Eq);
+            this.Add(">", Operator.GreaterThan);
+            this.Add(">=", Operator.GreaterThanOrEqual);
+            this.Add("<", Operator.LessThan);
+            this.Add("<=", Operator.LessThanOrEqual);
+            this.Add("<>", Operator.NotEqualsTo);
+            this.Add("&", Operator.Concat);
         }
 
         private static IDictionary<string, IOperator> _instance;

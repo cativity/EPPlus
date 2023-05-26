@@ -44,15 +44,15 @@ namespace EPPlusTest.FormulaParsing.LexicalAnalysis
         {
             ParsingContext? parsingContext = ParsingContext.Create();
             TokenFactory? tokenFactory = new TokenFactory(parsingContext.Configuration.FunctionRepository, null);
-            _tokenizerContext = new TokenizerContext("test", null, tokenFactory);
-            _handler = _tokenizerContext.CreateHandler(NameValueProvider.Empty);
+            this._tokenizerContext = new TokenizerContext("test", null, tokenFactory);
+            this._handler = this._tokenizerContext.CreateHandler(NameValueProvider.Empty);
         }
 
 
         [TestMethod]
         public void HasMoreTokensShouldBeTrueWhenTokensExists()
         {
-            Assert.IsTrue(_handler.HasMore());
+            Assert.IsTrue(this._handler.HasMore());
         }
 
         [TestMethod]
@@ -60,9 +60,9 @@ namespace EPPlusTest.FormulaParsing.LexicalAnalysis
         {
             for (int x = 0; x < "test".Length; x++ )
             {
-                _handler.Next();
+                this._handler.Next();
             }
-            Assert.IsFalse(_handler.HasMore());
+            Assert.IsFalse(this._handler.HasMore());
         }
     }
 }

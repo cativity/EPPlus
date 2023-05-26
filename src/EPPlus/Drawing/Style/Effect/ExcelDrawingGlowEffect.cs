@@ -25,7 +25,7 @@ namespace OfficeOpenXml.Drawing.Style.Effect
 
         internal ExcelDrawingGlowEffect(XmlNamespaceManager nameSpaceManager, XmlNode topNode, string[] schemaNodeOrder, string path) : base(nameSpaceManager, topNode, schemaNodeOrder, path)
         {
-            _radiusPath = string.Format(_radiusPath, path);
+            this._radiusPath = string.Format(this._radiusPath, path);
 
         }
         ExcelDrawingColorManager _color = null;
@@ -36,12 +36,12 @@ namespace OfficeOpenXml.Drawing.Style.Effect
         {    
             get
             {
-                if(_color==null)
+                if(this._color==null)
                 {
                     //Get color
-                        _color = new ExcelDrawingColorManager(NameSpaceManager, TopNode, _path, SchemaNodeOrder);
+                    this._color = new ExcelDrawingColorManager(this.NameSpaceManager, this.TopNode, this._path, this.SchemaNodeOrder);
                 }
-                return _color;
+                return this._color;
             }
         }
         /// <summary>
@@ -51,21 +51,21 @@ namespace OfficeOpenXml.Drawing.Style.Effect
         {
                 get
                 {
-                    return GetXmlNodeEmuToPtNull(_radiusPath)??0;
+                    return this.GetXmlNodeEmuToPtNull(this._radiusPath)??0;
                 }
                 set
                 {
-                    SetXmlNodeEmuToPt(_radiusPath, value);
-                    InitXml();
+                    this.SetXmlNodeEmuToPt(this._radiusPath, value);
+                    this.InitXml();
             }
         }
 
         private void InitXml()
         {
-            if (_color == null)
+            if (this._color == null)
             {
-                Color.SetPresetColor(ePresetColor.Black);
-                Color.Transforms.AddAlpha(50);
+                this.Color.SetPresetColor(ePresetColor.Black);
+                this.Color.Transforms.AddAlpha(50);
             }
         }
     } 

@@ -39,7 +39,7 @@ namespace OfficeOpenXml
         public ExcelAddress(int fromRow, int fromCol, int toRow, int toColumn)
             : base(fromRow, fromCol, toRow, toColumn)
         {
-            _ws = "";
+            this._ws = "";
         }
         /// <summary>
         /// Constructor
@@ -53,7 +53,7 @@ namespace OfficeOpenXml
         internal ExcelAddress(string ws, string address)
             : base(address)
         {
-            if (string.IsNullOrEmpty(_ws))
+            if (string.IsNullOrEmpty(this._ws))
             {
                 this._ws = ws;
             }
@@ -61,7 +61,7 @@ namespace OfficeOpenXml
         internal ExcelAddress(string ws, string address, bool isName)
             : base(address, isName)
         {
-            if (string.IsNullOrEmpty(_ws))
+            if (string.IsNullOrEmpty(this._ws))
             {
                 this._ws = ws;
             }
@@ -87,17 +87,17 @@ namespace OfficeOpenXml
         {
             get
             {
-                if (string.IsNullOrEmpty(_address) && _fromRow>0)
+                if (string.IsNullOrEmpty(this._address) && this._fromRow>0)
                 {
-                    _address = GetAddress(_fromRow, _fromCol, _toRow, _toCol);
+                    this._address = GetAddress(this._fromRow, this._fromCol, this._toRow, this._toCol);
                 }
-                return _address;
+                return this._address;
             }
             set
             {
-                BeforeChangeAddress();
-                SetAddress(value, null, null);
-                ChangeAddress();
+                this.BeforeChangeAddress();
+                this.SetAddress(value, null, null);
+                this.ChangeAddress();
             }
         }
     }

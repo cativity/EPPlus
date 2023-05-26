@@ -26,8 +26,8 @@ namespace OfficeOpenXml.Drawing.Chart.ChartEx
         internal readonly ExcelChartExSerie _serie;
         internal ExcelChartExDataLabel(ExcelChartExSerie serie, XmlNamespaceManager nsm, XmlNode node) : base(serie._chart, nsm, node, "", "cx")
         {
-            _serie = serie;
-            SchemaNodeOrder = new string[] { "numFmt","visibility", "spPr","txPr","visibility", "separator" };
+            this._serie = serie;
+            this.SchemaNodeOrder = new string[] { "numFmt","visibility", "spPr","txPr","visibility", "separator" };
         }
         internal const string _dataLabelPath = "cx:dataLabel";
         /// <summary>
@@ -37,20 +37,20 @@ namespace OfficeOpenXml.Drawing.Chart.ChartEx
         {
             get
             {
-                return GetPosEnum(GetXmlNodeString("@pos"));
+                return GetPosEnum(this.GetXmlNodeString("@pos"));
             }
             set
             {
-                SetDataLabelNode();
-                SetXmlNodeString("@pos", GetPosText(value));
+                this.SetDataLabelNode();
+                this.SetXmlNodeString("@pos", GetPosText(value));
             }
         }
 
         internal virtual void SetDataLabelNode()
         {
-            if (TopNode.LocalName == "series")
+            if (this.TopNode.LocalName == "series")
             {
-                TopNode = _serie.CreateNode("cx:dataLabels");
+                this.TopNode = this._serie.CreateNode("cx:dataLabels");
             }
         }
 
@@ -62,12 +62,12 @@ namespace OfficeOpenXml.Drawing.Chart.ChartEx
         { 
             get
             {
-                return GetXmlNodeBool(_showValuePath);
+                return this.GetXmlNodeBool(_showValuePath);
             }
             set
             {
-                SetDataLabelNode();
-                SetXmlNodeBool(_showValuePath, value);
+                this.SetDataLabelNode();
+                this.SetXmlNodeBool(_showValuePath, value);
             }
         }
         private const string _showCategoryPath = "cx:visibility/@categoryName";
@@ -78,12 +78,12 @@ namespace OfficeOpenXml.Drawing.Chart.ChartEx
         {
             get
             {
-                return GetXmlNodeBool(_showCategoryPath);
+                return this.GetXmlNodeBool(_showCategoryPath);
             }
             set
             {
-                SetDataLabelNode();
-                SetXmlNodeBool(_showCategoryPath, value);
+                this.SetDataLabelNode();
+                this.SetXmlNodeBool(_showCategoryPath, value);
             }
         }
         private const string _seriesNamePath = "cx:visibility/@seriesName";
@@ -94,12 +94,12 @@ namespace OfficeOpenXml.Drawing.Chart.ChartEx
         {
             get
             {
-                return GetXmlNodeBool(_seriesNamePath);
+                return this.GetXmlNodeBool(_seriesNamePath);
             }
             set
             {
-                SetDataLabelNode();
-                SetXmlNodeBool(_seriesNamePath, value);
+                this.SetDataLabelNode();
+                this.SetXmlNodeBool(_seriesNamePath, value);
             }
         }
         /// <summary>
@@ -165,12 +165,12 @@ namespace OfficeOpenXml.Drawing.Chart.ChartEx
         {
             get
             {
-                return GetXmlNodeString("cx:separator");
+                return this.GetXmlNodeString("cx:separator");
             }
             set
             {
-                SetDataLabelNode();
-                SetXmlNodeString("cx:separator", value);
+                this.SetDataLabelNode();
+                this.SetXmlNodeString("cx:separator", value);
             }
         }
     }

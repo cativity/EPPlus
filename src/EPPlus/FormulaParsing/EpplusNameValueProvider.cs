@@ -25,8 +25,8 @@ namespace OfficeOpenXml.FormulaParsing
 
         internal EpplusNameValueProvider(ExcelDataProvider excelDataProvider)
         {
-            _excelDataProvider = excelDataProvider;
-            _values = _excelDataProvider.GetWorkbookNameValues();
+            this._excelDataProvider = excelDataProvider;
+            this._values = this._excelDataProvider.GetWorkbookNameValues();
         }
 
         public virtual bool IsNamedValue(string key, string ws)
@@ -44,32 +44,32 @@ namespace OfficeOpenXml.FormulaParsing
             }
             if (key.StartsWith("["))
             {
-                return _excelDataProvider.IsExternalName(key);
+                return this._excelDataProvider.IsExternalName(key);
             }
             else if (ws!=null)
             {
-                ExcelNamedRangeCollection? wsNames = _excelDataProvider.GetWorksheetNames(ws);
+                ExcelNamedRangeCollection? wsNames = this._excelDataProvider.GetWorksheetNames(ws);
                 if (wsNames != null && wsNames.ContainsKey(key))
                 {
                     return true;
                 }
             }
-            return _values != null && _values.ContainsKey(key);
+            return this._values != null && this._values.ContainsKey(key);
         }
 
         public virtual object GetNamedValue(string key)
         {
-            return _values[key];
+            return this._values[key];
         }
 
         public virtual object GetNamedValue(string key, string worksheet)
         {
-            return _excelDataProvider.GetName(worksheet, key)?.Value;
+            return this._excelDataProvider.GetName(worksheet, key)?.Value;
         }
 
         public virtual void Reload()
         {
-            _values = _excelDataProvider.GetWorkbookNameValues();
+            this._values = this._excelDataProvider.GetWorkbookNameValues();
         }
     }
 }

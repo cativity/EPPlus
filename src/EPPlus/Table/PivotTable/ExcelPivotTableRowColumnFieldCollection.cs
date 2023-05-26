@@ -29,8 +29,8 @@ namespace OfficeOpenXml.Table.PivotTable
         internal ExcelPivotTableRowColumnFieldCollection(ExcelPivotTable table, string topNode) :
             base()
 	    {
-            _table = table;
-            _topNode=topNode;
+            this._table = table;
+            this._topNode=topNode;
 	    }
 
         /// <summary>
@@ -44,24 +44,23 @@ namespace OfficeOpenXml.Table.PivotTable
             {
                 throw (new ArgumentNullException("Field","Pivot Table Field can't be null"));
             }
-            if((_topNode=="colFields" && Field.DragToCol==false))
+            if((this._topNode=="colFields" && Field.DragToCol==false))
             {
                 throw (new ArgumentException("Field", "This field is not allowed as a column field."));
             }
 
-            if ((_topNode == "rowFields" && Field.DragToRow == false))
+            if ((this._topNode == "rowFields" && Field.DragToRow == false))
             {
                 throw (new ArgumentException("Field", "This field is not allowed as a row field."));
             }
 
-            if ((_topNode == "pageFields" && Field.DragToPage == false))
+            if ((this._topNode == "pageFields" && Field.DragToPage == false))
             {
                 throw (new ArgumentException("Field", "This field is not allowed as a Page field."));
             }
 
-
-            SetFlag(Field, true);
-            _list.Add(Field);
+            this.SetFlag(Field, true);
+            this._list.Add(Field);
             return Field;
         }
         /// <summary>
@@ -72,13 +71,13 @@ namespace OfficeOpenXml.Table.PivotTable
         /// <returns>The new field</returns>
         internal ExcelPivotTableField Insert(ExcelPivotTableField Field, int Index)
         {
-            SetFlag(Field, true);
-            _list.Insert(Index, Field);
+            this.SetFlag(Field, true);
+            this._list.Insert(Index, Field);
             return Field;
         }
         private void SetFlag(ExcelPivotTableField field, bool value)
         {
-            switch (_topNode)
+            switch (this._topNode)
             {
                 case "rowFields":
                     if (field.IsColumnField || field.IsPageField)
@@ -101,9 +100,9 @@ namespace OfficeOpenXml.Table.PivotTable
                     {
                         throw (new Exception("Field is a column or row field. Can't add it to the PageFields collection"));
                     }
-                    if (_table.Address._fromRow < 3)
+                    if (this._table.Address._fromRow < 3)
                     {
-                        throw(new Exception(string.Format("A pivot table with page fields must be located above row 3. Currenct location is {0}", _table.Address.Address)));
+                        throw(new Exception(string.Format("A pivot table with page fields must be located above row 3. Currenct location is {0}", this._table.Address.Address)));
                     }
                     field.IsPageField = value;
                     field.Axis = ePivotFieldAxis.Page;
@@ -119,12 +118,13 @@ namespace OfficeOpenXml.Table.PivotTable
         /// <param name="Field"></param>
         public void Remove(ExcelPivotTableField Field)
         {
-            if(!_list.Contains(Field))
+            if(!this._list.Contains(Field))
             {
                 throw new ArgumentException("Field not in collection");
             }
-            SetFlag(Field, false);            
-            _list.Remove(Field);            
+
+            this.SetFlag(Field, false);
+            this._list.Remove(Field);            
         }
         /// <summary>
         /// Remove a field at a specific position
@@ -132,12 +132,13 @@ namespace OfficeOpenXml.Table.PivotTable
         /// <param name="Index"></param>
         public void RemoveAt(int Index)
         {
-            if (Index > -1 && Index < _list.Count)
+            if (Index > -1 && Index < this._list.Count)
             {
                 throw(new IndexOutOfRangeException());
             }
-            SetFlag(_list[Index], false);
-            _list.RemoveAt(Index);      
+
+            this.SetFlag(this._list[Index], false);
+            this._list.RemoveAt(Index);      
         }
 
     }

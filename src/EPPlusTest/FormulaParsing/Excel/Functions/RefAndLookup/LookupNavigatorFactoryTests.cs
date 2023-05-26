@@ -46,24 +46,24 @@ namespace EPPlusTest.FormulaParsing.Excel.Functions.RefAndLookup
         [TestInitialize]
         public void Initialize()
         {
-            _excelPackage = new ExcelPackage(new MemoryStream());
-            _excelPackage.Workbook.Worksheets.Add("Test");
-            _context = ParsingContext.Create();
-            _context.ExcelDataProvider = new EpplusExcelDataProvider(_excelPackage);
-            _context.Scopes.NewScope(RangeAddress.Empty);
+            this._excelPackage = new ExcelPackage(new MemoryStream());
+            this._excelPackage.Workbook.Worksheets.Add("Test");
+            this._context = ParsingContext.Create();
+            this._context.ExcelDataProvider = new EpplusExcelDataProvider(this._excelPackage);
+            this._context.Scopes.NewScope(RangeAddress.Empty);
         }
 
         [TestCleanup]
         public void Cleanup()
         {
-            _excelPackage.Dispose();
+            this._excelPackage.Dispose();
         }
 
         [TestMethod]
         public void Should_Return_ExcelLookupNavigator_When_Range_Is_Set()
         {
             LookupArguments? args = new LookupArguments(FunctionsHelper.CreateArgs(8, "A:B", 1), ParsingContext.Create());
-            LookupNavigator? navigator = LookupNavigatorFactory.Create(LookupDirection.Horizontal, args, _context);
+            LookupNavigator? navigator = LookupNavigatorFactory.Create(LookupDirection.Horizontal, args, this._context);
             Assert.IsInstanceOfType(navigator, typeof(ExcelLookupNavigator));
         }
 
@@ -71,7 +71,7 @@ namespace EPPlusTest.FormulaParsing.Excel.Functions.RefAndLookup
         public void Should_Return_ArrayLookupNavigator_When_Array_Is_Supplied()
         {
             LookupArguments? args = new LookupArguments(FunctionsHelper.CreateArgs(8, FunctionsHelper.CreateArgs(1,2), 1), ParsingContext.Create());
-            LookupNavigator? navigator = LookupNavigatorFactory.Create(LookupDirection.Horizontal, args, _context);
+            LookupNavigator? navigator = LookupNavigatorFactory.Create(LookupDirection.Horizontal, args, this._context);
             Assert.IsInstanceOfType(navigator, typeof(ArrayLookupNavigator));
         }
     }

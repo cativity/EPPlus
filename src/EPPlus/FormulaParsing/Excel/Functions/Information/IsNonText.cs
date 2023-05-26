@@ -34,7 +34,7 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Information
                 return this.CreateResult(false, DataType.Boolean);
             }
 
-            return CreateResult(!(firstArg.Value is string), DataType.Boolean);
+            return this.CreateResult(!(firstArg.Value is string), DataType.Boolean);
         }
     }
 }

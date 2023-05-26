@@ -21,10 +21,10 @@ namespace OfficeOpenXml.FormulaParsing
     {
         public ExcelCell(object val, string formula, int colIndex, int rowIndex)
         {
-            Value = val;
-            Formula = formula;
-            ColIndex = colIndex;
-            RowIndex = rowIndex;
+            this.Value = val;
+            this.Formula = formula;
+            this.ColIndex = colIndex;
+            this.RowIndex = rowIndex;
         }
 
         public int ColIndex { get; private set; }

@@ -29,7 +29,7 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Math
     {
         public AverageA()
         {
-            IgnoreErrors = false;
+            this.IgnoreErrors = false;
         }
 
         public override CompileResult Execute(IEnumerable<FunctionArgument> arguments, ParsingContext context)
@@ -38,14 +38,14 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Math
             double nValues = 0d, result = 0d;
             foreach (FunctionArgument? arg in arguments)
             {
-                Calculate(arg, context, ref result, ref nValues);
+                this.Calculate(arg, context, ref result, ref nValues);
             }
-            return CreateResult(Divide(result, nValues), DataType.Decimal);
+            return this.CreateResult(Divide(result, nValues), DataType.Decimal);
         }
 
         private void Calculate(FunctionArgument arg, ParsingContext context, ref double retVal, ref double nValues, bool isInArray = false)
         {
-            if (ShouldIgnore(arg, context))
+            if (this.ShouldIgnore(arg, context))
             {
                 return;
             }
@@ -53,14 +53,14 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Math
             {
                 foreach (FunctionArgument? item in (IEnumerable<FunctionArgument>)arg.Value)
                 {
-                    Calculate(item, context, ref retVal, ref nValues, true);
+                    this.Calculate(item, context, ref retVal, ref nValues, true);
                 }
             }
             else if (arg.IsExcelRange)
             {
                 foreach (ICellInfo? c in arg.ValueAsRangeInfo)
                 {
-                    if (ShouldIgnore(c, context))
+                    if (this.ShouldIgnore(c, context))
                     {
                         continue;
                     }

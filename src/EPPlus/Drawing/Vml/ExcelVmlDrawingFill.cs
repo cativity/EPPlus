@@ -14,8 +14,8 @@ namespace OfficeOpenXml.Drawing.Vml
         internal ExcelVmlDrawingFill(ExcelDrawings drawings, XmlNamespaceManager ns, XmlNode topNode, string[] schemaNodeOrder) :
             base(ns, topNode)
         {
-            SchemaNodeOrder = schemaNodeOrder;
-            _drawings = drawings;
+            this.SchemaNodeOrder = schemaNodeOrder;
+            this._drawings = drawings;
         }
         /// <summary>
         /// The type of fill used in the vml drawing
@@ -24,19 +24,19 @@ namespace OfficeOpenXml.Drawing.Vml
         {
             get
             {
-                return GetXmlNodeString("v:fill/@type").ToEnum(eVmlFillType.NoFill);
+                return this.GetXmlNodeString("v:fill/@type").ToEnum(eVmlFillType.NoFill);
             }
             set
             {
                 if (value == eVmlFillType.NoFill)
                 {
-                    SetXmlNodeString("@filled", "t");
-                    DeleteNode("v:fill");
+                    this.SetXmlNodeString("@filled", "t");
+                    this.DeleteNode("v:fill");
                 }
                 else
                 {
-                    DeleteNode("@filled");
-                    SetXmlNodeString("v:fill/@type", value.ToEnumString());
+                    this.DeleteNode("@filled");
+                    this.SetXmlNodeString("v:fill/@type", value.ToEnumString());
                 }
             }
         }
@@ -48,11 +48,11 @@ namespace OfficeOpenXml.Drawing.Vml
         {
             get
             {
-                if (_fillColor == null)
+                if (this._fillColor == null)
                 {
-                    _fillColor = new ExcelVmlDrawingColor(NameSpaceManager, TopNode, "@fillcolor");
+                    this._fillColor = new ExcelVmlDrawingColor(this.NameSpaceManager, this.TopNode, "@fillcolor");
                 }
-                return _fillColor;
+                return this._fillColor;
             }
         }
         /// <summary>
@@ -63,7 +63,7 @@ namespace OfficeOpenXml.Drawing.Vml
         {
             get
             {
-                return VmlConvertUtil.GetOpacityFromStringVml(GetXmlNodeString("v:fill/@opacity"));
+                return VmlConvertUtil.GetOpacityFromStringVml(this.GetXmlNodeString("v:fill/@opacity"));
             }
             set
             {
@@ -71,7 +71,8 @@ namespace OfficeOpenXml.Drawing.Vml
                 {
                     throw (new ArgumentOutOfRangeException("Opacity ranges from 0 to 100%"));
                 }
-                SetXmlNodeDouble("v:fill/@opacity", value, null, "%");
+
+                this.SetXmlNodeDouble("v:fill/@opacity", value, null, "%");
             }
         }
         ExcelVmlDrawingColor _secondColor;
@@ -82,11 +83,11 @@ namespace OfficeOpenXml.Drawing.Vml
         {
             get
             {
-                if (_secondColor == null)
+                if (this._secondColor == null)
                 {
-                    _secondColor = new ExcelVmlDrawingColor(NameSpaceManager, TopNode, "v:fill/@color2");
+                    this._secondColor = new ExcelVmlDrawingColor(this.NameSpaceManager, this.TopNode, "v:fill/@color2");
                 }
-                return _secondColor;
+                return this._secondColor;
             }
         }
         /// <summary>
@@ -97,7 +98,7 @@ namespace OfficeOpenXml.Drawing.Vml
         {
             get
             {
-                return VmlConvertUtil.GetOpacityFromStringVml(GetXmlNodeString("v:fill/@o:opacity2"));
+                return VmlConvertUtil.GetOpacityFromStringVml(this.GetXmlNodeString("v:fill/@o:opacity2"));
             }
             set
             {
@@ -105,7 +106,8 @@ namespace OfficeOpenXml.Drawing.Vml
                 {
                     throw (new ArgumentOutOfRangeException("Opacity ranges from 0 to 100%"));
                 }
-                SetXmlNodeDouble("v:fill/@o:opacity2", value, null, "%");
+
+                this.SetXmlNodeDouble("v:fill/@o:opacity2", value, null, "%");
             }
         }
         ExcelVmlDrawingGradientFill _gradientSettings = null;
@@ -116,11 +118,11 @@ namespace OfficeOpenXml.Drawing.Vml
         {
             get
             {
-                if(_gradientSettings==null)
+                if(this._gradientSettings==null)
                 {
-                    _gradientSettings = new ExcelVmlDrawingGradientFill(this, NameSpaceManager, TopNode);
+                    this._gradientSettings = new ExcelVmlDrawingGradientFill(this, this.NameSpaceManager, this.TopNode);
                 }
-                return _gradientSettings;
+                return this._gradientSettings;
             }
         }
         internal ExcelVmlDrawingPictureFill _patternPictureSettings = null;
@@ -131,11 +133,11 @@ namespace OfficeOpenXml.Drawing.Vml
         {
             get
             {
-                if(_patternPictureSettings==null)
+                if(this._patternPictureSettings==null)
                 {
-                    _patternPictureSettings = new ExcelVmlDrawingPictureFill(this, NameSpaceManager, TopNode);
+                    this._patternPictureSettings = new ExcelVmlDrawingPictureFill(this, this.NameSpaceManager, this.TopNode);
                 }
-                return _patternPictureSettings;
+                return this._patternPictureSettings;
             }
         }
         /// <summary>
@@ -145,11 +147,11 @@ namespace OfficeOpenXml.Drawing.Vml
         { 
             get
             {
-                return GetXmlNodeBool("v:fill/@recolor");
+                return this.GetXmlNodeBool("v:fill/@recolor");
             }
             set
             {
-                SetXmlNodeBoolVml("v:fill/@recolor", value);
+                this.SetXmlNodeBoolVml("v:fill/@recolor", value);
             }
         }
         /// <summary>
@@ -159,11 +161,11 @@ namespace OfficeOpenXml.Drawing.Vml
         {
             get
             {
-                return GetXmlNodeBool("v:fill/@rotate");
+                return this.GetXmlNodeBool("v:fill/@rotate");
             }
             set
             {
-                SetXmlNodeBoolVml("v:fill/@rotate", value);
+                this.SetXmlNodeBoolVml("v:fill/@rotate", value);
             }
         }
     }

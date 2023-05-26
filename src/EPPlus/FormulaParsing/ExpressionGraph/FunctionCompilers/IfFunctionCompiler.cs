@@ -49,7 +49,7 @@ namespace OfficeOpenXml.FormulaParsing.ExpressionGraph.FunctionCompilers
             }
 
             List<FunctionArgument>? args = new List<FunctionArgument>();
-            Function.BeforeInvoke(Context);
+            this.Function.BeforeInvoke(this.Context);
             Expression? firstChild = children.ElementAt(0);
             object? v = firstChild.Compile().Result;
 
@@ -81,7 +81,7 @@ namespace OfficeOpenXml.FormulaParsing.ExpressionGraph.FunctionCompilers
             {
                 if (Utils.ConvertUtil.IsNumericOrDate(v))
                 {
-                    boolVal = OfficeOpenXml.Utils.ConvertUtil.GetValueDouble(v) != 0;
+                    boolVal = Utils.ConvertUtil.GetValueDouble(v) != 0;
                 }
                 else
                 {
@@ -114,7 +114,7 @@ namespace OfficeOpenXml.FormulaParsing.ExpressionGraph.FunctionCompilers
                 args.Add(new FunctionArgument(null));
                 args.Add(new FunctionArgument(val));
             }
-            return Function.Execute(args, Context);
+            return this.Function.Execute(args, this.Context);
         }
     }
 }

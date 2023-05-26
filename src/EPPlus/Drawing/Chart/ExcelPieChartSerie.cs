@@ -43,7 +43,7 @@ namespace OfficeOpenXml.Drawing.Chart
         {
             get
             {
-                return GetXmlNodeInt(explosionPath);
+                return this.GetXmlNodeInt(explosionPath);
             }
             set
             {
@@ -51,7 +51,8 @@ namespace OfficeOpenXml.Drawing.Chart
                 {
                     throw(new ArgumentOutOfRangeException("Explosion range is 0-400"));
                 }
-                SetXmlNodeString(explosionPath, value.ToString());
+
+                this.SetXmlNodeString(explosionPath, value.ToString());
             }
         }
         ExcelChartSerieDataLabel _DataLabel = null;
@@ -62,11 +63,11 @@ namespace OfficeOpenXml.Drawing.Chart
         {
             get
             {
-                if (_DataLabel == null)
+                if (this._DataLabel == null)
                 {
-                    _DataLabel = new ExcelChartSerieDataLabel(_chart, NameSpaceManager, TopNode, SchemaNodeOrder);
+                    this._DataLabel = new ExcelChartSerieDataLabel(this._chart, this.NameSpaceManager, this.TopNode, this.SchemaNodeOrder);
                 }
-                return _DataLabel;
+                return this._DataLabel;
             }
         }
         /// <summary>
@@ -76,7 +77,7 @@ namespace OfficeOpenXml.Drawing.Chart
         {
             get
             {
-                return TopNode.SelectSingleNode("c:dLbls", NameSpaceManager) != null;
+                return this.TopNode.SelectSingleNode("c:dLbls", this.NameSpaceManager) != null;
             }
         }
         ExcelChartDataPointCollection _dataPoints = null;
@@ -88,11 +89,11 @@ namespace OfficeOpenXml.Drawing.Chart
             get
             {
 
-                if (_dataPoints == null)
+                if (this._dataPoints == null)
                 {
-                    _dataPoints = new ExcelChartDataPointCollection(_chart, NameSpaceManager, TopNode, SchemaNodeOrder);
+                    this._dataPoints = new ExcelChartDataPointCollection(this._chart, this.NameSpaceManager, this.TopNode, this.SchemaNodeOrder);
                 }
-                return _dataPoints;
+                return this._dataPoints;
             }
         }
 

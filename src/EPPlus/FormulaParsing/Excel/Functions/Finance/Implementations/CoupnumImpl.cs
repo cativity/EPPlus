@@ -26,8 +26,8 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Finance.Implementations
 
         internal FinanceCalcResult<int> GetCoupnum()
         {
-            IFinanicalDays? fds = FinancialDaysFactory.Create(Basis);
-            return new FinanceCalcResult<int>(fds.GetNumberOfCouponPeriods(Settlement, Maturity, Frequency));
+            IFinanicalDays? fds = FinancialDaysFactory.Create(this.Basis);
+            return new FinanceCalcResult<int>(fds.GetNumberOfCouponPeriods(this.Settlement, this.Maturity, this.Frequency));
         }
     }
 }

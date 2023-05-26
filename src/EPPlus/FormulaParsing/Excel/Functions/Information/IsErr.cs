@@ -39,14 +39,14 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Information
                     ExcelErrorValue? e=r.GetValue(r.Address._fromRow, r.Address._fromCol) as ExcelErrorValue;
                     if (e !=null && e.Type==eErrorType.NA)
                     {
-                        return CreateResult(false, DataType.Boolean);
+                        return this.CreateResult(false, DataType.Boolean);
                     }
                 }
                 else
                 {
                     if (arg is ExcelErrorValue && ((ExcelErrorValue)arg).Type==eErrorType.NA)
                     {
-                        return CreateResult(false, DataType.Boolean);
+                        return this.CreateResult(false, DataType.Boolean);
                     }
                 }
             }
@@ -55,7 +55,7 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Information
 
         public override CompileResult HandleError(string errorCode)
         {
-            return CreateResult(true, DataType.Boolean);
+            return this.CreateResult(true, DataType.Boolean);
         }
     }
 }

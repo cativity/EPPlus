@@ -53,8 +53,8 @@ namespace OfficeOpenXml
         string _hf;
         internal ExcelHeaderFooterText(XmlNode TextNode, ExcelWorksheet ws, string hf)
         {
-            _ws = ws;
-            _hf = hf;
+            this._ws = ws;
+            this._hf = hf;
             if (TextNode == null || string.IsNullOrEmpty(TextNode.InnerText))
             {
                 return;
@@ -68,26 +68,27 @@ namespace OfficeOpenXml
                 string newCode = text.Substring(pos, 2);
                 if (newCode == "&C" || newCode == "&R")
                 {
-                    SetText(code, text.Substring(startPos, pos-startPos));
+                    this.SetText(code, text.Substring(startPos, pos-startPos));
                     startPos = pos+2;
                     pos = startPos;
                     code = newCode;
                 }
             }
-            SetText(code, text.Substring(startPos, text.Length - startPos));
+
+            this.SetText(code, text.Substring(startPos, text.Length - startPos));
         }
         private void SetText(string code, string text)
         {
             switch (code)
             {
                 case "&L":
-                    LeftAlignedText=text;
+                    this.LeftAlignedText=text;
                     break;
                 case "&C":
-                    CenteredText=text;
+                    this.CenteredText=text;
                     break;
                 default:
-                    RightAlignedText=text;
+                    this.RightAlignedText=text;
                     break;
             }
         }
@@ -110,18 +111,18 @@ namespace OfficeOpenXml
         /// <param name="Alignment">Alignment. The image object will be inserted at the end of the Text.</param>
         public ExcelVmlDrawingPicture InsertPicture(FileInfo PictureFile, PictureAlignment Alignment)
         {
-            string id = ValidateImage(Alignment);
+            string id = this.ValidateImage(Alignment);
 
             if (!PictureFile.Exists)
             {
                 throw (new FileNotFoundException(string.Format("{0} is missing", PictureFile.FullName)));
             }
 
-            Uri? uriPic = XmlHelper.GetNewUri(_ws._package.ZipPackage, "/xl/media/" + PictureFile.Name.Substring(0, PictureFile.Name.Length-PictureFile.Extension.Length) + "{0}" + PictureFile.Extension);
+            Uri? uriPic = XmlHelper.GetNewUri(this._ws._package.ZipPackage, "/xl/media/" + PictureFile.Name.Substring(0, PictureFile.Name.Length-PictureFile.Extension.Length) + "{0}" + PictureFile.Extension);
             byte[]? imgBytes = File.ReadAllBytes(PictureFile.FullName);
-            ImageInfo? ii = _ws.Workbook._package.PictureStore.AddImage(imgBytes, uriPic, null);
+            ImageInfo? ii = this._ws.Workbook._package.PictureStore.AddImage(imgBytes, uriPic, null);
 
-            return AddImage(id, ii);
+            return this.AddImage(id, ii);
         }
         /// <summary>
         /// Inserts a picture at the end of the text in the header or footer
@@ -131,14 +132,14 @@ namespace OfficeOpenXml
         /// <param name="Alignment">Alignment. The image object will be inserted at the end of the Text.</param>
         public ExcelVmlDrawingPicture InsertPicture(Stream PictureStream, ePictureType pictureType, PictureAlignment Alignment)
         {
-            string id = ValidateImage(Alignment);
+            string id = this.ValidateImage(Alignment);
 
             byte[]? imgBytes=new byte[PictureStream.Length];
             PictureStream.Seek(0, SeekOrigin.Begin);
             PictureStream.Read(imgBytes,0, imgBytes.Length);
-            ImageInfo? ii = _ws.Workbook._package.PictureStore.AddImage(imgBytes,null, pictureType);
+            ImageInfo? ii = this._ws.Workbook._package.PictureStore.AddImage(imgBytes,null, pictureType);
 
-            return AddImage(id, ii);
+            return this.AddImage(id, ii);
         }
 #if NETFULL
         /// <summary>
@@ -162,12 +163,12 @@ namespace OfficeOpenXml
             double width = ii.Bounds.Width * 72 / ii.Bounds.HorizontalResolution,      //Pixel --> Points
                    height = ii.Bounds.Height * 72 / ii.Bounds.VerticalResolution;      //Pixel --> Points
             //Add VML-drawing            
-            return _ws.HeaderFooter.Pictures.Add(id, ii.Uri, "", width, height);
+            return this._ws.HeaderFooter.Pictures.Add(id, ii.Uri, "", width, height);
         }
         private string ValidateImage(PictureAlignment Alignment)
         {
-            string id = string.Concat(Alignment.ToString()[0], _hf);
-            foreach (ExcelVmlDrawingPicture image in _ws.HeaderFooter.Pictures)
+            string id = string.Concat(Alignment.ToString()[0], this._hf);
+            foreach (ExcelVmlDrawingPicture image in this._ws.HeaderFooter.Pictures)
             {
                 if (image.Id == id)
                 {
@@ -178,13 +179,13 @@ namespace OfficeOpenXml
             switch (Alignment)
             {
                 case PictureAlignment.Left:
-                    LeftAlignedText += ExcelHeaderFooter.Image;
+                    this.LeftAlignedText += ExcelHeaderFooter.Image;
                     break;
                 case PictureAlignment.Centered:
-                    CenteredText += ExcelHeaderFooter.Image;
+                    this.CenteredText += ExcelHeaderFooter.Image;
                     break;
                 default:
-                    RightAlignedText += ExcelHeaderFooter.Image;
+                    this.RightAlignedText += ExcelHeaderFooter.Image;
                     break;
             }
             return id;
@@ -267,8 +268,8 @@ namespace OfficeOpenXml
 		internal ExcelHeaderFooter(XmlNamespaceManager nameSpaceManager, XmlNode topNode, ExcelWorksheet ws) :
             base(nameSpaceManager, topNode)
 		{
-            _ws = ws;
-            SchemaNodeOrder = new string[] { "headerFooter", "oddHeader", "oddFooter", "evenHeader", "evenFooter", "firstHeader", "firstFooter" };
+            this._ws = ws;
+            this.SchemaNodeOrder = new string[] { "headerFooter", "oddHeader", "oddFooter", "evenHeader", "evenFooter", "firstHeader", "firstFooter" };
 		}
 #endregion
 
@@ -281,11 +282,11 @@ namespace OfficeOpenXml
 		{
 			get
 			{
-                return GetXmlNodeBool(alignWithMarginsPath);
+                return this.GetXmlNodeBool(alignWithMarginsPath);
 			}
 			set
 			{
-                SetXmlNodeString(alignWithMarginsPath, value ? "1" : "0");
+                this.SetXmlNodeString(alignWithMarginsPath, value ? "1" : "0");
 			}
 		}
 #endregion
@@ -299,11 +300,11 @@ namespace OfficeOpenXml
 		{
 			get
 			{
-                return GetXmlNodeBool(differentOddEvenPath);
+                return this.GetXmlNodeBool(differentOddEvenPath);
 			}
 			set
 			{
-                SetXmlNodeString(differentOddEvenPath, value ? "1" : "0");
+                this.SetXmlNodeString(differentOddEvenPath, value ? "1" : "0");
 			}
 		}
 #endregion
@@ -318,11 +319,11 @@ namespace OfficeOpenXml
 		{
 			get
 			{
-                return GetXmlNodeBool(differentFirstPath);
+                return this.GetXmlNodeBool(differentFirstPath);
 			}
 			set
 			{
-                SetXmlNodeString(differentFirstPath, value ? "1" : "0");
+                this.SetXmlNodeString(differentFirstPath, value ? "1" : "0");
 			}
 		}
 #endregion
@@ -335,11 +336,11 @@ namespace OfficeOpenXml
         {
             get
             {
-                return GetXmlNodeBool(scaleWithDocPath);
+                return this.GetXmlNodeBool(scaleWithDocPath);
             }
             set
             {
-                SetXmlNodeBool(scaleWithDocPath, value);
+                this.SetXmlNodeBool(scaleWithDocPath, value);
             }
         }
 #endregion
@@ -352,11 +353,11 @@ namespace OfficeOpenXml
         { 
             get 
             {
-                if (_oddHeader == null)
+                if (this._oddHeader == null)
                 {
-                    _oddHeader = new ExcelHeaderFooterText(TopNode.SelectSingleNode("d:oddHeader", NameSpaceManager), _ws, "H");
+                    this._oddHeader = new ExcelHeaderFooterText(this.TopNode.SelectSingleNode("d:oddHeader", this.NameSpaceManager), this._ws, "H");
                 }
-                return _oddHeader; } 
+                return this._oddHeader; } 
         }
 		/// <summary>
 		/// Provides access to the footer on odd numbered pages of the document.
@@ -366,11 +367,11 @@ namespace OfficeOpenXml
         { 
             get 
             {
-                if (_oddFooter == null)
+                if (this._oddFooter == null)
                 {
-                    _oddFooter = new ExcelHeaderFooterText(TopNode.SelectSingleNode("d:oddFooter", NameSpaceManager), _ws, "F");
+                    this._oddFooter = new ExcelHeaderFooterText(this.TopNode.SelectSingleNode("d:oddFooter", this.NameSpaceManager), this._ws, "F");
                 }
-                return _oddFooter; 
+                return this._oddFooter; 
             } 
         }
 		// evenHeader and evenFooter set differentOddEven = true
@@ -381,12 +382,12 @@ namespace OfficeOpenXml
         { 
             get 
             {
-                if (_evenHeader == null)
+                if (this._evenHeader == null)
                 {
-                    _evenHeader = new ExcelHeaderFooterText(TopNode.SelectSingleNode("d:evenHeader", NameSpaceManager), _ws, "HEVEN");
-                    differentOddEven = true;
+                    this._evenHeader = new ExcelHeaderFooterText(this.TopNode.SelectSingleNode("d:evenHeader", this.NameSpaceManager), this._ws, "HEVEN");
+                    this.differentOddEven = true;
                 }
-                return _evenHeader; 
+                return this._evenHeader; 
             } 
         }
 		/// <summary>
@@ -396,12 +397,12 @@ namespace OfficeOpenXml
         { 
             get 
             {
-                if (_evenFooter == null)
+                if (this._evenFooter == null)
                 {
-                    _evenFooter = new ExcelHeaderFooterText(TopNode.SelectSingleNode("d:evenFooter", NameSpaceManager), _ws, "FEVEN");
-                    differentOddEven = true;
+                    this._evenFooter = new ExcelHeaderFooterText(this.TopNode.SelectSingleNode("d:evenFooter", this.NameSpaceManager), this._ws, "FEVEN");
+                    this.differentOddEven = true;
                 }
-                return _evenFooter ; 
+                return this._evenFooter ; 
             } 
         }
 		/// <summary>
@@ -411,12 +412,12 @@ namespace OfficeOpenXml
         { 
             get 
             {
-                if (_firstHeader == null)
+                if (this._firstHeader == null)
                 {
-                    _firstHeader = new ExcelHeaderFooterText(TopNode.SelectSingleNode("d:firstHeader", NameSpaceManager), _ws, "HFIRST"); 
-                     differentFirst = true;
+                    this._firstHeader = new ExcelHeaderFooterText(this.TopNode.SelectSingleNode("d:firstHeader", this.NameSpaceManager), this._ws, "HFIRST");
+                    this.differentFirst = true;
                 }
-                return _firstHeader; 
+                return this._firstHeader; 
             } 
         }
 		/// <summary>
@@ -426,12 +427,12 @@ namespace OfficeOpenXml
         { 
             get 
             {
-                if (_firstFooter == null)
+                if (this._firstFooter == null)
                 {
-                    _firstFooter = new ExcelHeaderFooterText(TopNode.SelectSingleNode("d:firstFooter", NameSpaceManager), _ws, "FFIRST"); 
-                    differentFirst = true;
+                    this._firstFooter = new ExcelHeaderFooterText(this.TopNode.SelectSingleNode("d:firstFooter", this.NameSpaceManager), this._ws, "FFIRST");
+                    this.differentFirst = true;
                 }
-                return _firstFooter; 
+                return this._firstFooter; 
             } 
         }
         private ExcelVmlDrawingPictureCollection _vmlDrawingsHF = null;
@@ -442,26 +443,26 @@ namespace OfficeOpenXml
         {
             get
             {
-                if (_vmlDrawingsHF == null)
+                if (this._vmlDrawingsHF == null)
                 {
-                    XmlNode? vmlNode = _ws.WorksheetXml.SelectSingleNode("d:worksheet/d:legacyDrawingHF/@r:id", NameSpaceManager);
+                    XmlNode? vmlNode = this._ws.WorksheetXml.SelectSingleNode("d:worksheet/d:legacyDrawingHF/@r:id", this.NameSpaceManager);
                     if (vmlNode == null)
                     {
-                        _vmlDrawingsHF = new ExcelVmlDrawingPictureCollection(_ws, null);
+                        this._vmlDrawingsHF = new ExcelVmlDrawingPictureCollection(this._ws, null);
                     }
                     else
                     {
-                        if (_ws.Part.RelationshipExists(vmlNode.Value))
+                        if (this._ws.Part.RelationshipExists(vmlNode.Value))
                         {
-                            ZipPackageRelationship? rel = _ws.Part.GetRelationship(vmlNode.Value);
+                            ZipPackageRelationship? rel = this._ws.Part.GetRelationship(vmlNode.Value);
                             Uri? vmlUri = UriHelper.ResolvePartUri(rel.SourceUri, rel.TargetUri);
 
-                            _vmlDrawingsHF = new ExcelVmlDrawingPictureCollection(_ws, vmlUri);
-                            _vmlDrawingsHF.RelId = rel.Id;
+                            this._vmlDrawingsHF = new ExcelVmlDrawingPictureCollection(this._ws, vmlUri);
+                            this._vmlDrawingsHF.RelId = rel.Id;
                         }
                     }
                 }
-                return _vmlDrawingsHF;
+                return this._vmlDrawingsHF;
             }
         }
 
@@ -472,83 +473,84 @@ namespace OfficeOpenXml
             /// </summary>
         internal void Save()
 		{
-			if (_oddHeader != null)
-			{                
-                SetXmlNodeStringPreserveWhiteSpace("d:oddHeader", GetText(OddHeader));
-			}
-			if (_oddFooter != null)
+			if (this._oddHeader != null)
 			{
-                SetXmlNodeStringPreserveWhiteSpace("d:oddFooter", GetText(OddFooter));
+                this.SetXmlNodeStringPreserveWhiteSpace("d:oddHeader", GetText(this.OddHeader));
+			}
+			if (this._oddFooter != null)
+			{
+                this.SetXmlNodeStringPreserveWhiteSpace("d:oddFooter", GetText(this.OddFooter));
 			}
 
 			// only set evenHeader and evenFooter 
-			if (differentOddEven)
+			if (this.differentOddEven)
 			{
-				if (_evenHeader != null)
+				if (this._evenHeader != null)
 				{
-                    SetXmlNodeStringPreserveWhiteSpace("d:evenHeader", GetText(EvenHeader));
+                    this.SetXmlNodeStringPreserveWhiteSpace("d:evenHeader", GetText(this.EvenHeader));
 				}
-				if (_evenFooter != null)
+				if (this._evenFooter != null)
 				{
-                    SetXmlNodeStringPreserveWhiteSpace("d:evenFooter", GetText(EvenFooter));
+                    this.SetXmlNodeStringPreserveWhiteSpace("d:evenFooter", GetText(this.EvenFooter));
 				}
 			}
 
 			// only set firstHeader and firstFooter
-			if (differentFirst)
+			if (this.differentFirst)
 			{
-				if (_firstHeader != null)
+				if (this._firstHeader != null)
 				{
-                    SetXmlNodeStringPreserveWhiteSpace("d:firstHeader", GetText(FirstHeader));
+                    this.SetXmlNodeStringPreserveWhiteSpace("d:firstHeader", GetText(this.FirstHeader));
 				}
-				if (_firstFooter != null)
+				if (this._firstFooter != null)
 				{
-                    SetXmlNodeStringPreserveWhiteSpace("d:firstFooter", GetText(FirstFooter));
+                    this.SetXmlNodeStringPreserveWhiteSpace("d:firstFooter", GetText(this.FirstFooter));
 				}
 			}
 		}
         internal void SaveHeaderFooterImages()
         {
-            if (_vmlDrawingsHF != null)
+            if (this._vmlDrawingsHF != null)
             {
-                if (_vmlDrawingsHF.Count == 0)
+                if (this._vmlDrawingsHF.Count == 0)
                 {
-                    if (_vmlDrawingsHF.Part != null)
+                    if (this._vmlDrawingsHF.Part != null)
                     {
-                        _ws.Part.DeleteRelationship(_vmlDrawingsHF.RelId);
-                        _ws._package.ZipPackage.DeletePart(_vmlDrawingsHF.Uri);
+                        this._ws.Part.DeleteRelationship(this._vmlDrawingsHF.RelId);
+                        this._ws._package.ZipPackage.DeletePart(this._vmlDrawingsHF.Uri);
                     }
                 }
                 else
                 {
-                    if (_vmlDrawingsHF.Uri == null)
+                    if (this._vmlDrawingsHF.Uri == null)
                     {
-                        _vmlDrawingsHF.Uri = XmlHelper.GetNewUri(_ws._package.ZipPackage, @"/xl/drawings/vmlDrawing{0}.vml");
+                        this._vmlDrawingsHF.Uri = GetNewUri(this._ws._package.ZipPackage, @"/xl/drawings/vmlDrawing{0}.vml");
                     }
-                    if (_vmlDrawingsHF.Part == null)
+                    if (this._vmlDrawingsHF.Part == null)
                     {
-                        _vmlDrawingsHF.Part = _ws._package.ZipPackage.CreatePart(_vmlDrawingsHF.Uri, "application/vnd.openxmlformats-officedocument.vmlDrawing", _ws._package.Compression);
-                        ZipPackageRelationship? rel = _ws.Part.CreateRelationship(UriHelper.GetRelativeUri(_ws.WorksheetUri, _vmlDrawingsHF.Uri), Packaging.TargetMode.Internal, ExcelPackage.schemaRelationships + "/vmlDrawing");
-                        _ws.SetHFLegacyDrawingRel(rel.Id);
-                        _vmlDrawingsHF.RelId = rel.Id;
-                        foreach (ExcelVmlDrawingPicture draw in _vmlDrawingsHF)
+                        this._vmlDrawingsHF.Part = this._ws._package.ZipPackage.CreatePart(this._vmlDrawingsHF.Uri, "application/vnd.openxmlformats-officedocument.vmlDrawing", this._ws._package.Compression);
+                        ZipPackageRelationship? rel = this._ws.Part.CreateRelationship(UriHelper.GetRelativeUri(this._ws.WorksheetUri, this._vmlDrawingsHF.Uri), TargetMode.Internal, ExcelPackage.schemaRelationships + "/vmlDrawing");
+                        this._ws.SetHFLegacyDrawingRel(rel.Id);
+                        this._vmlDrawingsHF.RelId = rel.Id;
+                        foreach (ExcelVmlDrawingPicture draw in this._vmlDrawingsHF)
                         {
-                            rel = _vmlDrawingsHF.Part.CreateRelationship(UriHelper.GetRelativeUri(_vmlDrawingsHF.Uri, draw.ImageUri), Packaging.TargetMode.Internal, ExcelPackage.schemaRelationships + "/image");
+                            rel = this._vmlDrawingsHF.Part.CreateRelationship(UriHelper.GetRelativeUri(this._vmlDrawingsHF.Uri, draw.ImageUri), TargetMode.Internal, ExcelPackage.schemaRelationships + "/image");
                             draw.RelId = rel.Id;
                         }
                     }
                     else
                     {
-                        foreach (ExcelVmlDrawingPicture draw in _vmlDrawingsHF)
+                        foreach (ExcelVmlDrawingPicture draw in this._vmlDrawingsHF)
                         {
                             if (string.IsNullOrEmpty(draw.RelId))
                             {
-                                ZipPackageRelationship? rel = _vmlDrawingsHF.Part.CreateRelationship(UriHelper.GetRelativeUri(_vmlDrawingsHF.Uri, draw.ImageUri), Packaging.TargetMode.Internal, ExcelPackage.schemaRelationships + "/image");
+                                ZipPackageRelationship? rel = this._vmlDrawingsHF.Part.CreateRelationship(UriHelper.GetRelativeUri(this._vmlDrawingsHF.Uri, draw.ImageUri), TargetMode.Internal, ExcelPackage.schemaRelationships + "/image");
                                 draw.RelId = rel.Id;
                             }
                         }
                     }
-                    _vmlDrawingsHF.VmlDrawingXml.Save(_vmlDrawingsHF.Part.GetStream());
+
+                    this._vmlDrawingsHF.VmlDrawingXml.Save(this._vmlDrawingsHF.Part.GetStream());
                 }
             }
         }

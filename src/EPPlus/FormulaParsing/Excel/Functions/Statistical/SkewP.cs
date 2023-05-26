@@ -29,7 +29,7 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Statistical
         public override CompileResult Execute(IEnumerable<FunctionArgument> arguments, ParsingContext context)
         {
             ValidateArguments(arguments, 1);
-            double[]? numbers = ArgsToDoubleEnumerable(arguments, context).Select(x => x.Value).ToArray();
+            double[]? numbers = this.ArgsToDoubleEnumerable(arguments, context).Select(x => x.Value).ToArray();
             int n = numbers.Length;
             double avg = numbers.Average();
             double sd = CalcStandardDev(numbers, avg);
@@ -39,7 +39,7 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Statistical
                 i += System.Math.Pow((number - avg)/sd, 3);
             }
             double result = i / n;
-            return CreateResult(result, DataType.Decimal);
+            return this.CreateResult(result, DataType.Decimal);
         }
 
         private static double CalcStandardDev(IEnumerable<double> numbers, double avg)

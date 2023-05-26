@@ -28,10 +28,10 @@ namespace OfficeOpenXml.Export.ToDataTable
         {
             Require.That(options).IsNotNull();
             Require.That(range).IsNotNull();
-            _options = options;
-            _range = range;
-            _sheet = _range.Worksheet;
-            _dataTable = dataTable;
+            this._options = options;
+            this._range = range;
+            this._sheet = this._range.Worksheet;
+            this._dataTable = dataTable;
         }
 
         private readonly ToDataTableOptions _options;
@@ -42,35 +42,35 @@ namespace OfficeOpenXml.Export.ToDataTable
         internal DataTable Build()
         {
             HashSet<string>? columnNames = new HashSet<string>(StringComparer.InvariantCultureIgnoreCase);
-            if(_dataTable == null)
+            if(this._dataTable == null)
             {
-                _dataTable = string.IsNullOrEmpty(_options.DataTableName) ? new DataTable() : new DataTable(_options.DataTableName);
+                this._dataTable = string.IsNullOrEmpty(this._options.DataTableName) ? new DataTable() : new DataTable(this._options.DataTableName);
             }
-            if(!string.IsNullOrEmpty(_options.DataTableNamespace))
+            if(!string.IsNullOrEmpty(this._options.DataTableNamespace))
             {
-                _dataTable.Namespace = _options.DataTableNamespace;
+                this._dataTable.Namespace = this._options.DataTableNamespace;
             }
             int columnOrder = 0;
-            for (int col = _range.Start.Column; col <= _range.End.Column; col++)
+            for (int col = this._range.Start.Column; col <= this._range.End.Column; col++)
             {
-                int row = _range.Start.Row;
-                string? name = _options.ColumnNamePrefix + ++columnOrder;
+                int row = this._range.Start.Row;
+                string? name = this._options.ColumnNamePrefix + ++columnOrder;
                 string? origName = name;
                 int columnIndex = columnOrder - 1;
-                if(_options.Mappings.ContainsMapping(columnIndex))
+                if(this._options.Mappings.ContainsMapping(columnIndex))
                 {
-                    name = _options.Mappings.GetByRangeIndex(columnIndex).DataColumnName;
+                    name = this._options.Mappings.GetByRangeIndex(columnIndex).DataColumnName;
                 }
-                else if (_options.FirstRowIsColumnNames)
+                else if (this._options.FirstRowIsColumnNames)
                 {                    
-                    name = _sheet.GetValue(row, col)?.ToString();
+                    name = this._sheet.GetValue(row, col)?.ToString();
                     origName = name;
                     if (name == null)
                     {
                         throw new InvalidOperationException(string.Format("First row contains an empty cell at index {0}", col - this._range.Start.Column));
                     }
 
-                    name = GetColumnName(name);
+                    name = this.GetColumnName(name);
                 }
                 else
                 {
@@ -82,13 +82,13 @@ namespace OfficeOpenXml.Export.ToDataTable
                 }
                 columnNames.Add(name);
                 // find type
-                while (_sheet.GetValue(++row, col) == null && row <= _range.End.Row)
+                while (this._sheet.GetValue(++row, col) == null && row <= this._range.End.Row)
                 {
                     ;
                 }
 
-                object? v = _sheet.GetValue(row, col);
-                if (row == _range.End.Row && v == null)
+                object? v = this._sheet.GetValue(row, col);
+                if (row == this._range.End.Row && v == null)
                 {
                     throw new InvalidOperationException(string.Format("Column with index {0} does not contain any values", col));
                 }
@@ -96,8 +96,8 @@ namespace OfficeOpenXml.Export.ToDataTable
                 Type? type = v == null ? typeof(Nullable) : v.GetType();
 
                 // check mapping
-                DataColumnMapping? mapping = _options.Mappings.GetByRangeIndex(columnIndex);
-                if (_options.PredefinedMappingsOnly && mapping == null)
+                DataColumnMapping? mapping = this._options.Mappings.GetByRangeIndex(columnIndex);
+                if (this._options.PredefinedMappingsOnly && mapping == null)
                 {
                     continue;
                 }
@@ -107,35 +107,36 @@ namespace OfficeOpenXml.Export.ToDataTable
                     {
                         type = mapping.ColumnDataType;
                     }
-                    if(mapping.HasDataColumn && _dataTable.Columns[mapping.DataColumnName] == null)
+                    if(mapping.HasDataColumn && this._dataTable.Columns[mapping.DataColumnName] == null)
                     {
-                        _dataTable.Columns.Add(mapping.DataColumn);
+                        this._dataTable.Columns.Add(mapping.DataColumn);
                     }
                 }
 
-                if((mapping == null || !mapping.HasDataColumn) && _dataTable.Columns[name] == null)
+                if((mapping == null || !mapping.HasDataColumn) && this._dataTable.Columns[name] == null)
                 {
-                    DataColumn? column = _dataTable.Columns.Add(name, type);
+                    DataColumn? column = this._dataTable.Columns.Add(name, type);
                     column.Caption = origName;
                 }
 
-                if (!_options.Mappings.ContainsMapping(columnIndex))
+                if (!this._options.Mappings.ContainsMapping(columnIndex))
                 {
                     bool allowNull = !type.IsValueType || (Nullable.GetUnderlyingType(type) != null);
-                    _options.Mappings.Add(columnOrder - 1, name, type, allowNull);
+                    this._options.Mappings.Add(columnOrder - 1, name, type, allowNull);
                 }
-                else if(_options.Mappings.GetByRangeIndex(columnIndex).ColumnDataType == null)
+                else if(this._options.Mappings.GetByRangeIndex(columnIndex).ColumnDataType == null)
                 {
-                    _options.Mappings.GetByRangeIndex(columnIndex).ColumnDataType = type;
+                    this._options.Mappings.GetByRangeIndex(columnIndex).ColumnDataType = type;
                 }
             }
-            HandlePrimaryKeys(_dataTable);
-            return _dataTable;
+
+            this.HandlePrimaryKeys(this._dataTable);
+            return this._dataTable;
         }
 
         private void HandlePrimaryKeys(DataTable dataTable)
         {
-            DataTablePrimaryKey? pk = new DataTablePrimaryKey(_options);
+            DataTablePrimaryKey? pk = new DataTablePrimaryKey(this._options);
             if(pk.HasKeys)
             {
                 List<DataColumn>? cols = new List<DataColumn>();
@@ -158,7 +159,7 @@ namespace OfficeOpenXml.Export.ToDataTable
 
         private string GetColumnName(string name)
         {
-            switch(_options.ColumnNameParsingStrategy)
+            switch(this._options.ColumnNameParsingStrategy)
             {
                 case NameParsingStrategy.Preserve:
                     return name;

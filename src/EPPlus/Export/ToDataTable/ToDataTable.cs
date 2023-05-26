@@ -24,8 +24,8 @@ namespace OfficeOpenXml.Export.ToDataTable
         {
             Require.That(options).IsNotNull();
             Require.That(range).IsNotNull();
-            _options = options;
-            _range = range;
+            this._options = options;
+            this._range = range;
         }
 
         private readonly ToDataTableOptions _options;
@@ -33,16 +33,16 @@ namespace OfficeOpenXml.Export.ToDataTable
 
         public DataTable Execute()
         {
-            DataTable? dataTable = new DataTableBuilder(_options, _range).Build();
-            new DataTableExporter(_options, _range, dataTable).Export();
+            DataTable? dataTable = new DataTableBuilder(this._options, this._range).Build();
+            new DataTableExporter(this._options, this._range, dataTable).Export();
             return dataTable;
         }
 
         public DataTable Execute(DataTable dataTable)
         {
             Require.That(dataTable).IsNotNull();
-            new DataTableMapper(_options, _range, dataTable).Map();
-            new DataTableExporter(_options, _range, dataTable).Export();
+            new DataTableMapper(this._options, this._range, dataTable).Map();
+            new DataTableExporter(this._options, this._range, dataTable).Export();
             return dataTable;
         }
     }

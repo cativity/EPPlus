@@ -44,7 +44,7 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions.DateTime.Workdays
                 char ch = arr[i];
                 if (ch == '1')
                 {
-                    retVal.Add(_dayOfWeekArray[i]);
+                    retVal.Add(this._dayOfWeekArray[i]);
                 }
             }
             return new HolidayWeekdays(retVal.ToArray());

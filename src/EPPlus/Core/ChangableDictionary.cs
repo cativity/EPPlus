@@ -25,18 +25,18 @@ namespace OfficeOpenXml.Core
         int _defaultSize;
         internal ChangeableDictionary(int size = 8)
         {
-            _defaultSize = size;
-            Clear();
+            this._defaultSize = size;
+            this.Clear();
         }
 
         internal T this[int key]
         {
             get
             {
-                int pos = Array.BinarySearch(_index[0], 0, _count, key);
+                int pos = Array.BinarySearch(this._index[0], 0, this._count, key);
                 if(pos>=0)
                 {
-                    return _items[_index[1][pos]];
+                    return this._items[this._index[1][pos]];
                 }
                 else
                 {
@@ -47,82 +47,84 @@ namespace OfficeOpenXml.Core
 
         internal void InsertAndShift(int fromPosition, int add)
         {
-            int pos = Array.BinarySearch(_index[0], 0, _count, fromPosition);
+            int pos = Array.BinarySearch(this._index[0], 0, this._count, fromPosition);
             if(pos<0)
             {
                 pos = ~pos;
             }
-            Array.Copy(_index[0], pos, _index[0], pos + 1, _count - pos);
-            Array.Copy(_index[1], pos, _index[1], pos + 1, _count - pos);
-            _count++;
-            for (int i=pos;i<Count;i++)
+            Array.Copy(this._index[0], pos, this._index[0], pos + 1, this._count - pos);
+            Array.Copy(this._index[1], pos, this._index[1], pos + 1, this._count - pos);
+            this._count++;
+            for (int i=pos;i< this.Count;i++)
             {
-                _index[0][i] += add;
+                this._index[0][i] += add;
             }
         }
         
-        internal int Count { get { return _count; } }
+        internal int Count { get { return this._count; } }
 
         public void Add(int key, T value)
         {
-            int pos = Array.BinarySearch(_index[0], 0, _count, key);
+            int pos = Array.BinarySearch(this._index[0], 0, this._count, key);
             if (pos >= 0)
             {
                 throw (new ArgumentException("Key already exists"));
             }
             pos = ~pos;
-            if (pos >= _index[0].Length - 1)
+            if (pos >= this._index[0].Length - 1)
             {
-                Array.Resize(ref _index[0], _index[0].Length << 1);
-                Array.Resize(ref _index[1], _index[1].Length << 1);
+                Array.Resize(ref this._index[0], this._index[0].Length << 1);
+                Array.Resize(ref this._index[1], this._index[1].Length << 1);
             }
-            if (pos < Count)
+            if (pos < this.Count)
             {
-                Array.Copy(_index[0], pos, _index[0], pos + 1, _index[0].Length - pos - 1);
-                Array.Copy(_index[1], pos, _index[1], pos + 1, _index[1].Length - pos - 1);
+                Array.Copy(this._index[0], pos, this._index[0], pos + 1, this._index[0].Length - pos - 1);
+                Array.Copy(this._index[1], pos, this._index[1], pos + 1, this._index[1].Length - pos - 1);
             }
-            _count++;
-            _index[0][pos] = key;
-            _index[1][pos] = _items.Count;
-            _items.Add(value);
+
+            this._count++;
+            this._index[0][pos] = key;
+            this._index[1][pos] = this._items.Count;
+            this._items.Add(value);
         }
 
         internal void Move(int fromPosition, int toPosition, bool before)
         {
-            if (Count <= 1 || fromPosition == toPosition)
+            if (this.Count <= 1 || fromPosition == toPosition)
             {
                 return;
             }
 
-            int listItem = _index[1][fromPosition];
+            int listItem = this._index[1][fromPosition];
             int insertPos = before ? toPosition : toPosition + 1;
             int removePos = fromPosition;
             if(insertPos>removePos)
             {
-                InsertAndShift(insertPos, 1);
-                RemoveAndShift(removePos, false);
+                this.InsertAndShift(insertPos, 1);
+                this.RemoveAndShift(removePos, false);
                 insertPos--;
             }
             else
             {
-                RemoveAndShift(removePos, false);
-                InsertAndShift(insertPos, 1);
+                this.RemoveAndShift(removePos, false);
+                this.InsertAndShift(insertPos, 1);
             }
-            _index[0][insertPos] = insertPos;
-            _index[1][insertPos] = listItem;
+
+            this._index[0][insertPos] = insertPos;
+            this._index[1][insertPos] = listItem;
         }
 
         public void Clear()
         {
-            _index = new int[2][];
-            _index[0] = new int[_defaultSize];
-            _index[1] = new int[_defaultSize];
-            _items = new List<T>();
+            this._index = new int[2][];
+            this._index[0] = new int[this._defaultSize];
+            this._index[1] = new int[this._defaultSize];
+            this._items = new List<T>();
         }
 
         public bool ContainsKey(int key)
         {
-            return Array.BinarySearch(_index[0], 0, _count, key) >= 0;
+            return Array.BinarySearch(this._index[0], 0, this._count, key) >= 0;
         }
     
         public IEnumerator<T> GetEnumerator()
@@ -132,29 +134,30 @@ namespace OfficeOpenXml.Core
 
         public bool RemoveAndShift(int key)
         {
-            return RemoveAndShift(key, true);
+            return this.RemoveAndShift(key, true);
         }
 
         private bool RemoveAndShift(int key, bool dispose)
         {
-            int pos = Array.BinarySearch(_index[0], 0, _count, key);
+            int pos = Array.BinarySearch(this._index[0], 0, this._count, key);
             if (pos >= 0)
             {
                 if (dispose)
                 {
-                    (_items[_index[1][pos]] as IDisposable)?.Dispose();
-                    _items[_index[1][pos]] = default(T);
+                    (this._items[this._index[1][pos]] as IDisposable)?.Dispose();
+                    this._items[this._index[1][pos]] = default(T);
                 }
 
-                if (pos < Count)
+                if (pos < this.Count)
                 {
-                    Array.Copy(_index[0], pos + 1, _index[0], pos, Count - pos - 1);
-                    Array.Copy(_index[1], pos + 1, _index[1], pos, Count - pos - 1);
+                    Array.Copy(this._index[0], pos + 1, this._index[0], pos, this.Count - pos - 1);
+                    Array.Copy(this._index[1], pos + 1, this._index[1], pos, this.Count - pos - 1);
                 }
-                _count--;
-                for (int i = pos; i < _count; i++)
+
+                this._count--;
+                for (int i = pos; i < this._count; i++)
                 {
-                    _index[0][i]--;
+                    this._index[0][i]--;
                 }
                 return true;
             }
@@ -163,10 +166,10 @@ namespace OfficeOpenXml.Core
 
         public bool TryGetValue(int key, out T value)
         {
-            int pos = Array.BinarySearch(_index[0], 0, _count, key);
+            int pos = Array.BinarySearch(this._index[0], 0, this._count, key);
             if (pos >= 0)
             {
-                value = _items[pos];
+                value = this._items[pos];
                 return true;
             }
             else
@@ -186,34 +189,34 @@ namespace OfficeOpenXml.Core
         ChangeableDictionary<T> _ts;
         public ChangeableDictionaryEnumerator(ChangeableDictionary<T> ts)
         {
-            _ts = ts;
+            this._ts = ts;
         }
         public T Current
         {
             get
             {
-                if (_index >= _ts._count)
+                if (this._index >= this._ts._count)
                 {
                     return default(T);
                 }
                 else
                 {
-                    return _ts._items[_ts._index[1][_index]];
+                    return this._ts._items[this._ts._index[1][this._index]];
                 }
             }
         }
 
-        object IEnumerator.Current => Current;
+        object IEnumerator.Current => this.Current;
 
         public void Dispose()
         {
-            _ts = null;
+            this._ts = null;
         }
 
         public bool MoveNext()
         {
-            _index++;
-            if (_ts.Count == _index)
+            this._index++;
+            if (this._ts.Count == this._index)
             {
                 return false;
             }

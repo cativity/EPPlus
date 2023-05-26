@@ -31,9 +31,10 @@ namespace OfficeOpenXml.Filter
         {
             if (typeof(T) == typeof(ExcelFilterCustomItem))
             {
-                _maxTwoItems = true;
+                this._maxTwoItems = true;
             }
-            _list = new List<T>();
+
+            this._list = new List<T>();
         }
         /// <summary>
         /// Gets the enumerator for the collection
@@ -41,7 +42,7 @@ namespace OfficeOpenXml.Filter
         /// <returns>The enumerator</returns>
         public IEnumerator<T> GetEnumerator()
         {
-            return _list.GetEnumerator();
+            return this._list.GetEnumerator();
         }
 
         /// <summary>
@@ -50,7 +51,7 @@ namespace OfficeOpenXml.Filter
         /// <returns>The enumerator</returns>
         IEnumerator IEnumerable.GetEnumerator()
         {
-            return _list.GetEnumerator();
+            return this._list.GetEnumerator();
         }
         
         /// <summary>
@@ -62,7 +63,7 @@ namespace OfficeOpenXml.Filter
         {
             get
             {
-                return _list[index];
+                return this._list[index];
             }
         }
         /// <summary>
@@ -72,7 +73,7 @@ namespace OfficeOpenXml.Filter
         {
             get
             {
-                return _list.Count;
+                return this._list.Count;
             }
         }
     }
@@ -88,11 +89,12 @@ namespace OfficeOpenXml.Filter
         /// <param name="value"></param>
         public T Add(T value)
         {
-            if (_maxTwoItems && _list.Count >= 2)
+            if (this._maxTwoItems && this._list.Count >= 2)
             {
                 throw (new InvalidOperationException("You can only have two filters on an ExcelCustomFilterColumn collection"));
             }
-            _list.Add(value);
+
+            this._list.Add(value);
             return value;
         }
 

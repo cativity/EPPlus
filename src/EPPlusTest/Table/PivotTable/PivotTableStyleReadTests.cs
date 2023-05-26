@@ -192,7 +192,7 @@ namespace EPPlusTest.Table.PivotTable
             Assert.AreEqual(pt.Fields[0].Index, s.Conditions.Fields[0].FieldIndex);
             Assert.AreEqual(pt.Fields[1].Index, s.Conditions.Fields[1].FieldIndex);
             Assert.IsTrue(s.GrandColumn);
-            Assert.AreEqual(s.Style.Fill.Style, OfficeOpenXml.Style.eDxfFillStyle.PatternFill);
+            Assert.AreEqual(s.Style.Fill.Style, eDxfFillStyle.PatternFill);
             Assert.AreEqual(Color.LightGray.ToArgb(), s.Style.Fill.BackgroundColor.Color.Value.ToArgb());
 
             Assert.AreEqual(ExcelUnderLineType.Single, s.Style.Font.Underline);
@@ -207,7 +207,7 @@ namespace EPPlusTest.Table.PivotTable
             ExcelPivotTableAreaStyle? s = pt.Styles[0];
 
             Assert.IsTrue(s.GrandRow);
-            Assert.AreEqual(s.Style.Fill.Style, OfficeOpenXml.Style.eDxfFillStyle.PatternFill);
+            Assert.AreEqual(s.Style.Fill.Style, eDxfFillStyle.PatternFill);
             Assert.AreEqual(Color.LightGray.ToArgb(), s.Style.Fill.BackgroundColor.Color.Value.ToArgb());
 
             Assert.AreEqual(ExcelUnderLineType.Single, s.Style.Font.Underline);

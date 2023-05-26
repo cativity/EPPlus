@@ -36,7 +36,7 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Math
         protected MultipleRangeCriteriasFunction(ExpressionEvaluator evaluator)
         {
             Require.That(evaluator).Named("evaluator").IsNotNull();
-            _expressionEvaluator = evaluator;
+            this._expressionEvaluator = evaluator;
         }
 
         protected bool Evaluate(object obj, string expression, bool convertNumericString = true)
@@ -48,9 +48,9 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Math
             }
             if (candidate.HasValue)
             {
-                return _expressionEvaluator.Evaluate(candidate.Value, expression, convertNumericString);
+                return this._expressionEvaluator.Evaluate(candidate.Value, expression, convertNumericString);
             }
-            return _expressionEvaluator.Evaluate(obj, expression, convertNumericString);
+            return this._expressionEvaluator.Evaluate(obj, expression, convertNumericString);
         }
 
         protected List<int> GetMatchIndexes(RangeOrValue rangeOrValue, string searched, bool convertNumericString = true)
@@ -70,7 +70,7 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Math
                     for (int col = rangeInfo.Address._fromCol; col <= rangeInfo.Address._toCol; col++)
                     {
                         object? candidate = rangeInfo.GetValue(row, col);
-                        if (searched != null && Evaluate(candidate, searched, convertNumericString))
+                        if (searched != null && this.Evaluate(candidate, searched, convertNumericString))
                         {
                             result.Add(internalIndex);
                         }
@@ -78,7 +78,7 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Math
                     }
                 }
             }
-            else if(Evaluate(rangeOrValue.Value, searched, convertNumericString))
+            else if(this.Evaluate(rangeOrValue.Value, searched, convertNumericString))
             {
                 result.Add(internalIndex);
             }

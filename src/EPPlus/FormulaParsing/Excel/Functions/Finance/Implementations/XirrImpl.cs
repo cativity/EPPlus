@@ -74,7 +74,7 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Finance.Implementations
 
             if (bContLoop)
             {
-                return new FinanceCalcResult<double>(OfficeOpenXml.eErrorType.Value);
+                return new FinanceCalcResult<double>(eErrorType.Value);
             }
 
             return new FinanceCalcResult<double>(fResultRate);

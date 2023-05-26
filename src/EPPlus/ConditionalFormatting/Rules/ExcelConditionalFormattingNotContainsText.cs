@@ -54,8 +54,8 @@ namespace OfficeOpenXml.ConditionalFormatting
     {
         if (itemElementNode==null) //Set default values and create attributes if needed
         {
-            Operator = eExcelConditionalFormattingOperatorType.NotContains;
-            Text = string.Empty;
+            this.Operator = eExcelConditionalFormattingOperatorType.NotContains;
+            this.Text = string.Empty;
         }
     }
 
@@ -110,19 +110,19 @@ namespace OfficeOpenXml.ConditionalFormatting
     {
       get
       {
-        return GetXmlNodeString(
-          ExcelConditionalFormattingConstants.Paths.TextAttribute);
+        return this.GetXmlNodeString(
+                                     ExcelConditionalFormattingConstants.Paths.TextAttribute);
       }
       set
       {
-        SetXmlNodeString(
-          ExcelConditionalFormattingConstants.Paths.TextAttribute,
-          value);
+          this.SetXmlNodeString(
+                                ExcelConditionalFormattingConstants.Paths.TextAttribute,
+                                value);
 
-        Formula = string.Format(
-          "ISERROR(SEARCH(\"{1}\",{0}))",
-          Address.Start.Address,
-          value.Replace("\"", "\"\""));
+          this.Formula = string.Format(
+                                       "ISERROR(SEARCH(\"{1}\",{0}))",
+                                       this.Address.Start.Address,
+                                       value.Replace("\"", "\"\""));
       }
     }
     #endregion Exposed Properties

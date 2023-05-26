@@ -36,22 +36,22 @@ namespace OfficeOpenXml.Drawing.Slicer
 
         internal override void Init(ExcelWorkbook wb)
         {
-            ExcelTable? tbl = wb.GetTable(TableId);                
-            TableColumn = tbl?.Columns.FirstOrDefault(x => x.Id == ColumnId);
-            SlicerCacheXml = new XmlDocument();
-            LoadXmlSafe(SlicerCacheXml, Part.GetStream());
+            ExcelTable? tbl = wb.GetTable(this.TableId);
+            this.TableColumn = tbl?.Columns.FirstOrDefault(x => x.Id == this.ColumnId);
+            this.SlicerCacheXml = new XmlDocument();
+            LoadXmlSafe(this.SlicerCacheXml, this.Part.GetStream());
         }
         internal void Init(ExcelTableColumn column, string cacheName)
         {
-            TableColumn = column;
+            this.TableColumn = column;
             ExcelWorkbook? wb = column.Table.WorkSheet.Workbook;
-            CreatePart(wb);
-            SlicerCacheXml.DocumentElement.InnerXml = $"<extLst><x:ext uri=\"{ExtLstUris.TableSlicerCacheUri}\" xmlns:x15=\"http://schemas.microsoft.com/office/spreadsheetml/2010/11/main\"><x15:tableSlicerCache tableId=\"{column.Table.Id}\" column=\"{column.Id}\"/></x:ext></extLst>";
-            TopNode = SlicerCacheXml.DocumentElement;
-            Name = cacheName;
-            SourceName = column.Name;
-            SlicerCacheXml.Save(Part.GetStream(FileMode.Create, FileAccess.Write));
-            CreateWorkbookReference(wb, ExtLstUris.WorkbookSlicerTableUri);
+            this.CreatePart(wb);
+            this.SlicerCacheXml.DocumentElement.InnerXml = $"<extLst><x:ext uri=\"{ExtLstUris.TableSlicerCacheUri}\" xmlns:x15=\"http://schemas.microsoft.com/office/spreadsheetml/2010/11/main\"><x15:tableSlicerCache tableId=\"{column.Table.Id}\" column=\"{column.Id}\"/></x:ext></extLst>";
+            this.TopNode = this.SlicerCacheXml.DocumentElement;
+            this.Name = cacheName;
+            this.SourceName = column.Name;
+            this.SlicerCacheXml.Save(this.Part.GetStream(FileMode.Create, FileAccess.Write));
+            this.CreateWorkbookReference(wb, ExtLstUris.WorkbookSlicerTableUri);
         }
 
         /// <summary>
@@ -81,11 +81,11 @@ namespace OfficeOpenXml.Drawing.Slicer
         {
             get
             {
-                return GetXmlNodeString(_sortOrderPath).ToEnum(eSortOrder.Ascending);
+                return this.GetXmlNodeString(_sortOrderPath).ToEnum(eSortOrder.Ascending);
             }
             set
             {
-                SetXmlNodeString(_sortOrderPath, value.ToEnumString());
+                this.SetXmlNodeString(_sortOrderPath, value.ToEnumString());
             }
         }
         const string _crossFilterPath = _topPath + "/@crossFilter";
@@ -96,11 +96,11 @@ namespace OfficeOpenXml.Drawing.Slicer
         {
             get
             {
-                return GetXmlNodeString(_crossFilterPath).ToEnum(eCrossFilter.None);
+                return this.GetXmlNodeString(_crossFilterPath).ToEnum(eCrossFilter.None);
             }
             set
             {
-                SetXmlNodeString(_crossFilterPath, value.ToEnumString());
+                this.SetXmlNodeString(_crossFilterPath, value.ToEnumString());
             }
         }
         const string _customListSortPath = _topPath + "/@customListSort";
@@ -111,11 +111,11 @@ namespace OfficeOpenXml.Drawing.Slicer
         {
             get
             {
-                return GetXmlNodeBool(_customListSortPath, true);
+                return this.GetXmlNodeBool(_customListSortPath, true);
             }
             set
             {
-                SetXmlNodeBool(_customListSortPath, value, true);
+                this.SetXmlNodeBool(_customListSortPath, value, true);
             }
         }
         const string _hideItemsWithNoDataPath = "x15:slicerCacheHideItemsWithNoData";
@@ -126,20 +126,20 @@ namespace OfficeOpenXml.Drawing.Slicer
         { 
             get
             {
-                return ExistsNode(_extPath +"/" + _hideItemsWithNoDataPath);
+                return this.ExistsNode(_extPath +"/" + _hideItemsWithNoDataPath);
             }
             set
             {
                 if(value)
                 {
-                    XmlNode? node = CreateNode("x14:extLst/d:ext",false,true);
+                    XmlNode? node = this.CreateNode("x14:extLst/d:ext",false,true);
                     ((XmlElement)node).SetAttribute("uri", "{470722E0-AACD-4C17-9CDC-17EF765DBC7E}");
-                    XmlHelper? helper = XmlHelperFactory.Create(NameSpaceManager, node);
+                    XmlHelper? helper = XmlHelperFactory.Create(this.NameSpaceManager, node);
                     helper.CreateNode(_hideItemsWithNoDataPath, false, true);
                 }
                 else
                 {
-                    XmlNode? hideNode = GetNode(_extPath + "/" + _hideItemsWithNoDataPath);
+                    XmlNode? hideNode = this.GetNode(_extPath + "/" + _hideItemsWithNoDataPath);
                     if(hideNode!=null)
                     {
                         hideNode.ParentNode.ParentNode.RemoveChild(hideNode.ParentNode);
@@ -152,11 +152,11 @@ namespace OfficeOpenXml.Drawing.Slicer
         {
             get
             {
-                return GetXmlNodeInt(_columnIndexPath);
+                return this.GetXmlNodeInt(_columnIndexPath);
             }
             set
             {
-                SetXmlNodeInt(_columnIndexPath, value);
+                this.SetXmlNodeInt(_columnIndexPath, value);
             }
         }
         const string _tableIdPath = _topPath + "/@tableId";
@@ -164,11 +164,11 @@ namespace OfficeOpenXml.Drawing.Slicer
         {
             get
             {
-                return GetXmlNodeInt(_tableIdPath);
+                return this.GetXmlNodeInt(_tableIdPath);
             }
             set
             {
-                SetXmlNodeInt(_tableIdPath, value);
+                this.SetXmlNodeInt(_tableIdPath, value);
             }
         }
     }

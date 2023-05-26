@@ -23,7 +23,7 @@ namespace OfficeOpenXml.FormulaParsing.ExpressionGraph.CompileStrategy
 
         public CompileStrategy(Expression expression)
         {
-            _expression = expression;
+            this._expression = expression;
         }
 
         public abstract Expression Compile();

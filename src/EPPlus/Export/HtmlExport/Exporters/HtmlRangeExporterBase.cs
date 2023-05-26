@@ -29,40 +29,40 @@ namespace OfficeOpenXml.Export.HtmlExport.Exporters
     {
         public HtmlRangeExporterBase(HtmlExportSettings settings, ExcelRangeBase range)
         {
-            Settings = settings;
+            this.Settings = settings;
             Require.Argument(range).IsNotNull("range");
-            _ranges = new EPPlusReadOnlyList<ExcelRangeBase>();
+            this._ranges = new EPPlusReadOnlyList<ExcelRangeBase>();
 
             if (range.Addresses == null)
             {
-                AddRange(range);
+                this.AddRange(range);
             }
             else
             {
                 foreach (ExcelAddressBase? address in range.Addresses)
                 {
-                    AddRange(range.Worksheet.Cells[address.Address]);
+                    this.AddRange(range.Worksheet.Cells[address.Address]);
                 }
             }
 
-            LoadRangeImages(_ranges._list);
+            this.LoadRangeImages(this._ranges._list);
         }
 
         public HtmlRangeExporterBase(HtmlExportSettings settings, EPPlusReadOnlyList<ExcelRangeBase> ranges)
         {
-            Settings = settings;
+            this.Settings = settings;
             Require.Argument(ranges).IsNotNull("ranges");
-            _ranges = ranges;
+            this._ranges = ranges;
 
-            LoadRangeImages(_ranges._list);
+            this.LoadRangeImages(this._ranges._list);
         }
 
         public HtmlRangeExporterBase(EPPlusReadOnlyList<ExcelRangeBase> ranges)
         {
             Require.Argument(ranges).IsNotNull("ranges");
-            _ranges = ranges;
+            this._ranges = ranges;
 
-            LoadRangeImages(_ranges._list);
+            this.LoadRangeImages(this._ranges._list);
         }
 
         protected List<int> _columns = new List<int>();
@@ -72,13 +72,13 @@ namespace OfficeOpenXml.Export.HtmlExport.Exporters
         protected void LoadVisibleColumns(ExcelRangeBase range)
         {
             ExcelWorksheet? ws = range.Worksheet;
-            _columns = new List<int>();
+            this._columns = new List<int>();
             for (int col = range._fromCol; col <= range._toCol; col++)
             {
                 ExcelColumn? c = ws.GetColumn(col);
                 if (c == null || (c.Hidden == false && c.Width > 0))
                 {
-                    _columns.Add(col);
+                    this._columns.Add(col);
                 }
             }
         }
@@ -89,17 +89,17 @@ namespace OfficeOpenXml.Export.HtmlExport.Exporters
         {
             if (range.IsFullColumn && range.IsFullRow)
             {
-                _ranges.Add(new ExcelRangeBase(range.Worksheet, range.Worksheet.Dimension.Address));
+                this._ranges.Add(new ExcelRangeBase(range.Worksheet, range.Worksheet.Dimension.Address));
             }
             else
             {
-                _ranges.Add(range);
+                this._ranges.Add(range);
             }
         }
 
         protected void ValidateRangeIndex(int rangeIndex)
         {
-            if (rangeIndex < 0 || rangeIndex >= _ranges.Count)
+            if (rangeIndex < 0 || rangeIndex >= this._ranges.Count)
             {
                 throw new ArgumentOutOfRangeException(nameof(rangeIndex));
             }
@@ -154,12 +154,12 @@ namespace OfficeOpenXml.Export.HtmlExport.Exporters
 
         protected bool InMergeCellSpan(int row, int col)
         {
-            for (int i = 0; i < _mergedCells.Count; i++)
+            for (int i = 0; i < this._mergedCells.Count; i++)
             {
-                ExcelAddressBase? adr = _mergedCells[i];
+                ExcelAddressBase? adr = this._mergedCells[i];
                 if (adr._toRow < row || (adr._toRow == row && adr._toCol < col))
                 {
-                    _mergedCells.RemoveAt(i);
+                    this._mergedCells.RemoveAt(i);
                     i--;
                 }
                 else
@@ -192,7 +192,8 @@ namespace OfficeOpenXml.Export.HtmlExport.Exporters
                         {
                             writer.AddAttribute("colspan", colSpan.ToString(CultureInfo.InvariantCulture));
                         }
-                        _mergedCells.Add(ma);
+
+                        this._mergedCells.Add(ma);
                         added = true;
                     }
                     //RowSpan
@@ -220,11 +221,11 @@ namespace OfficeOpenXml.Export.HtmlExport.Exporters
                 throw new InvalidOperationException("Range From Row + Header rows is out of bounds");
             }
 
-            _dataTypes = new List<string>();
+            this._dataTypes = new List<string>();
             for (int col = range._fromCol; col <= range._toCol; col++)
             {
-                _dataTypes.Add(
-                    ColumnDataTypeManager.GetColumnDataType(range.Worksheet, range, range._fromRow + settings.HeaderRows, col));
+                this._dataTypes.Add(
+                                    ColumnDataTypeManager.GetColumnDataType(range.Worksheet, range, range._fromRow + settings.HeaderRows, col));
             }
         }
         bool? _isMultiSheet = null;
@@ -232,11 +233,11 @@ namespace OfficeOpenXml.Export.HtmlExport.Exporters
         {
             get
             {
-                if (_isMultiSheet.HasValue == false)
+                if (this._isMultiSheet.HasValue == false)
                 {
-                    _isMultiSheet = _ranges.Select(x => x.Worksheet).Distinct().Count() > 1;
+                    this._isMultiSheet = this._ranges.Select(x => x.Worksheet).Distinct().Count() > 1;
                 }
-                return _isMultiSheet.Value;
+                return this._isMultiSheet.Value;
             }
         }
 
@@ -269,11 +270,11 @@ namespace OfficeOpenXml.Export.HtmlExport.Exporters
         {
             if (overrideSettings == null || string.IsNullOrEmpty(overrideSettings.TableId))
             {
-                if (_ranges.Count > 1 && !string.IsNullOrEmpty(Settings.TableId))
+                if (this._ranges.Count > 1 && !string.IsNullOrEmpty(this.Settings.TableId))
                 {
-                    return Settings.TableId + index.ToString(CultureInfo.InvariantCulture);
+                    return this.Settings.TableId + index.ToString(CultureInfo.InvariantCulture);
                 }
-                return Settings.TableId;
+                return this.Settings.TableId;
             }
             return overrideSettings.TableId;
         }

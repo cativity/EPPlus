@@ -28,7 +28,7 @@ namespace OfficeOpenXml.Drawing.Theme
     {
         internal ExcelThemeLine(XmlNamespaceManager nameSpaceManager, XmlNode topNode) : base(nameSpaceManager, topNode)
         {
-            SchemaNodeOrder = new string[] { "noFill", "solidFill", "gradientFill", "pattFill", "prstDash", "round", "bevel", "miter", "headEnd", " tailEnd" };
+            this.SchemaNodeOrder = new string[] { "noFill", "solidFill", "gradientFill", "pattFill", "prstDash", "round", "bevel", "miter", "headEnd", " tailEnd" };
         }
         const string widthPath = "@w";
         /// <summary>
@@ -43,11 +43,11 @@ namespace OfficeOpenXml.Drawing.Theme
         {
             get
             {
-                return GetXmlNodeInt(widthPath);
+                return this.GetXmlNodeInt(widthPath);
             }
             set
             {
-                SetXmlNodeString(widthPath, value.ToString(CultureInfo.InvariantCulture));
+                this.SetXmlNodeString(widthPath, value.ToString(CultureInfo.InvariantCulture));
             }
         }
         const string CapPath = "@cap";
@@ -58,11 +58,11 @@ namespace OfficeOpenXml.Drawing.Theme
         {
             get
             {
-                return EnumTransl.ToLineCap(GetXmlNodeString(CapPath));
+                return EnumTransl.ToLineCap(this.GetXmlNodeString(CapPath));
             }
             set
             {
-                SetXmlNodeString(CapPath, EnumTransl.FromLineCap(value));
+                this.SetXmlNodeString(CapPath, EnumTransl.FromLineCap(value));
             }
         }
         const string CompoundPath = "@cmpd";
@@ -73,11 +73,11 @@ namespace OfficeOpenXml.Drawing.Theme
         {
             get
             {
-                return EnumTransl.ToLineCompound(GetXmlNodeString(CompoundPath));
+                return EnumTransl.ToLineCompound(this.GetXmlNodeString(CompoundPath));
             }
             set
             {
-                SetXmlNodeString(CompoundPath, EnumTransl.FromLineCompound(value));
+                this.SetXmlNodeString(CompoundPath, EnumTransl.FromLineCompound(value));
             }
         }
         const string PenAlignmentPath = "@algn";
@@ -88,11 +88,11 @@ namespace OfficeOpenXml.Drawing.Theme
         {
             get
             {
-                return EnumTransl.ToPenAlignment(GetXmlNodeString(PenAlignmentPath));
+                return EnumTransl.ToPenAlignment(this.GetXmlNodeString(PenAlignmentPath));
             }
             set
             {
-                SetXmlNodeString(PenAlignmentPath, EnumTransl.FromPenAlignment(value));
+                this.SetXmlNodeString(PenAlignmentPath, EnumTransl.FromPenAlignment(value));
             }
         }
         ExcelDrawingFill _fill = null;
@@ -103,20 +103,20 @@ namespace OfficeOpenXml.Drawing.Theme
         {
             get
             {
-                if (_fill == null)
+                if (this._fill == null)
                 {
-                    if (!(TopNode.HasChildNodes && TopNode.ChildNodes[0].LocalName.EndsWith("Fill")))
+                    if (!(this.TopNode.HasChildNodes && this.TopNode.ChildNodes[0].LocalName.EndsWith("Fill")))
                     {
-                        _fill = new ExcelDrawingFill(null, NameSpaceManager, TopNode.ChildNodes[0], "", SchemaNodeOrder);
+                        this._fill = new ExcelDrawingFill(null, this.NameSpaceManager, this.TopNode.ChildNodes[0], "", this.SchemaNodeOrder);
                     }
                     else
                     {
-                        XmlNode? node = CreateNode("a:solidFill");
-                        _fill = new ExcelDrawingFill(null, NameSpaceManager, TopNode.ChildNodes[0], "", SchemaNodeOrder);
-                        Fill.SolidFill.Color.SetSchemeColor(eSchemeColor.Style);
+                        XmlNode? node = this.CreateNode("a:solidFill");
+                        this._fill = new ExcelDrawingFill(null, this.NameSpaceManager, this.TopNode.ChildNodes[0], "", this.SchemaNodeOrder);
+                        this.Fill.SolidFill.Color.SetSchemeColor(eSchemeColor.Style);
                     }
                 }
-                return _fill;
+                return this._fill;
             }
         }
         const string StylePath = "a:prstDash/@val";
@@ -127,11 +127,11 @@ namespace OfficeOpenXml.Drawing.Theme
         {
             get
             {
-                return EnumTransl.ToLineStyle(GetXmlNodeString(StylePath));
+                return EnumTransl.ToLineStyle(this.GetXmlNodeString(StylePath));
             }
             set
             {
-                SetXmlNodeString(StylePath, EnumTransl.FromLineStyle(value));
+                this.SetXmlNodeString(StylePath, EnumTransl.FromLineStyle(value));
             }
         }
         const string BevelPath = "a:bevel";
@@ -144,15 +144,15 @@ namespace OfficeOpenXml.Drawing.Theme
         {
             get
             {
-                if (ExistsNode(BevelPath))
+                if (this.ExistsNode(BevelPath))
                 {
                     return eLineJoin.Bevel;
                 }
-                else if (ExistsNode(RoundPath))
+                else if (this.ExistsNode(RoundPath))
                 {
                     return eLineJoin.Round;
                 }
-                else if (ExistsNode(MiterPath))
+                else if (this.ExistsNode(MiterPath))
                 {
                     return eLineJoin.Miter;
                 }
@@ -165,21 +165,21 @@ namespace OfficeOpenXml.Drawing.Theme
             {
                 if (value == eLineJoin.Bevel)
                 {
-                    CreateNode(BevelPath);
-                    DeleteNode(RoundPath);
-                    DeleteNode(MiterPath);
+                    this.CreateNode(BevelPath);
+                    this.DeleteNode(RoundPath);
+                    this.DeleteNode(MiterPath);
                 }
                 else if (value == eLineJoin.Round)
                 {
-                    CreateNode(RoundPath);
-                    DeleteNode(BevelPath);
-                    DeleteNode(MiterPath);
+                    this.CreateNode(RoundPath);
+                    this.DeleteNode(BevelPath);
+                    this.DeleteNode(MiterPath);
                 }
                 else
                 {
-                    CreateNode(MiterPath);
-                    DeleteNode(RoundPath);
-                    DeleteNode(BevelPath);
+                    this.CreateNode(MiterPath);
+                    this.DeleteNode(RoundPath);
+                    this.DeleteNode(BevelPath);
                 }
             }
         }
@@ -191,12 +191,12 @@ namespace OfficeOpenXml.Drawing.Theme
         {
             get
             {
-                return GetXmlNodePercentage(MiterJoinLimitPath);
+                return this.GetXmlNodePercentage(MiterJoinLimitPath);
             }
             set
             {
-                Join = eLineJoin.Miter;
-                SetXmlNodePercentage(MiterJoinLimitPath, value);
+                this.Join = eLineJoin.Miter;
+                this.SetXmlNodePercentage(MiterJoinLimitPath, value);
             }
         }
         ExcelDrawingLineEnd _headEnd = null;
@@ -207,11 +207,11 @@ namespace OfficeOpenXml.Drawing.Theme
         {
             get
             {
-                if (_headEnd == null)
+                if (this._headEnd == null)
                 {
-                    return new ExcelDrawingLineEnd(NameSpaceManager, TopNode, "a:headEnd", Init);
+                    return new ExcelDrawingLineEnd(this.NameSpaceManager, this.TopNode, "a:headEnd", Init);
                 }
-                return _headEnd;
+                return this._headEnd;
             }
         }
         ExcelDrawingLineEnd _tailEnd = null;
@@ -222,11 +222,11 @@ namespace OfficeOpenXml.Drawing.Theme
         {
             get
             {
-                if (_tailEnd == null)
+                if (this._tailEnd == null)
                 {
-                    return new ExcelDrawingLineEnd(NameSpaceManager, TopNode, "a:tailEnd", Init);
+                    return new ExcelDrawingLineEnd(this.NameSpaceManager, this.TopNode, "a:tailEnd", Init);
                 }
-                return _tailEnd;
+                return this._tailEnd;
             }
         }
 
@@ -234,7 +234,7 @@ namespace OfficeOpenXml.Drawing.Theme
         {
             get
             {
-                return TopNode as XmlElement;
+                return this.TopNode as XmlElement;
             }
         }
 

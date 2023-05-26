@@ -28,90 +28,90 @@ namespace OfficeOpenXml.Core.CellStore
         }
         public CellStoreEnumerator(CellStore<T> cellStore, int StartRow, int StartCol, int EndRow, int EndCol)
         {
-            _cellStore = cellStore;
+            this._cellStore = cellStore;
 
-            _startRow = StartRow;
-            _startCol = StartCol;
-            _endRow = EndRow;
-            _endCol = EndCol;
+            this._startRow = StartRow;
+            this._startCol = StartCol;
+            this._endRow = EndRow;
+            this._endCol = EndCol;
 
-            Init();
+            this.Init();
 
         }
 
         internal void Init()
         {
-            minRow = _startRow;
-            maxRow = _endRow;
+            this.minRow = this._startRow;
+            this.maxRow = this._endRow;
 
-            minColPos = _cellStore.GetColumnPosition(_startCol);
-            if (minColPos < 0)
+            this.minColPos = this._cellStore.GetColumnPosition(this._startCol);
+            if (this.minColPos < 0)
             {
                 this.minColPos = ~this.minColPos;
             }
 
-            maxColPos = _cellStore.GetColumnPosition(_endCol);
-            if (maxColPos < 0)
+            this.maxColPos = this._cellStore.GetColumnPosition(this._endCol);
+            if (this.maxColPos < 0)
             {
                 this.maxColPos = ~this.maxColPos - 1;
             }
 
-            row = minRow;
-            colPos = minColPos - 1;
+            this.row = this.minRow;
+            this.colPos = this.minColPos - 1;
 
-            int cols = maxColPos - minColPos + 1;
-            pagePos = new int[cols];
-            cellPos = new int[cols];
+            int cols = this.maxColPos - this.minColPos + 1;
+            this.pagePos = new int[cols];
+            this.cellPos = new int[cols];
             for (int i = 0; i < cols; i++)
             {
-                pagePos[i] = -1;
-                cellPos[i] = -1;
+                this.pagePos[i] = -1;
+                this.cellPos[i] = -1;
             }
         }
         internal int Row
         {
             get
             {
-                return row;
+                return this.row;
             }
         }
         internal int Column
         {
             get
             {
-                if (colPos<0 || colPos>=_cellStore.ColumnCount)
+                if (this.colPos<0 || this.colPos>= this._cellStore.ColumnCount)
                 {
                     return -1;
                 }
-                return _cellStore._columnIndex[colPos].Index;
+                return this._cellStore._columnIndex[this.colPos].Index;
             }
         }
         internal T Value
         {
             get
             {
-                lock (_cellStore)
+                lock (this._cellStore)
                 {
-                    return _cellStore.GetValue(row, Column);
+                    return this._cellStore.GetValue(this.row, this.Column);
                 }
             }
             set
             {
-                lock (_cellStore)
+                lock (this._cellStore)
                 {
-                    _cellStore.SetValue(row, Column, value);
+                    this._cellStore.SetValue(this.row, this.Column, value);
                 }
             }
         }
         internal bool Next()
         {
-            return _cellStore.GetNextCell(ref row, ref colPos, minColPos, maxRow, maxColPos);
+            return this._cellStore.GetNextCell(ref this.row, ref this.colPos, this.minColPos, this.maxRow, this.maxColPos);
         }
         internal bool Previous()
         {
-            lock (_cellStore)
+            lock (this._cellStore)
             {
-                return _cellStore.GetPrevCell(ref row, ref colPos, minRow, minColPos, maxColPos);
+                return this._cellStore.GetPrevCell(ref this.row, ref this.colPos, this.minRow, this.minColPos, this.maxColPos);
             }
         }
 
@@ -119,19 +119,19 @@ namespace OfficeOpenXml.Core.CellStore
         {
             get
             {
-                return ExcelAddressBase.GetAddress(Row, Column);
+                return ExcelCellBase.GetAddress(this.Row, this.Column);
             }
         }
 
         public IEnumerator<T> GetEnumerator()
         {
-            Reset();
+            this.Reset();
             return this;
         }
 
         IEnumerator IEnumerable.GetEnumerator()
         {
-            Reset();
+            this.Reset();
             return this;
         }
 
@@ -139,7 +139,7 @@ namespace OfficeOpenXml.Core.CellStore
         {
             get
             {
-                return Value;
+                return this.Value;
             }
         }
 
@@ -152,19 +152,19 @@ namespace OfficeOpenXml.Core.CellStore
         {
             get
             {
-                Reset();
+                this.Reset();
                 return this;
             }
         }
 
         public bool MoveNext()
         {
-            return Next();
+            return this.Next();
         }
 
         public void Reset()
         {
-            Init();
+            this.Init();
         }
     }
 }

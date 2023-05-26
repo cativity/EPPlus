@@ -29,8 +29,8 @@ namespace OfficeOpenXml.Drawing.Chart
             base(namespaceManager,topNode)
 
         {
-            _serie = serie;
-            AddSchemaNodeOrder(new string[] { "name", "spPr", "trendlineType","order","period", "forward","backward","intercept", "dispRSqr", "dispEq", "trendlineLbl" }, ExcelDrawing._schemaNodeOrderSpPr);
+            this._serie = serie;
+            this.AddSchemaNodeOrder(new string[] { "name", "spPr", "trendlineType","order","period", "forward","backward","intercept", "dispRSqr", "dispEq", "trendlineLbl" }, ExcelDrawing._schemaNodeOrderSpPr);
         }
         const string TRENDLINEPATH = "c:trendlineType/@val";
         /// <summary>
@@ -40,7 +40,7 @@ namespace OfficeOpenXml.Drawing.Chart
         {
            get
            {
-               switch (GetXmlNodeString(TRENDLINEPATH).ToLower(CultureInfo.InvariantCulture))
+               switch (this.GetXmlNodeString(TRENDLINEPATH).ToLower(CultureInfo.InvariantCulture))
                {
                    case "exp":
                        return eTrendLine.Exponential;
@@ -61,24 +61,24 @@ namespace OfficeOpenXml.Drawing.Chart
                 switch (value)
                 {
                     case eTrendLine.Exponential:
-                        SetXmlNodeString(TRENDLINEPATH, "exp");
+                        this.SetXmlNodeString(TRENDLINEPATH, "exp");
                         break;
                     case eTrendLine.Logarithmic:
-                        SetXmlNodeString(TRENDLINEPATH, "log");
+                        this.SetXmlNodeString(TRENDLINEPATH, "log");
                         break;
                     case eTrendLine.Polynomial:
-                        SetXmlNodeString(TRENDLINEPATH, "poly");
-                        Order = 2;
+                        this.SetXmlNodeString(TRENDLINEPATH, "poly");
+                        this.Order = 2;
                         break;
                     case eTrendLine.MovingAvgerage:
-                        SetXmlNodeString(TRENDLINEPATH, "movingAvg");
-                        Period = 2;
+                        this.SetXmlNodeString(TRENDLINEPATH, "movingAvg");
+                        this.Period = 2;
                         break;
                     case eTrendLine.Power:
-                        SetXmlNodeString(TRENDLINEPATH, "power");
+                        this.SetXmlNodeString(TRENDLINEPATH, "power");
                         break;
-                    default: 
-                        SetXmlNodeString(TRENDLINEPATH, "linear");
+                    default:
+                        this.SetXmlNodeString(TRENDLINEPATH, "linear");
                         break;
                 }
            }
@@ -91,11 +91,11 @@ namespace OfficeOpenXml.Drawing.Chart
         {
             get
             {
-                return GetXmlNodeString(NAMEPATH);
+                return this.GetXmlNodeString(NAMEPATH);
             }
             set
             {
-                SetXmlNodeString(NAMEPATH, value, true);
+                this.SetXmlNodeString(NAMEPATH, value, true);
             }
         }
         const string ORDERPATH = "c:order/@val";
@@ -106,16 +106,17 @@ namespace OfficeOpenXml.Drawing.Chart
         {
             get
             {
-                return GetXmlNodeDecimal(ORDERPATH);
+                return this.GetXmlNodeDecimal(ORDERPATH);
             }
             set
             {
-                if (Type == eTrendLine.MovingAvgerage)
+                if (this.Type == eTrendLine.MovingAvgerage)
                 {
                     throw (new ArgumentException("Can't set period for trendline type MovingAvgerage"));
                 }
-                DeleteAllNode(PERIODPATH);
-                SetXmlNodeString(ORDERPATH, value.ToString(CultureInfo.InvariantCulture));
+
+                this.DeleteAllNode(PERIODPATH);
+                this.SetXmlNodeString(ORDERPATH, value.ToString(CultureInfo.InvariantCulture));
             }
         }
         const string PERIODPATH = "c:period/@val";
@@ -126,16 +127,17 @@ namespace OfficeOpenXml.Drawing.Chart
         {
             get
             {
-                return GetXmlNodeDecimal(PERIODPATH);
+                return this.GetXmlNodeDecimal(PERIODPATH);
             }
             set
             {
-                if (Type == eTrendLine.Polynomial)
+                if (this.Type == eTrendLine.Polynomial)
                 {
                     throw (new ArgumentException("Can't set period for trendline type Polynomial"));
                 }
-                DeleteAllNode(ORDERPATH);
-                SetXmlNodeString(PERIODPATH, value.ToString(CultureInfo.InvariantCulture));
+
+                this.DeleteAllNode(ORDERPATH);
+                this.SetXmlNodeString(PERIODPATH, value.ToString(CultureInfo.InvariantCulture));
             }
         }
         const string FORWARDPATH = "c:forward/@val";
@@ -146,11 +148,11 @@ namespace OfficeOpenXml.Drawing.Chart
         {
             get
             {
-                return GetXmlNodeDecimal(FORWARDPATH);
+                return this.GetXmlNodeDecimal(FORWARDPATH);
             }
             set
             {
-                SetXmlNodeString(FORWARDPATH, value.ToString(CultureInfo.InvariantCulture));
+                this.SetXmlNodeString(FORWARDPATH, value.ToString(CultureInfo.InvariantCulture));
             }
         }
         const string BACKWARDPATH = "c:backward/@val";
@@ -161,11 +163,11 @@ namespace OfficeOpenXml.Drawing.Chart
         {
             get
             {
-                return GetXmlNodeDecimal(BACKWARDPATH);
+                return this.GetXmlNodeDecimal(BACKWARDPATH);
             }
             set
             {
-                SetXmlNodeString(BACKWARDPATH, value.ToString(CultureInfo.InvariantCulture));
+                this.SetXmlNodeString(BACKWARDPATH, value.ToString(CultureInfo.InvariantCulture));
             }
         }
         const string INTERCEPTPATH = "c:intercept/@val";
@@ -176,11 +178,11 @@ namespace OfficeOpenXml.Drawing.Chart
         {
             get
             {
-                return GetXmlNodeDecimal(INTERCEPTPATH);
+                return this.GetXmlNodeDecimal(INTERCEPTPATH);
             }
             set
             {
-                SetXmlNodeString(INTERCEPTPATH, value.ToString(CultureInfo.InvariantCulture));
+                this.SetXmlNodeString(INTERCEPTPATH, value.ToString(CultureInfo.InvariantCulture));
             }
         }
         const string DISPLAYRSQUAREDVALUEPATH = "c:dispRSqr/@val";
@@ -191,11 +193,11 @@ namespace OfficeOpenXml.Drawing.Chart
         {
             get
             {
-                return GetXmlNodeBool(DISPLAYRSQUAREDVALUEPATH, true);
+                return this.GetXmlNodeBool(DISPLAYRSQUAREDVALUEPATH, true);
             }
             set
             {
-                SetXmlNodeBool(DISPLAYRSQUAREDVALUEPATH, value, true);
+                this.SetXmlNodeBool(DISPLAYRSQUAREDVALUEPATH, value, true);
             }
         }
         const string DISPLAYEQUATIONPATH = "c:dispEq/@val";
@@ -206,11 +208,11 @@ namespace OfficeOpenXml.Drawing.Chart
         {
             get
             {
-                return GetXmlNodeBool(DISPLAYEQUATIONPATH, true);
+                return this.GetXmlNodeBool(DISPLAYEQUATIONPATH, true);
             }
             set
             {
-                SetXmlNodeBool(DISPLAYEQUATIONPATH, value, true);
+                this.SetXmlNodeBool(DISPLAYEQUATIONPATH, value, true);
             }
         }
         ExcelDrawingFill _fill = null;
@@ -221,11 +223,11 @@ namespace OfficeOpenXml.Drawing.Chart
         {
             get
             {
-                if (_fill == null)
+                if (this._fill == null)
                 {
-                    _fill = new ExcelDrawingFill(_serie._chart, NameSpaceManager, TopNode, "c:spPr", SchemaNodeOrder);
+                    this._fill = new ExcelDrawingFill(this._serie._chart, this.NameSpaceManager, this.TopNode, "c:spPr", this.SchemaNodeOrder);
                 }
-                return _fill;
+                return this._fill;
             }
         }
         ExcelDrawingBorder _border = null;
@@ -236,11 +238,11 @@ namespace OfficeOpenXml.Drawing.Chart
         {
             get
             {
-                if (_border == null)
+                if (this._border == null)
                 {
-                    _border = new ExcelDrawingBorder(_serie._chart, NameSpaceManager, TopNode, "c:spPr/a:ln", SchemaNodeOrder);
+                    this._border = new ExcelDrawingBorder(this._serie._chart, this.NameSpaceManager, this.TopNode, "c:spPr/a:ln", this.SchemaNodeOrder);
                 }
-                return _border;
+                return this._border;
             }
         }
         ExcelDrawingEffectStyle _effect = null;
@@ -251,11 +253,11 @@ namespace OfficeOpenXml.Drawing.Chart
         {
             get
             {
-                if (_effect == null)
+                if (this._effect == null)
                 {
-                    _effect = new ExcelDrawingEffectStyle(_serie._chart, NameSpaceManager, TopNode, "c:spPr/a:effectLst", SchemaNodeOrder);
+                    this._effect = new ExcelDrawingEffectStyle(this._serie._chart, this.NameSpaceManager, this.TopNode, "c:spPr/a:effectLst", this.SchemaNodeOrder);
                 }
-                return _effect;
+                return this._effect;
             }
         }
         ExcelDrawing3D _threeD = null;
@@ -266,16 +268,16 @@ namespace OfficeOpenXml.Drawing.Chart
         {
             get
             {
-                if (_threeD == null)
+                if (this._threeD == null)
                 {
-                    _threeD = new ExcelDrawing3D(NameSpaceManager, TopNode, "c:spPr", SchemaNodeOrder);
+                    this._threeD = new ExcelDrawing3D(this.NameSpaceManager, this.TopNode, "c:spPr", this.SchemaNodeOrder);
                 }
-                return _threeD;
+                return this._threeD;
             }
         }
         void IDrawingStyleBase.CreatespPr()
         {
-            CreatespPrNode();
+            this.CreatespPrNode();
         }
 
         ExcelChartTrendlineLabel _label =null;
@@ -286,11 +288,11 @@ namespace OfficeOpenXml.Drawing.Chart
         {
             get
             {
-                if(_label==null)
+                if(this._label==null)
                 {
-                    _label = new ExcelChartTrendlineLabel(NameSpaceManager, TopNode, _serie);
+                    this._label = new ExcelChartTrendlineLabel(this.NameSpaceManager, this.TopNode, this._serie);
                 }
-                return _label;
+                return this._label;
             }
         }
 
@@ -301,8 +303,8 @@ namespace OfficeOpenXml.Drawing.Chart
         {
             get
             {
-                return ExistsNode("c:trendlineLbl") ||
-                       (Type != eTrendLine.MovingAvgerage && (DisplayRSquaredValue == true || DisplayEquation == true));
+                return this.ExistsNode("c:trendlineLbl") ||
+                       (this.Type != eTrendLine.MovingAvgerage && (this.DisplayRSquaredValue == true || this.DisplayEquation == true));
             }
         }
     }

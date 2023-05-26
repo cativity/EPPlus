@@ -62,7 +62,7 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Database
             while (db.HasMoreRows)
             {
                 ExcelDatabaseRow? dataRow = db.Read();
-                if (RowMatcher.IsMatch(dataRow, criteria))
+                if (this.RowMatcher.IsMatch(dataRow, criteria))
                 {
                     // if a fieldname is supplied, count only this row if the value
                     // of the supplied field is not blank.
@@ -81,7 +81,7 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Database
                     }
                 }
             }
-            return CreateResult(nHits, DataType.Integer);
+            return this.CreateResult(nHits, DataType.Integer);
         }
 
         private static bool ShouldCount(object value)

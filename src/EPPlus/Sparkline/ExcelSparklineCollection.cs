@@ -28,9 +28,9 @@ namespace OfficeOpenXml.Sparkline
         List<ExcelSparkline> _lst;
         internal ExcelSparklineCollection(ExcelSparklineGroup slg)
         {
-            _slg = slg;
-            _lst = new List<ExcelSparkline>();
-            LoadSparklines();
+            this._slg = slg;
+            this._lst = new List<ExcelSparkline>();
+            this.LoadSparklines();
         }
         const string _topPath = "x14:sparklines/x14:sparkline";
         /// <summary>
@@ -40,16 +40,16 @@ namespace OfficeOpenXml.Sparkline
         {
             get
             {
-                return _lst.Count;
+                return this._lst.Count;
             }            
         }
 
         private void LoadSparklines()
         {
-            XmlNodeList? grps=_slg.TopNode.SelectNodes(_topPath, _slg.NameSpaceManager);
+            XmlNodeList? grps= this._slg.TopNode.SelectNodes(_topPath, this._slg.NameSpaceManager);
             foreach(XmlElement grp in grps)
             {
-                _lst.Add(new ExcelSparkline(_slg.NameSpaceManager, grp));
+                this._lst.Add(new ExcelSparkline(this._slg.NameSpaceManager, grp));
             }
         }
         /// <summary>
@@ -61,7 +61,7 @@ namespace OfficeOpenXml.Sparkline
         {
             get
             {
-                return (_lst[index]);
+                return (this._lst[index]);
             }
         }
         /// <summary>
@@ -70,30 +70,30 @@ namespace OfficeOpenXml.Sparkline
         /// <returns>The enumerator</returns>
         public IEnumerator<ExcelSparkline> GetEnumerator()
         {
-            return _lst.GetEnumerator();
+            return this._lst.GetEnumerator();
         }
 
         IEnumerator IEnumerable.GetEnumerator()
         {
-            return _lst.GetEnumerator();
+            return this._lst.GetEnumerator();
         }
 
         internal void Add(ExcelCellAddress cell, string worksheetName, ExcelAddressBase sqref)
         {
-            XmlElement? sparkline = _slg.TopNode.OwnerDocument.CreateElement("x14","sparkline", ExcelPackage.schemaMainX14);            
-            XmlNode? sls = _slg.TopNode.SelectSingleNode("x14:sparklines", _slg.NameSpaceManager);
+            XmlElement? sparkline = this._slg.TopNode.OwnerDocument.CreateElement("x14","sparkline", ExcelPackage.schemaMainX14);            
+            XmlNode? sls = this._slg.TopNode.SelectSingleNode("x14:sparklines", this._slg.NameSpaceManager);
 
             sls.AppendChild(sparkline);
-            _slg.TopNode.AppendChild(sls);
-            ExcelSparkline? sl = new ExcelSparkline(_slg.NameSpaceManager, sparkline);
+            this._slg.TopNode.AppendChild(sls);
+            ExcelSparkline? sl = new ExcelSparkline(this._slg.NameSpaceManager, sparkline);
             sl.Cell = cell;
             sl.RangeAddress = sqref;
-            _lst.Add(sl);
+            this._lst.Add(sl);
         }
         internal void Remove(ExcelSparkline sparkline)
         {
             sparkline.TopNode.ParentNode.RemoveChild(sparkline.TopNode);
-            _lst.Remove(sparkline);
+            this._lst.Remove(sparkline);
         }
     }
 }

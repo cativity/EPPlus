@@ -29,7 +29,7 @@ namespace OfficeOpenXml.Drawing
         internal ExcelConnectionShape(ExcelDrawings drawings, XmlNode node, ExcelGroupShape parent=null) :
             base(drawings, node, "xdr:cxnSp", "xdr:nvCxnSpPr/xdr:cNvPr", parent)
         {
-            Init(drawings, node);
+            this.Init(drawings, node);
         }
         internal ExcelConnectionShape(ExcelDrawings drawings, XmlNode node, eShapeConnectorStyle style, ExcelShape startShape, ExcelShape endShape) :
             base(drawings, node, "xdr:cxnSp", "xdr:nvCxnSpPr/xdr:cNvPr")
@@ -38,19 +38,19 @@ namespace OfficeOpenXml.Drawing
             shapeNode.SetAttribute("macro", "");
             node.AppendChild(shapeNode);
 
-            shapeNode.InnerXml = ShapeStartXml();
+            shapeNode.InnerXml = this.ShapeStartXml();
             node.AppendChild(shapeNode.OwnerDocument.CreateElement("xdr", "clientData", ExcelPackage.schemaSheetDrawings));
 
-            Init(drawings, node);
-            ConnectionStart.Shape = startShape;
-            ConnectionEnd.Shape = endShape;
-            Style = style;
+            this.Init(drawings, node);
+            this.ConnectionStart.Shape = startShape;
+            this.ConnectionEnd.Shape = endShape;
+            this.Style = style;
         }
 
         private void Init(ExcelDrawings drawings, XmlNode node)
         {
-            ConnectionStart = new ExcelDrawingConnectionPoint(drawings, node, "a:stCxn", SchemaNodeOrder);
-            ConnectionEnd = new ExcelDrawingConnectionPoint(drawings, node, "a:endCxn", SchemaNodeOrder);
+            this.ConnectionStart = new ExcelDrawingConnectionPoint(drawings, node, "a:stCxn", this.SchemaNodeOrder);
+            this.ConnectionEnd = new ExcelDrawingConnectionPoint(drawings, node, "a:endCxn", this.SchemaNodeOrder);
         }
         #region "Public methods"
         #endregion
@@ -58,22 +58,22 @@ namespace OfficeOpenXml.Drawing
         private string ShapeStartXml()
         {
             StringBuilder xml = new StringBuilder();
-            xml.AppendFormat("<xdr:nvCxnSpPr><xdr:cNvPr id=\"{0}\" name=\"{1}\" /></xdr:nvCxnSpPr><xdr:spPr><a:prstGeom prst=\"rect\"><a:avLst /></a:prstGeom></xdr:spPr><xdr:style><a:lnRef idx=\"2\"><a:schemeClr val=\"accent1\"><a:shade val=\"50000\" /></a:schemeClr></a:lnRef><a:fillRef idx=\"1\"><a:schemeClr val=\"accent1\" /></a:fillRef><a:effectRef idx=\"0\"><a:schemeClr val=\"accent1\" /></a:effectRef><a:fontRef idx=\"minor\"><a:schemeClr val=\"lt1\" /></a:fontRef></xdr:style>", _id, Name);
+            xml.AppendFormat("<xdr:nvCxnSpPr><xdr:cNvPr id=\"{0}\" name=\"{1}\" /></xdr:nvCxnSpPr><xdr:spPr><a:prstGeom prst=\"rect\"><a:avLst /></a:prstGeom></xdr:spPr><xdr:style><a:lnRef idx=\"2\"><a:schemeClr val=\"accent1\"><a:shade val=\"50000\" /></a:schemeClr></a:lnRef><a:fillRef idx=\"1\"><a:schemeClr val=\"accent1\" /></a:fillRef><a:effectRef idx=\"0\"><a:schemeClr val=\"accent1\" /></a:effectRef><a:fontRef idx=\"minor\"><a:schemeClr val=\"lt1\" /></a:fontRef></xdr:style>", this._id, this.Name);
             return xml.ToString();
         }
         #endregion
         internal override void DeleteMe()
         {
-            if (Fill.Style == eFillStyle.BlipFill)
+            if (this.Fill.Style == eFillStyle.BlipFill)
             {
-                IPictureContainer container = Fill.BlipFill;
-                _drawings._package.PictureStore.RemoveImage(container.ImageHash, Fill.BlipFill);
+                IPictureContainer container = this.Fill.BlipFill;
+                this._drawings._package.PictureStore.RemoveImage(container.ImageHash, this.Fill.BlipFill);
             }
             base.DeleteMe();
         }
         internal new string Id
         {
-            get { return Name + Text; } 
+            get { return this.Name + this.Text; } 
         }
         /// <summary>
         /// Connection starting point
@@ -94,7 +94,7 @@ namespace OfficeOpenXml.Drawing
         {   
             get
             {
-                string v = GetXmlNodeString(_shapeStylePath);
+                string v = this.GetXmlNodeString(this._shapeStylePath);
                 try
                 {
                     return (eShapeConnectorStyle)Enum.Parse(typeof(eShapeConnectorStyle), v, true);
@@ -105,8 +105,8 @@ namespace OfficeOpenXml.Drawing
                 }
             }
             set
-            {                
-                SetXmlNodeString(_shapeStylePath, value.ToEnumString());
+            {
+                this.SetXmlNodeString(this._shapeStylePath, value.ToEnumString());
             }
         }
 

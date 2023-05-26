@@ -27,17 +27,18 @@ namespace OfficeOpenXml.Drawing.Style.Fill
             string? v = xml.GetXmlNodeString("a:tile/@algn");
             if(!string.IsNullOrEmpty(v))
             {
-                Alignment = v.TranslateRectangleAlignment();
+                this.Alignment = v.TranslateRectangleAlignment();
             }
             else
             {
-                Alignment = null;
+                this.Alignment = null;
             }
-            FlipMode =  xml.GetXmlNodeString("a:tile/@flip").ToEnum(eTileFlipMode.None);
-            HorizontalRatio = xml.GetXmlNodePercentage("a:tile/@sx") ?? 0;
-            VerticalRatio = xml.GetXmlNodePercentage("a:tile/@sy") ?? 0;
-            HorizontalOffset = (xml.GetXmlNodeDoubleNull("a:tile/@tx") ?? 0) / ExcelDrawing.EMU_PER_PIXEL;
-            VerticalOffset = (xml.GetXmlNodeDoubleNull("a:tile/@ty") ?? 0) / ExcelDrawing.EMU_PER_PIXEL;
+
+            this.FlipMode =  xml.GetXmlNodeString("a:tile/@flip").ToEnum(eTileFlipMode.None);
+            this.HorizontalRatio = xml.GetXmlNodePercentage("a:tile/@sx") ?? 0;
+            this.VerticalRatio = xml.GetXmlNodePercentage("a:tile/@sy") ?? 0;
+            this.HorizontalOffset = (xml.GetXmlNodeDoubleNull("a:tile/@tx") ?? 0) / ExcelDrawing.EMU_PER_PIXEL;
+            this.VerticalOffset = (xml.GetXmlNodeDoubleNull("a:tile/@ty") ?? 0) / ExcelDrawing.EMU_PER_PIXEL;
         }
 
         /// <summary>

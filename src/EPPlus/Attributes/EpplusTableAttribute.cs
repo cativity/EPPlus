@@ -29,7 +29,7 @@ namespace OfficeOpenXml.Attributes
         /// </summary>
         public EpplusTableAttribute()
         {
-            TableStyle = TableStyles.None;
+            this.TableStyle = TableStyles.None;
         }
         /// <summary>
         /// Table style

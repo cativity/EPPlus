@@ -36,12 +36,12 @@ namespace OfficeOpenXml.Drawing.Chart.Style
         {
             get
             {
-                if(_xmlDoc==null)
+                if(this._xmlDoc==null)
                 {
-                    _xmlDoc = new XmlDocument();
-                    XmlHelper.LoadXmlSafe(_xmlDoc, XmlString, Encoding.UTF8);
+                    this._xmlDoc = new XmlDocument();
+                    XmlHelper.LoadXmlSafe(this._xmlDoc, this.XmlString, Encoding.UTF8);
                 }
-                return _xmlDoc;
+                return this._xmlDoc;
             }
         }
     }

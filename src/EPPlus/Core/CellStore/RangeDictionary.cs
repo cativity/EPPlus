@@ -23,25 +23,25 @@ namespace OfficeOpenXml.Core.CellStore
         {
             public RangeItem(long rowSpan)
             {
-                RowSpan = rowSpan;
-                Value = default;
+                this.RowSpan = rowSpan;
+                this.Value = default;
             }
             public RangeItem(long rowSpan, T value)
             {
-                RowSpan= rowSpan;
-                Value= value;
+                this.RowSpan= rowSpan;
+                this.Value= value;
             }
             internal long RowSpan;
             internal T Value;
 
             public int CompareTo(RangeItem other)
             {
-                return RowSpan.CompareTo(other.RowSpan);
+                return this.RowSpan.CompareTo(other.RowSpan);
             }
             public override string ToString()
             {
-                int fr = (int)(RowSpan >> 20) + 1;
-                int tr = (int)(RowSpan & 0xFFFFF) + 1;
+                int fr = (int)(this.RowSpan >> 20) + 1;
+                int tr = (int)(this.RowSpan & 0xFFFFF) + 1;
                 return $"{fr} - {tr}";
             }
         }
@@ -53,7 +53,7 @@ namespace OfficeOpenXml.Core.CellStore
             {
                 long rowSpan = (((long)fromRow - 1) << 20) | ((long)toRow - 1);
                 RangeItem ri = new RangeItem(rowSpan, default);
-                if (_addresses.TryGetValue(c, out List<RangeItem> rows))
+                if (this._addresses.TryGetValue(c, out List<RangeItem> rows))
                 {
                     int ix = rows.BinarySearch(ri);
                     if(ix >= 0)
@@ -78,7 +78,7 @@ namespace OfficeOpenXml.Core.CellStore
         }
         internal bool Exists(int row, int col)
         {
-            if (_addresses.TryGetValue(col, out List<RangeItem> rows))
+            if (this._addresses.TryGetValue(col, out List<RangeItem> rows))
             {
                 long rowSpan = ((row - 1) << 20) | (row - 1);
                 RangeItem ri = new RangeItem(rowSpan, default);
@@ -109,7 +109,7 @@ namespace OfficeOpenXml.Core.CellStore
         {
             get
             {
-                if (_addresses.TryGetValue(column, out List<RangeItem> rows))
+                if (this._addresses.TryGetValue(column, out List<RangeItem> rows))
                 {
                     long rowSpan = ((row - 1) << 20) | (row - 1);
                     RangeItem ri = new RangeItem(rowSpan, default);
@@ -145,8 +145,8 @@ namespace OfficeOpenXml.Core.CellStore
             HashSet<T>? hs = new HashSet<T>();
             long rowSpan = ((fromRow - 1) << 20) | (fromRow - 1);
             RangeItem searchItem = new RangeItem(rowSpan, default);
-            int minCol = _addresses.Keys.Min();
-            int maxCol = _addresses.Keys.Max();
+            int minCol = this._addresses.Keys.Min();
+            int maxCol = this._addresses.Keys.Max();
             fromCol = fromCol < minCol ? minCol : fromCol;
             for (int col = fromCol; col<=toCol;col++)
             {
@@ -155,7 +155,7 @@ namespace OfficeOpenXml.Core.CellStore
                     break;
                 }
 
-                if(_addresses.TryGetValue(col, out List<RangeItem> rows))
+                if(this._addresses.TryGetValue(col, out List<RangeItem> rows))
                 {
                     int ix = rows.BinarySearch(searchItem);
                     if(ix < 0)
@@ -197,36 +197,37 @@ namespace OfficeOpenXml.Core.CellStore
         {
             for (int c = fromCol; c <= toCol; c++)
             {
-                MergeRowSpan(c, fromRow, toRow, value);
+                this.MergeRowSpan(c, fromRow, toRow, value);
             }
         }
         internal void Add(int fromRow, int fromCol, int toRow, int toCol, T value)
         {
-            if (Exists(fromRow, fromCol, toRow, toCol))
+            if (this.Exists(fromRow, fromCol, toRow, toCol))
             {
                 throw (new InvalidOperationException($"Range already starting from range {ExcelCellBase.GetAddress(fromRow, fromCol, toRow, toCol)}"));
             }
             for (int c = fromCol; c <= toCol; c++)
             {
-                AddRowSpan(c, fromRow, toRow, value);
+                this.AddRowSpan(c, fromRow, toRow, value);
             }
         }
         internal void Add(int row, int col, T value)
         {
-            if (Exists(row, col))
+            if (this.Exists(row, col))
             {
                 throw (new InvalidOperationException($"Range already starting from cell {ExcelCellBase.GetAddress(row, col)}"));
             }
-            AddRowSpan(col, row,row, value);
+
+            this.AddRowSpan(col, row,row, value);
         }
         internal void InsertRow(int fromRow, int noRows, int fromCol=1, int toCol=ExcelPackage.MaxColumns)
         {
             long rowSpan = ((fromRow - 1) << 20) | (fromRow - 1);            
-            foreach(int c in _addresses.Keys)
+            foreach(int c in this._addresses.Keys)
             {
                 if(c>=fromCol && c <= toCol)
                 {
-                    List<RangeItem>? rows = _addresses[c];
+                    List<RangeItem>? rows = this._addresses[c];
                     RangeItem ri = new RangeItem(rowSpan, default);
                     int ix = rows.BinarySearch(ri);
                     if (ix < 0)
@@ -265,11 +266,11 @@ namespace OfficeOpenXml.Core.CellStore
         internal void DeleteRow(int fromRow, int noRows, int fromCol = 1, int toCol = ExcelPackage.MaxColumns, bool shiftRow = true)
         {
             long rowSpan = ((fromRow - 1) << 20) | (fromRow - 1);
-            foreach (int c in _addresses.Keys)
+            foreach (int c in this._addresses.Keys)
             {
                 if (c >= fromCol && c <= toCol)
                 {
-                    List<RangeItem>? rows = _addresses[c];
+                    List<RangeItem>? rows = this._addresses[c];
                     RangeItem ri = new RangeItem(rowSpan);
                     int rowStartIndex = rows.BinarySearch(ri);
                     if (rowStartIndex < 0)
@@ -333,23 +334,23 @@ namespace OfficeOpenXml.Core.CellStore
             //Full column
             if(fromRow<=1 && toRow >=ExcelPackage.MaxRows)
             {
-                AddFullColumn(fromCol, noCols);
+                this.AddFullColumn(fromCol, noCols);
             }
             else
             {
-                InsertPartialColumn(fromCol, noCols, fromRow, toRow);
+                this.InsertPartialColumn(fromCol, noCols, fromRow, toRow);
             }
-            if(_extendValuesToInsertedColumn)
+            if(this._extendValuesToInsertedColumn)
             {
-                ExtendValues(fromCol - 1, fromCol+noCols, fromRow, toRow);
+                this.ExtendValues(fromCol - 1, fromCol+noCols, fromRow, toRow);
             }
         }
         private void ExtendValues(int fromCol, int toCol, int fromRow, int toRow)
         {
-            if(_addresses.ContainsKey(fromCol) && _addresses.ContainsKey(toCol))
+            if(this._addresses.ContainsKey(fromCol) && this._addresses.ContainsKey(toCol))
             {
-                List<RangeItem>? toColumn = _addresses[toCol];
-                foreach(RangeItem item in _addresses[fromCol])
+                List<RangeItem>? toColumn = this._addresses[toCol];
+                foreach(RangeItem item in this._addresses[fromCol])
                 {
                     int pos = toColumn.BinarySearch(item);
                     if(pos < 0)
@@ -366,12 +367,12 @@ namespace OfficeOpenXml.Core.CellStore
                             break;
                         }
 
-                        RangeDictionary<T>.GetIntersect(item, toColumn[pos], out fr, out tr);
+                        GetIntersect(item, toColumn[pos], out fr, out tr);
                         if (fr >= 0)
                         {
                             fr = Math.Max(fr, fromRow);
                             tr = Math.Min(tr, toRow);
-                            Add(fr, fromCol + 1, tr, toCol - 1, item.Value);
+                            this.Add(fr, fromCol + 1, tr, toCol - 1, item.Value);
                         }
                         pos++;                        
                     }
@@ -403,17 +404,17 @@ namespace OfficeOpenXml.Core.CellStore
             //Full column
             if (fromRow <= 1 && toRow >= ExcelPackage.MaxRows)
             {
-                DeleteFullColumn(fromCol, noCols);
+                this.DeleteFullColumn(fromCol, noCols);
             }
             else
             {
-                DeletePartialColumn(fromCol, noCols, fromRow, toRow);
+                this.DeletePartialColumn(fromCol, noCols, fromRow, toRow);
             }
         }
 
         private void DeletePartialColumn(int fromCol, int noCols, int fromRow, int toRow)
         {
-            IOrderedEnumerable<int>? cols = GetColumnKeys().OrderBy(x=>x);
+            IOrderedEnumerable<int>? cols = this.GetColumnKeys().OrderBy(x=>x);
             int toCol = fromCol + noCols - 1;
             foreach (int colNo in cols)
             {
@@ -421,9 +422,10 @@ namespace OfficeOpenXml.Core.CellStore
                 {
                     if(colNo > toCol)
                     {
-                        MoveDataToColumn(colNo, noCols, fromRow, toRow);
+                        this.MoveDataToColumn(colNo, noCols, fromRow, toRow);
                     }
-                    DeleteRowsInColumn(colNo, fromRow, toRow);
+
+                    this.DeleteRowsInColumn(colNo, fromRow, toRow);
                 }
             }
         }
@@ -431,7 +433,7 @@ namespace OfficeOpenXml.Core.CellStore
         private void MoveDataToColumn(int colNo, int noCols, int fromRow, int toRow)
         {
             int destColNo = colNo - noCols;
-            if (_addresses.TryGetValue(colNo, out List<RangeItem> sourceCol))
+            if (this._addresses.TryGetValue(colNo, out List<RangeItem> sourceCol))
             {
                 for (int i = 0; i < sourceCol.Count; i++)
                 {
@@ -441,11 +443,11 @@ namespace OfficeOpenXml.Core.CellStore
 
                     if (fr >= fromRow && tr <= toRow)
                     {
-                        Add(fr, destColNo, tr, destColNo, ri.Value);
+                        this.Add(fr, destColNo, tr, destColNo, ri.Value);
                     }
                     else if (fr <= fromRow && tr >= fromRow)
                     {
-                        Add(fromRow, destColNo, Math.Min(toRow, tr), destColNo, ri.Value);
+                        this.Add(fromRow, destColNo, Math.Min(toRow, tr), destColNo, ri.Value);
                     }
                 }
             }
@@ -453,7 +455,7 @@ namespace OfficeOpenXml.Core.CellStore
 
         private void DeleteRowsInColumn(int colNo, int fromRow, int toRow)
         {
-            List<RangeItem>? deleteCol = _addresses[colNo];
+            List<RangeItem>? deleteCol = this._addresses[colNo];
 
             for (int i = 0; i < deleteCol.Count; i++)
             {
@@ -464,7 +466,7 @@ namespace OfficeOpenXml.Core.CellStore
                 if (fr >= fromRow && tr <= toRow)
                 {
                     int rows = tr - fr + 1;
-                    DeleteRow(fromRow, tr, colNo, colNo);
+                    this.DeleteRow(fromRow, tr, colNo, colNo);
                     i--;
                 }
                 else if (tr >= fromRow)
@@ -475,7 +477,7 @@ namespace OfficeOpenXml.Core.CellStore
 
                     if (toRow < tr)
                     {
-                        Add(toRow + 1, colNo, tr, colNo, ri.Value);
+                        this.Add(toRow + 1, colNo, tr, colNo, ri.Value);
                         i++;
                     }
                 }
@@ -484,12 +486,12 @@ namespace OfficeOpenXml.Core.CellStore
 
         private void InsertPartialColumn(int fromCol, int noCols, int fromRow, int toRow)
         {
-            List<int>? cols = GetColumnKeys();
+            List<int>? cols = this.GetColumnKeys();
             foreach (int colNo in cols.OrderByDescending(x => x))
             {
                 if (colNo >= fromCol)
                 {
-                    List<RangeItem>? sourceCol = _addresses[colNo];
+                    List<RangeItem>? sourceCol = this._addresses[colNo];
                     for(int i=0; i < sourceCol.Count;i++)
                     {
                         RangeItem ri = sourceCol[i];                        
@@ -499,8 +501,8 @@ namespace OfficeOpenXml.Core.CellStore
                         if(fr>=fromRow && tr<=toRow)
                         {
                             int rows = tr - fr + 1;
-                            DeleteRow(fromRow, tr, colNo, colNo);
-                            Add(fr, colNo + noCols, tr, colNo + noCols, ri.Value);
+                            this.DeleteRow(fromRow, tr, colNo, colNo);
+                            this.Add(fr, colNo + noCols, tr, colNo + noCols, ri.Value);
                             i--;
                         }
                         else if(tr>=fromRow)
@@ -509,10 +511,10 @@ namespace OfficeOpenXml.Core.CellStore
                             ri.RowSpan = ri.RowSpan = ((fr - 1) << 20) | (ntr - 1);
                             sourceCol[i] = ri;
 
-                            Add(fromRow, colNo + noCols, toRow, colNo + noCols, ri.Value);
+                            this.Add(fromRow, colNo + noCols, toRow, colNo + noCols, ri.Value);
                             if(toRow<tr)
                             {
-                                Add(toRow+1, colNo, tr, colNo, ri.Value);
+                                this.Add(toRow+1, colNo, tr, colNo, ri.Value);
                                 i++;
                             }
 
@@ -524,7 +526,7 @@ namespace OfficeOpenXml.Core.CellStore
 
         private void DeleteFullColumn(int fromCol, int noCols)
         {
-            List<int>? cols = GetColumnKeys();
+            List<int>? cols = this.GetColumnKeys();
 
             foreach (int key in cols.OrderBy(x => x))
             {
@@ -532,13 +534,13 @@ namespace OfficeOpenXml.Core.CellStore
                 {
                     if (key < fromCol + noCols)
                     {
-                        _addresses.Remove(key);
+                        this._addresses.Remove(key);
                     }
                     else
                     {
-                        List<RangeItem>? col = _addresses[key];
-                        _addresses.Remove(key);
-                        _addresses.Add(key - noCols, col);
+                        List<RangeItem>? col = this._addresses[key];
+                        this._addresses.Remove(key);
+                        this._addresses.Add(key - noCols, col);
                     }
                 }
             }
@@ -546,15 +548,15 @@ namespace OfficeOpenXml.Core.CellStore
 
         private void AddFullColumn(int fromCol, int noCols)
         {
-            List<int>? cols = GetColumnKeys();
+            List<int>? cols = this.GetColumnKeys();
 
             foreach (int key in cols.OrderByDescending(x => x))
             {
                 if (key >= fromCol)
                 {
-                    List<RangeItem>? col = _addresses[key];
-                    _addresses.Remove(key);
-                    _addresses.Add(key + noCols, col);
+                    List<RangeItem>? col = this._addresses[key];
+                    this._addresses.Remove(key);
+                    this._addresses.Add(key + noCols, col);
                 }
             }
         }
@@ -562,7 +564,7 @@ namespace OfficeOpenXml.Core.CellStore
         private List<int> GetColumnKeys()
         {
             List<int>? cols = new List<int>();
-            foreach (int key in _addresses.Keys)
+            foreach (int key in this._addresses.Keys)
             {
                 cols.Add(key);
             }
@@ -580,10 +582,10 @@ namespace OfficeOpenXml.Core.CellStore
         {
             List<RangeItem> rows;
             long rowSpan = ((long)(fromRow - 1) << 20) | (long)(toRow - 1);
-            if (_addresses.TryGetValue(col, out rows) == false)
+            if (this._addresses.TryGetValue(col, out rows) == false)
             {
                 rows = new List<RangeItem>(64);
-                _addresses.Add(col, rows);
+                this._addresses.Add(col, rows);
             }
             if (rows.Count == 0)
             {
@@ -609,10 +611,10 @@ namespace OfficeOpenXml.Core.CellStore
         {
             List<RangeItem> rows;
             long rowSpan = ((long)(fromRow - 1) << 20) | (long)(toRow - 1);
-            if (_addresses.TryGetValue(col, out rows) == false)
+            if (this._addresses.TryGetValue(col, out rows) == false)
             {
                 rows = new List<RangeItem>(64);
-                _addresses.Add(col, rows);
+                this._addresses.Add(col, rows);
             }
             if (rows.Count == 0)
             {

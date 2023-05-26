@@ -56,14 +56,14 @@ namespace OfficeOpenXml.DataValidation
         {
             base.ReadClassSpecificXmlNodes(xr);
 
-            if (Operator == ExcelDataValidationOperator.between || Operator == ExcelDataValidationOperator.notBetween)
+            if (this.Operator == ExcelDataValidationOperator.between || this.Operator == ExcelDataValidationOperator.notBetween)
             {
-                Formula2 = ReadFormula(xr, "formula2");
+                this.Formula2 = this.ReadFormula(xr, "formula2");
             }
             else
             {
                 //Ensure Formula2 is not null for writing and if operator type changes.
-                Formula2 = DefineFormulaClassType("", _workSheetName);
+                this.Formula2 = this.DefineFormulaClassType("", this._workSheetName);
             }
         }
 
@@ -84,15 +84,15 @@ namespace OfficeOpenXml.DataValidation
         public override void Validate()
         {
             base.Validate();
-            if (ValidationType.Type != eDataValidationType.List
-                && ValidationType.Type != eDataValidationType.Custom
-                && (Operator == ExcelDataValidationOperator.between || Operator == ExcelDataValidationOperator.notBetween))
+            if (this.ValidationType.Type != eDataValidationType.List
+                && this.ValidationType.Type != eDataValidationType.Custom
+                && (this.Operator == ExcelDataValidationOperator.between || this.Operator == ExcelDataValidationOperator.notBetween))
             {
-                if (string.IsNullOrEmpty(Formula2.ExcelFormula) &&
-                    (Formula2 as ExcelDataValidationFormula).HasValue == false &&
-                    !(AllowBlank ?? false))
+                if (string.IsNullOrEmpty(this.Formula2.ExcelFormula) &&
+                    (this.Formula2 as ExcelDataValidationFormula).HasValue == false &&
+                    !(this.AllowBlank ?? false))
                 {
-                    throw new InvalidOperationException("Validation of " + Address.Address + " failed: Formula2 must be set if operator is 'between' or 'notBetween'");
+                    throw new InvalidOperationException("Validation of " + this.Address.Address + " failed: Formula2 must be set if operator is 'between' or 'notBetween'");
                 }
             }
         }

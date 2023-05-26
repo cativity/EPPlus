@@ -47,36 +47,36 @@ namespace EPPlusTest.DataValidation
 
         public void SetupTestData()
         {
-            _package = new ExcelPackage();
-            _package.Compatibility.IsWorksheets1Based = true;
-            _sheet = _package.Workbook.Worksheets.Add("test");
-            _cultureInfo = new CultureInfo("en-US");
+            this._package = new ExcelPackage();
+            this._package.Compatibility.IsWorksheets1Based = true;
+            this._sheet = this._package.Workbook.Worksheets.Add("test");
+            this._cultureInfo = new CultureInfo("en-US");
         }
 
         public void CleanupTestData()
         {
-            if (_package != null)
+            if (this._package != null)
             {
                 this._package.Dispose();
             }
 
-            _package = null;
-            _sheet = null;
-            _namespaceManager = null;
+            this._package = null;
+            this._sheet = null;
+            this._namespaceManager = null;
         }
 
         protected void LoadXmlTestData(string address, string validationType, string formula1Value)
         {
             XmlDocument? xmlDoc = new XmlDocument();
-            _namespaceManager = new XmlNamespaceManager(xmlDoc.NameTable);
-            _namespaceManager.AddNamespace("d", "urn:a");
-            _namespaceManager.AddNamespace("xr", "urn:b");
+            this._namespaceManager = new XmlNamespaceManager(xmlDoc.NameTable);
+            this._namespaceManager.AddNamespace("d", "urn:a");
+            this._namespaceManager.AddNamespace("xr", "urn:b");
             StringBuilder? sb = new StringBuilder();
             sb.AppendFormat("<dataValidation xmlns:d=\"urn:a\" type=\"{0}\" sqref=\"{1}\">", validationType, address);
             sb.AppendFormat("<d:formula1>{0}</d:formula1>", formula1Value);
             sb.Append("</dataValidation>");
             xmlDoc.LoadXml(sb.ToString());
-            _dataValidationNode = xmlDoc.DocumentElement;
+            this._dataValidationNode = xmlDoc.DocumentElement;
         }
 
         protected static IExcelDataValidationInt CreateSheetWithIntegerValidation(ExcelPackage package)

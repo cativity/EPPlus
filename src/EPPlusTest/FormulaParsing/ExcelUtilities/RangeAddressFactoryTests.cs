@@ -48,19 +48,19 @@ namespace EPPlusTest.ExcelUtilities
         {
             ExcelDataProvider? provider = A.Fake<ExcelDataProvider>();
             A.CallTo(() => provider.ExcelMaxRows).Returns(ExcelMaxRows);
-            _factory = new RangeAddressFactory(provider);
+            this._factory = new RangeAddressFactory(provider);
         }
 
         [TestMethod, ExpectedException(typeof(ArgumentException))]
         public void CreateShouldThrowIfSuppliedAddressIsNull()
         {
-            _factory.Create(null);
+            this._factory.Create(null);
         }
 
         [TestMethod]
         public void CreateShouldReturnAndInstanceWithColPropertiesSet()
         {
-            RangeAddress? address = _factory.Create("A2");
+            RangeAddress? address = this._factory.Create("A2");
             Assert.AreEqual(1, address.FromCol, "FromCol was not 1");
             Assert.AreEqual(1, address.ToCol, "ToCol was not 1");
         }
@@ -68,7 +68,7 @@ namespace EPPlusTest.ExcelUtilities
         [TestMethod]
         public void CreateShouldReturnAndInstanceWithRowPropertiesSet()
         {
-            RangeAddress? address = _factory.Create("A2");
+            RangeAddress? address = this._factory.Create("A2");
             Assert.AreEqual(2, address.FromRow, "FromRow was not 2");
             Assert.AreEqual(2, address.ToRow, "ToRow was not 2");
         }
@@ -76,7 +76,7 @@ namespace EPPlusTest.ExcelUtilities
         [TestMethod]
         public void CreateShouldReturnAnInstanceWithFromAndToColSetWhenARangeAddressIsSupplied()
         {
-            RangeAddress? address = _factory.Create("A1:B2");
+            RangeAddress? address = this._factory.Create("A1:B2");
             Assert.AreEqual(1, address.FromCol);
             Assert.AreEqual(2, address.ToCol);
         }
@@ -84,7 +84,7 @@ namespace EPPlusTest.ExcelUtilities
         [TestMethod]
         public void CreateShouldReturnAnInstanceWithFromAndToRowSetWhenARangeAddressIsSupplied()
         {
-            RangeAddress? address = _factory.Create("A1:B3");
+            RangeAddress? address = this._factory.Create("A1:B3");
             Assert.AreEqual(1, address.FromRow);
             Assert.AreEqual(3, address.ToRow);
         }
@@ -92,21 +92,21 @@ namespace EPPlusTest.ExcelUtilities
         [TestMethod]
         public void CreateShouldSetWorksheetNameIfSuppliedInAddress()
         {
-            RangeAddress? address = _factory.Create("Ws!A1");
+            RangeAddress? address = this._factory.Create("Ws!A1");
             Assert.AreEqual("Ws", address.Worksheet);
         }
 
         [TestMethod]
         public void CreateShouldReturnAnInstanceWithStringAddressSet()
         {
-            RangeAddress? address = _factory.Create(1, 1);
+            RangeAddress? address = this._factory.Create(1, 1);
             Assert.AreEqual("A1", address.ToString());
         }
 
         [TestMethod]
         public void CreateShouldReturnAnInstanceWithFromAndToColSet()
         {
-            RangeAddress? address = _factory.Create(1, 0);
+            RangeAddress? address = this._factory.Create(1, 0);
             Assert.AreEqual(1, address.FromCol);
             Assert.AreEqual(1, address.ToCol);
         }
@@ -114,7 +114,7 @@ namespace EPPlusTest.ExcelUtilities
         [TestMethod]
         public void CreateShouldReturnAnInstanceWithFromAndToRowSet()
         {
-            RangeAddress? address = _factory.Create(0, 1);
+            RangeAddress? address = this._factory.Create(0, 1);
             Assert.AreEqual(1, address.FromRow);
             Assert.AreEqual(1, address.ToRow);
         }
@@ -122,14 +122,14 @@ namespace EPPlusTest.ExcelUtilities
         [TestMethod]
         public void CreateShouldReturnAnInstanceWithWorksheetSetToEmptyString()
         {
-            RangeAddress? address = _factory.Create(0, 1);
+            RangeAddress? address = this._factory.Create(0, 1);
             Assert.AreEqual(string.Empty, address.Worksheet);
         }
 
         [TestMethod]
         public void CreateShouldReturnEntireColumnRangeWhenNoRowsAreSpecified()
         {
-            RangeAddress? address = _factory.Create("A:B");
+            RangeAddress? address = this._factory.Create("A:B");
             Assert.AreEqual(1, address.FromCol);
             Assert.AreEqual(2, address.ToCol);
             Assert.AreEqual(1, address.FromRow);

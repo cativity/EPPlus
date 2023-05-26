@@ -25,7 +25,7 @@ namespace OfficeOpenXml.LoadFunctions
     {
         public ColumnInfo()
         {
-            TotalsRowFunction = RowFunctions.None;
+            this.TotalsRowFunction = RowFunctions.None;
         }
 
         public int SortOrder { get; set; }
@@ -55,9 +55,9 @@ namespace OfficeOpenXml.LoadFunctions
 
         public override string ToString()
         {
-            if(!string.IsNullOrEmpty(Header))
+            if(!string.IsNullOrEmpty(this.Header))
             {
-                return Header;
+                return this.Header;
             }
             return base.ToString();
         }

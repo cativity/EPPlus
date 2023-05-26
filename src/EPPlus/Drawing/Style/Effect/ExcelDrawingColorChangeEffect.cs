@@ -35,12 +35,12 @@ namespace OfficeOpenXml.Drawing.Style.Effect
         {
             get
             {
-                if (_colorFrom == null)
+                if (this._colorFrom == null)
                 {
-                    XmlNode? node = CreateNode("a:clrFrom");
-                    _colorFrom = new ExcelDrawingColorManager(NameSpaceManager, node, "", SchemaNodeOrder);
+                    XmlNode? node = this.CreateNode("a:clrFrom");
+                    this._colorFrom = new ExcelDrawingColorManager(this.NameSpaceManager, node, "", this.SchemaNodeOrder);
                 }
-                return _colorFrom;
+                return this._colorFrom;
             }
         }
         private ExcelDrawingColorManager _colorTo;
@@ -51,12 +51,12 @@ namespace OfficeOpenXml.Drawing.Style.Effect
         {
             get
             {
-                if (_colorTo == null)
+                if (this._colorTo == null)
                 {
-                    XmlNode? node = CreateNode("a:clrTo");
-                    _colorTo = new ExcelDrawingColorManager(NameSpaceManager, node, "", SchemaNodeOrder);
+                    XmlNode? node = this.CreateNode("a:clrTo");
+                    this._colorTo = new ExcelDrawingColorManager(this.NameSpaceManager, node, "", this.SchemaNodeOrder);
                 }
-                return _colorTo;
+                return this._colorTo;
             }
 
         }

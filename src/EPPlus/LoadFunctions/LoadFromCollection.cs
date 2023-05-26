@@ -30,36 +30,36 @@ namespace OfficeOpenXml.LoadFunctions
     {
         public LoadFromCollection(ExcelRangeBase range, IEnumerable<T> items, LoadFromCollectionParams parameters) : base(range, parameters)
         {
-            _items = items;
-            _bindingFlags = parameters.BindingFlags;
-            _headerParsingType = parameters.HeaderParsingType;
+            this._items = items;
+            this._bindingFlags = parameters.BindingFlags;
+            this._headerParsingType = parameters.HeaderParsingType;
             Type? type = typeof(T);
             EpplusTableAttribute? tableAttr = type.GetFirstAttributeOfType<EpplusTableAttribute>();
             if(tableAttr != null)
             {
-                ShowFirstColumn = tableAttr.ShowFirstColumn;
-                ShowLastColumn = tableAttr.ShowLastColumn;
-                ShowTotal = tableAttr.ShowTotal;
+                this.ShowFirstColumn = tableAttr.ShowFirstColumn;
+                this.ShowLastColumn = tableAttr.ShowLastColumn;
+                this.ShowTotal = tableAttr.ShowTotal;
             }
             EPPlusTableColumnSortOrderAttribute? classSortOrderAttr = type.GetFirstAttributeOfType<EPPlusTableColumnSortOrderAttribute>();
             if(classSortOrderAttr != null && classSortOrderAttr.Properties != null && classSortOrderAttr.Properties.Length > 0)
             {
-                SortOrderProperties = classSortOrderAttr.Properties.ToList();
+                this.SortOrderProperties = classSortOrderAttr.Properties.ToList();
             }
             if (parameters.Members == null)
             {
-                LoadFromCollectionColumns<T>? cols = new LoadFromCollectionColumns<T>(parameters.BindingFlags, SortOrderProperties);
+                LoadFromCollectionColumns<T>? cols = new LoadFromCollectionColumns<T>(parameters.BindingFlags, this.SortOrderProperties);
                 List<ColumnInfo>? columns = cols.Setup();
-                _columns = columns.ToArray();
+                this._columns = columns.ToArray();
             }
             else
             {
-                _columns = parameters.Members.Select(x => new ColumnInfo { MemberInfo = x }).ToArray();
-                if (_columns.Length == 0)   //Fixes issue 15555
+                this._columns = parameters.Members.Select(x => new ColumnInfo { MemberInfo = x }).ToArray();
+                if (this._columns.Length == 0)   //Fixes issue 15555
                 {
                     throw (new ArgumentException("Parameter Members must have at least one property. Length is zero"));
                 }
-                foreach (ColumnInfo? columnInfo in _columns)
+                foreach (ColumnInfo? columnInfo in this._columns)
                 {
                     if (columnInfo.MemberInfo == null)
                     {
@@ -69,7 +69,7 @@ namespace OfficeOpenXml.LoadFunctions
                     MemberInfo? member = columnInfo.MemberInfo;
                     if (member.DeclaringType != null && member.DeclaringType != type)
                     {
-                        _isSameType = false;
+                        this._isSameType = false;
                     }
 
                     //Fixing inverted check for IsSubclassOf / Pullrequest from tom dam
@@ -95,49 +95,49 @@ namespace OfficeOpenXml.LoadFunctions
 
         protected override int GetNumberOfColumns()
         {
-            return _columns.Length == 0 ? 1 : _columns.Length;
+            return this._columns.Length == 0 ? 1 : this._columns.Length;
         }
 
         protected override int GetNumberOfRows()
         {
-            if (_items == null)
+            if (this._items == null)
             {
                 return 0;
             }
 
-            return _items.Count();
+            return this._items.Count();
         }
 
         protected override void PostProcessTable(ExcelTable table, ExcelRangeBase range)
         {
             for(int ix = 0; ix < table.Columns.Count; ix++)
             {
-                if (ix >= _columns.Length)
+                if (ix >= this._columns.Length)
                 {
                     break;
                 }
 
-                string? totalsRowFormula = _columns[ix].TotalsRowFormula;
-                string? totalsRowLabel = _columns[ix].TotalsRowLabel;
+                string? totalsRowFormula = this._columns[ix].TotalsRowFormula;
+                string? totalsRowLabel = this._columns[ix].TotalsRowLabel;
                 if (!string.IsNullOrEmpty(totalsRowFormula))
                 {
                     table.Columns[ix].TotalsRowFormula = totalsRowFormula;
                 }
                 else if(!string.IsNullOrEmpty(totalsRowLabel))
                 {
-                    table.Columns[ix].TotalsRowLabel = _columns[ix].TotalsRowLabel;
+                    table.Columns[ix].TotalsRowLabel = this._columns[ix].TotalsRowLabel;
                     table.Columns[ix].TotalsRowFunction = RowFunctions.None;
                 }
                 else
                 {
-                    table.Columns[ix].TotalsRowFunction = _columns[ix].TotalsRowFunction;
+                    table.Columns[ix].TotalsRowFunction = this._columns[ix].TotalsRowFunction;
                 }
                 
-                if(!string.IsNullOrEmpty(_columns[ix].TotalsRowNumberFormat))
+                if(!string.IsNullOrEmpty(this._columns[ix].TotalsRowNumberFormat))
                 {
                     int row = range._toRow + 1;
-                    int col = range._fromCol + _columns[ix].Index;
-                    range.Worksheet.Cells[row, col].Style.Numberformat.Format = _columns[ix].TotalsRowNumberFormat;
+                    int col = range._fromCol + this._columns[ix].Index;
+                    range.Worksheet.Cells[row, col].Style.Numberformat.Format = this._columns[ix].TotalsRowNumberFormat;
                 }
             }
         }
@@ -150,29 +150,29 @@ namespace OfficeOpenXml.LoadFunctions
             int col = 0, row = 0;
             columnFormats = new Dictionary<int, string>();
             formulaCells = new Dictionary<int, FormulaCell>();
-            if (_columns.Length > 0 && PrintHeaders)
+            if (this._columns.Length > 0 && this.PrintHeaders)
             {
-                SetHeaders(values, columnFormats, ref col, ref row);
+                this.SetHeaders(values, columnFormats, ref col, ref row);
             }
 
-            if (!_items.Any() && (_columns.Length == 0 || PrintHeaders == false))
+            if (!this._items.Any() && (this._columns.Length == 0 || this.PrintHeaders == false))
             {
                 return;
             }
 
-            SetValuesAndFormulas(values, formulaCells, ref col, ref row);
+            this.SetValuesAndFormulas(values, formulaCells, ref col, ref row);
         }
 
         
 
         private void SetValuesAndFormulas(object[,] values, Dictionary<int, FormulaCell> formulaCells, ref int col, ref int row)
         {
-            int nMembers = GetNumberOfColumns();
-            foreach (T? item in _items)
+            int nMembers = this.GetNumberOfColumns();
+            foreach (T? item in this._items)
             {
                 if (item == null)
                 {
-                    col = GetNumberOfColumns();
+                    col = this.GetNumberOfColumns();
                 }
                 else
                 {
@@ -188,11 +188,11 @@ namespace OfficeOpenXml.LoadFunctions
                     }
                     else
                     {
-                        foreach (ColumnInfo? colInfo in _columns)
+                        foreach (ColumnInfo? colInfo in this._columns)
                         {
                             if(!string.IsNullOrEmpty(colInfo.Path) && colInfo.Path.Contains("."))
                             {
-                                values[row, col++] = LoadFromCollection<T>.GetValueByPath(item, colInfo.Path);
+                                values[row, col++] = GetValueByPath(item, colInfo.Path);
                                 continue;
                             }
                             T? obj = item;
@@ -200,7 +200,7 @@ namespace OfficeOpenXml.LoadFunctions
                             {
                                 MemberInfo? member = colInfo.MemberInfo;
                                 object v=null;
-                                if (_isSameType == false && obj.GetType().GetMember(member.Name, _bindingFlags).Length == 0)
+                                if (this._isSameType == false && obj.GetType().GetMember(member.Name, this._bindingFlags).Length == 0)
                                 {
                                     col++;
                                     continue; //Check if the property exists if and inherited class is used
@@ -298,7 +298,7 @@ namespace OfficeOpenXml.LoadFunctions
 
         private void SetHeaders(object[,] values, Dictionary<int, string> columnFormats, ref int col, ref int row)
         {
-            foreach (ColumnInfo? colInfo in _columns)
+            foreach (ColumnInfo? colInfo in this._columns)
             {
                 string? header = colInfo.Header;
                 
@@ -320,7 +320,7 @@ namespace OfficeOpenXml.LoadFunctions
                             }
                             else
                             {
-                                header = ParseHeader(member.Name);
+                                header = this.ParseHeader(member.Name);
                             }
                         }
                         if (!string.IsNullOrEmpty(epplusColumnAttribute.NumberFormat))
@@ -350,7 +350,7 @@ namespace OfficeOpenXml.LoadFunctions
                                 }
                                 else
                                 {
-                                    header = ParseHeader(member.Name);
+                                    header = this.ParseHeader(member.Name);
                                 }
                             }
                         }
@@ -370,7 +370,7 @@ namespace OfficeOpenXml.LoadFunctions
 
         private string ParseHeader(string header)
         {
-            switch(_headerParsingType)
+            switch(this._headerParsingType)
             {
                 case HeaderParsingTypes.Preserve:
                     return header;

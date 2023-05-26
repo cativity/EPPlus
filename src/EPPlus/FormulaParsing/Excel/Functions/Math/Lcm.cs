@@ -28,7 +28,7 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Math
         public override CompileResult Execute(IEnumerable<FunctionArgument> arguments, ParsingContext context)
         {
             ValidateArguments(arguments, 1);
-            IEnumerable<int>? numbers = ArgsToDoubleEnumerable(arguments, context).Select(x => (int)x);
+            IEnumerable<int>? numbers = this.ArgsToDoubleEnumerable(arguments, context).Select(x => (int)x);
             foreach (int number in numbers)
             {
                 if (number < 0)
@@ -37,7 +37,7 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Math
                 }
             }
 
-            return CreateResult(MathHelper.LeastCommonMultiple(numbers.ToArray()), DataType.Integer);
+            return this.CreateResult(MathHelper.LeastCommonMultiple(numbers.ToArray()), DataType.Integer);
         }
     }
 }

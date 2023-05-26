@@ -25,7 +25,7 @@ namespace OfficeOpenXml.Drawing.Theme
         internal ExcelThemeOverride(ExcelChart chart, ZipPackageRelationship rel)
             : base(chart._drawings._package, chart.NameSpaceManager, rel,"")
         {
-            _chart = chart;
+            this._chart = chart;
         }
     }
 }

@@ -44,9 +44,9 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions
             ArgumentParsers argumentParsers,
             CompileResultValidators compileResultValidators)
         {
-            _argumentCollectionUtil = argumentCollectionUtil;
-            _argumentParsers = argumentParsers;
-            _compileResultValidators = compileResultValidators;
+            this._argumentCollectionUtil = argumentCollectionUtil;
+            this._argumentParsers = argumentParsers;
+            this._compileResultValidators = compileResultValidators;
         }
 
         private readonly ArgumentCollectionUtil _argumentCollectionUtil;
@@ -212,7 +212,7 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions
                 throw new ExcelErrorValueException(arg.ValueAsExcelErrorValue);
             }
             object? val = arg.ValueFirst;
-            return (int)_argumentParsers.GetParser(DataType.Integer).Parse(val);
+            return (int)this._argumentParsers.GetParser(DataType.Integer).Parse(val);
         }
 
         /// <summary>
@@ -230,7 +230,7 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions
             {
                 throw new ExcelErrorValueException(arg.ValueAsExcelErrorValue.Type);
             }
-            return (int)_argumentParsers.GetParser(DataType.Integer).Parse(arg.ValueFirst);
+            return (int)this._argumentParsers.GetParser(DataType.Integer).Parse(arg.ValueFirst);
         }
 
         /// <summary>
@@ -250,7 +250,7 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions
                 throw new ExcelErrorValueException(arg.ValueAsExcelErrorValue);
             }
             object? val = arg.ValueFirst;
-            return (int)_argumentParsers.GetParser(DataType.Integer).Parse(val, roundingMethod);
+            return (int)this._argumentParsers.GetParser(DataType.Integer).Parse(val, roundingMethod);
         }
 
         /// <summary>
@@ -274,7 +274,7 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions
         /// <exception cref="ExcelErrorValueException"></exception>
         protected double ArgToDecimal(object obj)
         {
-            return (double)_argumentParsers.GetParser(DataType.Decimal).Parse(obj);
+            return (double)this._argumentParsers.GetParser(DataType.Decimal).Parse(obj);
         }
 
         /// <summary>
@@ -286,10 +286,10 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions
         /// <exception cref="ExcelErrorValueException"></exception>
         protected double ArgToDecimal(object obj, PrecisionAndRoundingStrategy precisionAndRoundingStrategy)
         {
-            double result = ArgToDecimal(obj);
+            double result = this.ArgToDecimal(obj);
             if (precisionAndRoundingStrategy == PrecisionAndRoundingStrategy.Excel)
             {
-                result = RoundingHelper.RoundToSignificantFig(result, NumberOfSignificantFigures);
+                result = RoundingHelper.RoundToSignificantFig(result, this.NumberOfSignificantFigures);
             }
             return result;
         }
@@ -309,7 +309,7 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions
             {
                 throw new ExcelErrorValueException(arg.ValueAsExcelErrorValue);
             }
-            return ArgToDecimal(arg.Value, PrecisionAndRoundingStrategy.DotNet);
+            return this.ArgToDecimal(arg.Value, PrecisionAndRoundingStrategy.DotNet);
         }
 
         /// <summary>
@@ -328,7 +328,7 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions
             {
                 throw new ExcelErrorValueException(arg.ValueAsExcelErrorValue);
             }
-            return ArgToDecimal(arg.Value, precisionAndRoundingStrategy);
+            return this.ArgToDecimal(arg.Value, precisionAndRoundingStrategy);
         }
 
         /// <summary>
@@ -382,7 +382,7 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions
         protected bool ArgToBool(IEnumerable<FunctionArgument> arguments, int index)
         {
             object? obj = arguments.ElementAt(index).Value ?? string.Empty;
-            return (bool)_argumentParsers.GetParser(DataType.Boolean).Parse(obj);
+            return (bool)this._argumentParsers.GetParser(DataType.Boolean).Parse(obj);
         }
 
         /// <summary>
@@ -496,7 +496,7 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions
         protected virtual IEnumerable<ExcelDoubleCellValue> ArgsToDoubleEnumerable(IEnumerable<FunctionArgument> arguments,
                                                                      ParsingContext context)
         {
-            return ArgsToDoubleEnumerable(false, arguments, context);
+            return this.ArgsToDoubleEnumerable(false, arguments, context);
         }
 
         /// <summary>
@@ -509,7 +509,7 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions
         /// <returns></returns>
         protected virtual IEnumerable<ExcelDoubleCellValue> ArgsToDoubleEnumerable(bool ignoreHiddenCells, bool ignoreErrors, IEnumerable<FunctionArgument> arguments, ParsingContext context)
         {
-            return _argumentCollectionUtil.ArgsToDoubleEnumerable(ignoreHiddenCells, ignoreErrors, arguments, context, false);
+            return this._argumentCollectionUtil.ArgsToDoubleEnumerable(ignoreHiddenCells, ignoreErrors, arguments, context, false);
         }
 
         /// <summary>
@@ -523,7 +523,7 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions
         /// <returns></returns>
         protected virtual IEnumerable<ExcelDoubleCellValue> ArgsToDoubleEnumerable(bool ignoreHiddenCells, bool ignoreErrors, IEnumerable<FunctionArgument> arguments, ParsingContext context, bool ignoreNonNumeric)
         {
-            return _argumentCollectionUtil.ArgsToDoubleEnumerable(ignoreHiddenCells, ignoreErrors, arguments, context, ignoreNonNumeric);
+            return this._argumentCollectionUtil.ArgsToDoubleEnumerable(ignoreHiddenCells, ignoreErrors, arguments, context, ignoreNonNumeric);
         }
 
         /// <summary>
@@ -536,7 +536,7 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions
         /// <returns></returns>
         protected virtual IEnumerable<ExcelDoubleCellValue> ArgsToDoubleEnumerable(bool ignoreHiddenCells, IEnumerable<FunctionArgument> arguments, ParsingContext context, bool ignoreNonNumeric)
         {
-            return ArgsToDoubleEnumerable(ignoreHiddenCells, true, arguments, context, ignoreNonNumeric);
+            return this.ArgsToDoubleEnumerable(ignoreHiddenCells, true, arguments, context, ignoreNonNumeric);
         }
 
 
@@ -549,7 +549,7 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions
         /// <returns></returns>
         protected virtual IEnumerable<ExcelDoubleCellValue> ArgsToDoubleEnumerable(bool ignoreHiddenCells, IEnumerable<FunctionArgument> arguments, ParsingContext context)
         {
-            return ArgsToDoubleEnumerable(ignoreHiddenCells, true, arguments, context, false);
+            return this.ArgsToDoubleEnumerable(ignoreHiddenCells, true, arguments, context, false);
         }
 
         protected virtual IEnumerable<double> ArgsToDoubleEnumerableZeroPadded(bool ignoreHiddenCells, IRangeInfo rangeInfo, ParsingContext context)
@@ -560,7 +560,7 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions
             int endCol = rangeInfo.Address.End.Column > rangeInfo.Worksheet.Dimension._toCol ? rangeInfo.Worksheet.Dimension._toCol : rangeInfo.Address.End.Column;
             bool horizontal = (startRow == endRow && rangeInfo.Address._fromCol < rangeInfo.Address._toCol);
             FunctionArgument? funcArg = new FunctionArgument(rangeInfo);
-            IEnumerable<ExcelDoubleCellValue>? result = ArgsToDoubleEnumerable(ignoreHiddenCells, new List<FunctionArgument> { funcArg }, context);
+            IEnumerable<ExcelDoubleCellValue>? result = this.ArgsToDoubleEnumerable(ignoreHiddenCells, new List<FunctionArgument> { funcArg }, context);
             Dictionary<int, double>? dict = new Dictionary<int, double>();
             result.ToList().ForEach(x => dict.Add(horizontal ? x.CellCol.Value : x.CellRow.Value, x.Value));
             List<double>? resultList = new List<double>();
@@ -589,7 +589,7 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions
         /// <returns></returns>
         protected virtual IEnumerable<object> ArgsToObjectEnumerable(bool ignoreHiddenCells, IEnumerable<FunctionArgument> arguments, ParsingContext context)
         {
-            return _argumentCollectionUtil.ArgsToObjectEnumerable(ignoreHiddenCells, arguments, context);
+            return this._argumentCollectionUtil.ArgsToObjectEnumerable(ignoreHiddenCells, arguments, context);
         }
 
         /// <summary>
@@ -600,14 +600,14 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions
         /// <returns></returns>
         protected CompileResult CreateResult(object result, DataType dataType)
         {
-            CompileResultValidator? validator = _compileResultValidators.GetValidator(dataType);
+            CompileResultValidator? validator = this._compileResultValidators.GetValidator(dataType);
             validator.Validate(result);
             return new CompileResult(result, dataType);
         }
 
         protected CompileResult CreateResult(eErrorType errorType)
         {
-            return CreateResult(ExcelErrorValue.Create(errorType), DataType.ExcelError);
+            return this.CreateResult(ExcelErrorValue.Create(errorType), DataType.ExcelError);
         }
 
         /// <summary>
@@ -621,7 +621,7 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions
         /// <returns></returns>
         protected virtual double CalculateCollection(IEnumerable<FunctionArgument> collection, double result, Func<FunctionArgument,double,double> action)
         {
-            return _argumentCollectionUtil.CalculateCollection(collection, result, action);
+            return this._argumentCollectionUtil.CalculateCollection(collection, result, action);
         }
 
         /// <summary>
@@ -655,21 +655,21 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions
         {
             if (IsNumeric(result))
             {
-                return CreateResult(result, DataType.Decimal);
+                return this.CreateResult(result, DataType.Decimal);
             }
             if (result is string)
             {
-                return CreateResult(result, DataType.String);
+                return this.CreateResult(result, DataType.String);
             }
             if (ExcelErrorValue.Values.IsErrorValue(result))
             {
-                return CreateResult(result, DataType.ExcelAddress);
+                return this.CreateResult(result, DataType.ExcelAddress);
             }
             if (result == null)
             {
                 return CompileResult.Empty;
             }
-            return CreateResult(result, DataType.Enumerable);
+            return this.CreateResult(result, DataType.Enumerable);
         }
     }
 }

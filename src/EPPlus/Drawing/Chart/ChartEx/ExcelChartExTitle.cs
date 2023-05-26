@@ -28,12 +28,12 @@ namespace OfficeOpenXml.Drawing.Chart.ChartEx
         {
             get
             {
-                return RichText.Text;
+                return this.RichText.Text;
             }
             set
             {
-                bool applyStyle = (RichText.Count == 0);
-                RichText.Text = value;
+                bool applyStyle = (this.RichText.Count == 0);
+                this.RichText.Text = value;
                 if (applyStyle)
                 {
                     this._chart.ApplyStyleOnPart(this, this._chart.StyleManager?.Style?.Title, true);
@@ -48,11 +48,11 @@ namespace OfficeOpenXml.Drawing.Chart.ChartEx
         { 
             get
             {
-                return GetXmlNodeString("@align").Replace("ctr", "center").ToEnum(ePositionAlign.Center);
+                return this.GetXmlNodeString("@align").Replace("ctr", "center").ToEnum(ePositionAlign.Center);
             }
             set
             {
-                SetXmlNodeString("@align", value.ToEnumString().Replace("center","ctr"));
+                this.SetXmlNodeString("@align", value.ToEnumString().Replace("center","ctr"));
             }
         }
         /// <summary>
@@ -62,7 +62,7 @@ namespace OfficeOpenXml.Drawing.Chart.ChartEx
         {
             get
             {
-                switch(GetXmlNodeString("@pos"))
+                switch(this.GetXmlNodeString("@pos"))
                 {
                     case "l":
                         return eSidePositions.Left;
@@ -76,7 +76,7 @@ namespace OfficeOpenXml.Drawing.Chart.ChartEx
             }
             set
             {
-                SetXmlNodeString("@align", value.ToEnumString().Substring(0,1).ToLowerInvariant());
+                this.SetXmlNodeString("@align", value.ToEnumString().Substring(0,1).ToLowerInvariant());
             }
         }
     }

@@ -50,10 +50,10 @@ namespace OfficeOpenXml
         internal ExcelWorksheets(ExcelPackage pck, XmlNamespaceManager nsm, XmlNode topNode) :
             base(nsm, topNode)
         {
-            _pck = pck;
-            _namespaceManager = nsm;
+            this._pck = pck;
+            this._namespaceManager = nsm;
             int ix = 0;
-            _worksheets = new ChangeableDictionary<ExcelWorksheet>();
+            this._worksheets = new ChangeableDictionary<ExcelWorksheet>();
 
             foreach (XmlNode sheetNode in topNode.ChildNodes)
             {
@@ -66,7 +66,7 @@ namespace OfficeOpenXml
 
                     if (string.IsNullOrEmpty(relId))
                     {
-                        ExcelWorksheet? ws = AddSheet(name, false, null, null, (XmlElement)sheetNode);
+                        ExcelWorksheet? ws = this.AddSheet(name, false, null, null, (XmlElement)sheetNode);
                         ws.SheetId = sheetID;
                         //_worksheets.Add(ix, ws);
                     }
@@ -75,15 +75,15 @@ namespace OfficeOpenXml
                         ZipPackageRelationship? sheetRelation = pck.Workbook.Part.GetRelationship(relId);
                         Uri uriWorksheet = UriHelper.ResolvePartUri(pck.Workbook.WorkbookUri, sheetRelation.TargetUri);
 
-                        int positionID = ix + _pck._worksheetAdd;
+                        int positionID = ix + this._pck._worksheetAdd;
                         //add the worksheet
                         if (sheetRelation.RelationshipType.EndsWith("chartsheet"))
                         {
-                            _worksheets.Add(ix, new ExcelChartsheet(_namespaceManager, _pck, relId, uriWorksheet, name, sheetID, positionID, null));
+                            this._worksheets.Add(ix, new ExcelChartsheet(this._namespaceManager, this._pck, relId, uriWorksheet, name, sheetID, positionID, null));
                         }
                         else
                         {
-                            _worksheets.Add(ix, new ExcelWorksheet(_namespaceManager, _pck, relId, uriWorksheet, name, sheetID, positionID, null));
+                            this._worksheets.Add(ix, new ExcelWorksheet(this._namespaceManager, this._pck, relId, uriWorksheet, name, sheetID, positionID, null));
                         }
                     }
                     ix++;
@@ -110,7 +110,7 @@ namespace OfficeOpenXml
         /// </summary>
         public int Count
         {
-            get { return (_worksheets.Count); }
+            get { return (this._worksheets.Count); }
         }
         #endregion
         internal const string ERR_DUP_WORKSHEET = "A worksheet with this name already exists in the workbook";
@@ -123,13 +123,13 @@ namespace OfficeOpenXml
         /// <returns>An enumerator</returns>
         public IEnumerator<ExcelWorksheet> GetEnumerator()
         {
-            return (_worksheets.GetEnumerator());
+            return (this._worksheets.GetEnumerator());
         }
         #region IEnumerable Members
 
         IEnumerator IEnumerable.GetEnumerator()
         {
-            return (_worksheets.GetEnumerator());
+            return (this._worksheets.GetEnumerator());
         }
 
         #endregion
@@ -140,20 +140,21 @@ namespace OfficeOpenXml
         /// <param name="Name">The name of the workbook</param>
         public ExcelWorksheet Add(string Name)
         {
-            ExcelWorksheet worksheet = AddSheet(Name, false, null);
+            ExcelWorksheet worksheet = this.AddSheet(Name, false, null);
             return worksheet;
         }
         private ExcelWorksheet AddSheet(string Name, bool isChart, eChartType? chartType, ExcelPivotTable pivotTableSource = null, XmlElement sheetElement=null)
         {   
-            lock (_worksheets)
+            lock (this._worksheets)
             {
                 Name = ValidateFixSheetName(Name);
-                if (GetByName(Name) != null)
+                if (this.GetByName(Name) != null)
                 {
                     throw (new InvalidOperationException(ERR_DUP_WORKSHEET + " : " + Name));
                 }
-                GetSheetURI(ref Name, out int sheetID, out Uri uriWorksheet, isChart);
-                Packaging.ZipPackagePart worksheetPart = _pck.ZipPackage.CreatePart(uriWorksheet, isChart ? CHARTSHEET_CONTENTTYPE : WORKSHEET_CONTENTTYPE, _pck.Compression);
+
+                this.GetSheetURI(ref Name, out int sheetID, out Uri uriWorksheet, isChart);
+                ZipPackagePart worksheetPart = this._pck.ZipPackage.CreatePart(uriWorksheet, isChart ? CHARTSHEET_CONTENTTYPE : WORKSHEET_CONTENTTYPE, this._pck.Compression);
 
                 //Create the new, empty worksheet and save it to the package
                 StreamWriter streamWorksheet = new StreamWriter(worksheetPart.GetStream(FileMode.Create, FileAccess.Write));
@@ -161,24 +162,24 @@ namespace OfficeOpenXml
                 worksheetXml.Save(streamWorksheet);
                 ZipPackage.Flush();
 
-                string rel = CreateWorkbookRel(Name, sheetID, uriWorksheet, isChart, sheetElement);
+                string rel = this.CreateWorkbookRel(Name, sheetID, uriWorksheet, isChart, sheetElement);
 
-                int positionID = _worksheets.Count + _pck._worksheetAdd;
+                int positionID = this._worksheets.Count + this._pck._worksheetAdd;
                 ExcelWorksheet worksheet;
                 if (isChart)
                 {
-                    worksheet = new ExcelChartsheet(_namespaceManager, _pck, rel, uriWorksheet, Name, sheetID, positionID, eWorkSheetHidden.Visible, (eChartType)chartType, pivotTableSource);
+                    worksheet = new ExcelChartsheet(this._namespaceManager, this._pck, rel, uriWorksheet, Name, sheetID, positionID, eWorkSheetHidden.Visible, (eChartType)chartType, pivotTableSource);
                 }
                 else
                 {
-                    worksheet = new ExcelWorksheet(_namespaceManager, _pck, rel, uriWorksheet, Name, sheetID, positionID, eWorkSheetHidden.Visible);
+                    worksheet = new ExcelWorksheet(this._namespaceManager, this._pck, rel, uriWorksheet, Name, sheetID, positionID, eWorkSheetHidden.Visible);
                 }
 
-                _worksheets.Add(_worksheets.Count, worksheet);
-                if (_pck.Workbook.VbaProject != null)
+                this._worksheets.Add(this._worksheets.Count, worksheet);
+                if (this._pck.Workbook.VbaProject != null)
                 {
-                    string? name = _pck.Workbook.VbaProject.GetModuleNameFromWorksheet(worksheet);
-                    _pck.Workbook.VbaProject.Modules.Add(new ExcelVBAModule(worksheet.CodeNameChange) { Name = name, Code = "", Attributes = ExcelVbaProject.GetDocumentAttributes(Name, "0{00020820-0000-0000-C000-000000000046}"), Type = eModuleType.Document, HelpContext = 0 });
+                    string? name = this._pck.Workbook.VbaProject.GetModuleNameFromWorksheet(worksheet);
+                    this._pck.Workbook.VbaProject.Modules.Add(new ExcelVBAModule(worksheet.CodeNameChange) { Name = name, Code = "", Attributes = ExcelVbaProject.GetDocumentAttributes(Name, "0{00020820-0000-0000-C000-000000000046}"), Type = eModuleType.Document, HelpContext = 0 });
                     worksheet.CodeModuleName = name;
                 }
 
@@ -192,7 +193,7 @@ namespace OfficeOpenXml
         /// <param name="Copy">The worksheet to be copied</param>
         public ExcelWorksheet Add(string Name, ExcelWorksheet Copy)
         {
-            lock (_worksheets)
+            lock (this._worksheets)
             {
                 return WorksheetCopyHelper.Copy(this, Name, Copy);
             }
@@ -209,7 +210,7 @@ namespace OfficeOpenXml
             {
                 throw (new InvalidOperationException("Please use method AddStockChart for Stock Charts"));
             }
-            return (ExcelChartsheet)AddSheet(Name, true, chartType, null);
+            return (ExcelChartsheet)this.AddSheet(Name, true, chartType, null);
         }
         /// <summary>
         /// Adds a chartsheet to the workbook.
@@ -220,7 +221,7 @@ namespace OfficeOpenXml
         /// <returns></returns>
         public ExcelChartsheet AddChart(string Name, eChartType chartType, ExcelPivotTable pivotTableSource)
         {
-            return (ExcelChartsheet)AddSheet(Name, true, chartType, pivotTableSource);
+            return (ExcelChartsheet)this.AddSheet(Name, true, chartType, pivotTableSource);
         }
         /// <summary>
         /// Adds a stock chart sheet to the workbook.
@@ -236,16 +237,16 @@ namespace OfficeOpenXml
         public ExcelChartsheet AddStockChart(string Name, ExcelRangeBase CategorySerie, ExcelRangeBase HighSerie, ExcelRangeBase LowSerie, ExcelRangeBase CloseSerie, ExcelRangeBase OpenSerie = null, ExcelRangeBase VolumeSerie = null)
         {
             eChartType chartType = ExcelStockChart.GetChartType(OpenSerie, VolumeSerie);
-            ExcelChartsheet? sheet = (ExcelChartsheet)AddSheet(Name, true, chartType, null);
+            ExcelChartsheet? sheet = (ExcelChartsheet)this.AddSheet(Name, true, chartType, null);
             ExcelStockChart? chart = (ExcelStockChart)sheet.Chart;
             ExcelStockChart.SetStockChartSeries(chart, chartType, CategorySerie.FullAddress, HighSerie.FullAddress, LowSerie.FullAddress, CloseSerie.FullAddress, OpenSerie?.FullAddress, VolumeSerie?.FullAddress);
             return sheet;
         }
         internal int? GetFirstVisibleSheetIndex()
         {
-            for (int i = 0; i < _worksheets.Count; i++)
+            for (int i = 0; i < this._worksheets.Count; i++)
             {
-                if (_worksheets[i].Hidden == eWorkSheetHidden.Visible)
+                if (this._worksheets[i].Hidden == eWorkSheetHidden.Visible)
                 {
                     return i;
                 }
@@ -257,16 +258,16 @@ namespace OfficeOpenXml
         internal string CreateWorkbookRel(string Name, int sheetID, Uri uriWorksheet, bool isChart, XmlElement sheetElement)
         {
             //Create the relationship between the workbook and the new worksheet
-            ZipPackageRelationship? rel = _pck.Workbook.Part.CreateRelationship(UriHelper.GetRelativeUri(_pck.Workbook.WorkbookUri, uriWorksheet), Packaging.TargetMode.Internal, ExcelPackage.schemaRelationships + "/" + (isChart ? "chartsheet" : "worksheet"));
+            ZipPackageRelationship? rel = this._pck.Workbook.Part.CreateRelationship(UriHelper.GetRelativeUri(this._pck.Workbook.WorkbookUri, uriWorksheet), TargetMode.Internal, ExcelPackage.schemaRelationships + "/" + (isChart ? "chartsheet" : "worksheet"));
             ZipPackage.Flush();
 
             //Create the new sheet node
             if(sheetElement==null)
             {
-                sheetElement = _pck.Workbook.WorkbookXml.CreateElement("sheet", ExcelPackage.schemaMain);
+                sheetElement = this._pck.Workbook.WorkbookXml.CreateElement("sheet", ExcelPackage.schemaMain);
                 sheetElement.SetAttribute("name", Name);
                 sheetElement.SetAttribute("sheetId", sheetID.ToString());
-                TopNode.AppendChild(sheetElement);
+                this.TopNode.AppendChild(sheetElement);
             }
             sheetElement.SetAttribute("id", ExcelPackage.schemaRelationships, rel.Id);
 
@@ -293,7 +294,7 @@ namespace OfficeOpenXml
                 }
 
                 uriId++;
-            } while (_pck.ZipPackage.PartExists(uriWorksheet));
+            } while (this._pck.ZipPackage.PartExists(uriWorksheet));
         }
 
         internal static string ValidateFixSheetName(string Name)
@@ -416,12 +417,12 @@ namespace OfficeOpenXml
             * to prevent the deletion of the image file, 
             * when referenced more than once
             */
-            foreach (ExcelWorksheet? ws in _worksheets)
+            foreach (ExcelWorksheet? ws in this._worksheets)
             {
                 ExcelDrawings? drawings = ws.Drawings;
             }
 
-            ExcelWorksheet worksheet = _worksheets[Index - _pck._worksheetAdd];
+            ExcelWorksheet worksheet = this._worksheets[Index - this._pck._worksheetAdd];
             if (worksheet.Drawings.Count > 0)
             {
                 worksheet.Drawings.ClearDrawings();
@@ -438,60 +439,61 @@ namespace OfficeOpenXml
                 worksheet.PivotTables.Delete(worksheet.PivotTables[0]);
             }
             //Delete any parts still with relations to the Worksheet.
-            DeleteRelationsAndParts(worksheet.Part);
+            this.DeleteRelationsAndParts(worksheet.Part);
 
 
             //Delete the worksheet part and relation from the package 
-            _pck.Workbook.Part.DeleteRelationship(worksheet.RelationshipId);
+            this._pck.Workbook.Part.DeleteRelationship(worksheet.RelationshipId);
 
             //Delete worksheet from the workbook XML
-            XmlNode sheetsNode = _pck.Workbook.WorkbookXml.SelectSingleNode("//d:workbook/d:sheets", _namespaceManager);
+            XmlNode sheetsNode = this._pck.Workbook.WorkbookXml.SelectSingleNode("//d:workbook/d:sheets", this._namespaceManager);
             if (sheetsNode != null)
             {
-                XmlNode sheetNode = sheetsNode.SelectSingleNode(string.Format("./d:sheet[@sheetId={0}]", worksheet.SheetId), _namespaceManager);
+                XmlNode sheetNode = sheetsNode.SelectSingleNode(string.Format("./d:sheet[@sheetId={0}]", worksheet.SheetId), this._namespaceManager);
                 if (sheetNode != null)
                 {
                     sheetsNode.RemoveChild(sheetNode);
                 }
             }
-            if (_pck.Workbook.VbaProject != null)
+            if (this._pck.Workbook.VbaProject != null)
             {
-                _pck.Workbook.VbaProject.Modules.Remove(worksheet.CodeModule);
+                this._pck.Workbook.VbaProject.Modules.Remove(worksheet.CodeModule);
             }
 
-            _worksheets.RemoveAndShift(Index - _pck._worksheetAdd);
-            ReindexWorksheetDictionary();
+            this._worksheets.RemoveAndShift(Index - this._pck._worksheetAdd);
+            this.ReindexWorksheetDictionary();
             //If the active sheet is deleted, set the first tab as active.
-            if (_pck.Workbook.Worksheets.Count > 0)
+            if (this._pck.Workbook.Worksheets.Count > 0)
             {
-                if (_pck.Workbook.View.ActiveTab >= _pck.Workbook.Worksheets.Count)
+                if (this._pck.Workbook.View.ActiveTab >= this._pck.Workbook.Worksheets.Count)
                 {
-                    _pck.Workbook.View.ActiveTab = Math.Min(_pck.Workbook.View.ActiveTab - 1, _pck.Workbook.Worksheets.Count-1);
+                    this._pck.Workbook.View.ActiveTab = Math.Min(this._pck.Workbook.View.ActiveTab - 1, this._pck.Workbook.Worksheets.Count-1);
                 }
-                if (_pck.Workbook.View.ActiveTab == worksheet.SheetId)
+                if (this._pck.Workbook.View.ActiveTab == worksheet.SheetId)
                 {
-                    _pck.Workbook.Worksheets[_pck._worksheetAdd].View.TabSelected = true;
+                    this._pck.Workbook.Worksheets[this._pck._worksheetAdd].View.TabSelected = true;
                 }
             }
         }
 
-        private void DeleteRelationsAndParts(Packaging.ZipPackagePart part)
+        private void DeleteRelationsAndParts(ZipPackagePart part)
         {
             List<ZipPackageRelationship>? rels = part.GetRelationships().ToList();
             for (int i = 0; i < rels.Count; i++)
             {
                 ZipPackageRelationship? rel = rels[i];
-                if (rel.RelationshipType != ExcelPackage.schemaImage && rel.TargetMode == Packaging.TargetMode.Internal)
+                if (rel.RelationshipType != ExcelPackage.schemaImage && rel.TargetMode == TargetMode.Internal)
                 {
                     Uri? relUri = UriHelper.ResolvePartUri(rel.SourceUri, rel.TargetUri);
-                    if (_pck.ZipPackage.PartExists(relUri))
+                    if (this._pck.ZipPackage.PartExists(relUri))
                     {
-                        DeleteRelationsAndParts(_pck.ZipPackage.GetPart(relUri));
+                        this.DeleteRelationsAndParts(this._pck.ZipPackage.GetPart(relUri));
                     }
                 }
                 part.DeleteRelationship(rel.Id);
             }
-            _pck.ZipPackage.DeletePart(part.Uri);
+
+            this._pck.ZipPackage.DeletePart(part.Uri);
         }
 
         /// <summary>
@@ -505,7 +507,8 @@ namespace OfficeOpenXml
             {
                 throw new ArgumentException(string.Format("Could not find worksheet to delete '{0}'", name));
             }
-            Delete(sheet.PositionId);
+
+            this.Delete(sheet.PositionId);
         }
         /// <summary>
         /// Delete a worksheet from the collection
@@ -513,10 +516,10 @@ namespace OfficeOpenXml
         /// <param name="Worksheet">The worksheet to delete</param>
         public void Delete(ExcelWorksheet Worksheet)
         {
-            int ix = Worksheet.PositionId - _pck._worksheetAdd;
-            if (ix < _worksheets.Count && Worksheet == _worksheets[ix])
+            int ix = Worksheet.PositionId - this._pck._worksheetAdd;
+            if (ix < this._worksheets.Count && Worksheet == this._worksheets[ix])
             {
-                Delete(Worksheet.PositionId);
+                this.Delete(Worksheet.PositionId);
             }
             else
             {
@@ -528,12 +531,13 @@ namespace OfficeOpenXml
         {
             int index = 0;
             ChangeableDictionary<ExcelWorksheet>? worksheets = new ChangeableDictionary<ExcelWorksheet>();
-            foreach (ExcelWorksheet? entry in _worksheets)
+            foreach (ExcelWorksheet? entry in this._worksheets)
             {
-                entry.PositionId = index + _pck._worksheetAdd;
+                entry.PositionId = index + this._pck._worksheetAdd;
                 worksheets.Add(index++, entry);
             }
-            _worksheets = worksheets;
+
+            this._worksheets = worksheets;
         }
 
 #if Core
@@ -555,10 +559,10 @@ namespace OfficeOpenXml
         {
             get
             {
-                int ix = PositionID - _pck._worksheetAdd;
-                if (_worksheets.ContainsKey(ix))
+                int ix = PositionID - this._pck._worksheetAdd;
+                if (this._worksheets.ContainsKey(ix))
                 {
-                    return _worksheets[ix];
+                    return this._worksheets[ix];
                 }
                 else
                 {
@@ -576,7 +580,7 @@ namespace OfficeOpenXml
         {
             get
             {
-                return GetByName(Name);
+                return this.GetByName(Name);
             }
         }
         /// <summary>
@@ -593,7 +597,7 @@ namespace OfficeOpenXml
                 throw new ArgumentException(string.Format("Copy worksheet error: Could not find worksheet to copy '{0}'", Name));
             }
 
-            ExcelWorksheet added = Add(NewName, Copy);
+            ExcelWorksheet added = this.Add(NewName, Copy);
             return added;
         }
         #endregion
@@ -617,7 +621,7 @@ namespace OfficeOpenXml
 
             name = ValidateFixSheetName(name);
             ExcelWorksheet ws = null;
-            foreach (ExcelWorksheet worksheet in _worksheets)
+            foreach (ExcelWorksheet worksheet in this._worksheets)
             {
                 if (worksheet.Name.Equals(name, StringComparison.OrdinalIgnoreCase))
                 {
@@ -636,7 +640,7 @@ namespace OfficeOpenXml
         /// <returns></returns>
         private ExcelWorksheet GetWorksheetByName(string worksheetName, string paramName = null, bool throwIfNull = true)
         {
-            ExcelWorksheet? worksheet = GetByName(worksheetName);
+            ExcelWorksheet? worksheet = this.GetByName(worksheetName);
             if (worksheet == null && throwIfNull)
             {
                 throw new ArgumentNullException(paramName ?? "worksheet", $"Could not find worksheet to move sourceName");
@@ -692,8 +696,8 @@ namespace OfficeOpenXml
         public void MoveToStart(string sourceName)
         {
             Require.Argument(sourceName).IsNotNullOrEmpty("sourceName");
-            ExcelWorksheet? worksheet = GetWorksheetByName(sourceName, "sourceName");
-            MoveToStart(worksheet.PositionId);
+            ExcelWorksheet? worksheet = this.GetWorksheetByName(sourceName, "sourceName");
+            this.MoveToStart(worksheet.PositionId);
         }
         /// <summary>
         /// Moves the source worksheet to the start of the worksheets collection
@@ -701,7 +705,7 @@ namespace OfficeOpenXml
         /// <param name="sourcePositionId">The position of the source worksheet</param>
         public void MoveToStart(int sourcePositionId)
         {
-            MoveSheetXmlNode.RearrangeWorksheets(this, sourcePositionId, _pck._worksheetAdd, true);
+            MoveSheetXmlNode.RearrangeWorksheets(this, sourcePositionId, this._pck._worksheetAdd, true);
         }
 
         /// <summary>
@@ -711,8 +715,8 @@ namespace OfficeOpenXml
         public void MoveToEnd(string sourceName)
         {
             Require.Argument(sourceName).IsNotNullOrEmpty("sourceName");
-            ExcelWorksheet? worksheet = GetWorksheetByName(sourceName, "sourceName");
-            MoveToEnd(worksheet.PositionId);
+            ExcelWorksheet? worksheet = this.GetWorksheetByName(sourceName, "sourceName");
+            this.MoveToEnd(worksheet.PositionId);
         }
 
         /// <summary>
@@ -721,7 +725,7 @@ namespace OfficeOpenXml
         /// <param name="sourcePositionId">The position of the source worksheet</param>
         public void MoveToEnd(int sourcePositionId)
         {
-            MoveSheetXmlNode.RearrangeWorksheets(this, sourcePositionId, Count - 1 + _pck._worksheetAdd, false);
+            MoveSheetXmlNode.RearrangeWorksheets(this, sourcePositionId, this.Count - 1 + this._pck._worksheetAdd, false);
         }
 
         /// <summary>
@@ -729,14 +733,15 @@ namespace OfficeOpenXml
         /// </summary>
         public void Dispose()
         {
-            if (_worksheets != null)
+            if (this._worksheets != null)
             {
                 foreach (ExcelWorksheet? sheet in this._worksheets)
                 {
                     ((IDisposable)sheet).Dispose();
                 }
-                _worksheets = null;
-                _pck = null;
+
+                this._worksheets = null;
+                this._pck = null;
             }
         }
 

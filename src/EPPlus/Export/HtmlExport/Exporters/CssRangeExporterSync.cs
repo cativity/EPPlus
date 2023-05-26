@@ -28,13 +28,13 @@ namespace OfficeOpenXml.Export.HtmlExport.Exporters
         public CssRangeExporterSync(HtmlRangeExportSettings settings, EPPlusReadOnlyList<ExcelRangeBase> ranges)
             : base(settings, ranges)
         {
-            _settings = settings;
+            this._settings = settings;
         }
 
         public CssRangeExporterSync(HtmlRangeExportSettings settings, ExcelRangeBase range)
             : base(settings, range)
         {
-            _settings = settings;
+            this._settings = settings;
         }
 
         private readonly HtmlRangeExportSettings _settings;
@@ -45,7 +45,7 @@ namespace OfficeOpenXml.Export.HtmlExport.Exporters
         public string GetCssString()
         {
             using MemoryStream? ms = RecyclableMemory.GetStream();
-            RenderCss(ms);
+            this.RenderCss(ms);
             ms.Position = 0;
             using StreamReader? sr = new StreamReader(ms);
             return sr.ReadToEnd();
@@ -64,16 +64,16 @@ namespace OfficeOpenXml.Export.HtmlExport.Exporters
 
             //if (_datatypes.Count == 0) GetDataTypes();
             StreamWriter? sw = new StreamWriter(stream);
-            RenderCellCss(sw);
+            this.RenderCellCss(sw);
         }
 
         private void RenderCellCss(StreamWriter sw)
         {
-            EpplusCssWriter? styleWriter = new EpplusCssWriter(sw, _ranges._list, _settings, _settings.Css, _settings.Css.CssExclude, _styleCache);
+            EpplusCssWriter? styleWriter = new EpplusCssWriter(sw, this._ranges._list, this._settings, this._settings.Css, this._settings.Css.CssExclude, this._styleCache);
 
             styleWriter.RenderAdditionalAndFontCss(TableClass);
             HashSet<TableStyles>? addedTableStyles = new HashSet<TableStyles>();
-            foreach (ExcelRangeBase? range in _ranges._list)
+            foreach (ExcelRangeBase? range in this._ranges._list)
             {
                 ExcelWorksheet? ws = range.Worksheet;
                 ExcelStyles? styles = ws.Workbook.Styles;
@@ -101,33 +101,33 @@ namespace OfficeOpenXml.Export.HtmlExport.Exporters
                             ExcelAddressBase? mAdr = new ExcelAddressBase(ma);
                             int bottomStyleId = range.Worksheet._values.GetValue(mAdr._toRow, mAdr._fromCol)._styleId;
                             int rightStyleId = range.Worksheet._values.GetValue(mAdr._fromRow, mAdr._toCol)._styleId;
-                            styleWriter.AddToCss(styles, ce.Value._styleId, bottomStyleId, rightStyleId, Settings.StyleClassPrefix, Settings.CellStyleClassName);
+                            styleWriter.AddToCss(styles, ce.Value._styleId, bottomStyleId, rightStyleId, this.Settings.StyleClassPrefix, this.Settings.CellStyleClassName);
                         }
                         else
                         {
-                            styleWriter.AddToCss(styles, ce.Value._styleId, Settings.StyleClassPrefix, Settings.CellStyleClassName);
+                            styleWriter.AddToCss(styles, ce.Value._styleId, this.Settings.StyleClassPrefix, this.Settings.CellStyleClassName);
                         }
                     }
                 }
 
-                if (Settings.TableStyle == eHtmlRangeTableInclude.Include)
+                if (this.Settings.TableStyle == eHtmlRangeTableInclude.Include)
                 {
                     ExcelTable? table = range.GetTable();
                     if (table != null &&
                        table.TableStyle != TableStyles.None &&
                        addedTableStyles.Contains(table.TableStyle) == false)
                     {
-                        HtmlTableExportSettings? settings = new HtmlTableExportSettings() { Minify = Settings.Minify };
-                        HtmlExportTableUtil.RenderTableCss(sw, table, settings, _styleCache, _dataTypes);
+                        HtmlTableExportSettings? settings = new HtmlTableExportSettings() { Minify = this.Settings.Minify };
+                        HtmlExportTableUtil.RenderTableCss(sw, table, settings, this._styleCache, this._dataTypes);
                         addedTableStyles.Add(table.TableStyle);
                     }
                 }
             }
 
-            if (Settings.Pictures.Include == ePictureInclude.Include)
+            if (this.Settings.Pictures.Include == ePictureInclude.Include)
             {
-                LoadRangeImages(_ranges._list);
-                foreach (HtmlImage? p in _rangePictures)
+                this.LoadRangeImages(this._ranges._list);
+                foreach (HtmlImage? p in this._rangePictures)
                 {
                     styleWriter.AddPictureToCss(p);
                 }

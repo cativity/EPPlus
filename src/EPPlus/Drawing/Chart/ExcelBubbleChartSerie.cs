@@ -43,11 +43,11 @@ namespace OfficeOpenXml.Drawing.Chart
         {
             get
             {
-                if (_dataLabel == null)
+                if (this._dataLabel == null)
                 {
-                    _dataLabel = new ExcelChartSerieDataLabel(_chart, NameSpaceManager, TopNode, SchemaNodeOrder);
+                    this._dataLabel = new ExcelChartSerieDataLabel(this._chart, this.NameSpaceManager, this.TopNode, this.SchemaNodeOrder);
                 }
-                return _dataLabel;
+                return this._dataLabel;
             }
         }
         /// <summary>
@@ -57,7 +57,7 @@ namespace OfficeOpenXml.Drawing.Chart
         {
             get
             {
-                return TopNode.SelectSingleNode("c:dLbls", NameSpaceManager) != null;
+                return this.TopNode.SelectSingleNode("c:dLbls", this.NameSpaceManager) != null;
             }
         }
         const string BUBBLE3D_PATH = "c:bubble3D/@val";
@@ -65,11 +65,11 @@ namespace OfficeOpenXml.Drawing.Chart
         {
             get
             {
-                return GetXmlNodeBool(BUBBLE3D_PATH, true);
+                return this.GetXmlNodeBool(BUBBLE3D_PATH, true);
             }
             set
             {
-                SetXmlNodeBool(BUBBLE3D_PATH, value);    
+                this.SetXmlNodeBool(BUBBLE3D_PATH, value);    
             }
         }
         const string INVERTIFNEGATIVE_PATH = "c:invertIfNegative/@val";
@@ -77,11 +77,11 @@ namespace OfficeOpenXml.Drawing.Chart
         {
             get
             {
-                return GetXmlNodeBool(INVERTIFNEGATIVE_PATH, true);
+                return this.GetXmlNodeBool(INVERTIFNEGATIVE_PATH, true);
             }
             set
             {
-                SetXmlNodeBool(INVERTIFNEGATIVE_PATH, value);
+                this.SetXmlNodeBool(INVERTIFNEGATIVE_PATH, value);
             }
         }
         /// <summary>
@@ -96,9 +96,9 @@ namespace OfficeOpenXml.Drawing.Chart
             set
             {
                 base.Series = value;
-                if(string.IsNullOrEmpty(BubbleSize))
+                if(string.IsNullOrEmpty(this.BubbleSize))
                 {
-                    GenerateLit();
+                    this.GenerateLit();
                 }
             }
         }        
@@ -111,32 +111,32 @@ namespace OfficeOpenXml.Drawing.Chart
         {
             get
             {
-                return GetXmlNodeString(BUBBLESIZE_PATH);
+                return this.GetXmlNodeString(BUBBLESIZE_PATH);
             }
             set
             {
                 if(string.IsNullOrEmpty(value))
                 {
-                    GenerateLit();
+                    this.GenerateLit();
                 }
                 else
                 {
-                    SetXmlNodeString(BUBBLESIZE_PATH, ExcelCellBase.GetFullAddress(_chart.WorkSheet.Name, value));
+                    this.SetXmlNodeString(BUBBLESIZE_PATH, ExcelCellBase.GetFullAddress(this._chart.WorkSheet.Name, value));
                 
-                    XmlNode cache = TopNode.SelectSingleNode(string.Format("{0}/c:numCache", BUBBLESIZE_PATH), NameSpaceManager);
+                    XmlNode cache = this.TopNode.SelectSingleNode(string.Format("{0}/c:numCache", BUBBLESIZE_PATH), this.NameSpaceManager);
                     if (cache != null)
                     {
                         cache.ParentNode.RemoveChild(cache);
                     }
 
-                    DeleteNode(string.Format("{0}/c:numLit", BUBBLESIZE_TOPPATH));
+                    this.DeleteNode(string.Format("{0}/c:numLit", BUBBLESIZE_TOPPATH));
                 }
             }
         }
 
         internal void GenerateLit()
         {
-            ExcelAddress? s = new ExcelAddress(Series);
+            ExcelAddress? s = new ExcelAddress(this.Series);
             int ix = 0;
             StringBuilder? sb = new StringBuilder();
             for (int row = s._fromRow; row <= s._toRow; row++)
@@ -146,8 +146,9 @@ namespace OfficeOpenXml.Drawing.Chart
                     sb.AppendFormat("<c:pt idx=\"{0}\"><c:v>1</c:v></c:pt>", ix++);
                 }
             }
-            CreateNode(BUBBLESIZE_TOPPATH + "/c:numLit", true);
-            XmlNode lit = TopNode.SelectSingleNode(string.Format("{0}/c:numLit", BUBBLESIZE_TOPPATH), NameSpaceManager);
+
+            this.CreateNode(BUBBLESIZE_TOPPATH + "/c:numLit", true);
+            XmlNode lit = this.TopNode.SelectSingleNode(string.Format("{0}/c:numLit", BUBBLESIZE_TOPPATH), this.NameSpaceManager);
             lit.InnerXml = string.Format("<c:formatCode>General</c:formatCode><c:ptCount val=\"{0}\"/>{1}", ix, sb.ToString());
         }
         ExcelChartDataPointCollection _dataPoints = null;
@@ -159,11 +160,11 @@ namespace OfficeOpenXml.Drawing.Chart
             get
             {
 
-                if (_dataPoints == null)
+                if (this._dataPoints == null)
                 {
-                    _dataPoints = new ExcelChartDataPointCollection(_chart, NameSpaceManager, TopNode, SchemaNodeOrder);
+                    this._dataPoints = new ExcelChartDataPointCollection(this._chart, this.NameSpaceManager, this.TopNode, this.SchemaNodeOrder);
                 }
-                return _dataPoints;
+                return this._dataPoints;
             }
         }
     }

@@ -35,14 +35,14 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions.RefAndLookup
 
         public LookupArguments(IEnumerable<FunctionArgument> arguments, ArgumentParsers argumentParsers, ParsingContext context)
         {
-            _argumentParsers = argumentParsers;
-            SearchedValue = arguments.ElementAt(0).Value;
+            this._argumentParsers = argumentParsers;
+            this.SearchedValue = arguments.ElementAt(0).Value;
             object? arg1 = arguments.ElementAt(1).Value;
             IEnumerable<FunctionArgument>? dataArray = arg1 as IEnumerable<FunctionArgument>;
             if (dataArray != null)
             {
-                DataArray = dataArray;
-                ArgumentDataType = LookupArgumentDataType.DataArray;
+                this.DataArray = dataArray;
+                this.ArgumentDataType = LookupArgumentDataType.DataArray;
             }
             else
             {
@@ -50,14 +50,14 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions.RefAndLookup
                 IRangeInfo? rangeInfo = arg1 as IRangeInfo;
                 if (rangeInfo != null)
                 {
-                    RangeAddress = string.IsNullOrEmpty(rangeInfo.Address.WorkSheetName) ? rangeInfo.Address.Address : "'" + rangeInfo.Address.WorkSheetName + "'!" + rangeInfo.Address.Address;
-                    RangeInfo = rangeInfo;
-                    ArgumentDataType = LookupArgumentDataType.ExcelRange;
+                    this.RangeAddress = string.IsNullOrEmpty(rangeInfo.Address.WorkSheetName) ? rangeInfo.Address.Address : "'" + rangeInfo.Address.WorkSheetName + "'!" + rangeInfo.Address.Address;
+                    this.RangeInfo = rangeInfo;
+                    this.ArgumentDataType = LookupArgumentDataType.ExcelRange;
                 }
                 else
                 {
-                    RangeAddress = arg1.ToString();
-                    ArgumentDataType = LookupArgumentDataType.ExcelRange;
+                    this.RangeAddress = arg1.ToString();
+                    this.ArgumentDataType = LookupArgumentDataType.ExcelRange;
                 }  
             }
             FunctionArgument? indexVal = arguments.ElementAt(2);
@@ -66,31 +66,31 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions.RefAndLookup
             {
                 ExcelAddress? address = new ExcelAddress(indexVal.Value.ToString());
                 object? indexObj = context.ExcelDataProvider.GetRangeValue(address.WorkSheetName, address._fromRow, address._fromCol);
-                LookupIndex = (int) _argumentParsers.GetParser(DataType.Integer).Parse(indexObj);
+                this.LookupIndex = (int)this._argumentParsers.GetParser(DataType.Integer).Parse(indexObj);
             }
             else
             {
-                LookupIndex = (int)_argumentParsers.GetParser(DataType.Integer).Parse(arguments.ElementAt(2).Value);
+                this.LookupIndex = (int)this._argumentParsers.GetParser(DataType.Integer).Parse(arguments.ElementAt(2).Value);
             }
             
             if (arguments.Count() > 3)
             {
-                RangeLookup = (bool)_argumentParsers.GetParser(DataType.Boolean).Parse(arguments.ElementAt(3).Value);
+                this.RangeLookup = (bool)this._argumentParsers.GetParser(DataType.Boolean).Parse(arguments.ElementAt(3).Value);
             }
             else
             {
-                RangeLookup = true;
+                this.RangeLookup = true;
             }
         }
 
         public LookupArguments(object searchedValue, string rangeAddress, int lookupIndex, int lookupOffset, bool rangeLookup, IRangeInfo rangeInfo)
         {
-            SearchedValue = searchedValue;
-            RangeAddress = rangeAddress;
-            RangeInfo = rangeInfo;
-            LookupIndex = lookupIndex;
-            LookupOffset = lookupOffset;
-            RangeLookup = rangeLookup;
+            this.SearchedValue = searchedValue;
+            this.RangeAddress = rangeAddress;
+            this.RangeInfo = rangeInfo;
+            this.LookupIndex = lookupIndex;
+            this.LookupOffset = lookupOffset;
+            this.RangeLookup = rangeLookup;
         }
 
         private readonly ArgumentParsers _argumentParsers;

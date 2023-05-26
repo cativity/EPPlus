@@ -55,7 +55,7 @@ namespace OfficeOpenXml.Export.HtmlExport
         {
             get
             {
-                return _headerRows;
+                return this._headerRows;
             }
             set
             {
@@ -63,7 +63,8 @@ namespace OfficeOpenXml.Export.HtmlExport
                 {
                     throw new InvalidOperationException("Can't be negative or exceed number of allowed rows in a worksheet.");
                 }
-                _headerRows = value;
+
+                this._headerRows = value;
             }
         }
         /// <summary>

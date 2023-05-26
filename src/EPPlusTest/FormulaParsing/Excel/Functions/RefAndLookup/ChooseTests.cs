@@ -47,75 +47,75 @@ namespace EPPlusTest.FormulaParsing.Excel.Functions.RefAndLookup
         [TestInitialize]
         public void Initialize()
         {
-            _parsingContext = ParsingContext.Create();
-            _package = new ExcelPackage(new MemoryStream());
-            _worksheet = _package.Workbook.Worksheets.Add("test");
+            this._parsingContext = ParsingContext.Create();
+            this._package = new ExcelPackage(new MemoryStream());
+            this._worksheet = this._package.Workbook.Worksheets.Add("test");
         }
 
         [TestCleanup]
         public void Cleanup()
         {
-            _package.Dispose();
+            this._package.Dispose();
         }
 
         [TestMethod]
         public void ChooseSingleValue()
         {
-            fillChooseOptions();
-            _worksheet.Cells["B1"].Formula = "CHOOSE(4, A1, A2, A3, A4, A5)";
-            _worksheet.Calculate();
+            this.fillChooseOptions();
+            this._worksheet.Cells["B1"].Formula = "CHOOSE(4, A1, A2, A3, A4, A5)";
+            this._worksheet.Calculate();
 
-            Assert.AreEqual(5d, _worksheet.Cells["B1"].Value);
+            Assert.AreEqual(5d, this._worksheet.Cells["B1"].Value);
         }
 
         [TestMethod]
         public void ChooseSingleFormula()
         {
-            fillChooseOptions();
-            _worksheet.Cells["B1"].Formula = "CHOOSE(6, A1, A2, A3, A4, A5, A6)";
-            _worksheet.Calculate();
+            this.fillChooseOptions();
+            this._worksheet.Cells["B1"].Formula = "CHOOSE(6, A1, A2, A3, A4, A5, A6)";
+            this._worksheet.Calculate();
 
-            Assert.AreEqual(12d, _worksheet.Cells["B1"].Value);
+            Assert.AreEqual(12d, this._worksheet.Cells["B1"].Value);
         }
 
         [TestMethod]
         public void ChooseMultipleValues()
         {
-            fillChooseOptions();
-            _worksheet.Cells["B1"].Formula = "SUM(CHOOSE({1,3,4}, A1, A2, A3, A4, A5))";
-            _worksheet.Calculate();
+            this.fillChooseOptions();
+            this._worksheet.Cells["B1"].Formula = "SUM(CHOOSE({1,3,4}, A1, A2, A3, A4, A5))";
+            this._worksheet.Calculate();
 
-            Assert.AreEqual(9D, _worksheet.Cells["B1"].Value);
+            Assert.AreEqual(9D, this._worksheet.Cells["B1"].Value);
         }
 
         [TestMethod]
         public void ChooseValueAndFormula()
         {
-            fillChooseOptions();
-            _worksheet.Cells["B1"].Formula = "SUM(CHOOSE({2,6}, A1, A2, A3, A4, A5, A6))";
-            _worksheet.Calculate();
+            this.fillChooseOptions();
+            this._worksheet.Cells["B1"].Formula = "SUM(CHOOSE({2,6}, A1, A2, A3, A4, A5, A6))";
+            this._worksheet.Calculate();
 
-            Assert.AreEqual(14D, _worksheet.Cells["B1"].Value);
+            Assert.AreEqual(14D, this._worksheet.Cells["B1"].Value);
         }
 
         [TestMethod]
         public void ChooseSumOfRange()
         {
-            fillChooseOptions();
-            _worksheet.Cells["B1"].Formula = "SUM(CHOOSE(1, A1:A2, A2:A3))";
-            _worksheet.Calculate();
+            this.fillChooseOptions();
+            this._worksheet.Cells["B1"].Formula = "SUM(CHOOSE(1, A1:A2, A2:A3))";
+            this._worksheet.Calculate();
 
-            Assert.AreEqual(3D, _worksheet.Cells["B1"].Value);
+            Assert.AreEqual(3D, this._worksheet.Cells["B1"].Value);
         }
 
         private void fillChooseOptions()
         {
-            _worksheet.Cells["A1"].Value = 1d;
-            _worksheet.Cells["A2"].Value = 2d;
-            _worksheet.Cells["A3"].Value = 3d;
-            _worksheet.Cells["A4"].Value = 5d;
-            _worksheet.Cells["A5"].Value = 7d;
-            _worksheet.Cells["A6"].Formula = "A4 + A5";
+            this._worksheet.Cells["A1"].Value = 1d;
+            this._worksheet.Cells["A2"].Value = 2d;
+            this._worksheet.Cells["A3"].Value = 3d;
+            this._worksheet.Cells["A4"].Value = 5d;
+            this._worksheet.Cells["A5"].Value = 7d;
+            this._worksheet.Cells["A6"].Formula = "A4 + A5";
         }
     }
 }

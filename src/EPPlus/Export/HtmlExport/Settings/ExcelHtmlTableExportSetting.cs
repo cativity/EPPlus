@@ -35,17 +35,17 @@ namespace OfficeOpenXml.Export.HtmlExport.Settings
         /// </summary>
         public void ResetToDefault()
         {
-            Minify = true;
-            HiddenRows = eHiddenState.Exclude;
-            Accessibility.TableSettings.ResetToDefault();
-            IncludeCssClassNames = true;
-            TableId = "";
-            AdditionalTableClassNames.Clear();
-            Culture = CultureInfo.CurrentCulture;
-            Encoding = Encoding.UTF8;
-            RenderDataAttributes = true;
-            Css.ResetToDefault();
-            Pictures.ResetToDefault();
+            this.Minify = true;
+            this.HiddenRows = eHiddenState.Exclude;
+            this.Accessibility.TableSettings.ResetToDefault();
+            this.IncludeCssClassNames = true;
+            this.TableId = "";
+            this.AdditionalTableClassNames.Clear();
+            this.Culture = CultureInfo.CurrentCulture;
+            this.Encoding = Encoding.UTF8;
+            this.RenderDataAttributes = true;
+            this.Css.ResetToDefault();
+            this.Pictures.ResetToDefault();
         }
         /// <summary>
         /// Copy the values from another settings object.
@@ -53,17 +53,17 @@ namespace OfficeOpenXml.Export.HtmlExport.Settings
         /// <param name="copy">The object to copy.</param>
         public void Copy(HtmlTableExportSettings copy)
         {
-            Minify = copy.Minify;
-            HiddenRows = copy.HiddenRows;
-            Accessibility.TableSettings.Copy(copy.Accessibility.TableSettings);
-            IncludeCssClassNames = copy.IncludeCssClassNames;
-            TableId = copy.TableId;
-            AdditionalTableClassNames = copy.AdditionalTableClassNames;
-            Culture = copy.Culture;
-            Encoding = copy.Encoding;
-            RenderDataAttributes = copy.RenderDataAttributes;
-            Css.Copy(copy.Css);
-            Pictures.Copy(copy.Pictures);
+            this.Minify = copy.Minify;
+            this.HiddenRows = copy.HiddenRows;
+            this.Accessibility.TableSettings.Copy(copy.Accessibility.TableSettings);
+            this.IncludeCssClassNames = copy.IncludeCssClassNames;
+            this.TableId = copy.TableId;
+            this.AdditionalTableClassNames = copy.AdditionalTableClassNames;
+            this.Culture = copy.Culture;
+            this.Encoding = copy.Encoding;
+            this.RenderDataAttributes = copy.RenderDataAttributes;
+            this.Css.Copy(copy.Css);
+            this.Pictures.Copy(copy.Pictures);
         }
         /// <summary>
         /// Configure the settings.

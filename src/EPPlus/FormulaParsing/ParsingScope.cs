@@ -43,10 +43,10 @@ namespace OfficeOpenXml.FormulaParsing
         /// <param name="address"></param>
         public ParsingScope(ParsingScopes parsingScopes, ParsingScope parent, RangeAddress address)
         {
-            _parsingScopes = parsingScopes;
-            Parent = parent;
-            Address = address;
-            ScopeId = Guid.NewGuid();
+            this._parsingScopes = parsingScopes;
+            this.Parent = parent;
+            this.Address = address;
+            this.ScopeId = Guid.NewGuid();
         }
 
         /// <summary>
@@ -74,7 +74,7 @@ namespace OfficeOpenXml.FormulaParsing
         /// </summary>
         public void Dispose()
         {
-            _parsingScopes.KillScope(this);
+            this._parsingScopes.KillScope(this);
         }
     }
 }

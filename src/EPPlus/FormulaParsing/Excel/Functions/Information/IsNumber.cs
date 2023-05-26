@@ -26,7 +26,7 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Information
         {
             ValidateArguments(arguments, 1);
             object? arg = GetFirstValue(arguments);
-            return CreateResult(IsNumeric(arg), DataType.Boolean);
+            return this.CreateResult(IsNumeric(arg), DataType.Boolean);
         }
     }
 }

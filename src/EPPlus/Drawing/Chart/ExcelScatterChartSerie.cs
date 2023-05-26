@@ -39,18 +39,18 @@ namespace OfficeOpenXml.Drawing.Chart
                 chart.ChartType == eChartType.XYScatterSmooth ||
                 chart.ChartType == eChartType.XYScatter)
             {
-                Marker.Style = eMarkerStyle.Square;
+                this.Marker.Style = eMarkerStyle.Square;
             }
 
             if (chart.ChartType == eChartType.XYScatterSmooth ||
                 chart.ChartType == eChartType.XYScatterSmoothNoMarkers)
             {
-                Smooth = 1;
+                this.Smooth = 1;
             }
             else if (chart.ChartType == eChartType.XYScatterLines || chart.ChartType == eChartType.XYScatterLinesNoMarkers || chart.ChartType == eChartType.XYScatter)
 
             {
-                Smooth = 0;
+                this.Smooth = 0;
             }
         }
 
@@ -62,11 +62,11 @@ namespace OfficeOpenXml.Drawing.Chart
         {
             get
             {
-                if (_dataLabel == null)
+                if (this._dataLabel == null)
                 {
-                    _dataLabel = new ExcelChartSerieDataLabel(_chart, NameSpaceManager, TopNode, SchemaNodeOrder);
+                    this._dataLabel = new ExcelChartSerieDataLabel(this._chart, this.NameSpaceManager, this.TopNode, this.SchemaNodeOrder);
                 }
-                return _dataLabel;
+                return this._dataLabel;
             }
         }
         /// <summary>
@@ -76,7 +76,7 @@ namespace OfficeOpenXml.Drawing.Chart
         {
             get
             {
-                return TopNode.SelectSingleNode("c:dLbls", NameSpaceManager) != null;
+                return this.TopNode.SelectSingleNode("c:dLbls", this.NameSpaceManager) != null;
             }
         }
         const string smoothPath = "c:smooth/@val";
@@ -87,11 +87,11 @@ namespace OfficeOpenXml.Drawing.Chart
         {
             get
             {
-                return GetXmlNodeInt(smoothPath);
+                return this.GetXmlNodeInt(smoothPath);
             }
             internal set
             {
-                SetXmlNodeString(smoothPath, value.ToString());
+                this.SetXmlNodeString(smoothPath, value.ToString());
             }
         }
         const string markerPath = "c:marker/c:symbol/@val";
@@ -103,16 +103,16 @@ namespace OfficeOpenXml.Drawing.Chart
         {
             get
             {
-                if (IsMarkersAllowed() == false)
+                if (this.IsMarkersAllowed() == false)
                 {
                     return null;
                 }
 
-                if (_chartMarker == null)
+                if (this._chartMarker == null)
                 {
-                    _chartMarker = new ExcelChartMarker(_chart, NameSpaceManager, TopNode, SchemaNodeOrder);
+                    this._chartMarker = new ExcelChartMarker(this._chart, this.NameSpaceManager, this.TopNode, this.SchemaNodeOrder);
                 }
-                return _chartMarker;
+                return this._chartMarker;
             }
         }
         /// <summary>
@@ -121,15 +121,15 @@ namespace OfficeOpenXml.Drawing.Chart
         /// <returns>True if serie has markers</returns>
         public bool HasMarker()
         {
-            if (IsMarkersAllowed())
+            if (this.IsMarkersAllowed())
             {
-                return ExistsNode("c:marker");
+                return this.ExistsNode("c:marker");
             }
             return false;
         }
         private bool IsMarkersAllowed()
         {
-            eChartType type = _chart.ChartType;
+            eChartType type = this._chart.ChartType;
             if (type == eChartType.XYScatterLinesNoMarkers || type == eChartType.XYScatterSmoothNoMarkers)
             {
                 return false;
@@ -145,11 +145,11 @@ namespace OfficeOpenXml.Drawing.Chart
             get
             {
 
-                if (_dataPoints == null)
+                if (this._dataPoints == null)
                 {
-                    _dataPoints = new ExcelChartDataPointCollection(_chart, NameSpaceManager, TopNode, SchemaNodeOrder);
+                    this._dataPoints = new ExcelChartDataPointCollection(this._chart, this.NameSpaceManager, this.TopNode, this.SchemaNodeOrder);
                 }
-                return _dataPoints;
+                return this._dataPoints;
             }
         }        
         /// <summary>
@@ -164,9 +164,9 @@ namespace OfficeOpenXml.Drawing.Chart
         {
             get
             {
-                if (Border.Fill.Style == eFillStyle.SolidFill && Border.Fill.SolidFill.Color.ColorType == eDrawingColorType.Rgb)
+                if (this.Border.Fill.Style == eFillStyle.SolidFill && this.Border.Fill.SolidFill.Color.ColorType == eDrawingColorType.Rgb)
                 {
-                    return Border.Fill.Color;
+                    return this.Border.Fill.Color;
                 }
                 else
                 {
@@ -175,7 +175,7 @@ namespace OfficeOpenXml.Drawing.Chart
             }
             set
             {
-                Border.Fill.Color = value;
+                this.Border.Fill.Color = value;
             }
         }
         /// <summary>
@@ -195,7 +195,7 @@ namespace OfficeOpenXml.Drawing.Chart
             get
             {
 
-                int size = Marker.Size;
+                int size = this.Marker.Size;
                 if (size == 0)
                 {
                     return 5;
@@ -207,7 +207,7 @@ namespace OfficeOpenXml.Drawing.Chart
             }
             set
             {
-                Marker.Size = value;
+                this.Marker.Size = value;
             }
         }
         /// <summary>
@@ -221,9 +221,9 @@ namespace OfficeOpenXml.Drawing.Chart
         {
             get
             {
-                if (Marker.Fill.Style == eFillStyle.SolidFill && Marker.Fill.SolidFill.Color.ColorType == eDrawingColorType.Rgb)
+                if (this.Marker.Fill.Style == eFillStyle.SolidFill && this.Marker.Fill.SolidFill.Color.ColorType == eDrawingColorType.Rgb)
                 {
-                    return Marker.Fill.Color;
+                    return this.Marker.Fill.Color;
                 }
                 else
                 {
@@ -232,7 +232,7 @@ namespace OfficeOpenXml.Drawing.Chart
             }
             set
             {
-                Marker.Fill.Color=value;
+                this.Marker.Fill.Color=value;
             }
         }
 
@@ -248,7 +248,7 @@ namespace OfficeOpenXml.Drawing.Chart
         {
             get
             {
-                double width = Border.Width;
+                double width = this.Border.Width;
                 if (width == 0)
                 {
                     return 2.25;
@@ -260,7 +260,7 @@ namespace OfficeOpenXml.Drawing.Chart
             }
             set
             {
-                Border.Width = value;
+                this.Border.Width = value;
             }
         }
         /// <summary>
@@ -276,9 +276,9 @@ namespace OfficeOpenXml.Drawing.Chart
         {
             get
             {                
-                if (Marker.Border.Fill.Style==eFillStyle.SolidFill && Marker.Border.Fill.SolidFill.Color.ColorType==eDrawingColorType.Rgb)
+                if (this.Marker.Border.Fill.Style==eFillStyle.SolidFill && this.Marker.Border.Fill.SolidFill.Color.ColorType==eDrawingColorType.Rgb)
                 {
-                    return Marker.Border.Fill.Color;
+                    return this.Marker.Border.Fill.Color;
                 }
                 else
                 {
@@ -287,7 +287,7 @@ namespace OfficeOpenXml.Drawing.Chart
             }
             set
             {
-                Marker.Border.Fill.Color = value;
+                this.Marker.Border.Fill.Color = value;
             }
         }
     }

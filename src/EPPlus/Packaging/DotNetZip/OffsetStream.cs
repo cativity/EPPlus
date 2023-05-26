@@ -31,7 +31,7 @@ using System.IO;
 
 namespace OfficeOpenXml.Packaging.Ionic.Zip
 {
-    internal class OffsetStream : System.IO.Stream, System.IDisposable
+    internal class OffsetStream : Stream, IDisposable
     {
         private Int64 _originalPosition;
         private Stream _innerStream;
@@ -39,13 +39,13 @@ namespace OfficeOpenXml.Packaging.Ionic.Zip
         public OffsetStream(Stream s)
             : base()
         {
-            _originalPosition = s.Position;
-            _innerStream = s;
+            this._originalPosition = s.Position;
+            this._innerStream = s;
         }
 
         public override int Read(byte[] buffer, int offset, int count)
         {
-            return _innerStream.Read(buffer, offset, count);
+            return this._innerStream.Read(buffer, offset, count);
         }
 
         public override void Write(byte[] buffer, int offset, int count)
@@ -55,12 +55,12 @@ namespace OfficeOpenXml.Packaging.Ionic.Zip
 
         public override bool CanRead
         {
-            get { return _innerStream.CanRead; }
+            get { return this._innerStream.CanRead; }
         }
 
         public override bool CanSeek
         {
-            get { return _innerStream.CanSeek; }
+            get { return this._innerStream.CanSeek; }
         }
 
         public override bool CanWrite
@@ -70,27 +70,27 @@ namespace OfficeOpenXml.Packaging.Ionic.Zip
 
         public override void Flush()
         {
-            _innerStream.Flush();
+            this._innerStream.Flush();
         }
 
         public override long Length
         {
             get
             {
-                return _innerStream.Length;
+                return this._innerStream.Length;
             }
         }
 
         public override long Position
         {
-            get { return _innerStream.Position - _originalPosition; }
-            set { _innerStream.Position = _originalPosition + value; }
+            get { return this._innerStream.Position - this._originalPosition; }
+            set { this._innerStream.Position = this._originalPosition + value; }
         }
 
 
-        public override long Seek(long offset, System.IO.SeekOrigin origin)
+        public override long Seek(long offset, SeekOrigin origin)
         {
-            return _innerStream.Seek(_originalPosition + offset, origin) - _originalPosition;
+            return this._innerStream.Seek(this._originalPosition + offset, origin) - this._originalPosition;
         }
 
 
@@ -101,7 +101,7 @@ namespace OfficeOpenXml.Packaging.Ionic.Zip
 
         void IDisposable.Dispose()
         {
-            Close();
+            this.Close();
         }
         public override void Close()
         {

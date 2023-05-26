@@ -25,7 +25,7 @@ namespace OfficeOpenXml.Style.Table
         ExcelTableNamedStyleBase _tableNamedStyle;
         internal ExcelTableNamedStyleAsType(ExcelTableNamedStyleBase tableNamedStyle)
         {
-            _tableNamedStyle = tableNamedStyle;
+            this._tableNamedStyle = tableNamedStyle;
         }
 
         /// <summary>
@@ -35,7 +35,7 @@ namespace OfficeOpenXml.Style.Table
         /// <returns>The table named style as type T</returns>
         public T Type<T>() where T : ExcelTableNamedStyleBase
         {
-            if(_tableNamedStyle is T t)
+            if(this._tableNamedStyle is T t)
             {
                 return t;
             }
@@ -49,7 +49,7 @@ namespace OfficeOpenXml.Style.Table
         {
             get
             {
-                return _tableNamedStyle as ExcelTableNamedStyle;
+                return this._tableNamedStyle as ExcelTableNamedStyle;
             }
         }
         /// <summary>
@@ -60,7 +60,7 @@ namespace OfficeOpenXml.Style.Table
         {
             get
             {
-                return _tableNamedStyle as ExcelPivotTableNamedStyle;
+                return this._tableNamedStyle as ExcelPivotTableNamedStyle;
             }
         }
         /// <summary>
@@ -71,7 +71,7 @@ namespace OfficeOpenXml.Style.Table
         {
             get
             {
-                return _tableNamedStyle as ExcelTableAndPivotTableNamedStyle;
+                return this._tableNamedStyle as ExcelTableAndPivotTableNamedStyle;
             }
         }
     }

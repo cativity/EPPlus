@@ -31,23 +31,23 @@ namespace OfficeOpenXml.FormulaParsing.LexicalAnalysis.TokenSeparatorHandlers
         }
         public MultipleCharSeparatorHandler(ITokenSeparatorProvider tokenSeparatorProvider, INameValueProvider nameValueProvider)
         {
-            _tokenSeparatorProvider = tokenSeparatorProvider;
-            _nameValueProvider = nameValueProvider;
+            this._tokenSeparatorProvider = tokenSeparatorProvider;
+            this._nameValueProvider = nameValueProvider;
         }
         public override bool Handle(char c, Token tokenSeparator, TokenizerContext context, ITokenIndexProvider tokenIndexProvider)
         {
             // two operators in sequence could be "<=" or ">="
-            if (IsPartOfMultipleCharSeparator(context, c))
+            if (this.IsPartOfMultipleCharSeparator(context, c))
             {
                 string? sOp = context.LastToken.Value.Value + c.ToString();
-                Token op = _tokenSeparatorProvider.Tokens[sOp];
+                Token op = this._tokenSeparatorProvider.Tokens[sOp];
                 context.ReplaceLastToken(op);
                 context.NewToken();
                 return true;
             }
             if (c == ':')
             {
-                HandleAddressSeparatorToken(c, tokenSeparator, context);
+                this.HandleAddressSeparatorToken(c, tokenSeparator, context);
                 return true;
             }
             return false;
@@ -61,9 +61,9 @@ namespace OfficeOpenXml.FormulaParsing.LexicalAnalysis.TokenSeparatorHandlers
             }
             else
             {
-                if(_nameValueProvider.IsNamedValue(context.CurrentToken, context.Worksheet))
+                if(this._nameValueProvider.IsNamedValue(context.CurrentToken, context.Worksheet))
                 {
-                    object? nameValue = _nameValueProvider.GetNamedValue(context.CurrentToken, context.Worksheet);
+                    object? nameValue = this._nameValueProvider.GetNamedValue(context.CurrentToken, context.Worksheet);
                     if(nameValue != null)
                     {
                         if(nameValue is IRangeInfo rangeInfo)
@@ -89,9 +89,9 @@ namespace OfficeOpenXml.FormulaParsing.LexicalAnalysis.TokenSeparatorHandlers
 
             Token lastToken = context.LastToken.Value;
             lastTokenVal = lastToken.Value ?? string.Empty;
-            return _tokenSeparatorProvider.IsOperator(lastTokenVal)
-                && _tokenSeparatorProvider.IsPossibleLastPartOfMultipleCharOperator(c.ToString())
-                && !context.CurrentTokenHasValue;
+            return this._tokenSeparatorProvider.IsOperator(lastTokenVal)
+                   && this._tokenSeparatorProvider.IsPossibleLastPartOfMultipleCharOperator(c.ToString())
+                   && !context.CurrentTokenHasValue;
         }
     }
 }

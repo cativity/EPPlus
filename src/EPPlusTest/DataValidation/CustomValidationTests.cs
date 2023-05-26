@@ -39,20 +39,20 @@ namespace EPPlusTest.DataValidation
         [TestInitialize]
         public void Setup()
         {
-            SetupTestData();
+            this.SetupTestData();
         }
 
         [TestCleanup]
         public void Cleanup()
         {
-            CleanupTestData();
+            this.CleanupTestData();
         }
 
         [TestMethod]
         public void CustomValidation_FormulaIsSet()
         {
             // Act
-            IExcelDataValidationCustom? validation = _sheet.DataValidations.AddCustomValidation("A1");
+            IExcelDataValidationCustom? validation = this._sheet.DataValidations.AddCustomValidation("A1");
 
             // Assert
             Assert.IsNotNull(validation.Formula);
@@ -69,7 +69,7 @@ namespace EPPlusTest.DataValidation
             }
 
             // Act
-            IExcelDataValidationCustom? validation = _sheet.DataValidations.AddCustomValidation("A1");
+            IExcelDataValidationCustom? validation = this._sheet.DataValidations.AddCustomValidation("A1");
             validation.Formula.ExcelFormula = sb.ToString();
         }
     }

@@ -23,7 +23,7 @@ namespace OfficeOpenXml.Drawing.Controls
 
         internal ExcelControlWithColorsAndLines(ExcelDrawings drawings, XmlElement drawNode, string name, ExcelGroupShape parent) : base(drawings, drawNode, name, parent)
         {
-            SetSize(90, 30); //Default size        
+            this.SetSize(90, 30); //Default size        
         }
         internal ExcelControlWithColorsAndLines(ExcelDrawings drawings, XmlNode drawingNode, ControlInternal control, ZipPackagePart part, XmlDocument ctrlPropXml, ExcelGroupShape parent = null) :
             base(drawings, drawingNode, control, part, ctrlPropXml, parent)
@@ -37,7 +37,7 @@ namespace OfficeOpenXml.Drawing.Controls
         {
             get
             {
-                return _vml.GetFill();
+                return this._vml.GetFill();
             }
         }
         ExcelVmlDrawingBorder _border = null;
@@ -48,17 +48,17 @@ namespace OfficeOpenXml.Drawing.Controls
         {
             get
             {
-                if (_border == null)
+                if (this._border == null)
                 {
-                    _border = new ExcelVmlDrawingBorder(_drawings, _vml.NameSpaceManager, _vml.TopNode, _vml.SchemaNodeOrder);
+                    this._border = new ExcelVmlDrawingBorder(this._drawings, this._vml.NameSpaceManager, this._vml.TopNode, this._vml.SchemaNodeOrder);
                 }
-                return _border;
+                return this._border;
             }
         }
         internal override void UpdateXml()
         {
             base.UpdateXml();
-            Border.UpdateXml();
+            this.Border.UpdateXml();
         }
     }
 }

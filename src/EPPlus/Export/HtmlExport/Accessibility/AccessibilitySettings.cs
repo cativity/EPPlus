@@ -24,7 +24,7 @@ namespace OfficeOpenXml.Export.HtmlExport.Accessibility
     {
         internal AccessibilitySettings()
         {
-            TableSettings.ResetToDefault();
+            this.TableSettings.ResetToDefault();
         }
 
         /// <summary>

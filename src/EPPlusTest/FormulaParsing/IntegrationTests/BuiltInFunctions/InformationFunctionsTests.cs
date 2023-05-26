@@ -46,36 +46,36 @@ namespace EPPlusTest.FormulaParsing.IntegrationTests.BuiltInFunctions
         [TestInitialize]
         public void Setup()
         {
-            _package = new ExcelPackage();
-            _package.Workbook.Worksheets.Add("test");
-            _parser = new FormulaParser(_package);
+            this._package = new ExcelPackage();
+            this._package.Workbook.Worksheets.Add("test");
+            this._parser = new FormulaParser(this._package);
         }
 
         [TestCleanup]
         public void Cleanup()
         {
-            _package.Dispose();
-            _package = null;
+            this._package.Dispose();
+            this._package = null;
         }
 
         [TestMethod]
         public void IsBlankShouldReturnCorrectValue()
         {
-            object? result = _parser.Parse("ISBLANK(A1)");
+            object? result = this._parser.Parse("ISBLANK(A1)");
             Assert.IsTrue((bool)result);
         }
 
         [TestMethod]
         public void IsNumberShouldReturnCorrectValue()
         {
-            object? result = _parser.Parse("ISNUMBER(10/2)");
+            object? result = this._parser.Parse("ISNUMBER(10/2)");
             Assert.IsTrue((bool)result);
         }
 
         [TestMethod]
         public void IsErrorShouldReturnTrueWhenDivBy0()
         {
-            object? result = _parser.Parse("ISERROR(10/0)");
+            object? result = this._parser.Parse("ISERROR(10/0)");
             Assert.IsTrue((bool)result);
         }
 

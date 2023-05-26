@@ -30,8 +30,8 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions.DateTime
         {
             FunctionArgument[]? functionArguments = arguments as FunctionArgument[] ?? arguments.ToArray();
             ValidateArguments(functionArguments, 2);
-            System.DateTime startDate = System.DateTime.FromOADate(ArgToInt(functionArguments, 0));
-            System.DateTime endDate = System.DateTime.FromOADate(ArgToInt(functionArguments, 1));
+            System.DateTime startDate = System.DateTime.FromOADate(this.ArgToInt(functionArguments, 0));
+            System.DateTime endDate = System.DateTime.FromOADate(this.ArgToInt(functionArguments, 1));
             WorkdayCalculator? calculator = new WorkdayCalculator();
             WorkdayCalculatorResult? result = calculator.CalculateNumberOfWorkdays(startDate, endDate);
             if (functionArguments.Length > 2)

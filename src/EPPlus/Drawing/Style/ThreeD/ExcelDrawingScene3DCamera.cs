@@ -36,13 +36,13 @@ namespace OfficeOpenXml.Drawing.Style.ThreeD
         private readonly Action<bool> _initParent;
         internal ExcelDrawingScene3DCamera(XmlNamespaceManager nameSpaceManager, XmlNode topNode, string[] schemaNodeOrder, string path, Action<bool> initParent) : base(nameSpaceManager, topNode)
         {
-            _path = path;
-            SchemaNodeOrder = schemaNodeOrder;
-            _initParent = initParent;
-            _rotationPath = string.Format(_rotationPath, path);
-            _fieldOfViewAnglePath = string.Format(_fieldOfViewAnglePath, path);
-            _typePath = string.Format(_typePath, path);
-            _zoomPath = string.Format(_zoomPath, path);
+            this._path = path;
+            this.SchemaNodeOrder = schemaNodeOrder;
+            this._initParent = initParent;
+            this._rotationPath = string.Format(this._rotationPath, path);
+            this._fieldOfViewAnglePath = string.Format(this._fieldOfViewAnglePath, path);
+            this._typePath = string.Format(this._typePath, path);
+            this._zoomPath = string.Format(this._zoomPath, path);
         }
         ExcelDrawingSphereCoordinate _rotation = null;
         /// <summary>
@@ -52,11 +52,11 @@ namespace OfficeOpenXml.Drawing.Style.ThreeD
         {
             get
             {
-                if(_rotation==null)
+                if(this._rotation==null)
                 {
-                    _rotation = new ExcelDrawingSphereCoordinate(NameSpaceManager, TopNode, _rotationPath, _initParent);
+                    this._rotation = new ExcelDrawingSphereCoordinate(this.NameSpaceManager, this.TopNode, this._rotationPath, this._initParent);
                 }
-                return _rotation;
+                return this._rotation;
             }
         }
         /// <summary>
@@ -66,12 +66,12 @@ namespace OfficeOpenXml.Drawing.Style.ThreeD
         {
             get
             {
-                return GetXmlNodeAngel(_fieldOfViewAnglePath, 0);
+                return this.GetXmlNodeAngel(this._fieldOfViewAnglePath, 0);
             }
             set
             {
-                _initParent(false);
-                SetXmlNodeAngel(_fieldOfViewAnglePath, value, "FieldOfViewAngle", 0, 180);
+                this._initParent(false);
+                this.SetXmlNodeAngel(this._fieldOfViewAnglePath, value, "FieldOfViewAngle", 0, 180);
             }
         }
         /// <summary>
@@ -81,18 +81,18 @@ namespace OfficeOpenXml.Drawing.Style.ThreeD
         {
             get
             {
-                return GetXmlNodeString(_typePath).ToEnum(ePresetCameraType.None);
+                return this.GetXmlNodeString(this._typePath).ToEnum(ePresetCameraType.None);
             }
             set
             {
                 if(value==ePresetCameraType.None)
                 {
-                    _initParent(true);
+                    this._initParent(true);
                 }
                 else
                 {
-                    _initParent(false);
-                    SetXmlNodeString(_typePath, value.ToEnumString());
+                    this._initParent(false);
+                    this.SetXmlNodeString(this._typePath, value.ToEnumString());
                 }
             }
         }
@@ -103,12 +103,12 @@ namespace OfficeOpenXml.Drawing.Style.ThreeD
         {
             get
             {
-                return GetXmlNodePercentage(_zoomPath) ?? 100;
+                return this.GetXmlNodePercentage(this._zoomPath) ?? 100;
             }
             set
             {
-                SetXmlNodePercentage(_zoomPath, value, false);
-                _initParent(false);
+                this.SetXmlNodePercentage(this._zoomPath, value, false);
+                this._initParent(false);
             }
         }
     }

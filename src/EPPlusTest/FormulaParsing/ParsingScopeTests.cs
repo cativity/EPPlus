@@ -48,33 +48,33 @@ namespace EPPlusTest.FormulaParsing
         public void Setup()
         {
             ExcelDataProvider? provider = A.Fake<ExcelDataProvider>();
-            _factory = new RangeAddressFactory(provider);
-            _lifeTimeEventHandler = A.Fake<IParsingLifetimeEventHandler>();
-            _parsingScopes = A.Fake<ParsingScopes>();
+            this._factory = new RangeAddressFactory(provider);
+            this._lifeTimeEventHandler = A.Fake<IParsingLifetimeEventHandler>();
+            this._parsingScopes = A.Fake<ParsingScopes>();
         }
 
         [TestMethod]
         public void ConstructorShouldSetAddress()
         {
-            RangeAddress? expectedAddress =  _factory.Create("A1");
-            ParsingScope? scope = new ParsingScope(_parsingScopes, expectedAddress);
+            RangeAddress? expectedAddress = this._factory.Create("A1");
+            ParsingScope? scope = new ParsingScope(this._parsingScopes, expectedAddress);
             Assert.AreEqual(expectedAddress, scope.Address);
         }
 
         [TestMethod]
         public void ConstructorShouldSetParent()
         {
-            ParsingScope? parent = new ParsingScope(_parsingScopes, _factory.Create("A1"));
-            ParsingScope? scope = new ParsingScope(_parsingScopes, parent, _factory.Create("A2"));
+            ParsingScope? parent = new ParsingScope(this._parsingScopes, this._factory.Create("A1"));
+            ParsingScope? scope = new ParsingScope(this._parsingScopes, parent, this._factory.Create("A2"));
             Assert.AreEqual(parent, scope.Parent);
         }
 
         [TestMethod]
         public void ScopeShouldCallKillScopeOnDispose()
         {
-            ParsingScope? scope = new ParsingScope(_parsingScopes, _factory.Create("A1"));
+            ParsingScope? scope = new ParsingScope(this._parsingScopes, this._factory.Create("A1"));
             ((IDisposable)scope).Dispose();
-           A.CallTo(() => _parsingScopes.KillScope(scope)).MustHaveHappened();
+           A.CallTo(() => this._parsingScopes.KillScope(scope)).MustHaveHappened();
         }
     }
 }

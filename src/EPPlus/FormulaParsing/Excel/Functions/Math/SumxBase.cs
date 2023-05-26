@@ -24,26 +24,26 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Math
         private ParsingContext _context;
         public override CompileResult Execute(IEnumerable<FunctionArgument> arguments, ParsingContext context)
         {
-            _context = context;
+            this._context = context;
             ValidateArguments(arguments, 2);
             FunctionArgument? arg1 = arguments.ElementAt(0);
             FunctionArgument? arg2 = arguments.ElementAt(1);
-            CreateSets(arg1, arg2, out double[] set1, out double[] set2);
+            this.CreateSets(arg1, arg2, out double[] set1, out double[] set2);
             if (set1.Length != set2.Length)
             {
                 return this.CreateResult(eErrorType.NA);
             }
 
-            double result = Calculate(set1.ToArray(), set2.ToArray());
-            return CreateResult(result, DataType.Decimal);
+            double result = this.Calculate(set1.ToArray(), set2.ToArray());
+            return this.CreateResult(result, DataType.Decimal);
         }
 
         public abstract double Calculate(double[] set1, double[] set2);
 
         private void CreateSets(FunctionArgument arg1, FunctionArgument arg2, out double[] set1, out double[] set2)
         {
-            List<double>? list1 = CreateSet(arg1);
-            List<double>? list2 = CreateSet(arg2);
+            List<double>? list1 = this.CreateSet(arg1);
+            List<double>? list2 = this.CreateSet(arg2);
             if(list1.Count == list2.Count)
             {
                 List<double>? r1 = new List<double>();
@@ -87,7 +87,7 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Math
             }
             else
             {
-                result = ArgsToDoubleEnumerable(new List<FunctionArgument> { arg }, _context).Select(x => Convert.ToDouble(x)).ToList();
+                result = this.ArgsToDoubleEnumerable(new List<FunctionArgument> { arg }, this._context).Select(x => Convert.ToDouble(x)).ToList();
             }
             return result;
         }

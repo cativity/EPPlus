@@ -38,9 +38,9 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Operators
 
         private Operator(Operators @operator, int precedence, Func<CompileResult, CompileResult, CompileResult> implementation)
         {
-            _implementation = implementation;
-            _precedence = precedence;
-            _operator = @operator;
+            this._implementation = implementation;
+            this._precedence = precedence;
+            this._operator = @operator;
         }
 
         private readonly Func<CompileResult, CompileResult, CompileResult> _implementation;
@@ -49,12 +49,12 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Operators
 
         int IOperator.Precedence
         {
-            get { return _precedence; }
+            get { return this._precedence; }
         }
 
         Operators IOperator.Operator
         {
-            get { return _operator; }
+            get { return this._operator; }
         }
 
         public CompileResult Apply(CompileResult left, CompileResult right)
@@ -67,7 +67,7 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Operators
             {
                 return new CompileResult(right.Result, DataType.ExcelError);
             }
-            return _implementation(left, right);
+            return this._implementation(left, right);
         }
 
         private static bool CanDoNumericOperation(CompileResult l, CompileResult r)

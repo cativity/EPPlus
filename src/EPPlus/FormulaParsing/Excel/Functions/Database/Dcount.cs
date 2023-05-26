@@ -37,7 +37,7 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Database
 
         public Dcount(RowMatcher rowMatcher)
         {
-            _rowMatcher = rowMatcher;
+            this._rowMatcher = rowMatcher;
         }
 
         public override CompileResult Execute(IEnumerable<FunctionArgument> arguments, ParsingContext context)
@@ -62,7 +62,7 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Database
             while (db.HasMoreRows)
             {
                 ExcelDatabaseRow? dataRow = db.Read();
-                if (_rowMatcher.IsMatch(dataRow, criteria))
+                if (this._rowMatcher.IsMatch(dataRow, criteria))
                 {
                     // if a fieldname is supplied, count only this row if the value
                     // of the supplied field is numeric.
@@ -81,7 +81,7 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Database
                     }
                 }
             }
-            return CreateResult(nHits, DataType.Integer);
+            return this.CreateResult(nHits, DataType.Integer);
         }
     }
 }

@@ -21,8 +21,8 @@ namespace EPPlusTest.FormulaParsing.Excel.Functions.Math
         [TestInitialize]
         public void Initialize()
         {
-            _parsingContext = ParsingContext.Create();
-            _parsingContext.Scopes.NewScope(RangeAddress.Empty);
+            this._parsingContext = ParsingContext.Create();
+            this._parsingContext.Scopes.NewScope(RangeAddress.Empty);
         }
 
         [TestMethod]
@@ -30,7 +30,7 @@ namespace EPPlusTest.FormulaParsing.Excel.Functions.Math
         {
             Floor? func = new Floor();
             IEnumerable<FunctionArgument>? args = FunctionsHelper.CreateArgs(26.75d, 0.1);
-            CompileResult? result = func.Execute(args, _parsingContext);
+            CompileResult? result = func.Execute(args, this._parsingContext);
             Assert.AreEqual(26.7d, result.Result);
         }
 
@@ -39,7 +39,7 @@ namespace EPPlusTest.FormulaParsing.Excel.Functions.Math
         {
             Floor? func = new Floor();
             IEnumerable<FunctionArgument>? args = FunctionsHelper.CreateArgs(26.75d, 1);
-            CompileResult? result = func.Execute(args, _parsingContext);
+            CompileResult? result = func.Execute(args, this._parsingContext);
             Assert.AreEqual(26d, result.Result);
         }
 
@@ -48,7 +48,7 @@ namespace EPPlusTest.FormulaParsing.Excel.Functions.Math
         {
             Floor? func = new Floor();
             IEnumerable<FunctionArgument>? args = FunctionsHelper.CreateArgs(-26.75d, -1);
-            CompileResult? result = func.Execute(args, _parsingContext);
+            CompileResult? result = func.Execute(args, this._parsingContext);
             Assert.AreEqual(-26d, result.Result);
         }
         [TestMethod]
@@ -57,7 +57,7 @@ namespace EPPlusTest.FormulaParsing.Excel.Functions.Math
             double expectedValue = 100d;
             Floor? func = new Floor();
             IEnumerable<FunctionArgument>? args = FunctionsHelper.CreateArgs(100d, 100d);
-            CompileResult? result = func.Execute(args, _parsingContext);
+            CompileResult? result = func.Execute(args, this._parsingContext);
             Assert.AreEqual(expectedValue, result.Result);
         }
         [TestMethod]
@@ -66,7 +66,7 @@ namespace EPPlusTest.FormulaParsing.Excel.Functions.Math
             double expectedValue = 12000d;
             Floor? func = new Floor();
             IEnumerable<FunctionArgument>? args = FunctionsHelper.CreateArgs(12000d, 1000d);
-            CompileResult? result = func.Execute(args, _parsingContext);
+            CompileResult? result = func.Execute(args, this._parsingContext);
             Assert.AreEqual(expectedValue, result.Result);
         }
 
@@ -76,27 +76,27 @@ namespace EPPlusTest.FormulaParsing.Excel.Functions.Math
             FloorMath? func = new FloorMath();
 
             IEnumerable<FunctionArgument>? args = FunctionsHelper.CreateArgs(58.55);
-            object? result = func.Execute(args, _parsingContext).Result;
+            object? result = func.Execute(args, this._parsingContext).Result;
             Assert.AreEqual(58d, result);
 
             args = FunctionsHelper.CreateArgs(58.55, 0.1);
-            result = func.Execute(args, _parsingContext).Result;
+            result = func.Execute(args, this._parsingContext).Result;
             Assert.AreEqual(58.5d, result);
 
             args = FunctionsHelper.CreateArgs(58.55, 5);
-            result = func.Execute(args, _parsingContext).Result;
+            result = func.Execute(args, this._parsingContext).Result;
             Assert.AreEqual(55d, result);
 
             args = FunctionsHelper.CreateArgs(-58.55, 1);
-            result = func.Execute(args, _parsingContext).Result;
+            result = func.Execute(args, this._parsingContext).Result;
             Assert.AreEqual(-59d, result);
 
             args = FunctionsHelper.CreateArgs(-58.55, 1, 1);
-            result = func.Execute(args, _parsingContext).Result;
+            result = func.Execute(args, this._parsingContext).Result;
             Assert.AreEqual(-58d, result);
 
             args = FunctionsHelper.CreateArgs(-58.55, 10);
-            result = func.Execute(args, _parsingContext).Result;
+            result = func.Execute(args, this._parsingContext).Result;
             Assert.AreEqual(-60d, result);
         }
     }

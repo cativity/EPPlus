@@ -31,11 +31,11 @@ namespace OfficeOpenXml.Drawing.Chart
         Action _removeMe;
         internal ExcelChartStyleItem(XmlNamespaceManager nsm, XmlNode topNode, ExcelChart chart, string path, Action removeMe) : base(nsm, topNode)
         {
-            _chart = chart;
-            _path = path;
-            AddSchemaNodeOrder(chart._chartXmlHelper.SchemaNodeOrder, ExcelDrawing._schemaNodeOrderSpPr);
-            TopNode = CreateNode(path);
-            _removeMe = removeMe;
+            this._chart = chart;
+            this._path = path;
+            this.AddSchemaNodeOrder(chart._chartXmlHelper.SchemaNodeOrder, ExcelDrawing._schemaNodeOrderSpPr);
+            this.TopNode = this.CreateNode(path);
+            this._removeMe = removeMe;
         }
         ExcelDrawingFill _fill = null;
         /// <summary>
@@ -45,11 +45,11 @@ namespace OfficeOpenXml.Drawing.Chart
         {
             get
             {
-                if (_fill == null)
+                if (this._fill == null)
                 {
-                    _fill = new ExcelDrawingFill(_chart, NameSpaceManager, TopNode, "c:spPr", SchemaNodeOrder);
+                    this._fill = new ExcelDrawingFill(this._chart, this.NameSpaceManager, this.TopNode, "c:spPr", this.SchemaNodeOrder);
                 }
-                return _fill;
+                return this._fill;
             }
         }
         ExcelDrawingBorder _border = null;
@@ -60,11 +60,11 @@ namespace OfficeOpenXml.Drawing.Chart
         {
             get
             {
-                if (_border == null)
+                if (this._border == null)
                 {
-                    _border = new ExcelDrawingBorder(_chart, NameSpaceManager, TopNode, "c:spPr/a:ln", SchemaNodeOrder);
+                    this._border = new ExcelDrawingBorder(this._chart, this.NameSpaceManager, this.TopNode, "c:spPr/a:ln", this.SchemaNodeOrder);
                 }
-                return _border;
+                return this._border;
             }
         }
 
@@ -76,11 +76,11 @@ namespace OfficeOpenXml.Drawing.Chart
         {
             get
             {
-                if (_effect == null)
+                if (this._effect == null)
                 {
-                    _effect = new ExcelDrawingEffectStyle(_chart, NameSpaceManager, TopNode, "c:spPr/a:effectLst", SchemaNodeOrder);
+                    this._effect = new ExcelDrawingEffectStyle(this._chart, this.NameSpaceManager, this.TopNode, "c:spPr/a:effectLst", this.SchemaNodeOrder);
                 }
-                return _effect;
+                return this._effect;
             }
         }
         ExcelDrawing3D _threeD = null;
@@ -91,24 +91,24 @@ namespace OfficeOpenXml.Drawing.Chart
         {
             get
             {
-                if (_threeD == null)
+                if (this._threeD == null)
                 {
-                    _threeD = new ExcelDrawing3D(NameSpaceManager, TopNode, "c:spPr", SchemaNodeOrder);
+                    this._threeD = new ExcelDrawing3D(this.NameSpaceManager, this.TopNode, "c:spPr", this.SchemaNodeOrder);
                 }
-                return _threeD;
+                return this._threeD;
             }
         }
         void IDrawingStyleBase.CreatespPr()
         {
-            CreatespPrNode();
+            this.CreatespPrNode();
         }
         /// <summary>
         /// Removes the item
         /// </summary>
         public void Remove()
         {
-            TopNode.ParentNode.RemoveChild(TopNode);
-            _removeMe();            
+            this.TopNode.ParentNode.RemoveChild(this.TopNode);
+            this._removeMe();            
         }
     }
 }

@@ -35,13 +35,13 @@ namespace OfficeOpenXml.Drawing.Style.ThreeD
         private readonly Action<bool> _initParent;
         internal ExcelDrawingScene3DLightRig(XmlNamespaceManager nameSpaceManager, XmlNode topNode, string[] schemaNodeOrder, string path, Action<bool> initParent) : base(nameSpaceManager, topNode)
         {
-            _path = path;
-            SchemaNodeOrder = schemaNodeOrder;
+            this._path = path;
+            this.SchemaNodeOrder = schemaNodeOrder;
 
-            _rotationPath = string.Format(_rotationPath, path);
-            _directionPath = string.Format(_directionPath, path);
-            _typePath = string.Format(_typePath, path);
-            _initParent = initParent;
+            this._rotationPath = string.Format(this._rotationPath, path);
+            this._directionPath = string.Format(this._directionPath, path);
+            this._typePath = string.Format(this._typePath, path);
+            this._initParent = initParent;
         }
         ExcelDrawingSphereCoordinate _rotation = null;
         /// <summary>
@@ -51,11 +51,11 @@ namespace OfficeOpenXml.Drawing.Style.ThreeD
         {
             get
             {
-                if(_rotation==null)
+                if(this._rotation==null)
                 {
-                    _rotation = new ExcelDrawingSphereCoordinate(NameSpaceManager, TopNode, _rotationPath, _initParent);
+                    this._rotation = new ExcelDrawingSphereCoordinate(this.NameSpaceManager, this.TopNode, this._rotationPath, this._initParent);
                 }
-                return _rotation;
+                return this._rotation;
             }
         }
         /// <summary>
@@ -65,12 +65,12 @@ namespace OfficeOpenXml.Drawing.Style.ThreeD
         {
             get
             {
-                return GetXmlNodeString(_directionPath).TranslateLightRigDirection();
+                return this.GetXmlNodeString(this._directionPath).TranslateLightRigDirection();
             }
             set
             {
-                _initParent(false);
-                SetXmlNodeString(_directionPath, value.TranslateString());
+                this._initParent(false);
+                this.SetXmlNodeString(this._directionPath, value.TranslateString());
             }
         }
         /// <summary>
@@ -80,18 +80,18 @@ namespace OfficeOpenXml.Drawing.Style.ThreeD
         {
             get
             {
-                return GetXmlNodeString(_typePath).ToEnum(eRigPresetType.Balanced);
+                return this.GetXmlNodeString(this._typePath).ToEnum(eRigPresetType.Balanced);
             }
             set
             {
                 if(value==eRigPresetType.None)
                 {
-                    _initParent(true);
+                    this._initParent(true);
                 }
                 else
                 {
-                    _initParent(false);
-                    SetXmlNodeString(_typePath, value.ToEnumString());
+                    this._initParent(false);
+                    this.SetXmlNodeString(this._typePath, value.ToEnumString());
                 }
             }
         }

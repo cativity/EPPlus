@@ -43,18 +43,18 @@ namespace EPPlusTest
         {
             _pck = new ExcelPackage();
             InitBase();
-            _pckfile = "Sparklines.xlsx";
+            this._pckfile = "Sparklines.xlsx";
         }
         [TestMethod]
         public void StartTest()
         {
-            WriteSparklines();
-            ReadSparklines();
+            this.WriteSparklines();
+            this.ReadSparklines();
         }
         public void ReadSparklines()
         {
             _pck = new ExcelPackage();
-            _pck=OpenPackage(_pckfile);
+            _pck=OpenPackage(this._pckfile);
             ExcelWorksheet? ws = _pck.Workbook.Worksheets[_pck.Compatibility.IsWorksheets1Based?1:0];
             Assert.AreEqual(4, ws.SparklineGroups.Count);
             ExcelSparklineGroup? sg1 = ws.SparklineGroups[0];
@@ -117,7 +117,7 @@ namespace EPPlusTest
             sg4.ManualMax = 5;
             sg4.ManualMin = 3;
 
-            SaveWorkbook(_pckfile, _pck);
+            SaveWorkbook(this._pckfile, _pck);
         }
     }
 }

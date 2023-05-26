@@ -30,7 +30,7 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Information
             FunctionArgument[]? functionArguments = arguments as FunctionArgument[] ?? arguments.ToArray();
             ValidateArguments(functionArguments, 1);
             object? v = GetFirstValue(arguments);
-            return CreateResult(v is bool, DataType.Boolean);
+            return this.CreateResult(v is bool, DataType.Boolean);
         }
     }
 }

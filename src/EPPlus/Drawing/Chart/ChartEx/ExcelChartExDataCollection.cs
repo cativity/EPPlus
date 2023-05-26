@@ -29,16 +29,16 @@ namespace OfficeOpenXml.Drawing.Chart.ChartEx
         ExcelChartExSerie _serie;
         internal ExcelChartExDataCollection(ExcelChartExSerie serie, XmlNamespaceManager nsm, XmlNode topNode) : base(nsm, topNode)
         {
-            _serie = serie;
+            this._serie = serie;
             foreach(XmlElement c in topNode.ChildNodes)
             {
                 if(c.LocalName=="numDim")
                 {
-                    _list.Add(new ExcelChartExNumericData(serie._chart.WorkSheet.Name, NameSpaceManager, c));
+                    this._list.Add(new ExcelChartExNumericData(serie._chart.WorkSheet.Name, this.NameSpaceManager, c));
                 }
                 else if(c.LocalName == "strDim")
                 {
-                    _list.Add(new ExcelChartExStringData(serie._chart.WorkSheet.Name, NameSpaceManager, c));
+                    this._list.Add(new ExcelChartExStringData(serie._chart.WorkSheet.Name, this.NameSpaceManager, c));
                 }
             }
         }
@@ -49,7 +49,7 @@ namespace OfficeOpenXml.Drawing.Chart.ChartEx
         { 
             get
             {
-                return GetXmlNodeInt("@id");
+                return this.GetXmlNodeInt("@id");
             }
         }
         /// <summary>
@@ -59,9 +59,9 @@ namespace OfficeOpenXml.Drawing.Chart.ChartEx
         /// <returns>The numeric data</returns>
         public ExcelChartExNumericData AddNumericDimension(string formula)
         {
-            XmlNode? node = CreateNode("cx:numDim", false, true);
-            ExcelChartExNumericData? nd = new ExcelChartExNumericData(_serie._chart.WorkSheet.Name, NameSpaceManager, node) { Formula = formula };
-            _list.Add(nd);
+            XmlNode? node = this.CreateNode("cx:numDim", false, true);
+            ExcelChartExNumericData? nd = new ExcelChartExNumericData(this._serie._chart.WorkSheet.Name, this.NameSpaceManager, node) { Formula = formula };
+            this._list.Add(nd);
             return nd;
         }
         /// <summary>
@@ -71,57 +71,57 @@ namespace OfficeOpenXml.Drawing.Chart.ChartEx
         /// <returns>The string data</returns>
         public ExcelChartExStringData AddStringDimension(string formula)
         {
-            XmlNode? node = CreateNode("cx:strDim", false, true);
-            ExcelChartExStringData? nd = new ExcelChartExStringData(_serie._chart.WorkSheet.Name, NameSpaceManager, node) { Formula = formula };
-            _list.Add(nd);
+            XmlNode? node = this.CreateNode("cx:strDim", false, true);
+            ExcelChartExStringData? nd = new ExcelChartExStringData(this._serie._chart.WorkSheet.Name, this.NameSpaceManager, node) { Formula = formula };
+            this._list.Add(nd);
             return nd;
         }
         internal void SetTypeNumeric(int index, eNumericDataType type)
         {
-            if(index < 0 || index >= _list.Count)
+            if(index < 0 || index >= this._list.Count)
             {
                 throw (new IndexOutOfRangeException("index is out of range"));
             }
 
-            if (_list[index] is ExcelChartExStringData data)
+            if (this._list[index] is ExcelChartExStringData data)
             {
                 XmlNode? node = data.TopNode;
                 string? innerXml = data.TopNode.InnerXml;
                 node.ParentNode.RemoveChild(node);
 
-                XmlNode? newNode = CreateNode("cx:numDim", false, true);
+                XmlNode? newNode = this.CreateNode("cx:numDim", false, true);
                 newNode.InnerXml = innerXml;
-                ExcelChartExNumericData? nd = new ExcelChartExNumericData(_serie._chart.WorkSheet.Name, NameSpaceManager, newNode);
+                ExcelChartExNumericData? nd = new ExcelChartExNumericData(this._serie._chart.WorkSheet.Name, this.NameSpaceManager, newNode);
                 nd.Type = type;
-                _list[index] = nd;
+                this._list[index] = nd;
             }
             else
             {
-                ((ExcelChartExNumericData)_list[index]).Type = type;
+                ((ExcelChartExNumericData)this._list[index]).Type = type;
             }
         }
         internal void SetTypeString(int index, eStringDataType type)
         {
-            if (index < 0 || index >= _list.Count)
+            if (index < 0 || index >= this._list.Count)
             {
                 throw (new IndexOutOfRangeException("index is out of range"));
             }
 
-            if (_list[index] is ExcelChartExNumericData data)
+            if (this._list[index] is ExcelChartExNumericData data)
             {
                 XmlNode? node = data.TopNode;
                 string? innerXml = data.TopNode.InnerXml;
                 node.ParentNode.RemoveChild(node);
 
-                XmlNode? newNode = CreateNode("cx:strDim", false, true);
+                XmlNode? newNode = this.CreateNode("cx:strDim", false, true);
                 newNode.InnerXml = innerXml;
-                ExcelChartExStringData? nd = new ExcelChartExStringData(_serie._chart.WorkSheet.Name, NameSpaceManager, newNode);
+                ExcelChartExStringData? nd = new ExcelChartExStringData(this._serie._chart.WorkSheet.Name, this.NameSpaceManager, newNode);
                 nd.Type = type;
-                _list[index] = nd;
+                this._list[index] = nd;
             }
             else
             {
-                ((ExcelChartExStringData)_list[index]).Type = type;
+                ((ExcelChartExStringData)this._list[index]).Type = type;
             }
         }
         /// <summary>
@@ -133,7 +133,7 @@ namespace OfficeOpenXml.Drawing.Chart.ChartEx
         {
             get
             {
-                return _list[index];
+                return this._list[index];
             }
         }
         /// <summary>
@@ -143,7 +143,7 @@ namespace OfficeOpenXml.Drawing.Chart.ChartEx
         {
             get
             {
-                return _list.Count;
+                return this._list.Count;
             }
         }
 
@@ -153,7 +153,7 @@ namespace OfficeOpenXml.Drawing.Chart.ChartEx
         /// <returns></returns>
         public IEnumerator<ExcelChartExData> GetEnumerator()
         {
-            return _list.GetEnumerator();
+            return this._list.GetEnumerator();
         }
 
         /// <summary>
@@ -162,12 +162,12 @@ namespace OfficeOpenXml.Drawing.Chart.ChartEx
         /// <returns></returns>
         IEnumerator IEnumerable.GetEnumerator()
         {
-            return _list.GetEnumerator();
+            return this._list.GetEnumerator();
         }
 
         internal ExcelChartExData GetValueDimension()
         {
-            foreach(ExcelChartExData? d in _list)
+            foreach(ExcelChartExData? d in this._list)
             {
                 if(d is ExcelChartExStringData s)
                 {

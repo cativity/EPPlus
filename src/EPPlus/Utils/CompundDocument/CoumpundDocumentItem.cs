@@ -24,7 +24,7 @@ namespace OfficeOpenXml.Utils.CompundDocument
     {
         public CompoundDocumentItem()
         {
-            Children = new List<CompoundDocumentItem>();
+            this.Children = new List<CompoundDocumentItem>();
         }
         public CompoundDocumentItem Parent { get; set; }
         public List<CompoundDocumentItem> Children { get; set; }
@@ -39,8 +39,8 @@ namespace OfficeOpenXml.Utils.CompundDocument
         {
             get
             {
-                string? path = Name;
-                CompoundDocumentItem? p=Parent;
+                string? path = this.Name;
+                CompoundDocumentItem? p= this.Parent;
                 while(p!=null)
                 {
                     path=p.Name + "/" + path;
@@ -141,47 +141,48 @@ namespace OfficeOpenXml.Utils.CompundDocument
             short sz = br.ReadInt16();
             if (sz > 0)
             {
-                Name = UTF8Encoding.Unicode.GetString(s, 0, sz - 2);
+                this.Name = Encoding.Unicode.GetString(s, 0, sz - 2);
             }
-            ObjectType = br.ReadByte();
-            ColorFlag = br.ReadByte();
-            LeftSibling = br.ReadInt32();
-            RightSibling = br.ReadInt32();
-            ChildID = br.ReadInt32();
+
+            this.ObjectType = br.ReadByte();
+            this.ColorFlag = br.ReadByte();
+            this.LeftSibling = br.ReadInt32();
+            this.RightSibling = br.ReadInt32();
+            this.ChildID = br.ReadInt32();
 
             //Clsid;
-            ClsID = new Guid(br.ReadBytes(16));
+            this.ClsID = new Guid(br.ReadBytes(16));
 
-            StatBits = br.ReadInt32();
-            CreationTime = br.ReadInt64();
-            ModifiedTime = br.ReadInt64();
+            this.StatBits = br.ReadInt32();
+            this.CreationTime = br.ReadInt64();
+            this.ModifiedTime = br.ReadInt64();
 
-            StartingSectorLocation = br.ReadInt32();
-            StreamSize = br.ReadInt64();
+            this.StartingSectorLocation = br.ReadInt32();
+            this.StreamSize = br.ReadInt64();
         }
         internal void Write(BinaryWriter bw)
         {
-            byte[]? name = Encoding.Unicode.GetBytes(Name);
+            byte[]? name = Encoding.Unicode.GetBytes(this.Name);
             bw.Write(name);
             bw.Write(new byte[0x40 - (name.Length)]);
             bw.Write((Int16)(name.Length + 2));
 
-            bw.Write(ObjectType);
-            bw.Write(ColorFlag);
-            bw.Write(LeftSibling);
-            bw.Write(RightSibling);
-            bw.Write(ChildID);
-            bw.Write(ClsID.ToByteArray());
-            bw.Write(StatBits);
-            bw.Write(CreationTime);
-            bw.Write(ModifiedTime);
-            bw.Write(StartingSectorLocation);
-            bw.Write(StreamSize);
+            bw.Write(this.ObjectType);
+            bw.Write(this.ColorFlag);
+            bw.Write(this.LeftSibling);
+            bw.Write(this.RightSibling);
+            bw.Write(this.ChildID);
+            bw.Write(this.ClsID.ToByteArray());
+            bw.Write(this.StatBits);
+            bw.Write(this.CreationTime);
+            bw.Write(this.ModifiedTime);
+            bw.Write(this.StartingSectorLocation);
+            bw.Write(this.StreamSize);
         }
 
         public override string ToString()
         {
-            return Name;
+            return this.Name;
         }
 
         /// <summary>
@@ -191,15 +192,15 @@ namespace OfficeOpenXml.Utils.CompundDocument
         /// <returns></returns>
         public int CompareTo(CompoundDocumentItem other)
         {
-            if(Name.Length < other.Name.Length)
+            if(this.Name.Length < other.Name.Length)
             {
                 return -1;
             }
-            else if(Name.Length > other.Name.Length)
+            else if(this.Name.Length > other.Name.Length)
             {
                 return 1;
             }
-            string? n1 = Name.ToUpperInvariant();
+            string? n1 = this.Name.ToUpperInvariant();
             string? n2 = other.Name.ToUpperInvariant();
             for (int i=0;i<n1.Length;i++)
             {

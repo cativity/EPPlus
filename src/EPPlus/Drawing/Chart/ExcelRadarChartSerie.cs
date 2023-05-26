@@ -33,11 +33,11 @@ namespace OfficeOpenXml.Drawing.Chart
         {
             if (chart.ChartType == eChartType.RadarMarkers)
             {
-                Marker.Style = eMarkerStyle.Square;
+                this.Marker.Style = eMarkerStyle.Square;
             }
             else if(chart.ChartType == eChartType.Radar)
             {
-                Marker.Style = eMarkerStyle.None;
+                this.Marker.Style = eMarkerStyle.None;
             }
         }
         ExcelChartSerieDataLabel _DataLabel = null;
@@ -48,11 +48,11 @@ namespace OfficeOpenXml.Drawing.Chart
         {
             get
             {
-                if (_DataLabel == null)
+                if (this._DataLabel == null)
                 {
-                    _DataLabel = new ExcelChartSerieDataLabel(_chart, NameSpaceManager, TopNode, SchemaNodeOrder);
+                    this._DataLabel = new ExcelChartSerieDataLabel(this._chart, this.NameSpaceManager, this.TopNode, this.SchemaNodeOrder);
                 }
-                return _DataLabel;
+                return this._DataLabel;
             }
         }
         /// <summary>
@@ -62,7 +62,7 @@ namespace OfficeOpenXml.Drawing.Chart
         {
             get
             {
-                return TopNode.SelectSingleNode("c:dLbls", NameSpaceManager) != null;
+                return this.TopNode.SelectSingleNode("c:dLbls", this.NameSpaceManager) != null;
             }
         }
         const string markerPath = "c:marker/c:symbol/@val";
@@ -76,11 +76,11 @@ namespace OfficeOpenXml.Drawing.Chart
             {
                 //if (IsMarkersAllowed() == false) return null;
 
-                if (_chartMarker == null)
+                if (this._chartMarker == null)
                 {
-                    _chartMarker = new ExcelChartMarker(_chart, NameSpaceManager, TopNode, SchemaNodeOrder);
+                    this._chartMarker = new ExcelChartMarker(this._chart, this.NameSpaceManager, this.TopNode, this.SchemaNodeOrder);
                 }
-                return _chartMarker;
+                return this._chartMarker;
             }
         }
         /// <summary>
@@ -89,15 +89,15 @@ namespace OfficeOpenXml.Drawing.Chart
         /// <returns>True if serie has markers</returns>
         public bool HasMarker()
         {
-            if (IsMarkersAllowed())
+            if (this.IsMarkersAllowed())
             {
-                return ExistsNode("c:marker");
+                return this.ExistsNode("c:marker");
             }
             return false;
         }
         private bool IsMarkersAllowed()
         {
-            if (_chart.ChartType == eChartType.RadarMarkers)
+            if (this._chart.ChartType == eChartType.RadarMarkers)
             {
                 return true;
             }
@@ -112,11 +112,11 @@ namespace OfficeOpenXml.Drawing.Chart
             get
             {
 
-                if (_dataPoints == null)
+                if (this._dataPoints == null)
                 {
-                    _dataPoints = new ExcelChartDataPointCollection(_chart, NameSpaceManager, TopNode, SchemaNodeOrder);
+                    this._dataPoints = new ExcelChartDataPointCollection(this._chart, this.NameSpaceManager, this.TopNode, this.SchemaNodeOrder);
                 }
-                return _dataPoints;
+                return this._dataPoints;
             }
         }
 
@@ -129,7 +129,7 @@ namespace OfficeOpenXml.Drawing.Chart
         {
             get
             {
-                return GetXmlNodeInt(MARKERSIZE_PATH);
+                return this.GetXmlNodeInt(MARKERSIZE_PATH);
             }
             set
             {
@@ -137,7 +137,8 @@ namespace OfficeOpenXml.Drawing.Chart
                 {
                     throw (new ArgumentOutOfRangeException("MarkerSize out of range. Range from 2-72 allowed."));
                 }
-                SetXmlNodeString(MARKERSIZE_PATH, value.ToString(CultureInfo.InvariantCulture));
+
+                this.SetXmlNodeString(MARKERSIZE_PATH, value.ToString(CultureInfo.InvariantCulture));
             }
         }
 

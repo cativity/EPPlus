@@ -28,7 +28,7 @@ namespace OfficeOpenXml.Filter
         /// <param name="filterOperator">The operator to use</param>
         public ExcelFilterCustomItem(string value, eFilterOperator filterOperator = eFilterOperator.Equal) : base(value)
         {
-            Operator = filterOperator;
+            this.Operator = filterOperator;
         }
         /// <summary>
         /// Operator used by the filter comparison

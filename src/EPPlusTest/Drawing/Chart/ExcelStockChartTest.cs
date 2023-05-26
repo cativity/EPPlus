@@ -213,7 +213,7 @@ namespace EPPlusTest.Drawing.Chart
             chart.Series[0].DataLabel.ShowValue=true;
             dl.ShowSeriesName = true;
             dl.ShowCategory = true;
-            dl.Effect.SetPresetShadow(OfficeOpenXml.Drawing.ePresetExcelShadowType.OuterCenter);
+            dl.Effect.SetPresetShadow(ePresetExcelShadowType.OuterCenter);
             Assert.AreEqual(eChartType.StockVOHLC, chart.ChartType);
             Assert.AreEqual(1, chart.Series[0].DataLabel.DataLabels.Count);
             Assert.IsTrue(chart.Series[0].DataLabel.ShowValue);
@@ -255,7 +255,7 @@ namespace EPPlusTest.Drawing.Chart
             ExcelChartDataLabelItem? dl = chart.Series[0].DataLabel.DataLabels.Add(0);
             dl.ShowSeriesName = true;
             dl.ShowCategory = true;
-            dl.Effect.SetPresetShadow(OfficeOpenXml.Drawing.ePresetExcelShadowType.OuterCenter);
+            dl.Effect.SetPresetShadow(ePresetExcelShadowType.OuterCenter);
             Assert.AreEqual(eChartType.StockVOHLC, chart.ChartType);
 
             Assert.AreEqual("StockTextVOHLCStringAdr!A1:A7", chart.Series[0].XSeries);

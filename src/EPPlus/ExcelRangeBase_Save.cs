@@ -44,7 +44,7 @@ namespace OfficeOpenXml
         /// <returns>A <see cref="DataTable"/> representing the range.</returns>
         public DataTable ToDataTable()
         {
-            return ToDataTable(ToDataTableOptions.Default);
+            return this.ToDataTable(ToDataTableOptions.Default);
         }
 
         /// <summary>
@@ -56,7 +56,7 @@ namespace OfficeOpenXml
         {
             ToDataTableOptions? o = ToDataTableOptions.Default;
             configHandler.Invoke(o);
-            return ToDataTable(o);
+            return this.ToDataTable(o);
         }
 
         /// <summary>
@@ -80,7 +80,7 @@ namespace OfficeOpenXml
         {
             ToDataTableOptions? o = ToDataTableOptions.Default;
             configHandler.Invoke(o);
-            return ToDataTable(o, dataTable);
+            return this.ToDataTable(o, dataTable);
         }
 
         /// <summary>
@@ -90,7 +90,7 @@ namespace OfficeOpenXml
         /// <returns>A <see cref="DataTable"/> representing the range.</returns>
         public DataTable ToDataTable(DataTable dataTable)
         {
-            return ToDataTable(ToDataTableOptions.Default, dataTable);
+            return this.ToDataTable(ToDataTableOptions.Default, dataTable);
         }
 
         /// <summary>
@@ -112,7 +112,7 @@ namespace OfficeOpenXml
         /// <returns>A string containing the text</returns>
         public string ToText()
         {
-            return ToText(null);
+            return this.ToText(null);
         }
         /// <summary>
         /// Converts a range to text in CSV format.
@@ -123,7 +123,7 @@ namespace OfficeOpenXml
         public string ToText(ExcelOutputTextFormat Format)
         {
             using MemoryStream? ms = RecyclableMemory.GetStream();
-            SaveToText(ms, Format);
+            this.SaveToText(ms, Format);
             ms.Position = 0;
             StreamReader? sr = new StreamReader(ms);
             return sr.ReadToEnd();
@@ -137,7 +137,7 @@ namespace OfficeOpenXml
         public void SaveToText(FileInfo file, ExcelOutputTextFormat Format)
         {
             FileStream? fileStream = file.Open(FileMode.Create, FileAccess.Write, FileShare.Write);
-            SaveToText(fileStream, Format);
+            this.SaveToText(fileStream, Format);
         }
         /// <summary>
         /// Converts a range to text in CSV format.
@@ -164,23 +164,23 @@ namespace OfficeOpenXml
             string doubleTextQualifiers = new string(Format.TextQualifier, 2);
             int skipLinesBegining = Format.SkipLinesBeginning + (Format.FirstRowIsHeader ? 1 : 0);
             CultureInfo ci = GetCultureInfo(Format);
-            for (int row = _fromRow; row <= _toRow; row++)
+            for (int row = this._fromRow; row <= this._toRow; row++)
             {
-                if (row == _fromRow && Format.FirstRowIsHeader)
+                if (row == this._fromRow && Format.FirstRowIsHeader)
                 {
-                    sw.Write(WriteHeaderRow(Format, hasTextQ, row, ci));
+                    sw.Write(this.WriteHeaderRow(Format, hasTextQ, row, ci));
                     continue;
                 }
 
 
-                if (SkipLines(Format, row, skipLinesBegining))
+                if (this.SkipLines(Format, row, skipLinesBegining))
                 {
                     continue;
                 }
 
-                for (int col = _fromCol; col <= _toCol; col++)
+                for (int col = this._fromCol; col <= this._toCol; col++)
                 {
-                    string t = GetText(Format, maxFormats, ci, row, col, out bool isText);
+                    string t = this.GetText(Format, maxFormats, ci, row, col, out bool isText);
 
                     if (hasTextQ && isText)
                     {
@@ -192,12 +192,12 @@ namespace OfficeOpenXml
                     {
                         sw.Write(t);
                     }
-                    if (col != _toCol)
+                    if (col != this._toCol)
                     {
                         sw.Write(Format.Delimiter);
                     }
                 }
-                if (row != _toRow - Format.SkipLinesEnd)
+                if (row != this._toRow - Format.SkipLinesEnd)
                 {
                     sw.Write(Format.EOL);
                 }
@@ -218,7 +218,7 @@ namespace OfficeOpenXml
         /// <returns>A string containing the text</returns>
         public async Task<string> ToTextAsync()
         {
-            return await ToTextAsync(null).ConfigureAwait(false);
+            return await this.ToTextAsync(null).ConfigureAwait(false);
         }
         /// <summary>
         /// Converts a range to text in CSV format.
@@ -229,7 +229,7 @@ namespace OfficeOpenXml
         public async Task<string> ToTextAsync(ExcelOutputTextFormat Format)
         {
             using MemoryStream? ms = RecyclableMemory.GetStream();
-            await SaveToTextAsync(ms, Format).ConfigureAwait(false);
+            await this.SaveToTextAsync(ms, Format).ConfigureAwait(false);
             ms.Position = 0;
             StreamReader? sr = new StreamReader(ms);
             return await sr.ReadToEndAsync().ConfigureAwait(false);
@@ -243,7 +243,7 @@ namespace OfficeOpenXml
         public async Task SaveToTextAsync(FileInfo file, ExcelOutputTextFormat Format)
         {
             FileStream? fileStream = file.Open(FileMode.Create, FileAccess.Write, FileShare.Write);
-            await SaveToTextAsync(fileStream, Format).ConfigureAwait(false);
+            await this.SaveToTextAsync(fileStream, Format).ConfigureAwait(false);
         }
         /// <summary>
         /// Converts a range to text in CSV format.
@@ -281,22 +281,22 @@ namespace OfficeOpenXml
             }
             int skipLinesBegining = Format.SkipLinesBeginning + (Format.FirstRowIsHeader ? 1 : 0);
             CultureInfo ci = GetCultureInfo(Format);
-            for (int row = _fromRow; row <= _toRow; row++)
+            for (int row = this._fromRow; row <= this._toRow; row++)
             {
-                if (row == _fromRow && Format.FirstRowIsHeader)
+                if (row == this._fromRow && Format.FirstRowIsHeader)
                 {
-                    await sw.WriteAsync(WriteHeaderRow(Format, hasTextQ, row, ci)).ConfigureAwait(false);
+                    await sw.WriteAsync(this.WriteHeaderRow(Format, hasTextQ, row, ci)).ConfigureAwait(false);
                     continue;
                 }
 
-                if (SkipLines(Format, row, skipLinesBegining))
+                if (this.SkipLines(Format, row, skipLinesBegining))
                 {
                     continue;
                 }
 
-                for (int col = _fromCol; col <= _toCol; col++)
+                for (int col = this._fromCol; col <= this._toCol; col++)
                 {
-                    string t = GetText(Format, maxFormats, ci, row, col, out bool isText);
+                    string t = this.GetText(Format, maxFormats, ci, row, col, out bool isText);
 
                     if (hasTextQ && isText)
                     {
@@ -306,12 +306,12 @@ namespace OfficeOpenXml
                     {
                         await sw.WriteAsync(t).ConfigureAwait(false);
                     }
-                    if (col != _toCol)
+                    if (col != this._toCol)
                     {
                         await sw.WriteAsync(Format.Delimiter).ConfigureAwait(false);
                     }
                 }
-                if (row != _toRow - Format.SkipLinesEnd)
+                if (row != this._toRow - Format.SkipLinesEnd)
                 {
                     await sw.WriteAsync(Format.EOL).ConfigureAwait(false);
                 }
@@ -417,15 +417,15 @@ namespace OfficeOpenXml
 
         private bool SkipLines(ExcelOutputTextFormat Format, int row, int skipLinesBegining)
         {
-            return skipLinesBegining > row - _fromRow ||
-                               Format.SkipLinesEnd > _toRow - row;
+            return skipLinesBegining > row - this._fromRow ||
+                               Format.SkipLinesEnd > this._toRow - row;
         }
 
         private string GetText(ExcelOutputTextFormat Format, int maxFormats, CultureInfo ci, int row, int col, out bool isText)
         {
-            ExcelValue v = GetCellStoreValue(row, col);
+            ExcelValue v = this.GetCellStoreValue(row, col);
 
-            int ix = col - _fromCol;
+            int ix = col - this._fromCol;
             isText = false;
             string fmt;
             if (ix < maxFormats)
@@ -442,7 +442,7 @@ namespace OfficeOpenXml
             {
                 if (Format.UseCellFormat)
                 {
-                    t = ValueToTextHandler.GetFormattedText(v._value, _workbook, v._styleId, false, ci);
+                    t = ValueToTextHandler.GetFormattedText(v._value, this._workbook, v._styleId, false, ci);
                     if (!ConvertUtil.IsNumericOrDate(v._value))
                     {
                         isText = true;
@@ -471,7 +471,7 @@ namespace OfficeOpenXml
                 {
                     if (Format.UseCellFormat)
                     {
-                        t = ValueToTextHandler.GetFormattedText(v._value, _workbook, v._styleId, false, ci);
+                        t = ValueToTextHandler.GetFormattedText(v._value, this._workbook, v._styleId, false, ci);
                     }
                     else
                     {
@@ -510,14 +510,14 @@ namespace OfficeOpenXml
             return t;
         }
 
-        private Core.CellStore.ExcelValue GetCellStoreValue(int row, int col)
+        private ExcelValue GetCellStoreValue(int row, int col)
         {
-            ExcelValue v = _worksheet.GetCoreValueInner(row, col);
-            if (_worksheet._flags.GetFlagValue(row, col, CellFlags.RichText))
+            ExcelValue v = this._worksheet.GetCoreValueInner(row, col);
+            if (this._worksheet._flags.GetFlagValue(row, col, CellFlags.RichText))
             {
                 XmlDocument? xml = new XmlDocument();
                 XmlHelper.LoadXmlSafe(xml, "<d:si xmlns:d=\"http://schemas.openxmlformats.org/spreadsheetml/2006/main\" >" + v._value.ToString() + "</d:si>", Encoding.UTF8);
-                ExcelRichTextCollection? rt = new ExcelRichTextCollection(_worksheet.NameSpaceManager, xml.SelectSingleNode("d:si", _worksheet.NameSpaceManager), this);
+                ExcelRichTextCollection? rt = new ExcelRichTextCollection(this._worksheet.NameSpaceManager, xml.SelectSingleNode("d:si", this._worksheet.NameSpaceManager), this);
                 v._value = rt.Text;
             }
             return v;
@@ -526,10 +526,10 @@ namespace OfficeOpenXml
         private string WriteHeaderRow(ExcelOutputTextFormat Format, bool hasTextQ, int row, CultureInfo ci)
         {
             StringBuilder? sb = new StringBuilder();
-            for (int col = _fromCol; col <= _toCol; col++)
+            for (int col = this._fromCol; col <= this._toCol; col++)
             {
-                ExcelValue v = GetCellStoreValue(row, col);
-                string? s = ValueToTextHandler.GetFormattedText(v._value, _workbook, v._styleId, false, ci);
+                ExcelValue v = this.GetCellStoreValue(row, col);
+                string? s = ValueToTextHandler.GetFormattedText(v._value, this._workbook, v._styleId, false, ci);
 
                 if (hasTextQ)
                 {
@@ -542,12 +542,12 @@ namespace OfficeOpenXml
                     sb.Append(s);
                 }
 
-                if (col < _toCol)
+                if (col < this._toCol)
                 {
                     sb.Append(Format.Delimiter);
                 }
             }
-            if (row != _toRow)
+            if (row != this._toRow)
             {
                 sb.Append(Format.EOL);
             }
@@ -564,7 +564,7 @@ namespace OfficeOpenXml
         /// <returns>A list of T</returns>
         public List<T> ToCollectionWithMappings<T>(Func<ToCollectionRow, T> setRow)
         {
-            return ToCollectionWithMappings(setRow, new ToCollectionRangeOptions());
+            return this.ToCollectionWithMappings(setRow, new ToCollectionRangeOptions());
         }
         /// <summary>
         /// Returns a collection of T for the range. 
@@ -579,7 +579,7 @@ namespace OfficeOpenXml
         {
             ToCollectionRangeOptions? o = new ToCollectionRangeOptions();
             options.Invoke(o);
-            return ToCollectionWithMappings(setRow, o);
+            return this.ToCollectionWithMappings(setRow, o);
         }
 
         /// <summary>
@@ -606,7 +606,7 @@ namespace OfficeOpenXml
         /// <returns>A list of T</returns>
         public List<T> ToCollection<T>()
         {
-            return ToCollection<T>(new ToCollectionRangeOptions() { HeaderRow = 0 });
+            return this.ToCollection<T>(new ToCollectionRangeOptions() { HeaderRow = 0 });
         }
         /// <summary>
         /// Automatically maps the range to the properties <see cref="T"/> using the headers.
@@ -621,7 +621,7 @@ namespace OfficeOpenXml
         {
             ToCollectionRangeOptions? o = new ToCollectionRangeOptions();
             options.Invoke(o);
-            return ToCollection<T>(o);
+            return this.ToCollection<T>(o);
         }
         /// <summary>
         /// Automatically maps the range to the properties <see cref="T"/> using the headers.

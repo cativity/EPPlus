@@ -34,8 +34,9 @@ namespace OfficeOpenXml.Table.PivotTable.Filter
             {
                 topNode.InnerXml = "<autoFilter ref=\"A1\"><filterColumn colId=\"0\"></filterColumn></autoFilter>";
             }
-            _filterColumnNode = GetNode("d:autoFilter/d:filterColumn");
-            _date1904 = date1904;
+
+            this._filterColumnNode = this.GetNode("d:autoFilter/d:filterColumn");
+            this._date1904 = date1904;
         } 
         /// <summary>
         /// The id 
@@ -44,11 +45,11 @@ namespace OfficeOpenXml.Table.PivotTable.Filter
         {
             get
             {
-                return GetXmlNodeInt("@id");
+                return this.GetXmlNodeInt("@id");
             }
             internal set
             {
-                SetXmlNodeInt("@id", value);
+                this.SetXmlNodeInt("@id", value);
             }
         }
         /// <summary>
@@ -58,11 +59,11 @@ namespace OfficeOpenXml.Table.PivotTable.Filter
         {
             get
             {
-                return GetXmlNodeString("@name");
+                return this.GetXmlNodeString("@name");
             }
             set
             {
-                SetXmlNodeString("@name", value, true);
+                this.SetXmlNodeString("@name", value, true);
             }
         }
         /// <summary>
@@ -72,20 +73,20 @@ namespace OfficeOpenXml.Table.PivotTable.Filter
         {
             get
             {
-                return GetXmlNodeString("@description");
+                return this.GetXmlNodeString("@description");
             }
             set
             {
-                SetXmlNodeString("@description", value, true);
+                this.SetXmlNodeString("@description", value, true);
             }
         }
         internal void CreateDateCustomFilter(ePivotTableDateValueFilterType type)
         {
-            _filterColumnNode.InnerXml = "<customFilters/>";
-            ExcelCustomFilterColumn? cf = new ExcelCustomFilterColumn(NameSpaceManager, _filterColumnNode);
+            this._filterColumnNode.InnerXml = "<customFilters/>";
+            ExcelCustomFilterColumn? cf = new ExcelCustomFilterColumn(this.NameSpaceManager, this._filterColumnNode);
 
             eFilterOperator t;
-            string? v = ConvertUtil.GetValueForXml(Value1, _date1904);
+            string? v = ConvertUtil.GetValueForXml(this.Value1, this._date1904);
             switch (type)
             {
                 case ePivotTableDateValueFilterType.DateNotEqual:
@@ -116,20 +117,21 @@ namespace OfficeOpenXml.Table.PivotTable.Filter
             if (type == ePivotTableDateValueFilterType.DateBetween)
             {
                 cf.And = true;
-                cf.Filters.Add(new ExcelFilterCustomItem(ConvertUtil.GetValueForXml(Value2, _date1904), eFilterOperator.LessThanOrEqual));
+                cf.Filters.Add(new ExcelFilterCustomItem(ConvertUtil.GetValueForXml(this.Value2, this._date1904), eFilterOperator.LessThanOrEqual));
             }
             else if (type == ePivotTableDateValueFilterType.DateNotBetween)
             {
                 cf.And = false;
-                cf.Filters.Add(new ExcelFilterCustomItem(ConvertUtil.GetValueForXml(Value2, _date1904), eFilterOperator.GreaterThan));
+                cf.Filters.Add(new ExcelFilterCustomItem(ConvertUtil.GetValueForXml(this.Value2, this._date1904), eFilterOperator.GreaterThan));
             }
-            _filter = cf;
+
+            this._filter = cf;
         }
 
         internal void CreateDateDynamicFilter(ePivotTableDatePeriodFilterType type)
         {
-            _filterColumnNode.InnerXml = "<dynamicFilter />";
-            ExcelDynamicFilterColumn? df = new ExcelDynamicFilterColumn(NameSpaceManager, _filterColumnNode);
+            this._filterColumnNode.InnerXml = "<dynamicFilter />";
+            ExcelDynamicFilterColumn? df = new ExcelDynamicFilterColumn(this.NameSpaceManager, this._filterColumnNode);
             switch(type)
             {
                 case ePivotTableDatePeriodFilterType.LastMonth:
@@ -231,30 +233,30 @@ namespace OfficeOpenXml.Table.PivotTable.Filter
                 default:
                     throw new Exception($"Unsupported Pivottable filter type {type}");
             }
-            
-            _filter = df;
+
+            this._filter = df;
         }
 
         internal void CreateTop10Filter(ePivotTableTop10FilterType type, bool isTop, double value)
         {
-            _filterColumnNode.InnerXml = "<top10 />";
-            ExcelTop10FilterColumn? tf = new ExcelTop10FilterColumn(NameSpaceManager, _filterColumnNode);
+            this._filterColumnNode.InnerXml = "<top10 />";
+            ExcelTop10FilterColumn? tf = new ExcelTop10FilterColumn(this.NameSpaceManager, this._filterColumnNode);
 
             tf.Percent = (type == ePivotTableTop10FilterType.Percent);
             tf.Top = isTop;
             tf.Value = value;
             tf.FilterValue = value;
-            
-            _filter = tf;
+
+            this._filter = tf;
         }
 
         internal void CreateCaptionCustomFilter(ePivotTableCaptionFilterType type)
         {
-            _filterColumnNode.InnerXml = "<customFilters/>";
-            ExcelCustomFilterColumn? cf = new ExcelCustomFilterColumn(NameSpaceManager, _filterColumnNode);
+            this._filterColumnNode.InnerXml = "<customFilters/>";
+            ExcelCustomFilterColumn? cf = new ExcelCustomFilterColumn(this.NameSpaceManager, this._filterColumnNode);
 
             eFilterOperator t;
-            string? v = StringValue1;
+            string? v = this.StringValue1;
             switch(type)
             {
                 case ePivotTableCaptionFilterType.CaptionNotBeginsWith:
@@ -302,23 +304,23 @@ namespace OfficeOpenXml.Table.PivotTable.Filter
             if(type==ePivotTableCaptionFilterType.CaptionBetween)
             {
                 cf.And = true;
-                cf.Filters.Add(new ExcelFilterCustomItem(StringValue2, eFilterOperator.LessThanOrEqual));
+                cf.Filters.Add(new ExcelFilterCustomItem(this.StringValue2, eFilterOperator.LessThanOrEqual));
             }
             else if (type == ePivotTableCaptionFilterType.CaptionNotBetween)
             {
                 cf.And = false;
-                cf.Filters.Add(new ExcelFilterCustomItem(StringValue2, eFilterOperator.GreaterThan));
+                cf.Filters.Add(new ExcelFilterCustomItem(this.StringValue2, eFilterOperator.GreaterThan));
             }
 
-            _filter = cf;
+            this._filter = cf;
         }
         internal void CreateValueCustomFilter(ePivotTableValueFilterType type)
         {
-            _filterColumnNode.InnerXml = "<customFilters/>";
-            ExcelCustomFilterColumn? cf = new ExcelCustomFilterColumn(NameSpaceManager, _filterColumnNode);
+            this._filterColumnNode.InnerXml = "<customFilters/>";
+            ExcelCustomFilterColumn? cf = new ExcelCustomFilterColumn(this.NameSpaceManager, this._filterColumnNode);
 
             eFilterOperator t;
-            string v1 = GetFilterValueAsString(Value1);
+            string v1 = GetFilterValueAsString(this.Value1);
             switch (type)
             {
                 case ePivotTableValueFilterType.ValueNotEqual:
@@ -349,14 +351,15 @@ namespace OfficeOpenXml.Table.PivotTable.Filter
             if (type == ePivotTableValueFilterType.ValueBetween)
             {
                 cf.And = true;
-                cf.Filters.Add(new ExcelFilterCustomItem(GetFilterValueAsString(Value2), eFilterOperator.LessThanOrEqual));
+                cf.Filters.Add(new ExcelFilterCustomItem(GetFilterValueAsString(this.Value2), eFilterOperator.LessThanOrEqual));
             }
             else if (type == ePivotTableValueFilterType.ValueNotBetween)
             {
                 cf.And = false;
-                cf.Filters.Add(new ExcelFilterCustomItem(GetFilterValueAsString(Value2), eFilterOperator.GreaterThan));
+                cf.Filters.Add(new ExcelFilterCustomItem(GetFilterValueAsString(this.Value2), eFilterOperator.GreaterThan));
             }
-            _filter = cf;
+
+            this._filter = cf;
         }
 
         private static string GetFilterValueAsString(object v)
@@ -372,10 +375,10 @@ namespace OfficeOpenXml.Table.PivotTable.Filter
         }
         internal void CreateValueFilter()
         {
-            _filterColumnNode.InnerXml = "<filters/>";
-            ExcelValueFilterColumn? f = new ExcelValueFilterColumn(NameSpaceManager, _filterColumnNode);
-            f.Filters.Add(StringValue1);
-            _filter = f;
+            this._filterColumnNode.InnerXml = "<filters/>";
+            ExcelValueFilterColumn? f = new ExcelValueFilterColumn(this.NameSpaceManager, this._filterColumnNode);
+            f.Filters.Add(this.StringValue1);
+            this._filter = f;
         }
 
         /// <summary>
@@ -385,7 +388,7 @@ namespace OfficeOpenXml.Table.PivotTable.Filter
         {
             get
             {
-                return GetXmlNodeString("@type").ToEnum(ePivotTableFilterType.Unknown);
+                return this.GetXmlNodeString("@type").ToEnum(ePivotTableFilterType.Unknown);
             }
             internal set
             {
@@ -395,7 +398,7 @@ namespace OfficeOpenXml.Table.PivotTable.Filter
                     s = s.ToUpper();  //For M1 - M12 and Q1 - Q4
                 }
 
-                SetXmlNodeString("@type", s);
+                this.SetXmlNodeString("@type", s);
             }
         }
         /// <summary>
@@ -405,55 +408,55 @@ namespace OfficeOpenXml.Table.PivotTable.Filter
         {
             get
             {
-                return GetXmlNodeInt("@evalOrder");
+                return this.GetXmlNodeInt("@evalOrder");
             }
             internal set
             {
-                SetXmlNodeInt("@evalOrder", value);
+                this.SetXmlNodeInt("@evalOrder", value);
             }
         }
         internal int Fld
         {
             get
             {
-                return GetXmlNodeInt("@fld");
+                return this.GetXmlNodeInt("@fld");
             }
             set
             {
-                SetXmlNodeInt("@fld", value);
+                this.SetXmlNodeInt("@fld", value);
             }
         }
         internal int MeasureFldIndex
         {
             get
             {
-                return GetXmlNodeInt("@iMeasureFld");
+                return this.GetXmlNodeInt("@iMeasureFld");
             }
             set
             {
-                SetXmlNodeInt("@iMeasureFld", value);
+                this.SetXmlNodeInt("@iMeasureFld", value);
             }
         }
         internal int MeasureHierIndex
         {
             get
             {
-                return GetXmlNodeInt("@iMeasureHier");
+                return this.GetXmlNodeInt("@iMeasureHier");
             }
             set
             {
-                SetXmlNodeInt("@iMeasureHier", value);
+                this.SetXmlNodeInt("@iMeasureHier", value);
             }
         }
         internal int MemberPropertyFldIndex
         {
             get
             {
-                return GetXmlNodeInt("@mpFld");
+                return this.GetXmlNodeInt("@mpFld");
             }
             set
             {
-                SetXmlNodeInt("@mpFld", value);
+                this.SetXmlNodeInt("@mpFld", value);
             }
         }
         /// <summary>
@@ -480,11 +483,11 @@ namespace OfficeOpenXml.Table.PivotTable.Filter
         {
             get
             {
-                return GetXmlNodeString("@stringValue1");
+                return this.GetXmlNodeString("@stringValue1");
             }
             set
             {
-                SetXmlNodeString("@stringValue1", value, true);
+                this.SetXmlNodeString("@stringValue1", value, true);
             }
         }
         /// <summary>
@@ -494,11 +497,11 @@ namespace OfficeOpenXml.Table.PivotTable.Filter
         {
             get
             {
-                return GetXmlNodeString("@stringValue2");
+                return this.GetXmlNodeString("@stringValue2");
             }
             set
             {
-                SetXmlNodeString("@stringValue2", value, true);
+                this.SetXmlNodeString("@stringValue2", value, true);
             }
         }
         ExcelFilterColumn _filter = null;
@@ -506,33 +509,33 @@ namespace OfficeOpenXml.Table.PivotTable.Filter
         {
             get
             {
-                if (_filter == null)
+                if (this._filter == null)
                 {
-                    XmlNode? filterNode = GetNode("d:autoFilter/d:filterColumn");
+                    XmlNode? filterNode = this.GetNode("d:autoFilter/d:filterColumn");
                     if (filterNode != null)
                     {
                         switch (filterNode.LocalName)
                         {
                             case "customFilters":
-                                _filter = new ExcelCustomFilterColumn(NameSpaceManager, filterNode);
+                                this._filter = new ExcelCustomFilterColumn(this.NameSpaceManager, filterNode);
                                 break;
                             case "top10":
-                                _filter = new ExcelTop10FilterColumn(NameSpaceManager, filterNode);
+                                this._filter = new ExcelTop10FilterColumn(this.NameSpaceManager, filterNode);
                                 break;
                             case "filters":
-                                _filter = new ExcelValueFilterColumn(NameSpaceManager, filterNode);
+                                this._filter = new ExcelValueFilterColumn(this.NameSpaceManager, filterNode);
                                 break;
                             case "dynamicFilter":
-                                _filter = new ExcelDynamicFilterColumn(NameSpaceManager, filterNode);
+                                this._filter = new ExcelDynamicFilterColumn(this.NameSpaceManager, filterNode);
                                 break;
                             case "colorFilter":
-                                _filter = new ExcelColorFilterColumn(NameSpaceManager, filterNode);
+                                this._filter = new ExcelColorFilterColumn(this.NameSpaceManager, filterNode);
                                 break;
                             case "iconFilter":
-                                _filter = new ExcelIconFilterColumn(NameSpaceManager, filterNode);
+                                this._filter = new ExcelIconFilterColumn(this.NameSpaceManager, filterNode);
                                 break;
                             default:
-                                _filter = null;
+                                this._filter = null;
                                 break;
                         }
                     }
@@ -541,11 +544,11 @@ namespace OfficeOpenXml.Table.PivotTable.Filter
                         throw new Exception("Invalid xml in pivot table. Missing Filter column");
                     }
                 }
-                return _filter;
+                return this._filter;
             }
             set
             {
-                _filter = value;
+                this._filter = value;
             }
         }
     }

@@ -97,9 +97,9 @@ namespace OfficeOpenXml
         internal int _fromCol, _toCol;
         internal ExcelRangeColumn(ExcelWorksheet ws, int fromCol, int toCol)
         {
-            _worksheet = ws;
-            _fromCol = fromCol;
-            _toCol = toCol;            
+            this._worksheet = ws;
+            this._fromCol = fromCol;
+            this._toCol = toCol;            
         }
         /// <summary>
         /// The first column in the collection
@@ -108,7 +108,7 @@ namespace OfficeOpenXml
         { 
             get
             {
-                return _fromCol;
+                return this._fromCol;
             }
         }
         /// <summary>
@@ -118,7 +118,7 @@ namespace OfficeOpenXml
         {
             get
             {
-                return _toCol;
+                return this._toCol;
             }
         }
         /// <summary>
@@ -128,11 +128,11 @@ namespace OfficeOpenXml
         {
             get
             {
-                return GetValue(new Func<ExcelColumn, bool>(x => x.Collapsed), false);
+                return this.GetValue(new Func<ExcelColumn, bool>(x => x.Collapsed), false);
             }
             set
             {
-                SetValue(new Action<ExcelColumn, bool>((x, v) => { x.Collapsed = v; }), value);
+                this.SetValue(new Action<ExcelColumn, bool>((x, v) => { x.Collapsed = v; }), value);
             }
         }
         /// <summary>
@@ -140,11 +140,11 @@ namespace OfficeOpenXml
         /// </summary>
         public void Group()
         {
-            SetValue(new Action<ExcelColumn, int>((x, v) => { if(x.OutlineLevel<8)
-                                                      {
-                                                          x.OutlineLevel += v;
-                                                      }
-                                                  }), 1);
+            this.SetValue(new Action<ExcelColumn, int>((x, v) => { if(x.OutlineLevel<8)
+                                                           {
+                                                               x.OutlineLevel += v;
+                                                           }
+                                                       }), 1);
         }
         /// <summary>
         /// Ungroups the columns from the outline. 
@@ -152,11 +152,11 @@ namespace OfficeOpenXml
         /// </summary>
         public void UnGroup()
         {
-            SetValue(new Action<ExcelColumn, int>((x, v) => { if (x.OutlineLevel >= 0)
-                                                      {
-                                                          x.OutlineLevel += v;
-                                                      }
-                                                  }), -1);
+            this.SetValue(new Action<ExcelColumn, int>((x, v) => { if (x.OutlineLevel >= 0)
+                                                           {
+                                                               x.OutlineLevel += v;
+                                                           }
+                                                       }), -1);
         }
 
         /// <summary>
@@ -165,17 +165,17 @@ namespace OfficeOpenXml
         /// </summary>
         public void CollapseChildren(bool allLevels = true)
         {
-            WorksheetOutlineHelper? helper = new WorksheetOutlineHelper(_worksheet);
-            if (_worksheet.OutLineSummaryRight)
+            WorksheetOutlineHelper? helper = new WorksheetOutlineHelper(this._worksheet);
+            if (this._worksheet.OutLineSummaryRight)
             {
-                for (int c = GetLastCol(); c >= _fromCol; c--)
+                for (int c = this.GetLastCol(); c >= this._fromCol; c--)
                 {
                     c = helper.CollapseColumn(c, allLevels ? -1 : -2, true, true, -1);
                 }
             }
             else
             {
-                for (int c = _fromCol; c <= GetLastCol(); c++)
+                for (int c = this._fromCol; c <= this.GetLastCol(); c++)
                 {
                     c = helper.CollapseColumn(c, allLevels ? -1 : -2, true, true, 1);
                 }
@@ -187,17 +187,17 @@ namespace OfficeOpenXml
         /// </summary>
         public void ExpandChildren(bool allLevels = true)
         {
-            WorksheetOutlineHelper? helper = new WorksheetOutlineHelper(_worksheet);
-            if (_worksheet.OutLineSummaryRight)
+            WorksheetOutlineHelper? helper = new WorksheetOutlineHelper(this._worksheet);
+            if (this._worksheet.OutLineSummaryRight)
             {
-                for (int c = GetLastCol(); c >= _fromCol; c--)
+                for (int c = this.GetLastCol(); c >= this._fromCol; c--)
                 {
                     c = helper.CollapseColumn(c, allLevels ? -1 : -2, false, true, -1);
                 }
             }
             else
             {
-                for (int c = _fromCol; c <= GetLastCol(); c++)
+                for (int c = this._fromCol; c <= this.GetLastCol(); c++)
                 {
                     c = helper.CollapseColumn(c, allLevels ? -1 : -2, false, true, 1);
                 }
@@ -210,17 +210,17 @@ namespace OfficeOpenXml
         /// <param name="collapseChildren">Collapses all children with a greater <see cref="OutlineLevel"/> than <paramref name="level"/></param>
         public void SetVisibleOutlineLevel(int level, bool collapseChildren = true)
         {
-            WorksheetOutlineHelper? helper = new WorksheetOutlineHelper(_worksheet);
-            if (_worksheet.OutLineSummaryRight)
+            WorksheetOutlineHelper? helper = new WorksheetOutlineHelper(this._worksheet);
+            if (this._worksheet.OutLineSummaryRight)
             {
-                for (int c = GetLastCol(); c >= _fromCol; c--)
+                for (int c = this.GetLastCol(); c >= this._fromCol; c--)
                 {
                     c = helper.CollapseColumn(c, level, true, collapseChildren, -1);
                 }
             }
             else
             {
-                for (int c = _fromCol; c <= GetLastCol(); c++)
+                for (int c = this._fromCol; c <= this.GetLastCol(); c++)
                 {
                     c = helper.CollapseColumn(c, level, true, collapseChildren, 1);
                 }
@@ -234,11 +234,11 @@ namespace OfficeOpenXml
         {
             get
             {
-                return GetValue(new Func<ExcelColumn, int>(x => x.OutlineLevel), 0);
+                return this.GetValue(new Func<ExcelColumn, int>(x => x.OutlineLevel), 0);
             }
             set
             {
-                SetValue(new Action<ExcelColumn, int>((x, v) => { x.OutlineLevel = v; }), value);
+                this.SetValue(new Action<ExcelColumn, int>((x, v) => { x.OutlineLevel = v; }), value);
             }
         }
         /// <summary>
@@ -248,11 +248,11 @@ namespace OfficeOpenXml
         {
             get
             {
-                return GetValue(new Func<ExcelColumn, bool>(x => x.Phonetic), false);
+                return this.GetValue(new Func<ExcelColumn, bool>(x => x.Phonetic), false);
             }
             set
             {
-                SetValue(new Action<ExcelColumn, bool>((x, v) => { x.Phonetic = v; }), value);
+                this.SetValue(new Action<ExcelColumn, bool>((x, v) => { x.Phonetic = v; }), value);
             }
         }
         /// <summary>
@@ -263,11 +263,11 @@ namespace OfficeOpenXml
         {
             get
             {
-                return GetValue(new Func<ExcelColumn, bool>(x => x.BestFit), false);
+                return this.GetValue(new Func<ExcelColumn, bool>(x => x.BestFit), false);
             }
             set
             {
-                SetValue(new Action<ExcelColumn, bool>((x, v) => { x.BestFit = v; }), value);
+                this.SetValue(new Action<ExcelColumn, bool>((x, v) => { x.BestFit = v; }), value);
             }
         }
 
@@ -278,11 +278,11 @@ namespace OfficeOpenXml
         {
             get
             {
-                return GetValue(new Func<ExcelColumn, bool>(x => x.Hidden), false);
+                return this.GetValue(new Func<ExcelColumn, bool>(x => x.Hidden), false);
             }
             set
             {
-                SetValue(new Action<ExcelColumn, bool>((x, v) => { x.Hidden = v; }), value);
+                this.SetValue(new Action<ExcelColumn, bool>((x, v) => { x.Hidden = v; }), value);
             }
         }
         /// <summary>
@@ -292,18 +292,18 @@ namespace OfficeOpenXml
         {
             get
             {
-                return GetValue(new Func<ExcelColumn, double>(x => x.Width), _worksheet.DefaultColWidth);
+                return this.GetValue(new Func<ExcelColumn, double>(x => x.Width), this._worksheet.DefaultColWidth);
             }
             set
             {
-                SetValue(new Action<ExcelColumn, double>((x, v) => { x.Width = v; }), value);
+                this.SetValue(new Action<ExcelColumn, double>((x, v) => { x.Width = v; }), value);
             }
         }
         internal double VisualWidth
         {
             get
             {
-                return GetValue(new Func<ExcelColumn, double>(x => x.VisualWidth), _worksheet.DefaultColWidth);
+                return this.GetValue(new Func<ExcelColumn, double>(x => x.VisualWidth), this._worksheet.DefaultColWidth);
             }
         }
 
@@ -314,11 +314,11 @@ namespace OfficeOpenXml
         {
             get
             {
-                return GetValue(new Func<ExcelColumn, bool>(x => x.PageBreak), false);
+                return this.GetValue(new Func<ExcelColumn, bool>(x => x.PageBreak), false);
             }
             set
             {
-                SetValue(new Action<ExcelColumn, bool>((x, v) => { x.PageBreak = v; }), value);
+                this.SetValue(new Action<ExcelColumn, bool>((x, v) => { x.PageBreak = v; }), value);
             }
         }
         #region ExcelColumn Style
@@ -330,9 +330,9 @@ namespace OfficeOpenXml
         {
             get
             {
-                string letter = ExcelCellBase.GetColumnLetter(_fromCol);
-                string endLetter = ExcelCellBase.GetColumnLetter(_toCol);
-                return _worksheet.Workbook.Styles.GetStyleObject(StyleID, _worksheet.PositionId, letter + ":" + endLetter);
+                string letter = ExcelCellBase.GetColumnLetter(this._fromCol);
+                string endLetter = ExcelCellBase.GetColumnLetter(this._toCol);
+                return this._worksheet.Workbook.Styles.GetStyleObject(this.StyleID, this._worksheet.PositionId, letter + ":" + endLetter);
             }
         }
         internal string _styleName = "";
@@ -344,11 +344,11 @@ namespace OfficeOpenXml
 
             get
             {
-                return GetValue<string>(new Func<ExcelColumn, string>(x => x.StyleName), "");
+                return this.GetValue<string>(new Func<ExcelColumn, string>(x => x.StyleName), "");
             }
             set
             {
-                SetValue(new Action<ExcelColumn,string>((x,v) => { x.StyleName = v; }), value);
+                this.SetValue(new Action<ExcelColumn,string>((x,v) => { x.StyleName = v; }), value);
             }
         }
         /// <summary>
@@ -358,11 +358,11 @@ namespace OfficeOpenXml
         {
             get
             {
-                return GetValue(new Func<ExcelColumn, int>(x => x.StyleID), 0);
+                return this.GetValue(new Func<ExcelColumn, int>(x => x.StyleID), 0);
             }
             set
             {
-                SetValue(new Action<ExcelColumn, int>((x, v) => { x.StyleID = v; }), value);
+                this.SetValue(new Action<ExcelColumn, int>((x, v) => { x.StyleID = v; }), value);
             }
         }
         /// <summary>
@@ -372,7 +372,7 @@ namespace OfficeOpenXml
         {
             get
             {
-                return new ExcelRangeColumn(_worksheet, enumCol, enumCol);
+                return new ExcelRangeColumn(this._worksheet, this.enumCol, this.enumCol);
             }
         }
         /// <summary>
@@ -382,7 +382,7 @@ namespace OfficeOpenXml
         {
             get
             {
-                return new ExcelRangeColumn(_worksheet, enumCol, enumCol);
+                return new ExcelRangeColumn(this._worksheet, this.enumCol, this.enumCol);
             }
         }
         #endregion
@@ -397,7 +397,7 @@ namespace OfficeOpenXml
         /// </remarks>
         public void AutoFit()
         {
-            _worksheet.Cells[1, _fromCol, ExcelPackage.MaxRows, _toCol].AutoFitColumns();
+            this._worksheet.Cells[1, this._fromCol, ExcelPackage.MaxRows, this._toCol].AutoFitColumns();
         }
 
         /// <summary>
@@ -411,7 +411,7 @@ namespace OfficeOpenXml
         /// <param name="MinimumWidth">Minimum column width</param>
         public void AutoFit(double MinimumWidth)
         {
-            _worksheet.Cells[1, _fromCol, ExcelPackage.MaxRows, _toCol].AutoFitColumns(MinimumWidth);
+            this._worksheet.Cells[1, this._fromCol, ExcelPackage.MaxRows, this._toCol].AutoFitColumns(MinimumWidth);
         }
 
         /// <summary>
@@ -426,20 +426,20 @@ namespace OfficeOpenXml
         /// <param name="MaximumWidth">Maximum column width</param>
         public void AutoFit(double MinimumWidth, double MaximumWidth)
         {
-            _worksheet.Cells[1, _fromCol, ExcelPackage.MaxRows, _toCol].AutoFitColumns(MinimumWidth, MaximumWidth);
+            this._worksheet.Cells[1, this._fromCol, ExcelPackage.MaxRows, this._toCol].AutoFitColumns(MinimumWidth, MaximumWidth);
         }
         private ExcelColumn GetColumn(int col, bool ignoreFromCol = true)
         {
-            ExcelColumn? currentCol = _worksheet.GetValueInner(0, col) as ExcelColumn;
+            ExcelColumn? currentCol = this._worksheet.GetValueInner(0, col) as ExcelColumn;
             if (currentCol == null)
             {
                 int r = 0, c = col;
-                if (_worksheet._values.PrevCell(ref r, ref c))
+                if (this._worksheet._values.PrevCell(ref r, ref c))
                 {
                     if (c > 0)
                     {
-                        ExcelColumn prevCol = _worksheet.GetValueInner(0, c) as ExcelColumn;
-                        if (prevCol.ColumnMax >= _fromCol || ignoreFromCol)
+                        ExcelColumn prevCol = this._worksheet.GetValueInner(0, c) as ExcelColumn;
+                        if (prevCol.ColumnMax >= this._fromCol || ignoreFromCol)
                         {
                             return prevCol;
                         }
@@ -450,16 +450,16 @@ namespace OfficeOpenXml
         }
         private TOut GetValue<TOut>(Func<ExcelColumn, TOut> getValue, TOut defaultValue)
         {
-            ExcelColumn? currentCol = _worksheet.GetValueInner(0, _fromCol) as ExcelColumn;
+            ExcelColumn? currentCol = this._worksheet.GetValueInner(0, this._fromCol) as ExcelColumn;
             if (currentCol == null)
             {
-                int r = 0, c = _fromCol;
-                if(_worksheet._values.PrevCell(ref r, ref c))
+                int r = 0, c = this._fromCol;
+                if(this._worksheet._values.PrevCell(ref r, ref c))
                 {
                     if(c>0)
                     {
-                        ExcelColumn prevCol = _worksheet.GetValueInner(0, c) as ExcelColumn;
-                        if (prevCol.ColumnMax>=_fromCol)
+                        ExcelColumn prevCol = this._worksheet.GetValueInner(0, c) as ExcelColumn;
+                        if (prevCol.ColumnMax>= this._fromCol)
                         {
                             return getValue(prevCol);
                         }
@@ -475,19 +475,19 @@ namespace OfficeOpenXml
 
         private void SetValue<T>(Action<ExcelColumn,T> SetValue, T value)
         {
-            int c = _fromCol;
+            int c = this._fromCol;
             int r = 0;
-            ExcelColumn currentCol = _worksheet.GetValueInner(0, c) as ExcelColumn;
+            ExcelColumn currentCol = this._worksheet.GetValueInner(0, c) as ExcelColumn;
             if (currentCol == null)
             {
-                int cPrev = _fromCol;
-                if (_worksheet._values.PrevCell(ref r, ref cPrev))
+                int cPrev = this._fromCol;
+                if (this._worksheet._values.PrevCell(ref r, ref cPrev))
                 {
-                    ExcelColumn? pc = _worksheet.GetValueInner(0, cPrev) as ExcelColumn;
+                    ExcelColumn? pc = this._worksheet.GetValueInner(0, cPrev) as ExcelColumn;
                     if (cPrev > 0)
                     {
-                        ExcelColumn prevCol = _worksheet.GetValueInner(0, cPrev) as ExcelColumn;
-                        if (prevCol.ColumnMax >= _fromCol)
+                        ExcelColumn prevCol = this._worksheet.GetValueInner(0, cPrev) as ExcelColumn;
+                        if (prevCol.ColumnMax >= this._fromCol)
                         {
                             currentCol = prevCol;
                         }
@@ -495,40 +495,40 @@ namespace OfficeOpenXml
                 }
             }
 
-            while (c <= _toCol)
+            while (c <= this._toCol)
             {
                 if (currentCol == null)
                 {
-                    currentCol = _worksheet.Column(c);
+                    currentCol = this._worksheet.Column(c);
                 }
                 else
                 {
-                    if (c < _fromCol || c != currentCol.ColumnMin)
+                    if (c < this._fromCol || c != currentCol.ColumnMin)
                     {
-                        currentCol = _worksheet.Column(c);
+                        currentCol = this._worksheet.Column(c);
                     }
                 }
 
-                if (currentCol.ColumnMax > _toCol)
+                if (currentCol.ColumnMax > this._toCol)
                 {
-                    AdjustColumnMaxAndCopy(currentCol, _toCol);
+                    this.AdjustColumnMaxAndCopy(currentCol, this._toCol);
                 }
-                else if(currentCol.ColumnMax < _toCol)
+                else if(currentCol.ColumnMax < this._toCol)
                 {
-                    if (_worksheet._values.NextCell(ref r, ref c))
+                    if (this._worksheet._values.NextCell(ref r, ref c))
                     {
-                        if (r == 0 && c <= _toCol)
+                        if (r == 0 && c <= this._toCol)
                         {
                             currentCol.ColumnMax = c - 1;
                         }
                         else
                         {
-                            currentCol.ColumnMax = _toCol;
+                            currentCol.ColumnMax = this._toCol;
                         }
                     }
                     else
                     {
-                        currentCol.ColumnMax = _toCol;
+                        currentCol.ColumnMax = this._toCol;
                     }
                 }
                 c = currentCol.ColumnMax + 1;
@@ -543,7 +543,7 @@ namespace OfficeOpenXml
             {
                 int maxCol = currentCol.ColumnMax;
                 currentCol.ColumnMax = newColMax;
-                ExcelColumn copy = _worksheet.CopyColumn(currentCol, newColMax + 1, maxCol);
+                ExcelColumn copy = this._worksheet.CopyColumn(currentCol, newColMax + 1, maxCol);
             }
         }
 
@@ -554,7 +554,7 @@ namespace OfficeOpenXml
         {
             get
             {
-                return new ExcelRangeBase(_worksheet, ExcelAddressBase.GetAddress(1, _fromCol, ExcelPackage.MaxRows, _toCol));
+                return new ExcelRangeBase(this._worksheet, ExcelCellBase.GetAddress(1, this._fromCol, ExcelPackage.MaxRows, this._toCol));
             }
         }
         /// <summary>
@@ -580,34 +580,35 @@ namespace OfficeOpenXml
         /// <returns>False if no more row exists</returns>
         public bool MoveNext()
         {
-            if(_cs==null)
+            if(this._cs==null)
             {
-                Reset();
-                return enumCol <= _toCol;
+                this.Reset();
+                return this.enumCol <= this._toCol;
             }
-            enumCol++;
-            if (_currentCol?.ColumnMax>=enumCol)
+
+            this.enumCol++;
+            if (this._currentCol?.ColumnMax>= this.enumCol)
             {
                 return true;
             }
             else
             {
-                ExcelColumn? c = _cs.GetValue(0, enumCol)._value as ExcelColumn;
-                if(c!=null && c.ColumnMax>=enumCol)
+                ExcelColumn? c = this._cs.GetValue(0, this.enumCol)._value as ExcelColumn;
+                if(c!=null && c.ColumnMax>= this.enumCol)
                 {
-                    enumColPos = _cs.GetColumnPosition(enumCol);
-                    _currentCol = c;
+                    this.enumColPos = this._cs.GetColumnPosition(this.enumCol);
+                    this._currentCol = c;
                     return true;
                 }
-                if(++enumColPos<_cs.ColumnCount)
+                if(++this.enumColPos< this._cs.ColumnCount)
                 {
-                    enumCol = _cs._columnIndex[enumColPos].Index;
+                    this.enumCol = this._cs._columnIndex[this.enumColPos].Index;
                 }
                 else
                 {
                     return false;
                 }
-                if (enumCol <= _toCol)
+                if (this.enumCol <= this._toCol)
                 {
                     return true;
                 }
@@ -622,41 +623,41 @@ namespace OfficeOpenXml
         /// </summary>
         public void Reset()
         {
-            _currentCol = null;
-            _cs = _worksheet._values;
-            if(_cs.ColumnCount>0)
+            this._currentCol = null;
+            this._cs = this._worksheet._values;
+            if(this._cs.ColumnCount>0)
             {
-                enumCol = _fromCol;
-                enumColPos = _cs.GetColumnPosition(enumCol);
-                if(enumColPos<0)
+                this.enumCol = this._fromCol;
+                this.enumColPos = this._cs.GetColumnPosition(this.enumCol);
+                if(this.enumColPos<0)
                 {
-                    enumColPos = ~enumColPos;
+                    this.enumColPos = ~this.enumColPos;
                     int r=0, c=0;
-                    if(enumColPos > 0 && _cs.GetPrevCell(ref r, ref c, 0, enumColPos - 1, _toCol))
+                    if(this.enumColPos > 0 && this._cs.GetPrevCell(ref r, ref c, 0, this.enumColPos - 1, this._toCol))
                     {
-                        if (r == 0 && c < enumColPos)
+                        if (r == 0 && c < this.enumColPos)
                         {
-                            _currentCol = ((ExcelColumn)_cs.GetValue(r, c)._value);
-                            if (_currentCol.ColumnMax >= _fromCol)
+                            this._currentCol = ((ExcelColumn)this._cs.GetValue(r, c)._value);
+                            if (this._currentCol.ColumnMax >= this._fromCol)
                             {
-                                enumColPos = c;
+                                this.enumColPos = c;
                             }
                             else
                             {
-                                enumCol = _cs._columnIndex[enumColPos].Index;
+                                this.enumCol = this._cs._columnIndex[this.enumColPos].Index;
                             }
                         }
                     }
                     else
                     {
-                        enumCol = _cs._columnIndex[enumColPos].Index;
-                        _currentCol = _cs.GetValue(0, enumCol)._value as ExcelColumn;
+                        this.enumCol = this._cs._columnIndex[this.enumColPos].Index;
+                        this._currentCol = this._cs.GetValue(0, this.enumCol)._value as ExcelColumn;
                     }
 
                 }
                 else
                 {
-                    _currentCol = _cs.GetValue(0, _fromCol)._value as ExcelColumn; 
+                    this._currentCol = this._cs.GetValue(0, this._fromCol)._value as ExcelColumn; 
                 }
             }
         }
@@ -664,15 +665,15 @@ namespace OfficeOpenXml
         {
             int maxCol;
             if
-                (_worksheet.Dimension == null)
+                (this._worksheet.Dimension == null)
             {
-                maxCol = _worksheet._values.GetLastColumn();
+                maxCol = this._worksheet._values.GetLastColumn();
             }
             else
             {
-                maxCol = Math.Max(_worksheet.Dimension.End.Row, _worksheet._values.GetLastRow(0));
+                maxCol = Math.Max(this._worksheet.Dimension.End.Row, this._worksheet._values.GetLastRow(0));
             }
-            return _toCol > maxCol + 1 ? maxCol + 1 : _toCol;   // +1 if the last column has outline level 1 then +1 is outline level 0.
+            return this._toCol > maxCol + 1 ? maxCol + 1 : this._toCol;   // +1 if the last column has outline level 1 then +1 is outline level 0.
         }
 
         /// <summary>

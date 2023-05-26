@@ -41,7 +41,7 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Text
                 }
                 str = sb.ToString();
             }
-            return CreateResult(str, DataType.String);
+            return this.CreateResult(str, DataType.String);
         }
     }
 }

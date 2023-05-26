@@ -17,11 +17,11 @@ namespace OfficeOpenXml.Style
     {
         internal StyleChangeEventArgs(eStyleClass styleclass, eStyleProperty styleProperty, object value, int positionID, string address)
         {
-            StyleClass = styleclass;
-            StyleProperty=styleProperty;
-            Value = value;
-            Address = address;
-            PositionID = positionID;
+            this.StyleClass = styleclass;
+            this.StyleProperty=styleProperty;
+            this.Value = value;
+            this.Address = address;
+            this.PositionID = positionID;
         }
         internal eStyleClass StyleClass;
         internal eStyleProperty StyleProperty;

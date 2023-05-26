@@ -47,27 +47,27 @@ namespace OfficeOpenXml.Drawing
         internal ExcelShapeBase(ExcelDrawings drawings, XmlNode node, string topPath, string nvPrPath, ExcelGroupShape parent=null) :
             base(drawings, node, topPath, nvPrPath, parent)
         {
-            Init(string.IsNullOrEmpty(_topPath) ? "" : _topPath + "/");
+            this.Init(string.IsNullOrEmpty(this._topPath) ? "" : this._topPath + "/");
         }
         private void Init(string topPath)
         {
-            _shapeStylePath = string.Format(_shapeStylePath, topPath);
-            _fillPath = string.Format(_fillPath, topPath);
-            _borderPath = string.Format(_borderPath, topPath);
-            _effectPath = string.Format(_effectPath, topPath);
-            _headEndPath = string.Format(_headEndPath, topPath);
-            _tailEndPath = string.Format(_tailEndPath, topPath);
-            _textPath = string.Format(_textPath, topPath);
-            _lockTextPath = string.Format(_lockTextPath, topPath);
-            _textAnchoringPath = string.Format(_textAnchoringPath, topPath);
-            _textAnchoringCtlPath = string.Format(_textAnchoringCtlPath, topPath);
-            _paragraphPath = string.Format(_paragraphPath, topPath);
-            _textAlignPath = string.Format(_textAlignPath, topPath);
-            _indentAlignPath = string.Format(_indentAlignPath, topPath);
-            _textVerticalPath = string.Format(_textVerticalPath, topPath);
-            _fontPath = string.Format(_fontPath, topPath);
-            _textBodyPath = string.Format(_textBodyPath, topPath);
-            AddSchemaNodeOrder(SchemaNodeOrder, new string[] { "nvSpPr", "spPr", "txSp", "style", "txBody", "hlinkClick", "hlinkHover", "xfrm", "custGeom", "prstGeom", "noFill", "solidFill", "blipFill", "gradFill", "pattFill", "grpFill", "ln", "effectLst", "effectDag", "scene3d", "sp3d", "pPr", "r", "br", "fld", "endParaRPr", "lnRef", "fillRef", "effectRef", "fontRef" });
+            this._shapeStylePath = string.Format(this._shapeStylePath, topPath);
+            this._fillPath = string.Format(this._fillPath, topPath);
+            this._borderPath = string.Format(this._borderPath, topPath);
+            this._effectPath = string.Format(this._effectPath, topPath);
+            this._headEndPath = string.Format(this._headEndPath, topPath);
+            this._tailEndPath = string.Format(this._tailEndPath, topPath);
+            this._textPath = string.Format(this._textPath, topPath);
+            this._lockTextPath = string.Format(this._lockTextPath, topPath);
+            this._textAnchoringPath = string.Format(this._textAnchoringPath, topPath);
+            this._textAnchoringCtlPath = string.Format(this._textAnchoringCtlPath, topPath);
+            this._paragraphPath = string.Format(this._paragraphPath, topPath);
+            this._textAlignPath = string.Format(this._textAlignPath, topPath);
+            this._indentAlignPath = string.Format(this._indentAlignPath, topPath);
+            this._textVerticalPath = string.Format(this._textVerticalPath, topPath);
+            this._fontPath = string.Format(this._fontPath, topPath);
+            this._textBodyPath = string.Format(this._textBodyPath, topPath);
+            this.AddSchemaNodeOrder(this.SchemaNodeOrder, new string[] { "nvSpPr", "spPr", "txSp", "style", "txBody", "hlinkClick", "hlinkHover", "xfrm", "custGeom", "prstGeom", "noFill", "solidFill", "blipFill", "gradFill", "pattFill", "grpFill", "ln", "effectLst", "effectDag", "scene3d", "sp3d", "pPr", "r", "br", "fld", "endParaRPr", "lnRef", "fillRef", "effectRef", "fontRef" });
         }
         /// <summary>
         /// The type of drawing
@@ -86,7 +86,7 @@ namespace OfficeOpenXml.Drawing
         {
             get
             {
-                string v = GetXmlNodeString(_shapeStylePath);
+                string v = this.GetXmlNodeString(this._shapeStylePath);
                 try
                 {
                     return (eShapeStyle)Enum.Parse(typeof(eShapeStyle), v, true);
@@ -100,7 +100,7 @@ namespace OfficeOpenXml.Drawing
             {
                 string v = value.ToString();
                 v = v.Substring(0, 1).ToLower(CultureInfo.InvariantCulture) + v.Substring(1, v.Length - 1);
-                SetXmlNodeString(_shapeStylePath, v);
+                this.SetXmlNodeString(this._shapeStylePath, v);
             }
         }
         ExcelDrawingFill _fill = null;
@@ -111,11 +111,11 @@ namespace OfficeOpenXml.Drawing
         {
             get
             {
-                if (_fill == null)
+                if (this._fill == null)
                 {
-                    _fill = new ExcelDrawingFill(_drawings, NameSpaceManager, TopNode, _fillPath, SchemaNodeOrder);
+                    this._fill = new ExcelDrawingFill(this._drawings, this.NameSpaceManager, this.TopNode, this._fillPath, this.SchemaNodeOrder);
                 }
-                return _fill;
+                return this._fill;
             }
         }
         ExcelDrawingBorder _border = null;
@@ -126,11 +126,11 @@ namespace OfficeOpenXml.Drawing
         {
             get
             {
-                if (_border == null)
+                if (this._border == null)
                 {
-                    _border = new ExcelDrawingBorder(_drawings, NameSpaceManager, TopNode, _borderPath, SchemaNodeOrder);
+                    this._border = new ExcelDrawingBorder(this._drawings, this.NameSpaceManager, this.TopNode, this._borderPath, this.SchemaNodeOrder);
                 }
-                return _border;
+                return this._border;
             }
         }
         ExcelDrawingEffectStyle _effect = null;
@@ -141,11 +141,11 @@ namespace OfficeOpenXml.Drawing
         {
             get
             {
-                if (_effect == null)
+                if (this._effect == null)
                 {
-                    _effect = new ExcelDrawingEffectStyle(_drawings, NameSpaceManager, TopNode, _effectPath, SchemaNodeOrder);
+                    this._effect = new ExcelDrawingEffectStyle(this._drawings, this.NameSpaceManager, this.TopNode, this._effectPath, this.SchemaNodeOrder);
                 }
-                return _effect;
+                return this._effect;
             }
         }
         ExcelDrawing3D _threeD = null;
@@ -156,11 +156,11 @@ namespace OfficeOpenXml.Drawing
         {
             get
             {
-                if (_threeD == null)
+                if (this._threeD == null)
                 {
-                    _threeD = new ExcelDrawing3D(NameSpaceManager, TopNode, _fillPath, SchemaNodeOrder);
+                    this._threeD = new ExcelDrawing3D(this.NameSpaceManager, this.TopNode, this._fillPath, this.SchemaNodeOrder);
                 }
-                return _threeD;
+                return this._threeD;
             }
         }
         ExcelDrawingLineEnd _headEnd = null;
@@ -171,11 +171,11 @@ namespace OfficeOpenXml.Drawing
         {
             get
             {
-                if (_headEnd == null)
+                if (this._headEnd == null)
                 {
-                    _headEnd = new ExcelDrawingLineEnd(NameSpaceManager, TopNode, _headEndPath, InitSpPr);
+                    this._headEnd = new ExcelDrawingLineEnd(this.NameSpaceManager, this.TopNode, this._headEndPath, this.InitSpPr);
                 }
-                return _headEnd;
+                return this._headEnd;
             }
         }
         ExcelDrawingLineEnd _tailEnd = null;
@@ -186,11 +186,11 @@ namespace OfficeOpenXml.Drawing
         {
             get
             {
-                if (_tailEnd == null)
+                if (this._tailEnd == null)
                 {
-                    _tailEnd = new ExcelDrawingLineEnd(NameSpaceManager, TopNode, _tailEndPath, InitSpPr);
+                    this._tailEnd = new ExcelDrawingLineEnd(this.NameSpaceManager, this.TopNode, this._tailEndPath, this.InitSpPr);
                 }
-                return _tailEnd;
+                return this._tailEnd;
             }
         }
         ExcelTextFont _font = null;
@@ -201,30 +201,32 @@ namespace OfficeOpenXml.Drawing
         {
             get
             {
-                if (_font == null)
+                if (this._font == null)
                 {
-                    XmlNode node = TopNode.SelectSingleNode(_paragraphPath, NameSpaceManager);
+                    XmlNode node = this.TopNode.SelectSingleNode(this._paragraphPath, this.NameSpaceManager);
                     if (node == null)
                     {
-                        Text = "";    //Creates the node p element
-                        node = TopNode.SelectSingleNode(_paragraphPath, NameSpaceManager);
+                        this.Text = "";    //Creates the node p element
+                        node = this.TopNode.SelectSingleNode(this._paragraphPath, this.NameSpaceManager);
                     }
-                    _font = new ExcelTextFont(_drawings, NameSpaceManager, TopNode, _fontPath, SchemaNodeOrder);
+
+                    this._font = new ExcelTextFont(this._drawings, this.NameSpaceManager, this.TopNode, this._fontPath, this.SchemaNodeOrder);
                 }
-                return _font;
+                return this._font;
             }
         }
         bool isSpInit = false;
         private void InitSpPr()
         {
-            if (isSpInit == false)
+            if (this.isSpInit == false)
             {
-                if (CreateNodeUntil(_topPath, "spPr", out XmlNode spPrNode))
+                if (this.CreateNodeUntil(this._topPath, "spPr", out XmlNode spPrNode))
                 {
                     spPrNode.InnerXml = "<a:noFill/><a:ln><a:noFill/></a:ln ><a:effectLst/><a:sp3d/>";
                 }
             }
-            isSpInit = true;
+
+            this.isSpInit = true;
         }
 
 
@@ -235,11 +237,11 @@ namespace OfficeOpenXml.Drawing
         {
             get
             {
-                return RichText.Text;
+                return this.RichText.Text;
             }
             set
-            {                
-                RichText.Text = value;
+            {
+                this.RichText.Text = value;
             }
 
         }
@@ -250,11 +252,11 @@ namespace OfficeOpenXml.Drawing
         {
             get
             {
-                return GetXmlNodeBool(_lockTextPath, true);
+                return this.GetXmlNodeBool(this._lockTextPath, true);
             }
             set
             {
-                SetXmlNodeBool(_lockTextPath, value);
+                this.SetXmlNodeBool(this._lockTextPath, value);
             }
         }
         ExcelParagraphCollection _richText = null;
@@ -267,11 +269,11 @@ namespace OfficeOpenXml.Drawing
         {
             get
             {
-                if (_richText == null)
+                if (this._richText == null)
                 {
-                    _richText = new ExcelParagraphCollection(this, NameSpaceManager, TopNode, _paragraphPath, SchemaNodeOrder);
+                    this._richText = new ExcelParagraphCollection(this, this.NameSpaceManager, this.TopNode, this._paragraphPath, this.SchemaNodeOrder);
                 }
-                return _richText;
+                return this._richText;
             }
         }
         /// <summary>
@@ -281,11 +283,11 @@ namespace OfficeOpenXml.Drawing
         {
             get
             {
-                return GetXmlNodeString(_textAnchoringPath).TranslateTextAchoring();
+                return this.GetXmlNodeString(this._textAnchoringPath).TranslateTextAchoring();
             }
             set
             {
-                SetXmlNodeString(_textAnchoringPath, value.TranslateTextAchoringText());
+                this.SetXmlNodeString(this._textAnchoringPath, value.TranslateTextAchoringText());
             }
         }
         /// <summary>
@@ -295,17 +297,17 @@ namespace OfficeOpenXml.Drawing
         {
             get
             {
-                return GetXmlNodeBool(_textAnchoringCtlPath);
+                return this.GetXmlNodeBool(this._textAnchoringCtlPath);
             }
             set
             {
                 if (value)
                 {
-                    SetXmlNodeString(_textAnchoringCtlPath, "1");
+                    this.SetXmlNodeString(this._textAnchoringCtlPath, "1");
                 }
                 else
                 {
-                    SetXmlNodeString(_textAnchoringCtlPath, "0");
+                    this.SetXmlNodeString(this._textAnchoringCtlPath, "0");
                 }
             }
         }
@@ -316,7 +318,7 @@ namespace OfficeOpenXml.Drawing
         {
             get
             {
-                switch (GetXmlNodeString(_textAlignPath))
+                switch (this.GetXmlNodeString(this._textAlignPath))
                 {
                     case "ctr":
                         return eTextAlignment.Center;
@@ -339,25 +341,25 @@ namespace OfficeOpenXml.Drawing
                 switch (value)
                 {
                     case eTextAlignment.Right:
-                        SetXmlNodeString(_textAlignPath, "r");
+                        this.SetXmlNodeString(this._textAlignPath, "r");
                         break;
                     case eTextAlignment.Center:
-                        SetXmlNodeString(_textAlignPath, "ctr");
+                        this.SetXmlNodeString(this._textAlignPath, "ctr");
                         break;
                     case eTextAlignment.Distributed:
-                        SetXmlNodeString(_textAlignPath, "dist");
+                        this.SetXmlNodeString(this._textAlignPath, "dist");
                         break;
                     case eTextAlignment.Justified:
-                        SetXmlNodeString(_textAlignPath, "just");
+                        this.SetXmlNodeString(this._textAlignPath, "just");
                         break;
                     case eTextAlignment.JustifiedLow:
-                        SetXmlNodeString(_textAlignPath, "justLow");
+                        this.SetXmlNodeString(this._textAlignPath, "justLow");
                         break;
                     case eTextAlignment.ThaiDistributed:
-                        SetXmlNodeString(_textAlignPath, "thaiDist");
+                        this.SetXmlNodeString(this._textAlignPath, "thaiDist");
                         break;
                     default:
-                        DeleteNode(_textAlignPath);
+                        this.DeleteNode(this._textAlignPath);
                         break;
                 }
             }
@@ -369,7 +371,7 @@ namespace OfficeOpenXml.Drawing
         {
             get
             {
-                return GetXmlNodeInt(_indentAlignPath);
+                return this.GetXmlNodeInt(this._indentAlignPath);
             }
             set
             {
@@ -377,7 +379,8 @@ namespace OfficeOpenXml.Drawing
                 {
                     throw (new ArgumentOutOfRangeException("Indent level must be between 0 and 8"));
                 }
-                SetXmlNodeString(_indentAlignPath, value.ToString());
+
+                this.SetXmlNodeString(this._indentAlignPath, value.ToString());
             }
         }
         /// <summary>
@@ -387,11 +390,11 @@ namespace OfficeOpenXml.Drawing
         {
             get
             {
-                return GetXmlNodeString(_textVerticalPath).TranslateTextVertical();
+                return this.GetXmlNodeString(this._textVerticalPath).TranslateTextVertical();
             }
             set
             {
-                SetXmlNodeString(_textVerticalPath, value.TranslateTextVerticalText());
+                this.SetXmlNodeString(this._textVerticalPath, value.TranslateTextVerticalText());
             }
         }
         ExcelTextBody _textBody = null;
@@ -402,58 +405,58 @@ namespace OfficeOpenXml.Drawing
         {
             get
             {
-                if (_textBody == null)
+                if (this._textBody == null)
                 {
-                    _textBody = new ExcelTextBody(NameSpaceManager, TopNode, _textBodyPath, this.SchemaNodeOrder);
+                    this._textBody = new ExcelTextBody(this.NameSpaceManager, this.TopNode, this._textBodyPath, this.SchemaNodeOrder);
                 }
-                return _textBody;
+                return this._textBody;
             }
         }
 
         internal override void CellAnchorChanged()
         {
             base.CellAnchorChanged();
-            if (_fill != null)
+            if (this._fill != null)
             {
                 this._fill.SetTopNode(this.TopNode);
             }
 
-            if (_border != null)
+            if (this._border != null)
             {
                 this._border.TopNode = this.TopNode;
             }
 
-            if (_effect != null)
+            if (this._effect != null)
             {
                 this._effect.TopNode = this.TopNode;
             }
 
-            if (_font != null)
+            if (this._font != null)
             {
                 this._font.TopNode = this.TopNode;
             }
 
-            if (_threeD != null)
+            if (this._threeD != null)
             {
                 this._threeD.TopNode = this.TopNode;
             }
 
-            if (_tailEnd != null)
+            if (this._tailEnd != null)
             {
                 this._tailEnd.TopNode = this.TopNode;
             }
 
-            if (_headEnd != null)
+            if (this._headEnd != null)
             {
                 this._headEnd.TopNode = this.TopNode;
             }
 
-            if (_richText != null)
+            if (this._richText != null)
             {
                 this._richText.TopNode = this.TopNode;
             }
 
-            if (_textBody != null)
+            if (this._textBody != null)
             {
                 this._textBody.TopNode = this.TopNode;
             }

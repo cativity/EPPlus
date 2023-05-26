@@ -43,8 +43,8 @@ namespace OfficeOpenXml.Configuration
         /// </summary>
         public string JsonConfigBasePath
         {
-            get { return _jsonConfigBasePath; }
-            set { _jsonConfigBasePath = value; }
+            get { return this._jsonConfigBasePath; }
+            set { this._jsonConfigBasePath = value; }
         }
 
         private string _jsonConfigFileName = "appsettings.json";
@@ -54,8 +54,8 @@ namespace OfficeOpenXml.Configuration
         /// </summary>
         public string JsonConfigFileName
         {
-            get { return _jsonConfigFileName; }
-            set { _jsonConfigFileName = value; }
+            get { return this._jsonConfigFileName; }
+            set { this._jsonConfigFileName = value; }
         }
 
         /// <summary>
@@ -68,9 +68,9 @@ namespace OfficeOpenXml.Configuration
 
         internal void CopyFrom(ExcelPackageConfiguration other)
         {
-            _jsonConfigBasePath = other.JsonConfigBasePath;
-            _jsonConfigFileName = other.JsonConfigFileName;
-            SuppressInitializationExceptions = other.SuppressInitializationExceptions;
+            this._jsonConfigBasePath = other.JsonConfigBasePath;
+            this._jsonConfigFileName = other.JsonConfigFileName;
+            this.SuppressInitializationExceptions = other.SuppressInitializationExceptions;
         }
 
         /// <summary>
@@ -78,7 +78,7 @@ namespace OfficeOpenXml.Configuration
         /// </summary>
         public void Reset()
         {
-            CopyFrom(Default);
+            this.CopyFrom(Default);
         }
     }
 }

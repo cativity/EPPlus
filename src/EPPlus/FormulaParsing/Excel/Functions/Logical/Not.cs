@@ -28,7 +28,7 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Logical
         public override CompileResult Execute(IEnumerable<FunctionArgument> arguments, ParsingContext context)
         {
             ValidateArguments(arguments, 1);
-            bool result = !ArgToBool(arguments, 0);
+            bool result = !this.ArgToBool(arguments, 0);
             return new CompileResult(result, DataType.Boolean);
         }
     }

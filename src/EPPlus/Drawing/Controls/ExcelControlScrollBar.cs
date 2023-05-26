@@ -23,7 +23,7 @@ namespace OfficeOpenXml.Drawing.Controls
     {
         internal ExcelControlScrollBar(ExcelDrawings drawings, XmlElement drawNode, string name, ExcelGroupShape parent=null) : base(drawings, drawNode, name, parent)
         {
-            SetSize(30, 150); //Default size
+            this.SetSize(30, 150); //Default size
         }
         internal ExcelControlScrollBar(ExcelDrawings drawings, XmlNode drawNode, ControlInternal control, ZipPackagePart part, XmlDocument controlPropertiesXml, ExcelGroupShape parent = null)
             : base(drawings, drawNode, control, part, controlPropertiesXml, parent)
@@ -42,18 +42,18 @@ namespace OfficeOpenXml.Drawing.Controls
         {
             get
             {
-                return _ctrlProp.GetXmlNodeBool("@horiz");
+                return this._ctrlProp.GetXmlNodeBool("@horiz");
             }
             set
             {
-                _ctrlProp.SetXmlNodeBool("@horiz", value);
+                this._ctrlProp.SetXmlNodeBool("@horiz", value);
                 if(value)
                 {
-                    _vmlProp.CreateNode("x:Horiz");
+                    this._vmlProp.CreateNode("x:Horiz");
                 }
                 else
                 {
-                    _vmlProp.DeleteNode("x:Horiz");
+                    this._vmlProp.DeleteNode("x:Horiz");
                 }
             }
         }
@@ -64,7 +64,7 @@ namespace OfficeOpenXml.Drawing.Controls
         {
             get
             {
-                return _ctrlProp.GetXmlNodeInt("@inc", 1);
+                return this._ctrlProp.GetXmlNodeInt("@inc", 1);
             }
             set
             {
@@ -72,8 +72,9 @@ namespace OfficeOpenXml.Drawing.Controls
                 {
                     throw (new ArgumentOutOfRangeException("Increment must be between 0 and 3000"));
                 }
-                _ctrlProp.SetXmlNodeInt("@inc", value);
-                _vmlProp.SetXmlNodeInt("x:Inc", value);
+
+                this._ctrlProp.SetXmlNodeInt("@inc", value);
+                this._vmlProp.SetXmlNodeInt("x:Inc", value);
             }
         }
         /// <summary>
@@ -83,7 +84,7 @@ namespace OfficeOpenXml.Drawing.Controls
         {
             get
             {
-                return _ctrlProp.GetXmlNodeIntNull("@page");
+                return this._ctrlProp.GetXmlNodeIntNull("@page");
             }
             set
             {
@@ -91,8 +92,9 @@ namespace OfficeOpenXml.Drawing.Controls
                 {
                     throw (new ArgumentOutOfRangeException("Page must be between 0 and 3000"));
                 }
-                _ctrlProp.SetXmlNodeInt("@page", value);
-                _vmlProp.SetXmlNodeInt("x:Page", value);
+
+                this._ctrlProp.SetXmlNodeInt("@page", value);
+                this._vmlProp.SetXmlNodeInt("x:Page", value);
             }
         }
         /// <summary>
@@ -102,7 +104,7 @@ namespace OfficeOpenXml.Drawing.Controls
         {
             get
             {
-                return _ctrlProp.GetXmlNodeInt("@min", 0);
+                return this._ctrlProp.GetXmlNodeInt("@min", 0);
             }
             set
             {
@@ -110,7 +112,8 @@ namespace OfficeOpenXml.Drawing.Controls
                 {
                     throw (new ArgumentOutOfRangeException("MinValue must be between 0 and 3000"));
                 }
-                _ctrlProp.SetXmlNodeInt("@min", value);
+
+                this._ctrlProp.SetXmlNodeInt("@min", value);
             }
         }
         /// <summary>
@@ -120,7 +123,7 @@ namespace OfficeOpenXml.Drawing.Controls
         {
             get
             {
-                return _ctrlProp.GetXmlNodeInt("@max", 30000);
+                return this._ctrlProp.GetXmlNodeInt("@max", 30000);
             }
             set
             {
@@ -128,7 +131,8 @@ namespace OfficeOpenXml.Drawing.Controls
                 {
                     throw (new ArgumentOutOfRangeException("MaxValue must be between 0 and 30000"));
                 }
-                _ctrlProp.SetXmlNodeInt("@max", value);
+
+                this._ctrlProp.SetXmlNodeInt("@max", value);
             }
         }
         /// <summary>
@@ -138,7 +142,7 @@ namespace OfficeOpenXml.Drawing.Controls
         {
             get
             {
-                return _ctrlProp.GetXmlNodeInt("@val", 0);
+                return this._ctrlProp.GetXmlNodeInt("@val", 0);
             }
             set
             {
@@ -146,10 +150,11 @@ namespace OfficeOpenXml.Drawing.Controls
                 {
                     throw (new ArgumentOutOfRangeException("Value must be between 0 and 30000"));
                 }
-                _ctrlProp.SetXmlNodeInt("@val", value);
-                _vmlProp.SetXmlNodeInt("x:Val", value);
 
-                SetLinkedCellValue(value);
+                this._ctrlProp.SetXmlNodeInt("@val", value);
+                this._vmlProp.SetXmlNodeInt("x:Val", value);
+
+                this.SetLinkedCellValue(value);
             }
         }
     }

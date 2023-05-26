@@ -29,12 +29,12 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions.DateTime
         public override CompileResult Execute(IEnumerable<FunctionArgument> arguments, ParsingContext context)
         {
             ValidateArguments(arguments, 1, eErrorType.Value);
-            double dateSerial = ArgToDecimal(arguments, 0);
+            double dateSerial = this.ArgToDecimal(arguments, 0);
             System.DateTime date = System.DateTime.FromOADate(dateSerial);
             DayOfWeek startDay = DayOfWeek.Sunday;
             if (arguments.Count() > 1)
             {
-                int argStartDay = ArgToInt(arguments, 1);
+                int argStartDay = this.ArgToInt(arguments, 1);
                 switch (argStartDay)
                 {
                     case 1:
@@ -61,7 +61,7 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions.DateTime
                         break;
                     default:
                         // Not supported 
-                        return CreateResult(eErrorType.Num);
+                        return this.CreateResult(eErrorType.Num);
                 }
             }
             if (DateTimeFormatInfo.CurrentInfo == null)
@@ -71,7 +71,7 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions.DateTime
             }
             int week = DateTimeFormatInfo.CurrentInfo.Calendar.GetWeekOfYear(date, CalendarWeekRule.FirstDay,
                                                                              startDay);
-            return CreateResult(week, DataType.Integer);
+            return this.CreateResult(week, DataType.Integer);
         }
         
         

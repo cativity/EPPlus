@@ -27,7 +27,7 @@ namespace OfficeOpenXml.Drawing.Style.Effect
         private readonly IPictureRelationDocument _pictureRelationDocument;
         internal ExcelDrawingFillOverlayEffect(IPictureRelationDocument pictureRelationDocument, XmlNamespaceManager nameSpaceManager, XmlNode topNode, string[] schemaNodeOrder, string path) : base(nameSpaceManager, topNode, schemaNodeOrder, path)
         {
-            _pictureRelationDocument = pictureRelationDocument;
+            this._pictureRelationDocument = pictureRelationDocument;
         }
         /// <summary>
         /// The fill to blend with
@@ -45,15 +45,16 @@ namespace OfficeOpenXml.Drawing.Style.Effect
         {
             get
             {
-                return GetXmlNodeString(_path+"/@blend").ToEnum(eBlendMode.Over);
+                return this.GetXmlNodeString(this._path+"/@blend").ToEnum(eBlendMode.Over);
             }
             set
             {
-                if(Fill==null)
+                if(this.Fill==null)
                 {
-                    Create();
+                    this.Create();
                 }
-                SetXmlNodeString(_path + "/@blend", value.ToString().ToLowerInvariant());
+
+                this.SetXmlNodeString(this._path + "/@blend", value.ToString().ToLowerInvariant());
             }
         }
         /// <summary>
@@ -61,18 +62,18 @@ namespace OfficeOpenXml.Drawing.Style.Effect
         /// </summary>
         public void Create()
         {
-            if (Fill == null)
-            {                
-                Fill = new ExcelDrawingFill(_pictureRelationDocument, NameSpaceManager, TopNode, _path, SchemaNodeOrder);
-                if(Fill._fillTypeNode==null)
+            if (this.Fill == null)
+            {
+                this.Fill = new ExcelDrawingFill(this._pictureRelationDocument, this.NameSpaceManager, this.TopNode, this._path, this.SchemaNodeOrder);
+                if(this.Fill._fillTypeNode==null)
                 {
-                    Fill.Style = eFillStyle.NoFill;
+                    this.Fill.Style = eFillStyle.NoFill;
                 }
             }
 
-            if (!ExistsNode($"{_path}/@blend"))
+            if (!this.ExistsNode($"{this._path}/@blend"))
             {
-                Blend = eBlendMode.Over;
+                this.Blend = eBlendMode.Over;
             }
         }
         /// <summary>
@@ -80,8 +81,8 @@ namespace OfficeOpenXml.Drawing.Style.Effect
         /// </summary>
         public void Remove()
         {
-            DeleteNode($"{_path}");
-            Fill = null;
+            this.DeleteNode($"{this._path}");
+            this.Fill = null;
         }
 
     }

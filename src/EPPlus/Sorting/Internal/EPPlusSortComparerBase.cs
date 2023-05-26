@@ -26,10 +26,10 @@ namespace OfficeOpenXml.Sorting.Internal
 
         public EPPlusSortComparerBase(bool[] descending, Dictionary<int, string[]> customLists, CultureInfo culture = null, CompareOptions compareOptions = CompareOptions.None)
         {
-            Descending = descending;
-            CustomLists = customLists;
-            Culture = culture;
-            CompOptions = compareOptions;
+            this.Descending = descending;
+            this.CustomLists = customLists;
+            this.Culture = culture;
+            this.CompOptions = compareOptions;
         }
 
         protected const int CustomListNotFound = -1;
@@ -48,10 +48,10 @@ namespace OfficeOpenXml.Sorting.Internal
                 return -1;
             }
 
-            bool ignoreCase = CompOptions == CompareOptions.IgnoreCase || CompOptions == CompareOptions.OrdinalIgnoreCase;
+            bool ignoreCase = this.CompOptions == CompareOptions.IgnoreCase || this.CompOptions == CompareOptions.OrdinalIgnoreCase;
             for (int x = 0; x < list.Length; x++)
             {
-                if (string.Compare(val, list[x], ignoreCase, Culture) == 0)
+                if (string.Compare(val, list[x], ignoreCase, this.Culture) == 0)
                 {
                     return x;
                 }

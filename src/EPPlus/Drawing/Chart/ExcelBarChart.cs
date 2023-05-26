@@ -29,7 +29,7 @@ namespace OfficeOpenXml.Drawing.Chart
         internal ExcelBarChart(ExcelDrawings drawings, XmlNode node, eChartType? type, ExcelChart topChart, ExcelPivotTable PivotTableSource, XmlDocument chartXml, ExcelGroupShape parent = null) :
             base(drawings, node, type, topChart, PivotTableSource, chartXml, parent)
         {
-            SetChartNodeText("");
+            this.SetChartNodeText("");
             if(type.HasValue)
             {
                 this.SetTypeProperties(drawings, type.Value);
@@ -39,19 +39,19 @@ namespace OfficeOpenXml.Drawing.Chart
         internal ExcelBarChart(ExcelDrawings drawings, XmlNode node, Uri uriChart, Packaging.ZipPackagePart part, XmlDocument chartXml, XmlNode chartNode, ExcelGroupShape parent = null) :
            base(drawings, node, uriChart, part, chartXml, chartNode, parent)
         {
-            SetChartNodeText(chartNode.Name);
+            this.SetChartNodeText(chartNode.Name);
         }
 
         internal ExcelBarChart(ExcelChart topChart, XmlNode chartNode, ExcelGroupShape parent = null) : 
             base(topChart, chartNode, parent)
         {
-            SetChartNodeText(chartNode.Name);
+            this.SetChartNodeText(chartNode.Name);
         }
         #endregion
         internal override void InitSeries(ExcelChart chart, XmlNamespaceManager ns, XmlNode node, bool isPivot, List<ExcelChartSerie> list = null)
         {
             base.InitSeries(chart, ns, node, isPivot, list);
-            Series.Init(chart, ns, node, isPivot, base.Series._list);
+            this.Series.Init(chart, ns, node, isPivot, base.Series._list);
         }
 
         #region "Private functions"
@@ -60,7 +60,7 @@ namespace OfficeOpenXml.Drawing.Chart
         {
             if(string.IsNullOrEmpty(chartNodeText))
             {
-                chartNodeText = GetChartNodeText();
+                chartNodeText = this.GetChartNodeText();
             }
             //_chartTopPath = string.Format(_chartTopPath, chartNodeText);
             //_directionPath = string.Format(_directionPath, _chartTopPath);
@@ -85,7 +85,7 @@ namespace OfficeOpenXml.Drawing.Chart
                 type == eChartType.PyramidBarStacked ||
                 type == eChartType.PyramidBarStacked100)
             {
-                Direction = eDirection.Bar;
+                this.Direction = eDirection.Bar;
             }
             else if (
                 type == eChartType.ColumnClustered ||
@@ -108,7 +108,7 @@ namespace OfficeOpenXml.Drawing.Chart
                 type == eChartType.PyramidColStacked ||
                 type == eChartType.PyramidColStacked100)
             {
-                Direction = eDirection.Column;
+                this.Direction = eDirection.Column;
             }
 
             /****** Shape ******/
@@ -126,7 +126,7 @@ namespace OfficeOpenXml.Drawing.Chart
                 type == eChartType.BarStacked3D ||
                 type == eChartType.BarStacked1003D)
             {
-                Shape = eShape.Box;
+                this.Shape = eShape.Box;
             }
             else if (
                 type == eChartType.CylinderBarClustered ||
@@ -137,7 +137,7 @@ namespace OfficeOpenXml.Drawing.Chart
                 type == eChartType.CylinderColStacked ||
                 type == eChartType.CylinderColStacked100)
             {
-                Shape = eShape.Cylinder;
+                this.Shape = eShape.Cylinder;
             }
             else if (
                 type == eChartType.ConeBarClustered ||
@@ -148,7 +148,7 @@ namespace OfficeOpenXml.Drawing.Chart
                 type == eChartType.ConeColStacked ||
                 type == eChartType.ConeColStacked100)
             {
-                Shape = eShape.Cone;
+                this.Shape = eShape.Cone;
             }
             else if (
                 type == eChartType.PyramidBarClustered ||
@@ -159,7 +159,7 @@ namespace OfficeOpenXml.Drawing.Chart
                 type == eChartType.PyramidColStacked ||
                 type == eChartType.PyramidColStacked100)
             {
-                Shape = eShape.Pyramid;
+                this.Shape = eShape.Pyramid;
             }
         }
         #endregion
@@ -172,11 +172,11 @@ namespace OfficeOpenXml.Drawing.Chart
         {
             get
             {
-                return GetDirectionEnum(_chartXmlHelper.GetXmlNodeString(_directionPath));
+                return GetDirectionEnum(this._chartXmlHelper.GetXmlNodeString(this._directionPath));
             }
             internal set
             {
-                _chartXmlHelper.SetXmlNodeString(_directionPath, GetDirectionText(value));
+                this._chartXmlHelper.SetXmlNodeString(this._directionPath, GetDirectionText(value));
             }
         }
         string _shapePath = "c:shape/@val";
@@ -187,11 +187,11 @@ namespace OfficeOpenXml.Drawing.Chart
         {
             get
             {
-                return GetShapeEnum(_chartXmlHelper.GetXmlNodeString(_shapePath));
+                return GetShapeEnum(this._chartXmlHelper.GetXmlNodeString(this._shapePath));
             }
             internal set
             {
-                _chartXmlHelper.SetXmlNodeString(_shapePath, GetShapeText(value));
+                this._chartXmlHelper.SetXmlNodeString(this._shapePath, GetShapeText(value));
             }
         }
         ExcelChartDataLabel _DataLabel = null;
@@ -202,11 +202,11 @@ namespace OfficeOpenXml.Drawing.Chart
         {
             get
             {
-                if (_DataLabel == null)
+                if (this._DataLabel == null)
                 {
-                    _DataLabel = new ExcelChartDataLabelStandard(this, NameSpaceManager, ChartNode, "dLbls", _chartXmlHelper.SchemaNodeOrder);
+                    this._DataLabel = new ExcelChartDataLabelStandard(this, this.NameSpaceManager, this.ChartNode, "dLbls", this._chartXmlHelper.SchemaNodeOrder);
                 }
-                return _DataLabel;
+                return this._DataLabel;
             }
         }
         /// <summary>
@@ -216,7 +216,7 @@ namespace OfficeOpenXml.Drawing.Chart
         {
             get
             {
-                return ChartNode.SelectSingleNode("c:dLbls", NameSpaceManager) != null;
+                return this.ChartNode.SelectSingleNode("c:dLbls", this.NameSpaceManager) != null;
             }
         }
         string _gapWidthPath = "c:gapWidth/@val";
@@ -227,11 +227,11 @@ namespace OfficeOpenXml.Drawing.Chart
         {
             get
             {
-                return _chartXmlHelper.GetXmlNodeInt(_gapWidthPath);
+                return this._chartXmlHelper.GetXmlNodeInt(this._gapWidthPath);
             }
             set
             {
-                _chartXmlHelper.SetXmlNodeString(_gapWidthPath, value.ToString(CultureInfo.InvariantCulture));
+                this._chartXmlHelper.SetXmlNodeString(this._gapWidthPath, value.ToString(CultureInfo.InvariantCulture));
             }
         }
         string _overlapPath = "c:overlap/@val";
@@ -242,11 +242,11 @@ namespace OfficeOpenXml.Drawing.Chart
         {
             get
             {
-                return _chartXmlHelper.GetXmlNodeInt(_overlapPath);
+                return this._chartXmlHelper.GetXmlNodeInt(this._overlapPath);
             }
             set
             {
-                _chartXmlHelper.SetXmlNodeString(_overlapPath, value.ToString(CultureInfo.InvariantCulture));
+                this._chartXmlHelper.SetXmlNodeString(this._overlapPath, value.ToString(CultureInfo.InvariantCulture));
             }
         }
         #endregion
@@ -322,11 +322,11 @@ namespace OfficeOpenXml.Drawing.Chart
             {
                 if (this.Direction == eDirection.Bar)
                 {
-                    if (Grouping == eGrouping.Stacked)
+                    if (this.Grouping == eGrouping.Stacked)
                     {
                         return eChartType.BarStacked;
                     }
-                    else if (Grouping == eGrouping.PercentStacked)
+                    else if (this.Grouping == eGrouping.PercentStacked)
                     {
                         return eChartType.BarStacked100;
                     }
@@ -337,11 +337,11 @@ namespace OfficeOpenXml.Drawing.Chart
                 }
                 else
                 {
-                    if (Grouping == eGrouping.Stacked)
+                    if (this.Grouping == eGrouping.Stacked)
                     {
                         return eChartType.ColumnStacked;
                     }
-                    else if (Grouping == eGrouping.PercentStacked)
+                    else if (this.Grouping == eGrouping.PercentStacked)
                     {
                         return eChartType.ColumnStacked100;
                     }
@@ -358,11 +358,11 @@ namespace OfficeOpenXml.Drawing.Chart
                 {
                     if (this.Direction == eDirection.Bar)
                     {
-                        if (Grouping == eGrouping.Stacked)
+                        if (this.Grouping == eGrouping.Stacked)
                         {
                             return eChartType.BarStacked3D;
                         }
-                        else if (Grouping == eGrouping.PercentStacked)
+                        else if (this.Grouping == eGrouping.PercentStacked)
                         {
                             return eChartType.BarStacked1003D;
                         }
@@ -373,11 +373,11 @@ namespace OfficeOpenXml.Drawing.Chart
                     }
                     else
                     {
-                        if (Grouping == eGrouping.Stacked)
+                        if (this.Grouping == eGrouping.Stacked)
                         {
                             return eChartType.ColumnStacked3D;
                         }
-                        else if (Grouping == eGrouping.PercentStacked)
+                        else if (this.Grouping == eGrouping.PercentStacked)
                         {
                             return eChartType.ColumnStacked1003D;
                         }
@@ -393,30 +393,30 @@ namespace OfficeOpenXml.Drawing.Chart
                 {
                     if (this.Direction == eDirection.Bar)
                     {
-                        if (Grouping == eGrouping.Stacked)
+                        if (this.Grouping == eGrouping.Stacked)
                         {
                             return eChartType.ConeBarStacked;
                         }
-                        else if (Grouping == eGrouping.PercentStacked)
+                        else if (this.Grouping == eGrouping.PercentStacked)
                         {
                             return eChartType.ConeBarStacked100;
                         }
-                        else if (Grouping == eGrouping.Clustered)
+                        else if (this.Grouping == eGrouping.Clustered)
                         {
                             return eChartType.ConeBarClustered;
                         }
                     }
                     else
                     {
-                        if (Grouping == eGrouping.Stacked)
+                        if (this.Grouping == eGrouping.Stacked)
                         {
                             return eChartType.ConeColStacked;
                         }
-                        else if (Grouping == eGrouping.PercentStacked)
+                        else if (this.Grouping == eGrouping.PercentStacked)
                         {
                             return eChartType.ConeColStacked100;
                         }
-                        else if (Grouping == eGrouping.Clustered)
+                        else if (this.Grouping == eGrouping.Clustered)
                         {
                             return eChartType.ConeColClustered;
                         }
@@ -432,30 +432,30 @@ namespace OfficeOpenXml.Drawing.Chart
                 {
                     if (this.Direction == eDirection.Bar)
                     {
-                        if (Grouping == eGrouping.Stacked)
+                        if (this.Grouping == eGrouping.Stacked)
                         {
                             return eChartType.CylinderBarStacked;
                         }
-                        else if (Grouping == eGrouping.PercentStacked)
+                        else if (this.Grouping == eGrouping.PercentStacked)
                         {
                             return eChartType.CylinderBarStacked100;
                         }
-                        else if (Grouping == eGrouping.Clustered)
+                        else if (this.Grouping == eGrouping.Clustered)
                         {
                             return eChartType.CylinderBarClustered;
                         }
                     }
                     else
                     {
-                        if (Grouping == eGrouping.Stacked)
+                        if (this.Grouping == eGrouping.Stacked)
                         {
                             return eChartType.CylinderColStacked;
                         }
-                        else if (Grouping == eGrouping.PercentStacked)
+                        else if (this.Grouping == eGrouping.PercentStacked)
                         {
                             return eChartType.CylinderColStacked100;
                         }
-                        else if (Grouping == eGrouping.Clustered)
+                        else if (this.Grouping == eGrouping.Clustered)
                         {
                             return eChartType.CylinderColClustered;
                         }
@@ -471,30 +471,30 @@ namespace OfficeOpenXml.Drawing.Chart
                 {
                     if (this.Direction == eDirection.Bar)
                     {
-                        if (Grouping == eGrouping.Stacked)
+                        if (this.Grouping == eGrouping.Stacked)
                         {
                             return eChartType.PyramidBarStacked;
                         }
-                        else if (Grouping == eGrouping.PercentStacked)
+                        else if (this.Grouping == eGrouping.PercentStacked)
                         {
                             return eChartType.PyramidBarStacked100;
                         }
-                        else if (Grouping == eGrouping.Clustered)
+                        else if (this.Grouping == eGrouping.Clustered)
                         {
                             return eChartType.PyramidBarClustered;
                         }
                     }
                     else
                     {
-                        if (Grouping == eGrouping.Stacked)
+                        if (this.Grouping == eGrouping.Stacked)
                         {
                             return eChartType.PyramidColStacked;
                         }
-                        else if (Grouping == eGrouping.PercentStacked)
+                        else if (this.Grouping == eGrouping.PercentStacked)
                         {
                             return eChartType.PyramidColStacked100;
                         }
-                        else if (Grouping == eGrouping.Clustered)
+                        else if (this.Grouping == eGrouping.Clustered)
                         {
                             return eChartType.PyramidColClustered;
                         }

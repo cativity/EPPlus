@@ -11,16 +11,16 @@ namespace OfficeOpenXml.Utils
 	public static class RecyclableMemory
 	{
 #if !NET35
-		private static Microsoft.IO.RecyclableMemoryStreamManager _memoryManager;
+		private static RecyclableMemoryStreamManager _memoryManager;
 		private static bool _dataInitialized = false;
 		private static bool _lazyInitializeFailed = false;
 		private static object _dataLock = new object();
 
-		private static Microsoft.IO.RecyclableMemoryStreamManager MemoryManager
+		private static RecyclableMemoryStreamManager MemoryManager
 		{
 			get
 			{
-				RecyclableMemoryStreamManager? manager = default(Microsoft.IO.RecyclableMemoryStreamManager);
+				RecyclableMemoryStreamManager? manager = default(RecyclableMemoryStreamManager);
 				if (_lazyInitializeFailed && _dataInitialized)
 				{
 					return _memoryManager;
@@ -37,7 +37,7 @@ namespace OfficeOpenXml.Utils
 						_lazyInitializeFailed = true;
 						if (_memoryManager == null)
                         {
-							_memoryManager = new Microsoft.IO.RecyclableMemoryStreamManager();
+							_memoryManager = new RecyclableMemoryStreamManager();
 							_dataInitialized = true;
                         }
                     }
@@ -51,7 +51,7 @@ namespace OfficeOpenXml.Utils
 		/// Sets the RecyclableMemorytreamsManager to manage pools
 		/// </summary>
 		/// <param name="recyclableMemoryStreamManager">The memory manager</param>
-		public static void SetRecyclableMemoryStreamManager(Microsoft.IO.RecyclableMemoryStreamManager recyclableMemoryStreamManager)
+		public static void SetRecyclableMemoryStreamManager(RecyclableMemoryStreamManager recyclableMemoryStreamManager)
 		{
 			_dataInitialized = recyclableMemoryStreamManager is object;
             _memoryManager = recyclableMemoryStreamManager;

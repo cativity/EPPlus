@@ -25,21 +25,21 @@ namespace OfficeOpenXml.Style.XmlAccess
     {
         internal ExcelBorderItemXml(XmlNamespaceManager nameSpaceManager) : base(nameSpaceManager)
         {
-            _borderStyle=ExcelBorderStyle.None;
-            _color = new ExcelColorXml(NameSpaceManager);
+            this._borderStyle=ExcelBorderStyle.None;
+            this._color = new ExcelColorXml(this.NameSpaceManager);
         }
         internal ExcelBorderItemXml(XmlNamespaceManager nsm, XmlNode topNode) :
             base(nsm, topNode)
         {
             if (topNode != null)
             {
-                _borderStyle = GetBorderStyle(GetXmlNodeString("@style"));
-                _color = new ExcelColorXml(nsm, topNode.SelectSingleNode(_colorPath, nsm));
-                Exists = true;
+                this._borderStyle = GetBorderStyle(this.GetXmlNodeString("@style"));
+                this._color = new ExcelColorXml(nsm, topNode.SelectSingleNode(_colorPath, nsm));
+                this.Exists = true;
             }
             else
             {
-                Exists = false;
+                this.Exists = false;
             }
         }
 
@@ -69,12 +69,12 @@ namespace OfficeOpenXml.Style.XmlAccess
         {
             get
             {
-                return _borderStyle;
+                return this._borderStyle;
             }
             set
             {
-                _borderStyle = value;
-                Exists = true;
+                this._borderStyle = value;
+                this.Exists = true;
             }
         }
         ExcelColorXml _color = null;
@@ -86,20 +86,20 @@ namespace OfficeOpenXml.Style.XmlAccess
         {
             get
             {
-                return _color;
+                return this._color;
             }
             internal set
             {
-                _color = value;
+                this._color = value;
             }
         }
         internal override string Id
         {
             get 
             {
-                if (Exists)
+                if (this.Exists)
                 {
-                    return Style + Color.Id;
+                    return this.Style + this.Color.Id;
                 }
                 else
                 {
@@ -110,26 +110,26 @@ namespace OfficeOpenXml.Style.XmlAccess
 
         internal ExcelBorderItemXml Copy()
         {
-            ExcelBorderItemXml? borderItem = new ExcelBorderItemXml(NameSpaceManager);
-            borderItem.Style = _borderStyle;
-            borderItem.Color = _color==null ? new ExcelColorXml(NameSpaceManager) { Auto = true } : _color.Copy();
+            ExcelBorderItemXml? borderItem = new ExcelBorderItemXml(this.NameSpaceManager);
+            borderItem.Style = this._borderStyle;
+            borderItem.Color = this._color==null ? new ExcelColorXml(this.NameSpaceManager) { Auto = true } : this._color.Copy();
             return borderItem;
         }
 
         internal override XmlNode CreateXmlNode(XmlNode topNode)
         {
-            TopNode = topNode;
+            this.TopNode = topNode;
 
-            if (Style != ExcelBorderStyle.None)
+            if (this.Style != ExcelBorderStyle.None)
             {
-                SetXmlNodeString("@style", SetBorderString(Style));
-                if (Color.Exists)
+                this.SetXmlNodeString("@style", SetBorderString(this.Style));
+                if (this.Color.Exists)
                 {
-                    CreateNode(_colorPath);
-                    topNode.AppendChild(Color.CreateXmlNode(TopNode.SelectSingleNode(_colorPath,NameSpaceManager)));
+                    this.CreateNode(_colorPath);
+                    topNode.AppendChild(this.Color.CreateXmlNode(this.TopNode.SelectSingleNode(_colorPath, this.NameSpaceManager)));
                 }
             }
-            return TopNode;
+            return this.TopNode;
         }
 
         private static string SetBorderString(ExcelBorderStyle Style)

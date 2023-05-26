@@ -58,11 +58,11 @@ namespace OfficeOpenXml.Drawing.Controls
         {
             get
             {
-                return GetXmlNodeString("@r:id");
+                return this.GetXmlNodeString("@r:id");
             }
             set
             {
-                SetXmlNodeString("@r:id", value);
+                this.SetXmlNodeString("@r:id", value);
             }
         }
 
@@ -70,11 +70,11 @@ namespace OfficeOpenXml.Drawing.Controls
         { 
             get
             {
-                return GetXmlNodeString("d:controlPr/@macro");
+                return this.GetXmlNodeString("d:controlPr/@macro");
             }
             internal set
             {
-                SetXmlNodeString("d:controlPr/@macro", value);                
+                this.SetXmlNodeString("d:controlPr/@macro", value);                
             }
         }
 
@@ -82,11 +82,11 @@ namespace OfficeOpenXml.Drawing.Controls
         {
             get
             {
-                return GetXmlNodeBool("d:controlPr/@print", true);
+                return this.GetXmlNodeBool("d:controlPr/@print", true);
             }
             set
             {
-                SetXmlNodeBool("d:controlPr/@print", value);
+                this.SetXmlNodeBool("d:controlPr/@print", value);
             }
         }
 
@@ -94,11 +94,11 @@ namespace OfficeOpenXml.Drawing.Controls
         {
             get
             {
-                return GetXmlNodeBool("d:controlPr/@locked", true);
+                return this.GetXmlNodeBool("d:controlPr/@locked", true);
             }
             set
             {
-                SetXmlNodeBool("d:controlPr/@locked", value);
+                this.SetXmlNodeBool("d:controlPr/@locked", value);
             }
         }
 
@@ -108,11 +108,11 @@ namespace OfficeOpenXml.Drawing.Controls
         {
             get
             {
-                return GetXmlNodeBool("d:controlPr/@autoPict", true);
+                return this.GetXmlNodeBool("d:controlPr/@autoPict", true);
             }
             set
             {
-                SetXmlNodeBool("d:controlPr/@autoPict", value);
+                this.SetXmlNodeBool("d:controlPr/@autoPict", value);
             }
         }
 
@@ -120,11 +120,11 @@ namespace OfficeOpenXml.Drawing.Controls
         {
             get
             {
-                return GetXmlNodeBool("d:controlPr/@autoFill", true);
+                return this.GetXmlNodeBool("d:controlPr/@autoFill", true);
             }
             set
             {
-                SetXmlNodeBool("d:controlPr/@autoFill", value);
+                this.SetXmlNodeBool("d:controlPr/@autoFill", value);
             }
         }
 
@@ -132,11 +132,11 @@ namespace OfficeOpenXml.Drawing.Controls
         {
             get
             {
-                return GetXmlNodeBool("d:controlPr/@defaultSize", true);
+                return this.GetXmlNodeBool("d:controlPr/@defaultSize", true);
             }
             set
             {
-                SetXmlNodeBool("d:controlPr/@defaultSize", value);
+                this.SetXmlNodeBool("d:controlPr/@defaultSize", value);
             }
         }
 
@@ -144,11 +144,11 @@ namespace OfficeOpenXml.Drawing.Controls
         {
             get
             {
-                return GetXmlNodeBool("d:controlPr/@disabled", false);
+                return this.GetXmlNodeBool("d:controlPr/@disabled", false);
             }
             set
             {
-                SetXmlNodeBool("d:controlPr/@disabled", value);
+                this.SetXmlNodeBool("d:controlPr/@disabled", value);
             }
         }
 
@@ -156,55 +156,55 @@ namespace OfficeOpenXml.Drawing.Controls
         { 
             get
             {
-                return GetXmlNodeString("@name");
+                return this.GetXmlNodeString("@name");
             }
             set
             {
-                SetXmlNodeString("@name", value);
+                this.SetXmlNodeString("@name", value);
             }
         }
         internal int ShapeId
         {
             get
             {
-                return GetXmlNodeInt("@shapeId");
+                return this.GetXmlNodeInt("@shapeId");
             }
             set
             {
-                SetXmlNodeInt("@shapeId", value);
+                this.SetXmlNodeInt("@shapeId", value);
             }
         }
         internal string AlternativeText
         {
             get
             {
-                return ConvertUtil.ExcelDecodeString(GetXmlNodeString("d:controlPr/@altText"));
+                return ConvertUtil.ExcelDecodeString(this.GetXmlNodeString("d:controlPr/@altText"));
             }
             set
             {
-                SetXmlNodeString("d:controlPr/@altText", ConvertUtil.ExcelEncodeString(value));
+                this.SetXmlNodeString("d:controlPr/@altText", ConvertUtil.ExcelEncodeString(value));
             }
         }
         public string FormulaRange
         {
             get
             {
-                return GetXmlNodeString("d:controlPr/@fmlaRange");
+                return this.GetXmlNodeString("d:controlPr/@fmlaRange");
             }
             set
             {
-                SetXmlNodeString("d:controlPr/@fmlaRange", value);
+                this.SetXmlNodeString("d:controlPr/@fmlaRange", value);
             }
         }
         public string LinkedCell
         {
             get
             {
-                return GetXmlNodeString("d:controlPr/@linkedCell");
+                return this.GetXmlNodeString("d:controlPr/@linkedCell");
             }
             set
             {
-                SetXmlNodeString("d:controlPr/@linkedCell", value);
+                this.SetXmlNodeString("d:controlPr/@linkedCell", value);
             }
         }
         ExcelPosition _from = null;
@@ -212,11 +212,11 @@ namespace OfficeOpenXml.Drawing.Controls
         {
             get
             {
-                if(_from==null)
+                if(this._from==null)
                 {
-                    _from = new ExcelPosition(NameSpaceManager, GetNode("d:controlPr/d:anchor/d:from"), null);
+                    this._from = new ExcelPosition(this.NameSpaceManager, this.GetNode("d:controlPr/d:anchor/d:from"), null);
                 }
-                return _from;
+                return this._from;
             }
         }
         ExcelPosition _to=null;
@@ -224,46 +224,46 @@ namespace OfficeOpenXml.Drawing.Controls
         {
             get
             {
-                if (_to == null)
+                if (this._to == null)
                 {
-                    _to=new ExcelPosition(NameSpaceManager, GetNode("d:controlPr/d:anchor/d:to"), null);
+                    this._to=new ExcelPosition(this.NameSpaceManager, this.GetNode("d:controlPr/d:anchor/d:to"), null);
                 }
-                return _to;
+                return this._to;
             }
         }
         public bool MoveWithCells 
         { 
             get
             {
-                return GetXmlNodeBool("d:controlPr/d:anchor/@moveWithCells");
+                return this.GetXmlNodeBool("d:controlPr/d:anchor/@moveWithCells");
             }
             set
             {
-                SetXmlNodeBool("d:controlPr/d:anchor/@moveWithCells", value, false);
+                this.SetXmlNodeBool("d:controlPr/d:anchor/@moveWithCells", value, false);
             }
         }
         public bool SizeWithCells
         {
             get
             {
-                return GetXmlNodeBool("d:controlPr/d:anchor/@sizeWithCells");
+                return this.GetXmlNodeBool("d:controlPr/d:anchor/@sizeWithCells");
             }
             set
             {
-                SetXmlNodeBool("d:controlPr/d:anchor/@sizeWithCells", value, false);
+                this.SetXmlNodeBool("d:controlPr/d:anchor/@sizeWithCells", value, false);
             }
         }
 
         internal void DeleteMe()
         {
-            XmlNode? node = TopNode.ParentNode?.ParentNode;
+            XmlNode? node = this.TopNode.ParentNode?.ParentNode;
             if (node?.LocalName=="AlternateContent")
             {
                 node.ParentNode.RemoveChild(node);
             }
             else
             {
-                TopNode.ParentNode.RemoveChild(TopNode);
+                this.TopNode.ParentNode.RemoveChild(this.TopNode);
             }
         }
     }

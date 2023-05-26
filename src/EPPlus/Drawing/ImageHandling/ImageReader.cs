@@ -209,7 +209,7 @@ namespace OfficeOpenXml.Drawing
                     MemoryStream? msOut = RecyclableMemory.GetStream();
                     const int bufferSize = 4096;
                     byte[]? buffer = new byte[bufferSize];
-                    using GZipStream? z = new OfficeOpenXml.Packaging.Ionic.Zlib.GZipStream(ms, Packaging.Ionic.Zlib.CompressionMode.Decompress);
+                    using GZipStream? z = new GZipStream(ms, CompressionMode.Decompress);
                     int size = 0;
                     do
                     {

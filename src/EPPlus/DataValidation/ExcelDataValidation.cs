@@ -38,9 +38,9 @@ namespace OfficeOpenXml.DataValidation
             Require.Argument(uid).IsNotNullOrEmpty("uid");
             Require.Argument(address).IsNotNullOrEmpty("address");
 
-            Uid = uid;
-            _address = new ExcelDatavalidationAddress(CheckAndFixRangeAddress(address), this);
-            _ws = ws;
+            this.Uid = uid;
+            this._address = new ExcelDatavalidationAddress(CheckAndFixRangeAddress(address), this);
+            this._ws = ws;
         }
 
         /// <summary>
@@ -49,8 +49,8 @@ namespace OfficeOpenXml.DataValidation
         /// <param name="xr"></param>
         protected ExcelDataValidation(XmlReader xr, ExcelWorksheet ws)
         {
-            LoadXML(xr);
-            _ws = ws;
+            this.LoadXML(xr);
+            this._ws = ws;
         }
 
         /// <summary>
@@ -59,19 +59,19 @@ namespace OfficeOpenXml.DataValidation
         /// <param name="validation">Validation to copy from</param>
         protected ExcelDataValidation(ExcelDataValidation validation,ExcelWorksheet ws)
         {
-            Uid = validation.Uid;
-            Address = validation.Address;
-            ValidationType = validation.ValidationType;
-            ErrorStyle = validation.ErrorStyle;
-            AllowBlank = validation.AllowBlank;
-            ShowInputMessage = validation.ShowInputMessage;
-            ShowErrorMessage = validation.ShowErrorMessage;
-            ErrorTitle = validation.ErrorTitle;
-            Error = validation.Error;
-            PromptTitle = validation.PromptTitle;
-            Prompt = validation.Prompt;
-            operatorString = validation.operatorString;
-            _ws = ws;
+            this.Uid = validation.Uid;
+            this.Address = validation.Address;
+            this.ValidationType = validation.ValidationType;
+            this.ErrorStyle = validation.ErrorStyle;
+            this.AllowBlank = validation.AllowBlank;
+            this.ShowInputMessage = validation.ShowInputMessage;
+            this.ShowErrorMessage = validation.ShowErrorMessage;
+            this.ErrorTitle = validation.ErrorTitle;
+            this.Error = validation.Error;
+            this.PromptTitle = validation.PromptTitle;
+            this.Prompt = validation.Prompt;
+            this.operatorString = validation.operatorString;
+            this._ws = ws;
         }
 
         internal ExcelWorksheet _ws;
@@ -86,7 +86,7 @@ namespace OfficeOpenXml.DataValidation
         /// <summary>
         /// Address of data validation
         /// </summary>
-        public ExcelAddress Address { get { return _address; } internal set { _address = (ExcelDatavalidationAddress)value; } }
+        public ExcelAddress Address { get { return this._address; } internal set { this._address = (ExcelDatavalidationAddress)value; } }
 
         /// <summary>
         /// Validation type
@@ -101,7 +101,7 @@ namespace OfficeOpenXml.DataValidation
         {
             get
             {
-                if (!string.IsNullOrEmpty(errorStyleString))
+                if (!string.IsNullOrEmpty(this.errorStyleString))
                 {
                     return (ExcelDataValidationWarningStyle)Enum.Parse(typeof(ExcelDataValidationWarningStyle), this.errorStyleString, true);
                 }
@@ -126,12 +126,12 @@ namespace OfficeOpenXml.DataValidation
         {
             get
             {
-                if (string.IsNullOrEmpty(imeModeString))
+                if (string.IsNullOrEmpty(this.imeModeString))
                 {
                     return (ExcelDataValidationImeMode.NoControl);
                 }
 
-                return (ExcelDataValidationImeMode) imeModeString.ToEnum<ExcelDataValidationImeMode>();
+                return (ExcelDataValidationImeMode)this.imeModeString.ToEnum<ExcelDataValidationImeMode>();
             }
             set
             {
@@ -202,11 +202,11 @@ namespace OfficeOpenXml.DataValidation
         {
             get
             {
-                if (_as == null)
+                if (this._as == null)
                 {
-                    _as = new ExcelDataValidationAsType(this);
+                    this._as = new ExcelDataValidationAsType(this);
                 }
-                return _as;
+                return this._as;
             }
         }
 
@@ -226,19 +226,20 @@ namespace OfficeOpenXml.DataValidation
         {
             get
             {
-                if (!string.IsNullOrEmpty(operatorString))
+                if (!string.IsNullOrEmpty(this.operatorString))
                 {
-                    return (ExcelDataValidationOperator)Enum.Parse(typeof(ExcelDataValidationOperator), operatorString, true);
+                    return (ExcelDataValidationOperator)Enum.Parse(typeof(ExcelDataValidationOperator), this.operatorString, true);
                 }
                 return default(ExcelDataValidationOperator);
             }
             set
             {
-                if ((ValidationType.Type == eDataValidationType.Any) || ValidationType.Type == eDataValidationType.List)
+                if ((this.ValidationType.Type == eDataValidationType.Any) || this.ValidationType.Type == eDataValidationType.List)
                 {
                     throw new InvalidOperationException("The current validation type does not allow operator to be set");
                 }
-                operatorString = value.ToString();
+
+                this.operatorString = value.ToString();
             }
         }
 
@@ -299,7 +300,7 @@ namespace OfficeOpenXml.DataValidation
         {
             if (e.isExt)
             {
-                InternalValidationType = InternalValidationType.ExtLst;
+                this.InternalValidationType = InternalValidationType.ExtLst;
             }
         };
 
@@ -311,36 +312,36 @@ namespace OfficeOpenXml.DataValidation
                 this.InternalValidationType = InternalValidationType.ExtLst;
             }
 
-            Uid = string.IsNullOrEmpty(xr.GetAttribute("xr:uid")) ? NewId() : xr.GetAttribute("xr:uid");
+            this.Uid = string.IsNullOrEmpty(xr.GetAttribute("xr:uid")) ? NewId() : xr.GetAttribute("xr:uid");
 
-            operatorString = xr.GetAttribute("operator");
-            errorStyleString = xr.GetAttribute("errorStyle");
+            this.operatorString = xr.GetAttribute("operator");
+            this.errorStyleString = xr.GetAttribute("errorStyle");
 
-            imeModeString = xr.GetAttribute("imeMode");
+            this.imeModeString = xr.GetAttribute("imeMode");
 
-            AllowBlank = xr.GetAttribute("allowBlank") == "1" ? true : false;
+            this.AllowBlank = xr.GetAttribute("allowBlank") == "1" ? true : false;
 
-            ShowInputMessage = xr.GetAttribute("showInputMessage") == "1" ? true : false;
-            ShowErrorMessage = xr.GetAttribute("showErrorMessage") == "1" ? true : false;
+            this.ShowInputMessage = xr.GetAttribute("showInputMessage") == "1" ? true : false;
+            this.ShowErrorMessage = xr.GetAttribute("showErrorMessage") == "1" ? true : false;
 
-            ErrorTitle = xr.GetAttribute("errorTitle");
-            Error = xr.GetAttribute("error");
+            this.ErrorTitle = xr.GetAttribute("errorTitle");
+            this.Error = xr.GetAttribute("error");
 
-            PromptTitle = xr.GetAttribute("promptTitle");
-            Prompt = xr.GetAttribute("prompt");
+            this.PromptTitle = xr.GetAttribute("promptTitle");
+            this.Prompt = xr.GetAttribute("prompt");
 
-            ReadClassSpecificXmlNodes(xr);
+            this.ReadClassSpecificXmlNodes(xr);
 
             if (address == null && xr.ReadUntil(5, "sqref", "dataValidation", "extLst"))
             {
                 address = xr.ReadString();
                 if (address == null)
                 {
-                    throw new NullReferenceException($"Unable to locate ExtList adress for DataValidation with uid:{Uid}");
+                    throw new NullReferenceException($"Unable to locate ExtList adress for DataValidation with uid:{this.Uid}");
                 }
             }
 
-            _address = new ExcelDatavalidationAddress
+            this._address = new ExcelDatavalidationAddress
                 (CheckAndFixRangeAddress(address)
                  .Replace(" ", ","), this);
         }
@@ -358,8 +359,8 @@ namespace OfficeOpenXml.DataValidation
         internal void SetAddress(string address)
         {
             string? dvAddress = AddressUtility.ParseEntireColumnSelections(address);
-            _address = new ExcelDatavalidationAddress(address, this);
-            _ws.DataValidations.UpdateRangeDictionary(this);
+            this._address = new ExcelDatavalidationAddress(address, this);
+            this._ws.DataValidations.UpdateRangeDictionary(this);
         }
 
         /// <summary>

@@ -27,7 +27,7 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions.DateTime
     {
         public override CompileResult Execute(IEnumerable<FunctionArgument> arguments, ParsingContext context)
         {
-            return CreateResult(System.DateTime.Now.ToOADate(), DataType.Date);
+            return this.CreateResult(System.DateTime.Now.ToOADate(), DataType.Date);
         }
     }
 }

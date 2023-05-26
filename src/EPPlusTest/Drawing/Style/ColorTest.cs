@@ -44,7 +44,7 @@ namespace EPPlusTest.Drawing.Style
         [TestMethod]
         public void VerifyPresetColorEnumCastFromColor()
         {
-            Type? t = typeof(System.Drawing.Color);
+            Type? t = typeof(Color);
 
             foreach(PropertyInfo? pi in t.GetProperties(BindingFlags.Static | BindingFlags.Public))
             {
@@ -76,7 +76,7 @@ namespace EPPlusTest.Drawing.Style
         }
         private static string TranslateFromColor(Color c)
         {
-            if (c.IsEmpty || c.GetType().GetProperty(c.Name, System.Reflection.BindingFlags.Public | System.Reflection.BindingFlags.Static) == null)
+            if (c.IsEmpty || c.GetType().GetProperty(c.Name, BindingFlags.Public | BindingFlags.Static) == null)
             {
                 throw (new ArgumentException("A preset color cannot be set to empty or be an unnamed color"));
             }

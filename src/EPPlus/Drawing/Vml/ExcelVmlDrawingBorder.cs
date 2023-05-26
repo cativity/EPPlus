@@ -24,7 +24,7 @@ namespace OfficeOpenXml.Drawing.Vml
         internal ExcelVmlDrawingBorder(ExcelDrawings drawings, XmlNamespaceManager ns, XmlNode topNode, string[] schemaNodeOrder) :
             base(ns, topNode)
         {
-           SchemaNodeOrder = schemaNodeOrder;
+            this.SchemaNodeOrder = schemaNodeOrder;
         }
         /// <summary>
         /// The style of the border
@@ -33,20 +33,20 @@ namespace OfficeOpenXml.Drawing.Vml
         { 
             get
             {
-                return GetXmlNodeString("v:stroke/@linestyle").ToEnum(eVmlLineStyle.NoLine);
+                return this.GetXmlNodeString("v:stroke/@linestyle").ToEnum(eVmlLineStyle.NoLine);
             }
             set
             {
                 if (value == eVmlLineStyle.NoLine)
                 {
-                    DeleteNode("v:stroke/@linestyle");
-                    SetXmlNodeString("@stroked", "f");
-                    DeleteNode("@strokeweight");
+                    this.DeleteNode("v:stroke/@linestyle");
+                    this.SetXmlNodeString("@stroked", "f");
+                    this.DeleteNode("@strokeweight");
                 }
                 else
                 {
-                   SetXmlNodeString("v:stroke/@linestyle", value.ToEnumString());
-                   DeleteNode("@stroked");
+                    this.SetXmlNodeString("v:stroke/@linestyle", value.ToEnumString());
+                    this.DeleteNode("@stroked");
                 }
             }
         }
@@ -57,11 +57,11 @@ namespace OfficeOpenXml.Drawing.Vml
         { 
             get
             {
-                return CustomDashStyle.ToEnum(eVmlDashStyle.Custom);
+                return this.CustomDashStyle.ToEnum(eVmlDashStyle.Custom);
             }
             set
             {
-                CustomDashStyle = value.ToEnumString();
+                this.CustomDashStyle = value.ToEnumString();
             }
         }
         /// <summary>
@@ -74,11 +74,11 @@ namespace OfficeOpenXml.Drawing.Vml
         {
             get
             {
-                return GetXmlNodeString("v:stroke/@dashstyle");
+                return this.GetXmlNodeString("v:stroke/@dashstyle");
             }
             set
             {
-                SetXmlNodeString("v:stroke/@dashstyle", value);
+                this.SetXmlNodeString("v:stroke/@dashstyle", value);
             }
         }
         ExcelVmlMeasurementUnit _width = null;
@@ -89,30 +89,30 @@ namespace OfficeOpenXml.Drawing.Vml
         {
             get
             {
-                if(_width==null)
+                if(this._width==null)
                 {
-                    _width = new ExcelVmlMeasurementUnit(GetXmlNodeString("@strokeweight"));
+                    this._width = new ExcelVmlMeasurementUnit(this.GetXmlNodeString("@strokeweight"));
                 }
-                return _width;
+                return this._width;
             }
         }
 
         internal void UpdateXml()
         {
-            if (_width != null)
+            if (this._width != null)
             {
-                if (Width.Value == 0)
+                if (this.Width.Value == 0)
                 {
-                    DeleteNode("@strokeweight");
+                    this.DeleteNode("@strokeweight");
                 }
                 else
                 {
-                    if (LineStyle == eVmlLineStyle.NoLine)
+                    if (this.LineStyle == eVmlLineStyle.NoLine)
                     {
                         this.LineStyle = eVmlLineStyle.Single;
                     }
 
-                    SetXmlNodeString("@strokeweight", _width.GetValueString());
+                    this.SetXmlNodeString("@strokeweight", this._width.GetValueString());
                 }
             }
         }

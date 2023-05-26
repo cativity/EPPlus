@@ -24,7 +24,7 @@ namespace OfficeOpenXml.Drawing.Style.Effect
 
         internal ExcelDrawingInnerShadowEffect(XmlNamespaceManager nameSpaceManager, XmlNode topNode, string[] schemaNodeOrder, string path) : base(nameSpaceManager, topNode, schemaNodeOrder, path)
         {
-            _blurRadPath = string.Format(_blurRadPath, path);
+            this._blurRadPath = string.Format(this._blurRadPath, path);
         }
         /// <summary>
         /// The blur radius.
@@ -33,12 +33,12 @@ namespace OfficeOpenXml.Drawing.Style.Effect
         {
             get
             {
-                return GetXmlNodeEmuToPt(_blurRadPath);
+                return this.GetXmlNodeEmuToPt(this._blurRadPath);
             }
             set
             {
-                SetXmlNodeEmuToPt(_blurRadPath, value);
-                InitXml();
+                this.SetXmlNodeEmuToPt(this._blurRadPath, value);
+                this.InitXml();
             }
         }
     }

@@ -35,7 +35,7 @@ namespace OfficeOpenXml.FormulaParsing.ExpressionGraph.FunctionCompilers
             }
 
             List<FunctionArgument>? args = new List<FunctionArgument>();
-            Function.BeforeInvoke(Context);
+            this.Function.BeforeInvoke(this.Context);
             Expression? firstChild = children.First();
             Expression? lastChild = children.ElementAt(1);
             try
@@ -56,7 +56,7 @@ namespace OfficeOpenXml.FormulaParsing.ExpressionGraph.FunctionCompilers
             {
                 args.Add(new FunctionArgument(lastChild.Compile().Result));
             }
-            return Function.Execute(args, Context);
+            return this.Function.Execute(args, this.Context);
         }
     }
 }

@@ -49,7 +49,7 @@ namespace EPPlusTest.Excel.Functions
         {
             CInt? func = new CInt();
             IEnumerable<FunctionArgument>? args = FunctionsHelper.CreateArgs("2");
-            CompileResult? result = func.Execute(args, _parsingContext);
+            CompileResult? result = func.Execute(args, this._parsingContext);
             Assert.AreEqual(2, result.Result);
         }
 
@@ -58,7 +58,7 @@ namespace EPPlusTest.Excel.Functions
         {
             CInt? func = new CInt();
             IEnumerable<FunctionArgument>? args = FunctionsHelper.CreateArgs(2.88m);
-            CompileResult? result = func.Execute(args, _parsingContext);
+            CompileResult? result = func.Execute(args, this._parsingContext);
             Assert.AreEqual(2, result.Result);
         }
 
@@ -67,7 +67,7 @@ namespace EPPlusTest.Excel.Functions
         {
             CInt? func = new CInt();
             IEnumerable<FunctionArgument>? args = FunctionsHelper.CreateArgs(-2.88m);
-            CompileResult? result = func.Execute(args, _parsingContext);
+            CompileResult? result = func.Execute(args, this._parsingContext);
             Assert.AreEqual(-3, result.Result);
         }
 
@@ -76,7 +76,7 @@ namespace EPPlusTest.Excel.Functions
         {
             CInt? func = new CInt();
             IEnumerable<FunctionArgument>? args = FunctionsHelper.CreateArgs("-2.88");
-            CompileResult? result = func.Execute(args, _parsingContext);
+            CompileResult? result = func.Execute(args, this._parsingContext);
             Assert.AreEqual(-3, result.Result);
         }
     }

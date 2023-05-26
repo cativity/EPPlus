@@ -24,7 +24,7 @@ namespace OfficeOpenXml
         /// </summary>
         public void FillNumber()
         {
-            FillNumber(x => { });
+            this.FillNumber(x => { });
         }
         /// <summary>
         /// Fills a range by adding the step value to the start Value. If <paramref name="startValue"/> is null the first value in the row/column is used.
@@ -34,7 +34,7 @@ namespace OfficeOpenXml
         /// <param name="stepValue">The value used for each step</param>
         public void FillNumber(double? startValue, double stepValue=1)
         {
-            FillNumber(x => { x.StepValue = stepValue; x.StartValue = startValue; });
+            this.FillNumber(x => { x.StepValue = stepValue; x.StartValue = startValue; });
         }
         /// <summary>
         /// Fills a range by using the argument options. 
@@ -49,16 +49,16 @@ namespace OfficeOpenXml
             {
                 if (o.StartPosition == eFillStartPosition.TopLeft)
                 {
-                    for (int c = _fromCol; c <= _toCol; c++)
+                    for (int c = this._fromCol; c <= this._toCol; c++)
                     {
-                        FillMethods.FillNumber(_worksheet, _fromRow, _toRow, c, c, o);
+                        FillMethods.FillNumber(this._worksheet, this._fromRow, this._toRow, c, c, o);
                     }
                 }
                 else
                 {
-                    for (int c = _toCol; c >= _fromCol; c--)
+                    for (int c = this._toCol; c >= this._fromCol; c--)
                     {
-                        FillMethods.FillNumber(_worksheet, _fromRow, _toRow, c, c, o);
+                        FillMethods.FillNumber(this._worksheet, this._fromRow, this._toRow, c, c, o);
                     }
                 }
             }
@@ -66,23 +66,23 @@ namespace OfficeOpenXml
             {
                 if (o.StartPosition == eFillStartPosition.TopLeft)
                 {
-                    for (int r = _fromRow; r <= _toRow; r++)
+                    for (int r = this._fromRow; r <= this._toRow; r++)
                     {
-                        FillMethods.FillNumber(_worksheet, r, r, _fromCol, _toCol, o);
+                        FillMethods.FillNumber(this._worksheet, r, r, this._fromCol, this._toCol, o);
                     }
                 }
                 else
                 {
-                    for (int r = _toRow; r >= _fromRow; r--)
+                    for (int r = this._toRow; r >= this._fromRow; r--)
                     {
-                        FillMethods.FillNumber(_worksheet, r, r, _fromCol, _toCol, o);
+                        FillMethods.FillNumber(this._worksheet, r, r, this._fromCol, this._toCol, o);
                     }
                 }
             }
 
             if (!string.IsNullOrEmpty(o.NumberFormat))
             {
-                Style.Numberformat.Format = o.NumberFormat;
+                this.Style.Numberformat.Format = o.NumberFormat;
             }
         }
          #endregion
@@ -92,14 +92,14 @@ namespace OfficeOpenXml
         /// </summary>
         public void FillDateTime()
         {
-            FillDateTime(x => { });
+            this.FillDateTime(x => { });
         }
         /// <summary>
         /// Fills the range by adding 1 day to each cell per column starting from <paramref name="startValue"/>.
         /// </summary>
         public void FillDateTime(DateTime? startValue, eDateTimeUnit dateTimeUnit=eDateTimeUnit.Day, int stepValue = 1)
         {
-            FillDateTime(x => 
+            this.FillDateTime(x => 
             {
                 x.StartValue = startValue;
                 x.DateTimeUnit = dateTimeUnit;
@@ -119,16 +119,16 @@ namespace OfficeOpenXml
             {
                 if (o.StartPosition == eFillStartPosition.TopLeft)
                 {
-                    for (int c = _fromCol; c <= _toCol; c++)
+                    for (int c = this._fromCol; c <= this._toCol; c++)
                     {
-                        FillMethods.FillDateTime(_worksheet, _fromRow, _toRow, c, c, o);
+                        FillMethods.FillDateTime(this._worksheet, this._fromRow, this._toRow, c, c, o);
                     }
                 }
                 else
                 {
-                    for (int c = _toCol; c >= _fromCol; c--)
+                    for (int c = this._toCol; c >= this._fromCol; c--)
                     {
-                        FillMethods.FillDateTime(_worksheet, _fromRow, _toRow, c, c, o);
+                        FillMethods.FillDateTime(this._worksheet, this._fromRow, this._toRow, c, c, o);
                     }
                 }
             }
@@ -136,23 +136,23 @@ namespace OfficeOpenXml
             {
                 if (o.StartPosition == eFillStartPosition.TopLeft)
                 {
-                    for (int r = _fromRow; r <= _toRow; r++)
+                    for (int r = this._fromRow; r <= this._toRow; r++)
                     {
-                        FillMethods.FillDateTime(_worksheet, r, r, _fromCol, _toCol, o);
+                        FillMethods.FillDateTime(this._worksheet, r, r, this._fromCol, this._toCol, o);
                     }
                 }
                 else
                 {
-                    for (int r = _toRow; r >= _fromRow; r--)
+                    for (int r = this._toRow; r >= this._fromRow; r--)
                     {
-                        FillMethods.FillDateTime(_worksheet, r, r, _fromCol, _toCol, o);
+                        FillMethods.FillDateTime(this._worksheet, r, r, this._fromCol, this._toCol, o);
                     }
                 }
             }
             
             if (!string.IsNullOrEmpty(o.NumberFormat))
             {
-                Style.Numberformat.Format = o.NumberFormat;
+                this.Style.Numberformat.Format = o.NumberFormat;
             }
         }
         #endregion
@@ -164,7 +164,7 @@ namespace OfficeOpenXml
         /// <param name="list">The list to use.</param>
         public void FillList<T>(IEnumerable<T> list)
         {
-            FillList(list, x=> { });
+            this.FillList(list, x=> { });
         }
         /// <summary>
         /// 
@@ -181,16 +181,16 @@ namespace OfficeOpenXml
             {
                 if (o.StartPosition == eFillStartPosition.TopLeft)
                 {
-                    for (int c = _fromCol; c <= _toCol; c++)
+                    for (int c = this._fromCol; c <= this._toCol; c++)
                     {
-                        FillMethods.FillList(_worksheet, _fromRow, _toRow, c, c, list, o);
+                        FillMethods.FillList(this._worksheet, this._fromRow, this._toRow, c, c, list, o);
                     }
                 }
                 else
                 {
-                    for (int c = _toCol; c >= _fromCol; c--)
+                    for (int c = this._toCol; c >= this._fromCol; c--)
                     {
-                        FillMethods.FillList(_worksheet, _fromRow, _toRow, c, c, list, o);
+                        FillMethods.FillList(this._worksheet, this._fromRow, this._toRow, c, c, list, o);
                     }
                 }
             }
@@ -198,23 +198,23 @@ namespace OfficeOpenXml
             {
                 if (o.StartPosition == eFillStartPosition.TopLeft)
                 {
-                    for (int r = _fromRow; r <= _toRow; r++)
+                    for (int r = this._fromRow; r <= this._toRow; r++)
                     {
-                        FillMethods.FillList(_worksheet, r, r, _fromCol, _toCol, list, o);
+                        FillMethods.FillList(this._worksheet, r, r, this._fromCol, this._toCol, list, o);
                     }
                 }
                 else
                 {
-                    for (int r = _toRow; r >= _fromRow; r--)
+                    for (int r = this._toRow; r >= this._fromRow; r--)
                     {
-                        FillMethods.FillList(_worksheet, r, r, _fromCol, _toCol, list, o);
+                        FillMethods.FillList(this._worksheet, r, r, this._fromCol, this._toCol, list, o);
                     }
                 }
             }
 
             if (!string.IsNullOrEmpty(o.NumberFormat))
             {
-                Style.Numberformat.Format = o.NumberFormat;
+                this.Style.Numberformat.Format = o.NumberFormat;
             }
         }
         #endregion

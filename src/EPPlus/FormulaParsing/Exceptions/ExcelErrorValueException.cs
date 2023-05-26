@@ -42,7 +42,7 @@ namespace OfficeOpenXml.FormulaParsing.Exceptions
         public ExcelErrorValueException(string message, ExcelErrorValue error)
             : base(message)
         {
-            ErrorValue = error;
+            this.ErrorValue = error;
         }
         /// <summary>
         /// Constructor

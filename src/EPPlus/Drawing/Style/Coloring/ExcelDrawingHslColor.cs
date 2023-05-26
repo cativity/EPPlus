@@ -34,11 +34,11 @@ namespace OfficeOpenXml.Drawing.Style.Coloring
         {
             get
             {
-                return GetXmlNodeAngel("@hue");
+                return this.GetXmlNodeAngel("@hue");
             }
             set
             {
-                SetXmlNodeAngel("@hue", value, "Hue");
+                this.SetXmlNodeAngel("@hue", value, "Hue");
             }
         }
         /// <summary>
@@ -48,11 +48,11 @@ namespace OfficeOpenXml.Drawing.Style.Coloring
         {
             get
             {
-                return GetXmlNodePercentage("@sat") ?? 0;
+                return this.GetXmlNodePercentage("@sat") ?? 0;
             }
             set
             {
-                SetXmlNodePercentage("@sat", value, false);
+                this.SetXmlNodePercentage("@sat", value, false);
             }
         }
         /// <summary>
@@ -62,11 +62,11 @@ namespace OfficeOpenXml.Drawing.Style.Coloring
         {
             get
             {
-                return GetXmlNodePercentage("@lum") ?? 0;
+                return this.GetXmlNodePercentage("@lum") ?? 0;
             }
             set
             {
-                SetXmlNodePercentage("@lum", value, false);
+                this.SetXmlNodePercentage("@lum", value, false);
             }
         }
 
@@ -74,9 +74,9 @@ namespace OfficeOpenXml.Drawing.Style.Coloring
 
         internal Color GetRgbColor()
         {
-            double h = Hue;
-            double s = Saturation / 100;
-            double l = Luminance / 100;
+            double h = this.Hue;
+            double s = this.Saturation / 100;
+            double l = this.Luminance / 100;
             return GetRgb(h, s, l);
         }
 

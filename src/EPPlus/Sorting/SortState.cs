@@ -26,39 +26,41 @@ namespace OfficeOpenXml.Sorting
     {
         internal SortState(XmlNamespaceManager nameSpaceManager, XmlNode topNode) : base(nameSpaceManager, topNode)
         {
-            _sortConditions = new SortConditionCollection(nameSpaceManager, topNode);
+            this._sortConditions = new SortConditionCollection(nameSpaceManager, topNode);
         }
 
         internal SortState(XmlNamespaceManager nameSpaceManager, ExcelWorksheet worksheet) : base(nameSpaceManager, null)
         {
-            SchemaNodeOrder = worksheet.SchemaNodeOrder;
-            TopNode = worksheet.WorksheetXml.SelectSingleNode(_sortStatePath, nameSpaceManager);
-            if(TopNode == null)
+            this.SchemaNodeOrder = worksheet.SchemaNodeOrder;
+            this.TopNode = worksheet.WorksheetXml.SelectSingleNode(this._sortStatePath, nameSpaceManager);
+            if(this.TopNode == null)
             {
-                TopNode = CreateNode(worksheet.WorksheetXml.DocumentElement, _sortStatePath);
+                this.TopNode = this.CreateNode(worksheet.WorksheetXml.DocumentElement, this._sortStatePath);
                 XmlAttribute? attr = worksheet.WorksheetXml.CreateAttribute("xmlns:xlrd2");
                 attr.Value = ExcelPackage.schemaRichData2;
-                TopNode.Attributes.Append(attr);
+                this.TopNode.Attributes.Append(attr);
             }
             else
             {
-                TopNode.RemoveAll();
+                this.TopNode.RemoveAll();
             }
-            _sortConditions = new SortConditionCollection(nameSpaceManager, TopNode);
+
+            this._sortConditions = new SortConditionCollection(nameSpaceManager, this.TopNode);
         }
 
         internal SortState(XmlNamespaceManager nameSpaceManager, ExcelTable table) : base(nameSpaceManager, null)
         {
-            SchemaNodeOrder = table.SchemaNodeOrder;
-            TopNode = table.TableXml.SelectSingleNode(_sortStatePath, nameSpaceManager);
-            if (TopNode == null)
+            this.SchemaNodeOrder = table.SchemaNodeOrder;
+            this.TopNode = table.TableXml.SelectSingleNode(this._sortStatePath, nameSpaceManager);
+            if (this.TopNode == null)
             {
-                TopNode = CreateNode(table.TableXml.DocumentElement, _sortStatePath);
+                this.TopNode = this.CreateNode(table.TableXml.DocumentElement, this._sortStatePath);
                 XmlAttribute? attr = table.TableXml.CreateAttribute("xmlns:xlrd2");
                 attr.Value = ExcelPackage.schemaRichData2;
-                TopNode.Attributes.Append(attr);
+                this.TopNode.Attributes.Append(attr);
             }
-            _sortConditions = new SortConditionCollection(nameSpaceManager, TopNode);
+
+            this._sortConditions = new SortConditionCollection(nameSpaceManager, this.TopNode);
         }
 
         private string _sortStatePath = "//d:sortState";
@@ -73,7 +75,7 @@ namespace OfficeOpenXml.Sorting
         /// </summary>
         public void Clear()
         {
-            _sortConditions.Clear();
+            this._sortConditions.Clear();
         }
 
         /// <summary>
@@ -83,7 +85,7 @@ namespace OfficeOpenXml.Sorting
         {
             get
             {
-                return _sortConditions;
+                return this._sortConditions;
             }
         }
 
@@ -94,11 +96,11 @@ namespace OfficeOpenXml.Sorting
         {
             get
             {
-                return GetXmlNodeBool(_caseSensitivePath);
+                return this.GetXmlNodeBool(this._caseSensitivePath);
             }
             internal set
             {
-                SetXmlNodeBool(_caseSensitivePath, value, false);
+                this.SetXmlNodeBool(this._caseSensitivePath, value, false);
             }
         }
 
@@ -109,11 +111,11 @@ namespace OfficeOpenXml.Sorting
         {
             get
             {
-                return GetXmlNodeBool(_columnSortPath);
+                return this.GetXmlNodeBool(this._columnSortPath);
             }
             internal set
             {
-                SetXmlNodeBool(_columnSortPath, value, false);
+                this.SetXmlNodeBool(this._columnSortPath, value, false);
             }
         }
 
@@ -124,11 +126,11 @@ namespace OfficeOpenXml.Sorting
         {
             get
             {
-                return GetXmlNodeString(_refPath);
+                return this.GetXmlNodeString(this._refPath);
             }
             internal set
             {
-                SetXmlNodeString(_refPath, value);
+                this.SetXmlNodeString(this._refPath, value);
             }
         }
     }

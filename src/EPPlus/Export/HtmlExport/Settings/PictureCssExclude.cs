@@ -36,8 +36,8 @@ namespace OfficeOpenXml.Export.HtmlExport
         /// </summary>
         public void ResetToDefault()
         {
-            Border = false;
-            Alignment = false;
+            this.Border = false;
+            this.Alignment = false;
         }
         /// <summary>
         /// Copy the values from another settings object.
@@ -45,8 +45,8 @@ namespace OfficeOpenXml.Export.HtmlExport
         /// <param name="copy">The object to copy.</param>
         public void Copy(PictureCssExclude copy)
         {
-            Border = copy.Border;
-            Alignment = copy.Alignment;
+            this.Border = copy.Border;
+            this.Alignment = copy.Alignment;
         }
     }
 }

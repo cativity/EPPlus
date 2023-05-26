@@ -74,64 +74,64 @@ namespace OfficeOpenXml.Drawing
         internal ExcelDrawing(ExcelDrawings drawings, XmlNode node, string topPath, string nvPrPath, ExcelGroupShape parent = null) :
             base(drawings.NameSpaceManager, node)
         {
-            _drawings = drawings;
-            _parent = parent;
+            this._drawings = drawings;
+            this._parent = parent;
             if (node != null)   //No drawing, chart xml only. This currently happends when created from a chart template
             {
-                TopNode = node;
+                this.TopNode = node;
                 
-                if(DrawingType==eDrawingType.Control || drawings.Worksheet.Workbook._nextDrawingId >= 1025)
+                if(this.DrawingType==eDrawingType.Control || drawings.Worksheet.Workbook._nextDrawingId >= 1025)
                 {
-                    _id = drawings.Worksheet._nextControlId++;
+                    this._id = drawings.Worksheet._nextControlId++;
                 }
                 else
                 {
-                    _id = drawings.Worksheet.Workbook._nextDrawingId++;
+                    this._id = drawings.Worksheet.Workbook._nextDrawingId++;
                 }
 
-                AddSchemaNodeOrder(new string[] { "from", "pos", "to", "ext", "pic", "graphicFrame", "sp", "cxnSp ","grpSp", "nvSpPr", "nvCxnSpPr", "nvGraphicFramePr", "spPr", "style", "AlternateContent", "clientData" }, _schemaNodeOrderSpPr);
-                _topPathUngrouped = topPath;
-                _nvPrPathUngrouped = nvPrPath;
-                if (_parent == null)
+                this.AddSchemaNodeOrder(new string[] { "from", "pos", "to", "ext", "pic", "graphicFrame", "sp", "cxnSp ","grpSp", "nvSpPr", "nvCxnSpPr", "nvGraphicFramePr", "spPr", "style", "AlternateContent", "clientData" }, _schemaNodeOrderSpPr);
+                this._topPathUngrouped = topPath;
+                this._nvPrPathUngrouped = nvPrPath;
+                if (this._parent == null)
                 {
-                    AdjustXPathsForGrouping(false);
-                    CellAnchor = GetAnchorFromName(node.LocalName);
-                    SetPositionProperties(drawings, node);
-                    GetPositionSize();                                  //Get the drawing position and size, so we can adjust it upon save, if the normal font is changed 
+                    this.AdjustXPathsForGrouping(false);
+                    this.CellAnchor = GetAnchorFromName(node.LocalName);
+                    this.SetPositionProperties(drawings, node);
+                    this.GetPositionSize();                                  //Get the drawing position and size, so we can adjust it upon save, if the normal font is changed 
 
-                    string relID = GetXmlNodeString(_hyperLinkPath + "/@r:id");
+                    string relID = this.GetXmlNodeString(this._hyperLinkPath + "/@r:id");
                     if (!string.IsNullOrEmpty(relID))
                     {
-                        HypRel = drawings.Part.GetRelationship(relID);
-                        if (HypRel.TargetUri == null)
+                        this.HypRel = drawings.Part.GetRelationship(relID);
+                        if (this.HypRel.TargetUri == null)
                         {
-                            if (!string.IsNullOrEmpty(HypRel.Target))
+                            if (!string.IsNullOrEmpty(this.HypRel.Target))
                             {
-                                _hyperLink = new ExcelHyperLink(HypRel.Target.Substring(1), "");
+                                this._hyperLink = new ExcelHyperLink(this.HypRel.Target.Substring(1), "");
                             }
                         }
                         else
                         {
-                            if (HypRel.TargetUri.IsAbsoluteUri)
+                            if (this.HypRel.TargetUri.IsAbsoluteUri)
                             {
-                                _hyperLink = new ExcelHyperLink(HypRel.TargetUri.AbsoluteUri);
+                                this._hyperLink = new ExcelHyperLink(this.HypRel.TargetUri.AbsoluteUri);
                             }
                             else
                             {
-                                _hyperLink = new ExcelHyperLink(HypRel.TargetUri.OriginalString, UriKind.Relative);
+                                this._hyperLink = new ExcelHyperLink(this.HypRel.TargetUri.OriginalString, UriKind.Relative);
                             }
                         }
-                        if (Hyperlink is ExcelHyperLink ehl)
+                        if (this.Hyperlink is ExcelHyperLink ehl)
                         {
-                            ehl.ToolTip = GetXmlNodeString(_hyperLinkPath + "/@tooltip");
+                            ehl.ToolTip = this.GetXmlNodeString(this._hyperLinkPath + "/@tooltip");
                         }
                     }
                 }
                 else
                 {
-                    AdjustXPathsForGrouping(true);
-                    SetPositionProperties(drawings, node);
-                    GetPositionSize();                                  //Get the drawing position and size, so we can adjust it upon save, if the normal font is changed 
+                    this.AdjustXPathsForGrouping(true);
+                    this.SetPositionProperties(drawings, node);
+                    this.GetPositionSize();                                  //Get the drawing position and size, so we can adjust it upon save, if the normal font is changed 
                 }
             }   
         }
@@ -140,80 +140,81 @@ namespace OfficeOpenXml.Drawing
         {
             if(group)
             {
-                _topPath = _topPathUngrouped.IndexOf('/') > 0 ? _topPathUngrouped.Substring(_topPathUngrouped.IndexOf('/')+1) : "";
-                if(_topPath=="")
+                this._topPath = this._topPathUngrouped.IndexOf('/') > 0 ? this._topPathUngrouped.Substring(this._topPathUngrouped.IndexOf('/')+1) : "";
+                if(this._topPath=="")
                 {
-                    _nvPrPath = _nvPrPathUngrouped;
+                    this._nvPrPath = this._nvPrPathUngrouped;
                 }
                 else
                 {
-                    _nvPrPath = _topPath + "/" + _nvPrPathUngrouped;
+                    this._nvPrPath = this._topPath + "/" + this._nvPrPathUngrouped;
                 }
             }
             else
             {
-                _topPath = _topPathUngrouped;
-                _nvPrPath = _topPath + "/" + _nvPrPathUngrouped;
+                this._topPath = this._topPathUngrouped;
+                this._nvPrPath = this._topPath + "/" + this._nvPrPathUngrouped;
             }
-            _hyperLinkPath = $"{_nvPrPath}/a:hlinkClick";
+
+            this._hyperLinkPath = $"{this._nvPrPath}/a:hlinkClick";
         }
 
         internal void SetGroupChild(XmlNode offNode, XmlNode extNode)
         {
-            CellAnchor = eEditAs.Absolute;
+            this.CellAnchor = eEditAs.Absolute;
 
-            From = null;
-            To = null;
-            Position = new ExcelDrawingCoordinate(NameSpaceManager, offNode, GetPositionSize);
-            Size = new ExcelDrawingSize(NameSpaceManager, extNode, GetPositionSize);
+            this.From = null;
+            this.To = null;
+            this.Position = new ExcelDrawingCoordinate(this.NameSpaceManager, offNode, this.GetPositionSize);
+            this.Size = new ExcelDrawingSize(this.NameSpaceManager, extNode, this.GetPositionSize);
         }
 
         private void SetPositionProperties(ExcelDrawings drawings, XmlNode node)
         {
-            if (_parent == null) //Top level drawing
+            if (this._parent == null) //Top level drawing
             {
                 XmlNode posNode = node.SelectSingleNode("xdr:from", drawings.NameSpaceManager);
                 if (posNode != null)
                 {
-                    From = new ExcelPosition(drawings.NameSpaceManager, posNode, GetPositionSize);
+                    this.From = new ExcelPosition(drawings.NameSpaceManager, posNode, this.GetPositionSize);
                 }
                 else
                 {
                     posNode = node.SelectSingleNode("xdr:pos", drawings.NameSpaceManager);
                     if (posNode != null)
                     {
-                        Position = new ExcelDrawingCoordinate(drawings.NameSpaceManager, posNode, GetPositionSize);
+                        this.Position = new ExcelDrawingCoordinate(drawings.NameSpaceManager, posNode, this.GetPositionSize);
                     }
                 }
                 posNode = node.SelectSingleNode("xdr:to", drawings.NameSpaceManager);
                 if (posNode != null)
                 {
-                    To = new ExcelPosition(drawings.NameSpaceManager, posNode, GetPositionSize);
+                    this.To = new ExcelPosition(drawings.NameSpaceManager, posNode, this.GetPositionSize);
                 }
                 else
                 {
-                    To = null;
+                    this.To = null;
                     posNode = node.SelectSingleNode("xdr:ext", drawings.NameSpaceManager);
                     if (posNode != null)
                     {
-                        Size = new ExcelDrawingSize(drawings.NameSpaceManager, posNode, GetPositionSize);
+                        this.Size = new ExcelDrawingSize(drawings.NameSpaceManager, posNode, this.GetPositionSize);
                     }
                 }
             }
             else //Child to Group shape
             {
-                From = null;
-                To = null;
-                XmlNode posNode = GetXFrameNode(node, "a:off");
+                this.From = null;
+                this.To = null;
+                XmlNode posNode = this.GetXFrameNode(node, "a:off");
                 if (posNode != null)
                 {
-                    Position = new ExcelDrawingCoordinate(drawings.NameSpaceManager, posNode, GetPositionSize);
+                    this.Position = new ExcelDrawingCoordinate(drawings.NameSpaceManager, posNode, this.GetPositionSize);
                 }
 
-                posNode = GetXFrameNode(node, "a:ext");
+                posNode = this.GetXFrameNode(node, "a:ext");
                 if (posNode != null)
                 {
-                    Size = new ExcelDrawingSize(drawings.NameSpaceManager, posNode, GetPositionSize);
+                    this.Size = new ExcelDrawingSize(drawings.NameSpaceManager, posNode, this.GetPositionSize);
                 }
             }
         }
@@ -226,29 +227,28 @@ namespace OfficeOpenXml.Drawing
             }
             if (node.LocalName == "grpSp")
             {
-                return node.SelectSingleNode($"xdr:grpSpPr/a:xfrm/{child}", NameSpaceManager);
+                return node.SelectSingleNode($"xdr:grpSpPr/a:xfrm/{child}", this.NameSpaceManager);
             }
             else if (node.LocalName == "graphicFrame")
             {
-                return node.SelectSingleNode($"xdr:xfrm/{child}", NameSpaceManager);
+                return node.SelectSingleNode($"xdr:xfrm/{child}", this.NameSpaceManager);
             }
             else
             {
-                return node.SelectSingleNode($"xdr:spPr/a:xfrm/{child}", NameSpaceManager);
+                return node.SelectSingleNode($"xdr:spPr/a:xfrm/{child}", this.NameSpaceManager);
             }
         }
 
         internal bool IsWithinColumnRange(int colFrom, int colTo)
         {
-            if (CellAnchor == eEditAs.OneCell)
+            if (this.CellAnchor == eEditAs.OneCell)
             {
-
-                GetToColumnFromPixels(_width, out int col, out _);
-                return ((From.Column > colFrom - 1 || (From.Column == colFrom - 1 && From.ColumnOff == 0)) && (col <= colTo));
+                this.GetToColumnFromPixels(this._width, out int col, out _);
+                return ((this.From.Column > colFrom - 1 || (this.From.Column == colFrom - 1 && this.From.ColumnOff == 0)) && (col <= colTo));
             }
-            else if (CellAnchor == eEditAs.TwoCell)
+            else if (this.CellAnchor == eEditAs.TwoCell)
             {
-                return ((From.Column > colFrom - 1 || (From.Column == colFrom - 1 && From.ColumnOff == 0)) && (To.Column <= colTo));
+                return ((this.From.Column > colFrom - 1 || (this.From.Column == colFrom - 1 && this.From.ColumnOff == 0)) && (this.To.Column <= colTo));
             }
             else
             {
@@ -257,14 +257,14 @@ namespace OfficeOpenXml.Drawing
         }
         internal bool IsWithinRowRange(int rowFrom, int rowTo)
         {
-            if (CellAnchor == eEditAs.OneCell)
+            if (this.CellAnchor == eEditAs.OneCell)
             {
-                GetToRowFromPixels(_height, out int row, out int pixOff);
-                return ((From.Row > rowFrom - 1 || (From.Row == rowFrom - 1 && From.RowOff == 0)) && (row <= rowTo));
+                this.GetToRowFromPixels(this._height, out int row, out int pixOff);
+                return ((this.From.Row > rowFrom - 1 || (this.From.Row == rowFrom - 1 && this.From.RowOff == 0)) && (row <= rowTo));
             }
-            else if (CellAnchor == eEditAs.TwoCell)
+            else if (this.CellAnchor == eEditAs.TwoCell)
             {
-                return ((From.Row > rowFrom - 1 || (From.Row == rowFrom - 1 && From.RowOff == 0)) && (To.Row <= rowTo));
+                return ((this.From.Row > rowFrom - 1 || (this.From.Row == rowFrom - 1 && this.From.RowOff == 0)) && (this.To.Row <= rowTo));
             }
             else
             {
@@ -303,12 +303,12 @@ namespace OfficeOpenXml.Drawing
             {
                 try
                 {
-                    if (_nvPrPath == "")
+                    if (this._nvPrPath == "")
                     {
                         return "";
                     }
 
-                    return GetXmlNodeString(_nvPrPath+"/@name");
+                    return this.GetXmlNodeString(this._nvPrPath+"/@name");
                 }
                 catch
                 {
@@ -319,20 +319,20 @@ namespace OfficeOpenXml.Drawing
             {
                 try
                 {
-                    if (_nvPrPath == "")
+                    if (this._nvPrPath == "")
                     {
                         throw new NotImplementedException();
                     }
 
-                    SetXmlNodeString(_nvPrPath + "/@name", value);
+                    this.SetXmlNodeString(this._nvPrPath + "/@name", value);
                     if (this is ExcelSlicer<ExcelTableSlicerCache> ts)
                     {
-                        SetXmlNodeString(_nvPrPath + "/../../a:graphic/a:graphicData/sle:slicer/@name", value);
+                        this.SetXmlNodeString(this._nvPrPath + "/../../a:graphic/a:graphicData/sle:slicer/@name", value);
                         ts.SlicerName = value;
                     }
                     else if (this is ExcelSlicer<ExcelPivotTableSlicerCache> pts)
                     {
-                        SetXmlNodeString(_nvPrPath + "/../../a:graphic/a:graphicData/sle:slicer/@name", value);
+                        this.SetXmlNodeString(this._nvPrPath + "/../../a:graphic/a:graphicData/sle:slicer/@name", value);
                         pts.SlicerName = value;
                     }
                 }
@@ -353,12 +353,12 @@ namespace OfficeOpenXml.Drawing
             {
                 try
                 {
-                    if (_nvPrPath == "")
+                    if (this._nvPrPath == "")
                     {
                         return "";
                     }
 
-                    return GetXmlNodeString(_nvPrPath + "/@descr");
+                    return this.GetXmlNodeString(this._nvPrPath + "/@descr");
                 }
                 catch
                 {
@@ -369,12 +369,12 @@ namespace OfficeOpenXml.Drawing
             {
                 try
                 {
-                    if (_nvPrPath == "")
+                    if (this._nvPrPath == "")
                     {
                         throw new NotImplementedException();
                     }
 
-                    SetXmlNodeString(_nvPrPath + "/@descr", value);
+                    this.SetXmlNodeString(this._nvPrPath + "/@descr", value);
                 }
                 catch
                 {
@@ -391,13 +391,13 @@ namespace OfficeOpenXml.Drawing
             {
                 try
                 {
-                    if (_parent!=null && DrawingType == eDrawingType.Control)
+                    if (this._parent!=null && this.DrawingType == eDrawingType.Control)
                     {
                         return ((ExcelControl)this).GetCellAnchorFromWorksheetXml();
                     }
-                    if (CellAnchor == eEditAs.TwoCell)
+                    if (this.CellAnchor == eEditAs.TwoCell)
                     {
-                        string s = GetXmlNodeString("@editAs");
+                        string s = this.GetXmlNodeString("@editAs");
                         if (s == "")
                         {
                             return eEditAs.TwoCell;
@@ -409,7 +409,7 @@ namespace OfficeOpenXml.Drawing
                     }
                     else
                     {
-                        return CellAnchor;
+                        return this.CellAnchor;
                     }
                 }
                 catch
@@ -419,9 +419,9 @@ namespace OfficeOpenXml.Drawing
             }
             set
             {
-                if(_parent!=null)
+                if(this._parent!=null)
                 {
-                    if(DrawingType==eDrawingType.Control)
+                    if(this.DrawingType==eDrawingType.Control)
                     {
                         ((ExcelControl)this).SetCellAnchor(value);
                     }
@@ -430,12 +430,12 @@ namespace OfficeOpenXml.Drawing
                         throw (new InvalidOperationException("EditAs can't be set when a drawing is a part of a group."));
                     }
                 }
-                else if (CellAnchor == eEditAs.TwoCell)
+                else if (this.CellAnchor == eEditAs.TwoCell)
                 {
                     string s = value.ToString();
-                    SetXmlNodeString("@editAs", s.Substring(0, 1).ToLower(CultureInfo.InvariantCulture) + s.Substring(1, s.Length - 1));
+                    this.SetXmlNodeString("@editAs", s.Substring(0, 1).ToLower(CultureInfo.InvariantCulture) + s.Substring(1, s.Length - 1));
                 }
-                else if(CellAnchor!=value)
+                else if(this.CellAnchor!=value)
                 {
                     throw (new InvalidOperationException("EditAs can only be set when CellAnchor is set to TwoCellAnchor"));
                 }
@@ -449,11 +449,11 @@ namespace OfficeOpenXml.Drawing
         {
             get
             {
-                return GetXmlNodeBool(lockedPath, true);
+                return this.GetXmlNodeBool(lockedPath, true);
             }
             set
             {
-                SetXmlNodeBool(lockedPath, value);
+                this.SetXmlNodeBool(lockedPath, value);
             }
         }
         const string printPath = "xdr:clientData/@fPrintsWithSheet";
@@ -464,11 +464,11 @@ namespace OfficeOpenXml.Drawing
         {
             get
             {
-                return GetXmlNodeBool(printPath, true);
+                return this.GetXmlNodeBool(printPath, true);
             }
             set
             {
-                SetXmlNodeBool(printPath, value);
+                this.SetXmlNodeBool(printPath, value);
             }
         }
         /// <summary>
@@ -509,36 +509,38 @@ namespace OfficeOpenXml.Drawing
         {
             get
             {
-                return _hyperLink;
+                return this._hyperLink;
             }
             set
             {
-                if (_hyperLink != null)
+                if (this._hyperLink != null)
                 {
-                    DeleteNode(_hyperLinkPath);
-                    if (HypRel != null)
+                    this.DeleteNode(this._hyperLinkPath);
+                    if (this.HypRel != null)
                     {
-                        _drawings._package.ZipPackage.DeletePart(UriHelper.ResolvePartUri(HypRel.SourceUri, HypRel.TargetUri));
+                        this._drawings._package.ZipPackage.DeletePart(UriHelper.ResolvePartUri(this.HypRel.SourceUri, this.HypRel.TargetUri));
                     }
                 }
 
                 if (value != null)
                 {
                     if(value is ExcelHyperLink el && !string.IsNullOrEmpty(el.ReferenceAddress))
-                    {                        
-                        HypRel = _drawings.Part.CreateRelationship("#" + new ExcelAddress(el.ReferenceAddress).FullAddress, Packaging.TargetMode.Internal, ExcelPackage.schemaHyperlink);
+                    {
+                        this.HypRel = this._drawings.Part.CreateRelationship("#" + new ExcelAddress(el.ReferenceAddress).FullAddress, TargetMode.Internal, ExcelPackage.schemaHyperlink);
                     }
                     else
                     {
-                        HypRel = _drawings.Part.CreateRelationship(value, Packaging.TargetMode.External, ExcelPackage.schemaHyperlink);
+                        this.HypRel = this._drawings.Part.CreateRelationship(value, TargetMode.External, ExcelPackage.schemaHyperlink);
                     }
-                    SetXmlNodeString(_hyperLinkPath + "/@r:id", HypRel.Id);
-                    if (Hyperlink is ExcelHyperLink excelLink)
+
+                    this.SetXmlNodeString(this._hyperLinkPath + "/@r:id", this.HypRel.Id);
+                    if (this.Hyperlink is ExcelHyperLink excelLink)
                     {
-                        SetXmlNodeString(_hyperLinkPath + "/@tooltip", excelLink.ToolTip);
+                        this.SetXmlNodeString(this._hyperLinkPath + "/@tooltip", excelLink.ToolTip);
                     }
                 }
-                _hyperLink = value;
+
+                this._hyperLink = value;
             }
         }
         ExcelDrawingAsType _as = null;
@@ -549,14 +551,14 @@ namespace OfficeOpenXml.Drawing
         {
             get
             {
-                if (_as == null)
+                if (this._as == null)
                 {
-                    _as = new ExcelDrawingAsType(this);
+                    this._as = new ExcelDrawingAsType(this);
                 }
-                return _as;
+                return this._as;
             }
         }
-        internal Packaging.ZipPackageRelationship HypRel { get; set; }
+        internal ZipPackageRelationship HypRel { get; set; }
         /// <summary>
         /// Add new Drawing types here
         /// </summary>
@@ -653,65 +655,65 @@ namespace OfficeOpenXml.Drawing
 
         internal int Id
         {
-            get { return _id; }
+            get { return this._id; }
         }
         #region "Internal sizing functions"
         internal void GetFromBounds(out int fromRow, out int fromRowOff, out int fromCol, out int fromColOff)
         {
-            if (CellAnchor == eEditAs.Absolute)
+            if (this.CellAnchor == eEditAs.Absolute)
             {
-                GetToRowFromPixels(Position.Y, out fromRow, out fromRowOff);
-                GetToColumnFromPixels(Position.X, out fromCol, out fromColOff);
+                this.GetToRowFromPixels(this.Position.Y, out fromRow, out fromRowOff);
+                this.GetToColumnFromPixels(this.Position.X, out fromCol, out fromColOff);
             }
             else
             {
-                fromRow = From.Row;
-                fromRowOff = From.RowOff;
-                fromCol = From.Column;
-                fromColOff = From.ColumnOff;
+                fromRow = this.From.Row;
+                fromRowOff = this.From.RowOff;
+                fromCol = this.From.Column;
+                fromColOff = this.From.ColumnOff;
             }
         }
         internal void GetToBounds(out int toRow, out int toRowOff, out int toCol, out int toColOff)
         {
-            if (CellAnchor == eEditAs.Absolute)
+            if (this.CellAnchor == eEditAs.Absolute)
             {
-                GetToRowFromPixels((Position.Y + Size.Height) / EMU_PER_PIXEL, out toRow, out toRowOff);
-                GetToColumnFromPixels(Position.X + Size.Width / EMU_PER_PIXEL, out toCol, out toColOff);
+                this.GetToRowFromPixels((this.Position.Y + this.Size.Height) / EMU_PER_PIXEL, out toRow, out toRowOff);
+                this.GetToColumnFromPixels(this.Position.X + this.Size.Width / EMU_PER_PIXEL, out toCol, out toColOff);
             }
             else
             {
-                if (CellAnchor == eEditAs.TwoCell)
+                if (this.CellAnchor == eEditAs.TwoCell)
                 {
-                    toRow = To.Row;
-                    toRowOff = To.RowOff;
-                    toCol = To.Column;
-                    toColOff = To.ColumnOff;
+                    toRow = this.To.Row;
+                    toRowOff = this.To.RowOff;
+                    toCol = this.To.Column;
+                    toColOff = this.To.ColumnOff;
                 }
                 else
                 {
-                    GetToRowFromPixels(Size.Height / EMU_PER_PIXEL, out toRow, out toRowOff, From.Row, From.RowOff);
-                    GetToColumnFromPixels(Size.Width / EMU_PER_PIXEL, out toCol, out toColOff, From.Column, From.ColumnOff);
+                    this.GetToRowFromPixels(this.Size.Height / EMU_PER_PIXEL, out toRow, out toRowOff, this.From.Row, this.From.RowOff);
+                    this.GetToColumnFromPixels(this.Size.Width / EMU_PER_PIXEL, out toCol, out toColOff, this.From.Column, this.From.ColumnOff);
                 }
             }
         }
         internal int GetPixelLeft()
         {
             int pix;
-            if (CellAnchor == eEditAs.Absolute)
+            if (this.CellAnchor == eEditAs.Absolute)
             {
-                pix = Position.X / EMU_PER_PIXEL;
+                pix = this.Position.X / EMU_PER_PIXEL;
             }
             else
             {
-                ExcelWorksheet ws = _drawings.Worksheet;
+                ExcelWorksheet ws = this._drawings.Worksheet;
                 decimal mdw = ws.Workbook.MaxFontWidth;
 
                 pix = 0;
-                for (int col = 0; col < From.Column; col++)
+                for (int col = 0; col < this.From.Column; col++)
                 {
                     pix += ws.GetColumnWidthPixels(col, mdw);
                 }
-                pix += From.ColumnOff / EMU_PER_PIXEL;
+                pix += this.From.ColumnOff / EMU_PER_PIXEL;
             }
 
             return pix;
@@ -719,94 +721,95 @@ namespace OfficeOpenXml.Drawing
         internal int GetPixelTop()
         {
             int pix;
-            if (CellAnchor == eEditAs.Absolute)
+            if (this.CellAnchor == eEditAs.Absolute)
             {
-                pix = Position.Y / EMU_PER_PIXEL;
+                pix = this.Position.Y / EMU_PER_PIXEL;
             }
             else
             {
                 pix = 0;
-                Dictionary<int, double>? cache = _drawings.Worksheet.RowHeightCache;
-                for (int row = 0; row < From.Row; row++)
+                Dictionary<int, double>? cache = this._drawings.Worksheet.RowHeightCache;
+                for (int row = 0; row < this.From.Row; row++)
                 {
                     lock (cache)
                     {
                         if (!cache.ContainsKey(row))
                         {
-                            cache.Add(row, _drawings.Worksheet.GetRowHeight(row + 1));
+                            cache.Add(row, this._drawings.Worksheet.GetRowHeight(row + 1));
                         }
                     }
                     pix += (int)(cache[row] / 0.75);
                 }
-                pix += From.RowOff / EMU_PER_PIXEL;
+                pix += this.From.RowOff / EMU_PER_PIXEL;
             }
             return pix;
         }
         internal double GetPixelWidth()
         {
             double pix;
-            if (CellAnchor == eEditAs.TwoCell)
+            if (this.CellAnchor == eEditAs.TwoCell)
             {
-                ExcelWorksheet ws = _drawings.Worksheet;
+                ExcelWorksheet ws = this._drawings.Worksheet;
                 decimal mdw = ws.Workbook.MaxFontWidth;
 
-                pix = -From.ColumnOff / (double)EMU_PER_PIXEL;
-                for (int col = From.Column + 1; col <= To.Column; col++)
+                pix = -this.From.ColumnOff / (double)EMU_PER_PIXEL;
+                for (int col = this.From.Column + 1; col <= this.To.Column; col++)
                 {
                     pix += (double)decimal.Truncate(((256 * ws.GetColumnWidth(col) + decimal.Truncate(128 / (decimal)mdw)) / 256) * mdw);
                 }
 
-                double w = (double)decimal.Truncate(((256 * ws.GetColumnWidth(To.Column + 1) + decimal.Truncate(128 / (decimal)mdw)) / 256) * mdw);
-                pix += Math.Min(w, Convert.ToDouble(To.ColumnOff) / EMU_PER_PIXEL);
+                double w = (double)decimal.Truncate(((256 * ws.GetColumnWidth(this.To.Column + 1) + decimal.Truncate(128 / (decimal)mdw)) / 256) * mdw);
+                pix += Math.Min(w, Convert.ToDouble(this.To.ColumnOff) / EMU_PER_PIXEL);
             }
             else
             {
-                pix = Size.Width / (double)EMU_PER_PIXEL;
+                pix = this.Size.Width / (double)EMU_PER_PIXEL;
             }
             return pix;
         }
         internal double GetPixelHeight()
         {
             double pix;
-            if (CellAnchor == eEditAs.TwoCell)
+            if (this.CellAnchor == eEditAs.TwoCell)
             {
-                ExcelWorksheet ws = _drawings.Worksheet;
+                ExcelWorksheet ws = this._drawings.Worksheet;
 
-                pix = -(From.RowOff / (double)EMU_PER_PIXEL);
-                for (int row = From.Row + 1; row <= To.Row; row++)
+                pix = -(this.From.RowOff / (double)EMU_PER_PIXEL);
+                for (int row = this.From.Row + 1; row <= this.To.Row; row++)
                 {
                     pix += ws.GetRowHeight(row) / 0.75;
                 }
-                double h = ws.GetRowHeight(To.Row + 1) / 0.75;
-                pix += Math.Min(h, Convert.ToDouble(To.RowOff) / EMU_PER_PIXEL);
+                double h = ws.GetRowHeight(this.To.Row + 1) / 0.75;
+                pix += Math.Min(h, Convert.ToDouble(this.To.RowOff) / EMU_PER_PIXEL);
             }
             else
             {
-                pix = Size.Height / (double)EMU_PER_PIXEL;
+                pix = this.Size.Height / (double)EMU_PER_PIXEL;
             }
             return pix;
         }
 
         internal void SetPixelTop(double pixels)
         {
-            _doNotAdjust = true;
-            if (CellAnchor == eEditAs.Absolute)
+            this._doNotAdjust = true;
+            if (this.CellAnchor == eEditAs.Absolute)
             {
-                Position.Y = (int)(pixels * EMU_PER_PIXEL);
+                this.Position.Y = (int)(pixels * EMU_PER_PIXEL);
             }
             else
             {
-                CalcRowFromPixelTop(pixels, out int row, out int rowOff);
-                From.Row = row;
-                From.RowOff = rowOff;
+                this.CalcRowFromPixelTop(pixels, out int row, out int rowOff);
+                this.From.Row = row;
+                this.From.RowOff = rowOff;
             }
-            _top = pixels;
-            _doNotAdjust = false;
+
+            this._top = pixels;
+            this._doNotAdjust = false;
         }
 
         internal void CalcRowFromPixelTop(double pixels, out int row, out int rowOff)
         {
-            ExcelWorksheet ws = _drawings.Worksheet;
+            ExcelWorksheet ws = this._drawings.Worksheet;
             decimal mdw = ws.Workbook.MaxFontWidth;
             double prevPix = 0;
             double pix = ws.GetRowHeight(1) / 0.75;
@@ -831,25 +834,26 @@ namespace OfficeOpenXml.Drawing
 
         internal void SetPixelLeft(double pixels)
         {
-            _doNotAdjust = true;
-            if (CellAnchor == eEditAs.Absolute)
+            this._doNotAdjust = true;
+            if (this.CellAnchor == eEditAs.Absolute)
             {
-                Position.X = (int)(pixels * EMU_PER_PIXEL);
+                this.Position.X = (int)(pixels * EMU_PER_PIXEL);
             }
             else
             {
-                CalcColFromPixelLeft(pixels, out int col, out int colOff);
-                From.Column = col;
-                From.ColumnOff = colOff;
+                this.CalcColFromPixelLeft(pixels, out int col, out int colOff);
+                this.From.Column = col;
+                this.From.ColumnOff = colOff;
             }
-            _doNotAdjust = false;
 
-            _left = pixels;
+            this._doNotAdjust = false;
+
+            this._left = pixels;
         }
         internal void CalcColFromPixelLeft(double pixels, out int column, out int columnOff)
         {
 
-            ExcelWorksheet ws = _drawings.Worksheet;
+            ExcelWorksheet ws = this._drawings.Worksheet;
             decimal mdw = ws.Workbook.MaxFontWidth;
             double prevPix = 0;
             double pix = (int)decimal.Truncate(((256 * ws.GetColumnWidth(1) + decimal.Truncate(128 / (decimal)mdw)) / 256) * mdw);
@@ -873,17 +877,17 @@ namespace OfficeOpenXml.Drawing
         }
         internal void SetPixelHeight(double pixels)
         {
-            if (CellAnchor == eEditAs.TwoCell)
+            if (this.CellAnchor == eEditAs.TwoCell)
             {
-                _doNotAdjust = true;
-                GetToRowFromPixels(pixels,  out int toRow, out int pixOff);
-                To.Row = toRow;
-                To.RowOff = pixOff;
-                _doNotAdjust = false;
+                this._doNotAdjust = true;
+                this.GetToRowFromPixels(pixels,  out int toRow, out int pixOff);
+                this.To.Row = toRow;
+                this.To.RowOff = pixOff;
+                this._doNotAdjust = false;
             }
             else
             {
-                Size.Height = (long)Math.Round(pixels * EMU_PER_PIXEL);
+                this.Size.Height = (long)Math.Round(pixels * EMU_PER_PIXEL);
             }
         }
 
@@ -891,10 +895,10 @@ namespace OfficeOpenXml.Drawing
         {
             if(fromRow<0)
             {
-                fromRow = From.Row;
-                fromRowOff = From.RowOff;
+                fromRow = this.From.Row;
+                fromRowOff = this.From.RowOff;
             }
-            ExcelWorksheet ws = _drawings.Worksheet;
+            ExcelWorksheet ws = this._drawings.Worksheet;
             double pixOff = pixels - ((ws.GetRowHeight(fromRow + 1) / 0.75) - (fromRowOff / (double)EMU_PER_PIXEL));
             double prevPixOff = pixels;
             int row = fromRow + 1;
@@ -917,29 +921,29 @@ namespace OfficeOpenXml.Drawing
 
         internal void SetPixelWidth(double pixels)
         {
-            if (CellAnchor == eEditAs.TwoCell)
+            if (this.CellAnchor == eEditAs.TwoCell)
             {
-                _doNotAdjust = true;
-                GetToColumnFromPixels(pixels, out int col, out int pixOff);
+                this._doNotAdjust = true;
+                this.GetToColumnFromPixels(pixels, out int col, out int pixOff);
 
-                To.Column = col - 2;
-                To.ColumnOff = pixOff * EMU_PER_PIXEL;
-                _doNotAdjust = false;
+                this.To.Column = col - 2;
+                this.To.ColumnOff = pixOff * EMU_PER_PIXEL;
+                this._doNotAdjust = false;
             }
             else
             {
-                Size.Width = (int)Math.Round(pixels * EMU_PER_PIXEL);
+                this.Size.Width = (int)Math.Round(pixels * EMU_PER_PIXEL);
             }
         }
 
         internal void GetToColumnFromPixels(double pixels, out int col, out int colOff, int fromColumn = -1, int fromColumnOff = -1)
         {
-            ExcelWorksheet ws = _drawings.Worksheet;
+            ExcelWorksheet ws = this._drawings.Worksheet;
             decimal mdw = ws.Workbook.MaxFontWidth;
             if(fromColumn<0)
             {
-                fromColumn = From.Column;
-                fromColumnOff = From.ColumnOff;
+                fromColumn = this.From.Column;
+                fromColumnOff = this.From.ColumnOff;
             }
             double pixOff = pixels - (double)(decimal.Truncate(((256 * ws.GetColumnWidth(fromColumn + 1) + decimal.Truncate(128 / (decimal)mdw)) / 256) * mdw) - fromColumnOff / EMU_PER_PIXEL);
             double offset = (double)fromColumnOff / EMU_PER_PIXEL + pixels;
@@ -961,35 +965,36 @@ namespace OfficeOpenXml.Drawing
         /// <param name="PixelLeft">Left pixel</param>
         public void SetPosition(int PixelTop, int PixelLeft)
         {
-            SetPosition(PixelTop, PixelLeft, true);
+            this.SetPosition(PixelTop, PixelLeft, true);
         }
         internal void SetPosition(int PixelTop, int PixelLeft, bool adjustChildren)
         {
-            _doNotAdjust = true;
-            if (_width == int.MinValue)
+            this._doNotAdjust = true;
+            if (this._width == int.MinValue)
             {
-                _width = GetPixelWidth();
-                _height = GetPixelHeight();
+                this._width = this.GetPixelWidth();
+                this._height = this.GetPixelHeight();
             }
-            if(adjustChildren && DrawingType == eDrawingType.GroupShape)
+            if(adjustChildren && this.DrawingType == eDrawingType.GroupShape)
             {
-                if(_left== int.MinValue)
+                if(this._left== int.MinValue)
                 {
-                    _left = GetPixelLeft();
-                    _top = GetPixelTop();
+                    this._left = this.GetPixelLeft();
+                    this._top = this.GetPixelTop();
                 }
                 ExcelGroupShape? grp = (ExcelGroupShape)this;
                 foreach(ExcelDrawing? d in grp.Drawings)
                 {
-                    d.SetPosition((int)(d._top + (PixelTop - _top)), (int)(d._left + (PixelLeft - _left)));
+                    d.SetPosition((int)(d._top + (PixelTop - this._top)), (int)(d._left + (PixelLeft - this._left)));
                 }
             }
-            SetPixelTop(PixelTop);
-            SetPixelLeft(PixelLeft);
 
-            SetPixelWidth(_width);
-            SetPixelHeight(_height);
-            _doNotAdjust = false;
+            this.SetPixelTop(PixelTop);
+            this.SetPixelLeft(PixelLeft);
+
+            this.SetPixelWidth(this._width);
+            this.SetPixelHeight(this._height);
+            this._doNotAdjust = false;
         }
         /// <summary>
         /// How the drawing is anchored to the cells.
@@ -1011,9 +1016,9 @@ namespace OfficeOpenXml.Drawing
         /// <param name="height">The height in pixels</param>
         public void ChangeCellAnchor(eEditAs type, int PixelTop, int PixelLeft, int width, int height)
         {
-            ChangeCellAnchorTypeInternal(type);
-            SetPosition(PixelTop, PixelLeft);
-            SetSize(width, height);
+            this.ChangeCellAnchorTypeInternal(type);
+            this.SetPosition(PixelTop, PixelLeft);
+            this.SetSize(width, height);
         }
         /// <summary>
         /// This will change the cell anchor type without modifiying the position and size.
@@ -1021,37 +1026,37 @@ namespace OfficeOpenXml.Drawing
         /// <param name="type">The cell anchor type to change to</param>
         public void ChangeCellAnchor(eEditAs type)
         {
-            if(DrawingType==eDrawingType.Control)
+            if(this.DrawingType==eDrawingType.Control)
             {
                 throw new InvalidOperationException("Controls can't change CellAnchor. Must be TwoCell anchor. Please use EditAs property instead.");
             }
 
-            GetPositionSize();
+            this.GetPositionSize();
             //Save the positions
-            double top = _top;
-            double left = _left;
-            double width = _width;
-            double height = _height;
+            double top = this._top;
+            double left = this._left;
+            double width = this._width;
+            double height = this._height;
             //Change the type
-            ChangeCellAnchorTypeInternal(type);
+            this.ChangeCellAnchorTypeInternal(type);
 
             //Set the position and size
-            SetPixelTop(top);
-            SetPixelLeft(left);
+            this.SetPixelTop(top);
+            this.SetPixelLeft(left);
 
-            SetPixelWidth(width);
-            SetPixelHeight(height);
+            this.SetPixelWidth(width);
+            this.SetPixelHeight(height);
         }
 
         private void ChangeCellAnchorTypeInternal(eEditAs type)
         {
-            if (type != CellAnchor)
+            if (type != this.CellAnchor)
             {
-                CellAnchor = type;
-                RenameNode(TopNode, "xdr", $"{type.ToEnumString()}Anchor");
-                CleanupPositionXml();
-                SetPositionProperties(_drawings, TopNode);
-                CellAnchorChanged();
+                this.CellAnchor = type;
+                this.RenameNode(this.TopNode, "xdr", $"{type.ToEnumString()}Anchor");
+                this.CleanupPositionXml();
+                this.SetPositionProperties(this._drawings, this.TopNode);
+                this.CellAnchorChanged();
             }
         }
 
@@ -1062,25 +1067,25 @@ namespace OfficeOpenXml.Drawing
 
         private void CleanupPositionXml()
         {
-            switch(CellAnchor)
+            switch(this.CellAnchor)
             {
                 case eEditAs.OneCell:
-                    DeleteNode("xdr:to");
-                    DeleteNode("xdr:pos");
-                    CreateNode("xdr:from");
-                    CreateNode("xdr:ext");
+                    this.DeleteNode("xdr:to");
+                    this.DeleteNode("xdr:pos");
+                    this.CreateNode("xdr:from");
+                    this.CreateNode("xdr:ext");
                     break;
                 case eEditAs.Absolute:
-                    DeleteNode("xdr:to");
-                    DeleteNode("xdr:from"); 
-                    CreateNode("xdr:pos");
-                    CreateNode("xdr:ext");
+                    this.DeleteNode("xdr:to");
+                    this.DeleteNode("xdr:from");
+                    this.CreateNode("xdr:pos");
+                    this.CreateNode("xdr:ext");
                     break;
                 default:
-                    DeleteNode("xdr:pos");
-                    DeleteNode("xdr:ext");
-                    CreateNode("xdr:from");
-                    CreateNode("xdr:to");
+                    this.DeleteNode("xdr:pos");
+                    this.DeleteNode("xdr:ext");
+                    this.CreateNode("xdr:from");
+                    this.CreateNode("xdr:to");
                     break;
             }
 
@@ -1096,27 +1101,27 @@ namespace OfficeOpenXml.Drawing
         /// <param name="ColumnOffsetPixels">Offset in pixels</param>
         public void SetPosition(int Row, int RowOffsetPixels, int Column, int ColumnOffsetPixels)
         {
-            _doNotAdjust = true;
+            this._doNotAdjust = true;
 
-            if (_width == int.MinValue)
+            if (this._width == int.MinValue)
             {
-                _width = GetPixelWidth();
-                _height = GetPixelHeight();
+                this._width = this.GetPixelWidth();
+                this._height = this.GetPixelHeight();
             }
 
-            From.Row = Row;
-            From.RowOff = RowOffsetPixels * EMU_PER_PIXEL;
-            From.Column = Column;
-            From.ColumnOff = ColumnOffsetPixels * EMU_PER_PIXEL;
-            if (CellAnchor == eEditAs.TwoCell)
+            this.From.Row = Row;
+            this.From.RowOff = RowOffsetPixels * EMU_PER_PIXEL;
+            this.From.Column = Column;
+            this.From.ColumnOff = ColumnOffsetPixels * EMU_PER_PIXEL;
+            if (this.CellAnchor == eEditAs.TwoCell)
             {
-                _left = GetPixelLeft();
-                _top = GetPixelTop();
+                this._left = this.GetPixelLeft();
+                this._top = this.GetPixelTop();
             }
 
-            SetPixelWidth(_width);
-            SetPixelHeight(_height);
-            _doNotAdjust = false;
+            this.SetPixelWidth(this._width);
+            this.SetPixelHeight(this._height);
+            this._doNotAdjust = false;
         }
         /// <summary>
         /// Set size in Percent.
@@ -1125,18 +1130,19 @@ namespace OfficeOpenXml.Drawing
         /// <param name="Percent"></param>
         public virtual void SetSize(int Percent)
         {
-            _doNotAdjust = true;
-            if (_width == int.MinValue)
+            this._doNotAdjust = true;
+            if (this._width == int.MinValue)
             {
-                _width = GetPixelWidth();
-                _height = GetPixelHeight();
+                this._width = this.GetPixelWidth();
+                this._height = this.GetPixelHeight();
             }
-            _width = _width * ((double)Percent / 100);
-            _height = _height * ((double)Percent / 100);
 
-            SetPixelWidth(_width);
-            SetPixelHeight(_height);
-            _doNotAdjust = false;
+            this._width = this._width * ((double)Percent / 100);
+            this._height = this._height * ((double)Percent / 100);
+
+            this.SetPixelWidth(this._width);
+            this.SetPixelHeight(this._height);
+            this._doNotAdjust = false;
         }
         /// <summary>
         /// Set size in pixels
@@ -1146,12 +1152,12 @@ namespace OfficeOpenXml.Drawing
         /// <param name="PixelHeight">Height in pixels</param>
         public void SetSize(int PixelWidth, int PixelHeight)
         {
-            _doNotAdjust = true;
-            _width = PixelWidth;
-            _height = PixelHeight;
-            SetPixelWidth(PixelWidth);
-            SetPixelHeight(PixelHeight);
-            _doNotAdjust = false;
+            this._doNotAdjust = true;
+            this._width = PixelWidth;
+            this._height = PixelHeight;
+            this.SetPixelWidth(PixelWidth);
+            this.SetPixelHeight(PixelHeight);
+            this._doNotAdjust = false;
         }
         #endregion
         /// <summary>
@@ -1159,14 +1165,14 @@ namespace OfficeOpenXml.Drawing
         /// </summary>
         public void SendToBack()
         {
-            _drawings.SendToBack(this);
+            this._drawings.SendToBack(this);
         }
         /// <summary>
         /// Brings the drawing to the front of any overlapping drawings.
         /// </summary>
         public void BringToFront()
         {
-            _drawings.BringToFront(this);
+            this._drawings.BringToFront(this);
         }
         /// <summary>
         /// Group the drawing together with a list of other drawings. 
@@ -1177,10 +1183,10 @@ namespace OfficeOpenXml.Drawing
         /// <returns>The group shape</returns>
         public ExcelGroupShape Group(params ExcelDrawing[] drawing)
         {
-            ExcelGroupShape grp = _parent;
+            ExcelGroupShape grp = this._parent;
             foreach(ExcelDrawing? d in drawing)
             {
-                ExcelGroupShape.Validate(d, _drawings, grp);
+                ExcelGroupShape.Validate(d, this._drawings, grp);
                 if (d._parent != null)
                 {
                     grp = d._parent;
@@ -1188,7 +1194,7 @@ namespace OfficeOpenXml.Drawing
             }
             if (grp == null)
             {
-                grp = _drawings.AddGroupDrawing();
+                grp = this._drawings.AddGroupDrawing();
             }
             
             grp.Drawings.AddDrawing(this);
@@ -1210,11 +1216,11 @@ namespace OfficeOpenXml.Drawing
 
             if(node.LocalName == "sp" || node.LocalName == "pic" || node.LocalName == "cxnSp")
             {
-                return (XmlElement)CreateNode(node, "xdr:spPr/a:xfrm");
+                return (XmlElement)this.CreateNode(node, "xdr:spPr/a:xfrm");
             }
             else if(node.LocalName == "graphicFrame")
             {
-                return (XmlElement)CreateNode(node, "xdr:xfrm"); 
+                return (XmlElement)this.CreateNode(node, "xdr:xfrm"); 
             }
             return null;
         }
@@ -1228,17 +1234,17 @@ namespace OfficeOpenXml.Drawing
         /// </param>
         public void UnGroup(bool ungroupThisItemOnly=true)
         {
-            if(_parent==null)
+            if(this._parent==null)
             {
                 throw new InvalidOperationException("Cannot ungroup this drawing. This drawing is not part of a group");
             }
             if(ungroupThisItemOnly)
             {
-                _parent.Drawings.Remove(this);
+                this._parent.Drawings.Remove(this);
             }
             else
             {
-                _parent.Drawings.Clear();
+                this._parent.Drawings.Clear();
             }           
         }
         /// <summary>
@@ -1249,12 +1255,12 @@ namespace OfficeOpenXml.Drawing
         { 
             get
             {
-                return _parent;
+                return this._parent;
             }
         }
         internal virtual void DeleteMe()
         {
-            TopNode.ParentNode.RemoveChild(TopNode);            
+            this.TopNode.ParentNode.RemoveChild(this.TopNode);            
         }
 
         /// <summary>
@@ -1266,15 +1272,15 @@ namespace OfficeOpenXml.Drawing
         }
         internal void GetPositionSize()
         {
-            if (_doNotAdjust)
+            if (this._doNotAdjust)
             {
                 return;
             }
 
-            _top = GetPixelTop();
-            _left = GetPixelLeft();
-            _height = GetPixelHeight();
-            _width = GetPixelWidth();
+            this._top = this.GetPixelTop();
+            this._left = this.GetPixelLeft();
+            this._height = this.GetPixelHeight();
+            this._width = this.GetPixelWidth();
         }
         /// <summary>
         /// Will adjust the position and size of the drawing according to changes in font of rows and to the Normal style.
@@ -1282,48 +1288,48 @@ namespace OfficeOpenXml.Drawing
         /// </summary>
         public void AdjustPositionAndSize()
         {
-            if (_drawings.Worksheet.Workbook._package.DoAdjustDrawings == false)
+            if (this._drawings.Worksheet.Workbook._package.DoAdjustDrawings == false)
             {
                 return;
             }
 
-            _drawings.Worksheet.Workbook._package.DoAdjustDrawings = false;
-            if (EditAs==eEditAs.Absolute)
+            this._drawings.Worksheet.Workbook._package.DoAdjustDrawings = false;
+            if (this.EditAs==eEditAs.Absolute)
             {
-                SetPixelLeft(_left);
-                SetPixelTop(_top);
+                this.SetPixelLeft(this._left);
+                this.SetPixelTop(this._top);
             }
-            if(EditAs == eEditAs.Absolute || EditAs == eEditAs.OneCell)
+            if(this.EditAs == eEditAs.Absolute || this.EditAs == eEditAs.OneCell)
             {
-                SetPixelHeight(_height);
-                SetPixelWidth(_width);
+                this.SetPixelHeight(this._height);
+                this.SetPixelWidth(this._width);
             }
-            
-            _drawings.Worksheet.Workbook._package.DoAdjustDrawings = true;
+
+            this._drawings.Worksheet.Workbook._package.DoAdjustDrawings = true;
         }
         internal void UpdatePositionAndSizeXml()
         {
-            From?.UpdateXml();
-            To?.UpdateXml();
-            Size?.UpdateXml();
-            Position?.UpdateXml();
+            this.From?.UpdateXml();
+            this.To?.UpdateXml();
+            this.Size?.UpdateXml();
+            this.Position?.UpdateXml();
         }
 
 
         internal XmlElement CreateShapeNode()
         {
-            XmlElement shapeNode = TopNode.OwnerDocument.CreateElement("xdr", "sp", ExcelPackage.schemaSheetDrawings);
+            XmlElement shapeNode = this.TopNode.OwnerDocument.CreateElement("xdr", "sp", ExcelPackage.schemaSheetDrawings);
             shapeNode.SetAttribute("macro", "");
             shapeNode.SetAttribute("textlink", "");
-            TopNode.AppendChild(shapeNode);
+            this.TopNode.AppendChild(shapeNode);
             return shapeNode;
         }
         internal XmlElement CreateClientData()
         {
-            XmlElement clientDataNode = TopNode.OwnerDocument.CreateElement("xdr", "clientData", ExcelPackage.schemaSheetDrawings);
+            XmlElement clientDataNode = this.TopNode.OwnerDocument.CreateElement("xdr", "clientData", ExcelPackage.schemaSheetDrawings);
             clientDataNode.SetAttribute("fPrintsWithSheet", "0");
-            TopNode.GetChildAtPosition(2).GetChildAtPosition(0).GetChildAtPosition(0).AppendChild(clientDataNode);
-            TopNode.AppendChild(clientDataNode);
+            this.TopNode.GetChildAtPosition(2).GetChildAtPosition(0).GetChildAtPosition(0).AppendChild(clientDataNode);
+            this.TopNode.AppendChild(clientDataNode);
             return clientDataNode;
         }
     }

@@ -24,7 +24,7 @@ namespace OfficeOpenXml.ExternalReferences
         { 
             get 
             { 
-                return ExcelCellBase.GetAddress(Row, Column); 
+                return ExcelCellBase.GetAddress(this.Row, this.Column); 
             } 
         }
         /// <summary>

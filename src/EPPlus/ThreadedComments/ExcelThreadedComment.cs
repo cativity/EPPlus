@@ -31,9 +31,9 @@ namespace OfficeOpenXml.ThreadedComments
         internal ExcelThreadedComment(XmlNode topNode, XmlNamespaceManager namespaceManager, ExcelWorkbook workbook, ExcelThreadedCommentThread thread)
             : base(namespaceManager, topNode)
         {
-            SchemaNodeOrder = new string[] { "text", "mentions" };
-            _workbook = workbook;
-            _thread = thread;
+            this.SchemaNodeOrder = new string[] { "text", "mentions" };
+            this._workbook = workbook;
+            this._thread = thread;
         }
 
         private readonly ExcelWorkbook _workbook;
@@ -47,7 +47,7 @@ namespace OfficeOpenXml.ThreadedComments
                     throw new ArgumentNullException("Thread");
                 }
 
-                _thread = value;
+                this._thread = value;
             }
         }
 
@@ -65,7 +65,7 @@ namespace OfficeOpenXml.ThreadedComments
         {
             get
             {
-                return Mentions != null && Mentions.Any();
+                return this.Mentions != null && this.Mentions.Any();
             }
         }
 
@@ -76,11 +76,11 @@ namespace OfficeOpenXml.ThreadedComments
         {
             get
             {
-                return GetXmlNodeString("@ref");
+                return this.GetXmlNodeString("@ref");
             }
             set
             {
-                SetXmlNodeString("@ref", value);
+                this.SetXmlNodeString("@ref", value);
             }
         }
         private ExcelCellAddress _cellAddress=null;
@@ -91,16 +91,16 @@ namespace OfficeOpenXml.ThreadedComments
         {
             get
             {
-                if(_cellAddress==null)
+                if(this._cellAddress==null)
                 {
-                    _cellAddress = new ExcelCellAddress(Ref);
+                    this._cellAddress = new ExcelCellAddress(this.Ref);
                 }
-                return _cellAddress;
+                return this._cellAddress;
             }
             internal set
             {
-                _cellAddress = value;
-                Ref = CellAddress.Address;
+                this._cellAddress = value;
+                this.Ref = this.CellAddress.Address;
             }
         }
         /// <summary>
@@ -110,7 +110,7 @@ namespace OfficeOpenXml.ThreadedComments
         {
             get
             {
-                string? dt = GetXmlNodeString("@dT");
+                string? dt = this.GetXmlNodeString("@dT");
                 if(DateTime.TryParse(dt, out DateTime result))
                 {
                     return result;
@@ -119,7 +119,7 @@ namespace OfficeOpenXml.ThreadedComments
             }
             set
             {
-                SetXmlNodeString("@dT", value.ToString("yyyy-MM-ddTHH:mm:ss.ff"));
+                this.SetXmlNodeString("@dT", value.ToString("yyyy-MM-ddTHH:mm:ss.ff"));
             }
         }
 
@@ -130,11 +130,11 @@ namespace OfficeOpenXml.ThreadedComments
         {
             get
             {
-                return GetXmlNodeString("@id");
+                return this.GetXmlNodeString("@id");
             }
             internal set
             {
-                SetXmlNodeString("@id", value);
+                this.SetXmlNodeString("@id", value);
             }
         }
 
@@ -145,12 +145,12 @@ namespace OfficeOpenXml.ThreadedComments
         {
             get
             {
-                return GetXmlNodeString("@personId");
+                return this.GetXmlNodeString("@personId");
             }
             set
             {
-                SetXmlNodeString("@personId", value);
-                _thread.OnCommentThreadChanged();
+                this.SetXmlNodeString("@personId", value);
+                this._thread.OnCommentThreadChanged();
             }
         }
 
@@ -161,7 +161,7 @@ namespace OfficeOpenXml.ThreadedComments
         {
             get
             {
-                return _workbook.ThreadedCommentPersons[PersonId];
+                return this._workbook.ThreadedCommentPersons[this.PersonId];
             }
         }
 
@@ -172,12 +172,12 @@ namespace OfficeOpenXml.ThreadedComments
         {
             get
             {
-                return GetXmlNodeString("@parentId");
+                return this.GetXmlNodeString("@parentId");
             }
             set
             {
-                SetXmlNodeString("@parentId", value);
-                _thread.OnCommentThreadChanged();
+                this.SetXmlNodeString("@parentId", value);
+                this._thread.OnCommentThreadChanged();
             }
         }
 
@@ -185,7 +185,7 @@ namespace OfficeOpenXml.ThreadedComments
         {
             get
             {
-                string? val = GetXmlNodeString("@done");
+                string? val = this.GetXmlNodeString("@done");
                 if(string.IsNullOrEmpty(val))
                 {
                     return null;
@@ -201,15 +201,15 @@ namespace OfficeOpenXml.ThreadedComments
             {
                 if(value.HasValue && value.Value)
                 {
-                    SetXmlNodeInt("@done", 1);
+                    this.SetXmlNodeInt("@done", 1);
                 }
                 else if(value.HasValue && !value.Value)
                 {
-                    SetXmlNodeInt("@done", 0);
+                    this.SetXmlNodeInt("@done", 0);
                 }
                 else
                 {
-                    SetXmlNodeInt("@done", null);
+                    this.SetXmlNodeInt("@done", null);
                 }
             }
         }
@@ -221,12 +221,12 @@ namespace OfficeOpenXml.ThreadedComments
         {
             get
             {
-                return GetXmlNodeString("tc:text");
+                return this.GetXmlNodeString("tc:text");
             }
             internal set
             {
-                SetXmlNodeString("tc:text", value);
-                _thread.OnCommentThreadChanged();
+                this.SetXmlNodeString("tc:text", value);
+                this._thread.OnCommentThreadChanged();
             }
         }
 
@@ -236,9 +236,9 @@ namespace OfficeOpenXml.ThreadedComments
         /// <param name="newText"></param>
         public void EditText(string newText)
         {
-            Mentions.Clear();
-            Text = newText;
-            _thread.OnCommentThreadChanged();
+            this.Mentions.Clear();
+            this.Text = newText;
+            this._thread.OnCommentThreadChanged();
         }
 
         /// <summary>
@@ -248,9 +248,9 @@ namespace OfficeOpenXml.ThreadedComments
         /// <param name="personsToMention">A params array of <see cref="ExcelThreadedCommentPerson"/>. Their DisplayName property will be used to replace the format placeholders.</param>
         public void EditText(string newTextWithFormats, params ExcelThreadedCommentPerson[] personsToMention)
         {
-            Mentions.Clear();
+            this.Mentions.Clear();
             MentionsHelper.InsertMentions(this, newTextWithFormats, personsToMention);
-            _thread.OnCommentThreadChanged();
+            this._thread.OnCommentThreadChanged();
         }
 
         private ExcelThreadedCommentMentionCollection _mentions;
@@ -262,18 +262,19 @@ namespace OfficeOpenXml.ThreadedComments
         {
             get
             {
-                if(_mentions == null)
+                if(this._mentions == null)
                 {
-                    XmlNode? mentionsNode = TopNode.SelectSingleNode("tc:mentions", NameSpaceManager);
+                    XmlNode? mentionsNode = this.TopNode.SelectSingleNode("tc:mentions", this.NameSpaceManager);
                     if (mentionsNode == null)
                     {
-                        mentionsNode = TopNode.OwnerDocument.CreateElement("mentions", ExcelPackage.schemaThreadedComments);
-                        TopNode.AppendChild(mentionsNode);
+                        mentionsNode = this.TopNode.OwnerDocument.CreateElement("mentions", ExcelPackage.schemaThreadedComments);
+                        this.TopNode.AppendChild(mentionsNode);
                     }
-                    _mentions = new ExcelThreadedCommentMentionCollection(NameSpaceManager, mentionsNode);
+
+                    this._mentions = new ExcelThreadedCommentMentionCollection(this.NameSpaceManager, mentionsNode);
                 }
 
-                return _mentions;
+                return this._mentions;
             }
         }
     }

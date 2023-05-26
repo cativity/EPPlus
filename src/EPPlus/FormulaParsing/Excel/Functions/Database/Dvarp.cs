@@ -41,13 +41,13 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Database
         public override CompileResult Execute(IEnumerable<FunctionArgument> arguments, ParsingContext context)
         {
             ValidateArguments(arguments, 3);
-            IEnumerable<double>? values = GetMatchingValues(arguments, context);
+            IEnumerable<double>? values = this.GetMatchingValues(arguments, context);
             if (!values.Any())
             {
                 return this.CreateResult(0d, DataType.Integer);
             }
 
-            return CreateResult(VarMethods.VarP(values), DataType.Integer);
+            return this.CreateResult(VarMethods.VarP(values), DataType.Integer);
         }
     }
 }

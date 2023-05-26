@@ -58,7 +58,7 @@ namespace EPPlusTest.Excel.Functions
         {
             Date? func = new Date();
             IEnumerable<FunctionArgument>? args = FunctionsHelper.CreateArgs(2012, 4, 3);
-            CompileResult? result = func.Execute(args, _parsingContext);
+            CompileResult? result = func.Execute(args, this._parsingContext);
             Assert.AreEqual(DataType.Date, result.DataType);
         }
 
@@ -68,7 +68,7 @@ namespace EPPlusTest.Excel.Functions
             DateTime expectedDate = new DateTime(2012, 4, 3);
             Date? func = new Date();
             IEnumerable<FunctionArgument>? args = FunctionsHelper.CreateArgs(2012, 4, 3);
-            CompileResult? result = func.Execute(args, _parsingContext);
+            CompileResult? result = func.Execute(args, this._parsingContext);
             Assert.AreEqual(expectedDate.ToOADate(), result.Result);
         }
 
@@ -78,7 +78,7 @@ namespace EPPlusTest.Excel.Functions
             DateTime expectedDate = new DateTime(2011, 11, 3);
             Date? func = new Date();
             IEnumerable<FunctionArgument>? args = FunctionsHelper.CreateArgs(2012, -1, 3);
-            CompileResult? result = func.Execute(args, _parsingContext);
+            CompileResult? result = func.Execute(args, this._parsingContext);
             Assert.AreEqual(expectedDate.ToOADate(), result.Result);
         }
 
@@ -89,7 +89,7 @@ namespace EPPlusTest.Excel.Functions
             Thread.Sleep(1);
             Now? func = new Now();
             FunctionArgument[]? args = new FunctionArgument[0];
-            CompileResult? result = func.Execute(args, _parsingContext);
+            CompileResult? result = func.Execute(args, this._parsingContext);
             Thread.Sleep(1);
             DateTime endTime = DateTime.Now;
             DateTime resultDate = DateTime.FromOADate((double)result.Result);
@@ -101,7 +101,7 @@ namespace EPPlusTest.Excel.Functions
         {
             Today? func = new Today();
             FunctionArgument[]? args = new FunctionArgument[0];
-            CompileResult? result = func.Execute(args, _parsingContext);
+            CompileResult? result = func.Execute(args, this._parsingContext);
             DateTime resultDate = DateTime.FromOADate((double)result.Result);
             Assert.AreEqual(DateTime.Now.Date, resultDate);
         }
@@ -112,7 +112,7 @@ namespace EPPlusTest.Excel.Functions
             DateTime date = new DateTime(2012, 3, 12);
             Day? func = new Day();
             IEnumerable<FunctionArgument>? args = FunctionsHelper.CreateArgs(date.ToOADate());
-            CompileResult? result = func.Execute(args, _parsingContext);
+            CompileResult? result = func.Execute(args, this._parsingContext);
             Assert.AreEqual(12, result.Result);
         }
 
@@ -121,7 +121,7 @@ namespace EPPlusTest.Excel.Functions
         {
             DateTime date = new DateTime(2012, 3, 12);
             Day? func = new Day();
-            CompileResult? result = func.Execute(FunctionsHelper.CreateArgs("2012-03-12"), _parsingContext);
+            CompileResult? result = func.Execute(FunctionsHelper.CreateArgs("2012-03-12"), this._parsingContext);
             Assert.AreEqual(12, result.Result);
         }
 
@@ -131,7 +131,7 @@ namespace EPPlusTest.Excel.Functions
             DateTime d1 = new DateTime(2015, 1, 1);
             DateTime d2 = new DateTime(2015, 2, 2);
             Days? func = new Days();
-            CompileResult? result = func.Execute(FunctionsHelper.CreateArgs(d2, d1), _parsingContext);
+            CompileResult? result = func.Execute(FunctionsHelper.CreateArgs(d2, d1), this._parsingContext);
             Assert.AreEqual(32d, result.Result);
         }
 
@@ -141,7 +141,7 @@ namespace EPPlusTest.Excel.Functions
             string? d1 = new DateTime(2015, 1, 1).ToString("yyyy-MM-dd");
             string? d2 = new DateTime(2015, 2, 2).ToString("yyyy-MM-dd");
             Days? func = new Days();
-            CompileResult? result = func.Execute(FunctionsHelper.CreateArgs(d2, d1), _parsingContext);
+            CompileResult? result = func.Execute(FunctionsHelper.CreateArgs(d2, d1), this._parsingContext);
             Assert.AreEqual(32d, result.Result);
         }
 
@@ -150,7 +150,7 @@ namespace EPPlusTest.Excel.Functions
         {
             DateTime date = new DateTime(2012, 3, 12);
             Month? func = new Month();
-            CompileResult? result = func.Execute(FunctionsHelper.CreateArgs(date.ToOADate()), _parsingContext);
+            CompileResult? result = func.Execute(FunctionsHelper.CreateArgs(date.ToOADate()), this._parsingContext);
             Assert.AreEqual(3, result.Result);
         }
 
@@ -159,7 +159,7 @@ namespace EPPlusTest.Excel.Functions
         {
             DateTime date = new DateTime(2012, 3, 12);
             Month? func = new Month();
-            CompileResult? result = func.Execute(FunctionsHelper.CreateArgs("2012-03-12"), _parsingContext);
+            CompileResult? result = func.Execute(FunctionsHelper.CreateArgs("2012-03-12"), this._parsingContext);
             Assert.AreEqual(3, result.Result);
         }
 
@@ -168,7 +168,7 @@ namespace EPPlusTest.Excel.Functions
         {
             DateTime date = new DateTime(2012, 3, 12);
             Year? func = new Year();
-            CompileResult? result = func.Execute(FunctionsHelper.CreateArgs(date.ToOADate()), _parsingContext);
+            CompileResult? result = func.Execute(FunctionsHelper.CreateArgs(date.ToOADate()), this._parsingContext);
             Assert.AreEqual(2012, result.Result);
         }
 
@@ -177,7 +177,7 @@ namespace EPPlusTest.Excel.Functions
         {
             DateTime date = new DateTime(2012, 3, 12);
             Year? func = new Year();
-            CompileResult? result = func.Execute(FunctionsHelper.CreateArgs("2012-03-12"), _parsingContext);
+            CompileResult? result = func.Execute(FunctionsHelper.CreateArgs("2012-03-12"), this._parsingContext);
             Assert.AreEqual(2012, result.Result);
         }
 
@@ -186,7 +186,7 @@ namespace EPPlusTest.Excel.Functions
         {
             double expectedResult = GetTime(10, 11, 12);
             Time? func = new Time();
-            CompileResult? result = func.Execute(FunctionsHelper.CreateArgs(10, 11, 12), _parsingContext);
+            CompileResult? result = func.Execute(FunctionsHelper.CreateArgs(10, 11, 12), this._parsingContext);
             Assert.AreEqual(expectedResult, result.Result);  
         }
 
@@ -195,7 +195,7 @@ namespace EPPlusTest.Excel.Functions
         {
             double expectedResult = GetTime(10, 11, 12);
             Time? func = new Time();
-            CompileResult? result = func.Execute(FunctionsHelper.CreateArgs("10:11:12"), _parsingContext);
+            CompileResult? result = func.Execute(FunctionsHelper.CreateArgs("10:11:12"), this._parsingContext);
             Assert.AreEqual(expectedResult, result.Result);
         }
 
@@ -203,7 +203,7 @@ namespace EPPlusTest.Excel.Functions
         public void TimeShouldReturnErrorIsOutOfRange()
         {
             Time? func = new Time();
-            CompileResult? result = func.Execute(FunctionsHelper.CreateArgs(10, 11, 60), _parsingContext);
+            CompileResult? result = func.Execute(FunctionsHelper.CreateArgs(10, 11, 60), this._parsingContext);
             Assert.AreEqual(DataType.ExcelError, result.DataType);
         }
 
@@ -211,7 +211,7 @@ namespace EPPlusTest.Excel.Functions
         public void TimeShouldReturnErrorIfMinuteIsOutOfRange()
         {
             Time? func = new Time();
-            CompileResult? result = func.Execute(FunctionsHelper.CreateArgs(10, 60, 12), _parsingContext);
+            CompileResult? result = func.Execute(FunctionsHelper.CreateArgs(10, 60, 12), this._parsingContext);
             Assert.AreEqual(DataType.ExcelError, result.DataType);
         }
 
@@ -219,7 +219,7 @@ namespace EPPlusTest.Excel.Functions
         public void TimeShouldReturnErrorIfHourIsOutOfRange()
         {
             Time? func = new Time();
-            CompileResult? result = func.Execute(FunctionsHelper.CreateArgs(24, 12, 12), _parsingContext);
+            CompileResult? result = func.Execute(FunctionsHelper.CreateArgs(24, 12, 12), this._parsingContext);
             Assert.AreEqual(DataType.ExcelError, result.DataType);
         }
 
@@ -227,10 +227,10 @@ namespace EPPlusTest.Excel.Functions
         public void HourShouldReturnCorrectResult()
         {
             Hour? func = new Hour();
-            CompileResult? result = func.Execute(FunctionsHelper.CreateArgs(GetTime(9, 13, 14)), _parsingContext);
+            CompileResult? result = func.Execute(FunctionsHelper.CreateArgs(GetTime(9, 13, 14)), this._parsingContext);
             Assert.AreEqual(9, result.Result);
 
-            result = func.Execute(FunctionsHelper.CreateArgs(GetTime(23, 13, 14)), _parsingContext);
+            result = func.Execute(FunctionsHelper.CreateArgs(GetTime(23, 13, 14)), this._parsingContext);
             Assert.AreEqual(23, result.Result);
         }
 
@@ -238,10 +238,10 @@ namespace EPPlusTest.Excel.Functions
         public void MinuteShouldReturnCorrectResult()
         {
             Minute? func = new Minute();
-            CompileResult? result = func.Execute(FunctionsHelper.CreateArgs(GetTime(9, 14, 14)), _parsingContext);
+            CompileResult? result = func.Execute(FunctionsHelper.CreateArgs(GetTime(9, 14, 14)), this._parsingContext);
             Assert.AreEqual(14, result.Result);
 
-            result = func.Execute(FunctionsHelper.CreateArgs(GetTime(9, 55, 14)), _parsingContext);
+            result = func.Execute(FunctionsHelper.CreateArgs(GetTime(9, 55, 14)), this._parsingContext);
             Assert.AreEqual(55, result.Result);
         }
 
@@ -249,7 +249,7 @@ namespace EPPlusTest.Excel.Functions
         public void SecondShouldReturnCorrectResult()
         {
             Second? func = new Second();
-            CompileResult? result = func.Execute(FunctionsHelper.CreateArgs(GetTime(9, 14, 17)), _parsingContext);
+            CompileResult? result = func.Execute(FunctionsHelper.CreateArgs(GetTime(9, 14, 17)), this._parsingContext);
             Assert.AreEqual(17, result.Result);
         }
 
@@ -257,7 +257,7 @@ namespace EPPlusTest.Excel.Functions
         public void SecondShouldReturnCorrectResultWithStringArgument()
         {
             Second? func = new Second();
-            CompileResult? result = func.Execute(FunctionsHelper.CreateArgs("2012-03-27 10:11:12"), _parsingContext);
+            CompileResult? result = func.Execute(FunctionsHelper.CreateArgs("2012-03-27 10:11:12"), this._parsingContext);
             Assert.AreEqual(12, result.Result);
         }
 
@@ -265,7 +265,7 @@ namespace EPPlusTest.Excel.Functions
         public void MinuteShouldReturnCorrectResultWithStringArgument()
         {
             Minute? func = new Minute();
-            CompileResult? result = func.Execute(FunctionsHelper.CreateArgs("2012-03-27 10:11:12"), _parsingContext);
+            CompileResult? result = func.Execute(FunctionsHelper.CreateArgs("2012-03-27 10:11:12"), this._parsingContext);
             Assert.AreEqual(11, result.Result);
         }
 
@@ -273,7 +273,7 @@ namespace EPPlusTest.Excel.Functions
         public void HourShouldReturnCorrectResultWithStringArgument()
         {
             Hour? func = new Hour();
-            CompileResult? result = func.Execute(FunctionsHelper.CreateArgs("2012-03-27 10:11:12"), _parsingContext);
+            CompileResult? result = func.Execute(FunctionsHelper.CreateArgs("2012-03-27 10:11:12"), this._parsingContext);
             Assert.AreEqual(10, result.Result);
         }
 
@@ -281,7 +281,7 @@ namespace EPPlusTest.Excel.Functions
         public void WeekdayShouldReturnCorrectResultForASundayWhenReturnTypeIs1()
         {
             Weekday? func = new Weekday();
-            CompileResult? result = func.Execute(FunctionsHelper.CreateArgs(new DateTime(2012, 4, 1).ToOADate(), 1), _parsingContext);
+            CompileResult? result = func.Execute(FunctionsHelper.CreateArgs(new DateTime(2012, 4, 1).ToOADate(), 1), this._parsingContext);
             Assert.AreEqual(1, result.Result);
         }
 
@@ -289,7 +289,7 @@ namespace EPPlusTest.Excel.Functions
         public void WeekdayShouldReturnCorrectResultForASundayWhenReturnTypeIs2()
         {
             Weekday? func = new Weekday();
-            CompileResult? result = func.Execute(FunctionsHelper.CreateArgs(new DateTime(2012, 4, 1).ToOADate(), 2), _parsingContext);
+            CompileResult? result = func.Execute(FunctionsHelper.CreateArgs(new DateTime(2012, 4, 1).ToOADate(), 2), this._parsingContext);
             Assert.AreEqual(7, result.Result);
         }
 
@@ -297,7 +297,7 @@ namespace EPPlusTest.Excel.Functions
         public void WeekdayShouldReturnCorrectResultForASundayWhenReturnTypeIs3()
         {
             Weekday? func = new Weekday();
-            CompileResult? result = func.Execute(FunctionsHelper.CreateArgs(new DateTime(2012, 4, 1).ToOADate(), 3), _parsingContext);
+            CompileResult? result = func.Execute(FunctionsHelper.CreateArgs(new DateTime(2012, 4, 1).ToOADate(), 3), this._parsingContext);
             Assert.AreEqual(6, result.Result);
         }
 
@@ -309,9 +309,9 @@ namespace EPPlusTest.Excel.Functions
             double dt2 = new DateTime(2012, 1, 1).ToOADate();
             double dt3 = new DateTime(2013, 1, 20).ToOADate();
 
-            CompileResult? r1 = func.Execute(FunctionsHelper.CreateArgs(dt1), _parsingContext);
-            CompileResult? r2 = func.Execute(FunctionsHelper.CreateArgs(dt2), _parsingContext);
-            CompileResult? r3 = func.Execute(FunctionsHelper.CreateArgs(dt3, 2), _parsingContext);
+            CompileResult? r1 = func.Execute(FunctionsHelper.CreateArgs(dt1), this._parsingContext);
+            CompileResult? r2 = func.Execute(FunctionsHelper.CreateArgs(dt2), this._parsingContext);
+            CompileResult? r3 = func.Execute(FunctionsHelper.CreateArgs(dt3, 2), this._parsingContext);
 
             Assert.AreEqual(53, r1.Result, "r1.Result was not 53, but " + r1.Result.ToString());
             Assert.AreEqual(1, r2.Result, "r2.Result was not 1, but " + r2.Result.ToString());
@@ -327,9 +327,9 @@ namespace EPPlusTest.Excel.Functions
             double dt2arg = new DateTime(2013, 1, 1).ToOADate();
             double dt3arg = new DateTime(2013, 2, 28).ToOADate();
 
-            CompileResult? r1 = func.Execute(FunctionsHelper.CreateArgs(dt1arg, 1), _parsingContext);
-            CompileResult? r2 = func.Execute(FunctionsHelper.CreateArgs(dt2arg, -1), _parsingContext);
-            CompileResult? r3 = func.Execute(FunctionsHelper.CreateArgs(dt3arg, 2), _parsingContext);
+            CompileResult? r1 = func.Execute(FunctionsHelper.CreateArgs(dt1arg, 1), this._parsingContext);
+            CompileResult? r2 = func.Execute(FunctionsHelper.CreateArgs(dt2arg, -1), this._parsingContext);
+            CompileResult? r3 = func.Execute(FunctionsHelper.CreateArgs(dt3arg, 2), this._parsingContext);
 
             DateTime dt1 = DateTime.FromOADate((double) r1.Result);
             DateTime dt2 = DateTime.FromOADate((double)r2.Result);
@@ -352,7 +352,7 @@ namespace EPPlusTest.Excel.Functions
             double dt1arg = new DateTime(2013, 1, 1).ToOADate();
             double dt2arg = new DateTime(2013, 3, 31).ToOADate();
 
-            CompileResult? result = func.Execute(FunctionsHelper.CreateArgs(dt1arg, dt2arg), _parsingContext);
+            CompileResult? result = func.Execute(FunctionsHelper.CreateArgs(dt1arg, dt2arg), this._parsingContext);
 
             Assert.AreEqual(90, result.Result);
         }
@@ -365,7 +365,7 @@ namespace EPPlusTest.Excel.Functions
             double dt1arg = new DateTime(2013, 1, 1).ToOADate();
             double dt2arg = new DateTime(2013, 3, 31).ToOADate();
 
-            CompileResult? result = func.Execute(FunctionsHelper.CreateArgs(dt1arg, dt2arg, true), _parsingContext);
+            CompileResult? result = func.Execute(FunctionsHelper.CreateArgs(dt1arg, dt2arg, true), this._parsingContext);
 
             Assert.AreEqual(89, result.Result);
         }
@@ -378,7 +378,7 @@ namespace EPPlusTest.Excel.Functions
             double dt1arg = new DateTime(2012, 2, 29).ToOADate();
             double dt2arg = new DateTime(2013, 2, 28).ToOADate();
 
-            CompileResult? result = func.Execute(FunctionsHelper.CreateArgs(dt1arg, dt2arg, true), _parsingContext);
+            CompileResult? result = func.Execute(FunctionsHelper.CreateArgs(dt1arg, dt2arg, true), this._parsingContext);
 
             Assert.AreEqual(359, result.Result);
         }
@@ -391,7 +391,7 @@ namespace EPPlusTest.Excel.Functions
             double dt1arg = new DateTime(2012, 2, 29).ToOADate();
             double dt2arg = new DateTime(2013, 2, 28).ToOADate();
 
-            CompileResult? result = func.Execute(FunctionsHelper.CreateArgs(dt1arg, dt2arg, false), _parsingContext);
+            CompileResult? result = func.Execute(FunctionsHelper.CreateArgs(dt1arg, dt2arg, false), this._parsingContext);
 
             Assert.AreEqual(358, result.Result);
         }
@@ -404,7 +404,7 @@ namespace EPPlusTest.Excel.Functions
             double dt1arg = new DateTime(2013, 2, 28).ToOADate();
             double dt2arg = new DateTime(2013, 3, 31).ToOADate();
 
-            CompileResult? result = func.Execute(FunctionsHelper.CreateArgs(dt1arg, dt2arg, false), _parsingContext);
+            CompileResult? result = func.Execute(FunctionsHelper.CreateArgs(dt1arg, dt2arg, false), this._parsingContext);
 
             Assert.AreEqual(30, result.Result);
         }
@@ -416,7 +416,7 @@ namespace EPPlusTest.Excel.Functions
             double dt1arg = new DateTime(2013, 2, 28).ToOADate();
             double dt2arg = new DateTime(2013, 3, 31).ToOADate();
 
-            CompileResult? result = func.Execute(FunctionsHelper.CreateArgs(dt1arg, dt2arg), _parsingContext);
+            CompileResult? result = func.Execute(FunctionsHelper.CreateArgs(dt1arg, dt2arg), this._parsingContext);
 
             double roundedResult = Math.Round((double) result.Result, 4);
 
@@ -430,7 +430,7 @@ namespace EPPlusTest.Excel.Functions
             double dt1arg = new DateTime(2013, 2, 28).ToOADate();
             double dt2arg = new DateTime(2013, 3, 31).ToOADate();
 
-            CompileResult? result = func.Execute(FunctionsHelper.CreateArgs(dt1arg, dt2arg, 4), _parsingContext);
+            CompileResult? result = func.Execute(FunctionsHelper.CreateArgs(dt1arg, dt2arg, 4), this._parsingContext);
 
             double roundedResult = Math.Round((double)result.Result, 4);
 
@@ -444,7 +444,7 @@ namespace EPPlusTest.Excel.Functions
             double dt1arg = new DateTime(2012, 2, 28).ToOADate();
             double dt2arg = new DateTime(2013, 3, 31).ToOADate();
 
-            CompileResult? result = func.Execute(FunctionsHelper.CreateArgs(dt1arg, dt2arg, 1), _parsingContext);
+            CompileResult? result = func.Execute(FunctionsHelper.CreateArgs(dt1arg, dt2arg, 1), this._parsingContext);
 
             double roundedResult = Math.Round((double)result.Result, 4);
 
@@ -457,7 +457,7 @@ namespace EPPlusTest.Excel.Functions
             IsoWeekNum? func = new IsoWeekNum();
             double arg = new DateTime(2013, 1, 1).ToOADate();
 
-            CompileResult? result = func.Execute(FunctionsHelper.CreateArgs(arg), _parsingContext);
+            CompileResult? result = func.Execute(FunctionsHelper.CreateArgs(arg), this._parsingContext);
 
             Assert.AreEqual(1, result.Result);
         }
@@ -468,7 +468,7 @@ namespace EPPlusTest.Excel.Functions
             Eomonth? func = new Eomonth();
             double arg = new DateTime(2013, 2, 2).ToOADate();
 
-            CompileResult? result = func.Execute(FunctionsHelper.CreateArgs(arg, 3), _parsingContext);
+            CompileResult? result = func.Execute(FunctionsHelper.CreateArgs(arg, 3), this._parsingContext);
 
             Assert.AreEqual(41425d, result.Result);
         }
@@ -479,7 +479,7 @@ namespace EPPlusTest.Excel.Functions
             Eomonth? func = new Eomonth();
             double arg = new DateTime(2013, 2, 2).ToOADate();
 
-            CompileResult? result = func.Execute(FunctionsHelper.CreateArgs(arg, -3), _parsingContext);
+            CompileResult? result = func.Execute(FunctionsHelper.CreateArgs(arg, -3), this._parsingContext);
 
             Assert.AreEqual(41243d, result.Result);
         }
@@ -492,7 +492,7 @@ namespace EPPlusTest.Excel.Functions
 
             Workday? func = new Workday();
             IEnumerable<FunctionArgument>? args = FunctionsHelper.CreateArgs(inputDate, 20);
-            CompileResult? result = func.Execute(args, _parsingContext);
+            CompileResult? result = func.Execute(args, this._parsingContext);
             Assert.AreEqual(expectedDate, result.Result);
         }
 
@@ -504,7 +504,7 @@ namespace EPPlusTest.Excel.Functions
 
             Workday? func = new Workday();
             IEnumerable<FunctionArgument>? args = FunctionsHelper.CreateArgs(inputDate, -30);
-            CompileResult? result = func.Execute(args, _parsingContext);
+            CompileResult? result = func.Execute(args, this._parsingContext);
             Assert.AreEqual(DateTime.FromOADate(expectedDate), DateTime.FromOADate((double)result.Result));
         }
 
@@ -516,7 +516,7 @@ namespace EPPlusTest.Excel.Functions
 
             Workday? func = new Workday();
             IEnumerable<FunctionArgument>? args = FunctionsHelper.CreateArgs(inputDate, 4);
-            CompileResult? result = func.Execute(args, _parsingContext);
+            CompileResult? result = func.Execute(args, this._parsingContext);
             Assert.AreEqual(expectedDate, result.Result);
         }
 
@@ -530,7 +530,7 @@ namespace EPPlusTest.Excel.Functions
 
             Workday? func = new Workday();
             IEnumerable<FunctionArgument>? args = FunctionsHelper.CreateArgs(inputDate, -30, FunctionsHelper.CreateArgs(holidayDate1, holidayDate2));
-            CompileResult? result = func.Execute(args, _parsingContext);
+            CompileResult? result = func.Execute(args, this._parsingContext);
             Assert.AreEqual(expectedDate, result.Result);
         }
 

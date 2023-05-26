@@ -21,19 +21,19 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Database
     {
         public ExcelDatabaseCriteriaField(string fieldName)
         {
-            FieldName = fieldName;
+            this.FieldName = fieldName;
         }
 
         public ExcelDatabaseCriteriaField(int fieldIndex)
         {
-            FieldIndex = fieldIndex;
+            this.FieldIndex = fieldIndex;
         }
 
         public override string ToString()
         {
-            if (!string.IsNullOrEmpty(FieldName))
+            if (!string.IsNullOrEmpty(this.FieldName))
             {
-                return FieldName;
+                return this.FieldName;
             }
             return base.ToString();
         }

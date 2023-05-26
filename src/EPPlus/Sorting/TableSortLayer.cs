@@ -22,7 +22,7 @@ namespace OfficeOpenXml.Sorting
         internal TableSortLayer(TableSortOptions options)
             : base(options)
         {
-            _options = options;
+            this._options = options;
         }
 
         private readonly TableSortOptions _options;
@@ -34,8 +34,8 @@ namespace OfficeOpenXml.Sorting
         /// <returns>A <see cref="TableSortLayerBuilder"/> for adding more sort criterias</returns>
         public TableSortLayerBuilder Column(int column)
         {
-            SetColumn(column);
-            return new TableSortLayerBuilder(_options, this);
+            this.SetColumn(column);
+            return new TableSortLayerBuilder(this._options, this);
         }
 
         /// <summary>
@@ -46,8 +46,8 @@ namespace OfficeOpenXml.Sorting
         /// <returns>A <see cref="TableSortLayerBuilder"/> for adding more sort criterias</returns>
         public TableSortLayerBuilder Column(int column, eSortOrder sortOrder)
         {
-            SetColumn(column, sortOrder);
-            return new TableSortLayerBuilder(_options, this);
+            this.SetColumn(column, sortOrder);
+            return new TableSortLayerBuilder(this._options, this);
         }
 
         /// <summary>
@@ -57,9 +57,9 @@ namespace OfficeOpenXml.Sorting
         /// <returns>A <see cref="TableSortLayerBuilder"/> for adding more sort criterias</returns>
         public TableSortLayerBuilder ColumnNamed(string columnName)
         {
-            int ix = _options.GetColumnNameIndex(columnName);
-            SetColumn(ix);
-            return new TableSortLayerBuilder(_options, this);
+            int ix = this._options.GetColumnNameIndex(columnName);
+            this.SetColumn(ix);
+            return new TableSortLayerBuilder(this._options, this);
         }
 
         /// <summary>
@@ -70,9 +70,9 @@ namespace OfficeOpenXml.Sorting
         /// <returns>A <see cref="TableSortLayerBuilder"/> for adding more sort criterias</returns>
         public TableSortLayerBuilder ColumnNamed(string columnName, eSortOrder sortOrder)
         {
-            int ix = _options.GetColumnNameIndex(columnName);
-            SetColumn(ix, sortOrder);
-            return new TableSortLayerBuilder(_options, this);
+            int ix = this._options.GetColumnNameIndex(columnName);
+            this.SetColumn(ix, sortOrder);
+            return new TableSortLayerBuilder(this._options, this);
         }
     }
 }

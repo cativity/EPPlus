@@ -30,7 +30,7 @@ namespace OfficeOpenXml.Drawing.Chart.ChartEx
         { 
             get
             {
-                string? s = GetXmlNodeString("@type");
+                string? s = this.GetXmlNodeString("@type");
                 switch (s)
                 {
                     case "val":
@@ -56,7 +56,8 @@ namespace OfficeOpenXml.Drawing.Chart.ChartEx
                         s = value.ToEnumString();
                         break;
                 }
-                SetXmlNodeString("@type", s);
+
+                this.SetXmlNodeString("@type", s);
             }
         }
     }

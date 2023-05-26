@@ -29,12 +29,12 @@ namespace OfficeOpenXml.VBA
         //private const string _validModulePattern = "^[a-zA-Z][a-zA-Z0-9_ ]*$";
         internal ExcelVBAModule()
         {
-            Attributes = new ExcelVbaModuleAttributesCollection();
+            this.Attributes = new ExcelVbaModuleAttributesCollection();
         }
         internal ExcelVBAModule(ModuleNameChange nameChangeCallback) :
             this()
         {
-            _nameChangeCallback = nameChangeCallback;
+            this._nameChangeCallback = nameChangeCallback;
         }
         /// <summary>
         /// The name of the module
@@ -43,7 +43,7 @@ namespace OfficeOpenXml.VBA
         {
             get
             {
-                return _name;
+                return this._name;
             }
             set
             {
@@ -55,13 +55,13 @@ namespace OfficeOpenXml.VBA
                 {
                     throw (new InvalidOperationException("Name contains invalid characters"));
                 }
-                if (value != _name)
+                if (value != this._name)
                 {
-                    _name = value;
-                    streamName = value;
-                    if (_nameChangeCallback != null)
+                    this._name = value;
+                    this.streamName = value;
+                    if (this._nameChangeCallback != null)
                     {
-                        _nameChangeCallback(value);
+                        this._nameChangeCallback(value);
                     }
                 }
             }
@@ -97,7 +97,7 @@ namespace OfficeOpenXml.VBA
         public string Code {
             get
             {
-                return _code;
+                return this._code;
             }
             set
             {
@@ -105,7 +105,8 @@ namespace OfficeOpenXml.VBA
                 {
                     throw (new InvalidOperationException("Code can't start with an Attribute or VERSION keyword. Attributes can be accessed through the Attributes collection."));
                 }
-                _code = value;
+
+                this._code = value;
             }
         }
         /// <summary>
@@ -138,7 +139,7 @@ namespace OfficeOpenXml.VBA
         /// <returns>The name of the VBA module</returns>
         public override string ToString()
         {
-            return Name;
+            return this.Name;
         }
     }
 }

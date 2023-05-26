@@ -38,11 +38,11 @@ namespace OfficeOpenXml.Drawing.Style.Coloring
         {
             get
             {
-                return GetXmlNodeString("@val").TranslatePresetColor();
+                return this.GetXmlNodeString("@val").TranslatePresetColor();
             }
             set
             {
-                SetXmlNodeString("@val", value.TranslateString());
+                this.SetXmlNodeString("@val", value.TranslateString());
             }
         }   
 

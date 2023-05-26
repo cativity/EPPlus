@@ -14,9 +14,9 @@ namespace OfficeOpenXml.Export.ToDataTable
             Require.That(options).IsNotNull();
             Require.That(dataTable).IsNotNull();
             Require.That(range).IsNotNull();
-            _options = options;
-            _dataTable = dataTable;
-            _range = range;
+            this._options = options;
+            this._dataTable = dataTable;
+            this._range = range;
         }
 
         private readonly ToDataTableOptions _options;
@@ -26,7 +26,7 @@ namespace OfficeOpenXml.Export.ToDataTable
         internal void Map()
         {
             int indexInRange = 0;
-            foreach(object? columnObj in _dataTable.Columns)
+            foreach(object? columnObj in this._dataTable.Columns)
             {
                 DataColumn? column = columnObj as DataColumn;
                 if (column == null)
@@ -34,21 +34,21 @@ namespace OfficeOpenXml.Export.ToDataTable
                     continue;
                 }
 
-                if(!_options.Mappings.Any(x => string.Compare(column.ColumnName, x.DataColumnName, StringComparison.OrdinalIgnoreCase) == 0))
+                if(!this._options.Mappings.Any(x => string.Compare(column.ColumnName, x.DataColumnName, StringComparison.OrdinalIgnoreCase) == 0))
                 {
-                    if(_options.FirstRowIsColumnNames)
+                    if(this._options.FirstRowIsColumnNames)
                     {
-                        int ix = FindIndexInRange(column.ColumnName);
+                        int ix = this.FindIndexInRange(column.ColumnName);
                         if (ix == -1)
                         {
                             throw new InvalidOperationException("Column name not found in range: " + column.ColumnName);
                         }
 
-                        _options.Mappings.Add(ix, column.ColumnName, column.DataType, column.AllowDBNull);
+                        this._options.Mappings.Add(ix, column.ColumnName, column.DataType, column.AllowDBNull);
                     }
                     else
                     {
-                        _options.Mappings.Add(indexInRange, column.ColumnName, column.DataType, column.AllowDBNull);
+                        this._options.Mappings.Add(indexInRange, column.ColumnName, column.DataType, column.AllowDBNull);
                     }
                     indexInRange++;
                 }
@@ -57,11 +57,11 @@ namespace OfficeOpenXml.Export.ToDataTable
 
         private int FindIndexInRange(string columnName)
         {
-            int row = _range.Start.Row;
+            int row = this._range.Start.Row;
             int index = 0;
-            for(int col = _range.Start.Column; col <= _range.End.Column; col++)
+            for(int col = this._range.Start.Column; col <= this._range.End.Column; col++)
             {
-                object? cellVal = _range.Worksheet.GetValueInner(row, col);
+                object? cellVal = this._range.Worksheet.GetValueInner(row, col);
                 if (cellVal == null)
                 {
                     continue;

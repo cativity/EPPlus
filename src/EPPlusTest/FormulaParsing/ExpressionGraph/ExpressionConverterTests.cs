@@ -46,14 +46,14 @@ namespace EPPlusTest.FormulaParsing.ExpressionGraph
         [TestInitialize]
         public void Setup()
         {
-            _converter = new ExpressionConverter();
+            this._converter = new ExpressionConverter();
         }
 
         [TestMethod]
         public void ToStringExpressionShouldConvertIntegerExpressionToStringExpression()
         {
             IntegerExpression? integerExpression = new IntegerExpression("2");
-            StringExpression? result = _converter.ToStringExpression(integerExpression);
+            StringExpression? result = this._converter.ToStringExpression(integerExpression);
             Assert.IsInstanceOfType(result, typeof(StringExpression));
             Assert.AreEqual("2", result.Compile().Result);
         }
@@ -63,7 +63,7 @@ namespace EPPlusTest.FormulaParsing.ExpressionGraph
         {
             IntegerExpression? integerExpression = new IntegerExpression("2");
             integerExpression.Operator = Operator.Plus;
-            StringExpression? result = _converter.ToStringExpression(integerExpression);
+            StringExpression? result = this._converter.ToStringExpression(integerExpression);
             Assert.AreEqual(integerExpression.Operator, result.Operator);
         }
 
@@ -71,7 +71,7 @@ namespace EPPlusTest.FormulaParsing.ExpressionGraph
         public void ToStringExpressionShouldConvertDecimalExpressionToStringExpression()
         {
             DecimalExpression? decimalExpression = new DecimalExpression("2.5");
-            StringExpression? result = _converter.ToStringExpression(decimalExpression);
+            StringExpression? result = this._converter.ToStringExpression(decimalExpression);
             Assert.IsInstanceOfType(result, typeof(StringExpression));
             Assert.AreEqual($"2{CultureInfo.CurrentCulture.NumberFormat.NumberDecimalSeparator}5", result.Compile().Result);
         }
@@ -80,7 +80,7 @@ namespace EPPlusTest.FormulaParsing.ExpressionGraph
         public void FromCompileResultShouldCreateIntegerExpressionIfCompileResultIsInteger()
         {
             CompileResult? compileResult = new CompileResult(1, DataType.Integer);
-            Expression? result = _converter.FromCompileResult(compileResult);
+            Expression? result = this._converter.FromCompileResult(compileResult);
             Assert.IsInstanceOfType(result, typeof(IntegerExpression));
             Assert.AreEqual(1d, result.Compile().Result);
         }
@@ -89,7 +89,7 @@ namespace EPPlusTest.FormulaParsing.ExpressionGraph
         public void FromCompileResultShouldCreateStringExpressionIfCompileResultIsString()
         {
             CompileResult? compileResult = new CompileResult("abc", DataType.String);
-            Expression? result = _converter.FromCompileResult(compileResult);
+            Expression? result = this._converter.FromCompileResult(compileResult);
             Assert.IsInstanceOfType(result, typeof(StringExpression));
             Assert.AreEqual("abc", result.Compile().Result);
         }
@@ -98,7 +98,7 @@ namespace EPPlusTest.FormulaParsing.ExpressionGraph
         public void FromCompileResultShouldCreateDecimalExpressionIfCompileResultIsDecimal()
         {
             CompileResult? compileResult = new CompileResult(2.5d, DataType.Decimal);
-            Expression? result = _converter.FromCompileResult(compileResult);
+            Expression? result = this._converter.FromCompileResult(compileResult);
             Assert.IsInstanceOfType(result, typeof(DecimalExpression));
             Assert.AreEqual(2.5d, result.Compile().Result);
         }
@@ -107,7 +107,7 @@ namespace EPPlusTest.FormulaParsing.ExpressionGraph
         public void FromCompileResultShouldCreateBooleanExpressionIfCompileResultIsBoolean()
         {
             CompileResult? compileResult = new CompileResult("true", DataType.Boolean);
-            Expression? result = _converter.FromCompileResult(compileResult);
+            Expression? result = this._converter.FromCompileResult(compileResult);
             Assert.IsInstanceOfType(result, typeof(BooleanExpression));
             Assert.IsTrue((bool)result.Compile().Result);
         }

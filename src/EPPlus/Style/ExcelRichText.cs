@@ -30,14 +30,14 @@ namespace OfficeOpenXml.Style
         internal ExcelRichText(XmlNamespaceManager ns, XmlNode topNode, ExcelRichTextCollection collection) :
             base(ns, topNode)
         {
-            SchemaNodeOrder = new string[] { "rPr", "t", "b", "i", "strike", "u", "vertAlign", "sz", "color", "rFont", "family", "scheme", "charset" };
-            _collection = collection;
+            this.SchemaNodeOrder = new string[] { "rPr", "t", "b", "i", "strike", "u", "vertAlign", "sz", "color", "rFont", "family", "scheme", "charset" };
+            this._collection = collection;
         }
         internal delegate void CallbackDelegate();
         internal CallbackDelegate _callback;
         internal void SetCallback(CallbackDelegate callback)
         {
-            _callback = callback;
+            this._callback = callback;
         }
         const string TEXT_PATH = "d:t";
         /// <summary>
@@ -48,7 +48,7 @@ namespace OfficeOpenXml.Style
 
             get
             {
-                return GetXmlNodeString(TEXT_PATH);
+                return this.GetXmlNodeString(TEXT_PATH);
             }
             set
             {
@@ -57,14 +57,14 @@ namespace OfficeOpenXml.Style
                     throw new InvalidOperationException("Text can't be null");
                 }
 
-                _collection.ConvertRichtext();
-                SetXmlNodeString(TEXT_PATH, value, false);
-                if (PreserveSpace)
+                this._collection.ConvertRichtext();
+                this.SetXmlNodeString(TEXT_PATH, value, false);
+                if (this.PreserveSpace)
                 {
-                    XmlElement elem = TopNode.SelectSingleNode(TEXT_PATH, NameSpaceManager) as XmlElement;
+                    XmlElement elem = this.TopNode.SelectSingleNode(TEXT_PATH, this.NameSpaceManager) as XmlElement;
                     elem.SetAttribute("xml:space", "preserve");
                 }
-                if (_callback != null)
+                if (this._callback != null)
                 {
                     this._callback();
                 }
@@ -78,7 +78,7 @@ namespace OfficeOpenXml.Style
             get
             {
                 StringBuilder? sb = new StringBuilder();
-                WriteHtmlText(sb);
+                this.WriteHtmlText(sb);
                 return sb.ToString();
             }
         }
@@ -88,7 +88,7 @@ namespace OfficeOpenXml.Style
             sb.Append("<span style=\"");
             HtmlRichText.GetRichTextStyle(this, sb);
             sb.Append("\">");
-            sb.Append(Text);
+            sb.Append(this.Text);
             sb.Append("</span>");
         }
 
@@ -99,7 +99,7 @@ namespace OfficeOpenXml.Style
         {
             get
             {
-                XmlElement elem = TopNode.SelectSingleNode(TEXT_PATH, NameSpaceManager) as XmlElement;
+                XmlElement elem = this.TopNode.SelectSingleNode(TEXT_PATH, this.NameSpaceManager) as XmlElement;
                 if (elem != null)
                 {
                     return elem.GetAttribute("xml:space") == "preserve";
@@ -108,8 +108,8 @@ namespace OfficeOpenXml.Style
             }
             set
             {
-                _collection.ConvertRichtext();
-                XmlElement elem = TopNode.SelectSingleNode(TEXT_PATH, NameSpaceManager) as XmlElement;
+                this._collection.ConvertRichtext();
+                XmlElement elem = this.TopNode.SelectSingleNode(TEXT_PATH, this.NameSpaceManager) as XmlElement;
                 if (elem != null)
                 {
                     if (value)
@@ -121,7 +121,7 @@ namespace OfficeOpenXml.Style
                         elem.RemoveAttribute("xml:space");
                     }
                 }
-                if (_callback != null)
+                if (this._callback != null)
                 {
                     this._callback();
                 }
@@ -135,20 +135,20 @@ namespace OfficeOpenXml.Style
         {
             get
             {
-                return ExistsNode(BOLD_PATH);
+                return this.ExistsNode(BOLD_PATH);
             }
             set
             {
-                _collection.ConvertRichtext();
+                this._collection.ConvertRichtext();
                 if (value)
                 {
-                    CreateNode(BOLD_PATH);
+                    this.CreateNode(BOLD_PATH);
                 }
                 else
                 {
-                    DeleteNode(BOLD_PATH);
+                    this.DeleteNode(BOLD_PATH);
                 }
-                if (_callback != null)
+                if (this._callback != null)
                 {
                     this._callback();
                 }
@@ -163,20 +163,20 @@ namespace OfficeOpenXml.Style
             get
             {
                 //return GetXmlNodeBool(ITALIC_PATH, false);
-                return ExistsNode(ITALIC_PATH);
+                return this.ExistsNode(ITALIC_PATH);
             }
             set
             {
-                _collection.ConvertRichtext();
+                this._collection.ConvertRichtext();
                 if (value)
                 {
-                    CreateNode(ITALIC_PATH);
+                    this.CreateNode(ITALIC_PATH);
                 }
                 else
                 {
-                    DeleteNode(ITALIC_PATH);
+                    this.DeleteNode(ITALIC_PATH);
                 }
-                if (_callback != null)
+                if (this._callback != null)
                 {
                     this._callback();
                 }
@@ -190,20 +190,20 @@ namespace OfficeOpenXml.Style
         {
             get
             {
-                return ExistsNode(STRIKE_PATH);
+                return this.ExistsNode(STRIKE_PATH);
             }
             set
             {
-                _collection.ConvertRichtext();
+                this._collection.ConvertRichtext();
                 if (value)
                 {
-                    CreateNode(STRIKE_PATH);
+                    this.CreateNode(STRIKE_PATH);
                 }
                 else
                 {
-                    DeleteNode(STRIKE_PATH);
+                    this.DeleteNode(STRIKE_PATH);
                 }
-                if (_callback != null)
+                if (this._callback != null)
                 {
                     this._callback();
                 }
@@ -217,20 +217,20 @@ namespace OfficeOpenXml.Style
         {
             get
             {
-                return ExistsNode(UNDERLINE_PATH);
+                return this.ExistsNode(UNDERLINE_PATH);
             }
             set
             {
-                _collection.ConvertRichtext();
+                this._collection.ConvertRichtext();
                 if (value)
                 {
-                    CreateNode(UNDERLINE_PATH);
+                    this.CreateNode(UNDERLINE_PATH);
                 }
                 else
                 {
-                    DeleteNode(UNDERLINE_PATH);
+                    this.DeleteNode(UNDERLINE_PATH);
                 }
-                if (_callback != null)
+                if (this._callback != null)
                 {
                     this._callback();
                 }
@@ -245,7 +245,7 @@ namespace OfficeOpenXml.Style
         {
             get
             {
-                string v = GetXmlNodeString(VERT_ALIGN_PATH);
+                string v = this.GetXmlNodeString(VERT_ALIGN_PATH);
                 if (v == "")
                 {
                     return ExcelVerticalAlignmentFont.None;
@@ -264,17 +264,17 @@ namespace OfficeOpenXml.Style
             }
             set
             {
-                _collection.ConvertRichtext();
+                this._collection.ConvertRichtext();
                 if (value == ExcelVerticalAlignmentFont.None)
                 {
                     // If Excel 2010 encounters a vertical align value of blank, it will not load
                     // the spreadsheet. So if None is specified, delete the node, it will be 
                     // recreated if a new value is applied later.
-                    DeleteNode(VERT_ALIGN_PATH, true);
+                    this.DeleteNode(VERT_ALIGN_PATH, true);
                 } else {
-                    SetXmlNodeString(VERT_ALIGN_PATH, value.ToString().ToLowerInvariant());
+                    this.SetXmlNodeString(VERT_ALIGN_PATH, value.ToString().ToLowerInvariant());
                 }
-                if (_callback != null)
+                if (this._callback != null)
                 {
                     this._callback();
                 }
@@ -288,13 +288,13 @@ namespace OfficeOpenXml.Style
         {
             get
             {
-                return Convert.ToSingle(GetXmlNodeDecimal(SIZE_PATH));
+                return Convert.ToSingle(this.GetXmlNodeDecimal(SIZE_PATH));
             }
             set
             {
-                _collection.ConvertRichtext();
-                SetXmlNodeString(SIZE_PATH, value.ToString(CultureInfo.InvariantCulture));
-                if (_callback != null)
+                this._collection.ConvertRichtext();
+                this.SetXmlNodeString(SIZE_PATH, value.ToString(CultureInfo.InvariantCulture));
+                if (this._callback != null)
                 {
                     this._callback();
                 }
@@ -308,13 +308,13 @@ namespace OfficeOpenXml.Style
         {
             get
             {
-                return GetXmlNodeString(FONT_PATH);
+                return this.GetXmlNodeString(FONT_PATH);
             }
             set
             {
-                _collection.ConvertRichtext();
-                SetXmlNodeString(FONT_PATH, value);
-                if (_callback != null)
+                this._collection.ConvertRichtext();
+                this.SetXmlNodeString(FONT_PATH, value);
+                if (this._callback != null)
                 {
                     this._callback();
                 }
@@ -332,26 +332,26 @@ namespace OfficeOpenXml.Style
         {
             get
             {
-                string? col = GetXmlNodeString(COLOR_PATH);
-                double? tint = GetXmlNodeDoubleNull(COLOR_TINT_PATH);
+                string? col = this.GetXmlNodeString(COLOR_PATH);
+                double? tint = this.GetXmlNodeDoubleNull(COLOR_TINT_PATH);
                 Color ret;
                 if (col == "")
                 {
-                    int? v = GetXmlNodeIntNull(COLOR_THEME_PATH);
+                    int? v = this.GetXmlNodeIntNull(COLOR_THEME_PATH);
                     if (v.HasValue)
                     {
-                        ret = Utils.ColorConverter.GetThemeColor(_collection._ws.Workbook.ThemeManager.GetOrCreateTheme(), (eThemeSchemeColor)v);
+                        ret = Utils.ColorConverter.GetThemeColor(this._collection._ws.Workbook.ThemeManager.GetOrCreateTheme(), (eThemeSchemeColor)v);
                     }
                     else
                     {
-                        if (_collection._cells == null || (ExistsNode(RPR_PATH))) //If the rPn element exist but no color element, automatic should be used.
+                        if (this._collection._cells == null || (this.ExistsNode(RPR_PATH))) //If the rPn element exist but no color element, automatic should be used.
                         {
-                            ret = Utils.ColorConverter.GetThemeColor(_collection._ws.Workbook.ThemeManager.GetOrCreateTheme().ColorScheme.Dark1);
+                            ret = Utils.ColorConverter.GetThemeColor(this._collection._ws.Workbook.ThemeManager.GetOrCreateTheme().ColorScheme.Dark1);
                         }
                         else
                         {
                             //If not color is set, return the font of the first cell in the range.
-                            string? s = _collection._cells.Style.Font.Color.LookupColor();
+                            string? s = this._collection._cells.Style.Font.Color.LookupColor();
                             ret = Color.FromArgb(int.Parse(s.Substring(1), NumberStyles.AllowHexSpecifier));
                         }
                     }
@@ -368,9 +368,9 @@ namespace OfficeOpenXml.Style
             }
             set
             {
-                _collection.ConvertRichtext();
-                SetXmlNodeString(COLOR_PATH, value.ToArgb().ToString("X")/*.Substring(2, 6)*/);
-                if (_callback != null)
+                this._collection.ConvertRichtext();
+                this.SetXmlNodeString(COLOR_PATH, value.ToArgb().ToString("X")/*.Substring(2, 6)*/);
+                if (this._callback != null)
                 {
                     this._callback();
                 }
@@ -386,11 +386,11 @@ namespace OfficeOpenXml.Style
         {
             get
             {
-                if(_colorSettings==null)
+                if(this._colorSettings==null)
                 {
-                    _colorSettings = new ExcelRichTextColor(NameSpaceManager, TopNode, this);
+                    this._colorSettings = new ExcelRichTextColor(this.NameSpaceManager, this.TopNode, this);
                 }
-                return _colorSettings;
+                return this._colorSettings;
             }
         }
         /// <summary>

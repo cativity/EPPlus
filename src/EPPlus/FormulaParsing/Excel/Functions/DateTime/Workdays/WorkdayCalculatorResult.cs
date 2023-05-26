@@ -22,10 +22,10 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions.DateTime.Workdays
     {
         public WorkdayCalculatorResult(int numberOfWorkdays, System.DateTime startDate, System.DateTime endDate, WorkdayCalculationDirection direction)
         {
-            NumberOfWorkdays = numberOfWorkdays;
-            StartDate = startDate;
-            EndDate = endDate;
-            Direction = direction;
+            this.NumberOfWorkdays = numberOfWorkdays;
+            this.StartDate = startDate;
+            this.EndDate = endDate;
+            this.Direction = direction;
         }
 
         public int NumberOfWorkdays { get; }

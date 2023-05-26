@@ -23,16 +23,16 @@ namespace OfficeOpenXml.LoadFunctions
     {
         public LoadFromText(ExcelRangeBase range, string text, LoadFromTextParams parameters)
         {
-            _range = range;
-            _worksheet = range.Worksheet;
-            _text = text;
+            this._range = range;
+            this._worksheet = range.Worksheet;
+            this._text = text;
             if(parameters.Format == null)
             {
-                _format = new ExcelTextFormat();
+                this._format = new ExcelTextFormat();
             }
             else
             {
-                _format = parameters.Format;
+                this._format = parameters.Format;
             }
         }
 
@@ -43,21 +43,21 @@ namespace OfficeOpenXml.LoadFunctions
 
         public ExcelRangeBase Load()
         {
-            if (string.IsNullOrEmpty(_text))
+            if (string.IsNullOrEmpty(this._text))
             {
-                ExcelRange? r = _worksheet.Cells[_range._fromRow, _range._fromCol];
+                ExcelRange? r = this._worksheet.Cells[this._range._fromRow, this._range._fromCol];
                 r.Value = "";
                 return r;
             }
 
             string[] lines;
-            if (_format.TextQualifier == 0)
+            if (this._format.TextQualifier == 0)
             {
-                lines = SplitLines(_text, _format.EOL);
+                lines = SplitLines(this._text, this._format.EOL);
             }
             else
             {
-                lines = GetLines(_text, _format);
+                lines = GetLines(this._text, this._format);
             }
 
             int row = 0;
@@ -70,7 +70,7 @@ namespace OfficeOpenXml.LoadFunctions
                 List<object>? items = new List<object>();
                 //values[row] = items;
 
-                if (lineNo > _format.SkipLinesBeginning && lineNo <= lines.Length - _format.SkipLinesEnd)
+                if (lineNo > this._format.SkipLinesBeginning && lineNo <= lines.Length - this._format.SkipLinesEnd)
                 {
                     col = 0;
                     string v = "";
@@ -79,7 +79,7 @@ namespace OfficeOpenXml.LoadFunctions
                     int lineQCount = 0;
                     foreach (char c in line)
                     {
-                        if (_format.TextQualifier != 0 && c == _format.TextQualifier)
+                        if (this._format.TextQualifier != 0 && c == this._format.TextQualifier)
                         {
                             if (!isText && v != "")
                             {
@@ -101,11 +101,11 @@ namespace OfficeOpenXml.LoadFunctions
                         {
                             if (QCount > 1 && !string.IsNullOrEmpty(v))
                             {
-                                v += new string(_format.TextQualifier, QCount / 2);
+                                v += new string(this._format.TextQualifier, QCount / 2);
                             }
                             else if (QCount > 2 && string.IsNullOrEmpty(v))
                             {
-                                v += new string(_format.TextQualifier, (QCount - 1) / 2);
+                                v += new string(this._format.TextQualifier, (QCount - 1) / 2);
                             }
 
                             if (isQualifier)
@@ -114,9 +114,9 @@ namespace OfficeOpenXml.LoadFunctions
                             }
                             else
                             {
-                                if (c == _format.Delimiter)
+                                if (c == this._format.Delimiter)
                                 {
-                                    items.Add(ConvertData(_format, v, col, isText));
+                                    items.Add(ConvertData(this._format, v, col, isText));
                                     v = "";
                                     isText = false;
                                     col++;
@@ -139,16 +139,16 @@ namespace OfficeOpenXml.LoadFunctions
                         {
                             QCount--;
                         }
-                        v += new string(_format.TextQualifier, (QCount) / 2);
+                        v += new string(this._format.TextQualifier, (QCount) / 2);
                     }
                     if (lineQCount % 2 == 1)
                     {
                         throw (new Exception(string.Format("Text delimiter is not closed in line : {0}", line)));
                     }
 
-                    items.Add(ConvertData(_format, v, col, isText));
+                    items.Add(ConvertData(this._format, v, col, isText));
 
-                    _worksheet._values.SetValueRow_Value(_range._fromRow + row, _range._fromCol, items);
+                    this._worksheet._values.SetValueRow_Value(this._range._fromRow + row, this._range._fromCol, items);
 
                     if (col > maxCol)
                     {
@@ -164,7 +164,7 @@ namespace OfficeOpenXml.LoadFunctions
             {
                 return null;
             }
-            return _worksheet.Cells[_range._fromRow, _range._fromCol, _range._fromRow + row - 1, _range._fromCol + maxCol];
+            return this._worksheet.Cells[this._range._fromRow, this._range._fromCol, this._range._fromRow + row - 1, this._range._fromCol + maxCol];
         }
 
         private static string[] SplitLines(string text, string EOL)

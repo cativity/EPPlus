@@ -33,21 +33,21 @@ namespace OfficeOpenXml.Drawing.Chart
         ExcelChart _chart;
         internal ExcelChartDataPoint(ExcelChart chart, XmlNamespaceManager ns, XmlNode topNode) : base(ns, topNode)
         {
-            Init(chart);
-            Index = GetXmlNodeInt(indexPath);
+            this.Init(chart);
+            this.Index = this.GetXmlNodeInt(indexPath);
         }
 
         internal ExcelChartDataPoint(ExcelChart chart, XmlNamespaceManager ns, XmlNode topNode, int index) : base(ns, topNode)
         {
-            Init(chart);
-            SetXmlNodeString(indexPath, index.ToString(CultureInfo.InvariantCulture));
-            Bubble3D = false;
-            Index = index;
+            this.Init(chart);
+            this.SetXmlNodeString(indexPath, index.ToString(CultureInfo.InvariantCulture));
+            this.Bubble3D = false;
+            this.Index = index;
         }
         private void Init(ExcelChart chart)
         {
-            _chart = chart;
-            AddSchemaNodeOrder(new string[] { "idx", "invertIfNegative", "marker", "bubble3D", "explosion", "spPr", "pictureOptions", "extLst" }, ExcelDrawing._schemaNodeOrderSpPr);
+            this._chart = chart;
+            this.AddSchemaNodeOrder(new string[] { "idx", "invertIfNegative", "marker", "bubble3D", "explosion", "spPr", "pictureOptions", "extLst" }, ExcelDrawing._schemaNodeOrderSpPr);
         }
         const string indexPath = "c:idx/@val";
         /// <summary>
@@ -65,11 +65,11 @@ namespace OfficeOpenXml.Drawing.Chart
         {
             get
             {
-                return GetXmlNodeBool("c:bubble3D/@val");
+                return this.GetXmlNodeBool("c:bubble3D/@val");
             }
             set
             {
-                SetXmlNodeString("c:bubble3D/@val", value.GetStringValueForXml());
+                this.SetXmlNodeString("c:bubble3D/@val", value.GetStringValueForXml());
             }
         }
         /// <summary>
@@ -79,11 +79,11 @@ namespace OfficeOpenXml.Drawing.Chart
         {
             get
             {
-                return GetXmlNodeBool("c:invertIfNegative");
+                return this.GetXmlNodeBool("c:invertIfNegative");
             }
             set
             {
-                SetXmlNodeString("c:invertIfNegative", value.GetStringValueForXml());
+                this.SetXmlNodeString("c:invertIfNegative", value.GetStringValueForXml());
             }
         }
         ExcelChartMarker _chartMarker = null;
@@ -94,11 +94,11 @@ namespace OfficeOpenXml.Drawing.Chart
         {
             get
             {
-                if (_chartMarker == null)
+                if (this._chartMarker == null)
                 {
-                    _chartMarker = new ExcelChartMarker(_chart, NameSpaceManager, TopNode, SchemaNodeOrder);
+                    this._chartMarker = new ExcelChartMarker(this._chart, this.NameSpaceManager, this.TopNode, this.SchemaNodeOrder);
                 }
-                return _chartMarker;
+                return this._chartMarker;
             }
         }
         ExcelDrawingFill _fill = null;
@@ -109,11 +109,11 @@ namespace OfficeOpenXml.Drawing.Chart
         {
             get
             {
-                if (_fill == null)
+                if (this._fill == null)
                 {
-                    _fill = new ExcelDrawingFill(_chart, NameSpaceManager, TopNode, "c:spPr", SchemaNodeOrder);
+                    this._fill = new ExcelDrawingFill(this._chart, this.NameSpaceManager, this.TopNode, "c:spPr", this.SchemaNodeOrder);
                 }
-                return _fill;
+                return this._fill;
             }
         }
         ExcelDrawingBorder _line = null;
@@ -124,11 +124,11 @@ namespace OfficeOpenXml.Drawing.Chart
         {
             get
             {
-                if (_line == null)
+                if (this._line == null)
                 {
-                    _line = new ExcelDrawingBorder(_chart, NameSpaceManager, TopNode, "c:spPr/a:ln", SchemaNodeOrder);
+                    this._line = new ExcelDrawingBorder(this._chart, this.NameSpaceManager, this.TopNode, "c:spPr/a:ln", this.SchemaNodeOrder);
                 }
-                return _line;
+                return this._line;
             }
         }
         private ExcelDrawingEffectStyle _effect = null;
@@ -139,11 +139,11 @@ namespace OfficeOpenXml.Drawing.Chart
         {
             get
             {
-                if (_effect == null)
+                if (this._effect == null)
                 {
-                    _effect = new ExcelDrawingEffectStyle(_chart, NameSpaceManager, TopNode, "c:spPr/a:effectLst", SchemaNodeOrder);
+                    this._effect = new ExcelDrawingEffectStyle(this._chart, this.NameSpaceManager, this.TopNode, "c:spPr/a:effectLst", this.SchemaNodeOrder);
                 }
-                return _effect;
+                return this._effect;
             }
         }
         ExcelDrawing3D _threeD = null;
@@ -154,16 +154,16 @@ namespace OfficeOpenXml.Drawing.Chart
         {
             get
             {
-                if (_threeD == null)
+                if (this._threeD == null)
                 {
-                    _threeD = new ExcelDrawing3D(NameSpaceManager, TopNode, "c:spPr", SchemaNodeOrder);
+                    this._threeD = new ExcelDrawing3D(this.NameSpaceManager, this.TopNode, "c:spPr", this.SchemaNodeOrder);
                 }
-                return _threeD;
+                return this._threeD;
             }
         }
         void IDrawingStyleBase.CreatespPr()
         {
-            CreatespPrNode();
+            this.CreatespPrNode();
         }
 
         /// <summary>
@@ -172,7 +172,7 @@ namespace OfficeOpenXml.Drawing.Chart
         /// <returns></returns>
         public bool HasMarker()
         {
-            return ExistsNode("c:marker");
+            return this.ExistsNode("c:marker");
         }
 
         /// <summary>
@@ -180,19 +180,19 @@ namespace OfficeOpenXml.Drawing.Chart
         /// </summary>
         public void Dispose()
         {
-            if (_chart != null)
+            if (this._chart != null)
             {
                 this._chart.Dispose();
             }
 
-            _chart = null;
-            _line = null;
-            if (_fill != null)
+            this._chart = null;
+            this._line = null;
+            if (this._fill != null)
             {
                 this._fill.Dispose();
             }
 
-            _fill = null;
+            this._fill = null;
         }
     }
 }

@@ -23,10 +23,10 @@ namespace OfficeOpenXml.Style.Dxf
         internal ExcelDxfStyleFont(XmlNamespaceManager nameSpaceManager, XmlNode topNode, ExcelStyles styles, Action<eStyleClass, eStyleProperty, object> callback)
             : base(nameSpaceManager, topNode, styles, callback)
         {
-            Font = new ExcelDxfFont(_styles, callback);
+            this.Font = new ExcelDxfFont(this._styles, callback);
             if (topNode != null)
             {
-                Font.SetValuesFromXml(_helper);
+                this.Font.SetValuesFromXml(this._helper);
             }
         }
         /// <summary>
@@ -37,7 +37,7 @@ namespace OfficeOpenXml.Style.Dxf
         {
             get
             {
-                return base.Id + Font.Id;
+                return base.Id + this.Font.Id;
             }
         }
         /// <summary>
@@ -47,43 +47,43 @@ namespace OfficeOpenXml.Style.Dxf
         {
             get
             {
-                return base.HasValue || Font.HasValue;
+                return base.HasValue || this.Font.HasValue;
             }
         }
         internal override DxfStyleBase Clone()
         {
-            ExcelDxfStyleFont? s = new ExcelDxfStyleFont(_helper.NameSpaceManager, null, _styles, _callback)
+            ExcelDxfStyleFont? s = new ExcelDxfStyleFont(this._helper.NameSpaceManager, null, this._styles, this._callback)
             {
-                Font = (ExcelDxfFont)Font.Clone(),
-                Fill = (ExcelDxfFill)Fill.Clone(),
-                Border = (ExcelDxfBorderBase)Border.Clone(),
+                Font = (ExcelDxfFont)this.Font.Clone(),
+                Fill = (ExcelDxfFill)this.Fill.Clone(),
+                Border = (ExcelDxfBorderBase)this.Border.Clone(),
             };
 
             return s;
         }
         internal override void CreateNodes(XmlHelper helper, string path)
         {
-            if (Font.HasValue)
+            if (this.Font.HasValue)
             {
                 this.Font.CreateNodes(helper, "d:font");
             }
 
-            if (Fill.HasValue)
+            if (this.Fill.HasValue)
             {
                 this.Fill.CreateNodes(helper, "d:fill");
             }
 
-            if (Border.HasValue)
+            if (this.Border.HasValue)
             {
                 this.Border.CreateNodes(helper, "d:border");
             }
         }
         internal override void SetStyle()
         {
-            if (_callback != null)
+            if (this._callback != null)
             {
                 base.SetStyle();
-                Font.SetStyle();
+                this.Font.SetStyle();
             }
         }
         /// <summary>
@@ -92,7 +92,7 @@ namespace OfficeOpenXml.Style.Dxf
         public override void Clear()
         {
             base.Clear();
-            Font.Clear();
+            this.Font.Clear();
        }
     }
 }

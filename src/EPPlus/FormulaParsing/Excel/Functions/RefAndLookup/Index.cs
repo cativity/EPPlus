@@ -35,7 +35,7 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions.RefAndLookup
             CompileResultFactory? crf = new CompileResultFactory();
             if (args != null)
             {
-                int index = ArgToInt(arguments, 1, RoundingMethod.Floor);
+                int index = this.ArgToInt(arguments, 1, RoundingMethod.Floor);
                 if (index > args.Count())
                 {
                     throw new ExcelErrorValueException(eErrorType.Ref);
@@ -51,8 +51,8 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions.RefAndLookup
             }
             if (arg1.IsExcelRange)
             {
-                int row = ArgToInt(arguments, 1, RoundingMethod.Floor);                 
-                int col = arguments.Count()>2 ? ArgToInt(arguments, 2, RoundingMethod.Floor) : 1;
+                int row = this.ArgToInt(arguments, 1, RoundingMethod.Floor);                 
+                int col = arguments.Count()>2 ? this.ArgToInt(arguments, 2, RoundingMethod.Floor) : 1;
                 IRangeInfo? ri=arg1.ValueAsRangeInfo;
                 if (row > ri.Address._toRow - ri.Address._fromRow + 1 ||
                     col > ri.Address._toCol - ri.Address._fromCol + 1)

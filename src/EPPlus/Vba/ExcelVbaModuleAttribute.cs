@@ -39,7 +39,7 @@ namespace OfficeOpenXml.VBA
         /// <returns>The name of the VBA module attribute</returns>
         public override string ToString()
         {
-            return Name;
+            return this.Name;
         }
     }
 }

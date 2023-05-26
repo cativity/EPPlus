@@ -37,9 +37,9 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Math
         public override CompileResult Execute(IEnumerable<FunctionArgument> arguments, ParsingContext context)
         {
             ValidateArguments(arguments, 3);
-            int funcNum = ArgToInt(arguments, 0);
+            int funcNum = this.ArgToInt(arguments, 0);
             int nToSkip = IsNumeric(arguments.ElementAt(1).Value) ? 2 : 1;  
-            int options = nToSkip == 1 ? 0 : ArgToInt(arguments, 1);
+            int options = nToSkip == 1 ? 0 : this.ArgToInt(arguments, 1);
 
             if (options < 0 || options > 7)
             {
@@ -214,7 +214,7 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Math
                     result = f19.Execute(new List<FunctionArgument> { arguments.ElementAt(nToSkip), arguments.ElementAt(nToSkip + 1) }, context);
                     break;
                 default:
-                    result = CreateResult(eErrorType.Value);
+                    result = this.CreateResult(eErrorType.Value);
                     break;
             }
             result.IsResultOfSubtotal = IgnoreNestedSubtotalAndAggregate(options);

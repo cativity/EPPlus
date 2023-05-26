@@ -30,8 +30,8 @@ namespace OfficeOpenXml.Utils.TypeConversion
         /// </summary>
         public ReturnTypeWrapper()
         {
-            _returnType = typeof(T);
-            _underlyingType = Nullable.GetUnderlyingType(_returnType);
+            this._returnType = typeof(T);
+            this._underlyingType = Nullable.GetUnderlyingType(this._returnType);
         }
 
         /// <summary>
@@ -41,7 +41,7 @@ namespace OfficeOpenXml.Utils.TypeConversion
         {
             get
             {
-                return IsNullable ? _underlyingType : _returnType;
+                return this.IsNullable ? this._underlyingType : this._returnType;
             }
         }
 
@@ -52,7 +52,7 @@ namespace OfficeOpenXml.Utils.TypeConversion
         {
             get
             {
-                return NumericTypeConversions.IsNumeric(Type);
+                return NumericTypeConversions.IsNumeric(this.Type);
             }
         }
 
@@ -63,7 +63,7 @@ namespace OfficeOpenXml.Utils.TypeConversion
         {
             get
             {
-                return _underlyingType != null;
+                return this._underlyingType != null;
             }
         }
 
@@ -74,7 +74,7 @@ namespace OfficeOpenXml.Utils.TypeConversion
         {
             get
             {
-                return Type == typeof(DateTime);
+                return this.Type == typeof(DateTime);
             }
         }
 
@@ -85,7 +85,7 @@ namespace OfficeOpenXml.Utils.TypeConversion
         {
             get
             {
-                return Type == typeof(TimeSpan);
+                return this.Type == typeof(TimeSpan);
             }
         }
     }

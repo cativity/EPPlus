@@ -19,13 +19,13 @@ namespace OfficeOpenXml.Core.CellStore
     {
         public PageIndex(int pageSizeMin)
         {
-            Rows = new IndexItem[pageSizeMin];
-            RowCount = 0;
+            this.Rows = new IndexItem[pageSizeMin];
+            this.RowCount = 0;
         }
         public PageIndex(IndexItem[] rows, int count)
         {
-            Rows = rows;
-            RowCount = count;
+            this.Rows = rows;
+            this.RowCount = count;
         }
         public PageIndex(PageIndex pageItem, int start, int size)
             : this(pageItem, start, size, pageItem.Index, pageItem.Offset)
@@ -39,15 +39,15 @@ namespace OfficeOpenXml.Core.CellStore
                 arraySize = CellStore<int>.GetSize(size);
             }
 
-            Rows = new IndexItem[arraySize];
-            Array.Copy(pageItem.Rows, start, Rows, 0, pageItem.RowCount-start);
-            RowCount = size;    
-            Index = index;
-            Offset = offset;
+            this.Rows = new IndexItem[arraySize];
+            Array.Copy(pageItem.Rows, start, this.Rows, 0, pageItem.RowCount-start);
+            this.RowCount = size;
+            this.Index = index;
+            this.Offset = offset;
         }
         ~PageIndex()
         {
-            Rows = null;
+            this.Rows = null;
         }
         internal int Offset = 0;
         /// <summary>
@@ -58,14 +58,14 @@ namespace OfficeOpenXml.Core.CellStore
         {
             get
             {
-                return IndexExpanded + Offset;
+                return this.IndexExpanded + this.Offset;
             }
         }
         internal int IndexExpanded
         {
             get
             {
-                return (Index << CellStoreSettings._pageBits);
+                return (this.Index << CellStoreSettings._pageBits);
             }
         }
         internal IndexItem[] Rows { get; set; }
@@ -76,26 +76,26 @@ namespace OfficeOpenXml.Core.CellStore
         {
             get
             {
-                return MaxIndex - MinIndex+1;
+                return this.MaxIndex - this.MinIndex+1;
             }
         }
 
         internal int GetPosition(int offset)
         {
-            return ArrayUtil.OptimizedBinarySearch(Rows, offset, RowCount);
+            return ArrayUtil.OptimizedBinarySearch(this.Rows, offset, this.RowCount);
         }
         internal int GetRowPosition(int row)
         {
-            int offset = row - IndexOffset;
-            return ArrayUtil.OptimizedBinarySearch(Rows, offset, RowCount);
+            int offset = row - this.IndexOffset;
+            return ArrayUtil.OptimizedBinarySearch(this.Rows, offset, this.RowCount);
         }
         internal int GetNextRow(int row)
         {
-            int o = GetRowPosition(row);
+            int o = this.GetRowPosition(row);
             if (o < 0)
             {
                 o = ~o;
-                if (o < RowCount)
+                if (o < this.RowCount)
                 {
                     return o;
                 }
@@ -111,9 +111,9 @@ namespace OfficeOpenXml.Core.CellStore
         {
             get
             {
-                if (RowCount > 0)
+                if (this.RowCount > 0)
                 {
-                    return IndexOffset + Rows[0].Index;
+                    return this.IndexOffset + this.Rows[0].Index;
                 }
                 else
                 {
@@ -125,9 +125,9 @@ namespace OfficeOpenXml.Core.CellStore
         {
             get
             {
-                if (RowCount > 0)
+                if (this.RowCount > 0)
                 {
-                    return IndexOffset + Rows[RowCount - 1].Index;
+                    return this.IndexOffset + this.Rows[this.RowCount - 1].Index;
                 }
                 else
                 {
@@ -137,30 +137,30 @@ namespace OfficeOpenXml.Core.CellStore
         }
         public int GetIndex(int pos)
         {
-            return IndexOffset + Rows[pos].Index;
+            return this.IndexOffset + this.Rows[pos].Index;
         }
         public void Dispose()
         {
-            Rows = null;
+            this.Rows = null;
         }
 
         internal bool IsWithin(int fromRow, int toRow)
         {
-            return fromRow <= MinIndex  && toRow >= MaxIndex;
+            return fromRow <= this.MinIndex  && toRow >= this.MaxIndex;
         }
         internal bool StartsWithin(int fromRow, int toRow)
         {
-            return fromRow <= MaxIndex && toRow >= MinIndex;
+            return fromRow <= this.MaxIndex && toRow >= this.MinIndex;
         }
 
         internal bool StartsAfter(int row)
         {
-            return row > MaxIndex;
+            return row > this.MaxIndex;
         }
 
         internal int GetRow(int rowIx)
         {
-            return IndexOffset + Rows[rowIx].Index;
+            return this.IndexOffset + this.Rows[rowIx].Index;
         }
     }
 }

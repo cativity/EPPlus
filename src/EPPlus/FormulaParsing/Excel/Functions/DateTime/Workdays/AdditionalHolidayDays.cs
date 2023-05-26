@@ -26,33 +26,33 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions.DateTime.Workdays
 
         public AdditionalHolidayDays(FunctionArgument holidayArg)
         {
-            _holidayArg = holidayArg;
-            Initialize();
+            this._holidayArg = holidayArg;
+            this.Initialize();
         }
 
-        public IEnumerable<System.DateTime> AdditionalDates => _holidayDates;
+        public IEnumerable<System.DateTime> AdditionalDates => this._holidayDates;
 
         private void Initialize()
         {
-            IEnumerable<FunctionArgument>? holidays = _holidayArg.Value as IEnumerable<FunctionArgument>;
+            IEnumerable<FunctionArgument>? holidays = this._holidayArg.Value as IEnumerable<FunctionArgument>;
             if (holidays != null)
             {
                 foreach (System.DateTime holidayDate in from arg in holidays where ConvertUtil.IsNumericOrDate(arg.Value) select ConvertUtil.GetValueDouble(arg.Value) into dateSerial select System.DateTime.FromOADate(dateSerial))
                 {
-                    _holidayDates.Add(holidayDate);
+                    this._holidayDates.Add(holidayDate);
                 }
             }
-            IRangeInfo? range = _holidayArg.Value as IRangeInfo;
+            IRangeInfo? range = this._holidayArg.Value as IRangeInfo;
             if (range != null)
             {
                 foreach (System.DateTime holidayDate in from cell in range where ConvertUtil.IsNumericOrDate(cell.Value) select ConvertUtil.GetValueDouble(cell.Value) into dateSerial select System.DateTime.FromOADate(dateSerial))
                 {
-                    _holidayDates.Add(holidayDate);
+                    this._holidayDates.Add(holidayDate);
                 }
             }
-            if (ConvertUtil.IsNumericOrDate(_holidayArg.Value))
+            if (ConvertUtil.IsNumericOrDate(this._holidayArg.Value))
             {
-                _holidayDates.Add(System.DateTime.FromOADate(ConvertUtil.GetValueDouble(_holidayArg.Value)));
+                this._holidayDates.Add(System.DateTime.FromOADate(ConvertUtil.GetValueDouble(this._holidayArg.Value)));
             }
         }
     }

@@ -48,21 +48,22 @@ namespace OfficeOpenXml.Export.HtmlExport
         public string IndentUnit { get; set; } = "em";
         internal void ResetToDefaultInternal()
         {
-            AdditionalCssElements = new Dictionary<string, string>()
+            this.AdditionalCssElements = new Dictionary<string, string>()
             {
                 { "border-spacing", "0" },
                 { "border-collapse", "collapse" },
                 { "word-wrap", "break-word"},
                 { "white-space", "nowrap"},
             };
-            IndentValue = 2;
-            IndentUnit = "em";
+
+            this.IndentValue = 2;
+            this.IndentUnit = "em";
         }
         internal void CopyInternal(CssExportSettings copy)
         {
-            AdditionalCssElements = copy.AdditionalCssElements;
-            IndentValue = copy.IndentValue;
-            IndentUnit = copy.IndentUnit;
+            this.AdditionalCssElements = copy.AdditionalCssElements;
+            this.IndentValue = copy.IndentValue;
+            this.IndentUnit = copy.IndentUnit;
         }
     }
 }

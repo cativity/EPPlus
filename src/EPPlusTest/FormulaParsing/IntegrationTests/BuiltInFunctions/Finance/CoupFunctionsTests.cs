@@ -18,7 +18,7 @@ namespace EPPlusTest.FormulaParsing.IntegrationTests.BuiltInFunctions.Finance
             ExcelWorksheet? sheet = pck.Workbook.Worksheets.Add("test");
             sheet.Cells["A1"].Formula = "COUPPCD(DATE(2017, 05, 30), DATE(2020, 05, 31), 4, 1)";
             sheet.Calculate();
-            Assert.AreEqual(new System.DateTime(2017, 2, 28).ToOADate(), sheet.Cells["A1"].Value);
+            Assert.AreEqual(new DateTime(2017, 2, 28).ToOADate(), sheet.Cells["A1"].Value);
         }
 
         [TestMethod]
@@ -28,7 +28,7 @@ namespace EPPlusTest.FormulaParsing.IntegrationTests.BuiltInFunctions.Finance
             ExcelWorksheet? sheet = pck.Workbook.Worksheets.Add("test");
             sheet.Cells["A1"].Formula = "COUPNCD(DATE(2017, 02, 01), DATE(2020, 05, 31), 4, 1)";
             sheet.Calculate();
-            Assert.AreEqual(new System.DateTime(2017, 2, 28).ToOADate(), sheet.Cells["A1"].Value);
+            Assert.AreEqual(new DateTime(2017, 2, 28).ToOADate(), sheet.Cells["A1"].Value);
         }
 
         [TestMethod]

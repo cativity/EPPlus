@@ -23,28 +23,28 @@ namespace OfficeOpenXml.Export.HtmlExport.Exporters
     {
         public CssRangeExporterBase(HtmlExportSettings settings, ExcelRangeBase range)
         {
-            Settings = settings;
+            this.Settings = settings;
             Require.Argument(range).IsNotNull("range");
-            _ranges = new EPPlusReadOnlyList<ExcelRangeBase>();
+            this._ranges = new EPPlusReadOnlyList<ExcelRangeBase>();
 
             if (range.Addresses == null)
             {
-                AddRange(range);
+                this.AddRange(range);
             }
             else
             {
                 foreach (ExcelAddressBase? address in range.Addresses)
                 {
-                    AddRange(range.Worksheet.Cells[address.Address]);
+                    this.AddRange(range.Worksheet.Cells[address.Address]);
                 }
             }
         }
 
         public CssRangeExporterBase(HtmlRangeExportSettings settings, EPPlusReadOnlyList<ExcelRangeBase> ranges)
         {
-            Settings = settings;
+            this.Settings = settings;
             Require.Argument(ranges).IsNotNull("ranges");
-            _ranges = ranges;
+            this._ranges = ranges;
         }
 
         protected HtmlExportSettings Settings;
@@ -54,11 +54,11 @@ namespace OfficeOpenXml.Export.HtmlExport.Exporters
         {
             if (range.IsFullColumn && range.IsFullRow)
             {
-                _ranges.Add(new ExcelRangeBase(range.Worksheet, range.Worksheet.Dimension.Address));
+                this._ranges.Add(new ExcelRangeBase(range.Worksheet, range.Worksheet.Dimension.Address));
             }
             else
             {
-                _ranges.Add(range);
+                this._ranges.Add(range);
             }
         }
     }

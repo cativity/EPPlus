@@ -10,44 +10,44 @@ namespace OfficeOpenXml
         internal async Task ExportAsync(Stream stream)
         {
             StreamWriter? sw = new StreamWriter(stream);
-            await WriteStartAsync(sw);
-            await WriteItemAsync(sw, $"\"{_settings.RootElementName}\":");
-            await WriteStartAsync(sw);
-            if (_settings.FirstRowIsHeader || (_settings.AddDataTypesOn == eDataTypeOn.OnColumn && _range.Rows > 1))
+            await this.WriteStartAsync(sw);
+            await this.WriteItemAsync(sw, $"\"{this._settings.RootElementName}\":");
+            await this.WriteStartAsync(sw);
+            if (this._settings.FirstRowIsHeader || (this._settings.AddDataTypesOn == eDataTypeOn.OnColumn && this._range.Rows > 1))
             {
-                await WriteColumnDataAsync(sw);
+                await this.WriteColumnDataAsync(sw);
             }
-            await WriteCellDataAsync(sw, _range, _settings.FirstRowIsHeader ? 1 : 0);
+            await this.WriteCellDataAsync(sw, this._range, this._settings.FirstRowIsHeader ? 1 : 0);
             await sw.WriteAsync("}");
             await sw.FlushAsync();
         }
 
         private async Task WriteColumnDataAsync(StreamWriter sw)
         {
-            await WriteItemAsync(sw, $"\"{_settings.ColumnsElementName}\":[", true);
-            for (int i = 0; i < _range.Columns; i++)
+            await this.WriteItemAsync(sw, $"\"{this._settings.ColumnsElementName}\":[", true);
+            for (int i = 0; i < this._range.Columns; i++)
             {
-                await WriteStartAsync(sw);
-                if (_settings.FirstRowIsHeader)
+                await this.WriteStartAsync(sw);
+                if (this._settings.FirstRowIsHeader)
                 {
-                    await WriteItemAsync(sw, $"\"name\":\"{_range.GetCellValue<string>(0, i)}\"", false, _settings.AddDataTypesOn == eDataTypeOn.OnColumn);
+                    await this.WriteItemAsync(sw, $"\"name\":\"{this._range.GetCellValue<string>(0, i)}\"", false, this._settings.AddDataTypesOn == eDataTypeOn.OnColumn);
                 }
-                if (_settings.AddDataTypesOn == eDataTypeOn.OnColumn)
+                if (this._settings.AddDataTypesOn == eDataTypeOn.OnColumn)
                 {
-                    string? dt = HtmlRawDataProvider.GetHtmlDataTypeFromValue(_range.GetCellValue<object>(1, i));
-                    await WriteItemAsync(sw, $"\"dt\":\"{dt}\"");
+                    string? dt = HtmlRawDataProvider.GetHtmlDataTypeFromValue(this._range.GetCellValue<object>(1, i));
+                    await this.WriteItemAsync(sw, $"\"dt\":\"{dt}\"");
                 }
-                if (i == _range.Columns - 1)
+                if (i == this._range.Columns - 1)
                 {
-                    await WriteEndAsync(sw, "}");
+                    await this.WriteEndAsync(sw, "}");
                 }
                 else
                 {
-                    await WriteEndAsync(sw, "},");
+                    await this.WriteEndAsync(sw, "},");
                 }
             }
 
-            await WriteEndAsync(sw, "],");
+            await this.WriteEndAsync(sw, "],");
         }
     }
 }

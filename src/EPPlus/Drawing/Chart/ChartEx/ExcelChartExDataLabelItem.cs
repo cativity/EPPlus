@@ -29,7 +29,7 @@ namespace OfficeOpenXml.Drawing.Chart.ChartEx
         }
         internal ExcelChartExDataLabelItem(ExcelChartExSerie serie, XmlNamespaceManager nsm, XmlNode node, int index) : base(serie, nsm, node)
         {
-            Index = index;
+            this.Index = index;
         }
         /// <summary>
         /// The index of the datapoint the label is attached to
@@ -38,11 +38,11 @@ namespace OfficeOpenXml.Drawing.Chart.ChartEx
         { 
             get
             {
-                return GetXmlNodeInt("@idx");
+                return this.GetXmlNodeInt("@idx");
             }
             private set
-            {                
-                SetXmlNodeInt("@idx", value);
+            {
+                this.SetXmlNodeInt("@idx", value);
             }
         }
     }

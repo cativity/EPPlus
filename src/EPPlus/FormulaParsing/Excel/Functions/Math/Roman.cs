@@ -30,8 +30,8 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Math
         public override CompileResult Execute(IEnumerable<FunctionArgument> arguments, ParsingContext context)
         {
             ValidateArguments(arguments, 1);
-            int number = ArgToInt(arguments, 0, RoundingMethod.Floor);
-            int type = arguments.Count() > 1 ? FirstArgumentToInt(arguments) : 0;
+            int number = this.ArgToInt(arguments, 0, RoundingMethod.Floor);
+            int type = arguments.Count() > 1 ? this.FirstArgumentToInt(arguments) : 0;
             if (type < 0 || type > 4)
             {
                 return this.CreateResult(eErrorType.Value);
@@ -60,7 +60,7 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Math
                 default:
                     break;
             }
-            return CreateResult(func.Execute(number), DataType.String);
+            return this.CreateResult(func.Execute(number), DataType.String);
         }
 
         private int FirstArgumentToInt(IEnumerable<FunctionArgument> arguments)
@@ -73,7 +73,7 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Math
                 return boolValue ? 0 : 4;
             }
 
-            return ArgToInt(arguments, 1);
+            return this.ArgToInt(arguments, 1);
         }
     }
 }

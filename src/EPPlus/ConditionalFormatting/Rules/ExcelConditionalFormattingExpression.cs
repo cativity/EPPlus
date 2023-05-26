@@ -54,7 +54,7 @@ namespace OfficeOpenXml.ConditionalFormatting
     {
         if (itemElementNode==null) //Set default values and create attributes if needed
         {
-            Formula = string.Empty;
+            this.Formula = string.Empty;
         }
     }
 

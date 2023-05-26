@@ -33,7 +33,7 @@ namespace OfficeOpenXml.Core.CellStore
             {
                 for (int c = 0; c <= colBound; c++)
                 {
-                    SetValue_Value(row + r, col + c, array[r, c]);
+                    this.SetValue_Value(row + r, col + c, array[r, c]);
                 }
             }
         }
@@ -44,11 +44,11 @@ namespace OfficeOpenXml.Core.CellStore
             {
                 if(array[c] == DBNull.Value)
                 {
-                    SetValue_Value(row, col + c, null);
+                    this.SetValue_Value(row, col + c, null);
                 }
                 else
                 {
-                    SetValue_Value(row, col + c, array[c]);
+                    this.SetValue_Value(row, col + c, array[c]);
                 }
             }
         }
@@ -57,13 +57,13 @@ namespace OfficeOpenXml.Core.CellStore
             int offset=0;
             foreach (object? v in collection)
             {
-                SetValue_Value(row, col + offset, v);
+                this.SetValue_Value(row, col + offset, v);
                 offset++;
             }
         }
         internal void SetValue_Value(int Row, int Column, object value)
         {
-            ColumnIndex<ExcelValue>? c = GetColumnIndex(Column);
+            ColumnIndex<ExcelValue>? c = this.GetColumnIndex(Column);
             if(c != null)
             {
                 int i = c.GetPointer(Row);
@@ -74,11 +74,11 @@ namespace OfficeOpenXml.Core.CellStore
                 }
             }
             ExcelValue v = new ExcelValue { _value = value };
-            SetValue(Row, Column, v);
+            this.SetValue(Row, Column, v);
         }
         internal void SetValue_Style(int Row, int Column, int styleId)
         {
-            ColumnIndex<ExcelValue>? c = GetColumnIndex(Column);
+            ColumnIndex<ExcelValue>? c = this.GetColumnIndex(Column);
             if (c != null)
             {
                 int i = c.GetPointer(Row);
@@ -89,11 +89,11 @@ namespace OfficeOpenXml.Core.CellStore
                 }
             }
             ExcelValue v = new ExcelValue { _styleId = styleId };
-            SetValue(Row, Column, v);
+            this.SetValue(Row, Column, v);
         }
         internal void SetValue(int Row, int Column, object value, int styleId)
         {
-            ColumnIndex<ExcelValue>? c = GetColumnIndex(Column);
+            ColumnIndex<ExcelValue>? c = this.GetColumnIndex(Column);
             if (c != null)
             {
                 int i = c.GetPointer(Row);
@@ -104,14 +104,14 @@ namespace OfficeOpenXml.Core.CellStore
                 }
             }
             ExcelValue v = new ExcelValue { _value = value, _styleId = styleId};
-            SetValue(Row, Column, v);
+            this.SetValue(Row, Column, v);
         }
 
         internal int GetLastRow(int columnIndex)
         {
-            if(columnIndex < ColumnCount)
+            if(columnIndex < this.ColumnCount)
             {
-                ColumnIndex<ExcelValue>? c = _columnIndex[columnIndex];
+                ColumnIndex<ExcelValue>? c = this._columnIndex[columnIndex];
                 if(c.PageCount>0)
                 {
                     PageIndex? p = c._pages[c.PageCount - 1];
@@ -123,12 +123,12 @@ namespace OfficeOpenXml.Core.CellStore
 
         internal int GetLastColumn()
         {
-            if(ColumnCount>0 && _columnIndex[ColumnCount - 1].PageCount > 0)
+            if(this.ColumnCount>0 && this._columnIndex[this.ColumnCount - 1].PageCount > 0)
             {
-                int cIx = _columnIndex[ColumnCount - 1].GetPointer(0);
+                int cIx = this._columnIndex[this.ColumnCount - 1].GetPointer(0);
                 if(cIx>=0)
                 {
-                    ExcelColumn? c = _columnIndex[ColumnCount - 1]._values[cIx]._value as ExcelColumn;
+                    ExcelColumn? c = this._columnIndex[this.ColumnCount - 1]._values[cIx]._value as ExcelColumn;
                     if(c!=null)
                     {
                         return c.ColumnMax;

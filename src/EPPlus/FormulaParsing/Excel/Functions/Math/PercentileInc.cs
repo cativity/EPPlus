@@ -28,8 +28,8 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Math
         public override CompileResult Execute(IEnumerable<FunctionArgument> arguments, ParsingContext context)
         {
             ValidateArguments(arguments, 2);
-            List<double>? arr = ArgsToDoubleEnumerable(arguments.Take(1), context).Select(x => (double)x).ToList();
-            double percentile = ArgToDecimal(arguments, 1);
+            List<double>? arr = this.ArgsToDoubleEnumerable(arguments.Take(1), context).Select(x => (double)x).ToList();
+            double percentile = this.ArgToDecimal(arguments, 1);
             if (percentile < 0 || percentile > 1)
             {
                 return this.CreateResult(eErrorType.Num);
@@ -41,7 +41,7 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Math
             int ix = (int)dIx;
             double rest = dIx - ix;
             double result = ix < (nElements - 1) ? arr[ix] + (arr[ix + 1] - arr[ix]) * rest : arr.Last();
-            return CreateResult(result, DataType.Decimal);
+            return this.CreateResult(result, DataType.Decimal);
         }
     }
 }

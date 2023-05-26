@@ -25,9 +25,9 @@ namespace OfficeOpenXml.Style.Dxf
         internal Action<eStyleClass, eStyleProperty, object> _callback;
         internal DxfStyleBase(ExcelStyles styles, Action<eStyleClass, eStyleProperty, object> callback)
         {
-            _styles = styles;
-            _callback = callback;
-            AllowChange = false; //Don't touch this value in the styles.xml (by default). When Dxfs is fully implemented this can be removed.
+            this._styles = styles;
+            this._callback = callback;
+            this.AllowChange = false; //Don't touch this value in the styles.xml (by default). When Dxfs is fully implemented this can be removed.
         }
         /// <summary>
         /// Reset all properties for the style.
@@ -189,7 +189,7 @@ namespace OfficeOpenXml.Style.Dxf
 
         internal ExcelDxfColor GetColor(XmlHelper helper, string path, eStyleClass styleClass)
         {
-            ExcelDxfColor ret = new ExcelDxfColor(_styles, styleClass, _callback);
+            ExcelDxfColor ret = new ExcelDxfColor(this._styles, styleClass, this._callback);
             ret.Theme = (eThemeSchemeColor?)helper.GetXmlNodeIntNull(path + "/@theme");
             ret.Index = helper.GetXmlNodeIntNull(path + "/@indexed");
             string rgb = helper.GetXmlNodeString(path + "/@rgb");

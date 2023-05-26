@@ -23,8 +23,8 @@ namespace OfficeOpenXml.Export.HtmlExport.Accessibility
         {
             public AriaAttribute(string attributeName, string defaultValue)
             {
-                AttributeName = attributeName;
-                DefaultValue = defaultValue;
+                this.AttributeName = attributeName;
+                this.DefaultValue = defaultValue;
             }
 
             public string AttributeName { get; private set; }

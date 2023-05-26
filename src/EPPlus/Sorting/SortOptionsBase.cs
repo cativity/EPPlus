@@ -28,11 +28,11 @@ namespace OfficeOpenXml.Sorting
         /// </summary>
         public SortOptionsBase()
         {
-            ColumnIndexes = new List<int>();
-            RowIndexes = new List<int>();
-            Descending = new List<bool>();
-            CustomLists = new Dictionary<int, string[]>();
-            CompareOptions = CompareOptions.None;
+            this.ColumnIndexes = new List<int>();
+            this.RowIndexes = new List<int>();
+            this.Descending = new List<bool>();
+            this.CustomLists = new Dictionary<int, string[]>();
+            this.CompareOptions = CompareOptions.None;
         }
 
         internal bool LeftToRight { get; set; }

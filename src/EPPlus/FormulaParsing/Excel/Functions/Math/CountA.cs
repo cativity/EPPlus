@@ -28,14 +28,14 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Math
     {
         public CountA() : base()
         {
-            IgnoreErrors = false;
+            this.IgnoreErrors = false;
         }
         public override CompileResult Execute(IEnumerable<FunctionArgument> arguments, ParsingContext context)
         {
             ValidateArguments(arguments, 1);
             double nItems = 0d;
-            Calculate(arguments, context, ref nItems);
-            return CreateResult(nItems, DataType.Integer);
+            this.Calculate(arguments, context, ref nItems);
+            return this.CreateResult(nItems, DataType.Integer);
         }
 
         private void Calculate(IEnumerable<FunctionArgument> items, ParsingContext context, ref double nItems)
@@ -48,7 +48,7 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Math
                     foreach (ICellInfo? c in cs)
                     {
                         _CheckForAndHandleExcelError(c, context);
-                        if (!ShouldIgnore(c, context) && ShouldCount(c.Value))
+                        if (!this.ShouldIgnore(c, context) && ShouldCount(c.Value))
                         {
                             nItems++;
                         }
@@ -56,12 +56,12 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Math
                 }
                 else if (item.Value is IEnumerable<FunctionArgument>)
                 {
-                    Calculate((IEnumerable<FunctionArgument>)item.Value, context, ref nItems);
+                    this.Calculate((IEnumerable<FunctionArgument>)item.Value, context, ref nItems);
                 }
                 else
                 {
                     _CheckForAndHandleExcelError(item, context);
-                    if (!ShouldIgnore(item, context) && ShouldCount(item.Value))
+                    if (!this.ShouldIgnore(item, context) && ShouldCount(item.Value))
                     {
                         nItems++;
                     }

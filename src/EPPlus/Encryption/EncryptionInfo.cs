@@ -145,10 +145,10 @@ namespace OfficeOpenXml.Encryption
         public EncryptionInfoAgile()
         {
             NameTable? nt = new NameTable();
-            _nsm = new XmlNamespaceManager(nt);
-            _nsm.AddNamespace("d", "http://schemas.microsoft.com/office/2006/encryption");
-            _nsm.AddNamespace("c", "http://schemas.microsoft.com/office/2006/keyEncryptor/certificate");
-            _nsm.AddNamespace("p", "http://schemas.microsoft.com/office/2006/keyEncryptor/password");
+            this._nsm = new XmlNamespaceManager(nt);
+            this._nsm.AddNamespace("d", "http://schemas.microsoft.com/office/2006/encryption");
+            this._nsm.AddNamespace("c", "http://schemas.microsoft.com/office/2006/keyEncryptor/certificate");
+            this._nsm.AddNamespace("p", "http://schemas.microsoft.com/office/2006/keyEncryptor/password");
         }
         internal class EncryptionKeyData : XmlHelper
         {
@@ -161,7 +161,7 @@ namespace OfficeOpenXml.Encryption
             {
                 get
                 {
-                    string? s = GetXmlNodeString("@saltValue");
+                    string? s = this.GetXmlNodeString("@saltValue");
                     if (!string.IsNullOrEmpty(s))
                     {
                         return Convert.FromBase64String(s);
@@ -170,18 +170,18 @@ namespace OfficeOpenXml.Encryption
                 }
                 set
                 {
-                    SetXmlNodeString("@saltValue", Convert.ToBase64String(value));
+                    this.SetXmlNodeString("@saltValue", Convert.ToBase64String(value));
                 }
             }
             internal eHashAlgorithm HashAlgorithm
             {
                 get
                 {
-                    return GetHashAlgorithm(GetXmlNodeString("@hashAlgorithm"));
+                    return GetHashAlgorithm(this.GetXmlNodeString("@hashAlgorithm"));
                 }
                 set
                 {
-                    SetXmlNodeString("@hashAlgorithm", GetHashAlgorithmString(value));
+                    this.SetXmlNodeString("@hashAlgorithm", GetHashAlgorithmString(value));
                 }
             }
 
@@ -225,7 +225,7 @@ namespace OfficeOpenXml.Encryption
             {
                 get
                 {
-                    string? v=GetXmlNodeString("@cipherChaining");
+                    string? v= this.GetXmlNodeString("@cipherChaining");
                     try
                     {
                         return (eChainingMode)Enum.Parse(typeof(eChainingMode), v);
@@ -237,18 +237,18 @@ namespace OfficeOpenXml.Encryption
                 }
                 set
                 {
-                    SetXmlNodeString("@cipherChaining", value.ToString());
+                    this.SetXmlNodeString("@cipherChaining", value.ToString());
                 }
             }
             internal eCipherAlgorithm CipherAlgorithm
             {
                 get
                 {
-                    return GetCipherAlgorithm(GetXmlNodeString("@cipherAlgorithm"));
+                    return GetCipherAlgorithm(this.GetXmlNodeString("@cipherAlgorithm"));
                 }
                 set
                 {
-                    SetXmlNodeString("@cipherAlgorithm", GetCipherAlgorithmString(value));
+                    this.SetXmlNodeString("@cipherAlgorithm", GetCipherAlgorithmString(value));
                 }
             }
 
@@ -288,44 +288,44 @@ namespace OfficeOpenXml.Encryption
             {
                 get
                 {
-                    return GetXmlNodeInt("@hashSize");
+                    return this.GetXmlNodeInt("@hashSize");
                 }
                 set
                 {
-                    SetXmlNodeString("@hashSize", value.ToString());
+                    this.SetXmlNodeString("@hashSize", value.ToString());
                 }
             }
             internal int KeyBits
             {
                 get
                 {
-                    return GetXmlNodeInt("@keyBits");
+                    return this.GetXmlNodeInt("@keyBits");
                 }
                 set
                 {
-                    SetXmlNodeString("@keyBits", value.ToString());
+                    this.SetXmlNodeString("@keyBits", value.ToString());
                 }
             }
             internal int BlockSize
             {
                 get
                 {
-                    return GetXmlNodeInt("@blockSize");
+                    return this.GetXmlNodeInt("@blockSize");
                 }
                 set
                 {
-                    SetXmlNodeString("@blockSize", value.ToString());
+                    this.SetXmlNodeString("@blockSize", value.ToString());
                 }
             }
             internal int SaltSize
             {
                 get
                 {
-                    return GetXmlNodeInt("@saltSize");
+                    return this.GetXmlNodeInt("@saltSize");
                 }
                 set
                 {
-                    SetXmlNodeString("@saltSize", value.ToString());
+                    this.SetXmlNodeString("@saltSize", value.ToString());
                 }
             }
         }
@@ -340,7 +340,7 @@ namespace OfficeOpenXml.Encryption
             {
                 get
                 {
-                    string? s = GetXmlNodeString("@encryptedHmacValue");
+                    string? s = this.GetXmlNodeString("@encryptedHmacValue");
                     if (!string.IsNullOrEmpty(s))
                     {
                         return Convert.FromBase64String(s);
@@ -349,14 +349,14 @@ namespace OfficeOpenXml.Encryption
                 }
                 set
                 {
-                    SetXmlNodeString("@encryptedHmacValue", Convert.ToBase64String(value));
+                    this.SetXmlNodeString("@encryptedHmacValue", Convert.ToBase64String(value));
                 }
             }
             internal byte[] EncryptedHmacKey
             {
                 get
                 {
-                    string? s = GetXmlNodeString("@encryptedHmacKey");
+                    string? s = this.GetXmlNodeString("@encryptedHmacKey");
                     if (!string.IsNullOrEmpty(s))
                     {
                         return Convert.FromBase64String(s);
@@ -365,7 +365,7 @@ namespace OfficeOpenXml.Encryption
                 }
                 set
                 {
-                    SetXmlNodeString("@encryptedHmacKey", Convert.ToBase64String(value));
+                    this.SetXmlNodeString("@encryptedHmacKey", Convert.ToBase64String(value));
                 }
             }
         }
@@ -380,7 +380,7 @@ namespace OfficeOpenXml.Encryption
             {
                 get
                 {
-                    string? s = GetXmlNodeString("@encryptedKeyValue");
+                    string? s = this.GetXmlNodeString("@encryptedKeyValue");
                     if (!string.IsNullOrEmpty(s))
                     {
                         return Convert.FromBase64String(s);
@@ -389,14 +389,14 @@ namespace OfficeOpenXml.Encryption
                 }
                 set
                 {
-                    SetXmlNodeString("@encryptedKeyValue", Convert.ToBase64String(value));
+                    this.SetXmlNodeString("@encryptedKeyValue", Convert.ToBase64String(value));
                 }
             }
             internal byte[] EncryptedVerifierHash
             {
                 get
                 {
-                    string? s = GetXmlNodeString("@encryptedVerifierHashValue");
+                    string? s = this.GetXmlNodeString("@encryptedVerifierHashValue");
                     if (!string.IsNullOrEmpty(s))
                     {
                         return Convert.FromBase64String(s);
@@ -406,14 +406,14 @@ namespace OfficeOpenXml.Encryption
                 }
                 set
                 {
-                    SetXmlNodeString("@encryptedVerifierHashValue", Convert.ToBase64String(value));
+                    this.SetXmlNodeString("@encryptedVerifierHashValue", Convert.ToBase64String(value));
                 }
             }
             internal byte[] EncryptedVerifierHashInput
             {
                 get
                 {
-                    string? s = GetXmlNodeString("@encryptedVerifierHashInput");
+                    string? s = this.GetXmlNodeString("@encryptedVerifierHashInput");
                     if (!string.IsNullOrEmpty(s))
                     {
                         return Convert.FromBase64String(s);
@@ -422,7 +422,7 @@ namespace OfficeOpenXml.Encryption
                 }
                 set
                 {
-                    SetXmlNodeString("@encryptedVerifierHashInput", Convert.ToBase64String(value));
+                    this.SetXmlNodeString("@encryptedVerifierHashInput", Convert.ToBase64String(value));
                 }
             }
             internal byte[] VerifierHashInput { get; set; }
@@ -432,11 +432,11 @@ namespace OfficeOpenXml.Encryption
             {
                 get
                 {
-                    return GetXmlNodeInt("@spinCount");
+                    return this.GetXmlNodeInt("@spinCount");
                 }
                 set
                 {
-                    SetXmlNodeString("@spinCount", value.ToString());
+                    this.SetXmlNodeString("@spinCount", value.ToString());
                 }
             }
         }
@@ -477,24 +477,24 @@ namespace OfficeOpenXml.Encryption
             byte[]? byXml = new byte[data.Length - 8];
             Array.Copy(data, 8, byXml, 0, data.Length - 8);
             string? xml = Encoding.UTF8.GetString(byXml);
-            ReadFromXml(xml);
+            this.ReadFromXml(xml);
         }
         internal void ReadFromXml(string xml)
         {
-            Xml = new XmlDocument();
-            XmlHelper.LoadXmlSafe(Xml, xml, Encoding.UTF8);
-            XmlNode? node = Xml.SelectSingleNode("/d:encryption/d:keyData", _nsm);
-            KeyData = new EncryptionKeyData(_nsm, node);
-            node = Xml.SelectSingleNode("/d:encryption/d:dataIntegrity", _nsm);
-            DataIntegrity = new EncryptionDataIntegrity(_nsm, node);
-            KeyEncryptors = new List<EncryptionKeyEncryptor>();
+            this.Xml = new XmlDocument();
+            XmlHelper.LoadXmlSafe(this.Xml, xml, Encoding.UTF8);
+            XmlNode? node = this.Xml.SelectSingleNode("/d:encryption/d:keyData", this._nsm);
+            this.KeyData = new EncryptionKeyData(this._nsm, node);
+            node = this.Xml.SelectSingleNode("/d:encryption/d:dataIntegrity", this._nsm);
+            this.DataIntegrity = new EncryptionDataIntegrity(this._nsm, node);
+            this.KeyEncryptors = new List<EncryptionKeyEncryptor>();
 
-            XmlNodeList? list = Xml.SelectNodes("/d:encryption/d:keyEncryptors/d:keyEncryptor/p:encryptedKey", _nsm);
+            XmlNodeList? list = this.Xml.SelectNodes("/d:encryption/d:keyEncryptors/d:keyEncryptor/p:encryptedKey", this._nsm);
             if (list != null)
             {
                 foreach (XmlNode n in list)
                 {
-                    KeyEncryptors.Add(new EncryptionKeyEncryptor(_nsm, n));
+                    this.KeyEncryptors.Add(new EncryptionKeyEncryptor(this._nsm, n));
                 }
             }
 
@@ -513,52 +513,52 @@ namespace OfficeOpenXml.Encryption
         internal EncryptionVerifier Verifier;
         internal override void Read(byte[] data)
         {
-            Flags = (Flags)BitConverter.ToInt32(data, 4);
-            HeaderSize = (uint)BitConverter.ToInt32(data, 8);
+            this.Flags = (Flags)BitConverter.ToInt32(data, 4);
+            this.HeaderSize = (uint)BitConverter.ToInt32(data, 8);
 
             /**** EncryptionHeader ****/
-            Header = new EncryptionHeader();
-            Header.Flags = (Flags)BitConverter.ToInt32(data, 12);
-            Header.SizeExtra = BitConverter.ToInt32(data, 16);
-            Header.AlgID = (AlgorithmID)BitConverter.ToInt32(data, 20);
-            Header.AlgIDHash = (AlgorithmHashID)BitConverter.ToInt32(data, 24);
-            Header.KeySize = BitConverter.ToInt32(data, 28);
-            Header.ProviderType = (ProviderType)BitConverter.ToInt32(data, 32);
-            Header.Reserved1 = BitConverter.ToInt32(data, 36);
-            Header.Reserved2 = BitConverter.ToInt32(data, 40);
+            this.Header = new EncryptionHeader();
+            this.Header.Flags = (Flags)BitConverter.ToInt32(data, 12);
+            this.Header.SizeExtra = BitConverter.ToInt32(data, 16);
+            this.Header.AlgID = (AlgorithmID)BitConverter.ToInt32(data, 20);
+            this.Header.AlgIDHash = (AlgorithmHashID)BitConverter.ToInt32(data, 24);
+            this.Header.KeySize = BitConverter.ToInt32(data, 28);
+            this.Header.ProviderType = (ProviderType)BitConverter.ToInt32(data, 32);
+            this.Header.Reserved1 = BitConverter.ToInt32(data, 36);
+            this.Header.Reserved2 = BitConverter.ToInt32(data, 40);
 
-            byte[] text = new byte[(int)HeaderSize - 34];
-            Array.Copy(data, 44, text, 0, (int)HeaderSize - 34);
-            Header.CSPName = UTF8Encoding.Unicode.GetString(text);
+            byte[] text = new byte[(int)this.HeaderSize - 34];
+            Array.Copy(data, 44, text, 0, (int)this.HeaderSize - 34);
+            this.Header.CSPName = Encoding.Unicode.GetString(text);
 
-            int pos = (int)HeaderSize + 12;
+            int pos = (int)this.HeaderSize + 12;
 
             /**** EncryptionVerifier ****/
-            Verifier = new EncryptionVerifier();
-            Verifier.SaltSize = (uint)BitConverter.ToInt32(data, pos);
-            Verifier.Salt = new byte[Verifier.SaltSize];
+            this.Verifier = new EncryptionVerifier();
+            this.Verifier.SaltSize = (uint)BitConverter.ToInt32(data, pos);
+            this.Verifier.Salt = new byte[this.Verifier.SaltSize];
 
-            Array.Copy(data, pos + 4, Verifier.Salt, 0, (int)Verifier.SaltSize);
+            Array.Copy(data, pos + 4, this.Verifier.Salt, 0, (int)this.Verifier.SaltSize);
 
-            Verifier.EncryptedVerifier = new byte[16];
-            Array.Copy(data, pos + 20, Verifier.EncryptedVerifier, 0, 16);
+            this.Verifier.EncryptedVerifier = new byte[16];
+            Array.Copy(data, pos + 20, this.Verifier.EncryptedVerifier, 0, 16);
 
-            Verifier.VerifierHashSize = (uint)BitConverter.ToInt32(data, pos + 36);
-            Verifier.EncryptedVerifierHash = new byte[Verifier.VerifierHashSize];
-            Array.Copy(data, pos + 40, Verifier.EncryptedVerifierHash, 0, (int)Verifier.VerifierHashSize);
+            this.Verifier.VerifierHashSize = (uint)BitConverter.ToInt32(data, pos + 36);
+            this.Verifier.EncryptedVerifierHash = new byte[this.Verifier.VerifierHashSize];
+            Array.Copy(data, pos + 40, this.Verifier.EncryptedVerifierHash, 0, (int)this.Verifier.VerifierHashSize);
         }
         internal byte[] WriteBinary()
         {
             using MemoryStream? ms = RecyclableMemory.GetStream();
             BinaryWriter bw = new BinaryWriter(ms);
 
-            bw.Write(MajorVersion);
-            bw.Write(MinorVersion);
-            bw.Write((int)Flags);
-            byte[] header = Header.WriteBinary();
+            bw.Write(this.MajorVersion);
+            bw.Write(this.MinorVersion);
+            bw.Write((int)this.Flags);
+            byte[] header = this.Header.WriteBinary();
             bw.Write((uint)header.Length);
             bw.Write(header);
-            bw.Write(Verifier.WriteBinary());
+            bw.Write(this.Verifier.WriteBinary());
 
             bw.Flush();
             return ms.ToArray();

@@ -54,7 +54,7 @@ namespace OfficeOpenXml.Drawing
                 height = 0;
                 horizontalResolution = 0;
                 verticalResolution = 0;
-                LastException = ex;
+                this.LastException = ex;
                 return false;
             }
         }

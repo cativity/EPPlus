@@ -26,21 +26,22 @@ namespace OfficeOpenXml.Table.PivotTable
         internal ExcelPivotTablePageFieldSettings(XmlNamespaceManager ns, XmlNode topNode, ExcelPivotTableField field, int index) :
             base(ns, topNode)
         {
-            if (GetXmlNodeString("@hier")=="")
+            if (this.GetXmlNodeString("@hier")=="")
             {
-                Hier = -1;
+                this.Hier = -1;
             }
-            _field = field;
+
+            this._field = field;
         }
         internal int Index 
         { 
             get
             {
-                return GetXmlNodeInt("@fld");
+                return this.GetXmlNodeInt("@fld");
             }
             set
             {
-                SetXmlNodeString("@fld",value.ToString());
+                this.SetXmlNodeString("@fld",value.ToString());
             }
         }
         /// <summary>
@@ -50,11 +51,11 @@ namespace OfficeOpenXml.Table.PivotTable
         {
             get
             {
-                return GetXmlNodeString("@name");
+                return this.GetXmlNodeString("@name");
             }
             set
             {
-                SetXmlNodeString("@name", value);
+                this.SetXmlNodeString("@name", value);
             }
         }
         /***** Dont work. Need items to be populated. ****/
@@ -65,17 +66,17 @@ namespace OfficeOpenXml.Table.PivotTable
         {
             get
             {
-                return GetXmlNodeInt("@item");
+                return this.GetXmlNodeInt("@item");
             }
             set
             {
                 if (value < 0)
                 {
-                    DeleteNode("@item");
+                    this.DeleteNode("@item");
                 }
                 else
                 {
-                    SetXmlNodeString("@item", value.ToString());
+                    this.SetXmlNodeString("@item", value.ToString());
                 }
             }
         }
@@ -83,22 +84,22 @@ namespace OfficeOpenXml.Table.PivotTable
         {
             get
             {
-                return GetXmlNodeInt("@numFmtId");
+                return this.GetXmlNodeInt("@numFmtId");
             }
             set
             {
-                SetXmlNodeString("@numFmtId", value.ToString());
+                this.SetXmlNodeString("@numFmtId", value.ToString());
             }
         }
         internal int Hier
         {
             get
             {
-                return GetXmlNodeInt("@hier");
+                return this.GetXmlNodeInt("@hier");
             }
             set
             {
-                SetXmlNodeString("@hier", value.ToString());
+                this.SetXmlNodeString("@hier", value.ToString());
             }
         }
     }

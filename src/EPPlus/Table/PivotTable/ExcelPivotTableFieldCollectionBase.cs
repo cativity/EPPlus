@@ -25,8 +25,8 @@ namespace OfficeOpenXml.Table.PivotTable
         private readonly ExcelPivotTableCacheField _cache;
         internal ExcelPivotTableFieldItemsCollection(ExcelPivotTableField field) : base()
         {
-            _field = field;
-            _cache = field.Cache;
+            this._field = field;
+            this._cache = field.Cache;
         }
         /// <summary>
         /// It the object exists in the cache
@@ -35,7 +35,7 @@ namespace OfficeOpenXml.Table.PivotTable
         /// <returns></returns>
         public bool Contains(object value)
         {
-            return _cache._cacheLookup.ContainsKey(value);
+            return this._cache._cacheLookup.ContainsKey(value);
         }
         /// <summary>
         /// Get the item with the value supplied. If the value does not exist, null is returned.
@@ -44,9 +44,9 @@ namespace OfficeOpenXml.Table.PivotTable
         /// <returns>The pivot table field</returns>
         public ExcelPivotTableFieldItem GetByValue(object value)
         {
-            if(_cache._cacheLookup.TryGetValue(value, out int ix))
+            if(this._cache._cacheLookup.TryGetValue(value, out int ix))
             {
-                return _list[ix];
+                return this._list[ix];
             }
             return null;
         }
@@ -57,7 +57,7 @@ namespace OfficeOpenXml.Table.PivotTable
         /// <returns>The index of the item</returns>
         public int GetIndexByValue(object value)
         {
-            if (_cache._cacheLookup.TryGetValue(value, out int ix))
+            if (this._cache._cacheLookup.TryGetValue(value, out int ix))
             {
                 return ix;
             }
@@ -68,11 +68,12 @@ namespace OfficeOpenXml.Table.PivotTable
         /// </summary>
         public void ShowAll()
         {
-            foreach(ExcelPivotTableFieldItem? item in _list)
+            foreach(ExcelPivotTableFieldItem? item in this._list)
             {
                 item.Hidden = false;
             }
-            _field.PageFieldSettings.SelectedItem = -1;
+
+            this._field.PageFieldSettings.SelectedItem = -1;
         }
         /// <summary>
         /// Set the ShowDetails for all items.
@@ -80,16 +81,16 @@ namespace OfficeOpenXml.Table.PivotTable
         /// <param name="isExpanded">The value of true is set all items to be expanded. The value of false set all items to be collapsed</param>
         public void ShowDetails(bool isExpanded=true)
         {
-            if(!(_field.IsRowField || _field.IsColumnField))
+            if(!(this._field.IsRowField || this._field.IsColumnField))
             {
                 //TODO: Add exception
             }
-            if (_list.Count == 0)
+            if (this._list.Count == 0)
             {
                 this.Refresh();
             }
 
-            foreach (ExcelPivotTableFieldItem? item in _list)
+            foreach (ExcelPivotTableFieldItem? item in this._list)
             {
                 item.ShowDetails= isExpanded;
             }
@@ -99,22 +100,23 @@ namespace OfficeOpenXml.Table.PivotTable
         /// </summary>
         public void SelectSingleItem(int index)
         {
-            if(index <0 || index >= _list.Count)
+            if(index <0 || index >= this._list.Count)
             {
                 throw new ArgumentOutOfRangeException("index", "Index is out of range");
             }
 
-            foreach (ExcelPivotTableFieldItem? item in _list)
+            foreach (ExcelPivotTableFieldItem? item in this._list)
             {
                 if (item.Type == eItemType.Data)
                 {
                     item.Hidden = true;
                 }
             }
-            _list[index].Hidden=false;
-            if(_field.IsPageField)
+
+            this._list[index].Hidden=false;
+            if(this._field.IsPageField)
             {
-                _field.PageFieldSettings.SelectedItem = index;
+                this._field.PageFieldSettings.SelectedItem = index;
             }
         }
         /// <summary>
@@ -122,7 +124,7 @@ namespace OfficeOpenXml.Table.PivotTable
         /// </summary>
         public void Refresh()
         {
-            _cache.Refresh();
+            this._cache.Refresh();
         }
     }
     /// <summary>
@@ -141,12 +143,12 @@ namespace OfficeOpenXml.Table.PivotTable
         /// <returns>The enumerator</returns>
         public IEnumerator<T> GetEnumerator()
         {
-            return _list.GetEnumerator();
+            return this._list.GetEnumerator();
         }
 
         System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator()
         {
-            return _list.GetEnumerator();
+            return this._list.GetEnumerator();
         }
         /// <summary>
         /// Number of items in the collection
@@ -155,16 +157,16 @@ namespace OfficeOpenXml.Table.PivotTable
         {
             get
             {
-                return _list.Count;
+                return this._list.Count;
             }
         }
         internal void AddInternal(T field)
         {
-            _list.Add(field);
+            this._list.Add(field);
         }
         internal void Clear()
         {
-            _list.Clear();
+            this._list.Clear();
         }
         /// <summary>
         /// Indexer for the  collection
@@ -175,11 +177,11 @@ namespace OfficeOpenXml.Table.PivotTable
         {
             get
             {
-                if (Index < 0 || Index >= _list.Count)
+                if (Index < 0 || Index >= this._list.Count)
                 {
                     throw (new ArgumentOutOfRangeException("Index out of range"));
                 }
-                return _list[Index];
+                return this._list[Index];
             }
         }
         /// <summary>
@@ -189,7 +191,7 @@ namespace OfficeOpenXml.Table.PivotTable
         /// <returns>the zero-based index of the item in the list</returns>
         internal int IndexOf(T item)
         {
-            return _list.IndexOf(item);
+            return this._list.IndexOf(item);
         }
     }
 }

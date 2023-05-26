@@ -29,17 +29,17 @@ namespace OfficeOpenXml.Export.HtmlExport.Exporters
         /// <param name="range"></param>
         internal ExcelHtmlExporterBase(ExcelRangeBase range)
         {
-            _ranges = new EPPlusReadOnlyList<ExcelRangeBase>();
+            this._ranges = new EPPlusReadOnlyList<ExcelRangeBase>();
 
             if (range.Addresses == null)
             {
-                AddRange(range);
+                this.AddRange(range);
             }
             else
             {
                 foreach (ExcelAddressBase? address in range.Addresses)
                 {
-                    AddRange(range.Worksheet.Cells[address.Address]);
+                    this.AddRange(range.Worksheet.Cells[address.Address]);
                 }
             }
         }
@@ -50,10 +50,10 @@ namespace OfficeOpenXml.Export.HtmlExport.Exporters
         /// <param name="ranges"></param>
         internal ExcelHtmlExporterBase(params ExcelRangeBase[] ranges)
         {
-            _ranges = new EPPlusReadOnlyList<ExcelRangeBase>();
+            this._ranges = new EPPlusReadOnlyList<ExcelRangeBase>();
             foreach (ExcelRangeBase? range in ranges)
             {
-                AddRange(range);
+                this.AddRange(range);
             }
         }
 
@@ -67,7 +67,7 @@ namespace OfficeOpenXml.Export.HtmlExport.Exporters
         {
             get
             {
-                return _ranges;
+                return this._ranges;
             }
         }
 
@@ -75,11 +75,11 @@ namespace OfficeOpenXml.Export.HtmlExport.Exporters
         {
             if (range.IsFullColumn && range.IsFullRow)
             {
-                _ranges.Add(new ExcelRangeBase(range.Worksheet, range.Worksheet.Dimension.Address));
+                this._ranges.Add(new ExcelRangeBase(range.Worksheet, range.Worksheet.Dimension.Address));
             }
             else
             {
-                _ranges.Add(range);
+                this._ranges.Add(range);
             }
         }
     }

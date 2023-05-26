@@ -44,27 +44,27 @@ namespace EPPlusTest.Excel.Functions
         [TestInitialize]
         public void Setup()
         {
-            _parserFactory = new ArgumentParserFactory();
+            this._parserFactory = new ArgumentParserFactory();
         }
 
         [TestMethod]
         public void ShouldReturnIntArgumentParserWhenDataTypeIsInteger()
         {
-            ArgumentParser? parser = _parserFactory.CreateArgumentParser(DataType.Integer);
+            ArgumentParser? parser = this._parserFactory.CreateArgumentParser(DataType.Integer);
             Assert.IsInstanceOfType(parser, typeof(IntArgumentParser));
         }
 
         [TestMethod]
         public void ShouldReturnBoolArgumentParserWhenDataTypeIsBoolean()
         {
-            ArgumentParser? parser = _parserFactory.CreateArgumentParser(DataType.Boolean);
+            ArgumentParser? parser = this._parserFactory.CreateArgumentParser(DataType.Boolean);
             Assert.IsInstanceOfType(parser, typeof(BoolArgumentParser));
         }
 
         [TestMethod]
         public void ShouldReturnDoubleArgumentParserWhenDataTypeIsDecial()
         {
-            ArgumentParser? parser = _parserFactory.CreateArgumentParser(DataType.Decimal);
+            ArgumentParser? parser = this._parserFactory.CreateArgumentParser(DataType.Decimal);
             Assert.IsInstanceOfType(parser, typeof(DoubleArgumentParser));
         }
     }

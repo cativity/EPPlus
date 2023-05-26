@@ -35,8 +35,8 @@ namespace OfficeOpenXml.ConditionalFormatting
       Require.Argument(worksheet).IsNotNull("worksheet");
       Require.Argument(address).IsNotNull("address");
 
-      _worksheet = worksheet;
-      _address = address;
+      this._worksheet = worksheet;
+      this._address = address;
     }
     #endregion Constructors
 
@@ -47,8 +47,7 @@ namespace OfficeOpenXml.ConditionalFormatting
     ///  <returns></returns>
     public IExcelConditionalFormattingAverageGroup AddAboveAverage()
     {
-      return _worksheet.ConditionalFormatting.AddAboveAverage(
-        _address);
+      return this._worksheet.ConditionalFormatting.AddAboveAverage(this._address);
     }
 
     /// <summary>
@@ -57,8 +56,7 @@ namespace OfficeOpenXml.ConditionalFormatting
     ///  <returns></returns>
     public IExcelConditionalFormattingAverageGroup AddAboveOrEqualAverage()
     {
-      return _worksheet.ConditionalFormatting.AddAboveOrEqualAverage(
-        _address);
+      return this._worksheet.ConditionalFormatting.AddAboveOrEqualAverage(this._address);
     }
 
     /// <summary>
@@ -67,8 +65,7 @@ namespace OfficeOpenXml.ConditionalFormatting
     ///  <returns></returns>
     public IExcelConditionalFormattingAverageGroup AddBelowAverage()
     {
-      return _worksheet.ConditionalFormatting.AddBelowAverage(
-        _address);
+      return this._worksheet.ConditionalFormatting.AddBelowAverage(this._address);
     }
 
     /// <summary>
@@ -77,8 +74,7 @@ namespace OfficeOpenXml.ConditionalFormatting
     ///  <returns></returns>
     public IExcelConditionalFormattingAverageGroup AddBelowOrEqualAverage()
     {
-      return _worksheet.ConditionalFormatting.AddBelowOrEqualAverage(
-        _address);
+      return this._worksheet.ConditionalFormatting.AddBelowOrEqualAverage(this._address);
     }
 
     /// <summary>
@@ -87,8 +83,7 @@ namespace OfficeOpenXml.ConditionalFormatting
     ///  <returns></returns>
     public IExcelConditionalFormattingStdDevGroup AddAboveStdDev()
     {
-      return _worksheet.ConditionalFormatting.AddAboveStdDev(
-        _address);
+      return this._worksheet.ConditionalFormatting.AddAboveStdDev(this._address);
     }
 
     /// <summary>
@@ -97,8 +92,7 @@ namespace OfficeOpenXml.ConditionalFormatting
     ///  <returns></returns>
     public IExcelConditionalFormattingStdDevGroup AddBelowStdDev()
     {
-      return _worksheet.ConditionalFormatting.AddBelowStdDev(
-        _address);
+      return this._worksheet.ConditionalFormatting.AddBelowStdDev(this._address);
     }
 
     /// <summary>
@@ -107,8 +101,7 @@ namespace OfficeOpenXml.ConditionalFormatting
     ///  <returns></returns>
     public IExcelConditionalFormattingTopBottomGroup AddBottom()
     {
-      return _worksheet.ConditionalFormatting.AddBottom(
-        _address);
+      return this._worksheet.ConditionalFormatting.AddBottom(this._address);
     }
 
     /// <summary>
@@ -117,8 +110,7 @@ namespace OfficeOpenXml.ConditionalFormatting
     ///  <returns></returns>
     public IExcelConditionalFormattingTopBottomGroup AddBottomPercent()
     {
-      return _worksheet.ConditionalFormatting.AddBottomPercent(
-        _address);
+      return this._worksheet.ConditionalFormatting.AddBottomPercent(this._address);
     }
 
     /// <summary>
@@ -127,8 +119,7 @@ namespace OfficeOpenXml.ConditionalFormatting
     ///  <returns></returns>
     public IExcelConditionalFormattingTopBottomGroup AddTop()
     {
-      return _worksheet.ConditionalFormatting.AddTop(
-        _address);
+      return this._worksheet.ConditionalFormatting.AddTop(this._address);
     }
 
     /// <summary>
@@ -137,8 +128,7 @@ namespace OfficeOpenXml.ConditionalFormatting
     ///  <returns></returns>
     public IExcelConditionalFormattingTopBottomGroup AddTopPercent()
     {
-      return _worksheet.ConditionalFormatting.AddTopPercent(
-        _address);
+      return this._worksheet.ConditionalFormatting.AddTopPercent(this._address);
     }
 
     /// <summary>
@@ -147,8 +137,7 @@ namespace OfficeOpenXml.ConditionalFormatting
     ///  <returns></returns>
     public IExcelConditionalFormattingTimePeriodGroup AddLast7Days()
     {
-      return _worksheet.ConditionalFormatting.AddLast7Days(
-        _address);
+      return this._worksheet.ConditionalFormatting.AddLast7Days(this._address);
     }
 
     /// <summary>
@@ -157,8 +146,7 @@ namespace OfficeOpenXml.ConditionalFormatting
     ///  <returns></returns>
     public IExcelConditionalFormattingTimePeriodGroup AddLastMonth()
     {
-      return _worksheet.ConditionalFormatting.AddLastMonth(
-        _address);
+      return this._worksheet.ConditionalFormatting.AddLastMonth(this._address);
     }
 
     /// <summary>
@@ -167,8 +155,7 @@ namespace OfficeOpenXml.ConditionalFormatting
     ///  <returns></returns>
     public IExcelConditionalFormattingTimePeriodGroup AddLastWeek()
     {
-      return _worksheet.ConditionalFormatting.AddLastWeek(
-        _address);
+      return this._worksheet.ConditionalFormatting.AddLastWeek(this._address);
     }
 
     /// <summary>
@@ -177,8 +164,7 @@ namespace OfficeOpenXml.ConditionalFormatting
     ///  <returns></returns>
     public IExcelConditionalFormattingTimePeriodGroup AddNextMonth()
     {
-      return _worksheet.ConditionalFormatting.AddNextMonth(
-        _address);
+      return this._worksheet.ConditionalFormatting.AddNextMonth(this._address);
     }
 
     /// <summary>
@@ -187,8 +173,7 @@ namespace OfficeOpenXml.ConditionalFormatting
     ///  <returns></returns>
     public IExcelConditionalFormattingTimePeriodGroup AddNextWeek()
     {
-      return _worksheet.ConditionalFormatting.AddNextWeek(
-        _address);
+      return this._worksheet.ConditionalFormatting.AddNextWeek(this._address);
     }
 
     /// <summary>
@@ -197,8 +182,7 @@ namespace OfficeOpenXml.ConditionalFormatting
     ///  <returns></returns>
     public IExcelConditionalFormattingTimePeriodGroup AddThisMonth()
     {
-      return _worksheet.ConditionalFormatting.AddThisMonth(
-        _address);
+      return this._worksheet.ConditionalFormatting.AddThisMonth(this._address);
     }
 
     /// <summary>
@@ -207,8 +191,7 @@ namespace OfficeOpenXml.ConditionalFormatting
     ///  <returns></returns>
     public IExcelConditionalFormattingTimePeriodGroup AddThisWeek()
     {
-      return _worksheet.ConditionalFormatting.AddThisWeek(
-        _address);
+      return this._worksheet.ConditionalFormatting.AddThisWeek(this._address);
     }
 
     /// <summary>
@@ -217,8 +200,7 @@ namespace OfficeOpenXml.ConditionalFormatting
     ///  <returns></returns>
     public IExcelConditionalFormattingTimePeriodGroup AddToday()
     {
-      return _worksheet.ConditionalFormatting.AddToday(
-        _address);
+      return this._worksheet.ConditionalFormatting.AddToday(this._address);
     }
 
     /// <summary>
@@ -227,8 +209,7 @@ namespace OfficeOpenXml.ConditionalFormatting
     ///  <returns></returns>
     public IExcelConditionalFormattingTimePeriodGroup AddTomorrow()
     {
-      return _worksheet.ConditionalFormatting.AddTomorrow(
-        _address);
+      return this._worksheet.ConditionalFormatting.AddTomorrow(this._address);
     }
 
     /// <summary>
@@ -237,8 +218,7 @@ namespace OfficeOpenXml.ConditionalFormatting
     ///  <returns></returns>
     public IExcelConditionalFormattingTimePeriodGroup AddYesterday()
     {
-      return _worksheet.ConditionalFormatting.AddYesterday(
-        _address);
+      return this._worksheet.ConditionalFormatting.AddYesterday(this._address);
     }
 
     /// <summary>
@@ -247,8 +227,7 @@ namespace OfficeOpenXml.ConditionalFormatting
     ///  <returns></returns>
     public IExcelConditionalFormattingBeginsWith AddBeginsWith()
     {
-      return _worksheet.ConditionalFormatting.AddBeginsWith(
-        _address);
+      return this._worksheet.ConditionalFormatting.AddBeginsWith(this._address);
     }
 
     /// <summary>
@@ -257,8 +236,7 @@ namespace OfficeOpenXml.ConditionalFormatting
     ///  <returns></returns>
     public IExcelConditionalFormattingBetween AddBetween()
     {
-      return _worksheet.ConditionalFormatting.AddBetween(
-        _address);
+      return this._worksheet.ConditionalFormatting.AddBetween(this._address);
     }
 
     /// <summary>
@@ -267,8 +245,7 @@ namespace OfficeOpenXml.ConditionalFormatting
     ///  <returns></returns>
     public IExcelConditionalFormattingContainsBlanks AddContainsBlanks()
     {
-      return _worksheet.ConditionalFormatting.AddContainsBlanks(
-        _address);
+      return this._worksheet.ConditionalFormatting.AddContainsBlanks(this._address);
     }
 
     /// <summary>
@@ -277,8 +254,7 @@ namespace OfficeOpenXml.ConditionalFormatting
     ///  <returns></returns>
     public IExcelConditionalFormattingContainsErrors AddContainsErrors()
     {
-      return _worksheet.ConditionalFormatting.AddContainsErrors(
-        _address);
+      return this._worksheet.ConditionalFormatting.AddContainsErrors(this._address);
     }
 
     /// <summary>
@@ -287,8 +263,7 @@ namespace OfficeOpenXml.ConditionalFormatting
     ///  <returns></returns>
     public IExcelConditionalFormattingContainsText AddContainsText()
     {
-      return _worksheet.ConditionalFormatting.AddContainsText(
-        _address);
+      return this._worksheet.ConditionalFormatting.AddContainsText(this._address);
     }
 
     /// <summary>
@@ -297,8 +272,7 @@ namespace OfficeOpenXml.ConditionalFormatting
     ///  <returns></returns>
     public IExcelConditionalFormattingDuplicateValues AddDuplicateValues()
     {
-      return _worksheet.ConditionalFormatting.AddDuplicateValues(
-        _address);
+      return this._worksheet.ConditionalFormatting.AddDuplicateValues(this._address);
     }
 
     /// <summary>
@@ -307,8 +281,7 @@ namespace OfficeOpenXml.ConditionalFormatting
     ///  <returns></returns>
     public IExcelConditionalFormattingEndsWith AddEndsWith()
     {
-      return _worksheet.ConditionalFormatting.AddEndsWith(
-        _address);
+      return this._worksheet.ConditionalFormatting.AddEndsWith(this._address);
     }
 
     /// <summary>
@@ -317,8 +290,7 @@ namespace OfficeOpenXml.ConditionalFormatting
     ///  <returns></returns>
     public IExcelConditionalFormattingEqual AddEqual()
     {
-      return _worksheet.ConditionalFormatting.AddEqual(
-        _address);
+      return this._worksheet.ConditionalFormatting.AddEqual(this._address);
     }
 
     /// <summary>
@@ -327,8 +299,7 @@ namespace OfficeOpenXml.ConditionalFormatting
     ///  <returns></returns>
     public IExcelConditionalFormattingExpression AddExpression()
     {
-      return _worksheet.ConditionalFormatting.AddExpression(
-        _address);
+      return this._worksheet.ConditionalFormatting.AddExpression(this._address);
     }
 
     /// <summary>
@@ -337,8 +308,7 @@ namespace OfficeOpenXml.ConditionalFormatting
     ///  <returns></returns>
     public IExcelConditionalFormattingGreaterThan AddGreaterThan()
     {
-      return _worksheet.ConditionalFormatting.AddGreaterThan(
-        _address);
+      return this._worksheet.ConditionalFormatting.AddGreaterThan(this._address);
     }
 
     /// <summary>
@@ -347,8 +317,7 @@ namespace OfficeOpenXml.ConditionalFormatting
     ///  <returns></returns>
     public IExcelConditionalFormattingGreaterThanOrEqual AddGreaterThanOrEqual()
     {
-      return _worksheet.ConditionalFormatting.AddGreaterThanOrEqual(
-        _address);
+      return this._worksheet.ConditionalFormatting.AddGreaterThanOrEqual(this._address);
     }
 
     /// <summary>
@@ -357,8 +326,7 @@ namespace OfficeOpenXml.ConditionalFormatting
     ///  <returns></returns>
     public IExcelConditionalFormattingLessThan AddLessThan()
     {
-      return _worksheet.ConditionalFormatting.AddLessThan(
-        _address);
+      return this._worksheet.ConditionalFormatting.AddLessThan(this._address);
     }
 
     /// <summary>
@@ -367,8 +335,7 @@ namespace OfficeOpenXml.ConditionalFormatting
     ///  <returns></returns>
     public IExcelConditionalFormattingLessThanOrEqual AddLessThanOrEqual()
     {
-      return _worksheet.ConditionalFormatting.AddLessThanOrEqual(
-        _address);
+      return this._worksheet.ConditionalFormatting.AddLessThanOrEqual(this._address);
     }
 
     /// <summary>
@@ -377,8 +344,7 @@ namespace OfficeOpenXml.ConditionalFormatting
     ///  <returns></returns>
     public IExcelConditionalFormattingNotBetween AddNotBetween()
     {
-      return _worksheet.ConditionalFormatting.AddNotBetween(
-        _address);
+      return this._worksheet.ConditionalFormatting.AddNotBetween(this._address);
     }
 
     /// <summary>
@@ -387,8 +353,7 @@ namespace OfficeOpenXml.ConditionalFormatting
     ///  <returns></returns>
     public IExcelConditionalFormattingNotContainsBlanks AddNotContainsBlanks()
     {
-      return _worksheet.ConditionalFormatting.AddNotContainsBlanks(
-        _address);
+      return this._worksheet.ConditionalFormatting.AddNotContainsBlanks(this._address);
     }
 
     /// <summary>
@@ -397,8 +362,7 @@ namespace OfficeOpenXml.ConditionalFormatting
     ///  <returns></returns>
     public IExcelConditionalFormattingNotContainsErrors AddNotContainsErrors()
     {
-      return _worksheet.ConditionalFormatting.AddNotContainsErrors(
-        _address);
+      return this._worksheet.ConditionalFormatting.AddNotContainsErrors(this._address);
     }
 
     /// <summary>
@@ -407,8 +371,7 @@ namespace OfficeOpenXml.ConditionalFormatting
     ///  <returns></returns>
     public IExcelConditionalFormattingNotContainsText AddNotContainsText()
     {
-      return _worksheet.ConditionalFormatting.AddNotContainsText(
-        _address);
+      return this._worksheet.ConditionalFormatting.AddNotContainsText(this._address);
     }
 
     /// <summary>
@@ -417,8 +380,7 @@ namespace OfficeOpenXml.ConditionalFormatting
     ///  <returns></returns>
     public IExcelConditionalFormattingNotEqual AddNotEqual()
     {
-      return _worksheet.ConditionalFormatting.AddNotEqual(
-        _address);
+      return this._worksheet.ConditionalFormatting.AddNotEqual(this._address);
     }
 
     /// <summary>
@@ -427,8 +389,7 @@ namespace OfficeOpenXml.ConditionalFormatting
     ///  <returns></returns>
     public IExcelConditionalFormattingUniqueValues AddUniqueValues()
     {
-      return _worksheet.ConditionalFormatting.AddUniqueValues(
-        _address);
+      return this._worksheet.ConditionalFormatting.AddUniqueValues(this._address);
     }
 
     /// <summary>
@@ -437,9 +398,9 @@ namespace OfficeOpenXml.ConditionalFormatting
     ///  <returns></returns>
     public IExcelConditionalFormattingThreeColorScale AddThreeColorScale()
     {
-      return (IExcelConditionalFormattingThreeColorScale)(_worksheet.ConditionalFormatting.AddRule(
-        eExcelConditionalFormattingRuleType.ThreeColorScale,
-        _address));
+      return (IExcelConditionalFormattingThreeColorScale)(this._worksheet.ConditionalFormatting.AddRule(
+                                                                                                        eExcelConditionalFormattingRuleType.ThreeColorScale,
+                                                                                                        this._address));
     }
 
     /// <summary>
@@ -448,9 +409,9 @@ namespace OfficeOpenXml.ConditionalFormatting
     ///  <returns></returns>
     public IExcelConditionalFormattingTwoColorScale AddTwoColorScale()
     {
-      return (IExcelConditionalFormattingTwoColorScale)(_worksheet.ConditionalFormatting.AddRule(
-        eExcelConditionalFormattingRuleType.TwoColorScale,
-        _address));
+      return (IExcelConditionalFormattingTwoColorScale)(this._worksheet.ConditionalFormatting.AddRule(
+                                                                                                      eExcelConditionalFormattingRuleType.TwoColorScale,
+                                                                                                      this._address));
     }
 
     /// <summary>
@@ -460,9 +421,9 @@ namespace OfficeOpenXml.ConditionalFormatting
     /// <returns></returns>
     public IExcelConditionalFormattingThreeIconSet<eExcelconditionalFormatting3IconsSetType> AddThreeIconSet(eExcelconditionalFormatting3IconsSetType IconSet)
     {
-        IExcelConditionalFormattingThreeIconSet<eExcelconditionalFormatting3IconsSetType>? rule = (IExcelConditionalFormattingThreeIconSet<eExcelconditionalFormatting3IconsSetType>)(_worksheet.ConditionalFormatting.AddRule(
-                                                                                                                                                                                                                               eExcelConditionalFormattingRuleType.ThreeIconSet,
-                                                                                                                                                                                                                               _address));
+        IExcelConditionalFormattingThreeIconSet<eExcelconditionalFormatting3IconsSetType>? rule = (IExcelConditionalFormattingThreeIconSet<eExcelconditionalFormatting3IconsSetType>)(this._worksheet.ConditionalFormatting.AddRule(
+                                                                                                                                                                                                                                 eExcelConditionalFormattingRuleType.ThreeIconSet,
+                                                                                                                                                                                                                                 this._address));
         rule.IconSet = IconSet;
         return rule;
     }
@@ -474,9 +435,9 @@ namespace OfficeOpenXml.ConditionalFormatting
     /// <returns></returns>
     public IExcelConditionalFormattingFourIconSet<eExcelconditionalFormatting4IconsSetType> AddFourIconSet(eExcelconditionalFormatting4IconsSetType IconSet)
     {
-        IExcelConditionalFormattingFourIconSet<eExcelconditionalFormatting4IconsSetType>? rule = (IExcelConditionalFormattingFourIconSet<eExcelconditionalFormatting4IconsSetType>)(_worksheet.ConditionalFormatting.AddRule(
-                                                                                                                                                                                                                             eExcelConditionalFormattingRuleType.FourIconSet,
-                                                                                                                                                                                                                             _address));
+        IExcelConditionalFormattingFourIconSet<eExcelconditionalFormatting4IconsSetType>? rule = (IExcelConditionalFormattingFourIconSet<eExcelconditionalFormatting4IconsSetType>)(this._worksheet.ConditionalFormatting.AddRule(
+                                                                                                                                                                                                                               eExcelConditionalFormattingRuleType.FourIconSet,
+                                                                                                                                                                                                                               this._address));
         rule.IconSet = IconSet;
         return rule;
     }
@@ -488,9 +449,9 @@ namespace OfficeOpenXml.ConditionalFormatting
     /// <returns></returns>
     public IExcelConditionalFormattingFiveIconSet AddFiveIconSet(eExcelconditionalFormatting5IconsSetType IconSet)
     {
-        IExcelConditionalFormattingFiveIconSet? rule = (IExcelConditionalFormattingFiveIconSet)(_worksheet.ConditionalFormatting.AddRule(
-                                                                                                    eExcelConditionalFormattingRuleType.FiveIconSet,
-                                                                                                    _address));
+        IExcelConditionalFormattingFiveIconSet? rule = (IExcelConditionalFormattingFiveIconSet)(this._worksheet.ConditionalFormatting.AddRule(
+                                                                                                                                           eExcelConditionalFormattingRuleType.FiveIconSet,
+                                                                                                                                           this._address));
         rule.IconSet = IconSet;
         return rule;
     }
@@ -502,9 +463,9 @@ namespace OfficeOpenXml.ConditionalFormatting
     /// <returns></returns>
     public IExcelConditionalFormattingDataBarGroup AddDatabar(System.Drawing.Color Color)
     {
-        IExcelConditionalFormattingDataBarGroup? rule = (IExcelConditionalFormattingDataBarGroup)(_worksheet.ConditionalFormatting.AddRule(
-                                                                                                      eExcelConditionalFormattingRuleType.DataBar,
-                                                                                                      _address));
+        IExcelConditionalFormattingDataBarGroup? rule = (IExcelConditionalFormattingDataBarGroup)(this._worksheet.ConditionalFormatting.AddRule(
+                                                                                                                                             eExcelConditionalFormattingRuleType.DataBar,
+                                                                                                                                             this._address));
         rule.Color = Color;
         return rule;
     }

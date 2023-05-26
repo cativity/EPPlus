@@ -27,21 +27,21 @@ namespace OfficeOpenXml.Drawing.Chart
         internal ExcelChartStandard _chart;
         internal ExcelChartLegendEntry(XmlNamespaceManager nsm, XmlNode topNode, ExcelChartStandard chart) : base(nsm, topNode)
         {
-            Init(chart);
-            Index = GetXmlNodeInt("c:idx/@val");
-            HasValue = true;
+            this.Init(chart);
+            this.Index = this.GetXmlNodeInt("c:idx/@val");
+            this.HasValue = true;
         }
 
         internal ExcelChartLegendEntry(XmlNamespaceManager nsm, XmlNode legendNode, ExcelChartStandard chart, int serieIndex) : base(nsm)
         {
-            Init(chart);
-            TopNode = legendNode;
-            Index = serieIndex;
+            this.Init(chart);
+            this.TopNode = legendNode;
+            this.Index = serieIndex;
         }
         private void Init(ExcelChartStandard chart)
         {
-            _chart = chart;
-            SchemaNodeOrder = new string[] { "idx", "deleted", "txPr" };
+            this._chart = chart;
+            this.SchemaNodeOrder = new string[] { "idx", "deleted", "txPr" };
         }
         /// <summary>
         /// The index of the item
@@ -59,22 +59,22 @@ namespace OfficeOpenXml.Drawing.Chart
         {
             get
             {
-                return GetXmlNodeBool("c:delete/@val");
+                return this.GetXmlNodeBool("c:delete/@val");
             }
             set
             {
-                CreateTopNode();
-                HasValue = true;
-                SetXmlNodeBool("c:delete/@val", value);
+                this.CreateTopNode();
+                this.HasValue = true;
+                this.SetXmlNodeBool("c:delete/@val", value);
             }
         }
         internal bool HasValue { get; set; }
         private void CreateTopNode()
         {
-            if(TopNode.LocalName != "legendEntry")
+            if(this.TopNode.LocalName != "legendEntry")
             {
-                ExcelChartLegend? legend = _chart.Legend;
-                int preIx = legend.GetPreEntryIndex(Index);
+                ExcelChartLegend? legend = this._chart.Legend;
+                int preIx = legend.GetPreEntryIndex(this.Index);
                 XmlNode legendEntryNode;
                 if (preIx == -1)
                 {
@@ -82,12 +82,13 @@ namespace OfficeOpenXml.Drawing.Chart
                 }
                 else
                 {
-                    legendEntryNode = _chart.ChartXml.CreateElement("c", "legendEntry", ExcelPackage.schemaChart);
+                    legendEntryNode = this._chart.ChartXml.CreateElement("c", "legendEntry", ExcelPackage.schemaChart);
                     XmlNode? refNode = legend.Entries[preIx].TopNode;
                     refNode.ParentNode.InsertBefore(legendEntryNode, refNode);
                 }
-                TopNode = legendEntryNode;
-                SetXmlNodeInt("c:idx/@val", Index);
+
+                this.TopNode = legendEntryNode;
+                this.SetXmlNodeInt("c:idx/@val", this.Index);
             }
         }
 
@@ -99,37 +100,37 @@ namespace OfficeOpenXml.Drawing.Chart
         {
             get
             {
-                if (_font == null)
+                if (this._font == null)
                 {
-                    CreateTopNode();
-                    _font = new ExcelTextFont(_chart, NameSpaceManager, TopNode, $"c:txPr/a:p/a:pPr/a:defRPr", SchemaNodeOrder, InitChartXml);                    
+                    this.CreateTopNode();
+                    this._font = new ExcelTextFont(this._chart, this.NameSpaceManager, this.TopNode, $"c:txPr/a:p/a:pPr/a:defRPr", this.SchemaNodeOrder, this.InitChartXml);                    
                 }
-                return _font;
+                return this._font;
             }
         }
         internal void InitChartXml()
         {
-            if (HasValue)
+            if (this.HasValue)
             {
                 return;
             }
 
-            HasValue = true;
-            _font.CreateTopNode();
-            if (_chart.StyleManager.Style == null)
+            this.HasValue = true;
+            this._font.CreateTopNode();
+            if (this._chart.StyleManager.Style == null)
             {
                 return;
             }
 
-            if (_chart.StyleManager.Style.Legend.HasTextRun)
+            if (this._chart.StyleManager.Style.Legend.HasTextRun)
             {
-                XmlElement? node = (XmlElement)CreateNode("c:txPr/a:p/a:pPr/a:defRPr");
-                CopyElement(_chart.StyleManager.Style.Legend.DefaultTextRun.PathElement, node);
+                XmlElement? node = (XmlElement)this.CreateNode("c:txPr/a:p/a:pPr/a:defRPr");
+                CopyElement(this._chart.StyleManager.Style.Legend.DefaultTextRun.PathElement, node);
             }
-            if (_chart.StyleManager.Style.Legend.HasTextBody)
+            if (this._chart.StyleManager.Style.Legend.HasTextBody)
             {
-                XmlElement? node = (XmlElement)CreateNode("c:txPr/a:bodyPr");
-                CopyElement(_chart.StyleManager.Style.Legend.DefaultTextBody.PathElement, node);
+                XmlElement? node = (XmlElement)this.CreateNode("c:txPr/a:bodyPr");
+                CopyElement(this._chart.StyleManager.Style.Legend.DefaultTextBody.PathElement, node);
             }
         }
         ExcelTextBody _textBody = null;
@@ -140,11 +141,11 @@ namespace OfficeOpenXml.Drawing.Chart
         {
             get
             {
-                if (_textBody == null)
+                if (this._textBody == null)
                 {
-                    _textBody = new ExcelTextBody(NameSpaceManager, TopNode, $"c:txPr/a:bodyPr", SchemaNodeOrder);
+                    this._textBody = new ExcelTextBody(this.NameSpaceManager, this.TopNode, $"c:txPr/a:bodyPr", this.SchemaNodeOrder);
                 }
-                return _textBody;
+                return this._textBody;
             }
         }
 
@@ -194,19 +195,19 @@ namespace OfficeOpenXml.Drawing.Chart
 
         internal void Save()
         {
-            if(Deleted==true)
+            if(this.Deleted==true)
             {
-                DeleteNode("c:txPr");
+                this.DeleteNode("c:txPr");
             }
             else
             {
-                if (ExistsNode("c:txPr"))
+                if (this.ExistsNode("c:txPr"))
                 {
-                    DeleteNode("c:delete");
+                    this.DeleteNode("c:delete");
                 }
                 else
                 {
-                    TopNode.ParentNode.RemoveChild(TopNode);
+                    this.TopNode.ParentNode.RemoveChild(this.TopNode);
                 }
             }
         }

@@ -83,7 +83,7 @@ namespace OfficeOpenXml.Packaging.Ionic.Zlib
     ///
     /// <seealso cref="DeflateStream" />
     /// <seealso cref="ZlibStream" />
-    public class GZipStream : System.IO.Stream
+    public class GZipStream : Stream
     {
         // GZip format
         // source: http://tools.ietf.org/html/rfc1952
@@ -147,16 +147,16 @@ namespace OfficeOpenXml.Packaging.Ionic.Zlib
         {
             get
             {
-                return _Comment;
+                return this._Comment;
             }
             set
             {
-                if (_disposed)
+                if (this._disposed)
                 {
                     throw new ObjectDisposedException("GZipStream");
                 }
 
-                _Comment = value;
+                this._Comment = value;
             }
         }
 
@@ -185,33 +185,33 @@ namespace OfficeOpenXml.Packaging.Ionic.Zlib
         /// </remarks>
         public String FileName
         {
-            get { return _FileName; }
+            get { return this._FileName; }
             set
             {
-                if (_disposed)
+                if (this._disposed)
                 {
                     throw new ObjectDisposedException("GZipStream");
                 }
 
-                _FileName = value;
-                if (_FileName == null)
+                this._FileName = value;
+                if (this._FileName == null)
                 {
                     return;
                 }
 
-                if (_FileName.IndexOf("/", StringComparison.OrdinalIgnoreCase) != -1)
+                if (this._FileName.IndexOf("/", StringComparison.OrdinalIgnoreCase) != -1)
                 {
-                    _FileName = _FileName.Replace("/", "\\");
+                    this._FileName = this._FileName.Replace("/", "\\");
                 }
-                if (_FileName.EndsWith("\\"))
+                if (this._FileName.EndsWith("\\"))
                 {
                     throw new Exception("Illegal filename");
                 }
 
-                if (_FileName.IndexOf("\\", StringComparison.OrdinalIgnoreCase) != -1)
+                if (this._FileName.IndexOf("\\", StringComparison.OrdinalIgnoreCase) != -1)
                 {
                     // trim any leading path
-                    _FileName = Path.GetFileName(_FileName);
+                    this._FileName = Path.GetFileName(this._FileName);
                 }
             }
         }
@@ -234,7 +234,7 @@ namespace OfficeOpenXml.Packaging.Ionic.Zlib
         /// <remarks>
         /// This is used for internal error checking. You probably don't need to look at this property.
         /// </remarks>
-        public int Crc32 { get { return _Crc32; } }
+        public int Crc32 { get { return this._Crc32; } }
 
         private int _headerByteCount;
         internal ZlibBaseStream _baseStream;
@@ -553,7 +553,7 @@ namespace OfficeOpenXml.Packaging.Ionic.Zlib
         /// <param name="level">A tuning knob to trade speed for effectiveness.</param>
         public GZipStream(Stream stream, CompressionMode mode, CompressionLevel level, bool leaveOpen)
         {
-            _baseStream = new ZlibBaseStream(stream, mode, level, ZlibStreamFlavor.GZIP, leaveOpen);
+            this._baseStream = new ZlibBaseStream(stream, mode, level, ZlibStreamFlavor.GZIP, leaveOpen);
         }
 
         #region Zlib properties
@@ -565,7 +565,7 @@ namespace OfficeOpenXml.Packaging.Ionic.Zlib
         {
             get { return (this._baseStream._flushMode); }
             set {
-                if (_disposed)
+                if (this._disposed)
                 {
                     throw new ObjectDisposedException("GZipStream");
                 }
@@ -599,7 +599,7 @@ namespace OfficeOpenXml.Packaging.Ionic.Zlib
             }
             set
             {
-                if (_disposed)
+                if (this._disposed)
                 {
                     throw new ObjectDisposedException("GZipStream");
                 }
@@ -668,14 +668,15 @@ namespace OfficeOpenXml.Packaging.Ionic.Zlib
         {
             try
             {
-                if (!_disposed)
+                if (!this._disposed)
                 {
                     if (disposing && (this._baseStream != null))
                     {
                         this._baseStream.Close();
-                        this._Crc32 = _baseStream.Crc32;
+                        this._Crc32 = this._baseStream.Crc32;
                     }
-                    _disposed = true;
+
+                    this._disposed = true;
                 }
             }
             finally
@@ -695,12 +696,12 @@ namespace OfficeOpenXml.Packaging.Ionic.Zlib
         {
             get
             {
-                if (_disposed)
+                if (this._disposed)
                 {
                     throw new ObjectDisposedException("GZipStream");
                 }
 
-                return _baseStream._stream.CanRead;
+                return this._baseStream._stream.CanRead;
             }
         }
 
@@ -726,12 +727,12 @@ namespace OfficeOpenXml.Packaging.Ionic.Zlib
         {
             get
             {
-                if (_disposed)
+                if (this._disposed)
                 {
                     throw new ObjectDisposedException("GZipStream");
                 }
 
-                return _baseStream._stream.CanWrite;
+                return this._baseStream._stream.CanWrite;
             }
         }
 
@@ -740,12 +741,12 @@ namespace OfficeOpenXml.Packaging.Ionic.Zlib
         /// </summary>
         public override void Flush()
         {
-            if (_disposed)
+            if (this._disposed)
             {
                 throw new ObjectDisposedException("GZipStream");
             }
 
-            _baseStream.Flush();
+            this._baseStream.Flush();
         }
 
         /// <summary>
@@ -771,12 +772,12 @@ namespace OfficeOpenXml.Packaging.Ionic.Zlib
         {
             get
             {
-                if (this._baseStream._streamMode == Ionic.Zlib.ZlibBaseStream.StreamMode.Writer)
+                if (this._baseStream._streamMode == ZlibBaseStream.StreamMode.Writer)
                 {
                     return this._baseStream._z.TotalBytesOut + this._headerByteCount;
                 }
 
-                if (this._baseStream._streamMode == Ionic.Zlib.ZlibBaseStream.StreamMode.Reader)
+                if (this._baseStream._streamMode == ZlibBaseStream.StreamMode.Reader)
                 {
                     return this._baseStream._z.TotalBytesIn + this._baseStream._gzipHeaderByteCount;
                 }
@@ -820,21 +821,21 @@ namespace OfficeOpenXml.Packaging.Ionic.Zlib
         /// <returns>the number of bytes actually read</returns>
         public override int Read(byte[] buffer, int offset, int count)
         {
-            if (_disposed)
+            if (this._disposed)
             {
                 throw new ObjectDisposedException("GZipStream");
             }
 
-            int n = _baseStream.Read(buffer, offset, count);
+            int n = this._baseStream.Read(buffer, offset, count);
 
             // Console.WriteLine("GZipStream::Read(buffer, off({0}), c({1}) = {2}", offset, count, n);
             // Console.WriteLine( Util.FormatByteArray(buffer, offset, n) );
 
-            if (!_firstReadDone)
+            if (!this._firstReadDone)
             {
-                _firstReadDone = true;
-                FileName = _baseStream._GzipFileName;
-                Comment = _baseStream._GzipComment;
+                this._firstReadDone = true;
+                this.FileName = this._baseStream._GzipFileName;
+                this.Comment = this._baseStream._GzipComment;
             }
             return n;
         }
@@ -885,18 +886,18 @@ namespace OfficeOpenXml.Packaging.Ionic.Zlib
         /// <param name="count">the number of bytes to write.</param>
         public override void Write(byte[] buffer, int offset, int count)
         {
-            if (_disposed)
+            if (this._disposed)
             {
                 throw new ObjectDisposedException("GZipStream");
             }
 
-            if (_baseStream._streamMode == Ionic.Zlib.ZlibBaseStream.StreamMode.Undefined)
+            if (this._baseStream._streamMode == ZlibBaseStream.StreamMode.Undefined)
             {
                 //Console.WriteLine("GZipStream: First write");
-                if (_baseStream._wantCompress)
+                if (this._baseStream._wantCompress)
                 {
                     // first write in compression, therefore, emit the GZIP header
-                    _headerByteCount = EmitHeader();
+                    this._headerByteCount = this.EmitHeader();
                 }
                 else
                 {
@@ -904,12 +905,12 @@ namespace OfficeOpenXml.Packaging.Ionic.Zlib
                 }
             }
 
-            _baseStream.Write(buffer, offset, count);
+            this._baseStream.Write(buffer, offset, count);
         }
         #endregion
 
 
-        internal static readonly System.DateTime _unixEpoch = new System.DateTime(1970, 1, 1, 0, 0, 0, DateTimeKind.Utc);
+        internal static readonly DateTime _unixEpoch = new DateTime(1970, 1, 1, 0, 0, 0, DateTimeKind.Utc);
 #if SILVERLIGHT || NETCF
         internal static readonly System.Text.Encoding iso8859dash1 = new Ionic.Encoding.Iso8859Dash1Encoding();
 #else
@@ -919,11 +920,11 @@ namespace OfficeOpenXml.Packaging.Ionic.Zlib
 
         private int EmitHeader()
         {
-            byte[] commentBytes = (Comment == null) ? null : iso8859dash1.GetBytes(Comment);
-            byte[] filenameBytes = (FileName == null) ? null : iso8859dash1.GetBytes(FileName);
+            byte[] commentBytes = (this.Comment == null) ? null : iso8859dash1.GetBytes(this.Comment);
+            byte[] filenameBytes = (this.FileName == null) ? null : iso8859dash1.GetBytes(this.FileName);
 
-            int cbLength = (Comment == null) ? 0 : commentBytes.Length + 1;
-            int fnLength = (FileName == null) ? 0 : filenameBytes.Length + 1;
+            int cbLength = (this.Comment == null) ? 0 : commentBytes.Length + 1;
+            int fnLength = (this.FileName == null) ? 0 : filenameBytes.Length + 1;
 
             int bufferLength = 10 + cbLength + fnLength;
             byte[] header = new byte[bufferLength];
@@ -935,12 +936,12 @@ namespace OfficeOpenXml.Packaging.Ionic.Zlib
             // compression method
             header[i++] = 8;
             byte flag = 0;
-            if (Comment != null)
+            if (this.Comment != null)
             {
                 flag ^= 0x10;
             }
 
-            if (FileName != null)
+            if (this.FileName != null)
             {
                 flag ^= 0x8;
             }
@@ -949,12 +950,12 @@ namespace OfficeOpenXml.Packaging.Ionic.Zlib
             header[i++] = flag;
 
             // mtime
-            if (!LastModified.HasValue)
+            if (!this.LastModified.HasValue)
             {
                 this.LastModified = DateTime.Now;
             }
 
-            System.TimeSpan delta = LastModified.Value - _unixEpoch;
+            TimeSpan delta = this.LastModified.Value - _unixEpoch;
             Int32 timet = (Int32)delta.TotalSeconds;
             Array.Copy(BitConverter.GetBytes(timet), 0, header, i, 4);
             i += 4;
@@ -984,7 +985,7 @@ namespace OfficeOpenXml.Packaging.Ionic.Zlib
                 header[i++] = 0; // terminate
             }
 
-            _baseStream._stream.Write(header, 0, header.Length);
+            this._baseStream._stream.Write(header, 0, header.Length);
 
             return header.Length; // bytes written
         }
@@ -1011,7 +1012,7 @@ namespace OfficeOpenXml.Packaging.Ionic.Zlib
         public static byte[] CompressString(String s)
         {
             using MemoryStream? ms = RecyclableMemory.GetStream();
-            System.IO.Stream compressor =
+            Stream compressor =
                 new GZipStream(ms, CompressionMode.Compress, CompressionLevel.BestCompression);
             ZlibBaseStream.CompressString(s, compressor);
             return ms.ToArray();
@@ -1037,7 +1038,7 @@ namespace OfficeOpenXml.Packaging.Ionic.Zlib
         public static byte[] CompressBuffer(byte[] b)
         {
             using MemoryStream? ms = RecyclableMemory.GetStream();
-            System.IO.Stream compressor =
+            Stream compressor =
                 new GZipStream(ms, CompressionMode.Compress, CompressionLevel.BestCompression);
 
             ZlibBaseStream.CompressBuffer(b, compressor);
@@ -1080,7 +1081,7 @@ namespace OfficeOpenXml.Packaging.Ionic.Zlib
         public static byte[] UncompressBuffer(byte[] compressed)
         {
             using MemoryStream? input = RecyclableMemory.GetStream(compressed);
-            System.IO.Stream decompressor =
+            Stream decompressor =
                 new GZipStream(input, CompressionMode.Decompress);
 
             return ZlibBaseStream.UncompressBuffer(compressed, decompressor);

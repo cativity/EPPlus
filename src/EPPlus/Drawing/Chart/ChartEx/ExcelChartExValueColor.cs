@@ -26,9 +26,9 @@ namespace OfficeOpenXml.Drawing.Chart.ChartEx
         string _positionPath;
         internal ExcelChartExValueColor(XmlNamespaceManager nameSpaceManager, XmlNode topNode, string[] schemaNodeOrder, string prefix) : base(nameSpaceManager, topNode)
         {
-            SchemaNodeOrder = schemaNodeOrder;
-            _prefix = prefix;
-            _positionPath = $"cx:valueColorPositions/cx:{prefix}Position";
+            this.SchemaNodeOrder = schemaNodeOrder;
+            this._prefix = prefix;
+            this._positionPath = $"cx:valueColorPositions/cx:{prefix}Position";
         }
 
         ExcelDrawingColorManager _color = null;
@@ -39,11 +39,11 @@ namespace OfficeOpenXml.Drawing.Chart.ChartEx
         {
             get
             {
-                if(_color==null)
+                if(this._color==null)
                 {
-                    _color = new ExcelDrawingColorManager(NameSpaceManager, TopNode, $"cx:valueColors/cx:{_prefix}Color", SchemaNodeOrder);
+                    this._color = new ExcelDrawingColorManager(this.NameSpaceManager, this.TopNode, $"cx:valueColors/cx:{this._prefix}Color", this.SchemaNodeOrder);
                 }
-                return _color;
+                return this._color;
             }
         }
         /// <summary>
@@ -53,11 +53,11 @@ namespace OfficeOpenXml.Drawing.Chart.ChartEx
         {
             get
             {
-                if(ExistsNode($"{_positionPath}/cx:number"))
+                if(this.ExistsNode($"{this._positionPath}/cx:number"))
                 {
                     return eColorValuePositionType.Number;
                 }
-                else if(ExistsNode($"{_positionPath}/cx:percent"))
+                else if(this.ExistsNode($"{this._positionPath}/cx:percent"))
                 {
                     return eColorValuePositionType.Percent;
                 }
@@ -68,19 +68,19 @@ namespace OfficeOpenXml.Drawing.Chart.ChartEx
             }
             set
             {
-                if(ValueType!=value)
+                if(this.ValueType!=value)
                 {
-                    ClearChildren(_positionPath);
+                    this.ClearChildren(this._positionPath);
                     switch(value)
                     {
                         case eColorValuePositionType.Extreme:
-                            CreateNode($"{_positionPath}/cx:extremeValue");
+                            this.CreateNode($"{this._positionPath}/cx:extremeValue");
                             break;
                         case eColorValuePositionType.Percent:
-                            SetXmlNodeString($"{_positionPath}/cx:percent/@val", "0");
+                            this.SetXmlNodeString($"{this._positionPath}/cx:percent/@val", "0");
                             break;
                         default:
-                            SetXmlNodeString($"{_positionPath}/cx:number/@val", "0");
+                            this.SetXmlNodeString($"{this._positionPath}/cx:number/@val", "0");
                             break;
                     }
                 }
@@ -94,30 +94,30 @@ namespace OfficeOpenXml.Drawing.Chart.ChartEx
         {
             get
             {
-                eColorValuePositionType t = ValueType;
+                eColorValuePositionType t = this.ValueType;
                 if (t==eColorValuePositionType.Extreme)
                 {
                     return 0;
                 }
-                else if(ValueType==eColorValuePositionType.Number)
+                else if(this.ValueType==eColorValuePositionType.Number)
                 {
-                    return GetXmlNodeDouble($"{_positionPath}/cx:number/@val");
+                    return this.GetXmlNodeDouble($"{this._positionPath}/cx:number/@val");
                 }
                 else
                 {
-                    return GetXmlNodeDoubleNull($"{_positionPath}/cx:percent/@val")??0;
+                    return this.GetXmlNodeDoubleNull($"{this._positionPath}/cx:percent/@val")??0;
                 }
             }
             set
             {
-                eColorValuePositionType t = ValueType;
+                eColorValuePositionType t = this.ValueType;
                 if (t==eColorValuePositionType.Extreme)
                 {
                     throw (new InvalidOperationException("Can't set PositionValue when ValueType is Extreme"));
                 }
                 else if (t==eColorValuePositionType.Number)
                 {
-                    SetXmlNodeString($"{_positionPath}/cx:number/@val", value.ToString(CultureInfo.InvariantCulture));
+                    this.SetXmlNodeString($"{this._positionPath}/cx:number/@val", value.ToString(CultureInfo.InvariantCulture));
                 }
                 else if (t == eColorValuePositionType.Percent)
                 {
@@ -125,7 +125,8 @@ namespace OfficeOpenXml.Drawing.Chart.ChartEx
                     {
                         throw new InvalidOperationException("PositionValue out of range. Percantage range is from 0 to 100");
                     }
-                    SetXmlNodeDouble($"{_positionPath}/cx:percent/@val", value);
+
+                    this.SetXmlNodeDouble($"{this._positionPath}/cx:percent/@val", value);
                 }
             }
         }

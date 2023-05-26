@@ -28,7 +28,7 @@ namespace OfficeOpenXml
         public ExcelHyperLink(string uriString) :
             base(uriString)
         {
-            OriginalUri = this;
+            this.OriginalUri = this;
         }
 #if !Core
         /// <summary>
@@ -51,7 +51,7 @@ namespace OfficeOpenXml
         public ExcelHyperLink(string uriString, UriKind uriKind) :
             base(uriString, uriKind)
         {
-            OriginalUri = this;
+            this.OriginalUri = this;
         }
         /// <summary>
         /// Sheet internal reference
@@ -61,8 +61,8 @@ namespace OfficeOpenXml
         public ExcelHyperLink(string referenceAddress, string display) :
             base("xl://internal")   //URI is not used on internal links so put a dummy uri here.
         {
-            _referenceAddress = referenceAddress;
-            _display = display;
+            this._referenceAddress = referenceAddress;
+            this._display = display;
         }
 
         string _referenceAddress = null;
@@ -73,11 +73,11 @@ namespace OfficeOpenXml
         {
             get
             {
-                return _referenceAddress;
+                return this._referenceAddress;
             }
             set
             {
-                _referenceAddress = value;
+                this._referenceAddress = value;
             }
         }
         string _display = "";
@@ -88,11 +88,11 @@ namespace OfficeOpenXml
         {
             get
             {
-                return _display;
+                return this._display;
             }
             set
             {
-                _display = value;
+                this._display = value;
             }
         }
         /// <summary>
@@ -111,11 +111,11 @@ namespace OfficeOpenXml
         {
             get
             {
-                return _colSpann;
+                return this._colSpann;
             }
             set
             {
-                _colSpann = value;
+                this._colSpann = value;
             }
         }
         int _rowSpann = 0;
@@ -126,11 +126,11 @@ namespace OfficeOpenXml
         {
             get
             {
-                return _rowSpann;
+                return this._rowSpann;
             }
             set
             {
-                _rowSpann = value;
+                this._rowSpann = value;
             }
         }
         /// <summary>

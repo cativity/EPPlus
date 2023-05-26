@@ -31,8 +31,8 @@ namespace OfficeOpenXml.Packaging
         int maxRId = 1;
         internal void DeleteRelationship(string id)
         {
-            _rels.Remove(id);
-            UpdateMaxRId(id, ref maxRId);
+            this._rels.Remove(id);
+            UpdateMaxRId(id, ref this.maxRId);
         }
         /// <summary>
         /// Updates the maximum id for the relationship
@@ -59,8 +59,8 @@ namespace OfficeOpenXml.Packaging
             rel.TargetUri = targetUri;
             rel.TargetMode = targetMode;
             rel.RelationshipType = relationshipType;
-            rel.Id = "rId" + (maxRId++).ToString();
-            _rels.Add(rel);
+            rel.Id = "rId" + (this.maxRId++).ToString();
+            this._rels.Add(rel);
             return rel;
         }
         internal virtual ZipPackageRelationship CreateRelationship(string target, TargetMode targetMode, string relationshipType)
@@ -69,26 +69,26 @@ namespace OfficeOpenXml.Packaging
             rel.Target = target;
             rel.TargetMode = targetMode;
             rel.RelationshipType = relationshipType;
-            rel.Id = "rId" + (maxRId++).ToString();
-            _rels.Add(rel);
+            rel.Id = "rId" + (this.maxRId++).ToString();
+            this._rels.Add(rel);
             return rel;
         }
 
         internal bool RelationshipExists(string id)
         {
-            return _rels.ContainsKey(id);
+            return this._rels.ContainsKey(id);
         }
         internal ZipPackageRelationshipCollection GetRelationshipsByType(string schema)
         {
-            return _rels.GetRelationshipsByType(schema);
+            return this._rels.GetRelationshipsByType(schema);
         }
         internal ZipPackageRelationshipCollection GetRelationships()
         {
-            return _rels;
+            return this._rels;
         }
         internal ZipPackageRelationship GetRelationship(string id)
         {
-            return _rels[id];
+            return this._rels[id];
         }
         internal void ReadRelation(string xml, string source)
         {
@@ -128,13 +128,14 @@ namespace OfficeOpenXml.Packaging
                     int id;
                     if (int.TryParse(rel.Id.Substring(3), out id))
                     {
-                        if (id >= maxRId && id < int.MaxValue - 10000) //Not likly to have this high id's but make sure we have space to avoid overflow.
+                        if (id >= this.maxRId && id < int.MaxValue - 10000) //Not likly to have this high id's but make sure we have space to avoid overflow.
                         {
-                            maxRId = id + 1;
+                            this.maxRId = id + 1;
                         }
                     }
                 }
-                _rels.Add(rel);
+
+                this._rels.Add(rel);
             }
         }
     }

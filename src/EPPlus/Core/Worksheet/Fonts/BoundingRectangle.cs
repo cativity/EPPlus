@@ -21,10 +21,10 @@ namespace OfficeOpenXml.Core.Worksheet.Fonts
     {
         public BoundingRectangle(short xMin, short yMin, short xMax, short yMax)
         {
-            Xmin = xMin;
-            Ymin = yMin;
-            Xmax = xMax;
-            Ymax = yMax;
+            this.Xmin = xMin;
+            this.Ymin = yMin;
+            this.Xmax = xMax;
+            this.Ymax = yMax;
         }
 
         public short Xmin { get; set; }

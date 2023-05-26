@@ -22,8 +22,8 @@ namespace OfficeOpenXml.Export.ToCollection
     {
         public MappedProperty(int ix, PropertyInfo property)
         {
-            Index = ix;
-            PropertyInfo = property;
+            this.Index = ix;
+            this.PropertyInfo = property;
         }
 
         internal int Index { get; set; }

@@ -34,7 +34,7 @@ namespace OfficeOpenXml.Filter
         {
             get
             {
-                return GetXmlNodeInt("d:iconId");
+                return this.GetXmlNodeInt("d:iconId");
             }
             set
             {
@@ -42,7 +42,8 @@ namespace OfficeOpenXml.Filter
                 {
                     throw (new ArgumentOutOfRangeException("iconId must not be negative"));
                 }
-                SetXmlNodeString("d:iconId", value.ToString(CultureInfo.InvariantCulture));
+
+                this.SetXmlNodeString("d:iconId", value.ToString(CultureInfo.InvariantCulture));
             }
         }
         /// <summary>
@@ -52,7 +53,7 @@ namespace OfficeOpenXml.Filter
         {
             get
             {
-                string? v=GetXmlNodeString("d:iconSet");
+                string? v= this.GetXmlNodeString("d:iconSet");
                 v = v.Replace("3", "Three").Replace("4", "four").Replace("5", "Five");
                 try
                 {
@@ -68,7 +69,7 @@ namespace OfficeOpenXml.Filter
             {
                 string? v = value.ToString();
                 v = v.Replace("Three", "3").Replace("four", "4").Replace("Five", "5");
-                SetXmlNodeString("d:dxfId", v);
+                this.SetXmlNodeString("d:dxfId", v);
             }
         }
 

@@ -256,7 +256,7 @@ namespace EPPlusTest.Table.PivotTable
             Assert.AreEqual(pt.Fields[0].SubTotalFunctions, eSubTotalFunctions.Default);
 
             pt.Fields[0].Sort = eSortType.Descending;
-            pt.TableStyle = OfficeOpenXml.Table.TableStyles.Medium14;
+            pt.TableStyle = TableStyles.Medium14;
         }
         [TestMethod]
         public void Pivot_GroupDate()
@@ -314,7 +314,7 @@ namespace EPPlusTest.Table.PivotTable
             pt.RowFields[0].Items[2].Hidden = true;
             pt.RowFields[0].Items[3].Hidden = true;
             pt.DataOnRows = false;
-            pt.TableStyle = OfficeOpenXml.Table.TableStyles.Medium14;
+            pt.TableStyle = TableStyles.Medium14;
         }
         [TestMethod]
         public void Pivot_ManyRowFields()

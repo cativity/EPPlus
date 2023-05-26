@@ -44,7 +44,7 @@ namespace OfficeOpenXml.Drawing.Chart
         internal override void InitSeries(ExcelChart chart, XmlNamespaceManager ns, XmlNode node, bool isPivot, List<ExcelChartSerie> list = null)
         {
             base.InitSeries(chart, ns, node, isPivot, list);
-            Series.Init(chart, ns, node, isPivot, base.Series._list);
+            this.Series.Init(chart, ns, node, isPivot, base.Series._list);
         }        
         #region DataLabel
         ExcelChartDataLabel _DataLabel = null;
@@ -55,11 +55,11 @@ namespace OfficeOpenXml.Drawing.Chart
         {
             get
             {
-                if (_DataLabel == null)
+                if (this._DataLabel == null)
                 {
-                    _DataLabel = new ExcelChartDataLabelStandard(this, NameSpaceManager, ChartNode, "dLbls", _chartXmlHelper.SchemaNodeOrder);
+                    this._DataLabel = new ExcelChartDataLabelStandard(this, this.NameSpaceManager, this.ChartNode, "dLbls", this._chartXmlHelper.SchemaNodeOrder);
                 }
-                return _DataLabel;
+                return this._DataLabel;
             }
         }
         /// <summary>
@@ -69,7 +69,7 @@ namespace OfficeOpenXml.Drawing.Chart
         {
             get
             {
-                return ChartNode.SelectSingleNode("c:dLbls", NameSpaceManager) != null;
+                return this.ChartNode.SelectSingleNode("c:dLbls", this.NameSpaceManager) != null;
             }
         }
         #endregion

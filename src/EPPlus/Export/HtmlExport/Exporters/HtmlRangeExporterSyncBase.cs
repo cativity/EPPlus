@@ -36,7 +36,7 @@ namespace OfficeOpenXml.Export.HtmlExport.Exporters
             writer.ApplyFormatIncreaseIndent(settings.Minify);
             decimal mdw = _range.Worksheet.Workbook.MaxFontWidth;
             int defColWidth = ExcelColumn.ColumnWidthToPixels(Convert.ToDecimal(ws.DefaultColWidth), mdw);
-            foreach (int c in _columns)
+            foreach (int c in this._columns)
             {
                 if (settings.SetColumnWidth)
                 {

@@ -24,8 +24,8 @@ namespace OfficeOpenXml.Sorting
     {
         internal TableSortLayerBuilder(TableSortOptions options, TableSortLayer sortLayer)
         {
-            _options = options;
-            _sortLayer = sortLayer;
+            this._options = options;
+            this._sortLayer = sortLayer;
         }
 
         private readonly TableSortOptions _options;
@@ -38,7 +38,7 @@ namespace OfficeOpenXml.Sorting
         {
             get
             {
-                return new TableSortLayer(_options);
+                return new TableSortLayer(this._options);
             }
         }
 
@@ -49,7 +49,7 @@ namespace OfficeOpenXml.Sorting
         /// <returns>A <see cref="TableSortLayerBuilder"/></returns>
         public TableSortLayerBuilder UsingCustomList(params string[] values)
         {
-            _sortLayer.SetCustomList(values);
+            this._sortLayer.SetCustomList(values);
             return this;
         }
     }

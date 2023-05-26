@@ -26,7 +26,7 @@ namespace OfficeOpenXml.Sorting
     {
         public RangeSorter(ExcelWorksheet worksheet)
         {
-            _worksheet = worksheet;
+            this._worksheet = worksheet;
         }
 
         private readonly ExcelWorksheet _worksheet;
@@ -87,7 +87,7 @@ namespace OfficeOpenXml.Sorting
             sortItems.Sort(comp);
             RangeWorksheetData? wsd = new RangeWorksheetData(range);
 
-            ApplySortedRange(range, sortItems, wsd);
+            this.ApplySortedRange(range, sortItems, wsd);
         }
 
         public void SortLeftToRight(
@@ -113,14 +113,14 @@ namespace OfficeOpenXml.Sorting
             sortItems.Sort(comp);
             RangeWorksheetData? wsd = new RangeWorksheetData(range);
 
-            ApplySortedRange(range, sortItems, wsd);
+            this.ApplySortedRange(range, sortItems, wsd);
         }
 
         private void ApplySortedRange(ExcelRangeBase range, List<SortItem<ExcelValue>> sortItems, RangeWorksheetData wsd)
         {
             //Sort the values and styles.
             int nColumnsInRange = range._toCol - range._fromCol + 1;
-            _worksheet._values.Clear(range._fromRow, range._fromCol, range._toRow - range._fromRow + 1, nColumnsInRange);
+            this._worksheet._values.Clear(range._fromRow, range._fromCol, range._toRow - range._fromRow + 1, nColumnsInRange);
             for (int r = 0; r < sortItems.Count; r++)
             {
                 for (int c = 0; c < nColumnsInRange; c++)
@@ -128,21 +128,21 @@ namespace OfficeOpenXml.Sorting
                     int row = range._fromRow + r;
                     int col = range._fromCol + c;
                     //_worksheet._values.SetValueSpecial(row, col, SortSetValue, l[r].Items[c]);
-                    _worksheet._values.SetValue(row, col, sortItems[r].Items[c]);
+                    this._worksheet._values.SetValue(row, col, sortItems[r].Items[c]);
                     string? addr = ExcelCellBase.GetAddress(sortItems[r].Row, range._fromCol + c);
                     //Move flags
-                    HandleFlags(wsd, row, col, addr);
+                    this.HandleFlags(wsd, row, col, addr);
                     //Move metadata
-                    HandleMetadata(wsd, row, col, addr);
+                    this.HandleMetadata(wsd, row, col, addr);
 
                     //Move formulas
-                    HandleFormula(wsd, row, col, addr, sortItems[r].Row, col);
+                    this.HandleFormula(wsd, row, col, addr, sortItems[r].Row, col);
 
                     //Move hyperlinks
-                    HandleHyperlink(wsd, row, col, addr);
+                    this.HandleHyperlink(wsd, row, col, addr);
 
                     //Move comments
-                    HandleComment(wsd, row, col, addr);
+                    this.HandleComment(wsd, row, col, addr);
                 }
             }
         }
@@ -151,7 +151,7 @@ namespace OfficeOpenXml.Sorting
         {
             //Sort the values and styles.
             int nRowsInRange = range._toRow - range._fromRow + 1;
-            _worksheet._values.Clear(range._fromRow, range._fromCol, range._toRow - range._fromRow + 1, range._toCol);
+            this._worksheet._values.Clear(range._fromRow, range._fromCol, range._toRow - range._fromRow + 1, range._toCol);
             for (int c = 0; c < sortItems.Count; c++)
             {
                 for (int r = 0; r < nRowsInRange; r++)
@@ -159,21 +159,21 @@ namespace OfficeOpenXml.Sorting
                     int row = range._fromRow + r;
                     int col = range._fromCol + c;
                     //_worksheet._values.SetValueSpecial(row, col, SortSetValue, l[r].Items[c]);
-                    _worksheet._values.SetValue(row, col, sortItems[c].Items[r]);
+                    this._worksheet._values.SetValue(row, col, sortItems[c].Items[r]);
                     string? addr = ExcelCellBase.GetAddress(range._fromRow + r, sortItems[c].Column);
                     //Move flags
-                    HandleFlags(wsd, row, col, addr);
+                    this.HandleFlags(wsd, row, col, addr);
                     //Move metadata
-                    HandleMetadata(wsd, row, col, addr);
+                    this.HandleMetadata(wsd, row, col, addr);
 
                     //Move formulas
-                    HandleFormula(wsd, row, col, addr, row, sortItems[c].Column);
+                    this.HandleFormula(wsd, row, col, addr, row, sortItems[c].Column);
 
                     //Move hyperlinks
-                    HandleHyperlink(wsd, row, col, addr);
+                    this.HandleHyperlink(wsd, row, col, addr);
 
                     //Move comments
-                    HandleComment(wsd, row, col, addr);
+                    this.HandleComment(wsd, row, col, addr);
                 }
             }
         }
@@ -182,7 +182,7 @@ namespace OfficeOpenXml.Sorting
         {
             if (wsd.Hyperlinks.ContainsKey(addr))
             {
-                _worksheet._hyperLinks.SetValue(row, col, wsd.Hyperlinks[addr]);
+                this._worksheet._hyperLinks.SetValue(row, col, wsd.Hyperlinks[addr]);
             }
         }
 
@@ -190,7 +190,7 @@ namespace OfficeOpenXml.Sorting
         {
             if (wsd.Metadata.ContainsKey(addr))
             {
-                _worksheet._metadataStore.SetValue(row, col, wsd.Metadata[addr]);
+                this._worksheet._metadataStore.SetValue(row, col, wsd.Metadata[addr]);
             }
         }
 
@@ -198,7 +198,7 @@ namespace OfficeOpenXml.Sorting
         {
             if (wsd.Flags.ContainsKey(addr))
             {
-                _worksheet._flags.SetValue(row, col, wsd.Flags[addr]);
+                this._worksheet._flags.SetValue(row, col, wsd.Flags[addr]);
             }
         }
 
@@ -207,8 +207,8 @@ namespace OfficeOpenXml.Sorting
             if (wsd.Comments.ContainsKey(addr))
             {
                 int i = wsd.Comments[addr];
-                _worksheet._commentsStore.SetValue(row, col, i);
-                ExcelComment? comment = _worksheet._comments[i];
+                this._worksheet._commentsStore.SetValue(row, col, i);
+                ExcelComment? comment = this._worksheet._comments[i];
                 comment.Reference = ExcelCellBase.GetAddress(row, col);
             }
         }
@@ -217,20 +217,21 @@ namespace OfficeOpenXml.Sorting
         {
             if (wsd.Formulas.ContainsKey(addr))
             {
-                _worksheet._formulas.SetValue(row, col, wsd.Formulas[addr]);
+                this._worksheet._formulas.SetValue(row, col, wsd.Formulas[addr]);
                 if(wsd.Formulas[addr] is string)
                 {
                     string? formula = wsd.Formulas[addr].ToString();
                     string? newFormula = initialRow != row ?
                                              AddressUtility.ShiftAddressRowsInFormula(string.Empty, formula, initialRow, row - initialRow) :
                                              AddressUtility.ShiftAddressColumnsInFormula(string.Empty, formula, initialCol, col - initialCol);
-                    _worksheet._formulas.SetValue(row, col, newFormula);
+
+                    this._worksheet._formulas.SetValue(row, col, newFormula);
                 }
                 else if (wsd.Formulas[addr] is int)
                 {
                     int sfIx = (int)wsd.Formulas[addr];
-                    ExcelAddress? startAddr = new ExcelAddress(_worksheet._sharedFormulas[sfIx].Address);
-                    ExcelWorksheet.Formulas? f = _worksheet._sharedFormulas[sfIx];
+                    ExcelAddress? startAddr = new ExcelAddress(this._worksheet._sharedFormulas[sfIx].Address);
+                    ExcelWorksheet.Formulas? f = this._worksheet._sharedFormulas[sfIx];
                     if (startAddr._fromRow > row)
                     {
                         f.Formula = ExcelCellBase.TranslateFromR1C1(ExcelCellBase.TranslateToR1C1(f.Formula, f.StartRow, f.StartCol), row, f.StartCol);
@@ -248,7 +249,7 @@ namespace OfficeOpenXml.Sorting
         internal void SetWorksheetSortState(ExcelRangeBase range, int[] columnsOrRows, bool[] descending, CompareOptions compareOptions, bool leftToRight, Dictionary<int, string[]> customLists)
         {
             //Set sort state
-            SortState? sortState = new SortState(_worksheet.NameSpaceManager, _worksheet);
+            SortState? sortState = new SortState(this._worksheet.NameSpaceManager, this._worksheet);
             sortState.Ref = range.Address;
             sortState.ColumnSort = leftToRight;
             sortState.CaseSensitive = (compareOptions == CompareOptions.IgnoreCase || compareOptions == CompareOptions.OrdinalIgnoreCase);

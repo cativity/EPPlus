@@ -29,7 +29,7 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Finance
         public override CompileResult Execute(IEnumerable<FunctionArgument> arguments, ParsingContext context)
         {
             ValidateArguments(arguments, 1);
-            IEnumerable<ExcelDoubleCellValue>? values = ArgsToDoubleEnumerable(new List<FunctionArgument> { arguments.ElementAt(0) }, context);
+            IEnumerable<ExcelDoubleCellValue>? values = this.ArgsToDoubleEnumerable(new List<FunctionArgument> { arguments.ElementAt(0) }, context);
             FinanceCalcResult<double>? result = default(FinanceCalcResult<double>);
             if(arguments.Count() == 1)
             {
@@ -37,7 +37,7 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Finance
             }
             else
             {
-                double guess = ArgToDecimal(arguments, 1);
+                double guess = this.ArgToDecimal(arguments, 1);
                 result = IrrImpl.Irr(values.Select(x => (double)x).ToArray(), guess);
             }
             if (result.HasError)
@@ -45,7 +45,7 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Finance
                 return this.CreateResult(result.ExcelErrorType);
             }
 
-            return CreateResult(result.Result, DataType.Decimal);
+            return this.CreateResult(result.Result, DataType.Decimal);
         }
     }
 }

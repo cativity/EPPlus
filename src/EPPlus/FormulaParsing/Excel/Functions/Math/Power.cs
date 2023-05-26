@@ -28,10 +28,10 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Math
         public override CompileResult Execute(IEnumerable<FunctionArgument> arguments, ParsingContext context)
         {
             ValidateArguments(arguments, 2);
-            double number = ArgToDecimal(arguments, 0);
-            double power = ArgToDecimal(arguments, 1);
+            double number = this.ArgToDecimal(arguments, 0);
+            double power = this.ArgToDecimal(arguments, 1);
             double result = System.Math.Pow(number, power);
-            return CreateResult(result, DataType.Decimal);
+            return this.CreateResult(result, DataType.Decimal);
         }
     }
 }

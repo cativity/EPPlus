@@ -28,15 +28,15 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Math
         public override CompileResult Execute(IEnumerable<FunctionArgument> arguments, ParsingContext context)
         {
             ValidateArguments(arguments, 2);
-            double num = ArgToDecimal(arguments, 0);
-            double denom = ArgToDecimal(arguments, 1);
+            double num = this.ArgToDecimal(arguments, 0);
+            double denom = this.ArgToDecimal(arguments, 1);
             if ((int)denom == 0)
             {
                 return this.CreateResult(eErrorType.Div0);
             }
 
             int result = (int)(num/denom);
-            return CreateResult(result, DataType.Integer);
+            return this.CreateResult(result, DataType.Integer);
         }
     }
 }

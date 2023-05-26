@@ -35,15 +35,15 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Text
             int startIndex = 0;
             if (functionArguments.Count() > 2)
             {
-                startIndex = ArgToInt(functionArguments, 2) - 1;
+                startIndex = this.ArgToInt(functionArguments, 2) - 1;
             }
-            int result = searchIn.IndexOf(search, startIndex, System.StringComparison.Ordinal);
+            int result = searchIn.IndexOf(search, startIndex, StringComparison.Ordinal);
             if (result == -1)
             {
-                return CreateResult(ExcelErrorValue.Create(eErrorType.Value), DataType.ExcelError);
+                return this.CreateResult(ExcelErrorValue.Create(eErrorType.Value), DataType.ExcelError);
             }
             // Adding 1 because Excel uses 1-based index
-            return CreateResult(result + 1, DataType.Integer);
+            return this.CreateResult(result + 1, DataType.Integer);
         }
     }
 }

@@ -29,25 +29,25 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Finance
         public override CompileResult Execute(IEnumerable<FunctionArgument> arguments, ParsingContext context)
         {
             ValidateArguments(arguments, 2);
-            double rate = ArgToDecimal(arguments, 0);
-            double nPer = ArgToDecimal(arguments, 1);
+            double rate = this.ArgToDecimal(arguments, 0);
+            double nPer = this.ArgToDecimal(arguments, 1);
             double pmt = 0d;
             if (arguments.Count() >= 3)
             {
-                pmt = ArgToDecimal(arguments, 2);
+                pmt = this.ArgToDecimal(arguments, 2);
             }
             double fv = 0d;
             if (arguments.Count() >= 4)
             {
-                fv = ArgToDecimal(arguments, 3);
+                fv = this.ArgToDecimal(arguments, 3);
             }
             int type = 0;
             if (arguments.Count() >= 5)
             {
-                type = ArgToInt(arguments, 4);
+                type = this.ArgToInt(arguments, 4);
             }
             double retVal = CashFlowHelper.Pv(rate, nPer, pmt, fv, (PmtDue)type);
-            return CreateResult(retVal, DataType.Decimal);
+            return this.CreateResult(retVal, DataType.Decimal);
         }
     }
 }

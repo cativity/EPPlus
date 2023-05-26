@@ -25,7 +25,7 @@ namespace OfficeOpenXml.FormulaParsing.ExpressionGraph
         public NamedValueExpression(string expression, ParsingContext parsingContext)
             : base(expression)
         {
-            _parsingContext = parsingContext;
+            this._parsingContext = parsingContext;
         }
 
         private readonly ParsingContext _parsingContext;
@@ -33,15 +33,15 @@ namespace OfficeOpenXml.FormulaParsing.ExpressionGraph
         public override CompileResult Compile()
         {
             ParsingScope? c = this._parsingContext.Scopes.Current;
-            INameInfo? name = _parsingContext.ExcelDataProvider.GetName(c.Address.Worksheet, ExpressionString);
+            INameInfo? name = this._parsingContext.ExcelDataProvider.GetName(c.Address.Worksheet, this.ExpressionString);
             
-            ExcelAddressCache? cache = _parsingContext.AddressCache;
+            ExcelAddressCache? cache = this._parsingContext.AddressCache;
             int cacheId = cache.GetNewId();
             
             if (name == null)
             {
                 // check if there is a table with the name
-                ExcelTable? table = _parsingContext.ExcelDataProvider.GetExcelTable(ExpressionString);
+                ExcelTable? table = this._parsingContext.ExcelDataProvider.GetExcelTable(this.ExpressionString);
                 if(table != null)
                 {
                     RangeInfo? ri = new RangeInfo(table.WorkSheet, table.Address);

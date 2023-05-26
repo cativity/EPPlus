@@ -66,7 +66,7 @@ namespace OfficeOpenXml.FormulaParsing
         /// </summary>
         private ParsingConfiguration() 
         {
-            FunctionRepository = FunctionRepository.Create();
+            this.FunctionRepository = FunctionRepository.Create();
         }
 
         /// <summary>
@@ -85,7 +85,7 @@ namespace OfficeOpenXml.FormulaParsing
         /// <returns></returns>
         public ParsingConfiguration SetLexer(ILexer lexer)
         {
-            Lexer = lexer;
+            this.Lexer = lexer;
             return this;
         }
 
@@ -96,7 +96,7 @@ namespace OfficeOpenXml.FormulaParsing
         /// <returns></returns>
         internal ParsingConfiguration SetGraphBuilder(IExpressionGraphBuilder graphBuilder)
         {
-            GraphBuilder = graphBuilder;
+            this.GraphBuilder = graphBuilder;
             return this;
         }
 
@@ -107,7 +107,7 @@ namespace OfficeOpenXml.FormulaParsing
         /// <returns></returns>
         public ParsingConfiguration SetExpresionCompiler(IExpressionCompiler expressionCompiler)
         {
-            ExpressionCompiler = expressionCompiler;
+            this.ExpressionCompiler = expressionCompiler;
             return this;
         }
 
@@ -119,7 +119,7 @@ namespace OfficeOpenXml.FormulaParsing
         public ParsingConfiguration AttachLogger(IFormulaParserLogger logger)
         {
             Require.That(logger).Named("logger").IsNotNull();
-            Logger = logger;
+            this.Logger = logger;
             return this;
         }
 
@@ -129,7 +129,7 @@ namespace OfficeOpenXml.FormulaParsing
         /// <returns></returns>
         public ParsingConfiguration DetachLogger()
         {
-            Logger = null;
+            this.Logger = null;
             return this;
         }
     }

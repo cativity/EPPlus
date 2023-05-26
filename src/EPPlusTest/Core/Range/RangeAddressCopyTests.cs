@@ -300,7 +300,7 @@ namespace EPPlusTest.Core.Range
             dv.Formula.Value = 1;
             dv.Formula2.Value = 3;
             dv.ShowErrorMessage = true;
-            dv.ErrorStyle = OfficeOpenXml.DataValidation.ExcelDataValidationWarningStyle.stop;
+            dv.ErrorStyle = ExcelDataValidationWarningStyle.stop;
             ws.Cells["A1:C4"].Copy(ws.Cells["E5"]);
 
             Assert.AreEqual("B2:D5,F6:G8", dv.Address.Address);

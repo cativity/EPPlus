@@ -28,39 +28,35 @@ namespace OfficeOpenXml.Drawing.Chart
         internal ExcelScatterChart(ExcelDrawings drawings, XmlNode node, eChartType? type, ExcelChart topChart, ExcelPivotTable PivotTableSource, XmlDocument chartXml, ExcelGroupShape parent=null) :
             base(drawings, node, type, topChart, PivotTableSource, chartXml, parent)
         {
-            SetTypeProperties();
+            this.SetTypeProperties();
         }
 
         internal ExcelScatterChart(ExcelDrawings drawings, XmlNode node, Uri uriChart, Packaging.ZipPackagePart part, XmlDocument chartXml, XmlNode chartNode, ExcelGroupShape parent) :
             base(drawings, node, uriChart, part, chartXml, chartNode, parent)
         {
-            SetTypeProperties();
+            this.SetTypeProperties();
         }
 
         internal ExcelScatterChart(ExcelChart topChart, XmlNode chartNode, ExcelGroupShape parent) :
             base(topChart, chartNode, parent)
         {
-            SetTypeProperties();
+            this.SetTypeProperties();
         }
         internal override void InitSeries(ExcelChart chart, XmlNamespaceManager ns, XmlNode node, bool isPivot, List<ExcelChartSerie> list = null)
         {
             base.InitSeries(chart, ns, node, isPivot, list);
-            Series.Init(chart, ns, node, isPivot, base.Series._list);
+            this.Series.Init(chart, ns, node, isPivot, base.Series._list);
         }
         private void SetTypeProperties()
         {
            /***** ScatterStyle *****/
-           if(ChartType == eChartType.XYScatter ||
-              ChartType == eChartType.XYScatterLines ||
-              ChartType == eChartType.XYScatterLinesNoMarkers)
+           if(this.ChartType == eChartType.XYScatter || this.ChartType == eChartType.XYScatterLines || this.ChartType == eChartType.XYScatterLinesNoMarkers)
            {
-               ScatterStyle = eScatterStyle.LineMarker;
+               this.ScatterStyle = eScatterStyle.LineMarker;
           }
-           else if (
-              ChartType == eChartType.XYScatterSmooth ||
-              ChartType == eChartType.XYScatterSmoothNoMarkers) 
+           else if (this.ChartType == eChartType.XYScatterSmooth || this.ChartType == eChartType.XYScatterSmoothNoMarkers) 
            {
-               ScatterStyle = eScatterStyle.SmoothMarker;
+               this.ScatterStyle = eScatterStyle.SmoothMarker;
            }
         }
         #region "Grouping Enum Translation"
@@ -94,12 +90,12 @@ namespace OfficeOpenXml.Drawing.Chart
         {
             get
             {
-                return GetScatterEnum(_chartXmlHelper.GetXmlNodeString(_scatterTypePath));
+                return GetScatterEnum(this._chartXmlHelper.GetXmlNodeString(this._scatterTypePath));
             }
             internal set
             {
-                _chartXmlHelper.CreateNode(_scatterTypePath, true);
-                _chartXmlHelper.SetXmlNodeString(_scatterTypePath, GetScatterText(value));
+                this._chartXmlHelper.CreateNode(this._scatterTypePath, true);
+                this._chartXmlHelper.SetXmlNodeString(this._scatterTypePath, GetScatterText(value));
             }
         }
         string MARKER_PATH = "c:marker/@val";
@@ -110,11 +106,11 @@ namespace OfficeOpenXml.Drawing.Chart
         {
             get
             {
-                return GetXmlNodeBool(MARKER_PATH, false);
+                return this.GetXmlNodeBool(this.MARKER_PATH, false);
             }
             set
             {
-                SetXmlNodeBool(MARKER_PATH, value, false);
+                this.SetXmlNodeBool(this.MARKER_PATH, value, false);
             }
         }
         ExcelChartDataLabel _dataLabel = null;
@@ -125,11 +121,11 @@ namespace OfficeOpenXml.Drawing.Chart
         {
             get
             {
-                if (_dataLabel == null)
+                if (this._dataLabel == null)
                 {
-                    _dataLabel = new ExcelChartDataLabelStandard(this, NameSpaceManager, ChartNode, "dLbls", _chartXmlHelper.SchemaNodeOrder);
+                    this._dataLabel = new ExcelChartDataLabelStandard(this, this.NameSpaceManager, this.ChartNode, "dLbls", this._chartXmlHelper.SchemaNodeOrder);
                 }
-                return _dataLabel;
+                return this._dataLabel;
             }
         }
         /// <summary>
@@ -139,22 +135,22 @@ namespace OfficeOpenXml.Drawing.Chart
         {
             get
             {
-                return ChartNode.SelectSingleNode("c:dLbls", NameSpaceManager) != null;
+                return this.ChartNode.SelectSingleNode("c:dLbls", this.NameSpaceManager) != null;
             }
         }
         internal override eChartType GetChartType(string name)
         {
             if (name == "scatterChart")
             {
-                if (ScatterStyle==eScatterStyle.LineMarker)
+                if (this.ScatterStyle==eScatterStyle.LineMarker)
                 {
-                    if (Series.Count > 0 && Series[0].Marker.Style == eMarkerStyle.None)
+                    if (this.Series.Count > 0 && this.Series[0].Marker.Style == eMarkerStyle.None)
                     {
                         return eChartType.XYScatterLinesNoMarkers;
                     }
                     else
                     {
-                        if(ExistsNode("c:ser/c:spPr/a:ln/noFill"))
+                        if(this.ExistsNode("c:ser/c:spPr/a:ln/noFill"))
                         {
                             return eChartType.XYScatter;
                         }
@@ -164,9 +160,9 @@ namespace OfficeOpenXml.Drawing.Chart
                         }
                     }
                 }
-                else if (ScatterStyle == eScatterStyle.SmoothMarker)
+                else if (this.ScatterStyle == eScatterStyle.SmoothMarker)
                 {
-                    if (Series.Count > 0 && Series[0].Marker.Style == eMarkerStyle.None)
+                    if (this.Series.Count > 0 && this.Series[0].Marker.Style == eMarkerStyle.None)
                     {
                         return eChartType.XYScatterSmoothNoMarkers;
                     }

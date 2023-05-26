@@ -47,7 +47,7 @@ namespace OfficeOpenXml.Drawing.Chart
         internal override void InitSeries(ExcelChart chart, XmlNamespaceManager ns, XmlNode node, bool isPivot, List<ExcelChartSerie> list = null)
         {
             base.InitSeries(chart, ns, node, isPivot, list);
-            Series.Init(chart, ns, node, isPivot, base.Series._list);
+            this.Series.Init(chart, ns, node, isPivot, base.Series._list);
         }
 
         ExcelChartDataLabel _dataLabel = null;
@@ -58,11 +58,11 @@ namespace OfficeOpenXml.Drawing.Chart
         {
             get
             {
-                if (_dataLabel == null)
+                if (this._dataLabel == null)
                 {
-                    _dataLabel = new ExcelChartDataLabelStandard(this, NameSpaceManager, ChartNode, "dLbls", _chartXmlHelper.SchemaNodeOrder);
+                    this._dataLabel = new ExcelChartDataLabelStandard(this, this.NameSpaceManager, this.ChartNode, "dLbls", this._chartXmlHelper.SchemaNodeOrder);
                 }
-                return _dataLabel;
+                return this._dataLabel;
             }
         }
         /// <summary>
@@ -72,14 +72,14 @@ namespace OfficeOpenXml.Drawing.Chart
         {
             get
             {
-                return ChartNode.SelectSingleNode("c:dLbls", NameSpaceManager) != null;
+                return this.ChartNode.SelectSingleNode("c:dLbls", this.NameSpaceManager) != null;
             }
         }
         internal override eChartType GetChartType(string name)
         {
             if (name == "pieChart")
             {
-                if (Series.Count > 0 && (Series[0]).Explosion>0)
+                if (this.Series.Count > 0 && (this.Series[0]).Explosion>0)
                 {
                     return eChartType.PieExploded;
                 }
@@ -90,7 +90,7 @@ namespace OfficeOpenXml.Drawing.Chart
             }
             else if (name == "pie3DChart")
             {
-                if (Series.Count > 0 && (Series[0]).Explosion > 0)
+                if (this.Series.Count > 0 && (this.Series[0]).Explosion > 0)
                 {
                     return eChartType.PieExploded3D;
                 }

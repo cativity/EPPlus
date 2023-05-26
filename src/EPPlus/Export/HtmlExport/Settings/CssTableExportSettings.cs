@@ -20,7 +20,7 @@ namespace OfficeOpenXml.Export.HtmlExport
     {
         internal CssTableExportSettings()
         {
-            ResetToDefault();
+            this.ResetToDefault();
         }
         /// <summary>
         /// Include Css for the current table style
@@ -43,12 +43,12 @@ namespace OfficeOpenXml.Export.HtmlExport
         /// </summary>
         public void ResetToDefault()
         {
-            IncludeTableStyles = true;
-            IncludeCellStyles = true;
+            this.IncludeTableStyles = true;
+            this.IncludeCellStyles = true;
 
-            Exclude.TableStyle.ResetToDefault();
-            Exclude.CellStyle.ResetToDefault();
-            base.ResetToDefaultInternal();
+            this.Exclude.TableStyle.ResetToDefault();
+            this.Exclude.CellStyle.ResetToDefault();
+            this.ResetToDefaultInternal();
         }
         /// <summary>
         /// Copy the values from another settings object.
@@ -56,13 +56,13 @@ namespace OfficeOpenXml.Export.HtmlExport
         /// <param name="copy">The object to copy.</param>
         public void Copy(CssTableExportSettings copy)
         {
-            IncludeTableStyles = copy.IncludeTableStyles;
-            IncludeCellStyles = copy.IncludeTableStyles;
+            this.IncludeTableStyles = copy.IncludeTableStyles;
+            this.IncludeCellStyles = copy.IncludeTableStyles;
 
-            Exclude.TableStyle.Copy(copy.Exclude.TableStyle);
-            Exclude.CellStyle.Copy(copy.Exclude.CellStyle);
+            this.Exclude.TableStyle.Copy(copy.Exclude.TableStyle);
+            this.Exclude.CellStyle.Copy(copy.Exclude.CellStyle);
 
-            base.CopyInternal(copy);
+            this.CopyInternal(copy);
         }
     }
 }

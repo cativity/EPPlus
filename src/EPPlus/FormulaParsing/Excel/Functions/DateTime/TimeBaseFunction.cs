@@ -22,7 +22,7 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions.DateTime
     {
         public TimeBaseFunction()
         {
-            TimeStringParser = new TimeStringParser();
+            this.TimeStringParser = new TimeStringParser();
         }
 
         protected TimeStringParser TimeStringParser
@@ -40,7 +40,7 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions.DateTime
         public void ValidateAndInitSerialNumber(IEnumerable<FunctionArgument> arguments)
         {
             ValidateArguments(arguments, 1);
-            SerialNumber = (double)ArgToDecimal(arguments, 0);
+            this.SerialNumber = (double)this.ArgToDecimal(arguments, 0);
         }
 
         protected static double SecondsInADay

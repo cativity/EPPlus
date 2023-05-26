@@ -49,13 +49,13 @@ namespace EPPlusTest.DataValidation
         [TestInitialize]
         public void Setup()
         {
-            _time = new ExcelTime();
+            this._time = new ExcelTime();
         }
 
         [TestCleanup]
         public void Cleanup()
         {
-            _time = null;
+            this._time = null;
         }
 
         [TestMethod, ExpectedException(typeof(ArgumentException))]
@@ -73,75 +73,75 @@ namespace EPPlusTest.DataValidation
         [TestMethod, ExpectedException(typeof(InvalidOperationException))]
         public void ExcelTimeTests_Hour_ShouldThrowIfNegativeValue()
         {
-            _time.Hour = -1;
+            this._time.Hour = -1;
         }
 
         [TestMethod, ExpectedException(typeof(InvalidOperationException))]
         public void ExcelTimeTests_Minute_ShouldThrowIfNegativeValue()
         {
-            _time.Minute = -1;
+            this._time.Minute = -1;
         }
 
         [TestMethod, ExpectedException(typeof(InvalidOperationException))]
         public void ExcelTimeTests_Minute_ShouldThrowIValueIsGreaterThan59()
         {
-            _time.Minute = 60;
+            this._time.Minute = 60;
         }
 
         [TestMethod, ExpectedException(typeof(InvalidOperationException))]
         public void ExcelTimeTests_Second_ShouldThrowIfNegativeValue()
         {
-            _time.Second = -1;
+            this._time.Second = -1;
         }
 
         [TestMethod, ExpectedException(typeof(InvalidOperationException))]
         public void ExcelTimeTests_Second_ShouldThrowIValueIsGreaterThan59()
         {
-            _time.Second = 60;
+            this._time.Second = 60;
         }
 
         [TestMethod]
         public void ExcelTimeTests_ToExcelTime_HourIsSet()
         {
             // Act
-            _time.Hour = 1;
+            this._time.Hour = 1;
             
             // Assert
-            Assert.AreEqual(Round(SecondsPerHour/SecondsPerDay), _time.ToExcelTime());
+            Assert.AreEqual(Round(this.SecondsPerHour/ this.SecondsPerDay), this._time.ToExcelTime());
         }
 
         [TestMethod]
         public void ExcelTimeTests_ToExcelTime_MinuteIsSet()
         {
             // Arrange
-            decimal expected = SecondsPerHour + (20M * 60M);
+            decimal expected = this.SecondsPerHour + (20M * 60M);
             // Act
-            _time.Hour = 1;
-            _time.Minute = 20;
+            this._time.Hour = 1;
+            this._time.Minute = 20;
 
             // Assert
-            Assert.AreEqual(Round(expected/SecondsPerDay), _time.ToExcelTime());
+            Assert.AreEqual(Round(expected/ this.SecondsPerDay), this._time.ToExcelTime());
         }
 
         [TestMethod]
         public void ExcelTimeTests_ToExcelTime_SecondIsSet()
         {
             // Arrange
-            decimal expected = SecondsPerHour + (20M * 60M) + 10M;
+            decimal expected = this.SecondsPerHour + (20M * 60M) + 10M;
             // Act
-            _time.Hour = 1;
-            _time.Minute = 20;
-            _time.Second = 10;
+            this._time.Hour = 1;
+            this._time.Minute = 20;
+            this._time.Second = 10;
 
             // Assert
-            Assert.AreEqual(Round(expected / SecondsPerDay), _time.ToExcelTime());
+            Assert.AreEqual(Round(expected / this.SecondsPerDay), this._time.ToExcelTime());
         }
 
         [TestMethod]
         public void ExcelTimeTests_ConstructorWithValue_ShouldSetHour()
         {
             // Arrange
-            decimal value = 3660M/(decimal)SecondsPerDay;
+            decimal value = 3660M/(decimal)this.SecondsPerDay;
 
             // Act
             ExcelTime? time = new ExcelTime(value);
@@ -154,7 +154,7 @@ namespace EPPlusTest.DataValidation
         public void ExcelTimeTests_ConstructorWithValue_ShouldSetMinute()
         {
             // Arrange
-            decimal value = 3660M / (decimal)SecondsPerDay;
+            decimal value = 3660M / (decimal)this.SecondsPerDay;
 
             // Act
             ExcelTime? time = new ExcelTime(value);
@@ -167,7 +167,7 @@ namespace EPPlusTest.DataValidation
         public void ExcelTimeTests_ConstructorWithValue_ShouldSetSecond()
         {
             // Arrange
-            decimal value = 3662M / (decimal)SecondsPerDay;
+            decimal value = 3662M / (decimal)this.SecondsPerDay;
 
             // Act
             ExcelTime? time = new ExcelTime(value);

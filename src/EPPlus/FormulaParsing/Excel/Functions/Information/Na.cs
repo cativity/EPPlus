@@ -27,7 +27,7 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Information
     {
         public override CompileResult Execute(IEnumerable<FunctionArgument> arguments, ParsingContext context)
         {
-            return CreateResult(ExcelErrorValue.Create(eErrorType.NA), DataType.ExcelError);
+            return this.CreateResult(ExcelErrorValue.Create(eErrorType.NA), DataType.ExcelError);
         }
     }
 }

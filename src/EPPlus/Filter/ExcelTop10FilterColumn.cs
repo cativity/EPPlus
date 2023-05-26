@@ -24,10 +24,10 @@ namespace OfficeOpenXml.Filter
     {
         internal ExcelTop10FilterColumn(XmlNamespaceManager namespaceManager, XmlNode topNode) : base(namespaceManager, topNode)
         {
-            FilterValue = GetXmlNodeDouble("d:top10/@filterVal");
-            Percent = GetXmlNodeBool("d:top10/@percent");
-            Top = GetXmlNodeBool("d:top10/@top");
-            Value = GetXmlNodeDouble("d:top10/@val");
+            this.FilterValue = this.GetXmlNodeDouble("d:top10/@filterVal");
+            this.Percent = this.GetXmlNodeBool("d:top10/@percent");
+            this.Top = this.GetXmlNodeBool("d:top10/@top");
+            this.Value = this.GetXmlNodeDouble("d:top10/@val");
         }
         /// <summary>
         /// The filter value to relate to
@@ -64,7 +64,7 @@ namespace OfficeOpenXml.Filter
 
         internal override bool Match(object value, string valueText)
         {
-            if(Top)
+            if(this.Top)
             {
                 if (Utils.ConvertUtil.IsNumericOrDate(value))
                 {
@@ -83,17 +83,17 @@ namespace OfficeOpenXml.Filter
 
         internal override void Save()
         {
-            XmlElement? node = (XmlElement)CreateNode("d:top10");
-            node.SetAttribute("filterVal", FilterValue.ToString("R15", CultureInfo.InvariantCulture));
-            node.SetAttribute("percent", Percent ? "1": "0");
-            node.SetAttribute("top", Top ? "1" : "0");
-            node.SetAttribute("val", Value.ToString("R15", CultureInfo.InvariantCulture));
+            XmlElement? node = (XmlElement)this.CreateNode("d:top10");
+            node.SetAttribute("filterVal", this.FilterValue.ToString("R15", CultureInfo.InvariantCulture));
+            node.SetAttribute("percent", this.Percent ? "1": "0");
+            node.SetAttribute("top", this.Top ? "1" : "0");
+            node.SetAttribute("val", this.Value.ToString("R15", CultureInfo.InvariantCulture));
         }
 
         internal override void SetFilterValue(ExcelWorksheet worksheet, ExcelAddressBase address)
         {
             List<double>? items = new List<double>();
-            int col = address._fromCol + Position;
+            int col = address._fromCol + this.Position;
             for (int row= address._fromRow + 1; row <= address._toRow; row++)
             {
                 object? v = worksheet.GetValue(row, col);
@@ -104,11 +104,11 @@ namespace OfficeOpenXml.Filter
             }
             items.Sort();
 
-            int valueInt = Convert.ToInt32(Value);
+            int valueInt = Convert.ToInt32(this.Value);
             int index;
-            if (Top)
+            if (this.Top)
             {
-                if (Percent)
+                if (this.Percent)
                 {
                     index = (items.Count - (int)((address._toRow-address._fromRow) * (valueInt / 100D)));
 
@@ -122,11 +122,11 @@ namespace OfficeOpenXml.Filter
                     index = 0;
                 }
 
-                FilterValue = items[index];
+                this.FilterValue = items[index];
             }
             else
             {
-                if (Percent)
+                if (this.Percent)
                 {
                     index = (int)((address._toRow-address._fromRow) * (valueInt/100D)) - 1;
                 }
@@ -139,7 +139,7 @@ namespace OfficeOpenXml.Filter
                     index = 0;
                 }
 
-                FilterValue = index < items.Count ? items[index] : items[items.Count - 1];
+                this.FilterValue = index < items.Count ? items[index] : items[items.Count - 1];
             }
         }
     }

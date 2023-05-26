@@ -263,7 +263,7 @@ namespace EPPlusTest.Core
                 ws.Cells[i, 1].Value = "A";
                 ws.Cells[i, 10].Value = "J";
             }
-            ws.Cells["A1:J10"].Style.Fill.SetBackground(System.Drawing.Color.AliceBlue);
+            ws.Cells["A1:J10"].Style.Fill.SetBackground(Color.AliceBlue);
             ws.Cells["C3"].Value = "C3";
             Assert.AreEqual("A", ws.Cells["A1"].Value);
             Assert.AreEqual("A", ws.Cells["A5"].Value);

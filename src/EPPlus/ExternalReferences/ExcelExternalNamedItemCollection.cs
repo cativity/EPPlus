@@ -32,22 +32,22 @@ namespace OfficeOpenXml.ExternalReferences
         {
             get
             {
-                if (_names.ContainsKey(name))
+                if (this._names.ContainsKey(name))
                 {
-                    return _list[_names[name]];
+                    return this._list[this._names[name]];
                 }
                 return default(T);
             }
         }
         internal override void Add(T item)
         {
-            _names.Add(item.Name, _list.Count);
+            this._names.Add(item.Name, this._list.Count);
             base.Add(item);
         }
         internal override void Clear()
         {
             base.Clear();
-            _names.Clear();
+            this._names.Clear();
         }
         /// <summary>
         /// If the name exists in the collection
@@ -56,7 +56,7 @@ namespace OfficeOpenXml.ExternalReferences
         /// <returns>true if the name exists in the collection, otherwise false</returns>
         public bool ContainsKey(string name)
         {
-            return _names.ContainsKey(name);
+            return this._names.ContainsKey(name);
         }
     }
 }

@@ -25,11 +25,11 @@ namespace OfficeOpenXml.Style
     /// </summary>
     public class ExcelFill : StyleBase
     {
-        internal ExcelFill(ExcelStyles styles, OfficeOpenXml.XmlHelper.ChangedEventHandler ChangedEvent, int PositionID, string address, int index) :
+        internal ExcelFill(ExcelStyles styles, XmlHelper.ChangedEventHandler ChangedEvent, int PositionID, string address, int index) :
             base(styles, ChangedEvent, PositionID, address)
 
         {
-            Index = index;
+            this.Index = index;
         }
         /// <summary>
         /// The pattern for solid fills.
@@ -38,23 +38,23 @@ namespace OfficeOpenXml.Style
         {
             get
             {
-                if (Index == int.MinValue)
+                if (this.Index == int.MinValue)
                 {
                     return ExcelFillStyle.None;
                 }
                 else
                 {
-                    return _styles.Fills[Index].PatternType;
+                    return this._styles.Fills[this.Index].PatternType;
                 }
             }
             set
             {
-                if (_gradient != null)
+                if (this._gradient != null)
                 {
                     this._gradient = null;
                 }
 
-                _ChangedEvent(this, new StyleChangeEventArgs(eStyleClass.Fill, eStyleProperty.PatternType, value, _positionID, _address));
+                this._ChangedEvent(this, new StyleChangeEventArgs(eStyleClass.Fill, eStyleProperty.PatternType, value, this._positionID, this._address));
             }
         }
         ExcelColor _patternColor = null;
@@ -65,15 +65,15 @@ namespace OfficeOpenXml.Style
         {
             get
             {
-                if (_patternColor == null)
+                if (this._patternColor == null)
                 {
-                    _patternColor = new ExcelColor(_styles, _ChangedEvent, _positionID, _address, eStyleClass.FillPatternColor, this);
-                    if (_gradient != null)
+                    this._patternColor = new ExcelColor(this._styles, this._ChangedEvent, this._positionID, this._address, eStyleClass.FillPatternColor, this);
+                    if (this._gradient != null)
                     {
                         this._gradient = null;
                     }
                 }
-                return _patternColor;
+                return this._patternColor;
             }
         }
         ExcelColor _backgroundColor = null;
@@ -84,15 +84,15 @@ namespace OfficeOpenXml.Style
         {
             get
             {
-                if (_backgroundColor == null)
+                if (this._backgroundColor == null)
                 {
-                    _backgroundColor = new ExcelColor(_styles, _ChangedEvent, _positionID, _address, eStyleClass.FillBackgroundColor, this);
-                    if (_gradient != null)
+                    this._backgroundColor = new ExcelColor(this._styles, this._ChangedEvent, this._positionID, this._address, eStyleClass.FillBackgroundColor, this);
+                    if (this._gradient != null)
                     {
                         this._gradient = null;
                     }
                 }
-                return _backgroundColor;
+                return this._backgroundColor;
                 
             }
         }
@@ -104,26 +104,26 @@ namespace OfficeOpenXml.Style
         {
             get
             {
-                if (_gradient == null)
-                {                    
-                    _gradient = new ExcelGradientFill(_styles, _ChangedEvent, _positionID, _address, Index);
-                    _backgroundColor = null;
-                    _patternColor = null;
+                if (this._gradient == null)
+                {
+                    this._gradient = new ExcelGradientFill(this._styles, this._ChangedEvent, this._positionID, this._address, this.Index);
+                    this._backgroundColor = null;
+                    this._patternColor = null;
                 }
-                return _gradient;
+                return this._gradient;
             }
         }
         internal override string Id
         {
             get
             {
-                if (_gradient == null)
+                if (this._gradient == null)
                 {
-                    return PatternType + PatternColor.Id + BackgroundColor.Id;
+                    return this.PatternType + this.PatternColor.Id + this.BackgroundColor.Id;
                 }
                 else
                 {
-                    return _gradient.Id;
+                    return this._gradient.Id;
                 }
             }
         }
@@ -134,8 +134,8 @@ namespace OfficeOpenXml.Style
         /// <param name="fillStyle">The fillstyle. Default Solid</param>
         public void SetBackground(Color color, ExcelFillStyle fillStyle=ExcelFillStyle.Solid)
         {
-            PatternType = fillStyle;
-            BackgroundColor.SetColor(color);
+            this.PatternType = fillStyle;
+            this.BackgroundColor.SetColor(color);
         }
         /// <summary>
         /// Set the background to a specific color and fillstyle
@@ -144,8 +144,8 @@ namespace OfficeOpenXml.Style
         /// <param name="fillStyle">The fillstyle. Default Solid</param>
         public void SetBackground(ExcelIndexedColor color, ExcelFillStyle fillStyle = ExcelFillStyle.Solid)
         {
-            PatternType = fillStyle;
-            BackgroundColor.SetColor(color);
+            this.PatternType = fillStyle;
+            this.BackgroundColor.SetColor(color);
         }
         /// <summary>
         /// Set the background to a specific color and fillstyle
@@ -154,8 +154,8 @@ namespace OfficeOpenXml.Style
         /// <param name="fillStyle">The fillstyle. Default Solid</param>
         public void SetBackground(eThemeSchemeColor color, ExcelFillStyle fillStyle = ExcelFillStyle.Solid)
         {
-            PatternType = fillStyle;
-            BackgroundColor.SetColor(color);
+            this.PatternType = fillStyle;
+            this.BackgroundColor.SetColor(color);
         }
     }
 }

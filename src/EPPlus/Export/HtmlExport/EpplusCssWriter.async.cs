@@ -35,73 +35,73 @@ namespace OfficeOpenXml.Export.HtmlExport
     {
         internal async Task RenderAdditionalAndFontCssAsync(string tableClass)
         {
-            if (_cssSettings.IncludeSharedClasses == false)
+            if (this._cssSettings.IncludeSharedClasses == false)
             {
                 return;
             }
 
-            await WriteClassAsync($"table.{tableClass}{{", _settings.Minify);
-            if (_cssSettings.IncludeNormalFont)
+            await this.WriteClassAsync($"table.{tableClass}{{", this._settings.Minify);
+            if (this._cssSettings.IncludeNormalFont)
             {
-                ExcelNamedStyleXml? ns = _ranges.First().Worksheet.Workbook.Styles.GetNormalStyle();
+                ExcelNamedStyleXml? ns = this._ranges.First().Worksheet.Workbook.Styles.GetNormalStyle();
                 if (ns != null)
                 {
-                    await WriteCssItemAsync($"font-family:{ns.Style.Font.Name};", _settings.Minify);
-                    await WriteCssItemAsync($"font-size:{ns.Style.Font.Size.ToString("g", CultureInfo.InvariantCulture)}pt;", _settings.Minify);
+                    await this.WriteCssItemAsync($"font-family:{ns.Style.Font.Name};", this._settings.Minify);
+                    await this.WriteCssItemAsync($"font-size:{ns.Style.Font.Size.ToString("g", CultureInfo.InvariantCulture)}pt;", this._settings.Minify);
                 }
             }
-            foreach (KeyValuePair<string, string> item in _cssSettings.AdditionalCssElements)
+            foreach (KeyValuePair<string, string> item in this._cssSettings.AdditionalCssElements)
             {
-                await WriteCssItemAsync($"{item.Key}:{item.Value};", _settings.Minify);
+                await this.WriteCssItemAsync($"{item.Key}:{item.Value};", this._settings.Minify);
             }
-            await WriteClassEndAsync(_settings.Minify);
+            await this.WriteClassEndAsync(this._settings.Minify);
 
             //Class for hidden rows.
-            await WriteClassAsync($".{_settings.StyleClassPrefix}hidden {{", _settings.Minify);
-            await WriteCssItemAsync($"display:none;", _settings.Minify);
-            await WriteClassEndAsync(_settings.Minify);
+            await this.WriteClassAsync($".{this._settings.StyleClassPrefix}hidden {{", this._settings.Minify);
+            await this.WriteCssItemAsync($"display:none;", this._settings.Minify);
+            await this.WriteClassEndAsync(this._settings.Minify);
 
-            await WriteClassAsync($".{_settings.StyleClassPrefix}al {{", _settings.Minify);
-            await WriteCssItemAsync($"text-align:left;", _settings.Minify);
-            await WriteClassEndAsync(_settings.Minify);
-            await WriteClassAsync($".{_settings.StyleClassPrefix}ar {{", _settings.Minify);
-            await WriteCssItemAsync($"text-align:right;", _settings.Minify);
-            await WriteClassEndAsync(_settings.Minify);
+            await this.WriteClassAsync($".{this._settings.StyleClassPrefix}al {{", this._settings.Minify);
+            await this.WriteCssItemAsync($"text-align:left;", this._settings.Minify);
+            await this.WriteClassEndAsync(this._settings.Minify);
+            await this.WriteClassAsync($".{this._settings.StyleClassPrefix}ar {{", this._settings.Minify);
+            await this.WriteCssItemAsync($"text-align:right;", this._settings.Minify);
+            await this.WriteClassEndAsync(this._settings.Minify);
 
-            List<ExcelWorksheet>? worksheets = _ranges.Select(x => x.Worksheet).Distinct().ToList();
+            List<ExcelWorksheet>? worksheets = this._ranges.Select(x => x.Worksheet).Distinct().ToList();
             foreach (ExcelWorksheet? ws in worksheets)
             {
-                string? clsName = HtmlExportTableUtil.GetWorksheetClassName(_settings.StyleClassPrefix, "dcw", ws, worksheets.Count > 1);
-                await WriteClassAsync($".{clsName} {{", _settings.Minify);
-                await WriteCssItemAsync($"width:{ExcelColumn.ColumnWidthToPixels(Convert.ToDecimal(ws.DefaultColWidth), ws.Workbook.MaxFontWidth)}px;", _settings.Minify);
-                await WriteClassEndAsync(_settings.Minify);
+                string? clsName = HtmlExportTableUtil.GetWorksheetClassName(this._settings.StyleClassPrefix, "dcw", ws, worksheets.Count > 1);
+                await this.WriteClassAsync($".{clsName} {{", this._settings.Minify);
+                await this.WriteCssItemAsync($"width:{ExcelColumn.ColumnWidthToPixels(Convert.ToDecimal(ws.DefaultColWidth), ws.Workbook.MaxFontWidth)}px;", this._settings.Minify);
+                await this.WriteClassEndAsync(this._settings.Minify);
 
-                clsName = HtmlExportTableUtil.GetWorksheetClassName(_settings.StyleClassPrefix, "drh", ws, worksheets.Count > 1);
-                await WriteClassAsync($".{clsName} {{", _settings.Minify);
-                await WriteCssItemAsync($"height:{(int)(ws.DefaultRowHeight / 0.75)}px;", _settings.Minify);
-                await WriteClassEndAsync(_settings.Minify);
+                clsName = HtmlExportTableUtil.GetWorksheetClassName(this._settings.StyleClassPrefix, "drh", ws, worksheets.Count > 1);
+                await this.WriteClassAsync($".{clsName} {{", this._settings.Minify);
+                await this.WriteCssItemAsync($"height:{(int)(ws.DefaultRowHeight / 0.75)}px;", this._settings.Minify);
+                await this.WriteClassEndAsync(this._settings.Minify);
             }
 
-            if (_settings.Pictures.Include != ePictureInclude.Exclude && _settings.Pictures.CssExclude.Alignment == false)
+            if (this._settings.Pictures.Include != ePictureInclude.Exclude && this._settings.Pictures.CssExclude.Alignment == false)
             {
-                await WriteClassAsync($"td.{_settings.StyleClassPrefix}image-cell {{", _settings.Minify);
-                if (_settings.Pictures.AddMarginTop)
+                await this.WriteClassAsync($"td.{this._settings.StyleClassPrefix}image-cell {{", this._settings.Minify);
+                if (this._settings.Pictures.AddMarginTop)
                 {
-                    await WriteCssItemAsync($"vertical-align:top;", _settings.Minify);
+                    await this.WriteCssItemAsync($"vertical-align:top;", this._settings.Minify);
                 }
                 else
                 {
-                    await WriteCssItemAsync($"vertical-align:middle;", _settings.Minify);
+                    await this.WriteCssItemAsync($"vertical-align:middle;", this._settings.Minify);
                 }
-                if (_settings.Pictures.AddMarginTop)
+                if (this._settings.Pictures.AddMarginTop)
                 {
-                    await WriteCssItemAsync($"text-align:left;", _settings.Minify);
+                    await this.WriteCssItemAsync($"text-align:left;", this._settings.Minify);
                 }
                 else
                 {
-                    await WriteCssItemAsync($"text-align:center;", _settings.Minify);
+                    await this.WriteCssItemAsync($"text-align:center;", this._settings.Minify);
                 }
-                await WriteClassEndAsync(_settings.Minify);
+                await this.WriteClassEndAsync(this._settings.Minify);
             }
         }
         internal async Task AddPictureToCssAsync(HtmlImage p)
@@ -125,33 +125,33 @@ namespace OfficeOpenXml.Export.HtmlExport
             }
 
             IPictureContainer? pc = (IPictureContainer)p.Picture;
-            if (_images.Contains(pc.ImageHash) == false)
+            if (this._images.Contains(pc.ImageHash) == false)
             {
                 string imageFileName = HtmlExportImageUtil.GetPictureName(p);
-                await WriteClassAsync($"img.{_settings.StyleClassPrefix}image-{imageFileName}{{", _settings.Minify);
-                await WriteCssItemAsync($"content:url('data:{GetContentType(type.Value)};base64,{encodedImage}');", _settings.Minify);
-                if (_settings.Pictures.Position != ePicturePosition.DontSet)
+                await this.WriteClassAsync($"img.{this._settings.StyleClassPrefix}image-{imageFileName}{{", this._settings.Minify);
+                await this.WriteCssItemAsync($"content:url('data:{GetContentType(type.Value)};base64,{encodedImage}');", this._settings.Minify);
+                if (this._settings.Pictures.Position != ePicturePosition.DontSet)
                 {
-                    await WriteCssItemAsync($"position:{_settings.Pictures.Position.ToString().ToLower()};", _settings.Minify);
+                    await this.WriteCssItemAsync($"position:{this._settings.Pictures.Position.ToString().ToLower()};", this._settings.Minify);
                 }
 
-                if (p.FromColumnOff != 0 && _settings.Pictures.AddMarginLeft)
+                if (p.FromColumnOff != 0 && this._settings.Pictures.AddMarginLeft)
                 {
-                    int leftOffset = p.FromColumnOff / ExcelPicture.EMU_PER_PIXEL;
-                    await WriteCssItemAsync($"margin-left:{leftOffset}px;", _settings.Minify);
+                    int leftOffset = p.FromColumnOff / ExcelDrawing.EMU_PER_PIXEL;
+                    await this.WriteCssItemAsync($"margin-left:{leftOffset}px;", this._settings.Minify);
                 }
 
-                if (p.FromRowOff != 0 && _settings.Pictures.AddMarginTop)
+                if (p.FromRowOff != 0 && this._settings.Pictures.AddMarginTop)
                 {
-                    int topOffset = p.FromRowOff / ExcelPicture.EMU_PER_PIXEL;
-                    await WriteCssItemAsync($"margin-top:{topOffset}px;", _settings.Minify);
+                    int topOffset = p.FromRowOff / ExcelDrawing.EMU_PER_PIXEL;
+                    await this.WriteCssItemAsync($"margin-top:{topOffset}px;", this._settings.Minify);
                 }
 
 
-                await WriteClassEndAsync(_settings.Minify);
-                _images.Add(pc.ImageHash);
+                await this.WriteClassEndAsync(this._settings.Minify);
+                this._images.Add(pc.ImageHash);
             }
-            await AddPicturePropertiesToCssAsync(p);
+            await this.AddPicturePropertiesToCssAsync(p);
         }
 
         private async Task AddPicturePropertiesToCssAsync(HtmlImage image)
@@ -160,25 +160,25 @@ namespace OfficeOpenXml.Export.HtmlExport
             double width = image.Picture.GetPixelWidth();
             double height = image.Picture.GetPixelHeight();
 
-            await WriteClassAsync($"img.{_settings.StyleClassPrefix}image-prop-{imageName}{{", _settings.Minify);
-            if (_settings.Pictures.KeepOriginalSize == false)
+            await this.WriteClassAsync($"img.{this._settings.StyleClassPrefix}image-prop-{imageName}{{", this._settings.Minify);
+            if (this._settings.Pictures.KeepOriginalSize == false)
             {
                 if (width != image.Picture.Image.Bounds.Width)
                 {
-                    await WriteCssItemAsync($"max-width:{width:F0}px;", _settings.Minify);
+                    await this.WriteCssItemAsync($"max-width:{width:F0}px;", this._settings.Minify);
                 }
                 if (height != image.Picture.Image.Bounds.Height)
                 {
-                    await WriteCssItemAsync($"max-height:{height:F0}px;", _settings.Minify);
+                    await this.WriteCssItemAsync($"max-height:{height:F0}px;", this._settings.Minify);
                 }
             }
 
-            if (image.Picture.Border.LineStyle != null && _settings.Pictures.CssExclude.Border==false)
+            if (image.Picture.Border.LineStyle != null && this._settings.Pictures.CssExclude.Border==false)
             {
                 string? border = GetDrawingBorder(image.Picture);
-                await WriteCssItemAsync($"border:{border};", _settings.Minify);
+                await this.WriteCssItemAsync($"border:{border};", this._settings.Minify);
             }
-            await WriteClassEndAsync(_settings.Minify);
+            await this.WriteClassEndAsync(this._settings.Minify);
         }
 
         internal async Task AddToCssAsync(ExcelStyles styles, int styleId, string styleClassPrefix, string cellStyleClassName)
@@ -186,25 +186,25 @@ namespace OfficeOpenXml.Export.HtmlExport
             ExcelXfs? xfs = styles.CellXfs[styleId];
             if (HasStyle(xfs))
             {
-                if (IsAddedToCache(xfs, out int id)== false || _addedToCss.Contains(id) == false)
+                if (this.IsAddedToCache(xfs, out int id)== false || this._addedToCss.Contains(id) == false)
                 {
-                    _addedToCss.Add(id);
-                    await WriteClassAsync($".{styleClassPrefix}{cellStyleClassName}{id}{{", _settings.Minify);
+                    this._addedToCss.Add(id);
+                    await this.WriteClassAsync($".{styleClassPrefix}{cellStyleClassName}{id}{{", this._settings.Minify);
                     if (xfs.FillId > 0)
                     {
-                        await WriteFillStylesAsync(xfs.Fill);
+                        await this.WriteFillStylesAsync(xfs.Fill);
                     }
                     if (xfs.FontId > 0)
                     {
                         ExcelNamedStyleXml? ns = styles.GetNormalStyle();
-                        await WriteFontStylesAsync(xfs.Font, ns.Style.Font);
+                        await this.WriteFontStylesAsync(xfs.Font, ns.Style.Font);
                     }
                     if (xfs.BorderId > 0)
                     {
-                        await WriteBorderStylesAsync(xfs.Border.Top, xfs.Border.Bottom, xfs.Border.Left, xfs.Border.Right);
+                        await this.WriteBorderStylesAsync(xfs.Border.Top, xfs.Border.Bottom, xfs.Border.Left, xfs.Border.Right);
                     }
-                    await WriteStylesAsync(xfs);
-                    await WriteClassEndAsync(_settings.Minify);
+                    await this.WriteStylesAsync(xfs);
+                    await this.WriteClassEndAsync(this._settings.Minify);
                 }
             }
         }
@@ -216,98 +216,98 @@ namespace OfficeOpenXml.Export.HtmlExport
             ExcelXfs? rXfs = styles.CellXfs[rightStyleId];
             if (HasStyle(xfs) || bXfs.BorderId > 0 || rXfs.BorderId > 0)
             {
-                if (IsAddedToCache(xfs, out int id, bottomStyleId, rightStyleId) == false || _addedToCss.Contains(id) == false)
+                if (this.IsAddedToCache(xfs, out int id, bottomStyleId, rightStyleId) == false || this._addedToCss.Contains(id) == false)
                 {
-                    _addedToCss.Add(id);
-                    await WriteClassAsync($".{styleClassPrefix}{cellStyleClassName}{id}{{", _settings.Minify);
+                    this._addedToCss.Add(id);
+                    await this.WriteClassAsync($".{styleClassPrefix}{cellStyleClassName}{id}{{", this._settings.Minify);
                     if (xfs.FillId > 0)
                     {
-                        WriteFillStyles(xfs.Fill);
+                        this.WriteFillStyles(xfs.Fill);
                     }
                     if (xfs.FontId > 0)
                     {
                         ExcelNamedStyleXml? ns = styles.GetNormalStyle();
-                        await WriteFontStylesAsync(xfs.Font, ns.Style.Font);
+                        await this.WriteFontStylesAsync(xfs.Font, ns.Style.Font);
                     }
                     if (xfs.BorderId > 0 || bXfs.BorderId > 0 || rXfs.BorderId > 0)
                     {
-                        await WriteBorderStylesAsync(xfs.Border.Top, bXfs.Border.Bottom, xfs.Border.Left, rXfs.Border.Right);
+                        await this.WriteBorderStylesAsync(xfs.Border.Top, bXfs.Border.Bottom, xfs.Border.Left, rXfs.Border.Right);
                     }
-                    await WriteStylesAsync(xfs);
-                    await WriteClassEndAsync(_settings.Minify);
+                    await this.WriteStylesAsync(xfs);
+                    await this.WriteClassEndAsync(this._settings.Minify);
                 }
             }
         }
 
         private async Task WriteStylesAsync (ExcelXfs xfs)
         {
-            if (_cssExclude.WrapText == false)
+            if (this._cssExclude.WrapText == false)
             {
                 if (xfs.WrapText)
                 {
-                    await WriteCssItemAsync("white-space: break-spaces;", _settings.Minify);
+                    await this.WriteCssItemAsync("white-space: break-spaces;", this._settings.Minify);
                 }
                 else
                 {
-                    await WriteCssItemAsync("white-space: nowrap;", _settings.Minify);
+                    await this.WriteCssItemAsync("white-space: nowrap;", this._settings.Minify);
                 }
             }
 
-            if (xfs.HorizontalAlignment != ExcelHorizontalAlignment.General && _cssExclude.HorizontalAlignment == false)
+            if (xfs.HorizontalAlignment != ExcelHorizontalAlignment.General && this._cssExclude.HorizontalAlignment == false)
             {
                 string? hAlign = GetHorizontalAlignment(xfs);
-                await WriteCssItemAsync($"text-align:{hAlign};", _settings.Minify);
+                await this.WriteCssItemAsync($"text-align:{hAlign};", this._settings.Minify);
             }
 
-            if (xfs.VerticalAlignment != ExcelVerticalAlignment.Bottom && _cssExclude.VerticalAlignment == false)
+            if (xfs.VerticalAlignment != ExcelVerticalAlignment.Bottom && this._cssExclude.VerticalAlignment == false)
             {
                 string? vAlign = GetVerticalAlignment(xfs);
-                await WriteCssItemAsync($"vertical-align:{vAlign};", _settings.Minify);
+                await this.WriteCssItemAsync($"vertical-align:{vAlign};", this._settings.Minify);
             }
-            if (xfs.TextRotation != 0 && _cssExclude.TextRotation == false)
+            if (xfs.TextRotation != 0 && this._cssExclude.TextRotation == false)
             {
                 if (xfs.TextRotation == 255)
                 {
-                    await WriteCssItemAsync($"writing-mode:vertical-lr;;", _settings.Minify);
-                    await WriteCssItemAsync($"text-orientation:upright;", _settings.Minify);
+                    await this.WriteCssItemAsync($"writing-mode:vertical-lr;;", this._settings.Minify);
+                    await this.WriteCssItemAsync($"text-orientation:upright;", this._settings.Minify);
                 }
                 else
                 {
                     if (xfs.TextRotation > 90)
                     {
-                        await WriteCssItemAsync($"transform:rotate({xfs.TextRotation - 90}deg);", _settings.Minify);
+                        await this.WriteCssItemAsync($"transform:rotate({xfs.TextRotation - 90}deg);", this._settings.Minify);
                     }
                     else
                     {
-                        await WriteCssItemAsync($"transform:rotate({360 - xfs.TextRotation}deg);", _settings.Minify);
+                        await this.WriteCssItemAsync($"transform:rotate({360 - xfs.TextRotation}deg);", this._settings.Minify);
                     }
                 }
             }
 
-            if (xfs.Indent > 0 && _cssExclude.Indent == false)
+            if (xfs.Indent > 0 && this._cssExclude.Indent == false)
             {
-                await WriteCssItemAsync($"padding-left:{xfs.Indent * _cssSettings.IndentValue}{_cssSettings.IndentUnit};", _settings.Minify);
+                await this.WriteCssItemAsync($"padding-left:{xfs.Indent * this._cssSettings.IndentValue}{this._cssSettings.IndentUnit};", this._settings.Minify);
             }
         }
 
         private async Task WriteBorderStylesAsync(ExcelBorderItemXml top, ExcelBorderItemXml bottom, ExcelBorderItemXml left, ExcelBorderItemXml right)
         {
-            if (EnumUtil.HasNotFlag(_borderExclude, eBorderExclude.Top))
+            if (EnumUtil.HasNotFlag(this._borderExclude, eBorderExclude.Top))
             {
                 await this.WriteBorderItemAsync(top, "top");
             }
 
-            if (EnumUtil.HasNotFlag(_borderExclude, eBorderExclude.Bottom))
+            if (EnumUtil.HasNotFlag(this._borderExclude, eBorderExclude.Bottom))
             {
                 await this.WriteBorderItemAsync(bottom, "bottom");
             }
 
-            if (EnumUtil.HasNotFlag(_borderExclude, eBorderExclude.Left))
+            if (EnumUtil.HasNotFlag(this._borderExclude, eBorderExclude.Left))
             {
                 await this.WriteBorderItemAsync(left, "left");
             }
 
-            if (EnumUtil.HasNotFlag(_borderExclude, eBorderExclude.Right))
+            if (EnumUtil.HasNotFlag(this._borderExclude, eBorderExclude.Right))
             {
                 await this.WriteBorderItemAsync(right, "right");
             }
@@ -325,50 +325,50 @@ namespace OfficeOpenXml.Export.HtmlExport
                 sb.Append(GetBorderItemLine(bi.Style, suffix));
                 if (bi.Color!=null && bi.Color.Exists)
                 {
-                    sb.Append($" {GetColor(bi.Color)}");
+                    sb.Append($" {this.GetColor(bi.Color)}");
                 }
                 sb.Append(";");
 
-                await WriteCssItemAsync(sb.ToString(), _settings.Minify);
+                await this.WriteCssItemAsync(sb.ToString(), this._settings.Minify);
             }
         }
 
         private async Task WriteFontStylesAsync(ExcelFontXml f, ExcelFont nf)
         {
-            if (string.IsNullOrEmpty(f.Name) == false && EnumUtil.HasNotFlag(_fontExclude, eFontExclude.Name) && f.Name.Equals(nf.Name) == false)
+            if (string.IsNullOrEmpty(f.Name) == false && EnumUtil.HasNotFlag(this._fontExclude, eFontExclude.Name) && f.Name.Equals(nf.Name) == false)
             {
-                await WriteCssItemAsync($"font-family:{f.Name};", _settings.Minify);
+                await this.WriteCssItemAsync($"font-family:{f.Name};", this._settings.Minify);
             }
-            if (f.Size > 0 && EnumUtil.HasNotFlag(_fontExclude, eFontExclude.Size) && f.Size != nf.Size)
+            if (f.Size > 0 && EnumUtil.HasNotFlag(this._fontExclude, eFontExclude.Size) && f.Size != nf.Size)
             {
-                await WriteCssItemAsync($"font-size:{f.Size.ToString("g", CultureInfo.InvariantCulture)}pt;", _settings.Minify);
+                await this.WriteCssItemAsync($"font-size:{f.Size.ToString("g", CultureInfo.InvariantCulture)}pt;", this._settings.Minify);
             }
-            if (f.Color != null && f.Color.Exists && EnumUtil.HasNotFlag(_fontExclude, eFontExclude.Color) && AreColorEqual(f.Color, nf.Color) == false)
+            if (f.Color != null && f.Color.Exists && EnumUtil.HasNotFlag(this._fontExclude, eFontExclude.Color) && AreColorEqual(f.Color, nf.Color) == false)
             {
-                await WriteCssItemAsync($"color:{GetColor(f.Color)};", _settings.Minify);
+                await this.WriteCssItemAsync($"color:{this.GetColor(f.Color)};", this._settings.Minify);
             }
-            if (f.Bold && EnumUtil.HasNotFlag(_fontExclude, eFontExclude.Bold) && nf.Bold != f.Bold)
+            if (f.Bold && EnumUtil.HasNotFlag(this._fontExclude, eFontExclude.Bold) && nf.Bold != f.Bold)
             {
-                await WriteCssItemAsync("font-weight:bolder;", _settings.Minify);
+                await this.WriteCssItemAsync("font-weight:bolder;", this._settings.Minify);
             }
-            if (f.Italic && EnumUtil.HasNotFlag(_fontExclude, eFontExclude.Italic) && nf.Italic != f.Italic)
+            if (f.Italic && EnumUtil.HasNotFlag(this._fontExclude, eFontExclude.Italic) && nf.Italic != f.Italic)
             {
-                await WriteCssItemAsync("font-style:italic;", _settings.Minify);
+                await this.WriteCssItemAsync("font-style:italic;", this._settings.Minify);
             }
-            if (f.Strike && EnumUtil.HasNotFlag(_fontExclude, eFontExclude.Strike) && nf.Strike != f.Strike)
+            if (f.Strike && EnumUtil.HasNotFlag(this._fontExclude, eFontExclude.Strike) && nf.Strike != f.Strike)
             {
-                await WriteCssItemAsync("text-decoration:line-through solid;", _settings.Minify);
+                await this.WriteCssItemAsync("text-decoration:line-through solid;", this._settings.Minify);
             }
-            if (f.UnderLineType != ExcelUnderLineType.None && EnumUtil.HasNotFlag(_fontExclude, eFontExclude.Underline) && f.UnderLineType != nf.UnderLineType)
+            if (f.UnderLineType != ExcelUnderLineType.None && EnumUtil.HasNotFlag(this._fontExclude, eFontExclude.Underline) && f.UnderLineType != nf.UnderLineType)
             {
                 switch (f.UnderLineType)
                 {
                     case ExcelUnderLineType.Double:
                     case ExcelUnderLineType.DoubleAccounting:
-                        await WriteCssItemAsync("text-decoration:underline double;", _settings.Minify);
+                        await this.WriteCssItemAsync("text-decoration:underline double;", this._settings.Minify);
                         break;
                     default:
-                        await WriteCssItemAsync("text-decoration:underline solid;", _settings.Minify);
+                        await this.WriteCssItemAsync("text-decoration:underline solid;", this._settings.Minify);
                         break;
                 }
             }
@@ -376,24 +376,24 @@ namespace OfficeOpenXml.Export.HtmlExport
 
         private async Task WriteFillStylesAsync(ExcelFillXml f)
         {
-            if (_cssExclude.Fill)
+            if (this._cssExclude.Fill)
             {
                 return;
             }
 
             if (f is ExcelGradientFillXml gf && gf.Type!=ExcelFillGradientType.None)
             {
-                await WriteGradientAsync(gf);
+                await this.WriteGradientAsync(gf);
             }
             else
             {
                 if (f.PatternType == ExcelFillStyle.Solid)
                 {
-                    await WriteCssItemAsync($"background-color:{GetColor(f.BackgroundColor)};", _settings.Minify);
+                    await this.WriteCssItemAsync($"background-color:{this.GetColor(f.BackgroundColor)};", this._settings.Minify);
                 }
                 else
                 {
-                    await WriteCssItemAsync($"{PatternFills.GetPatternSvg(f.PatternType, GetColor(f.BackgroundColor), GetColor(f.PatternColor))}", _settings.Minify);
+                    await this.WriteCssItemAsync($"{PatternFills.GetPatternSvg(f.PatternType, this.GetColor(f.BackgroundColor), this.GetColor(f.PatternColor))}", this._settings.Minify);
                 }
             }
         }
@@ -402,21 +402,21 @@ namespace OfficeOpenXml.Export.HtmlExport
         {
             if (gradient.Type == ExcelFillGradientType.Linear)
             {
-                await _writer.WriteAsync($"background: linear-gradient({(gradient.Degree + 90) % 360}deg");
+                await this._writer.WriteAsync($"background: linear-gradient({(gradient.Degree + 90) % 360}deg");
             }
             else
             {
-                await _writer.WriteAsync($"background:radial-gradient(ellipse {gradient.Right * 100}% {gradient.Bottom * 100}%");
+                await this._writer.WriteAsync($"background:radial-gradient(ellipse {gradient.Right * 100}% {gradient.Bottom * 100}%");
             }
 
-            await _writer.WriteAsync($",{GetColor(gradient.GradientColor1)} 0%");
-            await _writer.WriteAsync($",{GetColor(gradient.GradientColor2)} 100%");
+            await this._writer.WriteAsync($",{this.GetColor(gradient.GradientColor1)} 0%");
+            await this._writer.WriteAsync($",{this.GetColor(gradient.GradientColor2)} 100%");
 
-            await _writer.WriteAsync(");");
+            await this._writer.WriteAsync(");");
         }
         public async Task FlushStreamAsync()
         {
-            await _writer.FlushAsync();
+            await this._writer.FlushAsync();
         }
     }
 #endif

@@ -24,27 +24,27 @@ namespace OfficeOpenXml.Export.ToDataTable
 
         public DataTablePrimaryKey(ToDataTableOptions options)
         {
-            _options = options;
-            Initialize();
+            this._options = options;
+            this.Initialize();
         }
 
         private void Initialize()
         {
-            if(_options.PrimaryKeyNames.Any())
+            if(this._options.PrimaryKeyNames.Any())
             {
-                foreach(string? name in _options.PrimaryKeyNames)
+                foreach(string? name in this._options.PrimaryKeyNames)
                 {
-                    AddPrimaryKeyName(name);
+                    this.AddPrimaryKeyName(name);
                 }
             }
-            else if(_options.PrimaryKeyIndexes.Any())
+            else if(this._options.PrimaryKeyIndexes.Any())
             {
-                foreach(int ix in _options.PrimaryKeyIndexes)
+                foreach(int ix in this._options.PrimaryKeyIndexes)
                 {
                     try
                     {
-                        DataColumnMapping? mapping = _options.Mappings.GetByRangeIndex(ix);
-                        AddPrimaryKeyName(mapping.DataColumnName);
+                        DataColumnMapping? mapping = this._options.Mappings.GetByRangeIndex(ix);
+                        this.AddPrimaryKeyName(mapping.DataColumnName);
                     }
                     catch(ArgumentOutOfRangeException e)
                     {
@@ -56,24 +56,25 @@ namespace OfficeOpenXml.Export.ToDataTable
 
         private void AddPrimaryKeyName(string name)
         {
-            if (_keyNames.Contains(name))
+            if (this._keyNames.Contains(name))
             {
                 throw new InvalidOperationException("Duplicate primary key name: " + name);
             }
-            if (!_options.Mappings.Exists(x => x.DataColumnName == name))
+            if (!this._options.Mappings.Exists(x => x.DataColumnName == name))
             {
                 throw new InvalidOperationException("Invalid primary key name, no corresponding DataColumn: " + name);
             }
-            _keyNames.Add(name);
+
+            this._keyNames.Add(name);
         }
 
-        internal IEnumerable<string> KeyNames => _keyNames;
+        internal IEnumerable<string> KeyNames => this._keyNames;
 
-        internal bool HasKeys => _keyNames.Any();
+        internal bool HasKeys => this._keyNames.Any();
 
         internal bool ContainsKey(string key)
         {
-            return _keyNames.Contains(key);
+            return this._keyNames.Contains(key);
         }
     }
 }

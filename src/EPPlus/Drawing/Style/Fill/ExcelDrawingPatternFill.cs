@@ -28,8 +28,8 @@ namespace OfficeOpenXml.Drawing.Style.Fill
         string[] _schemaNodeOrder;
         internal ExcelDrawingPatternFill(XmlNamespaceManager nameSpaceManager, XmlNode topNode, string fillPath, string[] schemaNodeOrder, Action initXml) : base(nameSpaceManager, topNode, fillPath, initXml)
         {
-            _schemaNodeOrder = XmlHelper.CopyToSchemaNodeOrder(schemaNodeOrder, new string[] { "fgClr", "bgClr" });
-            GetXml();
+            this._schemaNodeOrder = XmlHelper.CopyToSchemaNodeOrder(schemaNodeOrder, new string[] { "fgClr", "bgClr" });
+            this.GetXml();
         }
         /// <summary>
         /// The fillstyle, always PatternFill
@@ -49,11 +49,11 @@ namespace OfficeOpenXml.Drawing.Style.Fill
         {
             get
             {
-                return _pattern;
+                return this._pattern;
             }
             set
             {
-                _pattern = value;
+                this._pattern = value;
             }
         }
         ExcelDrawingColorManager _fgColor = null;
@@ -64,11 +64,11 @@ namespace OfficeOpenXml.Drawing.Style.Fill
         {
             get
             {
-                if (_fgColor == null)
+                if (this._fgColor == null)
                 {
-                    _fgColor = new ExcelDrawingColorManager(_nsm, _topNode, "a:fgClr", _schemaNodeOrder, _initXml);
+                    this._fgColor = new ExcelDrawingColorManager(this._nsm, this._topNode, "a:fgClr", this._schemaNodeOrder, this._initXml);
                 }
-                return _fgColor;
+                return this._fgColor;
             }
         }
         ExcelDrawingColorManager _bgColor = null;
@@ -79,11 +79,11 @@ namespace OfficeOpenXml.Drawing.Style.Fill
         {
             get
             {
-                if(_bgColor == null)
+                if(this._bgColor == null)
                 {
-                    _bgColor = new ExcelDrawingColorManager(_nsm, _topNode, "a:bgClr", _schemaNodeOrder, _initXml);
+                    this._bgColor = new ExcelDrawingColorManager(this._nsm, this._topNode, "a:bgClr", this._schemaNodeOrder, this._initXml);
                 }
-                return _bgColor;
+                return this._bgColor;
             }
         }
 
@@ -98,38 +98,39 @@ namespace OfficeOpenXml.Drawing.Style.Fill
 
         internal override void SetXml(XmlNamespaceManager nsm, XmlNode node)
         {
-            _initXml?.Invoke();
-            if (_xml == null)
+            this._initXml?.Invoke();
+            if (this._xml == null)
             {
-                if(string.IsNullOrEmpty(_fillPath))
+                if(string.IsNullOrEmpty(this._fillPath))
                 {
-                    InitXml(nsm, node,"");
+                    this.InitXml(nsm, node,"");
                 }
                 else
                 {
-                    CreateXmlHelper();
+                    this.CreateXmlHelper();
                 }
             }
-            _xml.SetXmlNodeString("@prst", PatternType.ToEnumString());
-            XmlNode? fgNode=_xml.CreateNode("a:fgClr");
+
+            this._xml.SetXmlNodeString("@prst", this.PatternType.ToEnumString());
+            XmlNode? fgNode= this._xml.CreateNode("a:fgClr");
             ExcelDrawingThemeColorManager.SetXml(nsm, fgNode);
 
-            XmlNode? bgNode = _xml.CreateNode("a:bgClr");
+            XmlNode? bgNode = this._xml.CreateNode("a:bgClr");
             ExcelDrawingThemeColorManager.SetXml(nsm, bgNode);
         }
         internal override void GetXml()
         {
-            PatternType = _xml.GetXmlNodeString("@prst").ToEnum(eFillPatternStyle.Pct5);
+            this.PatternType = this._xml.GetXmlNodeString("@prst").ToEnum(eFillPatternStyle.Pct5);
         }
 
         internal override void UpdateXml()
         {
-            if (_xml == null)
+            if (this._xml == null)
             {
                 this.CreateXmlHelper();
             }
 
-            SetXml(_nsm, _xml.TopNode);
+            this.SetXml(this._nsm, this._xml.TopNode);
         }
     }
 }

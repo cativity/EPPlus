@@ -39,8 +39,8 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Engineering
                 return this.CreateResult(eErrorType.Num);
             }
 
-            int number = ArgToInt(arguments, 0);
-            int shiftAmount = ArgToInt(arguments, 1);
+            int number = this.ArgToInt(arguments, 0);
+            int shiftAmount = this.ArgToInt(arguments, 1);
             if (number < 0 || shiftAmount < 0)
             {
                 return this.CreateResult(eErrorType.Num);
@@ -51,7 +51,7 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Engineering
                 return this.CreateResult(eErrorType.Num);
             }
 
-            return CreateResult(number << shiftAmount, DataType.Integer);
+            return this.CreateResult(number << shiftAmount, DataType.Integer);
         }
     }
 }

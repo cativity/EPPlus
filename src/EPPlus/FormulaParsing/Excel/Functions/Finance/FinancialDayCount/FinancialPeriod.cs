@@ -20,8 +20,8 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Finance.FinancialDayCount
     {
         public FinancialPeriod(FinancialDay start, FinancialDay end)
         {
-            Start = start;
-            End = end;
+            this.Start = start;
+            this.End = end;
         }
         internal FinancialDay Start { get; }
 
@@ -29,7 +29,7 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Finance.FinancialDayCount
 
         public override string ToString()
         {
-            return $"{Start.ToString()} - {End.ToString()}";
+            return $"{this.Start.ToString()} - {this.End.ToString()}";
         }
     }
 }

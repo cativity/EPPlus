@@ -52,7 +52,7 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Math
             {
                 intNumber = intNumber >= 0 ? intNumber + 1 : intNumber - 1;
             }
-            return CreateResult(intNumber, DataType.Integer);
+            return this.CreateResult(intNumber, DataType.Integer);
         }
     }
 }

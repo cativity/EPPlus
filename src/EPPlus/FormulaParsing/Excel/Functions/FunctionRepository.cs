@@ -36,7 +36,7 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions
         /// </summary>
         public Dictionary<Type, FunctionCompiler> CustomCompilers
         {
-            get { return _customCompilers; }
+            get { return this._customCompilers; }
         }
 
         private FunctionRepository()
@@ -60,23 +60,23 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions
             foreach (string? key in module.Functions.Keys)
             {
                 string? lowerKey = key.ToLower(CultureInfo.InvariantCulture);
-                _functions[lowerKey] = module.Functions[key];
+                this._functions[lowerKey] = module.Functions[key];
             }
             foreach (Type? key in module.CustomCompilers.Keys)
             {
-                CustomCompilers[key] = module.CustomCompilers[key];
+                this.CustomCompilers[key] = module.CustomCompilers[key];
             }
         }
 
         public virtual ExcelFunction GetFunction(string name)
         {
-            if(!_functions.ContainsKey(name.ToLower(CultureInfo.InvariantCulture)))
+            if(!this._functions.ContainsKey(name.ToLower(CultureInfo.InvariantCulture)))
             {
                 //throw new InvalidOperationException("Non supported function: " + name);
                 //throw new ExcelErrorValueException("Non supported function: " + name, ExcelErrorValue.Create(eErrorType.Name));
                 return null;
             }
-            return _functions[name.ToLower(CultureInfo.InvariantCulture)];
+            return this._functions[name.ToLower(CultureInfo.InvariantCulture)];
         }
 
         /// <summary>
@@ -84,7 +84,7 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions
         /// </summary>
         public virtual void Clear()
         {
-            _functions.Clear();
+            this._functions.Clear();
         }
 
         /// <summary>
@@ -94,7 +94,7 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions
         /// <returns></returns>
         public bool IsFunctionName(string name)
         {
-            return _functions.ContainsKey(name.ToLower(CultureInfo.InvariantCulture));
+            return this._functions.ContainsKey(name.ToLower(CultureInfo.InvariantCulture));
         }
 
         /// <summary>
@@ -102,7 +102,7 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions
         /// </summary>
         public IEnumerable<string> FunctionNames
         {
-            get { return _functions.Keys; }
+            get { return this._functions.Keys; }
         }
 
         /// <summary>
@@ -115,11 +115,12 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions
             Require.That(functionName).Named("functionName").IsNotNullOrEmpty();
             Require.That(functionImpl).Named("functionImpl").IsNotNull();
             string? fName = functionName.ToLower(CultureInfo.InvariantCulture);
-            if (_functions.ContainsKey(fName))
+            if (this._functions.ContainsKey(fName))
             {
-                _functions.Remove(fName);
+                this._functions.Remove(fName);
             }
-            _functions[fName] = functionImpl;
+
+            this._functions[fName] = functionImpl;
         }
     }
 }

@@ -35,11 +35,11 @@ namespace OfficeOpenXml.Encryption
             using MemoryStream? ms = RecyclableMemory.GetStream();
             BinaryWriter bw = new BinaryWriter(ms);
 
-            bw.Write(SaltSize);
-            bw.Write(Salt);
-            bw.Write(EncryptedVerifier);
+            bw.Write(this.SaltSize);
+            bw.Write(this.Salt);
+            bw.Write(this.EncryptedVerifier);
             bw.Write(0x14);                 //Sha1 is 20 bytes  (Encrypted is 32)
-            bw.Write(EncryptedVerifierHash);
+            bw.Write(this.EncryptedVerifierHash);
 
             bw.Flush();
             return ms.ToArray();

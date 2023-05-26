@@ -51,55 +51,55 @@ namespace OfficeOpenXml.Drawing.Style.Coloring
         internal protected string[] _schemaNodeOrder;
         internal ExcelDrawingThemeColorManager(XmlNamespaceManager nameSpaceManager, XmlNode topNode, string path, string[] schemaNodeOrder, Action initMethod = null)
         {
-            _nameSpaceManager = nameSpaceManager;
-            _topNode = topNode;
-            _path = path;
-            _initMethod = initMethod;
-            _pathNode = GetPathNode();
-            _schemaNodeOrder = schemaNodeOrder;
-            if (_pathNode == null)
+            this._nameSpaceManager = nameSpaceManager;
+            this._topNode = topNode;
+            this._path = path;
+            this._initMethod = initMethod;
+            this._pathNode = this.GetPathNode();
+            this._schemaNodeOrder = schemaNodeOrder;
+            if (this._pathNode == null)
             {
                 return;
             }
 
-            if (IsTopNodeColorNode(_topNode))
+            if (IsTopNodeColorNode(this._topNode))
             {
-                _colorNode = _pathNode;
+                this._colorNode = this._pathNode;
             }
             else
             {
-                _colorNode = _pathNode.FirstChild;
+                this._colorNode = this._pathNode.FirstChild;
             }
 
-            if (_colorNode == null)
+            if (this._colorNode == null)
             {
                 return;
             }
 
-            switch (_colorNode.LocalName)
+            switch (this._colorNode.LocalName)
             {
                 case "sysClr":
-                    ColorType = eDrawingColorType.System;
-                    SystemColor = new ExcelDrawingSystemColor(_nameSpaceManager, _pathNode.FirstChild);
+                    this.ColorType = eDrawingColorType.System;
+                    this.SystemColor = new ExcelDrawingSystemColor(this._nameSpaceManager, this._pathNode.FirstChild);
                     break;
                 case "scrgbClr":
-                    ColorType = eDrawingColorType.RgbPercentage;
-                    RgbPercentageColor = new ExcelDrawingRgbPercentageColor(_nameSpaceManager, _pathNode.FirstChild);
+                    this.ColorType = eDrawingColorType.RgbPercentage;
+                    this.RgbPercentageColor = new ExcelDrawingRgbPercentageColor(this._nameSpaceManager, this._pathNode.FirstChild);
                     break;
                 case "hslClr":
-                    ColorType = eDrawingColorType.Hsl;
-                    HslColor = new ExcelDrawingHslColor(_nameSpaceManager, _pathNode.FirstChild);
+                    this.ColorType = eDrawingColorType.Hsl;
+                    this.HslColor = new ExcelDrawingHslColor(this._nameSpaceManager, this._pathNode.FirstChild);
                     break;
                 case "prstClr":
-                    ColorType = eDrawingColorType.Preset;
-                    PresetColor = new ExcelDrawingPresetColor(_nameSpaceManager, _pathNode.FirstChild);
+                    this.ColorType = eDrawingColorType.Preset;
+                    this.PresetColor = new ExcelDrawingPresetColor(this._nameSpaceManager, this._pathNode.FirstChild);
                     break;
                 case "srgbClr":
-                    ColorType = eDrawingColorType.Rgb;
-                    RgbColor = new ExcelDrawingRgbColor(_nameSpaceManager, _pathNode.FirstChild);
+                    this.ColorType = eDrawingColorType.Rgb;
+                    this.RgbColor = new ExcelDrawingRgbColor(this._nameSpaceManager, this._pathNode.FirstChild);
                     break;
                 default:
-                    ColorType = eDrawingColorType.None;
+                    this.ColorType = eDrawingColorType.None;
                     break;
             }
         }
@@ -133,16 +133,16 @@ namespace OfficeOpenXml.Drawing.Style.Coloring
         {
             get
             {
-                if (ColorType == eDrawingColorType.None)
+                if (this.ColorType == eDrawingColorType.None)
                 {
                     return null;
                 }
 
-                if (_transforms == null)
+                if (this._transforms == null)
                 {
-                    _transforms = new ExcelColorTransformCollection(_nameSpaceManager, _colorNode);
+                    this._transforms = new ExcelColorTransformCollection(this._nameSpaceManager, this._colorNode);
                 }
-                return _transforms;
+                return this._transforms;
             }
         }
         /// <summary>
@@ -177,15 +177,16 @@ namespace OfficeOpenXml.Drawing.Style.Coloring
         /// <param name="setAlpha">Apply the alpha part of the Color to the <see cref="Transforms"/> collection</param>
         public void SetRgbColor(Color color, bool setAlpha=false)
         {
-            ColorType = eDrawingColorType.Rgb;
-            ResetColors(ExcelDrawingRgbColor.NodeName);
+            this.ColorType = eDrawingColorType.Rgb;
+            this.ResetColors(ExcelDrawingRgbColor.NodeName);
 
             if(setAlpha && color.A != 0xFF)
             {
-                Transforms.RemoveOfType(eColorTransformType.Alpha);
-                Transforms.AddAlpha((((double)color.A)+1)/256*100);
+                this.Transforms.RemoveOfType(eColorTransformType.Alpha);
+                this.Transforms.AddAlpha((((double)color.A)+1)/256*100);
             }
-            RgbColor = new ExcelDrawingRgbColor(_nameSpaceManager, _colorNode) { Color = color };
+
+            this.RgbColor = new ExcelDrawingRgbColor(this._nameSpaceManager, this._colorNode) { Color = color };
         }
         /// <summary>
         /// Sets a rgb precentage color
@@ -195,9 +196,9 @@ namespace OfficeOpenXml.Drawing.Style.Coloring
         /// <param name="bluePercentage">Bluepercentage</param>
         public void SetRgbPercentageColor(double redPercentage, double greenPercentage, double bluePercentage)
         {
-            ColorType = eDrawingColorType.RgbPercentage;
-            ResetColors(ExcelDrawingRgbPercentageColor.NodeName);
-            RgbPercentageColor = new ExcelDrawingRgbPercentageColor(_nameSpaceManager, _colorNode) { RedPercentage = redPercentage, GreenPercentage = greenPercentage, BluePercentage = bluePercentage };
+            this.ColorType = eDrawingColorType.RgbPercentage;
+            this.ResetColors(ExcelDrawingRgbPercentageColor.NodeName);
+            this.RgbPercentageColor = new ExcelDrawingRgbPercentageColor(this._nameSpaceManager, this._colorNode) { RedPercentage = redPercentage, GreenPercentage = greenPercentage, BluePercentage = bluePercentage };
         }
         /// <summary>
         /// Sets a hsl color
@@ -207,9 +208,9 @@ namespace OfficeOpenXml.Drawing.Style.Coloring
         /// <param name="luminance">The luminance percentage. From 0-100</param>
         public void SetHslColor(double hue, double saturation, double luminance)
         {
-            ColorType = eDrawingColorType.Hsl;
-            ResetColors(ExcelDrawingHslColor.NodeName);
-            HslColor = new ExcelDrawingHslColor(_nameSpaceManager, _colorNode) { Hue = hue, Saturation= saturation, Luminance = luminance };
+            this.ColorType = eDrawingColorType.Hsl;
+            this.ResetColors(ExcelDrawingHslColor.NodeName);
+            this.HslColor = new ExcelDrawingHslColor(this._nameSpaceManager, this._colorNode) { Hue = hue, Saturation= saturation, Luminance = luminance };
         }
         /// <summary>
         /// Sets a preset color.
@@ -218,9 +219,9 @@ namespace OfficeOpenXml.Drawing.Style.Coloring
         /// <param name="color">Color</param>
         public void SetPresetColor(Color color)
         {
-            ColorType = eDrawingColorType.Preset;
-            ResetColors(ExcelDrawingPresetColor.NodeName);
-            PresetColor = new ExcelDrawingPresetColor(_nameSpaceManager, _colorNode) { Color = ExcelDrawingPresetColor.GetPresetColor(color) };
+            this.ColorType = eDrawingColorType.Preset;
+            this.ResetColors(ExcelDrawingPresetColor.NodeName);
+            this.PresetColor = new ExcelDrawingPresetColor(this._nameSpaceManager, this._colorNode) { Color = ExcelDrawingPresetColor.GetPresetColor(color) };
         }
         /// <summary>
         /// Sets a preset color.
@@ -228,9 +229,9 @@ namespace OfficeOpenXml.Drawing.Style.Coloring
         /// <param name="presetColor">The color</param>
         public void SetPresetColor(ePresetColor presetColor)
         {
-            ColorType = eDrawingColorType.Preset;
-            ResetColors(ExcelDrawingPresetColor.NodeName);
-            PresetColor = new ExcelDrawingPresetColor(_nameSpaceManager, _colorNode) { Color = presetColor };
+            this.ColorType = eDrawingColorType.Preset;
+            this.ResetColors(ExcelDrawingPresetColor.NodeName);
+            this.PresetColor = new ExcelDrawingPresetColor(this._nameSpaceManager, this._colorNode) { Color = presetColor };
         }
         /// <summary>
         /// Sets a system color
@@ -238,9 +239,9 @@ namespace OfficeOpenXml.Drawing.Style.Coloring
         /// <param name="systemColor">The colors</param>
         public void SetSystemColor(eSystemColor systemColor)
         {
-            ColorType = eDrawingColorType.System;
-            ResetColors(ExcelDrawingSystemColor.NodeName);
-            SystemColor = new ExcelDrawingSystemColor(_nameSpaceManager, _colorNode) { Color = systemColor };
+            this.ColorType = eDrawingColorType.System;
+            this.ResetColors(ExcelDrawingSystemColor.NodeName);
+            this.SystemColor = new ExcelDrawingSystemColor(this._nameSpaceManager, this._colorNode) { Color = systemColor };
         }
         /// <summary>
         /// Reset the color objects
@@ -248,60 +249,60 @@ namespace OfficeOpenXml.Drawing.Style.Coloring
         /// <param name="newNodeName">The new color node name</param>
         internal protected virtual void ResetColors(string newNodeName)
         {
-            if(_colorNode==null)
+            if(this._colorNode==null)
             {
-                XmlHelper? xml = XmlHelperFactory.Create(_nameSpaceManager, _topNode);
-                xml.SchemaNodeOrder = _schemaNodeOrder;
-                string? colorPath = string.IsNullOrEmpty(_path) ? newNodeName : _path + "/" + newNodeName;
-                _colorNode = xml.CreateNode(colorPath);
-                _initMethod?.Invoke();
+                XmlHelper? xml = XmlHelperFactory.Create(this._nameSpaceManager, this._topNode);
+                xml.SchemaNodeOrder = this._schemaNodeOrder;
+                string? colorPath = string.IsNullOrEmpty(this._path) ? newNodeName : this._path + "/" + newNodeName;
+                this._colorNode = xml.CreateNode(colorPath);
+                this._initMethod?.Invoke();
             }
-            if (_colorNode.Name == newNodeName)
+            if (this._colorNode.Name == newNodeName)
             {
                 return;
             }
             else
             {
-                _transforms = null;
-                ChangeType(newNodeName);
+                this._transforms = null;
+                this.ChangeType(newNodeName);
             }
 
-            RgbColor = null;
-            RgbPercentageColor = null;
-            HslColor = null;
-            PresetColor = null;
-            SystemColor = null;
+            this.RgbColor = null;
+            this.RgbPercentageColor = null;
+            this.HslColor = null;
+            this.PresetColor = null;
+            this.SystemColor = null;
         }
 
         private void ChangeType(string type)
         {
-            if(_topNode==_colorNode)
+            if(this._topNode== this._colorNode)
             {
-                XmlHelper? xh = XmlHelperFactory.Create(_nameSpaceManager, _topNode);
-                xh.ReplaceElement(_colorNode, type);
+                XmlHelper? xh = XmlHelperFactory.Create(this._nameSpaceManager, this._topNode);
+                xh.ReplaceElement(this._colorNode, type);
             }
             else
             {
-                XmlNode? p = _colorNode.ParentNode;
+                XmlNode? p = this._colorNode.ParentNode;
                 p.InnerXml = $"<{type} />";
-                _colorNode = p.FirstChild;
+                this._colorNode = p.FirstChild;
             }
         }
         private XmlNode GetPathNode()
         {
-            if (_pathNode == null)
+            if (this._pathNode == null)
             {
-                if (string.IsNullOrEmpty(_path))
+                if (string.IsNullOrEmpty(this._path))
                 {
-                    _pathNode = _topNode;
+                    this._pathNode = this._topNode;
                 }
                 else
                 {
-                    _pathNode = _topNode.SelectSingleNode(_path, _nameSpaceManager);
+                    this._pathNode = this._topNode.SelectSingleNode(this._path, this._nameSpaceManager);
                 }
 
             }
-            return _pathNode;
+            return this._pathNode;
         }
 
     }

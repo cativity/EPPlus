@@ -235,7 +235,7 @@ namespace EPPlusTest.VBA
             module.Code = "Sub Main\r\nMsgbox(\"Test\")\r\nEnd Sub";
             package.Workbook.VbaProject.Signature.LegacySignature.CreateSignatureOnSave = false;
             package.Workbook.VbaProject.Signature.V3Signature.CreateSignatureOnSave = false;
-            package.Workbook.VbaProject.Signature.AgileSignature.HashAlgorithm = OfficeOpenXml.VBA.VbaSignatureHashAlgorithm.SHA256;
+            package.Workbook.VbaProject.Signature.AgileSignature.HashAlgorithm = VbaSignatureHashAlgorithm.SHA256;
             SaveWorkbook("SignedUnsignedWorkbook1.xlsm", package);
         }
         [TestMethod]

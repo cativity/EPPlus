@@ -54,9 +54,9 @@ namespace OfficeOpenXml.ConditionalFormatting
     {
         if (itemElementNode==null) //Set default values and create attributes if needed
         {
-            Bottom = true;
-            Percent = true;
-            Rank = 10;  // Last 10 percent
+            this.Bottom = true;
+            this.Percent = true;
+            this.Rank = 10;  // Last 10 percent
         }
     }
 

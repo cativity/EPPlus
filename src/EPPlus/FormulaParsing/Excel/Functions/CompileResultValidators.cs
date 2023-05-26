@@ -24,20 +24,20 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions
 
         private CompileResultValidator CreateOrGet(DataType dataType)
         {
-            if (_validators.ContainsKey(dataType))
+            if (this._validators.ContainsKey(dataType))
             {
-                return _validators[dataType];
+                return this._validators[dataType];
             }
             if (dataType == DataType.Decimal)
             {
-                return _validators[DataType.Decimal] = new DecimalCompileResultValidator();
+                return this._validators[DataType.Decimal] = new DecimalCompileResultValidator();
             }
             return CompileResultValidator.Empty;
         }
 
         public CompileResultValidator GetValidator(DataType dataType)
         {
-            return CreateOrGet(dataType);
+            return this.CreateOrGet(dataType);
         }
     }
 }

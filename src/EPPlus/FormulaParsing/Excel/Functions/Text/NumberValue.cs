@@ -37,23 +37,23 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Text
         {
             ValidateArguments(arguments, 1);
             string? arg = ArgToString(arguments, 0);
-            SetArgAndPercentage(arg);
-            if(!ValidateAndSetSeparators(arguments.ToArray()))
+            this.SetArgAndPercentage(arg);
+            if(!this.ValidateAndSetSeparators(arguments.ToArray()))
             {
-                return CreateResult(ExcelErrorValue.Values.Value, DataType.ExcelError);
+                return this.CreateResult(ExcelErrorValue.Values.Value, DataType.ExcelError);
             }
             CultureInfo? cultureInfo = new CultureInfo("en-US", true);
-            cultureInfo.NumberFormat.NumberDecimalSeparator = _decimalSeparator;
-            cultureInfo.NumberFormat.NumberGroupSeparator = _groupSeparator;
-            if(double.TryParse(_arg, NumberStyles.Any, cultureInfo, out double result))
+            cultureInfo.NumberFormat.NumberDecimalSeparator = this._decimalSeparator;
+            cultureInfo.NumberFormat.NumberGroupSeparator = this._groupSeparator;
+            if(double.TryParse(this._arg, NumberStyles.Any, cultureInfo, out double result))
             {
-                if(_nPercentage > 0)
+                if(this._nPercentage > 0)
                 {
-                    result /= System.Math.Pow(100, _nPercentage);
+                    result /= System.Math.Pow(100, this._nPercentage);
                 }
-                return CreateResult(result, DataType.Decimal);
+                return this.CreateResult(result, DataType.Decimal);
             }
-            return CreateResult(ExcelErrorValue.Values.Value, DataType.ExcelError);
+            return this.CreateResult(ExcelErrorValue.Values.Value, DataType.ExcelError);
         }
 
         private void SetArgAndPercentage(string arg)
@@ -61,18 +61,18 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Text
             int pIndex = arg.IndexOf("%", StringComparison.OrdinalIgnoreCase);
             if(pIndex > 0)
             {
-                _arg = arg.Substring(0, pIndex).Replace(" ", "");
+                this._arg = arg.Substring(0, pIndex).Replace(" ", "");
                 string? percentage = arg.Substring(pIndex, arg.Length - pIndex).Trim();
                 if (!Regex.IsMatch(percentage, "[%]+"))
                 {
                     throw new ArgumentException("Invalid format: " + arg);
                 }
 
-                _nPercentage = percentage.Length;
+                this._nPercentage = percentage.Length;
             }
             else
             {
-                _arg = arg;
+                this._arg = arg;
             }
         }
 
@@ -88,7 +88,8 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Text
             {
                 return false;
             }
-            _decimalSeparator = decimalSeparator;
+
+            this._decimalSeparator = decimalSeparator;
             if (arguments.Length > 2)
             {
                 string? groupSeparator = ArgToString(arguments, 2).Substring(0, 1);
@@ -96,7 +97,8 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Text
                 {
                     return false;
                 }
-                _groupSeparator = groupSeparator;
+
+                this._groupSeparator = groupSeparator;
             }
             return true;
         }

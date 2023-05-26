@@ -20,34 +20,36 @@ namespace OfficeOpenXml.FormulaParsing.ExpressionGraph
     public class ExpressionGraph
     {
         private List<Expression> _expressions = new List<Expression>();
-        public IEnumerable<Expression> Expressions { get { return _expressions; } }
+        public IEnumerable<Expression> Expressions { get { return this._expressions; } }
         public Expression Current { get; private set; }
 
         public Expression Add(Expression expression)
         {
-            _expressions.Add(expression);
-            if (Current != null)
+            this._expressions.Add(expression);
+            if (this.Current != null)
             {
-                Current.Next = expression;
-                expression.Prev = Current;
+                this.Current.Next = expression;
+                expression.Prev = this.Current;
             }
-            Current = expression;
+
+            this.Current = expression;
             return expression;
         }
 
         public void Reset()
         {
-            _expressions.Clear();
-            Current = null;
+            this._expressions.Clear();
+            this.Current = null;
         }
 
         public void Remove(Expression item)
         {
-            if (item == Current)
+            if (item == this.Current)
             {
-                Current = item.Prev ?? item.Next;
+                this.Current = item.Prev ?? item.Next;
             }
-            _expressions.Remove(item);
+
+            this._expressions.Remove(item);
         }
     }
 }

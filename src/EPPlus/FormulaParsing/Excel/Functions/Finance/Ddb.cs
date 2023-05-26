@@ -29,14 +29,14 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Finance
         public override CompileResult Execute(IEnumerable<FunctionArgument> arguments, ParsingContext context)
         {
             ValidateArguments(arguments, 4);
-            double cost = ArgToDecimal(arguments, 0);
-            double salvage = ArgToDecimal(arguments, 1);
-            double life = ArgToDecimal(arguments, 2);
-            double period = ArgToDecimal(arguments, 3);
+            double cost = this.ArgToDecimal(arguments, 0);
+            double salvage = this.ArgToDecimal(arguments, 1);
+            double life = this.ArgToDecimal(arguments, 2);
+            double period = this.ArgToDecimal(arguments, 3);
             double factor = 2d;
             if(arguments.Count() >= 5)
             {
-                factor = ArgToDecimal(arguments, 4);
+                factor = this.ArgToDecimal(arguments, 4);
             }
 
             if (cost < 0 || salvage < 0 || life <= 0 || period <= 0 || factor <= 0)
@@ -50,7 +50,7 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Finance
                 return this.CreateResult(result.ExcelErrorType);
             }
 
-            return CreateResult(result.Result, DataType.Decimal);
+            return this.CreateResult(result.Result, DataType.Decimal);
         }
     }
 }

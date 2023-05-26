@@ -27,28 +27,28 @@ namespace OfficeOpenXml.Drawing.Chart
         internal ExcelSurfaceChart(ExcelDrawings drawings, XmlNode node, eChartType? type, ExcelChart topChart, ExcelPivotTable PivotTableSource, XmlDocument chartXml, ExcelGroupShape parent = null) :
             base(drawings, node, type, topChart, PivotTableSource, chartXml, parent)
         {
-            Init();
+            this.Init();
         }
         internal ExcelSurfaceChart(ExcelDrawings drawings, XmlNode node, Uri uriChart, Packaging.ZipPackagePart part, XmlDocument chartXml, XmlNode chartNode, ExcelGroupShape parent = null) :
            base(drawings, node, uriChart, part, chartXml, chartNode, parent)
         {
-            Init();
+            this.Init();
         }
 
         internal ExcelSurfaceChart(ExcelChart topChart, XmlNode chartNode, ExcelGroupShape parent = null) : 
             base(topChart, chartNode, parent)
         {
-            Init();
+            this.Init();
         }
         private void Init()
         {
-            SetTypeProperties();
+            this.SetTypeProperties();
         }
         #endregion
         internal override void InitSeries(ExcelChart chart, XmlNamespaceManager ns, XmlNode node, bool isPivot, List<ExcelChartSerie> list = null)
         {
             base.InitSeries(chart, ns, node, isPivot, list);
-            Series.Init(chart, ns, node, isPivot, base.Series._list);
+            this.Series.Init(chart, ns, node, isPivot, base.Series._list);
         }
         const string WIREFRAME_PATH = "c:wireframe/@val";
         /// <summary>
@@ -58,41 +58,42 @@ namespace OfficeOpenXml.Drawing.Chart
         {
             get
             {
-                return _chartXmlHelper.GetXmlNodeBool(WIREFRAME_PATH);
+                return this._chartXmlHelper.GetXmlNodeBool(WIREFRAME_PATH);
             }
             set
             {
-                _chartXmlHelper.SetXmlNodeBool(WIREFRAME_PATH, value);
+                this._chartXmlHelper.SetXmlNodeBool(WIREFRAME_PATH, value);
             }
         }        
         internal void SetTypeProperties()
         {
-               if(ChartType==eChartType.SurfaceWireframe || ChartType==eChartType.SurfaceTopViewWireframe)
+               if(this.ChartType==eChartType.SurfaceWireframe || this.ChartType==eChartType.SurfaceTopViewWireframe)
                {
-                   Wireframe=true;
+                   this.Wireframe=true;
                }
                else 
                {
-                   Wireframe=false;
+                   this.Wireframe=false;
                }
 
-                if(ChartType==eChartType.SurfaceTopView || ChartType==eChartType.SurfaceTopViewWireframe)
+                if(this.ChartType==eChartType.SurfaceTopView || this.ChartType==eChartType.SurfaceTopViewWireframe)
                 {
-                   View3D.RotY = 0;
-                   View3D.RotX = 90;
+                    this.View3D.RotY = 0;
+                    this.View3D.RotX = 90;
                 }
                 else
                 {
-                   View3D.RotY = 20;
-                   View3D.RotX = 15;
+                    this.View3D.RotY = 20;
+                    this.View3D.RotX = 15;
                 }
-                View3D.RightAngleAxes = false;
-                View3D.Perspective = 0;
-                Axis[1].CrossBetween = eCrossBetween.MidCat;
+
+                this.View3D.RightAngleAxes = false;
+                this.View3D.Perspective = 0;
+                this.Axis[1].CrossBetween = eCrossBetween.MidCat;
         }
         internal override eChartType GetChartType(string name)
         {
-            if(Wireframe)
+            if(this.Wireframe)
             {
                 if (name == "surfaceChart")
                 {

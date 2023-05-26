@@ -40,7 +40,7 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Math
         public SumIf(ExpressionEvaluator evaluator)
         {
             Require.That(evaluator).Named("evaluator").IsNotNull();
-            _evaluator = evaluator;
+            this._evaluator = evaluator;
         }
 
         public override CompileResult Execute(IEnumerable<FunctionArgument> arguments, ParsingContext context)
@@ -54,7 +54,7 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Math
             if (argRange == null)
             {
                 object? val = arguments.ElementAt(0).Value;
-                if (_evaluator.Evaluate(val, criteria))
+                if (this._evaluator.Evaluate(val, criteria))
                 {
                     if (arguments.Count() > 2)
                     {
@@ -70,13 +70,13 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Math
             else if (arguments.Count() > 2)
             {
                 IRangeInfo? sumRange = ArgToRangeInfo(arguments, 2);
-                retVal = CalculateWithSumRange(argRange, criteria, sumRange, context);
+                retVal = this.CalculateWithSumRange(argRange, criteria, sumRange, context);
             }
             else
             {
-                retVal = CalculateSingleRange(argRange, criteria, context);
+                retVal = this.CalculateSingleRange(argRange, criteria, context);
             }
-            return CreateResult(retVal, DataType.Decimal);
+            return this.CreateResult(retVal, DataType.Decimal);
         }
 
         internal static IEnumerable<string> GetCriteria(FunctionArgument criteriaArg)
@@ -111,7 +111,7 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Math
             double retVal = 0d;
             foreach (ICellInfo? cell in range)
             {
-                if (_evaluator.Evaluate(cell.Value, criteria))
+                if (this._evaluator.Evaluate(cell.Value, criteria))
                 {
                     int rowOffset = cell.Row - range.Address._fromRow;
                     int columnOffset = cell.Column - range.Address._fromCol;
@@ -135,7 +135,7 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Math
             double retVal = 0d;
             foreach (ICellInfo? candidate in range)
             {
-                if (IsNumeric(candidate.Value) && _evaluator.Evaluate(candidate.Value, expressions) && IsNumeric(candidate.Value))
+                if (IsNumeric(candidate.Value) && this._evaluator.Evaluate(candidate.Value, expressions) && IsNumeric(candidate.Value))
                 {
                     if (candidate.IsExcelError)
                     {

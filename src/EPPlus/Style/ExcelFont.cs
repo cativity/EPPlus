@@ -22,11 +22,11 @@ namespace OfficeOpenXml.Style
     /// </summary>
     public sealed class ExcelFont : StyleBase
     {
-        internal ExcelFont(ExcelStyles styles, OfficeOpenXml.XmlHelper.ChangedEventHandler ChangedEvent, int PositionID, string address, int index) :
+        internal ExcelFont(ExcelStyles styles, XmlHelper.ChangedEventHandler ChangedEvent, int PositionID, string address, int index) :
             base(styles, ChangedEvent, PositionID, address)
 
         {
-            Index = index;
+            this.Index = index;
         }
         /// <summary>
         /// The name of the font
@@ -35,23 +35,23 @@ namespace OfficeOpenXml.Style
         {
             get
             {
-                return _styles.Fonts[Index].Name;
+                return this._styles.Fonts[this.Index].Name;
             }
             set
             {
-                CheckNormalStyleChange();
-                _ChangedEvent(this, new StyleChangeEventArgs(eStyleClass.Font, eStyleProperty.Name, value, _positionID, _address));
+                this.CheckNormalStyleChange();
+                this._ChangedEvent(this, new StyleChangeEventArgs(eStyleClass.Font, eStyleProperty.Name, value, this._positionID, this._address));
             }
         }
 
         private void CheckNormalStyleChange()
         {
-            int nsIx = _styles.GetNormalStyleIndex();
+            int nsIx = this._styles.GetNormalStyleIndex();
             if(nsIx>=0)
             {
-                if(_styles.NamedStyles[nsIx].Style.Font.Index==Index)
+                if(this._styles.NamedStyles[nsIx].Style.Font.Index== this.Index)
                 {
-                    _styles._wb.ClearDefaultHeightsAndWidths();
+                    this._styles._wb.ClearDefaultHeightsAndWidths();
                 }
             }
         }
@@ -63,12 +63,12 @@ namespace OfficeOpenXml.Style
         {
             get
             {
-                return _styles.Fonts[Index].Size;
+                return this._styles.Fonts[this.Index].Size;
             }
             set
             {
-                CheckNormalStyleChange();
-                _ChangedEvent(this, new StyleChangeEventArgs(eStyleClass.Font, eStyleProperty.Size, value, _positionID, _address));
+                this.CheckNormalStyleChange();
+                this._ChangedEvent(this, new StyleChangeEventArgs(eStyleClass.Font, eStyleProperty.Size, value, this._positionID, this._address));
             }
         }
         /// <summary>
@@ -78,11 +78,11 @@ namespace OfficeOpenXml.Style
         {
             get
             {
-                return _styles.Fonts[Index].Family;
+                return this._styles.Fonts[this.Index].Family;
             }
             set
             {
-                _ChangedEvent(this, new StyleChangeEventArgs(eStyleClass.Font, eStyleProperty.Family, value, _positionID, _address));
+                this._ChangedEvent(this, new StyleChangeEventArgs(eStyleClass.Font, eStyleProperty.Family, value, this._positionID, this._address));
             }
         }
         /// <summary>
@@ -92,7 +92,7 @@ namespace OfficeOpenXml.Style
         {
             get
             {
-                return new ExcelColor(_styles, _ChangedEvent, _positionID, _address, eStyleClass.Font, this);
+                return new ExcelColor(this._styles, this._ChangedEvent, this._positionID, this._address, eStyleClass.Font, this);
             }
         }
         /// <summary>
@@ -102,11 +102,11 @@ namespace OfficeOpenXml.Style
         {
             get
             {
-                return _styles.Fonts[Index].Scheme;
+                return this._styles.Fonts[this.Index].Scheme;
             }
             set
             {
-                _ChangedEvent(this, new StyleChangeEventArgs(eStyleClass.Font, eStyleProperty.Scheme, value, _positionID, _address));
+                this._ChangedEvent(this, new StyleChangeEventArgs(eStyleClass.Font, eStyleProperty.Scheme, value, this._positionID, this._address));
             }
         }
         /// <summary>
@@ -116,12 +116,12 @@ namespace OfficeOpenXml.Style
         {
             get
             {
-                return _styles.Fonts[Index].Bold;
+                return this._styles.Fonts[this.Index].Bold;
             }
             set
             {
-                CheckNormalStyleChange();
-                _ChangedEvent(this, new StyleChangeEventArgs(eStyleClass.Font, eStyleProperty.Bold, value, _positionID, _address));
+                this.CheckNormalStyleChange();
+                this._ChangedEvent(this, new StyleChangeEventArgs(eStyleClass.Font, eStyleProperty.Bold, value, this._positionID, this._address));
             }
         }
         /// <summary>
@@ -131,12 +131,12 @@ namespace OfficeOpenXml.Style
         {
             get
             {
-                return _styles.Fonts[Index].Italic;
+                return this._styles.Fonts[this.Index].Italic;
             }
             set
             {
-                CheckNormalStyleChange();
-                _ChangedEvent(this, new StyleChangeEventArgs(eStyleClass.Font, eStyleProperty.Italic, value, _positionID, _address));
+                this.CheckNormalStyleChange();
+                this._ChangedEvent(this, new StyleChangeEventArgs(eStyleClass.Font, eStyleProperty.Italic, value, this._positionID, this._address));
             }
         }
         /// <summary>
@@ -146,11 +146,11 @@ namespace OfficeOpenXml.Style
         {
             get
             {
-                return _styles.Fonts[Index].Strike;
+                return this._styles.Fonts[this.Index].Strike;
             }
             set
             {
-                _ChangedEvent(this, new StyleChangeEventArgs(eStyleClass.Font, eStyleProperty.Strike, value, _positionID, _address));
+                this._ChangedEvent(this, new StyleChangeEventArgs(eStyleClass.Font, eStyleProperty.Strike, value, this._positionID, this._address));
             }
         }
         /// <summary>
@@ -160,17 +160,17 @@ namespace OfficeOpenXml.Style
         {
             get
             {
-                return _styles.Fonts[Index].UnderLine;
+                return this._styles.Fonts[this.Index].UnderLine;
             }
             set
             {
                 if (value)
                 {
-                    UnderLineType = ExcelUnderLineType.Single;
+                    this.UnderLineType = ExcelUnderLineType.Single;
                 }
                 else
                 {
-                    UnderLineType = ExcelUnderLineType.None;
+                    this.UnderLineType = ExcelUnderLineType.None;
                 }
                 //_ChangedEvent(this, new StyleChangeEventArgs(eStyleClass.Font, eStyleProperty.UnderlineType, value, _positionID, _address));
             }
@@ -182,11 +182,11 @@ namespace OfficeOpenXml.Style
         {
             get
             {
-                return _styles.Fonts[Index].UnderLineType;
+                return this._styles.Fonts[this.Index].UnderLineType;
             }
             set
             {
-                _ChangedEvent(this, new StyleChangeEventArgs(eStyleClass.Font, eStyleProperty.UnderlineType, value, _positionID, _address));
+                this._ChangedEvent(this, new StyleChangeEventArgs(eStyleClass.Font, eStyleProperty.UnderlineType, value, this._positionID, this._address));
             }
         }
         /// <summary>
@@ -196,18 +196,18 @@ namespace OfficeOpenXml.Style
         {
             get
             {
-                if (_styles.Fonts[Index].VerticalAlign == "")
+                if (this._styles.Fonts[this.Index].VerticalAlign == "")
                 {
                     return ExcelVerticalAlignmentFont.None;
                 }
                 else
                 {
-                    return (ExcelVerticalAlignmentFont)Enum.Parse(typeof(ExcelVerticalAlignmentFont), _styles.Fonts[Index].VerticalAlign, true);
+                    return (ExcelVerticalAlignmentFont)Enum.Parse(typeof(ExcelVerticalAlignmentFont), this._styles.Fonts[this.Index].VerticalAlign, true);
                 }
             }
             set
             {
-                _ChangedEvent(this, new StyleChangeEventArgs(eStyleClass.Font, eStyleProperty.VerticalAlign, value, _positionID, _address));
+                this._ChangedEvent(this, new StyleChangeEventArgs(eStyleClass.Font, eStyleProperty.VerticalAlign, value, this._positionID, this._address));
             }
         }
         /// <summary>
@@ -243,11 +243,11 @@ namespace OfficeOpenXml.Style
         {
             get
             {
-                return _styles.Fonts[Index].Charset;
+                return this._styles.Fonts[this.Index].Charset;
             }
             set
             {
-                _ChangedEvent(this, new StyleChangeEventArgs(eStyleClass.Font, eStyleProperty.Charset, value, _positionID, _address));
+                this._ChangedEvent(this, new StyleChangeEventArgs(eStyleClass.Font, eStyleProperty.Charset, value, this._positionID, this._address));
             }
         }
         /// <summary>
@@ -261,19 +261,19 @@ namespace OfficeOpenXml.Style
         /// <param name="strikeout"></param>
         public void SetFromFont(string name, float size, bool bold = false, bool italic = false, bool underline = false, bool strikeout = false)
         {
-            Name = name;
-            Size = size;
-            Strike = strikeout;
-            Bold = bold;
-            UnderLine = underline;
-            Italic = italic;
+            this.Name = name;
+            this.Size = size;
+            this.Strike = strikeout;
+            this.Bold = bold;
+            this.UnderLine = underline;
+            this.Italic = italic;
         }
 
         internal override string Id
         {
             get 
             {
-                return Name + Size.ToString() + Family.ToString() + Scheme.ToString() + Bold.ToString()[0] + Italic.ToString()[0] + Strike.ToString()[0] + UnderLine.ToString()[0] + VerticalAlign + Charset.ToString();
+                return this.Name + this.Size.ToString() + this.Family.ToString() + this.Scheme.ToString() + this.Bold.ToString()[0] + this.Italic.ToString()[0] + this.Strike.ToString()[0] + this.UnderLine.ToString()[0] + this.VerticalAlign + this.Charset.ToString();
             }
         }
     }

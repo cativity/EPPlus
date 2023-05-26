@@ -28,46 +28,46 @@ namespace OfficeOpenXml.Style.XmlAccess
         internal ExcelFontXml(XmlNamespaceManager nameSpaceManager)
             : base(nameSpaceManager)
         {
-            _name = "";
-            _size = 0;
-            _family = int.MinValue;
-            _scheme = "";
-            _color = _color = new ExcelColorXml(NameSpaceManager);
-            _bold = false;
-            _italic = false;
-            _strike = false;
-            _underlineType = ExcelUnderLineType.None ;
-            _verticalAlign = "";
-            _charset = null;
+            this._name = "";
+            this._size = 0;
+            this._family = int.MinValue;
+            this._scheme = "";
+            this._color = this._color = new ExcelColorXml(this.NameSpaceManager);
+            this._bold = false;
+            this._italic = false;
+            this._strike = false;
+            this._underlineType = ExcelUnderLineType.None ;
+            this._verticalAlign = "";
+            this._charset = null;
         }
         internal ExcelFontXml(XmlNamespaceManager nsm, XmlNode topNode) :
             base(nsm, topNode)
         {
-            _name = GetXmlNodeString(namePath);
-            _size = (float)GetXmlNodeDecimal(sizePath);
-            _family = GetXmlNodeIntNull(familyPath)??int.MinValue;
-            _scheme = GetXmlNodeString(schemePath);
-            _color = new ExcelColorXml(nsm, topNode.SelectSingleNode(_colorPath, nsm));
-            _bold = GetBoolValue(topNode, boldPath);
-            _italic = GetBoolValue(topNode, italicPath);
-            _strike = GetBoolValue(topNode, strikePath);
-            _verticalAlign = GetXmlNodeString(verticalAlignPath);
-            _charset = GetXmlNodeIntNull(_charsetPath);
-            if (topNode.SelectSingleNode(underLinedPath, NameSpaceManager) != null)
+            this._name = this.GetXmlNodeString(namePath);
+            this._size = (float)this.GetXmlNodeDecimal(sizePath);
+            this._family = this.GetXmlNodeIntNull(familyPath)??int.MinValue;
+            this._scheme = this.GetXmlNodeString(schemePath);
+            this._color = new ExcelColorXml(nsm, topNode.SelectSingleNode(_colorPath, nsm));
+            this._bold = this.GetBoolValue(topNode, boldPath);
+            this._italic = this.GetBoolValue(topNode, italicPath);
+            this._strike = this.GetBoolValue(topNode, strikePath);
+            this._verticalAlign = this.GetXmlNodeString(verticalAlignPath);
+            this._charset = this.GetXmlNodeIntNull(_charsetPath);
+            if (topNode.SelectSingleNode(underLinedPath, this.NameSpaceManager) != null)
             {
-                string ut = GetXmlNodeString(underLinedPath + "/@val");
+                string ut = this.GetXmlNodeString(underLinedPath + "/@val");
                 if (ut == "")
                 {
-                    _underlineType = ExcelUnderLineType.Single;
+                    this._underlineType = ExcelUnderLineType.Single;
                 }
                 else
                 {
-                    _underlineType = (ExcelUnderLineType)Enum.Parse(typeof(ExcelUnderLineType), ut, true);
+                    this._underlineType = (ExcelUnderLineType)Enum.Parse(typeof(ExcelUnderLineType), ut, true);
                 }
             }
             else
             {
-                _underlineType = ExcelUnderLineType.None;
+                this._underlineType = ExcelUnderLineType.None;
             }
         }
 
@@ -75,7 +75,7 @@ namespace OfficeOpenXml.Style.XmlAccess
         {
             get
             {
-                return Name + "|" + Size + "|" + Family + "|" + Color.Id + "|" + Scheme + "|" + Bold.ToString() + "|" + Italic.ToString() + "|" + Strike.ToString() + "|" + VerticalAlign + "|" + UnderLineType.ToString() + "|" + (Charset.HasValue ? Charset.ToString() : "");
+                return this.Name + "|" + this.Size + "|" + this.Family + "|" + this.Color.Id + "|" + this.Scheme + "|" + this.Bold.ToString() + "|" + this.Italic.ToString() + "|" + this.Strike.ToString() + "|" + this.VerticalAlign + "|" + this.UnderLineType.ToString() + "|" + (this.Charset.HasValue ? this.Charset.ToString() : "");
             }
         }
         const string namePath = "d:name/@val";
@@ -87,12 +87,12 @@ namespace OfficeOpenXml.Style.XmlAccess
         {
             get
             {
-                return _name;
+                return this._name;
             }
             set
             {
-                Scheme = "";        //Reset schema to avoid corrupt file if unsupported font is selected.
-                _name = value;
+                this.Scheme = "";        //Reset schema to avoid corrupt file if unsupported font is selected.
+                this._name = value;
             }
         }
         const string sizePath = "d:sz/@val";
@@ -104,11 +104,11 @@ namespace OfficeOpenXml.Style.XmlAccess
         {
             get
             {
-                return _size;
+                return this._size;
             }
             set
             {
-                _size = value;
+                this._size = value;
             }
         }
         const string familyPath = "d:family/@val";
@@ -120,11 +120,11 @@ namespace OfficeOpenXml.Style.XmlAccess
         {
             get
             {
-                return (_family == int.MinValue ? 0 : _family);
+                return (this._family == int.MinValue ? 0 : this._family);
             }
             set
             {
-                _family=value;
+                this._family=value;
             }
         }
         ExcelColorXml _color = null;
@@ -136,11 +136,11 @@ namespace OfficeOpenXml.Style.XmlAccess
         {
             get
             {
-                return _color;
+                return this._color;
             }
             internal set 
             {
-                _color=value;
+                this._color=value;
             }
         }
         const string schemePath = "d:scheme/@val";
@@ -152,11 +152,11 @@ namespace OfficeOpenXml.Style.XmlAccess
         {
             get
             {
-                return _scheme;
+                return this._scheme;
             }
             internal set
             {
-                _scheme=value;
+                this._scheme=value;
             }
         }
         const string boldPath = "d:b";
@@ -168,11 +168,11 @@ namespace OfficeOpenXml.Style.XmlAccess
         {
             get
             {
-                return _bold;
+                return this._bold;
             }
             set
             {
-                _bold=value;
+                this._bold=value;
             }
         }
         const string italicPath = "d:i";
@@ -184,11 +184,11 @@ namespace OfficeOpenXml.Style.XmlAccess
         {
             get
             {
-                return _italic;
+                return this._italic;
             }
             set
             {
-                _italic=value;
+                this._italic=value;
             }
         }
         const string strikePath = "d:strike";
@@ -200,11 +200,11 @@ namespace OfficeOpenXml.Style.XmlAccess
         {
             get
             {
-                return _strike;
+                return this._strike;
             }
             set
             {
-                _strike=value;
+                this._strike=value;
             }
         }
         const string underLinedPath = "d:u";
@@ -216,11 +216,11 @@ namespace OfficeOpenXml.Style.XmlAccess
         {
             get
             {
-                return UnderLineType!=ExcelUnderLineType.None;
+                return this.UnderLineType!=ExcelUnderLineType.None;
             }
             set
             {
-                _underlineType=value ? ExcelUnderLineType.Single : ExcelUnderLineType.None;
+                this._underlineType=value ? ExcelUnderLineType.Single : ExcelUnderLineType.None;
             }
         }
         ExcelUnderLineType _underlineType;
@@ -231,11 +231,11 @@ namespace OfficeOpenXml.Style.XmlAccess
         {
             get
             {
-                return _underlineType;
+                return this._underlineType;
             }
             set
             {
-                _underlineType = value;
+                this._underlineType = value;
             }
         }
         const string verticalAlignPath = "d:vertAlign/@val";
@@ -247,11 +247,11 @@ namespace OfficeOpenXml.Style.XmlAccess
         {
             get
             {
-                return _verticalAlign;
+                return this._verticalAlign;
             }
             set
             {
-                _verticalAlign=value;
+                this._verticalAlign=value;
             }
         }
         const string _charsetPath = "d:charset/@val";
@@ -290,11 +290,11 @@ namespace OfficeOpenXml.Style.XmlAccess
         {
             get
             {
-                return _charset;
+                return this._charset;
             }
             set
             {
-                _charset = value;
+                this._charset = value;
             }
         }
         /// <summary>
@@ -308,13 +308,13 @@ namespace OfficeOpenXml.Style.XmlAccess
         /// <param name="strikeout"></param>
         public void SetFromFont(string name, float size, bool bold = false, bool italic = false, bool underline = false, bool strikeout = false)
         {
-            Name=name;
+            this.Name=name;
             //Family=fnt.FontFamily.;
-            Size= size;
-            Strike= strikeout;
-            Bold = bold;
-            UnderLine= underline;
-            Italic= italic;            
+            this.Size= size;
+            this.Strike= strikeout;
+            this.Bold = bold;
+            this.UnderLine= underline;
+            this.Italic= italic;            
         }
         /// <summary>
         /// Gets the height of the font in 
@@ -329,24 +329,24 @@ namespace OfficeOpenXml.Style.XmlAccess
         }
         internal ExcelFontXml Copy()
         {
-            ExcelFontXml newFont = new ExcelFontXml(NameSpaceManager);
-            newFont.Name = _name;
-            newFont.Size = _size;
-            newFont.Family = _family;
-            newFont.Scheme = _scheme;
-            newFont.Bold = _bold;
-            newFont.Italic = _italic;
-            newFont.UnderLineType = _underlineType;
-            newFont.Strike = _strike;
-            newFont.VerticalAlign = _verticalAlign;
-            newFont.Color = Color.Copy();
-            newFont.Charset = _charset;
+            ExcelFontXml newFont = new ExcelFontXml(this.NameSpaceManager);
+            newFont.Name = this._name;
+            newFont.Size = this._size;
+            newFont.Family = this._family;
+            newFont.Scheme = this._scheme;
+            newFont.Bold = this._bold;
+            newFont.Italic = this._italic;
+            newFont.UnderLineType = this._underlineType;
+            newFont.Strike = this._strike;
+            newFont.VerticalAlign = this._verticalAlign;
+            newFont.Color = this.Color.Copy();
+            newFont.Charset = this._charset;
             return newFont;
         }
         internal override XmlNode CreateXmlNode(XmlNode topElement)
         {
-            TopNode = topElement;
-            if (_bold)
+            this.TopNode = topElement;
+            if (this._bold)
             {
                 this.CreateNode(boldPath);
             }
@@ -355,7 +355,7 @@ namespace OfficeOpenXml.Style.XmlAccess
                 this.DeleteAllNode(boldPath);
             }
 
-            if (_italic)
+            if (this._italic)
             {
                 this.CreateNode(italicPath);
             }
@@ -364,7 +364,7 @@ namespace OfficeOpenXml.Style.XmlAccess
                 this.DeleteAllNode(italicPath);
             }
 
-            if (_strike)
+            if (this._strike)
             {
                 this.CreateNode(strikePath);
             }
@@ -373,53 +373,53 @@ namespace OfficeOpenXml.Style.XmlAccess
                 this.DeleteAllNode(strikePath);
             }
 
-            if (_underlineType == ExcelUnderLineType.None)
+            if (this._underlineType == ExcelUnderLineType.None)
             {
-                DeleteAllNode(underLinedPath);
+                this.DeleteAllNode(underLinedPath);
             }
-            else if(_underlineType==ExcelUnderLineType.Single)
+            else if(this._underlineType==ExcelUnderLineType.Single)
             {
-                CreateNode(underLinedPath);
+                this.CreateNode(underLinedPath);
             }
             else
             {
-                string? v=_underlineType.ToString();
-                SetXmlNodeString(underLinedPath + "/@val", v.Substring(0, 1).ToLower(CultureInfo.InvariantCulture) + v.Substring(1));
+                string? v= this._underlineType.ToString();
+                this.SetXmlNodeString(underLinedPath + "/@val", v.Substring(0, 1).ToLower(CultureInfo.InvariantCulture) + v.Substring(1));
             }
 
-            if (_verticalAlign!="")
+            if (this._verticalAlign!="")
             {
                 this.SetXmlNodeString(verticalAlignPath, this._verticalAlign.ToString());
             }
 
-            if(_size>0)
+            if(this._size>0)
             {
-                this.SetXmlNodeString(sizePath, this._size.ToString(System.Globalization.CultureInfo.InvariantCulture));
+                this.SetXmlNodeString(sizePath, this._size.ToString(CultureInfo.InvariantCulture));
             }
 
-            if (_color.Exists)
+            if (this._color.Exists)
             {
-                CreateNode(_colorPath);
-                TopNode.AppendChild(_color.CreateXmlNode(TopNode.SelectSingleNode(_colorPath, NameSpaceManager)));
+                this.CreateNode(_colorPath);
+                this.TopNode.AppendChild(this._color.CreateXmlNode(this.TopNode.SelectSingleNode(_colorPath, this.NameSpaceManager)));
             }
 
-            if (!string.IsNullOrEmpty(_name))
+            if (!string.IsNullOrEmpty(this._name))
             {
                 this.SetXmlNodeString(namePath, this._name);
             }
 
-            if(_family>int.MinValue)
+            if(this._family>int.MinValue)
             {
                 this.SetXmlNodeString(familyPath, this._family.ToString());
             }
 
-            SetXmlNodeInt(_charsetPath, Charset);
-            if (_scheme != "")
+            this.SetXmlNodeInt(_charsetPath, this.Charset);
+            if (this._scheme != "")
             {
                 this.SetXmlNodeString(schemePath, this._scheme.ToString());
             }
 
-            return TopNode;
+            return this.TopNode;
         }
     }
 }

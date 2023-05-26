@@ -28,20 +28,20 @@ namespace OfficeOpenXml.Filter
         private ExcelTable _table;
         internal ExcelAutoFilter(XmlNamespaceManager namespaceManager, XmlNode topNode, ExcelWorksheet worksheet) : base(namespaceManager, topNode)
         {
-            _columns = new ExcelFilterColumnCollection(namespaceManager, topNode, this);
-            _worksheet = worksheet;
+            this._columns = new ExcelFilterColumnCollection(namespaceManager, topNode, this);
+            this._worksheet = worksheet;
         }
         internal ExcelAutoFilter(XmlNamespaceManager namespaceManager, XmlNode topNode, ExcelTable table) : base(namespaceManager, topNode)
         {
-            _columns = new ExcelFilterColumnCollection(namespaceManager, topNode, this);
-            _worksheet = table.WorkSheet;
-            _table = table;
+            this._columns = new ExcelFilterColumnCollection(namespaceManager, topNode, this);
+            this._worksheet = table.WorkSheet;
+            this._table = table;
         }
 
         internal void Save()
         {
-            ApplyFilter();
-            foreach (ExcelFilterColumn? c in Columns)
+            this.ApplyFilter();
+            foreach (ExcelFilterColumn? c in this.Columns)
             {
                 c.Save();
             }
@@ -52,23 +52,23 @@ namespace OfficeOpenXml.Filter
         /// <param name="calculateRange">If true, any formula in the autofilter range will be calculated before the filter is applied.</param>
         public void ApplyFilter(bool calculateRange=false)
         {
-            if(calculateRange && _address!=null && ExcelAddressBase.IsValidAddress(_address._address))
+            if(calculateRange && this._address!=null && ExcelCellBase.IsValidAddress(this._address._address))
             {
-                _worksheet.Cells[_address._address].Calculate();
+                this._worksheet.Cells[this._address._address].Calculate();
             }
 
-            foreach (ExcelFilterColumn? column in Columns)
+            foreach (ExcelFilterColumn? column in this.Columns)
             {
-                column.SetFilterValue(_worksheet, Address);
+                column.SetFilterValue(this._worksheet, this.Address);
             }
-            for (int row=Address._fromRow+1; row <= _address._toRow;row++)
+            for (int row= this.Address._fromRow+1; row <= this._address._toRow;row++)
             {
-                RowInternal? rowInternal = ExcelRow.GetRowInternal(_worksheet, row);
+                RowInternal? rowInternal = ExcelRow.GetRowInternal(this._worksheet, row);
                 rowInternal.Hidden = false;
-                foreach(ExcelFilterColumn? column in Columns)
+                foreach(ExcelFilterColumn? column in this.Columns)
                 {
-                    ExcelValue value = _worksheet.GetCoreValueInner(row, Address._fromCol + column.Position);
-                    string? text = ValueToTextHandler.GetFormattedText(value._value, _worksheet.Workbook, value._styleId, false);
+                    ExcelValue value = this._worksheet.GetCoreValueInner(row, this.Address._fromCol + column.Position);
+                    string? text = ValueToTextHandler.GetFormattedText(value._value, this._worksheet.Workbook, value._styleId, false);
                     if (column.Match(value._value, text) == false)
                     {
                         rowInternal.Hidden = true;
@@ -86,20 +86,21 @@ namespace OfficeOpenXml.Filter
         {
             get
             {
-                if (_address == null)
+                if (this._address == null)
                 {
-                    _address = new ExcelAddressBase(GetXmlNodeString("@ref"));
+                    this._address = new ExcelAddressBase(this.GetXmlNodeString("@ref"));
                 }
-                return _address;
+                return this._address;
             }
             internal set
             {                
-                if (value._fromCol != Address._fromCol || value._toCol != Address._toCol || value._fromRow!=Address._fromRow) //Allow different _toRow
+                if (value._fromCol != this.Address._fromCol || value._toCol != this.Address._toCol || value._fromRow!= this.Address._fromRow) //Allow different _toRow
                 {
-                    _columns = new ExcelFilterColumnCollection(NameSpaceManager, TopNode, this);
+                    this._columns = new ExcelFilterColumnCollection(this.NameSpaceManager, this.TopNode, this);
                 }
-                SetXmlNodeString("@ref", value.Address);
-                _address = value;
+
+                this.SetXmlNodeString("@ref", value.Address);
+                this._address = value;
             }
         }
 
@@ -111,7 +112,7 @@ namespace OfficeOpenXml.Filter
         {
             get
             {
-                return _columns;
+                return this._columns;
             }
         }
     }

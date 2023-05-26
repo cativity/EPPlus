@@ -46,30 +46,30 @@ namespace EPPlusTest.ExcelUtilities
         public void Setup()
         {
             ExcelDataProvider? provider = A.Fake<ExcelDataProvider>();
-            _factory = new RangeAddressFactory(provider);
+            this._factory = new RangeAddressFactory(provider);
         }
 
         [TestMethod]
         public void CollideShouldReturnTrueIfRangesCollides()
         {
-            RangeAddress? address1 = _factory.Create("A1:A6");
-            RangeAddress? address2 = _factory.Create("A5");
+            RangeAddress? address1 = this._factory.Create("A1:A6");
+            RangeAddress? address2 = this._factory.Create("A5");
             Assert.IsTrue(address1.CollidesWith(address2));
         }
 
         [TestMethod]
         public void CollideShouldReturnFalseIfRangesDoesNotCollide()
         {
-            RangeAddress? address1 = _factory.Create("A1:A6");
-            RangeAddress? address2 = _factory.Create("A8");
+            RangeAddress? address1 = this._factory.Create("A1:A6");
+            RangeAddress? address2 = this._factory.Create("A8");
             Assert.IsFalse(address1.CollidesWith(address2));
         }
 
         [TestMethod]
         public void CollideShouldReturnFalseIfRangesCollidesButWorksheetNameDiffers()
         {
-            RangeAddress? address1 = _factory.Create("Ws!A1:A6");
-            RangeAddress? address2 = _factory.Create("A5");
+            RangeAddress? address1 = this._factory.Create("Ws!A1:A6");
+            RangeAddress? address2 = this._factory.Create("A5");
             Assert.IsFalse(address1.CollidesWith(address2));
         }
     }

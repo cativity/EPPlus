@@ -28,7 +28,7 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Statistical
         public override CompileResult Execute(IEnumerable<FunctionArgument> arguments, ParsingContext context)
         {
             ValidateArguments(arguments, 1);
-            IEnumerable<ExcelDoubleCellValue>? arr = ArgsToDoubleEnumerable(arguments, context);
+            IEnumerable<ExcelDoubleCellValue>? arr = this.ArgsToDoubleEnumerable(arguments, context);
             if (!arr.Any())
             {
                 return this.CreateResult(eErrorType.Num);
@@ -36,7 +36,7 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Statistical
 
             double mean = arr.Select(x => (double)x).Average();
             double result = arr.Aggregate(0d, (val, x) => val += System.Math.Pow(x - mean, 2));
-            return CreateResult(result, DataType.Decimal);
+            return this.CreateResult(result, DataType.Decimal);
         }
     }
 }

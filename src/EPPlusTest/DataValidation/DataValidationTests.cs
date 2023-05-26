@@ -49,19 +49,19 @@ namespace EPPlusTest.DataValidation
         [TestInitialize]
         public void Setup()
         {
-            SetupTestData();
+            this.SetupTestData();
         }
 
         [TestCleanup]
         public void Cleanup()
         {
-            CleanupTestData();
+            this.CleanupTestData();
         }
 
         [TestMethod, ExpectedException(typeof(InvalidOperationException))]
         public void DataValidations_ShouldThrowIfOperatorIsEqualAndFormula1IsEmpty()
         {
-            IExcelDataValidationInt? validation = _sheet.DataValidations.AddIntegerValidation("A1");
+            IExcelDataValidationInt? validation = this._sheet.DataValidations.AddIntegerValidation("A1");
             validation.Operator = ExcelDataValidationOperator.equal;
             validation.Validate();
         }
@@ -301,7 +301,7 @@ namespace EPPlusTest.DataValidation
         [TestMethod, ExpectedException(typeof(InvalidOperationException))]
         public void DataValidations_ShouldThrowIfOperatorIsBetweenAndFormula2IsEmpty()
         {
-            IExcelDataValidationInt? validation = _sheet.DataValidations.AddIntegerValidation("A1");
+            IExcelDataValidationInt? validation = this._sheet.DataValidations.AddIntegerValidation("A1");
             validation.Formula.Value = 1;
             validation.Operator = ExcelDataValidationOperator.between;
             validation.Validate();
@@ -310,7 +310,7 @@ namespace EPPlusTest.DataValidation
         [TestMethod]
         public void DataValidations_ShouldAcceptOneItemOnly()
         {
-            IExcelDataValidationList? validation = _sheet.DataValidations.AddListValidation("A1");
+            IExcelDataValidationList? validation = this._sheet.DataValidations.AddListValidation("A1");
             validation.Formula.Values.Add("1");
             validation.Validate();
         }
@@ -318,7 +318,7 @@ namespace EPPlusTest.DataValidation
         [TestMethod, ExpectedException(typeof(InvalidOperationException))]
         public void DataValidations_ShouldThrowIfAllowBlankIsNotSet()
         {
-            IExcelDataValidationInt? validation = _sheet.DataValidations.AddIntegerValidation("A1");
+            IExcelDataValidationInt? validation = this._sheet.DataValidations.AddIntegerValidation("A1");
             validation.Validate();
         }
 
@@ -326,7 +326,7 @@ namespace EPPlusTest.DataValidation
         public void ExcelDataValidation_ShouldReplaceLastPartInWholeColumnRangeWithMaxNumberOfRowsOneColumn()
         {
             // Act
-            IExcelDataValidationInt? validation = _sheet.DataValidations.AddIntegerValidation("A:A");
+            IExcelDataValidationInt? validation = this._sheet.DataValidations.AddIntegerValidation("A:A");
 
             // Assert
             Assert.AreEqual("A1:A" + ExcelPackage.MaxRows.ToString(), validation.Address.Address);
@@ -336,7 +336,7 @@ namespace EPPlusTest.DataValidation
         public void ExcelDataValidation_ShouldReplaceLastPartInWholeColumnRangeWithMaxNumberOfRowsDifferentColumns()
         {
             // Act
-            IExcelDataValidationInt? validation = _sheet.DataValidations.AddIntegerValidation("A:B");
+            IExcelDataValidationInt? validation = this._sheet.DataValidations.AddIntegerValidation("A:B");
 
             // Assert
             Assert.AreEqual(string.Format("A1:B{0}", ExcelPackage.MaxRows), validation.Address.Address);

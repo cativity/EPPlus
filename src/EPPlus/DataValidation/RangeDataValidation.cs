@@ -26,8 +26,8 @@ namespace OfficeOpenXml.DataValidation
         {
             Require.Argument(worksheet).IsNotNull("worksheet");
             Require.Argument(address).IsNotNullOrEmpty("address");
-            _worksheet = worksheet;
-            _address = address;
+            this._worksheet = worksheet;
+            this._address = address;
         }
 
         ExcelWorksheet _worksheet;
@@ -40,8 +40,8 @@ namespace OfficeOpenXml.DataValidation
         /// <exception cref="InvalidOperationException"></exception>
         public void ClearDataValidation(bool deleteIfEmpty = false)
         {
-            ExcelAddress? address = new ExcelAddress(_address);
-            List<ExcelDataValidation>? validations = _worksheet.DataValidations._validationsRD.GetValuesFromRange(address._fromRow, address._fromCol, address._toRow, address._toCol);
+            ExcelAddress? address = new ExcelAddress(this._address);
+            List<ExcelDataValidation>? validations = this._worksheet.DataValidations._validationsRD.GetValuesFromRange(address._fromRow, address._fromCol, address._toRow, address._toCol);
 
             foreach( ExcelDataValidation? validation in validations)
             {
@@ -64,7 +64,7 @@ namespace OfficeOpenXml.DataValidation
                 {
                     if (deleteIfEmpty)
                     {
-                        _worksheet.DataValidations.Remove(validation);
+                        this._worksheet.DataValidations.Remove(validation);
                     }
                     else
                     {
@@ -82,42 +82,42 @@ namespace OfficeOpenXml.DataValidation
 
         public IExcelDataValidationAny AddAnyDataValidation()
         {
-            return _worksheet.DataValidations.AddAnyValidation(_address);
+            return this._worksheet.DataValidations.AddAnyValidation(this._address);
         }
 
-        public Contracts.IExcelDataValidationInt AddIntegerDataValidation()
+        public IExcelDataValidationInt AddIntegerDataValidation()
         {
-            return _worksheet.DataValidations.AddIntegerValidation(_address);
+            return this._worksheet.DataValidations.AddIntegerValidation(this._address);
         }
 
         public IExcelDataValidationDecimal AddDecimalDataValidation()
         {
-            return _worksheet.DataValidations.AddDecimalValidation(_address);
+            return this._worksheet.DataValidations.AddDecimalValidation(this._address);
         }
 
         public IExcelDataValidationDateTime AddDateTimeDataValidation()
         {
-            return _worksheet.DataValidations.AddDateTimeValidation(_address);
+            return this._worksheet.DataValidations.AddDateTimeValidation(this._address);
         }
 
         public IExcelDataValidationList AddListDataValidation()
         {
-            return _worksheet.DataValidations.AddListValidation(_address);
+            return this._worksheet.DataValidations.AddListValidation(this._address);
         }
 
-        public Contracts.IExcelDataValidationInt AddTextLengthDataValidation()
+        public IExcelDataValidationInt AddTextLengthDataValidation()
         {
-            return _worksheet.DataValidations.AddTextLengthValidation(_address);
+            return this._worksheet.DataValidations.AddTextLengthValidation(this._address);
         }
 
         public IExcelDataValidationTime AddTimeDataValidation()
         {
-            return _worksheet.DataValidations.AddTimeValidation(_address);
+            return this._worksheet.DataValidations.AddTimeValidation(this._address);
         }
 
         public IExcelDataValidationCustom AddCustomDataValidation()
         {
-            return _worksheet.DataValidations.AddCustomValidation(_address);
+            return this._worksheet.DataValidations.AddCustomValidation(this._address);
         }
     }
 }

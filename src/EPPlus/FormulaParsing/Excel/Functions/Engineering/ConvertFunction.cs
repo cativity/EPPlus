@@ -27,7 +27,7 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Engineering
         public override CompileResult Execute(IEnumerable<FunctionArgument> arguments, ParsingContext context)
         {
             ValidateArguments(arguments, 3);
-            double number = ArgToDecimal(arguments, 0);
+            double number = this.ArgToDecimal(arguments, 0);
             string? fromUnit = ArgToString(arguments, 1);
             string? toUnit = ArgToString(arguments, 2);
             if (!Conversions.IsValidUnit(fromUnit))
@@ -43,9 +43,9 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Engineering
             double result = Conversions.Convert(number, fromUnit, toUnit);
             if(double.IsNaN(result))
             {
-                return CreateResult(eErrorType.NA);
+                return this.CreateResult(eErrorType.NA);
             }
-            return CreateResult(result, DataType.Decimal);
+            return this.CreateResult(result, DataType.Decimal);
         }
     }
 }

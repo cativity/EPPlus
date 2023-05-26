@@ -34,7 +34,7 @@ namespace OfficeOpenXml.DataValidation
         internal ExcelDataValidationList(string uid, string address, ExcelWorksheet ws)
             : base(uid, address, ws)
         {
-            Formula = new ExcelDataValidationFormulaList(null, uid, ws.Name, OnFormulaChanged);
+            this.Formula = new ExcelDataValidationFormulaList(null, uid, ws.Name, this.OnFormulaChanged);
         }
 
         /// <summary>
@@ -53,7 +53,7 @@ namespace OfficeOpenXml.DataValidation
         internal ExcelDataValidationList(ExcelDataValidationList copy, ExcelWorksheet ws)
             : base(copy, ws)
         {
-            Formula = copy.Formula;
+            this.Formula = copy.Formula;
         }
 
         /// <summary>
@@ -84,7 +84,7 @@ namespace OfficeOpenXml.DataValidation
 
         internal override IExcelDataValidationFormulaList DefineFormulaClassType(string formulaValue, string sheetName)
         {
-            return new ExcelDataValidationFormulaList(formulaValue, Uid, sheetName, OnFormulaChanged);
+            return new ExcelDataValidationFormulaList(formulaValue, this.Uid, sheetName, this.OnFormulaChanged);
         }
 
         internal override void LoadXML(XmlReader xr)
@@ -93,17 +93,17 @@ namespace OfficeOpenXml.DataValidation
             string attribute = xr.GetAttribute("showDropDown");
             if (string.IsNullOrEmpty(attribute))
             {
-                HideDropDown = false;
+                this.HideDropDown = false;
             }
             else
             {
-                HideDropDown = bool.Parse(xr.GetAttribute("showDropDown"));
+                this.HideDropDown = bool.Parse(xr.GetAttribute("showDropDown"));
             }
         }
 
         internal override ExcelDataValidation GetClone()
         {
-            return new ExcelDataValidationList(this, _ws);
+            return new ExcelDataValidationList(this, this._ws);
         }
 
         internal override ExcelDataValidation GetClone(ExcelWorksheet copy)
@@ -113,7 +113,7 @@ namespace OfficeOpenXml.DataValidation
 
         ExcelDataValidationDecimal Clone()
         {
-            return (ExcelDataValidationDecimal)GetClone();
+            return (ExcelDataValidationDecimal)this.GetClone();
         }
     }
 }

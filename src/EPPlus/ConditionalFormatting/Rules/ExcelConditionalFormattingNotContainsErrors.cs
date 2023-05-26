@@ -54,9 +54,9 @@ namespace OfficeOpenXml.ConditionalFormatting
     {
         if (itemElementNode==null) //Set default values and create attributes if needed
         {
-            Formula = string.Format(
-              "NOT(ISERROR({0}))",
-              Address.Start.Address);
+            this.Formula = string.Format(
+                                         "NOT(ISERROR({0}))",
+                                         this.Address.Start.Address);
         }
     }
 

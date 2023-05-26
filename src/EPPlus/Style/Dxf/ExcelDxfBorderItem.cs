@@ -27,8 +27,8 @@ namespace OfficeOpenXml.Style.Dxf
         internal ExcelDxfBorderItem(ExcelStyles styles, eStyleClass styleClass, Action<eStyleClass, eStyleProperty, object> callback) :
             base(styles, callback)
         {
-            _styleClass = styleClass;
-            Color =new ExcelDxfColor(styles, _styleClass, callback);
+            this._styleClass = styleClass;
+            this.Color =new ExcelDxfColor(styles, this._styleClass, callback);
         }
         ExcelBorderStyle? _style;
         /// <summary>
@@ -38,12 +38,12 @@ namespace OfficeOpenXml.Style.Dxf
         {
             get
             {
-                return _style;
+                return this._style;
             }
             set
             {
-                _style = value;
-                _callback?.Invoke(_styleClass, eStyleProperty.Style, value);
+                this._style = value;
+                this._callback?.Invoke(this._styleClass, eStyleProperty.Style, value);
             }
         }        /// <summary>
                  /// The color of the border
@@ -57,7 +57,7 @@ namespace OfficeOpenXml.Style.Dxf
         {
             get
             {
-                return GetAsString(Style) + "|" + (Color == null ? "" : Color.Id);
+                return GetAsString(this.Style) + "|" + (this.Color == null ? "" : this.Color.Id);
             }
         }
 
@@ -68,8 +68,8 @@ namespace OfficeOpenXml.Style.Dxf
         /// <param name="path">The X Path</param>
         internal override void CreateNodes(XmlHelper helper, string path)
         {
-            SetValueEnum(helper, path + "/@style", Style);
-            SetValueColor(helper, path + "/d:color", Color);
+            SetValueEnum(helper, path + "/@style", this.Style);
+            SetValueColor(helper, path + "/d:color", this.Color);
         }
         /// <summary>
         /// If the object has any properties set
@@ -78,7 +78,7 @@ namespace OfficeOpenXml.Style.Dxf
         {
             get 
             {
-                return (Style != null && Style!=ExcelBorderStyle.None) || Color.HasValue;
+                return (this.Style != null && this.Style!=ExcelBorderStyle.None) || this.Color.HasValue;
             }
         }
         /// <summary>
@@ -86,15 +86,15 @@ namespace OfficeOpenXml.Style.Dxf
         /// </summary>
         public override void Clear()
         {
-            Style = null;
-            Color.Clear();
+            this.Style = null;
+            this.Color.Clear();
         }
         internal override void SetStyle()
         {
-            if (_callback != null)
+            if (this._callback != null)
             {
-                _callback.Invoke(_styleClass, eStyleProperty.Style, _style);
-                Color.SetStyle();
+                this._callback.Invoke(this._styleClass, eStyleProperty.Style, this._style);
+                this.Color.SetStyle();
             }
         }
         /// <summary>
@@ -103,7 +103,7 @@ namespace OfficeOpenXml.Style.Dxf
         /// <returns>A new instance of the object</returns>
         internal override DxfStyleBase Clone()
         {
-            return new ExcelDxfBorderItem(_styles,_styleClass, _callback) { Style = Style, Color = Color };
+            return new ExcelDxfBorderItem(this._styles, this._styleClass, this._callback) { Style = this.Style, Color = this.Color };
         }
     }
 }

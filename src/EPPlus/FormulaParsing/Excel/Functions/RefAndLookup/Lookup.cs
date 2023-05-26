@@ -34,9 +34,9 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions.RefAndLookup
             ValidateArguments(arguments, 2);
             if (HaveTwoRanges(arguments))
             {
-                return HandleTwoRanges(arguments, context);
+                return this.HandleTwoRanges(arguments, context);
             }
-            return HandleSingleRange(arguments, context);
+            return this.HandleSingleRange(arguments, context);
         }
 
         private static bool HaveTwoRanges(IEnumerable<FunctionArgument> arguments)
@@ -67,7 +67,7 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions.RefAndLookup
             }
             LookupArguments? lookupArgs = new LookupArguments(searchedValue, firstAddress, lookupIndex, 0, true, arguments.ElementAt(1).ValueAsRangeInfo);
             LookupNavigator? navigator = LookupNavigatorFactory.Create(lookupDirection, lookupArgs, context);
-            return Lookup(navigator, lookupArgs);
+            return this.Lookup(navigator, lookupArgs);
         }
 
         private CompileResult HandleTwoRanges(IEnumerable<FunctionArgument> arguments, ParsingContext context)
@@ -90,7 +90,7 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions.RefAndLookup
             }
             LookupArguments? lookupArgs = new LookupArguments(searchedValue, firstAddress, lookupIndex, lookupOffset,  true, arguments.ElementAt(1).ValueAsRangeInfo);
             LookupNavigator? navigator = LookupNavigatorFactory.Create(lookupDirection, lookupArgs, context);
-            return Lookup(navigator, lookupArgs);
+            return this.Lookup(navigator, lookupArgs);
         }
     }
 }

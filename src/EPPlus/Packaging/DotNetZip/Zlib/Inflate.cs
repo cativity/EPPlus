@@ -111,31 +111,31 @@ namespace OfficeOpenXml.Packaging.Ionic.Zlib
         internal int end;                                 // one byte after sliding window
         internal int readAt;                              // window read pointer
         internal int writeAt;                             // window write pointer
-        internal System.Object checkfn;                   // check function
+        internal Object checkfn;                   // check function
         internal uint check;                              // check on output
 
         internal InfTree inftree = new InfTree();
 
-        internal InflateBlocks(ZlibCodec codec, System.Object checkfn, int w)
+        internal InflateBlocks(ZlibCodec codec, Object checkfn, int w)
         {
-            _codec = codec;
-            hufts = new int[MANY * 3];
-            window = new byte[w];
-            end = w;
+            this._codec = codec;
+            this.hufts = new int[MANY * 3];
+            this.window = new byte[w];
+            this.end = w;
             this.checkfn = checkfn;
-            mode = InflateBlockMode.TYPE;
-            Reset();
+            this.mode = InflateBlockMode.TYPE;
+            this.Reset();
         }
 
         internal uint Reset()
         {
-            uint oldCheck = check;
-            mode = InflateBlockMode.TYPE;
-            bitk = 0;
-            bitb = 0;
-            readAt = writeAt = 0;
+            uint oldCheck = this.check;
+            this.mode = InflateBlockMode.TYPE;
+            this.bitk = 0;
+            this.bitb = 0;
+            this.readAt = this.writeAt = 0;
 
-            if (checkfn != null)
+            if (this.checkfn != null)
             {
                 this._codec._Adler32 = this.check = Adler.Adler32(0, null, 0, 0);
             }
@@ -156,19 +156,19 @@ namespace OfficeOpenXml.Packaging.Ionic.Zlib
 
             // copy input/output information to locals (UPDATE macro restores)
 
-            p = _codec.NextIn;
-            n = _codec.AvailableBytesIn;
-            b = bitb;
-            k = bitk;
+            p = this._codec.NextIn;
+            n = this._codec.AvailableBytesIn;
+            b = this.bitb;
+            k = this.bitk;
 
-            q = writeAt;
-            m = (int)(q < readAt ? readAt - q - 1 : end - q);
+            q = this.writeAt;
+            m = (int)(q < this.readAt ? this.readAt - q - 1 : this.end - q);
 
 
             // process input based on current state
             while (true)
             {
-                switch (mode)
+                switch (this.mode)
                 {
                     case InflateBlockMode.TYPE:
 
@@ -180,20 +180,21 @@ namespace OfficeOpenXml.Packaging.Ionic.Zlib
                             }
                             else
                             {
-                                bitb = b; bitk = k;
-                                _codec.AvailableBytesIn = n;
-                                _codec.TotalBytesIn += p - _codec.NextIn;
-                                _codec.NextIn = p;
-                                writeAt = q;
-                                return Flush(r);
+                                this.bitb = b;
+                                this.bitk = k;
+                                this._codec.AvailableBytesIn = n;
+                                this._codec.TotalBytesIn += p - this._codec.NextIn;
+                                this._codec.NextIn = p;
+                                this.writeAt = q;
+                                return this.Flush(r);
                             }
 
                             n--;
-                            b |= (_codec.InputBuffer[p++] & 0xff) << k;
+                            b |= (this._codec.InputBuffer[p++] & 0xff) << k;
                             k += 8;
                         }
                         t = (int)(b & 7);
-                        last = t & 1;
+                        this.last = t & 1;
 
                         switch ((uint)t >> 1)
                         {
@@ -201,7 +202,7 @@ namespace OfficeOpenXml.Packaging.Ionic.Zlib
                                 b >>= 3; k -= (3);
                                 t = k & 7; // go to byte boundary
                                 b >>= t; k -= t;
-                                mode = InflateBlockMode.LENS; // get length of stored block
+                                this.mode = InflateBlockMode.LENS; // get length of stored block
                                 break;
 
                             case 1:  // fixed
@@ -209,28 +210,29 @@ namespace OfficeOpenXml.Packaging.Ionic.Zlib
                                 int[] bd = new int[1];
                                 int[][] tl = new int[1][];
                                 int[][] td = new int[1][];
-                                InfTree.inflate_trees_fixed(bl, bd, tl, td, _codec);
-                                codes.Init(bl[0], bd[0], tl[0], 0, td[0], 0);
+                                InfTree.inflate_trees_fixed(bl, bd, tl, td, this._codec);
+                                this.codes.Init(bl[0], bd[0], tl[0], 0, td[0], 0);
                                 b >>= 3; k -= 3;
-                                mode = InflateBlockMode.CODES;
+                                this.mode = InflateBlockMode.CODES;
                                 break;
 
                             case 2:  // dynamic
                                 b >>= 3; k -= 3;
-                                mode = InflateBlockMode.TABLE;
+                                this.mode = InflateBlockMode.TABLE;
                                 break;
 
                             case 3:  // illegal
                                 b >>= 3; k -= 3;
-                                mode = InflateBlockMode.BAD;
-                                _codec.Message = "invalid block type";
+                                this.mode = InflateBlockMode.BAD;
+                                this._codec.Message = "invalid block type";
                                 r = ZlibConstants.Z_DATA_ERROR;
-                                bitb = b; bitk = k;
-                                _codec.AvailableBytesIn = n;
-                                _codec.TotalBytesIn += p - _codec.NextIn;
-                                _codec.NextIn = p;
-                                writeAt = q;
-                                return Flush(r);
+                                this.bitb = b;
+                                this.bitk = k;
+                                this._codec.AvailableBytesIn = n;
+                                this._codec.TotalBytesIn += p - this._codec.NextIn;
+                                this._codec.NextIn = p;
+                                this.writeAt = q;
+                                return this.Flush(r);
                         }
                         break;
 
@@ -244,77 +246,82 @@ namespace OfficeOpenXml.Packaging.Ionic.Zlib
                             }
                             else
                             {
-                                bitb = b; bitk = k;
-                                _codec.AvailableBytesIn = n;
-                                _codec.TotalBytesIn += p - _codec.NextIn;
-                                _codec.NextIn = p;
-                                writeAt = q;
-                                return Flush(r);
+                                this.bitb = b;
+                                this.bitk = k;
+                                this._codec.AvailableBytesIn = n;
+                                this._codec.TotalBytesIn += p - this._codec.NextIn;
+                                this._codec.NextIn = p;
+                                this.writeAt = q;
+                                return this.Flush(r);
                             }
                             ;
                             n--;
-                            b |= (_codec.InputBuffer[p++] & 0xff) << k;
+                            b |= (this._codec.InputBuffer[p++] & 0xff) << k;
                             k += 8;
                         }
 
                         if ( ( ((~b)>>16) & 0xffff) != (b & 0xffff))
                         {
-                            mode = InflateBlockMode.BAD;
-                            _codec.Message = "invalid stored block lengths";
+                            this.mode = InflateBlockMode.BAD;
+                            this._codec.Message = "invalid stored block lengths";
                             r = ZlibConstants.Z_DATA_ERROR;
 
-                            bitb = b; bitk = k;
-                            _codec.AvailableBytesIn = n;
-                            _codec.TotalBytesIn += p - _codec.NextIn;
-                            _codec.NextIn = p;
-                            writeAt = q;
-                            return Flush(r);
+                            this.bitb = b;
+                            this.bitk = k;
+                            this._codec.AvailableBytesIn = n;
+                            this._codec.TotalBytesIn += p - this._codec.NextIn;
+                            this._codec.NextIn = p;
+                            this.writeAt = q;
+                            return this.Flush(r);
                         }
-                        left = (b & 0xffff);
+
+                        this.left = (b & 0xffff);
                         b = k = 0; // dump bits
-                        mode = left != 0 ? InflateBlockMode.STORED : (last != 0 ? InflateBlockMode.DRY : InflateBlockMode.TYPE);
+                        this.mode = this.left != 0 ? InflateBlockMode.STORED : (this.last != 0 ? InflateBlockMode.DRY : InflateBlockMode.TYPE);
                         break;
 
                     case InflateBlockMode.STORED:
                         if (n == 0)
                         {
-                            bitb = b; bitk = k;
-                            _codec.AvailableBytesIn = n;
-                            _codec.TotalBytesIn += p - _codec.NextIn;
-                            _codec.NextIn = p;
-                            writeAt = q;
-                            return Flush(r);
+                            this.bitb = b;
+                            this.bitk = k;
+                            this._codec.AvailableBytesIn = n;
+                            this._codec.TotalBytesIn += p - this._codec.NextIn;
+                            this._codec.NextIn = p;
+                            this.writeAt = q;
+                            return this.Flush(r);
                         }
 
                         if (m == 0)
                         {
-                            if (q == end && readAt != 0)
+                            if (q == this.end && this.readAt != 0)
                             {
-                                q = 0; m = (int)(q < readAt ? readAt - q - 1 : end - q);
+                                q = 0; m = (int)(q < this.readAt ? this.readAt - q - 1 : this.end - q);
                             }
                             if (m == 0)
                             {
-                                writeAt = q;
-                                r = Flush(r);
-                                q = writeAt; m = (int)(q < readAt ? readAt - q - 1 : end - q);
-                                if (q == end && readAt != 0)
+                                this.writeAt = q;
+                                r = this.Flush(r);
+                                q = this.writeAt; m = (int)(q < this.readAt ? this.readAt - q - 1 : this.end - q);
+                                if (q == this.end && this.readAt != 0)
                                 {
-                                    q = 0; m = (int)(q < readAt ? readAt - q - 1 : end - q);
+                                    q = 0; m = (int)(q < this.readAt ? this.readAt - q - 1 : this.end - q);
                                 }
                                 if (m == 0)
                                 {
-                                    bitb = b; bitk = k;
-                                    _codec.AvailableBytesIn = n;
-                                    _codec.TotalBytesIn += p - _codec.NextIn;
-                                    _codec.NextIn = p;
-                                    writeAt = q;
-                                    return Flush(r);
+                                    this.bitb = b;
+                                    this.bitk = k;
+                                    this._codec.AvailableBytesIn = n;
+                                    this._codec.TotalBytesIn += p - this._codec.NextIn;
+                                    this._codec.NextIn = p;
+                                    this.writeAt = q;
+                                    return this.Flush(r);
                                 }
                             }
                         }
                         r = ZlibConstants.Z_OK;
 
-                        t = left;
+                        t = this.left;
                         if (t > n)
                         {
                             t = n;
@@ -325,15 +332,15 @@ namespace OfficeOpenXml.Packaging.Ionic.Zlib
                             t = m;
                         }
 
-                        Array.Copy(_codec.InputBuffer, p, window, q, t);
+                        Array.Copy(this._codec.InputBuffer, p, this.window, q, t);
                         p += t; n -= t;
                         q += t; m -= t;
-                        if ((left -= t) != 0)
+                        if ((this.left -= t) != 0)
                         {
                             break;
                         }
 
-                        mode = last != 0 ? InflateBlockMode.DRY : InflateBlockMode.TYPE;
+                        this.mode = this.last != 0 ? InflateBlockMode.DRY : InflateBlockMode.TYPE;
                         break;
 
                     case InflateBlockMode.TABLE:
@@ -346,41 +353,43 @@ namespace OfficeOpenXml.Packaging.Ionic.Zlib
                             }
                             else
                             {
-                                bitb = b; bitk = k;
-                                _codec.AvailableBytesIn = n;
-                                _codec.TotalBytesIn += p - _codec.NextIn;
-                                _codec.NextIn = p;
-                                writeAt = q;
-                                return Flush(r);
+                                this.bitb = b;
+                                this.bitk = k;
+                                this._codec.AvailableBytesIn = n;
+                                this._codec.TotalBytesIn += p - this._codec.NextIn;
+                                this._codec.NextIn = p;
+                                this.writeAt = q;
+                                return this.Flush(r);
                             }
 
                             n--;
-                            b |= (_codec.InputBuffer[p++] & 0xff) << k;
+                            b |= (this._codec.InputBuffer[p++] & 0xff) << k;
                             k += 8;
                         }
 
-                        table = t = (b & 0x3fff);
+                        this.table = t = (b & 0x3fff);
                         if ((t & 0x1f) > 29 || ((t >> 5) & 0x1f) > 29)
                         {
-                            mode = InflateBlockMode.BAD;
-                            _codec.Message = "too many length or distance symbols";
+                            this.mode = InflateBlockMode.BAD;
+                            this._codec.Message = "too many length or distance symbols";
                             r = ZlibConstants.Z_DATA_ERROR;
 
-                            bitb = b; bitk = k;
-                            _codec.AvailableBytesIn = n;
-                            _codec.TotalBytesIn += p - _codec.NextIn;
-                            _codec.NextIn = p;
-                            writeAt = q;
-                            return Flush(r);
+                            this.bitb = b;
+                            this.bitk = k;
+                            this._codec.AvailableBytesIn = n;
+                            this._codec.TotalBytesIn += p - this._codec.NextIn;
+                            this._codec.NextIn = p;
+                            this.writeAt = q;
+                            return this.Flush(r);
                         }
                         t = 258 + (t & 0x1f) + ((t >> 5) & 0x1f);
-                        if (blens == null || blens.Length < t)
+                        if (this.blens == null || this.blens.Length < t)
                         {
-                            blens = new int[t];
+                            this.blens = new int[t];
                         }
                         else
                         {
-                            Array.Clear(blens, 0, t);
+                            Array.Clear(this.blens, 0, t);
                             // for (int i = 0; i < t; i++)
                             // {
                             //     blens[i] = 0;
@@ -390,13 +399,12 @@ namespace OfficeOpenXml.Packaging.Ionic.Zlib
                         b >>= 14;
                         k -= 14;
 
-
-                        index = 0;
-                        mode = InflateBlockMode.BTREE;
+                        this.index = 0;
+                        this.mode = InflateBlockMode.BTREE;
                         goto case InflateBlockMode.BTREE;
 
                     case InflateBlockMode.BTREE:
-                        while (index < 4 + (table >> 10))
+                        while (this.index < 4 + (this.table >> 10))
                         {
                             while (k < (3))
                             {
@@ -406,64 +414,66 @@ namespace OfficeOpenXml.Packaging.Ionic.Zlib
                                 }
                                 else
                                 {
-                                    bitb = b; bitk = k;
-                                    _codec.AvailableBytesIn = n;
-                                    _codec.TotalBytesIn += p - _codec.NextIn;
-                                    _codec.NextIn = p;
-                                    writeAt = q;
-                                    return Flush(r);
+                                    this.bitb = b;
+                                    this.bitk = k;
+                                    this._codec.AvailableBytesIn = n;
+                                    this._codec.TotalBytesIn += p - this._codec.NextIn;
+                                    this._codec.NextIn = p;
+                                    this.writeAt = q;
+                                    return this.Flush(r);
                                 }
 
                                 n--;
-                                b |= (_codec.InputBuffer[p++] & 0xff) << k;
+                                b |= (this._codec.InputBuffer[p++] & 0xff) << k;
                                 k += 8;
                             }
 
-                            blens[border[index++]] = b & 7;
+                            this.blens[border[this.index++]] = b & 7;
 
                             b >>= 3; k -= 3;
                         }
 
-                        while (index < 19)
+                        while (this.index < 19)
                         {
-                            blens[border[index++]] = 0;
+                            this.blens[border[this.index++]] = 0;
                         }
 
-                        bb[0] = 7;
-                        t = inftree.inflate_trees_bits(blens, bb, tb, hufts, _codec);
+                        this.bb[0] = 7;
+                        t = this.inftree.inflate_trees_bits(this.blens, this.bb, this.tb, this.hufts, this._codec);
                         if (t != ZlibConstants.Z_OK)
                         {
                             r = t;
                             if (r == ZlibConstants.Z_DATA_ERROR)
                             {
-                                blens = null;
-                                mode = InflateBlockMode.BAD;
+                                this.blens = null;
+                                this.mode = InflateBlockMode.BAD;
                             }
 
-                            bitb = b; bitk = k;
-                            _codec.AvailableBytesIn = n;
-                            _codec.TotalBytesIn += p - _codec.NextIn;
-                            _codec.NextIn = p;
-                            writeAt = q;
-                            return Flush(r);
+                            this.bitb = b;
+                            this.bitk = k;
+                            this._codec.AvailableBytesIn = n;
+                            this._codec.TotalBytesIn += p - this._codec.NextIn;
+                            this._codec.NextIn = p;
+                            this.writeAt = q;
+                            return this.Flush(r);
                         }
 
-                        index = 0;
-                        mode = InflateBlockMode.DTREE;
+                        this.index = 0;
+                        this.mode = InflateBlockMode.DTREE;
                         goto case InflateBlockMode.DTREE;
 
                     case InflateBlockMode.DTREE:
                         while (true)
                         {
-                            t = table;
-                            if (!(index < 258 + (t & 0x1f) + ((t >> 5) & 0x1f)))
+                            t = this.table;
+                            if (!(this.index < 258 + (t & 0x1f) + ((t >> 5) & 0x1f)))
                             {
                                 break;
                             }
 
                             int i, j, c;
 
-                            t = bb[0];
+                            t = this.bb[0];
 
                             while (k < t)
                             {
@@ -473,26 +483,27 @@ namespace OfficeOpenXml.Packaging.Ionic.Zlib
                                 }
                                 else
                                 {
-                                    bitb = b; bitk = k;
-                                    _codec.AvailableBytesIn = n;
-                                    _codec.TotalBytesIn += p - _codec.NextIn;
-                                    _codec.NextIn = p;
-                                    writeAt = q;
-                                    return Flush(r);
+                                    this.bitb = b;
+                                    this.bitk = k;
+                                    this._codec.AvailableBytesIn = n;
+                                    this._codec.TotalBytesIn += p - this._codec.NextIn;
+                                    this._codec.NextIn = p;
+                                    this.writeAt = q;
+                                    return this.Flush(r);
                                 }
 
                                 n--;
-                                b |= (_codec.InputBuffer[p++] & 0xff) << k;
+                                b |= (this._codec.InputBuffer[p++] & 0xff) << k;
                                 k += 8;
                             }
 
-                            t = hufts[(tb[0] + (b & InternalInflateConstants.InflateMask[t])) * 3 + 1];
-                            c = hufts[(tb[0] + (b & InternalInflateConstants.InflateMask[t])) * 3 + 2];
+                            t = this.hufts[(this.tb[0] + (b & InternalInflateConstants.InflateMask[t])) * 3 + 1];
+                            c = this.hufts[(this.tb[0] + (b & InternalInflateConstants.InflateMask[t])) * 3 + 2];
 
                             if (c < 16)
                             {
                                 b >>= t; k -= t;
-                                blens[index++] = c;
+                                this.blens[this.index++] = c;
                             }
                             else
                             {
@@ -508,16 +519,17 @@ namespace OfficeOpenXml.Packaging.Ionic.Zlib
                                     }
                                     else
                                     {
-                                        bitb = b; bitk = k;
-                                        _codec.AvailableBytesIn = n;
-                                        _codec.TotalBytesIn += p - _codec.NextIn;
-                                        _codec.NextIn = p;
-                                        writeAt = q;
-                                        return Flush(r);
+                                        this.bitb = b;
+                                        this.bitk = k;
+                                        this._codec.AvailableBytesIn = n;
+                                        this._codec.TotalBytesIn += p - this._codec.NextIn;
+                                        this._codec.NextIn = p;
+                                        this.writeAt = q;
+                                        return this.Flush(r);
                                     }
 
                                     n--;
-                                    b |= (_codec.InputBuffer[p++] & 0xff) << k;
+                                    b |= (this._codec.InputBuffer[p++] & 0xff) << k;
                                     k += 8;
                                 }
 
@@ -527,139 +539,150 @@ namespace OfficeOpenXml.Packaging.Ionic.Zlib
 
                                 b >>= i; k -= i;
 
-                                i = index;
-                                t = table;
+                                i = this.index;
+                                t = this.table;
                                 if (i + j > 258 + (t & 0x1f) + ((t >> 5) & 0x1f) || (c == 16 && i < 1))
                                 {
-                                    blens = null;
-                                    mode = InflateBlockMode.BAD;
-                                    _codec.Message = "invalid bit length repeat";
+                                    this.blens = null;
+                                    this.mode = InflateBlockMode.BAD;
+                                    this._codec.Message = "invalid bit length repeat";
                                     r = ZlibConstants.Z_DATA_ERROR;
 
-                                    bitb = b; bitk = k;
-                                    _codec.AvailableBytesIn = n;
-                                    _codec.TotalBytesIn += p - _codec.NextIn;
-                                    _codec.NextIn = p;
-                                    writeAt = q;
-                                    return Flush(r);
+                                    this.bitb = b;
+                                    this.bitk = k;
+                                    this._codec.AvailableBytesIn = n;
+                                    this._codec.TotalBytesIn += p - this._codec.NextIn;
+                                    this._codec.NextIn = p;
+                                    this.writeAt = q;
+                                    return this.Flush(r);
                                 }
 
-                                c = (c == 16) ? blens[i-1] : 0;
+                                c = (c == 16) ? this.blens[i-1] : 0;
                                 do
                                 {
-                                    blens[i++] = c;
+                                    this.blens[i++] = c;
                                 }
                                 while (--j != 0);
-                                index = i;
+
+                                this.index = i;
                             }
                         }
 
-                        tb[0] = -1;
+                        this.tb[0] = -1;
                         {
                             int[] bl = new int[] { 9 };  // must be <= 9 for lookahead assumptions
                             int[] bd = new int[] { 6 }; // must be <= 9 for lookahead assumptions
                             int[] tl = new int[1];
                             int[] td = new int[1];
 
-                            t = table;
-                            t = inftree.inflate_trees_dynamic(257 + (t & 0x1f), 1 + ((t >> 5) & 0x1f), blens, bl, bd, tl, td, hufts, _codec);
+                            t = this.table;
+                            t = this.inftree.inflate_trees_dynamic(257 + (t & 0x1f), 1 + ((t >> 5) & 0x1f), this.blens, bl, bd, tl, td, this.hufts, this._codec);
 
                             if (t != ZlibConstants.Z_OK)
                             {
                                 if (t == ZlibConstants.Z_DATA_ERROR)
                                 {
-                                    blens = null;
-                                    mode = InflateBlockMode.BAD;
+                                    this.blens = null;
+                                    this.mode = InflateBlockMode.BAD;
                                 }
                                 r = t;
 
-                                bitb = b; bitk = k;
-                                _codec.AvailableBytesIn = n;
-                                _codec.TotalBytesIn += p - _codec.NextIn;
-                                _codec.NextIn = p;
-                                writeAt = q;
-                                return Flush(r);
+                                this.bitb = b;
+                                this.bitk = k;
+                                this._codec.AvailableBytesIn = n;
+                                this._codec.TotalBytesIn += p - this._codec.NextIn;
+                                this._codec.NextIn = p;
+                                this.writeAt = q;
+                                return this.Flush(r);
                             }
-                            codes.Init(bl[0], bd[0], hufts, tl[0], hufts, td[0]);
+
+                            this.codes.Init(bl[0], bd[0], this.hufts, tl[0], this.hufts, td[0]);
                         }
-                        mode = InflateBlockMode.CODES;
+
+                        this.mode = InflateBlockMode.CODES;
                         goto case InflateBlockMode.CODES;
 
                     case InflateBlockMode.CODES:
-                        bitb = b; bitk = k;
-                        _codec.AvailableBytesIn = n;
-                        _codec.TotalBytesIn += p - _codec.NextIn;
-                        _codec.NextIn = p;
-                        writeAt = q;
+                        this.bitb = b;
+                        this.bitk = k;
+                        this._codec.AvailableBytesIn = n;
+                        this._codec.TotalBytesIn += p - this._codec.NextIn;
+                        this._codec.NextIn = p;
+                        this.writeAt = q;
 
-                        r = codes.Process(this, r);
+                        r = this.codes.Process(this, r);
                         if (r != ZlibConstants.Z_STREAM_END)
                         {
-                            return Flush(r);
+                            return this.Flush(r);
                         }
 
                         r = ZlibConstants.Z_OK;
-                        p = _codec.NextIn;
-                        n = _codec.AvailableBytesIn;
-                        b = bitb;
-                        k = bitk;
-                        q = writeAt;
-                        m = (int)(q < readAt ? readAt - q - 1 : end - q);
+                        p = this._codec.NextIn;
+                        n = this._codec.AvailableBytesIn;
+                        b = this.bitb;
+                        k = this.bitk;
+                        q = this.writeAt;
+                        m = (int)(q < this.readAt ? this.readAt - q - 1 : this.end - q);
 
-                        if (last == 0)
+                        if (this.last == 0)
                         {
-                            mode = InflateBlockMode.TYPE;
+                            this.mode = InflateBlockMode.TYPE;
                             break;
                         }
-                        mode = InflateBlockMode.DRY;
+
+                        this.mode = InflateBlockMode.DRY;
                         goto case InflateBlockMode.DRY;
 
                     case InflateBlockMode.DRY:
-                        writeAt = q;
-                        r = Flush(r);
-                        q = writeAt; m = (int)(q < readAt ? readAt - q - 1 : end - q);
-                        if (readAt != writeAt)
+                        this.writeAt = q;
+                        r = this.Flush(r);
+                        q = this.writeAt; m = (int)(q < this.readAt ? this.readAt - q - 1 : this.end - q);
+                        if (this.readAt != this.writeAt)
                         {
-                            bitb = b; bitk = k;
-                            _codec.AvailableBytesIn = n;
-                            _codec.TotalBytesIn += p - _codec.NextIn;
-                            _codec.NextIn = p;
-                            writeAt = q;
-                            return Flush(r);
+                            this.bitb = b;
+                            this.bitk = k;
+                            this._codec.AvailableBytesIn = n;
+                            this._codec.TotalBytesIn += p - this._codec.NextIn;
+                            this._codec.NextIn = p;
+                            this.writeAt = q;
+                            return this.Flush(r);
                         }
-                        mode = InflateBlockMode.DONE;
+
+                        this.mode = InflateBlockMode.DONE;
                         goto case InflateBlockMode.DONE;
 
                     case InflateBlockMode.DONE:
                         r = ZlibConstants.Z_STREAM_END;
-                        bitb = b;
-                        bitk = k;
-                        _codec.AvailableBytesIn = n;
-                        _codec.TotalBytesIn += p - _codec.NextIn;
-                        _codec.NextIn = p;
-                        writeAt = q;
-                        return Flush(r);
+                        this.bitb = b;
+                        this.bitk = k;
+                        this._codec.AvailableBytesIn = n;
+                        this._codec.TotalBytesIn += p - this._codec.NextIn;
+                        this._codec.NextIn = p;
+                        this.writeAt = q;
+                        return this.Flush(r);
 
                     case InflateBlockMode.BAD:
                         r = ZlibConstants.Z_DATA_ERROR;
 
-                        bitb = b; bitk = k;
-                        _codec.AvailableBytesIn = n;
-                        _codec.TotalBytesIn += p - _codec.NextIn;
-                        _codec.NextIn = p;
-                        writeAt = q;
-                        return Flush(r);
+                        this.bitb = b;
+                        this.bitk = k;
+                        this._codec.AvailableBytesIn = n;
+                        this._codec.TotalBytesIn += p - this._codec.NextIn;
+                        this._codec.NextIn = p;
+                        this.writeAt = q;
+                        return this.Flush(r);
 
 
                     default:
                         r = ZlibConstants.Z_STREAM_ERROR;
 
-                        bitb = b; bitk = k;
-                        _codec.AvailableBytesIn = n;
-                        _codec.TotalBytesIn += p - _codec.NextIn;
-                        _codec.NextIn = p;
-                        writeAt = q;
-                        return Flush(r);
+                        this.bitb = b;
+                        this.bitk = k;
+                        this._codec.AvailableBytesIn = n;
+                        this._codec.TotalBytesIn += p - this._codec.NextIn;
+                        this._codec.NextIn = p;
+                        this.writeAt = q;
+                        return this.Flush(r);
                 }
             }
         }
@@ -667,22 +690,22 @@ namespace OfficeOpenXml.Packaging.Ionic.Zlib
 
         internal void Free()
         {
-            Reset();
-            window = null;
-            hufts = null;
+            this.Reset();
+            this.window = null;
+            this.hufts = null;
         }
 
         internal void SetDictionary(byte[] d, int start, int n)
         {
-            Array.Copy(d, start, window, 0, n);
-            readAt = writeAt = n;
+            Array.Copy(d, start, this.window, 0, n);
+            this.readAt = this.writeAt = n;
         }
 
         // Returns true if inflate is currently at the end of a block generated
         // by Z_SYNC_FLUSH or Z_FULL_FLUSH.
         internal int SyncPoint()
         {
-            return mode == InflateBlockMode.LENS ? 1 : 0;
+            return this.mode == InflateBlockMode.LENS ? 1 : 0;
         }
 
         // copy as much as possible from the sliding window to the output area
@@ -695,12 +718,12 @@ namespace OfficeOpenXml.Packaging.Ionic.Zlib
                 if (pass==0)
                 {
                     // compute number of bytes to copy as far as end of window
-                    nBytes = (int)((readAt <= writeAt ? writeAt : end) - readAt);
+                    nBytes = (int)((this.readAt <= this.writeAt ? this.writeAt : this.end) - this.readAt);
                 }
                 else
                 {
                     // compute bytes to copy
-                    nBytes = writeAt - readAt;
+                    nBytes = this.writeAt - this.readAt;
                 }
 
                 // workitem 8870
@@ -714,7 +737,7 @@ namespace OfficeOpenXml.Packaging.Ionic.Zlib
                     return r;
                 }
 
-                if (nBytes > _codec.AvailableBytesOut)
+                if (nBytes > this._codec.AvailableBytesOut)
                 {
                     nBytes = this._codec.AvailableBytesOut;
                 }
@@ -725,26 +748,26 @@ namespace OfficeOpenXml.Packaging.Ionic.Zlib
                 }
 
                 // update counters
-                _codec.AvailableBytesOut -= nBytes;
-                _codec.TotalBytesOut += nBytes;
+                this._codec.AvailableBytesOut -= nBytes;
+                this._codec.TotalBytesOut += nBytes;
 
                 // update check information
-                if (checkfn != null)
+                if (this.checkfn != null)
                 {
                     this._codec._Adler32 = this.check = Adler.Adler32(this.check, this.window, this.readAt, nBytes);
                 }
 
                 // copy as far as end of window
-                Array.Copy(window, readAt, _codec.OutputBuffer, _codec.NextOut, nBytes);
-                _codec.NextOut += nBytes;
-                readAt += nBytes;
+                Array.Copy(this.window, this.readAt, this._codec.OutputBuffer, this._codec.NextOut, nBytes);
+                this._codec.NextOut += nBytes;
+                this.readAt += nBytes;
 
                 // see if more to copy at beginning of window
-                if (readAt == end && pass == 0)
+                if (this.readAt == this.end && pass == 0)
                 {
                     // wrap pointers
-                    readAt = 0;
-                    if (writeAt == end)
+                    this.readAt = 0;
+                    if (this.writeAt == this.end)
                     {
                         this.writeAt = 0;
                     }
@@ -816,14 +839,14 @@ namespace OfficeOpenXml.Packaging.Ionic.Zlib
 
         internal void Init(int bl, int bd, int[] tl, int tl_index, int[] td, int td_index)
         {
-            mode = START;
-            lbits = (byte)bl;
-            dbits = (byte)bd;
-            ltree = tl;
-            ltree_index = tl_index;
-            dtree = td;
-            dtree_index = td_index;
-            tree = null;
+            this.mode = START;
+            this.lbits = (byte)bl;
+            this.dbits = (byte)bd;
+            this.ltree = tl;
+            this.ltree_index = tl_index;
+            this.dtree = td;
+            this.dtree_index = td_index;
+            this.tree = null;
         }
 
         internal int Process(InflateBlocks blocks, int r)
@@ -851,7 +874,7 @@ namespace OfficeOpenXml.Packaging.Ionic.Zlib
             // process input and output based on current state
             while (true)
             {
-                switch (mode)
+                switch (this.mode)
                 {
                     // waiting for "i:"=input, "o:"=output, "x:"=nothing
                     case START:  // x: set up for LEN
@@ -862,7 +885,7 @@ namespace OfficeOpenXml.Packaging.Ionic.Zlib
                             z.TotalBytesIn += p - z.NextIn;
                             z.NextIn = p;
                             blocks.writeAt = q;
-                            r = InflateFast(lbits, dbits, ltree, ltree_index, dtree, dtree_index, blocks, z);
+                            r = InflateFast(this.lbits, this.dbits, this.ltree, this.ltree_index, this.dtree, this.dtree_index, blocks, z);
 
                             p = z.NextIn;
                             n = z.AvailableBytesIn;
@@ -872,19 +895,20 @@ namespace OfficeOpenXml.Packaging.Ionic.Zlib
 
                             if (r != ZlibConstants.Z_OK)
                             {
-                                mode = (r == ZlibConstants.Z_STREAM_END) ? WASH : BADCODE;
+                                this.mode = (r == ZlibConstants.Z_STREAM_END) ? WASH : BADCODE;
                                 break;
                             }
                         }
-                        need = lbits;
-                        tree = ltree;
-                        tree_index = ltree_index;
 
-                        mode = LEN;
+                        this.need = this.lbits;
+                        this.tree = this.ltree;
+                        this.tree_index = this.ltree_index;
+
+                        this.mode = LEN;
                         goto case LEN;
 
                     case LEN:  // i: get length/literal/eob next
-                        j = need;
+                        j = this.need;
 
                         while (k < j)
                         {
@@ -906,42 +930,43 @@ namespace OfficeOpenXml.Packaging.Ionic.Zlib
                             k += 8;
                         }
 
-                        tindex = (tree_index + (b & InternalInflateConstants.InflateMask[j])) * 3;
+                        tindex = (this.tree_index + (b & InternalInflateConstants.InflateMask[j])) * 3;
 
-                        b >>= (tree[tindex + 1]);
-                        k -= (tree[tindex + 1]);
+                        b >>= (this.tree[tindex + 1]);
+                        k -= (this.tree[tindex + 1]);
 
-                        e = tree[tindex];
+                        e = this.tree[tindex];
 
                         if (e == 0)
                         {
                             // literal
-                            lit = tree[tindex + 2];
-                            mode = LIT;
+                            this.lit = this.tree[tindex + 2];
+                            this.mode = LIT;
                             break;
                         }
                         if ((e & 16) != 0)
                         {
                             // length
-                            bitsToGet = e & 15;
-                            len = tree[tindex + 2];
-                            mode = LENEXT;
+                            this.bitsToGet = e & 15;
+                            this.len = this.tree[tindex + 2];
+                            this.mode = LENEXT;
                             break;
                         }
                         if ((e & 64) == 0)
                         {
                             // next table
-                            need = e;
-                            tree_index = tindex / 3 + tree[tindex + 2];
+                            this.need = e;
+                            this.tree_index = tindex / 3 + this.tree[tindex + 2];
                             break;
                         }
                         if ((e & 32) != 0)
                         {
                             // end of block
-                            mode = WASH;
+                            this.mode = WASH;
                             break;
                         }
-                        mode = BADCODE; // invalid code
+
+                        this.mode = BADCODE; // invalid code
                         z.Message = "invalid literal/length code";
                         r = ZlibConstants.Z_DATA_ERROR;
 
@@ -954,7 +979,7 @@ namespace OfficeOpenXml.Packaging.Ionic.Zlib
 
 
                     case LENEXT:  // i: getting length extra (have base)
-                        j = bitsToGet;
+                        j = this.bitsToGet;
 
                         while (k < j)
                         {
@@ -973,19 +998,19 @@ namespace OfficeOpenXml.Packaging.Ionic.Zlib
                             k += 8;
                         }
 
-                        len += (b & InternalInflateConstants.InflateMask[j]);
+                        this.len += (b & InternalInflateConstants.InflateMask[j]);
 
                         b >>= j;
                         k -= j;
 
-                        need = dbits;
-                        tree = dtree;
-                        tree_index = dtree_index;
-                        mode = DIST;
+                        this.need = this.dbits;
+                        this.tree = this.dtree;
+                        this.tree_index = this.dtree_index;
+                        this.mode = DIST;
                         goto case DIST;
 
                     case DIST:  // i: get distance next
-                        j = need;
+                        j = this.need;
 
                         while (k < j)
                         {
@@ -1004,28 +1029,29 @@ namespace OfficeOpenXml.Packaging.Ionic.Zlib
                             k += 8;
                         }
 
-                        tindex = (tree_index + (b & InternalInflateConstants.InflateMask[j])) * 3;
+                        tindex = (this.tree_index + (b & InternalInflateConstants.InflateMask[j])) * 3;
 
-                        b >>= tree[tindex + 1];
-                        k -= tree[tindex + 1];
+                        b >>= this.tree[tindex + 1];
+                        k -= this.tree[tindex + 1];
 
-                        e = (tree[tindex]);
+                        e = (this.tree[tindex]);
                         if ((e & 0x10) != 0)
                         {
                             // distance
-                            bitsToGet = e & 15;
-                            dist = tree[tindex + 2];
-                            mode = DISTEXT;
+                            this.bitsToGet = e & 15;
+                            this.dist = this.tree[tindex + 2];
+                            this.mode = DISTEXT;
                             break;
                         }
                         if ((e & 64) == 0)
                         {
                             // next table
-                            need = e;
-                            tree_index = tindex / 3 + tree[tindex + 2];
+                            this.need = e;
+                            this.tree_index = tindex / 3 + this.tree[tindex + 2];
                             break;
                         }
-                        mode = BADCODE; // invalid code
+
+                        this.mode = BADCODE; // invalid code
                         z.Message = "invalid distance code";
                         r = ZlibConstants.Z_DATA_ERROR;
 
@@ -1036,7 +1062,7 @@ namespace OfficeOpenXml.Packaging.Ionic.Zlib
 
 
                     case DISTEXT:  // i: getting distance extra
-                        j = bitsToGet;
+                        j = this.bitsToGet;
 
                         while (k < j)
                         {
@@ -1055,22 +1081,22 @@ namespace OfficeOpenXml.Packaging.Ionic.Zlib
                             k += 8;
                         }
 
-                        dist += (b & InternalInflateConstants.InflateMask[j]);
+                        this.dist += (b & InternalInflateConstants.InflateMask[j]);
 
                         b >>= j;
                         k -= j;
 
-                        mode = COPY;
+                        this.mode = COPY;
                         goto case COPY;
 
                     case COPY:  // o: copying bytes in window, waiting for space
-                        f = q - dist;
+                        f = q - this.dist;
                         while (f < 0)
                         {
                             // modulo window size-"while" instead
                             f += blocks.end; // of "if" handles invalid distances
                         }
-                        while (len != 0)
+                        while (this.len != 0)
                         {
                             if (m == 0)
                             {
@@ -1107,9 +1133,10 @@ namespace OfficeOpenXml.Packaging.Ionic.Zlib
                                 f = 0;
                             }
 
-                            len--;
+                            this.len--;
                         }
-                        mode = START;
+
+                        this.mode = START;
                         break;
 
                     case LIT:  // o: got literal, waiting for output space
@@ -1139,9 +1166,9 @@ namespace OfficeOpenXml.Packaging.Ionic.Zlib
                         }
                         r = ZlibConstants.Z_OK;
 
-                        blocks.window[q++] = (byte)lit; m--;
+                        blocks.window[q++] = (byte)this.lit; m--;
 
-                        mode = START;
+                        this.mode = START;
                         break;
 
                     case WASH:  // o: got eob, possibly more output
@@ -1163,7 +1190,8 @@ namespace OfficeOpenXml.Packaging.Ionic.Zlib
                             blocks.writeAt = q;
                             return blocks.Flush(r);
                         }
-                        mode = END;
+
+                        this.mode = END;
                         goto case END;
 
                     case END:
@@ -1482,8 +1510,8 @@ namespace OfficeOpenXml.Packaging.Ionic.Zlib
         private bool _handleRfc1950HeaderBytes = true;
         internal bool HandleRfc1950HeaderBytes
         {
-            get { return _handleRfc1950HeaderBytes; }
-            set { _handleRfc1950HeaderBytes = value; }
+            get { return this._handleRfc1950HeaderBytes; }
+            set { this._handleRfc1950HeaderBytes = value; }
         }
         internal int wbits; // log2(window size)  (8..15, defaults to 15)
 
@@ -1493,34 +1521,34 @@ namespace OfficeOpenXml.Packaging.Ionic.Zlib
 
         public InflateManager(bool expectRfc1950HeaderBytes)
         {
-            _handleRfc1950HeaderBytes = expectRfc1950HeaderBytes;
+            this._handleRfc1950HeaderBytes = expectRfc1950HeaderBytes;
         }
 
         internal int Reset()
         {
-            _codec.TotalBytesIn = _codec.TotalBytesOut = 0;
-            _codec.Message = null;
-            mode = HandleRfc1950HeaderBytes ? InflateManagerMode.METHOD : InflateManagerMode.BLOCKS;
-            blocks.Reset();
+            this._codec.TotalBytesIn = this._codec.TotalBytesOut = 0;
+            this._codec.Message = null;
+            this.mode = this.HandleRfc1950HeaderBytes ? InflateManagerMode.METHOD : InflateManagerMode.BLOCKS;
+            this.blocks.Reset();
             return ZlibConstants.Z_OK;
         }
 
         internal int End()
         {
-            if (blocks != null)
+            if (this.blocks != null)
             {
                 this.blocks.Free();
             }
 
-            blocks = null;
+            this.blocks = null;
             return ZlibConstants.Z_OK;
         }
 
         internal int Initialize(ZlibCodec codec, int w)
         {
-            _codec = codec;
-            _codec.Message = null;
-            blocks = null;
+            this._codec = codec;
+            this._codec.Message = null;
+            this.blocks = null;
 
             // handle undocumented nowrap option (no zlib header or check)
             //nowrap = 0;
@@ -1533,19 +1561,20 @@ namespace OfficeOpenXml.Packaging.Ionic.Zlib
             // set window size
             if (w < 8 || w > 15)
             {
-                End();
+                this.End();
                 throw new ZlibException("Bad window size.");
 
                 //return ZlibConstants.Z_STREAM_ERROR;
             }
-            wbits = w;
 
-            blocks = new InflateBlocks(codec,
-                HandleRfc1950HeaderBytes ? this : null,
-                1 << w);
+            this.wbits = w;
+
+            this.blocks = new InflateBlocks(codec,
+                                            this.HandleRfc1950HeaderBytes ? this : null,
+                                            1 << w);
 
             // reset state
-            Reset();
+            this.Reset();
             return ZlibConstants.Z_OK;
         }
 
@@ -1554,7 +1583,7 @@ namespace OfficeOpenXml.Packaging.Ionic.Zlib
         {
             int b;
 
-            if (_codec.InputBuffer == null)
+            if (this._codec.InputBuffer == null)
             {
                 throw new ZlibException("InputBuffer is null. ");
             }
@@ -1569,127 +1598,129 @@ namespace OfficeOpenXml.Packaging.Ionic.Zlib
 
             while (true)
             {
-                switch (mode)
+                switch (this.mode)
                 {
                     case InflateManagerMode.METHOD:
-                        if (_codec.AvailableBytesIn == 0)
+                        if (this._codec.AvailableBytesIn == 0)
                         {
                             return r;
                         }
 
                         r = f;
-                        _codec.AvailableBytesIn--;
-                        _codec.TotalBytesIn++;
-                        if (((method = _codec.InputBuffer[_codec.NextIn++]) & 0xf) != Z_DEFLATED)
+                        this._codec.AvailableBytesIn--;
+                        this._codec.TotalBytesIn++;
+                        if (((this.method = this._codec.InputBuffer[this._codec.NextIn++]) & 0xf) != Z_DEFLATED)
                         {
-                            mode = InflateManagerMode.BAD;
-                            _codec.Message = String.Format("unknown compression method (0x{0:X2})", method);
-                            marker = 5; // can't try inflateSync
+                            this.mode = InflateManagerMode.BAD;
+                            this._codec.Message = String.Format("unknown compression method (0x{0:X2})", this.method);
+                            this.marker = 5; // can't try inflateSync
                             break;
                         }
-                        if ((method >> 4) + 8 > wbits)
+                        if ((this.method >> 4) + 8 > this.wbits)
                         {
-                            mode = InflateManagerMode.BAD;
-                            _codec.Message = String.Format("invalid window size ({0})", (method >> 4) + 8);
-                            marker = 5; // can't try inflateSync
+                            this.mode = InflateManagerMode.BAD;
+                            this._codec.Message = String.Format("invalid window size ({0})", (this.method >> 4) + 8);
+                            this.marker = 5; // can't try inflateSync
                             break;
                         }
-                        mode = InflateManagerMode.FLAG;
+
+                        this.mode = InflateManagerMode.FLAG;
                         break;
 
 
                     case InflateManagerMode.FLAG:
-                        if (_codec.AvailableBytesIn == 0)
+                        if (this._codec.AvailableBytesIn == 0)
                         {
                             return r;
                         }
 
                         r = f;
-                        _codec.AvailableBytesIn--;
-                        _codec.TotalBytesIn++;
-                        b = (_codec.InputBuffer[_codec.NextIn++]) & 0xff;
+                        this._codec.AvailableBytesIn--;
+                        this._codec.TotalBytesIn++;
+                        b = (this._codec.InputBuffer[this._codec.NextIn++]) & 0xff;
 
-                        if ((((method << 8) + b) % 31) != 0)
+                        if ((((this.method << 8) + b) % 31) != 0)
                         {
-                            mode = InflateManagerMode.BAD;
-                            _codec.Message = "incorrect header check";
-                            marker = 5; // can't try inflateSync
+                            this.mode = InflateManagerMode.BAD;
+                            this._codec.Message = "incorrect header check";
+                            this.marker = 5; // can't try inflateSync
                             break;
                         }
 
-                        mode = ((b & PRESET_DICT) == 0)
-                            ? InflateManagerMode.BLOCKS
-                            : InflateManagerMode.DICT4;
+                        this.mode = ((b & PRESET_DICT) == 0)
+                                        ? InflateManagerMode.BLOCKS
+                                        : InflateManagerMode.DICT4;
                         break;
 
                     case InflateManagerMode.DICT4:
-                        if (_codec.AvailableBytesIn == 0)
+                        if (this._codec.AvailableBytesIn == 0)
                         {
                             return r;
                         }
 
                         r = f;
-                        _codec.AvailableBytesIn--;
-                        _codec.TotalBytesIn++;
-                        expectedCheck = (uint)((_codec.InputBuffer[_codec.NextIn++] << 24) & 0xff000000);
-                        mode = InflateManagerMode.DICT3;
+                        this._codec.AvailableBytesIn--;
+                        this._codec.TotalBytesIn++;
+                        this.expectedCheck = (uint)((this._codec.InputBuffer[this._codec.NextIn++] << 24) & 0xff000000);
+                        this.mode = InflateManagerMode.DICT3;
                         break;
 
                     case InflateManagerMode.DICT3:
-                        if (_codec.AvailableBytesIn == 0)
+                        if (this._codec.AvailableBytesIn == 0)
                         {
                             return r;
                         }
 
                         r = f;
-                        _codec.AvailableBytesIn--;
-                        _codec.TotalBytesIn++;
-                        expectedCheck += (uint)((_codec.InputBuffer[_codec.NextIn++] << 16) & 0x00ff0000);
-                        mode = InflateManagerMode.DICT2;
+                        this._codec.AvailableBytesIn--;
+                        this._codec.TotalBytesIn++;
+                        this.expectedCheck += (uint)((this._codec.InputBuffer[this._codec.NextIn++] << 16) & 0x00ff0000);
+                        this.mode = InflateManagerMode.DICT2;
                         break;
 
                     case InflateManagerMode.DICT2:
 
-                        if (_codec.AvailableBytesIn == 0)
+                        if (this._codec.AvailableBytesIn == 0)
                         {
                             return r;
                         }
 
                         r = f;
-                        _codec.AvailableBytesIn--;
-                        _codec.TotalBytesIn++;
-                        expectedCheck += (uint)((_codec.InputBuffer[_codec.NextIn++] << 8) & 0x0000ff00);
-                        mode = InflateManagerMode.DICT1;
+                        this._codec.AvailableBytesIn--;
+                        this._codec.TotalBytesIn++;
+                        this.expectedCheck += (uint)((this._codec.InputBuffer[this._codec.NextIn++] << 8) & 0x0000ff00);
+                        this.mode = InflateManagerMode.DICT1;
                         break;
 
 
                     case InflateManagerMode.DICT1:
-                        if (_codec.AvailableBytesIn == 0)
+                        if (this._codec.AvailableBytesIn == 0)
                         {
                             return r;
                         }
 
                         r = f;
-                        _codec.AvailableBytesIn--; _codec.TotalBytesIn++;
-                        expectedCheck += (uint)(_codec.InputBuffer[_codec.NextIn++] & 0x000000ff);
-                        _codec._Adler32 = expectedCheck;
-                        mode = InflateManagerMode.DICT0;
+                        this._codec.AvailableBytesIn--;
+                        this._codec.TotalBytesIn++;
+                        this.expectedCheck += (uint)(this._codec.InputBuffer[this._codec.NextIn++] & 0x000000ff);
+                        this._codec._Adler32 = this.expectedCheck;
+                        this.mode = InflateManagerMode.DICT0;
                         return ZlibConstants.Z_NEED_DICT;
 
 
                     case InflateManagerMode.DICT0:
-                        mode = InflateManagerMode.BAD;
-                        _codec.Message = "need dictionary";
-                        marker = 0; // can try inflateSync
+                        this.mode = InflateManagerMode.BAD;
+                        this._codec.Message = "need dictionary";
+                        this.marker = 0; // can try inflateSync
                         return ZlibConstants.Z_STREAM_ERROR;
 
 
                     case InflateManagerMode.BLOCKS:
-                        r = blocks.Process(r);
+                        r = this.blocks.Process(r);
                         if (r == ZlibConstants.Z_DATA_ERROR)
                         {
-                            mode = InflateManagerMode.BAD;
-                            marker = 0; // can try inflateSync
+                            this.mode = InflateManagerMode.BAD;
+                            this.marker = 0; // can try inflateSync
                             break;
                         }
 
@@ -1704,77 +1735,81 @@ namespace OfficeOpenXml.Packaging.Ionic.Zlib
                         }
 
                         r = f;
-                        computedCheck = blocks.Reset();
-                        if (!HandleRfc1950HeaderBytes)
+                        this.computedCheck = this.blocks.Reset();
+                        if (!this.HandleRfc1950HeaderBytes)
                         {
-                            mode = InflateManagerMode.DONE;
+                            this.mode = InflateManagerMode.DONE;
                             return ZlibConstants.Z_STREAM_END;
                         }
-                        mode = InflateManagerMode.CHECK4;
+
+                        this.mode = InflateManagerMode.CHECK4;
                         break;
 
                     case InflateManagerMode.CHECK4:
-                        if (_codec.AvailableBytesIn == 0)
+                        if (this._codec.AvailableBytesIn == 0)
                         {
                             return r;
                         }
 
                         r = f;
-                        _codec.AvailableBytesIn--;
-                        _codec.TotalBytesIn++;
-                        expectedCheck = (uint)((_codec.InputBuffer[_codec.NextIn++] << 24) & 0xff000000);
-                        mode = InflateManagerMode.CHECK3;
+                        this._codec.AvailableBytesIn--;
+                        this._codec.TotalBytesIn++;
+                        this.expectedCheck = (uint)((this._codec.InputBuffer[this._codec.NextIn++] << 24) & 0xff000000);
+                        this.mode = InflateManagerMode.CHECK3;
                         break;
 
                     case InflateManagerMode.CHECK3:
-                        if (_codec.AvailableBytesIn == 0)
+                        if (this._codec.AvailableBytesIn == 0)
                         {
                             return r;
                         }
 
                         r = f;
-                        _codec.AvailableBytesIn--; _codec.TotalBytesIn++;
-                        expectedCheck += (uint)((_codec.InputBuffer[_codec.NextIn++] << 16) & 0x00ff0000);
-                        mode = InflateManagerMode.CHECK2;
+                        this._codec.AvailableBytesIn--;
+                        this._codec.TotalBytesIn++;
+                        this.expectedCheck += (uint)((this._codec.InputBuffer[this._codec.NextIn++] << 16) & 0x00ff0000);
+                        this.mode = InflateManagerMode.CHECK2;
                         break;
 
                     case InflateManagerMode.CHECK2:
-                        if (_codec.AvailableBytesIn == 0)
+                        if (this._codec.AvailableBytesIn == 0)
                         {
                             return r;
                         }
 
                         r = f;
-                        _codec.AvailableBytesIn--;
-                        _codec.TotalBytesIn++;
-                        expectedCheck += (uint)((_codec.InputBuffer[_codec.NextIn++] << 8) & 0x0000ff00);
-                        mode = InflateManagerMode.CHECK1;
+                        this._codec.AvailableBytesIn--;
+                        this._codec.TotalBytesIn++;
+                        this.expectedCheck += (uint)((this._codec.InputBuffer[this._codec.NextIn++] << 8) & 0x0000ff00);
+                        this.mode = InflateManagerMode.CHECK1;
                         break;
 
                     case InflateManagerMode.CHECK1:
-                        if (_codec.AvailableBytesIn == 0)
+                        if (this._codec.AvailableBytesIn == 0)
                         {
                             return r;
                         }
 
                         r = f;
-                        _codec.AvailableBytesIn--; _codec.TotalBytesIn++;
-                        expectedCheck += (uint)(_codec.InputBuffer[_codec.NextIn++] & 0x000000ff);
-                        if (computedCheck != expectedCheck)
+                        this._codec.AvailableBytesIn--;
+                        this._codec.TotalBytesIn++;
+                        this.expectedCheck += (uint)(this._codec.InputBuffer[this._codec.NextIn++] & 0x000000ff);
+                        if (this.computedCheck != this.expectedCheck)
                         {
-                            mode = InflateManagerMode.BAD;
-                            _codec.Message = "incorrect data check";
-                            marker = 5; // can't try inflateSync
+                            this.mode = InflateManagerMode.BAD;
+                            this._codec.Message = "incorrect data check";
+                            this.marker = 5; // can't try inflateSync
                             break;
                         }
-                        mode = InflateManagerMode.DONE;
+
+                        this.mode = InflateManagerMode.DONE;
                         return ZlibConstants.Z_STREAM_END;
 
                     case InflateManagerMode.DONE:
                         return ZlibConstants.Z_STREAM_END;
 
                     case InflateManagerMode.BAD:
-                        throw new ZlibException(String.Format("Bad state ({0})", _codec.Message));
+                        throw new ZlibException(String.Format("Bad state ({0})", this._codec.Message));
 
                     default:
                         throw new ZlibException("Stream error.");
@@ -1789,25 +1824,26 @@ namespace OfficeOpenXml.Packaging.Ionic.Zlib
         {
             int index = 0;
             int length = dictionary.Length;
-            if (mode != InflateManagerMode.DICT0)
+            if (this.mode != InflateManagerMode.DICT0)
             {
                 throw new ZlibException("Stream error.");
             }
 
-            if (Adler.Adler32(1, dictionary, 0, dictionary.Length) != _codec._Adler32)
+            if (Adler.Adler32(1, dictionary, 0, dictionary.Length) != this._codec._Adler32)
             {
                 return ZlibConstants.Z_DATA_ERROR;
             }
 
-            _codec._Adler32 = Adler.Adler32(0, null, 0, 0);
+            this._codec._Adler32 = Adler.Adler32(0, null, 0, 0);
 
-            if (length >= (1 << wbits))
+            if (length >= (1 << this.wbits))
             {
-                length = (1 << wbits) - 1;
+                length = (1 << this.wbits) - 1;
                 index = dictionary.Length - length;
             }
-            blocks.SetDictionary(dictionary, index, length);
-            mode = InflateManagerMode.BLOCKS;
+
+            this.blocks.SetDictionary(dictionary, index, length);
+            this.mode = InflateManagerMode.BLOCKS;
             return ZlibConstants.Z_OK;
         }
 
@@ -1822,27 +1858,27 @@ namespace OfficeOpenXml.Packaging.Ionic.Zlib
             long r, w; // temporaries to save total_in and total_out
 
             // set up
-            if (mode != InflateManagerMode.BAD)
+            if (this.mode != InflateManagerMode.BAD)
             {
-                mode = InflateManagerMode.BAD;
-                marker = 0;
+                this.mode = InflateManagerMode.BAD;
+                this.marker = 0;
             }
-            if ((n = _codec.AvailableBytesIn) == 0)
+            if ((n = this._codec.AvailableBytesIn) == 0)
             {
                 return ZlibConstants.Z_BUF_ERROR;
             }
 
-            p = _codec.NextIn;
-            m = marker;
+            p = this._codec.NextIn;
+            m = this.marker;
 
             // search
             while (n != 0 && m < 4)
             {
-                if (_codec.InputBuffer[p] == mark[m])
+                if (this._codec.InputBuffer[p] == mark[m])
                 {
                     m++;
                 }
-                else if (_codec.InputBuffer[p] != 0)
+                else if (this._codec.InputBuffer[p] != 0)
                 {
                     m = 0;
                 }
@@ -1854,22 +1890,22 @@ namespace OfficeOpenXml.Packaging.Ionic.Zlib
             }
 
             // restore
-            _codec.TotalBytesIn += p - _codec.NextIn;
-            _codec.NextIn = p;
-            _codec.AvailableBytesIn = n;
-            marker = m;
+            this._codec.TotalBytesIn += p - this._codec.NextIn;
+            this._codec.NextIn = p;
+            this._codec.AvailableBytesIn = n;
+            this.marker = m;
 
             // return no joy or set up to restart on a new block
             if (m != 4)
             {
                 return ZlibConstants.Z_DATA_ERROR;
             }
-            r = _codec.TotalBytesIn;
-            w = _codec.TotalBytesOut;
-            Reset();
-            _codec.TotalBytesIn = r;
-            _codec.TotalBytesOut = w;
-            mode = InflateManagerMode.BLOCKS;
+            r = this._codec.TotalBytesIn;
+            w = this._codec.TotalBytesOut;
+            this.Reset();
+            this._codec.TotalBytesIn = r;
+            this._codec.TotalBytesOut = w;
+            this.mode = InflateManagerMode.BLOCKS;
             return ZlibConstants.Z_OK;
         }
 
@@ -1882,7 +1918,7 @@ namespace OfficeOpenXml.Packaging.Ionic.Zlib
         // waiting for these length bytes.
         internal int SyncPoint(ZlibCodec z)
         {
-            return blocks.SyncPoint();
+            return this.blocks.SyncPoint();
         }
     }
 }

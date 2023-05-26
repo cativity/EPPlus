@@ -66,10 +66,10 @@ namespace OfficeOpenXml.Packaging.Ionic.Zlib
     ///
     /// <seealso cref="ZlibStream" />
     /// <seealso cref="GZipStream" />
-    public class DeflateStream : System.IO.Stream
+    public class DeflateStream : Stream
     {
         internal ZlibBaseStream _baseStream;
-        internal System.IO.Stream _innerStream;
+        internal Stream _innerStream;
         bool _disposed;
 
         /// <summary>
@@ -122,7 +122,7 @@ namespace OfficeOpenXml.Packaging.Ionic.Zlib
         /// </example>
         /// <param name="stream">The stream which will be read or written.</param>
         /// <param name="mode">Indicates whether the DeflateStream will compress or decompress.</param>
-        public DeflateStream(System.IO.Stream stream, CompressionMode mode)
+        public DeflateStream(Stream stream, CompressionMode mode)
             : this(stream, mode, CompressionLevel.Default, false)
         {
         }
@@ -188,7 +188,7 @@ namespace OfficeOpenXml.Packaging.Ionic.Zlib
         /// <param name="stream">The stream to be read or written while deflating or inflating.</param>
         /// <param name="mode">Indicates whether the <c>DeflateStream</c> will compress or decompress.</param>
         /// <param name="level">A tuning knob to trade speed for effectiveness.</param>
-        public DeflateStream(System.IO.Stream stream, CompressionMode mode, CompressionLevel level)
+        public DeflateStream(Stream stream, CompressionMode mode, CompressionLevel level)
             : this(stream, mode, level, false)
         {
         }
@@ -230,7 +230,7 @@ namespace OfficeOpenXml.Packaging.Ionic.Zlib
         ///
         /// <param name="leaveOpen">true if the application would like the stream to
         /// remain open after inflation/deflation.</param>
-        public DeflateStream(System.IO.Stream stream, CompressionMode mode, bool leaveOpen)
+        public DeflateStream(Stream stream, CompressionMode mode, bool leaveOpen)
             : this(stream, mode, CompressionLevel.Default, leaveOpen)
         {
         }
@@ -307,10 +307,10 @@ namespace OfficeOpenXml.Packaging.Ionic.Zlib
         /// <param name="mode">Indicates whether the DeflateStream will compress or decompress.</param>
         /// <param name="leaveOpen">true if the application would like the stream to remain open after inflation/deflation.</param>
         /// <param name="level">A tuning knob to trade speed for effectiveness.</param>
-        public DeflateStream(System.IO.Stream stream, CompressionMode mode, CompressionLevel level, bool leaveOpen)
+        public DeflateStream(Stream stream, CompressionMode mode, CompressionLevel level, bool leaveOpen)
         {
-            _innerStream = stream;
-            _baseStream = new ZlibBaseStream(stream, mode, level, ZlibStreamFlavor.DEFLATE, leaveOpen);
+            this._innerStream = stream;
+            this._baseStream = new ZlibBaseStream(stream, mode, level, ZlibStreamFlavor.DEFLATE, leaveOpen);
         }
 
         #region Zlib properties
@@ -325,7 +325,7 @@ namespace OfficeOpenXml.Packaging.Ionic.Zlib
             get { return (this._baseStream._flushMode); }
             set
             {
-                if (_disposed)
+                if (this._disposed)
                 {
                     throw new ObjectDisposedException("DeflateStream");
                 }
@@ -359,7 +359,7 @@ namespace OfficeOpenXml.Packaging.Ionic.Zlib
             }
             set
             {
-                if (_disposed)
+                if (this._disposed)
                 {
                     throw new ObjectDisposedException("DeflateStream");
                 }
@@ -394,7 +394,7 @@ namespace OfficeOpenXml.Packaging.Ionic.Zlib
             }
             set
             {
-            if (_disposed)
+            if (this._disposed)
             {
                 throw new ObjectDisposedException("DeflateStream");
             }
@@ -452,14 +452,14 @@ namespace OfficeOpenXml.Packaging.Ionic.Zlib
         {
             try
             {
-                if (!_disposed)
+                if (!this._disposed)
                 {
                     if (disposing && (this._baseStream != null))
                     {
                         this._baseStream.Close();
                     }
 
-                    _disposed = true;
+                    this._disposed = true;
                 }
             }
             finally
@@ -480,12 +480,12 @@ namespace OfficeOpenXml.Packaging.Ionic.Zlib
         {
             get
             {
-                if (_disposed)
+                if (this._disposed)
                 {
                     throw new ObjectDisposedException("DeflateStream");
                 }
 
-                return _baseStream._stream.CanRead;
+                return this._baseStream._stream.CanRead;
             }
         }
 
@@ -511,12 +511,12 @@ namespace OfficeOpenXml.Packaging.Ionic.Zlib
         {
             get
             {
-                if (_disposed)
+                if (this._disposed)
                 {
                     throw new ObjectDisposedException("DeflateStream");
                 }
 
-                return _baseStream._stream.CanWrite;
+                return this._baseStream._stream.CanWrite;
             }
         }
 
@@ -525,12 +525,12 @@ namespace OfficeOpenXml.Packaging.Ionic.Zlib
         /// </summary>
         public override void Flush()
         {
-            if (_disposed)
+            if (this._disposed)
             {
                 throw new ObjectDisposedException("DeflateStream");
             }
 
-            _baseStream.Flush();
+            this._baseStream.Flush();
         }
 
         /// <summary>
@@ -556,12 +556,12 @@ namespace OfficeOpenXml.Packaging.Ionic.Zlib
         {
             get
             {
-                if (this._baseStream._streamMode == Ionic.Zlib.ZlibBaseStream.StreamMode.Writer)
+                if (this._baseStream._streamMode == ZlibBaseStream.StreamMode.Writer)
                 {
                     return this._baseStream._z.TotalBytesOut;
                 }
 
-                if (this._baseStream._streamMode == Ionic.Zlib.ZlibBaseStream.StreamMode.Reader)
+                if (this._baseStream._streamMode == ZlibBaseStream.StreamMode.Reader)
                 {
                     return this._baseStream._z.TotalBytesIn;
                 }
@@ -599,12 +599,12 @@ namespace OfficeOpenXml.Packaging.Ionic.Zlib
         /// <returns>the number of bytes actually read</returns>
         public override int Read(byte[] buffer, int offset, int count)
         {
-            if (_disposed)
+            if (this._disposed)
             {
                 throw new ObjectDisposedException("DeflateStream");
             }
 
-            return _baseStream.Read(buffer, offset, count);
+            return this._baseStream.Read(buffer, offset, count);
         }
 
 
@@ -614,7 +614,7 @@ namespace OfficeOpenXml.Packaging.Ionic.Zlib
         /// <param name="offset">this is irrelevant, since it will always throw!</param>
         /// <param name="origin">this is irrelevant, since it will always throw!</param>
         /// <returns>irrelevant!</returns>
-        public override long Seek(long offset, System.IO.SeekOrigin origin)
+        public override long Seek(long offset, SeekOrigin origin)
         {
             throw new NotImplementedException();
         }
@@ -659,12 +659,12 @@ namespace OfficeOpenXml.Packaging.Ionic.Zlib
         /// <param name="count">the number of bytes to write.</param>
         public override void Write(byte[] buffer, int offset, int count)
         {
-            if (_disposed)
+            if (this._disposed)
             {
                 throw new ObjectDisposedException("DeflateStream");
             }
 
-            _baseStream.Write(buffer, offset, count);
+            this._baseStream.Write(buffer, offset, count);
         }
         #endregion
 
@@ -693,7 +693,7 @@ namespace OfficeOpenXml.Packaging.Ionic.Zlib
         public static byte[] CompressString(String s)
         {
             using MemoryStream? ms = RecyclableMemory.GetStream();
-            System.IO.Stream compressor =
+            Stream compressor =
                 new DeflateStream(ms, CompressionMode.Compress, CompressionLevel.BestCompression);
             ZlibBaseStream.CompressString(s, compressor);
             return ms.ToArray();
@@ -721,7 +721,7 @@ namespace OfficeOpenXml.Packaging.Ionic.Zlib
         public static byte[] CompressBuffer(byte[] b)
         {
             using MemoryStream? ms = RecyclableMemory.GetStream();
-            System.IO.Stream compressor =
+            Stream compressor =
                 new DeflateStream(ms, CompressionMode.Compress, CompressionLevel.BestCompression);
 
             ZlibBaseStream.CompressBuffer(b, compressor);
@@ -746,7 +746,7 @@ namespace OfficeOpenXml.Packaging.Ionic.Zlib
         public static String UncompressString(byte[] compressed)
         {
             using MemoryStream? input = RecyclableMemory.GetStream(compressed);
-            System.IO.Stream decompressor =
+            Stream decompressor =
                 new DeflateStream(input, CompressionMode.Decompress);
 
             return ZlibBaseStream.UncompressString(compressed, decompressor);
@@ -770,7 +770,7 @@ namespace OfficeOpenXml.Packaging.Ionic.Zlib
         public static byte[] UncompressBuffer(byte[] compressed)
         {
             using MemoryStream? input = RecyclableMemory.GetStream(compressed);
-            System.IO.Stream decompressor =
+            Stream decompressor =
                 new DeflateStream(input, CompressionMode.Decompress);
 
             return ZlibBaseStream.UncompressBuffer(compressed, decompressor);

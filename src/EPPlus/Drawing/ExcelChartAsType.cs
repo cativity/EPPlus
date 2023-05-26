@@ -23,7 +23,7 @@ namespace OfficeOpenXml.Drawing
         ExcelDrawing _drawing;
         internal ExcelChartAsType(ExcelDrawing drawing)
         {
-            _drawing = drawing;
+            this._drawing = drawing;
         }
         /// <summary>
         /// Converts the drawing to it's top level or other nested drawing class.        
@@ -32,7 +32,7 @@ namespace OfficeOpenXml.Drawing
         /// <returns>The drawing as type T</returns>
         public T Type<T>() where T : ExcelChart
         {
-            return _drawing as T;
+            return this._drawing as T;
         }
 
         #region Standard Charts
@@ -45,7 +45,7 @@ namespace OfficeOpenXml.Drawing
         {
             get
             {
-                return _drawing as ExcelChart;
+                return this._drawing as ExcelChart;
             }
         }
 
@@ -58,7 +58,7 @@ namespace OfficeOpenXml.Drawing
         {
             get
             {
-                return _drawing as ExcelAreaChart;
+                return this._drawing as ExcelAreaChart;
             }
         }
         /// <summary>
@@ -70,7 +70,7 @@ namespace OfficeOpenXml.Drawing
         {
             get
             {
-                return _drawing as ExcelBarChart;
+                return this._drawing as ExcelBarChart;
             }
         }
         /// <summary>
@@ -82,7 +82,7 @@ namespace OfficeOpenXml.Drawing
         {
             get
             {
-                return _drawing as ExcelBubbleChart;
+                return this._drawing as ExcelBubbleChart;
             }
         }
         /// <summary>
@@ -94,7 +94,7 @@ namespace OfficeOpenXml.Drawing
         {
             get
             {
-                return _drawing as ExcelDoughnutChart;
+                return this._drawing as ExcelDoughnutChart;
             }
         }
         /// <summary>
@@ -106,7 +106,7 @@ namespace OfficeOpenXml.Drawing
         {
             get
             {
-                return _drawing as ExcelOfPieChart;
+                return this._drawing as ExcelOfPieChart;
             }
         }
         /// <summary>
@@ -118,7 +118,7 @@ namespace OfficeOpenXml.Drawing
         {
             get
             {
-                return _drawing as ExcelPieChart;
+                return this._drawing as ExcelPieChart;
             }
         }
         /// <summary>
@@ -130,7 +130,7 @@ namespace OfficeOpenXml.Drawing
         {
             get
             {
-                return _drawing as ExcelLineChart;
+                return this._drawing as ExcelLineChart;
             }
         }
         /// <summary>
@@ -142,7 +142,7 @@ namespace OfficeOpenXml.Drawing
         {
             get
             {
-                return _drawing as ExcelRadarChart;
+                return this._drawing as ExcelRadarChart;
             }
         }
         /// <summary>
@@ -154,7 +154,7 @@ namespace OfficeOpenXml.Drawing
         {
             get
             {
-                return _drawing as ExcelScatterChart;
+                return this._drawing as ExcelScatterChart;
             }
         }
         /// <summary>
@@ -166,7 +166,7 @@ namespace OfficeOpenXml.Drawing
         {
             get
             {
-                return _drawing as ExcelStockChart;
+                return this._drawing as ExcelStockChart;
             }
         }
         /// <summary>
@@ -178,7 +178,7 @@ namespace OfficeOpenXml.Drawing
         {
             get
             {
-                return _drawing as ExcelSurfaceChart;
+                return this._drawing as ExcelSurfaceChart;
             }
         }
         #endregion
@@ -192,7 +192,7 @@ namespace OfficeOpenXml.Drawing
         {
             get
             {
-                return _drawing as ExcelSunburstChart;
+                return this._drawing as ExcelSunburstChart;
             }
         }
         /// <summary>
@@ -204,7 +204,7 @@ namespace OfficeOpenXml.Drawing
         {
             get
             {
-                return _drawing as ExcelTreemapChart;
+                return this._drawing as ExcelTreemapChart;
             }
         }
         /// <summary>
@@ -216,7 +216,7 @@ namespace OfficeOpenXml.Drawing
         {
             get
             {
-                return _drawing as ExcelBoxWhiskerChart;
+                return this._drawing as ExcelBoxWhiskerChart;
             }
         }
         /// <summary>
@@ -228,7 +228,7 @@ namespace OfficeOpenXml.Drawing
         {
             get
             {
-                return _drawing as ExcelHistogramChart;
+                return this._drawing as ExcelHistogramChart;
             }
         }
         /// <summary>
@@ -240,7 +240,7 @@ namespace OfficeOpenXml.Drawing
         {
             get
             {
-                return _drawing as ExcelFunnelChart;
+                return this._drawing as ExcelFunnelChart;
             }
         }
         /// <summary>
@@ -252,7 +252,7 @@ namespace OfficeOpenXml.Drawing
         {
             get
             {
-                return _drawing as ExcelWaterfallChart;
+                return this._drawing as ExcelWaterfallChart;
             }
         }
         /// <summary>
@@ -264,7 +264,7 @@ namespace OfficeOpenXml.Drawing
         {
             get
             {
-                return _drawing as ExcelRegionMapChart;
+                return this._drawing as ExcelRegionMapChart;
             }
         }
         #endregion

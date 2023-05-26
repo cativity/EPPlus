@@ -39,11 +39,11 @@ namespace OfficeOpenXml.Drawing.Chart
         {
             get
             {
-                return GetXmlNodeInt("c:idx/@val");
+                return this.GetXmlNodeInt("c:idx/@val");
             }
             set
             {
-                SetXmlNodeString("c:idx/@val", value.ToString(CultureInfo.InvariantCulture));
+                this.SetXmlNodeString("c:idx/@val", value.ToString(CultureInfo.InvariantCulture));
             }
         }
     }

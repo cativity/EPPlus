@@ -20,38 +20,38 @@ namespace OfficeOpenXml.Drawing.Slicer
         private readonly List<ExcelPivotTableSlicerItem> _items;
         internal ExcelPivotTableSlicerItemCollection(ExcelPivotTableSlicerCache cache)
         {
-            _cache = cache;
-            _items = new List<ExcelPivotTableSlicerItem>();
-            RefreshMe();
+            this._cache = cache;
+            this._items = new List<ExcelPivotTableSlicerItem>();
+            this.RefreshMe();
         }
 
         /// <summary>
         /// Refresh the items from the shared items or the group items.
         /// </summary>
         public void Refresh()
-        {            
-            _cache._field.Cache.Refresh();
+        {
+            this._cache._field.Cache.Refresh();
         }
 
         internal void RefreshMe()
         {
-            EPPlusReadOnlyList<object>? cacheItems = _cache._field.Cache.Grouping == null ? _cache._field.Cache.SharedItems : _cache._field.Cache.GroupItems;
-            if (cacheItems.Count == _items.Count)
+            EPPlusReadOnlyList<object>? cacheItems = this._cache._field.Cache.Grouping == null ? this._cache._field.Cache.SharedItems : this._cache._field.Cache.GroupItems;
+            if (cacheItems.Count == this._items.Count)
             {
                 return;
             }
-            else if (cacheItems.Count > _items.Count)
+            else if (cacheItems.Count > this._items.Count)
             {
-                for (int i = _items.Count; i < cacheItems.Count; i++)
+                for (int i = this._items.Count; i < cacheItems.Count; i++)
                 {
-                    _items.Add(new ExcelPivotTableSlicerItem(_cache, i));
+                    this._items.Add(new ExcelPivotTableSlicerItem(this._cache, i));
                 }
             }
             else
             {
-                while (cacheItems.Count < _items.Count)
+                while (cacheItems.Count < this._items.Count)
                 {
-                    _items.RemoveAt(_items.Count - 1);
+                    this._items.RemoveAt(this._items.Count - 1);
                 }
             }
         }
@@ -62,8 +62,8 @@ namespace OfficeOpenXml.Drawing.Slicer
         /// <returns></returns>
         public IEnumerator<ExcelPivotTableSlicerItem> GetEnumerator()
         {
-            Refresh();
-            return _items.GetEnumerator();
+            this.Refresh();
+            return this._items.GetEnumerator();
         }
 
         /// <summary>
@@ -72,8 +72,8 @@ namespace OfficeOpenXml.Drawing.Slicer
         /// <returns></returns>
         IEnumerator IEnumerable.GetEnumerator()
         {
-            Refresh();
-            return _items.GetEnumerator();
+            this.Refresh();
+            return this._items.GetEnumerator();
         }
         /// <summary>
         /// Number of items in the collection.
@@ -82,7 +82,7 @@ namespace OfficeOpenXml.Drawing.Slicer
         { 
             get
             {
-                return _items.Count;
+                return this._items.Count;
             }
         }
         /// <summary>
@@ -94,7 +94,7 @@ namespace OfficeOpenXml.Drawing.Slicer
         {
             get
             {
-                return _items[index];
+                return this._items[index];
             }
         }
         /// <summary>
@@ -104,9 +104,9 @@ namespace OfficeOpenXml.Drawing.Slicer
         /// <returns>The item matching the supplied value. Returns null if no value matches.</returns>
         public ExcelPivotTableSlicerItem GetByValue(object value)
         {
-            if (_cache._field.Cache._cacheLookup.TryGetValue(value??"", out int ix))
+            if (this._cache._field.Cache._cacheLookup.TryGetValue(value??"", out int ix))
             {
-                return _items[ix];
+                return this._items[ix];
             }
             return null;
         }
@@ -117,7 +117,7 @@ namespace OfficeOpenXml.Drawing.Slicer
         /// <returns>The item matching the supplied value. Returns -1 if no value matches.</returns>
         public int GetIndexByValue(object value)
         {
-            if (_cache._field.Cache._cacheLookup.TryGetValue(value ?? "", out int ix))
+            if (this._cache._field.Cache._cacheLookup.TryGetValue(value ?? "", out int ix))
             {
                 return ix;
             }
@@ -130,7 +130,7 @@ namespace OfficeOpenXml.Drawing.Slicer
         /// <returns></returns>
         public bool Contains(object value)
         {
-            return _cache._field.Cache._cacheLookup.ContainsKey(value);
+            return this._cache._field.Cache._cacheLookup.ContainsKey(value);
         }
     }
 }

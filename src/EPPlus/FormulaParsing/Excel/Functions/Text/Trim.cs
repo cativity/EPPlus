@@ -34,7 +34,7 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Text
                 str = str.Trim();
                 str = Regex.Replace(str, "[ ]+", " ");
             }
-            return CreateResult(str, DataType.String);
+            return this.CreateResult(str, DataType.String);
         }
     }
 }

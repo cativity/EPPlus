@@ -28,17 +28,17 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Math
         public override CompileResult Execute(IEnumerable<FunctionArgument> arguments, ParsingContext context)
         {
             ValidateArguments(arguments, 4);
-            double x = ArgToDecimal(arguments, 0);
-            double n = ArgToDecimal(arguments, 1);
-            double m = ArgToDecimal(arguments, 2);
-            ExcelDoubleCellValue[]? coeffs = ArgsToDoubleEnumerable(new List<FunctionArgument> { arguments.ElementAt(3) }, context).ToArray();
+            double x = this.ArgToDecimal(arguments, 0);
+            double n = this.ArgToDecimal(arguments, 1);
+            double m = this.ArgToDecimal(arguments, 2);
+            ExcelDoubleCellValue[]? coeffs = this.ArgsToDoubleEnumerable(new List<FunctionArgument> { arguments.ElementAt(3) }, context).ToArray();
             double result = 0d;
             for(int i = 0; i < coeffs.Count(); i++)
             {
                 ExcelDoubleCellValue c = coeffs[i];
                 result += c * System.Math.Pow(x, (i * n) + m);
             }
-            return CreateResult(result, DataType.Decimal);
+            return this.CreateResult(result, DataType.Decimal);
         }
     }
 }

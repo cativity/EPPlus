@@ -110,7 +110,7 @@ namespace EPPlusTest.Drawing
                 shape.RichText.Add("", true);
                 shape.RichText.Add("SecondLine", true);
                 ExcelParagraph? r2 = shape.RichText.Add("    ", true);
-                r2.UnderLine = OfficeOpenXml.Style.eUnderLineType.Single;
+                r2.UnderLine = eUnderLineType.Single;
                 Assert.AreEqual(3, shape.RichText.Count);
                 Assert.AreEqual("", shape.RichText[0].Text);
                 Assert.AreEqual("SecondLine", shape.RichText[1].Text);

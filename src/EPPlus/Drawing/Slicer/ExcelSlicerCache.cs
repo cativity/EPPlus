@@ -32,11 +32,11 @@ namespace OfficeOpenXml.Drawing.Slicer
         internal void CreatePart(ExcelWorkbook wb)
         {
             ZipPackage? p = wb._package.ZipPackage;
-            Uri = GetNewUri(p, "/xl/slicerCaches/slicerCache{0}.xml");
-            Part = p.CreatePart(Uri, "application/vnd.ms-excel.slicerCache+xml");
-            CacheRel = wb.Part.CreateRelationship(UriHelper.GetRelativeUri(wb.WorkbookUri, Uri), Packaging.TargetMode.Internal, ExcelPackage.schemaRelationshipsSlicerCache);
-            SlicerCacheXml = new XmlDocument();
-            SlicerCacheXml.LoadXml(GetStartXml());
+            this.Uri = GetNewUri(p, "/xl/slicerCaches/slicerCache{0}.xml");
+            this.Part = p.CreatePart(this.Uri, "application/vnd.ms-excel.slicerCache+xml");
+            this.CacheRel = wb.Part.CreateRelationship(UriHelper.GetRelativeUri(wb.WorkbookUri, this.Uri), TargetMode.Internal, ExcelPackage.schemaRelationshipsSlicerCache);
+            this.SlicerCacheXml = new XmlDocument();
+            this.SlicerCacheXml.LoadXml(GetStartXml());
         }
         internal ZipPackageRelationship CacheRel{ get; set; }
         internal ZipPackagePart Part { get; set; }
@@ -52,11 +52,11 @@ namespace OfficeOpenXml.Drawing.Slicer
         {
             get
             {
-                return GetXmlNodeString("@name");
+                return this.GetXmlNodeString("@name");
             }
             internal protected set
             {
-                SetXmlNodeString("@name",value);
+                this.SetXmlNodeString("@name",value);
             }
         }
         /// <summary>
@@ -66,11 +66,11 @@ namespace OfficeOpenXml.Drawing.Slicer
         {
             get
             {
-                return GetXmlNodeString("@sourceName");
+                return this.GetXmlNodeString("@sourceName");
             }
             internal protected set
             {
-                SetXmlNodeString("@sourceName", value);
+                this.SetXmlNodeString("@sourceName", value);
             }
         }
         /// <summary>
@@ -89,14 +89,14 @@ namespace OfficeOpenXml.Drawing.Slicer
         }
         internal void CreateWorkbookReference(ExcelWorkbook wb, string uriGuid)
         {
-            wb.Names.AddFormula(Name, "#N/A");
-            if(!wb.SlicerCaches.ContainsKey(Name))
+            wb.Names.AddFormula(this.Name, "#N/A");
+            if(!wb.SlicerCaches.ContainsKey(this.Name))
             {
                 wb.SlicerCaches.Add(this.Name, this);
             }
 
             string prefix;
-            if(GetType()==typeof(ExcelPivotTableSlicerCache))
+            if(this.GetType()==typeof(ExcelPivotTableSlicerCache))
             {
                 prefix = "x14";
             }
@@ -110,9 +110,9 @@ namespace OfficeOpenXml.Drawing.Slicer
                 extNode.InnerXml = $"<{prefix}:slicerCaches />";
             }
             XmlNode? slNode = extNode.FirstChild;
-            XmlHelper? xh = XmlHelperFactory.Create(NameSpaceManager, slNode);
+            XmlHelper? xh = XmlHelperFactory.Create(this.NameSpaceManager, slNode);
             XmlElement? element = (XmlElement)xh.CreateNode("x14:slicerCache", false, true);
-            element.SetAttribute("id", ExcelPackage.schemaRelationships, CacheRel.Id);
+            element.SetAttribute("id", ExcelPackage.schemaRelationships, this.CacheRel.Id);
         }
     }
 }

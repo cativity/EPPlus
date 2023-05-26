@@ -33,12 +33,12 @@ namespace OfficeOpenXml.Style.Dxf
         {
             get
             {
-                return _size;
+                return this._size;
             }
             set
             {
-                _size = value;
-                _callback?.Invoke(eStyleClass.Font, eStyleProperty.Size, value);
+                this._size = value;
+                this._callback?.Invoke(eStyleClass.Font, eStyleProperty.Size, value);
             }
         }
         string _name;
@@ -49,12 +49,12 @@ namespace OfficeOpenXml.Style.Dxf
         {
             get
             {
-                return _name;
+                return this._name;
             }
             set
             {
-                _name = value;
-                _callback?.Invoke(eStyleClass.Font, eStyleProperty.Name, value);
+                this._name = value;
+                this._callback?.Invoke(eStyleClass.Font, eStyleProperty.Name, value);
             }
         }
         int? _family;
@@ -65,12 +65,12 @@ namespace OfficeOpenXml.Style.Dxf
         {
             get
             {
-                return _family;
+                return this._family;
             }
             set
             {
-                _family = value;
-                _callback?.Invoke(eStyleClass.Font, eStyleProperty.Family, value);
+                this._family = value;
+                this._callback?.Invoke(eStyleClass.Font, eStyleProperty.Family, value);
             }
         }
         ExcelVerticalAlignmentFont _verticalAlign = ExcelVerticalAlignmentFont.None;
@@ -81,12 +81,12 @@ namespace OfficeOpenXml.Style.Dxf
         {
             get
             {
-                return _verticalAlign;
+                return this._verticalAlign;
             }
             set
             {
-                _verticalAlign = value;
-                _callback?.Invoke(eStyleClass.Font, eStyleProperty.VerticalAlign, value);
+                this._verticalAlign = value;
+                this._callback?.Invoke(eStyleClass.Font, eStyleProperty.VerticalAlign, value);
             }
         }
         bool? _outline;
@@ -97,11 +97,11 @@ namespace OfficeOpenXml.Style.Dxf
         {
             get
             {
-                return _outline;
+                return this._outline;
             }
             set
             {
-                _outline = value;                
+                this._outline = value;                
             }
         }
         bool? _shadow;
@@ -112,11 +112,11 @@ namespace OfficeOpenXml.Style.Dxf
         {
             get
             {
-                return _shadow;
+                return this._shadow;
             }
             set
             {
-                _shadow = value;
+                this._shadow = value;
             }
         }
         bool? _condense;
@@ -127,11 +127,11 @@ namespace OfficeOpenXml.Style.Dxf
         {
             get
             {
-                return _condense;
+                return this._condense;
             }
             set
             {
-                _condense = value;
+                this._condense = value;
             }
         }
         bool? _extend;
@@ -142,11 +142,11 @@ namespace OfficeOpenXml.Style.Dxf
         {
             get
             {
-                return _extend;
+                return this._extend;
             }
             set
             {
-                _extend = value;
+                this._extend = value;
             }
         }
         eThemeFontCollectionType? _scheme;
@@ -157,12 +157,12 @@ namespace OfficeOpenXml.Style.Dxf
         {
             get
             {
-                return _scheme;
+                return this._scheme;
             }
             set
             {
-                _scheme = value;
-                _callback?.Invoke(eStyleClass.Font, eStyleProperty.Scheme, value);
+                this._scheme = value;
+                this._callback?.Invoke(eStyleClass.Font, eStyleProperty.Scheme, value);
             }
         }
         /// <summary>
@@ -172,14 +172,14 @@ namespace OfficeOpenXml.Style.Dxf
         {
             get
             {
-                return GetAsString(Bold) + "|" + GetAsString(Italic) + "|" + GetAsString(Strike) + "|" + (Color == null ? "" : Color.Id) + "|" + GetAsString(Underline)
-                    + "|" + GetAsString(Name) + "|" + GetAsString(Size) + "|" + GetAsString(Family) + "|" + GetVAlign() + "|" + GetAsString(Outline) + "|" + GetAsString(Shadow) + "|" + GetAsString(Condense) + "|" + GetAsString(Extend) + "|" + GetAsString(Scheme);
+                return GetAsString(this.Bold) + "|" + GetAsString(this.Italic) + "|" + GetAsString(this.Strike) + "|" + (this.Color == null ? "" : this.Color.Id) + "|" + GetAsString(this.Underline)
+                    + "|" + GetAsString(this.Name) + "|" + GetAsString(this.Size) + "|" + GetAsString(this.Family) + "|" + this.GetVAlign() + "|" + GetAsString(this.Outline) + "|" + GetAsString(this.Shadow) + "|" + GetAsString(this.Condense) + "|" + GetAsString(this.Extend) + "|" + GetAsString(this.Scheme);
             }
         }
 
         private string GetVAlign()
         {
-            return VerticalAlign==ExcelVerticalAlignmentFont.None ? "" : GetAsString(VerticalAlign);
+            return this.VerticalAlign==ExcelVerticalAlignmentFont.None ? "" : GetAsString(this.VerticalAlign);
         }
 
         /// <summary>
@@ -188,22 +188,22 @@ namespace OfficeOpenXml.Style.Dxf
         /// <returns>A new instance of the object</returns>
         internal override DxfStyleBase Clone()
         {
-            return new ExcelDxfFont(_styles, _callback) 
+            return new ExcelDxfFont(this._styles, this._callback) 
             {
-                Name = Name,
-                Size = Size,
-                Family = Family,
-                Bold = Bold, 
-                Color = (ExcelDxfColor)Color.Clone(), 
-                Italic = Italic, 
-                Strike = Strike, 
-                Underline = Underline,  
-                Condense = Condense,
-                Extend = Extend,
-                Scheme=Scheme,
-                Outline=Outline,
-                Shadow=Shadow,
-                VerticalAlign=VerticalAlign
+                Name = this.Name,
+                Size = this.Size,
+                Family = this.Family,
+                Bold = this.Bold, 
+                Color = (ExcelDxfColor)this.Color.Clone(), 
+                Italic = this.Italic, 
+                Strike = this.Strike, 
+                Underline = this.Underline,  
+                Condense = this.Condense,
+                Extend = this.Extend,
+                Scheme= this.Scheme,
+                Outline= this.Outline,
+                Shadow= this.Shadow,
+                VerticalAlign= this.VerticalAlign
             };
         }
         /// <summary>
@@ -214,15 +214,7 @@ namespace OfficeOpenXml.Style.Dxf
             get
             {
                 return base.HasValue ||
-                       string.IsNullOrEmpty(Name) == false ||
-                       Size.HasValue ||
-                       Family.HasValue ||
-                       Condense.HasValue ||
-                       Extend.HasValue ||
-                       Scheme.HasValue ||
-                       Outline.HasValue ||
-                       Shadow.HasValue ||
-                       VerticalAlign != ExcelVerticalAlignmentFont.None
+                       string.IsNullOrEmpty(this.Name) == false || this.Size.HasValue || this.Family.HasValue || this.Condense.HasValue || this.Extend.HasValue || this.Scheme.HasValue || this.Outline.HasValue || this.Shadow.HasValue || this.VerticalAlign != ExcelVerticalAlignmentFont.None
 ;
             }
         }
@@ -232,61 +224,61 @@ namespace OfficeOpenXml.Style.Dxf
         public override void Clear()
         {
             base.Clear();
-            Name = null;
-            Size = null;
-            Family = null;
-            Condense = null;
-            Extend = null;
-            Scheme = null;
-            Outline = null;
-            Shadow = null;
-            VerticalAlign = ExcelVerticalAlignmentFont.None;
+            this.Name = null;
+            this.Size = null;
+            this.Family = null;
+            this.Condense = null;
+            this.Extend = null;
+            this.Scheme = null;
+            this.Outline = null;
+            this.Shadow = null;
+            this.VerticalAlign = ExcelVerticalAlignmentFont.None;
         }
         internal override void CreateNodes(XmlHelper helper, string path)
         {
             helper.CreateNode(path);
-            SetValueBool(helper, path + "/d:b/@val", Bold);
-            SetValueBool(helper, path + "/d:i/@val", Italic);
-            SetValueBool(helper, path + "/d:strike/@val", Strike);
-            SetValue(helper, path + "/d:u/@val", Underline == null ? null : Underline.ToEnumString());
-            SetValueBool(helper, path + "/d:condense/@val", Condense);
-            SetValueBool(helper, path + "/d:extend/@val", Extend);
-            SetValueBool(helper, path + "/d:outline/@val", Outline);
-            SetValueBool(helper, path + "/d:shadow/@val", Shadow);
-            SetValue(helper, path + "/d:sz/@val", Size);
-            SetValueColor(helper, path + "/d:color", Color);
-            SetValue(helper, path + "/d:name/@val", Name);
-            SetValue(helper, path + "/d:family/@val", Family);
-            SetValue(helper, path + "/d:vertAlign/@val", VerticalAlign==ExcelVerticalAlignmentFont.None ? null : VerticalAlign.ToEnumString());
+            SetValueBool(helper, path + "/d:b/@val", this.Bold);
+            SetValueBool(helper, path + "/d:i/@val", this.Italic);
+            SetValueBool(helper, path + "/d:strike/@val", this.Strike);
+            SetValue(helper, path + "/d:u/@val", this.Underline == null ? null : this.Underline.ToEnumString());
+            SetValueBool(helper, path + "/d:condense/@val", this.Condense);
+            SetValueBool(helper, path + "/d:extend/@val", this.Extend);
+            SetValueBool(helper, path + "/d:outline/@val", this.Outline);
+            SetValueBool(helper, path + "/d:shadow/@val", this.Shadow);
+            SetValue(helper, path + "/d:sz/@val", this.Size);
+            SetValueColor(helper, path + "/d:color", this.Color);
+            SetValue(helper, path + "/d:name/@val", this.Name);
+            SetValue(helper, path + "/d:family/@val", this.Family);
+            SetValue(helper, path + "/d:vertAlign/@val", this.VerticalAlign==ExcelVerticalAlignmentFont.None ? null : this.VerticalAlign.ToEnumString());
         }
         internal override void SetValuesFromXml(XmlHelper helper)
         {
-            Size = helper.GetXmlNodeIntNull("d:font/d:sz/@val");
+            this.Size = helper.GetXmlNodeIntNull("d:font/d:sz/@val");
 
             base.SetValuesFromXml(helper);
 
-            Name = helper.GetXmlNodeString("d:font/d:name/@val");
-            Condense = helper.GetXmlNodeBoolNullable("d:font/d:condense/@val");
-            Extend = helper.GetXmlNodeBoolNullable("d:font/d:extend/@val");
-            Outline = helper.GetXmlNodeBoolNullable("d:font/d:outline/@val");
+            this.Name = helper.GetXmlNodeString("d:font/d:name/@val");
+            this.Condense = helper.GetXmlNodeBoolNullable("d:font/d:condense/@val");
+            this.Extend = helper.GetXmlNodeBoolNullable("d:font/d:extend/@val");
+            this.Outline = helper.GetXmlNodeBoolNullable("d:font/d:outline/@val");
             
             string? v = helper.GetXmlNodeString("d:font/d:vertAlign/@val");
-            VerticalAlign = string.IsNullOrEmpty(v)?ExcelVerticalAlignmentFont.None: v.ToEnum(ExcelVerticalAlignmentFont.None);
-            
-            Family = helper.GetXmlNodeIntNull("d:font/d:family/@val");
-            Scheme = helper.GetXmlEnumNull<eThemeFontCollectionType>("d:font/d:scheme/@val");
-            Shadow = helper.GetXmlNodeBoolNullable("d:font/d:shadow/@val");
+            this.VerticalAlign = string.IsNullOrEmpty(v)?ExcelVerticalAlignmentFont.None: v.ToEnum(ExcelVerticalAlignmentFont.None);
+
+            this.Family = helper.GetXmlNodeIntNull("d:font/d:family/@val");
+            this.Scheme = helper.GetXmlEnumNull<eThemeFontCollectionType>("d:font/d:scheme/@val");
+            this.Shadow = helper.GetXmlNodeBoolNullable("d:font/d:shadow/@val");
         }
         internal override void SetStyle()
         {
-            if (_callback != null)
+            if (this._callback != null)
             {
                 base.SetStyle();
-                _callback?.Invoke(eStyleClass.Font, eStyleProperty.Name, _name);
-                _callback?.Invoke(eStyleClass.Font, eStyleProperty.Size, _size);
-                _callback?.Invoke(eStyleClass.Font, eStyleProperty.Family, _family);
-                _callback?.Invoke(eStyleClass.Font, eStyleProperty.Scheme, _scheme);
-                _callback?.Invoke(eStyleClass.Font, eStyleProperty.VerticalAlign, _verticalAlign);
+                this._callback?.Invoke(eStyleClass.Font, eStyleProperty.Name, this._name);
+                this._callback?.Invoke(eStyleClass.Font, eStyleProperty.Size, this._size);
+                this._callback?.Invoke(eStyleClass.Font, eStyleProperty.Family, this._family);
+                this._callback?.Invoke(eStyleClass.Font, eStyleProperty.Scheme, this._scheme);
+                this._callback?.Invoke(eStyleClass.Font, eStyleProperty.VerticalAlign, this._verticalAlign);
 
             }
         }

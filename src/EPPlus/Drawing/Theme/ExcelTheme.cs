@@ -36,18 +36,18 @@ namespace OfficeOpenXml.Drawing.Theme
         {
             get
             {
-                return GetXmlNodeString("@name");
+                return this.GetXmlNodeString("@name");
             }
             set
             {
-                SetXmlNodeString("@name", value);
+                this.SetXmlNodeString("@name", value);
             }
         }
 
         internal ExcelTheme(ExcelWorkbook workbook, ZipPackageRelationship rel)
             : base(workbook._package,workbook.NameSpaceManager, rel, "a:themeElements/")
         {
-            _workbook = workbook;
+            this._workbook = workbook;
         }
     }
 }

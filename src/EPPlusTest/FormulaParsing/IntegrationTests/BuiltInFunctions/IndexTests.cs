@@ -118,7 +118,7 @@ namespace EPPlusTest.FormulaParsing.IntegrationTests.BuiltInFunctions
                      PrecisionAndRoundingStrategy = PrecisionAndRoundingStrategy.Excel
                  });
             object? extractedIndexValue = package.Workbook.Worksheets[ExtractWorksheet].Cells["B1"].Value;
-            Assert.AreEqual(expectedValue, System.Math.Round((double)extractedIndexValue, 10));
+            Assert.AreEqual(expectedValue, Math.Round((double)extractedIndexValue, 10));
 
         }
 

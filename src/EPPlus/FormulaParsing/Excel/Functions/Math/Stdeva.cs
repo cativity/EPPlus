@@ -39,14 +39,14 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Math
         public Stdeva(DoubleEnumerableArgConverter argConverter)
         {
             Require.Argument(argConverter).IsNotNull("argConverter");
-            _argConverter = argConverter;
+            this._argConverter = argConverter;
         }
 
         public override CompileResult Execute(IEnumerable<FunctionArgument> arguments, ParsingContext context)
         {
             ValidateArguments(arguments, 1);
-            IEnumerable<double>? values = _argConverter.ConvertArgsIncludingOtherTypes(arguments, IgnoreHiddenValues).Select(x => (double)x);
-            return CreateResult(StandardDeviation(values), DataType.Decimal);
+            IEnumerable<double>? values = this._argConverter.ConvertArgsIncludingOtherTypes(arguments, this.IgnoreHiddenValues).Select(x => (double)x);
+            return this.CreateResult(StandardDeviation(values), DataType.Decimal);
         }
 
         private static double StandardDeviation(IEnumerable<double> values)

@@ -25,25 +25,25 @@ namespace OfficeOpenXml.Style.XmlAccess
         internal ExcelNamedStyleXml(XmlNamespaceManager nameSpaceManager, ExcelStyles styles)
             : base(nameSpaceManager)
         {
-            _styles = styles;
-            BuildInId = int.MinValue;
+            this._styles = styles;
+            this.BuildInId = int.MinValue;
         }
         internal ExcelNamedStyleXml(XmlNamespaceManager NameSpaceManager, XmlNode topNode, ExcelStyles styles) :
             base(NameSpaceManager, topNode)
         {
-            StyleXfId = GetXmlNodeInt(idPath);
-            Name = GetXmlNodeString(namePath);
-            BuildInId = GetXmlNodeInt(buildInIdPath);
-            CustomBuildin = GetXmlNodeBool(customBuiltinPath);
-            Uid= GetXmlNodeString(uidPath);
-            _styles = styles;
-            _style = new ExcelStyle(styles, styles.NamedStylePropertyChange, -1, Name, _styleXfId);
+            this.StyleXfId = this.GetXmlNodeInt(idPath);
+            this.Name = this.GetXmlNodeString(namePath);
+            this.BuildInId = this.GetXmlNodeInt(buildInIdPath);
+            this.CustomBuildin = this.GetXmlNodeBool(customBuiltinPath);
+            this.Uid= this.GetXmlNodeString(uidPath);
+            this._styles = styles;
+            this._style = new ExcelStyle(styles, styles.NamedStylePropertyChange, -1, this.Name, this._styleXfId);
         }
         internal override string Id
         {
             get
             {
-                return Name;
+                return this.Name;
             }
         }
         int _styleXfId=0;
@@ -55,11 +55,11 @@ namespace OfficeOpenXml.Style.XmlAccess
         {
             get
             {
-                return _styleXfId;
+                return this._styleXfId;
             }
             set
             {
-                _styleXfId = value;
+                this._styleXfId = value;
             }
         }
         int _xfId = int.MinValue;
@@ -70,11 +70,11 @@ namespace OfficeOpenXml.Style.XmlAccess
         {
             get
             {
-                return _xfId;
+                return this._xfId;
             }
             set
             {
-                _xfId = value;
+                this._xfId = value;
             }
         }
         const string buildInIdPath = "@builtinId";
@@ -96,11 +96,11 @@ namespace OfficeOpenXml.Style.XmlAccess
         {
             get
             {
-                return _name;
+                return this._name;
             }
             internal set
             {
-                _name = value;
+                this._name = value;
             }
         }
         ExcelStyle _style = null;
@@ -111,36 +111,36 @@ namespace OfficeOpenXml.Style.XmlAccess
         {
             get
             {
-                return _style;
+                return this._style;
             }
             internal set
             {
-                _style = value;
+                this._style = value;
             }
         }
         const string uidPath="@xr:uid";
         internal string Uid { get; set; }
         internal override XmlNode CreateXmlNode(XmlNode topNode)
         {
-            TopNode = topNode;
-            SetXmlNodeString(namePath, _name);
-            SetXmlNodeString(idPath, _styles.CellStyleXfs[StyleXfId].newID.ToString());
-            if (BuildInId>=0)
+            this.TopNode = topNode;
+            this.SetXmlNodeString(namePath, this._name);
+            this.SetXmlNodeString(idPath, this._styles.CellStyleXfs[this.StyleXfId].newID.ToString());
+            if (this.BuildInId>=0)
             {
                 this.SetXmlNodeString(buildInIdPath, this.BuildInId.ToString());
             }
 
-            if(CustomBuildin)
+            if(this.CustomBuildin)
             {
                 this.SetXmlNodeBool(customBuiltinPath, true);
             }
 
-            if (!string.IsNullOrEmpty(Uid))
+            if (!string.IsNullOrEmpty(this.Uid))
             {
                 this.SetXmlNodeString(uidPath, this.Uid);
             }
 
-            return TopNode;            
+            return this.TopNode;            
         }
     }
 }

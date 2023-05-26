@@ -47,7 +47,7 @@ namespace EPPlusTest
 
         public string GetNameID()
         {
-            return Id + "," + Name;
+            return this.Id + "," + this.Name;
         }
     }
     public class InheritTestDTO : TestDTO

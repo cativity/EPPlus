@@ -27,14 +27,14 @@ namespace OfficeOpenXml.Export.HtmlExport.Accessibility
         /// </summary>
         public void ResetToDefault()
         {
-            AddAccessibilityAttributes = true;
-            AriaLabel = string.Empty;
-            AriaLabelledBy = string.Empty;
-            TableRole = "table";
-            TheadRole = "rowgroup";
-            TbodyRole = "rowgroup";
-            TfootRole = "rowgroup";
-            TableHeaderCellRole = "columnheader";
+            this.AddAccessibilityAttributes = true;
+            this.AriaLabel = string.Empty;
+            this.AriaLabelledBy = string.Empty;
+            this.TableRole = "table";
+            this.TheadRole = "rowgroup";
+            this.TbodyRole = "rowgroup";
+            this.TfootRole = "rowgroup";
+            this.TableHeaderCellRole = "columnheader";
         }
 
         /// <summary>
@@ -43,14 +43,14 @@ namespace OfficeOpenXml.Export.HtmlExport.Accessibility
         /// <param name="copy"></param>
         public void Copy(TableAccessibilitySettings copy)
         {
-            AddAccessibilityAttributes = copy.AddAccessibilityAttributes;
-            AriaLabel = copy.AriaLabel;
-            AriaLabelledBy = copy.AriaLabelledBy;
-            TableRole = copy.TableRole;
-            TheadRole = copy.TheadRole;
-            TbodyRole = copy.TbodyRole;
-            TfootRole = copy.TfootRole;
-            TableHeaderCellRole = copy.TableHeaderCellRole;
+            this.AddAccessibilityAttributes = copy.AddAccessibilityAttributes;
+            this.AriaLabel = copy.AriaLabel;
+            this.AriaLabelledBy = copy.AriaLabelledBy;
+            this.TableRole = copy.TableRole;
+            this.TheadRole = copy.TheadRole;
+            this.TbodyRole = copy.TbodyRole;
+            this.TfootRole = copy.TfootRole;
+            this.TableHeaderCellRole = copy.TableHeaderCellRole;
         }
 
         /// <summary>

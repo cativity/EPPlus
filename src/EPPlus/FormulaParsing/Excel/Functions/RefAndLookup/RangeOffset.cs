@@ -15,18 +15,18 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions.RefAndLookup
         public override CompileResult Execute(IEnumerable<FunctionArgument> arguments, ParsingContext context)
         {
 
-            if (StartRange == null || EndRange == null)
+            if (this.StartRange == null || this.EndRange == null)
             {
                 return this.CreateResult(eErrorType.Value);
             }
 
             //Build the address from the minimum row and column to the maximum row and column. StartRange and offsetRange are single cells.
-            int fromRow = System.Math.Min(StartRange.Address._fromRow, EndRange.Address._fromRow);
-            int toRow = System.Math.Max(StartRange.Address._toRow, EndRange.Address._toRow);
-            int fromCol = System.Math.Min(StartRange.Address._fromCol, EndRange.Address._fromCol);
-            int toCol = System.Math.Max(StartRange.Address._toCol, EndRange.Address._toCol);
-            EpplusExcelDataProvider.RangeInfo? rangeAddress = new EpplusExcelDataProvider.RangeInfo(StartRange.Worksheet, new ExcelAddressBase(fromRow, fromCol, toRow, toCol));
-            return CreateResult(rangeAddress, DataType.Enumerable);
+            int fromRow = System.Math.Min(this.StartRange.Address._fromRow, this.EndRange.Address._fromRow);
+            int toRow = System.Math.Max(this.StartRange.Address._toRow, this.EndRange.Address._toRow);
+            int fromCol = System.Math.Min(this.StartRange.Address._fromCol, this.EndRange.Address._fromCol);
+            int toCol = System.Math.Max(this.StartRange.Address._toCol, this.EndRange.Address._toCol);
+            EpplusExcelDataProvider.RangeInfo? rangeAddress = new EpplusExcelDataProvider.RangeInfo(this.StartRange.Worksheet, new ExcelAddressBase(fromRow, fromCol, toRow, toCol));
+            return this.CreateResult(rangeAddress, DataType.Enumerable);
         }
     }
 }

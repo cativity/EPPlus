@@ -49,8 +49,8 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Engineering
         {
             public Unit(double value, UnitTypes type)
             {
-                Value = value;
-                UnitType = type;
+                this.Value = value;
+                this.UnitType = type;
             }
 
             public double Value { get; private set; }
@@ -65,8 +65,8 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Engineering
         {
             public Prefix(string abbrevation, double value)
             {
-                Abbrevation = abbrevation;
-                Value = value;
+                this.Abbrevation = abbrevation;
+                this.Value = value;
             }
 
             public string Abbrevation { get; private set; }

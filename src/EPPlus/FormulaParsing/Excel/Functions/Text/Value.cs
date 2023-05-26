@@ -30,11 +30,11 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Text
     {
         public Value(CultureInfo ci)
         {
-            _cultureInfo = ci;
-            _groupSeparator = _cultureInfo.NumberFormat.NumberGroupSeparator;
-            _decimalSeparator = _cultureInfo.NumberFormat.NumberDecimalSeparator;
-            _timeSeparator = _cultureInfo.DateTimeFormat.TimeSeparator;
-            _shortTimePattern = _cultureInfo.DateTimeFormat.ShortTimePattern;
+            this._cultureInfo = ci;
+            this._groupSeparator = this._cultureInfo.NumberFormat.NumberGroupSeparator;
+            this._decimalSeparator = this._cultureInfo.NumberFormat.NumberDecimalSeparator;
+            this._timeSeparator = this._cultureInfo.DateTimeFormat.TimeSeparator;
+            this._shortTimePattern = this._cultureInfo.DateTimeFormat.ShortTimePattern;
         }
 
         private readonly CultureInfo _cultureInfo;
@@ -65,35 +65,35 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Text
             if(val.StartsWith("(", StringComparison.OrdinalIgnoreCase) && val.EndsWith(")", StringComparison.OrdinalIgnoreCase))
             {
                 string? numCandidate = val.Substring(1, val.Length - 2);
-                if(double.TryParse(numCandidate, NumberStyles.Any, _cultureInfo, out double tmp))
+                if(double.TryParse(numCandidate, NumberStyles.Any, this._cultureInfo, out double tmp))
                 {
                     val = "-" + numCandidate;
                 }
             }
-            if (Regex.IsMatch(val, $"^[\\d]*({Regex.Escape(_groupSeparator)}?[\\d]*)*?({Regex.Escape(_decimalSeparator)}[\\d]*)?[ ?% ?]?$", RegexOptions.Compiled))
+            if (Regex.IsMatch(val, $"^[\\d]*({Regex.Escape(this._groupSeparator)}?[\\d]*)*?({Regex.Escape(this._decimalSeparator)}[\\d]*)?[ ?% ?]?$", RegexOptions.Compiled))
             {
-                result = double.Parse(val, _cultureInfo);
-                return CreateResult(isPercentage ? result/100 : result, DataType.Decimal);
+                result = double.Parse(val, this._cultureInfo);
+                return this.CreateResult(isPercentage ? result/100 : result, DataType.Decimal);
             }
-            if (double.TryParse(val, NumberStyles.Float, _cultureInfo, out result))
+            if (double.TryParse(val, NumberStyles.Float, this._cultureInfo, out result))
             {
-                return CreateResult(isPercentage ? result/100d : result, DataType.Decimal);
+                return this.CreateResult(isPercentage ? result/100d : result, DataType.Decimal);
             }
-            string? timeSeparator = Regex.Escape(_timeSeparator);
+            string? timeSeparator = Regex.Escape(this._timeSeparator);
             if (Regex.IsMatch(val, @"^[\d]{1,2}" + timeSeparator + @"[\d]{2}(" + timeSeparator + @"[\d]{2})?$", RegexOptions.Compiled))
             {
-                CompileResult? timeResult = _timeValueFunc.Execute(val);
+                CompileResult? timeResult = this._timeValueFunc.Execute(val);
                 if (timeResult.DataType == DataType.Date)
                 {
                     return timeResult;
                 }
             }
-            CompileResult? dateResult = _dateValueFunc.Execute(val);
+            CompileResult? dateResult = this._dateValueFunc.Execute(val);
             if (dateResult.DataType == DataType.Date)
             {
                 return dateResult;
             }
-            return CreateResult(ExcelErrorValue.Create(eErrorType.Value), DataType.ExcelError);
+            return this.CreateResult(ExcelErrorValue.Create(eErrorType.Value), DataType.ExcelError);
         }
     }
 }

@@ -24,19 +24,19 @@ namespace OfficeOpenXml.Drawing
         internal ExcelDrawingSize(XmlNamespaceManager ns, XmlNode node, SetWidthCallback setWidthCallback=null) :
             base (ns,node)
         {
-            _setWidthCallback = setWidthCallback;
-            Load();
+            this._setWidthCallback = setWidthCallback;
+            this.Load();
         }
 
         private void Load()
         {
-            _height = GetXmlNodeLong(colOffPath);
-            _width = GetXmlNodeLong(rowOffPath);
+            this._height = this.GetXmlNodeLong(colOffPath);
+            this._width = this.GetXmlNodeLong(rowOffPath);
         }
         public void UpdateXml()
         {
-            SetXmlNodeString(colOffPath, _height.ToString());
-            SetXmlNodeString(rowOffPath, _width.ToString());
+            this.SetXmlNodeString(colOffPath, this._height.ToString());
+            this.SetXmlNodeString(rowOffPath, this._width.ToString());
         }
         const string colOffPath = "@cy";
         long _height=long.MinValue;
@@ -51,12 +51,12 @@ namespace OfficeOpenXml.Drawing
         {
             get
             {
-                return _height;
+                return this._height;
             }
             set
             {
-                _height = value;
-                if (_setWidthCallback != null)
+                this._height = value;
+                if (this._setWidthCallback != null)
                 {
                     this._setWidthCallback();
                 }
@@ -75,12 +75,12 @@ namespace OfficeOpenXml.Drawing
         {
             get
             {
-                return _width;                
+                return this._width;                
             }
             set
             {
-                _width = value;
-                if (_setWidthCallback != null)
+                this._width = value;
+                if (this._setWidthCallback != null)
                 {
                     this._setWidthCallback();
                 }

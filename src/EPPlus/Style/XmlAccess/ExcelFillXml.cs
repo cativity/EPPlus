@@ -25,16 +25,16 @@ namespace OfficeOpenXml.Style.XmlAccess
         internal ExcelFillXml(XmlNamespaceManager nameSpaceManager)
             : base(nameSpaceManager)
         {
-            _fillPatternType = ExcelFillStyle.None;
-            _backgroundColor = new ExcelColorXml(NameSpaceManager);
-            _patternColor = new ExcelColorXml(NameSpaceManager);
+            this._fillPatternType = ExcelFillStyle.None;
+            this._backgroundColor = new ExcelColorXml(this.NameSpaceManager);
+            this._patternColor = new ExcelColorXml(this.NameSpaceManager);
         }
         internal ExcelFillXml(XmlNamespaceManager nsm, XmlNode topNode):
             base(nsm, topNode)
         {
-            PatternType = GetPatternType(GetXmlNodeString(fillPatternTypePath));
-            _backgroundColor = new ExcelColorXml(nsm, topNode.SelectSingleNode(_backgroundColorPath, nsm));
-            _patternColor = new ExcelColorXml(nsm, topNode.SelectSingleNode(_patternColorPath, nsm));
+            this.PatternType = GetPatternType(this.GetXmlNodeString(fillPatternTypePath));
+            this._backgroundColor = new ExcelColorXml(nsm, topNode.SelectSingleNode(_backgroundColorPath, nsm));
+            this._patternColor = new ExcelColorXml(nsm, topNode.SelectSingleNode(_patternColorPath, nsm));
         }
 
         private static ExcelFillStyle GetPatternType(string patternType)
@@ -58,7 +58,7 @@ namespace OfficeOpenXml.Style.XmlAccess
         {
             get
             {
-                return PatternType + PatternColor.Id + BackgroundColor.Id;
+                return this.PatternType + this.PatternColor.Id + this.BackgroundColor.Id;
             }
         }
         #region Public Properties
@@ -71,11 +71,11 @@ namespace OfficeOpenXml.Style.XmlAccess
         {
             get
             {
-                return _fillPatternType;
+                return this._fillPatternType;
             }
             set
             {
-                _fillPatternType=value;
+                this._fillPatternType=value;
             }
         }
         internal ExcelColorXml _patternColor = null;
@@ -87,11 +87,11 @@ namespace OfficeOpenXml.Style.XmlAccess
         {
             get
             {
-                return _patternColor;
+                return this._patternColor;
             }
             internal set
             {
-                _patternColor = value;
+                this._patternColor = value;
             }
         }
         internal ExcelColorXml _backgroundColor = null;
@@ -103,11 +103,11 @@ namespace OfficeOpenXml.Style.XmlAccess
         {
             get
             {
-                return _backgroundColor;
+                return this._backgroundColor;
             }
             internal set
             {
-                _backgroundColor=value;
+                this._backgroundColor=value;
             }
         }
         #endregion
@@ -121,28 +121,28 @@ namespace OfficeOpenXml.Style.XmlAccess
 
         internal virtual ExcelFillXml Copy()
         {
-            ExcelFillXml newFill = new ExcelFillXml(NameSpaceManager);
-            newFill.PatternType = _fillPatternType;
-            newFill.BackgroundColor = _backgroundColor.Copy();
-            newFill.PatternColor = _patternColor.Copy();
+            ExcelFillXml newFill = new ExcelFillXml(this.NameSpaceManager);
+            newFill.PatternType = this._fillPatternType;
+            newFill.BackgroundColor = this._backgroundColor.Copy();
+            newFill.PatternColor = this._patternColor.Copy();
             return newFill;
         }
 
         internal override XmlNode CreateXmlNode(XmlNode topNode)
         {
-            TopNode = topNode;
-            SetXmlNodeString(fillPatternTypePath, SetPatternString(_fillPatternType));
-            if (PatternType != ExcelFillStyle.None)
+            this.TopNode = topNode;
+            this.SetXmlNodeString(fillPatternTypePath, SetPatternString(this._fillPatternType));
+            if (this.PatternType != ExcelFillStyle.None)
             {
-                XmlNode pattern = topNode.SelectSingleNode(fillPatternTypePath, NameSpaceManager);
-                if (BackgroundColor.Exists)
+                XmlNode pattern = topNode.SelectSingleNode(fillPatternTypePath, this.NameSpaceManager);
+                if (this.BackgroundColor.Exists)
                 {
-                    CreateNode(_backgroundColorPath);
-                    BackgroundColor.CreateXmlNode(topNode.SelectSingleNode(_backgroundColorPath, NameSpaceManager));
-                    if (PatternColor.Exists)
+                    this.CreateNode(_backgroundColorPath);
+                    this.BackgroundColor.CreateXmlNode(topNode.SelectSingleNode(_backgroundColorPath, this.NameSpaceManager));
+                    if (this.PatternColor.Exists)
                     {
-                        CreateNode(_patternColorPath);
-                        PatternColor.CreateXmlNode(topNode.SelectSingleNode(_patternColorPath, NameSpaceManager));
+                        this.CreateNode(_patternColorPath);
+                        this.PatternColor.CreateXmlNode(topNode.SelectSingleNode(_patternColorPath, this.NameSpaceManager));
                     }
                 }
             }

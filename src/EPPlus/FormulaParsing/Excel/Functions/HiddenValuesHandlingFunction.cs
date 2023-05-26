@@ -26,7 +26,7 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions
     {
         public HiddenValuesHandlingFunction()
         {
-            IgnoreErrors = true;
+            this.IgnoreErrors = true;
         }
         /// <summary>
         /// Set to true or false to indicate whether the function should ignore hidden values.
@@ -47,7 +47,7 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions
 
         protected override IEnumerable<ExcelDoubleCellValue> ArgsToDoubleEnumerable(IEnumerable<FunctionArgument> arguments, ParsingContext context)
         {
-            return ArgsToDoubleEnumerable(arguments, context, IgnoreErrors, false);
+            return this.ArgsToDoubleEnumerable(arguments, context, this.IgnoreErrors, false);
         }
 
         protected IEnumerable<ExcelDoubleCellValue> ArgsToDoubleEnumerable(IEnumerable<FunctionArgument> arguments, ParsingContext context, bool ignoreErrors, bool ignoreNonNumeric)
@@ -56,21 +56,21 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions
             {
                 return Enumerable.Empty<ExcelDoubleCellValue>();
             }
-            if (IgnoreHiddenValues)
+            if (this.IgnoreHiddenValues)
             {
                 IEnumerable<FunctionArgument>? nonHidden = arguments.Where(x => !x.ExcelStateFlagIsSet(ExcelCellState.HiddenCell));
-                return base.ArgsToDoubleEnumerable(IgnoreHiddenValues, nonHidden, context);
+                return base.ArgsToDoubleEnumerable(this.IgnoreHiddenValues, nonHidden, context);
             }
-            return base.ArgsToDoubleEnumerable(IgnoreHiddenValues, ignoreErrors, arguments, context, ignoreNonNumeric);
+            return base.ArgsToDoubleEnumerable(this.IgnoreHiddenValues, ignoreErrors, arguments, context, ignoreNonNumeric);
         }
 
         protected bool ShouldIgnore(ICellInfo c, ParsingContext context)
         {
-            if(CellStateHelper.ShouldIgnore(IgnoreHiddenValues, c, context))
+            if(CellStateHelper.ShouldIgnore(this.IgnoreHiddenValues, c, context))
             {
                 return true;
             }
-            if(IgnoreErrors && c.IsExcelError)
+            if(this.IgnoreErrors && c.IsExcelError)
             {
                 return true;
             }
@@ -78,11 +78,11 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions
         }
         protected bool ShouldIgnore(FunctionArgument arg, ParsingContext context)
         {
-            if (CellStateHelper.ShouldIgnore(IgnoreHiddenValues, arg, context))
+            if (CellStateHelper.ShouldIgnore(this.IgnoreHiddenValues, arg, context))
             {
                 return true;
             }
-            if(IgnoreErrors && arg.ValueIsExcelError)
+            if(this.IgnoreErrors && arg.ValueIsExcelError)
             {
                 return true;
             }

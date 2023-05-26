@@ -30,35 +30,36 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions.RefAndLookup
         {
             Require.That(arguments).Named("arguments").IsNotNull();
             Require.That(arguments.DataArray).Named("arguments.DataArray").IsNotNull();
-            _arrayData = arguments.DataArray.ToArray();
-            Initialize();
+            this._arrayData = arguments.DataArray.ToArray();
+            this.Initialize();
         }
 
         private void Initialize()
         {
-            if (Arguments.LookupIndex >= _arrayData.Length)
+            if (this.Arguments.LookupIndex >= this._arrayData.Length)
             {
                 throw new ExcelErrorValueException(eErrorType.Ref);
             }
-            SetCurrentValue();
+
+            this.SetCurrentValue();
 
         }
 
         public override int Index
         {
-            get { return _index; }
+            get { return this._index; }
         }
 
         private void SetCurrentValue()
         {
-            _currentValue = _arrayData[_index];
+            this._currentValue = this._arrayData[this._index];
         }
 
         private bool HasNext()
         {
-            if (Direction == LookupDirection.Vertical)
+            if (this.Direction == LookupDirection.Vertical)
             {
-                return _index < (_arrayData.Length - 1);
+                return this._index < (this._arrayData.Length - 1);
             }
             else
             {
@@ -68,27 +69,28 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions.RefAndLookup
 
         public override bool MoveNext()
         {
-            if (!HasNext())
+            if (!this.HasNext())
             {
                 return false;
             }
 
-            if (Direction == LookupDirection.Vertical)
+            if (this.Direction == LookupDirection.Vertical)
             {
-                _index++;
+                this._index++;
             }
-            SetCurrentValue();
+
+            this.SetCurrentValue();
             return true;
         }
 
         public override object CurrentValue
         {
-            get { return _arrayData[_index].Value; }
+            get { return this._arrayData[this._index].Value; }
         }
 
         public override object GetLookupValue()
         {
-            return _arrayData[_index].Value;
+            return this._arrayData[this._index].Value;
         }
     }
 }

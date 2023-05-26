@@ -46,14 +46,14 @@ namespace EPPlusTest.ExcelUtilities
         [TestInitialize]
         public void Setup()
         {
-            SetupTranslator(12345, ExcelReferenceType.RelativeRowAndColumn);
+            this.SetupTranslator(12345, ExcelReferenceType.RelativeRowAndColumn);
         }
 
         private void SetupTranslator(int maxRows, ExcelReferenceType refType)
         {
-            _excelDataProvider = A.Fake<ExcelDataProvider>();
-            A.CallTo(() => _excelDataProvider.ExcelMaxRows).Returns(maxRows);
-            _indexToAddressTranslator = new IndexToAddressTranslator(_excelDataProvider, refType);
+            this._excelDataProvider = A.Fake<ExcelDataProvider>();
+            A.CallTo(() => this._excelDataProvider.ExcelMaxRows).Returns(maxRows);
+            this._indexToAddressTranslator = new IndexToAddressTranslator(this._excelDataProvider, refType);
         }
 
         [TestMethod, ExpectedException(typeof(ArgumentNullException))]
@@ -65,75 +65,75 @@ namespace EPPlusTest.ExcelUtilities
         [TestMethod]
         public void ShouldTranslate1And1ToA1()
         {
-            string? result = _indexToAddressTranslator.ToAddress(1, 1);
+            string? result = this._indexToAddressTranslator.ToAddress(1, 1);
             Assert.AreEqual("A1", result);
         }
 
         [TestMethod]
         public void ShouldTranslate27And1ToAA1()
         {
-            string? result = _indexToAddressTranslator.ToAddress(27, 1);
+            string? result = this._indexToAddressTranslator.ToAddress(27, 1);
             Assert.AreEqual("AA1", result);
         }
 
         [TestMethod]
         public void ShouldTranslate53And1ToBA1()
         {
-            string? result = _indexToAddressTranslator.ToAddress(53, 1);
+            string? result = this._indexToAddressTranslator.ToAddress(53, 1);
             Assert.AreEqual("BA1", result);
         }
 
         [TestMethod]
         public void ShouldTranslate702And1ToZZ1()
         {
-            string? result = _indexToAddressTranslator.ToAddress(702, 1);
+            string? result = this._indexToAddressTranslator.ToAddress(702, 1);
             Assert.AreEqual("ZZ1", result);
         }
 
         [TestMethod]
         public void ShouldTranslate703ToAAA4()
         {
-            string? result = _indexToAddressTranslator.ToAddress(703, 4);
+            string? result = this._indexToAddressTranslator.ToAddress(703, 4);
             Assert.AreEqual("AAA4", result);
         }
 
         [TestMethod]
         public void ShouldTranslateToEntireColumnWhenRowIsEqualToMaxRows()
         {
-            A.CallTo(() => _excelDataProvider.ExcelMaxRows).Returns(123456);
-            string? result = _indexToAddressTranslator.ToAddress(1, 123456);
+            A.CallTo(() => this._excelDataProvider.ExcelMaxRows).Returns(123456);
+            string? result = this._indexToAddressTranslator.ToAddress(1, 123456);
             Assert.AreEqual("A", result);
         }
 
         [TestMethod]
         public void ShouldTranslateToAbsoluteAddress()
         {
-            SetupTranslator(123456, ExcelReferenceType.AbsoluteRowAndColumn);
-            string? result = _indexToAddressTranslator.ToAddress(1, 1);
+            this.SetupTranslator(123456, ExcelReferenceType.AbsoluteRowAndColumn);
+            string? result = this._indexToAddressTranslator.ToAddress(1, 1);
             Assert.AreEqual("$A$1", result);
         }
 
         [TestMethod]
         public void ShouldTranslateToAbsoluteRowAndRelativeCol()
         {
-            SetupTranslator(123456, ExcelReferenceType.AbsoluteRowRelativeColumn);
-            string? result = _indexToAddressTranslator.ToAddress(1, 1);
+            this.SetupTranslator(123456, ExcelReferenceType.AbsoluteRowRelativeColumn);
+            string? result = this._indexToAddressTranslator.ToAddress(1, 1);
             Assert.AreEqual("A$1", result);
         }
 
         [TestMethod]
         public void ShouldTranslateToRelativeRowAndAbsoluteCol()
         {
-            SetupTranslator(123456, ExcelReferenceType.RelativeRowAbsolutColumn);
-            string? result = _indexToAddressTranslator.ToAddress(1, 1);
+            this.SetupTranslator(123456, ExcelReferenceType.RelativeRowAbsolutColumn);
+            string? result = this._indexToAddressTranslator.ToAddress(1, 1);
             Assert.AreEqual("$A1", result);
         }
 
         [TestMethod]
         public void ShouldTranslateToRelativeRowAndCol()
         {
-            SetupTranslator(123456, ExcelReferenceType.RelativeRowAndColumn);
-            string? result = _indexToAddressTranslator.ToAddress(1, 1);
+            this.SetupTranslator(123456, ExcelReferenceType.RelativeRowAndColumn);
+            string? result = this._indexToAddressTranslator.ToAddress(1, 1);
             Assert.AreEqual("A1", result);
         }
     }

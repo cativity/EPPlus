@@ -84,34 +84,34 @@ namespace OfficeOpenXml.ConditionalFormatting
             if (itemElementNode != null && itemElementNode.HasChildNodes)
             {
                 int pos = 1;
-                foreach (XmlNode node in itemElementNode.SelectNodes("d:iconSet/d:cfvo", NameSpaceManager))
+                foreach (XmlNode node in itemElementNode.SelectNodes("d:iconSet/d:cfvo", this.NameSpaceManager))
                 {
                     if(pos==1)
                     {
-                        Icon1 = new ExcelConditionalFormattingIconDataBarValue(
-                                type,
-                                address,
-                                worksheet,
-                                node,
-                                namespaceManager);
+                        this.Icon1 = new ExcelConditionalFormattingIconDataBarValue(
+                                                                                    type,
+                                                                                    address,
+                                                                                    worksheet,
+                                                                                    node,
+                                                                                    namespaceManager);
                     }
                     else if (pos == 2)
                     {
-                        Icon2 = new ExcelConditionalFormattingIconDataBarValue(
-                                type,
-                                address,
-                                worksheet,
-                                node,
-                                namespaceManager);
+                        this.Icon2 = new ExcelConditionalFormattingIconDataBarValue(
+                                                                                    type,
+                                                                                    address,
+                                                                                    worksheet,
+                                                                                    node,
+                                                                                    namespaceManager);
                     }
                     else if (pos == 3)
                     {
-                        Icon3 = new ExcelConditionalFormattingIconDataBarValue(
-                                type,
-                                address,
-                                worksheet,
-                                node,
-                                namespaceManager);
+                        this.Icon3 = new ExcelConditionalFormattingIconDataBarValue(
+                                                                                    type,
+                                                                                    address,
+                                                                                    worksheet,
+                                                                                    node,
+                                                                                    namespaceManager);
                     }
                     else
                     {
@@ -122,9 +122,8 @@ namespace OfficeOpenXml.ConditionalFormatting
             }
             else
             {
-                XmlNode? iconSetNode = CreateComplexNode(
-                                                         Node,
-                                                         ExcelConditionalFormattingConstants.Paths.IconSet);
+                XmlNode? iconSetNode = this.CreateComplexNode(this.Node,
+                                                              ExcelConditionalFormattingConstants.Paths.IconSet);
 
                 //Create the <iconSet> node inside the <cfRule> node
                 double spann;
@@ -143,40 +142,44 @@ namespace OfficeOpenXml.ConditionalFormatting
 
                 XmlElement? iconNode1 = iconSetNode.OwnerDocument.CreateElement(ExcelConditionalFormattingConstants.Paths.Cfvo, ExcelPackage.schemaMain);
                 iconSetNode.AppendChild(iconNode1);
-                Icon1 = new ExcelConditionalFormattingIconDataBarValue(eExcelConditionalFormattingValueObjectType.Percent,
-                        0,
-                        "",
-                        eExcelConditionalFormattingRuleType.ThreeIconSet,
-                        address,
-                        priority,
-                        worksheet,
-                        iconNode1,
-                        namespaceManager);
+
+                this.Icon1 = new ExcelConditionalFormattingIconDataBarValue(eExcelConditionalFormattingValueObjectType.Percent,
+                                                                            0,
+                                                                            "",
+                                                                            eExcelConditionalFormattingRuleType.ThreeIconSet,
+                                                                            address,
+                                                                            priority,
+                                                                            worksheet,
+                                                                            iconNode1,
+                                                                            namespaceManager);
 
                 XmlElement? iconNode2 = iconSetNode.OwnerDocument.CreateElement(ExcelConditionalFormattingConstants.Paths.Cfvo, ExcelPackage.schemaMain);
                 iconSetNode.AppendChild(iconNode2);
-                Icon2 = new ExcelConditionalFormattingIconDataBarValue(eExcelConditionalFormattingValueObjectType.Percent,
-                        Math.Round(100D / spann, 0),
-                        "",
-                        eExcelConditionalFormattingRuleType.ThreeIconSet,
-                        address,
-                        priority,
-                        worksheet,
-                        iconNode2,
-                        namespaceManager);
+
+                this.Icon2 = new ExcelConditionalFormattingIconDataBarValue(eExcelConditionalFormattingValueObjectType.Percent,
+                                                                            Math.Round(100D / spann, 0),
+                                                                            "",
+                                                                            eExcelConditionalFormattingRuleType.ThreeIconSet,
+                                                                            address,
+                                                                            priority,
+                                                                            worksheet,
+                                                                            iconNode2,
+                                                                            namespaceManager);
 
                 XmlElement? iconNode3 = iconSetNode.OwnerDocument.CreateElement(ExcelConditionalFormattingConstants.Paths.Cfvo, ExcelPackage.schemaMain);
                 iconSetNode.AppendChild(iconNode3);
-                Icon3 = new ExcelConditionalFormattingIconDataBarValue(eExcelConditionalFormattingValueObjectType.Percent,
-                        Math.Round(100D * (2D / spann), 0),
-                        "",
-                        eExcelConditionalFormattingRuleType.ThreeIconSet,
-                        address,
-                        priority,
-                        worksheet,
-                        iconNode3,
-                        namespaceManager);
-                Type = type;
+
+                this.Icon3 = new ExcelConditionalFormattingIconDataBarValue(eExcelConditionalFormattingValueObjectType.Percent,
+                                                                            Math.Round(100D * (2D / spann), 0),
+                                                                            "",
+                                                                            eExcelConditionalFormattingRuleType.ThreeIconSet,
+                                                                            address,
+                                                                            priority,
+                                                                            worksheet,
+                                                                            iconNode3,
+                                                                            namespaceManager);
+
+                this.Type = type;
             }
         }
 
@@ -260,11 +263,11 @@ namespace OfficeOpenXml.ConditionalFormatting
         {
             get
             {
-                return GetXmlNodeBool(_reversePath, false);
+                return this.GetXmlNodeBool(_reversePath, false);
             }
             set
             {
-                SetXmlNodeBool(_reversePath, value);
+                this.SetXmlNodeBool(_reversePath, value);
             }
         }
 
@@ -276,11 +279,11 @@ namespace OfficeOpenXml.ConditionalFormatting
         {
             get
             {
-                return GetXmlNodeBool(_showValuePath, true);
+                return this.GetXmlNodeBool(_showValuePath, true);
             }
             set
             {
-                SetXmlNodeBool(_showValuePath, value);
+                this.SetXmlNodeBool(_showValuePath, value);
             }
         }
         private const string _iconSetPath = "d:iconSet/@iconSet";
@@ -291,18 +294,18 @@ namespace OfficeOpenXml.ConditionalFormatting
         {
             get
             {
-                string? v = GetXmlNodeString(_iconSetPath);
+                string? v = this.GetXmlNodeString(_iconSetPath);
                 v = v.Substring(1); //Skip first icon.
                 return (T)Enum.Parse(typeof(T), v, true);
             }
             set
             {
-                SetXmlNodeString(_iconSetPath, GetIconSetString(value));
+                this.SetXmlNodeString(_iconSetPath, this.GetIconSetString(value));
             }
         }
         private string GetIconSetString(T value)
         {
-            if (Type == eExcelConditionalFormattingRuleType.FourIconSet)
+            if (this.Type == eExcelConditionalFormattingRuleType.FourIconSet)
             {
                 switch (value.ToString())
                 {
@@ -320,7 +323,7 @@ namespace OfficeOpenXml.ConditionalFormatting
                         throw (new ArgumentException("Invalid type"));
                 }
             }
-            else if (Type == eExcelConditionalFormattingRuleType.FiveIconSet)
+            else if (this.Type == eExcelConditionalFormattingRuleType.FiveIconSet)
             {
                 switch (value.ToString())
                 {

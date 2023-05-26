@@ -39,11 +39,11 @@ namespace OfficeOpenXml.Drawing.Controls
         {
             get
             {
-                return _ctrlProp.GetXmlNodeString("@checked")=="Checked";
+                return this._ctrlProp.GetXmlNodeString("@checked")=="Checked";
             }
             set
             {
-                _ctrlProp.SetXmlNodeString("@checked", value?"Checked":"Unchecked");
+                this._ctrlProp.SetXmlNodeString("@checked", value?"Checked":"Unchecked");
             }
         }
         /// <summary>
@@ -53,22 +53,22 @@ namespace OfficeOpenXml.Drawing.Controls
         {
             get
             {
-                ExcelAddressBase? v=LinkedGroup;
+                ExcelAddressBase? v= this.LinkedGroup;
                 if(v!=null)
                 {
                     return v;
                 }
-                return FmlaLink;
+                return this.FmlaLink;
             }
             set
             {
-                if (LinkedGroup == null)
+                if (this.LinkedGroup == null)
                 {
-                    FmlaLink = value;
+                    this.FmlaLink = value;
                 }
                 else
                 {
-                    LinkedGroup = value;
+                    this.LinkedGroup = value;
                 }
             }
         }
@@ -79,12 +79,12 @@ namespace OfficeOpenXml.Drawing.Controls
         {
             get
             {
-                return _ctrlProp.GetXmlNodeBool("@firstButton");
+                return this._ctrlProp.GetXmlNodeBool("@firstButton");
             }
             set
             {
-                _ctrlProp.SetXmlNodeBool("@firstButton", value);
-                _vmlProp.SetBoolNode("x:FirstButton", value);
+                this._ctrlProp.SetXmlNodeBool("@firstButton", value);
+                this._vmlProp.SetBoolNode("x:FirstButton", value);
             }
         }
     }

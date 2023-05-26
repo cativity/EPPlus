@@ -31,7 +31,7 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Database
 
         public DatabaseFunction(RowMatcher rowMatcher)
         {
-            RowMatcher = rowMatcher;
+            this.RowMatcher = rowMatcher;
         }
 
         protected IEnumerable<double> GetMatchingValues(IEnumerable<FunctionArgument> arguments, ParsingContext context)
@@ -48,7 +48,7 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Database
             while (db.HasMoreRows)
             {
                 ExcelDatabaseRow? dataRow = db.Read();
-                if (!RowMatcher.IsMatch(dataRow, criteria))
+                if (!this.RowMatcher.IsMatch(dataRow, criteria))
                 {
                     continue;
                 }

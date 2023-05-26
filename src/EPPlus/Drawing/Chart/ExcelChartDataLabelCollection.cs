@@ -26,13 +26,14 @@ namespace OfficeOpenXml.Drawing.Chart
         private readonly List<ExcelChartDataLabelItem> _list;
         internal ExcelChartDataLabelCollection(ExcelChart chart, XmlNamespaceManager ns, XmlNode topNode, string[] schemaNodeOrder) : base(ns, topNode)
         {
-            SchemaNodeOrder = schemaNodeOrder;
-            _list = new List<ExcelChartDataLabelItem>();
-            foreach (XmlNode pointNode in TopNode.SelectNodes(ExcelChartDataPoint.topNodePath, ns))
+            this.SchemaNodeOrder = schemaNodeOrder;
+            this._list = new List<ExcelChartDataLabelItem>();
+            foreach (XmlNode pointNode in this.TopNode.SelectNodes(ExcelChartDataPoint.topNodePath, ns))
             {
-                _list.Add(new ExcelChartDataLabelItem(chart, ns, pointNode, "idx", schemaNodeOrder));
+                this._list.Add(new ExcelChartDataLabelItem(chart, ns, pointNode, "idx", schemaNodeOrder));
             }
-            _chart = chart;
+
+            this._chart = chart;
         }
         /// <summary>
         /// Adds a new chart label to the collection
@@ -41,34 +42,34 @@ namespace OfficeOpenXml.Drawing.Chart
         /// <returns></returns>
         public ExcelChartDataLabelItem Add(int index)
         {
-            if (_list.Count == 0)
+            if (this._list.Count == 0)
             {
-                return CreateDataLabel(index);
+                return this.CreateDataLabel(index);
             }
             else
             {
-                int ix = GetItemAfter(index);
-                if (_list[ix].Index == index)
+                int ix = this.GetItemAfter(index);
+                if (this._list[ix].Index == index)
                 {
                     throw (new ArgumentException($"Data label with index {index} already exists"));
                 }
-                return CreateDataLabel(ix);
+                return this.CreateDataLabel(ix);
             }
         }
 
         private ExcelChartDataLabelItem CreateDataLabel(int idx)
         {
-            int pos = GetItemAfter(idx);
-            XmlElement element = CreateElement(idx);
-            ExcelChartDataLabelItem? dl = new ExcelChartDataLabelItem(_chart, NameSpaceManager, element, "dLbl", SchemaNodeOrder) { Index=idx };
+            int pos = this.GetItemAfter(idx);
+            XmlElement element = this.CreateElement(idx);
+            ExcelChartDataLabelItem? dl = new ExcelChartDataLabelItem(this._chart, this.NameSpaceManager, element, "dLbl", this.SchemaNodeOrder) { Index=idx };
 
-            if (idx < _list.Count)
+            if (idx < this._list.Count)
             {
-                _list.Insert(idx, dl);
+                this._list.Insert(idx, dl);
             }
             else
             {
-                _list.Add(dl);
+                this._list.Add(dl);
             }
 
             return dl;
@@ -77,28 +78,28 @@ namespace OfficeOpenXml.Drawing.Chart
         private XmlElement CreateElement(int idx)
         {
             XmlElement pointNode;
-            if (idx < _list.Count)
+            if (idx < this._list.Count)
             {
-                pointNode = TopNode.OwnerDocument.CreateElement("c", "dLbl", ExcelPackage.schemaMain);
-                _list[idx].TopNode.InsertBefore(pointNode, _list[idx].TopNode);
+                pointNode = this.TopNode.OwnerDocument.CreateElement("c", "dLbl", ExcelPackage.schemaMain);
+                this._list[idx].TopNode.InsertBefore(pointNode, this._list[idx].TopNode);
             }
             else
             {
-                pointNode = (XmlElement)CreateNode("c:dLbl");
+                pointNode = (XmlElement)this.CreateNode("c:dLbl");
             }
             return pointNode;
         }
 
         private int GetItemAfter(int index)
         {
-            for (int i = 0; i < _list.Count; i++)
+            for (int i = 0; i < this._list.Count; i++)
             {
-                if (index >= _list[i].Index)
+                if (index >= this._list[i].Index)
                 {
                     return i;
                 }
             }
-            return _list.Count;
+            return this._list.Count;
         }
         /// <summary>
         /// Indexer for the collection
@@ -109,7 +110,7 @@ namespace OfficeOpenXml.Drawing.Chart
         {
             get
             {
-                return (_list[index]);
+                return (this._list[index]);
             }
         }
         /// <summary>
@@ -119,7 +120,7 @@ namespace OfficeOpenXml.Drawing.Chart
         {
             get
             {
-                return _list.Count;
+                return this._list.Count;
             }
         }
         /// <summary>
@@ -128,12 +129,12 @@ namespace OfficeOpenXml.Drawing.Chart
         /// <returns>The enumerator</returns>
         public IEnumerator<ExcelChartDataLabelItem> GetEnumerator()
         {
-            return _list.GetEnumerator();
+            return this._list.GetEnumerator();
         }
 
         IEnumerator IEnumerable.GetEnumerator()
         {
-            return _list.GetEnumerator();
+            return this._list.GetEnumerator();
         }
     }
 }

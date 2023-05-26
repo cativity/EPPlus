@@ -21,52 +21,52 @@ namespace EPPlusTest.FormulaParsing
         [TestInitialize]
         public void Setup()
         {
-            _package = new ExcelPackage();
-            _sheet = _package.Workbook.Worksheets.Add("Test");
-            _parser = _package.Workbook.FormulaParser;
+            this._package = new ExcelPackage();
+            this._sheet = this._package.Workbook.Worksheets.Add("Test");
+            this._parser = this._package.Workbook.FormulaParser;
 
         }
 
         [TestCleanup]
         public void Cleanup()
         {
-            _package.Dispose();
-            _parser = null;
+            this._package.Dispose();
+            this._parser = null;
         }
 
         [TestMethod]
         public void EmptyCellReferenceShouldReturnZero()
         {
-            _sheet.Cells["A2"].Formula = "A1";
-            _sheet.Calculate();
-            object? result = _sheet.Cells["A2"].Value;
+            this._sheet.Cells["A2"].Formula = "A1";
+            this._sheet.Calculate();
+            object? result = this._sheet.Cells["A2"].Value;
             Assert.AreEqual(0d, result);
         }
 
         [TestMethod]
         public void EmptyCellReferenceMultiplicationShouldReturnZero()
         {
-            _sheet.Cells["A2"].Formula = "A1*3";
-            _sheet.Calculate();
-            object? result = _sheet.Cells["A2"].Value;
+            this._sheet.Cells["A2"].Formula = "A1*3";
+            this._sheet.Calculate();
+            object? result = this._sheet.Cells["A2"].Value;
             Assert.AreEqual(0d, result);
         }
 
         [TestMethod]
         public void EmptyCellReferenceAdditionShouldReturnOtherOperand()
         {
-            _sheet.Cells["A2"].Formula = "A1+2";
-            _sheet.Calculate();
-            object? result = _sheet.Cells["A2"].Value;
+            this._sheet.Cells["A2"].Formula = "A1+2";
+            this._sheet.Calculate();
+            object? result = this._sheet.Cells["A2"].Value;
             Assert.AreEqual(2d, result);
         }
 
         [TestMethod]
         public void IfResultEmptyCellReferenceReturnsZero()
         {
-            _sheet.Cells["A1"].Formula = "IF(TRUE,A2)";
-            _sheet.Calculate();
-            object? result = _sheet.Cells["A1"].Value;
+            this._sheet.Cells["A1"].Formula = "IF(TRUE,A2)";
+            this._sheet.Calculate();
+            object? result = this._sheet.Cells["A1"].Value;
             Assert.AreEqual(0d, result);
         }
 
@@ -103,25 +103,25 @@ namespace EPPlusTest.FormulaParsing
         [TestMethod]
         public void IfConditionEmptyCellReferenceEqualsZero()
         {
-            _sheet.Cells["A2"].Formula = "IF(A1=0,1)";
-            _sheet.Calculate();
-            object? result = _sheet.Cells["A2"].Value;
+            this._sheet.Cells["A2"].Formula = "IF(A1=0,1)";
+            this._sheet.Calculate();
+            object? result = this._sheet.Cells["A2"].Value;
             Assert.AreEqual(1d, result);
         }
         [TestMethod]
         public void IfConditionEmptyCellReferenceEqualsEmptyString()
         {
-            _sheet.Cells["A2"].Formula = "IF(A1=\"\",1)";
-            _sheet.Calculate();
-            object? result = _sheet.Cells["A2"].Value;
+            this._sheet.Cells["A2"].Formula = "IF(A1=\"\",1)";
+            this._sheet.Calculate();
+            object? result = this._sheet.Cells["A2"].Value;
             Assert.AreEqual(1d, result);
         }
         [TestMethod]
         public void IfConditionEmptyCellReferenceEqualsFalse()
         {
-            _sheet.Cells["A2"].Formula = "IF(A1=FALSE,1)";
-            _sheet.Calculate();
-            object? result = _sheet.Cells["A2"].Value;
+            this._sheet.Cells["A2"].Formula = "IF(A1=FALSE,1)";
+            this._sheet.Calculate();
+            object? result = this._sheet.Cells["A2"].Value;
             Assert.AreEqual(1d, result);
         }
     }

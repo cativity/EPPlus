@@ -29,14 +29,14 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Text
         {
             ValidateArguments(arguments, 2);
             string? str = ArgToString(arguments, 0);
-            int length = ArgToInt(arguments, 1);
+            int length = this.ArgToInt(arguments, 1);
             int startIx = str.Length - length;
             if (startIx < 0)
             {
                 startIx = 0;
             }
 
-            return CreateResult(str.Substring(startIx, str.Length - startIx), DataType.String);
+            return this.CreateResult(str.Substring(startIx, str.Length - startIx), DataType.String);
         }
     }
 }

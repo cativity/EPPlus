@@ -31,7 +31,7 @@ namespace OfficeOpenXml.FormulaParsing.Logging
         internal TextFileLogger(FileInfo fileInfo)
         {
 #if (Core)
-            _sw = new StreamWriter(new FileStream(fileInfo.FullName, FileMode.Append));
+            this._sw = new StreamWriter(new FileStream(fileInfo.FullName, FileMode.Append));
 #else
             _sw = new StreamWriter(fileInfo.FullName);
 #endif
@@ -39,90 +39,94 @@ namespace OfficeOpenXml.FormulaParsing.Logging
 
         private void WriteSeparatorAndTimeStamp()
         {
-            _sw.WriteLine(Separator);
-            _sw.WriteLine("Timestamp: {0}", DateTime.Now);
-            _sw.WriteLine();
+            this._sw.WriteLine(Separator);
+            this._sw.WriteLine("Timestamp: {0}", DateTime.Now);
+            this._sw.WriteLine();
         }
 
         private void WriteAddressInfo(ParsingContext context)
         {
             if (context.Scopes.Current != null && context.Scopes.Current.Address != null)
             {
-                _sw.WriteLine("Worksheet: {0}", context.Scopes.Current.Address.Worksheet ?? "<not specified>");
-                _sw.WriteLine("Address: {0}", context.Scopes.Current.Address.Address ?? "<not available>");
+                this._sw.WriteLine("Worksheet: {0}", context.Scopes.Current.Address.Worksheet ?? "<not specified>");
+                this._sw.WriteLine("Address: {0}", context.Scopes.Current.Address.Address ?? "<not available>");
             }
         }
 
         public void Log(ParsingContext context, Exception ex)
         {
-            WriteSeparatorAndTimeStamp();
-            WriteAddressInfo(context);
-            _sw.WriteLine(ex);
-            _sw.WriteLine();
+            this.WriteSeparatorAndTimeStamp();
+            this.WriteAddressInfo(context);
+            this._sw.WriteLine(ex);
+            this._sw.WriteLine();
         }
 
         public void Log(ParsingContext context, string message)
         {
-            WriteSeparatorAndTimeStamp();
-            WriteAddressInfo(context);
-            _sw.WriteLine(message);
-            _sw.WriteLine();
+            this.WriteSeparatorAndTimeStamp();
+            this.WriteAddressInfo(context);
+            this._sw.WriteLine(message);
+            this._sw.WriteLine();
         }
 
         public void Log(string message)
         {
-            WriteSeparatorAndTimeStamp();
-            _sw.WriteLine(message);
-            _sw.WriteLine();
+            this.WriteSeparatorAndTimeStamp();
+            this._sw.WriteLine(message);
+            this._sw.WriteLine();
         }
 
         public void LogCellCounted()
         {
-            _count++;
-            if (_count%500 == 0)
+            this._count++;
+            if (this._count%500 == 0)
             {
-                _sw.WriteLine(Separator);
-                TimeSpan timeEllapsed = DateTime.Now.Subtract(_startTime);
-                _sw.WriteLine("{0} cells parsed, time {1} seconds", _count, timeEllapsed.TotalSeconds);
+                this._sw.WriteLine(Separator);
+                TimeSpan timeEllapsed = DateTime.Now.Subtract(this._startTime);
+                this._sw.WriteLine("{0} cells parsed, time {1} seconds", this._count, timeEllapsed.TotalSeconds);
 
-                List<string>? funcs = _funcs.Keys.OrderByDescending(x => _funcs[x]).ToList();
+                List<string>? funcs = this._funcs.Keys.OrderByDescending(x => this._funcs[x]).ToList();
                 foreach (string? func in funcs)
                 {
-                    _sw.Write(func + "  - " + _funcs[func]);
-                    if (_funcPerformance.ContainsKey(func))
+                    this._sw.Write(func + "  - " + this._funcs[func]);
+                    if (this._funcPerformance.ContainsKey(func))
                     {
-                        _sw.Write(" - avg: " + _funcPerformance[func]/_funcs[func] + " milliseconds");
+                        this._sw.Write(" - avg: " + this._funcPerformance[func]/ this._funcs[func] + " milliseconds");
                     }
-                    _sw.WriteLine();
+
+                    this._sw.WriteLine();
                 }
-                _sw.WriteLine();
-                _funcs.Clear();
+
+                this._sw.WriteLine();
+                this._funcs.Clear();
 
             }
         }
 
         public void LogFunction(string func)
         {
-            if (!_funcs.ContainsKey(func))
+            if (!this._funcs.ContainsKey(func))
             {
-                _funcs.Add(func, 0);
+                this._funcs.Add(func, 0);
             }
-            _funcs[func]++;
+
+            this._funcs[func]++;
         }
 
         public void LogFunction(string func, long milliseconds)
         {
-            if (!_funcPerformance.ContainsKey(func))
+            if (!this._funcPerformance.ContainsKey(func))
             {
-                _funcPerformance[func] = 0;
+                this._funcPerformance[func] = 0;
             }
-            _funcPerformance[func] += milliseconds;
+
+            this._funcPerformance[func] += milliseconds;
         }
 
         public void Dispose()
         {
-            _sw.Close(); 
-            _sw.Dispose();
+            this._sw.Close();
+            this._sw.Dispose();
         }
     }
 }

@@ -68,15 +68,15 @@ namespace OfficeOpenXml.Encryption
             using MemoryStream? ms = RecyclableMemory.GetStream();
             BinaryWriter bw = new BinaryWriter(ms);
 
-            bw.Write((int)Flags);
-            bw.Write(SizeExtra);
-            bw.Write((int)AlgID);
-            bw.Write((int)AlgIDHash);
-            bw.Write((int)KeySize);
-            bw.Write((int)ProviderType);
-            bw.Write(Reserved1);
-            bw.Write(Reserved2);
-            bw.Write(Encoding.Unicode.GetBytes(CSPName));
+            bw.Write((int)this.Flags);
+            bw.Write(this.SizeExtra);
+            bw.Write((int)this.AlgID);
+            bw.Write((int)this.AlgIDHash);
+            bw.Write((int)this.KeySize);
+            bw.Write((int)this.ProviderType);
+            bw.Write(this.Reserved1);
+            bw.Write(this.Reserved2);
+            bw.Write(Encoding.Unicode.GetBytes(this.CSPName));
 
             bw.Flush();
             return ms.ToArray();

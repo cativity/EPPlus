@@ -27,10 +27,10 @@ namespace OfficeOpenXml.Drawing.Theme
         private readonly List<ExcelDrawingFill> _list;
         internal ExcelThemeFillStyles(XmlNamespaceManager nameSpaceManager, XmlNode topNode, ExcelThemeBase theme) : base(nameSpaceManager, topNode)
         {
-            _list = new List<ExcelDrawingFill>();
+            this._list = new List<ExcelDrawingFill>();
             foreach (XmlNode node in topNode.ChildNodes)
             {
-                _list.Add(new ExcelDrawingFill(theme, nameSpaceManager, node, "", SchemaNodeOrder));
+                this._list.Add(new ExcelDrawingFill(theme, nameSpaceManager, node, "", this.SchemaNodeOrder));
             }
         }
         /// <summary>
@@ -39,12 +39,12 @@ namespace OfficeOpenXml.Drawing.Theme
         /// <returns>The enumerator</returns>
         public IEnumerator<ExcelDrawingFill> GetEnumerator()
         {
-            return _list.GetEnumerator();
+            return this._list.GetEnumerator();
         }
 
         IEnumerator IEnumerable.GetEnumerator()
         {
-            return _list.GetEnumerator();
+            return this._list.GetEnumerator();
         }
         /// <summary>
         /// Indexer for the collection
@@ -55,7 +55,7 @@ namespace OfficeOpenXml.Drawing.Theme
         {
             get
             {
-                return _list[index];
+                return this._list[index];
             }
         }
         /// <summary>
@@ -65,9 +65,9 @@ namespace OfficeOpenXml.Drawing.Theme
         /// <returns>The fill</returns>
         public ExcelDrawingFill Add(eFillStyle style)
         {            
-            XmlElement? node = TopNode.OwnerDocument.CreateElement("a",ExcelDrawingFillBasic.GetStyleText(style),  ExcelPackage.schemaMain);
-            TopNode.AppendChild(node);
-            return new ExcelDrawingFill(null, NameSpaceManager, TopNode, "", SchemaNodeOrder);
+            XmlElement? node = this.TopNode.OwnerDocument.CreateElement("a",ExcelDrawingFillBasic.GetStyleText(style),  ExcelPackage.schemaMain);
+            this.TopNode.AppendChild(node);
+            return new ExcelDrawingFill(null, this.NameSpaceManager, this.TopNode, "", this.SchemaNodeOrder);
         }
         /// <summary>
         /// Remove a fill item
@@ -75,14 +75,14 @@ namespace OfficeOpenXml.Drawing.Theme
         /// <param name="item">The item</param>
         public void Remove(ExcelDrawingFill item)
         {
-            if(_list.Count==3)
+            if(this._list.Count==3)
             {
                 throw (new InvalidOperationException("Collection must contain at least 3 items"));
             }
 
-            if (_list.Contains(item))
+            if (this._list.Contains(item))
             {
-                _list.Remove(item);
+                this._list.Remove(item);
                 item.TopNode.ParentNode.RemoveChild(item.TopNode);
             }
         }
@@ -92,11 +92,12 @@ namespace OfficeOpenXml.Drawing.Theme
         /// <param name="Index"></param>
         public void Remove(int Index)
         {
-            if(Index >= _list.Count)
+            if(Index >= this._list.Count)
             {
                 throw new ArgumentException("Index", "Index out of range");
             }
-            _list.Remove(_list[Index]);            
+
+            this._list.Remove(this._list[Index]);            
         }
         /// <summary>
         /// Number of items in the collection
@@ -105,7 +106,7 @@ namespace OfficeOpenXml.Drawing.Theme
         {
             get
             {
-                return _list.Count;
+                return this._list.Count;
             }
         }
     }

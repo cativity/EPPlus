@@ -24,8 +24,8 @@ namespace OfficeOpenXml.Drawing
         internal ExcelTextRun(XmlNamespaceManager ns, XmlNode topNode, string path) :
             base(ns, topNode)
         {
-            _path = path;
-            SchemaNodeOrder = new string[] { "ln", "noFill", "solidFill", "gradFill", "pattFill", "blipFill", "latin", "ea", "cs", "sym", "hlinkClick", "hlinkMouseOver", "rtl", "extLst", "highlight", "kumimoji", "lang", "altLang", "sz", "b", "i", "u", "strike", "kern", "cap", "spc", "normalizeH", "baseline", "noProof", "dirty", "err", "smtClean", "smtId", "bmk" };
+            this._path = path;
+            this.SchemaNodeOrder = new string[] { "ln", "noFill", "solidFill", "gradFill", "pattFill", "blipFill", "latin", "ea", "cs", "sym", "hlinkClick", "hlinkMouseOver", "rtl", "extLst", "highlight", "kumimoji", "lang", "altLang", "sz", "b", "i", "u", "strike", "kern", "cap", "spc", "normalizeH", "baseline", "noProof", "dirty", "err", "smtClean", "smtId", "bmk" };
         }
         /// <summary>
         /// The capitalization that is to be applied
@@ -34,11 +34,11 @@ namespace OfficeOpenXml.Drawing
         {
             get
             {
-                return GetXmlNodeString($"{_path}/@cap").ToEnum(eTextCapsType.None);
+                return this.GetXmlNodeString($"{this._path}/@cap").ToEnum(eTextCapsType.None);
             }
             set
             {
-                SetXmlNodeString($"{_path}/@kern", value.ToEnumString());
+                this.SetXmlNodeString($"{this._path}/@kern", value.ToEnumString());
             }
         }
         /// <summary>
@@ -48,11 +48,11 @@ namespace OfficeOpenXml.Drawing
         {
             get
             {
-                return GetXmlNodeFontSize($"{_path}/@kern");
+                return this.GetXmlNodeFontSize($"{this._path}/@kern");
             }
             set
             {
-                SetXmlNodeFontSize($"{_path}/@kern", value, "Kerning");
+                this.SetXmlNodeFontSize($"{this._path}/@kern", value, "Kerning");
             }
         }
         /// <summary>
@@ -63,11 +63,11 @@ namespace OfficeOpenXml.Drawing
         {
             get
             {
-                return GetXmlNodeFontSize($"{_path}/@sz");
+                return this.GetXmlNodeFontSize($"{this._path}/@sz");
             }
             set
             {
-                SetXmlNodeFontSize($"{_path}/@sz", value, "FontSize");
+                this.SetXmlNodeFontSize($"{this._path}/@sz", value, "FontSize");
             }
         }
         /// <summary>
@@ -77,11 +77,11 @@ namespace OfficeOpenXml.Drawing
         {
             get
             {
-                return GetXmlNodeFontSize($"{_path}/@spc");
+                return this.GetXmlNodeFontSize($"{this._path}/@spc");
             }
             set
             {
-                SetXmlNodeFontSize($"{_path}/@spc", value, "Spacing", true);
+                this.SetXmlNodeFontSize($"{this._path}/@spc", value, "Spacing", true);
             }
         }
         /// <summary>
@@ -91,11 +91,11 @@ namespace OfficeOpenXml.Drawing
         {
             get
             {
-                return GetXmlNodePercentage($"{_path}/@baseline")??0;
+                return this.GetXmlNodePercentage($"{this._path}/@baseline")??0;
             }
             set
             {
-                SetXmlNodePercentage($"{_path}/@baseline", value);
+                this.SetXmlNodePercentage($"{this._path}/@baseline", value);
             }
         }
         /// <summary>
@@ -105,11 +105,11 @@ namespace OfficeOpenXml.Drawing
         {
             get
             {
-                return GetXmlNodeBool($"{_path}/@b");
+                return this.GetXmlNodeBool($"{this._path}/@b");
             }
             set
             {
-                SetXmlNodeBool($"{_path}/@b", value, false);
+                this.SetXmlNodeBool($"{this._path}/@b", value, false);
             }
         }
         /// <summary>
@@ -119,11 +119,11 @@ namespace OfficeOpenXml.Drawing
         {
             get
             {
-                return GetXmlNodeBool($"{_path}/@i");
+                return this.GetXmlNodeBool($"{this._path}/@i");
             }
             set
             {
-                SetXmlNodeBool($"{_path}/@i", value, false);
+                this.SetXmlNodeBool($"{this._path}/@i", value, false);
             }
         }
         /// <summary>
@@ -133,11 +133,11 @@ namespace OfficeOpenXml.Drawing
         {
             get
             {
-                return GetXmlNodeString($"{_path}/@strike").TranslateStrikeType();
+                return this.GetXmlNodeString($"{this._path}/@strike").TranslateStrikeType();
             }
             set
             {
-                SetXmlNodeString($"{_path}/@strike", value.TranslateStrikeTypeText());
+                this.SetXmlNodeString($"{this._path}/@strike", value.TranslateStrikeTypeText());
             }
         }
         /// <summary>
@@ -147,17 +147,17 @@ namespace OfficeOpenXml.Drawing
         {
             get
             {
-                return GetXmlNodeString($"{_path}/@u").TranslateUnderline();
+                return this.GetXmlNodeString($"{this._path}/@u").TranslateUnderline();
             }
             set
             {
                 if (value == eUnderLineType.None) 
                 {
-                    DeleteNode($"{_path}/@u");
+                    this.DeleteNode($"{this._path}/@u");
                 }
                 else
                 {
-                    SetXmlNodeString($"{_path}/@u", value.TranslateUnderlineText());
+                    this.SetXmlNodeString($"{this._path}/@u", value.TranslateUnderlineText());
                 }
             }
         }
@@ -165,10 +165,10 @@ namespace OfficeOpenXml.Drawing
         {
             get
             {
-                XmlElement? node = (XmlElement)GetNode(_path);
+                XmlElement? node = (XmlElement)this.GetNode(this._path);
                 if (node == null)
                 {
-                    return (XmlElement)CreateNode(_path);
+                    return (XmlElement)this.CreateNode(this._path);
                 }
                 else
                 {

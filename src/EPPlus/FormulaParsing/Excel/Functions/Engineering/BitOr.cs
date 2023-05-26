@@ -39,14 +39,14 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Engineering
                 return this.CreateResult(eErrorType.Num);
             }
 
-            int number1 = ArgToInt(arguments, 0);
-            int number2 = ArgToInt(arguments, 1);
+            int number1 = this.ArgToInt(arguments, 0);
+            int number2 = this.ArgToInt(arguments, 1);
             if (number1 < 0 || number2 < 0)
             {
                 return this.CreateResult(eErrorType.Num);
             }
 
-            return CreateResult(number1 | number2, DataType.Integer);
+            return this.CreateResult(number1 | number2, DataType.Integer);
         }
     }
 }

@@ -14,7 +14,7 @@ namespace OfficeOpenXml.Core
         internal List<T> _list=new List<T>();
         IEnumerator<T> IEnumerable<T>.GetEnumerator()
         {
-            return _list.GetEnumerator();
+            return this._list.GetEnumerator();
         }
         /// <summary>
         /// Return the enumerator for the collection
@@ -22,7 +22,7 @@ namespace OfficeOpenXml.Core
         /// <returns></returns>
         IEnumerator IEnumerable.GetEnumerator()
         {
-            return _list.GetEnumerator();
+            return this._list.GetEnumerator();
         }
 
         /// <summary>
@@ -34,7 +34,7 @@ namespace OfficeOpenXml.Core
         {
             get
             {
-                return _list[index];
+                return this._list[index];
             }
         }
         ///// <summary>
@@ -58,7 +58,7 @@ namespace OfficeOpenXml.Core
         /// <returns>The index</returns>
         public int GetIndexByValue(T value)
         {
-            return _list.IndexOf(value);
+            return this._list.IndexOf(value);
         }
         /// <summary>
         /// Number of items in the collection.
@@ -67,16 +67,16 @@ namespace OfficeOpenXml.Core
         {
             get
             {
-                return _list.Count;
+                return this._list.Count;
             }
         }
         internal virtual void Clear()
         {
-            _list.Clear();
+            this._list.Clear();
         }
         internal virtual void Add(T item)
         {
-            _list.Add(item);
+            this._list.Add(item);
         }
 
     }

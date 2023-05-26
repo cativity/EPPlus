@@ -29,8 +29,8 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Statistical
         public override CompileResult Execute(IEnumerable<FunctionArgument> arguments, ParsingContext context)
         {
             ValidateArguments(arguments, 2);
-            double z = ArgToDecimal(arguments, 0);
-            bool cumulative = ArgToBool(arguments, 1);
+            double z = this.ArgToDecimal(arguments, 0);
+            bool cumulative = this.ArgToBool(arguments, 1);
             double result = default(double);
             if (cumulative)
             { 
@@ -40,7 +40,7 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Statistical
             {
                 result = ProbabilityDensity(z, 0, 1);
             }
-            return CreateResult(result, DataType.Decimal);
+            return this.CreateResult(result, DataType.Decimal);
         }
     }
 }

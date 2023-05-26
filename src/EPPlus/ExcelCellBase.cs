@@ -722,7 +722,7 @@ namespace OfficeOpenXml
                         {
                             address = $"{wsForAddress}!";
                         }
-                        address += string.Format("{0}{1}:{2}{3}", ExcelAddress.GetColumnLetter(a._fromCol), a._fromRow, ExcelAddress.GetColumnLetter(a._toCol), a._toRow);
+                        address += string.Format("{0}{1}:{2}{3}", GetColumnLetter(a._fromCol), a._fromRow, GetColumnLetter(a._toCol), a._toRow);
                     }
                     else
                     {

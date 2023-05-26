@@ -30,21 +30,21 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Finance
         public override CompileResult Execute(IEnumerable<FunctionArgument> arguments, ParsingContext context)
         {
             ValidateArguments(arguments, 6);
-            System.DateTime settlementDate = System.DateTime.FromOADate(ArgToInt(arguments, 0));
-            System.DateTime maturityDate = System.DateTime.FromOADate(ArgToInt(arguments, 1));
-            double rate = ArgToDecimal(arguments, 2);
-            double yield = ArgToDecimal(arguments, 3);
-            double redemption = ArgToDecimal(arguments, 4);
-            int frequency = ArgToInt(arguments, 5);
+            System.DateTime settlementDate = System.DateTime.FromOADate(this.ArgToInt(arguments, 0));
+            System.DateTime maturityDate = System.DateTime.FromOADate(this.ArgToInt(arguments, 1));
+            double rate = this.ArgToDecimal(arguments, 2);
+            double yield = this.ArgToDecimal(arguments, 3);
+            double redemption = this.ArgToDecimal(arguments, 4);
+            int frequency = this.ArgToInt(arguments, 5);
             int basis = 0;
             if (arguments.Count() >= 7)
             {
-                basis = ArgToInt(arguments, 6);
+                basis = this.ArgToInt(arguments, 6);
             }
             // validate input
             if ((settlementDate > maturityDate) || rate < 0 || yield < 0 || redemption <= 0 || (frequency != 1 && frequency != 2 && frequency != 4) || (basis < 0 || basis > 4))
             {
-                return CreateResult(eErrorType.Num);
+                return this.CreateResult(eErrorType.Num);
             }
 
             FinanceCalcResult<double>? result = PriceImpl.GetPrice(FinancialDayFactory.Create(settlementDate, (DayCountBasis)basis), FinancialDayFactory.Create(maturityDate, (DayCountBasis)basis), rate, yield, redemption, frequency, (DayCountBasis)basis);
@@ -53,7 +53,7 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Finance
                 return this.CreateResult(result.ExcelErrorType);
             }
 
-            return CreateResult(result.Result, DataType.Decimal);
+            return this.CreateResult(result.Result, DataType.Decimal);
         }
     }
 }

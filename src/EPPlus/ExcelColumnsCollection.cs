@@ -20,11 +20,11 @@ namespace OfficeOpenXml
         ExcelWorksheet _worksheet;
         internal ExcelColumnCollection(ExcelWorksheet worksheet) : base(worksheet, 1, ExcelPackage.MaxColumns)
         {
-            _worksheet = worksheet;            
+            this._worksheet = worksheet;            
             if(worksheet.Dimension!=null)
             {
-                _fromCol = worksheet.Dimension._fromCol;
-                _toCol = worksheet.Dimension._toCol;
+                this._fromCol = worksheet.Dimension._fromCol;
+                this._toCol = worksheet.Dimension._toCol;
             }
         }
         /// <summary>
@@ -36,7 +36,7 @@ namespace OfficeOpenXml
         {
             get
             {
-                return new ExcelRangeColumn(_worksheet, column, column);
+                return new ExcelRangeColumn(this._worksheet, column, column);
             }
         }
         /// <summary>
@@ -49,7 +49,7 @@ namespace OfficeOpenXml
         {
             get
             {            
-                return new ExcelRangeColumn(_worksheet, fromColumn, toColumn);
+                return new ExcelRangeColumn(this._worksheet, fromColumn, toColumn);
             }
         }        
     }

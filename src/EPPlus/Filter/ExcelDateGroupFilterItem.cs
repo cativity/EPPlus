@@ -27,9 +27,9 @@ namespace OfficeOpenXml.Filter
         /// <param name="year">The year</param>
         public ExcelFilterDateGroupItem(int year)
         {
-            Grouping = eDateTimeGrouping.Year;
-            Year = year;
-            Validate();
+            this.Grouping = eDateTimeGrouping.Year;
+            this.Year = year;
+            this.Validate();
         }
 
         /// <summary>
@@ -39,10 +39,10 @@ namespace OfficeOpenXml.Filter
         /// <param name="month">The month</param>
         public ExcelFilterDateGroupItem(int year, int month)
         {
-            Grouping = eDateTimeGrouping.Month;
-            Year = year;
-            Month = month;
-            Validate();
+            this.Grouping = eDateTimeGrouping.Month;
+            this.Year = year;
+            this.Month = month;
+            this.Validate();
         }
         /// <summary>
         /// Filter out the specified year, month and day
@@ -52,11 +52,11 @@ namespace OfficeOpenXml.Filter
         /// <param name="day">The day</param>
         public ExcelFilterDateGroupItem(int year, int month, int day)
         {
-            Grouping = eDateTimeGrouping.Day;
-            Year = year;
-            Month = month;
-            Day = day;
-            Validate();
+            this.Grouping = eDateTimeGrouping.Day;
+            this.Year = year;
+            this.Month = month;
+            this.Day = day;
+            this.Validate();
         }
         /// <summary>
         /// Filter out the specified year, month, day and hour
@@ -67,12 +67,12 @@ namespace OfficeOpenXml.Filter
         /// <param name="hour">The hour</param>
         public ExcelFilterDateGroupItem(int year, int month, int day, int hour)
         {
-            Grouping = eDateTimeGrouping.Hour;
-            Year = year;
-            Month = month;
-            Day = day;
-            Hour = hour;
-            Validate();
+            this.Grouping = eDateTimeGrouping.Hour;
+            this.Year = year;
+            this.Month = month;
+            this.Day = day;
+            this.Hour = hour;
+            this.Validate();
         }
         /// <summary>
         /// Filter out the specified year, month, day, hour and and minute
@@ -84,13 +84,13 @@ namespace OfficeOpenXml.Filter
         /// <param name="minute">The minute</param>
         public ExcelFilterDateGroupItem(int year, int month, int day, int hour, int minute)
         {
-            Grouping = eDateTimeGrouping.Minute;
-            Year = year;
-            Month = month;
-            Day = day;
-            Hour = hour;
-            Minute = minute;
-            Validate();
+            this.Grouping = eDateTimeGrouping.Minute;
+            this.Year = year;
+            this.Month = month;
+            this.Day = day;
+            this.Hour = hour;
+            this.Minute = minute;
+            this.Validate();
         }
         /// <summary>
         /// Filter out the specified year, month, day, hour and and minute
@@ -103,64 +103,64 @@ namespace OfficeOpenXml.Filter
         /// <param name="second">The second</param>
         public ExcelFilterDateGroupItem(int year, int month, int day, int hour, int minute, int second)
         {
-            Grouping = eDateTimeGrouping.Second;
-            Year = year;
-            Month = month;
-            Day = day;
-            Hour = hour;
-            Minute = minute;
-            Second = second;
-            Validate();
+            this.Grouping = eDateTimeGrouping.Second;
+            this.Year = year;
+            this.Month = month;
+            this.Day = day;
+            this.Hour = hour;
+            this.Minute = minute;
+            this.Second = second;
+            this.Validate();
         }
         private void Validate()
         {
-            if (Year < 0 && Year > 9999)
+            if (this.Year < 0 && this.Year > 9999)
             {
                 throw (new ArgumentException("Year out of range(0-9999)"));
             }
 
-            if (Grouping == eDateTimeGrouping.Year)
+            if (this.Grouping == eDateTimeGrouping.Year)
             {
                 return;
             }
 
-            if (Month < 1 && Month > 12)
+            if (this.Month < 1 && this.Month > 12)
             {
                 throw (new ArgumentException("Month out of range(1-12)"));
             }
-            if (Grouping == eDateTimeGrouping.Month)
+            if (this.Grouping == eDateTimeGrouping.Month)
             {
                 return;
             }
 
-            if (Day < 1 && Day > 31)
+            if (this.Day < 1 && this.Day > 31)
             {
                 throw (new ArgumentException("Month out of range(1-31)"));
             }
-            if (Grouping == eDateTimeGrouping.Day)
+            if (this.Grouping == eDateTimeGrouping.Day)
             {
                 return;
             }
 
-            if (Hour < 0 && Hour > 23)
+            if (this.Hour < 0 && this.Hour > 23)
             {
                 throw (new ArgumentException("Hour out of range(0-23)"));
             }
-            if (Grouping == eDateTimeGrouping.Hour)
+            if (this.Grouping == eDateTimeGrouping.Hour)
             {
                 return;
             }
 
-            if (Minute < 0 && Minute > 59)
+            if (this.Minute < 0 && this.Minute > 59)
             {
                 throw (new ArgumentException("Minute out of range(0-59)"));
             }
-            if (Grouping == eDateTimeGrouping.Minute)
+            if (this.Grouping == eDateTimeGrouping.Minute)
             {
                 return;
             }
 
-            if (Second < 0 && Second > 59)
+            if (this.Second < 0 && this.Second > 59)
             {
                 throw (new ArgumentException("Second out of range(0-59)"));
             }
@@ -169,24 +169,24 @@ namespace OfficeOpenXml.Filter
         internal void AddNode(XmlNode node)
         {
             XmlElement? e = node.OwnerDocument.CreateElement("dateGroupItem", ExcelPackage.schemaMain);
-            e.SetAttribute("dateTimeGrouping", Grouping.ToString().ToLower());
-            e.SetAttribute("year", Year.ToString(CultureInfo.InvariantCulture));
+            e.SetAttribute("dateTimeGrouping", this.Grouping.ToString().ToLower());
+            e.SetAttribute("year", this.Year.ToString(CultureInfo.InvariantCulture));
 
-            if (Month.HasValue)
+            if (this.Month.HasValue)
             {
-                e.SetAttribute("month", Month.Value.ToString(CultureInfo.InvariantCulture));
-                if (Day.HasValue)
+                e.SetAttribute("month", this.Month.Value.ToString(CultureInfo.InvariantCulture));
+                if (this.Day.HasValue)
                 {
-                    e.SetAttribute("day", Day.Value.ToString(CultureInfo.InvariantCulture));
-                    if (Hour.HasValue)
+                    e.SetAttribute("day", this.Day.Value.ToString(CultureInfo.InvariantCulture));
+                    if (this.Hour.HasValue)
                     {
-                        e.SetAttribute("hour", Hour.Value.ToString(CultureInfo.InvariantCulture));
-                        if (Minute.HasValue)
+                        e.SetAttribute("hour", this.Hour.Value.ToString(CultureInfo.InvariantCulture));
+                        if (this.Minute.HasValue)
                         {
-                            e.SetAttribute("minute", Minute.Value.ToString(CultureInfo.InvariantCulture));
-                            if (Second.HasValue)
+                            e.SetAttribute("minute", this.Minute.Value.ToString(CultureInfo.InvariantCulture));
+                            if (this.Second.HasValue)
                             {
-                                e.SetAttribute("second", Second.Value.ToString(CultureInfo.InvariantCulture));
+                                e.SetAttribute("second", this.Second.Value.ToString(CultureInfo.InvariantCulture));
                             }
                         }
                     }
@@ -198,23 +198,23 @@ namespace OfficeOpenXml.Filter
 
         internal bool Match(DateTime value)
         {
-            bool match = value.Year == Year;
+            bool match = value.Year == this.Year;
 
-            if(match && Month.HasValue)
+            if(match && this.Month.HasValue)
             {
-                match = value.Month == Month;
-                if(match && Day.HasValue)
+                match = value.Month == this.Month;
+                if(match && this.Day.HasValue)
                 {
-                    match = value.Day == Day;
-                    if (match && Hour.HasValue)
+                    match = value.Day == this.Day;
+                    if (match && this.Hour.HasValue)
                     {
-                        match = value.Hour == Hour;
-                        if (match && Minute.HasValue)
+                        match = value.Hour == this.Hour;
+                        if (match && this.Minute.HasValue)
                         {
-                            match = value.Minute == Minute;
-                            if (match && Second.HasValue)
+                            match = value.Minute == this.Minute;
+                            if (match && this.Second.HasValue)
                             {
-                                match = value.Second == Second;
+                                match = value.Second == this.Second;
                             }
                         }
                     }

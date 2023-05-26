@@ -44,49 +44,49 @@ namespace EPPlusTest.DataValidation
         [TestInitialize]
         public void Setup()
         {
-            SetupTestData();
-            _validation = _sheet.Workbook.Worksheets[1].DataValidations.AddListValidation("A1");
+            this.SetupTestData();
+            this._validation = this._sheet.Workbook.Worksheets[1].DataValidations.AddListValidation("A1");
         }
 
         [TestCleanup]
         public void Cleanup()
         {
-            CleanupTestData();
+            this.CleanupTestData();
         }
 
         [TestMethod]
         public void ListDataValidation_FormulaIsSet()
         {
-            Assert.IsNotNull(_validation.Formula);
+            Assert.IsNotNull(this._validation.Formula);
         }
 
         [TestMethod]
         public void ListDataValidation_CanAssignFormula()
         {
-            _validation.Formula.ExcelFormula = "abc!A2";
-            Assert.AreEqual("abc!A2", _validation.Formula.ExcelFormula);
+            this._validation.Formula.ExcelFormula = "abc!A2";
+            Assert.AreEqual("abc!A2", this._validation.Formula.ExcelFormula);
         }
         [TestMethod]
         public void ListDataValidation_CanAssignDefinedName()
         {
-            _validation.Formula.ExcelFormula = "ListData";
-            Assert.AreEqual("ListData", _validation.Formula.ExcelFormula);
+            this._validation.Formula.ExcelFormula = "ListData";
+            Assert.AreEqual("ListData", this._validation.Formula.ExcelFormula);
         }
 
         [TestMethod]
         public void ListDataValidation_WhenOneItemIsAddedCountIs1()
         {
             // Act
-            _validation.Formula.Values.Add("test");
+            this._validation.Formula.Values.Add("test");
 
             // Assert
-            Assert.AreEqual(1, _validation.Formula.Values.Count);
+            Assert.AreEqual(1, this._validation.Formula.Values.Count);
         }
 
         [TestMethod, ExpectedException(typeof(InvalidOperationException))]
         public void ListDataValidation_ShouldThrowWhenNoFormulaOrValueIsSet()
         {
-            _validation.Validate();
+            this._validation.Validate();
         }
 
         [TestMethod]

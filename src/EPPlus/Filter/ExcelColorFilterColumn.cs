@@ -35,11 +35,11 @@ namespace OfficeOpenXml.Filter
         {
             get
             {
-                return GetXmlNodeBool("d:cellColor");
+                return this.GetXmlNodeBool("d:cellColor");
             }
             set
             {
-                SetXmlNodeBool("d:cellColor", value);
+                this.SetXmlNodeBool("d:cellColor", value);
             }
         }
         /// <summary>
@@ -49,7 +49,7 @@ namespace OfficeOpenXml.Filter
         {
             get
             {
-                return GetXmlNodeInt("d:dxfId");
+                return this.GetXmlNodeInt("d:dxfId");
             }
             set
             {
@@ -57,7 +57,8 @@ namespace OfficeOpenXml.Filter
                 {
                     throw (new ArgumentOutOfRangeException("DfxId must not be negative"));
                 }
-                SetXmlNodeString("d:dxfId", value.ToString(CultureInfo.InvariantCulture));
+
+                this.SetXmlNodeString("d:dxfId", value.ToString(CultureInfo.InvariantCulture));
             }
         }
 

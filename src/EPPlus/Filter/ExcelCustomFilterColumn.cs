@@ -23,8 +23,8 @@ namespace OfficeOpenXml.Filter
     {
         internal ExcelCustomFilterColumn(XmlNamespaceManager namespaceManager, XmlNode topNode) : base(namespaceManager, topNode)
         {
-            Filters = new ExcelFilterCollection<ExcelFilterCustomItem>();
-            LoadFilters(topNode);
+            this.Filters = new ExcelFilterCollection<ExcelFilterCustomItem>();
+            this.LoadFilters(topNode);
         }
         private void LoadFilters(XmlNode topNode)
         {
@@ -32,7 +32,7 @@ namespace OfficeOpenXml.Filter
             {
                 if(node.HasAttribute("and"))
                 {
-                    And = node.GetAttribute("and") == "1";
+                    this.And = node.GetAttribute("and") == "1";
                 }
 
                 switch (node.LocalName)
@@ -47,7 +47,8 @@ namespace OfficeOpenXml.Filter
                         {
                             filterOperator = eFilterOperator.Equal;
                         }
-                        Filters.Add(new ExcelFilterCustomItem(node.Attributes["val"].Value, filterOperator));
+
+                        this.Filters.Add(new ExcelFilterCustomItem(node.Attributes["val"].Value, filterOperator));
                         break;
                 }
             }
@@ -62,12 +63,12 @@ namespace OfficeOpenXml.Filter
         {
             get
             {
-                return _isNumericFilter;
+                return this._isNumericFilter;
             }
             set
             {
-                _isNumericFilter = value;
-                _isNumericFilterSet = true;
+                this._isNumericFilter = value;
+                this._isNumericFilterSet = true;
             }
         }
         /// <summary>
@@ -85,14 +86,14 @@ namespace OfficeOpenXml.Filter
 
         internal override bool Match(object value, string valueText)
         {
-            if(!_isNumericFilterSet)
+            if(!this._isNumericFilterSet)
             {
-                IsNumericFilter = Utils.ConvertUtil.IsNumericOrDate(value);
+                this.IsNumericFilter = Utils.ConvertUtil.IsNumericOrDate(value);
             }
             bool match = true;
-            foreach(ExcelFilterCustomItem? filter in Filters)
+            foreach(ExcelFilterCustomItem? filter in this.Filters)
             {
-                if(IsNumericFilter)
+                if(this.IsNumericFilter)
                 {
                     match = MatchByOperatorNumeric(value, filter);
                 }
@@ -101,11 +102,11 @@ namespace OfficeOpenXml.Filter
                     match = MatchByOperatorText(valueText, filter);
                 }
 
-                if (match == false && And)
+                if (match == false && this.And)
                 {
                     return false;
                 }
-                else if (match && And == false)
+                else if (match && this.And == false)
                 {
                     return true;
                 }
@@ -170,16 +171,16 @@ namespace OfficeOpenXml.Filter
 
             internal override void Save()
             {
-                XmlElement? node = (XmlElement)CreateNode("d:customFilters");
+                XmlElement? node = (XmlElement)this.CreateNode("d:customFilters");
                 node.RemoveAll();
-                if (And)
+                if (this.And)
                 {
                     node.SetAttribute("and", "1");
                 }
 
-                foreach (ExcelFilterCustomItem? f in Filters)
+                foreach (ExcelFilterCustomItem? f in this.Filters)
                 {
-                    XmlElement? e = TopNode.OwnerDocument.CreateElement("customFilter", ExcelPackage.schemaMain);
+                    XmlElement? e = this.TopNode.OwnerDocument.CreateElement("customFilter", ExcelPackage.schemaMain);
                     e.SetAttribute("val", f.Value);
                     if(f.Operator.HasValue)
                     {

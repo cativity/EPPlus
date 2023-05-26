@@ -27,16 +27,16 @@ namespace OfficeOpenXml.FormulaParsing.ExpressionGraph.CompileStrategy
 
         public override Expression Compile()
         {
-            Expression? newExp = _expression is ExcelAddressExpression ? _expression : ExpressionConverter.Instance.ToStringExpression(_expression);
-            newExp.Prev = _expression.Prev;
-            newExp.Next = _expression.Next;
-            if (_expression.Prev != null)
+            Expression? newExp = this._expression is ExcelAddressExpression ? this._expression : ExpressionConverter.Instance.ToStringExpression(this._expression);
+            newExp.Prev = this._expression.Prev;
+            newExp.Next = this._expression.Next;
+            if (this._expression.Prev != null)
             {
-                _expression.Prev.Next = newExp;
+                this._expression.Prev.Next = newExp;
             }
-            if (_expression.Next != null)
+            if (this._expression.Next != null)
             {
-                _expression.Next.Prev = newExp;
+                this._expression.Next.Prev = newExp;
             }
             return newExp.MergeWithNext();
         }

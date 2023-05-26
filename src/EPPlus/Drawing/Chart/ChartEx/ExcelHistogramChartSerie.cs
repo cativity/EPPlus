@@ -24,20 +24,20 @@ namespace OfficeOpenXml.Drawing.Chart.ChartEx
         {
             if(index==-1)
             {
-                _index = chart.Series.Count * (chart.ChartType == eChartType.Pareto ? 2 : 1);
+                this._index = chart.Series.Count * (chart.ChartType == eChartType.Pareto ? 2 : 1);
             }
             else
             {
-                _index = index;
+                this._index = index;
             }
         }
         internal void AddParetoLine()
         {
-            int ix = _chart.Series.Count * 2;
-            XmlElement? serElement = ExcelChartExSerie.CreateSeriesElement((ExcelChartEx)_chart, eChartType.Pareto, ix+1, TopNode, true);
+            int ix = this._chart.Series.Count * 2;
+            XmlElement? serElement = CreateSeriesElement((ExcelChartEx)this._chart, eChartType.Pareto, ix+1, this.TopNode, true);
             serElement.SetAttribute("ownerIdx", (ix).ToString());
             serElement.InnerXml = "<cx:axisId val=\"2\"/>";
-            AddParetoLineFromSerie(serElement);
+            this.AddParetoLineFromSerie(serElement);
         }
         ExcelChartExSerieBinning _binning = null;
         /// <summary>
@@ -47,11 +47,11 @@ namespace OfficeOpenXml.Drawing.Chart.ChartEx
         {
             get
             {
-                if (_binning == null)
+                if (this._binning == null)
                 {
-                    _binning = new ExcelChartExSerieBinning(NameSpaceManager, TopNode);
+                    this._binning = new ExcelChartExSerieBinning(this.NameSpaceManager, this.TopNode);
                 }
-                return _binning;
+                return this._binning;
             }
         }
         internal const string _aggregationPath = "cx:layoutPr/cx:aggregation";
@@ -63,33 +63,33 @@ namespace OfficeOpenXml.Drawing.Chart.ChartEx
         {
             get
             {
-                return ExistsNode(_aggregationPath);
+                return this.ExistsNode(_aggregationPath);
             }
             set
             {
                 if (value)
                 {
-                    DeleteNode(_binningPath);
-                    CreateNode(_aggregationPath);
+                    this.DeleteNode(_binningPath);
+                    this.CreateNode(_aggregationPath);
                 }
                 else
                 {
-                    DeleteNode(_aggregationPath);
-                    if(!ExistsNode(_binningPath))
+                    this.DeleteNode(_aggregationPath);
+                    if(!this.ExistsNode(_binningPath))
                     {
-                        Binning.IntervalClosed = eIntervalClosed.Right;
+                        this.Binning.IntervalClosed = eIntervalClosed.Right;
                     }
                 }
             }
         }
         internal void AddParetoLineFromSerie(XmlElement serElement)
         {
-            ParetoLine = new ExcelChartExParetoLine(_chart, NameSpaceManager, serElement);
+            this.ParetoLine = new ExcelChartExParetoLine(this._chart, this.NameSpaceManager, serElement);
         }
         internal void RemoveParetoLine()
         {
-            ParetoLine?.DeleteNode(".");
-            ParetoLine = null;
+            this.ParetoLine?.DeleteNode(".");
+            this.ParetoLine = null;
         }
         /// <summary>
         /// Properties for the pareto line.

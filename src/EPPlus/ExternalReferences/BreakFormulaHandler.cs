@@ -162,9 +162,9 @@ namespace OfficeOpenXml.ExternalReferences
         {
             foreach (Token t in tokens)
             {
-                if (t.TokenTypeIsSet(FormulaParsing.LexicalAnalysis.TokenType.ExcelAddress) ||
-                    t.TokenTypeIsSet(FormulaParsing.LexicalAnalysis.TokenType.NameValue) ||
-                    t.TokenTypeIsSet(FormulaParsing.LexicalAnalysis.TokenType.InvalidReference))
+                if (t.TokenTypeIsSet(TokenType.ExcelAddress) ||
+                    t.TokenTypeIsSet(TokenType.NameValue) ||
+                    t.TokenTypeIsSet(TokenType.InvalidReference))
                 {
                     string? address = t.Value;
                     if (address.StartsWith("[") || address.StartsWith("'["))
@@ -180,9 +180,9 @@ namespace OfficeOpenXml.ExternalReferences
             newFormula = "";
             foreach (Token t in tokens)
             {
-                if (t.TokenTypeIsSet(FormulaParsing.LexicalAnalysis.TokenType.ExcelAddress) ||
-                    t.TokenTypeIsSet(FormulaParsing.LexicalAnalysis.TokenType.NameValue) ||
-                    t.TokenTypeIsSet(FormulaParsing.LexicalAnalysis.TokenType.InvalidReference))
+                if (t.TokenTypeIsSet(TokenType.ExcelAddress) ||
+                    t.TokenTypeIsSet(TokenType.NameValue) ||
+                    t.TokenTypeIsSet(TokenType.InvalidReference))
                 {
                     string? address = t.Value;
                     if (address.StartsWith("[") || address.StartsWith("'["))

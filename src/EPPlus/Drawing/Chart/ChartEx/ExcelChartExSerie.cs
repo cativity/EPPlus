@@ -31,8 +31,8 @@ namespace OfficeOpenXml.Drawing.Chart.ChartEx
         internal ExcelChartExSerie(ExcelChartEx chart, XmlNamespaceManager ns, XmlNode node)
             : base(chart, ns, node, "cx")
         {
-            SchemaNodeOrder = new string[] { "tx", "spPr", "valueColors", "valueColorPositions", "dataPt", "dataLabels", "dataId", "layoutPr", "axisId" };
-            _dataNode = node.SelectSingleNode($"../../../../cx:chartData/cx:data[@id={DataId}]", ns);
+            this.SchemaNodeOrder = new string[] { "tx", "spPr", "valueColors", "valueColorPositions", "dataPt", "dataLabels", "dataId", "layoutPr", "axisId" };
+            this._dataNode = node.SelectSingleNode($"../../../../cx:chartData/cx:data[@id={this.DataId}]", ns);
             if((chart.ChartType == eChartType.BoxWhisker ||
                 chart.ChartType == eChartType.Histogram ||
                 chart.ChartType == eChartType.Pareto ||
@@ -41,7 +41,7 @@ namespace OfficeOpenXml.Drawing.Chart.ChartEx
             {
                 if(chart._chartXmlHelper.ExistsNode("cx:plotArea/cx:axis")==false)
                 {
-                    AddAxis();
+                    this.AddAxis();
                 }
                 chart.LoadAxis();
             }
@@ -49,12 +49,12 @@ namespace OfficeOpenXml.Drawing.Chart.ChartEx
 
         private void AddAxis()
         {
-            XmlElement? axis0=(XmlElement)_chart._chartXmlHelper.CreateNode("cx:plotArea/cx:axis");
+            XmlElement? axis0=(XmlElement)this._chart._chartXmlHelper.CreateNode("cx:plotArea/cx:axis");
             axis0.SetAttribute("id", "0");
-            XmlElement? axis1 = (XmlElement)_chart._chartXmlHelper.CreateNode("cx:plotArea/cx:axis", false, true);
+            XmlElement? axis1 = (XmlElement)this._chart._chartXmlHelper.CreateNode("cx:plotArea/cx:axis", false, true);
             axis1.SetAttribute("id", "1");
 
-            switch(_chart.ChartType)
+            switch(this._chart.ChartType)
             {
                 case eChartType.BoxWhisker:
                     axis0.InnerXml = "<cx:catScaling gapWidth=\"1\"/><cx:tickLabels/>";
@@ -71,9 +71,9 @@ namespace OfficeOpenXml.Drawing.Chart.ChartEx
                 case eChartType.Pareto:
                     axis0.InnerXml = "<cx:catScaling gapWidth=\"0\"/><cx:tickLabels/>";
                     axis1.InnerXml = "<cx:valScaling/><cx:majorGridlines/><cx:tickLabels/>";
-                    if(_chart.ChartType== eChartType.Pareto)
+                    if(this._chart.ChartType== eChartType.Pareto)
                     {
-                        XmlElement? axis2 = (XmlElement)_chart._chartXmlHelper.CreateNode("cx:plotArea/cx:axis", false, true);
+                        XmlElement? axis2 = (XmlElement)this._chart._chartXmlHelper.CreateNode("cx:plotArea/cx:axis", false, true);
                         axis2.SetAttribute("id", "2");
                         axis2.InnerXml = "<cx:valScaling min=\"0\" max=\"1\"/><cx:units unit=\"percentage\"/><cx:tickLabels/>";
                     }
@@ -84,7 +84,7 @@ namespace OfficeOpenXml.Drawing.Chart.ChartEx
         {
             get
             {
-                return GetXmlNodeInt("cx:dataId/@val");
+                return this.GetXmlNodeInt("cx:dataId/@val");
             }
         }
         ExcelChartExDataCollection _dataDimensions = null;
@@ -95,11 +95,11 @@ namespace OfficeOpenXml.Drawing.Chart.ChartEx
         {
             get
             {
-                if (_dataDimensions == null)
+                if (this._dataDimensions == null)
                 {
-                    _dataDimensions = new ExcelChartExDataCollection(this, NameSpaceManager, _dataNode);
+                    this._dataDimensions = new ExcelChartExDataCollection(this, this.NameSpaceManager, this._dataNode);
                 }
-                return _dataDimensions;
+                return this._dataDimensions;
             }
         }
         const string headerAddressPath = "c:tx/c:strRef/c:f";
@@ -110,27 +110,27 @@ namespace OfficeOpenXml.Drawing.Chart.ChartEx
         {
             get
             {
-                string? f = GetXmlNodeString("cx:tx/cx:txData/cx:f");
-                if (ExcelAddress.IsValidAddress(f))
+                string? f = this.GetXmlNodeString("cx:tx/cx:txData/cx:f");
+                if (ExcelCellBase.IsValidAddress(f))
                 {
                     return new ExcelAddressBase(f);
                 }
                 else
                 {
-                    if (_chart.WorkSheet.Workbook.Names.ContainsKey(f))
+                    if (this._chart.WorkSheet.Workbook.Names.ContainsKey(f))
                     {
-                        return _chart.WorkSheet.Workbook.Names[f];
+                        return this._chart.WorkSheet.Workbook.Names[f];
                     }
-                    else if (_chart.WorkSheet.Names.ContainsKey(f))
+                    else if (this._chart.WorkSheet.Names.ContainsKey(f))
                     {
-                        return _chart.WorkSheet.Names[f];
+                        return this._chart.WorkSheet.Names[f];
                     }
                     return null;
                 }
             }
             set
             {
-                SetXmlNodeString("cx:tx/cx:txData/cx:f", value.FullAddress);
+                this.SetXmlNodeString("cx:tx/cx:txData/cx:f", value.FullAddress);
             }
         }
         /// <summary>
@@ -140,11 +140,11 @@ namespace OfficeOpenXml.Drawing.Chart.ChartEx
         {
             get
             {
-                return GetXmlNodeString("cx:tx/cx:txData/cx:v");
+                return this.GetXmlNodeString("cx:tx/cx:txData/cx:v");
             }
             set
             {
-                SetXmlNodeString("cx:tx/cx:txData/cx:v", value);
+                this.SetXmlNodeString("cx:tx/cx:txData/cx:v", value);
             }
         }
         XmlHelper _catSerieHelper = null;
@@ -156,13 +156,13 @@ namespace OfficeOpenXml.Drawing.Chart.ChartEx
         {
             get
             {
-                XmlHelper? helper = GetSerieHelper();
+                XmlHelper? helper = this.GetSerieHelper();
                 return helper.GetXmlNodeString("cx:f");
             }
             set
             {
-                XmlHelper? helper = GetSerieHelper();
-                helper.SetXmlNodeString("cx:f", ToFullAddress(value));
+                XmlHelper? helper = this.GetSerieHelper();
+                helper.SetXmlNodeString("cx:f", this.ToFullAddress(value));
             }
         }
 
@@ -173,7 +173,7 @@ namespace OfficeOpenXml.Drawing.Chart.ChartEx
         {
             get
             {
-                XmlHelper? helper = GetXSerieHelper(false);
+                XmlHelper? helper = this.GetXSerieHelper(false);
                 if(helper==null)
                 {
                     return "";
@@ -185,49 +185,49 @@ namespace OfficeOpenXml.Drawing.Chart.ChartEx
             }
             set
             {
-                XmlHelper? helper = GetXSerieHelper(true);
-                helper.SetXmlNodeString("cx:f", ToFullAddress(value));
+                XmlHelper? helper = this.GetXSerieHelper(true);
+                helper.SetXmlNodeString("cx:f", this.ToFullAddress(value));
             }
         }
         private XmlHelper GetSerieHelper()
         {
-            if (_valSerieHelper == null)
+            if (this._valSerieHelper == null)
             {
-                if (_dataNode.ChildNodes.Count == 1)
+                if (this._dataNode.ChildNodes.Count == 1)
                 {
-                    _valSerieHelper = XmlHelperFactory.Create(NameSpaceManager, _dataNode.FirstChild);
+                    this._valSerieHelper = XmlHelperFactory.Create(this.NameSpaceManager, this._dataNode.FirstChild);
                 }
-                else if (_dataNode.ChildNodes.Count > 1)
+                else if (this._dataNode.ChildNodes.Count > 1)
                 {
-                    _valSerieHelper = XmlHelperFactory.Create(NameSpaceManager, _dataNode.ChildNodes[1]); 
+                    this._valSerieHelper = XmlHelperFactory.Create(this.NameSpaceManager, this._dataNode.ChildNodes[1]); 
                 }
             }
-            return _valSerieHelper;
+            return this._valSerieHelper;
         }
 
         private XmlHelper GetXSerieHelper(bool create)
         {
-            if (_catSerieHelper == null)
+            if (this._catSerieHelper == null)
             {
-                if (_dataNode.ChildNodes.Count == 1)
+                if (this._dataNode.ChildNodes.Count == 1)
                 {
                     if (create)
                     {
-                        XmlElement? node = _dataNode.OwnerDocument.CreateElement("cx", "strDim", ExcelPackage.schemaChartExMain);
-                        _dataNode.InsertBefore(node, _dataNode.FirstChild);
-                        _catSerieHelper = XmlHelperFactory.Create(NameSpaceManager, node);
+                        XmlElement? node = this._dataNode.OwnerDocument.CreateElement("cx", "strDim", ExcelPackage.schemaChartExMain);
+                        this._dataNode.InsertBefore(node, this._dataNode.FirstChild);
+                        this._catSerieHelper = XmlHelperFactory.Create(this.NameSpaceManager, node);
                     }
                     else
                     {
                         return null;
                     }
                 }
-                else if (_dataNode.ChildNodes.Count > 1)
+                else if (this._dataNode.ChildNodes.Count > 1)
                 {
-                    _catSerieHelper = XmlHelperFactory.Create(NameSpaceManager, _dataNode.ChildNodes[0]); 
+                    this._catSerieHelper = XmlHelperFactory.Create(this.NameSpaceManager, this._dataNode.ChildNodes[0]); 
                 }
             }
-            return _catSerieHelper;
+            return this._catSerieHelper;
         }
 
         ExcelChartExSerieDataLabel _dataLabels = null;
@@ -238,11 +238,11 @@ namespace OfficeOpenXml.Drawing.Chart.ChartEx
         {
             get
             {
-                if (_dataLabels == null)
+                if (this._dataLabels == null)
                 {
-                    _dataLabels = new ExcelChartExSerieDataLabel(this, NameSpaceManager, TopNode, SchemaNodeOrder);
+                    this._dataLabels = new ExcelChartExSerieDataLabel(this, this.NameSpaceManager, this.TopNode, this.SchemaNodeOrder);
                 }
-                return _dataLabels;
+                return this._dataLabels;
             }
         }
         ExcelChartExDataPointCollection _dataPoints = null;
@@ -253,11 +253,11 @@ namespace OfficeOpenXml.Drawing.Chart.ChartEx
         {
             get
             {
-                if(_dataPoints==null)
+                if(this._dataPoints==null)
                 {
-                    _dataPoints = new ExcelChartExDataPointCollection(this, NameSpaceManager, TopNode, SchemaNodeOrder);
+                    this._dataPoints = new ExcelChartExDataPointCollection(this, this.NameSpaceManager, this.TopNode, this.SchemaNodeOrder);
                 }
-                return _dataPoints;
+                return this._dataPoints;
             }
         }
         /// <summary>
@@ -267,11 +267,11 @@ namespace OfficeOpenXml.Drawing.Chart.ChartEx
         {
             get
             {
-                return GetXmlNodeBool("@hidden", false);
+                return this.GetXmlNodeBool("@hidden", false);
             }
             set
             {
-                SetXmlNodeBool("@hidden", value, false);
+                this.SetXmlNodeBool("@hidden", value, false);
             }
         }
 
@@ -282,7 +282,7 @@ namespace OfficeOpenXml.Drawing.Chart.ChartEx
         {
             get
             {
-                return TopNode.SelectSingleNode("c:dataLabels", NameSpaceManager) != null;
+                return this.TopNode.SelectSingleNode("c:dataLabels", this.NameSpaceManager) != null;
             }
         }
 
@@ -298,7 +298,7 @@ namespace OfficeOpenXml.Drawing.Chart.ChartEx
 
         internal override void SetID(string id)
         {
-            throw new System.NotImplementedException();
+            throw new NotImplementedException();
         }
 
         internal static XmlElement CreateSeriesAndDataElement(ExcelChartEx chart, bool hasCatSerie)

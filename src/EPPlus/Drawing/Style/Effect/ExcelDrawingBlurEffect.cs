@@ -27,8 +27,8 @@ namespace OfficeOpenXml.Drawing.Style.Effect
         private readonly string _glowBoundsPath = "{0}/@grow";
         internal ExcelDrawingBlurEffect(XmlNamespaceManager nameSpaceManager, XmlNode topNode, string[] schemaNodeOrder, string path) : base(nameSpaceManager, topNode, schemaNodeOrder, path)
         {
-            _radiusPath = string.Format(_radiusPath, path);
-            _glowBoundsPath = string.Format(_glowBoundsPath, path);
+            this._radiusPath = string.Format(this._radiusPath, path);
+            this._glowBoundsPath = string.Format(this._glowBoundsPath, path);
         }
         /// <summary>
         /// The radius of blur in points
@@ -37,11 +37,11 @@ namespace OfficeOpenXml.Drawing.Style.Effect
         {
             get
             {
-                return GetXmlNodeEmuToPtNull(_radiusPath) ?? 0;
+                return this.GetXmlNodeEmuToPtNull(this._radiusPath) ?? 0;
             }
             set
             {
-                SetXmlNodeEmuToPt(_radiusPath, value);
+                this.SetXmlNodeEmuToPt(this._radiusPath, value);
             }
         }
         /// <summary>
@@ -52,11 +52,11 @@ namespace OfficeOpenXml.Drawing.Style.Effect
         {
             get
             {
-                return GetXmlNodeBool(_glowBoundsPath, true);
+                return this.GetXmlNodeBool(this._glowBoundsPath, true);
             }
             set
             {
-                SetXmlNodeBool(_glowBoundsPath, value, true);
+                this.SetXmlNodeBool(this._glowBoundsPath, value, true);
             }
         }
 

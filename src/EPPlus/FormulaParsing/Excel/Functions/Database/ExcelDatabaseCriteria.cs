@@ -31,32 +31,32 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Database
 
         internal ExcelDatabaseCriteria(ExcelDataProvider dataProvider, string range)
         {
-            _dataProvider = dataProvider;
+            this._dataProvider = dataProvider;
             ExcelAddressBase? address = new ExcelAddressBase(range);
-            _fromCol = address._fromCol;
-            _toCol = address._toCol;
-            _worksheet = address.WorkSheetName;
-            _fieldRow = address._fromRow;
-            Initialize();
+            this._fromCol = address._fromCol;
+            this._toCol = address._toCol;
+            this._worksheet = address.WorkSheetName;
+            this._fieldRow = address._fromRow;
+            this.Initialize();
         }
 
         private void Initialize()
         {
-            for (int x = _fromCol; x <= _toCol; x++)
+            for (int x = this._fromCol; x <= this._toCol; x++)
             {
-                object? fieldObj = _dataProvider.GetCellValue(_worksheet, _fieldRow, x);
-                object? val = _dataProvider.GetCellValue(_worksheet, _fieldRow + 1, x);
+                object? fieldObj = this._dataProvider.GetCellValue(this._worksheet, this._fieldRow, x);
+                object? val = this._dataProvider.GetCellValue(this._worksheet, this._fieldRow + 1, x);
                 if (fieldObj != null && val != null)
                 {
                     if(fieldObj is string)
                     { 
                         ExcelDatabaseCriteriaField? field = new ExcelDatabaseCriteriaField(fieldObj.ToString().ToLower(CultureInfo.InvariantCulture));
-                        _criterias.Add(field, val);
+                        this._criterias.Add(field, val);
                     }
                     else if (ConvertUtil.IsNumericOrDate(fieldObj))
                     {
                         ExcelDatabaseCriteriaField? field = new ExcelDatabaseCriteriaField((int) fieldObj);
-                        _criterias.Add(field, val);
+                        this._criterias.Add(field, val);
                     }
 
                 }
@@ -65,7 +65,7 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Database
 
         public virtual IDictionary<ExcelDatabaseCriteriaField, object> Items
         {
-            get { return _criterias; }
+            get { return this._criterias; }
         }
     }
 }

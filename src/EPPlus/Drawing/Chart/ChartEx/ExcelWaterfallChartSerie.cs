@@ -32,11 +32,11 @@ namespace OfficeOpenXml.Drawing.Chart.ChartEx
         {
             get
             {
-                return GetXmlNodeBool($"{_connectorLinesPath}");
+                return this.GetXmlNodeBool($"{_connectorLinesPath}");
             }
             set
             {
-                SetXmlNodeBool($"{_connectorLinesPath}", value);
+                this.SetXmlNodeBool($"{_connectorLinesPath}", value);
             }
         }
     }

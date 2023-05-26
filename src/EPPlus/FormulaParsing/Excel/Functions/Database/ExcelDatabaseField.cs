@@ -25,8 +25,8 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Database
 
         public ExcelDatabaseField(string fieldName, int colIndex)
         {
-            FieldName = fieldName;
-            ColIndex = colIndex;
+            this.FieldName = fieldName;
+            this.ColIndex = colIndex;
         }
     }
 }

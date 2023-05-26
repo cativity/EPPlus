@@ -28,12 +28,12 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Math
         public override CompileResult Execute(IEnumerable<FunctionArgument> arguments, ParsingContext context)
         {
             ValidateArguments(arguments, 2);
-            double low = ArgToDecimal(arguments, 0);
-            double high = ArgToDecimal(arguments, 1);
+            double low = this.ArgToDecimal(arguments, 0);
+            double high = this.ArgToDecimal(arguments, 1);
             object? rand = new Rand().Execute(new FunctionArgument[0], context).Result;
             double randPart = (CalulateDiff(high, low) * (double)rand) + 1;
             randPart = System.Math.Floor(randPart);
-            return CreateResult(low + randPart, DataType.Integer);
+            return this.CreateResult(low + randPart, DataType.Integer);
         }
 
         private static double CalulateDiff(double high, double low)

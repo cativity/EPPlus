@@ -302,7 +302,7 @@ namespace OfficeOpenXml.Core.Worksheet
                             tokenAddress._toCol += (sfAddress.Columns - 1);
                         }
 
-                        if (tokenAddress.Collide(delRange, true) != ExcelAddressBase.eAddressCollition.No)  //Shared Formula address is effected.
+                        if (tokenAddress.Collide(delRange, true) != eAddressCollition.No)  //Shared Formula address is effected.
                         {
                             doConvertSF = true;
                             break;
@@ -332,7 +332,7 @@ namespace OfficeOpenXml.Core.Worksheet
         {
             //Validate autofilter
             if (range.Worksheet.AutoFilterAddress!=null && 
-                effectedAddress.Collide(range.Worksheet.AutoFilterAddress) == ExcelAddressBase.eAddressCollition.Partly 
+                effectedAddress.Collide(range.Worksheet.AutoFilterAddress) == eAddressCollition.Partly 
                     &&
                     range.Worksheet.AutoFilterAddress.CollideFullRowOrColumn(range) == false)
             {
@@ -345,7 +345,7 @@ namespace OfficeOpenXml.Core.Worksheet
                 if (!string.IsNullOrEmpty(a))
                 {
                     ExcelAddressBase? mc = new ExcelAddressBase(a);
-                    if (effectedAddress.Collide(mc) == ExcelAddressBase.eAddressCollition.Partly)
+                    if (effectedAddress.Collide(mc) == eAddressCollition.Partly)
                     {
                         throw new InvalidOperationException($"Can't {(insert ? "insert into" : "delete from")} the range. Cells collide with merged range {a}");
                     }
@@ -355,7 +355,7 @@ namespace OfficeOpenXml.Core.Worksheet
             //Validate pivot tables Cells
             foreach (ExcelPivotTable? pt in range.Worksheet.PivotTables)
             {
-                if (effectedAddress.Collide(pt.Address) == ExcelAddressBase.eAddressCollition.Partly)
+                if (effectedAddress.Collide(pt.Address) == eAddressCollition.Partly)
                 {
                     throw new InvalidOperationException($"Can't {(insert ? "insert into" : "delete from")} the range. Cells collide with pivot table {pt.Name}");
                 }
@@ -364,8 +364,8 @@ namespace OfficeOpenXml.Core.Worksheet
             //Validate tables Cells
             foreach (ExcelTable? t in range.Worksheet.Tables)
             {
-                if (effectedAddressTable.Collide(t.Address) == ExcelAddressBase.eAddressCollition.Partly &&
-                    effectedAddress.Collide(t.Address) != ExcelAddressBase.eAddressCollition.No)
+                if (effectedAddressTable.Collide(t.Address) == eAddressCollition.Partly &&
+                    effectedAddress.Collide(t.Address) != eAddressCollition.No)
                 {
                     throw new InvalidOperationException($"Can't {(insert ? "insert into" : "delete from")} the range. Cells collide with table {t.Name}");
                 }

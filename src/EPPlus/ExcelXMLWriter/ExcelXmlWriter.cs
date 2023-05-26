@@ -48,8 +48,8 @@ namespace OfficeOpenXml.ExcelXMLWriter
         /// <param name="package"></param>
         public ExcelXmlWriter(ExcelWorksheet worksheet, ExcelPackage package)
         {
-            _ws = worksheet;
-            _package = package;
+            this._ws = worksheet;
+            this._package = package;
         }
 
         /// <summary>
@@ -61,47 +61,47 @@ namespace OfficeOpenXml.ExcelXMLWriter
         /// <param name="endOfNode">End position of the current node</param>
         internal void WriteNodes(StreamWriter sw, string xml, ref int startOfNode, ref int endOfNode)
         {
-            string? prefix = _ws.GetNameSpacePrefix();
+            string? prefix = this._ws.GetNameSpacePrefix();
 
             FindNodePositionAndClearItInit(sw, xml, "cols", ref startOfNode, ref endOfNode);
-            UpdateColumnData(sw, prefix);
+            this.UpdateColumnData(sw, prefix);
 
             FindNodePositionAndClearIt(sw, xml, "sheetData", ref startOfNode, ref endOfNode);
-            UpdateRowCellData(sw, prefix);
+            this.UpdateRowCellData(sw, prefix);
 
             FindNodePositionAndClearIt(sw, xml, "mergeCells", ref startOfNode, ref endOfNode);
-            _ws._mergedCells.CleanupMergedCells();
-            if (_ws._mergedCells.Count > 0)
+            this._ws._mergedCells.CleanupMergedCells();
+            if (this._ws._mergedCells.Count > 0)
             {
-                UpdateMergedCells(sw, prefix);
+                this.UpdateMergedCells(sw, prefix);
             }
 
-            if (_ws.GetNode("d:dataValidations") != null)
+            if (this._ws.GetNode("d:dataValidations") != null)
             {
                 FindNodePositionAndClearIt(sw, xml, "dataValidations", ref startOfNode, ref endOfNode);
-                if(_ws.DataValidations.Count > 0)
+                if(this._ws.DataValidations.Count > 0)
                 {
-                    sw.Write(UpdateDataValidation(prefix));
+                    sw.Write(this.UpdateDataValidation(prefix));
                 }
             }
 
             FindNodePositionAndClearIt(sw, xml, "hyperlinks", ref startOfNode, ref endOfNode);
-            UpdateHyperLinks(sw, prefix);
+            this.UpdateHyperLinks(sw, prefix);
 
             FindNodePositionAndClearIt(sw, xml, "rowBreaks", ref startOfNode, ref endOfNode);
-            UpdateRowBreaks(sw, prefix);
+            this.UpdateRowBreaks(sw, prefix);
 
             FindNodePositionAndClearIt(sw, xml, "colBreaks", ref startOfNode, ref endOfNode);
-            UpdateColBreaks(sw, prefix);
+            this.UpdateColBreaks(sw, prefix);
 
             //Careful. Ensure that we only do appropriate extLst things when there are objects to operate on.
             //Creating an empty DataValidations Node in ExtLst for example generates a corrupt excelfile that passes validation tool checks.
-            if (_ws.GetNode("d:extLst") != null && _ws.DataValidations.GetExtLstCount() != 0)
+            if (this._ws.GetNode("d:extLst") != null && this._ws.DataValidations.GetExtLstCount() != 0)
             {
                 ExtLstHelper extLst = new ExtLstHelper(xml);
                 FindNodePositionAndClearIt(sw, xml, "extLst", ref startOfNode, ref endOfNode);
 
-                extLst.InsertExt(ExtLstUris.DataValidationsUri, UpdateExtLstDataValidations(prefix), "");
+                extLst.InsertExt(ExtLstUris.DataValidationsUri, this.UpdateExtLstDataValidations(prefix), "");
 
                 sw.Write(extLst.GetWholeExtLst());
             }
@@ -132,7 +132,7 @@ namespace OfficeOpenXml.ExcelXMLWriter
         /// </summary>
         private void UpdateColumnData(StreamWriter sw, string prefix)
         {
-            CellStoreEnumerator<ExcelValue>? cse = new CellStoreEnumerator<ExcelValue>(_ws._values, 0, 1, 0, ExcelPackage.MaxColumns);
+            CellStoreEnumerator<ExcelValue>? cse = new CellStoreEnumerator<ExcelValue>(this._ws._values, 0, 1, 0, ExcelPackage.MaxColumns);
             bool first = true;
             while (cse.Next())
             {
@@ -147,7 +147,7 @@ namespace OfficeOpenXml.ExcelXMLWriter
                     sw.Write($"<{prefix}cols>");
                     first = false;
                 }
-                ExcelStyleCollection<ExcelXfs> cellXfs = _package.Workbook.Styles.CellXfs;
+                ExcelStyleCollection<ExcelXfs> cellXfs = this._package.Workbook.Styles.CellXfs;
 
                 sw.Write($"<{prefix}col min=\"{col.ColumnMin}\" max=\"{col.ColumnMax}\"");
                 if (col.Hidden == true)
@@ -193,10 +193,10 @@ namespace OfficeOpenXml.ExcelXMLWriter
         private void FixSharedFormulas()
         {
             List<int>? remove = new List<int>();
-            foreach (Formulas? f in _ws._sharedFormulas.Values)
+            foreach (Formulas? f in this._ws._sharedFormulas.Values)
             {
                 ExcelAddressBase? addr = new ExcelAddressBase(f.Address);
-                object? shIx = _ws._formulas.GetValue(addr._fromRow, addr._fromCol);
+                object? shIx = this._ws._formulas.GetValue(addr._fromRow, addr._fromCol);
                 if (!(shIx is int) || (shIx is int && (int)shIx != f.Index))
                 {
                     for (int row = addr._fromRow; row <= addr._toRow; row++)
@@ -205,10 +205,10 @@ namespace OfficeOpenXml.ExcelXMLWriter
                         {
                             if (!(addr._fromRow == row && addr._fromCol == col))
                             {
-                                object? fIx = _ws._formulas.GetValue(row, col);
+                                object? fIx = this._ws._formulas.GetValue(row, col);
                                 if (fIx is int && (int)fIx == f.Index)
                                 {
-                                    _ws._formulas.SetValue(row, col, f.GetFormula(row, col, _ws.Name));
+                                    this._ws._formulas.SetValue(row, col, f.GetFormula(row, col, this._ws.Name));
                                 }
                             }
                         }
@@ -216,48 +216,48 @@ namespace OfficeOpenXml.ExcelXMLWriter
                     remove.Add(f.Index);
                 }
             }
-            remove.ForEach(i => _ws._sharedFormulas.Remove(i));
+            remove.ForEach(i => this._ws._sharedFormulas.Remove(i));
         }
 
         // get StyleID without cell style for UpdateRowCellData
         internal int GetStyleIdDefaultWithMemo(int row, int col)
         {
             int v = 0;
-            if (_ws.ExistsStyleInner(row, 0, ref v)) //First Row
+            if (this._ws.ExistsStyleInner(row, 0, ref v)) //First Row
             {
                 return v;
             }
             else // then column
             {
-                if (!columnStyles.ContainsKey(col))
+                if (!this.columnStyles.ContainsKey(col))
                 {
-                    if (_ws.ExistsStyleInner(0, col, ref v))
+                    if (this._ws.ExistsStyleInner(0, col, ref v))
                     {
-                        columnStyles.Add(col, v);
+                        this.columnStyles.Add(col, v);
                     }
                     else
                     {
                         int r = 0, c = col;
-                        if (_ws._values.PrevCell(ref r, ref c))
+                        if (this._ws._values.PrevCell(ref r, ref c))
                         {
-                            ExcelValue val = _ws._values.GetValue(0, c);
+                            ExcelValue val = this._ws._values.GetValue(0, c);
                             ExcelColumn? column = (ExcelColumn)(val._value);
                             if (column != null && column.ColumnMax >= col) //Fixes issue 15174
                             {
-                                columnStyles.Add(col, val._styleId);
+                                this.columnStyles.Add(col, val._styleId);
                             }
                             else
                             {
-                                columnStyles.Add(col, 0);
+                                this.columnStyles.Add(col, 0);
                             }
                         }
                         else
                         {
-                            columnStyles.Add(col, 0);
+                            this.columnStyles.Add(col, 0);
                         }
                     }
                 }
-                return columnStyles[col];
+                return this.columnStyles[col];
             }
         }
 
@@ -265,7 +265,7 @@ namespace OfficeOpenXml.ExcelXMLWriter
         {
             if (v != null && v.ToString() != "")
             {
-                return $"<{prefix}v>{ConvertUtil.ExcelEscapeAndEncodeString(ConvertUtil.GetValueForXml(v, _ws.Workbook.Date1904))}</{prefix}v>";
+                return $"<{prefix}v>{ConvertUtil.ExcelEscapeAndEncodeString(ConvertUtil.GetValueForXml(v, this._ws.Workbook.Date1904))}</{prefix}v>";
             }
             else
             {
@@ -282,7 +282,7 @@ namespace OfficeOpenXml.ExcelXMLWriter
 
             //ulong rowID = ExcelRow.GetRowID(SheetID, row);
             cache.Append($"<{prefix}row r=\"{row}\"");
-            RowInternal currRow = _ws.GetValueInner(row, 0) as RowInternal;
+            RowInternal currRow = this._ws.GetValueInner(row, 0) as RowInternal;
             if (currRow != null)
             {
 
@@ -313,7 +313,7 @@ namespace OfficeOpenXml.ExcelXMLWriter
                     cache.Append(" ph=\"1\"");
                 }
             }
-            int s = _ws.GetStyleInner(row, 0);
+            int s = this._ws.GetStyleInner(row, 0);
             if (s > 0)
             {
                 cache.AppendFormat(" s=\"{0}\" customFormat=\"1\"", cellXfs[s].newID < 0 ? 0 : cellXfs[s].newID);
@@ -356,7 +356,7 @@ namespace OfficeOpenXml.ExcelXMLWriter
         /// </summary>
         private void UpdateRowCellData(StreamWriter sw, string prefix)
         {
-            ExcelStyleCollection<ExcelXfs> cellXfs = _package.Workbook.Styles.CellXfs;
+            ExcelStyleCollection<ExcelXfs> cellXfs = this._package.Workbook.Styles.CellXfs;
 
             int row = -1;
             string mdAttr = "";
@@ -367,36 +367,36 @@ namespace OfficeOpenXml.ExcelXMLWriter
             string? vTag = prefix + "v";
 
             StringBuilder sbXml = new StringBuilder();
-            Dictionary<string, ExcelWorkbook.SharedStringItem>? ss = _package.Workbook._sharedStrings;
+            Dictionary<string, ExcelWorkbook.SharedStringItem>? ss = this._package.Workbook._sharedStrings;
             StringBuilder? cache = new StringBuilder();
             cache.Append($"<{sheetDataTag}>");
 
-            FixSharedFormulas(); //Fixes Issue #32
+            this.FixSharedFormulas(); //Fixes Issue #32
 
-            bool hasMd = _ws._metadataStore.HasValues;
-            columnStyles = new Dictionary<int, int>();
-            CellStoreEnumerator<ExcelValue>? cse = new CellStoreEnumerator<ExcelValue>(_ws._values, 1, 0, ExcelPackage.MaxRows, ExcelPackage.MaxColumns);
+            bool hasMd = this._ws._metadataStore.HasValues;
+            this.columnStyles = new Dictionary<int, int>();
+            CellStoreEnumerator<ExcelValue>? cse = new CellStoreEnumerator<ExcelValue>(this._ws._values, 1, 0, ExcelPackage.MaxRows, ExcelPackage.MaxColumns);
             while (cse.Next())
             {
                 if (cse.Column > 0)
                 {
                     ExcelValue val = cse.Value;
-                    int styleID = cellXfs[(val._styleId == 0 ? GetStyleIdDefaultWithMemo(cse.Row, cse.Column) : val._styleId)].newID;
+                    int styleID = cellXfs[(val._styleId == 0 ? this.GetStyleIdDefaultWithMemo(cse.Row, cse.Column) : val._styleId)].newID;
                     styleID = styleID < 0 ? 0 : styleID;
                     //Add the row element if it's a new row
                     if (cse.Row != row)
                     {
-                        WriteRow(cache, cellXfs, row, cse.Row, prefix);
+                        this.WriteRow(cache, cellXfs, row, cse.Row, prefix);
                         row = cse.Row;
                     }
                     object v = val._value;
-                    object formula = _ws._formulas.GetValue(cse.Row, cse.Column);
+                    object formula = this._ws._formulas.GetValue(cse.Row, cse.Column);
                     if (hasMd)
                     {
                         mdAttr = "";
-                        if (_ws._metadataStore.Exists(cse.Row, cse.Column))
+                        if (this._ws._metadataStore.Exists(cse.Row, cse.Column))
                         {
-                            MetaDataReference md = _ws._metadataStore.GetValue(cse.Row, cse.Column);
+                            MetaDataReference md = this._ws._metadataStore.GetValue(cse.Row, cse.Column);
                             if (md.cm > 0)
                             {
                                 mdAttr = $" cm=\"{md.cm}\"";
@@ -409,19 +409,19 @@ namespace OfficeOpenXml.ExcelXMLWriter
                     }
                     if (formula is int sfId)
                     {
-                        if (!_ws._sharedFormulas.ContainsKey(sfId))
+                        if (!this._ws._sharedFormulas.ContainsKey(sfId))
                         {
-                            throw (new InvalidDataException($"SharedFormulaId {sfId} not found on Worksheet {_ws.Name} cell {cse.CellAddress}, SharedFormulas Count {_ws._sharedFormulas.Count}"));
+                            throw (new InvalidDataException($"SharedFormulaId {sfId} not found on Worksheet {this._ws.Name} cell {cse.CellAddress}, SharedFormulas Count {this._ws._sharedFormulas.Count}"));
                         }
-                        Formulas? f = _ws._sharedFormulas[sfId];
+                        Formulas? f = this._ws._sharedFormulas[sfId];
 
                         //Set calc attributes for array formula. We preserve them from load only at this point.
                         if (hasMd)
                         {
                             mdAttrForFTag = "";
-                            if (_ws._metadataStore.Exists(cse.Row, cse.Column))
+                            if (this._ws._metadataStore.Exists(cse.Row, cse.Column))
                             {
-                                MetaDataReference md = _ws._metadataStore.GetValue(cse.Row, cse.Column);
+                                MetaDataReference md = this._ws._metadataStore.GetValue(cse.Row, cse.Column);
                                 if (md.aca)
                                 {
                                     mdAttrForFTag = $" aca=\"1\"";
@@ -439,7 +439,7 @@ namespace OfficeOpenXml.ExcelXMLWriter
                             {
                                 if (f.FormulaType == FormulaType.Array)
                                 {
-                                    cache.Append($"<{cTag} r=\"{cse.CellAddress}\" s=\"{styleID}\"{ConvertUtil.GetCellType(v, true)}{mdAttr}><{fTag} ref=\"{f.Address}\" t=\"array\" {mdAttrForFTag}>{ConvertUtil.ExcelEscapeAndEncodeString(f.Formula)}</{fTag}>{GetFormulaValue(v, prefix)}</{cTag}>");
+                                    cache.Append($"<{cTag} r=\"{cse.CellAddress}\" s=\"{styleID}\"{ConvertUtil.GetCellType(v, true)}{mdAttr}><{fTag} ref=\"{f.Address}\" t=\"array\" {mdAttrForFTag}>{ConvertUtil.ExcelEscapeAndEncodeString(f.Formula)}</{fTag}>{this.GetFormulaValue(v, prefix)}</{cTag}>");
                                 }
                                 else if (f.FormulaType == FormulaType.DataTable)
                                 {
@@ -448,7 +448,7 @@ namespace OfficeOpenXml.ExcelXMLWriter
                                 }
                                 else
                                 {
-                                    cache.Append($"<{cTag} r=\"{cse.CellAddress}\" s=\"{styleID}\"{ConvertUtil.GetCellType(v, true)}{mdAttr}><{fTag} ref=\"{f.Address}\" t=\"shared\" si=\"{sfId}\" {mdAttrForFTag}>{ConvertUtil.ExcelEscapeAndEncodeString(f.Formula)}</{fTag}>{GetFormulaValue(v, prefix)}</{cTag}>");
+                                    cache.Append($"<{cTag} r=\"{cse.CellAddress}\" s=\"{styleID}\"{ConvertUtil.GetCellType(v, true)}{mdAttr}><{fTag} ref=\"{f.Address}\" t=\"shared\" si=\"{sfId}\" {mdAttrForFTag}>{ConvertUtil.ExcelEscapeAndEncodeString(f.Formula)}</{fTag}>{this.GetFormulaValue(v, prefix)}</{cTag}>");
                                 }
 
                             }
@@ -463,15 +463,15 @@ namespace OfficeOpenXml.ExcelXMLWriter
                                 {
                                     fElement = $"";
                                 }
-                                cache.Append($"<{cTag} r=\"{cse.CellAddress}\" s=\"{styleID}\"{ConvertUtil.GetCellType(v, true)}{mdAttr}>{fElement}{GetFormulaValue(v, prefix)}</{cTag}>");
+                                cache.Append($"<{cTag} r=\"{cse.CellAddress}\" s=\"{styleID}\"{ConvertUtil.GetCellType(v, true)}{mdAttr}>{fElement}{this.GetFormulaValue(v, prefix)}</{cTag}>");
                             }
                             else if (f.FormulaType == FormulaType.DataTable)
                             {
-                                cache.Append($"<{cTag} r=\"{cse.CellAddress}\" s=\"{styleID}\"{ConvertUtil.GetCellType(v, true)}{mdAttr}>{GetFormulaValue(v, prefix)}</{cTag}>");
+                                cache.Append($"<{cTag} r=\"{cse.CellAddress}\" s=\"{styleID}\"{ConvertUtil.GetCellType(v, true)}{mdAttr}>{this.GetFormulaValue(v, prefix)}</{cTag}>");
                             }
                             else
                             {
-                                cache.Append($"<{cTag} r=\"{cse.CellAddress}\" s=\"{styleID}\"{ConvertUtil.GetCellType(v, true)}{mdAttr}><f t=\"shared\" si=\"{sfId}\" {mdAttrForFTag}/>{GetFormulaValue(v, prefix)}</{cTag}>");
+                                cache.Append($"<{cTag} r=\"{cse.CellAddress}\" s=\"{styleID}\"{ConvertUtil.GetCellType(v, true)}{mdAttr}><f t=\"shared\" si=\"{sfId}\" {mdAttrForFTag}/>{this.GetFormulaValue(v, prefix)}</{cTag}>");
                             }
                         }
                         else
@@ -479,19 +479,19 @@ namespace OfficeOpenXml.ExcelXMLWriter
                             // We can also have a single cell array formula
                             if (f.FormulaType == FormulaType.Array)
                             {
-                                cache.Append($"<{cTag} r=\"{cse.CellAddress}\" s=\"{styleID}\"{ConvertUtil.GetCellType(v, true)}{mdAttr}><{fTag} ref=\"{string.Format("{0}:{1}", f.Address, f.Address)}\" t=\"array\"{mdAttrForFTag}>{ConvertUtil.ExcelEscapeAndEncodeString(f.Formula)}</{fTag}>{GetFormulaValue(v, prefix)}</{cTag}>");
+                                cache.Append($"<{cTag} r=\"{cse.CellAddress}\" s=\"{styleID}\"{ConvertUtil.GetCellType(v, true)}{mdAttr}><{fTag} ref=\"{string.Format("{0}:{1}", f.Address, f.Address)}\" t=\"array\"{mdAttrForFTag}>{ConvertUtil.ExcelEscapeAndEncodeString(f.Formula)}</{fTag}>{this.GetFormulaValue(v, prefix)}</{cTag}>");
                             }
                             else
                             {
                                 cache.Append($"<{cTag} r=\"{f.Address}\" s=\"{styleID}\"{ConvertUtil.GetCellType(v, true)}{mdAttr}>");
-                                cache.Append($"<{fTag}{mdAttrForFTag}>{ConvertUtil.ExcelEscapeAndEncodeString(f.Formula)}</{fTag}>{GetFormulaValue(v, prefix)}</{cTag}>");
+                                cache.Append($"<{fTag}{mdAttrForFTag}>{ConvertUtil.ExcelEscapeAndEncodeString(f.Formula)}</{fTag}>{this.GetFormulaValue(v, prefix)}</{cTag}>");
                             }
                         }
                     }
                     else if (formula != null && formula.ToString() != "")
                     {
                         cache.Append($"<{cTag} r=\"{cse.CellAddress}\" s=\"{styleID}\"{ConvertUtil.GetCellType(v, true)}{mdAttr}>");
-                        cache.Append($"<{fTag}>{ConvertUtil.ExcelEscapeAndEncodeString(formula.ToString())}</{fTag}>{GetFormulaValue(v, prefix)}</{cTag}>");
+                        cache.Append($"<{fTag}>{ConvertUtil.ExcelEscapeAndEncodeString(formula.ToString())}</{fTag}>{this.GetFormulaValue(v, prefix)}</{cTag}>");
                     }
                     else
                     {
@@ -501,7 +501,7 @@ namespace OfficeOpenXml.ExcelXMLWriter
                         }
                         else if (v != null)
                         {
-                            if (v is System.Collections.IEnumerable enumResult && !(v is string))
+                            if (v is IEnumerable enumResult && !(v is string))
                             {
                                 IEnumerator? e = enumResult.GetEnumerator();
                                 if (e.MoveNext() && e.Current != null)
@@ -517,7 +517,7 @@ namespace OfficeOpenXml.ExcelXMLWriter
                             {
                                 //string sv = GetValueForXml(v);
                                 cache.Append($"<{cTag} r=\"{cse.CellAddress}\" s=\"{styleID}\"{ConvertUtil.GetCellType(v)}{mdAttr}>");
-                                cache.Append($"{GetFormulaValue(v, prefix)}</{cTag}>");
+                                cache.Append($"{this.GetFormulaValue(v, prefix)}</{cTag}>");
                             }
                             else
                             {
@@ -534,7 +534,7 @@ namespace OfficeOpenXml.ExcelXMLWriter
                                 if (!ss.ContainsKey(s))
                                 {
                                     ix = ss.Count;
-                                    ss.Add(s, new ExcelWorkbook.SharedStringItem() { isRichText = _ws._flags.GetFlagValue(cse.Row, cse.Column, CellFlags.RichText), pos = ix });
+                                    ss.Add(s, new ExcelWorkbook.SharedStringItem() { isRichText = this._ws._flags.GetFlagValue(cse.Row, cse.Column, CellFlags.RichText), pos = ix });
                                 }
                                 else
                                 {
@@ -548,7 +548,7 @@ namespace OfficeOpenXml.ExcelXMLWriter
                 }
                 else  //ExcelRow
                 {
-                    WriteRow(cache, cellXfs, row, cse.Row, prefix);
+                    this.WriteRow(cache, cellXfs, row, cse.Row, prefix);
                     row = cse.Row;
                 }
                 if (cache.Length > 0x600000)
@@ -558,7 +558,8 @@ namespace OfficeOpenXml.ExcelXMLWriter
                     cache.Length = 0;
                 }
             }
-            columnStyles = null;
+
+            this.columnStyles = null;
 
             if (row != -1)
             {
@@ -578,7 +579,7 @@ namespace OfficeOpenXml.ExcelXMLWriter
         private void UpdateMergedCells(StreamWriter sw, string prefix)
         {
             sw.Write($"<{prefix}mergeCells>");
-            foreach (string address in _ws._mergedCells.Distinct())
+            foreach (string address in this._ws._mergedCells.Distinct())
             {
                 sw.Write($"<{prefix}mergeCell ref=\"{address}\" />");
             }
@@ -587,78 +588,77 @@ namespace OfficeOpenXml.ExcelXMLWriter
 
         private void WriteDataValidationAttributes(StringBuilder cache, int i)
         {
-            if (_ws.DataValidations[i].ValidationType != null && 
-                _ws.DataValidations[i].ValidationType.Type != eDataValidationType.Any)
+            if (this._ws.DataValidations[i].ValidationType != null && this._ws.DataValidations[i].ValidationType.Type != eDataValidationType.Any)
             {
-                cache.Append($"type=\"{_ws.DataValidations[i].ValidationType.TypeToXmlString()}\" ");
+                cache.Append($"type=\"{this._ws.DataValidations[i].ValidationType.TypeToXmlString()}\" ");
             }
 
-            if (_ws.DataValidations[i].ErrorStyle != ExcelDataValidationWarningStyle.undefined)
+            if (this._ws.DataValidations[i].ErrorStyle != ExcelDataValidationWarningStyle.undefined)
             {
-                cache.Append($"errorStyle=\"{_ws.DataValidations[i].ErrorStyle.ToEnumString()}\" ");
+                cache.Append($"errorStyle=\"{this._ws.DataValidations[i].ErrorStyle.ToEnumString()}\" ");
             }
 
-            if (_ws.DataValidations[i].ImeMode != ExcelDataValidationImeMode.NoControl)
+            if (this._ws.DataValidations[i].ImeMode != ExcelDataValidationImeMode.NoControl)
             {
-                cache.Append($"imeMode=\"{_ws.DataValidations[i].ImeMode.ToEnumString()}\" ");
+                cache.Append($"imeMode=\"{this._ws.DataValidations[i].ImeMode.ToEnumString()}\" ");
             }
 
-            if (_ws.DataValidations[i].Operator != 0)
+            if (this._ws.DataValidations[i].Operator != 0)
             {
-                cache.Append($"operator=\"{_ws.DataValidations[i].Operator.ToEnumString()}\" ");
+                cache.Append($"operator=\"{this._ws.DataValidations[i].Operator.ToEnumString()}\" ");
             }
 
 
             //Note that if false excel does not write these properties out so we don't either.
-            if (_ws.DataValidations[i].AllowBlank == true)
+            if (this._ws.DataValidations[i].AllowBlank == true)
             {
                 cache.Append($"allowBlank=\"1\" ");
             }
 
-            if (_ws.DataValidations[i] is ExcelDataValidationList)
+            if (this._ws.DataValidations[i] is ExcelDataValidationList)
             {
-                if ((_ws.DataValidations[i] as ExcelDataValidationList).HideDropDown == true)
+                if ((this._ws.DataValidations[i] as ExcelDataValidationList).HideDropDown == true)
                 {
                     cache.Append($"showDropDown=\"1\" ");
                 }
             }
 
-            if (_ws.DataValidations[i].ShowInputMessage == true)
+            if (this._ws.DataValidations[i].ShowInputMessage == true)
             {
                 cache.Append($"showInputMessage=\"1\" ");
             }
 
-            if (_ws.DataValidations[i].ShowErrorMessage == true)
+            if (this._ws.DataValidations[i].ShowErrorMessage == true)
             {
                 cache.Append($"showErrorMessage=\"1\" ");
             }
 
-            if (string.IsNullOrEmpty(_ws.DataValidations[i].ErrorTitle) == false)
+            if (string.IsNullOrEmpty(this._ws.DataValidations[i].ErrorTitle) == false)
             {
-                cache.Append($"errorTitle=\"{_ws.DataValidations[i].ErrorTitle.EncodeXMLAttribute()}\" ");
+                cache.Append($"errorTitle=\"{this._ws.DataValidations[i].ErrorTitle.EncodeXMLAttribute()}\" ");
             }
 
-            if (string.IsNullOrEmpty(_ws.DataValidations[i].Error) == false)
+            if (string.IsNullOrEmpty(this._ws.DataValidations[i].Error) == false)
             {
-                cache.Append($"error=\"{_ws.DataValidations[i].Error.EncodeXMLAttribute()}\" ");
+                cache.Append($"error=\"{this._ws.DataValidations[i].Error.EncodeXMLAttribute()}\" ");
             }
 
-            if (string.IsNullOrEmpty(_ws.DataValidations[i].PromptTitle) == false)
+            if (string.IsNullOrEmpty(this._ws.DataValidations[i].PromptTitle) == false)
             {
-                cache.Append($"promptTitle=\"{_ws.DataValidations[i].PromptTitle.EncodeXMLAttribute()}\" ");
+                cache.Append($"promptTitle=\"{this._ws.DataValidations[i].PromptTitle.EncodeXMLAttribute()}\" ");
             }
 
-            if (string.IsNullOrEmpty(_ws.DataValidations[i].Prompt) == false)
+            if (string.IsNullOrEmpty(this._ws.DataValidations[i].Prompt) == false)
             {
-                cache.Append($"prompt=\"{_ws.DataValidations[i].Prompt.EncodeXMLAttribute()}\" ");
+                cache.Append($"prompt=\"{this._ws.DataValidations[i].Prompt.EncodeXMLAttribute()}\" ");
             }
 
-            if (_ws.DataValidations[i].InternalValidationType == InternalValidationType.DataValidation)
+            if (this._ws.DataValidations[i].InternalValidationType == InternalValidationType.DataValidation)
             {
-                cache.Append($"sqref=\"{_ws.DataValidations[i].Address.ToString().Replace(",", " ")}\" ");
+                cache.Append($"sqref=\"{this._ws.DataValidations[i].Address.ToString().Replace(",", " ")}\" ");
             }
 
-            cache.Append($"xr:uid=\"{_ws.DataValidations[i].Uid}\"");
+            cache.Append($"xr:uid=\"{this._ws.DataValidations[i].Uid}\"");
 
             cache.Append(">");
         }
@@ -666,9 +666,9 @@ namespace OfficeOpenXml.ExcelXMLWriter
         private void WriteDataValidation(StringBuilder cache, string prefix, int i, string extNode = "")
         {
             cache.Append($"<{prefix}dataValidation ");
-            WriteDataValidationAttributes(cache, i);
+            this.WriteDataValidationAttributes(cache, i);
 
-            if (_ws.DataValidations[i].ValidationType.Type != eDataValidationType.Any)
+            if (this._ws.DataValidations[i].ValidationType.Type != eDataValidationType.Any)
             {
                 string endExtNode = "";
                 if (extNode != "")
@@ -677,40 +677,44 @@ namespace OfficeOpenXml.ExcelXMLWriter
                     extNode = $"<{extNode}>";
                 }
 
-                switch (_ws.DataValidations[i].ValidationType.Type)
+                switch (this._ws.DataValidations[i].ValidationType.Type)
                 {
                     case eDataValidationType.TextLength:
                     case eDataValidationType.Whole:
-                        ExcelDataValidationWithFormula2<IExcelDataValidationFormulaInt>? intType = _ws.DataValidations[i] as ExcelDataValidationWithFormula2<IExcelDataValidationFormulaInt>;
+                        ExcelDataValidationWithFormula2<IExcelDataValidationFormulaInt>? intType = this._ws.DataValidations[i] as ExcelDataValidationWithFormula2<IExcelDataValidationFormulaInt>;
                         WriteDataValidationFormulas(intType.Formula, intType.Formula2, cache, 
-                            prefix, extNode, endExtNode, _ws.DataValidations[i].Operator);
+                            prefix, extNode, endExtNode,
+                            this._ws.DataValidations[i].Operator);
                         break;
 
                     case eDataValidationType.Decimal:
-                        ExcelDataValidationWithFormula2<IExcelDataValidationFormulaDecimal>? decimalType = _ws.DataValidations[i] as ExcelDataValidationWithFormula2<IExcelDataValidationFormulaDecimal>;
+                        ExcelDataValidationWithFormula2<IExcelDataValidationFormulaDecimal>? decimalType = this._ws.DataValidations[i] as ExcelDataValidationWithFormula2<IExcelDataValidationFormulaDecimal>;
                         WriteDataValidationFormulas(decimalType.Formula, decimalType.Formula2, cache, 
-                            prefix, extNode, endExtNode, _ws.DataValidations[i].Operator);
+                            prefix, extNode, endExtNode,
+                            this._ws.DataValidations[i].Operator);
                         break;
 
                     case eDataValidationType.List:
-                        ExcelDataValidationWithFormula<IExcelDataValidationFormulaList>? listType = _ws.DataValidations[i] as ExcelDataValidationWithFormula<IExcelDataValidationFormulaList>;
+                        ExcelDataValidationWithFormula<IExcelDataValidationFormulaList>? listType = this._ws.DataValidations[i] as ExcelDataValidationWithFormula<IExcelDataValidationFormulaList>;
                         WriteDataValidationFormulaSingle(listType.Formula, cache, prefix, extNode, endExtNode);
                         break;
 
                     case eDataValidationType.Time:
-                        ExcelDataValidationWithFormula2<IExcelDataValidationFormulaTime>? timeType = _ws.DataValidations[i] as ExcelDataValidationWithFormula2<IExcelDataValidationFormulaTime>;
+                        ExcelDataValidationWithFormula2<IExcelDataValidationFormulaTime>? timeType = this._ws.DataValidations[i] as ExcelDataValidationWithFormula2<IExcelDataValidationFormulaTime>;
                         WriteDataValidationFormulas(timeType.Formula, timeType.Formula2, cache, 
-                            prefix, extNode, endExtNode, _ws.DataValidations[i].Operator);
+                            prefix, extNode, endExtNode,
+                            this._ws.DataValidations[i].Operator);
                         break;
 
                     case eDataValidationType.DateTime:
-                        ExcelDataValidationWithFormula2<IExcelDataValidationFormulaDateTime>? dateTimeType = _ws.DataValidations[i] as ExcelDataValidationWithFormula2<IExcelDataValidationFormulaDateTime>;
+                        ExcelDataValidationWithFormula2<IExcelDataValidationFormulaDateTime>? dateTimeType = this._ws.DataValidations[i] as ExcelDataValidationWithFormula2<IExcelDataValidationFormulaDateTime>;
                         WriteDataValidationFormulas(dateTimeType.Formula, dateTimeType.Formula2, cache, 
-                            prefix, extNode, endExtNode, _ws.DataValidations[i].Operator);
+                            prefix, extNode, endExtNode,
+                            this._ws.DataValidations[i].Operator);
                         break;
 
                     case eDataValidationType.Custom:
-                        ExcelDataValidationWithFormula<IExcelDataValidationFormula>? customType = _ws.DataValidations[i] as ExcelDataValidationWithFormula<IExcelDataValidationFormula>;
+                        ExcelDataValidationWithFormula<IExcelDataValidationFormula>? customType = this._ws.DataValidations[i] as ExcelDataValidationWithFormula<IExcelDataValidationFormula>;
                         WriteDataValidationFormulaSingle(customType.Formula, cache, prefix, extNode, endExtNode);
                         break;
 
@@ -721,7 +725,7 @@ namespace OfficeOpenXml.ExcelXMLWriter
                 if (extNode != "")
                 {
                     //write adress if extLst
-                    cache.Append($"<xm:sqref>{_ws.DataValidations[i].Address.ToString().Replace(",", " ")}</xm:sqref>");
+                    cache.Append($"<xm:sqref>{this._ws.DataValidations[i].Address.ToString().Replace(",", " ")}</xm:sqref>");
                 }
             }
 
@@ -763,21 +767,21 @@ namespace OfficeOpenXml.ExcelXMLWriter
 
             if (extraAttribute == "")
             {
-                cache.Append($"<{prefix}dataValidations count=\"{_ws.DataValidations.GetNonExtLstCount()}\">");
+                cache.Append($"<{prefix}dataValidations count=\"{this._ws.DataValidations.GetNonExtLstCount()}\">");
                 type = InternalValidationType.DataValidation;
             }
             else
             {
-                cache.Append($"<{prefix}dataValidations {extraAttribute} count=\"{_ws.DataValidations.GetExtLstCount()}\">");
+                cache.Append($"<{prefix}dataValidations {extraAttribute} count=\"{this._ws.DataValidations.GetExtLstCount()}\">");
                 type = InternalValidationType.ExtLst;
                 extNode = "xm:f";
             }
 
-            for (int i = 0; i < _ws.DataValidations.Count; i++)
+            for (int i = 0; i < this._ws.DataValidations.Count; i++)
             {
-                if (_ws.DataValidations[i].InternalValidationType == type)
+                if (this._ws.DataValidations[i].InternalValidationType == type)
                 {
-                    WriteDataValidation(cache, prefix, i, extNode);
+                    this.WriteDataValidation(cache, prefix, i, extNode);
                 }
             }
 
@@ -794,11 +798,11 @@ namespace OfficeOpenXml.ExcelXMLWriter
         private void UpdateHyperLinks(StreamWriter sw, string prefix)
         {
             Dictionary<string, string> hyps = new Dictionary<string, string>();
-            CellStoreEnumerator<Uri>? cse = new CellStoreEnumerator<Uri>(_ws._hyperLinks);
+            CellStoreEnumerator<Uri>? cse = new CellStoreEnumerator<Uri>(this._ws._hyperLinks);
             bool first = true;
             while (cse.Next())
             {
-                Uri? uri = _ws._hyperLinks.GetValue(cse.Row, cse.Column);
+                Uri? uri = this._ws._hyperLinks.GetValue(cse.Row, cse.Column);
                 if (first && uri != null)
                 {
                     sw.Write($"<{prefix}hyperlinks>");
@@ -807,8 +811,8 @@ namespace OfficeOpenXml.ExcelXMLWriter
                 ExcelHyperLink? hl = uri as ExcelHyperLink;
                 if (hl != null && !string.IsNullOrEmpty(hl.ReferenceAddress))
                 {
-                    string? address = _ws.Cells[cse.Row, cse.Column, cse.Row + hl.RowSpann, cse.Column + hl.ColSpann].Address;
-                    string? location = ExcelCellBase.GetFullAddress(SecurityElement.Escape(_ws.Name), SecurityElement.Escape(hl.ReferenceAddress));
+                    string? address = this._ws.Cells[cse.Row, cse.Column, cse.Row + hl.RowSpann, cse.Column + hl.ColSpann].Address;
+                    string? location = ExcelCellBase.GetFullAddress(SecurityElement.Escape(this._ws.Name), SecurityElement.Escape(hl.ReferenceAddress));
                     string? display = string.IsNullOrEmpty(hl.Display) ? "" : " display=\"" + SecurityElement.Escape(hl.Display) + "\"";
                     string? tooltip = string.IsNullOrEmpty(hl.ToolTip) ? "" : " tooltip=\"" + SecurityElement.Escape(hl.ToolTip) + "\"";
                     sw.Write($"<{prefix}hyperlink ref=\"{address}\" location=\"{location}\"{display}{tooltip}/>");
@@ -839,11 +843,11 @@ namespace OfficeOpenXml.ExcelXMLWriter
                         ZipPackageRelationship relationship;
                         if (string.IsNullOrEmpty(target))
                         {
-                            relationship = _ws.Part.CreateRelationship(hyp, Packaging.TargetMode.External, ExcelPackage.schemaHyperlink);
+                            relationship = this._ws.Part.CreateRelationship(hyp, TargetMode.External, ExcelPackage.schemaHyperlink);
                         }
                         else
                         {
-                            relationship = _ws.Part.CreateRelationship(target, Packaging.TargetMode.External, ExcelPackage.schemaHyperlink);
+                            relationship = this._ws.Part.CreateRelationship(target, TargetMode.External, ExcelPackage.schemaHyperlink);
                         }
                         if (hl != null)
                         {
@@ -868,7 +872,7 @@ namespace OfficeOpenXml.ExcelXMLWriter
         {
             StringBuilder breaks = new StringBuilder();
             int count = 0;
-            CellStoreEnumerator<ExcelValue>? cse = new CellStoreEnumerator<ExcelValue>(_ws._values, 0, 0, ExcelPackage.MaxRows, 0);
+            CellStoreEnumerator<ExcelValue>? cse = new CellStoreEnumerator<ExcelValue>(this._ws._values, 0, 0, ExcelPackage.MaxRows, 0);
             while (cse.Next())
             {
                 RowInternal? row = cse.Value._value as RowInternal;
@@ -888,7 +892,7 @@ namespace OfficeOpenXml.ExcelXMLWriter
         {
             StringBuilder breaks = new StringBuilder();
             int count = 0;
-            CellStoreEnumerator<ExcelValue>? cse = new CellStoreEnumerator<ExcelValue>(_ws._values, 0, 0, 0, ExcelPackage.MaxColumns);
+            CellStoreEnumerator<ExcelValue>? cse = new CellStoreEnumerator<ExcelValue>(this._ws._values, 0, 0, 0, ExcelPackage.MaxColumns);
             while (cse.Next())
             {
                 ExcelColumn? col = cse.Value._value as ExcelColumn;
@@ -917,8 +921,7 @@ namespace OfficeOpenXml.ExcelXMLWriter
 
             prefix = "x14:";
             cache.Append
-            (
-            UpdateDataValidation(prefix, $"xmlns:xm=\"{ExcelPackage.schemaMainXm}\"")
+            (this.UpdateDataValidation(prefix, $"xmlns:xm=\"{ExcelPackage.schemaMainXm}\"")
             );
             cache.Append("</ext>");
 

@@ -27,18 +27,18 @@ namespace OfficeOpenXml.DataValidation.Formulas
                 double oADate = default(double);
                 if (double.TryParse(value, NumberStyles.Any, CultureInfo.InvariantCulture, out oADate))
                 {
-                    Value = DateTime.FromOADate(oADate);
+                    this.Value = DateTime.FromOADate(oADate);
                 }
                 else
                 {
-                    ExcelFormula = value;
+                    this.ExcelFormula = value;
                 }
             }
         }
 
         protected override string GetValueAsString()
         {
-            return Value.HasValue ? Value.Value.ToOADate().ToString(CultureInfo.InvariantCulture) : string.Empty;
+            return this.Value.HasValue ? this.Value.Value.ToOADate().ToString(CultureInfo.InvariantCulture) : string.Empty;
         }
 
     }

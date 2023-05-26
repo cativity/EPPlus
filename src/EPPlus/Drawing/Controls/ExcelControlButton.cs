@@ -25,7 +25,7 @@ namespace OfficeOpenXml.Drawing.Controls
         internal ExcelControlButton(ExcelDrawings drawings, XmlElement drawNode, string name, ExcelGroupShape parent=null) : 
             base(drawings, drawNode, name, parent)
         {
-            SetSize(90, 30); //Default size
+            this.SetSize(90, 30); //Default size
         }
 
         internal ExcelControlButton(ExcelDrawings drawings, XmlNode drawNode, ControlInternal control, ZipPackagePart part, XmlDocument controlPropertiesXml, ExcelGroupShape parent = null)
@@ -45,11 +45,11 @@ namespace OfficeOpenXml.Drawing.Controls
         {
             get
             {
-                if (_margin == null)
+                if (this._margin == null)
                 {
-                    _margin = new ExcelControlMargin(this);
+                    this._margin = new ExcelControlMargin(this);
                 }
-                return _margin;
+                return this._margin;
             }
         }        
         /// <summary>
@@ -91,11 +91,11 @@ namespace OfficeOpenXml.Drawing.Controls
         {
             get
             {
-                return TextBody.Anchor;
+                return this.TextBody.Anchor;
             }
             set
             {
-                TextBody.Anchor = value;
+                this.TextBody.Anchor = value;
             }
         }
         private string _textAlignPath = "xdr:sp/xdr:txBody/a:p/a:pPr/@algn";
@@ -106,7 +106,7 @@ namespace OfficeOpenXml.Drawing.Controls
         {
             get
             {
-                switch (GetXmlNodeString(_textAlignPath))
+                switch (this.GetXmlNodeString(this._textAlignPath))
                 {
                     case "ctr":
                         return eTextAlignment.Center;
@@ -129,25 +129,25 @@ namespace OfficeOpenXml.Drawing.Controls
                 switch (value)
                 {
                     case eTextAlignment.Right:
-                        SetXmlNodeString(_textAlignPath, "r");
+                        this.SetXmlNodeString(this._textAlignPath, "r");
                         break;
                     case eTextAlignment.Center:
-                        SetXmlNodeString(_textAlignPath, "ctr");
+                        this.SetXmlNodeString(this._textAlignPath, "ctr");
                         break;
                     case eTextAlignment.Distributed:
-                        SetXmlNodeString(_textAlignPath, "dist");
+                        this.SetXmlNodeString(this._textAlignPath, "dist");
                         break;
                     case eTextAlignment.Justified:
-                        SetXmlNodeString(_textAlignPath, "just");
+                        this.SetXmlNodeString(this._textAlignPath, "just");
                         break;
                     case eTextAlignment.JustifiedLow:
-                        SetXmlNodeString(_textAlignPath, "justLow");
+                        this.SetXmlNodeString(this._textAlignPath, "justLow");
                         break;
                     case eTextAlignment.ThaiDistributed:
-                        SetXmlNodeString(_textAlignPath, "thaiDist");
+                        this.SetXmlNodeString(this._textAlignPath, "thaiDist");
                         break;
                     default:
-                        DeleteNode(_textAlignPath);
+                        this.DeleteNode(this._textAlignPath);
                         break;
                 }
             }
@@ -156,18 +156,18 @@ namespace OfficeOpenXml.Drawing.Controls
         internal override void UpdateXml()
         {
             base.UpdateXml();
-            Margin.UpdateXml();
-            XmlHelper? vmlHelper = XmlHelperFactory.Create(_vmlProp.NameSpaceManager, _vmlProp.TopNode.ParentNode);            
-            string? style = "layout-flow:" + LayoutFlow.TranslateString() + ";mso-layout-flow-alt:" + Orientation.TranslateString();
-            if (ReadingOrder == eReadingOrder.RightToLeft)
+            this.Margin.UpdateXml();
+            XmlHelper? vmlHelper = XmlHelperFactory.Create(this._vmlProp.NameSpaceManager, this._vmlProp.TopNode.ParentNode);            
+            string? style = "layout-flow:" + this.LayoutFlow.TranslateString() + ";mso-layout-flow-alt:" + this.Orientation.TranslateString();
+            if (this.ReadingOrder == eReadingOrder.RightToLeft)
             {
                 style += ";direction:RTL";
             }
-            else if (ReadingOrder == eReadingOrder.ContextDependent)
+            else if (this.ReadingOrder == eReadingOrder.ContextDependent)
             {
                 style += ";mso-direction-alt:auto";
             }
-            if(AutomaticSize)
+            if(this.AutomaticSize)
             {
                 style += ";mso-fit-shape-to-text:t";
             }

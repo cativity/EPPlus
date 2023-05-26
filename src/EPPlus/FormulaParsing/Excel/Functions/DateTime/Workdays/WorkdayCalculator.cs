@@ -30,7 +30,7 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions.DateTime.Workdays
 
         public WorkdayCalculator(HolidayWeekdays holidayWeekdays)
         {
-            _holidayWeekdays = holidayWeekdays;
+            this._holidayWeekdays = holidayWeekdays;
         }
 
         public WorkdayCalculatorResult CalculateNumberOfWorkdays(System.DateTime startDate, System.DateTime endDate)
@@ -51,8 +51,8 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions.DateTime.Workdays
                 calcEndDate = startDate.Date;
             }
             int nWholeWeeks = (int)calcEndDate.Subtract(calcStartDate).TotalDays/7;
-            int workdaysCounted = nWholeWeeks*_holidayWeekdays.NumberOfWorkdaysPerWeek;
-            if (!_holidayWeekdays.IsHolidayWeekday(calcStartDate))
+            int workdaysCounted = nWholeWeeks* this._holidayWeekdays.NumberOfWorkdaysPerWeek;
+            if (!this._holidayWeekdays.IsHolidayWeekday(calcStartDate))
             {
                 workdaysCounted++;
             }
@@ -60,7 +60,7 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions.DateTime.Workdays
             while (tmpDate < calcEndDate)
             {
                 tmpDate = tmpDate.AddDays(1);
-                if (!_holidayWeekdays.IsHolidayWeekday(tmpDate))
+                if (!this._holidayWeekdays.IsHolidayWeekday(tmpDate))
                 {
                     workdaysCounted++;
                 }
@@ -77,15 +77,15 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions.DateTime.Workdays
             System.DateTime tmpDate = startDate;
             
             // calculate whole weeks
-            int nWholeWeeks = nWorkDays / _holidayWeekdays.NumberOfWorkdaysPerWeek;
+            int nWholeWeeks = nWorkDays / this._holidayWeekdays.NumberOfWorkdaysPerWeek;
             tmpDate = tmpDate.AddDays(nWholeWeeks * 7 * direction);
-            workdaysCounted += nWholeWeeks * _holidayWeekdays.NumberOfWorkdaysPerWeek;
+            workdaysCounted += nWholeWeeks * this._holidayWeekdays.NumberOfWorkdaysPerWeek;
 
             // calculate the rest
             while (workdaysCounted < nWorkDays)
             {
                 tmpDate = tmpDate.AddDays(direction);
-                if (!_holidayWeekdays.IsHolidayWeekday(tmpDate))
+                if (!this._holidayWeekdays.IsHolidayWeekday(tmpDate))
                 {
                     workdaysCounted++;
                 }
@@ -111,7 +111,7 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions.DateTime.Workdays
                 calcStartDate = endDate;
                 calcEndDate = startDate;
             }
-            int nAdditionalHolidayDays = additionalDays.AdditionalDates.Count(x => x >= calcStartDate && x <= calcEndDate && !_holidayWeekdays.IsHolidayWeekday(x));
+            int nAdditionalHolidayDays = additionalDays.AdditionalDates.Count(x => x >= calcStartDate && x <= calcEndDate && !this._holidayWeekdays.IsHolidayWeekday(x));
             return new WorkdayCalculatorResult(calculatedResult.NumberOfWorkdays - nAdditionalHolidayDays, startDate, endDate, calculatedResult.Direction);
         } 
 
@@ -135,15 +135,15 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions.DateTime.Workdays
                     continue;
                 }
 
-                if (_holidayWeekdays.IsHolidayWeekday(date))
+                if (this._holidayWeekdays.IsHolidayWeekday(date))
                 {
                     continue;
                 }
 
-                System.DateTime tmpDate = _holidayWeekdays.GetNextWorkday(endDate, direction);
+                System.DateTime tmpDate = this._holidayWeekdays.GetNextWorkday(endDate, direction);
                 while (additionalDays.AdditionalDates.Contains(tmpDate))
                 {
-                    tmpDate = _holidayWeekdays.GetNextWorkday(tmpDate, direction);
+                    tmpDate = this._holidayWeekdays.GetNextWorkday(tmpDate, direction);
                 }
                 workdaysCounted++;
                 endDate = tmpDate;

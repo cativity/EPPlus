@@ -27,7 +27,7 @@ namespace OfficeOpenXml.VBA
         /// <param name="Item">The reference object</param>
         public void Add(ExcelVbaReference Item)
         {
-            _list.Add(Item);
+            this._list.Add(Item);
         }
     }
 }

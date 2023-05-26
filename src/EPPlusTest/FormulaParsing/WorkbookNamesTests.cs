@@ -45,20 +45,20 @@ namespace EPPlusTest.FormulaParsing
         [TestInitialize]
         public void Initialize()
         {
-            _package = OpenTemplatePackage("workbook-offset-name.xlsx");
+            this._package = OpenTemplatePackage("workbook-offset-name.xlsx");
         }
 
         [TestCleanup]
         public void Cleanup()
         {
-            _package.Dispose();
+            this._package.Dispose();
         }
 
         [TestMethod]
         public void ShouldCalculateOffsetName()
         {
-            _package.Workbook.Calculate(x => x.AllowCircularReferences = true);
-            Assert.AreEqual(3d, _package.Workbook.Worksheets.First().Cells["A1"].Value);
+            this._package.Workbook.Calculate(x => x.AllowCircularReferences = true);
+            Assert.AreEqual(3d, this._package.Workbook.Worksheets.First().Cells["A1"].Value);
         }
     }
 }

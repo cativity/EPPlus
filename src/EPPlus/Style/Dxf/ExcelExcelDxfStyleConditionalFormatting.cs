@@ -23,10 +23,10 @@ namespace OfficeOpenXml.Style.Dxf
         internal ExcelDxfStyleConditionalFormatting(XmlNamespaceManager nameSpaceManager, XmlNode topNode, ExcelStyles styles, Action<eStyleClass, eStyleProperty, object> callback)
             : base(nameSpaceManager, topNode, styles, callback)
         {
-            NumberFormat = new ExcelDxfNumberFormat(_styles, callback);
+            this.NumberFormat = new ExcelDxfNumberFormat(this._styles, callback);
             if (topNode != null)
-            {                
-                NumberFormat.SetValuesFromXml(_helper);
+            {
+                this.NumberFormat.SetValuesFromXml(this._helper);
             }
          }
         /// <summary>
@@ -37,7 +37,7 @@ namespace OfficeOpenXml.Style.Dxf
         {
             get
             {
-                return base.Id + NumberFormat.Id;
+                return base.Id + this.NumberFormat.Id;
             }
         }
         /// <summary>
@@ -47,29 +47,29 @@ namespace OfficeOpenXml.Style.Dxf
         {
             get
             {
-                return base.HasValue || NumberFormat.HasValue;
+                return base.HasValue || this.NumberFormat.HasValue;
             }
         }
         internal override DxfStyleBase Clone()
         {
-            ExcelDxfStyleConditionalFormatting? s = new ExcelDxfStyleConditionalFormatting(_helper.NameSpaceManager, null, _styles, _callback)
+            ExcelDxfStyleConditionalFormatting? s = new ExcelDxfStyleConditionalFormatting(this._helper.NameSpaceManager, null, this._styles, this._callback)
             {
-                Font = (ExcelDxfFontBase)Font.Clone(),
-                Fill = (ExcelDxfFill)Fill.Clone(),
-                Border = (ExcelDxfBorderBase)Border.Clone(),
-                NumberFormat = (ExcelDxfNumberFormat)NumberFormat.Clone(),
+                Font = (ExcelDxfFontBase)this.Font.Clone(),
+                Fill = (ExcelDxfFill)this.Fill.Clone(),
+                Border = (ExcelDxfBorderBase)this.Border.Clone(),
+                NumberFormat = (ExcelDxfNumberFormat)this.NumberFormat.Clone(),
             };
 
             return s;
         }
         internal override void CreateNodes(XmlHelper helper, string path)
         {
-            if (Font.HasValue)
+            if (this.Font.HasValue)
             {
                 this.Font.CreateNodes(helper, "d:font");
             }
 
-            if (NumberFormat.HasValue)
+            if (this.NumberFormat.HasValue)
             {
                 this.NumberFormat.CreateNodes(helper, "d:numFmt");
             }
@@ -78,10 +78,10 @@ namespace OfficeOpenXml.Style.Dxf
         }
         internal override void SetStyle()
         {
-            if (_callback != null)
+            if (this._callback != null)
             {
                 base.SetStyle();
-                NumberFormat.SetStyle();
+                this.NumberFormat.SetStyle();
             }
         }
         /// <summary>
@@ -90,7 +90,7 @@ namespace OfficeOpenXml.Style.Dxf
         public override void Clear()
         {            
             base.Clear();
-            NumberFormat.Clear();
+            this.NumberFormat.Clear();
         }
     }
 }

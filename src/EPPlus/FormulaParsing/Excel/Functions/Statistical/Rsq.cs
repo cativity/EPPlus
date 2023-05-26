@@ -30,10 +30,10 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Statistical
             ValidateArguments(arguments, 2);
             FunctionArgument? arg1 = arguments.ElementAt(0);
             FunctionArgument? arg2 = arguments.ElementAt(1);
-            ExcelDoubleCellValue[]? knownXs = ArgsToDoubleEnumerable(false, false, new FunctionArgument[] { arg1 }, context).ToArray();
-            ExcelDoubleCellValue[]? knownYs = ArgsToDoubleEnumerable(false, false, new FunctionArgument[] { arg2 }, context).ToArray();
+            ExcelDoubleCellValue[]? knownXs = this.ArgsToDoubleEnumerable(false, false, new FunctionArgument[] { arg1 }, context).ToArray();
+            ExcelDoubleCellValue[]? knownYs = this.ArgsToDoubleEnumerable(false, false, new FunctionArgument[] { arg2 }, context).ToArray();
             double result = System.Math.Pow(Pearson.PearsonImpl(knownXs.Select(x => x.Value).ToArray(), knownYs.Select(x => x.Value).ToArray()), 2);
-            return CreateResult(result, DataType.Decimal);
+            return this.CreateResult(result, DataType.Decimal);
         }
     }
 }

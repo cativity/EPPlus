@@ -21,36 +21,36 @@ namespace OfficeOpenXml.Core.CellStore
 
         public ColumnIndex()
         {
-            _pages = new PageIndex[CellStoreSettings.PagesPerColumnMin];
-            PageCount = 0;
+            this._pages = new PageIndex[CellStoreSettings.PagesPerColumnMin];
+            this.PageCount = 0;
         }
         ~ColumnIndex()
         {
-            _pages = null;
+            this._pages = null;
         }
         internal int GetPagePosition(int Row)
         {
             int page = (Row >> CellStoreSettings._pageBits);
             int pagePos;
-            if (page >= 0 && page < PageCount && _pages[page].Index == page)
+            if (page >= 0 && page < this.PageCount && this._pages[page].Index == page)
             {
                 pagePos = page;
             }
             else
             {
-                pagePos = ArrayUtil.OptimizedBinarySearch(_pages, page, PageCount);
+                pagePos = ArrayUtil.OptimizedBinarySearch(this._pages, page, this.PageCount);
             }
 
             if (pagePos >= 0)
             {
-                GetPage(Row, ref pagePos);
+                this.GetPage(Row, ref pagePos);
                 return pagePos;
             }
             else
             {
                 int p = ~pagePos;
 
-                if (GetPage(Row, ref p))
+                if (this.GetPage(Row, ref p))
                 {
                     return p;
                 }
@@ -63,28 +63,28 @@ namespace OfficeOpenXml.Core.CellStore
 
         private bool GetPage(int Row, ref int pagePos)
         {
-            if (pagePos < PageCount && _pages[pagePos].MinIndex <= Row && (pagePos + 1 == PageCount || _pages[pagePos + 1].MinIndex > Row))
+            if (pagePos < this.PageCount && this._pages[pagePos].MinIndex <= Row && (pagePos + 1 == this.PageCount || this._pages[pagePos + 1].MinIndex > Row))
             {
                 return true;
             }
             else
             {
-                if (pagePos + 1 < PageCount && (_pages[pagePos + 1].MinIndex <= Row))
+                if (pagePos + 1 < this.PageCount && (this._pages[pagePos + 1].MinIndex <= Row))
                 {
                     do
                     {
                         pagePos++;
                     }
-                    while (pagePos + 1 < PageCount && _pages[pagePos + 1].MinIndex <= Row);
+                    while (pagePos + 1 < this.PageCount && this._pages[pagePos + 1].MinIndex <= Row);
                     return true;
                 }
-                else if (pagePos - 1 >= 0 && _pages[pagePos - 1].MaxIndex >= Row)
+                else if (pagePos - 1 >= 0 && this._pages[pagePos - 1].MaxIndex >= Row)
                 {
                     do
                     {
                         pagePos--;
                     }
-                    while (pagePos - 1 > 0 && _pages[pagePos - 1].MaxIndex >= Row);
+                    while (pagePos - 1 > 0 && this._pages[pagePos - 1].MaxIndex >= Row);
                     return true;
                 }
                 return false;
@@ -92,48 +92,48 @@ namespace OfficeOpenXml.Core.CellStore
         }
         internal int GetNextRow(int row)
         {
-            int p = GetPagePosition(row);
+            int p = this.GetPagePosition(row);
             if (p < 0)
             {
                 p = ~p;
-                if (p >= PageCount)
+                if (p >= this.PageCount)
                 {
                     return -1;
                 }
                 else
                 {
 
-                    if (_pages[p].IndexOffset + _pages[p].Rows[0].Index < row)
+                    if (this._pages[p].IndexOffset + this._pages[p].Rows[0].Index < row)
                     {
-                        if (p + 1 >= PageCount)
+                        if (p + 1 >= this.PageCount)
                         {
                             return -1;
                         }
                         else
                         {
-                            return _pages[p + 1].IndexOffset + _pages[p].Rows[0].Index;
+                            return this._pages[p + 1].IndexOffset + this._pages[p].Rows[0].Index;
                         }
                     }
                     else
                     {
-                        return _pages[p].IndexOffset + _pages[p].Rows[0].Index;
+                        return this._pages[p].IndexOffset + this._pages[p].Rows[0].Index;
                     }
                 }
             }
             else
             {
-                if (p < PageCount)
+                if (p < this.PageCount)
                 {
-                    int r = _pages[p].GetNextRow(row);
+                    int r = this._pages[p].GetNextRow(row);
                     if (r >= 0)
                     {
-                        return _pages[p].IndexOffset + _pages[p].Rows[r].Index;
+                        return this._pages[p].IndexOffset + this._pages[p].Rows[r].Index;
                     }
                     else
                     {
-                        if (++p < PageCount)
+                        if (++p < this.PageCount)
                         {
-                            return _pages[p].IndexOffset + _pages[p].Rows[0].Index;
+                            return this._pages[p].IndexOffset + this._pages[p].Rows[0].Index;
                         }
                         else
                         {
@@ -149,10 +149,10 @@ namespace OfficeOpenXml.Core.CellStore
         }
         internal int GetPointer(int Row)
         {
-            int pos = GetPagePosition(Row);
-            if (pos >= 0 && pos < PageCount)
+            int pos = this.GetPagePosition(Row);
+            if (pos >= 0 && pos < this.PageCount)
             {
-                PageIndex? pageItem = _pages[pos];
+                PageIndex? pageItem = this._pages[pos];
                 if (pageItem.MinIndex > Row)
                 {
                     pos--;
@@ -162,7 +162,7 @@ namespace OfficeOpenXml.Core.CellStore
                     }
                     else
                     {
-                        pageItem = _pages[pos];
+                        pageItem = this._pages[pos];
                     }
                 }
                 int ix = Row - pageItem.IndexOffset;
@@ -195,17 +195,18 @@ namespace OfficeOpenXml.Core.CellStore
         internal int PageCount;
         public void Dispose()
         {
-            if (_pages == null)
+            if (this._pages == null)
             {
                 return;
             }
 
-            for (int p = 0; p < PageCount; p++)
+            for (int p = 0; p < this.PageCount; p++)
             {
-                (_pages[p] as IDisposable)?.Dispose();
+                (this._pages[p] as IDisposable)?.Dispose();
             }
-            _pages = null;
-            if (_values != null)
+
+            this._pages = null;
+            if (this._values != null)
             {
                 this._values.Clear();
             }

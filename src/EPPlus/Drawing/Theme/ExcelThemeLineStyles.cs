@@ -27,10 +27,10 @@ namespace OfficeOpenXml.Drawing.Theme
         List<ExcelThemeLine> _list;
         internal ExcelThemeLineStyles(XmlNamespaceManager nameSpaceManager, XmlNode topNode) : base(nameSpaceManager, topNode)
         {
-            _list = new List<ExcelThemeLine>();
+            this._list = new List<ExcelThemeLine>();
             foreach (XmlNode node in topNode.ChildNodes)
             {
-                _list.Add(new ExcelThemeLine(nameSpaceManager, node));
+                this._list.Add(new ExcelThemeLine(nameSpaceManager, node));
             }
         }
         /// <summary>
@@ -39,11 +39,11 @@ namespace OfficeOpenXml.Drawing.Theme
         /// <returns>The enumerator</returns>
         public IEnumerator<ExcelThemeLine> GetEnumerator()
         {
-            return _list.GetEnumerator();
+            return this._list.GetEnumerator();
         }
         IEnumerator IEnumerable.GetEnumerator()
         {
-            return _list.GetEnumerator();
+            return this._list.GetEnumerator();
         }
         /// <summary>
         /// Indexer for the collection
@@ -54,7 +54,7 @@ namespace OfficeOpenXml.Drawing.Theme
         {
             get
             {
-                return (_list[index]);
+                return (this._list[index]);
             }
         }
         /// <summary>
@@ -63,9 +63,9 @@ namespace OfficeOpenXml.Drawing.Theme
         /// <returns>The line</returns>
         public ExcelThemeLine Add()
         {
-            XmlElement? node = TopNode.OwnerDocument.CreateElement("a", "ln", ExcelPackage.schemaMain);
-            TopNode.AppendChild(node);
-            return new ExcelThemeLine(NameSpaceManager, TopNode);
+            XmlElement? node = this.TopNode.OwnerDocument.CreateElement("a", "ln", ExcelPackage.schemaMain);
+            this.TopNode.AppendChild(node);
+            return new ExcelThemeLine(this.NameSpaceManager, this.TopNode);
         }
         /// <summary>
         /// Removes a line item from the collection
@@ -73,14 +73,14 @@ namespace OfficeOpenXml.Drawing.Theme
         /// <param name="item">The item</param>
         public void Remove(ExcelThemeLine item)
         {
-            if (_list.Count == 3)
+            if (this._list.Count == 3)
             {
                 throw (new InvalidOperationException("Collection must contain at least 3 items"));
             }
 
-            if (_list.Contains(item))
+            if (this._list.Contains(item))
             {
-                _list.Remove(item);
+                this._list.Remove(item);
                 item.TopNode.ParentNode.RemoveChild(item.TopNode);
             }
         }
@@ -90,16 +90,17 @@ namespace OfficeOpenXml.Drawing.Theme
         /// <param name="Index">The index</param>
         public void Remove(int Index)
         {
-            if (_list.Count == 3)
+            if (this._list.Count == 3)
             {
                 throw (new InvalidOperationException("Collection must contain at least 3 items"));
             }
 
-            if (Index >= _list.Count)
+            if (Index >= this._list.Count)
             {
                 throw new ArgumentException("Index", "Index out of range");
             }
-            _list.Remove(_list[Index]);
+
+            this._list.Remove(this._list[Index]);
         }
         /// <summary>
         /// Number of items in the collection
@@ -108,7 +109,7 @@ namespace OfficeOpenXml.Drawing.Theme
         {
             get
             {
-                return _list.Count;
+                return this._list.Count;
             }
         }
     }

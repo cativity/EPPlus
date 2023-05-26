@@ -33,24 +33,24 @@ namespace OfficeOpenXml.Table.PivotTable
         internal ExcelPivotTableCollection(ExcelWorksheet ws)
         {
             ZipPackage? pck = ws._package.ZipPackage;
-            _ws = ws;            
+            this._ws = ws;            
             foreach(ZipPackageRelationship? rel in ws.Part.GetRelationships())
             {
                 if (rel.RelationshipType == ExcelPackage.schemaRelationships + "/pivotTable")
                 {
                     ExcelPivotTable? tbl = new ExcelPivotTable(rel, ws);
-                    _pivotTableNames.Add(tbl.Name, _pivotTables.Count);
-                    _pivotTables.Add(tbl);
+                    this._pivotTableNames.Add(tbl.Name, this._pivotTables.Count);
+                    this._pivotTables.Add(tbl);
                 }
             }
         }
         internal ExcelPivotTable Add(ExcelPivotTable tbl)
         {
-            _pivotTables.Add(tbl);
-            _pivotTableNames.Add(tbl.Name, _pivotTables.Count - 1);
-            if (tbl.CacheId >= _ws.Workbook._nextPivotTableID)
+            this._pivotTables.Add(tbl);
+            this._pivotTableNames.Add(tbl.Name, this._pivotTables.Count - 1);
+            if (tbl.CacheId >= this._ws.Workbook._nextPivotTableID)
             {
-                _ws.Workbook._nextPivotTableID = tbl.CacheId + 1;
+                this._ws.Workbook._nextPivotTableID = tbl.CacheId + 1;
             }
             return tbl;
         }
@@ -66,10 +66,11 @@ namespace OfficeOpenXml.Table.PivotTable
         {
             if (string.IsNullOrEmpty(Name))
             {
-                Name = GetNewTableName();
+                Name = this.GetNewTableName();
             }
-            ValidateAdd(Range, Source, Name);
-            return Add(new ExcelPivotTable(_ws, Range, Source, Name, _ws.Workbook._nextPivotTableID++));
+
+            this.ValidateAdd(Range, Source, Name);
+            return this.Add(new ExcelPivotTable(this._ws, Range, Source, Name, this._ws.Workbook._nextPivotTableID++));
         }
 
         private void ValidateAdd(ExcelAddressBase Range, ExcelRangeBase Source, string Name)
@@ -78,15 +79,15 @@ namespace OfficeOpenXml.Table.PivotTable
             {
                 throw (new ArgumentException("The Range must contain at least 2 rows", "Source"));
             }
-            if (Range.WorkSheetName != _ws.Name)
+            if (Range.WorkSheetName != this._ws.Name)
             {
                 throw (new Exception("The Range must be in the current worksheet"));
             }
-            else if (_ws.Workbook.ExistsTableName(Name))
+            else if (this._ws.Workbook.ExistsTableName(Name))
             {
                 throw (new ArgumentException("Tablename is not unique"));
             }
-            foreach (ExcelPivotTable? t in _pivotTables)
+            foreach (ExcelPivotTable? t in this._pivotTables)
             {
                 if (t.Address.Collide(Range) != ExcelAddressBase.eAddressCollition.No)
                 {
@@ -111,16 +112,17 @@ namespace OfficeOpenXml.Table.PivotTable
         /// <returns>The pivottable object</returns>
         public ExcelPivotTable Add(ExcelAddressBase Range, ExcelTable Source, string Name)
         {
-            if(Source.WorkSheet.Workbook!=_ws.Workbook)
+            if(Source.WorkSheet.Workbook!= this._ws.Workbook)
             {
                 throw new ArgumentException("The table must be in the same package as the pivottable", "Source");
             }
             if (string.IsNullOrEmpty(Name))
             {
-                Name = GetNewTableName();
+                Name = this.GetNewTableName();
             }
-            ValidateAdd(Range, Source.Range, Name);
-            return Add(new ExcelPivotTable(_ws, Range, Source.Range, Name, _ws.Workbook._nextPivotTableID++));
+
+            this.ValidateAdd(Range, Source.Range, Name);
+            return this.Add(new ExcelPivotTable(this._ws, Range, Source.Range, Name, this._ws.Workbook._nextPivotTableID++));
         }
         /// <summary>
         /// Create a pivottable on the supplied range
@@ -131,13 +133,13 @@ namespace OfficeOpenXml.Table.PivotTable
         /// <returns>The pivottable object</returns>
         public ExcelPivotTable Add(ExcelAddressBase Range, ExcelPivotCacheDefinition PivotCacheDefinition, string Name)
         {
-            return Add(new ExcelPivotTable(_ws, Range, PivotCacheDefinition._cacheReference, Name, _ws.Workbook._nextPivotTableID++));
+            return this.Add(new ExcelPivotTable(this._ws, Range, PivotCacheDefinition._cacheReference, Name, this._ws.Workbook._nextPivotTableID++));
         }
         internal string GetNewTableName()
         {
             string name = "Pivottable1";
             int i = 2;
-            while (_ws.Workbook.ExistsPivotTableName(name))
+            while (this._ws.Workbook.ExistsPivotTableName(name))
             {
                 name = string.Format("Pivottable{0}", i++);
             }
@@ -150,7 +152,7 @@ namespace OfficeOpenXml.Table.PivotTable
         {
             get
             {
-                return _pivotTables.Count;
+                return this._pivotTables.Count;
             }
         }
         /// <summary>
@@ -162,11 +164,11 @@ namespace OfficeOpenXml.Table.PivotTable
         {
             get
             {
-                if (Index < 0 || Index >= _pivotTables.Count)
+                if (Index < 0 || Index >= this._pivotTables.Count)
                 {
                     throw (new ArgumentOutOfRangeException("PivotTable index out of range"));
                 }
-                return _pivotTables[Index];
+                return this._pivotTables[Index];
             }
         }
         /// <summary>
@@ -178,9 +180,9 @@ namespace OfficeOpenXml.Table.PivotTable
         {
             get
             {
-                if (_pivotTableNames.ContainsKey(Name))
+                if (this._pivotTableNames.ContainsKey(Name))
                 {
-                    return _pivotTables[_pivotTableNames[Name]];
+                    return this._pivotTables[this._pivotTableNames[Name]];
                 }
                 else
                 {
@@ -194,12 +196,12 @@ namespace OfficeOpenXml.Table.PivotTable
         /// <returns>The enumerator</returns>
         public IEnumerator<ExcelPivotTable> GetEnumerator()
         {
-            return _pivotTables.GetEnumerator();
+            return this._pivotTables.GetEnumerator();
         }
 
         System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator()
         {
-            return _pivotTables.GetEnumerator();
+            return this._pivotTables.GetEnumerator();
         }
         /// <summary>
         /// Delete the pivottable with the supplied name
@@ -208,11 +210,12 @@ namespace OfficeOpenXml.Table.PivotTable
         /// <param name="ClearRange">Clear the table range</param>
         public void Delete(string Name, bool ClearRange=false)
             {
-            if (!_pivotTableNames.ContainsKey(Name))
+            if (!this._pivotTableNames.ContainsKey(Name))
             {
                 throw new InvalidOperationException($"No pivottable with the name: {Name}");
             }
-            Delete(_pivotTables[_pivotTableNames[Name]], ClearRange);
+
+            this.Delete(this._pivotTables[this._pivotTableNames[Name]], ClearRange);
         }
         /// <summary>
         /// Delete the pivot table at the specified index
@@ -221,11 +224,12 @@ namespace OfficeOpenXml.Table.PivotTable
         /// <param name="ClearRange">Clear the table range</param>
         public void Delete(int Index, bool ClearRange = false)
         {
-            if(Index >=0 && Index <_pivotTables.Count)
+            if(Index >=0 && Index < this._pivotTables.Count)
             {
                 throw new IndexOutOfRangeException();
             }
-            Delete(_pivotTables[Index], ClearRange);
+
+            this.Delete(this._pivotTables[Index], ClearRange);
         }
         /// <summary>
         /// Delete the supplied pivot table 
@@ -234,17 +238,17 @@ namespace OfficeOpenXml.Table.PivotTable
         /// <param name="ClearRange">Clear the table range</param>
         public void Delete(ExcelPivotTable PivotTable, bool ClearRange = false)
         {
-            if(!_pivotTables.Contains(PivotTable))
+            if(!this._pivotTables.Contains(PivotTable))
             {
                 throw new ArgumentException("This pivot table does not exist in the collection");
             }
-            ZipPackage? pck = _ws._package.ZipPackage;
+            ZipPackage? pck = this._ws._package.ZipPackage;
 
             PivotTable.CacheDefinition._cacheReference._pivotTables.Remove(PivotTable);
             pck.DeletePart(PivotTable.Part.Uri);
 
-            _pivotTables.Remove(PivotTable);
-            _pivotTableNames.Remove(PivotTable.Name);
+            this._pivotTables.Remove(PivotTable);
+            this._pivotTableNames.Remove(PivotTable.Name);
         }
     }
 }

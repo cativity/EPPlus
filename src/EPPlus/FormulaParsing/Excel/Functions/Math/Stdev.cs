@@ -29,13 +29,13 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Math
     {
         public Stdev() : base()
         {
-            IgnoreErrors = false;
+            this.IgnoreErrors = false;
         }
         public override CompileResult Execute(IEnumerable<FunctionArgument> arguments, ParsingContext context)
         {
             ValidateArguments(arguments, 1);
-            IEnumerable<double>? values = ArgsToDoubleEnumerable(arguments, context).Select(x => (double)x);
-            return CreateResult(StandardDeviation(values), DataType.Decimal);
+            IEnumerable<double>? values = this.ArgsToDoubleEnumerable(arguments, context).Select(x => (double)x);
+            return this.CreateResult(StandardDeviation(values), DataType.Decimal);
         }
 
         internal static double StandardDeviation(IEnumerable<double> values)

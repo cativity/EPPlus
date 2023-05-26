@@ -32,8 +32,8 @@ namespace OfficeOpenXml.DataValidation
         internal ExcelDataValidationDateTime(string uid, string address, ExcelWorksheet ws)
             : base(uid, address, ws)
         {
-            Formula = new ExcelDataValidationFormulaDateTime(null, Uid, ws.Name, OnFormulaChanged);
-            Formula2 = new ExcelDataValidationFormulaDateTime(null, Uid, ws.Name, OnFormulaChanged);
+            this.Formula = new ExcelDataValidationFormulaDateTime(null, this.Uid, ws.Name, this.OnFormulaChanged);
+            this.Formula2 = new ExcelDataValidationFormulaDateTime(null, this.Uid, ws.Name, this.OnFormulaChanged);
         }
 
         /// <summary>
@@ -51,8 +51,8 @@ namespace OfficeOpenXml.DataValidation
         /// <param name="copy"></param>
         internal ExcelDataValidationDateTime(ExcelDataValidationDateTime copy, ExcelWorksheet ws) : base(copy, ws)
         {
-            Formula = copy.Formula;
-            Formula2 = copy.Formula;
+            this.Formula = copy.Formula;
+            this.Formula2 = copy.Formula;
         }
 
         /// <summary>
@@ -62,12 +62,12 @@ namespace OfficeOpenXml.DataValidation
 
         internal override IExcelDataValidationFormulaDateTime DefineFormulaClassType(string formulaValue, string sheetName)
         {
-            return new ExcelDataValidationFormulaDateTime(formulaValue, Uid, sheetName, OnFormulaChanged);
+            return new ExcelDataValidationFormulaDateTime(formulaValue, this.Uid, sheetName, this.OnFormulaChanged);
         }
 
         internal override ExcelDataValidation GetClone()
         {
-            return new ExcelDataValidationDateTime(this, _ws);
+            return new ExcelDataValidationDateTime(this, this._ws);
         }
 
         internal override ExcelDataValidation GetClone(ExcelWorksheet copy)
@@ -77,7 +77,7 @@ namespace OfficeOpenXml.DataValidation
 
         ExcelDataValidationDateTime Clone()
         {
-            return (ExcelDataValidationDateTime)GetClone();
+            return (ExcelDataValidationDateTime)this.GetClone();
         }
     }
 }

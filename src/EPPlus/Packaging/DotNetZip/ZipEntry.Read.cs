@@ -35,12 +35,12 @@ namespace OfficeOpenXml.Packaging.Ionic.Zip
         private int _readExtraDepth;
         private void ReadExtraField()
         {
-            _readExtraDepth++;
+            this._readExtraDepth++;
             // workitem 8098: ok (restore)
             long posn = this.ArchiveStream.Position;
             this.ArchiveStream.Seek(this._RelativeOffsetOfLocalHeader, SeekOrigin.Begin);
             // workitem 10178
-            Ionic.Zip.SharedUtilities.Workaround_Ladybug318918(this.ArchiveStream);
+            SharedUtilities.Workaround_Ladybug318918(this.ArchiveStream);
 
             byte[] block = new byte[30];
             this.ArchiveStream.Read(block, 0, block.Length);
@@ -51,15 +51,15 @@ namespace OfficeOpenXml.Packaging.Ionic.Zip
             // workitem 8098: ok (relative)
             this.ArchiveStream.Seek(filenameLength, SeekOrigin.Current);
             // workitem 10178
-            Ionic.Zip.SharedUtilities.Workaround_Ladybug318918(this.ArchiveStream);
+            SharedUtilities.Workaround_Ladybug318918(this.ArchiveStream);
 
-            ProcessExtraField(this.ArchiveStream, extraFieldLength);
+            this.ProcessExtraField(this.ArchiveStream, extraFieldLength);
 
             // workitem 8098: ok (restore)
             this.ArchiveStream.Seek(posn, SeekOrigin.Begin);
             // workitem 10178
-            Ionic.Zip.SharedUtilities.Workaround_Ladybug318918(this.ArchiveStream);
-            _readExtraDepth--;
+            SharedUtilities.Workaround_Ladybug318918(this.ArchiveStream);
+            this._readExtraDepth--;
         }
 
 
@@ -70,11 +70,11 @@ namespace OfficeOpenXml.Packaging.Ionic.Zip
             // change for workitem 8098
             ze._RelativeOffsetOfLocalHeader = ze.ArchiveStream.Position;
 
-            int signature = Ionic.Zip.SharedUtilities.ReadEntrySignature(ze.ArchiveStream);
+            int signature = SharedUtilities.ReadEntrySignature(ze.ArchiveStream);
             bytesRead += 4;
 
             // Return false if this is not a local file header signature.
-            if (ZipEntry.IsNotValidSig(signature))
+            if (IsNotValidSig(signature))
             {
                 // Getting "not a ZipEntry signature" is not always wrong or an error.
                 // This will happen after the last entry in a zipfile.  In that case, we
@@ -86,8 +86,8 @@ namespace OfficeOpenXml.Packaging.Ionic.Zip
 
                 ze.ArchiveStream.Seek(-4, SeekOrigin.Current); // unread the signature
                 // workitem 10178
-                Ionic.Zip.SharedUtilities.Workaround_Ladybug318918(ze.ArchiveStream);
-                if (ZipEntry.IsNotValidZipDirEntrySig(signature) && (signature != ZipConstants.EndOfCentralDirectorySignature))
+                SharedUtilities.Workaround_Ladybug318918(ze.ArchiveStream);
+                if (IsNotValidZipDirEntrySig(signature) && (signature != ZipConstants.EndOfCentralDirectorySignature))
                 {
                     throw new BadReadException(String.Format("  Bad signature (0x{0:X8}) at position  0x{1:X8}", signature, ze.ArchiveStream.Position));
                 }
@@ -109,7 +109,7 @@ namespace OfficeOpenXml.Packaging.Ionic.Zip
             ze._CompressionMethod_FromZipFile = ze._CompressionMethod = (Int16)(block[i++] + block[i++] * 256);
             ze._TimeBlob = block[i++] + block[i++] * 256 + block[i++] * 256 * 256 + block[i++] * 256 * 256 * 256;
             // transform the time data into something usable (a DateTime)
-            ze._LastModified = Ionic.Zip.SharedUtilities.PackedToDateTime(ze._TimeBlob);
+            ze._LastModified = SharedUtilities.PackedToDateTime(ze._TimeBlob);
             ze._timestamp |= ZipEntryTimestamp.DOS;
 
             if ((ze._BitField & 0x01) == 0x01)
@@ -269,7 +269,7 @@ namespace OfficeOpenXml.Packaging.Ionic.Zip
                         // (12 bytes for the CRC, Comp and Uncomp size.)
                         ze.ArchiveStream.Seek(-12, SeekOrigin.Current);
                         // workitem 10178
-                        Ionic.Zip.SharedUtilities.Workaround_Ladybug318918(ze.ArchiveStream);
+                        SharedUtilities.Workaround_Ladybug318918(ze.ArchiveStream);
 
                         // Adjust the size to account for the false signature read in
                         // FindSignature().
@@ -281,7 +281,7 @@ namespace OfficeOpenXml.Packaging.Ionic.Zip
                 // workitem 8098: ok (restore)
                 ze.ArchiveStream.Seek(posn, SeekOrigin.Begin);
                 // workitem 10178
-                Ionic.Zip.SharedUtilities.Workaround_Ladybug318918(ze.ArchiveStream);
+                SharedUtilities.Workaround_Ladybug318918(ze.ArchiveStream);
             }
 
             ze._CompressedFileDataSize = ze._CompressedSize;
@@ -307,7 +307,7 @@ namespace OfficeOpenXml.Packaging.Ionic.Zip
                 {
                     // read in the header data for "weak" encryption
                     ze._WeakEncryptionHeader = new byte[12];
-                    bytesRead += ZipEntry.ReadWeakEncryptionHeader(ze._archiveStream, ze._WeakEncryptionHeader);
+                    bytesRead += ReadWeakEncryptionHeader(ze._archiveStream, ze._WeakEncryptionHeader);
                     // decrease the filedata size by 12 bytes
                     ze._CompressedFileDataSize -= 12;
                 }
@@ -405,7 +405,7 @@ namespace OfficeOpenXml.Packaging.Ionic.Zip
             // seek past the data without reading it. We will read on Extract()
             s.Seek(entry._CompressedFileDataSize + entry._LengthOfTrailer, SeekOrigin.Current);
             // workitem 10178
-            Ionic.Zip.SharedUtilities.Workaround_Ladybug318918(s);
+            SharedUtilities.Workaround_Ladybug318918(s);
 
             // ReadHeader moves the file pointer to the end of the entry header,
             // as well as any encryption header.
@@ -433,12 +433,12 @@ namespace OfficeOpenXml.Packaging.Ionic.Zip
         {
             // in some cases, the zip file begins with "PK00".  This is a throwback and is rare,
             // but we handle it anyway. We do not change behavior based on it.
-            uint datum = (uint)Ionic.Zip.SharedUtilities.ReadInt(s);
+            uint datum = (uint)SharedUtilities.ReadInt(s);
             if (datum != ZipConstants.PackedToRemovableMedia)
             {
                 s.Seek(-4, SeekOrigin.Current); // unread the block
                 // workitem 10178
-                Ionic.Zip.SharedUtilities.Workaround_Ladybug318918(s);
+                SharedUtilities.Workaround_Ladybug318918(s);
             }
         }
 
@@ -453,13 +453,13 @@ namespace OfficeOpenXml.Packaging.Ionic.Zip
             //    by the compressed length and the uncompressed length (4 bytes for each
             //    of those three elements).  Need to check that here.
             //
-            uint datum = (uint)Ionic.Zip.SharedUtilities.ReadInt(s);
+            uint datum = (uint)SharedUtilities.ReadInt(s);
             if (datum == entry._Crc32)
             {
-                int sz = Ionic.Zip.SharedUtilities.ReadInt(s);
+                int sz = SharedUtilities.ReadInt(s);
                 if (sz == entry._CompressedSize)
                 {
-                    sz = Ionic.Zip.SharedUtilities.ReadInt(s);
+                    sz = SharedUtilities.ReadInt(s);
                     if (sz == entry._UncompressedSize)
                     {
                         // ignore everything and discard it.
@@ -469,7 +469,7 @@ namespace OfficeOpenXml.Packaging.Ionic.Zip
                         s.Seek(-12, SeekOrigin.Current); // unread the three blocks
 
                         // workitem 10178
-                        Ionic.Zip.SharedUtilities.Workaround_Ladybug318918(s);
+                        SharedUtilities.Workaround_Ladybug318918(s);
                     }
                 }
                 else
@@ -477,7 +477,7 @@ namespace OfficeOpenXml.Packaging.Ionic.Zip
                     s.Seek(-8, SeekOrigin.Current); // unread the two blocks
 
                     // workitem 10178
-                    Ionic.Zip.SharedUtilities.Workaround_Ladybug318918(s);
+                    SharedUtilities.Workaround_Ladybug318918(s);
                 }
             }
             else
@@ -485,7 +485,7 @@ namespace OfficeOpenXml.Packaging.Ionic.Zip
                 s.Seek(-4, SeekOrigin.Current); // unread the block
 
                 // workitem 10178
-                Ionic.Zip.SharedUtilities.Workaround_Ladybug318918(s);
+                SharedUtilities.Workaround_Ladybug318918(s);
             }
         }
 
@@ -541,17 +541,17 @@ namespace OfficeOpenXml.Packaging.Ionic.Zip
                     switch (headerId)
                     {
                         case 0x000a:  // NTFS ctime, atime, mtime
-                            j = ProcessExtraFieldWindowsTimes(buffer, j, dataSize, posn);
+                            j = this.ProcessExtraFieldWindowsTimes(buffer, j, dataSize, posn);
                             break;
 
                         case 0x5455:  // Unix ctime, atime, mtime
-                            j = ProcessExtraFieldUnixTimes(buffer, j, dataSize, posn);
+                            j = this.ProcessExtraFieldUnixTimes(buffer, j, dataSize, posn);
                             break;
 
                         case 0x5855:  // Info-zip Extra field (outdated)
                             // This is outdated, so the field is supported on
                             // read only.
-                            j = ProcessExtraFieldInfoZipTimes(buffer, j, dataSize, posn);
+                            j = this.ProcessExtraFieldInfoZipTimes(buffer, j, dataSize, posn);
                             break;
 
                         case 0x7855:  // Unix uid/gid
@@ -564,7 +564,7 @@ namespace OfficeOpenXml.Packaging.Ionic.Zip
                             break;
 
                         case 0x0001: // ZIP64
-                            j = ProcessExtraFieldZip64(buffer, j, dataSize, posn);
+                            j = this.ProcessExtraFieldZip64(buffer, j, dataSize, posn);
                             break;
 
 #if AESCRYPTO
@@ -574,7 +574,7 @@ namespace OfficeOpenXml.Packaging.Ionic.Zip
                             break;
 #endif
                         case 0x0017: // workitem 7968: handle PKWare Strong encryption header
-                            j = ProcessExtraFieldPkwareStrongEncryption(buffer, j);
+                            j = this.ProcessExtraFieldPkwareStrongEncryption(buffer, j);
                             break;
                     }
 
@@ -602,8 +602,8 @@ namespace OfficeOpenXml.Packaging.Ionic.Zip
             //                               the Strong Encryption Specification)
 
             j += 2;
-            _UnsupportedAlgorithmId = (UInt16)(Buffer[j++] + Buffer[j++] * 256);
-            _Encryption_FromZipFile = _Encryption = EncryptionAlgorithm.Unsupported;
+            this._UnsupportedAlgorithmId = (UInt16)(Buffer[j++] + Buffer[j++] * 256);
+            this._Encryption_FromZipFile = this._Encryption = EncryptionAlgorithm.Unsupported;
 
             // DotNetZip doesn't support this algorithm, but we don't need to throw
             // here.  we might just be reading the archive, which is fine.  We'll
@@ -732,8 +732,8 @@ namespace OfficeOpenXml.Packaging.Ionic.Zip
 
             this._Ctime = DateTime.UtcNow;
 
-            _ntfsTimesAreSet = true;
-            _timestamp |= ZipEntryTimestamp.InfoZip1; return j;
+            this._ntfsTimesAreSet = true;
+            this._timestamp |= ZipEntryTimestamp.InfoZip1; return j;
         }
 
 
@@ -757,7 +757,7 @@ namespace OfficeOpenXml.Packaging.Ionic.Zip
                     return _unixEpoch.AddSeconds(timet);
                 });
 
-            if (dataSize == 13 || _readExtraDepth > 0)
+            if (dataSize == 13 || this._readExtraDepth > 0)
             {
                 byte flag = buffer[j++];
                 remainingData--;
@@ -775,9 +775,9 @@ namespace OfficeOpenXml.Packaging.Ionic.Zip
                      ? slurp()
                      :DateTime.UtcNow;
 
-                _timestamp |= ZipEntryTimestamp.Unix;
-                _ntfsTimesAreSet = true;
-                _emitUnixTimes = true;
+                 this._timestamp |= ZipEntryTimestamp.Unix;
+                 this._ntfsTimesAreSet = true;
+                 this._emitUnixTimes = true;
             }
             else
             {
@@ -842,9 +842,9 @@ namespace OfficeOpenXml.Packaging.Ionic.Zip
                 this._Ctime = DateTime.FromFileTimeUtc(z);
                 j += 8;
 
-                _ntfsTimesAreSet = true;
-                _timestamp |= ZipEntryTimestamp.Windows;
-                _emitNtfsTimes = true;
+                this._ntfsTimesAreSet = true;
+                this._timestamp |= ZipEntryTimestamp.Windows;
+                this._emitNtfsTimes = true;
             }
    	    else
 	    {

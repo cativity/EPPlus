@@ -28,7 +28,7 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Logical
     {
         public override CompileResult Execute(IEnumerable<FunctionArgument> arguments, ParsingContext context)
         {
-            IEnumerable<double>? matches = GetMatches("MINIFS", arguments, out CompileResult errorResult);
+            IEnumerable<double>? matches = this.GetMatches("MINIFS", arguments, out CompileResult errorResult);
             if (errorResult != null)
             {
                 return errorResult;
@@ -39,7 +39,7 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Logical
                 return CompileResult.ZeroDecimal;
             }
 
-            return CreateResult(matches.Min(), DataType.Decimal);
+            return this.CreateResult(matches.Min(), DataType.Decimal);
         }
     }
 }

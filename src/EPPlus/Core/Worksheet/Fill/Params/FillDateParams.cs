@@ -48,7 +48,7 @@ namespace OfficeOpenXml.Core.Worksheet.Fill
         /// <param name="weekdays">The excluded week days</param>
         public void SetExcludedWeekdays(params DayOfWeek[] weekdays)
         {
-            _excludedWeekdays.UnionWith(weekdays);
+            this._excludedWeekdays.UnionWith(weekdays);
         }
         /// <summary>
         /// A list with week days treated as holidays.
@@ -60,7 +60,7 @@ namespace OfficeOpenXml.Core.Worksheet.Fill
         /// <param name="holidayDates">The dates treated as week days</param>
         public void SetExcludedDates(params DateTime[] holidayDates)
         {
-            _holidayCalendar.UnionWith(holidayDates);
+            this._holidayCalendar.UnionWith(holidayDates);
         }
         /// <summary>
         /// Excludes the dates supplied
@@ -68,7 +68,7 @@ namespace OfficeOpenXml.Core.Worksheet.Fill
         /// <param name="holidayDates">The dates treated as week days</param>
         public void SetExcludedDates(IEnumerable<DateTime> holidayDates)
         {
-            _holidayCalendar.UnionWith(holidayDates);
+            this._holidayCalendar.UnionWith(holidayDates);
         }
     }
 }

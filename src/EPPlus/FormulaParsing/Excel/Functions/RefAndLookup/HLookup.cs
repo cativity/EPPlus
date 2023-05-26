@@ -36,7 +36,7 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions.RefAndLookup
             }
 
             LookupNavigator? navigator = LookupNavigatorFactory.Create(LookupDirection.Horizontal, lookupArgs, context);
-            return Lookup(navigator, lookupArgs);
+            return this.Lookup(navigator, lookupArgs);
         }
     }
 }

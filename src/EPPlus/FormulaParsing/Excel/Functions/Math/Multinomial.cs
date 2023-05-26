@@ -28,7 +28,7 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Math
         public override CompileResult Execute(IEnumerable<FunctionArgument> arguments, ParsingContext context)
         {
             ValidateArguments(arguments, 1);
-            IEnumerable<ExcelDoubleCellValue>? numbers = ArgsToDoubleEnumerable(arguments, context);
+            IEnumerable<ExcelDoubleCellValue>? numbers = this.ArgsToDoubleEnumerable(arguments, context);
             double part1 = 0d;
             double part2 = 1d;
             foreach(ExcelDoubleCellValue number in numbers)
@@ -37,7 +37,7 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Math
                 part2 *= MathHelper.Factorial(number);
             }
             double result = MathHelper.Factorial(part1) / part2;
-            return CreateResult(result, DataType.Decimal);
+            return this.CreateResult(result, DataType.Decimal);
         }
     }
 }

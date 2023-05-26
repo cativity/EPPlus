@@ -33,13 +33,13 @@ namespace OfficeOpenXml.Drawing.Chart.ChartEx
         { 
             get
             {
-                return GetXmlNodeDoubleNull(_binSizePath);
+                return this.GetXmlNodeDoubleNull(_binSizePath);
             }
             set
             {
-                DeleteNode(ExcelHistogramChartSerie._aggregationPath);
-                DeleteNode(_binCountPath);
-                SetXmlNodeDouble(_binSizePath, value);
+                this.DeleteNode(ExcelHistogramChartSerie._aggregationPath);
+                this.DeleteNode(_binCountPath);
+                this.SetXmlNodeDouble(_binSizePath, value);
             }
         }
         const string _binCountPath = "cx:layoutPr/cx:binning/cx:binCount/@val";
@@ -50,13 +50,13 @@ namespace OfficeOpenXml.Drawing.Chart.ChartEx
         {
             get
             {
-                return GetXmlNodeIntNull(_binCountPath);
+                return this.GetXmlNodeIntNull(_binCountPath);
             }
             set
             {
-                DeleteNode(ExcelHistogramChartSerie._aggregationPath);
-                DeleteNode(_binSizePath);
-                SetXmlNodeInt(_binCountPath, value);
+                this.DeleteNode(ExcelHistogramChartSerie._aggregationPath);
+                this.DeleteNode(_binSizePath);
+                this.SetXmlNodeInt(_binCountPath, value);
             }
         }
         const string _intervalClosedPath = "cx:layoutPr/cx:binning/@intervalClosed";
@@ -67,7 +67,7 @@ namespace OfficeOpenXml.Drawing.Chart.ChartEx
         { 
             get
             {
-                string? v=GetXmlNodeString(_intervalClosedPath);
+                string? v= this.GetXmlNodeString(_intervalClosedPath);
                 if(v=="l")
                 {
                     return eIntervalClosed.Left;
@@ -80,18 +80,18 @@ namespace OfficeOpenXml.Drawing.Chart.ChartEx
             }
             set
             {
-                DeleteNode(ExcelHistogramChartSerie._aggregationPath);
+                this.DeleteNode(ExcelHistogramChartSerie._aggregationPath);
                 if (value==eIntervalClosed.Left)
                 {
-                    SetXmlNodeString(_intervalClosedPath, "l");
+                    this.SetXmlNodeString(_intervalClosedPath, "l");
                 }
                 else if (value == eIntervalClosed.Right)
                 {
-                    SetXmlNodeString(_intervalClosedPath, "r");
+                    this.SetXmlNodeString(_intervalClosedPath, "r");
                 }
                 else
                 {
-                    DeleteNode(_intervalClosedPath);
+                    this.DeleteNode(_intervalClosedPath);
                 }
             }
         }
@@ -103,12 +103,12 @@ namespace OfficeOpenXml.Drawing.Chart.ChartEx
         {
             get
             {
-                return GetXmlNodeString(_underflowPath)=="auto";
+                return this.GetXmlNodeString(_underflowPath)=="auto";
             }
             set
             {
-                DeleteNode(_intervalClosedPath);
-                SetXmlNodeString(_underflowPath, "auto");
+                this.DeleteNode(_intervalClosedPath);
+                this.SetXmlNodeString(_underflowPath, "auto");
             }
         }
         /// <summary>
@@ -118,12 +118,12 @@ namespace OfficeOpenXml.Drawing.Chart.ChartEx
         {
             get
             {
-                return GetXmlNodeDoubleNull(_underflowPath);
+                return this.GetXmlNodeDoubleNull(_underflowPath);
             }
             set
             {
-                DeleteNode(_intervalClosedPath);
-                SetXmlNodeDouble(_underflowPath, value);
+                this.DeleteNode(_intervalClosedPath);
+                this.SetXmlNodeDouble(_underflowPath, value);
             }
         }
         const string _overflowPath = "cx:layoutPr/cx:binning/@overflow";
@@ -134,12 +134,12 @@ namespace OfficeOpenXml.Drawing.Chart.ChartEx
         {
             get
             {
-                return GetXmlNodeString(_overflowPath) == "auto";
+                return this.GetXmlNodeString(_overflowPath) == "auto";
             }
             set
             {
-                DeleteNode(_intervalClosedPath);
-                SetXmlNodeString(_overflowPath, "auto");
+                this.DeleteNode(_intervalClosedPath);
+                this.SetXmlNodeString(_overflowPath, "auto");
             }
         }
         /// <summary>
@@ -149,12 +149,12 @@ namespace OfficeOpenXml.Drawing.Chart.ChartEx
         {
             get
             {
-                return GetXmlNodeDoubleNull(_overflowPath);
+                return this.GetXmlNodeDoubleNull(_overflowPath);
             }
             set
             {
-                DeleteNode(_intervalClosedPath);
-                SetXmlNodeDouble(_overflowPath, value);
+                this.DeleteNode(_intervalClosedPath);
+                this.SetXmlNodeDouble(_overflowPath, value);
             }
         }
     }

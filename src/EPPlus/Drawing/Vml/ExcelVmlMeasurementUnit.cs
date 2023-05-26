@@ -15,7 +15,7 @@ namespace OfficeOpenXml.Drawing.Vml
 
         internal ExcelVmlMeasurementUnit(string value="")
         {
-            SetValue(value);
+            this.SetValue(value);
         }
         /// <summary>
         /// The value of the specified unit.
@@ -27,12 +27,12 @@ namespace OfficeOpenXml.Drawing.Vml
         public eMeasurementUnits Unit { get; set;}
         internal void SetValue(string value)
         {
-            Value = GetValue(value);
-            Unit = GetUnit(value);
+            this.Value = GetValue(value);
+            this.Unit = GetUnit(value);
         }
         internal string GetValueString()
         {
-            return Value.ToString(CultureInfo.InvariantCulture) + Unit.TranslateString();
+            return this.Value.ToString(CultureInfo.InvariantCulture) + this.Unit.TranslateString();
         }
 
         private static double GetValue(string v)
@@ -62,7 +62,7 @@ namespace OfficeOpenXml.Drawing.Vml
 
         internal double? ToEmu()
         {
-            return VmlConvertUtil.ConvertToEMU(Value, Unit);
+            return VmlConvertUtil.ConvertToEMU(this.Value, this.Unit);
         }
     }
 }

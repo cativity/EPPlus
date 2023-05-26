@@ -66,8 +66,8 @@ namespace EPPlusTest.Table
             ExcelTable? table = ws.Tables.Add(ws.Cells["B2:C4"], "TestTableParamHeader");
             table.ShowTotal = true;
             table.ShowHeader = true;
-            table.Columns[0].TotalsRowFunction = OfficeOpenXml.Table.RowFunctions.Sum;
-            table.Columns[1].TotalsRowFunction = OfficeOpenXml.Table.RowFunctions.Sum;
+            table.Columns[0].TotalsRowFunction = RowFunctions.Sum;
+            table.Columns[1].TotalsRowFunction = RowFunctions.Sum;
             ws.Cells["B5"].Calculate();
             Assert.AreEqual(3.0, ws.Cells["B5"].Value);
             ws.Cells["C5"].Calculate();
@@ -132,7 +132,7 @@ namespace EPPlusTest.Table
             ExcelWorksheet? ws = _pck.Workbook.Worksheets.Add("Table");
             ws.Cells["B1"].Value = 123;
             ExcelTable? tbl = ws.Tables.Add(ws.Cells["B1:P12"], "TestTable");
-            tbl.TableStyle = OfficeOpenXml.Table.TableStyles.Custom;
+            tbl.TableStyle = TableStyles.Custom;
 
             tbl.ShowFirstColumn = true;
             tbl.ShowTotal = true;
@@ -143,7 +143,7 @@ namespace EPPlusTest.Table
             ws.Cells["K2"].Value = 5;
             ws.Cells["J3"].Value = 4;
 
-            tbl.Columns[8].TotalsRowFunction = OfficeOpenXml.Table.RowFunctions.Sum;
+            tbl.Columns[8].TotalsRowFunction = RowFunctions.Sum;
             tbl.Columns[9].TotalsRowFormula = string.Format("SUM([{0}])", tbl.Columns[9].Name);
             tbl.Columns[14].CalculatedColumnFormula = "TestTable[[#This Row],[123]]+TestTable[[#This Row],[Column2]]";
             ws.Cells["B2"].Value = 1;
@@ -165,7 +165,7 @@ namespace EPPlusTest.Table
             tbl = ws.Tables.Add(ws.Cells["a12:a13"], "");
 
             tbl = ws.Tables.Add(ws.Cells["C16:Y35"], "");
-            tbl.TableStyle = OfficeOpenXml.Table.TableStyles.Medium14;
+            tbl.TableStyle = TableStyles.Medium14;
             tbl.ShowFirstColumn = true;
             tbl.ShowLastColumn = true;
             tbl.ShowColumnStripes = true;
@@ -182,7 +182,7 @@ namespace EPPlusTest.Table
             tbl = ws.Tables.Add(ws.Cells["G50:G54"], "");
             tbl.ShowTotal = true;
             tbl.ShowFilter = false;
-            tbl.Columns[0].TotalsRowFunction = OfficeOpenXml.Table.RowFunctions.Sum;
+            tbl.Columns[0].TotalsRowFunction = RowFunctions.Sum;
         }
 
         [TestMethod]

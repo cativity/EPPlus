@@ -24,17 +24,17 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Finance.FinancialDayCount
         {
             FinancialDay? start = FinancialDayFactory.Create(startDate, DayCountBasis.Actual_Actual);
             FinancialDay? end = FinancialDayFactory.Create(endDate, DayCountBasis.Actual_Actual);
-            return GetDaysBetweenDates(start, end, 365);
+            return this.GetDaysBetweenDates(start, end, 365);
         }
 
         public double GetDaysBetweenDates(FinancialDay startDate, FinancialDay endDate)
         {
-            return GetDaysBetweenDates(startDate, endDate, -1);
+            return this.GetDaysBetweenDates(startDate, endDate, -1);
         }
 
         public double GetCoupdays(FinancialDay start, FinancialDay end, int frequency)
         {
-            return GetDaysBetweenDates(start, end);
+            return this.GetDaysBetweenDates(start, end);
         }
 
         protected override double GetDaysBetweenDates(FinancialDay start, FinancialDay end, int basis)

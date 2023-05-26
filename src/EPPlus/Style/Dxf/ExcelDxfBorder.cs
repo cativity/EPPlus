@@ -29,12 +29,12 @@ namespace OfficeOpenXml.Style.Dxf
         internal ExcelDxfBorderBase(ExcelStyles styles, Action<eStyleClass, eStyleProperty, object> callback)
             : base(styles, callback)
         {
-            Left = new ExcelDxfBorderItem(_styles, eStyleClass.BorderLeft, callback);
-            Right = new ExcelDxfBorderItem(_styles, eStyleClass.BorderRight, callback);
-            Top = new ExcelDxfBorderItem(_styles, eStyleClass.BorderTop, callback);
-            Bottom = new ExcelDxfBorderItem(_styles, eStyleClass.BorderBottom, callback);
-            Vertical = new ExcelDxfBorderItem(_styles, eStyleClass.Border, callback);
-            Horizontal = new ExcelDxfBorderItem(_styles, eStyleClass.Border, callback);
+            this.Left = new ExcelDxfBorderItem(this._styles, eStyleClass.BorderLeft, callback);
+            this.Right = new ExcelDxfBorderItem(this._styles, eStyleClass.BorderRight, callback);
+            this.Top = new ExcelDxfBorderItem(this._styles, eStyleClass.BorderTop, callback);
+            this.Bottom = new ExcelDxfBorderItem(this._styles, eStyleClass.BorderBottom, callback);
+            this.Vertical = new ExcelDxfBorderItem(this._styles, eStyleClass.Border, callback);
+            this.Horizontal = new ExcelDxfBorderItem(this._styles, eStyleClass.Border, callback);
         }
         /// <summary>
         /// Left border style
@@ -92,7 +92,7 @@ namespace OfficeOpenXml.Style.Dxf
         {
             get
             {
-                return Top.Id + Bottom.Id + Left.Id + Right.Id + Vertical.Id + Horizontal.Id;
+                return this.Top.Id + this.Bottom.Id + this.Left.Id + this.Right.Id + this.Vertical.Id + this.Horizontal.Id;
             }
         }
 
@@ -103,21 +103,21 @@ namespace OfficeOpenXml.Style.Dxf
         /// <param name="path">The X Path</param>
         internal override void CreateNodes(XmlHelper helper, string path)
         {
-            Left.CreateNodes(helper, path + "/d:left");
-            Right.CreateNodes(helper, path + "/d:right");
-            Top.CreateNodes(helper, path + "/d:top");
-            Bottom.CreateNodes(helper, path + "/d:bottom");
-            Vertical.CreateNodes(helper, path + "/d:vertical");
-            Horizontal.CreateNodes(helper, path + "/d:horizontal");
+            this.Left.CreateNodes(helper, path + "/d:left");
+            this.Right.CreateNodes(helper, path + "/d:right");
+            this.Top.CreateNodes(helper, path + "/d:top");
+            this.Bottom.CreateNodes(helper, path + "/d:bottom");
+            this.Vertical.CreateNodes(helper, path + "/d:vertical");
+            this.Horizontal.CreateNodes(helper, path + "/d:horizontal");
         }
         internal override void SetStyle()
         {
-            if (_callback != null)
+            if (this._callback != null)
             {
-                Left.SetStyle();
-                Right.SetStyle();
-                Top.SetStyle();
-                Bottom.SetStyle();
+                this.Left.SetStyle();
+                this.Right.SetStyle();
+                this.Top.SetStyle();
+                this.Bottom.SetStyle();
             }
         }
 
@@ -128,12 +128,7 @@ namespace OfficeOpenXml.Style.Dxf
         {
             get 
             {
-                return Left.HasValue ||
-                    Right.HasValue ||
-                    Top.HasValue ||
-                    Bottom.HasValue||
-                    Vertical.HasValue ||
-                    Horizontal.HasValue;
+                return this.Left.HasValue || this.Right.HasValue || this.Top.HasValue || this.Bottom.HasValue|| this.Vertical.HasValue || this.Horizontal.HasValue;
             }
         }
         /// <summary>
@@ -141,12 +136,12 @@ namespace OfficeOpenXml.Style.Dxf
         /// </summary>
         public override void Clear()
         {
-            Left.Clear();
-            Right.Clear();
-            Top.Clear();
-            Bottom.Clear();
-            Vertical.Clear();
-            Horizontal.Clear();
+            this.Left.Clear();
+            this.Right.Clear();
+            this.Top.Clear();
+            this.Bottom.Clear();
+            this.Vertical.Clear();
+            this.Horizontal.Clear();
         }
 
         /// <summary>
@@ -156,14 +151,14 @@ namespace OfficeOpenXml.Style.Dxf
         /// <param name="themeColor">The theme color</param>
         public void BorderAround(ExcelBorderStyle borderStyle = ExcelBorderStyle.Thin, eThemeSchemeColor themeColor=eThemeSchemeColor.Accent1)
         {
-            Top.Style = borderStyle;
-            Top.Color.SetColor(themeColor);
-            Right.Style = borderStyle;
-            Right.Color.SetColor(themeColor);
-            Bottom.Style = borderStyle;
-            Bottom.Color.SetColor(themeColor);
-            Left.Style = borderStyle;
-            Left.Color.SetColor(themeColor);
+            this.Top.Style = borderStyle;
+            this.Top.Color.SetColor(themeColor);
+            this.Right.Style = borderStyle;
+            this.Right.Color.SetColor(themeColor);
+            this.Bottom.Style = borderStyle;
+            this.Bottom.Color.SetColor(themeColor);
+            this.Left.Style = borderStyle;
+            this.Left.Color.SetColor(themeColor);
         }
         /// <summary>
         /// Set the border properties for Top/Bottom/Right and Left.
@@ -172,14 +167,14 @@ namespace OfficeOpenXml.Style.Dxf
         /// <param name="color">The color to use</param>
         public void BorderAround(ExcelBorderStyle borderStyle, Color color)
         {
-            Top.Style = borderStyle;
-            Top.Color.SetColor(color);
-            Right.Style = borderStyle;
-            Right.Color.SetColor(color);
-            Bottom.Style = borderStyle;
-            Bottom.Color.SetColor(color);
-            Left.Style = borderStyle;
-            Left.Color.SetColor(color);
+            this.Top.Style = borderStyle;
+            this.Top.Color.SetColor(color);
+            this.Right.Style = borderStyle;
+            this.Right.Color.SetColor(color);
+            this.Bottom.Style = borderStyle;
+            this.Bottom.Color.SetColor(color);
+            this.Left.Style = borderStyle;
+            this.Left.Color.SetColor(color);
         }
 
         /// <summary>
@@ -188,37 +183,37 @@ namespace OfficeOpenXml.Style.Dxf
         /// <returns>A new instance of the object</returns>
         internal override DxfStyleBase Clone()
         {
-            return new ExcelDxfBorderBase(_styles, _callback) 
+            return new ExcelDxfBorderBase(this._styles, this._callback) 
             { 
-                Bottom = (ExcelDxfBorderItem)Bottom.Clone(), 
-                Top= (ExcelDxfBorderItem)Top.Clone(), 
-                Left= (ExcelDxfBorderItem)Left.Clone(), 
-                Right= (ExcelDxfBorderItem)Right.Clone(),
-                Vertical = (ExcelDxfBorderItem)Vertical.Clone(),
-                Horizontal = (ExcelDxfBorderItem)Horizontal.Clone(),
+                Bottom = (ExcelDxfBorderItem)this.Bottom.Clone(), 
+                Top= (ExcelDxfBorderItem)this.Top.Clone(), 
+                Left= (ExcelDxfBorderItem)this.Left.Clone(), 
+                Right= (ExcelDxfBorderItem)this.Right.Clone(),
+                Vertical = (ExcelDxfBorderItem)this.Vertical.Clone(),
+                Horizontal = (ExcelDxfBorderItem)this.Horizontal.Clone(),
             };
         }
         internal override void SetValuesFromXml(XmlHelper helper)
         {
             if (helper.ExistsNode("d:border"))
             {
-                Left = GetBorderItem(helper, "d:border/d:left", eStyleClass.BorderLeft);
-                Right = GetBorderItem(helper, "d:border/d:right", eStyleClass.BorderLeft);
-                Bottom = GetBorderItem(helper, "d:border/d:bottom", eStyleClass.BorderLeft);
-                Top = GetBorderItem(helper, "d:border/d:top", eStyleClass.BorderLeft);
-                Vertical = GetBorderItem(helper, "d:border/d:vertical", eStyleClass.Border);
-                Horizontal = GetBorderItem(helper, "d:border/d:horizontal", eStyleClass.Border);
+                this.Left = this.GetBorderItem(helper, "d:border/d:left", eStyleClass.BorderLeft);
+                this.Right = this.GetBorderItem(helper, "d:border/d:right", eStyleClass.BorderLeft);
+                this.Bottom = this.GetBorderItem(helper, "d:border/d:bottom", eStyleClass.BorderLeft);
+                this.Top = this.GetBorderItem(helper, "d:border/d:top", eStyleClass.BorderLeft);
+                this.Vertical = this.GetBorderItem(helper, "d:border/d:vertical", eStyleClass.Border);
+                this.Horizontal = this.GetBorderItem(helper, "d:border/d:horizontal", eStyleClass.Border);
             }
         }
         private ExcelDxfBorderItem GetBorderItem(XmlHelper helper, string path, eStyleClass styleClass)
         {
-            ExcelDxfBorderItem bi = new ExcelDxfBorderItem(_styles, styleClass, _callback);
+            ExcelDxfBorderItem bi = new ExcelDxfBorderItem(this._styles, styleClass, this._callback);
             bool exists = helper.ExistsNode(path);
             if (exists)
             {
                 string? style = helper.GetXmlNodeString(path + "/@style");
                 bi.Style = GetBorderStyleEnum(style);
-                bi.Color = GetColor(helper, path + "/d:color", styleClass);
+                bi.Color = this.GetColor(helper, path + "/d:color", styleClass);
             }
             return bi;
         }

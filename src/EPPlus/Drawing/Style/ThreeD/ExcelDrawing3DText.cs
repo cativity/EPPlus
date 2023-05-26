@@ -26,7 +26,7 @@ namespace OfficeOpenXml.Drawing.Style.ThreeD
         private readonly string _flatTextZCoordinatePath = "{0}/a:flatTx/@z";
         internal ExcelDrawing3DText(XmlNamespaceManager nameSpaceManager, XmlNode topNode, string[] schemaNodeOrder, string path) : base(nameSpaceManager, topNode, path, schemaNodeOrder)
         {
-            _flatTextZCoordinatePath = string.Format(_flatTextZCoordinatePath, path);
+            this._flatTextZCoordinatePath = string.Format(this._flatTextZCoordinatePath, path);
         }
 
         /// <summary>
@@ -36,12 +36,12 @@ namespace OfficeOpenXml.Drawing.Style.ThreeD
         {
             get
             {
-                return GetXmlNodeEmuToPtNull(_flatTextZCoordinatePath) ?? 0;
+                return this.GetXmlNodeEmuToPtNull(this._flatTextZCoordinatePath) ?? 0;
             }
             set
             {
-                InitXml(true);
-                SetXmlNodeEmuToPt(_flatTextZCoordinatePath, value);
+                this.InitXml(true);
+                this.SetXmlNodeEmuToPt(this._flatTextZCoordinatePath, value);
             }
         }
     }

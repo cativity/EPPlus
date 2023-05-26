@@ -33,14 +33,14 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Math
                 return this.CreateResult(0d, DataType.Decimal);
             }
 
-            double number = ArgToDecimal(arguments, 0, context.Configuration.PrecisionAndRoundingStrategy);
-            double significance = ArgToDecimal(arguments, 1);
+            double number = this.ArgToDecimal(arguments, 0, context.Configuration.PrecisionAndRoundingStrategy);
+            double significance = this.ArgToDecimal(arguments, 1);
             if (RoundingHelper.IsInvalidNumberAndSign(number, significance))
             {
                 return this.CreateResult(eErrorType.Num);
             }
 
-            return CreateResult(RoundingHelper.Round(number, significance, RoundingHelper.Direction.Down), DataType.Decimal);
+            return this.CreateResult(RoundingHelper.Round(number, significance, RoundingHelper.Direction.Down), DataType.Decimal);
         }
     }
 }

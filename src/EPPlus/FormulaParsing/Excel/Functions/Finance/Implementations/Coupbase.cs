@@ -21,10 +21,10 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Finance.Implementations
     {
         public Coupbase(FinancialDay settlement, FinancialDay maturity, int frequency, DayCountBasis basis)
         {
-            Settlement = settlement;
-            Maturity = maturity;
-            Frequency = frequency;
-            Basis = basis;
+            this.Settlement = settlement;
+            this.Maturity = maturity;
+            this.Frequency = frequency;
+            this.Basis = basis;
         }
 
         protected FinancialDay Settlement { get; }
@@ -34,7 +34,7 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Finance.Implementations
 
         protected FinancialDay GetCouponPeriodBySettlement()
         {
-            IFinanicalDays? financialDays = FinancialDaysFactory.Create(Basis);
+            IFinanicalDays? financialDays = FinancialDaysFactory.Create(this.Basis);
             throw new NotImplementedException();
         }
     }

@@ -33,7 +33,7 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Engineering
             string? formatString = "X";
             if(arguments.Count() > 1)
             {
-                int padding = ArgToInt(arguments, 1);
+                int padding = this.ArgToInt(arguments, 1);
                 if (padding < 0 ^ padding > 10)
                 {
                     return this.CreateResult(eErrorType.Num);
@@ -49,7 +49,7 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Engineering
             if (number.Length < 10)
             {
                 int n = Convert.ToInt32(number, 2);
-                return CreateResult(n.ToString(formatString), DataType.Decimal);
+                return this.CreateResult(n.ToString(formatString), DataType.Decimal);
             }
             else
             {
@@ -63,7 +63,7 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Engineering
                 {
                     hexStr = PaddingHelper.EnsureLength(hexStr, 10, "F");
                 }
-                return CreateResult(hexStr, DataType.String);
+                return this.CreateResult(hexStr, DataType.String);
             }
         }
     }

@@ -15,58 +15,60 @@ namespace OfficeOpenXml
         private JsonTableExportSettings _settings;
         internal JsonTableExport(ExcelTable table, JsonTableExportSettings settings) : base(settings)
         {
-            _table = table;
-            _settings = settings;
+            this._table = table;
+            this._settings = settings;
         }
         internal void Export(Stream stream)
         {
             StreamWriter sw = new StreamWriter(stream);
-            WriteStart(sw);
-            WriteItem(sw, $"\"{_settings.RootElementName}\":");
-            WriteStart(sw);
-            if (_settings.WriteNameAttribute)
+            this.WriteStart(sw);
+            this.WriteItem(sw, $"\"{this._settings.RootElementName}\":");
+            this.WriteStart(sw);
+            if (this._settings.WriteNameAttribute)
             {
-                WriteItem(sw, $"\"name\":\"{JsonEscape(_table.Name)}\",");
+                this.WriteItem(sw, $"\"name\":\"{JsonEscape(this._table.Name)}\",");
             }
-            if (_settings.WriteShowHeaderAttribute)
+            if (this._settings.WriteShowHeaderAttribute)
             {
-                WriteItem(sw, $"\"showHeader\":\"{(_table.ShowHeader ? "1" : "0")}\",");
+                this.WriteItem(sw, $"\"showHeader\":\"{(this._table.ShowHeader ? "1" : "0")}\",");
             }
-            if (_settings.WriteShowTotalsAttribute)
+            if (this._settings.WriteShowTotalsAttribute)
             {
-                WriteItem(sw, $"\"showTotal\":\"{(_table.ShowTotal ? "1" : "0")}\",");
+                this.WriteItem(sw, $"\"showTotal\":\"{(this._table.ShowTotal ? "1" : "0")}\",");
             }
-            if (_settings.WriteColumnsElement)
+            if (this._settings.WriteColumnsElement)
             {
-                WriteColumnData(sw);
+                this.WriteColumnData(sw);
             }
-            WriteCellData(sw, _table.DataRange, 0);
+
+            this.WriteCellData(sw, this._table.DataRange, 0);
             sw.Write("}");
             sw.Flush();
         }
 
         private void WriteColumnData(StreamWriter sw)
         {
-            WriteItem(sw, $"\"{_settings.ColumnsElementName}\":[", true);
-            for (int i = 0; i < _table.Columns.Count; i++)
+            this.WriteItem(sw, $"\"{this._settings.ColumnsElementName}\":[", true);
+            for (int i = 0; i < this._table.Columns.Count; i++)
             {
-                WriteStart(sw);
-                WriteItem(sw, $"\"name\":\"{_table.Columns[i].Name}\"", false, _settings.AddDataTypesOn == eDataTypeOn.OnColumn);
-                if (_settings.AddDataTypesOn == eDataTypeOn.OnColumn)
+                this.WriteStart(sw);
+                this.WriteItem(sw, $"\"name\":\"{this._table.Columns[i].Name}\"", false, this._settings.AddDataTypesOn == eDataTypeOn.OnColumn);
+                if (this._settings.AddDataTypesOn == eDataTypeOn.OnColumn)
                 {
-                    string? dt = HtmlRawDataProvider.GetHtmlDataTypeFromValue(_table.DataRange.GetCellValue<object>(0, i));
-                    WriteItem(sw, $"\"dt\":\"{dt}\"");
+                    string? dt = HtmlRawDataProvider.GetHtmlDataTypeFromValue(this._table.DataRange.GetCellValue<object>(0, i));
+                    this.WriteItem(sw, $"\"dt\":\"{dt}\"");
                 }
-                if(i == _table.Columns.Count-1)
+                if(i == this._table.Columns.Count-1)
                 {
-                    WriteEnd(sw, "}");
+                    this.WriteEnd(sw, "}");
                 }
                 else
                 {
-                    WriteEnd(sw, "},");
+                    this.WriteEnd(sw, "},");
                 }
             }
-            WriteEnd(sw, "],");
+
+            this.WriteEnd(sw, "],");
         }
     }
 }

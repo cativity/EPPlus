@@ -53,7 +53,7 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions
 
         public override object Parse(object obj, RoundingMethod roundingMethod)
         {
-            return Parse(obj);
+            return this.Parse(obj);
         }
     }
 }

@@ -33,7 +33,7 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Math
         
         public Rank(bool isAvg)
         {
-            _isAvg=isAvg;
+            this._isAvg=isAvg;
         }
 
         private readonly bool _isAvg;
@@ -41,12 +41,12 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Math
         public override CompileResult Execute(IEnumerable<FunctionArgument> arguments, ParsingContext context)
         {
             ValidateArguments(arguments, 2);
-            double number = ArgToDecimal(arguments, 0);
+            double number = this.ArgToDecimal(arguments, 0);
             FunctionArgument? refArg = arguments.ElementAt(1);
-            bool sortAscending = arguments.Count() > 2 ? ArgToBool(arguments, 2) : false;
+            bool sortAscending = arguments.Count() > 2 ? this.ArgToBool(arguments, 2) : false;
             List<double>? numbers = GetNumbersFromRange(refArg, sortAscending);
             double rank = numbers.IndexOf(number) + 1;
-            if(_isAvg)
+            if(this._isAvg)
             {
                 int lastRank = numbers.LastIndexOf(number) + 1;
                 rank = rank + ((lastRank - rank) / 2d);
@@ -56,7 +56,7 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Math
             {
                 return new CompileResult(ExcelErrorValue.Create(eErrorType.NA), DataType.ExcelError);
             }
-            return CreateResult(rank, DataType.Decimal);
+            return this.CreateResult(rank, DataType.Decimal);
         }
 
         

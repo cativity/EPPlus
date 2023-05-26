@@ -36,23 +36,23 @@ namespace OfficeOpenXml.Drawing.Style.Effect
         private readonly IPictureRelationDocument _pictureRelationDocument;
         internal ExcelDrawingEffectStyle(IPictureRelationDocument pictureRelationDocument, XmlNamespaceManager nameSpaceManager, XmlNode topNode, string path, string[] schemaNodeOrder) : base(nameSpaceManager, topNode)
         {
-            _path = path;
+            this._path = path;
             if (path.Length > 0 && !path.EndsWith("/"))
             {
                 path += "/";
             }
 
-            _softEdgeRadiusPath = string.Format(_softEdgeRadiusPath, path);
-            _blurPath = string.Format(_blurPath, path);
-            _fillOverlayPath = string.Format(_fillOverlayPath, path);
-            _glowPath = string.Format(_glowPath, path);
-            _innerShadowPath = string.Format(_innerShadowPath, path);
-            _outerShadowPath = string.Format(_outerShadowPath, path);
-            _presetShadowPath = string.Format(_presetShadowPath, path);
-            _reflectionPath = string.Format(_reflectionPath, path);
-            _pictureRelationDocument = pictureRelationDocument;
+            this._softEdgeRadiusPath = string.Format(this._softEdgeRadiusPath, path);
+            this._blurPath = string.Format(this._blurPath, path);
+            this._fillOverlayPath = string.Format(this._fillOverlayPath, path);
+            this._glowPath = string.Format(this._glowPath, path);
+            this._innerShadowPath = string.Format(this._innerShadowPath, path);
+            this._outerShadowPath = string.Format(this._outerShadowPath, path);
+            this._presetShadowPath = string.Format(this._presetShadowPath, path);
+            this._reflectionPath = string.Format(this._reflectionPath, path);
+            this._pictureRelationDocument = pictureRelationDocument;
 
-            AddSchemaNodeOrder(schemaNodeOrder, ExcelShapeBase._shapeNodeOrder);   
+            this.AddSchemaNodeOrder(schemaNodeOrder, ExcelShapeBase._shapeNodeOrder);   
         }
         ExcelDrawingBlurEffect _blur = null;
         /// <summary>
@@ -62,11 +62,11 @@ namespace OfficeOpenXml.Drawing.Style.Effect
         {
             get
             {
-                if (_blur == null)
+                if (this._blur == null)
                 {
-                    _blur = new ExcelDrawingBlurEffect(NameSpaceManager, TopNode, SchemaNodeOrder, _blurPath);
+                    this._blur = new ExcelDrawingBlurEffect(this.NameSpaceManager, this.TopNode, this.SchemaNodeOrder, this._blurPath);
                 }
-                return _blur;
+                return this._blur;
             }
         }
 
@@ -78,11 +78,11 @@ namespace OfficeOpenXml.Drawing.Style.Effect
         {
             get
             {
-                if(_fillOverlay==null)
+                if(this._fillOverlay==null)
                 {
-                    _fillOverlay = new ExcelDrawingFillOverlayEffect(_pictureRelationDocument, NameSpaceManager, TopNode, SchemaNodeOrder, _fillOverlayPath);
+                    this._fillOverlay = new ExcelDrawingFillOverlayEffect(this._pictureRelationDocument, this.NameSpaceManager, this.TopNode, this.SchemaNodeOrder, this._fillOverlayPath);
                 }
-                return _fillOverlay;
+                return this._fillOverlay;
             }
         }
         ExcelDrawingGlowEffect _glow = null;
@@ -93,11 +93,11 @@ namespace OfficeOpenXml.Drawing.Style.Effect
         {
             get
             {
-                if (_glow == null)
+                if (this._glow == null)
                 {
-                    _glow = new ExcelDrawingGlowEffect(NameSpaceManager, TopNode, SchemaNodeOrder, _glowPath);
+                    this._glow = new ExcelDrawingGlowEffect(this.NameSpaceManager, this.TopNode, this.SchemaNodeOrder, this._glowPath);
                 }
-                return _glow;
+                return this._glow;
             }
         }
         ExcelDrawingInnerShadowEffect _innerShadowEffect = null;
@@ -108,11 +108,11 @@ namespace OfficeOpenXml.Drawing.Style.Effect
         {
             get
             {
-                if (_innerShadowEffect == null)
+                if (this._innerShadowEffect == null)
                 {
-                    _innerShadowEffect = new ExcelDrawingInnerShadowEffect(NameSpaceManager, TopNode, SchemaNodeOrder, _innerShadowPath);
+                    this._innerShadowEffect = new ExcelDrawingInnerShadowEffect(this.NameSpaceManager, this.TopNode, this.SchemaNodeOrder, this._innerShadowPath);
                 }
-                return _innerShadowEffect;
+                return this._innerShadowEffect;
             }
         }
         ExcelDrawingOuterShadowEffect _outerShadow=null;
@@ -123,11 +123,11 @@ namespace OfficeOpenXml.Drawing.Style.Effect
         {
             get
             {
-                if (_outerShadow == null)
+                if (this._outerShadow == null)
                 {
-                    _outerShadow = new ExcelDrawingOuterShadowEffect(NameSpaceManager, TopNode, SchemaNodeOrder, _outerShadowPath);
+                    this._outerShadow = new ExcelDrawingOuterShadowEffect(this.NameSpaceManager, this.TopNode, this.SchemaNodeOrder, this._outerShadowPath);
                 }
-                return _outerShadow;
+                return this._outerShadow;
             }
         }
         ExcelDrawingPresetShadowEffect _presetShadow;
@@ -138,11 +138,11 @@ namespace OfficeOpenXml.Drawing.Style.Effect
         {
             get
             {
-                if (_presetShadow == null)
+                if (this._presetShadow == null)
                 {
-                    _presetShadow = new ExcelDrawingPresetShadowEffect(NameSpaceManager, TopNode, SchemaNodeOrder, _presetShadowPath);
+                    this._presetShadow = new ExcelDrawingPresetShadowEffect(this.NameSpaceManager, this.TopNode, this.SchemaNodeOrder, this._presetShadowPath);
                 }
-                return _presetShadow;
+                return this._presetShadow;
             }
         }
         ExcelDrawingReflectionEffect _reflection;
@@ -153,11 +153,11 @@ namespace OfficeOpenXml.Drawing.Style.Effect
         {
             get
             {
-                if (_reflection == null)
+                if (this._reflection == null)
                 {
-                    _reflection = new ExcelDrawingReflectionEffect(NameSpaceManager, TopNode, SchemaNodeOrder, _reflectionPath);
+                    this._reflection = new ExcelDrawingReflectionEffect(this.NameSpaceManager, this.TopNode, this.SchemaNodeOrder, this._reflectionPath);
                 }
-                return _reflection;
+                return this._reflection;
             }
         }
         /// <summary>
@@ -167,17 +167,17 @@ namespace OfficeOpenXml.Drawing.Style.Effect
         {
             get
             {
-                return GetXmlNodeEmuToPtNull(_softEdgeRadiusPath);
+                return this.GetXmlNodeEmuToPtNull(this._softEdgeRadiusPath);
             }
             set
             {
                 if (value.HasValue)
                 {
-                    SetXmlNodeEmuToPt(_softEdgeRadiusPath, value.Value);
+                    this.SetXmlNodeEmuToPt(this._softEdgeRadiusPath, value.Value);
                 }
                 else
                 {
-                    DeleteNode(_softEdgeRadiusPath, true);
+                    this.DeleteNode(this._softEdgeRadiusPath, true);
                 }
             }
         }        
@@ -185,15 +185,15 @@ namespace OfficeOpenXml.Drawing.Style.Effect
         {
             get
             {
-                if(string.IsNullOrEmpty(_path))
+                if(string.IsNullOrEmpty(this._path))
                 {
-                    return (XmlElement)TopNode;
+                    return (XmlElement)this.TopNode;
                 }
-                if (ExistsNode(_path))
+                if (this.ExistsNode(this._path))
                 {
-                    return (XmlElement)GetNode(_path);
+                    return (XmlElement)this.GetNode(this._path);
                 }
-                return (XmlElement)CreateNode(_path);
+                return (XmlElement)this.CreateNode(this._path);
             }
         }
         /// <summary>
@@ -203,7 +203,7 @@ namespace OfficeOpenXml.Drawing.Style.Effect
         {
             get
             {
-                return ExistsNode(_innerShadowPath);
+                return this.ExistsNode(this._innerShadowPath);
             }
         }
         /// <summary>
@@ -213,7 +213,7 @@ namespace OfficeOpenXml.Drawing.Style.Effect
         {
             get
             {
-                return ExistsNode(_outerShadowPath);
+                return this.ExistsNode(this._outerShadowPath);
             }
         }
         /// <summary>
@@ -223,7 +223,7 @@ namespace OfficeOpenXml.Drawing.Style.Effect
         {
             get
             {
-                return ExistsNode(_presetShadowPath);
+                return this.ExistsNode(this._presetShadowPath);
             }
         }
         /// <summary>
@@ -233,7 +233,7 @@ namespace OfficeOpenXml.Drawing.Style.Effect
         {
             get
             {
-                return ExistsNode(_blurPath);
+                return this.ExistsNode(this._blurPath);
             }
         }
         /// <summary>
@@ -243,7 +243,7 @@ namespace OfficeOpenXml.Drawing.Style.Effect
         {
             get
             {
-                return ExistsNode(_glowPath);
+                return this.ExistsNode(this._glowPath);
             }
         }
         /// <summary>
@@ -253,13 +253,13 @@ namespace OfficeOpenXml.Drawing.Style.Effect
         {
             get
             {
-                return ExistsNode(_fillOverlayPath);
+                return this.ExistsNode(this._fillOverlayPath);
             }
         }
 
         internal void SetFromXml(XmlElement copyFromEffectElement)
         {
-            XmlElement effectElement = EffectElement;
+            XmlElement effectElement = this.EffectElement;
 
             foreach (XmlAttribute a in copyFromEffectElement.Attributes)
             {
@@ -270,150 +270,150 @@ namespace OfficeOpenXml.Drawing.Style.Effect
         #region Private Methods
         private void SetPredefinedOuterShadow(ePresetExcelShadowType shadowType)
         {
-            OuterShadow.Color.SetPresetColor(ePresetColor.Black);
+            this.OuterShadow.Color.SetPresetColor(ePresetColor.Black);
 
             switch (shadowType)
             {
                 case ePresetExcelShadowType.PerspectiveUpperLeft:
-                    OuterShadow.Color.Transforms.AddAlpha(20);
-                    OuterShadow.BlurRadius = 6;
-                    OuterShadow.Distance = 0;
-                    OuterShadow.Direction = 225;
-                    OuterShadow.Alignment = eRectangleAlignment.BottomRight;
-                    OuterShadow.HorizontalSkewAngle = 20;
-                    OuterShadow.VerticalScalingFactor = 23;
+                    this.OuterShadow.Color.Transforms.AddAlpha(20);
+                    this.OuterShadow.BlurRadius = 6;
+                    this.OuterShadow.Distance = 0;
+                    this.OuterShadow.Direction = 225;
+                    this.OuterShadow.Alignment = eRectangleAlignment.BottomRight;
+                    this.OuterShadow.HorizontalSkewAngle = 20;
+                    this.OuterShadow.VerticalScalingFactor = 23;
                     break;
                 case ePresetExcelShadowType.PerspectiveUpperRight:
-                    OuterShadow.Color.Transforms.AddAlpha(20);
-                    OuterShadow.BlurRadius = 6;
-                    OuterShadow.Distance = 0;
-                    OuterShadow.Direction = 315;
-                    OuterShadow.Alignment = eRectangleAlignment.BottomLeft;
-                    OuterShadow.HorizontalSkewAngle = -20;
-                    OuterShadow.VerticalScalingFactor = 23;
+                    this.OuterShadow.Color.Transforms.AddAlpha(20);
+                    this.OuterShadow.BlurRadius = 6;
+                    this.OuterShadow.Distance = 0;
+                    this.OuterShadow.Direction = 315;
+                    this.OuterShadow.Alignment = eRectangleAlignment.BottomLeft;
+                    this.OuterShadow.HorizontalSkewAngle = -20;
+                    this.OuterShadow.VerticalScalingFactor = 23;
                     break;
                 case ePresetExcelShadowType.PerspectiveBelow:
-                    OuterShadow.Color.Transforms.AddAlpha(15);
-                    OuterShadow.BlurRadius = 12;
-                    OuterShadow.Distance = 25;
-                    OuterShadow.Direction = 90;
-                    OuterShadow.HorizontalScalingFactor = 90;
-                    OuterShadow.VerticalScalingFactor = -19;
+                    this.OuterShadow.Color.Transforms.AddAlpha(15);
+                    this.OuterShadow.BlurRadius = 12;
+                    this.OuterShadow.Distance = 25;
+                    this.OuterShadow.Direction = 90;
+                    this.OuterShadow.HorizontalScalingFactor = 90;
+                    this.OuterShadow.VerticalScalingFactor = -19;
                     break;
                 case ePresetExcelShadowType.PerspectiveLowerLeft:
-                    OuterShadow.Color.Transforms.AddAlpha(20);
-                    OuterShadow.BlurRadius = 6;
-                    OuterShadow.Distance = 1;
-                    OuterShadow.Direction = 135;
-                    OuterShadow.Alignment = eRectangleAlignment.BottomRight;
-                    OuterShadow.HorizontalSkewAngle = 13.34;
-                    OuterShadow.VerticalScalingFactor = -23;
+                    this.OuterShadow.Color.Transforms.AddAlpha(20);
+                    this.OuterShadow.BlurRadius = 6;
+                    this.OuterShadow.Distance = 1;
+                    this.OuterShadow.Direction = 135;
+                    this.OuterShadow.Alignment = eRectangleAlignment.BottomRight;
+                    this.OuterShadow.HorizontalSkewAngle = 13.34;
+                    this.OuterShadow.VerticalScalingFactor = -23;
                     break;
                 case ePresetExcelShadowType.PerspectiveLowerRight:
-                    OuterShadow.Color.Transforms.AddAlpha(20);
-                    OuterShadow.BlurRadius = 6;
-                    OuterShadow.Distance = 1;
-                    OuterShadow.Direction = 45;
-                    OuterShadow.Alignment = eRectangleAlignment.BottomLeft;
-                    OuterShadow.HorizontalSkewAngle = -13.34;
-                    OuterShadow.VerticalScalingFactor = -23;
+                    this.OuterShadow.Color.Transforms.AddAlpha(20);
+                    this.OuterShadow.BlurRadius = 6;
+                    this.OuterShadow.Distance = 1;
+                    this.OuterShadow.Direction = 45;
+                    this.OuterShadow.Alignment = eRectangleAlignment.BottomLeft;
+                    this.OuterShadow.HorizontalSkewAngle = -13.34;
+                    this.OuterShadow.VerticalScalingFactor = -23;
                     break;
 
                 case ePresetExcelShadowType.OuterCenter:
-                    OuterShadow.Color.Transforms.AddAlpha(40);
-                    OuterShadow.VerticalScalingFactor = 102;
-                    OuterShadow.HorizontalScalingFactor = 102;
-                    OuterShadow.BlurRadius = 5;
-                    OuterShadow.Alignment = eRectangleAlignment.Center;
+                    this.OuterShadow.Color.Transforms.AddAlpha(40);
+                    this.OuterShadow.VerticalScalingFactor = 102;
+                    this.OuterShadow.HorizontalScalingFactor = 102;
+                    this.OuterShadow.BlurRadius = 5;
+                    this.OuterShadow.Alignment = eRectangleAlignment.Center;
                     break;
                 default:
-                    OuterShadow.Color.Transforms.AddAlpha(40);
-                    OuterShadow.BlurRadius = 4;
-                    OuterShadow.Distance = 3;
+                    this.OuterShadow.Color.Transforms.AddAlpha(40);
+                    this.OuterShadow.BlurRadius = 4;
+                    this.OuterShadow.Distance = 3;
                     switch (shadowType)
                     {
                         case ePresetExcelShadowType.OuterTopLeft:
-                            OuterShadow.Direction = 225;
-                            OuterShadow.Alignment = eRectangleAlignment.BottomRight;
+                            this.OuterShadow.Direction = 225;
+                            this.OuterShadow.Alignment = eRectangleAlignment.BottomRight;
                             break;
                         case ePresetExcelShadowType.OuterTop:
-                            OuterShadow.Direction = 270;
-                            OuterShadow.Alignment = eRectangleAlignment.Bottom;
+                            this.OuterShadow.Direction = 270;
+                            this.OuterShadow.Alignment = eRectangleAlignment.Bottom;
                             break;
                         case ePresetExcelShadowType.OuterTopRight:
-                            OuterShadow.Direction = 315;
-                            OuterShadow.Alignment = eRectangleAlignment.BottomLeft;
+                            this.OuterShadow.Direction = 315;
+                            this.OuterShadow.Alignment = eRectangleAlignment.BottomLeft;
                             break;
                         case ePresetExcelShadowType.OuterLeft:
-                            OuterShadow.Direction = 180;
-                            OuterShadow.Alignment = eRectangleAlignment.Right;
+                            this.OuterShadow.Direction = 180;
+                            this.OuterShadow.Alignment = eRectangleAlignment.Right;
                             break;
                         case ePresetExcelShadowType.OuterRight:
-                            OuterShadow.Direction = 0;
-                            OuterShadow.Alignment = eRectangleAlignment.Left;
+                            this.OuterShadow.Direction = 0;
+                            this.OuterShadow.Alignment = eRectangleAlignment.Left;
                             break;
                         case ePresetExcelShadowType.OuterBottomLeft:
-                            OuterShadow.Direction = 135;
-                            OuterShadow.Alignment = eRectangleAlignment.TopRight;
+                            this.OuterShadow.Direction = 135;
+                            this.OuterShadow.Alignment = eRectangleAlignment.TopRight;
                             break;
                         case ePresetExcelShadowType.OuterBottom:
-                            OuterShadow.Direction = 90;
-                            OuterShadow.Alignment = eRectangleAlignment.Top;
+                            this.OuterShadow.Direction = 90;
+                            this.OuterShadow.Alignment = eRectangleAlignment.Top;
                             break;
                         case ePresetExcelShadowType.OuterBottomRight:
-                            OuterShadow.Direction = 45;
-                            OuterShadow.Alignment = eRectangleAlignment.TopLeft;
+                            this.OuterShadow.Direction = 45;
+                            this.OuterShadow.Alignment = eRectangleAlignment.TopLeft;
                             break;
                     }
                     break;
             }
 
-            OuterShadow.RotateWithShape = false;
+            this.OuterShadow.RotateWithShape = false;
 
         }
         private void SetPredefinedInnerShadow(ePresetExcelShadowType shadowType)
         {
-            InnerShadow.Color.SetPresetColor(ePresetColor.Black);
+            this.InnerShadow.Color.SetPresetColor(ePresetColor.Black);
 
             if (shadowType == ePresetExcelShadowType.InnerCenter)
             {
-                InnerShadow.Color.Transforms.AddAlpha(0);
-                InnerShadow.Direction = 0;
-                InnerShadow.Distance = 0;
-                InnerShadow.BlurRadius = 9;
+                this.InnerShadow.Color.Transforms.AddAlpha(0);
+                this.InnerShadow.Direction = 0;
+                this.InnerShadow.Distance = 0;
+                this.InnerShadow.BlurRadius = 9;
             }
             else
             {
-                InnerShadow.Color.Transforms.AddAlpha(50);
-                InnerShadow.BlurRadius = 5;
-                InnerShadow.Distance = 4;
+                this.InnerShadow.Color.Transforms.AddAlpha(50);
+                this.InnerShadow.BlurRadius = 5;
+                this.InnerShadow.Distance = 4;
             }
 
             switch (shadowType)
             {
                 case ePresetExcelShadowType.InnerTopLeft:
-                    InnerShadow.Direction = 225;
+                    this.InnerShadow.Direction = 225;
                     break;
                 case ePresetExcelShadowType.InnerTop:
-                    InnerShadow.Direction = 270;
+                    this.InnerShadow.Direction = 270;
                     break;
                 case ePresetExcelShadowType.InnerTopRight:
-                    InnerShadow.Direction = 315;
+                    this.InnerShadow.Direction = 315;
                     break;
                 case ePresetExcelShadowType.InnerLeft:
-                    InnerShadow.Direction = 180;
+                    this.InnerShadow.Direction = 180;
                     break;
                 case ePresetExcelShadowType.InnerRight:
-                    InnerShadow.Direction = 0;
+                    this.InnerShadow.Direction = 0;
                     break;
                 case ePresetExcelShadowType.InnerBottomLeft:
-                    InnerShadow.Direction = 135;
+                    this.InnerShadow.Direction = 135;
                     break;
                 case ePresetExcelShadowType.InnerBottom:
-                    InnerShadow.Direction = 90;
+                    this.InnerShadow.Direction = 90;
                     break;
                 case ePresetExcelShadowType.InnerBottomRight:
-                    InnerShadow.Direction = 45;
+                    this.InnerShadow.Direction = 45;
                     break;
             }
         }
@@ -426,25 +426,25 @@ namespace OfficeOpenXml.Drawing.Style.Effect
             switch (softEdgesType)
             {
                 case ePresetExcelSoftEdgesType.None:
-                    SoftEdgeRadius = null;
+                    this.SoftEdgeRadius = null;
                     break;
                 case ePresetExcelSoftEdgesType.SoftEdge1Pt:
-                    SoftEdgeRadius = 1;
+                    this.SoftEdgeRadius = 1;
                     break;
                 case ePresetExcelSoftEdgesType.SoftEdge2_5Pt:
-                    SoftEdgeRadius = 2.5;
+                    this.SoftEdgeRadius = 2.5;
                     break;
                 case ePresetExcelSoftEdgesType.SoftEdge5Pt:
-                    SoftEdgeRadius = 5;
+                    this.SoftEdgeRadius = 5;
                     break;
                 case ePresetExcelSoftEdgesType.SoftEdge10Pt:
-                    SoftEdgeRadius = 10;
+                    this.SoftEdgeRadius = 10;
                     break;
                 case ePresetExcelSoftEdgesType.SoftEdge25Pt:
-                    SoftEdgeRadius = 25;
+                    this.SoftEdgeRadius = 25;
                     break;
                 case ePresetExcelSoftEdgesType.SoftEdge50Pt:
-                    SoftEdgeRadius = 50;
+                    this.SoftEdgeRadius = 50;
                     break;
             }
         }
@@ -456,7 +456,7 @@ namespace OfficeOpenXml.Drawing.Style.Effect
         /// <param name="glowType">The preset type</param>
         public void SetPresetGlow(ePresetExcelGlowType glowType)
         {
-            Glow.Delete();
+            this.Glow.Delete();
             if (glowType == ePresetExcelGlowType.None)
             {
                 return;
@@ -465,10 +465,10 @@ namespace OfficeOpenXml.Drawing.Style.Effect
             string? glowTypeString = glowType.ToString();
             string? font = glowTypeString.Substring(0, glowTypeString.IndexOf('_'));
             eSchemeColor schemeColor = (eSchemeColor)Enum.Parse(typeof(eSchemeColor), font);
-            Glow.Color.SetSchemeColor(schemeColor);
-            Glow.Color.Transforms.AddAlpha(40);
-            Glow.Color.Transforms.AddSaturationModulation(175);
-            Glow.Radius = int.Parse(glowTypeString.Substring(font.Length + 1, glowTypeString.Length - font.Length - 3));
+            this.Glow.Color.SetSchemeColor(schemeColor);
+            this.Glow.Color.Transforms.AddAlpha(40);
+            this.Glow.Color.Transforms.AddSaturationModulation(175);
+            this.Glow.Radius = int.Parse(glowTypeString.Substring(font.Length + 1, glowTypeString.Length - font.Length - 3));
         }
 
         /// <summary>
@@ -477,9 +477,9 @@ namespace OfficeOpenXml.Drawing.Style.Effect
         /// <param name="shadowType">The preset type</param>
         public void SetPresetShadow(ePresetExcelShadowType shadowType)
         {
-            InnerShadow.Delete();
-            OuterShadow.Delete();
-            PresetShadow.Delete();
+            this.InnerShadow.Delete();
+            this.OuterShadow.Delete();
+            this.PresetShadow.Delete();
 
             if (shadowType == ePresetExcelShadowType.None)
             {
@@ -488,11 +488,11 @@ namespace OfficeOpenXml.Drawing.Style.Effect
 
             if (shadowType <= ePresetExcelShadowType.InnerBottomRight)
             {
-                SetPredefinedInnerShadow(shadowType);
+                this.SetPredefinedInnerShadow(shadowType);
             }
             else
             {
-                SetPredefinedOuterShadow(shadowType);
+                this.SetPredefinedOuterShadow(shadowType);
             }
         }
         /// <summary>
@@ -501,98 +501,98 @@ namespace OfficeOpenXml.Drawing.Style.Effect
         /// <param name="reflectionType">The preset type</param>
         public void SetPresetReflection(ePresetExcelReflectionType reflectionType)
         {
-            Reflection.Delete();
+            this.Reflection.Delete();
             if (reflectionType == ePresetExcelReflectionType.TightTouching ||
                reflectionType == ePresetExcelReflectionType.Tight4Pt ||
                reflectionType == ePresetExcelReflectionType.Tight8Pt)
             {
-                Reflection.Alignment = eRectangleAlignment.BottomLeft;
-                Reflection.RotateWithShape = false;
-                Reflection.Direction = 90;
-                Reflection.VerticalScalingFactor = -100;
-                Reflection.BlurRadius = 0.5;
+                this.Reflection.Alignment = eRectangleAlignment.BottomLeft;
+                this.Reflection.RotateWithShape = false;
+                this.Reflection.Direction = 90;
+                this.Reflection.VerticalScalingFactor = -100;
+                this.Reflection.BlurRadius = 0.5;
                 if (reflectionType == ePresetExcelReflectionType.TightTouching)
                 {
-                    Reflection.EndPosition = 35;
-                    Reflection.StartOpacity = 52;
-                    Reflection.EndOpacity = 0.3;
-                    Reflection.Distance = 0;
+                    this.Reflection.EndPosition = 35;
+                    this.Reflection.StartOpacity = 52;
+                    this.Reflection.EndOpacity = 0.3;
+                    this.Reflection.Distance = 0;
                 }
                 else if (reflectionType == ePresetExcelReflectionType.Tight4Pt)
                 {
-                    Reflection.EndPosition = 38.5;
-                    Reflection.StartOpacity = 50;
-                    Reflection.EndOpacity = 0.3;
-                    Reflection.Distance = 4;
+                    this.Reflection.EndPosition = 38.5;
+                    this.Reflection.StartOpacity = 50;
+                    this.Reflection.EndOpacity = 0.3;
+                    this.Reflection.Distance = 4;
                 }
                 else if (reflectionType == ePresetExcelReflectionType.Tight8Pt)
                 {
-                    Reflection.EndPosition = 40;
-                    Reflection.StartOpacity = 50;
-                    Reflection.EndOpacity = 0.275;
-                    Reflection.Distance = 8;
+                    this.Reflection.EndPosition = 40;
+                    this.Reflection.StartOpacity = 50;
+                    this.Reflection.EndOpacity = 0.275;
+                    this.Reflection.Distance = 8;
                 }
             }
             else if (reflectionType == ePresetExcelReflectionType.HalfTouching ||
                     reflectionType == ePresetExcelReflectionType.Half4Pt ||
                     reflectionType == ePresetExcelReflectionType.Half8Pt)
             {
-                Reflection.Alignment = eRectangleAlignment.BottomLeft;
-                Reflection.RotateWithShape = false;
-                Reflection.Direction = 90;
-                Reflection.VerticalScalingFactor = -100;
-                Reflection.BlurRadius = 0.5;
+                this.Reflection.Alignment = eRectangleAlignment.BottomLeft;
+                this.Reflection.RotateWithShape = false;
+                this.Reflection.Direction = 90;
+                this.Reflection.VerticalScalingFactor = -100;
+                this.Reflection.BlurRadius = 0.5;
                 if (reflectionType == ePresetExcelReflectionType.HalfTouching)
                 {
-                    Reflection.EndPosition = 55;
-                    Reflection.StartOpacity = 50;
-                    Reflection.EndOpacity = 0.3;
-                    Reflection.Distance = 0;
+                    this.Reflection.EndPosition = 55;
+                    this.Reflection.StartOpacity = 50;
+                    this.Reflection.EndOpacity = 0.3;
+                    this.Reflection.Distance = 0;
                 }
                 else if (reflectionType == ePresetExcelReflectionType.Half4Pt)
                 {
-                    Reflection.EndPosition = 55.5;
-                    Reflection.StartOpacity = 50;
-                    Reflection.EndOpacity = 0.300;
-                    Reflection.Distance = 4;
+                    this.Reflection.EndPosition = 55.5;
+                    this.Reflection.StartOpacity = 50;
+                    this.Reflection.EndOpacity = 0.300;
+                    this.Reflection.Distance = 4;
                 }
                 else if (reflectionType == ePresetExcelReflectionType.Half8Pt)
                 {
-                    Reflection.EndPosition = 55.5;
-                    Reflection.StartOpacity = 50;
-                    Reflection.EndOpacity = 0.300;
-                    Reflection.Distance = 8;
+                    this.Reflection.EndPosition = 55.5;
+                    this.Reflection.StartOpacity = 50;
+                    this.Reflection.EndOpacity = 0.300;
+                    this.Reflection.Distance = 8;
                 }
             }
             else if (reflectionType == ePresetExcelReflectionType.FullTouching ||
                     reflectionType == ePresetExcelReflectionType.Full4Pt ||
                     reflectionType == ePresetExcelReflectionType.Full8Pt)
             {
-                Reflection.Alignment = eRectangleAlignment.BottomLeft;
-                Reflection.RotateWithShape = false;
-                Reflection.Direction = 90;
-                Reflection.VerticalScalingFactor = -100;
-                Reflection.BlurRadius = 0.5;
+                this.Reflection.Alignment = eRectangleAlignment.BottomLeft;
+                this.Reflection.RotateWithShape = false;
+                this.Reflection.Direction = 90;
+                this.Reflection.VerticalScalingFactor = -100;
+                this.Reflection.BlurRadius = 0.5;
                 if (reflectionType == ePresetExcelReflectionType.FullTouching)
                 {
-                    Reflection.EndPosition = 90;
-                    Reflection.StartOpacity = 50;
-                    Reflection.EndOpacity = 0.3;
-                    Reflection.Distance = 0;
+                    this.Reflection.EndPosition = 90;
+                    this.Reflection.StartOpacity = 50;
+                    this.Reflection.EndOpacity = 0.3;
+                    this.Reflection.Distance = 0;
                 }
                 else if (reflectionType == ePresetExcelReflectionType.Full4Pt)
                 {
-                    Reflection.EndPosition = 90;
-                    Reflection.StartOpacity = 50;
-                    Reflection.EndOpacity = 0.300;
-                    Reflection.Distance = 4;
+                    this.Reflection.EndPosition = 90;
+                    this.Reflection.StartOpacity = 50;
+                    this.Reflection.EndOpacity = 0.300;
+                    this.Reflection.Distance = 4;
                 }
                 else if (reflectionType == ePresetExcelReflectionType.Full8Pt)
                 {
-                    Reflection.EndPosition = 92;
-                    Reflection.StartOpacity = 50;
-                    Reflection.EndOpacity = 0.295;
-                    Reflection.Distance = 8;
+                    this.Reflection.EndPosition = 92;
+                    this.Reflection.StartOpacity = 50;
+                    this.Reflection.EndOpacity = 0.295;
+                    this.Reflection.Distance = 8;
                 }
             }
         }

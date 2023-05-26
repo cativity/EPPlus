@@ -38,11 +38,11 @@ namespace OfficeOpenXml.Sorting
         {
             get
             {
-                return GetXmlNodeBool(_descendingPath);
+                return this.GetXmlNodeBool(this._descendingPath);
             }
             set
             {
-                SetXmlNodeBool(_descendingPath, value);
+                this.SetXmlNodeBool(this._descendingPath, value);
             }
         }
 
@@ -53,11 +53,11 @@ namespace OfficeOpenXml.Sorting
         {
             get
             {
-                return GetXmlNodeString(_refPath);
+                return this.GetXmlNodeString(this._refPath);
             }
             set
             {
-                SetXmlNodeString(_refPath, value);
+                this.SetXmlNodeString(this._refPath, value);
             }
         }
 
@@ -68,7 +68,7 @@ namespace OfficeOpenXml.Sorting
         {
             get
             {
-                string? list = GetXmlNodeString(_customListPath);
+                string? list = this.GetXmlNodeString(this._customListPath);
                 if(!string.IsNullOrEmpty(list))
                 {
                     return list.Split(',').Where(x => !string.IsNullOrEmpty(x)).Select(x => x.Trim()).ToArray();
@@ -79,7 +79,7 @@ namespace OfficeOpenXml.Sorting
             {
                 if(value == null || value.Length == 0)
                 {
-                    SetXmlNodeString(_customListPath, string.Empty, true);
+                    this.SetXmlNodeString(this._customListPath, string.Empty, true);
                 }
                 StringBuilder? val = new StringBuilder();
                 for(int x = 0; x < value.Length; x++)
@@ -90,7 +90,8 @@ namespace OfficeOpenXml.Sorting
                         val.Append(",");
                     }
                 }
-                SetXmlNodeString(_customListPath, val.ToString());
+
+                this.SetXmlNodeString(this._customListPath, val.ToString());
             }
         }
     }

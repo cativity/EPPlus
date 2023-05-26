@@ -31,9 +31,9 @@ namespace OfficeOpenXml.Drawing.Theme
                 path += "/";
             }
 
-            _path = path;
-            _schemaNodeOrder = schemaNodeOrder;
-            _theme = theme;
+            this._path = path;
+            this._schemaNodeOrder = schemaNodeOrder;
+            this._theme = theme;
         }
         ExcelDrawingEffectStyle _effects = null;
         /// <summary>
@@ -43,11 +43,11 @@ namespace OfficeOpenXml.Drawing.Theme
         {
             get
             {
-                if(_effects==null)
+                if(this._effects==null)
                 {
-                    _effects = new ExcelDrawingEffectStyle(_theme, NameSpaceManager, TopNode, _path + "a:effectLst", _schemaNodeOrder);
+                    this._effects = new ExcelDrawingEffectStyle(this._theme, this.NameSpaceManager, this.TopNode, this._path + "a:effectLst", this._schemaNodeOrder);
                 }
-                return _effects;
+                return this._effects;
             }
         }
         ExcelDrawing3D _threeD = null;
@@ -58,11 +58,11 @@ namespace OfficeOpenXml.Drawing.Theme
         {
             get
             {
-                if (_threeD == null)
+                if (this._threeD == null)
                 {
-                    _threeD = new ExcelDrawing3D(NameSpaceManager, TopNode, _path, _schemaNodeOrder);
+                    this._threeD = new ExcelDrawing3D(this.NameSpaceManager, this.TopNode, this._path, this._schemaNodeOrder);
                 }
-                return _threeD;
+                return this._threeD;
             }
         }
     }

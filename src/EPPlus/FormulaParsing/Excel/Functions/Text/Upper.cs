@@ -29,7 +29,7 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Text
         {
             ValidateArguments(arguments, 1);
             string? arg = ArgToString(arguments, 0);
-            return CreateResult(Utils.ConvertUtil._invariantTextInfo.ToUpper(arg), DataType.String);
+            return this.CreateResult(Utils.ConvertUtil._invariantTextInfo.ToUpper(arg), DataType.String);
         }
     }
 }

@@ -28,8 +28,8 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Math
         public override CompileResult Execute(IEnumerable<FunctionArgument> arguments, ParsingContext context)
         {
             ValidateArguments(arguments, 2);
-            ExcelDoubleCellValue[]? array1 = ArgsToDoubleEnumerable(arguments.Take(1), context).ToArray();
-            ExcelDoubleCellValue[]? array2 = ArgsToDoubleEnumerable(arguments.Skip(1).Take(1), context).ToArray();
+            ExcelDoubleCellValue[]? array1 = this.ArgsToDoubleEnumerable(arguments.Take(1), context).ToArray();
+            ExcelDoubleCellValue[]? array2 = this.ArgsToDoubleEnumerable(arguments.Skip(1).Take(1), context).ToArray();
             if (array1.Length != array2.Length)
             {
                 return this.CreateResult(eErrorType.NA);
@@ -48,7 +48,7 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Math
                 result += (array1[x] - avg1) * (array2[x] - avg2);
             }
             result /= (array1.Length - 1);
-            return CreateResult(result, DataType.Decimal);
+            return this.CreateResult(result, DataType.Decimal);
         }
     }
 }

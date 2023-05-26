@@ -24,9 +24,9 @@ namespace OfficeOpenXml.FormulaParsing
     {
         internal FormulaCellInfo(string worksheet, string address, string formula)
         {
-            _worksheet = worksheet;
-            _address = address;
-            _formula = formula;
+            this._worksheet = worksheet;
+            this._address = address;
+            this._formula = formula;
         }
 
         private readonly string _worksheet;
@@ -36,15 +36,15 @@ namespace OfficeOpenXml.FormulaParsing
         /// <summary>
         /// The name of the worksheet.
         /// </summary>
-        public string Worksheet => _worksheet;
+        public string Worksheet => this._worksheet;
 
         /// <summary>
         /// The address of the formula
         /// </summary>
-        public string Address => _address;
+        public string Address => this._address;
         /// <summary>
         /// The formula
         /// </summary>
-        public string Formula => _formula;
+        public string Formula => this._formula;
     }
 }

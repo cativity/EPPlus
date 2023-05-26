@@ -29,12 +29,12 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Math
         public override CompileResult Execute(IEnumerable<FunctionArgument> arguments, ParsingContext context)
         {
             ValidateArguments(arguments, 1);
-            double number = ArgToDecimal(arguments, 0);
+            double number = this.ArgToDecimal(arguments, 0);
             if (arguments.Count() == 1)
             {
-                return CreateResult(System.Math.Truncate(number), DataType.Decimal);
+                return this.CreateResult(System.Math.Truncate(number), DataType.Decimal);
             }
-            int nDigits = ArgToInt(arguments, 1);
+            int nDigits = this.ArgToInt(arguments, 1);
             ExcelFunction? func = context.Configuration.FunctionRepository.GetFunction("rounddown");
             return func.Execute(arguments, context);
         }

@@ -45,8 +45,8 @@ namespace OfficeOpenXml.Vba.ContentHash
         protected override void CreateHashInputInternal(MemoryStream ms)
         {
             BinaryWriter bw = new BinaryWriter(ms);
-            CreateV3NormalizedDataHashInput(bw);
-            NormalizeProjectStream(bw);
+            this.CreateV3NormalizedDataHashInput(bw);
+            this.NormalizeProjectStream(bw);
         }
 
         /// <summary>
@@ -56,7 +56,7 @@ namespace OfficeOpenXml.Vba.ContentHash
         /// <param name="bw"></param>
         private void CreateV3NormalizedDataHashInput(BinaryWriter bw)
         {
-            ExcelVbaProject? p = base.Project;
+            ExcelVbaProject? p = this.Project;
             Encoding? encoding = Encoding.GetEncoding(p.CodePage);
 
             /******************************************
@@ -262,7 +262,7 @@ namespace OfficeOpenXml.Vba.ContentHash
                 /******************************************
                  * 2.3.4.2.2.1 REFERENCE Record           *
                  ******************************************/
-                WriteModuleRecord(p, bw, module);
+                this.WriteModuleRecord(p, bw, module);
             }
 
             // APPEND Buffer WITH Terminator (section 2.3.4.2) of Storage
@@ -519,7 +519,7 @@ namespace OfficeOpenXml.Vba.ContentHash
                  *    APPEND Buffer WITH Line 
                  *    APPEND Buffer WITH “\n”
                  */
-                else if(DefaultAttributes.Contains(lineText) == false)
+                else if(this.DefaultAttributes.Contains(lineText) == false)
                 {
                     hashModuleNameFlag = true;
                     bw.Write(line);
@@ -559,7 +559,7 @@ namespace OfficeOpenXml.Vba.ContentHash
         /// <param name="bw"></param>
         private void NormalizeProjectStream(BinaryWriter bw)
         {
-            ExcelVbaProject? p = base.Project;
+            ExcelVbaProject? p = this.Project;
             if(string.IsNullOrEmpty(p.ProjectStreamText))
             {
                 return;

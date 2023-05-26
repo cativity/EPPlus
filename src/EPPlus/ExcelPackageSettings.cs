@@ -34,11 +34,11 @@ namespace OfficeOpenXml
         {
             get
             {
-                if (_textSettings == null)
+                if (this._textSettings == null)
                 {
-                    _textSettings = new ExcelTextSettings();
+                    this._textSettings = new ExcelTextSettings();
                 }
-                return _textSettings;
+                return this._textSettings;
             }
         }
         private ExcelImageSettings _imageSettings = null;
@@ -49,11 +49,11 @@ namespace OfficeOpenXml
         {
             get
             {
-                if (_imageSettings == null)
+                if (this._imageSettings == null)
                 {
-                    _imageSettings = new ExcelImageSettings();
+                    this._imageSettings = new ExcelImageSettings();
                 }
-                return _imageSettings;
+                return this._imageSettings;
             }
         }
     }

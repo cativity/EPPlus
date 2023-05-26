@@ -27,10 +27,10 @@ namespace OfficeOpenXml.Core.Worksheet.Fonts.GenericFontMetrics
 
         public FontScaleFactor(float small, float medium, float large, float sizeFactor)
         {
-            _small = small;
-            _medium = medium;
-            _large = large;
-            _sizeFactor = sizeFactor;
+            this._small = small;
+            this._medium = medium;
+            this._large = large;
+            this._sizeFactor = sizeFactor;
         }
 
         private readonly float _small;
@@ -40,11 +40,11 @@ namespace OfficeOpenXml.Core.Worksheet.Fonts.GenericFontMetrics
 
         internal float Calculate(float width)
         {
-            if (width < (100 * _sizeFactor))
+            if (width < (100 * this._sizeFactor))
             {
                 return Adjustment(width, (25 * this._sizeFactor), (100 * this._sizeFactor), this._small, this._medium);
             }
-            else if (width < (200 * _sizeFactor))
+            else if (width < (200 * this._sizeFactor))
             {
                 return Adjustment(width, (100 * this._sizeFactor), (200 * this._sizeFactor), this._medium, this._large);
             }

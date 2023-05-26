@@ -14,76 +14,78 @@ namespace OfficeOpenXml
         protected bool _minify;
         internal JsonExport(JsonExportSettings settings)
         {
-            _settings = settings;
-            _minify = settings.Minify;
+            this._settings = settings;
+            this._minify = settings.Minify;
         }
         internal protected void WriteCellData(StreamWriter sw, ExcelRangeBase dr, int headerRows)
         {
-            bool dtOnCell = _settings.AddDataTypesOn == eDataTypeOn.OnCell;
+            bool dtOnCell = this._settings.AddDataTypesOn == eDataTypeOn.OnCell;
             ExcelWorksheet ws = dr.Worksheet;
             Uri uri = null;
             int commentIx = 0;
-            WriteItem(sw, $"\"{_settings.RowsElementName}\":[", true);
+            this.WriteItem(sw, $"\"{this._settings.RowsElementName}\":[", true);
             int fromRow = dr._fromRow + headerRows;
             for (int r = fromRow; r <= dr._toRow; r++)
             {
-                WriteStart(sw);
-                WriteItem(sw, $"\"{_settings.CellsElementName}\":[", true);
+                this.WriteStart(sw);
+                this.WriteItem(sw, $"\"{this._settings.CellsElementName}\":[", true);
                 for (int c = dr._fromCol; c <= dr._toCol; c++)
                 {
                     ExcelValue cv = ws.GetCoreValueInner(r, c);
-                    string? t = JsonEscape(ValueToTextHandler.GetFormattedText(cv._value, ws.Workbook, cv._styleId, false, _settings.Culture));
-                    WriteStart(sw);
-                    bool hasHyperlink = _settings.WriteHyperlinks && ws._hyperLinks.Exists(r, c, ref uri);
-                    bool hasComment = _settings.WriteComments && ws._commentsStore.Exists(r, c, ref commentIx);
+                    string? t = JsonEscape(ValueToTextHandler.GetFormattedText(cv._value, ws.Workbook, cv._styleId, false, this._settings.Culture));
+                    this.WriteStart(sw);
+                    bool hasHyperlink = this._settings.WriteHyperlinks && ws._hyperLinks.Exists(r, c, ref uri);
+                    bool hasComment = this._settings.WriteComments && ws._commentsStore.Exists(r, c, ref commentIx);
                     if (cv._value == null)
                     {
-                        WriteItem(sw, $"\"t\":\"{t}\"");
+                        this.WriteItem(sw, $"\"t\":\"{t}\"");
                     }
                     else
                     {
                         string? v = JsonEscape(HtmlRawDataProvider.GetRawValue(cv._value));
-                        WriteItem(sw, $"\"v\":\"{v}\",");
-                        WriteItem(sw, $"\"t\":\"{t}\"", false, dtOnCell || hasHyperlink || hasComment);
+                        this.WriteItem(sw, $"\"v\":\"{v}\",");
+                        this.WriteItem(sw, $"\"t\":\"{t}\"", false, dtOnCell || hasHyperlink || hasComment);
                         if (dtOnCell)
                         {
                             string? dt = HtmlRawDataProvider.GetHtmlDataTypeFromValue(cv._value);
-                            WriteItem(sw, $"\"dt\":\"{dt}\"", false, hasHyperlink  || hasComment);
+                            this.WriteItem(sw, $"\"dt\":\"{dt}\"", false, hasHyperlink  || hasComment);
                         }
                     }
 
                     if (hasHyperlink)
                     {
-                        WriteItem(sw, $"\"uri\":\"{JsonEscape(uri?.OriginalString)}\"", false, hasComment);
+                        this.WriteItem(sw, $"\"uri\":\"{JsonEscape(uri?.OriginalString)}\"", false, hasComment);
                     }
 
                     if(hasComment)
                     {
                         ExcelComment? comment = ws.Comments[commentIx];
-                        WriteItem(sw, $"\"comment\":\"{comment.Text}\"");
+                        this.WriteItem(sw, $"\"comment\":\"{comment.Text}\"");
                     }
 
                     if(c == dr._toCol)
                     {
-                        WriteEnd(sw, "}");
+                        this.WriteEnd(sw, "}");
                     }
                     else
                     {
-                        WriteEnd(sw,"},");
+                        this.WriteEnd(sw,"},");
                     }
                 }
-                WriteEnd(sw,"]");
+
+                this.WriteEnd(sw,"]");
                 if (r == dr._toRow)
                 {
-                    WriteEnd(sw);
+                    this.WriteEnd(sw);
                 }
                 else
                 {
-                    WriteEnd(sw, "},");
+                    this.WriteEnd(sw, "},");
                 }
             }
-            WriteEnd(sw, "]");
-            WriteEnd(sw);
+
+            this.WriteEnd(sw, "]");
+            this.WriteEnd(sw);
         }
         internal static string JsonEscape(string s)
         {
@@ -139,43 +141,43 @@ namespace OfficeOpenXml
                 v += ",";
             }
 
-            if (_minify)
+            if (this._minify)
             {
                 sw.Write(v);
             }
             else
             {
-                sw.WriteLine(_indent + v);
+                sw.WriteLine(this._indent + v);
                 if (indent)
                 {
-                    _indent += "  ";
+                    this._indent += "  ";
                 }
             }
         }
 
         internal protected void WriteStart(StreamWriter sw)
         {
-            if (_minify)
+            if (this._minify)
             {
             
                 sw.Write("{");
             }
             else
             {
-                sw.WriteLine($"{_indent}{{");
-                _indent += "  ";
+                sw.WriteLine($"{this._indent}{{");
+                this._indent += "  ";
             }
         }
         internal protected void WriteEnd(StreamWriter sw, string bracket="}")
         {
-            if (_minify)
+            if (this._minify)
             {
                 sw.Write(bracket);
             }
             else
             {
-                _indent = _indent.Substring(0, _indent.Length - 2);
-                sw.WriteLine($"{_indent}{bracket}");
+                this._indent = this._indent.Substring(0, this._indent.Length - 2);
+                sw.WriteLine($"{this._indent}{bracket}");
             }
         }
     }

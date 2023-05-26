@@ -26,7 +26,7 @@ namespace OfficeOpenXml.FormulaParsing.ExpressionGraph
         public ExcelErrorExpression(string expression, ExcelErrorValue error)
             : base(expression)
         {
-            _error = error;
+            this._error = error;
         }
 
         public ExcelErrorExpression(ExcelErrorValue error)
@@ -42,7 +42,7 @@ namespace OfficeOpenXml.FormulaParsing.ExpressionGraph
 
         public override CompileResult Compile()
         {
-            return new CompileResult(_error, DataType.ExcelError);
+            return new CompileResult(this._error, DataType.ExcelError);
             //if (ParentIsLookupFunction)
             //{
             //    return new CompileResult(ExpressionString, DataType.ExcelError);

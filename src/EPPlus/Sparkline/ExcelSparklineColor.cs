@@ -36,7 +36,7 @@ namespace OfficeOpenXml.Sparkline
         /// </summary>
         public int Indexed
         {
-            get => GetXmlNodeInt("@indexed");
+            get => this.GetXmlNodeInt("@indexed");
             set
             {
                 if (value < 0 || value > 65)
@@ -44,8 +44,8 @@ namespace OfficeOpenXml.Sparkline
                     throw (new ArgumentOutOfRangeException("Index out of range"));
                 }
 
-                ClearValues();
-                SetXmlNodeString("@indexed", value.ToString(CultureInfo.InvariantCulture));
+                this.ClearValues();
+                this.SetXmlNodeString("@indexed", value.ToString(CultureInfo.InvariantCulture));
             }
         }
 
@@ -54,11 +54,11 @@ namespace OfficeOpenXml.Sparkline
         /// </summary>
         public string Rgb
         {
-            get => GetXmlNodeString("@rgb");
+            get => this.GetXmlNodeString("@rgb");
             internal set
             {
-                ClearValues();
-                SetXmlNodeString("@rgb", value);
+                this.ClearValues();
+                this.SetXmlNodeString("@rgb", value);
             }
         }
         /// <summary>
@@ -68,7 +68,7 @@ namespace OfficeOpenXml.Sparkline
         {
             get
             {
-                int? v = GetXmlNodeIntNull("@theme");
+                int? v = this.GetXmlNodeIntNull("@theme");
                 if(v.HasValue)
                 {
                     return (eThemeSchemeColor)v;
@@ -80,18 +80,18 @@ namespace OfficeOpenXml.Sparkline
             }
             internal set
             {
-                ClearValues();
+                this.ClearValues();
 
-                SetXmlNodeString("@theme", ((int)value.Value).ToString(CultureInfo.InvariantCulture));
+                this.SetXmlNodeString("@theme", ((int)value.Value).ToString(CultureInfo.InvariantCulture));
             }
         }
 
         private void ClearValues()
         {
-            DeleteNode("@rgb");
-            DeleteNode("@indexed");
-            DeleteNode("@theme");
-            DeleteNode("@auto");
+            this.DeleteNode("@rgb");
+            this.DeleteNode("@indexed");
+            this.DeleteNode("@theme");
+            this.DeleteNode("@auto");
         }
 
         /// <summary>
@@ -99,14 +99,15 @@ namespace OfficeOpenXml.Sparkline
         /// </summary>
         public decimal Tint
         {
-            get=> GetXmlNodeDecimal("@tint");
+            get=> this.GetXmlNodeDecimal("@tint");
             set
             {
                 if (value > 1 || value < -1)
                 {
                     throw (new ArgumentOutOfRangeException("Value must be between -1 and 1"));
                 }
-                SetXmlNodeString("@tint", value.ToString(CultureInfo.InvariantCulture));
+
+                this.SetXmlNodeString("@tint", value.ToString(CultureInfo.InvariantCulture));
             }
         }
         /// <summary>
@@ -116,12 +117,12 @@ namespace OfficeOpenXml.Sparkline
         {
             get
             {
-                return GetXmlNodeBool("@auto");
+                return this.GetXmlNodeBool("@auto");
             }
             internal set
             {
-                ClearValues();
-                SetXmlNodeBool("@auto", value);
+                this.ClearValues();
+                this.SetXmlNodeBool("@auto", value);
             }
         }
         /// <summary>
@@ -130,7 +131,7 @@ namespace OfficeOpenXml.Sparkline
         /// <param name="color">The color</param>
         public void SetColor(Color color)
         {
-            Rgb = color.ToArgb().ToString("X");
+            this.Rgb = color.ToArgb().ToString("X");
         }
         /// <summary>
         /// Sets a theme color
@@ -138,7 +139,7 @@ namespace OfficeOpenXml.Sparkline
         /// <param name="color">The color</param>
         public void SetColor(eThemeSchemeColor color)
         {
-            Theme=color;
+            this.Theme=color;
         }
         /// <summary>
         /// Sets an indexed color
@@ -146,14 +147,14 @@ namespace OfficeOpenXml.Sparkline
         /// <param name="color">The color</param>
         public void SetColor(ExcelIndexedColor color)
         {
-            Indexed = (int)color;
+            this.Indexed = (int)color;
         }
         /// <summary>
         /// Sets the color to auto
         /// </summary>
         public void SetAuto()
         {
-            Auto = true;
+            this.Auto = true;
         }
     }
 }

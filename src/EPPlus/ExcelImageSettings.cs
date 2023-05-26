@@ -33,15 +33,15 @@ namespace OfficeOpenXml
             SystemDrawingImageHandler? m=new SystemDrawingImageHandler();
             if(m.ValidForEnvironment())
             {
-                PrimaryImageHandler = m;
-                SecondaryImageHandler = new GenericImageHandler();
-                TertiaryImageHandler = null;
+                this.PrimaryImageHandler = m;
+                this.SecondaryImageHandler = new GenericImageHandler();
+                this.TertiaryImageHandler = null;
             }
             else
             {
-                PrimaryImageHandler = new GenericImageHandler();
-                SecondaryImageHandler = null;
-                TertiaryImageHandler = null;
+                this.PrimaryImageHandler = new GenericImageHandler();
+                this.SecondaryImageHandler = null;
+                this.TertiaryImageHandler = null;
             }
         }
 
@@ -62,19 +62,15 @@ namespace OfficeOpenXml
 
         internal bool GetImageBounds(MemoryStream ms, ePictureType type, out double width, out double height, out double horizontalResolution, out double verticalResolution)
         {
-            if(PrimaryImageHandler.SupportedTypes.Contains(type) && PrimaryImageHandler.GetImageBounds(ms, type,out width, out height, out horizontalResolution, out verticalResolution))
+            if(this.PrimaryImageHandler.SupportedTypes.Contains(type) && this.PrimaryImageHandler.GetImageBounds(ms, type,out width, out height, out horizontalResolution, out verticalResolution))
             {
                 return true;
             }
-            if (SecondaryImageHandler != null && 
-                SecondaryImageHandler.SupportedTypes.Contains(type) && 
-                SecondaryImageHandler.GetImageBounds(ms, type, out width, out height, out horizontalResolution, out verticalResolution))
+            if (this.SecondaryImageHandler != null && this.SecondaryImageHandler.SupportedTypes.Contains(type) && this.SecondaryImageHandler.GetImageBounds(ms, type, out width, out height, out horizontalResolution, out verticalResolution))
             {
                 return true;
             }
-            if (TertiaryImageHandler != null &&
-                TertiaryImageHandler.SupportedTypes.Contains(type) &&
-                TertiaryImageHandler.GetImageBounds(ms, type, out width, out height, out horizontalResolution, out verticalResolution))
+            if (this.TertiaryImageHandler != null && this.TertiaryImageHandler.SupportedTypes.Contains(type) && this.TertiaryImageHandler.GetImageBounds(ms, type, out width, out height, out horizontalResolution, out verticalResolution))
             {
                 return true;
             }

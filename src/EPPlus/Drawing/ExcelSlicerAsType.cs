@@ -22,7 +22,7 @@ namespace OfficeOpenXml.Drawing
         ExcelDrawing _drawing;
         internal ExcelSlicerAsType(ExcelDrawing drawing)
         {
-            _drawing = drawing;
+            this._drawing = drawing;
         }
         /// <summary>
         /// Returns the drawing as table slicer . 
@@ -33,7 +33,7 @@ namespace OfficeOpenXml.Drawing
         {
             get
             {
-                return _drawing as ExcelTableSlicer;
+                return this._drawing as ExcelTableSlicer;
             }
         }
         /// <summary>
@@ -45,7 +45,7 @@ namespace OfficeOpenXml.Drawing
         {
             get
             {
-                return _drawing as ExcelPivotTableSlicer;
+                return this._drawing as ExcelPivotTableSlicer;
             }
         }
     }

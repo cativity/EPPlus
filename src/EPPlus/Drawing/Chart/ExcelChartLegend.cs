@@ -35,40 +35,41 @@ namespace OfficeOpenXml.Drawing.Chart
         internal ExcelChartLegend(XmlNamespaceManager ns, XmlNode node, ExcelChart chart, string nsPrefix)
            : base(ns,node)
        {
-           _chart=chart;
-            _nsPrefix = nsPrefix;
+           this._chart=chart;
+           this._nsPrefix = nsPrefix;
             if(chart._isChartEx)
             {
-                OVERLAY_PATH = "@overlay";
+                this.OVERLAY_PATH = "@overlay";
             }
             else
             {
-                OVERLAY_PATH = "c:overlay/@val";
+                this.OVERLAY_PATH = "c:overlay/@val";
             }
-            AddSchemaNodeOrder(new string[] { "legendPos","legendEntry", "layout", "overlay", "spPr", "txPr" }, ExcelDrawing._schemaNodeOrderSpPr);
-            LoadLegendEntries();
+
+            this.AddSchemaNodeOrder(new string[] { "legendPos","legendEntry", "layout", "overlay", "spPr", "txPr" }, ExcelDrawing._schemaNodeOrderSpPr);
+            this.LoadLegendEntries();
        }
         internal void LoadEntries()
         {
-            if (_chart._isChartEx)
+            if (this._chart._isChartEx)
             {
                 return;
             }
 
-            _entries = new EPPlusReadOnlyList<ExcelChartLegendEntry>();
-            List<ExcelChartLegendEntry>? e = LoadLegendEntries();
-            foreach (ExcelChart? c in _chart.PlotArea.ChartTypes)
+            this._entries = new EPPlusReadOnlyList<ExcelChartLegendEntry>();
+            List<ExcelChartLegendEntry>? e = this.LoadLegendEntries();
+            foreach (ExcelChart? c in this._chart.PlotArea.ChartTypes)
             {
-                for (int i = 0; i < _chart.Series.Count; i++)
+                for (int i = 0; i < this._chart.Series.Count; i++)
                 {
                     int ix = e.FindIndex(x => x.Index == i);
                     if (ix >= 0)
                     {
-                        _entries.Add(e[ix]);
+                        this._entries.Add(e[ix]);
                     }
                     else
                     {
-                        AddNewEntry(_chart.Series[i]);
+                        this.AddNewEntry(this._chart.Series[i]);
                     }
                 }
             }
@@ -86,16 +87,16 @@ namespace OfficeOpenXml.Drawing.Chart
             int seriesCount = (a.Rows == 1 ? a.Rows : a.Columns);
             for (int i = 0; i < seriesCount; i++)
             {
-                ExcelChartLegendEntry? entry = new ExcelChartLegendEntry(NameSpaceManager, TopNode, (ExcelChartStandard)_chart, _entries.Count);
-                _entries.Add(entry);
+                ExcelChartLegendEntry? entry = new ExcelChartLegendEntry(this.NameSpaceManager, this.TopNode, (ExcelChartStandard)this._chart, this._entries.Count);
+                this._entries.Add(entry);
             }
         }
 
         internal int GetPreEntryIndex(int serieIndex)
         {
-            for (int i = 0; i < Entries.Count; i++)
+            for (int i = 0; i < this.Entries.Count; i++)
             {
-                if (Entries[i].Index > serieIndex && Entries[i].TopNode.LocalName== "legendEntry")
+                if (this.Entries[i].Index > serieIndex && this.Entries[i].TopNode.LocalName== "legendEntry")
                 {
                     return i;
                 }
@@ -111,17 +112,17 @@ namespace OfficeOpenXml.Drawing.Chart
         {
             get
             {
-                if(_entries==null)
+                if(this._entries==null)
                 {
-                    LoadEntries();
+                    this.LoadEntries();
                 }
-                return _entries;
+                return this._entries;
             }
         } 
 
         internal XmlElement GetOrCreateEntry()
         {
-            return (XmlElement)CreateNode("c:legendEntry");
+            return (XmlElement)this.CreateNode("c:legendEntry");
         }
 
         internal List<ExcelChartLegendEntry> LoadLegendEntries()
@@ -132,10 +133,10 @@ namespace OfficeOpenXml.Drawing.Chart
             }
 
             List<ExcelChartLegendEntry>? entries = new List<ExcelChartLegendEntry>();
-            XmlNodeList? nodes = GetNodes("c:legendEntry");
+            XmlNodeList? nodes = this.GetNodes("c:legendEntry");
             foreach(XmlNode n in nodes)
             {
-                entries.Add(new ExcelChartLegendEntry(NameSpaceManager, n, (ExcelChartStandard)_chart));
+                entries.Add(new ExcelChartLegendEntry(this.NameSpaceManager, n, (ExcelChartStandard)this._chart));
             }
             return entries;
         }
@@ -148,7 +149,7 @@ namespace OfficeOpenXml.Drawing.Chart
         {
             get
             {
-                switch(GetXmlNodeString(POSITION_PATH).ToLower(CultureInfo.InvariantCulture))
+                switch(this.GetXmlNodeString(POSITION_PATH).ToLower(CultureInfo.InvariantCulture))
                 {
                     case "t":
                         return eLegendPosition.Top;
@@ -164,7 +165,7 @@ namespace OfficeOpenXml.Drawing.Chart
             }
             set
             {
-                if (TopNode == null)
+                if (this.TopNode == null)
                 {
                     throw(new Exception("Can't set position. Chart has no legend"));
                 }
@@ -172,19 +173,19 @@ namespace OfficeOpenXml.Drawing.Chart
                 switch (value)
                 {
                     case eLegendPosition.Top:
-                        SetXmlNodeString(POSITION_PATH, "t");
+                        this.SetXmlNodeString(POSITION_PATH, "t");
                         break;
                     case eLegendPosition.Bottom:
-                        SetXmlNodeString(POSITION_PATH, "b");
+                        this.SetXmlNodeString(POSITION_PATH, "b");
                         break;
                     case eLegendPosition.Left:
-                        SetXmlNodeString(POSITION_PATH, "l");
+                        this.SetXmlNodeString(POSITION_PATH, "l");
                         break;
                     case eLegendPosition.TopRight:
-                        SetXmlNodeString(POSITION_PATH, "tr");
+                        this.SetXmlNodeString(POSITION_PATH, "tr");
                         break;
                     default:
-                        SetXmlNodeString(POSITION_PATH, "r");
+                        this.SetXmlNodeString(POSITION_PATH, "r");
                         break;
                 }
             }
@@ -196,16 +197,16 @@ namespace OfficeOpenXml.Drawing.Chart
         {
             get
             {
-                return GetXmlNodeBool(OVERLAY_PATH);
+                return this.GetXmlNodeBool(this.OVERLAY_PATH);
             }
             set
             {
-                if (TopNode == null)
+                if (this.TopNode == null)
                 {
                     throw (new Exception("Can't set overlay. Chart has no legend"));
                 }
 
-                SetXmlNodeBool(OVERLAY_PATH, value);
+                this.SetXmlNodeBool(this.OVERLAY_PATH, value);
             }
         }
         ExcelDrawingFill _fill = null;
@@ -216,11 +217,11 @@ namespace OfficeOpenXml.Drawing.Chart
         {
             get
             {
-                if (_fill == null)
+                if (this._fill == null)
                 {
-                    _fill = new ExcelDrawingFill(_chart, NameSpaceManager, TopNode, "c:spPr", SchemaNodeOrder);
+                    this._fill = new ExcelDrawingFill(this._chart, this.NameSpaceManager, this.TopNode, "c:spPr", this.SchemaNodeOrder);
                 }
-                return _fill;
+                return this._fill;
             }
         }
         ExcelDrawingBorder _border = null;
@@ -231,11 +232,11 @@ namespace OfficeOpenXml.Drawing.Chart
         {
             get
             {
-                if (_border == null)
+                if (this._border == null)
                 {
-                    _border = new ExcelDrawingBorder(_chart, NameSpaceManager, TopNode, $"{_nsPrefix}:spPr/a:ln", SchemaNodeOrder);
+                    this._border = new ExcelDrawingBorder(this._chart, this.NameSpaceManager, this.TopNode, $"{this._nsPrefix}:spPr/a:ln", this.SchemaNodeOrder);
                 }
-                return _border;
+                return this._border;
             }
         }
         ExcelTextFont _font = null;
@@ -246,11 +247,11 @@ namespace OfficeOpenXml.Drawing.Chart
         {
             get
             {
-                if (_font == null)
+                if (this._font == null)
                 {
-                    _font = new ExcelTextFont(_chart,NameSpaceManager, TopNode, $"{_nsPrefix}:txPr/a:p/a:pPr/a:defRPr", SchemaNodeOrder);
+                    this._font = new ExcelTextFont(this._chart, this.NameSpaceManager, this.TopNode, $"{this._nsPrefix}:txPr/a:p/a:pPr/a:defRPr", this.SchemaNodeOrder);
                 }
-                return _font;
+                return this._font;
             }
         }
         ExcelTextBody _textBody = null;
@@ -261,11 +262,11 @@ namespace OfficeOpenXml.Drawing.Chart
         {
             get
             {
-                if (_textBody == null)
+                if (this._textBody == null)
                 {
-                    _textBody = new ExcelTextBody(NameSpaceManager, TopNode, $"{_nsPrefix}:txPr/a:bodyPr", SchemaNodeOrder);
+                    this._textBody = new ExcelTextBody(this.NameSpaceManager, this.TopNode, $"{this._nsPrefix}:txPr/a:bodyPr", this.SchemaNodeOrder);
                 }
-                return _textBody;
+                return this._textBody;
             }
         }
 
@@ -277,11 +278,11 @@ namespace OfficeOpenXml.Drawing.Chart
         {
             get
             {
-                if (_effect == null)
+                if (this._effect == null)
                 {
-                    _effect = new ExcelDrawingEffectStyle(_chart, NameSpaceManager, TopNode, $"{_nsPrefix}:spPr/a:effectLst", SchemaNodeOrder);
+                    this._effect = new ExcelDrawingEffectStyle(this._chart, this.NameSpaceManager, this.TopNode, $"{this._nsPrefix}:spPr/a:effectLst", this.SchemaNodeOrder);
                 }
-                return _effect;
+                return this._effect;
             }
         }
         ExcelDrawing3D _threeD = null;
@@ -292,16 +293,16 @@ namespace OfficeOpenXml.Drawing.Chart
         {
             get
             {
-                if (_threeD == null)
+                if (this._threeD == null)
                 {
-                    _threeD = new ExcelDrawing3D(NameSpaceManager, TopNode, $"{_nsPrefix}:spPr", SchemaNodeOrder);
+                    this._threeD = new ExcelDrawing3D(this.NameSpaceManager, this.TopNode, $"{this._nsPrefix}:spPr", this.SchemaNodeOrder);
                 }
-                return _threeD;
+                return this._threeD;
             }
         }
         void IDrawingStyleBase.CreatespPr()
         {
-            CreatespPrNode($"{_nsPrefix}:spPr");
+            this.CreatespPrNode($"{this._nsPrefix}:spPr");
         }
 
         /// <summary>
@@ -309,50 +310,50 @@ namespace OfficeOpenXml.Drawing.Chart
         /// </summary>
         public void Remove()
         {
-            if (TopNode == null)
+            if (this.TopNode == null)
             {
                 return;
             }
 
-            TopNode.ParentNode.RemoveChild(TopNode);
-            TopNode = null;
+            this.TopNode.ParentNode.RemoveChild(this.TopNode);
+            this.TopNode = null;
         }
         /// <summary>
         /// Adds a legend to the chart
         /// </summary>
         public virtual void Add()
         {
-            if(TopNode!=null)
+            if(this.TopNode!=null)
             {
                 return;
             }
 
             //XmlHelper xml = new XmlHelper(NameSpaceManager, _chart.ChartXml);
-            XmlHelper xml = XmlHelperFactory.Create(NameSpaceManager, _chart.ChartXml);
-            xml.SchemaNodeOrder=_chart.SchemaNodeOrder;
+            XmlHelper xml = XmlHelperFactory.Create(this.NameSpaceManager, this._chart.ChartXml);
+            xml.SchemaNodeOrder= this._chart.SchemaNodeOrder;
 
             xml.CreateNode("c:chartSpace/c:chart/c:legend");
-            TopNode = _chart.ChartXml.SelectSingleNode("c:chartSpace/c:chart/c:legend", NameSpaceManager);
-            TopNode.InnerXml= "<c:legendPos val=\"r\" /><c:layout /><c:spPr><a:noFill/><a:ln><a:noFill/></a:ln><a:effectLst/></c:spPr>";
+            this.TopNode = this._chart.ChartXml.SelectSingleNode("c:chartSpace/c:chart/c:legend", this.NameSpaceManager);
+            this.TopNode.InnerXml= "<c:legendPos val=\"r\" /><c:layout /><c:spPr><a:noFill/><a:ln><a:noFill/></a:ln><a:effectLst/></c:spPr>";
         }
 
         void IStyleMandatoryProperties.SetMandatoryProperties()
         {
-            TextBody.Anchor = eTextAnchoringType.Center;
-            TextBody.AnchorCenter = true;
-            TextBody.WrapText = eTextWrappingType.Square;
-            TextBody.VerticalTextOverflow = eTextVerticalOverflow.Ellipsis;
-            TextBody.ParagraphSpacing = true;
-            TextBody.Rotation = 0;
+            this.TextBody.Anchor = eTextAnchoringType.Center;
+            this.TextBody.AnchorCenter = true;
+            this.TextBody.WrapText = eTextWrappingType.Square;
+            this.TextBody.VerticalTextOverflow = eTextVerticalOverflow.Ellipsis;
+            this.TextBody.ParagraphSpacing = true;
+            this.TextBody.Rotation = 0;
 
-            if (Font.Kerning == 0)
+            if (this.Font.Kerning == 0)
             {
                 this.Font.Kerning = 12;
             }
 
-            Font.Bold = Font.Bold; //Must be set
+            this.Font.Bold = this.Font.Bold; //Must be set
 
-            CreatespPrNode($"{_nsPrefix}:spPr");
+            this.CreatespPrNode($"{this._nsPrefix}:spPr");
         }
     }
 }

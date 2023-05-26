@@ -95,9 +95,9 @@ namespace EPPlusTest.Core.Range
         public void RemoveVerticalAlign()
         {
             ExcelRichText? p=_ws.Cells["G1"].RichText.Add("RemoveVerticalAlign");
-            p.VerticalAlign = OfficeOpenXml.Style.ExcelVerticalAlignmentFont.Baseline;
-            p.VerticalAlign = OfficeOpenXml.Style.ExcelVerticalAlignmentFont.None;
-            Assert.AreEqual(p.VerticalAlign, OfficeOpenXml.Style.ExcelVerticalAlignmentFont.None);
+            p.VerticalAlign = ExcelVerticalAlignmentFont.Baseline;
+            p.VerticalAlign = ExcelVerticalAlignmentFont.None;
+            Assert.AreEqual(p.VerticalAlign, ExcelVerticalAlignmentFont.None);
         }
         [TestMethod]
         public void ValidateIsRichTextValuesAndTexts()
@@ -184,7 +184,7 @@ namespace EPPlusTest.Core.Range
         [TestMethod]
         public void ValidateRichText_TextIsReflectedOnRemove()
         {
-            ExcelPackage? package = new OfficeOpenXml.ExcelPackage();
+            ExcelPackage? package = new ExcelPackage();
             package.Workbook.Worksheets.Add("Test");
             ExcelRange? range = package.Workbook.Worksheets[0].Cells[1, 1];
             ExcelRichText? first = range.RichText.Add("1");

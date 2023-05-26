@@ -25,7 +25,7 @@ namespace OfficeOpenXml.Sparkline
     {
         internal ExcelSparkline(XmlNamespaceManager nsm, XmlNode topNode) : base(nsm, topNode)
         {
-            SchemaNodeOrder = new string[] { "f", "sqref" };
+            this.SchemaNodeOrder = new string[] { "f", "sqref" };
         }   
         const string _fPath = "xm:f";
         /// <summary>
@@ -35,7 +35,7 @@ namespace OfficeOpenXml.Sparkline
         {
             get
             {
-                string? v = GetXmlNodeString(_fPath);
+                string? v = this.GetXmlNodeString(_fPath);
                 if(string.IsNullOrEmpty(v))
                 {
                     return null;
@@ -49,11 +49,11 @@ namespace OfficeOpenXml.Sparkline
             {
                 if(value==null || value.Address=="#REF!")
                 {
-                    DeleteNode(_fPath);
+                    this.DeleteNode(_fPath);
                 }
                 else
                 {
-                    SetXmlNodeString(_fPath, value.FullAddress);
+                    this.SetXmlNodeString(_fPath, value.FullAddress);
                 }
             }
         }
@@ -65,11 +65,11 @@ namespace OfficeOpenXml.Sparkline
         {
             get
             {
-                return new ExcelCellAddress(GetXmlNodeString(_sqrefPath));
+                return new ExcelCellAddress(this.GetXmlNodeString(_sqrefPath));
             }
             internal set
             {
-                SetXmlNodeString("xm:sqref", value.Address);
+                this.SetXmlNodeString("xm:sqref", value.Address);
             }
         }
         /// <summary>
@@ -78,7 +78,7 @@ namespace OfficeOpenXml.Sparkline
         /// <returns>The cell address and the range</returns>
         public override string ToString()
         {
-            return Cell.Address + ", " +RangeAddress.Address;
+            return this.Cell.Address + ", " + this.RangeAddress.Address;
         }
     }
 }

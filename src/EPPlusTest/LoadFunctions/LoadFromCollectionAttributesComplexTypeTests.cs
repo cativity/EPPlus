@@ -23,7 +23,7 @@ namespace EPPlusTest.LoadFunctions
         [TestInitialize]
         public void Initialize()
         {
-            _collection.Add(new Outer
+            this._collection.Add(new Outer
             {
                 ApprovedUtc = new DateTime(2021, 7, 1),
                 Organization = new Organization 
@@ -34,7 +34,8 @@ namespace EPPlusTest.LoadFunctions
                 },
                 Acknowledged = true
             });
-            _collectionHeaders.Add(new OuterWithHeaders
+
+            this._collectionHeaders.Add(new OuterWithHeaders
             {
                 ApprovedUtc = new DateTime(2021, 7, 1),
                 Organization = new Organization
@@ -45,7 +46,8 @@ namespace EPPlusTest.LoadFunctions
                 },
                 Acknowledged = true
             });
-            _collectionReversed.Add(new OuterReversedSortOrder
+
+            this._collectionReversed.Add(new OuterReversedSortOrder
             {
                 ApprovedUtc = new DateTime(2021, 7, 1),
                 Organization = new OrganizationReversedSortOrder
@@ -56,7 +58,8 @@ namespace EPPlusTest.LoadFunctions
                 },
                 Acknowledged = true
             });
-            _collectionInheritence.Add(new OuterSubclass
+
+            this._collectionInheritence.Add(new OuterSubclass
             {
                 ApprovedUtc = new DateTime(2021, 7, 1),
                 Organization = new OrganizationSubclass
@@ -72,7 +75,7 @@ namespace EPPlusTest.LoadFunctions
         [TestCleanup]
         public void Cleanup()
         {
-            _collection.Clear();
+            this._collection.Clear();
         }
 
         [TestMethod]
@@ -121,7 +124,7 @@ namespace EPPlusTest.LoadFunctions
         {
             using ExcelPackage? package = new ExcelPackage();
             ExcelWorksheet? ws = package.Workbook.Worksheets.Add("test");
-            ws.Cells["A1"].LoadFromCollection(_collection);
+            ws.Cells["A1"].LoadFromCollection(this._collection);
             Assert.AreEqual("ABC", ws.Cells["B1"].Value);
         }
 
@@ -130,7 +133,7 @@ namespace EPPlusTest.LoadFunctions
         {
             using ExcelPackage? package = new ExcelPackage();
             ExcelWorksheet? ws = package.Workbook.Worksheets.Add("test");
-            ws.Cells["A1"].LoadFromCollection(_collectionReversed);
+            ws.Cells["A1"].LoadFromCollection(this._collectionReversed);
             Assert.IsTrue((bool)ws.Cells["A1"].Value);
             Assert.AreEqual("GHI", ws.Cells["B1"].Value);
             Assert.AreEqual(new DateTime(2021, 7, 1), ws.Cells["E1"].Value);
@@ -139,24 +142,24 @@ namespace EPPlusTest.LoadFunctions
         [TestMethod]
         public void ShouldLoadFromComplexTypeMemberWhenComplexMemberIsNull()
         {
-            Outer? obj = _collection.First();
+            Outer? obj = this._collection.First();
             obj.Organization = null;
-            _collection[0] = obj;
+            this._collection[0] = obj;
             using ExcelPackage? package = new ExcelPackage();
             ExcelWorksheet? ws = package.Workbook.Worksheets.Add("test");
-            ws.Cells["A1"].LoadFromCollection(_collection);
+            ws.Cells["A1"].LoadFromCollection(this._collection);
             Assert.IsNull(ws.Cells["B1"].Value);
         }
 
         [TestMethod]
         public void ShouldLoadFromComplexTypeMemberWhenComplexMemberIsNull_WithHeaders()
         {
-            OuterWithHeaders? obj = _collectionHeaders.First();
+            OuterWithHeaders? obj = this._collectionHeaders.First();
             obj.Organization = null;
-            _collectionHeaders[0] = obj;
+            this._collectionHeaders[0] = obj;
             using ExcelPackage? package = new ExcelPackage();
             ExcelWorksheet? ws = package.Workbook.Worksheets.Add("test");
-            ws.Cells["A1"].LoadFromCollection(_collectionHeaders);
+            ws.Cells["A1"].LoadFromCollection(this._collectionHeaders);
             Assert.AreEqual("Org Level 3", ws.Cells["B1"].Value);
             Assert.IsNull(ws.Cells["B2"].Value);
         }
@@ -188,7 +191,7 @@ namespace EPPlusTest.LoadFunctions
         {
             using ExcelPackage? package = new ExcelPackage();
             ExcelWorksheet? ws = package.Workbook.Worksheets.Add("test");
-            ws.Cells["A1"].LoadFromCollection(_collectionInheritence);
+            ws.Cells["A1"].LoadFromCollection(this._collectionInheritence);
             Assert.AreEqual("ABC", ws.Cells["B1"].Value);
         }
 

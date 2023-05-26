@@ -24,11 +24,11 @@ namespace OfficeOpenXml.Vba.Signatures
     {
         internal ExcelSignatureVersion(EPPlusVbaSignature signature, VbaSignatureHashAlgorithm hashAlgorithm)
         {
-            SignatureHandler = signature;
-            CreateSignatureOnSave = SignatureHandler.ReadSignature();
-            Part = SignatureHandler.Part;
-            Verifier = SignatureHandler.Verifier;
-            HashAlgorithm = hashAlgorithm;
+            this.SignatureHandler = signature;
+            this.CreateSignatureOnSave = this.SignatureHandler.ReadSignature();
+            this.Part = this.SignatureHandler.Part;
+            this.Verifier = this.SignatureHandler.Verifier;
+            this.HashAlgorithm = hashAlgorithm;
         }
         /// <summary>
         /// A boolean indicating if a signature for the VBA project will be created when the package is saved.
@@ -53,17 +53,17 @@ namespace OfficeOpenXml.Vba.Signatures
         {
             get
             {
-                return SignatureHandler.Certificate;
+                return this.SignatureHandler.Certificate;
             }
             set
             {
-                SignatureHandler.Certificate = value;
+                this.SignatureHandler.Certificate = value;
             }
         }
         internal void CreateSignature(ExcelVbaProject project)
         {
-            SignatureHandler.Context.HashAlgorithm = HashAlgorithm;
-            SignatureHandler.CreateSignature(project);
+            this.SignatureHandler.Context.HashAlgorithm = this.HashAlgorithm;
+            this.SignatureHandler.CreateSignature(project);
         }
     }
 }

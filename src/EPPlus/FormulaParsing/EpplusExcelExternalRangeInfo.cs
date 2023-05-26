@@ -45,22 +45,22 @@ namespace OfficeOpenXml.FormulaParsing
         /// <param name="address">The address within the external workbook including the worksheet name</param>
         public EpplusExcelExternalRangeInfo(ExcelExternalWorkbook externalWb, ExcelWorkbook wb, ExcelAddressBase address)
         {
-            SetAddress(wb, address, externalWb);
+            this.SetAddress(wb, address, externalWb);
         }
         private void SetAddress(ExcelWorkbook wb, ExcelAddressBase address, ExcelExternalWorkbook externalWb)
         {
             if (externalWb != null)
             {
-                _externalWs = externalWb.CachedWorksheets[address.WorkSheetName];
-                _fromRow = address._fromRow;
-                _fromCol = address._fromCol;
-                _toRow = address._toRow;
-                _toCol = address._toCol;
-                _address = address;
-                if (_externalWs != null)
+                this._externalWs = externalWb.CachedWorksheets[address.WorkSheetName];
+                this._fromRow = address._fromRow;
+                this._fromCol = address._fromCol;
+                this._toRow = address._toRow;
+                this._toCol = address._toCol;
+                this._address = address;
+                if (this._externalWs != null)
                 {
-                    _values = _externalWs.CellValues.GetCellStore(_fromRow, _fromCol, _toRow, _toCol);
-                    _cell = new ExternalCellInfo(_externalWs, _values);
+                    this._values = this._externalWs.CellValues.GetCellStore(this._fromRow, this._fromCol, this._toRow, this._toCol);
+                    this._cell = new ExternalCellInfo(this._externalWs, this._values);
                 }
             }
         }
@@ -70,7 +70,7 @@ namespace OfficeOpenXml.FormulaParsing
         /// <returns></returns>
         public int GetNCells()
         {
-            return ((_toRow - _fromRow) + 1) * ((_toCol - _fromCol) + 1);
+            return ((this._toRow - this._fromRow) + 1) * ((this._toCol - this._fromCol) + 1);
         }
         /// <summary>
         /// If the range is invalid (#REF!)
@@ -79,7 +79,7 @@ namespace OfficeOpenXml.FormulaParsing
         {
             get
             {
-                return _externalWs == null || _fromRow < 0 || _toRow < 0;
+                return this._externalWs == null || this._fromRow < 0 || this._toRow < 0;
             }
         }
         /// <summary>
@@ -89,17 +89,17 @@ namespace OfficeOpenXml.FormulaParsing
         {
             get
             {
-                if (_cellCount > 0)
+                if (this._cellCount > 0)
                 {
                     return false;
                 }
-                else if (_values == null)
+                else if (this._values == null)
                 {
                     return true;
                 }
-                else if (_values.Next())
+                else if (this._values.Next())
                 {
-                    _values.Reset();
+                    this._values.Reset();
                     return false;
                 }
                 else
@@ -115,25 +115,25 @@ namespace OfficeOpenXml.FormulaParsing
         {
             get
             {
-                if (_cellCount == 0)
+                if (this._cellCount == 0)
                 {
-                    if (_values == null)
+                    if (this._values == null)
                     {
                         return false;
                     }
 
-                    if (_values.Next() && _values.Next())
+                    if (this._values.Next() && this._values.Next())
                     {
-                        _values.Reset();
+                        this._values.Reset();
                         return true;
                     }
                     else
                     {
-                        _values.Reset();
+                        this._values.Reset();
                         return false;
                     }
                 }
-                else if (_cellCount > 1)
+                else if (this._cellCount > 1)
                 {
                     return true;
                 }
@@ -146,7 +146,7 @@ namespace OfficeOpenXml.FormulaParsing
         /// </summary>
         public ICellInfo Current
         {
-            get { return _cell; }
+            get { return this._cell; }
         }
         /// <summary>
         /// Not applicable for external ranges.. Returns null
@@ -176,21 +176,21 @@ namespace OfficeOpenXml.FormulaParsing
         /// <returns>returns true until the enumeration has reached the last cell.</returns>
         public bool MoveNext()
         {
-            if (_values == null)
+            if (this._values == null)
             {
                 return false;
             }
 
-            _cellCount++;
-            return _values.MoveNext();
+            this._cellCount++;
+            return this._values.MoveNext();
         }
         /// <summary>
         /// Resets the enumeration
         /// </summary>
         public void Reset()
         {
-            _cellCount = 0;
-            _values?.Init();
+            this._cellCount = 0;
+            this._values?.Init();
         }
 
         /// <summary>
@@ -199,13 +199,13 @@ namespace OfficeOpenXml.FormulaParsing
         /// <returns></returns>
         public bool NextCell()
         {
-            if (_values == null)
+            if (this._values == null)
             {
                 return false;
             }
 
-            _cellCount++;
-            return _values.MoveNext();
+            this._cellCount++;
+            return this._values.MoveNext();
         }
 
         /// <summary>
@@ -214,7 +214,7 @@ namespace OfficeOpenXml.FormulaParsing
         /// <returns>The enumerator</returns>
         public IEnumerator<ICellInfo> GetEnumerator()
         {
-            Reset();
+            this.Reset();
             return this;
         }
 
@@ -228,7 +228,7 @@ namespace OfficeOpenXml.FormulaParsing
         /// </summary>
         public ExcelAddressBase Address
         {
-            get { return _address; }
+            get { return this._address; }
         }
         /// <summary>
         /// Gets the value 
@@ -238,7 +238,7 @@ namespace OfficeOpenXml.FormulaParsing
         /// <returns></returns>
         public object GetValue(int row, int col)
         {
-            return _externalWs?.CellValues.GetValue(row, col);
+            return this._externalWs?.CellValues.GetValue(row, col);
         }
         /// <summary>
         /// Get the value from the range with the offset from the top-left cell
@@ -248,18 +248,18 @@ namespace OfficeOpenXml.FormulaParsing
         /// <returns></returns>
         public object GetOffset(int rowOffset, int colOffset)
         {
-            if (_values == null)
+            if (this._values == null)
             {
                 return null;
             }
 
-            if (_values.Row < _fromRow || _values.Column < _fromCol)
+            if (this._values.Row < this._fromRow || this._values.Column < this._fromCol)
             {
-                return _externalWs?.CellValues.GetValue(_fromRow + rowOffset, _fromCol + colOffset);
+                return this._externalWs?.CellValues.GetValue(this._fromRow + rowOffset, this._fromCol + colOffset);
             }
             else
             {
-                return _externalWs?.CellValues.GetValue(_values.Row + rowOffset, _values.Column + colOffset);
+                return this._externalWs?.CellValues.GetValue(this._values.Row + rowOffset, this._values.Column + colOffset);
             }
         }
     }
@@ -273,22 +273,22 @@ namespace OfficeOpenXml.FormulaParsing
         CellStoreEnumerator<object> _values;
         internal ExternalCellInfo(ExcelExternalWorksheet ws, CellStoreEnumerator<object> values)
         {
-            _ws = ws;
-            _values = values;
+            this._ws = ws;
+            this._values = values;
         }
         /// <summary>
         /// The cell address.
         /// </summary>
         public string Address
         {
-            get { return _values.CellAddress; }
+            get { return this._values.CellAddress; }
         }
         /// <summary>
         /// The row of the cell
         /// </summary>
         public int Row
         {
-            get { return _values.Row; }
+            get { return this._values.Row; }
         }
 
         /// <summary>
@@ -296,7 +296,7 @@ namespace OfficeOpenXml.FormulaParsing
         /// </summary>
         public int Column
         {
-            get { return _values.Column; }
+            get { return this._values.Column; }
         }
         /// <summary>
         /// Formula. Always return Empty.String for external cells.
@@ -315,7 +315,7 @@ namespace OfficeOpenXml.FormulaParsing
         {
             get
             {
-                return _values.Value;
+                return this._values.Value;
             }
         }
         /// <summary>
@@ -323,14 +323,14 @@ namespace OfficeOpenXml.FormulaParsing
         /// </summary>
         public double ValueDouble
         {
-            get { return ConvertUtil.GetValueDouble(_values.Value, true); }
+            get { return ConvertUtil.GetValueDouble(this._values.Value, true); }
         }
         /// <summary>
         /// The value as double of the current cell.
         /// </summary>
         public double ValueDoubleLogical
         {
-            get { return ConvertUtil.GetValueDouble(_values.Value, false); }
+            get { return ConvertUtil.GetValueDouble(this._values.Value, false); }
         }
         /// <summary>
         /// If the row of the cell is hidden
@@ -348,7 +348,7 @@ namespace OfficeOpenXml.FormulaParsing
         /// </summary>
         public bool IsExcelError
         {
-            get { return ExcelErrorValue.Values.IsErrorValue(_values.Value); }
+            get { return ExcelErrorValue.Values.IsErrorValue(this._values.Value); }
         }
         /// <summary>
         /// Tokens for the formula. Not applicable to External cells.
@@ -367,7 +367,7 @@ namespace OfficeOpenXml.FormulaParsing
         {
             get
             {
-                return ExcelCellBase.GetCellId(_ws.SheetId, _values.Row, _values.Column);
+                return ExcelCellBase.GetCellId(this._ws.SheetId, this._values.Row, this._values.Column);
             }
         }
         /// <summary>
@@ -375,7 +375,7 @@ namespace OfficeOpenXml.FormulaParsing
         /// </summary>
         public string WorksheetName
         {
-            get { return _ws.Name; }
+            get { return this._ws.Name; }
         }
     }
 }

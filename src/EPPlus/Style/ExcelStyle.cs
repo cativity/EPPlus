@@ -23,44 +23,46 @@ namespace OfficeOpenXml.Style
     public sealed class ExcelStyle : StyleBase
     {
         ExcelXfs _xfs;
-        internal ExcelStyle(ExcelStyles styles, OfficeOpenXml.XmlHelper.ChangedEventHandler ChangedEvent, int positionID, string Address, int xfsId) :
+        internal ExcelStyle(ExcelStyles styles, XmlHelper.ChangedEventHandler ChangedEvent, int positionID, string Address, int xfsId) :
             base(styles, ChangedEvent, positionID, Address)
         {
-            Index = xfsId;
-            Styles = styles;
-            PositionID = positionID;
+            this.Index = xfsId;
+            this.Styles = styles;
+            this.PositionID = positionID;
             if (positionID > -1)
             {
                 if(xfsId==0)
                 {
-                    int id = _styles.NamedStyles.FindIndexByBuildInId(0);
-                    if(id>-1 && id < _styles.CellStyleXfs.Count)
+                    int id = this._styles.NamedStyles.FindIndexByBuildInId(0);
+                    if(id>-1 && id < this._styles.CellStyleXfs.Count)
                     {
-                        _xfs = _styles.CellStyleXfs[_styles.NamedStyles[id].StyleXfId];
+                        this._xfs = this._styles.CellStyleXfs[this._styles.NamedStyles[id].StyleXfId];
                     }
                     else
                     {
-                        _xfs = _styles.CellXfs[0];
+                        this._xfs = this._styles.CellXfs[0];
                     }
                 }
                 else
                 {
-                    _xfs = _styles.CellXfs[xfsId];
+                    this._xfs = this._styles.CellXfs[xfsId];
                 }
             }
             else
             {
-                if (_styles.CellStyleXfs.Count == 0)   //CellStyleXfs.Count should never be 0, but for some custom build sheets this can happend.
+                if (this._styles.CellStyleXfs.Count == 0)   //CellStyleXfs.Count should never be 0, but for some custom build sheets this can happend.
                 {
-                    ExcelXfs? item=_styles.CellXfs[0].Copy();                    
-                    _styles.CellStyleXfs.Add(item.Id, item);
+                    ExcelXfs? item= this._styles.CellXfs[0].Copy();
+                    this._styles.CellStyleXfs.Add(item.Id, item);
                 }
-                _xfs = _styles.CellStyleXfs[xfsId];
+
+                this._xfs = this._styles.CellStyleXfs[xfsId];
             }
-            Numberformat = new ExcelNumberFormat(styles, ChangedEvent, PositionID, Address, _xfs.NumberFormatId);
-            Font = new ExcelFont(styles, ChangedEvent, PositionID, Address, _xfs.FontId);
-            Fill = new ExcelFill(styles, ChangedEvent, PositionID, Address, _xfs.FillId);
-            Border = new Border(styles, ChangedEvent, PositionID, Address, _xfs.BorderId); 
+
+            this.Numberformat = new ExcelNumberFormat(styles, ChangedEvent, this.PositionID, Address, this._xfs.NumberFormatId);
+            this.Font = new ExcelFont(styles, ChangedEvent, this.PositionID, Address, this._xfs.FontId);
+            this.Fill = new ExcelFill(styles, ChangedEvent, this.PositionID, Address, this._xfs.FillId);
+            this.Border = new Border(styles, ChangedEvent, this.PositionID, Address, this._xfs.BorderId); 
         }
         /// <summary>
         /// Numberformat
@@ -85,11 +87,11 @@ namespace OfficeOpenXml.Style
         {
             get
             {
-                return _xfs.HorizontalAlignment;
+                return this._xfs.HorizontalAlignment;
             }
             set
             {
-                _ChangedEvent(this, new StyleChangeEventArgs(eStyleClass.Style, eStyleProperty.HorizontalAlign, value, _positionID, _address));
+                this._ChangedEvent(this, new StyleChangeEventArgs(eStyleClass.Style, eStyleProperty.HorizontalAlign, value, this._positionID, this._address));
             }
         }
         /// <summary>
@@ -100,11 +102,11 @@ namespace OfficeOpenXml.Style
             get
             {
                 //return _styles.CellXfs[Index].VerticalAlignment;
-                return _xfs.VerticalAlignment;
+                return this._xfs.VerticalAlignment;
             }
             set
             {
-                _ChangedEvent(this, new StyleChangeEventArgs(eStyleClass.Style, eStyleProperty.VerticalAlign, value, _positionID, _address));
+                this._ChangedEvent(this, new StyleChangeEventArgs(eStyleClass.Style, eStyleProperty.VerticalAlign, value, this._positionID, this._address));
             }
         }
         /// <summary>
@@ -114,11 +116,11 @@ namespace OfficeOpenXml.Style
         {
             get
             {
-                return _xfs.JustifyLastLine;
+                return this._xfs.JustifyLastLine;
             }
             set
             {
-                _ChangedEvent(this, new StyleChangeEventArgs(eStyleClass.Style, eStyleProperty.JustifyLastLine, value, _positionID, _address));
+                this._ChangedEvent(this, new StyleChangeEventArgs(eStyleClass.Style, eStyleProperty.JustifyLastLine, value, this._positionID, this._address));
             }
         }
         /// <summary>
@@ -128,11 +130,11 @@ namespace OfficeOpenXml.Style
         {
             get
             {
-                return _xfs.WrapText;
+                return this._xfs.WrapText;
             }
             set
             {
-                _ChangedEvent(this, new StyleChangeEventArgs(eStyleClass.Style, eStyleProperty.WrapText, value, _positionID, _address));
+                this._ChangedEvent(this, new StyleChangeEventArgs(eStyleClass.Style, eStyleProperty.WrapText, value, this._positionID, this._address));
             }
         }
         /// <summary>
@@ -142,11 +144,11 @@ namespace OfficeOpenXml.Style
         {
             get
             {
-                return _xfs.ReadingOrder;
+                return this._xfs.ReadingOrder;
             }
             set
             {
-                _ChangedEvent(this, new StyleChangeEventArgs(eStyleClass.Style, eStyleProperty.ReadingOrder, value, _positionID, _address));
+                this._ChangedEvent(this, new StyleChangeEventArgs(eStyleClass.Style, eStyleProperty.ReadingOrder, value, this._positionID, this._address));
             }
         }
         /// <summary>
@@ -154,7 +156,7 @@ namespace OfficeOpenXml.Style
         /// </summary>
         public void SetTextVertical()
         {
-            TextRotation = 255;
+            this.TextRotation = 255;
         }
 
         /// <summary>
@@ -164,11 +166,11 @@ namespace OfficeOpenXml.Style
         {
             get
             {
-                return _xfs.ShrinkToFit;
+                return this._xfs.ShrinkToFit;
             }
             set
             {
-                _ChangedEvent(this, new StyleChangeEventArgs(eStyleClass.Style, eStyleProperty.ShrinkToFit, value, _positionID, _address));
+                this._ChangedEvent(this, new StyleChangeEventArgs(eStyleClass.Style, eStyleProperty.ShrinkToFit, value, this._positionID, this._address));
             }
         }
         /// <summary>
@@ -178,7 +180,7 @@ namespace OfficeOpenXml.Style
         {
             get
             {
-                return _xfs.Indent;
+                return this._xfs.Indent;
             }
             set
             {
@@ -186,7 +188,8 @@ namespace OfficeOpenXml.Style
                 {
                     throw(new ArgumentOutOfRangeException("Indent must be between 0 and 250"));
                 }
-                _ChangedEvent(this, new StyleChangeEventArgs(eStyleClass.Style, eStyleProperty.Indent, value, _positionID, _address));
+
+                this._ChangedEvent(this, new StyleChangeEventArgs(eStyleClass.Style, eStyleProperty.Indent, value, this._positionID, this._address));
             }
         }
         /// <summary>
@@ -197,7 +200,7 @@ namespace OfficeOpenXml.Style
         {
             get
             {
-                return _xfs.TextRotation;
+                return this._xfs.TextRotation;
             }
             set
             {
@@ -205,7 +208,8 @@ namespace OfficeOpenXml.Style
                 {
                     throw new ArgumentOutOfRangeException("TextRotation out of range.");
                 }
-                _ChangedEvent(this, new StyleChangeEventArgs(eStyleClass.Style, eStyleProperty.TextRotation, value, _positionID, _address));
+
+                this._ChangedEvent(this, new StyleChangeEventArgs(eStyleClass.Style, eStyleProperty.TextRotation, value, this._positionID, this._address));
             }
         }
         /// <summary>
@@ -216,11 +220,11 @@ namespace OfficeOpenXml.Style
         {
             get
             {
-                return _xfs.Locked;
+                return this._xfs.Locked;
             }
             set
             {
-                _ChangedEvent(this, new StyleChangeEventArgs(eStyleClass.Style, eStyleProperty.Locked, value, _positionID, _address));
+                this._ChangedEvent(this, new StyleChangeEventArgs(eStyleClass.Style, eStyleProperty.Locked, value, this._positionID, this._address));
             }
         }
         /// <summary>
@@ -231,11 +235,11 @@ namespace OfficeOpenXml.Style
         {
             get
             {
-                return _xfs.Hidden;
+                return this._xfs.Hidden;
             }
             set
             {
-                _ChangedEvent(this, new StyleChangeEventArgs(eStyleClass.Style, eStyleProperty.Hidden, value, _positionID, _address));
+                this._ChangedEvent(this, new StyleChangeEventArgs(eStyleClass.Style, eStyleProperty.Hidden, value, this._positionID, this._address));
             }
         }
 
@@ -246,11 +250,11 @@ namespace OfficeOpenXml.Style
         {
             get
             {
-                return _xfs.QuotePrefix;
+                return this._xfs.QuotePrefix;
             }
             set
             {
-                _ChangedEvent(this, new StyleChangeEventArgs(eStyleClass.Style, eStyleProperty.QuotePrefix, value, _positionID, _address));
+                this._ChangedEvent(this, new StyleChangeEventArgs(eStyleClass.Style, eStyleProperty.QuotePrefix, value, this._positionID, this._address));
             }
         }
 
@@ -262,11 +266,11 @@ namespace OfficeOpenXml.Style
         {
             get
             {
-                return _xfs.XfId;
+                return this._xfs.XfId;
             }
             set
             {
-                _ChangedEvent(this, new StyleChangeEventArgs(eStyleClass.Style, eStyleProperty.XfId, value, _positionID, _address));
+                this._ChangedEvent(this, new StyleChangeEventArgs(eStyleClass.Style, eStyleProperty.XfId, value, this._positionID, this._address));
             }
         }
         internal int PositionID
@@ -283,7 +287,7 @@ namespace OfficeOpenXml.Style
         {
             get 
             { 
-                return Numberformat.Id + "|" + Font.Id + "|" + Fill.Id + "|" + Border.Id + "|" + VerticalAlignment + "|" + HorizontalAlignment + "|" + WrapText.ToString() + "|" + ReadingOrder.ToString() + "|" + XfId.ToString() + "|" + QuotePrefix.ToString(); 
+                return this.Numberformat.Id + "|" + this.Font.Id + "|" + this.Fill.Id + "|" + this.Border.Id + "|" + this.VerticalAlignment + "|" + this.HorizontalAlignment + "|" + this.WrapText.ToString() + "|" + this.ReadingOrder.ToString() + "|" + this.XfId.ToString() + "|" + this.QuotePrefix.ToString(); 
             }
         }
 

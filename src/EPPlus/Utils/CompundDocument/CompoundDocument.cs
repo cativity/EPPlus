@@ -42,15 +42,15 @@ namespace OfficeOpenXml.Utils.CompundDocument
         internal List<CompoundDocumentItem> Directories { get; private set; }
         internal CompoundDocument()
         {
-            Storage = new StoragePart();
+            this.Storage = new StoragePart();
         }
         internal CompoundDocument(MemoryStream ms)
         {
-            Read(ms);
+            this.Read(ms);
         }
         internal CompoundDocument(FileInfo fi)
         {
-            Read(fi);
+            this.Read(fi);
         }
 
         internal static bool IsCompoundDocument(FileInfo fi)
@@ -64,24 +64,24 @@ namespace OfficeOpenXml.Utils.CompundDocument
 
         internal CompoundDocument(byte[] doc)
         {
-            Read(doc);
+            this.Read(doc);
         }
         internal void Read(FileInfo fi)
         {
             byte[]? b = File.ReadAllBytes(fi.FullName);
-            Read(b);
+            this.Read(b);
         }
         internal void Read(byte[] doc) 
         {
             using MemoryStream? ms = RecyclableMemory.GetStream(doc);
-            Read(ms);
+            this.Read(ms);
         }
         internal void Read(MemoryStream ms)
         {
             using CompoundDocumentFile? doc = new CompoundDocumentFile(ms);
-            Storage = new StoragePart();
-            GetStorageAndStreams(Storage, doc.RootItem);
-            Directories = doc.Directories;
+            this.Storage = new StoragePart();
+            GetStorageAndStreams(this.Storage, doc.RootItem);
+            this.Directories = doc.Directories;
         }
 
         private static void GetStorageAndStreams(StoragePart storage, CompoundDocumentItem parent)
@@ -103,8 +103,8 @@ namespace OfficeOpenXml.Utils.CompundDocument
         internal void Save(MemoryStream ms)
         {
             CompoundDocumentFile? doc = new CompoundDocumentFile();
-            WriteStorageAndStreams(Storage, doc.RootItem);            
-            Directories = doc.Directories;
+            WriteStorageAndStreams(this.Storage, doc.RootItem);
+            this.Directories = doc.Directories;
             doc.Write(ms);
         }
         private static void WriteStorageAndStreams(StoragePart storage, CompoundDocumentItem parent)

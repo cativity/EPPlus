@@ -45,12 +45,12 @@ namespace OfficeOpenXml
         /// <returns>The filled range</returns>
         public ExcelRangeBase LoadFromDataReader(IDataReader Reader, bool PrintHeaders, string TableName, TableStyles TableStyle = TableStyles.None)
         {
-            ExcelRangeBase? r = LoadFromDataReader(Reader, PrintHeaders);
+            ExcelRangeBase? r = this.LoadFromDataReader(Reader, PrintHeaders);
             
             int rows = r.Rows - 1;
             if (rows >= 0 && r.Columns > 0)
             {
-                ExcelTable? tbl = _worksheet.Tables.Add(new ExcelAddressBase(_fromRow, _fromCol, _fromRow + (rows <= 0 ? 1 : rows), _fromCol + r.Columns - 1), TableName);
+                ExcelTable? tbl = this._worksheet.Tables.Add(new ExcelAddressBase(this._fromRow, this._fromCol, this._fromRow + (rows <= 0 ? 1 : rows), this._fromCol + r.Columns - 1), TableName);
                 tbl.ShowHeader = PrintHeaders;
                 tbl.TableStyle = TableStyle;
             }
@@ -71,27 +71,27 @@ namespace OfficeOpenXml
             }
             int fieldCount = Reader.FieldCount;
 
-            int col = _fromCol, row = _fromRow;
+            int col = this._fromCol, row = this._fromRow;
             if (PrintHeaders)
             {
                 for (int i = 0; i < fieldCount; i++)
                 {
                     // If no caption is set, the ColumnName property is called implicitly.
-                    _worksheet.SetValueInner(row, col++, Reader.GetName(i));
+                    this._worksheet.SetValueInner(row, col++, Reader.GetName(i));
                 }
                 row++;
-                col = _fromCol;
+                col = this._fromCol;
             }            
             while (Reader.Read())
             {
                 for (int i = 0; i < fieldCount; i++)
                 {
-                    _worksheet.SetValueInner(row, col++, Reader.GetValue(i));
+                    this._worksheet.SetValueInner(row, col++, Reader.GetValue(i));
                 }
                 row++;
-                col = _fromCol;
+                col = this._fromCol;
             }
-            return _worksheet.Cells[_fromRow, _fromCol, row - 1, _fromCol + fieldCount - 1];
+            return this._worksheet.Cells[this._fromRow, this._fromCol, row - 1, this._fromCol + fieldCount - 1];
         }
 #if !NET35 && !NET40
         /// <summary>
@@ -106,7 +106,7 @@ namespace OfficeOpenXml
         public async Task<ExcelRangeBase> LoadFromDataReaderAsync(DbDataReader Reader, bool PrintHeaders, string TableName, TableStyles TableStyle = TableStyles.None,  CancellationToken? cancellationToken=null)
         {
             cancellationToken = cancellationToken ?? CancellationToken.None;
-            ExcelRangeBase? r = await LoadFromDataReaderAsync(Reader, PrintHeaders, cancellationToken.Value).ConfigureAwait(false);
+            ExcelRangeBase? r = await this.LoadFromDataReaderAsync(Reader, PrintHeaders, cancellationToken.Value).ConfigureAwait(false);
 
             if (cancellationToken.Value.IsCancellationRequested)
             {
@@ -116,7 +116,7 @@ namespace OfficeOpenXml
             int rows = r.Rows - 1;
             if (rows >= 0 && r.Columns > 0)
             {
-                ExcelTable? tbl = _worksheet.Tables.Add(new ExcelAddressBase(_fromRow, _fromCol, _fromRow + (rows <= 0 ? 1 : rows), _fromCol + r.Columns - 1), TableName);
+                ExcelTable? tbl = this._worksheet.Tables.Add(new ExcelAddressBase(this._fromRow, this._fromCol, this._fromRow + (rows <= 0 ? 1 : rows), this._fromCol + r.Columns - 1), TableName);
                 tbl.ShowHeader = PrintHeaders;
                 tbl.TableStyle = TableStyle;
             }
@@ -130,7 +130,7 @@ namespace OfficeOpenXml
         /// <returns>The filled range</returns>
         public async Task<ExcelRangeBase> LoadFromDataReaderAsync(DbDataReader Reader, bool PrintHeaders)
         {
-            return await LoadFromDataReaderAsync(Reader, PrintHeaders, CancellationToken.None);
+            return await this.LoadFromDataReaderAsync(Reader, PrintHeaders, CancellationToken.None);
         }
         /// <summary>
         /// Load the data from the datareader starting from the top left cell of the range
@@ -147,32 +147,32 @@ namespace OfficeOpenXml
             }
             int fieldCount = Reader.FieldCount;
 
-            int col = _fromCol, row = _fromRow;
+            int col = this._fromCol, row = this._fromRow;
             if (PrintHeaders)
             {
                 for (int i = 0; i < fieldCount; i++)
                 {
                     // If no caption is set, the ColumnName property is called implicitly.
-                    _worksheet.SetValueInner(row, col++, Reader.GetName(i));
+                    this._worksheet.SetValueInner(row, col++, Reader.GetName(i));
                 }
                 row++;
-                col = _fromCol;
+                col = this._fromCol;
             }
 
             while (await Reader.ReadAsync(cancellationToken).ConfigureAwait(false))
             {
                 for (int i = 0; i < fieldCount; i++)
                 {
-                    _worksheet.SetValueInner(row, col++, Reader.GetValue(i));
+                    this._worksheet.SetValueInner(row, col++, Reader.GetValue(i));
                 }
                 row++;
-                col = _fromCol;
+                col = this._fromCol;
                 if (row % 100 == 0 && cancellationToken.IsCancellationRequested)    //Check every 100 rows
                 {
-                    return _worksheet.Cells[_fromRow, _fromCol, row - 1, _fromCol + fieldCount - 1];
+                    return this._worksheet.Cells[this._fromRow, this._fromCol, row - 1, this._fromCol + fieldCount - 1];
                 }
             }
-            return _worksheet.Cells[_fromRow, _fromCol, row - 1, _fromCol + fieldCount - 1];
+            return this._worksheet.Cells[this._fromRow, this._fromCol, row - 1, this._fromCol + fieldCount - 1];
         }
 #endif
         #endregion
@@ -202,7 +202,7 @@ namespace OfficeOpenXml
         /// <returns>The filled range</returns>
         public ExcelRangeBase LoadFromDataTable(DataTable Table, bool PrintHeaders)
         {
-            return LoadFromDataTable(Table, PrintHeaders, null);
+            return this.LoadFromDataTable(Table, PrintHeaders, null);
         }
 
         /// <summary>
@@ -212,7 +212,7 @@ namespace OfficeOpenXml
         /// <returns>The filled range</returns>
         public ExcelRangeBase LoadFromDataTable(DataTable table)
         {
-            return LoadFromDataTable(table, false, null);
+            return this.LoadFromDataTable(table, false, null);
         }
 
         /// <summary>
@@ -234,7 +234,7 @@ namespace OfficeOpenXml
         {
             LoadFromDataTableParams? parameters = new LoadFromDataTableParams();
             paramsConfig.Invoke(parameters);
-            return LoadFromDataTable(table, parameters.PrintHeaders, parameters.TableStyle);
+            return this.LoadFromDataTable(table, parameters.PrintHeaders, parameters.TableStyle);
         }
 #endregion
         #region LoadFromArrays
@@ -252,10 +252,10 @@ namespace OfficeOpenXml
             }
 
             int maxColumn = 0;
-            int row = _fromRow;
+            int row = this._fromRow;
             foreach (object[] item in Data)
             {
-                _worksheet._values.SetValueRow_Value(row, _fromCol, item);
+                this._worksheet._values.SetValueRow_Value(row, this._fromCol, item);
                 if (maxColumn < item.Length)
                 {
                     maxColumn = item.Length;
@@ -264,7 +264,7 @@ namespace OfficeOpenXml
                 row++;
             }
 
-            return _worksheet.Cells[_fromRow, _fromCol, row - 1, _fromCol + maxColumn - 1];
+            return this._worksheet.Cells[this._fromRow, this._fromCol, row - 1, this._fromCol + maxColumn - 1];
         }
 #endregion
         #region LoadFromCollection
@@ -280,7 +280,7 @@ namespace OfficeOpenXml
             EpplusTableAttribute? attr = type.GetFirstAttributeOfType<EpplusTableAttribute>();
             if(attr != null)
             {
-                ExcelRangeBase? range = LoadFromCollection(Collection, attr.PrintHeaders, attr.TableStyle, BindingFlags.Public | BindingFlags.Instance, null);
+                ExcelRangeBase? range = this.LoadFromCollection(Collection, attr.PrintHeaders, attr.TableStyle, BindingFlags.Public | BindingFlags.Instance, null);
                 if(attr.AutofitColumns)
                 {
                     range.AutoFitColumns();
@@ -291,7 +291,7 @@ namespace OfficeOpenXml
                 }
                 return range;
             }
-            return LoadFromCollection<T>(Collection, false, null, BindingFlags.Public | BindingFlags.Instance, null);
+            return this.LoadFromCollection<T>(Collection, false, null, BindingFlags.Public | BindingFlags.Instance, null);
         }
         /// <summary>
         /// Load a collection of T into the worksheet starting from the top left row of the range.
@@ -303,7 +303,7 @@ namespace OfficeOpenXml
         /// <returns>The filled range</returns>
         public ExcelRangeBase LoadFromCollection<T>(IEnumerable<T> Collection, bool PrintHeaders)
         {
-            return LoadFromCollection<T>(Collection, PrintHeaders, null, BindingFlags.Public | BindingFlags.Instance, null);
+            return this.LoadFromCollection<T>(Collection, PrintHeaders, null, BindingFlags.Public | BindingFlags.Instance, null);
         }
         /// <summary>
         /// Load a collection of T into the worksheet starting from the top left row of the range.
@@ -316,7 +316,7 @@ namespace OfficeOpenXml
         /// <returns>The filled range</returns>
         public ExcelRangeBase LoadFromCollection<T>(IEnumerable<T> Collection, bool PrintHeaders, TableStyles? TableStyle)
         {
-            return LoadFromCollection<T>(Collection, PrintHeaders, TableStyle, BindingFlags.Public | BindingFlags.Instance, null);
+            return this.LoadFromCollection<T>(Collection, PrintHeaders, TableStyle, BindingFlags.Public | BindingFlags.Instance, null);
         }
         /// <summary>
         /// Load a collection into the worksheet starting from the top left row of the range.
@@ -330,7 +330,7 @@ namespace OfficeOpenXml
         /// <returns>The filled range</returns>
         public ExcelRangeBase LoadFromCollection<T>(IEnumerable<T> Collection, bool PrintHeaders, TableStyles? TableStyle, BindingFlags memberFlags, MemberInfo[] Members)
         {
-            return LoadFromCollectionInternal(Collection, PrintHeaders, TableStyle, memberFlags, Members);
+            return this.LoadFromCollectionInternal(Collection, PrintHeaders, TableStyle, memberFlags, Members);
         }
 
         private ExcelRangeBase LoadFromCollectionInternal<T>(IEnumerable<T> Collection, bool PrintHeaders, TableStyles? TableStyle, BindingFlags memberFlags, MemberInfo[] Members)
@@ -342,7 +342,7 @@ namespace OfficeOpenXml
                     return this.LoadFromDictionaries(Collection as IEnumerable<IDictionary<string, object>>, PrintHeaders, TableStyle);
                 }
 
-                return LoadFromDictionaries(Collection as IEnumerable<IDictionary<string, object>>, PrintHeaders, TableStyle, Members.Select(x => x.Name));
+                return this.LoadFromDictionaries(Collection as IEnumerable<IDictionary<string, object>>, PrintHeaders, TableStyle, Members.Select(x => x.Name));
             }
             LoadFromCollectionParams? param = new LoadFromCollectionParams
             {
@@ -382,7 +382,7 @@ namespace OfficeOpenXml
                     return this.LoadFromDictionaries(collection as IEnumerable<IDictionary<string, object>>, param.PrintHeaders, param.TableStyle);
                 }
 
-                return LoadFromDictionaries(collection as IEnumerable<IDictionary<string, object>>, param.PrintHeaders, param.TableStyle, param.Members.Select(x => x.Name));
+                return this.LoadFromDictionaries(collection as IEnumerable<IDictionary<string, object>>, param.PrintHeaders, param.TableStyle, param.Members.Select(x => x.Name));
             }
             LoadFromCollection<T>? func = new LoadFromCollection<T>(this, collection, param);
             return func.Load();
@@ -397,7 +397,7 @@ namespace OfficeOpenXml
         /// <returns>The range containing the data</returns>
         public ExcelRangeBase LoadFromText(string Text)
         {
-            return LoadFromText(Text, new ExcelTextFormat());
+            return this.LoadFromText(Text, new ExcelTextFormat());
         }
         /// <summary>
         /// Loads a CSV text into a range starting from the top left cell.
@@ -409,7 +409,7 @@ namespace OfficeOpenXml
         {
             if (string.IsNullOrEmpty(Text))
             {
-                ExcelRange? r = _worksheet.Cells[_fromRow, _fromCol];
+                ExcelRange? r = this._worksheet.Cells[this._fromRow, this._fromCol];
                 r.Value = "";
                 return r;
             }
@@ -431,11 +431,11 @@ namespace OfficeOpenXml
         /// <returns></returns>
         public ExcelRangeBase LoadFromText(string Text, ExcelTextFormat Format, TableStyles? TableStyle, bool FirstRowIsHeader)
         {
-            ExcelRangeBase? r = LoadFromText(Text, Format);
+            ExcelRangeBase? r = this.LoadFromText(Text, Format);
 
             if (r != null && TableStyle.HasValue)
             {
-                ExcelTable? tbl = _worksheet.Tables.Add(r, "");
+                ExcelTable? tbl = this._worksheet.Tables.Add(r, "");
                 tbl.ShowHeader = FirstRowIsHeader;
                 tbl.TableStyle = TableStyle.Value;
             }
@@ -448,7 +448,7 @@ namespace OfficeOpenXml
         /// <returns></returns>
         public ExcelRangeBase LoadFromText(FileInfo TextFile)
         {
-            return LoadFromText(File.ReadAllText(TextFile.FullName, Encoding.ASCII));
+            return this.LoadFromText(File.ReadAllText(TextFile.FullName, Encoding.ASCII));
         }
         /// <summary>
         /// Loads a CSV file into a range starting from the top left cell.
@@ -463,7 +463,7 @@ namespace OfficeOpenXml
                 throw (new ArgumentException($"File does not exist {TextFile.FullName}"));
             }
 
-            return LoadFromText(File.ReadAllText(TextFile.FullName, Format.Encoding), Format);
+            return this.LoadFromText(File.ReadAllText(TextFile.FullName, Format.Encoding), Format);
         }
         /// <summary>
         /// Loads a CSV file into a range starting from the top left cell.
@@ -480,7 +480,7 @@ namespace OfficeOpenXml
                 throw (new ArgumentException($"File does not exist {TextFile.FullName}"));
             }
 
-            return LoadFromText(File.ReadAllText(TextFile.FullName, Format.Encoding), Format, TableStyle, FirstRowIsHeader);
+            return this.LoadFromText(File.ReadAllText(TextFile.FullName, Format.Encoding), Format, TableStyle, FirstRowIsHeader);
         }
 #region LoadFromText async
 #if !NET35 && !NET40
@@ -498,7 +498,7 @@ namespace OfficeOpenXml
 
             FileStream? fs = new FileStream(TextFile.FullName, FileMode.Open, FileAccess.Read);
             StreamReader? sr = new StreamReader(fs, Encoding.ASCII);            
-            return LoadFromText(await sr.ReadToEndAsync().ConfigureAwait(false));
+            return this.LoadFromText(await sr.ReadToEndAsync().ConfigureAwait(false));
         }
         /// <summary>
         /// Loads a CSV file into a range starting from the top left cell.
@@ -515,7 +515,7 @@ namespace OfficeOpenXml
 
             FileStream? fs = new FileStream(TextFile.FullName, FileMode.Open, FileAccess.Read);
             StreamReader? sr = new StreamReader(fs, Format.Encoding);
-            return LoadFromText(await sr.ReadToEndAsync().ConfigureAwait(false), Format);
+            return this.LoadFromText(await sr.ReadToEndAsync().ConfigureAwait(false), Format);
         }
         /// <summary>
         /// Loads a CSV file into a range starting from the top left cell.
@@ -534,7 +534,7 @@ namespace OfficeOpenXml
 
             FileStream? fs = new FileStream(TextFile.FullName, FileMode.Open, FileAccess.Read);
             StreamReader? sr = new StreamReader(fs, Format.Encoding);
-            return LoadFromText(await sr.ReadToEndAsync().ConfigureAwait(false), Format, TableStyle, FirstRowIsHeader);
+            return this.LoadFromText(await sr.ReadToEndAsync().ConfigureAwait(false), Format, TableStyle, FirstRowIsHeader);
         }
 #endif
         #endregion
@@ -570,7 +570,7 @@ namespace OfficeOpenXml
         /// </example>
         public ExcelRangeBase LoadFromDictionaries(IEnumerable<IDictionary<string, object>> items)
         {
-            return LoadFromDictionaries(items, false, TableStyles.None, null);
+            return this.LoadFromDictionaries(items, false, TableStyles.None, null);
         }
 
         /// <summary>
@@ -604,7 +604,7 @@ namespace OfficeOpenXml
         /// </example>
         public ExcelRangeBase LoadFromDictionaries(IEnumerable<IDictionary<string, object>> items, bool printHeaders)
         {
-            return LoadFromDictionaries(items, printHeaders, TableStyles.None, null);
+            return this.LoadFromDictionaries(items, printHeaders, TableStyles.None, null);
         }
 
         /// <summary>
@@ -639,7 +639,7 @@ namespace OfficeOpenXml
         /// </example>
         public ExcelRangeBase LoadFromDictionaries(IEnumerable<IDictionary<string, object>> items, bool printHeaders, TableStyles? tableStyle)
         {
-            return LoadFromDictionaries(items, printHeaders, tableStyle, null);
+            return this.LoadFromDictionaries(items, printHeaders, tableStyle, null);
         }
 
         /// <summary>

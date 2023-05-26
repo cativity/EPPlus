@@ -32,8 +32,8 @@ namespace OfficeOpenXml
         }
         internal ToCollectionRangeOptions(ToCollectionOptions options)
         {
-            SetCustomHeaders(options.Headers);
-            ConversionFailureStrategy = options.ConversionFailureStrategy;
+            this.SetCustomHeaders(options.Headers);
+            this.ConversionFailureStrategy = options.ConversionFailureStrategy;
         }
         /// <summary>
         /// 0-based index of the Header row in the range, if applicable. 
@@ -76,7 +76,7 @@ namespace OfficeOpenXml
         /// <param name="header"></param>
         public void SetCustomHeaders(params string[] header)
         {
-            Headers = header;
+            this.Headers = header;
         }
         /// <summary>
         /// How conversion failures should be handled when mapping properties.

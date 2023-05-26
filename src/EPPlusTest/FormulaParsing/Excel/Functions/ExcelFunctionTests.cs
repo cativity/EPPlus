@@ -45,7 +45,7 @@ namespace EPPlusTest.Excel.Functions
         {
             public IEnumerable<ExcelDoubleCellValue> ArgsToDoubleEnumerableImpl(IEnumerable<FunctionArgument> args)
             {
-                return ArgsToDoubleEnumerable(args, ParsingContext.Create());
+                return this.ArgsToDoubleEnumerable(args, ParsingContext.Create());
             }
             #region Other members
             public override CompileResult Execute(IEnumerable<FunctionArgument> arguments, ParsingContext context)

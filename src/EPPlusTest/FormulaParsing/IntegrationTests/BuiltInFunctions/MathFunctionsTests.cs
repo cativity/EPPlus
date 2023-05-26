@@ -45,28 +45,28 @@ namespace EPPlusTest.FormulaParsing.IntegrationTests.BuiltInFunctions
         [TestInitialize]
         public void Setup()
         {
-            _package = new ExcelPackage();
-            EpplusExcelDataProvider? excelDataProvider = new EpplusExcelDataProvider(_package);
-            _parser = new FormulaParser(excelDataProvider);
+            this._package = new ExcelPackage();
+            EpplusExcelDataProvider? excelDataProvider = new EpplusExcelDataProvider(this._package);
+            this._parser = new FormulaParser(excelDataProvider);
         }
 
         [TestCleanup]
         public void Cleanup()
         {
-            _package.Dispose();
+            this._package.Dispose();
         }
 
         [TestMethod]
         public void PowerShouldReturnCorrectResult()
         {
-            object? result = _parser.Parse("Power(3, 3)");
+            object? result = this._parser.Parse("Power(3, 3)");
             Assert.AreEqual(27d, result);
         }
 
         [TestMethod]
         public void SqrtShouldReturnCorrectResult()
         {
-            object? result = _parser.Parse("sqrt(9)");
+            object? result = this._parser.Parse("sqrt(9)");
             Assert.AreEqual(3d, result);
         }
 
@@ -74,7 +74,7 @@ namespace EPPlusTest.FormulaParsing.IntegrationTests.BuiltInFunctions
         public void PiShouldReturnCorrectResult()
         {
             double expectedValue = (double)Math.Round(Math.PI, 14);
-            object? result = _parser.Parse("Pi()");
+            object? result = this._parser.Parse("Pi()");
             Assert.AreEqual(expectedValue, result);
         }
 
@@ -82,7 +82,7 @@ namespace EPPlusTest.FormulaParsing.IntegrationTests.BuiltInFunctions
         public void CeilingShouldReturnCorrectResult()
         {
             double expectedValue = 22.4d;
-            object? result = _parser.Parse("ceiling(22.35, 0.1)");
+            object? result = this._parser.Parse("ceiling(22.35, 0.1)");
             Assert.AreEqual(expectedValue, result);
         }
 
@@ -90,7 +90,7 @@ namespace EPPlusTest.FormulaParsing.IntegrationTests.BuiltInFunctions
         public void CeilingPreciseShouldReturnCorrectResult()
         {
             double expectedValue = -20d;
-            object? result = _parser.Parse("Ceiling.Precise(-22.25, 5)");
+            object? result = this._parser.Parse("Ceiling.Precise(-22.25, 5)");
             Assert.AreEqual(expectedValue, result);
         }
 
@@ -98,7 +98,7 @@ namespace EPPlusTest.FormulaParsing.IntegrationTests.BuiltInFunctions
         public void CeilingMathShouldReturnCorrectResult()
         {
             double expectedValue = -20d;
-            object? result = _parser.Parse("Ceiling.Math(-22.25, 5)");
+            object? result = this._parser.Parse("Ceiling.Math(-22.25, 5)");
             Assert.AreEqual(expectedValue, result);
         }
 
@@ -106,7 +106,7 @@ namespace EPPlusTest.FormulaParsing.IntegrationTests.BuiltInFunctions
         public void IsoCeilingShouldReturnCorrectResult()
         {
             double expectedValue = 30d;
-            object? result = _parser.Parse("Iso.Ceiling(22.25, 10)");
+            object? result = this._parser.Parse("Iso.Ceiling(22.25, 10)");
             Assert.AreEqual(expectedValue, result);
         }
 
@@ -114,7 +114,7 @@ namespace EPPlusTest.FormulaParsing.IntegrationTests.BuiltInFunctions
         public void MroundShouldReturnCorrectResult()
         {
             double expectedValue = 334d;
-            object? result = _parser.Parse("Mround(333.3, 2)");
+            object? result = this._parser.Parse("Mround(333.3, 2)");
             Assert.AreEqual(expectedValue, result);
         }
 
@@ -122,7 +122,7 @@ namespace EPPlusTest.FormulaParsing.IntegrationTests.BuiltInFunctions
         public void CombinShouldReturnCorrectResult()
         {
             double expectedValue = 15d;
-            object? result = _parser.Parse("combin(6, 4)");
+            object? result = this._parser.Parse("combin(6, 4)");
             Assert.AreEqual(expectedValue, result);
         }
 
@@ -130,7 +130,7 @@ namespace EPPlusTest.FormulaParsing.IntegrationTests.BuiltInFunctions
         public void CombinaShouldReturnCorrectResult()
         {
             double expectedValue = 462d;
-            object? result = _parser.Parse("combina(6, 6)");
+            object? result = this._parser.Parse("combina(6, 6)");
             Assert.AreEqual(expectedValue, result);
         }
 
@@ -138,7 +138,7 @@ namespace EPPlusTest.FormulaParsing.IntegrationTests.BuiltInFunctions
         public void SecShouldReturnCorrectResult()
         {
             double expectedValue = 1d;
-            object? result = _parser.Parse("sec(0)");
+            object? result = this._parser.Parse("sec(0)");
             Assert.AreEqual(expectedValue, result);
         }
 
@@ -146,7 +146,7 @@ namespace EPPlusTest.FormulaParsing.IntegrationTests.BuiltInFunctions
         public void SecHShouldReturnCorrectResult()
         {
             double expectedValue = 1d;
-            object? result = _parser.Parse("sech(0)");
+            object? result = this._parser.Parse("sech(0)");
             Assert.AreEqual(expectedValue, result);
         }
 
@@ -154,7 +154,7 @@ namespace EPPlusTest.FormulaParsing.IntegrationTests.BuiltInFunctions
         public void CscShouldReturnCorrectResult()
         {
             double expectedValue = 1d;
-            object? result = _parser.Parse("csc(1.5707963267949)");
+            object? result = this._parser.Parse("csc(1.5707963267949)");
             Assert.AreEqual(expectedValue, result);
         }
 
@@ -162,7 +162,7 @@ namespace EPPlusTest.FormulaParsing.IntegrationTests.BuiltInFunctions
         public void CschShouldReturnCorrectResult()
         {
             double expectedValue = 0.8004;
-            object? result = _parser.Parse("csch(pi()/3)");
+            object? result = this._parser.Parse("csch(pi()/3)");
             result = Math.Round((double)result, 4);
             Assert.AreEqual(expectedValue, result);
         }
@@ -171,7 +171,7 @@ namespace EPPlusTest.FormulaParsing.IntegrationTests.BuiltInFunctions
         public void CotShouldReturnCorrectResult()
         {
             double expectedValue = -1d;
-            object? result = _parser.Parse("Cot(-PI()/4)");
+            object? result = this._parser.Parse("Cot(-PI()/4)");
             Assert.AreEqual(expectedValue, Math.Round((double)result, 1));
         }
 
@@ -179,7 +179,7 @@ namespace EPPlusTest.FormulaParsing.IntegrationTests.BuiltInFunctions
         public void CothShouldReturnCorrectResult()
         {
             double expectedValue = 1.0903d;
-            object? result = _parser.Parse("Coth(PI()/2)");
+            object? result = this._parser.Parse("Coth(PI()/2)");
             Assert.AreEqual(expectedValue, Math.Round((double)result, 4));
         }
 
@@ -187,7 +187,7 @@ namespace EPPlusTest.FormulaParsing.IntegrationTests.BuiltInFunctions
         public void AcothShouldReturnCorrectResult()
         {
             double expectedValue = 0.5493d;
-            object? result = _parser.Parse("ACOTH(2)");
+            object? result = this._parser.Parse("ACOTH(2)");
             Assert.AreEqual(expectedValue, Math.Round((double)result, 4));
         }
 
@@ -195,7 +195,7 @@ namespace EPPlusTest.FormulaParsing.IntegrationTests.BuiltInFunctions
         public void RadiansShouldReturnCorrectResult()
         {
             double expectedValue = Math.PI;
-            object? result = _parser.Parse("Radians(180)");
+            object? result = this._parser.Parse("Radians(180)");
             Assert.AreEqual(expectedValue, result);
         }
 
@@ -203,7 +203,7 @@ namespace EPPlusTest.FormulaParsing.IntegrationTests.BuiltInFunctions
         public void AcotShouldReturnCorrectResult()
         {
             double expectedValue = 90d;
-            object? result = _parser.Parse("degrees(Acot(0))");
+            object? result = this._parser.Parse("degrees(Acot(0))");
             Assert.AreEqual(expectedValue, result);
         }
 
@@ -211,7 +211,7 @@ namespace EPPlusTest.FormulaParsing.IntegrationTests.BuiltInFunctions
         public void FloorShouldReturnCorrectResult()
         {
             double expectedValue = 22.3d;
-            object? result = _parser.Parse("Floor(22.35, 0.1)");
+            object? result = this._parser.Parse("Floor(22.35, 0.1)");
             Assert.AreEqual(expectedValue, result);
         }
 
@@ -219,7 +219,7 @@ namespace EPPlusTest.FormulaParsing.IntegrationTests.BuiltInFunctions
         public void FloorPreciseShouldReturnCorrectResult()
         {
             double expectedValue = -30d;
-            object? result = _parser.Parse("Floor.Precise(-26.75, 5)");
+            object? result = this._parser.Parse("Floor.Precise(-26.75, 5)");
             Assert.AreEqual(expectedValue, result);
         }
 
@@ -227,7 +227,7 @@ namespace EPPlusTest.FormulaParsing.IntegrationTests.BuiltInFunctions
         public void FloorMathShouldReturnCorrectResult()
         {
             double expectedValue = -25d;
-            object? result = _parser.Parse("Floor.Math(-26.75, 5, 1)");
+            object? result = this._parser.Parse("Floor.Math(-26.75, 5, 1)");
             Assert.AreEqual(expectedValue, result);
         }
 
@@ -235,7 +235,7 @@ namespace EPPlusTest.FormulaParsing.IntegrationTests.BuiltInFunctions
         public void GcdShouldReturnCorrectResult()
         {
             int expectedValue = 1;
-            object? result = _parser.Parse("Gcd(7, 2)");
+            object? result = this._parser.Parse("Gcd(7, 2)");
             Assert.AreEqual(expectedValue, result);
         }
 
@@ -243,7 +243,7 @@ namespace EPPlusTest.FormulaParsing.IntegrationTests.BuiltInFunctions
         public void LcmShouldReturnCorrectResult()
         {
             int expectedValue = 14;
-            object? result = _parser.Parse("Lcm(7, 2)");
+            object? result = this._parser.Parse("Lcm(7, 2)");
             Assert.AreEqual(expectedValue, result);
         }
 
@@ -251,84 +251,84 @@ namespace EPPlusTest.FormulaParsing.IntegrationTests.BuiltInFunctions
         public void RomanShouldReturnCorrectResult()
         {
             string? expectedValue = "CDXCIX";
-            object? result = _parser.Parse("ROMAN(499)");
+            object? result = this._parser.Parse("ROMAN(499)");
             Assert.AreEqual(expectedValue, result);
         }
 
         [TestMethod]
         public void SumShouldReturnCorrectResultWithInts()
         {
-            object? result = _parser.Parse("sum(1, 2)");
+            object? result = this._parser.Parse("sum(1, 2)");
             Assert.AreEqual(3d, result);
         }
 
         [TestMethod]
         public void SumShouldReturnCorrectResultWithDecimals()
         {
-            object? result = _parser.Parse("sum(1,2.5)");
+            object? result = this._parser.Parse("sum(1,2.5)");
             Assert.AreEqual(3.5d, result);
         }
 
         [TestMethod]
         public void SumShouldReturnCorrectResultWithEnumerable()
         {
-            object? result = _parser.Parse("sum({1;2;3;-1}, 2.5)");
+            object? result = this._parser.Parse("sum({1;2;3;-1}, 2.5)");
             Assert.AreEqual(7.5d, result);
         }
 
         [TestMethod]
         public void SumsqShouldReturnCorrectResultWithEnumerable()
         {
-            object? result = _parser.Parse("sumsq({2;3})");
+            object? result = this._parser.Parse("sumsq({2;3})");
             Assert.AreEqual(13d, result);
         }
 
         [TestMethod]
         public void SubtotalShouldNegateExpression()
         {
-            object? result = _parser.Parse("-subtotal(2;{1;2})");
+            object? result = this._parser.Parse("-subtotal(2;{1;2})");
             Assert.AreEqual(-2d, result);
         }
 
         [TestMethod]
         public void StdevShouldReturnAResult()
         {
-            object? result = _parser.Parse("stdev(1;2;3;4)");
+            object? result = this._parser.Parse("stdev(1;2;3;4)");
             Assert.IsInstanceOfType(result, typeof(double));
         }
 
         [TestMethod]
         public void StdevPShouldReturnAResult()
         {
-            object? result = _parser.Parse("stdevp(2,3,4)");
+            object? result = this._parser.Parse("stdevp(2,3,4)");
             Assert.IsInstanceOfType(result, typeof(double));
         }
 
         [TestMethod]
         public void ExpShouldReturnAResult()
         {
-            object? result = _parser.Parse("exp(4)");
+            object? result = this._parser.Parse("exp(4)");
             Assert.IsInstanceOfType(result, typeof(double));
         }
 
         [TestMethod]
         public void MaxShouldReturnAResult()
         {
-            object? result = _parser.Parse("Max(4, 5)");
+            object? result = this._parser.Parse("Max(4, 5)");
             Assert.IsInstanceOfType(result, typeof(double));
         }
 
         [TestMethod]
         public void MaxaShouldReturnAResult()
         {
-            object? result = _parser.Parse("Maxa(4, 5)");
+            object? result = this._parser.Parse("Maxa(4, 5)");
             Assert.IsInstanceOfType(result, typeof(double));
         }
 
         [TestMethod]
         public void MinShouldReturnAResult()
         {
-            object? result = _parser.Parse("min(4, 5)");
+            object? result = this._parser.Parse("min(4, 5)");
             Assert.IsInstanceOfType(result, typeof(double));
         }
 
@@ -347,7 +347,7 @@ namespace EPPlusTest.FormulaParsing.IntegrationTests.BuiltInFunctions
         [TestMethod]
         public void AverageShouldReturnAResult()
         {
-            object? result = _parser.Parse("Average(2, 2, 2)");
+            object? result = this._parser.Parse("Average(2, 2, 2)");
             Assert.AreEqual(2d, result);
         }
 
@@ -364,217 +364,217 @@ namespace EPPlusTest.FormulaParsing.IntegrationTests.BuiltInFunctions
         [TestMethod]
         public void RoundShouldReturnAResult()
         {
-            object? result = _parser.Parse("Round(2.2, 0)");
+            object? result = this._parser.Parse("Round(2.2, 0)");
             Assert.AreEqual(2d, result);
         }
 
         [TestMethod]
         public void RounddownShouldReturnAResult()
         {
-            object? result = _parser.Parse("Rounddown(2.99, 1)");
+            object? result = this._parser.Parse("Rounddown(2.99, 1)");
             Assert.AreEqual(2.9d, result);
         }
 
         [TestMethod]
         public void RoundupShouldReturnAResult()
         {
-            object? result = _parser.Parse("Roundup(2.99, 1)");
+            object? result = this._parser.Parse("Roundup(2.99, 1)");
             Assert.AreEqual(3d, result);
         }
 
         [TestMethod]
         public void SqrtPiShouldReturnAResult()
         {
-            object? result = _parser.Parse("SqrtPi(2.2)");
+            object? result = this._parser.Parse("SqrtPi(2.2)");
             Assert.IsInstanceOfType(result, typeof(double));
         }
 
         [TestMethod]
         public void IntShouldReturnAResult()
         {
-            object? result = _parser.Parse("Int(2.9)");
+            object? result = this._parser.Parse("Int(2.9)");
             Assert.AreEqual(2, result);
         }
 
         [TestMethod]
         public void RandShouldReturnAResult()
         {
-            object? result = _parser.Parse("Rand()");
+            object? result = this._parser.Parse("Rand()");
             Assert.IsInstanceOfType(result, typeof(double));
         }
 
         [TestMethod]
         public void RandBetweenShouldReturnAResult()
         {
-            object? result = _parser.Parse("RandBetween(1,2)");
+            object? result = this._parser.Parse("RandBetween(1,2)");
             Assert.IsInstanceOfType(result, typeof(double));
         }
 
         [TestMethod]
         public void CountShouldReturnAResult()
         {
-            object? result = _parser.Parse("Count(1,2,2,\"4\")");
+            object? result = this._parser.Parse("Count(1,2,2,\"4\")");
             Assert.AreEqual(4d, result);
         }
 
         [TestMethod]
         public void CountAShouldReturnAResult()
         {
-            object? result = _parser.Parse("CountA(1,2,2, \"a\")");
+            object? result = this._parser.Parse("CountA(1,2,2, \"a\")");
             Assert.AreEqual(4d, result);
         }
 
         [TestMethod]
         public void CountIfShouldReturnAResult()
         {
-            object? result = _parser.Parse("CountIf({1;2;2;\"\"}, \"2\")");
+            object? result = this._parser.Parse("CountIf({1;2;2;\"\"}, \"2\")");
             Assert.AreEqual(2d, result);
         }
 
         [TestMethod]
         public void VarShouldReturnAResult()
         {
-            object? result = _parser.Parse("Var(1,2,3)");
+            object? result = this._parser.Parse("Var(1,2,3)");
             Assert.IsInstanceOfType(result, typeof(double));
         }
 
         [TestMethod]
         public void VarPShouldReturnAResult()
         {
-            object? result = _parser.Parse("VarP(1,2,3)");
+            object? result = this._parser.Parse("VarP(1,2,3)");
             Assert.IsInstanceOfType(result, typeof(double));
         }
 
         [TestMethod]
         public void ModShouldReturnAResult()
         {
-            object? result = _parser.Parse("Mod(5,2)");
+            object? result = this._parser.Parse("Mod(5,2)");
             Assert.IsInstanceOfType(result, typeof(double));
         }
 
         [TestMethod]
         public void SubtotalShouldReturnAResult()
         {
-            object? result = _parser.Parse("Subtotal(1, 10, 20)");
+            object? result = this._parser.Parse("Subtotal(1, 10, 20)");
             Assert.IsInstanceOfType(result, typeof(double));
         }
 
         [TestMethod]
         public void TruncShouldReturnAResult()
         {
-            object? result = _parser.Parse("Trunc(1.2345)");
+            object? result = this._parser.Parse("Trunc(1.2345)");
             Assert.IsInstanceOfType(result, typeof(double));
         }
 
         [TestMethod]
         public void ProductShouldReturnAResult()
         {
-            object? result = _parser.Parse("Product(1,2,3)");
+            object? result = this._parser.Parse("Product(1,2,3)");
             Assert.IsInstanceOfType(result, typeof(double));
         }
 
         [TestMethod]
         public void CosShouldReturnAResult()
         {
-            object? result = _parser.Parse("Cos(2)");
+            object? result = this._parser.Parse("Cos(2)");
             Assert.IsInstanceOfType(result, typeof(double));
         }
 
         [TestMethod]
         public void CoshShouldReturnAResult()
         {
-            object? result = _parser.Parse("Cosh(2)");
+            object? result = this._parser.Parse("Cosh(2)");
             Assert.IsInstanceOfType(result, typeof(double));
         }
 
         [TestMethod]
         public void SinShouldReturnAResult()
         {
-            object? result = _parser.Parse("Sin(2)");
+            object? result = this._parser.Parse("Sin(2)");
             Assert.IsInstanceOfType(result, typeof(double));
         }
 
         [TestMethod]
         public void SinhShouldReturnAResult()
         {
-            object? result = _parser.Parse("Sinh(2)");
+            object? result = this._parser.Parse("Sinh(2)");
             Assert.IsInstanceOfType(result, typeof(double));
         }
 
         [TestMethod]
         public void TanShouldReturnAResult()
         {
-            object? result = _parser.Parse("Tan(2)");
+            object? result = this._parser.Parse("Tan(2)");
             Assert.IsInstanceOfType(result, typeof(double));
         }
 
         [TestMethod]
         public void AtanShouldReturnAResult()
         {
-            object? result = _parser.Parse("Atan(2)");
+            object? result = this._parser.Parse("Atan(2)");
             Assert.IsInstanceOfType(result, typeof(double));
         }
 
         [TestMethod]
         public void Atan2ShouldReturnAResult()
         {
-            object? result = _parser.Parse("Atan2(2,1)");
+            object? result = this._parser.Parse("Atan2(2,1)");
             Assert.IsInstanceOfType(result, typeof(double));
         }
 
         [TestMethod]
         public void TanhShouldReturnAResult()
         {
-            object? result = _parser.Parse("Tanh(2)");
+            object? result = this._parser.Parse("Tanh(2)");
             Assert.IsInstanceOfType(result, typeof(double));
         }
 
         [TestMethod]
         public void LogShouldReturnAResult()
         {
-            object? result = _parser.Parse("Log(2, 2)");
+            object? result = this._parser.Parse("Log(2, 2)");
             Assert.AreEqual(1d, result);
         }
 
         [TestMethod]
         public void Log10ShouldReturnAResult()
         {
-            object? result = _parser.Parse("Log10(2)");
+            object? result = this._parser.Parse("Log10(2)");
             Assert.IsInstanceOfType(result, typeof(double));
         }
 
         [TestMethod]
         public void LnShouldReturnAResult()
         {
-            object? result = _parser.Parse("Ln(2)");
+            object? result = this._parser.Parse("Ln(2)");
             Assert.IsInstanceOfType(result, typeof(double));
         }
 
         [TestMethod]
         public void FactShouldReturnAResult()
         {
-            object? result = _parser.Parse("Fact(0)");
+            object? result = this._parser.Parse("Fact(0)");
             Assert.AreEqual(1d, result);
         }
 
         [TestMethod]
         public void FactDoubleShouldReturnAResult()
         {
-            object? result = _parser.Parse("FactDouble(13)");
+            object? result = this._parser.Parse("FactDouble(13)");
             Assert.AreEqual(135135d, result);
         }
 
         [TestMethod]
         public void QuotientShouldReturnAResult()
         {
-            object? result = _parser.Parse("Quotient(5;2)");
+            object? result = this._parser.Parse("Quotient(5;2)");
             Assert.AreEqual(2, result);
         }
 
         [TestMethod]
         public void MedianShouldReturnAResult()
         {
-            object? result = _parser.Parse("Median(1;2;3)");
+            object? result = this._parser.Parse("Median(1;2;3)");
             Assert.AreEqual(2d, result);
         }
 
@@ -605,7 +605,7 @@ namespace EPPlusTest.FormulaParsing.IntegrationTests.BuiltInFunctions
         [TestMethod]
         public void DegreesShouldReturnCorrectResult()
         {
-            object? result = _parser.Parse("DEGREES(0.5)");
+            object? result = this._parser.Parse("DEGREES(0.5)");
             double rounded = Math.Round((double)result, 3);
             Assert.AreEqual(28.648, rounded);
         }

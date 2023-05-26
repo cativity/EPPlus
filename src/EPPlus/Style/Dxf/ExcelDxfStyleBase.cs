@@ -29,20 +29,21 @@ namespace OfficeOpenXml.Style.Dxf
         internal ExcelDxfStyleBase(XmlNamespaceManager nameSpaceManager, XmlNode topNode, ExcelStyles styles, Action<eStyleClass, eStyleProperty, object> callback) : base(styles, callback)
         {
             //_dxfIdPath = dxfIdPath;
-            Border = new ExcelDxfBorderBase(_styles, callback);
-            Fill = new ExcelDxfFill(_styles, callback);
+            this.Border = new ExcelDxfBorderBase(this._styles, callback);
+            this.Fill = new ExcelDxfFill(this._styles, callback);
 
             if (topNode != null)
             {
-                _helper = new XmlHelperInstance(nameSpaceManager, topNode);
-                Border.SetValuesFromXml(_helper);
-                Fill.SetValuesFromXml(_helper);
+                this._helper = new XmlHelperInstance(nameSpaceManager, topNode);
+                this.Border.SetValuesFromXml(this._helper);
+                this.Fill.SetValuesFromXml(this._helper);
             }
             else
             {
-                _helper = new XmlHelperInstance(nameSpaceManager);
+                this._helper = new XmlHelperInstance(nameSpaceManager);
             }
-            _helper.SchemaNodeOrder = new string[] { "font", "numFmt", "fill", "border" };
+
+            this._helper.SchemaNodeOrder = new string[] { "font", "numFmt", "fill", "border" };
         }
         internal virtual int DxfId { get; set; } = int.MinValue;
         /// <summary>
@@ -60,8 +61,8 @@ namespace OfficeOpenXml.Style.Dxf
         {
             get
             {
-                return Border.Id + Fill.Id +
-                    (AllowChange ? "" : DxfId.ToString());
+                return this.Border.Id + this.Fill.Id +
+                       (this.AllowChange ? "" : this.DxfId.ToString());
             }
         }
         
@@ -72,22 +73,22 @@ namespace OfficeOpenXml.Style.Dxf
         /// <param name="path">The XPath</param>
         internal override void CreateNodes(XmlHelper helper, string path)
         {
-            if (Fill.HasValue)
+            if (this.Fill.HasValue)
             {
                 this.Fill.CreateNodes(helper, "d:fill");
             }
 
-            if (Border.HasValue)
+            if (this.Border.HasValue)
             {
                 this.Border.CreateNodes(helper, "d:border");
             }
         }
         internal override void SetStyle()
         {
-            if (_callback != null)
+            if (this._callback != null)
             {
-                Border.SetStyle();
-                Fill.SetStyle();
+                this.Border.SetStyle();
+                this.Fill.SetStyle();
             }
         }
 
@@ -98,7 +99,7 @@ namespace OfficeOpenXml.Style.Dxf
         {
             get 
             {
-                return  Fill.HasValue || Border.HasValue; 
+                return this.Fill.HasValue || this.Border.HasValue; 
             }
         }
         /// <summary>
@@ -106,8 +107,8 @@ namespace OfficeOpenXml.Style.Dxf
         /// </summary>
         public override void Clear()
         {
-            Fill.Clear();
-            Border.Clear();
+            this.Fill.Clear();
+            this.Border.Clear();
         }
         internal ExcelDxfStyle ToDxfStyle()
         {
@@ -117,16 +118,16 @@ namespace OfficeOpenXml.Style.Dxf
             }
             else
             {
-                ExcelDxfStyle? ns = new ExcelDxfStyle(_styles.NameSpaceManager, null, _styles, null)
+                ExcelDxfStyle? ns = new ExcelDxfStyle(this._styles.NameSpaceManager, null, this._styles, null)
                 {
-                    Border = Border,
-                    Fill = Fill,
-                    DxfId = DxfId,
-                    Font = new ExcelDxfFont(_styles, _callback),
-                    NumberFormat = new ExcelDxfNumberFormat(_styles, _callback),
-                    _helper = _helper
+                    Border = this.Border,
+                    Fill = this.Fill,
+                    DxfId = this.DxfId,
+                    Font = new ExcelDxfFont(this._styles, this._callback),
+                    NumberFormat = new ExcelDxfNumberFormat(this._styles, this._callback),
+                    _helper = this._helper
                 };
-                ns.Font.SetValuesFromXml(_helper);
+                ns.Font.SetValuesFromXml(this._helper);
                 return ns;
             }
         }
@@ -138,15 +139,15 @@ namespace OfficeOpenXml.Style.Dxf
             }
             else
             {
-                ExcelDxfSlicerStyle? ns = new ExcelDxfSlicerStyle(_styles.NameSpaceManager, null, _styles, null)
+                ExcelDxfSlicerStyle? ns = new ExcelDxfSlicerStyle(this._styles.NameSpaceManager, null, this._styles, null)
                 {
-                    Border = Border,
-                    Fill = Fill,
-                    DxfId = DxfId,
-                    Font = new ExcelDxfFont(_styles, _callback),
-                    _helper = _helper
+                    Border = this.Border,
+                    Fill = this.Fill,
+                    DxfId = this.DxfId,
+                    Font = new ExcelDxfFont(this._styles, this._callback),
+                    _helper = this._helper
                 };
-                ns.Font.SetValuesFromXml(_helper);
+                ns.Font.SetValuesFromXml(this._helper);
                 return ns;
             }
         }
@@ -158,15 +159,15 @@ namespace OfficeOpenXml.Style.Dxf
             }
             else
             {
-                ExcelDxfTableStyle? ns = new ExcelDxfTableStyle(_styles.NameSpaceManager, null, _styles)
+                ExcelDxfTableStyle? ns = new ExcelDxfTableStyle(this._styles.NameSpaceManager, null, this._styles)
                 {
-                    Border = Border,
-                    Fill = Fill,
-                    DxfId = DxfId,
-                    Font = new ExcelDxfFont(_styles, _callback),
-                    _helper = _helper
+                    Border = this.Border,
+                    Fill = this.Fill,
+                    DxfId = this.DxfId,
+                    Font = new ExcelDxfFont(this._styles, this._callback),
+                    _helper = this._helper
                 };
-                ns.Font.SetValuesFromXml(_helper);
+                ns.Font.SetValuesFromXml(this._helper);
                 return ns;
             }
         }
@@ -178,15 +179,15 @@ namespace OfficeOpenXml.Style.Dxf
             }
             else
             {
-                ExcelDxfStyleLimitedFont? ns = new ExcelDxfStyleLimitedFont(_styles.NameSpaceManager, null, _styles, _callback)
+                ExcelDxfStyleLimitedFont? ns = new ExcelDxfStyleLimitedFont(this._styles.NameSpaceManager, null, this._styles, this._callback)
                 {
-                    Border = Border,
-                    Fill = Fill,
-                    DxfId = DxfId,
-                    Font = new ExcelDxfFontBase(_styles,_callback),
-                    _helper = _helper
+                    Border = this.Border,
+                    Fill = this.Fill,
+                    DxfId = this.DxfId,
+                    Font = new ExcelDxfFontBase(this._styles, this._callback),
+                    _helper = this._helper
                 };
-                ns.Font.SetValuesFromXml(_helper);
+                ns.Font.SetValuesFromXml(this._helper);
                 return ns;
             }
         }
@@ -198,17 +199,17 @@ namespace OfficeOpenXml.Style.Dxf
             }
             else
             {
-                ExcelDxfStyleConditionalFormatting? ns = new ExcelDxfStyleConditionalFormatting(_styles.NameSpaceManager, null, _styles, _callback)
+                ExcelDxfStyleConditionalFormatting? ns = new ExcelDxfStyleConditionalFormatting(this._styles.NameSpaceManager, null, this._styles, this._callback)
                 {
-                    Border = Border,
-                    Fill = Fill,
-                    NumberFormat = new ExcelDxfNumberFormat(_styles, _callback),
-                    DxfId = DxfId,
-                    Font = new ExcelDxfFontBase(_styles, _callback),
-                    _helper = _helper
+                    Border = this.Border,
+                    Fill = this.Fill,
+                    NumberFormat = new ExcelDxfNumberFormat(this._styles, this._callback),
+                    DxfId = this.DxfId,
+                    Font = new ExcelDxfFontBase(this._styles, this._callback),
+                    _helper = this._helper
                 };
-                ns.NumberFormat.SetValuesFromXml(_helper);
-                ns.Font.SetValuesFromXml(_helper);
+                ns.NumberFormat.SetValuesFromXml(this._helper);
+                ns.Font.SetValuesFromXml(this._helper);
                 return ns;
             }
         }

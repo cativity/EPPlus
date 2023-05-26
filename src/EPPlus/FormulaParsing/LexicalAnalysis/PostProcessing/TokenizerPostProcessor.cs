@@ -29,8 +29,8 @@ namespace OfficeOpenXml.FormulaParsing.LexicalAnalysis.PostProcessing
         }
         public TokenizerPostProcessor(TokenizerContext context, TokenNavigator navigator)
         {
-            _context = context;
-            _navigator = navigator;
+            this._context = context;
+            this._navigator = navigator;
         }
 
         private readonly TokenizerContext _context;
@@ -44,21 +44,21 @@ namespace OfficeOpenXml.FormulaParsing.LexicalAnalysis.PostProcessing
         public void Process()
         {
             bool hasColon = false;
-            while (_navigator.HasNext())
+            while (this._navigator.HasNext())
             {
-                Token token = _navigator.CurrentToken;
+                Token token = this._navigator.CurrentToken;
                 if (token.TokenTypeIsSet(TokenType.Unrecognized))
                 {
-                    HandleUnrecognizedToken();
+                    this.HandleUnrecognizedToken();
                 }
                 else if (token.TokenTypeIsSet(TokenType.Colon))
                 {
-                    HandleColon();
+                    this.HandleColon();
                     hasColon = true;
                 }
                 else if (token.TokenTypeIsSet(TokenType.WorksheetName))
                 {
-                    HandleWorksheetNameToken();
+                    this.HandleWorksheetNameToken();
                 }
                 else if (token.TokenTypeIsSet(TokenType.Operator) || token.TokenTypeIsSet(TokenType.Negator))
                 {
@@ -67,39 +67,40 @@ namespace OfficeOpenXml.FormulaParsing.LexicalAnalysis.PostProcessing
                         this.HandleNegators();
                     }
                 }
-                _navigator.MoveNext();
+
+                this._navigator.MoveNext();
             }
 
             if (hasColon)
             {
-                _navigator.MoveIndex(-_navigator.Index);
-                while (_navigator.HasNext())
+                this._navigator.MoveIndex(-this._navigator.Index);
+                while (this._navigator.HasNext())
                 {
-                    Token token = _navigator.CurrentToken;
-                    if (token.TokenTypeIsSet(TokenType.Colon) && _context.Result.Count > _navigator.Index + 1)
+                    Token token = this._navigator.CurrentToken;
+                    if (token.TokenTypeIsSet(TokenType.Colon) && this._context.Result.Count > this._navigator.Index + 1)
                     {
-                        if (_navigator.PreviousToken != null && _navigator.PreviousToken.Value.TokenTypeIsSet(TokenType.ExcelAddress) &&
-                           _navigator.NextToken.TokenTypeIsSet(TokenType.ExcelAddress))
+                        if (this._navigator.PreviousToken != null && this._navigator.PreviousToken.Value.TokenTypeIsSet(TokenType.ExcelAddress) && this._navigator.NextToken.TokenTypeIsSet(TokenType.ExcelAddress))
                         {
-                            string? newToken= _navigator.PreviousToken.Value.Value+":"+ _navigator.NextToken.Value;
-                            _context.Result[_navigator.Index-1] = new Token(newToken, TokenType.ExcelAddress);
-                            _context.RemoveAt(_navigator.Index);
-                            _context.RemoveAt(_navigator.Index);
-                            _navigator.MoveIndex(-1);
+                            string? newToken= this._navigator.PreviousToken.Value.Value+":"+ this._navigator.NextToken.Value;
+                            this._context.Result[this._navigator.Index-1] = new Token(newToken, TokenType.ExcelAddress);
+                            this._context.RemoveAt(this._navigator.Index);
+                            this._context.RemoveAt(this._navigator.Index);
+                            this._navigator.MoveIndex(-1);
                         }
                     }
-                    _navigator.MoveNext();
+
+                    this._navigator.MoveNext();
                 }
             }
         }
         private void ChangeTokenTypeOnCurrentToken(TokenType tokenType)
         {
-            _context.ChangeTokenType(tokenType, _navigator.Index);
+            this._context.ChangeTokenType(tokenType, this._navigator.Index);
         }
 
         private void ChangeValueOnCurrentToken(string value)
         {
-            _context.ChangeValue(value, _navigator.Index);
+            this._context.ChangeValue(value, this._navigator.Index);
         }
 
         private static bool IsOffsetFunctionToken(Token token)
@@ -109,8 +110,8 @@ namespace OfficeOpenXml.FormulaParsing.LexicalAnalysis.PostProcessing
 
         private void HandleColon()
         {
-            Token prevToken = _navigator.GetTokenAtRelativePosition(-1);
-            Token nextToken = _navigator.GetTokenAtRelativePosition(1);
+            Token prevToken = this._navigator.GetTokenAtRelativePosition(-1);
+            Token nextToken = this._navigator.GetTokenAtRelativePosition(1);
             if (prevToken.TokenTypeIsSet(TokenType.ClosingParenthesis))
             {
                 // Previous expression should be an OFFSET function
@@ -120,7 +121,7 @@ namespace OfficeOpenXml.FormulaParsing.LexicalAnalysis.PostProcessing
                 while(openedParenthesis == 0 || openedParenthesis > closedParethesis)
                 {
                     index--;
-                    Token token = _navigator.GetTokenAtRelativePosition(index);
+                    Token token = this._navigator.GetTokenAtRelativePosition(index);
                     if (token.TokenTypeIsSet(TokenType.ClosingParenthesis))
                     {
                         openedParenthesis++;
@@ -130,59 +131,59 @@ namespace OfficeOpenXml.FormulaParsing.LexicalAnalysis.PostProcessing
                         closedParethesis++;
                     }
                 }
-                Token offsetCandidate = _navigator.GetTokenAtRelativePosition(--index);
+                Token offsetCandidate = this._navigator.GetTokenAtRelativePosition(--index);
                 if(IsOffsetFunctionToken(offsetCandidate))
                 {
-                    _context.ChangeTokenType(TokenType.Function | TokenType.RangeOffset, _navigator.Index + index);
+                    this._context.ChangeTokenType(TokenType.Function | TokenType.RangeOffset, this._navigator.Index + index);
                     if (nextToken.TokenTypeIsSet(TokenType.ExcelAddress))
                     {
                         // OFFSET:A1
-                        _context.ChangeTokenType(TokenType.ExcelAddress | TokenType.RangeOffset, _navigator.Index + 1);
+                        this._context.ChangeTokenType(TokenType.ExcelAddress | TokenType.RangeOffset, this._navigator.Index + 1);
                     }
                     else if(IsOffsetFunctionToken(nextToken))
                     {
                         // OFFSET:OFFSET
-                        _context.ChangeTokenType(TokenType.Function | TokenType.RangeOffset, _navigator.Index + 1);
+                        this._context.ChangeTokenType(TokenType.Function | TokenType.RangeOffset, this._navigator.Index + 1);
                     }
                 }
             }
             else if(prevToken.TokenTypeIsSet(TokenType.ExcelAddress) && IsOffsetFunctionToken(nextToken))
             {
                 // A1: OFFSET
-                _context.ChangeTokenType(TokenType.ExcelAddress | TokenType.RangeOffset, _navigator.Index - 1);
-                _context.ChangeTokenType(TokenType.Function | TokenType.RangeOffset, _navigator.Index + 1);
+                this._context.ChangeTokenType(TokenType.ExcelAddress | TokenType.RangeOffset, this._navigator.Index - 1);
+                this._context.ChangeTokenType(TokenType.Function | TokenType.RangeOffset, this._navigator.Index + 1);
             }
         }
 
         private void HandleNegators()
         {
-            Token token = _navigator.CurrentToken;
+            Token token = this._navigator.CurrentToken;
             //Remove '+' from start of formula and formula arguments
-            if (token.Value == "+" && (!_navigator.HasPrev() || _navigator.PreviousToken.Value.TokenTypeIsSet(TokenType.OpeningParenthesis) || _navigator.PreviousToken.Value.TokenTypeIsSet(TokenType.Comma)))
+            if (token.Value == "+" && (!this._navigator.HasPrev() || this._navigator.PreviousToken.Value.TokenTypeIsSet(TokenType.OpeningParenthesis) || this._navigator.PreviousToken.Value.TokenTypeIsSet(TokenType.Comma)))
             {
-                RemoveTokenAndSetNegatorOperator();
+                this.RemoveTokenAndSetNegatorOperator();
                 return;
             }
 
-            Token nextToken = _navigator.NextToken;
+            Token nextToken = this._navigator.NextToken;
             if (nextToken.TokenTypeIsSet(TokenType.Operator) || nextToken.TokenTypeIsSet(TokenType.Negator))
             {
                 // Remove leading '+' from operator combinations
                 if (token.Value == "+" && (nextToken.Value == "+" || nextToken.Value == "-"))
                 {
-                    RemoveTokenAndSetNegatorOperator();
+                    this.RemoveTokenAndSetNegatorOperator();
                 }
                 // Remove trailing '+' from a negator operation
                 else if (token.Value == "-" && nextToken.Value == "+")
                 {
-                    RemoveTokenAndSetNegatorOperator(1);
+                    this.RemoveTokenAndSetNegatorOperator(1);
                 }
                 // Convert double negator operation to positive declaration
                 else if (token.Value == "-" && nextToken.Value == "-")
                 {
-                    _context.ChangeTokenType(TokenType.Negator, _navigator.Index);
-                    _navigator.MoveIndex(1);
-                    _context.ChangeTokenType(TokenType.Negator, _navigator.Index);
+                    this._context.ChangeTokenType(TokenType.Negator, this._navigator.Index);
+                    this._navigator.MoveIndex(1);
+                    this._context.ChangeTokenType(TokenType.Negator, this._navigator.Index);
                     /*
                     _context.RemoveAt(_navigator.Index);
                     _context.Replace(_navigator.Index, PlusToken);
@@ -195,20 +196,20 @@ namespace OfficeOpenXml.FormulaParsing.LexicalAnalysis.PostProcessing
 
         private void HandleUnrecognizedToken()
         {
-            if (_navigator.HasNext())
+            if (this._navigator.HasNext())
             {
-                if (_navigator.NextToken.TokenTypeIsSet(TokenType.OpeningParenthesis))
+                if (this._navigator.NextToken.TokenTypeIsSet(TokenType.OpeningParenthesis))
                 {
-                    ChangeTokenTypeOnCurrentToken(TokenType.Function);
+                    this.ChangeTokenTypeOnCurrentToken(TokenType.Function);
                 }
                 else
                 {
-                    ChangeTokenTypeOnCurrentToken(TokenType.NameValue);
+                    this.ChangeTokenTypeOnCurrentToken(TokenType.NameValue);
                 }
             }
             else
             {
-                ChangeTokenTypeOnCurrentToken(TokenType.NameValue);
+                this.ChangeTokenTypeOnCurrentToken(TokenType.NameValue);
             }
         }
 
@@ -216,24 +217,25 @@ namespace OfficeOpenXml.FormulaParsing.LexicalAnalysis.PostProcessing
         private void HandleWorksheetNameToken()
         {
             // use this and the following three tokens
-            Token relativeToken = _navigator.GetTokenAtRelativePosition(3);
+            Token relativeToken = this._navigator.GetTokenAtRelativePosition(3);
             TokenType tokenType = relativeToken.GetTokenTypeFlags();
-            ChangeTokenTypeOnCurrentToken(tokenType);
+            this.ChangeTokenTypeOnCurrentToken(tokenType);
             StringBuilder? sb = new StringBuilder();
             int nToRemove = 3;
-            if (_navigator.NbrOfRemainingTokens < nToRemove)
+            if (this._navigator.NbrOfRemainingTokens < nToRemove)
             {
-                ChangeTokenTypeOnCurrentToken(TokenType.InvalidReference);
-                nToRemove = _navigator.NbrOfRemainingTokens;
+                this.ChangeTokenTypeOnCurrentToken(TokenType.InvalidReference);
+                nToRemove = this._navigator.NbrOfRemainingTokens;
             }
             if (relativeToken.TokenTypeIsSet(TokenType.Comma) ||
                relativeToken.TokenTypeIsSet(TokenType.ClosingParenthesis))
             {
                 for (int ix = 0; ix < 3; ix++)
                 {
-                    sb.Append(_navigator.GetTokenAtRelativePosition(ix).Value);
+                    sb.Append(this._navigator.GetTokenAtRelativePosition(ix).Value);
                 }
-                ChangeTokenTypeOnCurrentToken(TokenType.ExcelAddress);
+
+                this.ChangeTokenTypeOnCurrentToken(TokenType.ExcelAddress);
                 nToRemove = 2;
             }
             else if (!relativeToken.TokenTypeIsSet(TokenType.ExcelAddress) &&
@@ -241,35 +243,36 @@ namespace OfficeOpenXml.FormulaParsing.LexicalAnalysis.PostProcessing
                      !relativeToken.TokenTypeIsSet(TokenType.NameValue) &&
                      !relativeToken.TokenTypeIsSet(TokenType.InvalidReference))
             {
-                ChangeTokenTypeOnCurrentToken(TokenType.InvalidReference);
+                this.ChangeTokenTypeOnCurrentToken(TokenType.InvalidReference);
                 nToRemove--;
             }            
             else
             {
                 for (int ix = 0; ix < 4; ix++)
                 {
-                    sb.Append(_navigator.GetTokenAtRelativePosition(ix).Value);
+                    sb.Append(this._navigator.GetTokenAtRelativePosition(ix).Value);
                 }
             }
-            ChangeValueOnCurrentToken(sb.ToString());
+
+            this.ChangeValueOnCurrentToken(sb.ToString());
             for (int ix = 0; ix < nToRemove; ix++)
             {
-                _context.RemoveAt(_navigator.Index + 1);
+                this._context.RemoveAt(this._navigator.Index + 1);
             }
         }
 
         private void SetNegatorOperator(int i)
         {
-            Token token = _context.Result[i];
+            Token token = this._context.Result[i];
             if (token.Value == "-" && i > 0 && (token.TokenTypeIsSet(TokenType.Operator) || token.TokenTypeIsSet(TokenType.Negator)))
             {
-                if (TokenIsNegator(_context.Result[i - 1]))
+                if (TokenIsNegator(this._context.Result[i - 1]))
                 {
-                    _context.Replace(i, new Token("-", TokenType.Negator));
+                    this._context.Replace(i, new Token("-", TokenType.Negator));
                 }
                 else
                 {
-                    _context.Replace(i, MinusToken);
+                    this._context.Replace(i, this.MinusToken);
                 }
             }
         }
@@ -293,9 +296,9 @@ namespace OfficeOpenXml.FormulaParsing.LexicalAnalysis.PostProcessing
 
         private void RemoveTokenAndSetNegatorOperator(int offset = 0)
         {
-            _context.Result.RemoveAt(_navigator.Index + offset);
-            SetNegatorOperator(_navigator.Index);
-            if (_navigator.Index > 0)
+            this._context.Result.RemoveAt(this._navigator.Index + offset);
+            this.SetNegatorOperator(this._navigator.Index);
+            if (this._navigator.Index > 0)
             {
                 this._navigator.MoveIndex(-1);
             }

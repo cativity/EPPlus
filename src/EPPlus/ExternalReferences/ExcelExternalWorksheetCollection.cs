@@ -30,16 +30,16 @@ namespace OfficeOpenXml.ExternalReferences
         {
             get
             {
-                if (_sheetNames.ContainsKey(name))
+                if (this._sheetNames.ContainsKey(name))
                 {
-                    return _list[_sheetNames[name]];
+                    return this._list[this._sheetNames[name]];
                 }
                 return null;
             }
         }
         internal override void Add(ExcelExternalWorksheet item)
         {
-            _sheetNames.Add(item.Name, _list.Count);
+            this._sheetNames.Add(item.Name, this._list.Count);
             base.Add(item);
         }
     }

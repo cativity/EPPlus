@@ -47,19 +47,19 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions.RefAndLookup
             string? address =  ArgToAddress(arguments,1, context); 
             RangeAddressFactory? rangeAddressFactory = new RangeAddressFactory(context.ExcelDataProvider);
             RangeAddress? rangeAddress = rangeAddressFactory.Create(address);
-            MatchType matchType = GetMatchType(arguments);
+            MatchType matchType = this.GetMatchType(arguments);
             LookupArguments? args = new LookupArguments(searchedValue, address, 0, 0, false, arguments.ElementAt(1).ValueAsRangeInfo);
             LookupDirection lookupDirection = GetLookupDirection(rangeAddress);
             LookupNavigator? navigator = LookupNavigatorFactory.Create(lookupDirection, args, context);
             int? lastValidIndex = null;
             do
             {
-                int matchResult = IsMatch(searchedValue, navigator.CurrentValue);
+                int matchResult = this.IsMatch(searchedValue, navigator.CurrentValue);
 
                 // For all match types, if the match result indicated equality, return the index (1 based)
                 if (searchedValue != null && matchResult == 0)
                 {
-                    return CreateResult(navigator.Index + 1, DataType.Integer);
+                    return this.CreateResult(navigator.Index + 1, DataType.Integer);
                 }
 
                 if ((matchType == MatchType.ClosestBelow && matchResult < 0) || (matchType == MatchType.ClosestAbove && matchResult > 0))
@@ -79,7 +79,7 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions.RefAndLookup
                 return this.CreateResult(eErrorType.NA);
             }
 
-            return CreateResult(lastValidIndex, DataType.Integer);
+            return this.CreateResult(lastValidIndex, DataType.Integer);
         }
 
         private MatchType GetMatchType(IEnumerable<FunctionArgument> arguments)
@@ -87,7 +87,7 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions.RefAndLookup
             MatchType matchType = MatchType.ClosestBelow;
             if (arguments.Count() > 2)
             {
-                matchType = (MatchType)ArgToInt(arguments, 2);
+                matchType = (MatchType)this.ArgToInt(arguments, 2);
             }
             return matchType;
         }

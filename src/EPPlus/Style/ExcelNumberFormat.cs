@@ -23,10 +23,10 @@ namespace OfficeOpenXml.Style
     /// </summary>
     public sealed class ExcelNumberFormat : StyleBase
     {
-        internal ExcelNumberFormat(ExcelStyles styles, OfficeOpenXml.XmlHelper.ChangedEventHandler ChangedEvent, int PositionID, string Address, int index) :
+        internal ExcelNumberFormat(ExcelStyles styles, XmlHelper.ChangedEventHandler ChangedEvent, int PositionID, string Address, int index) :
             base(styles, ChangedEvent, PositionID, Address)
         {
-            Index = index;
+            this.Index = index;
         }
         /// <summary>
         /// The numeric index fror the format
@@ -35,7 +35,7 @@ namespace OfficeOpenXml.Style
         {
             get
             {
-                return Index;
+                return this.Index;
             }
         }
         /// <summary>
@@ -45,18 +45,18 @@ namespace OfficeOpenXml.Style
         {
             get
             {
-                for(int i=0;i<_styles.NumberFormats.Count;i++)
+                for(int i=0;i< this._styles.NumberFormats.Count;i++)
                 {
-                    if(Index==_styles.NumberFormats[i].NumFmtId)
+                    if(this.Index== this._styles.NumberFormats[i].NumFmtId)
                     {
-                        return _styles.NumberFormats[i].Format;
+                        return this._styles.NumberFormats[i].Format;
                     }
                 }
                 return "general";
             }
             set
-            {                
-                _ChangedEvent(this, new StyleChangeEventArgs(eStyleClass.Numberformat, eStyleProperty.Format, (string.IsNullOrEmpty(value) ? "General" : value), _positionID, _address));
+            {
+                this._ChangedEvent(this, new StyleChangeEventArgs(eStyleClass.Numberformat, eStyleProperty.Format, (string.IsNullOrEmpty(value) ? "General" : value), this._positionID, this._address));
             }
         }
 
@@ -64,7 +64,7 @@ namespace OfficeOpenXml.Style
         {
             get 
             {
-                return Format;
+                return this.Format;
             }
         }
         /// <summary>

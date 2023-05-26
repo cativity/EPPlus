@@ -26,7 +26,7 @@ namespace OfficeOpenXml.Style
         {
             if(topNode!=null)
             {
-                _bandSize= GetXmlNodeInt("@size",1);
+                this._bandSize= this.GetXmlNodeInt("@size",1);
             }
         }
         int _bandSize = 1;
@@ -37,7 +37,7 @@ namespace OfficeOpenXml.Style
         {
             get
             {
-                return _bandSize;
+                return this._bandSize;
             }
             set
             {
@@ -45,19 +45,20 @@ namespace OfficeOpenXml.Style
                 {
                     throw new InvalidOperationException("BandSize must be between 1 and 9");
                 }
-                _bandSize = value;
+
+                this._bandSize = value;
             }
         }
         internal override void CreateNode()
         {
             base.CreateNode();
-            if (_bandSize == 1)
+            if (this._bandSize == 1)
             {
-                DeleteNode("@size");
+                this.DeleteNode("@size");
             }
             else
             {
-                SetXmlNodeInt("@size", _bandSize);
+                this.SetXmlNodeInt("@size", this._bandSize);
             }
         }
     }

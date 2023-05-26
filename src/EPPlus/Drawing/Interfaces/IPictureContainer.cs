@@ -22,7 +22,7 @@ namespace OfficeOpenXml.Drawing.Interfaces
     {
         public HashInfo(string relId)
         {
-            RelId = relId;
+            this.RelId = relId;
         }
         public string RelId { get; set; }
         public int RefCount { get; set; }
@@ -39,7 +39,7 @@ namespace OfficeOpenXml.Drawing.Interfaces
         IPictureRelationDocument RelationDocument { get; }
         string ImageHash { get; set; }
         Uri UriPic { get; set; }
-        Packaging.ZipPackageRelationship RelPic { get; set; }
+        ZipPackageRelationship RelPic { get; set; }
         void RemoveImage();
         void SetNewImage();
     }

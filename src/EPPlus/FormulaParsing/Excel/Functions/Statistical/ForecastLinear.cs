@@ -28,11 +28,11 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Statistical
         public override CompileResult Execute(IEnumerable<FunctionArgument> arguments, ParsingContext context)
         {
             ValidateArguments(arguments, 3);
-            double x = ArgToDecimal(arguments, 0);
+            double x = this.ArgToDecimal(arguments, 0);
             FunctionArgument? arg1 = arguments.ElementAt(1);
             FunctionArgument? arg2 = arguments.ElementAt(2);
-            double[]? arrayY = ArgsToDoubleEnumerable(false, false, new FunctionArgument[] { arg1 }, context).Select(a => a.Value).ToArray();
-            double[]? arrayX = ArgsToDoubleEnumerable(false, false, new FunctionArgument[] { arg2 }, context).Select(b => b.Value).ToArray();
+            double[]? arrayY = this.ArgsToDoubleEnumerable(false, false, new FunctionArgument[] { arg1 }, context).Select(a => a.Value).ToArray();
+            double[]? arrayX = this.ArgsToDoubleEnumerable(false, false, new FunctionArgument[] { arg2 }, context).Select(b => b.Value).ToArray();
             if (arrayY.Count() != arrayX.Count())
             {
                 return this.CreateResult(eErrorType.NA);
@@ -44,7 +44,7 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Statistical
             }
 
             double result = Forecast.ForecastImpl(x, arrayY, arrayX);
-            return CreateResult(result, DataType.Decimal);
+            return this.CreateResult(result, DataType.Decimal);
         }
     }
 }

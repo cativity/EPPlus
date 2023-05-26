@@ -28,38 +28,39 @@ namespace OfficeOpenXml.DataValidation.Formulas
                 decimal time = default;
                 if (decimal.TryParse(value, NumberStyles.Any, CultureInfo.InvariantCulture, out time))
                 {
-                    Value = new ExcelTime(time);
+                    this.Value = new ExcelTime(time);
                 }
                 else
                 {
-                    Value = new ExcelTime();
-                    ExcelFormula = value;
+                    this.Value = new ExcelTime();
+                    this.ExcelFormula = value;
                 }
             }
             else
             {
-                Value = new ExcelTime();
+                this.Value = new ExcelTime();
             }
-            Value.TimeChanged += new EventHandler(Value_TimeChanged);
+
+            this.Value.TimeChanged += new EventHandler(this.Value_TimeChanged);
         }
 
         void Value_TimeChanged(object sender, EventArgs e)
         {
-            _formula = Value.ToExcelString();
+            this._formula = this.Value.ToExcelString();
         }
 
         protected override string GetValueAsString()
         {
-            if (State == FormulaState.Value)
+            if (this.State == FormulaState.Value)
             {
-                return Value.ToExcelString();
+                return this.Value.ToExcelString();
             }
             return string.Empty;
         }
 
         internal override void ResetValue()
         {
-            Value = new ExcelTime();
+            this.Value = new ExcelTime();
         }
     }
 }

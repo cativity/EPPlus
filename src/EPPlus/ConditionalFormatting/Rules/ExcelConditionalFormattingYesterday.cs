@@ -53,10 +53,11 @@ namespace OfficeOpenXml.ConditionalFormatting
     {
         if (itemElementNode==null) //Set default values and create attributes if needed
         {
-            TimePeriod = eExcelConditionalFormattingTimePeriodType.Yesterday;
-            Formula = string.Format(
-              "FLOOR({0},1)=TODAY()-1",
-              Address.Start.Address);
+            this.TimePeriod = eExcelConditionalFormattingTimePeriodType.Yesterday;
+
+            this.Formula = string.Format(
+                                         "FLOOR({0},1)=TODAY()-1",
+                                         this.Address.Start.Address);
         }
     }
 

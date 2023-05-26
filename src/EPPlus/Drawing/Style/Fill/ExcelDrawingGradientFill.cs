@@ -26,8 +26,8 @@ namespace OfficeOpenXml.Drawing.Style.Fill
         private string[] _schemaNodeOrder;
         internal ExcelDrawingGradientFill(XmlNamespaceManager nsm, XmlNode topNode, string[]  schemaNodeOrder, Action initXml) : base(nsm, topNode,"", initXml)
         {
-            _schemaNodeOrder = schemaNodeOrder;
-            GetXml();
+            this._schemaNodeOrder = schemaNodeOrder;
+            this.GetXml();
         }
 
         /// <summary>
@@ -51,11 +51,11 @@ namespace OfficeOpenXml.Drawing.Style.Fill
         {
             get
             {
-                if (_colors == null)
+                if (this._colors == null)
                 {
-                    _colors = new ExcelDrawingGradientFillColorList(_nsm, _topNode, ColorsPath, _schemaNodeOrder);
+                    this._colors = new ExcelDrawingGradientFillColorList(this._nsm, this._topNode, ColorsPath, this._schemaNodeOrder);
                 }
-                return _colors;
+                return this._colors;
             }
         }
         /// <summary>
@@ -79,35 +79,35 @@ namespace OfficeOpenXml.Drawing.Style.Fill
 
         internal override void SetXml(XmlNamespaceManager nsm, XmlNode node)
         {
-            _initXml?.Invoke();
-            if (_xml == null)
+            this._initXml?.Invoke();
+            if (this._xml == null)
             {
                 this.InitXml(nsm, node,"");
             }
 
-            CheckTypeChange(NodeName);
-            _xml.SetXmlNodeBool("@rotWithShape", RotateWithShape);
-            if (TileFlip == eTileFlipMode.None)
+            this.CheckTypeChange(this.NodeName);
+            this._xml.SetXmlNodeBool("@rotWithShape", this.RotateWithShape);
+            if (this.TileFlip == eTileFlipMode.None)
             {
-                _xml.DeleteNode("@flip");
+                this._xml.DeleteNode("@flip");
             }
             else
             {
-                _xml.SetXmlNodeString("@flip", TileFlip.ToString().ToLower());
+                this._xml.SetXmlNodeString("@flip", this.TileFlip.ToString().ToLower());
             }
 
-            if (ShadePath==eShadePath.Linear && LinearSettings.Angel!=0 && LinearSettings.Scaled==false)
+            if (this.ShadePath==eShadePath.Linear && this.LinearSettings.Angel!=0 && this.LinearSettings.Scaled==false)
             {
-                _xml.SetXmlNodeAngel("a:lin/@ang", LinearSettings.Angel);
-                _xml.SetXmlNodeBool("a:lin/@scaled", LinearSettings.Scaled);
+                this._xml.SetXmlNodeAngel("a:lin/@ang", this.LinearSettings.Angel);
+                this._xml.SetXmlNodeBool("a:lin/@scaled", this.LinearSettings.Scaled);
             }
-            else if(ShadePath != eShadePath.Linear)
+            else if(this.ShadePath != eShadePath.Linear)
             {
-                _xml.SetXmlNodeString("a:path/@path", GetPathString(ShadePath));
-                _xml.SetXmlNodePercentage("a:path/a:fillToRect/@b", FocusPoint.BottomOffset, true, int.MaxValue/10000);
-                _xml.SetXmlNodePercentage("a:path/a:fillToRect/@t", FocusPoint.TopOffset, true, int.MaxValue / 10000);
-                _xml.SetXmlNodePercentage("a:path/a:fillToRect/@l", FocusPoint.LeftOffset, true, int.MaxValue / 10000);
-                _xml.SetXmlNodePercentage("a:path/a:fillToRect/@r", FocusPoint.RightOffset, true, int.MaxValue / 10000);
+                this._xml.SetXmlNodeString("a:path/@path", GetPathString(this.ShadePath));
+                this._xml.SetXmlNodePercentage("a:path/a:fillToRect/@b", this.FocusPoint.BottomOffset, true, int.MaxValue/10000);
+                this._xml.SetXmlNodePercentage("a:path/a:fillToRect/@t", this.FocusPoint.TopOffset, true, int.MaxValue / 10000);
+                this._xml.SetXmlNodePercentage("a:path/a:fillToRect/@l", this.FocusPoint.LeftOffset, true, int.MaxValue / 10000);
+                this._xml.SetXmlNodePercentage("a:path/a:fillToRect/@r", this.FocusPoint.RightOffset, true, int.MaxValue / 10000);
             }
         }
 
@@ -128,35 +128,35 @@ namespace OfficeOpenXml.Drawing.Style.Fill
 
         internal override void GetXml()
         {
-            _colors = new ExcelDrawingGradientFillColorList(_xml.NameSpaceManager, _xml.TopNode, ColorsPath, _schemaNodeOrder);
-            RotateWithShape = _xml.GetXmlNodeBool("@rotWithShape");
+            this._colors = new ExcelDrawingGradientFillColorList(this._xml.NameSpaceManager, this._xml.TopNode, ColorsPath, this._schemaNodeOrder);
+            this.RotateWithShape = this._xml.GetXmlNodeBool("@rotWithShape");
             try
             {
-                string? s = _xml.GetXmlNodeString("@flip");
+                string? s = this._xml.GetXmlNodeString("@flip");
                 if (string.IsNullOrEmpty(s))
                 {
-                    TileFlip = eTileFlipMode.None;
+                    this.TileFlip = eTileFlipMode.None;
                 }
                 else
                 {
-                    TileFlip = (eTileFlipMode)Enum.Parse(typeof(eTileFlipMode), s, true);
+                    this.TileFlip = (eTileFlipMode)Enum.Parse(typeof(eTileFlipMode), s, true);
                 }
             }
             catch
             {
-                TileFlip = eTileFlipMode.None;
+                this.TileFlip = eTileFlipMode.None;
             }
 
-            XmlNode? cols = _xml.TopNode.SelectSingleNode("a:gsLst", _xml.NameSpaceManager);
+            XmlNode? cols = this._xml.TopNode.SelectSingleNode("a:gsLst", this._xml.NameSpaceManager);
             if (cols != null)
             {
                 foreach (XmlNode c in cols.ChildNodes)
                 {
-                    XmlHelper? xml = XmlHelperFactory.Create(_xml.NameSpaceManager, c);
-                    _colors.Add(xml.GetXmlNodeDouble("@pos") / 1000, c);
+                    XmlHelper? xml = XmlHelperFactory.Create(this._xml.NameSpaceManager, c);
+                    this._colors.Add(xml.GetXmlNodeDouble("@pos") / 1000, c);
                 }
             }
-            string? path=_xml.GetXmlNodeString("a:path/@path");
+            string? path= this._xml.GetXmlNodeString("a:path/@path");
             if(!string.IsNullOrEmpty(path))
             {
                 if (path == "rect")
@@ -164,19 +164,19 @@ namespace OfficeOpenXml.Drawing.Style.Fill
                     path = "rectangle";
                 }
 
-                ShadePath = path.ToEnum(eShadePath.Linear);
+                this.ShadePath = path.ToEnum(eShadePath.Linear);
             }
             else
             {
-                ShadePath = eShadePath.Linear;
+                this.ShadePath = eShadePath.Linear;
             }
-            if(ShadePath==eShadePath.Linear)
+            if(this.ShadePath==eShadePath.Linear)
             {
-                LinearSettings = new ExcelDrawingGradientFillLinearSettings(_xml);
+                this.LinearSettings = new ExcelDrawingGradientFillLinearSettings(this._xml);
             }
             else
             {
-                FocusPoint = new ExcelDrawingRectangle(_xml, "a:path/a:fillToRect/", 0);
+                this.FocusPoint = new ExcelDrawingRectangle(this._xml, "a:path/a:fillToRect/", 0);
             }
         }
         eShadePath _shadePath = eShadePath.Linear;
@@ -187,21 +187,22 @@ namespace OfficeOpenXml.Drawing.Style.Fill
         {
             get
             {
-                return _shadePath;
+                return this._shadePath;
             }
             set
             {
                 if(value==eShadePath.Linear)
                 {
-                    LinearSettings = new ExcelDrawingGradientFillLinearSettings();
-                    FocusPoint = null;
+                    this.LinearSettings = new ExcelDrawingGradientFillLinearSettings();
+                    this.FocusPoint = null;
                 }
                 else
                 {
-                    LinearSettings = null;
-                    FocusPoint = new ExcelDrawingRectangle(50);
+                    this.LinearSettings = null;
+                    this.FocusPoint = new ExcelDrawingRectangle(50);
                 }
-                _shadePath = value;
+
+                this._shadePath = value;
             }
         }
 
@@ -225,12 +226,12 @@ namespace OfficeOpenXml.Drawing.Style.Fill
         }
         internal override void UpdateXml()
         {
-            if (_xml == null)
+            if (this._xml == null)
             {
                 this.CreateXmlHelper();
             }
 
-            SetXml(_nsm, _xml.TopNode);
+            this.SetXml(this._nsm, this._xml.TopNode);
             
         }
     }

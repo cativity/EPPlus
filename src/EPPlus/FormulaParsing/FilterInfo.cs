@@ -26,8 +26,8 @@ namespace OfficeOpenXml.FormulaParsing
     {
         public FilterInfo(ExcelWorkbook workbook)
         {
-            _workbook = workbook;
-            Initialize();
+            this._workbook = workbook;
+            this.Initialize();
         }
 
         private readonly ExcelWorkbook _workbook;
@@ -35,7 +35,7 @@ namespace OfficeOpenXml.FormulaParsing
 
         private void Initialize()
         {
-            foreach(ExcelWorksheet? worksheet in _workbook.Worksheets)
+            foreach(ExcelWorksheet? worksheet in this._workbook.Worksheets)
             {
                 if (worksheet.IsChartSheet)
                 {
@@ -44,16 +44,16 @@ namespace OfficeOpenXml.FormulaParsing
 
                 if(worksheet.AutoFilter != null && worksheet.AutoFilter.Columns != null && worksheet.AutoFilter.Columns.Count > 0)
                 {
-                    _worksheetFilters.Add(worksheet.Name);
+                    this._worksheetFilters.Add(worksheet.Name);
                     continue;
                 }
                 foreach(ExcelTable? table in worksheet.Tables)
                 {                    
                     if(table.AutoFilter != null && table.AutoFilter.Columns != null && table.AutoFilter.Columns.Count > 0)
                     {
-                        if(!_worksheetFilters.Contains(worksheet.Name))
+                        if(!this._worksheetFilters.Contains(worksheet.Name))
                         {
-                            _worksheetFilters.Add(worksheet.Name);
+                            this._worksheetFilters.Add(worksheet.Name);
                             continue;
                         }
                     }
@@ -68,7 +68,7 @@ namespace OfficeOpenXml.FormulaParsing
         /// <returns></returns>
         public bool WorksheetHasFilter(string worksheetName)
         {
-            return _worksheetFilters.Contains(worksheetName);
+            return this._worksheetFilters.Contains(worksheetName);
         }
     }
 }

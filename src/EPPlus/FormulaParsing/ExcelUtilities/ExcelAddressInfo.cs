@@ -26,24 +26,25 @@ namespace OfficeOpenXml.FormulaParsing.ExcelUtilities
         private ExcelAddressInfo(string address) 
         {   
             string? addressOnSheet = address;
-            Worksheet = string.Empty;
+            this.Worksheet = string.Empty;
             if (address.Contains("!"))
             {
                 string[]? worksheetArr = address.Split('!');
-                Worksheet = worksheetArr[0];
+                this.Worksheet = worksheetArr[0];
                 addressOnSheet = worksheetArr[1];
             }
             if (addressOnSheet.Contains(":"))
             {
                 string[]? rangeArr = addressOnSheet.Split(':');
-                StartCell = rangeArr[0];
-                EndCell = rangeArr[1];
+                this.StartCell = rangeArr[0];
+                this.EndCell = rangeArr[1];
             }
             else
             {
-                StartCell = addressOnSheet;
+                this.StartCell = addressOnSheet;
             }
-            AddressOnSheet = addressOnSheet;
+
+            this.AddressOnSheet = addressOnSheet;
         }
 
         public static ExcelAddressInfo Parse(string address)
@@ -64,7 +65,7 @@ namespace OfficeOpenXml.FormulaParsing.ExcelUtilities
         {
             get
             {
-                return !string.IsNullOrEmpty(Worksheet);
+                return !string.IsNullOrEmpty(this.Worksheet);
             }
         }
 
@@ -75,7 +76,7 @@ namespace OfficeOpenXml.FormulaParsing.ExcelUtilities
         { 
             get 
             { 
-                return !string.IsNullOrEmpty(EndCell); 
+                return !string.IsNullOrEmpty(this.EndCell); 
             } 
         }
 

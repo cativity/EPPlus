@@ -27,90 +27,92 @@ namespace OfficeOpenXml
         //private int _prevBufferEnd = 0;
         public WorksheetZipStream(Stream zip, bool writeToBuffer, long size = -1)
         {
-            _stream = zip;
+            this._stream = zip;
             //_size = size;
             //_bytesRead = 0;
-            WriteToBuffer = writeToBuffer;
+            this.WriteToBuffer = writeToBuffer;
         }
 
-        public override bool CanRead => _stream.CanRead;
+        public override bool CanRead => this._stream.CanRead;
 
-        public override bool CanSeek => _stream.CanSeek;
+        public override bool CanSeek => this._stream.CanSeek;
 
-        public override bool CanWrite => _stream.CanWrite;
+        public override bool CanWrite => this._stream.CanWrite;
 
-        public override long Length => _stream.Length;
+        public override long Length => this._stream.Length;
 
-        public override long Position { get => _stream.Position; set => _stream.Position = value; }
+        public override long Position { get => this._stream.Position; set => this._stream.Position = value; }
 
         public override void Flush()
         {
-            _stream.Flush();
+            this._stream.Flush();
         }
 
         //byte[] _buffer = null;
         //byte[] _prevBuffer, _tempBuffer = new byte[8192];
         public override int Read(byte[] buffer, int offset, int count)
         {
-            if(_stream.Length > 0 && _stream.Position + count > _stream.Length)
+            if(this._stream.Length > 0 && this._stream.Position + count > this._stream.Length)
             {
-                count = (int)(_stream.Length - _stream.Position);
+                count = (int)(this._stream.Length - this._stream.Position);
             }
 
-            int r = _stream.Read(buffer, offset, count);
+            int r = this._stream.Read(buffer, offset, count);
             if (r > 0)
             {
-                if (WriteToBuffer)
+                if (this.WriteToBuffer)
                 {
-                    Buffer.Write(buffer, 0, r);
+                    this.Buffer.Write(buffer, 0, r);
                 }
-                _rollingBuffer.Write(buffer, r);
+
+                this._rollingBuffer.Write(buffer, r);
             }
             return r;
         }
 
         public override long Seek(long offset, SeekOrigin origin)
         {
-            return _stream.Seek(offset, origin);
+            return this._stream.Seek(offset, origin);
         }
 
         public override void SetLength(long value)
         {
-            _stream.SetLength(value);
+            this._stream.SetLength(value);
         }
 
         public override void Write(byte[] buffer, int offset, int count)
         {
-            _stream.Write(buffer, offset, count);
+            this._stream.Write(buffer, offset, count);
         }
         public BinaryWriter Buffer = new BinaryWriter(RecyclableMemory.GetStream());
         public void SetWriteToBuffer()
         {
-            Buffer = new BinaryWriter(RecyclableMemory.GetStream());
-            Buffer.Write(_rollingBuffer.GetBuffer());
-            WriteToBuffer = true;
+            this.Buffer = new BinaryWriter(RecyclableMemory.GetStream());
+            this.Buffer.Write(this._rollingBuffer.GetBuffer());
+            this.WriteToBuffer = true;
         }
         public bool WriteToBuffer { get; set; }
 
         internal string GetBufferAsString(bool writeToBufferAfter)
         {
-            WriteToBuffer = writeToBufferAfter;
-            Buffer.Flush();
-            return System.Text.Encoding.UTF8.GetString(((MemoryStream)Buffer.BaseStream).ToArray());
+            this.WriteToBuffer = writeToBufferAfter;
+            this.Buffer.Flush();
+            return System.Text.Encoding.UTF8.GetString(((MemoryStream)this.Buffer.BaseStream).ToArray());
         }
         internal string GetBufferAsStringRemovingElement(bool writeToBufferAfter, string element)
         {
             string xml;
-            if (WriteToBuffer)
+            if (this.WriteToBuffer)
             {
-                Buffer.Flush();
-                xml = System.Text.Encoding.UTF8.GetString(((MemoryStream)Buffer.BaseStream).ToArray());
+                this.Buffer.Flush();
+                xml = System.Text.Encoding.UTF8.GetString(((MemoryStream)this.Buffer.BaseStream).ToArray());
             }
             else
             {
-                xml = System.Text.Encoding.UTF8.GetString(_rollingBuffer.GetBuffer());
+                xml = System.Text.Encoding.UTF8.GetString(this._rollingBuffer.GetBuffer());
             }
-            WriteToBuffer = writeToBufferAfter;
+
+            this.WriteToBuffer = writeToBufferAfter;
             GetElementPos(xml, element, out int startIx, out int endIx);
             if (startIx > 0)
             {
@@ -176,24 +178,24 @@ namespace OfficeOpenXml
 
         internal void ReadToEnd()
         {
-            if (_stream.Position < _stream.Length)
+            if (this._stream.Position < this._stream.Length)
             {
-                int sizeToEnd = (int)(_stream.Length - _stream.Position);
+                int sizeToEnd = (int)(this._stream.Length - this._stream.Position);
                 byte[] buffer = new byte[sizeToEnd];
-                int r = _stream.Read(buffer, 0, sizeToEnd);
-                Buffer.Write(buffer);
+                int r = this._stream.Read(buffer, 0, sizeToEnd);
+                this.Buffer.Write(buffer);
             }
         }
 
         internal string ReadFromEndElement(string endElement, string startXml = "", string readToElement = null, bool writeToBuffer = true, string xmlPrefix = "", bool addEmptyNode = true)
         {
-            if (string.IsNullOrEmpty(readToElement) && _stream.Position < _stream.Length)
+            if (string.IsNullOrEmpty(readToElement) && this._stream.Position < this._stream.Length)
             {
-                ReadToEnd();
+                this.ReadToEnd();
             }
 
-            Buffer.Flush();
-            string? xml = System.Text.Encoding.UTF8.GetString(((MemoryStream)Buffer.BaseStream).ToArray());
+            this.Buffer.Flush();
+            string? xml = System.Text.Encoding.UTF8.GetString(((MemoryStream)this.Buffer.BaseStream).ToArray());
             int endElementIx = FindElementPos(xml, endElement, false);
 
             if (endElementIx < 0)
@@ -221,13 +223,14 @@ namespace OfficeOpenXml
                     xml = xml.Substring(endElementIx);
                 }
             }
-            WriteToBuffer = writeToBuffer;
+
+            this.WriteToBuffer = writeToBuffer;
             return startXml + xml;
         }
         internal string ReadToExt(string startXml, string uriValue, ref string lastElement, string lastUri="")
         {
-            Buffer.Flush();
-            string? xml = System.Text.Encoding.UTF8.GetString(((MemoryStream)Buffer.BaseStream).ToArray());
+            this.Buffer.Flush();
+            string? xml = System.Text.Encoding.UTF8.GetString(((MemoryStream)this.Buffer.BaseStream).ToArray());
 
             if (lastElement == "ext")
             {

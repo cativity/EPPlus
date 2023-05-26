@@ -28,9 +28,9 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions.DateTime
         {
             ValidateArguments(arguments, 3);
             object? startDateObj = arguments.ElementAt(0).Value;
-            System.DateTime startDate = ParseDate(arguments, startDateObj);
+            System.DateTime startDate = this.ParseDate(arguments, startDateObj);
             object? endDateObj = arguments.ElementAt(1).Value;
-            System.DateTime endDate = ParseDate(arguments, endDateObj, 1);
+            System.DateTime endDate = this.ParseDate(arguments, endDateObj, 1);
             if (startDate > endDate)
             {
                 return this.CreateResult(eErrorType.Num);
@@ -40,25 +40,25 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions.DateTime
             switch(unit.ToLower())
             {
                 case "y":
-                    return CreateResult(DateDiffYears(startDate, endDate), DataType.Integer);
+                    return this.CreateResult(DateDiffYears(startDate, endDate), DataType.Integer);
                 case "m":
-                    return CreateResult(DateDiffMonths(startDate, endDate), DataType.Integer);
+                    return this.CreateResult(DateDiffMonths(startDate, endDate), DataType.Integer);
                 case "d":
                     double daysD = endDate.Subtract(startDate).TotalDays;
-                    return CreateResult(daysD, DataType.Integer);
+                    return this.CreateResult(daysD, DataType.Integer);
                 case "ym":
                     double monthsYm = DateDiffMonthsY(startDate, endDate);
-                    return CreateResult(monthsYm, DataType.Integer);
+                    return this.CreateResult(monthsYm, DataType.Integer);
                 case "yd":
                     double daysYd = GetStartYearEndDateY(startDate, endDate).Subtract(startDate).TotalDays;
-                    return CreateResult(daysYd, DataType.Integer);
+                    return this.CreateResult(daysYd, DataType.Integer);
                 case "md":
                     // NB! Excel calculates wrong here sometimes. Example DATEDIF(2001-04-02, 2003-01-01, "md") = 30 (it should be 29)
                     // we have not implemented this bug in EPPlus. Microsoft advices not to use the DateDif function due to this and other bugs.
                     double daysMd = GetStartYearEndDateMd(startDate, endDate).Subtract(startDate).TotalDays;
-                    return CreateResult(daysMd, DataType.Integer);
+                    return this.CreateResult(daysMd, DataType.Integer);
                 default:
-                    return CreateResult(eErrorType.Num);
+                    return this.CreateResult(eErrorType.Num);
             }
         }
 

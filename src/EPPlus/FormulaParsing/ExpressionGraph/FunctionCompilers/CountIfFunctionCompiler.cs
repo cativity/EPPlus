@@ -16,7 +16,7 @@ namespace OfficeOpenXml.FormulaParsing.ExpressionGraph.FunctionCompilers
         public override CompileResult Compile(IEnumerable<Expression> children)
         {
             List<FunctionArgument>? args = new List<FunctionArgument>();
-            Function.BeforeInvoke(Context);
+            this.Function.BeforeInvoke(this.Context);
             foreach (Expression? child in children)
             {
                 CompileResult? compileResult = child.Compile();
@@ -47,12 +47,12 @@ namespace OfficeOpenXml.FormulaParsing.ExpressionGraph.FunctionCompilers
                     List<FunctionArgument>? arguments = new List<FunctionArgument> { arg1 };
                     CompileResult? cr = new CompileResultFactory().Create(funcArg.Value);
                     BuildFunctionArguments(cr, arguments);
-                    CompileResult? r = Function.Execute(arguments, Context);
+                    CompileResult? r = this.Function.Execute(arguments, this.Context);
                     result.Add(r.Result);
                 }
                 return new CompileResult(result, DataType.Enumerable);
             }
-            return Function.Execute(args, Context);
+            return this.Function.Execute(args, this.Context);
         }
     }
 }

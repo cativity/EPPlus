@@ -29,9 +29,9 @@ namespace OfficeOpenXml.Drawing.Chart
         bool _allowMarkers;
         internal ExcelChartMarker(ExcelChart chart,XmlNamespaceManager ns, XmlNode topNode, string[] schemaNodeOrder) : base(ns, topNode)
         {
-            AddSchemaNodeOrder(schemaNodeOrder, new string[] { "symbol", "size", "spPr"});
-            _chart = chart;
-            _allowMarkers = chart.IsType3D();
+            this.AddSchemaNodeOrder(schemaNodeOrder, new string[] { "symbol", "size", "spPr"});
+            this._chart = chart;
+            this._allowMarkers = chart.IsType3D();
         }
         /// <summary>
         /// The marker style
@@ -40,15 +40,16 @@ namespace OfficeOpenXml.Drawing.Chart
         {
             get
             {
-                return GetXmlNodeString("c:marker/c:symbol/@val").ToEnum(eMarkerStyle.None);
+                return this.GetXmlNodeString("c:marker/c:symbol/@val").ToEnum(eMarkerStyle.None);
             }
             set
             {
-                if(_allowMarkers)
+                if(this._allowMarkers)
                 {
                     throw (new ArgumentException("Style", "Can't set markers on a 3d chart serie"));
                 }
-                SetXmlNodeString("c:marker/c:symbol/@val", value.ToEnumString());
+
+                this.SetXmlNodeString("c:marker/c:symbol/@val", value.ToEnumString());
             }
         }
         /// <summary>
@@ -59,7 +60,7 @@ namespace OfficeOpenXml.Drawing.Chart
         {
             get
             {
-                int v=GetXmlNodeInt("c:marker/c:size/@val");
+                int v= this.GetXmlNodeInt("c:marker/c:size/@val");
                 if(v<0)
                 {
                     return 5;   //Default value;
@@ -68,7 +69,7 @@ namespace OfficeOpenXml.Drawing.Chart
             }
             set
             {
-                if (_allowMarkers)
+                if (this._allowMarkers)
                 {
                     throw (new ArgumentException("Size", "Can't set markers on a 3d chart serie"));
                 }
@@ -77,7 +78,8 @@ namespace OfficeOpenXml.Drawing.Chart
                 {
                     throw (new ArgumentOutOfRangeException("Marker size must be between 2 and 72"));
                 }
-                SetXmlNodeString("c:marker/c:size/@val", value.ToString(CultureInfo.InvariantCulture));
+
+                this.SetXmlNodeString("c:marker/c:size/@val", value.ToString(CultureInfo.InvariantCulture));
             }
         }
         ExcelDrawingFill _fill = null;
@@ -88,15 +90,15 @@ namespace OfficeOpenXml.Drawing.Chart
         {
             get
             {
-                if (_allowMarkers)
+                if (this._allowMarkers)
                 {
                     throw (new ArgumentException("Fill", "Can't set markers on a 3d chart serie"));
                 }
-                if (_fill == null)
+                if (this._fill == null)
                 {
-                    _fill = new ExcelDrawingFill(_chart, NameSpaceManager, TopNode, "c:marker/c:spPr", SchemaNodeOrder);
+                    this._fill = new ExcelDrawingFill(this._chart, this.NameSpaceManager, this.TopNode, "c:marker/c:spPr", this.SchemaNodeOrder);
                 }
-                return _fill;
+                return this._fill;
             }
         }
         ExcelDrawingBorder _border = null;
@@ -107,15 +109,15 @@ namespace OfficeOpenXml.Drawing.Chart
         {
             get
             {
-                if (_allowMarkers)
+                if (this._allowMarkers)
                 {
                     throw (new ArgumentException("Border", "Can't set markers on a 3d chart serie"));
                 }
-                if (_border == null)
+                if (this._border == null)
                 {
-                    _border = new ExcelDrawingBorder(_chart, NameSpaceManager, TopNode, "c:marker/c:spPr/a:ln", SchemaNodeOrder);
+                    this._border = new ExcelDrawingBorder(this._chart, this.NameSpaceManager, this.TopNode, "c:marker/c:spPr/a:ln", this.SchemaNodeOrder);
                 }
-                return _border;
+                return this._border;
             }
         }
         ExcelDrawingEffectStyle _effect = null;
@@ -126,15 +128,15 @@ namespace OfficeOpenXml.Drawing.Chart
         {
             get
             {
-                if (_allowMarkers)
+                if (this._allowMarkers)
                 {
                     throw (new ArgumentException("Effect", "Can't set markers on a 3d chart serie"));
                 }
-                if (_effect == null)
+                if (this._effect == null)
                 {
-                    _effect = new ExcelDrawingEffectStyle(_chart, NameSpaceManager, TopNode, "c:marker/c:spPr/a:effectLst", SchemaNodeOrder);
+                    this._effect = new ExcelDrawingEffectStyle(this._chart, this.NameSpaceManager, this.TopNode, "c:marker/c:spPr/a:effectLst", this.SchemaNodeOrder);
                 }
-                return _effect;
+                return this._effect;
             }
         }
         ExcelDrawing3D _threeD = null;
@@ -145,20 +147,20 @@ namespace OfficeOpenXml.Drawing.Chart
         {
             get
             {
-                if (_allowMarkers)
+                if (this._allowMarkers)
                 {
                     throw (new ArgumentException("ThreeD", "Can't set markers on a 3d chart serie"));
                 }
-                if (_threeD == null)
+                if (this._threeD == null)
                 {
-                    _threeD = new ExcelDrawing3D(NameSpaceManager, TopNode, "c:marker/c:spPr", SchemaNodeOrder);
+                    this._threeD = new ExcelDrawing3D(this.NameSpaceManager, this.TopNode, "c:marker/c:spPr", this.SchemaNodeOrder);
                 }
-                return _threeD;
+                return this._threeD;
             }
         }
         void IDrawingStyleBase.CreatespPr()
         {
-            CreatespPrNode();
+            this.CreatespPrNode();
         }
 
     }

@@ -20,7 +20,7 @@ namespace OfficeOpenXml.ExternalReferences
         ExcelExternalLink _externalLink;
         internal ExcelExternalLinkAsType(ExcelExternalLink externalLink)
         {
-            _externalLink = externalLink;
+            this._externalLink = externalLink;
         }
         /// <summary>
         /// Converts the external link to it's top level .
@@ -29,7 +29,7 @@ namespace OfficeOpenXml.ExternalReferences
         /// <returns>The external link as type T</returns>
         public T Type<T>() where T : ExcelExternalLink
         {
-            return _externalLink as T;
+            return this._externalLink as T;
         }
         /// <summary>
         /// Return the external link as an external workbook. If the external link is not of type <see cref="ExcelExternalWorkbook" />, null is returned
@@ -38,7 +38,7 @@ namespace OfficeOpenXml.ExternalReferences
         {
             get
             {
-                return _externalLink as ExcelExternalWorkbook;
+                return this._externalLink as ExcelExternalWorkbook;
             }
         }
         /// <summary>
@@ -48,7 +48,7 @@ namespace OfficeOpenXml.ExternalReferences
         {
             get
             {
-                return _externalLink as ExcelExternalDdeLink;
+                return this._externalLink as ExcelExternalDdeLink;
             }
         }
         /// <summary>
@@ -58,7 +58,7 @@ namespace OfficeOpenXml.ExternalReferences
         {
             get
             {
-                return _externalLink as ExcelExternalOleLink;
+                return this._externalLink as ExcelExternalOleLink;
             }
         }
 

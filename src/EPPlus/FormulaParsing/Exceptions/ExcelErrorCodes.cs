@@ -24,7 +24,7 @@ namespace OfficeOpenXml.FormulaParsing.Exceptions
     {
         private ExcelErrorCodes(string code)
         {
-            Code = code;
+            this.Code = code;
         }
         /// <summary>
         /// The error code
@@ -41,7 +41,7 @@ namespace OfficeOpenXml.FormulaParsing.Exceptions
         /// <returns>The hash code</returns>
         public override int GetHashCode()
         {
-            return Code.GetHashCode();
+            return this.Code.GetHashCode();
         }
         /// <summary>
         /// Determines whether the specified object is equal to the current object.
@@ -52,7 +52,7 @@ namespace OfficeOpenXml.FormulaParsing.Exceptions
         {
             if (obj is ExcelErrorCodes)
             {
-                return ((ExcelErrorCodes)obj).Code.Equals(Code);
+                return ((ExcelErrorCodes)obj).Code.Equals(this.Code);
             }
  	        return false;
         }

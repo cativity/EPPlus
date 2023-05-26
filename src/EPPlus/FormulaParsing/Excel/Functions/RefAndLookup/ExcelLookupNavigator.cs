@@ -30,88 +30,90 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions.RefAndLookup
         public ExcelLookupNavigator(LookupDirection direction, LookupArguments arguments, ParsingContext parsingContext)
             : base(direction, arguments, parsingContext)
         {
-            Initialize();
+            this.Initialize();
         }
 
         private void Initialize()
         {
-            _index = 0;
-            RangeAddressFactory? factory = new RangeAddressFactory(ParsingContext.ExcelDataProvider);
-            if (Arguments.RangeInfo == null)
+            this._index = 0;
+            RangeAddressFactory? factory = new RangeAddressFactory(this.ParsingContext.ExcelDataProvider);
+            if (this.Arguments.RangeInfo == null)
             {
-                _rangeAddress = factory.Create(ParsingContext.Scopes.Current.Address.Worksheet, Arguments.RangeAddress);
+                this._rangeAddress = factory.Create(this.ParsingContext.Scopes.Current.Address.Worksheet, this.Arguments.RangeAddress);
             }
             else
             {
-                _rangeAddress = factory.Create(Arguments.RangeInfo.Address.WorkSheetName, Arguments.RangeInfo.Address.Address);
+                this._rangeAddress = factory.Create(this.Arguments.RangeInfo.Address.WorkSheetName, this.Arguments.RangeInfo.Address.Address);
             }
-            _currentCol = _rangeAddress.FromCol;
-            _currentRow = _rangeAddress.FromRow;
-            SetCurrentValue();
+
+            this._currentCol = this._rangeAddress.FromCol;
+            this._currentRow = this._rangeAddress.FromRow;
+            this.SetCurrentValue();
         }
 
         private void SetCurrentValue()
         {
-            _currentValue = ParsingContext.ExcelDataProvider.GetCellValue(_rangeAddress.Worksheet, _currentRow, _currentCol);
+            this._currentValue = this.ParsingContext.ExcelDataProvider.GetCellValue(this._rangeAddress.Worksheet, this._currentRow, this._currentCol);
         }
 
         private bool HasNext()
         {
-            if (Direction == LookupDirection.Vertical)
+            if (this.Direction == LookupDirection.Vertical)
             {
-                return _currentRow < _rangeAddress.ToRow;
+                return this._currentRow < this._rangeAddress.ToRow;
             }
             else
             {
-                return _currentCol < _rangeAddress.ToCol;
+                return this._currentCol < this._rangeAddress.ToCol;
             }
         }
 
         public override int Index
         {
-            get { return _index; }
+            get { return this._index; }
         }
 
         public override bool MoveNext()
         {
-            if (!HasNext())
+            if (!this.HasNext())
             {
                 return false;
             }
 
-            if (Direction == LookupDirection.Vertical)
+            if (this.Direction == LookupDirection.Vertical)
             {
-                _currentRow++;
+                this._currentRow++;
             }
             else
             {
-                _currentCol++;
+                this._currentCol++;
             }
-            _index++;
-            SetCurrentValue();
+
+            this._index++;
+            this.SetCurrentValue();
             return true;
         }
 
         public override object CurrentValue
         {
-            get { return _currentValue; }
+            get { return this._currentValue; }
         }
 
         public override object GetLookupValue()
         {
-            int row = _currentRow;
-            int col = _currentCol;
-            if (Direction == LookupDirection.Vertical)
+            int row = this._currentRow;
+            int col = this._currentCol;
+            if (this.Direction == LookupDirection.Vertical)
             {
-                col += Arguments.LookupIndex - 1;
-                row += Arguments.LookupOffset;
+                col += this.Arguments.LookupIndex - 1;
+                row += this.Arguments.LookupOffset;
             }
             else
             {
-                row += Arguments.LookupIndex - 1;
-                col += Arguments.LookupOffset;
+                row += this.Arguments.LookupIndex - 1;
+                col += this.Arguments.LookupOffset;
             }
-            return ParsingContext.ExcelDataProvider.GetCellValue(_rangeAddress.Worksheet, row, col); 
+            return this.ParsingContext.ExcelDataProvider.GetCellValue(this._rangeAddress.Worksheet, row, col); 
         }
     }
 }

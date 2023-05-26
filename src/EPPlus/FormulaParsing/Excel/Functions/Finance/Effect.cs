@@ -27,15 +27,15 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Finance
         public override CompileResult Execute(IEnumerable<FunctionArgument> arguments, ParsingContext context)
         {
             ValidateArguments(arguments, 2);
-            double nominalRate = ArgToDecimal(arguments, 0);
-            int npery = ArgToInt(arguments, 1);
+            double nominalRate = this.ArgToDecimal(arguments, 0);
+            int npery = this.ArgToInt(arguments, 1);
             if (nominalRate <= 0 || npery < 1)
             {
                 return this.CreateResult(eErrorType.Num);
             }
 
             double result = (System.Math.Pow(nominalRate/npery + 1d, npery) - 1d);
-            return CreateResult(result, DataType.Decimal);
+            return this.CreateResult(result, DataType.Decimal);
         }
     }
 }

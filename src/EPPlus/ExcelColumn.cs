@@ -32,10 +32,10 @@ namespace OfficeOpenXml
 		/// <param name="col"></param>
 		protected internal ExcelColumn(ExcelWorksheet Worksheet, int col)
         {
-            _worksheet = Worksheet;
-            _columnMin = col;
-            _columnMax = col;
-            _width = _worksheet.DefaultColWidth;
+            this._worksheet = Worksheet;
+            this._columnMin = col;
+            this._columnMax = col;
+            this._width = this._worksheet.DefaultColWidth;
         }
 		#endregion
         internal int _columnMin;
@@ -44,7 +44,7 @@ namespace OfficeOpenXml
 		/// </summary>
 		public int ColumnMin 
 		{
-            get { return _columnMin; }
+            get { return this._columnMin; }
 			//set { _columnMin=value; } 
 		}
 
@@ -54,24 +54,25 @@ namespace OfficeOpenXml
 		/// </summary>
         public int ColumnMax 
 		{ 
-            get { return _columnMax; }
+            get { return this._columnMax; }
 			set 
             {
-                if (value < _columnMin && value > ExcelPackage.MaxColumns)
+                if (value < this._columnMin && value > ExcelPackage.MaxColumns)
                 {
                     throw new Exception("ColumnMax out of range");
                 }
 
-                CellStoreEnumerator<ExcelValue>? cse = new CellStoreEnumerator<ExcelValue>(_worksheet._values, 0, 0, 0, ExcelPackage.MaxColumns);
+                CellStoreEnumerator<ExcelValue>? cse = new CellStoreEnumerator<ExcelValue>(this._worksheet._values, 0, 0, 0, ExcelPackage.MaxColumns);
                 while(cse.Next())
                 {
                     ExcelColumn? c = cse.Value._value as ExcelColumn;
-                    if (cse.Column > _columnMin && c.ColumnMax <= value && cse.Column!=_columnMin)
+                    if (cse.Column > this._columnMin && c.ColumnMax <= value && cse.Column!= this._columnMin)
                     {
                         throw new Exception(string.Format("ColumnMax cannot span over existing column {0}.",c.ColumnMin));
                     }
                 }
-                _columnMax = value; 
+
+                this._columnMax = value; 
             } 
 		}
         /// <summary>
@@ -81,7 +82,7 @@ namespace OfficeOpenXml
         {
             get
             {
-                return ExcelColumn.GetColumnID(_worksheet.SheetId, ColumnMin);
+                return GetColumnID(this._worksheet.SheetId, this.ColumnMin);
             }
         }
 		#region ExcelColumn Hidden
@@ -96,19 +97,19 @@ namespace OfficeOpenXml
 		{
 			get
 			{
-                return _hidden;
+                return this._hidden;
 			}
 			set
 			{
-                if (_worksheet._package.DoAdjustDrawings)
+                if (this._worksheet._package.DoAdjustDrawings)
                 {
-                    double[,]? pos = _worksheet.Drawings.GetDrawingWidths();                    
-                    _hidden = value;
-                    _worksheet.Drawings.AdjustWidth(pos);
+                    double[,]? pos = this._worksheet.Drawings.GetDrawingWidths();
+                    this._hidden = value;
+                    this._worksheet.Drawings.AdjustWidth(pos);
                 }
                 else
                 {
-                    _hidden = value;
+                    this._hidden = value;
                 }
 			}
 		}
@@ -119,13 +120,13 @@ namespace OfficeOpenXml
         {
             get
             {
-                if (_hidden || (Collapsed && OutlineLevel>0))
+                if (this._hidden || (this.Collapsed && this.OutlineLevel>0))
                 {
                     return 0;
                 }
                 else
                 {
-                    return _width;
+                    return this._width;
                 }
             }
         }
@@ -137,24 +138,24 @@ namespace OfficeOpenXml
 		{
 			get
 			{
-                return _width;
+                return this._width;
 			}
 			set	
             {
-                if (_worksheet._package.DoAdjustDrawings)
+                if (this._worksheet._package.DoAdjustDrawings)
                 {
-                    double[,]? pos = _worksheet.Drawings.GetDrawingWidths();
-                    _width = value;
-                    _worksheet.Drawings.AdjustWidth(pos);
+                    double[,]? pos = this._worksheet.Drawings.GetDrawingWidths();
+                    this._width = value;
+                    this._worksheet.Drawings.AdjustWidth(pos);
                 }
                 else
                 {
-                    _width = value;
+                    this._width = value;
                 }
 
-                if (_hidden && value!=0)
+                if (this._hidden && value!=0)
                 {
-                    _hidden = false;
+                    this._hidden = false;
                 }
             }
 		}
@@ -193,9 +194,9 @@ namespace OfficeOpenXml
         {
             get
             {
-                string letter = ExcelCellBase.GetColumnLetter(ColumnMin);
-                string endLetter = ExcelCellBase.GetColumnLetter(ColumnMax);
-                return _worksheet.Workbook.Styles.GetStyleObject(StyleID, _worksheet.PositionId, letter + ":" + endLetter);
+                string letter = ExcelCellBase.GetColumnLetter(this.ColumnMin);
+                string endLetter = ExcelCellBase.GetColumnLetter(this.ColumnMax);
+                return this._worksheet.Workbook.Styles.GetStyleObject(this.StyleID, this._worksheet.PositionId, letter + ":" + endLetter);
             }
         }
         internal string _styleName="";
@@ -206,12 +207,12 @@ namespace OfficeOpenXml
 		{
             get
             {
-                return _styleName;
+                return this._styleName;
             }
             set
             {
-                StyleID = _worksheet.Workbook.Styles.GetStyleIdFromName(value);
-                _styleName = value;
+                this.StyleID = this._worksheet.Workbook.Styles.GetStyleIdFromName(value);
+                this._styleName = value;
             }
 		}
         /// <summary>
@@ -221,11 +222,11 @@ namespace OfficeOpenXml
         {
             get
             {
-                return _worksheet.GetStyleInner(0, ColumnMin);
+                return this._worksheet.GetStyleInner(0, this.ColumnMin);
             }
             set
             {
-                _worksheet.SetStyleInner(0, ColumnMin, value);
+                this._worksheet.SetStyleInner(0, this.ColumnMin, value);
             }
         }
         /// <summary>
@@ -243,11 +244,11 @@ namespace OfficeOpenXml
         {
             get
             {
-                return _worksheet.MergedCells[0, ColumnMin] != null;
+                return this._worksheet.MergedCells[0, this.ColumnMin] != null;
             }
             set
             {
-                _worksheet.MergedCells.Add(new ExcelAddressBase(1, ColumnMin, ExcelPackage.MaxRows, ColumnMax), true);
+                this._worksheet.MergedCells.Add(new ExcelAddressBase(1, this.ColumnMin, ExcelPackage.MaxRows, this.ColumnMax), true);
             }
         }
         #endregion
@@ -258,7 +259,7 @@ namespace OfficeOpenXml
 		/// <returns>A string describing the range of columns covered by the column definition.</returns>
 		public override string ToString()
 		{
-			return string.Format("Column Range: {0} to {1}", ColumnMin, ColumnMax);
+			return string.Format("Column Range: {0} to {1}", this.ColumnMin, this.ColumnMax);
 		}
         /// <summary>
         /// Set the column width from the content of the range. The minimum width is the value of the ExcelWorksheet.defaultColumnWidth property.
@@ -267,7 +268,7 @@ namespace OfficeOpenXml
         /// </summary>
         public void AutoFit()
         {
-            _worksheet.Cells[1, _columnMin, ExcelPackage.MaxRows, _columnMax].AutoFitColumns();
+            this._worksheet.Cells[1, this._columnMin, ExcelPackage.MaxRows, this._columnMax].AutoFitColumns();
         }
 
         /// <summary>
@@ -278,7 +279,7 @@ namespace OfficeOpenXml
         /// <param name="MinimumWidth">Minimum column width</param>
         public void AutoFit(double MinimumWidth)
         {
-            _worksheet.Cells[1, _columnMin, ExcelPackage.MaxRows, _columnMax].AutoFitColumns(MinimumWidth);
+            this._worksheet.Cells[1, this._columnMin, ExcelPackage.MaxRows, this._columnMax].AutoFitColumns(MinimumWidth);
         }
 
         /// <summary>
@@ -290,7 +291,7 @@ namespace OfficeOpenXml
         /// <param name="MaximumWidth">Maximum column width</param>
         public void AutoFit(double MinimumWidth, double MaximumWidth)
         {
-            _worksheet.Cells[1, _columnMin, ExcelPackage.MaxRows, _columnMax].AutoFitColumns(MinimumWidth, MaximumWidth);
+            this._worksheet.Cells[1, this._columnMin, ExcelPackage.MaxRows, this._columnMax].AutoFitColumns(MinimumWidth, MaximumWidth);
         }
 
         /// <summary>
@@ -314,15 +315,15 @@ namespace OfficeOpenXml
         {
             get
             {
-                return ColumnID;
+                return this.ColumnID;
             }
             set
             {
-                int prevColMin = _columnMin;
-                _columnMin = ((int)(value >> 15) & 0x3FF);
-                _columnMax += prevColMin - ColumnMin;
+                int prevColMin = this._columnMin;
+                this._columnMin = ((int)(value >> 15) & 0x3FF);
+                this._columnMax += prevColMin - this.ColumnMin;
                 //Todo:More Validation
-                if (_columnMax > ExcelPackage.MaxColumns)
+                if (this._columnMax > ExcelPackage.MaxColumns)
                 {
                     this._columnMax = ExcelPackage.MaxColumns;
                 }
@@ -337,21 +338,21 @@ namespace OfficeOpenXml
         /// <param name="added">The worksheet where the copy will be created</param>
         internal ExcelColumn Clone(ExcelWorksheet added)
         {
-            return Clone(added, ColumnMin);
+            return this.Clone(added, this.ColumnMin);
         }
         internal ExcelColumn Clone(ExcelWorksheet added, int col)
         {
             ExcelColumn newCol = added.Column(col);
-                newCol.ColumnMax = ColumnMax;
-                newCol.BestFit = BestFit;
-                newCol.Collapsed = Collapsed;
-                newCol.OutlineLevel = OutlineLevel;
-                newCol.PageBreak = PageBreak;
-                newCol.Phonetic = Phonetic;
-                newCol._styleName = _styleName;
-                newCol.StyleID = StyleID;
-                newCol.Width = Width;
-                newCol.Hidden = Hidden;
+                newCol.ColumnMax = this.ColumnMax;
+                newCol.BestFit = this.BestFit;
+                newCol.Collapsed = this.Collapsed;
+                newCol.OutlineLevel = this.OutlineLevel;
+                newCol.PageBreak = this.PageBreak;
+                newCol.Phonetic = this.Phonetic;
+                newCol._styleName = this._styleName;
+                newCol.StyleID = this.StyleID;
+                newCol.Width = this.Width;
+                newCol.Hidden = this.Hidden;
                 return newCol;
         }
     }

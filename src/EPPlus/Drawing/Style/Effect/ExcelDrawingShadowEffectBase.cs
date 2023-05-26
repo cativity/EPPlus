@@ -23,7 +23,7 @@ namespace OfficeOpenXml.Drawing.Style.Effect
 
         internal ExcelDrawingShadowEffectBase(XmlNamespaceManager nameSpaceManager, XmlNode topNode, string[] schemaNodeOrder, string path) : base(nameSpaceManager, topNode, schemaNodeOrder, path)
         {
-            _distancePath = string.Format(_distancePath, path);
+            this._distancePath = string.Format(this._distancePath, path);
         }
         
         /// <summary>
@@ -33,11 +33,11 @@ namespace OfficeOpenXml.Drawing.Style.Effect
         {
             get
             {
-                return GetXmlNodeEmuToPt(_distancePath);
+                return this.GetXmlNodeEmuToPt(this._distancePath);
             }
             set
             {
-                SetXmlNodeEmuToPt(_distancePath, value);
+                this.SetXmlNodeEmuToPt(this._distancePath, value);
             }
         }        
     }

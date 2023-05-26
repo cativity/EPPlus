@@ -26,8 +26,8 @@ namespace OfficeOpenXml.Drawing.Chart.ChartEx
 
         internal ExcelChartExValueColors(ExcelRegionMapChartSerie series, XmlNamespaceManager nameSpaceManager, XmlNode topNode, string[] schemaNodeOrder) : base (nameSpaceManager, topNode)
         {
-            _series = series;
-            SchemaNodeOrder = schemaNodeOrder;
+            this._series = series;
+            this.SchemaNodeOrder = schemaNodeOrder;
         }
         /// <summary>
         /// Number of colors to create the series gradient color scale.
@@ -37,7 +37,7 @@ namespace OfficeOpenXml.Drawing.Chart.ChartEx
         { 
             get
             {
-                string? v=GetXmlNodeString("cx:valueColorPositions/@count");
+                string? v= this.GetXmlNodeString("cx:valueColorPositions/@count");
                 if(v=="3")
                 {
                     return eNumberOfColors.ThreeColor;
@@ -49,7 +49,7 @@ namespace OfficeOpenXml.Drawing.Chart.ChartEx
             }
             set
             {
-                SetXmlNodeString("cx:valueColorPositions/@count", ((int)value).ToString(CultureInfo.InvariantCulture));
+                this.SetXmlNodeString("cx:valueColorPositions/@count", ((int)value).ToString(CultureInfo.InvariantCulture));
             }
         }
         ExcelChartExValueColor _minColor = null;
@@ -60,11 +60,11 @@ namespace OfficeOpenXml.Drawing.Chart.ChartEx
         {
             get
             {
-                if(_minColor==null)
+                if(this._minColor==null)
                 {
-                    _minColor = new ExcelChartExValueColor(NameSpaceManager, TopNode, SchemaNodeOrder, "min");
+                    this._minColor = new ExcelChartExValueColor(this.NameSpaceManager, this.TopNode, this.SchemaNodeOrder, "min");
                 }
-                return _minColor;
+                return this._minColor;
             }
         }
         ExcelChartExValueColor _midColor = null;
@@ -75,16 +75,16 @@ namespace OfficeOpenXml.Drawing.Chart.ChartEx
         {
             get
             {
-                if (NumberOfColors == eNumberOfColors.TwoColor)
+                if (this.NumberOfColors == eNumberOfColors.TwoColor)
                 {
                     return null;
                 }
 
-                if (_midColor == null)
+                if (this._midColor == null)
                 {
-                    _midColor = new ExcelChartExValueColor(NameSpaceManager, TopNode, SchemaNodeOrder, "mid");
+                    this._midColor = new ExcelChartExValueColor(this.NameSpaceManager, this.TopNode, this.SchemaNodeOrder, "mid");
                 }
-                return _midColor;
+                return this._midColor;
             }
         }
         ExcelChartExValueColor _maxColor = null;
@@ -95,11 +95,11 @@ namespace OfficeOpenXml.Drawing.Chart.ChartEx
         {
             get
             {
-                if (_maxColor == null)
+                if (this._maxColor == null)
                 {
-                    _maxColor = new ExcelChartExValueColor(NameSpaceManager, TopNode, SchemaNodeOrder, "max");
+                    this._maxColor = new ExcelChartExValueColor(this.NameSpaceManager, this.TopNode, this.SchemaNodeOrder, "max");
                 }
-                return _maxColor;
+                return this._maxColor;
             }
         }
     }

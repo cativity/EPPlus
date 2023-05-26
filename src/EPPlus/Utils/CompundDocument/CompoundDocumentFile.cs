@@ -26,15 +26,15 @@ namespace OfficeOpenXml.Utils.CompundDocument
     {
         internal CompoundDocumentFile()
         {
-            RootItem = new CompoundDocumentItem() { Name = "<Root>", Children=new List<CompoundDocumentItem>(), ObjectType=5 };
-            minorVersion = 0x3E;
-            majorVersion = 3;
-            sectorShif = 9;
-            minSectorShift = 6;
+            this.RootItem = new CompoundDocumentItem() { Name = "<Root>", Children=new List<CompoundDocumentItem>(), ObjectType=5 };
+            this.minorVersion = 0x3E;
+            this.majorVersion = 3;
+            this.sectorShif = 9;
+            this.minSectorShift = 6;
 
-            _sectorSize = 1 << sectorShif;
-            _miniSectorSize = 1 << minSectorShift;
-            _sectorSizeInt = _sectorSize / 4;
+            this._sectorSize = 1 << this.sectorShif;
+            this._miniSectorSize = 1 << this.minSectorShift;
+            this._sectorSizeInt = this._sectorSize / 4;
         }
         internal CompoundDocumentFile(FileInfo fi) : this(File.ReadAllBytes(fi.FullName))
         {
@@ -43,11 +43,11 @@ namespace OfficeOpenXml.Utils.CompundDocument
         internal CompoundDocumentFile(byte[] file)
         {
             using MemoryStream? ms = RecyclableMemory.GetStream(file);
-            LoadFromMemoryStream(ms);
+            this.LoadFromMemoryStream(ms);
         }
         internal CompoundDocumentFile(MemoryStream ms)
         {
-            LoadFromMemoryStream(ms);
+            this.LoadFromMemoryStream(ms);
         }
         private struct DocWriteInfo
         {
@@ -93,11 +93,11 @@ namespace OfficeOpenXml.Utils.CompundDocument
         {
             get
             {
-                if (_directories == null)
+                if (this._directories == null)
                 {
-                    _directories = FlattenDirs();
+                    this._directories = this.FlattenDirs();
                 }
-                return _directories;
+                return this._directories;
             }
         }
 
@@ -151,25 +151,25 @@ namespace OfficeOpenXml.Utils.CompundDocument
         {
             br.ReadBytes(8);    //Read header
             br.ReadBytes(16);   //Header CLSID (16 bytes): Reserved and unused class ID that MUST be set to all zeroes (CLSID_NULL). 
-            minorVersion = br.ReadInt16();
-            majorVersion = br.ReadInt16();
+            this.minorVersion = br.ReadInt16();
+            this.majorVersion = br.ReadInt16();
             br.ReadInt16(); //Byte order
-            sectorShif = br.ReadInt16();
-            minSectorShift = br.ReadInt16();
+            this.sectorShif = br.ReadInt16();
+            this.minSectorShift = br.ReadInt16();
 
-            _sectorSize = 1 << sectorShif;
-            _miniSectorSize = 1 << minSectorShift;
-            _sectorSizeInt = _sectorSize / 4;
+            this._sectorSize = 1 << this.sectorShif;
+            this._miniSectorSize = 1 << this.minSectorShift;
+            this._sectorSizeInt = this._sectorSize / 4;
             br.ReadBytes(6);    //Reserved
-            numberOfDirectorySector = br.ReadInt32();
-            _numberOfFATSectors = br.ReadInt32();
-            _firstDirectorySectorLocation = br.ReadInt32();
-            _transactionSignatureNumber = br.ReadInt32();
-            _miniStreamCutoffSize = br.ReadInt32();
-            _firstMiniFATSectorLocation = br.ReadInt32();
-            _numberofMiniFATSectors = br.ReadInt32();
-            _firstDIFATSectorLocation = br.ReadInt32();
-            _numberofDIFATSectors = br.ReadInt32();
+            this.numberOfDirectorySector = br.ReadInt32();
+            this._numberOfFATSectors = br.ReadInt32();
+            this._firstDirectorySectorLocation = br.ReadInt32();
+            this._transactionSignatureNumber = br.ReadInt32();
+            this._miniStreamCutoffSize = br.ReadInt32();
+            this._firstMiniFATSectorLocation = br.ReadInt32();
+            this._numberofMiniFATSectors = br.ReadInt32();
+            this._firstDIFATSectorLocation = br.ReadInt32();
+            this._numberofDIFATSectors = br.ReadInt32();
             DocWriteInfo dwi = new DocWriteInfo() { DIFAT = new List<int>(), FAT = new List<int>(), miniFAT = new List<int>() };
 
             for (int i = 0; i < 109; i++)
@@ -181,42 +181,43 @@ namespace OfficeOpenXml.Utils.CompundDocument
                 }
             }
 
-            LoadSectors(br);
-            if (_firstDIFATSectorLocation > 0)
+            this.LoadSectors(br);
+            if (this._firstDIFATSectorLocation > 0)
             {
-                LoadDIFATSectors(dwi);
+                this.LoadDIFATSectors(dwi);
             }
 
-            dwi.FAT = ReadFAT(_sectors, dwi);
-            List<CompoundDocumentItem>? dir = ReadDirectories(_sectors, dwi);
+            dwi.FAT = this.ReadFAT(this._sectors, dwi);
+            List<CompoundDocumentItem>? dir = this.ReadDirectories(this._sectors, dwi);
 
-            LoadMinSectors(ref dwi, dir);
+            this.LoadMinSectors(ref dwi, dir);
             foreach (CompoundDocumentItem? d in dir)
             {
                 if (d.Stream == null && d.StreamSize > 0)
                 {
-                    if (d.StreamSize < _miniStreamCutoffSize)
+                    if (d.StreamSize < this._miniStreamCutoffSize)
                     {
-                        d.Stream = GetStream(d.StartingSectorLocation, d.StreamSize, dwi.miniFAT, _miniSectors);
+                        d.Stream = GetStream(d.StartingSectorLocation, d.StreamSize, dwi.miniFAT, this._miniSectors);
                     }
                     else
                     {
-                        d.Stream = GetStream(d.StartingSectorLocation, d.StreamSize, dwi.FAT, _sectors);
+                        d.Stream = GetStream(d.StartingSectorLocation, d.StreamSize, dwi.FAT, this._sectors);
                     }
                 }
             }
-            AddChildTree(dir[0], dir);
-            _directories = dir;
+
+            this.AddChildTree(dir[0], dir);
+            this._directories = dir;
         }
         private void LoadDIFATSectors(DocWriteInfo dwi)
         {
-            int nextSector = _firstDIFATSectorLocation;
+            int nextSector = this._firstDIFATSectorLocation;
             while (nextSector > 0)
             {
-                using MemoryStream? ms = RecyclableMemory.GetStream(_sectors[nextSector]);
+                using MemoryStream? ms = RecyclableMemory.GetStream(this._sectors[nextSector]);
                 BinaryReader? brDI = new BinaryReader(ms);
                 int sect = -1;
-                while (ms.Position < _sectorSize)
+                while (ms.Position < this._sectorSize)
                 {
                     if (sect > 0)
                     {
@@ -229,26 +230,26 @@ namespace OfficeOpenXml.Utils.CompundDocument
         }
         private void LoadSectors(BinaryReader br)
         {
-            _sectors = new List<byte[]>();
+            this._sectors = new List<byte[]>();
             while (br.BaseStream.Position < br.BaseStream.Length)
             {
-                _sectors.Add(br.ReadBytes(_sectorSize));
+                this._sectors.Add(br.ReadBytes(this._sectorSize));
             }
         }
         private void LoadMinSectors(ref DocWriteInfo dwi, List<CompoundDocumentItem> dir)
         {
-            dwi.miniFAT = ReadMiniFAT(_sectors,dwi);
-            dir[0].Stream = GetStream(dir[0].StartingSectorLocation, dir[0].StreamSize, dwi.FAT, _sectors);
-            GetMiniSectors(dir[0].Stream);
+            dwi.miniFAT = this.ReadMiniFAT(this._sectors,dwi);
+            dir[0].Stream = GetStream(dir[0].StartingSectorLocation, dir[0].StreamSize, dwi.FAT, this._sectors);
+            this.GetMiniSectors(dir[0].Stream);
         }
         private void GetMiniSectors(byte[] miniFATStream)
         {
             using MemoryStream? ms = RecyclableMemory.GetStream(miniFATStream);
             BinaryReader? br = new BinaryReader(ms);
-            _miniSectors = new List<byte[]>();
+            this._miniSectors = new List<byte[]>();
             while (ms.Position < ms.Length)
             {
-                _miniSectors.Add(br.ReadBytes(_miniSectorSize));
+                this._miniSectors.Add(br.ReadBytes(this._miniSectorSize));
             }
         }
         private static byte[] GetStream(int startingSectorLocation, long streamSize, List<int> FAT, List<byte[]> sectors)
@@ -280,12 +281,12 @@ namespace OfficeOpenXml.Utils.CompundDocument
         private List<int> ReadMiniFAT(List<byte[]> sectors, DocWriteInfo dwi)
         {
             List<int>? l = new List<int>();
-            int nextSector = _firstMiniFATSectorLocation;
+            int nextSector = this._firstMiniFATSectorLocation;
             while(nextSector!=END_OF_CHAIN)
             {
                 using MemoryStream? ms = RecyclableMemory.GetStream(sectors[nextSector]);
                 BinaryReader? br = new BinaryReader(ms);
-                while (ms.Position < _sectorSize)
+                while (ms.Position < this._sectorSize)
                 {
                     int d = br.ReadInt32();
                     l.Add(d);
@@ -297,7 +298,7 @@ namespace OfficeOpenXml.Utils.CompundDocument
         private List<CompoundDocumentItem> ReadDirectories(List<byte[]> sectors, DocWriteInfo dwi)
         {
             List<CompoundDocumentItem>? dir = new List<CompoundDocumentItem>();
-            int nextSector = _firstDirectorySectorLocation;
+            int nextSector = this._firstDirectorySectorLocation;
             while (nextSector != END_OF_CHAIN)
             {
                 ReadDirectory(sectors, nextSector, dir);
@@ -312,7 +313,7 @@ namespace OfficeOpenXml.Utils.CompundDocument
             {
                 using MemoryStream? ms = RecyclableMemory.GetStream(sectors[i]);
                 BinaryReader? br = new BinaryReader(ms);
-                while (ms.Position < _sectorSize)
+                while (ms.Position < this._sectorSize)
                 {
                     int d = br.ReadInt32();
                     l.Add(d);
@@ -348,25 +349,25 @@ namespace OfficeOpenXml.Utils.CompundDocument
                 CompoundDocumentItem? c = dirs[e.ChildID];
                 c.Parent = e;
                 e.Children.Add(c);
-                AddChildTree(c, dirs);
+                this.AddChildTree(c, dirs);
             }
             if (e.LeftSibling > 0)
             {
                 CompoundDocumentItem? c = dirs[e.LeftSibling];
                 c.Parent = e.Parent;
                 c.Parent.Children.Insert(e.Parent.Children.IndexOf(e), c);
-                AddChildTree(c, dirs);
+                this.AddChildTree(c, dirs);
             }
             if (e.RightSibling > 0)
             {
                 CompoundDocumentItem? c = dirs[e.RightSibling];
                 c.Parent = e.Parent;
                 e.Parent.Children.Insert(e.Parent.Children.IndexOf(e) + 1, c);
-                AddChildTree(c, dirs);
+                this.AddChildTree(c, dirs);
             }
             if (e.ObjectType == 5)
             {
-                RootItem = e;
+                this.RootItem = e;
             }
         }
         internal void AddLeftSiblingTree(CompoundDocumentItem e, List<CompoundDocumentItem> dirs)
@@ -379,7 +380,7 @@ namespace OfficeOpenXml.Utils.CompundDocument
                     c.Parent = e.Parent;
                     c.Parent.Children.Insert(e.Parent.Children.IndexOf(e), c);
                     e._handled = true;
-                    AddLeftSiblingTree(c, dirs);
+                    this.AddLeftSiblingTree(c, dirs);
                 }
             }
         }
@@ -391,7 +392,7 @@ namespace OfficeOpenXml.Utils.CompundDocument
                 c.Parent = e.Parent;
                 e.Parent.Children.Insert(e.Parent.Children.IndexOf(e) + 1, c);
                 e._handled = true;
-                AddRightSiblingTree(c, dirs);
+                this.AddRightSiblingTree(c, dirs);
             }
         }
     #endregion
@@ -401,41 +402,41 @@ namespace OfficeOpenXml.Utils.CompundDocument
             BinaryWriter? bw = new BinaryWriter(ms);
 
             //InitValues
-            minorVersion = 62;
-            majorVersion = 3;
-            sectorShif = 9;                 //2^9=512 bytes for version 3 documents 
-            minSectorShift = 6;             //2^6=64 bytes
-            _miniStreamCutoffSize = 4096;
-            _transactionSignatureNumber = 0;
-            _firstDIFATSectorLocation = END_OF_CHAIN;
-            _firstDirectorySectorLocation = 1;
-            _firstMiniFATSectorLocation = 2;
-            _numberOfFATSectors = 1;
+            this.minorVersion = 62;
+            this.majorVersion = 3;
+            this.sectorShif = 9;                 //2^9=512 bytes for version 3 documents 
+            this.minSectorShift = 6;             //2^6=64 bytes
+            this._miniStreamCutoffSize = 4096;
+            this._transactionSignatureNumber = 0;
+            this._firstDIFATSectorLocation = END_OF_CHAIN;
+            this._firstDirectorySectorLocation = 1;
+            this._firstMiniFATSectorLocation = 2;
+            this._numberOfFATSectors = 1;
 
-            _currentDIFATSectorPos = 76;             //DIFAT Position in the header
-            _currentFATSectorPos = _sectorSize;      //First FAT sector starts at Sector 0
-            _currentDirSectorPos = _sectorSize * 2;  //First FAT sector starts at Sector 1
-            _prevDirFATSectorPos = _sectorSize + 4;  //Dir sector starts FAT position 1 (4 for int size)
+            this._currentDIFATSectorPos = 76;             //DIFAT Position in the header
+            this._currentFATSectorPos = this._sectorSize;      //First FAT sector starts at Sector 0
+            this._currentDirSectorPos = this._sectorSize * 2;  //First FAT sector starts at Sector 1
+            this._prevDirFATSectorPos = this._sectorSize + 4;  //Dir sector starts FAT position 1 (4 for int size)
 
             bw.Write(new byte[512 * 4]);            //Allocate for Header and first FAT, Directory och MiniFAT sectors
-            WritePosition(bw, 0, ref _currentDIFATSectorPos, false);
-            WritePosition(bw, new int[] { FAT_SECTOR, END_OF_CHAIN, END_OF_CHAIN }, ref _currentFATSectorPos);  //First sector is first FAT sector, second is First Dir sector, thirs is first Mini FAT sector.
+            this.WritePosition(bw, 0, ref this._currentDIFATSectorPos, false);
+            WritePosition(bw, new int[] { FAT_SECTOR, END_OF_CHAIN, END_OF_CHAIN }, ref this._currentFATSectorPos);  //First sector is first FAT sector, second is First Dir sector, thirs is first Mini FAT sector.
 
             //Write directories
-            WriteDirs(bw, Directories);
+            this.WriteDirs(bw, this.Directories);
                 
             //Fill empty DISectors up to 109
-            FillDIFAT(bw);
+            this.FillDIFAT(bw);
             //Finally write the header information in the top of the file
-            WriteHeader(bw);
+            this.WriteHeader(bw);
         }
 
         private List<CompoundDocumentItem> FlattenDirs()
         {
             List<CompoundDocumentItem>? l = new List<CompoundDocumentItem>();
-            InitItem(RootItem);
-            l.Add(RootItem);
-            RootItem.ChildID = AddChildren(RootItem, l);
+            InitItem(this.RootItem);
+            l.Add(this.RootItem);
+            this.RootItem.ChildID = AddChildren(this.RootItem, l);
             return l;
         }
 
@@ -585,12 +586,12 @@ namespace OfficeOpenXml.Utils.CompundDocument
 
         private void FillDIFAT(BinaryWriter bw)
         {
-            if (_currentDIFATSectorPos < _sectorSize)
+            if (this._currentDIFATSectorPos < this._sectorSize)
             {
-                bw.Seek(_currentDIFATSectorPos, SeekOrigin.Begin);
-                while (_currentDIFATSectorPos < _sectorSize)
+                bw.Seek(this._currentDIFATSectorPos, SeekOrigin.Begin);
+                while (this._currentDIFATSectorPos < this._sectorSize)
                 {
-                    if (_currentDIFATSectorPos < 512)
+                    if (this._currentDIFATSectorPos < 512)
                     {
                         bw.Write(0xFFFFFFFF);
                     }
@@ -598,7 +599,8 @@ namespace OfficeOpenXml.Utils.CompundDocument
                     {
                         bw.Write(0x0);
                     }
-                    _currentDIFATSectorPos += 4;
+
+                    this._currentDIFATSectorPos += 4;
                 }
             }
         }
@@ -611,7 +613,7 @@ namespace OfficeOpenXml.Utils.CompundDocument
             writePos += 4;
             if(isFATEntry)
             {
-                CheckUpdateDIFAT(bw);
+                this.CheckUpdateDIFAT(bw);
             }
             bw.Seek(pos, SeekOrigin.Begin);
         }
@@ -628,18 +630,18 @@ namespace OfficeOpenXml.Utils.CompundDocument
         }
         private void WriteDirs(BinaryWriter bw, List<CompoundDocumentItem> dirs)
         {
-            byte[]? miniFAT = SetMiniStream(dirs);
-            AllocateFAT(bw, miniFAT.Length, dirs);
-            WriteMiniFAT(bw, miniFAT);
+            byte[]? miniFAT = this.SetMiniStream(dirs);
+            this.AllocateFAT(bw, miniFAT.Length, dirs);
+            this.WriteMiniFAT(bw, miniFAT);
             foreach (CompoundDocumentItem? entity in dirs)
             {
-                if (entity.ObjectType == 5 || entity.StreamSize > _miniStreamCutoffSize)
+                if (entity.ObjectType == 5 || entity.StreamSize > this._miniStreamCutoffSize)
                 {
-                    entity.StartingSectorLocation = WriteStream(bw, entity.Stream);
+                    entity.StartingSectorLocation = this.WriteStream(bw, entity.Stream);
                 }
             }
 
-            WriteDirStream(bw, dirs);
+            this.WriteDirStream(bw, dirs);
         }
 
         private int WriteDirStream(BinaryWriter bw, List<CompoundDocumentItem> dirs)
@@ -647,8 +649,8 @@ namespace OfficeOpenXml.Utils.CompundDocument
             if (dirs.Count>0)
             {
                 //First directory sector goes into sector 2
-                bw.Seek((_firstDirectorySectorLocation + 1) * _sectorSize, SeekOrigin.Begin);
-                for(int i=0;i<Math.Min(_sectorSize/128,dirs.Count);i++)
+                bw.Seek((this._firstDirectorySectorLocation + 1) * this._sectorSize, SeekOrigin.Begin);
+                for(int i=0;i<Math.Min(this._sectorSize/128,dirs.Count);i++)
                 {
                     dirs[i].Write(bw);
                 }
@@ -659,9 +661,9 @@ namespace OfficeOpenXml.Utils.CompundDocument
             }
 
             bw.Seek(0, SeekOrigin.End);
-            int start = (int)bw.BaseStream.Position / _sectorSize - 1;
-            int pos = _sectorSize + 4;
-            WritePosition(bw, start, ref pos, false);
+            int start = (int)bw.BaseStream.Position / this._sectorSize - 1;
+            int pos = this._sectorSize + 4;
+            this.WritePosition(bw, start, ref pos, false);
             int streamLength = 0;
             for(int i=4;i<dirs.Count;i++)
             {
@@ -669,94 +671,96 @@ namespace OfficeOpenXml.Utils.CompundDocument
                 streamLength += 128;
             }
 
-            WriteStreamFullSector(bw, _sectorSize);
-            WriteFAT(bw, start, streamLength);
+            WriteStreamFullSector(bw, this._sectorSize);
+            this.WriteFAT(bw, start, streamLength);
             return start;
 
         }
 
         private void WriteMiniFAT(BinaryWriter bw, byte[] miniFAT)
         {
-            if (miniFAT.Length >= _sectorSize)
+            if (miniFAT.Length >= this._sectorSize)
             {
-                bw.Seek((_firstMiniFATSectorLocation+1) * _sectorSize, SeekOrigin.Begin);
-                bw.Write(miniFAT, 0, _sectorSize);
+                bw.Seek((this._firstMiniFATSectorLocation+1) * this._sectorSize, SeekOrigin.Begin);
+                bw.Write(miniFAT, 0, this._sectorSize);
                 bw.Seek(0, SeekOrigin.End);
-                if (miniFAT.Length > _sectorSize)
+                if (miniFAT.Length > this._sectorSize)
                 {
                     //Write next minifat sector to fat for sector 2
-                    int sector = ((int)bw.BaseStream.Position / _sectorSize) - 1;
-                    int pos = _sectorSize+(4*2);
-                    WritePosition(bw, sector, ref pos, false);
+                    int sector = ((int)bw.BaseStream.Position / this._sectorSize) - 1;
+                    int pos = this._sectorSize+(4*2);
+                    this.WritePosition(bw, sector, ref pos, false);
 
                     //Write overflowing FAT sectors
-                    byte[]? b = new byte[miniFAT.Length - _sectorSize];
-                    Array.Copy(miniFAT, _sectorSize, b, 0, b.Length);
-                    WriteStream(bw, b);
+                    byte[]? b = new byte[miniFAT.Length - this._sectorSize];
+                    Array.Copy(miniFAT, this._sectorSize, b, 0, b.Length);
+                    this.WriteStream(bw, b);
                 }
-                _numberofMiniFATSectors = (miniFAT.Length + 1) / _sectorSize;
+
+                this._numberofMiniFATSectors = (miniFAT.Length + 1) / this._sectorSize;
             }
         }
 
         private int WriteStream(BinaryWriter bw, byte[] stream)
         {
             bw.Seek(0, SeekOrigin.End);
-            int start = (int)bw.BaseStream.Position / _sectorSize-1;
+            int start = (int)bw.BaseStream.Position / this._sectorSize-1;
             bw.Write(stream);
-            WriteStreamFullSector(bw, _sectorSize);
-            WriteFAT(bw, start, stream.Length);
+            WriteStreamFullSector(bw, this._sectorSize);
+            this.WriteFAT(bw, start, stream.Length);
             return start;
         }
         private void WriteFAT(BinaryWriter bw, int sector, long size)
         {
-            bw.Seek(_currentFATSectorPos, SeekOrigin.Begin);
-            int pos = _sectorSize;
+            bw.Seek(this._currentFATSectorPos, SeekOrigin.Begin);
+            int pos = this._sectorSize;
             while (size > pos)
             {
                 bw.Write(++sector);
-                pos += _sectorSize;
-                CheckUpdateDIFAT(bw);
+                pos += this._sectorSize;
+                this.CheckUpdateDIFAT(bw);
             }
             bw.Write(END_OF_CHAIN);
-            CheckUpdateDIFAT(bw);
-            _currentFATSectorPos = (int)bw.BaseStream.Position;
+            this.CheckUpdateDIFAT(bw);
+            this._currentFATSectorPos = (int)bw.BaseStream.Position;
             bw.Seek(0, SeekOrigin.End);
         }
 
         private void CheckUpdateDIFAT(BinaryWriter bw)
         {
-            if (bw.BaseStream.Position % _sectorSize == 0)
+            if (bw.BaseStream.Position % this._sectorSize == 0)
             {
-                if (_currentDIFATSectorPos % _sectorSize == 0) 
+                if (this._currentDIFATSectorPos % this._sectorSize == 0) 
                 {
                     bw.Seek(512, SeekOrigin.Current);
                 }
-                else if (bw.BaseStream.Position == (_sectorSize * 2))
+                else if (bw.BaseStream.Position == (this._sectorSize * 2))
                 {
-                    bw.Seek(4 * _sectorSize,SeekOrigin.Begin);    //FAT continues after initial dir och minifat sectors.
+                    bw.Seek(4 * this._sectorSize,SeekOrigin.Begin);    //FAT continues after initial dir och minifat sectors.
                 }
                 //Add to DIFAT
-                int FATSector = (int)(bw.BaseStream.Position / _sectorSize - 1);
-                WritePosition(bw, FATSector, ref _currentDIFATSectorPos, false);
-                _numberOfFATSectors++;
-                if (_currentDIFATSectorPos == _sectorSize || ((_currentDIFATSectorPos+4)  % _sectorSize == 0 && _currentDIFATSectorPos > _sectorSize))
+                int FATSector = (int)(bw.BaseStream.Position / this._sectorSize - 1);
+                this.WritePosition(bw, FATSector, ref this._currentDIFATSectorPos, false);
+                this._numberOfFATSectors++;
+                if (this._currentDIFATSectorPos == this._sectorSize || ((this._currentDIFATSectorPos+4)  % this._sectorSize == 0 && this._currentDIFATSectorPos > this._sectorSize))
                 {
-                    bw.Write(new byte[_sectorSize]); //Write pre FAT sector
-                    if (_currentDIFATSectorPos > _sectorSize)                       //Write link to next DIFAT sector
+                    bw.Write(new byte[this._sectorSize]); //Write pre FAT sector
+                    if (this._currentDIFATSectorPos > this._sectorSize)                       //Write link to next DIFAT sector
                     {
-                        WritePosition(bw, FATSector+1, ref _currentDIFATSectorPos, false);
+                        this.WritePosition(bw, FATSector+1, ref this._currentDIFATSectorPos, false);
                     }
                     else
                     {
-                        _firstDIFATSectorLocation = FATSector+1;                    //Current sector
+                        this._firstDIFATSectorLocation = FATSector+1;                    //Current sector
                     }
-                    _currentDIFATSectorPos = (int)bw.BaseStream.Position;
+
+                    this._currentDIFATSectorPos = (int)bw.BaseStream.Position;
                     //Fill sector
-                    for (int i = 0; i < _sectorSize; i++)
+                    for (int i = 0; i < this._sectorSize; i++)
                     {
                         bw.Write((byte)0xFF);
                     }
-                    bw.Seek(-(_sectorSize * 2), SeekOrigin.Current);
+                    bw.Seek(-(this._sectorSize * 2), SeekOrigin.Current);
                 }
             }
         }
@@ -764,26 +768,26 @@ namespace OfficeOpenXml.Utils.CompundDocument
         private void AllocateFAT(BinaryWriter bw, int miniFatLength, List<CompoundDocumentItem> dirs)
         {
             /*** First calculate full size ***/
-            long fullStreamSize = (long)miniFatLength - _sectorSize; //MiniFAT starts from sector 2, by default.
+            long fullStreamSize = (long)miniFatLength - this._sectorSize; //MiniFAT starts from sector 2, by default.
             //StreamSize
             foreach (CompoundDocumentItem? entity in dirs)
             {
-                if (entity.ObjectType == 5 || entity.StreamSize > _miniStreamCutoffSize)
+                if (entity.ObjectType == 5 || entity.StreamSize > this._miniStreamCutoffSize)
                 {
-                    long rest = _sectorSize - entity.StreamSize % _sectorSize;
+                    long rest = this._sectorSize - entity.StreamSize % this._sectorSize;
                     fullStreamSize += entity.StreamSize;
-                    if (rest > 0 && rest < _sectorSize)
+                    if (rest > 0 && rest < this._sectorSize)
                     {
                         fullStreamSize += rest;
                     }
                 }
             }
-            long noOfSectors = fullStreamSize / _sectorSize;
+            long noOfSectors = fullStreamSize / this._sectorSize;
 
             //Directory Size
-            int dirsPerSector = _sectorSize / 128;
+            int dirsPerSector = this._sectorSize / 128;
             int dirSectors = 0;
-            int firstFATSectorPos = _currentFATSectorPos;
+            int firstFATSectorPos = this._currentFATSectorPos;
             if (dirs.Count > dirsPerSector)
             {
                 dirSectors = GetSectors(dirs.Count, dirsPerSector);
@@ -791,44 +795,44 @@ namespace OfficeOpenXml.Utils.CompundDocument
             }
 
             //First calc fat no sectors and difat sectors from full size
-            int numberOfFATSectors = GetSectors((int)noOfSectors, _sectorSizeInt);       //Sector 0 is already allocated
-            _numberofDIFATSectors = GetDIFatSectors(numberOfFATSectors);
-            noOfSectors += numberOfFATSectors + _numberofDIFATSectors;
+            int numberOfFATSectors = GetSectors((int)noOfSectors, this._sectorSizeInt);       //Sector 0 is already allocated
+            this._numberofDIFATSectors = this.GetDIFatSectors(numberOfFATSectors);
+            noOfSectors += numberOfFATSectors + this._numberofDIFATSectors;
 
             //Calc fat sectors again with the added fat and di fat sectors.
-            numberOfFATSectors = GetSectors((int)noOfSectors, _sectorSizeInt) + _numberofDIFATSectors;
-             _numberofDIFATSectors = GetDIFatSectors(numberOfFATSectors);
+            numberOfFATSectors = GetSectors((int)noOfSectors, this._sectorSizeInt) + this._numberofDIFATSectors;
+            this._numberofDIFATSectors = this.GetDIFatSectors(numberOfFATSectors);
 
             //Allocate FAT and DIFAT Sectors
-            bw.Write(new byte[(numberOfFATSectors + (_numberofDIFATSectors > 0 ? _numberofDIFATSectors - 1 : 0)) * _sectorSize]);
+            bw.Write(new byte[(numberOfFATSectors + (this._numberofDIFATSectors > 0 ? this._numberofDIFATSectors - 1 : 0)) * this._sectorSize]);
 
             //Move to FAT Second sector (4).
-            bw.Seek(_currentFATSectorPos, SeekOrigin.Begin);
+            bw.Seek(this._currentFATSectorPos, SeekOrigin.Begin);
             int sectorPos = 1;
             for (int i = 1; i < 109; i++)     //We have 1 FAT sector to start with at sector 0
             {
-                if (i < numberOfFATSectors + _numberofDIFATSectors)
+                if (i < numberOfFATSectors + this._numberofDIFATSectors)
                 {
-                    WriteFATItem(bw, FAT_SECTOR);
+                    this.WriteFATItem(bw, FAT_SECTOR);
                     sectorPos++;
                 }
                 else
                 {
-                    WriteFATItem(bw, END_OF_CHAIN);
+                    this.WriteFATItem(bw, END_OF_CHAIN);
                     break;
                 }
             }
-            if (_numberofDIFATSectors > 0)
+            if (this._numberofDIFATSectors > 0)
             {
                 this._firstDIFATSectorLocation = sectorPos + 1;
             }
 
-            for (int j = 0; j < _numberofDIFATSectors; j++)
+            for (int j = 0; j < this._numberofDIFATSectors; j++)
             {
-                WriteFATItem(bw, DIFAT_SECTOR);
-                for (int i = 0; i < _sectorSizeInt - 1; i++)
+                this.WriteFATItem(bw, DIFAT_SECTOR);
+                for (int i = 0; i < this._sectorSizeInt - 1; i++)
                 {
-                    WriteFATItem(bw, FAT_SECTOR);
+                    this.WriteFATItem(bw, FAT_SECTOR);
                     sectorPos++;
                     if (sectorPos >= numberOfFATSectors)
                     {
@@ -847,7 +851,7 @@ namespace OfficeOpenXml.Utils.CompundDocument
         {
             if (FATSectors > 109)
             {
-                return GetSectors((FATSectors - 109), _sectorSizeInt-1);
+                return GetSectors((FATSectors - 109), this._sectorSizeInt-1);
             }
             else
             {
@@ -858,8 +862,8 @@ namespace OfficeOpenXml.Utils.CompundDocument
         private void WriteFATItem(BinaryWriter bw, int value)
         {
             bw.Write(value);
-            CheckUpdateDIFAT(bw);
-            _currentFATSectorPos = (int)bw.BaseStream.Position;            
+            this.CheckUpdateDIFAT(bw);
+            this._currentFATSectorPos = (int)bw.BaseStream.Position;            
         }
 
         private static int GetSectors(int v, int size)
@@ -884,16 +888,16 @@ namespace OfficeOpenXml.Utils.CompundDocument
             int pos = 0;
             foreach (CompoundDocumentItem? entity in dirs)
             {
-                if (entity.ObjectType != 5 && entity.StreamSize > 0 && entity.StreamSize <= _miniStreamCutoffSize)
+                if (entity.ObjectType != 5 && entity.StreamSize > 0 && entity.StreamSize <= this._miniStreamCutoffSize)
                 {
                     bwMiniFATStream.Write(entity.Stream);
                     WriteStreamFullSector(bwMiniFATStream, miniFATSectorSize);
-                    int size = _miniSectorSize;
+                    int size = this._miniSectorSize;
                     entity.StartingSectorLocation = pos;
                     while (entity.StreamSize > size)
                     {
                         bwMiniFAT.Write(++pos);
-                        size += _miniSectorSize;
+                        size += this._miniSectorSize;
                     }
                     bwMiniFAT.Write(END_OF_CHAIN);
                     pos++;
@@ -901,7 +905,7 @@ namespace OfficeOpenXml.Utils.CompundDocument
             }
             dirs[0].StreamSize = ms.Length;
             dirs[0].Stream = ms.ToArray();
-            WriteStreamFullSector(bwMiniFAT, _sectorSize);
+            WriteStreamFullSector(bwMiniFAT, this._sectorSize);
             return msforBw.ToArray();
         }
 
@@ -925,14 +929,14 @@ namespace OfficeOpenXml.Utils.CompundDocument
             bw.Write((short)6);                 //Mini Sector Shift
             bw.Write(new byte[6]);              //reserved
             bw.Write(0);                        //Number of Directory Sectors, unsupported i v3. Set to zero
-            bw.Write(_numberOfFATSectors);      //Number of FAT Sectors
+            bw.Write(this._numberOfFATSectors);      //Number of FAT Sectors
             bw.Write(1);                        //First Directory Sector Location
             bw.Write(0);                        //Transaction Signature Number
-            bw.Write(_miniStreamCutoffSize);     //Mini Stream Cutoff Size
+            bw.Write(this._miniStreamCutoffSize);     //Mini Stream Cutoff Size
             bw.Write(2);                        //First Mini FAT Sector Location
-            bw.Write(_numberofMiniFATSectors);   //Number of MiniFAT sectors
-            bw.Write(_firstDIFATSectorLocation); //First DIFAT Sector Location
-            bw.Write(_numberofDIFATSectors);     //Number of DIFAT Sectors
+            bw.Write(this._numberofMiniFATSectors);   //Number of MiniFAT sectors
+            bw.Write(this._firstDIFATSectorLocation); //First DIFAT Sector Location
+            bw.Write(this._numberofDIFATSectors);     //Number of DIFAT Sectors
         }
 
         private void CreateFATStreams(CompoundDocumentItem item, BinaryWriter bw, BinaryWriter bwMini, DocWriteInfo dwi)
@@ -942,7 +946,7 @@ namespace OfficeOpenXml.Utils.CompundDocument
                 if (item.StreamSize > 0)
                 {
                     item.StreamSize = item.Stream.Length;
-                    if (item.StreamSize < _miniStreamCutoffSize)
+                    if (item.StreamSize < this._miniStreamCutoffSize)
                     {
                         item.StartingSectorLocation= WriteStream(bwMini, dwi.miniFAT, item.Stream, miniFATSectorSize);
                     }
@@ -954,7 +958,7 @@ namespace OfficeOpenXml.Utils.CompundDocument
             }
             foreach(CompoundDocumentItem? c in item.Children)
             {
-                CreateFATStreams(c, bw, bwMini, dwi);
+                this.CreateFATStreams(c, bw, bwMini, dwi);
             }
         }
 
@@ -993,13 +997,13 @@ namespace OfficeOpenXml.Utils.CompundDocument
         private void LoadFromMemoryStream(MemoryStream ms)
         {
             ms.Seek(0, SeekOrigin.Begin);   //Fixes issue #60
-            Read(new BinaryReader(ms));
+            this.Read(new BinaryReader(ms));
         }
 
         public void Dispose()
         {
-            _miniSectors = null;
-            _sectors = null;            
+            this._miniSectors = null;
+            this._sectors = null;            
         }
 #endregion
     }

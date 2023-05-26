@@ -29,16 +29,16 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Finance
         public override CompileResult Execute(IEnumerable<FunctionArgument> arguments, ParsingContext context)
         {
             ValidateArguments(arguments, 3);
-            IEnumerable<ExcelDoubleCellValue>? values = ArgsToDoubleEnumerable(new List<FunctionArgument> { arguments.ElementAt(0) }, context);
-            double financeRate = ArgToDecimal(arguments, 1);
-            double reinvestState = ArgToDecimal(arguments, 2);
+            IEnumerable<ExcelDoubleCellValue>? values = this.ArgsToDoubleEnumerable(new List<FunctionArgument> { arguments.ElementAt(0) }, context);
+            double financeRate = this.ArgToDecimal(arguments, 1);
+            double reinvestState = this.ArgToDecimal(arguments, 2);
             FinanceCalcResult<double>? result = MirrImpl.MIRR(values.Select(x => (double)x).ToArray(), financeRate, reinvestState);
             if (result.HasError)
             {
                 return this.CreateResult(result.ExcelErrorType);
             }
 
-            return CreateResult(result.Result, DataType.Decimal);
+            return this.CreateResult(result.Result, DataType.Decimal);
         }
     }
 }

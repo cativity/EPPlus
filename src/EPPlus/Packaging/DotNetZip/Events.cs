@@ -313,8 +313,8 @@ namespace OfficeOpenXml.Packaging.Ionic.Zip
         /// </summary>
         public int EntriesTotal
         {
-            get { return _entriesTotal; }
-            set { _entriesTotal = value; }
+            get { return this._entriesTotal; }
+            set { this._entriesTotal = value; }
         }
 
         /// <summary>
@@ -322,8 +322,8 @@ namespace OfficeOpenXml.Packaging.Ionic.Zip
         /// </summary>
         public ZipEntry CurrentEntry
         {
-            get { return _latestEntry; }
-            set { _latestEntry = value; }
+            get { return this._latestEntry; }
+            set { this._latestEntry = value; }
         }
 
         /// <summary>
@@ -332,8 +332,8 @@ namespace OfficeOpenXml.Packaging.Ionic.Zip
         /// </summary>
         public bool Cancel
         {
-            get { return _cancel; }
-            set { _cancel = _cancel || value; }
+            get { return this._cancel; }
+            set { this._cancel = this._cancel || value; }
         }
 
         /// <summary>
@@ -341,8 +341,8 @@ namespace OfficeOpenXml.Packaging.Ionic.Zip
         /// </summary>
         public ZipProgressEventType EventType
         {
-            get { return _flavor; }
-            set { _flavor = value; }
+            get { return this._flavor; }
+            set { this._flavor = value; }
         }
 
         /// <summary>
@@ -350,8 +350,8 @@ namespace OfficeOpenXml.Packaging.Ionic.Zip
         /// </summary>
         public String ArchiveName
         {
-            get { return _archiveName; }
-            set { _archiveName = value; }
+            get { return this._archiveName; }
+            set { this._archiveName = value; }
         }
 
 
@@ -360,8 +360,8 @@ namespace OfficeOpenXml.Packaging.Ionic.Zip
         /// </summary>
         public Int64 BytesTransferred
         {
-            get { return _bytesTransferred; }
-            set { _bytesTransferred = value; }
+            get { return this._bytesTransferred; }
+            set { this._bytesTransferred = value; }
         }
 
 
@@ -372,8 +372,8 @@ namespace OfficeOpenXml.Packaging.Ionic.Zip
         /// </summary>
         public Int64 TotalBytesToTransfer
         {
-            get { return _totalBytesToTransfer; }
-            set { _totalBytesToTransfer = value; }
+            get { return this._totalBytesToTransfer; }
+            set { this._totalBytesToTransfer = value; }
         }
     }
 
@@ -520,7 +520,7 @@ namespace OfficeOpenXml.Packaging.Ionic.Zip
         /// </summary>
         public int EntriesSaved
         {
-            get { return _entriesSaved; }
+            get { return this._entriesSaved; }
         }
     }
 
@@ -629,7 +629,7 @@ namespace OfficeOpenXml.Packaging.Ionic.Zip
         /// </summary>
         public int EntriesExtracted
         {
-            get { return _entriesExtracted; }
+            get { return this._entriesExtracted; }
         }
 
         /// <summary>
@@ -637,7 +637,7 @@ namespace OfficeOpenXml.Packaging.Ionic.Zip
         /// </summary>
         public String ExtractLocation
         {
-            get { return _target; }
+            get { return this._target; }
         }
 
     }
@@ -668,7 +668,7 @@ namespace OfficeOpenXml.Packaging.Ionic.Zip
         /// </summary>
         public Exception @Exception
         {
-            get { return _exc; }
+            get { return this._exc; }
         }
 
         /// <summary>
@@ -676,7 +676,7 @@ namespace OfficeOpenXml.Packaging.Ionic.Zip
         /// </summary>
         public String FileName
         {
-            get { return CurrentEntry.LocalFileName; }
+            get { return this.CurrentEntry.LocalFileName; }
         }
     }
 

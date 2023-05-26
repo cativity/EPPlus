@@ -48,12 +48,12 @@ namespace OfficeOpenXml.Sorting
         {
             get
             {
-                if(_sortLayer == null)
+                if(this._sortLayer == null)
                 {
                     this._sortLayer = new RangeSortLayer(this);
                 }
 
-                return _sortLayer;
+                return this._sortLayer;
             }
         }
 
@@ -64,12 +64,12 @@ namespace OfficeOpenXml.Sorting
         {
             get
             {
-                if (_sortLayerLeftToRight == null)
+                if (this._sortLayerLeftToRight == null)
                 {
                     this._sortLayerLeftToRight = new RangeLeftToRightSortLayer(this);
                 }
 
-                return _sortLayerLeftToRight;
+                return this._sortLayerLeftToRight;
             }
         }
     }

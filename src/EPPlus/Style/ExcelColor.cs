@@ -111,12 +111,12 @@ namespace OfficeOpenXml.Style
 
         eStyleClass _cls;
         StyleBase _parent;
-        internal ExcelColor(ExcelStyles styles, OfficeOpenXml.XmlHelper.ChangedEventHandler ChangedEvent, int worksheetID, string address, eStyleClass cls, StyleBase parent) : 
+        internal ExcelColor(ExcelStyles styles, XmlHelper.ChangedEventHandler ChangedEvent, int worksheetID, string address, eStyleClass cls, StyleBase parent) : 
             base(styles, ChangedEvent, worksheetID, address)
         {
-            _parent = parent;
-            _cls = cls;
-            Index = int.MinValue;
+            this._parent = parent;
+            this._cls = cls;
+            this.Index = int.MinValue;
         }
         /// <summary>
         /// The theme color
@@ -125,16 +125,16 @@ namespace OfficeOpenXml.Style
         {
             get
             {
-                if (_parent.Index < 0)
+                if (this._parent.Index < 0)
                 {
                     return null;
                 }
 
-                return GetSource().Theme;
+                return this.GetSource().Theme;
             }
             internal set
             {
-                _ChangedEvent(this, new StyleChangeEventArgs(_cls, eStyleProperty.Theme, value, _positionID, _address));
+                this._ChangedEvent(this, new StyleChangeEventArgs(this._cls, eStyleProperty.Theme, value, this._positionID, this._address));
             }
         }
         /// <summary>
@@ -144,12 +144,12 @@ namespace OfficeOpenXml.Style
         {
             get
             {
-                if (_parent.Index < 0)
+                if (this._parent.Index < 0)
                 {
                     return 0;
                 }
 
-                return GetSource().Tint;
+                return this.GetSource().Tint;
             }
             set
             {
@@ -157,7 +157,8 @@ namespace OfficeOpenXml.Style
                 {
                     throw (new ArgumentOutOfRangeException("Value must be between -1 and 1"));
                 }
-                _ChangedEvent(this, new StyleChangeEventArgs(_cls, eStyleProperty.Tint, value, _positionID, _address));
+
+                this._ChangedEvent(this, new StyleChangeEventArgs(this._cls, eStyleProperty.Tint, value, this._positionID, this._address));
             }
         }
         /// <summary>
@@ -167,16 +168,16 @@ namespace OfficeOpenXml.Style
         {
             get
             {
-                if (_parent.Index < 0)
+                if (this._parent.Index < 0)
                 {
                     return null;
                 }
 
-                return GetSource().Rgb;
+                return this.GetSource().Rgb;
             }
             internal set
             {
-                _ChangedEvent(this, new StyleChangeEventArgs(_cls, eStyleProperty.Color, value, _positionID, _address));
+                this._ChangedEvent(this, new StyleChangeEventArgs(this._cls, eStyleProperty.Color, value, this._positionID, this._address));
             }
         }
         /// <summary>
@@ -187,12 +188,12 @@ namespace OfficeOpenXml.Style
         {
             get
             {
-                if (_parent.Index < 0)
+                if (this._parent.Index < 0)
                 {
                     return -1;
                 }
 
-                return GetSource().Indexed;
+                return this.GetSource().Indexed;
             }
             set
             {
@@ -200,7 +201,8 @@ namespace OfficeOpenXml.Style
                 {
                     throw (new ArgumentOutOfRangeException("Indexed", "Cannot be negative"));
                 }
-                _ChangedEvent(this, new StyleChangeEventArgs(_cls, eStyleProperty.IndexedColor, value, _positionID, _address));
+
+                this._ChangedEvent(this, new StyleChangeEventArgs(this._cls, eStyleProperty.IndexedColor, value, this._positionID, this._address));
             }
         }
         /// <summary>
@@ -210,16 +212,16 @@ namespace OfficeOpenXml.Style
         {
             get
             {
-                if (_parent.Index < 0)
+                if (this._parent.Index < 0)
                 {
                     return false;
                 }
 
-                return GetSource().Auto;
+                return this.GetSource().Auto;
             }
             private set
             {
-                _ChangedEvent(this, new StyleChangeEventArgs(_cls, eStyleProperty.AutoColor, value, _positionID, _address));
+                this._ChangedEvent(this, new StyleChangeEventArgs(this._cls, eStyleProperty.AutoColor, value, this._positionID, this._address));
             }
         }
 
@@ -229,7 +231,7 @@ namespace OfficeOpenXml.Style
         /// <param name="color">The color</param>
         public void SetColor(Color color)
         {
-            Rgb = color.ToArgb().ToString("X");       
+            this.Rgb = color.ToArgb().ToString("X");       
         }
         /// <summary>
         /// Set the color of the object
@@ -237,7 +239,7 @@ namespace OfficeOpenXml.Style
         /// <param name="color">The color</param>
         public void SetColor(eThemeSchemeColor color)
         {
-            Theme=color;
+            this.Theme=color;
         }
         /// <summary>
         /// Set the color of the object
@@ -245,14 +247,14 @@ namespace OfficeOpenXml.Style
         /// <param name="color">The color</param>
         public void SetColor(ExcelIndexedColor color)
         {
-            Indexed = (int)color;
+            this.Indexed = (int)color;
         }
         /// <summary>
         /// Set the color to automatic
         /// </summary>
         public void SetAuto()
         {
-            Auto = true;
+            this.Auto = true;
         }
         /// <summary>
         /// Set the color of the object
@@ -268,48 +270,49 @@ namespace OfficeOpenXml.Style
             {
                 throw (new ArgumentException("Argument range must be from 0 to 255"));
             }
-            Rgb = alpha.ToString("X2") + red.ToString("X2") + green.ToString("X2") + blue.ToString("X2");
+
+            this.Rgb = alpha.ToString("X2") + red.ToString("X2") + green.ToString("X2") + blue.ToString("X2");
         }
         internal override string Id
         {
             get 
             {
-                return Theme.ToString() + Tint + Rgb + Indexed;
+                return this.Theme.ToString() + this.Tint + this.Rgb + this.Indexed;
             }
         }
 
         private ExcelColorXml GetSource()
         {
-            Index = _parent.Index < 0 ? 0 : _parent.Index;
-            switch (_cls)
+            this.Index = this._parent.Index < 0 ? 0 : this._parent.Index;
+            switch (this._cls)
             {
                 case eStyleClass.FillBackgroundColor:
-                    return _styles.Fills[Index].BackgroundColor;
+                    return this._styles.Fills[this.Index].BackgroundColor;
                 case eStyleClass.FillPatternColor:
-                    return _styles.Fills[Index].PatternColor;
+                    return this._styles.Fills[this.Index].PatternColor;
                 case eStyleClass.Font:
-                    return _styles.Fonts[Index].Color;
+                    return this._styles.Fonts[this.Index].Color;
                 case eStyleClass.BorderLeft:
-                    return _styles.Borders[Index].Left.Color;
+                    return this._styles.Borders[this.Index].Left.Color;
                 case eStyleClass.BorderTop:
-                    return _styles.Borders[Index].Top.Color;
+                    return this._styles.Borders[this.Index].Top.Color;
                 case eStyleClass.BorderRight:
-                    return _styles.Borders[Index].Right.Color;
+                    return this._styles.Borders[this.Index].Right.Color;
                 case eStyleClass.BorderBottom:
-                    return _styles.Borders[Index].Bottom.Color;
+                    return this._styles.Borders[this.Index].Bottom.Color;
                 case eStyleClass.BorderDiagonal:
-                    return _styles.Borders[Index].Diagonal.Color;
+                    return this._styles.Borders[this.Index].Diagonal.Color;
                 case eStyleClass.FillGradientColor1:
-                    return ((ExcelGradientFillXml)(_styles.Fills[Index])).GradientColor1;
+                    return ((ExcelGradientFillXml)(this._styles.Fills[this.Index])).GradientColor1;
                 case eStyleClass.FillGradientColor2:
-                    return ((ExcelGradientFillXml)(_styles.Fills[Index])).GradientColor2;
+                    return ((ExcelGradientFillXml)(this._styles.Fills[this.Index])).GradientColor2;
                 default:
                     throw(new Exception("Invalid style-class for Color"));
             }
         }
         internal override void SetIndex(int index)
         {
-            _parent.Index = index;
+            this._parent.Index = index;
         }
         /// <summary>
         /// Return the RGB hex string for the Indexed or Tint property
@@ -317,7 +320,7 @@ namespace OfficeOpenXml.Style
         /// <returns>The RGB color starting with a #FF (alpha)</returns>
         public string LookupColor()
         {
-            return LookupColor(this);
+            return this.LookupColor(this);
         }
         /// <summary>
         /// Return the RGB value as a string for the color object that uses the Indexed or Tint property
@@ -336,11 +339,11 @@ namespace OfficeOpenXml.Style
             }
             else if(theColor.Theme.HasValue)
             {
-                return GetThemeColor(theColor.Theme.Value, Convert.ToDouble(theColor.Tint));
+                return this.GetThemeColor(theColor.Theme.Value, Convert.ToDouble(theColor.Tint));
             }
             else if (theColor.Auto)
             {
-                return GetThemeColor(eThemeSchemeColor.Background1, Convert.ToDouble(theColor.Tint));
+                return this.GetThemeColor(eThemeSchemeColor.Background1, Convert.ToDouble(theColor.Tint));
             }
             else
             {
@@ -351,7 +354,7 @@ namespace OfficeOpenXml.Style
 
         private string GetThemeColor(eThemeSchemeColor theme, double tint)
         {
-            ExcelDrawingThemeColorManager? themeColor = _styles._wb.ThemeManager.GetOrCreateTheme().ColorScheme.GetColorByEnum(theme);
+            ExcelDrawingThemeColorManager? themeColor = this._styles._wb.ThemeManager.GetOrCreateTheme().ColorScheme.GetColorByEnum(theme);
             Color color = Utils.ColorConverter.GetThemeColor(themeColor);
             if (tint != 0)
             {

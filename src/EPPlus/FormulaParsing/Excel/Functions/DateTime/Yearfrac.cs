@@ -31,8 +31,8 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions.DateTime
         {
             FunctionArgument[]? functionArguments = arguments as FunctionArgument[] ?? arguments.ToArray();
             ValidateArguments(functionArguments, 2);
-            double date1Num = ArgToDecimal(functionArguments, 0);
-            double date2Num = ArgToDecimal(functionArguments, 1);
+            double date1Num = this.ArgToDecimal(functionArguments, 0);
+            double date2Num = this.ArgToDecimal(functionArguments, 1);
             if (date1Num > date2Num) //Switch to make date1 the lowest date
             {
                 double t = date1Num;
@@ -48,7 +48,7 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions.DateTime
             int basis = 0;
             if (functionArguments.Count() > 2)
             {
-                basis = ArgToInt(functionArguments, 2);
+                basis = this.ArgToInt(functionArguments, 2);
                 if (basis < 0 || basis > 4)
                 {
                     return this.CreateResult(eErrorType.Num);
@@ -69,18 +69,18 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions.DateTime
                             d360Result++;
                         }
                     }
-                    return CreateResult(d360Result / 360d, DataType.Decimal);
+                    return this.CreateResult(d360Result / 360d, DataType.Decimal);
                 case 1:
-                    return CreateResult(System.Math.Abs((date2 - date1).TotalDays / CalculateAcutalYear(date1, date2)), DataType.Decimal);
+                    return this.CreateResult(System.Math.Abs((date2 - date1).TotalDays / CalculateAcutalYear(date1, date2)), DataType.Decimal);
                 case 2:
-                    return CreateResult(System.Math.Abs((date2 - date1).TotalDays / 360d), DataType.Decimal);
+                    return this.CreateResult(System.Math.Abs((date2 - date1).TotalDays / 360d), DataType.Decimal);
                 case 3:
-                    return CreateResult(System.Math.Abs((date2 - date1).TotalDays / 365d), DataType.Decimal);
+                    return this.CreateResult(System.Math.Abs((date2 - date1).TotalDays / 365d), DataType.Decimal);
                 case 4:
                     List<FunctionArgument>? args = functionArguments.ToList();
                     args.Add(new FunctionArgument(true));
                     double? result = System.Math.Abs(func.Execute(args, context).ResultNumeric / 360d);
-                    return CreateResult(result.Value, DataType.Decimal);
+                    return this.CreateResult(result.Value, DataType.Decimal);
                 default:
                     return null;
             }

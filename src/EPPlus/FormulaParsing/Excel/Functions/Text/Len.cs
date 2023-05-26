@@ -43,15 +43,15 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Text
                 ICellInfo? firstCell = range.FirstOrDefault();
                 if(firstCell != null && firstCell.Value != null)
                 {
-                    return CreateResult(Convert.ToDouble(firstCell.Value.ToString().Length), DataType.Integer);
+                    return this.CreateResult(Convert.ToDouble(firstCell.Value.ToString().Length), DataType.Integer);
                 }
                 else
                 {
-                    return CreateResult(0d, DataType.Integer);
+                    return this.CreateResult(0d, DataType.Integer);
                 }
             }
             int length = arguments.First().ValueFirst.ToString().Length;
-            return CreateResult(Convert.ToDouble(length), DataType.Integer);
+            return this.CreateResult(Convert.ToDouble(length), DataType.Integer);
         }
     }
 }

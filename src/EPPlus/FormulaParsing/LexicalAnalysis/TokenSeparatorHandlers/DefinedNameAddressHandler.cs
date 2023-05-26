@@ -24,7 +24,7 @@ namespace OfficeOpenXml.FormulaParsing.LexicalAnalysis.TokenSeparatorHandlers
 
         public DefinedNameAddressHandler(INameValueProvider nameValueProvider)
         {
-            _nameValueProvider = nameValueProvider;
+            this._nameValueProvider = nameValueProvider;
         }
         public override bool Handle(char c, Token tokenSeparator, TokenizerContext context, ITokenIndexProvider tokenIndexProvider)
         {
@@ -45,7 +45,7 @@ namespace OfficeOpenXml.FormulaParsing.LexicalAnalysis.TokenSeparatorHandlers
 
                         string? part1 = parts[0];
                         string? name = parts[1];
-                        object? nameValue = _nameValueProvider.GetNamedValue(name, context.Worksheet);
+                        object? nameValue = this._nameValueProvider.GetNamedValue(name, context.Worksheet);
                         if (nameValue != null)
                         {
                             if (nameValue is IRangeInfo rangeInfo)

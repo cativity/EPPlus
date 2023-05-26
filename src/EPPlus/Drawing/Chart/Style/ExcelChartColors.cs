@@ -32,16 +32,16 @@ namespace OfficeOpenXml.Drawing.Chart.Style
             {
                 if(c.LocalName== "variation")
                 {
-                    variations.Add(new ExcelColorTransformCollection(NameSpaceManager, c));
+                    variations.Add(new ExcelColorTransformCollection(this.NameSpaceManager, c));
                 }
                 else
                 {
-                    colors.Add(new ExcelDrawingColorManager(NameSpaceManager, c, "", new string[0]));
+                    colors.Add(new ExcelDrawingColorManager(this.NameSpaceManager, c, "", new string[0]));
                 }
             }
 
-            Colors = new ReadOnlyCollection<ExcelDrawingColorManager>(colors);
-            Variations = new ReadOnlyCollection<ExcelColorTransformCollection>(variations);
+            this.Colors = new ReadOnlyCollection<ExcelDrawingColorManager>(colors);
+            this.Variations = new ReadOnlyCollection<ExcelColorTransformCollection>(variations);
         }
         /// <summary>
         /// The method to use to calculate the colors
@@ -51,11 +51,11 @@ namespace OfficeOpenXml.Drawing.Chart.Style
         {
             get
             {
-                return GetXmlNodeString("@meth").ToEnum(eChartColorStyleMethod.Cycle);
+                return this.GetXmlNodeString("@meth").ToEnum(eChartColorStyleMethod.Cycle);
             }
             set
             {
-                SetXmlNodeString("@meth", value.ToEnumString());
+                this.SetXmlNodeString("@meth", value.ToEnumString());
             }
         }
         /// <summary>
@@ -75,26 +75,26 @@ namespace OfficeOpenXml.Drawing.Chart.Style
 
         internal void Transform(ExcelDrawingColorManager color, int colorIndex, int numberOfItems)
         {
-            ExcelDrawingColorManager? newColor = GetColor(colorIndex, numberOfItems);
-            ExcelColorTransformCollection? variation = GetVariation(colorIndex, numberOfItems);
+            ExcelDrawingColorManager? newColor = this.GetColor(colorIndex, numberOfItems);
+            ExcelColorTransformCollection? variation = this.GetVariation(colorIndex, numberOfItems);
             color.ApplyNewColor(newColor, variation);
         }
         private ExcelDrawingColorManager GetColor(int colorIndex, int numberOfItems)
         {
-            switch(Method)
+            switch(this.Method)
             {
                 case eChartColorStyleMethod.Cycle:
-                    int ix = colorIndex % Colors.Count;
-                    return Colors[ix];
+                    int ix = colorIndex % this.Colors.Count;
+                    return this.Colors[ix];
                 default:
                     //TODO add support for other types.
-                    ix = colorIndex % Colors.Count;
-                    return Colors[ix];
+                    ix = colorIndex % this.Colors.Count;
+                    return this.Colors[ix];
             }
         }
         private ExcelColorTransformCollection GetVariation(int colorIndex, int numberOfItems)
         {
-            switch (Method)
+            switch (this.Method)
             {
                 case eChartColorStyleMethod.AcrossLinear:
                 case eChartColorStyleMethod.WithinLinear:
@@ -104,16 +104,16 @@ namespace OfficeOpenXml.Drawing.Chart.Style
                     return GetLinearVariation(colorIndex, numberOfItems, true);
                 //eChartColorStyleMethod.Cycle
                 default:
-                    int div = (colorIndex - (colorIndex % Colors.Count));
+                    int div = (colorIndex - (colorIndex % this.Colors.Count));
                     if (div == 0)
                     {
-                        return Variations[0];
+                        return this.Variations[0];
                     }
                     else 
                     {
-                        int ix = div / Colors.Count;
-                        ix %= Variations.Count;
-                        return Variations[ix];
+                        int ix = div / this.Colors.Count;
+                        ix %= this.Variations.Count;
+                        return this.Variations[ix];
                     }
             }
         }

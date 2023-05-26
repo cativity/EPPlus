@@ -56,17 +56,17 @@ namespace OfficeOpenXml.Core.CellStore
         /// </summary>
         public CellStore()
         {
-            _columnIndex = new ColumnIndex<T>[CellStoreSettings.ColSizeMin];
+            this._columnIndex = new ColumnIndex<T>[CellStoreSettings.ColSizeMin];
         }
         ~CellStore()
         {
-            _columnIndex = null;
+            this._columnIndex = null;
         }
         internal bool HasValues
         {
             get
             {
-                foreach (ColumnIndex<T>? col in _columnIndex)
+                foreach (ColumnIndex<T>? col in this._columnIndex)
                 {
                     if (col == null)
                     {
@@ -83,7 +83,7 @@ namespace OfficeOpenXml.Core.CellStore
         }
         internal int GetClosestColumnPosition(int column)
         {
-            int pos = GetColumnPosition(column);
+            int pos = this.GetColumnPosition(column);
             if (pos < 0)
             {
                 return ~pos;
@@ -92,14 +92,14 @@ namespace OfficeOpenXml.Core.CellStore
         }
         internal int GetColumnPosition(int column)
         {
-            return ArrayUtil.OptimizedBinarySearch(_columnIndex, column, ColumnCount);
+            return ArrayUtil.OptimizedBinarySearch(this._columnIndex, column, this.ColumnCount);
         }
         internal ColumnIndex<T> GetColumnIndex(int column)
         {
-            int pos = ArrayUtil.OptimizedBinarySearch(_columnIndex, column, ColumnCount);
-            if (pos >= 0 && pos <= ColumnCount)
+            int pos = ArrayUtil.OptimizedBinarySearch(this._columnIndex, column, this.ColumnCount);
+            if (pos >= 0 && pos <= this.ColumnCount)
             {
-                return _columnIndex[pos];
+                return this._columnIndex[pos];
             }
             return null;
         }
@@ -107,9 +107,9 @@ namespace OfficeOpenXml.Core.CellStore
         {
             int row, col;
             CellStore<T>? ret = new CellStore<T>();
-            for (int c = 0; c < ColumnCount; c++)
+            for (int c = 0; c < this.ColumnCount; c++)
             {
-                ColumnIndex<T>? colIx = _columnIndex[c];
+                ColumnIndex<T>? colIx = this._columnIndex[c];
                 col = colIx.Index;
                 for (int p = 0; p < colIx.PageCount; p++)
                 {
@@ -127,11 +127,11 @@ namespace OfficeOpenXml.Core.CellStore
             get
             {
                 int count = 0;
-                for (int c = 0; c < ColumnCount; c++)
+                for (int c = 0; c < this.ColumnCount; c++)
                 {
-                    for (int p = 0; p < _columnIndex[c].PageCount; p++)
+                    for (int p = 0; p < this._columnIndex[c].PageCount; p++)
                     {
-                        count += _columnIndex[c]._pages[p].RowCount;
+                        count += this._columnIndex[c]._pages[p].RowCount;
                     }
                 }
                 return count;
@@ -146,35 +146,35 @@ namespace OfficeOpenXml.Core.CellStore
 
         internal bool GetDimension(out int fromRow, out int fromCol, out int toRow, out int toCol)
         {
-            if (ColumnCount == 0)
+            if (this.ColumnCount == 0)
             {
                 fromRow = fromCol = toRow = toCol = 0;
                 return false;
             }
             else
             {
-                fromCol = _columnIndex[0].Index;
+                fromCol = this._columnIndex[0].Index;
                 int fromIndex = 0;
-                if (fromCol <= 0 && ColumnCount > 1)
+                if (fromCol <= 0 && this.ColumnCount > 1)
                 {
-                    fromCol = _columnIndex[1].Index;
+                    fromCol = this._columnIndex[1].Index;
                     fromIndex = 1;
                 }
-                else if (ColumnCount == 1 && fromCol <= 0)
+                else if (this.ColumnCount == 1 && fromCol <= 0)
                 {
                     fromRow = fromCol = toRow = toCol = 0;
                     return false;
                 }
-                int col = ColumnCount - 1;
+                int col = this.ColumnCount - 1;
                 while (col > 0)
                 {
-                    if (_columnIndex[col].PageCount == 0 || _columnIndex[col]._pages[0].RowCount > 1 || _columnIndex[col]._pages[0].Rows[0].Index > 0)
+                    if (this._columnIndex[col].PageCount == 0 || this._columnIndex[col]._pages[0].RowCount > 1 || this._columnIndex[col]._pages[0].Rows[0].Index > 0)
                     {
                         break;
                     }
                     col--;
                 }
-                toCol = _columnIndex[col].Index;
+                toCol = this._columnIndex[col].Index;
                 if (toCol == 0)
                 {
                     fromRow = fromCol = toRow = toCol = 0;
@@ -182,40 +182,39 @@ namespace OfficeOpenXml.Core.CellStore
                 }
                 fromRow = toRow = 0;
 
-                for (int c = fromIndex; c < ColumnCount; c++)
+                for (int c = fromIndex; c < this.ColumnCount; c++)
                 {
                     int first, last;
-                    if (_columnIndex[c].PageCount == 0)
+                    if (this._columnIndex[c].PageCount == 0)
                     {
                         continue;
                     }
 
-                    if (_columnIndex[c]._pages[0].RowCount > 0 && _columnIndex[c]._pages[0].Rows[0].Index >= 0 &&
-                        _columnIndex[c]._pages[0].IndexOffset + _columnIndex[c]._pages[0].Rows[0].Index > 0)
+                    if (this._columnIndex[c]._pages[0].RowCount > 0 && this._columnIndex[c]._pages[0].Rows[0].Index >= 0 && this._columnIndex[c]._pages[0].IndexOffset + this._columnIndex[c]._pages[0].Rows[0].Index > 0)
                     {
-                        first = _columnIndex[c]._pages[0].IndexOffset + _columnIndex[c]._pages[0].Rows[0].Index;
+                        first = this._columnIndex[c]._pages[0].IndexOffset + this._columnIndex[c]._pages[0].Rows[0].Index;
                     }
                     else
                     {
-                        if (_columnIndex[c]._pages[0].RowCount > 1)
+                        if (this._columnIndex[c]._pages[0].RowCount > 1)
                         {
-                            first = _columnIndex[c]._pages[0].IndexOffset + _columnIndex[c]._pages[0].Rows[1].Index;
+                            first = this._columnIndex[c]._pages[0].IndexOffset + this._columnIndex[c]._pages[0].Rows[1].Index;
                         }
-                        else if (_columnIndex[c].PageCount > 1)
+                        else if (this._columnIndex[c].PageCount > 1)
                         {
-                            first = _columnIndex[c]._pages[0].IndexOffset + _columnIndex[c]._pages[1].Rows[0].Index;
+                            first = this._columnIndex[c]._pages[0].IndexOffset + this._columnIndex[c]._pages[1].Rows[0].Index;
                         }
                         else
                         {
                             first = 0;
                         }
                     }
-                    int lp = _columnIndex[c].PageCount - 1;
-                    while (_columnIndex[c]._pages[lp].RowCount == 0 && lp != 0)
+                    int lp = this._columnIndex[c].PageCount - 1;
+                    while (this._columnIndex[c]._pages[lp].RowCount == 0 && lp != 0)
                     {
                         lp--;
                     }
-                    PageIndex? p = _columnIndex[c]._pages[lp];
+                    PageIndex? p = this._columnIndex[c]._pages[lp];
                     if (p.RowCount > 0)
                     {
                         last = p.IndexOffset + p.Rows[p.RowCount - 1].Index;
@@ -246,7 +245,7 @@ namespace OfficeOpenXml.Core.CellStore
         }
         internal int FindNext(int Column)
         {
-            int c = GetColumnPosition(Column);
+            int c = this.GetColumnPosition(Column);
             if (c < 0)
             {
                 return ~c;
@@ -255,7 +254,7 @@ namespace OfficeOpenXml.Core.CellStore
         }
         internal T GetValue(int Row, int Column)
         {
-            ColumnIndex<T>? c = GetColumnIndex(Column);
+            ColumnIndex<T>? c = this.GetColumnIndex(Column);
             if (c != null)
             {
                 int i = c.GetPointer(Row);
@@ -268,7 +267,7 @@ namespace OfficeOpenXml.Core.CellStore
         }
         internal bool Exists(int Row, int Column)
         {
-            ColumnIndex<T>? c = GetColumnIndex(Column);
+            ColumnIndex<T>? c = this.GetColumnIndex(Column);
             if (c == null)
             {
                 return false;
@@ -279,7 +278,7 @@ namespace OfficeOpenXml.Core.CellStore
 
         internal bool Exists(int Row, int Column, ref T value)
         {
-            ColumnIndex<T>? c = GetColumnIndex(Column);
+            ColumnIndex<T>? c = this.GetColumnIndex(Column);
             if (c == null)
             {
                 return false;
@@ -298,10 +297,10 @@ namespace OfficeOpenXml.Core.CellStore
         }
         internal void SetValue(int row, int column, T value)
         {
-            lock (_columnIndex)
+            lock (this._columnIndex)
             {
-                int colPos = GetColumnPosition(column);
-                colPos = SetValueColumn(row, column, value, colPos);
+                int colPos = this.GetColumnPosition(column);
+                colPos = this.SetValueColumn(row, column, value, colPos);
             }
         }
 
@@ -310,14 +309,14 @@ namespace OfficeOpenXml.Core.CellStore
             short page = (short)(row >> CellStoreSettings._pageBits);
             if (colPos >= 0)    //Column Found
             {
-                ColumnIndex<T>? col = _columnIndex[colPos];
+                ColumnIndex<T>? col = this._columnIndex[colPos];
                 int pagePos = col.GetPagePosition(row);
                 if (pagePos < 0)
                 {
                     pagePos = ~pagePos;
                     if (pagePos - 1 < 0 || col._pages[pagePos - 1].IndexOffset + CellStoreSettings._pageSize - 1 < row)
                     {
-                        CellStore<T>.AddPage(col, pagePos, page);
+                        AddPage(col, pagePos, page);
                     }
                     else
                     {
@@ -326,7 +325,7 @@ namespace OfficeOpenXml.Core.CellStore
                 }
                 else if (pagePos >= col.PageCount)
                 {
-                    CellStore<T>.AddPage(col, pagePos, page);
+                    AddPage(col, pagePos, page);
                 }
                 PageIndex? pageItem = col._pages[pagePos];
 
@@ -345,9 +344,9 @@ namespace OfficeOpenXml.Core.CellStore
             else //Column does not exist
             {
                 colPos = ~colPos;
-                AddColumn(colPos, column);
-                ColumnIndex<T>? col = _columnIndex[colPos];
-                CellStore<T>.AddPage(col, 0, page);
+                this.AddColumn(colPos, column);
+                ColumnIndex<T>? col = this._columnIndex[colPos];
+                AddPage(col, 0, page);
                 short ix = (short)(row - (page << CellStoreSettings._pageBits));
                 AddCell(col, 0, 0, ix, value);
             }
@@ -357,9 +356,9 @@ namespace OfficeOpenXml.Core.CellStore
 
         internal void Insert(int fromRow, int fromCol, int rows, int columns)
         {
-            lock (_columnIndex)
+            lock (this._columnIndex)
             {
-                if (ColumnCount == 0)
+                if (this.ColumnCount == 0)
                 {
                     return;
                 }
@@ -372,23 +371,23 @@ namespace OfficeOpenXml.Core.CellStore
                     }
 
                     //Entire column
-                    int col = GetColumnPosition(fromCol);
+                    int col = this.GetColumnPosition(fromCol);
                     if (col < 0)
                     {
                         col = ~col;
                     }
-                    for (int c = col; c < ColumnCount; c++)
+                    for (int c = col; c < this.ColumnCount; c++)
                     {
-                        _columnIndex[c].Index += (short)columns;
+                        this._columnIndex[c].Index += (short)columns;
                     }
                 }
                 else
                 {
-                    GetColumnPositionFromColumn(fromCol, columns, out int fromColPos, out int toColPos);
+                    this.GetColumnPositionFromColumn(fromCol, columns, out int fromColPos, out int toColPos);
 
                     for (int c = fromColPos; c <= toColPos; c++)
                     {
-                        ColumnIndex<T>? column = _columnIndex[c];
+                        ColumnIndex<T>? column = this._columnIndex[c];
                         int pagePos = column.GetPagePosition(fromRow);
                         if (pagePos >= 0)
                         {
@@ -440,20 +439,20 @@ namespace OfficeOpenXml.Core.CellStore
             if (columns == 0)
             {
                 fromColPos = 0;
-                toColPos = ColumnCount - 1;
+                toColPos = this.ColumnCount - 1;
             }
             else
             {
                 int endCol = fromCol + columns - 1;
-                fromColPos = GetClosestColumnPosition(fromCol);
-                toColPos = GetClosestColumnPosition(endCol);
-                toColPos = Math.Min(toColPos, ColumnCount - 1);
-                if (fromColPos < ColumnCount && _columnIndex[fromColPos].Index < fromCol)
+                fromColPos = this.GetClosestColumnPosition(fromCol);
+                toColPos = this.GetClosestColumnPosition(endCol);
+                toColPos = Math.Min(toColPos, this.ColumnCount - 1);
+                if (fromColPos < this.ColumnCount && this._columnIndex[fromColPos].Index < fromCol)
                 {
                     fromColPos++;
                 }
 
-                if (toColPos >= 0 && toColPos < ColumnCount && _columnIndex[toColPos].Index > endCol)
+                if (toColPos >= 0 && toColPos < this.ColumnCount && this._columnIndex[toColPos].Index > endCol)
                 {
                     toColPos--;
                 }
@@ -467,15 +466,15 @@ namespace OfficeOpenXml.Core.CellStore
 
         internal void Clear(int fromRow, int fromCol, int rows, int columns)
         {
-            Delete(fromRow, fromCol, rows, columns, false);
+            this.Delete(fromRow, fromCol, rows, columns, false);
         }
         internal void Delete(int fromRow, int fromCol, int rows, int columns)
         {
-            Delete(fromRow, fromCol, rows, columns, true);
+            this.Delete(fromRow, fromCol, rows, columns, true);
         }
         internal void Delete(int fromRow, int fromCol, int rows, int columns, bool shift)
         {
-            lock (_columnIndex)
+            lock (this._columnIndex)
             {
                 if (rows == 0)
                 {
@@ -484,15 +483,15 @@ namespace OfficeOpenXml.Core.CellStore
                         return;
                     }
 
-                    DeleteColumns(fromCol, columns, shift);
+                    this.DeleteColumns(fromCol, columns, shift);
                 }
                 else
                 {
-                    GetColumnPositionFromColumn(fromCol, columns, out int fromColPos, out int toColPos);
+                    this.GetColumnPositionFromColumn(fromCol, columns, out int fromColPos, out int toColPos);
 
                     for (int c = fromColPos; c <= toColPos; c++)
                     {
-                        ColumnIndex<T>? column = _columnIndex[c];
+                        ColumnIndex<T>? column = this._columnIndex[c];
                         if (column.Index >= fromCol)
                         {
                             int toCol = fromCol + columns - 1;
@@ -556,46 +555,48 @@ namespace OfficeOpenXml.Core.CellStore
 
         internal void DeleteShiftLeft(ExcelAddressBase fromAddress)
         {
-            if (ColumnCount == 0)
+            if (this.ColumnCount == 0)
             {
                 return;
             }
 
-            lock (_columnIndex)
+            lock (this._columnIndex)
             {
-                short maxCol = _columnIndex[ColumnCount - 1].Index;
+                short maxCol = this._columnIndex[this.ColumnCount - 1].Index;
                 int cols = fromAddress.Columns;
                 for (int srcCol = fromAddress._toCol + 1; srcCol <= maxCol; srcCol++)
                 {
                     int destCol = srcCol - cols;
-                    MoveRangeColumnWise(srcCol, fromAddress._fromRow, fromAddress._toRow, destCol, fromAddress._fromRow);
+                    this.MoveRangeColumnWise(srcCol, fromAddress._fromRow, fromAddress._toRow, destCol, fromAddress._fromRow);
                 }
-                Delete(fromAddress._fromRow, maxCol - cols + 1, fromAddress.Rows, cols, false);
+
+                this.Delete(fromAddress._fromRow, maxCol - cols + 1, fromAddress.Rows, cols, false);
             }
         }
         internal void InsertShiftRight(ExcelAddressBase fromAddress)
         {
-            if (ColumnCount == 0)
+            if (this.ColumnCount == 0)
             {
                 return;
             }
 
-            lock (_columnIndex)
+            lock (this._columnIndex)
             {
-                short maxCol = _columnIndex[ColumnCount - 1].Index;
+                short maxCol = this._columnIndex[this.ColumnCount - 1].Index;
                 for (int sourceCol = maxCol; sourceCol >= fromAddress._fromCol; sourceCol--)
                 {
                     int destCol = fromAddress._toCol + 1 + (sourceCol - fromAddress._fromCol);
-                    MoveRangeColumnWise(sourceCol, fromAddress._fromRow, fromAddress._toRow, destCol, fromAddress._fromRow);
+                    this.MoveRangeColumnWise(sourceCol, fromAddress._fromRow, fromAddress._toRow, destCol, fromAddress._fromRow);
                 }
-                Delete(fromAddress._fromRow, fromAddress._fromCol, fromAddress.Rows, fromAddress.Columns, false);
+
+                this.Delete(fromAddress._fromRow, fromAddress._fromCol, fromAddress.Rows, fromAddress.Columns, false);
             }
         }
 
         private void MoveRangeColumnWise(int sourceCol, int sourceStartRow, int sourceEndRow, int destCol, int destStartRow)
         {
-            int sourceColPos = GetColumnPosition(sourceCol);
-            int destColPos = GetColumnPosition(destCol);
+            int sourceColPos = this.GetColumnPosition(sourceCol);
+            int destColPos = this.GetColumnPosition(destCol);
 
             int rows = sourceEndRow - sourceStartRow + 1;
             if (sourceColPos < 0 && destColPos < 0)             //Neither source nor destiontion exists, so we're done
@@ -604,11 +605,11 @@ namespace OfficeOpenXml.Core.CellStore
             }
             else if (sourceColPos < 0 && destCol >= 0)          //Source column does not exist, delete range in destintation column
             {
-                Delete(destStartRow, destCol, rows, 1, false);
+                this.Delete(destStartRow, destCol, rows, 1, false);
                 return;
             }
 
-            ColumnIndex<T>? sourceColIx = _columnIndex[sourceColPos];
+            ColumnIndex<T>? sourceColIx = this._columnIndex[sourceColPos];
             int sourcePagePos = sourceColIx.GetPagePosition(sourceStartRow);
             if (sourcePagePos < 0)
             {
@@ -616,7 +617,7 @@ namespace OfficeOpenXml.Core.CellStore
             }
             if (sourcePagePos > sourceColIx._pages.Length - 1 || sourceColIx.PageCount == 0)
             {
-                Delete(destStartRow, destCol, rows, 1, false);
+                this.Delete(destStartRow, destCol, rows, 1, false);
                 return;
             }
 
@@ -628,7 +629,7 @@ namespace OfficeOpenXml.Core.CellStore
                 sourceRowIx = ~sourceRowIx;
                 if (sourceRowIx >= sourcePage.RowCount || sourcePage.GetRow(sourceRowIx) < sourceStartRow)
                 {
-                    Delete(destStartRow, destCol, rows, 1, false);
+                    this.Delete(destStartRow, destCol, rows, 1, false);
                     return;
                 }
             }
@@ -638,12 +639,12 @@ namespace OfficeOpenXml.Core.CellStore
             if (destColPos < 0 && sourceRowIx >= 0 && sourcePage.GetRow(sourceRowIx) <= sourceEndRow)
             {
                 destColPos = ~destColPos;
-                AddColumn(destColPos, destCol);
-                destColIx = _columnIndex[destColPos];
+                this.AddColumn(destColPos, destCol);
+                destColIx = this._columnIndex[destColPos];
             }
             else if (destColPos >= 0)
             {
-                destColIx = _columnIndex[destColPos];
+                destColIx = this._columnIndex[destColPos];
                 //No rows to move, just clear the destination
                 DeleteColumn(destColIx, destStartRow, rows, false);
             }
@@ -669,7 +670,7 @@ namespace OfficeOpenXml.Core.CellStore
                 {
                     destPagePos = ~destPagePos;
                     short page = (short)(destRow >> CellStoreSettings._pageBits);
-                    CellStore<T>.AddPage(destColIx, destPagePos, page);
+                    AddPage(destColIx, destPagePos, page);
                 }
                 PageIndex? destPage = destColIx._pages[destPagePos];
                 destColIx._values.Add(sourceColIx._values[sourcePage.Rows[sourceRowIx].IndexPointer]);
@@ -761,7 +762,7 @@ namespace OfficeOpenXml.Core.CellStore
             {
                 for (int p = pagePos; p < column.PageCount; p++)
                 {
-                    p = CellStore<T>.UpdatePageOffsetSinglePage(column, p, rows);
+                    p = UpdatePageOffsetSinglePage(column, p, rows);
                 }
             }
         }
@@ -782,7 +783,7 @@ namespace OfficeOpenXml.Core.CellStore
                 //Verify if merge should be done.
                 if (pagePos > 0 && page.Index == column._pages[pagePos - 1].Index)
                 {
-                    CellStore<T>.MergePage(column, pagePos - 1);
+                    MergePage(column, pagePos - 1);
                     return pagePos - 1;
                 }
             }
@@ -921,39 +922,40 @@ namespace OfficeOpenXml.Core.CellStore
 
         private void DeleteColumns(int fromCol, int columns, bool shift)
         {
-            int fPos = GetColumnPosition(fromCol);
+            int fPos = this.GetColumnPosition(fromCol);
             if (fPos < 0)
             {
                 fPos = ~fPos;
             }
             int tPos = fPos;
-            for (int c = fPos; c <= ColumnCount; c++)
+            for (int c = fPos; c <= this.ColumnCount; c++)
             {
                 tPos = c;
-                if (tPos == ColumnCount || _columnIndex[c].Index >= fromCol + columns)
+                if (tPos == this.ColumnCount || this._columnIndex[c].Index >= fromCol + columns)
                 {
                     break;
                 }
             }
 
-            if (ColumnCount <= fPos)
+            if (this.ColumnCount <= fPos)
             {
                 return;
             }
 
-            if (_columnIndex[fPos].Index >= fromCol && _columnIndex[fPos].Index <= fromCol + columns)
+            if (this._columnIndex[fPos].Index >= fromCol && this._columnIndex[fPos].Index <= fromCol + columns)
             {
-                if (tPos < ColumnCount)
+                if (tPos < this.ColumnCount)
                 {
-                    Array.Copy(_columnIndex, tPos, _columnIndex, fPos, ColumnCount - tPos);
+                    Array.Copy(this._columnIndex, tPos, this._columnIndex, fPos, this.ColumnCount - tPos);
                 }
-                ColumnCount -= (tPos - fPos);
+
+                this.ColumnCount -= (tPos - fPos);
             }
             if (shift)
             {
-                for (int c = fPos; c < ColumnCount; c++)
+                for (int c = fPos; c < this.ColumnCount; c++)
                 {
-                    _columnIndex[c].Index -= (short)columns;
+                    this._columnIndex[c].Index -= (short)columns;
                 }
             }
         }
@@ -971,11 +973,11 @@ namespace OfficeOpenXml.Core.CellStore
                 if (rows >= CellStoreSettings._pageSize)
                 {
                     SplitPageAtPosition(column, pagePos, page, rowPos);
-                    CellStore<T>.UpdatePageOffsetSinglePage(column, ++pagePos, rows);
+                    UpdatePageOffsetSinglePage(column, ++pagePos, rows);
                 }
                 else
                 {
-                    CellStore<T>.AddRowIndex(rowPos, (short)rows, page);
+                    AddRowIndex(rowPos, (short)rows, page);
                     pagePos = ValidateAndSplitPageIfNeeded(column, page, pagePos);
                 }
             }
@@ -1108,7 +1110,7 @@ namespace OfficeOpenXml.Core.CellStore
                 nextPage.Rows[r].Index = (short)(nextPage.Rows[r].Index - CellStoreSettings._pageSize);
             }
 
-            CellStore<T>.AddPage(columnIndex, nextPage, pagePos + 1);
+            AddPage(columnIndex, nextPage, pagePos + 1);
         }
 
         private static void ResizePageCollectionIfNecessery(ColumnIndex<T> columnIndex)
@@ -1136,7 +1138,7 @@ namespace OfficeOpenXml.Core.CellStore
 
         private static void AddPage(ColumnIndex<T> column, int pos, short index)
         {
-            CellStore<T>.AddPage(column, pos);
+            AddPage(column, pos);
             column._pages[pos] = new PageIndex(CellStoreSettings._pageSizeMin) { Index = index };
             if (pos > 0)
             {
@@ -1155,7 +1157,7 @@ namespace OfficeOpenXml.Core.CellStore
         /// <param name="page">The new page object to add</param>
         private static void AddPage(ColumnIndex<T> column, PageIndex page, int pos)
         {
-            CellStore<T>.AddPage(column, pos);
+            AddPage(column, pos);
             column._pages[pos] = page;
         }
         /// <summary>
@@ -1175,53 +1177,55 @@ namespace OfficeOpenXml.Core.CellStore
         }
         private void AddColumn(int pos, int Column)
         {
-            if (ColumnCount == _columnIndex.Length)
+            if (this.ColumnCount == this._columnIndex.Length)
             {
-                ColumnIndex<T>[]? colTmp = new ColumnIndex<T>[_columnIndex.Length * 2];
-                Array.Copy(_columnIndex, 0, colTmp, 0, ColumnCount);
-                _columnIndex = colTmp;
+                ColumnIndex<T>[]? colTmp = new ColumnIndex<T>[this._columnIndex.Length * 2];
+                Array.Copy(this._columnIndex, 0, colTmp, 0, this.ColumnCount);
+                this._columnIndex = colTmp;
             }
-            if (pos < ColumnCount)
+            if (pos < this.ColumnCount)
             {
-                Array.Copy(_columnIndex, pos, _columnIndex, pos + 1, ColumnCount - pos);
+                Array.Copy(this._columnIndex, pos, this._columnIndex, pos + 1, this.ColumnCount - pos);
             }
-            _columnIndex[pos] = new ColumnIndex<T>() { Index = (short)(Column) };
-            ColumnCount++;
+
+            this._columnIndex[pos] = new ColumnIndex<T>() { Index = (short)(Column) };
+            this.ColumnCount++;
         }
 
         public void Dispose()
         {
-            if (_columnIndex == null)
+            if (this._columnIndex == null)
             {
                 return;
             }
 
-            for (int c = 0; c < ColumnCount; c++)
+            for (int c = 0; c < this.ColumnCount; c++)
             {
-                if (_columnIndex[c] != null)
+                if (this._columnIndex[c] != null)
                 {
-                    ((IDisposable)_columnIndex[c]).Dispose();
+                    ((IDisposable)this._columnIndex[c]).Dispose();
                 }
             }
-            _columnIndex = null;
+
+            this._columnIndex = null;
         }
 
         internal bool NextCell(ref int row, ref int col)
         {
 
-            return NextCell(ref row, ref col, 0, 0, ExcelPackage.MaxRows, ExcelPackage.MaxColumns);
+            return this.NextCell(ref row, ref col, 0, 0, ExcelPackage.MaxRows, ExcelPackage.MaxColumns);
         }
         internal bool NextCell(ref int row, ref int col, int minRow, int minColPos, int maxRow, int maxColPos)
         {
-            if (minColPos >= ColumnCount)
+            if (minColPos >= this.ColumnCount)
             {
                 return false;
             }
-            if (maxColPos >= ColumnCount)
+            if (maxColPos >= this.ColumnCount)
             {
-                maxColPos = ColumnCount - 1;
+                maxColPos = this.ColumnCount - 1;
             }
-            int c = GetColumnPosition(col);
+            int c = this.GetColumnPosition(col);
             if (c >= 0)
             {
                 if (c > maxColPos)
@@ -1231,38 +1235,38 @@ namespace OfficeOpenXml.Core.CellStore
                         return false;
                     }
                     col = minColPos;
-                    return NextCell(ref row, ref col);
+                    return this.NextCell(ref row, ref col);
                 }
                 else
                 {
-                    bool r = GetNextCell(ref row, ref c, minColPos, maxRow, maxColPos);
-                    col = _columnIndex[c].Index;
+                    bool r = this.GetNextCell(ref row, ref c, minColPos, maxRow, maxColPos);
+                    col = this._columnIndex[c].Index;
                     return r;
                 }
             }
             else
             {
                 c = ~c;
-                if (c >= ColumnCount)
+                if (c >= this.ColumnCount)
                 {
                     c = this.ColumnCount - 1;
                 }
 
-                if (col > _columnIndex[c].Index)
+                if (col > this._columnIndex[c].Index)
                 {
                     if (col <= minColPos)
                     {
                         return false;
                     }
                     col = minColPos;
-                    return NextCell(ref row, ref col, minRow, minColPos, maxRow, maxColPos);
+                    return this.NextCell(ref row, ref col, minRow, minColPos, maxRow, maxColPos);
                 }
                 else
                 {
-                    bool r = GetNextCell(ref row, ref c, minColPos, maxRow, maxColPos);
+                    bool r = this.GetNextCell(ref row, ref c, minColPos, maxRow, maxColPos);
                     if (r)
                     {
-                        col = _columnIndex[c].Index;
+                        col = this._columnIndex[c].Index;
                     }
                     return r;
                 }
@@ -1270,15 +1274,15 @@ namespace OfficeOpenXml.Core.CellStore
         }
         internal bool GetNextCell(ref int row, ref int colPos, int startColPos, int endRow, int endColPos)
         {
-            if (ColumnCount == 0)
+            if (this.ColumnCount == 0)
             {
                 return false;
             }
             else
             {
-                if (++colPos < ColumnCount && colPos <= endColPos)
+                if (++colPos < this.ColumnCount && colPos <= endColPos)
                 {
-                    int r = _columnIndex[colPos].GetNextRow(row);
+                    int r = this._columnIndex[colPos].GetNextRow(row);
                     if (r == row) //Exists next Row
                     {
                         return true;
@@ -1298,9 +1302,9 @@ namespace OfficeOpenXml.Core.CellStore
                         }
 
                         int c = colPos + 1;
-                        while (c < ColumnCount && c <= endColPos)
+                        while (c < this.ColumnCount && c <= endColPos)
                         {
-                            r = _columnIndex[c].GetNextRow(row);
+                            r = this._columnIndex[c].GetNextRow(row);
                             if (r == row) //Exists next Row
                             {
                                 colPos = c;
@@ -1319,7 +1323,7 @@ namespace OfficeOpenXml.Core.CellStore
                             row++;
                             while (c < colPos)
                             {
-                                r = _columnIndex[c].GetNextRow(row);
+                                r = this._columnIndex[c].GetNextRow(row);
                                 if (r == row) //Exists next Row
                                 {
                                     colPos = c;
@@ -1354,7 +1358,7 @@ namespace OfficeOpenXml.Core.CellStore
                     }
                     colPos = startColPos - 1;
                     row++;
-                    return GetNextCell(ref row, ref colPos, startColPos, endRow, endColPos);
+                    return this.GetNextCell(ref row, ref colPos, startColPos, endRow, endColPos);
                 }
             }
         }
@@ -1374,12 +1378,12 @@ namespace OfficeOpenXml.Core.CellStore
             {
                 if (pagePos[colPos] == -1)
                 {
-                    pagePos[colPos] = _columnIndex[colPos].GetPagePosition(row);
+                    pagePos[colPos] = this._columnIndex[colPos].GetPagePosition(row);
                 }
             }
-            else if (_columnIndex[colPos]._pages[pagePos[colPos]].RowCount <= row)
+            else if (this._columnIndex[colPos]._pages[pagePos[colPos]].RowCount <= row)
             {
-                if (_columnIndex[colPos].PageCount > pagePos[colPos])
+                if (this._columnIndex[colPos].PageCount > pagePos[colPos])
                 {
                     pagePos[colPos]++;
                 }
@@ -1389,7 +1393,7 @@ namespace OfficeOpenXml.Core.CellStore
                 }
             }
 
-            int r = _columnIndex[colPos]._pages[pagePos[colPos]].IndexOffset + _columnIndex[colPos]._pages[pagePos[colPos]].Rows[cellPos[colPos]].Index;
+            int r = this._columnIndex[colPos]._pages[pagePos[colPos]].IndexOffset + this._columnIndex[colPos]._pages[pagePos[colPos]].Rows[cellPos[colPos]].Index;
             if (r == row)
             {
                 row = r;
@@ -1401,19 +1405,19 @@ namespace OfficeOpenXml.Core.CellStore
         }
         internal bool PrevCell(ref int row, ref int col)
         {
-            return PrevCell(ref row, ref col, 0, 0, ExcelPackage.MaxRows, ExcelPackage.MaxColumns);
+            return this.PrevCell(ref row, ref col, 0, 0, ExcelPackage.MaxRows, ExcelPackage.MaxColumns);
         }
         internal bool PrevCell(ref int row, ref int col, int minRow, int minColPos, int maxRow, int maxColPos)
         {
-            if (minColPos >= ColumnCount)
+            if (minColPos >= this.ColumnCount)
             {
                 return false;
             }
-            if (maxColPos >= ColumnCount)
+            if (maxColPos >= this.ColumnCount)
             {
-                maxColPos = ColumnCount - 1;
+                maxColPos = this.ColumnCount - 1;
             }
-            int c = GetColumnPosition(col);
+            int c = this.GetColumnPosition(col);
             if (c >= 0)
             {
                 if (c == 0)
@@ -1428,14 +1432,14 @@ namespace OfficeOpenXml.Core.CellStore
                     }
                     row--;
                     col = maxColPos;
-                    return PrevCell(ref row, ref col, minRow, minColPos, maxRow, maxColPos);
+                    return this.PrevCell(ref row, ref col, minRow, minColPos, maxRow, maxColPos);
                 }
                 else
                 {
-                    bool ret = GetPrevCell(ref row, ref c, minRow, minColPos, maxColPos);
+                    bool ret = this.GetPrevCell(ref row, ref c, minRow, minColPos, maxColPos);
                     if (ret)
                     {
-                        col = _columnIndex[c].Index;
+                        col = this._columnIndex[c].Index;
                     }
                     return ret;
                 }
@@ -1451,14 +1455,14 @@ namespace OfficeOpenXml.Core.CellStore
                     }
                     col = maxColPos;
                     row--;
-                    return PrevCell(ref row, ref col, minRow, minColPos, maxRow, maxColPos);
+                    return this.PrevCell(ref row, ref col, minRow, minColPos, maxRow, maxColPos);
                 }
                 else
                 {
-                    bool ret = GetPrevCell(ref row, ref c, minRow, minColPos, maxColPos);
+                    bool ret = this.GetPrevCell(ref row, ref c, minRow, minColPos, maxColPos);
                     if (ret)
                     {
-                        col = _columnIndex[c].Index;
+                        col = this._columnIndex[c].Index;
                     }
                     return ret;
                 }
@@ -1466,7 +1470,7 @@ namespace OfficeOpenXml.Core.CellStore
         }
         internal bool GetPrevCell(ref int row, ref int colPos, int startRow, int startColPos, int endColPos)
         {
-            if (ColumnCount == 0)
+            if (this.ColumnCount == 0)
             {
                 return false;
             }
@@ -1474,7 +1478,7 @@ namespace OfficeOpenXml.Core.CellStore
             {
                 if (--colPos >= startColPos)
                 {
-                    int r = _columnIndex[colPos].GetNextRow(row);
+                    int r = this._columnIndex[colPos].GetNextRow(row);
                     if (r == row) //Exists next Row
                     {
                         return true;
@@ -1498,7 +1502,7 @@ namespace OfficeOpenXml.Core.CellStore
                         {
                             while (c >= startColPos)
                             {
-                                r = _columnIndex[c].GetNextRow(row);
+                                r = this._columnIndex[c].GetNextRow(row);
                                 if (r == row) //Exists next Row
                                 {
                                     colPos = c;
@@ -1518,7 +1522,7 @@ namespace OfficeOpenXml.Core.CellStore
                             row--;
                             while (c > colPos)
                             {
-                                r = _columnIndex[c].GetNextRow(row);
+                                r = this._columnIndex[c].GetNextRow(row);
                                 if (r == row) //Exists next Row
                                 {
                                     colPos = c;
@@ -1546,7 +1550,7 @@ namespace OfficeOpenXml.Core.CellStore
                 }
                 else
                 {
-                    colPos = ColumnCount;
+                    colPos = this.ColumnCount;
                     row--;
                     if (row < startRow)
                     {
@@ -1554,7 +1558,7 @@ namespace OfficeOpenXml.Core.CellStore
                     }
                     else
                     {
-                        return GetPrevCell(ref colPos, ref row, startRow, startColPos, endColPos);
+                        return this.GetPrevCell(ref colPos, ref row, startRow, startColPos, endColPos);
                     }
                 }
             }
@@ -1569,11 +1573,11 @@ namespace OfficeOpenXml.Core.CellStore
         {
             for (int col = fromCol; col <= toCol; col++)
             {
-                int colPos = GetColumnPosition(col);
+                int colPos = this.GetColumnPosition(col);
                 if (colPos < 0)
                 {
                     colPos = ~colPos;
-                    AddColumn(colPos, col);
+                    this.AddColumn(colPos, col);
                 }
             }
         }

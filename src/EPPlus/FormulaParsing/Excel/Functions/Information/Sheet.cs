@@ -94,9 +94,9 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Information
             }
             if(result == -1)
             {
-                return CreateResult(eErrorType.NA);
+                return this.CreateResult(eErrorType.NA);
             }
-            return CreateResult(result, DataType.Integer);
+            return this.CreateResult(result, DataType.Integer);
         }
     }
 }

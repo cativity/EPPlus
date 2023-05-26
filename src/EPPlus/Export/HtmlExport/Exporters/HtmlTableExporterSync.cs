@@ -29,10 +29,10 @@ namespace OfficeOpenXml.Export.HtmlExport.Exporters
             : base(settings, table.Range)
         {
             Require.Argument(table).IsNotNull("table");
-            _table = table;
-            _tableExportSettings = settings;
+            this._table = table;
+            this._tableExportSettings = settings;
 
-            LoadRangeImages(new List<ExcelRangeBase>() { table.Range });
+            this.LoadRangeImages(new List<ExcelRangeBase>() { table.Range });
         }
 
         private readonly ExcelTable _table;
@@ -40,14 +40,14 @@ namespace OfficeOpenXml.Export.HtmlExport.Exporters
 
         private void LoadVisibleColumns()
         {
-            _columns = new List<int>();
-            ExcelRangeBase? r = _table.Range;
+            this._columns = new List<int>();
+            ExcelRangeBase? r = this._table.Range;
             for (int col = r._fromCol; col <= r._toCol; col++)
             {
-                ExcelColumn? c = _table.WorkSheet.GetColumn(col);
+                ExcelColumn? c = this._table.WorkSheet.GetColumn(col);
                 if (c == null || (c.Hidden == false && c.Width > 0))
                 {
-                    _columns.Add(col);
+                    this._columns.Add(col);
                 }
             }
         }
@@ -55,45 +55,45 @@ namespace OfficeOpenXml.Export.HtmlExport.Exporters
         private void RenderHeaderRow(EpplusHtmlWriter writer)
         {
             // table header row
-            if (Settings.Accessibility.TableSettings.AddAccessibilityAttributes && !string.IsNullOrEmpty(Settings.Accessibility.TableSettings.TheadRole))
+            if (this.Settings.Accessibility.TableSettings.AddAccessibilityAttributes && !string.IsNullOrEmpty(this.Settings.Accessibility.TableSettings.TheadRole))
             {
-                writer.AddAttribute("role", Settings.Accessibility.TableSettings.TheadRole);
+                writer.AddAttribute("role", this.Settings.Accessibility.TableSettings.TheadRole);
             }
             writer.RenderBeginTag(HtmlElements.Thead);
-            writer.ApplyFormatIncreaseIndent(Settings.Minify);
-            if (Settings.Accessibility.TableSettings.AddAccessibilityAttributes)
+            writer.ApplyFormatIncreaseIndent(this.Settings.Minify);
+            if (this.Settings.Accessibility.TableSettings.AddAccessibilityAttributes)
             {
                 writer.AddAttribute("role", "row");
             }
-            ExcelAddressBase? adr = _table.Address;
+            ExcelAddressBase? adr = this._table.Address;
             int row = adr._fromRow;
-            if (Settings.SetRowHeight)
+            if (this.Settings.SetRowHeight)
             {
                 AddRowHeightStyle(writer, this._table.Range, row, this.Settings.StyleClassPrefix, false);
             }
 
             writer.RenderBeginTag(HtmlElements.TableRow);
-            writer.ApplyFormatIncreaseIndent(Settings.Minify);
+            writer.ApplyFormatIncreaseIndent(this.Settings.Minify);
             HtmlImage image = null;
-            foreach (int col in _columns)
+            foreach (int col in this._columns)
             {
-                ExcelRange? cell = _table.WorkSheet.Cells[row, col];
-                if (Settings.RenderDataTypes)
+                ExcelRange? cell = this._table.WorkSheet.Cells[row, col];
+                if (this.Settings.RenderDataTypes)
                 {
-                    writer.AddAttribute("data-datatype", _dataTypes[col - adr._fromCol]);
+                    writer.AddAttribute("data-datatype", this._dataTypes[col - adr._fromCol]);
                 }
-                string? imageCellClassName = image == null ? "" : Settings.StyleClassPrefix + "image-cell";
-                writer.SetClassAttributeFromStyle(cell, true, Settings, imageCellClassName);
-                if (Settings.Accessibility.TableSettings.AddAccessibilityAttributes && !string.IsNullOrEmpty(Settings.Accessibility.TableSettings.TableHeaderCellRole))
+                string? imageCellClassName = image == null ? "" : this.Settings.StyleClassPrefix + "image-cell";
+                writer.SetClassAttributeFromStyle(cell, true, this.Settings, imageCellClassName);
+                if (this.Settings.Accessibility.TableSettings.AddAccessibilityAttributes && !string.IsNullOrEmpty(this.Settings.Accessibility.TableSettings.TableHeaderCellRole))
                 {
-                    writer.AddAttribute("role", Settings.Accessibility.TableSettings.TableHeaderCellRole);
-                    if (!_table.ShowFirstColumn && !_table.ShowLastColumn)
+                    writer.AddAttribute("role", this.Settings.Accessibility.TableSettings.TableHeaderCellRole);
+                    if (!this._table.ShowFirstColumn && !this._table.ShowLastColumn)
                     {
                         writer.AddAttribute("scope", "col");
                     }
-                    if (_table.SortState != null && !_table.SortState.ColumnSort && _table.SortState.SortConditions.Any())
+                    if (this._table.SortState != null && !this._table.SortState.ColumnSort && this._table.SortState.SortConditions.Any())
                     {
-                        SortCondition? firstCondition = _table.SortState.SortConditions.First();
+                        SortCondition? firstCondition = this._table.SortState.SortConditions.First();
                         if (firstCondition != null && !string.IsNullOrEmpty(firstCondition.Ref))
                         {
                             ExcelAddress? addr = new ExcelAddress(firstCondition.Ref);
@@ -106,29 +106,29 @@ namespace OfficeOpenXml.Export.HtmlExport.Exporters
                     }
                 }
                 writer.RenderBeginTag(HtmlElements.TableHeader);
-                if (Settings.Pictures.Include == ePictureInclude.Include)
+                if (this.Settings.Pictures.Include == ePictureInclude.Include)
                 {
-                    image = GetImage(cell.Worksheet.PositionId, cell._fromRow, cell._fromCol);
+                    image = this.GetImage(cell.Worksheet.PositionId, cell._fromRow, cell._fromCol);
                 }
-                AddImage(writer, Settings, image, cell.Value);
+                AddImage(writer, this.Settings, image, cell.Value);
 
                 if (cell.Hyperlink == null)
                 {
-                    writer.Write(GetCellText(cell, Settings));
+                    writer.Write(GetCellText(cell, this.Settings));
                 }
                 else
                 {
-                    RenderHyperlink(writer, cell, Settings);
+                    RenderHyperlink(writer, cell, this.Settings);
                 }
 
                 writer.RenderEndTag();
-                writer.ApplyFormat(Settings.Minify);
+                writer.ApplyFormat(this.Settings.Minify);
             }
             writer.Indent--;
             writer.RenderEndTag();
-            writer.ApplyFormatDecreaseIndent(Settings.Minify);
+            writer.ApplyFormatDecreaseIndent(this.Settings.Minify);
             writer.RenderEndTag();
-            writer.ApplyFormat(Settings.Minify);
+            writer.ApplyFormat(this.Settings.Minify);
         }
 
         private void RenderTableRows(EpplusHtmlWriter writer, AccessibilitySettings accessibilitySettings)
@@ -138,13 +138,13 @@ namespace OfficeOpenXml.Export.HtmlExport.Exporters
                 writer.AddAttribute("role", accessibilitySettings.TableSettings.TbodyRole);
             }
             writer.RenderBeginTag(HtmlElements.Tbody);
-            writer.ApplyFormatIncreaseIndent(Settings.Minify);
-            int row = _table.ShowHeader ? _table.Address._fromRow + 1 : _table.Address._fromRow;
-            int endRow = _table.ShowTotal ? _table.Address._toRow - 1 : _table.Address._toRow;
+            writer.ApplyFormatIncreaseIndent(this.Settings.Minify);
+            int row = this._table.ShowHeader ? this._table.Address._fromRow + 1 : this._table.Address._fromRow;
+            int endRow = this._table.ShowTotal ? this._table.Address._toRow - 1 : this._table.Address._toRow;
             HtmlImage image = null;
             while (row <= endRow)
             {
-                if (HandleHiddenRow(writer, _table.WorkSheet, Settings, ref row))
+                if (HandleHiddenRow(writer, this._table.WorkSheet, this.Settings, ref row))
                 {
                     continue; //The row is hidden and should not be included.
                 }
@@ -152,104 +152,104 @@ namespace OfficeOpenXml.Export.HtmlExport.Exporters
                 if (accessibilitySettings.TableSettings.AddAccessibilityAttributes)
                 {
                     writer.AddAttribute("role", "row");
-                    if (!_table.ShowFirstColumn && !_table.ShowLastColumn)
+                    if (!this._table.ShowFirstColumn && !this._table.ShowLastColumn)
                     {
                         writer.AddAttribute("scope", "row");
                     }
                 }
-                if (Settings.SetRowHeight)
+                if (this.Settings.SetRowHeight)
                 {
                     AddRowHeightStyle(writer, this._table.Range, row, this.Settings.StyleClassPrefix, false);
                 }
 
                 writer.RenderBeginTag(HtmlElements.TableRow);
-                writer.ApplyFormatIncreaseIndent(Settings.Minify);
+                writer.ApplyFormatIncreaseIndent(this.Settings.Minify);
 
-                foreach (int col in _columns)
+                foreach (int col in this._columns)
                 {
-                    int colIx = col - _table.Address._fromCol;
-                    string? dataType = _dataTypes[colIx];
-                    ExcelRange? cell = _table.WorkSheet.Cells[row, col];
+                    int colIx = col - this._table.Address._fromCol;
+                    string? dataType = this._dataTypes[colIx];
+                    ExcelRange? cell = this._table.WorkSheet.Cells[row, col];
 
-                    if (Settings.Pictures.Include == ePictureInclude.Include)
+                    if (this.Settings.Pictures.Include == ePictureInclude.Include)
                     {
-                        image = GetImage(cell.Worksheet.PositionId, cell._fromRow, cell._fromCol);
+                        image = this.GetImage(cell.Worksheet.PositionId, cell._fromRow, cell._fromCol);
                     }
 
                     if (cell.Hyperlink == null)
                     {
-                        bool addRowScope = (_table.ShowFirstColumn && col == _table.Address._fromCol) || (_table.ShowLastColumn && col == _table.Address._toCol);
-                        CellDataWriter.Write(cell, dataType, writer, Settings, accessibilitySettings, addRowScope, image);
+                        bool addRowScope = (this._table.ShowFirstColumn && col == this._table.Address._fromCol) || (this._table.ShowLastColumn && col == this._table.Address._toCol);
+                        CellDataWriter.Write(cell, dataType, writer, this.Settings, accessibilitySettings, addRowScope, image);
                     }
                     else
                     {
                         writer.RenderBeginTag(HtmlElements.TableData);
-                        AddImage(writer, Settings, image, cell.Value);
-                        string? imageCellClassName = GetImageCellClassName(image, Settings);
-                        writer.SetClassAttributeFromStyle(cell, false, Settings, imageCellClassName);
-                        RenderHyperlink(writer, cell, Settings);
+                        AddImage(writer, this.Settings, image, cell.Value);
+                        string? imageCellClassName = GetImageCellClassName(image, this.Settings);
+                        writer.SetClassAttributeFromStyle(cell, false, this.Settings, imageCellClassName);
+                        RenderHyperlink(writer, cell, this.Settings);
                         writer.RenderEndTag();
-                        writer.ApplyFormat(Settings.Minify);
+                        writer.ApplyFormat(this.Settings.Minify);
                     }
                 }
 
                 // end tag tr
                 writer.Indent--;
                 writer.RenderEndTag();
-                writer.ApplyFormat(Settings.Minify);
+                writer.ApplyFormat(this.Settings.Minify);
                 row++;
             }
 
-            writer.ApplyFormatDecreaseIndent(Settings.Minify);
+            writer.ApplyFormatDecreaseIndent(this.Settings.Minify);
             // end tag tbody
             writer.RenderEndTag();
-            writer.ApplyFormat(Settings.Minify);
+            writer.ApplyFormat(this.Settings.Minify);
         }
 
         private void RenderTotalRow(EpplusHtmlWriter writer)
         {
             // table header row
-            int rowIndex = _table.Address._toRow;
-            if (Settings.Accessibility.TableSettings.AddAccessibilityAttributes && !string.IsNullOrEmpty(Settings.Accessibility.TableSettings.TfootRole))
+            int rowIndex = this._table.Address._toRow;
+            if (this.Settings.Accessibility.TableSettings.AddAccessibilityAttributes && !string.IsNullOrEmpty(this.Settings.Accessibility.TableSettings.TfootRole))
             {
-                writer.AddAttribute("role", Settings.Accessibility.TableSettings.TfootRole);
+                writer.AddAttribute("role", this.Settings.Accessibility.TableSettings.TfootRole);
             }
             writer.RenderBeginTag(HtmlElements.TFoot);
-            writer.ApplyFormatIncreaseIndent(Settings.Minify);
-            if (Settings.Accessibility.TableSettings.AddAccessibilityAttributes)
+            writer.ApplyFormatIncreaseIndent(this.Settings.Minify);
+            if (this.Settings.Accessibility.TableSettings.AddAccessibilityAttributes)
             {
                 writer.AddAttribute("role", "row");
                 writer.AddAttribute("scope", "row");
             }
-            if (Settings.SetRowHeight)
+            if (this.Settings.SetRowHeight)
             {
                 AddRowHeightStyle(writer, this._table.Range, rowIndex, this.Settings.StyleClassPrefix, false);
             }
 
             writer.RenderBeginTag(HtmlElements.TableRow);
-            writer.ApplyFormatIncreaseIndent(Settings.Minify);
-            ExcelAddressBase? address = _table.Address;
+            writer.ApplyFormatIncreaseIndent(this.Settings.Minify);
+            ExcelAddressBase? address = this._table.Address;
             HtmlImage image = null;
-            foreach (int col in _columns)
+            foreach (int col in this._columns)
             {
-                ExcelRange? cell = _table.WorkSheet.Cells[rowIndex, col];
-                if (Settings.Accessibility.TableSettings.AddAccessibilityAttributes)
+                ExcelRange? cell = this._table.WorkSheet.Cells[rowIndex, col];
+                if (this.Settings.Accessibility.TableSettings.AddAccessibilityAttributes)
                 {
                     writer.AddAttribute("role", "cell");
                 }
-                string? imageCellClassName = GetImageCellClassName(image, Settings);
-                writer.SetClassAttributeFromStyle(cell, false, Settings, imageCellClassName);
+                string? imageCellClassName = GetImageCellClassName(image, this.Settings);
+                writer.SetClassAttributeFromStyle(cell, false, this.Settings, imageCellClassName);
                 writer.RenderBeginTag(HtmlElements.TableData);
-                AddImage(writer, Settings, image, cell.Value);
-                writer.Write(GetCellText(cell, Settings));
+                AddImage(writer, this.Settings, image, cell.Value);
+                writer.Write(GetCellText(cell, this.Settings));
                 writer.RenderEndTag();
-                writer.ApplyFormat(Settings.Minify);
+                writer.ApplyFormat(this.Settings.Minify);
             }
             writer.Indent--;
             writer.RenderEndTag();
-            writer.ApplyFormatDecreaseIndent(Settings.Minify);
+            writer.ApplyFormatDecreaseIndent(this.Settings.Minify);
             writer.RenderEndTag();
-            writer.ApplyFormat(Settings.Minify);
+            writer.ApplyFormat(this.Settings.Minify);
         }
 
         /// <summary>
@@ -259,7 +259,7 @@ namespace OfficeOpenXml.Export.HtmlExport.Exporters
         public string GetHtmlString()
         {
             using MemoryStream? ms = RecyclableMemory.GetStream();
-            RenderHtml(ms);
+            this.RenderHtml(ms);
             ms.Position = 0;
             using StreamReader? sr = new StreamReader(ms);
             return sr.ReadToEnd();
@@ -276,29 +276,29 @@ namespace OfficeOpenXml.Export.HtmlExport.Exporters
                 throw new IOException("Parameter stream must be a writeable System.IO.Stream");
             }
 
-            GetDataTypes(_table.Address, _table);
+            this.GetDataTypes(this._table.Address, this._table);
 
-            EpplusHtmlWriter? writer = new EpplusHtmlWriter(stream, Settings.Encoding, _styleCache);
-            HtmlExportTableUtil.AddClassesAttributes(writer, _table, _tableExportSettings);
-            AddTableAccessibilityAttributes(Settings.Accessibility, writer);
+            EpplusHtmlWriter? writer = new EpplusHtmlWriter(stream, this.Settings.Encoding, this._styleCache);
+            HtmlExportTableUtil.AddClassesAttributes(writer, this._table, this._tableExportSettings);
+            AddTableAccessibilityAttributes(this.Settings.Accessibility, writer);
             writer.RenderBeginTag(HtmlElements.Table);
 
-            writer.ApplyFormatIncreaseIndent(Settings.Minify);
-            LoadVisibleColumns();
-            if (Settings.SetColumnWidth || Settings.HorizontalAlignmentWhenGeneral == eHtmlGeneralAlignmentHandling.ColumnDataType)
+            writer.ApplyFormatIncreaseIndent(this.Settings.Minify);
+            this.LoadVisibleColumns();
+            if (this.Settings.SetColumnWidth || this.Settings.HorizontalAlignmentWhenGeneral == eHtmlGeneralAlignmentHandling.ColumnDataType)
             {
-                SetColumnGroup(writer, _table.Range, Settings, false);
+                this.SetColumnGroup(writer, this._table.Range, this.Settings, false);
             }
 
-            if (_table.ShowHeader)
+            if (this._table.ShowHeader)
             {
-                RenderHeaderRow(writer);
+                this.RenderHeaderRow(writer);
             }
             // table rows
-            RenderTableRows(writer, Settings.Accessibility);
-            if (_table.ShowTotal)
+            this.RenderTableRows(writer, this.Settings.Accessibility);
+            if (this._table.ShowTotal)
             {
-                RenderTotalRow(writer);
+                this.RenderTotalRow(writer);
             }
             // end tag table
             writer.RenderEndTag();
@@ -311,13 +311,13 @@ namespace OfficeOpenXml.Export.HtmlExport.Exporters
         /// <returns>The html document</returns>
         public string GetSinglePage(string htmlDocument = "<!DOCTYPE html>\r\n<html>\r\n<head>\r\n<style type=\"text/css\">\r\n{1}</style></head>\r\n<body>\r\n{0}</body>\r\n</html>")
         {
-            if (Settings.Minify)
+            if (this.Settings.Minify)
             {
                 htmlDocument = htmlDocument.Replace("\r\n", "");
             }
 
-            string? html = GetHtmlString();
-            CssTableExporterSync? cssExporter = HtmlExporterFactory.CreateCssExporterTableSync(_tableExportSettings, _table, _styleCache);
+            string? html = this.GetHtmlString();
+            CssTableExporterSync? cssExporter = HtmlExporterFactory.CreateCssExporterTableSync(this._tableExportSettings, this._table, this._styleCache);
             string? css = cssExporter.GetCssString();
             return string.Format(htmlDocument, html, css);
 

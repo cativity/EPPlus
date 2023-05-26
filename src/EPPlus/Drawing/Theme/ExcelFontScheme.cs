@@ -21,8 +21,8 @@ namespace OfficeOpenXml.Drawing.Theme
     {
         private ExcelPackage _pck;
         internal ExcelFontScheme(ExcelPackage pck, XmlNamespaceManager nameSpaceManager, XmlNode topNode) : base(nameSpaceManager, topNode)
-        {            
-            _pck = pck;
+        {
+            this._pck = pck;
         }
         /// <summary>
         /// The name of the font scheme
@@ -31,11 +31,11 @@ namespace OfficeOpenXml.Drawing.Theme
         {
             get
             {
-                return GetXmlNodeString("@name");
+                return this.GetXmlNodeString("@name");
             }
             set
             {
-                SetXmlNodeString("@name", value);
+                this.SetXmlNodeString("@name", value);
             }
         }
         ExcelThemeFontCollection _majorFont=null;
@@ -46,11 +46,11 @@ namespace OfficeOpenXml.Drawing.Theme
         {
             get
             {
-                if(_majorFont==null)
+                if(this._majorFont==null)
                 {
-                    _majorFont = new ExcelThemeFontCollection(_pck,NameSpaceManager, TopNode.SelectSingleNode("a:majorFont", NameSpaceManager));
+                    this._majorFont = new ExcelThemeFontCollection(this._pck, this.NameSpaceManager, this.TopNode.SelectSingleNode("a:majorFont", this.NameSpaceManager));
                 }
-                return _majorFont;
+                return this._majorFont;
             }
         }
         ExcelThemeFontCollection _minorFont = null;
@@ -61,11 +61,11 @@ namespace OfficeOpenXml.Drawing.Theme
         {
             get
             {
-                if (_minorFont == null)
+                if (this._minorFont == null)
                 {
-                    _minorFont = new ExcelThemeFontCollection(_pck, NameSpaceManager, TopNode.SelectSingleNode("a:minorFont", NameSpaceManager));
+                    this._minorFont = new ExcelThemeFontCollection(this._pck, this.NameSpaceManager, this.TopNode.SelectSingleNode("a:minorFont", this.NameSpaceManager));
                 }
-                return _minorFont;
+                return this._minorFont;
             }
         }
     }

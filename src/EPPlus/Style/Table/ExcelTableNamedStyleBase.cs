@@ -31,8 +31,8 @@ namespace OfficeOpenXml.Style.Table
         internal Dictionary<eTableStyleElement, ExcelTableStyleElement> _dic = new Dictionary<eTableStyleElement, ExcelTableStyleElement>();
         internal ExcelTableNamedStyleBase(XmlNamespaceManager nameSpaceManager, XmlNode topNode, ExcelStyles styles) : base(nameSpaceManager, topNode)
         {
-            _styles = styles;
-            As = new ExcelTableNamedStyleAsType(this);
+            this._styles = styles;
+            this.As = new ExcelTableNamedStyleAsType(this);
             foreach(XmlNode node in topNode.ChildNodes)
             {
                 if (node is XmlElement e)
@@ -40,11 +40,11 @@ namespace OfficeOpenXml.Style.Table
                     eTableStyleElement type = e.GetAttribute("type").ToEnum(eTableStyleElement.WholeTable);
                     if (IsBanded(type))
                     {
-                        _dic.Add(type, new ExcelBandedTableStyleElement(nameSpaceManager, node, styles, type));
+                        this._dic.Add(type, new ExcelBandedTableStyleElement(nameSpaceManager, node, styles, type));
                     }
                     else
                     {
-                        _dic.Add(type, new ExcelTableStyleElement(nameSpaceManager, node, styles, type));
+                        this._dic.Add(type, new ExcelTableStyleElement(nameSpaceManager, node, styles, type));
                     }
                 }
             }
@@ -59,20 +59,21 @@ namespace OfficeOpenXml.Style.Table
         }
         internal ExcelTableStyleElement GetTableStyleElement(eTableStyleElement element)
         {
-            if (_dic.ContainsKey(element))
+            if (this._dic.ContainsKey(element))
             {
-                return _dic[element];
+                return this._dic[element];
             }
             ExcelTableStyleElement item;
             if (IsBanded(element))
             {
-                item = new ExcelBandedTableStyleElement(NameSpaceManager, TopNode, _styles, element);
+                item = new ExcelBandedTableStyleElement(this.NameSpaceManager, this.TopNode, this._styles, element);
             }
             else
             {
-                item = new ExcelTableStyleElement(NameSpaceManager, TopNode, _styles, element);
+                item = new ExcelTableStyleElement(this.NameSpaceManager, this.TopNode, this._styles, element);
             }
-            _dic.Add(element, item);
+
+            this._dic.Add(element, item);
             return item;
         }
         /// <summary>
@@ -89,15 +90,16 @@ namespace OfficeOpenXml.Style.Table
         { 
             get
             {
-                return GetXmlNodeString("@name");
+                return this.GetXmlNodeString("@name");
             }
             set
             {
-                if(_styles.TableStyles.ExistsKey(value) || _styles.SlicerStyles.ExistsKey(value))
+                if(this._styles.TableStyles.ExistsKey(value) || this._styles.SlicerStyles.ExistsKey(value))
                 {
                     throw new InvalidOperationException("Name already is already used by a table or slicer style");
                 }
-                SetXmlNodeString("@name", value);
+
+                this.SetXmlNodeString("@name", value);
             }
         }
         /// <summary>
@@ -107,7 +109,7 @@ namespace OfficeOpenXml.Style.Table
         { 
             get
             {
-                return GetTableStyleElement(eTableStyleElement.WholeTable);
+                return this.GetTableStyleElement(eTableStyleElement.WholeTable);
             }
         }
         /// <summary>
@@ -117,7 +119,7 @@ namespace OfficeOpenXml.Style.Table
         { 
             get
             {
-                return (ExcelBandedTableStyleElement)GetTableStyleElement(eTableStyleElement.FirstColumnStripe);
+                return (ExcelBandedTableStyleElement)this.GetTableStyleElement(eTableStyleElement.FirstColumnStripe);
             }
         }
         /// <summary>
@@ -127,7 +129,7 @@ namespace OfficeOpenXml.Style.Table
         {
             get
             {
-                return (ExcelBandedTableStyleElement)GetTableStyleElement(eTableStyleElement.SecondColumnStripe);
+                return (ExcelBandedTableStyleElement)this.GetTableStyleElement(eTableStyleElement.SecondColumnStripe);
             }
         }
         /// <summary>
@@ -137,7 +139,7 @@ namespace OfficeOpenXml.Style.Table
         {
             get
             {
-                return (ExcelBandedTableStyleElement)GetTableStyleElement(eTableStyleElement.FirstRowStripe);
+                return (ExcelBandedTableStyleElement)this.GetTableStyleElement(eTableStyleElement.FirstRowStripe);
             }
         }
         /// <summary>
@@ -147,7 +149,7 @@ namespace OfficeOpenXml.Style.Table
         {
             get
             {
-                return (ExcelBandedTableStyleElement)GetTableStyleElement(eTableStyleElement.SecondRowStripe);
+                return (ExcelBandedTableStyleElement)this.GetTableStyleElement(eTableStyleElement.SecondRowStripe);
             }
         }
         /// <summary>
@@ -157,7 +159,7 @@ namespace OfficeOpenXml.Style.Table
         {
             get
             {
-                return GetTableStyleElement(eTableStyleElement.LastColumn);
+                return this.GetTableStyleElement(eTableStyleElement.LastColumn);
             }
         }
         /// <summary>
@@ -167,7 +169,7 @@ namespace OfficeOpenXml.Style.Table
         {
             get
             {
-                return GetTableStyleElement(eTableStyleElement.FirstColumn);
+                return this.GetTableStyleElement(eTableStyleElement.FirstColumn);
             }
         }
         /// <summary>
@@ -177,7 +179,7 @@ namespace OfficeOpenXml.Style.Table
         {
             get
             {
-                return GetTableStyleElement(eTableStyleElement.HeaderRow);
+                return this.GetTableStyleElement(eTableStyleElement.HeaderRow);
             }
         }
         /// <summary>
@@ -187,7 +189,7 @@ namespace OfficeOpenXml.Style.Table
         {
             get
             {
-                return GetTableStyleElement(eTableStyleElement.TotalRow);
+                return this.GetTableStyleElement(eTableStyleElement.TotalRow);
             }
         }
         /// <summary>
@@ -197,7 +199,7 @@ namespace OfficeOpenXml.Style.Table
         {
             get
             {
-                return GetTableStyleElement(eTableStyleElement.FirstHeaderCell);
+                return this.GetTableStyleElement(eTableStyleElement.FirstHeaderCell);
             }
         }
         /// <summary>
@@ -211,17 +213,17 @@ namespace OfficeOpenXml.Style.Table
         {
             foreach(ExcelTableStyleElement? s in templateStyle._dic.Values)
             {
-                ExcelTableStyleElement? element = GetTableStyleElement(s.Type);
+                ExcelTableStyleElement? element = this.GetTableStyleElement(s.Type);
                 element.Style = (ExcelDxfStyleLimitedFont)s.Style.Clone();
             }
         }
         internal void SetFromTemplate(TableStyles templateStyle)
         {
-            LoadTableTemplate("TableStyles", templateStyle.ToString());
+            this.LoadTableTemplate("TableStyles", templateStyle.ToString());
         }
         internal void SetFromTemplate(PivotTableStyles templateStyle)
         {
-            LoadTableTemplate("PivotTableStyles", templateStyle.ToString());
+            this.LoadTableTemplate("PivotTableStyles", templateStyle.ToString());
         }
 
         private void LoadTableTemplate(string folder, string styleName)
@@ -247,16 +249,16 @@ namespace OfficeOpenXml.Style.Table
                     {
                         eTableStyleElement type = elem.GetAttribute("name").ToEnum(eTableStyleElement.WholeTable);
                         string? dxfXml = elem.InnerXml;
-                        ExcelDxfStyleLimitedFont? dxf = new ExcelDxfStyleLimitedFont(NameSpaceManager, elem.FirstChild, _styles, null);
+                        ExcelDxfStyleLimitedFont? dxf = new ExcelDxfStyleLimitedFont(this.NameSpaceManager, elem.FirstChild, this._styles, null);
 
-                        ExcelTableStyleElement? te = GetTableStyleElement(type);
+                        ExcelTableStyleElement? te = this.GetTableStyleElement(type);
                         te.Style = dxf;
                     }
                 }
             }
-            if (string.IsNullOrEmpty(Name))
+            if (string.IsNullOrEmpty(this.Name))
             {
-                SetXmlNodeString("@name", styleName);
+                this.SetXmlNodeString("@name", styleName);
             }
         }
     }

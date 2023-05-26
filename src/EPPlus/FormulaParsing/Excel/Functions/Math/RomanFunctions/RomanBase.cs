@@ -22,8 +22,8 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Math.RomanFunctions
         {
             public RomanNumber(int number, string letter)
             {
-                Number = number;
-                Letter = letter;
+                this.Number = number;
+                this.Letter = letter;
             }
             public int Number { get; set; }
 
@@ -43,19 +43,19 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Math.RomanFunctions
         protected string GetClassicRomanFormat(int number)
         {
             StringBuilder? roman = new StringBuilder();
-            Apply(ref number, Thousand, roman);
+            Apply(ref number, this.Thousand, roman);
             Apply(ref number, 900, "CM", roman);
-            Apply(ref number, FiveHundred, OneHundred, roman);
+            Apply(ref number, this.FiveHundred, this.OneHundred, roman);
             Apply(ref number, 400, "CD", roman);
-            Apply(ref number, OneHundred, roman);
+            Apply(ref number, this.OneHundred, roman);
             Apply(ref number, 90, "XC", roman);
-            Apply(ref number, Fifty, Ten, roman);
+            Apply(ref number, this.Fifty, this.Ten, roman);
             Apply(ref number, 40, "XL", roman);
-            Apply(ref number, Ten, roman);
+            Apply(ref number, this.Ten, roman);
             Apply(ref number, 9, "IX", roman);
-            Apply(ref number, Five, One, roman);
+            Apply(ref number, this.Five, this.One, roman);
             Apply(ref number, 4, "IV", roman);
-            Apply(ref number, One, roman);
+            Apply(ref number, this.One, roman);
             return roman.ToString();
         }
 

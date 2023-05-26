@@ -18,8 +18,8 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Finance.Implementations
     {
         public DurationImpl(IYearFracProvider yearFracProvider, ICouponProvider couponProvider)
         {
-            _yearFracProvider = yearFracProvider;
-            _couponProvider = couponProvider;
+            this._yearFracProvider = yearFracProvider;
+            this._couponProvider = couponProvider;
         }
 
         private readonly IYearFracProvider _yearFracProvider;
@@ -27,8 +27,8 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Finance.Implementations
 
         public double GetDuration(System.DateTime settlement, System.DateTime maturity, double coupon, double yield, int nFreq, DayCountBasis nBase)
         {
-            double fYearfrac = _yearFracProvider.GetYearFrac(settlement, maturity, nBase);
-            double fNumOfCoups = _couponProvider.GetCoupnum(settlement, maturity, nFreq, nBase);
+            double fYearfrac = this._yearFracProvider.GetYearFrac(settlement, maturity, nBase);
+            double fNumOfCoups = this._couponProvider.GetCoupnum(settlement, maturity, nFreq, nBase);
             double fDur = 0.0;
             const double f100 = 100.0;
             coupon *= f100 / (double)nFreq;    // fCoup is used as cash flow

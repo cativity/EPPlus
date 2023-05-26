@@ -24,7 +24,7 @@ namespace OfficeOpenXml.Drawing.Chart.ChartEx
         string _worksheetName;
         internal ExcelChartExData(string worksheetName, XmlNamespaceManager nsm, XmlNode topNode) : base(nsm, topNode)
         {
-            _worksheetName = worksheetName;
+            this._worksheetName = worksheetName;
         }
         /// <summary>
         /// Data formula
@@ -33,17 +33,17 @@ namespace OfficeOpenXml.Drawing.Chart.ChartEx
         { 
             get
             {
-                return GetXmlNodeString("cx:f");
+                return this.GetXmlNodeString("cx:f");
             }
             set
             {
                 if (ExcelCellBase.IsValidAddress(value))
                 {
-                    SetXmlNodeString("cx:f", ExcelCellBase.GetFullAddress(_worksheetName, value));
+                    this.SetXmlNodeString("cx:f", ExcelCellBase.GetFullAddress(this._worksheetName, value));
                 }
                 else
                 {
-                    SetXmlNodeString("cx:f", value);
+                    this.SetXmlNodeString("cx:f", value);
                 }
             }
         }
@@ -54,11 +54,11 @@ namespace OfficeOpenXml.Drawing.Chart.ChartEx
         {
             get
             {
-                return GetXmlNodeString("cx:f/@dir").ToEnum(eFormulaDirection.Column);
+                return this.GetXmlNodeString("cx:f/@dir").ToEnum(eFormulaDirection.Column);
             }
             set
             {
-                SetXmlNodeString("cx:f/@dir", value.ToEnumString());
+                this.SetXmlNodeString("cx:f/@dir", value.ToEnumString());
             }
         }
 
@@ -69,9 +69,9 @@ namespace OfficeOpenXml.Drawing.Chart.ChartEx
         {
             get
             {
-                if(ExistsNode("cx:nf"))
+                if(this.ExistsNode("cx:nf"))
                 {
-                    return GetXmlNodeString("cx:nf");
+                    return this.GetXmlNodeString("cx:nf");
                 }
                 else
                 {
@@ -82,11 +82,11 @@ namespace OfficeOpenXml.Drawing.Chart.ChartEx
             {
                 if(ExcelCellBase.IsValidAddress(value))
                 {
-                    SetXmlNodeString("cx:nf", ExcelCellBase.GetFullAddress(_worksheetName, value), true);
+                    this.SetXmlNodeString("cx:nf", ExcelCellBase.GetFullAddress(this._worksheetName, value), true);
                 }
                 else
                 {
-                    SetXmlNodeString("cx:nf", value, true);
+                    this.SetXmlNodeString("cx:nf", value, true);
                 }
             }
         }
@@ -97,9 +97,9 @@ namespace OfficeOpenXml.Drawing.Chart.ChartEx
         { 
             get
             {
-                if (ExistsNode("cx:nf"))
+                if (this.ExistsNode("cx:nf"))
                 {
-                    return GetXmlNodeString("cx:nf/@dir").ToEnum<eFormulaDirection>(eFormulaDirection.Column);
+                    return this.GetXmlNodeString("cx:nf/@dir").ToEnum<eFormulaDirection>(eFormulaDirection.Column);
                 }
                 else
                 {
@@ -110,11 +110,11 @@ namespace OfficeOpenXml.Drawing.Chart.ChartEx
             {
                 if(value==null)
                 {
-                    DeleteNode("cx:nf/@dir");
+                    this.DeleteNode("cx:nf/@dir");
                 }
                 else
                 {
-                    SetXmlNodeString("cx:nf/@dir", value.ToEnumString());
+                    this.SetXmlNodeString("cx:nf/@dir", value.ToEnumString());
                 }
             }
         }

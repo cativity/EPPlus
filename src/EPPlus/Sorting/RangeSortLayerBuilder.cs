@@ -24,8 +24,8 @@ namespace OfficeOpenXml.Sorting
     {
         internal RangeSortLayerBuilder(RangeSortOptions options, RangeSortLayer sortLayer)
         {
-            _options = options;
-            _sortLayer = sortLayer;
+            this._options = options;
+            this._sortLayer = sortLayer;
         }
 
         private readonly RangeSortOptions _options;
@@ -38,7 +38,7 @@ namespace OfficeOpenXml.Sorting
         {
             get
             {
-                return new RangeSortLayer(_options);
+                return new RangeSortLayer(this._options);
             }
         }
 
@@ -49,7 +49,7 @@ namespace OfficeOpenXml.Sorting
         /// <returns>A <see cref="RangeSortLayerBuilder"/></returns>
         public RangeSortLayerBuilder UsingCustomList(params string[] values)
         {
-            _sortLayer.SetCustomList(values);
+            this._sortLayer.SetCustomList(values);
             return this;
         }
     }

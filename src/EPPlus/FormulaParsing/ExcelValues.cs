@@ -180,7 +180,7 @@ namespace OfficeOpenXml
 
         private ExcelErrorValue(eErrorType type)
         {
-            Type=type; 
+            this.Type=type; 
         }
 
         /// <summary>
@@ -194,7 +194,7 @@ namespace OfficeOpenXml
         /// <returns></returns>
         public override string ToString()
         {
-            switch(Type)
+            switch(this.Type)
             {
                 case eErrorType.Div0:
                     return Values.Div0;

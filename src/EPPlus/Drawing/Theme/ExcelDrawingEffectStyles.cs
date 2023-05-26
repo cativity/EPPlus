@@ -28,11 +28,11 @@ namespace OfficeOpenXml.Drawing.Theme
         private readonly ExcelThemeBase _theme;
         internal ExcelThemeEffectStyles(XmlNamespaceManager nameSpaceManager, XmlNode topNode, ExcelThemeBase theme) : base(nameSpaceManager, topNode)
         {
-            _theme = theme;
-            _list = new List<ExcelThemeEffectStyle>();
+            this._theme = theme;
+            this._list = new List<ExcelThemeEffectStyle>();
             foreach (XmlNode node in topNode.ChildNodes)
             {
-                _list.Add(new ExcelThemeEffectStyle(nameSpaceManager, node, "", null, _theme));
+                this._list.Add(new ExcelThemeEffectStyle(nameSpaceManager, node, "", null, this._theme));
             }
         }
         /// <summary>
@@ -41,12 +41,12 @@ namespace OfficeOpenXml.Drawing.Theme
         /// <returns>The enumerator</returns>
         public IEnumerator<ExcelThemeEffectStyle> GetEnumerator()
         {
-            return _list.GetEnumerator();
+            return this._list.GetEnumerator();
         }
 
         IEnumerator IEnumerable.GetEnumerator()
         {
-            return _list.GetEnumerator();
+            return this._list.GetEnumerator();
         }
         /// <summary>
         /// Indexer for the collection
@@ -57,7 +57,7 @@ namespace OfficeOpenXml.Drawing.Theme
         {
             get
             {
-                return (_list[index]);
+                return (this._list[index]);
             }
         }
         /// <summary>
@@ -66,9 +66,9 @@ namespace OfficeOpenXml.Drawing.Theme
         /// <returns></returns>
         public ExcelThemeEffectStyle Add()
         {
-            XmlElement? node = TopNode.OwnerDocument.CreateElement("a", "effectStyle", ExcelPackage.schemaMain);
-            TopNode.AppendChild(node);
-            return new ExcelThemeEffectStyle(NameSpaceManager, TopNode, "", null, _theme);
+            XmlElement? node = this.TopNode.OwnerDocument.CreateElement("a", "effectStyle", ExcelPackage.schemaMain);
+            this.TopNode.AppendChild(node);
+            return new ExcelThemeEffectStyle(this.NameSpaceManager, this.TopNode, "", null, this._theme);
         }
         /// <summary>
         /// Removes an effect style. The collection must have at least three effect styles.
@@ -76,14 +76,14 @@ namespace OfficeOpenXml.Drawing.Theme
         /// <param name="item">The Item</param>
         public void Remove(ExcelThemeEffectStyle item)
         {
-            if (_list.Count == 3)
+            if (this._list.Count == 3)
             {
                 throw (new InvalidOperationException("Collection must contain at least 3 items"));
             }
 
-            if (_list.Contains(item))
+            if (this._list.Contains(item))
             {
-                _list.Remove(item);
+                this._list.Remove(item);
                 item.TopNode.ParentNode.RemoveChild(item.TopNode);
             }
         }
@@ -93,16 +93,17 @@ namespace OfficeOpenXml.Drawing.Theme
         /// <param name="Index">The index</param>
         public void Remove(int Index)
         {
-            if (_list.Count == 3)
+            if (this._list.Count == 3)
             {
                 throw (new InvalidOperationException("Collection must contain at least 3 items"));
             }
 
-            if (Index >= _list.Count)
+            if (Index >= this._list.Count)
             {
                 throw new ArgumentException("Index", "Index out of range");
             }
-            _list.Remove(_list[Index]);
+
+            this._list.Remove(this._list[Index]);
         }
 
         /// <summary>
@@ -112,7 +113,7 @@ namespace OfficeOpenXml.Drawing.Theme
         {
             get
             {
-                return _list.Count;
+                return this._list.Count;
             }
         }
      }

@@ -30,11 +30,11 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Text
         {
             if (arguments == null)
             {
-                return CreateResult(string.Empty, DataType.String);
+                return this.CreateResult(string.Empty, DataType.String);
             }
             else if(arguments.Count() > 254)
             {
-                return CreateResult(ExcelErrorValue.Create(eErrorType.Value), DataType.ExcelAddress);
+                return this.CreateResult(ExcelErrorValue.Create(eErrorType.Value), DataType.ExcelAddress);
             }
             StringBuilder? sb = new StringBuilder();
             foreach (FunctionArgument? arg in arguments)
@@ -58,9 +58,9 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Text
             string? result = sb.ToString();
             if(!string.IsNullOrEmpty(result) && result.Length > 32767)
             {
-                return CreateResult(ExcelErrorValue.Create(eErrorType.Value), DataType.ExcelAddress);
+                return this.CreateResult(ExcelErrorValue.Create(eErrorType.Value), DataType.ExcelAddress);
             }
-            return CreateResult(sb.ToString(), DataType.String);
+            return this.CreateResult(sb.ToString(), DataType.String);
         }
     }
 }

@@ -22,8 +22,8 @@ namespace OfficeOpenXml.Drawing.Style.Coloring
     {
         internal ExcelColorTransformItem(XmlNamespaceManager nsm, XmlNode topNode,eColorTransformType type) : base(nsm, topNode)
         {
-            Type = type;
-            DataType = GetDataType(type);
+            this.Type = type;
+            this.DataType = GetDataType(type);
         }
         private static eColorTransformDataType GetDataType(eColorTransformType type)
         {
@@ -76,50 +76,50 @@ namespace OfficeOpenXml.Drawing.Style.Coloring
         {
             get
             {
-                switch(DataType)
+                switch(this.DataType)
                 {
                     case eColorTransformDataType.Percentage:
                     case eColorTransformDataType.PositivePercentage:
                     case eColorTransformDataType.FixedPercentage:
                     case eColorTransformDataType.FixedPositivePercentage:
-                        return GetXmlNodePercentage("@val") ?? 0;
+                        return this.GetXmlNodePercentage("@val") ?? 0;
                     case eColorTransformDataType.Angle:
                     case eColorTransformDataType.FixedAngle90:
-                        return GetXmlNodeAngel("@val");
+                        return this.GetXmlNodeAngel("@val");
                     default:
                         return 1; //Boolean
                 }
             }
             set
             {
-                if(DataType==eColorTransformDataType.Boolean)
+                if(this.DataType==eColorTransformDataType.Boolean)
                 {
                     throw (new ArgumentException("Value", "Value property don't apply to transformations with datatype Boolean. Please add(true)/remove(false) this item to change it's state"));
                 }
 
-                if (DataType==eColorTransformDataType.Percentage)
+                if (this.DataType==eColorTransformDataType.Percentage)
                 {
-                    SetXmlNodePercentage("@val",value,true, int.MaxValue/1000);
+                    this.SetXmlNodePercentage("@val",value,true, int.MaxValue/1000);
                 }
-                else if (DataType == eColorTransformDataType.PositivePercentage)
+                else if (this.DataType == eColorTransformDataType.PositivePercentage)
                 {
-                    SetXmlNodePercentage("@val", value, false, int.MaxValue / 1000);
+                    this.SetXmlNodePercentage("@val", value, false, int.MaxValue / 1000);
                 }
-                else if (DataType == eColorTransformDataType.FixedPercentage)
+                else if (this.DataType == eColorTransformDataType.FixedPercentage)
                 {
-                    SetXmlNodePercentage("@val", value  );
+                    this.SetXmlNodePercentage("@val", value  );
                 }
-                else if (DataType == eColorTransformDataType.FixedPositivePercentage)
+                else if (this.DataType == eColorTransformDataType.FixedPositivePercentage)
                 {
-                    SetXmlNodePercentage("@val", value, false);
+                    this.SetXmlNodePercentage("@val", value, false);
                 }
-                else if(DataType == eColorTransformDataType.Angle)
+                else if(this.DataType == eColorTransformDataType.Angle)
                 {
-                    SetXmlNodeAngel("@val", value, Type.ToString(), int.MinValue/60000, int.MaxValue/60000);
+                    this.SetXmlNodeAngel("@val", value, this.Type.ToString(), int.MinValue/60000, int.MaxValue/60000);
                 }
-                else if (DataType == eColorTransformDataType.FixedAngle90)
+                else if (this.DataType == eColorTransformDataType.FixedAngle90)
                 {
-                    SetXmlNodeAngel("@val", value, Type.ToString(), -90, 90);
+                    this.SetXmlNodeAngel("@val", value, this.Type.ToString(), -90, 90);
                 }
             }
         }
@@ -132,7 +132,7 @@ namespace OfficeOpenXml.Drawing.Style.Coloring
         /// <returns>The type</returns>
         public override string ToString()
         {
-            return Type.ToString();
+            return this.Type.ToString();
         }
     }
 }

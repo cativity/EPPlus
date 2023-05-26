@@ -30,8 +30,8 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Statistical
             ValidateArguments(arguments, 2);
             FunctionArgument? arg1 = arguments.ElementAt(0);
             FunctionArgument? arg2 = arguments.ElementAt(1);
-            double[]? knownYs = ArgsToDoubleEnumerable(false, false, new FunctionArgument[] { arg1 }, context).Select(x => x.Value).ToArray();
-            double[]? knownXs = ArgsToDoubleEnumerable(false, false, new FunctionArgument[] { arg2 }, context).Select(x => x.Value).ToArray();
+            double[]? knownYs = this.ArgsToDoubleEnumerable(false, false, new FunctionArgument[] { arg1 }, context).Select(x => x.Value).ToArray();
+            double[]? knownXs = this.ArgsToDoubleEnumerable(false, false, new FunctionArgument[] { arg2 }, context).Select(x => x.Value).ToArray();
             if (knownYs.Count() != knownXs.Count())
             {
                 return this.CreateResult(eErrorType.NA);
@@ -43,7 +43,7 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Statistical
             }
 
             double result = InterceptImpl(0, knownYs, knownXs);
-            return CreateResult(result, DataType.Decimal);
+            return this.CreateResult(result, DataType.Decimal);
         }
 
         internal static double InterceptImpl(double x, double[] arrayY, double[] arrayX)

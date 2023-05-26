@@ -157,7 +157,7 @@ namespace OfficeOpenXml.Core.Worksheet
             {
                 foreach (ExcelTableColumn? c in t.Columns)
                 {
-                    if (c.TotalsRowFunction != Table.RowFunctions.None)
+                    if (c.TotalsRowFunction != RowFunctions.None)
                     {
                         t.WorkSheet.SetTableTotalFunction(t, c);
                     }
@@ -257,7 +257,7 @@ namespace OfficeOpenXml.Core.Worksheet
             XmlDocument drawXml = new XmlDocument();
             drawXml.LoadXml(xml);
             //Add the relationship ID to the worksheet xml.
-            ZipPackageRelationship? drawRelation = added.Part.CreateRelationship(UriHelper.GetRelativeUri(added.WorksheetUri, uriDraw), Packaging.TargetMode.Internal, ExcelPackage.schemaRelationships + "/drawing");
+            ZipPackageRelationship? drawRelation = added.Part.CreateRelationship(UriHelper.GetRelativeUri(added.WorksheetUri, uriDraw), TargetMode.Internal, ExcelPackage.schemaRelationships + "/drawing");
             XmlElement e = added.WorksheetXml.SelectSingleNode("//d:drawing", nsm) as XmlElement;
             e.SetAttribute("id", ExcelPackage.schemaRelationships, drawRelation.Id);
             for (int i = 0; i < copy.Drawings.Count; i++)
@@ -287,7 +287,7 @@ namespace OfficeOpenXml.Core.Worksheet
                     {
                         relNode=draw.TopNode.SelectSingleNode("mc:AlternateContent/mc:Choice[@Requires='cx1' or @Requires='cx2']/xdr:graphicFrame/a:graphic/a:graphicData/cx:chart/@r:id", copy.Drawings.NameSpaceManager);
                         string prevRelID = relNode?.Value;
-                        ZipPackageRelationship? rel = partDraw.CreateRelationship(UriHelper.GetRelativeUri(uriDraw, uriChart), Packaging.TargetMode.Internal, ExcelPackage.schemaChartExRelationships);
+                        ZipPackageRelationship? rel = partDraw.CreateRelationship(UriHelper.GetRelativeUri(uriDraw, uriChart), TargetMode.Internal, ExcelPackage.schemaChartExRelationships);
                         XmlAttribute relAtt = drawXml.SelectSingleNode(string.Format("//cx:chart/@r:id[.='{0}']", prevRelID), copy.Drawings.NameSpaceManager) as XmlAttribute;
                         relAtt.Value = rel.Id;
 
@@ -296,7 +296,7 @@ namespace OfficeOpenXml.Core.Worksheet
                     {
                         relNode=draw.TopNode.SelectSingleNode("xdr:graphicFrame/a:graphic/a:graphicData/c:chart/@r:id", copy.Drawings.NameSpaceManager);
                         string prevRelID = relNode?.Value;
-                        ZipPackageRelationship? rel = partDraw.CreateRelationship(UriHelper.GetRelativeUri(uriDraw, uriChart), Packaging.TargetMode.Internal, ExcelPackage.schemaRelationships + "/chart");
+                        ZipPackageRelationship? rel = partDraw.CreateRelationship(UriHelper.GetRelativeUri(uriDraw, uriChart), TargetMode.Internal, ExcelPackage.schemaRelationships + "/chart");
                         XmlAttribute relAtt = drawXml.SelectSingleNode(string.Format("//c:chart/@r:id[.='{0}']", prevRelID), copy.Drawings.NameSpaceManager) as XmlAttribute;
                         relAtt.Value = rel.Id;
                     }
@@ -309,7 +309,7 @@ namespace OfficeOpenXml.Core.Worksheet
                     Uri? uri = container.UriPic;
                     ImageInfo? ii = added.Workbook._package.PictureStore.AddImage(pic.Image.ImageBytes, null, pic.Image.Type);
 
-                    ZipPackageRelationship? rel = partDraw.CreateRelationship(UriHelper.GetRelativeUri(added.WorksheetUri, ii.Uri), Packaging.TargetMode.Internal, ExcelPackage.schemaRelationships + "/image");
+                    ZipPackageRelationship? rel = partDraw.CreateRelationship(UriHelper.GetRelativeUri(added.WorksheetUri, ii.Uri), TargetMode.Internal, ExcelPackage.schemaRelationships + "/image");
                     //Fixes problem with invalid image when the same image is used more than once.
                     XmlNode relAtt =
                         drawXml.SelectSingleNode(
@@ -349,7 +349,7 @@ namespace OfficeOpenXml.Core.Worksheet
                     streamChart.Flush();
 
                     string? prevRelID = ctrl._control.RelationshipId;
-                    ZipPackageRelationship? rel = added.Part.CreateRelationship(UriHelper.GetRelativeUri(added.WorksheetUri, UriCtrl), Packaging.TargetMode.Internal, ExcelPackage.schemaRelationships + "/ctrlProp");
+                    ZipPackageRelationship? rel = added.Part.CreateRelationship(UriHelper.GetRelativeUri(added.WorksheetUri, UriCtrl), TargetMode.Internal, ExcelPackage.schemaRelationships + "/ctrlProp");
                     XmlAttribute relAtt = added.WorksheetXml.SelectSingleNode(string.Format("//d:control/@r:id[.='{0}']", prevRelID), added.NameSpaceManager) as XmlAttribute;
                     relAtt.Value = rel.Id;
                 }
@@ -403,7 +403,7 @@ namespace OfficeOpenXml.Core.Worksheet
                     for (int j = 0; j < chart.Series.Count; j++)
                     {
                         ExcelChartSerie? s = chart.Series[j];
-                        if (ExcelAddressBase.IsValidAddress(s.Series))
+                        if (ExcelCellBase.IsValidAddress(s.Series))
                         {
                             ExcelAddressBase? a = new ExcelAddressBase(s.Series);
                             if (a.WorkSheetName.Equals(copy.Name))
@@ -411,7 +411,7 @@ namespace OfficeOpenXml.Core.Worksheet
                                 s.Series = ExcelCellBase.GetFullAddress(added.Name, a.LocalAddress);
                             }
                         }
-                        if (string.IsNullOrEmpty(s.XSeries) == false && ExcelAddressBase.IsValidAddress(s.XSeries))
+                        if (string.IsNullOrEmpty(s.XSeries) == false && ExcelCellBase.IsValidAddress(s.XSeries))
                         {
                             ExcelAddressBase? a = new ExcelAddressBase(s.XSeries);
                             if (a.WorkSheetName.Equals(copy.Name))
@@ -473,7 +473,7 @@ namespace OfficeOpenXml.Core.Worksheet
                 byte[]? img = fill.BlipFill.Image.ImageBytes;
                 ImageInfo? ii = added.Workbook._package.PictureStore.AddImage(img, uri, null);
 
-                ZipPackageRelationship? rel = part.CreateRelationship(UriHelper.GetRelativeUri(uriDraw, ii.Uri), Packaging.TargetMode.Internal, ExcelPackage.schemaRelationships + "/image");
+                ZipPackageRelationship? rel = part.CreateRelationship(UriHelper.GetRelativeUri(uriDraw, ii.Uri), TargetMode.Internal, ExcelPackage.schemaRelationships + "/image");
                 //Fixes problem with invalid image when the same image is used more than once.
                 XmlNode relAtt =
                     drawXml.SelectSingleNode(
@@ -498,7 +498,7 @@ namespace OfficeOpenXml.Core.Worksheet
             streamDrawing.Flush();
 
             //Add the relationship ID to the worksheet xml.
-            ZipPackageRelationship? vmlRelation = newSheet.Part.CreateRelationship(UriHelper.GetRelativeUri(newSheet.WorksheetUri, vmlUri), Packaging.TargetMode.Internal, ExcelPackage.schemaRelationships + "/vmlDrawing");
+            ZipPackageRelationship? vmlRelation = newSheet.Part.CreateRelationship(UriHelper.GetRelativeUri(newSheet.WorksheetUri, vmlUri), TargetMode.Internal, ExcelPackage.schemaRelationships + "/vmlDrawing");
             XmlElement? e = newSheet.WorksheetXml.SelectSingleNode("//d:legacyDrawing", newSheet.NameSpaceManager) as XmlElement;
             if (e == null)
             {
@@ -528,7 +528,7 @@ namespace OfficeOpenXml.Core.Worksheet
             streamDrawing.Flush();
 
             //Add the relationship ID to the worksheet xml.
-            ZipPackageRelationship? commentRelation = added.Part.CreateRelationship(UriHelper.GetRelativeUri(added.WorksheetUri, uriComment), Packaging.TargetMode.Internal, ExcelPackage.schemaRelationships + "/comments");
+            ZipPackageRelationship? commentRelation = added.Part.CreateRelationship(UriHelper.GetRelativeUri(added.WorksheetUri, uriComment), TargetMode.Internal, ExcelPackage.schemaRelationships + "/comments");
 
             xml = Copy.VmlDrawings.VmlDrawingXml.InnerXml;
 
@@ -543,7 +543,7 @@ namespace OfficeOpenXml.Core.Worksheet
             streamVml.Write(xml);
             streamVml.Flush();
 
-            ZipPackageRelationship? newVmlRel = added.Part.CreateRelationship(UriHelper.GetRelativeUri(added.WorksheetUri, uriVml), Packaging.TargetMode.Internal, ExcelPackage.schemaRelationships + "/vmlDrawing");
+            ZipPackageRelationship? newVmlRel = added.Part.CreateRelationship(UriHelper.GetRelativeUri(added.WorksheetUri, uriVml), TargetMode.Internal, ExcelPackage.schemaRelationships + "/vmlDrawing");
 
             //Add the relationship ID to the worksheet xml.
             XmlElement e = added.WorksheetXml.SelectSingleNode("//d:legacyDrawing", added.NameSpaceManager) as XmlElement;
@@ -669,7 +669,7 @@ namespace OfficeOpenXml.Core.Worksheet
                 streamTbl.Flush();
 
                 //create the relationship and add the ID to the worksheet xml.
-                ZipPackageRelationship? rel = added.Part.CreateRelationship(UriHelper.GetRelativeUri(added.WorksheetUri, uriTbl), Packaging.TargetMode.Internal, ExcelPackage.schemaRelationships + "/table");
+                ZipPackageRelationship? rel = added.Part.CreateRelationship(UriHelper.GetRelativeUri(added.WorksheetUri, uriTbl), TargetMode.Internal, ExcelPackage.schemaRelationships + "/table");
 
                 if (tbl.RelationshipID == null)
                 {
@@ -765,7 +765,7 @@ namespace OfficeOpenXml.Core.Worksheet
                 streamTbl.Flush();
 
                 //create the relationship and add the ID to the worksheet xml.
-                added.Part.CreateRelationship(UriHelper.ResolvePartUri(added.WorksheetUri, uriTbl), Packaging.TargetMode.Internal, ExcelPackage.schemaRelationships + "/pivotTable");
+                added.Part.CreateRelationship(UriHelper.ResolvePartUri(added.WorksheetUri, uriTbl), TargetMode.Internal, ExcelPackage.schemaRelationships + "/pivotTable");
                 if (Copy.Workbook == added.Workbook)
                 {
                     partTbl.CreateRelationship(tbl.CacheDefinition.CacheDefinitionUri, tbl.CacheDefinition.Relationship.TargetMode, tbl.CacheDefinition.Relationship.RelationshipType);
@@ -1015,7 +1015,7 @@ namespace OfficeOpenXml.Core.Worksheet
             streamDrawing.Flush();
 
             //Add the relationship ID to the worksheet xml.
-            added.Part.CreateRelationship(tcUri, Packaging.TargetMode.Internal, ExcelPackage.schemaThreadedComment);
+            added.Part.CreateRelationship(tcUri, TargetMode.Internal, ExcelPackage.schemaThreadedComment);
 
             added.LoadThreadedComments();
             foreach (ExcelThreadedCommentThread? t in added.ThreadedComments._threads)
@@ -1114,7 +1114,7 @@ namespace OfficeOpenXml.Core.Worksheet
                 int id = added.SheetId;
                 Uri? uri = XmlHelper.GetNewUri(added.Part.Package, "/xl/slicers/slicer{0}.xml", ref id);
                 ZipPackagePart? part = added.Part.Package.CreatePart(uri, "application/vnd.ms-excel.slicer+xml", added.Part.Package.Compression);
-                ZipPackageRelationship? rel = added.Part.CreateRelationship(uri, Packaging.TargetMode.Internal, ExcelPackage.schemaRelationshipsSlicer);
+                ZipPackageRelationship? rel = added.Part.CreateRelationship(uri, TargetMode.Internal, ExcelPackage.schemaRelationshipsSlicer);
                 XmlDocument? xml = new XmlDocument();
                 xml.LoadXml(source.XmlDocument.OuterXml);
                 StreamWriter? stream = new StreamWriter(part.GetStream(FileMode.Create, FileAccess.Write));

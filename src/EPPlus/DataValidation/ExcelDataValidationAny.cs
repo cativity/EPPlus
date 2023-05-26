@@ -67,7 +67,7 @@ namespace OfficeOpenXml.DataValidation
 
         internal ExcelDataValidationAny Clone()
         {
-            return (ExcelDataValidationAny)GetClone();
+            return (ExcelDataValidationAny)this.GetClone();
         }
 
 

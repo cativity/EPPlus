@@ -27,9 +27,9 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Finance
         public override CompileResult Execute(IEnumerable<FunctionArgument> arguments, ParsingContext context)
         {
             ValidateArguments(arguments, 3);
-            System.DateTime settlementDate = System.DateTime.FromOADate(ArgToInt(arguments, 0));
-            System.DateTime maturityDate = System.DateTime.FromOADate(ArgToInt(arguments, 1));
-            double pr = ArgToDecimal(arguments, 2);
+            System.DateTime settlementDate = System.DateTime.FromOADate(this.ArgToInt(arguments, 0));
+            System.DateTime maturityDate = System.DateTime.FromOADate(this.ArgToInt(arguments, 1));
+            double pr = this.ArgToDecimal(arguments, 2);
             if (settlementDate >= maturityDate)
             {
                 return this.CreateResult(eErrorType.Num);
@@ -48,7 +48,7 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Finance
             IFinanicalDays? finDays = FinancialDaysFactory.Create(DayCountBasis.Actual_360);
             double nDaysInPeriod = finDays.GetDaysBetweenDates(settlementDate, maturityDate);
             double result = ((100d - pr)/pr) * (360d/nDaysInPeriod);
-            return CreateResult(result, DataType.Decimal);
+            return this.CreateResult(result, DataType.Decimal);
         }
     }
 }

@@ -37,45 +37,47 @@ namespace OfficeOpenXml.Export.HtmlExport
         {
             Require.Argument(attributeName).IsNotNullOrEmpty("attributeName");
             Require.Argument(attributeValue).IsNotNullOrEmpty("attributeValue");
-            _attributes.Add(new EpplusHtmlAttribute { AttributeName = attributeName, Value = attributeValue });
+            this._attributes.Add(new EpplusHtmlAttribute { AttributeName = attributeName, Value = attributeValue });
         }
         public void RenderBeginTag(string elementName, bool closeElement = false)
         {
-            _newLine = false;
+            this._newLine = false;
             // avoid writing indent characters for a hyperlinks or images inside a td element
             if(elementName != HtmlElements.A && elementName != HtmlElements.Img)
             {
-                WriteIndent();
+                this.WriteIndent();
             }
-            _writer.Write($"<{elementName}");
-            foreach (EpplusHtmlAttribute? attribute in _attributes)
+
+            this._writer.Write($"<{elementName}");
+            foreach (EpplusHtmlAttribute? attribute in this._attributes)
             {
-                _writer.Write($" {attribute.AttributeName}=\"{attribute.Value}\"");
+                this._writer.Write($" {attribute.AttributeName}=\"{attribute.Value}\"");
             }
-            _attributes.Clear();
+
+            this._attributes.Clear();
 
             if (closeElement)
             {
-                _writer.Write("/>");
-                _writer.Flush();
+                this._writer.Write("/>");
+                this._writer.Flush();
             }
             else
             {
-                _writer.Write(">");
-                _elementStack.Push(elementName);
+                this._writer.Write(">");
+                this._elementStack.Push(elementName);
             }
         }
 
         public void RenderEndTag()
         {
-            if (_newLine)
+            if (this._newLine)
             {
-                WriteIndent();
+                this.WriteIndent();
             }
 
-            string? elementName = _elementStack.Pop();
-            _writer.Write($"</{elementName}>");
-            _writer.Flush();
+            string? elementName = this._elementStack.Pop();
+            this._writer.Write($"</{elementName}>");
+            this._writer.Flush();
         }
 
         internal void SetClassAttributeFromStyle(ExcelRangeBase cell, bool isHeader, HtmlExportSettings settings, string additionalClasses)
@@ -125,17 +127,17 @@ namespace OfficeOpenXml.Export.HtmlExport
             }
 
             int id;
-            if (_styleCache.ContainsKey(key))
+            if (this._styleCache.ContainsKey(key))
             {
-                id = _styleCache[key];
+                id = this._styleCache[key];
             }
             else
             {
-                id = _styleCache.Count + 1;
-                _styleCache.Add(key, id);
+                id = this._styleCache.Count + 1;
+                this._styleCache.Add(key, id);
             }
             cls += $" {styleClassPrefix}{settings.CellStyleClassName}{id}";
-            AddAttribute("class", cls.Trim());
+            this.AddAttribute("class", cls.Trim());
         }
     }
 }

@@ -31,22 +31,22 @@ namespace OfficeOpenXml.Table
         internal ExcelTableCollection(ExcelWorksheet ws)
         {
             ZipPackage? pck = ws._package.ZipPackage;
-            _ws = ws;
+            this._ws = ws;
             foreach(XmlElement node in ws.WorksheetXml.SelectNodes("//d:tableParts/d:tablePart", ws.NameSpaceManager))
             {
                 ZipPackageRelationship? rel = ws.Part.GetRelationship(node.GetAttribute("id",ExcelPackage.schemaRelationships));
                 ExcelTable? tbl = new ExcelTable(rel, ws);
-                _tableNames.Add(tbl.Name, _tables.Count);
-                _tables.Add(tbl);
+                this._tableNames.Add(tbl.Name, this._tables.Count);
+                this._tables.Add(tbl);
             }
         }
         private ExcelTable Add(ExcelTable tbl)
         {
-            _tables.Add(tbl);
-            _tableNames.Add(tbl.Name, _tables.Count - 1);
-            if (tbl.Id >= _ws.Workbook._nextTableID)
+            this._tables.Add(tbl);
+            this._tableNames.Add(tbl.Name, this._tables.Count - 1);
+            if (tbl.Id >= this._ws.Workbook._nextTableID)
             {
-                _ws.Workbook._nextTableID = tbl.Id + 1;
+                this._ws.Workbook._nextTableID = tbl.Id + 1;
             }
             return tbl;
         }
@@ -59,18 +59,18 @@ namespace OfficeOpenXml.Table
         /// <returns>The table object</returns>
         public ExcelTable Add(ExcelAddressBase Range, string Name)
         {
-            if (Range.WorkSheetName != null && Range.WorkSheetName != _ws.Name)
+            if (Range.WorkSheetName != null && Range.WorkSheetName != this._ws.Name)
             {
                 throw new ArgumentException("Range does not belong to a worksheet", "Range");
             }
 
             if (string.IsNullOrEmpty(Name))
             {
-                Name = GetNewTableName();
+                Name = this.GetNewTableName();
             }
             else
             {
-                if (_ws.Workbook.ExistsTableName(Name))
+                if (this._ws.Workbook.ExistsTableName(Name))
                 {
                     throw (new ArgumentException("Tablename is not unique"));
                 }
@@ -78,14 +78,14 @@ namespace OfficeOpenXml.Table
 
             ValidateName(Name);
 
-            foreach (ExcelTable? t in _tables)
+            foreach (ExcelTable? t in this._tables)
             {
                 if (t.Address.Collide(Range) != ExcelAddressBase.eAddressCollition.No)
                 {
                     throw (new ArgumentException(string.Format("Table range collides with table {0}", t.Name)));
                 }
             }
-            foreach (string? mc in _ws.MergedCells)
+            foreach (string? mc in this._ws.MergedCells)
             {
                 if (mc == null)
                 {
@@ -98,7 +98,7 @@ namespace OfficeOpenXml.Table
                 }
             }
 
-            return Add(new ExcelTable(_ws, Range, Name, _ws.Workbook._nextTableID));
+            return this.Add(new ExcelTable(this._ws, Range, Name, this._ws.Workbook._nextTableID));
         }
 
         private static void ValidateName(string name)
@@ -126,7 +126,7 @@ namespace OfficeOpenXml.Table
         /// <param name="ClearRange">Clear the rage if set to true</param>
         public void Delete(int Index, bool ClearRange = false)
         {
-            Delete(this[Index], ClearRange);
+            this.Delete(this[Index], ClearRange);
         }
 
         /// <summary>
@@ -138,9 +138,10 @@ namespace OfficeOpenXml.Table
         {
             if (this[Name] == null)
             {
-                throw new ArgumentOutOfRangeException(string.Format("Cannot delete non-existant table {0} in sheet {1}.", Name, _ws.Name));
+                throw new ArgumentOutOfRangeException(string.Format("Cannot delete non-existant table {0} in sheet {1}.", Name, this._ws.Name));
             }
-            Delete(this[Name], ClearRange);
+
+            this.Delete(this[Name], ClearRange);
         }
 
 
@@ -157,9 +158,9 @@ namespace OfficeOpenXml.Table
             }
             lock (this)
             {
-                int tIx = _tableNames[Table.Name];
-                _tableNames.Remove(Table.Name);
-                _tables.Remove(Table);
+                int tIx = this._tableNames[Table.Name];
+                this._tableNames.Remove(Table.Name);
+                this._tables.Remove(Table);
                 foreach (ExcelWorksheet? sheet in Table.WorkSheet.Workbook.Worksheets)
                 {
                     if (sheet is ExcelChartsheet)
@@ -176,17 +177,17 @@ namespace OfficeOpenXml.Table
                     }
                     Table.WorkSheet.Workbook._nextTableID--;
                 }
-                foreach(string? name in _tableNames.Keys.ToArray())
+                foreach(string? name in this._tableNames.Keys.ToArray())
                 { 
-                    if(_tableNames[name] > tIx)
+                    if(this._tableNames[name] > tIx)
                     {
-                        _tableNames[name]--;
+                        this._tableNames[name]--;
                     }
                 }
                 Table.DeleteMe();
                 if (ClearRange)
                 {
-                    ExcelRange? range = _ws.Cells[Table.Address.Address];
+                    ExcelRange? range = this._ws.Cells[Table.Address.Address];
                     range.Clear();
                 }                
             }
@@ -197,7 +198,7 @@ namespace OfficeOpenXml.Table
         {
             string name = "Table1";
             int i = 2;
-            while (_ws.Workbook.ExistsTableName(name))
+            while (this._ws.Workbook.ExistsTableName(name))
             {
                 name = string.Format("Table{0}", i++);
             }
@@ -210,7 +211,7 @@ namespace OfficeOpenXml.Table
         {
             get
             {
-                return _tables.Count;
+                return this._tables.Count;
             }
         }
         /// <summary>
@@ -238,11 +239,11 @@ namespace OfficeOpenXml.Table
         {
             get
             {
-                if (Index < 0 || Index >= _tables.Count)
+                if (Index < 0 || Index >= this._tables.Count)
                 {
                     throw (new ArgumentOutOfRangeException("Table index out of range"));
                 }
-                return _tables[Index];
+                return this._tables[Index];
             }
         }
         /// <summary>
@@ -254,9 +255,9 @@ namespace OfficeOpenXml.Table
         {
             get
             {
-                if (_tableNames.ContainsKey(Name))
+                if (this._tableNames.ContainsKey(Name))
                 {
-                    return _tables[_tableNames[Name]];
+                    return this._tables[this._tableNames[Name]];
                 }
                 else
                 {
@@ -270,12 +271,12 @@ namespace OfficeOpenXml.Table
         /// <returns>The enumerator</returns>
         public IEnumerator<ExcelTable> GetEnumerator()
         {
-            return _tables.GetEnumerator();
+            return this._tables.GetEnumerator();
         }
 
         System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator()
         {
-            return _tables.GetEnumerator();
+            return this._tables.GetEnumerator();
         }
     }
 }

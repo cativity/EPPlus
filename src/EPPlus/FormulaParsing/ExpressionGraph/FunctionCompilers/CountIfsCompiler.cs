@@ -20,12 +20,12 @@ namespace OfficeOpenXml.FormulaParsing.ExpressionGraph.FunctionCompilers
         public override CompileResult Compile(IEnumerable<Expression> children)
         {
             List<FunctionArgument>? args = new List<FunctionArgument>();
-            Function.BeforeInvoke(Context);
+            this.Function.BeforeInvoke(this.Context);
             for(int rangeIx = 0; rangeIx < children.Count(); rangeIx += 2)
             {
                 Expression? rangeExpr = children.ElementAt(rangeIx).Children.First();
                 rangeExpr.IgnoreCircularReference = true;
-                RangeAddress? currentAdr = Context.Scopes.Current.Address;
+                RangeAddress? currentAdr = this.Context.Scopes.Current.Address;
                 ExcelAddress? rangeAdr = new ExcelAddress(rangeExpr.ExpressionString);
                 string? rangeWs = string.IsNullOrEmpty(rangeAdr.WorkSheetName) ? currentAdr.Worksheet : rangeAdr.WorkSheetName;
                 if (currentAdr.Worksheet == rangeWs && rangeAdr.Collide(new ExcelAddress(currentAdr.Address)) != ExcelAddressBase.eAddressCollition.No)
@@ -41,9 +41,9 @@ namespace OfficeOpenXml.FormulaParsing.ExpressionGraph.FunctionCompilers
                             int candidateRowIndex = firstRangeResult.Address._fromRow + functionRowIndex;
                             int candidateColIndex = firstRangeResult.Address._fromCol + functionColIndex;
                             object? candidateValue = firstRangeResult.GetValue(candidateRowIndex, candidateColIndex);
-                            if (_evaluator.Evaluate(candidateArg, candidateValue?.ToString()))
+                            if (this._evaluator.Evaluate(candidateArg, candidateValue?.ToString()))
                             {
-                                if (Context.Configuration.AllowCircularReferences)
+                                if (this.Context.Configuration.AllowCircularReferences)
                                 {
                                     return CompileResult.ZeroDecimal;
                                 }
@@ -69,7 +69,7 @@ namespace OfficeOpenXml.FormulaParsing.ExpressionGraph.FunctionCompilers
                     BuildFunctionArguments(compileResult, args);
                 }
             }
-            return Function.Execute(args, Context);
+            return this.Function.Execute(args, this.Context);
         }
     }
 }

@@ -30,8 +30,8 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Statistical
             ValidateArguments(arguments, 2);
             FunctionArgument? arg1 = arguments.ElementAt(0);
             FunctionArgument? arg2 = arguments.ElementAt(1);
-            ExcelDoubleCellValue[]? arr1 = ArgsToDoubleEnumerable(new FunctionArgument[] { arg1 }, context).ToArray();
-            ExcelDoubleCellValue[]? arr2 = ArgsToDoubleEnumerable(new FunctionArgument[] { arg2 }, context).ToArray();
+            ExcelDoubleCellValue[]? arr1 = this.ArgsToDoubleEnumerable(new FunctionArgument[] { arg1 }, context).ToArray();
+            ExcelDoubleCellValue[]? arr2 = this.ArgsToDoubleEnumerable(new FunctionArgument[] { arg2 }, context).ToArray();
             if (arr2.Count() != arr1.Count())
             {
                 return this.CreateResult(eErrorType.NA);
@@ -43,7 +43,7 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Statistical
             }
 
             double result = Covar(arr1, arr2) / StandardDeviation(arr1) / StandardDeviation(arr2);
-            return CreateResult(result, DataType.Decimal);
+            return this.CreateResult(result, DataType.Decimal);
         }
 
         private static double StandardDeviation(ExcelDoubleCellValue[] values)

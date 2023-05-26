@@ -40,7 +40,7 @@ namespace OfficeOpenXml.FormulaParsing.Utilities
                 return false;
             }
 
-            return (TypeCompat.IsPrimitive(obj) || obj is double || obj is decimal || obj is System.DateTime || obj is TimeSpan);
+            return (TypeCompat.IsPrimitive(obj) || obj is double || obj is decimal || obj is DateTime || obj is TimeSpan);
         }
     }
 }

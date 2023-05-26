@@ -38,7 +38,7 @@ namespace OfficeOpenXml.FormulaParsing.ExcelUtilities
         internal AddressTranslator(ExcelDataProvider excelDataProvider)
         {
             Require.That(excelDataProvider).Named("excelDataProvider").IsNotNull();
-            _excelDataProvider = excelDataProvider;
+            this._excelDataProvider = excelDataProvider;
         }
 
         /// <summary>
@@ -51,7 +51,7 @@ namespace OfficeOpenXml.FormulaParsing.ExcelUtilities
         /// <param name="row"></param>
         public virtual void ToColAndRow(string address, out int col, out int row)
         {
-            ToColAndRow(address, out col, out row, RangeCalculationBehaviour.FirstPart);
+            this.ToColAndRow(address, out col, out row, RangeCalculationBehaviour.FirstPart);
         }
 
         /// <summary>
@@ -79,7 +79,7 @@ namespace OfficeOpenXml.FormulaParsing.ExcelUtilities
             }
             //col--;
             //row = GetIntPart(address) - 1 ?? GetRowIndexByBehaviour(behaviour);
-            row = GetIntPart(address) ?? GetRowIndexByBehaviour(behaviour);
+            row = GetIntPart(address) ?? this.GetRowIndexByBehaviour(behaviour);
 
         }
 
@@ -89,7 +89,7 @@ namespace OfficeOpenXml.FormulaParsing.ExcelUtilities
             {
                 return 1;
             }
-            return _excelDataProvider.ExcelMaxRows;
+            return this._excelDataProvider.ExcelMaxRows;
         }
 
         private static int GetNumericAlphaValue(char c)

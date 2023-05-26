@@ -21,8 +21,8 @@ namespace OfficeOpenXml.Core.Worksheet.Fonts.GenericFontMetrics
     {
         public UniCodeRange(int start, int end)
         {
-            Start = start;
-            End = end;
+            this.Start = start;
+            this.End = end;
         }
 
         public int Start { get; set; }
@@ -31,13 +31,13 @@ namespace OfficeOpenXml.Core.Worksheet.Fonts.GenericFontMetrics
 
         public bool IsInRange(int c)
         {
-            return (c >= Start && c <= End);
+            return (c >= this.Start && c <= this.End);
         }
 
         public IEnumerable<char> ToCharList()
         {
             List<char>? result = new List<char>();
-            for (int c = Start; c <= End; c++)
+            for (int c = this.Start; c <= this.End; c++)
             {
                 result.Add(Convert.ToChar(c));
             }

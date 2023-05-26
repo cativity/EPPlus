@@ -88,7 +88,7 @@ namespace OfficeOpenXml.Core
         /// <returns>The address in A1 notation</returns>        
         public static string FromR1C1(string r1C1Address, int row, int col)
         {
-            if (ExcelAddress.IsTableAddress(r1C1Address))
+            if (ExcelAddressBase.IsTableAddress(r1C1Address))
             {
                 return r1C1Address;
             }
@@ -260,7 +260,7 @@ namespace OfficeOpenXml.Core
                            GetCellAddress("R", address._toRow, row, address._toRowFixed) + GetCellAddress("C", address._toCol, col, address._toColFixed);
                 }
             }
-            return ExcelAddressBase.GetFullAddress(address._wb, address._ws, returnAddress);
+            return ExcelCellBase.GetFullAddress(address._wb, address._ws, returnAddress);
         }
 
         private static string GetCellAddress(string RC, int fromRow, int row, bool isFixed)

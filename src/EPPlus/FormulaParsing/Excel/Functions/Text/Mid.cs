@@ -29,8 +29,8 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Text
         {
             ValidateArguments(arguments, 3);
             string? text = ArgToString(arguments, 0);
-            int startIx = ArgToInt(arguments, 1);
-            int length = ArgToInt(arguments, 2);
+            int startIx = this.ArgToInt(arguments, 1);
+            int length = this.ArgToInt(arguments, 2);
             if(startIx<=0)
             {
                 throw(new ArgumentException("Argument start can't be less than 1"));
@@ -38,12 +38,12 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Text
             //Allow overflowing start and length
             if (startIx > text.Length)
             {
-                return CreateResult("", DataType.String);
+                return this.CreateResult("", DataType.String);
             }
             else
             {
                 string? result = text.Substring(startIx - 1, startIx - 1 + length < text.Length ? length : text.Length - startIx + 1);
-                return CreateResult(result, DataType.String);
+                return this.CreateResult(result, DataType.String);
             }
         }
     }

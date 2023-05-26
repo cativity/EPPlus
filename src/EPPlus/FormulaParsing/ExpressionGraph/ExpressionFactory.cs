@@ -26,8 +26,8 @@ namespace OfficeOpenXml.FormulaParsing.ExpressionGraph
 
         public ExpressionFactory(ExcelDataProvider excelDataProvider, ParsingContext context)
         {
-            _excelDataProvider = excelDataProvider;
-            _parsingContext = context;
+            this._excelDataProvider = excelDataProvider;
+            this._parsingContext = context;
         }
 
 
@@ -51,7 +51,7 @@ namespace OfficeOpenXml.FormulaParsing.ExpressionGraph
             }
             if (token.TokenTypeIsSet(TokenType.ExcelAddress))
             {
-                ExcelAddressExpression? exp = new ExcelAddressExpression(token.Value, _excelDataProvider, _parsingContext, token.IsNegated);
+                ExcelAddressExpression? exp = new ExcelAddressExpression(token.Value, this._excelDataProvider, this._parsingContext, token.IsNegated);
                 exp.HasCircularReference = token.TokenTypeIsSet(TokenType.CircularReference);
                 return exp;
             }
@@ -73,7 +73,7 @@ namespace OfficeOpenXml.FormulaParsing.ExpressionGraph
             }
             if (token.TokenTypeIsSet(TokenType.NameValue))
             {
-                return new NamedValueExpression(token.Value, _parsingContext);
+                return new NamedValueExpression(token.Value, this._parsingContext);
             }
             return new StringExpression(token.Value);
         }

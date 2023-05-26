@@ -11,7 +11,7 @@ namespace OfficeOpenXml.Drawing.Vml
         ExcelVmlDrawingFill _fill;
         internal ExcelVmlDrawingGradientFill(ExcelVmlDrawingFill fill, XmlNamespaceManager nsm, XmlNode topNode) : base(nsm, topNode)
         {
-            _fill = fill;
+            this._fill = fill;
         }       
         /// <summary>
         /// A semicolon separated list of colors used for gradient fill. 
@@ -22,11 +22,11 @@ namespace OfficeOpenXml.Drawing.Vml
         {
             get
             {
-                return GetXmlNodeString("v:fill/@colors");
+                return this.GetXmlNodeString("v:fill/@colors");
             }
             set
             {
-                SetXmlNodeString("v:fill/@colors", value);
+                this.SetXmlNodeString("v:fill/@colors", value);
             }
         }
         /// <summary>
@@ -67,22 +67,23 @@ namespace OfficeOpenXml.Drawing.Vml
             }
             if(colors[0].Percent==0)
             {
-                _fill.Color.SetColor(colors[0].Color);
+                this._fill.Color.SetColor(colors[0].Color);
             }
-            else if(!string.IsNullOrEmpty(_fill.Color.ColorString))
+            else if(!string.IsNullOrEmpty(this._fill.Color.ColorString))
             {
-                colorsString = $"0 #{_fill.Color.ColorString};";
+                colorsString = $"0 #{this._fill.Color.ColorString};";
             }
             
             if(colors[colors.Length-1].Percent==100)
             {
-                _fill.SecondColor.SetColor(colors[colors.Length - 1].Color);
+                this._fill.SecondColor.SetColor(colors[colors.Length - 1].Color);
             }
-            else if (!string.IsNullOrEmpty(_fill.SecondColor.ColorString))
+            else if (!string.IsNullOrEmpty(this._fill.SecondColor.ColorString))
             {
-                colorsString += $"1 #{_fill.SecondColor.ColorString};";
+                colorsString += $"1 #{this._fill.SecondColor.ColorString};";
             }
-            ColorsString = colorsString;
+
+            this.ColorsString = colorsString;
         }
         /// <summary>
         /// Gradient angle
@@ -91,12 +92,11 @@ namespace OfficeOpenXml.Drawing.Vml
         {
             get
             {
-                return GetXmlNodeDoubleNull("v:fill/@angle");
+                return this.GetXmlNodeDoubleNull("v:fill/@angle");
             }
             set
             {
-                
-                SetXmlNodeDouble("v:fill/@angle", value);
+                this.SetXmlNodeDouble("v:fill/@angle", value);
             }
         }
         /// <summary>
@@ -106,11 +106,11 @@ namespace OfficeOpenXml.Drawing.Vml
         {
             get
             {
-                return GetXmlNodeDoubleNull("v:fill/@focus");
+                return this.GetXmlNodeDoubleNull("v:fill/@focus");
             }
             set
             {
-                SetXmlNodeDouble("v:fill/@focus", value);
+                this.SetXmlNodeDouble("v:fill/@focus", value);
             }
         }
         /// <summary>
@@ -120,11 +120,11 @@ namespace OfficeOpenXml.Drawing.Vml
         {
             get
             {
-                return GetXmlNodeString("v:fill/@method").ToGradientMethodEnum(eVmlGradientMethod.None);
+                return this.GetXmlNodeString("v:fill/@method").ToGradientMethodEnum(eVmlGradientMethod.None);
             }
             set
             {
-                SetXmlNodeString("v:fill/@focus", value.ToEnumString());
+                this.SetXmlNodeString("v:fill/@focus", value.ToEnumString());
             }
         }
 

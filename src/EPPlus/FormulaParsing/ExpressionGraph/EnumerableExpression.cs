@@ -27,7 +27,7 @@ namespace OfficeOpenXml.FormulaParsing.ExpressionGraph
 
         public EnumerableExpression(IExpressionCompiler expressionCompiler)
         {
-            _expressionCompiler = expressionCompiler;
+            this._expressionCompiler = expressionCompiler;
         }
 
         private readonly IExpressionCompiler _expressionCompiler;
@@ -45,9 +45,9 @@ namespace OfficeOpenXml.FormulaParsing.ExpressionGraph
         public override CompileResult Compile()
         {
             List<object>? result = new List<object>();
-            foreach (Expression? childExpression in Children)
+            foreach (Expression? childExpression in this.Children)
             {
-                result.Add(_expressionCompiler.Compile(new List<Expression>{ childExpression }).Result);
+                result.Add(this._expressionCompiler.Compile(new List<Expression>{ childExpression }).Result);
             }
             return new CompileResult(result, DataType.Enumerable);
         }

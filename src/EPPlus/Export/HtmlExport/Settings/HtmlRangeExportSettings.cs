@@ -31,7 +31,7 @@ namespace OfficeOpenXml.Export.HtmlExport
         { 
             get
             {
-                return _headerRows;
+                return this._headerRows;
             }
             set
             {
@@ -39,7 +39,8 @@ namespace OfficeOpenXml.Export.HtmlExport
                 {
                     throw new InvalidOperationException("Can't be negative or exceed number of allowed rows in a worksheet.");
                 }
-                _headerRows = value;
+
+                this._headerRows = value;
             }
         }
         /// <summary>
@@ -57,16 +58,16 @@ namespace OfficeOpenXml.Export.HtmlExport
         /// </summary>
         public void ResetToDefault()
         {
-            Minify = true;
-            HiddenRows = eHiddenState.Exclude;
-            HeaderRows = 1;
-            Headers.Clear();
-            Accessibility.TableSettings.ResetToDefault();
-            AdditionalTableClassNames.Clear();
-            Culture = CultureInfo.CurrentCulture;
-            Encoding = Encoding.UTF8;
-            Css.ResetToDefault();
-            Pictures.ResetToDefault();
+            this.Minify = true;
+            this.HiddenRows = eHiddenState.Exclude;
+            this.HeaderRows = 1;
+            this.Headers.Clear();
+            this.Accessibility.TableSettings.ResetToDefault();
+            this.AdditionalTableClassNames.Clear();
+            this.Culture = CultureInfo.CurrentCulture;
+            this.Encoding = Encoding.UTF8;
+            this.Css.ResetToDefault();
+            this.Pictures.ResetToDefault();
         }
         /// <summary>
         /// Copy the values from another settings object.
@@ -74,21 +75,21 @@ namespace OfficeOpenXml.Export.HtmlExport
         /// <param name="copy">The object to copy.</param>
         public void Copy(HtmlRangeExportSettings copy)
         {
-            Minify = copy.Minify;
-            HiddenRows = copy.HiddenRows;
-            HeaderRows = copy.HeaderRows;
-            Headers.Clear();
-            Headers.AddRange(copy.Headers);
+            this.Minify = copy.Minify;
+            this.HiddenRows = copy.HiddenRows;
+            this.HeaderRows = copy.HeaderRows;
+            this.Headers.Clear();
+            this.Headers.AddRange(copy.Headers);
 
-            Accessibility.TableSettings.Copy(copy.Accessibility.TableSettings);
-            
-            AdditionalTableClassNames.Clear();
-            AdditionalTableClassNames.AddRange(copy.AdditionalTableClassNames);
+            this.Accessibility.TableSettings.Copy(copy.Accessibility.TableSettings);
 
-            Culture = copy.Culture;
-            Encoding = copy.Encoding;
-            Css.Copy(copy.Css);
-            Pictures.Copy(copy.Pictures);
+            this.AdditionalTableClassNames.Clear();
+            this.AdditionalTableClassNames.AddRange(copy.AdditionalTableClassNames);
+
+            this.Culture = copy.Culture;
+            this.Encoding = copy.Encoding;
+            this.Css.Copy(copy.Css);
+            this.Pictures.Copy(copy.Pictures);
         }
     }
 }

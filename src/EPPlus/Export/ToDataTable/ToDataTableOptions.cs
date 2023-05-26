@@ -29,23 +29,23 @@ namespace OfficeOpenXml.Export.ToDataTable
         private List<int> _primaryKeyIndexes = new List<int>();
         private ToDataTableOptions()
         {
-            Mappings = new DataColumnMappingCollection();
+            this.Mappings = new DataColumnMappingCollection();
             // Default values
-            ColumnNameParsingStrategy = NameParsingStrategy.Preserve;
-            ExcelErrorParsingStrategy = ExcelErrorParsingStrategy.HandleExcelErrorsAsBlankCells;
-            PredefinedMappingsOnly = false;
-            FirstRowIsColumnNames = true;
-            DataTableName = DefaultDataTableName;
+            this.ColumnNameParsingStrategy = NameParsingStrategy.Preserve;
+            this.ExcelErrorParsingStrategy = ExcelErrorParsingStrategy.HandleExcelErrorsAsBlankCells;
+            this.PredefinedMappingsOnly = false;
+            this.FirstRowIsColumnNames = true;
+            this.DataTableName = DefaultDataTableName;
         }
 
         internal IEnumerable<string> PrimaryKeyNames
         {
-            get { return _primaryKeyFields; }
+            get { return this._primaryKeyFields; }
         }
 
         internal IEnumerable<int> PrimaryKeyIndexes
         {
-            get { return _primaryKeyIndexes; }
+            get { return this._primaryKeyIndexes; }
         }
 
         /// <summary>
@@ -139,9 +139,9 @@ namespace OfficeOpenXml.Export.ToDataTable
         /// <param name="columnNames">The name or names of one or more column in the <see cref="System.Data.DataTable"/> that constitutes the primary key</param>
         public void SetPrimaryKey(params string[] columnNames)
         {
-            _primaryKeyFields.Clear();
-            _primaryKeyFields.AddRange(columnNames);
-            _primaryKeyIndexes.Clear();
+            this._primaryKeyFields.Clear();
+            this._primaryKeyFields.AddRange(columnNames);
+            this._primaryKeyIndexes.Clear();
         }
 
         /// <summary>
@@ -150,9 +150,9 @@ namespace OfficeOpenXml.Export.ToDataTable
         /// <param name="zeroBasedRangeIndexes">The index or indexes of one or more column in the range that builds up the primary key of the <see cref="System.Data.DataTable"/></param>
         public void SetPrimaryKey(params int[] zeroBasedRangeIndexes)
         {
-            _primaryKeyIndexes.Clear();
-            _primaryKeyIndexes.AddRange(zeroBasedRangeIndexes);
-            _primaryKeyFields.Clear();
+            this._primaryKeyIndexes.Clear();
+            this._primaryKeyIndexes.AddRange(zeroBasedRangeIndexes);
+            this._primaryKeyFields.Clear();
         }
     }
 }

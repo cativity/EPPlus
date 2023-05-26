@@ -26,19 +26,20 @@ namespace OfficeOpenXml.DataValidation.Formulas
         {
             if (!string.IsNullOrEmpty(formula))
             {
-                ExcelFormula = formula;
+                this.ExcelFormula = formula;
             }
-            State = FormulaState.Formula;
+
+            this.State = FormulaState.Formula;
         }
 
         internal override string GetXmlValue()
         {
-            return ExcelFormula;
+            return this.ExcelFormula;
         }
 
         protected override string GetValueAsString()
         {
-            return ExcelFormula;
+            return this.ExcelFormula;
         }
 
         internal override void ResetValue()

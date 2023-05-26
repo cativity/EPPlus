@@ -30,8 +30,8 @@ namespace OfficeOpenXml.ExternalReferences
     {
         internal ExcelExternalDdeLink(ExcelWorkbook wb, XmlTextReader reader, ZipPackagePart part, XmlElement workbookElement) : base (wb, reader, part, workbookElement)
         {
-            DdeService = reader.GetAttribute("ddeService");
-            DdeTopic = reader.GetAttribute("ddeTopic");
+            this.DdeService = reader.GetAttribute("ddeService");
+            this.DdeTopic = reader.GetAttribute("ddeTopic");
             
             while (reader.Read())
             {
@@ -40,7 +40,7 @@ namespace OfficeOpenXml.ExternalReferences
                     switch (reader.LocalName)
                     {
                         case "ddeItems":
-                            ReadDdeItems(reader);
+                            this.ReadDdeItems(reader);
                             break;
                     }
                 }
@@ -63,7 +63,7 @@ namespace OfficeOpenXml.ExternalReferences
                 }
                 if (reader.NodeType == XmlNodeType.Element && reader.LocalName == "ddeItem")
                 {
-                    DdeItems.Add(new ExcelExternalDdeItem()
+                    this.DdeItems.Add(new ExcelExternalDdeItem()
                     {
                         Name = reader.GetAttribute("name"),
                         Advise = XmlHelper.GetBoolFromString(reader.GetAttribute("advise")),
@@ -106,8 +106,8 @@ namespace OfficeOpenXml.ExternalReferences
         } = new ExcelExternalDdeItemCollection();
         internal override void Save(StreamWriter sw)
         {
-            sw.Write($"<ddeLink ddeTopic=\"{DdeTopic}\" ddeService=\"{DdeService}\"><ddeItems>");
-            foreach (ExcelExternalDdeItem item in DdeItems)
+            sw.Write($"<ddeLink ddeTopic=\"{this.DdeTopic}\" ddeService=\"{this.DdeService}\"><ddeItems>");
+            foreach (ExcelExternalDdeItem item in this.DdeItems)
             {                
                 sw.Write(string.Format("<ddeItem name=\"{0}\" {1}{2}{3}/>",
                   item.Name,

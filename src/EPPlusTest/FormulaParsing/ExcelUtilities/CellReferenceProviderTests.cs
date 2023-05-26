@@ -46,8 +46,8 @@ namespace EPPlusTest.ExcelUtilities
         [TestInitialize]
         public void Setup()
         {
-            _provider = A.Fake<ExcelDataProvider>();
-            A.CallTo(() => _provider.ExcelMaxRows).Returns(5000);
+            this._provider = A.Fake<ExcelDataProvider>();
+            A.CallTo(() => this._provider.ExcelMaxRows).Returns(5000);
         }
 
         [TestMethod]
@@ -56,7 +56,7 @@ namespace EPPlusTest.ExcelUtilities
             ParsingContext? parsingContext = ParsingContext.Create();
             parsingContext.Scopes.NewScope(RangeAddress.Empty);
             parsingContext.Configuration.SetLexer(new Lexer(parsingContext.Configuration.FunctionRepository, parsingContext.NameValueProvider));
-            parsingContext.RangeAddressFactory = new RangeAddressFactory(_provider);
+            parsingContext.RangeAddressFactory = new RangeAddressFactory(this._provider);
             CellReferenceProvider? provider = new CellReferenceProvider();
             IEnumerable<string>? result = provider.GetReferencedAddresses("A1", parsingContext);
             Assert.AreEqual("A1", result.First());
@@ -68,7 +68,7 @@ namespace EPPlusTest.ExcelUtilities
             ParsingContext? parsingContext = ParsingContext.Create();
             parsingContext.Scopes.NewScope(RangeAddress.Empty);
             parsingContext.Configuration.SetLexer(new Lexer(parsingContext.Configuration.FunctionRepository, parsingContext.NameValueProvider));
-            parsingContext.RangeAddressFactory = new RangeAddressFactory(_provider);
+            parsingContext.RangeAddressFactory = new RangeAddressFactory(this._provider);
             CellReferenceProvider? provider = new CellReferenceProvider();
             IEnumerable<string>? result = provider.GetReferencedAddresses("A1:A2", parsingContext);
             Assert.AreEqual("A1", result.First());

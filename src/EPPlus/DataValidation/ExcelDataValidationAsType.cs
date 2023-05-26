@@ -10,7 +10,7 @@ namespace OfficeOpenXml.DataValidation
         IExcelDataValidation _validation;
         internal ExcelDataValidationAsType(IExcelDataValidation validation)
         {
-            _validation = validation;
+            this._validation = validation;
         }
 
         /// <summary>
@@ -20,7 +20,7 @@ namespace OfficeOpenXml.DataValidation
         /// <returns>An instance of <typeparamref name="T"/> or null if type casting fails.</returns>
         public T Type<T>() where T : IExcelDataValidation
         {
-            if (_validation is T t)
+            if (this._validation is T t)
             {
                 return t;
             }
@@ -35,7 +35,7 @@ namespace OfficeOpenXml.DataValidation
         {
             get
             {
-                return _validation as IExcelDataValidationList;
+                return this._validation as IExcelDataValidationList;
             }
         }
 
@@ -43,11 +43,11 @@ namespace OfficeOpenXml.DataValidation
         /// Returns the data validation object as <see cref="Contracts.IExcelDataValidationInt"/>
         /// </summary>
         /// <returns>The data validation as an <see cref="Contracts.IExcelDataValidationInt"/> or null if typecasting fails</returns>
-        public Contracts.IExcelDataValidationInt IntegerValidation
+        public IExcelDataValidationInt IntegerValidation
         {
             get
             {
-                return _validation as Contracts.IExcelDataValidationInt;
+                return this._validation as IExcelDataValidationInt;
             }
         }
 
@@ -59,7 +59,7 @@ namespace OfficeOpenXml.DataValidation
         {
             get
             {
-                return _validation as IExcelDataValidationDateTime;
+                return this._validation as IExcelDataValidationDateTime;
             }
         }
 
@@ -71,7 +71,7 @@ namespace OfficeOpenXml.DataValidation
         {
             get
             {
-                return _validation as IExcelDataValidationTime;
+                return this._validation as IExcelDataValidationTime;
             }
         }
 
@@ -83,7 +83,7 @@ namespace OfficeOpenXml.DataValidation
         {
             get
             {
-                return _validation as IExcelDataValidationDecimal;
+                return this._validation as IExcelDataValidationDecimal;
             }
         }
 
@@ -95,7 +95,7 @@ namespace OfficeOpenXml.DataValidation
         {
             get
             {
-                return _validation as IExcelDataValidationAny;
+                return this._validation as IExcelDataValidationAny;
             }
         }
 
@@ -107,7 +107,7 @@ namespace OfficeOpenXml.DataValidation
         {
             get
             {
-                return _validation as IExcelDataValidationCustom;
+                return this._validation as IExcelDataValidationCustom;
             }
         }
     }

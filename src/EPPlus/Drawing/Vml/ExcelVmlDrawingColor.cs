@@ -14,7 +14,7 @@ namespace OfficeOpenXml.Drawing.Vml
         string _path;
         internal ExcelVmlDrawingColor(XmlNamespaceManager ns, XmlNode topNode, string path) : base (ns, topNode)
         {
-            _path = path;
+            this._path = path;
         }
         /// <summary>
         /// A color string representing a color. Uses the HTML 4.0 color names, rgb decimal triplets or rgb hex triplets
@@ -28,11 +28,11 @@ namespace OfficeOpenXml.Drawing.Vml
         { 
             get
             {
-                return GetXmlNodeString(_path);
+                return this.GetXmlNodeString(this._path);
             }
             set
             {
-                SetXmlNodeString(_path, value);
+                this.SetXmlNodeString(this._path, value);
             }
         }
         /// <summary>
@@ -41,7 +41,7 @@ namespace OfficeOpenXml.Drawing.Vml
         /// <param name="color"></param>
         public void SetColor(Color color)
         {
-            ColorString = "#" + (color.ToArgb() & 0xFFFFFF).ToString("X").PadLeft(6, '0');
+            this.ColorString = "#" + (color.ToArgb() & 0xFFFFFF).ToString("X").PadLeft(6, '0');
         }
         /// <summary>
         /// Gets the color for the color string
@@ -49,7 +49,7 @@ namespace OfficeOpenXml.Drawing.Vml
         /// <returns></returns>
         public Color GetColor()
         {
-            return GetColor(ColorString);
+            return GetColor(this.ColorString);
         }
         internal static Color GetColor(string c)
         {
@@ -79,7 +79,7 @@ namespace OfficeOpenXml.Drawing.Vml
 #if NETSTANDARD
                     return OfficeOpenXml.Compatibility.System.Drawing.ColorTranslator.FromHtml(c);
 #else
-                    return System.Drawing.ColorTranslator.FromHtml(c);
+                    return ColorTranslator.FromHtml(c);
 #endif
 
                 }

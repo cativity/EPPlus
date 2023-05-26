@@ -19,90 +19,90 @@ namespace EPPlusTest.FormulaParsing.Excel.Functions.RefAndLookup
         [TestInitialize]
         public void Initialize()
         {
-            _parsingContext = ParsingContext.Create();
-            _package = new ExcelPackage();
-            _worksheet = _package.Workbook.Worksheets.Add("test");
+            this._parsingContext = ParsingContext.Create();
+            this._package = new ExcelPackage();
+            this._worksheet = this._package.Workbook.Worksheets.Add("test");
         }
 
         [TestCleanup]
         public void Cleanup()
         {
-            _package.Dispose();
+            this._package.Dispose();
         }
 
         [TestMethod]
         public void Match_Without_Wildcard()
         {
-            _worksheet.Cells["A1"].Value = "test";
-            _worksheet.Cells["A2"].Value = "value_to_match";
-            _worksheet.Cells["A3"].Value = "test";
+            this._worksheet.Cells["A1"].Value = "test";
+            this._worksheet.Cells["A2"].Value = "value_to_match";
+            this._worksheet.Cells["A3"].Value = "test";
 
             //_worksheet.Cells["A4"].Value 
-            _worksheet.Cells["A4"].Formula = "MATCH(\"value_to_match\", A1:A3, 0)";
+            this._worksheet.Cells["A4"].Formula = "MATCH(\"value_to_match\", A1:A3, 0)";
 
-            _worksheet.Calculate();
+            this._worksheet.Calculate();
 
-            Assert.AreEqual(2, _worksheet.Cells["A4"].Value);
+            Assert.AreEqual(2, this._worksheet.Cells["A4"].Value);
         }
 
         [TestMethod]
         public void Match_With_Wildcard1()
         {
-            _worksheet.Cells["A1"].Value = "test";
-            _worksheet.Cells["A2"].Value = "value_to_match";
-            _worksheet.Cells["A3"].Value = "test";
+            this._worksheet.Cells["A1"].Value = "test";
+            this._worksheet.Cells["A2"].Value = "value_to_match";
+            this._worksheet.Cells["A3"].Value = "test";
 
             //_worksheet.Cells["A4"].Value 
-            _worksheet.Cells["A4"].Formula = "MATCH(\"valu*_to_match\", A1:A3, 0)";
+            this._worksheet.Cells["A4"].Formula = "MATCH(\"valu*_to_match\", A1:A3, 0)";
 
-            _worksheet.Calculate();
+            this._worksheet.Calculate();
 
-            Assert.AreEqual(2, _worksheet.Cells["A4"].Value);
+            Assert.AreEqual(2, this._worksheet.Cells["A4"].Value);
         }
 
         [TestMethod]
         public void Match_With_Wildcard2()
         {
-            _worksheet.Cells["A1"].Value = "test";
-            _worksheet.Cells["A2"].Value = "value_to_match";
-            _worksheet.Cells["A3"].Value = "test";
+            this._worksheet.Cells["A1"].Value = "test";
+            this._worksheet.Cells["A2"].Value = "value_to_match";
+            this._worksheet.Cells["A3"].Value = "test";
 
             //_worksheet.Cells["A4"].Value 
-            _worksheet.Cells["A4"].Formula = "MATCH(\"?alue_to_match\", A1:A3, 0)";
+            this._worksheet.Cells["A4"].Formula = "MATCH(\"?alue_to_match\", A1:A3, 0)";
 
-            _worksheet.Calculate();
+            this._worksheet.Calculate();
 
-            Assert.AreEqual(2, _worksheet.Cells["A4"].Value);
+            Assert.AreEqual(2, this._worksheet.Cells["A4"].Value);
         }
 
         [TestMethod]
         public void Match_Without_ExactMatch()
         {
-            _worksheet.Cells["A1"].Value = "test";
-            _worksheet.Cells["A2"].Value = "value_to_match";
-            _worksheet.Cells["A3"].Value = "test";
+            this._worksheet.Cells["A1"].Value = "test";
+            this._worksheet.Cells["A2"].Value = "value_to_match";
+            this._worksheet.Cells["A3"].Value = "test";
 
             //_worksheet.Cells["A4"].Value 
-            _worksheet.Cells["A4"].Formula = "MATCH(\"no_match\", A1:A3, 0)";
+            this._worksheet.Cells["A4"].Formula = "MATCH(\"no_match\", A1:A3, 0)";
 
-            _worksheet.Calculate();
+            this._worksheet.Calculate();
 
-            Assert.AreEqual(ExcelErrorValue.Create(eErrorType.NA), _worksheet.Cells["A4"].Value);
+            Assert.AreEqual(ExcelErrorValue.Create(eErrorType.NA), this._worksheet.Cells["A4"].Value);
         }
 
         [TestMethod]
         public void Match_With_ExactMatch_ShouldNotTreatNullValuesAsAMatch()
         {
-            _worksheet.Cells["A1"].Value = "test";
-            _worksheet.Cells["A2"].Value = "value_to_match";
-            _worksheet.Cells["A3"].Value = "test";
+            this._worksheet.Cells["A1"].Value = "test";
+            this._worksheet.Cells["A2"].Value = "value_to_match";
+            this._worksheet.Cells["A3"].Value = "test";
 
             //_worksheet.Cells["A4"].Value 
-            _worksheet.Cells["A4"].Formula = "MATCH(B1, C1:C2, 0)";
+            this._worksheet.Cells["A4"].Formula = "MATCH(B1, C1:C2, 0)";
 
-            _worksheet.Calculate();
+            this._worksheet.Calculate();
 
-            Assert.AreEqual(ExcelErrorValue.Create(eErrorType.NA), _worksheet.Cells["A4"].Value);
+            Assert.AreEqual(ExcelErrorValue.Create(eErrorType.NA), this._worksheet.Cells["A4"].Value);
         }
     }
 }

@@ -33,7 +33,7 @@ namespace OfficeOpenXml.FormulaParsing
         internal FormulaParserManager(FormulaParser parser)
         {
             Require.That(parser).Named("parser").IsNotNull();
-            _parser = parser;
+            this._parser = parser;
         }
 
         /// <summary>
@@ -44,7 +44,7 @@ namespace OfficeOpenXml.FormulaParsing
         /// <param name="module">A <see cref="IFunctionModule"/> containing <see cref="ExcelFunction"/>s.</param>
         public void LoadFunctionModule(IFunctionModule module)
         {
-            _parser.Configure(x => x.FunctionRepository.LoadModule(module));
+            this._parser.Configure(x => x.FunctionRepository.LoadModule(module));
         }
 
         /// <summary>
@@ -56,7 +56,7 @@ namespace OfficeOpenXml.FormulaParsing
         /// <param name="functionImpl"></param>
         public void AddOrReplaceFunction(string functionName, ExcelFunction functionImpl)
         {
-            _parser.Configure(x => x.FunctionRepository.AddOrReplaceFunction(functionName, functionImpl));
+            this._parser.Configure(x => x.FunctionRepository.AddOrReplaceFunction(functionName, functionImpl));
         }
 
         /// <summary>
@@ -68,7 +68,7 @@ namespace OfficeOpenXml.FormulaParsing
             IEnumerable<KeyValuePair<string, ExcelFunction>>? functions = otherWorkbook.FormulaParserManager.GetImplementedFunctions();
             foreach (KeyValuePair<string, ExcelFunction> func in functions)
             {
-                AddOrReplaceFunction(func.Key, func.Value);
+                this.AddOrReplaceFunction(func.Key, func.Value);
             }
         }
 
@@ -79,8 +79,8 @@ namespace OfficeOpenXml.FormulaParsing
         /// <returns>Function names in lower case</returns>
         public IEnumerable<string> GetImplementedFunctionNames()
         {
-            List<string>? fnList = _parser.FunctionNames.ToList();
-            fnList.Sort((x, y) => String.Compare(x, y, System.StringComparison.Ordinal));
+            List<string>? fnList = this._parser.FunctionNames.ToList();
+            fnList.Sort((x, y) => String.Compare(x, y, StringComparison.Ordinal));
             return fnList;
         }
 
@@ -91,7 +91,8 @@ namespace OfficeOpenXml.FormulaParsing
         public IEnumerable<KeyValuePair<string, ExcelFunction>> GetImplementedFunctions()
         {
             List<KeyValuePair<string, ExcelFunction>>? functions = new List<KeyValuePair<string, ExcelFunction>>();
-            _parser.Configure(parsingConfiguration =>
+
+            this._parser.Configure(parsingConfiguration =>
             {
                 foreach (string? name in parsingConfiguration.FunctionRepository.FunctionNames)
                 {
@@ -108,7 +109,7 @@ namespace OfficeOpenXml.FormulaParsing
         /// <returns>The result of the parsed formula</returns>
         public object Parse(string formula)
         {
-            return _parser.Parse(formula);
+            return this._parser.Parse(formula);
         }
 
         /// <summary>
@@ -119,7 +120,7 @@ namespace OfficeOpenXml.FormulaParsing
         /// <returns>The result of the parsed formula</returns>
         public object Parse(string formula, string address)
         {
-            return _parser.Parse(formula, address);
+            return this._parser.Parse(formula, address);
         }
 
         /// <summary>
@@ -129,7 +130,7 @@ namespace OfficeOpenXml.FormulaParsing
         /// <see cref="OfficeOpenXml.FormulaParsing.Logging.LoggerFactory"/>
         public void AttachLogger(IFormulaParserLogger logger)
         {
-            _parser.Configure(c => c.AttachLogger(logger));
+            this._parser.Configure(c => c.AttachLogger(logger));
         }
 
         /// <summary>
@@ -138,20 +139,20 @@ namespace OfficeOpenXml.FormulaParsing
         /// <param name="logfile"></param>
         public void AttachLogger(FileInfo logfile)
         {
-            _parser.Configure(c => c.AttachLogger(LoggerFactory.CreateTextFileLogger(logfile)));
+            this._parser.Configure(c => c.AttachLogger(LoggerFactory.CreateTextFileLogger(logfile)));
         }
         /// <summary>
         /// Detaches any attached logger from the formula parser.
         /// </summary>
         public void DetachLogger()
         {
-            _parser.Configure(c => c.DetachLogger());
+            this._parser.Configure(c => c.DetachLogger());
         }
 
         public IEnumerable<IFormulaCellInfo> GetCalculationChain(ExcelRangeBase range)
         {
             Require.That(range).IsNotNull();
-            return GetCalculationChain(range, null);
+            return this.GetCalculationChain(range, null);
         }
 
         public IEnumerable<IFormulaCellInfo> GetCalculationChain(ExcelRangeBase range, ExcelCalculationOption options)
@@ -159,7 +160,7 @@ namespace OfficeOpenXml.FormulaParsing
             Require.That(range).IsNotNull();
             Init(range.Worksheet.Workbook);
             FilterInfo? filterInfo = new FilterInfo(range.Worksheet.Workbook);
-            _parser.InitNewCalc(filterInfo);
+            this._parser.InitNewCalc(filterInfo);
             ExcelCalculationOption? opt = options != null ? options : new ExcelCalculationOption();
             DependencyChain? dc = DependencyChainFactory.Create(range, opt);
             List<IFormulaCellInfo>? result = new List<IFormulaCellInfo>();

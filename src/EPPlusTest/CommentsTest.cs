@@ -68,7 +68,7 @@ namespace EPPlusTest
                 new OfficeOpenXml.Drawing.Vml.VmlGradiantColor(100, Color.Orange));
             Assert.IsNotNull(a1.Comment);
             //check style attribute
-            Dictionary<string, string>? stylesDict = new System.Collections.Generic.Dictionary<string, string>();
+            Dictionary<string, string>? stylesDict = new Dictionary<string, string>();
             string[] styles = a1.Comment.Style
                 .Split(new[] { ";" }, StringSplitOptions.RemoveEmptyEntries);
             foreach (string? s in styles)

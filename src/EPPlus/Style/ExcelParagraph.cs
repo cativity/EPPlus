@@ -37,12 +37,12 @@ namespace OfficeOpenXml.Style
         {
             get
             {
-                return GetXmlNodeString(TextPath);
+                return this.GetXmlNodeString(TextPath);
             }
             set
             {
-                CreateTopNode();
-                SetXmlNodeString(TextPath, value);
+                this.CreateTopNode();
+                this.SetXmlNodeString(TextPath, value);
             }
         }
         /// <summary>
@@ -52,12 +52,12 @@ namespace OfficeOpenXml.Style
         {
             get
             {
-                XmlNode? parent = _rootNode.ParentNode;
+                XmlNode? parent = this._rootNode.ParentNode;
                 for (int i=0;i<parent.ChildNodes.Count;i++)
                 {
                     if (parent.ChildNodes[i].LocalName == "r")
                     {
-                        return parent.ChildNodes[i] == _rootNode;
+                        return parent.ChildNodes[i] == this._rootNode;
                     }
                 }
                 return false;
@@ -70,12 +70,12 @@ namespace OfficeOpenXml.Style
         {
             get
             {
-                XmlNode? parent = _rootNode.ParentNode;
+                XmlNode? parent = this._rootNode.ParentNode;
                 for (int i = parent.ChildNodes.Count-1; i >=0 ; i--)
                 {
                     if (parent.ChildNodes[i].LocalName == "r")
                     {
-                        return parent.ChildNodes[i] == _rootNode;
+                        return parent.ChildNodes[i] == this._rootNode;
                     }
                 }
                 return false;

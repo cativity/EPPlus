@@ -34,7 +34,7 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Logical
 
         public Xor(DoubleEnumerableArgConverter converter)
         {
-            _converter = converter;
+            this._converter = converter;
         }
 
         private readonly DoubleEnumerableArgConverter _converter;
@@ -43,7 +43,7 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Logical
         {
             ValidateArguments(arguments, 1);
             List<bool>? results = new List<bool>();
-            IEnumerable<ExcelDoubleCellValue>? values = _converter.ConvertArgsIncludingOtherTypes(arguments, false);
+            IEnumerable<ExcelDoubleCellValue>? values = this._converter.ConvertArgsIncludingOtherTypes(arguments, false);
             int nTrue = 0;
             foreach(ExcelDoubleCellValue val in values)
             {
@@ -53,7 +53,7 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Logical
                 }
             }
             bool result = (System.Math.Abs(nTrue) & 1) != 0;
-            return CreateResult(result, DataType.Boolean);
+            return this.CreateResult(result, DataType.Boolean);
         }
     }
 }

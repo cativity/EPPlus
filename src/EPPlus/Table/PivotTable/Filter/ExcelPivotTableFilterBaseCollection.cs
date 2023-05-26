@@ -29,28 +29,28 @@ namespace OfficeOpenXml.Table.PivotTable.Filter
         internal readonly ExcelPivotTableField _field;
         internal ExcelPivotTableFilterBaseCollection(ExcelPivotTable table)
         {
-            _table = table;
-            XmlNode? filtersNode = _table.GetNode("d:filters");
+            this._table = table;
+            XmlNode? filtersNode = this._table.GetNode("d:filters");
             if (filtersNode != null)
             {
                 foreach (XmlNode node in filtersNode.ChildNodes)
                 {
-                    ExcelPivotTableFilter? f =new ExcelPivotTableFilter(_table.NameSpaceManager, node, _table.WorkSheet.Workbook.Date1904);
+                    ExcelPivotTableFilter? f =new ExcelPivotTableFilter(this._table.NameSpaceManager, node, this._table.WorkSheet.Workbook.Date1904);
                     table.SetNewFilterId(f.Id);
-                    _filters.Add(f);
+                    this._filters.Add(f);
                 }
             }
         }
         internal ExcelPivotTableFilterBaseCollection(ExcelPivotTableField field)
-        {            
-            _field = field;
-            _table = field._pivotTable;
+        {
+            this._field = field;
+            this._table = field._pivotTable;
 
-            foreach(ExcelPivotTableFilter? filter in _table.Filters)
+            foreach(ExcelPivotTableFilter? filter in this._table.Filters)
             {
                 if(filter.Fld==field.Index)
                 {
-                    _filters.Add(filter);
+                    this._filters.Add(filter);
                 }
             }
         }
@@ -60,7 +60,7 @@ namespace OfficeOpenXml.Table.PivotTable.Filter
         /// <returns>An enumerator that can be used to iterate through the collection.</returns>
         public IEnumerator<ExcelPivotTableFilter> GetEnumerator()
         {
-            return _filters.GetEnumerator();
+            return this._filters.GetEnumerator();
         }
 
         /// <summary>
@@ -69,23 +69,23 @@ namespace OfficeOpenXml.Table.PivotTable.Filter
         /// <returns>An enumerator that can be used to iterate through the collection.</returns>
         IEnumerator IEnumerable.GetEnumerator()
         {
-            return _filters.GetEnumerator();
+            return this._filters.GetEnumerator();
         }
 
         internal XmlNode GetOrCreateFiltersNode()
         {
-            return _table.CreateNode("d:filters");
+            return this._table.CreateNode("d:filters");
         }
         internal ExcelPivotTableFilter CreateFilter()
         {
-            XmlNode? topNode = GetOrCreateFiltersNode();
+            XmlNode? topNode = this.GetOrCreateFiltersNode();
             XmlElement? filterNode = topNode.OwnerDocument.CreateElement("filter", ExcelPackage.schemaMain);
             topNode.AppendChild(filterNode);
-            ExcelPivotTableFilter? filter = new ExcelPivotTableFilter(_field.NameSpaceManager, filterNode, _table.WorkSheet.Workbook.Date1904)
+            ExcelPivotTableFilter? filter = new ExcelPivotTableFilter(this._field.NameSpaceManager, filterNode, this._table.WorkSheet.Workbook.Date1904)
             {
                 EvalOrder = -1,
-                Fld = _field.Index,
-                Id = _table.GetNewFilterId()
+                Fld = this._field.Index,
+                Id = this._table.GetNewFilterId()
             };
             return filter;
         }
@@ -96,7 +96,7 @@ namespace OfficeOpenXml.Table.PivotTable.Filter
         { 
             get
             {
-                return _filters.Count;
+                return this._filters.Count;
             }
         }
         /// <summary>
@@ -108,12 +108,12 @@ namespace OfficeOpenXml.Table.PivotTable.Filter
         {
             get
             {
-                if (index < 0 || index >= _filters.Count)
+                if (index < 0 || index >= this._filters.Count)
                 {
                     throw (new ArgumentOutOfRangeException());
                 }
 
-                return _filters[index];
+                return this._filters[index];
             }
         }
     }

@@ -25,7 +25,7 @@ namespace OfficeOpenXml
     {
         internal ExcelWriteProtection(XmlNamespaceManager nameSpaceManager, XmlNode topNode, string[] schemaNodeOrder) : base(nameSpaceManager, topNode)
         {
-            SchemaNodeOrder = schemaNodeOrder;
+            this.SchemaNodeOrder = schemaNodeOrder;
         }
         /// <summary>
         /// Writes protectes the workbook with a password. 
@@ -35,26 +35,27 @@ namespace OfficeOpenXml
         /// <param name="password">The password. Setting the password to null or empty will remove the read-only mode.</param>
         public void SetReadOnly(string userName, string password)
         {
-            UserName = userName;
+            this.UserName = userName;
             if (string.IsNullOrEmpty(password?.Trim()))
             {
-                RemovePasswordAttributes();
+                this.RemovePasswordAttributes();
                 return;
             }
-            HashAlgorithm = eHashAlgorithm.SHA512;
+
+            this.HashAlgorithm = eHashAlgorithm.SHA512;
 
             byte[]? s = new byte[16];
             RandomNumberGenerator? rnd = RandomNumberGenerator.Create();
             rnd.GetBytes(s);
-            SaltValue = s;
-            SpinCount = 100000;
+            this.SaltValue = s;
+            this.SpinCount = 100000;
 
-            HashValue = EncryptedPackageHandler.GetPasswordHashSpinAppending(SHA512.Create(), SaltValue, password, SpinCount, 64);
+            this.HashValue = EncryptedPackageHandler.GetPasswordHashSpinAppending(SHA512.Create(), this.SaltValue, password, this.SpinCount, 64);
         }
 
         private void RemovePasswordAttributes()
         {
-            XmlElement? node = (XmlElement)GetNode("d:fileSharing");            
+            XmlElement? node = (XmlElement)this.GetNode("d:fileSharing");            
             node.RemoveAttribute("spinCount");
             node.RemoveAttribute("saltValue");
             node.RemoveAttribute("hashValue");
@@ -64,17 +65,17 @@ namespace OfficeOpenXml
         /// </summary>
         public void RemoveReadOnly()
         {
-            DeleteNode("d:fileSharing");
+            this.DeleteNode("d:fileSharing");
         }
         internal eHashAlgorithm HashAlgorithm
         {
             get
             {
-                return GetHashAlogorithm(GetXmlNodeString("d:fileSharing/@algorithmName"));
+                return GetHashAlogorithm(this.GetXmlNodeString("d:fileSharing/@algorithmName"));
             }
             private set
             {
-                SetXmlNodeString("d:fileSharing/@algorithmName", SetHashAlogorithm(value));
+                this.SetXmlNodeString("d:fileSharing/@algorithmName", SetHashAlogorithm(value));
             }
         }
 
@@ -114,18 +115,18 @@ namespace OfficeOpenXml
         {
             get
             {
-                return GetXmlNodeInt("d:fileSharing/@spinCount");
+                return this.GetXmlNodeInt("d:fileSharing/@spinCount");
             }
             set
             {
-                SetXmlNodeInt("d:fileSharing/@spinCount", value);
+                this.SetXmlNodeInt("d:fileSharing/@spinCount", value);
             }
         }
         internal byte[] SaltValue
         {
             get
             {
-                string? s = GetXmlNodeString("d:fileSharing/@saltValue");
+                string? s = this.GetXmlNodeString("d:fileSharing/@saltValue");
                 if (!string.IsNullOrEmpty(s))
                 {
                     return Convert.FromBase64String(s);
@@ -134,14 +135,14 @@ namespace OfficeOpenXml
             }
             set
             {
-                SetXmlNodeString("d:fileSharing/@saltValue", Convert.ToBase64String(value));
+                this.SetXmlNodeString("d:fileSharing/@saltValue", Convert.ToBase64String(value));
             }
         }
         internal byte[] HashValue
         {
             get
             {
-                string? s = GetXmlNodeString("d:fileSharing/@hashValue");
+                string? s = this.GetXmlNodeString("d:fileSharing/@hashValue");
                 if (!string.IsNullOrEmpty(s))
                 {
                     return Convert.FromBase64String(s);
@@ -150,7 +151,7 @@ namespace OfficeOpenXml
             }
             set
             {
-                SetXmlNodeString("d:fileSharing/@hashValue", Convert.ToBase64String(value));
+                this.SetXmlNodeString("d:fileSharing/@hashValue", Convert.ToBase64String(value));
             }
         }
         /// <summary>
@@ -160,7 +161,7 @@ namespace OfficeOpenXml
         {
             get
             {
-                return ExistsNode("d:fileSharing/@hashValue");
+                return this.ExistsNode("d:fileSharing/@hashValue");
             }
         }
         /// <summary>
@@ -170,11 +171,11 @@ namespace OfficeOpenXml
         {
             get
             {
-                return GetXmlNodeString("d:fileSharing/@userName");
+                return this.GetXmlNodeString("d:fileSharing/@userName");
             }
             set
             {
-                SetXmlNodeString("d:fileSharing/@userName", value);
+                this.SetXmlNodeString("d:fileSharing/@userName", value);
             }
         }
         /// <summary>
@@ -184,11 +185,11 @@ namespace OfficeOpenXml
         {
             get
             {
-                return GetXmlNodeBool("d:fileSharing/@readOnlyRecommended");
+                return this.GetXmlNodeBool("d:fileSharing/@readOnlyRecommended");
             }
             set
             {
-                SetXmlNodeBool("d:fileSharing/@readOnlyRecommended", value);
+                this.SetXmlNodeBool("d:fileSharing/@readOnlyRecommended", value);
             }
         }
     }

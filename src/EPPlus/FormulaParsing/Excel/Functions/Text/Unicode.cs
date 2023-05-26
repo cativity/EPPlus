@@ -37,7 +37,7 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Text
             string? firstChar = arg.Substring(0, 1);
             byte[]? bytes = Encoding.UTF32.GetBytes(firstChar);
             int code = BitConverter.ToInt32(bytes, 0);
-            return CreateResult(code, DataType.Integer);
+            return this.CreateResult(code, DataType.Integer);
         }
     }
 }

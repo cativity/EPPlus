@@ -24,7 +24,7 @@ namespace OfficeOpenXml.Drawing.Chart.ChartEx
     {
         internal ExcelChartExPlotarea(XmlNamespaceManager ns, XmlNode node, ExcelChart chart) : base(ns, node, chart, "cx")
         {
-            SchemaNodeOrder = new string[] { "plotAreaRegion","axis","spPr" };
+            this.SchemaNodeOrder = new string[] { "plotAreaRegion","axis","spPr" };
         }
         /// <summary>
         /// Not applicable on extended charts. Will throw <see cref="InvalidOperationException"/>

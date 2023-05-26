@@ -32,11 +32,11 @@ namespace OfficeOpenXml.Drawing.Style.Coloring
         {
             get
             {
-                return TranslateFromString(GetXmlNodeString("@val"));
+                return TranslateFromString(this.GetXmlNodeString("@val"));
             }
             set
             {
-                SetXmlNodeString("@val", TranslateFromEnum(value));
+                this.SetXmlNodeString("@val", TranslateFromEnum(value));
             }
         }
         /// <summary>
@@ -46,7 +46,7 @@ namespace OfficeOpenXml.Drawing.Style.Coloring
         {
             get
             {
-                return ExcelDrawingRgbColor.GetColorFromString(GetXmlNodeString("@lastClr"));
+                return ExcelDrawingRgbColor.GetColorFromString(this.GetXmlNodeString("@lastClr"));
             }            
         }
         private static eSystemColor TranslateFromString(string v)
@@ -81,7 +81,7 @@ namespace OfficeOpenXml.Drawing.Style.Coloring
 
         internal Color GetColor()
         {
-            switch (Color)
+            switch (this.Color)
             {
                 case eSystemColor.ActiveBorder:
                     return EPPlusSystemColors.ActiveBorder;

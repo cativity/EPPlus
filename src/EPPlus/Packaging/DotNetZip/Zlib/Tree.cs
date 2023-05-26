@@ -196,11 +196,11 @@ namespace OfficeOpenXml.Packaging.Ionic.Zlib
         //     not null.
         internal void  gen_bitlen(DeflateManager s)
         {
-            short[] tree = dyn_tree;
-            short[] stree = staticTree.treeCodes;
-            int[] extra = staticTree.extraBits;
-            int base_Renamed = staticTree.extraBase;
-            int max_length = staticTree.maxLength;
+            short[] tree = this.dyn_tree;
+            short[] stree = this.staticTree.treeCodes;
+            int[] extra = this.staticTree.extraBits;
+            int base_Renamed = this.staticTree.extraBase;
+            int max_length = this.staticTree.maxLength;
             int h; // heap index
             int n, m; // iterate over the tree elements
             int bits; // bit length
@@ -228,7 +228,7 @@ namespace OfficeOpenXml.Packaging.Ionic.Zlib
                 tree[n * 2 + 1] = (short) bits;
                 // We overwrite tree[n*2+1] which is no longer needed
                                 
-                if (n > max_code)
+                if (n > this.max_code)
                 {
                     continue; // not a leaf node
                 }
@@ -277,7 +277,7 @@ namespace OfficeOpenXml.Packaging.Ionic.Zlib
                 while (n != 0)
                 {
                     m = s.heap[--h];
-                    if (m > max_code)
+                    if (m > this.max_code)
                     {
                         continue;
                     }
@@ -300,9 +300,9 @@ namespace OfficeOpenXml.Packaging.Ionic.Zlib
         //     also updated if stree is not null. The field max_code is set.
         internal void  build_tree(DeflateManager s)
         {
-            short[] tree  = dyn_tree;
-            short[] stree = staticTree.treeCodes;
-            int elems     = staticTree.elems;
+            short[] tree  = this.dyn_tree;
+            short[] stree = this.staticTree.treeCodes;
+            int elems     = this.staticTree.elems;
             int n, m;            // iterate over heap elements
             int max_code  = -1;  // largest code with non zero frequency
             int node;            // new node being created
@@ -370,7 +370,7 @@ namespace OfficeOpenXml.Packaging.Ionic.Zlib
                                 
                 // Create a new node father of n and m
                 tree[node * 2] = unchecked((short) (tree[n * 2] + tree[m * 2]));
-                s.depth[node] = (sbyte) (System.Math.Max((byte) s.depth[n], (byte) s.depth[m]) + 1);
+                s.depth[node] = (sbyte) (Math.Max((byte) s.depth[n], (byte) s.depth[m]) + 1);
                 tree[n * 2 + 1] = tree[m * 2 + 1] = (short) node;
                                 
                 // and insert the new node in the heap
@@ -383,8 +383,8 @@ namespace OfficeOpenXml.Packaging.Ionic.Zlib
                         
             // At this point, the fields freq and dad are set. We can now
             // generate the bit lengths.
-                        
-            gen_bitlen(s);
+
+            this.gen_bitlen(s);
                         
             // The field len is now set, we can generate the bit codes
             gen_codes(tree, max_code, s.bl_count);

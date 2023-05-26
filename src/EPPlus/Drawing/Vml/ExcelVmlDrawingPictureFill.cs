@@ -13,7 +13,7 @@ namespace OfficeOpenXml.Drawing.Vml
         ExcelVmlDrawingFill _fill;
         internal ExcelVmlDrawingPictureFill(ExcelVmlDrawingFill fill, XmlNamespaceManager nsm, XmlNode topNode) : base(nsm, topNode)
         {
-            _fill = fill;
+            this._fill = fill;
         }
         ExcelVmlDrawingColor _secondColor;
         /// <summary>
@@ -23,11 +23,11 @@ namespace OfficeOpenXml.Drawing.Vml
         {
             get
             {
-                if (_secondColor == null)
+                if (this._secondColor == null)
                 {
-                    _secondColor = new ExcelVmlDrawingColor(NameSpaceManager, TopNode, "v:fill/@color2");
+                    this._secondColor = new ExcelVmlDrawingColor(this.NameSpaceManager, this.TopNode, "v:fill/@color2");
                 }
-                return _secondColor;
+                return this._secondColor;
             }
         }
         /// <summary>
@@ -38,7 +38,7 @@ namespace OfficeOpenXml.Drawing.Vml
         {
             get
             {
-                return VmlConvertUtil.GetOpacityFromStringVml(GetXmlNodeString("v:fill/@o:opacity2"));
+                return VmlConvertUtil.GetOpacityFromStringVml(this.GetXmlNodeString("v:fill/@o:opacity2"));
             }
             set
             {
@@ -46,7 +46,8 @@ namespace OfficeOpenXml.Drawing.Vml
                 {
                     throw (new ArgumentOutOfRangeException("Opacity ranges from 0 to 100%"));
                 }
-                SetXmlNodeDouble("v:fill/@o:opacity2", value, null, "%");
+
+                this.SetXmlNodeDouble("v:fill/@o:opacity2", value, null, "%");
             }
         }
         /// <summary>
@@ -56,11 +57,11 @@ namespace OfficeOpenXml.Drawing.Vml
         { 
             get
             {
-                return GetXmlNodeString("v:fill/@aspect").ToEnum(eVmlAspectRatio.Ignore);
+                return this.GetXmlNodeString("v:fill/@aspect").ToEnum(eVmlAspectRatio.Ignore);
             }
             set
             {
-                SetXmlNodeString("v:fill/@aspect", value.ToString().ToLower());
+                this.SetXmlNodeString("v:fill/@aspect", value.ToString().ToLower());
             }
         }
         /// <summary>
@@ -71,11 +72,11 @@ namespace OfficeOpenXml.Drawing.Vml
         {
             get
             {
-                return GetXmlNodeString("v:fill/@size");
+                return this.GetXmlNodeString("v:fill/@size");
             }
             set
             {
-                SetXmlNodeString("v:fill/@size", value, true);
+                this.SetXmlNodeString("v:fill/@size", value, true);
             }
         }
         /// <summary>
@@ -85,11 +86,11 @@ namespace OfficeOpenXml.Drawing.Vml
         {
             get
             {
-                return GetXmlNodeString("v:fill/@origin");
+                return this.GetXmlNodeString("v:fill/@origin");
             }
             set
             {
-                SetXmlNodeString("v:fill/@origin", value, true);
+                this.SetXmlNodeString("v:fill/@origin", value, true);
             }
         }
         /// <summary>
@@ -99,11 +100,11 @@ namespace OfficeOpenXml.Drawing.Vml
         {
             get
             {
-                return GetXmlNodeString("v:fill/@position");
+                return this.GetXmlNodeString("v:fill/@position");
             }
             set
             {
-                SetXmlNodeString("v:fill/@position", value, true);
+                this.SetXmlNodeString("v:fill/@position", value, true);
             }
         }
         /// <summary>
@@ -113,11 +114,11 @@ namespace OfficeOpenXml.Drawing.Vml
         {
             get
             {
-                return GetXmlNodeString("v:fill/@o:title");
+                return this.GetXmlNodeString("v:fill/@o:title");
             }
             set
             {
-                SetXmlNodeString("v:fill/@o:title", value, true);
+                this.SetXmlNodeString("v:fill/@o:title", value, true);
             }
         }
         ExcelImage _image=null;
@@ -128,21 +129,21 @@ namespace OfficeOpenXml.Drawing.Vml
         {
             get
             {
-                if (_image == null)
+                if (this._image == null)
                 {
-                    string? relId = RelId;
-                    _image = new ExcelImage(this, new ePictureType[] { ePictureType.Svg, ePictureType.Ico, ePictureType.WebP });
+                    string? relId = this.RelId;
+                    this._image = new ExcelImage(this, new ePictureType[] { ePictureType.Svg, ePictureType.Ico, ePictureType.WebP });
                     if (!string.IsNullOrEmpty(relId))
                     {
-                        _image.ImageBytes = PictureStore.GetPicture(relId, this, out string contentType, out ePictureType pictureType);
-                        _image.Type = pictureType;
+                        this._image.ImageBytes = PictureStore.GetPicture(relId, this, out string contentType, out ePictureType pictureType);
+                        this._image.Type = pictureType;
                     }
                 }
-                return _image;
+                return this._image;
             }
         }
 
-        IPictureRelationDocument IPictureContainer.RelationDocument => _fill._drawings.Worksheet.VmlDrawings;
+        IPictureRelationDocument IPictureContainer.RelationDocument => this._fill._drawings.Worksheet.VmlDrawings;
 
         string IPictureContainer.ImageHash { get; set ; }
         Uri IPictureContainer.UriPic { get; set ; }
@@ -151,12 +152,12 @@ namespace OfficeOpenXml.Drawing.Vml
         {
             IPictureContainer? container = (IPictureContainer)this;
             //Create relationship
-            SetXmlNodeString("v:fill/@o:relid", container.RelPic.Id);
+            this.SetXmlNodeString("v:fill/@o:relid", container.RelPic.Id);
         }
         void IPictureContainer.RemoveImage()
         {
             IPictureContainer? container = (IPictureContainer)this;
-            IPictureRelationDocument? pictureRelationDocument = (IPictureRelationDocument)_fill._drawings;
+            IPictureRelationDocument? pictureRelationDocument = (IPictureRelationDocument)this._fill._drawings;
             pictureRelationDocument.Package.PictureStore.RemoveImage(container.ImageHash, this);
             pictureRelationDocument.RelatedPart.DeleteRelationship(container.RelPic.Id);
             pictureRelationDocument.Hashes.Remove(container.ImageHash);
@@ -166,7 +167,7 @@ namespace OfficeOpenXml.Drawing.Vml
         { 
             get
             {
-                return GetXmlNodeString("v:fill/@o:relid");
+                return this.GetXmlNodeString("v:fill/@o:relid");
             }
         }
     }

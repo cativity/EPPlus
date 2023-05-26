@@ -30,16 +30,16 @@ namespace OfficeOpenXml.Drawing.Chart
         internal ExcelChartSerieWithHorizontalErrorBars(ExcelChart chart, XmlNamespaceManager ns, XmlNode node, bool isPivot) :
             base(chart, ns, node, isPivot)
         {
-            foreach(XmlElement errBarsNode in GetNodes("c:errBars"))
+            foreach(XmlElement errBarsNode in this.GetNodes("c:errBars"))
             {
-                string? direction = GetXmlNodeString(errBarsNode, "c:errDir/@val");
+                string? direction = this.GetXmlNodeString(errBarsNode, "c:errDir/@val");
                 if(direction=="x")
                 {
-                    ErrorBarsX = new ExcelChartErrorBars(this, errBarsNode);
+                    this.ErrorBarsX = new ExcelChartErrorBars(this, errBarsNode);
                 }
                 else
                 {
-                    ErrorBars = new ExcelChartErrorBars(this, errBarsNode);
+                    this.ErrorBars = new ExcelChartErrorBars(this, errBarsNode);
                 }
             }
 
@@ -57,7 +57,7 @@ namespace OfficeOpenXml.Drawing.Chart
         /// <param name="valueType">The type of value the error bars will show</param>
         public override void AddErrorBars(eErrorBarType barType, eErrorValueType valueType)
         {
-            AddErrorBars(barType, valueType, null);
+            this.AddErrorBars(barType, valueType, null);
         }
         /// <summary>
         /// Adds error bars to the chart serie for vertical or horizontal directions.
@@ -67,16 +67,16 @@ namespace OfficeOpenXml.Drawing.Chart
         /// <param name="direction">Direction for the error bars. A value of null will add both horizontal and vertical error bars. </param>
         public void AddErrorBars(eErrorBarType barType, eErrorValueType valueType, eErrorBarDirection? direction)
         {
-            if (ErrorBars == null && (direction==null || direction==eErrorBarDirection.Y))
+            if (this.ErrorBars == null && (direction==null || direction==eErrorBarDirection.Y))
             {
                 base.AddErrorBars(barType, valueType);
-                ErrorBars.SetDirection(eErrorBarDirection.Y);
+                this.ErrorBars.SetDirection(eErrorBarDirection.Y);
             }
 
-            if (ErrorBarsX==null && (direction == null || direction == eErrorBarDirection.X))
+            if (this.ErrorBarsX==null && (direction == null || direction == eErrorBarDirection.X))
             {
-                ErrorBarsX = GetNewErrorBar(barType, valueType, ErrorBarsX);
-                ErrorBarsX.SetDirection(eErrorBarDirection.X);
+                this.ErrorBarsX = this.GetNewErrorBar(barType, valueType, this.ErrorBarsX);
+                this.ErrorBarsX.SetDirection(eErrorBarDirection.X);
             }
         }
 

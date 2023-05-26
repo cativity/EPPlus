@@ -30,8 +30,8 @@ namespace OfficeOpenXml.FormulaParsing.ExcelUtilities
         internal IndexToAddressTranslator(ExcelDataProvider excelDataProvider, ExcelReferenceType referenceType)
         {
             Require.That(excelDataProvider).Named("excelDataProvider").IsNotNull();
-            _excelDataProvider = excelDataProvider;
-            _excelReferenceType = referenceType;
+            this._excelDataProvider = excelDataProvider;
+            this._excelReferenceType = referenceType;
         }
 
         private readonly ExcelDataProvider _excelDataProvider;
@@ -58,18 +58,17 @@ namespace OfficeOpenXml.FormulaParsing.ExcelUtilities
 
         public string ToAddress(int col, int row)
         {
-            bool fixedCol = _excelReferenceType == ExcelReferenceType.AbsoluteRowAndColumn ||
-                            _excelReferenceType == ExcelReferenceType.RelativeRowAbsolutColumn;
+            bool fixedCol = this._excelReferenceType == ExcelReferenceType.AbsoluteRowAndColumn || this._excelReferenceType == ExcelReferenceType.RelativeRowAbsolutColumn;
             string? colString = GetColumnLetter(col, fixedCol);
-            return colString + GetRowNumber(row);
+            return colString + this.GetRowNumber(row);
         }
 
         private string GetRowNumber(int rowNo)
         {
-            string? retVal = rowNo < (_excelDataProvider.ExcelMaxRows) ? rowNo.ToString() : string.Empty;
+            string? retVal = rowNo < (this._excelDataProvider.ExcelMaxRows) ? rowNo.ToString() : string.Empty;
             if (!string.IsNullOrEmpty(retVal))
             {
-                switch (_excelReferenceType)
+                switch (this._excelReferenceType)
                 {
                     case ExcelReferenceType.AbsoluteRowAndColumn:
                     case ExcelReferenceType.AbsoluteRowRelativeColumn:

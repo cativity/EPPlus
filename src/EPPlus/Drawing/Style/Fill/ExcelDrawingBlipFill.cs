@@ -29,10 +29,10 @@ namespace OfficeOpenXml.Drawing.Style.Fill
         private readonly IPictureRelationDocument _pictureRelationDocument;
         internal ExcelDrawingBlipFill(IPictureRelationDocument pictureRelationDocument, XmlNamespaceManager nsm, XmlNode topNode, string fillPath, string[] schemaNodeOrder, Action initXml) : base(nsm, topNode, fillPath, initXml)
         {
-            _schemaNodeOrder = schemaNodeOrder;
-            _pictureRelationDocument = pictureRelationDocument;
-            Image = new ExcelImage(this);
-            GetXml();
+            this._schemaNodeOrder = schemaNodeOrder;
+            this._pictureRelationDocument = pictureRelationDocument;
+            this.Image = new ExcelImage(this);
+            this.GetXml();
         }
         /// <summary>
         /// The image used in the fill operation.
@@ -78,11 +78,11 @@ namespace OfficeOpenXml.Drawing.Style.Fill
         {
             get
             {
-                if(_effects==null)
+                if(this._effects==null)
                 {
-                    _effects = new ExcelDrawingBlipEffects(_nsm, _topNode.SelectSingleNode("a:blip", _nsm));
+                    this._effects = new ExcelDrawingBlipEffects(this._nsm, this._topNode.SelectSingleNode("a:blip", this._nsm));
                 }
-                return _effects;
+                return this._effects;
             }
         }
         internal override string NodeName
@@ -95,84 +95,85 @@ namespace OfficeOpenXml.Drawing.Style.Fill
 
         internal override void GetXml()
         {
-            string? relId = _xml.GetXmlNodeString("a:blip/@r:embed");
+            string? relId = this._xml.GetXmlNodeString("a:blip/@r:embed");
             if (!string.IsNullOrEmpty(relId))
             {
                 byte[]? img = PictureStore.GetPicture(relId, this, out string contentType, out ePictureType pictureType);
-                Image.Type = pictureType;
-                Image.ImageBytes = img;
-                ContentType = contentType;
-            }
-            SourceRectangle = new ExcelDrawingRectangle(_xml, "a:srcRect/", 0);
-            Stretch = _xml.ExistsNode("a:stretch");
-            if (Stretch)
-            {
-                StretchOffset = new ExcelDrawingRectangle(_xml, "a:stretch/a:fillRect/", 0);
+                this.Image.Type = pictureType;
+                this.Image.ImageBytes = img;
+                this.ContentType = contentType;
             }
 
-            Tile = new ExcelDrawingBlipFillTile(_xml);
+            this.SourceRectangle = new ExcelDrawingRectangle(this._xml, "a:srcRect/", 0);
+            this.Stretch = this._xml.ExistsNode("a:stretch");
+            if (this.Stretch)
+            {
+                this.StretchOffset = new ExcelDrawingRectangle(this._xml, "a:stretch/a:fillRect/", 0);
+            }
+
+            this.Tile = new ExcelDrawingBlipFillTile(this._xml);
         }
 
         internal override void SetXml(XmlNamespaceManager nsm, XmlNode node)
         {
-            _initXml?.Invoke();
-            if (_xml == null)
+            this._initXml?.Invoke();
+            if (this._xml == null)
             {
                 this.InitXml(nsm, node.FirstChild, "");
             }
 
-            CheckTypeChange(NodeName);
+            this.CheckTypeChange(this.NodeName);
 
-            if (SourceRectangle.BottomOffset != 0)
+            if (this.SourceRectangle.BottomOffset != 0)
             {
                 this._xml.SetXmlNodePercentage("a:srcRect/@b", this.SourceRectangle.BottomOffset);
             }
 
-            if (SourceRectangle.TopOffset != 0)
+            if (this.SourceRectangle.TopOffset != 0)
             {
                 this._xml.SetXmlNodePercentage("a:srcRect/@t", this.SourceRectangle.TopOffset);
             }
 
-            if (SourceRectangle.LeftOffset != 0)
+            if (this.SourceRectangle.LeftOffset != 0)
             {
                 this._xml.SetXmlNodePercentage("a:srcRect/@l", this.SourceRectangle.LeftOffset);
             }
 
-            if (SourceRectangle.RightOffset != 0)
+            if (this.SourceRectangle.RightOffset != 0)
             {
                 this._xml.SetXmlNodePercentage("a:srcRect/@r", this.SourceRectangle.RightOffset);
             }
 
-            if (Tile.Alignment != null && Tile.FlipMode != null)
+            if (this.Tile.Alignment != null && this.Tile.FlipMode != null)
             {
-                if (Tile.Alignment.HasValue)
+                if (this.Tile.Alignment.HasValue)
                 {
                     this._xml.SetXmlNodeString("a:tile/@algn", this.Tile.Alignment.Value.TranslateString());
                 }
 
-                if (Tile.FlipMode.HasValue)
+                if (this.Tile.FlipMode.HasValue)
                 {
                     this._xml.SetXmlNodeString("a:tile/@flip", this.Tile.FlipMode.Value.ToString().ToLower());
                 }
 
-                _xml.SetXmlNodePercentage("a:tile/@sx", Tile.HorizontalRatio, false);
-                _xml.SetXmlNodePercentage("a:tile/@sy", Tile.VerticalRatio, false);
-                _xml.SetXmlNodeString("a:tile/@tx", (Tile.HorizontalOffset * ExcelDrawing.EMU_PER_PIXEL).ToString(CultureInfo.InvariantCulture));
-                _xml.SetXmlNodeString("a:tile/@ty", (Tile.VerticalOffset * ExcelDrawing.EMU_PER_PIXEL).ToString(CultureInfo.InvariantCulture));
+                this._xml.SetXmlNodePercentage("a:tile/@sx", this.Tile.HorizontalRatio, false);
+                this._xml.SetXmlNodePercentage("a:tile/@sy", this.Tile.VerticalRatio, false);
+                this._xml.SetXmlNodeString("a:tile/@tx", (this.Tile.HorizontalOffset * ExcelDrawing.EMU_PER_PIXEL).ToString(CultureInfo.InvariantCulture));
+                this._xml.SetXmlNodeString("a:tile/@ty", (this.Tile.VerticalOffset * ExcelDrawing.EMU_PER_PIXEL).ToString(CultureInfo.InvariantCulture));
             }
 
-            if (Stretch)
+            if (this.Stretch)
             {
-                _xml.SetXmlNodePercentage("a:stretch/a:fillRect/@b", StretchOffset.BottomOffset);
-                _xml.SetXmlNodePercentage("a:stretch/a:fillRect/@t", StretchOffset.TopOffset);
-                _xml.SetXmlNodePercentage("a:stretch/a:fillRect/@l", StretchOffset.LeftOffset);
-                _xml.SetXmlNodePercentage("a:stretch/a:fillRect/@r", StretchOffset.RightOffset);
+                this._xml.SetXmlNodePercentage("a:stretch/a:fillRect/@b", this.StretchOffset.BottomOffset);
+                this._xml.SetXmlNodePercentage("a:stretch/a:fillRect/@t", this.StretchOffset.TopOffset);
+                this._xml.SetXmlNodePercentage("a:stretch/a:fillRect/@l", this.StretchOffset.LeftOffset);
+                this._xml.SetXmlNodePercentage("a:stretch/a:fillRect/@r", this.StretchOffset.RightOffset);
             }
         }
 
         internal override void UpdateXml()
         {
-            SetXml(_xml.NameSpaceManager, _xml.TopNode);
+            this.SetXml(this._xml.NameSpaceManager, this._xml.TopNode);
         }
 
         internal void AddImage(FileInfo file)
@@ -183,8 +184,8 @@ namespace OfficeOpenXml.Drawing.Style.Fill
             }
             byte[]? img = File.ReadAllBytes(file.FullName);
             string? extension = file.Extension;
-            ContentType = PictureStore.GetContentType(extension);
-            Image.SetImage(img, PictureStore.GetPictureType(extension));
+            this.ContentType = PictureStore.GetContentType(extension);
+            this.Image.SetImage(img, PictureStore.GetPictureType(extension));
         }
         #region IPictureContainer
 
@@ -207,14 +208,14 @@ namespace OfficeOpenXml.Drawing.Style.Fill
         {
             IPictureContainer container = this;
             //Create relationship
-            _xml.SetXmlNodeString("a:blip/@r:embed", container.RelPic.Id);
+            this._xml.SetXmlNodeString("a:blip/@r:embed", container.RelPic.Id);
         }
         void IPictureContainer.RemoveImage()
         {
             IPictureContainer container = this;
-            _pictureRelationDocument.Package.PictureStore.RemoveImage(container.ImageHash, this);
-            _pictureRelationDocument.RelatedPart.DeleteRelationship(container.RelPic.Id);
-            _pictureRelationDocument.Hashes.Remove(container.ImageHash);
+            this._pictureRelationDocument.Package.PictureStore.RemoveImage(container.ImageHash, this);
+            this._pictureRelationDocument.RelatedPart.DeleteRelationship(container.RelPic.Id);
+            this._pictureRelationDocument.Hashes.Remove(container.ImageHash);
         }
         internal string ContentType
         {
@@ -222,7 +223,7 @@ namespace OfficeOpenXml.Drawing.Style.Fill
             set;
         }
 
-        IPictureRelationDocument IPictureContainer.RelationDocument { get => _pictureRelationDocument; }
+        IPictureRelationDocument IPictureContainer.RelationDocument { get => this._pictureRelationDocument; }
 #endregion
     }
 }

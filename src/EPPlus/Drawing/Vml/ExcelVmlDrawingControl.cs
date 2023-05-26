@@ -13,7 +13,7 @@ namespace OfficeOpenXml.Drawing.Vml
         ExcelWorksheet _ws;
         internal ExcelVmlDrawingControl(ExcelWorksheet ws, XmlNode topNode, XmlNamespaceManager ns) : base(topNode, ns)
         {
-            _ws = ws;
+            this._ws = ws;
         }
         /// <summary>
         /// The Text
@@ -22,11 +22,11 @@ namespace OfficeOpenXml.Drawing.Vml
         { 
             get
             {
-                return GetXmlNodeString("v:textbox/d:div/d:font");
+                return this.GetXmlNodeString("v:textbox/d:div/d:font");
             }
             set
             {
-                SetXmlNodeString("v:textbox/div/font", value);
+                this.SetXmlNodeString("v:textbox/div/font", value);
             }
         }
         /// <summary>
@@ -36,11 +36,11 @@ namespace OfficeOpenXml.Drawing.Vml
         {
             get
             {
-                return GetXmlNodeIntNull("x:ClientData/x:Dx");
+                return this.GetXmlNodeIntNull("x:ClientData/x:Dx");
             }
             set
             {
-                SetXmlNodeInt("x:ClientData/x:Dx", value);
+                this.SetXmlNodeInt("x:ClientData/x:Dx", value);
             }
         }
         /// <summary>
@@ -50,21 +50,21 @@ namespace OfficeOpenXml.Drawing.Vml
         {
             get
             {
-                return GetXmlNodeIntNull("x:ClientData/x:Page");
+                return this.GetXmlNodeIntNull("x:ClientData/x:Page");
             }
             set
             {
-                SetXmlNodeInt("x:ClientData/x:Page", value);
+                this.SetXmlNodeInt("x:ClientData/x:Page", value);
             }
         }
         internal ExcelVmlDrawingFill _fill = null;
         internal ExcelVmlDrawingFill GetFill()
         {
-            if (_fill == null)
+            if (this._fill == null)
             {
-                _fill = new ExcelVmlDrawingFill(_ws.Drawings, NameSpaceManager, TopNode, SchemaNodeOrder);
+                this._fill = new ExcelVmlDrawingFill(this._ws.Drawings, this.NameSpaceManager, this.TopNode, this.SchemaNodeOrder);
             }
-            return _fill;
+            return this._fill;
         }
     }
 }

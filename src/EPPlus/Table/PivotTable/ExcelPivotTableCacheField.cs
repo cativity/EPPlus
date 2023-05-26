@@ -46,16 +46,16 @@ namespace OfficeOpenXml.Table.PivotTable
         internal PivotTableCacheInternal _cache;
         internal ExcelPivotTableCacheField(XmlNamespaceManager nsm, XmlNode topNode, PivotTableCacheInternal cache, int index) : base(nsm, topNode)
         {
-            _cache = cache;
-            Index = index;
-            SetCacheFieldNode();
-            if (NumFmtId.HasValue)
+            this._cache = cache;
+            this.Index = index;
+            this.SetCacheFieldNode();
+            if (this.NumFmtId.HasValue)
             {
                 ExcelStyles? styles = cache._wb.Styles;
-                int ix = styles.NumberFormats.FindIndexById(NumFmtId.Value.ToString(CultureInfo.InvariantCulture));
+                int ix = styles.NumberFormats.FindIndexById(this.NumFmtId.Value.ToString(CultureInfo.InvariantCulture));
                 if (ix >= 0)
                 {
-                    Format = styles.NumberFormats[ix].Format;
+                    this.Format = styles.NumberFormats[ix].Format;
                 }
             }
         }
@@ -70,11 +70,11 @@ namespace OfficeOpenXml.Table.PivotTable
         {
             get
             {
-                return GetXmlNodeString("@name");
+                return this.GetXmlNodeString("@name");
             }
             internal set
             {
-                SetXmlNodeString("@name", value);
+                this.SetXmlNodeString("@name", value);
             }
         }
         /// <summary>
@@ -110,11 +110,11 @@ namespace OfficeOpenXml.Table.PivotTable
         {
             get
             {
-                return GetXmlNodeIntNull("@numFmtId");
+                return this.GetXmlNodeIntNull("@numFmtId");
             }
             set
             {
-                SetXmlNodeInt("@numFmtId", value);
+                this.SetXmlNodeInt("@numFmtId", value);
             }
         }
         internal void WriteSharedItems(XmlElement fieldNode, XmlNamespaceManager nsm)
@@ -122,12 +122,12 @@ namespace OfficeOpenXml.Table.PivotTable
             XmlElement? shNode = (XmlElement)fieldNode.SelectSingleNode("d:sharedItems", nsm);
             shNode.RemoveAll();
 
-            DataTypeFlags flags = GetFlags();
+            DataTypeFlags flags = this.GetFlags();
 
-            _cacheLookup = new Dictionary<object, int>(new CacheComparer());
-            if (IsRowColumnOrPage || HasSlicer)
+            this._cacheLookup = new Dictionary<object, int>(new CacheComparer());
+            if (this.IsRowColumnOrPage || this.HasSlicer)
             {
-                AppendSharedItems(shNode);
+                this.AppendSharedItems(shNode);
             }
             int noTypes = GetNoOfTypes(flags);
             if (noTypes > 1 && 
@@ -136,8 +136,7 @@ namespace OfficeOpenXml.Table.PivotTable
                 flags != (DataTypeFlags.Int | DataTypeFlags.Float | DataTypeFlags.Number) &&
                 flags != (DataTypeFlags.Int | DataTypeFlags.Number | DataTypeFlags.Empty) &&
                 flags != (DataTypeFlags.Float | DataTypeFlags.Number | DataTypeFlags.Empty) &&
-                flags != (DataTypeFlags.Int | DataTypeFlags.Float | DataTypeFlags.Number | DataTypeFlags.Empty) &&
-                SharedItems.Count > 1)
+                flags != (DataTypeFlags.Int | DataTypeFlags.Float | DataTypeFlags.Number | DataTypeFlags.Empty) && this.SharedItems.Count > 1)
             {
                 if ((flags & DataTypeFlags.String) == DataTypeFlags.String ||
                     (flags & DataTypeFlags.String) == DataTypeFlags.Empty)
@@ -166,11 +165,11 @@ namespace OfficeOpenXml.Table.PivotTable
         {
             get
             {
-                foreach (ExcelPivotTable? pt in _cache._pivotTables)
+                foreach (ExcelPivotTable? pt in this._cache._pivotTables)
                 {
-                    if (Index < pt.Fields.Count)
+                    if (this.Index < pt.Fields.Count)
                     {
-                        ePivotFieldAxis axis = pt.Fields[Index].Axis;
+                        ePivotFieldAxis axis = pt.Fields[this.Index].Axis;
                         if (axis == ePivotFieldAxis.Column ||
                             axis == ePivotFieldAxis.Row ||
                             axis == ePivotFieldAxis.Page)
@@ -197,11 +196,11 @@ namespace OfficeOpenXml.Table.PivotTable
         {
             get
             {
-                return GetXmlNodeString("@formula");
+                return this.GetXmlNodeString("@formula");
             }
             set
             {
-                if(DatabaseField)
+                if(this.DatabaseField)
                 {
                     throw new InvalidOperationException("Can't set a formula to a database field");
                 }
@@ -209,27 +208,28 @@ namespace OfficeOpenXml.Table.PivotTable
                 {
                     throw (new ArgumentException("The formula can't be blank", "formula"));
                 }
-                SetXmlNodeString("@formula", value);
+
+                this.SetXmlNodeString("@formula", value);
             }
         }
         internal bool DatabaseField
         {
             get
             {
-                return GetXmlNodeBool("@databaseField", true);
+                return this.GetXmlNodeBool("@databaseField", true);
             }
             set
             {
-                SetXmlNodeBool("@databaseField", value, true);
+                this.SetXmlNodeBool("@databaseField", value, true);
             }
         }
         internal bool HasSlicer
         {
             get
             {
-                foreach (ExcelPivotTable? pt in _cache._pivotTables)
+                foreach (ExcelPivotTable? pt in this._cache._pivotTables)
                 {
-                    if (pt.Fields.Count>Index && pt.Fields[Index].Slicer != null)
+                    if (pt.Fields.Count> this.Index && pt.Fields[this.Index].Slicer != null)
                     {
                         return true;
                     }
@@ -239,9 +239,9 @@ namespace OfficeOpenXml.Table.PivotTable
         }
         internal void UpdateSlicers()
         {
-            foreach (ExcelPivotTable? pt in _cache._pivotTables)
+            foreach (ExcelPivotTable? pt in this._cache._pivotTables)
             {
-                ExcelPivotTableSlicer? s = pt.Fields[Index].Slicer;
+                ExcelPivotTableSlicer? s = pt.Fields[this.Index].Slicer;
                 if (s != null)
                 {
                     s.Cache.Data.Items.RefreshMe();
@@ -292,16 +292,16 @@ namespace OfficeOpenXml.Table.PivotTable
         {
             int index = 0;
             bool isLongText = false;
-            foreach (object? si in SharedItems)
+            foreach (object? si in this.SharedItems)
             {
                 if (si == null || si.Equals(ExcelPivotTable.PivotNullValue))
                 {
-                    _cacheLookup.Add(ExcelPivotTable.PivotNullValue, index++);
+                    this._cacheLookup.Add(ExcelPivotTable.PivotNullValue, index++);
                     AppendItem(shNode, "m", null);
                 }
                 else
                 {
-                    _cacheLookup.Add(si, index++);
+                    this._cacheLookup.Add(si, index++);
                     Type? t = si.GetType();
                     TypeCode tc = Type.GetTypeCode(t);
 
@@ -383,7 +383,7 @@ namespace OfficeOpenXml.Table.PivotTable
         private DataTypeFlags GetFlags()
         {
             DataTypeFlags flags = 0;
-            foreach (object? si in SharedItems)
+            foreach (object? si in this.SharedItems)
             {
                 if (si == null || si.Equals(ExcelPivotTable.PivotNullValue))
                 {
@@ -467,30 +467,30 @@ namespace OfficeOpenXml.Table.PivotTable
         }
         internal void SetCacheFieldNode()
         {
-            XmlNode? groupNode = GetNode("d:fieldGroup");
+            XmlNode? groupNode = this.GetNode("d:fieldGroup");
             if (groupNode != null)
             {
-                XmlNode? groupBy = groupNode.SelectSingleNode("d:rangePr/@groupBy", NameSpaceManager);
+                XmlNode? groupBy = groupNode.SelectSingleNode("d:rangePr/@groupBy", this.NameSpaceManager);
                 if (groupBy == null)
                 {
-                    Grouping = new ExcelPivotTableFieldNumericGroup(NameSpaceManager, TopNode);
+                    this.Grouping = new ExcelPivotTableFieldNumericGroup(this.NameSpaceManager, this.TopNode);
                 }
                 else
                 {
-                    DateGrouping = (eDateGroupBy)Enum.Parse(typeof(eDateGroupBy), groupBy.Value, true);
-                    Grouping = new ExcelPivotTableFieldDateGroup(NameSpaceManager, groupNode);
+                    this.DateGrouping = (eDateGroupBy)Enum.Parse(typeof(eDateGroupBy), groupBy.Value, true);
+                    this.Grouping = new ExcelPivotTableFieldDateGroup(this.NameSpaceManager, groupNode);
                 }
-                XmlNode? groupItems = groupNode.SelectSingleNode("d:groupItems", NameSpaceManager);
+                XmlNode? groupItems = groupNode.SelectSingleNode("d:groupItems", this.NameSpaceManager);
                 if (groupItems != null)
                 {
-                    AddItems(GroupItems, groupItems, true);
+                    this.AddItems(this.GroupItems, groupItems, true);
                 }
             }
 
-            XmlNode? si = GetNode("d:sharedItems");
+            XmlNode? si = this.GetNode("d:sharedItems");
             if (si != null)
             {
-                AddItems(SharedItems, si, groupNode==null);
+                this.AddItems(this.SharedItems, si, groupNode==null);
             }
 
         }
@@ -499,7 +499,7 @@ namespace OfficeOpenXml.Table.PivotTable
         {
             if (updateCacheLookup)
             {
-                _cacheLookup = new Dictionary<object, int>(new CacheComparer());
+                this._cacheLookup = new Dictionary<object, int>(new CacheComparer());
             }
 
             foreach (XmlElement c in itemsNode.ChildNodes)
@@ -559,13 +559,13 @@ namespace OfficeOpenXml.Table.PivotTable
                 if(updateCacheLookup)
                 {
                     object? key = items[items.Count - 1];
-                    if (_cacheLookup.ContainsKey(key))
+                    if (this._cacheLookup.ContainsKey(key))
                     {
                         items._list.Remove(key);
                     }
                     else
                     {
-                        _cacheLookup.Add(key, items.Count - 1);
+                        this._cacheLookup.Add(key, items.Count - 1);
                     }
                 }
             }
@@ -574,53 +574,53 @@ namespace OfficeOpenXml.Table.PivotTable
         internal ExcelPivotTableFieldDateGroup SetDateGroup(ExcelPivotTableField field, eDateGroupBy groupBy, DateTime StartDate, DateTime EndDate, int interval)
         {
             ExcelPivotTableFieldDateGroup group;
-            group = new ExcelPivotTableFieldDateGroup(NameSpaceManager, TopNode);
-            SetXmlNodeBool("d:sharedItems/@containsDate", true);
-            SetXmlNodeBool("d:sharedItems/@containsNonDate", false);
-            SetXmlNodeBool("d:sharedItems/@containsSemiMixedTypes", false);
+            group = new ExcelPivotTableFieldDateGroup(this.NameSpaceManager, this.TopNode);
+            this.SetXmlNodeBool("d:sharedItems/@containsDate", true);
+            this.SetXmlNodeBool("d:sharedItems/@containsNonDate", false);
+            this.SetXmlNodeBool("d:sharedItems/@containsSemiMixedTypes", false);
 
             group.TopNode.InnerXml += string.Format("<fieldGroup base=\"{0}\"><rangePr groupBy=\"{1}\" /><groupItems /></fieldGroup>", field.BaseIndex, groupBy.ToString().ToLower(CultureInfo.InvariantCulture));
 
             if (StartDate.Year < 1900)
             {
-                SetXmlNodeString("d:fieldGroup/d:rangePr/@startDate", "1900-01-01T00:00:00");
+                this.SetXmlNodeString("d:fieldGroup/d:rangePr/@startDate", "1900-01-01T00:00:00");
             }
             else
             {
-                SetXmlNodeString("d:fieldGroup/d:rangePr/@startDate", StartDate.ToString("s", CultureInfo.InvariantCulture));
-                SetXmlNodeString("d:fieldGroup/d:rangePr/@autoStart", "0");
+                this.SetXmlNodeString("d:fieldGroup/d:rangePr/@startDate", StartDate.ToString("s", CultureInfo.InvariantCulture));
+                this.SetXmlNodeString("d:fieldGroup/d:rangePr/@autoStart", "0");
             }
 
             if (EndDate == DateTime.MaxValue)
             {
-                SetXmlNodeString("d:fieldGroup/d:rangePr/@endDate", "9999-12-31T00:00:00");
+                this.SetXmlNodeString("d:fieldGroup/d:rangePr/@endDate", "9999-12-31T00:00:00");
             }
             else
             {
-                SetXmlNodeString("d:fieldGroup/d:rangePr/@endDate", EndDate.ToString("s", CultureInfo.InvariantCulture));
-                SetXmlNodeString("d:fieldGroup/d:rangePr/@autoEnd", "0");
+                this.SetXmlNodeString("d:fieldGroup/d:rangePr/@endDate", EndDate.ToString("s", CultureInfo.InvariantCulture));
+                this.SetXmlNodeString("d:fieldGroup/d:rangePr/@autoEnd", "0");
             }
 
-            int items = AddDateGroupItems(group, groupBy, StartDate, EndDate, interval);
+            int items = this.AddDateGroupItems(group, groupBy, StartDate, EndDate, interval);
 
-            Grouping = group;
-            DateGrouping = groupBy;
+            this.Grouping = group;
+            this.DateGrouping = groupBy;
             return group;
         }
         internal ExcelPivotTableFieldNumericGroup SetNumericGroup(int baseIndex, double start, double end, double interval)
         {
             ExcelPivotTableFieldNumericGroup group;
-            group = new ExcelPivotTableFieldNumericGroup(NameSpaceManager, TopNode);
-            SetXmlNodeBool("d:sharedItems/@containsNumber", true);
-            SetXmlNodeBool("d:sharedItems/@containsInteger", true);
-            SetXmlNodeBool("d:sharedItems/@containsSemiMixedTypes", false);
-            SetXmlNodeBool("d:sharedItems/@containsString", false);
+            group = new ExcelPivotTableFieldNumericGroup(this.NameSpaceManager, this.TopNode);
+            this.SetXmlNodeBool("d:sharedItems/@containsNumber", true);
+            this.SetXmlNodeBool("d:sharedItems/@containsInteger", true);
+            this.SetXmlNodeBool("d:sharedItems/@containsSemiMixedTypes", false);
+            this.SetXmlNodeBool("d:sharedItems/@containsString", false);
 
             group.TopNode.InnerXml += string.Format("<fieldGroup base=\"{0}\"><rangePr autoStart=\"0\" autoEnd=\"0\" startNum=\"{1}\" endNum=\"{2}\" groupInterval=\"{3}\"/><groupItems /></fieldGroup>",
                 baseIndex, start.ToString(CultureInfo.InvariantCulture), end.ToString(CultureInfo.InvariantCulture), interval.ToString(CultureInfo.InvariantCulture));
 
-            int items = AddNumericGroupItems(group, start, end, interval);
-            Grouping = group;
+            int items = this.AddNumericGroupItems(group, start, end, interval);
+            this.Grouping = group;
             return group;
         }
 
@@ -640,38 +640,39 @@ namespace OfficeOpenXml.Table.PivotTable
             //First date
             double index = start;
             double nextIndex = start + interval;
-            GroupItems.Clear();
-            AddGroupItem(groupItemsNode, "<" + start.ToString(CultureInfo.CurrentCulture));
+            this.GroupItems.Clear();
+            this.AddGroupItem(groupItemsNode, "<" + start.ToString(CultureInfo.CurrentCulture));
 
             while (index < end)
             {
-                AddGroupItem(groupItemsNode, string.Format("{0}-{1}", index.ToString(CultureInfo.CurrentCulture), nextIndex.ToString(CultureInfo.CurrentCulture)));
+                this.AddGroupItem(groupItemsNode, string.Format("{0}-{1}", index.ToString(CultureInfo.CurrentCulture), nextIndex.ToString(CultureInfo.CurrentCulture)));
                 index = nextIndex;
                 nextIndex += interval;
                 items++;
             }
-            AddGroupItem(groupItemsNode, ">" + index.ToString(CultureInfo.CurrentCulture));
 
-            UpdateCacheLookupFromItems(GroupItems._list);
+            this.AddGroupItem(groupItemsNode, ">" + index.ToString(CultureInfo.CurrentCulture));
+
+            this.UpdateCacheLookupFromItems(this.GroupItems._list);
             return items;
         }
         private int AddDateGroupItems(ExcelPivotTableFieldGroup group, eDateGroupBy GroupBy, DateTime StartDate, DateTime EndDate, int interval)
         {
             XmlElement groupItemsNode = group.TopNode.SelectSingleNode("d:fieldGroup/d:groupItems", group.NameSpaceManager) as XmlElement;
             int items = 2;
-            GroupItems.Clear();
+            this.GroupItems.Clear();
             //First date
-            AddGroupItem(groupItemsNode, "<" + StartDate.ToString("s", CultureInfo.InvariantCulture).Substring(0, 10));
+            this.AddGroupItem(groupItemsNode, "<" + StartDate.ToString("s", CultureInfo.InvariantCulture).Substring(0, 10));
 
             switch (GroupBy)
             {
                 case eDateGroupBy.Seconds:
                 case eDateGroupBy.Minutes:
-                    AddTimeSerie(60, groupItemsNode);
+                    this.AddTimeSerie(60, groupItemsNode);
                     items += 60;
                     break;
                 case eDateGroupBy.Hours:
-                    AddTimeSerie(24, groupItemsNode);
+                    this.AddTimeSerie(24, groupItemsNode);
                     items += 24;
                     break;
                 case eDateGroupBy.Days:
@@ -680,7 +681,7 @@ namespace OfficeOpenXml.Table.PivotTable
                         DateTime dt = new DateTime(2008, 1, 1); //pick a year with 366 days
                         while (dt.Year == 2008)
                         {
-                            AddGroupItem(groupItemsNode, dt.ToString("dd-MMM"));
+                            this.AddGroupItem(groupItemsNode, dt.ToString("dd-MMM"));
                             dt = dt.AddDays(1);
                         }
                         items += 366;
@@ -691,32 +692,32 @@ namespace OfficeOpenXml.Table.PivotTable
                         items = 0;
                         while (dt < EndDate)
                         {
-                            AddGroupItem(groupItemsNode, dt.ToString("dd-MMM"));
+                            this.AddGroupItem(groupItemsNode, dt.ToString("dd-MMM"));
                             dt = dt.AddDays(interval);
                             items++;
                         }
                     }
                     break;
                 case eDateGroupBy.Months:
-                    AddGroupItem(groupItemsNode, "jan");
-                    AddGroupItem(groupItemsNode, "feb");
-                    AddGroupItem(groupItemsNode, "mar");
-                    AddGroupItem(groupItemsNode, "apr");
-                    AddGroupItem(groupItemsNode, "may");
-                    AddGroupItem(groupItemsNode, "jun");
-                    AddGroupItem(groupItemsNode, "jul");
-                    AddGroupItem(groupItemsNode, "aug");
-                    AddGroupItem(groupItemsNode, "sep");
-                    AddGroupItem(groupItemsNode, "oct");
-                    AddGroupItem(groupItemsNode, "nov");
-                    AddGroupItem(groupItemsNode, "dec");
+                    this.AddGroupItem(groupItemsNode, "jan");
+                    this.AddGroupItem(groupItemsNode, "feb");
+                    this.AddGroupItem(groupItemsNode, "mar");
+                    this.AddGroupItem(groupItemsNode, "apr");
+                    this.AddGroupItem(groupItemsNode, "may");
+                    this.AddGroupItem(groupItemsNode, "jun");
+                    this.AddGroupItem(groupItemsNode, "jul");
+                    this.AddGroupItem(groupItemsNode, "aug");
+                    this.AddGroupItem(groupItemsNode, "sep");
+                    this.AddGroupItem(groupItemsNode, "oct");
+                    this.AddGroupItem(groupItemsNode, "nov");
+                    this.AddGroupItem(groupItemsNode, "dec");
                     items += 12;
                     break;
                 case eDateGroupBy.Quarters:
-                    AddGroupItem(groupItemsNode, "Qtr1");
-                    AddGroupItem(groupItemsNode, "Qtr2");
-                    AddGroupItem(groupItemsNode, "Qtr3");
-                    AddGroupItem(groupItemsNode, "Qtr4");
+                    this.AddGroupItem(groupItemsNode, "Qtr1");
+                    this.AddGroupItem(groupItemsNode, "Qtr2");
+                    this.AddGroupItem(groupItemsNode, "Qtr3");
+                    this.AddGroupItem(groupItemsNode, "Qtr4");
                     items += 4;
                     break;
                 case eDateGroupBy.Years:
@@ -724,7 +725,7 @@ namespace OfficeOpenXml.Table.PivotTable
                     {
                         for (int year = StartDate.Year; year <= EndDate.Year; year++)
                         {
-                            AddGroupItem(groupItemsNode, year.ToString());
+                            this.AddGroupItem(groupItemsNode, year.ToString());
                         }
                         items += EndDate.Year - StartDate.Year + 1;
                     }
@@ -734,20 +735,20 @@ namespace OfficeOpenXml.Table.PivotTable
             }
 
             //Lastdate
-            AddGroupItem(groupItemsNode, ">" + EndDate.ToString("s", CultureInfo.InvariantCulture).Substring(0, 10));
-            
-            UpdateCacheLookupFromItems(GroupItems._list);
+            this.AddGroupItem(groupItemsNode, ">" + EndDate.ToString("s", CultureInfo.InvariantCulture).Substring(0, 10));
+
+            this.UpdateCacheLookupFromItems(this.GroupItems._list);
 
             return items;
         }
 
         private void UpdateCacheLookupFromItems(List<object> items)
         {
-            _cacheLookup = new Dictionary<object, int>(new CacheComparer());
+            this._cacheLookup = new Dictionary<object, int>(new CacheComparer());
             for (int i = 0; i < items.Count; i++)
             {
                 object? key = items[i];
-                if (!_cacheLookup.ContainsKey(key))
+                if (!this._cacheLookup.ContainsKey(key))
                 {
                     this._cacheLookup.Add(key, i);
                 }
@@ -758,7 +759,7 @@ namespace OfficeOpenXml.Table.PivotTable
         {
             for (int i = 0; i < count; i++)
             {
-                AddGroupItem(groupItems, string.Format("{0:00}", i));
+                this.AddGroupItem(groupItems, string.Format("{0:00}", i));
             }
         }
 
@@ -767,57 +768,57 @@ namespace OfficeOpenXml.Table.PivotTable
             XmlElement? s = groupItems.OwnerDocument.CreateElement("s", ExcelPackage.schemaMain);
             s.SetAttribute("v", value);
             groupItems.AppendChild(s);
-            GroupItems.Add(value);
+            this.GroupItems.Add(value);
         }
 
 
         #endregion
         internal void Refresh()
         {
-            if (!string.IsNullOrEmpty(Formula))
+            if (!string.IsNullOrEmpty(this.Formula))
             {
                 return;
             }
 
-            if (Grouping == null)
+            if (this.Grouping == null)
             {
-                UpdateSharedItems();
+                this.UpdateSharedItems();
             }
             else
             {
-                UpdateGroupItems();
+                this.UpdateGroupItems();
             }
         }
 
         private void UpdateGroupItems()
         {
-            foreach (ExcelPivotTable? pt in _cache._pivotTables)
+            foreach (ExcelPivotTable? pt in this._cache._pivotTables)
             {                
-                if ((pt.Fields[Index].IsRowField ||
-                     pt.Fields[Index].IsColumnField ||
-                     pt.Fields[Index].IsPageField || pt.Fields[Index].Cache.HasSlicer) )
+                if ((pt.Fields[this.Index].IsRowField ||
+                     pt.Fields[this.Index].IsColumnField ||
+                     pt.Fields[this.Index].IsPageField || pt.Fields[this.Index].Cache.HasSlicer) )
                 {
-                    if (pt.Fields[Index].Items.Count == 0)
+                    if (pt.Fields[this.Index].Items.Count == 0)
                     {
-                        pt.Fields[Index].UpdateGroupItems(this, true);
+                        pt.Fields[this.Index].UpdateGroupItems(this, true);
                     }
                 }
                 else
                 {
-                    pt.Fields[Index].DeleteNode("d:items");
+                    pt.Fields[this.Index].DeleteNode("d:items");
                 }
             }
         }
 
         private void UpdateSharedItems()
         {
-            ExcelRangeBase? range = _cache.SourceRange;
+            ExcelRangeBase? range = this._cache.SourceRange;
             if (range == null)
             {
                 return;
             }
 
-            int column = range._fromCol + Index;
+            int column = range._fromCol + this.Index;
             HashSet<object>? hs = new HashSet<object>(new InvariantObjectComparer());
             ExcelWorksheet? ws = range.Worksheet;
             int dimensionToRow = ws.Dimension?._toRow ?? range._fromRow + 1;
@@ -829,10 +830,10 @@ namespace OfficeOpenXml.Table.PivotTable
                 AddSharedItemToHashSet(hs, ws.GetValue(row, column));
             }
             //A pivot table cache can reference multiple Pivot tables, so we need to update them all
-            foreach (ExcelPivotTable? pt in _cache._pivotTables)
+            foreach (ExcelPivotTable? pt in this._cache._pivotTables)
             {
                 HashSet<object>? existingItems = new HashSet<object>();
-                List<ExcelPivotTableFieldItem>? list = pt.Fields[Index].Items._list;
+                List<ExcelPivotTableFieldItem>? list = pt.Fields[this.Index].Items._list;
                 
                 for (int ix = 0; ix < list.Count; ix++)
                 {
@@ -856,16 +857,17 @@ namespace OfficeOpenXml.Table.PivotTable
                     }
                 }
 
-                if (list.Count > 0 && list[list.Count - 1].Type != eItemType.Default && pt.Fields[Index].GetXmlNodeBool("@defaultSubtotal", true) == true)
+                if (list.Count > 0 && list[list.Count - 1].Type != eItemType.Default && pt.Fields[this.Index].GetXmlNodeBool("@defaultSubtotal", true) == true)
                 {
                     list.Add(new ExcelPivotTableFieldItem() { Type = eItemType.Default, X = -1 });
                 }
             }
-            SharedItems._list = hs.ToList();
-            UpdateCacheLookupFromItems(SharedItems._list);
-            if (HasSlicer)
+
+            this.SharedItems._list = hs.ToList();
+            this.UpdateCacheLookupFromItems(this.SharedItems._list);
+            if (this.HasSlicer)
             {
-                UpdateSlicers();
+                this.UpdateSlicers();
             }
         }
         internal static object AddSharedItemToHashSet(HashSet<object> hs, object o)

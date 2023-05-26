@@ -31,7 +31,7 @@ namespace OfficeOpenXml.DataValidation
         internal ExcelDataValidationInt(XmlReader xr, ExcelWorksheet ws, bool isTextLength = false)
             : base(xr, ws)
         {
-            _isTextLength = isTextLength;
+            this._isTextLength = isTextLength;
         }
 
         /// <summary>
@@ -45,9 +45,9 @@ namespace OfficeOpenXml.DataValidation
             : base(uid, address, ws)
         {
             //Initilization of forumlas so they don't cause nullref
-            Formula = new ExcelDataValidationFormulaInt(null, uid, ws.Name, OnFormulaChanged);
-            Formula2 = new ExcelDataValidationFormulaInt(null, uid, ws.Name, OnFormulaChanged);
-            _isTextLength = isTextLength;
+            this.Formula = new ExcelDataValidationFormulaInt(null, uid, ws.Name, this.OnFormulaChanged);
+            this.Formula2 = new ExcelDataValidationFormulaInt(null, uid, ws.Name, this.OnFormulaChanged);
+            this._isTextLength = isTextLength;
         }
 
         /// <summary>
@@ -57,25 +57,26 @@ namespace OfficeOpenXml.DataValidation
         internal ExcelDataValidationInt(ExcelDataValidationInt copy, ExcelWorksheet ws) 
             : base(copy, ws)
         {
-            Formula = copy.Formula;
-            Formula2 = copy.Formula2;
+            this.Formula = copy.Formula;
+            this.Formula2 = copy.Formula2;
         }
 
         /// <summary>
         /// Property for determining type of validation
         /// </summary>
-        public override ExcelDataValidationType ValidationType => _isTextLength ?
+        public override ExcelDataValidationType ValidationType =>
+            this._isTextLength ?
             new ExcelDataValidationType(eDataValidationType.TextLength) :
             new ExcelDataValidationType(eDataValidationType.Whole);
 
         internal override IExcelDataValidationFormulaInt DefineFormulaClassType(string formulaValue, string worksheetName)
         {
-            return new ExcelDataValidationFormulaInt(formulaValue, Uid, worksheetName, OnFormulaChanged);
+            return new ExcelDataValidationFormulaInt(formulaValue, this.Uid, worksheetName, this.OnFormulaChanged);
         }
 
         internal override ExcelDataValidation GetClone()
         {
-            return new ExcelDataValidationInt(this, _ws);
+            return new ExcelDataValidationInt(this, this._ws);
         }
 
         internal override ExcelDataValidation GetClone(ExcelWorksheet copy)
@@ -90,7 +91,7 @@ namespace OfficeOpenXml.DataValidation
         /// <returns></returns>
         public ExcelDataValidationInt Clone()
         {
-            return (ExcelDataValidationInt)GetClone();
+            return (ExcelDataValidationInt)this.GetClone();
         }
 
     }

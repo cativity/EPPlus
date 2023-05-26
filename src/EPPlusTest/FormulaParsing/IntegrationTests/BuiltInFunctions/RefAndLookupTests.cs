@@ -49,18 +49,18 @@ namespace EPPlusTest.FormulaParsing.IntegrationTests.BuiltInFunctions
         [TestInitialize]
         public void Initialize()
         {
-            _package = new ExcelPackage();
-            _worksheet = _package.Workbook.Worksheets.Add("Test");
-            _excelDataProvider = A.Fake<ExcelDataProvider>();
-            A.CallTo(() => _excelDataProvider.GetDimensionEnd(A<string>.Ignored)).Returns(new ExcelCellAddress(10, 1));
-            A.CallTo(() => _excelDataProvider.GetWorkbookNameValues()).Returns(new ExcelNamedRangeCollection(_package.Workbook));
-            _parser = new FormulaParser(_excelDataProvider);
+            this._package = new ExcelPackage();
+            this._worksheet = this._package.Workbook.Worksheets.Add("Test");
+            this._excelDataProvider = A.Fake<ExcelDataProvider>();
+            A.CallTo(() => this._excelDataProvider.GetDimensionEnd(A<string>.Ignored)).Returns(new ExcelCellAddress(10, 1));
+            A.CallTo(() => this._excelDataProvider.GetWorkbookNameValues()).Returns(new ExcelNamedRangeCollection(this._package.Workbook));
+            this._parser = new FormulaParser(this._excelDataProvider);
         }
 
         [TestCleanup]
         public void Cleanup()
         {
-            _package.Dispose();
+            this._package.Dispose();
         }
 
         [TestMethod]
@@ -99,13 +99,13 @@ namespace EPPlusTest.FormulaParsing.IntegrationTests.BuiltInFunctions
         public void HLookupShouldReturnCorrespondingValue()
         {
             string? lookupAddress = "A1:B2";
-            _worksheet.Cells["A1"].Value = 1;
-            _worksheet.Cells["B1"].Value = 2;
-            _worksheet.Cells["A2"].Value = 2;
-            _worksheet.Cells["B2"].Value = 5;
-            _worksheet.Cells["A3"].Formula = "HLOOKUP(2, " + lookupAddress + ", 2)";
-            _worksheet.Calculate();
-            object? result = _worksheet.Cells["A3"].Value;
+            this._worksheet.Cells["A1"].Value = 1;
+            this._worksheet.Cells["B1"].Value = 2;
+            this._worksheet.Cells["A2"].Value = 2;
+            this._worksheet.Cells["B2"].Value = 5;
+            this._worksheet.Cells["A3"].Formula = "HLOOKUP(2, " + lookupAddress + ", 2)";
+            this._worksheet.Calculate();
+            object? result = this._worksheet.Cells["A3"].Value;
             Assert.AreEqual(5, result);
         }
 
@@ -150,19 +150,19 @@ namespace EPPlusTest.FormulaParsing.IntegrationTests.BuiltInFunctions
         {
             string? lookupAddress = "A1:A2";
 
-            _worksheet.Cells["A1"].Value = 3;
-            _worksheet.Cells["A2"].Value = 5;
-            _worksheet.Cells["A3"].Formula = "MATCH(3, " + lookupAddress + ")";
-            _worksheet.Calculate();
-            Assert.AreEqual(1, _worksheet.Cells["A3"].Value);
+            this._worksheet.Cells["A1"].Value = 3;
+            this._worksheet.Cells["A2"].Value = 5;
+            this._worksheet.Cells["A3"].Formula = "MATCH(3, " + lookupAddress + ")";
+            this._worksheet.Calculate();
+            Assert.AreEqual(1, this._worksheet.Cells["A3"].Value);
 
         }
 
         [TestMethod]
         public void RowShouldReturnRowNumber()
         {
-            A.CallTo(() => _excelDataProvider.GetRangeFormula("", 4, 1)).Returns("Row()");
-            object? result = _parser.ParseAt("A4");
+            A.CallTo(() => this._excelDataProvider.GetRangeFormula("", 4, 1)).Returns("Row()");
+            object? result = this._parser.ParseAt("A4");
             Assert.AreEqual(4, result);
         }
 
@@ -179,8 +179,8 @@ namespace EPPlusTest.FormulaParsing.IntegrationTests.BuiltInFunctions
         [TestMethod]
         public void ColumnShouldReturnRowNumber()
         {
-            A.CallTo(() => _excelDataProvider.GetRangeFormula("", 4, 2)).Returns("Column()");
-            object? result = _parser.ParseAt("B4");
+            A.CallTo(() => this._excelDataProvider.GetRangeFormula("", 4, 2)).Returns("Column()");
+            object? result = this._parser.ParseAt("B4");
             Assert.AreEqual(2, result);
         }
 
@@ -197,33 +197,33 @@ namespace EPPlusTest.FormulaParsing.IntegrationTests.BuiltInFunctions
         [TestMethod]
         public void RowsShouldReturnNbrOfRows()
         {
-            A.CallTo(() => _excelDataProvider.GetRangeFormula("", 4, 1)).Returns("Rows(A5:B7)");
-            A.CallTo(() => _excelDataProvider.GetRange("", 4, 1, "A5:B7")).Returns(new EpplusExcelDataProvider.RangeInfo(_worksheet, 1, 2, 3, 3));
-            object? result = _parser.ParseAt("A4");
+            A.CallTo(() => this._excelDataProvider.GetRangeFormula("", 4, 1)).Returns("Rows(A5:B7)");
+            A.CallTo(() => this._excelDataProvider.GetRange("", 4, 1, "A5:B7")).Returns(new EpplusExcelDataProvider.RangeInfo(this._worksheet, 1, 2, 3, 3));
+            object? result = this._parser.ParseAt("A4");
             Assert.AreEqual(3, result);
         }
 
         [TestMethod]
         public void ColumnsShouldReturnNbrOfCols()
         {
-            A.CallTo(() => _excelDataProvider.GetRangeFormula("", 4, 1)).Returns("Columns(A5:B7)");
-            A.CallTo(() => _excelDataProvider.GetRange("", 4, 1, "A5:B7")).Returns(new EpplusExcelDataProvider.RangeInfo(_worksheet, 1, 2, 1, 3));
-            object? result = _parser.ParseAt("A4");
+            A.CallTo(() => this._excelDataProvider.GetRangeFormula("", 4, 1)).Returns("Columns(A5:B7)");
+            A.CallTo(() => this._excelDataProvider.GetRange("", 4, 1, "A5:B7")).Returns(new EpplusExcelDataProvider.RangeInfo(this._worksheet, 1, 2, 1, 3));
+            object? result = this._parser.ParseAt("A4");
             Assert.AreEqual(2, result);
         }
 
         [TestMethod]
         public void ChooseShouldReturnCorrectResult()
         {
-            object? result = _parser.Parse("Choose(1, \"A\", \"B\")");
+            object? result = this._parser.Parse("Choose(1, \"A\", \"B\")");
             Assert.AreEqual("A", result);
         }
 
         [TestMethod]
         public void AddressShouldReturnCorrectResult()
         {
-            A.CallTo(() => _excelDataProvider.ExcelMaxRows).Returns(12345);
-            object? result = _parser.Parse("Address(1, 1)");
+            A.CallTo(() => this._excelDataProvider.ExcelMaxRows).Returns(12345);
+            object? result = this._parser.Parse("Address(1, 1)");
             Assert.AreEqual("$A$1", result);
         }
 

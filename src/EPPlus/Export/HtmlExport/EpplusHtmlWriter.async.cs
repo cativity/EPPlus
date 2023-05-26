@@ -25,40 +25,41 @@ namespace OfficeOpenXml.Export.HtmlExport
 #if !NET35 && !NET40
         public async Task RenderBeginTagAsync(string elementName, bool closeElement = false)
         {
-            _newLine = false;
+            this._newLine = false;
             if (elementName != HtmlElements.A && elementName != HtmlElements.Img)
             {
-                await WriteIndentAsync();
+                await this.WriteIndentAsync();
             }
-            await _writer.WriteAsync($"<{elementName}");
-            foreach (EpplusHtmlAttribute? attribute in _attributes)
+            await this._writer.WriteAsync($"<{elementName}");
+            foreach (EpplusHtmlAttribute? attribute in this._attributes)
             {
-                await _writer.WriteAsync($" {attribute.AttributeName}=\"{attribute.Value}\"");
+                await this._writer.WriteAsync($" {attribute.AttributeName}=\"{attribute.Value}\"");
             }
-            _attributes.Clear();
+
+            this._attributes.Clear();
 
             if (closeElement)
             {
-                await _writer.WriteAsync("/>");
-                await _writer.FlushAsync();
+                await this._writer.WriteAsync("/>");
+                await this._writer.FlushAsync();
             }
             else
             {
-                await _writer.WriteAsync(">");
-                _elementStack.Push(elementName);
+                await this._writer.WriteAsync(">");
+                this._elementStack.Push(elementName);
             }
         }
 
         public async Task RenderEndTagAsync()
         {
-            if (_newLine)
+            if (this._newLine)
             {
-                await WriteIndentAsync();
+                await this.WriteIndentAsync();
             }
 
-            string? elementName = _elementStack.Pop();
-            await _writer.WriteAsync($"</{elementName}>");
-            await _writer.FlushAsync();
+            string? elementName = this._elementStack.Pop();
+            await this._writer.WriteAsync($"</{elementName}>");
+            await this._writer.FlushAsync();
         }
 #endif
     }

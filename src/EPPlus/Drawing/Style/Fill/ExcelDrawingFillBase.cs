@@ -37,8 +37,8 @@ namespace OfficeOpenXml.Drawing.Style.Fill
         /// <param name="initXml">Xml initialize method</param>
         internal protected ExcelDrawingFillBase(XmlNamespaceManager nsm, XmlNode topNode, string fillPath, Action initXml)
         {
-            _initXml = initXml;
-            InitXml(nsm, topNode, fillPath);
+            this._initXml = initXml;
+            this.InitXml(nsm, topNode, fillPath);
         }
 
         /// <summary>
@@ -51,12 +51,12 @@ namespace OfficeOpenXml.Drawing.Style.Fill
         /// <param name="type">The type</param>
         internal protected void CheckTypeChange(string type)
         {
-            if (_xml.TopNode.Name != type)
+            if (this._xml.TopNode.Name != type)
             {
-                XmlNode? p = _xml.TopNode.ParentNode;
-                XmlElement? newNode = _xml.TopNode.OwnerDocument.CreateElement(type, ExcelPackage.schemaDrawings);
-                p.ReplaceChild(newNode, _xml.TopNode);
-                _xml.TopNode = newNode;
+                XmlNode? p = this._xml.TopNode.ParentNode;
+                XmlElement? newNode = this._xml.TopNode.OwnerDocument.CreateElement(type, ExcelPackage.schemaDrawings);
+                p.ReplaceChild(newNode, this._xml.TopNode);
+                this._xml.TopNode = newNode;
             }
         }
         /// <summary>
@@ -84,16 +84,16 @@ namespace OfficeOpenXml.Drawing.Style.Fill
         /// <param name="fillPath">The fill path</param>
         internal protected void InitXml(XmlNamespaceManager nsm, XmlNode node, string fillPath)
         {
-            _fillPath = fillPath;
-            _nsm = nsm;
-            _topNode = node;
+            this._fillPath = fillPath;
+            this._nsm = nsm;
+            this._topNode = node;
             if (string.IsNullOrEmpty(fillPath))
             {
-                _xml = XmlHelperFactory.Create(nsm, node);
+                this._xml = XmlHelperFactory.Create(nsm, node);
             }
             else
             {
-                _xml = null;
+                this._xml = null;
             }
         }
         /// <summary>
@@ -101,9 +101,9 @@ namespace OfficeOpenXml.Drawing.Style.Fill
         /// </summary>
         protected internal void CreateXmlHelper()
         {
-            _xml = XmlHelperFactory.Create(_nsm, _topNode);
-            _xml.SchemaNodeOrder = new string[] { "tickLblPos", "spPr", "txPr", "dLblPos", "crossAx", "printSettings", "showVal", "prstGeom", "noFill", "solidFill", "blipFill", "gradFill", "noFill", "pattFill", "ln", "prstDash", "blip", "srcRect", "tile", "stretch" };
-            _xml.TopNode = _xml.CreateNode(_fillPath+"/"+NodeName);
+            this._xml = XmlHelperFactory.Create(this._nsm, this._topNode);
+            this._xml.SchemaNodeOrder = new string[] { "tickLblPos", "spPr", "txPr", "dLblPos", "crossAx", "printSettings", "showVal", "prstGeom", "noFill", "solidFill", "blipFill", "gradFill", "noFill", "pattFill", "ln", "prstDash", "blip", "srcRect", "tile", "stretch" };
+            this._xml.TopNode = this._xml.CreateNode(this._fillPath+"/"+ this.NodeName);
             
         }
         internal abstract string NodeName { get; }

@@ -28,10 +28,10 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Finance
         public override CompileResult Execute(IEnumerable<FunctionArgument> arguments, ParsingContext context)
         {
             ValidateArguments(arguments, 4);
-            double cost = ArgToDecimal(arguments, 0);
-            double salvage = ArgToDecimal(arguments, 1);
-            double life = ArgToDecimal(arguments, 2);
-            double period = ArgToDecimal(arguments, 3);
+            double cost = this.ArgToDecimal(arguments, 0);
+            double salvage = this.ArgToDecimal(arguments, 1);
+            double life = this.ArgToDecimal(arguments, 2);
+            double period = this.ArgToDecimal(arguments, 3);
 
             if (salvage < 0 || life <= 0 || period <= 0)
             {
@@ -39,7 +39,7 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Finance
             }
 
             double result = (cost - salvage) / (life * (life + 1));
-            return CreateResult((result * (life + 1 - period) * 2), DataType.Decimal);
+            return this.CreateResult((result * (life + 1 - period) * 2), DataType.Decimal);
         }
 
         private static double GetInterest(double rate, double remainingAmount)

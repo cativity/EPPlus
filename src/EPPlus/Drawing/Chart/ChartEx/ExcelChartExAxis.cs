@@ -23,7 +23,7 @@ namespace OfficeOpenXml.Drawing.Chart.ChartEx
     {
         internal ExcelChartExAxis(ExcelChart chart, XmlNamespaceManager nsm, XmlNode topNode) : base(chart, nsm, topNode, "cx")
         {
-            SchemaNodeOrder = new string[] { "catScaling", "valScaling","title","units", "majorGridlines", "minorGridlines","majorTickMarks","minorTickMarks", "tickLabels", "numFmt", "spPr", "txPr" };
+            this.SchemaNodeOrder = new string[] { "catScaling", "valScaling","title","units", "majorGridlines", "minorGridlines","majorTickMarks","minorTickMarks", "tickLabels", "numFmt", "spPr", "txPr" };
         }
         string _majorTickMarkPath = "cx:majorTickMarks/@type";
         /// <summary>
@@ -33,11 +33,11 @@ namespace OfficeOpenXml.Drawing.Chart.ChartEx
         {
             get
             {
-                return GetXmlNodeString(_majorTickMarkPath).ToEnum(eAxisTickMark.None);
+                return this.GetXmlNodeString(this._majorTickMarkPath).ToEnum(eAxisTickMark.None);
             }
             set
             {
-                SetXmlNodeString(_majorTickMarkPath, value.ToEnumString());
+                this.SetXmlNodeString(this._majorTickMarkPath, value.ToEnumString());
             }
         }
         string _minorTickMarkPath = "cx:majorTickMarks/@type";
@@ -48,11 +48,11 @@ namespace OfficeOpenXml.Drawing.Chart.ChartEx
         {
             get
             {
-                return GetXmlNodeString(_minorTickMarkPath).ToEnum(eAxisTickMark.None);
+                return this.GetXmlNodeString(this._minorTickMarkPath).ToEnum(eAxisTickMark.None);
             }
             set
             {
-                SetXmlNodeString(_minorTickMarkPath, value.ToEnumString());
+                this.SetXmlNodeString(this._minorTickMarkPath, value.ToEnumString());
             }
         }
         /// <summary>
@@ -111,11 +111,11 @@ namespace OfficeOpenXml.Drawing.Chart.ChartEx
         {
             get
             {
-                return GetXmlNodeBool("@hidden");
+                return this.GetXmlNodeBool("@hidden");
             }
             set
             {
-                SetXmlNodeBool("@hidden", value);
+                this.SetXmlNodeBool("@hidden", value);
             }
         }
         /// <summary>
@@ -137,7 +137,7 @@ namespace OfficeOpenXml.Drawing.Chart.ChartEx
         {
             get
             {
-                string? s=GetXmlNodeString(_displayUnitPath);
+                string? s= this.GetXmlNodeString(this._displayUnitPath);
                 if(string.IsNullOrEmpty(s))
                 {
                     return 1;
@@ -156,12 +156,12 @@ namespace OfficeOpenXml.Drawing.Chart.ChartEx
             {
                 if(value==0 || value==1)
                 {
-                    DeleteNode("cx:units");
+                    this.DeleteNode("cx:units");
                 }
                 try
                 {
                     eBuildInUnits e = (eBuildInUnits)value;
-                    SetXmlNodeString("", e.ToEnumString());
+                    this.SetXmlNodeString("", e.ToEnumString());
                 }
                 catch
                 {
@@ -176,17 +176,17 @@ namespace OfficeOpenXml.Drawing.Chart.ChartEx
         {
             get
             {
-                return (ExcelChartExTitle)GetTitle();
+                return (ExcelChartExTitle)this.GetTitle();
             }
         }
         internal override ExcelChartTitle GetTitle()
         {
-            if (_title == null)
+            if (this._title == null)
             {
-                XmlNode? node = AddTitleNode();
-                _title = new ExcelChartExTitle(_chart, NameSpaceManager, node);
+                XmlNode? node = this.AddTitleNode();
+                this._title = new ExcelChartExTitle(this._chart, this.NameSpaceManager, node);
             }
-            return _title;
+            return this._title;
         }
 
         /// <summary>
@@ -259,14 +259,14 @@ namespace OfficeOpenXml.Drawing.Chart.ChartEx
         {
             get
             {
-                return GetXmlNodeString("@id");
+                return this.GetXmlNodeString("@id");
             }
         }
         internal override eAxisType AxisType
         {
             get
             {
-                if(Id=="0")
+                if(this.Id=="0")
                 {
                     return eAxisType.Cat;
                 }

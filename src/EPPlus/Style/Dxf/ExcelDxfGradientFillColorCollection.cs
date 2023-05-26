@@ -33,7 +33,7 @@ namespace OfficeOpenXml.Style.Dxf
         /// <returns>The enumerator</returns>
         public IEnumerator<ExcelDxfGradientFillColor> GetEnumerator()
         {
-            return _lst.GetEnumerator();
+            return this._lst.GetEnumerator();
         }
 
         /// <summary>
@@ -42,7 +42,7 @@ namespace OfficeOpenXml.Style.Dxf
         /// <returns>The enumerator</returns>
         IEnumerator IEnumerable.GetEnumerator()
         {
-            return _lst.GetEnumerator();
+            return this._lst.GetEnumerator();
         }
         /// <summary>
         /// Indexer for the collection
@@ -53,7 +53,7 @@ namespace OfficeOpenXml.Style.Dxf
         {
             get
             {
-                return (_lst[index]);
+                return (this._lst[index]);
             }
         }
         /// <summary>
@@ -65,7 +65,7 @@ namespace OfficeOpenXml.Style.Dxf
         {
             get
             {
-                return (_lst.Find(i => i.Position == position));
+                return (this._lst.Find(i => i.Position == position));
             }
         }
         /// <summary>
@@ -79,9 +79,9 @@ namespace OfficeOpenXml.Style.Dxf
             {
                 throw new ArgumentOutOfRangeException("position","Must be a value between 0 and 100");
             }
-            ExcelDxfGradientFillColor? color = new ExcelDxfGradientFillColor(_styles, position, _callback);
+            ExcelDxfGradientFillColor? color = new ExcelDxfGradientFillColor(this._styles, position, this._callback);
             color.Color.Auto = true;
-            _lst.Add(color);
+            this._lst.Add(color);
             return color;
         }
         /// <summary>
@@ -91,7 +91,7 @@ namespace OfficeOpenXml.Style.Dxf
         {
             get
             {
-                return _lst.Count;
+                return this._lst.Count;
             }
         }
         internal override string Id
@@ -99,7 +99,7 @@ namespace OfficeOpenXml.Style.Dxf
             get
             {
                 string? id = "";
-                foreach (ExcelDxfGradientFillColor? c in _lst.OrderBy(x=>x.Position))
+                foreach (ExcelDxfGradientFillColor? c in this._lst.OrderBy(x=>x.Position))
                 {
                     id += c.Id;
                 }
@@ -113,7 +113,7 @@ namespace OfficeOpenXml.Style.Dxf
         {
             get
             {
-                return _lst.Count > 0;
+                return this._lst.Count > 0;
             }
         }
 
@@ -123,7 +123,7 @@ namespace OfficeOpenXml.Style.Dxf
         /// <param name="index"></param>
         public void RemoveAt(int index)
         {
-            _lst.RemoveAt(index);
+            this._lst.RemoveAt(index);
         }
         /// <summary>
         /// Remove the style at the position from the collection.
@@ -131,10 +131,10 @@ namespace OfficeOpenXml.Style.Dxf
         /// <param name="position"></param>
         public void RemoveAt(double position)
         {
-            ExcelDxfGradientFillColor? item = _lst.Find(i => i.Position == position);
+            ExcelDxfGradientFillColor? item = this._lst.Find(i => i.Position == position);
             if(item!=null)
             {
-                _lst.Remove(item);
+                this._lst.Remove(item);
             }
         }
         /// <summary>
@@ -143,21 +143,21 @@ namespace OfficeOpenXml.Style.Dxf
         /// <param name="item"></param>
         public void Remove(ExcelDxfGradientFillColor item)
         {
-            _lst.Remove(item);
+            this._lst.Remove(item);
         }
        /// <summary>
        /// Clear all style items from the collection
        /// </summary>
         public override void Clear()
         {
-            _lst.Clear();
+            this._lst.Clear();
         }
 
         internal override void CreateNodes(XmlHelper helper, string path)
         {
-            if(_lst.Count>0)
+            if(this._lst.Count>0)
             {
-                foreach(ExcelDxfGradientFillColor? c in _lst)
+                foreach(ExcelDxfGradientFillColor? c in this._lst)
                 {
                     c.CreateNodes(helper, path);
                 }
@@ -165,9 +165,9 @@ namespace OfficeOpenXml.Style.Dxf
         }
         internal override void SetStyle()
         {
-            if (_callback!=null && _lst.Count > 0)
+            if (this._callback!=null && this._lst.Count > 0)
             {
-                foreach (ExcelDxfGradientFillColor? c in _lst)
+                foreach (ExcelDxfGradientFillColor? c in this._lst)
                 {
                     c.SetStyle();
                 }
@@ -175,8 +175,8 @@ namespace OfficeOpenXml.Style.Dxf
         }
         internal override DxfStyleBase Clone()
         {
-            ExcelDxfGradientFillColorCollection? ret = new ExcelDxfGradientFillColorCollection(_styles, _callback);
-            foreach (ExcelDxfGradientFillColor? c in _lst)
+            ExcelDxfGradientFillColorCollection? ret = new ExcelDxfGradientFillColorCollection(this._styles, this._callback);
+            foreach (ExcelDxfGradientFillColor? c in this._lst)
             {
                 ret._lst.Add((ExcelDxfGradientFillColor)c.Clone());
             }

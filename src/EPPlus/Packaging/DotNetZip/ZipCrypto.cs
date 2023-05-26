@@ -159,7 +159,7 @@ namespace OfficeOpenXml.Packaging.Ionic.Zip
         {
             get
             {
-                UInt16 t = (UInt16)((UInt16)(_Keys[2] & 0xFFFF) | 2);
+                UInt16 t = (UInt16)((UInt16)(this._Keys[2] & 0xFFFF) | 2);
                 return (byte)((t * (t ^ 1)) >> 8);
             }
         }
@@ -211,8 +211,8 @@ namespace OfficeOpenXml.Packaging.Ionic.Zip
             byte[] plainText = new byte[length];
             for (int i = 0; i < length; i++)
             {
-                byte C = (byte)(cipherText[i] ^ MagicByte);
-                UpdateKeys(C);
+                byte C = (byte)(cipherText[i] ^ this.MagicByte);
+                this.UpdateKeys(C);
                 plainText[i] = C;
             }
             return plainText;
@@ -248,8 +248,8 @@ namespace OfficeOpenXml.Packaging.Ionic.Zip
             for (int i = 0; i < length; i++)
             {
                 byte C = plainText[i];
-                cipherText[i] = (byte)(plainText[i] ^ MagicByte);
-                UpdateKeys(C);
+                cipherText[i] = (byte)(plainText[i] ^ this.MagicByte);
+                this.UpdateKeys(C);
             }
             return cipherText;
         }
@@ -317,10 +317,10 @@ namespace OfficeOpenXml.Packaging.Ionic.Zip
 
         private void UpdateKeys(byte byteValue)
         {
-            _Keys[0] = (UInt32)crc32.ComputeCrc32((int)_Keys[0], byteValue);
-            _Keys[1] = _Keys[1] + (byte)_Keys[0];
-            _Keys[1] = _Keys[1] * 0x08088405 + 1;
-            _Keys[2] = (UInt32)crc32.ComputeCrc32((int)_Keys[2], (byte)(_Keys[1] >> 24));
+            this._Keys[0] = (UInt32)this.crc32.ComputeCrc32((int)this._Keys[0], byteValue);
+            this._Keys[1] = this._Keys[1] + (byte)this._Keys[0];
+            this._Keys[1] = this._Keys[1] * 0x08088405 + 1;
+            this._Keys[2] = (UInt32)this.crc32.ComputeCrc32((int)this._Keys[2], (byte)(this._Keys[1] >> 24));
         }
 
         ///// <summary>
@@ -351,7 +351,7 @@ namespace OfficeOpenXml.Packaging.Ionic.Zip
 
         // private fields for the crypto stuff:
         private UInt32[] _Keys = { 0x12345678, 0x23456789, 0x34567890 };
-        private Ionic.Crc.CRC32 crc32 = new Ionic.Crc.CRC32();
+        private Crc.CRC32 crc32 = new Crc.CRC32();
 
     }
 
@@ -378,14 +378,14 @@ namespace OfficeOpenXml.Packaging.Ionic.Zip
         public ZipCipherStream(System.IO.Stream s, ZipCrypto cipher, CryptoMode mode)
             : base()
         {
-            _cipher = cipher;
-            _s = s;
-            _mode = mode;
+            this._cipher = cipher;
+            this._s = s;
+            this._mode = mode;
         }
 
         public override int Read(byte[] buffer, int offset, int count)
         {
-            if (_mode == CryptoMode.Encrypt)
+            if (this._mode == CryptoMode.Encrypt)
             {
                 throw new NotSupportedException("This stream does not encrypt via Read()");
             }
@@ -396,8 +396,8 @@ namespace OfficeOpenXml.Packaging.Ionic.Zip
             }
 
             byte[] db = new byte[count];
-            int n = _s.Read(db, 0, count);
-            byte[] decrypted = _cipher.DecryptMessage(db, n);
+            int n = this._s.Read(db, 0, count);
+            byte[] decrypted = this._cipher.DecryptMessage(db, n);
             for (int i = 0; i < n; i++)
             {
                 buffer[offset + i] = decrypted[i];
@@ -407,7 +407,7 @@ namespace OfficeOpenXml.Packaging.Ionic.Zip
 
         public override void Write(byte[] buffer, int offset, int count)
         {
-            if (_mode == CryptoMode.Decrypt)
+            if (this._mode == CryptoMode.Decrypt)
             {
                 throw new NotSupportedException("This stream does not Decrypt via Write()");
             }
@@ -437,14 +437,14 @@ namespace OfficeOpenXml.Packaging.Ionic.Zip
                 plaintext = buffer;
             }
 
-            byte[] encrypted = _cipher.EncryptMessage(plaintext, count);
-            _s.Write(encrypted, 0, encrypted.Length);
+            byte[] encrypted = this._cipher.EncryptMessage(plaintext, count);
+            this._s.Write(encrypted, 0, encrypted.Length);
         }
 
 
         public override bool CanRead
         {
-            get { return (_mode == CryptoMode.Decrypt); }
+            get { return (this._mode == CryptoMode.Decrypt); }
         }
         public override bool CanSeek
         {
@@ -453,7 +453,7 @@ namespace OfficeOpenXml.Packaging.Ionic.Zip
 
         public override bool CanWrite
         {
-            get { return (_mode == CryptoMode.Encrypt); }
+            get { return (this._mode == CryptoMode.Encrypt); }
         }
 
         public override void Flush()

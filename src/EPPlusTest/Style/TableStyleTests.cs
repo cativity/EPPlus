@@ -89,7 +89,7 @@ namespace EPPlusTest.Style
         public void AddTableStyleFromTemplate()
         {
             ExcelWorksheet? ws = _pck.Workbook.Worksheets.Add("TableStyleFromTempl");
-            ExcelTableNamedStyle? s = _pck.Workbook.Styles.CreateTableStyle("CustomTableStyleFromTempl1", OfficeOpenXml.Table.TableStyles.Medium5);
+            ExcelTableNamedStyle? s = _pck.Workbook.Styles.CreateTableStyle("CustomTableStyleFromTempl1", TableStyles.Medium5);
             LoadTestdata(ws);
             ExcelTable? tbl = ws.Tables.Add(ws.Cells["A1:D100"], "Table2");
             tbl.StyleName = "CustomTableStyleFromTempl1";
@@ -106,7 +106,7 @@ namespace EPPlusTest.Style
         public void AddTableStyleFromOtherStyle()
         {
             ExcelWorksheet? ws = _pck.Workbook.Worksheets.Add("TableStyleFromOther");
-            ExcelTableNamedStyle? sc = _pck.Workbook.Styles.CreateTableStyle("CustomTableStyleFromTemplCopy", OfficeOpenXml.Table.TableStyles.Light14);
+            ExcelTableNamedStyle? sc = _pck.Workbook.Styles.CreateTableStyle("CustomTableStyleFromTemplCopy", TableStyles.Light14);
             ExcelTableNamedStyle? s = _pck.Workbook.Styles.CreateTableStyle("CustomTableStyleFromOther1", sc);
             LoadTestdata(ws);
             ExcelTable? tbl = ws.Tables.Add(ws.Cells["A1:D100"], "TableOtherStyle");
@@ -258,7 +258,7 @@ namespace EPPlusTest.Style
             ns.Style.Font.Color.SetColor(Color.Red);
 
 
-            tbl.TableStyle = OfficeOpenXml.Table.TableStyles.None;
+            tbl.TableStyle = TableStyles.None;
             tbl.Range.Offset(0, 0, 1, tbl.Range.Columns).StyleName= "TableCellStyle2";
         }
 

@@ -375,7 +375,7 @@ namespace EPPlusTest.Core
             ExcelWorksheet? ws = p.Workbook.Worksheets.Add("SheetWithChart");
 
             ExcelExternalWorkbook? er = p.Workbook.ExternalLinks.AddExternalWorkbook(new FileInfo(_testInputPath + "externalreferences\\FromWB1.xlsx"));
-            ExcelLineChart? chart = ws.Drawings.AddLineChart("line1", OfficeOpenXml.Drawing.Chart.eLineChartType.Line);
+            ExcelLineChart? chart = ws.Drawings.AddLineChart("line1", eLineChartType.Line);
             ExcelLineChartSerie? serie = chart.Series.Add("[1]Sheet1!A2:A3", "[1]Sheet1!B2:B3");
             er.UpdateCache();
             serie.CreateCache();
@@ -398,7 +398,7 @@ namespace EPPlusTest.Core
 
             ExcelTable? tbl = ws.Tables.Add(ws.Cells["A1:C3"], "Table1");
             //Create Table
-            tbl.TableStyle = OfficeOpenXml.Table.TableStyles.Medium2;
+            tbl.TableStyle = TableStyles.Medium2;
             return ws;
         }
 

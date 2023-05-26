@@ -32,7 +32,7 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions.RefAndLookup
         {
             if (arguments == null || arguments.Count() == 0)
             {
-                return CreateResult(context.Scopes.Current.Address.FromCol, DataType.Integer);
+                return this.CreateResult(context.Scopes.Current.Address.FromCol, DataType.Integer);
             }
             string? rangeAddress = ArgToAddress(arguments, 0, context);
             if (!ExcelAddressUtil.IsValidAddress(rangeAddress))
@@ -42,7 +42,7 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions.RefAndLookup
 
             RangeAddressFactory? factory = new RangeAddressFactory(context.ExcelDataProvider);
             RangeAddress? address = factory.Create(rangeAddress);
-            return CreateResult(address.FromCol, DataType.Integer);
+            return this.CreateResult(address.FromCol, DataType.Integer);
         }
     }
 }

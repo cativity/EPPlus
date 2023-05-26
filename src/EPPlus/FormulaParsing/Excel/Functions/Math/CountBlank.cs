@@ -64,7 +64,7 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Math
                     result--;
                 }
             }
-            return CreateResult(result, DataType.Integer);
+            return this.CreateResult(result, DataType.Integer);
         }
     }
 }

@@ -53,25 +53,25 @@ namespace OfficeOpenXml
         internal OfficeProperties(ExcelPackage package, XmlNamespaceManager ns) :
             base(ns)
         {
-            _package = package;
+            this._package = package;
 
-            _coreHelper = XmlHelperFactory.Create(ns, CorePropertiesXml.SelectSingleNode("cp:coreProperties", NameSpaceManager));
-            _extendedHelper = XmlHelperFactory.Create(ns, ExtendedPropertiesXml);
-            _customHelper = XmlHelperFactory.Create(ns, CustomPropertiesXml);
-            _customProperties = new Dictionary<string, XmlElement>(StringComparer.CurrentCultureIgnoreCase);
-            LoadCustomProperties();
+            this._coreHelper = XmlHelperFactory.Create(ns, this.CorePropertiesXml.SelectSingleNode("cp:coreProperties", this.NameSpaceManager));
+            this._extendedHelper = XmlHelperFactory.Create(ns, this.ExtendedPropertiesXml);
+            this._customHelper = XmlHelperFactory.Create(ns, this.CustomPropertiesXml);
+            this._customProperties = new Dictionary<string, XmlElement>(StringComparer.CurrentCultureIgnoreCase);
+            this.LoadCustomProperties();
         }
 
         private void LoadCustomProperties()
         {
-            foreach (XmlElement node in CustomPropertiesXml.SelectNodes("ctp:Properties/ctp:property", NameSpaceManager))
+            foreach (XmlElement node in this.CustomPropertiesXml.SelectNodes("ctp:Properties/ctp:property", this.NameSpaceManager))
             {
-                _customProperties.Add(node.GetAttribute("name"), node);
-                if (Utils.ConvertUtil.TryParseIntString(node.GetAttribute("pid"), out int pid))
+                this._customProperties.Add(node.GetAttribute("name"), node);
+                if (ConvertUtil.TryParseIntString(node.GetAttribute("pid"), out int pid))
                 {
-                    if (pid > _maxPid)
+                    if (pid > this._maxPid)
                     {
-                        _maxPid = pid;
+                        this._maxPid = pid;
                     }
                 }
             }
@@ -86,7 +86,7 @@ namespace OfficeOpenXml
         {
             get
             {
-                if (_xmlPropertiesCore == null)
+                if (this._xmlPropertiesCore == null)
                 {
                     string xml = string.Format("<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"yes\" ?><cp:coreProperties xmlns:cp=\"{0}\" xmlns:dc=\"{1}\" xmlns:dcterms=\"{2}\" xmlns:dcmitype=\"{3}\" xmlns:xsi=\"{4}\"></cp:coreProperties>",
                         ExcelPackage.schemaCore,
@@ -95,16 +95,16 @@ namespace OfficeOpenXml
                         ExcelPackage.schemaDcmiType,
                         ExcelPackage.schemaXsi);
 
-                    _xmlPropertiesCore = GetXmlDocument(xml, _uriPropertiesCore, @"application/vnd.openxmlformats-package.core-properties+xml", @"http://schemas.openxmlformats.org/package/2006/relationships/metadata/core-properties");
+                    this._xmlPropertiesCore = this.GetXmlDocument(xml, this._uriPropertiesCore, @"application/vnd.openxmlformats-package.core-properties+xml", @"http://schemas.openxmlformats.org/package/2006/relationships/metadata/core-properties");
                 }
-                return (_xmlPropertiesCore);
+                return (this._xmlPropertiesCore);
             }
         }
 
         private XmlDocument GetXmlDocument(string startXml, Uri uri, string contentType, string relationship)
         {
             XmlDocument xmlDoc;
-            if (_package.ZipPackage.PartExists(uri))
+            if (this._package.ZipPackage.PartExists(uri))
             {
                 xmlDoc = this._package.GetXmlFromUri(uri);
             }
@@ -114,7 +114,7 @@ namespace OfficeOpenXml
                 xmlDoc.LoadXml(startXml);
 
                 // Create a the part and add to the package
-                Packaging.ZipPackagePart part = _package.ZipPackage.CreatePart(uri, contentType);
+                Packaging.ZipPackagePart part = this._package.ZipPackage.CreatePart(uri, contentType);
 
                 // Save it to the package
                 StreamWriter stream = new StreamWriter(part.GetStream(FileMode.Create, FileAccess.Write));
@@ -123,7 +123,7 @@ namespace OfficeOpenXml
                 Packaging.ZipPackage.Flush();
 
                 // create the relationship between the workbook and the new shared strings part
-                _package.ZipPackage.CreateRelationship(UriHelper.GetRelativeUri(new Uri("/xl", UriKind.Relative), uri), Packaging.TargetMode.Internal, relationship);
+                this._package.ZipPackage.CreateRelationship(UriHelper.GetRelativeUri(new Uri("/xl", UriKind.Relative), uri), Packaging.TargetMode.Internal, relationship);
                 Packaging.ZipPackage.Flush();
             }
             return xmlDoc;
@@ -136,8 +136,8 @@ namespace OfficeOpenXml
         /// </summary>
         public string Title
         {
-            get { return _coreHelper.GetXmlNodeString(TitlePath); }
-            set { _coreHelper.SetXmlNodeString(TitlePath, value); }
+            get { return this._coreHelper.GetXmlNodeString(TitlePath); }
+            set { this._coreHelper.SetXmlNodeString(TitlePath, value); }
         }
 
         const string SubjectPath = "dc:subject";
@@ -146,8 +146,8 @@ namespace OfficeOpenXml
         /// </summary>
         public string Subject
         {
-            get { return _coreHelper.GetXmlNodeString(SubjectPath); }
-            set { _coreHelper.SetXmlNodeString(SubjectPath, value); }
+            get { return this._coreHelper.GetXmlNodeString(SubjectPath); }
+            set { this._coreHelper.SetXmlNodeString(SubjectPath, value); }
         }
 
         const string AuthorPath = "dc:creator";
@@ -156,8 +156,8 @@ namespace OfficeOpenXml
         /// </summary>
         public string Author
         {
-            get { return _coreHelper.GetXmlNodeString(AuthorPath); }
-            set { _coreHelper.SetXmlNodeString(AuthorPath, value); }
+            get { return this._coreHelper.GetXmlNodeString(AuthorPath); }
+            set { this._coreHelper.SetXmlNodeString(AuthorPath, value); }
         }
 
         const string CommentsPath = "dc:description";
@@ -166,8 +166,8 @@ namespace OfficeOpenXml
         /// </summary>
         public string Comments
         {
-            get { return _coreHelper.GetXmlNodeString(CommentsPath); }
-            set { _coreHelper.SetXmlNodeString(CommentsPath, value); }
+            get { return this._coreHelper.GetXmlNodeString(CommentsPath); }
+            set { this._coreHelper.SetXmlNodeString(CommentsPath, value); }
         }
 
         const string KeywordsPath = "cp:keywords";
@@ -176,8 +176,8 @@ namespace OfficeOpenXml
         /// </summary>
         public string Keywords
         {
-            get { return _coreHelper.GetXmlNodeString(KeywordsPath); }
-            set { _coreHelper.SetXmlNodeString(KeywordsPath, value); }
+            get { return this._coreHelper.GetXmlNodeString(KeywordsPath); }
+            set { this._coreHelper.SetXmlNodeString(KeywordsPath, value); }
         }
 
         const string LastModifiedByPath = "cp:lastModifiedBy";
@@ -186,10 +186,10 @@ namespace OfficeOpenXml
         /// </summary>
         public string LastModifiedBy
         {
-            get { return _coreHelper.GetXmlNodeString(LastModifiedByPath); }
+            get { return this._coreHelper.GetXmlNodeString(LastModifiedByPath); }
             set
             {
-                _coreHelper.SetXmlNodeString(LastModifiedByPath, value);
+                this._coreHelper.SetXmlNodeString(LastModifiedByPath, value);
             }
         }
 
@@ -199,8 +199,8 @@ namespace OfficeOpenXml
         /// </summary>
         public string LastPrinted
         {
-            get { return _coreHelper.GetXmlNodeString(LastPrintedPath); }
-            set { _coreHelper.SetXmlNodeString(LastPrintedPath, value); }
+            get { return this._coreHelper.GetXmlNodeString(LastPrintedPath); }
+            set { this._coreHelper.SetXmlNodeString(LastPrintedPath, value); }
         }
 
         const string CreatedPath = "dcterms:created";
@@ -213,13 +213,13 @@ namespace OfficeOpenXml
 	        get
 	        {
 	            DateTime date;
-	            return DateTime.TryParse(_coreHelper.GetXmlNodeString(CreatedPath), out date) ? date : DateTime.MinValue;
+	            return DateTime.TryParse(this._coreHelper.GetXmlNodeString(CreatedPath), out date) ? date : DateTime.MinValue;
 	        }
 	        set
 	        {
 	            string? dateString = value.ToUniversalTime().ToString("s", CultureInfo.InvariantCulture) + "Z";
-	            _coreHelper.SetXmlNodeString(CreatedPath, dateString);
-                _coreHelper.SetXmlNodeString(CreatedPath + "/@xsi:type", "dcterms:W3CDTF");
+                this._coreHelper.SetXmlNodeString(CreatedPath, dateString);
+                this._coreHelper.SetXmlNodeString(CreatedPath + "/@xsi:type", "dcterms:W3CDTF");
 	        }
 	    }
 
@@ -229,8 +229,8 @@ namespace OfficeOpenXml
         /// </summary>
         public string Category
         {
-            get { return _coreHelper.GetXmlNodeString(CategoryPath); }
-            set { _coreHelper.SetXmlNodeString(CategoryPath, value); }
+            get { return this._coreHelper.GetXmlNodeString(CategoryPath); }
+            set { this._coreHelper.SetXmlNodeString(CategoryPath, value); }
         }
 
         const string ContentStatusPath = "cp:contentStatus";
@@ -239,8 +239,8 @@ namespace OfficeOpenXml
         /// </summary>
         public string Status
         {
-            get { return _coreHelper.GetXmlNodeString(ContentStatusPath); }
-            set { _coreHelper.SetXmlNodeString(ContentStatusPath, value); }
+            get { return this._coreHelper.GetXmlNodeString(ContentStatusPath); }
+            set { this._coreHelper.SetXmlNodeString(ContentStatusPath, value); }
         }
         #endregion
         #region Extended Properties
@@ -252,16 +252,16 @@ namespace OfficeOpenXml
         {
             get
             {
-                if (_xmlPropertiesExtended == null)
+                if (this._xmlPropertiesExtended == null)
                 {
-                    _xmlPropertiesExtended = GetXmlDocument(string.Format("<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"yes\" ?><Properties xmlns:vt=\"{0}\" xmlns=\"{1}\"></Properties>",
-                            ExcelPackage.schemaVt,
-                            ExcelPackage.schemaExtended),
-                        _uriPropertiesExtended,
-                        @"application/vnd.openxmlformats-officedocument.extended-properties+xml",
-                        @"http://schemas.openxmlformats.org/officeDocument/2006/relationships/extended-properties");
+                    this._xmlPropertiesExtended = this.GetXmlDocument(string.Format("<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"yes\" ?><Properties xmlns:vt=\"{0}\" xmlns=\"{1}\"></Properties>",
+                                                                                    ExcelPackage.schemaVt,
+                                                                                    ExcelPackage.schemaExtended),
+                                                                      this._uriPropertiesExtended,
+                                                                      @"application/vnd.openxmlformats-officedocument.extended-properties+xml",
+                                                                      @"http://schemas.openxmlformats.org/officeDocument/2006/relationships/extended-properties");
                 }
-                return (_xmlPropertiesExtended);
+                return (this._xmlPropertiesExtended);
             }
         }
         #endregion
@@ -272,8 +272,8 @@ namespace OfficeOpenXml
         /// </summary>
         public string Application
         {
-            get { return _extendedHelper.GetXmlNodeString(ApplicationPath); }
-            set { _extendedHelper.SetXmlNodeString(ApplicationPath, value); }
+            get { return this._extendedHelper.GetXmlNodeString(ApplicationPath); }
+            set { this._extendedHelper.SetXmlNodeString(ApplicationPath, value); }
         }
 
         const string HyperlinkBasePath = "xp:Properties/xp:HyperlinkBase";
@@ -282,8 +282,8 @@ namespace OfficeOpenXml
         /// </summary>
         public Uri HyperlinkBase
         {
-            get { return new Uri(_extendedHelper.GetXmlNodeString(HyperlinkBasePath), UriKind.Absolute); }
-            set { _extendedHelper.SetXmlNodeString(HyperlinkBasePath, value.AbsoluteUri); }
+            get { return new Uri(this._extendedHelper.GetXmlNodeString(HyperlinkBasePath), UriKind.Absolute); }
+            set { this._extendedHelper.SetXmlNodeString(HyperlinkBasePath, value.AbsoluteUri); }
         }
 
         const string AppVersionPath = "xp:Properties/xp:AppVersion";
@@ -292,7 +292,7 @@ namespace OfficeOpenXml
         /// </summary>
         public string AppVersion
         {
-            get { return _extendedHelper.GetXmlNodeString(AppVersionPath); }
+            get { return this._extendedHelper.GetXmlNodeString(AppVersionPath); }
             set 
             {
                 string[]? versions = value.Split('.');
@@ -300,7 +300,8 @@ namespace OfficeOpenXml
                 {
                     throw (new ArgumentException("AppVersion should be in the format XX.YYYY. X and Y are numeric values"));
                 }
-                _extendedHelper.SetXmlNodeString(AppVersionPath, value); 
+
+                this._extendedHelper.SetXmlNodeString(AppVersionPath, value); 
             }
         }
         const string CompanyPath = "xp:Properties/xp:Company";
@@ -310,8 +311,8 @@ namespace OfficeOpenXml
         /// </summary>
         public string Company
         {
-            get { return _extendedHelper.GetXmlNodeString(CompanyPath); }
-            set { _extendedHelper.SetXmlNodeString(CompanyPath, value); }
+            get { return this._extendedHelper.GetXmlNodeString(CompanyPath); }
+            set { this._extendedHelper.SetXmlNodeString(CompanyPath, value); }
         }
 
         const string ManagerPath = "xp:Properties/xp:Manager";
@@ -320,8 +321,8 @@ namespace OfficeOpenXml
         /// </summary>
         public string Manager
         {
-            get { return _extendedHelper.GetXmlNodeString(ManagerPath); }
-            set { _extendedHelper.SetXmlNodeString(ManagerPath, value); }
+            get { return this._extendedHelper.GetXmlNodeString(ManagerPath); }
+            set { this._extendedHelper.SetXmlNodeString(ManagerPath, value); }
         }
 
         const string ModifiedPath = "dcterms:modified";
@@ -333,13 +334,13 @@ namespace OfficeOpenXml
 	        get
 	        {
 	            DateTime date;
-	            return DateTime.TryParse(_coreHelper.GetXmlNodeString(ModifiedPath), out date) ? date : DateTime.MinValue;
+	            return DateTime.TryParse(this._coreHelper.GetXmlNodeString(ModifiedPath), out date) ? date : DateTime.MinValue;
 	        }
 	        set
 	        {
 	            string? dateString = value.ToUniversalTime().ToString("s", CultureInfo.InvariantCulture) + "Z";
-	            _coreHelper.SetXmlNodeString(ModifiedPath, dateString);
-                _coreHelper.SetXmlNodeString(ModifiedPath + "/@xsi:type", "dcterms:W3CDTF");
+                this._coreHelper.SetXmlNodeString(ModifiedPath, dateString);
+                this._coreHelper.SetXmlNodeString(ModifiedPath + "/@xsi:type", "dcterms:W3CDTF");
 	        }
 	    }
         const string LinksUpToDatePath = "xp:Properties/xp:LinksUpToDate";
@@ -348,8 +349,8 @@ namespace OfficeOpenXml
         /// </summary>
         public bool LinksUpToDate
         {
-            get { return _extendedHelper.GetXmlNodeBool(LinksUpToDatePath); }
-            set { _extendedHelper.SetXmlNodeBool(LinksUpToDatePath, value); }
+            get { return this._extendedHelper.GetXmlNodeBool(LinksUpToDatePath); }
+            set { this._extendedHelper.SetXmlNodeBool(LinksUpToDatePath, value); }
         }
         const string HyperlinksChangedPath = "xp:Properties/xp:HyperlinksChanged";
         /// <summary>
@@ -357,8 +358,8 @@ namespace OfficeOpenXml
         /// </summary>
         public bool HyperlinksChanged
         {
-            get { return _extendedHelper.GetXmlNodeBool(HyperlinksChangedPath); }
-            set { _extendedHelper.SetXmlNodeBool(HyperlinksChangedPath, value); }
+            get { return this._extendedHelper.GetXmlNodeBool(HyperlinksChangedPath); }
+            set { this._extendedHelper.SetXmlNodeBool(HyperlinksChangedPath, value); }
         }
         const string ScaleCropPath = "xp:Properties/xp:ScaleCrop";
         /// <summary>
@@ -366,8 +367,8 @@ namespace OfficeOpenXml
         /// </summary>
         public bool ScaleCrop
         {
-            get { return _extendedHelper.GetXmlNodeBool(ScaleCropPath); }
-            set { _extendedHelper.SetXmlNodeBool(ScaleCropPath, value); }
+            get { return this._extendedHelper.GetXmlNodeBool(ScaleCropPath); }
+            set { this._extendedHelper.SetXmlNodeBool(ScaleCropPath, value); }
         }
 
 
@@ -377,8 +378,8 @@ namespace OfficeOpenXml
         /// </summary>
         public bool SharedDoc
         {
-            get { return _extendedHelper.GetXmlNodeBool(SharedDocPath); }
-            set { _extendedHelper.SetXmlNodeBool(SharedDocPath, value); }
+            get { return this._extendedHelper.GetXmlNodeBool(SharedDocPath); }
+            set { this._extendedHelper.SetXmlNodeBool(SharedDocPath, value); }
         }
 
         #region Get and Set Extended Properties
@@ -391,7 +392,7 @@ namespace OfficeOpenXml
         {
             string retValue = null;
             string searchString = string.Format("xp:Properties/xp:{0}", propertyName);
-            XmlNode node = ExtendedPropertiesXml.SelectSingleNode(searchString, NameSpaceManager);
+            XmlNode node = this.ExtendedPropertiesXml.SelectSingleNode(searchString, this.NameSpaceManager);
             if (node != null)
             {
                 retValue = node.InnerText;
@@ -405,7 +406,7 @@ namespace OfficeOpenXml
         /// <param name="value">The value</param>
         public void SetExtendedPropertyValue(string propertyName, string value){
             string propertyPath = string.Format("xp:Properties/xp:{0}", propertyName);
-            _extendedHelper.SetXmlNodeString(propertyPath, value);
+            this._extendedHelper.SetXmlNodeString(propertyPath, value);
         }
         #endregion
         #endregion
@@ -420,16 +421,16 @@ namespace OfficeOpenXml
         {
             get
             {
-                if (_xmlPropertiesCustom == null)
+                if (this._xmlPropertiesCustom == null)
                 {
-                    _xmlPropertiesCustom = GetXmlDocument(string.Format("<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"yes\" ?><Properties xmlns:vt=\"{0}\" xmlns=\"{1}\"></Properties>",
-                            ExcelPackage.schemaVt,
-                            ExcelPackage.schemaCustom),
-                         _uriPropertiesCustom, 
-                         @"application/vnd.openxmlformats-officedocument.custom-properties+xml",
-                         @"http://schemas.openxmlformats.org/officeDocument/2006/relationships/custom-properties");
+                    this._xmlPropertiesCustom = this.GetXmlDocument(string.Format("<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"yes\" ?><Properties xmlns:vt=\"{0}\" xmlns=\"{1}\"></Properties>",
+                                                                                  ExcelPackage.schemaVt,
+                                                                                  ExcelPackage.schemaCustom),
+                                                                    this._uriPropertiesCustom, 
+                                                                    @"application/vnd.openxmlformats-officedocument.custom-properties+xml",
+                                                                    @"http://schemas.openxmlformats.org/officeDocument/2006/relationships/custom-properties");
                 }
-                return (_xmlPropertiesCustom);
+                return (this._xmlPropertiesCustom);
             }
         }
         #endregion
@@ -442,9 +443,9 @@ namespace OfficeOpenXml
         /// <returns>The current value of the property</returns>
         public object GetCustomPropertyValue(string propertyName)
         {
-            if (_customProperties.ContainsKey(propertyName))
+            if (this._customProperties.ContainsKey(propertyName))
             {
-                XmlElement? node = _customProperties[propertyName];
+                XmlElement? node = this._customProperties[propertyName];
                 string value = node.LastChild.InnerText;
                 switch (node.LastChild.LocalName)
                 {
@@ -460,7 +461,7 @@ namespace OfficeOpenXml
                         }
                     case "i4":
                         int i;
-                        if (int.TryParse(value, System.Globalization.NumberStyles.Number, CultureInfo.InvariantCulture, out i))
+                        if (int.TryParse(value, NumberStyles.Number, CultureInfo.InvariantCulture, out i))
                         {
                             return i;
                         }
@@ -508,43 +509,43 @@ namespace OfficeOpenXml
         /// <param name="value">The value of the property</param>
         public void SetCustomPropertyValue(string propertyName, object value)
         {
-            XmlNode allProps = CustomPropertiesXml.SelectSingleNode(@"ctp:Properties", NameSpaceManager);
+            XmlNode allProps = this.CustomPropertiesXml.SelectSingleNode(@"ctp:Properties", this.NameSpaceManager);
             XmlElement node;
-            if (_customProperties.ContainsKey(propertyName))
+            if (this._customProperties.ContainsKey(propertyName))
             {
-                node = _customProperties[propertyName];
+                node = this._customProperties[propertyName];
                 node.IsEmpty=true;
             }
             else
             {                
-                node = CustomPropertiesXml.CreateElement("property", ExcelPackage.schemaCustom);
+                node = this.CustomPropertiesXml.CreateElement("property", ExcelPackage.schemaCustom);
                 node.SetAttribute("fmtid", "{D5CDD505-2E9C-101B-9397-08002B2CF9AE}");
-                _maxPid++;
-                node.SetAttribute("pid", _maxPid.ToString());  // custom property pid
+                this._maxPid++;
+                node.SetAttribute("pid", this._maxPid.ToString());  // custom property pid
                 node.SetAttribute("name", propertyName);
 
-                _customProperties.Add(propertyName, node);
+                this._customProperties.Add(propertyName, node);
                 allProps.AppendChild(node);
             }
             XmlElement valueElem;
             if (value is bool)
             {
-                valueElem = CustomPropertiesXml.CreateElement("vt", "bool", ExcelPackage.schemaVt);
+                valueElem = this.CustomPropertiesXml.CreateElement("vt", "bool", ExcelPackage.schemaVt);
                 valueElem.InnerText = value.ToString().ToLower(CultureInfo.InvariantCulture);
             }
             else if (value is DateTime)
             {
-                valueElem = CustomPropertiesXml.CreateElement("vt", "filetime", ExcelPackage.schemaVt);
+                valueElem = this.CustomPropertiesXml.CreateElement("vt", "filetime", ExcelPackage.schemaVt);
                 valueElem.InnerText = ((DateTime)value).AddHours(-1).ToString("yyyy-MM-ddTHH:mm:ssZ");
             }
             else if (value is short || value is int)
             {
-                valueElem = CustomPropertiesXml.CreateElement("vt", "i4", ExcelPackage.schemaVt);
+                valueElem = this.CustomPropertiesXml.CreateElement("vt", "i4", ExcelPackage.schemaVt);
                 valueElem.InnerText = value.ToString();
             }
             else if (value is double || value is decimal || value is float || value is long)
             {
-                valueElem = CustomPropertiesXml.CreateElement("vt", "r8", ExcelPackage.schemaVt);
+                valueElem = this.CustomPropertiesXml.CreateElement("vt", "r8", ExcelPackage.schemaVt);
                 if (value is double)
                 {
                     valueElem.InnerText = ((double)value).ToString(CultureInfo.InvariantCulture);
@@ -564,7 +565,7 @@ namespace OfficeOpenXml
             }
             else
             {
-                valueElem = CustomPropertiesXml.CreateElement("vt", "lpwstr", ExcelPackage.schemaVt);
+                valueElem = this.CustomPropertiesXml.CreateElement("vt", "lpwstr", ExcelPackage.schemaVt);
                 valueElem.InnerText = value.ToString();
             }
             node.AppendChild(valueElem);
@@ -578,17 +579,17 @@ namespace OfficeOpenXml
         /// </summary>
         internal void Save()
         {
-            if (_xmlPropertiesCore != null)
+            if (this._xmlPropertiesCore != null)
             {
-                _package.SavePart(_uriPropertiesCore, _xmlPropertiesCore);
+                this._package.SavePart(this._uriPropertiesCore, this._xmlPropertiesCore);
                 }
-            if (_xmlPropertiesExtended != null)
+            if (this._xmlPropertiesExtended != null)
             {
-                _package.SavePart(_uriPropertiesExtended, _xmlPropertiesExtended);
+                this._package.SavePart(this._uriPropertiesExtended, this._xmlPropertiesExtended);
             }
-            if (_xmlPropertiesCustom != null)
+            if (this._xmlPropertiesCustom != null)
             {
-                _package.SavePart(_uriPropertiesCustom, _xmlPropertiesCustom);
+                this._package.SavePart(this._uriPropertiesCustom, this._xmlPropertiesCustom);
             }
 
         }

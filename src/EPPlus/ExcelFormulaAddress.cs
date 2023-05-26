@@ -37,7 +37,7 @@ namespace OfficeOpenXml
         public ExcelFormulaAddress(int fromRow, int fromCol, int toRow, int toColumn)
             : base(fromRow, fromCol, toRow, toColumn)
         {
-            _ws = "";
+            this._ws = "";
         }
         /// <summary>
         /// Creates an Address object
@@ -47,23 +47,23 @@ namespace OfficeOpenXml
         public ExcelFormulaAddress(string address, ExcelWorksheet worksheet)
             : base(address, worksheet?.Workbook, worksheet?.Name)
         {
-            SetFixed();
+            this.SetFixed();
         }
         
         internal ExcelFormulaAddress(string ws, string address)
             : base(address)
         {
-            if (string.IsNullOrEmpty(_ws))
+            if (string.IsNullOrEmpty(this._ws))
             {
                 this._ws = ws;
             }
 
-            SetFixed();
+            this.SetFixed();
         }
         internal ExcelFormulaAddress(string ws, string address, bool isName)
             : base(address, isName)
         {
-            if (string.IsNullOrEmpty(_ws))
+            if (string.IsNullOrEmpty(this._ws))
             {
                 this._ws = ws;
             }
@@ -76,23 +76,23 @@ namespace OfficeOpenXml
 
         private void SetFixed()
         {
-            if (Address.IndexOf('[') >= 0)
+            if (this.Address.IndexOf('[') >= 0)
             {
                 return;
             }
 
-            string? address=FirstAddress;
-            if(_fromRow==_toRow && _fromCol==_toCol)
+            string? address= this.FirstAddress;
+            if(this._fromRow== this._toRow && this._fromCol== this._toCol)
             {
-                GetFixed(address, out _fromRowFixed, out _fromColFixed);
+                GetFixed(address, out this._fromRowFixed, out this._fromColFixed);
             }
             else
             {
                 string[]? cells = address.Split(':');                
                 if(cells.Length>1) //If 1 then the address is the entire worksheet
                 {
-                    GetFixed(cells[0], out _fromRowFixed, out _fromColFixed);
-                    GetFixed(cells[1], out _toRowFixed, out _toColFixed);
+                    GetFixed(cells[0], out this._fromRowFixed, out this._fromColFixed);
+                    GetFixed(cells[1], out this._toRowFixed, out this._toColFixed);
                 }
             }
         }
@@ -127,17 +127,17 @@ namespace OfficeOpenXml
         {
             get
             {
-                if (string.IsNullOrEmpty(_address) && _fromRow>0)
+                if (string.IsNullOrEmpty(this._address) && this._fromRow>0)
                 {
-                    _address = GetAddress(_fromRow, _fromCol, _toRow, _toCol, _fromRowFixed, _toRowFixed, _fromColFixed, _toColFixed);
+                    this._address = GetAddress(this._fromRow, this._fromCol, this._toRow, this._toCol, this._fromRowFixed, this._toRowFixed, this._fromColFixed, this._toColFixed);
                 }
-                return _address;
+                return this._address;
             }
             set
-            {                
-                SetAddress(value, null, null);
-                ChangeAddress();
-                SetFixed();
+            {
+                this.SetAddress(value, null, null);
+                this.ChangeAddress();
+                this.SetFixed();
             }
         }
         internal new List<ExcelFormulaAddress> _addresses;
@@ -148,33 +148,33 @@ namespace OfficeOpenXml
         {
             get
             {
-                if (_addresses == null)
+                if (this._addresses == null)
                 {
-                    _addresses = new List<ExcelFormulaAddress>();
+                    this._addresses = new List<ExcelFormulaAddress>();
                 }
-                return _addresses;
+                return this._addresses;
 
             }
         }
         internal string GetOffset(int row, int column, bool withWbWs=false)
         {
-            int fromRow = _fromRow, fromCol = _fromCol, toRow = _toRow, tocol = _toCol;
+            int fromRow = this._fromRow, fromCol = this._fromCol, toRow = this._toRow, tocol = this._toCol;
             bool isMulti = (fromRow != toRow || fromCol != tocol);
-            if (!_fromRowFixed)
+            if (!this._fromRowFixed)
             {
                 fromRow += row;
             }
-            if (!_fromColFixed)
+            if (!this._fromColFixed)
             {
                 fromCol += column;
             }
             if (isMulti)
             {
-                if (!_toRowFixed)
+                if (!this._toRowFixed)
                 {
                     toRow += row;
                 }
-                if (!_toColFixed)
+                if (!this._toColFixed)
                 {
                     tocol += column;
                 }
@@ -184,17 +184,17 @@ namespace OfficeOpenXml
                 toRow = fromRow;
                 tocol = fromCol;
             }
-            string a = GetAddress(fromRow, fromCol, toRow, tocol, _fromRowFixed, _fromColFixed, _toRowFixed, _toColFixed);
-            if (Addresses != null)
+            string a = GetAddress(fromRow, fromCol, toRow, tocol, this._fromRowFixed, this._fromColFixed, this._toRowFixed, this._toColFixed);
+            if (this.Addresses != null)
             {
-                foreach (ExcelFormulaAddress? sa in Addresses)
+                foreach (ExcelFormulaAddress? sa in this.Addresses)
                 {
                     a+="," + sa.GetOffset(row, column, withWbWs);
                 }
             }
             if(withWbWs)
             {
-                return GetAddressWorkBookWorkSheet() + a;
+                return this.GetAddressWorkBookWorkSheet() + a;
             }
             else
             {

@@ -32,10 +32,10 @@ namespace OfficeOpenXml.Drawing.Style.Fill
         private string[] _schemaNodeOrder;
         internal ExcelDrawingGradientFillColorList(XmlNamespaceManager nsm, XmlNode topNode, string path, string[] schemaNodeOrder)
         {
-            _nsm = nsm;
-            _topNode = topNode;
-            _path = path;
-            _schemaNodeOrder = schemaNodeOrder;
+            this._nsm = nsm;
+            this._topNode = topNode;
+            this._path = path;
+            this._schemaNodeOrder = schemaNodeOrder;
         }
         /// <summary>
         /// Indexer for the collection
@@ -46,7 +46,7 @@ namespace OfficeOpenXml.Drawing.Style.Fill
         {
             get
             {
-                return (_lst[index]);
+                return (this._lst[index]);
             }
         }
         /// <summary>
@@ -56,7 +56,7 @@ namespace OfficeOpenXml.Drawing.Style.Fill
         {
             get
             {
-                return _lst.Count;
+                return this._lst.Count;
             }
         }
         /// <summary>
@@ -68,7 +68,7 @@ namespace OfficeOpenXml.Drawing.Style.Fill
         {
             get
             {
-                return (_lst.Find(i => i.Position == position));
+                return (this._lst.Find(i => i.Position == position));
             }
         }
         /// <summary>
@@ -78,9 +78,9 @@ namespace OfficeOpenXml.Drawing.Style.Fill
         /// <param name="color">The Color</param>
         public void AddRgb(double position, Color color)
         {
-            ExcelDrawingGradientFillColor? gs = GetGradientFillColor(position);
+            ExcelDrawingGradientFillColor? gs = this.GetGradientFillColor(position);
             gs.Color.SetRgbColor(color);
-            _lst.Add(gs);
+            this._lst.Add(gs);
         }
         /// <summary>
         /// Adds a RGB percentage color at the specified position
@@ -91,9 +91,9 @@ namespace OfficeOpenXml.Drawing.Style.Fill
         /// <param name="bluePercentage">The percentage of blue</param>
         public void AddRgbPercentage(double position, double redPercentage, double greenPercentage, double bluePercentage)
         {
-            ExcelDrawingGradientFillColor? gs = GetGradientFillColor(position);
+            ExcelDrawingGradientFillColor? gs = this.GetGradientFillColor(position);
             gs.Color.SetRgbPercentageColor(redPercentage, greenPercentage, bluePercentage);
-            _lst.Add(gs);
+            this._lst.Add(gs);
         }
         /// <summary>
         /// Adds a theme color at the specified position
@@ -102,9 +102,9 @@ namespace OfficeOpenXml.Drawing.Style.Fill
         /// <param name="color">The theme color</param>
         public void AddScheme(double position, eSchemeColor color)
         {
-            ExcelDrawingGradientFillColor? gs = GetGradientFillColor(position);
+            ExcelDrawingGradientFillColor? gs = this.GetGradientFillColor(position);
             gs.Color.SetSchemeColor(color);
-            _lst.Add(gs);
+            this._lst.Add(gs);
         }
         /// <summary>
         /// Adds a system color at the specified position
@@ -113,9 +113,9 @@ namespace OfficeOpenXml.Drawing.Style.Fill
         /// <param name="color">The system color</param>
         public void AddSystem(double position, eSystemColor color)
         {
-            ExcelDrawingGradientFillColor? gs = GetGradientFillColor(position);
+            ExcelDrawingGradientFillColor? gs = this.GetGradientFillColor(position);
             gs.Color.SetSystemColor(color);
-            _lst.Add(gs);
+            this._lst.Add(gs);
         }
         /// <summary>
         /// Adds a HSL color at the specified position
@@ -126,9 +126,9 @@ namespace OfficeOpenXml.Drawing.Style.Fill
         /// <param name="luminance">The luminance part. Percentage</param>
         public void AddHsl(double position, double hue, double saturation, double luminance)
         {            
-            ExcelDrawingGradientFillColor? gs = GetGradientFillColor(position);
+            ExcelDrawingGradientFillColor? gs = this.GetGradientFillColor(position);
             gs.Color.SetHslColor(hue, saturation, luminance);
-            _lst.Add(gs);
+            this._lst.Add(gs);
         }
         /// <summary>
         /// Adds a HSL color at the specified position
@@ -137,9 +137,9 @@ namespace OfficeOpenXml.Drawing.Style.Fill
         /// <param name="color">The preset color</param>
         public void AddPreset(double position, ePresetColor color)
         {
-            ExcelDrawingGradientFillColor? gs = GetGradientFillColor(position);
+            ExcelDrawingGradientFillColor? gs = this.GetGradientFillColor(position);
             gs.Color.SetPresetColor(color);
-            _lst.Add(gs);
+            this._lst.Add(gs);
         }
 
         private ExcelDrawingGradientFillColor GetGradientFillColor(double position)
@@ -149,19 +149,19 @@ namespace OfficeOpenXml.Drawing.Style.Fill
                 throw (new ArgumentOutOfRangeException("Position must be between 0 and 100"));
             }
             XmlNode node = null;
-            for (int i = 0; i < _lst.Count; i++)
+            for (int i = 0; i < this._lst.Count; i++)
             {
-                if (_lst[i].Position > position)
+                if (this._lst[i].Position > position)
                 {
-                    node = AddGs(position, _lst[i].TopNode);
+                    node = this.AddGs(position, this._lst[i].TopNode);
                 }
             }
-            node = AddGs(position, null);
+            node = this.AddGs(position, null);
 
             ExcelDrawingGradientFillColor? tc = new ExcelDrawingGradientFillColor()
             {
                 Position = position,
-                Color = new ExcelDrawingColorManager(_nsm, node, "", _schemaNodeOrder),
+                Color = new ExcelDrawingColorManager(this._nsm, node, "", this._schemaNodeOrder),
                 TopNode = node
             };
             return tc;
@@ -169,19 +169,19 @@ namespace OfficeOpenXml.Drawing.Style.Fill
 
         private XmlElement AddGs(double position, XmlNode node)
         {
-            if(_gsLst==null)
+            if(this._gsLst==null)
             {
-                XmlHelper? xml = XmlHelperFactory.Create(_nsm, _topNode);
-                _gsLst=xml.CreateNode(_path);
+                XmlHelper? xml = XmlHelperFactory.Create(this._nsm, this._topNode);
+                this._gsLst=xml.CreateNode(this._path);
             }
-            XmlElement? gs = _gsLst.OwnerDocument.CreateElement("a", "gs", ExcelPackage.schemaDrawings);
+            XmlElement? gs = this._gsLst.OwnerDocument.CreateElement("a", "gs", ExcelPackage.schemaDrawings);
             if (node == null)
             {
-                _gsLst.AppendChild(gs);
+                this._gsLst.AppendChild(gs);
             }
             else
             {
-                _gsLst.InsertBefore(gs, node);
+                this._gsLst.InsertBefore(gs, node);
             }
             gs.SetAttribute("pos", (position * 1000).ToString());
             return gs;
@@ -192,20 +192,20 @@ namespace OfficeOpenXml.Drawing.Style.Fill
         /// <returns>The enumerator</returns>
         public IEnumerator<ExcelDrawingGradientFillColor> GetEnumerator()
         {
-            return _lst.GetEnumerator();
+            return this._lst.GetEnumerator();
         }
 
         IEnumerator IEnumerable.GetEnumerator()
         {
-            return _lst.GetEnumerator();
+            return this._lst.GetEnumerator();
         }
 
         internal void Add(double position, XmlNode node)
         {
-            _lst.Add(new ExcelDrawingGradientFillColor()
+            this._lst.Add(new ExcelDrawingGradientFillColor()
             {
                 Position = position,
-                Color = new ExcelDrawingColorManager(_nsm, node, "", _schemaNodeOrder),
+                Color = new ExcelDrawingColorManager(this._nsm, node, "", this._schemaNodeOrder),
                 TopNode = node
             });
         }

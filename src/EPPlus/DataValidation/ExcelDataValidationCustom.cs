@@ -31,7 +31,7 @@ namespace OfficeOpenXml.DataValidation
         internal ExcelDataValidationCustom(string uid, string address, ExcelWorksheet ws)
             : base(uid, address, ws)
         {
-            Formula = new ExcelDataValidationFormulaCustom(null, Uid, ws.Name, OnFormulaChanged);
+            this.Formula = new ExcelDataValidationFormulaCustom(null, this.Uid, ws.Name, this.OnFormulaChanged);
         }
 
         /// <summary>
@@ -49,7 +49,7 @@ namespace OfficeOpenXml.DataValidation
         /// <param name="copy"></param>
         internal ExcelDataValidationCustom(ExcelDataValidationCustom copy, ExcelWorksheet ws) : base(copy, ws)
         {
-            Formula = copy.Formula;
+            this.Formula = copy.Formula;
         }
 
         /// <summary>
@@ -59,13 +59,13 @@ namespace OfficeOpenXml.DataValidation
 
         override internal IExcelDataValidationFormula DefineFormulaClassType(string formulaValue, string sheetName)
         {
-            return new ExcelDataValidationFormulaCustom(formulaValue, Uid, sheetName, OnFormulaChanged);
+            return new ExcelDataValidationFormulaCustom(formulaValue, this.Uid, sheetName, this.OnFormulaChanged);
 
         }
 
         internal override ExcelDataValidation GetClone()
         {
-            return new ExcelDataValidationCustom(this, _ws);
+            return new ExcelDataValidationCustom(this, this._ws);
         }
         internal override ExcelDataValidation GetClone(ExcelWorksheet copy)
         {
@@ -74,7 +74,7 @@ namespace OfficeOpenXml.DataValidation
 
         ExcelDataValidationAny Clone()
         {
-            return (ExcelDataValidationAny)GetClone();
+            return (ExcelDataValidationAny)this.GetClone();
         }
     }
 }

@@ -29,15 +29,15 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions.DateTime
         public override CompileResult Execute(IEnumerable<FunctionArgument> arguments, ParsingContext context)
         {
             ValidateArguments(arguments, 2);
-            double numDate1 = ArgToDecimal(arguments, 0);
-            double numDate2 = ArgToDecimal(arguments, 1);
+            double numDate1 = this.ArgToDecimal(arguments, 0);
+            double numDate2 = this.ArgToDecimal(arguments, 1);
             System.DateTime dt1 = System.DateTime.FromOADate(numDate1);
             System.DateTime dt2 = System.DateTime.FromOADate(numDate2);
 
             Days360Calctype calcType = Days360Calctype.Us;
             if (arguments.Count() > 2)
             {
-                bool european = ArgToBool(arguments, 2);
+                bool european = this.ArgToBool(arguments, 2);
                 if (european)
                 {
                     calcType = Days360Calctype.European;
@@ -45,7 +45,7 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions.DateTime
             }
 
             int result = Days360Impl.CalcDays360(dt1, dt2, calcType);
-            return CreateResult(result, DataType.Integer);
+            return this.CreateResult(result, DataType.Integer);
         }
 
         private static int GetNumWholeMonths(System.DateTime dt1, System.DateTime dt2)

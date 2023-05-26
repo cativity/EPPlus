@@ -35,15 +35,15 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions.DateTime
         {
             ValidateArguments(arguments, 1);
             string? firstArg = arguments.ElementAt(0).Value.ToString();
-            if(arguments.Count() == 1 && TimeStringParser.CanParse(firstArg))
+            if(arguments.Count() == 1 && this.TimeStringParser.CanParse(firstArg))
             {
-                double result = TimeStringParser.Parse(firstArg);
+                double result = this.TimeStringParser.Parse(firstArg);
                 return new CompileResult(result, DataType.Time);
             }
             ValidateArguments(arguments, 3);
-            int hour = ArgToInt(arguments, 0);
-            int min = ArgToInt(arguments, 1);
-            int sec = ArgToInt(arguments, 2);
+            int hour = this.ArgToInt(arguments, 0);
+            int min = this.ArgToInt(arguments, 1);
+            int sec = this.ArgToInt(arguments, 2);
 
             if (sec < 0 || sec > 59)
             {
@@ -61,7 +61,7 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions.DateTime
             }
 
             double secondsOfThisTime = (double)(hour * 60 * 60 + min * 60 + sec);
-            return CreateResult(GetTimeSerialNumber(secondsOfThisTime), DataType.Time);
+            return this.CreateResult(GetTimeSerialNumber(secondsOfThisTime), DataType.Time);
         }
     }
 }

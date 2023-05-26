@@ -26,7 +26,7 @@ namespace OfficeOpenXml.Drawing.Vml
         internal ExcelVmlDrawingPosition(XmlNamespaceManager ns, XmlNode topNode, int startPos) : 
             base(ns, topNode)
         {
-            _startPos = startPos;
+            this._startPos = startPos;
         }
         /// <summary>
         /// Row. Zero based
@@ -35,11 +35,11 @@ namespace OfficeOpenXml.Drawing.Vml
         {
             get
             {
-                return GetNumber(2);
+                return this.GetNumber(2);
             }
             set
             {
-                SetNumber(2, value);
+                this.SetNumber(2, value);
             } 
         }
         /// <summary>
@@ -49,11 +49,11 @@ namespace OfficeOpenXml.Drawing.Vml
         {
             get
             {
-                return GetNumber(3);
+                return this.GetNumber(3);
             }
             set
             {
-                SetNumber(3, value);
+                this.SetNumber(3, value);
             }
         }
         /// <summary>
@@ -63,11 +63,11 @@ namespace OfficeOpenXml.Drawing.Vml
         {
             get
             {
-                return GetNumber(0);
+                return this.GetNumber(0);
             }
             set
             {
-                SetNumber(0, value);
+                this.SetNumber(0, value);
             }
         }
         /// <summary>
@@ -77,36 +77,37 @@ namespace OfficeOpenXml.Drawing.Vml
         {
             get
             {
-                return GetNumber(1);
+                return this.GetNumber(1);
             }
             set
             {
-                SetNumber(1, value);
+                this.SetNumber(1, value);
             }
         }
         private void SetNumber(int pos, int value)
         {
-            string anchor = GetXmlNodeString("x:Anchor");
+            string anchor = this.GetXmlNodeString("x:Anchor");
             string[] numbers = anchor.Split(',');
             if (numbers.Length == 8)
             {
-                numbers[_startPos + pos] = value.ToString();
+                numbers[this._startPos + pos] = value.ToString();
             }
             else
             {
                 throw (new Exception("Anchor element is invalid in vmlDrawing"));
             }
-            SetXmlNodeString("x:Anchor", string.Join(",",numbers));
+
+            this.SetXmlNodeString("x:Anchor", string.Join(",",numbers));
         }
 
         private int GetNumber(int pos)
         {
-            string anchor = GetXmlNodeString("x:Anchor");
+            string anchor = this.GetXmlNodeString("x:Anchor");
             string[] numbers = anchor.Split(',');
             if (numbers.Length == 8)
             {
                 int ret;
-                if (int.TryParse(numbers[_startPos + pos], System.Globalization.NumberStyles.Number, CultureInfo.InvariantCulture, out ret))
+                if (int.TryParse(numbers[this._startPos + pos], NumberStyles.Number, CultureInfo.InvariantCulture, out ret))
                 {
                     return ret;
                 }

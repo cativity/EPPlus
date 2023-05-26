@@ -23,7 +23,7 @@ namespace EPPlusTest.Utils
         int _index = 0;
         internal RollingBuffer(int size)
         {
-            _buffer= new byte[size];            
+            this._buffer= new byte[size];            
         }
         internal void Write(byte[] bytes, int size=-1)
         {
@@ -32,45 +32,46 @@ namespace EPPlusTest.Utils
                 size = bytes.Length;
             }
 
-            if(size >= _buffer.Length)
+            if(size >= this._buffer.Length)
             {
-                _index = 0;
-                _isRolling = true;
-                Array.Copy(bytes, size - _buffer.Length, _buffer, 0, _buffer.Length);
+                this._index = 0;
+                this._isRolling = true;
+                Array.Copy(bytes, size - this._buffer.Length, this._buffer, 0, this._buffer.Length);
             }
-            else if(size + _index > _buffer.Length)
+            else if(size + this._index > this._buffer.Length)
             {
-                int endSize = _buffer.Length - _index;
-                _isRolling = true;
+                int endSize = this._buffer.Length - this._index;
+                this._isRolling = true;
                 if(endSize > 0)
                 {
-                    Array.Copy(bytes, 0, _buffer, _index, endSize);
+                    Array.Copy(bytes, 0, this._buffer, this._index, endSize);
                 }
-                _index = size - endSize;
-                Array.Copy(bytes, endSize, _buffer, 0, _index);
+
+                this._index = size - endSize;
+                Array.Copy(bytes, endSize, this._buffer, 0, this._index);
             }
             else
             {
-                Array.Copy(bytes, 0, _buffer, _index, size);
-                _index += size;
+                Array.Copy(bytes, 0, this._buffer, this._index, size);
+                this._index += size;
             }
         }
         internal byte[] GetBuffer()
         {
             byte[] ret;
-            if(_isRolling)
+            if(this._isRolling)
             {
-                ret = new byte[_buffer.Length];
-                Array.Copy(_buffer, _index, ret,0,_buffer.Length-_index);
-                if(_index>0)
+                ret = new byte[this._buffer.Length];
+                Array.Copy(this._buffer, this._index, ret,0, this._buffer.Length- this._index);
+                if(this._index>0)
                 {
-                    Array.Copy(_buffer, 0, ret, _buffer.Length - _index, _index);
+                    Array.Copy(this._buffer, 0, ret, this._buffer.Length - this._index, this._index);
                 }
             }
             else
             {
-                ret = new byte[_index];
-                Array.Copy(_buffer, ret, ret.Length);
+                ret = new byte[this._index];
+                Array.Copy(this._buffer, ret, ret.Length);
             }
             return ret;
         }

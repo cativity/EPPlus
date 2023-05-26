@@ -33,12 +33,12 @@ namespace OfficeOpenXml.Drawing.Style.Coloring
         {
             get
             {
-                string? s = GetXmlNodeString("@val");
+                string? s = this.GetXmlNodeString("@val");
                 return GetColorFromString(s);
             }
             set
-            {               
-                SetXmlNodeString("@val", (value.ToArgb() & 0xFFFFFF).ToString("X").PadLeft(6, '0'));
+            {
+                this.SetXmlNodeString("@val", (value.ToArgb() & 0xFFFFFF).ToString("X").PadLeft(6, '0'));
             }
         }
         internal static Color GetColorFromString(string s)
@@ -49,7 +49,7 @@ namespace OfficeOpenXml.Drawing.Style.Coloring
                 s = "FF" + s;
             }
 
-            if (int.TryParse(s, System.Globalization.NumberStyles.HexNumber, CultureInfo.InvariantCulture, out n))
+            if (int.TryParse(s, NumberStyles.HexNumber, CultureInfo.InvariantCulture, out n))
             {
                 return Color.FromArgb(n);
             }
@@ -69,7 +69,7 @@ namespace OfficeOpenXml.Drawing.Style.Coloring
         }
         internal void GetHsl(out double hue, out double saturation, out double luminance)
         {
-            GetHslColor(Color.R, Color.G, Color.B, out hue, out saturation, out luminance);
+            GetHslColor(this.Color.R, this.Color.G, this.Color.B, out hue, out saturation, out luminance);
         }
 
         internal static void GetHslColor(Color c, out double hue, out double saturation, out double luminance)

@@ -65,7 +65,7 @@ namespace EPPlusTest.LoadFunctions
         {
             using ExcelPackage? package = new ExcelPackage();
             ExcelWorksheet? sheet = package.Workbook.Worksheets.Add("test");
-            ExcelRangeBase? r = sheet.Cells["A1"].LoadFromCollection(_actors);
+            ExcelRangeBase? r = sheet.Cells["A1"].LoadFromCollection(this._actors);
 
             Assert.AreEqual("Birthdate", sheet.Cells["A1"].Value);
             Assert.AreEqual("First name", sheet.Cells["B1"].Value);
@@ -83,7 +83,7 @@ namespace EPPlusTest.LoadFunctions
         {
             using ExcelPackage? package = new ExcelPackage();
             ExcelWorksheet? sheet = package.Workbook.Worksheets.Add("test");
-            ExcelRangeBase? r = sheet.Cells["A1"].LoadFromCollection(_actors);
+            ExcelRangeBase? r = sheet.Cells["A1"].LoadFromCollection(this._actors);
             ExcelTable? table = sheet.Tables[0];
             Assert.AreEqual(TableStyles.Dark1, table.TableStyle);
         }
@@ -92,7 +92,7 @@ namespace EPPlusTest.LoadFunctions
         {
             using ExcelPackage? package = new ExcelPackage();
             ExcelWorksheet? sheet = package.Workbook.Worksheets.Add("test");
-            ExcelRangeBase? r = sheet.Cells["A1"].LoadFromCollection(_actors);
+            ExcelRangeBase? r = sheet.Cells["A1"].LoadFromCollection(this._actors);
             Assert.IsNull(sheet.Cells["H3"].Value);
         }
 
@@ -135,7 +135,7 @@ namespace EPPlusTest.LoadFunctions
         {
             using ExcelPackage? package = new ExcelPackage();
             ExcelWorksheet? sheet = package.Workbook.Worksheets.Add("test");
-            ExcelRangeBase? r = sheet.Cells["A1"].LoadFromCollection(_actors, false);
+            ExcelRangeBase? r = sheet.Cells["A1"].LoadFromCollection(this._actors, false);
 
             Assert.AreEqual("John", sheet.Cells["B1"].Value);
             Assert.AreEqual("Svensson", sheet.Cells["D2"].Value);
@@ -147,7 +147,7 @@ namespace EPPlusTest.LoadFunctions
         {
             using ExcelPackage? package = new ExcelPackage();
             ExcelWorksheet? sheet = package.Workbook.Worksheets.Add("test");
-            ExcelRangeBase? r = sheet.Cells["A1"].LoadFromCollection(_actors, true, TableStyles.Dark4);
+            ExcelRangeBase? r = sheet.Cells["A1"].LoadFromCollection(this._actors, true, TableStyles.Dark4);
             ExcelTable? table = sheet.Tables[0];
             Assert.AreEqual(TableStyles.Dark4, table.TableStyle);
         }

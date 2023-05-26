@@ -23,8 +23,8 @@ namespace OfficeOpenXml.ExternalReferences
     {
         internal ExcelExternalWorksheet()
         {
-            CachedNames = new ExcelExternalNamedItemCollection<ExcelExternalDefinedName>();
-            CellValues = new ExcelExternalCellCollection(new CellStore<object>(), new CellStore<int>());
+            this.CachedNames = new ExcelExternalNamedItemCollection<ExcelExternalDefinedName>();
+            this.CellValues = new ExcelExternalCellCollection(new CellStore<object>(), new CellStore<int>());
         }
 
         internal ExcelExternalWorksheet(
@@ -32,8 +32,8 @@ namespace OfficeOpenXml.ExternalReferences
             CellStore<int> metaData,
             ExcelExternalNamedItemCollection<ExcelExternalDefinedName> definedNames)
         {
-            CachedNames = definedNames;
-            CellValues = new ExcelExternalCellCollection(values, metaData);
+            this.CachedNames = definedNames;
+            this.CellValues = new ExcelExternalCellCollection(values, metaData);
         }
         /// <summary>
         /// The sheet id
@@ -64,7 +64,7 @@ namespace OfficeOpenXml.ExternalReferences
         /// <returns>A string that represents the current object.</returns>
         public override string ToString()
         {
-            return Name;
+            return this.Name;
         }
     }
 }

@@ -96,9 +96,9 @@ namespace OfficeOpenXml
         internal int _fromRow, _toRow;
         internal ExcelRangeRow(ExcelWorksheet worksheet, int fromRow, int toRow)
         {
-            _worksheet = worksheet;
-            _fromRow = fromRow;
-            _toRow = toRow;
+            this._worksheet = worksheet;
+            this._fromRow = fromRow;
+            this._toRow = toRow;
         }
         /// <summary>
         /// The first row in the collection
@@ -107,7 +107,7 @@ namespace OfficeOpenXml
         { 
             get
             {
-                return _fromRow;
+                return this._fromRow;
             }
         }
         /// <summary>
@@ -117,7 +117,7 @@ namespace OfficeOpenXml
         {
             get
             {
-                return _toRow;
+                return this._toRow;
             }
         }
         /// <summary>
@@ -127,11 +127,11 @@ namespace OfficeOpenXml
         {
             get
             {
-                return GetValue(new Func<RowInternal, bool>(x => x.Collapsed), false);
+                return this.GetValue(new Func<RowInternal, bool>(x => x.Collapsed), false);
             }
             set
             {
-                SetValue(new Action<RowInternal, bool>((x, v) => { x.Collapsed = v; }), value);
+                this.SetValue(new Action<RowInternal, bool>((x, v) => { x.Collapsed = v; }), value);
             }
         }
         /// <summary>
@@ -141,11 +141,11 @@ namespace OfficeOpenXml
         {
             get
             {
-                return GetValue(new Func<RowInternal, int>(x => x.OutlineLevel), 0);
+                return this.GetValue(new Func<RowInternal, int>(x => x.OutlineLevel), 0);
             }
             set
             {
-                SetValue(new Action<RowInternal, int>((x, v) => { x.OutlineLevel = (short)v; }), value);
+                this.SetValue(new Action<RowInternal, int>((x, v) => { x.OutlineLevel = (short)v; }), value);
             }
         }
 
@@ -156,11 +156,11 @@ namespace OfficeOpenXml
         {
             get
             {
-                return GetValue(new Func<RowInternal, bool>(x => x.Phonetic), false);
+                return this.GetValue(new Func<RowInternal, bool>(x => x.Phonetic), false);
             }
             set
             {
-                SetValue(new Action<RowInternal, bool>((x, v) => { x.Phonetic = v; }), value);
+                this.SetValue(new Action<RowInternal, bool>((x, v) => { x.Phonetic = v; }), value);
             }
         }
         /// <summary>
@@ -170,11 +170,11 @@ namespace OfficeOpenXml
         {
             get
             {
-                return GetValue(new Func<RowInternal, bool>(x => x.Hidden), false);
+                return this.GetValue(new Func<RowInternal, bool>(x => x.Hidden), false);
             }
             set
             {
-                SetValue(new Action<RowInternal, bool>((x, v) => { x.Hidden = v; }), value);
+                this.SetValue(new Action<RowInternal, bool>((x, v) => { x.Hidden = v; }), value);
             }
         }
         /// <summary>
@@ -184,11 +184,11 @@ namespace OfficeOpenXml
         {
             get
             {
-                return GetValue(new Func<RowInternal, double>(x => x.Height), _worksheet.DefaultRowHeight);
+                return this.GetValue(new Func<RowInternal, double>(x => x.Height), this._worksheet.DefaultRowHeight);
             }
             set
             {
-                SetValue(new Action<RowInternal, double>((x, v) => 
+                this.SetValue(new Action<RowInternal, double>((x, v) => 
                 { 
                     x.Height = v;
                     x.CustomHeight = true; 
@@ -202,11 +202,11 @@ namespace OfficeOpenXml
         {
             get
             {
-                return GetValue(new Func<RowInternal, bool>(x => x.CustomHeight), false);
+                return this.GetValue(new Func<RowInternal, bool>(x => x.CustomHeight), false);
             }
             set
             {
-                SetValue(new Action<RowInternal, bool>((x, v) => { x.CustomHeight = v; }), value);
+                this.SetValue(new Action<RowInternal, bool>((x, v) => { x.CustomHeight = v; }), value);
             }
         }
 
@@ -217,11 +217,11 @@ namespace OfficeOpenXml
         {
             get
             {
-                return GetValue(new Func<RowInternal, bool>(x => x.PageBreak), false);
+                return this.GetValue(new Func<RowInternal, bool>(x => x.PageBreak), false);
             }
             set
             {
-                SetValue(new Action<RowInternal, bool>((x, v) => { x.PageBreak = v; }), value);
+                this.SetValue(new Action<RowInternal, bool>((x, v) => { x.PageBreak = v; }), value);
             }
         }
         #region ExcelRow Style
@@ -233,7 +233,7 @@ namespace OfficeOpenXml
         {
             get
             {
-                return _worksheet.Workbook.Styles.GetStyleObject(StyleID, _worksheet.PositionId, _fromRow.ToString(CultureInfo.InvariantCulture) + ":" + _toRow.ToString(CultureInfo.InvariantCulture));
+                return this._worksheet.Workbook.Styles.GetStyleObject(this.StyleID, this._worksheet.PositionId, this._fromRow.ToString(CultureInfo.InvariantCulture) + ":" + this._toRow.ToString(CultureInfo.InvariantCulture));
             }
         }
         internal string _styleName = "";
@@ -245,10 +245,10 @@ namespace OfficeOpenXml
 
             get
             {
-                int xfId = _worksheet.Workbook.Styles.CellXfs[StyleID].XfId;
-                if (xfId >= 0 && xfId < _worksheet.Workbook.Styles.CellStyleXfs.Count)
+                int xfId = this._worksheet.Workbook.Styles.CellXfs[this.StyleID].XfId;
+                if (xfId >= 0 && xfId < this._worksheet.Workbook.Styles.CellStyleXfs.Count)
                 {
-                    ExcelNamedStyleXml? ns = _worksheet.Workbook.Styles.NamedStyles.Where(x => x.StyleXfId == xfId).FirstOrDefault();
+                    ExcelNamedStyleXml? ns = this._worksheet.Workbook.Styles.NamedStyles.Where(x => x.StyleXfId == xfId).FirstOrDefault();
                     if (ns != null)
                     {
                         return ns.Name;
@@ -258,7 +258,7 @@ namespace OfficeOpenXml
             }
             set
             {
-                StyleID = _worksheet.Workbook.Styles.GetStyleIdFromName(value);
+                this.StyleID = this._worksheet.Workbook.Styles.GetStyleIdFromName(value);
             }
         }
         /// <summary>
@@ -268,13 +268,13 @@ namespace OfficeOpenXml
         {
             get
             {
-                return _worksheet.GetStyleInner(_fromRow, 0);
+                return this._worksheet.GetStyleInner(this._fromRow, 0);
             }
             set
             {
-                for (int r = _fromRow; r <= _toRow; r++)
+                for (int r = this._fromRow; r <= this._toRow; r++)
                 {
-                    _worksheet.SetStyleInner(r, 0, value);
+                    this._worksheet.SetStyleInner(r, 0, value);
                 }
             }
         }
@@ -285,7 +285,7 @@ namespace OfficeOpenXml
         {
             get
             {
-                return new ExcelRangeBase(_worksheet, ExcelAddressBase.GetAddress(_fromRow, 1, _toRow, ExcelPackage.MaxColumns));
+                return new ExcelRangeBase(this._worksheet, ExcelCellBase.GetAddress(this._fromRow, 1, this._toRow, ExcelPackage.MaxColumns));
             }
         }
         /// <summary>
@@ -295,7 +295,7 @@ namespace OfficeOpenXml
         {
             get
             {
-                return new ExcelRangeRow(_worksheet, enumRow, enumRow);
+                return new ExcelRangeRow(this._worksheet, this.enumRow, this.enumRow);
             }
         }
 
@@ -306,7 +306,7 @@ namespace OfficeOpenXml
         {
             get
             {
-                return new ExcelRangeRow(_worksheet, enumRow, enumRow);
+                return new ExcelRangeRow(this._worksheet, this.enumRow, this.enumRow);
             }
         }
 
@@ -315,7 +315,7 @@ namespace OfficeOpenXml
 
         private TOut GetValue<TOut>(Func<RowInternal, TOut> getValue, TOut defaultValue)
         {
-            RowInternal? currentRow = _worksheet.GetValueInner(_fromRow, 0) as RowInternal;
+            RowInternal? currentRow = this._worksheet.GetValueInner(this._fromRow, 0) as RowInternal;
             if (currentRow == null)
             {
                 return defaultValue;
@@ -328,13 +328,13 @@ namespace OfficeOpenXml
 
         private void SetValue<T>(Action<RowInternal,T> SetValue, T value)
         {
-            for(int r=_fromRow;r<=_toRow;r++)
+            for(int r= this._fromRow;r<= this._toRow;r++)
             {
-                RowInternal? row = _worksheet.GetValueInner(r, 0) as RowInternal;
+                RowInternal? row = this._worksheet.GetValueInner(r, 0) as RowInternal;
                 if(row==null)
                 {
                     row = new RowInternal();
-                    _worksheet.SetValueInner(r, 0, row);
+                    this._worksheet.SetValueInner(r, 0, row);
                 }
                 SetValue(row, value);
             }
@@ -366,20 +366,21 @@ namespace OfficeOpenXml
         /// <returns>False if no more row exists</returns>
         public bool MoveNext()
         {
-            if (minCol < 0)
+            if (this.minCol < 0)
             {
-                if (_cs == null)
+                if (this._cs == null)
                 {
                     this.Reset();
                 }
 
-                if (minCol < 0)
+                if (this.minCol < 0)
                 {
                     return false;
                 }
             }
-            enumCol = -1;
-            return _cs.NextCell(ref enumRow, ref enumCol, enumRow, minCol, _toRow,ExcelPackage.MaxColumns);
+
+            this.enumCol = -1;
+            return this._cs.NextCell(ref this.enumRow, ref this.enumCol, this.enumRow, this.minCol, this._toRow,ExcelPackage.MaxColumns);
         }
 
         /// <summary>
@@ -387,9 +388,9 @@ namespace OfficeOpenXml
         /// </summary>
         public void Reset()
         {
-            _cs = _worksheet._values;
-            enumRow = _fromRow-1;
-            minCol = 0;
+            this._cs = this._worksheet._values;
+            this.enumRow = this._fromRow-1;
+            this.minCol = 0;
         }
         /// <summary>
         /// Disposes this object
@@ -403,11 +404,11 @@ namespace OfficeOpenXml
         /// </summary>
         public void Group()
         {
-            SetValue(new Action<RowInternal, int>((x, v) => { if (x.OutlineLevel < 8)
-                                                      {
-                                                          x.OutlineLevel += (short)v;
-                                                      }
-                                                  }), 1);
+            this.SetValue(new Action<RowInternal, int>((x, v) => { if (x.OutlineLevel < 8)
+                                                           {
+                                                               x.OutlineLevel += (short)v;
+                                                           }
+                                                       }), 1);
         }
         /// <summary>
         /// Ungroups the rows from the outline. 
@@ -415,11 +416,11 @@ namespace OfficeOpenXml
         /// </summary>
         public void Ungroup()
         {
-            SetValue(new Action<RowInternal, int>((x, v) => { if (x.OutlineLevel >= 0)
-                                                      {
-                                                          x.OutlineLevel += (short)v;
-                                                      }
-                                                  }), -1);
+            this.SetValue(new Action<RowInternal, int>((x, v) => { if (x.OutlineLevel >= 0)
+                                                           {
+                                                               x.OutlineLevel += (short)v;
+                                                           }
+                                                       }), -1);
         }
         /// <summary>
         /// Collapses and hides the rows's children. Children are rows immegetaly below or top of the row depending on the <see cref="ExcelWorksheet.OutLineSummaryBelow"/>
@@ -427,17 +428,17 @@ namespace OfficeOpenXml
         /// </summary>
         public void CollapseChildren(bool allLevels = true)
         {
-            WorksheetOutlineHelper? helper = new WorksheetOutlineHelper(_worksheet);
-            if (_worksheet.OutLineSummaryBelow)
+            WorksheetOutlineHelper? helper = new WorksheetOutlineHelper(this._worksheet);
+            if (this._worksheet.OutLineSummaryBelow)
             {
-                for (int c = GetToRow(); c >= _fromRow; c--)
+                for (int c = this.GetToRow(); c >= this._fromRow; c--)
                 {
                     c = helper.CollapseRow(c, allLevels ? -1 : -2, true, true, -1);
                 }
             }
             else
             {
-                for (int c = _fromRow; c <= GetToRow(); c++)
+                for (int c = this._fromRow; c <= this.GetToRow(); c++)
                 {
                     c = helper.CollapseRow(c, allLevels ? -1 : -2, true, true, 1);
                 }
@@ -449,17 +450,17 @@ namespace OfficeOpenXml
         /// </summary>
         public void ExpandChildren(bool allLevels = true)
         {
-            WorksheetOutlineHelper? helper = new WorksheetOutlineHelper(_worksheet);
-            if (_worksheet.OutLineSummaryBelow)
+            WorksheetOutlineHelper? helper = new WorksheetOutlineHelper(this._worksheet);
+            if (this._worksheet.OutLineSummaryBelow)
             {
-                for (int row = GetToRow(); row >= _fromRow; row--)
+                for (int row = this.GetToRow(); row >= this._fromRow; row--)
                 {
                     row = helper.CollapseRow(row, allLevels ? -1 : -2, false, true, -1);
                 }
             }
             else
             {
-                for (int c = _fromRow; c <= GetToRow(); c++)
+                for (int c = this._fromRow; c <= this.GetToRow(); c++)
                 {
                     c = helper.CollapseRow(c, allLevels ? -1 : -2, false, true, 1);
                 }
@@ -472,17 +473,17 @@ namespace OfficeOpenXml
         /// <param name="collapseChildren">Collapse all children with a greater <see cref="OutlineLevel"/> than <paramref name="level"/></param>
         public void SetVisibleOutlineLevel(int level, bool collapseChildren=true)
         {
-            WorksheetOutlineHelper? helper = new WorksheetOutlineHelper(_worksheet);
-            if (_worksheet.OutLineSummaryBelow)
+            WorksheetOutlineHelper? helper = new WorksheetOutlineHelper(this._worksheet);
+            if (this._worksheet.OutLineSummaryBelow)
             {
-                for (int r = GetToRow(); r >= _fromRow; r--)
+                for (int r = this.GetToRow(); r >= this._fromRow; r--)
                 {
                     r = helper.CollapseRow(r, level, true, collapseChildren, -1);
                 }
             }
             else
             {
-                for (int r = _fromRow; r <= GetToRow(); r++)
+                for (int r = this._fromRow; r <= this.GetToRow(); r++)
                 {
                     r = helper.CollapseRow(r, level, true, collapseChildren, 1);
                 }
@@ -492,15 +493,15 @@ namespace OfficeOpenXml
         {
             int maxRow;
             if 
-                (_worksheet.Dimension == null)
+                (this._worksheet.Dimension == null)
             {
-                maxRow=_worksheet._values.GetLastRow(0);
+                maxRow= this._worksheet._values.GetLastRow(0);
             }
             else
             {
-                maxRow = Math.Max(_worksheet.Dimension.End.Row, _worksheet._values.GetLastRow(0));
+                maxRow = Math.Max(this._worksheet.Dimension.End.Row, this._worksheet._values.GetLastRow(0));
             }
-            return _toRow > maxRow + 1 ? maxRow + 1 : _toRow; // +1 if the last row has outline level 1 then +1 is outline level 0.
+            return this._toRow > maxRow + 1 ? maxRow + 1 : this._toRow; // +1 if the last row has outline level 1 then +1 is outline level 0.
         }
 
         private RowInternal GetRow(int row)
@@ -510,7 +511,7 @@ namespace OfficeOpenXml
                 return null;
             }
 
-            return _worksheet.GetValueInner(row, 0) as RowInternal;
+            return this._worksheet.GetValueInner(row, 0) as RowInternal;
         }
 
     }

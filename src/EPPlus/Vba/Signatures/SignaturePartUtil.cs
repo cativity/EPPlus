@@ -40,7 +40,7 @@ namespace OfficeOpenXml.VBA.Signatures
             }
             if (rel == null)
             {
-                proj.Part.CreateRelationship(UriHelper.ResolvePartUri(proj.Uri, uri), Packaging.TargetMode.Internal, signature.SchemaRelation);
+                proj.Part.CreateRelationship(UriHelper.ResolvePartUri(proj.Uri, uri), TargetMode.Internal, signature.SchemaRelation);
             }
             return part;
         }

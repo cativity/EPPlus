@@ -17,12 +17,12 @@ namespace OfficeOpenXml.Table.PivotTable
         ExcelPivotTable _pt;
         internal ExcelPivotTableAreaStyleCollection(ExcelPivotTable pt)
         {
-            _pt = pt;
-            _styles = pt.WorkSheet.Workbook.Styles;
+            this._pt = pt;
+            this._styles = pt.WorkSheet.Workbook.Styles;
             foreach (XmlNode node in pt.GetNodes("d:formats/d:format/d:pivotArea"))
             {
-                ExcelPivotTableAreaStyle? s = new ExcelPivotTableAreaStyle(_styles.NameSpaceManager, node, _pt);
-                _list.Add(s);
+                ExcelPivotTableAreaStyle? s = new ExcelPivotTableAreaStyle(this._styles.NameSpaceManager, node, this._pt);
+                this._list.Add(s);
             }
         }
         /// <summary>
@@ -31,9 +31,9 @@ namespace OfficeOpenXml.Table.PivotTable
         /// <returns></returns>
         public ExcelPivotTableAreaStyle Add()
         {
-            XmlNode? formatNode = GetTopNode();
-            ExcelPivotTableAreaStyle? s = new ExcelPivotTableAreaStyle(_styles.NameSpaceManager, formatNode.FirstChild, _pt);
-            _list.Add(s);
+            XmlNode? formatNode = this.GetTopNode();
+            ExcelPivotTableAreaStyle? s = new ExcelPivotTableAreaStyle(this._styles.NameSpaceManager, formatNode.FirstChild, this._pt);
+            this._list.Add(s);
             return s;
         }
 
@@ -43,7 +43,7 @@ namespace OfficeOpenXml.Table.PivotTable
         /// <returns></returns>
         public ExcelPivotTableAreaStyle AddTopEnd()
         {
-            return AddTopEnd(null);
+            return this.AddTopEnd(null);
         }
         /// <summary>
         /// Adds a style for the top right cells of the pivot table, to the right of any filter button, if reading order i set to Left-To-Right. 
@@ -52,8 +52,8 @@ namespace OfficeOpenXml.Table.PivotTable
         /// <returns></returns>
         public ExcelPivotTableAreaStyle AddTopEnd(string offsetAddress=null)
         {
-            XmlNode? formatNode = GetTopNode();
-            ExcelPivotTableAreaStyle? s = new ExcelPivotTableAreaStyle(_styles.NameSpaceManager, formatNode.FirstChild, _pt)
+            XmlNode? formatNode = this.GetTopNode();
+            ExcelPivotTableAreaStyle? s = new ExcelPivotTableAreaStyle(this._styles.NameSpaceManager, formatNode.FirstChild, this._pt)
             {
                 PivotAreaType = ePivotAreaType.TopEnd,
 
@@ -66,7 +66,8 @@ namespace OfficeOpenXml.Table.PivotTable
                 }
                 s.Offset = offsetAddress;
             }
-            _list.Add(s);
+
+            this._list.Add(s);
             return s;
         }
         /// <summary>
@@ -76,8 +77,8 @@ namespace OfficeOpenXml.Table.PivotTable
         /// <returns></returns>
         public ExcelPivotTableAreaStyle AddTopStart(string offsetAddress = null)
         {
-            XmlNode? formatNode = GetTopNode();
-            ExcelPivotTableAreaStyle? s = new ExcelPivotTableAreaStyle(_styles.NameSpaceManager, formatNode.FirstChild, _pt)
+            XmlNode? formatNode = this.GetTopNode();
+            ExcelPivotTableAreaStyle? s = new ExcelPivotTableAreaStyle(this._styles.NameSpaceManager, formatNode.FirstChild, this._pt)
             {
                 PivotAreaType = ePivotAreaType.Origin,
                 FieldIndex = 0,
@@ -93,7 +94,8 @@ namespace OfficeOpenXml.Table.PivotTable
                 }
                 s.Offset = offsetAddress;
             }
-            _list.Add(s);
+
+            this._list.Add(s);
             return s;
         }
         /// <summary>
@@ -108,8 +110,8 @@ namespace OfficeOpenXml.Table.PivotTable
                 throw (new ArgumentException("Field can't be null"));
             }
 
-            XmlNode? formatNode = GetTopNode();
-            ExcelPivotTableAreaStyle? s = new ExcelPivotTableAreaStyle(_styles.NameSpaceManager, formatNode.FirstChild, _pt)
+            XmlNode? formatNode = this.GetTopNode();
+            ExcelPivotTableAreaStyle? s = new ExcelPivotTableAreaStyle(this._styles.NameSpaceManager, formatNode.FirstChild, this._pt)
             {
                 PivotAreaType = ePivotAreaType.FieldButton,
                 FieldIndex = field.Index,
@@ -121,20 +123,20 @@ namespace OfficeOpenXml.Table.PivotTable
             if (field.IsColumnField)
             {
                 s.Axis = ePivotTableAxis.ColumnAxis;
-                s.FieldPosition = _pt.ColumnFields.IndexOf(field);
+                s.FieldPosition = this._pt.ColumnFields.IndexOf(field);
             }
             else if (field.IsRowField)
             {
                 s.Axis = ePivotTableAxis.RowAxis;
-                s.FieldPosition = _pt.RowFields.IndexOf(field);
+                s.FieldPosition = this._pt.RowFields.IndexOf(field);
             }
             else if (field.IsPageField)
             {
                 s.Axis = ePivotTableAxis.PageAxis;
-                s.FieldPosition = _pt.PageFields.IndexOf(field);
+                s.FieldPosition = this._pt.PageFields.IndexOf(field);
             }
 
-            _list.Add(s);
+            this._list.Add(s);
             return s;
         }
         /// <summary>
@@ -143,7 +145,7 @@ namespace OfficeOpenXml.Table.PivotTable
         /// <returns>The style object used to set the styles</returns>
         public ExcelPivotTableAreaStyle AddWholeTable()
         {
-            return AddAll(false, false);
+            return this.AddAll(false, false);
         }
         /// <summary>
         /// Adds a pivot area style that affects all labels
@@ -151,7 +153,7 @@ namespace OfficeOpenXml.Table.PivotTable
         /// <returns>The style object used to set the styles</returns>
         public ExcelPivotTableAreaStyle AddAllLabels()
         {
-            return AddAll(true, false);
+            return this.AddAll(true, false);
         }
         /// <summary>
         /// Adds a pivot area style that affects all data cells
@@ -159,19 +161,20 @@ namespace OfficeOpenXml.Table.PivotTable
         /// <returns>The style object used to set the styles</returns>
         public ExcelPivotTableAreaStyle AddAllData()
         {
-            return AddAll(false, true);
+            return this.AddAll(false, true);
         }
 
         internal ExcelPivotTableAreaStyle AddAll(bool labels, bool data)
         {
-            XmlNode? formatNode = GetTopNode();
-            ExcelPivotTableAreaStyle? s = new ExcelPivotTableAreaStyle(_styles.NameSpaceManager, formatNode.FirstChild, _pt)
+            XmlNode? formatNode = this.GetTopNode();
+            ExcelPivotTableAreaStyle? s = new ExcelPivotTableAreaStyle(this._styles.NameSpaceManager, formatNode.FirstChild, this._pt)
             {
                 PivotAreaType = ePivotAreaType.All,
                 LabelOnly = labels,
                 DataOnly = data
             };
-            _list.Add(s);
+
+            this._list.Add(s);
             return s;
         }
 
@@ -187,7 +190,7 @@ namespace OfficeOpenXml.Table.PivotTable
                 throw (new ArgumentException("Field in array can't be null"));
             }
 
-            ExcelPivotTableAreaStyle? s =Add();
+            ExcelPivotTableAreaStyle? s = this.Add();
             s.LabelOnly = true;
             s.FieldPosition = 0;
             s.Outline = false;
@@ -209,14 +212,14 @@ namespace OfficeOpenXml.Table.PivotTable
                 throw (new ArgumentException("Field in array can't be null"));
             }
 
-            ExcelPivotTableAreaStyle? s = Add();
+            ExcelPivotTableAreaStyle? s = this.Add();
             s.PivotAreaType = ePivotAreaType.Data;
             s.LabelOnly = false;
             s.FieldPosition = 0;
             s.Outline = false;
             foreach (ExcelPivotTableField? field in fields)
             {
-                ExcelPivotAreaReference? r = s.Conditions.Fields.Add(_pt, field.Index);
+                ExcelPivotAreaReference? r = s.Conditions.Fields.Add(this._pt, field.Index);
             }
             return s;
         }
@@ -233,8 +236,8 @@ namespace OfficeOpenXml.Table.PivotTable
             {
                 throw new ArgumentException("Index must be positive", "index");
             }
-            XmlNode? formatNode = GetTopNode();
-            ExcelPivotTableAreaStyle? s = new ExcelPivotTableAreaStyle(_styles.NameSpaceManager, formatNode.FirstChild, _pt)
+            XmlNode? formatNode = this.GetTopNode();
+            ExcelPivotTableAreaStyle? s = new ExcelPivotTableAreaStyle(this._styles.NameSpaceManager, formatNode.FirstChild, this._pt)
             {
                 PivotAreaType = ePivotAreaType.FieldButton,
                 FieldIndex = 0,
@@ -245,42 +248,44 @@ namespace OfficeOpenXml.Table.PivotTable
                 Axis = axis
             };
 
-            _list.Add(s);
+            this._list.Add(s);
             return s;
         }
 
         internal ExcelPivotTableAreaStyle Add(ePivotAreaType type)
         {
-            XmlNode? formatNode = GetTopNode();
-            ExcelPivotTableAreaStyle? s = new ExcelPivotTableAreaStyle(_styles.NameSpaceManager, formatNode.FirstChild, _pt)
+            XmlNode? formatNode = this.GetTopNode();
+            ExcelPivotTableAreaStyle? s = new ExcelPivotTableAreaStyle(this._styles.NameSpaceManager, formatNode.FirstChild, this._pt)
             {
                 PivotAreaType = type
             };
-            _list.Add(s);
+
+            this._list.Add(s);
             return s;
         }
 
         internal ExcelPivotTableAreaStyle Add(ePivotAreaType type, ePivotTableAxis axis)
         {
-            XmlNode? formatNode = GetTopNode();
+            XmlNode? formatNode = this.GetTopNode();
             
-            ExcelPivotTableAreaStyle? s = new ExcelPivotTableAreaStyle(_styles.NameSpaceManager, formatNode.FirstChild, _pt)
+            ExcelPivotTableAreaStyle? s = new ExcelPivotTableAreaStyle(this._styles.NameSpaceManager, formatNode.FirstChild, this._pt)
             {
                 PivotAreaType = type,
                 Axis = axis
             };
-            _list.Add(s);
+
+            this._list.Add(s);
             return s;
         }
         private XmlNode GetTopNode()
         {
-            if (_xmlHelper == null)
+            if (this._xmlHelper == null)
             {
-                XmlNode? node = _pt.CreateNode("d:formats");
-                _xmlHelper = XmlHelperFactory.Create(_pt.NameSpaceManager, node);
+                XmlNode? node = this._pt.CreateNode("d:formats");
+                this._xmlHelper = XmlHelperFactory.Create(this._pt.NameSpaceManager, node);
             }
             
-            XmlNode? retNode = _xmlHelper.CreateNode("d:format",false,true);
+            XmlNode? retNode = this._xmlHelper.CreateNode("d:format",false,true);
             retNode.InnerXml = $"<pivotArea xmlns=\"{ExcelPackage.schemaMain}\"/>";
             return retNode;
         }

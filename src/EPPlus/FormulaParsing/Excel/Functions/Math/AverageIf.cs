@@ -41,7 +41,7 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Math
         public AverageIf(ExpressionEvaluator evaluator)
         {
             Require.That(evaluator).Named("evaluator").IsNotNull();
-            _expressionEvaluator = evaluator;
+            this._expressionEvaluator = evaluator;
         }
 
         private bool Evaluate(object obj, string expression)
@@ -53,9 +53,9 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Math
             }
             if (candidate.HasValue)
             {
-                return _expressionEvaluator.Evaluate(candidate.Value, expression);
+                return this._expressionEvaluator.Evaluate(candidate.Value, expression);
             }
-            return _expressionEvaluator.Evaluate(obj, expression);
+            return this._expressionEvaluator.Evaluate(obj, expression);
         }
 
         private static string GetCriteraFromArg(IEnumerable<FunctionArgument> arguments)
@@ -72,7 +72,7 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Math
             if (argRange == null)
             {
                 object? val = arguments.ElementAt(0).Value;
-                if (criteria != null && Evaluate(val, criteria))
+                if (criteria != null && this.Evaluate(val, criteria))
                 {
                     IRangeInfo? lookupRange = ArgToRangeInfo(arguments, 2);
                     returnValue = arguments.Count() > 2
@@ -87,13 +87,13 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Math
             else if (arguments.Count() > 2)
             {
                 IRangeInfo? lookupRange = ArgToRangeInfo(arguments, 2);
-                returnValue = CalculateWithLookupRange(argRange, criteria, lookupRange, context);
+                returnValue = this.CalculateWithLookupRange(argRange, criteria, lookupRange, context);
             }
             else
             {
-                returnValue = CalculateSingleRange(argRange, criteria, context);
+                returnValue = this.CalculateSingleRange(argRange, criteria, context);
             }
-            return CreateResult(returnValue, DataType.Decimal);
+            return this.CreateResult(returnValue, DataType.Decimal);
         }
 
         private double CalculateWithLookupRange(IRangeInfo argRange, string criteria, IRangeInfo sumRange, ParsingContext context)
@@ -102,7 +102,7 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Math
             int nMatches = 0;
             foreach (ICellInfo? cell in argRange)
             {
-                if (criteria != null && Evaluate(cell.Value, criteria))
+                if (criteria != null && this.Evaluate(cell.Value, criteria))
                 {
                     int rowOffset = cell.Row - argRange.Address._fromRow;
                     int columnOffset = cell.Column - argRange.Address._fromCol;
@@ -128,7 +128,7 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Math
             int nMatches = 0;
             foreach (ICellInfo? candidate in range)
             {
-                if (expression != null && IsNumeric(candidate.Value) && Evaluate(candidate.Value, expression))
+                if (expression != null && IsNumeric(candidate.Value) && this.Evaluate(candidate.Value, expression))
                 {
                     
                     if (candidate.IsExcelError)

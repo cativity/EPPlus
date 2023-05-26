@@ -26,7 +26,7 @@ namespace OfficeOpenXml.Drawing
         ExcelDrawing _drawing;
         internal ExcelDrawingAsType(ExcelDrawing drawing)
         {
-            _drawing = drawing;
+            this._drawing = drawing;
         }
         /// <summary>
         /// Converts the drawing to it's top level or other nested drawing class.        
@@ -35,7 +35,7 @@ namespace OfficeOpenXml.Drawing
         /// <returns>The drawing as type T</returns>
         public T Type<T>() where T : ExcelDrawing
         {
-            return _drawing as T;
+            return this._drawing as T;
         }
         /// <summary>
         /// Returns the drawing as a shape. 
@@ -46,7 +46,7 @@ namespace OfficeOpenXml.Drawing
         {
             get
             {
-                return _drawing as ExcelShape;
+                return this._drawing as ExcelShape;
             }
         }
         /// <summary>
@@ -58,7 +58,7 @@ namespace OfficeOpenXml.Drawing
         {
             get
             {
-                return _drawing as ExcelPicture;
+                return this._drawing as ExcelPicture;
             }
         }
         ExcelChartAsType _chartAsType;
@@ -69,11 +69,11 @@ namespace OfficeOpenXml.Drawing
         {
             get
             {
-                if (_chartAsType == null)
+                if (this._chartAsType == null)
                 {
-                    _chartAsType = new ExcelChartAsType(_drawing);
+                    this._chartAsType = new ExcelChartAsType(this._drawing);
                 }
-                return _chartAsType;
+                return this._chartAsType;
             }
         }
 
@@ -85,11 +85,11 @@ namespace OfficeOpenXml.Drawing
         { 
             get
             {
-                if (_slicerAsType == null)
+                if (this._slicerAsType == null)
                 {
-                    _slicerAsType = new ExcelSlicerAsType(_drawing);
+                    this._slicerAsType = new ExcelSlicerAsType(this._drawing);
                 }
-                return _slicerAsType;
+                return this._slicerAsType;
             }
         }
 
@@ -103,11 +103,11 @@ namespace OfficeOpenXml.Drawing
         {
             get
             {
-                if(_controlAsType == null)
+                if(this._controlAsType == null)
                 {
-                    _controlAsType = new ExcelControlAsType(_drawing);
+                    this._controlAsType = new ExcelControlAsType(this._drawing);
                 }
-                return _controlAsType;
+                return this._controlAsType;
             }
         }
     }

@@ -32,7 +32,7 @@ namespace OfficeOpenXml.Drawing.Chart.Style
         {
             get
             {
-                string? v = GetXmlNodeString("@val");
+                string? v = this.GetXmlNodeString("@val");
                 return v == "auto";                    
             }
         }
@@ -43,14 +43,14 @@ namespace OfficeOpenXml.Drawing.Chart.Style
         {
             get
             {
-                return GetXmlNodeIntNull("@val");
+                return this.GetXmlNodeIntNull("@val");
             }
         }
         internal void SetValue(bool isAuto, int index)
         {
-            if(Auto)
+            if(this.Auto)
             {
-                SetXmlNodeString("@val", "auto");
+                this.SetXmlNodeString("@val", "auto");
             }
             else
             {
@@ -59,7 +59,7 @@ namespace OfficeOpenXml.Drawing.Chart.Style
                     throw new ArgumentOutOfRangeException("index", "Index can't be negative");
                 }
 
-                SetXmlNodeString("@val", index.ToString(CultureInfo.InvariantCulture));
+                this.SetXmlNodeString("@val", index.ToString(CultureInfo.InvariantCulture));
             }
 
         }

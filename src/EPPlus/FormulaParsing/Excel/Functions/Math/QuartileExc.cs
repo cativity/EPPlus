@@ -30,13 +30,13 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Math
         {
             ValidateArguments(arguments, 2);
             IEnumerable<FunctionArgument>? arrArg = arguments.Take(1);
-            List<double>? arr = ArgsToDoubleEnumerable(arrArg, context).Select(x => (double)x).ToList();
+            List<double>? arr = this.ArgsToDoubleEnumerable(arrArg, context).Select(x => (double)x).ToList();
             if (!arr.Any())
             {
                 return this.CreateResult(eErrorType.Value);
             }
 
-            int quart = ArgToInt(arguments, 1);
+            int quart = this.ArgToInt(arguments, 1);
             switch (quart)
             {
                 case 1:
@@ -46,7 +46,7 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Math
                 case 3:
                     return base.Execute(BuildArgs(arrArg, 0.75d), context);
                 default:
-                    return CreateResult(eErrorType.Num);
+                    return this.CreateResult(eErrorType.Num);
             }
         }
 

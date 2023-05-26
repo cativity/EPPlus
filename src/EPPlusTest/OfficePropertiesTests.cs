@@ -28,7 +28,7 @@ namespace EPPlusTest
         [TestMethod]
         public void ValidateCaseInsensitiveCustomProperties()
         {
-            using ExcelPackage? p = new OfficeOpenXml.ExcelPackage();
+            using ExcelPackage? p = new ExcelPackage();
             p.Workbook.Worksheets.Add("CustomProperties");
             p.Workbook.Properties.SetCustomPropertyValue("Foo", "Bar");
             p.Workbook.Properties.SetCustomPropertyValue("fOO", "bAR");
@@ -38,14 +38,14 @@ namespace EPPlusTest
         [TestMethod]
         public void ValidateCaseInsensitiveCustomProperties_Loading()
         {
-            ExcelPackage? p = new OfficeOpenXml.ExcelPackage();
+            ExcelPackage? p = new ExcelPackage();
             p.Workbook.Worksheets.Add("CustomProperties");
             p.Workbook.Properties.SetCustomPropertyValue("fOO", "bAR");
             p.Workbook.Properties.SetCustomPropertyValue("Foo", "Bar");
 
             p.Save();
 
-            ExcelPackage? p2 = new OfficeOpenXml.ExcelPackage(p.Stream);
+            ExcelPackage? p2 = new ExcelPackage(p.Stream);
 
             Assert.AreEqual("Bar", p2.Workbook.Properties.GetCustomPropertyValue("fOo"));
 

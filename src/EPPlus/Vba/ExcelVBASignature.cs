@@ -28,24 +28,24 @@ namespace OfficeOpenXml.VBA
     /// </summary>
     public class ExcelVbaSignature
     {
-        internal ExcelVbaSignature(Packaging.ZipPackagePart vbaPart)
+        internal ExcelVbaSignature(ZipPackagePart vbaPart)
         {
-            _vbaPart = vbaPart;
-            LegacySignature = new ExcelSignatureVersion(new EPPlusVbaSignatureLegacy(vbaPart), VbaSignatureHashAlgorithm.MD5);
-            AgileSignature = new ExcelSignatureVersion(new EPPlusVbaSignatureAgile(vbaPart), VbaSignatureHashAlgorithm.SHA1);
-            V3Signature = new ExcelSignatureVersion(new EPPlusVbaSignatureV3(vbaPart), VbaSignatureHashAlgorithm.SHA1);
+            this._vbaPart = vbaPart;
+            this.LegacySignature = new ExcelSignatureVersion(new EPPlusVbaSignatureLegacy(vbaPart), VbaSignatureHashAlgorithm.MD5);
+            this.AgileSignature = new ExcelSignatureVersion(new EPPlusVbaSignatureAgile(vbaPart), VbaSignatureHashAlgorithm.SHA1);
+            this.V3Signature = new ExcelSignatureVersion(new EPPlusVbaSignatureV3(vbaPart), VbaSignatureHashAlgorithm.SHA1);
             
-            if (LegacySignature.Certificate != null)
+            if (this.LegacySignature.Certificate != null)
             {
                 this._certificate = this.LegacySignature.Certificate;
             }
 
-            if (_certificate == null && AgileSignature.Certificate != null)
+            if (this._certificate == null && this.AgileSignature.Certificate != null)
             {
                 this._certificate = this.AgileSignature.Certificate;
             }
 
-            if (_certificate == null && V3Signature.Certificate != null)
+            if (this._certificate == null && this.V3Signature.Certificate != null)
             {
                 this._certificate = this.V3Signature.Certificate;
             }
@@ -65,21 +65,22 @@ namespace OfficeOpenXml.VBA
         { 
             get
             {
-                return _certificate;
+                return this._certificate;
             }
             set 
             {
-                if(_certificate == null && value!=null && (LegacySignature.CreateSignatureOnSave==false && AgileSignature.CreateSignatureOnSave == false && V3Signature.CreateSignatureOnSave == false))
+                if(this._certificate == null && value!=null && (this.LegacySignature.CreateSignatureOnSave==false && this.AgileSignature.CreateSignatureOnSave == false && this.V3Signature.CreateSignatureOnSave == false))
                 {
                     //If we set a new certificate, make sure all signatures are written by default.
-                    LegacySignature.CreateSignatureOnSave = true;
-                    AgileSignature.CreateSignatureOnSave = true;
-                    V3Signature.CreateSignatureOnSave = true;
+                    this.LegacySignature.CreateSignatureOnSave = true;
+                    this.AgileSignature.CreateSignatureOnSave = true;
+                    this.V3Signature.CreateSignatureOnSave = true;
                 }
-                LegacySignature.Certificate = value;
-                AgileSignature.Certificate = value;
-                V3Signature.Certificate = value;
-                _certificate = value;
+
+                this.LegacySignature.Certificate = value;
+                this.AgileSignature.Certificate = value;
+                this.V3Signature.Certificate = value;
+                this._certificate = value;
             } 
         }
         /// <summary>
@@ -87,31 +88,31 @@ namespace OfficeOpenXml.VBA
         /// </summary>
         public SignedCms Verifier { get; internal set; }
         internal CompoundDocument Signature { get; set; }
-        internal Packaging.ZipPackagePart Part { get; set; }
+        internal ZipPackagePart Part { get; set; }
         internal void Save(ExcelVbaProject proj)
         {
-            if (Certificate == null)
+            if (this.Certificate == null)
             {
                 return;
             }
 
             //Legacy signature
-            if (LegacySignature.CreateSignatureOnSave)
+            if (this.LegacySignature.CreateSignatureOnSave)
             {
-                LegacySignature.SignatureHandler.Certificate = Certificate;
-                LegacySignature.CreateSignature(proj);
+                this.LegacySignature.SignatureHandler.Certificate = this.Certificate;
+                this.LegacySignature.CreateSignature(proj);
             }
-            else if(Part?.Uri != null && Part.Package.PartExists(Part.Uri))
-            {                
-                Part.Package.DeletePart(Part.Uri);
+            else if(this.Part?.Uri != null && this.Part.Package.PartExists(this.Part.Uri))
+            {
+                this.Part.Package.DeletePart(this.Part.Uri);
             }
 
             //Agile signature
-            ZipPackagePart? p = AgileSignature.Part;
-            if (AgileSignature.CreateSignatureOnSave)
+            ZipPackagePart? p = this.AgileSignature.Part;
+            if (this.AgileSignature.CreateSignatureOnSave)
             {
-                AgileSignature.SignatureHandler.Certificate = Certificate;
-                AgileSignature.CreateSignature(proj);
+                this.AgileSignature.SignatureHandler.Certificate = this.Certificate;
+                this.AgileSignature.CreateSignature(proj);
             }
             else if (p?.Uri != null && p.Package.PartExists(p.Uri))
             {
@@ -119,11 +120,11 @@ namespace OfficeOpenXml.VBA
             }
 
             //V3 signature
-            p = V3Signature.Part;
-            if (V3Signature.CreateSignatureOnSave)
+            p = this.V3Signature.Part;
+            if (this.V3Signature.CreateSignatureOnSave)
             {
-                V3Signature.Certificate = Certificate;
-                V3Signature.CreateSignature(proj);
+                this.V3Signature.Certificate = this.Certificate;
+                this.V3Signature.CreateSignature(proj);
             }
             else if (p?.Uri != null && p.Package.PartExists(p.Uri))
             {

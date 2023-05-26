@@ -29,8 +29,8 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Math
         public override CompileResult Execute(IEnumerable<FunctionArgument> arguments, ParsingContext context)
         {
             ValidateArguments(arguments, 2);
-            List<double>? arr = ArgsToDoubleEnumerable(arguments.Take(1), context).Select(x => (double)x).ToList();
-            double k = ArgToDecimal(arguments, 1);
+            List<double>? arr = this.ArgsToDoubleEnumerable(arguments.Take(1), context).Select(x => (double)x).ToList();
+            double k = this.ArgToDecimal(arguments, 1);
             if (k <= 0 || k >= 1)
             {
                 return this.CreateResult(eErrorType.Num);
@@ -46,7 +46,7 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Math
             double l = k * (n + 1d) - 1;
             int fl = (int)System.Math.Floor(l);
             double result = ((l - fl) < double.Epsilon) ? arr[fl] : arr[fl] + (l - fl) * (arr[fl + 1] - arr[fl]);
-            return CreateResult(result, DataType.Decimal);
+            return this.CreateResult(result, DataType.Decimal);
         }
     }
 }

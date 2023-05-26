@@ -28,16 +28,16 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Math
         public override CompileResult Execute(IEnumerable<FunctionArgument> arguments, ParsingContext context)
         {
             ValidateArguments(arguments, 2);
-            double number = ArgToDecimal(arguments, 0);
+            double number = this.ArgToDecimal(arguments, 0);
             number = System.Math.Floor(number);
-            double numberChosen = ArgToDecimal(arguments, 1);
+            double numberChosen = this.ArgToDecimal(arguments, 1);
             if (number <= 0d || numberChosen <= 0 || number < numberChosen)
             {
                 return this.CreateResult(eErrorType.Num);
             }
 
             double result = System.Math.Pow(number, numberChosen);
-            return CreateResult(result, DataType.Decimal);
+            return this.CreateResult(result, DataType.Decimal);
         }
     }
 }

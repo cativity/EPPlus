@@ -25,7 +25,7 @@ namespace OfficeOpenXml.Drawing
         ExcelDrawing _drawing;
         internal ExcelControlAsType(ExcelDrawing drawing)
         {
-            _drawing = drawing;
+            this._drawing = drawing;
         }
         /// <summary>
         /// Converts the drawing to it's top level or other nested drawing class.        
@@ -34,7 +34,7 @@ namespace OfficeOpenXml.Drawing
         /// <returns>The drawing as type T</returns>
         public T Type<T>() where T : ExcelControl
         {
-            return _drawing as T;
+            return this._drawing as T;
         }
 
         /// <summary>
@@ -44,7 +44,7 @@ namespace OfficeOpenXml.Drawing
         /// <returns>The drawing as a button</returns>
         public ExcelControlButton Button
         {
-            get { return _drawing as ExcelControlButton; }
+            get { return this._drawing as ExcelControlButton; }
         }
         /// <summary>
         /// Returns the drawing as a drop-down. 
@@ -53,7 +53,7 @@ namespace OfficeOpenXml.Drawing
         /// <returns>The drawing as a drop-down</returns>        
         public ExcelControlDropDown DropDown
         {
-            get { return _drawing as ExcelControlDropDown; }
+            get { return this._drawing as ExcelControlDropDown; }
         }
         /// <summary>
         /// Returns the drawing as a group box. 
@@ -62,7 +62,7 @@ namespace OfficeOpenXml.Drawing
         /// <returns>The drawing as a group box</returns>        
         public ExcelControlGroupBox GroupBox
         {
-            get { return _drawing as ExcelControlGroupBox; }
+            get { return this._drawing as ExcelControlGroupBox; }
         }
         /// <summary>
         /// Returns the drawing as a label. 
@@ -71,7 +71,7 @@ namespace OfficeOpenXml.Drawing
         /// <returns>The drawing as a label</returns>        
         public ExcelControlLabel Label
         {
-            get { return _drawing as ExcelControlLabel; }
+            get { return this._drawing as ExcelControlLabel; }
         }
 
         /// <summary>
@@ -81,7 +81,7 @@ namespace OfficeOpenXml.Drawing
         /// <returns>The drawing as a list box</returns>        
         public ExcelControlListBox ListBox
         {
-            get { return _drawing as ExcelControlListBox; }
+            get { return this._drawing as ExcelControlListBox; }
         }
 
         /// <summary>
@@ -91,7 +91,7 @@ namespace OfficeOpenXml.Drawing
         /// <returns>The drawing as a check box</returns>        
         public ExcelControlCheckBox CheckBox
         {
-            get { return _drawing as ExcelControlCheckBox; }
+            get { return this._drawing as ExcelControlCheckBox; }
         }
 
         /// <summary>
@@ -101,7 +101,7 @@ namespace OfficeOpenXml.Drawing
         /// <returns>The drawing as a radio button</returns>        
         public ExcelControlRadioButton RadioButton
         {
-            get { return _drawing as ExcelControlRadioButton; }
+            get { return this._drawing as ExcelControlRadioButton; }
         }
 
         /// <summary>
@@ -111,7 +111,7 @@ namespace OfficeOpenXml.Drawing
         /// <returns>The drawing as a scroll bar</returns>        
         public ExcelControlScrollBar ScrollBar
         {
-            get { return _drawing as ExcelControlScrollBar; }
+            get { return this._drawing as ExcelControlScrollBar; }
         }
 
         /// <summary>
@@ -121,7 +121,7 @@ namespace OfficeOpenXml.Drawing
         /// <returns>The drawing as a spin button</returns>        
         public ExcelControlSpinButton SpinButton
         {
-            get { return _drawing as ExcelControlSpinButton; }
+            get { return this._drawing as ExcelControlSpinButton; }
         }
     }
 }

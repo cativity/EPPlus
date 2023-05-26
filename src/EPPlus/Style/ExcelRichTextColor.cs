@@ -26,7 +26,7 @@ namespace OfficeOpenXml.Style
 
         internal ExcelRichTextColor(XmlNamespaceManager ns, XmlNode topNode, ExcelRichText rt) : base(ns, topNode)
         {
-            _rt = rt;
+            this._rt = rt;
         }
         /// <summary>
         /// Gets the rgb color depending in <see cref="Rgb"/>, <see cref="Theme"/> and <see cref="Tint"/>
@@ -35,7 +35,7 @@ namespace OfficeOpenXml.Style
         {
             get
             {
-                return _rt.Color;
+                return this._rt.Color;
             }
         }
         /// <summary>
@@ -45,7 +45,7 @@ namespace OfficeOpenXml.Style
         {
             get
             {
-                string? col = GetXmlNodeString(ExcelRichText.COLOR_PATH);
+                string? col = this.GetXmlNodeString(ExcelRichText.COLOR_PATH);
                 if (string.IsNullOrEmpty(col))
                 {
                     return Color.Empty;
@@ -54,16 +54,16 @@ namespace OfficeOpenXml.Style
             }
             set
             {
-                _rt._collection.ConvertRichtext();
+                this._rt._collection.ConvertRichtext();
                 if (value==Color.Empty)
                 {
-                    DeleteNode(ExcelRichText.COLOR_PATH);
+                    this.DeleteNode(ExcelRichText.COLOR_PATH);
                 }
                 else
                 {
-                    SetXmlNodeString(ExcelRichText.COLOR_PATH, value.ToArgb().ToString("X"));
+                    this.SetXmlNodeString(ExcelRichText.COLOR_PATH, value.ToArgb().ToString("X"));
                 }
-                if (_rt._callback != null)
+                if (this._rt._callback != null)
                 {
                     this._rt._callback();
                 }
@@ -76,21 +76,21 @@ namespace OfficeOpenXml.Style
         {
             get
             {
-                return GetXmlNodeString(ExcelRichText.COLOR_THEME_PATH).ToEnum<eThemeSchemeColor>();
+                return this.GetXmlNodeString(ExcelRichText.COLOR_THEME_PATH).ToEnum<eThemeSchemeColor>();
             }
             set
             {
-                _rt._collection.ConvertRichtext();
+                this._rt._collection.ConvertRichtext();
                 string? v =value.ToEnumString();
                 if(v==null)
                 {
-                    DeleteNode(ExcelRichText.COLOR_THEME_PATH);
+                    this.DeleteNode(ExcelRichText.COLOR_THEME_PATH);
                 }
                 else
                 {
-                    SetXmlNodeString(ExcelRichText.COLOR_THEME_PATH, v);
+                    this.SetXmlNodeString(ExcelRichText.COLOR_THEME_PATH, v);
                 }
-                if (_rt._callback != null)
+                if (this._rt._callback != null)
                 {
                     this._rt._callback();
                 }
@@ -103,13 +103,13 @@ namespace OfficeOpenXml.Style
         {
             get
             {
-                return GetXmlNodeDoubleNull(ExcelRichText.COLOR_TINT_PATH);
+                return this.GetXmlNodeDoubleNull(ExcelRichText.COLOR_TINT_PATH);
             }
             set
             {
-                _rt._collection.ConvertRichtext();
-                SetXmlNodeDouble(ExcelRichText.COLOR_TINT_PATH, value, true);
-                if (_rt._callback != null)
+                this._rt._collection.ConvertRichtext();
+                this.SetXmlNodeDouble(ExcelRichText.COLOR_TINT_PATH, value, true);
+                if (this._rt._callback != null)
                 {
                     this._rt._callback();
                 }

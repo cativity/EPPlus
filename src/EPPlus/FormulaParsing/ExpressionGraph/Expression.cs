@@ -23,7 +23,7 @@ namespace OfficeOpenXml.FormulaParsing.ExpressionGraph
     {
         internal string ExpressionString { get; private set; }
         private readonly List<Expression> _children = new List<Expression>();
-        public IEnumerable<Expression> Children { get { return _children; } }
+        public IEnumerable<Expression> Children { get { return this._children; } }
         public Expression Next { get; set; }
         public Expression Prev { get; set; }
         public IOperator Operator { get; set; }
@@ -43,13 +43,13 @@ namespace OfficeOpenXml.FormulaParsing.ExpressionGraph
 
         public Expression(string expression)
         {
-            ExpressionString = expression;
-            Operator = null;
+            this.ExpressionString = expression;
+            this.Operator = null;
         }
 
         public virtual bool HasChildren
         {
-            get { return _children.Any(); }
+            get { return this._children.Any(); }
         }
 
         public virtual Expression  PrepareForNextChild()
@@ -59,22 +59,23 @@ namespace OfficeOpenXml.FormulaParsing.ExpressionGraph
 
         public virtual Expression AddChild(Expression child)
         {
-            if (_children.Any())
+            if (this._children.Any())
             {
-                Expression? last = _children.Last();
+                Expression? last = this._children.Last();
                 child.Prev = last;
                 last.Next = child;
             }
-            _children.Add(child);
+
+            this._children.Add(child);
             return child;
         }
 
         public virtual Expression MergeWithNext()
         {
             Expression? expression = this;
-            if (Next != null && Operator != null)
+            if (this.Next != null && this.Operator != null)
             {
-                CompileResult? result = Operator.Apply(Compile(), Next.Compile());
+                CompileResult? result = this.Operator.Apply(this.Compile(), this.Next.Compile());
                 expression = ExpressionConverter.Instance.FromCompileResult(result);
                 if (expression is ExcelErrorExpression)
                 {
@@ -82,29 +83,29 @@ namespace OfficeOpenXml.FormulaParsing.ExpressionGraph
                     expression.Prev = null;
                     return expression;
                 }
-                if (Next != null)
+                if (this.Next != null)
                 {
-                    expression.Operator = Next.Operator;
+                    expression.Operator = this.Next.Operator;
                 }
                 else
                 {
                     expression.Operator = null;
                 }
-                expression.Next = Next.Next;
+                expression.Next = this.Next.Next;
                 if (expression.Next != null)
                 {
                     expression.Next.Prev = expression;
                 }
 
-                expression.Prev = Prev;
+                expression.Prev = this.Prev;
             }
             else
             {
                 throw (new FormatException("Invalid formula syntax. Operator missing expression."));
             }
-            if (Prev != null)
+            if (this.Prev != null)
             {
-                Prev.Next = expression;
+                this.Prev.Next = expression;
             }            
             return expression;
         }

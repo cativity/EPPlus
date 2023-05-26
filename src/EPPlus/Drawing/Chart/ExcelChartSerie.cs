@@ -32,8 +32,8 @@ namespace OfficeOpenXml.Drawing.Chart
         internal ExcelChartSerie(ExcelChart chart, XmlNamespaceManager ns, XmlNode node, string prefix="c")
             : base(ns, node)
         {
-            _chart = chart;
-            _prefix = prefix;
+            this._chart = chart;
+            this._prefix = prefix;
         }
         /// <summary>
         /// The header for the chart serie
@@ -53,7 +53,7 @@ namespace OfficeOpenXml.Drawing.Chart
         public string[] StringLiteralsX { get; protected set; } = null;
         void IDrawingStyleBase.CreatespPr()
         {
-            CreatespPrNode();
+            this.CreatespPrNode();
         }
         /// <summary>
         /// The header address for the serie.
@@ -75,11 +75,11 @@ namespace OfficeOpenXml.Drawing.Chart
         {
             get
             {
-                if (_fill == null)
+                if (this._fill == null)
                 {
-                    _fill = new ExcelDrawingFill(_chart, NameSpaceManager, TopNode, $"{_prefix}:spPr", SchemaNodeOrder);
+                    this._fill = new ExcelDrawingFill(this._chart, this.NameSpaceManager, this.TopNode, $"{this._prefix}:spPr", this.SchemaNodeOrder);
                 }
-                return _fill;
+                return this._fill;
             }
         }
         ExcelDrawingBorder _border = null;
@@ -90,11 +90,11 @@ namespace OfficeOpenXml.Drawing.Chart
         {
             get
             {
-                if (_border == null)
+                if (this._border == null)
                 {
-                    _border = new ExcelDrawingBorder(_chart, NameSpaceManager, TopNode, $"{_prefix}:spPr/a:ln", SchemaNodeOrder);
+                    this._border = new ExcelDrawingBorder(this._chart, this.NameSpaceManager, this.TopNode, $"{this._prefix}:spPr/a:ln", this.SchemaNodeOrder);
                 }
-                return _border;
+                return this._border;
             }
         }
         ExcelDrawingEffectStyle _effect = null;
@@ -105,11 +105,11 @@ namespace OfficeOpenXml.Drawing.Chart
         {
             get
             {
-                if (_effect == null)
+                if (this._effect == null)
                 {
-                    _effect = new ExcelDrawingEffectStyle(_chart, NameSpaceManager, TopNode, $"{_prefix}:spPr/a:effectLst", SchemaNodeOrder);
+                    this._effect = new ExcelDrawingEffectStyle(this._chart, this.NameSpaceManager, this.TopNode, $"{this._prefix}:spPr/a:effectLst", this.SchemaNodeOrder);
                 }
-                return _effect;
+                return this._effect;
             }
         }
         ExcelDrawing3D _threeD = null;
@@ -120,11 +120,11 @@ namespace OfficeOpenXml.Drawing.Chart
         {
             get
             {   
-                if (_threeD == null)
+                if (this._threeD == null)
                 {
-                    _threeD = new ExcelDrawing3D(NameSpaceManager, TopNode, $"{_prefix}:spPr", SchemaNodeOrder);
+                    this._threeD = new ExcelDrawing3D(this.NameSpaceManager, this.TopNode, $"{this._prefix}:spPr", this.SchemaNodeOrder);
                 }
-                return _threeD;
+                return this._threeD;
             }
         }
         /// <summary>
@@ -140,7 +140,7 @@ namespace OfficeOpenXml.Drawing.Chart
         {
             if (ExcelCellBase.IsValidAddress(value))
             {
-                return ExcelCellBase.GetFullAddress(_chart.WorkSheet.Name, value);
+                return ExcelCellBase.GetFullAddress(this._chart.WorkSheet.Name, value);
             }
             else
             {

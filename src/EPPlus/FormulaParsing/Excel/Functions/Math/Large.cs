@@ -27,22 +27,22 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Math
     {
         public Large()
         {
-            IgnoreHiddenValues = false;
-            IgnoreErrors = false;
+            this.IgnoreHiddenValues = false;
+            this.IgnoreErrors = false;
         }
         public override CompileResult Execute(IEnumerable<FunctionArgument> arguments, ParsingContext context)
         {
             ValidateArguments(arguments, 2);
             FunctionArgument? args = arguments.ElementAt(0);
-            int index = ArgToInt(arguments, 1, IgnoreErrors) - 1;
-            IEnumerable<ExcelDoubleCellValue>? values = ArgsToDoubleEnumerable(new List<FunctionArgument> {args}, context);
+            int index = this.ArgToInt(arguments, 1, this.IgnoreErrors) - 1;
+            IEnumerable<ExcelDoubleCellValue>? values = this.ArgsToDoubleEnumerable(new List<FunctionArgument> {args}, context);
             if (index < 0 || index >= values.Count())
             {
                 return this.CreateResult(eErrorType.Num);
             }
 
             ExcelDoubleCellValue result = values.OrderByDescending(x => x).ElementAt(index);
-            return CreateResult(result, DataType.Decimal);
+            return this.CreateResult(result, DataType.Decimal);
         }
     }
 }

@@ -29,16 +29,16 @@ namespace OfficeOpenXml.Drawing.Theme
         ExcelPackage _pck;
         internal ExcelThemeFontCollection(ExcelPackage pck, XmlNamespaceManager nameSpaceManager, XmlNode topNode) : base(nameSpaceManager,topNode)
         {
-            _pck = pck;
+            this._pck = pck;
             foreach (XmlNode node in topNode.ChildNodes)
             {
                 if(node.LocalName=="font")
                 {
-                    _lst.Add(new ExcelDrawingFont(nameSpaceManager, node));
+                    this._lst.Add(new ExcelDrawingFont(nameSpaceManager, node));
                 }
                 else
                 {
-                    _lst.Add(new ExcelDrawingFontSpecial(nameSpaceManager, node));
+                    this._lst.Add(new ExcelDrawingFontSpecial(nameSpaceManager, node));
                 }
             }
         }
@@ -51,7 +51,7 @@ namespace OfficeOpenXml.Drawing.Theme
         {
             get
             {
-                return (_lst[index]);
+                return (this._lst[index]);
             }
         }
         /// <summary>
@@ -62,10 +62,10 @@ namespace OfficeOpenXml.Drawing.Theme
         /// <returns>The font</returns>
         public ExcelDrawingFont Add(string typeface, string script)
         {
-            XmlNode e=TopNode.OwnerDocument.CreateElement("a","font",ExcelPackage.schemaDrawings);
-            TopNode.AppendChild(e);
-            ExcelDrawingFont? f = new ExcelDrawingFont(NameSpaceManager, e) { Typeface=typeface, Script=script };
-            _lst.Add(f);
+            XmlNode e= this.TopNode.OwnerDocument.CreateElement("a","font",ExcelPackage.schemaDrawings);
+            this.TopNode.AppendChild(e);
+            ExcelDrawingFont? f = new ExcelDrawingFont(this.NameSpaceManager, e) { Typeface=typeface, Script=script };
+            this._lst.Add(f);
             return f;
         }
         /// <summary>
@@ -74,11 +74,12 @@ namespace OfficeOpenXml.Drawing.Theme
         /// <param name="index">The index of the item to remove</param>
         public void RemoveAt(int index)
         {
-            if (index < 0 || index >= _lst.Count)
+            if (index < 0 || index >= this._lst.Count)
             {
                 throw new IndexOutOfRangeException();
             }
-            Remove(_lst[index]);
+
+            this.Remove(this._lst[index]);
         }
         /// <summary>
         /// Removes the item from the collection
@@ -91,7 +92,7 @@ namespace OfficeOpenXml.Drawing.Theme
                 throw new InvalidOperationException("Cant remove this type of font.");
             }
             item.TopNode.ParentNode.RemoveChild(item.TopNode);
-            _lst.Remove(item);
+            this._lst.Remove(item);
         }
 
         /// <summary>
@@ -100,14 +101,15 @@ namespace OfficeOpenXml.Drawing.Theme
         /// <param name="typeface">The typeface, or name of the font</param>
         public void SetLatinFont(string typeface)
         {
-            if (_pck.Workbook.Styles.Fonts.Count > 0 && string.IsNullOrEmpty(typeface)==false)
+            if (this._pck.Workbook.Styles.Fonts.Count > 0 && string.IsNullOrEmpty(typeface)==false)
             {
-                string? id = _pck.Workbook.Styles.Fonts[0].Id;
-                _pck.Workbook.Styles.Fonts[0].Name = typeface;
-                _pck.Workbook.Styles.Fonts._dic.Remove(id);
-                _pck.Workbook.Styles.Fonts._dic.Add(_pck.Workbook.Styles.Fonts[0].Id, 0);
+                string? id = this._pck.Workbook.Styles.Fonts[0].Id;
+                this._pck.Workbook.Styles.Fonts[0].Name = typeface;
+                this._pck.Workbook.Styles.Fonts._dic.Remove(id);
+                this._pck.Workbook.Styles.Fonts._dic.Add(this._pck.Workbook.Styles.Fonts[0].Id, 0);
             }
-            SetSpecialFont(typeface, eFontType.Latin);            
+
+            this.SetSpecialFont(typeface, eFontType.Latin);            
         }
         /// <summary>
         /// Set the complex font of the collection
@@ -115,7 +117,7 @@ namespace OfficeOpenXml.Drawing.Theme
         /// <param name="typeface">The typeface, or name of the font</param>
         public void SetComplexFont(string typeface)
         {
-            SetSpecialFont(typeface, eFontType.Complex);
+            this.SetSpecialFont(typeface, eFontType.Complex);
         }
         /// <summary>
         /// Set the East Asian font of the collection
@@ -123,15 +125,15 @@ namespace OfficeOpenXml.Drawing.Theme
         /// <param name="typeface">The typeface, or name of the font</param>
         public void SetEastAsianFont(string typeface)
         {
-            SetSpecialFont(typeface, eFontType.EastAsian);
+            this.SetSpecialFont(typeface, eFontType.EastAsian);
         }
 
         private void SetSpecialFont(string typeface, eFontType fontType)
         {
-            ExcelDrawingFontBase? f = _lst.Where((x => x is ExcelDrawingFontSpecial sf && sf.Type == fontType)).FirstOrDefault();
+            ExcelDrawingFontBase? f = this._lst.Where((x => x is ExcelDrawingFontSpecial sf && sf.Type == fontType)).FirstOrDefault();
             if (f == null)
             {
-                f = AddSpecialFont(fontType, typeface);
+                f = this.AddSpecialFont(fontType, typeface);
             }
 
             f.Typeface = typeface;
@@ -163,10 +165,10 @@ namespace OfficeOpenXml.Drawing.Theme
                 default:
                     throw (new ArgumentException("Please use the Add method to add normal fonts"));
             }
-            XmlNode e = TopNode.OwnerDocument.CreateElement("a", typeName, ExcelPackage.schemaDrawings);
-            TopNode.AppendChild(e);
-            ExcelDrawingFontSpecial? f = new ExcelDrawingFontSpecial(NameSpaceManager, e) { Typeface=typeface };
-            _lst.Add(f);
+            XmlNode e = this.TopNode.OwnerDocument.CreateElement("a", typeName, ExcelPackage.schemaDrawings);
+            this.TopNode.AppendChild(e);
+            ExcelDrawingFontSpecial? f = new ExcelDrawingFontSpecial(this.NameSpaceManager, e) { Typeface=typeface };
+            this._lst.Add(f);
             return f;
         }
 
@@ -177,7 +179,7 @@ namespace OfficeOpenXml.Drawing.Theme
         {
             get
             {
-                return _lst.Count;
+                return this._lst.Count;
             }
         }
         /// <summary>
@@ -186,12 +188,12 @@ namespace OfficeOpenXml.Drawing.Theme
         /// <returns>The enumerator</returns>
         public IEnumerator<ExcelDrawingFontBase> GetEnumerator()
         {
-            return _lst.GetEnumerator();
+            return this._lst.GetEnumerator();
         }
 
         IEnumerator IEnumerable.GetEnumerator()
         {
-            return _lst.GetEnumerator();
+            return this._lst.GetEnumerator();
         }
     }
 }

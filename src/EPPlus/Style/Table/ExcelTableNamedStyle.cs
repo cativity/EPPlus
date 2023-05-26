@@ -38,7 +38,7 @@ namespace OfficeOpenXml.Style.Table
         {
             get
             {
-                return GetTableStyleElement(eTableStyleElement.LastHeaderCell);
+                return this.GetTableStyleElement(eTableStyleElement.LastHeaderCell);
             }
         }
         /// <summary>
@@ -48,7 +48,7 @@ namespace OfficeOpenXml.Style.Table
         {
             get
             {
-                return GetTableStyleElement(eTableStyleElement.FirstTotalCell);
+                return this.GetTableStyleElement(eTableStyleElement.FirstTotalCell);
             }
         }
         /// <summary>
@@ -58,7 +58,7 @@ namespace OfficeOpenXml.Style.Table
         {
             get
             {
-                return GetTableStyleElement(eTableStyleElement.LastTotalCell);
+                return this.GetTableStyleElement(eTableStyleElement.LastTotalCell);
             }
         }
         /// <summary>

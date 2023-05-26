@@ -32,20 +32,20 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions
             DoubleEnumerableArgConverter doubleEnumerableArgConverter, 
             ObjectEnumerableArgConverter objectEnumerableArgConverter)
         {
-            _doubleEnumerableArgConverter = doubleEnumerableArgConverter;
-            _objectEnumerableArgConverter = objectEnumerableArgConverter;
+            this._doubleEnumerableArgConverter = doubleEnumerableArgConverter;
+            this._objectEnumerableArgConverter = objectEnumerableArgConverter;
         }
 
         public virtual IEnumerable<ExcelDoubleCellValue> ArgsToDoubleEnumerable(bool ignoreHidden, bool ignoreErrors, IEnumerable<FunctionArgument> arguments, ParsingContext context, bool ignoreNonNumeric = false)
         {
-            return _doubleEnumerableArgConverter.ConvertArgs(ignoreHidden, ignoreErrors, arguments, context, ignoreNonNumeric);
+            return this._doubleEnumerableArgConverter.ConvertArgs(ignoreHidden, ignoreErrors, arguments, context, ignoreNonNumeric);
         }
 
         public virtual IEnumerable<object> ArgsToObjectEnumerable(bool ignoreHidden,
                                                                   IEnumerable<FunctionArgument> arguments,
                                                                   ParsingContext context)
         {
-            return _objectEnumerableArgConverter.ConvertArgs(ignoreHidden, arguments, context);
+            return this._objectEnumerableArgConverter.ConvertArgs(ignoreHidden, arguments, context);
         }
 
         public virtual double CalculateCollection(IEnumerable<FunctionArgument> collection, double result, Func<FunctionArgument, double, double> action)
@@ -54,7 +54,7 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions
             {
                 if (item.Value is IEnumerable<FunctionArgument>)
                 {
-                    result = CalculateCollection((IEnumerable<FunctionArgument>)item.Value, result, action);
+                    result = this.CalculateCollection((IEnumerable<FunctionArgument>)item.Value, result, action);
                 }
                 else
                 {

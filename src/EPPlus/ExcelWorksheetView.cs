@@ -90,11 +90,11 @@ namespace OfficeOpenXml
             {
                 get
                 {
-                    return GetXmlEnumNull<ePaneState>("@state", ePaneState.Split).Value;
+                    return this.GetXmlEnumNull<ePaneState>("@state", ePaneState.Split).Value;
                 }
                 internal set
                 {
-                    SetXmlNodeString("@state", value.ToEnumString());
+                    this.SetXmlNodeString("@state", value.ToEnumString());
                 }
             }
             /// <summary>
@@ -104,11 +104,11 @@ namespace OfficeOpenXml
             {
                 get
                 {
-                    return GetXmlEnumNull<ePanePosition>("@activePane", ePanePosition.TopLeft).Value;
+                    return this.GetXmlEnumNull<ePanePosition>("@activePane", ePanePosition.TopLeft).Value;
                 }
                 set
                 {
-                    SetXmlNodeString("@activePane", value.ToEnumString());
+                    this.SetXmlNodeString("@activePane", value.ToEnumString());
                 }
             }
 
@@ -119,11 +119,11 @@ namespace OfficeOpenXml
             {
                 get
                 {
-                    return GetXmlNodeDouble("@xSplit");
+                    return this.GetXmlNodeDouble("@xSplit");
                 }
                 set
                 {
-                    SetXmlNodeDouble("@xSplit", value, false);
+                    this.SetXmlNodeDouble("@xSplit", value, false);
                 }
             }
             /// <summary>
@@ -133,11 +133,11 @@ namespace OfficeOpenXml
             {
                 get
                 {
-                    return GetXmlNodeDouble("@ySplit");
+                    return this.GetXmlNodeDouble("@ySplit");
                 }
                 set
                 {
-                    SetXmlNodeDouble("@ySplit", value, false);
+                    this.SetXmlNodeDouble("@ySplit", value, false);
                 }
             }
             /// <summary>
@@ -147,17 +147,17 @@ namespace OfficeOpenXml
             {
                 get
                 {
-                    return GetXmlNodeString("@topLeftCell");
+                    return this.GetXmlNodeString("@topLeftCell");
                 }
                 set
                 {
                     if (string.IsNullOrEmpty(value))
                     {
-                        DeleteNode("@topLeftCell");
+                        this.DeleteNode("@topLeftCell");
                     }
                     else if (ExcelCellBase.IsValidCellAddress(value))
                     {
-                        SetXmlNodeString("@topLeftCell", value);
+                        this.SetXmlNodeString("@topLeftCell", value);
                     }
                     else
                     {
@@ -187,7 +187,7 @@ namespace OfficeOpenXml
             {
                 if (topNode.Name == "selection")
                 {
-                    _selectionNode = topNode as XmlElement;
+                    this._selectionNode = topNode as XmlElement;
                 }
             }
 
@@ -199,7 +199,7 @@ namespace OfficeOpenXml
             {
                 get
                 {
-                    string address = GetXmlNodeString(_activeCellPath);
+                    string address = this.GetXmlNodeString(_activeCellPath);
                     if (address == "")
                     {
                         return "A1";
@@ -209,17 +209,16 @@ namespace OfficeOpenXml
                 set
                 {
                     int fromCol, fromRow, toCol, toRow;
-                    if (_selectionNode == null)
+                    if (this._selectionNode == null)
                     {
                         this.CreateSelectionElement();
                     }
 
                     ExcelCellBase.GetRowColFromAddress(value, out fromRow, out fromCol, out toRow, out toCol);
-                    SetXmlNodeString(_activeCellPath, value);
-                    if (((XmlElement)TopNode).GetAttribute("sqref") == "")
+                    this.SetXmlNodeString(_activeCellPath, value);
+                    if (((XmlElement)this.TopNode).GetAttribute("sqref") == "")
                     {
-
-                        SelectedRange = ExcelCellBase.GetAddress(fromRow, fromCol);
+                        this.SelectedRange = ExcelCellBase.GetAddress(fromRow, fromCol);
                     }
                     else
                     {
@@ -234,7 +233,7 @@ namespace OfficeOpenXml
             {
                 get
                 {
-                    return GetXmlEnumNull<ePanePosition>("@pane", ePanePosition.TopLeft).Value;
+                    return this.GetXmlEnumNull<ePanePosition>("@pane", ePanePosition.TopLeft).Value;
                 }
             }
             /// <summary>
@@ -247,9 +246,9 @@ namespace OfficeOpenXml
             }
             private void CreateSelectionElement()
             {
-                _selectionNode = TopNode.OwnerDocument.CreateElement("selection", ExcelPackage.schemaMain);
-                TopNode.AppendChild(_selectionNode);
-                TopNode = _selectionNode;
+                this._selectionNode = this.TopNode.OwnerDocument.CreateElement("selection", ExcelPackage.schemaMain);
+                this.TopNode.AppendChild(this._selectionNode);
+                this.TopNode = this._selectionNode;
             }
             const string _selectionRangePath = "@sqref";
             /// <summary>
@@ -259,7 +258,7 @@ namespace OfficeOpenXml
             {
                 get
                 {
-                    string address = GetXmlNodeString(_selectionRangePath);
+                    string address = this.GetXmlNodeString(_selectionRangePath);
                     if (address == "")
                     {
                         return "A1";
@@ -269,17 +268,16 @@ namespace OfficeOpenXml
                 set
                 {
                     int fromCol, fromRow, toCol, toRow;
-                    if (_selectionNode == null)
+                    if (this._selectionNode == null)
                     {
                         this.CreateSelectionElement();
                     }
 
                     ExcelCellBase.GetRowColFromAddress(value, out fromRow, out fromCol, out toRow, out toCol);
-                    SetXmlNodeString(_selectionRangePath, value);
-                    if (((XmlElement)TopNode).GetAttribute("activeCell") == "")
+                    this.SetXmlNodeString(_selectionRangePath, value);
+                    if (((XmlElement)this.TopNode).GetAttribute("activeCell") == "")
                     {
-
-                        ActiveCell = ExcelCellBase.GetAddress(fromRow, fromCol);
+                        this.ActiveCell = ExcelCellBase.GetAddress(fromRow, fromCol);
                     }
                     else
                     {
@@ -301,36 +299,37 @@ namespace OfficeOpenXml
         internal ExcelWorksheetView(XmlNamespaceManager ns, XmlNode node, ExcelWorksheet xlWorksheet) :
             base(ns, node)
         {
-            _worksheet = xlWorksheet;
-            SchemaNodeOrder = new string[] { "sheetViews", "sheetView", "pane", "selection" };
-            if (_paneSettings == null)
+            this._worksheet = xlWorksheet;
+            this.SchemaNodeOrder = new string[] { "sheetViews", "sheetView", "pane", "selection" };
+            if (this._paneSettings == null)
             {
-                _paneSettings = new ExcelWorksheetViewPaneSettings(NameSpaceManager, TopNode);
+                this._paneSettings = new ExcelWorksheetViewPaneSettings(this.NameSpaceManager, this.TopNode);
             }
-            SetPaneSettings();
-            Panes = LoadPanes();
+
+            this.SetPaneSettings();
+            this.Panes = this.LoadPanes();
         }
 
         private void SetPaneSettings()
         {
-            XmlNode? n = GetNode("d:pane");
+            XmlNode? n = this.GetNode("d:pane");
             if (n == null)
             {
-                PaneSettings = null;
+                this.PaneSettings = null;
             }
             else
             {
-                PaneSettings = new ExcelWorksheetViewPaneSettings(NameSpaceManager, n);
+                this.PaneSettings = new ExcelWorksheetViewPaneSettings(this.NameSpaceManager, n);
             }
         }
 
         #endregion
         private ExcelWorksheetPanes[] LoadPanes()
         {
-            XmlNodeList nodes = TopNode.SelectNodes("//d:selection", NameSpaceManager);
+            XmlNodeList nodes = this.TopNode.SelectNodes("//d:selection", this.NameSpaceManager);
             if (nodes.Count == 0)
             {
-                return new ExcelWorksheetPanes[] { new ExcelWorksheetPanes(NameSpaceManager, TopNode) };
+                return new ExcelWorksheetPanes[] { new ExcelWorksheetPanes(this.NameSpaceManager, this.TopNode) };
             }
             else
             {
@@ -338,7 +337,7 @@ namespace OfficeOpenXml
                 int i = 0;
                 foreach (XmlElement elem in nodes)
                 {
-                    panes[i++] = new ExcelWorksheetPanes(NameSpaceManager, elem);
+                    panes[i++] = new ExcelWorksheetPanes(this.NameSpaceManager, elem);
                 }
                 return panes;
             }
@@ -351,7 +350,7 @@ namespace OfficeOpenXml
         {
             get
             {
-                return (XmlElement)TopNode;
+                return (XmlElement)this.TopNode;
             }
         }
         #endregion
@@ -364,7 +363,7 @@ namespace OfficeOpenXml
         {
             get
             {
-                return Panes[Panes.GetUpperBound(0)].ActiveCell;
+                return this.Panes[this.Panes.GetUpperBound(0)].ActiveCell;
             }
             set
             {
@@ -375,12 +374,12 @@ namespace OfficeOpenXml
                 }
 
                 /*** Active cell must be inside SelectedRange ***/
-                ExcelAddressBase? sd = new ExcelAddressBase(SelectedRange.Replace(" ", ","));
-                Panes[Panes.GetUpperBound(0)].ActiveCell = value;
+                ExcelAddressBase? sd = new ExcelAddressBase(this.SelectedRange.Replace(" ", ","));
+                this.Panes[this.Panes.GetUpperBound(0)].ActiveCell = value;
 
                 if (IsActiveCellInSelection(ac, sd) == false)
                 {
-                    SelectedRange = value;
+                    this.SelectedRange = value;
                 }
             }
         }
@@ -392,17 +391,17 @@ namespace OfficeOpenXml
         {
             get
             {
-                return GetXmlNodeString("@topLeftCell");
+                return this.GetXmlNodeString("@topLeftCell");
             }
             set
             {
                 if (string.IsNullOrEmpty(value))
                 {
-                    DeleteNode("@topLeftCell");
+                    this.DeleteNode("@topLeftCell");
                 }
                 else
                 {
-                    if (!ExcelAddressBase.IsValidCellAddress(value))
+                    if (!ExcelCellBase.IsValidCellAddress(value))
                     {
                         throw (new InvalidOperationException("Must be a valid cell address."));
                     }
@@ -411,7 +410,8 @@ namespace OfficeOpenXml
                     {
                         throw (new InvalidOperationException("ActiveCell must be a single cell."));
                     }
-                    SetXmlNodeString("@topLeftCell", value);
+
+                    this.SetXmlNodeString("@topLeftCell", value);
                 }
             }
         }
@@ -425,19 +425,19 @@ namespace OfficeOpenXml
         {
             get
             {
-                return Panes[Panes.GetUpperBound(0)].SelectedRange;
+                return this.Panes[this.Panes.GetUpperBound(0)].SelectedRange;
             }
             set
             {
-                ExcelAddressBase? ac = new ExcelAddressBase(ActiveCell);
+                ExcelAddressBase? ac = new ExcelAddressBase(this.ActiveCell);
 
                 /*** Active cell must be inside SelectedRange ***/
                 ExcelAddressBase? sd = new ExcelAddressBase(value.Replace(" ", ","));      //Space delimitered here, replace
 
-                Panes[Panes.GetUpperBound(0)].SelectedRange = value;
+                this.Panes[this.Panes.GetUpperBound(0)].SelectedRange = value;
                 if (IsActiveCellInSelection(ac, sd) == false)
                 {
-                    ActiveCell = new ExcelCellAddress(sd._fromRow, sd._fromCol).Address;
+                    this.ActiveCell = new ExcelCellAddress(sd._fromRow, sd._fromCol).Address;
                 }
             }
         }
@@ -482,11 +482,11 @@ namespace OfficeOpenXml
         {
             get
             {
-                return GetXmlNodeBool("@tabSelected");
+                return this.GetXmlNodeBool("@tabSelected");
             }
             set
             {
-                SetTabSelected(value, false);
+                this.SetTabSelected(value, false);
             }
         }
 
@@ -497,11 +497,11 @@ namespace OfficeOpenXml
         {
             get
             {
-                return GetXmlNodeBool("@tabSelected");
+                return this.GetXmlNodeBool("@tabSelected");
             }
             set
             {
-                SetTabSelected(value, true);
+                this.SetTabSelected(value, true);
             }
         }
 
@@ -514,19 +514,19 @@ namespace OfficeOpenXml
         {
             if (isSelected)
             {
-                SheetViewElement.SetAttribute("tabSelected", "1");
+                this.SheetViewElement.SetAttribute("tabSelected", "1");
                 if (!allowMultiple)
                 {
                     //    // ensure no other worksheet has its tabSelected attribute set to 1
-                    foreach (ExcelWorksheet sheet in _worksheet._package.Workbook.Worksheets)
+                    foreach (ExcelWorksheet sheet in this._worksheet._package.Workbook.Worksheets)
                     {
                         sheet.View.TabSelected = false;
                     }
                 }
-                XmlElement bookView = _worksheet.Workbook.WorkbookXml.SelectSingleNode("//d:workbookView", _worksheet.NameSpaceManager) as XmlElement;
+                XmlElement bookView = this._worksheet.Workbook.WorkbookXml.SelectSingleNode("//d:workbookView", this._worksheet.NameSpaceManager) as XmlElement;
                 if (bookView != null)
                 {
-                    bookView.SetAttribute("activeTab", (_worksheet.PositionId).ToString());
+                    bookView.SetAttribute("activeTab", (this._worksheet.PositionId).ToString());
                 }
             }
             else
@@ -542,7 +542,7 @@ namespace OfficeOpenXml
         {
             get
             {
-                return GetXmlNodeString("@view") == "pageLayout";
+                return this.GetXmlNodeString("@view") == "pageLayout";
             }
             set
             {
@@ -563,7 +563,7 @@ namespace OfficeOpenXml
         {
             get
             {
-                return GetXmlNodeString("@view") == "pageBreakPreview";
+                return this.GetXmlNodeString("@view") == "pageBreakPreview";
             }
             set
             {
@@ -584,11 +584,11 @@ namespace OfficeOpenXml
         {
             get
             {
-                return GetXmlNodeBool("@showGridLines", true);
+                return this.GetXmlNodeBool("@showGridLines", true);
             }
             set
             {
-                SetXmlNodeString("@showGridLines", value ? "1" : "0");
+                this.SetXmlNodeString("@showGridLines", value ? "1" : "0");
             }
         }
         /// <summary>
@@ -598,11 +598,11 @@ namespace OfficeOpenXml
         {
             get
             {
-                return GetXmlNodeBool("@showRowColHeaders", true);
+                return this.GetXmlNodeBool("@showRowColHeaders", true);
             }
             set
             {
-                SetXmlNodeString("@showRowColHeaders", value ? "1" : "0");
+                this.SetXmlNodeString("@showRowColHeaders", value ? "1" : "0");
             }
         }
         /// <summary>
@@ -612,7 +612,7 @@ namespace OfficeOpenXml
         {
             get
             {
-                return GetXmlNodeInt("@zoomScale");
+                return this.GetXmlNodeInt("@zoomScale");
             }
             set
             {
@@ -620,7 +620,8 @@ namespace OfficeOpenXml
                 {
                     throw new ArgumentOutOfRangeException("Zoome scale out of range (10-400)");
                 }
-                SetXmlNodeString("@zoomScale", value.ToString());
+
+                this.SetXmlNodeString("@zoomScale", value.ToString());
             }
         }
         /// <summary>
@@ -630,22 +631,22 @@ namespace OfficeOpenXml
         {
             get
             {
-                return GetXmlNodeBool("@rightToLeft");
+                return this.GetXmlNodeBool("@rightToLeft");
             }
             set
             {
-                SetXmlNodeString("@rightToLeft", value == true ? "1" : "0");
+                this.SetXmlNodeString("@rightToLeft", value == true ? "1" : "0");
             }
         }
         internal bool WindowProtection
         {
             get
             {
-                return GetXmlNodeBool("@windowProtection", false);
+                return this.GetXmlNodeBool("@windowProtection", false);
             }
             set
             {
-                SetXmlNodeBool("@windowProtection", value, false);
+                this.SetXmlNodeBool("@windowProtection", value, false);
             }
         }
         /// <summary>
@@ -663,7 +664,7 @@ namespace OfficeOpenXml
         {
             get
             {
-                return Panes?.Where(x => x.Position == ePanePosition.TopLeft).FirstOrDefault();
+                return this.Panes?.Where(x => x.Position == ePanePosition.TopLeft).FirstOrDefault();
             }
         }
         /// <summary>
@@ -673,7 +674,7 @@ namespace OfficeOpenXml
         {
             get
             {
-                return Panes?.Where(x => x.Position == ePanePosition.TopRight).FirstOrDefault();
+                return this.Panes?.Where(x => x.Position == ePanePosition.TopRight).FirstOrDefault();
             }
         }
         /// <summary>
@@ -683,7 +684,7 @@ namespace OfficeOpenXml
         {
             get
             {
-                return Panes?.Where(x => x.Position == ePanePosition.BottomLeft).FirstOrDefault();
+                return this.Panes?.Where(x => x.Position == ePanePosition.BottomLeft).FirstOrDefault();
             }
         }
         /// <summary>
@@ -693,7 +694,7 @@ namespace OfficeOpenXml
         {
             get
             {
-                return Panes?.Where(x => x.Position == ePanePosition.BottomRight).FirstOrDefault();
+                return this.Panes?.Where(x => x.Position == ePanePosition.BottomRight).FirstOrDefault();
             }
         }
         string _paneNodePath = "d:pane";
@@ -710,22 +711,22 @@ namespace OfficeOpenXml
 
             if (Row == 1 && Column == 1)
             {
-                UnFreezePanes();
+                this.UnFreezePanes();
                 return;
             }
 
             bool isSplit;
-            if (PaneSettings == null)
+            if (this.PaneSettings == null)
             {
-                XmlNode? node = ExcelWorksheetViewPaneSettings.CreatePaneElement(NameSpaceManager, TopNode);
-                PaneSettings = new ExcelWorksheetViewPaneSettings(NameSpaceManager, node);
+                XmlNode? node = ExcelWorksheetViewPaneSettings.CreatePaneElement(this.NameSpaceManager, this.TopNode);
+                this.PaneSettings = new ExcelWorksheetViewPaneSettings(this.NameSpaceManager, node);
                 isSplit = false;
             }
             else
             {
 
-                isSplit = PaneSettings.State != ePaneState.Frozen;
-                PaneSettings.TopNode.RemoveAll();
+                isSplit = this.PaneSettings.State != ePaneState.Frozen;
+                this.PaneSettings.TopNode.RemoveAll();
             }
 
             if (Column > 1)
@@ -738,35 +739,35 @@ namespace OfficeOpenXml
                 this.PaneSettings.YSplit = Row - 1;
             }
 
-            PaneSettings.TopLeftCell = ExcelCellBase.GetAddress(Row, Column);
-            PaneSettings.State = isSplit ? ePaneState.FrozenSplit : ePaneState.Frozen;
+            this.PaneSettings.TopLeftCell = ExcelCellBase.GetAddress(Row, Column);
+            this.PaneSettings.State = isSplit ? ePaneState.FrozenSplit : ePaneState.Frozen;
 
-            CreateSelectionXml(Row - 1, Column - 1, false);
-            Panes = LoadPanes();
+            this.CreateSelectionXml(Row - 1, Column - 1, false);
+            this.Panes = this.LoadPanes();
         }
 
         private void CreateSelectionXml(int Row, int Column, bool isSplit)
         {
-            RemoveSelection();
+            this.RemoveSelection();
 
-            string sqRef = SelectedRange, activeCell = ActiveCell;
-            PaneSettings.ActivePanePosition = ePanePosition.BottomRight;
+            string sqRef = this.SelectedRange, activeCell = this.ActiveCell;
+            this.PaneSettings.ActivePanePosition = ePanePosition.BottomRight;
             XmlNode afterNode;
             if (isSplit)
             {
                 //Top left node, default pane
-                afterNode = TopNode.OwnerDocument.CreateElement("selection", ExcelPackage.schemaMain);
-                PaneSettings.TopNode.ParentNode.InsertAfter(afterNode, PaneSettings.TopNode);
+                afterNode = this.TopNode.OwnerDocument.CreateElement("selection", ExcelPackage.schemaMain);
+                this.PaneSettings.TopNode.ParentNode.InsertAfter(afterNode, this.PaneSettings.TopNode);
             }
             else
             {
-                afterNode = PaneSettings.TopNode;
+                afterNode = this.PaneSettings.TopNode;
             }
 
             if (Row > 0 && Column == 0)
             {
-                PaneSettings.ActivePanePosition = ePanePosition.BottomLeft;
-                XmlElement sel = TopNode.OwnerDocument.CreateElement("selection", ExcelPackage.schemaMain);
+                this.PaneSettings.ActivePanePosition = ePanePosition.BottomLeft;
+                XmlElement sel = this.TopNode.OwnerDocument.CreateElement("selection", ExcelPackage.schemaMain);
                 sel.SetAttribute("pane", "bottomLeft");
                 if (activeCell != "")
                 {
@@ -778,12 +779,12 @@ namespace OfficeOpenXml
                     sel.SetAttribute("sqref", sqRef);
                 }
 
-                TopNode.InsertAfter(sel, afterNode);
+                this.TopNode.InsertAfter(sel, afterNode);
             }
             else if (Column > 0 && Row == 0)
             {
-                PaneSettings.ActivePanePosition = ePanePosition.TopRight;
-                XmlElement sel = TopNode.OwnerDocument.CreateElement("selection", ExcelPackage.schemaMain);
+                this.PaneSettings.ActivePanePosition = ePanePosition.TopRight;
+                XmlElement sel = this.TopNode.OwnerDocument.CreateElement("selection", ExcelPackage.schemaMain);
                 sel.SetAttribute("pane", "topRight");
                 if (activeCell != "")
                 {
@@ -795,18 +796,18 @@ namespace OfficeOpenXml
                     sel.SetAttribute("sqref", sqRef);
                 }
 
-                TopNode.InsertAfter(sel, afterNode);
+                this.TopNode.InsertAfter(sel, afterNode);
             }
             else
             {
-                XmlElement selTR = TopNode.OwnerDocument.CreateElement("selection", ExcelPackage.schemaMain);
+                XmlElement selTR = this.TopNode.OwnerDocument.CreateElement("selection", ExcelPackage.schemaMain);
                 selTR.SetAttribute("pane", "topRight");
                 string cell = ExcelCellBase.GetAddress(1, Column + 1);
                 selTR.SetAttribute("activeCell", cell);
                 selTR.SetAttribute("sqref", cell);
                 afterNode.ParentNode.InsertAfter(selTR, afterNode);
 
-                XmlElement selBL = TopNode.OwnerDocument.CreateElement("selection", ExcelPackage.schemaMain);
+                XmlElement selBL = this.TopNode.OwnerDocument.CreateElement("selection", ExcelPackage.schemaMain);
                 cell = ExcelCellBase.GetAddress(Row + 1, 1);
                 selBL.SetAttribute("pane", "bottomLeft");
                 selBL.SetAttribute("activeCell", cell);
@@ -814,7 +815,7 @@ namespace OfficeOpenXml
                 selTR.ParentNode.InsertAfter(selBL, selTR);
 
 
-                XmlElement selBR = TopNode.OwnerDocument.CreateElement("selection", ExcelPackage.schemaMain);
+                XmlElement selBR = this.TopNode.OwnerDocument.CreateElement("selection", ExcelPackage.schemaMain);
                 selBR.SetAttribute("pane", "bottomRight");
                 if (activeCell != "")
                 {
@@ -851,32 +852,34 @@ namespace OfficeOpenXml
         {
             if (pixelsY <= 0 && pixelsX <= 0) //Both row and column is zero, remove the panes.
             {
-                UnFreezePanes();
+                this.UnFreezePanes();
                 return;
             }
-            SetPaneSetting();
 
-            ExcelCellAddress? c = GetTopLeftCell();
+            this.SetPaneSetting();
+
+            ExcelCellAddress? c = this.GetTopLeftCell();
             if (pixelsX > 0)
             {
-                ExcelStyles? styles = _worksheet.Workbook.Styles;
+                ExcelStyles? styles = this._worksheet.Workbook.Styles;
                 int normalStyleIx = styles.GetNormalStyleIndex();
                 ExcelFont? nf = styles.NamedStyles[normalStyleIx < 0 ? 0 : normalStyleIx].Style.Font;
                 double defaultWidth = Convert.ToDouble(FontSize.GetWidthPixels(nf.Name, nf.Size));
                 int widthCharRH = c.Row < 1000 ? 3 : c.Row.ToString(CultureInfo.InvariantCulture).Length;
                 int margin = 5;
-                PaneSettings.XSplit = (Convert.ToDouble(pixelsX) + (defaultWidth * widthCharRH) + margin) * 15D;
+                this.PaneSettings.XSplit = (Convert.ToDouble(pixelsX) + (defaultWidth * widthCharRH) + margin) * 15D;
             }
             if (pixelsY > 0)
             {
-                PaneSettings.YSplit = (pixelsY + _worksheet.DefaultRowHeight / 0.75) * 15D;
+                this.PaneSettings.YSplit = (pixelsY + this._worksheet.DefaultRowHeight / 0.75) * 15D;
             }
-            CreateSelectionXml(pixelsY == 0 ? 0 : 1, pixelsX == 0 ? 0 : 1, true);
-            Panes = LoadPanes();
+
+            this.CreateSelectionXml(pixelsY == 0 ? 0 : 1, pixelsX == 0 ? 0 : 1, true);
+            this.Panes = this.LoadPanes();
             if (pixelsX > 0 && pixelsY > 0)
             {
-                ExcelCellAddress? a = new ExcelCellAddress(string.IsNullOrEmpty(TopLeftCell) ? "A1" : TopLeftCell);
-                PaneSettings.TopLeftCell = ExcelCellBase.GetAddress(a.Row, a.Column);
+                ExcelCellAddress? a = new ExcelCellAddress(string.IsNullOrEmpty(this.TopLeftCell) ? "A1" : this.TopLeftCell);
+                this.PaneSettings.TopLeftCell = ExcelCellBase.GetAddress(a.Row, a.Column);
             }
         }
         /// <summary>
@@ -891,72 +894,74 @@ namespace OfficeOpenXml
             ValidateRows(rowsTop, columnsLeft);
             if (rowsTop == 0 && columnsLeft == 0) //Both row and column is zero, remove the panes.
             {
-                UnFreezePanes();
+                this.UnFreezePanes();
                 return;
             }
-            SetPaneSetting();
 
-            ExcelCellAddress? c = GetTopLeftCell();
+            this.SetPaneSetting();
+
+            ExcelCellAddress? c = this.GetTopLeftCell();
             if (columnsLeft > 0)
             {
-                ExcelStyles? styles = _worksheet.Workbook.Styles;
+                ExcelStyles? styles = this._worksheet.Workbook.Styles;
                 int normalStyleIx = styles.GetNormalStyleIndex();
                 ExcelFont? nf = styles.NamedStyles[normalStyleIx < 0 ? 0 : normalStyleIx].Style.Font;
                 decimal defaultWidth = FontSize.GetWidthPixels(nf.Name, nf.Size);
                 int widthCharRH = c.Row < 1000 ? 3 : c.Row.ToString(CultureInfo.InvariantCulture).Length;
                 int margin = 5;
-                PaneSettings.XSplit = (Convert.ToDouble(GetVisibleColumnWidth(c.Column-1, columnsLeft) + (defaultWidth * widthCharRH) + margin)) * 15D;
+                this.PaneSettings.XSplit = (Convert.ToDouble(this.GetVisibleColumnWidth(c.Column-1, columnsLeft) + (defaultWidth * widthCharRH) + margin)) * 15D;
             }
             if (rowsTop > 0)
             {
-                PaneSettings.YSplit = (Convert.ToDouble(GetVisibleRowWidth(c.Row, rowsTop)) + _worksheet.DefaultRowHeight / 0.75) * 15D;
+                this.PaneSettings.YSplit = (Convert.ToDouble(this.GetVisibleRowWidth(c.Row, rowsTop)) + this._worksheet.DefaultRowHeight / 0.75) * 15D;
             }
-            CreateSelectionXml(rowsTop, columnsLeft, true);
-            Panes = LoadPanes();
 
-            ExcelCellAddress? a = new ExcelCellAddress(string.IsNullOrEmpty(TopLeftCell) ? "A1" : TopLeftCell);
-            PaneSettings.TopLeftCell = ExcelCellBase.GetAddress(a.Row + rowsTop, a.Column + columnsLeft);
+            this.CreateSelectionXml(rowsTop, columnsLeft, true);
+            this.Panes = this.LoadPanes();
+
+            ExcelCellAddress? a = new ExcelCellAddress(string.IsNullOrEmpty(this.TopLeftCell) ? "A1" : this.TopLeftCell);
+            this.PaneSettings.TopLeftCell = ExcelCellBase.GetAddress(a.Row + rowsTop, a.Column + columnsLeft);
         }
 
         private void SetPaneSetting()
         {
-            if (PaneSettings == null)
+            if (this.PaneSettings == null)
             {
-                XmlNode? node = ExcelWorksheetViewPaneSettings.CreatePaneElement(NameSpaceManager, TopNode);
-                PaneSettings = new ExcelWorksheetViewPaneSettings(NameSpaceManager, node);
+                XmlNode? node = ExcelWorksheetViewPaneSettings.CreatePaneElement(this.NameSpaceManager, this.TopNode);
+                this.PaneSettings = new ExcelWorksheetViewPaneSettings(this.NameSpaceManager, node);
             }
             else
             {
-                PaneSettings.State = ePaneState.Split;
+                this.PaneSettings.State = ePaneState.Split;
             }
         }
 
         private ExcelCellAddress GetTopLeftCell()
         {
-            if (string.IsNullOrEmpty(TopLeftCell))
+            if (string.IsNullOrEmpty(this.TopLeftCell))
             {
-                if (string.IsNullOrEmpty(PaneSettings?.TopLeftCell))
+                if (string.IsNullOrEmpty(this.PaneSettings?.TopLeftCell))
                 {
                     return new ExcelCellAddress();
                 }
                 else
                 {
-                    return new ExcelCellAddress(PaneSettings.TopLeftCell);
+                    return new ExcelCellAddress(this.PaneSettings.TopLeftCell);
                 }
             }
             else
             {
-                return new ExcelCellAddress(TopLeftCell);
+                return new ExcelCellAddress(this.TopLeftCell);
             }
         }
 
         private decimal GetVisibleColumnWidth(int topCol, int cols)
         {
-            decimal mdw = _worksheet.Workbook.MaxFontWidth;
+            decimal mdw = this._worksheet.Workbook.MaxFontWidth;
             decimal width = 0;
             for (int c = 0; c < cols; c++)
             {
-                width += _worksheet.GetColumnWidthPixels(topCol + c, mdw);
+                width += this._worksheet.GetColumnWidthPixels(topCol + c, mdw);
             }
             return width;
         }
@@ -965,7 +970,7 @@ namespace OfficeOpenXml
             decimal height = 0;
             for (int r = 0; r < rows; r++)
             {
-                height += Convert.ToDecimal(_worksheet.GetRowHeight(leftRow + r)) / 0.75M;
+                height += Convert.ToDecimal(this._worksheet.GetRowHeight(leftRow + r)) / 0.75M;
             }
             return height;
 
@@ -974,7 +979,7 @@ namespace OfficeOpenXml
         private void RemoveSelection()
         {
             //Find selection nodes and remove them            
-            XmlNodeList selections = TopNode.SelectNodes(_selectionNodePath, NameSpaceManager);
+            XmlNodeList selections = this.TopNode.SelectNodes(this._selectionNodePath, this.NameSpaceManager);
             foreach (XmlNode sel in selections)
             {
                 sel.ParentNode.RemoveChild(sel);
@@ -985,20 +990,21 @@ namespace OfficeOpenXml
         /// </summary>
         public void UnFreezePanes()
         {
-            string sqRef = SelectedRange, activeCell = ActiveCell;
+            string sqRef = this.SelectedRange, activeCell = this.ActiveCell;
 
-            XmlElement paneNode = TopNode.SelectSingleNode(_paneNodePath, NameSpaceManager) as XmlElement;
+            XmlElement paneNode = this.TopNode.SelectSingleNode(this._paneNodePath, this.NameSpaceManager) as XmlElement;
             if (paneNode != null)
             {
                 paneNode.ParentNode.RemoveChild(paneNode);
             }
-            RemoveSelection();
 
-            PaneSettings = null;
-            Panes = new ExcelWorksheetPanes[] { new ExcelWorksheetPanes(NameSpaceManager, TopNode) };
+            this.RemoveSelection();
 
-            SelectedRange = sqRef;
-            ActiveCell = activeCell;
+            this.PaneSettings = null;
+            this.Panes = new ExcelWorksheetPanes[] { new ExcelWorksheetPanes(this.NameSpaceManager, this.TopNode) };
+
+            this.SelectedRange = sqRef;
+            this.ActiveCell = activeCell;
         }
         #endregion
     }

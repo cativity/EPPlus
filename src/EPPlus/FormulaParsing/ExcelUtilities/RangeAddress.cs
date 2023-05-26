@@ -22,7 +22,7 @@ namespace OfficeOpenXml.FormulaParsing.ExcelUtilities
     {
         public RangeAddress()
         {
-            Address = string.Empty;
+            this.Address = string.Empty;
         }
 
         internal string Address { get; set; }
@@ -39,7 +39,7 @@ namespace OfficeOpenXml.FormulaParsing.ExcelUtilities
 
         public override string ToString()
         {
-            return Address;
+            return this.Address;
         }
 
         private static RangeAddress _empty = new RangeAddress();
@@ -55,13 +55,12 @@ namespace OfficeOpenXml.FormulaParsing.ExcelUtilities
         /// <returns></returns>
         public bool CollidesWith(RangeAddress other)
         {
-            if (other.Worksheet != Worksheet)
+            if (other.Worksheet != this.Worksheet)
             {
                 return false;
             }
-            if (other.FromRow > ToRow || other.FromCol > ToCol
-                ||
-                FromRow > other.ToRow || FromCol > other.ToCol)
+            if (other.FromRow > this.ToRow || other.FromCol > this.ToCol
+                                           || this.FromRow > other.ToRow || this.FromCol > other.ToCol)
             {
                 return false;
             }

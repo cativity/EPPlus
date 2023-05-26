@@ -39,7 +39,7 @@ namespace OfficeOpenXml.Export.ToDataTable
         /// <param name="dataColumn">The destination <see cref="DataColumn"/> in the <see cref="DataTable"/></param>
         public void Add(int zeroBasedIndexInRange, DataColumn dataColumn)
         {
-            Add(zeroBasedIndexInRange, dataColumn, null);
+            this.Add(zeroBasedIndexInRange, dataColumn, null);
         }
 
         /// <summary>
@@ -56,9 +56,10 @@ namespace OfficeOpenXml.Export.ToDataTable
                 ZeroBasedColumnIndexInRange = zeroBasedIndexInRange,
                 TransformCellValue = transformCellValueFunc
             };
-            _mappingIndexes[mapping.ZeroBasedColumnIndexInRange] = mapping;
-            Add(mapping);
-            Sort((x, y) => x.ZeroBasedColumnIndexInRange.CompareTo(y.ZeroBasedColumnIndexInRange));
+
+            this._mappingIndexes[mapping.ZeroBasedColumnIndexInRange] = mapping;
+            this.Add(mapping);
+            this.Sort((x, y) => x.ZeroBasedColumnIndexInRange.CompareTo(y.ZeroBasedColumnIndexInRange));
         }
         /// <summary>
         /// Adds a <see cref="DataColumnMapping"/>
@@ -67,7 +68,7 @@ namespace OfficeOpenXml.Export.ToDataTable
         /// <param name="columnName">Name of the <see cref="DataColumn"/> in the <see cref="DataTable"/></param>
         public void Add(int zeroBasedIndexInRange, string columnName)
         {
-            Add(zeroBasedIndexInRange, columnName, null, true, null);
+            this.Add(zeroBasedIndexInRange, columnName, null, true, null);
         }
 
         /// <summary>
@@ -78,7 +79,7 @@ namespace OfficeOpenXml.Export.ToDataTable
         /// <param name="allowNull">Indicates if values read from the source range can be null</param>
         public void Add(int zeroBasedIndexInRange, string columnName, bool allowNull)
         {
-            Add(zeroBasedIndexInRange, columnName, null, allowNull, null);
+            this.Add(zeroBasedIndexInRange, columnName, null, allowNull, null);
         }
 
         /// <summary>
@@ -89,7 +90,7 @@ namespace OfficeOpenXml.Export.ToDataTable
         /// <param name="transformCellValueFunc">A function that casts/transforms the value before it is written to the <see cref="DataTable"/></param>
         public void Add(int zeroBasedIndexInRange, string columnName, Func<object, object> transformCellValueFunc)
         {
-            Add(zeroBasedIndexInRange, columnName, null, true, transformCellValueFunc);
+            this.Add(zeroBasedIndexInRange, columnName, null, true, transformCellValueFunc);
         }
 
         /// <summary>
@@ -100,7 +101,7 @@ namespace OfficeOpenXml.Export.ToDataTable
         /// <param name="columnDataType"><see cref="Type"/> of the <see cref="DataColumn"/></param>
         public void Add(int zeroBasedIndexInRange, string columnName, Type columnDataType)
         {
-            Add(zeroBasedIndexInRange, columnName, columnDataType, true, null);
+            this.Add(zeroBasedIndexInRange, columnName, columnDataType, true, null);
         }
 
         /// <summary>
@@ -112,7 +113,7 @@ namespace OfficeOpenXml.Export.ToDataTable
         /// <param name="allowNull">Indicates if values read from the source range can be null</param>
         public void Add(int zeroBasedIndexInRange, string columnName, Type columnDataType, bool allowNull)
         {
-            Add(zeroBasedIndexInRange, columnName, columnDataType, allowNull, null);
+            this.Add(zeroBasedIndexInRange, columnName, columnDataType, allowNull, null);
         }
 
         /// <summary>
@@ -140,24 +141,24 @@ namespace OfficeOpenXml.Export.ToDataTable
                 throw new InvalidOperationException("Duplicate index in range: " + zeroBasedIndexInRange);
             }
 
-            _mappingIndexes[mapping.ZeroBasedColumnIndexInRange] = mapping;
-            Add(mapping);
-            Sort((x, y) => x.ZeroBasedColumnIndexInRange.CompareTo(y.ZeroBasedColumnIndexInRange));
+            this._mappingIndexes[mapping.ZeroBasedColumnIndexInRange] = mapping;
+            this.Add(mapping);
+            this.Sort((x, y) => x.ZeroBasedColumnIndexInRange.CompareTo(y.ZeroBasedColumnIndexInRange));
         }
 
         internal DataColumnMapping GetByRangeIndex(int index)
         {
-            if (!_mappingIndexes.ContainsKey(index))
+            if (!this._mappingIndexes.ContainsKey(index))
             {
                 return null;
             }
 
-            return _mappingIndexes[index];
+            return this._mappingIndexes[index];
         }
 
         internal bool ContainsMapping(int index)
         {
-            return _mappingIndexes.ContainsKey(index);
+            return this._mappingIndexes.ContainsKey(index);
         }
     }
 }

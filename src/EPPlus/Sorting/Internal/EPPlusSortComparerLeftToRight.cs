@@ -25,17 +25,17 @@ namespace OfficeOpenXml.Sorting.Internal
         public EPPlusSortComparerLeftToRight(int[] rows, bool[] descending, Dictionary<int, string[]> customLists, CultureInfo culture = null, CompareOptions compareOptions = CompareOptions.None)
             : base(descending, customLists, culture, compareOptions)
         {
-            _rows = rows;
+            this._rows = rows;
         }
 
         private readonly int[] _rows;
 
         public override int Compare(SortItemLeftToRight<ExcelValue> x, SortItemLeftToRight<ExcelValue> y)
         {
-            for (int i = 0; i < _rows.Length; i++)
+            for (int i = 0; i < this._rows.Length; i++)
             {
-                object? x1 = x.Items[_rows[i]]._value;
-                object? y1 = y.Items[_rows[i]]._value;
+                object? x1 = x.Items[this._rows[i]]._value;
+                object? y1 = y.Items[this._rows[i]]._value;
                 if (x1 == null && y1 != null)
                 {
                     return 1;
@@ -47,10 +47,10 @@ namespace OfficeOpenXml.Sorting.Internal
                 }
 
                 int ret;
-                if (CustomLists != null && CustomLists.ContainsKey(_rows[i]))
+                if (this.CustomLists != null && this.CustomLists.ContainsKey(this._rows[i]))
                 {
-                    int weight1 = GetSortWeightByCustomList(x1.ToString(), CustomLists[_rows[i]]);
-                    int weight2 = GetSortWeightByCustomList(y1.ToString(), CustomLists[_rows[i]]);
+                    int weight1 = this.GetSortWeightByCustomList(x1.ToString(), this.CustomLists[this._rows[i]]);
+                    int weight2 = this.GetSortWeightByCustomList(y1.ToString(), this.CustomLists[this._rows[i]]);
                     if (weight1 != CustomListNotFound && weight2 != CustomListNotFound)
                     {
                         ret = weight1.CompareTo(weight2);

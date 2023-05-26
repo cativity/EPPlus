@@ -27,21 +27,21 @@ namespace OfficeOpenXml.Table.PivotTable
     {
         internal ExcelPivotAreaReference(XmlNamespaceManager nsm, XmlNode topNode, ExcelPivotTable pt, int fieldIndex = -1) : base(nsm, topNode, pt)
         {
-            Items = new ExcelPivotAreaReferenceItems(this);
+            this.Items = new ExcelPivotAreaReferenceItems(this);
             if (fieldIndex != -1)
             {
-                FieldIndex = fieldIndex;
+                this.FieldIndex = fieldIndex;
             }
-            if (FieldIndex >= 0)
+            if (this.FieldIndex >= 0)
             {
                 foreach (XmlNode n in topNode.ChildNodes)
                 {
                     if (n.LocalName == "x")
                     {
                         int ix = int.Parse(n.Attributes["v"].Value);
-                        if (ix < Field.Items.Count)
+                        if (ix < this.Field.Items.Count)
                         {
-                            Items.Add(new PivotItemReference() { Index = ix, Value = Field.Items[ix].Value });
+                            this.Items.Add(new PivotItemReference() { Index = ix, Value = this.Field.Items[ix].Value });
                         }
                     }
                 }
@@ -54,9 +54,9 @@ namespace OfficeOpenXml.Table.PivotTable
         {
             get
             {
-                if (FieldIndex >= 0)
+                if (this.FieldIndex >= 0)
                 {
-                    return _pt.Fields[FieldIndex];
+                    return this._pt.Fields[this.FieldIndex];
                 }
                 return null;
             }
@@ -68,22 +68,22 @@ namespace OfficeOpenXml.Table.PivotTable
         internal override void UpdateXml()
         {
             //Remove reference, so they can be re-written 
-            if (TopNode.LocalName == "reference")
+            if (this.TopNode.LocalName == "reference")
             {
-                while (TopNode.ChildNodes.Count > 0)
+                while (this.TopNode.ChildNodes.Count > 0)
                 {
-                    TopNode.RemoveChild(TopNode.ChildNodes[0]);
+                    this.TopNode.RemoveChild(this.TopNode.ChildNodes[0]);
                 }
             }
 
-            if (FieldIndex >= 0 && FieldIndex < _pt.Fields.Count)
+            if (this.FieldIndex >= 0 && this.FieldIndex < this._pt.Fields.Count)
             {
-                ExcelPivotTableFieldItemsCollection? items = Field.Items;
-                foreach (PivotItemReference r in Items)
+                ExcelPivotTableFieldItemsCollection? items = this.Field.Items;
+                foreach (PivotItemReference r in this.Items)
                 {
                     if (r.Index >= 0 && r.Index < items.Count && r.Value.Equals(items[r.Index]))
                     {
-                        XmlElement? n = (XmlElement)CreateNode("d:x", false, true);
+                        XmlElement? n = (XmlElement)this.CreateNode("d:x", false, true);
                         n.SetAttribute("v", r.Index.ToString(CultureInfo.InvariantCulture));
                     }
                     else
@@ -91,7 +91,7 @@ namespace OfficeOpenXml.Table.PivotTable
                         int ix = items._list.FindIndex(x => (x.Value != null && (x.Value.Equals(r.Value)) || (x.Text != null && x.Text.Equals(r.Value))));
                         if (ix >= 0)
                         {
-                            XmlElement? n = (XmlElement)CreateNode("d:x", false, true);
+                            XmlElement? n = (XmlElement)this.CreateNode("d:x", false, true);
                             n.SetAttribute("v", ix.ToString(CultureInfo.InvariantCulture));
                         }
                     }

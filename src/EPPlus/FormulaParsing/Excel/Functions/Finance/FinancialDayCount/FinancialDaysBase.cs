@@ -153,7 +153,7 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Finance.FinancialDayCount
 
         public IEnumerable<FinancialPeriod> GetCalendarYearPeriodsBackwards(FinancialDay settlement, FinancialDay date, int frequency)
         {
-            return GetCalendarYearPeriodsBackwards(settlement, date, frequency, 0);
+            return this.GetCalendarYearPeriodsBackwards(settlement, date, frequency, 0);
         }
 
         public IEnumerable<FinancialPeriod> GetCalendarYearPeriodsBackwards(FinancialDay settlement, FinancialDay date, int frequency, int additionalPeriods)

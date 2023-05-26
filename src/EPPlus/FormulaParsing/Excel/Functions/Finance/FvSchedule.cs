@@ -28,15 +28,15 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Finance
         public override CompileResult Execute(IEnumerable<FunctionArgument> arguments, ParsingContext context)
         {
             ValidateArguments(arguments, 2);
-            double principal = ArgToDecimal(arguments, 0);
+            double principal = this.ArgToDecimal(arguments, 0);
             List<FunctionArgument>? scheduleArg = new List<FunctionArgument> { arguments.ElementAt(1) };
-            IEnumerable<ExcelDoubleCellValue>? schedule = ArgsToDoubleEnumerable(scheduleArg, context);
+            IEnumerable<ExcelDoubleCellValue>? schedule = this.ArgsToDoubleEnumerable(scheduleArg, context);
             double result = principal;
             foreach(ExcelDoubleCellValue interest in schedule)
             {
                 result *= 1d + interest;
             }
-            return CreateResult(result, DataType.Decimal);
+            return this.CreateResult(result, DataType.Decimal);
         }
     }
 }

@@ -23,7 +23,7 @@ namespace EPPlusTest.Drawing
 		{
 			InitBase();
 			_pck = OpenPackage("ImageReader.xlsx", true);
-            _pck.Settings.ImageSettings.PrimaryImageHandler = new OfficeOpenXml.Drawing.GenericImageHandler();
+            _pck.Settings.ImageSettings.PrimaryImageHandler = new GenericImageHandler();
         }
         [ClassCleanup]
 		public static void Cleanup()
@@ -43,7 +43,7 @@ namespace EPPlusTest.Drawing
             ExcelWorksheet? ws = _pck.Workbook.Worksheets.Add("InternalJpg");
 
             using MemoryStream? ms = new MemoryStream(Properties.Resources.Test1JpgByteArray);
-            ExcelPicture? image = ws.Drawings.AddPicture("jpg", ms, OfficeOpenXml.Drawing.ePictureType.Jpg);
+            ExcelPicture? image = ws.Drawings.AddPicture("jpg", ms, ePictureType.Jpg);
         }
         [TestMethod]
         public void AddPngImageVia()
@@ -51,7 +51,7 @@ namespace EPPlusTest.Drawing
             ExcelWorksheet? ws = _pck.Workbook.Worksheets.Add("InternalPng");
 
             using MemoryStream? ms = new MemoryStream(Properties.Resources.VmlPatternImagePngByteArray);
-            ExcelPicture? image = ws.Drawings.AddPicture("png1", ms, OfficeOpenXml.Drawing.ePictureType.Png);
+            ExcelPicture? image = ws.Drawings.AddPicture("png1", ms, ePictureType.Png);
         }
 
         [TestMethod]
@@ -208,7 +208,7 @@ namespace EPPlusTest.Drawing
             }
 
             using MemoryStream? msIco128 = GetImageMemoryStream("1_128x128.ico");
-            ExcelPicture? imageIco = ws.Drawings.AddPicture("ico2", msIco128, OfficeOpenXml.Drawing.ePictureType.Ico);
+            ExcelPicture? imageIco = ws.Drawings.AddPicture("ico2", msIco128, ePictureType.Ico);
             imageIco.SetPosition(40, 0, 10, 0);
             Assert.AreEqual("image/x-icon", imageIco.ContentType);
         }
@@ -296,7 +296,7 @@ namespace EPPlusTest.Drawing
             }
 
             using MemoryStream? msIco128 = GetImageMemoryStream("1_128x128.ico");
-            ExcelPicture? imageIco = await ws.Drawings.AddPictureAsync("ico2", msIco128, OfficeOpenXml.Drawing.ePictureType.Ico);
+            ExcelPicture? imageIco = await ws.Drawings.AddPictureAsync("ico2", msIco128, ePictureType.Ico);
             imageIco.SetPosition(40, 0, 10, 0);
             Assert.AreEqual("image/x-icon", imageIco.ContentType);
         }
@@ -307,30 +307,30 @@ namespace EPPlusTest.Drawing
             //32*32
             using (MemoryStream? msIco1 = GetImageMemoryStream("1_32x32.ico"))
             {
-                ExcelPicture? imageWebP1 = ws.Drawings.AddPicture("ico1", msIco1, OfficeOpenXml.Drawing.ePictureType.Ico);
+                ExcelPicture? imageWebP1 = ws.Drawings.AddPicture("ico1", msIco1, ePictureType.Ico);
                 imageWebP1.SetPosition(40, 0, 0, 0);
             }
             //128*128
             using (MemoryStream? msIco2 = GetImageMemoryStream("1_128x128.ico"))
             {
-                ExcelPicture? imageWebP1 = ws.Drawings.AddPicture("ico2", msIco2, OfficeOpenXml.Drawing.ePictureType.Ico);
+                ExcelPicture? imageWebP1 = ws.Drawings.AddPicture("ico2", msIco2, ePictureType.Ico);
                 imageWebP1.SetPosition(40, 0, 10, 0);
             }
 
             using (MemoryStream? msIco3 = GetImageMemoryStream("example.ico"))
             {
-                ExcelPicture? imageWebP1 = ws.Drawings.AddPicture("ico3", msIco3, OfficeOpenXml.Drawing.ePictureType.Ico);
+                ExcelPicture? imageWebP1 = ws.Drawings.AddPicture("ico3", msIco3, ePictureType.Ico);
                 imageWebP1.SetPosition(40, 0, 20, 0);
             }
 
             using (MemoryStream? msIco4 = GetImageMemoryStream("example_small.ico"))
             {
-                ExcelPicture? imageWebP1 = ws.Drawings.AddPicture("ico4", msIco4, OfficeOpenXml.Drawing.ePictureType.Ico);
+                ExcelPicture? imageWebP1 = ws.Drawings.AddPicture("ico4", msIco4, ePictureType.Ico);
                 imageWebP1.SetPosition(40, 0, 30, 0);
             }
             using (MemoryStream? msIco5 = GetImageMemoryStream("Ico-file-for-testing.ico"))
             {
-                ExcelPicture? imageWebP1 = ws.Drawings.AddPicture("ico5", msIco5, OfficeOpenXml.Drawing.ePictureType.Ico);
+                ExcelPicture? imageWebP1 = ws.Drawings.AddPicture("ico5", msIco5, ePictureType.Ico);
                 imageWebP1.SetPosition(40, 0, 40, 0);
             }
         }
@@ -340,7 +340,7 @@ namespace EPPlusTest.Drawing
             ExcelWorksheet? ws = _pck.Workbook.Worksheets.Add("Emz");
             //32*32
             using MemoryStream? msIco1 = GetImageMemoryStream("example.emz");
-            ExcelPicture? imageWebP1 = ws.Drawings.AddPicture("Emf", msIco1, OfficeOpenXml.Drawing.ePictureType.Emz);
+            ExcelPicture? imageWebP1 = ws.Drawings.AddPicture("Emf", msIco1, ePictureType.Emz);
             imageWebP1.SetPosition(40, 0, 0, 0);
         }
         [TestMethod]
@@ -350,24 +350,24 @@ namespace EPPlusTest.Drawing
             
             using (MemoryStream? msBmp1 = GetImageMemoryStream("bmp\\MARBLES.BMP"))
             {
-                ExcelPicture? imageBmp1 = ws.Drawings.AddPicture("bmp1", msBmp1, OfficeOpenXml.Drawing.ePictureType.Bmp);
+                ExcelPicture? imageBmp1 = ws.Drawings.AddPicture("bmp1", msBmp1, ePictureType.Bmp);
                 imageBmp1.SetPosition(0, 0, 0, 0);
             }
 
             using (MemoryStream? msBmp2 = GetImageMemoryStream("bmp\\Land.BMP"))
             {
-                ExcelPicture? imageBmp2 = ws.Drawings.AddPicture("bmp2", msBmp2, OfficeOpenXml.Drawing.ePictureType.Bmp);
+                ExcelPicture? imageBmp2 = ws.Drawings.AddPicture("bmp2", msBmp2, ePictureType.Bmp);
                 imageBmp2.SetPosition(0, 0, 20, 0);
             }
 
             using (MemoryStream? msBmp3 = GetImageMemoryStream("bmp\\Land2.BMP"))
             {
-                ExcelPicture? imageBmp3 = ws.Drawings.AddPicture("bmp3", msBmp3, OfficeOpenXml.Drawing.ePictureType.Bmp);
+                ExcelPicture? imageBmp3 = ws.Drawings.AddPicture("bmp3", msBmp3, ePictureType.Bmp);
                 imageBmp3.SetPosition(0, 0, 40, 0);
             }
 
             using MemoryStream? msBmp4 = GetImageMemoryStream("bmp\\Land3.BMP");
-            ExcelPicture? imageBmp4 = ws.Drawings.AddPicture("bmp4", msBmp4, OfficeOpenXml.Drawing.ePictureType.Bmp);
+            ExcelPicture? imageBmp4 = ws.Drawings.AddPicture("bmp4", msBmp4, ePictureType.Bmp);
             imageBmp4.SetPosition(0, 0, 60, 0);
         }
         [TestMethod]
@@ -427,7 +427,7 @@ namespace EPPlusTest.Drawing
             ExcelWorksheet? ws2 = p.Workbook.Worksheets.Add("Bmp2");
             using (MemoryStream? msBmp1 = GetImageMemoryStream("bmp\\MARBLES.BMP"))
             {
-                ExcelPicture? imageBmp1 = ws2.Drawings.AddPicture("bmp2", msBmp1, OfficeOpenXml.Drawing.ePictureType.Bmp);
+                ExcelPicture? imageBmp1 = ws2.Drawings.AddPicture("bmp2", msBmp1, ePictureType.Bmp);
                 imageBmp1.SetPosition(0, 0, 0, 0);
             }
 

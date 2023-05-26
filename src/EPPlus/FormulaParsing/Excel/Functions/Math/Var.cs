@@ -28,13 +28,13 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Math
     {
         public Var() : base()
         {
-            IgnoreErrors = true;
+            this.IgnoreErrors = true;
         }
 
         public override CompileResult Execute(IEnumerable<FunctionArgument> arguments, ParsingContext context)
         {
             ValidateArguments(arguments, 1);
-            IEnumerable<ExcelDoubleCellValue>? args = ArgsToDoubleEnumerable(IgnoreHiddenValues, IgnoreErrors, arguments, context);
+            IEnumerable<ExcelDoubleCellValue>? args = this.ArgsToDoubleEnumerable(this.IgnoreHiddenValues, this.IgnoreErrors, arguments, context);
             return new CompileResult(VarMethods.Var(args), DataType.Decimal);
         }
     }

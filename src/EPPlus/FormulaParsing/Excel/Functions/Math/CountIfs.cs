@@ -71,15 +71,15 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Math
                 string? value = functionArguments[ix + 1].Value != null ? ArgToString(arguments, ix + 1) : null;
                 criterias.Add(value);
             }
-            IEnumerable<int> matchIndexes = GetMatchIndexes(argRanges[0], criterias[0], false);
+            IEnumerable<int> matchIndexes = this.GetMatchIndexes(argRanges[0], criterias[0], false);
             IList<int>? enumerable = matchIndexes as IList<int> ?? matchIndexes.ToList();
             for (int ix = 1; ix < argRanges.Count && enumerable.Any(); ix++)
             {
-                List<int>? indexes = GetMatchIndexes(argRanges[ix], criterias[ix], false);
+                List<int>? indexes = this.GetMatchIndexes(argRanges[ix], criterias[ix], false);
                 matchIndexes = matchIndexes.Intersect(indexes);
             }
             
-            return CreateResult((double)matchIndexes.Count(), DataType.Integer);
+            return this.CreateResult((double)matchIndexes.Count(), DataType.Integer);
         }
     }
 }

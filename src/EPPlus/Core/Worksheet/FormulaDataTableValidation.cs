@@ -21,7 +21,7 @@ namespace OfficeOpenXml.Core.Worksheet
         internal static void HasPartlyFormulaDataTable(ExcelWorksheet ws, ExcelAddressBase deleteRange, bool isDelete, string errorMsg)
         {
             HashSet<int>? hs = new HashSet<int>();
-            CellStoreEnumerator<object>? cse = new CellStore.CellStoreEnumerator<object>(ws._formulas, deleteRange._fromRow, deleteRange._fromCol, deleteRange._toRow+1, deleteRange._toCol+1);
+            CellStoreEnumerator<object>? cse = new CellStoreEnumerator<object>(ws._formulas, deleteRange._fromRow, deleteRange._fromCol, deleteRange._toRow+1, deleteRange._toCol+1);
             while(cse.Next())
             {
                 if(cse.Value is int si && hs.Contains(si)==false)

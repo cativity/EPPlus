@@ -24,8 +24,9 @@ namespace OfficeOpenXml.Drawing.Vml
             {
                 throw new ArgumentNullException("Parameter 'color' can't be empty");
             }
-            Percent = percent;
-            Color = color;
+
+            this.Percent = percent;
+            this.Color = color;
         }
         /// <summary>
         /// Percent position to insert the color. Range from 0-100

@@ -26,8 +26,8 @@ namespace OfficeOpenXml.VBA
         ExcelVbaProject _project;
         internal ExcelVbaProtection(ExcelVbaProject project)
         {
-            _project = project;
-            VisibilityState = true;
+            this._project = project;
+            this.VisibilityState = true;
         }
         /// <summary>
         /// If access to the VBA project was restricted by the user
@@ -57,33 +57,33 @@ namespace OfficeOpenXml.VBA
 
             if (string.IsNullOrEmpty(Password))
             {
-                PasswordHash = null;
-                PasswordKey = null;
-                VbeProtected = false;
-                HostProtected = false;
-                UserProtected = false;
-                VisibilityState = true;
-                _project.ProjectID = "{5DD90D76-4904-47A2-AF0D-D69B4673604E}";
+                this.PasswordHash = null;
+                this.PasswordKey = null;
+                this.VbeProtected = false;
+                this.HostProtected = false;
+                this.UserProtected = false;
+                this.VisibilityState = true;
+                this._project.ProjectID = "{5DD90D76-4904-47A2-AF0D-D69B4673604E}";
             }
             else
             {
                 //Join Password and Key
                 byte[] data;
                 //Set the key
-                PasswordKey = new byte[4];
+                this.PasswordKey = new byte[4];
                 RandomNumberGenerator r = RandomNumberGenerator.Create();
-                r.GetBytes(PasswordKey);
+                r.GetBytes(this.PasswordKey);
 
                 data = new byte[Password.Length + 4];
-                Array.Copy(Encoding.GetEncoding(_project.CodePage).GetBytes(Password), data, Password.Length);
-                VbeProtected = true;
-                VisibilityState = false;
-                Array.Copy(PasswordKey, 0, data, data.Length - 4, 4);
+                Array.Copy(Encoding.GetEncoding(this._project.CodePage).GetBytes(Password), data, Password.Length);
+                this.VbeProtected = true;
+                this.VisibilityState = false;
+                Array.Copy(this.PasswordKey, 0, data, data.Length - 4, 4);
 
                 //Calculate Hash
                 SHA1? provider = SHA1.Create();
-                PasswordHash = provider.ComputeHash(data);
-                _project.ProjectID = "{00000000-0000-0000-0000-000000000000}";
+                this.PasswordHash = provider.ComputeHash(data);
+                this._project.ProjectID = "{00000000-0000-0000-0000-000000000000}";
             }
         }
         //public void ValidatePassword(string Password)                     

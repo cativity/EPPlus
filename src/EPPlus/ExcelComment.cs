@@ -32,7 +32,7 @@ namespace OfficeOpenXml
             : base(null, cell, cell.Worksheet.VmlDrawings.NameSpaceManager)
         {
             //_commentHelper = new XmlHelper(ns, commentTopNode);
-            _commentHelper = XmlHelperFactory.Create(ns, commentTopNode);
+            this._commentHelper = XmlHelperFactory.Create(ns, commentTopNode);
             XmlNode? textElem=commentTopNode.SelectSingleNode("d:text", ns);
             if (textElem == null)
             {
@@ -44,12 +44,12 @@ namespace OfficeOpenXml
                 cell.Worksheet._vmlDrawings.AddComment(cell);
             }
 
-            TopNode = cell.Worksheet.VmlDrawings[cell.Start.Row, cell.Start.Column].TopNode;
-            RichText = new ExcelRichTextCollection(ns,textElem, cell.Worksheet);
+            this.TopNode = cell.Worksheet.VmlDrawings[cell.Start.Row, cell.Start.Column].TopNode;
+            this.RichText = new ExcelRichTextCollection(ns,textElem, cell.Worksheet);
             XmlNode? tNode = textElem.SelectSingleNode("d:t", ns);
             if (tNode != null)
             {
-                _text = tNode.InnerText;
+                this._text = tNode.InnerText;
             }
         }
         const string AUTHORS_PATH = "d:comments/d:authors";
@@ -61,20 +61,20 @@ namespace OfficeOpenXml
         {
             get
             {
-                int authorRef = _commentHelper.GetXmlNodeInt("@authorId");
-                return _commentHelper.TopNode.OwnerDocument.SelectSingleNode(string.Format("{0}[{1}]", AUTHOR_PATH, authorRef+1), _commentHelper.NameSpaceManager).InnerText;
+                int authorRef = this._commentHelper.GetXmlNodeInt("@authorId");
+                return this._commentHelper.TopNode.OwnerDocument.SelectSingleNode(string.Format("{0}[{1}]", AUTHOR_PATH, authorRef+1), this._commentHelper.NameSpaceManager).InnerText;
             }
             set
             {
-                int authorRef = GetAuthor(value);
-                _commentHelper.SetXmlNodeString("@authorId", authorRef.ToString());
+                int authorRef = this.GetAuthor(value);
+                this._commentHelper.SetXmlNodeString("@authorId", authorRef.ToString());
             }
         }
         private int GetAuthor(string value)
         {
             int authorRef = 0;
             bool found = false;
-            foreach (XmlElement node in _commentHelper.TopNode.OwnerDocument.SelectNodes(AUTHOR_PATH, _commentHelper.NameSpaceManager))
+            foreach (XmlElement node in this._commentHelper.TopNode.OwnerDocument.SelectNodes(AUTHOR_PATH, this._commentHelper.NameSpaceManager))
             {
                 if (node.InnerText == value)
                 {
@@ -85,8 +85,8 @@ namespace OfficeOpenXml
             }
             if (!found)
             {
-                XmlElement? elem = _commentHelper.TopNode.OwnerDocument.CreateElement("d", "author", ExcelPackage.schemaMain);
-                _commentHelper.TopNode.OwnerDocument.SelectSingleNode(AUTHORS_PATH, _commentHelper.NameSpaceManager).AppendChild(elem);
+                XmlElement? elem = this._commentHelper.TopNode.OwnerDocument.CreateElement("d", "author", ExcelPackage.schemaMain);
+                this._commentHelper.TopNode.OwnerDocument.SelectSingleNode(AUTHORS_PATH, this._commentHelper.NameSpaceManager).AppendChild(elem);
                 elem.InnerText = value;
             }
             return authorRef;
@@ -98,16 +98,16 @@ namespace OfficeOpenXml
         {
             get
             {
-                if(!string.IsNullOrEmpty(RichText.Text))
+                if(!string.IsNullOrEmpty(this.RichText.Text))
                 {
                     return this.RichText.Text;
                 }
 
-                return _text;
+                return this._text;
             }
             set
             {
-                RichText.Text = value;
+                this.RichText.Text = value;
             }
         }
         /// <summary>
@@ -117,9 +117,9 @@ namespace OfficeOpenXml
         {
             get
             {
-                if (RichText.Count > 0)
+                if (this.RichText.Count > 0)
                 {
-                    return RichText[0];
+                    return this.RichText[0];
                 }
                 return null;
             }
@@ -138,23 +138,23 @@ namespace OfficeOpenXml
         /// </summary>
         internal string Reference
 		{
-			get { return _commentHelper.GetXmlNodeString("@ref"); }
+			get { return this._commentHelper.GetXmlNodeString("@ref"); }
             set
             {
                 ExcelAddressBase? a = new ExcelAddressBase(value);
-                int rows = a._fromRow - Range._fromRow;
-                int cols= a._fromCol - Range._fromCol;
-                Range.Address = value;
-                _commentHelper.SetXmlNodeString("@ref", value);
+                int rows = a._fromRow - this.Range._fromRow;
+                int cols= a._fromCol - this.Range._fromCol;
+                this.Range.Address = value;
+                this._commentHelper.SetXmlNodeString("@ref", value);
 
-                From.Row += rows;
-                To.Row += rows;
+                this.From.Row += rows;
+                this.To.Row += rows;
 
-                From.Column += cols;
-                To.Column += cols;
+                this.From.Column += cols;
+                this.To.Column += cols;
 
-                Row = Range._fromRow - 1;
-                Column = Range._fromCol - 1;
+                this.Row = this.Range._fromRow - 1;
+                this.Column = this.Range._fromCol - 1;
             }
         }
 	}

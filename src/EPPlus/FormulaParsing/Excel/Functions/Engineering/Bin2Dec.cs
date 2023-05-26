@@ -36,14 +36,14 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Engineering
 
             if (number.Length < 10)
             {
-                return CreateResult(Convert.ToInt32(number, 2), DataType.Decimal);
+                return this.CreateResult(Convert.ToInt32(number, 2), DataType.Decimal);
             }
             if (!BinaryHelper.TryParseBinaryToDecimal(number, 2, out int result))
             {
                 return this.CreateResult(eErrorType.Num);
             }
 
-            return CreateResult(result, DataType.Integer);
+            return this.CreateResult(result, DataType.Integer);
         }
     }
 }

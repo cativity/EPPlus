@@ -25,8 +25,8 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Math
         public override CompileResult Execute(IEnumerable<FunctionArgument> arguments, ParsingContext context)
         {
             ValidateArguments(arguments, 1);
-            double arg = ArgToDecimal(arguments, 0);
-            return CreateResult(System.Math.Asin(arg), DataType.Decimal);
+            double arg = this.ArgToDecimal(arguments, 0);
+            return this.CreateResult(System.Math.Asin(arg), DataType.Decimal);
         }
     }
 }

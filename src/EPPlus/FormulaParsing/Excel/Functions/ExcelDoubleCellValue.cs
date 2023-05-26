@@ -23,16 +23,16 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions
     {
         public ExcelDoubleCellValue(double val)
         {
-            Value = val;
-            CellRow = default(int?);
-            CellCol = default(int?);
+            this.Value = val;
+            this.CellRow = default(int?);
+            this.CellCol = default(int?);
         }
 
         public ExcelDoubleCellValue(double val, int cellRow, int cellCol)
         {
-            Value = val;
-            CellRow = cellRow;
-            CellCol = cellCol;
+            this.Value = val;
+            this.CellRow = cellRow;
+            this.CellCol = cellCol;
         }
 
         public int? CellRow;
@@ -53,21 +53,21 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions
 
         public int CompareTo(ExcelDoubleCellValue other)
         {
-            return Value.CompareTo(other.Value);
+            return this.Value.CompareTo(other.Value);
         }
 
         public int CompareTo(object obj)
         {
             if(obj is double)
             {
-                return Value.CompareTo((double)obj);
+                return this.Value.CompareTo((double)obj);
             }
-            return Value.CompareTo(((ExcelDoubleCellValue)obj).Value);
+            return this.Value.CompareTo(((ExcelDoubleCellValue)obj).Value);
         }
 
         public override bool Equals(object obj)
         {
-            return CompareTo(obj) == 0;
+            return this.CompareTo(obj) == 0;
         }
         public override int GetHashCode()
         {

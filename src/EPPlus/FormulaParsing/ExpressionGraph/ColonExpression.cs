@@ -14,10 +14,10 @@ namespace OfficeOpenXml.FormulaParsing.ExpressionGraph
 
         public override CompileResult Compile()
         {
-            bool prevIsAddress = Prev.GetType() == typeof(ExcelAddressExpression);
-            bool prevIsOffset = Prev.GetType() == typeof(FunctionExpression) && ((FunctionExpression)Prev).ExpressionString.ToLower() == "offset";
-            bool nextIsAddress = Next.GetType() == typeof(ExcelAddressExpression);
-            bool nextIsOffset = Next.GetType() == typeof(FunctionExpression) && ((FunctionExpression)Next).ExpressionString.ToLower() == "offset";
+            bool prevIsAddress = this.Prev.GetType() == typeof(ExcelAddressExpression);
+            bool prevIsOffset = this.Prev.GetType() == typeof(FunctionExpression) && ((FunctionExpression)this.Prev).ExpressionString.ToLower() == "offset";
+            bool nextIsAddress = this.Next.GetType() == typeof(ExcelAddressExpression);
+            bool nextIsOffset = this.Next.GetType() == typeof(FunctionExpression) && ((FunctionExpression)this.Next).ExpressionString.ToLower() == "offset";
 
             if (!prevIsAddress && !prevIsOffset)
             {
@@ -31,15 +31,15 @@ namespace OfficeOpenXml.FormulaParsing.ExpressionGraph
 
             if(prevIsAddress && nextIsOffset)
             {
-                return InternalCompile(Prev.Compile().Result.ToString(), Next.Compile().Result as IRangeInfo);
+                return InternalCompile(this.Prev.Compile().Result.ToString(), this.Next.Compile().Result as IRangeInfo);
             }
             else if(prevIsOffset && nextIsAddress)
             {
-                return InternalCompile(Prev.Compile().Result as IRangeInfo, Next.Compile().Result.ToString());
+                return InternalCompile(this.Prev.Compile().Result as IRangeInfo, this.Next.Compile().Result.ToString());
             }
             else if(prevIsOffset && nextIsOffset)
             {
-                return InternalCompile(Prev.Compile().Result as IRangeInfo, Next.Compile().Result as IRangeInfo);
+                return InternalCompile(this.Prev.Compile().Result as IRangeInfo, this.Next.Compile().Result as IRangeInfo);
             }
 
             return new CompileResult(eErrorType.Value);
@@ -47,13 +47,13 @@ namespace OfficeOpenXml.FormulaParsing.ExpressionGraph
 
         public override Expression MergeWithNext()
         {
-            if(Prev.Prev != null)
+            if(this.Prev.Prev != null)
             {
-                Prev.Prev.Next = this;
+                this.Prev.Prev.Next = this;
             }
-            if(Next.Next != null)
+            if(this.Next.Next != null)
             {
-                Next.Next.Prev = this;
+                this.Next.Next.Prev = this;
             }
             return this;
         }

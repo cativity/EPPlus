@@ -120,7 +120,7 @@ namespace OfficeOpenXml.Packaging.Ionic.Zip
         /// <returns>A generic enumerator suitable for use  within a foreach loop.</returns>
         public System.Collections.Generic.IEnumerator<ZipEntry> GetEnumerator()
         {
-            foreach (ZipEntry e in _entries.Values)
+            foreach (ZipEntry e in this._entries.Values)
             {
                 yield return e;
             }
@@ -128,7 +128,7 @@ namespace OfficeOpenXml.Packaging.Ionic.Zip
 
         System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator()
         {
-            return GetEnumerator();
+            return this.GetEnumerator();
         }
 
 
@@ -149,7 +149,7 @@ namespace OfficeOpenXml.Packaging.Ionic.Zip
         [System.Runtime.InteropServices.DispId(-4)]
         public System.Collections.IEnumerator GetNewEnum()          // the name of this method is not significant
         {
-            return GetEnumerator();
+            return this.GetEnumerator();
         }
 
     }

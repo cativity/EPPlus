@@ -68,7 +68,7 @@ namespace OfficeOpenXml
         /// </summary>
         internal ExcelEncryption()
         {
-            Algorithm = EncryptionAlgorithm.AES256;
+            this.Algorithm = EncryptionAlgorithm.AES256;
         }
         /// <summary>
         /// Constructor
@@ -76,7 +76,7 @@ namespace OfficeOpenXml
         /// <param name="encryptionAlgorithm">Algorithm used to encrypt the package. Default is AES128</param>
         internal ExcelEncryption(EncryptionAlgorithm encryptionAlgorithm)
         {
-            Algorithm = encryptionAlgorithm;
+            this.Algorithm = encryptionAlgorithm;
         }
         bool _isEncrypted = false;
         /// <summary>
@@ -86,21 +86,21 @@ namespace OfficeOpenXml
         {
             get
             {
-                return _isEncrypted;
+                return this._isEncrypted;
             }
             set
             {
-                _isEncrypted = value;
-                if (_isEncrypted)
+                this._isEncrypted = value;
+                if (this._isEncrypted)
                 {
-                    if (_password == null)
+                    if (this._password == null)
                     {
                         this._password = "";
                     }
                 }
                 else
                 {
-                    _password = null;
+                    this._password = null;
                 }
             }
         }
@@ -112,12 +112,12 @@ namespace OfficeOpenXml
         {
             get
             {
-                return _password;
+                return this._password;
             }
             set
             {
-                _password = value;
-                _isEncrypted = (value != null);
+                this._password = value;
+                this._isEncrypted = (value != null);
             }
         }
         /// <summary>
@@ -132,21 +132,22 @@ namespace OfficeOpenXml
         {
             get
             {
-                return _version;
+                return this._version;
             }
             set
             {
-                if (value != Version)
+                if (value != this.Version)
                 {
                     if (value == EncryptionVersion.Agile)
                     {
-                        Algorithm = EncryptionAlgorithm.AES256;
+                        this.Algorithm = EncryptionAlgorithm.AES256;
                     }
                     else
                     {
-                        Algorithm = EncryptionAlgorithm.AES128;
+                        this.Algorithm = EncryptionAlgorithm.AES128;
                     }
-                    _version = value;
+
+                    this._version = value;
                 }
             }
         }
@@ -160,7 +161,7 @@ namespace OfficeOpenXml
         /// <returns>A MemoryStream containing the encypted package</returns>
         public static MemoryStream EncryptPackage(Stream stream, string password, EncryptionVersion encryptionVersion=EncryptionVersion.Agile, EncryptionAlgorithm algorithm = EncryptionAlgorithm.AES256)
         {
-            EncryptedPackageHandler? e = new Encryption.EncryptedPackageHandler();
+            EncryptedPackageHandler? e = new EncryptedPackageHandler();
             if(stream.CanRead==false)
             {
                 throw new InvalidOperationException("Stream must be readable");
@@ -182,7 +183,7 @@ namespace OfficeOpenXml
         /// <returns>A memorystream with the encypted package</returns>
         public static MemoryStream DecryptPackage(Stream stream, string password)
         {
-            EncryptedPackageHandler? e = new Encryption.EncryptedPackageHandler();
+            EncryptedPackageHandler? e = new EncryptedPackageHandler();
             if(stream==null)
             {
                 throw new ArgumentNullException("Stream must not be null");

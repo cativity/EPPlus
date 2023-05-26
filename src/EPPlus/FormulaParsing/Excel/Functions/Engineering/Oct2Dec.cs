@@ -31,7 +31,7 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Engineering
             ValidateArguments(arguments, 1);
             string? number = ArgToString(arguments, 0);
             double result = TwoComplementHelper.ParseDecFromString(number, 8);
-            return CreateResult(result, DataType.Integer);
+            return this.CreateResult(result, DataType.Integer);
         }
     }
 }

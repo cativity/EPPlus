@@ -25,31 +25,32 @@ namespace OfficeOpenXml.Style.XmlAccess
         internal ExcelColorXml(XmlNamespaceManager nameSpaceManager)
             : base(nameSpaceManager)
         {
-            _auto = false;
-            _theme = null;
-            _tint = 0;
-            _rgb = "";
-            _indexed = int.MinValue;
+            this._auto = false;
+            this._theme = null;
+            this._tint = 0;
+            this._rgb = "";
+            this._indexed = int.MinValue;
         }
         internal ExcelColorXml(XmlNamespaceManager nsm, XmlNode topNode) :
             base(nsm, topNode)
         {
             if(topNode==null)
             {
-                Exists=false;
+                this.Exists=false;
             }
             else
             {
-                Exists = true;
-                _auto = GetXmlNodeBool("@auto");
-                int? v=GetXmlNodeIntNull("@theme");
+                this.Exists = true;
+                this._auto = this.GetXmlNodeBool("@auto");
+                int? v= this.GetXmlNodeIntNull("@theme");
                 if(v.HasValue && v>=0 && v<=11)
                 {
-                    _theme = (eThemeSchemeColor)v;
+                    this._theme = (eThemeSchemeColor)v;
                 }
-                _tint = GetXmlNodeDecimalNull("@tint")??decimal.MinValue;
-                _rgb = GetXmlNodeString("@rgb");
-                _indexed = GetXmlNodeIntNull("@indexed") ?? int.MinValue;
+
+                this._tint = this.GetXmlNodeDecimalNull("@tint")??decimal.MinValue;
+                this._rgb = this.GetXmlNodeString("@rgb");
+                this._indexed = this.GetXmlNodeIntNull("@indexed") ?? int.MinValue;
             }
         }
         
@@ -57,7 +58,7 @@ namespace OfficeOpenXml.Style.XmlAccess
         {
             get
             {
-                return _auto.ToString() + "|" + _theme?.ToString() + "|" + _tint + "|" + _rgb + "|" + _indexed;
+                return this._auto.ToString() + "|" + this._theme?.ToString() + "|" + this._tint + "|" + this._rgb + "|" + this._indexed;
             }
         }
         bool _auto;
@@ -68,13 +69,13 @@ namespace OfficeOpenXml.Style.XmlAccess
         {
             get
             {
-                return _auto;
+                return this._auto;
             }
             set
             {
-                Clear();
-                _auto = value;
-                Exists = true;
+                this.Clear();
+                this._auto = value;
+                this.Exists = true;
             }
         }
         eThemeSchemeColor? _theme;
@@ -85,13 +86,13 @@ namespace OfficeOpenXml.Style.XmlAccess
         {
             get
             {
-                return _theme;
+                return this._theme;
             }
             set
             {
-                Clear();
-                _theme = value;
-                Exists = true;
+                this.Clear();
+                this._theme = value;
+                this.Exists = true;
             }
         }
         decimal _tint;
@@ -102,19 +103,19 @@ namespace OfficeOpenXml.Style.XmlAccess
         {
             get
             {
-                if (_tint == decimal.MinValue)
+                if (this._tint == decimal.MinValue)
                 {
                     return 0;
                 }
                 else
                 {
-                    return _tint;
+                    return this._tint;
                 }
             }
             set
             {
-                _tint = value;
-                Exists = true;
+                this._tint = value;
+                this.Exists = true;
             }
         }
         string _rgb;
@@ -125,14 +126,14 @@ namespace OfficeOpenXml.Style.XmlAccess
         {
             get
             {
-                return _rgb;
+                return this._rgb;
             }
             set
             {
-                _rgb = value;
-                Exists=true;
-                _indexed = int.MinValue;
-                _auto = false;
+                this._rgb = value;
+                this.Exists=true;
+                this._indexed = int.MinValue;
+                this._auto = false;
             }
         }
         int _indexed;
@@ -144,7 +145,7 @@ namespace OfficeOpenXml.Style.XmlAccess
         {
             get
             {
-                return _indexed;
+                return this._indexed;
             }
             set
             {
@@ -152,18 +153,19 @@ namespace OfficeOpenXml.Style.XmlAccess
                 {
                     throw (new ArgumentOutOfRangeException("Index out of range"));
                 }
-                Clear();
-                _indexed = value;
-                Exists = true;
+
+                this.Clear();
+                this._indexed = value;
+                this.Exists = true;
             }
         }
         internal void Clear()
         {
-            _theme = null;
-            _tint = decimal.MinValue;
-            _indexed = int.MinValue;
-            _rgb = "";
-            _auto = false;
+            this._theme = null;
+            this._tint = decimal.MinValue;
+            this._indexed = int.MinValue;
+            this._rgb = "";
+            this._auto = false;
         }
         /// <summary>
         /// Sets the color
@@ -171,8 +173,8 @@ namespace OfficeOpenXml.Style.XmlAccess
         /// <param name="color">The color</param>
         public void SetColor(System.Drawing.Color color)
         {
-            Clear();
-            _rgb = color.ToArgb().ToString("X");
+            this.Clear();
+            this._rgb = color.ToArgb().ToString("X");
         }
         /// <summary>
         /// Sets a theme color
@@ -180,8 +182,8 @@ namespace OfficeOpenXml.Style.XmlAccess
         /// <param name="themeColorType">The theme color</param>
         public void SetColor(eThemeSchemeColor themeColorType)
         {
-            Clear();
-            _theme = themeColorType;
+            this.Clear();
+            this._theme = themeColorType;
         }
         /// <summary>
         /// Sets an indexed color
@@ -189,39 +191,39 @@ namespace OfficeOpenXml.Style.XmlAccess
         /// <param name="indexedColor">The indexed color</param>
         public void SetColor(ExcelIndexedColor indexedColor)
         {
-            Clear();
-            _indexed = (int)indexedColor;
+            this.Clear();
+            this._indexed = (int)indexedColor;
         }
 
         internal ExcelColorXml Copy()
         {
-            return new ExcelColorXml(NameSpaceManager) {_indexed=_indexed, _tint=_tint, _rgb=_rgb, _theme=_theme, _auto=_auto, Exists=Exists };
+            return new ExcelColorXml(this.NameSpaceManager) {_indexed= this._indexed, _tint= this._tint, _rgb= this._rgb, _theme= this._theme, _auto= this._auto, Exists= this.Exists };
         }
 
         internal override XmlNode CreateXmlNode(XmlNode topNode)
         {
-            TopNode = topNode;
-            if(_rgb!="")
+            this.TopNode = topNode;
+            if(this._rgb!="")
             {
-                SetXmlNodeString("@rgb", _rgb);
+                this.SetXmlNodeString("@rgb", this._rgb);
             }
-            else if (_indexed >= 0)
+            else if (this._indexed >= 0)
             {
-                SetXmlNodeString("@indexed", _indexed.ToString());
+                this.SetXmlNodeString("@indexed", this._indexed.ToString());
             }
-            else if (Theme.HasValue)
+            else if (this.Theme.HasValue)
             {
-                SetXmlNodeString("@theme", ((int)_theme).ToString(CultureInfo.InvariantCulture));
+                this.SetXmlNodeString("@theme", ((int)this._theme).ToString(CultureInfo.InvariantCulture));
             }
             else
             {
-                SetXmlNodeBool("@auto", _auto);
+                this.SetXmlNodeBool("@auto", this._auto);
             }
-            if (_tint != decimal.MinValue)
+            if (this._tint != decimal.MinValue)
             {
-                SetXmlNodeString("@tint", _tint.ToString(CultureInfo.InvariantCulture));
+                this.SetXmlNodeString("@tint", this._tint.ToString(CultureInfo.InvariantCulture));
             }
-            return TopNode;
+            return this.TopNode;
         }
         /// <summary>
         /// True if the record exists in the underlaying xml

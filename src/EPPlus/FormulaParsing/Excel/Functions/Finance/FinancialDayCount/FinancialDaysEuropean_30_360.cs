@@ -23,7 +23,7 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Finance.FinancialDayCount
         {
             FinancialDay? start = FinancialDayFactory.Create(startDate, DayCountBasis.Actual_Actual);
             FinancialDay? end = FinancialDayFactory.Create(endDate, DayCountBasis.Actual_Actual);
-            return GetDaysBetweenDates(start, end, (int)DaysPerYear);
+            return this.GetDaysBetweenDates(start, end, (int)this.DaysPerYear);
         }
 
         public double GetDaysBetweenDates(FinancialDay startDate, FinancialDay endDate)
@@ -38,12 +38,12 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Finance.FinancialDayCount
                 endDate.Day = 30;
             }
 
-            return GetDaysBetweenDates(startDate, endDate, (int)DaysPerYear);
+            return this.GetDaysBetweenDates(startDate, endDate, (int)this.DaysPerYear);
         }
 
         public double GetCoupdays(FinancialDay start, FinancialDay end, int frequency)
         {
-            return DaysPerYear / frequency;
+            return this.DaysPerYear / frequency;
         }
 
         public double DaysPerYear { get { return 360d; } }

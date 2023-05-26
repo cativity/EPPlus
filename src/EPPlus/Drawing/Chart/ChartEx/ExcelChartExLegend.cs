@@ -13,7 +13,7 @@ namespace OfficeOpenXml.Drawing.Chart.ChartEx
     {
         internal ExcelChartExLegend(ExcelChart chart, XmlNamespaceManager nsm, XmlNode node) : base(nsm, node, chart, "cx")
         {
-            SchemaNodeOrder = new string[] { "spPr","txPr" };
+            this.SchemaNodeOrder = new string[] { "spPr","txPr" };
         }
         /// <summary>
         /// The side position alignment of the legend
@@ -22,16 +22,16 @@ namespace OfficeOpenXml.Drawing.Chart.ChartEx
         {
             get
             {
-                return GetXmlNodeString("@align").Replace("ctr", "center").ToEnum(ePositionAlign.Center);
+                return this.GetXmlNodeString("@align").Replace("ctr", "center").ToEnum(ePositionAlign.Center);
             }
             set
             {
-                if (TopNode == null)
+                if (this.TopNode == null)
                 {
                     this.Add();
                 }
 
-                SetXmlNodeString("@align", value.ToEnumString().Replace("center", "ctr"));
+                this.SetXmlNodeString("@align", value.ToEnumString().Replace("center", "ctr"));
             }
         }
         /// <summary>
@@ -42,7 +42,7 @@ namespace OfficeOpenXml.Drawing.Chart.ChartEx
         {
             get
             {
-                switch (GetXmlNodeString("@pos"))
+                switch (this.GetXmlNodeString("@pos"))
                 {
                     case "l":
                         return eLegendPosition.Left;
@@ -56,17 +56,18 @@ namespace OfficeOpenXml.Drawing.Chart.ChartEx
             }
             set
             {
-                if (TopNode == null)
+                if (this.TopNode == null)
                 {
                     this.Add();
                 }
 
                 if (value == eLegendPosition.TopRight)
                 {
-                    PositionAlignment = ePositionAlign.Min;
+                    this.PositionAlignment = ePositionAlign.Min;
                     value = eLegendPosition.Right;
                 }
-                SetXmlNodeString("@pos", value.ToEnumString().Substring(0, 1).ToLowerInvariant());
+
+                this.SetXmlNodeString("@pos", value.ToEnumString().Substring(0, 1).ToLowerInvariant());
             }
         }
         /// <summary>
@@ -74,16 +75,16 @@ namespace OfficeOpenXml.Drawing.Chart.ChartEx
         /// </summary>
         public override void Add()
         {
-            if (TopNode != null)
+            if (this.TopNode != null)
             {
                 return;
             }
 
             //XmlHelper xml = new XmlHelper(NameSpaceManager, _chart.ChartXml);
-            XmlHelper xml = XmlHelperFactory.Create(NameSpaceManager, _chart.ChartXml);
-            xml.SchemaNodeOrder = _chart.SchemaNodeOrder;
+            XmlHelper xml = XmlHelperFactory.Create(this.NameSpaceManager, this._chart.ChartXml);
+            xml.SchemaNodeOrder = this._chart.SchemaNodeOrder;
 
-            TopNode = xml.CreateNode("cx:chartSpace/cx:chart/cx:legend");
+            this.TopNode = xml.CreateNode("cx:chartSpace/cx:chart/cx:legend");
         }
     }
 }

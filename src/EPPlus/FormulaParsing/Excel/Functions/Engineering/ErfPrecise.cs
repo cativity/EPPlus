@@ -30,9 +30,9 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Engineering
         public override CompileResult Execute(IEnumerable<FunctionArgument> arguments, ParsingContext context)
         {
             ValidateArguments(arguments, 1);
-            double x = ArgToDecimal(arguments, 0);
+            double x = this.ArgToDecimal(arguments, 0);
             double retVal = ErfHelper.Erf(0d, x);
-            return CreateResult(retVal, DataType.Decimal);
+            return this.CreateResult(retVal, DataType.Decimal);
         }
 
 

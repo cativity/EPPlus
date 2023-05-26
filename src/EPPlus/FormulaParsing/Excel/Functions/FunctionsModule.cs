@@ -31,7 +31,7 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions
         /// </summary>
         public IDictionary<string, ExcelFunction> Functions
         {
-            get { return _functions; }
+            get { return this._functions; }
         }
 
         /// <summary>
@@ -43,7 +43,7 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions
         /// </summary>
         public IDictionary<Type, FunctionCompiler> CustomCompilers
         {
-            get { return _customCompilers; }
+            get { return this._customCompilers; }
         }
   }
 }

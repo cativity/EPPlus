@@ -36,10 +36,10 @@ namespace OfficeOpenXml.FormulaParsing.LexicalAnalysis
 
         public TokenFactory(ITokenSeparatorProvider tokenSeparatorProvider, INameValueProvider nameValueProvider, IFunctionNameProvider functionNameProvider, bool r1c1)
         {
-            _tokenSeparatorProvider = tokenSeparatorProvider;
-            _functionNameProvider = functionNameProvider;
-            _nameValueProvider = nameValueProvider;
-            _r1c1 = r1c1;
+            this._tokenSeparatorProvider = tokenSeparatorProvider;
+            this._functionNameProvider = functionNameProvider;
+            this._nameValueProvider = nameValueProvider;
+            this._r1c1 = r1c1;
         }
 
         private readonly ITokenSeparatorProvider _tokenSeparatorProvider;
@@ -48,12 +48,12 @@ namespace OfficeOpenXml.FormulaParsing.LexicalAnalysis
         private bool _r1c1;
         public Token Create(IEnumerable<Token> tokens, string token)
         {
-            return Create(tokens, token, null);
+            return this.Create(tokens, token, null);
         }
         public Token Create(IEnumerable<Token> tokens, string token, string worksheet)
         {
             Token tokenSeparator = default(Token);
-            if (_tokenSeparatorProvider.Tokens.TryGetValue(token, out tokenSeparator))
+            if (this._tokenSeparatorProvider.Tokens.TryGetValue(token, out tokenSeparator))
             {
                 return tokenSeparator;
             }
@@ -133,11 +133,11 @@ namespace OfficeOpenXml.FormulaParsing.LexicalAnalysis
             {
                 return new Token(token, TokenType.Null);
             }
-            if (_nameValueProvider != null && _nameValueProvider.IsNamedValue(token, worksheet))
+            if (this._nameValueProvider != null && this._nameValueProvider.IsNamedValue(token, worksheet))
             {
                 return new Token(token, TokenType.NameValue);
             }
-            if (_functionNameProvider.IsFunctionName(token))
+            if (this._functionNameProvider.IsFunctionName(token))
             {
                 return new Token(token, TokenType.Function);
             }
@@ -145,7 +145,7 @@ namespace OfficeOpenXml.FormulaParsing.LexicalAnalysis
             {
                 return new Token(token, TokenType.Enumerable);
             }
-            ExcelAddressBase.AddressType at = OfficeOpenXml.ExcelAddressBase.IsValid(token, _r1c1);
+            ExcelAddressBase.AddressType at = ExcelAddressBase.IsValid(token, this._r1c1);
             if (at==ExcelAddressBase.AddressType.InternalAddress || at == ExcelAddressBase.AddressType.ExternalAddress)
             {
                 return new Token(token, TokenType.ExcelAddress);

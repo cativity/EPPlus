@@ -20,7 +20,7 @@ namespace OfficeOpenXml.Export.HtmlExport
     {
         internal CssRangeExportSettings()
         {
-            ResetToDefault();
+            this.ResetToDefault();
         }
         /// <summary>
         /// Settings to exclude specific styles from the css.
@@ -31,8 +31,8 @@ namespace OfficeOpenXml.Export.HtmlExport
         /// </summary>
         public void ResetToDefault()
         {
-            CssExclude.ResetToDefault();
-            base.ResetToDefaultInternal();
+            this.CssExclude.ResetToDefault();
+            this.ResetToDefaultInternal();
         }
         /// <summary>
         /// Copy the values from another settings object.
@@ -40,8 +40,8 @@ namespace OfficeOpenXml.Export.HtmlExport
         /// <param name="copy">The object to copy.</param>
         public void Copy(CssRangeExportSettings copy)
         {
-            CssExclude.Copy(copy.CssExclude);
-            base.CopyInternal(copy);
+            this.CssExclude.Copy(copy.CssExclude);
+            this.CopyInternal(copy);
         }
     }
 }

@@ -44,48 +44,48 @@ namespace OfficeOpenXml.Drawing
         internal ExcelDrawingFillBasic(ExcelPackage pck, XmlNamespaceManager nameSpaceManager, XmlNode topNode, string fillPath, string[] schemaNodeOrderBefore, bool doLoad, Action initXml = null) :
             base(nameSpaceManager, topNode)
         {
-            AddSchemaNodeOrder(schemaNodeOrderBefore, new string[] { "xfrm", "custGeom", "prstGeom", "noFill", "solidFill", "blipFill", "gradFill", "noFill", "pattFill", "grpFill", "ln", "effectLst", "effectDag", "highlight", "latin", "cs", "sym", "ea", "hlinkClick", "hlinkMouseOver", "rtl" });
-            _fillPath = fillPath;
-            _initXml = initXml;
-            SetFillNodes(topNode);
+            this.AddSchemaNodeOrder(schemaNodeOrderBefore, new string[] { "xfrm", "custGeom", "prstGeom", "noFill", "solidFill", "blipFill", "gradFill", "noFill", "pattFill", "grpFill", "ln", "effectLst", "effectDag", "highlight", "latin", "cs", "sym", "ea", "hlinkClick", "hlinkMouseOver", "rtl" });
+            this._fillPath = fillPath;
+            this._initXml = initXml;
+            this.SetFillNodes(topNode);
             //Setfill node
-            if (doLoad && _fillNode != null)
+            if (doLoad && this._fillNode != null)
             {
-                LoadFill();
+                this.LoadFill();
             }
             if (pck != null)
             {
-                pck.BeforeSave.Add(BeforeSave);
+                pck.BeforeSave.Add(this.BeforeSave);
             }
         }
         internal void SetTopNode(XmlNode topNode)
         {
-            TopNode = topNode;
-            SetFillNodes(topNode);
-            _fillTypeNode = null;
-            LoadFill();
+            this.TopNode = topNode;
+            this.SetFillNodes(topNode);
+            this._fillTypeNode = null;
+            this.LoadFill();
         }
         private void SetFillNodes(XmlNode topNode)
         {
-            if (string.IsNullOrEmpty(_fillPath))
+            if (string.IsNullOrEmpty(this._fillPath))
             {
-                _fillNode = topNode;
+                this._fillNode = topNode;
                 if (topNode.LocalName.EndsWith("Fill"))  //Theme nodes will have the fillnode as topnode
                 {
-                    _fillTypeNode = _fillNode;
+                    this._fillTypeNode = this._fillNode;
                 }
             }
             else
             {
-                _fillNode = topNode.SelectSingleNode(_fillPath, NameSpaceManager);
+                this._fillNode = topNode.SelectSingleNode(this._fillPath, this.NameSpaceManager);
             }
         }
 
         internal virtual void BeforeSave()
         {
-            if(_gradientFill!=null)
+            if(this._gradientFill!=null)
             {
-                _gradientFill.UpdateXml();
+                this._gradientFill.UpdateXml();
             }
         }
         /// <summary>
@@ -93,60 +93,62 @@ namespace OfficeOpenXml.Drawing
         /// </summary>
         internal protected virtual void LoadFill()
         {
-            if (_fillTypeNode == null)
+            if (this._fillTypeNode == null)
             {
                 this._fillTypeNode = this._fillNode.SelectSingleNode("a:solidFill", this.NameSpaceManager);
             }
 
-            if (_fillTypeNode == null)
+            if (this._fillTypeNode == null)
             {
                 this._fillTypeNode = this._fillNode.SelectSingleNode("a:gradFill", this.NameSpaceManager);
             }
 
-            if (_fillTypeNode == null)
+            if (this._fillTypeNode == null)
             {
                 this._fillTypeNode = this._fillNode.SelectSingleNode("a:noFill", this.NameSpaceManager);
             }
 
-            if (_fillTypeNode == null)
+            if (this._fillTypeNode == null)
             {
                 return;
             }
 
-            switch (_fillTypeNode.LocalName)
+            switch (this._fillTypeNode.LocalName)
             {
                 case "solidFill":
-                    _style = eFillStyle.SolidFill;
-                    _solidFill = new ExcelDrawingSolidFill(NameSpaceManager, _fillTypeNode, "", SchemaNodeOrder, _initXml);
+                    this._style = eFillStyle.SolidFill;
+                    this._solidFill = new ExcelDrawingSolidFill(this.NameSpaceManager, this._fillTypeNode, "", this.SchemaNodeOrder, this._initXml);
                     break;
                 case "gradFill":
-                    _style = eFillStyle.GradientFill;
-                    _gradientFill = new ExcelDrawingGradientFill(NameSpaceManager, _fillTypeNode, SchemaNodeOrder, _initXml);
+                    this._style = eFillStyle.GradientFill;
+                    this._gradientFill = new ExcelDrawingGradientFill(this.NameSpaceManager, this._fillTypeNode, this.SchemaNodeOrder, this._initXml);
                     break;
                 default:
-                    _style = eFillStyle.NoFill;
+                    this._style = eFillStyle.NoFill;
                     break;
             }
         }
         internal void SetFromXml(ExcelDrawingFill fill)
         {
-            Style = fill.Style;
+            this.Style = fill.Style;
             XmlElement? copyFromFillElement = (XmlElement)fill._fillTypeNode;
             foreach (XmlAttribute a in copyFromFillElement.Attributes)
             {
-                ((XmlElement)_fillTypeNode).SetAttribute(a.Name, a.NamespaceURI, a.Value);
+                ((XmlElement)this._fillTypeNode).SetAttribute(a.Name, a.NamespaceURI, a.Value);
             }
-            _fillTypeNode.InnerXml = copyFromFillElement.InnerXml;
+
+            this._fillTypeNode.InnerXml = copyFromFillElement.InnerXml;
             if(fill.Style==eFillStyle.BlipFill)
             {
-                XmlAttribute relAttr=(XmlAttribute)_fillTypeNode.SelectSingleNode("a:blip/@r:embed", NameSpaceManager);
+                XmlAttribute relAttr=(XmlAttribute)this._fillTypeNode.SelectSingleNode("a:blip/@r:embed", this.NameSpaceManager);
                 if(relAttr?.Value!=null)
                 {
                     relAttr.OwnerElement.Attributes.Remove(relAttr);
                 }
             }
-            LoadFill();
-            if(Style==eFillStyle.BlipFill && fill.BlipFill.Image.ImageBytes!=null)
+
+            this.LoadFill();
+            if(this.Style==eFillStyle.BlipFill && fill.BlipFill.Image.ImageBytes!=null)
             {                                
                 ((ExcelDrawingFill)this).BlipFill.Image.SetImage(fill.BlipFill.Image.ImageBytes, fill.BlipFill.Image.Type??ePictureType.Jpg);
 
@@ -161,33 +163,33 @@ namespace OfficeOpenXml.Drawing
 
         internal string GetFromXml()
         {
-            return _fillTypeNode.OuterXml;
+            return this._fillTypeNode.OuterXml;
         }
         internal virtual void SetFillProperty()
         {   
-            if (_fillNode==null)
+            if (this._fillNode==null)
             {
-                InitSpPr(eFillStyle.SolidFill);
-                Style = eFillStyle.SolidFill;   //This will create the _fillNode
-                _solidFill = new ExcelDrawingSolidFill(NameSpaceManager, _fillTypeNode, "", SchemaNodeOrder, _initXml);
+                this.InitSpPr(eFillStyle.SolidFill);
+                this.Style = eFillStyle.SolidFill;   //This will create the _fillNode
+                this._solidFill = new ExcelDrawingSolidFill(this.NameSpaceManager, this._fillTypeNode, "", this.SchemaNodeOrder, this._initXml);
                 return; 
             }
 
-            _solidFill = null;
-            _gradientFill = null;
+            this._solidFill = null;
+            this._gradientFill = null;
 
-            switch (_fillTypeNode.LocalName)
+            switch (this._fillTypeNode.LocalName)
             {
                 case "solidFill":
-                    _solidFill = new ExcelDrawingSolidFill(NameSpaceManager, _fillTypeNode, "",SchemaNodeOrder, _initXml);
+                    this._solidFill = new ExcelDrawingSolidFill(this.NameSpaceManager, this._fillTypeNode, "", this.SchemaNodeOrder, this._initXml);
                     break;
                 case "gradFill":
-                    _gradientFill = new ExcelDrawingGradientFill(NameSpaceManager, _fillTypeNode, SchemaNodeOrder, _initXml);
+                    this._gradientFill = new ExcelDrawingGradientFill(this.NameSpaceManager, this._fillTypeNode, this.SchemaNodeOrder, this._initXml);
                     break;
                 default:
-                    if(this is ExcelDrawingFillBasic && _style!=eFillStyle.NoFill)
+                    if(this is ExcelDrawingFillBasic && this._style!=eFillStyle.NoFill)
                     {
-                        throw new ArgumentException("Style", $"Style {Style} cannot be applied to this object.");
+                        throw new ArgumentException("Style", $"Style {this.Style} cannot be applied to this object.");
                     }
                     break;
             }
@@ -195,11 +197,11 @@ namespace OfficeOpenXml.Drawing
         bool isSpInit = false;
         private void InitSpPr(eFillStyle style)
         {
-            if (isSpInit == false)
+            if (this.isSpInit == false)
             {
-                if (!string.IsNullOrEmpty(_fillPath) && !ExistsNode(_fillPath) && CreateNodeUntil(_fillPath, "spPr", out XmlNode spPrNode))
+                if (!string.IsNullOrEmpty(this._fillPath) && !this.ExistsNode(this._fillPath) && this.CreateNodeUntil(this._fillPath, "spPr", out XmlNode spPrNode))
                 {
-                    if(_fillPath.EndsWith("ln"))
+                    if(this._fillPath.EndsWith("ln"))
                     {
                         spPrNode.InnerXml = $"<a:ln><a:noFill/></a:ln ><a:effectLst/><a:sp3d/>";
                     }
@@ -207,23 +209,26 @@ namespace OfficeOpenXml.Drawing
                     {
                         spPrNode.InnerXml = $"<a:noFill/><a:ln><a:noFill/></a:ln><a:effectLst/><a:sp3d/>";
                     }
-                    _fillNode = GetNode(_fillPath);
-                    _fillTypeNode = _fillNode.FirstChild;
+
+                    this._fillNode = this.GetNode(this._fillPath);
+                    this._fillTypeNode = this._fillNode.FirstChild;
                 }
-                else if(_fillTypeNode==null)
+                else if(this._fillTypeNode==null)
                 {
-                    if(_fillNode==null)
+                    if(this._fillNode==null)
                     {
-                        _fillNode = GetNode(_fillPath);
+                        this._fillNode = this.GetNode(this._fillPath);
                     }
-                    if (!_fillNode.HasChildNodes)
+                    if (!this._fillNode.HasChildNodes)
                     {
-                        _fillNode.InnerXml = $"<a:{GetStyleText(style)}/>";
+                        this._fillNode.InnerXml = $"<a:{GetStyleText(style)}/>";
                     }
-                    LoadFill();
+
+                    this.LoadFill();
                 }
             }
-            isSpInit = true;
+
+            this.isSpInit = true;
         }
         internal eFillStyle? _style=null;
         /// <summary>
@@ -233,26 +238,26 @@ namespace OfficeOpenXml.Drawing
         {
             get
             {
-                return _style??eFillStyle.NoFill;
+                return this._style??eFillStyle.NoFill;
             }
             set
             {
-                if (_style == value)
+                if (this._style == value)
                 {
                     return;
                 }
 
-                _initXml?.Invoke();
+                this._initXml?.Invoke();
                 if (value == eFillStyle.GroupFill)
                 {
                     throw new NotImplementedException("Fillstyle not implemented");
                 }
                 else
                 {
-                    _style = value;
-                    InitSpPr(value);
-                    CreateFillTopNode(value);
-                    SetFillProperty();
+                    this._style = value;
+                    this.InitSpPr(value);
+                    this.CreateFillTopNode(value);
+                    this.SetFillProperty();
                 }
             }
         }
@@ -266,17 +271,17 @@ namespace OfficeOpenXml.Drawing
         {
             get
             {
-                if (Style != eFillStyle.SolidFill)
+                if (this.Style != eFillStyle.SolidFill)
                 {
                     return Color.Empty;
                 }
 
-                if (SolidFill.Color.ColorType != eDrawingColorType.Rgb)
+                if (this.SolidFill.Color.ColorType != eDrawingColorType.Rgb)
                 {
                     return Color.Empty;
                 }
 
-                Color col = SolidFill.Color.RgbColor.Color;
+                Color col = this.SolidFill.Color.RgbColor.Color;
                 if(col == Color.Empty)
                 {
                     return Color.FromArgb(79, 129, 189);
@@ -288,9 +293,9 @@ namespace OfficeOpenXml.Drawing
             }
             set
             {
-                _initXml?.Invoke();
-                Style = eFillStyle.SolidFill;
-                SolidFill.Color.SetRgbColor(value);
+                this._initXml?.Invoke();
+                this.Style = eFillStyle.SolidFill;
+                this.SolidFill.Color.SetRgbColor(value);
             }
         }
         private ExcelDrawingSolidFill _solidFill =null;
@@ -303,11 +308,11 @@ namespace OfficeOpenXml.Drawing
         {
             get
             {
-                if(Style==eFillStyle.SolidFill && _solidFill==null)
+                if(this.Style==eFillStyle.SolidFill && this._solidFill==null)
                 {
-                    _solidFill = new ExcelDrawingSolidFill(NameSpaceManager, _fillTypeNode, "", SchemaNodeOrder, _initXml);
+                    this._solidFill = new ExcelDrawingSolidFill(this.NameSpaceManager, this._fillTypeNode, "", this.SchemaNodeOrder, this._initXml);
                 }
-                return _solidFill;
+                return this._solidFill;
             }
         }
         private ExcelDrawingGradientFill _gradientFill = null;
@@ -319,7 +324,7 @@ namespace OfficeOpenXml.Drawing
         {
             get
             {
-                return _gradientFill;
+                return this._gradientFill;
             }
         }
         /// <summary>
@@ -330,24 +335,24 @@ namespace OfficeOpenXml.Drawing
         {
             get
             {
-                if (_solidFill == null)
+                if (this._solidFill == null)
                 {
                     return 0;
                 }
 
-                return (int)(100-_solidFill.Color.Transforms.FindValue(eColorTransformType.Alpha));
+                return (int)(100- this._solidFill.Color.Transforms.FindValue(eColorTransformType.Alpha));
             }
             set
             {
-                if (_solidFill == null)
+                if (this._solidFill == null)
                 {
                     throw new InvalidOperationException("Transparency can only be set when Type is set to SolidFill.");
                 }
 
-                IColorTransformItem? alphaItem = _solidFill.Color.Transforms.Find(eColorTransformType.Alpha);
+                IColorTransformItem? alphaItem = this._solidFill.Color.Transforms.Find(eColorTransformType.Alpha);
                 if(alphaItem==null)
                 {
-                    _solidFill.Color.Transforms.AddAlpha(100 - value);
+                    this._solidFill.Color.Transforms.AddAlpha(100 - value);
                 }
                 else
                 {
@@ -357,32 +362,33 @@ namespace OfficeOpenXml.Drawing
         }
         private void CreateFillTopNode(eFillStyle value)
         {
-            if (_fillNode == TopNode)
+            if (this._fillNode == this.TopNode)
             {
-                if(_fillNode== _fillTypeNode)
+                if(this._fillNode== this._fillTypeNode)
                 {
-                    XmlElement? node=_fillTypeNode.OwnerDocument.CreateElement("a", GetStyleText(value), ExcelPackage.schemaDrawings);
-                    _fillTypeNode.ParentNode.InsertBefore(node, _fillTypeNode);
-                    _fillTypeNode.ParentNode.RemoveChild(_fillTypeNode);
-                    _fillTypeNode = node;
-                    _fillNode = node;
-                    TopNode = node;
+                    XmlElement? node= this._fillTypeNode.OwnerDocument.CreateElement("a", GetStyleText(value), ExcelPackage.schemaDrawings);
+                    this._fillTypeNode.ParentNode.InsertBefore(node, this._fillTypeNode);
+                    this._fillTypeNode.ParentNode.RemoveChild(this._fillTypeNode);
+                    this._fillTypeNode = node;
+                    this._fillNode = node;
+                    this.TopNode = node;
                 }
                 else
                 {
-                    _fillTypeNode = CreateNode("a:" + GetStyleText(value));
+                    this._fillTypeNode = this.CreateNode("a:" + GetStyleText(value));
                 }
             }
             else
             {                
-                if (_fillTypeNode != null)
+                if (this._fillTypeNode != null)
                 {
-                    _fillTypeNode.ParentNode.RemoveChild(_fillTypeNode);
+                    this._fillTypeNode.ParentNode.RemoveChild(this._fillTypeNode);
                 }
-                _fillTypeNode = CreateNode(_fillPath + "/a:" + GetStyleText(value), false);
-                if(_fillNode==null)
+
+                this._fillTypeNode = this.CreateNode(this._fillPath + "/a:" + GetStyleText(value), false);
+                if(this._fillNode==null)
                 {
-                    _fillNode = _fillTypeNode.ParentNode;
+                    this._fillNode = this._fillTypeNode.ParentNode;
                 }
             }
         }
@@ -430,17 +436,17 @@ namespace OfficeOpenXml.Drawing
         /// </summary>
         public void Dispose()
         {
-            _fillNode = null;
-            _solidFill = null;
-            _gradientFill = null;
+            this._fillNode = null;
+            this._solidFill = null;
+            this._gradientFill = null;
         }
 
         internal void UpdateFillTypeNode()
         {
-            if(_fillTypeNode!=null && _fillTypeNode.ParentNode==null)
+            if(this._fillTypeNode!=null && this._fillTypeNode.ParentNode==null)
             {
-                _fillTypeNode = null;
-                LoadFill();
+                this._fillTypeNode = null;
+                this.LoadFill();
             }
         }
     }

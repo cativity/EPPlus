@@ -36,7 +36,7 @@ namespace OfficeOpenXml
         internal  ExcelBackgroundImage(XmlNamespaceManager nsm, XmlNode topNode, ExcelWorksheet workSheet) :
             base(nsm, topNode)
         {
-            _workSheet = workSheet;
+            this._workSheet = workSheet;
         }
         ExcelImage _imageNew;
         const string BACKGROUNDPIC_PATH = "d:picture/@r:id";
@@ -48,17 +48,17 @@ namespace OfficeOpenXml
         { 
             get
             {
-                if (_imageNew == null)
+                if (this._imageNew == null)
                 {
-                    string? relId = GetXmlNodeString(BACKGROUNDPIC_PATH);
-                    _imageNew = new ExcelImage(this, new ePictureType[] {ePictureType.Svg, ePictureType.Ico, ePictureType.WebP});
+                    string? relId = this.GetXmlNodeString(BACKGROUNDPIC_PATH);
+                    this._imageNew = new ExcelImage(this, new ePictureType[] {ePictureType.Svg, ePictureType.Ico, ePictureType.WebP});
                     if (!string.IsNullOrEmpty(relId))
                     {
-                        _imageNew.ImageBytes = PictureStore.GetPicture(relId, this, out string contentType, out ePictureType pictureType);
-                        _imageNew.Type = pictureType;
+                        this._imageNew.ImageBytes = PictureStore.GetPicture(relId, this, out string contentType, out ePictureType pictureType);
+                        this._imageNew.Type = pictureType;
                     }
                 }
-                return _imageNew;
+                return this._imageNew;
             }
         }
         /// <summary>
@@ -73,7 +73,7 @@ namespace OfficeOpenXml
             }
             ePictureType type = PictureStore.GetPictureType(PictureFile.Extension);
             byte[]? imgBytes =File.ReadAllBytes(PictureFile.FullName);
-            Image.SetImage(imgBytes, type);
+            this.Image.SetImage(imgBytes, type);
         }
         /// <summary>
         /// Set the picture from an image file. 
@@ -85,20 +85,21 @@ namespace OfficeOpenXml
             {
                 throw new ArgumentNullException("File path cannot be null.");
             }
-            SetFromFile(new FileInfo(PictureFilePath));
+
+            this.SetFromFile(new FileInfo(PictureFilePath));
         }
         /// <summary>
         /// Removes the background image.
         /// </summary>
         public void Remove()
         {
-            Image.RemoveImage();
+            this.Image.RemoveImage();
         }
         IPictureRelationDocument IPictureContainer.RelationDocument 
         { 
             get 
             { 
-                return _workSheet; 
+                return this._workSheet; 
             } 
         }
         string IPictureContainer.ImageHash { get; set; }
@@ -108,18 +109,18 @@ namespace OfficeOpenXml
 
         void IPictureContainer.RemoveImage()
         {
-            if (Image.Type != null)
+            if (this.Image.Type != null)
             {
                 IPictureContainer? pc = (IPictureContainer)this;
-                _workSheet._package.PictureStore.RemoveImage(pc.ImageHash, pc);
-                _workSheet.DeleteNode(BACKGROUNDPIC_PATH, true);
+                this._workSheet._package.PictureStore.RemoveImage(pc.ImageHash, pc);
+                this._workSheet.DeleteNode(BACKGROUNDPIC_PATH, true);
             }
         }
 
         void IPictureContainer.SetNewImage()
         {
             IPictureContainer? pc = (IPictureContainer)this;
-            _workSheet.SetXmlNodeString(BACKGROUNDPIC_PATH, pc.RelPic.Id);
+            this._workSheet.SetXmlNodeString(BACKGROUNDPIC_PATH, pc.RelPic.Id);
         }
     }
 }

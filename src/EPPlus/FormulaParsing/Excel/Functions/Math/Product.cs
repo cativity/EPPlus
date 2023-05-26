@@ -27,24 +27,24 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Math
     {
         public Product()
         {
-            IgnoreErrors = false;
+            this.IgnoreErrors = false;
         }
         public override CompileResult Execute(IEnumerable<FunctionArgument> arguments, ParsingContext context)
         {
             ValidateArguments(arguments, 1);
             List<FunctionArgument>? args = arguments.ToList();
-            if(!IgnoreErrors && arguments.Any(x => x.ValueIsExcelError))
+            if(!this.IgnoreErrors && arguments.Any(x => x.ValueIsExcelError))
             {
-                return CreateResult(arguments.First(x => x.ValueIsExcelError).ValueAsExcelErrorValue.Type);
+                return this.CreateResult(arguments.First(x => x.ValueIsExcelError).ValueAsExcelErrorValue.Type);
             }
-            args.RemoveAll(x => ShouldIgnore(x, context));
+            args.RemoveAll(x => this.ShouldIgnore(x, context));
             double result = 1d;
-            IEnumerable<object>? values = ArgsToObjectEnumerable(true, args, context);
+            IEnumerable<object>? values = this.ArgsToObjectEnumerable(true, args, context);
             foreach (object? obj in values.Where(x => x != null && IsNumeric(x)))
             {
                 result *= Convert.ToDouble(obj);
             }
-            return CreateResult(result, DataType.Decimal);
+            return this.CreateResult(result, DataType.Decimal);
         }
 
     }

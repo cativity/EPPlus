@@ -31,9 +31,9 @@ namespace OfficeOpenXml.FormulaParsing.ExpressionGraph.UnrecognizedFunctionsPipe
 
         public FunctionsPipeline(ParsingContext context, IEnumerable<Expression> children, params UnrecognizedFunctionsHandler[] handlers)
         {
-            _context = context;
-            _handlers = handlers;
-            _children = children;
+            this._context = context;
+            this._handlers = handlers;
+            this._children = children;
         }
 
         private IEnumerable<UnrecognizedFunctionsHandler> _handlers;
@@ -48,9 +48,9 @@ namespace OfficeOpenXml.FormulaParsing.ExpressionGraph.UnrecognizedFunctionsPipe
         /// <returns>An <see cref="ExcelFunction"/> that can handle the function call</returns>
         internal ExcelFunction FindFunction(string funcName)
         {
-            foreach(UnrecognizedFunctionsHandler? handler in _handlers)
+            foreach(UnrecognizedFunctionsHandler? handler in this._handlers)
             {
-                if(handler.Handle(funcName, _children, _context, out ExcelFunction function))
+                if(handler.Handle(funcName, this._children, this._context, out ExcelFunction function))
                 {
                     return function;
                 }

@@ -24,11 +24,11 @@ namespace OfficeOpenXml.LoadFunctions
     {
         public LoadFromDataTable(ExcelRangeBase range, DataTable dataTable, LoadFromDataTableParams parameters)
         {
-            _range = range;
-            _worksheet = range.Worksheet;
-            _dataTable = dataTable;
-            _printHeaders = parameters.PrintHeaders;
-            _tableStyle = parameters.TableStyle;
+            this._range = range;
+            this._worksheet = range.Worksheet;
+            this._dataTable = dataTable;
+            this._printHeaders = parameters.PrintHeaders;
+            this._tableStyle = parameters.TableStyle;
         }
 
         private readonly ExcelRangeBase _range;
@@ -39,42 +39,42 @@ namespace OfficeOpenXml.LoadFunctions
 
         public ExcelRangeBase Load()
         {
-            if (_dataTable == null)
+            if (this._dataTable == null)
             {
                 throw (new ArgumentNullException("Table can't be null"));
             }
 
-            if (_dataTable.Rows.Count == 0 && _printHeaders == false)
+            if (this._dataTable.Rows.Count == 0 && this._printHeaders == false)
             {
                 return null;
             }
 
             //var rowArray = new List<object[]>();
-            int row = _range._fromRow;
-            if (_printHeaders)
+            int row = this._range._fromRow;
+            if (this._printHeaders)
             {
-                _worksheet._values.SetValueRow_Value(_range._fromRow, _range._fromCol, _dataTable.Columns.Cast<DataColumn>().Select((dc) => { return dc.Caption; }).ToArray());
+                this._worksheet._values.SetValueRow_Value(this._range._fromRow, this._range._fromCol, this._dataTable.Columns.Cast<DataColumn>().Select((dc) => { return dc.Caption; }).ToArray());
                 row++;
             }
-            foreach (DataRow dr in _dataTable.Rows)
+            foreach (DataRow dr in this._dataTable.Rows)
             {
-                _range.Worksheet._values.SetValueRow_Value(row++, _range._fromCol, dr.ItemArray);
+                this._range.Worksheet._values.SetValueRow_Value(row++, this._range._fromCol, dr.ItemArray);
             }
-            if (row != _range._fromRow)
+            if (row != this._range._fromRow)
             {
                 row--;
             }
 
             // set table style
-            int rows = (_dataTable.Rows.Count == 0 ? 1 : _dataTable.Rows.Count) + (_printHeaders ? 1 : 0);
-            if (rows >= 0 && _dataTable.Columns.Count > 0 && _tableStyle.HasValue)
+            int rows = (this._dataTable.Rows.Count == 0 ? 1 : this._dataTable.Rows.Count) + (this._printHeaders ? 1 : 0);
+            if (rows >= 0 && this._dataTable.Columns.Count > 0 && this._tableStyle.HasValue)
             {
-                ExcelTable? tbl = _worksheet.Tables.Add(new ExcelAddressBase(_range._fromRow, _range._fromCol, _range._fromRow + rows - 1, _range._fromCol + _dataTable.Columns.Count - 1), _dataTable.TableName);
-                tbl.ShowHeader = _printHeaders;
-                tbl.TableStyle = _tableStyle.Value;
+                ExcelTable? tbl = this._worksheet.Tables.Add(new ExcelAddressBase(this._range._fromRow, this._range._fromCol, this._range._fromRow + rows - 1, this._range._fromCol + this._dataTable.Columns.Count - 1), this._dataTable.TableName);
+                tbl.ShowHeader = this._printHeaders;
+                tbl.TableStyle = this._tableStyle.Value;
             }
 
-            return _worksheet.Cells[_range._fromRow, _range._fromCol, row, _range._fromCol + _dataTable.Columns.Count - 1];
+            return this._worksheet.Cells[this._range._fromRow, this._range._fromCol, row, this._range._fromCol + this._dataTable.Columns.Count - 1];
         }
     }
 }

@@ -24,11 +24,11 @@ namespace OfficeOpenXml.Style
     /// </summary>
     public class ExcelGradientFill : StyleBase
     {
-        internal ExcelGradientFill(ExcelStyles styles, OfficeOpenXml.XmlHelper.ChangedEventHandler ChangedEvent, int PositionID, string address, int index) :
+        internal ExcelGradientFill(ExcelStyles styles, XmlHelper.ChangedEventHandler ChangedEvent, int PositionID, string address, int index) :
             base(styles, ChangedEvent, PositionID, address)
 
         {
-            Index = index;
+            this.Index = index;
         }
         /// <summary>
         /// Angle of the linear gradient
@@ -37,16 +37,16 @@ namespace OfficeOpenXml.Style
         {
             get
             {
-                if (Index < 0)
+                if (this.Index < 0)
                 {
                     return 0;
                 }
 
-                return ((ExcelGradientFillXml)_styles.Fills[Index]).Degree;
+                return ((ExcelGradientFillXml)this._styles.Fills[this.Index]).Degree;
             }
             set
             {
-                _ChangedEvent(this, new StyleChangeEventArgs(eStyleClass.GradientFill, eStyleProperty.GradientDegree, value, _positionID, _address));
+                this._ChangedEvent(this, new StyleChangeEventArgs(eStyleClass.GradientFill, eStyleProperty.GradientDegree, value, this._positionID, this._address));
             }
         }
         /// <summary>
@@ -56,16 +56,16 @@ namespace OfficeOpenXml.Style
         {
             get
             {
-                if (Index < 0)
+                if (this.Index < 0)
                 {
                     return ExcelFillGradientType.None;
                 }
 
-                return ((ExcelGradientFillXml)_styles.Fills[Index]).Type;
+                return ((ExcelGradientFillXml)this._styles.Fills[this.Index]).Type;
             }
             set
             {
-                _ChangedEvent(this, new StyleChangeEventArgs(eStyleClass.GradientFill, eStyleProperty.GradientType, value, _positionID, _address));
+                this._ChangedEvent(this, new StyleChangeEventArgs(eStyleClass.GradientFill, eStyleProperty.GradientType, value, this._positionID, this._address));
             }
         }
         /// <summary>
@@ -76,12 +76,12 @@ namespace OfficeOpenXml.Style
         {
             get
             {
-                if (Index < 0)
+                if (this.Index < 0)
                 {
                     return 0;
                 }
 
-                return ((ExcelGradientFillXml)_styles.Fills[Index]).Top;
+                return ((ExcelGradientFillXml)this._styles.Fills[this.Index]).Top;
             }
             set
             {
@@ -89,7 +89,8 @@ namespace OfficeOpenXml.Style
                 {
                     throw (new ArgumentOutOfRangeException("Value must be between 0 and 1"));
                 }
-                _ChangedEvent(this, new StyleChangeEventArgs(eStyleClass.GradientFill, eStyleProperty.GradientTop, value, _positionID, _address));
+
+                this._ChangedEvent(this, new StyleChangeEventArgs(eStyleClass.GradientFill, eStyleProperty.GradientTop, value, this._positionID, this._address));
             }
         }
         /// <summary>
@@ -100,12 +101,12 @@ namespace OfficeOpenXml.Style
         {
             get
             {
-                if (Index < 0)
+                if (this.Index < 0)
                 {
                     return 0;
                 }
 
-                return ((ExcelGradientFillXml)_styles.Fills[Index]).Bottom;
+                return ((ExcelGradientFillXml)this._styles.Fills[this.Index]).Bottom;
             }
             set
             {
@@ -113,7 +114,8 @@ namespace OfficeOpenXml.Style
                 {
                     throw (new ArgumentOutOfRangeException("Value must be between 0 and 1"));
                 }
-                _ChangedEvent(this, new StyleChangeEventArgs(eStyleClass.GradientFill, eStyleProperty.GradientBottom, value, _positionID, _address));
+
+                this._ChangedEvent(this, new StyleChangeEventArgs(eStyleClass.GradientFill, eStyleProperty.GradientBottom, value, this._positionID, this._address));
             }
         }
         /// <summary>
@@ -124,12 +126,12 @@ namespace OfficeOpenXml.Style
         {
             get
             {
-                if (Index < 0)
+                if (this.Index < 0)
                 {
                     return 0;
                 }
 
-                return ((ExcelGradientFillXml)_styles.Fills[Index]).Left;
+                return ((ExcelGradientFillXml)this._styles.Fills[this.Index]).Left;
             }
             set
             {
@@ -137,7 +139,8 @@ namespace OfficeOpenXml.Style
                 {
                     throw (new ArgumentOutOfRangeException("Value must be between 0 and 1"));
                 }
-                _ChangedEvent(this, new StyleChangeEventArgs(eStyleClass.GradientFill, eStyleProperty.GradientLeft, value, _positionID, _address));
+
+                this._ChangedEvent(this, new StyleChangeEventArgs(eStyleClass.GradientFill, eStyleProperty.GradientLeft, value, this._positionID, this._address));
             }
         }
         /// <summary>
@@ -148,12 +151,12 @@ namespace OfficeOpenXml.Style
         {
             get
             {
-                if (Index < 0)
+                if (this.Index < 0)
                 {
                     return 0;
                 }
 
-                return ((ExcelGradientFillXml)_styles.Fills[Index]).Right;
+                return ((ExcelGradientFillXml)this._styles.Fills[this.Index]).Right;
             }
             set
             {
@@ -161,7 +164,8 @@ namespace OfficeOpenXml.Style
                 {
                     throw (new ArgumentOutOfRangeException("Value must be between 0 and 1"));
                 }
-                _ChangedEvent(this, new StyleChangeEventArgs(eStyleClass.GradientFill, eStyleProperty.GradientRight, value, _positionID, _address));
+
+                this._ChangedEvent(this, new StyleChangeEventArgs(eStyleClass.GradientFill, eStyleProperty.GradientRight, value, this._positionID, this._address));
             }
         }
         ExcelColor _gradientColor1 = null;
@@ -172,11 +176,11 @@ namespace OfficeOpenXml.Style
         {
             get
             {
-                if (_gradientColor1 == null)
+                if (this._gradientColor1 == null)
                 {
-                    _gradientColor1 = new ExcelColor(_styles, _ChangedEvent, _positionID, _address, eStyleClass.FillGradientColor1, this);
+                    this._gradientColor1 = new ExcelColor(this._styles, this._ChangedEvent, this._positionID, this._address, eStyleClass.FillGradientColor1, this);
                 }
-                return _gradientColor1;
+                return this._gradientColor1;
 
             }
         }
@@ -188,17 +192,17 @@ namespace OfficeOpenXml.Style
         {
             get
             {
-                if (_gradientColor2 == null)
+                if (this._gradientColor2 == null)
                 {
-                    _gradientColor2 = new ExcelColor(_styles, _ChangedEvent, _positionID, _address, eStyleClass.FillGradientColor2, this);
+                    this._gradientColor2 = new ExcelColor(this._styles, this._ChangedEvent, this._positionID, this._address, eStyleClass.FillGradientColor2, this);
                 }
-                return _gradientColor2;
+                return this._gradientColor2;
 
             }
         }
         internal override string Id
         {
-            get { return Degree.ToString() + Type + Color1.Id + Color2.Id + Top.ToString() + Bottom.ToString() + Left.ToString() + Right.ToString(); }
+            get { return this.Degree.ToString() + this.Type + this.Color1.Id + this.Color2.Id + this.Top.ToString() + this.Bottom.ToString() + this.Left.ToString() + this.Right.ToString(); }
         }
     }
 }

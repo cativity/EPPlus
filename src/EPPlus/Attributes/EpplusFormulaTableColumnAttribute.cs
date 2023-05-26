@@ -34,15 +34,16 @@ namespace OfficeOpenXml.Attributes
         {
             get
             {
-                return _formula;
+                return this._formula;
             }
             set
             {
-                if(!string.IsNullOrEmpty(_formulaR1C1) && !string.IsNullOrEmpty(value))
+                if(!string.IsNullOrEmpty(this._formulaR1C1) && !string.IsNullOrEmpty(value))
                 {
                     throw new InvalidOperationException("EpplusFormulaTableColumn attribute: Formula cannot be set if FormulaR1C1 is not null or empty.");
                 }
-                _formula = value;
+
+                this._formula = value;
             }
         }
 
@@ -53,15 +54,16 @@ namespace OfficeOpenXml.Attributes
         {
             get
             {
-                return _formulaR1C1;
+                return this._formulaR1C1;
             }
             set
             {
-                if (!string.IsNullOrEmpty(_formula) && !string.IsNullOrEmpty(value))
+                if (!string.IsNullOrEmpty(this._formula) && !string.IsNullOrEmpty(value))
                 {
                     throw new InvalidOperationException("EpplusFormulaTableColumn attribute: FormulaR1C1 cannot be set if Formula is not null or empty.");
                 }
-                _formulaR1C1 = value;
+
+                this._formulaR1C1 = value;
             }
         }
     }

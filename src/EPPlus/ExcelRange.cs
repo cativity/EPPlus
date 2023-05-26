@@ -31,10 +31,10 @@ namespace OfficeOpenXml
         internal ExcelRange(ExcelWorksheet sheet, int fromRow, int fromCol, int toRow, int toCol)
             : base(sheet)
         {
-            _fromRow = fromRow;
-            _fromCol = fromCol;
-            _toRow = toRow;
-            _toCol = toCol;
+            this._fromRow = fromRow;
+            this._fromCol = fromCol;
+            this._toRow = toRow;
+            this._toCol = toCol;
         }
         #endregion
         #region "Indexers"
@@ -47,15 +47,15 @@ namespace OfficeOpenXml
         {
             get
             {
-                if (_worksheet.Names.ContainsKey(Address))
+                if (this._worksheet.Names.ContainsKey(Address))
                 {
-                    if (_worksheet.Names[Address].IsName)
+                    if (this._worksheet.Names[Address].IsName)
                     {
                         return null;
                     }
                     else
                     {
-                        base.Address = _worksheet.Names[Address].Address;
+                        this.Address = this._worksheet.Names[Address].Address;
                     }
                 }
                 else
@@ -63,19 +63,21 @@ namespace OfficeOpenXml
                     if(Address.IndexOfAny(new char[] { '\'', '[', '!' })>=0)
                     {
                         ExcelAddress? a = new ExcelAddress(Address);
-                        if(a.WorkSheetName!=null && a.WorkSheetName.Equals(_worksheet.Name, StringComparison.InvariantCultureIgnoreCase)==false)
+                        if(a.WorkSheetName!=null && a.WorkSheetName.Equals(this._worksheet.Name, StringComparison.InvariantCultureIgnoreCase)==false)
                         {
-                            throw new InvalidOperationException($"The worksheet address {Address} is not within the worksheet {_worksheet.Name}");
+                            throw new InvalidOperationException($"The worksheet address {Address} is not within the worksheet {this._worksheet.Name}");
                         }
                     }
-                    SetAddress(Address, _workbook, _worksheet.Name);
-                    ChangeAddress();
+
+                    this.SetAddress(Address, this._workbook, this._worksheet.Name);
+                    this.ChangeAddress();
                 }
-                if((_fromRow < 1 || _fromCol < 1) && Address.Equals("#REF!", StringComparison.InvariantCultureIgnoreCase)==false)
+                if((this._fromRow < 1 || this._fromCol < 1) && Address.Equals("#REF!", StringComparison.InvariantCultureIgnoreCase)==false)
                 {
                     throw (new InvalidOperationException("Address is not valid."));
                 }
-                _rtc = null;
+
+                this._rtc = null;
                 return this;
             }
         }
@@ -109,18 +111,18 @@ namespace OfficeOpenXml
             {
                 ValidateRowCol(Row, Col);
 
-                _fromCol = Col;
-                _fromRow = Row;
-                _toCol = Col;
-                _toRow = Row;
-                _rtc = null;
+                this._fromCol = Col;
+                this._fromRow = Row;
+                this._toCol = Col;
+                this._toRow = Row;
+                this._rtc = null;
                 // avoid address re-calculation
                 //base.Address = GetAddress(_fromRow, _fromCol);
-                _start = null;
-                _end = null;
-                _addresses = null;
-                _address = GetAddress(_fromRow, _fromCol);
-                ChangeAddress();
+                this._start = null;
+                this._end = null;
+                this._addresses = null;
+                this._address = GetAddress(this._fromRow, this._fromCol);
+                this.ChangeAddress();
                 return this;
             }
         }
@@ -139,18 +141,18 @@ namespace OfficeOpenXml
                 ValidateRowCol(FromRow, FromCol);
                 ValidateRowCol(ToRow, ToCol);
 
-                _fromCol = FromCol;
-                _fromRow = FromRow;
-                _toCol = ToCol;
-                _toRow = ToRow;
-                _rtc = null;
+                this._fromCol = FromCol;
+                this._fromRow = FromRow;
+                this._toCol = ToCol;
+                this._toRow = ToRow;
+                this._rtc = null;
                 // avoid address re-calculation
                 //base.Address = GetAddress(_fromRow, _fromCol, _toRow, _toCol);
-                _start = null;
-                _end = null;
-                _addresses = null;
-                _address = GetAddress(_fromRow, _fromCol, _toRow, _toCol);
-                ChangeAddress();
+                this._start = null;
+                this._end = null;
+                this._addresses = null;
+                this._address = GetAddress(this._fromRow, this._fromCol, this._toRow, this._toCol);
+                this.ChangeAddress();
                 return this;
             }
         }

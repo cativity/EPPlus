@@ -45,7 +45,7 @@ namespace EPPlusTest.FormulaParsing.LexicalAnalysis
         [TestInitialize]
         public void Setup()
         {
-            _analyser = new SyntacticAnalyzer();
+            this._analyser = new SyntacticAnalyzer();
         }
 
         [TestMethod]
@@ -59,7 +59,8 @@ namespace EPPlusTest.FormulaParsing.LexicalAnalysis
                 new Token("2", TokenType.Integer),
                 new Token(")", TokenType.ClosingParenthesis)
             };
-            _analyser.Analyze(input);
+
+            this._analyser.Analyze(input);
         }
 
         [TestMethod, ExpectedException(typeof(FormatException))]
@@ -72,7 +73,8 @@ namespace EPPlusTest.FormulaParsing.LexicalAnalysis
                 new Token("+", TokenType.Operator),
                 new Token("2", TokenType.Integer)
             };
-            _analyser.Analyze(input);
+
+            this._analyser.Analyze(input);
         }
 
         [TestMethod]
@@ -84,7 +86,8 @@ namespace EPPlusTest.FormulaParsing.LexicalAnalysis
                 new Token("abc123", TokenType.StringContent),
                 new Token("'", TokenType.String)
             };
-            _analyser.Analyze(input);
+
+            this._analyser.Analyze(input);
         }
 
         [TestMethod, ExpectedException(typeof(FormatException))]
@@ -95,7 +98,8 @@ namespace EPPlusTest.FormulaParsing.LexicalAnalysis
                 new Token("'", TokenType.String),
                 new Token("abc123", TokenType.StringContent)
             };
-            _analyser.Analyze(input);
+
+            this._analyser.Analyze(input);
         }
 
 
@@ -106,7 +110,8 @@ namespace EPPlusTest.FormulaParsing.LexicalAnalysis
             {
                 new Token("abc123", TokenType.Unrecognized)
             };
-            _analyser.Analyze(input);
+
+            this._analyser.Analyze(input);
         }
 
         [TestMethod]

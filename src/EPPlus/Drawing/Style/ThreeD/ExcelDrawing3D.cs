@@ -43,22 +43,22 @@ namespace OfficeOpenXml.Drawing.Style.ThreeD
                 path += "/";
             }
 
-            _path = path;
-            _sp3dPath = string.Format(_sp3dPath, path);
-            _scene3dPath = string.Format(_scene3dPath, path);
-            _bevelTPath = string.Format(_bevelTPath, _sp3dPath);
-            _bevelBPath = string.Format(_bevelBPath, _sp3dPath);
-            _extrusionColorPath = string.Format(_extrusionColorPath, _sp3dPath);
-            _contourColorPath = string.Format(_contourColorPath, _sp3dPath);
-            _extrusionHeightPath = string.Format(_extrusionHeightPath, _sp3dPath);
-            _contourWidthPath = string.Format(_contourWidthPath, _sp3dPath);
-            _shapeDepthPath = string.Format(_shapeDepthPath, _sp3dPath); 
-            _materialTypePath = string.Format(_materialTypePath, _sp3dPath);
+            this._path = path;
+            this._sp3dPath = string.Format(this._sp3dPath, path);
+            this._scene3dPath = string.Format(this._scene3dPath, path);
+            this._bevelTPath = string.Format(this._bevelTPath, this._sp3dPath);
+            this._bevelBPath = string.Format(this._bevelBPath, this._sp3dPath);
+            this._extrusionColorPath = string.Format(this._extrusionColorPath, this._sp3dPath);
+            this._contourColorPath = string.Format(this._contourColorPath, this._sp3dPath);
+            this._extrusionHeightPath = string.Format(this._extrusionHeightPath, this._sp3dPath);
+            this._contourWidthPath = string.Format(this._contourWidthPath, this._sp3dPath);
+            this._shapeDepthPath = string.Format(this._shapeDepthPath, this._sp3dPath);
+            this._materialTypePath = string.Format(this._materialTypePath, this._sp3dPath);
 
-            AddSchemaNodeOrder(schemaNodeOrder, ExcelShapeBase._shapeNodeOrder);
+            this.AddSchemaNodeOrder(schemaNodeOrder, ExcelShapeBase._shapeNodeOrder);
 
-            _contourColor = new ExcelDrawingColorManager(nameSpaceManager, TopNode, _contourColorPath, SchemaNodeOrder, InitContourColor);
-            _extrusionColor = new ExcelDrawingColorManager(nameSpaceManager, TopNode, _extrusionColorPath, SchemaNodeOrder, InitExtrusionColor);
+            this._contourColor = new ExcelDrawingColorManager(nameSpaceManager, this.TopNode, this._contourColorPath, this.SchemaNodeOrder, this.InitContourColor);
+            this._extrusionColor = new ExcelDrawingColorManager(nameSpaceManager, this.TopNode, this._extrusionColorPath, this.SchemaNodeOrder, this.InitExtrusionColor);
         }
         ExcelDrawingScene3D _scene3D = null;
         /// <summary>
@@ -68,11 +68,11 @@ namespace OfficeOpenXml.Drawing.Style.ThreeD
         {
             get
             {
-                if (_scene3D == null)
+                if (this._scene3D == null)
                 {
-                    _scene3D = new ExcelDrawingScene3D(NameSpaceManager, TopNode, SchemaNodeOrder, _scene3dPath);
+                    this._scene3D = new ExcelDrawingScene3D(this.NameSpaceManager, this.TopNode, this.SchemaNodeOrder, this._scene3dPath);
                 }
-                return _scene3D;
+                return this._scene3D;
             }
         }
         /// <summary>
@@ -82,11 +82,11 @@ namespace OfficeOpenXml.Drawing.Style.ThreeD
         {   
             get
             {
-                return GetXmlNodeEmuToPtNull(_extrusionHeightPath)??0;
+                return this.GetXmlNodeEmuToPtNull(this._extrusionHeightPath)??0;
             }
             set
             {
-                SetXmlNodeEmuToPt(_extrusionHeightPath, value);
+                this.SetXmlNodeEmuToPt(this._extrusionHeightPath, value);
             }
         }
         /// <summary>
@@ -96,11 +96,11 @@ namespace OfficeOpenXml.Drawing.Style.ThreeD
         {
             get
             {
-                return GetXmlNodeEmuToPtNull(_contourWidthPath) ?? 0;
+                return this.GetXmlNodeEmuToPtNull(this._contourWidthPath) ?? 0;
             }
             set
             {
-                SetXmlNodeEmuToPt(_contourWidthPath, value);
+                this.SetXmlNodeEmuToPt(this._contourWidthPath, value);
             }
         }
         ExcelDrawing3DBevel _topBevel = null;
@@ -111,11 +111,11 @@ namespace OfficeOpenXml.Drawing.Style.ThreeD
         {
             get
             {
-                if(_topBevel==null)
+                if(this._topBevel==null)
                 {
-                    _topBevel = new ExcelDrawing3DBevel(NameSpaceManager, TopNode, SchemaNodeOrder, _bevelTPath, InitXml);
+                    this._topBevel = new ExcelDrawing3DBevel(this.NameSpaceManager, this.TopNode, this.SchemaNodeOrder, this._bevelTPath, this.InitXml);
                 }
-                return _topBevel;
+                return this._topBevel;
             }
         }
         ExcelDrawing3DBevel _bottomBevel = null;
@@ -126,11 +126,11 @@ namespace OfficeOpenXml.Drawing.Style.ThreeD
         {
             get
             {
-                if (_bottomBevel == null)
+                if (this._bottomBevel == null)
                 {
-                    _bottomBevel = new ExcelDrawing3DBevel(NameSpaceManager, TopNode, SchemaNodeOrder, _bevelBPath, InitXml);
+                    this._bottomBevel = new ExcelDrawing3DBevel(this.NameSpaceManager, this.TopNode, this.SchemaNodeOrder, this._bevelBPath, this.InitXml);
                 }
-                return _bottomBevel;
+                return this._bottomBevel;
             }
         }
         ExcelDrawingColorManager _extrusionColor = null;
@@ -141,7 +141,7 @@ namespace OfficeOpenXml.Drawing.Style.ThreeD
         {
             get
             {
-                return _extrusionColor;                
+                return this._extrusionColor;                
             }
         }
 
@@ -153,7 +153,7 @@ namespace OfficeOpenXml.Drawing.Style.ThreeD
         {
             get
             {
-                return _contourColor;
+                return this._contourColor;
             }
         }
         /// <summary>
@@ -163,12 +163,12 @@ namespace OfficeOpenXml.Drawing.Style.ThreeD
         {
             get
             {
-                return GetXmlNodeString(_materialTypePath).ToEnum(ePresetMaterialType.WarmMatte);
+                return this.GetXmlNodeString(this._materialTypePath).ToEnum(ePresetMaterialType.WarmMatte);
             }
             set
             {
-                InitXml(false);
-                SetXmlNodeString(_materialTypePath, value.ToEnumString());
+                this.InitXml(false);
+                this.SetXmlNodeString(this._materialTypePath, value.ToEnumString());
             }
         }
         /// <summary>
@@ -178,11 +178,11 @@ namespace OfficeOpenXml.Drawing.Style.ThreeD
         {
             get
             {
-                return GetXmlNodeEmuToPtNull(_shapeDepthPath) ?? 0;
+                return this.GetXmlNodeEmuToPtNull(this._shapeDepthPath) ?? 0;
             }
             set
             {
-                SetXmlNodeEmuToPt(_shapeDepthPath, value);
+                this.SetXmlNodeEmuToPt(this._shapeDepthPath, value);
             }
         }
 
@@ -190,14 +190,14 @@ namespace OfficeOpenXml.Drawing.Style.ThreeD
         {
             get
             {
-                return GetNode(_scene3dPath) as XmlElement;
+                return this.GetNode(this._scene3dPath) as XmlElement;
             }
         }
         internal XmlElement Sp3DElement
         {
             get
             {
-                return GetNode(_sp3dPath) as XmlElement;
+                return this.GetNode(this._sp3dPath) as XmlElement;
             }
         }
         bool isInit = false;
@@ -205,16 +205,16 @@ namespace OfficeOpenXml.Drawing.Style.ThreeD
         {
             if(delete)
             {
-                Delete();
+                this.Delete();
             }
             else
             {
-                if (isInit == false)
+                if (this.isInit == false)
                 {
-                    if (!ExistsNode(_sp3dPath))
+                    if (!this.ExistsNode(this._sp3dPath))
                     {
-                        CreateNode(_sp3dPath);
-                        Scene.InitXml(false);
+                        this.CreateNode(this._sp3dPath);
+                        this.Scene.InitXml(false);
                     }
                 }
             }
@@ -224,19 +224,19 @@ namespace OfficeOpenXml.Drawing.Style.ThreeD
         /// </summary>
         public void Delete()
         {
-            DeleteNode(_scene3dPath);
-            DeleteNode(_sp3dPath);
+            this.DeleteNode(this._scene3dPath);
+            this.DeleteNode(this._sp3dPath);
         }
         private void InitContourColor()
         {
-            if (ContourWidth <= 0)
+            if (this.ContourWidth <= 0)
             {
                 this.ContourWidth = 1;
             }
         }
         private void InitExtrusionColor()
         {
-            if (ExtrusionHeight <= 0)
+            if (this.ExtrusionHeight <= 0)
             {
                 this.ExtrusionHeight = 1;
             }
@@ -246,12 +246,12 @@ namespace OfficeOpenXml.Drawing.Style.ThreeD
         {
             if(copyFromScene3DElement!=null)
             {
-                XmlElement? scene3DElement = (XmlElement)CreateNode(_scene3dPath);
+                XmlElement? scene3DElement = (XmlElement)this.CreateNode(this._scene3dPath);
                 CopyXml(copyFromScene3DElement, scene3DElement);
             }
             if (copyFromSp3DElement!=null)
             {
-                XmlElement? sp3DElement = (XmlElement)CreateNode(_sp3dPath);
+                XmlElement? sp3DElement = (XmlElement)this.CreateNode(this._sp3dPath);
                 CopyXml(copyFromSp3DElement, sp3DElement);
             }
         }

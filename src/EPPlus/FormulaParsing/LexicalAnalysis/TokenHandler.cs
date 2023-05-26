@@ -25,10 +25,10 @@ namespace OfficeOpenXml.FormulaParsing.LexicalAnalysis
         }
         public TokenHandler(TokenizerContext context, ITokenFactory tokenFactory, ITokenSeparatorProvider tokenProvider, TokenSeparatorHandler tokenSeparatorHandler)
         {
-            _context = context;
-            _tokenFactory = tokenFactory;
-            _tokenProvider = tokenProvider;
-            _tokenSeparatorHandler = tokenSeparatorHandler;
+            this._context = context;
+            this._tokenFactory = tokenFactory;
+            this._tokenProvider = tokenProvider;
+            this._tokenSeparatorHandler = tokenSeparatorHandler;
         }
 
         private readonly TokenizerContext _context;
@@ -41,62 +41,64 @@ namespace OfficeOpenXml.FormulaParsing.LexicalAnalysis
 
         public bool HasMore()
         {
-            return _tokenIndex < (_context.FormulaChars.Length - 1);
+            return this._tokenIndex < (this._context.FormulaChars.Length - 1);
         }
 
         public void Next()
         {
-            _tokenIndex++;
-            Handle();
+            this._tokenIndex++;
+            this.Handle();
         }
 
         private void Handle()
         {
-            char c = _context.FormulaChars[_tokenIndex];
+            char c = this._context.FormulaChars[this._tokenIndex];
             Token tokenSeparator;
-            if (CharIsTokenSeparator(c, out tokenSeparator))
+            if (this.CharIsTokenSeparator(c, out tokenSeparator))
             {
-                if (_tokenSeparatorHandler.Handle(c, tokenSeparator, _context, this))
+                if (this._tokenSeparatorHandler.Handle(c, tokenSeparator, this._context, this))
                 {
                     return;
                 }
                                               
-                if (_context.CurrentTokenHasValue)
+                if (this._context.CurrentTokenHasValue)
                 {
                     //if (Regex.IsMatch(_context.CurrentToken, "^\"*$"))
-                    if(_context.CurrentToken.StartsWith("\"") && _context.CurrentToken.EndsWith("\""))
+                    if(this._context.CurrentToken.StartsWith("\"") && this._context.CurrentToken.EndsWith("\""))
                     {
-                        _context.AddToken(_tokenFactory.Create(_context.CurrentToken, TokenType.StringContent));
+                        this._context.AddToken(this._tokenFactory.Create(this._context.CurrentToken, TokenType.StringContent));
                     }
                     else
                     {
-                        _context.AddToken(CreateToken(_context, Worksheet));
+                        this._context.AddToken(this.CreateToken(this._context, this.Worksheet));
                     }
 
 
                     //If the a next token is an opening parantheses and the previous token is interpeted as an address or name, then the currenct token is a function
-                    if (tokenSeparator.TokenTypeIsSet(TokenType.OpeningParenthesis) && (_context.LastToken.Value.TokenTypeIsSet(TokenType.ExcelAddress) || _context.LastToken.Value.TokenTypeIsSet(TokenType.NameValue)))
+                    if (tokenSeparator.TokenTypeIsSet(TokenType.OpeningParenthesis) && (this._context.LastToken.Value.TokenTypeIsSet(TokenType.ExcelAddress) || this._context.LastToken.Value.TokenTypeIsSet(TokenType.NameValue)))
                     {
-                        Token newToken = _context.LastToken.Value.CloneWithNewTokenType(TokenType.Function);
-                        _context.ReplaceLastToken(newToken);
+                        Token newToken = this._context.LastToken.Value.CloneWithNewTokenType(TokenType.Function);
+                        this._context.ReplaceLastToken(newToken);
                     }
                 }
-                if (TokenIsNegator(tokenSeparator.Value, _context))
+                if (TokenIsNegator(tokenSeparator.Value, this._context))
                 {
-                    _context.AddToken(new Token("-", TokenType.Negator));
+                    this._context.AddToken(new Token("-", TokenType.Negator));
                     return;
                 }
-                _context.AddToken(tokenSeparator);
-                _context.NewToken();
+
+                this._context.AddToken(tokenSeparator);
+                this._context.NewToken();
                 return;
             }
-            _context.AppendToCurrentToken(c);
+
+            this._context.AppendToCurrentToken(c);
         }
 
         private bool CharIsTokenSeparator(char c, out Token token)
         {
-            bool result = _tokenProvider.Tokens.ContainsKey(c.ToString());
-            token = result ? token = _tokenProvider.Tokens[c.ToString()] : default(Token);
+            bool result = this._tokenProvider.Tokens.ContainsKey(c.ToString());
+            token = result ? token = this._tokenProvider.Tokens[c.ToString()] : default(Token);
             return result;
         }
 
@@ -134,18 +136,18 @@ namespace OfficeOpenXml.FormulaParsing.LexicalAnalysis
                     return new Token("-", TokenType.Negator);
                 }
             }
-            return _tokenFactory.Create(context.Result, context.CurrentToken, worksheet);
+            return this._tokenFactory.Create(context.Result, context.CurrentToken, worksheet);
         }
 
         int ITokenIndexProvider.Index
         {
-            get { return _tokenIndex; }
+            get { return this._tokenIndex; }
         }
 
 
         void ITokenIndexProvider.MoveIndexPointerForward()
         {
-            _tokenIndex++;
+            this._tokenIndex++;
         }
     }
 }

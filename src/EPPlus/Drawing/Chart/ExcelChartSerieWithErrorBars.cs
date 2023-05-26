@@ -30,10 +30,10 @@ namespace OfficeOpenXml.Drawing.Chart
         internal ExcelChartSerieWithErrorBars(ExcelChart chart, XmlNamespaceManager ns, XmlNode node, bool isPivot) :
             base(chart, ns, node, isPivot)
         {
-            XmlNode? errorNode = GetNode("c:errBars");
+            XmlNode? errorNode = this.GetNode("c:errBars");
             if (errorNode != null) 
             {
-                ErrorBars = new ExcelChartErrorBars(this, errorNode);
+                this.ErrorBars = new ExcelChartErrorBars(this, errorNode);
             }
         }
         /// <summary>
@@ -48,7 +48,7 @@ namespace OfficeOpenXml.Drawing.Chart
         /// <param name="valueType"></param>
         public virtual void AddErrorBars(eErrorBarType barType, eErrorValueType valueType)
         {
-            ErrorBars = GetNewErrorBar(barType, valueType, ErrorBars);
+            this.ErrorBars = this.GetNewErrorBar(barType, valueType, this.ErrorBars);
         }
 
         internal ExcelChartErrorBars GetNewErrorBar(eErrorBarType barType, eErrorValueType valueType, ExcelChartErrorBars errorBars)
@@ -61,7 +61,7 @@ namespace OfficeOpenXml.Drawing.Chart
             errorBars.ValueType = valueType;
             errorBars.NoEndCap = false;
 
-            _chart.ApplyStyleOnPart(errorBars, _chart.StyleManager?.Style?.ErrorBar);
+            this._chart.ApplyStyleOnPart(errorBars, this._chart.StyleManager?.Style?.ErrorBar);
             return errorBars;
         }
 
@@ -71,7 +71,7 @@ namespace OfficeOpenXml.Drawing.Chart
         /// <returns>True if the serie has Error Bars</returns>
         public bool HasErrorBars()
         {
-            return ExistsNode("c:errBars");
+            return this.ExistsNode("c:errBars");
         }
     }
 }

@@ -31,33 +31,33 @@ namespace OfficeOpenXml.Drawing.Vml
         internal ExcelWorksheet _ws;
         internal ExcelVmlDrawingBaseCollection(ExcelWorksheet ws, Uri uri, string worksheetRelIdPath)
         {
-            VmlDrawingXml = new XmlDocument();
-            VmlDrawingXml.PreserveWhitespace = false;
+            this.VmlDrawingXml = new XmlDocument();
+            this.VmlDrawingXml.PreserveWhitespace = false;
             
             NameTable nt=new NameTable();
-            NameSpaceManager = new XmlNamespaceManager(nt);
-            NameSpaceManager.AddNamespace("v", ExcelPackage.schemaMicrosoftVml);
-            NameSpaceManager.AddNamespace("o", ExcelPackage.schemaMicrosoftOffice);
-            NameSpaceManager.AddNamespace("x", ExcelPackage.schemaMicrosoftExcel);
-            Uri = uri;
-            _package = ws.Workbook._package;
-            _ws = ws;
+            this.NameSpaceManager = new XmlNamespaceManager(nt);
+            this.NameSpaceManager.AddNamespace("v", ExcelPackage.schemaMicrosoftVml);
+            this.NameSpaceManager.AddNamespace("o", ExcelPackage.schemaMicrosoftOffice);
+            this.NameSpaceManager.AddNamespace("x", ExcelPackage.schemaMicrosoftExcel);
+            this.Uri = uri;
+            this._package = ws.Workbook._package;
+            this._ws = ws;
             if (uri == null)
             {
-                int id = _ws.SheetId;
+                int id = this._ws.SheetId;
             }
             else
             {
-                Part=_package.ZipPackage.GetPart(uri);
+                this.Part= this._package.ZipPackage.GetPart(uri);
                 try
                 {                    
-                    XmlHelper.LoadXmlSafe(VmlDrawingXml, Part.GetStream());
+                    XmlHelper.LoadXmlSafe(this.VmlDrawingXml, this.Part.GetStream());
                 }
                 catch
                 {
                     //VML can contain unclosed br tags. Try handle this.
-                    string? xml = new StreamReader(Part.GetStream()).ReadToEnd();
-                    XmlHelper.LoadXmlSafe(VmlDrawingXml, RemoveUnclosedBrTags(xml), Encoding.UTF8);
+                    string? xml = new StreamReader(this.Part.GetStream()).ReadToEnd();
+                    XmlHelper.LoadXmlSafe(this.VmlDrawingXml, RemoveUnclosedBrTags(xml), Encoding.UTF8);
                 }
             }
         }
@@ -71,24 +71,24 @@ namespace OfficeOpenXml.Drawing.Vml
         internal XmlDocument VmlDrawingXml { get; set; }
         internal Uri Uri { get; set; }
         internal string RelId { get; set; }
-        internal Packaging.ZipPackagePart Part { get; set; }
+        internal ZipPackagePart Part { get; set; }
         internal XmlNamespaceManager NameSpaceManager { get; set; }
         internal void CreateVmlPart()
         {
-            if (Uri == null)
+            if (this.Uri == null)
             {
-                int id = _ws.SheetId;
-                Uri = XmlHelper.GetNewUri(_package.ZipPackage, @"/xl/drawings/vmlDrawing{0}.vml", ref id);
+                int id = this._ws.SheetId;
+                this.Uri = XmlHelper.GetNewUri(this._package.ZipPackage, @"/xl/drawings/vmlDrawing{0}.vml", ref id);
             }
-            if (Part == null)
+            if (this.Part == null)
             {
-                Part = _package.ZipPackage.CreatePart(Uri, ContentTypes.contentTypeVml, _package.Compression);
-                ZipPackageRelationship? rel = _ws.Part.CreateRelationship(UriHelper.GetRelativeUri(_ws.WorksheetUri, Uri), Packaging.TargetMode.Internal, ExcelPackage.schemaRelationships + "/vmlDrawing");
-                _ws.SetXmlNodeString("d:legacyDrawing/@r:id", rel.Id);
-                RelId = rel.Id;
+                this.Part = this._package.ZipPackage.CreatePart(this.Uri, ContentTypes.contentTypeVml, this._package.Compression);
+                ZipPackageRelationship? rel = this._ws.Part.CreateRelationship(UriHelper.GetRelativeUri(this._ws.WorksheetUri, this.Uri), TargetMode.Internal, ExcelPackage.schemaRelationships + "/vmlDrawing");
+                this._ws.SetXmlNodeString("d:legacyDrawing/@r:id", rel.Id);
+                this.RelId = rel.Id;
             }
 
-            VmlDrawingXml.Save(Part.GetStream(FileMode.Create));
+            this.VmlDrawingXml.Save(this.Part.GetStream(FileMode.Create));
         }
     }
 }

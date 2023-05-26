@@ -239,7 +239,7 @@ namespace EPPlusTest
         [TestMethod]
         public void Issue15179()
         {
-            using ExcelPackage? package = new OfficeOpenXml.ExcelPackage();
+            using ExcelPackage? package = new ExcelPackage();
             ExcelWorksheet? ws = package.Workbook.Worksheets.Add("MergeDeleteBug");
             ws.Cells["E3:F3"].Merge = true;
             ws.Cells["E3:F3"].Merge = false;
@@ -427,17 +427,17 @@ namespace EPPlusTest
         {
             using ExcelPackage? p = new ExcelPackage();
             ExcelWorksheet? workSheet = p.Workbook.Worksheets.Add("styleerror");
-            workSheet.Cells["F:G"].Style.Fill.PatternType = OfficeOpenXml.Style.ExcelFillStyle.Solid;
+            workSheet.Cells["F:G"].Style.Fill.PatternType = ExcelFillStyle.Solid;
             workSheet.Cells["F:G"].Style.Fill.BackgroundColor.SetColor(Color.Red);
 
-            workSheet.Cells["A:A,C:C"].Style.Fill.PatternType = OfficeOpenXml.Style.ExcelFillStyle.Solid;
+            workSheet.Cells["A:A,C:C"].Style.Fill.PatternType = ExcelFillStyle.Solid;
             workSheet.Cells["A:A,C:C"].Style.Fill.BackgroundColor.SetColor(Color.Red);
 
             //And then: 
 
             workSheet.Cells["A:H"].Style.Font.Color.SetColor(Color.Blue);
 
-            workSheet.Cells["I:I"].Style.Fill.PatternType = OfficeOpenXml.Style.ExcelFillStyle.Solid;
+            workSheet.Cells["I:I"].Style.Fill.PatternType = ExcelFillStyle.Solid;
             workSheet.Cells["I:I"].Style.Fill.BackgroundColor.SetColor(Color.Red);
             workSheet.Cells["I2"].Style.Fill.BackgroundColor.SetColor(Color.Green);
             workSheet.Cells["I4"].Style.Fill.BackgroundColor.SetColor(Color.Blue);
@@ -484,9 +484,9 @@ namespace EPPlusTest
         public static byte[] ReadTemplateFile(string templateName)
         {
             byte[] templateFIle;
-            using (System.IO.MemoryStream ms = new System.IO.MemoryStream())
+            using (MemoryStream ms = new MemoryStream())
             {
-                using (FileStream? sw = new System.IO.FileStream(templateName, System.IO.FileMode.Open, System.IO.FileAccess.Read, System.IO.FileShare.ReadWrite))
+                using (FileStream? sw = new FileStream(templateName, FileMode.Open, FileAccess.Read, FileShare.ReadWrite))
                 {
                     byte[] buffer = new byte[2048];
                     int bytesRead;
@@ -738,7 +738,7 @@ namespace EPPlusTest
             //Make the range a table
             ExcelTable? tbl = sheet.Tables.Add(range, $"data{sheetName}");
             tbl.ShowTotal = true;
-            tbl.Columns["ReleaseYear"].TotalsRowFunction = OfficeOpenXml.Table.RowFunctions.Sum;
+            tbl.Columns["ReleaseYear"].TotalsRowFunction = RowFunctions.Sum;
 
             //save and dispose
             pck.Save();
@@ -753,10 +753,10 @@ namespace EPPlusTest
 
             public Car(int id, string make, string model, int releaseYear)
             {
-                Id = id;
-                Make = make;
-                Model = model;
-                ReleaseYear = releaseYear;
+                this.Id = id;
+                this.Make = make;
+                this.Model = model;
+                this.ReleaseYear = releaseYear;
             }
 
             internal static List<Car> GenerateList()
@@ -806,7 +806,7 @@ namespace EPPlusTest
         [TestMethod]
         public void Issue195()
         {
-            using ExcelPackage? pkg = new OfficeOpenXml.ExcelPackage();
+            using ExcelPackage? pkg = new ExcelPackage();
             ExcelWorksheet? sheet = pkg.Workbook.Worksheets.Add("Sheet1");
             ExcelNamedStyleXml? defaultStyle = pkg.Workbook.Styles.CreateNamedStyle("Default");
             defaultStyle.Style.Font.Name = "Arial";
@@ -1882,16 +1882,16 @@ namespace EPPlusTest
                 if (onColumns)
                 {
                     // Set the horizontal alignment on the columns themselves
-                    ws.Column(3).Style.HorizontalAlignment = ws.Column(4).Style.HorizontalAlignment = OfficeOpenXml.Style.ExcelHorizontalAlignment.Left;
-                    ws.Column(5).Style.HorizontalAlignment = ws.Column(6).Style.HorizontalAlignment = OfficeOpenXml.Style.ExcelHorizontalAlignment.Center;
-                    ws.Column(7).Style.HorizontalAlignment = ws.Column(8).Style.HorizontalAlignment = OfficeOpenXml.Style.ExcelHorizontalAlignment.Right;
+                    ws.Column(3).Style.HorizontalAlignment = ws.Column(4).Style.HorizontalAlignment = ExcelHorizontalAlignment.Left;
+                    ws.Column(5).Style.HorizontalAlignment = ws.Column(6).Style.HorizontalAlignment = ExcelHorizontalAlignment.Center;
+                    ws.Column(7).Style.HorizontalAlignment = ws.Column(8).Style.HorizontalAlignment = ExcelHorizontalAlignment.Right;
                 }
                 else
                 {
                     // Set the horizontal alignment on the cells of the header
-                    ws.Cells[1, 3, 1, 4].Style.HorizontalAlignment = OfficeOpenXml.Style.ExcelHorizontalAlignment.Left;
-                    ws.Cells[1, 5, 1, 6].Style.HorizontalAlignment = OfficeOpenXml.Style.ExcelHorizontalAlignment.Center;
-                    ws.Cells[1, 7, 1, 8].Style.HorizontalAlignment = OfficeOpenXml.Style.ExcelHorizontalAlignment.Right;
+                    ws.Cells[1, 3, 1, 4].Style.HorizontalAlignment = ExcelHorizontalAlignment.Left;
+                    ws.Cells[1, 5, 1, 6].Style.HorizontalAlignment = ExcelHorizontalAlignment.Center;
+                    ws.Cells[1, 7, 1, 8].Style.HorizontalAlignment = ExcelHorizontalAlignment.Right;
                 }
 
                 for (int row = 2; row < 30; ++row)
@@ -1904,9 +1904,9 @@ namespace EPPlusTest
                     if (!onColumns)
                     {
                         // Set the horizontal alignment on this row's cells
-                        ws.Cells[row, 3, row, 4].Style.HorizontalAlignment = OfficeOpenXml.Style.ExcelHorizontalAlignment.Left;
-                        ws.Cells[row, 5, row, 6].Style.HorizontalAlignment = OfficeOpenXml.Style.ExcelHorizontalAlignment.Center;
-                        ws.Cells[row, 7, row, 8].Style.HorizontalAlignment = OfficeOpenXml.Style.ExcelHorizontalAlignment.Right;
+                        ws.Cells[row, 3, row, 4].Style.HorizontalAlignment = ExcelHorizontalAlignment.Left;
+                        ws.Cells[row, 5, row, 6].Style.HorizontalAlignment = ExcelHorizontalAlignment.Center;
+                        ws.Cells[row, 7, row, 8].Style.HorizontalAlignment = ExcelHorizontalAlignment.Right;
                     }
                 }
 
@@ -2395,7 +2395,7 @@ namespace EPPlusTest
 
             ExcelControlCheckBox? ctrl = worksheet.Drawings.AddCheckBoxControl("test");
             ctrl.SetPosition(10, 10);
-            ctrl.Checked = OfficeOpenXml.Drawing.Controls.eCheckState.Checked; // creates valid XLSX file
+            ctrl.Checked = eCheckState.Checked; // creates valid XLSX file
                                                                                //ctrl.Checked = OfficeOpenXml.Drawing.Controls.eCheckState.Mixed; // creates valid XLSX file
                                                                                //ctrl.Checked = OfficeOpenXml.Drawing.Controls.eCheckState.Unchecked; // creates invalid XLSX file
 
@@ -2707,7 +2707,7 @@ namespace EPPlusTest
             ExcelPieChart? chart = ws.Drawings.AddPieChart("Pie1", ePieChartType.Pie);
             chart.VaryColors = true;
             chart.Series.Add("B1:B3", "A1:A3");
-            chart.StyleManager.SetChartStyle(OfficeOpenXml.Drawing.Chart.Style.ePresetChartStyle.PieChartStyle1);
+            chart.StyleManager.SetChartStyle(ePresetChartStyle.PieChartStyle1);
 
             SaveAndCleanup(p);
         }
@@ -2726,14 +2726,14 @@ namespace EPPlusTest
             ExcelPieChart? chart = ws.Drawings.AddPieChart("Pie1", ePieChartType.Pie);
             chart.VaryColors = true;
             chart.Series.Add("A2:C2", "A1:C1");
-            chart.StyleManager.SetChartStyle(OfficeOpenXml.Drawing.Chart.Style.ePresetChartStyle.PieChartStyle1);
+            chart.StyleManager.SetChartStyle(ePresetChartStyle.PieChartStyle1);
 
             SaveAndCleanup(p);
         }
         [TestMethod]
         public void CheckEnvironment()
         {
-            System.Drawing.Graphics.FromHwnd(IntPtr.Zero);
+            Graphics.FromHwnd(IntPtr.Zero);
         }
         [TestMethod]
         public void Issue592()
@@ -3360,7 +3360,7 @@ namespace EPPlusTest
             foreach (string? key in storage.DataStreams.Keys)
             {
                 sb.WriteLine($"{path}{dir}\\" + key);
-                System.IO.File.WriteAllBytes($"{path}{dir}\\" + GetFileName(key) + ".bin", storage.DataStreams[key]);
+                File.WriteAllBytes($"{path}{dir}\\" + GetFileName(key) + ".bin", storage.DataStreams[key]);
             }
         }
 
@@ -4307,8 +4307,8 @@ namespace EPPlusTest
             {
                 sheet.Cells[1, i].IsRichText = true;
                 sheet.Cells[1, i].Style.WrapText = true;
-                sheet.Cells[1, i].Style.HorizontalAlignment = OfficeOpenXml.Style.ExcelHorizontalAlignment.Left;
-                sheet.Cells[1, i].Style.VerticalAlignment = OfficeOpenXml.Style.ExcelVerticalAlignment.Top;
+                sheet.Cells[1, i].Style.HorizontalAlignment = ExcelHorizontalAlignment.Left;
+                sheet.Cells[1, i].Style.VerticalAlignment = ExcelVerticalAlignment.Top;
                 sheet.Cells[1, i].RichText.Add($"Hello world {i}");
 
             }
@@ -4332,9 +4332,9 @@ namespace EPPlusTest
 
             ExcelColumn? wsCol = ws.Column(3);
             wsCol.Style.Border.Left.Style = wsCol.Style.Border.Right.Style = ExcelBorderStyle.Thick;
-            wsCol.Style.Fill.SetBackground(System.Drawing.Color.Black);
+            wsCol.Style.Fill.SetBackground(Color.Black);
 
-            ws.Row(3).Style.Fill.SetBackground(System.Drawing.Color.Aqua);
+            ws.Row(3).Style.Fill.SetBackground(Color.Aqua);
 
             Assert.AreNotEqual(ws.Row(3).Style.Border.Left.Style, wsCol.Style.Border.Left.Style);
             Assert.AreNotEqual(ws.Row(3).Style.Border.Right.Style, wsCol.Style.Border.Right.Style);

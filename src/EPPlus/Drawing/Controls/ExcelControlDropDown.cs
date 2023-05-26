@@ -22,7 +22,7 @@ namespace OfficeOpenXml.Drawing.Controls
     {
         internal ExcelControlDropDown(ExcelDrawings drawings, XmlElement drawNode, string name, ExcelGroupShape parent=null) : base(drawings, drawNode, name, parent)
         {
-            SetSize(150, 20); //Default size
+            this.SetSize(150, 20); //Default size
         }
         internal ExcelControlDropDown(ExcelDrawings drawings, XmlNode drawNode, ControlInternal control, ZipPackagePart part, XmlDocument controlPropertiesXml, ExcelGroupShape parent = null)
             : base(drawings, drawNode, control, part, controlPropertiesXml, parent)
@@ -40,12 +40,12 @@ namespace OfficeOpenXml.Drawing.Controls
         {
             get
             {
-                return _ctrlProp.GetXmlNodeBool("@colored");
+                return this._ctrlProp.GetXmlNodeBool("@colored");
             }
             set
             {
-                _ctrlProp.SetXmlNodeBool("@colored", value);
-                _vmlProp.SetXmlNodeBool("x:Colored", value);
+                this._ctrlProp.SetXmlNodeBool("@colored", value);
+                this._vmlProp.SetXmlNodeBool("x:Colored", value);
             }
         }
         /// <summary>
@@ -55,12 +55,12 @@ namespace OfficeOpenXml.Drawing.Controls
         {
             get
             {
-                return _ctrlProp.GetXmlNodeInt("@dropLines", 8);
+                return this._ctrlProp.GetXmlNodeInt("@dropLines", 8);
             }
             set
             {
-                _ctrlProp.SetXmlNodeInt("@dropLines", value, null, false);
-                _vmlProp.SetXmlNodeInt("x:DropLines", value);
+                this._ctrlProp.SetXmlNodeInt("@dropLines", value, null, false);
+                this._vmlProp.SetXmlNodeInt("x:DropLines", value);
             }
         }
         /// <summary>
@@ -70,7 +70,7 @@ namespace OfficeOpenXml.Drawing.Controls
         {
             get
             {
-                switch(_ctrlProp.GetXmlNodeString("@dropStyle"))
+                switch(this._ctrlProp.GetXmlNodeString("@dropStyle"))
                 {
                     case "comboedit":
                         return eDropStyle.ComboEdit;
@@ -82,8 +82,8 @@ namespace OfficeOpenXml.Drawing.Controls
             }
             set
             {
-                _ctrlProp.SetXmlNodeString("@dropStyle", value.ToString().ToLower());
-                _vmlProp.SetXmlNodeString("x:DropStyle", value.ToString());
+                this._ctrlProp.SetXmlNodeString("@dropStyle", value.ToString().ToLower());
+                this._vmlProp.SetXmlNodeString("x:DropStyle", value.ToString());
             }
         }
         /// <summary>
@@ -93,12 +93,12 @@ namespace OfficeOpenXml.Drawing.Controls
         {
             get
             {
-                return _ctrlProp.GetXmlNodeIntNull("@widthMin");
+                return this._ctrlProp.GetXmlNodeIntNull("@widthMin");
             }
             set
             {
-                _ctrlProp.SetXmlNodeInt("@widthMin", value,null, false);
-                _ctrlProp.SetXmlNodeInt("x:WidthMin", value);
+                this._ctrlProp.SetXmlNodeInt("@widthMin", value,null, false);
+                this._ctrlProp.SetXmlNodeInt("x:WidthMin", value);
             }
         }
     }

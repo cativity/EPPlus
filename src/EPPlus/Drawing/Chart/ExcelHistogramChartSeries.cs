@@ -24,18 +24,18 @@ namespace OfficeOpenXml.Drawing.Chart
         /// </summary>
         public void AddParetoLine()
         {
-            if(_chart.ChartType==eChartType.Pareto)
+            if(this._chart.ChartType==eChartType.Pareto)
             {
                 return;
             }
-            if (_chart.Axis.Length == 2)
+            if (this._chart.Axis.Length == 2)
             {
                 //Add pareto axis
-                XmlElement? axis2 = (XmlElement)_chart._chartXmlHelper.CreateNode("cx:plotArea/cx:axis", false, true);
+                XmlElement? axis2 = (XmlElement)this._chart._chartXmlHelper.CreateNode("cx:plotArea/cx:axis", false, true);
                 axis2.SetAttribute("id", "2");
                 axis2.InnerXml = "<cx:valScaling min=\"0\" max=\"1\"/><cx:units unit=\"percentage\"/><cx:tickLabels/>";
             }
-            foreach(ExcelHistogramChartSerie ser in _list)
+            foreach(ExcelHistogramChartSerie ser in this._list)
             {
                 ser.AddParetoLineFromSerie((XmlElement)ser.TopNode);                
             }
@@ -45,18 +45,18 @@ namespace OfficeOpenXml.Drawing.Chart
         /// </summary>
         public void RemoveParetoLine()
         {
-            if (_chart.ChartType == eChartType.Histogram)
+            if (this._chart.ChartType == eChartType.Histogram)
             {
                 return;
             }
-            if (_chart.Axis.Length == 2)
+            if (this._chart.Axis.Length == 2)
             {
-                if (_chart.Axis.Length == 3)
+                if (this._chart.Axis.Length == 3)
                 {
                     //Remove percentage axis
-                    _chart.Axis[2].TopNode.ParentNode.RemoveChild(_chart.Axis[2].TopNode);
-                    ((ExcelChartEx)_chart)._exAxis = null;
-                    _chart._axis = new ExcelChartAxis[] { _chart._axis[0], _chart._axis[1] };
+                    this._chart.Axis[2].TopNode.ParentNode.RemoveChild(this._chart.Axis[2].TopNode);
+                    ((ExcelChartEx)this._chart)._exAxis = null;
+                    this._chart._axis = new ExcelChartAxis[] { this._chart._axis[0], this._chart._axis[1] };
                 }
             }
         }

@@ -29,7 +29,7 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Text
         {
             if (arguments == null)
             {
-                return CreateResult(string.Empty, DataType.String);
+                return this.CreateResult(string.Empty, DataType.String);
             }
             StringBuilder? sb = new StringBuilder();
             foreach (FunctionArgument? arg in arguments)
@@ -40,7 +40,7 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Text
                     sb.Append(v);
                 }
             }
-            return CreateResult(sb.ToString(), DataType.String);
+            return this.CreateResult(sb.ToString(), DataType.String);
         }
     }
 }

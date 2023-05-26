@@ -22,13 +22,13 @@ namespace OfficeOpenXml.Table.PivotTable
         internal ExcelPivotTable _pt;
         internal ExcelPivotAreaReferenceBase(XmlNamespaceManager nsm, XmlNode topNode, ExcelPivotTable pt) : base(nsm, topNode)
         {
-            _pt = pt;
+            this._pt = pt;
         }
         internal int FieldIndex
         { 
             get
             {
-                long v=GetXmlNodeLong("@field");
+                long v= this.GetXmlNodeLong("@field");
                 if(v > int.MaxValue)
                 {
                     return -2;
@@ -42,11 +42,11 @@ namespace OfficeOpenXml.Table.PivotTable
             {
                 if(value<0)
                 {
-                    SetXmlNodeLong("@field", 4294967294);
+                    this.SetXmlNodeLong("@field", 4294967294);
                 }
                 else
                 {
-                    SetXmlNodeInt("@field", value);
+                    this.SetXmlNodeInt("@field", value);
                 }
             }
         }
@@ -57,11 +57,11 @@ namespace OfficeOpenXml.Table.PivotTable
         {
             get
             {
-                return GetXmlNodeBool("@selected", true);
+                return this.GetXmlNodeBool("@selected", true);
             }
             set
             {
-                SetXmlNodeBool("@selected", value);
+                this.SetXmlNodeBool("@selected", value);
             }
         }
         /// <summary>
@@ -71,11 +71,11 @@ namespace OfficeOpenXml.Table.PivotTable
         { 
             get
             {
-                return GetXmlNodeBool("@relative");
+                return this.GetXmlNodeBool("@relative");
             }
             set
             {
-                SetXmlNodeBool("@relative", value);
+                this.SetXmlNodeBool("@relative", value);
             }
         }
         /// <summary>
@@ -85,11 +85,11 @@ namespace OfficeOpenXml.Table.PivotTable
         {
             get
             {
-                return GetXmlNodeBool("@byPosition");
+                return this.GetXmlNodeBool("@byPosition");
             }
             set
             {
-                SetXmlNodeBool("@byPosition", value);
+                this.SetXmlNodeBool("@byPosition", value);
             }
         }
         internal abstract void UpdateXml();
@@ -100,11 +100,11 @@ namespace OfficeOpenXml.Table.PivotTable
         { 
             get
             {
-                return GetXmlNodeBool("@defaultSubtotal");
+                return this.GetXmlNodeBool("@defaultSubtotal");
             }
             set
             {
-                SetXmlNodeBool("@defaultSubtotal", value);
+                this.SetXmlNodeBool("@defaultSubtotal", value);
             }
         }
         /// <summary>
@@ -114,11 +114,11 @@ namespace OfficeOpenXml.Table.PivotTable
         {
             get
             {
-                return GetXmlNodeBool("@avgSubtotal");
+                return this.GetXmlNodeBool("@avgSubtotal");
             }
             set
             {
-                SetXmlNodeBool("@avgSubtotal", value);
+                this.SetXmlNodeBool("@avgSubtotal", value);
             }
         }
         /// <summary>
@@ -128,11 +128,11 @@ namespace OfficeOpenXml.Table.PivotTable
         {
             get
             {
-                return GetXmlNodeBool("@countSubtotal");
+                return this.GetXmlNodeBool("@countSubtotal");
             }
             set
             {
-                SetXmlNodeBool("@countSubtotal", value);
+                this.SetXmlNodeBool("@countSubtotal", value);
             }
         }
         /// <summary>
@@ -142,11 +142,11 @@ namespace OfficeOpenXml.Table.PivotTable
         {
             get
             {
-                return GetXmlNodeBool("@countASubtotal");
+                return this.GetXmlNodeBool("@countASubtotal");
             }
             set
             {
-                SetXmlNodeBool("@countASubtotal", value);
+                this.SetXmlNodeBool("@countASubtotal", value);
             }
         }
         /// <summary>
@@ -156,11 +156,11 @@ namespace OfficeOpenXml.Table.PivotTable
         {
             get
             {
-                return GetXmlNodeBool("@maxSubtotal");
+                return this.GetXmlNodeBool("@maxSubtotal");
             }
             set
             {
-                SetXmlNodeBool("@maxSubtotal", value);
+                this.SetXmlNodeBool("@maxSubtotal", value);
             }
         }
         /// <summary>
@@ -170,11 +170,11 @@ namespace OfficeOpenXml.Table.PivotTable
         {
             get
             {
-                return GetXmlNodeBool("@minSubtotal");
+                return this.GetXmlNodeBool("@minSubtotal");
             }
             set
             {
-                SetXmlNodeBool("@minSubtotal", value);
+                this.SetXmlNodeBool("@minSubtotal", value);
             }
         }
         /// <summary>
@@ -184,11 +184,11 @@ namespace OfficeOpenXml.Table.PivotTable
         {
             get
             {
-                return GetXmlNodeBool("@productSubtotal");
+                return this.GetXmlNodeBool("@productSubtotal");
             }
             set
             {
-                SetXmlNodeBool("@productSubtotal", value);
+                this.SetXmlNodeBool("@productSubtotal", value);
             }
         }
         /// <summary>
@@ -198,11 +198,11 @@ namespace OfficeOpenXml.Table.PivotTable
         {
             get
             {
-                return GetXmlNodeBool("@StdDevPSubtotal");
+                return this.GetXmlNodeBool("@StdDevPSubtotal");
             }
             set
             {
-                SetXmlNodeBool("@StdDevPSubtotal", value);
+                this.SetXmlNodeBool("@StdDevPSubtotal", value);
             }
         }
         /// <summary>
@@ -212,11 +212,11 @@ namespace OfficeOpenXml.Table.PivotTable
         {
             get
             {
-                return GetXmlNodeBool("@StdDevSubtotal");
+                return this.GetXmlNodeBool("@StdDevSubtotal");
             }
             set
             {
-                SetXmlNodeBool("@StdDevSubtotal", value);
+                this.SetXmlNodeBool("@StdDevSubtotal", value);
             }
         }
         /// <summary>
@@ -226,11 +226,11 @@ namespace OfficeOpenXml.Table.PivotTable
         {
             get
             {
-                return GetXmlNodeBool("@sumSubtotal");
+                return this.GetXmlNodeBool("@sumSubtotal");
             }
             set
             {
-                SetXmlNodeBool("@sumSubtotal", value);
+                this.SetXmlNodeBool("@sumSubtotal", value);
             }
         }
         /// <summary>
@@ -240,11 +240,11 @@ namespace OfficeOpenXml.Table.PivotTable
         {
             get
             {
-                return GetXmlNodeBool("@varPSubtotal");
+                return this.GetXmlNodeBool("@varPSubtotal");
             }
             set
             {
-                SetXmlNodeBool("@varPSubtotal", value);
+                this.SetXmlNodeBool("@varPSubtotal", value);
             }
         }
         /// <summary>
@@ -254,11 +254,11 @@ namespace OfficeOpenXml.Table.PivotTable
         {
             get
             {
-                return GetXmlNodeBool("@varSubtotal");
+                return this.GetXmlNodeBool("@varSubtotal");
             }
             set
             {
-                SetXmlNodeBool("@varSubtotal", value);
+                this.SetXmlNodeBool("@varSubtotal", value);
             }
         }
         internal void SetFunction(DataFieldFunctions function)
@@ -266,40 +266,40 @@ namespace OfficeOpenXml.Table.PivotTable
             switch(function)
             {
                 case DataFieldFunctions.Average:
-                    AvgSubtotal = true;
+                    this.AvgSubtotal = true;
                     break;
                 case DataFieldFunctions.Count:
-                    CountSubtotal = true;
+                    this.CountSubtotal = true;
                     break;
                 case DataFieldFunctions.CountNums:
-                    CountASubtotal = true;
+                    this.CountASubtotal = true;
                     break;
                 case DataFieldFunctions.Max:
-                    MaxSubtotal = true;
+                    this.MaxSubtotal = true;
                     break;
                 case DataFieldFunctions.Min:
-                    MinSubtotal = true;
+                    this.MinSubtotal = true;
                     break;
                 case DataFieldFunctions.Product:
-                    ProductSubtotal = true;
+                    this.ProductSubtotal = true;
                     break;
                 case DataFieldFunctions.StdDevP:
-                    StdDevPSubtotal = true;
+                    this.StdDevPSubtotal = true;
                     break;
                 case DataFieldFunctions.StdDev:
-                    StdDevSubtotal = true;
+                    this.StdDevSubtotal = true;
                     break;
                 case DataFieldFunctions.Sum:
-                    SumSubtotal = true;
+                    this.SumSubtotal = true;
                     break;
                 case DataFieldFunctions.VarP:
-                    VarPSubtotal = true;
+                    this.VarPSubtotal = true;
                     break;
                 case DataFieldFunctions.Var:
-                    VarSubtotal = true;
+                    this.VarSubtotal = true;
                     break;
                 default:
-                    DefaultSubtotal = true;
+                    this.DefaultSubtotal = true;
                     break;
             }
         }

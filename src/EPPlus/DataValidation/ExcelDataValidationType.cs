@@ -72,7 +72,8 @@ namespace OfficeOpenXml.DataValidation
     /// </summary>
     public class ExcelDataValidationType
     {
-        internal ExcelDataValidationType(eDataValidationType validationType) { Type = validationType; }
+        internal ExcelDataValidationType(eDataValidationType validationType) {
+            this.Type = validationType; }
 
         /// <summary>
         /// Validation type
@@ -86,7 +87,7 @@ namespace OfficeOpenXml.DataValidation
         /// <returns></returns>
         internal string TypeToXmlString()
         {
-            switch (Type)
+            switch (this.Type)
             {
                 case eDataValidationType.Any:
                     return DataValidationSchemaNames.Any;
@@ -105,7 +106,7 @@ namespace OfficeOpenXml.DataValidation
                 case eDataValidationType.Custom:
                     return DataValidationSchemaNames.Custom;
                 default:
-                    throw new InvalidOperationException("Non supported Validationtype : " + Type.ToString());
+                    throw new InvalidOperationException("Non supported Validationtype : " + this.Type.ToString());
             }
         }
     }

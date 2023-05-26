@@ -29,13 +29,13 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Text
         {
             ValidateArguments(arguments, 2);
             string? str = ArgToString(arguments, 0);
-            int n = ArgToInt(arguments, 1);
+            int n = this.ArgToInt(arguments, 1);
             StringBuilder? sb = new StringBuilder();
             for (int x = 0; x < n; x++)
             {
                 sb.Append(str);
             }
-            return CreateResult(sb.ToString(), DataType.String);
+            return this.CreateResult(sb.ToString(), DataType.String);
         }
     }
 }

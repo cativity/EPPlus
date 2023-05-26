@@ -35,8 +35,8 @@ namespace OfficeOpenXml.FormulaParsing.ExcelUtilities
 
         public ExpressionEvaluator(WildCardValueMatcher wildCardValueMatcher, CompileResultFactory compileResultFactory)
         {
-            _wildCardValueMatcher = wildCardValueMatcher;
-            _compileResultFactory = compileResultFactory;
+            this._wildCardValueMatcher = wildCardValueMatcher;
+            this._compileResultFactory = compileResultFactory;
         }
 
         private static string GetNonAlphanumericStartChars(string expr)
@@ -67,8 +67,8 @@ namespace OfficeOpenXml.FormulaParsing.ExcelUtilities
 
         private bool EvaluateOperator(object left, object right, IOperator op)
         {
-            CompileResult? leftResult = _compileResultFactory.Create(left);
-            CompileResult? rightResult = _compileResultFactory.Create(right);
+            CompileResult? leftResult = this._compileResultFactory.Create(left);
+            CompileResult? rightResult = this._compileResultFactory.Create(right);
             CompileResult? result = op.Apply(leftResult, rightResult);
             if (result.DataType != DataType.Boolean)
             {
@@ -115,7 +115,7 @@ namespace OfficeOpenXml.FormulaParsing.ExcelUtilities
 
             foreach(string? expression in expressions)
             {
-                if(Evaluate(left, expression))
+                if(this.Evaluate(left, expression))
                 {
                     return true;
                 }
@@ -130,7 +130,7 @@ namespace OfficeOpenXml.FormulaParsing.ExcelUtilities
         /// <returns></returns>
         public bool Evaluate(object left, string expression)
         {
-            return Evaluate(left, expression, true);
+            return this.Evaluate(left, expression, true);
         }
 
         /// <summary>
@@ -177,7 +177,7 @@ namespace OfficeOpenXml.FormulaParsing.ExcelUtilities
                         double leftNum, rightNum;
                         DateTime date;
                         bool leftIsNumeric = TryConvertToDouble(left, out leftNum, convertNumericString);
-                        bool rightIsNumeric = TryConvertStringToDouble(right, out rightNum);
+                        bool rightIsNumeric = this.TryConvertStringToDouble(right, out rightNum);
                         bool rightIsDate = DateTime.TryParse(right, out date);
                         if (rightIsNumeric && op.Operator == Operators.Minus)
                         {
@@ -186,21 +186,21 @@ namespace OfficeOpenXml.FormulaParsing.ExcelUtilities
                         }
                         if (leftIsNumeric && rightIsNumeric)
                         {
-                            return EvaluateOperator(leftNum, rightNum, op);
+                            return this.EvaluateOperator(leftNum, rightNum, op);
                         }
                         if (leftIsNumeric && rightIsDate)
                         {
-                            return EvaluateOperator(leftNum, date.ToOADate(), op);
+                            return this.EvaluateOperator(leftNum, date.ToOADate(), op);
                         }
                         if (leftIsNumeric != rightIsNumeric)
                         {
                             return op.Operator == Operators.NotEqualTo;
                         }
-                        return EvaluateOperator(left, right, op);
+                        return this.EvaluateOperator(left, right, op);
                     }
                 }
             }
-            return _wildCardValueMatcher.IsMatch(expression, left) == 0;
+            return this._wildCardValueMatcher.IsMatch(expression, left) == 0;
         }
 
         private bool TryConvertStringToDouble(string right, out double result)
@@ -211,9 +211,9 @@ namespace OfficeOpenXml.FormulaParsing.ExcelUtilities
                 result = val;
                 return true;
             }
-            else if(IsTimeString(right))
+            else if(this.IsTimeString(right))
             {
-                result = _timeStringParser.Parse(right);
+                result = this._timeStringParser.Parse(right);
                 return true;
             }
             return false;
@@ -226,7 +226,7 @@ namespace OfficeOpenXml.FormulaParsing.ExcelUtilities
                 return false;
             }
 
-            return _timeStringParser.CanParse(str);
+            return this._timeStringParser.CanParse(str);
         }
     }
 }

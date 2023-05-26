@@ -48,7 +48,7 @@ namespace EPPlusTest.Excel.Functions.Text
         public void CStrShouldConvertNumberToString()
         {
             CStr? func = new CStr();
-            CompileResult? result = func.Execute(FunctionsHelper.CreateArgs(1), _parsingContext);
+            CompileResult? result = func.Execute(FunctionsHelper.CreateArgs(1), this._parsingContext);
             Assert.AreEqual(DataType.String, result.DataType);
             Assert.AreEqual("1", result.Result);
         }
@@ -57,7 +57,7 @@ namespace EPPlusTest.Excel.Functions.Text
         public void LenShouldReturnStringsLength()
         {
             Len? func = new Len();
-            CompileResult? result = func.Execute(FunctionsHelper.CreateArgs("abc"), _parsingContext);
+            CompileResult? result = func.Execute(FunctionsHelper.CreateArgs("abc"), this._parsingContext);
             Assert.AreEqual(3d, result.Result);
         }
 
@@ -65,7 +65,7 @@ namespace EPPlusTest.Excel.Functions.Text
         public void LowerShouldReturnLowerCaseString()
         {
             Lower? func = new Lower();
-            CompileResult? result = func.Execute(FunctionsHelper.CreateArgs("ABC"), _parsingContext);
+            CompileResult? result = func.Execute(FunctionsHelper.CreateArgs("ABC"), this._parsingContext);
             Assert.AreEqual("abc", result.Result);
         }
 
@@ -73,7 +73,7 @@ namespace EPPlusTest.Excel.Functions.Text
         public void UpperShouldReturnUpperCaseString()
         {
             Upper? func = new Upper();
-            CompileResult? result = func.Execute(FunctionsHelper.CreateArgs("abc"), _parsingContext);
+            CompileResult? result = func.Execute(FunctionsHelper.CreateArgs("abc"), this._parsingContext);
             Assert.AreEqual("ABC", result.Result);
         }
 
@@ -81,7 +81,7 @@ namespace EPPlusTest.Excel.Functions.Text
         public void LeftShouldReturnSubstringFromLeft()
         {
             Left? func = new Left();
-            CompileResult? result = func.Execute(FunctionsHelper.CreateArgs("abcd", 2), _parsingContext);
+            CompileResult? result = func.Execute(FunctionsHelper.CreateArgs("abcd", 2), this._parsingContext);
             Assert.AreEqual("ab", result.Result);
         }
 
@@ -89,7 +89,7 @@ namespace EPPlusTest.Excel.Functions.Text
         public void RightShouldReturnSubstringFromRight()
         {
             Right? func = new Right();
-            CompileResult? result = func.Execute(FunctionsHelper.CreateArgs("abcd", 2), _parsingContext);
+            CompileResult? result = func.Execute(FunctionsHelper.CreateArgs("abcd", 2), this._parsingContext);
             Assert.AreEqual("cd", result.Result);
         }
 
@@ -97,7 +97,7 @@ namespace EPPlusTest.Excel.Functions.Text
         public void MidShouldReturnSubstringAccordingToParams()
         {
             Mid? func = new Mid();
-            CompileResult? result = func.Execute(FunctionsHelper.CreateArgs("abcd", 1, 2), _parsingContext);
+            CompileResult? result = func.Execute(FunctionsHelper.CreateArgs("abcd", 1, 2), this._parsingContext);
             Assert.AreEqual("ab", result.Result);
         }
 
@@ -105,7 +105,7 @@ namespace EPPlusTest.Excel.Functions.Text
         public void ReplaceShouldReturnAReplacedStringAccordingToParamsWhenStartIxIs1()
         {
             Replace? func = new Replace();
-            CompileResult? result = func.Execute(FunctionsHelper.CreateArgs("testar", 1, 2, "hej"), _parsingContext);
+            CompileResult? result = func.Execute(FunctionsHelper.CreateArgs("testar", 1, 2, "hej"), this._parsingContext);
             Assert.AreEqual("hejstar", result.Result);
         }
 
@@ -113,7 +113,7 @@ namespace EPPlusTest.Excel.Functions.Text
         public void ReplaceShouldReturnAReplacedStringAccordingToParamsWhenStartIxIs3()
         {
             Replace? func = new Replace();
-            CompileResult? result = func.Execute(FunctionsHelper.CreateArgs("testar", 3, 3, "hej"), _parsingContext);
+            CompileResult? result = func.Execute(FunctionsHelper.CreateArgs("testar", 3, 3, "hej"), this._parsingContext);
             Assert.AreEqual("tehejr", result.Result);
         }
 
@@ -121,7 +121,7 @@ namespace EPPlusTest.Excel.Functions.Text
         public void SubstituteShouldReturnAReplacedStringAccordingToParamsWhen()
         {
             Substitute? func = new Substitute();
-            CompileResult? result = func.Execute(FunctionsHelper.CreateArgs("testar testar", "es", "xx"), _parsingContext);
+            CompileResult? result = func.Execute(FunctionsHelper.CreateArgs("testar testar", "es", "xx"), this._parsingContext);
             Assert.AreEqual("txxtar txxtar", result.Result);
         }
 
@@ -129,7 +129,7 @@ namespace EPPlusTest.Excel.Functions.Text
         public void ConcatenateShouldConcatenateThreeStrings()
         {
             Concatenate? func = new Concatenate();
-            CompileResult? result = func.Execute(FunctionsHelper.CreateArgs("One", "Two", "Three"), _parsingContext);
+            CompileResult? result = func.Execute(FunctionsHelper.CreateArgs("One", "Two", "Three"), this._parsingContext);
             Assert.AreEqual("OneTwoThree", result.Result);
         }
 
@@ -137,7 +137,7 @@ namespace EPPlusTest.Excel.Functions.Text
         public void ConcatenateShouldConcatenateStringWithInt()
         {
             Concatenate? func = new Concatenate();
-            CompileResult? result = func.Execute(FunctionsHelper.CreateArgs(1, "Two"), _parsingContext);
+            CompileResult? result = func.Execute(FunctionsHelper.CreateArgs(1, "Two"), this._parsingContext);
             Assert.AreEqual("1Two", result.Result);
         }
 
@@ -150,7 +150,7 @@ namespace EPPlusTest.Excel.Functions.Text
             {
                 args.Add("arg " + i);
             }
-            CompileResult? result = func.Execute(FunctionsHelper.CreateArgs(args.ToArray()), _parsingContext);
+            CompileResult? result = func.Execute(FunctionsHelper.CreateArgs(args.ToArray()), this._parsingContext);
             Assert.AreEqual("#VALUE!", result.Result.ToString());
         }
 
@@ -158,7 +158,7 @@ namespace EPPlusTest.Excel.Functions.Text
         public void ExactShouldReturnTrueWhenTwoEqualStrings()
         {
             Exact? func = new Exact();
-            CompileResult? result = func.Execute(FunctionsHelper.CreateArgs("abc", "abc"), _parsingContext);
+            CompileResult? result = func.Execute(FunctionsHelper.CreateArgs("abc", "abc"), this._parsingContext);
             Assert.IsTrue((bool)result.Result);
         }
 
@@ -166,7 +166,7 @@ namespace EPPlusTest.Excel.Functions.Text
         public void ExactShouldReturnTrueWhenEqualStringAndDouble()
         {
             Exact? func = new Exact();
-            CompileResult? result = func.Execute(FunctionsHelper.CreateArgs("1", 1d), _parsingContext);
+            CompileResult? result = func.Execute(FunctionsHelper.CreateArgs("1", 1d), this._parsingContext);
             Assert.IsTrue((bool)result.Result);
         }
 
@@ -174,7 +174,7 @@ namespace EPPlusTest.Excel.Functions.Text
         public void ExactShouldReturnFalseWhenStringAndNull()
         {
             Exact? func = new Exact();
-            CompileResult? result = func.Execute(FunctionsHelper.CreateArgs("1", null), _parsingContext);
+            CompileResult? result = func.Execute(FunctionsHelper.CreateArgs("1", null), this._parsingContext);
             Assert.IsFalse((bool)result.Result);
         }
 
@@ -182,7 +182,7 @@ namespace EPPlusTest.Excel.Functions.Text
         public void ExactShouldReturnFalseWhenTwoEqualStringsWithDifferentCase()
         {
             Exact? func = new Exact();
-            CompileResult? result = func.Execute(FunctionsHelper.CreateArgs("abc", "Abc"), _parsingContext);
+            CompileResult? result = func.Execute(FunctionsHelper.CreateArgs("abc", "Abc"), this._parsingContext);
             Assert.IsFalse((bool)result.Result);
         }
 
@@ -190,7 +190,7 @@ namespace EPPlusTest.Excel.Functions.Text
         public void FindShouldReturnIndexOfFoundPhrase()
         {
             Find? func = new Find();
-            CompileResult? result = func.Execute(FunctionsHelper.CreateArgs("hopp", "hej hopp"), _parsingContext);
+            CompileResult? result = func.Execute(FunctionsHelper.CreateArgs("hopp", "hej hopp"), this._parsingContext);
             Assert.AreEqual(5, result.Result);
         }
 
@@ -198,7 +198,7 @@ namespace EPPlusTest.Excel.Functions.Text
         public void FindShouldReturnIndexOfFoundPhraseBasedOnStartIndex()
         {
             Find? func = new Find();
-            CompileResult? result = func.Execute(FunctionsHelper.CreateArgs("hopp", "hopp hopp", 2), _parsingContext);
+            CompileResult? result = func.Execute(FunctionsHelper.CreateArgs("hopp", "hopp hopp", 2), this._parsingContext);
             Assert.AreEqual(6, result.Result);
         }
 
@@ -206,7 +206,7 @@ namespace EPPlusTest.Excel.Functions.Text
         public void ProperShouldSetFirstLetterToUpperCase()
         {
             Proper? func = new Proper();
-            CompileResult? result = func.Execute(FunctionsHelper.CreateArgs("this IS A tEst.wi3th SOME w0rds östEr"), _parsingContext);
+            CompileResult? result = func.Execute(FunctionsHelper.CreateArgs("this IS A tEst.wi3th SOME w0rds östEr"), this._parsingContext);
             Assert.AreEqual("This Is A Test.Wi3Th Some W0Rds Öster", result.Result);
         }
 
@@ -214,7 +214,7 @@ namespace EPPlusTest.Excel.Functions.Text
         public void HyperLinkShouldReturnArgIfOneArgIsSupplied()
         {
             Hyperlink? func = new Hyperlink();
-            CompileResult? result = func.Execute(FunctionsHelper.CreateArgs("http://epplus.codeplex.com"), _parsingContext);
+            CompileResult? result = func.Execute(FunctionsHelper.CreateArgs("http://epplus.codeplex.com"), this._parsingContext);
             Assert.AreEqual("http://epplus.codeplex.com", result.Result);
         }
 
@@ -222,7 +222,7 @@ namespace EPPlusTest.Excel.Functions.Text
         public void HyperLinkShouldReturnLastArgIfTwoArgsAreSupplied()
         {
             Hyperlink? func = new Hyperlink();
-            CompileResult? result = func.Execute(FunctionsHelper.CreateArgs("http://epplus.codeplex.com", "EPPlus"), _parsingContext);
+            CompileResult? result = func.Execute(FunctionsHelper.CreateArgs("http://epplus.codeplex.com", "EPPlus"), this._parsingContext);
             Assert.AreEqual("EPPlus", result.Result);
         }
 
@@ -230,7 +230,7 @@ namespace EPPlusTest.Excel.Functions.Text
         public void TrimShouldReturnDataTypeString()
         {
             Trim? func = new Trim();
-            CompileResult? result = func.Execute(FunctionsHelper.CreateArgs(" epplus "), _parsingContext);
+            CompileResult? result = func.Execute(FunctionsHelper.CreateArgs(" epplus "), this._parsingContext);
             Assert.AreEqual(DataType.String, result.DataType);
         }
 
@@ -238,7 +238,7 @@ namespace EPPlusTest.Excel.Functions.Text
         public void TrimShouldTrimFromBothEnds()
         {
             Trim? func = new Trim();
-            CompileResult? result = func.Execute(FunctionsHelper.CreateArgs(" epplus "), _parsingContext);
+            CompileResult? result = func.Execute(FunctionsHelper.CreateArgs(" epplus "), this._parsingContext);
             Assert.AreEqual("epplus", result.Result);
         }
 
@@ -246,7 +246,7 @@ namespace EPPlusTest.Excel.Functions.Text
         public void TrimShouldTrimMultipleSpaces()
         {
             Trim? func = new Trim();
-            CompileResult? result = func.Execute(FunctionsHelper.CreateArgs(" epplus    5 "), _parsingContext);
+            CompileResult? result = func.Execute(FunctionsHelper.CreateArgs(" epplus    5 "), this._parsingContext);
             Assert.AreEqual("epplus 5", result.Result);
         }
 
@@ -254,7 +254,7 @@ namespace EPPlusTest.Excel.Functions.Text
         public void CleanShouldReturnDataTypeString()
         {
             Clean? func = new Clean();
-            CompileResult? result = func.Execute(FunctionsHelper.CreateArgs("epplus"), _parsingContext);
+            CompileResult? result = func.Execute(FunctionsHelper.CreateArgs("epplus"), this._parsingContext);
             Assert.AreEqual(DataType.String, result.DataType);
         }
 
@@ -268,7 +268,7 @@ namespace EPPlusTest.Excel.Functions.Text
             }
             input.Append("epplus");
             Clean? func = new Clean();
-            CompileResult? result = func.Execute(FunctionsHelper.CreateArgs(input), _parsingContext);
+            CompileResult? result = func.Execute(FunctionsHelper.CreateArgs(input), this._parsingContext);
             Assert.AreEqual("epplus", result.Result);
         }
 
@@ -277,10 +277,10 @@ namespace EPPlusTest.Excel.Functions.Text
         {
             Unicode? func = new Unicode();
 
-            CompileResult? result = func.Execute(FunctionsHelper.CreateArgs("B"), _parsingContext);
+            CompileResult? result = func.Execute(FunctionsHelper.CreateArgs("B"), this._parsingContext);
             Assert.AreEqual(66, result.Result);
 
-            result = func.Execute(FunctionsHelper.CreateArgs("a"), _parsingContext);
+            result = func.Execute(FunctionsHelper.CreateArgs("a"), this._parsingContext);
             Assert.AreEqual(97, result.Result);
         }
 
@@ -289,10 +289,10 @@ namespace EPPlusTest.Excel.Functions.Text
         {
             Unichar? func = new Unichar();
 
-            CompileResult? result = func.Execute(FunctionsHelper.CreateArgs(66), _parsingContext);
+            CompileResult? result = func.Execute(FunctionsHelper.CreateArgs(66), this._parsingContext);
             Assert.AreEqual("B", result.Result);
 
-            result = func.Execute(FunctionsHelper.CreateArgs(97), _parsingContext);
+            result = func.Execute(FunctionsHelper.CreateArgs(97), this._parsingContext);
             Assert.AreEqual("a", result.Result);
         }
 
@@ -300,7 +300,7 @@ namespace EPPlusTest.Excel.Functions.Text
         public void NumberValueShouldCastIntegerValue()
         {
             NumberValue? func = new NumberValue();
-            CompileResult? result = func.Execute(FunctionsHelper.CreateArgs("1000"), _parsingContext);
+            CompileResult? result = func.Execute(FunctionsHelper.CreateArgs("1000"), this._parsingContext);
             Assert.AreEqual(1000d, result.Result);
         }
 
@@ -309,7 +309,7 @@ namespace EPPlusTest.Excel.Functions.Text
         {
             string? input = $"1{CultureInfo.CurrentCulture.NumberFormat.NumberGroupSeparator}000{CultureInfo.CurrentCulture.NumberFormat.NumberDecimalSeparator}15";
             NumberValue? func = new NumberValue();
-            CompileResult? result = func.Execute(FunctionsHelper.CreateArgs(input), _parsingContext);
+            CompileResult? result = func.Execute(FunctionsHelper.CreateArgs(input), this._parsingContext);
             Assert.AreEqual(1000.15d, result.Result);
         }
 
@@ -318,7 +318,7 @@ namespace EPPlusTest.Excel.Functions.Text
         {
             string? input = $"1,000.15";
             NumberValue? func = new NumberValue();
-            CompileResult? result = func.Execute(FunctionsHelper.CreateArgs(input, ".", ","), _parsingContext);
+            CompileResult? result = func.Execute(FunctionsHelper.CreateArgs(input, ".", ","), this._parsingContext);
             Assert.AreEqual(1000.15d, result.Result);
         }
 
@@ -327,7 +327,7 @@ namespace EPPlusTest.Excel.Functions.Text
         {
             string? input = $"1,000.15%";
             NumberValue? func = new NumberValue();
-            CompileResult? result = func.Execute(FunctionsHelper.CreateArgs(input, ".", ","), _parsingContext);
+            CompileResult? result = func.Execute(FunctionsHelper.CreateArgs(input, ".", ","), this._parsingContext);
             Assert.AreEqual(10.0015d, result.Result);
         }
 
@@ -336,7 +336,7 @@ namespace EPPlusTest.Excel.Functions.Text
         {
             string? input = $"1,000.15%%";
             NumberValue? func = new NumberValue();
-            CompileResult? result = func.Execute(FunctionsHelper.CreateArgs(input, ".", ","), _parsingContext);
+            CompileResult? result = func.Execute(FunctionsHelper.CreateArgs(input, ".", ","), this._parsingContext);
             double r = System.Math.Round((double)result.Result, 15);
             Assert.AreEqual(0.100015d, r);
         }

@@ -35,20 +35,20 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Information
             if (arg is bool)
             {
                 double val = (bool) arg ? 1d : 0d;
-                return CreateResult(val, DataType.Decimal);
+                return this.CreateResult(val, DataType.Decimal);
             }
             else if (IsNumeric(arg))
             {
                 double val = ConvertUtil.GetValueDouble(arg);
-                return CreateResult(val, DataType.Decimal);
+                return this.CreateResult(val, DataType.Decimal);
             }
             else if (arg is string)
             {
-                return CreateResult(0d, DataType.Decimal);
+                return this.CreateResult(0d, DataType.Decimal);
             }
             else if (arg is ExcelErrorValue)
             {
-                return CreateResult(arg, DataType.ExcelError);
+                return this.CreateResult(arg, DataType.ExcelError);
             }
             throw new ExcelErrorValueException(eErrorType.Value);
         }

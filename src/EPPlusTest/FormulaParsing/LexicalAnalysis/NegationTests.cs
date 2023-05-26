@@ -46,7 +46,7 @@ namespace EPPlusTest.FormulaParsing.LexicalAnalysis
         public void Setup()
         {
             ParsingContext? context = ParsingContext.Create();
-            _tokenizer = new SourceCodeTokenizer(context.Configuration.FunctionRepository, null);
+            this._tokenizer = new SourceCodeTokenizer(context.Configuration.FunctionRepository, null);
         }
 
         [TestCleanup]
@@ -59,7 +59,7 @@ namespace EPPlusTest.FormulaParsing.LexicalAnalysis
         public void ShouldSetNegatorOnFirstTokenIfFirstCharIsMinus()
         {
             string? input = "-1";
-            IEnumerable<Token>? tokens = _tokenizer.Tokenize(input);
+            IEnumerable<Token>? tokens = this._tokenizer.Tokenize(input);
 
             Assert.AreEqual(2, tokens.Count());
             Assert.IsTrue(tokens.First().TokenTypeIsSet(TokenType.Negator));
@@ -69,7 +69,7 @@ namespace EPPlusTest.FormulaParsing.LexicalAnalysis
         public void ShouldChangePlusToMinusIfNegatorIsPresent()
         {
             string? input = "1 + -1";
-            IEnumerable<Token>? tokens = _tokenizer.Tokenize(input);
+            IEnumerable<Token>? tokens = this._tokenizer.Tokenize(input);
 
             Assert.AreEqual(3, tokens.Count());
             Assert.IsTrue(tokens.ElementAt(1).TokenTypeIsSet(TokenType.Operator));
@@ -80,7 +80,7 @@ namespace EPPlusTest.FormulaParsing.LexicalAnalysis
         public void ShouldSetNegatorOnTokenInsideParenthethis()
         {
             string? input = "1 + (-1 * 2)";
-            IEnumerable<Token>? tokens = _tokenizer.Tokenize(input);
+            IEnumerable<Token>? tokens = this._tokenizer.Tokenize(input);
 
             Assert.AreEqual(8, tokens.Count());
             Assert.IsTrue(tokens.ElementAt(3).TokenTypeIsSet(TokenType.Negator));
@@ -90,7 +90,7 @@ namespace EPPlusTest.FormulaParsing.LexicalAnalysis
         public void ShouldSetNegatorOnTokenInsideFunctionCall()
         {
             string? input = "Ceiling(-1, -0.1)";
-            IEnumerable<Token>? tokens = _tokenizer.Tokenize(input);
+            IEnumerable<Token>? tokens = this._tokenizer.Tokenize(input);
 
             Assert.AreEqual(8, tokens.Count());
             Assert.IsTrue(tokens.ElementAt(2).TokenTypeIsSet(TokenType.Negator));
@@ -101,7 +101,7 @@ namespace EPPlusTest.FormulaParsing.LexicalAnalysis
         public void ShouldSetNegatorOnTokenInEnumerable()
         {
             string? input = "{-1}";
-            IEnumerable<Token>? tokens = _tokenizer.Tokenize(input);
+            IEnumerable<Token>? tokens = this._tokenizer.Tokenize(input);
             Assert.IsTrue(tokens.ElementAt(1).TokenTypeIsSet(TokenType.Negator));
         }
 
@@ -109,7 +109,7 @@ namespace EPPlusTest.FormulaParsing.LexicalAnalysis
         public void ShouldSetNegatorOnExcelAddress()
         {
             string? input = "-A1";
-            IEnumerable<Token>? tokens = _tokenizer.Tokenize(input);
+            IEnumerable<Token>? tokens = this._tokenizer.Tokenize(input);
             Assert.IsTrue(tokens.ElementAt(0).TokenTypeIsSet(TokenType.Negator));
             Assert.IsTrue(tokens.ElementAt(1).TokenTypeIsSet(TokenType.ExcelAddress));
         }
@@ -118,7 +118,7 @@ namespace EPPlusTest.FormulaParsing.LexicalAnalysis
         public void ShouldNotRemoveDoubleNegators()
         {
             string? input = "--1";
-            IEnumerable<Token>? tokens = _tokenizer.Tokenize(input);
+            IEnumerable<Token>? tokens = this._tokenizer.Tokenize(input);
             Assert.AreEqual(3, tokens.Count(), "tokens.Count() was not 2, but " + tokens.Count());
             Assert.IsTrue(tokens.ElementAt(0).TokenTypeIsSet(TokenType.Negator), "First token was not a negator");
             Assert.IsTrue(tokens.ElementAt(1).TokenTypeIsSet(TokenType.Negator), "Second token was not a negator");

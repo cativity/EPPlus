@@ -28,8 +28,8 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Finance
         public override CompileResult Execute(IEnumerable<FunctionArgument> arguments, ParsingContext context)
         {
             ValidateArguments(arguments, 2);
-            double fractionalDollar = ArgToDecimal(arguments, 0);
-            double fractionDec = ArgToDecimal(arguments, 1);
+            double fractionalDollar = this.ArgToDecimal(arguments, 0);
+            double fractionDec = this.ArgToDecimal(arguments, 1);
             double fraction = System.Math.Floor(fractionDec);
             if (fraction <= 0d)
             {
@@ -44,7 +44,7 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Finance
             double intResult = System.Math.Floor(fractionalDollar);
             double result = ((double)intResult) + (fractionalDollar % 1) * System.Math.Pow(10d, (double)System.Math.Ceiling(System.Math.Log(fraction) / System.Math.Log(10))) / fraction;
             double power = System.Math.Pow(10d, (double)System.Math.Ceiling(System.Math.Log(fraction) / System.Math.Log(2)) + 1);
-            return CreateResult(System.Math.Round(result * power) / power, DataType.Decimal);
+            return this.CreateResult(System.Math.Round(result * power) / power, DataType.Decimal);
         }
     }
 }

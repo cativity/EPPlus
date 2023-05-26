@@ -29,16 +29,16 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Text
         public override CompileResult Execute(IEnumerable<FunctionArgument> arguments, ParsingContext context)
         {
             ValidateArguments(arguments, 1);
-            double number = ArgToDecimal(arguments, 0);
+            double number = this.ArgToDecimal(arguments, 0);
             int nDecimals = 2;
             bool noCommas = false;
             if (arguments.Count() > 1)
             {
-                nDecimals = ArgToInt(arguments, 1);
+                nDecimals = this.ArgToInt(arguments, 1);
             }
             if (arguments.Count() > 2)
             {
-                noCommas = ArgToBool(arguments, 2);
+                noCommas = this.ArgToBool(arguments, 2);
             }
             string? format = (noCommas ? "F" : "N") + nDecimals.ToString(CultureInfo.InvariantCulture);
             if (nDecimals < 0)
@@ -48,7 +48,7 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Text
                 format = noCommas ? "F0" : "N0";
             }
             string? retVal = number.ToString(format);
-            return CreateResult(retVal, DataType.String);
+            return this.CreateResult(retVal, DataType.String);
         }
     }
 }

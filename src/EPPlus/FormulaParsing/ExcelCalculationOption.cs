@@ -33,21 +33,21 @@ namespace OfficeOpenXml.FormulaParsing
         /// </summary>
         public ExcelCalculationOption()
         {
-            AllowCircularReferences = false;
-            PrecisionAndRoundingStrategy = PrecisionAndRoundingStrategy.DotNet;
+            this.AllowCircularReferences = false;
+            this.PrecisionAndRoundingStrategy = PrecisionAndRoundingStrategy.DotNet;
             List<ExcelInitializationError>? initErrors = new List<ExcelInitializationError>();
 
 #if (Core)
             string? configValue = ExcelConfigurationReader.GetJsonConfigValue("EPPlus:ExcelPackage:AllowCircularReferences", ExcelPackage.GlobalConfiguration, initErrors);
             if(bool.TryParse(configValue, out bool allow))
             {
-                AllowCircularReferences = allow;
+                this.AllowCircularReferences = allow;
             }
             //var roundingStrategy = c["EPPlus:ExcelPackage:PrecisionAndRoundingStrategy"];
             string? roundingStrategy = ExcelConfigurationReader.GetJsonConfigValue("EPPlus:ExcelPackage:PrecisionAndRoundingStrategy", ExcelPackage.GlobalConfiguration, initErrors);
             if (Enum.TryParse(roundingStrategy, out PrecisionAndRoundingStrategy precisionAndRoundingStrategy))
             {
-                PrecisionAndRoundingStrategy = precisionAndRoundingStrategy;
+                this.PrecisionAndRoundingStrategy = precisionAndRoundingStrategy;
             }
 
 #else

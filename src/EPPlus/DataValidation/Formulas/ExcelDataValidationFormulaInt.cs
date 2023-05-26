@@ -28,18 +28,18 @@ namespace OfficeOpenXml.DataValidation.Formulas
                 int intValue = default(int);
                 if (int.TryParse(value, NumberStyles.Number, CultureInfo.InvariantCulture, out intValue))
                 {
-                    Value = intValue;
+                    this.Value = intValue;
                 }
                 else
                 {
-                    ExcelFormula = value;
+                    this.ExcelFormula = value;
                 }
             }
         }
 
         protected override string GetValueAsString()
         {
-            return Value.HasValue ? Value.Value.ToString() : string.Empty;
+            return this.Value.HasValue ? this.Value.Value.ToString() : string.Empty;
         }
     }
 }

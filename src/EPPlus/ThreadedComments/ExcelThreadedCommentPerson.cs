@@ -31,8 +31,8 @@ namespace OfficeOpenXml.ThreadedComments
 
         internal ExcelThreadedCommentPerson(XmlNamespaceManager nameSpaceManager, XmlNode topNode) : base(nameSpaceManager, topNode)
         {
-            TopNode = topNode;
-            SchemaNodeOrder = new string[] { "displayName", "id", "userId", "providerId" };
+            this.TopNode = topNode;
+            this.SchemaNodeOrder = new string[] { "displayName", "id", "userId", "providerId" };
         }
 
         /// <summary>
@@ -40,8 +40,8 @@ namespace OfficeOpenXml.ThreadedComments
         /// </summary>
         public string Id
         {
-            get { return GetXmlNodeString("@id"); }
-            set { SetXmlNodeString("@id", value); }
+            get { return this.GetXmlNodeString("@id"); }
+            set { this.SetXmlNodeString("@id", value); }
         }
 
         /// <summary>
@@ -49,8 +49,8 @@ namespace OfficeOpenXml.ThreadedComments
         /// </summary>
         public string DisplayName
         {
-            get { return GetXmlNodeString("@displayName"); }
-            set { SetXmlNodeString("@displayName", value); }
+            get { return this.GetXmlNodeString("@displayName"); }
+            set { this.SetXmlNodeString("@displayName", value); }
         }
 
         /// <summary>
@@ -59,8 +59,8 @@ namespace OfficeOpenXml.ThreadedComments
         /// </summary>
         public string UserId
         {
-            get { return GetXmlNodeString("@userId"); }
-            set { SetXmlNodeString("@userId", value); }
+            get { return this.GetXmlNodeString("@userId"); }
+            set { this.SetXmlNodeString("@userId", value); }
         }
 
         /// <summary>
@@ -71,8 +71,8 @@ namespace OfficeOpenXml.ThreadedComments
         {
             get 
             { 
-                string? id = GetXmlNodeString("@providerId");
-                if (string.IsNullOrEmpty(UserId) && UserId == "AD")
+                string? id = this.GetXmlNodeString("@providerId");
+                if (string.IsNullOrEmpty(this.UserId) && this.UserId == "AD")
                 {
                     throw new InvalidOperationException("Cannot get ProviderId when UserId is not set");
                 }
@@ -84,7 +84,7 @@ namespace OfficeOpenXml.ThreadedComments
                     case "PeoplePicker":
                         return IdentityProvider.PeoplePicker;
                     case "AD":
-                        if (UserId.Contains("::"))
+                        if (this.UserId.Contains("::"))
                         {
                             return IdentityProvider.Office365;
                         }
@@ -100,19 +100,19 @@ namespace OfficeOpenXml.ThreadedComments
                 switch(value)
                 {
                     case IdentityProvider.ActiveDirectory:
-                        SetXmlNodeString("@providerId", "AD");
+                        this.SetXmlNodeString("@providerId", "AD");
                         break;
                     case IdentityProvider.WindowsLiveId:
-                        SetXmlNodeString("@providerId", "Windows Live");
+                        this.SetXmlNodeString("@providerId", "Windows Live");
                         break;
                     case IdentityProvider.Office365:
-                        SetXmlNodeString("@providerId", "AD");
+                        this.SetXmlNodeString("@providerId", "AD");
                         break;
                     case IdentityProvider.PeoplePicker:
-                        SetXmlNodeString("@providerId", "PeoplePicker");
+                        this.SetXmlNodeString("@providerId", "PeoplePicker");
                         break;
                     default:
-                        SetXmlNodeString("@providerId", "None");
+                        this.SetXmlNodeString("@providerId", "None");
                         break;
                 }
             }
@@ -159,7 +159,7 @@ namespace OfficeOpenXml.ThreadedComments
         /// <returns>A string that represents the current object.</returns>
         public override string ToString()
         {
-            return DisplayName + " (id: " + UserId + ")";
+            return this.DisplayName + " (id: " + this.UserId + ")";
         }
     }
 }

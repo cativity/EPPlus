@@ -27,7 +27,7 @@ namespace OfficeOpenXml.Drawing
         internal string Hash { get; set; }
         internal Uri Uri { get; set; }
         internal int RefCount { get; set; }
-        internal Packaging.ZipPackagePart Part { get; set; }
+        internal ZipPackagePart Part { get; set; }
         internal ExcelImageInfo Bounds { get; set; }
     }
     internal class PictureStore : IDisposable
@@ -37,12 +37,12 @@ namespace OfficeOpenXml.Drawing
         internal Dictionary<string, ImageInfo> _images;
         public PictureStore(ExcelPackage pck)
         {
-            _pck = pck;
-            _images = _pck.Workbook._images;
+            this._pck = pck;
+            this._images = this._pck.Workbook._images;
         }
         internal ImageInfo AddImage(byte[] image)
         {
-            return AddImage(image, null, null);
+            return this.AddImage(image, null, null);
         }
         internal ImageInfo AddImage(byte[] image, Uri uri, ePictureType? pictureType)
         {
@@ -56,22 +56,22 @@ namespace OfficeOpenXml.Drawing
             var hashProvider = new SHA1CryptoServiceProvider();
 #endif
             string? hash = BitConverter.ToString(hashProvider.ComputeHash(image)).Replace("-", "");
-            lock (_images)
+            lock (this._images)
             {
-                if (_images.ContainsKey(hash))
+                if (this._images.ContainsKey(hash))
                 {
-                    _images[hash].RefCount++;
+                    this._images[hash].RefCount++;
                 }
                 else
                 {
-                    Packaging.ZipPackagePart imagePart;
+                    ZipPackagePart imagePart;
                     string contentType;
                     if (uri == null)
                     {
                         string? extension = GetExtension(pictureType.Value);
                         contentType = GetContentType(extension);
-                        uri = GetNewUri(_pck.ZipPackage, "/xl/media/image{0}." + extension);
-                        imagePart = _pck.ZipPackage.CreatePart(uri, contentType, CompressionLevel.None, extension);
+                        uri = GetNewUri(this._pck.ZipPackage, "/xl/media/image{0}." + extension);
+                        imagePart = this._pck.ZipPackage.CreatePart(uri, contentType, CompressionLevel.None, extension);
                         SaveImageToPart(image, imagePart);
                     }
                     else
@@ -79,37 +79,38 @@ namespace OfficeOpenXml.Drawing
                         string? extension = GetExtension(uri);
                         contentType = GetContentType(extension);
                         pictureType = GetPictureType(extension);
-                        if (_pck.ZipPackage.PartExists(uri))
+                        if (this._pck.ZipPackage.PartExists(uri))
                         {
-                            if(_images.Values.Any(x=>x.Uri.OriginalString==uri.OriginalString))
+                            if(this._images.Values.Any(x=>x.Uri.OriginalString==uri.OriginalString))
                             {
-                                uri = GetNewUri(_pck.ZipPackage, "/xl/media/image{0}." + extension);
-                                imagePart = _pck.ZipPackage.CreatePart(uri, contentType, CompressionLevel.None, extension);
+                                uri = GetNewUri(this._pck.ZipPackage, "/xl/media/image{0}." + extension);
+                                imagePart = this._pck.ZipPackage.CreatePart(uri, contentType, CompressionLevel.None, extension);
                                 SaveImageToPart(image, imagePart);
                             }
                             else
                             {
-                                imagePart = _pck.ZipPackage.GetPart(uri);
+                                imagePart = this._pck.ZipPackage.GetPart(uri);
                             }
                         }
                         else
                         {
-                            imagePart = _pck.ZipPackage.CreatePart(uri, contentType, CompressionLevel.None, extension);
+                            imagePart = this._pck.ZipPackage.CreatePart(uri, contentType, CompressionLevel.None, extension);
                             SaveImageToPart(image, imagePart);
                         }
                     }
-                    _images.Add(hash,
-                        new ImageInfo()
-                        {
-                            Uri = uri,
-                            RefCount = 1,
-                            Hash = hash,
-                            Part = imagePart,
-                            Bounds = GetImageBounds(image, pictureType.Value, _pck)
-                        });
+
+                    this._images.Add(hash,
+                                     new ImageInfo()
+                                     {
+                                         Uri = uri,
+                                         RefCount = 1,
+                                         Hash = hash,
+                                         Part = imagePart,
+                                         Bounds = GetImageBounds(image, pictureType.Value, this._pck)
+                                     });
                 }
             }
-            return _images[hash];
+            return this._images[hash];
         }
 
         private static void SaveImageToPart(byte[] image, ZipPackagePart imagePart)
@@ -146,7 +147,7 @@ namespace OfficeOpenXml.Drawing
             return null;
         }
 
-        internal ImageInfo LoadImage(byte[] image, Uri uri, Packaging.ZipPackagePart imagePart)
+        internal ImageInfo LoadImage(byte[] image, Uri uri, ZipPackagePart imagePart)
         {
 #if (Core)
             SHA1? hashProvider = SHA1.Create();
@@ -154,28 +155,28 @@ namespace OfficeOpenXml.Drawing
             var hashProvider = new SHA1CryptoServiceProvider();
 #endif
             string? hash = BitConverter.ToString(hashProvider.ComputeHash(image)).Replace("-", "");
-            if (_images.ContainsKey(hash))
+            if (this._images.ContainsKey(hash))
             {
-                _images[hash].RefCount++;
+                this._images[hash].RefCount++;
             }
             else
             {
-                _images.Add(hash, new ImageInfo() { Uri = uri, RefCount = 1, Hash = hash, Part = imagePart });
+                this._images.Add(hash, new ImageInfo() { Uri = uri, RefCount = 1, Hash = hash, Part = imagePart });
             }
-            return _images[hash];
+            return this._images[hash];
         }
         internal void RemoveImage(string hash, IPictureContainer container)
         {
-            lock (_images)
+            lock (this._images)
             {
-                if (_images.ContainsKey(hash))
+                if (this._images.ContainsKey(hash))
                 {
-                    ImageInfo? ii = _images[hash];
+                    ImageInfo? ii = this._images[hash];
                     ii.RefCount--;
                     if (ii.RefCount == 0)
                     {
-                        _pck.ZipPackage.DeletePart(ii.Uri);
-                        _images.Remove(hash);
+                        this._pck.ZipPackage.DeletePart(ii.Uri);
+                        this._images.Remove(hash);
                     }
                 }
                 if(container.RelationDocument.Hashes.ContainsKey(hash))
@@ -192,9 +193,9 @@ namespace OfficeOpenXml.Drawing
         internal ImageInfo GetImageInfo(byte[] image)
         {
             string? hash = GetHash(image);
-            if (_images.ContainsKey(hash))
+            if (this._images.ContainsKey(hash))
             {
-                return _images[hash];
+                return this._images[hash];
             }
             else
             {
@@ -204,7 +205,7 @@ namespace OfficeOpenXml.Drawing
         internal bool ImageExists(byte[] image)
         {
             string? hash = GetHash(image);
-            return _images.ContainsKey(hash);
+            return this._images.ContainsKey(hash);
         }
 
         internal static string GetHash(byte[] image)
@@ -217,7 +218,7 @@ namespace OfficeOpenXml.Drawing
             return BitConverter.ToString(hashProvider.ComputeHash(image)).Replace("-", "");
         }
 
-        private static Uri GetNewUri(Packaging.ZipPackage package, string sUri)
+        private static Uri GetNewUri(ZipPackage package, string sUri)
         {
             Uri uri;
             do
@@ -384,7 +385,7 @@ namespace OfficeOpenXml.Drawing
             }
 
             //Set the Image and save it to the package.
-            container.RelPic = container.RelationDocument.RelatedPart.CreateRelationship(UriHelper.GetRelativeUri(container.RelationDocument.RelatedUri, container.UriPic), Packaging.TargetMode.Internal, ExcelPackage.schemaRelationships + "/image");
+            container.RelPic = container.RelationDocument.RelatedPart.CreateRelationship(UriHelper.GetRelativeUri(container.RelationDocument.RelatedUri, container.UriPic), TargetMode.Internal, ExcelPackage.schemaRelationships + "/image");
 
             //AddNewPicture(img, picRelation.Id);
             hashes.Add(ii.Hash, new HashInfo(container.RelPic.Id) { RefCount = 1});
@@ -394,7 +395,7 @@ namespace OfficeOpenXml.Drawing
 
         public void Dispose()
         {
-            _images = null;
+            this._images = null;
         }
     }
 }

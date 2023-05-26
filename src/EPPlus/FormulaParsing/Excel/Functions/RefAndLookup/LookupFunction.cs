@@ -33,8 +33,8 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions.RefAndLookup
 
         public LookupFunction(ValueMatcher valueMatcher, CompileResultFactory compileResultFactory)
         {
-            _valueMatcher = valueMatcher;
-            _compileResultFactory = compileResultFactory;
+            this._valueMatcher = valueMatcher;
+            this._compileResultFactory = compileResultFactory;
         }
 
         public override bool IsLookupFuction
@@ -47,7 +47,7 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions.RefAndLookup
 
         protected int IsMatch(object searchedValue, object candidate)
         {
-            return _valueMatcher.IsMatch(searchedValue, candidate);
+            return this._valueMatcher.IsMatch(searchedValue, candidate);
         }
 
         protected static LookupDirection GetLookupDirection(RangeAddress rangeAddress)
@@ -68,7 +68,7 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions.RefAndLookup
             }
             do
             {
-                int matchResult = IsMatch(lookupArgs.SearchedValue, navigator.CurrentValue);
+                int matchResult = this.IsMatch(lookupArgs.SearchedValue, navigator.CurrentValue);
                 if (matchResult != 0)
                 {
                     if (lastValue != null && navigator.CurrentValue == null)
@@ -87,7 +87,7 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions.RefAndLookup
                     }
                     if (lastValue != null && matchResult > 0 && lastMatchResult < 0)
                     {
-                        return _compileResultFactory.Create(lastLookupValue);
+                        return this._compileResultFactory.Create(lastLookupValue);
                     }
                     lastMatchResult = matchResult;
                     lastValue = navigator.CurrentValue;
@@ -95,12 +95,12 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions.RefAndLookup
                 }
                 else
                 {
-                    return _compileResultFactory.Create(navigator.GetLookupValue());
+                    return this._compileResultFactory.Create(navigator.GetLookupValue());
                 }
             }
             while (navigator.MoveNext());
 
-            return lookupArgs.RangeLookup ? _compileResultFactory.Create(lastLookupValue) : new CompileResult(eErrorType.NA);
+            return lookupArgs.RangeLookup ? this._compileResultFactory.Create(lastLookupValue) : new CompileResult(eErrorType.NA);
         }
     }
 }

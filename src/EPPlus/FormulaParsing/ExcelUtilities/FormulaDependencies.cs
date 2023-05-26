@@ -28,13 +28,13 @@ namespace OfficeOpenXml.FormulaParsing.ExcelUtilities
 
         public FormulaDependencies(FormulaDependencyFactory formulaDependencyFactory)
         {
-            _formulaDependencyFactory = formulaDependencyFactory;
+            this._formulaDependencyFactory = formulaDependencyFactory;
         }
 
         private readonly FormulaDependencyFactory _formulaDependencyFactory;
         private readonly Dictionary<string, FormulaDependency> _dependencies = new Dictionary<string, FormulaDependency>();
 
-        public IEnumerable<KeyValuePair<string, FormulaDependency>> Dependencies { get { return _dependencies; } }
+        public IEnumerable<KeyValuePair<string, FormulaDependency>> Dependencies { get { return this._dependencies; } }
 
         public static void AddFormulaScope(ParsingScope parsingScope)
         {
@@ -58,7 +58,7 @@ namespace OfficeOpenXml.FormulaParsing.ExcelUtilities
 
         public void Clear()
         {
-            _dependencies.Clear();
+            this._dependencies.Clear();
         }
     }
 }

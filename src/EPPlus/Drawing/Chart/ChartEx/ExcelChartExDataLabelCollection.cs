@@ -27,17 +27,17 @@ namespace OfficeOpenXml.Drawing.Chart.ChartEx
         internal ExcelChartExDataLabelCollection(ExcelChartExSerie serie, XmlNamespaceManager ns, XmlNode node, string[] schemaNodeOrder) : 
             base(serie, ns, node)
         {
-            _chart = serie._chart;
-            AddSchemaNodeOrder(schemaNodeOrder, new string[]{ "numFmt","spPr", "txPr", "visibility", "separator"});
-            foreach (XmlNode pointNode in TopNode.SelectNodes(ExcelChartExDataLabel._dataLabelPath, ns))
+            this._chart = serie._chart;
+            this.AddSchemaNodeOrder(schemaNodeOrder, new string[]{ "numFmt","spPr", "txPr", "visibility", "separator"});
+            foreach (XmlNode pointNode in this.TopNode.SelectNodes(_dataLabelPath, ns))
             {
                 ExcelChartExDataLabelItem? item = new ExcelChartExDataLabelItem(serie, ns, pointNode);
-                _dic.Add(item.Index, item);
+                this._dic.Add(item.Index, item);
             }
         }
         void IDrawingStyleBase.CreatespPr()
         {
-            CreatespPrNode("cx:spPr");
+            this.CreatespPrNode("cx:spPr");
         }
         /// <summary>
         /// Adds an individual data label for customization.
@@ -46,12 +46,12 @@ namespace OfficeOpenXml.Drawing.Chart.ChartEx
         /// <returns></returns>
         public ExcelChartExDataLabelItem Add(int index)
         {
-            if(_dic.ContainsKey(index))
+            if(this._dic.ContainsKey(index))
             {
                 throw new InvalidOperationException($"Data label with index {index} already exists.");
             }
-            XmlNode? node = _serie.CreateNode("cx:dataLabels/cx:dataLabel", false, true);
-            return new ExcelChartExDataLabelItem(_serie, NameSpaceManager, node, index);
+            XmlNode? node = this._serie.CreateNode("cx:dataLabels/cx:dataLabel", false, true);
+            return new ExcelChartExDataLabelItem(this._serie, this.NameSpaceManager, node, index);
         }
         /// <summary>
         /// Returns tje data label at the specific position.  
@@ -62,9 +62,9 @@ namespace OfficeOpenXml.Drawing.Chart.ChartEx
         {
             get
             {
-                if (_dic.ContainsKey(index))
+                if (this._dic.ContainsKey(index))
                 {
-                    return _dic[index];
+                    return this._dic[index];
                 }
                 return null;
             }
@@ -75,12 +75,12 @@ namespace OfficeOpenXml.Drawing.Chart.ChartEx
         /// <returns></returns>
         public IEnumerator<ExcelChartExDataLabelItem> GetEnumerator()
         {
-            return _dic.Values.GetEnumerator();
+            return this._dic.Values.GetEnumerator();
         }
 
         IEnumerator IEnumerable.GetEnumerator()
         {
-            return _dic.Values.GetEnumerator();
+            return this._dic.Values.GetEnumerator();
         }
     }
 }

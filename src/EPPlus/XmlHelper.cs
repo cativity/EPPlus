@@ -29,18 +29,18 @@ namespace OfficeOpenXml
     public abstract class XmlHelper
     {
         int[] _levels = null;
-        internal delegate int ChangedEventHandler(StyleBase sender, Style.StyleChangeEventArgs e);
+        internal delegate int ChangedEventHandler(StyleBase sender, StyleChangeEventArgs e);
 
         internal XmlHelper(XmlNamespaceManager nameSpaceManager)
         {
-            TopNode = null;
-            NameSpaceManager = nameSpaceManager;
+            this.TopNode = null;
+            this.NameSpaceManager = nameSpaceManager;
         }
 
         internal XmlHelper(XmlNamespaceManager nameSpaceManager, XmlNode topNode)
         {
-            TopNode = topNode;
-            NameSpaceManager = nameSpaceManager;
+            this.TopNode = topNode;
+            this.NameSpaceManager = nameSpaceManager;
         }
         //internal bool ChangedFlag;
         internal XmlNamespaceManager NameSpaceManager { get; set; }
@@ -58,18 +58,18 @@ namespace OfficeOpenXml
         /// <returns>The new order</returns>
         internal void AddSchemaNodeOrder(string[] schemaNodeOrder, string[] newItems)
         {
-            SchemaNodeOrder = CopyToSchemaNodeOrder(schemaNodeOrder, newItems);
+            this.SchemaNodeOrder = CopyToSchemaNodeOrder(schemaNodeOrder, newItems);
         }
 
         internal void SetBoolNode(string path, bool value)
         {
             if(value)
             {
-                CreateNode(path);
+                this.CreateNode(path);
             }
             else
             {
-                DeleteNode(path);
+                this.DeleteNode(path);
             }
         }
 
@@ -81,8 +81,8 @@ namespace OfficeOpenXml
         /// <param name="levels">Positions that defines levels in the xpath</param>
         internal void AddSchemaNodeOrder(string[] schemaNodeOrder, string[] newItems, int[] levels)
         {
-            _levels = levels;
-            SchemaNodeOrder = CopyToSchemaNodeOrder(schemaNodeOrder, newItems);
+            this._levels = levels;
+            this.SchemaNodeOrder = CopyToSchemaNodeOrder(schemaNodeOrder, newItems);
         }
 
         internal static string[] CopyToSchemaNodeOrder(string[] schemaNodeOrder, string[] newItems)
@@ -162,11 +162,11 @@ namespace OfficeOpenXml
         /// <returns></returns>
         internal XmlNode CreateNode(string path, bool insertFirst, bool addNew = false, string exitName = "")
         {
-            return CreateNode(TopNode, path, insertFirst, addNew, exitName);
+            return this.CreateNode(this.TopNode, path, insertFirst, addNew, exitName);
         }
         internal XmlNode CreateAlternateContentNode(string elementName, string requires)
         {
-            return CreateNode(TopNode, elementName, false, false,"", requires);
+            return this.CreateNode(this.TopNode, elementName, false, false,"", requires);
         }
 
         private XmlNode CreateNode(XmlNode node, string path, bool insertFirst, bool addNew, string exitName, string alternateContentRequires=null)
@@ -182,7 +182,7 @@ namespace OfficeOpenXml
             for (int i = 0; i < subPaths.Length; i++)
             {
                 string subPath = subPaths[i];
-                XmlNode subNode = node.SelectSingleNode(subPath, NameSpaceManager);
+                XmlNode subNode = node.SelectSingleNode(subPath, this.NameSpaceManager);
                 if (subNode == null || (i == subPaths.Length - 1 && addNew))
                 {
                     string nodeName;
@@ -191,10 +191,10 @@ namespace OfficeOpenXml
                     string nameSpaceURI = "";
                     string[] nameSplit = subPath.Split(':');
 
-                    if (SchemaNodeOrder != null && subPath[0] != '@')
+                    if (this.SchemaNodeOrder != null && subPath[0] != '@')
                     {
                         insertFirst = false;
-                        prependNode = GetPrependNode(subPath, node, ref lastUsedOrderIndex);
+                        prependNode = this.GetPrependNode(subPath, node, ref lastUsedOrderIndex);
                     }
 
                     if (nameSplit.Length > 1)
@@ -205,7 +205,7 @@ namespace OfficeOpenXml
                             nodePrefix = nodePrefix.Substring(1, nodePrefix.Length - 1);
                         }
 
-                        nameSpaceURI = NameSpaceManager.LookupNamespace(nodePrefix);
+                        nameSpaceURI = this.NameSpaceManager.LookupNamespace(nodePrefix);
                         nodeName = nameSplit[1];
                     }
                     else
@@ -252,7 +252,7 @@ namespace OfficeOpenXml
                             node.InsertBefore(subNode, prependNode);
                             prependNode = null;
                         }
-                        else if (insertFirst || (SchemaNodeOrder?.Length > 0 && subNode.LocalName == SchemaNodeOrder[0]))
+                        else if (insertFirst || (this.SchemaNodeOrder?.Length > 0 && subNode.LocalName == this.SchemaNodeOrder[0]))
                         {
                             node.PrependChild(subNode);
                         }
@@ -266,12 +266,12 @@ namespace OfficeOpenXml
                         return subNode;
                     }
                 }
-                else if (SchemaNodeOrder != null && subPath != "..")  //Parent node, node order should not change. Parent node (..) is only supported in the start of the xpath
+                else if (this.SchemaNodeOrder != null && subPath != "..")  //Parent node, node order should not change. Parent node (..) is only supported in the start of the xpath
                 {
-                    int ix = GetNodePos(subNode.LocalName, lastUsedOrderIndex);
+                    int ix = this.GetNodePos(subNode.LocalName, lastUsedOrderIndex);
                     if (ix >= 0)
                     {
-                        lastUsedOrderIndex = GetIndex(ix);
+                        lastUsedOrderIndex = this.GetIndex(ix);
                     }
                 }
                 node = subNode;
@@ -281,7 +281,7 @@ namespace OfficeOpenXml
 
         internal bool CreateNodeUntil(string path, string untilNodeName, out XmlNode spPrNode)
         {
-            spPrNode = CreateNode(path, false, false, untilNodeName);
+            spPrNode = this.CreateNode(path, false, false, untilNodeName);
             return spPrNode != null && spPrNode.LocalName == untilNodeName;
         }
         internal XmlNode ReplaceElement(XmlNode oldChild, string newNodeName)
@@ -293,12 +293,12 @@ namespace OfficeOpenXml
                 string? prefix = newNameSplit[0];
                 string? name = newNameSplit[1];
 
-                string? ns = NameSpaceManager.LookupNamespace(prefix);
+                string? ns = this.NameSpaceManager.LookupNamespace(prefix);
                 newElement = oldChild.OwnerDocument.CreateElement(newNodeName, ns);
             }
             else
             {
-                newElement = oldChild.OwnerDocument.CreateElement(newNodeName, NameSpaceManager.DefaultNamespace);
+                newElement = oldChild.OwnerDocument.CreateElement(newNodeName, this.NameSpaceManager.DefaultNamespace);
             }
             oldChild.ParentNode.ReplaceChild(newElement, oldChild);
             return newElement;
@@ -344,11 +344,10 @@ namespace OfficeOpenXml
         internal XmlNode CreateComplexNode(
             string path)
         {
-            return CreateComplexNode(
-                TopNode,
-                path,
-                eNodeInsertOrder.SchemaOrder,
-                null);
+            return this.CreateComplexNode(this.TopNode,
+                                          path,
+                                          eNodeInsertOrder.SchemaOrder,
+                                          null);
         }
 
         /// <summary>
@@ -362,11 +361,11 @@ namespace OfficeOpenXml
             XmlNode topNode,
             string path)
         {
-            return CreateComplexNode(
-                topNode,
-                path,
-                eNodeInsertOrder.SchemaOrder,
-                null);
+            return this.CreateComplexNode(
+                                          topNode,
+                                          path,
+                                          eNodeInsertOrder.SchemaOrder,
+                                          null);
         }
 
         /// <summary>
@@ -493,7 +492,7 @@ namespace OfficeOpenXml
                         // x:nodeName[find criteria]
 
                         // Look for the node (with or without filter criteria)
-                        XmlNode subNode = node.SelectSingleNode(subPath, NameSpaceManager);
+                        XmlNode subNode = node.SelectSingleNode(subPath, this.NameSpaceManager);
 
                         // Check if the node does not exists
                         if (subNode == null)
@@ -507,7 +506,7 @@ namespace OfficeOpenXml
                             if (nameSplit.Length > 1)
                             {
                                 nodePrefix = nameSplit[0];
-                                nameSpaceURI = NameSpaceManager.LookupNamespace(nodePrefix);
+                                nameSpaceURI = this.NameSpaceManager.LookupNamespace(nodePrefix);
                                 nodeName = nameSplit[1];
                             }
                             else
@@ -552,7 +551,7 @@ namespace OfficeOpenXml
                             if (nodeInsertOrder == eNodeInsertOrder.SchemaOrder)
                             {
                                 // Check if the Schema Order List is empty
-                                if ((SchemaNodeOrder == null) || (SchemaNodeOrder.Length == 0))
+                                if ((this.SchemaNodeOrder == null) || (this.SchemaNodeOrder.Length == 0))
                                 {
                                     // Use the "Insert Last" option when Schema Order List is empty
                                     nodeInsertOrder = eNodeInsertOrder.Last;
@@ -560,7 +559,7 @@ namespace OfficeOpenXml
                                 else
                                 {
                                     // Find the prepend node in order to insert
-                                    referenceNode = GetPrependNode(nodeName, node, ref lastIndex);
+                                    referenceNode = this.GetPrependNode(nodeName, node, ref lastIndex);
 
                                     if (referenceNode != null)
                                     {
@@ -609,15 +608,15 @@ namespace OfficeOpenXml
 
         internal XmlNode GetNode(string path)
         {
-            return TopNode.SelectSingleNode(path, NameSpaceManager);
+            return this.TopNode.SelectSingleNode(path, this.NameSpaceManager);
         }
         internal XmlNodeList GetNodes(string path)
         {
-            return TopNode.SelectNodes(path, NameSpaceManager);
+            return this.TopNode.SelectNodes(path, this.NameSpaceManager);
         }
         internal void ClearChildren(string path)
         {
-            XmlNode? n=TopNode.SelectSingleNode(path, NameSpaceManager);
+            XmlNode? n= this.TopNode.SelectSingleNode(path, this.NameSpaceManager);
             if(n!=null)
             {
                 n.InnerXml = null;
@@ -633,7 +632,7 @@ namespace OfficeOpenXml
         /// <returns></returns>
         private XmlNode GetPrependNode(string nodeName, XmlNode node, ref int index)
         {
-            int ix = GetNodePos(nodeName, index);
+            int ix = this.GetNodePos(nodeName, index);
             if (ix < 0)
             {
                 return null;
@@ -650,7 +649,7 @@ namespace OfficeOpenXml
                 {
                     checkNodeName = childNode.Name;
                 }
-                int childPos = GetNodePos(checkNodeName, index);
+                int childPos = this.GetNodePos(checkNodeName, index);
                 if (childPos > -1)  //Found?
                 {
                     if (childPos > ix) //Position is before
@@ -661,19 +660,19 @@ namespace OfficeOpenXml
                     }
                 }
             }
-            index = GetIndex(ix + 1);
+            index = this.GetIndex(ix + 1);
             return prependNode;
         }
 
         private int GetIndex(int ix)
         {
-            if (_levels != null)
+            if (this._levels != null)
             {
-                for (int i = 0; i <= _levels.GetUpperBound(0); i++)
+                for (int i = 0; i <= this._levels.GetUpperBound(0); i++)
                 {
-                    if (_levels[i] >= ix)
+                    if (this._levels[i] >= ix)
                     {
-                        return _levels[i];
+                        return this._levels[i];
                     }
                 }
             }
@@ -687,9 +686,9 @@ namespace OfficeOpenXml
             {
                 nodeName = nodeName.Substring(ix + 1, nodeName.Length - (ix + 1));
             }
-            for (int i = startIndex; i < SchemaNodeOrder.Length; i++)
+            for (int i = startIndex; i < this.SchemaNodeOrder.Length; i++)
             {
-                if (nodeName == SchemaNodeOrder[i])
+                if (nodeName == this.SchemaNodeOrder[i])
                 {
                     return i;
                 }
@@ -699,10 +698,10 @@ namespace OfficeOpenXml
         internal void DeleteAllNode(string path)
         {
             string[] split = path.Split('/');
-            XmlNode node = TopNode;
+            XmlNode node = this.TopNode;
             foreach (string s in split)
             {
-                node = node.SelectSingleNode(s, NameSpaceManager);
+                node = node.SelectSingleNode(s, this.NameSpaceManager);
                 if (node != null)
                 {
                     if (node is XmlAttribute)
@@ -727,7 +726,7 @@ namespace OfficeOpenXml
 		/// <param name="deleteElement">If true and the node is an attribute, the parent element is deleted. Default false</param>
 		internal void DeleteNode(string path, bool deleteElement=false)
         {
-            XmlNode? node = TopNode.SelectSingleNode(path, NameSpaceManager);
+            XmlNode? node = this.TopNode.SelectSingleNode(path, this.NameSpaceManager);
             if (node != null)
             {
                 if (node is XmlAttribute)
@@ -750,17 +749,17 @@ namespace OfficeOpenXml
         }
         internal void DeleteTopNode()
         {
-            TopNode.ParentNode.RemoveChild(TopNode);
+            this.TopNode.ParentNode.RemoveChild(this.TopNode);
         }
         internal void SetXmlNodeDouble(string path, double? d, bool allowNegative)
         {
-            SetXmlNodeDouble(path, d, null, "", allowNegative);
+            this.SetXmlNodeDouble(path, d, null, "", allowNegative);
         }
         internal void SetXmlNodeDouble(string path, double? d, CultureInfo ci = null, string suffix="", bool allowNegative=true)
         {
             if (d.HasValue==false || double.IsNaN(d.Value))
             {
-                DeleteNode(path);
+                this.DeleteNode(path);
             }
             else
             {
@@ -768,14 +767,15 @@ namespace OfficeOpenXml
                 {
                     throw new InvalidOperationException("Value can't be negative");
                 }
-                SetXmlNodeString(TopNode, path, d.Value.ToString(ci ?? CultureInfo.InvariantCulture) + suffix);
+
+                this.SetXmlNodeString(this.TopNode, path, d.Value.ToString(ci ?? CultureInfo.InvariantCulture) + suffix);
             }
         }
         internal void SetXmlNodeInt(string path, int? d, CultureInfo ci = null, bool allowNegative = true)
         {
             if (d == null)
             {
-                DeleteNode(path);
+                this.DeleteNode(path);
             }   
             else
             {
@@ -783,14 +783,15 @@ namespace OfficeOpenXml
                 {
                     throw new ArgumentException("Negative value not permitted");
                 }
-                SetXmlNodeString(TopNode, path, d.Value.ToString(ci ?? CultureInfo.InvariantCulture));
+
+                this.SetXmlNodeString(this.TopNode, path, d.Value.ToString(ci ?? CultureInfo.InvariantCulture));
             }
         }
         internal void SetXmlNodeLong(string path, long? d, CultureInfo ci = null, bool allowNegative = true)
         {
             if (d == null)
             {
-                DeleteNode(path);
+                this.DeleteNode(path);
             }
             else
             {
@@ -798,19 +799,19 @@ namespace OfficeOpenXml
                 {
                     throw new ArgumentException("Negative value not permitted");
                 }
-                SetXmlNodeString(TopNode, path, d.Value.ToString(ci ?? CultureInfo.InvariantCulture));
+
+                this.SetXmlNodeString(this.TopNode, path, d.Value.ToString(ci ?? CultureInfo.InvariantCulture));
             }
         }
         readonly char[] _whiteSpaces = new char[] { '\t', '\n', '\r', ' ' };
         internal void SetXmlNodeStringPreserveWhiteSpace(string path, string value, bool removeIfBlank=false, bool insertFirst=false)
         {
-            SetXmlNodeString(TopNode, path, value, removeIfBlank, insertFirst);
+            this.SetXmlNodeString(this.TopNode, path, value, removeIfBlank, insertFirst);
             if (value!=null &&  value.Length>0)
             {
-                if(_whiteSpaces.Contains(value[0]) ||
-                   _whiteSpaces.Contains(value[value.Length - 1]))
+                if(this._whiteSpaces.Contains(value[0]) || this._whiteSpaces.Contains(value[value.Length - 1]))
                 {
-                    XmlNode? workNode = GetNode(path);
+                    XmlNode? workNode = this.GetNode(path);
                     if(workNode.NodeType==XmlNodeType.Attribute)
                     {
                         workNode=workNode.ParentNode;
@@ -825,19 +826,19 @@ namespace OfficeOpenXml
 
         internal void SetXmlNodeString(string path, string value)
         {
-            SetXmlNodeString(TopNode, path, value, false, false);
+            this.SetXmlNodeString(this.TopNode, path, value, false, false);
         }
         internal void SetXmlNodeString(string path, string value, bool removeIfBlank)
         {
-            SetXmlNodeString(TopNode, path, value, removeIfBlank, false);
+            this.SetXmlNodeString(this.TopNode, path, value, removeIfBlank, false);
         }
         internal void SetXmlNodeString(XmlNode node, string path, string value)
         {
-            SetXmlNodeString(node, path, value, false, false);
+            this.SetXmlNodeString(node, path, value, false, false);
         }
         internal void SetXmlNodeString(XmlNode node, string path, string value, bool removeIfBlank)
         {
-            SetXmlNodeString(node, path, value, removeIfBlank, false);
+            this.SetXmlNodeString(node, path, value, removeIfBlank, false);
         }
         internal void SetXmlNodeString(XmlNode node, string path, string value, bool removeIfBlank, bool insertFirst)
         {
@@ -847,15 +848,15 @@ namespace OfficeOpenXml
             }
             if (value == "" && removeIfBlank)
             {
-                DeleteAllNode(path);
+                this.DeleteAllNode(path);
             }
             else
             {
-                XmlNode nameNode = node.SelectSingleNode(path, NameSpaceManager);
+                XmlNode nameNode = node.SelectSingleNode(path, this.NameSpaceManager);
                 if (nameNode == null)
                 {
-                    CreateNode(path, insertFirst);
-                    nameNode = node.SelectSingleNode(path, NameSpaceManager);
+                    this.CreateNode(path, insertFirst);
+                    nameNode = node.SelectSingleNode(path, this.NameSpaceManager);
                 }
                 //if (nameNode.InnerText != value) HasChanged();
                 nameNode.InnerText = value;
@@ -863,18 +864,18 @@ namespace OfficeOpenXml
         }
         internal void SetXmlNodeBool(string path, bool value)
         {
-            SetXmlNodeString(TopNode, path, value ? "1" : "0", false, false);
+            this.SetXmlNodeString(this.TopNode, path, value ? "1" : "0", false, false);
         }
         internal void SetXmlNodeBoolVml(string path, bool value)
         {
-            SetXmlNodeString(TopNode, path, value ? "t" : "f", false, false);
+            this.SetXmlNodeString(this.TopNode, path, value ? "t" : "f", false, false);
         }
 
         internal void SetXmlNodeBool(string path, bool value, bool removeIf)
         {
             if (value == removeIf)
             {
-                XmlNode? node = TopNode.SelectSingleNode(path, NameSpaceManager);
+                XmlNode? node = this.TopNode.SelectSingleNode(path, this.NameSpaceManager);
                 if (node != null)
                 {
                     if (node is XmlAttribute attrib)
@@ -890,7 +891,7 @@ namespace OfficeOpenXml
             }
             else
             {
-                SetXmlNodeString(TopNode, path, value ? "1" : "0", false, false);
+                this.SetXmlNodeString(this.TopNode, path, value ? "1" : "0", false, false);
             }
         }
         internal void SetXmlNodePercentage(string path, double? value, bool allowNegative = true, double minMaxValue = 100D)
@@ -907,11 +908,11 @@ namespace OfficeOpenXml
                     throw (new ArgumentOutOfRangeException("value", $"Percentage out of range. Ranges from {(allowNegative ? 0 : -minMaxValue)}% to {minMaxValue}%"));
                 }
 
-                SetXmlNodeString(path, ((int)(value.Value * 1000)).ToString(CultureInfo.InvariantCulture));
+                this.SetXmlNodeString(path, ((int)(value.Value * 1000)).ToString(CultureInfo.InvariantCulture));
             }
             else
             {
-                DeleteNode(path);
+                this.DeleteNode(path);
             }
         }
         internal void SetXmlNodeAngel(string path, double? value, string parameter = null, int minValue = 0, int maxValue = 360)
@@ -924,11 +925,11 @@ namespace OfficeOpenXml
                     throw (new ArgumentOutOfRangeException(parameter, $"Value must be between {minValue} and {maxValue}"));
                 }
                 v = (int)(value * 60000);
-                SetXmlNodeString(path, v.ToString(CultureInfo.InvariantCulture));
+                this.SetXmlNodeString(path, v.ToString(CultureInfo.InvariantCulture));
             }
             else
             {
-                DeleteNode(path);
+                this.DeleteNode(path);
             }
         }
         internal void SetXmlNodeEmuToPt(string path, double? value)
@@ -937,11 +938,11 @@ namespace OfficeOpenXml
             {
                 int v;
                 v = (int)(value * Drawing.ExcelDrawing.EMU_PER_POINT);
-                SetXmlNodeString(path, v.ToString());
+                this.SetXmlNodeString(path, v.ToString());
             }
             else
             {
-                DeleteNode(path);
+                this.DeleteNode(path);
             }
         }
         internal void SetXmlNodeFontSize(string path, double? value, string propertyName, bool AllowNegative = true)
@@ -962,16 +963,17 @@ namespace OfficeOpenXml
                         throw (new ArgumentOutOfRangeException(propertyName, "Fontsize must be between -4000 and 4000"));
                     }
                 }
-                SetXmlNodeString(path, ((double)value * 100).ToString(CultureInfo.InvariantCulture));
+
+                this.SetXmlNodeString(path, ((double)value * 100).ToString(CultureInfo.InvariantCulture));
             }
             else
             {
-                DeleteNode(path);
+                this.DeleteNode(path);
             }
         }
         internal bool ExistsNode(string path)
         {
-            if (TopNode == null || TopNode.SelectSingleNode(path, NameSpaceManager) == null)
+            if (this.TopNode == null || this.TopNode.SelectSingleNode(path, this.NameSpaceManager) == null)
             {
                 return false;
             }
@@ -982,7 +984,7 @@ namespace OfficeOpenXml
         }
         internal bool ExistsNode(XmlNode node, string path)
         {
-            if (node == null || node.SelectSingleNode(path, NameSpaceManager) == null)
+            if (node == null || node.SelectSingleNode(path, this.NameSpaceManager) == null)
             {
                 return false;
             }
@@ -993,16 +995,16 @@ namespace OfficeOpenXml
         }
         internal bool? GetXmlNodeBoolNullable(string path)
         {
-            string? value = GetXmlNodeString(path);
+            string? value = this.GetXmlNodeString(path);
             if (string.IsNullOrEmpty(value))
             {
                 return null;
             }
-            return GetXmlNodeBool(path);
+            return this.GetXmlNodeBool(path);
         }
         internal bool? GetXmlNodeBoolNullableWithVal(string path)
         {
-            XmlNode? node = GetNode(path);
+            XmlNode? node = this.GetNode(path);
             if (node==null)
             {
                 return null;
@@ -1019,11 +1021,11 @@ namespace OfficeOpenXml
         }
         internal bool GetXmlNodeBool(string path)
         {
-            return GetXmlNodeBool(path, false);
+            return this.GetXmlNodeBool(path, false);
         }
         internal bool GetXmlNodeBool(string path, bool blankValue)
         {
-            string value = GetXmlNodeString(path);
+            string value = this.GetXmlNodeString(path);
             if (value == "1" || value == "-1" || value.StartsWith("t", StringComparison.OrdinalIgnoreCase))
             {
                 return true;
@@ -1049,7 +1051,7 @@ namespace OfficeOpenXml
         internal int GetXmlNodeInt(string path, int defaultValue=int.MinValue)
         {
             int i;
-            if (int.TryParse(GetXmlNodeString(path), NumberStyles.Number, CultureInfo.InvariantCulture, out i))
+            if (int.TryParse(this.GetXmlNodeString(path), NumberStyles.Number, CultureInfo.InvariantCulture, out i))
             {
                 return i;
             }
@@ -1060,7 +1062,7 @@ namespace OfficeOpenXml
         }
         internal double GetXmlNodeAngel(string path, double defaultValue = 0)
         {
-            int a = GetXmlNodeInt(path);
+            int a = this.GetXmlNodeInt(path);
             if (a < 0)
             {
                 return defaultValue;
@@ -1070,7 +1072,7 @@ namespace OfficeOpenXml
         }
         internal double GetXmlNodeEmuToPt(string path)
         {
-            long v = GetXmlNodeLong(path);
+            long v = this.GetXmlNodeLong(path);
             if (v < 0)
             {
                 return 0;
@@ -1080,7 +1082,7 @@ namespace OfficeOpenXml
         }
         internal double? GetXmlNodeEmuToPtNull(string path)
         {
-            long? v = GetXmlNodeLongNull(path);
+            long? v = this.GetXmlNodeLongNull(path);
             if (v == null)
             {
                 return null;
@@ -1091,7 +1093,7 @@ namespace OfficeOpenXml
         internal int? GetXmlNodeIntNull(string path)
         {
             int i;
-            string s = GetXmlNodeString(path);
+            string s = this.GetXmlNodeString(path);
             if (s != "" && int.TryParse(s, NumberStyles.Number, CultureInfo.InvariantCulture, out i))
             {
                 return i;
@@ -1104,7 +1106,7 @@ namespace OfficeOpenXml
         internal long GetXmlNodeLong(string path)
         {
             long l;
-            string s = GetXmlNodeString(path);
+            string s = this.GetXmlNodeString(path);
             if (s != "" && long.TryParse(s, NumberStyles.Number, CultureInfo.InvariantCulture, out l))
             {
                 return l;
@@ -1118,7 +1120,7 @@ namespace OfficeOpenXml
         internal long? GetXmlNodeLongNull(string path)
         {
             long l;
-            string s = GetXmlNodeString(path);
+            string s = this.GetXmlNodeString(path);
             if (s != "" && long.TryParse(s, NumberStyles.Number, CultureInfo.InvariantCulture, out l))
             {
                 return l;
@@ -1132,7 +1134,7 @@ namespace OfficeOpenXml
         internal decimal GetXmlNodeDecimal(string path)
         {
             decimal d;
-            if (decimal.TryParse(GetXmlNodeString(path), NumberStyles.Any, CultureInfo.InvariantCulture, out d))
+            if (decimal.TryParse(this.GetXmlNodeString(path), NumberStyles.Any, CultureInfo.InvariantCulture, out d))
             {
                 return d;
             }
@@ -1144,7 +1146,7 @@ namespace OfficeOpenXml
         internal decimal? GetXmlNodeDecimalNull(string path)
         {
             decimal d;
-            if (decimal.TryParse(GetXmlNodeString(path), NumberStyles.Any, CultureInfo.InvariantCulture, out d))
+            if (decimal.TryParse(this.GetXmlNodeString(path), NumberStyles.Any, CultureInfo.InvariantCulture, out d))
             {
                 return d;
             }
@@ -1155,7 +1157,7 @@ namespace OfficeOpenXml
         }
         internal double? GetXmlNodeDoubleNull(string path)
         {
-            string s = GetXmlNodeString(path);
+            string s = this.GetXmlNodeString(path);
             if (s == "")
             {
                 return null;
@@ -1175,7 +1177,7 @@ namespace OfficeOpenXml
         }
         internal double GetXmlNodeDouble(string path)
         {
-            string s = GetXmlNodeString(path);
+            string s = this.GetXmlNodeString(path);
             if (s == "")
             {
                 return double.NaN;
@@ -1201,7 +1203,7 @@ namespace OfficeOpenXml
                 return "";
             }
 
-            XmlNode nameNode = node.SelectSingleNode(path, NameSpaceManager);
+            XmlNode nameNode = node.SelectSingleNode(path, this.NameSpaceManager);
 
             if (nameNode != null)
             {
@@ -1221,7 +1223,7 @@ namespace OfficeOpenXml
         }
         internal string GetXmlNodeString(string path)
         {
-            return GetXmlNodeString(TopNode, path);
+            return this.GetXmlNodeString(this.TopNode, path);
         }
         internal static Uri GetNewUri(Packaging.ZipPackage package, string sUri)
         {
@@ -1239,7 +1241,7 @@ namespace OfficeOpenXml
         }
         internal T? GetXmlEnumNull<T>(string path, T? defaultValue=null) where T : struct, Enum
         {
-            string? v = GetXmlNodeString(path);
+            string? v = this.GetXmlNodeString(path);
             if(string.IsNullOrEmpty(v))
             {
                 return defaultValue;
@@ -1253,7 +1255,7 @@ namespace OfficeOpenXml
         internal double? GetXmlNodePercentage(string path)
         {
             double d;
-            string? p = GetXmlNodeString(path);
+            string? p = this.GetXmlNodeString(path);
             if (p.EndsWith("%"))
             {
                 if (double.TryParse(p.Substring(0, p.Length - 1), out d))
@@ -1279,16 +1281,16 @@ namespace OfficeOpenXml
         }
         internal double GetXmlNodeFontSize(string path)
         {
-            return (GetXmlNodeDoubleNull(path) ?? 0) / 100;
+            return (this.GetXmlNodeDoubleNull(path) ?? 0) / 100;
         }
         internal void RenameNode(XmlNode node, string prefix, string newName, string[] allowedChildren=null)
         {
             
             XmlDocument? doc = node.OwnerDocument;
-            XmlElement? newNode = doc.CreateElement(prefix, newName, NameSpaceManager.LookupNamespace(prefix));
-            while (TopNode.ChildNodes.Count > 0)
+            XmlElement? newNode = doc.CreateElement(prefix, newName, this.NameSpaceManager.LookupNamespace(prefix));
+            while (this.TopNode.ChildNodes.Count > 0)
             {
-                if (allowedChildren == null || allowedChildren.Contains(TopNode.ChildNodes[0].LocalName))
+                if (allowedChildren == null || allowedChildren.Contains(this.TopNode.ChildNodes[0].LocalName))
                 {
                     newNode.AppendChild(this.TopNode.ChildNodes[0]);
                 }
@@ -1297,8 +1299,9 @@ namespace OfficeOpenXml
                     this.TopNode.RemoveChild(this.TopNode.ChildNodes[0]);
                 }
             }
-            TopNode.ParentNode.ReplaceChild(newNode, TopNode);
-            TopNode = newNode;
+
+            this.TopNode.ParentNode.ReplaceChild(newNode, this.TopNode);
+            this.TopNode = newNode;
         }
         /// <summary>
         /// Insert the new node before any of the nodes in the comma separeted list
@@ -1346,9 +1349,9 @@ namespace OfficeOpenXml
         }
         internal void CreatespPrNode(string nodePath = "c:spPr", bool withLine = true)
         {
-            if (!ExistsNode(nodePath))
+            if (!this.ExistsNode(nodePath))
             {
-                XmlNode? node = CreateNode(nodePath);
+                XmlNode? node = this.CreateNode(nodePath);
                 if (withLine)
                 {
                     node.InnerXml = "<a:noFill/><a:ln><a:noFill/></a:ln><a:effectLst/><a:sp3d/>";
@@ -1362,14 +1365,14 @@ namespace OfficeOpenXml
 
         internal XmlNode GetOrCreateExtLstSubNode(string uriGuid, string prefix, string[] uriOrder=null)
         {
-            foreach(XmlElement node in GetNodes("d:extLst/d:ext"))
+            foreach(XmlElement node in this.GetNodes("d:extLst/d:ext"))
             {
                 if(node.Attributes["uri"].Value.Equals(uriGuid, StringComparison.OrdinalIgnoreCase))
                 {
                     return node;
                 }
             }
-            XmlElement? extLst = (XmlElement)CreateNode("d:extLst");
+            XmlElement? extLst = (XmlElement)this.CreateNode("d:extLst");
             XmlElement prependChild = null;
             if (uriOrder != null)
             {
@@ -1386,10 +1389,10 @@ namespace OfficeOpenXml
                     }
                 }
             }
-            XmlElement? newExt = TopNode.OwnerDocument.CreateElement("ext", ExcelPackage.schemaMain);
+            XmlElement? newExt = this.TopNode.OwnerDocument.CreateElement("ext", ExcelPackage.schemaMain);
             if (!string.IsNullOrEmpty(prefix))
             {
-                newExt.SetAttribute($"xmlns:{prefix}", NameSpaceManager.LookupNamespace(prefix));
+                newExt.SetAttribute($"xmlns:{prefix}", this.NameSpaceManager.LookupNamespace(prefix));
             }
 
             newExt.SetAttribute("uri", uriGuid);

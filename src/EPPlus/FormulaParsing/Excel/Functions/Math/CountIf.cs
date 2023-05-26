@@ -40,7 +40,7 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Math
         public CountIf(ExpressionEvaluator evaluator)
         {
             Require.That(evaluator).Named("evaluator").IsNotNull();
-            _expressionEvaluator = evaluator;
+            this._expressionEvaluator = evaluator;
         }
 
         private bool Evaluate(object obj, string expression)
@@ -52,9 +52,9 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Math
             }
             if (candidate.HasValue)
             {
-                return _expressionEvaluator.Evaluate(candidate.Value, expression, false);
+                return this._expressionEvaluator.Evaluate(candidate.Value, expression, false);
             }
-            return _expressionEvaluator.Evaluate(obj, expression, false);
+            return this._expressionEvaluator.Evaluate(obj, expression, false);
         }
 
         public override CompileResult Execute(IEnumerable<FunctionArgument> arguments, ParsingContext context)
@@ -71,7 +71,7 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Math
                 {
                     for (int col = rangeInfo.Address.Start.Column; col < rangeInfo.Address.End.Column + 1; col++)
                     {
-                        if (criteria != null && Evaluate(rangeInfo.GetValue(row, col), criteria))
+                        if (criteria != null && this.Evaluate(rangeInfo.GetValue(row, col), criteria))
                         {
                             result++;
                         }
@@ -82,7 +82,7 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Math
             {
                 foreach (FunctionArgument? arg in (IEnumerable<FunctionArgument>) range.Value)
                 {
-                    if(Evaluate(arg.Value, criteria))
+                    if(this.Evaluate(arg.Value, criteria))
                     {
                         result++;
                     }
@@ -90,12 +90,12 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Math
             }
             else
             {
-                if (Evaluate(range.Value, criteria))
+                if (this.Evaluate(range.Value, criteria))
                 {
                     result++;
                 }
             }
-            return CreateResult(result, DataType.Integer);
+            return this.CreateResult(result, DataType.Integer);
         }
     }
 }

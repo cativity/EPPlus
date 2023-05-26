@@ -29,74 +29,74 @@ namespace OfficeOpenXml.DataValidation.Formulas
 
             public event EventHandler<EventArgs> ListChanged
             {
-                add { _listChanged += value; }
-                remove { _listChanged -= value; }
+                add { this._listChanged += value; }
+                remove { this._listChanged -= value; }
             }
 
             private void OnListChanged()
             {
-                if (_listChanged != null)
+                if (this._listChanged != null)
                 {
-                    _listChanged(this, EventArgs.Empty);
+                    this._listChanged(this, EventArgs.Empty);
                 }
             }
 
             #region IList members
             int IList<string>.IndexOf(string item)
             {
-                return _items.IndexOf(item);
+                return this._items.IndexOf(item);
             }
 
             void IList<string>.Insert(int index, string item)
             {
-                _items.Insert(index, item);
-                OnListChanged();
+                this._items.Insert(index, item);
+                this.OnListChanged();
             }
 
             void IList<string>.RemoveAt(int index)
             {
-                _items.RemoveAt(index);
-                OnListChanged();
+                this._items.RemoveAt(index);
+                this.OnListChanged();
             }
 
             string IList<string>.this[int index]
             {
                 get
                 {
-                    return _items[index];
+                    return this._items[index];
                 }
                 set
                 {
-                    _items[index] = value;
-                    OnListChanged();
+                    this._items[index] = value;
+                    this.OnListChanged();
                 }
             }
 
             void ICollection<string>.Add(string item)
             {
-                _items.Add(item);
-                OnListChanged();
+                this._items.Add(item);
+                this.OnListChanged();
             }
 
             void ICollection<string>.Clear()
             {
-                _items.Clear();
-                OnListChanged();
+                this._items.Clear();
+                this.OnListChanged();
             }
 
             bool ICollection<string>.Contains(string item)
             {
-                return _items.Contains(item);
+                return this._items.Contains(item);
             }
 
             void ICollection<string>.CopyTo(string[] array, int arrayIndex)
             {
-                _items.CopyTo(array, arrayIndex);
+                this._items.CopyTo(array, arrayIndex);
             }
 
             int ICollection<string>.Count
             {
-                get { return _items.Count; }
+                get { return this._items.Count; }
             }
 
             bool ICollection<string>.IsReadOnly
@@ -106,40 +106,40 @@ namespace OfficeOpenXml.DataValidation.Formulas
 
             bool ICollection<string>.Remove(string item)
             {
-                bool retVal = _items.Remove(item);
-                OnListChanged();
+                bool retVal = this._items.Remove(item);
+                this.OnListChanged();
                 return retVal;
             }
 
             IEnumerator<string> IEnumerable<string>.GetEnumerator()
             {
-                return _items.GetEnumerator();
+                return this._items.GetEnumerator();
             }
 
-            System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator()
+            IEnumerator IEnumerable.GetEnumerator()
             {
-                return _items.GetEnumerator();
+                return this._items.GetEnumerator();
             }
             #endregion
 
             public void CopyTo(Array array, int index)
             {
-                _items.CopyTo((string[])array, index);
+                this._items.CopyTo((string[])array, index);
             }
 
             int ICollection.Count
             {
-                get { return _items.Count; }
+                get { return this._items.Count; }
             }
 
             public bool IsSynchronized
             {
-                get { return ((ICollection)_items).IsSynchronized; }
+                get { return ((ICollection)this._items).IsSynchronized; }
             }
 
             public object SyncRoot
             {
-                get { return ((ICollection)_items).SyncRoot; }
+                get { return ((ICollection)this._items).SyncRoot; }
             }
         }
         #endregion
@@ -148,17 +148,17 @@ namespace OfficeOpenXml.DataValidation.Formulas
             : base(uid, sheetName, extListHandler)
         {
             DataValidationList? values = new DataValidationList();
-            values.ListChanged += new EventHandler<EventArgs>(values_ListChanged);
-            Values = values;
-            _inputFormula = formula;
-            SetInitialValues();
+            values.ListChanged += new EventHandler<EventArgs>(this.values_ListChanged);
+            this.Values = values;
+            this._inputFormula = formula;
+            this.SetInitialValues();
         }
 
         private string _inputFormula;
 
         private void SetInitialValues()
         {
-            string? @value = _inputFormula;
+            string? @value = this._inputFormula;
             if (!string.IsNullOrEmpty(@value))
             {
                 if (@value.StartsWith("\"", StringComparison.OrdinalIgnoreCase) && @value.EndsWith("\"", StringComparison.OrdinalIgnoreCase))
@@ -167,23 +167,23 @@ namespace OfficeOpenXml.DataValidation.Formulas
                     string[]? items = @value.Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries);
                     foreach (string? item in items)
                     {
-                        Values.Add(item);
+                        this.Values.Add(item);
                     }
                 }
                 else
                 {
-                    ExcelFormula = @value;
+                    this.ExcelFormula = @value;
                 }
             }
         }
 
         void values_ListChanged(object sender, EventArgs e)
         {
-            if (Values.Count > 0)
+            if (this.Values.Count > 0)
             {
-                State = FormulaState.Value;
+                this.State = FormulaState.Value;
             }
-            string? valuesAsString = GetValueAsString();
+            string? valuesAsString = this.GetValueAsString();
             // Excel supports max 255 characters in this field.
             if (valuesAsString.Length > 255)
             {
@@ -199,7 +199,7 @@ namespace OfficeOpenXml.DataValidation.Formulas
         protected override string GetValueAsString()
         {
             StringBuilder? sb = new StringBuilder();
-            foreach (string? val in Values)
+            foreach (string? val in this.Values)
             {
                 if (sb.Length == 0)
                 {
@@ -217,7 +217,7 @@ namespace OfficeOpenXml.DataValidation.Formulas
 
         internal override void ResetValue()
         {
-            Values.Clear();
+            this.Values.Clear();
         }
     }
 }

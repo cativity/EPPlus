@@ -29,9 +29,9 @@ namespace OfficeOpenXml.Drawing.Chart
         {
             if(type==eChartType.StockVHLC || type==eChartType.StockVOHLC)
             {
-                ExcelBarChart? barChart = new ExcelBarChart(this, _chartNode.PreviousSibling, parent);
+                ExcelBarChart? barChart = new ExcelBarChart(this, this._chartNode.PreviousSibling, parent);
                 barChart.Direction = eDirection.Column;
-                _plotArea = new ExcelChartPlotArea(NameSpaceManager, ChartXml.SelectSingleNode("c:chartSpace/c:chart/c:plotArea", NameSpaceManager), barChart, "c", this);
+                this._plotArea = new ExcelChartPlotArea(this.NameSpaceManager, this.ChartXml.SelectSingleNode("c:chartSpace/c:chart/c:plotArea", this.NameSpaceManager), barChart, "c", this);
             }
         }
 
@@ -42,8 +42,8 @@ namespace OfficeOpenXml.Drawing.Chart
             {
                 ExcelBarChart? barChart = new ExcelBarChart(this, chartNode, parent);
                 barChart.Direction = eDirection.Column;
-                _plotArea = new ExcelChartPlotArea(NameSpaceManager, ChartXml.SelectSingleNode("c:chartSpace/c:chart/c:plotArea", NameSpaceManager), barChart, "c", this);
-                _chartNode = chartNode.NextSibling;
+                this._plotArea = new ExcelChartPlotArea(this.NameSpaceManager, this.ChartXml.SelectSingleNode("c:chartSpace/c:chart/c:plotArea", this.NameSpaceManager), barChart, "c", this);
+                this._chartNode = chartNode.NextSibling;
             }
         }
         internal ExcelStockChart(ExcelChart topChart, XmlNode chartNode, ExcelGroupShape parent = null) :
@@ -53,7 +53,7 @@ namespace OfficeOpenXml.Drawing.Chart
         internal override void InitSeries(ExcelChart chart, XmlNamespaceManager ns, XmlNode node, bool isPivot, List<ExcelChartSerie> list = null)
         {
             base.InitSeries(chart, ns, node, isPivot, list);
-            Series.Init(chart, ns, node, isPivot, base.Series._list);
+            this.Series.Init(chart, ns, node, isPivot, base.Series._list);
         }
         /// <summary>
         /// A collection of series for a Stock Chart

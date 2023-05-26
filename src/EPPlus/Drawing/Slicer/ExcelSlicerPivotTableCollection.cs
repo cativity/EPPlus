@@ -25,7 +25,7 @@ namespace OfficeOpenXml.Drawing.Slicer
         ExcelPivotTableSlicerCache _slicerCache;
         internal ExcelSlicerPivotTableCollection(ExcelPivotTableSlicerCache slicerCache)
         {
-            _slicerCache = slicerCache;
+            this._slicerCache = slicerCache;
         }
         internal List<ExcelPivotTable> _list=new List<ExcelPivotTable>();
         /// <summary>
@@ -34,7 +34,7 @@ namespace OfficeOpenXml.Drawing.Slicer
         /// <returns>The Enumerator</returns>
         public IEnumerator<ExcelPivotTable> GetEnumerator()
         {
-            return _list.GetEnumerator();
+            return this._list.GetEnumerator();
         }
 
         /// <summary>
@@ -43,7 +43,7 @@ namespace OfficeOpenXml.Drawing.Slicer
         /// <returns>The Enumerator</returns>
         IEnumerator IEnumerable.GetEnumerator()
         {
-            return _list.GetEnumerator();
+            return this._list.GetEnumerator();
         }
         /// <summary>
         /// The indexer for the collection
@@ -54,11 +54,11 @@ namespace OfficeOpenXml.Drawing.Slicer
         {
             get
             {
-                if(index < 0 || index >= _list.Count)
+                if(index < 0 || index >= this._list.Count)
                 {
                     throw new IndexOutOfRangeException("Index for pivot table out of range");
                 }
-                return _list[index];
+                return this._list[index];
             }
         }
         /// <summary>
@@ -67,12 +67,13 @@ namespace OfficeOpenXml.Drawing.Slicer
         /// <param name="pivotTable">The pivot table to add</param>
         public void Add(ExcelPivotTable pivotTable)
         {
-            if(_list.Count > 0 && _list[0].CacheId != pivotTable.CacheId)
+            if(this._list.Count > 0 && this._list[0].CacheId != pivotTable.CacheId)
             {
                 throw (new InvalidOperationException("Multiple Pivot tables added to a slicer must refer to the same cache."));
             }
-            _list.Add(pivotTable);
-            _slicerCache.UpdateItemsXml();
+
+            this._list.Add(pivotTable);
+            this._slicerCache.UpdateItemsXml();
         }
         /// <summary>
         /// Number of items in the collection
@@ -81,7 +82,7 @@ namespace OfficeOpenXml.Drawing.Slicer
         {
             get
             {
-                return _list.Count;
+                return this._list.Count;
             }
         }
     }

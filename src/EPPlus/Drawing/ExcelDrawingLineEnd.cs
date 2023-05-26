@@ -25,9 +25,9 @@ namespace OfficeOpenXml.Drawing
         internal ExcelDrawingLineEnd(XmlNamespaceManager nameSpaceManager, XmlNode topNode, string linePath, Action init) : 
             base(nameSpaceManager, topNode)
         {
-            _linePath = linePath;
-            _init = init;
-            SchemaNodeOrder = new string[] { "noFill","solidFill","gradFill","pattFill","prstDash", "custDash", "round","bevel", "miter", "headEnd", "tailEnd" };
+            this._linePath = linePath;
+            this._init = init;
+            this.SchemaNodeOrder = new string[] { "noFill","solidFill","gradFill","pattFill","prstDash", "custDash", "round","bevel", "miter", "headEnd", "tailEnd" };
         }
         string _stylePath = "/@type";
         /// <summary>
@@ -37,18 +37,18 @@ namespace OfficeOpenXml.Drawing
         {
             get
             {
-                return TranslateEndStyle(GetXmlNodeString(_linePath + _stylePath));
+                return TranslateEndStyle(this.GetXmlNodeString(this._linePath + this._stylePath));
             }
             set
             {
-                _init();
+                this._init();
                 if (value == null)
                 {
-                    DeleteNode(_linePath + _stylePath);
+                    this.DeleteNode(this._linePath + this._stylePath);
                 }
                 else
                 {
-                    SetXmlNodeString(_linePath + _stylePath, TranslateEndStyleText(value.Value));
+                    this.SetXmlNodeString(this._linePath + this._stylePath, TranslateEndStyleText(value.Value));
                 }
             }
         }
@@ -61,18 +61,18 @@ namespace OfficeOpenXml.Drawing
         {
             get
             {
-                return TranslateEndSize(GetXmlNodeString(_linePath + _widthPath));
+                return TranslateEndSize(this.GetXmlNodeString(this._linePath + this._widthPath));
             }
             set
             {
-                _init();
+                this._init();
                 if (value == null)
                 {
-                    DeleteNode(_linePath + _widthPath);
+                    this.DeleteNode(this._linePath + this._widthPath);
                 }
                 else
                 {
-                    SetXmlNodeString(_linePath + _widthPath, TranslateEndSizeText(value.Value));
+                    this.SetXmlNodeString(this._linePath + this._widthPath, TranslateEndSizeText(value.Value));
                 }
             }
         }
@@ -85,18 +85,18 @@ namespace OfficeOpenXml.Drawing
         {
             get
             {
-                return TranslateEndSize(GetXmlNodeString(_linePath +_heightPath));
+                return TranslateEndSize(this.GetXmlNodeString(this._linePath + this._heightPath));
             }
             set
             {
-                _init();
+                this._init();
                 if (value == null)
                 {
-                    DeleteNode(_linePath + _heightPath);
+                    this.DeleteNode(this._linePath + this._heightPath);
                 }
                 else
                 {
-                    SetXmlNodeString(_linePath + _heightPath, TranslateEndSizeText(value.Value));
+                    this.SetXmlNodeString(this._linePath + this._heightPath, TranslateEndSizeText(value.Value));
                 }
             }
         }
@@ -122,7 +122,7 @@ namespace OfficeOpenXml.Drawing
         }
         private string GetCreateLinePath(bool doCreate)
         {
-            if (string.IsNullOrEmpty(_linePath))
+            if (string.IsNullOrEmpty(this._linePath))
             {
                 return "";
             }
@@ -133,7 +133,7 @@ namespace OfficeOpenXml.Drawing
                     this.CreateNode(this._linePath, false);
                 }
 
-                return _linePath + "/";
+                return this._linePath + "/";
             }
         }
 

@@ -44,73 +44,73 @@ namespace EPPlusTest.FormulaParsing
         [TestInitialize]
         public void Initialize()
         {
-            _pck = new ExcelPackage();
-            _sheet = _pck.Workbook.Worksheets.Add("R1C1");
+            this._pck = new ExcelPackage();
+            this._sheet = this._pck.Workbook.Worksheets.Add("R1C1");
         }
 
         [TestCleanup]
         public void Cleanup()
         {
-            _pck.Dispose();
+            this._pck.Dispose();
         }
 
         [TestMethod]
         public void RC2()
         {
             string fR1C1 = "RC2";
-            _sheet.Cells[5, 1].FormulaR1C1 = fR1C1;
-            string f = _sheet.Cells[5, 1].Formula;
+            this._sheet.Cells[5, 1].FormulaR1C1 = fR1C1;
+            string f = this._sheet.Cells[5, 1].Formula;
             Assert.AreEqual("$B5", f);
-            _sheet.Cells[5, 1].Formula = f;
-            Assert.AreEqual(fR1C1, _sheet.Cells[5,1].FormulaR1C1);
+            this._sheet.Cells[5, 1].Formula = f;
+            Assert.AreEqual(fR1C1, this._sheet.Cells[5,1].FormulaR1C1);
         }
         [TestMethod]
         public void C()
         {
             string fR1C1 = "SUMIFS(C,C2,RC1)";
-            _sheet.Cells[5, 3].FormulaR1C1 = fR1C1;
-            string f = _sheet.Cells[5, 3].Formula;
+            this._sheet.Cells[5, 3].FormulaR1C1 = fR1C1;
+            string f = this._sheet.Cells[5, 3].Formula;
             Assert.AreEqual("SUMIFS(C:C,$B:$B,$A5)", f);
-            _sheet.Cells[5, 3].Formula = f;
-            Assert.AreEqual(fR1C1, _sheet.Cells[5, 3].FormulaR1C1);
+            this._sheet.Cells[5, 3].Formula = f;
+            Assert.AreEqual(fR1C1, this._sheet.Cells[5, 3].FormulaR1C1);
         }
         [TestMethod]
         public void C2Abs()
         {
             string fR1C1 = "SUM(C2)";
-            _sheet.Cells[5, 3].FormulaR1C1 = fR1C1;
-            string f = _sheet.Cells[5, 3].Formula;
+            this._sheet.Cells[5, 3].FormulaR1C1 = fR1C1;
+            string f = this._sheet.Cells[5, 3].Formula;
             Assert.AreEqual("SUM($B:$B)", f);
         }
         [TestMethod]
         public void C2AbsWithSheet()
         {
             string fR1C1 = "SUM(A!C2)";
-            _sheet.Cells[5, 3].FormulaR1C1 = fR1C1;
-            string f = _sheet.Cells[5, 3].Formula;
+            this._sheet.Cells[5, 3].FormulaR1C1 = fR1C1;
+            string f = this._sheet.Cells[5, 3].Formula;
             Assert.AreEqual("SUM(A!$B:$B)", f);
         }
         [TestMethod]
         public void C2()
         {
             string fR1C1 = "SUM(C2)";
-            _sheet.Cells[5, 3].FormulaR1C1 = fR1C1;
-            string f = _sheet.Cells[5, 3].Formula;
+            this._sheet.Cells[5, 3].FormulaR1C1 = fR1C1;
+            string f = this._sheet.Cells[5, 3].Formula;
             Assert.AreEqual("SUM($B:$B)", f);
-            _sheet.Cells[5, 3].Formula = f;
-            Assert.AreEqual(fR1C1, _sheet.Cells[5, 3].FormulaR1C1);
+            this._sheet.Cells[5, 3].Formula = f;
+            Assert.AreEqual(fR1C1, this._sheet.Cells[5, 3].FormulaR1C1);
         }
         [TestMethod]
         public void R2Abs()
         {
             string fR1C1 = "SUM(R2)";
-            _sheet.Cells[5, 3].FormulaR1C1 = fR1C1;
-            string f = _sheet.Cells[5, 3].Formula;
+            this._sheet.Cells[5, 3].FormulaR1C1 = fR1C1;
+            string f = this._sheet.Cells[5, 3].Formula;
             Assert.AreEqual("SUM($2:$2)",f);
 
             fR1C1 = "SUM(TEST2!R2)";
-            _sheet.Cells[5, 3].FormulaR1C1 = fR1C1;
-            f = _sheet.Cells[5, 3].Formula;
+            this._sheet.Cells[5, 3].FormulaR1C1 = fR1C1;
+            f = this._sheet.Cells[5, 3].Formula;
             Assert.AreEqual("SUM(TEST2!$2:$2)", f);
 
         }
@@ -118,47 +118,47 @@ namespace EPPlusTest.FormulaParsing
         public void R2()
         {
             string fR1C1 = "SUM(R2)";
-            _sheet.Cells[5, 3].FormulaR1C1 = fR1C1;
-            string f = _sheet.Cells[5, 3].Formula;
+            this._sheet.Cells[5, 3].FormulaR1C1 = fR1C1;
+            string f = this._sheet.Cells[5, 3].Formula;
             Assert.AreEqual("SUM($2:$2)", f);
-            _sheet.Cells[5, 3].Formula = f;
-            Assert.AreEqual(fR1C1, _sheet.Cells[5, 3].FormulaR1C1);
+            this._sheet.Cells[5, 3].Formula = f;
+            Assert.AreEqual(fR1C1, this._sheet.Cells[5, 3].FormulaR1C1);
         }
         [TestMethod]
         public void RCRelativeToAB()
         {
             string fR1C1 = "SUMIFS(C,C2,RC1)";
-            _sheet.Cells[5, 3].FormulaR1C1 = fR1C1;
-            string f = _sheet.Cells[5, 3].Formula;
+            this._sheet.Cells[5, 3].FormulaR1C1 = fR1C1;
+            string f = this._sheet.Cells[5, 3].Formula;
             Assert.AreEqual("SUMIFS(C:C,$B:$B,$A5)", f);
         }
         [TestMethod]
         public void RRelativeToAB()
         {
             string fR1C1 = "SUMIFS(R,C2,RC1)";
-            _sheet.Cells[5, 3].FormulaR1C1 = fR1C1;
-            string f = _sheet.Cells[5, 3].Formula;
+            this._sheet.Cells[5, 3].FormulaR1C1 = fR1C1;
+            string f = this._sheet.Cells[5, 3].Formula;
             Assert.AreEqual("SUMIFS(5:5,$B:$B,$A5)", f);
         }
         [TestMethod]
         public void RCRelativeToABToR1C1()
         {
             string fR1C1 = "SUMIFS(C,C2,RC1)";
-            _sheet.Cells[5, 3].FormulaR1C1 = fR1C1;
-            string f = _sheet.Cells[5, 3].Formula;
+            this._sheet.Cells[5, 3].FormulaR1C1 = fR1C1;
+            string f = this._sheet.Cells[5, 3].Formula;
             Assert.AreEqual("SUMIFS(C:C,$B:$B,$A5)", f);
-            _sheet.Cells[5, 3].Formula = f;
-            Assert.AreEqual(fR1C1, _sheet.Cells[5, 3].FormulaR1C1);
+            this._sheet.Cells[5, 3].Formula = f;
+            Assert.AreEqual(fR1C1, this._sheet.Cells[5, 3].FormulaR1C1);
         }
         [TestMethod]
         public void RCRelativeToABToR1C1_2()
         {
             string fR1C1 = "SUM(RC9:RC[-1])";
-            _sheet.Cells[5, 13].FormulaR1C1 = fR1C1;
-            string f = _sheet.Cells[5, 13].Formula;
+            this._sheet.Cells[5, 13].FormulaR1C1 = fR1C1;
+            string f = this._sheet.Cells[5, 13].Formula;
             Assert.AreEqual("SUM($I5:L5)", f);
-            _sheet.Cells[5, 13].Formula = f;
-            Assert.AreEqual(fR1C1, _sheet.Cells[5, 13].FormulaR1C1);
+            this._sheet.Cells[5, 13].Formula = f;
+            Assert.AreEqual(fR1C1, this._sheet.Cells[5, 13].FormulaR1C1);
 
             //"RC{colShort} - SUM(RC21:RC12)";
         }
@@ -166,17 +166,17 @@ namespace EPPlusTest.FormulaParsing
         public void RCFixToABToR1C1_2()
         {
             string fR1C1 = "RC28-SUM(RC12:RC21)";
-            _sheet.Cells[6, 13].FormulaR1C1 = fR1C1;
-            string f = _sheet.Cells[6, 13].Formula;
+            this._sheet.Cells[6, 13].FormulaR1C1 = fR1C1;
+            string f = this._sheet.Cells[6, 13].Formula;
             Assert.AreEqual("$AB6-SUM($L6:$U6)", f);
-            _sheet.Cells[6, 13].Formula = f;
-            Assert.AreEqual(fR1C1, _sheet.Cells[6, 13].FormulaR1C1);
+            this._sheet.Cells[6, 13].Formula = f;
+            Assert.AreEqual(fR1C1, this._sheet.Cells[6, 13].FormulaR1C1);
         }
         [TestMethod]
         public void SimpleRelativeR1C1()
         {
             string fR1C1 = "R[-1]C[-5]";
-            ExcelRange? c = _sheet.Cells[7, 7];
+            ExcelRange? c = this._sheet.Cells[7, 7];
             c.FormulaR1C1 = fR1C1;
             string f = c.Formula;
             Assert.AreEqual("B6", f);
@@ -187,7 +187,7 @@ namespace EPPlusTest.FormulaParsing
         public void SimpleAbsR1C1()
         {
             string fR1C1 = "R1C5";
-            ExcelRange? c = _sheet.Cells[8, 8];
+            ExcelRange? c = this._sheet.Cells[8, 8];
             c.FormulaR1C1 = fR1C1;
             string f = c.Formula;
             Assert.AreEqual("$E$1", f);
@@ -198,7 +198,7 @@ namespace EPPlusTest.FormulaParsing
         public void FullTwoColumn()
         {
             string formula = "VLOOKUP(C2,A:B,1,0)";
-            ExcelRange? c = _sheet.Cells["D2"];
+            ExcelRange? c = this._sheet.Cells["D2"];
             c.Formula = formula;
             Assert.AreEqual(c.FormulaR1C1, "VLOOKUP(RC[-1],C[-3]:C[-2],1,0)");
             c.FormulaR1C1 = c.FormulaR1C1;
@@ -208,7 +208,7 @@ namespace EPPlusTest.FormulaParsing
         public void FullColumn()
         {
             string formula = "VLOOKUP(C2,A:A,1,0)";
-            ExcelRange? c = _sheet.Cells["D2"];
+            ExcelRange? c = this._sheet.Cells["D2"];
             c.Formula = formula;
             Assert.AreEqual(c.FormulaR1C1, "VLOOKUP(RC[-1],C[-3],1,0)");
             c.FormulaR1C1 = c.FormulaR1C1;
@@ -218,7 +218,7 @@ namespace EPPlusTest.FormulaParsing
         public void FullTwoRow()
         {
             string formula = "VLOOKUP(C3,1:2,1,0)";
-            ExcelRange? c = _sheet.Cells["D3"];
+            ExcelRange? c = this._sheet.Cells["D3"];
             c.Formula = formula;
             Assert.AreEqual(c.FormulaR1C1, "VLOOKUP(RC[-1],R[-2]:R[-1],1,0)");
             c.FormulaR1C1 = c.FormulaR1C1;
@@ -228,7 +228,7 @@ namespace EPPlusTest.FormulaParsing
         public void FullRow()
         {
             string formula = "VLOOKUP(C3,1:1,1,0)";
-            ExcelRange? c = _sheet.Cells["D3"];
+            ExcelRange? c = this._sheet.Cells["D3"];
             c.Formula = formula;
             Assert.AreEqual(c.FormulaR1C1, "VLOOKUP(RC[-1],R[-2],1,0)");
             c.FormulaR1C1 = c.FormulaR1C1;
@@ -238,15 +238,15 @@ namespace EPPlusTest.FormulaParsing
         [TestMethod]
         public void OutOfRangeCol()
         {
-            _sheet.Cells["a3"].FormulaR1C1 = "R[-3]C";
-            Assert.AreEqual("#REF!", _sheet.Cells["a3"].Formula);
-            _sheet.Cells["a3"].FormulaR1C1 = "R[-2]C";
-            Assert.AreEqual("A1", _sheet.Cells["a3"].Formula);
+            this._sheet.Cells["a3"].FormulaR1C1 = "R[-3]C";
+            Assert.AreEqual("#REF!", this._sheet.Cells["a3"].Formula);
+            this._sheet.Cells["a3"].FormulaR1C1 = "R[-2]C";
+            Assert.AreEqual("A1", this._sheet.Cells["a3"].Formula);
 
-            _sheet.Cells["B3"].FormulaR1C1 = "RC[-2]";
-            Assert.AreEqual("#REF!", _sheet.Cells["B3"].Formula);
-            _sheet.Cells["B3"].FormulaR1C1 = "RC[-1]";
-            Assert.AreEqual("A3", _sheet.Cells["B3"].Formula);
+            this._sheet.Cells["B3"].FormulaR1C1 = "RC[-2]";
+            Assert.AreEqual("#REF!", this._sheet.Cells["B3"].Formula);
+            this._sheet.Cells["B3"].FormulaR1C1 = "RC[-1]";
+            Assert.AreEqual("A3", this._sheet.Cells["B3"].Formula);
 
         }
     }

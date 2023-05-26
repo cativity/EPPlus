@@ -37,10 +37,10 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions.DateTime
             }
             else
             {
-                double d = ArgToDecimal(arguments, 0);
+                double d = this.ArgToDecimal(arguments, 0);
                 date = System.DateTime.FromOADate(d);
             }
-            return CreateResult(date.Year, DataType.Integer);
+            return this.CreateResult(date.Year, DataType.Integer);
         }
     }
 }

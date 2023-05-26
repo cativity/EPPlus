@@ -31,14 +31,14 @@ namespace OfficeOpenXml
         {
             return new RowInternal()
             {
-                Height=Height,
-                Hidden=Hidden,
-                Collapsed=Collapsed,
-                OutlineLevel=OutlineLevel,
-                PageBreak=PageBreak,
-                Phonetic=Phonetic,
-                CustomHeight=CustomHeight,
-                MergeID=MergeID
+                Height= this.Height,
+                Hidden= this.Hidden,
+                Collapsed= this.Collapsed,
+                OutlineLevel= this.OutlineLevel,
+                PageBreak= this.PageBreak,
+                Phonetic= this.Phonetic,
+                CustomHeight= this.CustomHeight,
+                MergeID= this.MergeID
             };
         }
     }
@@ -57,7 +57,7 @@ namespace OfficeOpenXml
         {
             get
             {
-                return GetRowID(_worksheet.SheetId, Row);
+                return GetRowID(this._worksheet.SheetId, this.Row);
             }
         }
 		#region ExcelRow Constructor
@@ -69,15 +69,15 @@ namespace OfficeOpenXml
 		/// <param name="row">The row number</param>
 		internal ExcelRow(ExcelWorksheet Worksheet, int row)
 		{
-			_worksheet = Worksheet;
-            Row = row;
+            this._worksheet = Worksheet;
+            this.Row = row;
 		}
 		#endregion
 
 		/// <summary>
 		/// Provides access to the node representing the row.
 		/// </summary>
-		internal XmlNode Node { get { return (_rowElement); } }
+		internal XmlNode Node { get { return (this._rowElement); } }
 
 		#region ExcelRow Hidden
         /// <summary>
@@ -87,7 +87,7 @@ namespace OfficeOpenXml
         {
             get
             {
-                RowInternal? r=(RowInternal)_worksheet.GetValueInner(Row, 0);
+                RowInternal? r=(RowInternal)this._worksheet.GetValueInner(this.Row, 0);
                 if (r == null)
                 {
                     return false;
@@ -99,7 +99,7 @@ namespace OfficeOpenXml
             }
             set
             {
-                RowInternal? r = GetRowInternal();
+                RowInternal? r = this.GetRowInternal();
                 r.Hidden=value;
             }
         }        
@@ -113,10 +113,10 @@ namespace OfficeOpenXml
         {
 			get
 			{
-                RowInternal? r = (RowInternal)_worksheet.GetValueInner(Row, 0);
+                RowInternal? r = (RowInternal)this._worksheet.GetValueInner(this.Row, 0);
                 if (r == null || r.Height<0)
                 {
-                    return _worksheet.DefaultRowHeight;
+                    return this._worksheet.DefaultRowHeight;
                 }
                 else
                 {
@@ -125,13 +125,13 @@ namespace OfficeOpenXml
             }
             set
             {
-                RowInternal? r = GetRowInternal();
-                if (_worksheet._package.DoAdjustDrawings)
+                RowInternal? r = this.GetRowInternal();
+                if (this._worksheet._package.DoAdjustDrawings)
                 {
-                    double[,]? pos = _worksheet.Drawings.GetDrawingHeight();   //Fixes issue 14846
-                    _worksheet.RowHeightCache.Remove(Row - 1);
+                    double[,]? pos = this._worksheet.Drawings.GetDrawingHeight();   //Fixes issue 14846
+                    this._worksheet.RowHeightCache.Remove(this.Row - 1);
                     r.Height = value;
-                    _worksheet.Drawings.AdjustHeight(pos);
+                    this._worksheet.Drawings.AdjustHeight(pos);
                 }
                 else
                 {
@@ -140,7 +140,7 @@ namespace OfficeOpenXml
                 
                 if (r.Hidden && value != 0)
                 {
-                    Hidden = false;
+                    this.Hidden = false;
                 }
                 r.CustomHeight = true;
             }
@@ -152,7 +152,7 @@ namespace OfficeOpenXml
         {
             get
             {
-                RowInternal? r = (RowInternal)_worksheet.GetValueInner(Row, 0);
+                RowInternal? r = (RowInternal)this._worksheet.GetValueInner(this.Row, 0);
                 if (r == null)
                 {
                     return false;
@@ -164,7 +164,7 @@ namespace OfficeOpenXml
             }
             set
             {
-                RowInternal? r = GetRowInternal();
+                RowInternal? r = this.GetRowInternal();
                 r.CustomHeight = value;
             }
         }
@@ -178,12 +178,12 @@ namespace OfficeOpenXml
         {
             get
             {
-                return _styleName;
+                return this._styleName;
             }
             set
             {
-                StyleID = _worksheet.Workbook.Styles.GetStyleIdFromName(value);
-                _styleName = value;
+                this.StyleID = this._worksheet.Workbook.Styles.GetStyleIdFromName(value);
+                this._styleName = value;
             }
         }
         /// <summary>
@@ -193,11 +193,11 @@ namespace OfficeOpenXml
         {
             get
             {
-                return _worksheet.GetStyleInner(Row, 0);
+                return this._worksheet.GetStyleInner(this.Row, 0);
             }
             set
             {
-                _worksheet.SetStyleInner(Row, 0, value);
+                this._worksheet.SetStyleInner(this.Row, 0, value);
             }
         }
 
@@ -216,7 +216,7 @@ namespace OfficeOpenXml
         {
             get
             {
-                RowInternal? r=(RowInternal)_worksheet.GetValueInner(Row, 0);
+                RowInternal? r=(RowInternal)this._worksheet.GetValueInner(this.Row, 0);
                 if (r == null)
                 {
                     return false;
@@ -228,7 +228,7 @@ namespace OfficeOpenXml
             }
             set
             {
-                RowInternal? r = GetRowInternal();
+                RowInternal? r = this.GetRowInternal();
                 r.Collapsed = value;
             }
         }
@@ -239,7 +239,7 @@ namespace OfficeOpenXml
         {
             get
             {
-                RowInternal? r=(RowInternal)_worksheet.GetValueInner(Row, 0);
+                RowInternal? r=(RowInternal)this._worksheet.GetValueInner(this.Row, 0);
                 if (r == null)
                 {
                     return 0;
@@ -251,14 +251,14 @@ namespace OfficeOpenXml
             }
             set
             {
-                RowInternal? r = GetRowInternal();
+                RowInternal? r = this.GetRowInternal();
                 r.OutlineLevel=(short)value;
             }
         }
 
         private RowInternal GetRowInternal()
         {
-            return GetRowInternal(_worksheet, Row);
+            return GetRowInternal(this._worksheet, this.Row);
         }        
         internal static RowInternal GetRowInternal(ExcelWorksheet ws, int row)
         {
@@ -277,7 +277,7 @@ namespace OfficeOpenXml
         {
             get
             {
-                RowInternal? r = (RowInternal)_worksheet.GetValueInner(Row, 0);
+                RowInternal? r = (RowInternal)this._worksheet.GetValueInner(this.Row, 0);
                 if (r == null)
                 {
                     return false;
@@ -289,7 +289,7 @@ namespace OfficeOpenXml
             }
             set
             {
-                RowInternal? r = GetRowInternal();
+                RowInternal? r = this.GetRowInternal();
                 r.Phonetic = value;
             }
         }
@@ -301,7 +301,7 @@ namespace OfficeOpenXml
         {
             get
             {
-                return _worksheet.Workbook.Styles.GetStyleObject(StyleID,_worksheet.PositionId ,Row.ToString(CultureInfo.InvariantCulture) + ":" + Row.ToString(CultureInfo.InvariantCulture));                
+                return this._worksheet.Workbook.Styles.GetStyleObject(this.StyleID, this._worksheet.PositionId , this.Row.ToString(CultureInfo.InvariantCulture) + ":" + this.Row.ToString(CultureInfo.InvariantCulture));                
             }
         }
         /// <summary>
@@ -311,7 +311,7 @@ namespace OfficeOpenXml
         {
             get
             {
-                RowInternal? r = (RowInternal)_worksheet.GetValueInner(Row, 0);
+                RowInternal? r = (RowInternal)this._worksheet.GetValueInner(this.Row, 0);
                 if (r == null)
                 {
                     return false;
@@ -323,7 +323,7 @@ namespace OfficeOpenXml
             }
             set
             {
-                RowInternal? r = GetRowInternal();
+                RowInternal? r = this.GetRowInternal();
                 r.PageBreak = value;
             }
         }
@@ -334,11 +334,11 @@ namespace OfficeOpenXml
         {
             get
             {
-                return _worksheet.MergedCells[Row, 0] != null;
+                return this._worksheet.MergedCells[this.Row, 0] != null;
             }
             set
             {
-                _worksheet.MergedCells.Add(new ExcelAddressBase(Row, 1, Row, ExcelPackage.MaxColumns), true);
+                this._worksheet.MergedCells.Add(new ExcelAddressBase(this.Row, 1, this.Row, ExcelPackage.MaxColumns), true);
             }
         }
         internal static ulong GetRowID(int sheetID, int row)
@@ -354,11 +354,11 @@ namespace OfficeOpenXml
         {
             get
             {
-                return RowID; 
+                return this.RowID; 
             }
             set
             {
-                Row = ((int)(value >> 29));
+                this.Row = ((int)(value >> 29));
             }
         }
 
@@ -369,10 +369,10 @@ namespace OfficeOpenXml
         /// <param name="added">The worksheet where the copy will be created</param>
         internal void Clone(ExcelWorksheet added)
         {
-            RowInternal? rowSource = _worksheet.GetValue(Row, 0) as RowInternal;
+            RowInternal? rowSource = this._worksheet.GetValue(this.Row, 0) as RowInternal;
             if(rowSource != null)
             {
-                added.SetValueInner(Row, 0, rowSource.Clone());
+                added.SetValueInner(this.Row, 0, rowSource.Clone());
             }
         }
     }

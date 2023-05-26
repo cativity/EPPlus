@@ -21,27 +21,27 @@ namespace OfficeOpenXml.Export.HtmlExport
     {
         public async Task WriteLineAsync()
         {
-            _newLine = true;
-            await _writer.WriteLineAsync();
+            this._newLine = true;
+            await this._writer.WriteLineAsync();
         }
 
         public async Task WriteAsync(string text)
         {
-            await _writer.WriteAsync(text);
+            await this._writer.WriteAsync(text);
         }
 
         internal protected async Task WriteIndentAsync()
         {
-            for (int x = 0; x < Indent; x++)
+            for (int x = 0; x < this.Indent; x++)
             {
-                await _writer.WriteAsync(IndentWhiteSpace);
+                await this._writer.WriteAsync(IndentWhiteSpace);
             }
         }
         internal async Task ApplyFormatAsync(bool minify)
         {
             if (minify == false)
             {
-                await WriteLineAsync();
+                await this.WriteLineAsync();
             }
         }
 
@@ -49,8 +49,8 @@ namespace OfficeOpenXml.Export.HtmlExport
         {
             if (minify == false)
             {
-                await WriteLineAsync();
-                Indent++;
+                await this.WriteLineAsync();
+                this.Indent++;
             }
         }
 
@@ -58,44 +58,44 @@ namespace OfficeOpenXml.Export.HtmlExport
         {
             if (minify == false)
             {
-                await WriteLineAsync();
-                Indent--;
+                await this.WriteLineAsync();
+                this.Indent--;
             }
         }
         internal async Task WriteClassAsync(string value, bool minify)
         {
             if (minify)
             {
-                await _writer.WriteAsync(value);
+                await this._writer.WriteAsync(value);
             }
             else
             {
-                await _writer.WriteLineAsync(value);
-                Indent = 1;
+                await this._writer.WriteLineAsync(value);
+                this.Indent = 1;
             }
         }
         internal async Task WriteClassEndAsync(bool minify)
         {
             if (minify)
             {
-                await _writer.WriteAsync("}");
+                await this._writer.WriteAsync("}");
             }
             else
             {
-                await _writer.WriteLineAsync("}");
-                Indent = 0;
+                await this._writer.WriteLineAsync("}");
+                this.Indent = 0;
             }
         }
         internal async Task WriteCssItemAsync(string value, bool minify)
         {
             if (minify)
             {
-                await _writer.WriteAsync(value);
+                await this._writer.WriteAsync(value);
             }
             else
             {
-                await WriteIndentAsync();
-                _writer.WriteLine(value);
+                await this.WriteIndentAsync();
+                this._writer.WriteLine(value);
             }
         }
     }

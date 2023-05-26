@@ -44,18 +44,18 @@ namespace OfficeOpenXml
         /// <param name="isColumnFixed">If the column is fixed, prefixed with $</param>
         public ExcelCellAddress(int row, int column, bool isRowFixed = false, bool isColumnFixed = false)
         {
-            _row = row;
-            _column = column;
-            _isRowFixed = isRowFixed;
-            _isColumnFixed = isColumnFixed;
+            this._row = row;
+            this._column = column;
+            this._isRowFixed = isRowFixed;
+            this._isColumnFixed = isColumnFixed;
 
-            if (_column > 0 && _row > 0)
+            if (this._column > 0 && this._row > 0)
             {
-                _address = ExcelCellBase.GetAddress(_row, _column);
+                this._address = ExcelCellBase.GetAddress(this._row, this._column);
             }
             else
             {
-                _address = "#REF!";
+                this._address = "#REF!";
             }
         }
         /// <summary>
@@ -64,7 +64,7 @@ namespace OfficeOpenXml
         ///<param name="address">The address</param>
         public ExcelCellAddress(string address)
         {
-            Address = address; 
+            this.Address = address; 
         }
         /// <summary>
         /// Row
@@ -82,7 +82,7 @@ namespace OfficeOpenXml
                     throw new ArgumentOutOfRangeException("value", "Row cannot be less than 1.");
                 }
                 this._row = value;
-                if(_column>0)
+                if(this._column>0)
                 {
                     this._address = ExcelCellBase.GetAddress(this._row, this._column);
                 }
@@ -108,7 +108,7 @@ namespace OfficeOpenXml
                     throw new ArgumentOutOfRangeException("value", "Column cannot be less than 1.");
                 }
                 this._column = value;
-                if (_row > 0)
+                if (this._row > 0)
                 {
                     this._address = ExcelCellBase.GetAddress(this._row, this._column);
                 }
@@ -125,12 +125,12 @@ namespace OfficeOpenXml
         {
             get
             {
-                return _address;
+                return this._address;
             }
             internal set
             {
-                _address = value;
-                ExcelCellBase.GetRowColFromAddress(_address, out _row, out _column,out _isRowFixed, out _isColumnFixed);
+                this._address = value;
+                ExcelCellBase.GetRowColFromAddress(this._address, out this._row, out this._column,out this._isRowFixed, out this._isColumnFixed);
             }
         }
         /// <summary>
@@ -140,7 +140,7 @@ namespace OfficeOpenXml
         { 
             get
             {
-                return _isRowFixed;
+                return this._isRowFixed;
             }
         }
         /// <summary>
@@ -150,7 +150,7 @@ namespace OfficeOpenXml
         {
             get
             {
-                return _isColumnFixed;
+                return this._isColumnFixed;
             }
         }
 
@@ -161,7 +161,7 @@ namespace OfficeOpenXml
         {
             get
             {
-                return _row <= 0;
+                return this._row <= 0;
             }
         }
 

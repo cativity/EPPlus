@@ -74,7 +74,7 @@ namespace OfficeOpenXml.Packaging.Ionic.Zip
         /// </remarks>
         internal void Extract()
         {
-            InternalExtract(".", null, null);
+            this.InternalExtract(".", null, null);
         }
 
 
@@ -96,8 +96,8 @@ namespace OfficeOpenXml.Packaging.Ionic.Zip
         /// </param>
         internal void Extract(ExtractExistingFileAction extractExistingFile)
         {
-            ExtractExistingFile = extractExistingFile;
-            InternalExtract(".", null, null);
+            this.ExtractExistingFile = extractExistingFile;
+            this.InternalExtract(".", null, null);
         }
 
         /// <summary>
@@ -125,7 +125,7 @@ namespace OfficeOpenXml.Packaging.Ionic.Zip
         ///
         public void Extract(Stream stream)
         {
-            InternalExtract(null, stream, null);
+            this.InternalExtract(null, stream, null);
         }
 
         /// <summary>
@@ -181,7 +181,7 @@ namespace OfficeOpenXml.Packaging.Ionic.Zip
         /// </remarks>
         public void Extract(string baseDirectory)
         {
-            InternalExtract(baseDirectory, null, null);
+            this.InternalExtract(baseDirectory, null, null);
         }
 
 
@@ -237,8 +237,8 @@ namespace OfficeOpenXml.Packaging.Ionic.Zip
         /// </param>
         internal void Extract(string baseDirectory, ExtractExistingFileAction extractExistingFile)
         {
-            ExtractExistingFile = extractExistingFile;
-            InternalExtract(baseDirectory, null, null);
+            this.ExtractExistingFile = extractExistingFile;
+            this.InternalExtract(baseDirectory, null, null);
         }
 
 
@@ -303,7 +303,7 @@ namespace OfficeOpenXml.Packaging.Ionic.Zip
         /// <param name="password">The Password to use for decrypting the entry.</param>
         public void ExtractWithPassword(string password)
         {
-            InternalExtract(".", null, password);
+            this.InternalExtract(".", null, password);
         }
 
         /// <summary>
@@ -333,7 +333,7 @@ namespace OfficeOpenXml.Packaging.Ionic.Zip
         /// <param name="password">The Password to use for decrypting the entry.</param>
         public void ExtractWithPassword(string baseDirectory, string password)
         {
-            InternalExtract(baseDirectory, null, password);
+            this.InternalExtract(baseDirectory, null, password);
         }
 
 
@@ -359,8 +359,8 @@ namespace OfficeOpenXml.Packaging.Ionic.Zip
         /// </param>
         internal void ExtractWithPassword(ExtractExistingFileAction extractExistingFile, string password)
         {
-            ExtractExistingFile = extractExistingFile;
-            InternalExtract(".", null, password);
+            this.ExtractExistingFile = extractExistingFile;
+            this.InternalExtract(".", null, password);
         }
 
 
@@ -384,8 +384,8 @@ namespace OfficeOpenXml.Packaging.Ionic.Zip
         /// <param name="password">The Password to use for decrypting the entry.</param>
         internal void ExtractWithPassword(string baseDirectory, ExtractExistingFileAction extractExistingFile, string password)
         {
-            ExtractExistingFile = extractExistingFile;
-            InternalExtract(baseDirectory, null, password);
+            this.ExtractExistingFile = extractExistingFile;
+            this.InternalExtract(baseDirectory, null, password);
         }
 
         /// <summary>
@@ -418,7 +418,7 @@ namespace OfficeOpenXml.Packaging.Ionic.Zip
         /// </param>
         public void ExtractWithPassword(Stream stream, string password)
         {
-            InternalExtract(null, stream, password);
+            this.InternalExtract(null, stream, password);
         }
 
 
@@ -541,17 +541,17 @@ namespace OfficeOpenXml.Packaging.Ionic.Zip
         /// </example>
         /// <seealso cref="ZipEntry.Extract(System.IO.Stream)"/>
         /// <returns>The Stream for reading.</returns>
-        internal Ionic.Crc.CrcCalculatorStream OpenReader()
+        internal CrcCalculatorStream OpenReader()
         {
             // workitem 10923
-            if (_container.ZipFile == null)
+            if (this._container.ZipFile == null)
             {
                 throw new InvalidOperationException("Use OpenReader() only with ZipFile.");
             }
 
             // use the entry password if it is non-null,
             // else use the zipfile password, which is possibly null
-            return InternalOpenReader(this._Password ?? this._container.Password);
+            return this.InternalOpenReader(this._Password ?? this._container.Password);
         }
 
         /// <summary>
@@ -569,24 +569,24 @@ namespace OfficeOpenXml.Packaging.Ionic.Zip
         ///
         /// <param name="password">The password to use for decrypting the entry.</param>
         /// <returns>The Stream for reading.</returns>
-        internal Ionic.Crc.CrcCalculatorStream OpenReader(string password)
+        internal CrcCalculatorStream OpenReader(string password)
         {
             // workitem 10923
-            if (_container.ZipFile == null)
+            if (this._container.ZipFile == null)
             {
                 throw new InvalidOperationException("Use OpenReader() only with ZipFile.");
             }
 
-            return InternalOpenReader(password);
+            return this.InternalOpenReader(password);
         }
 
 
 
-        internal Ionic.Crc.CrcCalculatorStream InternalOpenReader(string password)
+        internal CrcCalculatorStream InternalOpenReader(string password)
         {
-            ValidateCompression();
-            ValidateEncryption();
-            SetupCryptoForExtract(password);
+            this.ValidateCompression();
+            this.ValidateEncryption();
+            this.SetupCryptoForExtract(password);
 
             // workitem 7958
             if (this._Source != ZipEntrySource.ZipFile)
@@ -598,7 +598,7 @@ namespace OfficeOpenXml.Packaging.Ionic.Zip
             // from the stream AFTER decompression and decryption.
             // It is the uncompressed size, unless ... there is no compression in which
             // case ...?  :< I'm not sure why it's not always UncompressedSize
-            Int64 LeftToRead = (_CompressionMethod_FromZipFile == (short)CompressionMethod.None)
+            Int64 LeftToRead = (this._CompressionMethod_FromZipFile == (short)CompressionMethod.None)
                 ? this._CompressedFileDataSize
                 : this.UncompressedSize;
 
@@ -606,19 +606,19 @@ namespace OfficeOpenXml.Packaging.Ionic.Zip
 
             this.ArchiveStream.Seek(this.FileDataPosition, SeekOrigin.Begin);
             // workitem 10178
-            Ionic.Zip.SharedUtilities.Workaround_Ladybug318918(this.ArchiveStream);
+            SharedUtilities.Workaround_Ladybug318918(this.ArchiveStream);
 
-            _inputDecryptorStream = GetExtractDecryptor(input);
-            Stream input3 = GetExtractDecompressor(_inputDecryptorStream);
+            this._inputDecryptorStream = this.GetExtractDecryptor(input);
+            Stream input3 = this.GetExtractDecompressor(this._inputDecryptorStream);
 
-            return new Ionic.Crc.CrcCalculatorStream(input3, LeftToRead);
+            return new CrcCalculatorStream(input3, LeftToRead);
         }
 
 
 
         private void OnExtractProgress(Int64 bytesWritten, Int64 totalBytesToWrite)
         {
-            if (_container.ZipFile != null)
+            if (this._container.ZipFile != null)
             {
                 this._ioOperationCanceled = this._container.ZipFile.OnExtractBlock(this, bytesWritten, totalBytesToWrite);
             }
@@ -630,11 +630,11 @@ namespace OfficeOpenXml.Packaging.Ionic.Zip
             // When in the context of a ZipFile.ExtractAll, the events are generated from
             // the ZipFile method, not from within the ZipEntry instance. (why?)
             // Therefore we suppress the events originating from the ZipEntry method.
-            if (_container.ZipFile != null)
+            if (this._container.ZipFile != null)
             {
-                if (!_container.ZipFile._inExtractAll)
+                if (!this._container.ZipFile._inExtractAll)
                 {
-                    _ioOperationCanceled = _container.ZipFile.OnSingleEntryExtract(this, path, true);
+                    this._ioOperationCanceled = this._container.ZipFile.OnSingleEntryExtract(this, path, true);
                 }
             }
         }
@@ -644,18 +644,18 @@ namespace OfficeOpenXml.Packaging.Ionic.Zip
             // When in the context of a ZipFile.ExtractAll, the events are generated from
             // the ZipFile method, not from within the ZipEntry instance. (why?)
             // Therefore we suppress the events originating from the ZipEntry method.
-            if (_container.ZipFile != null)
+            if (this._container.ZipFile != null)
             {
-                if (!_container.ZipFile._inExtractAll)
+                if (!this._container.ZipFile._inExtractAll)
                 {
-                    _container.ZipFile.OnSingleEntryExtract(this, path, false);
+                    this._container.ZipFile.OnSingleEntryExtract(this, path, false);
                 }
             }
         }
 
         private void OnExtractExisting(string path)
         {
-            if (_container.ZipFile != null)
+            if (this._container.ZipFile != null)
             {
                 this._ioOperationCanceled = this._container.ZipFile.OnExtractExisting(this, path);
             }
@@ -681,7 +681,7 @@ namespace OfficeOpenXml.Packaging.Ionic.Zip
 
         private void WriteStatus(string format, params Object[] args)
         {
-            if (_container.ZipFile != null && _container.ZipFile.Verbose)
+            if (this._container.ZipFile != null && this._container.ZipFile.Verbose)
             {
                 this._container.ZipFile.StatusMessageTextWriter.WriteLine(format, args);
             }
@@ -694,41 +694,41 @@ namespace OfficeOpenXml.Packaging.Ionic.Zip
         private void InternalExtract(string baseDir, Stream outstream, string password)
         {
             // workitem 7958
-            if (_container == null)
+            if (this._container == null)
             {
                 throw new BadStateException("This entry is an orphan");
             }
 
             // workitem 10355
-            if (_container.ZipFile == null)
+            if (this._container.ZipFile == null)
             {
                 throw new InvalidOperationException("Use Extract() only with ZipFile.");
             }
 
-            _container.ZipFile.Reset(false);
+            this._container.ZipFile.Reset(false);
 
             if (this._Source != ZipEntrySource.ZipFile)
             {
                 throw new BadStateException("You must call ZipFile.Save before calling any Extract method");
             }
 
-            OnBeforeExtract(baseDir);
-            _ioOperationCanceled = false;
+            this.OnBeforeExtract(baseDir);
+            this._ioOperationCanceled = false;
             string targetFileName = null;
             Stream output = null;
             bool fileExistsBeforeExtraction = false;
             bool checkLaterForResetDirTimes = false;
             try
             {
-                ValidateCompression();
-                ValidateEncryption();
+                this.ValidateCompression();
+                this.ValidateEncryption();
 
-                if (ValidateOutput(baseDir, outstream, out targetFileName))
+                if (this.ValidateOutput(baseDir, outstream, out targetFileName))
                 {
-                    WriteStatus("extract dir {0}...", targetFileName);
+                    this.WriteStatus("extract dir {0}...", targetFileName);
                     // if true, then the entry was a directory and has been created.
                     // We need to fire the Extract Event.
-                    OnAfterExtract(baseDir);
+                    this.OnAfterExtract(baseDir);
                     return;
                 }
 
@@ -748,7 +748,7 @@ namespace OfficeOpenXml.Packaging.Ionic.Zip
                     if (File.Exists(targetFileName))
                     {
                         fileExistsBeforeExtraction = true;
-                        int rc = CheckExtractExistingFile(baseDir, targetFileName);
+                        int rc = this.CheckExtractExistingFile(baseDir, targetFileName);
                         if (rc == 2)
                         {
                             goto ExitTry; // cancel
@@ -764,21 +764,21 @@ namespace OfficeOpenXml.Packaging.Ionic.Zip
                 // If no password explicitly specified, use the password on the entry itself,
                 // or on the zipfile itself.
                 string p = password ?? this._Password ?? this._container.Password;
-                if (_Encryption_FromZipFile != EncryptionAlgorithm.None)
+                if (this._Encryption_FromZipFile != EncryptionAlgorithm.None)
                 {
                     if (p == null)
                     {
                         throw new BadPasswordException();
                     }
 
-                    SetupCryptoForExtract(p);
+                    this.SetupCryptoForExtract(p);
                 }
 
 
                 // set up the output stream
                 if (targetFileName != null)
                 {
-                    WriteStatus("extract file {0}...", targetFileName);
+                    this.WriteStatus("extract file {0}...", targetFileName);
                     targetFileName += ".tmp";
                     string? dirName = Path.GetDirectoryName(targetFileName);
                     // ensure the target path exists
@@ -793,7 +793,7 @@ namespace OfficeOpenXml.Packaging.Ionic.Zip
                     else
                     {
                         // workitem 8264
-                        if (_container.ZipFile != null)
+                        if (this._container.ZipFile != null)
                         {
                             checkLaterForResetDirTimes = this._container.ZipFile._inExtractAll;
                         }
@@ -804,24 +804,24 @@ namespace OfficeOpenXml.Packaging.Ionic.Zip
                 }
                 else
                 {
-                    WriteStatus("extract entry {0} to stream...", FileName);
+                    this.WriteStatus("extract entry {0} to stream...", this.FileName);
                     output = outstream;
                 }
 
 
-                if (_ioOperationCanceled)
+                if (this._ioOperationCanceled)
                 {
                     goto ExitTry;
                 }
 
-                Int32 ActualCrc32 = ExtractOne(output);
+                Int32 ActualCrc32 = this.ExtractOne(output);
 
-                if (_ioOperationCanceled)
+                if (this._ioOperationCanceled)
                 {
                     goto ExitTry;
                 }
 
-                VerifyCrcAfterExtract(ActualCrc32);
+                this.VerifyCrcAfterExtract(ActualCrc32);
 
                 if (targetFileName != null)
                 {
@@ -853,7 +853,7 @@ namespace OfficeOpenXml.Packaging.Ionic.Zip
                     }
 
                     File.Move(tmpName, targetFileName);
-                    _SetTimes(targetFileName, true);
+                    this._SetTimes(targetFileName, true);
 
                     if (zombie != null && File.Exists(zombie))
                     {
@@ -876,7 +876,7 @@ namespace OfficeOpenXml.Packaging.Ionic.Zip
                             string dirname = Path.GetDirectoryName(this.FileName);
                             if (this._container.ZipFile[dirname] == null)
                             {
-                                _SetTimes(Path.GetDirectoryName(targetFileName), false);
+                                this._SetTimes(Path.GetDirectoryName(targetFileName), false);
                             }
                         }
                     }
@@ -895,25 +895,25 @@ namespace OfficeOpenXml.Packaging.Ionic.Zip
                     //
                     // workitem 7926 - version made by OS can be zero (FAT) or 10
                     // (NTFS)
-                    if ((_VersionMadeBy & 0xFF00) == 0x0a00 || (_VersionMadeBy & 0xFF00) == 0x0000)
+                    if ((this._VersionMadeBy & 0xFF00) == 0x0a00 || (this._VersionMadeBy & 0xFF00) == 0x0000)
                     {
                         File.SetAttributes(targetFileName, (FileAttributes)this._ExternalFileAttrs);
                     }
 #endif
                 }
 
-                OnAfterExtract(baseDir);
+                this.OnAfterExtract(baseDir);
 
                 ExitTry: ;
             }
             catch (Exception)
             {
-                _ioOperationCanceled = true;
+                this._ioOperationCanceled = true;
                 throw;
             }
             finally
             {
-                if (_ioOperationCanceled)
+                if (this._ioOperationCanceled)
                 {
                     if (targetFileName != null)
                     {
@@ -998,7 +998,7 @@ namespace OfficeOpenXml.Packaging.Ionic.Zip
 
 
 #else
-            if (actualCrc32 != _Crc32)
+            if (actualCrc32 != this._Crc32)
             {
                 throw new BadCrcException("CRC error: the file being extracted appears to be corrupted. " +
                                           String.Format("Expected 0x{0:X8}, Actual 0x{1:X8}", this._Crc32, actualCrc32));
@@ -1015,15 +1015,15 @@ namespace OfficeOpenXml.Packaging.Ionic.Zip
             // returns: 0 == extract, 1 = don't, 2 = cancel
             do
             {
-                switch (ExtractExistingFile)
+                switch (this.ExtractExistingFile)
                 {
                     case ExtractExistingFileAction.OverwriteSilently:
-                        WriteStatus("the file {0} exists; will overwrite it...", targetFileName);
+                        this.WriteStatus("the file {0} exists; will overwrite it...", targetFileName);
                         return 0;
 
                     case ExtractExistingFileAction.DoNotOverwrite:
-                        WriteStatus("the file {0} exists; not extracting entry...", FileName);
-                        OnAfterExtract(baseDir);
+                        this.WriteStatus("the file {0} exists; not extracting entry...", this.FileName);
+                        this.OnAfterExtract(baseDir);
                         return 1;
 
                     case ExtractExistingFileAction.InvokeExtractProgressEvent:
@@ -1032,8 +1032,8 @@ namespace OfficeOpenXml.Packaging.Ionic.Zip
                             throw new ZipException(String.Format("The file {0} already exists.", targetFileName));
                         }
 
-                        OnExtractExisting(baseDir);
-                        if (_ioOperationCanceled)
+                        this.OnExtractExisting(baseDir);
+                        if (this._ioOperationCanceled)
                         {
                             return 2;
                         }
@@ -1075,9 +1075,9 @@ namespace OfficeOpenXml.Packaging.Ionic.Zip
                 // change for workitem 8098
                 input.Seek(this.FileDataPosition, SeekOrigin.Begin);
                 // workitem 10178
-                Ionic.Zip.SharedUtilities.Workaround_Ladybug318918(input);
+                SharedUtilities.Workaround_Ladybug318918(input);
 
-                byte[] bytes = new byte[BufferSize];
+                byte[] bytes = new byte[this.BufferSize];
 
                 // The extraction process varies depending on how the entry was
                 // stored.  It could have been encrypted, and it coould have
@@ -1085,18 +1085,18 @@ namespace OfficeOpenXml.Packaging.Ionic.Zip
                 // both the encryption flag and the compression flag, and take
                 // the proper action in all cases.
 
-                Int64 LeftToRead = (_CompressionMethod_FromZipFile != (short)CompressionMethod.None)
+                Int64 LeftToRead = (this._CompressionMethod_FromZipFile != (short)CompressionMethod.None)
                     ? this.UncompressedSize
                     : this._CompressedFileDataSize;
 
                 // Get a stream that either decrypts or not.
-                _inputDecryptorStream = GetExtractDecryptor(input);
+                this._inputDecryptorStream = this.GetExtractDecryptor(input);
 
-                Stream input3 = GetExtractDecompressor( _inputDecryptorStream );
+                Stream input3 = this.GetExtractDecompressor(this._inputDecryptorStream );
 
                 Int64 bytesWritten = 0;
                 // As we read, we maybe decrypt, and then we maybe decompress. Then we write.
-                using CrcCalculatorStream? s1 = new Ionic.Crc.CrcCalculatorStream(input3);
+                using CrcCalculatorStream? s1 = new CrcCalculatorStream(input3);
                 while (LeftToRead > 0)
                 {
                     //Console.WriteLine("ExtractOne: LeftToRead {0}", LeftToRead);
@@ -1108,15 +1108,15 @@ namespace OfficeOpenXml.Packaging.Ionic.Zip
                     int n = s1.Read(bytes, 0, len);
 
                     // must check data read - essential for detecting corrupt zip files
-                    _CheckRead(n);
+                    this._CheckRead(n);
 
                     output.Write(bytes, 0, n);
                     LeftToRead -= n;
                     bytesWritten += n;
 
                     // fire the progress event, check for cancels
-                    OnExtractProgress(bytesWritten, UncompressedSize);
-                    if (_ioOperationCanceled)
+                    this.OnExtractProgress(bytesWritten, this.UncompressedSize);
+                    if (this._ioOperationCanceled)
                     {
                         break;
                     }
@@ -1135,7 +1135,7 @@ namespace OfficeOpenXml.Packaging.Ionic.Zip
                     // need to dispose it
                     zss.Dispose();
 #endif
-                    _archiveStream = null;
+                    this._archiveStream = null;
                 }
             }
 
@@ -1147,12 +1147,12 @@ namespace OfficeOpenXml.Packaging.Ionic.Zip
         internal Stream GetExtractDecompressor(Stream input2)
         {
             // get a stream that either decompresses or not.
-            switch (_CompressionMethod_FromZipFile)
+            switch (this._CompressionMethod_FromZipFile)
             {
                 case (short)CompressionMethod.None:
                     return input2;
                 case (short)CompressionMethod.Deflate:
-                    return new Ionic.Zlib.DeflateStream(input2, Ionic.Zlib.CompressionMode.Decompress, true);
+                    return new Zlib.DeflateStream(input2, Zlib.CompressionMode.Decompress, true);
 #if BZIP
                 case (short)CompressionMethod.BZip2:
                     return new Ionic.BZip2.BZip2InputStream(input2, true);
@@ -1167,7 +1167,7 @@ namespace OfficeOpenXml.Packaging.Ionic.Zip
         internal Stream GetExtractDecryptor(Stream input)
         {
             Stream input2 = null;
-            if (_Encryption_FromZipFile == EncryptionAlgorithm.PkzipWeak)
+            if (this._Encryption_FromZipFile == EncryptionAlgorithm.PkzipWeak)
             {
                 input2 = new ZipCipherStream(input, this._zipCrypto_forExtract, CryptoMode.Decrypt);
             }
@@ -1202,7 +1202,7 @@ namespace OfficeOpenXml.Packaging.Ionic.Zip
 
             try
             {
-                if (_ntfsTimesAreSet)
+                if (this._ntfsTimesAreSet)
                 {
 #if NETCF
                     // workitem 7944: set time should not be a fatal error on CF
@@ -1219,9 +1219,9 @@ namespace OfficeOpenXml.Packaging.Ionic.Zip
                         // the file does not exist.
                         if (File.Exists(fileOrDirectory))
                         {
-                            File.SetCreationTimeUtc(fileOrDirectory, _Ctime);
-                            File.SetLastAccessTimeUtc(fileOrDirectory, _Atime);
-                            File.SetLastWriteTimeUtc(fileOrDirectory, _Mtime);
+                            File.SetCreationTimeUtc(fileOrDirectory, this._Ctime);
+                            File.SetLastAccessTimeUtc(fileOrDirectory, this._Atime);
+                            File.SetLastWriteTimeUtc(fileOrDirectory, this._Mtime);
                         }
                     }
                     else
@@ -1230,9 +1230,9 @@ namespace OfficeOpenXml.Packaging.Ionic.Zip
                         // the directory does not exist.
                         if (Directory.Exists(fileOrDirectory))
                         {
-                            Directory.SetCreationTimeUtc(fileOrDirectory, _Ctime);
-                            Directory.SetLastAccessTimeUtc(fileOrDirectory, _Atime);
-                            Directory.SetLastWriteTimeUtc(fileOrDirectory, _Mtime);
+                            Directory.SetCreationTimeUtc(fileOrDirectory, this._Ctime);
+                            Directory.SetLastAccessTimeUtc(fileOrDirectory, this._Atime);
+                            Directory.SetLastWriteTimeUtc(fileOrDirectory, this._Mtime);
                         }
                     }
 #endif
@@ -1240,7 +1240,7 @@ namespace OfficeOpenXml.Packaging.Ionic.Zip
                 else
                 {
                     // workitem 6191
-                    DateTime AdjustedLastModified = Ionic.Zip.SharedUtilities.AdjustTime_Reverse(LastModified);
+                    DateTime AdjustedLastModified = SharedUtilities.AdjustTime_Reverse(this.LastModified);
 
 #if NETCF
                     int rc = NetCfFile.SetLastWriteTime(fileOrDirectory, AdjustedLastModified);
@@ -1262,9 +1262,9 @@ namespace OfficeOpenXml.Packaging.Ionic.Zip
 #endif
                 }
             }
-            catch (System.IO.IOException ioexc1)
+            catch (IOException ioexc1)
             {
-                WriteStatus("failed to set time on {0}: {1}", fileOrDirectory, ioexc1.Message);
+                this.WriteStatus("failed to set time on {0}: {1}", fileOrDirectory, ioexc1.Message);
             }
 #endif
         }
@@ -1279,7 +1279,7 @@ namespace OfficeOpenXml.Packaging.Ionic.Zip
             get
             {
                 string alg = String.Empty;
-                switch (_UnsupportedAlgorithmId)
+                switch (this._UnsupportedAlgorithmId)
                 {
                     case 0:
                         alg = "--";
@@ -1319,7 +1319,7 @@ namespace OfficeOpenXml.Packaging.Ionic.Zip
                         break;
                     case 0xFFFF: // - Unknown algorithm
                     default:
-                        alg = String.Format("Unknown (0x{0:X4})", _UnsupportedAlgorithmId);
+                        alg = String.Format("Unknown (0x{0:X4})", this._UnsupportedAlgorithmId);
                         break;
                 }
                 return alg;
@@ -1332,7 +1332,7 @@ namespace OfficeOpenXml.Packaging.Ionic.Zip
             get
             {
                 string meth = String.Empty;
-                switch ((int)_CompressionMethod)
+                switch ((int)this._CompressionMethod)
                 {
                     case 0:
                         meth = "Store";
@@ -1359,7 +1359,7 @@ namespace OfficeOpenXml.Packaging.Ionic.Zip
                         meth = "PPMd";
                         break;
                     default:
-                        meth = String.Format("Unknown (0x{0:X4})", _CompressionMethod);
+                        meth = String.Format("Unknown (0x{0:X4})", this._CompressionMethod);
                         break;
                 }
                 return meth;
@@ -1369,15 +1369,15 @@ namespace OfficeOpenXml.Packaging.Ionic.Zip
 
         internal void ValidateEncryption()
         {
-            if (Encryption != EncryptionAlgorithm.PkzipWeak &&
+            if (this.Encryption != EncryptionAlgorithm.PkzipWeak &&
 #if AESCRYPTO
  Encryption != EncryptionAlgorithm.WinZipAes128 &&
                 Encryption != EncryptionAlgorithm.WinZipAes256 &&
 #endif
- Encryption != EncryptionAlgorithm.None)
+                this.Encryption != EncryptionAlgorithm.None)
             {
                 // workitem 7968
-                if (_UnsupportedAlgorithmId != 0)
+                if (this._UnsupportedAlgorithmId != 0)
                 {
                     throw new ZipException(String.Format("Cannot extract: Entry {0} is encrypted with an algorithm not supported by DotNetZip: {1}",
                                                          this.FileName, this.UnsupportedAlgorithm));
@@ -1393,8 +1393,8 @@ namespace OfficeOpenXml.Packaging.Ionic.Zip
 
         private void ValidateCompression()
         {
-            if ((_CompressionMethod_FromZipFile != (short)CompressionMethod.None) &&
-                (_CompressionMethod_FromZipFile != (short)CompressionMethod.Deflate)
+            if ((this._CompressionMethod_FromZipFile != (short)CompressionMethod.None) &&
+                (this._CompressionMethod_FromZipFile != (short)CompressionMethod.Deflate)
 #if BZIP
                 && (_CompressionMethod_FromZipFile != (short)CompressionMethod.BZip2)
 #endif
@@ -1409,12 +1409,12 @@ namespace OfficeOpenXml.Packaging.Ionic.Zip
         private void SetupCryptoForExtract(string password)
         {
             //if (password == null) return;
-            if (_Encryption_FromZipFile == EncryptionAlgorithm.None)
+            if (this._Encryption_FromZipFile == EncryptionAlgorithm.None)
             {
                 return;
             }
 
-            if (_Encryption_FromZipFile == EncryptionAlgorithm.PkzipWeak)
+            if (this._Encryption_FromZipFile == EncryptionAlgorithm.PkzipWeak)
             {
                 if (password == null)
                 {
@@ -1423,8 +1423,8 @@ namespace OfficeOpenXml.Packaging.Ionic.Zip
 
                 this.ArchiveStream.Seek(this.FileDataPosition - 12, SeekOrigin.Begin);
                 // workitem 10178
-                Ionic.Zip.SharedUtilities.Workaround_Ladybug318918(this.ArchiveStream);
-                _zipCrypto_forExtract = ZipCrypto.ForRead(password, this);
+                SharedUtilities.Workaround_Ladybug318918(this.ArchiveStream);
+                this._zipCrypto_forExtract = ZipCrypto.ForRead(password, this);
             }
 
 #if AESCRYPTO
@@ -1484,7 +1484,7 @@ namespace OfficeOpenXml.Packaging.Ionic.Zip
 
                 // String.Contains is not available on .NET CF 2.0
 
-                if (_container.ZipFile.FlattenFoldersOnExtract)
+                if (this._container.ZipFile.FlattenFoldersOnExtract)
                 {
                     outFileName = Path.Combine(basedir,
                                                (f.IndexOf('/') != -1) ? Path.GetFileName(f) : f);
@@ -1498,17 +1498,17 @@ namespace OfficeOpenXml.Packaging.Ionic.Zip
                 outFileName = outFileName.Replace("/","\\");
 
                 // check if it is a directory
-                if ((IsDirectory) || (FileName.EndsWith("/")))
+                if ((this.IsDirectory) || (this.FileName.EndsWith("/")))
                 {
                     if (!Directory.Exists(outFileName))
                     {
                         Directory.CreateDirectory(outFileName);
-                        _SetTimes(outFileName, false);
+                        this._SetTimes(outFileName, false);
                     }
                     else
                     {
                         // the dir exists, maybe we want to overwrite times.
-                        if (ExtractExistingFile == ExtractExistingFileAction.OverwriteSilently)
+                        if (this.ExtractExistingFile == ExtractExistingFileAction.OverwriteSilently)
                         {
                             this._SetTimes(outFileName, false);
                         }
@@ -1521,7 +1521,7 @@ namespace OfficeOpenXml.Packaging.Ionic.Zip
             if (outstream != null)
             {
                 outFileName = null;
-                if ((IsDirectory) || (FileName.EndsWith("/")))
+                if ((this.IsDirectory) || (this.FileName.EndsWith("/")))
                 {
                     // extract a directory to streamwriter?  nothing to do!
                     return true;  // true == all done!  caller can return

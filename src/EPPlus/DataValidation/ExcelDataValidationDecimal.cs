@@ -31,8 +31,8 @@ namespace OfficeOpenXml.DataValidation
         internal ExcelDataValidationDecimal(string uid, string address, ExcelWorksheet ws)
             : base(uid, address, ws)
         {
-            Formula = new ExcelDataValidationFormulaDecimal(null, uid, ws.Name, OnFormulaChanged);
-            Formula2 = new ExcelDataValidationFormulaDecimal(null, uid, ws.Name, OnFormulaChanged);
+            this.Formula = new ExcelDataValidationFormulaDecimal(null, uid, ws.Name, this.OnFormulaChanged);
+            this.Formula2 = new ExcelDataValidationFormulaDecimal(null, uid, ws.Name, this.OnFormulaChanged);
         }
 
         /// <summary>
@@ -50,8 +50,8 @@ namespace OfficeOpenXml.DataValidation
         /// <param name="copy"></param>
         internal ExcelDataValidationDecimal(ExcelDataValidationDecimal copy, ExcelWorksheet ws) : base(copy, ws)
         {
-            Formula = copy.Formula;
-            Formula2 = copy.Formula2;
+            this.Formula = copy.Formula;
+            this.Formula2 = copy.Formula2;
         }
 
         /// <summary>
@@ -61,12 +61,12 @@ namespace OfficeOpenXml.DataValidation
 
         internal override IExcelDataValidationFormulaDecimal DefineFormulaClassType(string formulaValue, string sheetName)
         {
-            return new ExcelDataValidationFormulaDecimal(formulaValue, Uid, sheetName, OnFormulaChanged);
+            return new ExcelDataValidationFormulaDecimal(formulaValue, this.Uid, sheetName, this.OnFormulaChanged);
         }
 
         internal override ExcelDataValidation GetClone()
         {
-            return new ExcelDataValidationDecimal(this, _ws);
+            return new ExcelDataValidationDecimal(this, this._ws);
         }
 
         internal override ExcelDataValidation GetClone(ExcelWorksheet copy)
@@ -76,7 +76,7 @@ namespace OfficeOpenXml.DataValidation
 
         ExcelDataValidationDecimal Clone()
         {
-            return (ExcelDataValidationDecimal)GetClone();
+            return (ExcelDataValidationDecimal)this.GetClone();
         }
     }
 }

@@ -15,52 +15,53 @@ namespace OfficeOpenXml
         private JsonRangeExportSettings _settings;
         internal JsonRangeExport(ExcelRangeBase range, JsonRangeExportSettings settings) : base(settings)
         {
-            _range = range;
-            _settings = settings;
+            this._range = range;
+            this._settings = settings;
         }
         internal void Export(Stream stream)
         {
             StreamWriter? sw = new StreamWriter(stream);
-            WriteStart(sw);
-            WriteItem(sw, $"\"{_settings.RootElementName}\":");
-            WriteStart(sw);
-            if (_settings.FirstRowIsHeader || (_settings.AddDataTypesOn==eDataTypeOn.OnColumn && _range.Rows>1))
+            this.WriteStart(sw);
+            this.WriteItem(sw, $"\"{this._settings.RootElementName}\":");
+            this.WriteStart(sw);
+            if (this._settings.FirstRowIsHeader || (this._settings.AddDataTypesOn==eDataTypeOn.OnColumn && this._range.Rows>1))
             {
-                WriteColumnData(sw);
+                this.WriteColumnData(sw);
             }
-            WriteCellData(sw, _range, _settings.FirstRowIsHeader ? 1 : 0);
+
+            this.WriteCellData(sw, this._range, this._settings.FirstRowIsHeader ? 1 : 0);
             sw.Write("}");
             sw.Flush();
         }
 
         private void WriteColumnData(StreamWriter sw)
         {
-            WriteItem(sw, $"\"{_settings.ColumnsElementName}\":[", true);
-            for (int i = 0; i < _range.Columns; i++)
+            this.WriteItem(sw, $"\"{this._settings.ColumnsElementName}\":[", true);
+            for (int i = 0; i < this._range.Columns; i++)
             {
                 //if (i > 0) sw.Write(",");
                 //sw.Write("{");
-                WriteStart(sw);
-                if (_settings.FirstRowIsHeader)
+                this.WriteStart(sw);
+                if (this._settings.FirstRowIsHeader)
                 {
-                    WriteItem(sw, $"\"name\":\"{_range.GetCellValue<string>(0,i)}\"", false, _settings.AddDataTypesOn == eDataTypeOn.OnColumn);
+                    this.WriteItem(sw, $"\"name\":\"{this._range.GetCellValue<string>(0,i)}\"", false, this._settings.AddDataTypesOn == eDataTypeOn.OnColumn);
                 }
-                if (_settings.AddDataTypesOn==eDataTypeOn.OnColumn)
+                if (this._settings.AddDataTypesOn==eDataTypeOn.OnColumn)
                 {
-                    string? dt = HtmlRawDataProvider.GetHtmlDataTypeFromValue(_range.GetCellValue<object>(1, i));
-                    WriteItem(sw, $"\"dt\":\"{dt}\"");
+                    string? dt = HtmlRawDataProvider.GetHtmlDataTypeFromValue(this._range.GetCellValue<object>(1, i));
+                    this.WriteItem(sw, $"\"dt\":\"{dt}\"");
                 }
-                if (i == _range.Columns - 1)
+                if (i == this._range.Columns - 1)
                 {
-                    WriteEnd(sw, "}");
+                    this.WriteEnd(sw, "}");
                 }
                 else
                 {
-                    WriteEnd(sw, "},");
+                    this.WriteEnd(sw, "},");
                 }
             }
 
-            WriteEnd(sw, "],");
+            this.WriteEnd(sw, "],");
         }
     }
 }

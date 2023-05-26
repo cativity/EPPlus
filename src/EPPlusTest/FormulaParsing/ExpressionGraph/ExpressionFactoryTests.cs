@@ -47,16 +47,16 @@ namespace EPPlusTest.FormulaParsing.ExpressionGraph
         [TestInitialize]
         public void Setup()
         {
-            _parsingContext = ParsingContext.Create();
+            this._parsingContext = ParsingContext.Create();
             ExcelDataProvider? provider = A.Fake<ExcelDataProvider>();
-            _factory = new ExpressionFactory(provider, _parsingContext);
+            this._factory = new ExpressionFactory(provider, this._parsingContext);
         }
 
         [TestMethod]
         public void ShouldReturnIntegerExpressionWhenTokenIsInteger()
         {
             Token token = new Token("2", TokenType.Integer);
-            Expression? expression = _factory.Create(token);
+            Expression? expression = this._factory.Create(token);
             Assert.IsInstanceOfType(expression, typeof(IntegerExpression));
         }
 
@@ -64,7 +64,7 @@ namespace EPPlusTest.FormulaParsing.ExpressionGraph
         public void ShouldReturnBooleanExpressionWhenTokenIsBoolean()
         {
             Token token = new Token("true", TokenType.Boolean);
-            Expression? expression = _factory.Create(token);
+            Expression? expression = this._factory.Create(token);
             Assert.IsInstanceOfType(expression, typeof(BooleanExpression));
         }
 
@@ -72,7 +72,7 @@ namespace EPPlusTest.FormulaParsing.ExpressionGraph
         public void ShouldReturnDecimalExpressionWhenTokenIsDecimal()
         {
             Token token = new Token("2.5", TokenType.Decimal);
-            Expression? expression = _factory.Create(token);
+            Expression? expression = this._factory.Create(token);
             Assert.IsInstanceOfType(expression, typeof(DecimalExpression));
         }
 
@@ -80,7 +80,7 @@ namespace EPPlusTest.FormulaParsing.ExpressionGraph
         public void ShouldReturnExcelRangeExpressionWhenTokenIsExcelAddress()
         {
             Token token = new Token("A1", TokenType.ExcelAddress);
-            Expression? expression = _factory.Create(token);
+            Expression? expression = this._factory.Create(token);
             Assert.IsInstanceOfType(expression, typeof(ExcelAddressExpression));
         }
 
@@ -88,7 +88,7 @@ namespace EPPlusTest.FormulaParsing.ExpressionGraph
         public void ShouldReturnNamedValueExpressionWhenTokenIsNamedValue()
         {
             Token token = new Token("NamedValue", TokenType.NameValue);
-            Expression? expression = _factory.Create(token);
+            Expression? expression = this._factory.Create(token);
             Assert.IsInstanceOfType(expression, typeof(NamedValueExpression));
         }
     }

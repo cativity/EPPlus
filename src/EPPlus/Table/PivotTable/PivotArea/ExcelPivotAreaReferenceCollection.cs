@@ -25,8 +25,8 @@ namespace OfficeOpenXml.Table.PivotTable
         ExcelPivotTable _pt;
         internal ExcelPivotAreaReferenceCollection(XmlNamespaceManager nsm, XmlNode topNode, ExcelPivotTable pt)
         {
-            _xmlHelper = XmlHelperFactory.Create(nsm, topNode);
-            _pt = pt;
+            this._xmlHelper = XmlHelperFactory.Create(nsm, topNode);
+            this._pt = pt;
         }
         /// <summary>
         /// Adds a pivot table field to the collection. The field is usually a column or row field
@@ -35,7 +35,7 @@ namespace OfficeOpenXml.Table.PivotTable
         /// <returns>The pivot area reference</returns>
         public ExcelPivotAreaReference Add(ExcelPivotTableField field)
         {
-            return Add(field._pivotTable, field.Index);
+            return this.Add(field._pivotTable, field.Index);
         }
         /// <summary>
         /// Adds a pivot table field to the collection. The field is usually a column or row field
@@ -45,14 +45,14 @@ namespace OfficeOpenXml.Table.PivotTable
         /// <returns></returns>
         public ExcelPivotAreaReference Add(ExcelPivotTable pivotTable, int fieldIndex)
         {
-            XmlNode? n = _xmlHelper.CreateNode("d:references");
-            XmlNode? rn=_xmlHelper.CreateNode(n, "d:reference", true);
-            if(pivotTable!=_pt)
+            XmlNode? n = this._xmlHelper.CreateNode("d:references");
+            XmlNode? rn= this._xmlHelper.CreateNode(n, "d:reference", true);
+            if(pivotTable!= this._pt)
             {
                 throw new InvalidOperationException("The pivot table field is from another pivot table.");
             }
-            ExcelPivotAreaReference? r =new ExcelPivotAreaReference(_xmlHelper.NameSpaceManager, rn, pivotTable, fieldIndex);            
-            _list.Add(r);
+            ExcelPivotAreaReference? r =new ExcelPivotAreaReference(this._xmlHelper.NameSpaceManager, rn, pivotTable, fieldIndex);
+            this._list.Add(r);
             return r;
         }
     }

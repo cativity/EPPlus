@@ -44,10 +44,10 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Math
 
         protected double[] GetNumbersFromArgs(IEnumerable<FunctionArgument> arguments, int index, ParsingContext context)
         {
-            double[]? array = ArgsToDoubleEnumerable(new FunctionArgument[] { arguments.ElementAt(index) }, context)
-                              .Select(x => (double)x)
-                              .OrderBy(x => x)
-                              .ToArray();
+            double[]? array = this.ArgsToDoubleEnumerable(new FunctionArgument[] { arguments.ElementAt(index) }, context)
+                                  .Select(x => (double)x)
+                                  .OrderBy(x => x)
+                                  .ToArray();
             return array;
         }
 

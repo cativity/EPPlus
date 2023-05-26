@@ -51,11 +51,11 @@ namespace OfficeOpenXml.Drawing.Chart
         {
             get
             {
-                return _chartXmlHelper.GetXmlNodeDecimal(_firstSliceAngPath);
+                return this._chartXmlHelper.GetXmlNodeDecimal(this._firstSliceAngPath);
             }
             internal set
             {
-                _chartXmlHelper.SetXmlNodeString(_firstSliceAngPath, value.ToString(CultureInfo.InvariantCulture));
+                this._chartXmlHelper.SetXmlNodeString(this._firstSliceAngPath, value.ToString(CultureInfo.InvariantCulture));
             }
         }
         //string _holeSizePath = "c:chartSpace/c:chart/c:plotArea/{0}/c:holeSize/@val";
@@ -67,18 +67,18 @@ namespace OfficeOpenXml.Drawing.Chart
         {
             get
             {
-                return _chartXmlHelper.GetXmlNodeDecimal(_holeSizePath);
+                return this._chartXmlHelper.GetXmlNodeDecimal(this._holeSizePath);
             }
             internal set
             {
-                _chartXmlHelper.SetXmlNodeString(_holeSizePath, value.ToString(CultureInfo.InvariantCulture));
+                this._chartXmlHelper.SetXmlNodeString(this._holeSizePath, value.ToString(CultureInfo.InvariantCulture));
             }
         }
         internal override eChartType GetChartType(string name)
         {
             if (name == "doughnutChart")
             {
-                if (Series.Count > 0 && Series[0].Explosion > 0)
+                if (this.Series.Count > 0 && this.Series[0].Explosion > 0)
                 {
                     return eChartType.DoughnutExploded;
                 }

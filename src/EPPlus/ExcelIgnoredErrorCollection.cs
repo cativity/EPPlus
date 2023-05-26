@@ -28,9 +28,9 @@ namespace OfficeOpenXml
         private List<ExcelIgnoredError> _list = new List<ExcelIgnoredError>();
         internal ExcelIgnoredErrorCollection(ExcelPackage package, ExcelWorksheet excelWorksheet, XmlNamespaceManager nameSpaceManager)
         {
-            _package = package;
-            _excelWorksheet = excelWorksheet;
-            _nameSpaceManager = nameSpaceManager;
+            this._package = package;
+            this._excelWorksheet = excelWorksheet;
+            this._nameSpaceManager = nameSpaceManager;
         }
         /// <summary>
         /// Indexer for the collection
@@ -41,11 +41,11 @@ namespace OfficeOpenXml
         {
             get
             {
-                if(Index<0 || Index>_list.Count)
+                if(Index<0 || Index> this._list.Count)
                 {
                     throw new ArgumentOutOfRangeException("Index");
                 }
-                return _list[Index];
+                return this._list[Index];
             }
         }
         /// <summary>
@@ -55,7 +55,7 @@ namespace OfficeOpenXml
         {
             get
             {
-                return _list.Count;
+                return this._list.Count;
             }
         }
         /// <summary>
@@ -64,7 +64,7 @@ namespace OfficeOpenXml
         /// <returns>The enumerator</returns>
         IEnumerator IEnumerable.GetEnumerator()
         {
-            return _list.GetEnumerator();
+            return this._list.GetEnumerator();
         }
         /// <summary>
         /// Adds an IgnoreError item to the collection
@@ -74,10 +74,10 @@ namespace OfficeOpenXml
         public ExcelIgnoredError Add(ExcelAddressBase address)
         {
 
-            XmlElement? node = _excelWorksheet.WorksheetXml.CreateElement("ignoredError", ExcelPackage.schemaMain);
-            TopNode.AppendChild(node);
-            ExcelIgnoredError? item = new ExcelIgnoredError(_nameSpaceManager, node, address);
-            _list.Add(item);
+            XmlElement? node = this._excelWorksheet.WorksheetXml.CreateElement("ignoredError", ExcelPackage.schemaMain);
+            this.TopNode.AppendChild(node);
+            ExcelIgnoredError? item = new ExcelIgnoredError(this._nameSpaceManager, node, address);
+            this._list.Add(item);
             return item;
         }
         XmlNode _topNode=null;
@@ -85,11 +85,11 @@ namespace OfficeOpenXml
         {
             get
             {
-                if(_topNode==null)
+                if(this._topNode==null)
                 {
-                    _topNode=_excelWorksheet.CreateNode("d:ignoredErrors");
+                    this._topNode= this._excelWorksheet.CreateNode("d:ignoredErrors");
                 }   
-                return _topNode;
+                return this._topNode;
             }
         }
         /// <summary>
@@ -98,7 +98,7 @@ namespace OfficeOpenXml
         /// <returns>The enumerator</returns>
         IEnumerator<ExcelIgnoredError> IEnumerable<ExcelIgnoredError>.GetEnumerator()
         {
-            return _list.GetEnumerator();
+            return this._list.GetEnumerator();
         }
         /// <summary>
         /// Called when the class is disposed.

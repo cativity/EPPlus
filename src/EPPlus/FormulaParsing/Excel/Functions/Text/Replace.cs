@@ -29,13 +29,13 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Text
         {
             ValidateArguments(arguments, 4);
             string? oldText = ArgToString(arguments, 0);
-            int startPos = ArgToInt(arguments, 1);
-            int nCharsToReplace = ArgToInt(arguments, 2);
+            int startPos = this.ArgToInt(arguments, 1);
+            int nCharsToReplace = this.ArgToInt(arguments, 2);
             string? newText = ArgToString(arguments, 3);
             string? firstPart = GetFirstPart(oldText, startPos);
             string? lastPart = GetLastPart(oldText, startPos, nCharsToReplace);
             string? result = string.Concat(firstPart, newText, lastPart);
-            return CreateResult(result, DataType.String);
+            return this.CreateResult(result, DataType.String);
         }
 
         private static string GetFirstPart(string text, int startPos)

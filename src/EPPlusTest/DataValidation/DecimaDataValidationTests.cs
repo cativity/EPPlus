@@ -40,27 +40,27 @@ namespace EPPlusTest.DataValidation
         [TestInitialize]
         public void Setup()
         {
-            SetupTestData();
-            _validation = _package.Workbook.Worksheets[1].DataValidations.AddDecimalValidation("A1");
+            this.SetupTestData();
+            this._validation = this._package.Workbook.Worksheets[1].DataValidations.AddDecimalValidation("A1");
         }
 
         [TestCleanup]
         public void Cleanup()
         {
-            CleanupTestData();
-            _validation = null;
+            this.CleanupTestData();
+            this._validation = null;
         }
 
         [TestMethod]
         public void DecimalDataValidation_Formula1IsSet()
         {
-            Assert.IsNotNull(_validation.Formula);
+            Assert.IsNotNull(this._validation.Formula);
         }
 
         [TestMethod]
         public void DecimalDataValidation_Formula2IsSet()
         {
-            Assert.IsNotNull(_validation.Formula2);
+            Assert.IsNotNull(this._validation.Formula2);
         }
     }
 }

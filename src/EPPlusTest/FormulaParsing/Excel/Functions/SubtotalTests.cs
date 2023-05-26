@@ -52,8 +52,8 @@ namespace EPPlusTest.Excel.Functions
         [TestInitialize]
         public void Setup()
         {
-            _context = ParsingContext.Create();
-            _context.Scopes.NewScope(RangeAddress.Empty);
+            this._context = ParsingContext.Create();
+            this._context.Scopes.NewScope(RangeAddress.Empty);
         }
 
         [TestMethod, ExpectedException(typeof(ExcelErrorValueException))]
@@ -61,7 +61,7 @@ namespace EPPlusTest.Excel.Functions
         {
             Subtotal? func = new Subtotal();
             IEnumerable<FunctionArgument>? args = FunctionsHelper.CreateArgs(139, 1);
-            func.Execute(args, _context);
+            func.Execute(args, this._context);
         }
 
         [TestMethod]
@@ -69,7 +69,7 @@ namespace EPPlusTest.Excel.Functions
         {
             Subtotal? func = new Subtotal();
             IEnumerable<FunctionArgument>? args = FunctionsHelper.CreateArgs(1, 10, 20, 30, 40, 50);
-            CompileResult? result = func.Execute(args, _context);
+            CompileResult? result = func.Execute(args, this._context);
             Assert.AreEqual(30d, result.Result);
         }
 
@@ -78,7 +78,7 @@ namespace EPPlusTest.Excel.Functions
         {
             Subtotal? func = new Subtotal();
             IEnumerable<FunctionArgument>? args = FunctionsHelper.CreateArgs(2, 10, 20, 30, 40, 50);
-            CompileResult? result = func.Execute(args, _context);
+            CompileResult? result = func.Execute(args, this._context);
             Assert.AreEqual(5d, result.Result);
         }
 
@@ -87,7 +87,7 @@ namespace EPPlusTest.Excel.Functions
         {
             Subtotal? func = new Subtotal();
             IEnumerable<FunctionArgument>? args = FunctionsHelper.CreateArgs(3, 10, 20, 30, 40, 50);
-            CompileResult? result = func.Execute(args, _context);
+            CompileResult? result = func.Execute(args, this._context);
             Assert.AreEqual(5d, result.Result);
         }
 
@@ -96,7 +96,7 @@ namespace EPPlusTest.Excel.Functions
         {
             Subtotal? func = new Subtotal();
             IEnumerable<FunctionArgument>? args = FunctionsHelper.CreateArgs(4, 10, 20, 30, 40, 50);
-            CompileResult? result = func.Execute(args, _context);
+            CompileResult? result = func.Execute(args, this._context);
             Assert.AreEqual(50d, result.Result);
         }
 
@@ -105,7 +105,7 @@ namespace EPPlusTest.Excel.Functions
         {
             Subtotal? func = new Subtotal();
             IEnumerable<FunctionArgument>? args = FunctionsHelper.CreateArgs(5, 10, 20, 30, 40, 50);
-            CompileResult? result = func.Execute(args, _context);
+            CompileResult? result = func.Execute(args, this._context);
             Assert.AreEqual(10d, result.Result);
         }
 
@@ -114,7 +114,7 @@ namespace EPPlusTest.Excel.Functions
         {
             Subtotal? func = new Subtotal();
             IEnumerable<FunctionArgument>? args = FunctionsHelper.CreateArgs(6, 10, 20, 30, 40, 50);
-            CompileResult? result = func.Execute(args, _context);
+            CompileResult? result = func.Execute(args, this._context);
             Assert.AreEqual(12000000d, result.Result);
         }
 
@@ -123,7 +123,7 @@ namespace EPPlusTest.Excel.Functions
         {
             Subtotal? func = new Subtotal();
             IEnumerable<FunctionArgument>? args = FunctionsHelper.CreateArgs(7, 10, 20, 30, 40, 50);
-            CompileResult? result = func.Execute(args, _context);
+            CompileResult? result = func.Execute(args, this._context);
             double resultRounded = Math.Round((double)result.Result, 5);
             Assert.AreEqual(15.81139d, resultRounded);
         }
@@ -133,7 +133,7 @@ namespace EPPlusTest.Excel.Functions
         {
             Subtotal? func = new Subtotal();
             IEnumerable<FunctionArgument>? args = FunctionsHelper.CreateArgs(8, 10, 20, 30, 40, 50);
-            CompileResult? result = func.Execute(args, _context);
+            CompileResult? result = func.Execute(args, this._context);
             double resultRounded = Math.Round((double)result.Result, 8);
             Assert.AreEqual(14.14213562, resultRounded);
         }
@@ -143,7 +143,7 @@ namespace EPPlusTest.Excel.Functions
         {
             Subtotal? func = new Subtotal();
             IEnumerable<FunctionArgument>? args = FunctionsHelper.CreateArgs(9, 10, 20, 30, 40, 50);
-            CompileResult? result = func.Execute(args, _context);
+            CompileResult? result = func.Execute(args, this._context);
             Assert.AreEqual(150d, result.Result);
         }
 
@@ -152,7 +152,7 @@ namespace EPPlusTest.Excel.Functions
         {
             Subtotal? func = new Subtotal();
             IEnumerable<FunctionArgument>? args = FunctionsHelper.CreateArgs(10, 10, 20, 30, 40, 50);
-            CompileResult? result = func.Execute(args, _context);
+            CompileResult? result = func.Execute(args, this._context);
             Assert.AreEqual(250d, result.Result);
         }
 
@@ -161,7 +161,7 @@ namespace EPPlusTest.Excel.Functions
         {
             Subtotal? func = new Subtotal();
             IEnumerable<FunctionArgument>? args = FunctionsHelper.CreateArgs(11, 10, 20, 30, 40, 50);
-            CompileResult? result = func.Execute(args, _context);
+            CompileResult? result = func.Execute(args, this._context);
             Assert.AreEqual(200d, result.Result);
         }
 
@@ -170,7 +170,7 @@ namespace EPPlusTest.Excel.Functions
         {
             Subtotal? func = new Subtotal();
             IEnumerable<FunctionArgument>? args = FunctionsHelper.CreateArgs(101, 10, 20, 30, 40, 50);
-            CompileResult? result = func.Execute(args, _context);
+            CompileResult? result = func.Execute(args, this._context);
             Assert.AreEqual(30d, result.Result);
         }
 
@@ -179,7 +179,7 @@ namespace EPPlusTest.Excel.Functions
         {
             Subtotal? func = new Subtotal();
             IEnumerable<FunctionArgument>? args = FunctionsHelper.CreateArgs(102, 10, 20, 30, 40, 50);
-            CompileResult? result = func.Execute(args, _context);
+            CompileResult? result = func.Execute(args, this._context);
             Assert.AreEqual(5d, result.Result);
         }
 
@@ -188,7 +188,7 @@ namespace EPPlusTest.Excel.Functions
         {
             Subtotal? func = new Subtotal();
             IEnumerable<FunctionArgument>? args = FunctionsHelper.CreateArgs(103, 10, 20, 30, 40, 50);
-            CompileResult? result = func.Execute(args, _context);
+            CompileResult? result = func.Execute(args, this._context);
             Assert.AreEqual(5d, result.Result);
         }
 
@@ -197,7 +197,7 @@ namespace EPPlusTest.Excel.Functions
         {
             Subtotal? func = new Subtotal();
             IEnumerable<FunctionArgument>? args = FunctionsHelper.CreateArgs(104, 10, 20, 30, 40, 50);
-            CompileResult? result = func.Execute(args, _context);
+            CompileResult? result = func.Execute(args, this._context);
             Assert.AreEqual(50d, result.Result);
         }
 
@@ -206,7 +206,7 @@ namespace EPPlusTest.Excel.Functions
         {
             Subtotal? func = new Subtotal();
             IEnumerable<FunctionArgument>? args = FunctionsHelper.CreateArgs(105, 10, 20, 30, 40, 50);
-            CompileResult? result = func.Execute(args, _context);
+            CompileResult? result = func.Execute(args, this._context);
             Assert.AreEqual(10d, result.Result);
         }
 
@@ -215,7 +215,7 @@ namespace EPPlusTest.Excel.Functions
         {
             Subtotal? func = new Subtotal();
             IEnumerable<FunctionArgument>? args = FunctionsHelper.CreateArgs(106, 10, 20, 30, 40, 50);
-            CompileResult? result = func.Execute(args, _context);
+            CompileResult? result = func.Execute(args, this._context);
             Assert.AreEqual(12000000d, result.Result);
         }
 
@@ -224,7 +224,7 @@ namespace EPPlusTest.Excel.Functions
         {
             Subtotal? func = new Subtotal();
             IEnumerable<FunctionArgument>? args = FunctionsHelper.CreateArgs(107, 10, 20, 30, 40, 50);
-            CompileResult? result = func.Execute(args, _context);
+            CompileResult? result = func.Execute(args, this._context);
             double resultRounded = Math.Round((double)result.Result, 5);
             Assert.AreEqual(15.81139d, resultRounded);
         }
@@ -234,7 +234,7 @@ namespace EPPlusTest.Excel.Functions
         {
             Subtotal? func = new Subtotal();
             IEnumerable<FunctionArgument>? args = FunctionsHelper.CreateArgs(108, 10, 20, 30, 40, 50);
-            CompileResult? result = func.Execute(args, _context);
+            CompileResult? result = func.Execute(args, this._context);
             double resultRounded = Math.Round((double)result.Result, 8);
             Assert.AreEqual(14.14213562, resultRounded);
         }
@@ -244,7 +244,7 @@ namespace EPPlusTest.Excel.Functions
         {
             Subtotal? func = new Subtotal();
             IEnumerable<FunctionArgument>? args = FunctionsHelper.CreateArgs(109, 10, 20, 30, 40, 50);
-            CompileResult? result = func.Execute(args, _context);
+            CompileResult? result = func.Execute(args, this._context);
             Assert.AreEqual(150d, result.Result);
         }
 
@@ -254,7 +254,7 @@ namespace EPPlusTest.Excel.Functions
             Subtotal? func = new Subtotal();
             IEnumerable<FunctionArgument>? args = FunctionsHelper.CreateArgs(110, 10, 20, 30, 40, 50, 51);
             args.Last().SetExcelStateFlag(ExcelCellState.HiddenCell);
-            CompileResult? result = func.Execute(args, _context);
+            CompileResult? result = func.Execute(args, this._context);
             Assert.AreEqual(250d, result.Result);
         }
 
@@ -263,7 +263,7 @@ namespace EPPlusTest.Excel.Functions
         {
             Subtotal? func = new Subtotal();
             IEnumerable<FunctionArgument>? args = FunctionsHelper.CreateArgs(111, 10, 20, 30, 40, 50);
-            CompileResult? result = func.Execute(args, _context);
+            CompileResult? result = func.Execute(args, this._context);
             Assert.AreEqual(200d, result.Result);
         }
 

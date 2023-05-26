@@ -66,11 +66,11 @@ namespace OfficeOpenXml.Style.Dxf
         { 
             get
             {
-                return _numFmtID;
+                return this._numFmtID;
             }
             internal set
             {
-                _numFmtID = value;
+                this._numFmtID = value;
             }
         }
         string _format="";
@@ -81,13 +81,13 @@ namespace OfficeOpenXml.Style.Dxf
         { 
             get
             {
-                return _format;
+                return this._format;
             }
             set
             {
-                _format = value;
-                NumFmtID = ExcelNumberFormat.GetFromBuildIdFromFormat(value);
-                _callback?.Invoke(eStyleClass.Numberformat, eStyleProperty.Format, value);
+                this._format = value;
+                this.NumFmtID = ExcelNumberFormat.GetFromBuildIdFromFormat(value);
+                this._callback?.Invoke(eStyleClass.Numberformat, eStyleProperty.Format, value);
             }
         }
 
@@ -98,7 +98,7 @@ namespace OfficeOpenXml.Style.Dxf
         {
             get
             {
-                return Format;
+                return this.Format;
             }
         }
 
@@ -109,13 +109,13 @@ namespace OfficeOpenXml.Style.Dxf
         /// <param name="path">The X Path</param>
         internal override void CreateNodes(XmlHelper helper, string path)
         {
-            if (NumFmtID < 0 && !string.IsNullOrEmpty(Format))
+            if (this.NumFmtID < 0 && !string.IsNullOrEmpty(this.Format))
             {
-                NumFmtID = _styles._nextDfxNumFmtID++;
+                this.NumFmtID = this._styles._nextDfxNumFmtID++;
             }
             helper.CreateNode(path);
-            SetValue(helper, path + "/@numFmtId", NumFmtID);
-            SetValue(helper, path + "/@formatCode", Format);
+            SetValue(helper, path + "/@numFmtId", this.NumFmtID);
+            SetValue(helper, path + "/@formatCode", this.Format);
         }
         /// <summary>
         /// If the object has any properties set
@@ -124,7 +124,7 @@ namespace OfficeOpenXml.Style.Dxf
         {
             get 
             { 
-                return !string.IsNullOrEmpty(Format) && NumFmtID!=0; 
+                return !string.IsNullOrEmpty(this.Format) && this.NumFmtID!=0; 
             }
         }
         /// <summary>
@@ -132,8 +132,8 @@ namespace OfficeOpenXml.Style.Dxf
         /// </summary>
         public override void Clear()
         {
-            Format = null;
-            NumFmtID = int.MinValue;
+            this.Format = null;
+            this.NumFmtID = int.MinValue;
         }
         /// <summary>
         /// Clone the object
@@ -141,25 +141,25 @@ namespace OfficeOpenXml.Style.Dxf
         /// <returns>A new instance of the object</returns>
         internal override DxfStyleBase Clone()
         {
-            return new ExcelDxfNumberFormat(_styles, _callback) { NumFmtID = NumFmtID, Format = Format };
+            return new ExcelDxfNumberFormat(this._styles, this._callback) { NumFmtID = this.NumFmtID, Format = this.Format };
         }
         internal override void SetValuesFromXml(XmlHelper helper)
         {
             if (helper.ExistsNode("d:numFmt"))
             {
-                NumFmtID = helper.GetXmlNodeInt("d:numFmt/@numFmtId");
-                Format = helper.GetXmlNodeString("d:numFmt/@formatCode");
-                if (NumFmtID < 164 && string.IsNullOrEmpty(Format))
+                this.NumFmtID = helper.GetXmlNodeInt("d:numFmt/@numFmtId");
+                this.Format = helper.GetXmlNodeString("d:numFmt/@formatCode");
+                if (this.NumFmtID < 164 && string.IsNullOrEmpty(this.Format))
                 {
-                    Format = ExcelNumberFormat.GetFromBuildInFromID(NumFmtID);
+                    this.Format = ExcelNumberFormat.GetFromBuildInFromID(this.NumFmtID);
                 }
             }
         }
         internal override void SetStyle()
         {
-            if (_callback != null)
+            if (this._callback != null)
             {
-                _callback?.Invoke(eStyleClass.Numberformat, eStyleProperty.Format, _format);
+                this._callback?.Invoke(eStyleClass.Numberformat, eStyleProperty.Format, this._format);
             }
         }
     }

@@ -28,9 +28,10 @@ namespace OfficeOpenXml.ExternalReferences
             string? rId = reader.GetAttribute("id", ExcelPackage.schemaRelationships);
             if(!string.IsNullOrEmpty(rId))
             {
-                Relation = part.GetRelationship(rId);
+                this.Relation = part.GetRelationship(rId);
             }
-            ProgId = reader.GetAttribute("progId");
+
+            this.ProgId = reader.GetAttribute("progId");
             while (reader.Read())
             {
                 if (reader.NodeType == XmlNodeType.Element)
@@ -38,7 +39,7 @@ namespace OfficeOpenXml.ExternalReferences
                     switch (reader.LocalName)
                     {
                         case "oleItems":
-                            ReadOleItems(reader);
+                            this.ReadOleItems(reader);
                             break;
                     }
                 }
@@ -61,7 +62,7 @@ namespace OfficeOpenXml.ExternalReferences
                 }
                 if (reader.NodeType == XmlNodeType.Element && reader.LocalName == "oleItem")
                 {
-                    OleItems.Add(new ExcelExternalOleItem()
+                    this.OleItems.Add(new ExcelExternalOleItem()
                     {
                         Name = reader.GetAttribute("name"),
                         Advise = XmlHelper.GetBoolFromString(reader.GetAttribute("advise")),
@@ -101,8 +102,8 @@ namespace OfficeOpenXml.ExternalReferences
 
         internal override void Save(StreamWriter sw)
         {
-            sw.Write($"<oleLink progId=\"{ProgId}\" r:id=\"{Relation.Id}\" xmlns:r=\"http://schemas.openxmlformats.org/officeDocument/2006/relationships\"><oleItems>");
-            foreach (ExcelExternalOleItem item in OleItems)
+            sw.Write($"<oleLink progId=\"{this.ProgId}\" r:id=\"{this.Relation.Id}\" xmlns:r=\"http://schemas.openxmlformats.org/officeDocument/2006/relationships\"><oleItems>");
+            foreach (ExcelExternalOleItem item in this.OleItems)
             {
                 sw.Write(string.Format("<mc:AlternateContent><mc:Choice Requires=\"x14\"><x14:oleItem name=\"{0}\" {1}{2}{3}/></mc:Choice><mc:Fallback><oleItem name=\"{0}\" {1}{2}{3}/></mc:Fallback></mc:AlternateContent>",
                   item.Name,

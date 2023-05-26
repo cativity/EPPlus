@@ -49,9 +49,9 @@ namespace EPPlusTest.FormulaParsing.ExpressionGraph
         [TestInitialize]
         public void Setup()
         {
-            _excelDataProvider = A.Fake<ExcelDataProvider>();
+            this._excelDataProvider = A.Fake<ExcelDataProvider>();
             ParsingContext? parsingContext = ParsingContext.Create();
-            _graphBuilder = new ExpressionGraphBuilder(_excelDataProvider, parsingContext);
+            this._graphBuilder = new ExpressionGraphBuilder(this._excelDataProvider, parsingContext);
         }
 
         [TestCleanup]
@@ -70,7 +70,7 @@ namespace EPPlusTest.FormulaParsing.ExpressionGraph
                 new Token("'", TokenType.String)
             };
 
-            OfficeOpenXml.FormulaParsing.ExpressionGraph.ExpressionGraph? result = _graphBuilder.Build(tokens);
+            OfficeOpenXml.FormulaParsing.ExpressionGraph.ExpressionGraph? result = this._graphBuilder.Build(tokens);
 
             Assert.AreEqual(1, result.Expressions.Count());
         }
@@ -85,7 +85,7 @@ namespace EPPlusTest.FormulaParsing.ExpressionGraph
                 new Token("'", TokenType.String)
             };
 
-            OfficeOpenXml.FormulaParsing.ExpressionGraph.ExpressionGraph? result = _graphBuilder.Build(tokens);
+            OfficeOpenXml.FormulaParsing.ExpressionGraph.ExpressionGraph? result = this._graphBuilder.Build(tokens);
 
             Assert.AreEqual("1 + 2", result.Expressions.First().Compile().Result);
         }
@@ -103,7 +103,7 @@ namespace EPPlusTest.FormulaParsing.ExpressionGraph
                 new Token("*", TokenType.Operator),
                 new Token("2", TokenType.Integer)
             };
-            OfficeOpenXml.FormulaParsing.ExpressionGraph.ExpressionGraph? result = _graphBuilder.Build(tokens);
+            OfficeOpenXml.FormulaParsing.ExpressionGraph.ExpressionGraph? result = this._graphBuilder.Build(tokens);
 
             Assert.AreEqual(Operator.Multiply.Operator, result.Expressions.First().Operator.Operator);
 
@@ -122,7 +122,7 @@ namespace EPPlusTest.FormulaParsing.ExpressionGraph
                 new Token("*", TokenType.Operator),
                 new Token("2", TokenType.Integer)
             };
-            OfficeOpenXml.FormulaParsing.ExpressionGraph.ExpressionGraph? result = _graphBuilder.Build(tokens);
+            OfficeOpenXml.FormulaParsing.ExpressionGraph.ExpressionGraph? result = this._graphBuilder.Build(tokens);
 
             Assert.IsInstanceOfType(result.Expressions.First(), typeof(GroupExpression));
             Assert.AreEqual(2, result.Expressions.First().Children.Count());
@@ -141,7 +141,7 @@ namespace EPPlusTest.FormulaParsing.ExpressionGraph
                 new Token("*", TokenType.Operator),
                 new Token("2", TokenType.Integer)
             };
-            OfficeOpenXml.FormulaParsing.ExpressionGraph.ExpressionGraph? result = _graphBuilder.Build(tokens);
+            OfficeOpenXml.FormulaParsing.ExpressionGraph.ExpressionGraph? result = this._graphBuilder.Build(tokens);
 
             Assert.IsNotNull(result.Expressions.First().Next);
             Assert.IsInstanceOfType(result.Expressions.First().Next, typeof(IntegerExpression));
@@ -158,7 +158,7 @@ namespace EPPlusTest.FormulaParsing.ExpressionGraph
                 new Token("2", TokenType.Integer),
                 new Token(")", TokenType.ClosingParenthesis),
             };
-            OfficeOpenXml.FormulaParsing.ExpressionGraph.ExpressionGraph? result = _graphBuilder.Build(tokens);
+            OfficeOpenXml.FormulaParsing.ExpressionGraph.ExpressionGraph? result = this._graphBuilder.Build(tokens);
 
             Assert.AreEqual(1, result.Expressions.Count());
             Assert.IsInstanceOfType(result.Expressions.First(), typeof(FunctionExpression));
@@ -174,7 +174,7 @@ namespace EPPlusTest.FormulaParsing.ExpressionGraph
                 new Token("2", TokenType.Integer),
                 new Token(")", TokenType.ClosingParenthesis)
             };
-            OfficeOpenXml.FormulaParsing.ExpressionGraph.ExpressionGraph? result = _graphBuilder.Build(tokens);
+            OfficeOpenXml.FormulaParsing.ExpressionGraph.ExpressionGraph? result = this._graphBuilder.Build(tokens);
 
             Assert.AreEqual(1, result.Expressions.First().Children.Count());
             Assert.IsInstanceOfType(result.Expressions.First().Children.First(), typeof(GroupExpression));
@@ -194,7 +194,7 @@ namespace EPPlusTest.FormulaParsing.ExpressionGraph
                 new Token("&", TokenType.Operator),
                 new Token("A", TokenType.StringContent)
             };
-            OfficeOpenXml.FormulaParsing.ExpressionGraph.ExpressionGraph? result = _graphBuilder.Build(tokens);
+            OfficeOpenXml.FormulaParsing.ExpressionGraph.ExpressionGraph? result = this._graphBuilder.Build(tokens);
 
             Assert.AreEqual(1, result.Expressions.First().Children.Count());
             Assert.AreEqual(2, result.Expressions.Count());
@@ -215,7 +215,7 @@ namespace EPPlusTest.FormulaParsing.ExpressionGraph
                 new Token("A", TokenType.StringContent)
             };
 
-            OfficeOpenXml.FormulaParsing.ExpressionGraph.ExpressionGraph? result = _graphBuilder.Build(tokens);
+            OfficeOpenXml.FormulaParsing.ExpressionGraph.ExpressionGraph? result = this._graphBuilder.Build(tokens);
 
             Assert.AreEqual(2, result.Expressions.First().Children.Count());
         }
@@ -229,7 +229,7 @@ namespace EPPlusTest.FormulaParsing.ExpressionGraph
                 new Token("2", TokenType.Integer),
             };
 
-            OfficeOpenXml.FormulaParsing.ExpressionGraph.ExpressionGraph? result = _graphBuilder.Build(tokens);
+            OfficeOpenXml.FormulaParsing.ExpressionGraph.ExpressionGraph? result = this._graphBuilder.Build(tokens);
 
             Assert.AreEqual(1, result.Expressions.Count());
             Assert.AreEqual(-2d, result.Expressions.First().Compile().Result);
@@ -250,7 +250,7 @@ namespace EPPlusTest.FormulaParsing.ExpressionGraph
                 new Token(")", TokenType.ClosingParenthesis)
             };
 
-            OfficeOpenXml.FormulaParsing.ExpressionGraph.ExpressionGraph? result = _graphBuilder.Build(tokens);
+            OfficeOpenXml.FormulaParsing.ExpressionGraph.ExpressionGraph? result = this._graphBuilder.Build(tokens);
             Expression? funcArgExpression = result.Expressions.First().Children.First();
             Assert.IsInstanceOfType(funcArgExpression, typeof(FunctionArgumentExpression));
 
@@ -267,7 +267,7 @@ namespace EPPlusTest.FormulaParsing.ExpressionGraph
             const string formula = "IF(3>2;\"Yes\";\"No\")";
             SourceCodeTokenizer? tokenizer = new SourceCodeTokenizer(ctx.Configuration.FunctionRepository, ctx.NameValueProvider);
             IEnumerable<Token>? tokens = tokenizer.Tokenize(formula);
-            OfficeOpenXml.FormulaParsing.ExpressionGraph.ExpressionGraph? expression = _graphBuilder.Build(tokens);
+            OfficeOpenXml.FormulaParsing.ExpressionGraph.ExpressionGraph? expression = this._graphBuilder.Build(tokens);
             Assert.AreEqual(1, expression.Expressions.Count());
 
             ExpressionCompiler? compiler = new ExpressionCompiler(new ExpressionConverter(), new CompileStrategyFactory());
@@ -282,7 +282,7 @@ namespace EPPlusTest.FormulaParsing.ExpressionGraph
             const string formula = "IF(I10>=0;IF(O10>I10;((O10-I10)*$B10)/$C$27;IF(O10<0;(O10*$B10)/$C$27;\"\"));IF(O10<0;((O10-I10)*$B10)/$C$27;IF(O10>0;(O10*$B10)/$C$27;)))";
             SourceCodeTokenizer? tokenizer = new SourceCodeTokenizer(ctx.Configuration.FunctionRepository, ctx.NameValueProvider);
             IEnumerable<Token>? tokens = tokenizer.Tokenize(formula);
-            OfficeOpenXml.FormulaParsing.ExpressionGraph.ExpressionGraph? expression = _graphBuilder.Build(tokens);
+            OfficeOpenXml.FormulaParsing.ExpressionGraph.ExpressionGraph? expression = this._graphBuilder.Build(tokens);
             Assert.AreEqual(1, expression.Expressions.Count());
             Expression? exp1 = expression.Expressions.First();
             Assert.AreEqual(3, exp1.Children.Count());
@@ -295,7 +295,7 @@ namespace EPPlusTest.FormulaParsing.ExpressionGraph
             // the formula above equals 1+2-3-1+3+2
             SourceCodeTokenizer? tokenizer = new SourceCodeTokenizer(ctx.Configuration.FunctionRepository, ctx.NameValueProvider);
             List<Token>? tokens = tokenizer.Tokenize(formula).ToList();
-            OfficeOpenXml.FormulaParsing.ExpressionGraph.ExpressionGraph? expression = _graphBuilder.Build(tokens);
+            OfficeOpenXml.FormulaParsing.ExpressionGraph.ExpressionGraph? expression = this._graphBuilder.Build(tokens);
             Assert.AreEqual(11, tokens.Count);
             Assert.AreEqual("+", tokens[1].Value);
             Assert.AreEqual("-", tokens[3].Value);
@@ -320,7 +320,7 @@ namespace EPPlusTest.FormulaParsing.ExpressionGraph
                 new Token("A1", TokenType.ExcelAddress)
             };
 
-            OfficeOpenXml.FormulaParsing.ExpressionGraph.ExpressionGraph? result = _graphBuilder.Build(tokens);
+            OfficeOpenXml.FormulaParsing.ExpressionGraph.ExpressionGraph? result = this._graphBuilder.Build(tokens);
             Assert.IsInstanceOfType(result.Expressions.First(), typeof(ExcelAddressExpression));
         }
     }

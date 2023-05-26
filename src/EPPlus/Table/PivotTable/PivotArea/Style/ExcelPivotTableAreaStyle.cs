@@ -24,8 +24,8 @@ namespace OfficeOpenXml.Table.PivotTable
         internal ExcelPivotTableAreaStyle(XmlNamespaceManager nsm, XmlNode topNode, ExcelPivotTable pt) :
             base(nsm, topNode, pt)
         {
-            _styles = pt.WorkSheet.Workbook.Styles;
-            Conditions = new ExcelPivotAreaStyleConditions(nsm, topNode, pt);
+            this._styles = pt.WorkSheet.Workbook.Styles;
+            this.Conditions = new ExcelPivotAreaStyleConditions(nsm, topNode, pt);
         }
         /// <summary>
         /// Conditions for the pivot table. Conditions can be set for specific row-, column- or data fields. Specify labels, data grand totals and more.
@@ -43,12 +43,12 @@ namespace OfficeOpenXml.Table.PivotTable
         { 
             get
             {
-                if (_style == null)
+                if (this._style == null)
                 {
-                    int? dxfId= GetXmlNodeIntNull("../@dxfId");
-                    _style = _styles.GetDxf(dxfId, null);
+                    int? dxfId= this.GetXmlNodeIntNull("../@dxfId");
+                    this._style = this._styles.GetDxf(dxfId, null);
                 }
-                return _style;
+                return this._style;
             }
         }
 
@@ -56,11 +56,11 @@ namespace OfficeOpenXml.Table.PivotTable
         { 
             get
             {
-                return GetXmlNodeIntNull("../@dxfId");
+                return this.GetXmlNodeIntNull("../@dxfId");
             }
             set
             {
-                SetXmlNodeInt("../@dxfId", value);
+                this.SetXmlNodeInt("../@dxfId", value);
             }
         }
     }

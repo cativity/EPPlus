@@ -40,8 +40,8 @@ namespace OfficeOpenXml.Drawing.Controls
         { 
             get
             {
-                string? range = _ctrlProp.GetXmlNodeString("@fmlaRange");
-                if(ExcelAddressBase.IsValidAddress(range))
+                string? range = this._ctrlProp.GetXmlNodeString("@fmlaRange");
+                if(ExcelCellBase.IsValidAddress(range))
                 {
                     return new ExcelAddressBase(range);
                 }
@@ -51,18 +51,18 @@ namespace OfficeOpenXml.Drawing.Controls
             {
                 if (value == null)
                 {
-                    _ctrlProp.DeleteNode("@fmlaRange");
-                    _vmlProp.DeleteNode("x:FmlaRange");
+                    this._ctrlProp.DeleteNode("@fmlaRange");
+                    this._vmlProp.DeleteNode("x:FmlaRange");
                 }
-                if (value.WorkSheetName.Equals(_drawings.Worksheet.Name, StringComparison.CurrentCultureIgnoreCase))
+                if (value.WorkSheetName.Equals(this._drawings.Worksheet.Name, StringComparison.CurrentCultureIgnoreCase))
                 {
-                    _ctrlProp.SetXmlNodeString("@fmlaRange", value.Address);
-                    _vmlProp.SetXmlNodeString("x:FmlaRange", value.Address);
+                    this._ctrlProp.SetXmlNodeString("@fmlaRange", value.Address);
+                    this._vmlProp.SetXmlNodeString("x:FmlaRange", value.Address);
                 }
                 else
                 {
-                    _ctrlProp.SetXmlNodeString("@fmlaRange", value.FullAddress);
-                    _vmlProp.SetXmlNodeString("x:FmlaRange", value.FullAddress);
+                    this._ctrlProp.SetXmlNodeString("@fmlaRange", value.FullAddress);
+                    this._vmlProp.SetXmlNodeString("x:FmlaRange", value.FullAddress);
                 }
             }
         }
@@ -73,19 +73,19 @@ namespace OfficeOpenXml.Drawing.Controls
         {
             get
             {
-                return _ctrlProp.GetXmlNodeInt("@sel", 0) - 1;
+                return this._ctrlProp.GetXmlNodeInt("@sel", 0) - 1;
             }
             set
             {
                 if (value <= 0)
                 {
-                    _ctrlProp.DeleteNode("@sel");
-                    _vmlProp.DeleteNode("x:Sel");
+                    this._ctrlProp.DeleteNode("@sel");
+                    this._vmlProp.DeleteNode("x:Sel");
                 }
                 else
                 {
-                    _ctrlProp.SetXmlNodeInt("@sel", value);
-                    _vmlProp.SetXmlNodeInt("x:Sel", value);
+                    this._ctrlProp.SetXmlNodeInt("@sel", value);
+                    this._vmlProp.SetXmlNodeInt("x:Sel", value);
                 }
             }
         }
@@ -93,12 +93,12 @@ namespace OfficeOpenXml.Drawing.Controls
         {
             get
             {
-                return _vmlProp.GetXmlNodeInt("x:Page");
+                return this._vmlProp.GetXmlNodeInt("x:Page");
             }
             set
             {
-                _ctrlProp.SetXmlNodeInt("@page", value);
-                _vmlProp.SetXmlNodeInt("x:Page", value);
+                this._ctrlProp.SetXmlNodeInt("@page", value);
+                this._vmlProp.SetXmlNodeInt("x:Page", value);
             }
         }
     }

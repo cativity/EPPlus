@@ -43,13 +43,13 @@ namespace EPPlusTest.FormulaParsing.IntegrationTests.ErrorHandling
         [TestInitialize]
         public void ClassInitialize()
         {
-            BaseInitialize();
+            this.BaseInitialize();
         }
 
         [TestCleanup]
         public void ClassCleanup()
         {
-            BaseCleanup();
+            this.BaseCleanup();
         }
 
         private TestContext testContextInstance;
@@ -62,47 +62,47 @@ namespace EPPlusTest.FormulaParsing.IntegrationTests.ErrorHandling
         {
             get
             {
-                return testContextInstance;
+                return this.testContextInstance;
             }
             set
             {
-                testContextInstance = value;
+                this.testContextInstance = value;
             }
         }
         [TestMethod]
         public void SingleCell()
         {
-            Assert.AreEqual(3d, Worksheet.Cells["B9"].Value);
+            Assert.AreEqual(3d, this.Worksheet.Cells["B9"].Value);
         }
 
         [TestMethod]
         public void MultiCell()
         {
-            Assert.AreEqual(40d, Worksheet.Cells["C9"].Value);
+            Assert.AreEqual(40d, this.Worksheet.Cells["C9"].Value);
         }
 
         [TestMethod]
         public void Name()
         {
-            Assert.AreEqual(10d, Worksheet.Cells["E9"].Value);
+            Assert.AreEqual(10d, this.Worksheet.Cells["E9"].Value);
         }
 
         [TestMethod]
         public void ReferenceError()
         {
-            Assert.AreEqual("#REF!", Worksheet.Cells["H9"].Value.ToString());
+            Assert.AreEqual("#REF!", this.Worksheet.Cells["H9"].Value.ToString());
         }
 
         [TestMethod]
         public void NameOnOtherSheet()
         {
-            Assert.AreEqual(130d, Worksheet.Cells["I9"].Value);
+            Assert.AreEqual(130d, this.Worksheet.Cells["I9"].Value);
         }
 
         [TestMethod]
         public void ArrayInclText()
         {
-            Assert.AreEqual(7d, Worksheet.Cells["J9"].Value);
+            Assert.AreEqual(7d, this.Worksheet.Cells["J9"].Value);
         }
 
         //[TestMethod]

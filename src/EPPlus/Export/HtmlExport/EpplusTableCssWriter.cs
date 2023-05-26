@@ -38,38 +38,39 @@ namespace OfficeOpenXml.Export.HtmlExport
         ExcelTheme _theme;
         internal EpplusTableCssWriter(Stream stream, ExcelTable table, HtmlTableExportSettings settings, Dictionary<string, int> styleCache) : base(stream, settings.Encoding, styleCache)
         {
-            Init(table, settings);
+            this.Init(table, settings);
         }
         internal EpplusTableCssWriter(StreamWriter writer, ExcelTable table, HtmlTableExportSettings settings, Dictionary<string, int> styleCache) : base(writer, styleCache)
         {
-            Init(table, settings);
+            this.Init(table, settings);
         }
         private void Init(ExcelTable table, HtmlTableExportSettings settings)
         {
-            _table = table;
-            _settings = settings;
+            this._table = table;
+            this._settings = settings;
             if (table.WorkSheet.Workbook.ThemeManager.CurrentTheme == null)
             {
                 table.WorkSheet.Workbook.ThemeManager.CreateDefaultTheme();
             }
-            _theme = table.WorkSheet.Workbook.ThemeManager.CurrentTheme;
+
+            this._theme = table.WorkSheet.Workbook.ThemeManager.CurrentTheme;
         }
         internal void AddAlignmentToCss(string name, List<string> dataTypes)
         {
-            if (_settings.HorizontalAlignmentWhenGeneral == eHtmlGeneralAlignmentHandling.DontSet)
+            if (this._settings.HorizontalAlignmentWhenGeneral == eHtmlGeneralAlignmentHandling.DontSet)
             {
                 return;
             }
-            int row = _table.ShowHeader ? _table.Address._fromRow + 1 : _table.Address._fromRow;
-            for (int c=0;c < _table.Columns.Count;c++)
+            int row = this._table.ShowHeader ? this._table.Address._fromRow + 1 : this._table.Address._fromRow;
+            for (int c=0;c < this._table.Columns.Count;c++)
             {
-                int col = _table.Address._fromCol + c;
-                int styleId = _table.WorkSheet.GetStyleInner(row, col);
+                int col = this._table.Address._fromCol + c;
+                int styleId = this._table.WorkSheet.GetStyleInner(row, col);
                 string hAlign = "";
                 string vAlign = "";
                 if(styleId>0)
                 {
-                    ExcelXfs? xfs = _table.WorkSheet.Workbook.Styles.CellXfs[styleId];
+                    ExcelXfs? xfs = this._table.WorkSheet.Workbook.Styles.CellXfs[styleId];
                     if(xfs.ApplyAlignment??true)
                     {
                         hAlign = GetHorizontalAlignment(xfs);
@@ -84,16 +85,17 @@ namespace OfficeOpenXml.Export.HtmlExport
 
                 if (!(string.IsNullOrEmpty(hAlign) && string.IsNullOrEmpty(vAlign)))
                 {
-                    WriteClass($"table.{name} td:nth-child({col}){{", _settings.Minify);
-                    if (string.IsNullOrEmpty(hAlign)==false && _settings.Css.Exclude.TableStyle.HorizontalAlignment==false)
+                    this.WriteClass($"table.{name} td:nth-child({col}){{", this._settings.Minify);
+                    if (string.IsNullOrEmpty(hAlign)==false && this._settings.Css.Exclude.TableStyle.HorizontalAlignment==false)
                     {
-                        WriteCssItem($"text-align:{hAlign};", _settings.Minify);
+                        this.WriteCssItem($"text-align:{hAlign};", this._settings.Minify);
                     }
-                    if (string.IsNullOrEmpty(vAlign) == false && _settings.Css.Exclude.TableStyle.VerticalAlignment==false)
+                    if (string.IsNullOrEmpty(vAlign) == false && this._settings.Css.Exclude.TableStyle.VerticalAlignment==false)
                     {
-                        WriteCssItem($"vertical-align:{vAlign};", _settings.Minify);
+                        this.WriteCssItem($"vertical-align:{vAlign};", this._settings.Minify);
                     }
-                    WriteClassEnd(_settings.Minify);
+
+                    this.WriteClassEnd(this._settings.Minify);
                 }
             }
         }
@@ -105,18 +107,18 @@ namespace OfficeOpenXml.Export.HtmlExport
                 return; //Dont add empty elements
             }
 
-            WriteClass($"table.{name}{htmlElement}{{", _settings.Minify);
-            WriteFillStyles(s.Fill);
-            WriteFontStyles(s.Font);
-            WriteBorderStyles(s.Border);
-            WriteClassEnd(_settings.Minify);
+            this.WriteClass($"table.{name}{htmlElement}{{", this._settings.Minify);
+            this.WriteFillStyles(s.Fill);
+            this.WriteFontStyles(s.Font);
+            this.WriteBorderStyles(s.Border);
+            this.WriteClassEnd(this._settings.Minify);
         }
 
         internal void AddHyperlinkCss(string name, ExcelTableStyleElement element)
         {
-            WriteClass($"table.{name} a{{", _settings.Minify);
-            WriteFontStyles(element.Style.Font);
-            WriteClassEnd(_settings.Minify);
+            this.WriteClass($"table.{name} a{{", this._settings.Minify);
+            this.WriteFontStyles(element.Style.Font);
+            this.WriteClassEnd(this._settings.Minify);
         }
 
         internal void AddToCssBorderVH(string name, ExcelTableStyleElement element, string htmlElement)
@@ -127,32 +129,32 @@ namespace OfficeOpenXml.Export.HtmlExport
                 return; //Dont add empty elements
             }
 
-            WriteClass($"table.{name}{htmlElement} td,tr {{", _settings.Minify);
-            WriteBorderStylesVerticalHorizontal(s.Border);
-            WriteClassEnd(_settings.Minify);
+            this.WriteClass($"table.{name}{htmlElement} td,tr {{", this._settings.Minify);
+            this.WriteBorderStylesVerticalHorizontal(s.Border);
+            this.WriteClassEnd(this._settings.Minify);
         }
         internal void FlushStream()
         {
-            _writer.Flush();
+            this._writer.Flush();
         }
         private void WriteFillStyles(ExcelDxfFill f)
         {
-            if (f.HasValue && _settings.Css.Exclude.TableStyle.Fill == false)
+            if (f.HasValue && this._settings.Css.Exclude.TableStyle.Fill == false)
             {
                 if (f.Style == eDxfFillStyle.PatternFill)
                 {
                     if (f.PatternType.Value==ExcelFillStyle.Solid)
                     {
-                        WriteCssItem($"background-color:{GetDxfColor(f.BackgroundColor)};", _settings.Minify);
+                        this.WriteCssItem($"background-color:{this.GetDxfColor(f.BackgroundColor)};", this._settings.Minify);
                     }
                     else
                     {
-                        WriteCssItem($"{PatternFills.GetPatternSvg(f.PatternType.Value, GetDxfColor(f.BackgroundColor), GetDxfColor(f.PatternColor))};", _settings.Minify);
+                        this.WriteCssItem($"{PatternFills.GetPatternSvg(f.PatternType.Value, this.GetDxfColor(f.BackgroundColor), this.GetDxfColor(f.PatternColor))};", this._settings.Minify);
                     }
                 }
                 else if(f.Style==eDxfFillStyle.GradientFill)
                 {
-                    WriteDxfGradient(f.Gradient);
+                    this.WriteDxfGradient(f.Gradient);
                 }
             }
         }
@@ -170,42 +172,42 @@ namespace OfficeOpenXml.Export.HtmlExport
             }
             foreach (ExcelDxfGradientFillColor? color in gradient.Colors)
             {
-                sb.Append($",{GetDxfColor(color.Color)} {color.Position.ToString("F", CultureInfo.InvariantCulture)}%");
+                sb.Append($",{this.GetDxfColor(color.Color)} {color.Position.ToString("F", CultureInfo.InvariantCulture)}%");
             }
             sb.Append(")");
 
-            WriteCssItem(sb.ToString(), _settings.Minify);
+            this.WriteCssItem(sb.ToString(), this._settings.Minify);
         }
         private void WriteFontStyles(ExcelDxfFontBase f)
         {
-            eFontExclude flags = _settings.Css.Exclude.TableStyle.Font;
+            eFontExclude flags = this._settings.Css.Exclude.TableStyle.Font;
             if (f.Color.HasValue && EnumUtil.HasNotFlag(flags, eFontExclude.Color))
             {
-                WriteCssItem($"color:{GetDxfColor(f.Color)};", _settings.Minify);
+                this.WriteCssItem($"color:{this.GetDxfColor(f.Color)};", this._settings.Minify);
             }
             if (f.Bold.HasValue && f.Bold.Value && EnumUtil.HasNotFlag(flags, eFontExclude.Bold))
             {
-                WriteCssItem("font-weight:bolder;", _settings.Minify);
+                this.WriteCssItem("font-weight:bolder;", this._settings.Minify);
             }
             if (f.Italic.HasValue && f.Italic.Value && EnumUtil.HasNotFlag(flags, eFontExclude.Italic))
             {
-                WriteCssItem("font-style:italic;", _settings.Minify);
+                this.WriteCssItem("font-style:italic;", this._settings.Minify);
             }
             if (f.Strike.HasValue && f.Strike.Value && EnumUtil.HasNotFlag(flags, eFontExclude.Strike))
             {
-                WriteCssItem("text-decoration:line-through solid;", _settings.Minify);
+                this.WriteCssItem("text-decoration:line-through solid;", this._settings.Minify);
             }
             if (f.Underline.HasValue && f.Underline != ExcelUnderLineType.None && EnumUtil.HasNotFlag(flags, eFontExclude.Underline))
             {
-                WriteCssItem("text-decoration:underline ", _settings.Minify);
+                this.WriteCssItem("text-decoration:underline ", this._settings.Minify);
                 switch (f.Underline.Value)
                 {
                     case ExcelUnderLineType.Double:
                     case ExcelUnderLineType.DoubleAccounting:
-                        WriteCssItem("double;", _settings.Minify);
+                        this.WriteCssItem("double;", this._settings.Minify);
                         break;
                     default:
-                        WriteCssItem("solid;", _settings.Minify);
+                        this.WriteCssItem("solid;", this._settings.Minify);
                         break;
                 }
             }
@@ -214,7 +216,7 @@ namespace OfficeOpenXml.Export.HtmlExport
         {
             if (b.HasValue)
             {
-                eBorderExclude flags = _settings.Css.Exclude.TableStyle.Border;
+                eBorderExclude flags = this._settings.Css.Exclude.TableStyle.Border;
                 if(EnumUtil.HasNotFlag(flags, eBorderExclude.Top))
                 {
                     this.WriteBorderItem(b.Top, "top");
@@ -240,7 +242,7 @@ namespace OfficeOpenXml.Export.HtmlExport
         {
             if (b.HasValue)
             {
-                eBorderExclude flags = _settings.Css.Exclude.TableStyle.Border;
+                eBorderExclude flags = this._settings.Css.Exclude.TableStyle.Border;
                 if (EnumUtil.HasNotFlag(flags, eBorderExclude.Top))
                 {
                     this.WriteBorderItem(b.Horizontal, "top");
@@ -271,11 +273,11 @@ namespace OfficeOpenXml.Export.HtmlExport
                 sb.Append(GetBorderItemLine(bi.Style.Value, suffix));
                 if (bi.Color.HasValue)
                 {
-                    sb.Append($" {GetDxfColor(bi.Color)}");
+                    sb.Append($" {this.GetDxfColor(bi.Color)}");
                 }
                 sb.Append(";");
 
-                WriteCssItem(sb.ToString(), _settings.Minify);
+                this.WriteCssItem(sb.ToString(), this._settings.Minify);
             }
         }
         private string GetDxfColor(ExcelDxfColor c)
@@ -287,7 +289,7 @@ namespace OfficeOpenXml.Export.HtmlExport
             }
             else if (c.Theme.HasValue)
             {
-                ret = Utils.ColorConverter.GetThemeColor(_theme, c.Theme.Value);
+                ret = Utils.ColorConverter.GetThemeColor(this._theme, c.Theme.Value);
             }
             else if (c.Index.HasValue)
             {

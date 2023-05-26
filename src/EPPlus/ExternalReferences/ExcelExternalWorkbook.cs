@@ -39,15 +39,15 @@ namespace OfficeOpenXml.ExternalReferences
         HashSet<int> _sheetRefresh = new HashSet<int>();
         internal ExcelExternalWorkbook(ExcelWorkbook wb, ExcelPackage p) : base(wb)
         {
-            CachedWorksheets = new ExcelExternalNamedItemCollection<ExcelExternalWorksheet>();
-            CachedNames = new ExcelExternalNamedItemCollection<ExcelExternalDefinedName>();
-            CacheStatus = eExternalWorkbookCacheStatus.NotUpdated;
-            SetPackage(p, false);
+            this.CachedWorksheets = new ExcelExternalNamedItemCollection<ExcelExternalWorksheet>();
+            this.CachedNames = new ExcelExternalNamedItemCollection<ExcelExternalDefinedName>();
+            this.CacheStatus = eExternalWorkbookCacheStatus.NotUpdated;
+            this.SetPackage(p, false);
        }
         internal ExcelExternalWorkbook(ExcelWorkbook wb, XmlTextReader reader, ZipPackagePart part, XmlElement workbookElement)  : base(wb, reader, part, workbookElement)
         {
             string? rId = reader.GetAttribute("id", ExcelPackage.schemaRelationships);
-            Relation = part.GetRelationship(rId);
+            this.Relation = part.GetRelationship(rId);
             while (reader.Read())
             {
                 if (reader.NodeType == XmlNodeType.Element)
@@ -55,13 +55,13 @@ namespace OfficeOpenXml.ExternalReferences
                     switch (reader.LocalName)
                     {
                         case "sheetNames":
-                            ReadSheetNames(reader);
+                            this.ReadSheetNames(reader);
                             break;
                         case "definedNames":
-                            ReadDefinedNames(reader);
+                            this.ReadDefinedNames(reader);
                             break;
                         case "sheetDataSet":
-                            ReadSheetDataSet(reader, wb);
+                            this.ReadSheetDataSet(reader, wb);
                             break;
                     }
                 }
@@ -74,22 +74,24 @@ namespace OfficeOpenXml.ExternalReferences
                     }
                 }
             }
-            CachedWorksheets = new ExcelExternalNamedItemCollection<ExcelExternalWorksheet>();
-            CachedNames = GetNames(-1);
-            foreach (string? sheetName in _sheetNames.Keys)
+
+            this.CachedWorksheets = new ExcelExternalNamedItemCollection<ExcelExternalWorksheet>();
+            this.CachedNames = this.GetNames(-1);
+            foreach (string? sheetName in this._sheetNames.Keys)
             {
-                int sheetId = _sheetNames[sheetName];
-                CachedWorksheets.Add(new ExcelExternalWorksheet(
-                       _sheetValues[sheetId], 
-                       _sheetMetaData[sheetId],
-                       _definedNamesValues[sheetId]) 
+                int sheetId = this._sheetNames[sheetName];
+
+                this.CachedWorksheets.Add(new ExcelExternalWorksheet(this._sheetValues[sheetId],
+                                                                     this._sheetMetaData[sheetId],
+                                                                     this._definedNamesValues[sheetId]) 
                 { 
                     SheetId  = sheetId, 
                     Name =sheetName, 
-                    RefreshError=_sheetRefresh.Contains(sheetId)
+                    RefreshError= this._sheetRefresh.Contains(sheetId)
                 });
             }
-            CacheStatus = eExternalWorkbookCacheStatus.LoadedFromPackage;
+
+            this.CacheStatus = eExternalWorkbookCacheStatus.LoadedFromPackage;
         }
 
         /// <summary>
@@ -105,9 +107,9 @@ namespace OfficeOpenXml.ExternalReferences
 
         private ExcelExternalNamedItemCollection<ExcelExternalDefinedName> GetNames(int ix)
         {
-            if(_definedNamesValues.ContainsKey(ix))
+            if(this._definedNamesValues.ContainsKey(ix))
             {
-                return _definedNamesValues[ix];
+                return this._definedNamesValues[ix];
             }
             else
             {
@@ -124,21 +126,21 @@ namespace OfficeOpenXml.ExternalReferences
                 }
                 else if(reader.NodeType == XmlNodeType.Element && reader.Name == "sheetData")
                 {
-                    ReadSheetData(reader, wb);
+                    this.ReadSheetData(reader, wb);
                 }
             }
         }
         private void ReadSheetData(XmlTextReader reader, ExcelWorkbook wb)
         {
             int sheetId = int.Parse(reader.GetAttribute("sheetId"));
-            if(reader.GetAttribute("refreshError")=="1" && !_sheetRefresh.Contains(sheetId))
+            if(reader.GetAttribute("refreshError")=="1" && !this._sheetRefresh.Contains(sheetId))
             {
-                _sheetRefresh.Add(sheetId);
+                this._sheetRefresh.Add(sheetId);
             }
             CellStore<object> cellStoreValues;
             CellStore<int> cellStoreMetaData;
-            cellStoreValues = _sheetValues[sheetId];
-            cellStoreMetaData = _sheetMetaData[sheetId];
+            cellStoreValues = this._sheetValues[sheetId];
+            cellStoreMetaData = this._sheetMetaData[sheetId];
 
             int row=0, col=0;
             string type="";
@@ -193,7 +195,7 @@ namespace OfficeOpenXml.ExternalReferences
                         sheetId = int.Parse(sheetIdAttr);
                     }
                     
-                    ExcelExternalNamedItemCollection<ExcelExternalDefinedName> names = _definedNamesValues[sheetId];
+                    ExcelExternalNamedItemCollection<ExcelExternalDefinedName> names = this._definedNamesValues[sheetId];
 
                     string? name = reader.GetAttribute("name");
                     names.Add(new ExcelExternalDefinedName() { Name = reader.GetAttribute("name"), RefersTo = reader.GetAttribute("refersTo"), SheetId = sheetId });
@@ -203,7 +205,7 @@ namespace OfficeOpenXml.ExternalReferences
         private void ReadSheetNames(XmlTextReader reader)
         {
             int ix = 0;
-            _definedNamesValues.Add(-1, new ExcelExternalNamedItemCollection<ExcelExternalDefinedName>());
+            this._definedNamesValues.Add(-1, new ExcelExternalNamedItemCollection<ExcelExternalDefinedName>());
             while (reader.Read())
             {
                 if(reader.NodeType==XmlNodeType.EndElement && reader.Name== "sheetNames")
@@ -212,10 +214,10 @@ namespace OfficeOpenXml.ExternalReferences
                 }
                 else if(reader.NodeType==XmlNodeType.Element && reader.Name== "sheetName")
                 {
-                    _sheetValues.Add(ix, new CellStore<object>());
-                    _sheetMetaData.Add(ix, new CellStore<int>());
-                    _definedNamesValues.Add(ix, new ExcelExternalNamedItemCollection<ExcelExternalDefinedName>());
-                    _sheetNames.Add(reader.GetAttribute("val"), ix++);                    
+                    this._sheetValues.Add(ix, new CellStore<object>());
+                    this._sheetMetaData.Add(ix, new CellStore<int>());
+                    this._definedNamesValues.Add(ix, new ExcelExternalNamedItemCollection<ExcelExternalDefinedName>());
+                    this._sheetNames.Add(reader.GetAttribute("val"), ix++);                    
 
                 }
             }
@@ -227,12 +229,12 @@ namespace OfficeOpenXml.ExternalReferences
         {
             get
             {
-                return Relation?.TargetUri;
+                return this.Relation?.TargetUri;
             }
             set
             {
-                Relation.TargetUri = value;
-                _file = null;
+                this.Relation.TargetUri = value;
+                this._file = null;
             }
         }
         FileInfo _file=null;
@@ -243,9 +245,9 @@ namespace OfficeOpenXml.ExternalReferences
         {
             get
             {
-                if(_file==null)
+                if(this._file==null)
                 {
-                    string? filePath = Relation?.TargetUri?.OriginalString;
+                    string? filePath = this.Relation?.TargetUri?.OriginalString;
                     if (string.IsNullOrEmpty(filePath) || HasWebProtocol(filePath))
                     {
                         return null;
@@ -259,24 +261,25 @@ namespace OfficeOpenXml.ExternalReferences
                     try
                     {
                         
-                        if(_wb._package.File!=null)
+                        if(this._wb._package.File!=null)
                         {
                             if (string.IsNullOrEmpty(Path.GetDirectoryName(filePath)) || Path.IsPathRooted(filePath) == false)
                             {
-                                filePath = _wb._package.File.DirectoryName + "\\" + filePath;
+                                filePath = this._wb._package.File.DirectoryName + "\\" + filePath;
                             }
                             else
                             {
                                 if(Path.IsPathRooted(filePath) == true && filePath[0]==Path.DirectorySeparatorChar)
                                 {
-                                    filePath = _wb._package.File.Directory.Root.Name + filePath;
+                                    filePath = this._wb._package.File.Directory.Root.Name + filePath;
                                 }
                             }
-                        }                        
-                        _file = new FileInfo(filePath);
-                        if(!_file.Exists && _wb.ExternalLinks.Directories.Count>0)
+                        }
+
+                        this._file = new FileInfo(filePath);
+                        if(!this._file.Exists && this._wb.ExternalLinks.Directories.Count>0)
                         {
-                            SetDirectoryIfExists();
+                            this.SetDirectoryIfExists();
                         }
                     }
                     catch
@@ -284,31 +287,31 @@ namespace OfficeOpenXml.ExternalReferences
                         return null;
                     }
                 }
-                return _file;
+                return this._file;
             }
             set
             {
-                _file = value;
-                if(_package!=null)
+                this._file = value;
+                if(this._package!=null)
                 {
-                    _package.File = File;
+                    this._package.File = this.File;
                 }
             }
         }
 
         private void SetDirectoryIfExists()
         {
-            foreach(DirectoryInfo? d in _wb.ExternalLinks.Directories)
+            foreach(DirectoryInfo? d in this._wb.ExternalLinks.Directories)
             {
                 string? file = d.FullName;
                 if (file.EndsWith(Path.DirectorySeparatorChar.ToString()) == false)
                 {
                     file += Path.DirectorySeparatorChar;
                 }
-                file += _file.Name;
+                file += this._file.Name;
                 if (System.IO.File.Exists(file))
                 {
-                    _file = new FileInfo(FileHelper.GetRelativeFile(_wb._package.File, new FileInfo(file)));
+                    this._file = new FileInfo(FileHelper.GetRelativeFile(this._wb._package.File, new FileInfo(file)));
                     return;
                 }
             }
@@ -323,7 +326,7 @@ namespace OfficeOpenXml.ExternalReferences
         {
             get
             {
-                return _package;
+                return this._package;
             }
         }
         /// <summary>
@@ -332,7 +335,7 @@ namespace OfficeOpenXml.ExternalReferences
         /// <returns>True if the load succeeded, otherwise false. If false, see <see cref="ExcelExternalLink.ErrorLog"/></returns>
         public bool Load()
         {
-            return Load(File);
+            return this.Load(this.File);
         }
         /// <summary>
         /// Tries to Loads the external package using the External Uri into the <see cref="Package"/> property
@@ -346,13 +349,15 @@ namespace OfficeOpenXml.ExternalReferences
                    packageFile.Extension.EndsWith(".xlsm", StringComparison.OrdinalIgnoreCase) ||
                    packageFile.Extension.EndsWith(".xlst", StringComparison.OrdinalIgnoreCase)))
                 {
-                    _errors.Add("EPPlus only supports updating references to files of type xlsx, xlsm and xlst");
+                    this._errors.Add("EPPlus only supports updating references to files of type xlsx, xlsm and xlst");
                     return false;
                 }
-                SetPackage(packageFile);
+
+                this.SetPackage(packageFile);
                 return true;
             }
-            _errors.Add($"Loaded file does not exists {packageFile.FullName}");
+
+            this._errors.Add($"Loaded file does not exists {packageFile.FullName}");
 
             return false;
         }
@@ -362,48 +367,49 @@ namespace OfficeOpenXml.ExternalReferences
         /// <returns>True if the load succeeded, otherwise false. If false, see <see cref="ExcelExternalLink.ErrorLog"/> and <see cref="ExcelExternalWorkbook.CacheStatus"/> of each <see cref="ExcelExternalWorkbook"/></returns>
         public bool Load(ExcelPackage package)
         {
-            if (package == null || package == _wb._package)
+            if (package == null || package == this._wb._package)
             {
-                _errors.Add("Load failed. The package can't be null or load itself.");
+                this._errors.Add("Load failed. The package can't be null or load itself.");
                 return false;
             }
 
             if (package.File == null)
             {
-                _errors.Add("Load failed. The package must have the File property set to be added as an external reference.");
+                this._errors.Add("Load failed. The package must have the File property set to be added as an external reference.");
                 return false;
             }
 
-            SetPackage(package, true);
+            this.SetPackage(package, true);
 
             return true;
         }
 
         private void SetPackage(ExcelPackage package, bool setTarget)
         {
-            _package = package;
-            _package._loadedPackage = _wb._package;
-            _file = _package.File;
+            this._package = package;
+            this._package._loadedPackage = this._wb._package;
+            this._file = this._package.File;
             if (setTarget)
             {
-                SetTarget(_file);
+                this.SetTarget(this._file);
             }
         }
         private void SetPackage(FileInfo file)
         {
-            if (_wb._package.File.Name.Equals(file.Name, StringComparison.CurrentCultureIgnoreCase))
+            if (this._wb._package.File.Name.Equals(file.Name, StringComparison.CurrentCultureIgnoreCase))
             {
-                _package = _wb._package;
+                this._package = this._wb._package;
                 return;
             }
 
-            if (SetPackageFromOtherReference(_wb._externalLinks, file) == false)
+            if (this.SetPackageFromOtherReference(this._wb._externalLinks, file) == false)
             {
-                _package = new ExcelPackage(file);
+                this._package = new ExcelPackage(file);
             }
-            _package._loadedPackage = _wb._package;
-            _file = file;
-            SetTarget(file);
+
+            this._package._loadedPackage = this._wb._package;
+            this._file = file;
+            this.SetTarget(file);
         }
 
         private void SetTarget(FileInfo file)
@@ -413,15 +419,15 @@ namespace OfficeOpenXml.ExternalReferences
                 return;
             }
 
-            if (IsPathRelative)
+            if (this.IsPathRelative)
             {
-                Relation.TargetUri = null;
-                Relation.Target = FileHelper.GetRelativeFile(_wb._package.File, file, true);
+                this.Relation.TargetUri = null;
+                this.Relation.Target = FileHelper.GetRelativeFile(this._wb._package.File, file, true);
             }
             else
             {
-                Relation.Target = "file:///" + file.FullName;
-                Relation.TargetUri = new Uri(Relation.Target);
+                this.Relation.Target = "file:///" + file.FullName;
+                this.Relation.TargetUri = new Uri(this.Relation.Target);
             }
         }
 
@@ -447,10 +453,11 @@ namespace OfficeOpenXml.ExternalReferences
                     ExcelExternalWorkbook? wb = er.As.ExternalWorkbook;
                     if (wb._package!=null && wb.File!=null && wb.File.Name.Equals(file.Name, StringComparison.CurrentCultureIgnoreCase))
                     {
-                        _package=wb._package;
+                        this._package=wb._package;
                         return true;
                     }
-                    SetPackageFromOtherReference(wb._package?._workbook?._externalLinks, file);
+
+                    this.SetPackageFromOtherReference(wb._package?._workbook?._externalLinks, file);
                 }
             }
             return false;
@@ -464,43 +471,43 @@ namespace OfficeOpenXml.ExternalReferences
         /// <returns>True if the update was successful otherwise false</returns>
         public bool UpdateCache()
         {
-            if (_package == null)
+            if (this._package == null)
             {
-                if (Load() == false)
+                if (this.Load() == false)
                 {
-                    CacheStatus = eExternalWorkbookCacheStatus.Failed;
-                    _errors.Add($"Load failed. Can't update cache.");
+                    this.CacheStatus = eExternalWorkbookCacheStatus.Failed;
+                    this._errors.Add($"Load failed. Can't update cache.");
                     return false;
                 }
             }
 
-            ILexer? lexer = _wb.FormulaParser.Lexer;
-            CachedWorksheets.Clear();
-            CachedNames.Clear();
-            _definedNamesValues.Clear();
-            _sheetValues.Clear();
-            _sheetMetaData.Clear();
-            _sheetNames.Clear();
-            _definedNamesValues.Add(-1, CachedNames);
-            foreach (ExcelWorksheet? ws in _package.Workbook.Worksheets)
+            ILexer? lexer = this._wb.FormulaParser.Lexer;
+            this.CachedWorksheets.Clear();
+            this.CachedNames.Clear();
+            this._definedNamesValues.Clear();
+            this._sheetValues.Clear();
+            this._sheetMetaData.Clear();
+            this._sheetNames.Clear();
+            this._definedNamesValues.Add(-1, this.CachedNames);
+            foreach (ExcelWorksheet? ws in this._package.Workbook.Worksheets)
             {
-                int ix = CachedWorksheets.Count;
-                _sheetNames.Add(ws.Name, ix);
-                _sheetValues.Add(ix, new CellStore<object>());
-                _sheetMetaData.Add(ix, new CellStore<int>());
-                _definedNamesValues.Add(ix, new ExcelExternalNamedItemCollection<ExcelExternalDefinedName>());
-                CachedWorksheets.Add(new ExcelExternalWorksheet(_sheetValues[ix], _sheetMetaData[ix], _definedNamesValues[ix]) { Name = ws.Name, RefreshError = false });
+                int ix = this.CachedWorksheets.Count;
+                this._sheetNames.Add(ws.Name, ix);
+                this._sheetValues.Add(ix, new CellStore<object>());
+                this._sheetMetaData.Add(ix, new CellStore<int>());
+                this._definedNamesValues.Add(ix, new ExcelExternalNamedItemCollection<ExcelExternalDefinedName>());
+                this.CachedWorksheets.Add(new ExcelExternalWorksheet(this._sheetValues[ix], this._sheetMetaData[ix], this._definedNamesValues[ix]) { Name = ws.Name, RefreshError = false });
             }
 
-            UpdateCacheFromCells();
-            UpdateCacheFromNames(_wb, _wb.Names);
-            CacheStatus = eExternalWorkbookCacheStatus.Updated;
+            this.UpdateCacheFromCells();
+            this.UpdateCacheFromNames(this._wb, this._wb.Names);
+            this.CacheStatus = eExternalWorkbookCacheStatus.Updated;
             return true;
         }
 
         private void UpdateCacheFromCells()
         {
-            foreach (ExcelWorksheet? ws in _wb.Worksheets)
+            foreach (ExcelWorksheet? ws in this._wb.Worksheets)
             {
                 CellStoreEnumerator<object>? formulas = new CellStoreEnumerator<object>(ws._formulas);
                 foreach (object? f in formulas)
@@ -510,7 +517,7 @@ namespace OfficeOpenXml.ExternalReferences
                         ExcelWorksheet.Formulas? sf = ws._sharedFormulas[sfIx];
                         if (sf.Formula.Contains("["))
                         {
-                            UpdateCacheForFormula(_wb, sf.Formula, sf.Address);
+                            this.UpdateCacheForFormula(this._wb, sf.Formula, sf.Address);
                         }
                     }
                     else
@@ -518,11 +525,12 @@ namespace OfficeOpenXml.ExternalReferences
                         string? s = f.ToString();
                         if (s.Contains("["))
                         {
-                            UpdateCacheForFormula(_wb, s, "");
+                            this.UpdateCacheForFormula(this._wb, s, "");
                         }
                     }
                 }
-                UpdateCacheFromNames(_wb, ws.Names);
+
+                this.UpdateCacheFromNames(this._wb, ws.Names);
 
                 //Update cache for chart references.
                 foreach(ExcelDrawing? d in ws.Drawings)
@@ -536,7 +544,7 @@ namespace OfficeOpenXml.ExternalReferences
                                 ExcelAddressBase? a = new ExcelAddressBase(s.Series);
                                 if (a.IsExternal)
                                 {
-                                    UpdateCacheForAddress(a, "");
+                                    this.UpdateCacheForAddress(a, "");
                                 }
                             }
                             if (s.XSeries.Contains("["))
@@ -544,7 +552,7 @@ namespace OfficeOpenXml.ExternalReferences
                                 ExcelAddressBase? a = new ExcelAddressBase(s.XSeries);
                                 if (a.IsExternal)
                                 {
-                                    UpdateCacheForAddress(a, "");
+                                    this.UpdateCacheForAddress(a, "");
                                 }
                             }
                         }
@@ -561,12 +569,12 @@ namespace OfficeOpenXml.ExternalReferences
                 {
                     if (n.IsExternal)
                     {
-                        UpdateCacheForAddress(n, "");
+                        this.UpdateCacheForAddress(n, "");
                     }
                 }
                 else
                 {
-                    UpdateCacheForFormula(wb, n.NameFormula, "");
+                    this.UpdateCacheForFormula(wb, n.NameFormula, "");
                 }
             }
         }
@@ -591,10 +599,10 @@ namespace OfficeOpenXml.ExternalReferences
                         if(t.TokenTypeIsSet(TokenType.ExcelAddress))
                         {
                             ExcelAddressBase a = new ExcelAddressBase(t.Value);
-                            int ix = _wb.ExternalLinks.GetExternalLink(a._wb);
-                            if (ix >= 0 && _wb.ExternalLinks[ix] == this)
+                            int ix = this._wb.ExternalLinks.GetExternalLink(a._wb);
+                            if (ix >= 0 && this._wb.ExternalLinks[ix] == this)
                             {
-                                UpdateCacheForAddress(a, address);
+                                this.UpdateCacheForAddress(a, address);
                             }
                         }
                         else
@@ -602,8 +610,8 @@ namespace OfficeOpenXml.ExternalReferences
                             ExcelAddressBase.SplitAddress(t.Value, out string wbRef, out string wsRef, out string nameRef);
                             if (!string.IsNullOrEmpty(wbRef))
                             {
-                                int ix = _wb.ExternalLinks.GetExternalLink(wbRef);
-                                if (ix >= 0 && _wb.ExternalLinks[ix] == this)
+                                int ix = this._wb.ExternalLinks.GetExternalLink(wbRef);
+                                if (ix >= 0 && this._wb.ExternalLinks[ix] == this)
                                 {
                                     string name;
                                     if(string.IsNullOrEmpty(wsRef))
@@ -614,7 +622,8 @@ namespace OfficeOpenXml.ExternalReferences
                                     {
                                         name = ExcelCellBase.GetQuotedWorksheetName(wsRef)+"!"+nameRef;
                                     }
-                                    UpdateCacheForName(name);
+
+                                    this.UpdateCacheForName(name);
                                 }
                             }
                         }
@@ -635,11 +644,11 @@ namespace OfficeOpenXml.ExternalReferences
             ExcelNamedRange namedRange;
             if (string.IsNullOrEmpty(wsName))
             {
-                namedRange = _package.Workbook.Names.ContainsKey(name) ? _package.Workbook.Names[name] : null;
+                namedRange = this._package.Workbook.Names.ContainsKey(name) ? this._package.Workbook.Names[name] : null;
             }
             else
             {
-                ExcelWorksheet? ws = _package.Workbook.Worksheets[wsName];
+                ExcelWorksheet? ws = this._package.Workbook.Worksheets[wsName];
                 if (ws == null)
                 {
                     namedRange = null;
@@ -661,21 +670,21 @@ namespace OfficeOpenXml.ExternalReferences
 
             if(namedRange==null || namedRange.LocalSheetId < 0)
             {
-                if (!CachedNames.ContainsKey(name))
+                if (!this.CachedNames.ContainsKey(name))
                 {
-                    CachedNames.Add(new ExcelExternalDefinedName() { Name = name, RefersTo = referensTo.Address, SheetId=-1 });
-                    UpdateCacheForAddress(referensTo, "");
+                    this.CachedNames.Add(new ExcelExternalDefinedName() { Name = name, RefersTo = referensTo.Address, SheetId=-1 });
+                    this.UpdateCacheForAddress(referensTo, "");
                 }
             }
             else
             {
-                ExcelExternalWorksheet? cws = CachedWorksheets[namedRange.LocalSheet.Name];
+                ExcelExternalWorksheet? cws = this.CachedWorksheets[namedRange.LocalSheet.Name];
                 if(cws != null)
                 {
                     if (!cws.CachedNames.ContainsKey(name))
                     {
                         cws.CachedNames.Add(new ExcelExternalDefinedName() { Name = name, RefersTo = referensTo.Address, SheetId = namedRange.LocalSheetId });
-                        UpdateCacheForAddress(referensTo, "");
+                        this.UpdateCacheForAddress(referensTo, "");
                     }
                 }
             }
@@ -699,17 +708,17 @@ namespace OfficeOpenXml.ExternalReferences
 
             if (!string.IsNullOrEmpty(formulaAddress.WorkSheetName))
             {
-                ExcelWorksheet? ws = _package.Workbook.Worksheets[formulaAddress.WorkSheetName];
+                ExcelWorksheet? ws = this._package.Workbook.Worksheets[formulaAddress.WorkSheetName];
                 if (ws == null)
                 {
-                    if (!CachedWorksheets.ContainsKey(formulaAddress.WorkSheetName))
+                    if (!this.CachedWorksheets.ContainsKey(formulaAddress.WorkSheetName))
                     {
-                        CachedWorksheets.Add(new ExcelExternalWorksheet() { Name = formulaAddress.WorkSheetName, RefreshError = true });
+                        this.CachedWorksheets.Add(new ExcelExternalWorksheet() { Name = formulaAddress.WorkSheetName, RefreshError = true });
                     }
                 }
                 else
                 {
-                    ExcelExternalWorksheet? cws = CachedWorksheets[formulaAddress.WorkSheetName];
+                    ExcelExternalWorksheet? cws = this.CachedWorksheets[formulaAddress.WorkSheetName];
                     if (cws != null)
                     {
                         CellStoreEnumerator<ExcelValue>? cse = new CellStoreEnumerator<ExcelValue>(ws._values, formulaAddress._fromRow, formulaAddress._fromCol, formulaAddress._toRow, formulaAddress._toCol);
@@ -728,9 +737,9 @@ namespace OfficeOpenXml.ExternalReferences
         /// <returns></returns>
         public override string ToString()
         {
-            if (Relation?.TargetUri != null)
+            if (this.Relation?.TargetUri != null)
             {
-                return ExternalLinkType.ToString() + "(" + Relation.TargetUri.ToString() + ")";
+                return this.ExternalLinkType.ToString() + "(" + this.Relation.TargetUri.ToString() + ")";
             }
             else
             {
@@ -760,29 +769,29 @@ namespace OfficeOpenXml.ExternalReferences
 
         internal override void Save(StreamWriter sw)
         {
-            if(File==null && Relation?.TargetUri==null)
+            if(this.File==null && this.Relation?.TargetUri==null)
             {
-                throw new InvalidOperationException($"External reference with Index {Index} has no File or Uri set");
+                throw new InvalidOperationException($"External reference with Index {this.Index} has no File or Uri set");
             }
             //If sheet names is 0, no update has been performed. Update the cache.
-            if(_sheetNames.Count==0)
+            if(this._sheetNames.Count==0)
             {
-                if(UpdateCache()==false || _sheetNames.Count == 0)
+                if(this.UpdateCache()==false || this._sheetNames.Count == 0)
                 {
-                    throw (new InvalidDataException($"External reference {File.FullName} can't be updated saved. Make sure it contains at least one worksheet. For any errors please check the ErrorLog property of the object after UpdateCache has been called."));
+                    throw (new InvalidDataException($"External reference {this.File.FullName} can't be updated saved. Make sure it contains at least one worksheet. For any errors please check the ErrorLog property of the object after UpdateCache has been called."));
                 }
             }
 
-            sw.Write($"<externalBook xmlns:r=\"http://schemas.openxmlformats.org/officeDocument/2006/relationships\" r:id=\"{Relation.Id}\">");
+            sw.Write($"<externalBook xmlns:r=\"http://schemas.openxmlformats.org/officeDocument/2006/relationships\" r:id=\"{this.Relation.Id}\">");
             sw.Write("<sheetNames>");
-            foreach(KeyValuePair<string, int> sheet in _sheetNames.OrderBy(x=>x.Value))
+            foreach(KeyValuePair<string, int> sheet in this._sheetNames.OrderBy(x=>x.Value))
             {
                 sw.Write($"<sheetName val=\"{ConvertUtil.ExcelEscapeString(sheet.Key)}\"/>");
             }
             sw.Write("</sheetNames><definedNames>");
-            foreach (int sheet in _definedNamesValues.Keys)
+            foreach (int sheet in this._definedNamesValues.Keys)
             {
-                foreach (ExcelExternalDefinedName name in _definedNamesValues[sheet])
+                foreach (ExcelExternalDefinedName name in this._definedNamesValues[sheet])
                 {
                     if(name.SheetId<0)
                     {
@@ -795,11 +804,11 @@ namespace OfficeOpenXml.ExternalReferences
                 }
             }
             sw.Write("</definedNames><sheetDataSet>");
-            foreach (int sheetId in _sheetValues.Keys)
+            foreach (int sheetId in this._sheetValues.Keys)
             {
-                sw.Write($"<sheetData sheetId=\"{sheetId}\"{(_sheetRefresh.Contains(sheetId) ? " refreshError=\"1\"" : "")}>");
-                CellStoreEnumerator<object>? cellEnum = new CellStoreEnumerator<object>(_sheetValues[sheetId]);
-                CellStore<int>? mdStore = _sheetMetaData[sheetId];
+                sw.Write($"<sheetData sheetId=\"{sheetId}\"{(this._sheetRefresh.Contains(sheetId) ? " refreshError=\"1\"" : "")}>");
+                CellStoreEnumerator<object>? cellEnum = new CellStoreEnumerator<object>(this._sheetValues[sheetId]);
+                CellStore<int>? mdStore = this._sheetMetaData[sheetId];
                 int r = -1;
                 while(cellEnum.Next())
                 {
@@ -814,11 +823,11 @@ namespace OfficeOpenXml.ExternalReferences
                     int md=-1;
                     if(mdStore.Exists(cellEnum.Row, cellEnum.Column, ref md))
                     {
-                        sw.Write($"<cell r=\"{ExcelCellBase.GetAddress(cellEnum.Row, cellEnum.Column)}\" md=\"{md}\"{ConvertUtil.GetCellType(cellEnum.Value, true)}><v>{ConvertUtil.ExcelEscapeAndEncodeString(ConvertUtil.GetValueForXml(cellEnum.Value, _wb.Date1904))}</v></cell>");
+                        sw.Write($"<cell r=\"{ExcelCellBase.GetAddress(cellEnum.Row, cellEnum.Column)}\" md=\"{md}\"{ConvertUtil.GetCellType(cellEnum.Value, true)}><v>{ConvertUtil.ExcelEscapeAndEncodeString(ConvertUtil.GetValueForXml(cellEnum.Value, this._wb.Date1904))}</v></cell>");
                     }
                     else
                     {
-                        sw.Write($"<cell r=\"{ExcelCellBase.GetAddress(cellEnum.Row, cellEnum.Column)}\"{ConvertUtil.GetCellType(cellEnum.Value, true)}><v>{ConvertUtil.ExcelEscapeAndEncodeString(ConvertUtil.GetValueForXml(cellEnum.Value, _wb.Date1904))}</v></cell>");
+                        sw.Write($"<cell r=\"{ExcelCellBase.GetAddress(cellEnum.Row, cellEnum.Column)}\"{ConvertUtil.GetCellType(cellEnum.Value, true)}><v>{ConvertUtil.ExcelEscapeAndEncodeString(ConvertUtil.GetValueForXml(cellEnum.Value, this._wb.Date1904))}</v></cell>");
                     }
                     r = cellEnum.Row;
                 }

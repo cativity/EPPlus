@@ -26,7 +26,7 @@ namespace OfficeOpenXml.Table.PivotTable
         internal ExcelPivotTableFieldCollection(ExcelPivotTable table) :
             base()
         {
-            _table = table;
+            this._table = table;
         }
         /// <summary>
         /// Indexer by name
@@ -37,7 +37,7 @@ namespace OfficeOpenXml.Table.PivotTable
         {
             get
             {
-                foreach (ExcelPivotTableField? field in _list)
+                foreach (ExcelPivotTableField? field in this._list)
                 {
                     if (field.Name.Equals(name,StringComparison.OrdinalIgnoreCase))
                     {
@@ -54,7 +54,7 @@ namespace OfficeOpenXml.Table.PivotTable
         /// <returns>The matching field. If none is found null is returned</returns>
         public ExcelPivotTableField GetDateGroupField(eDateGroupBy GroupBy)
         {
-            foreach (ExcelPivotTableField? fld in _list)
+            foreach (ExcelPivotTableField? fld in this._list)
             {
                 if (fld.Grouping is ExcelPivotTableFieldDateGroup && (((ExcelPivotTableFieldDateGroup)fld.Grouping).GroupBy) == GroupBy)
                 {
@@ -69,7 +69,7 @@ namespace OfficeOpenXml.Table.PivotTable
         /// <returns>The matching field. If none is found null is returned</returns>
         public ExcelPivotTableField GetNumericGroupField()
         {
-            foreach (ExcelPivotTableField? fld in _list)
+            foreach (ExcelPivotTableField? fld in this._list)
             {
                 if (fld.Grouping is ExcelPivotTableFieldNumericGroup)
                 {
@@ -82,29 +82,29 @@ namespace OfficeOpenXml.Table.PivotTable
         internal ExcelPivotTableField AddDateGroupField(int index)
         {
             //Pivot field
-            XmlElement fieldNode = CreateFieldNode(_table);
+            XmlElement fieldNode = this.CreateFieldNode(this._table);
             fieldNode.InnerXml = "<items/>";
 
-            ExcelPivotTableField? field = new ExcelPivotTableField(_table.NameSpaceManager, fieldNode, _table, _table.Fields.Count, index);
+            ExcelPivotTableField? field = new ExcelPivotTableField(this._table.NameSpaceManager, fieldNode, this._table, this._table.Fields.Count, index);
 
-            _list.Add(field);
+            this._list.Add(field);
             return field;
         }
         internal ExcelPivotTableField AddField(int index)
         {
             //Pivot field
-            XmlElement fieldNode = CreateFieldNode(_table);
+            XmlElement fieldNode = this.CreateFieldNode(this._table);
             fieldNode.InnerXml = "<items/>";
 
-            ExcelPivotTableField? field = new ExcelPivotTableField(_table.NameSpaceManager, fieldNode, _table, _table.Fields.Count, index);
+            ExcelPivotTableField? field = new ExcelPivotTableField(this._table.NameSpaceManager, fieldNode, this._table, this._table.Fields.Count, index);
 
-            _list.Add(field);
+            this._list.Add(field);
             return field;
         }
 
         private XmlElement CreateFieldNode(ExcelPivotTable tbl)
         {
-            XmlNode? topNode = tbl.PivotTableXml.SelectSingleNode("//d:pivotFields", _table.NameSpaceManager);
+            XmlNode? topNode = tbl.PivotTableXml.SelectSingleNode("//d:pivotFields", this._table.NameSpaceManager);
             XmlElement? fieldNode = tbl.PivotTableXml.CreateElement("pivotField", ExcelPackage.schemaMain);
             fieldNode.SetAttribute("compact", "0");
             fieldNode.SetAttribute("outline", "0");
@@ -124,33 +124,33 @@ namespace OfficeOpenXml.Table.PivotTable
         /// <returns>The new calculated field</returns>
         public ExcelPivotTableField AddCalculatedField(string name, string formula)
         {            
-            if(_list.Exists(x=>x.Name.Equals(name,StringComparison.OrdinalIgnoreCase)))
+            if(this._list.Exists(x=>x.Name.Equals(name,StringComparison.OrdinalIgnoreCase)))
             {
                 throw (new InvalidOperationException($"Field with name {name} already exists in the collection"));
             }
-            PivotTableCacheInternal? cache = _table.CacheDefinition._cacheReference;
+            PivotTableCacheInternal? cache = this._table.CacheDefinition._cacheReference;
             ExcelPivotTableCacheField? cacheField = cache.AddFormula(name, formula);
 
             foreach (ExcelPivotTable? pt in cache._pivotTables)
             {
-                XmlElement fieldNode = CreateFieldNode(pt);
+                XmlElement fieldNode = this.CreateFieldNode(pt);
                 fieldNode.SetAttribute("dragToPage", "0");
                 fieldNode.SetAttribute("dragToCol", "0");
                 fieldNode.SetAttribute("dragToRow", "0");
-                ExcelPivotTableField? field = new ExcelPivotTableField(_table.NameSpaceManager, fieldNode, pt, cacheField.Index, 0);
+                ExcelPivotTableField? field = new ExcelPivotTableField(this._table.NameSpaceManager, fieldNode, pt, cacheField.Index, 0);
                 field._cacheField = cacheField;
                 pt.Fields.AddInternal(field);
             }
-            return _table.Fields[cacheField.Index];
+            return this._table.Fields[cacheField.Index];
         }
         internal void RemoveAt(int index)
         {
-            Remove(_list[index]);
+            this.Remove(this._list[index]);
         }
         internal void Remove(ExcelPivotTableField item)
         {
             item.TopNode.ParentNode.RemoveChild(item.TopNode);
-            _list.Remove(item);
+            this._list.Remove(item);
         }
     }
 }

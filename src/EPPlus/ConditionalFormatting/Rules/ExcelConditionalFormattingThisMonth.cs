@@ -53,10 +53,11 @@ namespace OfficeOpenXml.ConditionalFormatting
     {
         if (itemElementNode==null) //Set default values and create attributes if needed
         {
-            TimePeriod = eExcelConditionalFormattingTimePeriodType.ThisMonth;
-            Formula = string.Format(
-              "AND(MONTH({0})=MONTH(TODAY()), YEAR({0})=YEAR(TODAY()))",
-              Address.Start.Address);
+            this.TimePeriod = eExcelConditionalFormattingTimePeriodType.ThisMonth;
+
+            this.Formula = string.Format(
+                                         "AND(MONTH({0})=MONTH(TODAY()), YEAR({0})=YEAR(TODAY()))",
+                                         this.Address.Start.Address);
         }
     }
 

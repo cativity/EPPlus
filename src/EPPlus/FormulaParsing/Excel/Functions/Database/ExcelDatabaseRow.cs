@@ -25,12 +25,12 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Database
         private int _colIndex = 1;
         public object this[string field]
         {
-            get { return _items[field]; }
+            get { return this._items[field]; }
 
             set
             {
-                _items[field] = value;
-                _fieldIndexes[_colIndex++] = field;
+                this._items[field] = value;
+                this._fieldIndexes[this._colIndex++] = field;
             }
         }
 
@@ -38,8 +38,8 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Database
         {
             get
             {
-                string? field = _fieldIndexes[index];
-                return _items[field];
+                string? field = this._fieldIndexes[index];
+                return this._items[field];
             }
         }
         

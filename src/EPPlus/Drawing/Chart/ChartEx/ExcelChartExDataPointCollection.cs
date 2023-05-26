@@ -27,26 +27,27 @@ namespace OfficeOpenXml.Drawing.Chart.ChartEx
         internal readonly SortedDictionary<int, ExcelChartExDataPoint> _dic = new SortedDictionary<int, ExcelChartExDataPoint>();
         internal ExcelChartExDataPointCollection(ExcelChartExSerie serie, XmlNamespaceManager ns, XmlNode topNode, string[] schemaNodeOrder) : base(ns, topNode)
         {
-            SchemaNodeOrder = schemaNodeOrder;
-            foreach (XmlNode pointNode in TopNode.SelectNodes(ExcelChartExDataPoint.dataPtPath, ns))
+            this.SchemaNodeOrder = schemaNodeOrder;
+            foreach (XmlNode pointNode in this.TopNode.SelectNodes(ExcelChartExDataPoint.dataPtPath, ns))
             {
-                ExcelChartExDataPoint? item = new ExcelChartExDataPoint(serie, ns, pointNode, SchemaNodeOrder);
-                _dic.Add(item.Index, item);
+                ExcelChartExDataPoint? item = new ExcelChartExDataPoint(serie, ns, pointNode, this.SchemaNodeOrder);
+                this._dic.Add(item.Index, item);
             }
-            foreach (XmlElement stNode in TopNode.SelectNodes(ExcelChartExDataPoint.SubTotalPath, ns))
+            foreach (XmlElement stNode in this.TopNode.SelectNodes(ExcelChartExDataPoint.SubTotalPath, ns))
             {
                 int ix = int.Parse(stNode.GetAttribute("val"));
-                if(_dic.ContainsKey(ix))
+                if(this._dic.ContainsKey(ix))
                 {
-                    _dic[ix].SubTotal = true;
+                    this._dic[ix].SubTotal = true;
                 }
                 else
                 {
-                    ExcelChartExDataPoint? item = new ExcelChartExDataPoint(serie, ns, TopNode, ix, SchemaNodeOrder);
-                    _dic.Add(item.Index, item);
+                    ExcelChartExDataPoint? item = new ExcelChartExDataPoint(serie, ns, this.TopNode, ix, this.SchemaNodeOrder);
+                    this._dic.Add(item.Index, item);
                 }
             }
-            _serie = serie;
+
+            this._serie = serie;
 
         }
         /// <summary>
@@ -56,18 +57,18 @@ namespace OfficeOpenXml.Drawing.Chart.ChartEx
         /// <returns>The datapoint</returns>
         public ExcelChartExDataPoint Add(int index)
         {
-            return AddDp(index);
+            return this.AddDp(index);
         }
         internal ExcelChartExDataPoint AddDp(int idx)
         {
-            if (_dic.ContainsKey(idx))
+            if (this._dic.ContainsKey(idx))
             {
                 throw (new ArgumentException($"Data point with index {idx} already exists"));
             }
             
-            ExcelChartExDataPoint? dp = new ExcelChartExDataPoint(_serie, NameSpaceManager, TopNode, idx, SchemaNodeOrder);
+            ExcelChartExDataPoint? dp = new ExcelChartExDataPoint(this._serie, this.NameSpaceManager, this.TopNode, idx, this.SchemaNodeOrder);
 
-            _dic.Add(idx, dp);
+            this._dic.Add(idx, dp);
 
             return dp;
         }
@@ -79,7 +80,7 @@ namespace OfficeOpenXml.Drawing.Chart.ChartEx
         /// <returns>true if exists</returns>
         public bool ContainsKey(int index)
         {
-            return _dic.ContainsKey(index);
+            return this._dic.ContainsKey(index);
         }
         /// <summary>
         /// Indexer
@@ -90,7 +91,7 @@ namespace OfficeOpenXml.Drawing.Chart.ChartEx
         {
             get
             {
-                return (_dic[index]);
+                return (this._dic[index]);
             }
         }
         /// <summary>
@@ -100,7 +101,7 @@ namespace OfficeOpenXml.Drawing.Chart.ChartEx
         {
             get
             {
-                return _dic.Count;
+                return this._dic.Count;
             }
         }
         /// <summary>
@@ -109,12 +110,12 @@ namespace OfficeOpenXml.Drawing.Chart.ChartEx
         /// <returns>The enumerator</returns>
         public IEnumerator<ExcelChartExDataPoint> GetEnumerator()
         {
-            return _dic.Values.GetEnumerator();
+            return this._dic.Values.GetEnumerator();
         }
 
         IEnumerator IEnumerable.GetEnumerator()
         {
-            return _dic.Values.GetEnumerator();
+            return this._dic.Values.GetEnumerator();
         }
     }
 }

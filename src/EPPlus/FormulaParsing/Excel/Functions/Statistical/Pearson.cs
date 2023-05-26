@@ -30,8 +30,8 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Statistical
             ValidateArguments(arguments, 2);
             FunctionArgument? arg1 = arguments.ElementAt(0);
             FunctionArgument? arg2 = arguments.ElementAt(1);
-            double[]? array1 = ArgsToDoubleEnumerable(new FunctionArgument[] { arg1 }, context).Select(x => x.Value).ToArray();
-            double[]? array2 = ArgsToDoubleEnumerable(new FunctionArgument[] { arg2 }, context).Select(x => x.Value).ToArray();
+            double[]? array1 = this.ArgsToDoubleEnumerable(new FunctionArgument[] { arg1 }, context).Select(x => x.Value).ToArray();
+            double[]? array2 = this.ArgsToDoubleEnumerable(new FunctionArgument[] { arg2 }, context).Select(x => x.Value).ToArray();
             if (array1.Count() != array2.Count())
             {
                 return this.CreateResult(eErrorType.NA);
@@ -43,7 +43,7 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Statistical
             }
 
             double result = PearsonImpl(array1, array2);
-            return CreateResult(result, DataType.Decimal);
+            return this.CreateResult(result, DataType.Decimal);
         }
 
         internal static double PearsonImpl(IEnumerable<double> arr1, IEnumerable<double> arr2)

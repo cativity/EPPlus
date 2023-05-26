@@ -34,42 +34,42 @@ namespace OfficeOpenXml
 
         internal ExcelCommentCollection(ExcelPackage pck, ExcelWorksheet ws, XmlNamespaceManager ns)
         {
-            CommentXml = new XmlDocument();
-            CommentXml.PreserveWhitespace = false;
-            NameSpaceManager=ns;
-            Worksheet=ws;
-            CreateXml(pck);
-            AddCommentsFromXml();
+            this.CommentXml = new XmlDocument();
+            this.CommentXml.PreserveWhitespace = false;
+            this.NameSpaceManager=ns;
+            this.Worksheet=ws;
+            this.CreateXml(pck);
+            this.AddCommentsFromXml();
         }
         private void CreateXml(ExcelPackage pck)
         {
-            ZipPackageRelationshipCollection? commentRels = Worksheet.Part.GetRelationshipsByType(ExcelPackage.schemaComment);
+            ZipPackageRelationshipCollection? commentRels = this.Worksheet.Part.GetRelationshipsByType(ExcelPackage.schemaComment);
             bool isLoaded=false;
-            CommentXml=new XmlDocument();
+            this.CommentXml=new XmlDocument();
             foreach(ZipPackageRelationship? commentPart in commentRels)
             {
-                Uri = UriHelper.ResolvePartUri(commentPart.SourceUri, commentPart.TargetUri);
-                Part = pck.ZipPackage.GetPart(Uri);
-                XmlHelper.LoadXmlSafe(CommentXml, Part.GetStream()); 
-                RelId = commentPart.Id;
+                this.Uri = UriHelper.ResolvePartUri(commentPart.SourceUri, commentPart.TargetUri);
+                this.Part = pck.ZipPackage.GetPart(this.Uri);
+                XmlHelper.LoadXmlSafe(this.CommentXml, this.Part.GetStream());
+                this.RelId = commentPart.Id;
                 isLoaded=true;
             }
             //Create a new document
             if(!isLoaded)
             {
-                CommentXml.LoadXml("<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"yes\" ?><comments xmlns=\"http://schemas.openxmlformats.org/spreadsheetml/2006/main\"><authors /><commentList /></comments>");
-                Uri = null;
+                this.CommentXml.LoadXml("<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"yes\" ?><comments xmlns=\"http://schemas.openxmlformats.org/spreadsheetml/2006/main\"><authors /><commentList /></comments>");
+                this.Uri = null;
             }
         }
         private void AddCommentsFromXml()
         {
             //var lst = new List<IRangeID>();
-            foreach (XmlElement node in CommentXml.SelectNodes("//d:commentList/d:comment", NameSpaceManager))
+            foreach (XmlElement node in this.CommentXml.SelectNodes("//d:commentList/d:comment", this.NameSpaceManager))
             {
-                ExcelComment? comment = new ExcelComment(NameSpaceManager, node, new ExcelRangeBase(Worksheet, node.GetAttribute("ref")));
-                _listIndex.Add(_list.Count);
-                Worksheet._commentsStore.SetValue(comment.Range._fromRow, comment.Range._fromCol, _list.Count);
-                _list.Add(comment);
+                ExcelComment? comment = new ExcelComment(this.NameSpaceManager, node, new ExcelRangeBase(this.Worksheet, node.GetAttribute("ref")));
+                this._listIndex.Add(this._list.Count);
+                this.Worksheet._commentsStore.SetValue(comment.Range._fromRow, comment.Range._fromCol, this._list.Count);
+                this._list.Add(comment);
             }
             //_comments = new RangeCollection(lst);
         }
@@ -80,7 +80,7 @@ namespace OfficeOpenXml
         internal Uri Uri { get; set; }
         internal string RelId { get; set; }
         internal XmlNamespaceManager NameSpaceManager { get; set; }
-        internal Packaging.ZipPackagePart Part
+        internal ZipPackagePart Part
         {
             get;
             set;
@@ -100,7 +100,7 @@ namespace OfficeOpenXml
         {
             get
             {
-                return _listIndex.Count;
+                return this._listIndex.Count;
             }
         }
         /// <summary>
@@ -112,11 +112,11 @@ namespace OfficeOpenXml
         {
             get
             {
-                if (Index < 0 || Index >= _listIndex.Count)
+                if (Index < 0 || Index >= this._listIndex.Count)
                 {
                     throw(new ArgumentOutOfRangeException("Comment index out of range"));
                 }
-                return _list[_listIndex[Index]];
+                return this._list[this._listIndex[Index]];
             }
         }
         /// <summary>
@@ -129,9 +129,9 @@ namespace OfficeOpenXml
             get
             {
                 int i=-1;
-                if (Worksheet._commentsStore.Exists(cell.Row, cell.Column, ref i))
+                if (this.Worksheet._commentsStore.Exists(cell.Row, cell.Column, ref i))
                 {
-                    return _list[i];
+                    return this._list[i];
                 }
                 else
                 {
@@ -174,34 +174,34 @@ namespace OfficeOpenXml
                     author = "Anonymous";
                 }
             }
-            XmlElement? elem = CommentXml.CreateElement("comment", ExcelPackage.schemaMain);
+            XmlElement? elem = this.CommentXml.CreateElement("comment", ExcelPackage.schemaMain);
             //int ix=_comments.IndexOf(ExcelAddress.GetCellID(Worksheet.SheetID, cell._fromRow, cell._fromCol));
             //Make sure the nodes come on order.
             int row=cell.Start.Row, column= cell.Start.Column;
             ExcelComment nextComment = null;
-            if (Worksheet._commentsStore.NextCell(ref row, ref column))
+            if (this.Worksheet._commentsStore.NextCell(ref row, ref column))
             {
-                nextComment = _list[Worksheet._commentsStore.GetValue(row, column)];
+                nextComment = this._list[this.Worksheet._commentsStore.GetValue(row, column)];
             }
             if(nextComment==null)
             {
-                CommentXml.SelectSingleNode("d:comments/d:commentList", NameSpaceManager).AppendChild(elem);
+                this.CommentXml.SelectSingleNode("d:comments/d:commentList", this.NameSpaceManager).AppendChild(elem);
             }
             else
             {
                 nextComment._commentHelper.TopNode.ParentNode.InsertBefore(elem, nextComment._commentHelper.TopNode);
             }
             elem.SetAttribute("ref", cell.Start.Address);
-            ExcelComment comment = new ExcelComment(NameSpaceManager, elem , cell);
+            ExcelComment comment = new ExcelComment(this.NameSpaceManager, elem , cell);
             comment.RichText.Add(Text);
             comment.Author = author;
-            _listIndex.Add(_list.Count);
-            Worksheet._commentsStore.SetValue(cell.Start.Row, cell.Start.Column, _list.Count);
-            _list.Add(comment);
+            this._listIndex.Add(this._list.Count);
+            this.Worksheet._commentsStore.SetValue(cell.Start.Row, cell.Start.Column, this._list.Count);
+            this._list.Add(comment);
             //Check if a value exists otherwise add one so it is saved when the cells collection is iterated
-            if (!Worksheet.ExistsValueInner(cell._fromRow, cell._fromCol))
+            if (!this.Worksheet.ExistsValueInner(cell._fromRow, cell._fromCol))
             {
-                Worksheet.SetValueInner(cell._fromRow, cell._fromCol, null);
+                this.Worksheet.SetValueInner(cell._fromRow, cell._fromCol, null);
             }
             return comment;
         }
@@ -211,25 +211,25 @@ namespace OfficeOpenXml
         /// <param name="comment">The comment to remove</param>
         public void Remove(ExcelComment comment)
         {
-            Remove(comment, false);
+            this.Remove(comment, false);
         }
         internal void Remove(ExcelComment comment, bool shift)
         {
             int i = -1;
             ExcelComment c=null;
-            if (Worksheet._commentsStore.Exists(comment.Range._fromRow, comment.Range._fromCol, ref i))
+            if (this.Worksheet._commentsStore.Exists(comment.Range._fromRow, comment.Range._fromCol, ref i))
             {
-                c = _list[i];
+                c = this._list[i];
             }
             if (comment==c)
             {
                 comment.TopNode.ParentNode.RemoveChild(comment.TopNode); //Remove VML
                 comment._commentHelper.TopNode.ParentNode.RemoveChild(comment._commentHelper.TopNode); //Remove Comment
 
-                Worksheet.VmlDrawings._drawingsCellStore.Delete(comment.Range._fromRow, comment.Range._fromCol, 1, 1, shift);
-                Worksheet._commentsStore.Delete(comment.Range._fromRow, comment.Range._fromCol, 1, 1, shift);
-                _list[i]=null;
-                _listIndex.Remove(i);
+                this.Worksheet.VmlDrawings._drawingsCellStore.Delete(comment.Range._fromRow, comment.Range._fromCol, 1, 1, shift);
+                this.Worksheet._commentsStore.Delete(comment.Range._fromRow, comment.Range._fromCol, 1, 1, shift);
+                this._list[i]=null;
+                this._listIndex.Remove(i);
                 //if(_listIndex.Count==0)
                 //{
                 //    _list.Clear();
@@ -254,7 +254,7 @@ namespace OfficeOpenXml
         {
             List<ExcelComment> deletedComments = new List<ExcelComment>();
             ExcelAddressBase address = null;
-            foreach (ExcelComment comment in _list.Where(x=>x!=null))
+            foreach (ExcelComment comment in this._list.Where(x=>x!=null))
             {
                 address = new ExcelAddressBase(comment.Address);
                 if (columns > 0 && address._fromCol >= fromCol &&
@@ -281,9 +281,9 @@ namespace OfficeOpenXml
             {
                 comment.TopNode.ParentNode.RemoveChild(comment.TopNode); //Remove VML
                 comment._commentHelper.TopNode.ParentNode.RemoveChild(comment._commentHelper.TopNode); //Remove Comment
-                int ix = _list.IndexOf(comment);
-                _list[ix] = null;
-                _listIndex.Remove(ix);
+                int ix = this._list.IndexOf(comment);
+                this._list[ix] = null;
+                this._listIndex.Remove(ix);
             }
         }
         /// <summary>
@@ -297,7 +297,7 @@ namespace OfficeOpenXml
         /// <param name="toCol">If the insert is in a range, this the end column</param>
         internal void Insert(int fromRow, int fromCol, int rows, int columns, int toRow = ExcelPackage.MaxRows, int toCol=ExcelPackage.MaxColumns)
         {
-            foreach (ExcelComment comment in _list.Where(x => x != null))
+            foreach (ExcelComment comment in this._list.Where(x => x != null))
             {
                 ExcelAddressBase? address = new ExcelAddressBase(comment.Address);
                 if (rows > 0 && address._fromRow >= fromRow &&
@@ -322,22 +322,22 @@ namespace OfficeOpenXml
         /// <param name="Index">The index</param>
         public void RemoveAt(int Index)
         {
-            Remove(this[Index]);
+            this.Remove(this[Index]);
         }
 
         #region IEnumerable Members
 
         IEnumerator IEnumerable.GetEnumerator()
         {
-            return _list.Where(x=>x!=null).GetEnumerator();
+            return this._list.Where(x=>x!=null).GetEnumerator();
         }
         #endregion
 
         internal void Clear()
         {
-            while(Count>0)
+            while(this.Count>0)
             {
-                RemoveAt(0);
+                this.RemoveAt(0);
             }
         }
     }

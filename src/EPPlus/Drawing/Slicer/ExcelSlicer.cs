@@ -29,12 +29,12 @@ namespace OfficeOpenXml.Drawing.Slicer
         internal ExcelSlicer(ExcelDrawings drawings, XmlNode node, ExcelGroupShape parent=null) :
             base(drawings, node, "mc:AlternateContent/mc:Choice/xdr:graphicFrame", "xdr:nvGraphicFramePr/xdr:cNvPr", parent)
         {
-            _ws = drawings.Worksheet;
+            this._ws = drawings.Worksheet;
         }
         internal ExcelSlicer(ExcelDrawings drawings, XmlNode node, XmlDocument slicerXml, ExcelGroupShape parent = null) :
             base(drawings, node, "mc:AlternateContent/mc:Choice/xdr:graphicFrame", "xdr:nvGraphicFramePr/xdr:cNvPr", parent)
         {
-            _ws = drawings.Worksheet;
+            this._ws = drawings.Worksheet;
         }
         /// <summary>
         /// The type of drawing
@@ -53,11 +53,11 @@ namespace OfficeOpenXml.Drawing.Slicer
         {
             get
             {
-                return _slicerXmlHelper.GetXmlNodeString("@caption");
+                return this._slicerXmlHelper.GetXmlNodeString("@caption");
             }
             set
             {
-                _slicerXmlHelper.SetXmlNodeString("@caption", value);
+                this._slicerXmlHelper.SetXmlNodeString("@caption", value);
             }
         }
         /// <summary>
@@ -67,11 +67,11 @@ namespace OfficeOpenXml.Drawing.Slicer
         {
             get
             {
-                return _slicerXmlHelper.GetXmlNodeBool("@showCaption", true);
+                return this._slicerXmlHelper.GetXmlNodeBool("@showCaption", true);
             }
             set
             {
-                _slicerXmlHelper.SetXmlNodeBool("@showCaption", value, true);
+                this._slicerXmlHelper.SetXmlNodeBool("@showCaption", value, true);
             }
         }        
         /// <summary>
@@ -81,23 +81,23 @@ namespace OfficeOpenXml.Drawing.Slicer
         {
             get
             {
-                return _slicerXmlHelper.GetXmlNodeString("@name");
+                return this._slicerXmlHelper.GetXmlNodeString("@name");
             }
             set
             {
-                if(!CheckSlicerNameIsUnique(value))
+                if(!this.CheckSlicerNameIsUnique(value))
                 {
-                    if (Name != value)
+                    if (this.Name != value)
                     {
                         throw new InvalidOperationException("Slicer Name is not unique");
                     }
                 }
-                if (Name != value)
+                if (this.Name != value)
                 {
                     this.Name=value;
                 }
 
-                _slicerXmlHelper.SetXmlNodeString("@name", value);
+                this._slicerXmlHelper.SetXmlNodeString("@name", value);
             }
         }
 
@@ -110,11 +110,11 @@ namespace OfficeOpenXml.Drawing.Slicer
         { 
             get
             {
-                return _slicerXmlHelper.GetXmlNodeEmuToPt("@rowHeight");
+                return this._slicerXmlHelper.GetXmlNodeEmuToPt("@rowHeight");
             }
             set
             {
-                _slicerXmlHelper.SetXmlNodeEmuToPt("@rowHeight", value);
+                this._slicerXmlHelper.SetXmlNodeEmuToPt("@rowHeight", value);
             }
         }
         /// <summary>
@@ -124,11 +124,11 @@ namespace OfficeOpenXml.Drawing.Slicer
         {
             get
             { 
-                return _slicerXmlHelper.GetXmlNodeInt("@startItem", 0);
+                return this._slicerXmlHelper.GetXmlNodeInt("@startItem", 0);
             }
             set
             {
-                _slicerXmlHelper.SetXmlNodeInt("@startItem", value, null, false);
+                this._slicerXmlHelper.SetXmlNodeInt("@startItem", value, null, false);
             }
         }
         /// <summary>
@@ -138,11 +138,11 @@ namespace OfficeOpenXml.Drawing.Slicer
         {
             get
             {
-                return _slicerXmlHelper.GetXmlNodeInt("@columnCount", 1);
+                return this._slicerXmlHelper.GetXmlNodeInt("@columnCount", 1);
             }
             set
             {
-                _slicerXmlHelper.SetXmlNodeInt("@columnCount", value, null, false);
+                this._slicerXmlHelper.SetXmlNodeInt("@columnCount", value, null, false);
             }
         }
         /// <summary>
@@ -152,11 +152,11 @@ namespace OfficeOpenXml.Drawing.Slicer
         {
             get
             {
-                return _slicerXmlHelper.GetXmlNodeBool("@lockedPosition", false);
+                return this._slicerXmlHelper.GetXmlNodeBool("@lockedPosition", false);
             }
             set
             {
-                _slicerXmlHelper.SetXmlNodeBool("@lockedPosition", value, false);
+                this._slicerXmlHelper.SetXmlNodeBool("@lockedPosition", value, false);
             }
         }
         /// <summary>
@@ -167,17 +167,17 @@ namespace OfficeOpenXml.Drawing.Slicer
         {
             get
             {
-                return StyleName.TranslateSlicerStyle();
+                return this.StyleName.TranslateSlicerStyle();
             }
             set
             {
                 if(value==eSlicerStyle.None)
                 {
-                    StyleName = "";
+                    this.StyleName = "";
                 }
                 else if(value != eSlicerStyle.Custom)
                 {
-                    StyleName = "SlicerStyle" + value.ToString();
+                    this.StyleName = "SlicerStyle" + value.ToString();
                 }
             }
         }
@@ -189,13 +189,13 @@ namespace OfficeOpenXml.Drawing.Slicer
         {
             get
             {
-                return _slicerXmlHelper.GetXmlNodeString("@style");
+                return this._slicerXmlHelper.GetXmlNodeString("@style");
             }
             set
             {
                 if(string.IsNullOrEmpty(value))
                 {
-                    _slicerXmlHelper.DeleteNode("@style");
+                    this._slicerXmlHelper.DeleteNode("@style");
                     return;
                 }
                 if(value.StartsWith("SlicerStyle", StringComparison.OrdinalIgnoreCase))
@@ -203,23 +203,24 @@ namespace OfficeOpenXml.Drawing.Slicer
                     eSlicerStyle style = value.Substring(11).ToEnum(eSlicerStyle.Custom);
                     if(style!=eSlicerStyle.Custom || style!=eSlicerStyle.None)
                     {
-                        _slicerXmlHelper.SetXmlNodeString("@style", "SlicerStyle" + style);
+                        this._slicerXmlHelper.SetXmlNodeString("@style", "SlicerStyle" + style);
                         return;
                     }
                 }
-                Style = eSlicerStyle.Custom;
-                _slicerXmlHelper.SetXmlNodeString("@style", value);
+
+                this.Style = eSlicerStyle.Custom;
+                this._slicerXmlHelper.SetXmlNodeString("@style", value);
             }
         }
         internal string CacheName
         {
             get
             {
-                return _slicerXmlHelper.GetXmlNodeString("@cache");
+                return this._slicerXmlHelper.GetXmlNodeString("@cache");
             }
             set
             {
-                _slicerXmlHelper.SetXmlNodeString("@cache", value);
+                this._slicerXmlHelper.SetXmlNodeString("@cache", value);
             }
         }
         internal ExcelSlicerCache _cache = null;
@@ -230,28 +231,28 @@ namespace OfficeOpenXml.Drawing.Slicer
         {
             get
             {
-                if(_cache==null)
+                if(this._cache==null)
                 {
-                    _cache = _drawings.Worksheet.Workbook.GetSlicerCaches(CacheName);
+                    this._cache = this._drawings.Worksheet.Workbook.GetSlicerCaches(this.CacheName);
                 }
-                return _cache as T;
+                return this._cache as T;
             }
         }
         internal override void DeleteMe()
         {
-            if (_slicerXmlHelper.TopNode.ParentNode.ChildNodes.Count == 1)
+            if (this._slicerXmlHelper.TopNode.ParentNode.ChildNodes.Count == 1)
             {
-                _ws.RemoveSlicerReference(_xmlSource);
-                _xmlSource = null;
+                this._ws.RemoveSlicerReference(this._xmlSource);
+                this._xmlSource = null;
             }
 
-            _slicerXmlHelper.TopNode.ParentNode.RemoveChild(_slicerXmlHelper.TopNode);
+            this._slicerXmlHelper.TopNode.ParentNode.RemoveChild(this._slicerXmlHelper.TopNode);
 
-            _ws.Workbook.RemoveSlicerCacheReference(Cache.CacheRel.Id, Cache.SourceType);
-            _ws.Workbook.Names.Remove(Name);
-            if (Cache.Part.Package.PartExists(Cache.Uri))
+            this._ws.Workbook.RemoveSlicerCacheReference(this.Cache.CacheRel.Id, this.Cache.SourceType);
+            this._ws.Workbook.Names.Remove(this.Name);
+            if (this.Cache.Part.Package.PartExists(this.Cache.Uri))
             {
-                _drawings.Worksheet.Workbook._package.ZipPackage.DeletePart(Cache.Uri);
+                this._drawings.Worksheet.Workbook._package.ZipPackage.DeletePart(this.Cache.Uri);
             }
             base.DeleteMe();
         }

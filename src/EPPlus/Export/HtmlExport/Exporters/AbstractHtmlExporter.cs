@@ -34,26 +34,27 @@ namespace OfficeOpenXml.Export.HtmlExport.Exporters
 
         internal void SetStyleCache(Dictionary<string, int> styleCache)
         {
-            _styleCache = styleCache;
+            this._styleCache = styleCache;
         }
 
         protected void GetDataTypes(ExcelAddressBase adr, ExcelTable table)
         {
-            _dataTypes = new List<string>();
+            this._dataTypes = new List<string>();
             for (int col = adr._fromCol; col <= adr._toCol; col++)
             {
-                _dataTypes.Add(
-                    ColumnDataTypeManager.GetColumnDataType(table.WorkSheet, table.Range, 2, col));
+                this._dataTypes.Add(
+                                    ColumnDataTypeManager.GetColumnDataType(table.WorkSheet, table.Range, 2, col));
             }
         }
 
         internal void LoadRangeImages(List<ExcelRangeBase> ranges)
         {
-            if (_rangePictures != null)
+            if (this._rangePictures != null)
             {
                 return;
             }
-            _rangePictures = new List<HtmlImage>();
+
+            this._rangePictures = new List<HtmlImage>();
             //Render in-cell images.
             foreach (ExcelWorksheet? worksheet in ranges.Select(x => x.Worksheet).Distinct())
             {
@@ -64,7 +65,7 @@ namespace OfficeOpenXml.Export.HtmlExport.Exporters
                         p.GetFromBounds(out int fromRow, out int fromRowOff, out int fromCol, out int fromColOff);
                         p.GetToBounds(out int toRow, out int toRowOff, out int toCol, out int toColOff);
 
-                        _rangePictures.Add(new HtmlImage()
+                        this._rangePictures.Add(new HtmlImage()
                         {
                             WorksheetId = worksheet.PositionId,
                             Picture = p,
@@ -101,12 +102,12 @@ namespace OfficeOpenXml.Export.HtmlExport.Exporters
 
         protected HtmlImage GetImage(int worksheetId, int row, int col)
         {
-            if (_rangePictures == null)
+            if (this._rangePictures == null)
             {
                 return null;
             }
 
-            foreach (HtmlImage? p in _rangePictures)
+            foreach (HtmlImage? p in this._rangePictures)
             {
                 if (p.FromRow == row - 1 && p.FromColumn == col - 1 && p.WorksheetId == worksheetId)
                 {

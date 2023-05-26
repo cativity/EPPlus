@@ -34,7 +34,7 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Text
                 return this.CreateResult(val, DataType.String);
             }
 
-            return CreateResult(string.Empty, DataType.String);
+            return this.CreateResult(string.Empty, DataType.String);
         }
     }
 }

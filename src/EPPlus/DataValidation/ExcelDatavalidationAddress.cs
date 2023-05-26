@@ -17,7 +17,7 @@ namespace OfficeOpenXml.DataValidation
 
         internal ExcelDatavalidationAddress(string address, ExcelDataValidation val) : base(address) 
         {
-            _val = val;
+            this._val = val;
         }
 
         /// <summary>
@@ -25,7 +25,7 @@ namespace OfficeOpenXml.DataValidation
         /// </summary>
         internal protected override void BeforeChangeAddress()
         {
-            _val._ws.DataValidations.ClearRangeDictionary(_val.Address);
+            this._val._ws.DataValidations.ClearRangeDictionary(this._val.Address);
         }
 
         /// <summary>
@@ -33,7 +33,7 @@ namespace OfficeOpenXml.DataValidation
         /// </summary>
         internal protected override void ChangeAddress()
         {
-            _val._ws.DataValidations.AddToRangeDictionary(_val);
+            this._val._ws.DataValidations.AddToRangeDictionary(this._val);
         }
     }
 }

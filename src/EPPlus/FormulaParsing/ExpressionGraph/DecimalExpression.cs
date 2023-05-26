@@ -28,19 +28,19 @@ namespace OfficeOpenXml.FormulaParsing.ExpressionGraph
         public DecimalExpression(string expression, bool negate)
             : base(expression)
         {
-            _negate = negate;
+            this._negate = negate;
         }
 
         public DecimalExpression(double compiledValue)
             : base(compiledValue.ToString(CultureInfo.InvariantCulture))
         {
-            _compiledValue = compiledValue;
+            this._compiledValue = compiledValue;
         }
 
         public override CompileResult Compile()
         {
-            double result = _compiledValue ?? double.Parse(ExpressionString, CultureInfo.InvariantCulture);
-            result = _negate ? result * -1 : result;
+            double result = this._compiledValue ?? double.Parse(this.ExpressionString, CultureInfo.InvariantCulture);
+            result = this._negate ? result * -1 : result;
             return new CompileResult(result, DataType.Decimal);
         }
     }

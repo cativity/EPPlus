@@ -15,11 +15,11 @@ namespace OfficeOpenXml.SystemDrawing.Image
         {
             if(IsWindows())
             {
-                SupportedTypes= new HashSet<ePictureType>() { ePictureType.Bmp, ePictureType.Jpg, ePictureType.Gif, ePictureType.Png, ePictureType.Tif, ePictureType.Emf, ePictureType.Wmf };
+                this.SupportedTypes= new HashSet<ePictureType>() { ePictureType.Bmp, ePictureType.Jpg, ePictureType.Gif, ePictureType.Png, ePictureType.Tif, ePictureType.Emf, ePictureType.Wmf };
             }
             else
             {
-                SupportedTypes = new HashSet<ePictureType>() { ePictureType.Bmp, ePictureType.Jpg, ePictureType.Gif, ePictureType.Png, ePictureType.Tif };
+                this.SupportedTypes = new HashSet<ePictureType>() { ePictureType.Bmp, ePictureType.Jpg, ePictureType.Gif, ePictureType.Png, ePictureType.Tif };
             }
         }
 
@@ -63,26 +63,26 @@ namespace OfficeOpenXml.SystemDrawing.Image
                 height = 0;
                 horizontalResolution = 0;
                 verticalResolution = 0;
-                LastException = ex;
+                this.LastException = ex;
                 return false;
             }
         }
         bool? _validForEnvironment = null;
         public bool ValidForEnvironment()
         {
-            if (_validForEnvironment.HasValue == false)
+            if (this._validForEnvironment.HasValue == false)
             {
                 try
                 {
                     Graphics? g = Graphics.FromHwnd(IntPtr.Zero); //Fails if no gdi.
-                    _validForEnvironment = true;
+                    this._validForEnvironment = true;
                 }
                 catch
                 {
-                    _validForEnvironment = false;
+                    this._validForEnvironment = false;
                 }
             }
-            return _validForEnvironment.Value;
+            return this._validForEnvironment.Value;
         }
     }
 }

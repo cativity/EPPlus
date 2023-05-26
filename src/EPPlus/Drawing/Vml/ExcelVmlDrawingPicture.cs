@@ -29,7 +29,7 @@ namespace OfficeOpenXml.Drawing.Vml
         internal ExcelVmlDrawingPicture(XmlNode topNode, XmlNamespaceManager ns, ExcelWorksheet ws) :
             base(topNode, ns)
         {
-            _worksheet = ws;
+            this._worksheet = ws;
         }
         /// <summary>
         /// Position ID
@@ -38,7 +38,7 @@ namespace OfficeOpenXml.Drawing.Vml
         {
             get
             {
-                return GetXmlNodeString("@id");
+                return this.GetXmlNodeString("@id");
             }
         }
         /// <summary>
@@ -48,11 +48,11 @@ namespace OfficeOpenXml.Drawing.Vml
         {
             get
             {
-                return GetStyleProp("width");
+                return this.GetStyleProp("width");
             }
             set
             {
-                SetStyleProp("width",value.ToString(CultureInfo.InvariantCulture) + "pt");
+                this.SetStyleProp("width",value.ToString(CultureInfo.InvariantCulture) + "pt");
             }
         }
         /// <summary>
@@ -62,11 +62,11 @@ namespace OfficeOpenXml.Drawing.Vml
         {
             get
             {
-                return GetStyleProp("height");
+                return this.GetStyleProp("height");
             }
             set
             {
-                SetStyleProp("height", value.ToString(CultureInfo.InvariantCulture) + "pt");
+                this.SetStyleProp("height", value.ToString(CultureInfo.InvariantCulture) + "pt");
             }
         }
         /// <summary>
@@ -76,11 +76,11 @@ namespace OfficeOpenXml.Drawing.Vml
         {
             get
             {
-                return GetStyleProp("left");
+                return this.GetStyleProp("left");
             }
             set
             {
-                SetStyleProp("left", value.ToString(CultureInfo.InvariantCulture));
+                this.SetStyleProp("left", value.ToString(CultureInfo.InvariantCulture));
             }
         }
         /// <summary>
@@ -90,11 +90,11 @@ namespace OfficeOpenXml.Drawing.Vml
         {
             get
             {
-                return GetStyleProp("top");
+                return this.GetStyleProp("top");
             }
             set
             {
-                SetStyleProp("top", value.ToString(CultureInfo.InvariantCulture));
+                this.SetStyleProp("top", value.ToString(CultureInfo.InvariantCulture));
             }
         }
         /// <summary>
@@ -104,11 +104,11 @@ namespace OfficeOpenXml.Drawing.Vml
         {
             get
             {
-                return GetXmlNodeString("v:imagedata/@o:title");
+                return this.GetXmlNodeString("v:imagedata/@o:title");
             }
             set
             {
-                SetXmlNodeString("v:imagedata/@o:title",value);
+                this.SetXmlNodeString("v:imagedata/@o:title",value);
             }
         }
         ExcelImage _image;
@@ -119,21 +119,21 @@ namespace OfficeOpenXml.Drawing.Vml
         {
             get
             {
-                if(_image==null)
-                {                    
-                    _image = new ExcelImage(this, new ePictureType[] { ePictureType.Svg, ePictureType.Ico, ePictureType.WebP });
-                    ZipPackage? pck = _worksheet._package.ZipPackage;
-                    if (pck.PartExists(ImageUri))
+                if(this._image==null)
+                {
+                    this._image = new ExcelImage(this, new ePictureType[] { ePictureType.Svg, ePictureType.Ico, ePictureType.WebP });
+                    ZipPackage? pck = this._worksheet._package.ZipPackage;
+                    if (pck.PartExists(this.ImageUri))
                     {
-                        ZipPackagePart? part = pck.GetPart(ImageUri);
-                        _image.SetImage(((MemoryStream)part.GetStream()).ToArray(), PictureStore.GetPictureType(ImageUri));
+                        ZipPackagePart? part = pck.GetPart(this.ImageUri);
+                        this._image.SetImage(((MemoryStream)part.GetStream()).ToArray(), PictureStore.GetPictureType(this.ImageUri));
                     }
                     else
                     {
                         return null;
                     }
                 }
-                return _image;
+                return this._image;
             }
         }
         internal Uri ImageUri
@@ -145,11 +145,11 @@ namespace OfficeOpenXml.Drawing.Vml
         {
             get
             {
-                return GetXmlNodeString("v:imagedata/@o:relid");
+                return this.GetXmlNodeString("v:imagedata/@o:relid");
             }
             set
             {
-                SetXmlNodeString("v:imagedata/@o:relid",value);
+                this.SetXmlNodeString("v:imagedata/@o:relid",value);
             }
         }        
         /// <summary>
@@ -159,17 +159,17 @@ namespace OfficeOpenXml.Drawing.Vml
         {
             get
             {
-                return GetXmlNodeString("v:imagedata/@bilevel")=="t";
+                return this.GetXmlNodeString("v:imagedata/@bilevel")=="t";
             }
             set
             {
                 if (value)
                 {
-                    SetXmlNodeString("v:imagedata/@bilevel", "t");
+                    this.SetXmlNodeString("v:imagedata/@bilevel", "t");
                 }
                 else
                 {
-                    DeleteNode("v:imagedata/@bilevel");
+                    this.DeleteNode("v:imagedata/@bilevel");
                 }
             }
         }
@@ -180,17 +180,17 @@ namespace OfficeOpenXml.Drawing.Vml
         {
             get
             {
-                return GetXmlNodeString("v:imagedata/@grayscale")=="t";
+                return this.GetXmlNodeString("v:imagedata/@grayscale")=="t";
             }
             set
             {
                 if (value)
                 {
-                    SetXmlNodeString("v:imagedata/@grayscale", "t");
+                    this.SetXmlNodeString("v:imagedata/@grayscale", "t");
                 }
                 else
                 {
-                    DeleteNode("v:imagedata/@grayscale");
+                    this.DeleteNode("v:imagedata/@grayscale");
                 }
             }
         }
@@ -202,7 +202,7 @@ namespace OfficeOpenXml.Drawing.Vml
         {
             get
             {
-                string v = GetXmlNodeString("v:imagedata/@gain");
+                string v = this.GetXmlNodeString("v:imagedata/@gain");
                 return GetFracDT(v,1);
             }
             set
@@ -213,11 +213,11 @@ namespace OfficeOpenXml.Drawing.Vml
                 }
                 if (value == 1)
                 {
-                    DeleteNode("v:imagedata/@gamma");
+                    this.DeleteNode("v:imagedata/@gamma");
                 }
                 else
                 {
-                    SetXmlNodeString("v:imagedata/@gain", value.ToString("#.0#", CultureInfo.InvariantCulture));
+                    this.SetXmlNodeString("v:imagedata/@gain", value.ToString("#.0#", CultureInfo.InvariantCulture));
                 }
             }
         }
@@ -229,18 +229,18 @@ namespace OfficeOpenXml.Drawing.Vml
         {
             get
             {
-                string v = GetXmlNodeString("v:imagedata/@gamma");
+                string v = this.GetXmlNodeString("v:imagedata/@gamma");
                 return GetFracDT(v,0);
             }
             set
             {
                 if (value == 0) //Default
                 {
-                    DeleteNode("v:imagedata/@gamma");
+                    this.DeleteNode("v:imagedata/@gamma");
                 }
                 else
                 {
-                    SetXmlNodeString("v:imagedata/@gamma", value.ToString("#.0#", CultureInfo.InvariantCulture));
+                    this.SetXmlNodeString("v:imagedata/@gamma", value.ToString("#.0#", CultureInfo.InvariantCulture));
                 }
             }
         }
@@ -252,18 +252,18 @@ namespace OfficeOpenXml.Drawing.Vml
         {
             get
             {
-                string v = GetXmlNodeString("v:imagedata/@blacklevel");
+                string v = this.GetXmlNodeString("v:imagedata/@blacklevel");
                 return GetFracDT(v, 0);
             }
             set
             {
                 if (value == 0)
                 {
-                    DeleteNode("v:imagedata/@blacklevel");
+                    this.DeleteNode("v:imagedata/@blacklevel");
                 }
                 else
                 {
-                    SetXmlNodeString("v:imagedata/@blacklevel", value.ToString("#.0#", CultureInfo.InvariantCulture));
+                    this.SetXmlNodeString("v:imagedata/@blacklevel", value.ToString("#.0#", CultureInfo.InvariantCulture));
                 }
             }
         }
@@ -275,7 +275,7 @@ namespace OfficeOpenXml.Drawing.Vml
             if (v.EndsWith("f"))
             {
                 v = v.Substring(0, v.Length - 1);
-                if (double.TryParse(v, System.Globalization.NumberStyles.Any, CultureInfo.InvariantCulture, out d))
+                if (double.TryParse(v, NumberStyles.Any, CultureInfo.InvariantCulture, out d))
                 {
                     d /= 65535;
                 }
@@ -286,7 +286,7 @@ namespace OfficeOpenXml.Drawing.Vml
             }
             else
             {
-                if (!double.TryParse(v, System.Globalization.NumberStyles.Any, CultureInfo.InvariantCulture, out d))
+                if (!double.TryParse(v, NumberStyles.Any, CultureInfo.InvariantCulture, out d))
                 {
                     d = def;
                 }
@@ -295,7 +295,7 @@ namespace OfficeOpenXml.Drawing.Vml
         }
         private void SetStyleProp(string propertyName, string value)
         {
-            string style = GetXmlNodeString("@style");
+            string style = this.GetXmlNodeString("@style");
             string newStyle = "";
             bool found = false;
             foreach (string prop in style.Split(';'))
@@ -315,11 +315,12 @@ namespace OfficeOpenXml.Drawing.Vml
             {
                 newStyle += propertyName + ":" + value + ";";
             }
-            SetXmlNodeString("@style", newStyle.Substring(0, newStyle.Length - 1));
+
+            this.SetXmlNodeString("@style", newStyle.Substring(0, newStyle.Length - 1));
         }
         private double GetStyleProp(string propertyName)
         {
-            string style = GetXmlNodeString("@style");
+            string style = this.GetXmlNodeString("@style");
             foreach (string prop in style.Split(';'))
             {
                 string[] split = prop.Split(':');
@@ -344,19 +345,19 @@ namespace OfficeOpenXml.Drawing.Vml
         {
             get
             {
-                return _worksheet.VmlDrawings;
+                return this._worksheet.VmlDrawings;
             }
         }
 
         string ImageHash { get; set; }
         Uri UriPic { get; set; }
-        Packaging.ZipPackageRelationship RelPic { get; set; }
+        ZipPackageRelationship RelPic { get; set; }
 
         IPictureRelationDocument IPictureContainer.RelationDocument => throw new NotImplementedException();
 
         string IPictureContainer.ImageHash { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
         Uri IPictureContainer.UriPic { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
-        Packaging.ZipPackageRelationship IPictureContainer.RelPic { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
+        ZipPackageRelationship IPictureContainer.RelPic { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
 
         void IPictureContainer.RemoveImage()
         {

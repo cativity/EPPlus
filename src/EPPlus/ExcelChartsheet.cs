@@ -27,13 +27,13 @@ namespace OfficeOpenXml
         internal ExcelChartsheet(XmlNamespaceManager ns, ExcelPackage pck, string relID, Uri uriWorksheet, string sheetName, int sheetID, int positionID, eWorkSheetHidden? hidden, eChartType chartType, ExcelPivotTable pivotTableSource ) :
             base(ns, pck, relID, uriWorksheet, sheetName, sheetID, positionID, hidden)
         {
-            IsChartSheet = true;
-            Drawings.AddAllChartTypes("Chart 1", chartType, pivotTableSource, eEditAs.Absolute);
+            this.IsChartSheet = true;
+            this.Drawings.AddAllChartTypes("Chart 1", chartType, pivotTableSource, eEditAs.Absolute);
         }
         internal ExcelChartsheet(XmlNamespaceManager ns, ExcelPackage pck, string relID, Uri uriWorksheet, string sheetName, int sheetID, int positionID, eWorkSheetHidden? hidden) :
             base(ns, pck, relID, uriWorksheet, sheetName, sheetID, positionID, hidden)
         {
-            IsChartSheet = true;
+            this.IsChartSheet = true;
         }
         /// <summary>
         /// The worksheet chart object
@@ -42,7 +42,7 @@ namespace OfficeOpenXml
         {
             get
             {
-                return (ExcelChart)Drawings[0];
+                return (ExcelChart)this.Drawings[0];
             }
         }
     }

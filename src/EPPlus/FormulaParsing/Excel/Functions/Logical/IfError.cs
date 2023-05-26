@@ -29,7 +29,7 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Logical
         {
             ValidateArguments(arguments, 1);
             FunctionArgument? firstArg = arguments.First();
-            return GetResultByObject(firstArg.Value);
+            return this.GetResultByObject(firstArg.Value);
         }
     }
 }

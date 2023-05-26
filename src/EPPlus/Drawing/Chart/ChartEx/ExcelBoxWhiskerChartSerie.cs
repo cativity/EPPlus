@@ -32,11 +32,11 @@ namespace OfficeOpenXml.Drawing.Chart.ChartEx
         {
             get
             {
-                return GetXmlNodeString("cx:layoutPr/cx:parentLabelLayout/@val").ToEnum(eParentLabelLayout.None);
+                return this.GetXmlNodeString("cx:layoutPr/cx:parentLabelLayout/@val").ToEnum(eParentLabelLayout.None);
             }
             set
             {
-                SetXmlNodeString("cx:layoutPr/cx:parentLabelLayout/@val", value.ToEnumString());
+                this.SetXmlNodeString("cx:layoutPr/cx:parentLabelLayout/@val", value.ToEnumString());
             }
         }
         /// <summary>
@@ -46,7 +46,7 @@ namespace OfficeOpenXml.Drawing.Chart.ChartEx
         {
             get
             {
-                string? s = GetXmlNodeString("cx:layoutPr/cx:statistics/@quartileMethod");
+                string? s = this.GetXmlNodeString("cx:layoutPr/cx:statistics/@quartileMethod");
                 if (string.IsNullOrEmpty(s))
                 {
                     return null;
@@ -56,7 +56,7 @@ namespace OfficeOpenXml.Drawing.Chart.ChartEx
             }
             set
             {
-                SetXmlNodeString("cx:layoutPr/cx:statistics/@quartileMethod", value.ToEnumString());
+                this.SetXmlNodeString("cx:layoutPr/cx:statistics/@quartileMethod", value.ToEnumString());
             }
         }
         /// <summary>
@@ -66,11 +66,11 @@ namespace OfficeOpenXml.Drawing.Chart.ChartEx
         {
             get
             {
-                return GetXmlNodeBool($"{_path}/@meanLine");
+                return this.GetXmlNodeBool($"{_path}/@meanLine");
             }
             set
             {
-                SetXmlNodeBool($"{_path}/@meanLine", value);
+                this.SetXmlNodeBool($"{_path}/@meanLine", value);
             }
         }
         /// <summary>
@@ -80,11 +80,11 @@ namespace OfficeOpenXml.Drawing.Chart.ChartEx
         {
             get
             {
-                return GetXmlNodeBool($"{_path}/@meanMarker");
+                return this.GetXmlNodeBool($"{_path}/@meanMarker");
             }
             set
             {
-                SetXmlNodeBool($"{_path}/@meanMarker", value);
+                this.SetXmlNodeBool($"{_path}/@meanMarker", value);
             }
         }
         /// <summary>
@@ -94,11 +94,11 @@ namespace OfficeOpenXml.Drawing.Chart.ChartEx
         {
             get
             {
-                return GetXmlNodeBool($"{_path}/@nonoutliers");
+                return this.GetXmlNodeBool($"{_path}/@nonoutliers");
             }
             set
             {
-                SetXmlNodeBool($"{_path}/@nonoutliers", value);
+                this.SetXmlNodeBool($"{_path}/@nonoutliers", value);
             }
         }
         /// <summary>
@@ -108,11 +108,11 @@ namespace OfficeOpenXml.Drawing.Chart.ChartEx
         {
             get
             {
-                return GetXmlNodeBool($"{_path}/@outliers");
+                return this.GetXmlNodeBool($"{_path}/@outliers");
             }
             set
             {
-                SetXmlNodeBool($"{_path}/@outliers", value);
+                this.SetXmlNodeBool($"{_path}/@outliers", value);
             }
         }
     }

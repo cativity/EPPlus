@@ -28,8 +28,8 @@ namespace OfficeOpenXml.Export.HtmlExport.Exporters
     {
         public CssTableExporterSync(HtmlTableExportSettings settings, ExcelTable table) : base(settings, table.Range)
         {
-            _table = table;
-            _tableSettings = settings;
+            this._table = table;
+            this._tableSettings = settings;
         }
 
         private readonly ExcelTable _table;
@@ -99,14 +99,14 @@ namespace OfficeOpenXml.Export.HtmlExport.Exporters
         private void RenderCellCss(EpplusCssWriter styleWriter)
         {
 
-            ExcelRangeBase? r = _table.Range;
+            ExcelRangeBase? r = this._table.Range;
             ExcelStyles? styles = r.Worksheet.Workbook.Styles;
             CellStoreEnumerator<ExcelValue>? ce = new CellStoreEnumerator<ExcelValue>(r.Worksheet._values, r._fromRow, r._fromCol, r._toRow, r._toCol);
             while (ce.Next())
             {
                 if (ce.Value._styleId > 0 && ce.Value._styleId < styles.CellXfs.Count)
                 {
-                    styleWriter.AddToCss(styles, ce.Value._styleId, Settings.StyleClassPrefix, Settings.CellStyleClassName);
+                    styleWriter.AddToCss(styles, ce.Value._styleId, this.Settings.StyleClassPrefix, this.Settings.CellStyleClassName);
                 }
             }
             styleWriter.FlushStream();
@@ -119,7 +119,7 @@ namespace OfficeOpenXml.Export.HtmlExport.Exporters
         public string GetCssString()
         {
             using MemoryStream? ms = RecyclableMemory.GetStream();
-            RenderCss(ms);
+            this.RenderCss(ms);
             ms.Position = 0;
             using StreamReader? sr = new StreamReader(ms);
             return sr.ReadToEnd();
@@ -130,7 +130,7 @@ namespace OfficeOpenXml.Export.HtmlExport.Exporters
         /// <returns>A html table</returns>
         public void RenderCss(Stream stream)
         {
-            if ((_table.TableStyle == TableStyles.None || _tableSettings.Css.IncludeTableStyles == false) && _tableSettings.Css.IncludeCellStyles == false)
+            if ((this._table.TableStyle == TableStyles.None || this._tableSettings.Css.IncludeTableStyles == false) && this._tableSettings.Css.IncludeCellStyles == false)
             {
                 return;
             }
@@ -139,30 +139,30 @@ namespace OfficeOpenXml.Export.HtmlExport.Exporters
                 throw new IOException("Parameter stream must be a writeable System.IO.Stream");
             }
 
-            if (_dataTypes.Count == 0)
+            if (this._dataTypes.Count == 0)
             {
                 this.GetDataTypes(this._table.Address, this._table);
             }
 
             StreamWriter? sw = new StreamWriter(stream);
 
-            List<ExcelRangeBase>? ranges = new List<ExcelRangeBase>() { _table.Range };
-            EpplusCssWriter? cellCssWriter = new EpplusCssWriter(sw, ranges, _tableSettings, _tableSettings.Css, _tableSettings.Css.Exclude.CellStyle, _styleCache);
+            List<ExcelRangeBase>? ranges = new List<ExcelRangeBase>() { this._table.Range };
+            EpplusCssWriter? cellCssWriter = new EpplusCssWriter(sw, ranges, this._tableSettings, this._tableSettings.Css, this._tableSettings.Css.Exclude.CellStyle, this._styleCache);
             cellCssWriter.RenderAdditionalAndFontCss(TableClass);
-            if (_tableSettings.Css.IncludeTableStyles)
+            if (this._tableSettings.Css.IncludeTableStyles)
             {
                 RenderTableCss(sw, this._table, this._tableSettings, this._styleCache, this._dataTypes);
             }
 
-            if (_tableSettings.Css.IncludeCellStyles)
+            if (this._tableSettings.Css.IncludeCellStyles)
             {
                 this.RenderCellCss(cellCssWriter);
             }
 
-            if (_tableSettings.Pictures.Include == ePictureInclude.Include)
+            if (this._tableSettings.Pictures.Include == ePictureInclude.Include)
             {
-                LoadRangeImages(ranges);
-                foreach (HtmlImage? p in _rangePictures)
+                this.LoadRangeImages(ranges);
+                foreach (HtmlImage? p in this._rangePictures)
                 {
                     cellCssWriter.AddPictureToCss(p);
                 }

@@ -28,7 +28,7 @@ namespace OfficeOpenXml.Export.ToDataTable
             Require.That(dataColumn).IsNotNull();
             Require.That(dataColumn.ColumnName).IsNotNullOrEmpty();
             Require.That(dataColumn.DataType).IsNotNull();
-            DataColumn = dataColumn;
+            this.DataColumn = dataColumn;
         }
 
         internal DataColumnMapping()
@@ -59,16 +59,16 @@ namespace OfficeOpenXml.Export.ToDataTable
         /// </summary>
         public string DataColumnName
         {
-            get { return HasDataColumn ? DataColumn.ColumnName : _dataColumnName; }
+            get { return this.HasDataColumn ? this.DataColumn.ColumnName : this._dataColumnName; }
             set
             {
-                if(HasDataColumn)
+                if(this.HasDataColumn)
                 {
-                    DataColumn.ColumnName = value;
+                    this.DataColumn.ColumnName = value;
                 }
                 else
                 {
-                    _dataColumnName = value;
+                    this._dataColumnName = value;
                 }
             }
         }
@@ -81,24 +81,24 @@ namespace OfficeOpenXml.Export.ToDataTable
         {
             get
             {
-                if(HasDataColumn)
+                if(this.HasDataColumn)
                 {
-                    return DataColumn.DataType;
+                    return this.DataColumn.DataType;
                 }
                 else
                 {
-                    return _dataColumnType;
+                    return this._dataColumnType;
                 }
             }
             set
             {
-                if(HasDataColumn)
+                if(this.HasDataColumn)
                 {
-                    DataColumn.DataType = value;
+                    this.DataColumn.DataType = value;
                 }
                 else
                 {
-                    _dataColumnType = value;
+                    this._dataColumnType = value;
                 }
             }
         }
@@ -111,24 +111,24 @@ namespace OfficeOpenXml.Export.ToDataTable
         {
             get
             {
-                if(HasDataColumn)
+                if(this.HasDataColumn)
                 {
-                    return DataColumn.AllowDBNull;
+                    return this.DataColumn.AllowDBNull;
                 }
                 else
                 {
-                    return _allowNull;
+                    return this._allowNull;
                 }
             }
             set
             {
-                if(HasDataColumn)
+                if(this.HasDataColumn)
                 {
-                    DataColumn.AllowDBNull = value;
+                    this.DataColumn.AllowDBNull = value;
                 }
                 else
                 {
-                    _allowNull = value;
+                    this._allowNull = value;
                 }
             }
         }
@@ -153,12 +153,12 @@ namespace OfficeOpenXml.Export.ToDataTable
 
         internal void Validate()
         {
-            if(string.IsNullOrEmpty(DataColumnName))
+            if(string.IsNullOrEmpty(this.DataColumnName))
             {
                 throw new ArgumentNullException("DataColumnName");
             }
 
-            if (ZeroBasedColumnIndexInRange < 0)
+            if (this.ZeroBasedColumnIndexInRange < 0)
             {
                 throw new ArgumentOutOfRangeException("ZeroBasedColumnIndex");
             }

@@ -43,30 +43,30 @@ namespace EPPlusTest.FormulaParsing.IntegrationTests
         [TestInitialize]
         public void Initialize()
         {
-            _package = new ExcelPackage();
-            _ws = _package.Workbook.Worksheets.Add("test");
+            this._package = new ExcelPackage();
+            this._ws = this._package.Workbook.Worksheets.Add("test");
         }
 
         [TestCleanup]
         public void Cleanup()
         {
-            _package.Dispose();
+            this._package.Dispose();
         }
 
         [TestMethod]
         public void DivByZeroShouldReturnError()
         {
-            object? result = _ws.Calculate("10/0 + 3");
-            Assert.AreEqual(DivByZero, result);
+            object? result = this._ws.Calculate("10/0 + 3");
+            Assert.AreEqual(this.DivByZero, result);
         }
 
         [TestMethod]
         public void ConcatShouldUseFormatG15()
         {
-            object? result = _ws.Calculate("14.000000000000002 & \"%\"");
+            object? result = this._ws.Calculate("14.000000000000002 & \"%\"");
             Assert.AreEqual("14%", result);
 
-            result = _ws.Calculate("\"%\" & 14.000000000000002");
+            result = this._ws.Calculate("\"%\" & 14.000000000000002");
             Assert.AreEqual("%14", result);
         }
     }

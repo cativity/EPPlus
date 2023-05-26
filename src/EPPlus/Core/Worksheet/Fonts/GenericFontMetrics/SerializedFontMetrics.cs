@@ -21,8 +21,8 @@ namespace OfficeOpenXml.Core.Worksheet.Core.Worksheet.Fonts.GenericMeasurements
     {
         public SerializedFontMetrics()
         {
-            ClassWidths = new Dictionary<FontMetricsClass, float>();
-            CharMetrics = new Dictionary<char, FontMetricsClass>();
+            this.ClassWidths = new Dictionary<FontMetricsClass, float>();
+            this.CharMetrics = new Dictionary<char, FontMetricsClass>();
         }
 
         public FontMetricsFamilies Family { get; set; }
@@ -49,7 +49,7 @@ namespace OfficeOpenXml.Core.Worksheet.Core.Worksheet.Fonts.GenericMeasurements
 
         public uint GetKey()
         {
-            return GetKey(Family, SubFamily);
+            return GetKey(this.Family, this.SubFamily);
         }
 
         public static uint GetKey(FontMetricsFamilies family, FontSubFamilies subFamily)

@@ -26,17 +26,17 @@ namespace OfficeOpenXml.ExternalReferences
         internal ExcelWorkbook _wb;
         internal ExcelExternalLink(ExcelWorkbook wb)
         {
-            _wb = wb;
-            As = new ExcelExternalLinkAsType(this);            
-            Part = null;
-            WorkbookElement = null;
+            this._wb = wb;
+            this.As = new ExcelExternalLinkAsType(this);
+            this.Part = null;
+            this.WorkbookElement = null;
         }
         internal ExcelExternalLink(ExcelWorkbook wb, XmlTextReader reader, ZipPackagePart part, XmlElement workbookElement)
         {
-            _wb = wb;
-            As = new ExcelExternalLinkAsType(this);
-            Part = part;
-            WorkbookElement = workbookElement;
+            this._wb = wb;
+            this.As = new ExcelExternalLinkAsType(this);
+            this.Part = part;
+            this.WorkbookElement = workbookElement;
         }
         /// <summary>
         /// The type of external link
@@ -70,7 +70,7 @@ namespace OfficeOpenXml.ExternalReferences
         /// <returns></returns>
         public override string ToString()
         {
-            return ExternalLinkType.ToString();
+            return this.ExternalLinkType.ToString();
         }
         /// <summary>
         /// The index of the external link. The index can be used in formulas between brackets to reference this link.
@@ -82,7 +82,7 @@ namespace OfficeOpenXml.ExternalReferences
         {
             get
             {
-                return _wb.ExternalLinks.GetIndex(this)+1;
+                return this._wb.ExternalLinks.GetIndex(this)+1;
             }
         }
         internal static bool HasWebProtocol(string uriPath)
@@ -97,7 +97,7 @@ namespace OfficeOpenXml.ExternalReferences
         {
             get
             {
-                return _errors;
+                return this._errors;
             }
         }
 

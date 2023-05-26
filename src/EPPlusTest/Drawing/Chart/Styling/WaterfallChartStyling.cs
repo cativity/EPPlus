@@ -93,7 +93,7 @@ namespace EPPlusTest.Drawing.Chart.Styling
                     dl.Format = "#,##0.00";
                     dl = c.Series[0].DataLabel.DataLabels.Add(0);
                     dl.Border.Width = 1;
-                    dl.Border.Fill.Style = OfficeOpenXml.Drawing.eFillStyle.SolidFill;
+                    dl.Border.Fill.Style = eFillStyle.SolidFill;
                     dl.Border.Fill.SolidFill.Color.SetPresetColor(ePresetColor.DarkCyan);
                     dl.Position = eLabelPosition.Top;
                     dl.ShowSeriesName = true;

@@ -28,8 +28,8 @@ namespace OfficeOpenXml.ThreadedComments
         internal ExcelThreadedCommentCollection(ExcelWorksheet worksheet, XmlNode topNode)
             : base(worksheet.NameSpaceManager, topNode)
         {
-            _package = worksheet._package;
-            Worksheet = worksheet;
+            this._package = worksheet._package;
+            this.Worksheet = worksheet;
         }
 
         private readonly ExcelPackage _package;
@@ -63,7 +63,7 @@ namespace OfficeOpenXml.ThreadedComments
         {
             get
             {
-                return _commentList[index];
+                return this._commentList[index];
             }
         }
 
@@ -77,11 +77,11 @@ namespace OfficeOpenXml.ThreadedComments
         {
             get
             {
-                if(!_commentsIndex.ContainsKey(id))
+                if(!this._commentsIndex.ContainsKey(id))
                 {
                     throw new ArgumentException("Id " + id + " was not present in the comments.");
                 }
-                return _commentsIndex[id];
+                return this._commentsIndex[id];
             }
         }
 
@@ -92,7 +92,7 @@ namespace OfficeOpenXml.ThreadedComments
         /// <returns>An enumerator that can be used to iterate through the collection.</returns>
         public IEnumerator<ExcelThreadedComment> GetEnumerator()
         {
-            return _commentList.GetEnumerator();
+            return this._commentList.GetEnumerator();
         }
         /// <summary>
         /// Returns an enumerator that iterates through the collection.
@@ -100,7 +100,7 @@ namespace OfficeOpenXml.ThreadedComments
         /// <returns>An enumerator that can be used to iterate through the collection.</returns>
         IEnumerator IEnumerable.GetEnumerator()
         {
-            return _commentList.GetEnumerator();
+            return this._commentList.GetEnumerator();
         }
 
         /// <summary>
@@ -108,48 +108,49 @@ namespace OfficeOpenXml.ThreadedComments
         /// </summary>
         public int Count
         {
-            get { return _commentList.Count; }   
+            get { return this._commentList.Count; }   
         }
 
         private void RebuildIndex()
         {
-            _commentsIndex.Clear();
-            foreach(ExcelThreadedComment? comment in _commentList)
+            this._commentsIndex.Clear();
+            foreach(ExcelThreadedComment? comment in this._commentList)
             {
-                _commentsIndex[comment.Id] = comment;
+                this._commentsIndex[comment.Id] = comment;
             }
         }
 
         internal void Add(ExcelThreadedComment comment)
         {
-            _commentList.Add(comment);
-            if(TopNode.SelectSingleNode("tc:threadedComment[@id='" + comment.Id + "']", NameSpaceManager) == null)
+            this._commentList.Add(comment);
+            if(this.TopNode.SelectSingleNode("tc:threadedComment[@id='" + comment.Id + "']", this.NameSpaceManager) == null)
             {
-                TopNode.AppendChild(comment.TopNode);
+                this.TopNode.AppendChild(comment.TopNode);
             }
-            RebuildIndex();
+
+            this.RebuildIndex();
         }
 
         internal bool Remove(ExcelThreadedComment comment)
         {
-            int index = _commentList.IndexOf(comment);
-            _commentList.Remove(comment);
-            XmlNode? commentNode = TopNode.SelectSingleNode("tc:threadedComment[@id='" + comment.Id + "']", NameSpaceManager);
+            int index = this._commentList.IndexOf(comment);
+            this._commentList.Remove(comment);
+            XmlNode? commentNode = this.TopNode.SelectSingleNode("tc:threadedComment[@id='" + comment.Id + "']", this.NameSpaceManager);
             if (commentNode != null)
             {
-                TopNode.RemoveChild(commentNode);
+                this.TopNode.RemoveChild(commentNode);
 
                 //Reset the parentid to the first item in the list if we remove the first comment
-                if (index == 0 && _commentList.Count > 0)
+                if (index == 0 && this._commentList.Count > 0)
                 {
-                    ((XmlElement)_commentList[0].TopNode).RemoveAttribute("parentId");
-                    for (int i = 1; i < _commentList.Count; i++)
+                    ((XmlElement)this._commentList[0].TopNode).RemoveAttribute("parentId");
+                    for (int i = 1; i < this._commentList.Count; i++)
                     {
-                        _commentList[i].ParentId = _commentList[0].Id;
+                        this._commentList[i].ParentId = this._commentList[0].Id;
                     }
                 }
 
-                RebuildIndex();
+                this.RebuildIndex();
 
                 return true;
             }
@@ -162,11 +163,12 @@ namespace OfficeOpenXml.ThreadedComments
         /// </summary>
         internal void Clear()
         {
-            foreach(XmlNode? node in _commentList.Select(x => x.TopNode))
+            foreach(XmlNode? node in this._commentList.Select(x => x.TopNode))
             {
-                TopNode.RemoveChild(node);
+                this.TopNode.RemoveChild(node);
             }
-            _commentList.Clear();
+
+            this._commentList.Clear();
         }
 
         /// <summary>
@@ -175,7 +177,7 @@ namespace OfficeOpenXml.ThreadedComments
         /// <returns>A string that represents the current object.</returns>
         public override string ToString()
         {
-            return "Count = " + _commentList.Count;
+            return "Count = " + this._commentList.Count;
         }
     }
 }

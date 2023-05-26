@@ -31,8 +31,8 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Text
             string? text = ArgToString(arguments, 0);
             string? find = ArgToString(arguments, 1);
             string? replaceWith = ArgToString(arguments, 2);
-            string? result = arguments.Count() > 3 ? ReplaceFirst(text, find, replaceWith, ArgToInt(arguments, 3)) : text.Replace(find, replaceWith);
-            return CreateResult(result, DataType.String);
+            string? result = arguments.Count() > 3 ? ReplaceFirst(text, find, replaceWith, this.ArgToInt(arguments, 3)) : text.Replace(find, replaceWith);
+            return this.CreateResult(result, DataType.String);
         }
 
         private static string ReplaceFirst(string text, string search, string replace, int instanceNumber)

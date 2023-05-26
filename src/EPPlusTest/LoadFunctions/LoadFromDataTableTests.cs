@@ -18,18 +18,18 @@ namespace EPPlusTest.LoadFunctions
         [TestInitialize]
         public void Initialize()
         {
-            _package = new ExcelPackage();
-            _worksheet = _package.Workbook.Worksheets.Add("test");
-            _dataSet = new DataSet();
-            _table = _dataSet.Tables.Add("table");
-            _table.Columns.Add("Id", typeof(string));
-            _table.Columns.Add("Name", typeof(string));
+            this._package = new ExcelPackage();
+            this._worksheet = this._package.Workbook.Worksheets.Add("test");
+            this._dataSet = new DataSet();
+            this._table = this._dataSet.Tables.Add("table");
+            this._table.Columns.Add("Id", typeof(string));
+            this._table.Columns.Add("Name", typeof(string));
         }
 
         [TestCleanup]
         public void Cleanup()
         {
-            _package.Dispose();
+            this._package.Dispose();
         }
 
         private ExcelPackage _package;
@@ -40,9 +40,9 @@ namespace EPPlusTest.LoadFunctions
         [TestMethod]
         public void ShouldLoadTable()
         {
-            _table.Rows.Add("1", "Test name");
-            _worksheet.Cells["A1"].LoadFromDataTable(_table, false);
-            Assert.AreEqual("1", _worksheet.Cells["A1"].Value);
+            this._table.Rows.Add("1", "Test name");
+            this._worksheet.Cells["A1"].LoadFromDataTable(this._table, false);
+            Assert.AreEqual("1", this._worksheet.Cells["A1"].Value);
         }
 
         [TestMethod]
@@ -67,25 +67,25 @@ namespace EPPlusTest.LoadFunctions
         [TestMethod]
         public void ShouldLoadTableWithTableStyle()
         {
-            _table.Rows.Add("1", "Test name");
-            _worksheet.Cells["A1"].LoadFromDataTable(_table, false, TableStyles.Dark1);
-            Assert.AreEqual(1, _worksheet.Tables.Count);
+            this._table.Rows.Add("1", "Test name");
+            this._worksheet.Cells["A1"].LoadFromDataTable(this._table, false, TableStyles.Dark1);
+            Assert.AreEqual(1, this._worksheet.Tables.Count);
         }
 
         [TestMethod]
         public void ShouldUseCaptionForHeader()
         {
-            _table.Columns["Id"].Caption = "An Id";
-            _table.Columns["Name"].Caption = "A name";
-            _worksheet.Cells["A1"].LoadFromDataTable(_table, true);
-            Assert.AreEqual("An Id", _worksheet.Cells["A1"].Value);
+            this._table.Columns["Id"].Caption = "An Id";
+            this._table.Columns["Name"].Caption = "A name";
+            this._worksheet.Cells["A1"].LoadFromDataTable(this._table, true);
+            Assert.AreEqual("An Id", this._worksheet.Cells["A1"].Value);
         }
 
         [TestMethod]
         public void ShouldUseColumnNameForHeaderIfNoCaption()
         {
-            _worksheet.Cells["A1"].LoadFromDataTable(_table, true);
-            Assert.AreEqual("Id", _worksheet.Cells["A1"].Value);
+            this._worksheet.Cells["A1"].LoadFromDataTable(this._table, true);
+            Assert.AreEqual("Id", this._worksheet.Cells["A1"].Value);
         }
 
         [TestMethod]
@@ -124,51 +124,55 @@ namespace EPPlusTest.LoadFunctions
         [TestMethod]
         public void ShouldUseLambdaConfig()
         {
-            _table.Rows.Add("1", "Test name");
-            _worksheet.Cells["A1"].LoadFromDataTable(_table, c =>
+            this._table.Rows.Add("1", "Test name");
+
+            this._worksheet.Cells["A1"].LoadFromDataTable(this._table, c =>
             {
                 c.PrintHeaders = true;
                 c.TableStyle = TableStyles.Dark1;
             });
-            Assert.AreEqual("Id", _worksheet.Cells["A1"].Value);
-            Assert.AreEqual("1", _worksheet.Cells["A2"].Value);
+            Assert.AreEqual("Id", this._worksheet.Cells["A1"].Value);
+            Assert.AreEqual("1", this._worksheet.Cells["A2"].Value);
         }
 
         [TestMethod]
         public void ShouldSetDbNullToNull()
         {
-            _table.Rows.Add("1", DBNull.Value);
-            _worksheet.Cells["A1"].LoadFromDataTable(_table, c =>
+            this._table.Rows.Add("1", DBNull.Value);
+
+            this._worksheet.Cells["A1"].LoadFromDataTable(this._table, c =>
             {
                 c.PrintHeaders = true;
                 c.TableStyle = TableStyles.Dark1;
             });
-            Assert.IsNull(_worksheet.Cells["B2"].Value);
+            Assert.IsNull(this._worksheet.Cells["B2"].Value);
         }
 
         [TestMethod]
         public void ShouldSetNullToNull()
         {
-            _table.Rows.Add("1", null);
-            _worksheet.Cells["A1"].LoadFromDataTable(_table, c =>
+            this._table.Rows.Add("1", null);
+
+            this._worksheet.Cells["A1"].LoadFromDataTable(this._table, c =>
             {
                 c.PrintHeaders = true;
                 c.TableStyle = TableStyles.Dark1;
             });
-            Assert.IsNull(_worksheet.Cells["B2"].Value);
+            Assert.IsNull(this._worksheet.Cells["B2"].Value);
         }
 
         [TestMethod]
         public void ShouldReplaceWithNullIfDbNull()
         {
-            _table.Rows.Add("1", null);
-            _worksheet.Cells["B2"].Value = 2;
-            _worksheet.Cells["A1"].LoadFromDataTable(_table, c =>
+            this._table.Rows.Add("1", null);
+            this._worksheet.Cells["B2"].Value = 2;
+
+            this._worksheet.Cells["A1"].LoadFromDataTable(this._table, c =>
             {
                 c.PrintHeaders = true;
                 c.TableStyle = TableStyles.Dark1;
             });
-            Assert.IsNull(_worksheet.Cells["B2"].Value);
+            Assert.IsNull(this._worksheet.Cells["B2"].Value);
         }
     }
 }

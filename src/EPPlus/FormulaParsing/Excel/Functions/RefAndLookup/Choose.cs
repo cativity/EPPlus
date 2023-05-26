@@ -40,15 +40,15 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions.RefAndLookup
             {
                 IntArgumentParser intParser = new IntArgumentParser();
                 object[] values = chooseIndices.Select(chosenIndex => items[(int)intParser.Parse(chosenIndex.ValueFirst)]).ToArray();
-                return CreateResult(values, DataType.Enumerable);
+                return this.CreateResult(values, DataType.Enumerable);
             }
             else
             {
-                int index = ArgToInt(arguments, 0);
+                int index = this.ArgToInt(arguments, 0);
                 object? choosedValue = arguments.ElementAt(index).Value;
                 if(choosedValue is IRangeInfo)
                 {
-                    return CreateResult(choosedValue, DataType.Enumerable);
+                    return this.CreateResult(choosedValue, DataType.Enumerable);
                 }
                 CompileResultFactory? factory = new CompileResultFactory();
                 return factory.Create(choosedValue);

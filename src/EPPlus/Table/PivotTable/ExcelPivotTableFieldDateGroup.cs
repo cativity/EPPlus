@@ -33,7 +33,7 @@ namespace OfficeOpenXml.Table.PivotTable
         {
             get
             {
-                string v = GetXmlNodeString(groupByPath);
+                string v = this.GetXmlNodeString(groupByPath);
                 if (v != "")
                 {
                     return (eDateGroupBy)Enum.Parse(typeof(eDateGroupBy), v, true);
@@ -45,7 +45,7 @@ namespace OfficeOpenXml.Table.PivotTable
             }
             private set
             {
-                SetXmlNodeString(groupByPath, value.ToString().ToLower(CultureInfo.InvariantCulture));
+                this.SetXmlNodeString(groupByPath, value.ToString().ToLower(CultureInfo.InvariantCulture));
             }
         }
         /// <summary>
@@ -55,7 +55,7 @@ namespace OfficeOpenXml.Table.PivotTable
         {
             get
             {
-                return GetXmlNodeBool("@autoStart", false);
+                return this.GetXmlNodeBool("@autoStart", false);
             }
         }
         /// <summary>
@@ -65,7 +65,7 @@ namespace OfficeOpenXml.Table.PivotTable
         {
             get
             {
-                return GetXmlNodeBool("@autoStart", false);
+                return this.GetXmlNodeBool("@autoStart", false);
             }
         }
     }

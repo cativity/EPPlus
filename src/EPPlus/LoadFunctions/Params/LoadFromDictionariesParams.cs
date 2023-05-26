@@ -33,7 +33,7 @@ namespace OfficeOpenXml.LoadFunctions.Params
         /// <param name="keys">The keys to include</param>
         public void SetKeys(params string[] keys)
         {
-            Keys = keys;
+            this.Keys = keys;
         }
 
         /// <summary>

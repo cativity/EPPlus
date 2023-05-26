@@ -426,8 +426,8 @@ namespace EPPlusTest.Export.ToCollection
                 ExcelTable? t=sheet.Tables.Add(sheet.Cells["A1:E3"], $"tbl{wsName}");
                 t.ShowTotal = true;
                 t.Columns["Id"].TotalsRowLabel = "Totals";
-                t.Columns["Ratio"].TotalsRowFunction = OfficeOpenXml.Table.RowFunctions.Sum;
-                t.Columns["TimeStamp"].TotalsRowFunction = OfficeOpenXml.Table.RowFunctions.Count;
+                t.Columns["Ratio"].TotalsRowFunction = RowFunctions.Sum;
+                t.Columns["TimeStamp"].TotalsRowFunction = RowFunctions.Count;
             }
             return sheet;
 

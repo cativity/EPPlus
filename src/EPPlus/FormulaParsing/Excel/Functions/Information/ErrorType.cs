@@ -33,27 +33,27 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Information
             CompileResult? isErrorResult = isErrorFunc.Execute(arguments, context);
             if (!(bool) isErrorResult.Result)
             {
-                return CreateResult(ExcelErrorValue.Create(eErrorType.NA), DataType.ExcelError);
+                return this.CreateResult(ExcelErrorValue.Create(eErrorType.NA), DataType.ExcelError);
             }
             ExcelErrorValue? errorType = error.ValueAsExcelErrorValue;
             switch (errorType.Type)
             {
                 case eErrorType.Null:
-                    return CreateResult(1, DataType.Integer);
+                    return this.CreateResult(1, DataType.Integer);
                 case eErrorType.Div0:
-                    return CreateResult(2, DataType.Integer);
+                    return this.CreateResult(2, DataType.Integer);
                 case eErrorType.Value:
-                    return CreateResult(3, DataType.Integer);
+                    return this.CreateResult(3, DataType.Integer);
                 case eErrorType.Ref:
-                    return CreateResult(4, DataType.Integer);
+                    return this.CreateResult(4, DataType.Integer);
                 case eErrorType.Name:
-                    return CreateResult(5, DataType.Integer);
+                    return this.CreateResult(5, DataType.Integer);
                 case eErrorType.Num:
-                    return CreateResult(6, DataType.Integer);
+                    return this.CreateResult(6, DataType.Integer);
                 case eErrorType.NA:
-                    return CreateResult(7, DataType.Integer);
+                    return this.CreateResult(7, DataType.Integer);
             }
-            return CreateResult(ExcelErrorValue.Create(eErrorType.NA), DataType.ExcelError);
+            return this.CreateResult(ExcelErrorValue.Create(eErrorType.NA), DataType.ExcelError);
         }
     }
 }

@@ -26,19 +26,19 @@ namespace OfficeOpenXml.Drawing.Chart
         string _formatCodePath;
         internal ExcelChartNumericSource(XmlNamespaceManager nameSpaceManager, XmlNode topNode, string path, string[] schemaNodeOrder) : base(nameSpaceManager, topNode)
         {
-            _path = path;
-            _formatCodePath = $"{_path}/c:numLit/c:formatCode";
-            AddSchemaNodeOrder(schemaNodeOrder,new string[] { "formatCode", "ptCount", "pt" });
-            SetSourceElement();
-            if (_sourceElement != null)
+            this._path = path;
+            this._formatCodePath = $"{this._path}/c:numLit/c:formatCode";
+            this.AddSchemaNodeOrder(schemaNodeOrder,new string[] { "formatCode", "ptCount", "pt" });
+            this.SetSourceElement();
+            if (this._sourceElement != null)
             {
-                switch (_sourceElement.LocalName)
+                switch (this._sourceElement.LocalName)
                 {
                     case "numLit":
-                        _formatCode = GetXmlNodeString(_path + "/c:numLit/c:formatCode");
+                        this._formatCode = this.GetXmlNodeString(this._path + "/c:numLit/c:formatCode");
                         break;
                     case "numRef":
-                        _formatCode = GetXmlNodeString(_path + "/c:numRef/c:numCache/c:formatCode");
+                        this._formatCode = this.GetXmlNodeString(this._path + "/c:numRef/c:numCache/c:formatCode");
                         break;
                }
             }
@@ -51,22 +51,22 @@ namespace OfficeOpenXml.Drawing.Chart
         {
             get
             {
-                if(_sourceElement==null)
+                if(this._sourceElement==null)
                 {
                     return "";
                 }
-                else if(_sourceElement.LocalName=="numLit")
+                else if(this._sourceElement.LocalName=="numLit")
                 {
-                    return GetNumLit();
+                    return this.GetNumLit();
                 }
                 else
                 {
-                    return GetXmlNodeString($"{_path}/c:numRef/c:f");
+                    return this.GetXmlNodeString($"{this._path}/c:numRef/c:f");
                 }
             }
             set
             {
-                if (_sourceElement != null)
+                if (this._sourceElement != null)
                 {
                     this._sourceElement.ParentNode.RemoveChild(this._sourceElement);
                 }
@@ -84,25 +84,25 @@ namespace OfficeOpenXml.Drawing.Chart
                         throw new ArgumentException("ValueSource", "Invalid format:Litteral values must begin and end with a curly bracket");
                     }
 
-                    CreateNumLit(value);
+                    this.CreateNumLit(value);
                 }
                 else
                 {
-                    SetXmlNodeString($"{_path}/c:numRef/c:f", value);
+                    this.SetXmlNodeString($"{this._path}/c:numRef/c:f", value);
                 }
-                if (!string.IsNullOrEmpty(_formatCode))
+                if (!string.IsNullOrEmpty(this._formatCode))
                 {
                     this.FormatCode = this.FormatCode;
                 }
 
-                SetSourceElement();
+                this.SetSourceElement();
             }
         }
 
         private string GetNumLit()
         {
             string? v = "";
-            foreach (XmlNode node in _sourceElement.ChildNodes)
+            foreach (XmlNode node in this._sourceElement.ChildNodes)
             {
                 if(node.LocalName=="pt")
                 {
@@ -118,10 +118,10 @@ namespace OfficeOpenXml.Drawing.Chart
 
         private void SetSourceElement()
         {
-            XmlNode? node = GetNode(_path);
+            XmlNode? node = this.GetNode(this._path);
             if(node!=null && node.HasChildNodes)
             {
-                _sourceElement = (XmlElement)node.FirstChild;
+                this._sourceElement = (XmlElement)node.FirstChild;
             }
         }
 
@@ -130,12 +130,12 @@ namespace OfficeOpenXml.Drawing.Chart
             string[]? nums = value.Substring(1, value.Length - 2).Split(',');
             if(nums.Length>0)
             {
-                SetXmlNodeString($"{_path}/c:numLit/c:ptCount/@val", nums.Length.ToString(CultureInfo.InvariantCulture));
-                XmlElement? litNode = (XmlElement)GetNode($"{_path}/c:numLit");
+                this.SetXmlNodeString($"{this._path}/c:numLit/c:ptCount/@val", nums.Length.ToString(CultureInfo.InvariantCulture));
+                XmlElement? litNode = (XmlElement)this.GetNode($"{this._path}/c:numLit");
                 int idx = 0;
                 foreach (string? num in nums)
                 {
-                    XmlElement? child = CreateLit(num.Trim(), idx++);
+                    XmlElement? child = this.CreateLit(num.Trim(), idx++);
                     litNode.AppendChild(child);
                 }
             }
@@ -143,9 +143,9 @@ namespace OfficeOpenXml.Drawing.Chart
 
         private XmlElement CreateLit(string num, int idx)
         {
-            XmlElement ptNode = TopNode.OwnerDocument.CreateElement("c", "pt", ExcelPackage.schemaChart);
+            XmlElement ptNode = this.TopNode.OwnerDocument.CreateElement("c", "pt", ExcelPackage.schemaChart);
             ptNode.SetAttribute("idx",idx.ToString(CultureInfo.InvariantCulture));
-            XmlElement? vNode = TopNode.OwnerDocument.CreateElement("c", "v", ExcelPackage.schemaChart);
+            XmlElement? vNode = this.TopNode.OwnerDocument.CreateElement("c", "v", ExcelPackage.schemaChart);
             vNode.InnerText = num;
             ptNode.AppendChild(vNode);
             return ptNode;
@@ -159,23 +159,24 @@ namespace OfficeOpenXml.Drawing.Chart
         {
             get
             {
-                return _formatCode;
+                return this._formatCode;
             }
             set
             {
-                if (_sourceElement != null)
+                if (this._sourceElement != null)
                 {
-                    switch (_sourceElement.LocalName)
+                    switch (this._sourceElement.LocalName)
                     {
                         case "numLit":
-                            SetXmlNodeString(_path + "/c:numLit/c:formatCode", value);
+                            this.SetXmlNodeString(this._path + "/c:numLit/c:formatCode", value);
                             break;
                         case "numRef":
-                            SetXmlNodeString(_path + "/c:numRef/c:numCache/c:formatCode", value);
+                            this.SetXmlNodeString(this._path + "/c:numRef/c:numCache/c:formatCode", value);
                             break;
                     }
                 }
-                _formatCode=value;
+
+                this._formatCode=value;
             }
         }
     }

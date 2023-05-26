@@ -30,12 +30,12 @@ namespace OfficeOpenXml.ExternalReferences
         readonly ExcelWorkbook _wb;
         internal ExcelExternalLinksCollection(ExcelWorkbook wb)
         {
-            _wb = wb;
-            LoadExternalReferences();
+            this._wb = wb;
+            this.LoadExternalReferences();
         }
         internal void AddInternal(ExcelExternalLink externalLink)
         {
-            _list.Add(externalLink);
+            this._list.Add(externalLink);
         }
         /// <summary>
         ///     Returns an enumerator that iterates through the collection.
@@ -43,7 +43,7 @@ namespace OfficeOpenXml.ExternalReferences
         /// <returns>An enumerator that can be used to iterate through the collection.</returns>
         public IEnumerator<ExcelExternalLink> GetEnumerator()
         {
-            return _list.GetEnumerator();
+            return this._list.GetEnumerator();
         }
 
         /// <summary>
@@ -52,12 +52,12 @@ namespace OfficeOpenXml.ExternalReferences
         /// <returns>An enumerator that can be used to iterate through the collection.</returns>
         IEnumerator IEnumerable.GetEnumerator()
         {
-            return _list.GetEnumerator();
+            return this._list.GetEnumerator();
         }
         /// <summary>
         /// Gets the number of items in the collection
         /// </summary>
-        public int Count { get { return _list.Count; } }
+        public int Count { get { return this._list.Count; } }
         /// <summary>
         /// The indexer for the collection
         /// </summary>
@@ -67,7 +67,7 @@ namespace OfficeOpenXml.ExternalReferences
         {
             get
             {
-                return _list[index];
+                return this._list[index];
             }
         }
         /// <summary>
@@ -82,20 +82,20 @@ namespace OfficeOpenXml.ExternalReferences
                 throw (new FileNotFoundException("The file does not exist."));
             }
             ExcelPackage? p = new ExcelPackage(file);
-            ExcelExternalWorkbook? ewb = new ExcelExternalWorkbook(_wb, p);
-            _list.Add(ewb);
+            ExcelExternalWorkbook? ewb = new ExcelExternalWorkbook(this._wb, p);
+            this._list.Add(ewb);
             return ewb;
         }
         internal void LoadExternalReferences()
         {
-            XmlNodeList nl = _wb.WorkbookXml.SelectNodes("//d:externalReferences/d:externalReference", _wb.NameSpaceManager);
+            XmlNodeList nl = this._wb.WorkbookXml.SelectNodes("//d:externalReferences/d:externalReference", this._wb.NameSpaceManager);
             if (nl != null)
             {
                 foreach (XmlElement elem in nl)
                 {
                     string rID = elem.GetAttribute("r:id");
-                    ZipPackageRelationship? rel = _wb.Part.GetRelationship(rID);
-                    ZipPackagePart? part = _wb._package.ZipPackage.GetPart(UriHelper.ResolvePartUri(rel.SourceUri, rel.TargetUri));
+                    ZipPackageRelationship? rel = this._wb.Part.GetRelationship(rID);
+                    ZipPackagePart? part = this._wb._package.ZipPackage.GetPart(UriHelper.ResolvePartUri(rel.SourceUri, rel.TargetUri));
                     XmlTextReader? xr = new XmlTextReader(part.GetStream());
                     while (xr.Read())
                     {
@@ -104,13 +104,13 @@ namespace OfficeOpenXml.ExternalReferences
                             switch (xr.Name)
                             {
                                 case "externalBook":
-                                    AddInternal(new ExcelExternalWorkbook(_wb, xr, part, elem));
+                                    this.AddInternal(new ExcelExternalWorkbook(this._wb, xr, part, elem));
                                     break;
                                 case "ddeLink":
-                                    AddInternal(new ExcelExternalDdeLink(_wb, xr, part, elem));
+                                    this.AddInternal(new ExcelExternalDdeLink(this._wb, xr, part, elem));
                                     break;
                                 case "oleLink":
-                                    AddInternal(new ExcelExternalOleLink(_wb, xr, part, elem));
+                                    this.AddInternal(new ExcelExternalOleLink(this._wb, xr, part, elem));
                                     break;
                                 case "extLst":
 
@@ -130,11 +130,12 @@ namespace OfficeOpenXml.ExternalReferences
         /// <param name="index">The zero-based index</param>
         public void RemoveAt(int index)
         {
-            if(index < 0 || index>=_list.Count)
+            if(index < 0 || index>= this._list.Count)
             {
                 throw (new ArgumentOutOfRangeException(nameof(index)));
             }
-            Remove(_list[index]);
+
+            this.Remove(this._list[index]);
         }
         /// <summary>
         /// Removes the external link from the package.If the external reference is an workbook any formula links are broken.
@@ -142,13 +143,13 @@ namespace OfficeOpenXml.ExternalReferences
         /// <param name="externalLink"></param>
         public void Remove(ExcelExternalLink externalLink)
         {
-            int ix = _list.IndexOf(externalLink);
-            
-            _wb._package.ZipPackage.DeletePart(externalLink.Part.Uri);
+            int ix = this._list.IndexOf(externalLink);
+
+            this._wb._package.ZipPackage.DeletePart(externalLink.Part.Uri);
 
             if(externalLink.ExternalLinkType==eExternalLinkType.ExternalWorkbook)
             {
-                ExternalLinksHandler.BreakFormulaLinks(_wb, ix, true);
+                ExternalLinksHandler.BreakFormulaLinks(this._wb, ix, true);
             }
 
             XmlNode? extRefs = externalLink.WorkbookElement.ParentNode;
@@ -157,25 +158,26 @@ namespace OfficeOpenXml.ExternalReferences
             {
                 extRefs.ParentNode?.RemoveChild(extRefs);
             }
-            _list.Remove(externalLink);
+
+            this._list.Remove(externalLink);
         }
         /// <summary>
         /// Clear all external links and break any formula links.
         /// </summary>
         public void Clear()
         {
-            if (_list.Count == 0)
+            if (this._list.Count == 0)
             {
                 return;
             }
 
-            XmlNode? extRefs = _list[0].WorkbookElement.ParentNode;
+            XmlNode? extRefs = this._list[0].WorkbookElement.ParentNode;
 
-            ExternalLinksHandler.BreakAllFormulaLinks(_wb);
-            while (_list.Count>0)
+            ExternalLinksHandler.BreakAllFormulaLinks(this._wb);
+            while (this._list.Count>0)
             {
-                _wb._package.ZipPackage.DeletePart(_list[0].Part.Uri);
-                _list.RemoveAt(0);
+                this._wb._package.ZipPackage.DeletePart(this._list[0].Part.Uri);
+                this._list.RemoveAt(0);
             }
 
             extRefs?.ParentNode?.RemoveChild(extRefs);
@@ -195,7 +197,7 @@ namespace OfficeOpenXml.ExternalReferences
         public bool LoadWorkbooks()
         {
             bool ret = true;
-            foreach (ExcelExternalLink? link in _list)
+            foreach (ExcelExternalLink? link in this._list)
             {
                 if(link.ExternalLinkType==eExternalLinkType.ExternalWorkbook)
                 {
@@ -222,11 +224,11 @@ namespace OfficeOpenXml.ExternalReferences
             {
                 if(ExcelExternalLink.HasWebProtocol(extRef))
                 {
-                    for (int ix = 0; ix < _list.Count; ix++)
+                    for (int ix = 0; ix < this._list.Count; ix++)
                     {
-                        if (_list[ix].ExternalLinkType == eExternalLinkType.ExternalWorkbook)
+                        if (this._list[ix].ExternalLinkType == eExternalLinkType.ExternalWorkbook)
                         {
-                            if (extRef.Equals(_list[ix].As.ExternalWorkbook.ExternalLinkUri.OriginalString, StringComparison.OrdinalIgnoreCase))
+                            if (extRef.Equals(this._list[ix].As.ExternalWorkbook.ExternalLinkUri.OriginalString, StringComparison.OrdinalIgnoreCase))
                             {
                                 return ix;
                             }
@@ -243,12 +245,12 @@ namespace OfficeOpenXml.ExternalReferences
                 try
                 {
                     FileInfo? fi = new FileInfo(extRef);
-                    for (int ix = 0; ix < _list.Count; ix++)
+                    for (int ix = 0; ix < this._list.Count; ix++)
                     {
-                        if (_list[ix].ExternalLinkType == eExternalLinkType.ExternalWorkbook)
+                        if (this._list[ix].ExternalLinkType == eExternalLinkType.ExternalWorkbook)
                         {
 
-                            ExcelExternalWorkbook? wb = _list[ix].As.ExternalWorkbook;
+                            ExcelExternalWorkbook? wb = this._list[ix].As.ExternalWorkbook;
                             if (wb.File == null)
                             {
                                 string? fileName = wb.ExternalLinkUri?.OriginalString;
@@ -278,7 +280,7 @@ namespace OfficeOpenXml.ExternalReferences
             else
             {
                 int ix = int.Parse(extRef)-1;
-                if(ix<_list.Count)
+                if(ix< this._list.Count)
                 {
                     return ix;
                 }
@@ -287,7 +289,7 @@ namespace OfficeOpenXml.ExternalReferences
         }
         internal int GetIndex(ExcelExternalLink link)
         {
-            return _list.IndexOf(link);
+            return this._list.IndexOf(link);
         }
         /// <summary>
         /// Updates the value cache for any external workbook in the collection. The link must be an workbook and of type xlsx, xlsm or xlst.
@@ -296,7 +298,7 @@ namespace OfficeOpenXml.ExternalReferences
         public bool UpdateCaches()
         {
             bool ret = true;
-            foreach(ExcelExternalLink? er in _list)
+            foreach(ExcelExternalLink? er in this._list)
             {
                 if(er.ExternalLinkType==eExternalLinkType.ExternalWorkbook)
                 {

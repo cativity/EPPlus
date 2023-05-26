@@ -22,7 +22,7 @@ namespace OfficeOpenXml.Drawing.Vml
         internal ExcelVmlDrawingBase(XmlNode topNode, XmlNamespaceManager ns) :
             base(ns, topNode)
         {
-            SchemaNodeOrder = new string[] { "fill", "stroke", "shadow", "path", "textbox", "ClientData", "MoveWithCells", "SizeWithCells", "Anchor", "Locked", "AutoFill", "LockText", "TextHAlign", "TextVAlign", "Row", "Column", "Visible" };
+            this.SchemaNodeOrder = new string[] { "fill", "stroke", "shadow", "path", "textbox", "ClientData", "MoveWithCells", "SizeWithCells", "Anchor", "Locked", "AutoFill", "LockText", "TextHAlign", "TextVAlign", "Row", "Column", "Visible" };
         }
         /// <summary>
         /// The Id of the vml drawing
@@ -31,11 +31,11 @@ namespace OfficeOpenXml.Drawing.Vml
         {
             get
             {
-                return GetXmlNodeString("@id");
+                return this.GetXmlNodeString("@id");
             }
             set
             {
-                SetXmlNodeString("@id",value);
+                this.SetXmlNodeString("@id",value);
             }
         }
         /// <summary>
@@ -45,11 +45,11 @@ namespace OfficeOpenXml.Drawing.Vml
         {
             get
             {
-                return GetXmlNodeString("@o:spid");
+                return this.GetXmlNodeString("@o:spid");
             }
             set
             {
-                SetXmlNodeString("@o:spid", value);
+                this.SetXmlNodeString("@o:spid", value);
             }
         }
         /// <summary>
@@ -59,11 +59,11 @@ namespace OfficeOpenXml.Drawing.Vml
         {
             get
             {
-                return GetXmlNodeString("@alt");
+                return this.GetXmlNodeString("@alt");
             }
             set
             {
-                SetXmlNodeString("@alt", value);
+                this.SetXmlNodeString("@alt", value);
             }
         }
         /// <summary>
@@ -73,11 +73,11 @@ namespace OfficeOpenXml.Drawing.Vml
         {
             get
             {
-                return GetXmlNodeString("x:ClientData/x:Anchor");
+                return this.GetXmlNodeString("x:ClientData/x:Anchor");
             }
             set
             {
-                SetXmlNodeString("x:ClientData/x:Anchor", value);
+                this.SetXmlNodeString("x:ClientData/x:Anchor", value);
             }
         }
 

@@ -49,7 +49,7 @@ namespace EPPlusTest.Excel.Functions
         [TestInitialize]
         public void Setup()
         {
-            _context = ParsingContext.Create();
+            this._context = ParsingContext.Create();
         }
 
         [TestMethod]
@@ -57,7 +57,7 @@ namespace EPPlusTest.Excel.Functions
         {
             IsBlank? func = new IsBlank();
             IEnumerable<FunctionArgument>? args = FunctionsHelper.CreateArgs(new object[]{null});
-            CompileResult? result = func.Execute(args, _context);
+            CompileResult? result = func.Execute(args, this._context);
             Assert.IsTrue((bool)result.Result);
         }
 
@@ -66,7 +66,7 @@ namespace EPPlusTest.Excel.Functions
         {
             IsBlank? func = new IsBlank();
             IEnumerable<FunctionArgument>? args = FunctionsHelper.CreateArgs(string.Empty);
-            CompileResult? result = func.Execute(args, _context);
+            CompileResult? result = func.Execute(args, this._context);
             Assert.IsTrue((bool)result.Result);
         }
 
@@ -75,7 +75,7 @@ namespace EPPlusTest.Excel.Functions
         {
             IsNumber? func = new IsNumber();
             IEnumerable<FunctionArgument>? args = FunctionsHelper.CreateArgs(1d);
-            CompileResult? result = func.Execute(args, _context);
+            CompileResult? result = func.Execute(args, this._context);
             Assert.IsTrue((bool)result.Result);
         }
 
@@ -84,7 +84,7 @@ namespace EPPlusTest.Excel.Functions
         {
             IsNumber? func = new IsNumber();
             IEnumerable<FunctionArgument>? args = FunctionsHelper.CreateArgs("1");
-            CompileResult? result = func.Execute(args, _context);
+            CompileResult? result = func.Execute(args, this._context);
             Assert.IsFalse((bool)result.Result);
         }
 
@@ -93,7 +93,7 @@ namespace EPPlusTest.Excel.Functions
         {
             IEnumerable<FunctionArgument>? args = FunctionsHelper.CreateArgs(ExcelErrorValue.Parse("#DIV/0!"));
             IsError? func = new IsError();
-            CompileResult? result = func.Execute(args, _context);
+            CompileResult? result = func.Execute(args, this._context);
             Assert.IsTrue((bool)result.Result);
         }
 
@@ -102,7 +102,7 @@ namespace EPPlusTest.Excel.Functions
         {
             IEnumerable<FunctionArgument>? args = FunctionsHelper.CreateArgs("A", 1);
             IsError? func = new IsError();
-            CompileResult? result = func.Execute(args, _context);
+            CompileResult? result = func.Execute(args, this._context);
             Assert.IsFalse((bool)result.Result);
         }
 
@@ -111,7 +111,7 @@ namespace EPPlusTest.Excel.Functions
         {
             IEnumerable<FunctionArgument>? args = FunctionsHelper.CreateArgs("1");
             IsText? func = new IsText();
-            CompileResult? result = func.Execute(args, _context);
+            CompileResult? result = func.Execute(args, this._context);
             Assert.IsTrue((bool)result.Result);
         }
 
@@ -120,7 +120,7 @@ namespace EPPlusTest.Excel.Functions
         {
             IEnumerable<FunctionArgument>? args = FunctionsHelper.CreateArgs(1);
             IsText? func = new IsText();
-            CompileResult? result = func.Execute(args, _context);
+            CompileResult? result = func.Execute(args, this._context);
             Assert.IsFalse((bool)result.Result);
         }
 
@@ -129,7 +129,7 @@ namespace EPPlusTest.Excel.Functions
         {
             IEnumerable<FunctionArgument>? args = FunctionsHelper.CreateArgs("1");
             IsNonText? func = new IsNonText();
-            CompileResult? result = func.Execute(args, _context);
+            CompileResult? result = func.Execute(args, this._context);
             Assert.IsFalse((bool)result.Result);
         }
 
@@ -138,7 +138,7 @@ namespace EPPlusTest.Excel.Functions
         {
             IEnumerable<FunctionArgument>? args = FunctionsHelper.CreateArgs(1);
             IsNonText? func = new IsNonText();
-            CompileResult? result = func.Execute(args, _context);
+            CompileResult? result = func.Execute(args, this._context);
             Assert.IsTrue((bool)result.Result);
         }
 
@@ -147,7 +147,7 @@ namespace EPPlusTest.Excel.Functions
         {
             IEnumerable<FunctionArgument>? args = FunctionsHelper.CreateArgs(3.123);
             IsOdd? func = new IsOdd();
-            CompileResult? result = func.Execute(args, _context);
+            CompileResult? result = func.Execute(args, this._context);
             Assert.IsTrue((bool)result.Result);
         }
 
@@ -156,7 +156,7 @@ namespace EPPlusTest.Excel.Functions
         {
             IEnumerable<FunctionArgument>? args = FunctionsHelper.CreateArgs(4.123);
             IsEven? func = new IsEven();
-            CompileResult? result = func.Execute(args, _context);
+            CompileResult? result = func.Execute(args, this._context);
             Assert.IsTrue((bool)result.Result);
         }
 
@@ -166,15 +166,15 @@ namespace EPPlusTest.Excel.Functions
             IsLogical? func = new IsLogical();
 
             IEnumerable<FunctionArgument>? args = FunctionsHelper.CreateArgs(1);
-            CompileResult? result = func.Execute(args, _context);
+            CompileResult? result = func.Execute(args, this._context);
             Assert.IsFalse((bool)result.Result);
 
             args = FunctionsHelper.CreateArgs("true");
-            result = func.Execute(args, _context);
+            result = func.Execute(args, this._context);
             Assert.IsFalse((bool)result.Result);
 
             args = FunctionsHelper.CreateArgs(false);
-            result = func.Execute(args, _context);
+            result = func.Execute(args, this._context);
             Assert.IsTrue((bool)result.Result);
         }
 
@@ -184,20 +184,20 @@ namespace EPPlusTest.Excel.Functions
             N? func = new N();
 
             IEnumerable<FunctionArgument>? args = FunctionsHelper.CreateArgs(1.2);
-            CompileResult? result = func.Execute(args, _context);
+            CompileResult? result = func.Execute(args, this._context);
             Assert.AreEqual(1.2, result.Result);
 
             args = FunctionsHelper.CreateArgs("abc");
-            result = func.Execute(args, _context);
+            result = func.Execute(args, this._context);
             Assert.AreEqual(0d, result.Result);
 
             args = FunctionsHelper.CreateArgs(true);
-            result = func.Execute(args, _context);
+            result = func.Execute(args, this._context);
             Assert.AreEqual(1d, result.Result);
 
             ExcelErrorValue? errorCode = ExcelErrorValue.Create(eErrorType.Value);
             args = FunctionsHelper.CreateArgs(errorCode);
-            result = func.Execute(args, _context);
+            result = func.Execute(args, this._context);
             Assert.AreEqual(errorCode, result.Result);
         }
 

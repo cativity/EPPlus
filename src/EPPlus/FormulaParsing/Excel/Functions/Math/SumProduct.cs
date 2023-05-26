@@ -81,7 +81,7 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Math
                 }
                 result += rowResult;
             }
-            return CreateResult(result, DataType.Decimal);
+            return this.CreateResult(result, DataType.Decimal);
         }
 
         private static void AddValue(object convertVal, List<double> currentResult)

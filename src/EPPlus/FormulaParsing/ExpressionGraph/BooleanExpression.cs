@@ -30,12 +30,12 @@ namespace OfficeOpenXml.FormulaParsing.ExpressionGraph
         public BooleanExpression(bool value)
             : base(value ? "true" : "false")
         {
-            _precompiledValue = value;
+            this._precompiledValue = value;
         }
 
         public override CompileResult Compile()
         {
-            bool result = _precompiledValue ?? bool.Parse(ExpressionString);
+            bool result = this._precompiledValue ?? bool.Parse(this.ExpressionString);
             return new CompileResult(result, DataType.Boolean);
         }
     }

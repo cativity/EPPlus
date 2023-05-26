@@ -275,7 +275,7 @@ namespace OfficeOpenXml.FormulaParsing
                         }
                         else
                         {
-                            ulong id = ExcelAddressBase.GetCellId(name.LocalSheetId, name.Index, 0);
+                            ulong id = ExcelCellBase.GetCellId(name.LocalSheetId, name.Index, 0);
 
                             if (!depChain.index.ContainsKey(id))
                             {
@@ -299,7 +299,7 @@ namespace OfficeOpenXml.FormulaParsing
                                     //Check for circular references
                                     foreach (FormulaCell? par in stack)
                                     {
-                                        if (ExcelAddressBase.GetCellId(par.wsIndex, par.Row, par.Column) == id && !options.AllowCircularReferences)
+                                        if (ExcelCellBase.GetCellId(par.wsIndex, par.Row, par.Column) == id && !options.AllowCircularReferences)
                                         {
                                             TokenType tt = t.GetTokenTypeFlags() | TokenType.CircularReference;
                                             f.Tokens[f.tokenIx] = t.CloneWithNewTokenType(tt);
@@ -331,7 +331,7 @@ namespace OfficeOpenXml.FormulaParsing
                     continue;
                 }
 
-                ulong id = ExcelAddressBase.GetCellId(f.iteratorWs.IndexInList, f.iterator.Row, f.iterator.Column);
+                ulong id = ExcelCellBase.GetCellId(f.iteratorWs.IndexInList, f.iterator.Row, f.iterator.Column);
                 if (!depChain.index.ContainsKey(id))
                 {
                     FormulaCell? rf = new FormulaCell() { wsIndex = f.iteratorWs.IndexInList, Row = f.iterator.Row, Column = f.iterator.Column };
@@ -362,11 +362,11 @@ namespace OfficeOpenXml.FormulaParsing
                             foreach (FormulaCell? par in stack)
                             {
                                 if ((par.iteratorWs!=null && par.iterator!=null && ExcelCellBase.GetCellId(par.iteratorWs.IndexInList, par.iterator.Row, par.iterator.Column) == id) ||
-                                    ExcelAddressBase.GetCellId(par.wsIndex, par.Row, par.Column) == id)  //This is only neccesary for the first cell in the chain.
+                                    ExcelCellBase.GetCellId(par.wsIndex, par.Row, par.Column) == id)  //This is only neccesary for the first cell in the chain.
                                 {
                                     if (options.AllowCircularReferences == false)
                                     {
-                                        throw (new CircularReferenceException(string.Format("Circular Reference in cell {0}!{1}", par.ws.Name, ExcelAddress.GetAddress(f.Row, f.Column))));
+                                        throw (new CircularReferenceException(string.Format("Circular Reference in cell {0}!{1}", par.ws.Name, ExcelCellBase.GetAddress(f.Row, f.Column))));
                                     }
                                     else
                                     {

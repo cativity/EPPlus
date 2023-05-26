@@ -33,15 +33,15 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Text
 
             if (val1 == null && val2 == null)
             {
-                return CreateResult(true, DataType.Boolean);
+                return this.CreateResult(true, DataType.Boolean);
             }
             else if ((val1 == null && val2 != null) || (val1 != null && val2 == null))
             {
-                return CreateResult(false, DataType.Boolean);
+                return this.CreateResult(false, DataType.Boolean);
             }
 
             int result = string.Compare(val1.ToString(), val2.ToString(), StringComparison.Ordinal);
-            return CreateResult(result == 0, DataType.Boolean);
+            return this.CreateResult(result == 0, DataType.Boolean);
         }
     }
 }

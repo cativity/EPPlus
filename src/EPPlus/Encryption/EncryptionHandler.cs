@@ -38,7 +38,7 @@ namespace OfficeOpenXml.Encryption
             {
                 CompoundDocument doc = new CompoundDocument(fi);
                 
-                return GetStreamFromPackage(doc, encryption);
+                return this.GetStreamFromPackage(doc, encryption);
             }
             else
             {
@@ -72,7 +72,7 @@ namespace OfficeOpenXml.Encryption
                 if (CompoundDocument.IsCompoundDocument(stream))
                 {
                     CompoundDocument? doc = new CompoundDocument(stream);
-                    return GetStreamFromPackage(doc, encryption);
+                    return this.GetStreamFromPackage(doc, encryption);
                 }
                 else
                 {
@@ -99,7 +99,7 @@ namespace OfficeOpenXml.Encryption
             }
             else if (encryption.Version == EncryptionVersion.Agile) //Agile encryption
             {
-                return EncryptPackageAgile(package, encryption);
+                return this.EncryptPackageAgile(package, encryption);
             }
             throw(new ArgumentException("Unsupported encryption version."));
         }
@@ -132,7 +132,7 @@ namespace OfficeOpenXml.Encryption
             //Get the password key.
             HashAlgorithm? hashProvider = GetHashProvider(encryptionInfo.KeyEncryptors[0]);
             byte[]? baseHash = GetPasswordHashSpinPrepending(hashProvider, encr.SaltValue, encryption.Password, encr.SpinCount, encr.HashSize);
-            byte[]? hashFinal = GetFinalHash(hashProvider,  BlockKey_KeyValue, baseHash);
+            byte[]? hashFinal = GetFinalHash(hashProvider, this.BlockKey_KeyValue, baseHash);
             hashFinal = FixHashSize(hashFinal, encr.KeyBits / 8);
 
             byte[]? encrData = EncryptDataAgile(package, encryptionInfo, hashProvider);
@@ -141,7 +141,7 @@ namespace OfficeOpenXml.Encryption
             byte[]? saltHMAC=new byte[64];
             rnd.GetBytes(saltHMAC);
 
-            SetHMAC(encryptionInfo,hashProvider,saltHMAC, encrData);
+            this.SetHMAC(encryptionInfo,hashProvider,saltHMAC, encrData);
 
             /**** Verifier ****/
             encr.VerifierHashInput = new byte[16];
@@ -149,9 +149,9 @@ namespace OfficeOpenXml.Encryption
 
             encr.VerifierHash = hashProvider.ComputeHash(encr.VerifierHashInput);
 
-            byte[]? VerifierInputKey = GetFinalHash(hashProvider, BlockKey_HashInput, baseHash);
-            byte[]? VerifierHashKey = GetFinalHash(hashProvider, BlockKey_HashValue, baseHash);
-            byte[]? KeyValueKey = GetFinalHash(hashProvider, BlockKey_KeyValue, baseHash);
+            byte[]? VerifierInputKey = GetFinalHash(hashProvider, this.BlockKey_HashInput, baseHash);
+            byte[]? VerifierHashKey = GetFinalHash(hashProvider, this.BlockKey_HashValue, baseHash);
+            byte[]? KeyValueKey = GetFinalHash(hashProvider, this.BlockKey_KeyValue, baseHash);
 
             MemoryStream? ms = RecyclableMemory.GetStream();
             EncryptAgileFromKey(encr, VerifierInputKey, encr.VerifierHashInput, 0, encr.VerifierHashInput.Length, encr.SaltValue, ms);
@@ -232,7 +232,7 @@ namespace OfficeOpenXml.Encryption
         // Set the dataintegrity
         private void SetHMAC(EncryptionInfoAgile ei, HashAlgorithm hashProvider, byte[] salt, byte[] data)
         {
-            byte[]? iv = GetFinalHash(hashProvider, BlockKey_HmacKey, ei.KeyData.SaltValue);
+            byte[]? iv = GetFinalHash(hashProvider, this.BlockKey_HmacKey, ei.KeyData.SaltValue);
             MemoryStream? ms = RecyclableMemory.GetStream();
             EncryptAgileFromKey(ei.KeyEncryptors[0], ei.KeyEncryptors[0].KeyValue, salt, 0L, salt.Length, iv, ms);
             ei.DataIntegrity.EncryptedHmacKey = ms.ToArray();
@@ -242,7 +242,7 @@ namespace OfficeOpenXml.Encryption
             byte[]? hmacValue = h.ComputeHash(data);
 
             ms = RecyclableMemory.GetStream();
-            iv = GetFinalHash(hashProvider, BlockKey_HmacValue, ei.KeyData.SaltValue);
+            iv = GetFinalHash(hashProvider, this.BlockKey_HmacValue, ei.KeyData.SaltValue);
             EncryptAgileFromKey(ei.KeyEncryptors[0], ei.KeyEncryptors[0].KeyValue, hmacValue, 0L, hmacValue.Length, iv, ms);
             ei.DataIntegrity.EncryptedHmacValue = ms.ToArray();
             ms.Dispose();
@@ -338,7 +338,7 @@ namespace OfficeOpenXml.Encryption
 
             string tr = "StrongEncryptionTransform";
             bw.Write((int)tr.Length*2);
-            bw.Write(UTF8Encoding.Unicode.GetBytes(tr + "\0")); // end \0 is for padding
+            bw.Write(Encoding.Unicode.GetBytes(tr + "\0")); // end \0 is for padding
 
             bw.Flush();
             return ms.ToArray();
@@ -350,7 +350,7 @@ namespace OfficeOpenXml.Encryption
 
             bw.Write((short)0x3C);  //Major
             bw.Write((short)0);     //Minor
-            bw.Write(UTF8Encoding.Unicode.GetBytes("Microsoft.Container.DataSpaces"));
+            bw.Write(Encoding.Unicode.GetBytes("Microsoft.Container.DataSpaces"));
             bw.Write((int)1);       //ReaderVersion
             bw.Write((int)1);       //UpdaterVersion
             bw.Write((int)1);       //WriterVersion
@@ -371,9 +371,9 @@ namespace OfficeOpenXml.Encryption
             bw.Write((int)1);       //ReferenceComponentCount
             bw.Write((int)0);       //Stream=0
             bw.Write((int)s1.Length * 2); //Length s1
-            bw.Write(UTF8Encoding.Unicode.GetBytes(s1));
+            bw.Write(Encoding.Unicode.GetBytes(s1));
             bw.Write((int)(s2.Length * 2));   //Length s2
-            bw.Write(UTF8Encoding.Unicode.GetBytes(s2 + "\0"));   // end \0 is for padding
+            bw.Write(Encoding.Unicode.GetBytes(s2 + "\0"));   // end \0 is for padding
 
             bw.Flush();
             return ms.ToArray();
@@ -387,9 +387,9 @@ namespace OfficeOpenXml.Encryption
             bw.Write(TransformID.Length * 2 + 12);
             bw.Write((int)1);
             bw.Write(TransformID.Length * 2);
-            bw.Write(UTF8Encoding.Unicode.GetBytes(TransformID));
+            bw.Write(Encoding.Unicode.GetBytes(TransformID));
             bw.Write(TransformName.Length * 2);
-            bw.Write(UTF8Encoding.Unicode.GetBytes(TransformName + "\0"));
+            bw.Write(Encoding.Unicode.GetBytes(TransformName + "\0"));
             bw.Write((int)1);   //ReaderVersion
             bw.Write((int)1);   //UpdaterVersion
             bw.Write((int)1);   //WriterVersion
@@ -500,7 +500,7 @@ namespace OfficeOpenXml.Encryption
             {
                 EncryptionInfo? encryptionInfo = EncryptionInfo.ReadBinary(doc.Storage.DataStreams["EncryptionInfo"]);
                 
-                return DecryptDocument(doc.Storage.DataStreams["EncryptedPackage"], encryptionInfo, encryption.Password);
+                return this.DecryptDocument(doc.Storage.DataStreams["EncryptedPackage"], encryptionInfo, encryption.Password);
             }
             else
             {
@@ -528,7 +528,7 @@ namespace OfficeOpenXml.Encryption
             }
             else
             {
-                return DecryptAgile((EncryptionInfoAgile)encryptionInfo, password, size, encryptedData, data);
+                return this.DecryptAgile((EncryptionInfoAgile)encryptionInfo, password, size, encryptedData, data);
             }
 
         }
@@ -550,9 +550,9 @@ namespace OfficeOpenXml.Encryption
                 byte[]? baseHash = GetPasswordHashSpinPrepending(hashProvider, encr.SaltValue, password, encr.SpinCount, encr.HashSize);
 
                 //Get the keys for the verifiers and the key value
-                byte[]? valInputKey = GetFinalHash(hashProvider, BlockKey_HashInput, baseHash);
-                byte[]? valHashKey = GetFinalHash(hashProvider, BlockKey_HashValue, baseHash);
-                byte[]? valKeySizeKey = GetFinalHash(hashProvider, BlockKey_KeyValue, baseHash);
+                byte[]? valInputKey = GetFinalHash(hashProvider, this.BlockKey_HashInput, baseHash);
+                byte[]? valHashKey = GetFinalHash(hashProvider, this.BlockKey_HashValue, baseHash);
+                byte[]? valKeySizeKey = GetFinalHash(hashProvider, this.BlockKey_KeyValue, baseHash);
 
                 //Decrypt
                 encr.VerifierHashInput = DecryptAgileFromKey(encr, valInputKey, encr.EncryptedVerifierHashInput, encr.SaltSize, encr.SaltValue);
@@ -561,10 +561,10 @@ namespace OfficeOpenXml.Encryption
 
                 if (IsPasswordValid(hashProvider, encr))
                 {
-                    byte[]? ivhmac = GetFinalHash(hashProviderDataKey, BlockKey_HmacKey, encryptionInfo.KeyData.SaltValue);
+                    byte[]? ivhmac = GetFinalHash(hashProviderDataKey, this.BlockKey_HmacKey, encryptionInfo.KeyData.SaltValue);
                     byte[]? key = DecryptAgileFromKey(encryptionInfo.KeyData, encr.KeyValue, encryptionInfo.DataIntegrity.EncryptedHmacKey, encryptionInfo.KeyData.HashSize, ivhmac);
 
-                    ivhmac = GetFinalHash(hashProviderDataKey, BlockKey_HmacValue, encryptionInfo.KeyData.SaltValue);
+                    ivhmac = GetFinalHash(hashProviderDataKey, this.BlockKey_HmacValue, encryptionInfo.KeyData.SaltValue);
                     byte[]? value = DecryptAgileFromKey(encryptionInfo.KeyData, encr.KeyValue, encryptionInfo.DataIntegrity.EncryptedHmacValue, encryptionInfo.KeyData.HashSize, ivhmac);
 
                     HMAC? hmca = GetHmacProvider(encryptionInfo.KeyData, key);
@@ -910,7 +910,7 @@ namespace OfficeOpenXml.Encryption
 
                 // Append "block" (0)
                 Array.Copy(hash, tempHash, hash.Length);
-                Array.Copy(System.BitConverter.GetBytes(0), 0, tempHash, hash.Length, 4);
+                Array.Copy(BitConverter.GetBytes(0), 0, tempHash, hash.Length, 4);
                 hash = hashProvider.ComputeHash(tempHash);
 
                 /***** Now use the derived key algorithm *****/
@@ -1050,7 +1050,7 @@ namespace OfficeOpenXml.Encryption
                 password = "VelvetSweatshop";   //Used if Password is blank
             }
             // Convert password to unicode...
-            byte[] passwordBuf = UnicodeEncoding.Unicode.GetBytes(password);
+            byte[] passwordBuf = Encoding.Unicode.GetBytes(password);
 
             byte[] inputBuf = new byte[salt.Length + passwordBuf.Length];
             Array.Copy(salt, inputBuf, salt.Length);

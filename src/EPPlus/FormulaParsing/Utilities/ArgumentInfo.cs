@@ -29,7 +29,7 @@ namespace OfficeOpenXml.FormulaParsing.Utilities
         /// <param name="val">The argument to validate</param>
         public ArgumentInfo(T val)
         {
-            Value = val;
+            this.Value = val;
         }
 
         /// <summary>
@@ -49,7 +49,7 @@ namespace OfficeOpenXml.FormulaParsing.Utilities
         /// <returns></returns>
         public ArgumentInfo<T> Named(string argName)
         {
-            Name = argName;
+            this.Name = argName;
             return this;
         }
     }

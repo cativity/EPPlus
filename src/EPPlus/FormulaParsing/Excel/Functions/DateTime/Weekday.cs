@@ -29,9 +29,9 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions.DateTime
         public override CompileResult Execute(IEnumerable<FunctionArgument> arguments, ParsingContext context)
         {
             ValidateArguments(arguments, 1);
-            double serialNumber = ArgToDecimal(arguments, 0);
-            int returnType = arguments.Count() > 1 ? ArgToInt(arguments, 1) : 1;
-            return CreateResult(CalculateDayOfWeek(System.DateTime.FromOADate(serialNumber), returnType), DataType.Integer);
+            double serialNumber = this.ArgToDecimal(arguments, 0);
+            int returnType = arguments.Count() > 1 ? this.ArgToInt(arguments, 1) : 1;
+            return this.CreateResult(CalculateDayOfWeek(System.DateTime.FromOADate(serialNumber), returnType), DataType.Integer);
         }
 
         private static List<int> _oneBasedStartOnSunday = new List<int> { 1, 2, 3, 4, 5, 6, 7 };

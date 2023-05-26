@@ -60,70 +60,72 @@ namespace OfficeOpenXml.ConditionalFormatting
               itemElementNode,
               (namespaceManager == null) ? worksheet.NameSpaceManager : namespaceManager)
         {
-            string[]? s = SchemaNodeOrder;
+            string[]? s = this.SchemaNodeOrder;
             Array.Resize(ref s, s.Length+2);    //Fixes issue 15429. Append node order instead om overwriting it.
             s[s.Length - 2] = "cfvo";
             s[s.Length - 1] = "color";
-            SchemaNodeOrder = s;
+            this.SchemaNodeOrder = s;
 
             //Create the <dataBar> node inside the <cfRule> node
             if (itemElementNode!=null && itemElementNode.HasChildNodes)
             {
                 bool high=false;
-                foreach (XmlNode node in itemElementNode.SelectNodes("d:dataBar/d:cfvo", NameSpaceManager))
+                foreach (XmlNode node in itemElementNode.SelectNodes("d:dataBar/d:cfvo", this.NameSpaceManager))
                 {
                     if (high == false)
                     {
-                        LowValue = new ExcelConditionalFormattingIconDataBarValue(
-                                type,
-                                address,
-                                worksheet,
-                                node,
-                                namespaceManager);
+                        this.LowValue = new ExcelConditionalFormattingIconDataBarValue(
+                                                                                       type,
+                                                                                       address,
+                                                                                       worksheet,
+                                                                                       node,
+                                                                                       namespaceManager);
                         high = true;
                     }
                     else
                     {
-                        HighValue = new ExcelConditionalFormattingIconDataBarValue(
-                                type,
-                                address,
-                                worksheet,
-                                node,
-                                namespaceManager);
+                        this.HighValue = new ExcelConditionalFormattingIconDataBarValue(
+                                                                                        type,
+                                                                                        address,
+                                                                                        worksheet,
+                                                                                        node,
+                                                                                        namespaceManager);
                     }
                 }
             }
             else
             {
-                XmlNode? iconSetNode = CreateComplexNode(
-                                                         Node,
-                                                         ExcelConditionalFormattingConstants.Paths.DataBar);
+                XmlNode? iconSetNode = this.CreateComplexNode(this.Node,
+                                                              ExcelConditionalFormattingConstants.Paths.DataBar);
 
                 XmlElement? lowNode = iconSetNode.OwnerDocument.CreateElement(ExcelConditionalFormattingConstants.Paths.Cfvo, ExcelPackage.schemaMain);
                 iconSetNode.AppendChild(lowNode);
-                LowValue = new ExcelConditionalFormattingIconDataBarValue(eExcelConditionalFormattingValueObjectType.Min,
-                        0,
-                        "",
-                        eExcelConditionalFormattingRuleType.DataBar,
-                        address,
-                        priority,
-                        worksheet,
-                        lowNode,
-                        namespaceManager);
+
+                this.LowValue = new ExcelConditionalFormattingIconDataBarValue(eExcelConditionalFormattingValueObjectType.Min,
+                                                                               0,
+                                                                               "",
+                                                                               eExcelConditionalFormattingRuleType.DataBar,
+                                                                               address,
+                                                                               priority,
+                                                                               worksheet,
+                                                                               lowNode,
+                                                                               namespaceManager);
 
                 XmlElement? highNode = iconSetNode.OwnerDocument.CreateElement(ExcelConditionalFormattingConstants.Paths.Cfvo, ExcelPackage.schemaMain);
                 iconSetNode.AppendChild(highNode);
-                HighValue = new ExcelConditionalFormattingIconDataBarValue(eExcelConditionalFormattingValueObjectType.Max,
-                        0,
-                        "",
-                        eExcelConditionalFormattingRuleType.DataBar,
-                        address,
-                        priority,
-                        worksheet,
-                        highNode,
-                        namespaceManager);
+
+                this.HighValue = new ExcelConditionalFormattingIconDataBarValue(eExcelConditionalFormattingValueObjectType.Max,
+                                                                                0,
+                                                                                "",
+                                                                                eExcelConditionalFormattingRuleType.DataBar,
+                                                                                address,
+                                                                                priority,
+                                                                                worksheet,
+                                                                                highNode,
+                                                                                namespaceManager);
             }
-            Type = type;
+
+            this.Type = type;
         }
 
         /// <summary>
@@ -180,11 +182,11 @@ namespace OfficeOpenXml.ConditionalFormatting
         {
             get
             {
-                return GetXmlNodeBool(_showValuePath, true);
+                return this.GetXmlNodeBool(_showValuePath, true);
             }
             set
             {
-                SetXmlNodeBool(_showValuePath, value);
+                this.SetXmlNodeBool(_showValuePath, value);
             }
         }
 
@@ -215,7 +217,7 @@ namespace OfficeOpenXml.ConditionalFormatting
         {
             get
             {
-                string? rgb=GetXmlNodeString(_colorPath);
+                string? rgb= this.GetXmlNodeString(_colorPath);
                 if(!string.IsNullOrEmpty(rgb))
                 {
                     return Color.FromArgb(int.Parse(rgb, NumberStyles.HexNumber));
@@ -224,7 +226,7 @@ namespace OfficeOpenXml.ConditionalFormatting
             }
             set
             {
-                SetXmlNodeString(_colorPath, value.ToArgb().ToString("X"));
+                this.SetXmlNodeString(_colorPath, value.ToArgb().ToString("X"));
             }
         }
     }

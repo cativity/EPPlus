@@ -29,11 +29,11 @@ namespace OfficeOpenXml.Sorting
         /// <param name="table">The table sort</param>
         public TableSortOptions(ExcelTable table) : base()
         {
-            _table = table;
-            _columnNameIndexes = new Dictionary<string, int>();
+            this._table = table;
+            this._columnNameIndexes = new Dictionary<string, int>();
             for(int x = 0; x < table.Columns.Count(); x++)
             {
-                _columnNameIndexes[table.Columns.ElementAt(x).Name] = x;
+                this._columnNameIndexes[table.Columns.ElementAt(x).Name] = x;
             }
         }
 
@@ -43,16 +43,16 @@ namespace OfficeOpenXml.Sorting
 
         internal ExcelTable Table
         {
-            get { return _table; }
+            get { return this._table; }
         }
 
         internal int GetColumnNameIndex(string name)
         {
-            if(!_columnNameIndexes.ContainsKey(name))
+            if(!this._columnNameIndexes.ContainsKey(name))
             {
-                throw new InvalidOperationException($"Table {_table.Name} does not contain column {name}");
+                throw new InvalidOperationException($"Table {this._table.Name} does not contain column {name}");
             }
-            return _columnNameIndexes[name];
+            return this._columnNameIndexes[name];
         }
 
         /// <summary>
@@ -62,12 +62,12 @@ namespace OfficeOpenXml.Sorting
         {
             get
             {
-                if (_sortLayer == null)
+                if (this._sortLayer == null)
                 {
                     this._sortLayer = new TableSortLayer(this);
                 }
 
-                return _sortLayer;
+                return this._sortLayer;
             }
         }
     }

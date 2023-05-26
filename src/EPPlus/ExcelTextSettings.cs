@@ -28,14 +28,14 @@ namespace OfficeOpenXml
             if(Environment.OSVersion.Platform==PlatformID.Unix ||
                Environment.OSVersion.Platform==PlatformID.MacOSX)
             {
-                PrimaryTextMeasurer = new GenericFontMetricsTextMeasurer();
+                this.PrimaryTextMeasurer = new GenericFontMetricsTextMeasurer();
                 try
                 {
-                    FallbackTextMeasurer = new SystemDrawingTextMeasurer();
+                    this.FallbackTextMeasurer = new SystemDrawingTextMeasurer();
                 }
                 catch
                 {
-                    FallbackTextMeasurer = null;
+                    this.FallbackTextMeasurer = null;
                 }
             }
             else
@@ -45,20 +45,21 @@ namespace OfficeOpenXml
                     SystemDrawingTextMeasurer? m = new SystemDrawingTextMeasurer();
                     if (m.ValidForEnvironment())
                     {
-                        PrimaryTextMeasurer = m;
-                        FallbackTextMeasurer = new GenericFontMetricsTextMeasurer();
+                        this.PrimaryTextMeasurer = m;
+                        this.FallbackTextMeasurer = new GenericFontMetricsTextMeasurer();
                     }
                     else
                     {
-                        PrimaryTextMeasurer = new GenericFontMetricsTextMeasurer();
+                        this.PrimaryTextMeasurer = new GenericFontMetricsTextMeasurer();
                     }
                 }
                 catch
                 {
-                    PrimaryTextMeasurer = new GenericFontMetricsTextMeasurer();
+                    this.PrimaryTextMeasurer = new GenericFontMetricsTextMeasurer();
                 }
             }
-            AutofitScaleFactor = 1f;
+
+            this.AutofitScaleFactor = 1f;
         }
 
         /// <summary>

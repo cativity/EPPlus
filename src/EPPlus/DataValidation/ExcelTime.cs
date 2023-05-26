@@ -54,26 +54,27 @@ namespace OfficeOpenXml.DataValidation
             {
                 throw new ArgumentException("Value cannot be greater or equal to 1");
             }
-            Init(value);
+
+            this.Init(value);
         }
 
         private void Init(decimal value)
         {
             // handle hour
-            decimal totalSeconds = value * SecondsPerDay;
-            decimal hour = Math.Floor(totalSeconds / SecondsPerHour);
-            Hour = (int)hour;
+            decimal totalSeconds = value * this.SecondsPerDay;
+            decimal hour = Math.Floor(totalSeconds / this.SecondsPerHour);
+            this.Hour = (int)hour;
 
             // handle minute
-            decimal remainingSeconds = totalSeconds - (hour * SecondsPerHour);
-            decimal minute = Math.Floor(remainingSeconds / SecondsPerMinute);
-            Minute = (int)minute;
+            decimal remainingSeconds = totalSeconds - (hour * this.SecondsPerHour);
+            decimal minute = Math.Floor(remainingSeconds / this.SecondsPerMinute);
+            this.Minute = (int)minute;
 
             // handle second
-            remainingSeconds = totalSeconds - (hour * SecondsPerHour) - (minute * SecondsPerMinute);
+            remainingSeconds = totalSeconds - (hour * this.SecondsPerHour) - (minute * this.SecondsPerMinute);
             decimal second = Math.Round(remainingSeconds, MidpointRounding.AwayFromZero);
             // Second might be rounded to 60... the SetSecond method handles that.
-            SetSecond((int)second);
+            this.SetSecond((int)second);
         }
 
         /// <summary>
@@ -84,13 +85,13 @@ namespace OfficeOpenXml.DataValidation
         {
             if (value == 60)
             {
-                Second = 0;
-                int minute = Minute + 1;
-                SetMinute(minute);
+                this.Second = 0;
+                int minute = this.Minute + 1;
+                this.SetMinute(minute);
             }
             else
             {
-                Second = value;
+                this.Second = value;
             }
         }
 
@@ -98,13 +99,13 @@ namespace OfficeOpenXml.DataValidation
         {
             if (value == 60)
             {
-                Minute = 0;
-                int hour = Hour + 1;
-                SetHour(hour);
+                this.Minute = 0;
+                int hour = this.Hour + 1;
+                this.SetHour(hour);
             }
             else
             {
-                Minute = value;
+                this.Minute = value;
             }
         }
 
@@ -112,25 +113,25 @@ namespace OfficeOpenXml.DataValidation
         {
             if (value == 24)
             {
-                Hour = 0;
+                this.Hour = 0;
             }
             else
             {
-                Hour = value;
+                this.Hour = value;
             }
         }
 
         internal event EventHandler TimeChanged
         {
-            add { _timeChanged += value; }
-            remove { _timeChanged -= value; }
+            add { this._timeChanged += value; }
+            remove { this._timeChanged -= value; }
         }
 
         private void OnTimeChanged()
         {
-            if (_timeChanged != null)
+            if (this._timeChanged != null)
             {
-                _timeChanged(this, EventArgs.Empty);
+                this._timeChanged(this, EventArgs.Empty);
             }
         }
 
@@ -142,7 +143,7 @@ namespace OfficeOpenXml.DataValidation
         {
             get
             {
-                return _hour;
+                return this._hour;
             }
             set
             {
@@ -154,8 +155,9 @@ namespace OfficeOpenXml.DataValidation
                 {
                     throw new InvalidOperationException("Value for hour cannot be greater than 23");
                 }
-                _hour = value;
-                OnTimeChanged();
+
+                this._hour = value;
+                this.OnTimeChanged();
             }
         }
 
@@ -167,7 +169,7 @@ namespace OfficeOpenXml.DataValidation
         {
             get
             {
-                return _minute;
+                return this._minute;
             }
             set
             {
@@ -179,8 +181,9 @@ namespace OfficeOpenXml.DataValidation
                 {
                     throw new InvalidOperationException("Value for minute cannot be greater than 59");
                 }
-                _minute = value;
-                OnTimeChanged();
+
+                this._minute = value;
+                this.OnTimeChanged();
             }
         }
 
@@ -192,7 +195,7 @@ namespace OfficeOpenXml.DataValidation
         {
             get
             {
-                return _second;
+                return this._second;
             }
             set
             {
@@ -204,8 +207,9 @@ namespace OfficeOpenXml.DataValidation
                 {
                     throw new InvalidOperationException("Value for second cannot be greater than 59");
                 }
-                _second = value;
-                OnTimeChanged();
+
+                this._second = value;
+                this.OnTimeChanged();
             }
         }
 
@@ -216,9 +220,9 @@ namespace OfficeOpenXml.DataValidation
 
         private decimal ToSeconds()
         {
-            decimal result = Hour * SecondsPerHour;
-            result += Minute * SecondsPerMinute;
-            result += Second ?? 0;
+            decimal result = this.Hour * this.SecondsPerHour;
+            result += this.Minute * this.SecondsPerMinute;
+            result += this.Second ?? 0;
             return (decimal)result;
         }
 
@@ -228,8 +232,8 @@ namespace OfficeOpenXml.DataValidation
         /// <returns></returns>
         public decimal ToExcelTime()
         {
-            decimal seconds = ToSeconds();
-            return Round(seconds / (decimal)SecondsPerDay);
+            decimal seconds = this.ToSeconds();
+            return Round(seconds / (decimal)this.SecondsPerDay);
         }
 
         /// <summary>
@@ -238,7 +242,7 @@ namespace OfficeOpenXml.DataValidation
         /// <returns></returns>
         public string ToExcelString()
         {
-            return ToExcelTime().ToString(CultureInfo.InvariantCulture);
+            return this.ToExcelTime().ToString(CultureInfo.InvariantCulture);
         }
         /// <summary>
         /// Converts the object to a string
@@ -246,10 +250,10 @@ namespace OfficeOpenXml.DataValidation
         /// <returns>The string</returns>
         public override string ToString()
         {
-            int second = Second ?? 0;
+            int second = this.Second ?? 0;
             return string.Format("{0}:{1}:{2}",
-                Hour < 10 ? "0" + Hour.ToString() : Hour.ToString(),
-                Minute < 10 ? "0" + Minute.ToString() : Minute.ToString(),
+                                 this.Hour < 10 ? "0" + this.Hour.ToString() : this.Hour.ToString(),
+                                 this.Minute < 10 ? "0" + this.Minute.ToString() : this.Minute.ToString(),
                 second < 10 ? "0" + second.ToString() : second.ToString());
         }
 

@@ -447,7 +447,7 @@ namespace EPPlusTest
             ws.Cells["D30"].Value = "Text orientation 38";
             ws.Cells["D30"].Style.TextRotation = 38;
             ws.Cells["D30"].Style.Font.Bold = true;
-            ws.Cells["D30"].Style.HorizontalAlignment = OfficeOpenXml.Style.ExcelHorizontalAlignment.Right;
+            ws.Cells["D30"].Style.HorizontalAlignment = ExcelHorizontalAlignment.Right;
 
             ws.Workbook.Names.Add("TestName", ws.Cells["B30:E30"]);
             ws.Workbook.Names["TestName"].Style.Font.Color.SetColor(Color.Red);
@@ -809,9 +809,9 @@ namespace EPPlusTest
             ExcelWorksheet? ws = _pck.Workbook.Worksheets.Add("Address");
             ws.Cells["A1:A4,B5:B7"].Value = "AddressTest";
             ws.Cells["A1:A4,B5:B7"].Style.Font.Color.SetColor(Color.Red);
-            ws.Cells["A2:A3,B4:B8"].Style.Fill.PatternType = OfficeOpenXml.Style.ExcelFillStyle.LightUp;
+            ws.Cells["A2:A3,B4:B8"].Style.Fill.PatternType = ExcelFillStyle.LightUp;
             ws.Cells["A2:A3,B4:B8"].Style.Fill.BackgroundColor.SetColor(Color.LightGreen);
-            ws.Cells["2:2"].Style.Fill.PatternType = OfficeOpenXml.Style.ExcelFillStyle.Solid;
+            ws.Cells["2:2"].Style.Fill.PatternType = ExcelFillStyle.Solid;
             ws.Cells["2:2"].Style.Fill.BackgroundColor.SetColor(Color.LightGreen);
             ws.Cells["B:B"].Style.Font.Name = "Times New Roman";
 
@@ -879,10 +879,10 @@ namespace EPPlusTest
             list.Add(new TestDTO() { Id = 9, Name = "Item9", Boolean = false, Date = new DateTime(2010, 2, 1), dto = null, NameVar = "Field 9" });
 
             ws.Cells["A1"].LoadFromCollection(list, true);
-            ws.Cells["A30"].LoadFromCollection(list, true, OfficeOpenXml.Table.TableStyles.Medium9, BindingFlags.Instance | BindingFlags.Instance, typeof(TestDTO).GetFields());
+            ws.Cells["A30"].LoadFromCollection(list, true, TableStyles.Medium9, BindingFlags.Instance | BindingFlags.Instance, typeof(TestDTO).GetFields());
 
-            ws.Cells["A45"].LoadFromCollection(list, true, OfficeOpenXml.Table.TableStyles.Light1, BindingFlags.Instance | BindingFlags.Instance, new MemberInfo[] { typeof(TestDTO).GetMethod("GetNameID"), typeof(TestDTO).GetField("NameVar") });
-            ws.Cells["J1"].LoadFromCollection(from l in list where l.Boolean orderby l.Date select new { Name = l.Name, Id = l.Id, Date = l.Date, NameVariable = l.NameVar }, true, OfficeOpenXml.Table.TableStyles.Dark4);
+            ws.Cells["A45"].LoadFromCollection(list, true, TableStyles.Light1, BindingFlags.Instance | BindingFlags.Instance, new MemberInfo[] { typeof(TestDTO).GetMethod("GetNameID"), typeof(TestDTO).GetField("NameVar") });
+            ws.Cells["J1"].LoadFromCollection(from l in list where l.Boolean orderby l.Date select new { Name = l.Name, Id = l.Id, Date = l.Date, NameVariable = l.NameVar }, true, TableStyles.Dark4);
 
             int[]? ints = new int[] { 1, 3, 4, 76, 2, 5 };
             ws.Cells["A15"].Value = ints;
@@ -906,10 +906,10 @@ namespace EPPlusTest
             //List<int> list = new List<int>(0);
 
             ws.Cells["A1"].LoadFromCollection(listDTO, true);
-            ws.Cells["A5"].LoadFromCollection(listDTO, true, OfficeOpenXml.Table.TableStyles.Medium9, BindingFlags.Instance | BindingFlags.Instance, typeof(TestDTO).GetFields());
+            ws.Cells["A5"].LoadFromCollection(listDTO, true, TableStyles.Medium9, BindingFlags.Instance | BindingFlags.Instance, typeof(TestDTO).GetFields());
 
-            ws.Cells["A10"].LoadFromCollection(listDTO, true, OfficeOpenXml.Table.TableStyles.Light1, BindingFlags.Instance | BindingFlags.Instance, new MemberInfo[] { typeof(TestDTO).GetMethod("GetNameID"), typeof(TestDTO).GetField("NameVar") });
-            ws.Cells["A15"].LoadFromCollection(from l in listDTO where l.Boolean orderby l.Date select new { Name = l.Name, Id = l.Id, Date = l.Date, NameVariable = l.NameVar }, true, OfficeOpenXml.Table.TableStyles.Dark4);
+            ws.Cells["A10"].LoadFromCollection(listDTO, true, TableStyles.Light1, BindingFlags.Instance | BindingFlags.Instance, new MemberInfo[] { typeof(TestDTO).GetMethod("GetNameID"), typeof(TestDTO).GetField("NameVar") });
+            ws.Cells["A15"].LoadFromCollection(from l in listDTO where l.Boolean orderby l.Date select new { Name = l.Name, Id = l.Id, Date = l.Date, NameVariable = l.NameVar }, true, TableStyles.Dark4);
 
             ws.Cells["A20"].LoadFromCollection(listDTO, false);
         }
@@ -1071,7 +1071,7 @@ namespace EPPlusTest
             ExcelWorksheet? ws = _pck.Workbook.Worksheets.Add("Table");
             ws.Cells["B1"].Value = 123;
             ExcelTable? tbl = ws.Tables.Add(ws.Cells["B1:P12"], "TestTable");
-            tbl.TableStyle = OfficeOpenXml.Table.TableStyles.Custom;
+            tbl.TableStyle = TableStyles.Custom;
 
             tbl.ShowFirstColumn = true;
             tbl.ShowTotal = true;
@@ -1082,7 +1082,7 @@ namespace EPPlusTest
             ws.Cells["K2"].Value = 5;
             ws.Cells["J3"].Value = 4;
 
-            tbl.Columns[8].TotalsRowFunction = OfficeOpenXml.Table.RowFunctions.Sum;
+            tbl.Columns[8].TotalsRowFunction = RowFunctions.Sum;
             tbl.Columns[9].TotalsRowFormula = string.Format("SUM([{0}])", tbl.Columns[9].Name);
             tbl.Columns[14].CalculatedColumnFormula = "TestTable[[#This Row],[123]]+TestTable[[#This Row],[Column2]]";
             ws.Cells["B2"].Value = 1;
@@ -1103,7 +1103,7 @@ namespace EPPlusTest
             tbl = ws.Tables.Add(ws.Cells["a12:a13"], "");
 
             tbl = ws.Tables.Add(ws.Cells["C16:Y35"], "");
-            tbl.TableStyle = OfficeOpenXml.Table.TableStyles.Medium14;
+            tbl.TableStyle = TableStyles.Medium14;
             tbl.ShowFirstColumn = true;
             tbl.ShowLastColumn = true;
             tbl.ShowColumnStripes = true;
@@ -1120,7 +1120,7 @@ namespace EPPlusTest
             tbl = ws.Tables.Add(ws.Cells["G50:G54"], "");
             tbl.ShowTotal = true;
             tbl.ShowFilter = false;
-            tbl.Columns[0].TotalsRowFunction = OfficeOpenXml.Table.RowFunctions.Sum;
+            tbl.Columns[0].TotalsRowFunction = RowFunctions.Sum;
         }
         [TestMethod]
         public void CopyTable()
@@ -1195,8 +1195,8 @@ namespace EPPlusTest
             ws.Cells["A15"].Value = "Värde";
             ws.Cells["C12"].AddComment("Test", "JJOD");
             ws.Cells["D12:I12"].Merge = true;
-            ws.Cells["D12:I12"].Style.HorizontalAlignment = OfficeOpenXml.Style.ExcelHorizontalAlignment.Left;
-            ws.Cells["D12:I12"].Style.VerticalAlignment = OfficeOpenXml.Style.ExcelVerticalAlignment.Top;
+            ws.Cells["D12:I12"].Style.HorizontalAlignment = ExcelHorizontalAlignment.Left;
+            ws.Cells["D12:I12"].Style.VerticalAlignment = ExcelVerticalAlignment.Top;
             ws.Cells["D12:I12"].Style.WrapText = true;
 
             ws.Cells["F1:F3"].Formula = "F2+F3";
@@ -1347,9 +1347,9 @@ namespace EPPlusTest
             dr[3] = 3.125;
             dt.Rows.Add(dr);
 
-            ExcelRangeBase? range = ws.Cells["A1"].LoadFromDataTable(dt, true, OfficeOpenXml.Table.TableStyles.Medium5);
+            ExcelRangeBase? range = ws.Cells["A1"].LoadFromDataTable(dt, true, TableStyles.Medium5);
             range.AutoFilter = true;
-            ws.Tables[0].Columns[1].TotalsRowFunction = OfficeOpenXml.Table.RowFunctions.Sum;
+            ws.Tables[0].Columns[1].TotalsRowFunction = RowFunctions.Sum;
             ws.Tables[0].ShowTotal = true;
 
             Assert.AreEqual("A1:D4", range.Address);
@@ -1684,7 +1684,7 @@ namespace EPPlusTest
             {
                 for (int row = 1; row < 30; row++)
                 {
-                    ws.SetValue(row, col, "cell " + ExcelAddressBase.GetAddress(row, col));
+                    ws.SetValue(row, col, "cell " + ExcelCellBase.GetAddress(row, col));
                 }
             }
             ws.Cells["A1:P30"].Copy(ws.Cells["B1"]);
@@ -1780,7 +1780,7 @@ namespace EPPlusTest
             ws.Protection.AllowPivotTables = false;
             ws.Cells["A3:D4"].AutoFitColumns();
 
-            ExcelShape? drawing = ws.Drawings.AddShape("Note", OfficeOpenXml.Drawing.eShapeStyle.Rect);
+            ExcelShape? drawing = ws.Drawings.AddShape("Note", eShapeStyle.Rect);
             drawing.SetPosition(9, 0, 2, 0);
             drawing.SetSize(500, 200);
             drawing.Text = "This is a note";

@@ -31,11 +31,11 @@ namespace OfficeOpenXml.Drawing.Style.Coloring
         {
             get
             {
-                return TranslateFromString(GetXmlNodeString("@val"));
+                return TranslateFromString(this.GetXmlNodeString("@val"));
             }
             set
             {
-                SetXmlNodeString("@val", TranslateFromEnum(value));
+                this.SetXmlNodeString("@val", TranslateFromEnum(value));
             }
         }
         private static eSchemeColor TranslateFromString(string v)

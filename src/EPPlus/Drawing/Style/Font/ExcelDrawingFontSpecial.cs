@@ -31,7 +31,7 @@ namespace OfficeOpenXml.Drawing.Style.Font
         {
             get
             {
-                switch (TopNode.LocalName)
+                switch (this.TopNode.LocalName)
                 {
                     case "cs":
                         return eFontType.Complex;
@@ -53,11 +53,11 @@ namespace OfficeOpenXml.Drawing.Style.Font
         {
             get
             {
-                return GetXmlNodeString("@panose");
+                return this.GetXmlNodeString("@panose");
             }
             set
             {
-                SetXmlNodeString("@panose",value);
+                this.SetXmlNodeString("@panose",value);
             }
         }
         /// <summary>
@@ -67,7 +67,7 @@ namespace OfficeOpenXml.Drawing.Style.Font
         {
             get
             {
-                int p=GetXmlNodeInt("@pitchFamily");
+                int p= this.GetXmlNodeInt("@pitchFamily");
                 try
                 {
                     return (ePitchFamily)p;
@@ -79,7 +79,7 @@ namespace OfficeOpenXml.Drawing.Style.Font
             }
             set
             {
-                SetXmlNodeString("@pitchFamily", ((int)value).ToString());
+                this.SetXmlNodeString("@pitchFamily", ((int)value).ToString());
             }
         }
 

@@ -32,7 +32,7 @@ namespace OfficeOpenXml.Filter
         /// <returns></returns>
         public ExcelFilterDateGroupItem Add(ExcelFilterDateGroupItem value)
         {
-            _list.Add(value);
+            this._list.Add(value);
             return value;
         }
         /// <summary>
@@ -42,7 +42,7 @@ namespace OfficeOpenXml.Filter
         /// <returns>The filter value item</returns>
         public ExcelFilterValueItem Add(ExcelFilterValueItem item)
         {
-            _list.Add(item);
+            this._list.Add(item);
             return item;
         }
         /// <summary>
@@ -53,7 +53,7 @@ namespace OfficeOpenXml.Filter
         public ExcelFilterValueItem Add(string value)
         {
             ExcelFilterValueItem? v = new ExcelFilterValueItem(value);
-            _list.Add(v);
+            this._list.Add(v);
             return v;
         }
         /// <summary>
@@ -61,7 +61,7 @@ namespace OfficeOpenXml.Filter
         /// </summary>
         public void Clear()
         {
-            _list.Clear();
+            this._list.Clear();
         }
         /// <summary>
         /// Remove the item at the specified index from the list
@@ -69,7 +69,7 @@ namespace OfficeOpenXml.Filter
         /// <param name="index">The index in the list</param>
         public void RemoveAt(int index)
         {
-            _list.RemoveAt(index);
+            this._list.RemoveAt(index);
         }
         /// <summary>
         /// Remove the item from the list
@@ -77,7 +77,7 @@ namespace OfficeOpenXml.Filter
         /// <param name="item">The item to remove</param>
         public void Remove(ExcelFilterItem item)
         {
-            _list.Remove(item);
+            this._list.Remove(item);
         }
     }
 }

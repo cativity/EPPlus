@@ -26,11 +26,11 @@ namespace OfficeOpenXml.Sorting.Internal
         public RangeWorksheetData(ExcelRangeBase range)
         {
             ExcelWorksheet? worksheet = range.Worksheet;
-            Flags = GetItems(range, worksheet._flags);
-            Formulas = GetItems(range, worksheet._formulas);
-            Hyperlinks = GetItems(range, worksheet._hyperLinks);
-            Comments = GetItems(range, worksheet._commentsStore);
-            Metadata = GetItems(range, worksheet._metadataStore);
+            this.Flags = GetItems(range, worksheet._flags);
+            this.Formulas = GetItems(range, worksheet._formulas);
+            this.Hyperlinks = GetItems(range, worksheet._hyperLinks);
+            this.Comments = GetItems(range, worksheet._commentsStore);
+            this.Metadata = GetItems(range, worksheet._metadataStore);
         }
 
         public Dictionary<string, byte> Flags { get; private set; }

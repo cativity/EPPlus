@@ -46,54 +46,54 @@ namespace EPPlusTest
         [TestInitialize]
         public void Setup()
         {
-            _evaluator = new ExpressionEvaluator();
+            this._evaluator = new ExpressionEvaluator();
         }
 
         #region Numeric Expression Tests
         [TestMethod]
         public void EvaluateShouldReturnTrueIfOperandsAreEqual()
         {
-            bool result = _evaluator.Evaluate("1", "1");
+            bool result = this._evaluator.Evaluate("1", "1");
             Assert.IsTrue(result);
         }
 
         [TestMethod]
         public void EvaluateShouldReturnTrueIfOperandsAreMatchingButDifferentTypes()
         {
-            bool result = _evaluator.Evaluate(1d, "1");
+            bool result = this._evaluator.Evaluate(1d, "1");
             Assert.IsTrue(result);
         }
 
         [TestMethod]
         public void EvaluateShouldEvaluateOperator()
         {
-            bool result = _evaluator.Evaluate(1d, "<2");
+            bool result = this._evaluator.Evaluate(1d, "<2");
             Assert.IsTrue(result);
         }
 
         [TestMethod]
         public void EvaluateShouldEvaluateNumericString()
         {
-            bool result = _evaluator.Evaluate("1", ">0");
+            bool result = this._evaluator.Evaluate("1", ">0");
             Assert.IsTrue(result);
         }
 
         [TestMethod]
         public void EvaluateShouldHandleBooleanArg()
         {
-            bool result = _evaluator.Evaluate(true, "TRUE");
+            bool result = this._evaluator.Evaluate(true, "TRUE");
             Assert.IsTrue(result);
         }
 
         [TestMethod, ExpectedException(typeof(ArgumentException))]
         public void EvaluateShouldThrowIfOperatorIsNotBoolean()
         {
-            bool result = _evaluator.Evaluate(1d, "+1");
+            bool result = this._evaluator.Evaluate(1d, "+1");
         }
         [TestMethod]
         public void EvaluateShouldEvaluateToGreaterThanMinusOne ()
         {
-            bool result = _evaluator.Evaluate(1d, "<>-1");
+            bool result = this._evaluator.Evaluate(1d, "<>-1");
             Assert.IsTrue(result);
         }
         #endregion
@@ -106,7 +106,7 @@ namespace EPPlusTest
             var ci = Thread.CurrentThread.CurrentCulture;
             Thread.CurrentThread.CurrentCulture = CultureInfo.InvariantCulture;
 #endif
-            bool result = _evaluator.Evaluate(new DateTime(2016,6,28), "2016-06-28");
+            bool result = this._evaluator.Evaluate(new DateTime(2016,6,28), "2016-06-28");
             Assert.IsTrue(result);
 #if (!Core)
             Thread.CurrentThread.CurrentCulture = ci;
@@ -121,7 +121,7 @@ namespace EPPlusTest
             var ci = Thread.CurrentThread.CurrentCulture;
             Thread.CurrentThread.CurrentCulture = CultureInfo.InvariantCulture;
 #endif
-            bool result = _evaluator.Evaluate(new DateTime(2016, 6, 28), ">2016-06-27");
+            bool result = this._evaluator.Evaluate(new DateTime(2016, 6, 28), ">2016-06-27");
             Assert.IsTrue(result);
 #if (!Core)
             Thread.CurrentThread.CurrentCulture = ci;
@@ -133,21 +133,21 @@ namespace EPPlusTest
         [TestMethod]
         public void EvaluateBlankExpressionEqualsNull()
         {
-            bool result = _evaluator.Evaluate(null, "");
+            bool result = this._evaluator.Evaluate(null, "");
             Assert.IsTrue(result);
         }
 
         [TestMethod]
         public void EvaluateBlankExpressionEqualsEmptyString()
         {
-            bool result = _evaluator.Evaluate(string.Empty, "");
+            bool result = this._evaluator.Evaluate(string.Empty, "");
             Assert.IsTrue(result);
         }
 
         [TestMethod]
         public void EvaluateBlankExpressionEqualsZero()
         {
-            bool result = _evaluator.Evaluate(0d, "");
+            bool result = this._evaluator.Evaluate(0d, "");
             Assert.IsFalse(result);
         }
 #endregion
@@ -156,21 +156,21 @@ namespace EPPlusTest
         [TestMethod]
         public void EvaluateQuotesExpressionEqualsNull()
         {
-            bool result = _evaluator.Evaluate(null, "\"\"");
+            bool result = this._evaluator.Evaluate(null, "\"\"");
             Assert.IsFalse(result);
         }
 
         [TestMethod]
         public void EvaluateQuotesExpressionEqualsZero()
         {
-            bool result = _evaluator.Evaluate(0d, "\"\"");
+            bool result = this._evaluator.Evaluate(0d, "\"\"");
             Assert.IsFalse(result);
         }
 
         [TestMethod]
         public void EvaluateQuotesExpressionEqualsCharacter()
         {
-            bool result = _evaluator.Evaluate("a", "\"\"");
+            bool result = this._evaluator.Evaluate("a", "\"\"");
             Assert.IsFalse(result);
         }
 #endregion
@@ -179,35 +179,35 @@ namespace EPPlusTest
         [TestMethod]
         public void EvaluateNotEqualToZeroExpressionEqualsNull()
         {
-            bool result = _evaluator.Evaluate(null, "<>0");
+            bool result = this._evaluator.Evaluate(null, "<>0");
             Assert.IsTrue(result);
         }
 
         [TestMethod]
         public void EvaluateNotEqualToZeroExpressionEqualsEmptyString()
         {
-            bool result = _evaluator.Evaluate(string.Empty, "<>0");
+            bool result = this._evaluator.Evaluate(string.Empty, "<>0");
             Assert.IsTrue(result);
         }
 
         [TestMethod]
         public void EvaluateNotEqualToZeroExpressionEqualsCharacter()
         {
-            bool result = _evaluator.Evaluate("a", "<>0");
+            bool result = this._evaluator.Evaluate("a", "<>0");
             Assert.IsTrue(result);
         }
 
         [TestMethod]
         public void EvaluateNotEqualToZeroExpressionEqualsNonZero()
         {
-            bool result = _evaluator.Evaluate(1d, "<>0");
+            bool result = this._evaluator.Evaluate(1d, "<>0");
             Assert.IsTrue(result);
         }
 
         [TestMethod]
         public void EvaluateNotEqualToZeroExpressionEqualsZero()
         {
-            bool result = _evaluator.Evaluate(0d, "<>0");
+            bool result = this._evaluator.Evaluate(0d, "<>0");
             Assert.IsFalse(result);
         }
 #endregion
@@ -216,35 +216,35 @@ namespace EPPlusTest
         [TestMethod]
         public void EvaluateNotEqualToBlankExpressionEqualsNull()
         {
-            bool result = _evaluator.Evaluate(null, "<>");
+            bool result = this._evaluator.Evaluate(null, "<>");
             Assert.IsFalse(result);
         }
 
         [TestMethod]
         public void EvaluateNotEqualToBlankExpressionEqualsEmptyString()
         {
-            bool result = _evaluator.Evaluate(string.Empty, "<>");
+            bool result = this._evaluator.Evaluate(string.Empty, "<>");
             Assert.IsTrue(result);
         }
 
         [TestMethod]
         public void EvaluateNotEqualToBlankExpressionEqualsCharacter()
         {
-            bool result = _evaluator.Evaluate("a", "<>");
+            bool result = this._evaluator.Evaluate("a", "<>");
             Assert.IsTrue(result);
         }
 
         [TestMethod]
         public void EvaluateNotEqualToBlankExpressionEqualsNonZero()
         {
-            bool result = _evaluator.Evaluate(1d, "<>");
+            bool result = this._evaluator.Evaluate(1d, "<>");
             Assert.IsTrue(result);
         }
 
         [TestMethod]
         public void EvaluateNotEqualToBlankExpressionEqualsZero()
         {
-            bool result = _evaluator.Evaluate(0d, "<>");
+            bool result = this._evaluator.Evaluate(0d, "<>");
             Assert.IsTrue(result);
         }
 #endregion
@@ -253,35 +253,35 @@ namespace EPPlusTest
         [TestMethod]
         public void EvaluateCharacterExpressionEqualNull()
         {
-            bool result = _evaluator.Evaluate(null, "a");
+            bool result = this._evaluator.Evaluate(null, "a");
             Assert.IsFalse(result);
         }
 
         [TestMethod]
         public void EvaluateCharacterExpressionEqualsEmptyString()
         {
-            bool result = _evaluator.Evaluate(string.Empty, "a");
+            bool result = this._evaluator.Evaluate(string.Empty, "a");
             Assert.IsFalse(result);
         }
 
         [TestMethod]
         public void EvaluateCharacterExpressionEqualsNumeral()
         {
-            bool result = _evaluator.Evaluate(1d, "a");
+            bool result = this._evaluator.Evaluate(1d, "a");
             Assert.IsFalse(result);
         }
 
         [TestMethod]
         public void EvaluateCharacterExpressionEqualsSameCharacter()
         {
-            bool result = _evaluator.Evaluate("a", "a");
+            bool result = this._evaluator.Evaluate("a", "a");
             Assert.IsTrue(result);
         }
 
         [TestMethod]
         public void EvaluateCharacterExpressionEqualsDifferentCharacter()
         {
-            bool result = _evaluator.Evaluate("b", "a");
+            bool result = this._evaluator.Evaluate("b", "a");
             Assert.IsFalse(result);
         }
 #endregion
@@ -290,65 +290,65 @@ namespace EPPlusTest
         [TestMethod]
         public void EvaluateCharacterWithOperatorExpressionEqualNull()
         {
-            bool result = _evaluator.Evaluate(null, ">a");
+            bool result = this._evaluator.Evaluate(null, ">a");
             Assert.IsFalse(result);
-            result = _evaluator.Evaluate(null, "<a");
+            result = this._evaluator.Evaluate(null, "<a");
             Assert.IsFalse(result);
         }
 
         [TestMethod]
         public void EvaluateCharacterWithOperatorExpressionEqualsEmptyString()
         {
-            bool result = _evaluator.Evaluate(string.Empty, ">a");
+            bool result = this._evaluator.Evaluate(string.Empty, ">a");
             Assert.IsFalse(result);
-            result = _evaluator.Evaluate(string.Empty, "<a");
+            result = this._evaluator.Evaluate(string.Empty, "<a");
             Assert.IsTrue(result);
         }
 
         [TestMethod]
         public void EvaluateCharacterWithOperatorExpressionEqualsNumeral()
         {
-            bool result = _evaluator.Evaluate(1d, ">a");
+            bool result = this._evaluator.Evaluate(1d, ">a");
             Assert.IsFalse(result);
-            result = _evaluator.Evaluate(1d, "<a");
+            result = this._evaluator.Evaluate(1d, "<a");
             Assert.IsFalse(result);
         }
 
         [TestMethod]
         public void EvaluateShouldHandleLeadingEqualOperatorAndWildCard()
         {
-            bool result = _evaluator.Evaluate("TEST", "=*EST*");
+            bool result = this._evaluator.Evaluate("TEST", "=*EST*");
             Assert.IsTrue(result);
         }
 
         [TestMethod]
         public void EvaluateCharacterWithOperatorExpressionEqualsSameCharacter()
         {
-            bool result = _evaluator.Evaluate("a", ">a");
+            bool result = this._evaluator.Evaluate("a", ">a");
             Assert.IsFalse(result);
-            result = _evaluator.Evaluate("a", ">=a");
+            result = this._evaluator.Evaluate("a", ">=a");
             Assert.IsTrue(result);
-            result = _evaluator.Evaluate("a", "<a");
+            result = this._evaluator.Evaluate("a", "<a");
             Assert.IsFalse(result);
-            result = _evaluator.Evaluate("a", ">=a");
+            result = this._evaluator.Evaluate("a", ">=a");
             Assert.IsTrue(result);
         }
 
         [TestMethod]
         public void EvaluateCharacterWithOperatorExpressionEqualsDifferentCharacter()
         {
-            bool result = _evaluator.Evaluate("b", ">a");
+            bool result = this._evaluator.Evaluate("b", ">a");
             Assert.IsTrue(result);
-            result = _evaluator.Evaluate("b", "<a");
+            result = this._evaluator.Evaluate("b", "<a");
             Assert.IsFalse(result);
         }
 
         [TestMethod]
         public void EvaluateCharacterWithSpaceBetweenOperatorAndCharacter()
         {
-            bool result = _evaluator.Evaluate("b", "> a");
+            bool result = this._evaluator.Evaluate("b", "> a");
             Assert.IsTrue(result);
-            result = _evaluator.Evaluate("b", "< a");
+            result = this._evaluator.Evaluate("b", "< a");
             Assert.IsFalse(result);
         }
 #endregion

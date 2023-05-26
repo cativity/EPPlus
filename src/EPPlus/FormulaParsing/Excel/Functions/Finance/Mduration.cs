@@ -35,10 +35,10 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Finance
             }
 
             double dur = durationResult.ResultNumeric;
-            double yield = ArgToDecimal(arguments, 3);
-            double frequency = ArgToDecimal(arguments, 4);
+            double yield = this.ArgToDecimal(arguments, 3);
+            double frequency = this.ArgToDecimal(arguments, 4);
             double result = dur / (1d + (yield / frequency));
-            return CreateResult(result, DataType.Decimal);
+            return this.CreateResult(result, DataType.Decimal);
         }
     }
 }

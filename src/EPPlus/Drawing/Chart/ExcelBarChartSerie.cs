@@ -42,14 +42,14 @@ namespace OfficeOpenXml.Drawing.Chart
         {
             get
             {
-                if (_dataLabel == null)
+                if (this._dataLabel == null)
                 {
-                    if (ExcelChartDataLabelStandard.ForbiddDataLabelPosition(_chart) == false)
+                    if (ExcelChartDataLabelStandard.ForbiddDataLabelPosition(this._chart) == false)
                     {
-                        _dataLabel = new ExcelChartSerieDataLabel(_chart, NameSpaceManager, TopNode, SchemaNodeOrder);
+                        this._dataLabel = new ExcelChartSerieDataLabel(this._chart, this.NameSpaceManager, this.TopNode, this.SchemaNodeOrder);
                     }
                 }
-                return _dataLabel;
+                return this._dataLabel;
             }
         }
         /// <summary>
@@ -59,7 +59,7 @@ namespace OfficeOpenXml.Drawing.Chart
         {
             get
             {
-                return TopNode.SelectSingleNode("c:dLbls", NameSpaceManager) != null;
+                return this.TopNode.SelectSingleNode("c:dLbls", this.NameSpaceManager) != null;
             }
         }
 
@@ -68,11 +68,11 @@ namespace OfficeOpenXml.Drawing.Chart
         {
             get
             {
-                return GetXmlNodeBool(INVERTIFNEGATIVE_PATH, true);
+                return this.GetXmlNodeBool(INVERTIFNEGATIVE_PATH, true);
             }
             set
             {
-                SetXmlNodeBool(INVERTIFNEGATIVE_PATH, value);
+                this.SetXmlNodeBool(INVERTIFNEGATIVE_PATH, value);
             }
         }
         ExcelChartDataPointCollection _dataPoints = null;
@@ -84,11 +84,11 @@ namespace OfficeOpenXml.Drawing.Chart
             get
             {
 
-                if (_dataPoints == null)
+                if (this._dataPoints == null)
                 {
-                    _dataPoints = new ExcelChartDataPointCollection(_chart, NameSpaceManager, TopNode, SchemaNodeOrder);
+                    this._dataPoints = new ExcelChartDataPointCollection(this._chart, this.NameSpaceManager, this.TopNode, this.SchemaNodeOrder);
                 }
-                return _dataPoints;
+                return this._dataPoints;
             }
         }
     }

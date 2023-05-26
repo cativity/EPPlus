@@ -34,7 +34,7 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions.RefAndLookup
             IRangeInfo? r=arguments.ElementAt(0).ValueAsRangeInfo;
             if (r != null)
             {
-                return CreateResult(r.Address._toRow - r.Address._fromRow + 1, DataType.Integer);
+                return this.CreateResult(r.Address._toRow - r.Address._fromRow + 1, DataType.Integer);
             }
             else
             {
@@ -43,7 +43,7 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions.RefAndLookup
                 {
                     RangeAddressFactory? factory = new RangeAddressFactory(context.ExcelDataProvider);
                     RangeAddress? address = factory.Create(range);
-                    return CreateResult(address.ToRow - address.FromRow + 1, DataType.Integer);
+                    return this.CreateResult(address.ToRow - address.FromRow + 1, DataType.Integer);
                 }
             }
             throw new ArgumentException("Invalid range supplied");

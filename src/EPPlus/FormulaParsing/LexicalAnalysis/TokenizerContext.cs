@@ -34,13 +34,13 @@ namespace OfficeOpenXml.FormulaParsing.LexicalAnalysis
         {
             if (!string.IsNullOrEmpty(formula))
             {
-                FormulaChars = formula.ToArray();
+                this.FormulaChars = formula.ToArray();
             }
             Require.That(tokenFactory).IsNotNull();
-            _result = new List<Token>();
-            _currentToken = new StringBuilder();
-            _worksheet = worksheet;
-            _tokenFactory = tokenFactory;
+            this._result = new List<Token>();
+            this._currentToken = new StringBuilder();
+            this._worksheet = worksheet;
+            this._tokenFactory = tokenFactory;
         }
 
         private readonly List<Token> _result;
@@ -58,8 +58,8 @@ namespace OfficeOpenXml.FormulaParsing.LexicalAnalysis
 
         public TokenHandler CreateHandler(INameValueProvider nameValueProvider)
         {
-            TokenHandler? handler = new TokenHandler(this, _tokenFactory, TokenSeparatorProvider.Instance, nameValueProvider);
-            handler.Worksheet = _worksheet;
+            TokenHandler? handler = new TokenHandler(this, this._tokenFactory, TokenSeparatorProvider.Instance, nameValueProvider);
+            handler.Worksheet = this._worksheet;
             return handler;
         }
 
@@ -68,12 +68,12 @@ namespace OfficeOpenXml.FormulaParsing.LexicalAnalysis
         /// </summary>
         public IList<Token> Result
         {
-            get { return _result; }
+            get { return this._result; }
         }
 
         internal string Worksheet
         {
-            get { return _worksheet;}
+            get { return this._worksheet;}
         }
 
         /// <summary>
@@ -83,12 +83,12 @@ namespace OfficeOpenXml.FormulaParsing.LexicalAnalysis
         /// <returns>The <see cref="Token"/> at the requested position</returns>
         public Token GetTokenBeforeIndex(int index)
         {
-            if (index < 1 || index > _result.Count - 1)
+            if (index < 1 || index > this._result.Count - 1)
             {
                 throw new IndexOutOfRangeException("Index was out of range of the token array");
             }
 
-            return _result[index - 1];
+            return this._result[index - 1];
         }
 
         /// <summary>
@@ -98,36 +98,36 @@ namespace OfficeOpenXml.FormulaParsing.LexicalAnalysis
         /// <returns>The <see cref="Token"/> at the requested position</returns>
         public Token GetNextTokenAfterIndex(int index)
         {
-            if (index < 0 || index > _result.Count - 2)
+            if (index < 0 || index > this._result.Count - 2)
             {
                 throw new IndexOutOfRangeException("Index was out of range of the token array");
             }
 
-            return _result[index + 1];
+            return this._result[index + 1];
         }
 
         private Token CreateToken(string worksheet)
         {
-            if (CurrentToken == "-")
+            if (this.CurrentToken == "-")
             {
-                if (LastToken == null && LastToken.Value.TokenTypeIsSet(TokenType.Operator))
+                if (this.LastToken == null && this.LastToken.Value.TokenTypeIsSet(TokenType.Operator))
                 {
                     return new Token("-", TokenType.Negator);
                 }
             }
-            return _tokenFactory.Create(Result, CurrentToken, worksheet);
+            return this._tokenFactory.Create(this.Result, this.CurrentToken, worksheet);
         }
 
         internal void OverwriteCurrentToken(string token)
         {
-            _currentToken = new StringBuilder(token);
+            this._currentToken = new StringBuilder(token);
         }
 
         public void PostProcess()
         {
-            if (CurrentTokenHasValue)
+            if (this.CurrentTokenHasValue)
             {
-                AddToken(CreateToken(_worksheet));
+                this.AddToken(this.CreateToken(this._worksheet));
             }
 
             TokenizerPostProcessor? postProcessor = new TokenizerPostProcessor(this);
@@ -141,7 +141,7 @@ namespace OfficeOpenXml.FormulaParsing.LexicalAnalysis
         /// <param name="newValue">The new <see cref="Token"/></param>
         public void Replace(int index, Token newValue)
         {
-            _result[index] = newValue;
+            this._result[index] = newValue;
         }
 
         /// <summary>
@@ -150,7 +150,7 @@ namespace OfficeOpenXml.FormulaParsing.LexicalAnalysis
         /// <param name="index">0-based index of the requested position</param>
         public void RemoveAt(int index)
         {
-            _result.RemoveAt(index);
+            this._result.RemoveAt(index);
         }
 
         /// <summary>
@@ -176,7 +176,7 @@ namespace OfficeOpenXml.FormulaParsing.LexicalAnalysis
         /// </summary>
         public void ToggleIsInString()
         {
-            IsInString = !IsInString;
+            this.IsInString = !this.IsInString;
         }
 
         /// <summary>
@@ -184,7 +184,7 @@ namespace OfficeOpenXml.FormulaParsing.LexicalAnalysis
         /// </summary>
         public void ToggleIsInSheetName()
         {
-            IsInSheetName = !IsInSheetName;
+            this.IsInSheetName = !this.IsInSheetName;
         }
 
         internal int BracketCount
@@ -204,35 +204,35 @@ namespace OfficeOpenXml.FormulaParsing.LexicalAnalysis
         /// </summary>
         public string CurrentToken
         {
-            get { return _currentToken.ToString(); }
+            get { return this._currentToken.ToString(); }
         }
 
         public bool CurrentTokenHasValue
         {
-            get { return !string.IsNullOrEmpty(IsInString ? CurrentToken : CurrentToken.Trim()); }
+            get { return !string.IsNullOrEmpty(this.IsInString ? this.CurrentToken : this.CurrentToken.Trim()); }
         }
 
         public void NewToken()
         {
-            _currentToken = new StringBuilder();
+            this._currentToken = new StringBuilder();
         }
 
         public void AddToken(Token token)
         {
-            _result.Add(token);
+            this._result.Add(token);
         }
 
         public void AppendToCurrentToken(char c)
         {
-            _currentToken.Append(c.ToString());
+            this._currentToken.Append(c.ToString());
         }
 
         public void AppendToLastToken(string stringToAppend)
         {
-            Token token = _result.Last();
+            Token token = this._result.Last();
             string? newVal = token.Value += stringToAppend;
             Token newToken = token.CloneWithNewValue(newVal);
-            ReplaceLastToken(newToken);
+            this.ReplaceLastToken(newToken);
         }
 
         /// <summary>
@@ -242,7 +242,7 @@ namespace OfficeOpenXml.FormulaParsing.LexicalAnalysis
         /// <param name="index">Index of the token to change</param>
         public void ChangeTokenType(TokenType tokenType, int index)
         {
-            _result[index] = _result[index].CloneWithNewTokenType(tokenType);
+            this._result[index] = this._result[index].CloneWithNewTokenType(tokenType);
         }
 
         /// <summary>
@@ -252,7 +252,7 @@ namespace OfficeOpenXml.FormulaParsing.LexicalAnalysis
         /// <param name="index">Index of the token to change</param>
         public void ChangeValue(string val, int index)
         {
-            _result[index] = _result[index].CloneWithNewValue(val);
+            this._result[index] = this._result[index].CloneWithNewValue(val);
         }
 
         /// <summary>
@@ -261,8 +261,8 @@ namespace OfficeOpenXml.FormulaParsing.LexicalAnalysis
         /// <param name="type"></param>
         public void SetLastTokenType(TokenType type)
         {
-            Token newToken = _result.Last().CloneWithNewTokenType(type);
-            ReplaceLastToken(newToken);
+            Token newToken = this._result.Last().CloneWithNewTokenType(type);
+            this.ReplaceLastToken(newToken);
         }
 
         /// <summary>
@@ -271,12 +271,13 @@ namespace OfficeOpenXml.FormulaParsing.LexicalAnalysis
         /// <param name="newToken">The new token</param>
         public void ReplaceLastToken(Token newToken)
         {
-            int count = _result.Count;
+            int count = this._result.Count;
             if (count > 0)
             {
-                _result.RemoveAt(count - 1);   
+                this._result.RemoveAt(count - 1);   
             }
-            _result.Add(newToken);
+
+            this._result.Add(newToken);
         }
 
         /// <summary>
@@ -284,7 +285,7 @@ namespace OfficeOpenXml.FormulaParsing.LexicalAnalysis
         /// </summary>
         public Token? LastToken
         {
-            get { return _result.Count > 0 ? _result.Last() : default(Token?); }
+            get { return this._result.Count > 0 ? this._result.Last() : default(Token?); }
         }
 
     }

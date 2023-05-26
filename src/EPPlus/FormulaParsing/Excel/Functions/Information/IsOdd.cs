@@ -32,10 +32,10 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Information
             object? arg1 = GetFirstValue(arguments);//arguments.ElementAt(0);
             if (!ConvertUtil.IsNumericOrDate(arg1))
             {
-                return CreateResult(eErrorType.Value);
+                return this.CreateResult(eErrorType.Value);
             }
             int number = (int)System.Math.Floor(ConvertUtil.GetValueDouble(arg1));
-            return CreateResult(number % 2 == 1, DataType.Boolean);
+            return this.CreateResult(number % 2 == 1, DataType.Boolean);
         }
     }
 }

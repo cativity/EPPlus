@@ -30,12 +30,12 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions.RefAndLookup
             FunctionArgument[]? functionArguments = arguments as FunctionArgument[] ?? arguments.ToArray();
             ValidateArguments(functionArguments, 3);
             string? startRange = ArgToAddress(functionArguments, 0, context);
-            int rowOffset = ArgToInt(functionArguments, 1);
-            int colOffset = ArgToInt(functionArguments, 2);
+            int rowOffset = this.ArgToInt(functionArguments, 1);
+            int colOffset = this.ArgToInt(functionArguments, 2);
             int width = 0, height = 0;
             if (functionArguments.Length > 3)
             {
-                height = ArgToInt(functionArguments, 3);
+                height = this.ArgToInt(functionArguments, 3);
                 if (height == 0)
                 {
                     return new CompileResult(eErrorType.Ref);
@@ -43,7 +43,7 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions.RefAndLookup
             }
             if (functionArguments.Length > 4)
             {
-                width = ArgToInt(functionArguments, 4);
+                width = this.ArgToInt(functionArguments, 4);
                 if (width == 0)
                 {
                     return new CompileResult(eErrorType.Ref);
@@ -60,7 +60,7 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions.RefAndLookup
 
             IRangeInfo? newRange = context.ExcelDataProvider.GetRange(adr.WorkSheetName, fromRow, fromCol, toRow, toCol);
             
-            return CreateResult(newRange, DataType.Enumerable);
+            return this.CreateResult(newRange, DataType.Enumerable);
         }
     }
 }

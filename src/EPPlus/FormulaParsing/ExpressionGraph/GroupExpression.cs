@@ -27,8 +27,8 @@ namespace OfficeOpenXml.FormulaParsing.ExpressionGraph
 
         public GroupExpression(bool isNegated, IExpressionCompiler expressionCompiler)
         {
-            _expressionCompiler = expressionCompiler;
-            _isNegated = isNegated;
+            this._expressionCompiler = expressionCompiler;
+            this._isNegated = isNegated;
         }
 
         private readonly IExpressionCompiler _expressionCompiler;
@@ -37,8 +37,8 @@ namespace OfficeOpenXml.FormulaParsing.ExpressionGraph
 
         public override CompileResult Compile()
         {
-            CompileResult? result =  _expressionCompiler.Compile(Children);
-            if (result.IsNumeric && _isNegated)
+            CompileResult? result = this._expressionCompiler.Compile(this.Children);
+            if (result.IsNumeric && this._isNegated)
             {
                 return new CompileResult(result.ResultNumeric * -1, result.DataType);
             }

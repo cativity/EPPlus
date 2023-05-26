@@ -30,22 +30,22 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Finance
         public override CompileResult Execute(IEnumerable<FunctionArgument> arguments, ParsingContext context)
         {
             ValidateArguments(arguments, 5);
-            System.DateTime settlementDate = System.DateTime.FromOADate(ArgToInt(arguments, 0));
-            System.DateTime maturityDate = System.DateTime.FromOADate(ArgToInt(arguments, 1));
+            System.DateTime settlementDate = System.DateTime.FromOADate(this.ArgToInt(arguments, 0));
+            System.DateTime maturityDate = System.DateTime.FromOADate(this.ArgToInt(arguments, 1));
             if (settlementDate >= maturityDate)
             {
                 return this.CreateResult(eErrorType.Num);
             }
 
-            System.DateTime issueDate = System.DateTime.FromOADate(ArgToInt(arguments, 2));
+            System.DateTime issueDate = System.DateTime.FromOADate(this.ArgToInt(arguments, 2));
             
-            double rate = ArgToDecimal(arguments, 3);
+            double rate = this.ArgToDecimal(arguments, 3);
             if (rate < 0)
             {
                 return this.CreateResult(eErrorType.Num);
             }
 
-            double price = ArgToDecimal(arguments, 4);
+            double price = this.ArgToDecimal(arguments, 4);
             if (price <= 0)
             {
                 return this.CreateResult(eErrorType.Num);
@@ -54,7 +54,7 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Finance
             int basis = 0;
             if(arguments.Count() > 5)
             {
-                basis = ArgToInt(arguments, 5);
+                basis = this.ArgToInt(arguments, 5);
                 if (basis < 0 || basis > 4)
                 {
                     return this.CreateResult(eErrorType.Num);
@@ -69,7 +69,7 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Finance
             double result = 1d + yf1 * rate;
             result /= price / 100d + yf2 * rate;
             result = --result / yf3;
-            return CreateResult(result, DataType.Decimal);
+            return this.CreateResult(result, DataType.Decimal);
         }
     }
 }

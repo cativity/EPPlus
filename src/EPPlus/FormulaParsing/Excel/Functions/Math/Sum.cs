@@ -30,7 +30,7 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Math
     {
         public Sum()
         {
-            IgnoreErrors = false;
+            this.IgnoreErrors = false;
         }
 
         public override CompileResult Execute(IEnumerable<FunctionArgument> arguments, ParsingContext context)
@@ -40,17 +40,17 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Math
             {
                 foreach (FunctionArgument? arg in arguments)
                 {
-                    retVal += Calculate(arg, context);                    
+                    retVal += this.Calculate(arg, context);                    
                 }
             }
-            return CreateResult(retVal, DataType.Decimal);
+            return this.CreateResult(retVal, DataType.Decimal);
         }
 
         
         private double Calculate(FunctionArgument arg, ParsingContext context)
         {
             double retVal = 0d;
-            if (ShouldIgnore(arg, context))
+            if (this.ShouldIgnore(arg, context))
             {
                 return retVal;
             }
@@ -58,9 +58,9 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Math
             {
                 foreach (FunctionArgument? item in (IEnumerable<FunctionArgument>)arg.Value)
                 {
-                    if(!ShouldIgnore(arg, context))
+                    if(!this.ShouldIgnore(arg, context))
                     {
-                        retVal += Calculate(item, context);
+                        retVal += this.Calculate(item, context);
                     }
                 }
             }
@@ -68,7 +68,7 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Math
             {
                 foreach (ICellInfo? c in (IRangeInfo)arg.Value)
                 {
-                    if (ShouldIgnore(c, context) == false)
+                    if (this.ShouldIgnore(c, context) == false)
                     {
                         CheckForAndHandleExcelError(c);
                         retVal += c.ValueDouble;

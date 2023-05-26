@@ -22,32 +22,32 @@ namespace OfficeOpenXml.Table
         }
         internal void InitDxf(ExcelStyles styles, ExcelTable table, ExcelTableColumn tableColumn)
         {
-            _table = table;
-            _tableColumn = tableColumn;
-            HeaderRowStyle = styles.GetDxf(HeaderRowDxfId, SetHeaderStyle);
-            DataStyle = styles.GetDxf(DataDxfId, SetDataStyle);
-            TotalsRowStyle = styles.GetDxf(TotalsRowDxfId, SetTotalsStyle);
+            this._table = table;
+            this._tableColumn = tableColumn;
+            this.HeaderRowStyle = styles.GetDxf(this.HeaderRowDxfId, this.SetHeaderStyle);
+            this.DataStyle = styles.GetDxf(this.DataDxfId, this.SetDataStyle);
+            this.TotalsRowStyle = styles.GetDxf(this.TotalsRowDxfId, this.SetTotalsStyle);
         }
         internal int? HeaderRowDxfId
         {
             get
             {
-                return GetXmlNodeIntNull("@headerRowDxfId");
+                return this.GetXmlNodeIntNull("@headerRowDxfId");
             }
             set
             {
-                SetXmlNodeInt("@headerRowDxfId", value);
+                this.SetXmlNodeInt("@headerRowDxfId", value);
             }
         }
         internal string HeaderRowStyleName
         {
             get
             {
-                return GetXmlNodeString("@headerRowCellStyle");
+                return this.GetXmlNodeString("@headerRowCellStyle");
             }
             set
             {
-                SetXmlNodeString("@headerRowCellStyle",value);
+                this.SetXmlNodeString("@headerRowCellStyle",value);
             }
         }
 
@@ -59,11 +59,11 @@ namespace OfficeOpenXml.Table
         {
             get
             {
-                return GetXmlNodeIntNull("@dataDxfId");
+                return this.GetXmlNodeIntNull("@dataDxfId");
             }
             set
             {
-                SetXmlNodeInt("@dataDxfId", value);
+                this.SetXmlNodeInt("@dataDxfId", value);
             }
         }
         /// <summary>
@@ -81,30 +81,30 @@ namespace OfficeOpenXml.Table
         {
             get
             {
-                return GetXmlNodeIntNull("@totalsRowDxfId");
+                return this.GetXmlNodeIntNull("@totalsRowDxfId");
             }
             set
             {
-                SetXmlNodeInt("@totalsRowDxfId", value);
+                this.SetXmlNodeInt("@totalsRowDxfId", value);
             }
         }
 
         internal void SetHeaderStyle(eStyleClass styleClass, eStyleProperty styleProperty, object value)
         {
-            if ((_table ?? _tableColumn.Table).ShowHeader == false || value==null)
+            if ((this._table ?? this._tableColumn.Table).ShowHeader == false || value==null)
             {
                 return;
             }
 
             ExcelRangeBase headerRange;
-            if(_tableColumn==null)
+            if(this._tableColumn==null)
             {
-                headerRange = _table.Range.Offset(0, 0, 1, _table.Range.Columns);
+                headerRange = this._table.Range.Offset(0, 0, 1, this._table.Range.Columns);
             }
             else
             {
-                ExcelTable? tbl = _tableColumn.Table;
-                headerRange = tbl.Range.Offset(0, _tableColumn.Position, 1, 1);
+                ExcelTable? tbl = this._tableColumn.Table;
+                headerRange = tbl.Range.Offset(0, this._tableColumn.Position, 1, 1);
             }
             SetStyle(headerRange, styleClass, styleProperty, value);
         }
@@ -117,33 +117,33 @@ namespace OfficeOpenXml.Table
             }
 
             ExcelRangeBase range;
-            if (_tableColumn == null)
+            if (this._tableColumn == null)
             {
-                range = _table.DataRange;
+                range = this._table.DataRange;
             }
             else
             {
-                ExcelTable? tbl = _tableColumn.Table;
-                range = tbl.DataRange.Offset(0, _tableColumn.Position, tbl.DataRange.Rows, 1);
+                ExcelTable? tbl = this._tableColumn.Table;
+                range = tbl.DataRange.Offset(0, this._tableColumn.Position, tbl.DataRange.Rows, 1);
             }
             SetStyle(range, styleClass, styleProperty, value);
         }
         internal void SetTotalsStyle(eStyleClass styleClass, eStyleProperty styleProperty, object value)
         {
-            if ((_table??_tableColumn.Table).ShowTotal == false || value==null)
+            if ((this._table?? this._tableColumn.Table).ShowTotal == false || value==null)
             {
                 return;
             }
 
             ExcelRangeBase totalRange;
-            if (_tableColumn == null)
+            if (this._tableColumn == null)
             {
-                totalRange = _table.Range.Offset(_table.Range.Rows-1, 0, 1, _table.Range.Columns);
+                totalRange = this._table.Range.Offset(this._table.Range.Rows-1, 0, 1, this._table.Range.Columns);
             }
             else
             {
-                ExcelTable? tbl = _tableColumn.Table;
-                totalRange = tbl.Range.Offset(tbl.Range.Rows-1, _tableColumn.Position, 1, 1);
+                ExcelTable? tbl = this._tableColumn.Table;
+                totalRange = tbl.Range.Offset(tbl.Range.Rows-1, this._tableColumn.Position, 1, 1);
             }
             SetStyle(totalRange, styleClass, styleProperty, value);
         }

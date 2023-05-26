@@ -23,7 +23,7 @@ namespace OfficeOpenXml.VBA
         /// </summary>
         public ExcelVbaReference()
         {
-            ReferenceRecordID = 0xD;
+            this.ReferenceRecordID = 0xD;
         }
         /// <summary>
         /// The reference record ID. See MS-OVBA documentation for more info. 
@@ -48,7 +48,7 @@ namespace OfficeOpenXml.VBA
         /// <returns></returns>
         public override string ToString()
         {
-            return Name;
+            return this.Name;
         }
     }
 }

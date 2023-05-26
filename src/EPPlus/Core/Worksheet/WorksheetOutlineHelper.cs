@@ -12,12 +12,12 @@ namespace OfficeOpenXml.Core.Worksheet
         ExcelWorksheet _worksheet;
         internal WorksheetOutlineHelper(ExcelWorksheet worksheet)
         {
-            _worksheet = worksheet;
+            this._worksheet = worksheet;
         }
         #region Row
         internal int CollapseRow(int rowNo, int level, bool collapsed, bool collapseChildren, int addValue, bool parentIsHidden = false)
         {
-            RowInternal? row = GetRow(rowNo);
+            RowInternal? row = this.GetRow(rowNo);
             int startLevel = 0;
             if (row != null)
             {
@@ -25,7 +25,7 @@ namespace OfficeOpenXml.Core.Worksheet
             }
             if (row==null)
             {
-                _worksheet.Row(rowNo).Collapsed=collapsed;
+                this._worksheet.Row(rowNo).Collapsed=collapsed;
 
             }
             else
@@ -45,7 +45,7 @@ namespace OfficeOpenXml.Core.Worksheet
             }
 
             int r = rowNo + addValue;
-            row = GetRow(r);
+            row = this.GetRow(r);
             while (row != null && (row.OutlineLevel > startLevel || (row.OutlineLevel >= level && level>=0)))
             {
                 if (level < row.OutlineLevel)
@@ -74,11 +74,11 @@ namespace OfficeOpenXml.Core.Worksheet
                 
                 if (addValue < 0)
                 {
-                    row = GetRow(r--);
+                    row = this.GetRow(r--);
                 }
                 else
                 {
-                    row = GetRow(r++);
+                    row = this.GetRow(r++);
                 }
 
                 if (row != null)
@@ -97,13 +97,13 @@ namespace OfficeOpenXml.Core.Worksheet
                 return null;
             }
 
-            return _worksheet.GetValueInner(row, 0) as RowInternal;
+            return this._worksheet.GetValueInner(row, 0) as RowInternal;
         }
         #endregion
         #region Column
         internal int CollapseColumn(int colNo, int level, bool collapsed, bool collapseChildren, int addValue)
         {
-            ExcelColumn? col = GetColumn(colNo);
+            ExcelColumn? col = this.GetColumn(colNo);
             int startLevel = 0;
             if(col!=null)
             {
@@ -111,7 +111,7 @@ namespace OfficeOpenXml.Core.Worksheet
             }
             if (col == null)
             {
-                col = _worksheet.Column(colNo);
+                col = this._worksheet.Column(colNo);
             }
 
             col.Collapsed = collapsed;
@@ -127,7 +127,7 @@ namespace OfficeOpenXml.Core.Worksheet
                 hidden = col.Hidden;
             }
 
-            col = GetColumn(colNo + addValue);
+            col = this.GetColumn(colNo + addValue);
             while(col!=null && (col.OutlineLevel > startLevel || (col.OutlineLevel >= level && level >= 0)))
             {
                 if (level < col.OutlineLevel)
@@ -155,11 +155,11 @@ namespace OfficeOpenXml.Core.Worksheet
                 }
                 if(addValue<0)
                 {
-                    col = GetColumn(col.ColumnMin - 1);
+                    col = this.GetColumn(col.ColumnMin - 1);
                 }
                 else
                 {
-                    col = GetColumn(col.ColumnMax + 1);
+                    col = this.GetColumn(col.ColumnMax + 1);
                 }
                 if (col != null)
                 {
@@ -176,15 +176,15 @@ namespace OfficeOpenXml.Core.Worksheet
                 return null;
             }
 
-            ExcelColumn? currentCol = _worksheet.GetValueInner(0, col) as ExcelColumn;
+            ExcelColumn? currentCol = this._worksheet.GetValueInner(0, col) as ExcelColumn;
             if (currentCol == null)
             {
                 int r = 0, c = col;
-                if (_worksheet._values.PrevCell(ref r, ref c))
+                if (this._worksheet._values.PrevCell(ref r, ref c))
                 {
                     if (c > 0)
                     {
-                        ExcelColumn prevCol = _worksheet.GetValueInner(0, c) as ExcelColumn;
+                        ExcelColumn prevCol = this._worksheet.GetValueInner(0, c) as ExcelColumn;
                         if (prevCol.ColumnMax < col)
                         {
                             return null;

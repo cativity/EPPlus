@@ -32,9 +32,9 @@ namespace OfficeOpenXml
         {
             Require.Argument(errorMessage).IsNotNullOrEmpty("errorMessage");
             Require.Argument(e).IsNotNull("e");
-            ErrorMessage = errorMessage;
-            Exception = e;
-            TimestampUtc = DateTime.UtcNow;
+            this.ErrorMessage = errorMessage;
+            this.Exception = e;
+            this.TimestampUtc = DateTime.UtcNow;
         }
 
         private ExcelInitializationError()

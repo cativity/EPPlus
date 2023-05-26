@@ -33,7 +33,7 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Text
         {
             ValidateArguments(arguments, 3);
             string? delimiter = ArgToString(arguments, 0);
-            bool ignoreEmpty = ArgToBool(arguments, 1);
+            bool ignoreEmpty = this.ArgToBool(arguments, 1);
             StringBuilder? str = new StringBuilder();
             for(int x = 2; x < arguments.Count() && x < 252; x++)
             {
@@ -50,7 +50,7 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Text
 
                         str.Append(val);
                         str.Append(delimiter);
-                        if (str.Length > MaxReturnLength)
+                        if (str.Length > this.MaxReturnLength)
                         {
                             return this.CreateResult(eErrorType.Value);
                         }
@@ -71,7 +71,7 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Text
 
                             str.Append(val);
                             str.Append(delimiter);
-                            if (str.Length > MaxReturnLength)
+                            if (str.Length > this.MaxReturnLength)
                             {
                                 return this.CreateResult(eErrorType.Value);
                             }
@@ -88,14 +88,14 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Text
 
                     str.Append(val);
                     str.Append(delimiter);
-                    if (str.Length > MaxReturnLength)
+                    if (str.Length > this.MaxReturnLength)
                     {
                         return this.CreateResult(eErrorType.Value);
                     }
                 }
             }
             string? resultString = str.ToString().TrimEnd(delimiter.ToCharArray());
-            return CreateResult(resultString, DataType.String);
+            return this.CreateResult(resultString, DataType.String);
         }
     }
 }

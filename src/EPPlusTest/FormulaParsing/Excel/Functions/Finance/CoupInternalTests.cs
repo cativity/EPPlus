@@ -556,7 +556,7 @@ namespace EPPlusTest.FormulaParsing.Excel.Functions.Finance
                                                 DayCountBasis.Actual_Actual
                                                );
             FinanceCalcResult<DateTime>? result = func.GetCoupncd();
-            Assert.AreEqual(new System.DateTime(2017, 2, 28), result.Result);
+            Assert.AreEqual(new DateTime(2017, 2, 28), result.Result);
 
             settlement = new DateTime(2016, 02, 01);
             maturity = new DateTime(2019, 5, 31);
@@ -568,7 +568,7 @@ namespace EPPlusTest.FormulaParsing.Excel.Functions.Finance
                 DayCountBasis.Actual_Actual
                 );
             result = func.GetCoupncd();
-            Assert.AreEqual(new System.DateTime(2016, 2, 29), result.Result);
+            Assert.AreEqual(new DateTime(2016, 2, 29), result.Result);
         }
         #endregion
 
@@ -587,7 +587,7 @@ namespace EPPlusTest.FormulaParsing.Excel.Functions.Finance
                                                 DayCountBasis.Actual_Actual
                                                );
             FinanceCalcResult<DateTime>? result = func.GetCouppcd();
-            Assert.AreEqual(new System.DateTime(2017, 2, 28), result.Result);
+            Assert.AreEqual(new DateTime(2017, 2, 28), result.Result);
 
             settlement = new DateTime(2016, 02, 01);
             maturity = new DateTime(2019, 5, 31);
@@ -599,7 +599,7 @@ namespace EPPlusTest.FormulaParsing.Excel.Functions.Finance
                 DayCountBasis.Actual_Actual
                 );
             result = func.GetCouppcd();
-            Assert.AreEqual(new System.DateTime(2015, 11, 30), result.Result);
+            Assert.AreEqual(new DateTime(2015, 11, 30), result.Result);
         }
         #endregion
     }

@@ -48,34 +48,34 @@ namespace OfficeOpenXml.Table.PivotTable
         internal ExcelPivotTable(ZipPackageRelationship rel, ExcelWorksheet sheet) :
             base(sheet.NameSpaceManager)
         {
-            WorkSheet = sheet;
-            PivotTableUri = UriHelper.ResolvePartUri(rel.SourceUri, rel.TargetUri);
-            Relationship = rel;
+            this.WorkSheet = sheet;
+            this.PivotTableUri = UriHelper.ResolvePartUri(rel.SourceUri, rel.TargetUri);
+            this.Relationship = rel;
             ZipPackage? pck = sheet._package.ZipPackage;
-            Part = pck.GetPart(PivotTableUri);
+            this.Part = pck.GetPart(this.PivotTableUri);
 
-            PivotTableXml = new XmlDocument();
-            LoadXmlSafe(PivotTableXml, Part.GetStream());
-            TopNode = PivotTableXml.DocumentElement;
-            Init();
-            Address = new ExcelAddressBase(GetXmlNodeString("d:location/@ref"));
+            this.PivotTableXml = new XmlDocument();
+            LoadXmlSafe(this.PivotTableXml, this.Part.GetStream());
+            this.TopNode = this.PivotTableXml.DocumentElement;
+            this.Init();
+            this.Address = new ExcelAddressBase(this.GetXmlNodeString("d:location/@ref"));
 
-            CacheDefinition = new ExcelPivotCacheDefinition(sheet.NameSpaceManager, this);
-            LoadFields();
+            this.CacheDefinition = new ExcelPivotCacheDefinition(sheet.NameSpaceManager, this);
+            this.LoadFields();
 
             int pos = 0;
             //Add row fields.
-            foreach (XmlElement rowElem in TopNode.SelectNodes("d:rowFields/d:field", NameSpaceManager))
+            foreach (XmlElement rowElem in this.TopNode.SelectNodes("d:rowFields/d:field", this.NameSpaceManager))
             {
                 if (int.TryParse(rowElem.GetAttribute("x"), out int x) && x >= 0)
                 {
-                    RowFields.AddInternal(Fields[x]);
+                    this.RowFields.AddInternal(this.Fields[x]);
                 }
                 else
                 {
                     if(x==-2)
                     {
-                        ValuesFieldPosition = pos;
+                        this.ValuesFieldPosition = pos;
                     }
                     rowElem.ParentNode.RemoveChild(rowElem);
                 }
@@ -84,17 +84,17 @@ namespace OfficeOpenXml.Table.PivotTable
 
             pos = 0;
             ////Add column fields.
-            foreach (XmlElement colElem in TopNode.SelectNodes("d:colFields/d:field", NameSpaceManager))
+            foreach (XmlElement colElem in this.TopNode.SelectNodes("d:colFields/d:field", this.NameSpaceManager))
             {
                 if (int.TryParse(colElem.GetAttribute("x"), out int x) && x >= 0)
                 {
-                    ColumnFields.AddInternal(Fields[x]);
+                    this.ColumnFields.AddInternal(this.Fields[x]);
                 }
                 else
                 {
                     if (x == -2)
                     {
-                        ValuesFieldPosition = pos;
+                        this.ValuesFieldPosition = pos;
                     }
                     colElem.ParentNode.RemoveChild(colElem);
                 }
@@ -103,29 +103,29 @@ namespace OfficeOpenXml.Table.PivotTable
 
             //Add Page elements
             //int index = 0;
-            foreach (XmlElement pageElem in TopNode.SelectNodes("d:pageFields/d:pageField", NameSpaceManager))
+            foreach (XmlElement pageElem in this.TopNode.SelectNodes("d:pageFields/d:pageField", this.NameSpaceManager))
             {
                 if (int.TryParse(pageElem.GetAttribute("fld"), out int fld) && fld >= 0)
                 {
-                    ExcelPivotTableField? field = Fields[fld];
-                    field._pageFieldSettings = new ExcelPivotTablePageFieldSettings(NameSpaceManager, pageElem, field, fld);
-                    PageFields.AddInternal(field);
+                    ExcelPivotTableField? field = this.Fields[fld];
+                    field._pageFieldSettings = new ExcelPivotTablePageFieldSettings(this.NameSpaceManager, pageElem, field, fld);
+                    this.PageFields.AddInternal(field);
                 }
             }
 
             //Add data elements
             //index = 0;
-            foreach (XmlElement dataElem in TopNode.SelectNodes("d:dataFields/d:dataField", NameSpaceManager))
+            foreach (XmlElement dataElem in this.TopNode.SelectNodes("d:dataFields/d:dataField", this.NameSpaceManager))
             {
                 if (int.TryParse(dataElem.GetAttribute("fld"), out int fld) && fld >= 0)
                 {
-                    ExcelPivotTableField? field = Fields[fld];
-                    ExcelPivotTableDataField? dataField = new ExcelPivotTableDataField(NameSpaceManager, dataElem, field);
-                    DataFields.AddInternal(dataField);
+                    ExcelPivotTableField? field = this.Fields[fld];
+                    ExcelPivotTableDataField? dataField = new ExcelPivotTableDataField(this.NameSpaceManager, dataElem, field);
+                    this.DataFields.AddInternal(dataField);
                 }
             }
 
-            Styles = new ExcelPivotTableAreaStyleCollection(this);
+            this.Styles = new ExcelPivotTableAreaStyleCollection(this);
         }
         /// <summary>
         /// Add a new pivottable
@@ -138,13 +138,13 @@ namespace OfficeOpenXml.Table.PivotTable
         internal ExcelPivotTable(ExcelWorksheet sheet, ExcelAddressBase address, PivotTableCacheInternal pivotTableCache, string name, int tblId) :
         base(sheet.NameSpaceManager)
         {
-            CreatePivotTable(sheet, address, pivotTableCache.Fields.Count, name, tblId);
+            this.CreatePivotTable(sheet, address, pivotTableCache.Fields.Count, name, tblId);
 
-            CacheDefinition = new ExcelPivotCacheDefinition(sheet.NameSpaceManager, this, pivotTableCache);
-            CacheId = pivotTableCache.CacheId;
+            this.CacheDefinition = new ExcelPivotCacheDefinition(sheet.NameSpaceManager, this, pivotTableCache);
+            this.CacheId = pivotTableCache.CacheId;
 
-            LoadFields();
-            Styles = new ExcelPivotTableAreaStyleCollection(this);
+            this.LoadFields();
+            this.Styles = new ExcelPivotTableAreaStyleCollection(this);
         }
         /// <summary>
         /// Add a new pivottable
@@ -157,32 +157,32 @@ namespace OfficeOpenXml.Table.PivotTable
         internal ExcelPivotTable(ExcelWorksheet sheet, ExcelAddressBase address, ExcelRangeBase sourceAddress, string name, int tblId) :
         base(sheet.NameSpaceManager)
         {
-            CreatePivotTable(sheet, address, sourceAddress._toCol - sourceAddress._fromCol + 1, name, tblId);
+            this.CreatePivotTable(sheet, address, sourceAddress._toCol - sourceAddress._fromCol + 1, name, tblId);
 
-            CacheDefinition = new ExcelPivotCacheDefinition(sheet.NameSpaceManager, this, sourceAddress);
-            CacheId = CacheDefinition._cacheReference.CacheId;
+            this.CacheDefinition = new ExcelPivotCacheDefinition(sheet.NameSpaceManager, this, sourceAddress);
+            this.CacheId = this.CacheDefinition._cacheReference.CacheId;
 
-            LoadFields();
-            Styles = new ExcelPivotTableAreaStyleCollection(this);
+            this.LoadFields();
+            this.Styles = new ExcelPivotTableAreaStyleCollection(this);
         }
 
         private void CreatePivotTable(ExcelWorksheet sheet, ExcelAddressBase address, int fields, string name, int tblId)
         {
-            WorkSheet = sheet;
-            Address = address;
+            this.WorkSheet = sheet;
+            this.Address = address;
             ZipPackage? pck = sheet._package.ZipPackage;
 
-            PivotTableXml = new XmlDocument();
-            LoadXmlSafe(PivotTableXml, GetStartXml(name, address, fields), Encoding.UTF8);
-            TopNode = PivotTableXml.DocumentElement;
-            PivotTableUri = GetNewUri(pck, "/xl/pivotTables/pivotTable{0}.xml", ref tblId);
-            Init();
+            this.PivotTableXml = new XmlDocument();
+            LoadXmlSafe(this.PivotTableXml, GetStartXml(name, address, fields), Encoding.UTF8);
+            this.TopNode = this.PivotTableXml.DocumentElement;
+            this.PivotTableUri = GetNewUri(pck, "/xl/pivotTables/pivotTable{0}.xml", ref tblId);
+            this.Init();
 
-            Part = pck.CreatePart(PivotTableUri, ContentTypes.contentTypePivotTable);
-            PivotTableXml.Save(Part.GetStream());
+            this.Part = pck.CreatePart(this.PivotTableUri, ContentTypes.contentTypePivotTable);
+            this.PivotTableXml.Save(this.Part.GetStream());
 
             //Worksheet-Pivottable relationship
-            Relationship = sheet.Part.CreateRelationship(UriHelper.ResolvePartUri(sheet.WorksheetUri, PivotTableUri), Packaging.TargetMode.Internal, ExcelPackage.schemaRelationships + "/pivotTable");
+            this.Relationship = sheet.Part.CreateRelationship(UriHelper.ResolvePartUri(sheet.WorksheetUri, this.PivotTableUri), TargetMode.Internal, ExcelPackage.schemaRelationships + "/pivotTable");
 
             using ExcelRange? r = sheet.Cells[address.Address];
             r.Clear();
@@ -190,19 +190,19 @@ namespace OfficeOpenXml.Table.PivotTable
 
         private void Init()
         {
-            SchemaNodeOrder = new string[] { "location", "pivotFields", "rowFields", "rowItems", "colFields", "colItems", "pageFields", "dataFields", "formats", "conditionalFormats", "chartFormats", "pivotHierarchies", "pivotTableStyleInfo", "filters", "rowHierarchiesUsage", "colHierarchiesUsage", "extLst" };
+            this.SchemaNodeOrder = new string[] { "location", "pivotFields", "rowFields", "rowItems", "colFields", "colItems", "pageFields", "dataFields", "formats", "conditionalFormats", "chartFormats", "pivotHierarchies", "pivotTableStyleInfo", "filters", "rowHierarchiesUsage", "colHierarchiesUsage", "extLst" };
         }
         private void LoadFields()
         {
             int index = 0;
-            XmlNode? pivotFieldNode = TopNode.SelectSingleNode("d:pivotFields", NameSpaceManager);
+            XmlNode? pivotFieldNode = this.TopNode.SelectSingleNode("d:pivotFields", this.NameSpaceManager);
             //Add fields.            
-            foreach (XmlElement fieldElem in pivotFieldNode.SelectNodes("d:pivotField", NameSpaceManager))
+            foreach (XmlElement fieldElem in pivotFieldNode.SelectNodes("d:pivotField", this.NameSpaceManager))
             {
-                ExcelPivotTableField? fld = new ExcelPivotTableField(NameSpaceManager, fieldElem, this, index, index);
-                fld._cacheField = CacheDefinition._cacheReference.Fields[index++];
+                ExcelPivotTableField? fld = new ExcelPivotTableField(this.NameSpaceManager, fieldElem, this, index, index);
+                fld._cacheField = this.CacheDefinition._cacheReference.Fields[index++];
                 fld.LoadItems();
-                Fields.AddInternal(fld);
+                this.Fields.AddInternal(fld);
             }
 
         }
@@ -224,7 +224,7 @@ namespace OfficeOpenXml.Table.PivotTable
             xml += "</pivotTableDefinition>";
             return xml;
         }
-        internal Packaging.ZipPackagePart Part
+        internal ZipPackagePart Part
         {
             get;
             set;
@@ -249,7 +249,7 @@ namespace OfficeOpenXml.Table.PivotTable
             get;
             internal set;
         }
-        internal Packaging.ZipPackageRelationship Relationship
+        internal ZipPackageRelationship Relationship
         {
             get;
             set;
@@ -263,23 +263,24 @@ namespace OfficeOpenXml.Table.PivotTable
         {
             get
             {
-                return GetXmlNodeString(NAME_PATH);
+                return this.GetXmlNodeString(NAME_PATH);
             }
             set
             {
-                if (WorkSheet.Workbook.ExistsTableName(value))
+                if (this.WorkSheet.Workbook.ExistsTableName(value))
                 {
                     throw (new ArgumentException("PivotTable name is not unique"));
                 }
-                string prevName = Name;
-                if (WorkSheet.Tables._tableNames.ContainsKey(prevName))
+                string prevName = this.Name;
+                if (this.WorkSheet.Tables._tableNames.ContainsKey(prevName))
                 {
-                    int ix = WorkSheet.Tables._tableNames[prevName];
-                    WorkSheet.Tables._tableNames.Remove(prevName);
-                    WorkSheet.Tables._tableNames.Add(value, ix);
+                    int ix = this.WorkSheet.Tables._tableNames[prevName];
+                    this.WorkSheet.Tables._tableNames.Remove(prevName);
+                    this.WorkSheet.Tables._tableNames.Add(value, ix);
                 }
-                SetXmlNodeString(NAME_PATH, value);
-                SetXmlNodeString(DISPLAY_NAME_PATH, cleanDisplayName(value));
+
+                this.SetXmlNodeString(NAME_PATH, value);
+                this.SetXmlNodeString(DISPLAY_NAME_PATH, cleanDisplayName(value));
             }
         }
         /// <summary>
@@ -319,11 +320,11 @@ namespace OfficeOpenXml.Table.PivotTable
         {
             get
             {
-                return GetXmlNodeBool("@dataOnRows");
+                return this.GetXmlNodeBool("@dataOnRows");
             }
             set
             {
-                SetXmlNodeBool("@dataOnRows", value);
+                this.SetXmlNodeBool("@dataOnRows", value);
             }
         }
         /// <summary>
@@ -344,11 +345,11 @@ namespace OfficeOpenXml.Table.PivotTable
         {
             get
             {
-                return GetXmlNodeBool("@applyNumberFormats");
+                return this.GetXmlNodeBool("@applyNumberFormats");
             }
             set
             {
-                SetXmlNodeBool("@applyNumberFormats", value);
+                this.SetXmlNodeBool("@applyNumberFormats", value);
             }
         }
         /// <summary>
@@ -358,11 +359,11 @@ namespace OfficeOpenXml.Table.PivotTable
         {
             get
             {
-                return GetXmlNodeBool("@applyBorderFormats");
+                return this.GetXmlNodeBool("@applyBorderFormats");
             }
             set
             {
-                SetXmlNodeBool("@applyBorderFormats", value);
+                this.SetXmlNodeBool("@applyBorderFormats", value);
             }
         }
         /// <summary>
@@ -372,11 +373,11 @@ namespace OfficeOpenXml.Table.PivotTable
         {
             get
             {
-                return GetXmlNodeBool("@applyFontFormats");
+                return this.GetXmlNodeBool("@applyFontFormats");
             }
             set
             {
-                SetXmlNodeBool("@applyFontFormats", value);
+                this.SetXmlNodeBool("@applyFontFormats", value);
             }
         }
         /// <summary>
@@ -386,11 +387,11 @@ namespace OfficeOpenXml.Table.PivotTable
         {
             get
             {
-                return GetXmlNodeBool("@applyPatternFormats");
+                return this.GetXmlNodeBool("@applyPatternFormats");
             }
             set
             {
-                SetXmlNodeBool("@applyPatternFormats", value);
+                this.SetXmlNodeBool("@applyPatternFormats", value);
             }
         }
         /// <summary>
@@ -400,11 +401,11 @@ namespace OfficeOpenXml.Table.PivotTable
         {
             get
             {
-                return GetXmlNodeBool("@applyWidthHeightFormats");
+                return this.GetXmlNodeBool("@applyWidthHeightFormats");
             }
             set
             {
-                SetXmlNodeBool("@applyWidthHeightFormats", value);
+                this.SetXmlNodeBool("@applyWidthHeightFormats", value);
             }
         }
         /// <summary>
@@ -414,11 +415,11 @@ namespace OfficeOpenXml.Table.PivotTable
         {
             get
             {
-                return GetXmlNodeBool("@showMemberPropertyTips");
+                return this.GetXmlNodeBool("@showMemberPropertyTips");
             }
             set
             {
-                SetXmlNodeBool("@showMemberPropertyTips", value);
+                this.SetXmlNodeBool("@showMemberPropertyTips", value);
             }
         }
         /// <summary>
@@ -428,11 +429,11 @@ namespace OfficeOpenXml.Table.PivotTable
         {
             get
             {
-                return GetXmlNodeBool("@showCalcMbrs");
+                return this.GetXmlNodeBool("@showCalcMbrs");
             }
             set
             {
-                SetXmlNodeBool("@showCalcMbrs", value);
+                this.SetXmlNodeBool("@showCalcMbrs", value);
             }
         }
         /// <summary>
@@ -442,11 +443,11 @@ namespace OfficeOpenXml.Table.PivotTable
         {
             get
             {
-                return GetXmlNodeBool("@enableDrill", true);
+                return this.GetXmlNodeBool("@enableDrill", true);
             }
             set
             {
-                SetXmlNodeBool("@enableDrill", value);
+                this.SetXmlNodeBool("@enableDrill", value);
             }
         }
         /// <summary>
@@ -456,11 +457,11 @@ namespace OfficeOpenXml.Table.PivotTable
         {
             get
             {
-                return GetXmlNodeBool("@showDrill", true);
+                return this.GetXmlNodeBool("@showDrill", true);
             }
             set
             {
-                SetXmlNodeBool("@showDrill", value);
+                this.SetXmlNodeBool("@showDrill", value);
             }
         }
         /// <summary>
@@ -470,11 +471,11 @@ namespace OfficeOpenXml.Table.PivotTable
         {
             get
             {
-                return GetXmlNodeBool("@showDataTips", true);
+                return this.GetXmlNodeBool("@showDataTips", true);
             }
             set
             {
-                SetXmlNodeBool("@showDataTips", value, true);
+                this.SetXmlNodeBool("@showDataTips", value, true);
             }
         }
         /// <summary>
@@ -484,11 +485,11 @@ namespace OfficeOpenXml.Table.PivotTable
         {
             get
             {
-                return GetXmlNodeBool("@fieldPrintTitles");
+                return this.GetXmlNodeBool("@fieldPrintTitles");
             }
             set
             {
-                SetXmlNodeBool("@fieldPrintTitles", value);
+                this.SetXmlNodeBool("@fieldPrintTitles", value);
             }
         }
         /// <summary>
@@ -498,11 +499,11 @@ namespace OfficeOpenXml.Table.PivotTable
         {
             get
             {
-                return GetXmlNodeBool("@itemPrintTitles");
+                return this.GetXmlNodeBool("@itemPrintTitles");
             }
             set
             {
-                SetXmlNodeBool("@itemPrintTitles", value);
+                this.SetXmlNodeBool("@itemPrintTitles", value);
             }
         }
         /// <summary>
@@ -512,11 +513,11 @@ namespace OfficeOpenXml.Table.PivotTable
         {
             get
             {
-                return GetXmlNodeBool("@colGrandTotals");
+                return this.GetXmlNodeBool("@colGrandTotals");
             }
             set
             {
-                SetXmlNodeBool("@colGrandTotals", value);
+                this.SetXmlNodeBool("@colGrandTotals", value);
             }
         }
         /// <summary>
@@ -526,11 +527,11 @@ namespace OfficeOpenXml.Table.PivotTable
         {
             get
             {
-                return GetXmlNodeBool("@rowGrandTotals");
+                return this.GetXmlNodeBool("@rowGrandTotals");
             }
             set
             {
-                SetXmlNodeBool("@rowGrandTotals", value);
+                this.SetXmlNodeBool("@rowGrandTotals", value);
             }
         }
         /// <summary>
@@ -540,11 +541,11 @@ namespace OfficeOpenXml.Table.PivotTable
         {
             get
             {
-                return GetXmlNodeBool("@printDrill");
+                return this.GetXmlNodeBool("@printDrill");
             }
             set
             {
-                SetXmlNodeBool("@printDrill", value);
+                this.SetXmlNodeBool("@printDrill", value);
             }
         }
         /// <summary>
@@ -554,11 +555,11 @@ namespace OfficeOpenXml.Table.PivotTable
         {
             get
             {
-                return GetXmlNodeBool("@showError");
+                return this.GetXmlNodeBool("@showError");
             }
             set
             {
-                SetXmlNodeBool("@showError", value);
+                this.SetXmlNodeBool("@showError", value);
             }
         }
         /// <summary>
@@ -568,11 +569,11 @@ namespace OfficeOpenXml.Table.PivotTable
         {
             get
             {
-                return GetXmlNodeString("@errorCaption");
+                return this.GetXmlNodeString("@errorCaption");
             }
             set
             {
-                SetXmlNodeString("@errorCaption", value);
+                this.SetXmlNodeString("@errorCaption", value);
             }
         }
         /// <summary>
@@ -583,11 +584,11 @@ namespace OfficeOpenXml.Table.PivotTable
         {
             get
             {
-                return GetXmlNodeString("@dataCaption");
+                return this.GetXmlNodeString("@dataCaption");
             }
             set
             {
-                SetXmlNodeString("@dataCaption", value);
+                this.SetXmlNodeString("@dataCaption", value);
             }
         }
         /// <summary>
@@ -597,11 +598,11 @@ namespace OfficeOpenXml.Table.PivotTable
         {
             get
             {
-                return GetXmlNodeBool("@showHeaders");
+                return this.GetXmlNodeBool("@showHeaders");
             }
             set
             {
-                SetXmlNodeBool("@showHeaders", value);
+                this.SetXmlNodeBool("@showHeaders", value);
             }
         }
         /// <summary>
@@ -611,7 +612,7 @@ namespace OfficeOpenXml.Table.PivotTable
         {
             get
             {
-                return GetXmlNodeInt("@pageWrap");
+                return this.GetXmlNodeInt("@pageWrap");
             }
             set
             {
@@ -619,7 +620,8 @@ namespace OfficeOpenXml.Table.PivotTable
                 {
                     throw new Exception("Value can't be negative");
                 }
-                SetXmlNodeString("@pageWrap", value.ToString());
+
+                this.SetXmlNodeString("@pageWrap", value.ToString());
             }
         }
         /// <summary>
@@ -629,11 +631,11 @@ namespace OfficeOpenXml.Table.PivotTable
         {
             get
             {
-                return GetXmlNodeBool("@useAutoFormatting");
+                return this.GetXmlNodeBool("@useAutoFormatting");
             }
             set
             {
-                SetXmlNodeBool("@useAutoFormatting", value);
+                this.SetXmlNodeBool("@useAutoFormatting", value);
             }
         }
         /// <summary>
@@ -643,11 +645,11 @@ namespace OfficeOpenXml.Table.PivotTable
         {
             get
             {
-                return GetXmlNodeBool("@gridDropZones");
+                return this.GetXmlNodeBool("@gridDropZones");
             }
             set
             {
-                SetXmlNodeBool("@gridDropZones", value);
+                this.SetXmlNodeBool("@gridDropZones", value);
             }
         }
         /// <summary>
@@ -657,11 +659,11 @@ namespace OfficeOpenXml.Table.PivotTable
         {
             get
             {
-                return GetXmlNodeInt("@indent");
+                return this.GetXmlNodeInt("@indent");
             }
             set
             {
-                SetXmlNodeString("@indent", value.ToString());
+                this.SetXmlNodeString("@indent", value.ToString());
             }
         }
         /// <summary>
@@ -671,11 +673,11 @@ namespace OfficeOpenXml.Table.PivotTable
         {
             get
             {
-                return GetXmlNodeBool("@outlineData");
+                return this.GetXmlNodeBool("@outlineData");
             }
             set
             {
-                SetXmlNodeBool("@outlineData", value);
+                this.SetXmlNodeBool("@outlineData", value);
             }
         }
         /// <summary>
@@ -685,11 +687,11 @@ namespace OfficeOpenXml.Table.PivotTable
         {
             get
             {
-                return GetXmlNodeBool("@outline");
+                return this.GetXmlNodeBool("@outline");
             }
             set
             {
-                SetXmlNodeBool("@outline", value);
+                this.SetXmlNodeBool("@outline", value);
             }
         }
         /// <summary>
@@ -699,11 +701,11 @@ namespace OfficeOpenXml.Table.PivotTable
         {
             get
             {
-                return GetXmlNodeBool("@multipleFieldFilters");
+                return this.GetXmlNodeBool("@multipleFieldFilters");
             }
             set
             {
-                SetXmlNodeBool("@multipleFieldFilters", value);
+                this.SetXmlNodeBool("@multipleFieldFilters", value);
             }
         }
         /// <summary>
@@ -713,11 +715,11 @@ namespace OfficeOpenXml.Table.PivotTable
         {
             get
             {
-                return GetXmlNodeBool("@compact");
+                return this.GetXmlNodeBool("@compact");
             }
             set
             {
-                SetXmlNodeBool("@compact", value);
+                this.SetXmlNodeBool("@compact", value);
             }
         }
         /// <summary>
@@ -726,8 +728,8 @@ namespace OfficeOpenXml.Table.PivotTable
         /// <param name="value">The the value for the Compact property.</param>
         public void SetCompact(bool value=true)
         {
-            Compact = value;
-            foreach(ExcelPivotTableField? f in Fields)
+            this.Compact = value;
+            foreach(ExcelPivotTableField? f in this.Fields)
             {
                 f.Compact = value;
             }
@@ -739,11 +741,11 @@ namespace OfficeOpenXml.Table.PivotTable
         {
             get
             {
-                return GetXmlNodeBool("@compactData");
+                return this.GetXmlNodeBool("@compactData");
             }
             set
             {
-                SetXmlNodeBool("@compactData", value);
+                this.SetXmlNodeBool("@compactData", value);
             }
         }
         /// <summary>
@@ -753,11 +755,11 @@ namespace OfficeOpenXml.Table.PivotTable
         {
             get
             {
-                return GetXmlNodeString("@grandTotalCaption");
+                return this.GetXmlNodeString("@grandTotalCaption");
             }
             set
             {
-                SetXmlNodeString("@grandTotalCaption", value);
+                this.SetXmlNodeString("@grandTotalCaption", value);
             }
         }
         /// <summary>
@@ -767,11 +769,11 @@ namespace OfficeOpenXml.Table.PivotTable
         {
             get
             {
-                return GetXmlNodeString("@rowHeaderCaption");
+                return this.GetXmlNodeString("@rowHeaderCaption");
             }
             set
             {
-                SetXmlNodeString("@rowHeaderCaption", value);
+                this.SetXmlNodeString("@rowHeaderCaption", value);
             }
         }
         /// <summary>
@@ -781,11 +783,11 @@ namespace OfficeOpenXml.Table.PivotTable
         {
             get
             {
-                return GetXmlNodeString("@colHeaderCaption");
+                return this.GetXmlNodeString("@colHeaderCaption");
             }
             set
             {
-                SetXmlNodeString("@colHeaderCaption", value);
+                this.SetXmlNodeString("@colHeaderCaption", value);
             }
         }
         /// <summary>
@@ -795,11 +797,11 @@ namespace OfficeOpenXml.Table.PivotTable
         {
             get
             {
-                return GetXmlNodeString("@missingCaption");
+                return this.GetXmlNodeString("@missingCaption");
             }
             set
             {
-                SetXmlNodeString("@missingCaption", value);
+                this.SetXmlNodeString("@missingCaption", value);
             }
         }
         ExcelPivotTableFilterCollection _filters = null;
@@ -810,11 +812,11 @@ namespace OfficeOpenXml.Table.PivotTable
         {
             get
             {
-                if (_filters == null)
+                if (this._filters == null)
                 {
-                    _filters = new ExcelPivotTableFilterCollection(this);
+                    this._filters = new ExcelPivotTableFilterCollection(this);
                 }
-                return _filters;
+                return this._filters;
             }
         }
         const string FIRSTHEADERROW_PATH = "d:location/@firstHeaderRow";
@@ -825,11 +827,11 @@ namespace OfficeOpenXml.Table.PivotTable
         {
             get
             {
-                return GetXmlNodeInt(FIRSTHEADERROW_PATH);
+                return this.GetXmlNodeInt(FIRSTHEADERROW_PATH);
             }
             set
             {
-                SetXmlNodeString(FIRSTHEADERROW_PATH, value.ToString());
+                this.SetXmlNodeString(FIRSTHEADERROW_PATH, value.ToString());
             }
         }
         const string FIRSTDATAROW_PATH = "d:location/@firstDataRow";
@@ -840,11 +842,11 @@ namespace OfficeOpenXml.Table.PivotTable
         {
             get
             {
-                return GetXmlNodeInt(FIRSTDATAROW_PATH);
+                return this.GetXmlNodeInt(FIRSTDATAROW_PATH);
             }
             set
             {
-                SetXmlNodeString(FIRSTDATAROW_PATH, value.ToString());
+                this.SetXmlNodeString(FIRSTDATAROW_PATH, value.ToString());
             }
         }
         const string FIRSTDATACOL_PATH = "d:location/@firstDataCol";
@@ -855,11 +857,11 @@ namespace OfficeOpenXml.Table.PivotTable
         {
             get
             {
-                return GetXmlNodeInt(FIRSTDATACOL_PATH);
+                return this.GetXmlNodeInt(FIRSTDATACOL_PATH);
             }
             set
             {
-                SetXmlNodeString(FIRSTDATACOL_PATH, value.ToString());
+                this.SetXmlNodeString(FIRSTDATACOL_PATH, value.ToString());
             }
         }
         ExcelPivotTableFieldCollection _fields = null;
@@ -870,11 +872,11 @@ namespace OfficeOpenXml.Table.PivotTable
         {
             get
             {
-                if (_fields == null)
+                if (this._fields == null)
                 {
-                    _fields = new ExcelPivotTableFieldCollection(this);
+                    this._fields = new ExcelPivotTableFieldCollection(this);
                 }
-                return _fields;
+                return this._fields;
             }
         }
         ExcelPivotTableRowColumnFieldCollection _rowFields = null;
@@ -885,11 +887,11 @@ namespace OfficeOpenXml.Table.PivotTable
         {
             get
             {
-                if (_rowFields == null)
+                if (this._rowFields == null)
                 {
-                    _rowFields = new ExcelPivotTableRowColumnFieldCollection(this, "rowFields");
+                    this._rowFields = new ExcelPivotTableRowColumnFieldCollection(this, "rowFields");
                 }
-                return _rowFields;
+                return this._rowFields;
             }
         }
         ExcelPivotTableRowColumnFieldCollection _columnFields = null;
@@ -900,11 +902,11 @@ namespace OfficeOpenXml.Table.PivotTable
         {
             get
             {
-                if (_columnFields == null)
+                if (this._columnFields == null)
                 {
-                    _columnFields = new ExcelPivotTableRowColumnFieldCollection(this, "colFields");
+                    this._columnFields = new ExcelPivotTableRowColumnFieldCollection(this, "colFields");
                 }
-                return _columnFields;
+                return this._columnFields;
             }
         }
         ExcelPivotTableDataFieldCollection _dataFields = null;
@@ -915,11 +917,11 @@ namespace OfficeOpenXml.Table.PivotTable
         {
             get
             {
-                if (_dataFields == null)
+                if (this._dataFields == null)
                 {
-                    _dataFields = new ExcelPivotTableDataFieldCollection(this);
+                    this._dataFields = new ExcelPivotTableDataFieldCollection(this);
                 }
-                return _dataFields;
+                return this._dataFields;
             }
         }
         ExcelPivotTableRowColumnFieldCollection _pageFields = null;
@@ -930,11 +932,11 @@ namespace OfficeOpenXml.Table.PivotTable
         {
             get
             {
-                if (_pageFields == null)
+                if (this._pageFields == null)
                 {
-                    _pageFields = new ExcelPivotTableRowColumnFieldCollection(this, "pageFields");
+                    this._pageFields = new ExcelPivotTableRowColumnFieldCollection(this, "pageFields");
                 }
-                return _pageFields;
+                return this._pageFields;
             }
         }
         const string STYLENAME_PATH = "d:pivotTableStyleInfo/@name";
@@ -945,7 +947,7 @@ namespace OfficeOpenXml.Table.PivotTable
         {
             get
             {
-                return GetXmlNodeString(STYLENAME_PATH);
+                return this.GetXmlNodeString(STYLENAME_PATH);
             }
             set
             {
@@ -955,39 +957,40 @@ namespace OfficeOpenXml.Table.PivotTable
                     {
                         if (Enum.GetNames(typeof(TableStyles)).Any(x => x.Equals(value.Substring(10, value.Length - 10), StringComparison.OrdinalIgnoreCase)))
                         {
-                            _tableStyle = (TableStyles)Enum.Parse(typeof(TableStyles), value.Substring(10, value.Length - 10), true);
+                            this._tableStyle = (TableStyles)Enum.Parse(typeof(TableStyles), value.Substring(10, value.Length - 10), true);
                         }
                         else
                         {
-                            _tableStyle = TableStyles.Custom;
+                            this._tableStyle = TableStyles.Custom;
                         }
                     }
                     catch
                     {
-                        _tableStyle = TableStyles.Custom;
+                        this._tableStyle = TableStyles.Custom;
                     }
                     try
                     {
-                        _pivotTableStyle = (PivotTableStyles)Enum.Parse(typeof(PivotTableStyles), value.Substring(10, value.Length - 10), true);
+                        this._pivotTableStyle = (PivotTableStyles)Enum.Parse(typeof(PivotTableStyles), value.Substring(10, value.Length - 10), true);
                     }
                     catch
                     {
-                        _pivotTableStyle = PivotTableStyles.Custom;
+                        this._pivotTableStyle = PivotTableStyles.Custom;
                     }
 
                 }
                 else if (value == "None")
                 {
-                    _tableStyle = TableStyles.None;
-                    _pivotTableStyle = PivotTableStyles.None;
+                    this._tableStyle = TableStyles.None;
+                    this._pivotTableStyle = PivotTableStyles.None;
                     value = "";
                 }
                 else
                 {
-                    _tableStyle = TableStyles.Custom;
-                    _pivotTableStyle = PivotTableStyles.Custom;
+                    this._tableStyle = TableStyles.Custom;
+                    this._pivotTableStyle = PivotTableStyles.Custom;
                 }
-                SetXmlNodeString(STYLENAME_PATH, value, true);
+
+                this.SetXmlNodeString(STYLENAME_PATH, value, true);
             }
         }
         const string SHOWCOLHEADERS_PATH = "d:pivotTableStyleInfo/@showColHeaders";
@@ -998,11 +1001,11 @@ namespace OfficeOpenXml.Table.PivotTable
         {
             get
             {
-                return GetXmlNodeBool(SHOWCOLHEADERS_PATH);
+                return this.GetXmlNodeBool(SHOWCOLHEADERS_PATH);
             }
             set
             {
-                SetXmlNodeBool(SHOWCOLHEADERS_PATH, value);
+                this.SetXmlNodeBool(SHOWCOLHEADERS_PATH, value);
             }
         }
         const string SHOWCOLSTRIPES_PATH = "d:pivotTableStyleInfo/@showColStripes";
@@ -1013,11 +1016,11 @@ namespace OfficeOpenXml.Table.PivotTable
         {
             get
             {
-                return GetXmlNodeBool(SHOWCOLSTRIPES_PATH);
+                return this.GetXmlNodeBool(SHOWCOLSTRIPES_PATH);
             }
             set
             {
-                SetXmlNodeBool(SHOWCOLSTRIPES_PATH, value);
+                this.SetXmlNodeBool(SHOWCOLSTRIPES_PATH, value);
             }
         }
         const string SHOWLASTCOLUMN_PATH = "d:pivotTableStyleInfo/@showLastColumn";
@@ -1028,11 +1031,11 @@ namespace OfficeOpenXml.Table.PivotTable
         {
             get
             {
-                return GetXmlNodeBool(SHOWLASTCOLUMN_PATH);
+                return this.GetXmlNodeBool(SHOWLASTCOLUMN_PATH);
             }
             set
             {
-                SetXmlNodeBool(SHOWLASTCOLUMN_PATH, value);
+                this.SetXmlNodeBool(SHOWLASTCOLUMN_PATH, value);
             }
         }
         const string SHOWROWHEADERS_PATH = "d:pivotTableStyleInfo/@showRowHeaders";
@@ -1043,11 +1046,11 @@ namespace OfficeOpenXml.Table.PivotTable
         {
             get
             {
-                return GetXmlNodeBool(SHOWROWHEADERS_PATH);
+                return this.GetXmlNodeBool(SHOWROWHEADERS_PATH);
             }
             set
             {
-                SetXmlNodeBool(SHOWROWHEADERS_PATH, value);
+                this.SetXmlNodeBool(SHOWROWHEADERS_PATH, value);
             }
         }
         const string SHOWROWSTRIPES_PATH = "d:pivotTableStyleInfo/@showRowStripes";
@@ -1058,14 +1061,14 @@ namespace OfficeOpenXml.Table.PivotTable
         {
             get
             {
-                return GetXmlNodeBool(SHOWROWSTRIPES_PATH);
+                return this.GetXmlNodeBool(SHOWROWSTRIPES_PATH);
             }
             set
             {
-                SetXmlNodeBool(SHOWROWSTRIPES_PATH, value);
+                this.SetXmlNodeBool(SHOWROWSTRIPES_PATH, value);
             }
         }
-        TableStyles _tableStyle = Table.TableStyles.Medium6;
+        TableStyles _tableStyle = TableStyles.Medium6;
         /// <summary>
         /// The table style. If this property is Custom, the style from the StyleName propery is used.
         /// </summary>
@@ -1074,14 +1077,14 @@ namespace OfficeOpenXml.Table.PivotTable
         {
             get
             {
-                return _tableStyle;
+                return this._tableStyle;
             }
             set
             {
-                _tableStyle = value;
+                this._tableStyle = value;
                 if (value != TableStyles.Custom)
                 {
-                    StyleName = "PivotStyle" + value.ToString();
+                    this.StyleName = "PivotStyle" + value.ToString();
                 }
             }
         }
@@ -1093,15 +1096,15 @@ namespace OfficeOpenXml.Table.PivotTable
         {
             get
             {
-                return _pivotTableStyle;
+                return this._pivotTableStyle;
             }
             set
             {
-                _pivotTableStyle = value;
+                this._pivotTableStyle = value;
                 if (value != PivotTableStyles.Custom)
                 {
                     //SetXmlNodeString(STYLENAME_PATH, "PivotStyle" + value.ToString());
-                    StyleName = "PivotStyle" + value.ToString();
+                    this.StyleName = "PivotStyle" + value.ToString();
                 }
             }
         }
@@ -1114,12 +1117,12 @@ namespace OfficeOpenXml.Table.PivotTable
         {
             get
             {
-                return !GetXmlNodeBool(_showValuesRowPath);
+                return !this.GetXmlNodeBool(_showValuesRowPath);
             }
             set
             {
-                XmlNode? node = GetOrCreateExtLstSubNode(ExtLstUris.PivotTableDefinitionUri, "x14");
-                XmlHelper? xh = XmlHelperFactory.Create(NameSpaceManager, node);
+                XmlNode? node = this.GetOrCreateExtLstSubNode(ExtLstUris.PivotTableDefinitionUri, "x14");
+                XmlHelper? xh = XmlHelperFactory.Create(this.NameSpaceManager, node);
                 xh.SetXmlNodeBool("x14:pivotTableDefinition/@hideValuesRow", !value);
             }
         }
@@ -1130,20 +1133,20 @@ namespace OfficeOpenXml.Table.PivotTable
         {
             get
             {
-                return GetXmlNodeInt("@cacheId", 0);
+                return this.GetXmlNodeInt("@cacheId", 0);
             }
             set
             {
-                SetXmlNodeInt("@cacheId", value);
+                this.SetXmlNodeInt("@cacheId", value);
             }
         }
 
         internal int ChangeCacheId(int oldCacheId)
         {
-            int newCacheId = WorkSheet.Workbook.GetNewPivotCacheId();
-            CacheId = newCacheId;
-            CacheDefinition._cacheReference.CacheId = newCacheId;
-            WorkSheet.Workbook.SetXmlNodeInt($"d:pivotCaches/d:pivotCache[@cacheId={oldCacheId}]/@cacheId", newCacheId);
+            int newCacheId = this.WorkSheet.Workbook.GetNewPivotCacheId();
+            this.CacheId = newCacheId;
+            this.CacheDefinition._cacheReference.CacheId = newCacheId;
+            this.WorkSheet.Workbook.SetXmlNodeInt($"d:pivotCaches/d:pivotCache[@cacheId={oldCacheId}]/@cacheId", newCacheId);
 
             return newCacheId;
         }
@@ -1152,58 +1155,58 @@ namespace OfficeOpenXml.Table.PivotTable
         int _newFilterId = 0;
         internal int GetNewFilterId()
         {
-            return _newFilterId++;
+            return this._newFilterId++;
         }
         internal void SetNewFilterId(int value)
         {
-            if (value >= _newFilterId)
+            if (value >= this._newFilterId)
             {
-                _newFilterId = value + 1;
+                this._newFilterId = value + 1;
             }
         }
 
         internal void Save()
         {
-            if(CacheDefinition.CacheSource==eSourceType.Worksheet)
+            if(this.CacheDefinition.CacheSource==eSourceType.Worksheet)
             {
-                if(CacheDefinition.SourceRange.Columns!=Fields.Count)
+                if(this.CacheDefinition.SourceRange.Columns!= this.Fields.Count)
                 {   
                     //if(Fields.Count)
                     //CacheDefinition.Refresh();
                 }
             }
-            if (DataFields.Count > 1)
+            if (this.DataFields.Count > 1)
             {
                 XmlElement parentNode;
                 int fields;
-                if (DataOnRows == true)
+                if (this.DataOnRows == true)
                 {
-                    parentNode = PivotTableXml.SelectSingleNode("//d:rowFields", NameSpaceManager) as XmlElement;
+                    parentNode = this.PivotTableXml.SelectSingleNode("//d:rowFields", this.NameSpaceManager) as XmlElement;
                     if (parentNode == null)
                     {
-                        CreateNode("d:rowFields");
-                        parentNode = PivotTableXml.SelectSingleNode("//d:rowFields", NameSpaceManager) as XmlElement;
+                        this.CreateNode("d:rowFields");
+                        parentNode = this.PivotTableXml.SelectSingleNode("//d:rowFields", this.NameSpaceManager) as XmlElement;
                     }
-                    fields = RowFields.Count;
+                    fields = this.RowFields.Count;
                 }
                 else
                 {
-                    parentNode = PivotTableXml.SelectSingleNode("//d:colFields", NameSpaceManager) as XmlElement;
+                    parentNode = this.PivotTableXml.SelectSingleNode("//d:colFields", this.NameSpaceManager) as XmlElement;
                     if (parentNode == null)
                     {
-                        CreateNode("d:colFields");
-                        parentNode = PivotTableXml.SelectSingleNode("//d:colFields", NameSpaceManager) as XmlElement;
+                        this.CreateNode("d:colFields");
+                        parentNode = this.PivotTableXml.SelectSingleNode("//d:colFields", this.NameSpaceManager) as XmlElement;
                     }
-                    fields = ColumnFields.Count;
+                    fields = this.ColumnFields.Count;
                 }
 
-                if (parentNode.SelectSingleNode("d:field[@ x= \"-2\"]", NameSpaceManager) == null)
+                if (parentNode.SelectSingleNode("d:field[@ x= \"-2\"]", this.NameSpaceManager) == null)
                 {
-                    XmlElement fieldNode = PivotTableXml.CreateElement("field", ExcelPackage.schemaMain);
+                    XmlElement fieldNode = this.PivotTableXml.CreateElement("field", ExcelPackage.schemaMain);
                     fieldNode.SetAttribute("x", "-2");
-                    if (ValuesFieldPosition >= 0 && ValuesFieldPosition < fields)
+                    if (this.ValuesFieldPosition >= 0 && this.ValuesFieldPosition < fields)
                     {
-                        parentNode.InsertBefore(fieldNode, parentNode.ChildNodes[ValuesFieldPosition]);
+                        parentNode.InsertBefore(fieldNode, parentNode.ChildNodes[this.ValuesFieldPosition]);
                     }
                     else
                     {
@@ -1212,14 +1215,14 @@ namespace OfficeOpenXml.Table.PivotTable
                 }
             }
 
-            SetXmlNodeString("d:location/@ref", Address.Address);
+            this.SetXmlNodeString("d:location/@ref", this.Address.Address);
 
-            foreach (ExcelPivotTableField? field in Fields)
+            foreach (ExcelPivotTableField? field in this.Fields)
             {
                 field.SaveToXml();
             }
 
-            foreach (ExcelPivotTableDataField? df in DataFields)
+            foreach (ExcelPivotTableDataField? df in this.DataFields)
             {
                 if (string.IsNullOrEmpty(df.Name))
                 {
@@ -1237,7 +1240,7 @@ namespace OfficeOpenXml.Table.PivotTable
                     //Make sure name is unique
                     string? newName = name;
                     int i = 2;
-                    while (DataFields.ExistsDfName(newName, df))
+                    while (this.DataFields.ExistsDfName(newName, df))
                     {
                         newName = name + (i++).ToString(CultureInfo.InvariantCulture);
                     }
@@ -1245,13 +1248,13 @@ namespace OfficeOpenXml.Table.PivotTable
                 }
             }
 
-            UpdatePivotTableStyles();
-            PivotTableXml.Save(Part.GetStream(FileMode.Create));
+            this.UpdatePivotTableStyles();
+            this.PivotTableXml.Save(this.Part.GetStream(FileMode.Create));
         }
 
         private void UpdatePivotTableStyles()
         {
-            foreach (ExcelPivotTableAreaStyle a in Styles)
+            foreach (ExcelPivotTableAreaStyle a in this.Styles)
             {
                 a.Conditions.UpdateXml();
             }

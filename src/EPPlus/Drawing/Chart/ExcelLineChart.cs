@@ -47,11 +47,11 @@ namespace OfficeOpenXml.Drawing.Chart
         {
             get
             {
-                return _chartXmlHelper.GetXmlNodeBool(MARKER_PATH, false);
+                return this._chartXmlHelper.GetXmlNodeBool(this.MARKER_PATH, false);
             }
             set
             {
-                _chartXmlHelper.SetXmlNodeBool(MARKER_PATH, value, false);
+                this._chartXmlHelper.SetXmlNodeBool(this.MARKER_PATH, value, false);
             }
         }
 
@@ -63,15 +63,16 @@ namespace OfficeOpenXml.Drawing.Chart
         {
             get
             {
-                return _chartXmlHelper.GetXmlNodeBool(SMOOTH_PATH, false);
+                return this._chartXmlHelper.GetXmlNodeBool(this.SMOOTH_PATH, false);
             }
             set
             {
-                if (ChartType == eChartType.Line3D)
+                if (this.ChartType == eChartType.Line3D)
                 {
                     throw new ArgumentException("Smooth", "Smooth does not apply to 3d line charts");
                 }
-                _chartXmlHelper.SetXmlNodeBool(SMOOTH_PATH, value);
+
+                this._chartXmlHelper.SetXmlNodeBool(this.SMOOTH_PATH, value);
             }
         }
         //string _chartTopPath = "c:chartSpace/c:chart/c:plotArea/{0}";
@@ -83,11 +84,11 @@ namespace OfficeOpenXml.Drawing.Chart
         {
             get
             {
-                if (_dataLabel == null)
+                if (this._dataLabel == null)
                 {
-                    _dataLabel = new ExcelChartDataLabelStandard(this, NameSpaceManager, ChartNode, "dLbls", _chartXmlHelper.SchemaNodeOrder);
+                    this._dataLabel = new ExcelChartDataLabelStandard(this, this.NameSpaceManager, this.ChartNode, "dLbls", this._chartXmlHelper.SchemaNodeOrder);
                 }
-                return _dataLabel;
+                return this._dataLabel;
             }
         }
         /// <summary>
@@ -97,7 +98,7 @@ namespace OfficeOpenXml.Drawing.Chart
         {
             get
             {
-                return ChartNode.SelectSingleNode("c:dLbls", NameSpaceManager) != null;
+                return this.ChartNode.SelectSingleNode("c:dLbls", this.NameSpaceManager) != null;
             }
         }
         const string _gapWidthPath = "c:upDownBars/c:gapWidth/@val";
@@ -108,19 +109,20 @@ namespace OfficeOpenXml.Drawing.Chart
         {
             get
             {
-                return _chartXmlHelper.GetXmlNodeIntNull(_gapWidthPath);
+                return this._chartXmlHelper.GetXmlNodeIntNull(_gapWidthPath);
             }
             set
             {
                 if (value == null)
                 {
-                    _chartXmlHelper.DeleteNode(_gapWidthPath, true);
+                    this._chartXmlHelper.DeleteNode(_gapWidthPath, true);
                 }
                 if (value < 0 || value > 500)
                 {
                     throw (new ArgumentOutOfRangeException("GapWidth ranges between 0 and 500"));
                 }
-                _chartXmlHelper.SetXmlNodeString(_gapWidthPath, value.Value.ToString(CultureInfo.InvariantCulture));
+
+                this._chartXmlHelper.SetXmlNodeString(_gapWidthPath, value.Value.ToString(CultureInfo.InvariantCulture));
             }
         }
         ExcelChartStyleItem _upBar = null;
@@ -132,7 +134,7 @@ namespace OfficeOpenXml.Drawing.Chart
         {
             get
             {
-                return _upBar;
+                return this._upBar;
             }
         }
         ExcelChartStyleItem _downBar = null;
@@ -144,7 +146,7 @@ namespace OfficeOpenXml.Drawing.Chart
         {
             get
             {
-                return _downBar;
+                return this._downBar;
             }
         }
         ExcelChartStyleItem _hiLowLines = null;
@@ -156,7 +158,7 @@ namespace OfficeOpenXml.Drawing.Chart
         {
             get
             {
-                return _hiLowLines;
+                return this._hiLowLines;
             }
         }
         ExcelChartStyleItem _dropLines = null;
@@ -169,7 +171,7 @@ namespace OfficeOpenXml.Drawing.Chart
         {
             get
             {
-                return _dropLines;
+                return this._dropLines;
             }
         }
         /// <summary>
@@ -179,17 +181,17 @@ namespace OfficeOpenXml.Drawing.Chart
         /// <param name="downBars">Adds down bars if down bars does not exist.</param>
         public void AddUpDownBars(bool upBars = true, bool downBars = true)
         {
-            if (upBars && _upBar == null)
+            if (upBars && this._upBar == null)
             {
-                _upBar = new ExcelChartStyleItem(NameSpaceManager, ChartNode, this, _upBarPath, RemoveUpBar);
-                ExcelChart? chart = _topChart ?? this;
-                chart.ApplyStyleOnPart(_upBar, chart.StyleManager?.Style?.UpBar);
+                this._upBar = new ExcelChartStyleItem(this.NameSpaceManager, this.ChartNode, this, _upBarPath, this.RemoveUpBar);
+                ExcelChart? chart = this._topChart ?? this;
+                chart.ApplyStyleOnPart(this._upBar, chart.StyleManager?.Style?.UpBar);
             }
-            if (downBars && _downBar == null)
+            if (downBars && this._downBar == null)
             {
-                _downBar = new ExcelChartStyleItem(NameSpaceManager, ChartNode, this, _downBarPath, RemoveDownBar);
-                ExcelChart? chart = _topChart ?? this;
-                chart.ApplyStyleOnPart(_upBar, chart.StyleManager?.Style?.DownBar);
+                this._downBar = new ExcelChartStyleItem(this.NameSpaceManager, this.ChartNode, this, _downBarPath, this.RemoveDownBar);
+                ExcelChart? chart = this._topChart ?? this;
+                chart.ApplyStyleOnPart(this._upBar, chart.StyleManager?.Style?.DownBar);
             }
         }
         /// <summary>
@@ -197,26 +199,26 @@ namespace OfficeOpenXml.Drawing.Chart
         /// </summary>
         public ExcelChartStyleItem AddDropLines()
         {
-            if (_dropLines == null)
+            if (this._dropLines == null)
             {
-                _dropLines = new ExcelChartStyleItem(NameSpaceManager, ChartNode, this, _dropLinesPath, RemoveDropLines);
-                ExcelChart? chart = _topChart ?? this;
-                chart.ApplyStyleOnPart(_upBar, chart.StyleManager?.Style?.DropLine);
+                this._dropLines = new ExcelChartStyleItem(this.NameSpaceManager, this.ChartNode, this, _dropLinesPath, this.RemoveDropLines);
+                ExcelChart? chart = this._topChart ?? this;
+                chart.ApplyStyleOnPart(this._upBar, chart.StyleManager?.Style?.DropLine);
             }
-            return _dropLines;
+            return this._dropLines;
         }
         /// <summary>
         /// Adds High-Low lines to the chart.        
         /// </summary>
         public ExcelChartStyleItem AddHighLowLines()
         {
-            if (_hiLowLines == null)
+            if (this._hiLowLines == null)
             {
-                _hiLowLines = new ExcelChartStyleItem(NameSpaceManager, ChartNode, this, _hiLowLinesPath, RemoveHiLowLines);
-                ExcelChart? chart = _topChart ?? this;
-                chart.ApplyStyleOnPart(_upBar, chart.StyleManager?.Style?.HighLowLine);
+                this._hiLowLines = new ExcelChartStyleItem(this.NameSpaceManager, this.ChartNode, this, _hiLowLinesPath, this.RemoveHiLowLines);
+                ExcelChart? chart = this._topChart ?? this;
+                chart.ApplyStyleOnPart(this._upBar, chart.StyleManager?.Style?.HighLowLine);
             }
-            return HighLowLine;
+            return this.HighLowLine;
         }
         //TODO: Consider adding this method later (for all charts with datalabels)
         ///// <summary>
@@ -244,13 +246,13 @@ namespace OfficeOpenXml.Drawing.Chart
         {
             if (name == "lineChart")
             {
-                if (Marker)
+                if (this.Marker)
                 {
-                    if (Grouping == eGrouping.Stacked)
+                    if (this.Grouping == eGrouping.Stacked)
                     {
                         return eChartType.LineMarkersStacked;
                     }
-                    else if (Grouping == eGrouping.PercentStacked)
+                    else if (this.Grouping == eGrouping.PercentStacked)
                     {
                         return eChartType.LineMarkersStacked100;
                     }
@@ -261,11 +263,11 @@ namespace OfficeOpenXml.Drawing.Chart
                 }
                 else
                 {
-                    if (Grouping == eGrouping.Stacked)
+                    if (this.Grouping == eGrouping.Stacked)
                     {
                         return eChartType.LineStacked;
                     }
-                    else if (Grouping == eGrouping.PercentStacked)
+                    else if (this.Grouping == eGrouping.PercentStacked)
                     {
                         return eChartType.LineStacked100;
                     }
@@ -284,31 +286,31 @@ namespace OfficeOpenXml.Drawing.Chart
         internal override void InitSeries(ExcelChart chart, XmlNamespaceManager ns, XmlNode node, bool isPivot, List<ExcelChartSerie> list = null)
         {
             base.InitSeries(chart, ns, node, isPivot, list);
-            AddSchemaNodeOrder(SchemaNodeOrder, new string[] { "gapWidth", "upbars", "downbars" });
-            Series.Init(chart, ns, node, isPivot, base.Series._list);
+            this.AddSchemaNodeOrder(this.SchemaNodeOrder, new string[] { "gapWidth", "upbars", "downbars" });
+            this.Series.Init(chart, ns, node, isPivot, base.Series._list);
 
             //Up bars
-            if (_upBar==null && ExistsNode(node, _upBarPath))
+            if (this._upBar==null && this.ExistsNode(node, _upBarPath))
             {
-                _upBar = new ExcelChartStyleItem(ns, node, this, _upBarPath, RemoveUpBar);
+                this._upBar = new ExcelChartStyleItem(ns, node, this, _upBarPath, this.RemoveUpBar);
             }
 
             //Down bars
-            if (_downBar == null && ExistsNode(node, _downBarPath))
+            if (this._downBar == null && this.ExistsNode(node, _downBarPath))
             {
-                _downBar = new ExcelChartStyleItem(ns, node, this, _downBarPath, RemoveDownBar);
+                this._downBar = new ExcelChartStyleItem(ns, node, this, _downBarPath, this.RemoveDownBar);
             }
 
             //Drop lines
-            if (_dropLines == null && ExistsNode(node, _dropLinesPath))
+            if (this._dropLines == null && this.ExistsNode(node, _dropLinesPath))
             {
-                _dropLines = new ExcelChartStyleItem(ns, node, this, _dropLinesPath, RemoveDropLines);
+                this._dropLines = new ExcelChartStyleItem(ns, node, this, _dropLinesPath, this.RemoveDropLines);
             }
 
             //High / low lines
-            if (_hiLowLines == null && ExistsNode(node, _hiLowLinesPath))
+            if (this._hiLowLines == null && this.ExistsNode(node, _hiLowLinesPath))
             {
-                _hiLowLines = new ExcelChartStyleItem(ns, node, this, _hiLowLinesPath, RemoveHiLowLines);
+                this._hiLowLines = new ExcelChartStyleItem(ns, node, this, _hiLowLinesPath, this.RemoveHiLowLines);
             }
 
 
@@ -324,19 +326,19 @@ namespace OfficeOpenXml.Drawing.Chart
         #region Remove Line/Bar
         private void RemoveUpBar()
         {
-            _upBar = null;
+            this._upBar = null;
         }
         private void RemoveDownBar()
         {
-            _downBar = null;
+            this._downBar = null;
         }
         private void RemoveDropLines()
         {
-            _dropLines = null;
+            this._dropLines = null;
         }
         private void RemoveHiLowLines()
         {
-            _hiLowLines = null;
+            this._hiLowLines = null;
         }
         #endregion
 
@@ -362,7 +364,7 @@ namespace OfficeOpenXml.Drawing.Chart
         {
             if (type != eChartType.Line3D)
             {
-                Smooth = false;
+                this.Smooth = false;
             }
         }
         #endregion

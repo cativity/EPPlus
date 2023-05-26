@@ -30,13 +30,13 @@ namespace OfficeOpenXml.Export.HtmlExport.Exporters
         public CssRangeExporterAsync(HtmlRangeExportSettings settings, EPPlusReadOnlyList<ExcelRangeBase> ranges)
          : base(settings, ranges)
         {
-            _settings = settings;
+            this._settings = settings;
         }
 
         public CssRangeExporterAsync(HtmlRangeExportSettings settings, ExcelRangeBase range)
             : base(settings, range)
         {
-            _settings = settings;
+            this._settings = settings;
         }
 
         private readonly HtmlRangeExportSettings _settings;
@@ -48,7 +48,7 @@ namespace OfficeOpenXml.Export.HtmlExport.Exporters
         public async Task<string> GetCssStringAsync()
         {
             using MemoryStream? ms = RecyclableMemory.GetStream();
-            await RenderCssAsync(ms);
+            await this.RenderCssAsync(ms);
             ms.Position = 0;
             using StreamReader? sr = new StreamReader(ms);
             return await sr.ReadToEndAsync();
@@ -68,16 +68,16 @@ namespace OfficeOpenXml.Export.HtmlExport.Exporters
 
             //if (_datatypes.Count == 0) GetDataTypes();
             StreamWriter? sw = new StreamWriter(stream);
-            await RenderCellCssAsync(sw);
+            await this.RenderCellCssAsync(sw);
         }
 
         private async Task RenderCellCssAsync(StreamWriter sw)
         {
-            EpplusCssWriter? styleWriter = new EpplusCssWriter(sw, _ranges._list, _settings, _settings.Css, _settings.Css.CssExclude, _styleCache);
+            EpplusCssWriter? styleWriter = new EpplusCssWriter(sw, this._ranges._list, this._settings, this._settings.Css, this._settings.Css.CssExclude, this._styleCache);
 
             await styleWriter.RenderAdditionalAndFontCssAsync(TableClass);
             HashSet<TableStyles>? addedTableStyles = new HashSet<TableStyles>();
-            foreach (ExcelRangeBase? range in _ranges._list)
+            foreach (ExcelRangeBase? range in this._ranges._list)
             {
                 ExcelWorksheet? ws = range.Worksheet;
                 ExcelStyles? styles = ws.Workbook.Styles;
@@ -105,31 +105,31 @@ namespace OfficeOpenXml.Export.HtmlExport.Exporters
                             ExcelAddressBase? mAdr = new ExcelAddressBase(ma);
                             int bottomStyleId = range.Worksheet._values.GetValue(mAdr._toRow, mAdr._fromCol)._styleId;
                             int rightStyleId = range.Worksheet._values.GetValue(mAdr._fromRow, mAdr._toCol)._styleId;
-                            await styleWriter.AddToCssAsync(styles, ce.Value._styleId, bottomStyleId, rightStyleId, Settings.StyleClassPrefix, Settings.CellStyleClassName);
+                            await styleWriter.AddToCssAsync(styles, ce.Value._styleId, bottomStyleId, rightStyleId, this.Settings.StyleClassPrefix, this.Settings.CellStyleClassName);
                         }
                         else
                         {
-                            await styleWriter.AddToCssAsync(styles, ce.Value._styleId, Settings.StyleClassPrefix, Settings.CellStyleClassName);
+                            await styleWriter.AddToCssAsync(styles, ce.Value._styleId, this.Settings.StyleClassPrefix, this.Settings.CellStyleClassName);
                         }
                     }
                 }
-                if (Settings.TableStyle == eHtmlRangeTableInclude.Include)
+                if (this.Settings.TableStyle == eHtmlRangeTableInclude.Include)
                 {
                     ExcelTable? table = range.GetTable();
                     if (table != null &&
                        table.TableStyle != TableStyles.None &&
                        addedTableStyles.Contains(table.TableStyle) == false)
                     {
-                        HtmlTableExportSettings? settings = new HtmlTableExportSettings() { Minify = Settings.Minify };
-                        await HtmlExportTableUtil.RenderTableCssAsync(sw, table, settings, _styleCache, _dataTypes);
+                        HtmlTableExportSettings? settings = new HtmlTableExportSettings() { Minify = this.Settings.Minify };
+                        await HtmlExportTableUtil.RenderTableCssAsync(sw, table, settings, this._styleCache, this._dataTypes);
                         addedTableStyles.Add(table.TableStyle);
                     }
                 }
             }
-            if (Settings.Pictures.Include == ePictureInclude.Include)
+            if (this.Settings.Pictures.Include == ePictureInclude.Include)
             {
-                LoadRangeImages(_ranges._list);
-                foreach (HtmlImage? p in _rangePictures)
+                this.LoadRangeImages(this._ranges._list);
+                foreach (HtmlImage? p in this._rangePictures)
                 {
                     await styleWriter.AddPictureToCssAsync(p);
                 }

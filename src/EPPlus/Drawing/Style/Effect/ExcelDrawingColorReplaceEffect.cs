@@ -35,11 +35,11 @@ namespace OfficeOpenXml.Drawing.Style.Effect
         {
             get
             {
-                if (_color == null)
+                if (this._color == null)
                 {
-                    _color = new ExcelDrawingColorManager(NameSpaceManager, TopNode, "", SchemaNodeOrder);
+                    this._color = new ExcelDrawingColorManager(this.NameSpaceManager, this.TopNode, "", this.SchemaNodeOrder);
                 }
-                return _color;
+                return this._color;
             }
         }
     }

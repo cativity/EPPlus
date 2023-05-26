@@ -27,7 +27,7 @@ namespace OfficeOpenXml.Drawing.Controls
     {
         internal ExcelControlListBox(ExcelDrawings drawings, XmlElement drawNode, string name, ExcelGroupShape parent=null) : base(drawings, drawNode, name, parent)
         {
-            SetSize(150, 100); //Default size
+            this.SetSize(150, 100); //Default size
         }
         internal ExcelControlListBox(ExcelDrawings drawings, XmlNode drawNode, ControlInternal control, ZipPackagePart part, XmlDocument controlPropertiesXml, ExcelGroupShape parent = null)
             : base(drawings, drawNode, control, part, controlPropertiesXml, parent)
@@ -45,12 +45,12 @@ namespace OfficeOpenXml.Drawing.Controls
         {
             get
             {
-                return _ctrlProp.GetXmlNodeString("@seltype").ToEnum(eSelectionType.Single);
+                return this._ctrlProp.GetXmlNodeString("@seltype").ToEnum(eSelectionType.Single);
             }
             set
             {
-                _ctrlProp.SetXmlNodeString("@seltype", value.ToEnumString());
-                _vmlProp.SetXmlNodeString("x:SelType", value.ToString());
+                this._ctrlProp.SetXmlNodeString("@seltype", value.ToEnumString());
+                this._vmlProp.SetXmlNodeString("x:SelType", value.ToString());
             }
         }
         /// <summary>
@@ -60,7 +60,7 @@ namespace OfficeOpenXml.Drawing.Controls
         {
             get
             {
-                string? s = _ctrlProp.GetXmlNodeString("@multiSel");
+                string? s = this._ctrlProp.GetXmlNodeString("@multiSel");
                 if (string.IsNullOrEmpty(s))
                 {
                     return null;
@@ -82,18 +82,18 @@ namespace OfficeOpenXml.Drawing.Controls
             {
                 if (value == null)
                 {
-                    _ctrlProp.DeleteNode("@multiSel");
-                    _vmlProp.DeleteNode("x:MultiSel");
+                    this._ctrlProp.DeleteNode("@multiSel");
+                    this._vmlProp.DeleteNode("x:MultiSel");
                 }
                 string? v = value.Select(x => (x + 1).ToString(CultureInfo.InvariantCulture)).Aggregate((x, y) => x + "," + y);
-                _ctrlProp.SetXmlNodeString("selType", v);
-                _vmlProp.SetXmlNodeString("x:MultiSel", v);
+                this._ctrlProp.SetXmlNodeString("selType", v);
+                this._vmlProp.SetXmlNodeString("x:MultiSel", v);
             }
         }
         internal override void UpdateXml()
         {
             base.UpdateXml();
-            ((ExcelControlList)this).Page = (int)Math.Round((_height / 14));
+            ((ExcelControlList)this).Page = (int)Math.Round((this._height / 14));
         }
     }
 }

@@ -34,17 +34,17 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Math
             {
                 foreach (FunctionArgument? arg in arguments)
                 {
-                    retVal += Calculate(arg, context);
+                    retVal += this.Calculate(arg, context);
                 }
             }
-            return CreateResult(retVal, DataType.Decimal);
+            return this.CreateResult(retVal, DataType.Decimal);
         }
 
 
         private double Calculate(FunctionArgument arg, ParsingContext context, bool isInArray = false)
         {
             double retVal = 0d;
-            if (ShouldIgnore(arg, context))
+            if (this.ShouldIgnore(arg, context))
             {
                 return retVal;
             }
@@ -52,7 +52,7 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Math
             {
                 foreach (FunctionArgument? item in (IEnumerable<FunctionArgument>)arg.Value)
                 {
-                    retVal += Calculate(item, context, true);
+                    retVal += this.Calculate(item, context, true);
                 }
             }
             else
@@ -62,7 +62,7 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Math
                 {
                     foreach (ICellInfo? c in cs)
                     {
-                        if (ShouldIgnore(c, context) == false)
+                        if (this.ShouldIgnore(c, context) == false)
                         {
                             CheckForAndHandleExcelError(c);
                             retVal += System.Math.Pow(c.ValueDouble, 2);

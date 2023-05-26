@@ -29,8 +29,8 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Math
         public override CompileResult Execute(IEnumerable<FunctionArgument> arguments, ParsingContext context)
         {
             ValidateArguments(arguments, 2);
-            double[]? array = GetNumbersFromArgs(arguments, 0, context);
-            double number = ArgToDecimal(arguments, 1);
+            double[]? array = this.GetNumbersFromArgs(arguments, 0, context);
+            double number = this.ArgToDecimal(arguments, 1);
             if (number < array.First() || number > array.Last())
             {
                 return this.CreateResult(eErrorType.NA);
@@ -39,11 +39,11 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Math
             int significance = 3;
             if (arguments.Count() > 2)
             {
-                significance = ArgToInt(arguments, 2);
+                significance = this.ArgToInt(arguments, 2);
             }
             double result = PercentRankExcImpl(array, number);
             result = RoundResult(result, significance);
-            return CreateResult(result, DataType.Decimal);
+            return this.CreateResult(result, DataType.Decimal);
         }
     }
 }

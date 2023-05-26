@@ -28,7 +28,7 @@ namespace OfficeOpenXml.Drawing.Theme
     {
         internal ExcelColorScheme(XmlNamespaceManager nameSpaceManager, XmlNode topNode) : base(nameSpaceManager, topNode)
         {
-            SchemaNodeOrder = new string[] { "dk1","lt1", "dk2", "lt3", "accent1", "accent2", "accent3", "accent4", "accent5", "accent6", "hlink", "folHlink" };
+            this.SchemaNodeOrder = new string[] { "dk1","lt1", "dk2", "lt3", "accent1", "accent2", "accent3", "accent4", "accent5", "accent6", "hlink", "folHlink" };
         }
         const string Dk1Path = "a:dk1";
         ExcelDrawingThemeColorManager _dk1 =null;
@@ -39,11 +39,11 @@ namespace OfficeOpenXml.Drawing.Theme
         {
             get
             {
-                if (_dk1 == null)
+                if (this._dk1 == null)
                 {
-                    _dk1 = new ExcelDrawingThemeColorManager(NameSpaceManager, TopNode, Dk1Path, SchemaNodeOrder);
+                    this._dk1 = new ExcelDrawingThemeColorManager(this.NameSpaceManager, this.TopNode, Dk1Path, this.SchemaNodeOrder);
                 }
-                return _dk1;
+                return this._dk1;
             }
         }
 
@@ -52,29 +52,29 @@ namespace OfficeOpenXml.Drawing.Theme
             switch(color)
             {
                 case eThemeSchemeColor.Accent1:
-                    return Accent1;
+                    return this.Accent1;
                 case eThemeSchemeColor.Accent2:
-                    return Accent2;
+                    return this.Accent2;
                 case eThemeSchemeColor.Accent3:
-                    return Accent3;
+                    return this.Accent3;
                 case eThemeSchemeColor.Accent4:
-                    return Accent4;
+                    return this.Accent4;
                 case eThemeSchemeColor.Accent5:
-                    return Accent5;
+                    return this.Accent5;
                 case eThemeSchemeColor.Accent6:
-                    return Accent6;
+                    return this.Accent6;
                 case eThemeSchemeColor.Background1:
-                    return Light1;
+                    return this.Light1;
                 case eThemeSchemeColor.Background2:
-                    return Light2;
+                    return this.Light2;
                 case eThemeSchemeColor.Text1:
-                    return Dark1;
+                    return this.Dark1;
                 case eThemeSchemeColor.Text2:
-                    return Dark2;
+                    return this.Dark2;
                 case eThemeSchemeColor.Hyperlink:
-                    return Hyperlink;
+                    return this.Hyperlink;
                 case eThemeSchemeColor.FollowedHyperlink:
-                    return FollowedHyperlink;                
+                    return this.FollowedHyperlink;                
             }
             throw(new ArgumentOutOfRangeException($"Type {color} is unhandled."));
         }
@@ -88,11 +88,11 @@ namespace OfficeOpenXml.Drawing.Theme
         {
             get
             {
-                if (_dk2 == null)
+                if (this._dk2 == null)
                 {
-                    _dk2 = new ExcelDrawingThemeColorManager(NameSpaceManager, TopNode, Dk2Path, SchemaNodeOrder);
+                    this._dk2 = new ExcelDrawingThemeColorManager(this.NameSpaceManager, this.TopNode, Dk2Path, this.SchemaNodeOrder);
                 }
-                return _dk2;
+                return this._dk2;
             }
         }
         const string lt1Path = "a:lt1";
@@ -104,11 +104,11 @@ namespace OfficeOpenXml.Drawing.Theme
         {
             get
             {
-                if (_lt1 == null)
+                if (this._lt1 == null)
                 {
-                    _lt1 = new ExcelDrawingThemeColorManager(NameSpaceManager, TopNode, lt1Path, SchemaNodeOrder);
+                    this._lt1 = new ExcelDrawingThemeColorManager(this.NameSpaceManager, this.TopNode, lt1Path, this.SchemaNodeOrder);
                 }
-                return _lt1;
+                return this._lt1;
 
             }
         }
@@ -121,11 +121,11 @@ namespace OfficeOpenXml.Drawing.Theme
         {
             get
             {
-                if (_lt2 == null)
+                if (this._lt2 == null)
                 {
-                    _lt2 = new ExcelDrawingThemeColorManager(NameSpaceManager, TopNode, lt2Path, SchemaNodeOrder);
+                    this._lt2 = new ExcelDrawingThemeColorManager(this.NameSpaceManager, this.TopNode, lt2Path, this.SchemaNodeOrder);
                 }
-                return _lt2;
+                return this._lt2;
             }
         }
         const string Accent1Path = "a:accent1";
@@ -137,11 +137,11 @@ namespace OfficeOpenXml.Drawing.Theme
         {
             get
             {
-                if (_accent1 == null)
+                if (this._accent1 == null)
                 {
-                    _accent1 = new ExcelDrawingThemeColorManager(NameSpaceManager, TopNode, Accent1Path, SchemaNodeOrder);
+                    this._accent1 = new ExcelDrawingThemeColorManager(this.NameSpaceManager, this.TopNode, Accent1Path, this.SchemaNodeOrder);
                 }
-                return _accent1;
+                return this._accent1;
             }
         }
         const string Accent2Path = "a:accent2";
@@ -153,11 +153,11 @@ namespace OfficeOpenXml.Drawing.Theme
         {
             get
             {
-                if (_accent2 == null)
+                if (this._accent2 == null)
                 {
-                    _accent2 = new ExcelDrawingThemeColorManager(NameSpaceManager, TopNode, Accent2Path, SchemaNodeOrder);
+                    this._accent2 = new ExcelDrawingThemeColorManager(this.NameSpaceManager, this.TopNode, Accent2Path, this.SchemaNodeOrder);
                 }
-                return _accent2;
+                return this._accent2;
             }
         }
         const string Accent3Path = "a:accent3";
@@ -169,11 +169,11 @@ namespace OfficeOpenXml.Drawing.Theme
         {
             get
             {
-                if (_accent3 == null)
+                if (this._accent3 == null)
                 {
-                    _accent3 = new ExcelDrawingThemeColorManager(NameSpaceManager, TopNode, Accent3Path, SchemaNodeOrder);
+                    this._accent3 = new ExcelDrawingThemeColorManager(this.NameSpaceManager, this.TopNode, Accent3Path, this.SchemaNodeOrder);
                 }
-                return _accent3;
+                return this._accent3;
             }
         }
         const string Accent4Path = "a:accent4";
@@ -185,11 +185,11 @@ namespace OfficeOpenXml.Drawing.Theme
         {
             get
             {
-                if (_accent4 == null)
+                if (this._accent4 == null)
                 {
-                    _accent4 = new ExcelDrawingThemeColorManager(NameSpaceManager, TopNode, Accent4Path, SchemaNodeOrder);
+                    this._accent4 = new ExcelDrawingThemeColorManager(this.NameSpaceManager, this.TopNode, Accent4Path, this.SchemaNodeOrder);
                 }
-                return _accent4;
+                return this._accent4;
             }
         }
         const string Accent5Path = "a:accent5";
@@ -201,11 +201,11 @@ namespace OfficeOpenXml.Drawing.Theme
         {
             get
             {
-                if (_accent5 == null)
+                if (this._accent5 == null)
                 {
-                    _accent5 = new ExcelDrawingThemeColorManager(NameSpaceManager, TopNode, Accent5Path, SchemaNodeOrder);
+                    this._accent5 = new ExcelDrawingThemeColorManager(this.NameSpaceManager, this.TopNode, Accent5Path, this.SchemaNodeOrder);
                 }
-                return _accent5;
+                return this._accent5;
             }
         }
         const string Accent6Path = "a:accent6";
@@ -217,11 +217,11 @@ namespace OfficeOpenXml.Drawing.Theme
         {
             get
             {
-                if (_accent6 == null)
+                if (this._accent6 == null)
                 {
-                    _accent6 = new ExcelDrawingThemeColorManager(NameSpaceManager, TopNode, Accent6Path, SchemaNodeOrder);
+                    this._accent6 = new ExcelDrawingThemeColorManager(this.NameSpaceManager, this.TopNode, Accent6Path, this.SchemaNodeOrder);
                 }
-                return _accent6;
+                return this._accent6;
             }
         }
         const string HlinkPath = "a:hlink";
@@ -233,11 +233,11 @@ namespace OfficeOpenXml.Drawing.Theme
         {
             get
             {
-                if (_hlink == null)
+                if (this._hlink == null)
                 {
-                    _hlink = new ExcelDrawingThemeColorManager(NameSpaceManager, TopNode, HlinkPath, SchemaNodeOrder);
+                    this._hlink = new ExcelDrawingThemeColorManager(this.NameSpaceManager, this.TopNode, HlinkPath, this.SchemaNodeOrder);
                 }
-                return _hlink;
+                return this._hlink;
             }
         }
 
@@ -250,11 +250,11 @@ namespace OfficeOpenXml.Drawing.Theme
         {
             get
             {
-                if (_folHlink == null)
+                if (this._folHlink == null)
                 {
-                    _folHlink = new ExcelDrawingThemeColorManager(NameSpaceManager, TopNode, FolHlinkPath, SchemaNodeOrder);
+                    this._folHlink = new ExcelDrawingThemeColorManager(this.NameSpaceManager, this.TopNode, FolHlinkPath, this.SchemaNodeOrder);
                 }
-                return _folHlink;
+                return this._folHlink;
             }
         }
     }

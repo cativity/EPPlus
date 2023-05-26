@@ -34,7 +34,7 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Math
                 return this.CreateResult(0d, DataType.Decimal);
             }
 
-            double number = ArgToDecimal(arguments, 0, context.Configuration.PrecisionAndRoundingStrategy);
+            double number = this.ArgToDecimal(arguments, 0, context.Configuration.PrecisionAndRoundingStrategy);
             double significance = 1d;
             if (arguments.Count() > 1)
             {
@@ -46,7 +46,7 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Math
                 return this.CreateResult(eErrorType.Num);
             }
 
-            return CreateResult(RoundingHelper.Round(number, significance, RoundingHelper.Direction.AlwaysDown), DataType.Decimal);
+            return this.CreateResult(RoundingHelper.Round(number, significance, RoundingHelper.Direction.AlwaysDown), DataType.Decimal);
         }
     }
 }

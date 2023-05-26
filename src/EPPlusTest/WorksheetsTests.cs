@@ -45,110 +45,110 @@ namespace EPPlusTest
 		[TestInitialize]
 		public void TestInitialize()
 		{
-			package = new ExcelPackage();
-			workbook = package.Workbook;
-			workbook.Worksheets.Add("NEW1");
+            this.package = new ExcelPackage();
+            this.workbook = this.package.Workbook;
+            this.workbook.Worksheets.Add("NEW1");
 		}
 
 		[TestMethod]
 		public void ConfirmFileStructure()
 		{
-			Assert.IsNotNull(package, "Package not created");
-			Assert.IsNotNull(workbook, "No workbook found");
+			Assert.IsNotNull(this.package, "Package not created");
+			Assert.IsNotNull(this.workbook, "No workbook found");
 		}
 
 		[TestMethod]
 		public void ShouldBeAbleToDeleteAndThenAdd()
 		{
-			workbook.Worksheets.Add("NEW2");
-			workbook.Worksheets.Delete(1);
-			workbook.Worksheets.Add("NEW3");
+            this.workbook.Worksheets.Add("NEW2");
+            this.workbook.Worksheets.Delete(1);
+            this.workbook.Worksheets.Add("NEW3");
 		}
 
 		[TestMethod]
 		public void DeleteByNameWhereWorkSheetExists()
 		{
-		    workbook.Worksheets.Add("NEW2");
-			workbook.Worksheets.Delete("NEW2");
+            this.workbook.Worksheets.Add("NEW2");
+            this.workbook.Worksheets.Delete("NEW2");
         }
 
 		[TestMethod, ExpectedException(typeof(ArgumentException))]
 		public void DeleteByNameWhereWorkSheetDoesNotExist()
 		{
-			workbook.Worksheets.Add("NEW2");
-			workbook.Worksheets.Delete("NEW3");
+            this.workbook.Worksheets.Add("NEW2");
+            this.workbook.Worksheets.Delete("NEW3");
 		}
 
 		[TestMethod]
 		public void MoveBeforeByNameWhereWorkSheetExists()
 		{
-			workbook.Worksheets.Add("NEW2");
-			workbook.Worksheets.Add("NEW3");
-			workbook.Worksheets.Add("NEW4");
-			workbook.Worksheets.Add("NEW5");
+            this.workbook.Worksheets.Add("NEW2");
+            this.workbook.Worksheets.Add("NEW3");
+            this.workbook.Worksheets.Add("NEW4");
+            this.workbook.Worksheets.Add("NEW5");
 
-			workbook.Worksheets.MoveBefore("NEW4", "NEW2");
+            this.workbook.Worksheets.MoveBefore("NEW4", "NEW2");
 
-			CompareOrderOfWorksheetsAfterSaving(package);
+			CompareOrderOfWorksheetsAfterSaving(this.package);
 		}
 
 		[TestMethod]
 		public void MoveAfterByNameWhereWorkSheetExists()
 		{
-			workbook.Worksheets.Add("NEW2");
-			workbook.Worksheets.Add("NEW3");
-			workbook.Worksheets.Add("NEW4");
-			workbook.Worksheets.Add("NEW5");
+            this.workbook.Worksheets.Add("NEW2");
+            this.workbook.Worksheets.Add("NEW3");
+            this.workbook.Worksheets.Add("NEW4");
+            this.workbook.Worksheets.Add("NEW5");
 
-			workbook.Worksheets.MoveAfter("NEW4", "NEW2");
+            this.workbook.Worksheets.MoveAfter("NEW4", "NEW2");
 
-			CompareOrderOfWorksheetsAfterSaving(package);
+			CompareOrderOfWorksheetsAfterSaving(this.package);
 		}
 
 		[TestMethod]
 		public void MoveBeforeByPositionWhereWorkSheetExists()
 		{
-			workbook.Worksheets.Add("NEW2");
-			workbook.Worksheets.Add("NEW3");
-			workbook.Worksheets.Add("NEW4");
-			workbook.Worksheets.Add("NEW5");
+            this.workbook.Worksheets.Add("NEW2");
+            this.workbook.Worksheets.Add("NEW3");
+            this.workbook.Worksheets.Add("NEW4");
+            this.workbook.Worksheets.Add("NEW5");
 
-			workbook.Worksheets.MoveBefore(4, 2);
+            this.workbook.Worksheets.MoveBefore(4, 2);
 
-			CompareOrderOfWorksheetsAfterSaving(package);
+			CompareOrderOfWorksheetsAfterSaving(this.package);
 		}
 
 		[TestMethod]
 		public void MoveAfterByPositionWhereWorkSheetExists()
 		{
-			workbook.Worksheets.Add("NEW2");
-			workbook.Worksheets.Add("NEW3");
-			workbook.Worksheets.Add("NEW4");
-			workbook.Worksheets.Add("NEW5");
+            this.workbook.Worksheets.Add("NEW2");
+            this.workbook.Worksheets.Add("NEW3");
+            this.workbook.Worksheets.Add("NEW4");
+            this.workbook.Worksheets.Add("NEW5");
 
-			workbook.Worksheets.MoveAfter(4, 2);
+            this.workbook.Worksheets.MoveAfter(4, 2);
 
-			CompareOrderOfWorksheetsAfterSaving(package);
+			CompareOrderOfWorksheetsAfterSaving(this.package);
 		}
 
         [TestMethod]
         public void MoveToStartByNameWhereWorkSheetExists()
         {
-            workbook.Worksheets.Add("NEW2");
+            this.workbook.Worksheets.Add("NEW2");
 
-            workbook.Worksheets.MoveToStart("NEW2");
+            this.workbook.Worksheets.MoveToStart("NEW2");
 
-            Assert.AreEqual("NEW2", workbook.Worksheets.First().Name);
+            Assert.AreEqual("NEW2", this.workbook.Worksheets.First().Name);
         }
 
         [TestMethod]
         public void MoveToEndByNameWhereWorkSheetExists()
         {
-            workbook.Worksheets.Add("NEW2");
+            this.workbook.Worksheets.Add("NEW2");
 
-            workbook.Worksheets.MoveToEnd("NEW1");
+            this.workbook.Worksheets.MoveToEnd("NEW1");
 
-            Assert.AreEqual("NEW1", workbook.Worksheets.Last().Name);
+            Assert.AreEqual("NEW1", this.workbook.Worksheets.Last().Name);
         }
 		[TestMethod]
 		public void ShouldHandleResizeOfIndexWhenExceed8Items()
@@ -164,18 +164,18 @@ namespace EPPlusTest
 		[TestMethod]
 		public void MoveBeforeByName8Worksheets()
 		{
-			workbook.Worksheets.Add("NEW2");
-			workbook.Worksheets.Add("NEW3");
-			workbook.Worksheets.Add("NEW4");
-			workbook.Worksheets.Add("NEW5");
-			workbook.Worksheets.Add("NEW6");
-			workbook.Worksheets.Add("NEW7");
-			workbook.Worksheets.Add("NEW8");
+            this.workbook.Worksheets.Add("NEW2");
+            this.workbook.Worksheets.Add("NEW3");
+            this.workbook.Worksheets.Add("NEW4");
+            this.workbook.Worksheets.Add("NEW5");
+            this.workbook.Worksheets.Add("NEW6");
+            this.workbook.Worksheets.Add("NEW7");
+            this.workbook.Worksheets.Add("NEW8");
 
-			workbook.Worksheets.MoveBefore("NEW8", "NEW1");
-			Assert.AreEqual("NEW7", workbook.Worksheets.Last().Name);
-			Assert.AreEqual("NEW8", workbook.Worksheets.First().Name);
-			Assert.AreEqual("NEW1", workbook.Worksheets[1].Name);
+            this.workbook.Worksheets.MoveBefore("NEW8", "NEW1");
+			Assert.AreEqual("NEW7", this.workbook.Worksheets.Last().Name);
+			Assert.AreEqual("NEW8", this.workbook.Worksheets.First().Name);
+			Assert.AreEqual("NEW1", this.workbook.Worksheets[1].Name);
 		}
 		private static void CompareOrderOfWorksheetsAfterSaving(ExcelPackage editedPackage)
 		{
@@ -193,12 +193,12 @@ namespace EPPlusTest
         [TestMethod]
         public void CheckAddedWorksheetWithInvalidName()
         {
-            if (workbook.Worksheets["[NEW2]"] == null)
+            if (this.workbook.Worksheets["[NEW2]"] == null)
             {
                 this.workbook.Worksheets.Add("[NEW2]");
             }
 
-            Assert.IsNotNull(workbook.Worksheets["[NEW2]"]);
+            Assert.IsNotNull(this.workbook.Worksheets["[NEW2]"]);
         }
     }
 }

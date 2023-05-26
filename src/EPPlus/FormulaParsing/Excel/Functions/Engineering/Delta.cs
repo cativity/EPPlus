@@ -28,18 +28,18 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Engineering
         public override CompileResult Execute(IEnumerable<FunctionArgument> arguments, ParsingContext context)
         {
             ValidateArguments(arguments, 1);
-            double n1 = ArgToDecimal(arguments, 0);
+            double n1 = this.ArgToDecimal(arguments, 0);
             double n2 = 0d;
             if(arguments.Count() > 1)
             {
-                n2 = ArgToDecimal(arguments, 1);
+                n2 = this.ArgToDecimal(arguments, 1);
             }
             if (n1.CompareTo(n2) == 0)
             {
                 return this.CreateResult(1, DataType.Integer);
             }
 
-            return CreateResult(0, DataType.Integer);
+            return this.CreateResult(0, DataType.Integer);
         }
     }
 }

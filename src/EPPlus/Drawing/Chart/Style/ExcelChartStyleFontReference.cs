@@ -24,7 +24,7 @@ namespace OfficeOpenXml.Drawing.Chart.Style
         string _path;
         internal ExcelChartStyleFontReference(XmlNamespaceManager nsm, XmlNode topNode, string path) : base(nsm, topNode)
         {
-            _path = path;
+            this._path = path;
         }
         /// <summary>
         /// The index to the style matrix.
@@ -34,11 +34,11 @@ namespace OfficeOpenXml.Drawing.Chart.Style
         {
             get
             {
-                return GetXmlNodeString($"{_path}/@idx").ToEnum(eThemeFontCollectionType.None);
+                return this.GetXmlNodeString($"{this._path}/@idx").ToEnum(eThemeFontCollectionType.None);
             }
             set
             {
-                SetXmlNodeString($"{_path}/@idx", value.ToEnumString());
+                this.SetXmlNodeString($"{this._path}/@idx", value.ToEnumString());
             }
         }
         ExcelChartStyleColorManager _color = null;
@@ -50,12 +50,12 @@ namespace OfficeOpenXml.Drawing.Chart.Style
         {
             get
             {
-                if (_color == null)
+                if (this._color == null)
                 {
-                    _color = new ExcelChartStyleColorManager(NameSpaceManager, TopNode, _path, SchemaNodeOrder);
+                    this._color = new ExcelChartStyleColorManager(this.NameSpaceManager, this.TopNode, this._path, this.SchemaNodeOrder);
                 }
 
-                return _color;
+                return this._color;
             }
         }
         /// <summary>
@@ -65,7 +65,7 @@ namespace OfficeOpenXml.Drawing.Chart.Style
         {
             get
             {
-                XmlNode? node = GetNode(_path);
+                XmlNode? node = this.GetNode(this._path);
                 return node != null && node.HasChildNodes;
             }
         }

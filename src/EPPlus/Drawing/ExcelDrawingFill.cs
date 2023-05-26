@@ -32,10 +32,10 @@ namespace OfficeOpenXml.Drawing
         internal ExcelDrawingFill(IPictureRelationDocument pictureRelationDocument, XmlNamespaceManager nameSpaceManager, XmlNode topNode, string fillPath, string[] schemaNodeOrder, Action initXml = null) :
             base(pictureRelationDocument.Package, nameSpaceManager, topNode, fillPath, schemaNodeOrder, false, initXml)
         {
-            _pictureRelationDocument = pictureRelationDocument;
-            if (_fillNode != null)
+            this._pictureRelationDocument = pictureRelationDocument;
+            if (this._fillNode != null)
             {
-                LoadFill();
+                this.LoadFill();
             }
         }
         /// <summary>
@@ -43,32 +43,32 @@ namespace OfficeOpenXml.Drawing
         /// </summary>
         internal protected override void LoadFill()
         {
-            if (_fillTypeNode == null)
+            if (this._fillTypeNode == null)
             {
                 this._fillTypeNode = this._fillNode.SelectSingleNode("a:pattFill", this.NameSpaceManager);
             }
 
-            if (_fillTypeNode == null)
+            if (this._fillTypeNode == null)
             {
                 this._fillTypeNode = this._fillNode.SelectSingleNode("a:blipFill", this.NameSpaceManager);
             }
 
-            if (_fillTypeNode == null)
+            if (this._fillTypeNode == null)
             {
                 base.LoadFill();
                 return;
             }
 
-            switch (_fillTypeNode.LocalName)
+            switch (this._fillTypeNode.LocalName)
             {
                 case "pattFill":
-                    _style = eFillStyle.PatternFill;
-                    _patternFill = new ExcelDrawingPatternFill(NameSpaceManager, _fillTypeNode, "", SchemaNodeOrder, _initXml);
+                    this._style = eFillStyle.PatternFill;
+                    this._patternFill = new ExcelDrawingPatternFill(this.NameSpaceManager, this._fillTypeNode, "", this.SchemaNodeOrder, this._initXml);
                     break;
                 case "blipFill":
-                    _style = eFillStyle.BlipFill;
+                    this._style = eFillStyle.BlipFill;
 
-                    _blipFill = new ExcelDrawingBlipFill(_pictureRelationDocument, NameSpaceManager, _fillTypeNode, "", SchemaNodeOrder, _initXml);
+                    this._blipFill = new ExcelDrawingBlipFill(this._pictureRelationDocument, this.NameSpaceManager, this._fillTypeNode, "", this.SchemaNodeOrder, this._initXml);
                     break;
                 default:
                     base.LoadFill();
@@ -78,28 +78,29 @@ namespace OfficeOpenXml.Drawing
 
         internal override void SetFillProperty()
         {
-            if (_fillNode == null)
+            if (this._fillNode == null)
             {
                 base.SetFillProperty();
             }
 
-            _patternFill = null;
-            _blipFill = null;
+            this._patternFill = null;
+            this._blipFill = null;
 
-            switch (_fillTypeNode.LocalName)
+            switch (this._fillTypeNode.LocalName)
             {
                 case "pattFill":
-                    _patternFill    = new ExcelDrawingPatternFill(NameSpaceManager, _fillTypeNode, "", SchemaNodeOrder, _initXml);
-                    _patternFill.PatternType = eFillPatternStyle.Pct5;
+                    this._patternFill    = new ExcelDrawingPatternFill(this.NameSpaceManager, this._fillTypeNode, "", this.SchemaNodeOrder, this._initXml);
+                    this._patternFill.PatternType = eFillPatternStyle.Pct5;
 
-                    if (_patternFill.BackgroundColor.ColorType == eDrawingColorType.None)
+                    if (this._patternFill.BackgroundColor.ColorType == eDrawingColorType.None)
                     {
-                        _patternFill.BackgroundColor.SetSchemeColor(eSchemeColor.Background1);
+                        this._patternFill.BackgroundColor.SetSchemeColor(eSchemeColor.Background1);
                     }
-                    _patternFill.ForegroundColor.SetSchemeColor(eSchemeColor.Text1);
+
+                    this._patternFill.ForegroundColor.SetSchemeColor(eSchemeColor.Text1);
                     break;
                 case "blipFill":
-                    _blipFill = new ExcelDrawingBlipFill(_pictureRelationDocument, NameSpaceManager, _fillTypeNode, "", SchemaNodeOrder, _initXml);
+                    this._blipFill = new ExcelDrawingBlipFill(this._pictureRelationDocument, this.NameSpaceManager, this._fillTypeNode, "", this.SchemaNodeOrder, this._initXml);
                     break;
                 default:
                     base.SetFillProperty();
@@ -109,13 +110,13 @@ namespace OfficeOpenXml.Drawing
 
         internal override void BeforeSave()
         {
-            if (_patternFill != null)
+            if (this._patternFill != null)
             {
-                PatternFill.UpdateXml();
+                this.PatternFill.UpdateXml();
             }
-            else if (_blipFill != null)
+            else if (this._blipFill != null)
             {
-                BlipFill.UpdateXml();
+                this.BlipFill.UpdateXml();
             }
             else
             {
@@ -132,7 +133,7 @@ namespace OfficeOpenXml.Drawing
         {
             get
             {
-                return _patternFill;
+                return this._patternFill;
             }
         }
         private ExcelDrawingBlipFill _blipFill = null;
@@ -144,7 +145,7 @@ namespace OfficeOpenXml.Drawing
         {
             get
             {
-                return _blipFill;
+                return this._blipFill;
             }
         }
 
@@ -155,8 +156,8 @@ namespace OfficeOpenXml.Drawing
         public new void Dispose()
         {
             base.Dispose();
-            _patternFill = null;
-            _blipFill = null;
+            this._patternFill = null;
+            this._blipFill = null;
         }
     }
 }

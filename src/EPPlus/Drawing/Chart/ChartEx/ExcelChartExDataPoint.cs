@@ -29,15 +29,15 @@ namespace OfficeOpenXml.Drawing.Chart.ChartEx
         ExcelChartExSerie _serie;
         internal ExcelChartExDataPoint(ExcelChartExSerie serie, XmlNamespaceManager ns, XmlNode topNode, string[] schemaNodeOrder) : base(ns, topNode)
         {
-            _serie = serie;
-            AddSchemaNodeOrder(schemaNodeOrder, new string[] { "spPr" });
-            Index = GetXmlNodeInt(indexPath);
+            this._serie = serie;
+            this.AddSchemaNodeOrder(schemaNodeOrder, new string[] { "spPr" });
+            this.Index = this.GetXmlNodeInt(indexPath);
         }
         internal ExcelChartExDataPoint(ExcelChartExSerie serie, XmlNamespaceManager ns, XmlNode topNode, int index, string[] schemaNodeOrder) : base(ns, topNode)
         {
-            _serie = serie;
-            AddSchemaNodeOrder(schemaNodeOrder, new string[] { "spPr" });
-            Index = index;
+            this._serie = serie;
+            this.AddSchemaNodeOrder(schemaNodeOrder, new string[] { "spPr" });
+            this.Index = index;
         }
 
         internal const string dataPtPath = "cx:dataPt";
@@ -58,29 +58,29 @@ namespace OfficeOpenXml.Drawing.Chart.ChartEx
         {
             get
             {
-                return ExistsNode($"{GetSubTotalPath()}[@val={Index}]");
+                return this.ExistsNode($"{this.GetSubTotalPath()}[@val={this.Index}]");
             }
             set
             {
-                string? path = GetSubTotalPath();
+                string? path = this.GetSubTotalPath();
                 if (value)
                 {
-                    if (!ExistsNode($"{path}[@val={Index}]"))
+                    if (!this.ExistsNode($"{path}[@val={this.Index}]"))
                     {
-                        XmlElement? idxElement = (XmlElement)CreateNode(path, false, true);
-                        idxElement.SetAttribute("val", Index.ToString(CultureInfo.InvariantCulture));
+                        XmlElement? idxElement = (XmlElement)this.CreateNode(path, false, true);
+                        idxElement.SetAttribute("val", this.Index.ToString(CultureInfo.InvariantCulture));
                     }
                 }
                 else
                 {
-                    DeleteNode($"{path}/[@val={Index}]");
+                    this.DeleteNode($"{path}/[@val={this.Index}]");
                 }
             }
         }
 
         private string GetSubTotalPath()
         {
-            if(TopNode.LocalName=="series")
+            if(this.TopNode.LocalName=="series")
             {
                 return "cx:layoutPr/cx:subtotals/cx:idx";
             }
@@ -98,12 +98,12 @@ namespace OfficeOpenXml.Drawing.Chart.ChartEx
         {
             get
             {
-                if (_fill == null)
+                if (this._fill == null)
                 {
-                    CreateDp();
-                    _fill = new ExcelDrawingFill(_serie._chart, NameSpaceManager, TopNode, "cx:spPr", SchemaNodeOrder);
+                    this.CreateDp();
+                    this._fill = new ExcelDrawingFill(this._serie._chart, this.NameSpaceManager, this.TopNode, "cx:spPr", this.SchemaNodeOrder);
                 }
-                return _fill;
+                return this._fill;
             }
         }
 
@@ -115,12 +115,12 @@ namespace OfficeOpenXml.Drawing.Chart.ChartEx
         {
             get
             {
-                if (_line == null)
+                if (this._line == null)
                 {
-                    CreateDp();
-                    _line = new ExcelDrawingBorder(_serie._chart, NameSpaceManager, TopNode, "cx:spPr/a:ln", SchemaNodeOrder);
+                    this.CreateDp();
+                    this._line = new ExcelDrawingBorder(this._serie._chart, this.NameSpaceManager, this.TopNode, "cx:spPr/a:ln", this.SchemaNodeOrder);
                 }
-                return _line;
+                return this._line;
             }
         }
         private ExcelDrawingEffectStyle _effect = null;
@@ -131,12 +131,12 @@ namespace OfficeOpenXml.Drawing.Chart.ChartEx
         {
             get
             {
-                if (_effect == null)
+                if (this._effect == null)
                 {
-                    CreateDp();
-                    _effect = new ExcelDrawingEffectStyle(_serie._chart, NameSpaceManager, TopNode, "cx:spPr/a:effectLst", SchemaNodeOrder);
+                    this.CreateDp();
+                    this._effect = new ExcelDrawingEffectStyle(this._serie._chart, this.NameSpaceManager, this.TopNode, "cx:spPr/a:effectLst", this.SchemaNodeOrder);
                 }
-                return _effect;
+                return this._effect;
             }
         }
         ExcelDrawing3D _threeD = null;
@@ -147,37 +147,37 @@ namespace OfficeOpenXml.Drawing.Chart.ChartEx
         {
             get
             {
-                if (_threeD == null)
+                if (this._threeD == null)
                 {
-                    CreateDp();
-                    _threeD = new ExcelDrawing3D(NameSpaceManager, TopNode, "cx:spPr", SchemaNodeOrder);
+                    this.CreateDp();
+                    this._threeD = new ExcelDrawing3D(this.NameSpaceManager, this.TopNode, "cx:spPr", this.SchemaNodeOrder);
                 }
-                return _threeD;
+                return this._threeD;
             }
         }
         private void CreateDp()
         {
-            if (TopNode.LocalName == "series")
+            if (this.TopNode.LocalName == "series")
             {
                 XmlElement pointElement;
-                XmlElement? prepend = GetPrependItem();
+                XmlElement? prepend = this.GetPrependItem();
                 if (prepend == null)
                 {
-                    pointElement = (XmlElement)CreateNode(dataPtPath);
+                    pointElement = (XmlElement)this.CreateNode(dataPtPath);
                 }
                 else
                 {
-                    pointElement = TopNode.OwnerDocument.CreateElement(dataPtPath, ExcelPackage.schemaChartExMain);
+                    pointElement = this.TopNode.OwnerDocument.CreateElement(dataPtPath, ExcelPackage.schemaChartExMain);
                     prepend.ParentNode.InsertBefore(pointElement, prepend);
                 }
-                pointElement.SetAttribute("idx", Index.ToString(CultureInfo.InvariantCulture));
-                TopNode = pointElement;
+                pointElement.SetAttribute("idx", this.Index.ToString(CultureInfo.InvariantCulture));
+                this.TopNode = pointElement;
             }
         }
 
         private XmlElement GetPrependItem()
         {
-            SortedDictionary<int, ExcelChartExDataPoint>? dic = _serie.DataPoints._dic;
+            SortedDictionary<int, ExcelChartExDataPoint>? dic = this._serie.DataPoints._dic;
             int prevKey = -1;
             foreach (ExcelChartExDataPoint? v in dic.Values)
             {
@@ -191,7 +191,7 @@ namespace OfficeOpenXml.Drawing.Chart.ChartEx
 
         void IDrawingStyleBase.CreatespPr()
         {
-            base.CreatespPrNode("cx:spPr");
+            this.CreatespPrNode("cx:spPr");
         }
     }
 }

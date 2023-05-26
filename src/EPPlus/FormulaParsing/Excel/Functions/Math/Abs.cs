@@ -31,14 +31,14 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Math
             ValidateArguments(functionArguments, 1);
             if (functionArguments.ElementAt(0).Value == null)
             {
-                return CreateResult(0d, DataType.Decimal);
+                return this.CreateResult(0d, DataType.Decimal);
             }
-            double val = ArgToDecimal(functionArguments, 0);
+            double val = this.ArgToDecimal(functionArguments, 0);
             if (val < 0)
             {
                 val *= -1;
             }
-            return CreateResult(val, DataType.Decimal);
+            return this.CreateResult(val, DataType.Decimal);
         }
     }
 }

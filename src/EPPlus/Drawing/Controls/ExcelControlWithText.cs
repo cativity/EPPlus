@@ -45,20 +45,21 @@ namespace OfficeOpenXml.Drawing.Controls
         {
             get
             {
-                return RichText.Text;
+                return this.RichText.Text;
             }
             set
             {
-                if(RichText.Count==1)
+                if(this.RichText.Count==1)
                 {
-                    RichText[0].Text = value;
+                    this.RichText[0].Text = value;
                 }
                 else
                 {
-                    RichText.Clear();
-                    RichText.Text = value;
+                    this.RichText.Clear();
+                    this.RichText.Text = value;
                 }
-                _vml.Text = value;
+
+                this._vml.Text = value;
             }
         }
         ExcelParagraphCollection _richText = null;
@@ -70,11 +71,11 @@ namespace OfficeOpenXml.Drawing.Controls
         {
             get
             {
-                if (_richText == null)
+                if (this._richText == null)
                 {
-                    _richText = new ExcelParagraphCollection(this, NameSpaceManager, TopNode, _paragraphPath, SchemaNodeOrder);
+                    this._richText = new ExcelParagraphCollection(this, this.NameSpaceManager, this.TopNode, this._paragraphPath, this.SchemaNodeOrder);
                 }
-                return _richText;
+                return this._richText;
             }
         }
         /// <summary>
@@ -84,12 +85,12 @@ namespace OfficeOpenXml.Drawing.Controls
         {
             get
             {
-                return _ctrlProp.GetXmlNodeBool("@lockText");
+                return this._ctrlProp.GetXmlNodeBool("@lockText");
             }
             set
             {
-                _ctrlProp.SetXmlNodeBool("@lockText", value);
-                SetXmlNodeBool(_lockTextPath, value);
+                this._ctrlProp.SetXmlNodeBool("@lockText", value);
+                this.SetXmlNodeBool(this._lockTextPath, value);
             }
         }
         ExcelTextBody _textBody = null;
@@ -100,11 +101,11 @@ namespace OfficeOpenXml.Drawing.Controls
         {
             get
             {
-                if (_textBody == null)
+                if (this._textBody == null)
                 {
-                    _textBody = new ExcelTextBody(NameSpaceManager, TopNode, "xdr:sp/xdr:txBody/a:bodyPr", this.SchemaNodeOrder);
+                    this._textBody = new ExcelTextBody(this.NameSpaceManager, this.TopNode, "xdr:sp/xdr:txBody/a:bodyPr", this.SchemaNodeOrder);
                 }
-                return _textBody;
+                return this._textBody;
             }
         }
     }

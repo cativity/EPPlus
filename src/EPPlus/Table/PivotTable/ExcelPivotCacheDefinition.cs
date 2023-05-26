@@ -30,20 +30,20 @@ namespace OfficeOpenXml.Table.PivotTable
         XmlNamespaceManager _nsm;
         internal ExcelPivotCacheDefinition(XmlNamespaceManager nsm, ExcelPivotTable pivotTable)
         {
-            Relationship = pivotTable.Part.GetRelationshipsByType(ExcelPackage.schemaRelationships + "/pivotCacheDefinition").FirstOrDefault();
-            Uri? cacheDefinitionUri = UriHelper.ResolvePartUri(Relationship.SourceUri, Relationship.TargetUri); 
-            PivotTable = pivotTable;
-            _wb = pivotTable.WorkSheet.Workbook;
-            _nsm = nsm;
-            ExcelWorkbook.PivotTableCacheRangeInfo? c = _wb._pivotTableCaches.Values.FirstOrDefault(x => x.PivotCaches.Exists(y=>y.CacheDefinitionUri.OriginalString == cacheDefinitionUri.OriginalString));
+            this.Relationship = pivotTable.Part.GetRelationshipsByType(ExcelPackage.schemaRelationships + "/pivotCacheDefinition").FirstOrDefault();
+            Uri? cacheDefinitionUri = UriHelper.ResolvePartUri(this.Relationship.SourceUri, this.Relationship.TargetUri);
+            this.PivotTable = pivotTable;
+            this._wb = pivotTable.WorkSheet.Workbook;
+            this._nsm = nsm;
+            ExcelWorkbook.PivotTableCacheRangeInfo? c = this._wb._pivotTableCaches.Values.FirstOrDefault(x => x.PivotCaches.Exists(y=>y.CacheDefinitionUri.OriginalString == cacheDefinitionUri.OriginalString));
             if (c == null)
             {
                 ZipPackage? pck = pivotTable.WorkSheet._package.ZipPackage;
-                if (_wb._pivotTableIds.ContainsKey(cacheDefinitionUri))
+                if (this._wb._pivotTableIds.ContainsKey(cacheDefinitionUri))
                 {
-                    int cid = _wb._pivotTableIds[cacheDefinitionUri];
-                    _cacheReference = new PivotTableCacheInternal(_wb, cacheDefinitionUri, cid);
-                    _wb.AddPivotTableCache(_cacheReference, false);
+                    int cid = this._wb._pivotTableIds[cacheDefinitionUri];
+                    this._cacheReference = new PivotTableCacheInternal(this._wb, cacheDefinitionUri, cid);
+                    this._wb.AddPivotTableCache(this._cacheReference, false);
                 }
                 else
                 {
@@ -52,42 +52,43 @@ namespace OfficeOpenXml.Table.PivotTable
             }
             else
             {
-                _cacheReference = c.PivotCaches.FirstOrDefault(x => x.CacheDefinitionUri.OriginalString == cacheDefinitionUri.OriginalString);
+                this._cacheReference = c.PivotCaches.FirstOrDefault(x => x.CacheDefinitionUri.OriginalString == cacheDefinitionUri.OriginalString);
             }
-            _cacheReference._pivotTables.Add(pivotTable);
+
+            this._cacheReference._pivotTables.Add(pivotTable);
         }
         internal ExcelPivotCacheDefinition(XmlNamespaceManager nsm, ExcelPivotTable pivotTable, ExcelRangeBase sourceRange)
         {
-            PivotTable = pivotTable;
-            _wb = PivotTable.WorkSheet.Workbook;
-            _nsm = nsm;
-            _cacheReference = new PivotTableCacheInternal(nsm, _wb);
-            _cacheReference.InitNew(pivotTable, sourceRange, null);
-            _wb.AddPivotTableCache(_cacheReference);
-            Relationship = pivotTable.Part.CreateRelationship(UriHelper.ResolvePartUri(pivotTable.PivotTableUri, _cacheReference.CacheDefinitionUri), Packaging.TargetMode.Internal, ExcelPackage.schemaRelationships + "/pivotCacheDefinition");
+            this.PivotTable = pivotTable;
+            this._wb = this.PivotTable.WorkSheet.Workbook;
+            this._nsm = nsm;
+            this._cacheReference = new PivotTableCacheInternal(nsm, this._wb);
+            this._cacheReference.InitNew(pivotTable, sourceRange, null);
+            this._wb.AddPivotTableCache(this._cacheReference);
+            this.Relationship = pivotTable.Part.CreateRelationship(UriHelper.ResolvePartUri(pivotTable.PivotTableUri, this._cacheReference.CacheDefinitionUri), TargetMode.Internal, ExcelPackage.schemaRelationships + "/pivotCacheDefinition");
         }
         internal ExcelPivotCacheDefinition(XmlNamespaceManager nsm, ExcelPivotTable pivotTable, PivotTableCacheInternal cache)
         {
-            PivotTable = pivotTable;
-            _wb = PivotTable.WorkSheet.Workbook;
-            _nsm = nsm;
-            if(cache._wb !=_wb)
+            this.PivotTable = pivotTable;
+            this._wb = this.PivotTable.WorkSheet.Workbook;
+            this._nsm = nsm;
+            if(cache._wb != this._wb)
             {
                 throw (new InvalidOperationException("The pivot table and the cache must be in the same workbook."));
             }
-                
-            _cacheReference = cache;
-            _cacheReference._pivotTables.Add(pivotTable);
 
-            ZipPackageRelationship? rel = pivotTable.Part.CreateRelationship(UriHelper.ResolvePartUri(pivotTable.PivotTableUri, _cacheReference.CacheDefinitionUri), Packaging.TargetMode.Internal, ExcelPackage.schemaRelationships + "/pivotCacheDefinition");
+            this._cacheReference = cache;
+            this._cacheReference._pivotTables.Add(pivotTable);
+
+            ZipPackageRelationship? rel = pivotTable.Part.CreateRelationship(UriHelper.ResolvePartUri(pivotTable.PivotTableUri, this._cacheReference.CacheDefinitionUri), TargetMode.Internal, ExcelPackage.schemaRelationships + "/pivotCacheDefinition");
         }
 
         internal void Refresh()
         {
-            _cacheReference.RefreshFields();
+            this._cacheReference.RefreshFields();
         }
 
-        internal Packaging.ZipPackagePart Part
+        internal ZipPackagePart Part
         {
             get;
             set;
@@ -99,7 +100,7 @@ namespace OfficeOpenXml.Table.PivotTable
         {
             get
             {
-                return _cacheReference.CacheDefinitionXml;
+                return this._cacheReference.CacheDefinitionXml;
             }
         }
         /// <summary>
@@ -109,7 +110,7 @@ namespace OfficeOpenXml.Table.PivotTable
         {
             get
             {
-                return _cacheReference.CacheDefinitionUri;
+                return this._cacheReference.CacheDefinitionUri;
             }
         }
         internal ZipPackageRelationship Relationship
@@ -139,57 +140,58 @@ namespace OfficeOpenXml.Table.PivotTable
         {
             get
             {
-                return _cacheReference.SourceRange;
+                return this._cacheReference.SourceRange;
             }
             set
             {
-                if (PivotTable.WorkSheet.Workbook != value.Worksheet.Workbook)
+                if (this.PivotTable.WorkSheet.Workbook != value.Worksheet.Workbook)
                 {
                     throw (new ArgumentException("Range must be in the same package as the pivottable"));
                 }
 
-                ExcelRangeBase? sr = SourceRange;
+                ExcelRangeBase? sr = this.SourceRange;
                 if (value.End.Column - value.Start.Column != sr.End.Column - sr.Start.Column)
                 {
                     throw (new ArgumentException("Cannot change the number of columns(fields) in the SourceRange"));
                 }
 
-                if (value.FullAddress == SourceRange.FullAddress)
+                if (value.FullAddress == this.SourceRange.FullAddress)
                 {
                     return; //Same
                 }
 
-                if (_wb.GetPivotCacheFromAddress(value.FullAddress, out PivotTableCacheInternal cache))
+                if (this._wb.GetPivotCacheFromAddress(value.FullAddress, out PivotTableCacheInternal cache))
                 {
-                    _cacheReference._pivotTables.Remove(PivotTable);
-                    cache._pivotTables.Add(PivotTable);
-                    _cacheReference = cache;
-                    PivotTable.CacheId = _cacheReference.CacheId;
-                    Relationship.TargetUri = cache.CacheDefinitionUri;
+                    this._cacheReference._pivotTables.Remove(this.PivotTable);
+                    cache._pivotTables.Add(this.PivotTable);
+                    this._cacheReference = cache;
+                    this.PivotTable.CacheId = this._cacheReference.CacheId;
+                    this.Relationship.TargetUri = cache.CacheDefinitionUri;
                 }
-                else if (_cacheReference._pivotTables.Count == 1)
+                else if (this._cacheReference._pivotTables.Count == 1)
                 {
-                    string sourceName = SourceRange.GetName();
+                    string sourceName = this.SourceRange.GetName();
                     if (string.IsNullOrEmpty(sourceName))
                     {
-                        _cacheReference.SetXmlNodeString(_sourceWorksheetPath, value.Worksheet.Name);
-                        _cacheReference.SetXmlNodeString(_sourceAddressPath, value.FirstAddress);
+                        this._cacheReference.SetXmlNodeString(_sourceWorksheetPath, value.Worksheet.Name);
+                        this._cacheReference.SetXmlNodeString(_sourceAddressPath, value.FirstAddress);
                     }
                     else
                     {
-                        _cacheReference.SetXmlNodeString(_sourceNamePath, sourceName);
+                        this._cacheReference.SetXmlNodeString(_sourceNamePath, sourceName);
                     }
-                    _sourceRange = value;
+
+                    this._sourceRange = value;
                 }
                 else
                 {
-                    _cacheReference._pivotTables.Remove(PivotTable);
-                    XmlDocument? xml = _cacheReference.CacheDefinitionXml;
-                    _cacheReference = new PivotTableCacheInternal(_nsm, _wb);
-                    _cacheReference.InitNew(PivotTable, value, xml.InnerXml);
-                    PivotTable.CacheId = _cacheReference.CacheId;
-                    _wb.AddPivotTableCache(_cacheReference);
-                    Relationship.TargetUri = _cacheReference.CacheDefinitionUri;
+                    this._cacheReference._pivotTables.Remove(this.PivotTable);
+                    XmlDocument? xml = this._cacheReference.CacheDefinitionXml;
+                    this._cacheReference = new PivotTableCacheInternal(this._nsm, this._wb);
+                    this._cacheReference.InitNew(this.PivotTable, value, xml.InnerXml);
+                    this.PivotTable.CacheId = this._cacheReference.CacheId;
+                    this._wb.AddPivotTableCache(this._cacheReference);
+                    this.Relationship.TargetUri = this._cacheReference.CacheDefinitionUri;
                 }
             }
         }
@@ -200,11 +202,11 @@ namespace OfficeOpenXml.Table.PivotTable
         {
             get
             {
-                return _cacheReference.SaveData;
+                return this._cacheReference.SaveData;
             }
             set
             {
-                _cacheReference.SaveData = value;
+                this._cacheReference.SaveData = value;
             }
         }
         /// <summary>
@@ -214,7 +216,7 @@ namespace OfficeOpenXml.Table.PivotTable
         {
             get
             {
-                return _cacheReference.CacheSource;
+                return this._cacheReference.CacheSource;
             }
         }
     }

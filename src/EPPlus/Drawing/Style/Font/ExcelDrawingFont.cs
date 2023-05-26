@@ -30,11 +30,11 @@ namespace OfficeOpenXml.Drawing.Style.Font
         {
             get
             {
-                return GetXmlNodeString("@script");
+                return this.GetXmlNodeString("@script");
             }
             internal set
             {
-                SetXmlNodeString("@script", value);
+                this.SetXmlNodeString("@script", value);
             }
         }
     }

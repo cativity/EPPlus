@@ -29,7 +29,7 @@ namespace OfficeOpenXml.Drawing.Chart.ChartEx
         {
             get
             {
-                string? s = GetXmlNodeString("@type");
+                string? s = this.GetXmlNodeString("@type");
                 switch (s)
                 {
                     case "entityId":
@@ -55,7 +55,8 @@ namespace OfficeOpenXml.Drawing.Chart.ChartEx
                         s = "cat";
                         break;
                 }
-                SetXmlNodeString("@type", s);
+
+                this.SetXmlNodeString("@type", s);
             }
         }
     }

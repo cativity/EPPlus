@@ -127,7 +127,7 @@ namespace OfficeOpenXml.Packaging.Ionic.Zip
                 zip1.FullScan = true;
                 zip1.Initialize(zipFileName);
 
-                zip2 = ZipFile.Read(zipFileName);
+                zip2 = Read(zipFileName);
 
                 foreach (ZipEntry? e1 in zip1)
                 {
@@ -198,7 +198,7 @@ namespace OfficeOpenXml.Packaging.Ionic.Zip
                 if (!isOk && fixIfNecessary)
                 {
                     string newFileName = Path.GetFileNameWithoutExtension(zipFileName);
-                    newFileName = System.String.Format("{0}_fixed.zip", newFileName);
+                    newFileName = String.Format("{0}_fixed.zip", newFileName);
                     zip1.Save(newFileName);
                 }
             }
@@ -294,19 +294,19 @@ namespace OfficeOpenXml.Packaging.Ionic.Zip
             bool success = false;
             try
             {
-                using (ZipFile zip1 = ZipFile.Read(zipFileName))
+                using (ZipFile zip1 = Read(zipFileName))
                 {
                     foreach (ZipEntry? e in zip1)
                     {
                         if (!e.IsDirectory && e.UsesEncryption)
                         {
-                            e.ExtractWithPassword(System.IO.Stream.Null, password);
+                            e.ExtractWithPassword(Stream.Null, password);
                         }
                     }
                 }
                 success = true;
             }
-            catch(Ionic.Zip.BadPasswordException) { }
+            catch(BadPasswordException) { }
             return success;
         }
 
@@ -331,7 +331,7 @@ namespace OfficeOpenXml.Packaging.Ionic.Zip
         {
             get
             {
-                StringBuilder? builder = new System.Text.StringBuilder();
+                StringBuilder? builder = new StringBuilder();
                 builder.Append(string.Format("          ZipFile: {0}\n", this.Name));
                 if (!string.IsNullOrEmpty(this._Comment))
                 {

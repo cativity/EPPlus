@@ -31,13 +31,13 @@ namespace OfficeOpenXml.Style.XmlAccess
         }        
         internal ExcelNumberFormatXml(XmlNamespaceManager nameSpaceManager, bool buildIn): base(nameSpaceManager)
         {
-            BuildIn = buildIn;
+            this.BuildIn = buildIn;
         }
         internal ExcelNumberFormatXml(XmlNamespaceManager nsm, XmlNode topNode) :
             base(nsm, topNode)
         {
-            _numFmtId = GetXmlNodeInt("@numFmtId");
-            _format = GetXmlNodeString("@formatCode");
+            this._numFmtId = this.GetXmlNodeInt("@numFmtId");
+            this._format = this.GetXmlNodeString("@formatCode");
         }
         /// <summary>
         /// If the number format is build in
@@ -82,18 +82,18 @@ namespace OfficeOpenXml.Style.XmlAccess
         {
             get
             {
-                return _numFmtId;
+                return this._numFmtId;
             }
             set
             {
-                _numFmtId = value;
+                this._numFmtId = value;
             }
         }
         internal override string Id
         {
             get
             {
-                return _format;
+                return this._format;
             }
         }
         const string fmtPath = "@formatCode";
@@ -105,12 +105,12 @@ namespace OfficeOpenXml.Style.XmlAccess
         {
             get
             {
-                return _format;
+                return this._format;
             }
             set
             {
-                _numFmtId = ExcelNumberFormat.GetFromBuildIdFromFormat(value);
-                _format = value;
+                this._numFmtId = ExcelNumberFormat.GetFromBuildIdFromFormat(value);
+                this._format = value;
             }
         }
         internal static string GetNewID(int NumFmtId, string Format)
@@ -158,10 +158,10 @@ namespace OfficeOpenXml.Style.XmlAccess
 
         internal override XmlNode CreateXmlNode(XmlNode topNode)
         {
-            TopNode = topNode;
-            SetXmlNodeString("@numFmtId", NumFmtId.ToString());
-            SetXmlNodeString("@formatCode", Format);
-            return TopNode;
+            this.TopNode = topNode;
+            this.SetXmlNodeString("@numFmtId", this.NumFmtId.ToString());
+            this.SetXmlNodeString("@formatCode", this.Format);
+            return this.TopNode;
         }
 
         internal enum eFormatType
@@ -175,11 +175,11 @@ namespace OfficeOpenXml.Style.XmlAccess
         {
             get
             {
-                if (_translator == null)
+                if (this._translator == null)
                 {
-                    _translator = new ExcelFormatTranslator(Format, NumFmtId);
+                    this._translator = new ExcelFormatTranslator(this.Format, this.NumFmtId);
                 }
-                return _translator;
+                return this._translator;
             }
         }
         #region Excel --> .Net Format
@@ -209,33 +209,33 @@ namespace OfficeOpenXml.Style.XmlAccess
 
                     if (forColWidth)
                     {
-                        NetFormatForWidth = format;
+                        this.NetFormatForWidth = format;
                     }
                     else
                     {
-                        NetFormat = format;
+                        this.NetFormat = format;
                     }
                 }
             }
             internal ExcelFormatTranslator(string format, int numFmtID)
             {
                 FormatPart? f = new FormatPart();
-                Formats.Add(f);
+                this.Formats.Add(f);
                 if (numFmtID == 14)
                 {
                     f.NetFormat = f.NetFormatForWidth = "";
-                    DataType = eFormatType.DateTime;
+                    this.DataType = eFormatType.DateTime;
                     f.SpecialDateFormat = eSystemDateFormat.SystemShortDate;
                 }
                 else if (format.Equals("general",StringComparison.OrdinalIgnoreCase))
                 {
                     f.NetFormat = f.NetFormatForWidth = "0.#########";
-                    DataType = eFormatType.Number;
+                    this.DataType = eFormatType.Number;
                 }
                 else
                 {
-                    ToNetFormat(format, false);
-                    ToNetFormat(format, true);
+                    this.ToNetFormat(format, false);
+                    this.ToNetFormat(format, true);
                 }                
             }
             internal List<FormatPart> Formats { get; private set; } = new List<FormatPart>();
@@ -244,24 +244,24 @@ namespace OfficeOpenXml.Style.XmlAccess
             {
                 get
                 {
-                    return _ci ?? CultureInfo.CurrentCulture;
+                    return this._ci ?? CultureInfo.CurrentCulture;
                 }
                 set
                 {
-                    _ci = value;
+                    this._ci = value;
                 }
             }
             internal bool HasCulture 
             { 
                 get 
                 { 
-                    return _ci != null; 
+                    return this._ci != null; 
                 } 
             }
             internal eFormatType DataType { get; private set; }
             private void ToNetFormat(string ExcelFormat, bool forColWidth)
             {
-                DataType = eFormatType.Unknown;
+                this.DataType = eFormatType.Unknown;
                 bool isText = false;
                 bool isBracket = false;
                 string bracketText = "";
@@ -272,15 +272,15 @@ namespace OfficeOpenXml.Style.XmlAccess
                 bool containsAmPm = ExcelFormat.Contains("AM/PM");
                 List<int> lstDec=new List<int>();
                 StringBuilder sb = new StringBuilder();
-                Culture = null;
+                this.Culture = null;
                 char clc;
                 int secCount = 0;
-                FormatPart? f = Formats[0];
+                FormatPart? f = this.Formats[0];
 
                 if (containsAmPm)
                 {
                     ExcelFormat = Regex.Replace(ExcelFormat, "AM/PM", "");
-                    DataType = eFormatType.DateTime;
+                    this.DataType = eFormatType.DateTime;
                 }
 
                 for (int pos = 0; pos < ExcelFormat.Length; pos++)
@@ -328,22 +328,22 @@ namespace OfficeOpenXml.Style.XmlAccess
                                         {
                                             try
                                             {
-                                                Culture = CultureInfo.GetCultureInfo(num & 0xFFFF);
+                                                this.Culture = CultureInfo.GetCultureInfo(num & 0xFFFF);
                                             }
                                             catch
                                             {
-                                                Culture = null;
+                                                this.Culture = null;
                                             }
                                         }
                                         else //Excel saves in hex, but seems to support having culture codes as well.
                                         {
                                             try
                                             {
-                                                Culture = CultureInfo.GetCultureInfo(li[1]);
+                                                this.Culture = CultureInfo.GetCultureInfo(li[1]);
                                             }
                                             catch
                                             {
-                                                Culture = null;
+                                                this.Culture = null;
                                             }
                                         }
                                     }
@@ -379,14 +379,14 @@ namespace OfficeOpenXml.Style.XmlAccess
                             {
                                 secCount++;
                                 f.SetFormat(sb.ToString(), containsAmPm, forColWidth);
-                                if (secCount < Formats.Count)
+                                if (secCount < this.Formats.Count)
                                 {
-                                    f = Formats[secCount];
+                                    f = this.Formats[secCount];
                                 }
                                 else
                                 {
                                     f = new FormatPart();
-                                    Formats.Add(f);
+                                    this.Formats.Add(f);
                                 }
                                 sb = new StringBuilder();
                             }
@@ -394,15 +394,15 @@ namespace OfficeOpenXml.Style.XmlAccess
                             {
                                 clc = c.ToString().ToLower(CultureInfo.InvariantCulture)[0];  //Lowercase character
                                 //Set the datetype
-                                if (DataType == eFormatType.Unknown)
+                                if (this.DataType == eFormatType.Unknown)
                                 {
                                     if (c == '0' || c == '#' || c == '.')
                                     {
-                                        DataType = eFormatType.Number;
+                                        this.DataType = eFormatType.Number;
                                     }
                                     else if (clc == 'y' || clc == 'm' || clc == 'd' || clc == 'h' || clc == 'm' || clc == 's')
                                     {
-                                        DataType = eFormatType.DateTime;
+                                        this.DataType = eFormatType.DateTime;
                                     }
                                 }
 
@@ -471,7 +471,7 @@ namespace OfficeOpenXml.Style.XmlAccess
                                 }
                                 else if (c == '/')
                                 {
-                                    if (DataType == eFormatType.Number)
+                                    if (this.DataType == eFormatType.Number)
                                     {
                                         int startPos = pos - 1;
                                         while (startPos >= 0 &&
@@ -527,7 +527,7 @@ namespace OfficeOpenXml.Style.XmlAccess
                 }
 
                 //Add qoutes
-                if (DataType == eFormatType.DateTime)
+                if (this.DataType == eFormatType.DateTime)
                 {
                     SetDecimal(lstDec, sb); //Remove?
                 }
@@ -684,39 +684,39 @@ namespace OfficeOpenXml.Style.XmlAccess
 
             internal FormatPart GetFormatPart(object value)
             {
-                if(Formats.Count>1)
+                if(this.Formats.Count>1)
                 {
                     if(ConvertUtil.IsNumericOrDate(value))
                     {
                         double d=ConvertUtil.GetValueDouble(value);
-                        if(d < 0D && Formats.Count > 1)
+                        if(d < 0D && this.Formats.Count > 1)
                         {
-                            return Formats[1];
+                            return this.Formats[1];
                         }
-                        else if(d==0D && Formats.Count > 2)
+                        else if(d==0D && this.Formats.Count > 2)
                         {
-                            return Formats[2];
+                            return this.Formats[2];
                         }
                         else
                         {
-                            return Formats[0];
+                            return this.Formats[0];
                         }
                     }
                     else
                     {
-                        if(Formats.Count>3)
+                        if(this.Formats.Count>3)
                         {
-                            return Formats[3];
+                            return this.Formats[3];
                         }
                         else
                         {
-                            return Formats[0];
+                            return this.Formats[0];
                         }
                     }
                 }
                 else
                 {
-                    return Formats[0];
+                    return this.Formats[0];
                 }
             }
         }

@@ -9,8 +9,8 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Finance.Implementations
     {
         public YieldImpl(ICouponProvider couponProvider, IPriceProvider priceProvider)
         {
-            _couponProvider = couponProvider;
-            _priceProvider = priceProvider;
+            this._couponProvider = couponProvider;
+            this._priceProvider = priceProvider;
         }
 
         private readonly ICouponProvider _couponProvider;
@@ -24,9 +24,9 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Finance.Implementations
         public double GetYield(System.DateTime settlement, System.DateTime maturity, double rate, double pr, double redemption, int frequency, DayCountBasis basis = DayCountBasis.US_30_360)
         {
             
-            double A = _couponProvider.GetCoupdaybs(settlement, maturity, frequency, basis);
-            double N = _couponProvider.GetCoupnum(settlement, maturity, frequency, basis);
-            double E = _couponProvider.GetCoupdays(settlement, maturity, frequency, basis);
+            double A = this._couponProvider.GetCoupdaybs(settlement, maturity, frequency, basis);
+            double N = this._couponProvider.GetCoupnum(settlement, maturity, frequency, basis);
+            double E = this._couponProvider.GetCoupdays(settlement, maturity, frequency, basis);
 
             if (N <= -1)
             { 
@@ -43,14 +43,14 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Finance.Implementations
                 double fPriceN = 0.0;
                 double fYield1 = 0.0;
                 double fYield2 = 1.0;
-                double fPrice1 = _priceProvider.GetPrice(settlement, maturity, rate, fYield1, redemption, frequency, basis);
-                double fPrice2 = _priceProvider.GetPrice(settlement, maturity, rate, fYield2, redemption, frequency, basis);
+                double fPrice1 = this._priceProvider.GetPrice(settlement, maturity, rate, fYield1, redemption, frequency, basis);
+                double fPrice2 = this._priceProvider.GetPrice(settlement, maturity, rate, fYield2, redemption, frequency, basis);
                 double fYieldN = (fYield2 - fYield1) * 0.5;
 
 
                 for (int nIter = 0; nIter < 100 && !AreEqual(fPriceN, price); nIter++)
                 {
-                    fPriceN = _priceProvider.GetPrice(settlement, maturity, rate, fYieldN, redemption, frequency, basis);
+                    fPriceN = this._priceProvider.GetPrice(settlement, maturity, rate, fYieldN, redemption, frequency, basis);
 
                     if (AreEqual(price, fPrice1))
                     {
@@ -67,7 +67,7 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Finance.Implementations
                     else if (price < fPrice2)
                     {
                         fYield2 *= 2.0;
-                        fPrice2 = _priceProvider.GetPrice(settlement, maturity, rate, fYield2, redemption, frequency, basis);
+                        fPrice2 = this._priceProvider.GetPrice(settlement, maturity, rate, fYield2, redemption, frequency, basis);
 
                         fYieldN = (fYield2 - fYield1) * 0.5;
                     }

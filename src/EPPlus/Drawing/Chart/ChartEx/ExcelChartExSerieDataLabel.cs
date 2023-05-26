@@ -28,8 +28,8 @@ namespace OfficeOpenXml.Drawing.Chart.ChartEx
         internal ExcelChartExSerieDataLabel(ExcelChartExSerie serie, XmlNamespaceManager ns, XmlNode node, string[] schemaNodeOrder)
              : base(serie, ns, node)
         {
-            SchemaNodeOrder = schemaNodeOrder;
-            Position = eLabelPosition.Center;
+            this.SchemaNodeOrder = schemaNodeOrder;
+            this.Position = eLabelPosition.Center;
         }
         ExcelChartExDataLabelCollection _dataLabels = null;
         /// <summary>
@@ -39,11 +39,11 @@ namespace OfficeOpenXml.Drawing.Chart.ChartEx
         {
             get
             {
-                if (_dataLabels == null)
+                if (this._dataLabels == null)
                 {
-                    _dataLabels = new ExcelChartExDataLabelCollection(_serie, NameSpaceManager, TopNode, SchemaNodeOrder);
+                    this._dataLabels = new ExcelChartExDataLabelCollection(this._serie, this.NameSpaceManager, this.TopNode, this.SchemaNodeOrder);
                 }
-                return _dataLabels;
+                return this._dataLabels;
             }
         }
         /// <summary>
@@ -54,17 +54,17 @@ namespace OfficeOpenXml.Drawing.Chart.ChartEx
         /// <param name="showSeriesName">Show series name</param>
         public void Add(bool showCategory=true, bool showValue=false, bool showSeriesName=false)
         {
-            SetDataLabelNode();
-            ShowCategory = showCategory;
-            ShowValue = showValue;
-            ShowSeriesName = showSeriesName;
+            this.SetDataLabelNode();
+            this.ShowCategory = showCategory;
+            this.ShowValue = showValue;
+            this.ShowSeriesName = showSeriesName;
         }
         /// <summary>
         /// Removes data labels from the series
         /// </summary>
         public void Remove()
         {
-            _serie.DeleteNode("cx:dataLabels");
+            this._serie.DeleteNode("cx:dataLabels");
         }        
     }
 }

@@ -34,11 +34,11 @@ namespace OfficeOpenXml.Drawing.Style.ThreeD
 
         internal ExcelDrawingScene3D(XmlNamespaceManager nameSpaceManager, XmlNode topNode, string[] schemaNodeOrder, string path) : base(nameSpaceManager, topNode)
         {
-            _path = path;
-            SchemaNodeOrder = schemaNodeOrder;
-            _cameraPath = string.Format(_cameraPath, _path);
-            _lightRigPath = string.Format(_lightRigPath, _path);
-            _backDropPath = string.Format(_backDropPath, _path);
+            this._path = path;
+            this.SchemaNodeOrder = schemaNodeOrder;
+            this._cameraPath = string.Format(this._cameraPath, this._path);
+            this._lightRigPath = string.Format(this._lightRigPath, this._path);
+            this._backDropPath = string.Format(this._backDropPath, this._path);
         }
         ExcelDrawingScene3DCamera _camera = null;
         /// <summary>
@@ -48,11 +48,11 @@ namespace OfficeOpenXml.Drawing.Style.ThreeD
         {
             get
             {
-                if(_camera == null)
+                if(this._camera == null)
                 {
-                    _camera = new ExcelDrawingScene3DCamera(NameSpaceManager, TopNode, SchemaNodeOrder, _cameraPath, InitXml);
+                    this._camera = new ExcelDrawingScene3DCamera(this.NameSpaceManager, this.TopNode, this.SchemaNodeOrder, this._cameraPath, this.InitXml);
                 }
-                return _camera;
+                return this._camera;
             }
         }
         ExcelDrawingScene3DLightRig _lightRig = null;
@@ -64,11 +64,11 @@ namespace OfficeOpenXml.Drawing.Style.ThreeD
         {
             get
             {
-                if (_lightRig == null)
+                if (this._lightRig == null)
                 {
-                    _lightRig = new ExcelDrawingScene3DLightRig(NameSpaceManager, TopNode, SchemaNodeOrder, _lightRigPath, InitXml);
+                    this._lightRig = new ExcelDrawingScene3DLightRig(this.NameSpaceManager, this.TopNode, this.SchemaNodeOrder, this._lightRigPath, this.InitXml);
                 }
-                return _lightRig;
+                return this._lightRig;
             }
         }
         ExcelDrawingScene3DBackDrop _backDropPlane = null;
@@ -79,11 +79,11 @@ namespace OfficeOpenXml.Drawing.Style.ThreeD
         {
             get
             {
-                if (_backDropPlane == null)
+                if (this._backDropPlane == null)
                 {
-                    _backDropPlane = new ExcelDrawingScene3DBackDrop(NameSpaceManager, TopNode, SchemaNodeOrder, _backDropPath, InitXml);
+                    this._backDropPlane = new ExcelDrawingScene3DBackDrop(this.NameSpaceManager, this.TopNode, this.SchemaNodeOrder, this._backDropPath, this.InitXml);
                 }
-                return _backDropPlane;
+                return this._backDropPlane;
             }
         }
         bool hasInit = false;
@@ -92,19 +92,19 @@ namespace OfficeOpenXml.Drawing.Style.ThreeD
             
             if(delete)
             {
-                DeleteNode(_cameraPath);
-                DeleteNode(_lightRigPath);
-                DeleteNode(_backDropPath);
-                hasInit = false;
+                this.DeleteNode(this._cameraPath);
+                this.DeleteNode(this._lightRigPath);
+                this.DeleteNode(this._backDropPath);
+                this.hasInit = false;
             }
-            else if(hasInit==false)
+            else if(this.hasInit==false)
             {
-                hasInit = true;
-                if (!ExistsNode(_cameraPath))
+                this.hasInit = true;
+                if (!this.ExistsNode(this._cameraPath))
                 {
-                    Camera.CameraType = ePresetCameraType.OrthographicFront;
-                    LightRig.RigType = eRigPresetType.ThreePt;
-                    LightRig.Direction = eLightRigDirection.Top;
+                    this.Camera.CameraType = ePresetCameraType.OrthographicFront;
+                    this.LightRig.RigType = eRigPresetType.ThreePt;
+                    this.LightRig.Direction = eLightRigDirection.Top;
                 }
             }
         }

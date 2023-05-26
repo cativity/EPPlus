@@ -10,12 +10,12 @@ namespace OfficeOpenXml.Table
         ExcelTable _tbl;
         public TableAdjustFormula(ExcelTable tbl)
         {
-            _tbl = tbl;
+            this._tbl = tbl;
         }
 
         internal void AdjustFormulas(string prevName, string name)
         {
-            foreach (ExcelWorksheet? ws in _tbl.WorkSheet.Workbook.Worksheets)
+            foreach (ExcelWorksheet? ws in this._tbl.WorkSheet.Workbook.Worksheets)
             {
                 foreach (ExcelTable? tbl in ws.Tables)
                 {
@@ -23,7 +23,7 @@ namespace OfficeOpenXml.Table
                     {
                         if (!string.IsNullOrEmpty(c.CalculatedColumnFormula))
                         {
-                            c.CalculatedColumnFormula = ReplaceTableName(c.CalculatedColumnFormula, prevName, name);
+                            c.CalculatedColumnFormula = this.ReplaceTableName(c.CalculatedColumnFormula, prevName, name);
                         }
                     }
                 }
@@ -35,7 +35,7 @@ namespace OfficeOpenXml.Table
                     {
                         if (f.IndexOf(prevName, StringComparison.InvariantCultureIgnoreCase) > -1)
                         {
-                            ws._formulas.SetValue(cse.Row, cse.Column, ReplaceTableName(f, prevName, name));
+                            ws._formulas.SetValue(cse.Row, cse.Column, this.ReplaceTableName(f, prevName, name));
                         }
                     }
                 }
@@ -44,19 +44,19 @@ namespace OfficeOpenXml.Table
                 {
                     if (sf.Formula.IndexOf(prevName, StringComparison.InvariantCultureIgnoreCase) > -1)
                     {
-                        sf.Formula = ReplaceTableName(sf.Formula, prevName, name);
+                        sf.Formula = this.ReplaceTableName(sf.Formula, prevName, name);
                     }
                 }
 
                 foreach (ExcelNamedRange? n in ws.Names)
                 {
-                    AdjustName(n, prevName, name);
+                    this.AdjustName(n, prevName, name);
                 }
             }
 
-            foreach (ExcelNamedRange? n in _tbl.WorkSheet.Workbook.Names)
+            foreach (ExcelNamedRange? n in this._tbl.WorkSheet.Workbook.Names)
             {
-                AdjustName(n, prevName, name);
+                this.AdjustName(n, prevName, name);
             }
         }
 
@@ -66,21 +66,21 @@ namespace OfficeOpenXml.Table
             {
                 if (n.Formula.IndexOf(prevName, StringComparison.InvariantCultureIgnoreCase) > -1)
                 {
-                    n.Formula = ReplaceTableName(n.Formula, prevName, name);
+                    n.Formula = this.ReplaceTableName(n.Formula, prevName, name);
                 }
             }
             else if (n.IsName == false)
             {
                 if (n.Address.IndexOf(prevName, StringComparison.InvariantCultureIgnoreCase) > -1)
                 {
-                    n.Address = ReplaceTableName(n.Address, prevName, name);
+                    n.Address = this.ReplaceTableName(n.Address, prevName, name);
                 }
             }
         }
 
         private string ReplaceTableName(string formula, string prevName, string name)
         {
-            IEnumerable<Token>? tokens = _tbl.WorkSheet.Workbook.FormulaParser.Lexer.Tokenize(formula);
+            IEnumerable<Token>? tokens = this._tbl.WorkSheet.Workbook.FormulaParser.Lexer.Tokenize(formula);
             string? f = "";
             foreach (Token t in tokens)
             {

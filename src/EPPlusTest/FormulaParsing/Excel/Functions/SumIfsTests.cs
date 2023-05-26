@@ -44,8 +44,8 @@ namespace EPPlusTest.FormulaParsing.Excel.Functions
         [TestInitialize]
         public void Initialize()
         {
-            _package = new ExcelPackage();
-            ExcelWorksheet? s1 = _package.Workbook.Worksheets.Add("test");
+            this._package = new ExcelPackage();
+            ExcelWorksheet? s1 = this._package.Workbook.Worksheets.Add("test");
             s1.Cells["A1"].Value = 1;
             s1.Cells["A2"].Value = 2;
             s1.Cells["A3"].Value = 3;
@@ -61,69 +61,69 @@ namespace EPPlusTest.FormulaParsing.Excel.Functions
             s1.Cells["C3"].Value = 7;
             s1.Cells["C4"].Value = 8;
 
-            _sheet = s1;
+            this._sheet = s1;
         }
 
         [TestCleanup]
         public void Cleanup()
         {
-            _package.Dispose();
+            this._package.Dispose();
         }
 
         [TestMethod]
         public void ShouldCalculateTwoCriteriaRanges()
         {
-            _sheet.Cells["A5"].Formula = "SUMIFS(A1:A4;B1:B5;\">5\";C1:C5;\">4\")";
-            _sheet.Calculate();
+            this._sheet.Cells["A5"].Formula = "SUMIFS(A1:A4;B1:B5;\">5\";C1:C5;\">4\")";
+            this._sheet.Calculate();
 
-            Assert.AreEqual(9d, _sheet.Cells["A5"].Value);
+            Assert.AreEqual(9d, this._sheet.Cells["A5"].Value);
         }
 
         [TestMethod]
         public void ShouldIgnoreErrorInCriteriaRange()
         {
-            _sheet.Cells["B3"].Value = ExcelErrorValue.Create(eErrorType.Div0);
+            this._sheet.Cells["B3"].Value = ExcelErrorValue.Create(eErrorType.Div0);
 
-            _sheet.Cells["A5"].Formula = "SUMIFS(A1:A4;B1:B5;\">5\";C1:C5;\">4\")";
-            _sheet.Calculate();
+            this._sheet.Cells["A5"].Formula = "SUMIFS(A1:A4;B1:B5;\">5\";C1:C5;\">4\")";
+            this._sheet.Calculate();
 
-            Assert.AreEqual(6d, _sheet.Cells["A5"].Value);
+            Assert.AreEqual(6d, this._sheet.Cells["A5"].Value);
         }
 
         [TestMethod]
         public void ShouldHandleExcelRangesInCriteria()
         {
-            _sheet.Cells["D1"].Value = 6;
-            _sheet.Cells["A5"].Formula = "SUMIFS(A1:A4;B1:B5;\">5\";C1:C5;D1)";
-            _sheet.Calculate();
+            this._sheet.Cells["D1"].Value = 6;
+            this._sheet.Cells["A5"].Formula = "SUMIFS(A1:A4;B1:B5;\">5\";C1:C5;D1)";
+            this._sheet.Calculate();
 
-            Assert.AreEqual(2d, _sheet.Cells["A5"].Value);
+            Assert.AreEqual(2d, this._sheet.Cells["A5"].Value);
         }
 
         [TestMethod]
         public void ShouldHandleTimeValuesCorrectly()
         {
-            _sheet.Cells["A1"].Value = null;
-            _sheet.Cells["A2"].Value = (7d * 3600d + 33d * 60d)/(24d * 3600d);// 07:33
-            _sheet.Cells["A3"].Value = (11d * 3600d + 18d * 60d) / (24d * 3600d);// 11:18
-            _sheet.Cells["A4"].Value = (7d * 3600d + 18d * 60d) / (24d * 3600d);// 07:18
-            _sheet.Cells["A5"].Value = (10d * 3600d + 30d * 60d) / (24d * 3600d);// 10:30
-            _sheet.Cells["A6"].Value = (10d * 3600d + 33d * 60d) / (24d * 3600d);// 10:33
-            _sheet.Cells["A7"].Value = (10d * 3600d + 24d * 60d) / (24d * 3600d);// 10:24
-            _sheet.Cells["A8"].Value = (11d * 3600d + 00d * 60d) / (24d * 3600d);// 11:00
-            _sheet.Cells["A9"].Value = (6d * 3600d + 54d * 60d) / (24d * 3600d);// 06:54
-            _sheet.Cells["A10"].Value = (12d * 3600d + 00d * 60d) / (24d * 3600d);// 12:00
-            _sheet.Cells["A2:A10"].Calculate();
+            this._sheet.Cells["A1"].Value = null;
+            this._sheet.Cells["A2"].Value = (7d * 3600d + 33d * 60d)/(24d * 3600d);// 07:33
+            this._sheet.Cells["A3"].Value = (11d * 3600d + 18d * 60d) / (24d * 3600d);// 11:18
+            this._sheet.Cells["A4"].Value = (7d * 3600d + 18d * 60d) / (24d * 3600d);// 07:18
+            this._sheet.Cells["A5"].Value = (10d * 3600d + 30d * 60d) / (24d * 3600d);// 10:30
+            this._sheet.Cells["A6"].Value = (10d * 3600d + 33d * 60d) / (24d * 3600d);// 10:33
+            this._sheet.Cells["A7"].Value = (10d * 3600d + 24d * 60d) / (24d * 3600d);// 10:24
+            this._sheet.Cells["A8"].Value = (11d * 3600d + 00d * 60d) / (24d * 3600d);// 11:00
+            this._sheet.Cells["A9"].Value = (6d * 3600d + 54d * 60d) / (24d * 3600d);// 06:54
+            this._sheet.Cells["A10"].Value = (12d * 3600d + 00d * 60d) / (24d * 3600d);// 12:00
+            this._sheet.Cells["A2:A10"].Calculate();
 
             for(int row = 2; row < 11; row++)
             {
-                _sheet.Cells["B" + row].Value = 100;
+                this._sheet.Cells["B" + row].Value = 100;
             }
 
-            _sheet.Cells["C2"].Formula = "SUMIFS(B:B,A:A,\">08:00\")";
-            _sheet.Cells["C2"].Calculate();
+            this._sheet.Cells["C2"].Formula = "SUMIFS(B:B,A:A,\">08:00\")";
+            this._sheet.Cells["C2"].Calculate();
 
-            Assert.AreEqual(600d, _sheet.Cells["C2"].Value);
+            Assert.AreEqual(600d, this._sheet.Cells["C2"].Value);
 
         }
 

@@ -32,7 +32,7 @@ namespace OfficeOpenXml.Packaging
         internal protected Dictionary<string, ZipPackageRelationship> _rels = new Dictionary<string, ZipPackageRelationship>(StringComparer.OrdinalIgnoreCase);
         internal void Add(ZipPackageRelationship item)
         {
-            _rels.Add(item.Id, item);
+            this._rels.Add(item.Id, item);
         }
         /// <summary>
         /// Gets the enumerator for the collection
@@ -40,33 +40,33 @@ namespace OfficeOpenXml.Packaging
         /// <returns>the enumerator</returns>
         public IEnumerator<ZipPackageRelationship> GetEnumerator()
         {
-            return _rels.Values.GetEnumerator();
+            return this._rels.Values.GetEnumerator();
         }
 
         System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator()
         {
-            return _rels.Values.GetEnumerator();
+            return this._rels.Values.GetEnumerator();
         }
 
         internal void Remove(string id)
         {
-            _rels.Remove(id);
+            this._rels.Remove(id);
         }
         internal bool ContainsKey(string id)
         {
-            return _rels.ContainsKey(id);
+            return this._rels.ContainsKey(id);
         }
         internal ZipPackageRelationship this[string id]
         {
             get
             {
-                return _rels[id];
+                return this._rels[id];
             }
         }
         internal ZipPackageRelationshipCollection GetRelationshipsByType(string relationshipType)
         {
             ZipPackageRelationshipCollection? ret = new ZipPackageRelationshipCollection();
-            foreach (ZipPackageRelationship? rel in _rels.Values)
+            foreach (ZipPackageRelationship? rel in this._rels.Values)
             {
                 if (rel.RelationshipType == relationshipType)
                 {
@@ -79,7 +79,7 @@ namespace OfficeOpenXml.Packaging
         internal void WriteZip(ZipOutputStream os, string fileName)
         {
             StringBuilder xml = new StringBuilder("<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"yes\"?><Relationships xmlns=\"http://schemas.openxmlformats.org/package/2006/relationships\">");
-            foreach (ZipPackageRelationship? rel in _rels.Values)
+            foreach (ZipPackageRelationship? rel in this._rels.Values)
             {
                 if(rel.TargetUri==null || rel.TargetUri.OriginalString.StartsWith("Invalid:URI", StringComparison.OrdinalIgnoreCase))
                 {
@@ -104,7 +104,7 @@ namespace OfficeOpenXml.Packaging
         {
             get
             {
-                return _rels.Count;
+                return this._rels.Count;
             }
         }
     }

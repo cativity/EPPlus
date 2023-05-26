@@ -41,7 +41,7 @@ namespace OfficeOpenXml.Packaging.Ionic.Zip
         {
             if (!File.Exists(fileName))
             {
-                throw new System.IO.FileNotFoundException(fileName);
+                throw new FileNotFoundException(fileName);
             }
 
             long fileLength = 0L;
@@ -212,7 +212,7 @@ namespace OfficeOpenXml.Packaging.Ionic.Zip
         }
 
 
-        internal static int ReadSignature(System.IO.Stream s)
+        internal static int ReadSignature(Stream s)
         {
             int x = 0;
             try { x = _ReadFourBytes(s, "n/a"); }
@@ -221,7 +221,7 @@ namespace OfficeOpenXml.Packaging.Ionic.Zip
         }
 
 
-        internal static int ReadEntrySignature(System.IO.Stream s)
+        internal static int ReadEntrySignature(Stream s)
         {
             // handle the case of ill-formatted zip archives - includes a data descriptor
             // when none is expected.
@@ -260,12 +260,12 @@ namespace OfficeOpenXml.Packaging.Ionic.Zip
         }
 
 
-        internal static int ReadInt(System.IO.Stream s)
+        internal static int ReadInt(Stream s)
         {
             return _ReadFourBytes(s, "Could not read block - no data!  (position 0x{0:X8})");
         }
 
-        private static int _ReadFourBytes(System.IO.Stream s, string message)
+        private static int _ReadFourBytes(Stream s, string message)
         {
             int n = 0;
             byte[] block = new byte[4];
@@ -324,7 +324,7 @@ namespace OfficeOpenXml.Packaging.Ionic.Zip
         /// <param name="stream">The stream to search</param>
         /// <param name="SignatureToFind">The 4-byte signature to find</param>
         /// <returns>The number of bytes read</returns>
-        internal static long FindSignature(System.IO.Stream stream, int SignatureToFind)
+        internal static long FindSignature(Stream stream, int SignatureToFind)
         {
             long startingPosition = stream.Position;
 
@@ -347,14 +347,14 @@ namespace OfficeOpenXml.Packaging.Ionic.Zip
                         {
                             if (i >= BATCH_SIZE - 4)
                             {
-                                stream.Seek(stream.Position - 4, System.IO.SeekOrigin.Begin);
+                                stream.Seek(stream.Position - 4, SeekOrigin.Begin);
                                 // workitem 10178
                                 Workaround_Ladybug318918(stream);
                                 break;
                             }
                             else if (batch[i + 1] == targetBytes[2] && batch[i + 2] == targetBytes[1] && batch[i + 3] == targetBytes[0])
                             {
-                                stream.Seek(i - n + 4, System.IO.SeekOrigin.Current);
+                                stream.Seek(i - n + 4, SeekOrigin.Current);
                                 Workaround_Ladybug318918(stream);
                                 success = true;
                                 break;
@@ -380,7 +380,7 @@ namespace OfficeOpenXml.Packaging.Ionic.Zip
 
             if (!success)
             {
-                stream.Seek(startingPosition, System.IO.SeekOrigin.Begin);
+                stream.Seek(startingPosition, SeekOrigin.Begin);
                 // workitem 10178
                 Workaround_Ladybug318918(stream);
                 return -1;  // or throw?
@@ -405,12 +405,12 @@ namespace OfficeOpenXml.Packaging.Ionic.Zip
             DateTime adjusted = time;
             if (DateTime.Now.IsDaylightSavingTime() && !time.IsDaylightSavingTime())
             {
-                adjusted = time - new System.TimeSpan(1, 0, 0);
+                adjusted = time - new TimeSpan(1, 0, 0);
             }
 
             else if (!DateTime.Now.IsDaylightSavingTime() && time.IsDaylightSavingTime())
             {
-                adjusted = time + new System.TimeSpan(1, 0, 0);
+                adjusted = time + new TimeSpan(1, 0, 0);
             }
 
             return adjusted;
@@ -439,7 +439,7 @@ namespace OfficeOpenXml.Packaging.Ionic.Zip
             // workitem 7074 & workitem 7170
             if (packedDateTime == 0xFFFF || packedDateTime == 0)
             {
-                return new System.DateTime(1995, 1, 1, 0, 0, 0, 0);  // return a fixed date when none is supplied.
+                return new DateTime(1995, 1, 1, 0, 0, 0, 0);  // return a fixed date when none is supplied.
             }
 
             Int16 packedTime = unchecked((Int16)(packedDateTime & 0x0000ffff));
@@ -460,30 +460,30 @@ namespace OfficeOpenXml.Packaging.Ionic.Zip
             if (minute >= 60) { hour++; minute = 0; }
             if (hour >= 24) { day++; hour = 0; }
 
-            DateTime d = System.DateTime.Now;
+            DateTime d = DateTime.Now;
             bool success= false;
             try
             {
-                d = new System.DateTime(year, month, day, hour, minute, second, 0);
+                d = new DateTime(year, month, day, hour, minute, second, 0);
                 success= true;
             }
-            catch (System.ArgumentOutOfRangeException)
+            catch (ArgumentOutOfRangeException)
             {
                 if (year == 1980 && (month == 0 || day == 0))
                 {
                     try
                     {
-                        d = new System.DateTime(1980, 1, 1, hour, minute, second, 0);
+                        d = new DateTime(1980, 1, 1, hour, minute, second, 0);
                 success= true;
                     }
-                    catch (System.ArgumentOutOfRangeException)
+                    catch (ArgumentOutOfRangeException)
                     {
                         try
                         {
-                            d = new System.DateTime(1980, 1, 1, 0, 0, 0, 0);
+                            d = new DateTime(1980, 1, 1, 0, 0, 0, 0);
                 success= true;
                         }
-                        catch (System.ArgumentOutOfRangeException) { }
+                        catch (ArgumentOutOfRangeException) { }
 
                     }
                 }
@@ -544,10 +544,10 @@ namespace OfficeOpenXml.Packaging.Ionic.Zip
                             second--;
                         }
 
-                        d = new System.DateTime(year, month, day, hour, minute, second, 0);
+                        d = new DateTime(year, month, day, hour, minute, second, 0);
                         success= true;
                     }
-                    catch (System.ArgumentOutOfRangeException) { }
+                    catch (ArgumentOutOfRangeException) { }
                 }
             }
             if (!success)
@@ -667,7 +667,7 @@ namespace OfficeOpenXml.Packaging.Ionic.Zip
         /// This could be gracefully handled with an extension attribute, but
         /// This assembly is built for .NET 2.0, so I cannot use them.
         /// </remarks>
-        internal static int ReadWithRetry(System.IO.Stream s, byte[] buffer, int offset, int count, string FileName)
+        internal static int ReadWithRetry(Stream s, byte[] buffer, int offset, int count, string FileName)
         {
             int n = 0;
             bool done = false;
@@ -788,10 +788,10 @@ namespace OfficeOpenXml.Packaging.Ionic.Zip
     ///     <c>Position</c>, it will then do the right thing with the offsets.
     ///   </para>
     /// </remarks>
-    internal class CountingStream : System.IO.Stream
+    internal class CountingStream : Stream
     {
         // workitem 12374: this class is now public
-        private System.IO.Stream _s;
+        private Stream _s;
         private Int64 _bytesWritten;
         private Int64 _bytesRead;
         private Int64 _initialOffset;
@@ -800,17 +800,17 @@ namespace OfficeOpenXml.Packaging.Ionic.Zip
         /// The constructor.
         /// </summary>
         /// <param name="stream">The underlying stream</param>
-        public CountingStream(System.IO.Stream stream)
+        public CountingStream(Stream stream)
             : base()
         {
-            _s = stream;
+            this._s = stream;
             try
             {
-                _initialOffset = _s.Position;
+                this._initialOffset = this._s.Position;
             }
             catch
             {
-                _initialOffset = 0L;
+                this._initialOffset = 0L;
             }
         }
 
@@ -821,7 +821,7 @@ namespace OfficeOpenXml.Packaging.Ionic.Zip
         {
             get
             {
-                return _s;
+                return this._s;
             }
         }
 
@@ -830,7 +830,7 @@ namespace OfficeOpenXml.Packaging.Ionic.Zip
         /// </summary>
         public Int64 BytesWritten
         {
-            get { return _bytesWritten; }
+            get { return this._bytesWritten; }
         }
 
         /// <summary>
@@ -838,7 +838,7 @@ namespace OfficeOpenXml.Packaging.Ionic.Zip
         /// </summary>
         public Int64 BytesRead
         {
-            get { return _bytesRead; }
+            get { return this._bytesRead; }
         }
 
         /// <summary>
@@ -858,13 +858,13 @@ namespace OfficeOpenXml.Packaging.Ionic.Zip
         /// </remarks>
         public void Adjust(Int64 delta)
         {
-            _bytesWritten -= delta;
-            if (_bytesWritten < 0)
+            this._bytesWritten -= delta;
+            if (this._bytesWritten < 0)
             {
                 throw new InvalidOperationException();
             }
 
-            if (_s as CountingStream != null)
+            if (this._s as CountingStream != null)
             {
                 ((CountingStream)this._s).Adjust(delta);
             }
@@ -879,8 +879,8 @@ namespace OfficeOpenXml.Packaging.Ionic.Zip
         /// <returns>the number of bytes read, after decryption and decompression.</returns>
         public override int Read(byte[] buffer, int offset, int count)
         {
-            int n = _s.Read(buffer, offset, count);
-            _bytesRead += n;
+            int n = this._s.Read(buffer, offset, count);
+            this._bytesRead += n;
             return n;
         }
 
@@ -897,8 +897,8 @@ namespace OfficeOpenXml.Packaging.Ionic.Zip
                 return;
             }
 
-            _s.Write(buffer, offset, count);
-            _bytesWritten += count;
+            this._s.Write(buffer, offset, count);
+            this._bytesWritten += count;
         }
 
         /// <summary>
@@ -906,7 +906,7 @@ namespace OfficeOpenXml.Packaging.Ionic.Zip
         /// </summary>
         public override bool CanRead
         {
-            get { return _s.CanRead; }
+            get { return this._s.CanRead; }
         }
 
         /// <summary>
@@ -914,7 +914,7 @@ namespace OfficeOpenXml.Packaging.Ionic.Zip
         /// </summary>
         public override bool CanSeek
         {
-            get { return _s.CanSeek; }
+            get { return this._s.CanSeek; }
         }
 
         /// <summary>
@@ -922,7 +922,7 @@ namespace OfficeOpenXml.Packaging.Ionic.Zip
         /// </summary>
         public override bool CanWrite
         {
-            get { return _s.CanWrite; }
+            get { return this._s.CanWrite; }
         }
 
         /// <summary>
@@ -930,7 +930,7 @@ namespace OfficeOpenXml.Packaging.Ionic.Zip
         /// </summary>
         public override void Flush()
         {
-            _s.Flush();
+            this._s.Flush();
         }
 
         /// <summary>
@@ -938,7 +938,7 @@ namespace OfficeOpenXml.Packaging.Ionic.Zip
         /// </summary>
         public override long Length
         {
-            get { return _s.Length; }   // bytesWritten??
+            get { return this._s.Length; }   // bytesWritten??
         }
 
         /// <summary>
@@ -947,7 +947,7 @@ namespace OfficeOpenXml.Packaging.Ionic.Zip
         /// </summary>
         public long ComputedPosition
         {
-            get { return _initialOffset + _bytesWritten; }
+            get { return this._initialOffset + this._bytesWritten; }
         }
 
 
@@ -956,12 +956,12 @@ namespace OfficeOpenXml.Packaging.Ionic.Zip
         /// </summary>
         public override long Position
         {
-            get { return _s.Position; }
+            get { return this._s.Position; }
             set
             {
-                _s.Seek(value, System.IO.SeekOrigin.Begin);
+                this._s.Seek(value, SeekOrigin.Begin);
                 // workitem 10178
-                Ionic.Zip.SharedUtilities.Workaround_Ladybug318918(_s);
+                SharedUtilities.Workaround_Ladybug318918(this._s);
             }
         }
 
@@ -971,9 +971,9 @@ namespace OfficeOpenXml.Packaging.Ionic.Zip
         /// <param name="offset">the offset point to seek to</param>
         /// <param name="origin">the reference point from which to seek</param>
         /// <returns>The new position</returns>
-        public override long Seek(long offset, System.IO.SeekOrigin origin)
+        public override long Seek(long offset, SeekOrigin origin)
         {
-            return _s.Seek(offset, origin);
+            return this._s.Seek(offset, origin);
         }
 
         /// <summary>
@@ -983,7 +983,7 @@ namespace OfficeOpenXml.Packaging.Ionic.Zip
         /// <param name='value'>the length to set on the underlying stream.</param>
         public override void SetLength(long value)
         {
-            _s.SetLength(value);
+            this._s.SetLength(value);
         }
     }
 

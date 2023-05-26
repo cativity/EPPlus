@@ -31,22 +31,22 @@ namespace OfficeOpenXml.ThreadedComments
         /// <param name="workbook">The <paramref name="workbook"/> where the <see cref="ExcelThreadedCommentPerson"/> occurs</param>
         public ExcelThreadedCommentPersonCollection(ExcelWorkbook workbook)
         {
-            _workbook = workbook;
+            this._workbook = workbook;
             if(workbook._package.ZipPackage.PartExists(workbook.PersonsUri))
             {
-                PersonsXml = workbook._package.GetXmlFromUri(workbook.PersonsUri);
+                this.PersonsXml = workbook._package.GetXmlFromUri(workbook.PersonsUri);
                 // lägg upp personerna i listan, loopa på noderna
-                XmlElement? listNode = PersonsXml.DocumentElement;
+                XmlElement? listNode = this.PersonsXml.DocumentElement;
                 foreach(object? personNode in listNode.ChildNodes)
                 {
                     ExcelThreadedCommentPerson? person = new ExcelThreadedCommentPerson(workbook.NameSpaceManager, (XmlNode)personNode);
-                    _personList.Add(person);
+                    this._personList.Add(person);
                 }
             }
             else
             {
-                PersonsXml = new XmlDocument();
-                PersonsXml.LoadXml("<personList xmlns=\"http://schemas.microsoft.com/office/spreadsheetml/2018/threadedcomments\" xmlns:x=\"http://schemas.openxmlformats.org/spreadsheetml/2006/main\"/>");
+                this.PersonsXml = new XmlDocument();
+                this.PersonsXml.LoadXml("<personList xmlns=\"http://schemas.microsoft.com/office/spreadsheetml/2018/threadedcomments\" xmlns:x=\"http://schemas.openxmlformats.org/spreadsheetml/2006/main\"/>");
             }
         }
 
@@ -65,7 +65,7 @@ namespace OfficeOpenXml.ThreadedComments
         { 
             get 
             {
-                return _personList.Count;
+                return this._personList.Count;
             } 
         }
 
@@ -78,7 +78,7 @@ namespace OfficeOpenXml.ThreadedComments
         {
             get
             {
-                return _personList[index];
+                return this._personList[index];
             }
         }
 
@@ -91,7 +91,7 @@ namespace OfficeOpenXml.ThreadedComments
         {
             get
             {
-                return _personList.FirstOrDefault(x => x.Id == id);
+                return this._personList.FirstOrDefault(x => x.Id == id);
             }
         }
 
@@ -102,7 +102,7 @@ namespace OfficeOpenXml.ThreadedComments
         /// <returns>A matching <see cref="ExcelThreadedCommentPerson"/></returns>
         public ExcelThreadedCommentPerson Find(Predicate<ExcelThreadedCommentPerson> match)
         {
-            return _personList.Find(match);
+            return this._personList.Find(match);
         }
 
         /// <summary>
@@ -112,7 +112,7 @@ namespace OfficeOpenXml.ThreadedComments
         /// <returns>An enumerable of matching <see cref="ExcelThreadedCommentPerson"/>'s</returns>
         public IEnumerable<ExcelThreadedCommentPerson> FindAll(Predicate<ExcelThreadedCommentPerson> match)
         {
-            return _personList.FindAll(match);
+            return this._personList.FindAll(match);
         }
 
         /// <summary>
@@ -122,7 +122,7 @@ namespace OfficeOpenXml.ThreadedComments
         /// <param name="displayName">The display name of the added <see cref="ExcelThreadedCommentPerson"/></param>
         public ExcelThreadedCommentPerson Add(string displayName)
         {
-            return Add(displayName, displayName, IdentityProvider.NoProvider);
+            return this.Add(displayName, displayName, IdentityProvider.NoProvider);
         }
 
         /// <summary>
@@ -134,7 +134,7 @@ namespace OfficeOpenXml.ThreadedComments
         /// <returns>The added <see cref="ExcelThreadedCommentPerson"/></returns>
         public ExcelThreadedCommentPerson Add(string displayName, string userId, IdentityProvider identityProvider)
         {
-            return Add(displayName, userId, identityProvider, ExcelThreadedCommentPerson.NewId());
+            return this.Add(displayName, userId, identityProvider, ExcelThreadedCommentPerson.NewId());
         }
 
         /// <summary>
@@ -147,14 +147,14 @@ namespace OfficeOpenXml.ThreadedComments
         /// <returns>The added <see cref="ExcelThreadedCommentPerson"/></returns>
         public ExcelThreadedCommentPerson Add(string displayName, string userId, IdentityProvider identityProvider, string id)
         {
-            XmlElement? personsNode = PersonsXml.CreateElement("person", ExcelPackage.schemaThreadedComments);
-            PersonsXml.DocumentElement.AppendChild(personsNode);
-            ExcelThreadedCommentPerson? p = new ExcelThreadedCommentPerson(_workbook.NameSpaceManager, personsNode);
+            XmlElement? personsNode = this.PersonsXml.CreateElement("person", ExcelPackage.schemaThreadedComments);
+            this.PersonsXml.DocumentElement.AppendChild(personsNode);
+            ExcelThreadedCommentPerson? p = new ExcelThreadedCommentPerson(this._workbook.NameSpaceManager, personsNode);
             p.DisplayName = displayName;
             p.Id = id;
             p.UserId = userId;
             p.ProviderId = identityProvider;
-            _personList.Add(p);
+            this._personList.Add(p);
             return p;
         }
 
@@ -164,7 +164,7 @@ namespace OfficeOpenXml.ThreadedComments
         /// <returns>An enumerator that can be used to iterate through the collection.</returns>
         public IEnumerator<ExcelThreadedCommentPerson> GetEnumerator()
         {
-            return _personList.GetEnumerator();
+            return this._personList.GetEnumerator();
         }
 
         /// <summary>
@@ -173,12 +173,12 @@ namespace OfficeOpenXml.ThreadedComments
         /// <returns>An enumerator that can be used to iterate through the collection.</returns>
         IEnumerator IEnumerable.GetEnumerator()
         {
-            return _personList.GetEnumerator();
+            return this._personList.GetEnumerator();
         }
 
         internal void Add(ExcelThreadedCommentPerson person)
         {
-            _personList.Add(person);
+            this._personList.Add(person);
         }
 
         /// <summary>
@@ -187,12 +187,13 @@ namespace OfficeOpenXml.ThreadedComments
         /// <param name="person"></param>
         public void Remove(ExcelThreadedCommentPerson person)
         {
-            XmlNode? node = PersonsXml.DocumentElement.SelectSingleNode("/person[id='" + person.Id + "']");
+            XmlNode? node = this.PersonsXml.DocumentElement.SelectSingleNode("/person[id='" + person.Id + "']");
             if(node != null)
             {
-                PersonsXml.DocumentElement.RemoveChild(node);
+                this.PersonsXml.DocumentElement.RemoveChild(node);
             }
-            _personList.Remove(person);
+
+            this._personList.Remove(person);
         }
 
         /// <summary>
@@ -200,8 +201,8 @@ namespace OfficeOpenXml.ThreadedComments
         /// </summary>
         public void Clear()
         {
-            PersonsXml.DocumentElement.RemoveAll();
-            _personList.Clear();
+            this.PersonsXml.DocumentElement.RemoveAll();
+            this._personList.Clear();
         }
 
         /// <summary>
@@ -210,12 +211,12 @@ namespace OfficeOpenXml.ThreadedComments
         /// <returns>A string that represents the current object.</returns>
         public override string ToString()
         {
-            return "Count = " + _personList.Count;
+            return "Count = " + this._personList.Count;
         }
 
         internal void Save(ExcelPackage package, ZipPackagePart WorkbookPart, Uri personsUri)
         {
-            if (Count == 0)
+            if (this.Count == 0)
             {
                 if (package.ZipPackage.PartExists(personsUri))
                 {
@@ -227,9 +228,9 @@ namespace OfficeOpenXml.ThreadedComments
                 if (!package.ZipPackage.PartExists(personsUri))
                 {
                     ZipPackagePart? p=package.ZipPackage.CreatePart(personsUri, "application/vnd.ms-excel.person+xml");
-                    WorkbookPart.CreateRelationship(personsUri, Packaging.TargetMode.Internal, ExcelPackage.schemaPersonsRelationShips);
+                    WorkbookPart.CreateRelationship(personsUri, TargetMode.Internal, ExcelPackage.schemaPersonsRelationShips);
                 }
-                package.SavePart(personsUri, PersonsXml);
+                package.SavePart(personsUri, this.PersonsXml);
             }
         }
     }

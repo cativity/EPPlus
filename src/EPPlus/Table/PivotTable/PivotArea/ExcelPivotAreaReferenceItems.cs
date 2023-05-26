@@ -24,7 +24,7 @@ namespace OfficeOpenXml.Table.PivotTable
         private ExcelPivotAreaReference _reference;
         internal ExcelPivotAreaReferenceItems(ExcelPivotAreaReference reference)
         {
-            _reference = reference;
+            this._reference = reference;
         }
         /// <summary>
         /// Adds the item at the index to the condition. The index referes to the pivot cache.
@@ -33,10 +33,10 @@ namespace OfficeOpenXml.Table.PivotTable
         public void Add(int index)
         {
             {
-                EPPlusReadOnlyList<object>? items = _reference.Field.Cache.SharedItems.Count == 0 ? _reference.Field.Cache.GroupItems : _reference.Field.Cache.SharedItems;
+                EPPlusReadOnlyList<object>? items = this._reference.Field.Cache.SharedItems.Count == 0 ? this._reference.Field.Cache.GroupItems : this._reference.Field.Cache.SharedItems;
                 if (items.Count > index)
                 {
-                    Add(new PivotItemReference() { Index = index, Value = items[index] });
+                    this.Add(new PivotItemReference() { Index = index, Value = items[index] });
                 }
                 else
                 {
@@ -51,10 +51,10 @@ namespace OfficeOpenXml.Table.PivotTable
         /// <returns>true if the value has been added, otherwise false</returns>
         public bool AddByValue(object value)
         {
-            int index = _reference.Field.Items._list.FindIndex(x => (x.Value!=null && (x.Value.Equals(value)) || (x.Text!=null && x.Text.Equals(value))));
+            int index = this._reference.Field.Items._list.FindIndex(x => (x.Value!=null && (x.Value.Equals(value)) || (x.Text!=null && x.Text.Equals(value))));
             if (index >= 0)
             {
-                Add(new PivotItemReference() { Index = index, Value = value });
+                this.Add(new PivotItemReference() { Index = index, Value = value });
                 return true;
             }
             return false;

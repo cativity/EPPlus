@@ -29,12 +29,12 @@ namespace OfficeOpenXml.Export.HtmlExport.Exporters
         internal HtmlRangeExporterAsync
            (HtmlRangeExportSettings settings, ExcelRangeBase range) : base(settings, range)
         {
-            _settings = settings;
+            this._settings = settings;
         }
 
         internal HtmlRangeExporterAsync(HtmlRangeExportSettings settings, EPPlusReadOnlyList<ExcelRangeBase> ranges) : base(settings, ranges)
         {
-            _settings = settings;
+            this._settings = settings;
         }
 
         private readonly HtmlRangeExportSettings _settings;
@@ -46,7 +46,7 @@ namespace OfficeOpenXml.Export.HtmlExport.Exporters
         public async Task<string> GetHtmlStringAsync()
         {
             using MemoryStream? ms = RecyclableMemory.GetStream();
-            await RenderHtmlAsync(ms, 0);
+            await this.RenderHtmlAsync(ms, 0);
             ms.Position = 0;
             using StreamReader? sr = new StreamReader(ms);
             return sr.ReadToEnd();
@@ -60,7 +60,7 @@ namespace OfficeOpenXml.Export.HtmlExport.Exporters
         public async Task<string> GetHtmlStringAsync(int rangeIndex, ExcelHtmlOverrideExportSettings settings = null)
         {
             using MemoryStream? ms = RecyclableMemory.GetStream();
-            await RenderHtmlAsync(ms, rangeIndex, settings);
+            await this.RenderHtmlAsync(ms, rangeIndex, settings);
             ms.Position = 0;
             using StreamReader? sr = new StreamReader(ms);
             return sr.ReadToEnd();
@@ -76,7 +76,7 @@ namespace OfficeOpenXml.Export.HtmlExport.Exporters
         {
             ExcelHtmlOverrideExportSettings? settings = new ExcelHtmlOverrideExportSettings();
             config.Invoke(settings);
-            return await GetHtmlStringAsync(rangeIndex, settings);
+            return await this.GetHtmlStringAsync(rangeIndex, settings);
         }
 
         /// <summary>
@@ -86,7 +86,7 @@ namespace OfficeOpenXml.Export.HtmlExport.Exporters
         /// <returns>A html table</returns>
         public async Task RenderHtmlAsync(Stream stream)
         {
-            await RenderHtmlAsync(stream, 0);
+            await this.RenderHtmlAsync(stream, 0);
         }
 
         /// <summary>
@@ -98,46 +98,47 @@ namespace OfficeOpenXml.Export.HtmlExport.Exporters
         /// <exception cref="IOException"></exception>
         public async Task RenderHtmlAsync(Stream stream, int rangeIndex, ExcelHtmlOverrideExportSettings overrideSettings = null)
         {
-            ValidateRangeIndex(rangeIndex);
+            this.ValidateRangeIndex(rangeIndex);
             if (!stream.CanWrite)
             {
                 throw new IOException("Parameter stream must be a writeable System.IO.Stream");
             }
-            _mergedCells.Clear();
-            ExcelRangeBase? range = _ranges[rangeIndex];
-            GetDataTypes(_ranges[rangeIndex], _settings);
+
+            this._mergedCells.Clear();
+            ExcelRangeBase? range = this._ranges[rangeIndex];
+            this.GetDataTypes(this._ranges[rangeIndex], this._settings);
 
             ExcelTable table = null;
-            if (Settings.TableStyle != eHtmlRangeTableInclude.Exclude)
+            if (this.Settings.TableStyle != eHtmlRangeTableInclude.Exclude)
             {
                 table = range.GetTable();
             }
 
-            EpplusHtmlWriter? writer = new EpplusHtmlWriter(stream, Settings.Encoding, _styleCache);
-            string? tableId = GetTableId(rangeIndex, overrideSettings);
-            List<string>? additionalClassNames = GetAdditionalClassNames(overrideSettings);
-            AccessibilitySettings? accessibilitySettings = GetAccessibilitySettings(overrideSettings);
-            int headerRows = overrideSettings != null ? overrideSettings.HeaderRows : _settings.HeaderRows;
-            List<string>? headers = overrideSettings != null ? overrideSettings.Headers : _settings.Headers;
+            EpplusHtmlWriter? writer = new EpplusHtmlWriter(stream, this.Settings.Encoding, this._styleCache);
+            string? tableId = this.GetTableId(rangeIndex, overrideSettings);
+            List<string>? additionalClassNames = this.GetAdditionalClassNames(overrideSettings);
+            AccessibilitySettings? accessibilitySettings = this.GetAccessibilitySettings(overrideSettings);
+            int headerRows = overrideSettings != null ? overrideSettings.HeaderRows : this._settings.HeaderRows;
+            List<string>? headers = overrideSettings != null ? overrideSettings.Headers : this._settings.Headers;
             AddClassesAttributes(writer, table, tableId, additionalClassNames);
             AddTableAccessibilityAttributes(accessibilitySettings, writer);
             await writer.RenderBeginTagAsync(HtmlElements.Table);
 
-            await writer.ApplyFormatIncreaseIndentAsync(Settings.Minify);
-            LoadVisibleColumns(range);
-            if (Settings.SetColumnWidth || Settings.HorizontalAlignmentWhenGeneral == eHtmlGeneralAlignmentHandling.ColumnDataType)
+            await writer.ApplyFormatIncreaseIndentAsync(this.Settings.Minify);
+            this.LoadVisibleColumns(range);
+            if (this.Settings.SetColumnWidth || this.Settings.HorizontalAlignmentWhenGeneral == eHtmlGeneralAlignmentHandling.ColumnDataType)
             {
-                await SetColumnGroupAsync(writer, range, Settings, IsMultiSheet);
+                await this.SetColumnGroupAsync(writer, range, this.Settings, this.IsMultiSheet);
             }
 
             if (headerRows > 0 || headers.Count > 0)
             {
-                await RenderHeaderRowAsync(range, writer, table, accessibilitySettings, headerRows, headers);
+                await this.RenderHeaderRowAsync(range, writer, table, accessibilitySettings, headerRows, headers);
             }
             // table rows
-            await RenderTableRowsAsync(range, writer, table, accessibilitySettings, _settings.HeaderRows);
+            await this.RenderTableRowsAsync(range, writer, table, accessibilitySettings, this._settings.HeaderRows);
 
-            await writer.ApplyFormatDecreaseIndentAsync(Settings.Minify);
+            await writer.ApplyFormatDecreaseIndentAsync(this.Settings.Minify);
             // end tag table
             await writer.RenderEndTagAsync();
         }
@@ -153,7 +154,7 @@ namespace OfficeOpenXml.Export.HtmlExport.Exporters
         {
             ExcelHtmlOverrideExportSettings? settings = new ExcelHtmlOverrideExportSettings();
             config.Invoke(settings);
-            await RenderHtmlAsync(stream, rangeIndex, settings);
+            await this.RenderHtmlAsync(stream, rangeIndex, settings);
         }
 
         /// <summary>
@@ -163,13 +164,13 @@ namespace OfficeOpenXml.Export.HtmlExport.Exporters
         /// <returns>The html document</returns>
         public async Task<string> GetSinglePageAsync(string htmlDocument = "<!DOCTYPE html>\r\n<html>\r\n<head>\r\n<style type=\"text/css\">\r\n{1}</style></head>\r\n<body>\r\n{0}\r\n</body>\r\n</html>")
         {
-            if (Settings.Minify)
+            if (this.Settings.Minify)
             {
                 htmlDocument = htmlDocument.Replace("\r\n", "");
             }
 
-            string? html = await GetHtmlStringAsync();
-            CssRangeExporterAsync? cssExporter = HtmlExporterFactory.CreateCssExporterAsync(_settings, _ranges, _styleCache);
+            string? html = await this.GetHtmlStringAsync();
+            CssRangeExporterAsync? cssExporter = HtmlExporterFactory.CreateCssExporterAsync(this._settings, this._ranges, this._styleCache);
             string? css = await cssExporter.GetCssStringAsync();
             return string.Format(htmlDocument, html, css);
         }

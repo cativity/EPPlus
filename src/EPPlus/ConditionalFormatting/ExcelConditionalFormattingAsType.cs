@@ -13,7 +13,7 @@ namespace OfficeOpenXml.ConditionalFormatting
         IExcelConditionalFormattingRule _rule;
         internal ExcelConditionalFormattingAsType(IExcelConditionalFormattingRule rule)
         {
-            _rule = rule;
+            this._rule = rule;
         }
 
         /// <summary>
@@ -23,7 +23,7 @@ namespace OfficeOpenXml.ConditionalFormatting
         /// <returns>The conditional formatting rule as type T</returns>
         public T Type<T>() where T : IExcelConditionalFormattingRule
         {
-            if(_rule is T t)
+            if(this._rule is T t)
             {
                 return t;
             }
@@ -38,7 +38,7 @@ namespace OfficeOpenXml.ConditionalFormatting
         {
             get
             {
-                return _rule as IExcelConditionalFormattingAverageGroup;
+                return this._rule as IExcelConditionalFormattingAverageGroup;
             }
         }
         /// <summary>
@@ -50,7 +50,7 @@ namespace OfficeOpenXml.ConditionalFormatting
         {
             get
             {
-                return _rule as IExcelConditionalFormattingStdDevGroup;
+                return this._rule as IExcelConditionalFormattingStdDevGroup;
             }
         }
         /// <summary>
@@ -62,7 +62,7 @@ namespace OfficeOpenXml.ConditionalFormatting
         {
             get
             {
-                return _rule as IExcelConditionalFormattingTopBottomGroup;
+                return this._rule as IExcelConditionalFormattingTopBottomGroup;
             }
         }
         /// <summary>
@@ -74,7 +74,7 @@ namespace OfficeOpenXml.ConditionalFormatting
         {
             get
             {
-                return _rule as IExcelConditionalFormattingTimePeriodGroup;
+                return this._rule as IExcelConditionalFormattingTimePeriodGroup;
             }
         }
         /// <summary>
@@ -86,7 +86,7 @@ namespace OfficeOpenXml.ConditionalFormatting
         {
             get
             {
-                return _rule as IExcelConditionalFormattingBetween;
+                return this._rule as IExcelConditionalFormattingBetween;
             }
         }
         /// <summary>
@@ -98,7 +98,7 @@ namespace OfficeOpenXml.ConditionalFormatting
         {
             get
             {
-                return _rule as IExcelConditionalFormattingContainsBlanks;
+                return this._rule as IExcelConditionalFormattingContainsBlanks;
             }
         }
         /// <summary>
@@ -110,7 +110,7 @@ namespace OfficeOpenXml.ConditionalFormatting
         {
             get
             {
-                return _rule as IExcelConditionalFormattingContainsErrors;
+                return this._rule as IExcelConditionalFormattingContainsErrors;
             }
         }
         /// <summary>
@@ -122,7 +122,7 @@ namespace OfficeOpenXml.ConditionalFormatting
         {
             get
             {
-                return _rule as IExcelConditionalFormattingContainsText;
+                return this._rule as IExcelConditionalFormattingContainsText;
             }
         }
         /// <summary>
@@ -134,7 +134,7 @@ namespace OfficeOpenXml.ConditionalFormatting
         {
             get
             {
-                return _rule as IExcelConditionalFormattingNotContainsBlanks;
+                return this._rule as IExcelConditionalFormattingNotContainsBlanks;
             }
         }
         /// <summary>
@@ -146,7 +146,7 @@ namespace OfficeOpenXml.ConditionalFormatting
         {
             get
             {
-                return _rule as IExcelConditionalFormattingNotContainsText;
+                return this._rule as IExcelConditionalFormattingNotContainsText;
             }
         }
         /// <summary>
@@ -158,7 +158,7 @@ namespace OfficeOpenXml.ConditionalFormatting
         {
             get
             {
-                return _rule as IExcelConditionalFormattingNotContainsErrors;
+                return this._rule as IExcelConditionalFormattingNotContainsErrors;
             }
         }
         /// <summary>
@@ -170,7 +170,7 @@ namespace OfficeOpenXml.ConditionalFormatting
         {
             get
             {
-                return _rule as IExcelConditionalFormattingNotBetween;
+                return this._rule as IExcelConditionalFormattingNotBetween;
             }
         }
         /// <summary>
@@ -182,7 +182,7 @@ namespace OfficeOpenXml.ConditionalFormatting
         { 
             get
             {
-                return _rule as IExcelConditionalFormattingEqual;
+                return this._rule as IExcelConditionalFormattingEqual;
             }
         }
         /// <summary>
@@ -194,7 +194,7 @@ namespace OfficeOpenXml.ConditionalFormatting
         {
             get
             {
-                return _rule as IExcelConditionalFormattingNotEqual;
+                return this._rule as IExcelConditionalFormattingNotEqual;
             }   
         }
         /// <summary>
@@ -206,7 +206,7 @@ namespace OfficeOpenXml.ConditionalFormatting
         {
             get
             {
-                return _rule as IExcelConditionalFormattingDuplicateValues;
+                return this._rule as IExcelConditionalFormattingDuplicateValues;
             }
         }
         /// <summary>
@@ -218,7 +218,7 @@ namespace OfficeOpenXml.ConditionalFormatting
         {
             get
             {
-                return _rule as IExcelConditionalFormattingBeginsWith;
+                return this._rule as IExcelConditionalFormattingBeginsWith;
             }
         }
         /// <summary>
@@ -230,7 +230,7 @@ namespace OfficeOpenXml.ConditionalFormatting
         {
             get
             {
-                return _rule as IExcelConditionalFormattingEndsWith;
+                return this._rule as IExcelConditionalFormattingEndsWith;
             }
         }
         /// <summary>
@@ -242,7 +242,7 @@ namespace OfficeOpenXml.ConditionalFormatting
         {
             get
             {
-                return _rule as IExcelConditionalFormattingExpression;
+                return this._rule as IExcelConditionalFormattingExpression;
             }
         }
         /// <summary>
@@ -254,7 +254,7 @@ namespace OfficeOpenXml.ConditionalFormatting
         {
             get
             {
-                return _rule as IExcelConditionalFormattingGreaterThan;
+                return this._rule as IExcelConditionalFormattingGreaterThan;
             }
         }
         /// <summary>
@@ -266,7 +266,7 @@ namespace OfficeOpenXml.ConditionalFormatting
         {
             get
             {
-                return _rule as IExcelConditionalFormattingGreaterThanOrEqual;
+                return this._rule as IExcelConditionalFormattingGreaterThanOrEqual;
             }
         }
         /// <summary>
@@ -278,7 +278,7 @@ namespace OfficeOpenXml.ConditionalFormatting
         {
             get
             {
-                return _rule as IExcelConditionalFormattingLessThan;
+                return this._rule as IExcelConditionalFormattingLessThan;
             }
         }
         /// <summary>
@@ -290,7 +290,7 @@ namespace OfficeOpenXml.ConditionalFormatting
         {
             get
             {
-                return _rule as IExcelConditionalFormattingLessThanOrEqual;
+                return this._rule as IExcelConditionalFormattingLessThanOrEqual;
             }
         }
         /// <summary>
@@ -302,7 +302,7 @@ namespace OfficeOpenXml.ConditionalFormatting
         {
             get
             {
-                return _rule as IExcelConditionalFormattingUniqueValues;
+                return this._rule as IExcelConditionalFormattingUniqueValues;
             }
         }
         /// <summary>
@@ -314,7 +314,7 @@ namespace OfficeOpenXml.ConditionalFormatting
         {
             get
             {
-                return _rule as IExcelConditionalFormattingTwoColorScale;
+                return this._rule as IExcelConditionalFormattingTwoColorScale;
             }
         }
         /// <summary>
@@ -326,7 +326,7 @@ namespace OfficeOpenXml.ConditionalFormatting
         {
             get
             {
-                return _rule as IExcelConditionalFormattingThreeColorScale;
+                return this._rule as IExcelConditionalFormattingThreeColorScale;
             }
         }
         /// <summary>
@@ -338,7 +338,7 @@ namespace OfficeOpenXml.ConditionalFormatting
         {
             get
             {
-                return _rule as IExcelConditionalFormattingThreeIconSet<eExcelconditionalFormatting3IconsSetType>;
+                return this._rule as IExcelConditionalFormattingThreeIconSet<eExcelconditionalFormatting3IconsSetType>;
             }
         }
         /// <summary>
@@ -350,7 +350,7 @@ namespace OfficeOpenXml.ConditionalFormatting
         {
             get
             {
-                return _rule as IExcelConditionalFormattingFourIconSet<eExcelconditionalFormatting4IconsSetType>;
+                return this._rule as IExcelConditionalFormattingFourIconSet<eExcelconditionalFormatting4IconsSetType>;
             }
         }
         /// <summary>
@@ -362,7 +362,7 @@ namespace OfficeOpenXml.ConditionalFormatting
         {
             get
             {
-                return _rule as IExcelConditionalFormattingFiveIconSet;
+                return this._rule as IExcelConditionalFormattingFiveIconSet;
             }
         }
         /// <summary>
@@ -374,7 +374,7 @@ namespace OfficeOpenXml.ConditionalFormatting
         {
             get
             {
-                return _rule as IExcelConditionalFormattingDataBarGroup;
+                return this._rule as IExcelConditionalFormattingDataBarGroup;
             }
         }
     }

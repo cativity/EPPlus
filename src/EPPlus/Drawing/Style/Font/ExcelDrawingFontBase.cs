@@ -31,11 +31,11 @@ namespace OfficeOpenXml.Drawing.Style.Font
         {
             get
             {
-                return GetXmlNodeString("@typeface");
+                return this.GetXmlNodeString("@typeface");
             }
             internal set
             {
-                SetXmlNodeString("@typeface", value);
+                this.SetXmlNodeString("@typeface", value);
             }
         }
     }

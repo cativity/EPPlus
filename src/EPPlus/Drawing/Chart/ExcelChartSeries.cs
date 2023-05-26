@@ -31,27 +31,27 @@ namespace OfficeOpenXml.Drawing.Chart
         XmlNamespaceManager _ns;
         internal void Init(ExcelChart chart, XmlNamespaceManager ns, XmlNode chartNode, bool isPivot, List<ExcelChartSerie> list = null)
         {
-            _ns = ns;
-            _chart = chart;
-            _node = chartNode;
-            _isPivot = isPivot;
+            this._ns = ns;
+            this._chart = chart;
+            this._node = chartNode;
+            this._isPivot = isPivot;
             if (list == null)
             {
-                _list = new List<ExcelChartSerie>();
+                this._list = new List<ExcelChartSerie>();
             }
             else
             {
-                _list = list;
+                this._list = list;
                 return;
             }
 
-            if (_chart._isChartEx)
+            if (this._chart._isChartEx)
             {
-                AddSeriesChartEx((ExcelChartEx)chart, ns, chartNode);
+                this.AddSeriesChartEx((ExcelChartEx)chart, ns, chartNode);
             }
             else
             {
-                AddSeriesStandard(chart, ns, chartNode, isPivot);
+                this.AddSeriesStandard(chart, ns, chartNode, isPivot);
             }
         }
         private void AddSeriesChartEx(ExcelChartEx chart, XmlNamespaceManager ns, XmlNode chartNode)
@@ -63,10 +63,10 @@ namespace OfficeOpenXml.Drawing.Chart
                 switch (chart.ChartType)
                 {
                     case eChartType.Treemap:
-                        _list.Add(new ExcelTreemapChartSerie(chart, ns, serieElement));
+                        this._list.Add(new ExcelTreemapChartSerie(chart, ns, serieElement));
                         break;
                     case eChartType.BoxWhisker:
-                        _list.Add(new ExcelBoxWhiskerChartSerie(chart, ns, serieElement));
+                        this._list.Add(new ExcelBoxWhiskerChartSerie(chart, ns, serieElement));
                         break;
                     case eChartType.Histogram:
                     case eChartType.Pareto:
@@ -76,17 +76,17 @@ namespace OfficeOpenXml.Drawing.Chart
                         }
                         else
                         {
-                            _list.Add(new ExcelHistogramChartSerie(chart, ns, serieElement, index));
+                            this._list.Add(new ExcelHistogramChartSerie(chart, ns, serieElement, index));
                         }
                         break;
                     case eChartType.RegionMap:
-                        _list.Add(new ExcelRegionMapChartSerie(chart, ns, serieElement));
+                        this._list.Add(new ExcelRegionMapChartSerie(chart, ns, serieElement));
                         break;
                     case eChartType.Waterfall:
-                        _list.Add(new ExcelWaterfallChartSerie(chart, ns, serieElement));
+                        this._list.Add(new ExcelWaterfallChartSerie(chart, ns, serieElement));
                         break;
                     default:
-                        _list.Add(new ExcelChartExSerie(chart, ns, serieElement));
+                        this._list.Add(new ExcelChartExSerie(chart, ns, serieElement));
                         break;
                 }
                 index++;
@@ -99,7 +99,7 @@ namespace OfficeOpenXml.Drawing.Chart
                     {
                         if (ConvertUtil.TryParseIntString(e.GetAttribute("ownerIdx"), out int ownerId))
                         {
-                            ExcelHistogramChartSerie? serie=(ExcelHistogramChartSerie)_list.FirstOrDefault(x => ((ExcelHistogramChartSerie)x)._index == ownerId);
+                            ExcelHistogramChartSerie? serie=(ExcelHistogramChartSerie)this._list.FirstOrDefault(x => ((ExcelHistogramChartSerie)x)._index == ownerId);
                             if(serie!=null)
                             {
                                 serie.AddParetoLineFromSerie(e);
@@ -118,43 +118,44 @@ namespace OfficeOpenXml.Drawing.Chart
                 {
                     case "barChart":
                     case "bar3DChart":
-                        s = new ExcelBarChartSerie(_chart, ns, n, isPivot);
+                        s = new ExcelBarChartSerie(this._chart, ns, n, isPivot);
                         break;
                     case "lineChart":
                     case "line3DChart":
-                        s = new ExcelLineChartSerie(_chart, ns, n, isPivot);
+                        s = new ExcelLineChartSerie(this._chart, ns, n, isPivot);
                         break;
                     case "stockChart":
-                        s = new ExcelStockChartSerie(_chart, ns, n, isPivot);
+                        s = new ExcelStockChartSerie(this._chart, ns, n, isPivot);
                         break;
                     case "scatterChart":
-                        s = new ExcelScatterChartSerie(_chart, ns, n, isPivot);
+                        s = new ExcelScatterChartSerie(this._chart, ns, n, isPivot);
                         break;
                     case "pieChart":
                     case "pie3DChart":
                     case "ofPieChart":
                     case "doughnutChart":
-                        s = new ExcelPieChartSerie(_chart, ns, n, isPivot);
+                        s = new ExcelPieChartSerie(this._chart, ns, n, isPivot);
                         break;
                     case "bubbleChart":
-                        s = new ExcelBubbleChartSerie(_chart, ns, n, isPivot);
+                        s = new ExcelBubbleChartSerie(this._chart, ns, n, isPivot);
                         break;
                     case "radarChart":
-                        s = new ExcelRadarChartSerie(_chart, ns, n, isPivot);
+                        s = new ExcelRadarChartSerie(this._chart, ns, n, isPivot);
                         break;
                     case "surfaceChart":
                     case "surface3DChart":
-                        s = new ExcelSurfaceChartSerie(_chart, ns, n, isPivot);
+                        s = new ExcelSurfaceChartSerie(this._chart, ns, n, isPivot);
                         break;
                     case "areaChart":
                     case "area3DChart":
-                        s = new ExcelAreaChartSerie(_chart, ns, n, isPivot);
+                        s = new ExcelAreaChartSerie(this._chart, ns, n, isPivot);
                         break;
                     default:
-                        s = new ExcelChartStandardSerie(_chart, ns, n, isPivot);
+                        s = new ExcelChartStandardSerie(this._chart, ns, n, isPivot);
                         break;
                 }
-                _list.Add((T)s);
+
+                this._list.Add((T)s);
             }
         }
 
@@ -167,7 +168,7 @@ namespace OfficeOpenXml.Drawing.Chart
         {
             get
             {
-                return (T)(_list[PositionID]);
+                return (T)(this._list[PositionID]);
             }
         }
         /// <summary>
@@ -177,7 +178,7 @@ namespace OfficeOpenXml.Drawing.Chart
         {
             get
             {
-                return _list?.Count ?? 0;
+                return this._list?.Count ?? 0;
             }
         }
         /// <summary>
@@ -186,9 +187,9 @@ namespace OfficeOpenXml.Drawing.Chart
         /// <param name="PositionID">Zero based</param>
         public void Delete(int PositionID)
         {
-            ExcelChartSerie ser = _list[PositionID];
+            ExcelChartSerie ser = this._list[PositionID];
             ser.TopNode.ParentNode.RemoveChild(ser.TopNode);
-            _list.RemoveAt(PositionID);
+            this._list.RemoveAt(PositionID);
         }
         /// <summary>
         /// A reference to the chart object
@@ -197,7 +198,7 @@ namespace OfficeOpenXml.Drawing.Chart
         {
             get
             {
-                return _chart;
+                return this._chart;
             }
         }
         #region "Add Series"
@@ -208,11 +209,11 @@ namespace OfficeOpenXml.Drawing.Chart
         /// <returns>The serie</returns>
         public virtual T Add(ExcelRangeBase Serie)
         {
-            if (_chart.PivotTableSource != null)
+            if (this._chart.PivotTableSource != null)
             {
                 throw (new InvalidOperationException("Can't add a serie to a pivotchart"));
             }
-            return AddSeries(Serie.FullAddressAbsolute, null, "");
+            return this.AddSeries(Serie.FullAddressAbsolute, null, "");
         }
         /// <summary>
         /// Adds a new serie to the chart. Do not apply to pivotcharts.
@@ -221,11 +222,11 @@ namespace OfficeOpenXml.Drawing.Chart
         /// <returns>The serie</returns>
         public virtual T Add(string Serie)
         {
-            if (_chart.PivotTableSource != null)
+            if (this._chart.PivotTableSource != null)
             {
                 throw (new InvalidOperationException("Can't add a serie to a pivotchart"));
             }
-            return AddSeries(Serie, null, "");
+            return this.AddSeries(Serie, null, "");
         }
 
         /// <summary>
@@ -236,11 +237,11 @@ namespace OfficeOpenXml.Drawing.Chart
         /// <returns>The serie</returns>
         public virtual T Add(ExcelRangeBase Serie, ExcelRangeBase XSerie)
         {
-            if (_chart.PivotTableSource != null)
+            if (this._chart.PivotTableSource != null)
             {
                 throw (new InvalidOperationException("Can't add a serie to a pivotchart"));
             }
-            return AddSeries(Serie.FullAddressAbsolute, XSerie?.FullAddressAbsolute, "");
+            return this.AddSeries(Serie.FullAddressAbsolute, XSerie?.FullAddressAbsolute, "");
         }
         /// <summary>
         /// Adds a new serie to the chart.Do not apply to pivotcharts.
@@ -250,11 +251,11 @@ namespace OfficeOpenXml.Drawing.Chart
         /// <returns>The serie</returns>
         public virtual T Add(string SerieAddress, string XSerieAddress)
         {
-            if (_chart.PivotTableSource != null)
+            if (this._chart.PivotTableSource != null)
             {
                 throw (new InvalidOperationException("Can't add a serie to a pivotchart"));
             }
-            return AddSeries(SerieAddress, XSerieAddress, "");
+            return this.AddSeries(SerieAddress, XSerieAddress, "");
         }
         /// <summary>
         /// Adds a new serie to the chart
@@ -265,27 +266,27 @@ namespace OfficeOpenXml.Drawing.Chart
         /// <returns></returns>
         internal protected T AddSeries(string SerieAddress, string XSerieAddress, string bubbleSizeAddress)
         {
-            if (_list.Count == 256)
+            if (this._list.Count == 256)
             {
                 throw (new InvalidOperationException("Charts have a maximum of 256 series."));
             }
             XmlElement serElement;
-            if (_chart._isChartEx)
+            if (this._chart._isChartEx)
             {
-                serElement = ExcelChartExSerie.CreateSeriesAndDataElement((ExcelChartEx)_chart, !string.IsNullOrEmpty(XSerieAddress));
+                serElement = ExcelChartExSerie.CreateSeriesAndDataElement((ExcelChartEx)this._chart, !string.IsNullOrEmpty(XSerieAddress));
             }
             else
             {
-                serElement = ExcelChartStandardSerie.CreateSerieElement(_chart);
+                serElement = ExcelChartStandardSerie.CreateSerieElement(this._chart);
             }
             ExcelChartSerie serie;
-            switch (Chart.ChartType)
+            switch (this.Chart.ChartType)
             {
                 case eChartType.Bubble:
                 case eChartType.Bubble3DEffect:
-                    serie = new ExcelBubbleChartSerie(_chart, _ns, serElement, _isPivot)
+                    serie = new ExcelBubbleChartSerie(this._chart, this._ns, serElement, this._isPivot)
                     {
-                        Bubble3D = Chart.ChartType == eChartType.Bubble3DEffect,
+                        Bubble3D = this.Chart.ChartType == eChartType.Bubble3DEffect,
                         Series = SerieAddress,
                         XSeries = XSerieAddress,
                         BubbleSize = bubbleSizeAddress
@@ -296,18 +297,18 @@ namespace OfficeOpenXml.Drawing.Chart
                 case eChartType.XYScatterLinesNoMarkers:
                 case eChartType.XYScatterSmooth:
                 case eChartType.XYScatterSmoothNoMarkers:
-                    serie = new ExcelScatterChartSerie(_chart, _ns, serElement, _isPivot);
+                    serie = new ExcelScatterChartSerie(this._chart, this._ns, serElement, this._isPivot);
                     break;
                 case eChartType.Radar:
                 case eChartType.RadarFilled:
                 case eChartType.RadarMarkers:
-                    serie = new ExcelRadarChartSerie(_chart, _ns, serElement, _isPivot);
+                    serie = new ExcelRadarChartSerie(this._chart, this._ns, serElement, this._isPivot);
                     break;
                 case eChartType.Surface:
                 case eChartType.SurfaceTopView:
                 case eChartType.SurfaceTopViewWireframe:
                 case eChartType.SurfaceWireframe:
-                    serie = new ExcelSurfaceChartSerie(_chart, _ns, serElement, _isPivot);
+                    serie = new ExcelSurfaceChartSerie(this._chart, this._ns, serElement, this._isPivot);
                     break;
                 case eChartType.Pie:
                 case eChartType.Pie3D:
@@ -317,7 +318,7 @@ namespace OfficeOpenXml.Drawing.Chart
                 case eChartType.Doughnut:
                 case eChartType.DoughnutExploded:
                 case eChartType.BarOfPie:
-                    serie = new ExcelPieChartSerie(_chart, _ns, serElement, _isPivot);
+                    serie = new ExcelPieChartSerie(this._chart, this._ns, serElement, this._isPivot);
                     break;
                 case eChartType.Line:
                 case eChartType.LineMarkers:
@@ -326,14 +327,12 @@ namespace OfficeOpenXml.Drawing.Chart
                 case eChartType.LineStacked:
                 case eChartType.LineStacked100:
                 case eChartType.Line3D:
-                    serie = new ExcelLineChartSerie(_chart, _ns, serElement, _isPivot);
-                    if (Chart.ChartType == eChartType.LineMarkers ||
-                        Chart.ChartType == eChartType.LineMarkersStacked ||
-                        Chart.ChartType == eChartType.LineMarkersStacked100)
+                    serie = new ExcelLineChartSerie(this._chart, this._ns, serElement, this._isPivot);
+                    if (this.Chart.ChartType == eChartType.LineMarkers || this.Chart.ChartType == eChartType.LineMarkersStacked || this.Chart.ChartType == eChartType.LineMarkersStacked100)
                     {
                         ((ExcelLineChartSerie)serie).Marker.Style = eMarkerStyle.Square;
                     }
-                    ((ExcelLineChartSerie)serie).Smooth = ((ExcelLineChart)Chart).Smooth;
+                    ((ExcelLineChartSerie)serie).Smooth = ((ExcelLineChart)this.Chart).Smooth;
                     break;
                 case eChartType.BarClustered:
                 case eChartType.BarStacked:
@@ -369,7 +368,7 @@ namespace OfficeOpenXml.Drawing.Chart
                 case eChartType.PyramidColClustered:
                 case eChartType.PyramidColStacked:
                 case eChartType.PyramidColStacked100:
-                    serie = new ExcelBarChartSerie(_chart, _ns, serElement, _isPivot);
+                    serie = new ExcelBarChartSerie(this._chart, this._ns, serElement, this._isPivot);
                     ((ExcelBarChartSerie)serie).InvertIfNegative = false;
                     break;
                 case eChartType.Area:
@@ -378,40 +377,40 @@ namespace OfficeOpenXml.Drawing.Chart
                 case eChartType.AreaStacked100:
                 case eChartType.AreaStacked1003D:
                 case eChartType.AreaStacked3D:
-                    serie = new ExcelAreaChartSerie(_chart, _ns, serElement, _isPivot);
+                    serie = new ExcelAreaChartSerie(this._chart, this._ns, serElement, this._isPivot);
                     break;
                 case eChartType.StockHLC:
                 case eChartType.StockOHLC:
                 case eChartType.StockVHLC:
                 case eChartType.StockVOHLC:
-                    serie = new ExcelStockChartSerie(_chart, _ns, serElement, _isPivot);
+                    serie = new ExcelStockChartSerie(this._chart, this._ns, serElement, this._isPivot);
                     break;
                 case eChartType.Treemap:
-                    serie = new ExcelTreemapChartSerie((ExcelChartEx)_chart, _ns, serElement);
+                    serie = new ExcelTreemapChartSerie((ExcelChartEx)this._chart, this._ns, serElement);
                     break;
                 case eChartType.BoxWhisker:
-                    serie = new ExcelBoxWhiskerChartSerie((ExcelChartEx)_chart, _ns, serElement);
+                    serie = new ExcelBoxWhiskerChartSerie((ExcelChartEx)this._chart, this._ns, serElement);
                     break;
                 case eChartType.Histogram:
                 case eChartType.Pareto:
-                    serie=new ExcelHistogramChartSerie((ExcelChartEx)_chart, _ns, serElement);
-                    if(Chart.ChartType== eChartType.Pareto)
+                    serie=new ExcelHistogramChartSerie((ExcelChartEx)this._chart, this._ns, serElement);
+                    if(this.Chart.ChartType== eChartType.Pareto)
                     {
                         ((ExcelHistogramChartSerie)serie).AddParetoLine();
                     }
                     break;
                 case eChartType.RegionMap:
-                    serie = new ExcelRegionMapChartSerie((ExcelChartEx)_chart, _ns, serElement);
+                    serie = new ExcelRegionMapChartSerie((ExcelChartEx)this._chart, this._ns, serElement);
                     break;
                 case eChartType.Waterfall:
-                    serie = new ExcelWaterfallChartSerie((ExcelChartEx)_chart, _ns, serElement);
+                    serie = new ExcelWaterfallChartSerie((ExcelChartEx)this._chart, this._ns, serElement);
                     break;
                 case eChartType.Sunburst:
                 case eChartType.Funnel:
-                    serie = new ExcelChartExSerie((ExcelChartEx)_chart, _ns, serElement);
+                    serie = new ExcelChartExSerie((ExcelChartEx)this._chart, this._ns, serElement);
                     break;
                 default:
-                    serie = new ExcelChartStandardSerie(_chart, _ns, serElement, _isPivot);
+                    serie = new ExcelChartStandardSerie(this._chart, this._ns, serElement, this._isPivot);
                     break;
             }
             serie.Series = SerieAddress;
@@ -419,17 +418,18 @@ namespace OfficeOpenXml.Drawing.Chart
             {
                 serie.XSeries = XSerieAddress;
             }
-            _list.Add((T)serie);
-            if (_chart._isChartEx == false)
+
+            this._list.Add((T)serie);
+            if (this._chart._isChartEx == false)
             {
-                if (_chart.StyleManager.StylePart != null)
+                if (this._chart.StyleManager.StylePart != null)
                 {
-                    _chart.StyleManager.ApplySeries();
+                    this._chart.StyleManager.ApplySeries();
                 }
 
-                if (_chart._legend != null && _chart._legend._entries!=null)
+                if (this._chart._legend != null && this._chart._legend._entries!=null)
                 {
-                    _chart._legend.AddNewEntry(serie);
+                    this._chart._legend.AddNewEntry(serie);
                 }
             }
             return (T)serie;
@@ -438,8 +438,8 @@ namespace OfficeOpenXml.Drawing.Chart
         internal void AddPivotSerie(ExcelPivotTable pivotTableSource)
         {
             ExcelRange? r = pivotTableSource.WorkSheet.Cells[pivotTableSource.Address.Address];
-            _isPivot = true;
-            AddSeries(r.Offset(0, 1, r._toRow - r._fromRow + 1, 1).FullAddressAbsolute, r.Offset(0, 0, r._toRow - r._fromRow + 1, 1).FullAddressAbsolute, "");
+            this._isPivot = true;
+            this.AddSeries(r.Offset(0, 1, r._toRow - r._fromRow + 1, 1).FullAddressAbsolute, r.Offset(0, 0, r._toRow - r._fromRow + 1, 1).FullAddressAbsolute, "");
         }
         #endregion
         /// <summary>
@@ -448,16 +448,16 @@ namespace OfficeOpenXml.Drawing.Chart
         /// <returns>The enumerator</returns>
         public IEnumerator<T> GetEnumerator()
         {
-            return _list.Cast<T>().GetEnumerator();
+            return this._list.Cast<T>().GetEnumerator();
         }
         IEnumerator<T> IEnumerable<T>.GetEnumerator()
         {
-            return _list.Cast<T>().GetEnumerator();
+            return this._list.Cast<T>().GetEnumerator();
         }
 
         IEnumerator IEnumerable.GetEnumerator()
         {
-            return _list.GetEnumerator();
+            return this._list.GetEnumerator();
         }
     }
 }

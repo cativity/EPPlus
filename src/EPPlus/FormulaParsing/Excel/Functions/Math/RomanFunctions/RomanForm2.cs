@@ -20,7 +20,7 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Math.RomanFunctions
     {
         internal override string Execute(int number)
         {
-            return HandleType(2, GetClassicRomanFormat(number));
+            return HandleType(2, this.GetClassicRomanFormat(number));
         }
     }
 }

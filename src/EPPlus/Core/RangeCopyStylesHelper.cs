@@ -11,20 +11,20 @@ namespace OfficeOpenXml.Core
         private readonly ExcelRangeBase _destinationRange;
         internal RangeCopyStylesHelper(ExcelRangeBase sourceRange, ExcelRangeBase destinationRange)
         {
-            _sourceRange = sourceRange;
-            _destinationRange = destinationRange;
+            this._sourceRange = sourceRange;
+            this._destinationRange = destinationRange;
         }
         internal void CopyStyles()
         {
             Dictionary<int, int>? styleCashe = new Dictionary<int, int>();
-            ExcelWorksheet? wsSource = _sourceRange.Worksheet;
-            ExcelWorksheet? wsDest= _destinationRange.Worksheet;
+            ExcelWorksheet? wsSource = this._sourceRange.Worksheet;
+            ExcelWorksheet? wsDest= this._destinationRange.Worksheet;
             bool sameWorkbook = wsSource.Workbook == wsDest.Workbook; 
-            int sc = _sourceRange._fromCol;
-            for(int dc=_destinationRange._fromCol; dc <= _destinationRange._toCol; dc++)
+            int sc = this._sourceRange._fromCol;
+            for(int dc= this._destinationRange._fromCol; dc <= this._destinationRange._toCol; dc++)
             {
-                int sr = _sourceRange._fromRow;
-                for (int dr = _destinationRange._fromRow; dr <= _destinationRange._toRow; dr++)
+                int sr = this._sourceRange._fromRow;
+                for (int dr = this._destinationRange._fromRow; dr <= this._destinationRange._toRow; dr++)
                 {
                     int styleId = GetStyleId(wsSource, sc, sr);
                     if (!sameWorkbook)
@@ -40,14 +40,15 @@ namespace OfficeOpenXml.Core
                             styleCashe.Add(sourceStyleId, styleId);
                         }
                     }
-                    _destinationRange.Worksheet.SetStyleInner(dr, dc, styleId);
 
-                    if (sr < _sourceRange._toRow)
+                    this._destinationRange.Worksheet.SetStyleInner(dr, dc, styleId);
+
+                    if (sr < this._sourceRange._toRow)
                     {
                         sr++;
                     }
                 }
-                if (sc < _sourceRange._toCol)
+                if (sc < this._sourceRange._toCol)
                 {
                     sc++;
                 }

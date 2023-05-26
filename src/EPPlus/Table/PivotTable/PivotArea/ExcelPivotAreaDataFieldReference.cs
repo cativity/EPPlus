@@ -26,16 +26,16 @@ namespace OfficeOpenXml.Table.PivotTable
         List<ExcelPivotTableDataField> _dataFields = new List<ExcelPivotTableDataField>();
         internal ExcelPivotAreaDataFieldReference(XmlNamespaceManager nsm, XmlNode topNode, ExcelPivotTable pt, int fieldIndex = -1) : base(nsm, topNode, pt)
         {
-            if(TopNode.LocalName=="reference")
+            if(this.TopNode.LocalName=="reference")
             {
-                foreach (XmlNode c in TopNode.ChildNodes)
+                foreach (XmlNode c in this.TopNode.ChildNodes)
                 {
                     if (c.LocalName == "x")
                     {
                         int ix = int.Parse(c.Attributes["v"].Value);
                         if (ix < pt.DataFields.Count)
                         {
-                            _dataFields.Add(pt.DataFields[ix]);
+                            this._dataFields.Add(pt.DataFields[ix]);
                         }
                     }
                 }
@@ -50,7 +50,7 @@ namespace OfficeOpenXml.Table.PivotTable
         {
             get
             {
-                return _dataFields[index];
+                return this._dataFields[index];
             }
         }
         /// <summary>
@@ -60,12 +60,12 @@ namespace OfficeOpenXml.Table.PivotTable
         { 
             get
             {
-                return _dataFields.Count;
+                return this._dataFields.Count;
             }
         }
         internal void AddInternal(ExcelPivotTableDataField item)
         {
-            _dataFields.Add(item);
+            this._dataFields.Add(item);
         }
         /// <summary>
         /// Adds the data field at the specific index
@@ -73,9 +73,9 @@ namespace OfficeOpenXml.Table.PivotTable
         /// <param name="index"></param>
         public void Add(int index)
         {
-            if (index >= 0 && index < _pt.DataFields.Count)
+            if (index >= 0 && index < this._pt.DataFields.Count)
             {
-                _dataFields.Add(_pt.DataFields[index]);
+                this._dataFields.Add(this._pt.DataFields[index]);
             }
             else
             {
@@ -92,51 +92,52 @@ namespace OfficeOpenXml.Table.PivotTable
             {
                 throw new ArgumentNullException("The pivot table field must not be null.");
             }
-            if (field.Field._pivotTable != _pt)
+            if (field.Field._pivotTable != this._pt)
             {
                 throw new ArgumentException("The pivot table field is from another pivot table.");
             }
-            _dataFields.Add(field);
+
+            this._dataFields.Add(field);
         }
 
         internal override void UpdateXml()
         {
             //Remove reference, so they can be re-written 
-            if (TopNode.LocalName == "reference")
+            if (this.TopNode.LocalName == "reference")
             {
-                while (TopNode.ChildNodes.Count > 0)
+                while (this.TopNode.ChildNodes.Count > 0)
                 {
-                    TopNode.RemoveChild(TopNode.ChildNodes[0]);
+                    this.TopNode.RemoveChild(this.TopNode.ChildNodes[0]);
                 }
             }
 
-            if (_dataFields.Count==0 && FieldIndex>=0)
+            if (this._dataFields.Count==0 && this.FieldIndex>=0)
             {
-                if(TopNode.LocalName == "reference")
+                if(this.TopNode.LocalName == "reference")
                 {
-                    TopNode.ParentNode.ParentNode.RemoveChild(TopNode.ParentNode);
+                    this.TopNode.ParentNode.ParentNode.RemoveChild(this.TopNode.ParentNode);
                 }
                 return;
             }
             else
             {
-                if (TopNode.LocalName == "pivotArea")
+                if (this.TopNode.LocalName == "pivotArea")
                 {
-                    XmlNode? n = CreateNode("d:references");
-                    XmlElement? rn = (XmlElement)CreateNode(n, "d:reference", true);
+                    XmlNode? n = this.CreateNode("d:references");
+                    XmlElement? rn = (XmlElement)this.CreateNode(n, "d:reference", true);
                     rn.SetAttribute("field", "4294967294");
-                    TopNode = rn;
+                    this.TopNode = rn;
                 }
             }
 
-            foreach (ExcelPivotTableDataField r in _dataFields)
+            foreach (ExcelPivotTableDataField r in this._dataFields)
             {
                 if (r.Field.IsDataField)
                 {
-                    int ix = _pt.DataFields._list.IndexOf(r);
+                    int ix = this._pt.DataFields._list.IndexOf(r);
                     if (ix >= 0)
                     {
-                        XmlElement? n = (XmlElement)CreateNode("d:x", false, true);
+                        XmlElement? n = (XmlElement)this.CreateNode("d:x", false, true);
                         n.SetAttribute("v", ix.ToString(CultureInfo.InvariantCulture));
                     }
                 }
@@ -144,7 +145,7 @@ namespace OfficeOpenXml.Table.PivotTable
         }
         internal void Clear()
         {
-            _dataFields.Clear();
+            this._dataFields.Clear();
         }
         /// <summary>
         /// Gets the enumerator
@@ -152,7 +153,7 @@ namespace OfficeOpenXml.Table.PivotTable
         /// <returns></returns>
         public IEnumerator<ExcelPivotTableDataField> GetEnumerator()
         {
-            return ((IEnumerable<ExcelPivotTableDataField>)_dataFields).GetEnumerator();
+            return ((IEnumerable<ExcelPivotTableDataField>)this._dataFields).GetEnumerator();
         }
 
         /// <summary>
@@ -161,7 +162,7 @@ namespace OfficeOpenXml.Table.PivotTable
         /// <returns></returns>
         IEnumerator IEnumerable.GetEnumerator()
         {
-            return ((IEnumerable)_dataFields).GetEnumerator();
+            return ((IEnumerable)this._dataFields).GetEnumerator();
         }
     }
 }

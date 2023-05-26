@@ -23,7 +23,7 @@ namespace OfficeOpenXml.FormulaParsing.LexicalAnalysis.PostProcessing
     {
         public TokenNavigator(IList<Token> tokens)
         {
-            _tokens = tokens;
+            this._tokens = tokens;
         }
 
         private readonly IList<Token> _tokens;
@@ -34,7 +34,7 @@ namespace OfficeOpenXml.FormulaParsing.LexicalAnalysis.PostProcessing
         /// <returns></returns>
         public bool HasNext()
         {
-            return Index < _tokens.Count - 1;
+            return this.Index < this._tokens.Count - 1;
         }
 
         /// <summary>
@@ -43,7 +43,7 @@ namespace OfficeOpenXml.FormulaParsing.LexicalAnalysis.PostProcessing
         /// <returns></returns>
         public bool HasPrev()
         {
-            return Index > 0;
+            return this.Index > 0;
         }
 
         /// <summary>
@@ -51,7 +51,7 @@ namespace OfficeOpenXml.FormulaParsing.LexicalAnalysis.PostProcessing
         /// </summary>
         public void MoveNext()
         {
-            Index++;
+            this.Index++;
         }
 
         /// <summary>
@@ -64,7 +64,7 @@ namespace OfficeOpenXml.FormulaParsing.LexicalAnalysis.PostProcessing
         /// </summary>
         public int NbrOfRemainingTokens
         {
-            get { return _tokens.Count - Index - 1; }
+            get { return this._tokens.Count - this.Index - 1; }
         }
 
         /// <summary>
@@ -72,7 +72,7 @@ namespace OfficeOpenXml.FormulaParsing.LexicalAnalysis.PostProcessing
         /// </summary>
         public Token CurrentToken
         {
-            get { return _tokens[Index]; }
+            get { return this._tokens[this.Index]; }
         }
 
         /// <summary>
@@ -80,19 +80,19 @@ namespace OfficeOpenXml.FormulaParsing.LexicalAnalysis.PostProcessing
         /// </summary>
         public Token? PreviousToken
         {
-            get { return Index == 0 ? default(Token?) : _tokens[Index - 1]; }
+            get { return this.Index == 0 ? default(Token?) : this._tokens[this.Index - 1]; }
         }
 
         public Token NextToken
         {
             get
             {
-                if (Index == _tokens.Count - 1)
+                if (this.Index == this._tokens.Count - 1)
                 {
                     throw new ArgumentOutOfRangeException("NextToken: current token is the last token");
                 }
 
-                return _tokens[Index + 1];
+                return this._tokens[this.Index + 1];
             }
         }
         
@@ -102,13 +102,13 @@ namespace OfficeOpenXml.FormulaParsing.LexicalAnalysis.PostProcessing
         /// <param name="relativePosition">The requested position relative to current</param>
         public void MoveIndex(int relativePosition)
         {
-            int newPosition = Index + relativePosition;
-            if (newPosition < 0 || newPosition >= _tokens.Count)
+            int newPosition = this.Index + relativePosition;
+            if (newPosition < 0 || newPosition >= this._tokens.Count)
             {
                 throw new ArgumentOutOfRangeException("MoveIndex: new index out of range");
             }
 
-            Index += relativePosition;
+            this.Index += relativePosition;
         }
 
         /// <summary>
@@ -118,13 +118,13 @@ namespace OfficeOpenXml.FormulaParsing.LexicalAnalysis.PostProcessing
         /// <returns>The <see cref="Token"/> of the requested position</returns>
         public Token GetTokenAtRelativePosition(int relativePosition)
         {
-            int newPosition = Index + relativePosition;
-            if (newPosition < 0 || newPosition >= _tokens.Count)
+            int newPosition = this.Index + relativePosition;
+            if (newPosition < 0 || newPosition >= this._tokens.Count)
             {
                 throw new ArgumentOutOfRangeException("¨GetTokenAtRelativePosition: new index out of range");
             }
 
-            return _tokens[newPosition];
+            return this._tokens[newPosition];
         }
     }
 }

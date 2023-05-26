@@ -42,8 +42,8 @@ namespace OfficeOpenXml.ThreadedComments
         /// </summary>
         public int StartIndex
         {
-            get { return GetXmlNodeInt("@startIndex"); }
-            set { SetXmlNodeInt("@startIndex", value); }
+            get { return this.GetXmlNodeInt("@startIndex"); }
+            set { this.SetXmlNodeInt("@startIndex", value); }
         }
 
         /// <summary>
@@ -51,8 +51,8 @@ namespace OfficeOpenXml.ThreadedComments
         /// </summary>
         public int Length
         {
-            get { return GetXmlNodeInt("@length"); }
-            set { SetXmlNodeInt("@length", value); }
+            get { return this.GetXmlNodeInt("@length"); }
+            set { this.SetXmlNodeInt("@length", value); }
         }
 
         /// <summary>
@@ -60,8 +60,8 @@ namespace OfficeOpenXml.ThreadedComments
         /// </summary>
         public string MentionId
         {
-            get { return GetXmlNodeString("@mentionId"); }
-            set { SetXmlNodeString("@mentionId", value); }
+            get { return this.GetXmlNodeString("@mentionId"); }
+            set { this.SetXmlNodeString("@mentionId", value); }
         }
 
         /// <summary>
@@ -69,8 +69,8 @@ namespace OfficeOpenXml.ThreadedComments
         /// </summary>
         public string MentionPersonId
         {
-            get { return GetXmlNodeString("@mentionpersonId"); }
-            set { SetXmlNodeString("@mentionpersonId", value); }
+            get { return this.GetXmlNodeString("@mentionpersonId"); }
+            set { this.SetXmlNodeString("@mentionpersonId", value); }
         }
     }
 }

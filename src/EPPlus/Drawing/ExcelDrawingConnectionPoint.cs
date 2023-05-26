@@ -28,9 +28,9 @@ namespace OfficeOpenXml.Drawing
         string _path = "xdr:cxnSp/xdr:nvCxnSpPr/xdr:cNvCxnSpPr/{0}";
         internal ExcelDrawingConnectionPoint(ExcelDrawings drawings, XmlNode topNode, string elementName, string[] schemaNodeOrder) : base(drawings.NameSpaceManager, topNode)
         {
-            _path = string.Format(_path, elementName);
-            _drawings = drawings;
-            SchemaNodeOrder = schemaNodeOrder;
+            this._path = string.Format(this._path, elementName);
+            this._drawings = drawings;
+            this.SchemaNodeOrder = schemaNodeOrder;
         }
         /// <summary>
         /// The index the connection point
@@ -39,7 +39,7 @@ namespace OfficeOpenXml.Drawing
         {
             get
             {
-                return GetXmlNodeIntNull(_path + "/@idx") ?? 0;
+                return this.GetXmlNodeIntNull(this._path + "/@idx") ?? 0;
             }
             set
             {
@@ -47,11 +47,12 @@ namespace OfficeOpenXml.Drawing
                 {
                     throw (new ArgumentOutOfRangeException("Index", "Index can't be negative."));
                 }
-                if (_shape == null)
+                if (this._shape == null)
                 {
                     throw (new InvalidOperationException("Can't set Index when Shape is null"));
                 }
-                SetIndex(value);
+
+                this.SetIndex(value);
             }
         }
 
@@ -63,36 +64,38 @@ namespace OfficeOpenXml.Drawing
         {
             get
             {
-                if(_shape==null)
+                if(this._shape==null)
                 {
-                    int? id = GetXmlNodeIntNull(_path + "/@id");
+                    int? id = this.GetXmlNodeIntNull(this._path + "/@id");
                     if (id.HasValue)
                     {
-                        _shape = _drawings.GetById(id.Value) as ExcelShape;
+                        this._shape = this._drawings.GetById(id.Value) as ExcelShape;
                     }
                 }
-                return _shape; 
+                return this._shape; 
             }
             set
             {
                 if(value==null)
                 {
-                    DeleteNode(_path);
+                    this.DeleteNode(this._path);
                 }
                 else
                 {
-                    if(_shape==null)
+                    if(this._shape==null)
                     {
-                        SetIndex(1);
+                        this.SetIndex(1);
                     }
-                    SetXmlNodeString(_path + "/@id", value.Id.ToString(CultureInfo.InvariantCulture));
+
+                    this.SetXmlNodeString(this._path + "/@id", value.Id.ToString(CultureInfo.InvariantCulture));
                 }
-                _shape = value;
+
+                this._shape = value;
             }
         }
         private void SetIndex(int value)
         {
-            SetXmlNodeString(_path + "/@idx", value.ToString(CultureInfo.InvariantCulture));
+            this.SetXmlNodeString(this._path + "/@idx", value.ToString(CultureInfo.InvariantCulture));
         }
 
     }

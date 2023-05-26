@@ -44,55 +44,55 @@ namespace EPPlusTest.FormulaParsing.IntegrationTests
         [TestInitialize]
         public void Setup()
         {
-            _excelPackage = new ExcelPackage();
-            _parser = new FormulaParser(_excelPackage);
+            this._excelPackage = new ExcelPackage();
+            this._parser = new FormulaParser(this._excelPackage);
         }
 
         [TestCleanup]
         public void Cleanup()
         {
-            _excelPackage.Dispose();
+            this._excelPackage.Dispose();
         }
 
         [TestMethod]
         public void ShouldCaluclateUsingPrecedenceMultiplyBeforeAdd()
         {
-            object? result = _parser.Parse("4 + 6 * 2");
+            object? result = this._parser.Parse("4 + 6 * 2");
             Assert.AreEqual(16d, result);
         }
 
         [TestMethod]
         public void ShouldCaluclateUsingPrecedenceDivideBeforeAdd()
         {
-            object? result = _parser.Parse("4 + 6 / 2");
+            object? result = this._parser.Parse("4 + 6 / 2");
             Assert.AreEqual(7d, result);
         }
 
         [TestMethod]
         public void ShouldCalculateTwoGroupsUsingDivideAndMultiplyBeforeSubtract()
         {
-            object? result = _parser.Parse("4/2 + 3 * 3");
+            object? result = this._parser.Parse("4/2 + 3 * 3");
             Assert.AreEqual(11d, result);
         }
 
         [TestMethod]
         public void ShouldCalculateExpressionWithinParenthesisBeforeMultiply()
         {
-            object? result = _parser.Parse("(2+4) * 2");
+            object? result = this._parser.Parse("(2+4) * 2");
             Assert.AreEqual(12d, result);
         }
 
         [TestMethod]
         public void ShouldConcatAfterAdd()
         {
-            object? result = _parser.Parse("2 + 4 & \"abc\"");
+            object? result = this._parser.Parse("2 + 4 & \"abc\"");
             Assert.AreEqual("6abc", result);
         }
 
         [TestMethod]
         public void Bugfixtest()
         {
-            object? result = _parser.Parse("(1+2)+3^2");
+            object? result = this._parser.Parse("(1+2)+3^2");
         }
     }
 }

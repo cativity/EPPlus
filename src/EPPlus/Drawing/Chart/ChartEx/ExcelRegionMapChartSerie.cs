@@ -34,11 +34,11 @@ namespace OfficeOpenXml.Drawing.Chart.ChartEx
         { 
             get
             {
-                return GetXmlNodeString(_attributionPath);
+                return this.GetXmlNodeString(_attributionPath);
             }
             set
             {
-                SetXmlNodeString(_attributionPath, value);
+                this.SetXmlNodeString(_attributionPath, value);
             }
         }
         const string _regionPath = "cx:layoutPr/cx:geography/@cultureRegion";
@@ -49,7 +49,7 @@ namespace OfficeOpenXml.Drawing.Chart.ChartEx
         { 
             get
             {
-                string? r=GetXmlNodeString(_regionPath);
+                string? r= this.GetXmlNodeString(_regionPath);
                 return new CultureInfo(r);
             }
             set
@@ -58,7 +58,8 @@ namespace OfficeOpenXml.Drawing.Chart.ChartEx
                 {
                     throw (new InvalidOperationException("Region must have a two letter ISO code"));
                 }
-                SetXmlNodeString(_regionPath, value.TwoLetterISOLanguageName);
+
+                this.SetXmlNodeString(_regionPath, value.TwoLetterISOLanguageName);
             }
         }
 
@@ -70,7 +71,7 @@ namespace OfficeOpenXml.Drawing.Chart.ChartEx
         {
             get
             {
-                string? r = GetXmlNodeString(_languagePath);
+                string? r = this.GetXmlNodeString(_languagePath);
                 return new CultureInfo(r);
             }
             set
@@ -79,7 +80,8 @@ namespace OfficeOpenXml.Drawing.Chart.ChartEx
                 {
                     throw (new InvalidOperationException("Language must not be null."));
                 }
-                SetXmlNodeString(_languagePath, value.Name);
+
+                this.SetXmlNodeString(_languagePath, value.Name);
             }
         }
         const string _projectionTypePath = "cx:layoutPr/cx:geography/@projectionType";
@@ -90,17 +92,17 @@ namespace OfficeOpenXml.Drawing.Chart.ChartEx
         { 
             get
             {
-                return GetXmlNodeString(_projectionTypePath).ToEnum(eProjectionType.Automatic);
+                return this.GetXmlNodeString(_projectionTypePath).ToEnum(eProjectionType.Automatic);
             }
             set
             {
                 if (value == eProjectionType.Automatic)
                 {
-                    DeleteNode(_projectionTypePath);
+                    this.DeleteNode(_projectionTypePath);
                 }
                 else
                 {
-                    SetXmlNodeString(_projectionTypePath, value.ToEnumString());
+                    this.SetXmlNodeString(_projectionTypePath, value.ToEnumString());
                 }
             }
         }
@@ -112,17 +114,17 @@ namespace OfficeOpenXml.Drawing.Chart.ChartEx
         {
             get
             {
-                return GetXmlNodeString(_geoMappingLevelPath).ToEnum(eGeoMappingLevel.Automatic);
+                return this.GetXmlNodeString(_geoMappingLevelPath).ToEnum(eGeoMappingLevel.Automatic);
             }
             set
             {
                 if(value==eGeoMappingLevel.Automatic)
                 {
-                    DeleteNode(_geoMappingLevelPath);
+                    this.DeleteNode(_geoMappingLevelPath);
                 }
                 else
                 {
-                    SetXmlNodeString(_geoMappingLevelPath, value.ToEnumString());
+                    this.SetXmlNodeString(_geoMappingLevelPath, value.ToEnumString());
                 }                
             }
         }
@@ -134,11 +136,11 @@ namespace OfficeOpenXml.Drawing.Chart.ChartEx
         {
             get
             {
-                if(_colors==null)
+                if(this._colors==null)
                 {
-                    _colors = new ExcelChartExValueColors(this, NameSpaceManager, TopNode, SchemaNodeOrder);
+                    this._colors = new ExcelChartExValueColors(this, this.NameSpaceManager, this.TopNode, this.SchemaNodeOrder);
                 }
-                return _colors;
+                return this._colors;
             }
         }
         /// <summary>
@@ -148,11 +150,11 @@ namespace OfficeOpenXml.Drawing.Chart.ChartEx
         {
             get
             {
-                return GetXmlNodeString("cx:layoutPr/cx:regionLabelLayout/@val").ToEnum(eRegionLabelLayout.None);
+                return this.GetXmlNodeString("cx:layoutPr/cx:regionLabelLayout/@val").ToEnum(eRegionLabelLayout.None);
             }
             set
             {
-                SetXmlNodeString("cx:layoutPr/cx:regionLabelLayout/@val", value.ToEnumString());
+                this.SetXmlNodeString("cx:layoutPr/cx:regionLabelLayout/@val", value.ToEnumString());
             }
         }
 
@@ -163,7 +165,7 @@ namespace OfficeOpenXml.Drawing.Chart.ChartEx
         { 
             get
             {
-                if(DataDimensions.GetValueDimension() is ExcelChartExStringData s)
+                if(this.DataDimensions.GetValueDimension() is ExcelChartExStringData s)
                 {
                     if(s.Type==eStringDataType.ColorString)
                     {
@@ -174,15 +176,15 @@ namespace OfficeOpenXml.Drawing.Chart.ChartEx
             }
             set
             {
-                if(ColorBy != value)
+                if(this.ColorBy != value)
                 {
                     if(value==eColorBy.Value)
                     {
-                        DataDimensions.SetTypeNumeric(1, eNumericDataType.ColorValue);
+                        this.DataDimensions.SetTypeNumeric(1, eNumericDataType.ColorValue);
                     }
                     else
                     {
-                        DataDimensions.SetTypeString(1, eStringDataType.ColorString);
+                        this.DataDimensions.SetTypeString(1, eStringDataType.ColorString);
                     }
                 }
             }

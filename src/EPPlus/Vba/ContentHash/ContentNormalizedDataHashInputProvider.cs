@@ -28,16 +28,16 @@ namespace OfficeOpenXml.Vba.ContentHash
 
         protected override void CreateHashInputInternal(MemoryStream ms)
         {
-            GetContentHash(ms);
+            this.GetContentHash(ms);
         }
 
         private void GetContentHash(MemoryStream ms)
         {
             //MS-OVBA 2.4.2.1
             BinaryWriter bw = new BinaryWriter(ms);
-            bw.Write(HashEncoding.GetBytes(Project.Name));
-            bw.Write(HashEncoding.GetBytes(Project.Constants));
-            foreach (ExcelVbaReference? reference in Project.References)
+            bw.Write(this.HashEncoding.GetBytes(this.Project.Name));
+            bw.Write(this.HashEncoding.GetBytes(this.Project.Constants));
+            foreach (ExcelVbaReference? reference in this.Project.References)
             {
                 if (reference.ReferenceRecordID == 0x0D)
                 {
@@ -58,14 +58,14 @@ namespace OfficeOpenXml.Vba.ContentHash
                     }
                 }
             }
-            foreach (ExcelVBAModule? module in Project.Modules)
+            foreach (ExcelVBAModule? module in this.Project.Modules)
             {
                 string[]? lines = module.Code.Split(new char[] { '\r', '\n' }, StringSplitOptions.RemoveEmptyEntries);
                 foreach (string? line in lines)
                 {
                     if (!line.StartsWith("attribute", StringComparison.OrdinalIgnoreCase))
                     {
-                        bw.Write(HashEncoding.GetBytes(line));
+                        bw.Write(this.HashEncoding.GetBytes(line));
                     }
                 }
             }

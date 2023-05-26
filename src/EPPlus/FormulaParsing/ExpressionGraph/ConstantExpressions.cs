@@ -32,12 +32,12 @@ namespace OfficeOpenXml.FormulaParsing.ExpressionGraph
         public ConstantExpression(string title, Func<CompileResult> factoryMethod)
             : base(title)
         {
-            _factoryMethod = factoryMethod;
+            this._factoryMethod = factoryMethod;
         }
 
         public override CompileResult Compile()
         {
-            return _factoryMethod();
+            return this._factoryMethod();
         }
     }
 }

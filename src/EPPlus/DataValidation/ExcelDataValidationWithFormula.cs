@@ -38,7 +38,7 @@ namespace OfficeOpenXml.DataValidation
         internal ExcelDataValidationWithFormula(string uid, string address, ExcelWorksheet ws)
             : base(uid, address, ws)
         {
-            _workSheetName = ws.Name;
+            this._workSheetName = ws.Name;
         }
 
         /// <summary>
@@ -62,7 +62,7 @@ namespace OfficeOpenXml.DataValidation
         internal override void ReadClassSpecificXmlNodes(XmlReader xr)
         {
             base.ReadClassSpecificXmlNodes(xr);
-            Formula = ReadFormula(xr, "formula1");
+            this.Formula = this.ReadFormula(xr, "formula1");
         }
 
         internal T ReadFormula(XmlReader xr, string formulaIdentifier)
@@ -77,12 +77,12 @@ namespace OfficeOpenXml.DataValidation
 
             bool isExt = xr.NamespaceURI == ExcelPackage.schemaMainX14;
 
-            if (InternalValidationType == InternalValidationType.ExtLst || isExt)
+            if (this.InternalValidationType == InternalValidationType.ExtLst || isExt)
             {
                 xr.Read();
             }
 
-            return DefineFormulaClassType(xr.ReadString(), _workSheetName);
+            return this.DefineFormulaClassType(xr.ReadString(), this._workSheetName);
         }
 
         abstract internal T DefineFormulaClassType(string formulaValue, string worksheetName);
@@ -106,28 +106,28 @@ namespace OfficeOpenXml.DataValidation
         {
             base.Validate();
 
-            ExcelDataValidationFormula? formula = Formula as ExcelDataValidationFormula;
+            ExcelDataValidationFormula? formula = this.Formula as ExcelDataValidationFormula;
 
-            if (ValidationType.Type == eDataValidationType.Any)
+            if (this.ValidationType.Type == eDataValidationType.Any)
             {
                 return;
             }
 
-            if (ValidationType.Type == eDataValidationType.List)
+            if (this.ValidationType.Type == eDataValidationType.List)
             {
                 ExcelDataValidationFormulaList? formulaList = (ExcelDataValidationFormulaList)formula;
                 if (string.IsNullOrEmpty(formulaList.ExcelFormula) && formulaList.Values.Count <= 0)
                 {
-                    throw new InvalidOperationException($"Formula in Datavalidation of type: {eDataValidationType.List} with Uid: {Uid} must have a Value or ExcelFormula");
+                    throw new InvalidOperationException($"Formula in Datavalidation of type: {eDataValidationType.List} with Uid: {this.Uid} must have a Value or ExcelFormula");
                 }
                 return;
             }
 
             if ((formula.HasValue == false) 
                 && string.IsNullOrEmpty(formula.ExcelFormula) 
-                && !(AllowBlank ?? false))
+                && !(this.AllowBlank ?? false))
             {
-                throw new InvalidOperationException($"Formula in Datavalidation of type: {ValidationType.Type} with Uid: {Uid} must have a Value or ExcelFormula");
+                throw new InvalidOperationException($"Formula in Datavalidation of type: {this.ValidationType.Type} with Uid: {this.Uid} must have a Value or ExcelFormula");
             }
         }
     }

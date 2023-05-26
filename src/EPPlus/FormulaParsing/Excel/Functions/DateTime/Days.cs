@@ -29,11 +29,11 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions.DateTime
         {
             ValidateArguments(arguments, 2);
             ValidateArguments(arguments, 2);
-            double numDate1 = ArgToDecimal(arguments, 0);
-            double numDate2 = ArgToDecimal(arguments, 1);
+            double numDate1 = this.ArgToDecimal(arguments, 0);
+            double numDate2 = this.ArgToDecimal(arguments, 1);
             System.DateTime endDate = System.DateTime.FromOADate(numDate1);
             System.DateTime startDate = System.DateTime.FromOADate(numDate2);
-            return CreateResult(endDate.Subtract(startDate).TotalDays, DataType.Date);
+            return this.CreateResult(endDate.Subtract(startDate).TotalDays, DataType.Date);
         }
     }
 }

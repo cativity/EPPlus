@@ -26,7 +26,7 @@ namespace OfficeOpenXml.Filter
         ExcelAutoFilter _autoFilter;
         internal ExcelFilterColumnCollection(XmlNamespaceManager namespaceManager, XmlNode topNode, ExcelAutoFilter autofilter) : base(namespaceManager, topNode)
         {
-            _autoFilter = autofilter;
+            this._autoFilter = autofilter;
             foreach (XmlElement node in topNode.SelectNodes("d:filterColumn", namespaceManager))
             {
                 if(!int.TryParse(node.Attributes["colId"].Value, out int position))
@@ -36,22 +36,22 @@ namespace OfficeOpenXml.Filter
                 switch (node.FirstChild?.Name)
                 {
                     case "filters":
-                        _columns.Add(position, new ExcelValueFilterColumn(namespaceManager, node));
+                        this._columns.Add(position, new ExcelValueFilterColumn(namespaceManager, node));
                         break;
                     case "customFilters":
-                        _columns.Add(position, new ExcelCustomFilterColumn(namespaceManager, node));
+                        this._columns.Add(position, new ExcelCustomFilterColumn(namespaceManager, node));
                         break;
                     case "colorFilter":
-                        _columns.Add(position, new ExcelColorFilterColumn(namespaceManager, node));
+                        this._columns.Add(position, new ExcelColorFilterColumn(namespaceManager, node));
                         break;
                     case "iconFilter":
-                        _columns.Add(position, new ExcelIconFilterColumn(namespaceManager, node));
+                        this._columns.Add(position, new ExcelIconFilterColumn(namespaceManager, node));
                         break;
                     case "dynamicFilter":
-                        _columns.Add(position, new ExcelDynamicFilterColumn(namespaceManager, node));
+                        this._columns.Add(position, new ExcelDynamicFilterColumn(namespaceManager, node));
                         break;
                     case "top10":
-                        _columns.Add(position, new ExcelTop10FilterColumn(namespaceManager, node));
+                        this._columns.Add(position, new ExcelTop10FilterColumn(namespaceManager, node));
                         break;
                 }
             }
@@ -63,37 +63,37 @@ namespace OfficeOpenXml.Filter
         {
             get
             {
-                return _columns.Count;
+                return this._columns.Count;
             }
         }
         internal XmlNode Add(int position, string topNodeName)
         {
             XmlElement node;
-            if (position >= _autoFilter.Address.Columns)
+            if (position >= this._autoFilter.Address.Columns)
             {
                 throw (new ArgumentOutOfRangeException("Position is outside of the range"));
             }
-            if (_columns.ContainsKey(position))
+            if (this._columns.ContainsKey(position))
             {
                 throw (new ArgumentOutOfRangeException("Position already exists"));
             }
-            foreach (ExcelFilterColumn? c in _columns.Values)
+            foreach (ExcelFilterColumn? c in this._columns.Values)
             {
                 if (c.Position > position)
                 {
-                    node = GetColumnNode(position, topNodeName);
+                    node = this.GetColumnNode(position, topNodeName);
                     return c.TopNode.ParentNode.InsertBefore(node, c.TopNode);
                 }
             }
-            node = GetColumnNode(position, topNodeName);
-            return TopNode.AppendChild(node);
+            node = this.GetColumnNode(position, topNodeName);
+            return this.TopNode.AppendChild(node);
         }
 
         private XmlElement GetColumnNode(int position, string topNodeName)
         {
-            XmlElement node = TopNode.OwnerDocument.CreateElement("filterColumn", ExcelPackage.schemaMain);
+            XmlElement node = this.TopNode.OwnerDocument.CreateElement("filterColumn", ExcelPackage.schemaMain);
             node.SetAttribute("colId", position.ToString());
-            XmlElement? subNode = TopNode.OwnerDocument.CreateElement(topNodeName, ExcelPackage.schemaMain);
+            XmlElement? subNode = this.TopNode.OwnerDocument.CreateElement(topNodeName, ExcelPackage.schemaMain);
             node.AppendChild(subNode);
             return node;
         }
@@ -106,9 +106,9 @@ namespace OfficeOpenXml.Filter
         {
             get
             {
-                if(_columns.ContainsKey(index))
+                if(this._columns.ContainsKey(index))
                 {
-                    return _columns[index];
+                    return this._columns[index];
                 }
                 else
                 {
@@ -123,9 +123,9 @@ namespace OfficeOpenXml.Filter
         /// <returns>The value filter</returns>
         public ExcelValueFilterColumn AddValueFilterColumn(int position)
         {
-            XmlNode? node = Add(position, "filters");
-            ExcelValueFilterColumn? col = new ExcelValueFilterColumn(NameSpaceManager, node);
-            _columns.Add(position, col);
+            XmlNode? node = this.Add(position, "filters");
+            ExcelValueFilterColumn? col = new ExcelValueFilterColumn(this.NameSpaceManager, node);
+            this._columns.Add(position, col);
             return col;
         }
         /// <summary>
@@ -135,9 +135,9 @@ namespace OfficeOpenXml.Filter
         /// <returns>The custom filter</returns>
         public ExcelCustomFilterColumn AddCustomFilterColumn(int position)
         {
-            XmlNode? node = Add(position, "customFilters");
-            ExcelCustomFilterColumn? col= new ExcelCustomFilterColumn(NameSpaceManager, node);
-            _columns.Add(position, col);
+            XmlNode? node = this.Add(position, "customFilters");
+            ExcelCustomFilterColumn? col= new ExcelCustomFilterColumn(this.NameSpaceManager, node);
+            this._columns.Add(position, col);
             return col;
         }
         /// <summary>
@@ -148,9 +148,9 @@ namespace OfficeOpenXml.Filter
         /// <returns>The color filter</returns>
         public ExcelColorFilterColumn AddColorFilterColumn(int position)
         {
-            XmlNode? node = Add(position, "colorFilter");
-            ExcelColorFilterColumn? col = new ExcelColorFilterColumn(NameSpaceManager, node);
-            _columns.Add(position, col);
+            XmlNode? node = this.Add(position, "colorFilter");
+            ExcelColorFilterColumn? col = new ExcelColorFilterColumn(this.NameSpaceManager, node);
+            this._columns.Add(position, col);
             return col;
         }
         /// <summary>
@@ -161,9 +161,9 @@ namespace OfficeOpenXml.Filter
         /// <returns>The color filter</returns>
         public ExcelIconFilterColumn AddIconFilterColumn(int position)
         {
-            XmlNode? node = Add(position, "iconFilter");
-            ExcelIconFilterColumn? col = new ExcelIconFilterColumn(NameSpaceManager, node);
-            _columns.Add(position, col);
+            XmlNode? node = this.Add(position, "iconFilter");
+            ExcelIconFilterColumn? col = new ExcelIconFilterColumn(this.NameSpaceManager, node);
+            this._columns.Add(position, col);
             return col;
         }
         /// <summary>
@@ -173,9 +173,9 @@ namespace OfficeOpenXml.Filter
         /// <returns>The top 10 filter</returns>
         public ExcelTop10FilterColumn AddTop10FilterColumn(int position)
         {
-            XmlNode? node = Add(position, "top10");
-            ExcelTop10FilterColumn? col = new ExcelTop10FilterColumn(NameSpaceManager, node);
-            _columns.Add(position, col);
+            XmlNode? node = this.Add(position, "top10");
+            ExcelTop10FilterColumn? col = new ExcelTop10FilterColumn(this.NameSpaceManager, node);
+            this._columns.Add(position, col);
             return col;
         }
         /// <summary>
@@ -185,9 +185,9 @@ namespace OfficeOpenXml.Filter
         /// <returns>The dynamic filter</returns>
         public ExcelDynamicFilterColumn AddDynamicFilterColumn(int position)
         {
-            XmlNode? node = Add(position, "dynamicFilter");
-            ExcelDynamicFilterColumn? col = new ExcelDynamicFilterColumn(NameSpaceManager, node);
-            _columns.Add(position, col);
+            XmlNode? node = this.Add(position, "dynamicFilter");
+            ExcelDynamicFilterColumn? col = new ExcelDynamicFilterColumn(this.NameSpaceManager, node);
+            this._columns.Add(position, col);
             return col;
         }
         /// <summary>
@@ -196,7 +196,7 @@ namespace OfficeOpenXml.Filter
         /// <returns>The enumerator</returns>
         public IEnumerator<ExcelFilterColumn> GetEnumerator()
         {
-            return _columns.Values.GetEnumerator();
+            return this._columns.Values.GetEnumerator();
         }
         /// <summary>
         /// Gets the enumerator for the collection
@@ -204,7 +204,7 @@ namespace OfficeOpenXml.Filter
         /// <returns>The enumerator</returns>
         IEnumerator IEnumerable.GetEnumerator()
         {
-            return _columns.Values.GetEnumerator();
+            return this._columns.Values.GetEnumerator();
         }
         /// <summary>
         /// Remove the filter column with the position from the collection
@@ -212,11 +212,12 @@ namespace OfficeOpenXml.Filter
         /// <param name="position">The index of the column to remove</param>
         public void RemoveAt(int position)
         {
-            if(!_columns.ContainsKey(position))
+            if(!this._columns.ContainsKey(position))
             {
                 throw new InvalidOperationException($"Column with position {position} does not exist in the filter collection");
             }
-            Remove(_columns[position]);
+
+            this.Remove(this._columns[position]);
         }
         /// <summary>
         /// Remove the filter column from the collection
@@ -226,7 +227,7 @@ namespace OfficeOpenXml.Filter
         {
             XmlNode? node = column.TopNode;
             node.ParentNode.RemoveChild(node);
-            _columns.Remove(column.Position);
+            this._columns.Remove(column.Position);
         }
     }
 }

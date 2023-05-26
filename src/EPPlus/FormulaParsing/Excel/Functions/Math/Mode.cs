@@ -27,7 +27,7 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Math
     {
         public Mode()
         {
-            IgnoreErrors = false;
+            this.IgnoreErrors = false;
         }
         public override CompileResult Execute(IEnumerable<FunctionArgument> arguments, ParsingContext context)
         {
@@ -37,7 +37,7 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Math
                 return this.CreateResult(eErrorType.Value);
             }
 
-            IEnumerable<ExcelDoubleCellValue>? numbers = ArgsToDoubleEnumerable(IgnoreHiddenValues, IgnoreErrors, arguments, context);
+            IEnumerable<ExcelDoubleCellValue>? numbers = this.ArgsToDoubleEnumerable(this.IgnoreHiddenValues, this.IgnoreErrors, arguments, context);
             Dictionary<double, int>? counts = new Dictionary<double, int>();
             double? maxCountValue = default;
             foreach(ExcelDoubleCellValue number in numbers)
@@ -72,7 +72,7 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Math
                 return this.CreateResult(eErrorType.Num);
             }
 
-            return CreateResult(maxCountValue.Value, DataType.Decimal);
+            return this.CreateResult(maxCountValue.Value, DataType.Decimal);
         }
     }
 }

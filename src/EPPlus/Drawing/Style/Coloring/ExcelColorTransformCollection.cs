@@ -34,12 +34,12 @@ namespace OfficeOpenXml.Drawing.Style.Coloring
         }
         internal ExcelColorTransformCollection(XmlNamespaceManager nsm, XmlNode topNode)
         {
-            _namespaceManager = nsm;
-            _topNode = topNode;
+            this._namespaceManager = nsm;
+            this._topNode = topNode;
             foreach(XmlElement e in topNode.ChildNodes)
             {
                 eColorTransformType type = e.LocalName.ToEnum(eColorTransformType.Alpha);
-                _list.Add(new ExcelColorTransformItem(nsm, e, type));
+                this._list.Add(new ExcelColorTransformItem(nsm, e, type));
             }
         }
         /// <summary>
@@ -51,7 +51,7 @@ namespace OfficeOpenXml.Drawing.Style.Coloring
         {
             get
             {
-                return (_list[index]);
+                return (this._list[index]);
             }
         }
         /// <summary>
@@ -59,14 +59,15 @@ namespace OfficeOpenXml.Drawing.Style.Coloring
         /// </summary>
         public void Clear()
         {
-            foreach(IColorTransformItem? item in _list)
+            foreach(IColorTransformItem? item in this._list)
             {
                 if (item is ExcelColorTransformItem colorItem)
                 {
                     colorItem.TopNode.ParentNode.RemoveChild(colorItem.TopNode);
                 }
             }
-            _list.Clear();
+
+            this._list.Clear();
         }
         /// <summary>
         /// Remote item at a specific position
@@ -74,7 +75,7 @@ namespace OfficeOpenXml.Drawing.Style.Coloring
         /// <param name="index">The postion in the list</param>
         public void RemoveAt(int index)
         {
-            Remove(_list[index]);
+            this.Remove(this._list[index]);
         }
         /// <summary>
         /// Removes the specific item
@@ -86,7 +87,8 @@ namespace OfficeOpenXml.Drawing.Style.Coloring
             {
                 colorItem.TopNode.ParentNode.RemoveChild(colorItem.TopNode);
             }
-            _list.Remove(item);
+
+            this._list.Remove(item);
         }
         /// <summary>
         /// Remove all items of a specific type
@@ -94,11 +96,11 @@ namespace OfficeOpenXml.Drawing.Style.Coloring
         /// <param name="type">The transformation type</param>
         public void RemoveOfType(eColorTransformType type)
         {
-            for(int i=0;i<_list.Count;i++)
+            for(int i=0;i< this._list.Count;i++)
             {
-                if(_list[i].Type==type)
+                if(this._list[i].Type==type)
                 {
-                    _list.RemoveAt(i);
+                    this._list.RemoveAt(i);
                     i--;
                 }
             }
@@ -112,7 +114,7 @@ namespace OfficeOpenXml.Drawing.Style.Coloring
         /// <param name="value">The alpha value in percentage 0-100</param>
         public void AddAlpha(double value)
         {
-            AddValue("alpha", eColorTransformType.Alpha, value);
+            this.AddValue("alpha", eColorTransformType.Alpha, value);
         }
         /// <summary>
         /// Specifies a more or less opaque version of its input color
@@ -121,7 +123,7 @@ namespace OfficeOpenXml.Drawing.Style.Coloring
         /// <param name="value">The alpha modulation in a positive percentage</param>
         public void AddAlphaModulation(double value)
         {
-            AddValue("alphaMod", eColorTransformType.AlphaMod, value);
+            this.AddValue("alphaMod", eColorTransformType.AlphaMod, value);
         }
         /// <summary>
         /// Adds an alpha offset value. 
@@ -129,7 +131,7 @@ namespace OfficeOpenXml.Drawing.Style.Coloring
         /// <param name="value">The tint percentage. From 0-100</param>
         public void AddAlphaOffset(double value)
         {
-            AddValue("alphaOff", eColorTransformType.AlphaOff, value);
+            this.AddValue("alphaOff", eColorTransformType.AlphaOff, value);
         }
         #endregion
         #region Hue
@@ -139,7 +141,7 @@ namespace OfficeOpenXml.Drawing.Style.Coloring
         /// <param name="value">The hue angle from 0-360</param>
         public void AddHue(double value)
         {
-            AddValue("hue", eColorTransformType.Hue, value);
+            this.AddValue("hue", eColorTransformType.Hue, value);
         }
         /// <summary>
         /// Specifies the hue as expressed by a percentage relative to the input color
@@ -147,7 +149,7 @@ namespace OfficeOpenXml.Drawing.Style.Coloring
         /// <param name="value">The hue modulation in a positive percentage</param>
         public void AddHueModulation(double value)
         {
-            AddValue("hueMod", eColorTransformType.HueMod, value);
+            this.AddValue("hueMod", eColorTransformType.HueMod, value);
         }
         /// <summary>
         /// Specifies the actual angular value of the shift. The result of the shift shall be between 0 and 360 degrees.Shifts resulting in angular values less than 0 are treated as 0. 
@@ -156,7 +158,7 @@ namespace OfficeOpenXml.Drawing.Style.Coloring
         /// <param name="value">The hue offset value.</param>
         public void AddHueOffset(double value)
         {
-            AddValue("hueOff", eColorTransformType.HueOff, value);
+            this.AddValue("hueOff", eColorTransformType.HueOff, value);
         }
         #endregion
         #region Saturation
@@ -166,7 +168,7 @@ namespace OfficeOpenXml.Drawing.Style.Coloring
         /// <param name="value">The saturation percentage from 0-100</param>
         public void AddSaturation(double value)
         {
-            AddValue("sat", eColorTransformType.Sat, value);
+            this.AddValue("sat", eColorTransformType.Sat, value);
         }
         /// <summary>
         /// Specifies the saturation as expressed by a percentage relative to the input color
@@ -174,7 +176,7 @@ namespace OfficeOpenXml.Drawing.Style.Coloring
         /// <param name="value">The saturation modulation in a positive percentage</param>
         public void AddSaturationModulation(double value)
         {
-            AddValue("satMod", eColorTransformType.SatMod, value);
+            this.AddValue("satMod", eColorTransformType.SatMod, value);
         }
         /// <summary>
         /// Specifies the saturation as expressed by a percentage offset increase or decrease to the input color.
@@ -183,7 +185,7 @@ namespace OfficeOpenXml.Drawing.Style.Coloring
         /// <param name="value">The saturation offset value</param>
         public void AddSaturationOffset(double value)
         {
-            AddValue("satOff", eColorTransformType.SatOff, value);
+            this.AddValue("satOff", eColorTransformType.SatOff, value);
         }
         #endregion
         #region Luminance
@@ -193,7 +195,7 @@ namespace OfficeOpenXml.Drawing.Style.Coloring
         /// <param name="value">The luminance percentage from 0-100</param>
         public void AddLuminance(double value)
         {
-            AddValue("lum", eColorTransformType.Lum, value);
+            this.AddValue("lum", eColorTransformType.Lum, value);
         }
         /// <summary>
         /// Specifies the luminance as expressed by a percentage relative to the input color
@@ -201,7 +203,7 @@ namespace OfficeOpenXml.Drawing.Style.Coloring
         /// <param name="value">The luminance modulation in a positive percentage</param>
         public void AddLuminanceModulation(double value)
         {
-            AddValue("lumMod", eColorTransformType.LumMod, value);
+            this.AddValue("lumMod", eColorTransformType.LumMod, value);
         }
         /// <summary>
         /// Specifies the luminance as expressed by a percentage offset increase or decrease to the input color.
@@ -210,7 +212,7 @@ namespace OfficeOpenXml.Drawing.Style.Coloring
         /// <param name="value">The luminance offset value</param>
         public void AddLuminanceOffset(double value)
         {
-            AddValue("lumOff", eColorTransformType.LumOff, value);
+            this.AddValue("lumOff", eColorTransformType.LumOff, value);
         }
         #endregion
         #region Red
@@ -220,7 +222,7 @@ namespace OfficeOpenXml.Drawing.Style.Coloring
         /// <param name="value">The red value</param>
         public void AddRed(double value)
         {
-            AddValue("red", eColorTransformType.Red, value);
+            this.AddValue("red", eColorTransformType.Red, value);
         }
         /// <summary>
         /// Specifies the red component as expressed by a percentage relative to the input color component
@@ -228,7 +230,7 @@ namespace OfficeOpenXml.Drawing.Style.Coloring
         /// <param name="value">The red modulation value</param>
         public void AddRedModulation(double value)
         {
-            AddValue("redMod", eColorTransformType.RedMod, value);
+            this.AddValue("redMod", eColorTransformType.RedMod, value);
         }
         /// <summary>
         /// Specifies the red component as expressed by a percentage offset increase or decrease to the input color component
@@ -236,7 +238,7 @@ namespace OfficeOpenXml.Drawing.Style.Coloring
         /// <param name="value">The red offset value.</param>
         public void AddRedOffset(double value)
         {
-            AddValue("redOff", eColorTransformType.RedOff, value);
+            this.AddValue("redOff", eColorTransformType.RedOff, value);
         }
         #endregion
         #region Green
@@ -246,7 +248,7 @@ namespace OfficeOpenXml.Drawing.Style.Coloring
         /// <param name="value">The green value</param>
         public void AddGreen(double value)
         {
-            AddValue("green", eColorTransformType.Green, value);
+            this.AddValue("green", eColorTransformType.Green, value);
         }
         /// <summary>
         /// Specifies the green component as expressed by a percentage relative to the input color component
@@ -254,7 +256,7 @@ namespace OfficeOpenXml.Drawing.Style.Coloring
         /// <param name="value">The green modulation value</param>
         public void AddGreenModulation(double value)
         {
-            AddValue("greenMod", eColorTransformType.GreenMod, value);
+            this.AddValue("greenMod", eColorTransformType.GreenMod, value);
         }
         /// <summary>
         /// Specifies the green component as expressed by a percentage offset increase or decrease to the input color component
@@ -262,7 +264,7 @@ namespace OfficeOpenXml.Drawing.Style.Coloring
         /// <param name="value">The green offset value.</param>
         public void AddGreenOffset(double value)
         {
-            AddValue("greenOff", eColorTransformType.GreenOff, value);
+            this.AddValue("greenOff", eColorTransformType.GreenOff, value);
         }
         #endregion
         #region Blue
@@ -272,16 +274,16 @@ namespace OfficeOpenXml.Drawing.Style.Coloring
         /// <param name="value">The blue value</param>
         public void AddBlue(double value)
         {
-            AddValue("blue", eColorTransformType.Blue, value);
+            this.AddValue("blue", eColorTransformType.Blue, value);
         }
 
         internal double FindValue(eColorTransformType alpha)
         {
-            return _list.Find(x => x.Type == alpha)?.Value ?? 0;
+            return this._list.Find(x => x.Type == alpha)?.Value ?? 0;
         }
         internal IColorTransformItem Find(eColorTransformType alpha)
         {
-            return _list.Find(x => x.Type == alpha);
+            return this._list.Find(x => x.Type == alpha);
         }
 
         /// <summary>
@@ -290,7 +292,7 @@ namespace OfficeOpenXml.Drawing.Style.Coloring
         /// <param name="value">The blue modulation value</param>
         public void AddBlueModulation(double value)
         {
-            AddValue("blueMod", eColorTransformType.BlueMod, value);
+            this.AddValue("blueMod", eColorTransformType.BlueMod, value);
         }
         /// <summary>
         /// Specifies the blue component as expressed by a percentage offset increase or decrease to the input color component
@@ -298,7 +300,7 @@ namespace OfficeOpenXml.Drawing.Style.Coloring
         /// <param name="value">The blue offset value.</param>
         public void AddBlueOffset(double value)
         {
-            AddValue("blueOff", eColorTransformType.BlueOff, value);
+            this.AddValue("blueOff", eColorTransformType.BlueOff, value);
         }
         #endregion
         /// <summary>
@@ -307,7 +309,7 @@ namespace OfficeOpenXml.Drawing.Style.Coloring
         /// <param name="value">The tint value in percentage 0-100</param>
         public void AddTint(double value)
         {
-            AddValue("tint", eColorTransformType.Tint, value);
+            this.AddValue("tint", eColorTransformType.Tint, value);
         }
         /// <summary>
         /// Specifies a lighter version of its input color
@@ -315,7 +317,7 @@ namespace OfficeOpenXml.Drawing.Style.Coloring
         /// <param name="value">The tint value in percentage 0-100</param>
         public void AddShade(double value)
         {
-            AddValue("shade", eColorTransformType.Shade, value);
+            this.AddValue("shade", eColorTransformType.Shade, value);
         }
         #region Boolean Types
         /// <summary>
@@ -324,58 +326,58 @@ namespace OfficeOpenXml.Drawing.Style.Coloring
         /// </summary>
         public void AddComplement()
         {
-            AddValue("comp", eColorTransformType.Comp);
+            this.AddValue("comp", eColorTransformType.Comp);
         }
         /// <summary>
         /// Specifies that the output color rendered by the generating application should be the sRGB gamma shift of the input color.
         /// </summary>
         public void AddGamma()
         {
-            AddValue("gamma", eColorTransformType.Gamma);
+            this.AddValue("gamma", eColorTransformType.Gamma);
         }
         /// <summary>
         /// Specifies a grayscale of its input color, taking into relative intensities of the red, green, and blue primaries.
         /// </summary>
         public void AddGray()
         {
-            AddValue("gray", eColorTransformType.Gray);
+            this.AddValue("gray", eColorTransformType.Gray);
         }
         /// <summary>
         /// Specifies the inverse of its input color
         /// </summary>
         public void AddInverse()
         {
-            AddValue("inv", eColorTransformType.Inv);
+            this.AddValue("inv", eColorTransformType.Inv);
         }
         /// <summary>
         /// Specifies that the output color rendered by the generating application should be the inverse sRGB gamma shift of the input color
         /// </summary>
         public void AddInverseGamma()
         {
-            AddValue("invGamma", eColorTransformType.InvGamma);
+            this.AddValue("invGamma", eColorTransformType.InvGamma);
         }
         #endregion
         private void AddValue(string name, eColorTransformType type)
         {
-            if (_namespaceManager == null)
+            if (this._namespaceManager == null)
             {
-                _list.Add(new ExcelColorTransformSimpleItem() { Type=type });
+                this._list.Add(new ExcelColorTransformSimpleItem() { Type=type });
             }
             else
             {
-                XmlElement node = AddNode(name);
-                _list.Add(new ExcelColorTransformItem(_namespaceManager, node, type));
+                XmlElement node = this.AddNode(name);
+                this._list.Add(new ExcelColorTransformItem(this._namespaceManager, node, type));
             }
         }
         private void AddValue(string name, eColorTransformType type, double value)
         {
-            AddValue(name, type);
-            _list[_list.Count - 1].Value = value;
+            this.AddValue(name, type);
+            this._list[this._list.Count - 1].Value = value;
         }
         private XmlElement AddNode(string name)
         {
-            XmlElement? node = _topNode.OwnerDocument.CreateElement("a", name, ExcelPackage.schemaDrawings);
-            _topNode.AppendChild(node);
+            XmlElement? node = this._topNode.OwnerDocument.CreateElement("a", name, ExcelPackage.schemaDrawings);
+            this._topNode.AppendChild(node);
             return node;
         }
         #endregion
@@ -385,12 +387,12 @@ namespace OfficeOpenXml.Drawing.Style.Coloring
         /// <returns>The enumerator</returns>
         public IEnumerator<IColorTransformItem> GetEnumerator()
         {
-            return _list.GetEnumerator();
+            return this._list.GetEnumerator();
         }
 
         IEnumerator IEnumerable.GetEnumerator()
         {
-            return _list.GetEnumerator();
+            return this._list.GetEnumerator();
         }
         /// <summary>
         /// Number of items in the collection
@@ -399,7 +401,7 @@ namespace OfficeOpenXml.Drawing.Style.Coloring
         {
             get
             {
-                return _list.Count;
+                return this._list.Count;
             }
         }
     }

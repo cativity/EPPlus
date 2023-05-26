@@ -22,7 +22,7 @@ namespace OfficeOpenXml.Drawing.Chart
     {
         internal ExcelBubbleChartSeries(ExcelChart chart, XmlNamespaceManager ns, XmlNode node, bool isPivot, List<ExcelChartSerie> list)
         {
-            Init(chart, ns, node, isPivot, list);
+            this.Init(chart, ns, node, isPivot, list);
         }
         /// <summary>
         /// Adds a new serie to a bubble chart
@@ -33,7 +33,7 @@ namespace OfficeOpenXml.Drawing.Chart
         /// <returns></returns>
         public ExcelChartSerie Add(ExcelRangeBase Serie, ExcelRangeBase XSerie, ExcelRangeBase BubbleSize)
         {
-            return AddSeries(Serie.FullAddressAbsolute, XSerie.FullAddressAbsolute, BubbleSize?.FullAddressAbsolute);
+            return this.AddSeries(Serie.FullAddressAbsolute, XSerie.FullAddressAbsolute, BubbleSize?.FullAddressAbsolute);
         }
         /// <summary>
         /// 
@@ -44,7 +44,7 @@ namespace OfficeOpenXml.Drawing.Chart
         /// <returns></returns>
         public ExcelChartSerie Add(string SerieAddress, string XSerieAddress, string BubbleSizeAddress)
         {
-            return AddSeries(SerieAddress, XSerieAddress, BubbleSizeAddress);
+            return this.AddSeries(SerieAddress, XSerieAddress, BubbleSizeAddress);
         }
     }
 }

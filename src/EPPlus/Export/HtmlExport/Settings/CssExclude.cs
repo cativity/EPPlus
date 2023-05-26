@@ -60,14 +60,14 @@ namespace OfficeOpenXml.Export.HtmlExport
         /// </summary>
         public void ResetToDefault()
         {
-            Font = 0;
-            Border = 0;
-            Fill = false;
-            VerticalAlignment = false;
-            HorizontalAlignment = false;
-            WrapText = false;
-            TextRotation = false;
-            Indent = false;
+            this.Font = 0;
+            this.Border = 0;
+            this.Fill = false;
+            this.VerticalAlignment = false;
+            this.HorizontalAlignment = false;
+            this.WrapText = false;
+            this.TextRotation = false;
+            this.Indent = false;
         }
         /// <summary>
         /// Copy the values from another settings object.
@@ -75,14 +75,14 @@ namespace OfficeOpenXml.Export.HtmlExport
         /// <param name="copy">The object to copy.</param>
         public void Copy(CssExclude copy)
         {
-            Font = copy.Font;
-            Border = copy.Border;
-            Fill = copy.Fill;
-            VerticalAlignment = copy.VerticalAlignment;
-            HorizontalAlignment = copy.HorizontalAlignment;
-            WrapText = copy.WrapText;
-            TextRotation = copy.TextRotation;
-            Indent = copy.Indent;
+            this.Font = copy.Font;
+            this.Border = copy.Border;
+            this.Fill = copy.Fill;
+            this.VerticalAlignment = copy.VerticalAlignment;
+            this.HorizontalAlignment = copy.HorizontalAlignment;
+            this.WrapText = copy.WrapText;
+            this.TextRotation = copy.TextRotation;
+            this.Indent = copy.Indent;
         }        
     }
 }

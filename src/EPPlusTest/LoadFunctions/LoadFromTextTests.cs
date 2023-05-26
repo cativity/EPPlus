@@ -15,16 +15,16 @@ namespace EPPlusTest.LoadFunctions
         [TestInitialize]
         public void Initialize()
         {
-            _package = new ExcelPackage();
-            _worksheet = _package.Workbook.Worksheets.Add("test");
-            _lines = new StringBuilder();
-            _format = new ExcelTextFormat();
+            this._package = new ExcelPackage();
+            this._worksheet = this._package.Workbook.Worksheets.Add("test");
+            this._lines = new StringBuilder();
+            this._format = new ExcelTextFormat();
         }
 
         [TestCleanup]
         public void Cleanup()
         {
-            _package.Dispose();
+            this._package.Dispose();
         }
 
         private ExcelPackage _package;
@@ -34,108 +34,108 @@ namespace EPPlusTest.LoadFunctions
 
         private void AddLine(string s)
         {
-            _lines.AppendLine(s);
+            this._lines.AppendLine(s);
         }
 
         [TestMethod]
         public void ShouldLoadCsvFormat()
         {
-            AddLine("a,b,c");
-            _worksheet.Cells["A1"].LoadFromText(_lines.ToString());
-            Assert.AreEqual("a", _worksheet.Cells["A1"].Value);
+            this.AddLine("a,b,c");
+            this._worksheet.Cells["A1"].LoadFromText(this._lines.ToString());
+            Assert.AreEqual("a", this._worksheet.Cells["A1"].Value);
         }
 
         [TestMethod]
         public void ShouldLoadCsvFormatWithDelimiter()
         {
-            AddLine("a;b;c");
-            AddLine("d;e;f");
-            _format.Delimiter = ';';
-            _worksheet.Cells["A1"].LoadFromText(_lines.ToString(), _format);
-            Assert.AreEqual("a", _worksheet.Cells["A1"].Value);
-            Assert.AreEqual("d", _worksheet.Cells["A2"].Value);
+            this.AddLine("a;b;c");
+            this.AddLine("d;e;f");
+            this._format.Delimiter = ';';
+            this._worksheet.Cells["A1"].LoadFromText(this._lines.ToString(), this._format);
+            Assert.AreEqual("a", this._worksheet.Cells["A1"].Value);
+            Assert.AreEqual("d", this._worksheet.Cells["A2"].Value);
         }
 
         [TestMethod]
         public void ShouldUseTypesFromFormat()
         {
-            AddLine("a;2;5%");
-            AddLine("d;3;8%");
-            _format.Delimiter = ';';
-            _format.DataTypes = new eDataTypes[] { eDataTypes.String, eDataTypes.Number, eDataTypes.Percent };
-            _worksheet.Cells["A1"].LoadFromText(_lines.ToString(), _format);
-            Assert.AreEqual("a", _worksheet.Cells["A1"].Value);
-            Assert.AreEqual(2d, _worksheet.Cells["B1"].Value);
-            Assert.AreEqual(3d, _worksheet.Cells["B2"].Value);
-            Assert.AreEqual(0.05, _worksheet.Cells["C1"].Value);
+            this.AddLine("a;2;5%");
+            this.AddLine("d;3;8%");
+            this._format.Delimiter = ';';
+            this._format.DataTypes = new eDataTypes[] { eDataTypes.String, eDataTypes.Number, eDataTypes.Percent };
+            this._worksheet.Cells["A1"].LoadFromText(this._lines.ToString(), this._format);
+            Assert.AreEqual("a", this._worksheet.Cells["A1"].Value);
+            Assert.AreEqual(2d, this._worksheet.Cells["B1"].Value);
+            Assert.AreEqual(3d, this._worksheet.Cells["B2"].Value);
+            Assert.AreEqual(0.05, this._worksheet.Cells["C1"].Value);
         }
 
         [TestMethod]
         public void ShouldUseHeadersFromFirstRow()
         {
-            AddLine("Height 1,Width");
-            AddLine("1,2");
-            _worksheet.Cells["A1"].LoadFromText(_lines.ToString(), _format, TableStyles.None, true);
-            Assert.AreEqual("Height 1", _worksheet.Cells["A1"].Value);
-            Assert.AreEqual(1d, _worksheet.Cells["A2"].Value);
+            this.AddLine("Height 1,Width");
+            this.AddLine("1,2");
+            this._worksheet.Cells["A1"].LoadFromText(this._lines.ToString(), this._format, TableStyles.None, true);
+            Assert.AreEqual("Height 1", this._worksheet.Cells["A1"].Value);
+            Assert.AreEqual(1d, this._worksheet.Cells["A2"].Value);
         }
 
         [TestMethod]
         public void ShouldUseTextQualifier()
         {
-            AddLine("'Look, a bird!',2");
-            AddLine("'One apple, one orange',3");
-            _format.TextQualifier = '\'';
-            _worksheet.Cells["A1"].LoadFromText(_lines.ToString(), _format);
-            Assert.AreEqual("Look, a bird!", _worksheet.Cells["A1"].Value);
-            Assert.AreEqual("One apple, one orange", _worksheet.Cells["A2"].Value);
+            this.AddLine("'Look, a bird!',2");
+            this.AddLine("'One apple, one orange',3");
+            this._format.TextQualifier = '\'';
+            this._worksheet.Cells["A1"].LoadFromText(this._lines.ToString(), this._format);
+            Assert.AreEqual("Look, a bird!", this._worksheet.Cells["A1"].Value);
+            Assert.AreEqual("One apple, one orange", this._worksheet.Cells["A2"].Value);
         }
 
         [TestMethod]
         public void ShouldReturnRange()
         {
-            AddLine("a,b,c");
-            ExcelRangeBase? r = _worksheet.Cells["A1"].LoadFromText(_lines.ToString());
+            this.AddLine("a,b,c");
+            ExcelRangeBase? r = this._worksheet.Cells["A1"].LoadFromText(this._lines.ToString());
             Assert.AreEqual("A1:C2", r.FirstAddress);
         }
         [TestMethod]
         public void VerifyOneLineWithTextQualifier()
         {
-            AddLine("\"a\",\"\"\"\", \"\"\"\"");
-            ExcelRangeBase? r = _worksheet.Cells["A1"].LoadFromText(_lines.ToString(),new ExcelTextFormat { TextQualifier='\"' });
-            Assert.AreEqual("a", _worksheet.Cells[1,1].Value);
-            Assert.AreEqual("\"", _worksheet.Cells[1, 2].Value);
-            Assert.AreEqual("\"", _worksheet.Cells[1, 3].Value);
+            this.AddLine("\"a\",\"\"\"\", \"\"\"\"");
+            ExcelRangeBase? r = this._worksheet.Cells["A1"].LoadFromText(this._lines.ToString(),new ExcelTextFormat { TextQualifier='\"' });
+            Assert.AreEqual("a", this._worksheet.Cells[1,1].Value);
+            Assert.AreEqual("\"", this._worksheet.Cells[1, 2].Value);
+            Assert.AreEqual("\"", this._worksheet.Cells[1, 3].Value);
         }
         [TestMethod]
         public void VerifyMultiLineWithTextQualifier()
         {
-            AddLine("\"a\",b, \"c\"\"\"");
-            AddLine("a,\"b\", \"c\"\"\r\n\"\"\"");
-            AddLine("a,\"b\", \"c\"\"\"\"\"");
-            AddLine("\"d\",e, \"\"");
-            AddLine("\"\",, \"\"");
+            this.AddLine("\"a\",b, \"c\"\"\"");
+            this.AddLine("a,\"b\", \"c\"\"\r\n\"\"\"");
+            this.AddLine("a,\"b\", \"c\"\"\"\"\"");
+            this.AddLine("\"d\",e, \"\"");
+            this.AddLine("\"\",, \"\"");
 
-            ExcelRangeBase? r = _worksheet.Cells["A1"].LoadFromText(_lines.ToString(), new ExcelTextFormat { TextQualifier = '\"' });
-            Assert.AreEqual("a", _worksheet.Cells[1, 1].Value);
-            Assert.AreEqual("b", _worksheet.Cells[1, 2].Value);
-            Assert.AreEqual("c\"", _worksheet.Cells[1, 3].Value);
+            ExcelRangeBase? r = this._worksheet.Cells["A1"].LoadFromText(this._lines.ToString(), new ExcelTextFormat { TextQualifier = '\"' });
+            Assert.AreEqual("a", this._worksheet.Cells[1, 1].Value);
+            Assert.AreEqual("b", this._worksheet.Cells[1, 2].Value);
+            Assert.AreEqual("c\"", this._worksheet.Cells[1, 3].Value);
 
-            Assert.AreEqual("a", _worksheet.Cells[2, 1].Value);
-            Assert.AreEqual("b", _worksheet.Cells[2, 2].Value);
-            Assert.AreEqual("c\"\r\n\"", _worksheet.Cells[2, 3].Value);
+            Assert.AreEqual("a", this._worksheet.Cells[2, 1].Value);
+            Assert.AreEqual("b", this._worksheet.Cells[2, 2].Value);
+            Assert.AreEqual("c\"\r\n\"", this._worksheet.Cells[2, 3].Value);
 
-            Assert.AreEqual("a", _worksheet.Cells[3, 1].Value);
-            Assert.AreEqual("b", _worksheet.Cells[3, 2].Value);
-            Assert.AreEqual("c\"\"", _worksheet.Cells[3, 3].Value);
+            Assert.AreEqual("a", this._worksheet.Cells[3, 1].Value);
+            Assert.AreEqual("b", this._worksheet.Cells[3, 2].Value);
+            Assert.AreEqual("c\"\"", this._worksheet.Cells[3, 3].Value);
 
-            Assert.AreEqual("d", _worksheet.Cells[4, 1].Value);
-            Assert.AreEqual("e", _worksheet.Cells[4, 2].Value);
-            Assert.IsNull(_worksheet.Cells[4, 3].Value);
+            Assert.AreEqual("d", this._worksheet.Cells[4, 1].Value);
+            Assert.AreEqual("e", this._worksheet.Cells[4, 2].Value);
+            Assert.IsNull(this._worksheet.Cells[4, 3].Value);
 
-            Assert.IsNull(_worksheet.Cells[5, 1].Value);
-            Assert.IsNull(_worksheet.Cells[5, 2].Value);
-            Assert.IsNull(_worksheet.Cells[5, 3].Value);
+            Assert.IsNull(this._worksheet.Cells[5, 1].Value);
+            Assert.IsNull(this._worksheet.Cells[5, 2].Value);
+            Assert.IsNull(this._worksheet.Cells[5, 3].Value);
         }
     }
 }

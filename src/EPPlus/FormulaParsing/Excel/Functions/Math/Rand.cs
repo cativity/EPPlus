@@ -35,7 +35,7 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Math
         {
             Seed = Seed > 50 ? 0 : Seed + 5;
             double val = new Random(System.DateTime.Now.Millisecond + Seed).NextDouble();
-            return CreateResult(val, DataType.Decimal);
+            return this.CreateResult(val, DataType.Decimal);
         }
     }
 }

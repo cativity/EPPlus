@@ -33,12 +33,12 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Logical
             int maxArgs = arguments.Count() < (127 * 2) ? arguments.Count() : 127 * 2; 
             for(int x = 0; x < maxArgs; x += 2)
             {
-                if (System.Math.Round(ArgToDecimal(arguments, x), 15) != 0d)
+                if (System.Math.Round(this.ArgToDecimal(arguments, x), 15) != 0d)
                 {
                     return crf.Create(arguments.ElementAt(x + 1).Value);
                 }
             }
-            return CreateResult(ExcelErrorValue.Create(eErrorType.NA), DataType.ExcelError);
+            return this.CreateResult(ExcelErrorValue.Create(eErrorType.NA), DataType.ExcelError);
         }
     }
 }

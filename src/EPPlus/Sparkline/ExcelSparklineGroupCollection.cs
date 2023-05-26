@@ -28,9 +28,9 @@ namespace OfficeOpenXml.Sparkline
         List<ExcelSparklineGroup> _lst;
         internal ExcelSparklineGroupCollection(ExcelWorksheet ws)
         {
-            _ws = ws;
-            _lst = new List<ExcelSparklineGroup>();
-            LoadSparklines();
+            this._ws = ws;
+            this._lst = new List<ExcelSparklineGroup>();
+            this.LoadSparklines();
         }
         const string _extPath = "/d:worksheet/d:extLst/d:ext";
         const string _searchPath = "[@uri='{05C60535-1F16-4fd2-B633-F4F36F0B64E0}']";
@@ -44,7 +44,7 @@ namespace OfficeOpenXml.Sparkline
         {
             get
             {
-                return _lst.Count;
+                return this._lst.Count;
             }            
         }
         /// <summary>
@@ -60,11 +60,11 @@ namespace OfficeOpenXml.Sparkline
             {
                 if(locationRange.Columns==dataRange.Rows)
                 {
-                    return AddGroup(type, locationRange, dataRange, true);
+                    return this.AddGroup(type, locationRange, dataRange, true);
                 }
                 else if(locationRange.Columns== dataRange.Columns)
                 {
-                    return AddGroup(type, locationRange, dataRange, false);
+                    return this.AddGroup(type, locationRange, dataRange, false);
                 }
                 else
                 {
@@ -75,11 +75,11 @@ namespace OfficeOpenXml.Sparkline
             {
                 if (locationRange.Rows== dataRange.Columns)
                 {
-                    return AddGroup(type, locationRange, dataRange, false);
+                    return this.AddGroup(type, locationRange, dataRange, false);
                 }
                 else if (locationRange.Rows== dataRange.Rows)
                 {
-                    return AddGroup(type, locationRange, dataRange, true);
+                    return this.AddGroup(type, locationRange, dataRange, true);
                 }
                 else
                 {
@@ -94,7 +94,7 @@ namespace OfficeOpenXml.Sparkline
 
         private ExcelSparklineGroup AddGroup(eSparklineType type, ExcelAddressBase locationRange, ExcelAddressBase dataRange, bool isRows)
         {
-            ExcelSparklineGroup? group = NewSparklineGroup();
+            ExcelSparklineGroup? group = this.NewSparklineGroup();
             group.Type = type;
             int row = locationRange._fromRow;
             int col = locationRange._fromCol;
@@ -106,7 +106,7 @@ namespace OfficeOpenXml.Sparkline
 
             int cells = (locationRange._fromRow==locationRange._toRow ? locationRange._toCol - locationRange._fromCol: locationRange._toRow- locationRange._fromRow)+1;
             int cell = 0;
-            string? wsName = dataRange?.WorkSheetName ?? _ws.Name;
+            string? wsName = dataRange?.WorkSheetName ?? this._ws.Name;
             while (cell < cells)
             {
                 ExcelCellAddress? f = new ExcelCellAddress(row, col);
@@ -141,13 +141,13 @@ namespace OfficeOpenXml.Sparkline
             group.ColorLast.Rgb = "FFD00000";
             group.ColorHigh.Rgb = "FFD00000";
             group.ColorLow.Rgb = "FFD00000";
-            _lst.Add(group);
+            this._lst.Add(group);
             return group;
         }
 
         private ExcelSparklineGroup NewSparklineGroup()
         {
-            XmlHelperInstance? xh = new XmlHelperInstance(_ws.NameSpaceManager, _ws.WorksheetXml); //SelectSingleNode("/d:worksheet", _ws.NameSpaceManager)
+            XmlHelperInstance? xh = new XmlHelperInstance(this._ws.NameSpaceManager, this._ws.WorksheetXml); //SelectSingleNode("/d:worksheet", _ws.NameSpaceManager)
             if (!xh.ExistsNode(_extPath + _searchPath))
             {
                 XmlNode? ext = xh.CreateNode(_extPath, false, true);
@@ -158,20 +158,20 @@ namespace OfficeOpenXml.Sparkline
             }
             XmlNode? parent = xh.CreateNode(_topSearchPath);
 
-            XmlElement? topNode = _ws.WorksheetXml.CreateElement("x14","sparklineGroup", ExcelPackage.schemaMainX14);
+            XmlElement? topNode = this._ws.WorksheetXml.CreateElement("x14","sparklineGroup", ExcelPackage.schemaMainX14);
             topNode.SetAttribute("xmlns:xm", ExcelPackage.schemaMainXm);
             topNode.SetAttribute("uid", ExcelPackage.schemaXr2, $"{{{Guid.NewGuid().ToString()}}}");
             parent.AppendChild(topNode);
             topNode.AppendChild(topNode.OwnerDocument.CreateElement("x14", "sparklines", ExcelPackage.schemaMainX14));
-            return new ExcelSparklineGroup(_ws.NameSpaceManager, topNode, _ws);
+            return new ExcelSparklineGroup(this._ws.NameSpaceManager, topNode, this._ws);
         }
 
         private void LoadSparklines()
         {
-            XmlNodeList? grps=_ws.WorksheetXml.SelectNodes(_topPath + "/x14:sparklineGroup", _ws.NameSpaceManager);
+            XmlNodeList? grps= this._ws.WorksheetXml.SelectNodes(_topPath + "/x14:sparklineGroup", this._ws.NameSpaceManager);
             foreach (XmlElement grp in grps)
             {
-                _lst.Add(new ExcelSparklineGroup(_ws.NameSpaceManager, grp, _ws));
+                this._lst.Add(new ExcelSparklineGroup(this._ws.NameSpaceManager, grp, this._ws));
             }
         }
         /// <summary>
@@ -183,7 +183,7 @@ namespace OfficeOpenXml.Sparkline
         {
             get
             {
-                return (_lst[index]);
+                return (this._lst[index]);
             }
         }
         /// <summary>
@@ -192,12 +192,12 @@ namespace OfficeOpenXml.Sparkline
         /// <returns>The enumerator</returns>
         public IEnumerator<ExcelSparklineGroup> GetEnumerator()
         {
-            return _lst.GetEnumerator();
+            return this._lst.GetEnumerator();
         }
 
         IEnumerator IEnumerable.GetEnumerator()
         {
-            return _lst.GetEnumerator();
+            return this._lst.GetEnumerator();
         }
         /// <summary>
         /// Removes the sparkline.
@@ -205,7 +205,7 @@ namespace OfficeOpenXml.Sparkline
         /// <param name="index">The index of the item to be removed</param>
         public void RemoveAt(int index)
         {
-            Remove(_lst[index]);
+            this.Remove(this._lst[index]);
         }
         /// <summary>
         /// Removes the sparkline.
@@ -214,7 +214,7 @@ namespace OfficeOpenXml.Sparkline
         public void Remove(ExcelSparklineGroup sparklineGroup)
         {
             sparklineGroup.TopNode.ParentNode.RemoveChild(sparklineGroup.TopNode);
-            _lst.Remove(sparklineGroup);
+            this._lst.Remove(sparklineGroup);
         }
     }
 }

@@ -31,21 +31,21 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Finance
         {
             ValidateArguments(arguments, 6);
             // collect input
-            System.DateTime issueDate = System.DateTime.FromOADate(ArgToInt(arguments, 0));
-            System.DateTime firstInterestDate = System.DateTime.FromOADate(ArgToInt(arguments, 1));
-            System.DateTime settlementDate = System.DateTime.FromOADate(ArgToInt(arguments, 2));
-            double rate = ArgToDecimal(arguments, 3);
-            double par = ArgToDecimal(arguments, 4);
-            int frequency = ArgToInt(arguments, 5);
+            System.DateTime issueDate = System.DateTime.FromOADate(this.ArgToInt(arguments, 0));
+            System.DateTime firstInterestDate = System.DateTime.FromOADate(this.ArgToInt(arguments, 1));
+            System.DateTime settlementDate = System.DateTime.FromOADate(this.ArgToInt(arguments, 2));
+            double rate = this.ArgToDecimal(arguments, 3);
+            double par = this.ArgToDecimal(arguments, 4);
+            int frequency = this.ArgToInt(arguments, 5);
             int basis = 0;
             if(arguments.Count() >= 7)
             {
-                basis = ArgToInt(arguments, 6);
+                basis = this.ArgToInt(arguments, 6);
             }
             bool issueToSettlement = true;
             if(arguments.Count() >= 8)
             {
-                issueToSettlement = ArgToBool(arguments, 7);
+                issueToSettlement = this.ArgToBool(arguments, 7);
             }
 
             // validate input
@@ -80,12 +80,12 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Finance
             {
                 YearFracProvider? yearFrac = new YearFracProvider(context);
                 double r = yearFrac.GetYearFrac(issueDate, settlementDate, dayCountBasis) * rate * par;
-                return CreateResult(r, DataType.Decimal);
+                return this.CreateResult(r, DataType.Decimal);
             }
             else
             {
                 double r = CalculateInterest(issue, firstInterest, settlement, rate, par, frequency, dayCountBasis, context);
-                return CreateResult(r, DataType.Decimal);
+                return this.CreateResult(r, DataType.Decimal);
             }
         }
 

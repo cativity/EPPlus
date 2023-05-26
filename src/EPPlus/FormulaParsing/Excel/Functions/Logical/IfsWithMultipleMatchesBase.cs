@@ -30,14 +30,14 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Logical
                     {
                         if (criteriaRange.Count() < maxRange.Count())
                         {
-                            errorResult = CreateResult(eErrorType.Value);
+                            errorResult = this.CreateResult(eErrorType.Value);
                             return Enumerable.Empty<double>();
                         }
                     }
                     object? matchCriteria = arguments.ElementAt(criteriaIx + 1).Value;
 
                     object? candidate = criteriaRange.ElementAt(valueIx).Value;
-                    if (!_evaluator.Evaluate(candidate, Convert.ToString(matchCriteria, CultureInfo.InvariantCulture)))
+                    if (!this._evaluator.Evaluate(candidate, Convert.ToString(matchCriteria, CultureInfo.InvariantCulture)))
                     {
                         isMatch = false;
                         break;

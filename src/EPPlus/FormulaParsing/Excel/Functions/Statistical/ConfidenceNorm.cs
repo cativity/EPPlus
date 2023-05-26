@@ -30,9 +30,9 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Statistical
         public override CompileResult Execute(IEnumerable<FunctionArgument> arguments, ParsingContext context)
         {
             ValidateArguments(arguments, 3);
-            double alpha = ArgToDecimal(arguments, 0);
-            double sigma = ArgToDecimal(arguments, 1);
-            int size = ArgToInt(arguments, 2);
+            double alpha = this.ArgToDecimal(arguments, 0);
+            double sigma = this.ArgToDecimal(arguments, 1);
+            int size = this.ArgToInt(arguments, 2);
 
             if (alpha <= 0d || alpha >= 1d)
             {
@@ -51,7 +51,7 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Statistical
 
             double result = NormalCi(1, alpha, sigma ,size);
             result -= 1d;
-            return CreateResult(result, DataType.Decimal);
+            return this.CreateResult(result, DataType.Decimal);
 
         }
 

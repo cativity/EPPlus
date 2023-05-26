@@ -26,8 +26,8 @@ namespace OfficeOpenXml.Drawing.Style.Effect
         internal string _path;
         internal ExcelDrawingEffectBase(XmlNamespaceManager nameSpaceManager, XmlNode topNode, string[] schemaNodeOrder, string path) : base(nameSpaceManager, topNode)
         {
-            _path = path;
-            SchemaNodeOrder = schemaNodeOrder;
+            this._path = path;
+            this.SchemaNodeOrder = schemaNodeOrder;
         }
 
         /// <summary>
@@ -35,10 +35,10 @@ namespace OfficeOpenXml.Drawing.Style.Effect
         /// </summary>
         public void Delete()
         {
-            XmlNode? node = GetNode(_path);
+            XmlNode? node = this.GetNode(this._path);
             if (node != null)
-            {   
-                TopNode.RemoveChild(node);
+            {
+                this.TopNode.RemoveChild(node);
             }
         }
     }

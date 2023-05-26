@@ -51,14 +51,14 @@ namespace EPPlusTest.FormulaParsing.ExpressionGraph.FunctionCompilers
         [TestInitialize]
         public void Initialize()
         {
-            _context = ParsingContext.Create();
+            this._context = ParsingContext.Create();
         }
         #region Create Tests
         [TestMethod]
         public void CreateHandlesStandardFunctionCompiler()
         {
             FunctionRepository? functionRepository = FunctionRepository.Create();
-            FunctionCompilerFactory? functionCompilerFactory = new FunctionCompilerFactory(functionRepository, _context);
+            FunctionCompilerFactory? functionCompilerFactory = new FunctionCompilerFactory(functionRepository, this._context);
             Sum? function = new Sum();
             FunctionCompiler? functionCompiler = functionCompilerFactory.Create(function);
             Assert.IsInstanceOfType(functionCompiler, typeof(DefaultCompiler));
@@ -68,7 +68,7 @@ namespace EPPlusTest.FormulaParsing.ExpressionGraph.FunctionCompilers
         public void CreateHandlesSpecialIfCompiler()
         {
             FunctionRepository? functionRepository = FunctionRepository.Create();
-            FunctionCompilerFactory? functionCompilerFactory = new FunctionCompilerFactory(functionRepository, _context);
+            FunctionCompilerFactory? functionCompilerFactory = new FunctionCompilerFactory(functionRepository, this._context);
             If? function = new If();
             FunctionCompiler? functionCompiler = functionCompilerFactory.Create(function);
             Assert.IsInstanceOfType(functionCompiler, typeof(IfFunctionCompiler));
@@ -78,7 +78,7 @@ namespace EPPlusTest.FormulaParsing.ExpressionGraph.FunctionCompilers
         public void CreateHandlesSpecialIfErrorCompiler()
         {
             FunctionRepository? functionRepository = FunctionRepository.Create();
-            FunctionCompilerFactory? functionCompilerFactory = new FunctionCompilerFactory(functionRepository, _context);
+            FunctionCompilerFactory? functionCompilerFactory = new FunctionCompilerFactory(functionRepository, this._context);
             IfError? function = new IfError();
             FunctionCompiler? functionCompiler = functionCompilerFactory.Create(function);
             Assert.IsInstanceOfType(functionCompiler, typeof(IfErrorFunctionCompiler));
@@ -88,7 +88,7 @@ namespace EPPlusTest.FormulaParsing.ExpressionGraph.FunctionCompilers
         public void CreateHandlesSpecialIfNaCompiler()
         {
             FunctionRepository? functionRepository = FunctionRepository.Create();
-            FunctionCompilerFactory? functionCompilerFactory = new FunctionCompilerFactory(functionRepository, _context);
+            FunctionCompilerFactory? functionCompilerFactory = new FunctionCompilerFactory(functionRepository, this._context);
             IfNa? function = new IfNa();
             FunctionCompiler? functionCompiler = functionCompilerFactory.Create(function);
             Assert.IsInstanceOfType(functionCompiler, typeof(IfNaFunctionCompiler));
@@ -98,7 +98,7 @@ namespace EPPlusTest.FormulaParsing.ExpressionGraph.FunctionCompilers
         public void CreateHandlesLookupFunctionCompiler()
         {
             FunctionRepository? functionRepository = FunctionRepository.Create();
-            FunctionCompilerFactory? functionCompilerFactory = new FunctionCompilerFactory(functionRepository, _context);
+            FunctionCompilerFactory? functionCompilerFactory = new FunctionCompilerFactory(functionRepository, this._context);
             Column? function = new Column();
             FunctionCompiler? functionCompiler = functionCompilerFactory.Create(function);
             Assert.IsInstanceOfType(functionCompiler, typeof(LookupFunctionCompiler));
@@ -108,7 +108,7 @@ namespace EPPlusTest.FormulaParsing.ExpressionGraph.FunctionCompilers
         public void CreateHandlesErrorFunctionCompiler()
         {
             FunctionRepository? functionRepository = FunctionRepository.Create();
-            FunctionCompilerFactory? functionCompilerFactory = new FunctionCompilerFactory(functionRepository, _context);
+            FunctionCompilerFactory? functionCompilerFactory = new FunctionCompilerFactory(functionRepository, this._context);
             IsError? function = new IsError();
             FunctionCompiler? functionCompiler = functionCompilerFactory.Create(function);
             Assert.IsInstanceOfType(functionCompiler, typeof(ErrorHandlingFunctionCompiler));
@@ -118,8 +118,8 @@ namespace EPPlusTest.FormulaParsing.ExpressionGraph.FunctionCompilers
         public void CreateHandlesCustomFunctionCompiler()
         {
             FunctionRepository? functionRepository = FunctionRepository.Create();
-            functionRepository.LoadModule(new TestFunctionModule(_context));
-            FunctionCompilerFactory? functionCompilerFactory = new FunctionCompilerFactory(functionRepository, _context);
+            functionRepository.LoadModule(new TestFunctionModule(this._context));
+            FunctionCompilerFactory? functionCompilerFactory = new FunctionCompilerFactory(functionRepository, this._context);
             MyFunction? function = new MyFunction();
             FunctionCompiler? functionCompiler = functionCompilerFactory.Create(function);
             Assert.IsInstanceOfType(functionCompiler, typeof(MyFunctionCompiler));
@@ -133,8 +133,8 @@ namespace EPPlusTest.FormulaParsing.ExpressionGraph.FunctionCompilers
             {
                 MyFunction? myFunction = new MyFunction();
                 MyFunctionCompiler? customCompiler = new MyFunctionCompiler(myFunction, context);
-                base.Functions.Add(MyFunction.Name, myFunction);
-                base.CustomCompilers.Add(typeof(MyFunction), customCompiler);
+                this.Functions.Add(MyFunction.Name, myFunction);
+                this.CustomCompilers.Add(typeof(MyFunction), customCompiler);
             }
         }
 

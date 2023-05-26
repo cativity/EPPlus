@@ -16,8 +16,8 @@ namespace OfficeOpenXml.Drawing.Slicer
 
         internal ExcelPivotTableSlicerItem(ExcelPivotTableSlicerCache cache, int index)
         {
-            _cache = cache;
-            _index = index;
+            this._cache = cache;
+            this._index = index;
         }
         /// <summary>
         /// The value of the item
@@ -26,11 +26,11 @@ namespace OfficeOpenXml.Drawing.Slicer
         { 
             get
             {
-                if (_index >= _cache._field.Items.Count)
+                if (this._index >= this._cache._field.Items.Count)
                 {
                     return null;
                 }
-                return _cache._field.Items[_index].Value;
+                return this._cache._field.Items[this._index].Value;
             }
         }
         /// <summary>
@@ -40,27 +40,27 @@ namespace OfficeOpenXml.Drawing.Slicer
         { 
             get
             {
-                if (_index >= _cache._field.Items.Count)
+                if (this._index >= this._cache._field.Items.Count)
                 {
                     throw(new IndexOutOfRangeException());
                 }
-                return _cache._field.Items[_index].Hidden;
+                return this._cache._field.Items[this._index].Hidden;
             }
             set
             {
-                if (_index >= _cache.Data.Items.Count)
+                if (this._index >= this._cache.Data.Items.Count)
                 {
                     throw (new IndexOutOfRangeException());
                 }
-                foreach (ExcelPivotTable? pt in _cache.PivotTables)
+                foreach (ExcelPivotTable? pt in this._cache.PivotTables)
                 {
-                    ExcelPivotTableField? fld = pt.Fields[_cache._field.Index];
-                    if (_index >= fld.Items.Count || fld.Items[_index].Type != Table.PivotTable.eItemType.Data)
+                    ExcelPivotTableField? fld = pt.Fields[this._cache._field.Index];
+                    if (this._index >= fld.Items.Count || fld.Items[this._index].Type != eItemType.Data)
                     {
                         continue;
                     }
 
-                    fld.Items[_index].Hidden = value;
+                    fld.Items[this._index].Hidden = value;
                 }
             }
         }

@@ -30,12 +30,12 @@ namespace OfficeOpenXml.Vba.ContentHash
         {
             //MS-OVBA 2.4.2.2
             BinaryWriter bw = new BinaryWriter(ms);
-            FormsNormaizedData(bw);
+            this.FormsNormaizedData(bw);
         }
 
         private void FormsNormaizedData(BinaryWriter bw)
         {
-            ExcelVbaProject? p = base.Project;
+            ExcelVbaProject? p = this.Project;
             IList<string>? designers = GetDesigners(p);
             List<SortItem>? list = new List<SortItem>();
             foreach (string? designer in designers)
@@ -109,8 +109,8 @@ namespace OfficeOpenXml.Vba.ContentHash
         {
             public SortItem(string name, bool isStream)
             {
-                Name = name;
-                IsStream = isStream;
+                this.Name = name;
+                this.IsStream = isStream;
             }
     
             public string Name { get; set; }
@@ -132,7 +132,7 @@ namespace OfficeOpenXml.Vba.ContentHash
 
         private static void NormalizeDesignerStorage(ExcelVBAModule designerModule, BinaryWriter bw)
         {
-            BufferedStream? buffer = new System.IO.BufferedStream(bw.BaseStream, 1023);
+            BufferedStream? buffer = new BufferedStream(bw.BaseStream, 1023);
             //var ds = p.Document.Storage.SubStorage[designerModule.streamName];
         }
     }

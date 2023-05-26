@@ -23,7 +23,7 @@ namespace OfficeOpenXml
         ExcelWorksheet _worksheet;
         internal ExcelRowsCollection(ExcelWorksheet worksheet) : base(worksheet, 1, ExcelPackage.MaxRows)
         {
-            _worksheet = worksheet;
+            this._worksheet = worksheet;
         }
         /// <summary>
         /// Indexer for the collection
@@ -34,7 +34,7 @@ namespace OfficeOpenXml
         {
             get
             {
-                return new ExcelRangeRow(_worksheet, row, row);
+                return new ExcelRangeRow(this._worksheet, row, row);
             }
         }
         /// <summary>
@@ -47,7 +47,7 @@ namespace OfficeOpenXml
         {
             get
             {            
-                return new ExcelRangeRow(_worksheet, fromRow, toRow);
+                return new ExcelRangeRow(this._worksheet, fromRow, toRow);
             }
         }        
     }

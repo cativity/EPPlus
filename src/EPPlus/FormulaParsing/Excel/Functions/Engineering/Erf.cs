@@ -29,14 +29,14 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Engineering
         public override CompileResult Execute(IEnumerable<FunctionArgument> arguments, ParsingContext context)
         {
             ValidateArguments(arguments, 1);
-            double lowerLimit = ArgToDecimal(arguments, 0);
+            double lowerLimit = this.ArgToDecimal(arguments, 0);
             double? upperLimit = default(double?);
             if(arguments.Count() > 1)
             {
-                upperLimit = ArgToDecimal(arguments, 1);
+                upperLimit = this.ArgToDecimal(arguments, 1);
             }
             double retVal = !upperLimit.HasValue ? ErfHelper.Erf(lowerLimit) : ErfHelper.Erf(lowerLimit, upperLimit.Value); 
-            return CreateResult(retVal, DataType.Decimal);
+            return this.CreateResult(retVal, DataType.Decimal);
         }
 
         

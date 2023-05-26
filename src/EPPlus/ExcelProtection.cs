@@ -28,7 +28,7 @@ namespace OfficeOpenXml
         internal ExcelProtection(XmlNamespaceManager ns, XmlNode topNode, ExcelWorkbook wb) :
             base(ns, topNode)
         {
-            SchemaNodeOrder = wb.SchemaNodeOrder;            
+            this.SchemaNodeOrder = wb.SchemaNodeOrder;            
         }
         const string workbookPasswordPath = "d:workbookProtection/@workbookPassword";
         /// <summary>
@@ -39,11 +39,11 @@ namespace OfficeOpenXml
         {
             if (string.IsNullOrEmpty(Password))
             {
-                DeleteNode(workbookPasswordPath);
+                this.DeleteNode(workbookPasswordPath);
             }
             else
             {
-                SetXmlNodeString(workbookPasswordPath, ((int)EncryptedPackageHandler.CalculatePasswordHash(Password)).ToString("x"));
+                this.SetXmlNodeString(workbookPasswordPath, ((int)EncryptedPackageHandler.CalculatePasswordHash(Password)).ToString("x"));
             }
         }
         const string lockStructurePath = "d:workbookProtection/@lockStructure";
@@ -54,11 +54,11 @@ namespace OfficeOpenXml
         {
             get
             {
-                return GetXmlNodeBool(lockStructurePath, false);
+                return this.GetXmlNodeBool(lockStructurePath, false);
             }
             set
             {
-                SetXmlNodeBool(lockStructurePath, value, false);
+                this.SetXmlNodeBool(lockStructurePath, value, false);
             }
         }
         const string lockWindowsPath = "d:workbookProtection/@lockWindows";
@@ -69,11 +69,11 @@ namespace OfficeOpenXml
         {
             get
             {
-                return GetXmlNodeBool(lockWindowsPath, false);
+                return this.GetXmlNodeBool(lockWindowsPath, false);
             }
             set
             {
-                SetXmlNodeBool(lockWindowsPath, value, false);
+                this.SetXmlNodeBool(lockWindowsPath, value, false);
             }
         }
         const string lockRevisionPath = "d:workbookProtection/@lockRevision";
@@ -85,11 +85,11 @@ namespace OfficeOpenXml
         {
             get
             {
-                return GetXmlNodeBool(lockRevisionPath, false);
+                return this.GetXmlNodeBool(lockRevisionPath, false);
             }
             set
             {
-                SetXmlNodeBool(lockRevisionPath, value, false);
+                this.SetXmlNodeBool(lockRevisionPath, value, false);
             }
         }
         ExcelWriteProtection _writeProtection=null;
@@ -100,11 +100,11 @@ namespace OfficeOpenXml
         {
             get
             {
-                if (_writeProtection == null)
+                if (this._writeProtection == null)
                 {
-                    _writeProtection = new ExcelWriteProtection(NameSpaceManager, TopNode, SchemaNodeOrder);
+                    this._writeProtection = new ExcelWriteProtection(this.NameSpaceManager, this.TopNode, this.SchemaNodeOrder);
                 }
-                return _writeProtection;
+                return this._writeProtection;
             }
         }
     }

@@ -29,10 +29,10 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Engineering
         public override CompileResult Execute(IEnumerable<FunctionArgument> arguments, ParsingContext context)
         {
             ValidateArguments(arguments, 2);
-            double x = ArgToDecimal(arguments, 0);
-            int n = ArgToInt(arguments, 1);
+            double x = this.ArgToDecimal(arguments, 0);
+            int n = this.ArgToInt(arguments, 1);
             FinanceCalcResult<double>? result = BesselIimpl.BesselI(x, n);
-            return CreateResult(result.Result, DataType.Decimal);
+            return this.CreateResult(result.Result, DataType.Decimal);
         }
     }
 }

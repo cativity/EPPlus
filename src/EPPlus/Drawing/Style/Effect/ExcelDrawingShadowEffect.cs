@@ -25,7 +25,7 @@ namespace OfficeOpenXml.Drawing.Style.Effect
         private readonly string _directionPath = "{0}/@dir";
         internal ExcelDrawingShadowEffect(XmlNamespaceManager nameSpaceManager, XmlNode topNode, string[] schemaNodeOrder, string path) : base(nameSpaceManager, topNode, schemaNodeOrder, path)
         {
-            _directionPath = string.Format(_directionPath, path);
+            this._directionPath = string.Format(this._directionPath, path);
         }
         ExcelDrawingColorManager _color =null;
         /// <summary>
@@ -35,11 +35,11 @@ namespace OfficeOpenXml.Drawing.Style.Effect
         {
             get
             {
-                if(_color==null)
+                if(this._color==null)
                 {
-                    _color = new ExcelDrawingColorManager(NameSpaceManager, TopNode, _path, SchemaNodeOrder);
+                    this._color = new ExcelDrawingColorManager(this.NameSpaceManager, this.TopNode, this._path, this.SchemaNodeOrder);
                 }
-                return _color;
+                return this._color;
             }
         }
         /// <summary>
@@ -50,12 +50,12 @@ namespace OfficeOpenXml.Drawing.Style.Effect
         {
             get
             {
-                return GetXmlNodeAngel(_directionPath);
+                return this.GetXmlNodeAngel(this._directionPath);
             }
             set
             {
-                InitXml();
-                SetXmlNodeAngel(_directionPath, value, "Direction");
+                this.InitXml();
+                this.SetXmlNodeAngel(this._directionPath, value, "Direction");
             }
         }
         /// <summary>
@@ -63,10 +63,10 @@ namespace OfficeOpenXml.Drawing.Style.Effect
         /// </summary>
         protected internal void InitXml()
         {
-            if (_color == null)
+            if (this._color == null)
             {
-                Color.SetPresetColor(ePresetColor.Black);
-                Color.Transforms.AddAlpha(50);
+                this.Color.SetPresetColor(ePresetColor.Black);
+                this.Color.Transforms.AddAlpha(50);
             }
         }
     }

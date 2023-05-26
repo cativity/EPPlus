@@ -28,7 +28,7 @@ namespace OfficeOpenXml.Style.Dxf
         internal ExcelDxfGradientFill(ExcelStyles styles, Action<eStyleClass, eStyleProperty, object> callback)
             : base(styles, callback)
         {
-            Colors = new ExcelDxfGradientFillColorCollection(styles, callback);
+            this.Colors = new ExcelDxfGradientFillColorCollection(styles, callback);
         }
 
         /// <summary>
@@ -38,14 +38,14 @@ namespace OfficeOpenXml.Style.Dxf
         {
             get
             {
-                return Colors.HasValue || Degree.HasValue || Left.HasValue || Right.HasValue || Top.HasValue || Bottom.HasValue || GradientType.HasValue;
+                return this.Colors.HasValue || this.Degree.HasValue || this.Left.HasValue || this.Right.HasValue || this.Top.HasValue || this.Bottom.HasValue || this.GradientType.HasValue;
             }
         }
         internal override string Id 
         {
             get
             {
-                return Colors.Id + "|" + GetAsString(Degree) + "|" + GetAsString(Left) + "|" + GetAsString(Right) + "|" + GetAsString(Top) + "|" + GetAsString(Bottom) + "|" + GetAsString(GradientType);
+                return this.Colors.Id + "|" + GetAsString(this.Degree) + "|" + GetAsString(this.Left) + "|" + GetAsString(this.Right) + "|" + GetAsString(this.Top) + "|" + GetAsString(this.Bottom) + "|" + GetAsString(this.GradientType);
             }
         } 
 
@@ -54,12 +54,12 @@ namespace OfficeOpenXml.Style.Dxf
         /// </summary>
         public override void Clear()
         {
-            Degree = null;
-            Left = null;
-            Right = null;
-            Top = null;
-            Bottom = null;
-            Colors.Clear();
+            this.Degree = null;
+            this.Left = null;
+            this.Right = null;
+            this.Top = null;
+            this.Bottom = null;
+            this.Colors.Clear();
         }
         /// <summary>
         /// A collection of colors and percents for the gradient fill
@@ -71,14 +71,14 @@ namespace OfficeOpenXml.Style.Dxf
         }
         internal override DxfStyleBase Clone()
         {
-            return new ExcelDxfGradientFill(_styles, _callback)
+            return new ExcelDxfGradientFill(this._styles, this._callback)
             {
-                Colors = (ExcelDxfGradientFillColorCollection)Colors.Clone(),
-                Degree = Degree,
-                Left = Left,
-                Right = Right,
-                Top = Top,
-                Bottom = Bottom
+                Colors = (ExcelDxfGradientFillColorCollection)this.Colors.Clone(),
+                Degree = this.Degree,
+                Left = this.Left,
+                Right = this.Right,
+                Top = this.Top,
+                Bottom = this.Bottom
             };
         }
         eDxfGradientFillType? _gradientType;
@@ -89,12 +89,12 @@ namespace OfficeOpenXml.Style.Dxf
         { 
             get
             {
-                return _gradientType;
+                return this._gradientType;
             }
             set
             {
-                _gradientType = value;
-                _callback?.Invoke(eStyleClass.GradientFill, eStyleProperty.GradientType, value);
+                this._gradientType = value;
+                this._callback?.Invoke(eStyleClass.GradientFill, eStyleProperty.GradientType, value);
             }
         }
         double? _degree;
@@ -106,12 +106,12 @@ namespace OfficeOpenXml.Style.Dxf
         {
             get
             {
-                return _degree;
+                return this._degree;
             }
             set
             {
-                _degree = value;
-                _callback?.Invoke(eStyleClass.GradientFill, eStyleProperty.GradientDegree, value);
+                this._degree = value;
+                this._callback?.Invoke(eStyleClass.GradientFill, eStyleProperty.GradientDegree, value);
             }
         }
         double? _left;
@@ -123,12 +123,12 @@ namespace OfficeOpenXml.Style.Dxf
         {
             get
             {
-                return _left;
+                return this._left;
             }
             set
             {
-                _left = value;
-                _callback?.Invoke(eStyleClass.GradientFill, eStyleProperty.GradientLeft, value);
+                this._left = value;
+                this._callback?.Invoke(eStyleClass.GradientFill, eStyleProperty.GradientLeft, value);
             }
         }
 
@@ -140,12 +140,12 @@ namespace OfficeOpenXml.Style.Dxf
         {
             get
             {
-                return _right;
+                return this._right;
             }
             set
             {
-                _right = value;
-                _callback?.Invoke(eStyleClass.GradientFill, eStyleProperty.GradientRight, value);
+                this._right = value;
+                this._callback?.Invoke(eStyleClass.GradientFill, eStyleProperty.GradientRight, value);
             }
         }
 
@@ -157,12 +157,12 @@ namespace OfficeOpenXml.Style.Dxf
         {
             get
             {
-                return _top;
+                return this._top;
             }
             set
             {
-                _top = value;
-                _callback?.Invoke(eStyleClass.GradientFill, eStyleProperty.GradientTop, value);
+                this._top = value;
+                this._callback?.Invoke(eStyleClass.GradientFill, eStyleProperty.GradientTop, value);
             }
         }
         double? _bottom;
@@ -173,12 +173,12 @@ namespace OfficeOpenXml.Style.Dxf
         {
             get
             {
-                return _bottom;
+                return this._bottom;
             }
             set
             {
-                _bottom = value;
-                _callback?.Invoke(eStyleClass.GradientFill, eStyleProperty.GradientBottom, value);
+                this._bottom = value;
+                this._callback?.Invoke(eStyleClass.GradientFill, eStyleProperty.GradientBottom, value);
             }
         }
 
@@ -186,29 +186,29 @@ namespace OfficeOpenXml.Style.Dxf
         {
             XmlNode? gradNode = helper.CreateNode(path + "/d:gradientFill");
             XmlHelper? gradHelper=XmlHelperFactory.Create(helper.NameSpaceManager, gradNode);
-            SetValueEnum(gradHelper, "@type", GradientType);
-            SetValue(gradHelper, "@degree", Degree);
-            SetValue(gradHelper, "@left", Left);
-            SetValue(gradHelper, "@right", Right);
-            SetValue(gradHelper, "@top", Top);
-            SetValue(gradHelper, "@bottom", Bottom);
+            SetValueEnum(gradHelper, "@type", this.GradientType);
+            SetValue(gradHelper, "@degree", this.Degree);
+            SetValue(gradHelper, "@left", this.Left);
+            SetValue(gradHelper, "@right", this.Right);
+            SetValue(gradHelper, "@top", this.Top);
+            SetValue(gradHelper, "@bottom", this.Bottom);
 
-            foreach (ExcelDxfGradientFillColor? c in Colors)
+            foreach (ExcelDxfGradientFillColor? c in this.Colors)
             {
                 c.CreateNodes(gradHelper, "");
             }
         }
         internal override void SetStyle()
         {
-            if (_callback != null)
+            if (this._callback != null)
             {
-                _callback?.Invoke(eStyleClass.GradientFill, eStyleProperty.GradientType, _gradientType);
-                _callback?.Invoke(eStyleClass.GradientFill, eStyleProperty.GradientDegree, _degree);
-                _callback?.Invoke(eStyleClass.GradientFill, eStyleProperty.GradientTop, _top);
-                _callback?.Invoke(eStyleClass.GradientFill, eStyleProperty.GradientBottom, _bottom);
-                _callback?.Invoke(eStyleClass.GradientFill, eStyleProperty.GradientLeft, _left);
-                _callback?.Invoke(eStyleClass.GradientFill, eStyleProperty.GradientRight, _right);
-                foreach (ExcelDxfGradientFillColor? c in Colors)
+                this._callback?.Invoke(eStyleClass.GradientFill, eStyleProperty.GradientType, this._gradientType);
+                this._callback?.Invoke(eStyleClass.GradientFill, eStyleProperty.GradientDegree, this._degree);
+                this._callback?.Invoke(eStyleClass.GradientFill, eStyleProperty.GradientTop, this._top);
+                this._callback?.Invoke(eStyleClass.GradientFill, eStyleProperty.GradientBottom, this._bottom);
+                this._callback?.Invoke(eStyleClass.GradientFill, eStyleProperty.GradientLeft, this._left);
+                this._callback?.Invoke(eStyleClass.GradientFill, eStyleProperty.GradientRight, this._right);
+                foreach (ExcelDxfGradientFillColor? c in this.Colors)
                 {
                     c.SetStyle();
                 }
@@ -217,17 +217,17 @@ namespace OfficeOpenXml.Style.Dxf
 
         internal override void SetValuesFromXml(XmlHelper helper)
         {
-            GradientType = helper.GetXmlNodeString("d:fill/d:gradientFill/@type").ToEnum<eDxfGradientFillType>();
-            Degree = helper.GetXmlNodeDoubleNull("d:fill/d:gradientFill/@degree");
-            Left = helper.GetXmlNodeDoubleNull("d:fill/d:gradientFill/@left");
-            Right = helper.GetXmlNodeDoubleNull("d:fill/d:gradientFill/@right");
-            Top = helper.GetXmlNodeDoubleNull("d:fill/d:gradientFill/@top");
-            Bottom = helper.GetXmlNodeDoubleNull("d:fill/d:gradientFill/@bottom");
+            this.GradientType = helper.GetXmlNodeString("d:fill/d:gradientFill/@type").ToEnum<eDxfGradientFillType>();
+            this.Degree = helper.GetXmlNodeDoubleNull("d:fill/d:gradientFill/@degree");
+            this.Left = helper.GetXmlNodeDoubleNull("d:fill/d:gradientFill/@left");
+            this.Right = helper.GetXmlNodeDoubleNull("d:fill/d:gradientFill/@right");
+            this.Top = helper.GetXmlNodeDoubleNull("d:fill/d:gradientFill/@top");
+            this.Bottom = helper.GetXmlNodeDoubleNull("d:fill/d:gradientFill/@bottom");
             foreach (XmlNode node in helper.GetNodes("d:fill/d:gradientFill/d:stop"))
             {
-                XmlHelper? stopHelper = XmlHelperFactory.Create(_styles.NameSpaceManager, node);
-                ExcelDxfGradientFillColor? c = Colors.Add(stopHelper.GetXmlNodeDouble("@position") * 100);
-                c.Color = GetColor(stopHelper, "d:color", c.Position==0 ? eStyleClass.FillGradientColor1 : eStyleClass.FillGradientColor2);
+                XmlHelper? stopHelper = XmlHelperFactory.Create(this._styles.NameSpaceManager, node);
+                ExcelDxfGradientFillColor? c = this.Colors.Add(stopHelper.GetXmlNodeDouble("@position") * 100);
+                c.Color = this.GetColor(stopHelper, "d:color", c.Position==0 ? eStyleClass.FillGradientColor1 : eStyleClass.FillGradientColor2);
             }
         }
     }

@@ -28,13 +28,13 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Finance
         public override CompileResult Execute(IEnumerable<FunctionArgument> arguments, ParsingContext context)
         {
             ValidateArguments(arguments, 4);
-            double rate = ArgToDecimal(arguments, 0);
-            int per = ArgToInt(arguments, 1);
-            int nper = ArgToInt(arguments, 2);
-            double pv = ArgToDecimal(arguments, 3);
+            double rate = this.ArgToDecimal(arguments, 0);
+            int per = this.ArgToInt(arguments, 1);
+            int nper = this.ArgToInt(arguments, 2);
+            double pv = this.ArgToDecimal(arguments, 3);
             double result = -pv * rate;
             result = result - result / nper * per;
-            return CreateResult(result, DataType.Decimal);
+            return this.CreateResult(result, DataType.Decimal);
         }
     }
 }

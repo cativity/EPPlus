@@ -108,7 +108,7 @@ namespace EPPlusTest.Drawing.Slicer
             rf.Items.Refresh();
             rf.Items[0].Hidden = true;
             ExcelPivotTableDataField? df = tbl.DataFields.Add(tbl.Fields[3]);
-            df.Function = OfficeOpenXml.Table.PivotTable.DataFieldFunctions.Sum;
+            df.Function = DataFieldFunctions.Sum;
 
             ExcelPivotTableSlicer? slicer = ws.Drawings.AddPivotTableSlicer(tbl.Fields[1]);
             slicer.Cache.Data.Items[0].Hidden = true;
@@ -229,7 +229,7 @@ namespace EPPlusTest.Drawing.Slicer
             rf.Items.Refresh();
             rf.Items[0].Hidden = true;
             ExcelPivotTableDataField? df = tbl.DataFields.Add(tbl.Fields[3]);
-            df.Function = OfficeOpenXml.Table.PivotTable.DataFieldFunctions.Sum;
+            df.Function = DataFieldFunctions.Sum;
 
             ExcelPivotTableSlicer? slicer = ws.Drawings.AddPivotTableSlicer(tbl.Fields[1]);
             Assert.AreEqual(slicer, tbl.Fields[1].Slicer);
@@ -248,7 +248,7 @@ namespace EPPlusTest.Drawing.Slicer
             rf.Items.Refresh();
             rf.Items[0].Hidden = true;
             ExcelPivotTableDataField? df = tbl.DataFields.Add(tbl.Fields[3]);
-            df.Function = OfficeOpenXml.Table.PivotTable.DataFieldFunctions.Sum;
+            df.Function = DataFieldFunctions.Sum;
 
             ExcelPivotTableSlicer? slicer1 = ws.Drawings.AddPivotTableSlicer(tbl.Fields[1]);
             ExcelPivotTableSlicer? slicer2 = ws.Drawings.AddPivotTableSlicer(tbl.Fields[2]);
@@ -315,7 +315,7 @@ namespace EPPlusTest.Drawing.Slicer
             rf.Items.Refresh();
             rf.Items[0].Hidden = true;
             ExcelPivotTableDataField? df = tbl.DataFields.Add(tbl.Fields[3]);
-            df.Function = OfficeOpenXml.Table.PivotTable.DataFieldFunctions.Sum;
+            df.Function = DataFieldFunctions.Sum;
 
             ExcelPivotTableSlicer? slicer1 = ws.Drawings.AddPivotTableSlicer(tbl.Fields[2]);
             ExcelPivotTableSlicer? slicer2 = ws.Drawings.AddPivotTableSlicer(tbl.Fields[2]);

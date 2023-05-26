@@ -52,18 +52,18 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Helpers
         /// <returns></returns>
         public double Evaluate(double x)
         {
-            return Evaluate(x, DEFAULT_EPSILON, int.MaxValue);
+            return this.Evaluate(x, DEFAULT_EPSILON, int.MaxValue);
         }
 
         public double Evaluate(double x, int maxIterations)
         {
-            return Evaluate(x, DEFAULT_EPSILON, maxIterations);
+            return this.Evaluate(x, DEFAULT_EPSILON, maxIterations);
         }
 
         public double Evaluate(double x, double epsilon, int maxIterations)
         {
             const double small = 1e-50;
-            double hPrev = GetA.Invoke(0, x);
+            double hPrev = this.GetA.Invoke(0, x);
 
             // use the value of small as epsilon criteria for zero checks
             if (PrecisionEquals(hPrev, 0.0, small))
@@ -78,8 +78,8 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Helpers
 
             while (n < maxIterations)
             {
-                double a = GetA.Invoke(n, x);
-                double b = GetB.Invoke(n, x);
+                double a = this.GetA.Invoke(n, x);
+                double b = this.GetB.Invoke(n, x);
 
                 double dN = a + b * dPrev;
                 if (PrecisionEquals(dN, 0.0, small))

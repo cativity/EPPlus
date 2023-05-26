@@ -25,21 +25,21 @@ namespace OfficeOpenXml.Style.XmlAccess
         internal ExcelGradientFillXml(XmlNamespaceManager nameSpaceManager)
             : base(nameSpaceManager)
         {
-            GradientColor1 = new ExcelColorXml(nameSpaceManager);
-            GradientColor2 = new ExcelColorXml(nameSpaceManager);
+            this.GradientColor1 = new ExcelColorXml(nameSpaceManager);
+            this.GradientColor2 = new ExcelColorXml(nameSpaceManager);
         }
         internal ExcelGradientFillXml(XmlNamespaceManager nsm, XmlNode topNode) :
             base(nsm, topNode)
         {
-            Degree = GetXmlNodeDouble(_degreePath);
-            Type = GetXmlNodeString(_typePath)=="path" ? ExcelFillGradientType.Path : ExcelFillGradientType.Linear;
-            GradientColor1 = new ExcelColorXml(nsm, topNode.SelectSingleNode(_gradientColor1Path, nsm));
-            GradientColor2 = new ExcelColorXml(nsm, topNode.SelectSingleNode(_gradientColor2Path, nsm));
-            
-            Top = GetXmlNodeDouble(_topPath);
-            Bottom = GetXmlNodeDouble(_bottomPath);
-            Left = GetXmlNodeDouble(_leftPath);
-            Right = GetXmlNodeDouble(_rightPath);
+            this.Degree = this.GetXmlNodeDouble(_degreePath);
+            this.Type = this.GetXmlNodeString(_typePath)=="path" ? ExcelFillGradientType.Path : ExcelFillGradientType.Linear;
+            this.GradientColor1 = new ExcelColorXml(nsm, topNode.SelectSingleNode(_gradientColor1Path, nsm));
+            this.GradientColor2 = new ExcelColorXml(nsm, topNode.SelectSingleNode(_gradientColor2Path, nsm));
+
+            this.Top = this.GetXmlNodeDouble(_topPath);
+            this.Bottom = this.GetXmlNodeDouble(_bottomPath);
+            this.Left = this.GetXmlNodeDouble(_leftPath);
+            this.Right = this.GetXmlNodeDouble(_rightPath);
         }
         const string _typePath = "d:gradientFill/@type";
         /// <summary>
@@ -117,7 +117,7 @@ namespace OfficeOpenXml.Style.XmlAccess
         {
             get
             {
-                return base.Id + Degree.ToString() + GradientColor1.Id + GradientColor2.Id + Type + Left.ToString() + Right.ToString() + Bottom.ToString() + Top.ToString();
+                return base.Id + this.Degree.ToString() + this.GradientColor1.Id + this.GradientColor2.Id + this.Type + this.Left.ToString() + this.Right.ToString() + this.Bottom.ToString() + this.Top.ToString();
             }
         }
 
@@ -125,47 +125,47 @@ namespace OfficeOpenXml.Style.XmlAccess
         #endregion
         internal override ExcelFillXml Copy()
         {
-            ExcelGradientFillXml newFill = new ExcelGradientFillXml(NameSpaceManager);
-            newFill.PatternType = _fillPatternType;
-            newFill.BackgroundColor = _backgroundColor.Copy();
-            newFill.PatternColor = _patternColor.Copy();
+            ExcelGradientFillXml newFill = new ExcelGradientFillXml(this.NameSpaceManager);
+            newFill.PatternType = this._fillPatternType;
+            newFill.BackgroundColor = this._backgroundColor.Copy();
+            newFill.PatternColor = this._patternColor.Copy();
 
-            newFill.GradientColor1 = GradientColor1.Copy();
-            newFill.GradientColor2 = GradientColor2.Copy();
-            newFill.Type = Type;
-            newFill.Degree = Degree;
-            newFill.Top = Top;
-            newFill.Bottom = Bottom;
-            newFill.Left = Left;
-            newFill.Right = Right;
+            newFill.GradientColor1 = this.GradientColor1.Copy();
+            newFill.GradientColor2 = this.GradientColor2.Copy();
+            newFill.Type = this.Type;
+            newFill.Degree = this.Degree;
+            newFill.Top = this.Top;
+            newFill.Bottom = this.Bottom;
+            newFill.Left = this.Left;
+            newFill.Right = this.Right;
             
             return newFill;
         }
 
         internal override XmlNode CreateXmlNode(XmlNode topNode)
         {
-            TopNode = topNode;
-            CreateNode("d:gradientFill");
-            if(Type==ExcelFillGradientType.Path)
+            this.TopNode = topNode;
+            this.CreateNode("d:gradientFill");
+            if(this.Type==ExcelFillGradientType.Path)
             {
                 this.SetXmlNodeString(_typePath, "path");
             }
 
-            if(!double.IsNaN(Degree))
+            if(!double.IsNaN(this.Degree))
             {
                 this.SetXmlNodeString(_degreePath, this.Degree.ToString(CultureInfo.InvariantCulture));
             }
 
-            if (GradientColor1!=null)
+            if (this.GradientColor1!=null)
             {
                 /*** Gradient color node 1***/
-                XmlNode? node = TopNode.SelectSingleNode("d:gradientFill", NameSpaceManager);
+                XmlNode? node = this.TopNode.SelectSingleNode("d:gradientFill", this.NameSpaceManager);
                 XmlElement? stopNode = node.OwnerDocument.CreateElement("stop", ExcelPackage.schemaMain);
                 stopNode.SetAttribute("position", "0");
                 node.AppendChild(stopNode);
                 XmlElement? colorNode = node.OwnerDocument.CreateElement("color", ExcelPackage.schemaMain);
                 stopNode.AppendChild(colorNode);
-                GradientColor1.CreateXmlNode(colorNode);
+                this.GradientColor1.CreateXmlNode(colorNode);
 
                 /*** Gradient color node 2***/
                 stopNode = node.OwnerDocument.CreateElement("stop", ExcelPackage.schemaMain);
@@ -174,24 +174,24 @@ namespace OfficeOpenXml.Style.XmlAccess
                 colorNode = node.OwnerDocument.CreateElement("color", ExcelPackage.schemaMain);
                 stopNode.AppendChild(colorNode);
 
-                GradientColor2.CreateXmlNode(colorNode);
+                this.GradientColor2.CreateXmlNode(colorNode);
             }
-            if (!double.IsNaN(Top))
+            if (!double.IsNaN(this.Top))
             {
                 this.SetXmlNodeString(_topPath, this.Top.ToString("F5",CultureInfo.InvariantCulture));
             }
 
-            if (!double.IsNaN(Bottom))
+            if (!double.IsNaN(this.Bottom))
             {
                 this.SetXmlNodeString(_bottomPath, this.Bottom.ToString("F5", CultureInfo.InvariantCulture));
             }
 
-            if (!double.IsNaN(Left))
+            if (!double.IsNaN(this.Left))
             {
                 this.SetXmlNodeString(_leftPath, this.Left.ToString("F5", CultureInfo.InvariantCulture));
             }
 
-            if (!double.IsNaN(Right))
+            if (!double.IsNaN(this.Right))
             {
                 this.SetXmlNodeString(_rightPath, this.Right.ToString("F5", CultureInfo.InvariantCulture));
             }

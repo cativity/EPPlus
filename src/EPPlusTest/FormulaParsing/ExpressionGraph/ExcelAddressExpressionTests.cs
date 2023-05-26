@@ -52,20 +52,20 @@ namespace EPPlusTest.FormulaParsing.ExpressionGraph
         [TestInitialize]
         public void Setup()
         {
-            _parsingContext = ParsingContext.Create();
-            _scope = _parsingContext.Scopes.NewScope(RangeAddress.Empty);
+            this._parsingContext = ParsingContext.Create();
+            this._scope = this._parsingContext.Scopes.NewScope(RangeAddress.Empty);
         }
 
         [TestCleanup]
         public void Cleanup()
         {
-            _scope.Dispose();
+            this._scope.Dispose();
         }
 
         [TestMethod, ExpectedException(typeof(ArgumentNullException))]
         public void ConstructorShouldThrowIfExcelDataProviderIsNull()
         {
-            new ExcelAddressExpression("A1", null, _parsingContext);
+            new ExcelAddressExpression("A1", null, this._parsingContext);
         }
 
         [TestMethod, ExpectedException(typeof(ArgumentNullException))]

@@ -29,12 +29,12 @@ namespace OfficeOpenXml.Drawing.Style.Effect
         private readonly string _horizontalScalingFactorPath = "{0}/@sx";
         internal ExcelDrawingOuterShadowEffect(XmlNamespaceManager nameSpaceManager, XmlNode topNode, string[] schemaNodeOrder, string path) : base(nameSpaceManager, topNode, schemaNodeOrder, path)
         {
-            _shadowAlignmentPath = string.Format(_shadowAlignmentPath, path);
-            _rotateWithShapePath = string.Format(_rotateWithShapePath, path);
-            _verticalSkewAnglePath = string.Format(_verticalSkewAnglePath, path);
-            _horizontalSkewAnglePath = string.Format(_horizontalSkewAnglePath, path);
-            _verticalScalingFactorPath = string.Format(_verticalScalingFactorPath, path);
-            _horizontalScalingFactorPath = string.Format(_horizontalScalingFactorPath, path);
+            this._shadowAlignmentPath = string.Format(this._shadowAlignmentPath, path);
+            this._rotateWithShapePath = string.Format(this._rotateWithShapePath, path);
+            this._verticalSkewAnglePath = string.Format(this._verticalSkewAnglePath, path);
+            this._horizontalSkewAnglePath = string.Format(this._horizontalSkewAnglePath, path);
+            this._verticalScalingFactorPath = string.Format(this._verticalScalingFactorPath, path);
+            this._horizontalScalingFactorPath = string.Format(this._horizontalScalingFactorPath, path);
         }
         /// <summary>
         /// The shadow alignment
@@ -43,17 +43,17 @@ namespace OfficeOpenXml.Drawing.Style.Effect
         {
             get
             {
-                return GetXmlNodeString(_shadowAlignmentPath).TranslateRectangleAlignment();
+                return this.GetXmlNodeString(this._shadowAlignmentPath).TranslateRectangleAlignment();
             }
             set
             {
                 if (value == eRectangleAlignment.Bottom)
                 {
-                    DeleteNode(_shadowAlignmentPath);
+                    this.DeleteNode(this._shadowAlignmentPath);
                 }
                 else
                 {
-                    SetXmlNodeString(_shadowAlignmentPath, value.TranslateString());
+                    this.SetXmlNodeString(this._shadowAlignmentPath, value.TranslateString());
                 }
             }
         }
@@ -64,11 +64,11 @@ namespace OfficeOpenXml.Drawing.Style.Effect
         {
             get
             {
-                return GetXmlNodeBool(_rotateWithShapePath, true);
+                return this.GetXmlNodeBool(this._rotateWithShapePath, true);
             }
             set
             {
-                SetXmlNodeBool(_rotateWithShapePath, value, true);
+                this.SetXmlNodeBool(this._rotateWithShapePath, value, true);
             }
         }
         /// <summary>
@@ -79,11 +79,11 @@ namespace OfficeOpenXml.Drawing.Style.Effect
         {
             get
             {
-                return  GetXmlNodeAngel(_horizontalSkewAnglePath);
+                return this.GetXmlNodeAngel(this._horizontalSkewAnglePath);
             }
             set
             {
-                SetXmlNodeAngel(_horizontalSkewAnglePath, value, "HorizontalSkewAngle", -90, 90);
+                this.SetXmlNodeAngel(this._horizontalSkewAnglePath, value, "HorizontalSkewAngle", -90, 90);
             }
         }
         /// <summary>
@@ -94,11 +94,11 @@ namespace OfficeOpenXml.Drawing.Style.Effect
         {
             get
             {
-                return GetXmlNodeAngel(_verticalSkewAnglePath);
+                return this.GetXmlNodeAngel(this._verticalSkewAnglePath);
             }
             set
             {
-                SetXmlNodeAngel(_verticalSkewAnglePath, value, "HorizontalSkewAngle", -90, 90);
+                this.SetXmlNodeAngel(this._verticalSkewAnglePath, value, "HorizontalSkewAngle", -90, 90);
             }
         }
         /// <summary>
@@ -109,11 +109,11 @@ namespace OfficeOpenXml.Drawing.Style.Effect
         {
             get
             {
-                return GetXmlNodePercentage(_horizontalScalingFactorPath) ?? 100;
+                return this.GetXmlNodePercentage(this._horizontalScalingFactorPath) ?? 100;
             }
             set
             {
-                SetXmlNodePercentage(_horizontalScalingFactorPath, value, true, 10000);
+                this.SetXmlNodePercentage(this._horizontalScalingFactorPath, value, true, 10000);
             }
         }
         /// <summary>
@@ -124,11 +124,11 @@ namespace OfficeOpenXml.Drawing.Style.Effect
         {
             get
             {
-                return GetXmlNodePercentage(_verticalScalingFactorPath) ?? 100;
+                return this.GetXmlNodePercentage(this._verticalScalingFactorPath) ?? 100;
             }
             set
             {
-                SetXmlNodePercentage(_verticalScalingFactorPath, value, true, 10000);
+                this.SetXmlNodePercentage(this._verticalScalingFactorPath, value, true, 10000);
             }
         }
     }

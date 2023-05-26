@@ -28,13 +28,13 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Text
         public override CompileResult Execute(IEnumerable<FunctionArgument> arguments, ParsingContext context)
         {
             ValidateArguments(arguments, 1);
-            int number = ArgToInt(arguments, 0);
+            int number = this.ArgToInt(arguments, 0);
             if (number < 1 || number > 255)
             {
                 return this.CreateResult(eErrorType.Value);
             }
 
-            return CreateResult(((char) number).ToString(), DataType.String);
+            return this.CreateResult(((char) number).ToString(), DataType.String);
         }
     }
 }

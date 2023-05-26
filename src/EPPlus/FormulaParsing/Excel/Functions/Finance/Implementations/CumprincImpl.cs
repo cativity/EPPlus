@@ -20,8 +20,8 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Finance.Implementations
     {
         public CumprincImpl(IPmtProvider pmtProvider, IFvProvider fvProvider)
         {
-            _pmtProvider = pmtProvider;
-            _fvProvider = fvProvider;
+            this._pmtProvider = pmtProvider;
+            this._fvProvider = fvProvider;
         }
 
         private readonly IPmtProvider _pmtProvider;
@@ -36,7 +36,7 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Finance.Implementations
                 return new FinanceCalcResult<double>(eErrorType.Num);
             }
 
-            fPmt = _pmtProvider.GetPmt(rate, nper, pv, 0.0, type);
+            fPmt = this._pmtProvider.GetPmt(rate, nper, pv, 0.0, type);
 
             fPpmt = 0.0;
 

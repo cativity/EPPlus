@@ -32,18 +32,18 @@ namespace OfficeOpenXml.Drawing.Theme
         internal ExcelThemeBase(ExcelPackage package, XmlNamespaceManager nsm, ZipPackageRelationship rel, string path)
             : base(nsm, null)
         {
-            ThemeUri = UriHelper.ResolvePartUri(rel.SourceUri, rel.TargetUri);
-            Part = package.ZipPackage.GetPart(ThemeUri);
-            RelationshipId = rel.Id;
-            ThemeXml = new XmlDocument();
-            LoadXmlSafe(ThemeXml, Part.GetStream());
-            TopNode = ThemeXml.DocumentElement;
+            this.ThemeUri = UriHelper.ResolvePartUri(rel.SourceUri, rel.TargetUri);
+            this.Part = package.ZipPackage.GetPart(this.ThemeUri);
+            this.RelationshipId = rel.Id;
+            this.ThemeXml = new XmlDocument();
+            LoadXmlSafe(this.ThemeXml, this.Part.GetStream());
+            this.TopNode = this.ThemeXml.DocumentElement;
 
-            _colorSchemePath = string.Format(_colorSchemePath, path);
-            _fontSchemePath = string.Format(_fontSchemePath, path);
-            _fmtSchemePath = string.Format(_fmtSchemePath, path);
-            _pck = package;
-            if (!NameSpaceManager.HasNamespace("a"))
+            this._colorSchemePath = string.Format(this._colorSchemePath, path);
+            this._fontSchemePath = string.Format(this._fontSchemePath, path);
+            this._fmtSchemePath = string.Format(this._fmtSchemePath, path);
+            this._pck = package;
+            if (!this.NameSpaceManager.HasNamespace("a"))
             {
                 this.NameSpaceManager.AddNamespace("a", ExcelPackage.schemaDrawings);
             }
@@ -63,11 +63,11 @@ namespace OfficeOpenXml.Drawing.Theme
         {
             get
             {
-                if (_colorScheme == null)
+                if (this._colorScheme == null)
                 {
-                    _colorScheme = new ExcelColorScheme(NameSpaceManager, TopNode.SelectSingleNode(_colorSchemePath, NameSpaceManager));
+                    this._colorScheme = new ExcelColorScheme(this.NameSpaceManager, this.TopNode.SelectSingleNode(this._colorSchemePath, this.NameSpaceManager));
                 }
-                return _colorScheme;
+                return this._colorScheme;
             }
         }
         internal ExcelFontScheme _fontScheme = null;
@@ -78,11 +78,11 @@ namespace OfficeOpenXml.Drawing.Theme
         {
             get
             {
-                if (_fontScheme == null)
+                if (this._fontScheme == null)
                 {
-                    _fontScheme = new ExcelFontScheme(_pck,NameSpaceManager, TopNode.SelectSingleNode(_fontSchemePath, NameSpaceManager));
+                    this._fontScheme = new ExcelFontScheme(this._pck, this.NameSpaceManager, this.TopNode.SelectSingleNode(this._fontSchemePath, this.NameSpaceManager));
                 }
-                return _fontScheme;
+                return this._fontScheme;
             }
         }
         private ExcelFormatScheme _formatScheme = null;
@@ -93,20 +93,20 @@ namespace OfficeOpenXml.Drawing.Theme
         {
             get
             {
-                if (_formatScheme == null)
+                if (this._formatScheme == null)
                 {
-                    _formatScheme = new ExcelFormatScheme(NameSpaceManager, TopNode.SelectSingleNode(_fmtSchemePath, NameSpaceManager), this);
+                    this._formatScheme = new ExcelFormatScheme(this.NameSpaceManager, this.TopNode.SelectSingleNode(this._fmtSchemePath, this.NameSpaceManager), this);
                 }
-                return _formatScheme;
+                return this._formatScheme;
             }
         }
 
-        ExcelPackage IPictureRelationDocument.Package { get => _pck; }
+        ExcelPackage IPictureRelationDocument.Package { get => this._pck; }
 
-        Dictionary<string, HashInfo> IPictureRelationDocument.Hashes { get => _hashes; }
+        Dictionary<string, HashInfo> IPictureRelationDocument.Hashes { get => this._hashes; }
 
-        ZipPackagePart IPictureRelationDocument.RelatedPart { get => Part; }
+        ZipPackagePart IPictureRelationDocument.RelatedPart { get => this.Part; }
 
-        Uri IPictureRelationDocument.RelatedUri { get => ThemeUri; }
+        Uri IPictureRelationDocument.RelatedUri { get => this.ThemeUri; }
     }
 }

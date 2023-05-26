@@ -35,9 +35,9 @@ namespace OfficeOpenXml
         {
             get
             {
-                if(_dic.ContainsKey(name))
+                if(this._dic.ContainsKey(name))
                 {
-                    return _list[_dic[name]];
+                    return this._list[this._dic[name]];
                 }
                 return default(T);
             }
@@ -51,12 +51,12 @@ namespace OfficeOpenXml
     {
         internal ExcelStyleCollection()
         {
-            _setNextIdManual = false;
+            this._setNextIdManual = false;
         }
         bool _setNextIdManual;
         internal ExcelStyleCollection(bool SetNextIdManual)
         {
-            _setNextIdManual = SetNextIdManual;
+            this._setNextIdManual = SetNextIdManual;
         }
         /// <summary>
         /// The top xml node of the collection
@@ -72,7 +72,7 @@ namespace OfficeOpenXml
         /// <returns>The enumerator</returns>
         public IEnumerator<T> GetEnumerator()
         {
-            return _list.GetEnumerator();
+            return this._list.GetEnumerator();
         }
 
         #endregion
@@ -83,7 +83,7 @@ namespace OfficeOpenXml
         /// <returns>The enumerator</returns>
         System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator()
         {
-            return _list.GetEnumerator();
+            return this._list.GetEnumerator();
         }
         #endregion
         /// <summary>
@@ -100,7 +100,7 @@ namespace OfficeOpenXml
                     return default;
                 }
 
-                return _list[PositionID];
+                return this._list[PositionID];
             }
         }
         /// <summary>
@@ -110,23 +110,23 @@ namespace OfficeOpenXml
         {
             get
             {
-                return _list.Count;
+                return this._list.Count;
             }
         }
         internal int Add(string key, T item)
         {
-            _list.Add(item);
-            if (!_dic.ContainsKey(key.ToLower(CultureInfo.InvariantCulture)))
+            this._list.Add(item);
+            if (!this._dic.ContainsKey(key.ToLower(CultureInfo.InvariantCulture)))
             {
                 this._dic.Add(key.ToLower(CultureInfo.InvariantCulture), this._list.Count - 1);
             }
 
-            if (_setNextIdManual)
+            if (this._setNextIdManual)
             {
                 this.NextId++;
             }
 
-            return _list.Count-1;
+            return this._list.Count-1;
         }
         /// <summary>
         /// Finds the key 
@@ -136,9 +136,9 @@ namespace OfficeOpenXml
         /// <returns>True if found</returns>
         internal bool FindById(string key, ref T obj)
         {
-            if (_dic.ContainsKey(key))
+            if (this._dic.ContainsKey(key))
             {
-                obj = _list[_dic[key.ToLower(CultureInfo.InvariantCulture)]];
+                obj = this._list[this._dic[key.ToLower(CultureInfo.InvariantCulture)]];
                 return true;
             }
             else
@@ -153,9 +153,9 @@ namespace OfficeOpenXml
         /// <returns></returns>
         internal int FindIndexById(string key)
         {
-            if (_dic.ContainsKey(key))
+            if (this._dic.ContainsKey(key))
             {
-                return _dic[key];
+                return this._dic[key];
             }
             else
             {
@@ -164,9 +164,9 @@ namespace OfficeOpenXml
         }
         internal int FindIndexByBuildInId(int id)
         {
-            for(int i=0;i<_list.Count;i++)
+            for(int i=0;i< this._list.Count;i++)
             {
-                if (_list[i] is ExcelNamedStyleXml ns)
+                if (this._list[i] is ExcelNamedStyleXml ns)
                 {
                     if (ns.BuildInId == id)
                     {
@@ -179,11 +179,11 @@ namespace OfficeOpenXml
 
         internal bool ExistsKey(string key)
         {
-            return _dic.ContainsKey(key);
+            return this._dic.ContainsKey(key);
         }
         internal void Sort(Comparison<T> c)
         {
-            _list.Sort(c);
+            this._list.Sort(c);
         }
     }
 }

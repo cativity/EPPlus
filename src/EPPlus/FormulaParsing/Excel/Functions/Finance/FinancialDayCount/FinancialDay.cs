@@ -21,21 +21,21 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Finance.FinancialDayCount
 
         public FinancialDay(System.DateTime date)
         {
-            Year = Convert.ToInt16(date.Year);
-            Month = Convert.ToInt16(date.Month);
-            Day = Convert.ToInt16(date.Day);
+            this.Year = Convert.ToInt16(date.Year);
+            this.Month = Convert.ToInt16(date.Month);
+            this.Day = Convert.ToInt16(date.Day);
         }
 
         public FinancialDay(int year, int month, int day)
         {
-            Year = (short)year;
-            Month = (short)month;
-            Day = (short)day;
+            this.Year = (short)year;
+            this.Month = (short)month;
+            this.Day = (short)day;
         }
 
         public override string ToString()
         {
-            return $"{Year}-{Month}-{Day}";
+            return $"{this.Year}-{this.Month}-{this.Day}";
         }
 
         public short Year { get; set; }
@@ -48,7 +48,7 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Finance.FinancialDayCount
         {
             get
             {
-                return Month == 2 && Day == System.DateTime.DaysInMonth(Year, Month);
+                return this.Month == 2 && this.Day == System.DateTime.DaysInMonth(this.Year, this.Month);
             }
         }
 
@@ -56,23 +56,23 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Finance.FinancialDayCount
         {
             get
             {
-                return Day == System.DateTime.DaysInMonth(Year, Month);
+                return this.Day == System.DateTime.DaysInMonth(this.Year, this.Month);
             }
         }
 
         public System.DateTime ToDateTime()
         {
-            return new System.DateTime(Year, Month, Day);
+            return new System.DateTime(this.Year, this.Month, this.Day);
         }
 
         public FinancialDay SubtractYears(int years)
         {
-            short day = Day;
-            if (IsLastDayOfFebruary && System.DateTime.IsLeapYear(Year) && !System.DateTime.IsLeapYear(Year + years))
+            short day = this.Day;
+            if (this.IsLastDayOfFebruary && System.DateTime.IsLeapYear(this.Year) && !System.DateTime.IsLeapYear(this.Year + years))
             {
                 day -= 1;
             }
-            return Factory((short)(Year - years), Month, day);
+            return this.Factory((short)(this.Year - years), this.Month, day);
         }
 
         public int CompareTo(FinancialDay other)
@@ -82,12 +82,12 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Finance.FinancialDayCount
                 return 1;
             }
 
-            if (Year == other.Year && Month == other.Month && Day == other.Day)
+            if (this.Year == other.Year && this.Month == other.Month && this.Day == other.Day)
             {
                 return 0;
             }
 
-            return ToDateTime().CompareTo(other.ToDateTime());
+            return this.ToDateTime().CompareTo(other.ToDateTime());
         }
 
         public static bool operator >(FinancialDay a, FinancialDay b) => a.CompareTo(b) > 0;
@@ -140,19 +140,19 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Finance.FinancialDayCount
 
         public FinancialDay SubtractMonths(int months, short day)
         {
-            short year = Year;
+            short year = this.Year;
             short actualDay = day;
-            short month = Month;
-            if (Month - months < 1)
+            short month = this.Month;
+            if (this.Month - months < 1)
             {
                 year -= 1;
-                month = Convert.ToInt16(12 - ((Month - months) * -1));
+                month = Convert.ToInt16(12 - ((this.Month - months) * -1));
             }
             else
             {
-                month = (short)(Month - Convert.ToInt16(months));
+                month = (short)(this.Month - Convert.ToInt16(months));
             }
-            if (IsLastDayOfFebruary && System.DateTime.IsLeapYear(Year) && !System.DateTime.IsLeapYear(year))
+            if (this.IsLastDayOfFebruary && System.DateTime.IsLeapYear(this.Year) && !System.DateTime.IsLeapYear(year))
             {
                 actualDay -= 1;
             }
@@ -160,14 +160,14 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Finance.FinancialDayCount
             {
                 actualDay = (short)System.DateTime.DaysInMonth(year, month);
             }
-            return Factory(year, month, actualDay);
+            return this.Factory(year, month, actualDay);
         }
 
         protected abstract FinancialDay Factory(short year, short month, short day);
 
         internal DayCountBasis GetBasis()
         {
-            return Basis;
+            return this.Basis;
         }
 
         protected abstract DayCountBasis Basis { get; }
@@ -179,7 +179,7 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Finance.FinancialDayCount
         /// <returns>Number of days according to the <see cref="DayCountBasis"/> of this day</returns>
         public double SubtractDays(FinancialDay day)
         {
-            IFinanicalDays? financialDays = FinancialDaysFactory.Create(Basis);
+            IFinanicalDays? financialDays = FinancialDaysFactory.Create(this.Basis);
             return financialDays.GetDaysBetweenDates(this.ToDateTime(), day.ToDateTime());
         }
         public override bool Equals(object obj)

@@ -23,23 +23,23 @@ namespace OfficeOpenXml.Drawing.Controls
         private XmlHelper _vmlHelper;
         internal ExcelControlMargin(ExcelControlWithText control)
         {
-            _control = control;
-            _vmlHelper = XmlHelperFactory.Create(control._vmlProp.NameSpaceManager, control._vmlProp.TopNode.ParentNode);
-            
-            Automatic = _vmlHelper.GetXmlNodeString("@o:insetmode") == "auto";
-            string? margin = _vmlHelper.GetXmlNodeString("v:textbox/@inset");
+            this._control = control;
+            this._vmlHelper = XmlHelperFactory.Create(control._vmlProp.NameSpaceManager, control._vmlProp.TopNode.ParentNode);
+
+            this.Automatic = this._vmlHelper.GetXmlNodeString("@o:insetmode") == "auto";
+            string? margin = this._vmlHelper.GetXmlNodeString("v:textbox/@inset");
 
             string? v = margin.GetCsvPosition(0);
-            LeftMargin.SetValue(v);
+            this.LeftMargin.SetValue(v);
 
             v = margin.GetCsvPosition(1);
-            TopMargin.SetValue(v);
+            this.TopMargin.SetValue(v);
 
             v = margin.GetCsvPosition(2);
-            RightMargin.SetValue(v);
+            this.RightMargin.SetValue(v);
 
             v = margin.GetCsvPosition(3);
-            BottomMargin.SetValue(v);
+            this.BottomMargin.SetValue(v);
         }
         /// <summary>
         /// Sets the margin value and unit of measurement for all margins.
@@ -48,11 +48,11 @@ namespace OfficeOpenXml.Drawing.Controls
         /// <param name="unit">The unit to set for all margins. Default <see cref="eMeasurementUnits.Points" /></param>
         public void SetValue(double marginValue, eMeasurementUnits unit=eMeasurementUnits.Points)
         {
-            LeftMargin.Value = marginValue;
-            TopMargin.Value = marginValue;
-            RightMargin.Value = marginValue;
-            BottomMargin.Value = marginValue;
-            SetUnit(unit);
+            this.LeftMargin.Value = marginValue;
+            this.TopMargin.Value = marginValue;
+            this.RightMargin.Value = marginValue;
+            this.BottomMargin.Value = marginValue;
+            this.SetUnit(unit);
         }
         /// <summary>
         /// Sets the margin unit of measurement for all margins.
@@ -60,41 +60,37 @@ namespace OfficeOpenXml.Drawing.Controls
         /// <param name="unit">The unit to set for all margins.</param>
         public void SetUnit(eMeasurementUnits unit)
         {
-            LeftMargin.Unit = unit;
-            TopMargin.Unit = unit;
-            RightMargin.Unit = unit;
-            BottomMargin.Unit = unit;
+            this.LeftMargin.Unit = unit;
+            this.TopMargin.Unit = unit;
+            this.RightMargin.Unit = unit;
+            this.BottomMargin.Unit = unit;
         }
 
         internal void UpdateXml()
         {
-            if (Automatic)
+            if (this.Automatic)
             {
-                _vmlHelper.SetXmlNodeString("@o:insetmode", "auto");
+                this._vmlHelper.SetXmlNodeString("@o:insetmode", "auto");
             }
             else
             {
-                _vmlHelper.DeleteNode("@o:insetmode");    //Custom
+                this._vmlHelper.DeleteNode("@o:insetmode");    //Custom
             }
 
-            if (LeftMargin.Value != 0 && TopMargin.Value != 0 && RightMargin.Value != 0 && BottomMargin.Value != 0)
+            if (this.LeftMargin.Value != 0 && this.TopMargin.Value != 0 && this.RightMargin.Value != 0 && this.BottomMargin.Value != 0)
             {
-                string? v =
-                    LeftMargin.GetValueString() + "," +
-                    TopMargin.GetValueString() + "," +
-                    RightMargin.GetValueString() + "," +
-                    BottomMargin.GetValueString();
+                string? v = this.LeftMargin.GetValueString() + "," + this.TopMargin.GetValueString() + "," + this.RightMargin.GetValueString() + "," + this.BottomMargin.GetValueString();
 
-                _control.TextBody.LeftInsert = LeftMargin.ToEmu();
-                _control.TextBody.TopInsert = TopMargin.ToEmu();
-                _control.TextBody.RightInsert = RightMargin.ToEmu(); 
-                _control.TextBody.BottomInsert = BottomMargin.ToEmu(); 
+                this._control.TextBody.LeftInsert = this.LeftMargin.ToEmu();
+                this._control.TextBody.TopInsert = this.TopMargin.ToEmu();
+                this._control.TextBody.RightInsert = this.RightMargin.ToEmu();
+                this._control.TextBody.BottomInsert = this.BottomMargin.ToEmu();
 
-                _vmlHelper.SetXmlNodeString("v:textbox/@inset", v);
+                this._vmlHelper.SetXmlNodeString("v:textbox/@inset", v);
             }
             else
             {
-                _vmlHelper.DeleteNode("v:textbox/@inset");
+                this._vmlHelper.DeleteNode("v:textbox/@inset");
             }
         }
         /// <summary>

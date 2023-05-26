@@ -30,11 +30,11 @@ namespace OfficeOpenXml.Drawing
         bool isInit = false;
         internal ExcelDrawingPoint3D(XmlNamespaceManager nameSpaceManager, XmlNode topNode, string[] schemaNodeOrder, string path, string prefix, Action<bool> initParent) : base(nameSpaceManager, topNode)
         {
-            SchemaNodeOrder = schemaNodeOrder;
-            _xPath = string.Format(_xPath, path, prefix);
-            _yPath = string.Format(_yPath, path, prefix);
-            _zPath = string.Format(_zPath, path, prefix);
-            _initParent = initParent;
+            this.SchemaNodeOrder = schemaNodeOrder;
+            this._xPath = string.Format(this._xPath, path, prefix);
+            this._yPath = string.Format(this._yPath, path, prefix);
+            this._zPath = string.Format(this._zPath, path, prefix);
+            this._initParent = initParent;
         }
         /// <summary>
         /// The X coordinate in point
@@ -43,16 +43,16 @@ namespace OfficeOpenXml.Drawing
         {
             get
             {
-                return GetXmlNodeEmuToPtNull(_xPath) ?? 0;
+                return this.GetXmlNodeEmuToPtNull(this._xPath) ?? 0;
             }
             set
             {
-                if(isInit==false)
+                if(this.isInit==false)
                 {
                     this._initParent(false);
                 }
 
-                SetXmlNodeEmuToPt(_xPath, value);
+                this.SetXmlNodeEmuToPt(this._xPath, value);
             }
         }
         /// <summary>
@@ -62,16 +62,16 @@ namespace OfficeOpenXml.Drawing
         {
             get
             {
-                return GetXmlNodeEmuToPtNull(_yPath) ?? 0;
+                return this.GetXmlNodeEmuToPtNull(this._yPath) ?? 0;
             }
             set
             {
-                if (isInit == false)
+                if (this.isInit == false)
                 {
                     this._initParent(false);
                 }
 
-                SetXmlNodeEmuToPt(_yPath, value);
+                this.SetXmlNodeEmuToPt(this._yPath, value);
             }
         }
         /// <summary>
@@ -81,28 +81,28 @@ namespace OfficeOpenXml.Drawing
         {
             get
             {
-                return GetXmlNodeEmuToPtNull(_zPath) ?? 0;
+                return this.GetXmlNodeEmuToPtNull(this._zPath) ?? 0;
             }
             set
             {
-                if (isInit == false)
+                if (this.isInit == false)
                 {
                     this._initParent(false);
                 }
 
-                SetXmlNodeEmuToPt(_zPath, value);
+                this.SetXmlNodeEmuToPt(this._zPath, value);
             }
         }
         internal void InitXml()
         {
-            if (isInit==false)
+            if (this.isInit==false)
             {
-                isInit = true;
-                if (!ExistsNode(_xPath))
+                this.isInit = true;
+                if (!this.ExistsNode(this._xPath))
                 {
-                    X = 0;
-                    Y = 0;
-                    Z = 0;
+                    this.X = 0;
+                    this.Y = 0;
+                    this.Z = 0;
                 }
             }
         }

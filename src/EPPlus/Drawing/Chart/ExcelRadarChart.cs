@@ -28,38 +28,38 @@ namespace OfficeOpenXml.Drawing.Chart
         internal ExcelRadarChart(ExcelDrawings drawings, XmlNode node, Uri uriChart, Packaging.ZipPackagePart part, XmlDocument chartXml, XmlNode chartNode, ExcelGroupShape parent = null) :
             base(drawings, node, uriChart, part, chartXml, chartNode, parent)
         {
-            SetTypeProperties();
+            this.SetTypeProperties();
         }
 
         internal ExcelRadarChart(ExcelChart topChart, XmlNode chartNode, ExcelGroupShape parent = null) :
             base(topChart, chartNode, parent)
         {
-            SetTypeProperties();
+            this.SetTypeProperties();
         }
         internal ExcelRadarChart(ExcelDrawings drawings, XmlNode node, eChartType? type, ExcelChart topChart, ExcelPivotTable PivotTableSource, XmlDocument chartXml, ExcelGroupShape parent = null) :
             base(drawings, node, type, topChart, PivotTableSource, chartXml, parent)
         {
-            SetTypeProperties();
+            this.SetTypeProperties();
         }
         #endregion
         internal override void InitSeries(ExcelChart chart, XmlNamespaceManager ns, XmlNode node, bool isPivot, List<ExcelChartSerie> list = null)
         {
             base.InitSeries(chart, ns, node, isPivot, list);
-            Series.Init(chart, ns, node, isPivot, base.Series._list);
+            this.Series.Init(chart, ns, node, isPivot, base.Series._list);
         }
         private void SetTypeProperties()
         {
-            if (ChartType == eChartType.RadarFilled)
+            if (this.ChartType == eChartType.RadarFilled)
             {
-                RadarStyle = eRadarStyle.Filled;
+                this.RadarStyle = eRadarStyle.Filled;
             }
-            else if  (ChartType == eChartType.RadarMarkers)
+            else if  (this.ChartType == eChartType.RadarMarkers)
             {
-                RadarStyle =  eRadarStyle.Marker;
+                this.RadarStyle =  eRadarStyle.Marker;
             }
             else
             {
-                RadarStyle = eRadarStyle.Standard;
+                this.RadarStyle = eRadarStyle.Standard;
             }
         }
 
@@ -71,7 +71,7 @@ namespace OfficeOpenXml.Drawing.Chart
         {
             get
             {
-                string? v=_chartXmlHelper.GetXmlNodeString(STYLE_PATH);
+                string? v= this._chartXmlHelper.GetXmlNodeString(this.STYLE_PATH);
                 if (string.IsNullOrEmpty(v))
                 {
                     return eRadarStyle.Standard;
@@ -83,7 +83,7 @@ namespace OfficeOpenXml.Drawing.Chart
             }
             set
             {
-                _chartXmlHelper.SetXmlNodeString(STYLE_PATH, value.ToString().ToLower(CultureInfo.InvariantCulture));
+                this._chartXmlHelper.SetXmlNodeString(this.STYLE_PATH, value.ToString().ToLower(CultureInfo.InvariantCulture));
             }
         }
         ExcelChartDataLabel _DataLabel = null;
@@ -94,11 +94,11 @@ namespace OfficeOpenXml.Drawing.Chart
         {
             get
             {
-                if (_DataLabel == null)
+                if (this._DataLabel == null)
                 {
-                    _DataLabel = new ExcelChartDataLabelStandard(this, NameSpaceManager, ChartNode, "dLbls", _chartXmlHelper.SchemaNodeOrder);
+                    this._DataLabel = new ExcelChartDataLabelStandard(this, this.NameSpaceManager, this.ChartNode, "dLbls", this._chartXmlHelper.SchemaNodeOrder);
                 }
-                return _DataLabel;
+                return this._DataLabel;
             }
         }
         /// <summary>
@@ -108,16 +108,16 @@ namespace OfficeOpenXml.Drawing.Chart
         {
             get
             {
-                return ChartNode.SelectSingleNode("c:dLbls", NameSpaceManager) != null;
+                return this.ChartNode.SelectSingleNode("c:dLbls", this.NameSpaceManager) != null;
             }
         }
         internal override eChartType GetChartType(string name)
         {
-            if (RadarStyle == eRadarStyle.Filled)
+            if (this.RadarStyle == eRadarStyle.Filled)
             {
                 return eChartType.RadarFilled;
             }
-            else if (RadarStyle == eRadarStyle.Marker)
+            else if (this.RadarStyle == eRadarStyle.Marker)
             {
                 return eChartType.RadarMarkers;
             }

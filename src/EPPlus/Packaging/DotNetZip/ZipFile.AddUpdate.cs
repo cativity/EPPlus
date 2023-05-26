@@ -83,7 +83,7 @@ namespace OfficeOpenXml.Packaging.Ionic.Zip
         /// <returns>The <c>ZipEntry</c> added.</returns>
         public ZipEntry AddItem(string fileOrDirectoryName)
         {
-            return AddItem(fileOrDirectoryName, null);
+            return this.AddItem(fileOrDirectoryName, null);
         }
 
 
@@ -298,7 +298,7 @@ namespace OfficeOpenXml.Packaging.Ionic.Zip
         /// <returns>The <c>ZipEntry</c> corresponding to the File added.</returns>
         public ZipEntry AddFile(string fileName)
         {
-            return AddFile(fileName, null);
+            return this.AddFile(fileName, null);
         }
 
 
@@ -409,12 +409,12 @@ namespace OfficeOpenXml.Packaging.Ionic.Zip
         {
             string nameInArchive = ZipEntry.NameInArchive(fileName, directoryPathInArchive);
             ZipEntry ze = ZipEntry.CreateFromFile(fileName, nameInArchive);
-            if (Verbose)
+            if (this.Verbose)
             {
                 this.StatusMessageTextWriter.WriteLine("adding {0}...", fileName);
             }
 
-            return _InternalAddEntry(ze);
+            return this._InternalAddEntry(ze);
         }
 
 
@@ -432,7 +432,7 @@ namespace OfficeOpenXml.Packaging.Ionic.Zip
         ///
         /// <seealso cref="Ionic.Zip.ZipFile.SelectEntries(String)" />
         /// <seealso cref="Ionic.Zip.ZipFile.RemoveSelectedEntries(String)" />
-        public void RemoveEntries(System.Collections.Generic.ICollection<ZipEntry> entriesToRemove)
+        public void RemoveEntries(ICollection<ZipEntry> entriesToRemove)
         {
             if (entriesToRemove == null)
             {
@@ -458,7 +458,7 @@ namespace OfficeOpenXml.Packaging.Ionic.Zip
         ///
         /// <seealso cref="Ionic.Zip.ZipFile.SelectEntries(String)" />
         /// <seealso cref="Ionic.Zip.ZipFile.RemoveSelectedEntries(String)" />
-        public void RemoveEntries(System.Collections.Generic.ICollection<String> entriesToRemove)
+        public void RemoveEntries(ICollection<String> entriesToRemove)
         {
             if (entriesToRemove == null)
             {
@@ -527,7 +527,7 @@ namespace OfficeOpenXml.Packaging.Ionic.Zip
         /// </example>
         ///
         /// <seealso cref="Ionic.Zip.ZipFile.AddSelectedFiles(String, String)" />
-        public void AddFiles(System.Collections.Generic.IEnumerable<String> fileNames)
+        public void AddFiles(IEnumerable<String> fileNames)
         {
             this.AddFiles(fileNames, null);
         }
@@ -558,7 +558,7 @@ namespace OfficeOpenXml.Packaging.Ionic.Zip
         ///   the filesystem. The name of the file may be a relative path or a fully-qualified path.
         /// </param>
         ///
-        public void UpdateFiles(System.Collections.Generic.IEnumerable<String> fileNames)
+        public void UpdateFiles(IEnumerable<String> fileNames)
         {
             this.UpdateFiles(fileNames, null);
         }
@@ -606,9 +606,9 @@ namespace OfficeOpenXml.Packaging.Ionic.Zip
         /// </param>
         ///
         /// <seealso cref="Ionic.Zip.ZipFile.AddSelectedFiles(String, String)" />
-        public void AddFiles(System.Collections.Generic.IEnumerable<String> fileNames, String directoryPathInArchive)
+        public void AddFiles(IEnumerable<String> fileNames, String directoryPathInArchive)
         {
-            AddFiles(fileNames, false, directoryPathInArchive);
+            this.AddFiles(fileNames, false, directoryPathInArchive);
         }
 
 
@@ -672,7 +672,7 @@ namespace OfficeOpenXml.Packaging.Ionic.Zip
         ///   the entries added to the ZipFile.
         /// </param>
         /// <seealso cref="Ionic.Zip.ZipFile.AddSelectedFiles(String, String)" />
-        public void AddFiles(System.Collections.Generic.IEnumerable<String> fileNames,
+        public void AddFiles(IEnumerable<String> fileNames,
                              bool preserveDirHierarchy,
                              String directoryPathInArchive)
         {
@@ -681,13 +681,13 @@ namespace OfficeOpenXml.Packaging.Ionic.Zip
                 throw new ArgumentNullException("fileNames");
             }
 
-            _addOperationCanceled = false;
-            OnAddStarted();
+            this._addOperationCanceled = false;
+            this.OnAddStarted();
             if (preserveDirHierarchy)
             {
                 foreach (string? f in fileNames)
                 {
-                    if (_addOperationCanceled)
+                    if (this._addOperationCanceled)
                     {
                         break;
                     }
@@ -708,7 +708,7 @@ namespace OfficeOpenXml.Packaging.Ionic.Zip
             {
                 foreach (string? f in fileNames)
                 {
-                    if (_addOperationCanceled)
+                    if (this._addOperationCanceled)
                     {
                         break;
                     }
@@ -716,7 +716,7 @@ namespace OfficeOpenXml.Packaging.Ionic.Zip
                     this.AddFile(f, directoryPathInArchive);
                 }
             }
-            if (!_addOperationCanceled)
+            if (!this._addOperationCanceled)
             {
                 this.OnAddCompleted();
             }
@@ -762,20 +762,20 @@ namespace OfficeOpenXml.Packaging.Ionic.Zip
         /// </param>
         ///
         /// <seealso cref="Ionic.Zip.ZipFile.AddSelectedFiles(String, String)" />
-        public void UpdateFiles(System.Collections.Generic.IEnumerable<String> fileNames, String directoryPathInArchive)
+        public void UpdateFiles(IEnumerable<String> fileNames, String directoryPathInArchive)
         {
             if (fileNames == null)
             {
                 throw new ArgumentNullException("fileNames");
             }
 
-            OnAddStarted();
+            this.OnAddStarted();
             foreach (string? f in fileNames)
             {
                 this.UpdateFile(f, directoryPathInArchive);
             }
 
-            OnAddCompleted();
+            this.OnAddCompleted();
         }
 
 
@@ -865,7 +865,7 @@ namespace OfficeOpenXml.Packaging.Ionic.Zip
         /// </returns>
         public ZipEntry UpdateFile(string fileName)
         {
-            return UpdateFile(fileName, null);
+            return this.UpdateFile(fileName, null);
         }
 
 
@@ -970,7 +970,7 @@ namespace OfficeOpenXml.Packaging.Ionic.Zip
         /// </returns>
         public ZipEntry UpdateDirectory(string directoryName)
         {
-            return UpdateDirectory(directoryName, null);
+            return this.UpdateDirectory(directoryName, null);
         }
 
 
@@ -1052,7 +1052,7 @@ namespace OfficeOpenXml.Packaging.Ionic.Zip
         /// </param>
         public void UpdateItem(string itemName)
         {
-            UpdateItem(itemName, null);
+            this.UpdateItem(itemName, null);
         }
 
 
@@ -1180,13 +1180,13 @@ namespace OfficeOpenXml.Packaging.Ionic.Zip
 #if SILVERLIGHT
             return AddEntry(entryName, content, System.Text.Encoding.UTF8);
 #else
-            return AddEntry(entryName, content,
+            return this.AddEntry(entryName, content,
 #if Core
-                System.Text.Encoding.GetEncoding("UTF-8")
+                                 System.Text.Encoding.GetEncoding("UTF-8")
 #else
                 System.Text.Encoding.Default
 #endif
-                );
+                                );
 #endif
         }
 
@@ -1251,7 +1251,7 @@ namespace OfficeOpenXml.Packaging.Ionic.Zip
             // reset to allow reading later
             ms.Seek(0, SeekOrigin.Begin);
 
-            return AddEntry(entryName, ms);
+            return this.AddEntry(entryName, ms);
 
             // must not dispose the MemoryStream - it will be used later.
         }
@@ -1342,12 +1342,12 @@ namespace OfficeOpenXml.Packaging.Ionic.Zip
         {
             ZipEntry ze = ZipEntry.CreateForStream(entryName, stream);
             ze.SetEntryTimes(DateTime.Now,DateTime.Now,DateTime.Now);
-            if (Verbose)
+            if (this.Verbose)
             {
                 this.StatusMessageTextWriter.WriteLine("adding {0}...", entryName);
             }
 
-            return _InternalAddEntry(ze);
+            return this._InternalAddEntry(ze);
         }
 
 
@@ -1536,12 +1536,12 @@ namespace OfficeOpenXml.Packaging.Ionic.Zip
         public ZipEntry AddEntry(string entryName, WriteDelegate writer)
         {
             ZipEntry ze = ZipEntry.CreateForWriter(entryName, writer);
-            if (Verbose)
+            if (this.Verbose)
             {
                 this.StatusMessageTextWriter.WriteLine("adding {0}...", entryName);
             }
 
-            return _InternalAddEntry(ze);
+            return this._InternalAddEntry(ze);
         }
 
 
@@ -1655,12 +1655,12 @@ namespace OfficeOpenXml.Packaging.Ionic.Zip
         {
             ZipEntry ze = ZipEntry.CreateForJitStreamProvider(entryName, opener, closer);
             ze.SetEntryTimes(DateTime.Now,DateTime.Now,DateTime.Now);
-            if (Verbose)
+            if (this.Verbose)
             {
                 this.StatusMessageTextWriter.WriteLine("adding {0}...", entryName);
             }
 
-            return _InternalAddEntry(ze);
+            return this._InternalAddEntry(ze);
         }
 
 
@@ -1681,8 +1681,8 @@ namespace OfficeOpenXml.Packaging.Ionic.Zip
             ze.EmitTimesInWindowsFormatWhenSaving = this._emitNtfsTimes;
             ze.EmitTimesInUnixFormatWhenSaving = this._emitUnixTimes;
             //string key = DictionaryKeyForEntry(ze);
-            InternalAddEntry(ze.FileName,ze);
-            AfterAddEntry(ze);
+            this.InternalAddEntry(ze.FileName,ze);
+            this.AfterAddEntry(ze);
             return ze;
         }
 
@@ -1723,13 +1723,13 @@ namespace OfficeOpenXml.Packaging.Ionic.Zip
 #if SILVERLIGHT
             return UpdateEntry(entryName, content, System.Text.Encoding.UTF8);
 #else
-            return UpdateEntry(entryName, content,
+            return this.UpdateEntry(entryName, content,
 #if Core
-                System.Text.Encoding.GetEncoding("UTF-8")
+                                    System.Text.Encoding.GetEncoding("UTF-8")
 #else
                 System.Text.Encoding.Default
 #endif
-                );
+                                   );
 #endif
         }
 
@@ -1764,8 +1764,8 @@ namespace OfficeOpenXml.Packaging.Ionic.Zip
         ///
         public ZipEntry UpdateEntry(string entryName, string content, System.Text.Encoding encoding)
         {
-            RemoveEntryForUpdate(entryName);
-            return AddEntry(entryName, content, encoding);
+            this.RemoveEntryForUpdate(entryName);
+            return this.AddEntry(entryName, content, encoding);
         }
 
 
@@ -1792,8 +1792,8 @@ namespace OfficeOpenXml.Packaging.Ionic.Zip
         ///
         public ZipEntry UpdateEntry(string entryName, WriteDelegate writer)
         {
-            RemoveEntryForUpdate(entryName);
-            return AddEntry(entryName, writer);
+            this.RemoveEntryForUpdate(entryName);
+            return this.AddEntry(entryName, writer);
         }
 
 
@@ -1825,8 +1825,8 @@ namespace OfficeOpenXml.Packaging.Ionic.Zip
         ///
         public ZipEntry UpdateEntry(string entryName, OpenDelegate opener, CloseDelegate closer)
         {
-            RemoveEntryForUpdate(entryName);
-            return AddEntry(entryName, opener, closer);
+            this.RemoveEntryForUpdate(entryName);
+            return this.AddEntry(entryName, opener, closer);
         }
 
 
@@ -1871,8 +1871,8 @@ namespace OfficeOpenXml.Packaging.Ionic.Zip
         /// <returns>The <c>ZipEntry</c> added.</returns>
         public ZipEntry UpdateEntry(string entryName, Stream stream)
         {
-            RemoveEntryForUpdate(entryName);
-            return AddEntry(entryName, stream);
+            this.RemoveEntryForUpdate(entryName);
+            return this.AddEntry(entryName, stream);
         }
 
 
@@ -1920,7 +1920,7 @@ namespace OfficeOpenXml.Packaging.Ionic.Zip
             }
 
             MemoryStream? ms = RecyclableMemory.GetStream(byteContent);
-            return AddEntry(entryName, ms);
+            return this.AddEntry(entryName, ms);
         }
 
 
@@ -1946,8 +1946,8 @@ namespace OfficeOpenXml.Packaging.Ionic.Zip
         ///
         public ZipEntry UpdateEntry(string entryName, byte[] byteContent)
         {
-            RemoveEntryForUpdate(entryName);
-            return AddEntry(entryName, byteContent);
+            this.RemoveEntryForUpdate(entryName);
+            return this.AddEntry(entryName, byteContent);
         }
 
 
@@ -2005,7 +2005,7 @@ namespace OfficeOpenXml.Packaging.Ionic.Zip
         /// <returns>The <c>ZipEntry</c> added.</returns>
         public ZipEntry AddDirectory(string directoryName)
         {
-            return AddDirectory(directoryName, null);
+            return this.AddDirectory(directoryName, null);
         }
 
 
@@ -2075,7 +2075,7 @@ namespace OfficeOpenXml.Packaging.Ionic.Zip
         /// <returns>The <c>ZipEntry</c> added.</returns>
         public ZipEntry AddDirectory(string directoryName, string directoryPathInArchive)
         {
-            return AddOrUpdateDirectoryImpl(directoryName, directoryPathInArchive, AddOrUpdateAction.AddOnly);
+            return this.AddOrUpdateDirectoryImpl(directoryName, directoryPathInArchive, AddOrUpdateAction.AddOnly);
         }
 
 
@@ -2113,12 +2113,12 @@ namespace OfficeOpenXml.Packaging.Ionic.Zip
             dir.AlternateEncoding = this.AlternateEncoding;  // workitem 8984
             dir.AlternateEncodingUsage = this.AlternateEncodingUsage;
             dir.SetEntryTimes(DateTime.Now,DateTime.Now,DateTime.Now);
-            dir.EmitTimesInWindowsFormatWhenSaving = _emitNtfsTimes;
-            dir.EmitTimesInUnixFormatWhenSaving = _emitUnixTimes;
+            dir.EmitTimesInWindowsFormatWhenSaving = this._emitNtfsTimes;
+            dir.EmitTimesInUnixFormatWhenSaving = this._emitUnixTimes;
             dir._Source = ZipEntrySource.Stream;
             //string key = DictionaryKeyForEntry(dir);
-            InternalAddEntry(dir.FileName,dir);
-            AfterAddEntry(dir);
+            this.InternalAddEntry(dir.FileName,dir);
+            this.AfterAddEntry(dir);
             return dir;
         }
 
@@ -2133,15 +2133,15 @@ namespace OfficeOpenXml.Packaging.Ionic.Zip
                 rootDirectoryPathInArchive = "";
             }
 
-            return AddOrUpdateDirectoryImpl(directoryName, rootDirectoryPathInArchive, action, true, 0);
+            return this.AddOrUpdateDirectoryImpl(directoryName, rootDirectoryPathInArchive, action, true, 0);
         }
 
 
         internal void InternalAddEntry(String name, ZipEntry entry)
         {
-            _entries.Add(name, entry);
-            _zipEntriesAsList = null;
-            _contentsChanged = true;
+            this._entries.Add(name, entry);
+            this._zipEntriesAsList = null;
+            this._contentsChanged = true;
         }
 
 
@@ -2152,7 +2152,7 @@ namespace OfficeOpenXml.Packaging.Ionic.Zip
                                                   bool recurse,
                                                   int level)
         {
-            if (Verbose)
+            if (this.Verbose)
             {
                 this.StatusMessageTextWriter.WriteLine("{0} {1}...",
                                                        (action == AddOrUpdateAction.AddOnly) ? "adding" : "Adding or updating",
@@ -2161,12 +2161,12 @@ namespace OfficeOpenXml.Packaging.Ionic.Zip
 
             if (level == 0)
             {
-                _addOperationCanceled = false;
-                OnAddStarted();
+                this._addOperationCanceled = false;
+                this.OnAddStarted();
             }
 
             // workitem 13371
-            if (_addOperationCanceled)
+            if (this._addOperationCanceled)
             {
                 return null;
             }
@@ -2194,20 +2194,20 @@ namespace OfficeOpenXml.Packaging.Ionic.Zip
                 baseDir.AlternateEncoding = this.AlternateEncoding;  // workitem 6410
                 baseDir.AlternateEncodingUsage = this.AlternateEncodingUsage;
                 baseDir.MarkAsDirectory();
-                baseDir.EmitTimesInWindowsFormatWhenSaving = _emitNtfsTimes;
-                baseDir.EmitTimesInUnixFormatWhenSaving = _emitUnixTimes;
+                baseDir.EmitTimesInWindowsFormatWhenSaving = this._emitNtfsTimes;
+                baseDir.EmitTimesInUnixFormatWhenSaving = this._emitUnixTimes;
 
                 // add the directory only if it does not exist.
                 // It's not an error if it already exists.
-                if (!_entries.ContainsKey(baseDir.FileName))
+                if (!this._entries.ContainsKey(baseDir.FileName))
                 {
-                    InternalAddEntry(baseDir.FileName,baseDir);
-                    AfterAddEntry(baseDir);
+                    this.InternalAddEntry(baseDir.FileName,baseDir);
+                    this.AfterAddEntry(baseDir);
                 }
                 dirForEntries = baseDir.FileName;
             }
 
-            if (!_addOperationCanceled)
+            if (!this._addOperationCanceled)
             {
 
                 String[] filenames = Directory.GetFiles(directoryName);
@@ -2217,7 +2217,7 @@ namespace OfficeOpenXml.Packaging.Ionic.Zip
                     // add the files:
                     foreach (String filename in filenames)
                     {
-                        if (_addOperationCanceled)
+                        if (this._addOperationCanceled)
                         {
                             break;
                         }
@@ -2232,7 +2232,7 @@ namespace OfficeOpenXml.Packaging.Ionic.Zip
                         }
                     }
 
-                    if (!_addOperationCanceled)
+                    if (!this._addOperationCanceled)
                     {
                         // add the subdirectories:
                         String[] dirnames = Directory.GetDirectories(directoryName);
@@ -2243,7 +2243,7 @@ namespace OfficeOpenXml.Packaging.Ionic.Zip
 #elif NETCF
                             FileAttributes fileAttrs = (FileAttributes) NetCfFile.GetAttributes(dir);
 #else
-                            FileAttributes fileAttrs = System.IO.File.GetAttributes(dir);
+                            FileAttributes fileAttrs = File.GetAttributes(dir);
 #endif
                             if (this.AddDirectoryWillTraverseReparsePoints
 #if !SILVERLIGHT

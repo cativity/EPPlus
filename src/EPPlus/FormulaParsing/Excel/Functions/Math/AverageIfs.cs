@@ -35,7 +35,7 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Math
         {
             FunctionArgument[]? functionArguments = arguments as FunctionArgument[] ?? arguments.ToArray();
             ValidateArguments(functionArguments, 3);
-            List<ExcelDoubleCellValue>? sumRange = ArgsToDoubleEnumerable(false, new List<FunctionArgument> { functionArguments[0] }, context).ToList();
+            List<ExcelDoubleCellValue>? sumRange = this.ArgsToDoubleEnumerable(false, new List<FunctionArgument> { functionArguments[0] }, context).ToList();
             List<RangeOrValue>? argRanges = new List<RangeOrValue>();
             List<string>? criterias = new List<string>();
             for (int ix = 1; ix < 31; ix += 2)
@@ -58,11 +58,11 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Math
                 string? v = GetCriteraFromArgsByIndex(functionArguments, ix);
                 criterias.Add(v);
             }
-            IEnumerable<int> matchIndexes = GetMatchIndexes(argRanges[0], criterias[0]);
+            IEnumerable<int> matchIndexes = this.GetMatchIndexes(argRanges[0], criterias[0]);
             IList<int>? enumerable = matchIndexes as IList<int> ?? matchIndexes.ToList();
             for (int ix = 1; ix < argRanges.Count && enumerable.Any(); ix++)
             {
-                List<int>? indexes = GetMatchIndexes(argRanges[ix], criterias[ix], false);
+                List<int>? indexes = this.GetMatchIndexes(argRanges[ix], criterias[ix], false);
                 matchIndexes = matchIndexes.Intersect(indexes);
             }
 
@@ -73,7 +73,7 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Math
 
             double result = matchIndexes.Average(index => sumRange[index]);
 
-            return CreateResult(result, DataType.Decimal);
+            return this.CreateResult(result, DataType.Decimal);
         }
     }
 }

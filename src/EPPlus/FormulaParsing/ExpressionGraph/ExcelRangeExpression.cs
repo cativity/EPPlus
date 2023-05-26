@@ -10,7 +10,7 @@ namespace OfficeOpenXml.FormulaParsing.ExpressionGraph
     {
         public ExcelRangeExpression(IRangeInfo rangeInfo)
         {
-            _rangeInfo = rangeInfo;
+            this._rangeInfo = rangeInfo;
         }
 
         private readonly IRangeInfo _rangeInfo;
@@ -18,7 +18,7 @@ namespace OfficeOpenXml.FormulaParsing.ExpressionGraph
 
         public override CompileResult Compile()
         {
-            return new CompileResult(_rangeInfo, DataType.Enumerable);
+            return new CompileResult(this._rangeInfo, DataType.Enumerable);
         }
     }
 }

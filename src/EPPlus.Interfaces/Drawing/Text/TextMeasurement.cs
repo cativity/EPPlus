@@ -17,8 +17,8 @@ namespace OfficeOpenXml.Interfaces.Drawing.Text
     {
         public TextMeasurement(float width, float height)
         {
-            Width = width;
-            Height = height;
+            this.Width = width;
+            this.Height = height;
         }
 
         /// <summary>
@@ -41,7 +41,7 @@ namespace OfficeOpenXml.Interfaces.Drawing.Text
         /// </summary>
         public bool IsEmpty
         {
-            get { return Width == -1 && Height == -1; }
+            get { return this.Width == -1 && this.Height == -1; }
         }
     }
 }

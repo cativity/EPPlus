@@ -23,10 +23,10 @@ namespace OfficeOpenXml.Style
     /// </summary>
     public sealed class Border : StyleBase
     {
-        internal Border(ExcelStyles styles, OfficeOpenXml.XmlHelper.ChangedEventHandler ChangedEvent, int PositionID, string address, int index) :
+        internal Border(ExcelStyles styles, XmlHelper.ChangedEventHandler ChangedEvent, int PositionID, string address, int index) :
             base(styles, ChangedEvent, PositionID, address)
 	    {
-            Index = index;
+            this.Index = index;
         }
         /// <summary>
         /// Left border style
@@ -35,7 +35,7 @@ namespace OfficeOpenXml.Style
         {
             get
             {
-                return new ExcelBorderItem(_styles, _ChangedEvent, _positionID, _address, eStyleClass.BorderLeft, this);
+                return new ExcelBorderItem(this._styles, this._ChangedEvent, this._positionID, this._address, eStyleClass.BorderLeft, this);
             }
         }
         /// <summary>
@@ -45,7 +45,7 @@ namespace OfficeOpenXml.Style
         {
             get
             {
-                return new ExcelBorderItem(_styles, _ChangedEvent, _positionID, _address, eStyleClass.BorderRight, this);
+                return new ExcelBorderItem(this._styles, this._ChangedEvent, this._positionID, this._address, eStyleClass.BorderRight, this);
             }
         }
         /// <summary>
@@ -55,7 +55,7 @@ namespace OfficeOpenXml.Style
         {
             get
             {
-                return new ExcelBorderItem(_styles, _ChangedEvent, _positionID, _address, eStyleClass.BorderTop, this);
+                return new ExcelBorderItem(this._styles, this._ChangedEvent, this._positionID, this._address, eStyleClass.BorderTop, this);
             }
         }
         /// <summary>
@@ -65,7 +65,7 @@ namespace OfficeOpenXml.Style
         {
             get
             {
-                return new ExcelBorderItem(_styles, _ChangedEvent, _positionID, _address, eStyleClass.BorderBottom, this);
+                return new ExcelBorderItem(this._styles, this._ChangedEvent, this._positionID, this._address, eStyleClass.BorderBottom, this);
             }
         }
         /// <summary>
@@ -75,7 +75,7 @@ namespace OfficeOpenXml.Style
         {
             get
             {
-                return new ExcelBorderItem(_styles, _ChangedEvent, _positionID, _address, eStyleClass.BorderDiagonal, this);
+                return new ExcelBorderItem(this._styles, this._ChangedEvent, this._positionID, this._address, eStyleClass.BorderDiagonal, this);
             }
         }
         /// <summary>
@@ -85,9 +85,9 @@ namespace OfficeOpenXml.Style
         {
             get
             {
-                if (Index >=0)
+                if (this.Index >=0)
                 {
-                    return _styles.Borders[Index].DiagonalUp;
+                    return this._styles.Borders[this.Index].DiagonalUp;
                 }
                 else
                 {
@@ -96,7 +96,7 @@ namespace OfficeOpenXml.Style
             }
             set
             {
-                _ChangedEvent(this, new StyleChangeEventArgs(eStyleClass.Border, eStyleProperty.BorderDiagonalUp, value, _positionID, _address));
+                this._ChangedEvent(this, new StyleChangeEventArgs(eStyleClass.Border, eStyleProperty.BorderDiagonalUp, value, this._positionID, this._address));
             }
         }
         /// <summary>
@@ -106,9 +106,9 @@ namespace OfficeOpenXml.Style
         {
             get
             {
-                if (Index >= 0)
+                if (this.Index >= 0)
                 {
-                    return _styles.Borders[Index].DiagonalDown;
+                    return this._styles.Borders[this.Index].DiagonalDown;
                 }
                 else
                 {
@@ -117,12 +117,12 @@ namespace OfficeOpenXml.Style
             }
             set
             {
-                _ChangedEvent(this, new StyleChangeEventArgs(eStyleClass.Border, eStyleProperty.BorderDiagonalDown, value, _positionID, _address));
+                this._ChangedEvent(this, new StyleChangeEventArgs(eStyleClass.Border, eStyleProperty.BorderDiagonalDown, value, this._positionID, this._address));
             }
         }
         internal override string Id
         {
-            get { return Top.Id + Bottom.Id +Left.Id + Right.Id + Diagonal.Id + DiagonalUp + DiagonalDown; }
+            get { return this.Top.Id + this.Bottom.Id + this.Left.Id + this.Right.Id + this.Diagonal.Id + this.DiagonalUp + this.DiagonalDown; }
         }
         /// <summary>
         /// Set the border style around the range.
@@ -130,21 +130,21 @@ namespace OfficeOpenXml.Style
         /// <param name="Style">The border style</param>
         public void BorderAround(ExcelBorderStyle Style)
         {
-            BorderAround(Style, Color.Empty);
+            this.BorderAround(Style, Color.Empty);
         }
         /// <summary>
         /// Set the border style around the range.
         /// </summary>
         /// <param name="Style">The border style</param>
         /// <param name="Color">The color of the border</param>
-        public void BorderAround(ExcelBorderStyle Style, System.Drawing.Color Color)
+        public void BorderAround(ExcelBorderStyle Style, Color Color)
         {
-            ExcelAddressBase? addr = new ExcelAddressBase(_address);
+            ExcelAddressBase? addr = new ExcelAddressBase(this._address);
             if (addr.Addresses?.Count > 1)
             {
                 foreach (ExcelAddressBase? a in addr.Addresses)
                 {
-                    SetBorderAroundStyle(Style, a);
+                    this.SetBorderAroundStyle(Style, a);
                     if (!Color.IsEmpty)
                     {
                         this.SetBorderColor(Color, a);
@@ -153,7 +153,7 @@ namespace OfficeOpenXml.Style
             }
             else
             {
-                SetBorderAroundStyle(Style, addr);
+                this.SetBorderAroundStyle(Style, addr);
                 if (!Color.IsEmpty)
                 {
                     this.SetBorderColor(Color, addr);
@@ -163,18 +163,18 @@ namespace OfficeOpenXml.Style
 
         private void SetBorderColor(Color Color, ExcelAddressBase addr)
         {
-            _ChangedEvent(this, new StyleChangeEventArgs(eStyleClass.BorderTop, eStyleProperty.Color, Color.ToArgb().ToString("X"), _positionID, new ExcelAddress(addr._fromRow, addr._fromCol, addr._fromRow, addr._toCol).Address));
-            _ChangedEvent(this, new StyleChangeEventArgs(eStyleClass.BorderBottom, eStyleProperty.Color, Color.ToArgb().ToString("X"), _positionID, new ExcelAddress(addr._toRow, addr._fromCol, addr._toRow, addr._toCol).Address));
-            _ChangedEvent(this, new StyleChangeEventArgs(eStyleClass.BorderLeft, eStyleProperty.Color, Color.ToArgb().ToString("X"), _positionID, new ExcelAddress(addr._fromRow, addr._fromCol, addr._toRow, addr._fromCol).Address));
-            _ChangedEvent(this, new StyleChangeEventArgs(eStyleClass.BorderRight, eStyleProperty.Color, Color.ToArgb().ToString("X"), _positionID, new ExcelAddress(addr._fromRow, addr._toCol, addr._toRow, addr._toCol).Address));
+            this._ChangedEvent(this, new StyleChangeEventArgs(eStyleClass.BorderTop, eStyleProperty.Color, Color.ToArgb().ToString("X"), this._positionID, new ExcelAddress(addr._fromRow, addr._fromCol, addr._fromRow, addr._toCol).Address));
+            this._ChangedEvent(this, new StyleChangeEventArgs(eStyleClass.BorderBottom, eStyleProperty.Color, Color.ToArgb().ToString("X"), this._positionID, new ExcelAddress(addr._toRow, addr._fromCol, addr._toRow, addr._toCol).Address));
+            this._ChangedEvent(this, new StyleChangeEventArgs(eStyleClass.BorderLeft, eStyleProperty.Color, Color.ToArgb().ToString("X"), this._positionID, new ExcelAddress(addr._fromRow, addr._fromCol, addr._toRow, addr._fromCol).Address));
+            this._ChangedEvent(this, new StyleChangeEventArgs(eStyleClass.BorderRight, eStyleProperty.Color, Color.ToArgb().ToString("X"), this._positionID, new ExcelAddress(addr._fromRow, addr._toCol, addr._toRow, addr._toCol).Address));
         }
 
         private void SetBorderAroundStyle(ExcelBorderStyle Style, ExcelAddressBase addr)
         {
-            _ChangedEvent(this, new StyleChangeEventArgs(eStyleClass.BorderTop, eStyleProperty.Style, Style, _positionID, new ExcelAddress(addr._fromRow, addr._fromCol, addr._fromRow, addr._toCol).Address));
-            _ChangedEvent(this, new StyleChangeEventArgs(eStyleClass.BorderBottom, eStyleProperty.Style, Style, _positionID, new ExcelAddress(addr._toRow, addr._fromCol, addr._toRow, addr._toCol).Address));
-            _ChangedEvent(this, new StyleChangeEventArgs(eStyleClass.BorderLeft, eStyleProperty.Style, Style, _positionID, new ExcelAddress(addr._fromRow, addr._fromCol, addr._toRow, addr._fromCol).Address));
-            _ChangedEvent(this, new StyleChangeEventArgs(eStyleClass.BorderRight, eStyleProperty.Style, Style, _positionID, new ExcelAddress(addr._fromRow, addr._toCol, addr._toRow, addr._toCol).Address));
+            this._ChangedEvent(this, new StyleChangeEventArgs(eStyleClass.BorderTop, eStyleProperty.Style, Style, this._positionID, new ExcelAddress(addr._fromRow, addr._fromCol, addr._fromRow, addr._toCol).Address));
+            this._ChangedEvent(this, new StyleChangeEventArgs(eStyleClass.BorderBottom, eStyleProperty.Style, Style, this._positionID, new ExcelAddress(addr._toRow, addr._fromCol, addr._toRow, addr._toCol).Address));
+            this._ChangedEvent(this, new StyleChangeEventArgs(eStyleClass.BorderLeft, eStyleProperty.Style, Style, this._positionID, new ExcelAddress(addr._fromRow, addr._fromCol, addr._toRow, addr._fromCol).Address));
+            this._ChangedEvent(this, new StyleChangeEventArgs(eStyleClass.BorderRight, eStyleProperty.Style, Style, this._positionID, new ExcelAddress(addr._fromRow, addr._toCol, addr._toRow, addr._toCol).Address));
         }
     }
 }

@@ -24,11 +24,11 @@ namespace OfficeOpenXml.Style
     {
         eStyleClass _cls;
         StyleBase _parent;
-        internal ExcelBorderItem (ExcelStyles styles, OfficeOpenXml.XmlHelper.ChangedEventHandler ChangedEvent, int worksheetID, string address, eStyleClass cls, StyleBase parent) : 
+        internal ExcelBorderItem (ExcelStyles styles, XmlHelper.ChangedEventHandler ChangedEvent, int worksheetID, string address, eStyleClass cls, StyleBase parent) : 
             base(styles, ChangedEvent, worksheetID, address)
 	    {
-            _cls=cls;
-            _parent = parent;
+            this._cls=cls;
+            this._parent = parent;
 	    }
         /// <summary>
         /// The line style of the border
@@ -37,11 +37,11 @@ namespace OfficeOpenXml.Style
         {
             get
             {
-                return GetSource().Style;
+                return this.GetSource().Style;
             }
             set
             {
-                _ChangedEvent(this, new StyleChangeEventArgs(_cls, eStyleProperty.Style, value, _positionID, _address));
+                this._ChangedEvent(this, new StyleChangeEventArgs(this._cls, eStyleProperty.Style, value, this._positionID, this._address));
             }
         }
         ExcelColor _color=null;
@@ -52,38 +52,38 @@ namespace OfficeOpenXml.Style
         {
             get
             {
-                if (_color == null)
+                if (this._color == null)
                 {
-                    _color = new ExcelColor(_styles, _ChangedEvent, _positionID, _address, _cls, _parent);
+                    this._color = new ExcelColor(this._styles, this._ChangedEvent, this._positionID, this._address, this._cls, this._parent);
                 }
-                return _color;
+                return this._color;
             }
         }
 
         internal override string Id
         {
-            get { return Style + Color.Id; }
+            get { return this.Style + this.Color.Id; }
         }
         internal override void SetIndex(int index)
         {
-            _parent.Index = index;
+            this._parent.Index = index;
         }
         private ExcelBorderItemXml GetSource()
         {
-            int ix = _parent.Index < 0 ? 0 : _parent.Index;
+            int ix = this._parent.Index < 0 ? 0 : this._parent.Index;
 
-            switch(_cls)
+            switch(this._cls)
             {
                 case eStyleClass.BorderTop:
-                    return _styles.Borders[ix].Top;
+                    return this._styles.Borders[ix].Top;
                 case eStyleClass.BorderBottom:
-                    return _styles.Borders[ix].Bottom;
+                    return this._styles.Borders[ix].Bottom;
                 case eStyleClass.BorderLeft:
-                    return _styles.Borders[ix].Left;
+                    return this._styles.Borders[ix].Left;
                 case eStyleClass.BorderRight:
-                    return _styles.Borders[ix].Right;
+                    return this._styles.Borders[ix].Right;
                 case eStyleClass.BorderDiagonal:
-                    return _styles.Borders[ix].Diagonal;
+                    return this._styles.Borders[ix].Diagonal;
                 default:
                     throw new Exception("Invalid class for Borderitem");
             }

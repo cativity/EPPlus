@@ -28,13 +28,13 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Statistical
         public override CompileResult Execute(IEnumerable<FunctionArgument> arguments, ParsingContext context)
         {
             ValidateArguments(arguments, 1);
-            double probability = ArgToDecimal(arguments, 0);
+            double probability = this.ArgToDecimal(arguments, 0);
             if (probability < 0 || probability > 1)
             {
-                return CreateResult(eErrorType.Num);
+                return this.CreateResult(eErrorType.Num);
             }
             double result = NormsInv(probability, 0, 1);
-            return CreateResult(result, DataType.Decimal);
+            return this.CreateResult(result, DataType.Decimal);
         }
     }
 }

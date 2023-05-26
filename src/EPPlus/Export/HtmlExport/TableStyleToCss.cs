@@ -29,11 +29,11 @@ namespace OfficeOpenXml.Export.HtmlExport
         ExcelTable _table;
         internal TableStyleToCss(ExcelTable table)
         {
-            _table = table;
+            this._table = table;
         }
         internal void Render(StreamWriter sw)
         {
-            if(_table.TableStyle==TableStyles.None)
+            if(this._table.TableStyle==TableStyles.None)
             {
                 return;
             }

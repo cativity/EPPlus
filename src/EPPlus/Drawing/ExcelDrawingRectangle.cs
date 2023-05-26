@@ -20,18 +20,18 @@ namespace OfficeOpenXml.Drawing.Theme
 
         internal ExcelDrawingRectangle(XmlHelper xml, string path, double defaultValue)
         {
-            TopOffset = xml.GetXmlNodePercentage(path + "@t") ?? defaultValue;
-            BottomOffset = xml.GetXmlNodePercentage(path + "@b") ?? defaultValue;
-            LeftOffset = xml.GetXmlNodePercentage(path + "@l") ?? defaultValue;
-            RightOffset = xml.GetXmlNodePercentage(path+"@r") ?? defaultValue;
+            this.TopOffset = xml.GetXmlNodePercentage(path + "@t") ?? defaultValue;
+            this.BottomOffset = xml.GetXmlNodePercentage(path + "@b") ?? defaultValue;
+            this.LeftOffset = xml.GetXmlNodePercentage(path + "@l") ?? defaultValue;
+            this.RightOffset = xml.GetXmlNodePercentage(path+"@r") ?? defaultValue;
         }
 
         internal ExcelDrawingRectangle(double defaultValue)
         {
-            TopOffset = defaultValue;
-            BottomOffset = defaultValue;
-            LeftOffset = defaultValue;
-            RightOffset = defaultValue;
+            this.TopOffset = defaultValue;
+            this.BottomOffset = defaultValue;
+            this.LeftOffset = defaultValue;
+            this.RightOffset = defaultValue;
         }
         /// <summary>
         /// Top offset in percentage

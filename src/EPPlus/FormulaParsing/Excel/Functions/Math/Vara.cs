@@ -37,7 +37,7 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Math
         public Vara(DoubleEnumerableArgConverter argConverter)
         {
             Require.Argument(argConverter).IsNotNull("argConverter");
-            _argConverter = argConverter;
+            this._argConverter = argConverter;
         }
 
         public override CompileResult Execute(IEnumerable<FunctionArgument> arguments, ParsingContext context)
@@ -47,9 +47,9 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Math
                 return this.CreateResult(eErrorType.Div0);
             }
 
-            IEnumerable<ExcelDoubleCellValue>? values = _argConverter.ConvertArgsIncludingOtherTypes(arguments, false);
+            IEnumerable<ExcelDoubleCellValue>? values = this._argConverter.ConvertArgsIncludingOtherTypes(arguments, false);
             double result = VarMethods.Var(values);
-            return CreateResult(result, DataType.Decimal);
+            return this.CreateResult(result, DataType.Decimal);
         }
     }
 }

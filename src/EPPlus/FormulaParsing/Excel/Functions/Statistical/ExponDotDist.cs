@@ -29,9 +29,9 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Statistical
         public override CompileResult Execute(IEnumerable<FunctionArgument> arguments, ParsingContext context)
         {
             ValidateArguments(arguments, 3);
-            double x = ArgToDecimal(arguments, 0);
-            double lambda = ArgToDecimal(arguments, 1);
-            bool cumulative = ArgToBool(arguments, 2);
+            double x = this.ArgToDecimal(arguments, 0);
+            double lambda = this.ArgToDecimal(arguments, 1);
+            bool cumulative = this.ArgToBool(arguments, 2);
             if (lambda <= 0d)
             {
                 return this.CreateResult(eErrorType.Num);
@@ -51,7 +51,7 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Statistical
             {
                 result = lambda * System.Math.Exp(x * -lambda);
             }
-            return CreateResult(result, DataType.Decimal);
+            return this.CreateResult(result, DataType.Decimal);
         }
     }
 }

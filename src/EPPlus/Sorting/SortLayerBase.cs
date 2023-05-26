@@ -24,7 +24,7 @@ namespace OfficeOpenXml.Sorting
     {
         internal SortLayerBase(SortOptionsBase options)
         {
-            _options = options;
+            this._options = options;
         }
 
         private readonly SortOptionsBase _options;
@@ -37,9 +37,9 @@ namespace OfficeOpenXml.Sorting
         /// <param name="column"></param>
         protected void SetColumn(int column)
         {
-            _column = column;
-            _options.ColumnIndexes.Add(column);
-            _options.Descending.Add(false);
+            this._column = column;
+            this._options.ColumnIndexes.Add(column);
+            this._options.Descending.Add(false);
         }
 
         /// <summary>
@@ -49,9 +49,9 @@ namespace OfficeOpenXml.Sorting
         /// <param name="sortOrder">Sort order</param>
         protected void SetColumn(int column, eSortOrder sortOrder)
         {
-            _column = column;
-            _options.ColumnIndexes.Add(column);
-            _options.Descending.Add((sortOrder == eSortOrder.Descending));
+            this._column = column;
+            this._options.ColumnIndexes.Add(column);
+            this._options.Descending.Add((sortOrder == eSortOrder.Descending));
         }
 
         /// <summary>
@@ -60,9 +60,9 @@ namespace OfficeOpenXml.Sorting
         /// <param name="row"></param>
         protected void SetRow(int row)
         {
-            _row = row;
-            _options.RowIndexes.Add(row);
-            _options.Descending.Add(false);
+            this._row = row;
+            this._options.RowIndexes.Add(row);
+            this._options.Descending.Add(false);
         }
 
         /// <summary>
@@ -72,18 +72,19 @@ namespace OfficeOpenXml.Sorting
         /// <param name="sortOrder"></param>
         protected void SetRow(int row, eSortOrder sortOrder)
         {
-            _row = row;
-            _options.RowIndexes.Add(row);
-            _options.Descending.Add((sortOrder == eSortOrder.Descending));
+            this._row = row;
+            this._options.RowIndexes.Add(row);
+            this._options.Descending.Add((sortOrder == eSortOrder.Descending));
         }
 
         internal void SetCustomList(params string[] values)
         {
-            if(_options.CustomLists.ContainsKey(_column))
+            if(this._options.CustomLists.ContainsKey(this._column))
             {
-                throw new ArgumentException("Custom list is already defined for column index " + _column);
+                throw new ArgumentException("Custom list is already defined for column index " + this._column);
             }
-            _options.CustomLists[_column] = values;
+
+            this._options.CustomLists[this._column] = values;
         }
     }
 }

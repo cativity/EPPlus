@@ -29,7 +29,7 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Text
         {
             ValidateArguments(arguments, 1);
             string? arg = ArgToString(arguments, 0);
-            return CreateResult(arg.ToLower(), DataType.String);
+            return this.CreateResult(arg.ToLower(), DataType.String);
         }
     }
 }

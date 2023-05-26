@@ -31,22 +31,22 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions
         public ArgumentParsers(ArgumentParserFactory factory)
         {
             Require.That(factory).Named("argumentParserfactory").IsNotNull();
-            _parserFactory = factory;
+            this._parserFactory = factory;
         }
 
         public ArgumentParser GetParser(DataType dataType)
         {
-            if (!_parsers.ContainsKey(dataType))
+            if (!this._parsers.ContainsKey(dataType))
             {
                 lock (_syncRoot)
                 {
-                    if (!_parsers.ContainsKey(dataType))
+                    if (!this._parsers.ContainsKey(dataType))
                     {
-                        _parsers.Add(dataType, _parserFactory.CreateArgumentParser(dataType));
+                        this._parsers.Add(dataType, this._parserFactory.CreateArgumentParser(dataType));
                     }
                 }
             }
-            return _parsers[dataType];
+            return this._parsers[dataType];
         }
     }
 }

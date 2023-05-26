@@ -38,8 +38,8 @@ namespace OfficeOpenXml.FormulaParsing.ExpressionGraph.FunctionCompilers
         {
             Require.That(function).Named("function").IsNotNull();
             Require.That(context).Named("context").IsNotNull();
-            Function = function;
-            Context = context;
+            this.Function = function;
+            this.Context = context;
         }
 
         protected static void BuildFunctionArguments(CompileResult compileResult, DataType dataType, List<FunctionArgument> args)

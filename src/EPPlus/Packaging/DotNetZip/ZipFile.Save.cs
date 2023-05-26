@@ -62,7 +62,7 @@ namespace OfficeOpenXml.Packaging.Ionic.Zip
                     File.Delete(filename);
                     done = true;
                 }
-                catch (System.UnauthorizedAccessException)
+                catch (UnauthorizedAccessException)
                 {
                     Console.WriteLine("************************************************** Retry delete.");
                     System.Threading.Thread.Sleep(200+i*200);
@@ -133,25 +133,25 @@ namespace OfficeOpenXml.Packaging.Ionic.Zip
             try
             {
                 bool thisSaveUsedZip64 = false;
-                _saveOperationCanceled = false;
-                _numberOfSegmentsForMostRecentSave = 0;
-                OnSaveStarted();
+                this._saveOperationCanceled = false;
+                this._numberOfSegmentsForMostRecentSave = 0;
+                this.OnSaveStarted();
 
-                if (WriteStream == null)
+                if (this.WriteStream == null)
                 {
                     throw new BadStateException("You haven't specified where to save the zip.");
                 }
 
-                if (_name != null && _name.EndsWith(".exe") && !_SavingSfx)
+                if (this._name != null && this._name.EndsWith(".exe") && !this._SavingSfx)
                 {
                     throw new BadStateException("You specified an EXE for a plain zip file.");
                 }
 
                 // check if modified, before saving.
-                if (!_contentsChanged)
+                if (!this._contentsChanged)
                 {
-                    OnSaveCompleted();
-                    if (Verbose)
+                    this.OnSaveCompleted();
+                    if (this.Verbose)
                     {
                         this.StatusMessageTextWriter.WriteLine("No save is necessary....");
                     }
@@ -159,15 +159,15 @@ namespace OfficeOpenXml.Packaging.Ionic.Zip
                     return;
                 }
 
-                Reset(true);
+                this.Reset(true);
 
-                if (Verbose)
+                if (this.Verbose)
                 {
                     this.StatusMessageTextWriter.WriteLine("saving....");
                 }
 
                 // validate the number of entries
-                if (_entries.Count >= 0xFFFF && _zip64 == Zip64Option.Never)
+                if (this._entries.Count >= 0xFFFF && this._zip64 == Zip64Option.Never)
                 {
                     throw new ZipException("The number of entries is 65535 or greater. Consider setting the UseZip64WhenSaving property on the ZipFile instance.");
                 }
@@ -175,19 +175,19 @@ namespace OfficeOpenXml.Packaging.Ionic.Zip
                 // write an entry in the zip for each file
                 int n = 0;
                 // workitem 9831
-                ICollection<ZipEntry> c = (SortEntriesBeforeSaving) ? EntriesSorted : Entries;
+                ICollection<ZipEntry> c = (this.SortEntriesBeforeSaving) ? this.EntriesSorted : this.Entries;
                 foreach (ZipEntry e in c) // _entries.Values
                 {
-                    OnSaveEntry(n, e, true);
-                    e.Write(WriteStream);
-                    if (_saveOperationCanceled)
+                    this.OnSaveEntry(n, e, true);
+                    e.Write(this.WriteStream);
+                    if (this._saveOperationCanceled)
                     {
                         break;
                     }
 
                     n++;
-                    OnSaveEntry(n, e, false);
-                    if (_saveOperationCanceled)
+                    this.OnSaveEntry(n, e, false);
+                    if (this._saveOperationCanceled)
                     {
                         break;
                     }
@@ -201,52 +201,52 @@ namespace OfficeOpenXml.Packaging.Ionic.Zip
 
 
 
-                if (_saveOperationCanceled)
+                if (this._saveOperationCanceled)
                 {
                     return;
                 }
 
-                ZipSegmentedStream? zss = WriteStream as ZipSegmentedStream;
+                ZipSegmentedStream? zss = this.WriteStream as ZipSegmentedStream;
 
-                _numberOfSegmentsForMostRecentSave = (zss!=null)
-                    ? zss.CurrentSegment
-                    : 1;
+                this._numberOfSegmentsForMostRecentSave = (zss!=null)
+                                                              ? zss.CurrentSegment
+                                                              : 1;
 
                 bool directoryNeededZip64 =
                     ZipOutput.WriteCentralDirectoryStructure
-                    (WriteStream,
+                    (this.WriteStream,
                      c,
-                     _numberOfSegmentsForMostRecentSave,
-                     _zip64,
-                     Comment,
+                     this._numberOfSegmentsForMostRecentSave,
+                     this._zip64,
+                     this.Comment,
                      new ZipContainer(this));
 
-                OnSaveEvent(ZipProgressEventType.Saving_AfterSaveTempArchive);
+                this.OnSaveEvent(ZipProgressEventType.Saving_AfterSaveTempArchive);
 
-                _hasBeenSaved = true;
-                _contentsChanged = false;
+                this._hasBeenSaved = true;
+                this._contentsChanged = false;
 
                 thisSaveUsedZip64 |= directoryNeededZip64;
-                _OutputUsesZip64 = new Nullable<bool>(thisSaveUsedZip64);
+                this._OutputUsesZip64 = new Nullable<bool>(thisSaveUsedZip64);
 
 
                 // do the rename as necessary
-                if (_name != null &&
-                    (_temporaryFileName!=null || zss != null))
+                if (this._name != null &&
+                    (this._temporaryFileName!=null || zss != null))
                 {
                     // _temporaryFileName may remain null if we are writing to a stream.
                     // only close the stream if there is a file behind it.
 #if NETCF
                     WriteStream.Close();
 #else
-                    WriteStream.Dispose();
+                    this.WriteStream.Dispose();
 #endif
-                    if (_saveOperationCanceled)
+                    if (this._saveOperationCanceled)
                     {
                         return;
                     }
 
-                    if (_fileAlreadyExists && this._readstream != null)
+                    if (this._fileAlreadyExists && this._readstream != null)
                     {
                         // This means we opened and read a zip file.
                         // If we are now saving to the same file, we need to close the
@@ -270,7 +270,7 @@ namespace OfficeOpenXml.Packaging.Ionic.Zip
                     }
 
                     string tmpName = null;
-                    if (File.Exists(_name))
+                    if (File.Exists(this._name))
                     {
                         // the steps:
                         //
@@ -310,21 +310,20 @@ namespace OfficeOpenXml.Packaging.Ionic.Zip
 #if NETCF || SILVERLIGHT
                         tmpName = _name + "." + SharedUtilities.GenerateRandomStringImpl(8,0) + ".tmp";
 #else
-                        tmpName = _name + "." + Path.GetRandomFileName();
+                        tmpName = this._name + "." + Path.GetRandomFileName();
 #endif
                         if (File.Exists(tmpName))
                         {
                             DeleteFileWithRetry(tmpName);
                         }
 
-                        File.Move(_name, tmpName);
+                        File.Move(this._name, tmpName);
                     }
 
-                    OnSaveEvent(ZipProgressEventType.Saving_BeforeRenameTempArchive);
-                    File.Move((zss != null) ? zss.CurrentTempName : _temporaryFileName,
-                              _name);
+                    this.OnSaveEvent(ZipProgressEventType.Saving_BeforeRenameTempArchive);
+                    File.Move((zss != null) ? zss.CurrentTempName : this._temporaryFileName, this._name);
 
-                    OnSaveEvent(ZipProgressEventType.Saving_AfterRenameTempArchive);
+                    this.OnSaveEvent(ZipProgressEventType.Saving_AfterRenameTempArchive);
 
                     if (tmpName != null)
                     {
@@ -342,18 +341,19 @@ namespace OfficeOpenXml.Packaging.Ionic.Zip
                         }
 
                     }
-                    _fileAlreadyExists = true;
+
+                    this._fileAlreadyExists = true;
                 }
 
                 NotifyEntriesSaveComplete(c);
-                OnSaveCompleted();
-                _JustSaved = true;
+                this.OnSaveCompleted();
+                this._JustSaved = true;
             }
 
             // workitem 5043
             finally
             {
-                CleanupAfterSaveOperation();
+                this.CleanupAfterSaveOperation();
             }
 
             return;
@@ -374,14 +374,14 @@ namespace OfficeOpenXml.Packaging.Ionic.Zip
         {
             try
             {
-                if (File.Exists(_temporaryFileName))
+                if (File.Exists(this._temporaryFileName))
                 {
-                    File.Delete(_temporaryFileName);
+                    File.Delete(this._temporaryFileName);
                 }
             }
             catch (IOException ex1)
             {
-                if (Verbose)
+                if (this.Verbose)
                 {
                     this.StatusMessageTextWriter.WriteLine("ZipFile::Save: could not delete temp file: {0}.", ex1.Message);
                 }
@@ -391,10 +391,10 @@ namespace OfficeOpenXml.Packaging.Ionic.Zip
 
         private void CleanupAfterSaveOperation()
         {
-            if (_name != null)
+            if (this._name != null)
             {
                 // close the stream if there is a file behind it.
-                if (_writestream != null)
+                if (this._writestream != null)
                 {
                     try
                     {
@@ -402,17 +402,18 @@ namespace OfficeOpenXml.Packaging.Ionic.Zip
 #if NETCF
                         _writestream.Close();
 #else
-                        _writestream.Dispose();
+                        this._writestream.Dispose();
 #endif
                     }
-                    catch (System.IO.IOException) { }
+                    catch (IOException) { }
                 }
-                _writestream = null;
 
-                if (_temporaryFileName != null)
+                this._writestream = null;
+
+                if (this._temporaryFileName != null)
                 {
-                    RemoveTempFile();
-                    _temporaryFileName = null;
+                    this.RemoveTempFile();
+                    this._temporaryFileName = null;
                 }
             }
         }
@@ -497,7 +498,7 @@ namespace OfficeOpenXml.Packaging.Ionic.Zip
             // the _name will be null. If so, we set _writestream to null,
             // which insures that we'll cons up a new WriteStream (with a filesystem
             // file backing it) in the Save() method.
-            if (_name == null)
+            if (this._name == null)
             {
                 this._writestream = null;
             }
@@ -507,15 +508,15 @@ namespace OfficeOpenXml.Packaging.Ionic.Zip
                 this._readName = this._name; // workitem 13915
             }
 
-            _name = fileName;
-            if (Directory.Exists(_name))
+            this._name = fileName;
+            if (Directory.Exists(this._name))
             {
-                throw new ZipException("Bad Directory", new System.ArgumentException("That name specifies an existing directory. Please specify a filename.", "fileName"));
+                throw new ZipException("Bad Directory", new ArgumentException("That name specifies an existing directory. Please specify a filename.", "fileName"));
             }
 
-            _contentsChanged = true;
-            _fileAlreadyExists = File.Exists(_name);
-            Save();
+            this._contentsChanged = true;
+            this._fileAlreadyExists = File.Exists(this._name);
+            this.Save();
         }
 
 
@@ -621,13 +622,13 @@ namespace OfficeOpenXml.Packaging.Ionic.Zip
             }
 
             // if we had a filename to save to, we are now obliterating it.
-            _name = null;
+            this._name = null;
 
-            _writestream = new CountingStream(outputStream);
+            this._writestream = new CountingStream(outputStream);
 
-            _contentsChanged = true;
-            _fileAlreadyExists = false;
-            Save();
+            this._contentsChanged = true;
+            this._fileAlreadyExists = false;
+            this.Save();
         }
 
 
@@ -783,7 +784,7 @@ namespace OfficeOpenXml.Packaging.Ionic.Zip
         }
 
 
-        private static System.Text.Encoding GetEncoding(ZipContainer container, string t)
+        private static Encoding GetEncoding(ZipContainer container, string t)
         {
             switch (container.AlternateEncodingUsage)
             {
@@ -819,7 +820,7 @@ namespace OfficeOpenXml.Packaging.Ionic.Zip
                                                         string comment,
                                                         ZipContainer container)
         {
-            System.Text.Encoding encoding = GetEncoding(container, comment);
+            Encoding encoding = GetEncoding(container, comment);
             int j = 0;
             int bufferLength = 22;
             byte[] block = null;

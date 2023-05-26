@@ -30,12 +30,12 @@ namespace OfficeOpenXml.Table.PivotTable
         {
             if (topNode.Attributes.Count == 0)
             {
-                Index = field.Index;
-                BaseField = 0;
-                BaseItem = 0;
+                this.Index = field.Index;
+                this.BaseField = 0;
+                this.BaseItem = 0;
             }
-            
-            Field = field;
+
+            this.Field = field;
         }
         /// <summary>
         /// The field
@@ -52,11 +52,11 @@ namespace OfficeOpenXml.Table.PivotTable
         { 
             get
             {
-                return GetXmlNodeInt("@fld");
+                return this.GetXmlNodeInt("@fld");
             }
             internal set
             {
-                SetXmlNodeString("@fld",value.ToString());
+                this.SetXmlNodeString("@fld",value.ToString());
             }
         }
         /// <summary>
@@ -66,15 +66,16 @@ namespace OfficeOpenXml.Table.PivotTable
         {
             get
             {
-                return GetXmlNodeString("@name");
+                return this.GetXmlNodeString("@name");
             }
             set
             {
-                if (Field._pivotTable.DataFields.ExistsDfName(value, this))
+                if (this.Field._pivotTable.DataFields.ExistsDfName(value, this))
                 {
                     throw (new InvalidOperationException("Duplicate datafield name"));
                 }
-                SetXmlNodeString("@name", value);
+
+                this.SetXmlNodeString("@name", value);
             }
         }
         /// <summary>
@@ -84,11 +85,11 @@ namespace OfficeOpenXml.Table.PivotTable
         {
             get
             {
-                return GetXmlNodeInt("@baseField");
+                return this.GetXmlNodeInt("@baseField");
             }
             set
             {
-                SetXmlNodeString("@baseField", value.ToString());
+                this.SetXmlNodeString("@baseField", value.ToString());
             }
         }
         /// <summary>
@@ -98,11 +99,11 @@ namespace OfficeOpenXml.Table.PivotTable
         {
             get
             {
-                return GetXmlNodeInt("@baseItem");
+                return this.GetXmlNodeInt("@baseItem");
             }
             set
             {
-                SetXmlNodeString("@baseItem", value.ToString());
+                this.SetXmlNodeString("@baseItem", value.ToString());
             }
         }
         /// <summary>
@@ -112,11 +113,11 @@ namespace OfficeOpenXml.Table.PivotTable
         {
             get
             {
-                return GetXmlNodeInt("@numFmtId");
+                return this.GetXmlNodeInt("@numFmtId");
             }
             set
             {
-                SetXmlNodeString("@numFmtId", value.ToString());
+                this.SetXmlNodeString("@numFmtId", value.ToString());
             }
         }
         /// <summary>
@@ -126,26 +127,27 @@ namespace OfficeOpenXml.Table.PivotTable
         {
             get
             {
-                foreach (ExcelNumberFormatXml? nf in Field._pivotTable.WorkSheet.Workbook.Styles.NumberFormats)
+                foreach (ExcelNumberFormatXml? nf in this.Field._pivotTable.WorkSheet.Workbook.Styles.NumberFormats)
                 {
-                    if (nf.NumFmtId == NumFmtId)
+                    if (nf.NumFmtId == this.NumFmtId)
                     {
                         return nf.Format;
                     }
                 }
-                return Field._pivotTable.WorkSheet.Workbook.Styles.NumberFormats[0].Format;
+                return this.Field._pivotTable.WorkSheet.Workbook.Styles.NumberFormats[0].Format;
             }
             set
             {
-                ExcelStyles? styles = Field._pivotTable.WorkSheet.Workbook.Styles;
+                ExcelStyles? styles = this.Field._pivotTable.WorkSheet.Workbook.Styles;
 
                 ExcelNumberFormatXml nf = null;
                 if (!styles.NumberFormats.FindById(value, ref nf))
                 {
-                    nf = new ExcelNumberFormatXml(NameSpaceManager) { Format = value, NumFmtId = styles.NumberFormats.NextId++ };
+                    nf = new ExcelNumberFormatXml(this.NameSpaceManager) { Format = value, NumFmtId = styles.NumberFormats.NextId++ };
                     styles.NumberFormats.Add(value, nf);
                 }
-                NumFmtId = nf.NumFmtId;
+
+                this.NumFmtId = nf.NumFmtId;
             }
         }
         /// <summary>
@@ -155,7 +157,7 @@ namespace OfficeOpenXml.Table.PivotTable
         {
             get
             {
-                string s=GetXmlNodeString("@subtotal");
+                string s= this.GetXmlNodeString("@subtotal");
                 if(s=="")
                 {
                     return DataFieldFunctions.None;
@@ -171,7 +173,7 @@ namespace OfficeOpenXml.Table.PivotTable
                 switch(value)
                 {
                     case DataFieldFunctions.None:
-                        DeleteNode("@subtotal");
+                        this.DeleteNode("@subtotal");
                         return;
                     case DataFieldFunctions.CountNums:
                         v="countNums";
@@ -185,8 +187,9 @@ namespace OfficeOpenXml.Table.PivotTable
                     default:
                         v=value.ToString().ToLower(CultureInfo.InvariantCulture);
                         break;
-                }                
-                SetXmlNodeString("@subtotal", v);
+                }
+
+                this.SetXmlNodeString("@subtotal", v);
             }
         }
         ExcelPivotTableDataFieldShowDataAs _showDataAs = null;
@@ -197,21 +200,21 @@ namespace OfficeOpenXml.Table.PivotTable
         {
             get
             {
-                if (_showDataAs == null)
+                if (this._showDataAs == null)
                 {
-                    _showDataAs = new ExcelPivotTableDataFieldShowDataAs(this);
+                    this._showDataAs = new ExcelPivotTableDataFieldShowDataAs(this);
                 }
-                return _showDataAs;
+                return this._showDataAs;
             }
         }
         internal eShowDataAs ShowDataAsInternal
         {
             get
             {
-                string s = GetXmlNodeString("@showDataAs");
+                string s = this.GetXmlNodeString("@showDataAs");
                 if (s == "")
                 {
-                    s = GetXmlNodeString("d:extLst/d:ext[@uri='{E15A36E0-9728-4e99-A89B-3F7291B0FE68}']/x14:dataField/@pivotShowAs");
+                    s = this.GetXmlNodeString("d:extLst/d:ext[@uri='{E15A36E0-9728-4e99-A89B-3F7291B0FE68}']/x14:dataField/@pivotShowAs");
                     if (s == "")
                     {
                         return eShowDataAs.Normal;
@@ -223,22 +226,22 @@ namespace OfficeOpenXml.Table.PivotTable
             {
                 if(value==eShowDataAs.Normal)
                 {
-                    DeleteNode("@showDataAs");
+                    this.DeleteNode("@showDataAs");
                 }
                 else
                 {
                     if(IsShowDataAsExtLst(value))
                     {
-                        DeleteNode("@showDataAs");
-                        XmlNode? extNode = GetOrCreateExtLstSubNode("{E15A36E0-9728-4e99-A89B-3F7291B0FE68}", "x14");
-                        XmlHelper? extNodeHelper = XmlHelperFactory.Create(NameSpaceManager, extNode);
+                        this.DeleteNode("@showDataAs");
+                        XmlNode? extNode = this.GetOrCreateExtLstSubNode("{E15A36E0-9728-4e99-A89B-3F7291B0FE68}", "x14");
+                        XmlHelper? extNodeHelper = XmlHelperFactory.Create(this.NameSpaceManager, extNode);
 
                         extNodeHelper.SetXmlNodeString("x14:dataField/@pivotShowAs", value.FromShowDataAs());
                     }
                     else
                     {
-                        DeleteNode("d:extLst/d:ext[@url='{E15A36E0-9728-4e99-A89B-3F7291B0FE68}']");
-                        SetXmlNodeString("@showDataAs", value.FromShowDataAs());
+                        this.DeleteNode("d:extLst/d:ext[@url='{E15A36E0-9728-4e99-A89B-3F7291B0FE68}']");
+                        this.SetXmlNodeString("@showDataAs", value.FromShowDataAs());
                     }
                 }
             }

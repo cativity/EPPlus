@@ -42,15 +42,15 @@ namespace OfficeOpenXml.FormulaParsing.ExcelUtilities
 
             if (searchedValue is string && candidate is string)
             {
-                return CompareStringToString(searchedValue.ToString().ToLower(), candidate.ToString().ToLower());
+                return this.CompareStringToString(searchedValue.ToString().ToLower(), candidate.ToString().ToLower());
             }
             else if (searchedValue.GetType() == typeof(string))
             {
-                return CompareStringToObject(searchedValue.ToString(), candidate);
+                return this.CompareStringToObject(searchedValue.ToString(), candidate);
             }
             else if (candidate.GetType() == typeof(string))
             {
-                return CompareObjectToString(searchedValue, candidate.ToString());
+                return this.CompareObjectToString(searchedValue, candidate.ToString());
             }
             else if (candidate is DateTime && searchedValue is DateTime)
             {

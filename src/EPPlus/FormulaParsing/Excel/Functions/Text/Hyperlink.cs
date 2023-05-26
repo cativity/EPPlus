@@ -30,9 +30,9 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Text
             ValidateArguments(arguments, 1);
             if (arguments.Count() > 1)
             {
-                return CreateResult(ArgToString(arguments, 1), DataType.String);
+                return this.CreateResult(ArgToString(arguments, 1), DataType.String);
             }
-            return CreateResult(ArgToString(arguments, 0), DataType.String);
+            return this.CreateResult(ArgToString(arguments, 0), DataType.String);
         }
     }
 }

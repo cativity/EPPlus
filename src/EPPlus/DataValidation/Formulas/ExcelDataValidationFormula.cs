@@ -43,7 +43,7 @@ namespace OfficeOpenXml.DataValidation.Formulas
     internal abstract class ExcelDataValidationFormula :IExcelDataValidationFormula
     {
 
-        internal event System.EventHandler BecomesExt;
+        internal event EventHandler BecomesExt;
 
         private readonly Action<OnFormulaChangedEventArgs> _handler;
 
@@ -54,9 +54,9 @@ namespace OfficeOpenXml.DataValidation.Formulas
         public ExcelDataValidationFormula(string validationUid, string workSheetName, Action<OnFormulaChangedEventArgs> extListHandler)
         {
             Require.Argument(validationUid).IsNotNullOrEmpty("validationUid");
-            _validationUid = validationUid;
-            _workSheetName = workSheetName;
-            _handler = extListHandler;
+            this._validationUid = validationUid;
+            this._workSheetName = workSheetName;
+            this._handler = extListHandler;
         }
 
         private string _validationUid;
@@ -91,7 +91,7 @@ namespace OfficeOpenXml.DataValidation.Formulas
         {
             get
             {
-                return _formula;
+                return this._formula;
             }
             set
             {
@@ -100,20 +100,20 @@ namespace OfficeOpenXml.DataValidation.Formulas
                     throw new DataValidationFormulaTooLongException("The length of a DataValidation formula cannot exceed 255 characters");
                 }
 
-                _formula = value;
+                this._formula = value;
 
                 if (!string.IsNullOrEmpty(value))
                 {
-                    ResetValue();
-                    State = FormulaState.Formula;
+                    this.ResetValue();
+                    this.State = FormulaState.Formula;
 
-                    if (_formula.Any(x => char.IsLetter(x)))
+                    if (this._formula.Any(x => char.IsLetter(x)))
                     {
-                        if (RefersToOtherWorksheet(_formula))
+                        if (this.RefersToOtherWorksheet(this._formula))
                         {
                             OnFormulaChangedEventArgs? e = new OnFormulaChangedEventArgs();
                             e.isExt = true;
-                            _handler.Invoke(e);
+                            this._handler.Invoke(e);
                         }
                     }
                 }
@@ -125,11 +125,11 @@ namespace OfficeOpenXml.DataValidation.Formulas
             if (!string.IsNullOrEmpty(address) && ExcelCellBase.IsValidAddress(address))
             {
                 ExcelAddress? adr = new ExcelAddress(address);
-                return !string.IsNullOrEmpty(adr.WorkSheetName) && adr.WorkSheetName != _workSheetName;
+                return !string.IsNullOrEmpty(adr.WorkSheetName) && adr.WorkSheetName != this._workSheetName;
             }
             else if (!string.IsNullOrEmpty(address))
             {
-                IEnumerable<Token>? tokens = SourceCodeTokenizer.Default.Tokenize(address, _workSheetName);
+                IEnumerable<Token>? tokens = SourceCodeTokenizer.Default.Tokenize(address, this._workSheetName);
                 if (!tokens.Any())
                 {
                     return false;
@@ -139,7 +139,7 @@ namespace OfficeOpenXml.DataValidation.Formulas
                 foreach (Token token in addressTokens)
                 {
                     ExcelAddress? adr = new ExcelAddress(token.Value);
-                    if (!string.IsNullOrEmpty(adr.WorkSheetName) && adr.WorkSheetName != _workSheetName)
+                    if (!string.IsNullOrEmpty(adr.WorkSheetName) && adr.WorkSheetName != this._workSheetName)
                     {
                         return true;
                     }
@@ -156,11 +156,11 @@ namespace OfficeOpenXml.DataValidation.Formulas
         /// </summary>
         internal virtual string GetXmlValue()
         {
-            if (State == FormulaState.Formula)
+            if (this.State == FormulaState.Formula)
             {
-                return ExcelFormula;
+                return this.ExcelFormula;
             }
-            return GetValueAsString();
+            return this.GetValueAsString();
         }
 
         /// <summary>

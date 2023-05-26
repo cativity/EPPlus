@@ -32,12 +32,12 @@ namespace OfficeOpenXml.VBA
         /// <returns>The enumerator</returns>
         public IEnumerator<T> GetEnumerator()
         {
-            return _list.GetEnumerator();
+            return this._list.GetEnumerator();
         }
 
         System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator()
         {
-            return _list.GetEnumerator();
+            return this._list.GetEnumerator();
         }
         /// <summary>
         /// Indexer
@@ -48,7 +48,7 @@ namespace OfficeOpenXml.VBA
         {
             get
             {
-                return _list.Find((f) => TypeCompat.GetPropertyValue(f,"Name").ToString().Equals(Name,StringComparison.OrdinalIgnoreCase));
+                return this._list.Find((f) => TypeCompat.GetPropertyValue(f,"Name").ToString().Equals(Name,StringComparison.OrdinalIgnoreCase));
             }
         }
         /// <summary>
@@ -60,7 +60,7 @@ namespace OfficeOpenXml.VBA
         {
             get
             {
-                return _list[Index];
+                return this._list[Index];
             }
         }
         /// <summary>
@@ -68,7 +68,7 @@ namespace OfficeOpenXml.VBA
         /// </summary>
         public int Count
         {
-            get { return _list.Count; }
+            get { return this._list.Count; }
         }
         /// <summary>
         /// If a specific name exists in the collection
@@ -77,7 +77,7 @@ namespace OfficeOpenXml.VBA
         /// <returns>True if the name exists</returns>
         public bool Exists(string Name)
         {
-            return _list.Exists((f) => TypeCompat.GetPropertyValue(f,"Name").ToString().Equals(Name,StringComparison.OrdinalIgnoreCase));
+            return this._list.Exists((f) => TypeCompat.GetPropertyValue(f,"Name").ToString().Equals(Name,StringComparison.OrdinalIgnoreCase));
         }
         /// <summary>
         /// Removes the item
@@ -85,7 +85,7 @@ namespace OfficeOpenXml.VBA
         /// <param name="Item"></param>
         public void Remove(T Item)
         {
-            _list.Remove(Item);
+            this._list.Remove(Item);
         }
         /// <summary>
         /// Removes the item at the specified index
@@ -93,12 +93,12 @@ namespace OfficeOpenXml.VBA
         /// <param name="index">THe index</param>
         public void RemoveAt(int index)
         {
-            _list.RemoveAt(index);
+            this._list.RemoveAt(index);
         }
         
         internal void Clear()
         {
-            _list.Clear();
+            this._list.Clear();
         }
     }
 }

@@ -27,14 +27,14 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Statistical
         public override CompileResult Execute(IEnumerable<FunctionArgument> arguments, ParsingContext context)
         {
             ValidateArguments(arguments, 2);
-            double n = ArgToDecimal(arguments, 0);
-            int degreesOfFreedom = ArgToInt(arguments, 1);
+            double n = this.ArgToDecimal(arguments, 0);
+            int degreesOfFreedom = this.ArgToInt(arguments, 1);
             if(n < 0d || degreesOfFreedom < 1 || degreesOfFreedom > System.Math.Pow(10, 10))
             {
-                return CreateResult(eErrorType.Num);
+                return this.CreateResult(eErrorType.Num);
             }
             double result = 1d - ChiSquareHelper.CumulativeDistribution(n, degreesOfFreedom);
-            return CreateResult(result, DataType.Decimal);
+            return this.CreateResult(result, DataType.Decimal);
         }
     }
 }

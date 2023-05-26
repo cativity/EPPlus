@@ -26,7 +26,7 @@ namespace OfficeOpenXml.Sorting
             : base(options)
         {
             options.LeftToRight = true;
-            _options = options;
+            this._options = options;
         }
 
         private readonly RangeSortOptions _options;
@@ -38,8 +38,8 @@ namespace OfficeOpenXml.Sorting
         /// <returns>A <see cref="RangeLeftToRightSortLayerBuilder"/> for adding more sort criterias</returns>
         public virtual RangeLeftToRightSortLayerBuilder Row(int row)
         {
-            SetColumn(row);
-            return new RangeLeftToRightSortLayerBuilder(_options, this);
+            this.SetColumn(row);
+            return new RangeLeftToRightSortLayerBuilder(this._options, this);
         }
 
         /// <summary>
@@ -50,8 +50,8 @@ namespace OfficeOpenXml.Sorting
         /// <returns>A <see cref="RangeLeftToRightSortLayerBuilder"/> for adding more sort criterias</returns>
         public RangeLeftToRightSortLayerBuilder Row(int row, eSortOrder sortOrder)
         {
-            SetColumn(row, sortOrder);
-            return new RangeLeftToRightSortLayerBuilder(_options, this);
+            this.SetColumn(row, sortOrder);
+            return new RangeLeftToRightSortLayerBuilder(this._options, this);
         }
     }
 }

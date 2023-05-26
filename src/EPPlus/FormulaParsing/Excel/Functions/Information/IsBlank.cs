@@ -30,7 +30,7 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Information
         {
             if (arguments == null || arguments.Count() == 0)
             {
-                return CreateResult(true, DataType.Boolean);
+                return this.CreateResult(true, DataType.Boolean);
             }
             bool result = true;
             foreach (FunctionArgument? arg in arguments)
@@ -52,7 +52,7 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Information
                     }
                 }
             }
-            return CreateResult(result, DataType.Boolean);
+            return this.CreateResult(result, DataType.Boolean);
         }
     }
 }

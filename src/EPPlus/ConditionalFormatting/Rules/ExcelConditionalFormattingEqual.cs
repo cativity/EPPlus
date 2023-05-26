@@ -54,8 +54,8 @@ namespace OfficeOpenXml.ConditionalFormatting
     {
         if (itemElementNode==null) //Set default values and create attributes if needed
         {
-            Operator = eExcelConditionalFormattingOperatorType.Equal;
-            Formula = string.Empty;
+            this.Operator = eExcelConditionalFormattingOperatorType.Equal;
+            this.Formula = string.Empty;
         }
     }
 

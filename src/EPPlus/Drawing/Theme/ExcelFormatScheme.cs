@@ -30,7 +30,7 @@ namespace OfficeOpenXml.Drawing.Theme
         private readonly ExcelThemeBase _theme;
         internal ExcelFormatScheme(XmlNamespaceManager nameSpaceManager, XmlNode topNode, ExcelThemeBase theme) : base(nameSpaceManager, topNode)
         {
-            _theme = theme;
+            this._theme = theme;
         }
         /// <summary>
         /// The name of the format scheme
@@ -39,11 +39,11 @@ namespace OfficeOpenXml.Drawing.Theme
         {
             get
             {
-                return GetXmlNodeString("@name");
+                return this.GetXmlNodeString("@name");
             }
             set
             {
-                SetXmlNodeString("@name", value);
+                this.SetXmlNodeString("@name", value);
             }
         }
         const string fillStylePath = "a:fillStyleLst";
@@ -55,11 +55,11 @@ namespace OfficeOpenXml.Drawing.Theme
         {
             get
             {
-                if (_fillStyle == null)
+                if (this._fillStyle == null)
                 {
-                    _fillStyle = new ExcelThemeFillStyles(NameSpaceManager, TopNode.SelectSingleNode(fillStylePath, NameSpaceManager), _theme);
+                    this._fillStyle = new ExcelThemeFillStyles(this.NameSpaceManager, this.TopNode.SelectSingleNode(fillStylePath, this.NameSpaceManager), this._theme);
                 }
-                return _fillStyle;
+                return this._fillStyle;
             }
         }
 
@@ -72,11 +72,11 @@ namespace OfficeOpenXml.Drawing.Theme
         {
             get
             {
-                if (_lineStyle == null)
+                if (this._lineStyle == null)
                 {
-                    _lineStyle = new ExcelThemeLineStyles(NameSpaceManager, TopNode.SelectSingleNode(lineStylePath, NameSpaceManager));
+                    this._lineStyle = new ExcelThemeLineStyles(this.NameSpaceManager, this.TopNode.SelectSingleNode(lineStylePath, this.NameSpaceManager));
                 }
-                return _lineStyle;
+                return this._lineStyle;
             }
         }
         const string effectStylePath = "a:effectStyleLst";
@@ -88,11 +88,11 @@ namespace OfficeOpenXml.Drawing.Theme
         {
             get
             {
-                if (_effectStyle == null)
+                if (this._effectStyle == null)
                 {
-                    _effectStyle = new ExcelThemeEffectStyles(NameSpaceManager, TopNode.SelectSingleNode(effectStylePath, NameSpaceManager), _theme);
+                    this._effectStyle = new ExcelThemeEffectStyles(this.NameSpaceManager, this.TopNode.SelectSingleNode(effectStylePath, this.NameSpaceManager), this._theme);
                 }
-                return _effectStyle;
+                return this._effectStyle;
             }
         }
         const string backgroundFillStylePath = "a:bgFillStyleLst";
@@ -104,11 +104,11 @@ namespace OfficeOpenXml.Drawing.Theme
         {
             get
             {
-                if (_backgroundFillStyle == null)
+                if (this._backgroundFillStyle == null)
                 {
-                    _backgroundFillStyle = new ExcelThemeFillStyles(NameSpaceManager, TopNode.SelectSingleNode(backgroundFillStylePath, NameSpaceManager), _theme);
+                    this._backgroundFillStyle = new ExcelThemeFillStyles(this.NameSpaceManager, this.TopNode.SelectSingleNode(backgroundFillStylePath, this.NameSpaceManager), this._theme);
                 }
-                return _backgroundFillStyle;
+                return this._backgroundFillStyle;
             }
         }
     }

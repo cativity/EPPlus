@@ -24,7 +24,7 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions
     {
         public override object Parse(object obj)
         {
-            return Parse(obj, RoundingMethod.Convert);
+            return this.Parse(obj, RoundingMethod.Convert);
         }
 
         public override object Parse(object obj, RoundingMethod roundingMethod)

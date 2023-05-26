@@ -23,26 +23,26 @@ namespace OfficeOpenXml
         private List<ControlInternal> _list=new List<ControlInternal>();
         internal ControlsCollectionInternal(XmlNamespaceManager nameSpaceManager, XmlNode topNode) : base(nameSpaceManager, topNode)
         {
-            XmlNodeList? nodes = GetNodes("mc:AlternateContent/mc:Choice/d:controls/mc:AlternateContent/mc:Choice/d:control");
+            XmlNodeList? nodes = this.GetNodes("mc:AlternateContent/mc:Choice/d:controls/mc:AlternateContent/mc:Choice/d:control");
             foreach(XmlNode node in nodes)
             {
-                _list.Add(new ControlInternal(NameSpaceManager, node));
+                this._list.Add(new ControlInternal(this.NameSpaceManager, node));
             }
         }
 
         public IEnumerator<ControlInternal> GetEnumerator()
         {
-            return _list.GetEnumerator();
+            return this._list.GetEnumerator();
         }
 
         IEnumerator IEnumerable.GetEnumerator()
         {
-            return _list.GetEnumerator();
+            return this._list.GetEnumerator();
         }
 
         internal ControlInternal GetControlByShapeId(int shapeId)
         {
-            return _list.FirstOrDefault(x => x.ShapeId == shapeId);
+            return this._list.FirstOrDefault(x => x.ShapeId == shapeId);
         }
     }
 }

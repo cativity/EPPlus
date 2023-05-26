@@ -44,13 +44,13 @@ namespace OfficeOpenXml.Filter
         
         internal override bool Match(object value, string valueText)
         {
-            if (Type == eDynamicFilterType.AboveAverage)
+            if (this.Type == eDynamicFilterType.AboveAverage)
             {
-                return ConvertUtil.GetValueDouble(value) > Value;
+                return ConvertUtil.GetValueDouble(value) > this.Value;
             }
-            else if (Type == eDynamicFilterType.BelowAverage)
+            else if (this.Type == eDynamicFilterType.BelowAverage)
             {
-                return ConvertUtil.GetValueDouble(value) < Value;
+                return ConvertUtil.GetValueDouble(value) < this.Value;
             }
             else
             {
@@ -66,21 +66,21 @@ namespace OfficeOpenXml.Filter
 
         internal override void Save()
         {
-            XmlElement? node = (XmlElement)CreateNode("d:dynamicFilter");
+            XmlElement? node = (XmlElement)this.CreateNode("d:dynamicFilter");
             node.RemoveAll();
-            string? type = Type.ToEnumString();
+            string? type = this.Type.ToEnumString();
             if (type.Length <= 3)
             {
                 type = type.ToUpper();    //For M1, M12, Q1 etc
             }
 
-            node.SetAttribute("type", GetTypeForXml(Type));
-            if(Value.HasValue)
+            node.SetAttribute("type", GetTypeForXml(this.Type));
+            if(this.Value.HasValue)
             {
                 node.SetAttribute("val", this.Value.Value.ToString("R15", CultureInfo.InvariantCulture));
             }
 
-            if(MaxValue.HasValue)
+            if(this.MaxValue.HasValue)
             {
                 node.SetAttribute("maxVal", this.MaxValue.Value.ToString("R15", CultureInfo.InvariantCulture));
             }
@@ -99,11 +99,10 @@ namespace OfficeOpenXml.Filter
 
         internal override void SetFilterValue(ExcelWorksheet worksheet, ExcelAddressBase address)
         {
-            if (Type == eDynamicFilterType.AboveAverage ||
-                Type == eDynamicFilterType.BelowAverage)
+            if (this.Type == eDynamicFilterType.AboveAverage || this.Type == eDynamicFilterType.BelowAverage)
             {
-                Value = GetAvg(worksheet, address);
-                MaxValue = null;
+                this.Value = this.GetAvg(worksheet, address);
+                this.MaxValue = null;
             }
             else
             {
@@ -115,11 +114,11 @@ namespace OfficeOpenXml.Filter
         {
             int count = 0;
             double sum = 0;
-            int col = address._fromCol + Position;
+            int col = address._fromCol + this.Position;
             for (int row = address._fromRow + 1; row <= address._toRow; row++)
             {
                 object? v = worksheet.GetValue(row, col);
-                if (Utils.ConvertUtil.IsNumericOrDate(v))
+                if (ConvertUtil.IsNumericOrDate(v))
                 {
                     sum += ConvertUtil.GetValueDouble(v);
                     count++;

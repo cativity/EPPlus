@@ -36,7 +36,7 @@ namespace OfficeOpenXml.ExternalReferences
         /// <returns></returns>
         public override string ToString()
         {
-            return Name;
+            return this.Name;
         }
     }
 }

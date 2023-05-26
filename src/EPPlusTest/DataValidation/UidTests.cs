@@ -9,24 +9,24 @@ namespace EPPlusTest.DataValidation
         [TestInitialize]
         public void Setup()
         {
-            SetupTestData();
+            this.SetupTestData();
         }
 
         [TestCleanup]
         public void Cleanup()
         {
-            CleanupTestData();
-            _dataValidationNode = null;
+            this.CleanupTestData();
+            this._dataValidationNode = null;
         }
 
         [TestMethod]
         public void UidShouldBeSetOnValidations()
         {
             // Arrange
-            LoadXmlTestData("A1", "decimal", "1.3");
+            this.LoadXmlTestData("A1", "decimal", "1.3");
             string? id = ExcelDataValidation.NewId();
             // Act
-            ExcelDataValidationDecimal? validation = new ExcelDataValidationDecimal(id, "A1", _sheet);
+            ExcelDataValidationDecimal? validation = new ExcelDataValidationDecimal(id, "A1", this._sheet);
             // Assert
             Assert.AreEqual(id, validation.Uid);
         }

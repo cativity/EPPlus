@@ -23,26 +23,26 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions
     {
         public FunctionArgument(object val)
         {
-            Value = val;
-            DataType = DataType.Unknown;
+            this.Value = val;
+            this.DataType = DataType.Unknown;
         }
 
         public FunctionArgument(object val, DataType dataType)
             :this(val)
         {
-            DataType = dataType;
+            this.DataType = dataType;
         }
 
         private ExcelCellState _excelCellState;
 
         public void SetExcelStateFlag(ExcelCellState state)
         {
-            _excelCellState |= state;
+            this._excelCellState |= state;
         }
 
         public bool ExcelStateFlagIsSet(ExcelCellState state)
         {
-            return (_excelCellState & state) != 0;
+            return (this._excelCellState & state) != 0;
         }
 
         public object Value { get; private set; }
@@ -51,52 +51,52 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions
 
         public Type Type
         {
-            get { return Value != null ? Value.GetType() : null; }
+            get { return this.Value != null ? this.Value.GetType() : null; }
         }
 
         public int ExcelAddressReferenceId { get; set; }
 
         public bool IsExcelRange
         {
-            get { return Value != null && Value is IRangeInfo; }
+            get { return this.Value != null && this.Value is IRangeInfo; }
         }
 
         public bool IsEnumerableOfFuncArgs
         {
-            get { return Value != null && Value is IEnumerable<FunctionArgument>; }
+            get { return this.Value != null && this.Value is IEnumerable<FunctionArgument>; }
         }
 
         public IEnumerable<FunctionArgument> ValueAsEnumerableOfFuncArgs
         {
-            get { return Value as IEnumerable<FunctionArgument>; }
+            get { return this.Value as IEnumerable<FunctionArgument>; }
         }
 
         public bool ValueIsExcelError
         {
-            get { return ExcelErrorValue.Values.IsErrorValue(Value); }
+            get { return ExcelErrorValue.Values.IsErrorValue(this.Value); }
         }
 
         public ExcelErrorValue ValueAsExcelErrorValue
         {
-            get { return ExcelErrorValue.Parse(Value.ToString()); }
+            get { return ExcelErrorValue.Parse(this.Value.ToString()); }
         }
 
         public IRangeInfo ValueAsRangeInfo
         {
-            get { return Value as IRangeInfo; }
+            get { return this.Value as IRangeInfo; }
         }
         public object ValueFirst
         {
             get
             {
-                if (Value is INameInfo)
+                if (this.Value is INameInfo)
                 {
-                    Value = ((INameInfo)Value).Value;
+                    this.Value = ((INameInfo)this.Value).Value;
                 }
-                IRangeInfo? v = Value as IRangeInfo;
+                IRangeInfo? v = this.Value as IRangeInfo;
                 if (v==null)
                 {
-                    return Value;
+                    return this.Value;
                 }
                 else
                 {
@@ -109,13 +109,13 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions
         {
             get
             {
-                object? v = ValueFirst;
+                object? v = this.ValueFirst;
                 if (v == null)
                 {
                     return default(string);
                 }
 
-                return ValueFirst.ToString();
+                return this.ValueFirst.ToString();
             }
         }
 

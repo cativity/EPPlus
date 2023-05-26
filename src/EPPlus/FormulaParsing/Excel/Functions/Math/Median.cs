@@ -27,11 +27,11 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Math
     {
         public Median()
         {
-            IgnoreErrors = false;
+            this.IgnoreErrors = false;
         }
         public override CompileResult Execute(IEnumerable<FunctionArgument> arguments, ParsingContext context)
         {
-            IEnumerable<ExcelDoubleCellValue>? nums = ArgsToDoubleEnumerable(IgnoreHiddenValues, IgnoreErrors, arguments, context);
+            IEnumerable<ExcelDoubleCellValue>? nums = this.ArgsToDoubleEnumerable(this.IgnoreHiddenValues, this.IgnoreErrors, arguments, context);
             ExcelDoubleCellValue[]? arr = nums.ToArray();
             Array.Sort(arr);
             if (arr.Length == 0)
@@ -49,7 +49,7 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Math
                 int startIndex = arr.Length/2 - 1;
                 result = (arr[startIndex] + arr[startIndex + 1])/2d;
             }
-            return CreateResult(result, DataType.Decimal);
+            return this.CreateResult(result, DataType.Decimal);
         }
     }
 }

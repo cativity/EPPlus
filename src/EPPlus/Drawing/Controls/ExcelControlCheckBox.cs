@@ -42,44 +42,45 @@ namespace OfficeOpenXml.Drawing.Controls
         { 
             get
             {
-                return _ctrlProp.GetXmlNodeString("@checked").ToEnum(eCheckState.Unchecked);
+                return this._ctrlProp.GetXmlNodeString("@checked").ToEnum(eCheckState.Unchecked);
             }
             set
             {
                 if(value==eCheckState.Unchecked)
                 {
-                    _ctrlProp.DeleteNode("@checked");
+                    this._ctrlProp.DeleteNode("@checked");
                 }
                 else
                 {
-                    _ctrlProp.SetXmlNodeString("@checked", value.ToString());
+                    this._ctrlProp.SetXmlNodeString("@checked", value.ToString());
                 }
-                _vmlProp.SetXmlNodeInt("x:Checked",(int)value);
-                if(LinkedCell!=null)
+
+                this._vmlProp.SetXmlNodeInt("x:Checked",(int)value);
+                if(this.LinkedCell!=null)
                 {
                     ExcelWorksheet ws;
-                    if(string.IsNullOrEmpty(LinkedCell.WorkSheetName))
+                    if(string.IsNullOrEmpty(this.LinkedCell.WorkSheetName))
                     {
-                        ws = _drawings.Worksheet;
+                        ws = this._drawings.Worksheet;
                     }
                     else
                     {
-                        ws = _drawings.Worksheet.Workbook.Worksheets[LinkedCell.WorkSheetName];
+                        ws = this._drawings.Worksheet.Workbook.Worksheets[this.LinkedCell.WorkSheetName];
                     }
 
                     if (ws!=null)
                     {
                         if(value == eCheckState.Checked)
                         {
-                            ws.Cells[LinkedCell.Address].Value = true;
+                            ws.Cells[this.LinkedCell.Address].Value = true;
                         }
                         else if (value == eCheckState.Unchecked)
                         {
-                            ws.Cells[LinkedCell.Address].Value = false;
+                            ws.Cells[this.LinkedCell.Address].Value = false;
                         }
                         else
                         {
-                            ws.Cells[LinkedCell.Address].Value = ExcelErrorValue.Create(eErrorType.NA);
+                            ws.Cells[this.LinkedCell.Address].Value = ExcelErrorValue.Create(eErrorType.NA);
                         }                           
                     }
                 }

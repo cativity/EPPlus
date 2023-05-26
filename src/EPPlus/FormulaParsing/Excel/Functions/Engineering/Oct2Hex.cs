@@ -33,7 +33,7 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Engineering
             int? padding = default(int?);
             if (arguments.Count() > 1)
             {
-                padding = ArgToInt(arguments, 1);
+                padding = this.ArgToInt(arguments, 1);
                 if (padding.Value < 0 ^ padding.Value > 10)
                 {
                     return this.CreateResult(eErrorType.Num);
@@ -53,7 +53,7 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Engineering
             {
                 result = PaddingHelper.EnsureMinLength(result, 10);
             }
-            return CreateResult(result, DataType.String);
+            return this.CreateResult(result, DataType.String);
         }
     }
 }

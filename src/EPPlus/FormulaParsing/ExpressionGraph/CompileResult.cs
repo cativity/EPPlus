@@ -63,27 +63,28 @@ namespace OfficeOpenXml.FormulaParsing.ExpressionGraph
         {
             if(result is ExcelDoubleCellValue)
             {
-                Result = ((ExcelDoubleCellValue)result).Value;
+                this.Result = ((ExcelDoubleCellValue)result).Value;
             }
             else
             {
-                Result = result;
+                this.Result = result;
             }
-            DataType = dataType;
-            ExcelAddressReferenceId = excelAddressReferenceId;
+
+            this.DataType = dataType;
+            this.ExcelAddressReferenceId = excelAddressReferenceId;
         }
 
         public CompileResult(eErrorType errorType)
         {
-            Result = ExcelErrorValue.Create(errorType);
-            DataType = DataType.ExcelError;
+            this.Result = ExcelErrorValue.Create(errorType);
+            this.DataType = DataType.ExcelError;
         }
 
         public CompileResult(ExcelErrorValue errorValue)
         {
             Require.Argument(errorValue).IsNotNull("errorValue");
-            Result = errorValue;
-            DataType = DataType.ExcelError;
+            this.Result = errorValue;
+            this.DataType = DataType.ExcelError;
         }
 
         public object Result
@@ -96,10 +97,10 @@ namespace OfficeOpenXml.FormulaParsing.ExpressionGraph
         {
             get
             {
-                IRangeInfo? r = Result as IRangeInfo;
+                IRangeInfo? r = this.Result as IRangeInfo;
                 if (r == null)
                 {
-                    return Result;
+                    return this.Result;
                 }
                 else
                 {
@@ -113,27 +114,27 @@ namespace OfficeOpenXml.FormulaParsing.ExpressionGraph
             get
             {
 				// We assume that Result does not change unless it is a range.
-				if (_resultNumeric == null)
+				if (this._resultNumeric == null)
 				{
-					if (IsNumeric)
+					if (this.IsNumeric)
 					{
-						_resultNumeric = Result == null ? 0 : Convert.ToDouble(Result);
+                        this._resultNumeric = this.Result == null ? 0 : Convert.ToDouble(this.Result);
 					}
-                    else if(IsPercentageString && ConvertUtil.TryParsePercentageString(Result.ToString(), out double v))
+                    else if(this.IsPercentageString && ConvertUtil.TryParsePercentageString(this.Result.ToString(), out double v))
                     {
-                        _resultNumeric = v;
+                        this._resultNumeric = v;
                     }
-					else if (Result is DateTime)
+					else if (this.Result is DateTime)
 					{
-                        _resultNumeric = ((DateTime)Result).ToOADate();
+                        this._resultNumeric = ((DateTime)this.Result).ToOADate();
 					}
-					else if (Result is TimeSpan)
+					else if (this.Result is TimeSpan)
 					{
-                        _resultNumeric = DateTime.FromOADate(0).Add((TimeSpan)Result).ToOADate();
+                        this._resultNumeric = DateTime.FromOADate(0).Add((TimeSpan)this.Result).ToOADate();
 					}
-					else if (Result is IRangeInfo)
+					else if (this.Result is IRangeInfo)
 					{
-						ICellInfo? c = ((IRangeInfo)Result).FirstOrDefault();
+						ICellInfo? c = ((IRangeInfo)this.Result).FirstOrDefault();
 						if (c == null)
 						{
 							return 0;
@@ -145,12 +146,12 @@ namespace OfficeOpenXml.FormulaParsing.ExpressionGraph
 					}
 					// The IsNumericString and IsDateString properties will set _resultNumeric for efficiency so we just need
 					// to check them here.
-					else if (!IsDateString && !IsNumericString)
+					else if (!this.IsDateString && !this.IsNumericString)
 					{
-						_resultNumeric = 0;
+                        this._resultNumeric = 0;
 					}
 				}
-				return _resultNumeric.Value;
+				return this._resultNumeric.Value;
             }
         }
 
@@ -164,7 +165,7 @@ namespace OfficeOpenXml.FormulaParsing.ExpressionGraph
         {
             get 
             {
-                return DataType == DataType.Decimal || DataType == DataType.Integer || DataType == DataType.Empty || DataType == DataType.Boolean || DataType == DataType.Date || DataType == DataType.Time; 
+                return this.DataType == DataType.Decimal || this.DataType == DataType.Integer || this.DataType == DataType.Empty || this.DataType == DataType.Boolean || this.DataType == DataType.Date || this.DataType == DataType.Time; 
             }
         }
 
@@ -172,9 +173,9 @@ namespace OfficeOpenXml.FormulaParsing.ExpressionGraph
         {
             get
             {
-                if (DataType == DataType.String && ConvertUtil.TryParseNumericString(Result as string, out double result))
+                if (this.DataType == DataType.String && ConvertUtil.TryParseNumericString(this.Result as string, out double result))
                 {
-                    _resultNumeric = result;
+                    this._resultNumeric = result;
                     return true;
                 }
                 return false;
@@ -185,9 +186,9 @@ namespace OfficeOpenXml.FormulaParsing.ExpressionGraph
         {
             get
             {
-                if (DataType == DataType.String)
+                if (this.DataType == DataType.String)
                 {
-                    string? s = Result as string;
+                    string? s = this.Result as string;
                     return ConvertUtil.IsPercentageString(s);
                 }
                 return false;
@@ -199,9 +200,9 @@ namespace OfficeOpenXml.FormulaParsing.ExpressionGraph
 		{
 			get
 			{
-                if (DataType == DataType.String && ConvertUtil.TryParseDateString((Result as string), out DateTime result))
+                if (this.DataType == DataType.String && ConvertUtil.TryParseDateString((this.Result as string), out DateTime result))
                 {
-                    _resultNumeric = result.ToOADate();
+                    this._resultNumeric = result.ToOADate();
                     return true;
                 }
                 return false;
@@ -216,7 +217,7 @@ namespace OfficeOpenXml.FormulaParsing.ExpressionGraph
 
         public bool IsResultOfResolvedExcelRange
         {
-            get { return ExcelAddressReferenceId > 0; }
+            get { return this.ExcelAddressReferenceId > 0; }
         }
     }
 }

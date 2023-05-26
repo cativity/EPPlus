@@ -31,11 +31,11 @@ namespace OfficeOpenXml.Drawing.Style.Coloring
         {
             get
             {
-                return (double)GetXmlNodePercentage("@r");
+                return (double)this.GetXmlNodePercentage("@r");
             }
             set
             {
-                SetXmlNodePercentage("@r", value, false);
+                this.SetXmlNodePercentage("@r", value, false);
                 
             }
         }
@@ -46,11 +46,11 @@ namespace OfficeOpenXml.Drawing.Style.Coloring
         {
             get
             {
-                return (double)GetXmlNodePercentage("@g");
+                return (double)this.GetXmlNodePercentage("@g");
             }
             set
             {
-                SetXmlNodePercentage("@g", value, false);
+                this.SetXmlNodePercentage("@g", value, false);
             }
         }
         /// <summary>
@@ -60,11 +60,11 @@ namespace OfficeOpenXml.Drawing.Style.Coloring
         {
             get
             {
-                return (double)GetXmlNodePercentage("@b");
+                return (double)this.GetXmlNodePercentage("@b");
             }
             set
             {
-                SetXmlNodePercentage("@b", value, false);
+                this.SetXmlNodePercentage("@b", value, false);
             }
         }
         internal const string NodeName = "a:scrgbClr";

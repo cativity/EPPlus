@@ -25,16 +25,16 @@ namespace OfficeOpenXml.Drawing.Style.Coloring
         internal ExcelDrawingColorManager(XmlNamespaceManager nameSpaceManager, XmlNode topNode, string path, string[] schemaNodeOrder, Action initMethod = null) : 
             base(nameSpaceManager, topNode, path, schemaNodeOrder, initMethod)
         {
-            if (_pathNode == null || _colorNode==null)
+            if (this._pathNode == null || this._colorNode==null)
             {
                 return;
             }
 
-            switch (_colorNode.LocalName)
+            switch (this._colorNode.LocalName)
             {
                 case "schemeClr":
-                    ColorType = eDrawingColorType.Scheme;
-                    SchemeColor = new ExcelDrawingSchemeColor(_nameSpaceManager, _colorNode);
+                    this.ColorType = eDrawingColorType.Scheme;
+                    this.SchemeColor = new ExcelDrawingSchemeColor(this._nameSpaceManager, this._colorNode);
                     break;
             }
         }
@@ -48,9 +48,9 @@ namespace OfficeOpenXml.Drawing.Style.Coloring
         /// <param name="schemeColor">The scheme color</param>
         public void SetSchemeColor(eSchemeColor schemeColor)
         {
-            ColorType = eDrawingColorType.Scheme;
-            ResetColors(ExcelDrawingSchemeColor.NodeName);
-            SchemeColor = new ExcelDrawingSchemeColor(_nameSpaceManager, _colorNode) { Color=schemeColor };
+            this.ColorType = eDrawingColorType.Scheme;
+            this.ResetColors(ExcelDrawingSchemeColor.NodeName);
+            this.SchemeColor = new ExcelDrawingSchemeColor(this._nameSpaceManager, this._colorNode) { Color=schemeColor };
         }
         /// <summary>
         /// Reset the colors on the object
@@ -59,42 +59,43 @@ namespace OfficeOpenXml.Drawing.Style.Coloring
         internal new protected void ResetColors(string newNodeName) 
         {
             base.ResetColors(newNodeName);
-            SchemeColor = null;
+            this.SchemeColor = null;
         }
 
         internal void ApplyNewColor(ExcelDrawingColorManager newColor, ExcelColorTransformCollection variation=null)
         {
-            ColorType = newColor.ColorType;
+            this.ColorType = newColor.ColorType;
             switch (newColor.ColorType)
             {
                 case eDrawingColorType.Rgb:
-                    SetRgbColor(newColor.RgbColor.Color);
+                    this.SetRgbColor(newColor.RgbColor.Color);
                     break;
                 case eDrawingColorType.RgbPercentage:
-                    SetRgbPercentageColor(newColor.RgbPercentageColor.RedPercentage, newColor.RgbPercentageColor.GreenPercentage, newColor.RgbPercentageColor.BluePercentage);
+                    this.SetRgbPercentageColor(newColor.RgbPercentageColor.RedPercentage, newColor.RgbPercentageColor.GreenPercentage, newColor.RgbPercentageColor.BluePercentage);
                     break;
                 case eDrawingColorType.Hsl:
-                    SetHslColor(newColor.HslColor.Hue, newColor.HslColor.Saturation, newColor.HslColor.Luminance);
+                    this.SetHslColor(newColor.HslColor.Hue, newColor.HslColor.Saturation, newColor.HslColor.Luminance);
                     break;
                 case eDrawingColorType.Preset:
-                    SetPresetColor(newColor.PresetColor.Color);
+                    this.SetPresetColor(newColor.PresetColor.Color);
                     break;
                 case eDrawingColorType.System:
-                    SetSystemColor(newColor.SystemColor.Color);
+                    this.SetSystemColor(newColor.SystemColor.Color);
                     break;
                 case eDrawingColorType.Scheme:
-                    SetSchemeColor(newColor.SchemeColor.Color);
+                    this.SetSchemeColor(newColor.SchemeColor.Color);
                     break;
             }
             //Variations should be added first, so temporary store the transforms and add the again
-            List<IColorTransformItem>? trans = Transforms.Where(x=>((ISource)x)._fromStyleTemplate==false).ToList();
-            Transforms.Clear();
+            List<IColorTransformItem>? trans = this.Transforms.Where(x=>((ISource)x)._fromStyleTemplate==false).ToList();
+            this.Transforms.Clear();
             if (variation != null)
             {
-                ApplyNewTransform(variation);
+                this.ApplyNewTransform(variation);
             }
-            ApplyNewTransform(trans);
-            ApplyNewTransform(newColor.Transforms, true);
+
+            this.ApplyNewTransform(trans);
+            this.ApplyNewTransform(newColor.Transforms, true);
         }
 
         private void ApplyNewTransform(IEnumerable<IColorTransformItem> transforms, bool isSourceStyleTemplate=false)
@@ -104,93 +105,93 @@ namespace OfficeOpenXml.Drawing.Style.Coloring
                 switch(t.Type)
                 {
                     case eColorTransformType.Alpha:
-                        Transforms.AddAlpha(t.Value);
+                        this.Transforms.AddAlpha(t.Value);
                         break;
                     case eColorTransformType.AlphaMod:
-                        Transforms.AddAlphaModulation(t.Value);
+                        this.Transforms.AddAlphaModulation(t.Value);
                         break;
                     case eColorTransformType.AlphaOff:
-                        Transforms.AddAlphaOffset(t.Value);
+                        this.Transforms.AddAlphaOffset(t.Value);
                         break;
                     case eColorTransformType.Blue:
-                        Transforms.AddBlue(t.Value);
+                        this.Transforms.AddBlue(t.Value);
                         break;
                     case eColorTransformType.BlueMod:
-                        Transforms.AddBlueModulation(t.Value);
+                        this.Transforms.AddBlueModulation(t.Value);
                         break;
                     case eColorTransformType.BlueOff:
-                        Transforms.AddBlueOffset(t.Value);
+                        this.Transforms.AddBlueOffset(t.Value);
                         break;
                     case eColorTransformType.Comp:
-                        Transforms.AddComplement();
+                        this.Transforms.AddComplement();
                         break;
                     case eColorTransformType.Gamma:
-                        Transforms.AddGamma();
+                        this.Transforms.AddGamma();
                         break;
                     case eColorTransformType.Gray:
-                        Transforms.AddGray();
+                        this.Transforms.AddGray();
                         break;
                     case eColorTransformType.Green:
-                        Transforms.AddGreen(t.Value);
+                        this.Transforms.AddGreen(t.Value);
                         break;
                     case eColorTransformType.GreenMod:
-                        Transforms.AddGreenModulation(t.Value);
+                        this.Transforms.AddGreenModulation(t.Value);
                         break;
                     case eColorTransformType.GreenOff:
-                        Transforms.AddGreenOffset(t.Value);
+                        this.Transforms.AddGreenOffset(t.Value);
                         break;
                     case eColorTransformType.Hue:
-                        Transforms.AddHue(t.Value);
+                        this.Transforms.AddHue(t.Value);
                         break;
                     case eColorTransformType.HueMod:
-                        Transforms.AddHueModulation(t.Value);
+                        this.Transforms.AddHueModulation(t.Value);
                         break;
                     case eColorTransformType.HueOff:
-                        Transforms.AddHueOffset(t.Value);
+                        this.Transforms.AddHueOffset(t.Value);
                         break;
                     case eColorTransformType.Inv:
-                        Transforms.AddInverse();
+                        this.Transforms.AddInverse();
                         break;
                     case eColorTransformType.InvGamma:
-                        Transforms.AddGamma();
+                        this.Transforms.AddGamma();
                         break;
                     case eColorTransformType.Lum:
-                        Transforms.AddLuminance(t.Value);
+                        this.Transforms.AddLuminance(t.Value);
                         break;
                     case eColorTransformType.LumMod:
-                        Transforms.AddLuminanceModulation(t.Value);
+                        this.Transforms.AddLuminanceModulation(t.Value);
                         break;
                     case eColorTransformType.LumOff:
-                        Transforms.AddLuminanceOffset(t.Value);
+                        this.Transforms.AddLuminanceOffset(t.Value);
                         break;
                     case eColorTransformType.Red:
-                        Transforms.AddRed(t.Value);
+                        this.Transforms.AddRed(t.Value);
                         break;
                     case eColorTransformType.RedMod:
-                        Transforms.AddRedModulation(t.Value);
+                        this.Transforms.AddRedModulation(t.Value);
                         break;
                     case eColorTransformType.RedOff:
-                        Transforms.AddRedOffset(t.Value);
+                        this.Transforms.AddRedOffset(t.Value);
                         break;
                     case eColorTransformType.Sat:
-                        Transforms.AddSaturation(t.Value);
+                        this.Transforms.AddSaturation(t.Value);
                         break;
                     case eColorTransformType.SatMod:
-                        Transforms.AddSaturationModulation(t.Value);
+                        this.Transforms.AddSaturationModulation(t.Value);
                         break;
                     case eColorTransformType.SatOff:
-                        Transforms.AddSaturationOffset(t.Value);
+                        this.Transforms.AddSaturationOffset(t.Value);
                         break;
                     case eColorTransformType.Shade:
-                        Transforms.AddShade(t.Value);
+                        this.Transforms.AddShade(t.Value);
                         break;
                     case eColorTransformType.Tint:
-                        Transforms.AddTint(t.Value);
+                        this.Transforms.AddTint(t.Value);
                         break;
                 }
-                if (isSourceStyleTemplate && Transforms.Count > 0)
+                if (isSourceStyleTemplate && this.Transforms.Count > 0)
                 {
-                    ((ISource)Transforms.Last())._fromStyleTemplate = true;
+                    ((ISource)this.Transforms.Last())._fromStyleTemplate = true;
                 }
             }
         }

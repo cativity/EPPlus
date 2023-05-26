@@ -28,8 +28,8 @@ namespace OfficeOpenXml.Drawing.Style.Fill
         string[] _schemaNodeOrder;
         internal ExcelDrawingSolidFill(XmlNamespaceManager nsm, XmlNode topNode, string fillPath, string[]  schemaNodeOrder, Action initXml) : base(nsm, topNode, fillPath, initXml)
         {
-            _schemaNodeOrder = schemaNodeOrder;
-            GetXml();
+            this._schemaNodeOrder = schemaNodeOrder;
+            this.GetXml();
         }
         /// <summary>
         /// The fill style
@@ -50,11 +50,11 @@ namespace OfficeOpenXml.Drawing.Style.Fill
         {
             get
             {
-                if (_color == null)
+                if (this._color == null)
                 {
-                    _color = new ExcelDrawingColorManager(_nsm, _topNode, _fillPath, _schemaNodeOrder, _initXml);
+                    this._color = new ExcelDrawingColorManager(this._nsm, this._topNode, this._fillPath, this._schemaNodeOrder, this._initXml);
                 }
-                return _color;
+                return this._color;
             }
         }
 
@@ -68,22 +68,23 @@ namespace OfficeOpenXml.Drawing.Style.Fill
 
         internal override void SetXml(XmlNamespaceManager nsm, XmlNode node)
         {
-            _initXml?.Invoke();
-            if (_xml == null)
+            this._initXml?.Invoke();
+            if (this._xml == null)
             {
-                if(string.IsNullOrEmpty(_fillPath))
+                if(string.IsNullOrEmpty(this._fillPath))
                 {
-                    InitXml(nsm, node,"");
+                    this.InitXml(nsm, node,"");
                 }
                 else
                 {
-                    CreateXmlHelper();
+                    this.CreateXmlHelper();
                 }
             }
-            CheckTypeChange(NodeName);
-            if(_color==null)
+
+            this.CheckTypeChange(this.NodeName);
+            if(this._color==null)
             {
-                Color.SetPresetColor(ePresetColor.Black);
+                this.Color.SetPresetColor(ePresetColor.Black);
             }
             ExcelDrawingThemeColorManager.SetXml(nsm, node);
         }

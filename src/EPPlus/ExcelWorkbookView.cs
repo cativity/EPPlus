@@ -34,8 +34,8 @@ namespace OfficeOpenXml
         internal ExcelWorkbookView(XmlNamespaceManager ns, XmlNode node, ExcelWorkbook wb) :
             base(ns, node)
 		{
-            SchemaNodeOrder = wb.SchemaNodeOrder;
-            _wb = wb;
+            this.SchemaNodeOrder = wb.SchemaNodeOrder;
+            this._wb = wb;
 
         }
 		#endregion
@@ -47,11 +47,11 @@ namespace OfficeOpenXml
         { 
             get
             {
-                return GetXmlNodeInt(LEFT_PATH);
+                return this.GetXmlNodeInt(LEFT_PATH);
             }
             internal set
             {
-                SetXmlNodeString(LEFT_PATH,value.ToString());
+                this.SetXmlNodeString(LEFT_PATH,value.ToString());
             }
         }
         const string TOP_PATH="d:bookViews/d:workbookView/@yWindow";
@@ -62,11 +62,11 @@ namespace OfficeOpenXml
         { 
             get
             {
-                return GetXmlNodeInt(TOP_PATH);
+                return this.GetXmlNodeInt(TOP_PATH);
             }
             internal set
             {
-                SetXmlNodeString(TOP_PATH, value.ToString());
+                this.SetXmlNodeString(TOP_PATH, value.ToString());
             }
         }
         const string WIDTH_PATH="d:bookViews/d:workbookView/@windowWidth";
@@ -77,11 +77,11 @@ namespace OfficeOpenXml
         { 
             get
             {
-                return GetXmlNodeInt(WIDTH_PATH);
+                return this.GetXmlNodeInt(WIDTH_PATH);
             }
             internal set
             {
-                SetXmlNodeString(WIDTH_PATH, value.ToString());
+                this.SetXmlNodeString(WIDTH_PATH, value.ToString());
             }
         }
         const string HEIGHT_PATH="d:bookViews/d:workbookView/@windowHeight";
@@ -92,11 +92,11 @@ namespace OfficeOpenXml
         { 
             get
             {
-                return GetXmlNodeInt(HEIGHT_PATH);
+                return this.GetXmlNodeInt(HEIGHT_PATH);
             }
             internal set
             {
-                SetXmlNodeString(HEIGHT_PATH, value.ToString());
+                this.SetXmlNodeString(HEIGHT_PATH, value.ToString());
             }
         }
         const string MINIMIZED_PATH="d:bookViews/d:workbookView/@minimized";
@@ -107,11 +107,11 @@ namespace OfficeOpenXml
         {
             get
             {
-                return GetXmlNodeBool(MINIMIZED_PATH);
+                return this.GetXmlNodeBool(MINIMIZED_PATH);
             }
             set
             {
-                SetXmlNodeString(MINIMIZED_PATH, value.ToString());
+                this.SetXmlNodeString(MINIMIZED_PATH, value.ToString());
             }
         }
         const string SHOWVERTICALSCROLL_PATH = "d:bookViews/d:workbookView/@showVerticalScroll";
@@ -122,11 +122,11 @@ namespace OfficeOpenXml
         {
             get
             {
-                return GetXmlNodeBool(SHOWVERTICALSCROLL_PATH,true);
+                return this.GetXmlNodeBool(SHOWVERTICALSCROLL_PATH,true);
             }
             set
             {
-                SetXmlNodeBool(SHOWVERTICALSCROLL_PATH, value, true);
+                this.SetXmlNodeBool(SHOWVERTICALSCROLL_PATH, value, true);
             }
         }
         const string SHOWHORIZONTALSCR_PATH = "d:bookViews/d:workbookView/@showHorizontalScroll";
@@ -137,11 +137,11 @@ namespace OfficeOpenXml
         {
             get
             {
-                return GetXmlNodeBool(SHOWHORIZONTALSCR_PATH, true);
+                return this.GetXmlNodeBool(SHOWHORIZONTALSCR_PATH, true);
             }
             set
             {
-                SetXmlNodeBool(SHOWHORIZONTALSCR_PATH, value, true);
+                this.SetXmlNodeBool(SHOWHORIZONTALSCR_PATH, value, true);
             }
         }
         const string SHOWSHEETTABS_PATH = "d:bookViews/d:workbookView/@showSheetTabs";
@@ -152,11 +152,11 @@ namespace OfficeOpenXml
         {
             get
             {
-                return GetXmlNodeBool(SHOWSHEETTABS_PATH, true);
+                return this.GetXmlNodeBool(SHOWSHEETTABS_PATH, true);
             }
             set
             {
-                SetXmlNodeBool(SHOWSHEETTABS_PATH, value, true);
+                this.SetXmlNodeBool(SHOWSHEETTABS_PATH, value, true);
             }
         }
         /// <summary>
@@ -168,10 +168,10 @@ namespace OfficeOpenXml
         /// <param name="height">Height in twips</param>
         public void SetWindowSize(int left, int top, int width, int height)
         {
-            Left = left;
-            Top = top;
-            Width = width;
-            Height = height;
+            this.Left = left;
+            this.Top = top;
+            this.Width = width;
+            this.Height = height;
         }
 
         const string ACTIVETAB_PATH = "d:bookViews/d:workbookView/@activeTab";
@@ -182,7 +182,7 @@ namespace OfficeOpenXml
         {
             get
             {
-                int v=GetXmlNodeInt(ACTIVETAB_PATH);
+                int v= this.GetXmlNodeInt(ACTIVETAB_PATH);
                 if (v < 0)
                 {
                     return this._wb._package._worksheetAdd;
@@ -194,11 +194,12 @@ namespace OfficeOpenXml
             }
             set
             {
-                if(value < 0 || value >= _wb.Worksheets.Count)
+                if(value < 0 || value >= this._wb.Worksheets.Count)
                 {
                     throw (new InvalidOperationException("Value out of range"));
                 }
-                SetXmlNodeString(ACTIVETAB_PATH, value.ToString(CultureInfo.InvariantCulture));
+
+                this.SetXmlNodeString(ACTIVETAB_PATH, value.ToString(CultureInfo.InvariantCulture));
             }
         }
         const string FirstSheet_PATH = "d:bookViews/d:workbookView/@firstSheet";
@@ -209,11 +210,11 @@ namespace OfficeOpenXml
         {
             get
             {
-                return GetXmlNodeIntNull(FirstSheet_PATH);
+                return this.GetXmlNodeIntNull(FirstSheet_PATH);
             }
             set
             {
-                SetXmlNodeInt(FirstSheet_PATH, value);
+                this.SetXmlNodeInt(FirstSheet_PATH, value);
             }
         }
 

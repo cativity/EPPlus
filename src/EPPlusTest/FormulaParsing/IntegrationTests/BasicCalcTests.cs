@@ -45,168 +45,168 @@ namespace EPPlusTest.FormulaParsing.IntegrationTests
         [TestInitialize]
         public void Setup()
         {
-            _package = new ExcelPackage();
-            EpplusExcelDataProvider? excelDataProvider = new EpplusExcelDataProvider(_package);
-            _parser = new FormulaParser(excelDataProvider);
+            this._package = new ExcelPackage();
+            EpplusExcelDataProvider? excelDataProvider = new EpplusExcelDataProvider(this._package);
+            this._parser = new FormulaParser(excelDataProvider);
         }
 
         [TestCleanup]
         public void Cleanup()
         {
-            _package.Dispose();
+            this._package.Dispose();
         }
 
         [TestMethod]
         public void ShouldAddIntegersCorrectly()
         {
-            object? result = _parser.Parse("1 + 2");
+            object? result = this._parser.Parse("1 + 2");
             Assert.AreEqual(3d, result);
         }
 
         [TestMethod]
         public void ShouldSubtractIntegersCorrectly()
         {
-            object? result = _parser.Parse("2 - 1");
+            object? result = this._parser.Parse("2 - 1");
             Assert.AreEqual(1d, result);
         }
 
         [TestMethod]
         public void ShouldMultiplyIntegersCorrectly()
         {
-            object? result = _parser.Parse("2 * 3");
+            object? result = this._parser.Parse("2 * 3");
             Assert.AreEqual(6d, result);
         }
 
         [TestMethod]
         public void ShouldDivideIntegersCorrectly()
         {
-            object? result = _parser.Parse("8 / 4");
+            object? result = this._parser.Parse("8 / 4");
             Assert.AreEqual(2d, result);
         }
 
         [TestMethod]
         public void ShouldDivideDecimalWithIntegerCorrectly()
         {
-            object? result = _parser.Parse("2.5/2");
+            object? result = this._parser.Parse("2.5/2");
             Assert.AreEqual(1.25d, result);
         }
 
         [TestMethod]
         public void ShouldHandleExpCorrectly()
         {
-            object? result = _parser.Parse("2 ^ 4");
+            object? result = this._parser.Parse("2 ^ 4");
             Assert.AreEqual(16d, result);
         }
 
         [TestMethod]
         public void ShouldHandleExpWithDecimalCorrectly()
         {
-            object? result = _parser.Parse("2.5 ^ 2");
+            object? result = this._parser.Parse("2.5 ^ 2");
             Assert.AreEqual(6.25d, result);
         }
 
         [TestMethod]
         public void ShouldMultiplyDecimalWithDecimalCorrectly()
         {
-            object? result = _parser.Parse("2.5 * 1.5");
+            object? result = this._parser.Parse("2.5 * 1.5");
             Assert.AreEqual(3.75d, result);
         }
 
         [TestMethod]
         public void ThreeGreaterThanTwoShouldBeTrue()
         {
-            object? result = _parser.Parse("3 > 2");
+            object? result = this._parser.Parse("3 > 2");
             Assert.IsTrue((bool)result);
         }
 
         [TestMethod]
         public void ThreeLessThanTwoShouldBeFalse()
         {
-            object? result = _parser.Parse("3 < 2");
+            object? result = this._parser.Parse("3 < 2");
             Assert.IsFalse((bool)result);
         }
 
         [TestMethod]
         public void ThreeLessThanOrEqualToThreeShouldBeTrue()
         {
-            object? result = _parser.Parse("3 <= 3");
+            object? result = this._parser.Parse("3 <= 3");
             Assert.IsTrue((bool)result);
         }
 
         [TestMethod]
         public void ThreeLessThanOrEqualToTwoDotThreeShouldBeFalse()
         {
-            object? result = _parser.Parse("3 <= 2.3");
+            object? result = this._parser.Parse("3 <= 2.3");
             Assert.IsFalse((bool)result);
         }
 
         [TestMethod]
         public void ThreeGreaterThanOrEqualToThreeShouldBeTrue()
         {
-            object? result = _parser.Parse("3 >= 3");
+            object? result = this._parser.Parse("3 >= 3");
             Assert.IsTrue((bool)result);
         }
 
         [TestMethod]
         public void TwoDotTwoGreaterThanOrEqualToThreeShouldBeFalse()
         {
-            object? result = _parser.Parse("2.2 >= 3");
+            object? result = this._parser.Parse("2.2 >= 3");
             Assert.IsFalse((bool)result);
         }
 
         [TestMethod]
         public void TwelveAndTwelveShouldBeEqual()
         {
-            object? result = _parser.Parse("2=2");
+            object? result = this._parser.Parse("2=2");
             Assert.IsTrue((bool)result);
         }
 
         [TestMethod]
         public void TenPercentShouldBe0Point1()
         {
-            object? result = _parser.Parse("10%");
+            object? result = this._parser.Parse("10%");
             Assert.AreEqual(0.1, result);
         }
 
         [TestMethod]
         public void ShouldHandleMultiplePercentSigns()
         {
-            object? result = _parser.Parse("10%%");
+            object? result = this._parser.Parse("10%%");
             Assert.AreEqual(0.001, result);
         }
 
         [TestMethod]
         public void ShouldHandlePercentageOnFunctionResult()
         {
-            object? result = _parser.Parse("SUM(1;2;3)%");
+            object? result = this._parser.Parse("SUM(1;2;3)%");
             Assert.AreEqual(0.06, result);
         }
 
         [TestMethod]
         public void ShouldHandlePercentageOnParantethis()
         {
-            object? result = _parser.Parse("(1+2)%");
+            object? result = this._parser.Parse("(1+2)%");
             Assert.AreEqual(0.03, result);
         }
 
         [TestMethod]
         public void ShouldIgnoreLeadingPlus()
         {
-            object? result = _parser.Parse("+(1-2)");
+            object? result = this._parser.Parse("+(1-2)");
             Assert.AreEqual(-1d, result);
         }
 
         [TestMethod]
         public void ShouldHandleDecimalNumberWhenDividingIntegers()
         {
-            object? result = _parser.Parse("224567455/400000000*500000");
+            object? result = this._parser.Parse("224567455/400000000*500000");
             Assert.AreEqual(280709.31875, result);
         }
 
         [TestMethod]
         public void ShouldNegateExpressionInParenthesis()
         {
-            object? result = _parser.Parse("-(1+2)");
+            object? result = this._parser.Parse("-(1+2)");
             Assert.AreEqual(-3d, result);
         }
 

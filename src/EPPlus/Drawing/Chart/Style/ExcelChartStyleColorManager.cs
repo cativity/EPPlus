@@ -24,16 +24,16 @@ namespace OfficeOpenXml.Drawing.Chart.Style
         internal ExcelChartStyleColorManager(XmlNamespaceManager nameSpaceManager, XmlNode topNode, string path, string[] schemaNodeOrder, Action initMethod = null) : 
              base(nameSpaceManager, topNode, path, schemaNodeOrder, initMethod)  
         {
-            if (_pathNode == null || _colorNode == null)
+            if (this._pathNode == null || this._colorNode == null)
             {
                 return;
             }
 
-            switch (_colorNode.LocalName)
+            switch (this._colorNode.LocalName)
             {
                 case "styleClr":
-                    ColorType = eDrawingColorType.ChartStyleColor;
-                    StyleColor = new ExcelChartStyleColor(_nameSpaceManager, _pathNode.FirstChild);
+                    this.ColorType = eDrawingColorType.ChartStyleColor;
+                    this.StyleColor = new ExcelChartStyleColor(this._nameSpaceManager, this._pathNode.FirstChild);
                     break;
             }
         }
@@ -43,7 +43,7 @@ namespace OfficeOpenXml.Drawing.Chart.Style
         /// <param name="index">Is index, maps to the style matrix in the theme</param>
         public void SetStyleColor(int index = 0)
         {
-            SetStyleColor(false, index);
+            this.SetStyleColor(false, index);
         }
         internal const string NodeName = "a:styleClr";
 
@@ -54,11 +54,11 @@ namespace OfficeOpenXml.Drawing.Chart.Style
         /// <param name="index">Is index, maps to the style matrix in the theme</param>
         public void SetStyleColor(bool isAuto = true, int index = 0)
         {
-            ColorType = eDrawingColorType.ChartStyleColor;
-            ResetColors(NodeName);
-            StyleColor=new ExcelChartStyleColor(_nameSpaceManager, _colorNode);
+            this.ColorType = eDrawingColorType.ChartStyleColor;
+            this.ResetColors(NodeName);
+            this.StyleColor=new ExcelChartStyleColor(this._nameSpaceManager, this._colorNode);
 
-            StyleColor.SetValue(isAuto, index);
+            this.StyleColor.SetValue(isAuto, index);
         }
         /// <summary>
         /// The style color object
@@ -76,7 +76,7 @@ namespace OfficeOpenXml.Drawing.Chart.Style
         internal protected new void ResetColors(string newNodeName)
         {
             base.ResetColors(newNodeName);
-            StyleColor = null;
+            this.StyleColor = null;
         }
     }
 }

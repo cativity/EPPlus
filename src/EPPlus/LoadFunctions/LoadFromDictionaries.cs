@@ -35,27 +35,28 @@ namespace OfficeOpenXml.LoadFunctions
         public LoadFromDictionaries(ExcelRangeBase range, IEnumerable<IDictionary<string, object>> items, LoadFromDictionariesParams parameters) 
             : base(range, parameters)
         {
-            _items = items;
-            _keys = parameters.Keys;
-            _headerParsingType = parameters.HeaderParsingType;
-            _cultureInfo = parameters.Culture ?? CultureInfo.CurrentCulture;
+            this._items = items;
+            this._keys = parameters.Keys;
+            this._headerParsingType = parameters.HeaderParsingType;
+            this._cultureInfo = parameters.Culture ?? CultureInfo.CurrentCulture;
             if (items == null || !items.Any())
             {
-                _keys = Enumerable.Empty<string>();
+                this._keys = Enumerable.Empty<string>();
             }
             else
             {
                 IDictionary<string, object>? firstItem = items.First();
-                if (_keys == null || !_keys.Any())
+                if (this._keys == null || !this._keys.Any())
                 {
-                    _keys = firstItem.Keys;
+                    this._keys = firstItem.Keys;
                 }
                 else
                 {
-                    _keys = parameters.Keys;
+                    this._keys = parameters.Keys;
                 }
             }
-            _dataTypes = parameters.DataTypes ?? new eDataTypes[0];
+
+            this._dataTypes = parameters.DataTypes ?? new eDataTypes[0];
         }
 
         private readonly IEnumerable<IDictionary<string, object>> _items;
@@ -107,30 +108,30 @@ namespace OfficeOpenXml.LoadFunctions
             columnFormats = new Dictionary<int, string>();
             formulaCells = new Dictionary<int, FormulaCell>();
             int col = 0, row = 0;
-            if (PrintHeaders && _keys.Count() > 0)
+            if (this.PrintHeaders && this._keys.Count() > 0)
             {
-                foreach (string? key in _keys)
+                foreach (string? key in this._keys)
                 {
-                    values[row, col++] = ParseHeader(key);
+                    values[row, col++] = this.ParseHeader(key);
                 }
                 row++;
             }
-            foreach (IDictionary<string, object>? item in _items)
+            foreach (IDictionary<string, object>? item in this._items)
             {
                 col = 0;
-                foreach (string? key in _keys)
+                foreach (string? key in this._keys)
                 {
                     if (item.ContainsKey(key))
                     {
                         object? v = item[key];
-                        if(col < _dataTypes.Length && v != null)
+                        if(col < this._dataTypes.Length && v != null)
                         {
-                            eDataTypes dataType = _dataTypes[col];
+                            eDataTypes dataType = this._dataTypes[col];
                             switch(dataType)
                             {
                                 case eDataTypes.Percent:
                                 case eDataTypes.Number:
-                                    if(double.TryParse(v.ToString(), NumberStyles.Float | NumberStyles.Number, _cultureInfo, out double d))
+                                    if(double.TryParse(v.ToString(), NumberStyles.Float | NumberStyles.Number, this._cultureInfo, out double d))
                                     {
                                         if(dataType == eDataTypes.Percent)
                                         {
@@ -171,27 +172,27 @@ namespace OfficeOpenXml.LoadFunctions
 
         protected override int GetNumberOfRows()
         {
-            if (_items == null)
+            if (this._items == null)
             {
                 return 0;
             }
 
-            return _items.Count();
+            return this._items.Count();
         }
 
         protected override int GetNumberOfColumns()
         {
-            if (_keys == null)
+            if (this._keys == null)
             {
                 return 0;
             }
 
-            return _keys.Count();
+            return this._keys.Count();
         }
 
         private string ParseHeader(string header)
         {
-            switch (_headerParsingType)
+            switch (this._headerParsingType)
             {
                 case HeaderParsingTypes.Preserve:
                     return header;

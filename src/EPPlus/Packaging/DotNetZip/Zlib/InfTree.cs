@@ -143,11 +143,11 @@ namespace OfficeOpenXml.Packaging.Ionic.Zlib
                         p = 0; i = n;
                         do 
                         {
-                                c[b[bindex + p]]++; p++; i--; // assume all entries <= BMAX
+                            this.c[b[bindex + p]]++; p++; i--; // assume all entries <= BMAX
                         }
                         while (i != 0);
                         
-                        if (c[0] == n)
+                        if (this.c[0] == n)
                         {
                                 // null input--all zero length codes
                                 t[0] = - 1;
@@ -172,7 +172,7 @@ namespace OfficeOpenXml.Packaging.Ionic.Zlib
                         }
                         for (i = BMAX; i != 0; i--)
                         {
-                                if (c[i] != 0)
+                                if (this.c[i] != 0)
                                 {
                                     break;
                                 }
@@ -187,24 +187,25 @@ namespace OfficeOpenXml.Packaging.Ionic.Zlib
                         // Adjust last length count to fill out codes, if needed
                         for (y = 1 << j; j < i; j++, y <<= 1)
                         {
-                                if ((y -= c[j]) < 0)
+                                if ((y -= this.c[j]) < 0)
                                 {
                                         return Z_DATA_ERROR;
                                 }
                         }
-                        if ((y -= c[i]) < 0)
+                        if ((y -= this.c[i]) < 0)
                         {
                                 return Z_DATA_ERROR;
                         }
-                        c[i] += y;
+
+                        this.c[i] += y;
                         
                         // Generate starting offsets into the value table for each length
-                        x[1] = j = 0;
+                        this.x[1] = j = 0;
                         p = 1; xp = 2;
                         while (--i != 0)
                         {
                                 // note that i == g from above
-                                x[xp] = (j += c[p]);
+                                this.x[xp] = (j += this.c[p]);
                                 xp++;
                                 p++;
                         }
@@ -215,26 +216,26 @@ namespace OfficeOpenXml.Packaging.Ionic.Zlib
                         {
                                 if ((j = b[bindex + p]) != 0)
                                 {
-                                        v[x[j]++] = i;
+                                        v[this.x[j]++] = i;
                                 }
                                 p++;
                         }
                         while (++i < n);
-                        n = x[g]; // set n to length of v
+                        n = this.x[g]; // set n to length of v
                         
                         // Generate the Huffman codes and for each, make the table entries
-                        x[0] = i = 0; // first Huffman code is zero
+                        this.x[0] = i = 0; // first Huffman code is zero
                         p = 0; // grab values in bit order
                         h = - 1; // no tables yet--level -1
                         w = - l; // bits decoded == (l * h)
-                        u[0] = 0; // just to keep compilers happy
+                        this.u[0] = 0; // just to keep compilers happy
                         q = 0; // ditto
                         z = 0; // ditto
                         
                         // go through the bit lengths (k already is bits in shortest code)
                         for (; k <= g; k++)
                         {
-                                a = c[k];
+                                a = this.c[k];
                                 while (a-- != 0)
                                 {
                                         // here i is the Huffman code of length k bits for value *p
@@ -257,12 +258,12 @@ namespace OfficeOpenXml.Packaging.Ionic.Zlib
                                                                 while (++j < z)
                                                                 {
                                                                         // try smaller tables up to z bits
-                                                                        if ((f <<= 1) <= c[++xp])
+                                                                        if ((f <<= 1) <= this.c[++xp])
                                                                         {
                                                                             break; // enough codes to use up j bits
                                                                         }
 
-                                                                        f -= c[xp]; // else deduct codes from patterns
+                                                                        f -= this.c[xp]; // else deduct codes from patterns
                                                                 }
                                                         }
                                                 }
@@ -274,18 +275,19 @@ namespace OfficeOpenXml.Packaging.Ionic.Zlib
                                                         // (note: doesn't matter for fixed)
                                                         return Z_DATA_ERROR; // overflow of MANY
                                                 }
-                                                u[h] = q = hn[0]; // DEBUG
+
+                                                this.u[h] = q = hn[0]; // DEBUG
                                                 hn[0] += z;
                                                 
                                                 // connect to last table, if there is one
                                                 if (h != 0)
                                                 {
-                                                        x[h] = i; // save pattern for backing up
-                                                        r[0] = (sbyte) j; // bits in this table
-                                                        r[1] = (sbyte) l; // bits to dump before this table
+                                                    this.x[h] = i; // save pattern for backing up
+                                                    this.r[0] = (sbyte) j; // bits in this table
+                                                    this.r[1] = (sbyte) l; // bits to dump before this table
                                                         j = SharedUtils.URShift(i, (w - l));
-                                                        r[2] = (int) (q - u[h - 1] - j); // offset to this table
-                                                        Array.Copy(r, 0, hp, (u[h - 1] + j) * 3, 3); // connect to last table
+                                                        this.r[2] = (int) (q - this.u[h - 1] - j); // offset to this table
+                                                        Array.Copy(this.r, 0, hp, (this.u[h - 1] + j) * 3, 3); // connect to last table
                                                 }
                                                 else
                                                 {
@@ -294,27 +296,27 @@ namespace OfficeOpenXml.Packaging.Ionic.Zlib
                                         }
                                         
                                         // set up table entry in r
-                                        r[1] = (sbyte) (k - w);
+                                        this.r[1] = (sbyte) (k - w);
                                         if (p >= n)
                                         {
-                                                r[0] = 128 + 64; // out of values--invalid code
+                                            this.r[0] = 128 + 64; // out of values--invalid code
                                         }
                                         else if (v[p] < s)
                                         {
-                                                r[0] = (sbyte) (v[p] < 256?0:32 + 64); // 256 is end-of-block
-                                                r[2] = v[p++]; // simple code is just the value
+                                            this.r[0] = (sbyte) (v[p] < 256?0:32 + 64); // 256 is end-of-block
+                                            this.r[2] = v[p++]; // simple code is just the value
                                         }
                                         else
                                         {
-                                                r[0] = (sbyte) (e[v[p] - s] + 16 + 64); // non-simple--look up in lists
-                                                r[2] = d[v[p++] - s];
+                                            this.r[0] = (sbyte) (e[v[p] - s] + 16 + 64); // non-simple--look up in lists
+                                            this.r[2] = d[v[p++] - s];
                                         }
                                         
                                         // fill code-like entries with r
                                         f = 1 << (k - w);
                                         for (j = SharedUtils.URShift(i, w); j < z; j += f)
                                         {
-                                                Array.Copy(r, 0, hp, (q + j) * 3, 3);
+                                                Array.Copy(this.r, 0, hp, (q + j) * 3, 3);
                                         }
                                         
                                         // backwards increment the k-bit code i
@@ -326,7 +328,7 @@ namespace OfficeOpenXml.Packaging.Ionic.Zlib
                                         
                                         // backup over finished tables
                                         mask = (1 << w) - 1; // needed on HP, cc -O bug
-                                        while ((i & mask) != x[h])
+                                        while ((i & mask) != this.x[h])
                                         {
                                                 h--; // don't need to update q
                                                 w -= l;
@@ -341,9 +343,9 @@ namespace OfficeOpenXml.Packaging.Ionic.Zlib
                 internal int inflate_trees_bits(int[] c, int[] bb, int[] tb, int[] hp, ZlibCodec z)
                 {
                         int result;
-                        initWorkArea(19);
-                        hn[0] = 0;
-                        result = huft_build(c, 0, 19, 19, null, null, tb, bb, hp, hn, v);
+                        this.initWorkArea(19);
+                        this.hn[0] = 0;
+                        result = this.huft_build(c, 0, 19, 19, null, null, tb, bb, hp, this.hn, this.v);
                         
                         if (result == Z_DATA_ERROR)
                         {
@@ -362,9 +364,9 @@ namespace OfficeOpenXml.Packaging.Ionic.Zlib
                         int result;
                         
                         // build literal/length tree
-                        initWorkArea(288);
-                        hn[0] = 0;
-                        result = huft_build(c, 0, nl, 257, cplens, cplext, tl, bl, hp, hn, v);
+                        this.initWorkArea(288);
+                        this.hn[0] = 0;
+                        result = this.huft_build(c, 0, nl, 257, cplens, cplext, tl, bl, hp, this.hn, this.v);
                         if (result != Z_OK || bl[0] == 0)
                         {
                                 if (result == Z_DATA_ERROR)
@@ -380,8 +382,8 @@ namespace OfficeOpenXml.Packaging.Ionic.Zlib
                         }
                         
                         // build distance tree
-                        initWorkArea(288);
-                        result = huft_build(c, nl, nd, 0, cpdist, cpdext, td, bd, hp, hn, v);
+                        this.initWorkArea(288);
+                        result = this.huft_build(c, nl, nd, 0, cpdist, cpdext, td, bd, hp, this.hn, this.v);
                         
                         if (result != Z_OK || (bd[0] == 0 && nl > 257))
                         {
@@ -416,30 +418,32 @@ namespace OfficeOpenXml.Packaging.Ionic.Zlib
                 
                 private void  initWorkArea(int vsize)
                 {
-                        if (hn == null)
+                        if (this.hn == null)
                         {
-                                hn = new int[1];
-                                v = new int[vsize];
-                                c = new int[BMAX + 1];
-                                r = new int[3];
-                                u = new int[BMAX];
-                                x = new int[BMAX + 1];
+                            this.hn = new int[1];
+                            this.v = new int[vsize];
+                            this.c = new int[BMAX + 1];
+                            this.r = new int[3];
+                            this.u = new int[BMAX];
+                            this.x = new int[BMAX + 1];
                         }
                         else
                         {
-                            if (v.Length < vsize)
+                            if (this.v.Length < vsize)
                             {
-                                v = new int[vsize];
+                                this.v = new int[vsize];
                             }
-                            Array.Clear(v,0,vsize);
-                            Array.Clear(c,0,BMAX+1);
-                            r[0]=0; r[1]=0; r[2]=0;
+                            Array.Clear(this.v,0,vsize);
+                            Array.Clear(this.c,0,BMAX+1);
+                            this.r[0]=0;
+                            this.r[1]=0;
+                            this.r[2]=0;
                             //  for(int i=0; i<BMAX; i++){u[i]=0;}
                             //Array.Copy(c, 0, u, 0, BMAX);
-                            Array.Clear(u,0,BMAX);
+                            Array.Clear(this.u,0,BMAX);
                             //  for(int i=0; i<BMAX+1; i++){x[i]=0;}
                             //Array.Copy(c, 0, x, 0, BMAX + 1);
-                            Array.Clear(x,0,BMAX+1);
+                            Array.Clear(this.x,0,BMAX+1);
                         }
                 }
         }

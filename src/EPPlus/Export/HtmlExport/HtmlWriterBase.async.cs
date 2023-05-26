@@ -31,15 +31,15 @@ namespace OfficeOpenXml.Export.HtmlExport
         protected Dictionary<string, int> _styleCache;
         internal HtmlWriterBase(Stream stream, Encoding encoding, Dictionary<string, int> styleCache)
         {
-            _stream = stream;
-            _writer = new StreamWriter(stream, encoding);
-            _styleCache = styleCache;
+            this._stream = stream;
+            this._writer = new StreamWriter(stream, encoding);
+            this._styleCache = styleCache;
         }
         public HtmlWriterBase(StreamWriter writer, Dictionary<string, int> styleCache)
         {
-            _stream = writer.BaseStream;
-            _writer = writer;
-            _styleCache = styleCache;
+            this._stream = writer.BaseStream;
+            this._writer = writer;
+            this._styleCache = styleCache;
         }
         internal int Indent { get; set; }
 
@@ -128,27 +128,27 @@ namespace OfficeOpenXml.Export.HtmlExport
         }
         public void WriteLine()
         {
-            _newLine = true;
-            _writer.WriteLine();
+            this._newLine = true;
+            this._writer.WriteLine();
         }
 
         public void Write(string text)
         {
-            _writer.Write(text);
+            this._writer.Write(text);
         }
 
         internal protected void WriteIndent()
         {
-            for (int x = 0; x < Indent; x++)
+            for (int x = 0; x < this.Indent; x++)
             {
-                _writer.Write(IndentWhiteSpace);
+                this._writer.Write(IndentWhiteSpace);
             }
         }
         internal void ApplyFormat(bool minify)
         {
             if (minify == false)
             {
-                WriteLine();
+                this.WriteLine();
             }
         }
 
@@ -156,8 +156,8 @@ namespace OfficeOpenXml.Export.HtmlExport
         {
             if (minify == false)
             {
-                WriteLine();
-                Indent++;
+                this.WriteLine();
+                this.Indent++;
             }
         }
 
@@ -165,44 +165,44 @@ namespace OfficeOpenXml.Export.HtmlExport
         {
             if (minify == false)
             {
-                WriteLine();
-                Indent--;
+                this.WriteLine();
+                this.Indent--;
             }
         }
         internal void WriteClass(string value, bool minify)
         {
             if (minify)
             {
-                _writer.Write(value);
+                this._writer.Write(value);
             }
             else
             {
-                _writer.WriteLine(value);
-                Indent = 1;
+                this._writer.WriteLine(value);
+                this.Indent = 1;
             }
         }
         internal void WriteClassEnd(bool minify)
         {
             if (minify)
             {
-                _writer.Write("}");
+                this._writer.Write("}");
             }
             else
             {
-                _writer.WriteLine("}");
-                Indent = 0;
+                this._writer.WriteLine("}");
+                this.Indent = 0;
             }
         }
         internal void WriteCssItem(string value, bool minify)
         {
             if (minify)
             {
-                _writer.Write(value);
+                this._writer.Write(value);
             }
             else
             {
-                WriteIndent();
-                _writer.WriteLine(value);
+                this.WriteIndent();
+                this._writer.WriteLine(value);
             }
         }
     }

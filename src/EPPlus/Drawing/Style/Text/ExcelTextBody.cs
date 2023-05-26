@@ -26,8 +26,8 @@ namespace OfficeOpenXml.Drawing
         internal ExcelTextBody(XmlNamespaceManager ns, XmlNode topNode, string path, string[] schemaNodeOrder=null) :
             base(ns, topNode)   
         {
-            _path = path;
-            AddSchemaNodeOrder(schemaNodeOrder, new string[] { "ln", "noFill", "solidFill", "gradFill", "pattFill", "blipFill", "latin", "ea", "cs", "sym", "hlinkClick", "hlinkMouseOver", "rtl", "extLst", "highlight", "kumimoji", "lang", "altLang", "sz", "b", "i", "u", "strike", "kern", "cap", "spc", "normalizeH", "baseline", "noProof", "dirty", "err", "smtClean", "smtId", "bmk" });
+            this._path = path;
+            this.AddSchemaNodeOrder(schemaNodeOrder, new string[] { "ln", "noFill", "solidFill", "gradFill", "pattFill", "blipFill", "latin", "ea", "cs", "sym", "hlinkClick", "hlinkMouseOver", "rtl", "extLst", "highlight", "kumimoji", "lang", "altLang", "sz", "b", "i", "u", "strike", "kern", "cap", "spc", "normalizeH", "baseline", "noProof", "dirty", "err", "smtClean", "smtId", "bmk" });
         }
         /// <summary>
         /// The anchoring position within the shape
@@ -36,11 +36,11 @@ namespace OfficeOpenXml.Drawing
         {
             get
             {
-                return GetXmlNodeString($"{_path}/@anchor").TranslateTextAchoring();
+                return this.GetXmlNodeString($"{this._path}/@anchor").TranslateTextAchoring();
             }
             set
             {
-                SetXmlNodeString($"{_path}/@anchor", value.TranslateTextAchoringText());
+                this.SetXmlNodeString($"{this._path}/@anchor", value.TranslateTextAchoringText());
             }
         }
         /// <summary>
@@ -50,11 +50,11 @@ namespace OfficeOpenXml.Drawing
         {
             get
             {   
-                return GetXmlNodeBool($"{_path}/@anchorCtr");
+                return this.GetXmlNodeBool($"{this._path}/@anchorCtr");
             }
             set
             {
-                SetXmlNodeBool($"{_path}/@anchorCtr", value, false);
+                this.SetXmlNodeBool($"{this._path}/@anchorCtr", value, false);
             }
         }
         /// <summary>
@@ -64,17 +64,17 @@ namespace OfficeOpenXml.Drawing
         {
             get
             {
-                return GetXmlNodeString($"{_path}/@u").TranslateUnderline();
+                return this.GetXmlNodeString($"{this._path}/@u").TranslateUnderline();
             }
             set
             {
                 if (value == eUnderLineType.None)
                 {
-                    DeleteNode($"{_path}/@u");
+                    this.DeleteNode($"{this._path}/@u");
                 }
                 else
                 {
-                    SetXmlNodeString($"{_path}/@u", value.TranslateUnderlineText());
+                    this.SetXmlNodeString($"{this._path}/@u", value.TranslateUnderlineText());
                 }
             }
         }
@@ -85,11 +85,11 @@ namespace OfficeOpenXml.Drawing
         {
             get
             {
-                return GetXmlNodeEmuToPtNull($"{_path}/@bIns");
+                return this.GetXmlNodeEmuToPtNull($"{this._path}/@bIns");
             }
             set
             {
-                SetXmlNodeEmuToPt($"{_path}/@bIns", value);
+                this.SetXmlNodeEmuToPt($"{this._path}/@bIns", value);
             }
         }
         /// <summary>
@@ -99,11 +99,11 @@ namespace OfficeOpenXml.Drawing
         {
             get
             {
-                return GetXmlNodeEmuToPtNull($"{_path}/@tIns");
+                return this.GetXmlNodeEmuToPtNull($"{this._path}/@tIns");
             }
             set
             {
-                SetXmlNodeEmuToPt($"{_path}/@tIns", value);
+                this.SetXmlNodeEmuToPt($"{this._path}/@tIns", value);
             }
         }
         /// <summary>
@@ -113,11 +113,11 @@ namespace OfficeOpenXml.Drawing
         {
             get
             {
-                return GetXmlNodeEmuToPtNull($"{_path}/@rIns");
+                return this.GetXmlNodeEmuToPtNull($"{this._path}/@rIns");
             }
             set
             {
-                SetXmlNodeEmuToPt($"{_path}/@rIns", value);
+                this.SetXmlNodeEmuToPt($"{this._path}/@rIns", value);
             }
         }
         /// <summary>
@@ -127,11 +127,11 @@ namespace OfficeOpenXml.Drawing
         {
             get
             {
-                return GetXmlNodeEmuToPtNull($"{_path}/@lIns");
+                return this.GetXmlNodeEmuToPtNull($"{this._path}/@lIns");
             }
             set
             {
-                SetXmlNodeEmuToPt($"{_path}/@lIns", value);
+                this.SetXmlNodeEmuToPt($"{this._path}/@lIns", value);
             }
         }
         /// <summary>
@@ -141,11 +141,11 @@ namespace OfficeOpenXml.Drawing
         {
             get
             {
-                return GetXmlNodeAngel($"{_path}/@rot");
+                return this.GetXmlNodeAngel($"{this._path}/@rot");
             }
             set
             {
-                SetXmlNodeAngel($"{_path}/@rot", value, "Rotation", -100000, 100000);
+                this.SetXmlNodeAngel($"{this._path}/@rot", value, "Rotation", -100000, 100000);
             }
         }
         /// <summary>
@@ -155,7 +155,7 @@ namespace OfficeOpenXml.Drawing
         {
             get
             {
-                return GetXmlNodeEmuToPt($"{_path}/@spcCol");
+                return this.GetXmlNodeEmuToPt($"{this._path}/@spcCol");
             }
             set
             {
@@ -164,7 +164,7 @@ namespace OfficeOpenXml.Drawing
                     throw new ArgumentOutOfRangeException("SpaceBetweenColumns", "Can't be negative");
                 }
 
-                SetXmlNodeEmuToPt($"{_path}/@spcCol", value);
+                this.SetXmlNodeEmuToPt($"{this._path}/@spcCol", value);
             }
         }
 
@@ -175,11 +175,11 @@ namespace OfficeOpenXml.Drawing
         {
             get
             {
-                return GetXmlNodeBool($"{_path}/@spcFirstLastPara");
+                return this.GetXmlNodeBool($"{this._path}/@spcFirstLastPara");
             }
             set
             {
-                SetXmlNodeBool($"{_path}/@spcFirstLastPara", value);
+                this.SetXmlNodeBool($"{this._path}/@spcFirstLastPara", value);
             }
         }
         /// <summary>
@@ -189,11 +189,11 @@ namespace OfficeOpenXml.Drawing
         {
             get
             {
-                return GetXmlNodeBool($"{_path}/@upright");
+                return this.GetXmlNodeBool($"{this._path}/@upright");
             }
             set
             {
-                SetXmlNodeBool($"{_path}/@upright", value);
+                this.SetXmlNodeBool($"{this._path}/@upright", value);
             }
         }
         /// <summary>
@@ -203,11 +203,11 @@ namespace OfficeOpenXml.Drawing
         {
             get
             {
-                return GetXmlNodeBool($"{_path}/@compatLnSpc");
+                return this.GetXmlNodeBool($"{this._path}/@compatLnSpc");
             }
             set
             {
-                SetXmlNodeBool($"{_path}/@compatLnSpc", value);
+                this.SetXmlNodeBool($"{this._path}/@compatLnSpc", value);
             }
         }
         /// <summary>
@@ -217,11 +217,11 @@ namespace OfficeOpenXml.Drawing
         {
             get
             {
-                return GetXmlNodeBool($"{_path}/@forceAA");
+                return this.GetXmlNodeBool($"{this._path}/@forceAA");
             }
             set
             {
-                SetXmlNodeBool($"{_path}/@forceAA", value);
+                this.SetXmlNodeBool($"{this._path}/@forceAA", value);
             }
         }
         /// <summary>
@@ -231,11 +231,11 @@ namespace OfficeOpenXml.Drawing
         {
             get
             {
-                return GetXmlNodeBool($"{_path}/@fromWordArt");
+                return this.GetXmlNodeBool($"{this._path}/@fromWordArt");
             }
             set
             {
-                SetXmlNodeBool($"{_path}/@fromWordArt", value);
+                this.SetXmlNodeBool($"{this._path}/@fromWordArt", value);
             }
         }
         /// <summary>
@@ -245,11 +245,11 @@ namespace OfficeOpenXml.Drawing
         {
             get
             {
-                return GetXmlNodeString($"{_path}/@vert").TranslateTextVertical();
+                return this.GetXmlNodeString($"{this._path}/@vert").TranslateTextVertical();
             }
             set
             {
-                SetXmlNodeString($"{_path}/@vert", value.TranslateTextVerticalText());
+                this.SetXmlNodeString($"{this._path}/@vert", value.TranslateTextVerticalText());
             }
         }
         /// <summary>
@@ -259,11 +259,11 @@ namespace OfficeOpenXml.Drawing
         {
             get
             {
-                return GetXmlNodeString($"{_path}/@horzOverflow").ToEnum(eTextHorizontalOverflow.Overflow);
+                return this.GetXmlNodeString($"{this._path}/@horzOverflow").ToEnum(eTextHorizontalOverflow.Overflow);
             }
             set
             {
-                SetXmlNodeString($"{_path}/@horzOverflow", value.ToEnumString());
+                this.SetXmlNodeString($"{this._path}/@horzOverflow", value.ToEnumString());
             }
         }
 
@@ -274,11 +274,11 @@ namespace OfficeOpenXml.Drawing
         {
             get
             {
-                return GetXmlNodeString($"{_path}/@vertOverflow").ToEnum(eTextVerticalOverflow.Overflow);
+                return this.GetXmlNodeString($"{this._path}/@vertOverflow").ToEnum(eTextVerticalOverflow.Overflow);
             }
             set
             {
-                SetXmlNodeString($"{_path}/@vertOverflow", value.ToEnumString());
+                this.SetXmlNodeString($"{this._path}/@vertOverflow", value.ToEnumString());
             }
         }
         /// <summary>
@@ -288,11 +288,11 @@ namespace OfficeOpenXml.Drawing
         {
             get
             {
-                return GetXmlNodeString($"{_path}/@wrap").ToEnum(eTextWrappingType.Square);
+                return this.GetXmlNodeString($"{this._path}/@wrap").ToEnum(eTextWrappingType.Square);
             }
             set
             {
-                SetXmlNodeString($"{_path}/@wrap", value.ToEnumString());
+                this.SetXmlNodeString($"{this._path}/@wrap", value.ToEnumString());
             }
         }
         /// <summary>
@@ -302,11 +302,11 @@ namespace OfficeOpenXml.Drawing
         {
             get
             {
-                if (ExistsNode($"{_path}/a:normAutofit"))
+                if (this.ExistsNode($"{this._path}/a:normAutofit"))
                 {
                     return eTextAutofit.NormalAutofit;
                 }
-                else if (ExistsNode($"{_path}/a:spAutoFit"))
+                else if (this.ExistsNode($"{this._path}/a:spAutoFit"))
                 {
                     return eTextAutofit.ShapeAutofit;
                 }
@@ -320,24 +320,24 @@ namespace OfficeOpenXml.Drawing
                 switch (value)
                 {
                     case eTextAutofit.NormalAutofit:
-                        if (value == TextAutofit)
+                        if (value == this.TextAutofit)
                         {
                             return;
                         }
 
-                        DeleteNode($"{_path}/a:spAutoFit");
-                        DeleteNode($"{_path}/a:noAutofit");
-                        CreateNode($"{_path}/a:normAutofit");
+                        this.DeleteNode($"{this._path}/a:spAutoFit");
+                        this.DeleteNode($"{this._path}/a:noAutofit");
+                        this.CreateNode($"{this._path}/a:normAutofit");
                         break;
                     case eTextAutofit.ShapeAutofit:
-                        DeleteNode($"{_path}/a:noAutofit");
-                        DeleteNode($"{_path}/a:normAutofit");
-                        CreateNode($"{_path}/a:spAutofit");
+                        this.DeleteNode($"{this._path}/a:noAutofit");
+                        this.DeleteNode($"{this._path}/a:normAutofit");
+                        this.CreateNode($"{this._path}/a:spAutofit");
                         break;
                     case eTextAutofit.NoAutofit:
-                        DeleteNode($"{_path}/a:spAutoFit");
-                        DeleteNode($"{_path}/a:normAutofit");
-                        CreateNode($"{_path}/a:noAutofit");
+                        this.DeleteNode($"{this._path}/a:spAutoFit");
+                        this.DeleteNode($"{this._path}/a:normAutofit");
+                        this.CreateNode($"{this._path}/a:noAutofit");
                         break;
                 }
             }
@@ -350,16 +350,16 @@ namespace OfficeOpenXml.Drawing
         {
             get
             {
-                return GetXmlNodePercentage($"{_path}/a:normAutofit/@fontScale");
+                return this.GetXmlNodePercentage($"{this._path}/a:normAutofit/@fontScale");
             }
             set
             {
-                if (TextAutofit != eTextAutofit.NormalAutofit)
+                if (this.TextAutofit != eTextAutofit.NormalAutofit)
                 {
                     throw new ArgumentException("AutofitNormalFontScale", "TextAutofit must be set to NormalAutofit to use set this property");
                 }
 
-                SetXmlNodePercentage($"{_path}/a:normAutofit/@fontScale", value, false);
+                this.SetXmlNodePercentage($"{this._path}/a:normAutofit/@fontScale", value, false);
             }
         }
         /// <summary>
@@ -370,26 +370,26 @@ namespace OfficeOpenXml.Drawing
         {
             get
             {
-                return GetXmlNodePercentage($"{_path}/a:normAutofit/@lnSpcReduction");
+                return this.GetXmlNodePercentage($"{this._path}/a:normAutofit/@lnSpcReduction");
             }
             set
             {
-                if (TextAutofit != eTextAutofit.NormalAutofit)
+                if (this.TextAutofit != eTextAutofit.NormalAutofit)
                 {
                     throw new ArgumentException("LineSpaceReduction", "TextAutofit must be set to NormalAutofit to use set this property");
                 }
 
-                SetXmlNodePercentage($"{_path}/a:normAutofit/@lnSpcReduction", value, false);
+                this.SetXmlNodePercentage($"{this._path}/a:normAutofit/@lnSpcReduction", value, false);
             }
         }
         internal XmlElement PathElement
         {
             get
             {
-                XmlElement? node = (XmlElement)GetNode(_path);
+                XmlElement? node = (XmlElement)this.GetNode(this._path);
                 if (node == null)
                 {
-                    return (XmlElement)CreateNode(_path);
+                    return (XmlElement)this.CreateNode(this._path);
                 }
                 else
                 {
@@ -399,7 +399,7 @@ namespace OfficeOpenXml.Drawing
         }
         internal void SetFromXml(XmlElement copyFromElement)
         {
-            XmlElement? element = PathElement;
+            XmlElement? element = this.PathElement;
             foreach (XmlAttribute a in copyFromElement.Attributes)
             {
                 element.SetAttribute(a.Name, a.NamespaceURI, a.Value);

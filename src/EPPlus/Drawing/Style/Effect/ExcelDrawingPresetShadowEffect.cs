@@ -24,7 +24,7 @@ namespace OfficeOpenXml.Drawing.Style.Effect
         private readonly string _typePath = "{0}/@prst";
         internal ExcelDrawingPresetShadowEffect(XmlNamespaceManager nameSpaceManager, XmlNode topNode, string[] schemaNodeOrder, string path) : base(nameSpaceManager, topNode, schemaNodeOrder, path)
         {
-            _typePath = string.Format(_typePath, path);
+            this._typePath = string.Format(this._typePath, path);
         }
         /// <summary>
         /// The preset shadow type
@@ -33,12 +33,12 @@ namespace OfficeOpenXml.Drawing.Style.Effect
         {
             get
             {
-                return GetXmlNodeString(_typePath).TranslatePresetShadowType();
+                return this.GetXmlNodeString(this._typePath).TranslatePresetShadowType();
             }
             set
             {
-                SetXmlNodeString(_typePath, value.TranslateString());
-                InitXml();
+                this.SetXmlNodeString(this._typePath, value.TranslateString());
+                this.InitXml();
             }
         }
     }

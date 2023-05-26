@@ -20,8 +20,8 @@ namespace OfficeOpenXml.Utils.TypeConversion
     {
         internal TypeConvertUtil(object o)
         {
-            Value = new ValueWrapper(o);
-            ReturnType = new ReturnTypeWrapper<TReturnType>();
+            this.Value = new ValueWrapper(o);
+            this.ReturnType = new ReturnTypeWrapper<TReturnType>();
         }
 
         public ReturnTypeWrapper<TReturnType> ReturnType
@@ -38,43 +38,43 @@ namespace OfficeOpenXml.Utils.TypeConversion
 
         public object ConvertToReturnType()
         {
-            if (ReturnType.IsNullable && Value.IsEmptyString)
+            if (this.ReturnType.IsNullable && this.Value.IsEmptyString)
             {
                 return null;
             }
-            if (NumericTypeConversions.IsNumeric(ReturnType.Type))
+            if (NumericTypeConversions.IsNumeric(this.ReturnType.Type))
             {
                 object convertedObj;      
-                if(NumericTypeConversions.TryConvert(Value.Object, out convertedObj, ReturnType.Type))
+                if(NumericTypeConversions.TryConvert(this.Value.Object, out convertedObj, this.ReturnType.Type))
                 {
                     return convertedObj;
                 }
                 return default(TReturnType);
             }
-            return Value.Object;
+            return this.Value.Object;
         }
 
         public bool TryGetDateTime(out object returnDate)
         {
             returnDate = default;
-            if (!ReturnType.IsDateTime)
+            if (!this.ReturnType.IsDateTime)
             {
                 return false;
             }
 
-            if (Value.Object is double)
+            if (this.Value.Object is double)
             {
-                returnDate = DateTime.FromOADate(Value.ToDouble());
+                returnDate = DateTime.FromOADate(this.Value.ToDouble());
                 return true;
             }
-            if (Value.IsTimeSpan)
+            if (this.Value.IsTimeSpan)
             {
-                returnDate = new DateTime(Value.ToTimeSpan().Ticks);
+                returnDate = new DateTime(this.Value.ToTimeSpan().Ticks);
                 return true;
             }
-            if (Value.IsString)
+            if (this.Value.IsString)
             {
-                if (DateTime.TryParse(Value.ToString(), out DateTime dt))
+                if (DateTime.TryParse(this.Value.ToString(), out DateTime dt))
                 {
                     returnDate = dt;
                     return true;
@@ -86,35 +86,35 @@ namespace OfficeOpenXml.Utils.TypeConversion
         public bool TryGetTimeSpan(out object timeSpan)
         {
             timeSpan = default;
-            if (!ReturnType.IsTimeSpan)
+            if (!this.ReturnType.IsTimeSpan)
             {
                 return false;
             }
 
-            if (Value.Object is long)
+            if (this.Value.Object is long)
             {
-                timeSpan = new TimeSpan(Convert.ToInt64(Value.Object));
+                timeSpan = new TimeSpan(Convert.ToInt64(this.Value.Object));
                 return true;
             }
-            if(Value.Object is double)
+            if(this.Value.Object is double)
             {
-                timeSpan = new TimeSpan(DateTime.FromOADate((double)Value.Object).Ticks);
+                timeSpan = new TimeSpan(DateTime.FromOADate((double)this.Value.Object).Ticks);
                 return true;
             }
-            if (Value.IsDateTime)
+            if (this.Value.IsDateTime)
             {
-                timeSpan = new TimeSpan(Value.ToDateTime().Ticks);
+                timeSpan = new TimeSpan(this.Value.ToDateTime().Ticks);
                 return true;
             }
-            if (Value.IsString)
+            if (this.Value.IsString)
             {
                 TimeSpan ts;
-                if (TimeSpan.TryParse(Value.ToString(), out ts))
+                if (TimeSpan.TryParse(this.Value.ToString(), out ts))
                 {
                     timeSpan = ts;
                     return true;
                 }
-                throw new FormatException(Value.ToString() + " could not be parsed to a TimeSpan");
+                throw new FormatException(this.Value.ToString() + " could not be parsed to a TimeSpan");
             }
             return false;
         }

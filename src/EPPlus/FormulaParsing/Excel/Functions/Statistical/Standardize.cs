@@ -28,11 +28,11 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Statistical
         public override CompileResult Execute(IEnumerable<FunctionArgument> arguments, ParsingContext context)
         {
             ValidateArguments(arguments, 3);
-            double val = ArgToDecimal(arguments, 0);
-            double avg = ArgToDecimal(arguments, 1);
-            double stdev = ArgToDecimal(arguments, 2);
+            double val = this.ArgToDecimal(arguments, 0);
+            double avg = this.ArgToDecimal(arguments, 1);
+            double stdev = this.ArgToDecimal(arguments, 2);
             double result = (val - avg) / stdev;
-            return CreateResult(result, DataType.Decimal);
+            return this.CreateResult(result, DataType.Decimal);
         }
     }
 }

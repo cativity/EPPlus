@@ -17,7 +17,7 @@ namespace EPPlusTest.LoadFunctions
         [TestInitialize]
         public void Initialize()
         {
-            _items = new List<IDictionary<string, object>>()
+            this._items = new List<IDictionary<string, object>>()
             {
                 new Dictionary<string, object>()
                 {
@@ -40,7 +40,7 @@ namespace EPPlusTest.LoadFunctions
         {
             using ExcelPackage? package = new ExcelPackage();
             ExcelWorksheet? sheet = package.Workbook.Worksheets.Add("test");
-            ExcelRangeBase? r = sheet.Cells["A1"].LoadFromDictionaries(_items);
+            ExcelRangeBase? r = sheet.Cells["A1"].LoadFromDictionaries(this._items);
 
             Assert.AreEqual(1, sheet.Cells["A1"].Value);
             Assert.AreEqual("TestName 2", sheet.Cells["B2"].Value);
@@ -51,7 +51,7 @@ namespace EPPlusTest.LoadFunctions
         {
             using ExcelPackage? package = new ExcelPackage();
             ExcelWorksheet? sheet = package.Workbook.Worksheets.Add("test");
-            ExcelRangeBase? r = sheet.Cells["A1"].LoadFromDictionaries(_items, true, TableStyles.None, null);
+            ExcelRangeBase? r = sheet.Cells["A1"].LoadFromDictionaries(this._items, true, TableStyles.None, null);
 
             Assert.AreEqual("Id", sheet.Cells["A1"].Value);
             Assert.AreEqual(1, sheet.Cells["A2"].Value);
@@ -61,13 +61,13 @@ namespace EPPlusTest.LoadFunctions
         [TestMethod]
         public void ShouldLoadDictionaryWithParsedHeaders_Default()
         {
-            foreach (IDictionary<string, object>? item in _items)
+            foreach (IDictionary<string, object>? item in this._items)
             {
                 item["First_name"] = "test";
             }
             using ExcelPackage? package = new ExcelPackage();
             ExcelWorksheet? sheet = package.Workbook.Worksheets.Add("test");
-            ExcelRangeBase? r = sheet.Cells["A1"].LoadFromDictionaries(_items, true, TableStyles.None, null);
+            ExcelRangeBase? r = sheet.Cells["A1"].LoadFromDictionaries(this._items, true, TableStyles.None, null);
 
             Assert.AreEqual("First name", sheet.Cells["C1"].Value);
         }
@@ -75,13 +75,13 @@ namespace EPPlusTest.LoadFunctions
         [TestMethod]
         public void ShouldLoadDictionaryWithParsedHeaders_CamelCase()
         {
-            foreach (IDictionary<string, object>? item in _items)
+            foreach (IDictionary<string, object>? item in this._items)
             {
                 item["FirstName"] = "test";
             }
             using ExcelPackage? package = new ExcelPackage();
             ExcelWorksheet? sheet = package.Workbook.Worksheets.Add("test");
-            ExcelRangeBase? r = sheet.Cells["A1"].LoadFromDictionaries(_items, c =>
+            ExcelRangeBase? r = sheet.Cells["A1"].LoadFromDictionaries(this._items, c =>
             {
                 c.PrintHeaders = true;
                 c.HeaderParsingType = HeaderParsingTypes.CamelCaseToSpace;
@@ -95,7 +95,7 @@ namespace EPPlusTest.LoadFunctions
         {
             using ExcelPackage? package = new ExcelPackage();
             ExcelWorksheet? sheet = package.Workbook.Worksheets.Add("test");
-            ExcelRangeBase? r = sheet.Cells["A1"].LoadFromDictionaries(_items, true, TableStyles.Dark1, null);
+            ExcelRangeBase? r = sheet.Cells["A1"].LoadFromDictionaries(this._items, true, TableStyles.Dark1, null);
 
             Assert.AreEqual(1, sheet.Tables.Count);
             Assert.AreEqual(TableStyles.Dark1, sheet.Tables.First().TableStyle);
@@ -106,7 +106,7 @@ namespace EPPlusTest.LoadFunctions
         {
             using ExcelPackage? package = new ExcelPackage();
             ExcelWorksheet? sheet = package.Workbook.Worksheets.Add("test");
-            ExcelRangeBase? r = sheet.Cells["A1"].LoadFromDictionaries(_items, false, TableStyles.None, new string[] { "Name" });
+            ExcelRangeBase? r = sheet.Cells["A1"].LoadFromDictionaries(this._items, false, TableStyles.None, new string[] { "Name" });
 
             Assert.AreEqual("TestName 1", sheet.Cells["A1"].Value);
         }
@@ -114,13 +114,13 @@ namespace EPPlusTest.LoadFunctions
         [TestMethod]
         public void ShouldLoadDictionaryWithKeysFilterLambdaVersion()
         {
-            foreach(IDictionary<string, object>? item in _items)
+            foreach(IDictionary<string, object>? item in this._items)
             {
                 item["Number"] = 1;
             }
             using ExcelPackage? package = new ExcelPackage();
             ExcelWorksheet? sheet = package.Workbook.Worksheets.Add("test");
-            ExcelRangeBase? r = sheet.Cells["A1"].LoadFromDictionaries(_items, c =>
+            ExcelRangeBase? r = sheet.Cells["A1"].LoadFromDictionaries(this._items, c =>
             {
                 c.PrintHeaders = false;
                 c.TableStyle = TableStyles.None;

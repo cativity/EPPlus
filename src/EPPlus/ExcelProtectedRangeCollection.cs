@@ -36,14 +36,14 @@ namespace OfficeOpenXml
         internal ExcelProtectedRangeCollection(ExcelWorksheet ws)
             : base(ws.NameSpaceManager, ws.TopNode)
         {
-            _ws = ws;
-            SchemaNodeOrder = ws.SchemaNodeOrder;
-            _collectionNode = (XmlElement)GetNode(_collectionNodePath);
-            if(_collectionNode!=null)
+            this._ws = ws;
+            this.SchemaNodeOrder = ws.SchemaNodeOrder;
+            this._collectionNode = (XmlElement)this.GetNode(_collectionNodePath);
+            if(this._collectionNode!=null)
             {
-                foreach (XmlNode node in _collectionNode.ChildNodes)
+                foreach (XmlNode node in this._collectionNode.ChildNodes)
                 {
-                    _list.Add(new ExcelProtectedRange(ws.NameSpaceManager, node));
+                    this._list.Add(new ExcelProtectedRange(ws.NameSpaceManager, node));
                 }
             }
         }
@@ -57,22 +57,22 @@ namespace OfficeOpenXml
         public ExcelProtectedRange Add(string name, ExcelAddress address)
         {
             XmlNode node;
-            if (_list.Count==0)
+            if (this._list.Count==0)
             {
-                node = CreateNode($"{_collectionNodePath}/d:{_itemNodePath}");
-                _collectionNode = (XmlElement)node.ParentNode;
+                node = this.CreateNode($"{_collectionNodePath}/d:{_itemNodePath}");
+                this._collectionNode = (XmlElement)node.ParentNode;
             }
             else
             {
-                node = _collectionNode.OwnerDocument.CreateElement(_itemNodePath, ExcelPackage.schemaMain);
-                _collectionNode.AppendChild(node);
+                node = this._collectionNode.OwnerDocument.CreateElement(_itemNodePath, ExcelPackage.schemaMain);
+                this._collectionNode.AppendChild(node);
             }
-            if(_list.Any(x=>x.Name.Equals(name, StringComparison.CurrentCultureIgnoreCase)))
+            if(this._list.Any(x=>x.Name.Equals(name, StringComparison.CurrentCultureIgnoreCase)))
             {
                 throw (new InvalidOperationException($"An item with name {name} already exists"));
             }
-            ExcelProtectedRange? pr = new ExcelProtectedRange(_ws.NameSpaceManager, node) { Name=name, Address=address };
-            _list.Add(pr);
+            ExcelProtectedRange? pr = new ExcelProtectedRange(this._ws.NameSpaceManager, node) { Name=name, Address=address };
+            this._list.Add(pr);
             return pr;
         }
         /// <summary>
@@ -80,8 +80,8 @@ namespace OfficeOpenXml
         /// </summary>
         public void Clear()
         {
-            DeleteNode(_collectionNodePath);
-            _list.Clear();
+            this.DeleteNode(_collectionNodePath);
+            this._list.Clear();
         }
         /// <summary>
         /// Checks if the collection contains a specific item.
@@ -90,7 +90,7 @@ namespace OfficeOpenXml
         /// <returns></returns>
         public bool Contains(ExcelProtectedRange item)
         {
-            return _list.Contains(item);
+            return this._list.Contains(item);
         }
         /// <summary>
         /// Copies the entire collection to a compatible one-dimensional
@@ -99,8 +99,8 @@ namespace OfficeOpenXml
         /// <param name="array">The array</param>
         /// <param name="arrayIndex">The index</param>
         public void CopyTo(ExcelProtectedRange[] array, int arrayIndex)
-        {   
-            _list.CopyTo(array, arrayIndex);
+        {
+            this._list.CopyTo(array, arrayIndex);
         }
 
         /// <summary>
@@ -108,7 +108,7 @@ namespace OfficeOpenXml
         /// </summary>
         public int Count
         {
-            get { return _list.Count; }
+            get { return this._list.Count; }
         }
         /// <summary>
         /// Remove the specified item from the collection
@@ -118,10 +118,10 @@ namespace OfficeOpenXml
         public bool Remove(ExcelProtectedRange item)
         {
             item.TopNode.ParentNode.RemoveChild(item.TopNode);            
-            bool ret = _list.Remove(item);
-            if (_list.Count==0)
+            bool ret = this._list.Remove(item);
+            if (this._list.Count==0)
             {
-                _collectionNode.ParentNode.RemoveChild(_collectionNode);
+                this._collectionNode.ParentNode.RemoveChild(this._collectionNode);
             }
             return ret;
         }
@@ -133,7 +133,7 @@ namespace OfficeOpenXml
         /// <returns></returns>
         public int IndexOf(ExcelProtectedRange item)
         {
-            return _list.IndexOf(item);
+            return this._list.IndexOf(item);
         }
 
         /// <summary>
@@ -142,11 +142,12 @@ namespace OfficeOpenXml
         /// <param name="index"></param>
         public void RemoveAt(int index)
         {
-            if(index<0 || index >= _list.Count)
+            if(index<0 || index >= this._list.Count)
             {
                 throw (new IndexOutOfRangeException());
             }
-            Remove(_list[index]);
+
+            this.Remove(this._list[index]);
         }
         /// <summary>
         /// Indexer for the collection
@@ -157,7 +158,7 @@ namespace OfficeOpenXml
         {
             get
             {
-                return _list[index];
+                return this._list[index];
             }
         }
         /// <summary>
@@ -166,7 +167,7 @@ namespace OfficeOpenXml
         /// <returns>The enumerator</returns>
         IEnumerator<ExcelProtectedRange> IEnumerable<ExcelProtectedRange>.GetEnumerator()
         {
-            return _list.GetEnumerator();
+            return this._list.GetEnumerator();
         }
         /// <summary>
         /// Get the enumerator
@@ -174,7 +175,7 @@ namespace OfficeOpenXml
         /// <returns>The enumerator</returns>
         System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator()
         {
-            return _list.GetEnumerator();
+            return this._list.GetEnumerator();
         }
     }
 }

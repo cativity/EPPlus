@@ -111,7 +111,7 @@ namespace OfficeOpenXml
         /// </summary>
         public ExcelTextFormat() : base()
         {
-            DataTypes=null;
+            this.DataTypes=null;
         }
         /// <summary>
         /// Datatypes list for each column (if column is not present Unknown is assumed)

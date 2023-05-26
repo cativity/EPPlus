@@ -32,8 +32,8 @@ namespace OfficeOpenXml.DataValidation
         internal ExcelDataValidationTime(string uid, string address, ExcelWorksheet ws)
             : base(uid, address, ws)
         {
-            Formula = new ExcelDataValidationFormulaTime(null, uid, ws.Name, OnFormulaChanged);
-            Formula2 = new ExcelDataValidationFormulaTime(null, uid, ws.Name, OnFormulaChanged);
+            this.Formula = new ExcelDataValidationFormulaTime(null, uid, ws.Name, this.OnFormulaChanged);
+            this.Formula2 = new ExcelDataValidationFormulaTime(null, uid, ws.Name, this.OnFormulaChanged);
         }
 
         /// <summary>
@@ -52,8 +52,8 @@ namespace OfficeOpenXml.DataValidation
         internal ExcelDataValidationTime(ExcelDataValidationTime copy, ExcelWorksheet ws) 
             : base(copy, ws)
         {
-            Formula = copy.Formula;
-            Formula2 = copy.Formula2;
+            this.Formula = copy.Formula;
+            this.Formula2 = copy.Formula2;
         }
 
         /// <summary>
@@ -63,12 +63,12 @@ namespace OfficeOpenXml.DataValidation
 
         internal override IExcelDataValidationFormulaTime DefineFormulaClassType(string formulaValue, string sheetName)
         {
-            return new ExcelDataValidationFormulaTime(formulaValue, Uid, sheetName, OnFormulaChanged);
+            return new ExcelDataValidationFormulaTime(formulaValue, this.Uid, sheetName, this.OnFormulaChanged);
         }
 
         internal override ExcelDataValidation GetClone()
         {
-            return new ExcelDataValidationTime(this, _ws);
+            return new ExcelDataValidationTime(this, this._ws);
         }
 
         internal override ExcelDataValidation GetClone(ExcelWorksheet copy)
@@ -78,7 +78,7 @@ namespace OfficeOpenXml.DataValidation
 
         ExcelDataValidationTime Clone()
         {
-            return (ExcelDataValidationTime)GetClone();
+            return (ExcelDataValidationTime)this.GetClone();
         }
     }
 }

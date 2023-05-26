@@ -32,11 +32,11 @@ namespace OfficeOpenXml.Table.PivotTable
         {
             get
             {
-                return (double)GetXmlNodeDoubleNull(startPath);
+                return (double)this.GetXmlNodeDoubleNull(startPath);
             }
             private set
             {
-                SetXmlNodeString(startPath,value.ToString(CultureInfo.InvariantCulture));
+                this.SetXmlNodeString(startPath,value.ToString(CultureInfo.InvariantCulture));
             }
         }
         const string endPath = "d:fieldGroup/d:rangePr/@endNum";
@@ -47,11 +47,11 @@ namespace OfficeOpenXml.Table.PivotTable
         {
             get
             {
-                return (double)GetXmlNodeDoubleNull(endPath);
+                return (double)this.GetXmlNodeDoubleNull(endPath);
             }
             private set
             {
-                SetXmlNodeString(endPath, value.ToString(CultureInfo.InvariantCulture));
+                this.SetXmlNodeString(endPath, value.ToString(CultureInfo.InvariantCulture));
             }
         }
         const string groupIntervalPath = "d:fieldGroup/d:rangePr/@groupInterval";
@@ -62,11 +62,11 @@ namespace OfficeOpenXml.Table.PivotTable
         {
             get
             {
-                return (double)GetXmlNodeDoubleNull(groupIntervalPath);
+                return (double)this.GetXmlNodeDoubleNull(groupIntervalPath);
             }
             private set
             {
-                SetXmlNodeString(groupIntervalPath, value.ToString(CultureInfo.InvariantCulture));
+                this.SetXmlNodeString(groupIntervalPath, value.ToString(CultureInfo.InvariantCulture));
             }
         }
     }

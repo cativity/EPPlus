@@ -29,14 +29,14 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Finance
         public override CompileResult Execute(IEnumerable<FunctionArgument> arguments, ParsingContext context)
         {
             ValidateArguments(arguments, 4);
-            double cost = ArgToDecimal(arguments, 0);
-            double salvage = ArgToDecimal(arguments, 1);
-            double life = ArgToDecimal(arguments, 2);
-            double period = ArgToDecimal(arguments, 3);
+            double cost = this.ArgToDecimal(arguments, 0);
+            double salvage = this.ArgToDecimal(arguments, 1);
+            double life = this.ArgToDecimal(arguments, 2);
+            double period = this.ArgToDecimal(arguments, 3);
             int month = 12;
             if (arguments.Count() >= 5)
             {
-                month = ArgToInt(arguments, 4);
+                month = this.ArgToInt(arguments, 4);
             }
 
             if (cost < 0 || salvage < 0 || life <= 0 || period <= 0 || month <= 0 || month > 12)
@@ -82,11 +82,11 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Finance
                     // For the last period, DB uses this formula: ((cost - total depreciation from prior periods) * rate * (12 - month)) / 12
                     result = currentPeriodDepr  * (12 - month) / 12;
                 }
-                return CreateResult(result, DataType.Decimal);
+                return this.CreateResult(result, DataType.Decimal);
             }
             else
             {
-                return CreateResult(currentPeriodDepr, DataType.Decimal);
+                return this.CreateResult(currentPeriodDepr, DataType.Decimal);
             }
         }
     }

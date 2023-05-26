@@ -52,7 +52,7 @@ namespace OfficeOpenXml.Filter
         /// <summary>
         /// Zero-based index indicating the AutoFilter column to which this filter information applies
         /// </summary>
-        public int Position { get => GetXmlNodeInt("@colId"); }
+        public int Position { get => this.GetXmlNodeInt("@colId"); }
         const string _hiddenButtonPath = "@hiddenButton";
         /// <summary>
         /// If true the AutoFilter button for this column is hidden.
@@ -61,11 +61,11 @@ namespace OfficeOpenXml.Filter
         {
             get
             {
-                return GetXmlNodeBool(_hiddenButtonPath);
+                return this.GetXmlNodeBool(_hiddenButtonPath);
             }
             set
             {
-                SetXmlNodeBool(_hiddenButtonPath, value, false);
+                this.SetXmlNodeBool(_hiddenButtonPath, value, false);
             }
         }
         const string _showButtonPath = "@showButton";
@@ -76,11 +76,11 @@ namespace OfficeOpenXml.Filter
         {
             get
             {
-                return GetXmlNodeBool(_showButtonPath);
+                return this.GetXmlNodeBool(_showButtonPath);
             }
             set
             {
-                SetXmlNodeBool(_showButtonPath, value, true);
+                this.SetXmlNodeBool(_showButtonPath, value, true);
             }
         }
 

@@ -29,7 +29,7 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Math
         {
             ValidateArguments(arguments, 1);
             double result = 0d;
-            double val = ArgToDecimal(arguments, 0);
+            double val = this.ArgToDecimal(arguments, 0);
             if (val < 0)
             {
                 result = -1;
@@ -38,7 +38,7 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Math
             {
                 result = 1;
             }
-            return CreateResult(result, DataType.Decimal);
+            return this.CreateResult(result, DataType.Decimal);
         }
     }
 }

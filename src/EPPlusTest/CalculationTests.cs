@@ -432,7 +432,7 @@ namespace EPPlusTest
             List<Tuple<string, object, object>>? errors = new List<Tuple<string, object, object>>();
             ExcelWorksheet sheet = null;
             string adr = "";
-            StreamWriter? fileErr = new System.IO.StreamWriter(new FileStream("c:\\temp\\err.txt", FileMode.Append));
+            StreamWriter? fileErr = new StreamWriter(new FileStream("c:\\temp\\err.txt", FileMode.Append));
             foreach (string? cell in fr.Keys)
             {
                 try
@@ -446,7 +446,7 @@ namespace EPPlusTest
                         double d1 = Convert.ToDouble(fr[cell]);
                         double d2 = Convert.ToDouble(sheet.Cells[adr].Value);
                         //if (Math.Abs(d1 - d2) < double.Epsilon)
-                        if (double.Equals(d1, d2))
+                        if (Equals(d1, d2))
                         {
                             continue;
                         }

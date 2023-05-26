@@ -30,14 +30,14 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Statistical
         public override CompileResult Execute(IEnumerable<FunctionArgument> arguments, ParsingContext context)
         {
             ValidateArguments(arguments, 1);
-            double n = ArgToDecimal(arguments, 0);
+            double n = this.ArgToDecimal(arguments, 0);
             if (n <= 0)
             {
                 return this.CreateResult(eErrorType.Num);
             }
 
             double result = GammaHelper.gamma(n);
-            return CreateResult(result, DataType.Decimal);
+            return this.CreateResult(result, DataType.Decimal);
         }
     }
 }

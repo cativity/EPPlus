@@ -59,30 +59,30 @@ namespace OfficeOpenXml.ConditionalFormatting
     {
         if(itemElementNode!=null && itemElementNode.HasChildNodes)
         {
-            XmlNode iconNode4 = TopNode.SelectSingleNode("d:iconSet/d:cfvo[position()=4]", NameSpaceManager);
-            Icon4 = new ExcelConditionalFormattingIconDataBarValue(
-                    eExcelConditionalFormattingRuleType.FourIconSet,
-                    address,
-                    worksheet,
-                    iconNode4,
-                    namespaceManager);
+            XmlNode iconNode4 = this.TopNode.SelectSingleNode("d:iconSet/d:cfvo[position()=4]", this.NameSpaceManager);
+
+            this.Icon4 = new ExcelConditionalFormattingIconDataBarValue(
+                                                                        eExcelConditionalFormattingRuleType.FourIconSet,
+                                                                        address,
+                                                                        worksheet,
+                                                                        iconNode4,
+                                                                        namespaceManager);
         }
         else
         {
-            XmlNode iconSetNode = TopNode.SelectSingleNode("d:iconSet", NameSpaceManager);
+            XmlNode iconSetNode = this.TopNode.SelectSingleNode("d:iconSet", this.NameSpaceManager);
             XmlElement? iconNode4 = iconSetNode.OwnerDocument.CreateElement(ExcelConditionalFormattingConstants.Paths.Cfvo, ExcelPackage.schemaMain);
             iconSetNode.AppendChild(iconNode4);
 
-
-            Icon4 = new ExcelConditionalFormattingIconDataBarValue(eExcelConditionalFormattingValueObjectType.Percent,
-                    75,
-                    "",
-                    eExcelConditionalFormattingRuleType.ThreeIconSet,
-                    address,
-                    priority,
-                    worksheet,
-                    iconNode4,
-                    namespaceManager);
+            this.Icon4 = new ExcelConditionalFormattingIconDataBarValue(eExcelConditionalFormattingValueObjectType.Percent,
+                                                                        75,
+                                                                        "",
+                                                                        eExcelConditionalFormattingRuleType.ThreeIconSet,
+                                                                        address,
+                                                                        priority,
+                                                                        worksheet,
+                                                                        iconNode4,
+                                                                        namespaceManager);
         }
     }
 

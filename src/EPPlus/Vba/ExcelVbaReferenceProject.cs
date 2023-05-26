@@ -23,7 +23,7 @@ namespace OfficeOpenXml.VBA
         /// </summary>
         public ExcelVbaReferenceProject()
         {
-            ReferenceRecordID = 0x0E;
+            this.ReferenceRecordID = 0x0E;
         }
         /// <summary>
         /// LibIdRelative

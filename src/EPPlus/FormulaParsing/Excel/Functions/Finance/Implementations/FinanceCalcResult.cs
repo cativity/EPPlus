@@ -21,34 +21,34 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Finance.Implementations
     {
         public FinanceCalcResult(T result)
         {
-            Result = result;
+            this.Result = result;
             if(result is double)
             {
-                DataType = DataType.Decimal;
+                this.DataType = DataType.Decimal;
             }
             else if(result is int)
             {
-                DataType = DataType.Integer;
+                this.DataType = DataType.Integer;
             }
             else if(result is System.DateTime)
             {
-                DataType = DataType.Date;
+                this.DataType = DataType.Date;
             }
             else
             {
-                DataType = DataType.Unknown;
+                this.DataType = DataType.Unknown;
             }
         }
         public FinanceCalcResult(T result, DataType dataType)
         {
-            Result = result;
-            DataType = dataType;
+            this.Result = result;
+            this.DataType = dataType;
         }
 
         public FinanceCalcResult(eErrorType error)
         {
-            HasError = true;
-            ExcelErrorType = error;
+            this.HasError = true;
+            this.ExcelErrorType = error;
         }
 
         public T Result { get; private set; }

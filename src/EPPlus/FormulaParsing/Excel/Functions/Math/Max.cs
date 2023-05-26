@@ -27,17 +27,17 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Math
     {
         public Max() : base()
         {
-            IgnoreErrors = false;
+            this.IgnoreErrors = false;
         }
         public override CompileResult Execute(IEnumerable<FunctionArgument> arguments, ParsingContext context)
         {
             ValidateArguments(arguments, 1);
-            IEnumerable<ExcelDoubleCellValue>? values = ArgsToDoubleEnumerable(IgnoreHiddenValues, IgnoreErrors, arguments, context);
+            IEnumerable<ExcelDoubleCellValue>? values = this.ArgsToDoubleEnumerable(this.IgnoreHiddenValues, this.IgnoreErrors, arguments, context);
             if (!values.Any())
             {
-                return CreateResult(0d, DataType.Decimal);
+                return this.CreateResult(0d, DataType.Decimal);
             }
-            return CreateResult(values.Max(), DataType.Decimal);
+            return this.CreateResult(values.Max(), DataType.Decimal);
         }
     }
 }

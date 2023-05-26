@@ -30,16 +30,16 @@ namespace OfficeOpenXml.ThreadedComments
         /// <param name="topNode">The <see cref="XmlNode"/> representing the parent element of the collection</param>
         internal ExcelThreadedCommentMentionCollection(XmlNamespaceManager nameSpaceManager, XmlNode topNode) : base(nameSpaceManager, topNode)
         {
-            LoadMentions();
+            this.LoadMentions();
         }
 
         private readonly List<ExcelThreadedCommentMention> _mentionList = new List<ExcelThreadedCommentMention>();
 
         private void LoadMentions()
         {
-            foreach(object? mentionNode in TopNode.ChildNodes)
+            foreach(object? mentionNode in this.TopNode.ChildNodes)
             {
-                _mentionList.Add(new ExcelThreadedCommentMention(NameSpaceManager, (XmlNode)mentionNode));
+                this._mentionList.Add(new ExcelThreadedCommentMention(this.NameSpaceManager, (XmlNode)mentionNode));
             }
         }
 
@@ -49,7 +49,7 @@ namespace OfficeOpenXml.ThreadedComments
         /// <returns>An enumerator that can be used to iterate through the collection.</returns>
         public IEnumerator<ExcelThreadedCommentMention> GetEnumerator()
         {
-            return _mentionList.GetEnumerator();
+            return this._mentionList.GetEnumerator();
         }
 
         /// <summary>
@@ -58,7 +58,7 @@ namespace OfficeOpenXml.ThreadedComments
         /// <returns>An enumerator that can be used to iterate through the collection.</returns>
         IEnumerator IEnumerable.GetEnumerator()
         {
-            return _mentionList.GetEnumerator();
+            return this._mentionList.GetEnumerator();
         }
 
         /// <summary>
@@ -68,15 +68,15 @@ namespace OfficeOpenXml.ThreadedComments
         /// <param name="textPosition">Index of the first character of the mention in the text</param>
         internal void AddMention(ExcelThreadedCommentPerson person, int textPosition)
         {
-            XmlElement? elem = TopNode.OwnerDocument.CreateElement("mention", ExcelPackage.schemaThreadedComments);
-            TopNode.AppendChild(elem);
-            ExcelThreadedCommentMention? mention = new ExcelThreadedCommentMention(NameSpaceManager, elem);
+            XmlElement? elem = this.TopNode.OwnerDocument.CreateElement("mention", ExcelPackage.schemaThreadedComments);
+            this.TopNode.AppendChild(elem);
+            ExcelThreadedCommentMention? mention = new ExcelThreadedCommentMention(this.NameSpaceManager, elem);
             mention.MentionId = ExcelThreadedCommentMention.NewId();
             mention.StartIndex = textPosition;
             // + 1 to include the @ prefix...
             mention.Length = person.DisplayName.Length + 1;
             mention.MentionPersonId = person.Id;
-            _mentionList.Add(mention);
+            this._mentionList.Add(mention);
         }
 
         /// <summary>
@@ -84,9 +84,9 @@ namespace OfficeOpenXml.ThreadedComments
         /// </summary>
         internal void SortAndAddMentionsToXml()
         {
-            _mentionList.Sort((x, y) => x.StartIndex.CompareTo(y.StartIndex));
-            TopNode.RemoveAll();
-            _mentionList.ForEach(x => TopNode.AppendChild(x.TopNode));
+            this._mentionList.Sort((x, y) => x.StartIndex.CompareTo(y.StartIndex));
+            this.TopNode.RemoveAll();
+            this._mentionList.ForEach(x => this.TopNode.AppendChild(x.TopNode));
         }
 
         /// <summary>
@@ -94,8 +94,8 @@ namespace OfficeOpenXml.ThreadedComments
         /// </summary>
         internal void Clear()
         {
-            _mentionList.Clear();
-            TopNode.RemoveAll();
+            this._mentionList.Clear();
+            this.TopNode.RemoveAll();
         }
 
         /// <summary>
@@ -104,7 +104,7 @@ namespace OfficeOpenXml.ThreadedComments
         /// <returns>A string that represents the current object.</returns>
         public override string ToString()
         {
-            return "Count = " + _mentionList.Count;
+            return "Count = " + this._mentionList.Count;
         }
     }
 }

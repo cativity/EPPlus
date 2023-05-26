@@ -23,7 +23,7 @@ namespace OfficeOpenXml.Drawing.Chart.ChartEx
         private readonly ExcelChart _chart;
         internal ExcelChartExParetoLine(ExcelChart chart, XmlNamespaceManager nsm, XmlNode node) : base(chart, nsm, node, "cx:spPr/a:ln", new string[] { "spPr", "axisId" })
         {
-            _chart = chart;
+            this._chart = chart;
         }
         ExcelDrawingEffectStyle _effect = null;
         /// <summary>
@@ -33,11 +33,11 @@ namespace OfficeOpenXml.Drawing.Chart.ChartEx
         {
             get
             {
-                if (_effect == null)
+                if (this._effect == null)
                 {
-                    _effect = new ExcelDrawingEffectStyle(_chart, NameSpaceManager, TopNode, "cx:spPr/a:effectLst", SchemaNodeOrder);
+                    this._effect = new ExcelDrawingEffectStyle(this._chart, this.NameSpaceManager, this.TopNode, "cx:spPr/a:effectLst", this.SchemaNodeOrder);
                 }
-                return _effect;
+                return this._effect;
             }
         }
     }

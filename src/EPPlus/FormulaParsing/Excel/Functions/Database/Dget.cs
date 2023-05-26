@@ -54,7 +54,7 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Database
             while (db.HasMoreRows)
             {
                 ExcelDatabaseRow? dataRow = db.Read();
-                if (!RowMatcher.IsMatch(dataRow, criteria))
+                if (!this.RowMatcher.IsMatch(dataRow, criteria))
                 {
                     continue;
                 }

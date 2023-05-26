@@ -24,15 +24,15 @@ namespace OfficeOpenXml.Vba.ContentHash
     {
         public ContentHashInputProvider(ExcelVbaProject project)
         {
-            _project = project;
-            _hashEncoding = System.Text.Encoding.GetEncoding(Project.CodePage);
+            this._project = project;
+            this._hashEncoding = Encoding.GetEncoding(this.Project.CodePage);
         }
 
         private readonly ExcelVbaProject _project;
         private readonly Encoding _hashEncoding; 
 
-        protected ExcelVbaProject Project => _project;
-        protected Encoding HashEncoding => _hashEncoding;
+        protected ExcelVbaProject Project => this._project;
+        protected Encoding HashEncoding => this._hashEncoding;
 
         public void CreateHashInput(MemoryStream ms)
         {
@@ -40,7 +40,8 @@ namespace OfficeOpenXml.Vba.ContentHash
             {
                 ms = RecyclableMemory.GetStream();
             }
-            CreateHashInputInternal(ms);
+
+            this.CreateHashInputInternal(ms);
         }
 
         protected abstract void CreateHashInputInternal(MemoryStream s);

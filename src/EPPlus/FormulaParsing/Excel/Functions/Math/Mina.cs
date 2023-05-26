@@ -36,13 +36,13 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Math
         public Mina(DoubleEnumerableArgConverter argConverter)
         {
             Require.That(argConverter).Named("argConverter").IsNotNull();
-            _argConverter = argConverter;
+            this._argConverter = argConverter;
         }
         public override CompileResult Execute(IEnumerable<FunctionArgument> arguments, ParsingContext context)
         {
             ValidateArguments(arguments, 1);
-            IEnumerable<ExcelDoubleCellValue>? values = _argConverter.ConvertArgsIncludingOtherTypes(arguments, false);
-            return CreateResult(values.Min(), DataType.Decimal);
+            IEnumerable<ExcelDoubleCellValue>? values = this._argConverter.ConvertArgsIncludingOtherTypes(arguments, false);
+            return this.CreateResult(values.Min(), DataType.Decimal);
         }
     }
 }

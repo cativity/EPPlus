@@ -32,7 +32,7 @@ namespace OfficeOpenXml.Drawing.Slicer
         internal ExcelPivotTableField _field=null;
         internal ExcelPivotTableSlicerCache(XmlNamespaceManager nameSpaceManager) : base(nameSpaceManager)
         {
-            PivotTables = new ExcelSlicerPivotTableCollection(this);
+            this.PivotTables = new ExcelSlicerPivotTableCollection(this);
         }
 
         internal void Init(ExcelWorkbook wb, string name, ExcelPivotTableField field)
@@ -42,16 +42,16 @@ namespace OfficeOpenXml.Drawing.Slicer
                 wb.LoadSlicerCaches();
             }
 
-            CreatePart(wb);
-            TopNode = SlicerCacheXml.DocumentElement;
-            Name = "Slicer_" + ExcelAddressUtil.GetValidName(name);
-            _field = field;
-            SourceName = _field.Cache.Name;
-            wb.Names.AddFormula(Name, "#N/A");
-            PivotTables.Add(_field._pivotTable);           
-            CreateWorkbookReference(wb, ExtLstUris.WorkbookSlicerPivotTableUri);
-            SlicerCacheXml.Save(Part.GetStream());
-            Data.Items.Refresh();
+            this.CreatePart(wb);
+            this.TopNode = this.SlicerCacheXml.DocumentElement;
+            this.Name = "Slicer_" + ExcelAddressUtil.GetValidName(name);
+            this._field = field;
+            this.SourceName = this._field.Cache.Name;
+            wb.Names.AddFormula(this.Name, "#N/A");
+            this.PivotTables.Add(this._field._pivotTable);
+            this.CreateWorkbookReference(wb, ExtLstUris.WorkbookSlicerPivotTableUri);
+            this.SlicerCacheXml.Save(this.Part.GetStream());
+            this.Data.Items.Refresh();
         }
         /// <summary>
         /// Init must be called before accessing any properties as it sets several properties.
@@ -59,7 +59,7 @@ namespace OfficeOpenXml.Drawing.Slicer
         /// <param name="wb"></param>
         internal override void Init(ExcelWorkbook wb)
         {
-            foreach (XmlElement ptElement in GetNodes("x14:pivotTables/x14:pivotTable"))
+            foreach (XmlElement ptElement in this.GetNodes("x14:pivotTables/x14:pivotTable"))
             {
                 string? name = ptElement.GetAttribute("name");
                 string? tabId = ptElement.GetAttribute("tabId");
@@ -70,20 +70,20 @@ namespace OfficeOpenXml.Drawing.Slicer
                     ExcelPivotTable? pt = ws?.PivotTables[name];
                     if(pt!=null)
                     {
-                        if (_field == null)
+                        if (this._field == null)
                         {
-                            _field = pt.Fields.Where(x => x.Cache.Name == SourceName).FirstOrDefault();
+                            this._field = pt.Fields.Where(x => x.Cache.Name == this.SourceName).FirstOrDefault();
                         }
 
-                        PivotTables._list.Add(pt);
+                        this.PivotTables._list.Add(pt);
                     }
                 }
             }
         }
         internal void Init(ExcelWorkbook wb, ExcelPivotTableSlicer slicer)
         {
-            _field = PivotTables[0].Fields.Where(x=>x.Cache.Name==SourceName).FirstOrDefault();
-            Init(wb);
+            this._field = this.PivotTables[0].Fields.Where(x=>x.Cache.Name== this.SourceName).FirstOrDefault();
+            this.Init(wb);
         }
         /// <summary>
         /// The source type of the slicer
@@ -107,24 +107,24 @@ namespace OfficeOpenXml.Drawing.Slicer
         { 
             get
             {
-                if(_data==null)
+                if(this._data==null)
                 {
-                    _data = new ExcelPivotTableSlicerCacheTabularData(NameSpaceManager, TopNode, this);
+                    this._data = new ExcelPivotTableSlicerCacheTabularData(this.NameSpaceManager, this.TopNode, this);
                 }
-                return _data;
+                return this._data;
             }
         }
 
         internal void UpdateItemsXml()
         {
            StringBuilder? sb = new StringBuilder();
-            foreach(ExcelPivotTable? pt in PivotTables)
+            foreach(ExcelPivotTable? pt in this.PivotTables)
             {
                 sb.Append($"<pivotTable name=\"{pt.Name}\" tabId=\"{pt.WorkSheet.SheetId}\"/>");
             }
-            XmlNode? ptNode = CreateNode("x14:pivotTables");
+            XmlNode? ptNode = this.CreateNode("x14:pivotTables");
             ptNode.InnerXml = sb.ToString();
-            Data.UpdateItemsXml();
+            this.Data.UpdateItemsXml();
         }
     }
 }

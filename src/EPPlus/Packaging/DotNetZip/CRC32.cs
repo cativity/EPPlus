@@ -56,7 +56,7 @@ namespace OfficeOpenXml.Packaging.Ionic.Crc
         {
             get
             {
-                return _TotalBytesRead;
+                return this._TotalBytesRead;
             }
         }
 
@@ -67,7 +67,7 @@ namespace OfficeOpenXml.Packaging.Ionic.Crc
         {
             get
             {
-                return unchecked((Int32)(~_register));
+                return unchecked((Int32)(~this._register));
             }
         }
 
@@ -78,7 +78,7 @@ namespace OfficeOpenXml.Packaging.Ionic.Crc
         /// <returns>the CRC32 calculation</returns>
         public Int32 GetCrc32(System.IO.Stream input)
         {
-            return GetCrc32AndCopy(input, null);
+            return this.GetCrc32AndCopy(input, null);
         }
 
         /// <summary>
@@ -100,27 +100,27 @@ namespace OfficeOpenXml.Packaging.Ionic.Crc
                 byte[] buffer = new byte[BUFFER_SIZE];
                 int readSize = BUFFER_SIZE;
 
-                _TotalBytesRead = 0;
+                this._TotalBytesRead = 0;
                 int count = input.Read(buffer, 0, readSize);
                 if (output != null)
                 {
                     output.Write(buffer, 0, count);
                 }
 
-                _TotalBytesRead += count;
+                this._TotalBytesRead += count;
                 while (count > 0)
                 {
-                    SlurpBlock(buffer, 0, count);
+                    this.SlurpBlock(buffer, 0, count);
                     count = input.Read(buffer, 0, readSize);
                     if (output != null)
                     {
                         output.Write(buffer, 0, count);
                     }
 
-                    _TotalBytesRead += count;
+                    this._TotalBytesRead += count;
                 }
 
-                return (Int32)(~_register);
+                return (Int32)(~this._register);
             }
         }
 
@@ -134,12 +134,12 @@ namespace OfficeOpenXml.Packaging.Ionic.Crc
         /// <returns>The CRC-ized result.</returns>
         public Int32 ComputeCrc32(Int32 W, byte B)
         {
-            return _InternalComputeCrc32((UInt32)W, B);
+            return this._InternalComputeCrc32((UInt32)W, B);
         }
 
         internal Int32 _InternalComputeCrc32(UInt32 W, byte B)
         {
-            return (Int32)(crc32Table[(W ^ B) & 0xFF] ^ (W >> 8));
+            return (Int32)(this.crc32Table[(W ^ B) & 0xFF] ^ (W >> 8));
         }
 
 
@@ -164,16 +164,17 @@ namespace OfficeOpenXml.Packaging.Ionic.Crc
                 byte b = block[x];
                 if (this.reverseBits)
                 {
-                    UInt32 temp = (_register >> 24) ^ b;
-                    _register = (_register << 8) ^ crc32Table[temp];
+                    UInt32 temp = (this._register >> 24) ^ b;
+                    this._register = (this._register << 8) ^ this.crc32Table[temp];
                 }
                 else
                 {
-                    UInt32 temp = (_register & 0x000000FF) ^ b;
-                    _register = (_register >> 8) ^ crc32Table[temp];
+                    UInt32 temp = (this._register & 0x000000FF) ^ b;
+                    this._register = (this._register >> 8) ^ this.crc32Table[temp];
                 }
             }
-            _TotalBytesRead += count;
+
+            this._TotalBytesRead += count;
         }
 
 
@@ -185,13 +186,13 @@ namespace OfficeOpenXml.Packaging.Ionic.Crc
         {
             if (this.reverseBits)
             {
-                UInt32 temp = (_register >> 24) ^ b;
-                _register = (_register << 8) ^ crc32Table[temp];
+                UInt32 temp = (this._register >> 24) ^ b;
+                this._register = (this._register << 8) ^ this.crc32Table[temp];
             }
             else
             {
-                UInt32 temp = (_register & 0x000000FF) ^ b;
-                _register = (_register >> 8) ^ crc32Table[temp];
+                UInt32 temp = (this._register & 0x000000FF) ^ b;
+                this._register = (this._register >> 8) ^ this.crc32Table[temp];
             }
         }
 
@@ -215,17 +216,19 @@ namespace OfficeOpenXml.Packaging.Ionic.Crc
             {
                 if (this.reverseBits)
                 {
-                    uint temp = (_register >> 24) ^ b;
-                    _register = (_register << 8) ^ crc32Table[(temp >= 0)
-                                                              ? temp
-                                                              : (temp + 256)];
+                    uint temp = (this._register >> 24) ^ b;
+
+                    this._register = (this._register << 8) ^ this.crc32Table[(temp >= 0)
+                                                                                 ? temp
+                                                                                 : (temp + 256)];
                 }
                 else
                 {
-                    UInt32 temp = (_register & 0x000000FF) ^ b;
-                    _register = (_register >> 8) ^ crc32Table[(temp >= 0)
-                                                              ? temp
-                                                              : (temp + 256)];
+                    UInt32 temp = (this._register & 0x000000FF) ^ b;
+
+                    this._register = (this._register >> 8) ^ this.crc32Table[(temp >= 0)
+                                                                                 ? temp
+                                                                                 : (temp + 256)];
 
                 }
             }
@@ -262,7 +265,7 @@ namespace OfficeOpenXml.Packaging.Ionic.Crc
 
         private void GenerateLookupTable()
         {
-            crc32Table = new UInt32[256];
+            this.crc32Table = new UInt32[256];
             unchecked
             {
                 UInt32 dwCrc;
@@ -274,20 +277,20 @@ namespace OfficeOpenXml.Packaging.Ionic.Crc
                     {
                         if ((dwCrc & 1) == 1)
                         {
-                            dwCrc = (dwCrc >> 1) ^ dwPolynomial;
+                            dwCrc = (dwCrc >> 1) ^ this.dwPolynomial;
                         }
                         else
                         {
                             dwCrc >>= 1;
                         }
                     }
-                    if (reverseBits)
+                    if (this.reverseBits)
                     {
-                        crc32Table[ReverseBits(i)] = ReverseBits(dwCrc);
+                        this.crc32Table[ReverseBits(i)] = ReverseBits(dwCrc);
                     }
                     else
                     {
-                        crc32Table[i] = dwCrc;
+                        this.crc32Table[i] = dwCrc;
                     }
                     i++;
                 } while (i!=0);
@@ -359,7 +362,7 @@ namespace OfficeOpenXml.Packaging.Ionic.Crc
                 return;
             }
 
-            uint crc1= ~_register;
+            uint crc1= ~this._register;
             uint crc2= (uint) crc;
 
             // put operator for one zero bit in odd
@@ -411,7 +414,7 @@ namespace OfficeOpenXml.Packaging.Ionic.Crc
 
             crc1 ^= crc2;
 
-            _register= ~crc1;
+            this._register= ~crc1;
 
             //return (int) crc1;
             return;
@@ -491,7 +494,7 @@ namespace OfficeOpenXml.Packaging.Ionic.Crc
         /// </remarks>
         public void Reset()
         {
-            _register = 0xFFFFFFFFU;
+            this._register = 0xFFFFFFFFU;
         }
 
         // private member vars
@@ -523,7 +526,7 @@ namespace OfficeOpenXml.Packaging.Ionic.Crc
     /// DotNetZip library.
     /// </para>
     /// </remarks>
-    internal class CrcCalculatorStream : System.IO.Stream, System.IDisposable
+    internal class CrcCalculatorStream : System.IO.Stream, IDisposable
     {
         private static readonly Int64 UnsetLengthLimit = -99;
 
@@ -544,7 +547,7 @@ namespace OfficeOpenXml.Packaging.Ionic.Crc
         /// </remarks>
         /// <param name="stream">The underlying stream</param>
         public CrcCalculatorStream(System.IO.Stream stream)
-            : this(true, CrcCalculatorStream.UnsetLengthLimit, stream, null)
+            : this(true, UnsetLengthLimit, stream, null)
         {
         }
 
@@ -562,7 +565,7 @@ namespace OfficeOpenXml.Packaging.Ionic.Crc
         /// <param name="leaveOpen">true to leave the underlying stream
         /// open upon close of the <c>CrcCalculatorStream</c>; false otherwise.</param>
         public CrcCalculatorStream(System.IO.Stream stream, bool leaveOpen)
-            : this(leaveOpen, CrcCalculatorStream.UnsetLengthLimit, stream, null)
+            : this(leaveOpen, UnsetLengthLimit, stream, null)
         {
         }
 
@@ -651,10 +654,10 @@ namespace OfficeOpenXml.Packaging.Ionic.Crc
             (bool leaveOpen, Int64 length, System.IO.Stream stream, CRC32 crc32)
             : base()
         {
-            _innerStream = stream;
-            _Crc32 = crc32 ?? new CRC32();
-            _lengthLimit = length;
-            _leaveOpen = leaveOpen;
+            this._innerStream = stream;
+            this._Crc32 = crc32 ?? new CRC32();
+            this._lengthLimit = length;
+            this._leaveOpen = leaveOpen;
         }
 
 
@@ -668,7 +671,7 @@ namespace OfficeOpenXml.Packaging.Ionic.Crc
         /// </remarks>
         public Int64 TotalBytesSlurped
         {
-            get { return _Crc32.TotalBytesRead; }
+            get { return this._Crc32.TotalBytesRead; }
         }
 
         /// <summary>
@@ -683,7 +686,7 @@ namespace OfficeOpenXml.Packaging.Ionic.Crc
         /// </remarks>
         public Int32 Crc
         {
-            get { return _Crc32.Crc32Result; }
+            get { return this._Crc32.Crc32Result; }
         }
 
         /// <summary>
@@ -692,8 +695,8 @@ namespace OfficeOpenXml.Packaging.Ionic.Crc
         /// </summary>
         public bool LeaveOpen
         {
-            get { return _leaveOpen; }
-            set { _leaveOpen = value; }
+            get { return this._leaveOpen; }
+            set { this._leaveOpen = value; }
         }
 
         /// <summary>
@@ -715,20 +718,20 @@ namespace OfficeOpenXml.Packaging.Ionic.Crc
             // calling ReadToEnd() on it, We can "over-read" the zip data and get a
             // corrupt string.  The length limits that, prevents that problem.
 
-            if (_lengthLimit != CrcCalculatorStream.UnsetLengthLimit)
+            if (this._lengthLimit != UnsetLengthLimit)
             {
-                if (_Crc32.TotalBytesRead >= _lengthLimit)
+                if (this._Crc32.TotalBytesRead >= this._lengthLimit)
                 {
                     return 0; // EOF
                 }
 
-                Int64 bytesRemaining = _lengthLimit - _Crc32.TotalBytesRead;
+                Int64 bytesRemaining = this._lengthLimit - this._Crc32.TotalBytesRead;
                 if (bytesRemaining < count)
                 {
                     bytesToRead = (int)bytesRemaining;
                 }
             }
-            int n = _innerStream.Read(buffer, offset, bytesToRead);
+            int n = this._innerStream.Read(buffer, offset, bytesToRead);
             if (n > 0)
             {
                 this._Crc32.SlurpBlock(buffer, offset, n);
@@ -750,7 +753,7 @@ namespace OfficeOpenXml.Packaging.Ionic.Crc
                 this._Crc32.SlurpBlock(buffer, offset, count);
             }
 
-            _innerStream.Write(buffer, offset, count);
+            this._innerStream.Write(buffer, offset, count);
         }
 
         /// <summary>
@@ -758,7 +761,7 @@ namespace OfficeOpenXml.Packaging.Ionic.Crc
         /// </summary>
         public override bool CanRead
         {
-            get { return _innerStream.CanRead; }
+            get { return this._innerStream.CanRead; }
         }
 
         /// <summary>
@@ -779,7 +782,7 @@ namespace OfficeOpenXml.Packaging.Ionic.Crc
         /// </summary>
         public override bool CanWrite
         {
-            get { return _innerStream.CanWrite; }
+            get { return this._innerStream.CanWrite; }
         }
 
         /// <summary>
@@ -787,7 +790,7 @@ namespace OfficeOpenXml.Packaging.Ionic.Crc
         /// </summary>
         public override void Flush()
         {
-            _innerStream.Flush();
+            this._innerStream.Flush();
         }
 
         /// <summary>
@@ -797,7 +800,7 @@ namespace OfficeOpenXml.Packaging.Ionic.Crc
         {
             get
             {
-                if (_lengthLimit == CrcCalculatorStream.UnsetLengthLimit)
+                if (this._lengthLimit == UnsetLengthLimit)
                 {
                     return this._innerStream.Length;
                 }
@@ -815,7 +818,7 @@ namespace OfficeOpenXml.Packaging.Ionic.Crc
         /// </summary>
         public override long Position
         {
-            get { return _Crc32.TotalBytesRead; }
+            get { return this._Crc32.TotalBytesRead; }
             set { throw new NotSupportedException(); }
         }
 

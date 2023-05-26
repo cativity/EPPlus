@@ -22,23 +22,23 @@ namespace OfficeOpenXml.Table.PivotTable
     {
         internal ExcelPivotAreaStyleConditions(XmlNamespaceManager nsm, XmlNode topNode, ExcelPivotTable pt)
         {
-            Fields = new ExcelPivotAreaReferenceCollection(nsm, topNode, pt);
+            this.Fields = new ExcelPivotAreaReferenceCollection(nsm, topNode, pt);
             XmlHelper? xh = XmlHelperFactory.Create(nsm, topNode);
             foreach (XmlElement n in xh.GetNodes("d:references/d:reference"))
             {
                 if (n.GetAttribute("field") == "4294967294")
                 {
-                    DataFields = new ExcelPivotAreaDataFieldReference(nsm, n, pt, -2);
+                    this.DataFields = new ExcelPivotAreaDataFieldReference(nsm, n, pt, -2);
                 }
                 else
                 {
-                    Fields.Add(new ExcelPivotAreaReference(nsm, n, pt));
+                    this.Fields.Add(new ExcelPivotAreaReference(nsm, n, pt));
                 }
             }
 
-            if(DataFields==null)
+            if(this.DataFields==null)
             {
-                DataFields = new ExcelPivotAreaDataFieldReference(nsm, topNode, pt, -2);
+                this.DataFields = new ExcelPivotAreaDataFieldReference(nsm, topNode, pt, -2);
             }
         }
         /// <summary>
@@ -58,8 +58,8 @@ namespace OfficeOpenXml.Table.PivotTable
 
         internal void UpdateXml()
         {
-            DataFields.UpdateXml();
-            foreach (ExcelPivotAreaReference r in Fields)
+            this.DataFields.UpdateXml();
+            foreach (ExcelPivotAreaReference r in this.Fields)
             {
                 r.UpdateXml();
             }

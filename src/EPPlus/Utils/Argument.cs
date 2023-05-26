@@ -21,14 +21,14 @@ namespace OfficeOpenXml.Utils
     {
         public Argument(T @value)
         {
-            _value = @value;
+            this._value = @value;
         }
 
         private T _value;
 
         T IArgument<T>.Value
         {
-            get { return _value; }
+            get { return this._value; }
         }
     }
 }

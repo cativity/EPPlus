@@ -32,7 +32,7 @@ namespace OfficeOpenXml.Sorting
                 foreach(object? node in conditionNodes)
                 {
                     SortCondition? condition = new SortCondition(nameSpaceManager, (XmlNode)node);
-                    _sortConditions.Add(condition);
+                    this._sortConditions.Add(condition);
                 }
             }
         }
@@ -45,7 +45,7 @@ namespace OfficeOpenXml.Sorting
         /// <returns>An enumerator that can be used to iterate through the collection.</returns>
         public IEnumerator<SortCondition> GetEnumerator()
         {
-            return _sortConditions.GetEnumerator();
+            return this._sortConditions.GetEnumerator();
         }
 
         /// <summary>
@@ -54,7 +54,7 @@ namespace OfficeOpenXml.Sorting
         /// <returns>An enumerator that can be used to iterate through the collection.</returns>
         IEnumerator IEnumerable.GetEnumerator()
         {
-            return _sortConditions.GetEnumerator();
+            return this._sortConditions.GetEnumerator();
         }
 
         /// <summary>
@@ -64,20 +64,21 @@ namespace OfficeOpenXml.Sorting
         /// <param name="decending">If true - descending sort order, if false or null - ascending sort order.</param>
         internal void Add(string @ref, bool? decending = null)
         {
-            if (_sortConditions.Count > 63)
+            if (this._sortConditions.Count > 63)
             {
                 throw new ArgumentException("Too many sort conditions added, max number of conditions is 64");
             }
 
-            XmlNode? node = CreateNode(TopNode, _sortConditionPath, true);
-            SortCondition? condition = new SortCondition(NameSpaceManager, node);
+            XmlNode? node = this.CreateNode(this.TopNode, this._sortConditionPath, true);
+            SortCondition? condition = new SortCondition(this.NameSpaceManager, node);
             condition.Ref = @ref;
             if(decending.HasValue)
             {
                 condition.Descending = decending.Value;
             }
-            TopNode.AppendChild(condition.TopNode);
-            _sortConditions.Add(condition);
+
+            this.TopNode.AppendChild(condition.TopNode);
+            this._sortConditions.Add(condition);
         }
 
         /// <summary>
@@ -88,21 +89,21 @@ namespace OfficeOpenXml.Sorting
         /// <param name="customList">A custom list of strings that defines the sort order for this condition.</param>
         internal void Add(string @ref, bool? decending, string[] customList = null)
         {
-            if (_sortConditions.Count > 63)
+            if (this._sortConditions.Count > 63)
             {
                 throw new ArgumentException("Too many sort conditions added, max number of conditions is 64");
             }
 
-            XmlNode? node = CreateNode(TopNode, _sortConditionPath, true);
-            SortCondition? condition = new SortCondition(NameSpaceManager, node);
+            XmlNode? node = this.CreateNode(this.TopNode, this._sortConditionPath, true);
+            SortCondition? condition = new SortCondition(this.NameSpaceManager, node);
             condition.Ref = @ref;
             if (decending.HasValue)
             {
                 condition.Descending = decending.Value;
             }
             condition.CustomList = customList;
-            TopNode.AppendChild(condition.TopNode);
-            _sortConditions.Add(condition);
+            this.TopNode.AppendChild(condition.TopNode);
+            this._sortConditions.Add(condition);
         }
 
         /// <summary>
@@ -110,8 +111,8 @@ namespace OfficeOpenXml.Sorting
         /// </summary>
         internal void Clear()
         {
-            _sortConditions.Clear();
-            TopNode.RemoveAll();
+            this._sortConditions.Clear();
+            this.TopNode.RemoveAll();
         }
     }
 }

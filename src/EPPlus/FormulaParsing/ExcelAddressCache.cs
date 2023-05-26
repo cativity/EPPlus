@@ -33,9 +33,9 @@ namespace OfficeOpenXml.FormulaParsing
         /// <returns></returns>
         public int GetNewId()
         {
-            lock(_myLock)
+            lock(this._myLock)
             {
-                return _nextId++;
+                return this._nextId++;
             }
         }
 
@@ -47,15 +47,15 @@ namespace OfficeOpenXml.FormulaParsing
         /// <returns></returns>
         public bool Add(int id, string address)
         {
-            lock(_myLock)
+            lock(this._myLock)
             {
-                if (_addressCache.ContainsKey(id))
+                if (this._addressCache.ContainsKey(id))
                 {
                     return false;
                 }
 
-                _addressCache.Add(id, address);
-                if(EnableLookupCache && !_lookupCache.ContainsKey(address))
+                this._addressCache.Add(id, address);
+                if(EnableLookupCache && !this._lookupCache.ContainsKey(address))
                 {
                     this._lookupCache.Add(address, id);
                 }
@@ -70,7 +70,7 @@ namespace OfficeOpenXml.FormulaParsing
         /// </summary>
         public int Count
         {
-            get { return _addressCache.Count; }
+            get { return this._addressCache.Count; }
         }
 
         /// <summary>
@@ -80,12 +80,12 @@ namespace OfficeOpenXml.FormulaParsing
         /// <returns></returns>
         public string Get(int id)
         {
-            if (!_addressCache.ContainsKey(id))
+            if (!this._addressCache.ContainsKey(id))
             {
                 return string.Empty;
             }
 
-            return _addressCache[id];
+            return this._addressCache[id];
         }
 
         /// <summary>
@@ -93,11 +93,11 @@ namespace OfficeOpenXml.FormulaParsing
         /// </summary>
         public void Clear()
         {
-            lock(_myLock)
+            lock(this._myLock)
             {
-                _addressCache.Clear();
-                _lookupCache.Clear();
-                _nextId = 1;
+                this._addressCache.Clear();
+                this._lookupCache.Clear();
+                this._nextId = 1;
             }  
         }
 

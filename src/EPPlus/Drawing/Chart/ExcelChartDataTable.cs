@@ -27,8 +27,8 @@ namespace OfficeOpenXml.Drawing.Chart
        internal ExcelChartDataTable(ExcelChart chart, XmlNamespaceManager ns, XmlNode node)
            : base(ns,node)
         {
-            AddSchemaNodeOrder(new string[] { "dTable", "showHorzBorder", "showVertBorder", "showOutline", "showKeys", "spPr", "txPr" }, ExcelDrawing._schemaNodeOrderSpPr);
-            XmlNode topNode = node.SelectSingleNode("c:dTable", NameSpaceManager);
+            this.AddSchemaNodeOrder(new string[] { "dTable", "showHorzBorder", "showVertBorder", "showOutline", "showKeys", "spPr", "txPr" }, ExcelDrawing._schemaNodeOrderSpPr);
+            XmlNode topNode = node.SelectSingleNode("c:dTable", this.NameSpaceManager);
            if (topNode == null)
            {
                topNode = node.OwnerDocument.CreateElement("c", "dTable", ExcelPackage.schemaChart);
@@ -40,8 +40,9 @@ namespace OfficeOpenXml.Drawing.Chart
                     "<a:latin typeface=\" + mn - lt\"/><a:ea typeface=\" + mn - ea\"/><a:cs typeface=\" + mn - cs\"/></a:defRPr></a:pPr><a:endParaRPr lang=\"en - US\"/></a:p></c:txPr>";
 
            }
-           TopNode = topNode;
-            _chart = chart;
+
+           this.TopNode = topNode;
+           this._chart = chart;
        }
        #region "Public properties"
        const string showHorzBorderPath = "c:showHorzBorder/@val";
@@ -52,11 +53,11 @@ namespace OfficeOpenXml.Drawing.Chart
         {
            get
            {
-               return GetXmlNodeBool(showHorzBorderPath);
+               return this.GetXmlNodeBool(showHorzBorderPath);
            }
            set
            {
-               SetXmlNodeString(showHorzBorderPath, value ? "1" : "0");
+               this.SetXmlNodeString(showHorzBorderPath, value ? "1" : "0");
            }
        }
         const string showVertBorderPath = "c:showVertBorder/@val";
@@ -67,11 +68,11 @@ namespace OfficeOpenXml.Drawing.Chart
         {
             get
             {
-                return GetXmlNodeBool(showVertBorderPath);
+                return this.GetXmlNodeBool(showVertBorderPath);
             }
             set
             {
-                SetXmlNodeString(showVertBorderPath, value ? "1" : "0");
+                this.SetXmlNodeString(showVertBorderPath, value ? "1" : "0");
             }
         }
         const string showOutlinePath = "c:showOutline/@val";
@@ -82,11 +83,11 @@ namespace OfficeOpenXml.Drawing.Chart
         {
             get
             {
-                return GetXmlNodeBool(showOutlinePath);
+                return this.GetXmlNodeBool(showOutlinePath);
             }
             set
             {
-                SetXmlNodeString(showOutlinePath, value ? "1" : "0");
+                this.SetXmlNodeString(showOutlinePath, value ? "1" : "0");
             }
         }
         const string showKeysPath = "c:showKeys/@val";
@@ -97,11 +98,11 @@ namespace OfficeOpenXml.Drawing.Chart
         {
             get
             {
-                return GetXmlNodeBool(showKeysPath);
+                return this.GetXmlNodeBool(showKeysPath);
             }
             set
             {
-                SetXmlNodeString(showKeysPath, value ? "1" : "0");
+                this.SetXmlNodeString(showKeysPath, value ? "1" : "0");
             }
         }
         ExcelDrawingFill _fill = null;
@@ -112,11 +113,11 @@ namespace OfficeOpenXml.Drawing.Chart
         {
             get
             {
-                if (_fill == null)
+                if (this._fill == null)
                 {
-                    _fill = new ExcelDrawingFill(_chart, NameSpaceManager, TopNode, "c:spPr", SchemaNodeOrder);
+                    this._fill = new ExcelDrawingFill(this._chart, this.NameSpaceManager, this.TopNode, "c:spPr", this.SchemaNodeOrder);
                 }
-                return _fill;
+                return this._fill;
             }
         }
         ExcelDrawingBorder _border = null;
@@ -127,11 +128,11 @@ namespace OfficeOpenXml.Drawing.Chart
         {
             get
             {
-                if (_border == null)
+                if (this._border == null)
                 {
-                    _border = new ExcelDrawingBorder(_chart, NameSpaceManager, TopNode, "c:spPr/a:ln", SchemaNodeOrder);
+                    this._border = new ExcelDrawingBorder(this._chart, this.NameSpaceManager, this.TopNode, "c:spPr/a:ln", this.SchemaNodeOrder);
                 }
-                return _border;
+                return this._border;
             }
         }
         ExcelTextFont _font = null;
@@ -142,16 +143,17 @@ namespace OfficeOpenXml.Drawing.Chart
         {
             get
             {
-                if (_font == null)
+                if (this._font == null)
                 {
-                    if (TopNode.SelectSingleNode("c:txPr", NameSpaceManager) == null)
+                    if (this.TopNode.SelectSingleNode("c:txPr", this.NameSpaceManager) == null)
                     {
-                        CreateNode("c:txPr/a:bodyPr");
-                        CreateNode("c:txPr/a:lstStyle");
+                        this.CreateNode("c:txPr/a:bodyPr");
+                        this.CreateNode("c:txPr/a:lstStyle");
                     }
-                    _font = new ExcelTextFont(_chart, NameSpaceManager, TopNode, "c:txPr/a:p/a:pPr/a:defRPr", SchemaNodeOrder);
+
+                    this._font = new ExcelTextFont(this._chart, this.NameSpaceManager, this.TopNode, "c:txPr/a:p/a:pPr/a:defRPr", this.SchemaNodeOrder);
                 }
-                return _font;
+                return this._font;
             }
         }
         ExcelTextBody _textBody = null;
@@ -162,11 +164,11 @@ namespace OfficeOpenXml.Drawing.Chart
         {
             get
             {
-                if (_textBody == null)
+                if (this._textBody == null)
                 {
-                    _textBody = new ExcelTextBody(NameSpaceManager, TopNode, "c:txPr/a:bodyPr", SchemaNodeOrder);
+                    this._textBody = new ExcelTextBody(this.NameSpaceManager, this.TopNode, "c:txPr/a:bodyPr", this.SchemaNodeOrder);
                 }
-                return _textBody;
+                return this._textBody;
             }
         }
 
@@ -178,11 +180,11 @@ namespace OfficeOpenXml.Drawing.Chart
         {
             get
             {
-                if (_effect == null)
+                if (this._effect == null)
                 {
-                    _effect = new ExcelDrawingEffectStyle(_chart, NameSpaceManager, TopNode, "c:spPr/a:effectLst", SchemaNodeOrder);
+                    this._effect = new ExcelDrawingEffectStyle(this._chart, this.NameSpaceManager, this.TopNode, "c:spPr/a:effectLst", this.SchemaNodeOrder);
                 }
-                return _effect;
+                return this._effect;
             }
         }
         ExcelDrawing3D _threeD = null;
@@ -193,16 +195,16 @@ namespace OfficeOpenXml.Drawing.Chart
         {
             get
             {
-                if (_threeD == null)
+                if (this._threeD == null)
                 {
-                    _threeD = new ExcelDrawing3D(NameSpaceManager, TopNode, "c:spPr", SchemaNodeOrder);
+                    this._threeD = new ExcelDrawing3D(this.NameSpaceManager, this.TopNode, "c:spPr", this.SchemaNodeOrder);
                 }
-                return _threeD;
+                return this._threeD;
             }
         }
         void IDrawingStyleBase.CreatespPr()
         {
-            CreatespPrNode();
+            this.CreatespPrNode();
         }
 
         #endregion

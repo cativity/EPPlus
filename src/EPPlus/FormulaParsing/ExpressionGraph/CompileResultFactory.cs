@@ -22,7 +22,7 @@ namespace OfficeOpenXml.FormulaParsing.ExpressionGraph
     {
         public virtual CompileResult Create(object obj)
         {
-            return Create(obj, 0);
+            return this.Create(obj, 0);
         }
 
         public virtual CompileResult Create(object obj, int excelAddressReferenceId)
@@ -60,9 +60,9 @@ namespace OfficeOpenXml.FormulaParsing.ExpressionGraph
             {
                 return new CompileResult(obj, DataType.ExcelError, excelAddressReferenceId);
             }
-            if (obj.GetType().Equals(typeof(System.DateTime)))
+            if (obj.GetType().Equals(typeof(DateTime)))
             {
-                return new CompileResult(((System.DateTime)obj).ToOADate(), DataType.Date, excelAddressReferenceId);
+                return new CompileResult(((DateTime)obj).ToOADate(), DataType.Date, excelAddressReferenceId);
             }
             throw new ArgumentException("Non supported type " + obj.GetType().FullName);
         }

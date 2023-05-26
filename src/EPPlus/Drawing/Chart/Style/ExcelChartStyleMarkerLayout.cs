@@ -34,11 +34,11 @@ namespace OfficeOpenXml.Drawing.Chart.Style
         {
             get
             {
-                return GetXmlNodeString("@symbol").ToEnum(eMarkerStyle.None);
+                return this.GetXmlNodeString("@symbol").ToEnum(eMarkerStyle.None);
             }
             set
             {
-                SetXmlNodeString("@symbol", value.ToEnumString());
+                this.SetXmlNodeString("@symbol", value.ToEnumString());
             }
         }
         /// <summary>
@@ -49,7 +49,7 @@ namespace OfficeOpenXml.Drawing.Chart.Style
         {
             get
             {
-                int v = GetXmlNodeInt("@size");
+                int v = this.GetXmlNodeInt("@size");
                 if (v < 0)
                 {
                     return 5;   //Default value;
@@ -62,7 +62,8 @@ namespace OfficeOpenXml.Drawing.Chart.Style
                 {
                     throw (new ArgumentOutOfRangeException("Marker size must be between 2 and 72"));
                 }
-                SetXmlNodeString("@size", value.ToString(CultureInfo.InvariantCulture));
+
+                this.SetXmlNodeString("@size", value.ToString(CultureInfo.InvariantCulture));
             }
         }
     }

@@ -35,9 +35,9 @@ namespace OfficeOpenXml.Drawing
         internal ExcelPicture(ExcelDrawings drawings, XmlNode node, Uri hyperlink, ePictureType type) :
             base(drawings, node, "xdr:pic", "xdr:nvPicPr/xdr:cNvPr")
         {
-            CreatePicNode(node,type);
-            Hyperlink = hyperlink;
-            Image = new ExcelImage(this);
+            this.CreatePicNode(node,type);
+            this.Hyperlink = hyperlink;
+            this.Image = new ExcelImage(this);
         }
 
         internal ExcelPicture(ExcelDrawings drawings, XmlNode node, ExcelGroupShape shape = null) :
@@ -51,23 +51,23 @@ namespace OfficeOpenXml.Drawing
                 container.UriPic = UriHelper.ResolvePartUri(drawings.UriDrawing, container.RelPic.TargetUri);
 
                 string? extension = Path.GetExtension(container.UriPic.OriginalString);
-                ContentType = PictureStore.GetContentType(extension);
+                this.ContentType = PictureStore.GetContentType(extension);
                 if (drawings.Part.Package.PartExists(container.UriPic))
                 {
-                    Part = drawings.Part.Package.GetPart(container.UriPic);
+                    this.Part = drawings.Part.Package.GetPart(container.UriPic);
                 }
                 else
                 {
-                    Part = null;
+                    this.Part = null;
                     return;
                 }
 
-                byte[] iby = ((MemoryStream)Part.GetStream()).ToArray();
-                Image = new ExcelImage(this);
-                Image.Type = PictureStore.GetPictureType(extension);
-                Image.ImageBytes=iby;
-                ImageInfo? ii = _drawings._package.PictureStore.LoadImage(iby, container.UriPic, Part);
-                IPictureRelationDocument? pd = (IPictureRelationDocument)_drawings;
+                byte[] iby = ((MemoryStream)this.Part.GetStream()).ToArray();
+                this.Image = new ExcelImage(this);
+                this.Image.Type = PictureStore.GetPictureType(extension);
+                this.Image.ImageBytes=iby;
+                ImageInfo? ii = this._drawings._package.PictureStore.LoadImage(iby, container.UriPic, this.Part);
+                IPictureRelationDocument? pd = (IPictureRelationDocument)this._drawings;
                 if (pd.Hashes.ContainsKey(ii.Hash))
                 {
                     pd.Hashes[ii.Hash].RefCount++;
@@ -82,11 +82,11 @@ namespace OfficeOpenXml.Drawing
         private void SetRelId(XmlNode node, ePictureType type, string relID)
         {
             //Create relationship
-            node.SelectSingleNode("xdr:pic/xdr:blipFill/a:blip/@r:embed", NameSpaceManager).Value = relID;
+            node.SelectSingleNode("xdr:pic/xdr:blipFill/a:blip/@r:embed", this.NameSpaceManager).Value = relID;
             
             if (type == ePictureType.Svg)
             {
-                node.SelectSingleNode("xdr:pic/xdr:blipFill/a:blip/a:extLst/a:ext/asvg:svgBlip/@r:embed", NameSpaceManager).Value = relID;
+                node.SelectSingleNode("xdr:pic/xdr:blipFill/a:blip/a:extLst/a:ext/asvg:svgBlip/@r:embed", this.NameSpaceManager).Value = relID;
             }
         }
 
@@ -107,7 +107,7 @@ namespace OfficeOpenXml.Drawing
             stream.Seek(0, SeekOrigin.Begin);
             await stream.ReadAsync(img, 0, (int)stream.Length).ConfigureAwait(false);
 
-            SaveImageToPackage(type, img);
+            this.SaveImageToPackage(type, img);
         }        
 #endif
         internal void LoadImage(Stream stream, ePictureType type)
@@ -116,11 +116,11 @@ namespace OfficeOpenXml.Drawing
             stream.Seek(0, SeekOrigin.Begin);
             stream.Read(img, 0, (int)stream.Length);
 
-            SaveImageToPackage(type, img);
+            this.SaveImageToPackage(type, img);
         }
         private void SaveImageToPackage(ePictureType type, byte[] img)
         {
-            ZipPackage? package = _drawings.Worksheet._package.ZipPackage;
+            ZipPackage? package = this._drawings.Worksheet._package.ZipPackage;
             if (type == ePictureType.Emz ||
                type == ePictureType.Wmz)
             {
@@ -132,10 +132,10 @@ namespace OfficeOpenXml.Drawing
                 type = pt.Value;
             }
 
-            ContentType = PictureStore.GetContentType(type.ToString());
+            this.ContentType = PictureStore.GetContentType(type.ToString());
             Uri? newUri = GetNewUri(package, "/xl/media/image{0}." + type.ToString());
-            PictureStore? store = _drawings._package.PictureStore;
-            IPictureRelationDocument? pc = _drawings as IPictureRelationDocument;            
+            PictureStore? store = this._drawings._package.PictureStore;
+            IPictureRelationDocument? pc = this._drawings as IPictureRelationDocument;            
             ImageInfo? ii = store.AddImage(img, newUri, type);
             
             IPictureContainer container = this;
@@ -143,8 +143,8 @@ namespace OfficeOpenXml.Drawing
             string relId;
             if (!pc.Hashes.ContainsKey(ii.Hash))
             {
-                Part = ii.Part;
-                container.RelPic = _drawings.Part.CreateRelationship(UriHelper.GetRelativeUri(_drawings.UriDrawing, ii.Uri), Packaging.TargetMode.Internal, ExcelPackage.schemaRelationships + "/image");
+                this.Part = ii.Part;
+                container.RelPic = this._drawings.Part.CreateRelationship(UriHelper.GetRelativeUri(this._drawings.UriDrawing, ii.Uri), TargetMode.Internal, ExcelPackage.schemaRelationships + "/image");
                 relId = container.RelPic.Id;
                 pc.Hashes.Add(ii.Hash, new HashInfo(relId));
                 AddNewPicture(img, relId);
@@ -152,30 +152,30 @@ namespace OfficeOpenXml.Drawing
             else
             {
                 relId = pc.Hashes[ii.Hash].RelId;
-                ZipPackageRelationship? rel = _drawings.Part.GetRelationship(relId);
+                ZipPackageRelationship? rel = this._drawings.Part.GetRelationship(relId);
                 container.UriPic = UriHelper.ResolvePartUri(rel.SourceUri, rel.TargetUri);
             }
             container.ImageHash = ii.Hash;
             using (MemoryStream? ms = RecyclableMemory.GetStream(img))
             {
-                Image.Bounds = PictureStore.GetImageBounds(img, type, _drawings._package);
-                Image.ImageBytes = img;
-                Image.Type = type;
-                double width = Image.Bounds.Width / (Image.Bounds.HorizontalResolution / STANDARD_DPI);
-                double height = Image.Bounds.Height / (Image.Bounds.VerticalResolution / STANDARD_DPI);
-                SetPosDefaults((float)width, (float)height);
+                this.Image.Bounds = PictureStore.GetImageBounds(img, type, this._drawings._package);
+                this.Image.ImageBytes = img;
+                this.Image.Type = type;
+                double width = this.Image.Bounds.Width / (this.Image.Bounds.HorizontalResolution / STANDARD_DPI);
+                double height = this.Image.Bounds.Height / (this.Image.Bounds.VerticalResolution / STANDARD_DPI);
+                this.SetPosDefaults((float)width, (float)height);
             }
 
             //Create relationship
-            SetRelId(TopNode, type, relId);
+            this.SetRelId(this.TopNode, type, relId);
             //TopNode.SelectSingleNode("xdr:pic/xdr:blipFill/a:blip/@r:embed", NameSpaceManager).Value = relId;
             ZipPackage.Flush();
         }
 
         private void CreatePicNode(XmlNode node, ePictureType type)
         {
-            XmlNode? picNode = CreateNode("xdr:pic");
-            picNode.InnerXml = PicStartXml(type);
+            XmlNode? picNode = this.CreateNode("xdr:pic");
+            picNode.InnerXml = this.PicStartXml(type);
 
             node.InsertAfter(node.OwnerDocument.CreateElement("xdr", "clientData", ExcelPackage.schemaSheetDrawings), picNode);
         }
@@ -190,11 +190,11 @@ namespace OfficeOpenXml.Drawing
 #endregion
         private void SetPosDefaults(float width, float height)
         {
-            EditAs = eEditAs.OneCell;
-            SetPixelWidth(width);
-            SetPixelHeight(height);
-            _width = GetPixelWidth();
-            _height = GetPixelHeight();
+            this.EditAs = eEditAs.OneCell;
+            this.SetPixelWidth(width);
+            this.SetPixelHeight(height);
+            this._width = this.GetPixelWidth();
+            this._height = this.GetPixelHeight();
         }
 
         private string PicStartXml(ePictureType type)
@@ -202,7 +202,7 @@ namespace OfficeOpenXml.Drawing
             StringBuilder xml = new StringBuilder();
 
             xml.Append("<xdr:nvPicPr>");
-            xml.AppendFormat("<xdr:cNvPr id=\"{0}\" descr=\"\" />", _id);
+            xml.AppendFormat("<xdr:cNvPr id=\"{0}\" descr=\"\" />", this._id);
             xml.Append("<xdr:cNvPicPr><a:picLocks noChangeAspect=\"1\" /></xdr:cNvPicPr></xdr:nvPicPr><xdr:blipFill>");
             if(type==ePictureType.Svg)
             {
@@ -236,29 +236,29 @@ namespace OfficeOpenXml.Drawing
         /// <param name="Percent">Percent</param>
         public override void SetSize(int Percent)
         {
-            if (Image.ImageBytes == null)
+            if (this.Image.ImageBytes == null)
             {
                 base.SetSize(Percent);
             }
             else
             {
-                _width = Image.Bounds.Width / (Image.Bounds.HorizontalResolution / STANDARD_DPI);
-                _height = Image.Bounds.Height / (Image.Bounds.VerticalResolution / STANDARD_DPI);
+                this._width = this.Image.Bounds.Width / (this.Image.Bounds.HorizontalResolution / STANDARD_DPI);
+                this._height = this.Image.Bounds.Height / (this.Image.Bounds.VerticalResolution / STANDARD_DPI);
 
-                _width = (int)(_width * ((double)Percent / 100));
-                _height = (int)(_height * ((double)Percent / 100));
+                this._width = (int)(this._width * ((double)Percent / 100));
+                this._height = (int)(this._height * ((double)Percent / 100));
 
-                _doNotAdjust = true;
-                SetPixelWidth(_width);
-                SetPixelHeight(_height);
-                _doNotAdjust = false;
+                this._doNotAdjust = true;
+                this.SetPixelWidth(this._width);
+                this.SetPixelHeight(this._height);
+                this._doNotAdjust = false;
             }
         }
-        internal Packaging.ZipPackagePart Part;
+        internal ZipPackagePart Part;
 
         internal new string Id
         {
-            get { return Name; }
+            get { return this.Name; }
         }
         ExcelDrawingFill _fill = null;
         /// <summary>
@@ -268,11 +268,11 @@ namespace OfficeOpenXml.Drawing
         {
             get
             {
-                if (_fill == null)
+                if (this._fill == null)
                 {
-                    _fill = new ExcelDrawingFill(_drawings, NameSpaceManager, TopNode, "xdr:pic/xdr:spPr", SchemaNodeOrder);
+                    this._fill = new ExcelDrawingFill(this._drawings, this.NameSpaceManager, this.TopNode, "xdr:pic/xdr:spPr", this.SchemaNodeOrder);
                 }
-                return _fill;
+                return this._fill;
             }
         }
         ExcelDrawingBorder _border = null;
@@ -283,11 +283,11 @@ namespace OfficeOpenXml.Drawing
         {
             get
             {
-                if (_border == null)
+                if (this._border == null)
                 {
-                    _border = new ExcelDrawingBorder(_drawings, NameSpaceManager, TopNode, "xdr:pic/xdr:spPr/a:ln", SchemaNodeOrder);
+                    this._border = new ExcelDrawingBorder(this._drawings, this.NameSpaceManager, this.TopNode, "xdr:pic/xdr:spPr/a:ln", this.SchemaNodeOrder);
                 }
-                return _border;
+                return this._border;
             }
         }
         ExcelDrawingEffectStyle _effect = null;
@@ -298,11 +298,11 @@ namespace OfficeOpenXml.Drawing
         {
             get
             {
-                if (_effect == null)
+                if (this._effect == null)
                 {
-                    _effect = new ExcelDrawingEffectStyle(_drawings, NameSpaceManager, TopNode, "xdr:pic/xdr:spPr/a:effectLst", SchemaNodeOrder);
+                    this._effect = new ExcelDrawingEffectStyle(this._drawings, this.NameSpaceManager, this.TopNode, "xdr:pic/xdr:spPr/a:effectLst", this.SchemaNodeOrder);
                 }
-                return _effect;
+                return this._effect;
             }
         }
         const string _preferRelativeResizePath = "xdr:pic/xdr:nvPicPr/xdr:cNvPicPr/@preferRelativeResize";
@@ -313,11 +313,11 @@ namespace OfficeOpenXml.Drawing
         { 
             get
             {
-                return GetXmlNodeBool(_preferRelativeResizePath);
+                return this.GetXmlNodeBool(_preferRelativeResizePath);
             }
             set
             {
-                SetXmlNodeBool(_preferRelativeResizePath, value);
+                this.SetXmlNodeBool(_preferRelativeResizePath, value);
             }
         }
         const string _lockAspectRatioPath = "xdr:pic/xdr:nvPicPr/xdr:cNvPicPr/a:picLocks/@noChangeAspect";
@@ -328,27 +328,27 @@ namespace OfficeOpenXml.Drawing
         {
             get
             {
-                return GetXmlNodeBool(_lockAspectRatioPath);
+                return this.GetXmlNodeBool(_lockAspectRatioPath);
             }
             set
             {
-                SetXmlNodeBool(_lockAspectRatioPath, value);
+                this.SetXmlNodeBool(_lockAspectRatioPath, value);
             }
         }
         internal override void CellAnchorChanged()
         {
             base.CellAnchorChanged();
-            if (_fill != null)
+            if (this._fill != null)
             {
                 this._fill.SetTopNode(this.TopNode);
             }
 
-            if (_border != null)
+            if (this._border != null)
             {
                 this._border.TopNode = this.TopNode;
             }
 
-            if (_effect != null)
+            if (this._effect != null)
             {
                 this._effect.TopNode = this.TopNode;
             }
@@ -357,7 +357,7 @@ namespace OfficeOpenXml.Drawing
         internal override void DeleteMe()
         {
             IPictureContainer container = this;
-            _drawings._package.PictureStore.RemoveImage(container.ImageHash, this);
+            this._drawings._package.PictureStore.RemoveImage(container.ImageHash, this);
             base.DeleteMe();
         }
         /// <summary>
@@ -373,7 +373,7 @@ namespace OfficeOpenXml.Drawing
         void IPictureContainer.RemoveImage()
         {
             IPictureContainer container = this;
-            IPictureRelationDocument? relDoc = (IPictureRelationDocument)_drawings;
+            IPictureRelationDocument? relDoc = (IPictureRelationDocument)this._drawings;
             if (relDoc.Hashes.TryGetValue(container.ImageHash, out HashInfo hi))
             {
                 if (hi.RefCount <= 1)
@@ -392,17 +392,17 @@ namespace OfficeOpenXml.Drawing
         void IPictureContainer.SetNewImage()
         {
             string? relId = ((IPictureContainer)this).RelPic.Id;
-            TopNode.SelectSingleNode("xdr:pic/xdr:blipFill/a:blip/@r:embed", NameSpaceManager).Value = relId;
-            if (Image.Type == ePictureType.Svg)
+            this.TopNode.SelectSingleNode("xdr:pic/xdr:blipFill/a:blip/@r:embed", this.NameSpaceManager).Value = relId;
+            if (this.Image.Type == ePictureType.Svg)
             {
-                TopNode.SelectSingleNode("xdr:pic/xdr:blipFill/a:blip/a:extLst/a:ext/asvg:svgBlip/@r:embed", NameSpaceManager).Value = relId;
+                this.TopNode.SelectSingleNode("xdr:pic/xdr:blipFill/a:blip/a:extLst/a:ext/asvg:svgBlip/@r:embed", this.NameSpaceManager).Value = relId;
             }
         }
 
         string IPictureContainer.ImageHash { get; set; }
         Uri IPictureContainer.UriPic { get; set; }
-        Packaging.ZipPackageRelationship IPictureContainer.RelPic { get; set; }
-        IPictureRelationDocument IPictureContainer.RelationDocument => _drawings;
+        ZipPackageRelationship IPictureContainer.RelPic { get; set; }
+        IPictureRelationDocument IPictureContainer.RelationDocument => this._drawings;
 
     }
 }

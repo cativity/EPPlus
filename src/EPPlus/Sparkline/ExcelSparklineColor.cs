@@ -10,7 +10,8 @@
  *************************************************************************************************
   01/27/2020         EPPlus Software AB       Initial release EPPlus 5
  *************************************************************************************************/
-    using OfficeOpenXml.Style;
+
+using OfficeOpenXml.Style;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -27,10 +28,11 @@ namespace OfficeOpenXml.Sparkline;
 /// </summary>
 public class ExcelSparklineColor : XmlHelper, IColor
 {
-    internal ExcelSparklineColor(XmlNamespaceManager ns, XmlNode node) : base(ns, node)
+    internal ExcelSparklineColor(XmlNamespaceManager ns, XmlNode node)
+        : base(ns, node)
     {
-
     }
+
     /// <summary>
     /// Indexed color
     /// </summary>
@@ -61,15 +63,17 @@ public class ExcelSparklineColor : XmlHelper, IColor
             this.SetXmlNodeString("@rgb", value);
         }
     }
+
     /// <summary>
     /// The theme color
     /// </summary>
-    public eThemeSchemeColor? Theme 
+    public eThemeSchemeColor? Theme
     {
         get
         {
             int? v = this.GetXmlNodeIntNull("@theme");
-            if(v.HasValue)
+
+            if (v.HasValue)
             {
                 return (eThemeSchemeColor)v;
             }
@@ -99,7 +103,7 @@ public class ExcelSparklineColor : XmlHelper, IColor
     /// </summary>
     public decimal Tint
     {
-        get=> this.GetXmlNodeDecimal("@tint");
+        get => this.GetXmlNodeDecimal("@tint");
         set
         {
             if (value > 1 || value < -1)
@@ -110,21 +114,20 @@ public class ExcelSparklineColor : XmlHelper, IColor
             this.SetXmlNodeString("@tint", value.ToString(CultureInfo.InvariantCulture));
         }
     }
+
     /// <summary>
     /// Color is set to automatic
     /// </summary>
     public bool Auto
     {
-        get
-        {
-            return this.GetXmlNodeBool("@auto");
-        }
+        get { return this.GetXmlNodeBool("@auto"); }
         internal set
         {
             this.ClearValues();
             this.SetXmlNodeBool("@auto", value);
         }
     }
+
     /// <summary>
     /// Sets a color
     /// </summary>
@@ -133,14 +136,16 @@ public class ExcelSparklineColor : XmlHelper, IColor
     {
         this.Rgb = color.ToArgb().ToString("X");
     }
+
     /// <summary>
     /// Sets a theme color
     /// </summary>
     /// <param name="color">The color</param>
     public void SetColor(eThemeSchemeColor color)
     {
-        this.Theme=color;
+        this.Theme = color;
     }
+
     /// <summary>
     /// Sets an indexed color
     /// </summary>
@@ -149,6 +154,7 @@ public class ExcelSparklineColor : XmlHelper, IColor
     {
         this.Indexed = (int)color;
     }
+
     /// <summary>
     /// Sets the color to auto
     /// </summary>

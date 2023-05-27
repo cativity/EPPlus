@@ -10,6 +10,7 @@
  *************************************************************************************************
   01/27/2020         EPPlus Software AB       Initial release EPPlus 5
  *************************************************************************************************/
+
 using OfficeOpenXml.DataValidation.Contracts;
 using OfficeOpenXml.DataValidation.Formulas;
 using OfficeOpenXml.DataValidation.Formulas.Contracts;
@@ -23,7 +24,6 @@ namespace OfficeOpenXml.DataValidation;
 /// </summary>
 public class ExcelDataValidationList : ExcelDataValidationWithFormula<IExcelDataValidationFormulaList>, IExcelDataValidationList
 {
-
     /// <summary>
     /// Constructor
     /// </summary>
@@ -59,7 +59,10 @@ public class ExcelDataValidationList : ExcelDataValidationWithFormula<IExcelData
     /// <summary>
     /// Read-Only property for seeing if this dataValidation type has an operator.
     /// </summary>
-    public override bool AllowsOperator { get { return false; } }
+    public override bool AllowsOperator
+    {
+        get { return false; }
+    }
 
     /// <summary>
     /// Property for determining type of validation
@@ -91,6 +94,7 @@ public class ExcelDataValidationList : ExcelDataValidationWithFormula<IExcelData
     {
         base.LoadXML(xr);
         string attribute = xr.GetAttribute("showDropDown");
+
         if (string.IsNullOrEmpty(attribute))
         {
             this.HideDropDown = false;

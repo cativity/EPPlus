@@ -10,6 +10,7 @@
  *************************************************************************************************
   01/27/2020         EPPlus Software AB       Initial release EPPlus 5
  *************************************************************************************************/
+
 using OfficeOpenXml.Drawing.Style;
 using OfficeOpenXml.Drawing.Style.Effect;
 using System.Xml;
@@ -29,7 +30,7 @@ public class ExcelChartStyleEntry : XmlHelper
     string _borderReferencePath = "{0}/cs:lnRef ";
     string _effectReferencePath = "{0}/cs:effectRef";
     string _fontReferencePath = "{0}/cs:fontRef";
-        
+
     string _fillPath = "{0}/cs:spPr";
     string _borderPath = "{0}/cs:spPr/a:ln";
     string _effectPath = "{0}/cs:spPr/a:effectLst";
@@ -39,9 +40,15 @@ public class ExcelChartStyleEntry : XmlHelper
     string _defaultTextRunPath = "{0}/cs:defRPr";
     string _defaultTextBodyPath = "{0}/cs:bodyPr";
     private readonly IPictureRelationDocument _pictureRelationDocument;
-    internal ExcelChartStyleEntry(XmlNamespaceManager nsm, XmlNode topNode, string path, IPictureRelationDocument pictureRelationDocument) : base(nsm, topNode)
+
+    internal ExcelChartStyleEntry(XmlNamespaceManager nsm, XmlNode topNode, string path, IPictureRelationDocument pictureRelationDocument)
+        : base(nsm, topNode)
     {
-        this.SchemaNodeOrder = new string[] { "lnRef", "fillRef", "effectRef", "fontRef", "spPr", "noFill", "solidFill", "blipFill", "gradFill", "noFill", "pattFill","ln", "defRPr" };
+        this.SchemaNodeOrder = new string[]
+        {
+            "lnRef", "fillRef", "effectRef", "fontRef", "spPr", "noFill", "solidFill", "blipFill", "gradFill", "noFill", "pattFill", "ln", "defRPr"
+        };
+
         this._fillReferencePath = string.Format(this._fillReferencePath, path);
         this._borderReferencePath = string.Format(this._borderReferencePath, path);
         this._effectReferencePath = string.Format(this._effectReferencePath, path);
@@ -57,54 +64,51 @@ public class ExcelChartStyleEntry : XmlHelper
         this._defaultTextBodyPath = string.Format(this._defaultTextBodyPath, path);
         this._pictureRelationDocument = pictureRelationDocument;
     }
+
     private ExcelChartStyleReference _borderReference = null;
+
     /// Border reference. 
     /// Contains an index reference to the theme and a color to be used in border styling
     public ExcelChartStyleReference BorderReference
     {
-        get
-        {
-            return this._borderReference ??= new ExcelChartStyleReference(this.NameSpaceManager, this.TopNode, this._borderReferencePath);
-        }
+        get { return this._borderReference ??= new ExcelChartStyleReference(this.NameSpaceManager, this.TopNode, this._borderReferencePath); }
     }
+
     private ExcelChartStyleReference _fillReference = null;
+
     /// <summary>
     /// Fill reference. 
     /// Contains an index reference to the theme and a fill color to be used in fills
     /// </summary>
     public ExcelChartStyleReference FillReference
     {
-        get
-        {
-            return this._fillReference ??= new ExcelChartStyleReference(this.NameSpaceManager, this.TopNode, this._fillReferencePath);
-        }
+        get { return this._fillReference ??= new ExcelChartStyleReference(this.NameSpaceManager, this.TopNode, this._fillReferencePath); }
     }
+
     private ExcelChartStyleReference _effectReference = null;
+
     /// <summary>
     /// Effect reference. 
     /// Contains an index reference to the theme and a color to be used in effects
     /// </summary>
     public ExcelChartStyleReference EffectReference
     {
-        get
-        {
-            return this._effectReference ??= new ExcelChartStyleReference(this.NameSpaceManager, this.TopNode, this._effectReferencePath);
-        }
+        get { return this._effectReference ??= new ExcelChartStyleReference(this.NameSpaceManager, this.TopNode, this._effectReferencePath); }
     }
+
     ExcelChartStyleFontReference _fontReference = null;
+
     /// <summary>
     /// Font reference. 
     /// Contains an index reference to the theme and a color to be used for font styling
     /// </summary>
     public ExcelChartStyleFontReference FontReference
     {
-        get
-        {
-            return this._fontReference ??= new ExcelChartStyleFontReference(this.NameSpaceManager, this.TopNode, this._fontReferencePath);
-        }
+        get { return this._fontReference ??= new ExcelChartStyleFontReference(this.NameSpaceManager, this.TopNode, this._fontReferencePath); }
     }
 
     private ExcelDrawingFill _fill = null;
+
     /// <summary>
     /// Reference to fill settings for a chart part
     /// </summary>
@@ -119,7 +123,9 @@ public class ExcelChartStyleEntry : XmlHelper
                                                        this.SchemaNodeOrder);
         }
     }
+
     private ExcelDrawingBorder _border = null;
+
     /// <summary>
     /// Reference to border settings for a chart part
     /// </summary>
@@ -134,7 +140,9 @@ public class ExcelChartStyleEntry : XmlHelper
                                                            this.SchemaNodeOrder);
         }
     }
+
     private ExcelDrawingEffectStyle _effect = null;
+
     /// <summary>
     /// Reference to border settings for a chart part
     /// </summary>
@@ -149,7 +157,9 @@ public class ExcelChartStyleEntry : XmlHelper
                                                                 this.SchemaNodeOrder);
         }
     }
+
     private ExcelDrawing3D _threeD = null;
+
     /// <summary>
     /// Reference to 3D effect settings for a chart part
     /// </summary>
@@ -157,7 +167,9 @@ public class ExcelChartStyleEntry : XmlHelper
     {
         get { return this._threeD ??= new ExcelDrawing3D(this.NameSpaceManager, this.TopNode, this._fillPath, this.SchemaNodeOrder); }
     }
+
     private ExcelTextRun _defaultTextRun = null;
+
     /// <summary>
     /// Reference to default text run settings for a chart part
     /// </summary>
@@ -165,7 +177,9 @@ public class ExcelChartStyleEntry : XmlHelper
     {
         get { return this._defaultTextRun ??= new ExcelTextRun(this.NameSpaceManager, this.TopNode, this._defaultTextRunPath); }
     }
+
     private ExcelTextBody _defaultTextBody = null;
+
     /// <summary>
     /// Reference to default text body run settings for a chart part
     /// </summary>
@@ -173,6 +187,7 @@ public class ExcelChartStyleEntry : XmlHelper
     {
         get { return this._defaultTextBody ??= new ExcelTextBody(this.NameSpaceManager, this.TopNode, this._defaultTextBodyPath); }
     }
+
     /// <summary>
     /// Modifier for the chart
     /// </summary>
@@ -181,33 +196,38 @@ public class ExcelChartStyleEntry : XmlHelper
         get
         {
             string[]? split = this.GetXmlNodeString("@mods").Split(' ');
-            eStyleEntryModifier ret=0;
-            foreach(string? v in split)
+            eStyleEntryModifier ret = 0;
+
+            foreach (string? v in split)
             {
                 ret |= v.ToEnum<eStyleEntryModifier>(0);
             }
+
             return ret;
         }
         set
         {
             string s = "";
-            foreach(eStyleEntryModifier e in Enum.GetValues(typeof(eStyleEntryModifier)))
+
+            foreach (eStyleEntryModifier e in Enum.GetValues(typeof(eStyleEntryModifier)))
             {
                 if ((int)(value & e) != 0)
                 {
                     s += e.ToString() + " ";
                 }
             }
-            if(s=="")
+
+            if (s == "")
             {
-                ((XmlElement)this.TopNode).RemoveAttribute("mods"); 
+                ((XmlElement)this.TopNode).RemoveAttribute("mods");
             }
             else
             {
-                this.SetXmlNodeString("@mods", s.Substring(0,s.Length-1));
+                this.SetXmlNodeString("@mods", s.Substring(0, s.Length - 1));
             }
         }
     }
+
     /// <summary>
     /// True if the entry has fill styles
     /// </summary>
@@ -215,38 +235,36 @@ public class ExcelChartStyleEntry : XmlHelper
     {
         get
         {
-            return this.ExistsNode($"{this._fillPath}/a:noFill") || this.ExistsNode($"{this._fillPath}/a:solidFill") || this.ExistsNode($"{this._fillPath}/a:gradFill") || this.ExistsNode($"{this._fillPath}/a:pattFill") || this.ExistsNode($"{this._fillPath}/a:blipFill");
+            return this.ExistsNode($"{this._fillPath}/a:noFill")
+                   || this.ExistsNode($"{this._fillPath}/a:solidFill")
+                   || this.ExistsNode($"{this._fillPath}/a:gradFill")
+                   || this.ExistsNode($"{this._fillPath}/a:pattFill")
+                   || this.ExistsNode($"{this._fillPath}/a:blipFill");
         }
     }
+
     /// <summary>
     /// True if the entry has border styles
     /// </summary>
     public bool HasBorder
     {
-        get
-        {
-            return this.ExistsNode(this._borderPath);
-        }
+        get { return this.ExistsNode(this._borderPath); }
     }
+
     /// <summary>
     /// True if the entry effects styles
     /// </summary>
     public bool HasEffect
     {
-        get
-        {
-            return this.ExistsNode(this._effectPath);
-        }
+        get { return this.ExistsNode(this._effectPath); }
     }
+
     /// <summary>
     /// True if the entry has 3D styles
     /// </summary>
     public bool HasThreeD
     {
-        get
-        {
-            return this.ExistsNode(this._scene3DPath) || this.ExistsNode(this._sp3DPath);
-        }
+        get { return this.ExistsNode(this._scene3DPath) || this.ExistsNode(this._sp3DPath); }
     }
 
     /// <summary>
@@ -254,19 +272,14 @@ public class ExcelChartStyleEntry : XmlHelper
     /// </summary>
     public bool HasTextBody
     {
-        get
-        {
-            return this.ExistsNode(this._defaultTextBodyPath);
-        }
+        get { return this.ExistsNode(this._defaultTextBodyPath); }
     }
+
     /// <summary>
     /// True if the entry has text run styles
     /// </summary>
     public bool HasTextRun
     {
-        get
-        {
-            return this.ExistsNode(this._defaultTextRunPath);
-        }
+        get { return this.ExistsNode(this._defaultTextRunPath); }
     }
 }

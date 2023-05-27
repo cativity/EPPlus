@@ -10,6 +10,7 @@
  *************************************************************************************************
   01/27/2020         EPPlus Software AB       Initial release EPPlus 5
  *************************************************************************************************/
+
 namespace OfficeOpenXml.Drawing.Chart;
 
 /// <summary>
@@ -21,30 +22,37 @@ public enum eChartExType
     /// A treemap chart
     /// </summary>
     Treemap = 117,
+
     /// <summary>
     /// A histogram chart
     /// </summary>
     Histogram = 118,
+
     /// <summary>
     /// A waterfall chart
     /// </summary>
     Waterfall = 119,
+
     /// <summary>
     /// A sunburst chart
     /// </summary>
     Sunburst = 120,
+
     /// <summary>
     /// A box whisker
     /// </summary>
     BoxWhisker = 121,
+
     /// <summary>
     /// A Histogram Pareto chart
     /// </summary>
     Pareto = 122,
+
     /// <summary>
     /// A funnel chart
     /// </summary>
     Funnel = 123,
+
     /// <summary>
     /// A region map chart
     /// </summary>

@@ -10,6 +10,7 @@
  *************************************************************************************************
   05/7/2021         EPPlus Software AB       EPPlus 5.7
  *************************************************************************************************/
+
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -20,5 +21,4 @@ namespace OfficeOpenXml.Sorting.Internal;
 internal class SortItem<T> : SortItemBase<T>
 {
     internal int Row { get; set; }
-        
 }

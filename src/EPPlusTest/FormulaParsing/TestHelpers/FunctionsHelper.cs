@@ -26,6 +26,7 @@
  *******************************************************************************
   01/27/2020         EPPlus Software AB       Initial release EPPlus 5
  *******************************************************************************/
+
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -40,15 +41,17 @@ public static class FunctionsHelper
     public static IEnumerable<FunctionArgument> CreateArgs(params object[] args)
     {
         List<FunctionArgument>? list = new List<FunctionArgument>();
+
         foreach (object? arg in args)
         {
             list.Add(new FunctionArgument(arg));
         }
+
         return list;
     }
 
     public static IEnumerable<FunctionArgument> Empty()
     {
-        return new List<FunctionArgument>() {new FunctionArgument(null)};
+        return new List<FunctionArgument>() { new FunctionArgument(null) };
     }
 }

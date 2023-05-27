@@ -26,6 +26,7 @@
  *******************************************************************************
   01/27/2020         EPPlus Software AB       Initial release EPPlus 5
  *******************************************************************************/
+
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using OfficeOpenXml;
 using OfficeOpenXml.Core.CellStore;
@@ -69,12 +70,10 @@ public class DataValidationTests : ValidationTestBase
     [TestMethod]
     public void DataValidations_ShouldWriteReadAllValidOperatorsOnAllTypes()
     {
-
     }
 
     public static void TestTypeOperator(ExcelDataValidation type)
     {
-
     }
 
     [TestMethod, ExpectedException(typeof(InvalidOperationException))]
@@ -97,7 +96,6 @@ public class DataValidationTests : ValidationTestBase
         validations.AddIntegerValidation("Z8");
     }
 
-
     [TestMethod]
     public void TestRangeAddsMultipleInbetweenInstances()
     {
@@ -118,15 +116,18 @@ public class DataValidationTests : ValidationTestBase
                 {
                     if (!validations._validationsRD.Exists(addresses[j]._fromRow, addresses[j]._fromCol, addresses[j]._toRow, addresses[j]._toCol))
                     {
-                        sb.Append(addresses[j]+",");
+                        sb.Append(addresses[j] + ",");
                     }
                 }
             }
             else
             {
-                if (!validations._validationsRD.Exists(validations[i].Address._fromRow, validations[i].Address._fromCol, validations[i].Address._toRow, validations[i].Address._toCol))
+                if (!validations._validationsRD.Exists(validations[i].Address._fromRow,
+                                                       validations[i].Address._fromCol,
+                                                       validations[i].Address._toRow,
+                                                       validations[i].Address._toCol))
                 {
-                    sb.Append(validations[i].Address+",");
+                    sb.Append(validations[i].Address + ",");
                 }
             }
         }
@@ -137,7 +138,8 @@ public class DataValidationTests : ValidationTestBase
     [TestMethod]
     public void TestRangeAddsSingularInstance()
     {
-        ExcelPackage pck = OpenTemplatePackage("ValidationRangeTest.xlsx"); ;
+        ExcelPackage pck = OpenTemplatePackage("ValidationRangeTest.xlsx");
+        ;
 
         //pck.Workbook.Worksheets.Add("RangeTest");
 
@@ -146,15 +148,15 @@ public class DataValidationTests : ValidationTestBase
         StringBuilder sb = new StringBuilder();
 
         //Ensure all addresses exist in _validationsRD
-        for(int i = 0; i< validations.Count; i++) 
+        for (int i = 0; i < validations.Count; i++)
         {
-            if(validations[i].Address.Addresses != null)
+            if (validations[i].Address.Addresses != null)
             {
                 List<ExcelAddressBase>? addresses = validations[i].Address.Addresses;
 
                 for (int j = 0; j < validations[i].Address.Addresses.Count; j++)
                 {
-                    if(!validations._validationsRD.Exists(addresses[j]._fromRow, addresses[j]._fromCol, addresses[j]._toRow, addresses[j]._toCol))
+                    if (!validations._validationsRD.Exists(addresses[j]._fromRow, addresses[j]._fromCol, addresses[j]._toRow, addresses[j]._toCol))
                     {
                         sb.Append(addresses[i]);
                     }
@@ -162,14 +164,17 @@ public class DataValidationTests : ValidationTestBase
             }
             else
             {
-                if (!validations._validationsRD.Exists(validations[i].Address._fromRow, validations[i].Address._fromCol, validations[i].Address._toRow, validations[i].Address._toCol))
+                if (!validations._validationsRD.Exists(validations[i].Address._fromRow,
+                                                       validations[i].Address._fromCol,
+                                                       validations[i].Address._toRow,
+                                                       validations[i].Address._toCol))
                 {
                     sb.Append(validations[i].Address);
                 }
             }
         }
 
-        Assert.AreEqual("",sb.ToString());
+        Assert.AreEqual("", sb.ToString());
     }
 
     [TestMethod]
@@ -192,7 +197,6 @@ public class DataValidationTests : ValidationTestBase
 
         listDV.Formula.Values.Add("5");
         listDV.Formula.Values.Add("Option");
-
 
         IExcelDataValidationInt? textDV = sheet.DataValidations.AddTextLengthValidation("A5");
 
@@ -341,10 +345,12 @@ public class DataValidationTests : ValidationTestBase
         // Assert
         Assert.AreEqual(string.Format("A1:B{0}", ExcelPackage.MaxRows), validation.Address.Address);
     }
+
     [TestMethod]
     public void TestInsertRowsIntoVeryLongRangeWithDataValidation()
     {
         using ExcelPackage? pck = new ExcelPackage();
+
         // Add a sheet with data validation on the whole of column A except row 1
         ExcelWorksheet? wks = pck.Workbook.Worksheets.Add("Sheet1");
         string? dvAddress = "A2:A1048576";
@@ -359,10 +365,12 @@ public class DataValidationTests : ValidationTestBase
         // Check that the data validation rule still applies to the same range (since there's nowhere to extend it to)
         Assert.AreEqual(dvAddress, dv.Address.Address);
     }
+
     [TestMethod]
     public void TestInsertRowsAboveVeryLongRangeWithDataValidation()
     {
         using ExcelPackage? pck = new ExcelPackage();
+
         // Add a sheet with data validation on the whole of column A except rows 1-10
         ExcelWorksheet? wks = pck.Workbook.Worksheets.Add("Sheet1");
         string? dvAddress = "A11:A1048576";
@@ -382,6 +390,7 @@ public class DataValidationTests : ValidationTestBase
     public void TestInsertRowsToPushDataValidationOffSheet()
     {
         using ExcelPackage? pck = new ExcelPackage();
+
         // Add a sheet with data validation on the last two rows of column A
         ExcelWorksheet? wks = pck.Workbook.Worksheets.Add("Sheet1");
         string? dvAddress = "A1048575:A1048576";
@@ -564,7 +573,6 @@ public class DataValidationTests : ValidationTestBase
         rangeValidation2.Operator = ExcelDataValidationOperator.equal;
         rangeValidation2.Formula.Value = 6;
 
-
         ws.Cells["A2"].DataValidation.ClearDataValidation();
 
         IExcelDataValidationList? list = ws.DataValidations.AddListValidation("A2");
@@ -588,7 +596,6 @@ public class DataValidationTests : ValidationTestBase
 
         rangeValidation2.Operator = ExcelDataValidationOperator.equal;
         rangeValidation2.Formula.Value = 6;
-
 
         ws.Cells["A2:A3"].DataValidation.ClearDataValidation();
         ws.Cells["E16 A5"].DataValidation.ClearDataValidation();
@@ -616,7 +623,6 @@ public class DataValidationTests : ValidationTestBase
         rangeValidation.Operator = ExcelDataValidationOperator.equal;
         rangeValidation.Formula.Value = 5;
 
-
         ws.Cells["A2:A3"].DataValidation.ClearDataValidation();
         ws.Cells["E16 A5"].DataValidation.ClearDataValidation();
 
@@ -642,7 +648,6 @@ public class DataValidationTests : ValidationTestBase
         rangeValidation2.Operator = ExcelDataValidationOperator.equal;
         rangeValidation2.Formula.Value = 6;
 
-
         ws.Cells["A4:A7"].DataValidation.ClearDataValidation();
 
         IExcelDataValidationList? list = ws.DataValidations.AddListValidation("A4");
@@ -655,7 +660,6 @@ public class DataValidationTests : ValidationTestBase
 
         SaveAndCleanup(pck);
     }
-
 
     [TestMethod]
     public void ClearValidationOverARangeWithMultipleValidations2()
@@ -705,7 +709,6 @@ public class DataValidationTests : ValidationTestBase
 
         list.Formula.Values.Add("Value1");
         list.Formula.Values.Add("Value2");
-
 
         list2.Formula.Values.Add("Value21");
         list2.Formula.Values.Add("Value22");
@@ -786,7 +789,6 @@ public class DataValidationTests : ValidationTestBase
 
         SaveAndCleanup(pck);
     }
-
 
     [TestMethod]
     public void UserTestClear()

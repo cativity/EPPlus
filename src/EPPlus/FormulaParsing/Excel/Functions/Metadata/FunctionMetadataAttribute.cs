@@ -10,7 +10,6 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Metadata;
 [AttributeUsage(AttributeTargets.Class)]
 public class FunctionMetadataAttribute : Attribute
 {
-
     /// <summary>
     /// Function category
     /// </summary>
@@ -27,5 +26,4 @@ public class FunctionMetadataAttribute : Attribute
     public string Description { get; set; }
 
     public string IntroducedInExcelVersion { get; set; }
-
 }

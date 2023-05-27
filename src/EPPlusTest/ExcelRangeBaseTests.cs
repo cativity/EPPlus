@@ -26,6 +26,7 @@
  *******************************************************************************
   01/27/2020         EPPlus Software AB       Initial release EPPlus 5
  *******************************************************************************/
+
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using OfficeOpenXml;
 
@@ -48,9 +49,11 @@ public class ExcelRangeBaseTests : TestBase
         ExcelRange? destinationExcelRange = ws1.Cells[5, 5];
         Assert.IsNull(destinationExcelRange.Comment);
         sourceExcelRange.Copy(destinationExcelRange);
+
         // Assert the original comment is intact.
         Assert.AreEqual("test1", sourceExcelRange.Comment.Author);
         Assert.AreEqual("Testing comment 1", sourceExcelRange.Comment.Text);
+
         // Assert the comment was copied.
         Assert.AreEqual("test1", destinationExcelRange.Comment.Author);
         Assert.AreEqual("Testing comment 1", destinationExcelRange.Comment.Text);
@@ -77,11 +80,13 @@ public class ExcelRangeBaseTests : TestBase
         Assert.AreEqual("Testing comment 2", sourceExcelRangeD3.Comment.Text);
         Assert.AreEqual("test1", sourceExcelRangeE3.Comment.Author);
         Assert.AreEqual("Testing comment 3", sourceExcelRangeE3.Comment.Text);
+
         // Copy the full row to capture each cell at once.
         Assert.IsNull(ws1.Cells[5, 3].Comment);
         Assert.IsNull(ws1.Cells[5, 4].Comment);
         Assert.IsNull(ws1.Cells[5, 5].Comment);
         ws1.Cells["3:3"].Copy(ws1.Cells["5:5"]);
+
         // Assert the original comments are intact.
         Assert.AreEqual("test1", sourceExcelRangeC3.Comment.Author);
         Assert.AreEqual("Testing comment 1", sourceExcelRangeC3.Comment.Text);
@@ -89,6 +94,7 @@ public class ExcelRangeBaseTests : TestBase
         Assert.AreEqual("Testing comment 2", sourceExcelRangeD3.Comment.Text);
         Assert.AreEqual("test1", sourceExcelRangeE3.Comment.Author);
         Assert.AreEqual("Testing comment 3", sourceExcelRangeE3.Comment.Text);
+
         // Assert the comments were copied.
         ExcelRange? destinationExcelRangeC5 = ws1.Cells[5, 3];
         ExcelRange? destinationExcelRangeD5 = ws1.Cells[5, 4];

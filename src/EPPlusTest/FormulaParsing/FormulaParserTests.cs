@@ -26,6 +26,7 @@
  *******************************************************************************
   01/27/2020         EPPlus Software AB       Initial release EPPlus 5
  *******************************************************************************/
+
 using System;
 using System.Text;
 using System.Collections.Generic;
@@ -49,13 +50,11 @@ public class FormulaParserTests
     {
         ExcelDataProvider? provider = A.Fake<ExcelDataProvider>();
         this._parser = new FormulaParser(provider);
-
     }
 
     [TestCleanup]
     public void Cleanup()
     {
-
     }
 
     [TestMethod]
@@ -79,12 +78,7 @@ public class FormulaParserTests
         IExpressionGraphBuilder? graphBuilder = A.Fake<IExpressionGraphBuilder>();
         A.CallTo(() => graphBuilder.Build(tokens)).Returns(new ExGraph());
 
-        this._parser.Configure(config =>
-        {
-            config
-                .SetLexer(lexer)
-                .SetGraphBuilder(graphBuilder);
-        });
+        this._parser.Configure(config => { config.SetLexer(lexer).SetGraphBuilder(graphBuilder); });
 
         this._parser.Parse("ABC");
 
@@ -104,13 +98,7 @@ public class FormulaParserTests
         IExpressionCompiler? compiler = A.Fake<IExpressionCompiler>();
         A.CallTo(() => compiler.Compile(expectedGraph.Expressions)).Returns(new CompileResult(0, DataType.Integer));
 
-        this._parser.Configure(config =>
-        {
-            config
-                .SetLexer(lexer)
-                .SetGraphBuilder(graphBuilder)
-                .SetExpresionCompiler(compiler);
-        });
+        this._parser.Configure(config => { config.SetLexer(lexer).SetGraphBuilder(graphBuilder).SetExpresionCompiler(compiler); });
 
         this._parser.Parse("ABC");
 

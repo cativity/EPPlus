@@ -10,6 +10,7 @@
  *************************************************************************************************
   01/27/2020         EPPlus Software AB       Initial release EPPlus 5
  *************************************************************************************************/
+
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -19,10 +20,9 @@ using OfficeOpenXml.FormulaParsing.ExpressionGraph;
 
 namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Text;
 
-[FunctionMetadata(
-                     Category = ExcelFunctionCategory.Text,
-                     EPPlusVersion = "4",
-                     Description = "Returns a specified number of characters from the start of a supplied text string")]
+[FunctionMetadata(Category = ExcelFunctionCategory.Text,
+                  EPPlusVersion = "4",
+                  Description = "Returns a specified number of characters from the start of a supplied text string")]
 internal class Left : ExcelFunction
 {
     public override CompileResult Execute(IEnumerable<FunctionArgument> arguments, ParsingContext context)
@@ -30,6 +30,7 @@ internal class Left : ExcelFunction
         ValidateArguments(arguments, 2);
         string? str = ArgToString(arguments, 0);
         int length = this.ArgToInt(arguments, 1);
+
         if (str.Length < length)
         {
             length = str.Length;

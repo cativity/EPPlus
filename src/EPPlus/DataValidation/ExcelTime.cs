@@ -10,6 +10,7 @@
  *************************************************************************************************
   01/27/2020         EPPlus Software AB       Initial release EPPlus 5
  *************************************************************************************************/
+
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -24,9 +25,11 @@ namespace OfficeOpenXml.DataValidation;
 public class ExcelTime
 {
     private event EventHandler _timeChanged;
+
     private readonly decimal SecondsPerDay = 3600 * 24;
     private readonly decimal SecondsPerHour = 3600;
     private readonly decimal SecondsPerMinute = 60;
+
     /// <summary>
     /// Max number of decimals when rounding.
     /// </summary>
@@ -37,7 +40,6 @@ public class ExcelTime
     /// </summary>
     public ExcelTime()
     {
-
     }
 
     /// <summary>
@@ -73,6 +75,7 @@ public class ExcelTime
         // handle second
         remainingSeconds = totalSeconds - (hour * this.SecondsPerHour) - (minute * this.SecondsPerMinute);
         decimal second = Math.Round(remainingSeconds, MidpointRounding.AwayFromZero);
+
         // Second might be rounded to 60... the SetSecond method handles that.
         this.SetSecond((int)second);
     }
@@ -136,21 +139,20 @@ public class ExcelTime
     }
 
     private int _hour;
+
     /// <summary>
     /// Hour between 0 and 23
     /// </summary>
-    public int Hour 
+    public int Hour
     {
-        get
-        {
-            return this._hour;
-        }
+        get { return this._hour; }
         set
         {
             if (value < 0)
             {
                 throw new InvalidOperationException("Value for hour cannot be negative");
             }
+
             if (value > 23)
             {
                 throw new InvalidOperationException("Value for hour cannot be greater than 23");
@@ -162,21 +164,20 @@ public class ExcelTime
     }
 
     private int _minute;
+
     /// <summary>
     /// Minute between 0 and 59
     /// </summary>
     public int Minute
     {
-        get
-        {
-            return this._minute;
-        }
+        get { return this._minute; }
         set
         {
             if (value < 0)
             {
                 throw new InvalidOperationException("Value for minute cannot be negative");
             }
+
             if (value > 59)
             {
                 throw new InvalidOperationException("Value for minute cannot be greater than 59");
@@ -188,21 +189,20 @@ public class ExcelTime
     }
 
     private int? _second;
+
     /// <summary>
     /// Second between 0 and 59
     /// </summary>
     public int? Second
     {
-        get
-        {
-            return this._second;
-        }
+        get { return this._second; }
         set
         {
             if (value < 0)
             {
                 throw new InvalidOperationException("Value for second cannot be negative");
             }
+
             if (value > 59)
             {
                 throw new InvalidOperationException("Value for second cannot be greater than 59");
@@ -223,6 +223,7 @@ public class ExcelTime
         decimal result = this.Hour * this.SecondsPerHour;
         result += this.Minute * this.SecondsPerMinute;
         result += this.Second ?? 0;
+
         return (decimal)result;
     }
 
@@ -233,6 +234,7 @@ public class ExcelTime
     public decimal ToExcelTime()
     {
         decimal seconds = this.ToSeconds();
+
         return Round(seconds / (decimal)this.SecondsPerDay);
     }
 
@@ -244,6 +246,7 @@ public class ExcelTime
     {
         return this.ToExcelTime().ToString(CultureInfo.InvariantCulture);
     }
+
     /// <summary>
     /// Converts the object to a string
     /// </summary>
@@ -251,10 +254,10 @@ public class ExcelTime
     public override string ToString()
     {
         int second = this.Second ?? 0;
+
         return string.Format("{0}:{1}:{2}",
                              this.Hour < 10 ? "0" + this.Hour.ToString() : this.Hour.ToString(),
                              this.Minute < 10 ? "0" + this.Minute.ToString() : this.Minute.ToString(),
                              second < 10 ? "0" + second.ToString() : second.ToString());
     }
-
 }

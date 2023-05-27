@@ -10,18 +10,22 @@ namespace EPPlusTest.Core.Range.Delete;
 public class WorksheetRangeInsertDeleteDrawingsTests : TestBase
 {
     public static ExcelPackage _pck;
+
     [ClassInitialize]
     public static void Init(TestContext context)
     {
         InitBase();
         _pck = OpenPackage("WorksheetRangeInsertDeleteDrawings.xlsx", true);
     }
+
     [ClassCleanup]
     public static void Cleanup()
     {
         SaveAndCleanup(_pck);
     }
+
     #region Row Tests
+
     [TestMethod]
     public void DeleteRowsEntireDrawing()
     {
@@ -47,6 +51,7 @@ public class WorksheetRangeInsertDeleteDrawingsTests : TestBase
         Assert.AreEqual(2, shape3.From.Row);
         Assert.AreEqual(5, shape3.To.Row);
     }
+
     [TestMethod]
     public void DeleteRowsDrawingPartialRow()
     {
@@ -82,8 +87,11 @@ public class WorksheetRangeInsertDeleteDrawingsTests : TestBase
         Assert.AreEqual(5, shape3.To.Row);
         Assert.AreEqual(5, shape3.To.RowOff / ExcelDrawing.EMU_PER_PIXEL);
     }
+
     #endregion
+
     #region Column Tests
+
     [TestMethod]
     public void DeleteColumnWithDrawing()
     {
@@ -111,6 +119,7 @@ public class WorksheetRangeInsertDeleteDrawingsTests : TestBase
         Assert.AreEqual(9, shape.To.Column);
         Assert.AreEqual(11, chart.To.Column);
     }
+
     [TestMethod]
     public void DeleteColumnEntireDrawing()
     {
@@ -127,6 +136,7 @@ public class WorksheetRangeInsertDeleteDrawingsTests : TestBase
         IExcelDataValidationInt? dv = ws.DataValidations.AddIntegerValidation("C1:D5");
         dv.Operator = OfficeOpenXml.DataValidation.ExcelDataValidationOperator.equal;
         dv.Formula.Value = 1;
+
         //Act
         ws.DeleteColumn(3, 10);
 
@@ -139,8 +149,8 @@ public class WorksheetRangeInsertDeleteDrawingsTests : TestBase
         Assert.AreEqual(2, shape3.From.Column);
         Assert.AreEqual(5, shape3.To.Column);
         Assert.AreEqual(0, ws.DataValidations.Count);
-
     }
+
     [TestMethod]
     public void DeleteColumnDrawingPartialColumn()
     {
@@ -178,7 +188,9 @@ public class WorksheetRangeInsertDeleteDrawingsTests : TestBase
     }
 
     #endregion
+
     #region Range
+
     [TestMethod]
     public void DeleteRangeWithDrawingFullShiftUp()
     {
@@ -206,6 +218,7 @@ public class WorksheetRangeInsertDeleteDrawingsTests : TestBase
         Assert.AreEqual(10, shape.To.Row);
         Assert.AreEqual(12, chart.To.Row);
     }
+
     [TestMethod]
     public void DeleteRangeWithDrawingFullShiftRight()
     {
@@ -231,9 +244,11 @@ public class WorksheetRangeInsertDeleteDrawingsTests : TestBase
         Assert.AreEqual(22, chart.From.Column);
 
         Assert.AreEqual(9, shape.To.Column);
+
         //Assert.AreEqual(picToCol, pic.To.Column);
         Assert.AreEqual(32, chart.To.Column);
     }
+
     [TestMethod]
     public void DeleteRangeWithDrawingPartialShiftUp()
     {
@@ -262,6 +277,7 @@ public class WorksheetRangeInsertDeleteDrawingsTests : TestBase
         Assert.AreEqual(10, shape.To.Row);
         Assert.AreEqual(10, chart.To.Row);
     }
+
     [TestMethod]
     public void DeleteRangeWithDrawingPartialShiftUpOffset()
     {
@@ -281,6 +297,7 @@ public class WorksheetRangeInsertDeleteDrawingsTests : TestBase
         Assert.AreEqual(4, shape.From.Row);
         Assert.AreEqual(0, shape.From.RowOff);
     }
+
     [TestMethod]
     public void DeleteRangeWithDrawingPartialShiftLeftOffset()
     {
@@ -300,6 +317,7 @@ public class WorksheetRangeInsertDeleteDrawingsTests : TestBase
         Assert.AreEqual(4, shape.From.Column);
         Assert.AreEqual(0, shape.From.ColumnOff);
     }
+
     [TestMethod]
     public void DeleteRangeWithDrawingPartialShiftLeft()
     {
@@ -328,5 +346,6 @@ public class WorksheetRangeInsertDeleteDrawingsTests : TestBase
         Assert.AreEqual(10, shape.To.Column);
         Assert.AreEqual(32, chart.To.Column);
     }
+
     #endregion
 }

@@ -10,6 +10,7 @@
  *************************************************************************************************
   01/27/2020         EPPlus Software AB       Initial release EPPlus 5
  *************************************************************************************************/
+
 using System;
 using System.Xml;
 using OfficeOpenXml.Drawing;
@@ -27,16 +28,30 @@ public class ExcelTextFont : XmlHelper
     internal XmlNode _rootNode;
     Action _initXml;
     IPictureRelationDocument _pictureRelationDocument;
-    internal ExcelTextFont(IPictureRelationDocument pictureRelationDocument, XmlNamespaceManager namespaceManager, XmlNode rootNode, string path, string[] schemaNodeOrder, Action initXml=null)
+
+    internal ExcelTextFont(IPictureRelationDocument pictureRelationDocument,
+                           XmlNamespaceManager namespaceManager,
+                           XmlNode rootNode,
+                           string path,
+                           string[] schemaNodeOrder,
+                           Action initXml = null)
         : base(namespaceManager, rootNode)
     {
-        this.AddSchemaNodeOrder(schemaNodeOrder, new string[] { "bodyPr", "lstStyle","p", "pPr", "defRPr", "solidFill","highlight", "uFill", "latin","ea", "cs","sym","hlinkClick","hlinkMouseOver","rtl", "r", "rPr", "t" });
+        this.AddSchemaNodeOrder(schemaNodeOrder,
+                                new string[]
+                                {
+                                    "bodyPr", "lstStyle", "p", "pPr", "defRPr", "solidFill", "highlight", "uFill", "latin", "ea", "cs", "sym", "hlinkClick",
+                                    "hlinkMouseOver", "rtl", "r", "rPr", "t"
+                                });
+
         this._rootNode = rootNode;
         this._pictureRelationDocument = pictureRelationDocument;
         this._initXml = initXml;
+
         if (path != "")
         {
             XmlNode node = rootNode.SelectSingleNode(path, namespaceManager);
+
             if (node != null)
             {
                 this.TopNode = node;
@@ -45,48 +60,45 @@ public class ExcelTextFont : XmlHelper
 
         this._path = path;
     }
+
     string _fontLatinPath = "a:latin/@typeface";
+
     /// <summary>
     /// The latin typeface name
     /// </summary>
     public string LatinFont
     {
-        get
-        {
-            return this.GetXmlNodeString(this._fontLatinPath);
-        }
+        get { return this.GetXmlNodeString(this._fontLatinPath); }
         set
         {
             this.CreateTopNode();
             this.SetXmlNodeString(this._fontLatinPath, value);
         }
     }
+
     string _fontEaPath = "a:ea/@typeface";
+
     /// <summary>
     /// The East Asian typeface name
     /// </summary>
     public string EastAsianFont
     {
-        get
-        {
-            return this.GetXmlNodeString(this._fontEaPath);
-        }
+        get { return this.GetXmlNodeString(this._fontEaPath); }
         set
         {
             this.CreateTopNode();
             this.SetXmlNodeString(this._fontEaPath, value);
         }
     }
+
     string _fontCsPath = "a:cs/@typeface";
+
     /// <summary>
     /// The complex font typeface name
     /// </summary>
     public string ComplexFont
     {
-        get
-        {
-            return this.GetXmlNodeString(this._fontCsPath);
-        }
+        get { return this.GetXmlNodeString(this._fontCsPath); }
         set
         {
             this.CreateTopNode();
@@ -99,7 +111,7 @@ public class ExcelTextFont : XmlHelper
     /// </summary>
     protected internal void CreateTopNode()
     {
-        if (this._path!="" && this.TopNode== this._rootNode)
+        if (this._path != "" && this.TopNode == this._rootNode)
         {
             this._initXml?.Invoke();
             this.CreateNode(this._path);
@@ -113,32 +125,30 @@ public class ExcelTextFont : XmlHelper
             this.CreateNode("../../../a:lstStyle");
         }
     }
+
     string _boldPath = "@b";
+
     /// <summary>
     /// If the font is bold
     /// </summary>
     public bool Bold
     {
-        get
-        {
-            return this.GetXmlNodeBool(this._boldPath);
-        }
+        get { return this.GetXmlNodeBool(this._boldPath); }
         set
         {
             this.CreateTopNode();
             this.SetXmlNodeString(this._boldPath, value ? "1" : "0");
         }
     }
+
     string _underLinePath = "@u";
+
     /// <summary>
     /// The fonts underline style
     /// </summary>
     public eUnderLineType UnderLine
     {
-        get
-        {
-            return this.GetXmlNodeString(this._underLinePath).TranslateUnderline();
-        }
+        get { return this.GetXmlNodeString(this._underLinePath).TranslateUnderline(); }
         set
         {
             this.CreateTopNode();
@@ -149,17 +159,20 @@ public class ExcelTextFont : XmlHelper
     internal void SetFromXml(XmlElement copyFromElement)
     {
         this.CreateTopNode();
+
         foreach (XmlAttribute a in copyFromElement.Attributes)
         {
             ((XmlElement)this.TopNode).SetAttribute(a.Name, a.NamespaceURI, a.Value);
         }
-        if(copyFromElement.HasChildNodes && !this.TopNode.HasChildNodes)
+
+        if (copyFromElement.HasChildNodes && !this.TopNode.HasChildNodes)
         {
             this.TopNode.InnerXml = copyFromElement.InnerXml;
         }
     }
 
     string _underLineColorPath = "a:uFill/a:solidFill/a:srgbClr/@val";
+
     /// <summary>
     /// The fonts underline color
     /// </summary>
@@ -168,6 +181,7 @@ public class ExcelTextFont : XmlHelper
         get
         {
             string col = this.GetXmlNodeString(this._underLineColorPath);
+
             if (col == "")
             {
                 return Color.Empty;
@@ -183,55 +197,54 @@ public class ExcelTextFont : XmlHelper
             this.SetXmlNodeString(this._underLineColorPath, value.ToArgb().ToString("X").Substring(2, 6));
         }
     }
+
     string _italicPath = "@i";
+
     /// <summary>
     /// If the font is italic
     /// </summary>
     public bool Italic
     {
-        get
-        {
-            return this.GetXmlNodeBool(this._italicPath);
-        }
+        get { return this.GetXmlNodeBool(this._italicPath); }
         set
         {
             this.CreateTopNode();
             this.SetXmlNodeString(this._italicPath, value ? "1" : "0");
         }
     }
+
     string _strikePath = "@strike";
+
     /// <summary>
     /// Font strike out type
     /// </summary>
     public eStrikeType Strike
     {
-        get
-        {
-            return this.GetXmlNodeString(this._strikePath).TranslateStrikeType();
-        }
+        get { return this.GetXmlNodeString(this._strikePath).TranslateStrikeType(); }
         set
         {
             this.CreateTopNode();
             this.SetXmlNodeString(this._strikePath, value.TranslateStrikeTypeText());
         }
     }
+
     string _sizePath = "@sz";
+
     /// <summary>
     /// Font size
     /// </summary>
     public float Size
     {
-        get
-        {
-            return this.GetXmlNodeInt(this._sizePath) / 100;
-        }
+        get { return this.GetXmlNodeInt(this._sizePath) / 100; }
         set
         {
             this.CreateTopNode();
             this.SetXmlNodeString(this._sizePath, ((int)(value * 100)).ToString());
         }
     }
+
     ExcelDrawingFill _fill;
+
     /// <summary>
     /// A reference to the fill properties
     /// </summary>
@@ -247,7 +260,9 @@ public class ExcelTextFont : XmlHelper
                                                        this.CreateTopNode);
         }
     }
+
     string _colorPath = "a:solidFill/a:srgbClr/@val";
+
     /// <summary>
     /// Sets the default color of the text.
     /// This sets the Fill to a SolidFill with the specified color.
@@ -261,6 +276,7 @@ public class ExcelTextFont : XmlHelper
         get
         {
             string col = this.GetXmlNodeString(this._colorPath);
+
             if (col == "")
             {
                 return Color.Empty;
@@ -276,16 +292,15 @@ public class ExcelTextFont : XmlHelper
             this.Fill.SolidFill.Color.SetRgbColor(value);
         }
     }
+
     string _kernPath = "@kern";
+
     /// <summary>
     /// Specifies the minimum font size at which character kerning occurs for this text run
     /// </summary>
     public double Kerning
     {
-        get
-        {
-            return this.GetXmlNodeFontSize(this._kernPath);
-        }
+        get { return this.GetXmlNodeFontSize(this._kernPath); }
         set
         {
             this.CreateTopNode();
@@ -307,6 +322,7 @@ public class ExcelTextFont : XmlHelper
         this.LatinFont = name;
         this.ComplexFont = name;
         this.Size = size;
+
         if (bold)
         {
             this.Bold = bold;

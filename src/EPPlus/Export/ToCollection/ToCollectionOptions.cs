@@ -10,6 +10,7 @@
  *************************************************************************************************
   10/04/2022         EPPlus Software AB       Initial release EPPlus 6.1
  *************************************************************************************************/
+
 using OfficeOpenXml.Export.ToCollection;
 using OfficeOpenXml.FormulaParsing.Excel.Functions.Text;
 using OfficeOpenXml.Table;
@@ -28,13 +29,14 @@ public class ToCollectionRangeOptions : ToCollectionOptions
     /// </summary>
     public ToCollectionRangeOptions()
     {
-
     }
+
     internal ToCollectionRangeOptions(ToCollectionOptions options)
     {
         this.SetCustomHeaders(options.Headers);
         this.ConversionFailureStrategy = options.ConversionFailureStrategy;
     }
+
     /// <summary>
     /// 0-based index of the Header row in the range, if applicable. 
     /// A null value means there is no header row.
@@ -42,22 +44,22 @@ public class ToCollectionRangeOptions : ToCollectionOptions
     /// <seealso cref="DataStartRow"/>
     /// </summary>
     public int? HeaderRow { get; set; } = null;
+
     /// <summary>
     /// The data start row in the range.
     /// A null value means the data rows starts direcly after the header row.
     /// </summary>
     public int? DataStartRow { get; set; } = null;
+
     /// <summary>
     /// A <see cref="ToCollectionRangeOptions"/> with default values.
     /// </summary>
     public static ToCollectionRangeOptions Default
     {
-        get
-        {
-            return new ToCollectionRangeOptions();
-        }
+        get { return new ToCollectionRangeOptions(); }
     }
 }
+
 /// <summary>
 /// Base class for settings to the ToCollection method.
 /// <see cref="ExcelRangeBase.ToCollection{T}()"/>
@@ -70,6 +72,7 @@ public abstract class ToCollectionOptions
     /// <see cref="SetCustomHeaders(string[])"/>
     /// </summary>
     internal string[] Headers { get; private set; } = null;
+
     /// <summary>
     /// Sets custom headers.  If set, used instead of the header row. 
     /// </summary>
@@ -78,11 +81,13 @@ public abstract class ToCollectionOptions
     {
         this.Headers = header;
     }
+
     /// <summary>
     /// How conversion failures should be handled when mapping properties.
     /// </summary>
     public ToCollectionConversionFailureStrategy ConversionFailureStrategy { get; set; }
 }
+
 /// <summary>
 /// Settings for the ToCollection method.
 /// <see cref="ExcelTable.ToCollection{T}()"/>
@@ -94,9 +99,6 @@ public class ToCollectionTableOptions : ToCollectionOptions
     /// </summary>
     public static ToCollectionTableOptions Default
     {
-        get
-        {
-            return new ToCollectionTableOptions();
-        }
+        get { return new ToCollectionTableOptions(); }
     }
 }

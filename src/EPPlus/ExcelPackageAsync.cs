@@ -10,6 +10,7 @@
  *************************************************************************************************
   01/27/2020         EPPlus Software AB       Initial release EPPlus 5
  *************************************************************************************************/
+
 using OfficeOpenXml.Encryption;
 using OfficeOpenXml.Utils;
 using OfficeOpenXml.Utils.CompundDocument;
@@ -19,11 +20,13 @@ using System.IO;
 using System.Threading;
 using System.Threading.Tasks;
 #endif
+
 namespace OfficeOpenXml
 {
     public sealed partial class ExcelPackage
     {
 #if !NET35 && !NET40
+
         #region Load
 
         /// <summary>
@@ -36,6 +39,7 @@ namespace OfficeOpenXml
             using FileStream? stream = fileInfo.OpenRead();
             await this.LoadAsync(stream, RecyclableMemory.GetStream(), null, cancellationToken).ConfigureAwait(false);
         }
+
         /// <summary>
         /// Loads the specified package data from a stream.
         /// </summary>
@@ -58,6 +62,7 @@ namespace OfficeOpenXml
             await this.LoadAsync(stream, RecyclableMemory.GetStream(), Password, cancellationToken).ConfigureAwait(false);
             stream.Close();
         }
+
         /// <summary>
         /// Loads the specified package data from a stream.
         /// </summary>
@@ -82,6 +87,7 @@ namespace OfficeOpenXml
             await this.LoadAsync(stream, output, Password, cancellationToken).ConfigureAwait(false);
             stream.Close();
         }
+
         /// <summary>
         /// Loads the specified package data from a stream.
         /// </summary>
@@ -125,6 +131,7 @@ namespace OfficeOpenXml
         private async Task LoadAsync(Stream input, Stream output, string Password, CancellationToken cancellationToken)
         {
             this.ReleaseResources();
+
             if (input.CanSeek && input.Length == 0) // Template is blank, Construct new
             {
                 this._stream = output;
@@ -134,6 +141,7 @@ namespace OfficeOpenXml
             {
                 Stream ms;
                 this._stream = output;
+
                 if (Password != null)
                 {
                     using MemoryStream? encrStream = RecyclableMemory.GetStream();
@@ -148,27 +156,32 @@ namespace OfficeOpenXml
                     await StreamUtil.CopyStreamAsync(input, ms, cancellationToken).ConfigureAwait(false);
                 }
 
-				try
-				{
+                try
+                {
                     this._zipPackage = new Packaging.ZipPackage(ms);
-				}
-				catch (Exception ex)
-				{
-					if (Password == null && await CompoundDocumentFile.IsCompoundDocumentAsync((MemoryStream)this._stream, cancellationToken).ConfigureAwait(false))
-					{
-						throw new Exception("Cannot open the package. The package is an OLE compound document. If this is an encrypted package, please supply the password", ex);
-					}
+                }
+                catch (Exception ex)
+                {
+                    if (Password == null
+                        && await CompoundDocumentFile.IsCompoundDocumentAsync((MemoryStream)this._stream, cancellationToken).ConfigureAwait(false))
+                    {
+                        throw new
+                            Exception("Cannot open the package. The package is an OLE compound document. If this is an encrypted package, please supply the password",
+                                      ex);
+                    }
 
-					throw;
-				}
+                    throw;
+                }
                 finally
                 {
                     ms.Dispose();
-				}
+                }
             }
+
             //Clear the workbook so that it gets reinitialized next time
             this._workbook = null;
         }
+
         #endregion
 
         #region SaveAsync
@@ -183,6 +196,7 @@ namespace OfficeOpenXml
         public async Task SaveAsync(CancellationToken cancellationToken = default)
         {
             this.CheckNotDisposed();
+
             try
             {
                 if (this._stream is MemoryStream && this._stream.Length > 0)
@@ -200,6 +214,7 @@ namespace OfficeOpenXml
                 }
 
                 this.Workbook.Save();
+
                 if (this.File == null)
                 {
                     if (this.Encryption.IsEncrypted)
@@ -215,6 +230,7 @@ namespace OfficeOpenXml
                     {
                         this._zipPackage.Save(this._stream);
                     }
+
                     await this._stream.FlushAsync(cancellationToken);
                     Packaging.ZipPackage.Close();
                 }
@@ -234,6 +250,7 @@ namespace OfficeOpenXml
 
                     this._zipPackage.Save(this._stream);
                     Packaging.ZipPackage.Close();
+
                     if (this.Stream is MemoryStream stream)
                     {
 #if NETSTANDARD2_1
@@ -241,6 +258,7 @@ namespace OfficeOpenXml
 #else
                         using FileStream? fi = new FileStream(this.File.FullName, FileMode.Create);
 #endif
+
                         //EncryptPackage
                         if (this.Encryption.IsEncrypted)
                         {
@@ -263,7 +281,6 @@ namespace OfficeOpenXml
 #endif
                         byte[]? b = await this.GetAsByteArrayAsync(false, cancellationToken).ConfigureAwait(false);
                         await fs.WriteAsync(b, 0, b.Length, cancellationToken).ConfigureAwait(false);
-
                     }
                 }
             }
@@ -305,8 +322,9 @@ namespace OfficeOpenXml
         public async Task SaveAsAsync(FileInfo file, CancellationToken cancellationToken = default)
         {
             this.File = file;
-            await this.SaveAsync(cancellationToken).ConfigureAwait(false); 
+            await this.SaveAsync(cancellationToken).ConfigureAwait(false);
         }
+
         /// <summary>
         /// Saves the workbook to a new file
         /// The package is closed after it has been saved        
@@ -332,6 +350,7 @@ namespace OfficeOpenXml
             this.Encryption.Password = password;
             await this.SaveAsync(cancellationToken).ConfigureAwait(false);
         }
+
         /// <summary>
         /// Saves the workbook to a new file
         /// The package is closed after it has been saved
@@ -354,7 +373,7 @@ namespace OfficeOpenXml
         public async Task SaveAsAsync(Stream OutputStream, CancellationToken cancellationToken = default)
         {
             this.File = null;
-            await this.SaveAsync(cancellationToken).ConfigureAwait(false); 
+            await this.SaveAsync(cancellationToken).ConfigureAwait(false);
 
             if (OutputStream != this._stream)
             {
@@ -373,19 +392,20 @@ namespace OfficeOpenXml
         public async Task SaveAsAsync(Stream OutputStream, string password, CancellationToken cancellationToken = default)
         {
             this.Encryption.Password = password;
-            await this.SaveAsAsync(OutputStream, cancellationToken).ConfigureAwait(false); 
+            await this.SaveAsAsync(OutputStream, cancellationToken).ConfigureAwait(false);
         }
 
         #endregion
 
-
         internal async Task<byte[]> GetAsByteArrayAsync(bool save, CancellationToken cancellationToken)
         {
             this.CheckNotDisposed();
+
             if (save)
             {
                 this.Workbook.Save();
                 Packaging.ZipPackage.Close();
+
                 if (this._stream is MemoryStream && this._stream.Length > 0)
                 {
                     this._stream.Close();
@@ -399,6 +419,7 @@ namespace OfficeOpenXml
 
                 this._zipPackage.Save(this._stream);
             }
+
             byte[]? byRet = new byte[this.Stream.Length];
             long pos = this.Stream.Position;
             this.Stream.Seek(0, SeekOrigin.Begin);
@@ -414,6 +435,7 @@ namespace OfficeOpenXml
 
             this.Stream.Seek(pos, SeekOrigin.Begin);
             this.Stream.Close();
+
             return byRet;
         }
 
@@ -464,6 +486,7 @@ namespace OfficeOpenXml
             {
                 this.Encryption.Password = password;
             }
+
             return await this.GetAsByteArrayAsync(true, cancellationToken).ConfigureAwait(false);
         }
 
@@ -473,6 +496,7 @@ namespace OfficeOpenXml
             this._stream ??= RecyclableMemory.GetStream();
 
             this.File?.Refresh();
+
             if (this.File != null && this.File.Exists)
             {
                 if (password != null)
@@ -487,6 +511,7 @@ namespace OfficeOpenXml
                 {
                     await WriteFileToStreamAsync(this.File.FullName, ms, cancellationToken).ConfigureAwait(false);
                 }
+
                 try
                 {
                     this._zipPackage = new Packaging.ZipPackage(ms);
@@ -495,7 +520,9 @@ namespace OfficeOpenXml
                 {
                     if (password == null && await CompoundDocumentFile.IsCompoundDocumentAsync(this.File, cancellationToken).ConfigureAwait(false))
                     {
-                        throw new Exception("Cannot open the package. The package is an OLE compound document. If this is an encrypted package, please supply the password", ex);
+                        throw new
+                            Exception("Cannot open the package. The package is an OLE compound document. If this is an encrypted package, please supply the password",
+                                      ex);
                     }
 
                     throw;
@@ -503,7 +530,7 @@ namespace OfficeOpenXml
                 finally
                 {
                     ms.Dispose();
-				}
+                }
             }
             else
             {
@@ -513,8 +540,7 @@ namespace OfficeOpenXml
             }
         }
 
-        private static async Task WriteFileToStreamAsync(string path, Stream stream,
-            CancellationToken cancellationToken)
+        private static async Task WriteFileToStreamAsync(string path, Stream stream, CancellationToken cancellationToken)
         {
 #if NETSTANDARD2_1
             await using (var fileStream = new FileStream(path, FileMode.Open, FileAccess.Read, FileShare.ReadWrite))
@@ -523,6 +549,7 @@ namespace OfficeOpenXml
 #endif
             byte[]? buffer = new byte[4096];
             int read;
+
             while ((read = await fileStream.ReadAsync(buffer, 0, buffer.Length, cancellationToken).ConfigureAwait(false)) > 0)
             {
                 await stream.WriteAsync(buffer, 0, read, cancellationToken).ConfigureAwait(false);
@@ -530,5 +557,5 @@ namespace OfficeOpenXml
         }
 
 #endif
-                }
-            }
+    }
+}

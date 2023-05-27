@@ -10,6 +10,7 @@
  *************************************************************************************************
   01/27/2020         EPPlus Software AB       Initial release EPPlus 5
  *************************************************************************************************/
+
 using OfficeOpenXml.Drawing.Style;
 using OfficeOpenXml.Drawing.Style.Coloring;
 using System;
@@ -26,21 +27,22 @@ namespace OfficeOpenXml.Drawing.Style.Fill;
 public class ExcelDrawingSolidFill : ExcelDrawingFillBase
 {
     string[] _schemaNodeOrder;
-    internal ExcelDrawingSolidFill(XmlNamespaceManager nsm, XmlNode topNode, string fillPath, string[]  schemaNodeOrder, Action initXml) : base(nsm, topNode, fillPath, initXml)
+
+    internal ExcelDrawingSolidFill(XmlNamespaceManager nsm, XmlNode topNode, string fillPath, string[] schemaNodeOrder, Action initXml)
+        : base(nsm, topNode, fillPath, initXml)
     {
         this._schemaNodeOrder = schemaNodeOrder;
         this.GetXml();
     }
+
     /// <summary>
     /// The fill style
     /// </summary>
     public override eFillStyle Style
     {
-        get
-        {
-            return eFillStyle.SolidFill;
-        }
+        get { return eFillStyle.SolidFill; }
     }
+
     ExcelDrawingColorManager _color = null;
 
     /// <summary>
@@ -48,28 +50,23 @@ public class ExcelDrawingSolidFill : ExcelDrawingFillBase
     /// </summary>
     public ExcelDrawingColorManager Color
     {
-        get
-        {
-            return this._color ??= new ExcelDrawingColorManager(this._nsm, this._topNode, this._fillPath, this._schemaNodeOrder, this._initXml);
-        }
+        get { return this._color ??= new ExcelDrawingColorManager(this._nsm, this._topNode, this._fillPath, this._schemaNodeOrder, this._initXml); }
     }
 
     internal override string NodeName
     {
-        get
-        {
-            return "a:solidFill";
-        }
+        get { return "a:solidFill"; }
     }
 
     internal override void SetXml(XmlNamespaceManager nsm, XmlNode node)
     {
         this._initXml?.Invoke();
+
         if (this._xml == null)
         {
-            if(string.IsNullOrEmpty(this._fillPath))
+            if (string.IsNullOrEmpty(this._fillPath))
             {
-                this.InitXml(nsm, node,"");
+                this.InitXml(nsm, node, "");
             }
             else
             {
@@ -78,16 +75,19 @@ public class ExcelDrawingSolidFill : ExcelDrawingFillBase
         }
 
         this.CheckTypeChange(this.NodeName);
-        if(this._color==null)
+
+        if (this._color == null)
         {
             this.Color.SetPresetColor(ePresetColor.Black);
         }
+
         ExcelDrawingThemeColorManager.SetXml(nsm, node);
     }
+
     internal override void GetXml()
     {
-            
     }
+
     internal override void UpdateXml()
     {
     }

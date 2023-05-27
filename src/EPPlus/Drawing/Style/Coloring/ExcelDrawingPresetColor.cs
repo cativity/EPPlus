@@ -10,9 +10,10 @@
  *************************************************************************************************
   01/27/2020         EPPlus Software AB       Initial release EPPlus 5
  *************************************************************************************************/
+
 using System;
 using OfficeOpenXml.Utils.Extensions;
-using drawing =System.Drawing;
+using drawing = System.Drawing;
 using System.Xml;
 
 namespace OfficeOpenXml.Drawing.Style.Coloring;
@@ -22,10 +23,11 @@ namespace OfficeOpenXml.Drawing.Style.Coloring;
 /// </summary>
 public class ExcelDrawingPresetColor : XmlHelper
 {
-    internal ExcelDrawingPresetColor(XmlNamespaceManager nsm, XmlNode topNode) : base(nsm, topNode)
+    internal ExcelDrawingPresetColor(XmlNamespaceManager nsm, XmlNode topNode)
+        : base(nsm, topNode)
     {
-
     }
+
     internal static ePresetColor GetPresetColor(drawing.Color presetColor)
     {
         return (ePresetColor)Enum.Parse(typeof(ePresetColor), TranslateFromColor(presetColor), true);
@@ -36,24 +38,20 @@ public class ExcelDrawingPresetColor : XmlHelper
     /// </summary>
     public ePresetColor Color
     {
-        get
-        {
-            return this.GetXmlNodeString("@val").TranslatePresetColor();
-        }
-        set
-        {
-            this.SetXmlNodeString("@val", value.TranslateString());
-        }
-    }   
+        get { return this.GetXmlNodeString("@val").TranslatePresetColor(); }
+        set { this.SetXmlNodeString("@val", value.TranslateString()); }
+    }
 
     private static string TranslateFromColor(drawing.Color c)
-    {            
+    {
         if (c.IsEmpty || c.GetType().GetProperty(c.Name, System.Reflection.BindingFlags.Public | System.Reflection.BindingFlags.Static) == null)
         {
             throw new ArgumentException("A preset color cannot be set to empty or be an unnamed color");
         }
-        string? s= c.Name.ToString();
-        return s.Substring(0, 1).ToLower()+s.Substring(1);
+
+        string? s = c.Name.ToString();
+
+        return s.Substring(0, 1).ToLower() + s.Substring(1);
     }
 
     internal const string NodeName = "a:prstClr";

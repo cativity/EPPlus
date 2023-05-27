@@ -10,21 +10,26 @@
  *************************************************************************************************
   12/01/2020         EPPlus Software AB       EPPlus 5.5
  *************************************************************************************************/
+
 using OfficeOpenXml.Drawing.Controls;
 using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Xml;
+
 namespace OfficeOpenXml;
 
 internal class ControlsCollectionInternal : XmlHelper, IEnumerable<ControlInternal>
 {
-    private List<ControlInternal> _list=new List<ControlInternal>();
-    internal ControlsCollectionInternal(XmlNamespaceManager nameSpaceManager, XmlNode topNode) : base(nameSpaceManager, topNode)
+    private List<ControlInternal> _list = new List<ControlInternal>();
+
+    internal ControlsCollectionInternal(XmlNamespaceManager nameSpaceManager, XmlNode topNode)
+        : base(nameSpaceManager, topNode)
     {
         XmlNodeList? nodes = this.GetNodes("mc:AlternateContent/mc:Choice/d:controls/mc:AlternateContent/mc:Choice/d:control");
-        foreach(XmlNode node in nodes)
+
+        foreach (XmlNode node in nodes)
         {
             this._list.Add(new ControlInternal(this.NameSpaceManager, node));
         }

@@ -98,15 +98,17 @@ public class LoadFromTextTests
         ExcelRangeBase? r = this._worksheet.Cells["A1"].LoadFromText(this._lines.ToString());
         Assert.AreEqual("A1:C2", r.FirstAddress);
     }
+
     [TestMethod]
     public void VerifyOneLineWithTextQualifier()
     {
         this.AddLine("\"a\",\"\"\"\", \"\"\"\"");
-        ExcelRangeBase? r = this._worksheet.Cells["A1"].LoadFromText(this._lines.ToString(),new ExcelTextFormat { TextQualifier='\"' });
-        Assert.AreEqual("a", this._worksheet.Cells[1,1].Value);
+        ExcelRangeBase? r = this._worksheet.Cells["A1"].LoadFromText(this._lines.ToString(), new ExcelTextFormat { TextQualifier = '\"' });
+        Assert.AreEqual("a", this._worksheet.Cells[1, 1].Value);
         Assert.AreEqual("\"", this._worksheet.Cells[1, 2].Value);
         Assert.AreEqual("\"", this._worksheet.Cells[1, 3].Value);
     }
+
     [TestMethod]
     public void VerifyMultiLineWithTextQualifier()
     {

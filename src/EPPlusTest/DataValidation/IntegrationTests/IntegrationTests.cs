@@ -26,6 +26,7 @@
  *******************************************************************************
   01/27/2020         EPPlus Software AB       Initial release EPPlus 5
  *******************************************************************************/
+
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using OfficeOpenXml;
 using OfficeOpenXml.DataValidation;
@@ -42,12 +43,12 @@ public class IntegrationTests : TestBase
 {
     static ExcelPackage _package;
     private ExcelPackage _unitTestPackage;
+
     [ClassInitialize]
     public static void Init(TestContext context)
     {
         _package = OpenPackage("DatavalidationIntegrationTests.xlsx", true);
     }
-
 
     [ClassCleanup]
     public static void Cleanup()
@@ -78,9 +79,11 @@ public class IntegrationTests : TestBase
         validation.ErrorTitle = "Invalid value was entered";
         validation.PromptTitle = "Enter value here";
         validation.Operator = ExcelDataValidationOperator.greaterThan;
+
         //validation.Value.Value = 3;
         validation.Formula.ExcelFormula = "B1";
     }
+
     [TestMethod]
     public void DataValidations_AddOneValidationOfTypeDecimal()
     {
@@ -176,7 +179,6 @@ public class IntegrationTests : TestBase
         v.ShowInputMessage = true;
         v.AllowBlank = false;
         v.Formula.ExcelFormula = "IF(AND(Sheet2!A1=\"Foo\",A1=\"Bar\"),TRUE,FALSE)";
-
 
         SaveWorkbook("MoveToExtLst_Custom.xlsx", this._unitTestPackage);
     }

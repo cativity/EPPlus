@@ -10,6 +10,7 @@
  *************************************************************************************************
   01/27/2020         EPPlus Software AB       Initial release EPPlus 5
  *************************************************************************************************/
+
 using System;
 using System.Collections.Generic;
 using System.Globalization;
@@ -25,7 +26,8 @@ public class ExpressionConverter : IExpressionConverter
     {
         CompileResult result = expression.Compile();
         string toString;
-        if(result.DataType == DataType.Decimal)
+
+        if (result.DataType == DataType.Decimal)
         {
             toString = result.ResultNumeric.ToString("G15");
         }
@@ -33,8 +35,10 @@ public class ExpressionConverter : IExpressionConverter
         {
             toString = result.Result.ToString();
         }
+
         StringExpression newExp = new StringExpression(toString);
         newExp.Operator = expression.Operator;
+
         return newExp;
     }
 
@@ -46,42 +50,51 @@ public class ExpressionConverter : IExpressionConverter
                 return compileResult.Result is string
                            ? new IntegerExpression(compileResult.Result.ToString())
                            : new IntegerExpression(Convert.ToDouble(compileResult.Result));
+
             case DataType.String:
                 return new StringExpression(compileResult.Result.ToString());
+
             case DataType.Decimal:
                 return compileResult.Result is string
                            ? new DecimalExpression(compileResult.Result.ToString())
-                           : new DecimalExpression((double) compileResult.Result);
+                           : new DecimalExpression((double)compileResult.Result);
+
             case DataType.Boolean:
                 return compileResult.Result is string
                            ? new BooleanExpression(compileResult.Result.ToString())
-                           : new BooleanExpression((bool) compileResult.Result);
+                           : new BooleanExpression((bool)compileResult.Result);
+
             //case DataType.Enumerable:
             //    return 
             case DataType.ExcelError:
                 //throw (new OfficeOpenXml.FormulaParsing.Exceptions.ExcelErrorValueException((ExcelErrorValue)compileResult.Result)); //Added JK
                 return compileResult.Result is string
-                           ? new ExcelErrorExpression(compileResult.Result.ToString(),
-                                                      ExcelErrorValue.Parse(compileResult.Result.ToString()))
-                           : new ExcelErrorExpression((ExcelErrorValue) compileResult.Result);
+                           ? new ExcelErrorExpression(compileResult.Result.ToString(), ExcelErrorValue.Parse(compileResult.Result.ToString()))
+                           : new ExcelErrorExpression((ExcelErrorValue)compileResult.Result);
+
             case DataType.Empty:
                 return new IntegerExpression(0); //Added JK
+
             case DataType.Time:
             case DataType.Date:
                 return new DecimalExpression((double)compileResult.Result);
+
             case DataType.Enumerable:
                 IRangeInfo? rangeInfo = compileResult.Result as IRangeInfo;
+
                 if (rangeInfo != null)
                 {
                     return new ExcelRangeExpression(rangeInfo);
                 }
-                break;
 
+                break;
         }
+
         return null;
     }
 
     private static IExpressionConverter _instance;
+
     public static IExpressionConverter Instance
     {
         get { return _instance ??= new ExpressionConverter(); }

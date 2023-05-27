@@ -10,6 +10,7 @@
  *************************************************************************************************
   01/27/2020         EPPlus Software AB       Initial release EPPlus 5
  *************************************************************************************************/
+
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -20,10 +21,9 @@ using OfficeOpenXml.FormulaParsing.ExpressionGraph;
 
 namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Finance;
 
-[FunctionMetadata(
-                     Category = ExcelFunctionCategory.Financial,
-                     EPPlusVersion = "5.2",
-                     Description = "Calculates the payments required to reduce a loan, from a supplied present value to a specified future value")]
+[FunctionMetadata(Category = ExcelFunctionCategory.Financial,
+                  EPPlusVersion = "5.2",
+                  Description = "Calculates the payments required to reduce a loan, from a supplied present value to a specified future value")]
 internal class Ppmt : ExcelFunction
 {
     public override CompileResult Execute(IEnumerable<FunctionArgument> arguments, ParsingContext context)
@@ -34,16 +34,21 @@ internal class Ppmt : ExcelFunction
         int nPer = this.ArgToInt(arguments, 2);
         double presentValue = this.ArgToDecimal(arguments, 3);
         double fv = 0d;
+
         if (arguments.Count() >= 5)
         {
             fv = this.ArgToDecimal(arguments, 4);
         }
+
         PmtDue type = PmtDue.EndOfPeriod;
+
         if (arguments.Count() >= 6)
         {
             type = (PmtDue)this.ArgToInt(arguments, 5);
         }
+
         FinanceCalcResult<double>? result = PpmtImpl.Ppmt(rate, per, nPer, presentValue, fv, type);
+
         if (result.HasError)
         {
             return this.CreateResult(result.ExcelErrorType);

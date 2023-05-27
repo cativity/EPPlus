@@ -10,6 +10,7 @@
  *************************************************************************************************
   01/27/2020         EPPlus Software AB       Initial release EPPlus 5
  *************************************************************************************************/
+
 using System;
 using System.Collections.Generic;
 using System.Globalization;
@@ -25,37 +26,54 @@ namespace OfficeOpenXml.Drawing.Chart;
 public class ExcelRadarChart : ExcelChartStandard, IDrawingDataLabel
 {
     #region "Constructors"
-    internal ExcelRadarChart(ExcelDrawings drawings, XmlNode node, Uri uriChart, Packaging.ZipPackagePart part, XmlDocument chartXml, XmlNode chartNode, ExcelGroupShape parent = null) :
-        base(drawings, node, uriChart, part, chartXml, chartNode, parent)
+
+    internal ExcelRadarChart(ExcelDrawings drawings,
+                             XmlNode node,
+                             Uri uriChart,
+                             Packaging.ZipPackagePart part,
+                             XmlDocument chartXml,
+                             XmlNode chartNode,
+                             ExcelGroupShape parent = null)
+        : base(drawings, node, uriChart, part, chartXml, chartNode, parent)
     {
         this.SetTypeProperties();
     }
 
-    internal ExcelRadarChart(ExcelChart topChart, XmlNode chartNode, ExcelGroupShape parent = null) :
-        base(topChart, chartNode, parent)
+    internal ExcelRadarChart(ExcelChart topChart, XmlNode chartNode, ExcelGroupShape parent = null)
+        : base(topChart, chartNode, parent)
     {
         this.SetTypeProperties();
     }
-    internal ExcelRadarChart(ExcelDrawings drawings, XmlNode node, eChartType? type, ExcelChart topChart, ExcelPivotTable PivotTableSource, XmlDocument chartXml, ExcelGroupShape parent = null) :
-        base(drawings, node, type, topChart, PivotTableSource, chartXml, parent)
+
+    internal ExcelRadarChart(ExcelDrawings drawings,
+                             XmlNode node,
+                             eChartType? type,
+                             ExcelChart topChart,
+                             ExcelPivotTable PivotTableSource,
+                             XmlDocument chartXml,
+                             ExcelGroupShape parent = null)
+        : base(drawings, node, type, topChart, PivotTableSource, chartXml, parent)
     {
         this.SetTypeProperties();
     }
+
     #endregion
+
     internal override void InitSeries(ExcelChart chart, XmlNamespaceManager ns, XmlNode node, bool isPivot, List<ExcelChartSerie> list = null)
     {
         base.InitSeries(chart, ns, node, isPivot, list);
         this.Series.Init(chart, ns, node, isPivot, base.Series._list);
     }
+
     private void SetTypeProperties()
     {
         if (this.ChartType == eChartType.RadarFilled)
         {
             this.RadarStyle = eRadarStyle.Filled;
         }
-        else if  (this.ChartType == eChartType.RadarMarkers)
+        else if (this.ChartType == eChartType.RadarMarkers)
         {
-            this.RadarStyle =  eRadarStyle.Marker;
+            this.RadarStyle = eRadarStyle.Marker;
         }
         else
         {
@@ -64,6 +82,7 @@ public class ExcelRadarChart : ExcelChartStandard, IDrawingDataLabel
     }
 
     string STYLE_PATH = "c:radarStyle/@val";
+
     /// <summary>
     /// The type of radarchart
     /// </summary>
@@ -71,7 +90,8 @@ public class ExcelRadarChart : ExcelChartStandard, IDrawingDataLabel
     {
         get
         {
-            string? v= this._chartXmlHelper.GetXmlNodeString(this.STYLE_PATH);
+            string? v = this._chartXmlHelper.GetXmlNodeString(this.STYLE_PATH);
+
             if (string.IsNullOrEmpty(v))
             {
                 return eRadarStyle.Standard;
@@ -81,12 +101,11 @@ public class ExcelRadarChart : ExcelChartStandard, IDrawingDataLabel
                 return (eRadarStyle)Enum.Parse(typeof(eRadarStyle), v, true);
             }
         }
-        set
-        {
-            this._chartXmlHelper.SetXmlNodeString(this.STYLE_PATH, value.ToString().ToLower(CultureInfo.InvariantCulture));
-        }
+        set { this._chartXmlHelper.SetXmlNodeString(this.STYLE_PATH, value.ToString().ToLower(CultureInfo.InvariantCulture)); }
     }
+
     ExcelChartDataLabel _DataLabel = null;
+
     /// <summary>
     /// Access to datalabel properties
     /// </summary>
@@ -94,19 +113,19 @@ public class ExcelRadarChart : ExcelChartStandard, IDrawingDataLabel
     {
         get
         {
-            return this._DataLabel ??= new ExcelChartDataLabelStandard(this, this.NameSpaceManager, this.ChartNode, "dLbls", this._chartXmlHelper.SchemaNodeOrder);
+            return this._DataLabel ??=
+                       new ExcelChartDataLabelStandard(this, this.NameSpaceManager, this.ChartNode, "dLbls", this._chartXmlHelper.SchemaNodeOrder);
         }
     }
+
     /// <summary>
     /// If the chart has datalabel
     /// </summary>
     public bool HasDataLabel
     {
-        get
-        {
-            return this.ChartNode.SelectSingleNode("c:dLbls", this.NameSpaceManager) != null;
-        }
+        get { return this.ChartNode.SelectSingleNode("c:dLbls", this.NameSpaceManager) != null; }
     }
+
     internal override eChartType GetChartType(string name)
     {
         if (this.RadarStyle == eRadarStyle.Filled)
@@ -122,6 +141,7 @@ public class ExcelRadarChart : ExcelChartStandard, IDrawingDataLabel
             return eChartType.Radar;
         }
     }
+
     /// <summary>
     /// A collection of series for a Radar Chart
     /// </summary>

@@ -26,6 +26,7 @@
  *******************************************************************************
   01/27/2020         EPPlus Software AB       Initial release EPPlus 5
  *******************************************************************************/
+
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using OfficeOpenXml.Utils;
 using System;
@@ -130,54 +131,61 @@ public class GetTypedCellValueTests
     {
         ConvertUtil.GetTypedCellValue<int>("text1");
     }
+
     [TestMethod]
     public void DoubleToDateTime()
     {
         DateTime expected = new DateTime(2020, 1, 1);
         Assert.AreEqual(expected, ConvertUtil.GetTypedCellValue<DateTime>(expected.ToOADate()));
     }
+
     [TestMethod]
     public void StringToDateTime()
     {
         DateTime expected = new DateTime(2020, 1, 1);
         Assert.AreEqual(expected, ConvertUtil.GetTypedCellValue<DateTime>(expected.ToString()));
     }
+
     [TestMethod]
     public void DateTimeToTimeSpan()
     {
         DateTime expected = new DateTime(2020, 1, 1);
         Assert.AreEqual(expected, ConvertUtil.GetTypedCellValue<DateTime>(new TimeSpan(expected.Ticks)));
     }
+
     [TestMethod]
     public void StringToTimeSpan()
     {
         TimeSpan expected = new TimeSpan(10, 11, 12);
         Assert.AreEqual(expected, ConvertUtil.GetTypedCellValue<TimeSpan>(expected.ToString()));
     }
+
     [TestMethod]
     public void TimeSpanToDateTime()
     {
         TimeSpan expected = new TimeSpan(10, 11, 12);
         Assert.AreEqual(expected, ConvertUtil.GetTypedCellValue<TimeSpan>(new DateTime(expected.Ticks)));
     }
+
     [TestMethod]
     public void DateTimeToNullableDateTime()
     {
         DateTime? expected = new DateTime(10, 11, 12);
         Assert.AreEqual(expected.Value, ConvertUtil.GetTypedCellValue<DateTime>(expected));
     }
+
     [TestMethod]
     public void DateTimeToNullableDateTimeNull()
     {
         DateTime? expected = null;
         Assert.AreEqual(default, ConvertUtil.GetTypedCellValue<DateTime>(expected));
     }
+
     [TestMethod]
     public void EmptyStringToNullableShouldReturnNull()
     {
         Assert.IsNull(ConvertUtil.GetTypedCellValue<int?>(""));
         Assert.IsNull(ConvertUtil.GetTypedCellValue<int?>("  "));
-
     }
 
     [TestMethod]

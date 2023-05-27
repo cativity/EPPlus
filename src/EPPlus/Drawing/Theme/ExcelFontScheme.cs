@@ -10,6 +10,7 @@
  *************************************************************************************************
   01/27/2020         EPPlus Software AB       Initial release EPPlus 5
  *************************************************************************************************/
+
 using System.Xml;
 
 namespace OfficeOpenXml.Drawing.Theme;
@@ -20,25 +21,24 @@ namespace OfficeOpenXml.Drawing.Theme;
 public class ExcelFontScheme : XmlHelper
 {
     private ExcelPackage _pck;
-    internal ExcelFontScheme(ExcelPackage pck, XmlNamespaceManager nameSpaceManager, XmlNode topNode) : base(nameSpaceManager, topNode)
+
+    internal ExcelFontScheme(ExcelPackage pck, XmlNamespaceManager nameSpaceManager, XmlNode topNode)
+        : base(nameSpaceManager, topNode)
     {
         this._pck = pck;
     }
+
     /// <summary>
     /// The name of the font scheme
     /// </summary>
     public string Name
     {
-        get
-        {
-            return this.GetXmlNodeString("@name");
-        }
-        set
-        {
-            this.SetXmlNodeString("@name", value);
-        }
+        get { return this.GetXmlNodeString("@name"); }
+        set { this.SetXmlNodeString("@name", value); }
     }
-    ExcelThemeFontCollection _majorFont=null;
+
+    ExcelThemeFontCollection _majorFont = null;
+
     /// <summary>
     /// A collection of major fonts
     /// </summary>
@@ -51,7 +51,9 @@ public class ExcelFontScheme : XmlHelper
                                                                     this.TopNode.SelectSingleNode("a:majorFont", this.NameSpaceManager));
         }
     }
+
     ExcelThemeFontCollection _minorFont = null;
+
     /// <summary>
     /// A collection of minor fonts
     /// </summary>

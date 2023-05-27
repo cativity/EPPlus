@@ -10,6 +10,7 @@
  *************************************************************************************************
   01/27/2020         EPPlus Software AB       Initial release EPPlus 5
  *************************************************************************************************/
+
 using System.Collections.Generic;
 using System.Linq;
 using OfficeOpenXml.FormulaParsing;
@@ -23,10 +24,9 @@ using Require = OfficeOpenXml.FormulaParsing.Utilities.Require;
 
 namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Math;
 
-[FunctionMetadata(
-                     Category = ExcelFunctionCategory.MathAndTrig,
-                     EPPlusVersion = "4",
-                     Description = "Adds the cells in a supplied range, that satisfy a given criteria")]
+[FunctionMetadata(Category = ExcelFunctionCategory.MathAndTrig,
+                  EPPlusVersion = "4",
+                  Description = "Adds the cells in a supplied range, that satisfy a given criteria")]
 internal class SumIf : HiddenValuesHandlingFunction
 {
     private readonly ExpressionEvaluator _evaluator;
@@ -34,7 +34,6 @@ internal class SumIf : HiddenValuesHandlingFunction
     public SumIf()
         : this(new ExpressionEvaluator())
     {
-
     }
 
     public SumIf(ExpressionEvaluator evaluator)
@@ -51,9 +50,11 @@ internal class SumIf : HiddenValuesHandlingFunction
         // Criteria can either be a string or an array of strings
         IEnumerable<string>? criteria = GetCriteria(arguments.ElementAt(1));
         double retVal = 0d;
+
         if (argRange == null)
         {
             object? val = arguments.ElementAt(0).Value;
+
             if (this._evaluator.Evaluate(val, criteria))
             {
                 if (arguments.Count() > 2)
@@ -76,12 +77,14 @@ internal class SumIf : HiddenValuesHandlingFunction
         {
             retVal = this.CalculateSingleRange(argRange, criteria, context);
         }
+
         return this.CreateResult(retVal, DataType.Decimal);
     }
 
     internal static IEnumerable<string> GetCriteria(FunctionArgument criteriaArg)
     {
         List<string>? criteria = new List<string>();
+
         if (criteriaArg.IsEnumerableOfFuncArgs)
         {
             foreach (FunctionArgument? arg in criteriaArg.ValueAsEnumerableOfFuncArgs)
@@ -103,36 +106,42 @@ internal class SumIf : HiddenValuesHandlingFunction
         {
             criteria.Add(criteriaArg.ValueFirst != null ? criteriaArg.ValueFirst.ToString() : null);
         }
+
         return criteria;
     }
 
     private double CalculateWithSumRange(IRangeInfo range, IEnumerable<string> criteria, IRangeInfo sumRange, ParsingContext context)
     {
         double retVal = 0d;
+
         foreach (ICellInfo? cell in range)
         {
             if (this._evaluator.Evaluate(cell.Value, criteria))
             {
                 int rowOffset = cell.Row - range.Address._fromRow;
                 int columnOffset = cell.Column - range.Address._fromCol;
-                if (sumRange.Address._fromRow + rowOffset <= sumRange.Address._toRow &&
-                    sumRange.Address._fromCol + columnOffset <= sumRange.Address._toCol)
+
+                if (sumRange.Address._fromRow + rowOffset <= sumRange.Address._toRow && sumRange.Address._fromCol + columnOffset <= sumRange.Address._toCol)
                 {
                     object? val = sumRange.GetOffset(rowOffset, columnOffset);
+
                     if (val is ExcelErrorValue)
                     {
                         ThrowExcelErrorValueException((ExcelErrorValue)val);
                     }
+
                     retVal += ConvertUtil.GetValueDouble(val, true);
                 }
             }
         }
+
         return retVal;
     }
 
     private double CalculateSingleRange(IRangeInfo range, IEnumerable<string> expressions, ParsingContext context)
     {
         double retVal = 0d;
+
         foreach (ICellInfo? candidate in range)
         {
             if (IsNumeric(candidate.Value) && this._evaluator.Evaluate(candidate.Value, expressions) && IsNumeric(candidate.Value))
@@ -141,9 +150,11 @@ internal class SumIf : HiddenValuesHandlingFunction
                 {
                     ThrowExcelErrorValueException((ExcelErrorValue)candidate.Value);
                 }
+
                 retVal += candidate.ValueDouble;
             }
         }
+
         return retVal;
     }
 }

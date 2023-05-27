@@ -26,6 +26,7 @@
  *******************************************************************************
   01/27/2020         EPPlus Software AB       Initial release EPPlus 5
  *******************************************************************************/
+
 using EPPlusTest.Properties;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using OfficeOpenXml;
@@ -48,13 +49,16 @@ namespace EPPlusTest.Drawing;
 public class ThemeTest : TestBase
 {
     internal static ExcelPackage _pck;
+
     [TestMethod]
     public void PresetColors()
     {
         List<Color>? l = new List<Color>();
+
         foreach (string? name in Enum.GetNames(typeof(ePresetColor)))
         {
             string? n = name;
+
             if (n.Contains("Grey"))
             {
                 n = n.Replace("Grey", "Gray");
@@ -76,20 +80,25 @@ public class ThemeTest : TestBase
             }
 
             Color c = Color.FromName(n);
+
             if (c == Color.Empty)
             {
                 Assert.Fail("Error Name");
             }
+
             l.Add(c);
         }
     }
+
     [TestMethod]
     public void SystemColor()
     {
         List<Color>? l = new List<Color>();
+
         foreach (string? name in Enum.GetNames(typeof(eSystemColor)))
         {
             Color c = Color.Empty;
+
             foreach (PropertyInfo? p in typeof(SystemColors).GetProperties(BindingFlags.Public | BindingFlags.Static))
             {
                 if (p.Name.Equals(name, StringComparison.CurrentCultureIgnoreCase))
@@ -102,9 +111,11 @@ public class ThemeTest : TestBase
             {
                 Console.WriteLine(name);
             }
+
             l.Add(c);
         }
     }
+
     [TestMethod]
     public void Read()
     {
@@ -136,14 +147,15 @@ public class ThemeTest : TestBase
         ExcelDrawingFill? b3 = theme.CurrentTheme.FormatScheme.BackgroundFillStyle[2];
 
         Assert.AreEqual(eFillStyle.GradientFill, f2.Style);
+
         foreach (ExcelDrawingGradientFillColor? f in f2.GradientFill.Colors)
         {
-
         }
+
         Assert.AreEqual(eFillStyle.GradientFill, f3.Style);
+
         foreach (ExcelDrawingGradientFillColor? f in f3.GradientFill.Colors)
         {
-
         }
 
         theme.CurrentTheme.FormatScheme.FillStyle[0].Style = eFillStyle.GradientFill;
@@ -169,6 +181,7 @@ public class ThemeTest : TestBase
         SaveWorkbook("Theme-saved.xlsx", _pck);
         _pck.Dispose();
     }
+
     [TestMethod]
     public void LoadThmx_ColorScheme()
     {
@@ -219,6 +232,7 @@ public class ThemeTest : TestBase
 
         SaveWorkbook("ThemeLoaded.xlsx", _pck);
     }
+
     [TestMethod]
     public void LoadThmx_FontScheme()
     {
@@ -237,6 +251,7 @@ public class ThemeTest : TestBase
         Assert.AreEqual("Sylfaen", currentTheme.FontScheme.MajorFont[32].Typeface);
         Assert.AreEqual("Sylfaen", currentTheme.FontScheme.MinorFont[32].Typeface);
     }
+
     [TestMethod]
     public void LoadThmx_BordersScheme()
     {
@@ -264,6 +279,7 @@ public class ThemeTest : TestBase
         Assert.AreEqual(12700, currentTheme.FormatScheme.BorderStyle[1].Width);
         Assert.AreEqual(19050, currentTheme.FormatScheme.BorderStyle[2].Width);
     }
+
     [TestMethod]
     public void LoadThmx_Effect()
     {
@@ -362,7 +378,6 @@ public class ThemeTest : TestBase
         Assert.AreEqual(eColorTransformType.SatMod, currentTheme.FormatScheme.BackgroundFillStyle[1].SolidFill.Color.Transforms[1].Type);
         Assert.AreEqual(170, currentTheme.FormatScheme.BackgroundFillStyle[1].SolidFill.Color.Transforms[1].Value);
 
-
         Assert.AreEqual(eFillStyle.GradientFill, currentTheme.FormatScheme.BackgroundFillStyle[2].Style);
         Assert.AreEqual(3, currentTheme.FormatScheme.BackgroundFillStyle[2].GradientFill.Colors.Count);
         Assert.AreEqual(eDrawingColorType.Scheme, currentTheme.FormatScheme.BackgroundFillStyle[2].GradientFill.Colors[0].Color.ColorType);
@@ -389,6 +404,7 @@ public class ThemeTest : TestBase
         Assert.AreEqual(3, currentTheme.FormatScheme.FillStyle[1].GradientFill.Colors[1].Color.Transforms.Count);
         Assert.AreEqual(3, currentTheme.FormatScheme.FillStyle[1].GradientFill.Colors[2].Color.Transforms.Count);
     }
+
     [TestMethod]
     public void ReadThmx()
     {
@@ -398,6 +414,7 @@ public class ThemeTest : TestBase
     }
 
     #region Theme Savon
+
     [TestMethod]
     public void ValidateThemeSavonWithBlipFill()
     {
@@ -406,7 +423,7 @@ public class ThemeTest : TestBase
 
         ExcelTheme? theme = _pck.Workbook.ThemeManager.CurrentTheme;
         Assert.AreEqual(eFillStyle.BlipFill, theme.FormatScheme.BackgroundFillStyle[2].Style);
-        ExcelWorksheet? ws=_pck.Workbook.Worksheets.Add("ThemeTest");
+        ExcelWorksheet? ws = _pck.Workbook.Worksheets.Add("ThemeTest");
         LoadTestdata(ws);
         ExcelBarChart? chart = ws.Drawings.AddBarChart("ThisChart", eBarChartType.BarClustered3D);
 
@@ -415,6 +432,7 @@ public class ThemeTest : TestBase
         chart.StyleManager.SetChartStyle(ePresetChartStyle.Bar3dChartStyle1);
         SaveWorkbook("ThemeSavonBlipFill.xlsx", _pck);
     }
+
     [TestMethod]
     public void ValidateThemeWoodTypeWithBlipFill()
     {
@@ -423,10 +441,11 @@ public class ThemeTest : TestBase
 
         ExcelTheme? theme = _pck.Workbook.ThemeManager.CurrentTheme;
         Assert.AreEqual(eFillStyle.BlipFill, theme.FormatScheme.BackgroundFillStyle[2].Style);
-        ExcelWorksheet? ws=_pck.Workbook.Worksheets.Add("ThemeTest");
+        ExcelWorksheet? ws = _pck.Workbook.Worksheets.Add("ThemeTest");
         LoadTestdata(ws);
         SaveWorkbook("ThemeWoodTypeBlipFill.xlsx", _pck);
     }
+
     [TestMethod]
     public void ChangeFontOnDefaultTheme()
     {
@@ -445,10 +464,10 @@ public class ThemeTest : TestBase
 
         //Set normal font to arial
         _pck.Workbook.Styles.NamedStyles[0].Style.Font.Name = "Arial";
-        ExcelNamedStyleXml? ns=_pck.Workbook.Styles.CreateNamedStyle("New Style With Arial");
+        ExcelNamedStyleXml? ns = _pck.Workbook.Styles.CreateNamedStyle("New Style With Arial");
         ns.Style.Font.Size = 12;
 
-        ExcelWorksheet? ws=_pck.Workbook.Worksheets.Add("Sheet1");
+        ExcelWorksheet? ws = _pck.Workbook.Worksheets.Add("Sheet1");
         ws.Cells["A1"].Value = 1;
         ws.Cells["A2"].Value = 2;
         ws.Cells["A2"].StyleName = "New Style With Arial";

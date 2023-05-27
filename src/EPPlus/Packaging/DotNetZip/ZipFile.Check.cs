@@ -26,7 +26,6 @@
 // ------------------------------------------------------------------
 //
 
-
 using System;
 using System.IO;
 using System.Collections.Generic;
@@ -74,7 +73,6 @@ internal partial class ZipFile
         return CheckZip(zipFileName, false, null);
     }
 
-
     /// <summary>
     ///   Checks a zip file to see if its directory is consistent,
     ///   and optionally fixes the directory if necessary.
@@ -115,12 +113,14 @@ internal partial class ZipFile
     ///
     /// <seealso cref="CheckZip(string)"/>
     /// <seealso cref="FixZipDirectory(string)"/>
-    public static bool CheckZip(string zipFileName, bool fixIfNecessary,
-                                TextWriter writer)
+    public static bool CheckZip(string zipFileName, bool fixIfNecessary, TextWriter writer)
 
     {
-        ZipFile zip1 = null, zip2 = null;
+        ZipFile zip1 = null,
+                zip2 = null;
+
         bool isOk = true;
+
         try
         {
             zip1 = new ZipFile();
@@ -138,51 +138,62 @@ internal partial class ZipFile
                         if (e1._RelativeOffsetOfLocalHeader != e2._RelativeOffsetOfLocalHeader)
                         {
                             isOk = false;
+
                             if (writer != null)
                             {
                                 writer.WriteLine("{0}: mismatch in RelativeOffsetOfLocalHeader  (0x{1:X16} != 0x{2:X16})",
-                                                 e1.FileName, e1._RelativeOffsetOfLocalHeader,
+                                                 e1.FileName,
+                                                 e1._RelativeOffsetOfLocalHeader,
                                                  e2._RelativeOffsetOfLocalHeader);
                             }
                         }
+
                         if (e1._CompressedSize != e2._CompressedSize)
                         {
                             isOk = false;
+
                             if (writer != null)
                             {
                                 writer.WriteLine("{0}: mismatch in CompressedSize  (0x{1:X16} != 0x{2:X16})",
-                                                 e1.FileName, e1._CompressedSize,
+                                                 e1.FileName,
+                                                 e1._CompressedSize,
                                                  e2._CompressedSize);
                             }
                         }
+
                         if (e1._UncompressedSize != e2._UncompressedSize)
                         {
                             isOk = false;
+
                             if (writer != null)
                             {
                                 writer.WriteLine("{0}: mismatch in UncompressedSize  (0x{1:X16} != 0x{2:X16})",
-                                                 e1.FileName, e1._UncompressedSize,
+                                                 e1.FileName,
+                                                 e1._UncompressedSize,
                                                  e2._UncompressedSize);
                             }
                         }
+
                         if (e1.CompressionMethod != e2.CompressionMethod)
                         {
                             isOk = false;
+
                             if (writer != null)
                             {
                                 writer.WriteLine("{0}: mismatch in CompressionMethod  (0x{1:X4} != 0x{2:X4})",
-                                                 e1.FileName, e1.CompressionMethod,
+                                                 e1.FileName,
+                                                 e1.CompressionMethod,
                                                  e2.CompressionMethod);
                             }
                         }
+
                         if (e1.Crc != e2.Crc)
                         {
                             isOk = false;
+
                             if (writer != null)
                             {
-                                writer.WriteLine("{0}: mismatch in Crc32  (0x{1:X4} != 0x{2:X4})",
-                                                 e1.FileName, e1.Crc,
-                                                 e2.Crc);
+                                writer.WriteLine("{0}: mismatch in Crc32  (0x{1:X4} != 0x{2:X4})", e1.FileName, e1.Crc, e2.Crc);
                             }
                         }
 
@@ -214,10 +225,9 @@ internal partial class ZipFile
                 zip2.Dispose();
             }
         }
+
         return isOk;
     }
-
-
 
     /// <summary>
     ///   Rewrite the directory within a zipfile.
@@ -261,8 +271,6 @@ internal partial class ZipFile
         zip.Save(zipFileName);
     }
 
-
-
     /// <summary>
     ///   Verify the password on a zip file.
     /// </summary>
@@ -292,6 +300,7 @@ internal partial class ZipFile
     {
         // workitem 13664
         bool success = false;
+
         try
         {
             using (ZipFile zip1 = Read(zipFileName))
@@ -304,12 +313,15 @@ internal partial class ZipFile
                     }
                 }
             }
+
             success = true;
         }
-        catch(BadPasswordException) { }
+        catch (BadPasswordException)
+        {
+        }
+
         return success;
     }
-
 
     /// <summary>
     ///   Provides a human-readable string with information about the ZipFile.
@@ -333,14 +345,17 @@ internal partial class ZipFile
         {
             StringBuilder? builder = new StringBuilder();
             builder.Append(string.Format("          ZipFile: {0}\n", this.Name));
+
             if (!string.IsNullOrEmpty(this._Comment))
             {
                 builder.Append(string.Format("          Comment: {0}\n", this._Comment));
             }
+
             if (this._versionMadeBy != 0)
             {
                 builder.Append(string.Format("  version made by: 0x{0:X4}\n", this._versionMadeBy));
             }
+
             if (this._versionNeededToExtract != 0)
             {
                 builder.Append(string.Format("needed to extract: 0x{0:X4}\n", this._versionNeededToExtract));
@@ -349,6 +364,7 @@ internal partial class ZipFile
             builder.Append(string.Format("       uses ZIP64: {0}\n", this.InputUsesZip64));
 
             builder.Append(string.Format("     disk with CD: {0}\n", this._diskNumberWithCd));
+
             if (this._OffsetOfCentralDirectory == 0xFFFFFFFF)
             {
                 builder.Append(string.Format("      CD64 offset: 0x{0:X16}\n", this._OffsetOfCentralDirectory64));
@@ -359,13 +375,13 @@ internal partial class ZipFile
             }
 
             builder.Append("\n");
+
             foreach (ZipEntry entry in this._entries.Values)
             {
                 builder.Append(entry.Info);
             }
+
             return builder.ToString();
         }
     }
-
-
 }

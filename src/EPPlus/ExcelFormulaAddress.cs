@@ -10,6 +10,7 @@
  *************************************************************************************************
   01/27/2020         EPPlus Software AB       Initial release EPPlus 5
  *************************************************************************************************/
+
 using System.Collections.Generic;
 
 namespace OfficeOpenXml;
@@ -39,6 +40,7 @@ public class ExcelFormulaAddress : ExcelAddressBase
     {
         this._ws = "";
     }
+
     /// <summary>
     /// Creates an Address object
     /// </summary>
@@ -49,7 +51,7 @@ public class ExcelFormulaAddress : ExcelAddressBase
     {
         this.SetFixed();
     }
-        
+
     internal ExcelFormulaAddress(string ws, string address)
         : base(address)
     {
@@ -60,6 +62,7 @@ public class ExcelFormulaAddress : ExcelAddressBase
 
         this.SetFixed();
     }
+
     internal ExcelFormulaAddress(string ws, string address, bool isName)
         : base(address, isName)
     {
@@ -68,7 +71,7 @@ public class ExcelFormulaAddress : ExcelAddressBase
             this._ws = ws;
         }
 
-        if(!isName)
+        if (!isName)
         {
             this.SetFixed();
         }
@@ -81,15 +84,17 @@ public class ExcelFormulaAddress : ExcelAddressBase
             return;
         }
 
-        string? address= this.FirstAddress;
-        if(this._fromRow== this._toRow && this._fromCol== this._toCol)
+        string? address = this.FirstAddress;
+
+        if (this._fromRow == this._toRow && this._fromCol == this._toCol)
         {
             GetFixed(address, out this._fromRowFixed, out this._fromColFixed);
         }
         else
         {
-            string[]? cells = address.Split(':');                
-            if(cells.Length>1) //If 1 then the address is the entire worksheet
+            string[]? cells = address.Split(':');
+
+            if (cells.Length > 1) //If 1 then the address is the entire worksheet
             {
                 GetFixed(cells[0], out this._fromRowFixed, out this._fromColFixed);
                 GetFixed(cells[1], out this._toRowFixed, out this._toColFixed);
@@ -98,27 +103,32 @@ public class ExcelFormulaAddress : ExcelAddressBase
     }
 
     private static void GetFixed(string address, out bool rowFixed, out bool colFixed)
-    {            
-        rowFixed=colFixed=false;
-        int ix=address.IndexOf('$');
-        while(ix>-1)
+    {
+        rowFixed = colFixed = false;
+        int ix = address.IndexOf('$');
+
+        while (ix > -1)
         {
             ix++;
-            if(ix < address.Length)
+
+            if (ix < address.Length)
             {
-                if(address[ix]>='0' && address[ix]<='9')
+                if (address[ix] >= '0' && address[ix] <= '9')
                 {
-                    rowFixed=true;
+                    rowFixed = true;
+
                     break;
                 }
                 else
                 {
-                    colFixed=true;
+                    colFixed = true;
                 }
             }
+
             ix = address.IndexOf('$', ix);
         }
     }
+
     /// <summary>
     /// The address for the range
     /// </summary>
@@ -127,10 +137,18 @@ public class ExcelFormulaAddress : ExcelAddressBase
     {
         get
         {
-            if (string.IsNullOrEmpty(this._address) && this._fromRow>0)
+            if (string.IsNullOrEmpty(this._address) && this._fromRow > 0)
             {
-                this._address = GetAddress(this._fromRow, this._fromCol, this._toRow, this._toCol, this._fromRowFixed, this._toRowFixed, this._fromColFixed, this._toColFixed);
+                this._address = GetAddress(this._fromRow,
+                                           this._fromCol,
+                                           this._toRow,
+                                           this._toCol,
+                                           this._fromRowFixed,
+                                           this._toRowFixed,
+                                           this._fromColFixed,
+                                           this._toColFixed);
             }
+
             return this._address;
         }
         set
@@ -140,7 +158,9 @@ public class ExcelFormulaAddress : ExcelAddressBase
             this.SetFixed();
         }
     }
+
     internal new List<ExcelFormulaAddress> _addresses;
+
     /// <summary>
     /// Addresses can be separated by a comma. If the address contains multiple addresses this list contains them.
     /// </summary>
@@ -148,24 +168,33 @@ public class ExcelFormulaAddress : ExcelAddressBase
     {
         get { return this._addresses ??= new List<ExcelFormulaAddress>(); }
     }
-    internal string GetOffset(int row, int column, bool withWbWs=false)
+
+    internal string GetOffset(int row, int column, bool withWbWs = false)
     {
-        int fromRow = this._fromRow, fromCol = this._fromCol, toRow = this._toRow, tocol = this._toCol;
+        int fromRow = this._fromRow,
+            fromCol = this._fromCol,
+            toRow = this._toRow,
+            tocol = this._toCol;
+
         bool isMulti = fromRow != toRow || fromCol != tocol;
+
         if (!this._fromRowFixed)
         {
             fromRow += row;
         }
+
         if (!this._fromColFixed)
         {
             fromCol += column;
         }
+
         if (isMulti)
         {
             if (!this._toRowFixed)
             {
                 toRow += row;
             }
+
             if (!this._toColFixed)
             {
                 tocol += column;
@@ -176,15 +205,18 @@ public class ExcelFormulaAddress : ExcelAddressBase
             toRow = fromRow;
             tocol = fromCol;
         }
+
         string a = GetAddress(fromRow, fromCol, toRow, tocol, this._fromRowFixed, this._fromColFixed, this._toRowFixed, this._toColFixed);
+
         if (this.Addresses != null)
         {
             foreach (ExcelFormulaAddress? sa in this.Addresses)
             {
-                a+="," + sa.GetOffset(row, column, withWbWs);
+                a += "," + sa.GetOffset(row, column, withWbWs);
             }
         }
-        if(withWbWs)
+
+        if (withWbWs)
         {
             return this.GetAddressWorkBookWorkSheet() + a;
         }

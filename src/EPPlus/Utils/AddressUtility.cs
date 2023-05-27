@@ -10,6 +10,7 @@
  *************************************************************************************************
   01/27/2020         EPPlus Software AB       Initial release EPPlus 5
  *************************************************************************************************/
+
 using OfficeOpenXml.FormulaParsing.LexicalAnalysis;
 using System.Collections.Generic;
 using System.Linq;
@@ -32,12 +33,15 @@ public static class AddressUtility
     {
         string parsedAddress = address;
         MatchCollection? matches = Regex.Matches(address, "[A-Z]+:[A-Z]+");
+
         foreach (Match match in matches)
         {
             AddRowNumbersToEntireColumnRange(ref parsedAddress, match.Value);
         }
+
         return parsedAddress;
     }
+
     /// <summary>
     /// Add row number to entire column range
     /// </summary>
@@ -58,12 +62,14 @@ public static class AddressUtility
         }
 
         IEnumerable<Token>? tokens = SourceCodeTokenizer.Default.Tokenize(formula, worksheetName);
+
         if (!tokens.Any(x => x.TokenTypeIsSet(TokenType.ExcelAddress)))
         {
             return formula;
         }
 
         List<Token>? resultTokens = new List<Token>();
+
         foreach (Token token in tokens)
         {
             if (!token.TokenTypeIsSet(TokenType.ExcelAddress))
@@ -74,6 +80,7 @@ public static class AddressUtility
             {
                 List<ExcelCellAddress>? addresses = new List<ExcelCellAddress>();
                 ExcelAddressBase? adr = new ExcelAddressBase(token.Value);
+
                 // if the formula is a table formula (relative) keep it as it is
                 if (adr.Table == null)
                 {
@@ -87,11 +94,14 @@ public static class AddressUtility
                 }
             }
         }
+
         StringBuilder? result = new StringBuilder();
+
         foreach (Token token in resultTokens)
         {
             result.Append(token.Value);
         }
+
         return result.ToString();
     }
 
@@ -103,12 +113,14 @@ public static class AddressUtility
         }
 
         IEnumerable<Token>? tokens = SourceCodeTokenizer.Default.Tokenize(formula, worksheetName);
+
         if (!tokens.Any(x => x.TokenTypeIsSet(TokenType.ExcelAddress)))
         {
             return formula;
         }
 
         List<Token>? resultTokens = new List<Token>();
+
         foreach (Token token in tokens)
         {
             if (!token.TokenTypeIsSet(TokenType.ExcelAddress))
@@ -119,6 +131,7 @@ public static class AddressUtility
             {
                 List<ExcelCellAddress>? addresses = new List<ExcelCellAddress>();
                 ExcelAddressBase? adr = new ExcelAddressBase(token.Value);
+
                 // if the formula is a table formula (relative) keep it as it is
                 if (adr.Table == null)
                 {
@@ -132,11 +145,14 @@ public static class AddressUtility
                 }
             }
         }
+
         StringBuilder? result = new StringBuilder();
+
         foreach (Token token in resultTokens)
         {
             result.Append(token.Value);
         }
+
         return result.ToString();
     }
 }

@@ -10,6 +10,7 @@
  *************************************************************************************************
   05/11/2021         EPPlus Software AB           ExcelTable Html Export
  *************************************************************************************************/
+
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -77,18 +78,22 @@ public class TableAccessibilitySettings
     /// Value of the role attribute on the table element. Default value: table
     /// </summary>
     public string TableRole { get; set; }
+
     /// <summary>
     /// Value of the role attribute on the thead element. Default value: rowgroup
     /// </summary>
     public string TheadRole { get; set; }
+
     /// <summary>
     /// Value of the role attribute on the tbody element. Default value: rowgroup
     /// </summary>
     public string TbodyRole { get; set; }
+
     /// <summary>
     /// Value of the role attribute on the tfoot element. Default value: rowgroup
     /// </summary>
     public string TfootRole { get; set; }
+
     /// <summary>
     /// Value of the role attribute on the thead.tr.td element. Default value: columnheader
     /// </summary>

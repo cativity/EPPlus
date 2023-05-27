@@ -10,6 +10,7 @@
  *************************************************************************************************
   01/27/2020         EPPlus Software AB       Initial release EPPlus 5
  *************************************************************************************************/
+
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -29,23 +30,18 @@ namespace OfficeOpenXml.Drawing.Theme;
 public class ExcelTheme : ExcelThemeBase
 {
     ExcelWorkbook _workbook;
+
     /// <summary>
     /// The name of the theme
     /// </summary>
     public string Name
     {
-        get
-        {
-            return this.GetXmlNodeString("@name");
-        }
-        set
-        {
-            this.SetXmlNodeString("@name", value);
-        }
+        get { return this.GetXmlNodeString("@name"); }
+        set { this.SetXmlNodeString("@name", value); }
     }
 
     internal ExcelTheme(ExcelWorkbook workbook, ZipPackageRelationship rel)
-        : base(workbook._package,workbook.NameSpaceManager, rel, "a:themeElements/")
+        : base(workbook._package, workbook.NameSpaceManager, rel, "a:themeElements/")
     {
         this._workbook = workbook;
     }

@@ -10,6 +10,7 @@
  *************************************************************************************************
   01/27/2020         EPPlus Software AB       Initial release EPPlus 5
  *************************************************************************************************/
+
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -26,6 +27,7 @@ internal class TimeStringParser
     private static double GetSerialNumber(int hour, int minute, int second)
     {
         double secondsInADay = 24d * 60d * 60d;
+
         return (((double)hour * 60 * 60) + ((double)minute * 60) + (double)second) / secondsInADay;
     }
 
@@ -35,6 +37,7 @@ internal class TimeStringParser
         {
             throw new FormatException("Illegal value for second: " + second);
         }
+
         if (minute < 0 || minute > 59)
         {
             throw new FormatException("Illegal value for minute: " + minute);
@@ -49,6 +52,7 @@ internal class TimeStringParser
     public virtual bool CanParse(string input)
     {
         System.DateTime dt;
+
         return Regex.IsMatch(input, RegEx24) || Regex.IsMatch(input, RegEx12) || System.DateTime.TryParse(input, out dt);
     }
 
@@ -58,6 +62,7 @@ internal class TimeStringParser
         {
             return Parse24HourTimeString(input);
         }
+
         if (Regex.IsMatch(input, RegEx12))
         {
             return Parse12HourTimeString(input);
@@ -67,6 +72,7 @@ internal class TimeStringParser
         {
             return GetSerialNumber(dateTime.Hour, dateTime.Minute, dateTime.Second);
         }
+
         return -1;
     }
 
@@ -75,12 +81,14 @@ internal class TimeStringParser
         string dayPart = string.Empty;
         dayPart = input.Substring(input.Length - 2, 2);
         GetValuesFromString(input, out int hour, out int minute, out int second);
+
         if (dayPart == "PM")
         {
             hour += 12;
         }
 
         ValidateValues(hour, minute, second);
+
         return GetSerialNumber(hour, minute, second);
     }
 
@@ -88,6 +96,7 @@ internal class TimeStringParser
     {
         GetValuesFromString(input, out int hour, out int minute, out int second);
         ValidateValues(hour, minute, second);
+
         return GetSerialNumber(hour, minute, second);
     }
 
@@ -99,10 +108,12 @@ internal class TimeStringParser
 
         string[]? items = input.Split(':');
         hour = int.Parse(items[0]);
+
         if (items.Length > 1)
         {
             minute = int.Parse(items[1]);
         }
+
         if (items.Length > 2)
         {
             string? val = items[2];

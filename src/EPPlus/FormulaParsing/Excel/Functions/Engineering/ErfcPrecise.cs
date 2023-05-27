@@ -10,6 +10,7 @@
  *************************************************************************************************
   05/03/2020         EPPlus Software AB         Implemented function
  *************************************************************************************************/
+
 using OfficeOpenXml.FormulaParsing.Excel.Functions.Metadata;
 using System;
 using System.Collections.Generic;
@@ -17,10 +18,9 @@ using System.Text;
 
 namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Engineering;
 
-[FunctionMetadata(
-                     Category = ExcelFunctionCategory.Engineering,
-                     EPPlusVersion = "5.2",
-                     Description = "Returns the complementary error function integrated between a supplied lower limit and infinity")]
+[FunctionMetadata(Category = ExcelFunctionCategory.Engineering,
+                  EPPlusVersion = "5.2",
+                  Description = "Returns the complementary error function integrated between a supplied lower limit and infinity")]
 internal class ErfcPrecise : Erfc
 {
 }

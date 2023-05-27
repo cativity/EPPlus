@@ -19,7 +19,6 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Finance.Implementations;
 
 public static class XirrImpl
 {
-
     public static FinanceCalcResult<double> GetXirr(IEnumerable<double> aValues, IEnumerable<System.DateTime> aDates, double rGuessRate = 0.1)
     {
         if (aValues.Count() != aDates.Count())
@@ -29,6 +28,7 @@ public static class XirrImpl
 
         // maximum epsilon for end of iteration
         const double fMaxEps = 1e-10;
+
         // maximum number of iterations
         const int nMaxIter = 50;
 
@@ -59,19 +59,18 @@ public static class XirrImpl
                 double fRateEps = System.Math.Abs(fNewRate - fResultRate);
                 fResultRate = fNewRate;
                 bContLoop = fRateEps > fMaxEps && System.Math.Abs(fResultValue) > fMaxEps;
-            }
-            while (bContLoop && ++nIter < nMaxIter);
+            } while (bContLoop && ++nIter < nMaxIter);
+
             nIter = 0;
-            if (double.IsNaN(fResultRate) || double.IsInfinity(fResultRate)
-                                          || double.IsNaN(fResultValue) || double.IsInfinity(fResultValue))
+
+            if (double.IsNaN(fResultRate) || double.IsInfinity(fResultRate) || double.IsNaN(fResultValue) || double.IsInfinity(fResultValue))
             {
                 bContLoop = true;
             }
 
             ++nIterScan;
             bResultRateScanEnd = nIterScan >= 200;
-        }
-        while (bContLoop && !bResultRateScanEnd);
+        } while (bContLoop && !bResultRateScanEnd);
 
         if (bContLoop)
         {
@@ -101,11 +100,16 @@ public static class XirrImpl
         System.DateTime D_0 = rDates.ElementAt(0);
         double r = fRate + 1.0;
         double fResult = 0.0;
-        for (int i = 1, nCount = rValues.Count(); i < nCount; ++i)
+
+        for (int i = 1,
+                 nCount = rValues.Count();
+             i < nCount;
+             ++i)
         {
             double E_i = rDates.ElementAt(i).Subtract(D_0).TotalDays / 365d;
             fResult -= E_i * rValues.ElementAt(i) / System.Math.Pow(r, E_i + 1.0);
         }
+
         return fResult;
     }
 
@@ -125,7 +129,11 @@ public static class XirrImpl
         System.DateTime D_0 = rDates.ElementAt(0);
         double r = fRate + 1.0;
         double fResult = rValues.ElementAt(0);
-        for (int i = 1, nCount = rValues.Count(); i < nCount; ++i)
+
+        for (int i = 1,
+                 nCount = rValues.Count();
+             i < nCount;
+             ++i)
         {
             fResult += rValues.ElementAt(i) / System.Math.Pow(r, rDates.ElementAt(i).Subtract(D_0).TotalDays / 365.0);
         }

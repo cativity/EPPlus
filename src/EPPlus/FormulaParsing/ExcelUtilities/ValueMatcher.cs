@@ -10,6 +10,7 @@
  *************************************************************************************************
   01/27/2020         EPPlus Software AB       Initial release EPPlus 5
  *************************************************************************************************/
+
 using OfficeOpenXml.Utils;
 using System;
 
@@ -64,6 +65,7 @@ public class ValueMatcher
         {
             return Convert.ToDouble(candidate).CompareTo(((DateTime)searchedValue).ToOADate());
         }
+
         return Convert.ToDouble(candidate).CompareTo(Convert.ToDouble(searchedValue));
     }
 
@@ -72,10 +74,12 @@ public class ValueMatcher
         if (v is IRangeInfo)
         {
             IRangeInfo? r = (IRangeInfo)v;
+
             if (r.GetNCells() > 1)
             {
                 v = ExcelErrorValue.Create(eErrorType.NA);
             }
+
             v = r.GetOffset(0, 0);
         }
         else if (v is INameInfo)
@@ -83,6 +87,7 @@ public class ValueMatcher
             INameInfo? n = (INameInfo)v;
             v = CheckGetRange(n);
         }
+
         return v;
     }
 
@@ -97,13 +102,16 @@ public class ValueMatcher
         {
             return ConvertUtil.GetValueDouble(candidate).CompareTo(dsv);
         }
+
         if (bool.TryParse(searchedValue, out bool bsv))
         {
             return (ConvertUtil.GetValueDouble(candidate) == 1).CompareTo(bsv);
         }
+
         if (DateTime.TryParse(searchedValue, out DateTime dtsv))
         {
             DateTime? date = ConvertUtil.GetValueDate(candidate);
+
             if (date.HasValue == false)
             {
                 return -1;
@@ -111,6 +119,7 @@ public class ValueMatcher
 
             return date.Value.CompareTo(dtsv);
         }
+
         return IncompatibleOperands;
     }
 
@@ -120,6 +129,7 @@ public class ValueMatcher
         {
             return d2.CompareTo(Convert.ToDouble(searchedValue));
         }
+
         return IncompatibleOperands;
     }
 }

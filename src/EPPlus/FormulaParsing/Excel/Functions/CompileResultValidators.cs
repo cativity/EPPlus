@@ -10,6 +10,7 @@
  *************************************************************************************************
   01/27/2020         EPPlus Software AB       Initial release EPPlus 5
  *************************************************************************************************/
+
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -20,7 +21,7 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions;
 
 public class CompileResultValidators
 {
-    private readonly Dictionary<DataType, CompileResultValidator> _validators = new Dictionary<DataType, CompileResultValidator>(); 
+    private readonly Dictionary<DataType, CompileResultValidator> _validators = new Dictionary<DataType, CompileResultValidator>();
 
     private CompileResultValidator CreateOrGet(DataType dataType)
     {
@@ -28,10 +29,12 @@ public class CompileResultValidators
         {
             return this._validators[dataType];
         }
+
         if (dataType == DataType.Decimal)
         {
             return this._validators[DataType.Decimal] = new DecimalCompileResultValidator();
         }
+
         return CompileResultValidator.Empty;
     }
 

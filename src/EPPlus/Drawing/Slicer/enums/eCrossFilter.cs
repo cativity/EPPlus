@@ -10,6 +10,7 @@
  *************************************************************************************************
   06/29/2020         EPPlus Software AB       EPPlus 5.3
  *************************************************************************************************/
+
 namespace OfficeOpenXml;
 
 /// <summary>
@@ -21,10 +22,12 @@ public enum eCrossFilter
     /// The slicer style for slicer items with no data is not applied to slicer items with no data, and slicer items with no data are not sorted separately in the list of slicer items in the slicer view.
     /// </summary>
     None,
+
     /// <summary>
     /// The slicer style for slicer items with no data is applied to slicer items with no data, and slicer items with no data are sorted at the bottom in the list of slicer items in the slicer view.
     /// </summary>
     ShowItemsWithDataAtTop,
+
     /// <summary>
     /// The slicer style for slicer items with no data is applied to slicer items with no data, and slicer items with no data are not sorted separately in the list of slicer items in the slicer view.
     /// </summary>

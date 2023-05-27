@@ -10,6 +10,7 @@
  *************************************************************************************************
   01/27/2020         EPPlus Software AB       Initial release EPPlus 5
  *************************************************************************************************/
+
 using OfficeOpenXml.Core;
 using OfficeOpenXml.FormulaParsing;
 using OfficeOpenXml.FormulaParsing.Excel.Functions;
@@ -26,6 +27,7 @@ namespace OfficeOpenXml;
 public abstract class ExcelCellBase
 {
     #region "Public Functions"
+
     /// <summary>
     /// Get the sheet, row and column from the CellID
     /// </summary>
@@ -39,6 +41,7 @@ public abstract class ExcelCellBase
         col = (int)(cellId >> 15) & 0x3FF;
         row = (int)(cellId >> 29);
     }
+
     /// <summary>
     /// Get the cellID for the cell. 
     /// </summary>
@@ -50,10 +53,15 @@ public abstract class ExcelCellBase
     {
         return (ulong)sheetId + ((ulong)col << 15) + ((ulong)row << 29);
     }
+
     #endregion
+
     #region "Formula Functions"
+
     private delegate string dlgTransl(string part, int row, int col);
+
     #region R1C1 Functions"
+
     /// <summary>
     /// Translates a R1C1 to an absolut address/Formula
     /// </summary>
@@ -64,8 +72,10 @@ public abstract class ExcelCellBase
     public static string TranslateFromR1C1(string value, int row, int col)
     {
         return R1C1Translator.FromR1C1Formula(value, row, col);
+
         //return Translate(value, ToAbs, row, col);
     }
+
     /// <summary>
     /// Translates a absolut address to R1C1 Format
     /// </summary>
@@ -76,13 +86,19 @@ public abstract class ExcelCellBase
     public static string TranslateToR1C1(string value, int row, int col)
     {
         return R1C1Translator.ToR1C1Formula(value, row, col);
+
         //return Translate(value, ToR1C1, row, col);
     }
+
     //    //    return part;
     //    if (rStart != 0 && cStart != 0)
+
     #endregion
+
     #region "Address Functions"
+
     #region GetColumnLetter
+
     /// <summary>
     /// Returns the character representation of the numbered column
     /// </summary>
@@ -92,6 +108,7 @@ public abstract class ExcelCellBase
     {
         return GetColumnLetter(iColumnNumber, false);
     }
+
     /// <summary>
     /// Returns the character representation of the numbered column
     /// </summary>
@@ -100,7 +117,6 @@ public abstract class ExcelCellBase
     /// <returns>The letter representing the column</returns>
     protected internal static string GetColumnLetter(int iColumnNumber, bool fixedCol)
     {
-
         if (iColumnNumber < 1)
         {
             //throw new Exception("Column number is out of range");
@@ -108,14 +124,16 @@ public abstract class ExcelCellBase
         }
 
         string sCol = "";
+
         do
         {
             sCol = ((char)('A' + ((iColumnNumber - 1) % 26))).ToString() + sCol;
             iColumnNumber = (iColumnNumber - ((iColumnNumber - 1) % 26)) / 26;
-        }
-        while (iColumnNumber > 0);
+        } while (iColumnNumber > 0);
+
         return fixedCol ? "$" + sCol : sCol;
     }
+
     #endregion
 
     internal static bool GetRowColFromAddress(string CellAddress, out int FromRow, out int FromColumn, out int ToRow, out int ToColumn)
@@ -127,8 +145,10 @@ public abstract class ExcelCellBase
     {
         int startIx = address.IndexOf('[');
         int endIx = address.IndexOf(']');
+
         return address.Substring(startIx + 1, endIx - startIx - 1);
     }
+
     /// <summary>
     /// Get the row/columns for a Cell-address
     /// </summary>
@@ -144,17 +164,30 @@ public abstract class ExcelCellBase
     /// <param name="wb">A reference to the workbook object</param>
     /// <param name="wsName">The worksheet name used for addresses without a worksheet reference.</param>
     /// <returns></returns>
-    internal static bool GetRowColFromAddress(string CellAddress, out int FromRow, out int FromColumn, out int ToRow, out int ToColumn, out bool fixedFromRow, out bool fixedFromColumn, out bool fixedToRow, out bool fixedToColumn, ExcelWorkbook wb = null, string wsName = null)
+    internal static bool GetRowColFromAddress(string CellAddress,
+                                              out int FromRow,
+                                              out int FromColumn,
+                                              out int ToRow,
+                                              out int ToColumn,
+                                              out bool fixedFromRow,
+                                              out bool fixedFromColumn,
+                                              out bool fixedToRow,
+                                              out bool fixedToColumn,
+                                              ExcelWorkbook wb = null,
+                                              string wsName = null)
     {
         bool ret;
+
         if (CellAddress.IndexOf('[') > 0) //External reference or reference to Table or Pivottable.
         {
             FromRow = FromColumn = ToRow = ToColumn = -1;
             fixedFromRow = fixedFromColumn = fixedToRow = fixedToColumn = false;
+
             return false;
         }
 
         CellAddress = Utils.ConvertUtil._invariantTextInfo.ToUpper(CellAddress);
+
         //This one can be removed when the worksheet Select format is fixed
         if (CellAddress.IndexOf(' ') > 0)
         {
@@ -172,6 +205,7 @@ public abstract class ExcelCellBase
         else
         {
             string[] cells = CellAddress.Split(':');
+
             if (cells.Length > 2)
             {
                 //throw new InvalidOperationException($"Address is not valid {CellAddress}");
@@ -190,6 +224,7 @@ public abstract class ExcelCellBase
                         {
                             FromRow = FromColumn = ToRow = ToColumn = -1;
                             fixedFromRow = fixedFromColumn = fixedToRow = fixedToColumn = false;
+
                             return false;
                         }
 
@@ -204,6 +239,7 @@ public abstract class ExcelCellBase
                         {
                             FromRow = FromColumn = ToRow = ToColumn = -1;
                             fixedFromRow = fixedFromColumn = fixedToRow = fixedToColumn = false;
+
                             return false;
                         }
                         else
@@ -211,6 +247,7 @@ public abstract class ExcelCellBase
                             if (wb.Names.ContainsKey(cell))
                             {
                                 ExcelNamedRange? n = wb.Names[cell];
+
                                 if (n._fromRow > 0 && n._fromCol > 0)
                                 {
                                     SetFromRowCol(ref FromColumn, ref fixedFromColumn, n._fromCol, n._fromColFixed);
@@ -222,17 +259,20 @@ public abstract class ExcelCellBase
                                 {
                                     FromRow = FromColumn = ToRow = ToColumn = -1;
                                     fixedFromRow = fixedFromColumn = fixedToRow = fixedToColumn = false;
+
                                     return false;
                                 }
                             }
                             else
                             {
                                 ExcelWorksheet? ws = wb.Worksheets[wsName];
+
                                 if (ws == null)
                                 {
                                     if (ws.Names.ContainsKey(cell))
                                     {
                                         ExcelNamedRange? n = wb.Names[cell];
+
                                         if (n._fromRow > 0 && n._fromCol > 0)
                                         {
                                             SetFromRowCol(ref FromColumn, ref fixedFromColumn, n._fromCol, n._fromColFixed);
@@ -244,16 +284,19 @@ public abstract class ExcelCellBase
                                         {
                                             FromRow = FromColumn = ToRow = ToColumn = -1;
                                             fixedFromRow = fixedFromColumn = fixedToRow = fixedToColumn = false;
+
                                             return false;
                                         }
                                     }
                                     else
                                     {
                                         ExcelTable? tbl = ws.Tables[cell];
+
                                         if (tbl == null)
                                         {
                                             FromRow = FromColumn = ToRow = ToColumn = -1;
                                             fixedFromRow = fixedFromColumn = fixedToRow = fixedToColumn = false;
+
                                             return false;
                                         }
                                         else
@@ -277,10 +320,12 @@ public abstract class ExcelCellBase
                     //throw new InvalidOperationException($"Address is not valid {CellAddress}");
                     FromColumn = ToColumn = FromRow = ToRow = -1;
                     fixedFromRow = fixedFromColumn = fixedToRow = fixedToColumn = false;
+
                     return false;
                 }
 
                 ret = GetRowCol(cells[0], out FromRow, out FromColumn, false, out fixedFromRow, out fixedFromColumn);
+
                 if (ret)
                 {
                     ret = GetRowCol(cells[1], out ToRow, out ToColumn, false, out fixedToRow, out fixedToColumn);
@@ -289,6 +334,7 @@ public abstract class ExcelCellBase
                 {
                     GetRowCol(cells[1], out ToRow, out ToColumn, false, out fixedToRow, out fixedToColumn);
                 }
+
                 if (FromColumn <= 0)
                 {
                     FromColumn = 1;
@@ -310,9 +356,9 @@ public abstract class ExcelCellBase
                 }
             }
         }
+
         return ret;
     }
-
 
     private static void SetFromRowCol(ref int FromRowCol, ref bool fixedFromRowCol, int rowCol, bool fixedRowCol)
     {
@@ -322,6 +368,7 @@ public abstract class ExcelCellBase
             fixedFromRowCol = fixedRowCol;
         }
     }
+
     private static void SetToRowCol(ref int toRowCol, ref bool fixedToRowCol, int rowCol, bool fixedRowCol)
     {
         if (rowCol > toRowCol)
@@ -340,14 +387,17 @@ public abstract class ExcelCellBase
 
         int alpha = 0;
         bool num = false;
+
         for (int i = 0; i < cellAddress.Length; i++)
         {
             char c = cellAddress[i];
+
             if (c != '$')
             {
                 if (c >= 'A' && c <= 'Z')
                 {
                     alpha++;
+
                     if (alpha > 3 || num)
                     {
                         return false;
@@ -359,6 +409,7 @@ public abstract class ExcelCellBase
                     {
                         return false;
                     }
+
                     num = true;
                 }
                 else
@@ -367,6 +418,7 @@ public abstract class ExcelCellBase
                 }
             }
         }
+
         return num;
     }
 
@@ -381,14 +433,17 @@ public abstract class ExcelCellBase
     {
         return GetRowCol(CellAddress, out Row, out Column, true);
     }
+
     internal static bool GetRowColFromAddress(string CellAddress, out int row, out int col, out bool fixedRow, out bool fixedCol)
     {
         return GetRowCol(CellAddress, out row, out col, true, out fixedRow, out fixedCol);
     }
+
     internal static bool IsAlpha(char c)
     {
         return c >= 'A' && c <= 'Z';
     }
+
     /// <summary>
     /// Get the row/column for a Cell-address
     /// </summary>
@@ -401,9 +456,11 @@ public abstract class ExcelCellBase
     {
         return GetRowCol(address, out row, out col, throwException, out bool fixedRow, out bool fixedCol);
     }
+
     const int numberOfCharacters = 'Z' - 'A' + 1;
     const int startChar = 'A' - 1;
     const int startNum = '0';
+
     internal static bool GetRowCol(string address, out int row, out int col, bool throwException, out bool fixedRow, out bool fixedCol)
     {
         int start = 0;
@@ -416,25 +473,32 @@ public abstract class ExcelCellBase
         {
             row = 0;
             col = 0;
+
             return true;
         }
 
         int sheetNameSeparator = address.LastIndexOf('!');
+
         if (sheetNameSeparator > 0)
         {
             start = sheetNameSeparator + 1;
         }
+
         address = Utils.ConvertUtil._invariantTextInfo.ToUpper(address);
+
         for (int i = start; i < address.Length; i++)
         {
             char c = address[i];
+
             if (IsAlpha(c))
             {
                 col *= numberOfCharacters;
                 col += c - startChar;
+
                 if (col > ExcelPackage.MaxColumns || row > 0)
                 {
                     ThrowAddressException(address, out row, out col, throwException);
+
                     break;
                 }
             }
@@ -442,9 +506,11 @@ public abstract class ExcelCellBase
             {
                 row *= 10; //Number of numbers 0-9
                 row += c - startNum;
+
                 if (row > ExcelPackage.MaxRows)
                 {
                     ThrowAddressExceptionOutOfRange(address, row, throwException);
+
                     //ThrowAddressException(address, out row, out col, throwException);
                     break;
                 }
@@ -465,6 +531,7 @@ public abstract class ExcelCellBase
                 return ThrowAddressException(address, out row, out col, throwException);
             }
         }
+
         return row != 0 || col != 0;
     }
 
@@ -472,6 +539,7 @@ public abstract class ExcelCellBase
     {
         row = 0;
         col = 0;
+
         if (throwException)
         {
             throw new ArgumentException(string.Format("Invalid Address format {0}", address));
@@ -486,8 +554,10 @@ public abstract class ExcelCellBase
     {
         if (throwException)
         {
-            throw new ArgumentException(string.Format(
-                                                      "Invalid Address format {0}. Row: {1} is out of range. Maxvalue for row is {2}", address, row, ExcelPackage.MaxRows));
+            throw new ArgumentException(string.Format("Invalid Address format {0}. Row: {1} is out of range. Maxvalue for row is {2}",
+                                                      address,
+                                                      row,
+                                                      ExcelPackage.MaxRows));
         }
         else
         {
@@ -495,18 +565,21 @@ public abstract class ExcelCellBase
         }
     }
 
-
     private static int GetColumn(string sCol)
     {
         int col = 0;
         int len = sCol.Length - 1;
+
         for (int i = len; i >= 0; i--)
         {
             col += ((int)sCol[i] - 64) * (int)Math.Pow(26, len - i);
         }
+
         return col;
     }
+
     #region GetAddress
+
     /// <summary>
     /// Get the row number in text
     /// </summary>
@@ -522,6 +595,7 @@ public abstract class ExcelCellBase
 
         return $"{Row}";
     }
+
     /// <summary>
     /// Get the columnn address for the column
     /// </summary>
@@ -531,6 +605,7 @@ public abstract class ExcelCellBase
     public static string GetAddressCol(int Col, bool Absolute = false)
     {
         string? colLetter = GetColumnLetter(Col);
+
         if (Absolute)
         {
             return $"${colLetter}";
@@ -538,6 +613,7 @@ public abstract class ExcelCellBase
 
         return $"{colLetter}";
     }
+
     /// <summary>
     /// Returns the AlphaNumeric representation that Excel expects for a Cell Address
     /// </summary>
@@ -548,6 +624,7 @@ public abstract class ExcelCellBase
     {
         return GetAddress(Row, Column, false);
     }
+
     /// <summary>
     /// Returns the AlphaNumeric representation that Excel expects for a Cell Address
     /// </summary>
@@ -565,6 +642,7 @@ public abstract class ExcelCellBase
 
         return (AbsoluteCol ? "$" : "") + GetColumnLetter(Column) + (AbsoluteRow ? "$" : "") + Row.ToString();
     }
+
     /// <summary>
     /// Returns the AlphaNumeric representation that Excel expects for a Cell Address
     /// </summary>
@@ -578,6 +656,7 @@ public abstract class ExcelCellBase
         {
             return "#REF!";
         }
+
         if (Absolute)
         {
             return "$" + GetColumnLetter(Column) + "$" + Row.ToString();
@@ -587,6 +666,7 @@ public abstract class ExcelCellBase
             return GetColumnLetter(Column) + Row.ToString();
         }
     }
+
     /// <summary>
     /// Returns the AlphaNumeric representation that Excel expects for a Cell Address
     /// </summary>
@@ -599,6 +679,7 @@ public abstract class ExcelCellBase
     {
         return GetAddress(FromRow, FromColumn, ToRow, ToColumn, false);
     }
+
     /// <summary>
     /// Returns the AlphaNumeric representation that Excel expects for a Cell Address
     /// </summary>
@@ -619,11 +700,13 @@ public abstract class ExcelCellBase
             if (FromRow == 1 && ToRow == ExcelPackage.MaxRows)
             {
                 string? absChar = Absolute ? "$" : "";
+
                 return absChar + GetColumnLetter(FromColumn) + ":" + absChar + GetColumnLetter(ToColumn);
             }
             else if (FromColumn == 1 && ToColumn == ExcelPackage.MaxColumns)
             {
                 string? absChar = Absolute ? "$" : "";
+
                 return absChar + FromRow.ToString() + ":" + absChar + ToRow.ToString();
             }
             else
@@ -632,6 +715,7 @@ public abstract class ExcelCellBase
             }
         }
     }
+
     /// <summary>
     /// Returns the AlphaNumeric representation that Excel expects for a Cell Address
     /// </summary>
@@ -644,7 +728,14 @@ public abstract class ExcelCellBase
     /// <param name="FixedToColumn"></param>
     /// <param name="FixedToRow"></param>
     /// <returns>The cell address in the format A1</returns>
-    public static string GetAddress(int FromRow, int FromColumn, int ToRow, int ToColumn, bool FixedFromRow, bool FixedFromColumn, bool FixedToRow, bool FixedToColumn)
+    public static string GetAddress(int FromRow,
+                                    int FromColumn,
+                                    int ToRow,
+                                    int ToColumn,
+                                    bool FixedFromRow,
+                                    bool FixedFromColumn,
+                                    bool FixedToRow,
+                                    bool FixedToColumn)
     {
         if (FromRow == ToRow && FromColumn == ToColumn)
         {
@@ -666,6 +757,7 @@ public abstract class ExcelCellBase
             }
         }
     }
+
     /// <summary>
     /// Get the full address including the worksheet name
     /// </summary>
@@ -676,6 +768,7 @@ public abstract class ExcelCellBase
     {
         return GetFullAddress(worksheetName, address, true);
     }
+
     /// <summary>
     /// Get the full address including the worksheet name
     /// </summary>
@@ -692,21 +785,26 @@ public abstract class ExcelCellBase
 
         return workbook + GetFullAddress(worksheetName, address, true);
     }
+
     internal static string GetFullAddress(string worksheetName, string address, bool fullRowCol)
     {
         string? wsForAddress = "";
+
         if (!string.IsNullOrEmpty(worksheetName))
         {
             wsForAddress = GetQuotedWorksheetName(worksheetName);
         }
+
         if (address.IndexOf('!') == -1 || address.Contains("#REF!"))
         {
             if (fullRowCol)
             {
                 string[] cells = address.Split(':');
+
                 if (cells.Length > 0)
                 {
                     address = string.IsNullOrEmpty(wsForAddress) || cells[0].Contains("!") ? cells[0] : string.Format("{0}!{1}", wsForAddress, cells[0]);
+
                     if (cells.Length > 1)
                     {
                         address += string.Format(":{0}", cells[1]);
@@ -716,12 +814,14 @@ public abstract class ExcelCellBase
             else
             {
                 ExcelAddressBase? a = new ExcelAddressBase(address);
+
                 if ((a._fromRow == 1 && a._toRow == ExcelPackage.MaxRows) || (a._fromCol == 1 && a._toCol == ExcelPackage.MaxColumns))
                 {
                     if (string.IsNullOrEmpty(wsForAddress))
                     {
                         address = $"{wsForAddress}!";
                     }
+
                     address += string.Format("{0}{1}:{2}{3}", GetColumnLetter(a._fromCol), a._fromRow, GetColumnLetter(a._toCol), a._toRow);
                 }
                 else
@@ -730,15 +830,17 @@ public abstract class ExcelCellBase
                 }
             }
         }
+
         return address;
     }
 
     internal static string GetQuotedWorksheetName(string worksheetName)
     {
         string wsForAddress;
+
         if (ExcelWorksheet.NameNeedsApostrophes(worksheetName))
         {
-            wsForAddress = "'" + worksheetName.Replace("'", "''") + "'";   //Makesure addresses handle single qoutes
+            wsForAddress = "'" + worksheetName.Replace("'", "''") + "'"; //Makesure addresses handle single qoutes
         }
         else
         {
@@ -747,8 +849,11 @@ public abstract class ExcelCellBase
 
         return wsForAddress;
     }
+
     #endregion
+
     #region IsValidCellAddress
+
     /// <summary>
     /// If the address is a address is a cell or range address of format A1 or A1:A2, without specified worksheet name. 
     /// </summary>
@@ -757,10 +862,12 @@ public abstract class ExcelCellBase
     public static bool IsSimpleAddress(string address)
     {
         string[]? split = address.Split(':');
+
         if (split.Length > 2)
         {
             return false;
         }
+
         foreach (string? cell in split)
         {
             if (!IsCellAddress(cell))
@@ -768,8 +875,10 @@ public abstract class ExcelCellBase
                 return false;
             }
         }
+
         return true;
     }
+
     /// <summary>
     /// Returns true if the cell address is valid
     /// </summary>
@@ -777,10 +886,11 @@ public abstract class ExcelCellBase
     /// <returns>Return true if the address is valid</returns>
     public static bool IsValidAddress(string address)
     {
-        if (address.LastIndexOf('!', address.Length - 2) > 0)   //Last char can be ! if address is set to #REF!, so use Lengh - 2 as start.
+        if (address.LastIndexOf('!', address.Length - 2) > 0) //Last char can be ! if address is set to #REF!, so use Lengh - 2 as start.
         {
             address = address.Substring(address.LastIndexOf('!') + 1);
         }
+
         if (string.IsNullOrEmpty(address.Trim()))
         {
             return false;
@@ -788,10 +898,16 @@ public abstract class ExcelCellBase
 
         address = Utils.ConvertUtil._invariantTextInfo.ToUpper(address);
         string[]? addrs = address.Split(',');
+
         foreach (string? a in addrs)
         {
-            string r1 = "", c1 = "", r2 = "", c2 = "";
+            string r1 = "",
+                   c1 = "",
+                   r2 = "",
+                   c2 = "";
+
             bool isSecond = false;
+
             for (int i = 0; i < a.Length; i++)
             {
                 if (IsCol(a[i]))
@@ -804,6 +920,7 @@ public abstract class ExcelCellBase
                         }
 
                         c1 += a[i];
+
                         if (c1.Length > 3)
                         {
                             return false;
@@ -817,6 +934,7 @@ public abstract class ExcelCellBase
                         }
 
                         c2 += a[i];
+
                         if (c2.Length > 3)
                         {
                             return false;
@@ -828,6 +946,7 @@ public abstract class ExcelCellBase
                     if (isSecond == false)
                     {
                         r1 += a[i];
+
                         if (r1.Length > 7)
                         {
                             return false;
@@ -836,6 +955,7 @@ public abstract class ExcelCellBase
                     else
                     {
                         r2 += a[i];
+
                         if (r2.Length > 7)
                         {
                             return false;
@@ -853,9 +973,7 @@ public abstract class ExcelCellBase
                 }
                 else if (a[i] == '$')
                 {
-                    if (i == a.Length - 1 || a[i + 1] == ':' ||
-                        (i > 1 && IsCol(a[i - 1]) && IsCol(a[i + 1])) ||
-                        (i > 1 && IsRow(a[i - 1]) && IsRow(a[i + 1])))
+                    if (i == a.Length - 1 || a[i + 1] == ':' || (i > 1 && IsCol(a[i - 1]) && IsCol(a[i + 1])) || (i > 1 && IsRow(a[i - 1]) && IsRow(a[i + 1])))
                     {
                         return false;
                     }
@@ -865,8 +983,10 @@ public abstract class ExcelCellBase
                     return false;
                 }
             }
+
             bool ret;
-            if (r1 != "" && c1 != "" && r2 == "" && c2 == "")   //Single Cell
+
+            if (r1 != "" && c1 != "" && r2 == "" && c2 == "") //Single Cell
             {
                 int column = GetColumn(c1);
                 int row = int.Parse(r1);
@@ -879,36 +999,32 @@ public abstract class ExcelCellBase
                 int iR2 = int.Parse(r2);
                 int iC2 = GetColumn(c2);
 
-                ret = iC1 <= iC2 && iR1 <= iR2 &&
-                      iC1 >= 1 && iC2 <= ExcelPackage.MaxColumns &&
-                      iR1 >= 1 && iR2 <= ExcelPackage.MaxRows;
-
+                ret = iC1 <= iC2 && iR1 <= iR2 && iC1 >= 1 && iC2 <= ExcelPackage.MaxColumns && iR1 >= 1 && iR2 <= ExcelPackage.MaxRows;
             }
             else if (r1 == "" && r2 == "" && c1 != "" && c2 != "") //Full Column
             {
                 int iC1 = GetColumn(c1);
                 int iC2 = GetColumn(c2);
-                ret = iC1 <= iC2 &&
-                      iC1 >= 1 && iC2 <= ExcelPackage.MaxColumns;
+                ret = iC1 <= iC2 && iC1 >= 1 && iC2 <= ExcelPackage.MaxColumns;
             }
             else if (r1 != "" && r2 != "" && c1 == "" && c2 == "")
             {
                 int iR1 = int.Parse(r2);
                 int iR2 = int.Parse(r2);
 
-                ret = int.Parse(r1) <= iR2 &&
-                      iR1 >= 1 &&
-                      iR2 <= ExcelPackage.MaxRows;
+                ret = int.Parse(r1) <= iR2 && iR1 >= 1 && iR2 <= ExcelPackage.MaxRows;
             }
             else
             {
                 return false;
             }
+
             if (ret == false)
             {
                 return false;
             }
         }
+
         return true;
     }
 
@@ -916,6 +1032,7 @@ public abstract class ExcelCellBase
     {
         return c >= 'A' && c <= 'Z';
     }
+
     private static bool IsRow(char r)
     {
         return r >= '0' && r <= '9';
@@ -929,6 +1046,7 @@ public abstract class ExcelCellBase
     public static bool IsValidCellAddress(string cellAddress)
     {
         bool result = false;
+
         try
         {
             if (GetRowColFromAddress(cellAddress, out int row, out int col))
@@ -943,12 +1061,19 @@ public abstract class ExcelCellBase
                 }
             }
         }
-        catch { }
+        catch
+        {
+        }
+
         return result;
     }
+
     #endregion
+
     #region UpdateFormulaReferences
+
     private static SourceCodeTokenizer _sct = new SourceCodeTokenizer(FunctionNameProvider.Empty, NameValueProvider.Empty);
+
     /// <summary>
     /// Updates the Excel formula so that all the cellAddresses are incremented by the row and column increments
     /// if they fall after the afterRow and afterColumn.
@@ -965,20 +1090,32 @@ public abstract class ExcelCellBase
     /// <param name="copy">If a copy operation is performed, fully fixed cells should be untoughe.</param>
     /// <param name="tokens">Tokens, if a cache exists</param>
     /// <returns>The updated version of the <paramref name="formula"/>.</returns>
-    internal static string UpdateFormulaReferences(string formula, int rowIncrement, int colIncrement, int afterRow, int afterColumn, string currentSheet, string modifiedSheet, bool setFixed = false, bool copy = false, IEnumerable<Token> tokens = null)
+    internal static string UpdateFormulaReferences(string formula,
+                                                   int rowIncrement,
+                                                   int colIncrement,
+                                                   int afterRow,
+                                                   int afterColumn,
+                                                   string currentSheet,
+                                                   string modifiedSheet,
+                                                   bool setFixed = false,
+                                                   bool copy = false,
+                                                   IEnumerable<Token> tokens = null)
     {
         try
         {
             tokens ??= _sct.Tokenize(formula);
             string? f = "";
+
             foreach (Token t in tokens)
             {
                 if (t.TokenTypeIsSet(TokenType.ExcelAddress))
                 {
                     ExcelAddressBase? address = new ExcelAddressBase(t.Value);
+
                     if ((!string.IsNullOrEmpty(address._wb) || !IsReferencesModifiedWorksheet(currentSheet, modifiedSheet, address)) && !setFixed)
                     {
                         f += address.Address;
+
                         continue;
                     }
 
@@ -996,9 +1133,12 @@ public abstract class ExcelCellBase
 
                     if (!address.IsFullColumn)
                     {
-                        if (copy && ((address._fromRowFixed && address._toRowFixed && address.IsFullRow) || (address._fromColFixed && address._toColFixed && address._fromRowFixed && address._toRowFixed)))
+                        if (copy
+                            && ((address._fromRowFixed && address._toRowFixed && address.IsFullRow)
+                                || (address._fromColFixed && address._toColFixed && address._fromRowFixed && address._toRowFixed)))
                         {
                             f += address.LocalAddress;
+
                             continue;
                         }
 
@@ -1024,6 +1164,7 @@ public abstract class ExcelCellBase
                         if (copy && address._fromColFixed && address._toColFixed && address.IsFullColumn)
                         {
                             f += address.LocalAddress;
+
                             continue;
                         }
 
@@ -1051,6 +1192,7 @@ public abstract class ExcelCellBase
                     else
                     {
                         int ix = address.Address.LastIndexOf('!');
+
                         if (ix > 0)
                         {
                             f += address.Address.Substring(ix + 1);
@@ -1060,14 +1202,13 @@ public abstract class ExcelCellBase
                             f += address.Address;
                         }
                     }
-
-
                 }
                 else
                 {
                     f += t.Value;
                 }
             }
+
             return f;
         }
         catch //Invalid formula, return formula
@@ -1075,6 +1216,7 @@ public abstract class ExcelCellBase
             return formula;
         }
     }
+
     /// <summary>
     /// Updates the Excel formula so that all the cellAddresses are incremented by the row and column increments
     /// if they fall after the afterRow and afterColumn.
@@ -1088,10 +1230,17 @@ public abstract class ExcelCellBase
     /// <param name="modifiedSheet">The sheet where cells are being inserted or deleted.</param>
     /// <param name="setFixed">Fixed address</param>
     /// <returns>The updated version of the <paramref name="formula"/>.</returns>
-    internal static string UpdateFormulaReferences(string formula, ExcelAddressBase range, ExcelAddressBase effectedRange, eShiftTypeInsert shift, string currentSheet, string modifiedSheet, bool setFixed = false)
+    internal static string UpdateFormulaReferences(string formula,
+                                                   ExcelAddressBase range,
+                                                   ExcelAddressBase effectedRange,
+                                                   eShiftTypeInsert shift,
+                                                   string currentSheet,
+                                                   string modifiedSheet,
+                                                   bool setFixed = false)
     {
         int rowIncrement;
         int colIncrement;
+
         if (shift == eShiftTypeInsert.Down || shift == eShiftTypeInsert.EntireRow)
         {
             rowIncrement = range.Rows;
@@ -1105,10 +1254,18 @@ public abstract class ExcelCellBase
 
         return UpdateFormulaReferencesPrivate(formula, range, effectedRange, currentSheet, modifiedSheet, setFixed, rowIncrement, colIncrement);
     }
-    internal static string UpdateFormulaReferences(string formula, ExcelAddressBase range, ExcelAddressBase effectedRange, eShiftTypeDelete shift, string currentSheet, string modifiedSheet, bool setFixed = false)
+
+    internal static string UpdateFormulaReferences(string formula,
+                                                   ExcelAddressBase range,
+                                                   ExcelAddressBase effectedRange,
+                                                   eShiftTypeDelete shift,
+                                                   string currentSheet,
+                                                   string modifiedSheet,
+                                                   bool setFixed = false)
     {
         int rowIncrement;
         int colIncrement;
+
         if (shift == eShiftTypeDelete.Up || shift == eShiftTypeDelete.EntireRow)
         {
             rowIncrement = -range.Rows;
@@ -1122,7 +1279,15 @@ public abstract class ExcelCellBase
 
         return UpdateFormulaReferencesPrivate(formula, range, effectedRange, currentSheet, modifiedSheet, setFixed, rowIncrement, colIncrement);
     }
-    private static string UpdateFormulaReferencesPrivate(string formula, ExcelAddressBase range, ExcelAddressBase effectedRange, string currentSheet, string modifiedSheet, bool setFixed, int rowIncrement, int colIncrement)
+
+    private static string UpdateFormulaReferencesPrivate(string formula,
+                                                         ExcelAddressBase range,
+                                                         ExcelAddressBase effectedRange,
+                                                         string currentSheet,
+                                                         string modifiedSheet,
+                                                         bool setFixed,
+                                                         int rowIncrement,
+                                                         int colIncrement)
     {
         try
         {
@@ -1131,15 +1296,18 @@ public abstract class ExcelCellBase
             SourceCodeTokenizer? sct = new SourceCodeTokenizer(FunctionNameProvider.Empty, NameValueProvider.Empty);
             IEnumerable<Token>? tokens = sct.Tokenize(formula);
             string? f = "";
+
             foreach (Token t in tokens)
             {
                 if (t.TokenTypeIsSet(TokenType.ExcelAddress))
                 {
                     ExcelAddressBase? address = new ExcelAddressBase(t.Value);
-                    if (((!string.IsNullOrEmpty(address._wb) || !IsReferencesModifiedWorksheet(currentSheet, modifiedSheet, address)) && !setFixed) ||
-                        address.Collide(effectedRange) == ExcelAddressBase.eAddressCollition.No)
+
+                    if (((!string.IsNullOrEmpty(address._wb) || !IsReferencesModifiedWorksheet(currentSheet, modifiedSheet, address)) && !setFixed)
+                        || address.Collide(effectedRange) == ExcelAddressBase.eAddressCollition.No)
                     {
                         f += address.Address;
+
                         continue;
                     }
 
@@ -1154,6 +1322,7 @@ public abstract class ExcelCellBase
                             f += $"{address._ws}!";
                         }
                     }
+
                     if (!address.IsFullColumn)
                     {
                         if (rowIncrement > 0)
@@ -1172,6 +1341,7 @@ public abstract class ExcelCellBase
                             }
                         }
                     }
+
                     if (address != null && !address.IsFullRow)
                     {
                         if (colIncrement > 0)
@@ -1198,6 +1368,7 @@ public abstract class ExcelCellBase
                     else
                     {
                         int ix = address.Address.LastIndexOf('!');
+
                         if (ix > 0)
                         {
                             f += address.Address.Substring(ix + 1);
@@ -1207,14 +1378,13 @@ public abstract class ExcelCellBase
                             f += address.Address;
                         }
                     }
-
-
                 }
                 else
                 {
                     f += t.Value;
                 }
             }
+
             return f;
         }
         catch //Invalid formula, return formula
@@ -1225,8 +1395,8 @@ public abstract class ExcelCellBase
 
     private static bool IsReferencesModifiedWorksheet(string currentSheet, string modifiedSheet, ExcelAddressBase a)
     {
-        return (string.IsNullOrEmpty(a._ws) && currentSheet.Equals(modifiedSheet, StringComparison.CurrentCultureIgnoreCase)) ||
-               modifiedSheet.Equals(a._ws, StringComparison.CurrentCultureIgnoreCase);
+        return (string.IsNullOrEmpty(a._ws) && currentSheet.Equals(modifiedSheet, StringComparison.CurrentCultureIgnoreCase))
+               || modifiedSheet.Equals(a._ws, StringComparison.CurrentCultureIgnoreCase);
     }
 
     /// <summary>
@@ -1247,11 +1417,13 @@ public abstract class ExcelCellBase
         {
             SourceCodeTokenizer? sct = new SourceCodeTokenizer(FunctionNameProvider.Empty, NameValueProvider.Empty);
             string? retFormula = "";
+
             foreach (Token token in sct.Tokenize(formula))
             {
                 if (token.TokenTypeIsSet(TokenType.ExcelAddress)) //Address
                 {
                     ExcelAddressBase? address = new ExcelAddressBase(token.Value);
+
                     if (address == null || !address.IsValidRowCol())
                     {
                         retFormula += "#REF!";
@@ -1267,6 +1439,7 @@ public abstract class ExcelCellBase
                     retFormula += token.Value;
                 }
             }
+
             return retFormula;
         }
         catch //if we have an exception, return the original formula.
@@ -1274,11 +1447,15 @@ public abstract class ExcelCellBase
             return formula;
         }
     }
+
     #endregion
+
     internal static bool IsExternalAddress(string address)
     {
         return address.StartsWith("[") || address.StartsWith("'[");
     }
+
     #endregion
+
     #endregion
 }

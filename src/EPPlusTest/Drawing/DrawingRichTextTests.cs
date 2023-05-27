@@ -13,12 +13,14 @@ namespace EPPlusTest.Drawing
         {
             static ExcelPackage _pck;
             static ExcelWorksheet _ws;
+
             [ClassInitialize]
             public static void Init(TestContext context)
             {
-                _pck = OpenPackage("DrawingRichText.xlsx", true);                
+                _pck = OpenPackage("DrawingRichText.xlsx", true);
                 _ws = _pck.Workbook.Worksheets.Add("Richtext");
             }
+
             [ClassCleanup]
             public static void Cleanup()
             {
@@ -35,7 +37,7 @@ namespace EPPlusTest.Drawing
             {
                 ExcelShape? shape = _ws.Drawings.AddShape("shape1", eShapeStyle.Rect);
                 shape.RichText.Add("Line1");
-                ExcelParagraph? r2=shape.RichText.Add("L", true);
+                ExcelParagraph? r2 = shape.RichText.Add("L", true);
                 r2.Fill.Style = eFillStyle.SolidFill;
                 r2.Fill.SolidFill.Color.SetSchemeColor(eSchemeColor.Accent2);
                 r2 = shape.RichText.Add("i");
@@ -51,8 +53,7 @@ namespace EPPlusTest.Drawing
                 r2.Fill.Style = eFillStyle.SolidFill;
                 r2.Fill.SolidFill.Color.SetSchemeColor(eSchemeColor.Accent6);
 
-
-                ExcelParagraph? r3=shape.RichText.Add("Line3", true);
+                ExcelParagraph? r3 = shape.RichText.Add("Line3", true);
                 r3.Bold = true;
                 r3.Italic = true;
                 r3.LatinFont = "Times New Roman";
@@ -77,6 +78,7 @@ namespace EPPlusTest.Drawing
                 Assert.IsTrue(shape.RichText[6].IsFirstInParagraph);
                 Assert.IsTrue(shape.RichText[6].IsLastInParagraph);
             }
+
             [TestMethod]
             public void ReadThreeParagraphsAndValidate()
             {
@@ -102,6 +104,7 @@ namespace EPPlusTest.Drawing
                 Assert.IsTrue(shape.RichText[6].IsFirstInParagraph);
                 Assert.IsTrue(shape.RichText[6].IsLastInParagraph);
             }
+
             [TestMethod]
             public void AddEmptyParagraphFirst()
             {

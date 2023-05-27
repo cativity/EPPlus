@@ -10,6 +10,7 @@
  *************************************************************************************************
   01/27/2020         EPPlus Software AB       Initial release EPPlus 5
  *************************************************************************************************/
+
 namespace OfficeOpenXml.Drawing.Chart;
 
 /// <summary>
@@ -21,22 +22,27 @@ public enum eAreaChartType
     /// An area chart
     /// </summary>
     Area = 1,
+
     /// <summary>
     /// A stacked area chart
     /// </summary>
     AreaStacked = 76,
+
     /// <summary>
     /// A stacked 100 percent area chart
     /// </summary>
     AreaStacked100 = 77,
+
     /// <summary>
     /// An 3D area chart
     /// </summary>
     Area3D = -4098,
+
     /// <summary>
     /// A stacked area 3D chart
     /// </summary>
     AreaStacked3D = 78,
+
     /// <summary>
     /// A stacked 100 percent 3D area chart
     /// </summary>

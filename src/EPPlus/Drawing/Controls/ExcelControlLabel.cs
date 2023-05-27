@@ -10,6 +10,7 @@
  *************************************************************************************************
   10/21/2020         EPPlus Software AB           Controls 
  *************************************************************************************************/
+
 using OfficeOpenXml.Packaging;
 using System;
 using System.Xml;
@@ -21,11 +22,18 @@ namespace OfficeOpenXml.Drawing.Controls;
 /// </summary>
 public class ExcelControlLabel : ExcelControlWithText
 {
-    internal ExcelControlLabel(ExcelDrawings drawings, XmlElement drawNode, string name, ExcelGroupShape parent=null) : base(drawings, drawNode, name, parent)
+    internal ExcelControlLabel(ExcelDrawings drawings, XmlElement drawNode, string name, ExcelGroupShape parent = null)
+        : base(drawings, drawNode, name, parent)
     {
         this.SetSize(150, 30); //Default size
     }
-    internal ExcelControlLabel(ExcelDrawings drawings, XmlNode drawNode, ControlInternal control, ZipPackagePart part, XmlDocument controlPropertiesXml, ExcelGroupShape parent = null)
+
+    internal ExcelControlLabel(ExcelDrawings drawings,
+                               XmlNode drawNode,
+                               ControlInternal control,
+                               ZipPackagePart part,
+                               XmlDocument controlPropertiesXml,
+                               ExcelGroupShape parent = null)
         : base(drawings, drawNode, control, part, controlPropertiesXml, parent)
     {
     }

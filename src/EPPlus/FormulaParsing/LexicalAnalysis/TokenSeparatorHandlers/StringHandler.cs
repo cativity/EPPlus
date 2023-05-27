@@ -10,6 +10,7 @@
  *************************************************************************************************
   01/27/2020         EPPlus Software AB       Initial release EPPlus 5
  *************************************************************************************************/
+
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -21,17 +22,20 @@ internal class StringHandler : SeparatorHandler
 {
     public override bool Handle(char c, Token tokenSeparator, TokenizerContext context, ITokenIndexProvider tokenIndexProvider)
     {
-        if(context.IsInString)
-        { 
+        if (context.IsInString)
+        {
             if (IsDoubleQuote(tokenSeparator, tokenIndexProvider.Index, context))
             {
                 tokenIndexProvider.MoveIndexPointerForward();
                 context.AppendToCurrentToken(c);
+
                 return true;
             }
+
             if (!tokenSeparator.TokenTypeIsSet(TokenType.String))
             {
                 context.AppendToCurrentToken(c);
+
                 return true;
             }
         }
@@ -44,19 +48,24 @@ internal class StringHandler : SeparatorHandler
                 context.ToggleIsInString();
                 context.AddToken(tokenSeparator);
                 context.NewToken();
+
                 return true;
             }
+
             if (context.LastToken != null && context.LastToken.Value.TokenTypeIsSet(TokenType.String))
             {
                 context.AddToken(!context.CurrentTokenHasValue
                                      ? new Token(string.Empty, TokenType.StringContent)
                                      : new Token(context.CurrentToken, TokenType.StringContent));
             }
+
             context.AddToken(new Token("\"", TokenType.String));
             context.ToggleIsInString();
             context.NewToken();
+
             return true;
         }
+
         return false;
     }
 }

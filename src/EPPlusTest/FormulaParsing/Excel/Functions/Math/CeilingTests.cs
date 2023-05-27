@@ -45,6 +45,7 @@ public class CeilingTests
         CompileResult? result = func.Execute(args, this._parsingContext);
         Assert.AreEqual(expectedValue, result.Result);
     }
+
     [TestMethod]
     public void CeilingBugTest2()
     {

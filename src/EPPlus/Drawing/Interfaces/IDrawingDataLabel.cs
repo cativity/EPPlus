@@ -10,6 +10,7 @@
  *************************************************************************************************
   01/27/2020         EPPlus Software AB       Initial release EPPlus 5
  *************************************************************************************************/
+
 using OfficeOpenXml.Drawing.Chart;
 using OfficeOpenXml.Drawing.Style.Effect;
 using OfficeOpenXml.Drawing.Style.Font;
@@ -29,11 +30,13 @@ public interface IDrawingDataLabel
     /// Data labels
     /// </summary>
     ExcelChartDataLabel DataLabel { get; }
+
     /// <summary>
     /// If the chart part has data labels
     /// </summary>
     bool HasDataLabel { get; }
 }
+
 /// <summary>
 /// Interface for handling data labels on a serie
 /// </summary>
@@ -43,6 +46,7 @@ public interface IDrawingSerieDataLabel
     /// Data labels
     /// </summary>
     ExcelChartSerieDataLabel DataLabel { get; }
+
     /// <summary>
     /// If the chart part has data labels
     /// </summary>

@@ -26,6 +26,7 @@
  *******************************************************************************
   01/27/2020         EPPlus Software AB       Initial release EPPlus 5
  *******************************************************************************/
+
 using EPPlusTest.Properties;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using OfficeOpenXml;
@@ -41,11 +42,13 @@ namespace EPPlusTest.Drawing;
 public class FillTest : TestBase
 {
     static ExcelPackage _pck;
+
     [ClassInitialize]
     public static void Init(TestContext context)
     {
         _pck = OpenPackage("DrawingFill.xlsx", true);
     }
+
     [ClassCleanup]
     public static void Cleanup()
     {
@@ -55,7 +58,9 @@ public class FillTest : TestBase
         SaveAndCleanup(_pck);
         File.Copy(fileName, dirName + "\\DrawingFillRead.xlsx", true);
     }
+
     #region SolidFill
+
     [TestMethod]
     public void ColorProperty()
     {
@@ -65,16 +70,17 @@ public class FillTest : TestBase
 
         ExcelShape? shape = ws.Drawings.AddShape("Shape1", eShapeStyle.Rect);
         shape.SetPosition(1, 0, 5, 0);
-            
+
         //Act
         shape.Fill.Color = expected;
-            
+
         //Assert
         Assert.AreEqual(eFillStyle.SolidFill, shape.Fill.Style);
         Assert.AreEqual(eDrawingColorType.Rgb, shape.Fill.SolidFill.Color.ColorType);
         Assert.IsNotNull(shape.Fill.SolidFill.Color.RgbColor);
         Assert.AreEqual(expected.ToArgb(), shape.Fill.SolidFill.Color.RgbColor.Color.ToArgb());
     }
+
     [TestMethod]
     public void SolidFill_NoColor()
     {
@@ -112,6 +118,7 @@ public class FillTest : TestBase
         Assert.IsNotNull(shape.Fill.SolidFill.Color.RgbColor);
         Assert.AreEqual(expected.ToArgb(), shape.Fill.SolidFill.Color.RgbColor.Color.ToArgb());
     }
+
     [TestMethod]
     public void NoFill()
     {
@@ -127,6 +134,7 @@ public class FillTest : TestBase
         //Assert
         Assert.AreEqual(eFillStyle.NoFill, shape.Fill.Style);
     }
+
     [TestMethod]
     public void SolidFill_ColorPreset()
     {
@@ -139,13 +147,14 @@ public class FillTest : TestBase
 
         //Act
         shape.Fill.Style = eFillStyle.SolidFill;
-        shape.Fill.SolidFill.Color.SetPresetColor(expected) ;
+        shape.Fill.SolidFill.Color.SetPresetColor(expected);
 
         //Assert
         Assert.AreEqual(eFillStyle.SolidFill, shape.Fill.Style);
         Assert.IsNotNull(shape.Fill.SolidFill.Color.PresetColor);
         Assert.AreEqual(expected, shape.Fill.SolidFill.Color.PresetColor.Color);
     }
+
     [TestMethod]
     public void SolidFill_ColorScheme()
     {
@@ -166,6 +175,7 @@ public class FillTest : TestBase
         Assert.IsNotNull(shape.Fill.SolidFill.Color.SchemeColor);
         Assert.AreEqual(expected, shape.Fill.SolidFill.Color.SchemeColor.Color);
     }
+
     [TestMethod]
     public void SolidFill_ColorPercentage()
     {
@@ -190,6 +200,7 @@ public class FillTest : TestBase
         Assert.AreEqual(expectedG, shape.Fill.SolidFill.Color.RgbPercentageColor.GreenPercentage);
         Assert.AreEqual(expectedB, shape.Fill.SolidFill.Color.RgbPercentageColor.BluePercentage);
     }
+
     [TestMethod]
     public void SolidFill_ColorHsl()
     {
@@ -214,11 +225,12 @@ public class FillTest : TestBase
         Assert.AreEqual(expectedLum, shape.Fill.SolidFill.Color.HslColor.Luminance);
         Assert.AreEqual(expectedSat, shape.Fill.SolidFill.Color.HslColor.Saturation);
     }
+
     [TestMethod]
     public void SolidFill_ColorSystem()
     {
         //Setup
-        eSystemColor expected= eSystemColor.Background;
+        eSystemColor expected = eSystemColor.Background;
         ExcelWorksheet? ws = _pck.Workbook.Worksheets.Add("SolidFillFromColorSystem");
 
         ExcelShape? shape = ws.Drawings.AddShape("Shape1", eShapeStyle.Rect);
@@ -234,8 +246,11 @@ public class FillTest : TestBase
         Assert.IsNotNull(shape.Fill.SolidFill.Color.SystemColor);
         Assert.AreEqual(expected, shape.Fill.SolidFill.Color.SystemColor.Color);
     }
+
     #endregion
+
     #region Transform
+
     [TestMethod]
     public void Transparancy()
     {
@@ -254,8 +269,9 @@ public class FillTest : TestBase
         Assert.AreEqual(eFillStyle.SolidFill, shape.Fill.Style);
         Assert.IsInstanceOfType(shape.Fill.SolidFill.Color.RgbColor, typeof(ExcelDrawingRgbColor));
         Assert.AreEqual(expected, shape.Fill.Transparancy);
-        Assert.AreEqual(100-expected, shape.Fill.SolidFill.Color.Transforms[0].Value);
+        Assert.AreEqual(100 - expected, shape.Fill.SolidFill.Color.Transforms[0].Value);
     }
+
     [TestMethod]
     public void TransformAlpha()
     {
@@ -277,6 +293,7 @@ public class FillTest : TestBase
         Assert.AreEqual(eColorTransformType.Alpha, shape.Fill.SolidFill.Color.Transforms[0].Type);
         Assert.AreEqual(expected, shape.Fill.SolidFill.Color.Transforms[0].Value);
     }
+
     [TestMethod]
     public void TransformTint()
     {
@@ -297,6 +314,7 @@ public class FillTest : TestBase
         Assert.AreEqual(eColorTransformType.Tint, shape.Fill.SolidFill.Color.Transforms[0].Type);
         Assert.AreEqual(expected, shape.Fill.SolidFill.Color.Transforms[0].Value);
     }
+
     [TestMethod]
     public void TransformShade()
     {
@@ -317,6 +335,7 @@ public class FillTest : TestBase
         Assert.AreEqual(eColorTransformType.Shade, shape.Fill.SolidFill.Color.Transforms[0].Type);
         Assert.AreEqual(expected, shape.Fill.SolidFill.Color.Transforms[0].Value);
     }
+
     [TestMethod]
     public void TransformInverse_true()
     {
@@ -335,6 +354,7 @@ public class FillTest : TestBase
         Assert.IsInstanceOfType(shape.Fill.SolidFill.Color.RgbColor, typeof(ExcelDrawingRgbColor));
         Assert.AreEqual(eColorTransformType.Inv, shape.Fill.SolidFill.Color.Transforms[0].Type);
     }
+
     [TestMethod]
     public void TransformAlphaModulation()
     {
@@ -356,6 +376,7 @@ public class FillTest : TestBase
         Assert.AreEqual(eColorTransformType.AlphaMod, shape.Fill.SolidFill.Color.Transforms[1].Type);
         Assert.AreEqual(expected, shape.Fill.SolidFill.Color.Transforms[1].Value);
     }
+
     [TestMethod]
     public void TransformAlphaOffset()
     {
@@ -376,6 +397,7 @@ public class FillTest : TestBase
         Assert.AreEqual(eColorTransformType.AlphaOff, shape.Fill.SolidFill.Color.Transforms[1].Type);
         Assert.AreEqual(expected, shape.Fill.SolidFill.Color.Transforms[1].Value);
     }
+
     [TestMethod]
     public void TransformColorPercentage()
     {
@@ -404,6 +426,7 @@ public class FillTest : TestBase
         Assert.AreEqual(eColorTransformType.Blue, shape.Fill.SolidFill.Color.Transforms[2].Type);
         Assert.AreEqual(expectedB, shape.Fill.SolidFill.Color.Transforms[2].Value);
     }
+
     [TestMethod]
     public void TransformColorModulation()
     {
@@ -432,6 +455,7 @@ public class FillTest : TestBase
         Assert.AreEqual(eColorTransformType.BlueMod, shape.Fill.SolidFill.Color.Transforms[2].Type);
         Assert.AreEqual(expectedB, shape.Fill.SolidFill.Color.Transforms[2].Value);
     }
+
     [TestMethod]
     public void TransformColoOffset()
     {
@@ -460,6 +484,7 @@ public class FillTest : TestBase
         Assert.AreEqual(eColorTransformType.BlueOff, shape.Fill.SolidFill.Color.Transforms[2].Type);
         Assert.AreEqual(expectedB, shape.Fill.SolidFill.Color.Transforms[2].Value);
     }
+
     [TestMethod]
     public void TransformHslOffset()
     {
@@ -484,6 +509,7 @@ public class FillTest : TestBase
         Assert.AreEqual(eColorTransformType.SatOff, shape.Fill.SolidFill.Color.Transforms[1].Type);
         Assert.AreEqual(expectedSat, shape.Fill.SolidFill.Color.Transforms[1].Value);
     }
+
     [TestMethod]
     public void TransformHslModulation()
     {
@@ -508,8 +534,11 @@ public class FillTest : TestBase
         Assert.AreEqual(eColorTransformType.SatMod, shape.Fill.SolidFill.Color.Transforms[1].Type);
         Assert.AreEqual(expectedSat, shape.Fill.SolidFill.Color.Transforms[1].Value);
     }
+
     #endregion
+
     #region Gradiant
+
     [TestMethod]
     public void Gradient()
     {
@@ -540,6 +569,7 @@ public class FillTest : TestBase
         Assert.IsNull(shape.Fill.SolidFill);
         Assert.AreEqual(true, shape.Fill.GradientFill.RotateWithShape);
     }
+
     [TestMethod]
     public void GradientNotSet()
     {
@@ -554,9 +584,10 @@ public class FillTest : TestBase
 
         //Assert
         Assert.AreEqual(eFillStyle.GradientFill, shape.Fill.Style);
-        Assert.AreEqual(0,shape.Fill.GradientFill.Colors.Count);
+        Assert.AreEqual(0, shape.Fill.GradientFill.Colors.Count);
         Assert.AreEqual(false, shape.Fill.GradientFill.RotateWithShape);
     }
+
     [TestMethod]
     public void GradientCircularPath()
     {
@@ -571,7 +602,7 @@ public class FillTest : TestBase
         shape.Fill.GradientFill.Colors.AddRgb(0, Color.Green);
         shape.Fill.GradientFill.Colors.AddRgb(50.35, Color.Olive);
         shape.Fill.GradientFill.Colors.AddRgb(100, Color.Gray);
-        shape.Fill.GradientFill.ShadePath= eShadePath.Circle;
+        shape.Fill.GradientFill.ShadePath = eShadePath.Circle;
 
         //Assert
         Assert.AreEqual(eFillStyle.GradientFill, shape.Fill.Style);
@@ -582,6 +613,7 @@ public class FillTest : TestBase
         Assert.AreEqual(50, shape.Fill.GradientFill.FocusPoint.LeftOffset);
         Assert.AreEqual(50, shape.Fill.GradientFill.FocusPoint.RightOffset);
     }
+
     [TestMethod]
     public void GradientRectPath()
     {
@@ -609,6 +641,7 @@ public class FillTest : TestBase
         Assert.AreEqual(20, shape.Fill.GradientFill.FocusPoint.LeftOffset);
         Assert.AreEqual(50, shape.Fill.GradientFill.FocusPoint.RightOffset);
     }
+
     [TestMethod]
     public void GradientShapePath()
     {
@@ -634,6 +667,7 @@ public class FillTest : TestBase
         Assert.AreEqual(50, shape.Fill.GradientFill.FocusPoint.LeftOffset);
         Assert.AreEqual(50, shape.Fill.GradientFill.FocusPoint.RightOffset);
     }
+
     [TestMethod]
     public void Gradient_AddMethods()
     {
@@ -651,7 +685,6 @@ public class FillTest : TestBase
         shape.Fill.GradientFill.Colors.AddPreset(55.2, ePresetColor.BlueViolet);
         shape.Fill.GradientFill.Colors.AddScheme(66.2, eSchemeColor.Background2);
         shape.Fill.GradientFill.Colors.AddSystem(88.2, eSystemColor.GradientActiveCaption);
-
 
         //Assert
         Assert.AreEqual(eFillStyle.GradientFill, shape.Fill.Style);
@@ -692,7 +725,9 @@ public class FillTest : TestBase
         Assert.AreEqual(eDrawingColorType.System, shape.Fill.GradientFill.Colors[5].Color.ColorType);
         Assert.AreEqual(eSystemColor.GradientActiveCaption, shape.Fill.GradientFill.Colors[5].Color.SystemColor.Color);
     }
+
     #endregion
+
     [TestMethod]
     public void PatternDefault()
     {
@@ -713,6 +748,7 @@ public class FillTest : TestBase
         Assert.IsNull(shape.Fill.GradientFill);
         Assert.AreEqual(eFillPatternStyle.Pct5, shape.Fill.PatternFill.PatternType);
     }
+
     [TestMethod]
     public void PatternDefaultColorCheck()
     {
@@ -735,6 +771,7 @@ public class FillTest : TestBase
         Assert.AreEqual(eSchemeColor.Text1, shape.Fill.PatternFill.ForegroundColor.SchemeColor.Color);
         Assert.AreEqual(eFillPatternStyle.Pct5, shape.Fill.PatternFill.PatternType);
     }
+
     [TestMethod]
     public void PatternCross()
     {
@@ -756,14 +793,16 @@ public class FillTest : TestBase
         Assert.IsNull(shape.Fill.GradientFill);
         Assert.AreEqual(eFillPatternStyle.Cross, shape.Fill.PatternFill.PatternType);
     }
+
     #region BlipFill
+
     [TestMethod]
     public void BlipFill_DefaultSettings()
     {
         //Setup
         ExcelWorksheet? ws = _pck.Workbook.Worksheets.Add("BlipFill");
 
-        ExcelShape? shape = AddBlip(ws, 1,"Shape1",false, 0, 0);
+        ExcelShape? shape = AddBlip(ws, 1, "Shape1", false, 0, 0);
 
         //Assert
         Assert.AreEqual(eFillStyle.BlipFill, shape.Fill.Style);
@@ -772,6 +811,7 @@ public class FillTest : TestBase
         Assert.IsNull(shape.Fill.PatternFill);
         Assert.AreEqual(false, shape.Fill.BlipFill.Stretch);
     }
+
     [TestMethod]
     public void BlipFill_NoImage()
     {
@@ -787,6 +827,7 @@ public class FillTest : TestBase
         Assert.IsNull(shape.Fill.GradientFill);
         Assert.IsNull(shape.Fill.PatternFill);
     }
+
     [TestMethod]
     public void BlipFill_Stretch()
     {
@@ -811,6 +852,7 @@ public class FillTest : TestBase
         Assert.AreEqual(-5, shape.Fill.BlipFill.StretchOffset.LeftOffset);
         Assert.AreEqual(15, shape.Fill.BlipFill.StretchOffset.RightOffset);
     }
+
     [TestMethod]
     public void BlipFill_SourceRectangle()
     {
@@ -835,6 +877,7 @@ public class FillTest : TestBase
         Assert.AreEqual(-5, shape.Fill.BlipFill.SourceRectangle.LeftOffset);
         Assert.AreEqual(15, shape.Fill.BlipFill.SourceRectangle.RightOffset);
     }
+
     [TestMethod]
     public void BlipFill_Tile()
     {
@@ -846,7 +889,7 @@ public class FillTest : TestBase
 
         //Act
         shape.Fill.Style = eFillStyle.BlipFill;
-        shape.Fill.BlipFill.Image.SetImage(Resources.CodeTif,ePictureType.Tif);
+        shape.Fill.BlipFill.Image.SetImage(Resources.CodeTif, ePictureType.Tif);
 
         shape.Fill.BlipFill.Stretch = false;
         shape.Fill.BlipFill.Tile.Alignment = eRectangleAlignment.Center;
@@ -869,6 +912,7 @@ public class FillTest : TestBase
         Assert.AreEqual(2, shape.Fill.BlipFill.Tile.HorizontalOffset);
         Assert.AreEqual(1, shape.Fill.BlipFill.Tile.VerticalOffset);
     }
+
     [TestMethod]
     public void BlipFill_PieChart()
     {
@@ -880,13 +924,13 @@ public class FillTest : TestBase
         chart.Fill.Style = eFillStyle.BlipFill;
         chart.Fill.BlipFill.Image.SetImage(Resources.CodeTif, ePictureType.Tif);
 
-
-        ExcelChartDataPoint? pt=chart.Series[0].DataPoints.Add(0);
+        ExcelChartDataPoint? pt = chart.Series[0].DataPoints.Add(0);
         pt.Fill.Style = eFillStyle.BlipFill;
         pt.Fill.BlipFill.Image.SetImage(Resources.CodeTif, ePictureType.Tif);
 
         chart.SetPosition(1, 0, 5, 0);
     }
+
     [TestMethod]
     public void BlipFill_OverwriteImage()
     {
@@ -906,7 +950,7 @@ public class FillTest : TestBase
         Assert.IsNull(shape.Fill.PatternFill);
     }
 
-    private static ExcelShape AddBlip(ExcelWorksheet ws, int row, string shapeName, bool stretch, double offset, double sourceRect=0)
+    private static ExcelShape AddBlip(ExcelWorksheet ws, int row, string shapeName, bool stretch, double offset, double sourceRect = 0)
     {
         ExcelShape? shape = ws.Drawings.AddShape(shapeName, eShapeStyle.RoundRect);
         shape.SetPosition(row, 0, 5, 0);
@@ -915,6 +959,7 @@ public class FillTest : TestBase
         shape.Fill.Style = eFillStyle.BlipFill;
         shape.Fill.BlipFill.Image.SetImage(Resources.Test1JpgByteArray, ePictureType.Jpg);
         shape.Fill.BlipFill.Stretch = stretch;
+
         if (stretch)
         {
             shape.Fill.BlipFill.StretchOffset.TopOffset = offset;
@@ -922,11 +967,14 @@ public class FillTest : TestBase
             shape.Fill.BlipFill.StretchOffset.LeftOffset = offset;
             shape.Fill.BlipFill.StretchOffset.RightOffset = offset;
         }
+
         shape.Fill.BlipFill.SourceRectangle.TopOffset = sourceRect;
         shape.Fill.BlipFill.SourceRectangle.BottomOffset = sourceRect;
         shape.Fill.BlipFill.SourceRectangle.LeftOffset = sourceRect;
         shape.Fill.BlipFill.SourceRectangle.RightOffset = sourceRect;
+
         return shape;
     }
+
     #endregion
 }

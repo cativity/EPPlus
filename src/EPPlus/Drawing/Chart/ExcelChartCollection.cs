@@ -10,6 +10,7 @@
  *************************************************************************************************
   01/27/2020         EPPlus Software AB       Initial release EPPlus 5
  *************************************************************************************************/
+
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -24,15 +25,19 @@ public class ExcelChartCollection : IEnumerable<ExcelChart>
 {
     List<ExcelChart> _list = new List<ExcelChart>();
     ExcelChart _topChart;
+
     internal ExcelChartCollection(ExcelChart chart)
     {
         this._topChart = chart;
     }
+
     internal void Add(ExcelChart chart)
     {
         this._list.Add(chart);
     }
+
     #region Add charts
+
     /// <summary>
     /// Add a new charttype to the chart
     /// </summary>
@@ -44,7 +49,7 @@ public class ExcelChartCollection : IEnumerable<ExcelChart>
         {
             throw new InvalidOperationException("Cannot add other chart types to a pivot chart");
         }
-        else if(this._topChart._isChartEx)
+        else if (this._topChart._isChartEx)
         {
             throw new InvalidOperationException("Extended charts cannot be combined with other chart types");
         }
@@ -57,8 +62,10 @@ public class ExcelChartCollection : IEnumerable<ExcelChart>
         ExcelChart? chart = ExcelChart.GetNewChart(this._topChart.WorkSheet.Drawings, this._topChart.TopNode, chartType, this._topChart, null);
 
         this._list.Add((ExcelChart)chart);
+
         return chart;
     }
+
     /// <summary>
     /// Adds a new line chart to the chart
     /// </summary>
@@ -68,6 +75,7 @@ public class ExcelChartCollection : IEnumerable<ExcelChart>
     {
         return (ExcelLineChart)this.Add((eChartType)chartType);
     }
+
     /// <summary>
     /// Adds a new bar chart to the chart
     /// </summary>
@@ -77,6 +85,7 @@ public class ExcelChartCollection : IEnumerable<ExcelChart>
     {
         return (ExcelBarChart)this.Add((eChartType)chartType);
     }
+
     /// <summary>
     /// Adds a new area chart to the chart
     /// </summary>
@@ -86,6 +95,7 @@ public class ExcelChartCollection : IEnumerable<ExcelChart>
     {
         return (ExcelAreaChart)this.Add((eChartType)chartType);
     }
+
     /// <summary>
     /// Adds a new pie chart to the chart
     /// </summary>
@@ -95,6 +105,7 @@ public class ExcelChartCollection : IEnumerable<ExcelChart>
     {
         return (ExcelPieChart)this.Add((eChartType)chartType);
     }
+
     /// <summary>
     /// Adds a new column of pie- or bar of pie chart to the chart
     /// </summary>
@@ -104,6 +115,7 @@ public class ExcelChartCollection : IEnumerable<ExcelChart>
     {
         return (ExcelOfPieChart)this.Add((eChartType)chartType);
     }
+
     /// <summary>
     /// Adds a new doughnut chart to the chart
     /// </summary>
@@ -113,6 +125,7 @@ public class ExcelChartCollection : IEnumerable<ExcelChart>
     {
         return (ExcelDoughnutChart)this.Add((eChartType)chartType);
     }
+
     /// <summary>
     /// Adds a new radar chart to the chart
     /// </summary>
@@ -122,6 +135,7 @@ public class ExcelChartCollection : IEnumerable<ExcelChart>
     {
         return (ExcelRadarChart)this.Add((eChartType)chartType);
     }
+
     /// <summary>
     /// Adds a new scatter chart to the chart
     /// </summary>
@@ -131,25 +145,27 @@ public class ExcelChartCollection : IEnumerable<ExcelChart>
     {
         return (ExcelScatterChart)this.Add((eChartType)chartType);
     }
+
     #endregion
+
     /// <summary>
     /// Number of items in the collection
     /// </summary>
     public int Count
     {
-        get
-        {
-            return this._list.Count;
-        }
+        get { return this._list.Count; }
     }
+
     IEnumerator<ExcelChart> IEnumerable<ExcelChart>.GetEnumerator()
     {
         return this._list.GetEnumerator();
     }
+
     IEnumerator IEnumerable.GetEnumerator()
     {
         return this._list.GetEnumerator();
     }
+
     /// <summary>
     /// Returns a chart at the specific position.  
     /// </summary>
@@ -157,9 +173,6 @@ public class ExcelChartCollection : IEnumerable<ExcelChart>
     /// <returns></returns>
     public ExcelChart this[int PositionID]
     {
-        get
-        {
-            return this._list[PositionID];
-        }
+        get { return this._list[PositionID]; }
     }
 }

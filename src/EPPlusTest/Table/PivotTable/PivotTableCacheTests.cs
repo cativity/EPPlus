@@ -15,6 +15,7 @@ namespace EPPlusTest.Table.PivotTable;
 public class PivotTableCacheTests : TestBase
 {
     static ExcelPackage _pck;
+
     [ClassInitialize]
     public static void Init(TestContext context)
     {
@@ -27,11 +28,13 @@ public class PivotTableCacheTests : TestBase
         r = LoadItemData(ws);
         ws.Tables.Add(r, "Table2");
     }
+
     [ClassCleanup]
     public static void Cleanup()
     {
         SaveAndCleanup(_pck);
     }
+
     [TestMethod]
     public void ValidateSameCache()
     {
@@ -46,6 +49,7 @@ public class PivotTableCacheTests : TestBase
         Assert.AreEqual(5, p1.CacheDefinition._cacheReference.Fields.Count);
         Assert.AreEqual(p1.CacheDefinition._cacheReference, p2.CacheDefinition._cacheReference);
     }
+
     [TestMethod]
     public void ValidateDifferentChangeToSameCache()
     {
@@ -58,10 +62,12 @@ public class PivotTableCacheTests : TestBase
         p2.DataFields.Add(p2.Fields[4]);
 
         Assert.AreEqual(5, p1.CacheDefinition._cacheReference.Fields.Count);
-//            Assert.AreEqual(2, _pck.Workbook._pivotTableCaches.Count);
+
+        //            Assert.AreEqual(2, _pck.Workbook._pivotTableCaches.Count);
 
         p2.CacheDefinition.SourceRange = _pck.Workbook.Worksheets[0].Tables[0].Range;
     }
+
     [TestMethod]
     public void ValidateSameCacheThenNewCache()
     {
@@ -93,6 +99,7 @@ public class PivotTableCacheTests : TestBase
         Assert.AreEqual(7, p1.CacheDefinition._cacheReference.Fields.Count);
         Assert.AreEqual(p1.CacheDefinition._cacheReference, p2.CacheDefinition._cacheReference);
     }
+
     [TestMethod]
     public void ValidateTimeSpanHandligInCache()
     {
@@ -137,8 +144,6 @@ public class PivotTableCacheTests : TestBase
         ExcelPivotTableField? dateField = pivotTable.Fields["Date"];
         pivotTable.RowFields.Add(dateField);
 
-
-
         ExcelPivotTableField? timeField = pivotTable.Fields["Time"];
         pivotTable.RowFields.Add(timeField);
         timeField.Cache.Refresh();
@@ -149,6 +154,7 @@ public class PivotTableCacheTests : TestBase
         ExcelPivotTableField? countField = pivotTable.Fields["Text"];
         pivotTable.ColumnFields.Add(countField);
     }
+
     [TestMethod]
     public void ValidatePivotTableCacheAfterDeletedWorksheet()
     {
@@ -166,6 +172,7 @@ public class PivotTableCacheTests : TestBase
 
         SaveWorkbook("pivotDeletedWorksheet.xlsx", p2);
     }
+
     [TestMethod]
     public void ValidatePivotTableCacheHandlesLongTexts()
     {
@@ -178,7 +185,12 @@ public class PivotTableCacheTests : TestBase
         ExcelPivotTable? pivotTable = wsPivot.PivotTables.Add(wsPivot.Cells["A3"], dataRange, "PivotWithLongText");
         pivotTable.ColumnFields.Add(pivotTable.Fields[2]);
         p.Save();
-        Assert.AreEqual("1", pivotTable.CacheDefinition.CacheDefinitionXml.SelectSingleNode("/d:pivotCacheDefinition/d:cacheFields/d:cacheField[@name='StrValue']/d:sharedItems", pivotTable.NameSpaceManager).Attributes["longText"].Value);
-    }
 
+        Assert.AreEqual("1",
+                        pivotTable.CacheDefinition.CacheDefinitionXml
+                                  .SelectSingleNode("/d:pivotCacheDefinition/d:cacheFields/d:cacheField[@name='StrValue']/d:sharedItems",
+                                                    pivotTable.NameSpaceManager)
+                                  .Attributes["longText"]
+                                  .Value);
+    }
 }

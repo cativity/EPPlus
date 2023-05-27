@@ -10,6 +10,7 @@
  *************************************************************************************************
   01/27/2020         EPPlus Software AB       Initial release EPPlus 5
  *************************************************************************************************/
+
 using OfficeOpenXml.FormulaParsing.Excel.Functions.Metadata;
 using OfficeOpenXml.FormulaParsing.ExpressionGraph;
 using System;
@@ -19,11 +20,10 @@ using System.Text;
 
 namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Text;
 
-[FunctionMetadata(
-                     Category = ExcelFunctionCategory.Text,
-                     EPPlusVersion = "5.0",
-                     Description = "Joins together two or more text strings",
-                     IntroducedInExcelVersion = "2016")]
+[FunctionMetadata(Category = ExcelFunctionCategory.Text,
+                  EPPlusVersion = "5.0",
+                  Description = "Joins together two or more text strings",
+                  IntroducedInExcelVersion = "2016")]
 internal class Concat : ExcelFunction
 {
     public override CompileResult Execute(IEnumerable<FunctionArgument> arguments, ParsingContext context)
@@ -32,16 +32,18 @@ internal class Concat : ExcelFunction
         {
             return this.CreateResult(string.Empty, DataType.String);
         }
-        else if(arguments.Count() > 254)
+        else if (arguments.Count() > 254)
         {
             return this.CreateResult(ExcelErrorValue.Create(eErrorType.Value), DataType.ExcelAddress);
         }
+
         StringBuilder? sb = new StringBuilder();
+
         foreach (FunctionArgument? arg in arguments)
         {
-            if(arg.IsExcelRange)
+            if (arg.IsExcelRange)
             {
-                foreach(ICellInfo? cell in arg.ValueAsRangeInfo)
+                foreach (ICellInfo? cell in arg.ValueAsRangeInfo)
                 {
                     sb.Append(cell.Value);
                 }
@@ -49,17 +51,21 @@ internal class Concat : ExcelFunction
             else
             {
                 object? v = arg.ValueFirst;
+
                 if (v != null)
                 {
                     sb.Append(v);
                 }
             }
         }
+
         string? result = sb.ToString();
-        if(!string.IsNullOrEmpty(result) && result.Length > 32767)
+
+        if (!string.IsNullOrEmpty(result) && result.Length > 32767)
         {
             return this.CreateResult(ExcelErrorValue.Create(eErrorType.Value), DataType.ExcelAddress);
         }
+
         return this.CreateResult(sb.ToString(), DataType.String);
     }
 }

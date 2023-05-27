@@ -10,6 +10,7 @@
  *************************************************************************************************
   6/4/2022         EPPlus Software AB           ExcelTable Html Export
  *************************************************************************************************/
+
 using OfficeOpenXml.Core;
 using OfficeOpenXml.Core.CellStore;
 using OfficeOpenXml.Export.HtmlExport.Settings;
@@ -38,6 +39,7 @@ internal class CssRangeExporterSync : CssRangeExporterBase
     }
 
     private readonly HtmlRangeExportSettings _settings;
+
     /// <summary>
     /// Exports an <see cref="ExcelTable"/> to a html string
     /// </summary>
@@ -48,8 +50,10 @@ internal class CssRangeExporterSync : CssRangeExporterBase
         this.RenderCss(ms);
         ms.Position = 0;
         using StreamReader? sr = new StreamReader(ms);
+
         return sr.ReadToEnd();
     }
+
     /// <summary>
     /// Exports the css part of the html export.
     /// </summary>
@@ -69,27 +73,35 @@ internal class CssRangeExporterSync : CssRangeExporterBase
 
     private void RenderCellCss(StreamWriter sw)
     {
-        EpplusCssWriter? styleWriter = new EpplusCssWriter(sw, this._ranges._list, this._settings, this._settings.Css, this._settings.Css.CssExclude, this._styleCache);
+        EpplusCssWriter? styleWriter =
+            new EpplusCssWriter(sw, this._ranges._list, this._settings, this._settings.Css, this._settings.Css.CssExclude, this._styleCache);
 
         styleWriter.RenderAdditionalAndFontCss(TableClass);
         HashSet<TableStyles>? addedTableStyles = new HashSet<TableStyles>();
+
         foreach (ExcelRangeBase? range in this._ranges._list)
         {
             ExcelWorksheet? ws = range.Worksheet;
             ExcelStyles? styles = ws.Workbook.Styles;
-            CellStoreEnumerator<ExcelValue>? ce = new CellStoreEnumerator<ExcelValue>(range.Worksheet._values, range._fromRow, range._fromCol, range._toRow, range._toCol);
+
+            CellStoreEnumerator<ExcelValue>? ce =
+                new CellStoreEnumerator<ExcelValue>(range.Worksheet._values, range._fromRow, range._fromCol, range._toRow, range._toCol);
+
             ExcelAddressBase address = null;
+
             while (ce.Next())
             {
                 if (ce.Value._styleId > 0 && ce.Value._styleId < styles.CellXfs.Count)
                 {
                     string? ma = ws.MergedCells[ce.Row, ce.Column];
+
                     if (ma != null)
                     {
                         if (address == null || address.Address != ma)
                         {
                             address = new ExcelAddressBase(ma);
                         }
+
                         int fromRow = address._fromRow < range._fromRow ? range._fromRow : address._fromRow;
                         int fromCol = address._fromCol < range._fromCol ? range._fromCol : address._fromCol;
 
@@ -101,7 +113,13 @@ internal class CssRangeExporterSync : CssRangeExporterBase
                         ExcelAddressBase? mAdr = new ExcelAddressBase(ma);
                         int bottomStyleId = range.Worksheet._values.GetValue(mAdr._toRow, mAdr._fromCol)._styleId;
                         int rightStyleId = range.Worksheet._values.GetValue(mAdr._fromRow, mAdr._toCol)._styleId;
-                        styleWriter.AddToCss(styles, ce.Value._styleId, bottomStyleId, rightStyleId, this.Settings.StyleClassPrefix, this.Settings.CellStyleClassName);
+
+                        styleWriter.AddToCss(styles,
+                                             ce.Value._styleId,
+                                             bottomStyleId,
+                                             rightStyleId,
+                                             this.Settings.StyleClassPrefix,
+                                             this.Settings.CellStyleClassName);
                     }
                     else
                     {
@@ -113,9 +131,8 @@ internal class CssRangeExporterSync : CssRangeExporterBase
             if (this.Settings.TableStyle == eHtmlRangeTableInclude.Include)
             {
                 ExcelTable? table = range.GetTable();
-                if (table != null &&
-                    table.TableStyle != TableStyles.None &&
-                    addedTableStyles.Contains(table.TableStyle) == false)
+
+                if (table != null && table.TableStyle != TableStyles.None && addedTableStyles.Contains(table.TableStyle) == false)
                 {
                     HtmlTableExportSettings? settings = new HtmlTableExportSettings() { Minify = this.Settings.Minify };
                     HtmlExportTableUtil.RenderTableCss(sw, table, settings, this._styleCache, this._dataTypes);
@@ -127,11 +144,13 @@ internal class CssRangeExporterSync : CssRangeExporterBase
         if (this.Settings.Pictures.Include == ePictureInclude.Include)
         {
             this.LoadRangeImages(this._ranges._list);
+
             foreach (HtmlImage? p in this._rangePictures)
             {
                 styleWriter.AddPictureToCss(p);
             }
         }
+
         styleWriter.FlushStream();
     }
 }

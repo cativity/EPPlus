@@ -10,6 +10,7 @@
  *************************************************************************************************
   01/27/2020         EPPlus Software AB       Initial release EPPlus 5
  *************************************************************************************************/
+
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -20,21 +21,23 @@ using OfficeOpenXml.FormulaParsing.ExpressionGraph;
 
 namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Math;
 
-[FunctionMetadata(
-                     Category = ExcelFunctionCategory.Statistical,
-                     EPPlusVersion = "4",
-                     Description = "Returns the number of non-blanks in a supplied set of cells or values")]
+[FunctionMetadata(Category = ExcelFunctionCategory.Statistical,
+                  EPPlusVersion = "4",
+                  Description = "Returns the number of non-blanks in a supplied set of cells or values")]
 internal class CountA : HiddenValuesHandlingFunction
 {
-    public CountA() : base()
+    public CountA()
+        : base()
     {
         this.IgnoreErrors = false;
     }
+
     public override CompileResult Execute(IEnumerable<FunctionArgument> arguments, ParsingContext context)
     {
         ValidateArguments(arguments, 1);
         double nItems = 0d;
         this.Calculate(arguments, context, ref nItems);
+
         return this.CreateResult(nItems, DataType.Integer);
     }
 
@@ -43,11 +46,13 @@ internal class CountA : HiddenValuesHandlingFunction
         foreach (FunctionArgument? item in items)
         {
             IRangeInfo? cs = item.Value as IRangeInfo;
+
             if (cs != null)
             {
                 foreach (ICellInfo? c in cs)
                 {
                     _CheckForAndHandleExcelError(c, context);
+
                     if (!this.ShouldIgnore(c, context) && ShouldCount(c.Value))
                     {
                         nItems++;
@@ -61,12 +66,12 @@ internal class CountA : HiddenValuesHandlingFunction
             else
             {
                 _CheckForAndHandleExcelError(item, context);
+
                 if (!this.ShouldIgnore(item, context) && ShouldCount(item.Value))
                 {
                     nItems++;
                 }
             }
-
         }
     }
 

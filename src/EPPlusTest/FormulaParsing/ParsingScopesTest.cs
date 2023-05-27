@@ -26,6 +26,7 @@
  *******************************************************************************
   01/27/2020         EPPlus Software AB       Initial release EPPlus 5
  *******************************************************************************/
+
 using System;
 using System.Text;
 using System.Collections.Generic;
@@ -63,12 +64,15 @@ public class ParsingScopesTest
         using (ParsingScope? scope1 = this._parsingScopes.NewScope(RangeAddress.Empty))
         {
             Assert.AreEqual(this._parsingScopes.Current, scope1);
+
             using (ParsingScope? scope2 = this._parsingScopes.NewScope(RangeAddress.Empty))
             {
                 Assert.AreEqual(this._parsingScopes.Current, scope2);
             }
+
             Assert.AreEqual(this._parsingScopes.Current, scope1);
         }
+
         Assert.IsNull(this._parsingScopes.Current);
     }
 
@@ -76,7 +80,9 @@ public class ParsingScopesTest
     public void CurrentScopeShouldBeNullWhenScopeHasTerminated()
     {
         using (ParsingScope? scope = this._parsingScopes.NewScope(RangeAddress.Empty))
-        { }
+        {
+        }
+
         Assert.IsNull(this._parsingScopes.Current);
     }
 
@@ -92,7 +98,9 @@ public class ParsingScopesTest
     public void LifetimeEventHandlerShouldBeCalled()
     {
         using (ParsingScope? scope = this._parsingScopes.NewScope(RangeAddress.Empty))
-        { }
+        {
+        }
+
         A.CallTo(() => this._lifeTimeEventHandler.ParsingCompleted()).MustHaveHappened();
     }
 }

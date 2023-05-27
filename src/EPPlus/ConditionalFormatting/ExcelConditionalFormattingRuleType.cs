@@ -10,6 +10,7 @@
  *************************************************************************************************
   01/27/2020         EPPlus Software AB       Initial release EPPlus 5
  *************************************************************************************************/
+
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -30,29 +31,22 @@ internal static class ExcelConditionalFormattingRuleType
     /// <param name="topNode"></param>
     /// <param name="nameSpaceManager"></param>
     /// <returns></returns>
-    internal static eExcelConditionalFormattingRuleType GetTypeByAttrbiute(
-        string attribute,
-        XmlNode topNode,
-        XmlNamespaceManager nameSpaceManager)
+    internal static eExcelConditionalFormattingRuleType GetTypeByAttrbiute(string attribute, XmlNode topNode, XmlNamespaceManager nameSpaceManager)
     {
         switch (attribute)
         {
             case ExcelConditionalFormattingConstants.RuleType.AboveAverage:
-                return GetAboveAverageType(
-                                           topNode,
-                                           nameSpaceManager);
+                return GetAboveAverageType(topNode, nameSpaceManager);
 
             case ExcelConditionalFormattingConstants.RuleType.Top10:
-                return GetTop10Type(
-                                    topNode,
-                                    nameSpaceManager);
+                return GetTop10Type(topNode, nameSpaceManager);
 
             case ExcelConditionalFormattingConstants.RuleType.TimePeriod:
-                return GetTimePeriodType(
-                                         topNode,
-                                         nameSpaceManager);
+                return GetTimePeriodType(topNode, nameSpaceManager);
+
             case ExcelConditionalFormattingConstants.RuleType.CellIs:
                 return GetCellIs((XmlElement)topNode);
+
             case ExcelConditionalFormattingConstants.RuleType.BeginsWith:
                 return eExcelConditionalFormattingRuleType.BeginsWith;
 
@@ -111,25 +105,25 @@ internal static class ExcelConditionalFormattingRuleType
                 return eExcelConditionalFormattingRuleType.UniqueValues;
 
             case ExcelConditionalFormattingConstants.RuleType.ColorScale:
-                return GetColorScaleType(
-                                         topNode,
-                                         nameSpaceManager);        
+                return GetColorScaleType(topNode, nameSpaceManager);
+
             case ExcelConditionalFormattingConstants.RuleType.IconSet:
                 return GetIconSetType(topNode, nameSpaceManager);
+
             case ExcelConditionalFormattingConstants.RuleType.DataBar:
                 return eExcelConditionalFormattingRuleType.DataBar;
         }
 
-        throw new Exception(
-                            ExcelConditionalFormattingConstants.Errors.UnexpectedRuleTypeAttribute);
+        throw new Exception(ExcelConditionalFormattingConstants.Errors.UnexpectedRuleTypeAttribute);
     }
 
     private static eExcelConditionalFormattingRuleType GetCellIs(XmlElement node)
     {
-        switch(node.GetAttribute("operator"))
+        switch (node.GetAttribute("operator"))
         {
             case ExcelConditionalFormattingConstants.Operators.BeginsWith:
                 return eExcelConditionalFormattingRuleType.BeginsWith;
+
             case ExcelConditionalFormattingConstants.Operators.Between:
                 return eExcelConditionalFormattingRuleType.Between;
 
@@ -162,14 +156,16 @@ internal static class ExcelConditionalFormattingRuleType
 
             case ExcelConditionalFormattingConstants.Operators.NotEqual:
                 return eExcelConditionalFormattingRuleType.NotEqual;
+
             default:
-                throw new Exception(
-                                    ExcelConditionalFormattingConstants.Errors.UnexistentOperatorTypeAttribute);
+                throw new Exception(ExcelConditionalFormattingConstants.Errors.UnexistentOperatorTypeAttribute);
         }
     }
+
     private static eExcelConditionalFormattingRuleType GetIconSetType(XmlNode topNode, XmlNamespaceManager nameSpaceManager)
     {
         XmlNode? node = topNode.SelectSingleNode("d:iconSet/@iconSet", nameSpaceManager);
+
         if (node == null)
         {
             return eExcelConditionalFormattingRuleType.ThreeIconSet;
@@ -198,40 +194,33 @@ internal static class ExcelConditionalFormattingRuleType
     /// If we have excatly 2 "cfvo" and "color" childs, then we return "twoColorScale"
     /// </summary>
     /// <returns>TwoColorScale or ThreeColorScale</returns>
-    internal static eExcelConditionalFormattingRuleType GetColorScaleType(
-        XmlNode topNode,
-        XmlNamespaceManager nameSpaceManager)
+    internal static eExcelConditionalFormattingRuleType GetColorScaleType(XmlNode topNode, XmlNamespaceManager nameSpaceManager)
     {
         // Get the <cfvo> nodes
-        XmlNodeList? cfvoNodes = topNode.SelectNodes(
-                                                     string.Format(
-                                                                   "{0}/{1}",
-                                                                   ExcelConditionalFormattingConstants.Paths.ColorScale,
-                                                                   ExcelConditionalFormattingConstants.Paths.Cfvo),
-                                                     nameSpaceManager);
+        XmlNodeList? cfvoNodes =
+            topNode.SelectNodes(string.Format("{0}/{1}", ExcelConditionalFormattingConstants.Paths.ColorScale, ExcelConditionalFormattingConstants.Paths.Cfvo),
+                                nameSpaceManager);
 
         // Get the <color> nodes
-        XmlNodeList? colorNodes = topNode.SelectNodes(
-                                                      string.Format(
-                                                                    "{0}/{1}",
-                                                                    ExcelConditionalFormattingConstants.Paths.ColorScale,
-                                                                    ExcelConditionalFormattingConstants.Paths.Color),
-                                                      nameSpaceManager);
+        XmlNodeList? colorNodes =
+            topNode.SelectNodes(string.Format("{0}/{1}", ExcelConditionalFormattingConstants.Paths.ColorScale, ExcelConditionalFormattingConstants.Paths.Color),
+                                nameSpaceManager);
 
         // We determine if it is "TwoColorScale" or "ThreeColorScale" by the
         // number of <cfvo> and <color> inside the <colorScale> node
-        if (cfvoNodes == null || cfvoNodes.Count < 2 || cfvoNodes.Count > 3
-            || colorNodes == null || colorNodes.Count < 2 || colorNodes.Count > 3
+        if (cfvoNodes == null
+            || cfvoNodes.Count < 2
+            || cfvoNodes.Count > 3
+            || colorNodes == null
+            || colorNodes.Count < 2
+            || colorNodes.Count > 3
             || cfvoNodes.Count != colorNodes.Count)
         {
-            throw new Exception(
-                                ExcelConditionalFormattingConstants.Errors.WrongNumberCfvoColorNodes);
+            throw new Exception(ExcelConditionalFormattingConstants.Errors.WrongNumberCfvoColorNodes);
         }
 
         // Return the corresponding rule type (TwoColorScale or ThreeColorScale)
-        return cfvoNodes.Count == 2
-                   ? eExcelConditionalFormattingRuleType.TwoColorScale
-                   : eExcelConditionalFormattingRuleType.ThreeColorScale;
+        return cfvoNodes.Count == 2 ? eExcelConditionalFormattingRuleType.TwoColorScale : eExcelConditionalFormattingRuleType.ThreeColorScale;
     }
 
     /// <summary>
@@ -246,14 +235,10 @@ internal static class ExcelConditionalFormattingRuleType
     /// @AboveAverage = "0" and @EqualAverage = "1"           == BelowOrEqualAverage
     /// /// </summary>
     /// <returns>AboveAverage, AboveOrEqualAverage, BelowAverage or BelowOrEqualAverage</returns>
-    internal static eExcelConditionalFormattingRuleType GetAboveAverageType(
-        XmlNode topNode,
-        XmlNamespaceManager nameSpaceManager)
+    internal static eExcelConditionalFormattingRuleType GetAboveAverageType(XmlNode topNode, XmlNamespaceManager nameSpaceManager)
     {
         // Get @StdDev attribute
-        int? stdDev = ExcelConditionalFormattingHelper.GetAttributeIntNullable(
-                                                                               topNode,
-                                                                               ExcelConditionalFormattingConstants.Attributes.StdDev);
+        int? stdDev = ExcelConditionalFormattingHelper.GetAttributeIntNullable(topNode, ExcelConditionalFormattingConstants.Attributes.StdDev);
 
         if (stdDev > 0)
         {
@@ -268,14 +253,10 @@ internal static class ExcelConditionalFormattingRuleType
         }
 
         // Get @AboveAverage attribute
-        bool? isAboveAverage = ExcelConditionalFormattingHelper.GetAttributeBoolNullable(
-                                                                                         topNode,
-                                                                                         ExcelConditionalFormattingConstants.Attributes.AboveAverage);
+        bool? isAboveAverage = ExcelConditionalFormattingHelper.GetAttributeBoolNullable(topNode, ExcelConditionalFormattingConstants.Attributes.AboveAverage);
 
         // Get @EqualAverage attribute
-        bool? isEqualAverage = ExcelConditionalFormattingHelper.GetAttributeBoolNullable(
-                                                                                         topNode,
-                                                                                         ExcelConditionalFormattingConstants.Attributes.EqualAverage);
+        bool? isEqualAverage = ExcelConditionalFormattingHelper.GetAttributeBoolNullable(topNode, ExcelConditionalFormattingConstants.Attributes.EqualAverage);
 
         if (isAboveAverage == null || isAboveAverage == true)
         {
@@ -309,19 +290,13 @@ internal static class ExcelConditionalFormattingRuleType
     /// @Bottom = "0"/null and @Percent = "1"       == TopPercent
     /// /// </summary>
     /// <returns>Top, TopPercent, Bottom or BottomPercent</returns>
-    public static eExcelConditionalFormattingRuleType GetTop10Type(
-        XmlNode topNode,
-        XmlNamespaceManager nameSpaceManager)
+    public static eExcelConditionalFormattingRuleType GetTop10Type(XmlNode topNode, XmlNamespaceManager nameSpaceManager)
     {
         // Get @Bottom attribute
-        bool? isBottom = ExcelConditionalFormattingHelper.GetAttributeBoolNullable(
-                                                                                   topNode,
-                                                                                   ExcelConditionalFormattingConstants.Attributes.Bottom);
+        bool? isBottom = ExcelConditionalFormattingHelper.GetAttributeBoolNullable(topNode, ExcelConditionalFormattingConstants.Attributes.Bottom);
 
         // Get @Percent attribute
-        bool? isPercent = ExcelConditionalFormattingHelper.GetAttributeBoolNullable(
-                                                                                    topNode,
-                                                                                    ExcelConditionalFormattingConstants.Attributes.Percent);
+        bool? isPercent = ExcelConditionalFormattingHelper.GetAttributeBoolNullable(topNode, ExcelConditionalFormattingConstants.Attributes.Percent);
 
         if (isBottom == true)
         {
@@ -349,14 +324,11 @@ internal static class ExcelConditionalFormattingRuleType
     /// Get the "timePeriod" rule type according to "TimePeriod" attribute.
     /// /// </summary>
     /// <returns>Last7Days, LastMonth etc.</returns>
-    public static eExcelConditionalFormattingRuleType GetTimePeriodType(
-        XmlNode topNode,
-        XmlNamespaceManager nameSpaceManager)
+    public static eExcelConditionalFormattingRuleType GetTimePeriodType(XmlNode topNode, XmlNamespaceManager nameSpaceManager)
     {
-        eExcelConditionalFormattingTimePeriodType timePeriod = ExcelConditionalFormattingTimePeriodType.GetTypeByAttribute(
-         ExcelConditionalFormattingHelper.GetAttributeString(
-                                                             topNode,
-                                                             ExcelConditionalFormattingConstants.Attributes.TimePeriod));
+        eExcelConditionalFormattingTimePeriodType timePeriod =
+            ExcelConditionalFormattingTimePeriodType.GetTypeByAttribute(ExcelConditionalFormattingHelper.GetAttributeString(topNode,
+                                                                            ExcelConditionalFormattingConstants.Attributes.TimePeriod));
 
         switch (timePeriod)
         {
@@ -391,8 +363,7 @@ internal static class ExcelConditionalFormattingRuleType
                 return eExcelConditionalFormattingRuleType.Yesterday;
         }
 
-        throw new Exception(
-                            ExcelConditionalFormattingConstants.Errors.UnexistentTimePeriodTypeAttribute);
+        throw new Exception(ExcelConditionalFormattingConstants.Errors.UnexistentTimePeriodTypeAttribute);
     }
 
     /// <summary>
@@ -400,8 +371,7 @@ internal static class ExcelConditionalFormattingRuleType
     /// </summary>
     /// <param name="type"></param>
     /// <returns></returns>
-    public static string GetAttributeByType(
-        eExcelConditionalFormattingRuleType type)
+    public static string GetAttributeByType(eExcelConditionalFormattingRuleType type)
     {
         switch (type)
         {
@@ -487,8 +457,7 @@ internal static class ExcelConditionalFormattingRuleType
                 return ExcelConditionalFormattingConstants.RuleType.DataBar;
         }
 
-        throw new Exception(
-                            ExcelConditionalFormattingConstants.Errors.MissingRuleType);
+        throw new Exception(ExcelConditionalFormattingConstants.Errors.MissingRuleType);
     }
 
     /// <summary>
@@ -496,8 +465,7 @@ internal static class ExcelConditionalFormattingRuleType
     /// </summary>
     /// <param name="type"></param>
     /// <returns></returns>
-    public static string GetCfvoParentPathByType(
-        eExcelConditionalFormattingRuleType type)
+    public static string GetCfvoParentPathByType(eExcelConditionalFormattingRuleType type)
     {
         switch (type)
         {
@@ -514,7 +482,6 @@ internal static class ExcelConditionalFormattingRuleType
                 return ExcelConditionalFormattingConstants.RuleType.DataBar;
         }
 
-        throw new Exception(
-                            ExcelConditionalFormattingConstants.Errors.MissingRuleType);
+        throw new Exception(ExcelConditionalFormattingConstants.Errors.MissingRuleType);
     }
 }

@@ -10,6 +10,7 @@
  *************************************************************************************************
   01/29/2021         EPPlus Software AB       EPPlus 5.6
  *************************************************************************************************/
+
 using System;
 using System.Xml;
 
@@ -24,16 +25,15 @@ public class ExcelDxfGradientFillColor : DxfStyleBase
         : base(styles, callback)
     {
         this.Position = position;
-        eStyleClass styleClass = position==0 ? eStyleClass.FillGradientColor1 : eStyleClass.FillGradientColor2;
+        eStyleClass styleClass = position == 0 ? eStyleClass.FillGradientColor1 : eStyleClass.FillGradientColor2;
         this.Color = new ExcelDxfColor(styles, styleClass, callback);
     }
+
     /// <summary>
     /// The position of the color 
     /// </summary>
-    public double Position 
-    {
-        get;
-    }
+    public double Position { get; }
+
     /// <summary>
     /// The color to use at the position
     /// </summary>
@@ -44,18 +44,12 @@ public class ExcelDxfGradientFillColor : DxfStyleBase
     /// </summary>
     public override bool HasValue
     {
-        get
-        {
-            return this.Color.HasValue;
-        }
+        get { return this.Color.HasValue; }
     }
 
     internal override string Id
     {
-        get
-        {
-            return this.Position.ToString() + "|" + this.Color.Id;
-        }
+        get { return this.Position.ToString() + "|" + this.Color.Id; }
     }
 
     /// <summary>
@@ -68,10 +62,7 @@ public class ExcelDxfGradientFillColor : DxfStyleBase
 
     internal override DxfStyleBase Clone()
     {
-        return new ExcelDxfGradientFillColor(this._styles, this.Position, this._callback)
-        {
-            Color = (ExcelDxfColor)this.Color.Clone()
-        };
+        return new ExcelDxfGradientFillColor(this._styles, this.Position, this._callback) { Color = (ExcelDxfColor)this.Color.Clone() };
     }
 
     internal override void CreateNodes(XmlHelper helper, string path)
@@ -81,6 +72,7 @@ public class ExcelDxfGradientFillColor : DxfStyleBase
         SetValue(stopHelper, "@position", this.Position / 100);
         SetValueColor(stopHelper, "d:color", this.Color);
     }
+
     internal override void SetStyle()
     {
         this.Color.SetStyle();

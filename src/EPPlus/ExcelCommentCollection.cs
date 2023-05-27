@@ -10,6 +10,7 @@
  *************************************************************************************************
   01/27/2020         EPPlus Software AB       Initial release EPPlus 5
  *************************************************************************************************/
+
 using System;
 using System.Collections.Generic;
 using System.Xml;
@@ -29,38 +30,42 @@ namespace OfficeOpenXml;
 public class ExcelCommentCollection : IEnumerable, IDisposable
 {
     //internal RangeCollection _comments;
-    internal List<ExcelComment> _list=new List<ExcelComment>();
+    internal List<ExcelComment> _list = new List<ExcelComment>();
     List<int> _listIndex = new List<int>();
 
     internal ExcelCommentCollection(ExcelPackage pck, ExcelWorksheet ws, XmlNamespaceManager ns)
     {
         this.CommentXml = new XmlDocument();
         this.CommentXml.PreserveWhitespace = false;
-        this.NameSpaceManager=ns;
-        this.Worksheet=ws;
+        this.NameSpaceManager = ns;
+        this.Worksheet = ws;
         this.CreateXml(pck);
         this.AddCommentsFromXml();
     }
+
     private void CreateXml(ExcelPackage pck)
     {
         ZipPackageRelationshipCollection? commentRels = this.Worksheet.Part.GetRelationshipsByType(ExcelPackage.schemaComment);
-        bool isLoaded=false;
-        this.CommentXml=new XmlDocument();
-        foreach(ZipPackageRelationship? commentPart in commentRels)
+        bool isLoaded = false;
+        this.CommentXml = new XmlDocument();
+
+        foreach (ZipPackageRelationship? commentPart in commentRels)
         {
             this.Uri = UriHelper.ResolvePartUri(commentPart.SourceUri, commentPart.TargetUri);
             this.Part = pck.ZipPackage.GetPart(this.Uri);
             XmlHelper.LoadXmlSafe(this.CommentXml, this.Part.GetStream());
             this.RelId = commentPart.Id;
-            isLoaded=true;
+            isLoaded = true;
         }
+
         //Create a new document
-        if(!isLoaded)
+        if (!isLoaded)
         {
             this.CommentXml.LoadXml("<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"yes\" ?><comments xmlns=\"http://schemas.openxmlformats.org/spreadsheetml/2006/main\"><authors /><commentList /></comments>");
             this.Uri = null;
         }
     }
+
     private void AddCommentsFromXml()
     {
         //var lst = new List<IRangeID>();
@@ -71,38 +76,36 @@ public class ExcelCommentCollection : IEnumerable, IDisposable
             this.Worksheet._commentsStore.SetValue(comment.Range._fromRow, comment.Range._fromCol, this._list.Count);
             this._list.Add(comment);
         }
+
         //_comments = new RangeCollection(lst);
     }
+
     /// <summary>
     /// Access to the comment xml document
     /// </summary>
     public XmlDocument CommentXml { get; set; }
+
     internal Uri Uri { get; set; }
+
     internal string RelId { get; set; }
+
     internal XmlNamespaceManager NameSpaceManager { get; set; }
-    internal ZipPackagePart Part
-    {
-        get;
-        set;
-    }
+
+    internal ZipPackagePart Part { get; set; }
+
     /// <summary>
     /// A reference to the worksheet object
     /// </summary>
-    public ExcelWorksheet Worksheet
-    {
-        get;
-        set;
-    }
+    public ExcelWorksheet Worksheet { get; set; }
+
     /// <summary>
     /// Number of comments in the collection
     /// </summary>
     public int Count
     {
-        get
-        {
-            return this._listIndex.Count;
-        }
+        get { return this._listIndex.Count; }
     }
+
     /// <summary>
     /// Indexer for the comments collection
     /// </summary>
@@ -116,9 +119,11 @@ public class ExcelCommentCollection : IEnumerable, IDisposable
             {
                 throw new ArgumentOutOfRangeException("Comment index out of range");
             }
+
             return this._list[this._listIndex[Index]];
         }
     }
+
     /// <summary>
     /// Indexer for the comments collection
     /// </summary>
@@ -128,7 +133,8 @@ public class ExcelCommentCollection : IEnumerable, IDisposable
     {
         get
         {
-            int i=-1;
+            int i = -1;
+
             if (this.Worksheet._commentsStore.Exists(cell.Row, cell.Column, ref i))
             {
                 return this._list[i];
@@ -137,9 +143,9 @@ public class ExcelCommentCollection : IEnumerable, IDisposable
             {
                 return null;
             }
-                
         }
     }
+
     /// <summary>
     /// Indexer for the comments collection
     /// </summary>
@@ -147,11 +153,9 @@ public class ExcelCommentCollection : IEnumerable, IDisposable
     /// <returns>The comment</returns>
     public ExcelComment this[string cellAddress]
     {
-        get
-        {
-            return this[new ExcelCellAddress(cellAddress)];
-        }
+        get { return this[new ExcelCellAddress(cellAddress)]; }
     }
+
     /// <summary>
     /// Adds a comment to the top left cell of the range
     /// </summary>
@@ -170,20 +174,25 @@ public class ExcelCommentCollection : IEnumerable, IDisposable
 #endif
             if (string.IsNullOrEmpty(author))
             {
-
                 author = "Anonymous";
             }
         }
+
         XmlElement? elem = this.CommentXml.CreateElement("comment", ExcelPackage.schemaMain);
+
         //int ix=_comments.IndexOf(ExcelAddress.GetCellID(Worksheet.SheetID, cell._fromRow, cell._fromCol));
         //Make sure the nodes come on order.
-        int row=cell.Start.Row, column= cell.Start.Column;
+        int row = cell.Start.Row,
+            column = cell.Start.Column;
+
         ExcelComment nextComment = null;
+
         if (this.Worksheet._commentsStore.NextCell(ref row, ref column))
         {
             nextComment = this._list[this.Worksheet._commentsStore.GetValue(row, column)];
         }
-        if(nextComment==null)
+
+        if (nextComment == null)
         {
             this.CommentXml.SelectSingleNode("d:comments/d:commentList", this.NameSpaceManager).AppendChild(elem);
         }
@@ -191,20 +200,24 @@ public class ExcelCommentCollection : IEnumerable, IDisposable
         {
             nextComment._commentHelper.TopNode.ParentNode.InsertBefore(elem, nextComment._commentHelper.TopNode);
         }
+
         elem.SetAttribute("ref", cell.Start.Address);
-        ExcelComment comment = new ExcelComment(this.NameSpaceManager, elem , cell);
+        ExcelComment comment = new ExcelComment(this.NameSpaceManager, elem, cell);
         comment.RichText.Add(Text);
         comment.Author = author;
         this._listIndex.Add(this._list.Count);
         this.Worksheet._commentsStore.SetValue(cell.Start.Row, cell.Start.Column, this._list.Count);
         this._list.Add(comment);
+
         //Check if a value exists otherwise add one so it is saved when the cells collection is iterated
         if (!this.Worksheet.ExistsValueInner(cell._fromRow, cell._fromCol))
         {
             this.Worksheet.SetValueInner(cell._fromRow, cell._fromCol, null);
         }
+
         return comment;
     }
+
     /// <summary>
     /// Removes the comment
     /// </summary>
@@ -213,23 +226,27 @@ public class ExcelCommentCollection : IEnumerable, IDisposable
     {
         this.Remove(comment, false);
     }
+
     internal void Remove(ExcelComment comment, bool shift)
     {
         int i = -1;
-        ExcelComment c=null;
+        ExcelComment c = null;
+
         if (this.Worksheet._commentsStore.Exists(comment.Range._fromRow, comment.Range._fromCol, ref i))
         {
             c = this._list[i];
         }
-        if (comment==c)
+
+        if (comment == c)
         {
             comment.TopNode.ParentNode.RemoveChild(comment.TopNode); //Remove VML
             comment._commentHelper.TopNode.ParentNode.RemoveChild(comment._commentHelper.TopNode); //Remove Comment
 
             this.Worksheet.VmlDrawings._drawingsCellStore.Delete(comment.Range._fromRow, comment.Range._fromCol, 1, 1, shift);
             this.Worksheet._commentsStore.Delete(comment.Range._fromRow, comment.Range._fromCol, 1, 1, shift);
-            this._list[i]=null;
+            this._list[i] = null;
             this._listIndex.Remove(i);
+
             //if(_listIndex.Count==0)
             //{
             //    _list.Clear();
@@ -254,20 +271,21 @@ public class ExcelCommentCollection : IEnumerable, IDisposable
     {
         List<ExcelComment> deletedComments = new List<ExcelComment>();
 
-        foreach (ExcelComment comment in this._list.Where(x=>x!=null))
+        foreach (ExcelComment comment in this._list.Where(x => x != null))
         {
             ExcelAddressBase address = new(comment.Address);
-            if (columns > 0 && address._fromCol >= fromCol &&
-                address._fromRow >= fromRow && address._toRow <= toRow)
+
+            if (columns > 0 && address._fromCol >= fromCol && address._fromRow >= fromRow && address._toRow <= toRow)
             {
                 address = address.DeleteColumn(fromCol, columns);
             }
-            if (rows > 0 && address._fromRow >= fromRow &&
-                address._fromCol >= fromCol && address._toCol <= toCol)
+
+            if (rows > 0 && address._fromRow >= fromRow && address._fromCol >= fromCol && address._toCol <= toCol)
             {
                 address = address.DeleteRow(fromRow, rows);
             }
-            if(address==null || address.Address=="#REF!")
+
+            if (address == null || address.Address == "#REF!")
             {
                 deletedComments.Add(comment);
             }
@@ -277,7 +295,7 @@ public class ExcelCommentCollection : IEnumerable, IDisposable
             }
         }
 
-        foreach(ExcelComment? comment in deletedComments)
+        foreach (ExcelComment? comment in deletedComments)
         {
             comment.TopNode.ParentNode.RemoveChild(comment.TopNode); //Remove VML
             comment._commentHelper.TopNode.ParentNode.RemoveChild(comment._commentHelper.TopNode); //Remove Comment
@@ -286,6 +304,7 @@ public class ExcelCommentCollection : IEnumerable, IDisposable
             this._listIndex.Remove(ix);
         }
     }
+
     /// <summary>
     /// Shifts all comments based on their address and the location of inserted rows and columns.
     /// </summary>
@@ -295,27 +314,28 @@ public class ExcelCommentCollection : IEnumerable, IDisposable
     /// <param name="columns">The number of columns to insert</param>
     /// <param name="toRow">If the insert is in a range, this is the end row</param>
     /// <param name="toCol">If the insert is in a range, this the end column</param>
-    internal void Insert(int fromRow, int fromCol, int rows, int columns, int toRow = ExcelPackage.MaxRows, int toCol=ExcelPackage.MaxColumns)
+    internal void Insert(int fromRow, int fromCol, int rows, int columns, int toRow = ExcelPackage.MaxRows, int toCol = ExcelPackage.MaxColumns)
     {
         foreach (ExcelComment comment in this._list.Where(x => x != null))
         {
             ExcelAddressBase? address = new ExcelAddressBase(comment.Address);
-            if (rows > 0 && address._fromRow >= fromRow &&
-                address._fromCol >= fromCol && address._toCol <= toCol)
+
+            if (rows > 0 && address._fromRow >= fromRow && address._fromCol >= fromCol && address._toCol <= toCol)
             {
                 comment.Reference = comment.Range.AddRow(fromRow, rows).Address;
             }
-            if(columns>0 && address._fromCol >= fromCol &&
-               address._fromRow >= fromRow && address._toRow <= toRow)
+
+            if (columns > 0 && address._fromCol >= fromCol && address._fromRow >= fromRow && address._toRow <= toRow)
             {
                 comment.Reference = comment.Range.AddColumn(fromCol, columns).Address;
             }
         }
     }
 
-    void IDisposable.Dispose() 
-    { 
-    } 
+    void IDisposable.Dispose()
+    {
+    }
+
     /// <summary>
     /// Removes the comment at the specified position
     /// </summary>
@@ -329,13 +349,14 @@ public class ExcelCommentCollection : IEnumerable, IDisposable
 
     IEnumerator IEnumerable.GetEnumerator()
     {
-        return this._list.Where(x=>x!=null).GetEnumerator();
+        return this._list.Where(x => x != null).GetEnumerator();
     }
+
     #endregion
 
     internal void Clear()
     {
-        while(this.Count>0)
+        while (this.Count > 0)
         {
             this.RemoveAt(0);
         }

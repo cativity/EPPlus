@@ -10,6 +10,7 @@
  *************************************************************************************************
   01/27/2020         EPPlus Software AB       Initial release EPPlus 5
  *************************************************************************************************/
+
 using System.Text;
 using System.Xml;
 
@@ -24,11 +25,14 @@ public class ExcelChartStyleLibraryItem
     /// The id of the style
     /// </summary>
     public int Id { get; internal set; }
+
     /// <summary>
     /// The Xml as string
     /// </summary>
     public string XmlString { get; set; }
-    XmlDocument _xmlDoc=null;
+
+    XmlDocument _xmlDoc = null;
+
     /// <summary>
     /// The style xml document
     /// </summary>
@@ -36,11 +40,12 @@ public class ExcelChartStyleLibraryItem
     {
         get
         {
-            if(this._xmlDoc==null)
+            if (this._xmlDoc == null)
             {
                 this._xmlDoc = new XmlDocument();
                 XmlHelper.LoadXmlSafe(this._xmlDoc, this.XmlString, Encoding.UTF8);
             }
+
             return this._xmlDoc;
         }
     }

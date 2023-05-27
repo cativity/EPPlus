@@ -10,6 +10,7 @@
  *************************************************************************************************
   12/26/2021         EPPlus Software AB       EPPlus 6.0
  *************************************************************************************************/
+
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -22,7 +23,6 @@ internal class FontScaleFactor
     public FontScaleFactor(float small, float medium, float large)
         : this(small, medium, large, 1f)
     {
-
     }
 
     public FontScaleFactor(float small, float medium, float large, float sizeFactor)
@@ -68,6 +68,7 @@ internal class FontScaleFactor
 
         float f = originalFactorUpper - originalFactorLower;
         float f2 = v / upperWidth;
+
         return originalFactorLower + (f * f2);
     }
 }

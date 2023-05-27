@@ -10,6 +10,7 @@
  *************************************************************************************************
   01/27/2020         EPPlus Software AB       Initial release EPPlus 5
  *************************************************************************************************/
+
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -23,6 +24,7 @@ internal class CStr : ExcelFunction
     public override CompileResult Execute(IEnumerable<FunctionArgument> arguments, ParsingContext context)
     {
         ValidateArguments(arguments, 1);
+
         return this.CreateResult(ArgToString(arguments, 0), DataType.String);
     }
 }

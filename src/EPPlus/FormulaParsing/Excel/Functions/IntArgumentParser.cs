@@ -10,6 +10,7 @@
  *************************************************************************************************
   01/27/2020         EPPlus Software AB       Initial release EPPlus 5
  *************************************************************************************************/
+
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -34,27 +35,34 @@ public class IntArgumentParser : ArgumentParser
         if (obj is IRangeInfo)
         {
             ICellInfo? r = ((IRangeInfo)obj).FirstOrDefault();
+
             return r == null ? 0 : ConvertToInt(r.ValueDouble, roundingMethod);
         }
+
         Type? objType = obj.GetType();
+
         if (objType == typeof(int))
         {
             return (int)obj;
         }
+
         if (objType == typeof(double) || objType == typeof(decimal) || objType == typeof(bool))
         {
             return ConvertToInt(obj, roundingMethod);
         }
+
         if (!int.TryParse(obj.ToString(), out int result))
         {
             throw new ExcelErrorValueException(ExcelErrorValue.Create(eErrorType.Value));
         }
+
         return result;
     }
 
     private static int ConvertToInt(object obj, RoundingMethod roundingMethod)
     {
         Type? objType = obj.GetType();
+
         if (roundingMethod == RoundingMethod.Convert)
         {
             return Convert.ToInt32(obj);

@@ -10,6 +10,7 @@
  *************************************************************************************************
   04/16/2021         EPPlus Software AB       EPPlus 5.7
  *************************************************************************************************/
+
 namespace OfficeOpenXml.ExternalReferences;
 
 /// <summary>
@@ -20,25 +21,26 @@ public class ExcelExternalCellValue
     /// <summary>
     /// The address of the cell
     /// </summary>
-    public string Address 
-    { 
-        get 
-        { 
-            return ExcelCellBase.GetAddress(this.Row, this.Column); 
-        } 
+    public string Address
+    {
+        get { return ExcelCellBase.GetAddress(this.Row, this.Column); }
     }
+
     /// <summary>
     /// The row of the cell
     /// </summary>
     public int Row { get; internal set; }
+
     /// <summary>
     /// The column of the cell
     /// </summary>
     public int Column { get; internal set; }
+
     /// <summary>
     /// The value of the cell
     /// </summary>
     public object Value { get; internal set; }
+
     /// <summary>
     /// A reference index to meta data for the cell
     /// </summary>

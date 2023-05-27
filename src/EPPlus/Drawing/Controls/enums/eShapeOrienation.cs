@@ -10,6 +10,7 @@
  *************************************************************************************************
   10/21/2020         EPPlus Software AB           Controls 
  *************************************************************************************************/
+
 namespace OfficeOpenXml.Drawing.Controls;
 
 /// <summary>
@@ -21,10 +22,12 @@ public enum eShapeOrientation
     /// Auto orientation
     /// </summary>
     Auto,
+
     /// <summary>
     /// Top To Bottom 
     /// </summary>
     TopToBottom,
+
     /// <summary>
     /// Bottom To Top
     /// </summary>

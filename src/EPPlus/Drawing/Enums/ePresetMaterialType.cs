@@ -10,6 +10,7 @@
  *************************************************************************************************
   01/27/2020         EPPlus Software AB       Initial release EPPlus 5
  *************************************************************************************************/
+
 namespace OfficeOpenXml.Drawing;
 
 /// <summary>
@@ -21,58 +22,72 @@ public enum ePresetMaterialType
     /// Clear
     /// </summary>
     Clear,
+
     /// <summary>
     /// Dark Edge
     /// </summary>
     DkEdge,
+
     /// <summary>
     /// Flat
     /// </summary>
     Flat,
+
     /// <summary>
     /// Legacy Matte
     /// </summary>
     LegacyMatte,
+
     /// <summary>
     /// Legacy Metal
     /// </summary>
     LegacyMetal,
+
     /// <summary>
     /// Legacy Plastic
     /// </summary>
     LegacyPlastic,
+
     /// <summary>
     /// Legacy Wireframe
     /// </summary>
     LegacyWireframe,
+
     /// <summary>
     /// Matte
     /// </summary>
     Matte,
+
     /// <summary>
     /// Metal
     /// </summary>
     Metal,
+
     /// <summary>
     /// Plastic
     /// </summary>
     Plastic,
+
     /// <summary>
     /// Powder
     /// </summary>
     Powder,
+
     /// <summary>
     /// Soft Edge
     /// </summary>
     SoftEdge,
+
     /// <summary>
     /// Soft Metal
     /// </summary>
     Softmetal,
+
     /// <summary>
     /// Translucent Powder 
     /// </summary>
     TranslucentPowder,
+
     /// <summary>
     /// Warm Matte
     /// </summary>

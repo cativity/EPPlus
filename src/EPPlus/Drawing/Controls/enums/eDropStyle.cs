@@ -10,6 +10,7 @@
  *************************************************************************************************
   01/27/2020         EPPlus Software AB       Initial release EPPlus 5
  *************************************************************************************************/
+
 namespace OfficeOpenXml.Drawing.Controls;
 
 /// <summary>
@@ -21,10 +22,12 @@ public enum eDropStyle
     /// A standard combo box
     /// </summary>
     Combo,
+
     /// <summary>
     /// An editable combo box
     /// </summary>
     ComboEdit,
+
     /// <summary>
     /// A standard combo box with only the drop-down button visible when the box is not expanded
     /// </summary>

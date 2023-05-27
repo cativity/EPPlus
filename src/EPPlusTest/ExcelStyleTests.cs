@@ -26,6 +26,7 @@
  *******************************************************************************
   01/27/2020         EPPlus Software AB       Initial release EPPlus 5
  *******************************************************************************/
+
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using OfficeOpenXml;
 using System.Xml;
@@ -46,6 +47,7 @@ public class ExcelStyleTests
 
         p.Workbook.Styles.UpdateXml();
         XmlNodeList? nodes = p.Workbook.StylesXml.SelectNodes("//d:cellXfs/d:xf", p.Workbook.NameSpaceManager);
+
         // Since the quotePrefix attribute is not part of the default style,
         // a new one should be created and referenced.
         Assert.AreNotEqual(0, cell.StyleID);

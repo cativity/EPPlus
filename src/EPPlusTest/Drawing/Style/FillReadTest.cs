@@ -26,6 +26,7 @@
  *******************************************************************************
   01/27/2020         EPPlus Software AB       Initial release EPPlus 5
  *******************************************************************************/
+
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using OfficeOpenXml;
 using OfficeOpenXml.Drawing;
@@ -39,12 +40,15 @@ namespace EPPlusTest.Drawing;
 public class FillReadTest : TestBase
 {
     static ExcelPackage _pck;
+
     [ClassInitialize]
     public static void Init(TestContext context)
     {
         _pck = OpenPackage("DrawingFillRead.xlsx");
     }
+
     #region SolidFill
+
     [TestMethod]
     public void ReadColorProperty()
     {
@@ -52,6 +56,7 @@ public class FillReadTest : TestBase
         string? wsName = "SolidFill";
         Color expected = Color.Blue;
         ExcelWorksheet? ws = _pck.Workbook.Worksheets[wsName];
+
         if (ws == null)
         {
             Assert.Inconclusive($"{wsName} worksheet is missing");
@@ -64,6 +69,7 @@ public class FillReadTest : TestBase
         Assert.IsNotNull(shape.Fill.SolidFill.Color.RgbColor);
         Assert.AreEqual(expected.ToArgb(), shape.Fill.SolidFill.Color.RgbColor.Color.ToArgb());
     }
+
     [TestMethod]
     public void ReadSolidFill_Color()
     {
@@ -71,6 +77,7 @@ public class FillReadTest : TestBase
         string? wsName = "SolidFillFromSolidFill";
         Color expected = Color.Green;
         ExcelWorksheet? ws = _pck.Workbook.Worksheets[wsName];
+
         if (ws == null)
         {
             Assert.Inconclusive($"{wsName} worksheet is missing");
@@ -83,6 +90,7 @@ public class FillReadTest : TestBase
         Assert.IsNotNull(shape.Fill.SolidFill.Color.RgbColor);
         Assert.AreEqual(expected.ToArgb(), shape.Fill.SolidFill.Color.RgbColor.Color.ToArgb());
     }
+
     [TestMethod]
     public void ReadSolidFill_ColorPreset()
     {
@@ -90,6 +98,7 @@ public class FillReadTest : TestBase
         string? wsName = "SolidFillFromPresetClr";
         ePresetColor expected = ePresetColor.Red;
         ExcelWorksheet? ws = _pck.Workbook.Worksheets[wsName];
+
         if (ws == null)
         {
             Assert.Inconclusive($"{wsName} worksheet is missing");
@@ -102,6 +111,7 @@ public class FillReadTest : TestBase
         Assert.IsNotNull(shape.Fill.SolidFill.Color.PresetColor);
         Assert.AreEqual(expected, shape.Fill.SolidFill.Color.PresetColor.Color);
     }
+
     [TestMethod]
     public void ReadSolidFill_ColorScheme()
     {
@@ -109,6 +119,7 @@ public class FillReadTest : TestBase
         string? wsName = "SolidFillFromSchemeClr";
         eSchemeColor expected = eSchemeColor.Accent6;
         ExcelWorksheet? ws = _pck.Workbook.Worksheets[wsName];
+
         if (ws == null)
         {
             Assert.Inconclusive($"{wsName} worksheet is missing");
@@ -125,6 +136,7 @@ public class FillReadTest : TestBase
         Assert.IsNotNull(shape.Fill.SolidFill.Color.SchemeColor);
         Assert.AreEqual(expected, shape.Fill.SolidFill.Color.SchemeColor.Color);
     }
+
     [TestMethod]
     public void ReadSolidFill_ColorPercentage()
     {
@@ -134,6 +146,7 @@ public class FillReadTest : TestBase
         int expectedG = 49;
         int expectedB = 50;
         ExcelWorksheet? ws = _pck.Workbook.Worksheets[wsName];
+
         if (ws == null)
         {
             Assert.Inconclusive($"{wsName} worksheet is missing");
@@ -148,6 +161,7 @@ public class FillReadTest : TestBase
         Assert.AreEqual(expectedG, shape.Fill.SolidFill.Color.RgbPercentageColor.GreenPercentage);
         Assert.AreEqual(expectedB, shape.Fill.SolidFill.Color.RgbPercentageColor.BluePercentage);
     }
+
     [TestMethod]
     public void ReadSolidFill_ColorHsl()
     {
@@ -157,6 +171,7 @@ public class FillReadTest : TestBase
         int expectedLum = 15;
         int expectedSat = 50;
         ExcelWorksheet? ws = _pck.Workbook.Worksheets[wsName];
+
         if (ws == null)
         {
             Assert.Inconclusive($"{wsName} worksheet is missing");
@@ -171,6 +186,7 @@ public class FillReadTest : TestBase
         Assert.AreEqual(expectedLum, shape.Fill.SolidFill.Color.HslColor.Luminance);
         Assert.AreEqual(expectedSat, shape.Fill.SolidFill.Color.HslColor.Saturation);
     }
+
     [TestMethod]
     public void ReadSolidFill_ColorSystem()
     {
@@ -178,6 +194,7 @@ public class FillReadTest : TestBase
         string? wsName = "SolidFillFromColorSystem";
         eSystemColor expected = eSystemColor.Background;
         ExcelWorksheet? ws = _pck.Workbook.Worksheets[wsName];
+
         if (ws == null)
         {
             Assert.Inconclusive($"{wsName} worksheet is missing");
@@ -190,8 +207,11 @@ public class FillReadTest : TestBase
         Assert.IsNotNull(shape.Fill.SolidFill.Color.SystemColor);
         Assert.AreEqual(expected, shape.Fill.SolidFill.Color.SystemColor.Color);
     }
+
     #endregion
+
     #region Transform
+
     [TestMethod]
     public void ReadTransparancy()
     {
@@ -199,6 +219,7 @@ public class FillReadTest : TestBase
         string? wsName = "Transparancy";
         int expected = 45;
         ExcelWorksheet? ws = _pck.Workbook.Worksheets[wsName];
+
         if (ws == null)
         {
             Assert.Inconclusive($"{wsName} worksheet is missing");
@@ -212,6 +233,7 @@ public class FillReadTest : TestBase
         Assert.AreEqual(eColorTransformType.Alpha, shape.Fill.SolidFill.Color.Transforms[0].Type);
         Assert.AreEqual(100 - expected, shape.Fill.SolidFill.Color.Transforms[0].Value);
     }
+
     [TestMethod]
     public void ReadTransformAlpha()
     {
@@ -219,6 +241,7 @@ public class FillReadTest : TestBase
         string? wsName = "Alpha";
         int expected = 45;
         ExcelWorksheet? ws = _pck.Workbook.Worksheets[wsName];
+
         if (ws == null)
         {
             Assert.Inconclusive($"{wsName} worksheet is missing");
@@ -232,6 +255,7 @@ public class FillReadTest : TestBase
         Assert.AreEqual(eColorTransformType.Alpha, shape.Fill.SolidFill.Color.Transforms[0].Type);
         Assert.AreEqual(expected, shape.Fill.SolidFill.Color.Transforms[0].Value);
     }
+
     [TestMethod]
     public void ReadTransformTint()
     {
@@ -239,6 +263,7 @@ public class FillReadTest : TestBase
         string? wsName = "Tint";
         int expected = 30;
         ExcelWorksheet? ws = _pck.Workbook.Worksheets[wsName];
+
         if (ws == null)
         {
             Assert.Inconclusive($"{wsName} worksheet is missing");
@@ -251,6 +276,7 @@ public class FillReadTest : TestBase
         Assert.AreEqual(eColorTransformType.Tint, shape.Fill.SolidFill.Color.Transforms[0].Type);
         Assert.AreEqual(expected, shape.Fill.SolidFill.Color.Transforms[0].Value);
     }
+
     [TestMethod]
     public void ReadTransformShade()
     {
@@ -258,6 +284,7 @@ public class FillReadTest : TestBase
         string? wsName = "Shade";
         int expected = 95;
         ExcelWorksheet? ws = _pck.Workbook.Worksheets[wsName];
+
         if (ws == null)
         {
             Assert.Inconclusive($"{wsName} worksheet is missing");
@@ -265,18 +292,19 @@ public class FillReadTest : TestBase
 
         ExcelShape? shape = (ExcelShape)ws.Drawings[0];
 
-
         //Assert
         Assert.AreEqual(eFillStyle.SolidFill, shape.Fill.Style);
         Assert.AreEqual(eColorTransformType.Shade, shape.Fill.SolidFill.Color.Transforms[0].Type);
         Assert.AreEqual(expected, shape.Fill.SolidFill.Color.Transforms[0].Value);
     }
+
     [TestMethod]
     public void ReadTransformInverse_true()
     {
         //Setup
         string? wsName = "Inverse_set";
         ExcelWorksheet? ws = _pck.Workbook.Worksheets[wsName];
+
         if (ws == null)
         {
             Assert.Inconclusive($"{wsName} worksheet is missing");
@@ -289,6 +317,7 @@ public class FillReadTest : TestBase
         Assert.AreEqual(eColorTransformType.Inv, shape.Fill.SolidFill.Color.Transforms[0].Type);
         Assert.AreEqual(1, shape.Fill.SolidFill.Color.Transforms[0].Value);
     }
+
     [TestMethod]
     public void ReadTransformAlphaModulation()
     {
@@ -296,6 +325,7 @@ public class FillReadTest : TestBase
         string? wsName = "AlphaModulation";
         int expected = 50;
         ExcelWorksheet? ws = _pck.Workbook.Worksheets[wsName];
+
         if (ws == null)
         {
             Assert.Inconclusive($"{wsName} worksheet is missing");
@@ -310,6 +340,7 @@ public class FillReadTest : TestBase
         Assert.AreEqual(20, shape.Fill.SolidFill.Color.Transforms[0].Value);
         Assert.AreEqual(expected, shape.Fill.SolidFill.Color.Transforms[1].Value);
     }
+
     [TestMethod]
     public void ReadTransformAlphaOffset()
     {
@@ -317,6 +348,7 @@ public class FillReadTest : TestBase
         string? wsName = "AlphaOffset";
         int expected = -10;
         ExcelWorksheet? ws = _pck.Workbook.Worksheets[wsName];
+
         if (ws == null)
         {
             Assert.Inconclusive($"{wsName} worksheet is missing");
@@ -331,6 +363,7 @@ public class FillReadTest : TestBase
         Assert.AreEqual(20, shape.Fill.SolidFill.Color.Transforms[0].Value);
         Assert.AreEqual(expected, shape.Fill.SolidFill.Color.Transforms[1].Value);
     }
+
     [TestMethod]
     public void ReadTransformColorPercentage()
     {
@@ -340,6 +373,7 @@ public class FillReadTest : TestBase
         int expectedG = 60;
         int expectedB = 20;
         ExcelWorksheet? ws = _pck.Workbook.Worksheets[wsName];
+
         if (ws == null)
         {
             Assert.Inconclusive($"{wsName} worksheet is missing");
@@ -356,6 +390,7 @@ public class FillReadTest : TestBase
         Assert.AreEqual(eColorTransformType.Blue, shape.Fill.SolidFill.Color.Transforms[2].Type);
         Assert.AreEqual(expectedB, shape.Fill.SolidFill.Color.Transforms[2].Value);
     }
+
     [TestMethod]
     public void ReadTransformColorModulation()
     {
@@ -365,6 +400,7 @@ public class FillReadTest : TestBase
         int expectedG = 50;
         int expectedB = 25600;
         ExcelWorksheet? ws = _pck.Workbook.Worksheets[wsName];
+
         if (ws == null)
         {
             Assert.Inconclusive($"{wsName} worksheet is missing");
@@ -381,6 +417,7 @@ public class FillReadTest : TestBase
         Assert.AreEqual(eColorTransformType.BlueMod, shape.Fill.SolidFill.Color.Transforms[2].Type);
         Assert.AreEqual(expectedB, shape.Fill.SolidFill.Color.Transforms[2].Value);
     }
+
     [TestMethod]
     public void ReadTransformColorOffset()
     {
@@ -390,6 +427,7 @@ public class FillReadTest : TestBase
         int expectedG = -20;
         int expectedB = 30;
         ExcelWorksheet? ws = _pck.Workbook.Worksheets[wsName];
+
         if (ws == null)
         {
             Assert.Inconclusive($"{wsName} worksheet is missing");
@@ -406,6 +444,7 @@ public class FillReadTest : TestBase
         Assert.AreEqual(eColorTransformType.BlueOff, shape.Fill.SolidFill.Color.Transforms[2].Type);
         Assert.AreEqual(expectedB, shape.Fill.SolidFill.Color.Transforms[2].Value);
     }
+
     [TestMethod]
     public void ReadTransformHslOffset()
     {
@@ -414,6 +453,7 @@ public class FillReadTest : TestBase
         int expectedLum = 10;
         int expectedSat = -20;
         ExcelWorksheet? ws = _pck.Workbook.Worksheets[wsName];
+
         if (ws == null)
         {
             Assert.Inconclusive($"{wsName} worksheet is missing");
@@ -428,6 +468,7 @@ public class FillReadTest : TestBase
         Assert.AreEqual(eColorTransformType.SatOff, shape.Fill.SolidFill.Color.Transforms[1].Type);
         Assert.AreEqual(expectedSat, shape.Fill.SolidFill.Color.Transforms[1].Value);
     }
+
     [TestMethod]
     public void ReadTransformHslModulation()
     {
@@ -436,13 +477,14 @@ public class FillReadTest : TestBase
         int expectedLum = 50;
         int expectedSat = 200;
         ExcelWorksheet? ws = _pck.Workbook.Worksheets[wsName];
+
         if (ws == null)
         {
             Assert.Inconclusive($"{wsName} worksheet is missing");
         }
 
         ExcelShape? shape = (ExcelShape)ws.Drawings[0];
-            
+
         //Assert
         Assert.AreEqual(eFillStyle.SolidFill, shape.Fill.Style);
         Assert.AreEqual(eColorTransformType.LumMod, shape.Fill.SolidFill.Color.Transforms[0].Type);
@@ -452,13 +494,16 @@ public class FillReadTest : TestBase
     }
 
     #endregion
+
     #region Gradient
+
     [TestMethod]
     public void ReadGradient()
     {
         //Setup
         string? wsName = "Gradient";
         ExcelWorksheet? ws = _pck.Workbook.Worksheets[wsName];
+
         if (ws == null)
         {
             Assert.Inconclusive($"{wsName} worksheet is missing");
@@ -473,12 +518,14 @@ public class FillReadTest : TestBase
         Assert.AreEqual(true, shape.Fill.GradientFill.RotateWithShape);
         Assert.AreEqual(eTileFlipMode.XY, shape.Fill.GradientFill.TileFlip);
     }
+
     [TestMethod]
     public void ReadGradientCircularPath()
     {
         //Setup
         string? wsName = "GradientCircular";
         ExcelWorksheet? ws = _pck.Workbook.Worksheets[wsName];
+
         if (ws == null)
         {
             Assert.Inconclusive($"{wsName} worksheet is missing");
@@ -496,12 +543,14 @@ public class FillReadTest : TestBase
         Assert.AreEqual(50, shape.Fill.GradientFill.FocusPoint.LeftOffset);
         Assert.AreEqual(50, shape.Fill.GradientFill.FocusPoint.RightOffset);
     }
+
     [TestMethod]
     public void ReadGradientRectPath()
     {
         //Setup
         string? wsName = "GradientRect";
         ExcelWorksheet? ws = _pck.Workbook.Worksheets[wsName];
+
         if (ws == null)
         {
             Assert.Inconclusive($"{wsName} worksheet is missing");
@@ -518,12 +567,14 @@ public class FillReadTest : TestBase
         Assert.AreEqual(20, shape.Fill.GradientFill.FocusPoint.LeftOffset);
         Assert.AreEqual(50, shape.Fill.GradientFill.FocusPoint.RightOffset);
     }
+
     [TestMethod]
     public void ReadGradientShapePath()
     {
         //Setup
         string? wsName = "GradientShape";
         ExcelWorksheet? ws = _pck.Workbook.Worksheets[wsName];
+
         if (ws == null)
         {
             Assert.Inconclusive($"{wsName} worksheet is missing");
@@ -547,12 +598,14 @@ public class FillReadTest : TestBase
         Assert.AreEqual(50, shape.Fill.GradientFill.FocusPoint.LeftOffset);
         Assert.AreEqual(50, shape.Fill.GradientFill.FocusPoint.RightOffset);
     }
+
     [TestMethod]
     public void ReadGradientAddMethods()
     {
         //Setup
         string? wsName = "GradientAddMethods";
         ExcelWorksheet? ws = _pck.Workbook.Worksheets[wsName];
+
         if (ws == null)
         {
             Assert.Inconclusive($"{wsName} worksheet is missing");
@@ -568,7 +621,6 @@ public class FillReadTest : TestBase
         shape.Fill.GradientFill.Colors.AddPreset(55.2, ePresetColor.BlueViolet);
         shape.Fill.GradientFill.Colors.AddScheme(66.2, eSchemeColor.Background2);
         shape.Fill.GradientFill.Colors.AddSystem(88.2, eSystemColor.GradientActiveCaption);
-
 
         //Assert
         Assert.AreEqual(eFillStyle.GradientFill, shape.Fill.Style);
@@ -611,13 +663,16 @@ public class FillReadTest : TestBase
     }
 
     #endregion
+
     #region Pattern
+
     [TestMethod]
     public void ReadPatternDefault()
     {
         //Setup
         string? wsName = "PatternDefault";
         ExcelWorksheet? ws = _pck.Workbook.Worksheets[wsName];
+
         if (ws == null)
         {
             Assert.Inconclusive($"{wsName} worksheet is missing");
@@ -631,12 +686,14 @@ public class FillReadTest : TestBase
         Assert.IsNull(shape.Fill.GradientFill);
         Assert.AreEqual(eFillPatternStyle.Pct5, shape.Fill.PatternFill.PatternType);
     }
+
     [TestMethod]
     public void ReadPatternCross()
     {
         //Setup
         string? wsName = "PatternCross";
         ExcelWorksheet? ws = _pck.Workbook.Worksheets[wsName];
+
         if (ws == null)
         {
             Assert.Inconclusive($"{wsName} worksheet is missing");
@@ -656,20 +713,24 @@ public class FillReadTest : TestBase
         Assert.IsNull(shape.Fill.GradientFill);
         Assert.AreEqual(eFillPatternStyle.Cross, shape.Fill.PatternFill.PatternType);
     }
+
     #endregion
+
     #region Blip
+
     [TestMethod]
     public void ReadBlipFill_DefaultSettings()
     {
         //Setup
         string? wsName = "BlipFill";
         ExcelWorksheet? ws = _pck.Workbook.Worksheets[wsName];
+
         if (ws == null)
         {
             Assert.Inconclusive($"{wsName} worksheet is missing");
         }
 
-        ExcelShape? shape = (ExcelShape)ws.Drawings[0]; 
+        ExcelShape? shape = (ExcelShape)ws.Drawings[0];
 
         //Assert
         Assert.AreEqual(eFillStyle.BlipFill, shape.Fill.Style);
@@ -678,12 +739,14 @@ public class FillReadTest : TestBase
         Assert.IsNull(shape.Fill.PatternFill);
         Assert.AreEqual(false, shape.Fill.BlipFill.Stretch);
     }
+
     [TestMethod]
     public void ReadBlipFill_NoImage()
     {
         //Setup
         string? wsName = "BlipFillNoImage";
         ExcelWorksheet? ws = _pck.Workbook.Worksheets[wsName];
+
         if (ws == null)
         {
             Assert.Inconclusive($"{wsName} worksheet is missing");
@@ -697,12 +760,14 @@ public class FillReadTest : TestBase
         Assert.IsNull(shape.Fill.GradientFill);
         Assert.IsNull(shape.Fill.PatternFill);
     }
+
     [TestMethod]
     public void ReadBlipFill_Stretch()
     {
         //Setup
         string? wsName = "BlipFillStretch";
         ExcelWorksheet? ws = _pck.Workbook.Worksheets[wsName];
+
         if (ws == null)
         {
             Assert.Inconclusive($"{wsName} worksheet is missing");
@@ -721,12 +786,14 @@ public class FillReadTest : TestBase
         Assert.AreEqual(-5, shape.Fill.BlipFill.StretchOffset.LeftOffset);
         Assert.AreEqual(15, shape.Fill.BlipFill.StretchOffset.RightOffset);
     }
+
     [TestMethod]
     public void ReadBlipFill_SourceRectangle()
     {
         //Setup
         string? wsName = "BlipFillSourceRectangle";
         ExcelWorksheet? ws = _pck.Workbook.Worksheets[wsName];
+
         if (ws == null)
         {
             Assert.Inconclusive($"{wsName} worksheet is missing");
@@ -745,12 +812,14 @@ public class FillReadTest : TestBase
         Assert.AreEqual(-5, shape.Fill.BlipFill.SourceRectangle.LeftOffset);
         Assert.AreEqual(15, shape.Fill.BlipFill.SourceRectangle.RightOffset);
     }
+
     [TestMethod]
     public void ReadBlipFill_Tile()
     {
         //Setup
         string? wsName = "BlipFillTile";
         ExcelWorksheet? ws = _pck.Workbook.Worksheets[wsName];
+
         if (ws == null)
         {
             Assert.Inconclusive($"{wsName} worksheet is missing");
@@ -771,12 +840,14 @@ public class FillReadTest : TestBase
         Assert.AreEqual(2, shape.Fill.BlipFill.Tile.HorizontalOffset);
         Assert.AreEqual(1, shape.Fill.BlipFill.Tile.VerticalOffset);
     }
+
     [TestMethod]
     public void ReadBlipFill_PieChart()
     {
         //Setup
         string? wsName = "BlipFillPieChart";
         ExcelWorksheet? ws = _pck.Workbook.Worksheets[wsName];
+
         if (ws == null)
         {
             Assert.Inconclusive($"{wsName} worksheet is missing");

@@ -26,6 +26,7 @@
  *******************************************************************************
   01/27/2020         EPPlus Software AB       Initial release EPPlus 5
  *******************************************************************************/
+
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
 using System.Text;
@@ -40,11 +41,13 @@ namespace EPPlusTest.Filter;
 public class CustomFilter : TestBase
 {
     static ExcelPackage _pck;
+
     [ClassInitialize]
     public static void Init(TestContext context)
     {
         _pck = OpenPackage("CustomFilter.xlsx", true);
     }
+
     [ClassCleanup]
     public static void Cleanup()
     {
@@ -56,15 +59,16 @@ public class CustomFilter : TestBase
     {
         ExcelWorksheet? ws = _pck.Workbook.Worksheets.Add("CustomEndWith");
         LoadTestdata(ws);
-            
+
         ws.AutoFilterAddress = ws.Cells["A1:D100"];
-        ExcelCustomFilterColumn? col=ws.AutoFilter.Columns.AddCustomFilterColumn(2);
+        ExcelCustomFilterColumn? col = ws.AutoFilter.Columns.AddCustomFilterColumn(2);
         col.Filters.Add(new ExcelFilterCustomItem("*3"));
         ws.AutoFilter.ApplyFilter();
 
         Assert.AreEqual(true, ws.Row(2).Hidden);
         Assert.AreEqual(false, ws.Row(3).Hidden);
     }
+
     [TestMethod]
     public void CustomStartsWithOrContainsText()
     {
@@ -83,11 +87,13 @@ public class CustomFilter : TestBase
         Assert.AreEqual(false, ws.Row(22).Hidden);
         Assert.AreEqual(false, ws.Row(33).Hidden);
     }
+
     [TestMethod]
     public void CustomContains()
     {
         ExcelWorksheet? ws = _pck.Workbook.Worksheets.Add("StartsWith");
         LoadTestdata(ws);
+
         for (int row = 2; row <= ws.Dimension.Rows; row++)
         {
             if (row % 10 == 0)
@@ -107,6 +113,7 @@ public class CustomFilter : TestBase
             Assert.AreEqual(false, ws.Row(row).Hidden);
         }
     }
+
     [TestMethod]
     public void CustomNumericEqualOrGreaterThanOrEqual()
     {
@@ -126,6 +133,7 @@ public class CustomFilter : TestBase
         Assert.AreEqual(false, ws.Row(95).Hidden);
         Assert.AreEqual(false, ws.Row(96).Hidden);
     }
+
     [TestMethod]
     public void CustomNumericEqualOrLessThanOrEqual()
     {
@@ -144,6 +152,7 @@ public class CustomFilter : TestBase
         Assert.AreEqual(true, ws.Row(13).Hidden);
         Assert.AreEqual(false, ws.Row(14).Hidden);
     }
+
     [TestMethod]
     public void CustomNumericEqualAndLessThanOrEqual()
     {
@@ -162,6 +171,7 @@ public class CustomFilter : TestBase
         Assert.AreEqual(true, ws.Row(13).Hidden);
         Assert.AreEqual(true, ws.Row(14).Hidden);
     }
+
     [TestMethod]
     public void CustomNumericEqualAndNotEqual()
     {

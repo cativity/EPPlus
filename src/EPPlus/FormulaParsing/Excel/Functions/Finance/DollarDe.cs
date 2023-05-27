@@ -10,6 +10,7 @@
  *************************************************************************************************
   05/03/2020         EPPlus Software AB         Implemented function
  *************************************************************************************************/
+
 using OfficeOpenXml.FormulaParsing.Excel.Functions.Metadata;
 using OfficeOpenXml.FormulaParsing.ExpressionGraph;
 using System;
@@ -19,10 +20,9 @@ using System.Text;
 
 namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Finance;
 
-[FunctionMetadata(
-                     Category = ExcelFunctionCategory.Financial,
-                     EPPlusVersion = "5.5",
-                     Description = "Converts a dollar price expressed as a fraction, into a dollar price expressed as a decimal")]
+[FunctionMetadata(Category = ExcelFunctionCategory.Financial,
+                  EPPlusVersion = "5.5",
+                  Description = "Converts a dollar price expressed as a fraction, into a dollar price expressed as a decimal")]
 internal class DollarDe : ExcelFunction
 {
     public override CompileResult Execute(IEnumerable<FunctionArgument> arguments, ParsingContext context)
@@ -31,6 +31,7 @@ internal class DollarDe : ExcelFunction
         double fractionalDollar = this.ArgToDecimal(arguments, 0);
         double fractionDec = this.ArgToDecimal(arguments, 1);
         double fraction = System.Math.Floor(fractionDec);
+
         if (fraction <= 0d)
         {
             return this.CreateResult(eErrorType.Num);
@@ -42,8 +43,15 @@ internal class DollarDe : ExcelFunction
         }
 
         double intResult = System.Math.Floor(fractionalDollar);
-        double result = (double)intResult + (fractionalDollar % 1 * System.Math.Pow(10d, (double)System.Math.Ceiling(System.Math.Log(fraction) / System.Math.Log(10))) / fraction);
+
+        double result = (double)intResult
+                        + (fractionalDollar
+                           % 1
+                           * System.Math.Pow(10d, (double)System.Math.Ceiling(System.Math.Log(fraction) / System.Math.Log(10)))
+                           / fraction);
+
         double power = System.Math.Pow(10d, (double)System.Math.Ceiling(System.Math.Log(fraction) / System.Math.Log(2)) + 1);
+
         return this.CreateResult(System.Math.Round(result * power) / power, DataType.Decimal);
     }
 }

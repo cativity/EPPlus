@@ -10,6 +10,7 @@
  *************************************************************************************************
   01/27/2020         EPPlus Software AB       Initial release EPPlus 5
  *************************************************************************************************/
+
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -24,29 +25,37 @@ namespace OfficeOpenXml.VBA;
 public class ExcelVbaProtection
 {
     ExcelVbaProject _project;
+
     internal ExcelVbaProtection(ExcelVbaProject project)
     {
         this._project = project;
         this.VisibilityState = true;
     }
+
     /// <summary>
     /// If access to the VBA project was restricted by the user
     /// </summary>
     public bool UserProtected { get; internal set; }
+
     /// <summary>
     /// If access to the VBA project was restricted by the VBA host application
     /// </summary>
     public bool HostProtected { get; internal set; }
+
     /// <summary>
     /// If access to the VBA project was restricted by the VBA project editor
     /// </summary>
     public bool VbeProtected { get; internal set; }
+
     /// <summary>
     /// if the VBA project is visible.
     /// </summary>
     public bool VisibilityState { get; internal set; }
+
     internal byte[] PasswordHash { get; set; }
+
     internal byte[] PasswordKey { get; set; }
+
     /// <summary>
     /// Password protect the VBA project.
     /// An empty string or null will remove the password protection
@@ -54,7 +63,6 @@ public class ExcelVbaProtection
     /// <param name="Password">The password</param>
     public void SetPassword(string Password)
     {
-
         if (string.IsNullOrEmpty(Password))
         {
             this.PasswordHash = null;
@@ -85,6 +93,7 @@ public class ExcelVbaProtection
             this._project.ProjectID = "{00000000-0000-0000-0000-000000000000}";
         }
     }
+
     //public void ValidatePassword(string Password)                     
     //{
 

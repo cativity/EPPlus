@@ -16,11 +16,13 @@ namespace EPPlusTest.Drawing.Slicer;
 public class SlicerCopyTest : TestBase
 {
     static ExcelPackage _pck;
+
     [ClassInitialize]
     public static void Init(TestContext context)
     {
         _pck = OpenPackage("SlicerCopy.xlsx", true);
     }
+
     [ClassCleanup]
     public static void Cleanup()
     {
@@ -29,6 +31,7 @@ public class SlicerCopyTest : TestBase
 
         SaveAndCleanup(_pck);
     }
+
     [TestMethod]
     public void CopyTableSlicer()
     {
@@ -43,6 +46,7 @@ public class SlicerCopyTest : TestBase
 
         ExcelWorksheet? copy = _pck.Workbook.Worksheets.Add("TableSlicerCopy", ws);
     }
+
     [TestMethod]
     public void CopyPivotTableSlicer()
     {

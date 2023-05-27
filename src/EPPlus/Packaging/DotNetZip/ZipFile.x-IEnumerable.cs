@@ -24,7 +24,6 @@
 //
 // ------------------------------------------------------------------
 
-
 namespace OfficeOpenXml.Packaging.Ionic.Zip;
 
 // For some weird reason, the method with the DispId(-4) attribute, which is used as
@@ -38,10 +37,6 @@ namespace OfficeOpenXml.Packaging.Ionic.Zip;
 
 internal partial class ZipFile
 {
-
-
-
-
     /// <summary>
     /// Generic IEnumerator support, for use of a ZipFile in an enumeration.
     /// </summary>
@@ -128,7 +123,6 @@ internal partial class ZipFile
         return this.GetEnumerator();
     }
 
-
     /// <summary>
     /// An IEnumerator, for use of a ZipFile in a foreach construct.
     /// </summary>
@@ -144,9 +138,8 @@ internal partial class ZipFile
     /// The IEnumerator over the entries in the ZipFile.
     /// </returns>
     [System.Runtime.InteropServices.DispId(-4)]
-    public System.Collections.IEnumerator GetNewEnum()          // the name of this method is not significant
+    public System.Collections.IEnumerator GetNewEnum() // the name of this method is not significant
     {
         return this.GetEnumerator();
     }
-
 }

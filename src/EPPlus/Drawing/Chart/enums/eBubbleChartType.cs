@@ -10,6 +10,7 @@
  *************************************************************************************************
   01/27/2020         EPPlus Software AB       Initial release EPPlus 5
  *************************************************************************************************/
+
 namespace OfficeOpenXml.Drawing.Chart;
 
 /// <summary>
@@ -21,6 +22,7 @@ public enum eBubbleChartType
     /// A bubble chart 
     /// </summary>
     Bubble = 15,
+
     /// <summary>
     /// A 3D bubble chart 
     /// </summary>

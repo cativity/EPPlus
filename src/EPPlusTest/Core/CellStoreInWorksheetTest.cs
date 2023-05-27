@@ -26,6 +26,7 @@
  *******************************************************************************
   01/27/2020         EPPlus Software AB       Initial release EPPlus 5
  *******************************************************************************/
+
 using System;
 using System.Drawing;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -39,16 +40,19 @@ namespace EPPlusTest.Core;
 public class CellStoreInWorksheetTest : TestBase
 {
     static ExcelPackage _pck;
+
     [ClassInitialize]
     public static void Init(TestContext context)
     {
         _pck = OpenPackage("CellStore.xlsx", true);
     }
+
     [ClassCleanup]
     public static void Cleanup()
     {
         SaveAndCleanup(_pck);
     }
+
     [TestMethod]
     public void Insert1()
     {
@@ -73,8 +77,8 @@ public class CellStoreInWorksheetTest : TestBase
         ws.InsertRow(1, 15);
         Assert.AreEqual(ws.GetValue(4020, 1), "3,0");
         Assert.AreEqual(ws.GetValue(5016, 1), "499,0");
-
     }
+
     [TestMethod]
     public void Insert2()
     {
@@ -85,6 +89,7 @@ public class CellStoreInWorksheetTest : TestBase
         {
             ws.InsertRow(1, 1);
         }
+
         Assert.AreEqual(ws.GetValue(33, 1), "0,0");
 
         ws = _pck.Workbook.Worksheets.Add("Insert2-2");
@@ -94,9 +99,11 @@ public class CellStoreInWorksheetTest : TestBase
         {
             ws.InsertRow(15, 1);
         }
+
         Assert.AreEqual(ws.GetValue(1, 1), "0,0");
         Assert.AreEqual(ws.GetValue(47, 1), "14,0");
     }
+
     [TestMethod]
     public void InsertTwoFrom5000()
     {
@@ -107,6 +114,7 @@ public class CellStoreInWorksheetTest : TestBase
         {
             ws.InsertRow(i + 1, 3);
         }
+
         Assert.AreEqual("1249,0", ws.GetValue(5000, 1));
     }
 
@@ -121,9 +129,11 @@ public class CellStoreInWorksheetTest : TestBase
         {
             ws.InsertRow(i, 1);
         }
-        Assert.AreEqual("3546,0", ws.GetValue(5320, 1)); 
+
+        Assert.AreEqual("3546,0", ws.GetValue(5320, 1));
         Assert.AreEqual("4999,0", ws.GetValue(7500, 1));
     }
+
     [TestMethod]
     public void EnumCellstore()
     {
@@ -132,11 +142,13 @@ public class CellStoreInWorksheetTest : TestBase
         LoadData(ws, 5000);
 
         CellStoreEnumerator<ExcelValue>? o = new CellStoreEnumerator<ExcelValue>(ws._values, 2, 1, 5, 3);
-        for (int i=1;i<5000;i++)
+
+        for (int i = 1; i < 5000; i++)
         {
-            Assert.AreEqual($"{i-1},0", ws.Cells[i, 1].Value);
+            Assert.AreEqual($"{i - 1},0", ws.Cells[i, 1].Value);
         }
     }
+
     [TestMethod]
     public void DeleteRows()
     {
@@ -153,8 +165,9 @@ public class CellStoreInWorksheetTest : TestBase
         Assert.AreEqual("251,0", ws.GetValue(100, 1));
         ws.DeleteRow(1, 31);
         Assert.AreEqual("43,0", ws.GetValue(1, 1));
-        Assert.AreEqual("4999,0",   ws.GetValue(4817, 1));
+        Assert.AreEqual("4999,0", ws.GetValue(4817, 1));
     }
+
     [TestMethod]
     public void DeleteRowsFirst()
     {
@@ -162,11 +175,13 @@ public class CellStoreInWorksheetTest : TestBase
         LoadData(ws, 5000);
 
         ws.DeleteRow(32, 30);
+
         for (int i = 1; i < 50; i++)
         {
             ws.DeleteRow(1, 1);
         }
     }
+
     [TestMethod]
     public void DeleteInsert()
     {
@@ -181,10 +196,12 @@ public class CellStoreInWorksheetTest : TestBase
             ws.SetValue(i + 2, 1, i + 2);
         }
     }
+
     private static void LoadData(ExcelWorksheet ws)
     {
         LoadData(ws, 1000);
     }
+
     private static void LoadData(ExcelWorksheet ws, int rows, int cols = 1, bool isNumeric = false)
     {
         for (int r = 0; r < rows; r++)
@@ -202,6 +219,7 @@ public class CellStoreInWorksheetTest : TestBase
             }
         }
     }
+
     [TestMethod]
     public void FillInsertTest()
     {
@@ -210,6 +228,7 @@ public class CellStoreInWorksheetTest : TestBase
         LoadData(ws, 500);
 
         int r = 1;
+
         for (int i = 1; i <= 500; i++)
         {
             ws.InsertRow(r, i);
@@ -217,6 +236,7 @@ public class CellStoreInWorksheetTest : TestBase
             r += i + 1;
         }
     }
+
     [TestMethod]
     public void CopyCellsTest()
     {
@@ -234,13 +254,15 @@ public class CellStoreInWorksheetTest : TestBase
         Assert.AreEqual(ws.Cells["B1"].Value, ws.Cells["D1"].Value);
         Assert.AreNotEqual(ws.Cells["B1"].Formula, ws.Cells["D1"].Formula);
     }
+
     [TestMethod]
     public void Issues351()
     {
         using ExcelPackage? package = new ExcelPackage();
+
         // Arrange
         ExcelWorksheet? worksheet = package.Workbook.Worksheets.Add("Test");
-        worksheet.Cells[1, 1].Value = "A";                      // If you remove this "anchor", the problem doesn't happen.
+        worksheet.Cells[1, 1].Value = "A"; // If you remove this "anchor", the problem doesn't happen.
         worksheet.Cells[1026, 1].Value = "B";
         worksheet.Cells[1026, 2].Value = "B";
         ExcelRow? range = worksheet.Row(1026);
@@ -253,16 +275,18 @@ public class CellStoreInWorksheetTest : TestBase
         // Assert - This value should be null, instead it's "B"
         Assert.IsNull(worksheet.Cells[1025, 1].Value);
     }
+
     [TestMethod]
     public void ValidateColumnsAreCreatedIfSpan()
     {
-
         ExcelWorksheet? ws = _pck.Workbook.Worksheets.Add("ValidateColumnSpan");
+
         for (int i = 1; i < 11; i++)
         {
             ws.Cells[i, 1].Value = "A";
             ws.Cells[i, 10].Value = "J";
         }
+
         ws.Cells["A1:J10"].Style.Fill.SetBackground(Color.AliceBlue);
         ws.Cells["C3"].Value = "C3";
         Assert.AreEqual("A", ws.Cells["A1"].Value);
@@ -273,5 +297,4 @@ public class CellStoreInWorksheetTest : TestBase
         Assert.AreEqual("J", ws.Cells["J5"].Value);
         Assert.AreEqual("J", ws.Cells["J10"].Value);
     }
-
 }

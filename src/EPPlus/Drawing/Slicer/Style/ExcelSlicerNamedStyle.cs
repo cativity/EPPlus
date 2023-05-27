@@ -10,6 +10,7 @@
  *************************************************************************************************
   01/20/2021         EPPlus Software AB       Table Styling - EPPlus 5.6
  *************************************************************************************************/
+
 using OfficeOpenXml.Core;
 using OfficeOpenXml.Packaging.Ionic.Zip;
 using OfficeOpenXml.Style;
@@ -31,9 +32,12 @@ public class ExcelSlicerNamedStyle : XmlHelper
     internal Dictionary<eSlicerStyleElement, ExcelSlicerStyleElement> _dicSlicer = new Dictionary<eSlicerStyleElement, ExcelSlicerStyleElement>();
     internal Dictionary<eTableStyleElement, ExcelSlicerTableStyleElement> _dicTable = new Dictionary<eTableStyleElement, ExcelSlicerTableStyleElement>();
     XmlNode _tableStyleNode;
-    internal ExcelSlicerNamedStyle(XmlNamespaceManager nameSpaceManager, XmlNode topNode, XmlNode tableStyleNode, ExcelStyles styles) : base(nameSpaceManager, topNode)
+
+    internal ExcelSlicerNamedStyle(XmlNamespaceManager nameSpaceManager, XmlNode topNode, XmlNode tableStyleNode, ExcelStyles styles)
+        : base(nameSpaceManager, topNode)
     {
         this._styles = styles;
+
         if (tableStyleNode == null)
         {
             //TODO: Create table styles node with 
@@ -41,6 +45,7 @@ public class ExcelSlicerNamedStyle : XmlHelper
         else
         {
             this._tableStyleNode = tableStyleNode;
+
             foreach (XmlNode node in tableStyleNode.ChildNodes)
             {
                 if (node is XmlElement e)
@@ -50,6 +55,7 @@ public class ExcelSlicerNamedStyle : XmlHelper
                 }
             }
         }
+
         if (topNode.HasChildNodes)
         {
             foreach (XmlNode node in topNode?.FirstChild?.ChildNodes)
@@ -62,6 +68,7 @@ public class ExcelSlicerNamedStyle : XmlHelper
             }
         }
     }
+
     private ExcelSlicerTableStyleElement GetTableStyleElement(eTableStyleElement element)
     {
         if (this._dicTable.ContainsKey(element))
@@ -71,8 +78,10 @@ public class ExcelSlicerNamedStyle : XmlHelper
 
         ExcelSlicerTableStyleElement item = new(this.NameSpaceManager, this._tableStyleNode, this._styles, element);
         this._dicTable.Add(element, item);
+
         return item;
     }
+
     private ExcelSlicerStyleElement GetSlicerStyleElement(eSlicerStyleElement element)
     {
         if (this._dicSlicer.ContainsKey(element))
@@ -82,6 +91,7 @@ public class ExcelSlicerNamedStyle : XmlHelper
 
         ExcelSlicerStyleElement item = new(this.NameSpaceManager, this.TopNode, this._styles, element);
         this._dicSlicer.Add(element, item);
+
         return item;
     }
 
@@ -90,10 +100,7 @@ public class ExcelSlicerNamedStyle : XmlHelper
     /// </summary>
     public string Name
     {
-        get
-        {
-            return this.GetXmlNodeString("@name");
-        }
+        get { return this.GetXmlNodeString("@name"); }
         set
         {
             if (this._styles.SlicerStyles.ExistsKey(value) || this._styles.TableStyles.ExistsKey(value))
@@ -104,45 +111,37 @@ public class ExcelSlicerNamedStyle : XmlHelper
             this.SetXmlNodeString("@name", value);
         }
     }
+
     /// <summary>
     /// Applies to the entire content of a table or pivot table
     /// </summary>
     public ExcelSlicerTableStyleElement WholeTable
     {
-        get
-        {
-            return this.GetTableStyleElement(eTableStyleElement.WholeTable);
-        }
+        get { return this.GetTableStyleElement(eTableStyleElement.WholeTable); }
     }
+
     /// <summary>
     /// Applies to the header row of a table or pivot table
     /// </summary>
     public ExcelSlicerTableStyleElement HeaderRow
     {
-        get
-        {
-            return this.GetTableStyleElement(eTableStyleElement.HeaderRow);
-        }
+        get { return this.GetTableStyleElement(eTableStyleElement.HeaderRow); }
     }
+
     /// <summary>
     /// Applies to slicer item that is selected
     /// </summary>
     public ExcelSlicerStyleElement SelectedItemWithData
     {
-        get
-        {
-            return this.GetSlicerStyleElement(eSlicerStyleElement.SelectedItemWithData);
-        }
+        get { return this.GetSlicerStyleElement(eSlicerStyleElement.SelectedItemWithData); }
     }
+
     /// <summary>
     /// Applies to a select slicer item with no data.
     /// </summary>
     public ExcelSlicerStyleElement SelectedItemWithNoData
     {
-        get
-        {
-            return this.GetSlicerStyleElement(eSlicerStyleElement.SelectedItemWithNoData);
-        }
+        get { return this.GetSlicerStyleElement(eSlicerStyleElement.SelectedItemWithNoData); }
     }
 
     /// <summary>
@@ -150,40 +149,31 @@ public class ExcelSlicerNamedStyle : XmlHelper
     /// </summary>
     public ExcelSlicerStyleElement UnselectedItemWithData
     {
-        get
-        {
-            return this.GetSlicerStyleElement(eSlicerStyleElement.UnselectedItemWithData);
-        }
+        get { return this.GetSlicerStyleElement(eSlicerStyleElement.UnselectedItemWithData); }
     }
+
     /// <summary>
     /// Applies to a slicer item with no data that is not selected
     /// </summary>
     public ExcelSlicerStyleElement UnselectedItemWithNoData
     {
-        get
-        {
-            return this.GetSlicerStyleElement(eSlicerStyleElement.UnselectedItemWithNoData);
-        }
+        get { return this.GetSlicerStyleElement(eSlicerStyleElement.UnselectedItemWithNoData); }
     }
+
     /// <summary>
     /// Applies to a selected slicer item with data and over which the mouse is paused on
     /// </summary>
     public ExcelSlicerStyleElement HoveredSelectedItemWithData
     {
-        get
-        {
-            return this.GetSlicerStyleElement(eSlicerStyleElement.HoveredSelectedItemWithData);
-        }
+        get { return this.GetSlicerStyleElement(eSlicerStyleElement.HoveredSelectedItemWithData); }
     }
+
     /// <summary>
     /// Applies to a selected slicer item with no data and over which the mouse is paused on
     /// </summary>
     public ExcelSlicerStyleElement HoveredSelectedItemWithNoData
     {
-        get
-        {
-            return this.GetSlicerStyleElement(eSlicerStyleElement.HoveredSelectedItemWithNoData);
-        }
+        get { return this.GetSlicerStyleElement(eSlicerStyleElement.HoveredSelectedItemWithNoData); }
     }
 
     /// <summary>
@@ -191,20 +181,15 @@ public class ExcelSlicerNamedStyle : XmlHelper
     /// </summary>
     public ExcelSlicerStyleElement HoveredUnselectedItemWithData
     {
-        get
-        {
-            return this.GetSlicerStyleElement(eSlicerStyleElement.HoveredUnselectedItemWithData);
-        }
+        get { return this.GetSlicerStyleElement(eSlicerStyleElement.HoveredUnselectedItemWithData); }
     }
+
     /// <summary>
     /// Applies to a selected slicer item with no data and over which the mouse is paused on
     /// </summary>
     public ExcelSlicerStyleElement HoveredUnselectedItemWithNoData
     {
-        get
-        {
-            return this.GetSlicerStyleElement(eSlicerStyleElement.HoveredUnselectedItemWithNoData);
-        }
+        get { return this.GetSlicerStyleElement(eSlicerStyleElement.HoveredUnselectedItemWithNoData); }
     }
 
     internal void SetFromTemplate(ExcelSlicerNamedStyle templateStyle)
@@ -214,20 +199,24 @@ public class ExcelSlicerNamedStyle : XmlHelper
             ExcelSlicerTableStyleElement? element = this.GetTableStyleElement(s.Type);
             element.Style = (ExcelDxfSlicerStyle)s.Style.Clone();
         }
+
         foreach (ExcelSlicerStyleElement? s in templateStyle._dicSlicer.Values)
         {
             ExcelSlicerStyleElement? element = this.GetSlicerStyleElement(s.Type);
             element.Style = (ExcelDxfSlicerStyle)s.Style.Clone();
         }
     }
+
     internal void SetFromTemplate(eSlicerStyle templateStyle)
     {
         this.LoadTableTemplate("SlicerStyles", templateStyle.ToString());
     }
+
     private void LoadTableTemplate(string folder, string styleName)
     {
         ZipInputStream? zipStream = ZipHelper.OpenZipResource();
         ZipEntry entry;
+
         while ((entry = zipStream.GetNextEntry()) != null)
         {
             if (entry.IsDirectory || !entry.FileName.EndsWith(".xml") || entry.UncompressedSize <= 0 || !entry.FileName.StartsWith(folder))
@@ -237,6 +226,7 @@ public class ExcelSlicerNamedStyle : XmlHelper
 
             string? name = new FileInfo(entry.FileName).Name;
             name = name.Substring(0, name.Length - 4);
+
             if (name.Equals(styleName, StringComparison.OrdinalIgnoreCase))
             {
                 string? xmlContent = ZipHelper.UncompressEntry(zipStream, entry);
@@ -247,10 +237,12 @@ public class ExcelSlicerNamedStyle : XmlHelper
                 {
                     string? dxfXml = elem.InnerXml;
                     eTableStyleElement? tblType = elem.GetAttribute("name").ToEnum<eTableStyleElement>();
-                    if(tblType==null)
+
+                    if (tblType == null)
                     {
-                        eSlicerStyleElement? slicerType= elem.GetAttribute("name").ToEnum<eSlicerStyleElement>();
-                        if(slicerType.HasValue)
+                        eSlicerStyleElement? slicerType = elem.GetAttribute("name").ToEnum<eSlicerStyleElement>();
+
+                        if (slicerType.HasValue)
                         {
                             ExcelSlicerStyleElement? se = this.GetSlicerStyleElement(slicerType.Value);
                             ExcelDxfSlicerStyle? dxf = new ExcelDxfSlicerStyle(this.NameSpaceManager, elem.FirstChild, this._styles, null);

@@ -10,6 +10,7 @@
  *************************************************************************************************
   01/27/2020         EPPlus Software AB       Initial release EPPlus 5
  *************************************************************************************************/
+
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -33,7 +34,7 @@ internal class EpplusNameValueProvider : INameValueProvider
     {
         if (key.StartsWith("[0]"))
         {
-            if(key.Length>3&&key[3]=='!')
+            if (key.Length > 3 && key[3] == '!')
             {
                 key = key.Substring(4);
             }
@@ -42,18 +43,21 @@ internal class EpplusNameValueProvider : INameValueProvider
                 key = key.Substring(3);
             }
         }
+
         if (key.StartsWith("["))
         {
             return this._excelDataProvider.IsExternalName(key);
         }
-        else if (ws!=null)
+        else if (ws != null)
         {
             ExcelNamedRangeCollection? wsNames = this._excelDataProvider.GetWorksheetNames(ws);
+
             if (wsNames != null && wsNames.ContainsKey(key))
             {
                 return true;
             }
         }
+
         return this._values != null && this._values.ContainsKey(key);
     }
 

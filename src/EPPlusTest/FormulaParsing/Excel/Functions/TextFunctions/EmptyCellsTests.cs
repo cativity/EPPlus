@@ -13,7 +13,7 @@ public class EmptyCellsTests
 {
     private ExcelPackage _package;
     private ExcelWorksheet _worksheet;
-        
+
     [TestInitialize]
     public void Initialize()
     {

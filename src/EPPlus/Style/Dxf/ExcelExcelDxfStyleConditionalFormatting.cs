@@ -11,8 +11,10 @@
   01/27/2020         EPPlus Software AB       Initial release EPPlus 5
   02/26/2021         EPPlus Software AB       Modified to work with dxf styling for tables
  *************************************************************************************************/
+
 using System;
 using System.Xml;
+
 namespace OfficeOpenXml.Style.Dxf;
 
 /// <summary>
@@ -20,36 +22,38 @@ namespace OfficeOpenXml.Style.Dxf;
 /// </summary>
 public class ExcelDxfStyleConditionalFormatting : ExcelDxfStyleLimitedFont
 {
-    internal ExcelDxfStyleConditionalFormatting(XmlNamespaceManager nameSpaceManager, XmlNode topNode, ExcelStyles styles, Action<eStyleClass, eStyleProperty, object> callback)
+    internal ExcelDxfStyleConditionalFormatting(XmlNamespaceManager nameSpaceManager,
+                                                XmlNode topNode,
+                                                ExcelStyles styles,
+                                                Action<eStyleClass, eStyleProperty, object> callback)
         : base(nameSpaceManager, topNode, styles, callback)
     {
         this.NumberFormat = new ExcelDxfNumberFormat(this._styles, callback);
+
         if (topNode != null)
         {
             this.NumberFormat.SetValuesFromXml(this._helper);
         }
     }
+
     /// <summary>
     /// Number format settings
     /// </summary>
     public ExcelDxfNumberFormat NumberFormat { get; internal set; }
+
     internal override string Id
     {
-        get
-        {
-            return base.Id + this.NumberFormat.Id;
-        }
+        get { return base.Id + this.NumberFormat.Id; }
     }
+
     /// <summary>
     /// If the object has any properties set
     /// </summary>
     public override bool HasValue
     {
-        get
-        {
-            return base.HasValue || this.NumberFormat.HasValue;
-        }
+        get { return base.HasValue || this.NumberFormat.HasValue; }
     }
+
     internal override DxfStyleBase Clone()
     {
         ExcelDxfStyleConditionalFormatting? s = new ExcelDxfStyleConditionalFormatting(this._helper.NameSpaceManager, null, this._styles, this._callback)
@@ -62,6 +66,7 @@ public class ExcelDxfStyleConditionalFormatting : ExcelDxfStyleLimitedFont
 
         return s;
     }
+
     internal override void CreateNodes(XmlHelper helper, string path)
     {
         if (this.Font.HasValue)
@@ -76,6 +81,7 @@ public class ExcelDxfStyleConditionalFormatting : ExcelDxfStyleLimitedFont
 
         base.CreateNodes(helper, path);
     }
+
     internal override void SetStyle()
     {
         if (this._callback != null)
@@ -84,11 +90,12 @@ public class ExcelDxfStyleConditionalFormatting : ExcelDxfStyleLimitedFont
             this.NumberFormat.SetStyle();
         }
     }
+
     /// <summary>
     /// Clears all properties
     /// </summary>
     public override void Clear()
-    {            
+    {
         base.Clear();
         this.NumberFormat.Clear();
     }

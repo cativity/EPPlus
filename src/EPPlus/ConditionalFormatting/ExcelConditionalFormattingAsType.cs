@@ -11,6 +11,7 @@ namespace OfficeOpenXml.ConditionalFormatting;
 public class ExcelConditionalFormattingAsType
 {
     IExcelConditionalFormattingRule _rule;
+
     internal ExcelConditionalFormattingAsType(IExcelConditionalFormattingRule rule)
     {
         this._rule = rule;
@@ -21,14 +22,17 @@ public class ExcelConditionalFormattingAsType
     /// </summary>
     /// <typeparam name="T">The type of conditional formatting object. T must be inherited from IExcelConditionalFormattingRule</typeparam>
     /// <returns>The conditional formatting rule as type T</returns>
-    public T Type<T>() where T : IExcelConditionalFormattingRule
+    public T Type<T>()
+        where T : IExcelConditionalFormattingRule
     {
-        if(this._rule is T t)
+        if (this._rule is T t)
         {
             return t;
         }
+
         return default;
     }
+
     /// <summary>
     /// Returns the conditional formatting object as an Average rule
     /// If this object is not of type AboveAverage, AboveOrEqualAverage, BelowAverage or BelowOrEqualAverage, null will be returned
@@ -36,11 +40,9 @@ public class ExcelConditionalFormattingAsType
     /// <returns>The conditional formatting rule as an Average rule</returns>
     public IExcelConditionalFormattingAverageGroup Average
     {
-        get
-        {
-            return this._rule as IExcelConditionalFormattingAverageGroup;
-        }
+        get { return this._rule as IExcelConditionalFormattingAverageGroup; }
     }
+
     /// <summary>
     /// Returns the conditional formatting object as a StdDev rule
     /// If this object is not of type AboveStdDev or BelowStdDev, null will be returned
@@ -48,11 +50,9 @@ public class ExcelConditionalFormattingAsType
     /// <returns>The conditional formatting object as a StdDev rule</returns>
     public IExcelConditionalFormattingStdDevGroup StdDev
     {
-        get
-        {
-            return this._rule as IExcelConditionalFormattingStdDevGroup;
-        }
+        get { return this._rule as IExcelConditionalFormattingStdDevGroup; }
     }
+
     /// <summary>
     /// Returns the conditional formatting object as a TopBottom rule
     /// If this object is not of type Bottom, BottomPercent, Top or TopPercent, null will be returned
@@ -60,11 +60,9 @@ public class ExcelConditionalFormattingAsType
     /// <returns>The conditional formatting object as a TopBottom rule</returns>
     public IExcelConditionalFormattingTopBottomGroup TopBottom
     {
-        get
-        {
-            return this._rule as IExcelConditionalFormattingTopBottomGroup;
-        }
+        get { return this._rule as IExcelConditionalFormattingTopBottomGroup; }
     }
+
     /// <summary>
     /// Returns the conditional formatting object as a DateTimePeriod rule
     /// If this object is not of type Last7Days, LastMonth, LastWeek, NextMonth, NextWeek, ThisMonth, ThisWeek, Today, Tomorrow or Yesterday, null will be returned
@@ -72,11 +70,9 @@ public class ExcelConditionalFormattingAsType
     /// <returns>The conditional formatting object as a DateTimePeriod rule</returns>
     public IExcelConditionalFormattingTimePeriodGroup DateTimePeriod
     {
-        get
-        {
-            return this._rule as IExcelConditionalFormattingTimePeriodGroup;
-        }
+        get { return this._rule as IExcelConditionalFormattingTimePeriodGroup; }
     }
+
     /// <summary>
     /// Returns the conditional formatting object as a Between rule
     /// If this object is not of type Between, null will be returned
@@ -84,11 +80,9 @@ public class ExcelConditionalFormattingAsType
     /// <returns>The conditional formatting object as a Between rule</returns>
     public IExcelConditionalFormattingBetween Between
     {
-        get
-        {
-            return this._rule as IExcelConditionalFormattingBetween;
-        }
+        get { return this._rule as IExcelConditionalFormattingBetween; }
     }
+
     /// <summary>
     /// Returns the conditional formatting object as a ContainsBlanks rule
     /// If this object is not of type ContainsBlanks, null will be returned
@@ -96,11 +90,9 @@ public class ExcelConditionalFormattingAsType
     /// <returns>The conditional formatting object as a ContainsBlanks rule</returns>
     public IExcelConditionalFormattingContainsBlanks ContainsBlanks
     {
-        get
-        {
-            return this._rule as IExcelConditionalFormattingContainsBlanks;
-        }
+        get { return this._rule as IExcelConditionalFormattingContainsBlanks; }
     }
+
     /// <summary>
     /// Returns the conditional formatting object as a ContainsErrors rule
     /// If this object is not of type ContainsErrors, null will be returned
@@ -108,11 +100,9 @@ public class ExcelConditionalFormattingAsType
     /// <returns>The conditional formatting object as a ContainsErrors rule</returns>
     public IExcelConditionalFormattingContainsErrors ContainsErrors
     {
-        get
-        {
-            return this._rule as IExcelConditionalFormattingContainsErrors;
-        }
+        get { return this._rule as IExcelConditionalFormattingContainsErrors; }
     }
+
     /// <summary>
     /// Returns the conditional formatting object as a ContainsText rule
     /// If this object is not of type ContainsText, null will be returned
@@ -120,11 +110,9 @@ public class ExcelConditionalFormattingAsType
     /// <returns>The conditional formatting object as a ContainsText rule</returns>
     public IExcelConditionalFormattingContainsText ContainsText
     {
-        get
-        {
-            return this._rule as IExcelConditionalFormattingContainsText;
-        }
+        get { return this._rule as IExcelConditionalFormattingContainsText; }
     }
+
     /// <summary>
     /// Returns the conditional formatting object as a NotContainsBlanks rule
     /// If this object is not of type NotContainsBlanks, null will be returned
@@ -132,11 +120,9 @@ public class ExcelConditionalFormattingAsType
     /// <returns>The conditional formatting object as a NotContainsBlanks rule</returns>
     public IExcelConditionalFormattingNotContainsBlanks NotContainsBlanks
     {
-        get
-        {
-            return this._rule as IExcelConditionalFormattingNotContainsBlanks;
-        }
+        get { return this._rule as IExcelConditionalFormattingNotContainsBlanks; }
     }
+
     /// <summary>
     /// Returns the conditional formatting object as a NotContainsText rule
     /// If this object is not of type NotContainsText, null will be returned
@@ -144,11 +130,9 @@ public class ExcelConditionalFormattingAsType
     /// <returns>The conditional formatting object as a NotContainsText rule</returns>
     public IExcelConditionalFormattingNotContainsText NotContainsText
     {
-        get
-        {
-            return this._rule as IExcelConditionalFormattingNotContainsText;
-        }
+        get { return this._rule as IExcelConditionalFormattingNotContainsText; }
     }
+
     /// <summary>
     /// Returns the conditional formatting object as a NotContainsErrors rule
     /// If this object is not of type NotContainsErrors, null will be returned
@@ -156,11 +140,9 @@ public class ExcelConditionalFormattingAsType
     /// <returns>The conditional formatting object as a NotContainsErrors rule</returns>
     public IExcelConditionalFormattingNotContainsErrors NotContainsErrors
     {
-        get
-        {
-            return this._rule as IExcelConditionalFormattingNotContainsErrors;
-        }
+        get { return this._rule as IExcelConditionalFormattingNotContainsErrors; }
     }
+
     /// <summary>
     /// Returns the conditional formatting object as a NotBetween rule
     /// If this object is not of type NotBetween, null will be returned
@@ -168,23 +150,19 @@ public class ExcelConditionalFormattingAsType
     /// <returns>The conditional formatting object as a NotBetween rule</returns>
     public IExcelConditionalFormattingNotBetween NotBetween
     {
-        get
-        {
-            return this._rule as IExcelConditionalFormattingNotBetween;
-        }
+        get { return this._rule as IExcelConditionalFormattingNotBetween; }
     }
+
     /// <summary>
     /// Returns the conditional formatting object as an Equal rule
     /// If this object is not of type Equal, null will be returned
     /// </summary>
     /// <returns>The conditional formatting object as an Equal rule</returns>
-    public IExcelConditionalFormattingEqual Equal 
-    { 
-        get
-        {
-            return this._rule as IExcelConditionalFormattingEqual;
-        }
+    public IExcelConditionalFormattingEqual Equal
+    {
+        get { return this._rule as IExcelConditionalFormattingEqual; }
     }
+
     /// <summary>
     /// Returns the conditional formatting object as a NotEqual rule
     /// If this object is not of type NotEqual, null will be returned
@@ -192,11 +170,9 @@ public class ExcelConditionalFormattingAsType
     /// <returns>The conditional formatting object as a NotEqual rule</returns>
     public IExcelConditionalFormattingNotEqual NotEqual
     {
-        get
-        {
-            return this._rule as IExcelConditionalFormattingNotEqual;
-        }   
+        get { return this._rule as IExcelConditionalFormattingNotEqual; }
     }
+
     /// <summary>
     /// Returns the conditional formatting object as a DuplicateValues rule
     /// If this object is not of type DuplicateValues, null will be returned
@@ -204,11 +180,9 @@ public class ExcelConditionalFormattingAsType
     /// <returns>The conditional formatting object as a DuplicateValues rule</returns>
     public IExcelConditionalFormattingDuplicateValues DuplicateValues
     {
-        get
-        {
-            return this._rule as IExcelConditionalFormattingDuplicateValues;
-        }
+        get { return this._rule as IExcelConditionalFormattingDuplicateValues; }
     }
+
     /// <summary>
     /// Returns the conditional formatting object as a BeginsWith rule
     /// If this object is not of type BeginsWith, null will be returned
@@ -216,11 +190,9 @@ public class ExcelConditionalFormattingAsType
     /// <returns>The conditional formatting object as a BeginsWith rule</returns>
     public IExcelConditionalFormattingBeginsWith BeginsWith
     {
-        get
-        {
-            return this._rule as IExcelConditionalFormattingBeginsWith;
-        }
+        get { return this._rule as IExcelConditionalFormattingBeginsWith; }
     }
+
     /// <summary>
     /// Returns the conditional formatting object as an EndsWith rule
     /// If this object is not of type EndsWith, null will be returned
@@ -228,11 +200,9 @@ public class ExcelConditionalFormattingAsType
     /// <returns>The conditional formatting object as an EndsWith rule</returns>
     public IExcelConditionalFormattingEndsWith EndsWith
     {
-        get
-        {
-            return this._rule as IExcelConditionalFormattingEndsWith;
-        }
+        get { return this._rule as IExcelConditionalFormattingEndsWith; }
     }
+
     /// <summary>
     /// Returns the conditional formatting object as an Expression rule
     /// If this object is not of type Expression, null will be returned
@@ -240,11 +210,9 @@ public class ExcelConditionalFormattingAsType
     /// <returns>The conditional formatting object as an Expression rule</returns>
     public IExcelConditionalFormattingExpression Expression
     {
-        get
-        {
-            return this._rule as IExcelConditionalFormattingExpression;
-        }
+        get { return this._rule as IExcelConditionalFormattingExpression; }
     }
+
     /// <summary>
     /// Returns the conditional formatting object as a GreaterThan rule
     /// If this object is not of type GreaterThan, null will be returned
@@ -252,11 +220,9 @@ public class ExcelConditionalFormattingAsType
     /// <returns>The conditional formatting object as a GreaterThan rule</returns>
     public IExcelConditionalFormattingGreaterThan GreaterThan
     {
-        get
-        {
-            return this._rule as IExcelConditionalFormattingGreaterThan;
-        }
+        get { return this._rule as IExcelConditionalFormattingGreaterThan; }
     }
+
     /// <summary>
     /// Returns the conditional formatting object as a GreaterThanOrEqual rule
     /// If this object is not of type GreaterThanOrEqual, null will be returned
@@ -264,11 +230,9 @@ public class ExcelConditionalFormattingAsType
     /// <returns>The conditional formatting object as a GreaterThanOrEqual rule</returns>
     public IExcelConditionalFormattingGreaterThanOrEqual GreaterThanOrEqual
     {
-        get
-        {
-            return this._rule as IExcelConditionalFormattingGreaterThanOrEqual;
-        }
+        get { return this._rule as IExcelConditionalFormattingGreaterThanOrEqual; }
     }
+
     /// <summary>
     /// Returns the conditional formatting object as a LessThan rule
     /// If this object is not of type LessThan, null will be returned
@@ -276,11 +240,9 @@ public class ExcelConditionalFormattingAsType
     /// <returns>The conditional formatting object as a LessThan rule</returns>
     public IExcelConditionalFormattingLessThan LessThan
     {
-        get
-        {
-            return this._rule as IExcelConditionalFormattingLessThan;
-        }
+        get { return this._rule as IExcelConditionalFormattingLessThan; }
     }
+
     /// <summary>
     /// Returns the conditional formatting object as a LessThanOrEqual rule
     /// If this object is not of type LessThanOrEqual, null will be returned
@@ -288,11 +250,9 @@ public class ExcelConditionalFormattingAsType
     /// <returns>The conditional formatting object as a LessThanOrEqual rule</returns>
     public IExcelConditionalFormattingLessThanOrEqual LessThanOrEqual
     {
-        get
-        {
-            return this._rule as IExcelConditionalFormattingLessThanOrEqual;
-        }
+        get { return this._rule as IExcelConditionalFormattingLessThanOrEqual; }
     }
+
     /// <summary>
     /// Returns the conditional formatting object as a UniqueValues rule
     /// If this object is not of type UniqueValues, null will be returned
@@ -300,11 +260,9 @@ public class ExcelConditionalFormattingAsType
     /// <returns>The conditional formatting object as a UniqueValues rule</returns>
     public IExcelConditionalFormattingUniqueValues UniqueValues
     {
-        get
-        {
-            return this._rule as IExcelConditionalFormattingUniqueValues;
-        }
+        get { return this._rule as IExcelConditionalFormattingUniqueValues; }
     }
+
     /// <summary>
     /// Returns the conditional formatting object as a TwoColorScale rule
     /// If this object is not of type TwoColorScale, null will be returned
@@ -312,11 +270,9 @@ public class ExcelConditionalFormattingAsType
     /// <returns>The conditional formatting object as a TwoColorScale rule</returns>
     public IExcelConditionalFormattingTwoColorScale TwoColorScale
     {
-        get
-        {
-            return this._rule as IExcelConditionalFormattingTwoColorScale;
-        }
+        get { return this._rule as IExcelConditionalFormattingTwoColorScale; }
     }
+
     /// <summary>
     /// Returns the conditional formatting object as a ThreeColorScale rule
     /// If this object is not of type ThreeColorScale, null will be returned
@@ -324,11 +280,9 @@ public class ExcelConditionalFormattingAsType
     /// <returns>The conditional formatting object as a ThreeColorScale rule</returns>
     public IExcelConditionalFormattingThreeColorScale ThreeColorScale
     {
-        get
-        {
-            return this._rule as IExcelConditionalFormattingThreeColorScale;
-        }
+        get { return this._rule as IExcelConditionalFormattingThreeColorScale; }
     }
+
     /// <summary>
     /// Returns the conditional formatting object as a ThreeIconSet rule
     /// If this object is not of type ThreeIconSet, null will be returned
@@ -336,11 +290,9 @@ public class ExcelConditionalFormattingAsType
     /// <returns>The conditional formatting object as a ThreeIconSet rule</returns>
     public IExcelConditionalFormattingThreeIconSet<eExcelconditionalFormatting3IconsSetType> ThreeIconSet
     {
-        get
-        {
-            return this._rule as IExcelConditionalFormattingThreeIconSet<eExcelconditionalFormatting3IconsSetType>;
-        }
+        get { return this._rule as IExcelConditionalFormattingThreeIconSet<eExcelconditionalFormatting3IconsSetType>; }
     }
+
     /// <summary>
     /// Returns the conditional formatting object as a FourIconSet rule
     /// If this object is not of type FourIconSet, null will be returned
@@ -348,11 +300,9 @@ public class ExcelConditionalFormattingAsType
     /// <returns>The conditional formatting object as a FourIconSet rule</returns>
     public IExcelConditionalFormattingFourIconSet<eExcelconditionalFormatting4IconsSetType> FourIconSet
     {
-        get
-        {
-            return this._rule as IExcelConditionalFormattingFourIconSet<eExcelconditionalFormatting4IconsSetType>;
-        }
+        get { return this._rule as IExcelConditionalFormattingFourIconSet<eExcelconditionalFormatting4IconsSetType>; }
     }
+
     /// <summary>
     /// Returns the conditional formatting object as a FiveIconSet rule
     /// If this object is not of type FiveIconSet, null will be returned
@@ -360,11 +310,9 @@ public class ExcelConditionalFormattingAsType
     /// <returns>The conditional formatting object as a FiveIconSet rule</returns>
     public IExcelConditionalFormattingFiveIconSet FiveIconSet
     {
-        get
-        {
-            return this._rule as IExcelConditionalFormattingFiveIconSet;
-        }
+        get { return this._rule as IExcelConditionalFormattingFiveIconSet; }
     }
+
     /// <summary>
     /// Returns the conditional formatting object as a DataBar rule
     /// If this object is not of type DataBar, null will be returned
@@ -372,9 +320,6 @@ public class ExcelConditionalFormattingAsType
     /// <returns>The conditional formatting object as a DataBar rule</returns>
     public IExcelConditionalFormattingDataBarGroup DataBar
     {
-        get
-        {
-            return this._rule as IExcelConditionalFormattingDataBarGroup;
-        }
+        get { return this._rule as IExcelConditionalFormattingDataBarGroup; }
     }
 }

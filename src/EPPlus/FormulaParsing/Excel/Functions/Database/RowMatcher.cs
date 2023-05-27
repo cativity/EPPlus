@@ -10,6 +10,7 @@
  *************************************************************************************************
   01/27/2020         EPPlus Software AB       Initial release EPPlus 5
  *************************************************************************************************/
+
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -28,7 +29,6 @@ internal class RowMatcher
     public RowMatcher()
         : this(new WildCardValueMatcher(), new ExpressionEvaluator())
     {
-            
     }
 
     public RowMatcher(WildCardValueMatcher wildCardValueMatcher, ExpressionEvaluator expressionEvaluator)
@@ -40,13 +40,15 @@ internal class RowMatcher
     public bool IsMatch(ExcelDatabaseRow row, ExcelDatabaseCriteria criteria)
     {
         bool retVal = true;
+
         foreach (KeyValuePair<ExcelDatabaseCriteriaField, object> c in criteria.Items)
         {
             object? candidate = c.Key.FieldIndex.HasValue ? row[c.Key.FieldIndex.Value] : row[c.Key.FieldName];
             object? crit = c.Value;
+
             if (candidate.IsNumeric() && crit.IsNumeric())
             {
-                if(System.Math.Abs(ConvertUtil.GetValueDouble(candidate) - ConvertUtil.GetValueDouble(crit)) > double.Epsilon)
+                if (System.Math.Abs(ConvertUtil.GetValueDouble(candidate) - ConvertUtil.GetValueDouble(crit)) > double.Epsilon)
                 {
                     return false;
                 }
@@ -54,12 +56,14 @@ internal class RowMatcher
             else
             {
                 string? criteriaString = crit.ToString();
+
                 if (!this.Evaluate(candidate, criteriaString))
                 {
                     return false;
                 }
             }
         }
+
         return retVal;
     }
 
@@ -71,14 +75,17 @@ internal class RowMatcher
         }
 
         double? candidate = default(double?);
+
         if (ConvertUtil.IsNumericOrDate(obj))
         {
             candidate = ConvertUtil.GetValueDouble(obj);
         }
+
         if (candidate.HasValue)
         {
             return this._expressionEvaluator.Evaluate(candidate.Value, expression);
         }
+
         return this._wildCardValueMatcher.IsMatch(expression, obj.ToString()) == 0;
     }
 }

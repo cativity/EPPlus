@@ -18,25 +18,26 @@ public class RangeDictionaryTests : TestBase
     public static void Init(TestContext context)
     {
     }
+
     private static int GetFromRow(long address)
     {
         return (int)(address >> 20) + 1;
     }
+
     private static int GetToRow(long address)
     {
-        return (int)(address & 0xFFFFF) + 1; 
+        return (int)(address & 0xFFFFF) + 1;
     }
 
     [TestMethod]
-    public void RangeDictionaryTestForG() 
+    public void RangeDictionaryTestForG()
     {
         RangeDictionary<int>? rd = new RangeDictionary<int>();
 
         //rd.Add(1, 7, 5, 7, 10);
         rd.Add(1, 7, 2, 7, 10);
 
-
-        Assert.IsTrue(rd.Exists(1,7,5,7));
+        Assert.IsTrue(rd.Exists(1, 7, 5, 7));
     }
 
     [TestMethod]
@@ -44,7 +45,7 @@ public class RangeDictionaryTests : TestBase
     {
         RangeDictionary<int>? rd = new RangeDictionary<int>();
 
-        rd.Add(1,1,5,5, 1);
+        rd.Add(1, 1, 5, 5, 1);
 
         Assert.IsTrue(rd.Exists(1, 1));
         Assert.IsTrue(rd.Exists(2, 2));
@@ -56,14 +57,15 @@ public class RangeDictionaryTests : TestBase
         Assert.AreEqual(1, rd[3, 3]);
         Assert.AreEqual(1, rd[5, 5]);
     }
+
     [TestMethod]
     public void VerifyAddAddressFillGap()
     {
         RangeDictionary<int>? rd = new RangeDictionary<int>();
 
-        rd.Add(1,1,5,5, 1);
-        rd.Add(6,1,7,5, 2);
-        rd.Add(8,1,15,5, 3);
+        rd.Add(1, 1, 5, 5, 1);
+        rd.Add(6, 1, 7, 5, 2);
+        rd.Add(8, 1, 15, 5, 3);
 
         Assert.IsTrue(rd.Exists(1, 1));
         Assert.IsTrue(rd.Exists(2, 2));
@@ -77,22 +79,25 @@ public class RangeDictionaryTests : TestBase
         Assert.AreEqual(2, rd[7, 4]);
         Assert.AreEqual(3, rd[8, 5]);
     }
+
     [TestMethod]
     public void VerifyAddAddressWithSpan()
     {
         RangeDictionary<int>? rd = new RangeDictionary<int>();
 
-        rd.Add(1,1,2,5, 1);
+        rd.Add(1, 1, 2, 5, 1);
+
         //var r2 = new FormulaRangeAddress() { FromRow = 6, ToRow = 7, FromCol = 1, ToCol = 5 };
-        rd.Add(6,1,7,5, 2);
+        rd.Add(6, 1, 7, 5, 2);
+
         //var r3 = new FormulaRangeAddress() { FromRow = 9, ToRow = 15, FromCol = 1, ToCol = 5 };
         rd.Add(9, 1, 15, 5, 3);
 
         //var r4 = new FormulaRangeAddress() { FromRow = 4, ToRow = 4, FromCol = 1, ToCol = 5 };
-        rd.Add(4,1,4,5, 4);
+        rd.Add(4, 1, 4, 5, 4);
 
         //var r5 = new FormulaRangeAddress() { FromRow = 8, ToRow = 8, FromCol = 1, ToCol = 5 };
-        rd.Add(8, 1,8, 5, 5);
+        rd.Add(8, 1, 8, 5, 5);
 
         Assert.IsTrue(rd.Exists(1, 1));
         Assert.IsTrue(rd.Exists(2, 2));
@@ -116,18 +121,20 @@ public class RangeDictionaryTests : TestBase
     {
         RangeDictionary<int>? rd = new RangeDictionary<int>();
 
-        rd.Add(1,1,5,5, 1);
-        rd.Add(5,5,6,6, 2);
+        rd.Add(1, 1, 5, 5, 1);
+        rd.Add(5, 5, 6, 6, 2);
     }
+
     [TestMethod]
     [ExpectedException(typeof(InvalidOperationException))]
     public void VerifyOverlapTopLeftThrowsException()
     {
         RangeDictionary<int>? rd = new RangeDictionary<int>();
 
-        rd.Add(5,5,6,6, 2);
-        rd.Add(1,1,5,5, 1);
+        rd.Add(5, 5, 6, 6, 2);
+        rd.Add(1, 1, 5, 5, 1);
     }
+
     [TestMethod]
     public void VerifyInsertOnRow()
     {
@@ -144,6 +151,7 @@ public class RangeDictionaryTests : TestBase
         Assert.AreEqual(0, rd[12, 1]);
         Assert.AreEqual(2, rd[12, 2]);
     }
+
     [TestMethod]
     public void VerifyInsertBeforeRow()
     {
@@ -160,6 +168,7 @@ public class RangeDictionaryTests : TestBase
         Assert.AreEqual(0, rd[12, 1]);
         Assert.AreEqual(2, rd[12, 2]);
     }
+
     [TestMethod]
     public void VerifyInsertRowSingleColumn()
     {
@@ -194,6 +203,7 @@ public class RangeDictionaryTests : TestBase
 
         //Assert.AreEqual(2, rd[6, 2]);
     }
+
     [TestMethod]
     public void VerifyDeleteBeforeRowWithDeleteOneRow()
     {
@@ -208,6 +218,7 @@ public class RangeDictionaryTests : TestBase
         Assert.AreEqual(2, rd[3, 3]);
         Assert.AreEqual(0, rd[4, 4]);
     }
+
     [TestMethod]
     public void VerifyInsert1FullColumn()
     {
@@ -226,6 +237,7 @@ public class RangeDictionaryTests : TestBase
         Assert.AreEqual(2, rd[5, 9]);
         Assert.AreEqual(2, rd[5, 11]);
     }
+
     [TestMethod]
     public void VerifyInsert3FullColumn()
     {
@@ -245,6 +257,7 @@ public class RangeDictionaryTests : TestBase
         Assert.AreEqual(2, rd[5, 11]);
         Assert.AreEqual(2, rd[5, 13]);
     }
+
     [TestMethod]
     public void VerifyInsertPartialColumn()
     {
@@ -266,6 +279,7 @@ public class RangeDictionaryTests : TestBase
         Assert.AreEqual(2, rd[3, 9]);
         Assert.AreEqual(2, rd[3, 11]);
     }
+
     [TestMethod]
     public void VerifyDeletePartialColumn()
     {
@@ -274,8 +288,8 @@ public class RangeDictionaryTests : TestBase
         rd.Add(1, 1, 5, 5, 1);
         rd.Add(1, 8, 10, 10, 2);
 
-        rd.DeleteColumn(2, 1, 2, 3);   //Row 2 and 3 - inside
-        rd.DeleteColumn(2, 2, 6, 9);   //Row 6 and 7 - between
+        rd.DeleteColumn(2, 1, 2, 3); //Row 2 and 3 - inside
+        rd.DeleteColumn(2, 2, 6, 9); //Row 6 and 7 - between
         rd.DeleteColumn(2, 1, 15, 15); // Row 15 - Above.
 
         Assert.AreEqual(1, rd[1, 1]);
@@ -314,6 +328,7 @@ public class RangeDictionaryTests : TestBase
         Assert.AreEqual(2, rd[5, 9]);
         Assert.AreEqual(0, rd[5, 10]);
     }
+
     [TestMethod]
     public void VerifyDelete3FullColumn()
     {
@@ -331,6 +346,7 @@ public class RangeDictionaryTests : TestBase
         Assert.AreEqual(2, rd[5, 7]);
         Assert.AreEqual(0, rd[5, 8]);
     }
+
     [TestMethod]
     public void VerifyMerge()
     {
@@ -372,10 +388,11 @@ public class RangeDictionaryTests : TestBase
         Assert.AreEqual(6, rd[20, 1]);
         Assert.AreEqual(6, rd[20, 5]);
     }
+
     [TestMethod]
     public void VerifyMergeFirstLast()
     {
-        RangeDictionary<int>? rd = new RangeDictionary<int>(); 
+        RangeDictionary<int>? rd = new RangeDictionary<int>();
         rd.Add(1, 1, 10, 1, 1);
         rd.Add(11, 1, 15, 1, 2);
         rd.Merge(1, 1, 1, 1, 3); //Inside, Should not apply
@@ -385,6 +402,7 @@ public class RangeDictionaryTests : TestBase
         Assert.AreEqual("1 - 10", rd._addresses[1][0].ToString());
         Assert.AreEqual("11 - 15", rd._addresses[1][1].ToString());
     }
+
     [TestMethod]
     public void VerifyGetValuesFromRange()
     {
@@ -394,7 +412,7 @@ public class RangeDictionaryTests : TestBase
         rd.Add(6, 1, 6, 2, 2); //A6:B6 = 2
         rd.Add(8, 2, 10, 5, 3); //B8:E10 = 3
 
-        List<int>? items = rd.GetValuesFromRange(2, 1, 10,1); //A2:A10
+        List<int>? items = rd.GetValuesFromRange(2, 1, 10, 1); //A2:A10
         Assert.AreEqual(2, items.Count);
         Assert.IsTrue(items.Contains(1));
         Assert.IsTrue(items.Contains(2));

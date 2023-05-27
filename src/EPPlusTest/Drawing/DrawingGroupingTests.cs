@@ -21,16 +21,19 @@ public class DrawingGroupingTests : TestBase
 {
     static ExcelPackage _pck;
     static ExcelWorksheet _ws;
+
     [ClassInitialize]
     public static void Init(TestContext context)
     {
-        _pck = OpenPackage("DrawingGrouping.xlsx",true);
+        _pck = OpenPackage("DrawingGrouping.xlsx", true);
     }
+
     [ClassCleanup]
     public static void Cleanup()
     {
         SaveAndCleanup(_pck);
     }
+
     [TestMethod]
     public void Group_GroupBoxWithRadioButtonsTest()
     {
@@ -40,7 +43,7 @@ public class DrawingGroupingTests : TestBase
         ctrl.SetPosition(480, 80);
         ctrl.SetSize(200, 120);
 
-        _ws.Cells["G1"].Value = "Linked Groupbox";            
+        _ws.Cells["G1"].Value = "Linked Groupbox";
         ctrl.LinkedCell = _ws.Cells["G1"];
 
         ExcelControlRadioButton? r1 = _ws.Drawings.AddRadioButtonControl("Option Button 1");
@@ -55,8 +58,8 @@ public class DrawingGroupingTests : TestBase
         r3.FirstButton = true;
 
         ctrl.Group(r1, r2, r3);
-
     }
+
     [TestMethod]
     public void Group_SingleDrawing()
     {
@@ -67,6 +70,7 @@ public class DrawingGroupingTests : TestBase
 
         ctrl.Group();
     }
+
     [TestMethod]
     public void Group_AddControlViaGroupShape()
     {
@@ -82,6 +86,7 @@ public class DrawingGroupingTests : TestBase
         ExcelGroupShape? group = ctrl.Group();
         group.Drawings.Add(r1);
     }
+
     [TestMethod]
     public void UnGroup_SingleDrawing()
     {
@@ -89,10 +94,11 @@ public class DrawingGroupingTests : TestBase
         ExcelControlGroupBox? ctrl = (ExcelControlGroupBox)_ws.Drawings.AddControl("GroupBox 1", eControlType.GroupBox);
         ctrl.SetPosition(480, 80);
         ctrl.SetSize(200, 120);
-            
+
         ctrl.Group();
         ctrl.UnGroup();
     }
+
     [TestMethod]
     public void UnGroup_GroupBoxWithRadioButtonsTest()
     {
@@ -116,12 +122,13 @@ public class DrawingGroupingTests : TestBase
         r3.SetSize(100, 25);
         r3.FirstButton = true;
 
-        ExcelGroupShape? g=ctrl.Group(r1, r2, r3);
+        ExcelGroupShape? g = ctrl.Group(r1, r2, r3);
 
-        g.SetPosition(100, 100);    //Move whole group
+        g.SetPosition(100, 100); //Move whole group
 
         r1.UnGroup(false);
     }
+
     [TestMethod]
     public void Group_GroupIntoGroupTest()
     {
@@ -148,6 +155,7 @@ public class DrawingGroupingTests : TestBase
         r3.FirstButton = true;
         g.Drawings.Add(r3);
     }
+
     [TestMethod]
     public void Group_ShapeAndChart()
     {
@@ -167,8 +175,7 @@ public class DrawingGroupingTests : TestBase
         ExcelPicture? pic = _ws.Drawings.AddPicture("Pic1", Properties.Resources.Test1);
         pic.SetPosition(400, 400);
 
-
-        ExcelTable? tbl = _ws.Tables.Add(_ws.Cells["A1:B2"], "Table1");       
+        ExcelTable? tbl = _ws.Tables.Add(_ws.Cells["A1:B2"], "Table1");
         ExcelTableSlicer? slicer = tbl.Columns[0].AddSlicer();
         slicer.SetPosition(200, 200);
 

@@ -10,6 +10,7 @@
  *************************************************************************************************
     04/16/2020         EPPlus Software AB       EPPlus 5.2
  *************************************************************************************************/
+
 namespace OfficeOpenXml.Drawing.Chart.ChartEx;
 
 /// <summary>
@@ -21,18 +22,22 @@ public enum eNumericDataType
     /// The dimension is a value.
     /// </summary>
     Value,
+
     /// <summary>
     /// The dimension is an x-coordinate.
     /// </summary>
     X,
+
     /// <summary>
     /// The dimension is a y-coordinate.
     /// </summary>
     Y,
+
     /// <summary>
     /// The dimension is a size.
     /// </summary>
     Size,
+
     /// <summary>
     /// The dimension is a value determining a color.        
     /// </summary>

@@ -10,6 +10,7 @@
  *************************************************************************************************
   01/27/2020         EPPlus Software AB       Initial release EPPlus 5
  *************************************************************************************************/
+
 namespace OfficeOpenXml.Drawing;
 
 /// <summary>
@@ -21,30 +22,37 @@ public enum eDrawingColorType
     /// Not specified
     /// </summary>
     None,
+
     /// <summary>
     /// RGB specified in percentage
     /// </summary>
-    RgbPercentage,      //ScRgbColor
+    RgbPercentage, //ScRgbColor
+
     /// <summary>
     /// Red Green Blue
     /// </summary>
     Rgb,
+
     /// <summary>
     /// Hue, Saturation, Luminance
     /// </summary>
     Hsl,
+
     /// <summary>
     /// A system color
     /// </summary>
     System,
+
     /// <summary>
     /// A color bound to a user's theme
     /// </summary>
     Scheme,
+
     /// <summary>
     /// A preset Color
     /// </summary>
     Preset,
+
     /// <summary>
     /// A Color refering to a charts color style
     /// </summary>

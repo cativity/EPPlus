@@ -11,11 +11,13 @@ namespace OfficeOpenXml.Core;
 /// <typeparam name="T">The generic type</typeparam>
 public class EPPlusReadOnlyList<T> : IEnumerable<T>
 {
-    internal List<T> _list=new List<T>();
+    internal List<T> _list = new List<T>();
+
     IEnumerator<T> IEnumerable<T>.GetEnumerator()
     {
         return this._list.GetEnumerator();
     }
+
     /// <summary>
     /// Return the enumerator for the collection
     /// </summary>
@@ -32,11 +34,9 @@ public class EPPlusReadOnlyList<T> : IEnumerable<T>
     /// <returns>Returns the object at the index</returns>
     public T this[int index]
     {
-        get
-        {
-            return this._list[index];
-        }
+        get { return this._list[index]; }
     }
+
     ///// <summary>
     ///// Gets the item with the value supplied
     ///// </summary>
@@ -60,23 +60,22 @@ public class EPPlusReadOnlyList<T> : IEnumerable<T>
     {
         return this._list.IndexOf(value);
     }
+
     /// <summary>
     /// Number of items in the collection.
     /// </summary>
     public int Count
     {
-        get
-        {
-            return this._list.Count;
-        }
+        get { return this._list.Count; }
     }
+
     internal virtual void Clear()
     {
         this._list.Clear();
     }
+
     internal virtual void Add(T item)
     {
         this._list.Add(item);
     }
-
 }

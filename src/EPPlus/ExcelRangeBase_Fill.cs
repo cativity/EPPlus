@@ -10,6 +10,7 @@
  *************************************************************************************************
     08/11/2021         EPPlus Software AB       EPPlus 5.8
  *************************************************************************************************/
+
 using OfficeOpenXml.Core.Worksheet.Fill;
 using System;
 using System.Collections.Generic;
@@ -19,6 +20,7 @@ namespace OfficeOpenXml;
 public partial class ExcelRangeBase
 {
     #region FillNumbers
+
     /// <summary>
     /// Fills the range by adding 1 to each cell starting from the value in the top left cell by column
     /// </summary>
@@ -26,16 +28,22 @@ public partial class ExcelRangeBase
     {
         this.FillNumber(x => { });
     }
+
     /// <summary>
     /// Fills a range by adding the step value to the start Value. If <paramref name="startValue"/> is null the first value in the row/column is used.
     /// Fill is done by column from top to bottom
     /// </summary>
     /// <param name="startValue">The start value of the first cell. If this value is null the value of the first cell is used.</param>
     /// <param name="stepValue">The value used for each step</param>
-    public void FillNumber(double? startValue, double stepValue=1)
+    public void FillNumber(double? startValue, double stepValue = 1)
     {
-        this.FillNumber(x => { x.StepValue = stepValue; x.StartValue = startValue; });
+        this.FillNumber(x =>
+        {
+            x.StepValue = stepValue;
+            x.StartValue = startValue;
+        });
     }
+
     /// <summary>
     /// Fills a range by using the argument options. 
     /// </summary>
@@ -85,8 +93,11 @@ public partial class ExcelRangeBase
             this.Style.Numberformat.Format = o.NumberFormat;
         }
     }
+
     #endregion
+
     #region FillDateTime
+
     /// <summary>
     /// Fills the range by adding 1 day to each cell starting from the value in the top left cell by column.
     /// </summary>
@@ -94,18 +105,20 @@ public partial class ExcelRangeBase
     {
         this.FillDateTime(x => { });
     }
+
     /// <summary>
     /// Fills the range by adding 1 day to each cell per column starting from <paramref name="startValue"/>.
     /// </summary>
-    public void FillDateTime(DateTime? startValue, eDateTimeUnit dateTimeUnit=eDateTimeUnit.Day, int stepValue = 1)
+    public void FillDateTime(DateTime? startValue, eDateTimeUnit dateTimeUnit = eDateTimeUnit.Day, int stepValue = 1)
     {
-        this.FillDateTime(x => 
+        this.FillDateTime(x =>
         {
             x.StartValue = startValue;
             x.DateTimeUnit = dateTimeUnit;
             x.StepValue = stepValue;
         });
     }
+
     /// <summary>
     /// Fill the range with dates.
     /// </summary>
@@ -149,14 +162,17 @@ public partial class ExcelRangeBase
                 }
             }
         }
-            
+
         if (!string.IsNullOrEmpty(o.NumberFormat))
         {
             this.Style.Numberformat.Format = o.NumberFormat;
         }
     }
+
     #endregion
+
     #region FillList
+
     /// <summary>
     /// Fills the range columnwise using the values in the list. 
     /// </summary>
@@ -164,8 +180,9 @@ public partial class ExcelRangeBase
     /// <param name="list">The list to use.</param>
     public void FillList<T>(IEnumerable<T> list)
     {
-        this.FillList(list, x=> { });
+        this.FillList(list, x => { });
     }
+
     /// <summary>
     /// 
     /// </summary>
@@ -217,5 +234,6 @@ public partial class ExcelRangeBase
             this.Style.Numberformat.Format = o.NumberFormat;
         }
     }
+
     #endregion
 }

@@ -10,6 +10,7 @@
  *************************************************************************************************
   12/10/2020         EPPlus Software AB       EPPlus 5.5
  *************************************************************************************************/
+
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -59,6 +60,7 @@ internal static class AttributeExtensions
         where T : Attribute
     {
         PropertyInfo[]? members = type.GetProperties();
+
         return members.Any(x => x.GetCustomAttributes(typeof(T), false).FirstOrDefault() != null);
     }
 
@@ -66,19 +68,24 @@ internal static class AttributeExtensions
         where T : Attribute
     {
         object[]? attributes = type.GetCustomAttributes(true);
-        if(attributes == null || !attributes.Any())
+
+        if (attributes == null || !attributes.Any())
         {
             return Enumerable.Empty<T>();
         }
+
         List<T>? result = new List<T>();
-        foreach(object? attr in attributes)
+
+        foreach (object? attr in attributes)
         {
             T? typedAttr = attr as T;
-            if(typedAttr != null)
+
+            if (typedAttr != null)
             {
                 result.Add(typedAttr);
             }
         }
+
         return result;
     }
 

@@ -10,6 +10,7 @@
  *************************************************************************************************
   01/27/2020         EPPlus Software AB       Initial release EPPlus 5
  *************************************************************************************************/
+
 using System;
 using System.Globalization;
 using System.Xml;
@@ -22,20 +23,20 @@ namespace OfficeOpenXml.Drawing.Chart.Style;
 public class ExcelChartStyleReference : XmlHelper
 {
     string _path;
-    internal ExcelChartStyleReference(XmlNamespaceManager nsm, XmlNode topNode, string path) : base(nsm, topNode)
+
+    internal ExcelChartStyleReference(XmlNamespaceManager nsm, XmlNode topNode, string path)
+        : base(nsm, topNode)
     {
-        this._path = path;            
+        this._path = path;
     }
+
     /// <summary>
     /// The index to the theme style matrix.
     /// <seealso cref="ExcelWorkbook.ThemeManager"/>
     /// </summary>
     public int Index
     {
-        get
-        {
-            return this.GetXmlNodeInt($"{this._path}/@idx");
-        }
+        get { return this.GetXmlNodeInt($"{this._path}/@idx"); }
         set
         {
             if (value < 0)
@@ -44,20 +45,20 @@ public class ExcelChartStyleReference : XmlHelper
             }
 
             this.SetXmlNodeString($"{this._path}/@idx", value.ToString(CultureInfo.InvariantCulture));
-        }   
+        }
     }
+
     ExcelChartStyleColorManager _color = null;
+
     /// <summary>
     /// The color to be used for the reference. 
     /// This will replace any the StyleClr node in the chart style xml.
     /// </summary>
     public ExcelChartStyleColorManager Color
     {
-        get
-        {
-            return this._color ??= new ExcelChartStyleColorManager(this.NameSpaceManager, this.TopNode, this._path, this.SchemaNodeOrder);
-        }
+        get { return this._color ??= new ExcelChartStyleColorManager(this.NameSpaceManager, this.TopNode, this._path, this.SchemaNodeOrder); }
     }
+
     /// <summary>
     /// If the reference has a color
     /// </summary>
@@ -66,7 +67,8 @@ public class ExcelChartStyleReference : XmlHelper
         get
         {
             XmlNode? node = this.GetNode(this._path);
-            return node!=null && node.HasChildNodes;
+
+            return node != null && node.HasChildNodes;
         }
     }
 }

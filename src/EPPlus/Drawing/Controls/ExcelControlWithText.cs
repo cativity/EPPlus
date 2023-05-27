@@ -10,6 +10,7 @@
  *************************************************************************************************
     11/24/2020         EPPlus Software AB           Controls 
  *************************************************************************************************/
+
 using OfficeOpenXml.Packaging;
 using OfficeOpenXml.Style;
 using System;
@@ -27,14 +28,18 @@ public abstract class ExcelControlWithText : ExcelControl
     private string _paragraphPath = "xdr:sp/xdr:txBody/a:p";
     private string _lockTextPath = "xdr:sp/@fLocksText";
 
-    internal ExcelControlWithText(ExcelDrawings drawings, XmlNode drawingNode, ControlInternal control, ZipPackagePart part, XmlDocument ctrlPropXml, ExcelGroupShape parent = null) : 
-        base(drawings, drawingNode, control, part, ctrlPropXml, parent)
+    internal ExcelControlWithText(ExcelDrawings drawings,
+                                  XmlNode drawingNode,
+                                  ControlInternal control,
+                                  ZipPackagePart part,
+                                  XmlDocument ctrlPropXml,
+                                  ExcelGroupShape parent = null)
+        : base(drawings, drawingNode, control, part, ctrlPropXml, parent)
     {
-
     }
 
-    internal ExcelControlWithText(ExcelDrawings drawings, XmlElement drawNode, string name, ExcelGroupShape parent=null) : 
-        base(drawings, drawNode, name, parent)
+    internal ExcelControlWithText(ExcelDrawings drawings, XmlElement drawNode, string name, ExcelGroupShape parent = null)
+        : base(drawings, drawNode, name, parent)
     {
     }
 
@@ -43,13 +48,10 @@ public abstract class ExcelControlWithText : ExcelControl
     /// </summary>
     public string Text
     {
-        get
-        {
-            return this.RichText.Text;
-        }
+        get { return this.RichText.Text; }
         set
         {
-            if(this.RichText.Count==1)
+            if (this.RichText.Count == 1)
             {
                 this.RichText[0].Text = value;
             }
@@ -62,6 +64,7 @@ public abstract class ExcelControlWithText : ExcelControl
             this._vml.Text = value;
         }
     }
+
     ExcelParagraphCollection _richText = null;
 
     /// <summary>
@@ -69,35 +72,29 @@ public abstract class ExcelControlWithText : ExcelControl
     /// </summary>
     public ExcelParagraphCollection RichText
     {
-        get
-        {
-            return this._richText ??= new ExcelParagraphCollection(this, this.NameSpaceManager, this.TopNode, this._paragraphPath, this.SchemaNodeOrder);
-        }
+        get { return this._richText ??= new ExcelParagraphCollection(this, this.NameSpaceManager, this.TopNode, this._paragraphPath, this.SchemaNodeOrder); }
     }
+
     /// <summary>
     /// Gets or sets whether a controls text is locked when the worksheet is protected.
     /// </summary>
     public bool LockedText
     {
-        get
-        {
-            return this._ctrlProp.GetXmlNodeBool("@lockText");
-        }
+        get { return this._ctrlProp.GetXmlNodeBool("@lockText"); }
         set
         {
             this._ctrlProp.SetXmlNodeBool("@lockText", value);
             this.SetXmlNodeBool(this._lockTextPath, value);
         }
     }
+
     ExcelTextBody _textBody = null;
+
     /// <summary>
     /// Access to text body properties.
     /// </summary>
     public ExcelTextBody TextBody
     {
-        get
-        {
-            return this._textBody ??= new ExcelTextBody(this.NameSpaceManager, this.TopNode, "xdr:sp/xdr:txBody/a:bodyPr", this.SchemaNodeOrder);
-        }
+        get { return this._textBody ??= new ExcelTextBody(this.NameSpaceManager, this.TopNode, "xdr:sp/xdr:txBody/a:bodyPr", this.SchemaNodeOrder); }
     }
 }

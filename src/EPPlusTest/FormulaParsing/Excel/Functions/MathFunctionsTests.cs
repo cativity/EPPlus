@@ -26,6 +26,7 @@
  *******************************************************************************
   01/27/2020         EPPlus Software AB       Initial release EPPlus 5
  *******************************************************************************/
+
 using System;
 using System.Text;
 using System.Collections.Generic;
@@ -470,10 +471,13 @@ public class MathFunctionsTests
 
         // incorrect rounding method - have to be floor
         Assert.AreEqual("IX", sheet.Cells["A1"].Value.ToString());
+
         // incorrect cornversion by 1 scenario
         Assert.AreEqual("LMVLIV", sheet.Cells["A2"].Value.ToString());
+
         // incorrect interpretation of true - should be "0" instead of "1"
         Assert.AreEqual("XLV", sheet.Cells["A3"].Value.ToString());
+
         // incorrect interpretation of false - should be "4" instead of "0"
         Assert.AreEqual("ID", sheet.Cells["A4"].Value.ToString());
     }
@@ -765,6 +769,7 @@ public class MathFunctionsTests
 
         Average? func = new Average();
         FunctionArgument[]? args = new FunctionArgument[0];
+
         try
         {
             func.Execute(args, this._parsingContext);
@@ -773,6 +778,7 @@ public class MathFunctionsTests
         {
             errorType = e.ErrorValue.Type;
         }
+
         Assert.AreEqual(eErrorType.Div0, errorType);
     }
 
@@ -887,7 +893,6 @@ public class MathFunctionsTests
         CompileResult? result = func.Execute(args, this._parsingContext);
         Assert.AreEqual(5d, result.Result);
     }
-
 
     [TestMethod]
     public void CountShouldIncludeEnumerableMembers()
@@ -1603,7 +1608,6 @@ public class MathFunctionsTests
         w.SetFormula(4, 4, "RANK.AVG(4,A1:A5,1)");
         w.SetFormula(4, 5, "RANK.AVG(4,A1:A5)");
 
-
         w.SetFormula(5, 4, "RANK.AVG(4,A1:A6,1)");
         w.SetFormula(5, 5, "RANK.AVG(4,A1:A6)");
 
@@ -1682,7 +1686,7 @@ public class MathFunctionsTests
         Assert.AreEqual(0.41666, result);
     }
 
-    [TestMethod] 
+    [TestMethod]
     public void PercentrankExc_Test1()
     {
         using ExcelPackage? package = new ExcelPackage();

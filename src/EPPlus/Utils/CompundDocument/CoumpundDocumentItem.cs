@@ -10,6 +10,7 @@
  *************************************************************************************************
   01/27/2020         EPPlus Software AB       Initial release EPPlus 5
  *************************************************************************************************/
+
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -26,38 +27,36 @@ internal class CompoundDocumentItem : IComparable<CompoundDocumentItem>
     {
         this.Children = new List<CompoundDocumentItem>();
     }
+
     public CompoundDocumentItem Parent { get; set; }
+
     public List<CompoundDocumentItem> Children { get; set; }
 
-    public string Name
-    {
-        get;
-        set;
-    }
-        
+    public string Name { get; set; }
+
     public string FullName
     {
         get
         {
             string? path = this.Name;
-            CompoundDocumentItem? p= this.Parent;
-            while(p!=null)
+            CompoundDocumentItem? p = this.Parent;
+
+            while (p != null)
             {
-                path=p.Name + "/" + path;
+                path = p.Name + "/" + path;
                 p = p.Parent;
             }
+
             return path;
         }
     }
+
     /// <summary>
     /// 0=Red
     /// 1=Black
     /// </summary>
-    public byte ColorFlag
-    {
-        get;
-        set;
-    }
+    public byte ColorFlag { get; set; }
+
     /// <summary>
     /// Type of object
     /// 0x00 - Unknown or unallocated 
@@ -65,80 +64,35 @@ internal class CompoundDocumentItem : IComparable<CompoundDocumentItem>
     /// 0x02 - Stream Object 
     /// 0x05 - Root Storage Object
     /// </summary>
-    public byte ObjectType
-    {
-        get;
+    public byte ObjectType { get; set; }
 
-        set;
-    }
+    public int ChildID { get; set; }
 
-    public int ChildID
-    {
-        get;
+    public Guid ClsID { get; set; }
 
-        set;
-    }
+    public int LeftSibling { get; set; }
 
-    public Guid ClsID
-    {
-        get;
+    public int RightSibling { get; set; }
 
-        set;
-    }
+    public int StatBits { get; set; }
 
-    public int LeftSibling
-    {
-        get;
+    public long CreationTime { get; set; }
 
-        set;
-    }
+    public long ModifiedTime { get; set; }
 
-    public int RightSibling
-    {
-        get;
-        set;
-    }
+    public int StartingSectorLocation { get; set; }
 
-    public int StatBits
-    {
-        get;
-        set;
-    }
+    public long StreamSize { get; set; }
 
-    public long CreationTime
-    {
-        get;
-        set;
-    }
+    public byte[] Stream { get; set; }
 
-    public long ModifiedTime
-    {
-        get;
-        set;
-    }
-
-    public int StartingSectorLocation
-    {
-        get;
-        set;
-    }
-
-    public long StreamSize
-    {
-        get;
-        set;
-    }
-
-    public byte[] Stream
-    {
-        get;
-        set;
-    }
     internal bool _handled = false;
+
     internal void Read(BinaryReader br)
     {
         byte[]? s = br.ReadBytes(0x40);
         short sz = br.ReadInt16();
+
         if (sz > 0)
         {
             this.Name = Encoding.Unicode.GetString(s, 0, sz - 2);
@@ -160,6 +114,7 @@ internal class CompoundDocumentItem : IComparable<CompoundDocumentItem>
         this.StartingSectorLocation = br.ReadInt32();
         this.StreamSize = br.ReadInt64();
     }
+
     internal void Write(BinaryWriter bw)
     {
         byte[]? name = Encoding.Unicode.GetBytes(this.Name);
@@ -192,27 +147,30 @@ internal class CompoundDocumentItem : IComparable<CompoundDocumentItem>
     /// <returns></returns>
     public int CompareTo(CompoundDocumentItem other)
     {
-        if(this.Name.Length < other.Name.Length)
+        if (this.Name.Length < other.Name.Length)
         {
             return -1;
         }
-        else if(this.Name.Length > other.Name.Length)
+        else if (this.Name.Length > other.Name.Length)
         {
             return 1;
         }
+
         string? n1 = this.Name.ToUpperInvariant();
         string? n2 = other.Name.ToUpperInvariant();
-        for (int i=0;i<n1.Length;i++)
+
+        for (int i = 0; i < n1.Length; i++)
         {
-            if(n1[i] < n2[i])
+            if (n1[i] < n2[i])
             {
                 return -1;
             }
-            else if(n1[i] > n2[i])
+            else if (n1[i] > n2[i])
             {
                 return 1;
             }
         }
+
         return 0;
     }
 }

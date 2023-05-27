@@ -13,11 +13,13 @@ namespace EPPlusTest.Drawing.Slicer;
 public class SlicerTest : TestBase
 {
     static ExcelPackage _pck;
+
     [ClassInitialize]
     public static void Init(TestContext context)
     {
         _pck = OpenPackage("Slicer.xlsx", true);
     }
+
     [ClassCleanup]
     public static void Cleanup()
     {
@@ -31,6 +33,7 @@ public class SlicerTest : TestBase
             File.Copy(fileName, dirName + "\\SlicerRead.xlsx", true);
         }
     }
+
     [TestMethod]
     public void AddTableSlicerDate()
     {
@@ -50,9 +53,9 @@ public class SlicerTest : TestBase
 
         Assert.AreEqual(eCrossFilter.None, slicer.Cache.CrossFilter);
         Assert.IsTrue(slicer.Cache.HideItemsWithNoData);
-        slicer.Cache.HideItemsWithNoData = false;       //Validate element is removed
+        slicer.Cache.HideItemsWithNoData = false; //Validate element is removed
         Assert.IsFalse(slicer.Cache.HideItemsWithNoData);
-        slicer.Cache.HideItemsWithNoData = true;       //Add element again
+        slicer.Cache.HideItemsWithNoData = true; //Add element again
 
         ExcelTableSlicer? slicer2 = ws.Drawings.AddTableSlicer(tbl.Columns[2]);
         slicer2.Style = eSlicerStyle.Light4;
@@ -74,6 +77,7 @@ public class SlicerTest : TestBase
         Assert.AreEqual("SlicerStyleLight4", slicer2.StyleName);
         Assert.AreEqual(eSlicerStyle.Light4, slicer2.Style);
     }
+
     [TestMethod]
     public void AddTableSlicerString()
     {
@@ -97,6 +101,7 @@ public class SlicerTest : TestBase
         Assert.AreEqual(eSlicerStyle.Dark1, slicer.Style);
         Assert.IsFalse(slicer.ShowCaption);
     }
+
     [TestMethod]
     public void AddPivotTableSlicer()
     {
@@ -118,6 +123,7 @@ public class SlicerTest : TestBase
         slicer.SetPosition(1, 0, 10, 0);
         slicer.SetSize(200, 600);
     }
+
     [TestMethod]
     public void AddPivotTableSlicerToTwoPivotTables()
     {
@@ -130,6 +136,7 @@ public class SlicerTest : TestBase
         ExcelPivotTable? p2 = ws.PivotTables.Add(ws.Cells["K1"], p1.CacheDefinition, "Pivot2");
         p2.DataFields.Add(p2.Fields[1]);
         p2.RowFields.Add(p2.Fields[3]);
+
         //p2.Fields[4].AddDateGrouping(eDateGroupBy.Years | eDateGroupBy.Months | eDateGroupBy.Days);
 
         ExcelPivotTableSlicer? slicer = ws.Drawings.AddPivotTableSlicer(p1.Fields[0]);
@@ -155,6 +162,7 @@ public class SlicerTest : TestBase
         Assert.IsTrue(p2.Fields[0].Items[0].Hidden);
         Assert.IsTrue(p2.Fields[0].Items[1].Hidden);
     }
+
     [TestMethod]
     public void AddPivotTableSlicerToTwoPivotTablesWithDateGrouping()
     {
@@ -193,6 +201,7 @@ public class SlicerTest : TestBase
         Assert.IsTrue(p2.Fields[0].Items[0].Hidden);
         Assert.IsTrue(p2.Fields[0].Items[1].Hidden);
     }
+
     [TestMethod]
     public void AddPivotTableSlicerToTwoPivotTablesWithNumberGrouping()
     {
@@ -237,6 +246,7 @@ public class SlicerTest : TestBase
         ws.Drawings.Remove(slicer);
         Assert.IsNull(tbl.Fields[1].Slicer);
     }
+
     [TestMethod]
     public void RemoveOnePivotTableSlicerNotLast()
     {
@@ -259,6 +269,7 @@ public class SlicerTest : TestBase
         Assert.IsNull(tbl.Fields[1].Slicer);
         Assert.IsNotNull(tbl.Fields[2].Slicer);
     }
+
     [TestMethod]
     public void RemoveTableSlicerStringIfLast()
     {
@@ -271,6 +282,7 @@ public class SlicerTest : TestBase
         ws.Drawings.Remove(slicer);
         Assert.IsNull(tbl.Columns[1].Slicer);
     }
+
     [TestMethod]
     public void RemoveTableSlicerStringIfNotLast()
     {
@@ -285,6 +297,7 @@ public class SlicerTest : TestBase
         Assert.IsNull(tbl.Columns[1].Slicer);
         Assert.IsNotNull(tbl.Columns[2].Slicer);
     }
+
     [TestMethod]
     public void AddTwoTableSlicersToSameColumn()
     {
@@ -304,6 +317,7 @@ public class SlicerTest : TestBase
         Assert.IsNull(tbl.Columns[1].Slicer);
         Assert.AreEqual(slicer1, tbl.Columns[2].Slicer);
     }
+
     [TestMethod]
     public void AddTwoPivotTableSlicersToSameField()
     {

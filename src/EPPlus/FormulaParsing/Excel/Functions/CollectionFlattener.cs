@@ -10,6 +10,7 @@
  *************************************************************************************************
   01/27/2020         EPPlus Software AB       Initial release EPPlus 5
  *************************************************************************************************/
+
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -23,6 +24,7 @@ public abstract class CollectionFlattener<T>
     {
         List<T>? argList = new List<T>();
         FuncArgsToFlatEnumerable(arguments, argList, convertFunc);
+
         return argList;
     }
 

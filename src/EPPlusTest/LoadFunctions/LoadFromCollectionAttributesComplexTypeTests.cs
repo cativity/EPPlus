@@ -26,48 +26,28 @@ public class LoadFromCollectionAttributesComplexTypeTests
         this._collection.Add(new Outer
         {
             ApprovedUtc = new DateTime(2021, 7, 1),
-            Organization = new Organization 
-            { 
-                OrgLevel3 = "ABC", 
-                OrgLevel4 = "DEF", 
-                OrgLevel5 = "GHI"
-            },
+            Organization = new Organization { OrgLevel3 = "ABC", OrgLevel4 = "DEF", OrgLevel5 = "GHI" },
             Acknowledged = true
         });
 
         this._collectionHeaders.Add(new OuterWithHeaders
         {
             ApprovedUtc = new DateTime(2021, 7, 1),
-            Organization = new Organization
-            {
-                OrgLevel3 = "ABC",
-                OrgLevel4 = "DEF",
-                OrgLevel5 = "GHI"
-            },
+            Organization = new Organization { OrgLevel3 = "ABC", OrgLevel4 = "DEF", OrgLevel5 = "GHI" },
             Acknowledged = true
         });
 
         this._collectionReversed.Add(new OuterReversedSortOrder
         {
             ApprovedUtc = new DateTime(2021, 7, 1),
-            Organization = new OrganizationReversedSortOrder
-            {
-                OrgLevel3 = "ABC",
-                OrgLevel4 = "DEF",
-                OrgLevel5 = "GHI"
-            },
+            Organization = new OrganizationReversedSortOrder { OrgLevel3 = "ABC", OrgLevel4 = "DEF", OrgLevel5 = "GHI" },
             Acknowledged = true
         });
 
         this._collectionInheritence.Add(new OuterSubclass
         {
             ApprovedUtc = new DateTime(2021, 7, 1),
-            Organization = new OrganizationSubclass
-            {
-                OrgLevel3 = "ABC",
-                OrgLevel4 = "DEF",
-                OrgLevel5 = "GHI"
-            },
+            Organization = new OrganizationSubclass { OrgLevel3 = "ABC", OrgLevel4 = "DEF", OrgLevel5 = "GHI" },
             Acknowledged = true
         });
     }
@@ -81,7 +61,9 @@ public class LoadFromCollectionAttributesComplexTypeTests
     [TestMethod]
     public void ShouldSetupColumnsWithPath()
     {
-        LoadFromCollectionColumns<Outer>? cols = new LoadFromCollectionColumns<Outer>(LoadFromCollectionParams.DefaultBindingFlags, Enumerable.Empty<string>().ToList());
+        LoadFromCollectionColumns<Outer>? cols =
+            new LoadFromCollectionColumns<Outer>(LoadFromCollectionParams.DefaultBindingFlags, Enumerable.Empty<string>().ToList());
+
         List<ColumnInfo>? result = cols.Setup();
         Assert.AreEqual(5, result.Count, "List did not contain 5 elements as expected");
         Assert.AreEqual("ApprovedUtc", result[0].Path);
@@ -91,7 +73,9 @@ public class LoadFromCollectionAttributesComplexTypeTests
     [TestMethod]
     public void ShouldSetupColumnsWithPathSorted()
     {
-        LoadFromCollectionColumns<OuterReversedSortOrder>? cols = new LoadFromCollectionColumns<OuterReversedSortOrder>(LoadFromCollectionParams.DefaultBindingFlags);
+        LoadFromCollectionColumns<OuterReversedSortOrder>? cols =
+            new LoadFromCollectionColumns<OuterReversedSortOrder>(LoadFromCollectionParams.DefaultBindingFlags);
+
         List<ColumnInfo>? result = cols.Setup();
         Assert.AreEqual(5, result.Count, "List did not contain 5 elements as expected");
         Assert.AreEqual("Acknowledged", result[0].Path);
@@ -102,13 +86,11 @@ public class LoadFromCollectionAttributesComplexTypeTests
     [TestMethod]
     public void ShouldSetupColumnsWithPathSortedByClassAttribute()
     {
-        List<string>? order = new List<string>
-        {
-            "ApprovedUtc",
-            "Acknowledged",
-            "Organization.OrgLevel5"
-        };
-        LoadFromCollectionColumns<OuterReversedSortOrder>? cols = new LoadFromCollectionColumns<OuterReversedSortOrder>(LoadFromCollectionParams.DefaultBindingFlags, order);
+        List<string>? order = new List<string> { "ApprovedUtc", "Acknowledged", "Organization.OrgLevel5" };
+
+        LoadFromCollectionColumns<OuterReversedSortOrder>? cols =
+            new LoadFromCollectionColumns<OuterReversedSortOrder>(LoadFromCollectionParams.DefaultBindingFlags, order);
+
         List<ColumnInfo>? result = cols.Setup();
         Assert.AreEqual(5, result.Count, "List did not contain 5 elements as expected");
         Assert.AreEqual("ApprovedUtc", result[0].Path);
@@ -116,7 +98,6 @@ public class LoadFromCollectionAttributesComplexTypeTests
         Assert.AreEqual("Organization.OrgLevel5", result[2].Path);
         Assert.AreEqual("Organization.OrgLevel4", result[3].Path);
         Assert.AreEqual("Organization.OrgLevel3", result[4].Path);
-
     }
 
     [TestMethod]

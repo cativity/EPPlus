@@ -10,6 +10,7 @@
  *************************************************************************************************
   07/16/2020         EPPlus Software AB       EPPlus 5.2.1
  *************************************************************************************************/
+
 using OfficeOpenXml.LoadFunctions.Params;
 using System;
 using System.Collections.Generic;
@@ -40,10 +41,12 @@ internal class LoadFromText
         {
             ExcelRange? r = this._worksheet.Cells[this._range._fromRow, this._range._fromCol];
             r.Value = "";
+
             return r;
         }
 
         string[] lines;
+
         if (this._format.TextQualifier == 0)
         {
             lines = SplitLines(this._text, this._format.EOL);
@@ -57,26 +60,32 @@ internal class LoadFromText
         int col = 0;
         int maxCol = col;
         int lineNo = 1;
+
         //var values = new List<object>[lines.Length];
         foreach (string line in lines)
         {
             List<object>? items = new List<object>();
+
             //values[row] = items;
 
             if (lineNo > this._format.SkipLinesBeginning && lineNo <= lines.Length - this._format.SkipLinesEnd)
             {
                 col = 0;
                 string v = "";
-                bool isText = false, isQualifier = false;
+
+                bool isText = false,
+                     isQualifier = false;
+
                 int QCount = 0;
                 int lineQCount = 0;
+
                 foreach (char c in line)
                 {
                     if (this._format.TextQualifier != 0 && c == this._format.TextQualifier)
                     {
                         if (!isText && v != "")
                         {
-                            if(v.Trim()=="")
+                            if (v.Trim() == "")
                             {
                                 v = "";
                             }
@@ -85,6 +94,7 @@ internal class LoadFromText
                                 throw new Exception(string.Format("Invalid Text Qualifier in line : {0}", line));
                             }
                         }
+
                         isQualifier = !isQualifier;
                         QCount += 1;
                         lineQCount++;
@@ -120,20 +130,25 @@ internal class LoadFromText
                                 {
                                     throw new Exception(string.Format("Text delimiter is not closed in line : {0}", line));
                                 }
+
                                 v += c;
                             }
                         }
+
                         QCount = 0;
                     }
                 }
+
                 if (QCount > 1)
                 {
-                    if(string.IsNullOrEmpty(v))
+                    if (string.IsNullOrEmpty(v))
                     {
                         QCount--;
                     }
+
                     v += new string(this._format.TextQualifier, QCount / 2);
                 }
+
                 if (lineQCount % 2 == 1)
                 {
                     throw new Exception(string.Format("Text delimiter is not closed in line : {0}", line));
@@ -150,6 +165,7 @@ internal class LoadFromText
 
                 row++;
             }
+
             lineNo++;
         }
 
@@ -157,12 +173,14 @@ internal class LoadFromText
         {
             return null;
         }
+
         return this._worksheet.Cells[this._range._fromRow, this._range._fromCol, this._range._fromRow + row - 1, this._range._fromCol + maxCol];
     }
 
     private static string[] SplitLines(string text, string EOL)
     {
         string[]? lines = Regex.Split(text, EOL);
+
         for (int i = 0; i < lines.Length; i++)
         {
             if (EOL == "\n" && lines[i].EndsWith("\r", StringComparison.OrdinalIgnoreCase))
@@ -175,6 +193,7 @@ internal class LoadFromText
                 lines[i] = lines[i].Substring(1); //If EOL char is cr and last chart lf then we remove the heading lf.
             }
         }
+
         return lines;
     }
 
@@ -189,6 +208,7 @@ internal class LoadFromText
         List<string>? list = new List<string>();
         bool inTQ = false;
         int prevLineStart = 0;
+
         for (int i = 0; i < text.Length; i++)
         {
             if (text[i] == Format.TextQualifier)
@@ -200,6 +220,7 @@ internal class LoadFromText
                 if (IsEOL(text, i, eol))
                 {
                     string? s = text.Substring(prevLineStart, i - prevLineStart);
+
                     if (eol == "\n" && s.EndsWith("\r", StringComparison.OrdinalIgnoreCase))
                     {
                         s = s.Substring(0, s.Length - 1); //If EOL char is lf and last chart cr then we remove the trailing cr.
@@ -230,9 +251,11 @@ internal class LoadFromText
         //else
         //{
         list.Add(text.Substring(prevLineStart));
+
         //}
         return list.ToArray();
     }
+
     private static bool IsEOL(string text, int ix, string eol)
     {
         for (int i = 0; i < eol.Length; i++)
@@ -242,6 +265,7 @@ internal class LoadFromText
                 return false;
             }
         }
+
         return ix + eol.Length <= text.Length;
     }
 
@@ -254,9 +278,11 @@ internal class LoadFromText
 
         double d;
         DateTime dt;
+
         if (Format.DataTypes == null || Format.DataTypes.Length <= col || Format.DataTypes[col] == eDataTypes.Unknown)
         {
             string v2 = v.EndsWith("%") ? v.Substring(0, v.Length - 1) : v;
+
             if (double.TryParse(v2, NumberStyles.Any, Format.Culture, out d))
             {
                 if (v2 == v)
@@ -268,6 +294,7 @@ internal class LoadFromText
                     return d / 100;
                 }
             }
+
             if (DateTime.TryParse(v, Format.Culture, DateTimeStyles.None, out dt))
             {
                 return dt;
@@ -290,6 +317,7 @@ internal class LoadFromText
                     {
                         return v;
                     }
+
                 case eDataTypes.DateTime:
                     if (DateTime.TryParse(v, Format.Culture, DateTimeStyles.None, out dt))
                     {
@@ -299,8 +327,10 @@ internal class LoadFromText
                     {
                         return v;
                     }
+
                 case eDataTypes.Percent:
                     string v2 = v.EndsWith("%") ? v.Substring(0, v.Length - 1) : v;
+
                     if (double.TryParse(v2, NumberStyles.Any, Format.Culture, out d))
                     {
                         return d / 100;
@@ -309,11 +339,12 @@ internal class LoadFromText
                     {
                         return v;
                     }
+
                 case eDataTypes.String:
                     return v;
+
                 default:
                     return string.IsNullOrEmpty(v) ? null : v;
-
             }
         }
     }

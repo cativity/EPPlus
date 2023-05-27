@@ -1,5 +1,4 @@
-﻿
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 using OfficeOpenXml;
 using System;
 using System.Globalization;
@@ -12,6 +11,7 @@ public class RangeTextTests : TestBase
 {
     static ExcelPackage _pck;
     static ExcelWorksheet _ws;
+
     [ClassInitialize]
     public static void Init(TestContext context)
     {
@@ -21,6 +21,7 @@ public class RangeTextTests : TestBase
         LoadTestdata(_ws, noItems);
         SetDateValues(_ws, noItems);
     }
+
     [TestMethod]
     public void TextFormatParentheses()
     {
@@ -35,6 +36,7 @@ public class RangeTextTests : TestBase
         ws.Cells["A1"].Style.Numberformat.Format = "#,##0;(#,##0);-";
         Assert.AreEqual("(100)", ws.Cells["A1"].Text);
     }
+
     [TestMethod]
     public void TextFormatStringWithPercent()
     {
@@ -45,6 +47,7 @@ public class RangeTextTests : TestBase
 
         Assert.AreEqual("88%", ws.Cells["A1"].Text);
     }
+
     [TestMethod]
     public void TextFormatWithBlankFormattingNumber()
     {
@@ -61,6 +64,7 @@ public class RangeTextTests : TestBase
         Assert.IsNull(ws.Cells["A3"].Text);
         Assert.AreEqual("String", ws.Cells["A4"].Text);
     }
+
     [TestMethod]
     public void TextFormatWithBlankFormattingWithString()
     {
@@ -77,6 +81,7 @@ public class RangeTextTests : TestBase
         Assert.IsNull(ws.Cells["A3"].Text);
         Assert.IsNull(ws.Cells["A4"].Text);
     }
+
     [TestMethod]
     public void NumberFormatWithLanguageCode()
     {
@@ -93,6 +98,7 @@ public class RangeTextTests : TestBase
 
         ws.Cells.AutoFitColumns();
     }
+
     [TestMethod]
     public void ValidateNumberFormatDiffExcelVsNet()
     {
@@ -114,6 +120,7 @@ public class RangeTextTests : TestBase
         Assert.AreEqual("0.1", ws.Cells["A3"].Text);
         Thread.CurrentThread.CurrentCulture = prevCi;
     }
+
     [TestMethod]
     public void Text()
     {
@@ -133,6 +140,7 @@ public class RangeTextTests : TestBase
         ws.Cells["A1"].Style.Numberformat.Format = "YYY";
         Assert.AreEqual("2018", ws.Cells["A1"].Text);
     }
+
     [TestMethod]
     public void ValudateDateTextWithAMPM()
     {
@@ -143,12 +151,14 @@ public class RangeTextTests : TestBase
 
         Assert.AreEqual("7/6/2021 9:29 AM", ws.Cells["A1"].Text);
     }
+
     [TestMethod]
     public void ValidateAccountingFormatKr()
     {
         CultureInfo? prevCi = Thread.CurrentThread.CurrentCulture;
         Thread.CurrentThread.CurrentCulture = CultureInfo.InvariantCulture;
         string? fmt = "_-* #,##0\\ \"kr\"_-;\\-* #,##0\\ \"kr\"_-;_-* \"-\"\\ \"kr\"_-;_-@_-";
+
         //var fmt2 = "_-* #,##0.00\\ \"kr\"_-;\\-* #,##0.00\\ \"kr\"_-;_-* \"-\"??\\ \"kr\"_-;_-@_-\"";
 
         using (ExcelPackage? package = new ExcelPackage())
@@ -165,8 +175,10 @@ public class RangeTextTests : TestBase
             Assert.AreEqual("-5,555 kr", ws.Cells["A3"].Text);
             Assert.AreEqual("Text", ws.Cells["A4"].Text);
         }
+
         Thread.CurrentThread.CurrentCulture = prevCi;
     }
+
     [TestMethod]
     public void ValidateAccountingFormatKrWithDecimals()
     {
@@ -188,8 +200,10 @@ public class RangeTextTests : TestBase
             Assert.AreEqual("-5,555.00 kr", ws.Cells["A3"].Text);
             Assert.AreEqual("Text", ws.Cells["A4"].Text);
         }
+
         Thread.CurrentThread.CurrentCulture = prevCi;
     }
+
     [TestMethod]
     public void ValidateDateFormatWithNullAndText()
     {
@@ -200,7 +214,7 @@ public class RangeTextTests : TestBase
         using (ExcelPackage? package = new ExcelPackage())
         {
             ExcelWorksheet? ws = package.Workbook.Worksheets.Add("dateText");
-            ws.Cells["A1"].Value = new DateTime(2021,2,3);
+            ws.Cells["A1"].Value = new DateTime(2021, 2, 3);
             ws.Cells["A2"].Value = 0;
             ws.Cells["A3"].Value = -2;
             ws.Cells["A4"].Value = "3/2";
@@ -211,7 +225,7 @@ public class RangeTextTests : TestBase
             Assert.IsNull(ws.Cells["A3"].Text);
             Assert.AreEqual("Invalid date 3/2", ws.Cells["A4"].Text);
         }
-        Thread.CurrentThread.CurrentCulture = prevCi;            
-    }
 
+        Thread.CurrentThread.CurrentCulture = prevCi;
+    }
 }

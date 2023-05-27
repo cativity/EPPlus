@@ -10,6 +10,7 @@
  *************************************************************************************************
   01/27/2020         EPPlus Software AB       Initial release EPPlus 5
  *************************************************************************************************/
+
 namespace OfficeOpenXml.Drawing.Chart;
 
 /// <summary>
@@ -21,34 +22,42 @@ public enum eLabelPosition
     /// Best fit
     /// </summary>
     BestFit,
+
     /// <summary>
     /// Left aligned
     /// </summary>
     Left,
+
     /// <summary>
     /// Right aligned
     /// </summary>
     Right,
+
     /// <summary>
     /// Center aligned
     /// </summary>
     Center,
+
     /// <summary>
     /// Top aligned
     /// </summary>
     Top,
+
     /// <summary>
     /// Bottom aligned
     /// </summary>
     Bottom,
+
     /// <summary>
     /// Labels will be displayed inside the data marker
     /// </summary>
     InBase,
+
     /// <summary>
     /// Labels will be displayed inside the end of the data marker
     /// </summary>
     InEnd,
+
     /// <summary>
     /// Labels will be displayed outside the end of the data marker
     /// </summary>

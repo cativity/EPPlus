@@ -10,6 +10,7 @@
  *************************************************************************************************
   10/15/2020         EPPlus Software AB       ToDataTable function
  *************************************************************************************************/
+
 using OfficeOpenXml.LoadFunctions.Params;
 using System;
 using System.Collections.Generic;
@@ -27,9 +28,11 @@ public class ToDataTableOptions
     private const string DefaultDataTableName = "dataTable1";
     private List<string> _primaryKeyFields = new List<string>();
     private List<int> _primaryKeyIndexes = new List<int>();
+
     private ToDataTableOptions()
     {
         this.Mappings = new DataColumnMappingCollection();
+
         // Default values
         this.ColumnNameParsingStrategy = NameParsingStrategy.Preserve;
         this.ExcelErrorParsingStrategy = ExcelErrorParsingStrategy.HandleExcelErrorsAsBlankCells;
@@ -53,7 +56,7 @@ public class ToDataTableOptions
     /// </summary>
     internal static ToDataTableOptions Default
     {
-        get { return new ToDataTableOptions(); }    
+        get { return new ToDataTableOptions(); }
     }
 
     /// <summary>
@@ -75,8 +78,10 @@ public class ToDataTableOptions
     {
         ToDataTableOptions? options = Default;
         configHandler.Invoke(options);
+
         return options;
     }
+
     /// <summary>
     /// If true, the first row of the range will be used to collect the column names of the <see cref="DataTable"/>. The column names will be set according to the <see cref="ColumnNameParsingStrategy"></see> used.
     /// </summary>

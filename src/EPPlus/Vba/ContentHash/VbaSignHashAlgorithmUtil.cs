@@ -10,6 +10,7 @@
  *************************************************************************************************
   09/05/2022         EPPlus Software AB       EPPlus 6.1
  *************************************************************************************************/
+
 using OfficeOpenXml.Utils;
 using OfficeOpenXml.Vba.ContentHash;
 using OfficeOpenXml.VBA.Signatures;
@@ -33,6 +34,7 @@ internal static class VbaSignHashAlgorithmUtil
             byte[]? buffer = ms.ToArray();
             byte[]? hash = ComputeHash(buffer, ctx);
             byte[]? existingHash = ctx.SourceHash;
+
             return hash;
         }
         else if (ctx.SignatureType == ExcelVbaSignatureType.Agile)
@@ -43,9 +45,10 @@ internal static class VbaSignHashAlgorithmUtil
             byte[]? buffer = ms.ToArray();
             byte[]? hash = ComputeHash(buffer, ctx);
             byte[]? existingHash = ctx.SourceHash;
+
             return hash;
         }
-        else if(ctx.SignatureType == ExcelVbaSignatureType.V3)
+        else if (ctx.SignatureType == ExcelVbaSignatureType.V3)
         {
             using MemoryStream? ms = RecyclableMemory.GetStream();
             ContentHashInputProvider.GetV3ContentNormalizedDataHashInput(proj, ms);
@@ -55,12 +58,14 @@ internal static class VbaSignHashAlgorithmUtil
 
             return hash;
         }
+
         return default(byte[]);
-            
     }
+
     internal static byte[] ComputeHash(byte[] buffer, EPPlusSignatureContext ctx)
     {
         HashAlgorithm? algorithm = ctx.GetHashAlgorithm();
+
         if (algorithm == null)
         {
             return null;

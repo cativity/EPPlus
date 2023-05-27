@@ -10,6 +10,7 @@
  *************************************************************************************************
   01/27/2020         EPPlus Software AB       Initial release EPPlus 5
  *************************************************************************************************/
+
 using OfficeOpenXml.Drawing.Style.Coloring;
 using OfficeOpenXml.Utils.Extensions;
 using System;
@@ -30,13 +31,15 @@ public class ExcelDrawing3D : XmlHelper
     private readonly string _bevelTPath = "{0}/a:bevelT";
     private readonly string _bevelBPath = "{0}/a:bevelB";
     private readonly string _extrusionColorPath = "{0}/a:extrusionClr";
-    private readonly string _contourColorPath = "{0}/a:contourClr";        
+    private readonly string _contourColorPath = "{0}/a:contourClr";
     private readonly string _contourWidthPath = "{0}/@contourW";
     private readonly string _extrusionHeightPath = "{0}/@extrusionH";
     private readonly string _shapeDepthPath = "{0}/@z";
     private readonly string _materialTypePath = "{0}/@prstMaterial";
     private readonly string _path;
-    internal ExcelDrawing3D(XmlNamespaceManager nameSpaceManager, XmlNode topNode, string path, string[] schemaNodeOrder) : base(nameSpaceManager, topNode)
+
+    internal ExcelDrawing3D(XmlNamespaceManager nameSpaceManager, XmlNode topNode, string path, string[] schemaNodeOrder)
+        : base(nameSpaceManager, topNode)
     {
         if (!string.IsNullOrEmpty(path))
         {
@@ -58,140 +61,116 @@ public class ExcelDrawing3D : XmlHelper
         this.AddSchemaNodeOrder(schemaNodeOrder, ExcelShapeBase._shapeNodeOrder);
 
         this._contourColor = new ExcelDrawingColorManager(nameSpaceManager, this.TopNode, this._contourColorPath, this.SchemaNodeOrder, this.InitContourColor);
-        this._extrusionColor = new ExcelDrawingColorManager(nameSpaceManager, this.TopNode, this._extrusionColorPath, this.SchemaNodeOrder, this.InitExtrusionColor);
+
+        this._extrusionColor =
+            new ExcelDrawingColorManager(nameSpaceManager, this.TopNode, this._extrusionColorPath, this.SchemaNodeOrder, this.InitExtrusionColor);
     }
+
     ExcelDrawingScene3D _scene3D = null;
+
     /// <summary>
     /// Defines scene-level 3D properties to apply to an object
     /// </summary>
     public ExcelDrawingScene3D Scene
     {
-        get
-        {
-            return this._scene3D ??= new ExcelDrawingScene3D(this.NameSpaceManager, this.TopNode, this.SchemaNodeOrder, this._scene3dPath);
-        }
+        get { return this._scene3D ??= new ExcelDrawingScene3D(this.NameSpaceManager, this.TopNode, this.SchemaNodeOrder, this._scene3dPath); }
     }
+
     /// <summary>
     /// The height of the extrusion
     /// </summary>
     public double ExtrusionHeight
-    {   
-        get
-        {
-            return this.GetXmlNodeEmuToPtNull(this._extrusionHeightPath)??0;
-        }
-        set
-        {
-            this.SetXmlNodeEmuToPt(this._extrusionHeightPath, value);
-        }
+    {
+        get { return this.GetXmlNodeEmuToPtNull(this._extrusionHeightPath) ?? 0; }
+        set { this.SetXmlNodeEmuToPt(this._extrusionHeightPath, value); }
     }
+
     /// <summary>
     /// The height of the extrusion
     /// </summary>
     public double ContourWidth
     {
-        get
-        {
-            return this.GetXmlNodeEmuToPtNull(this._contourWidthPath) ?? 0;
-        }
-        set
-        {
-            this.SetXmlNodeEmuToPt(this._contourWidthPath, value);
-        }
+        get { return this.GetXmlNodeEmuToPtNull(this._contourWidthPath) ?? 0; }
+        set { this.SetXmlNodeEmuToPt(this._contourWidthPath, value); }
     }
+
     ExcelDrawing3DBevel _topBevel = null;
+
     /// <summary>
     /// The bevel on the top or front face of a shape
     /// </summary>
     public ExcelDrawing3DBevel TopBevel
     {
-        get
-        {
-            return this._topBevel ??= new ExcelDrawing3DBevel(this.NameSpaceManager, this.TopNode, this.SchemaNodeOrder, this._bevelTPath, this.InitXml);
-        }
+        get { return this._topBevel ??= new ExcelDrawing3DBevel(this.NameSpaceManager, this.TopNode, this.SchemaNodeOrder, this._bevelTPath, this.InitXml); }
     }
+
     ExcelDrawing3DBevel _bottomBevel = null;
+
     /// <summary>
     /// The bevel on the top or front face of a shape
     /// </summary>
     public ExcelDrawing3DBevel BottomBevel
     {
-        get
-        {
-            return this._bottomBevel ??= new ExcelDrawing3DBevel(this.NameSpaceManager, this.TopNode, this.SchemaNodeOrder, this._bevelBPath, this.InitXml);
-        }
+        get { return this._bottomBevel ??= new ExcelDrawing3DBevel(this.NameSpaceManager, this.TopNode, this.SchemaNodeOrder, this._bevelBPath, this.InitXml); }
     }
+
     ExcelDrawingColorManager _extrusionColor = null;
+
     /// <summary>
     /// The color of the extrusion applied to a shape
     /// </summary>
     public ExcelDrawingColorManager ExtrusionColor
     {
-        get
-        {
-            return this._extrusionColor;                
-        }
+        get { return this._extrusionColor; }
     }
 
     ExcelDrawingColorManager _contourColor = null;
+
     /// <summary>
     /// The color for the contour on a shape
     /// </summary>
     public ExcelDrawingColorManager ContourColor
     {
-        get
-        {
-            return this._contourColor;
-        }
+        get { return this._contourColor; }
     }
+
     /// <summary>
     /// The surface appearance of a shape
     /// </summary>
     public ePresetMaterialType MaterialType
     {
-        get
-        {
-            return this.GetXmlNodeString(this._materialTypePath).ToEnum(ePresetMaterialType.WarmMatte);
-        }
+        get { return this.GetXmlNodeString(this._materialTypePath).ToEnum(ePresetMaterialType.WarmMatte); }
         set
         {
             this.InitXml(false);
             this.SetXmlNodeString(this._materialTypePath, value.ToEnumString());
         }
     }
+
     /// <summary>
     /// The z coordinate for the 3D shape
     /// </summary>
     public double? ShapeDepthZCoordinate
     {
-        get
-        {
-            return this.GetXmlNodeEmuToPtNull(this._shapeDepthPath) ?? 0;
-        }
-        set
-        {
-            this.SetXmlNodeEmuToPt(this._shapeDepthPath, value);
-        }
+        get { return this.GetXmlNodeEmuToPtNull(this._shapeDepthPath) ?? 0; }
+        set { this.SetXmlNodeEmuToPt(this._shapeDepthPath, value); }
     }
 
     internal XmlElement Scene3DElement
     {
-        get
-        {
-            return this.GetNode(this._scene3dPath) as XmlElement;
-        }
+        get { return this.GetNode(this._scene3dPath) as XmlElement; }
     }
+
     internal XmlElement Sp3DElement
     {
-        get
-        {
-            return this.GetNode(this._sp3dPath) as XmlElement;
-        }
+        get { return this.GetNode(this._sp3dPath) as XmlElement; }
     }
+
     bool isInit = false;
+
     internal void InitXml(bool delete)
     {
-        if(delete)
+        if (delete)
         {
             this.Delete();
         }
@@ -207,6 +186,7 @@ public class ExcelDrawing3D : XmlHelper
             }
         }
     }
+
     /// <summary>
     /// Remove all 3D settings
     /// </summary>
@@ -215,6 +195,7 @@ public class ExcelDrawing3D : XmlHelper
         this.DeleteNode(this._scene3dPath);
         this.DeleteNode(this._sp3dPath);
     }
+
     private void InitContourColor()
     {
         if (this.ContourWidth <= 0)
@@ -222,6 +203,7 @@ public class ExcelDrawing3D : XmlHelper
             this.ContourWidth = 1;
         }
     }
+
     private void InitExtrusionColor()
     {
         if (this.ExtrusionHeight <= 0)
@@ -232,12 +214,13 @@ public class ExcelDrawing3D : XmlHelper
 
     internal void SetFromXml(XmlElement copyFromScene3DElement, XmlElement copyFromSp3DElement)
     {
-        if(copyFromScene3DElement!=null)
+        if (copyFromScene3DElement != null)
         {
             XmlElement? scene3DElement = (XmlElement)this.CreateNode(this._scene3dPath);
             CopyXml(copyFromScene3DElement, scene3DElement);
         }
-        if (copyFromSp3DElement!=null)
+
+        if (copyFromSp3DElement != null)
         {
             XmlElement? sp3DElement = (XmlElement)this.CreateNode(this._sp3dPath);
             CopyXml(copyFromSp3DElement, sp3DElement);
@@ -250,6 +233,7 @@ public class ExcelDrawing3D : XmlHelper
         {
             to.SetAttribute(a.Name, a.NamespaceURI, a.Value);
         }
+
         to.InnerXml = copyFrom.InnerXml;
     }
 }

@@ -10,6 +10,7 @@
  *************************************************************************************************
   01/27/2020         EPPlus Software AB       Initial release EPPlus 5
  *************************************************************************************************/
+
 namespace OfficeOpenXml.Drawing.Chart;
 
 /// <summary>
@@ -21,6 +22,7 @@ public enum eDirection
     /// A column
     /// </summary>
     Column,
+
     /// <summary>
     /// A bar
     /// </summary>

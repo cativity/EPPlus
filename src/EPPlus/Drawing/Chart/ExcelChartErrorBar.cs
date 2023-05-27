@@ -10,6 +10,7 @@
  *************************************************************************************************
   01/27/2020         EPPlus Software AB       Initial release EPPlus 5
  *************************************************************************************************/
+
 using System;
 using System.Globalization;
 using System.Xml;
@@ -18,6 +19,7 @@ using OfficeOpenXml.Drawing.Style.Effect;
 using OfficeOpenXml.Drawing.Style.ThreeD;
 using OfficeOpenXml.Style;
 using OfficeOpenXml.Utils.Extensions;
+
 namespace OfficeOpenXml.Drawing.Chart;
 
 /// <summary>
@@ -26,21 +28,28 @@ namespace OfficeOpenXml.Drawing.Chart;
 public class ExcelChartErrorBars : XmlHelper, IDrawingStyleBase
 {
     readonly ExcelChartSerieWithErrorBars _chartSerie;
-    internal ExcelChartErrorBars(ExcelChartSerieWithErrorBars chartSerie) :
-        this(chartSerie, chartSerie.TopNode)
+
+    internal ExcelChartErrorBars(ExcelChartSerieWithErrorBars chartSerie)
+        : this(chartSerie, chartSerie.TopNode)
     {
     }
-    internal ExcelChartErrorBars(ExcelChartSerieWithErrorBars chartSerie, XmlNode topNode) :
-        base(chartSerie.NameSpaceManager, topNode)
+
+    internal ExcelChartErrorBars(ExcelChartSerieWithErrorBars chartSerie, XmlNode topNode)
+        : base(chartSerie.NameSpaceManager, topNode)
     {
         this._chartSerie = chartSerie;
-        this.AddSchemaNodeOrder(new string[]{ "errDir", "errBarType", "errValType", "noEndCap", "plus", "minus", "val", "spPr" }, ExcelDrawing._schemaNodeOrderSpPr);
+
+        this.AddSchemaNodeOrder(new string[] { "errDir", "errBarType", "errValType", "noEndCap", "plus", "minus", "val", "spPr" },
+                                ExcelDrawing._schemaNodeOrderSpPr);
+
         if (this.TopNode.LocalName != "errBars")
         {
             this.TopNode = chartSerie.CreateNode("c:errBars", false, true);
         }
     }
+
     string _directionPath = "c:errDir/@val";
+
     /// <summary>
     /// The directions for the error bars. For scatter-, bubble- and area charts this property can't be changed. Please use the ErrorBars property for Y direction and ErrorBarsX for the X direction.
     /// </summary>
@@ -49,17 +58,21 @@ public class ExcelChartErrorBars : XmlHelper, IDrawingStyleBase
         get
         {
             this.ValidateNotDeleted();
+
             return this.GetXmlNodeString(this._directionPath).ToEnum(eErrorBarDirection.Y);
         }
         set
         {
             this.ValidateNotDeleted();
-            if(this._chartSerie._chart.IsTypeBubble() || this._chartSerie._chart.IsTypeScatter() || this._chartSerie._chart.IsTypeArea())
+
+            if (this._chartSerie._chart.IsTypeBubble() || this._chartSerie._chart.IsTypeScatter() || this._chartSerie._chart.IsTypeArea())
             {
-                if(value!= this.Direction)
+                if (value != this.Direction)
                 {
-                    throw new InvalidOperationException("Can't change direction for this chart type. Please use ErrorBars or ErrorBarsX property to determine the direction.");
+                    throw new
+                        InvalidOperationException("Can't change direction for this chart type. Please use ErrorBars or ErrorBarsX property to determine the direction.");
                 }
+
                 return;
             }
 
@@ -73,6 +86,7 @@ public class ExcelChartErrorBars : XmlHelper, IDrawingStyleBase
     }
 
     string _barTypePath = "c:errBarType/@val";
+
     /// <summary>
     /// The ways to draw an error bar
     /// </summary>
@@ -81,6 +95,7 @@ public class ExcelChartErrorBars : XmlHelper, IDrawingStyleBase
         get
         {
             this.ValidateNotDeleted();
+
             return this.GetXmlNodeString(this._barTypePath).ToEnum(eErrorBarType.Both);
         }
         set
@@ -89,7 +104,9 @@ public class ExcelChartErrorBars : XmlHelper, IDrawingStyleBase
             this.SetXmlNodeString(this._barTypePath, value.ToEnumString());
         }
     }
+
     string _valueTypePath = "c:errValType/@val";
+
     /// <summary>
     /// The ways to determine the length of the error bars
     /// </summary>
@@ -98,6 +115,7 @@ public class ExcelChartErrorBars : XmlHelper, IDrawingStyleBase
         get
         {
             this.ValidateNotDeleted();
+
             return this.GetXmlNodeString(this._valueTypePath).TranslateErrorValueType();
         }
         set
@@ -105,8 +123,10 @@ public class ExcelChartErrorBars : XmlHelper, IDrawingStyleBase
             this.ValidateNotDeleted();
             this.SetXmlNodeString(this._valueTypePath, value.ToEnumString());
         }
-    }        
+    }
+
     string _noEndCapPath = "c:noEndCap/@val";
+
     /// <summary>
     /// If true, no end cap is drawn on the error bars 
     /// </summary>
@@ -115,6 +135,7 @@ public class ExcelChartErrorBars : XmlHelper, IDrawingStyleBase
         get
         {
             this.ValidateNotDeleted();
+
             return this.GetXmlNodeBool(this._noEndCapPath, true);
         }
         set
@@ -125,6 +146,7 @@ public class ExcelChartErrorBars : XmlHelper, IDrawingStyleBase
     }
 
     string _valuePath = "c:val/@val";
+
     /// <summary>
     /// The value which used to determine the length of the error bars when <c>ValueType</c> is FixedValue
     /// </summary>
@@ -133,11 +155,13 @@ public class ExcelChartErrorBars : XmlHelper, IDrawingStyleBase
         get
         {
             this.ValidateNotDeleted();
+
             return this.GetXmlNodeDoubleNull(this._valuePath);
         }
         set
         {
             this.ValidateNotDeleted();
+
             if (value == null)
             {
                 this.DeleteNode(this._valuePath, true);
@@ -148,8 +172,10 @@ public class ExcelChartErrorBars : XmlHelper, IDrawingStyleBase
             }
         }
     }
+
     string _plusNodePath = "c:plus";
-    ExcelChartNumericSource _plus=null;
+    ExcelChartNumericSource _plus = null;
+
     /// <summary>
     /// Numeric Source for plus errorbars when <c>ValueType</c> is set to Custom
     /// </summary>
@@ -162,8 +188,10 @@ public class ExcelChartErrorBars : XmlHelper, IDrawingStyleBase
             return this._plus ??= new ExcelChartNumericSource(this.NameSpaceManager, this.TopNode, this._plusNodePath, this.SchemaNodeOrder);
         }
     }
+
     string _minusNodePath = "c:minus";
     ExcelChartNumericSource _minus = null;
+
     /// <summary>
     /// Numeric Source for minus errorbars when <c>ValueType</c> is set to Custom
     /// </summary>
@@ -176,7 +204,9 @@ public class ExcelChartErrorBars : XmlHelper, IDrawingStyleBase
             return this._minus ??= new ExcelChartNumericSource(this.NameSpaceManager, this.TopNode, this._minusNodePath, this.SchemaNodeOrder);
         }
     }
+
     ExcelDrawingFill _fill = null;
+
     /// <summary>
     /// Fill style
     /// </summary>
@@ -189,7 +219,9 @@ public class ExcelChartErrorBars : XmlHelper, IDrawingStyleBase
             return this._fill ??= new ExcelDrawingFill(this._chartSerie._chart, this.NameSpaceManager, this.TopNode, "c:spPr", this.SchemaNodeOrder);
         }
     }
+
     ExcelDrawingBorder _border = null;
+
     /// <summary>
     /// Border style
     /// </summary>
@@ -199,15 +231,12 @@ public class ExcelChartErrorBars : XmlHelper, IDrawingStyleBase
         {
             this.ValidateNotDeleted();
 
-            return this._border ??= new ExcelDrawingBorder(this._chartSerie._chart,
-                                                           this.NameSpaceManager,
-                                                           this.TopNode,
-                                                           "c:spPr/a:ln",
-                                                           this.SchemaNodeOrder);
+            return this._border ??= new ExcelDrawingBorder(this._chartSerie._chart, this.NameSpaceManager, this.TopNode, "c:spPr/a:ln", this.SchemaNodeOrder);
         }
     }
 
     ExcelDrawingEffectStyle _effect = null;
+
     /// <summary>
     /// Effects
     /// </summary>
@@ -224,7 +253,9 @@ public class ExcelChartErrorBars : XmlHelper, IDrawingStyleBase
                                                                 this.SchemaNodeOrder);
         }
     }
+
     ExcelDrawing3D _threeD = null;
+
     /// <summary>
     /// 3D properties
     /// </summary>
@@ -237,13 +268,15 @@ public class ExcelChartErrorBars : XmlHelper, IDrawingStyleBase
             return this._threeD ??= new ExcelDrawing3D(this.NameSpaceManager, this.TopNode, "c:spPr", this.SchemaNodeOrder);
         }
     }
+
     private void ValidateNotDeleted()
     {
-        if(this.TopNode==null)
+        if (this.TopNode == null)
         {
             throw new InvalidOperationException("The error bar has been deleted.");
         }
     }
+
     void IDrawingStyleBase.CreatespPr()
     {
         this.CreatespPrNode();
@@ -255,11 +288,13 @@ public class ExcelChartErrorBars : XmlHelper, IDrawingStyleBase
     public void Remove()
     {
         this.DeleteNode(".");
-        if(this._chartSerie.ErrorBars==this)
+
+        if (this._chartSerie.ErrorBars == this)
         {
             this._chartSerie.ErrorBars = null;
         }
-        if(this._chartSerie is ExcelChartSerieWithHorizontalErrorBars errorBarsSerie)
+
+        if (this._chartSerie is ExcelChartSerieWithHorizontalErrorBars errorBarsSerie)
         {
             if (errorBarsSerie.ErrorBarsX == this)
             {

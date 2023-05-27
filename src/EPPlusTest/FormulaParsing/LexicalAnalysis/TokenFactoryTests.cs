@@ -26,6 +26,7 @@
  *******************************************************************************
   01/27/2020         EPPlus Software AB       Initial release EPPlus 5
  *******************************************************************************/
+
 using System;
 using System.Text;
 using System.Collections.Generic;
@@ -44,7 +45,6 @@ public class TokenFactoryTests
     private ITokenFactory _tokenFactory;
     private INameValueProvider _nameValueProvider;
 
-
     [TestInitialize]
     public void Setup()
     {
@@ -57,7 +57,6 @@ public class TokenFactoryTests
     [TestCleanup]
     public void Cleanup()
     {
-      
     }
 
     [TestMethod]
@@ -128,7 +127,6 @@ public class TokenFactoryTests
 
         Assert.AreEqual("23", token.Value);
         Assert.IsTrue(token.TokenTypeIsSet(TokenType.Integer));
-
     }
 
     [TestMethod]
@@ -191,7 +189,7 @@ public class TokenFactoryTests
     public void CreateShouldCreateNamedValueAsExcelAddressToken()
     {
         string? input = "NamedValue";
-        A.CallTo(() => this._nameValueProvider.IsNamedValue("NamedValue","")).Returns(true);
+        A.CallTo(() => this._nameValueProvider.IsNamedValue("NamedValue", "")).Returns(true);
         A.CallTo(() => this._nameValueProvider.IsNamedValue("NamedValue", null)).Returns(true);
         Token token = this._tokenFactory.Create(Enumerable.Empty<Token>(), input);
         Assert.IsTrue(token.TokenTypeIsSet(TokenType.NameValue));
@@ -202,7 +200,7 @@ public class TokenFactoryTests
     public void TokenFactory_IsNumericTests()
     {
         List<Token>? tokens = new List<Token>();
-            
+
         Token t = this._tokenFactory.Create(tokens, "1");
         Assert.IsTrue(t.TokenTypeIsSet(TokenType.Integer), "Failed to recognize integer");
 
@@ -223,6 +221,5 @@ public class TokenFactoryTests
 
         t = this._tokenFactory.Create(tokens, "E1");
         Assert.IsFalse(t.TokenTypeIsSet(TokenType.Integer | TokenType.Decimal), "Invalid exponential number was still numeric 2");
-
     }
 }

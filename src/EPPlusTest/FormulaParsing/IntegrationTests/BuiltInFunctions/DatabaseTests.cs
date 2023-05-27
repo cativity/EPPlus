@@ -26,6 +26,7 @@
  *******************************************************************************
   01/27/2020         EPPlus Software AB       Initial release EPPlus 5
  *******************************************************************************/
+
 using System;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using OfficeOpenXml;
@@ -35,12 +36,12 @@ namespace EPPlusTest.FormulaParsing.IntegrationTests.BuiltInFunctions;
 [TestClass]
 public class DatabaseTests
 {
-
     [TestMethod]
     public void DgetShouldReturnCorrectResult()
     {
         using ExcelPackage? package = new ExcelPackage();
         ExcelWorksheet? sheet = package.Workbook.Worksheets.Add("test");
+
         // database
         sheet.Cells["A1"].Value = "crit1";
         sheet.Cells["B1"].Value = "crit2";
@@ -51,11 +52,13 @@ public class DatabaseTests
         sheet.Cells["A3"].Value = "test";
         sheet.Cells["B3"].Value = 3;
         sheet.Cells["C3"].Value = "aaa";
+
         // criteria
         sheet.Cells["D1"].Value = "crit1";
         sheet.Cells["D2"].Value = "t*t";
         sheet.Cells["E1"].Value = "crit2";
         sheet.Cells["E2"].Value = 2;
+
         // function
         sheet.Cells["F1"].Formula = "DGET(A1:C3,\"Crit3\",D1:E2)";
 
@@ -69,6 +72,7 @@ public class DatabaseTests
     {
         using ExcelPackage? package = new ExcelPackage();
         ExcelWorksheet? sheet = package.Workbook.Worksheets.Add("test");
+
         // database
         sheet.Cells["A1"].Value = "crit1";
         sheet.Cells["B1"].Value = "crit2";
@@ -79,11 +83,13 @@ public class DatabaseTests
         sheet.Cells["A3"].Value = "tesst";
         sheet.Cells["B3"].Value = "2";
         sheet.Cells["C3"].Value = "aaa";
+
         // criteria
         sheet.Cells["D1"].Value = "crit1";
         sheet.Cells["D2"].Value = "t*t";
         sheet.Cells["E1"].Value = "crit2";
         sheet.Cells["E2"].Value = 2;
+
         // function
         sheet.Cells["F1"].Formula = "DCOUNT(A1:C3,\"Crit2\",D1:E2)";
 
@@ -97,6 +103,7 @@ public class DatabaseTests
     {
         using ExcelPackage? package = new ExcelPackage();
         ExcelWorksheet? sheet = package.Workbook.Worksheets.Add("test");
+
         // database
         sheet.Cells["A1"].Value = "crit1";
         sheet.Cells["B1"].Value = "crit2";
@@ -107,11 +114,13 @@ public class DatabaseTests
         sheet.Cells["A3"].Value = "tesst";
         sheet.Cells["B3"].Value = "2";
         sheet.Cells["C3"].Value = "aaa";
+
         // criteria
         sheet.Cells["D1"].Value = "crit1";
         sheet.Cells["D2"].Value = "t*t";
         sheet.Cells["E1"].Value = "crit2";
         sheet.Cells["E2"].Value = 2;
+
         // function
         sheet.Cells["F1"].Formula = "DCOUNTA(A1:C3,\"Crit2\",D1:E2)";
 
@@ -125,6 +134,7 @@ public class DatabaseTests
     {
         using ExcelPackage? package = new ExcelPackage();
         ExcelWorksheet? sheet = package.Workbook.Worksheets.Add("test");
+
         // database
         sheet.Cells["A1"].Value = "crit1";
         sheet.Cells["B1"].Value = "crit2";
@@ -134,6 +144,7 @@ public class DatabaseTests
 
         sheet.Cells["A3"].Value = "tesst";
         sheet.Cells["B3"].Value = 1;
+
         // criteria
         sheet.Cells["D1"].Value = "crit1";
         sheet.Cells["D2"].Value = "t*t";
@@ -151,6 +162,7 @@ public class DatabaseTests
     {
         using ExcelPackage? package = new ExcelPackage();
         ExcelWorksheet? sheet = package.Workbook.Worksheets.Add("test");
+
         // database
         sheet.Cells["A1"].Value = "crit1";
         sheet.Cells["B1"].Value = "crit2";
@@ -160,6 +172,7 @@ public class DatabaseTests
 
         sheet.Cells["A3"].Value = "tesst";
         sheet.Cells["B3"].Value = 1;
+
         // criteria
         sheet.Cells["D1"].Value = "crit1";
         sheet.Cells["D2"].Value = "t*t";
@@ -177,6 +190,7 @@ public class DatabaseTests
     {
         using ExcelPackage? package = new ExcelPackage();
         ExcelWorksheet? sheet = package.Workbook.Worksheets.Add("test");
+
         // database
         sheet.Cells["A1"].Value = "crit1";
         sheet.Cells["B1"].Value = "crit2";
@@ -186,6 +200,7 @@ public class DatabaseTests
 
         sheet.Cells["A3"].Value = "tesst";
         sheet.Cells["B3"].Value = 1;
+
         // criteria
         sheet.Cells["D1"].Value = "crit1";
         sheet.Cells["D2"].Value = "t*t";
@@ -203,6 +218,7 @@ public class DatabaseTests
     {
         using ExcelPackage? package = new ExcelPackage();
         ExcelWorksheet? sheet = package.Workbook.Worksheets.Add("test");
+
         // database
         sheet.Cells["A1"].Value = "crit1";
         sheet.Cells["B1"].Value = "crit2";
@@ -212,6 +228,7 @@ public class DatabaseTests
 
         sheet.Cells["A3"].Value = "tesst";
         sheet.Cells["B3"].Value = 1;
+
         // criteria
         sheet.Cells["D1"].Value = "crit1";
         sheet.Cells["D2"].Value = "t*t";
@@ -229,6 +246,7 @@ public class DatabaseTests
     {
         using ExcelPackage? package = new ExcelPackage();
         ExcelWorksheet? sheet = package.Workbook.Worksheets.Add("test");
+
         // database
         sheet.Cells["A1"].Value = "crit1";
         sheet.Cells["B1"].Value = "crit2";
@@ -238,6 +256,7 @@ public class DatabaseTests
 
         sheet.Cells["A3"].Value = "tesst";
         sheet.Cells["B3"].Value = 1;
+
         // criteria
         sheet.Cells["D1"].Value = "crit1";
         sheet.Cells["D2"].Value = "t*t";
@@ -255,6 +274,7 @@ public class DatabaseTests
     {
         using ExcelPackage? package = new ExcelPackage();
         ExcelWorksheet? sheet = package.Workbook.Worksheets.Add("test");
+
         // database
         sheet.Cells["A1"].Value = "crit1";
         sheet.Cells["B1"].Value = "crit2";
@@ -264,6 +284,7 @@ public class DatabaseTests
 
         sheet.Cells["A3"].Value = "tesst";
         sheet.Cells["B3"].Value = 1;
+
         // criteria
         sheet.Cells["D1"].Value = "crit1";
         sheet.Cells["D2"].Value = "t*t";
@@ -281,6 +302,7 @@ public class DatabaseTests
     {
         using ExcelPackage? package = new ExcelPackage();
         ExcelWorksheet? sheet = package.Workbook.Worksheets.Add("test");
+
         // database
         sheet.Cells["A1"].Value = "crit1";
         sheet.Cells["B1"].Value = "crit2";
@@ -290,6 +312,7 @@ public class DatabaseTests
 
         sheet.Cells["A3"].Value = "tesst";
         sheet.Cells["B3"].Value = 1;
+
         // criteria
         sheet.Cells["D1"].Value = "crit1";
         sheet.Cells["D2"].Value = "t*t";

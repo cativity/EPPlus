@@ -26,6 +26,7 @@
  *******************************************************************************
   01/27/2020         EPPlus Software AB       Initial release EPPlus 5
  *******************************************************************************/
+
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using OfficeOpenXml;
 using OfficeOpenXml.ConditionalFormatting;
@@ -41,11 +42,13 @@ namespace EPPlusTest.ConditionalFormatting;
 public class ConditionalFormattingTests : TestBase
 {
     private static ExcelPackage _pck;
+
     [ClassInitialize()]
     public static void Init(TestContext testContext)
     {
         _pck = OpenPackage("ConditionalFormatting.xlsx", true);
     }
+
     // Use ClassCleanup to run code after all tests in a class have run
     [ClassCleanup()]
     public static void MyClassCleanup()
@@ -68,6 +71,7 @@ public class ConditionalFormattingTests : TestBase
         ws.SetValue(4, 1, 4);
         ws.SetValue(5, 1, 5);
     }
+
     [TestMethod]
     public void Pivot()
     {
@@ -94,6 +98,7 @@ public class ConditionalFormattingTests : TestBase
         condition2.Formula = "FALSE";
         condition2.Style.Fill.BackgroundColor.Color = Color.Red;
     }
+
     [TestMethod]
     public void Databar()
     {
@@ -105,10 +110,12 @@ public class ConditionalFormattingTests : TestBase
         ws.SetValue(4, 1, 4);
         ws.SetValue(5, 1, 5);
     }
+
     [TestMethod]
     public void DatabarChangingAddressAddsConditionalFormatNodeInSchemaOrder()
     {
         ExcelWorksheet ws = _pck.Workbook.Worksheets.Add("DatabarAddressing");
+
         // Ensure there is at least one element that always exists below ConditionalFormatting nodes.   
         ws.HeaderFooter.AlignWithMargins = true;
         IExcelConditionalFormattingDataBarGroup cf = ws.ConditionalFormatting.AddDatabar(ws.Cells["A1:A5"], Color.BlueViolet);
@@ -118,16 +125,22 @@ public class ConditionalFormattingTests : TestBase
         Assert.AreEqual("sheetData", cf.Node.ParentNode.PreviousSibling.LocalName);
         Assert.AreEqual("headerFooter", cf.Node.ParentNode.NextSibling.LocalName);
     }
+
     [TestMethod]
     public void IconSet()
     {
         ExcelWorksheet ws = _pck.Workbook.Worksheets.Add("IconSet");
-        IExcelConditionalFormattingThreeIconSet<eExcelconditionalFormatting3IconsSetType> cf = ws.ConditionalFormatting.AddThreeIconSet(ws.Cells["A1:A3"], eExcelconditionalFormatting3IconsSetType.Symbols);
+
+        IExcelConditionalFormattingThreeIconSet<eExcelconditionalFormatting3IconsSetType> cf =
+            ws.ConditionalFormatting.AddThreeIconSet(ws.Cells["A1:A3"], eExcelconditionalFormatting3IconsSetType.Symbols);
+
         ws.SetValue(1, 1, 1);
         ws.SetValue(2, 1, 2);
         ws.SetValue(3, 1, 3);
 
-        IExcelConditionalFormattingFourIconSet<eExcelconditionalFormatting4IconsSetType> cf4 = ws.ConditionalFormatting.AddFourIconSet(ws.Cells["B1:B4"], eExcelconditionalFormatting4IconsSetType.Rating);
+        IExcelConditionalFormattingFourIconSet<eExcelconditionalFormatting4IconsSetType> cf4 =
+            ws.ConditionalFormatting.AddFourIconSet(ws.Cells["B1:B4"], eExcelconditionalFormatting4IconsSetType.Rating);
+
         cf4.Icon1.Type = eExcelConditionalFormattingValueObjectType.Formula;
         cf4.Icon1.Formula = "0";
         cf4.Icon2.Type = eExcelConditionalFormattingValueObjectType.Formula;
@@ -139,7 +152,9 @@ public class ConditionalFormattingTests : TestBase
         ws.SetValue(3, 2, 3);
         ws.SetValue(4, 2, 4);
 
-        IExcelConditionalFormattingFiveIconSet cf5 = ws.ConditionalFormatting.AddFiveIconSet(ws.Cells["C1:C5"], eExcelconditionalFormatting5IconsSetType.Quarters);
+        IExcelConditionalFormattingFiveIconSet cf5 =
+            ws.ConditionalFormatting.AddFiveIconSet(ws.Cells["C1:C5"], eExcelconditionalFormatting5IconsSetType.Quarters);
+
         cf5.Icon1.Type = eExcelConditionalFormattingValueObjectType.Num;
         cf5.Icon1.Value = 1;
         cf5.Icon2.Type = eExcelConditionalFormattingValueObjectType.Num;
@@ -159,6 +174,7 @@ public class ConditionalFormattingTests : TestBase
         ws.SetValue(4, 3, 4);
         ws.SetValue(5, 3, 5);
     }
+
     [TestMethod]
     public void WriteReadEqual()
     {
@@ -178,7 +194,9 @@ public class ConditionalFormattingTests : TestBase
     {
         using ExcelPackage p = new ExcelPackage();
         ExcelWorksheet ws = p.Workbook.Worksheets.Add("FiveIcon");
-        IExcelConditionalFormattingThreeIconSet<eExcelconditionalFormatting3IconsSetType> cf = ws.Cells["A1"].ConditionalFormatting.AddThreeIconSet(eExcelconditionalFormatting3IconsSetType.TrafficLights2);
+
+        IExcelConditionalFormattingThreeIconSet<eExcelconditionalFormatting3IconsSetType> cf =
+            ws.Cells["A1"].ConditionalFormatting.AddThreeIconSet(eExcelconditionalFormatting3IconsSetType.TrafficLights2);
 
         p.Save();
         using ExcelPackage p2 = new ExcelPackage(p.Stream);
@@ -186,12 +204,15 @@ public class ConditionalFormattingTests : TestBase
         cf = ws.ConditionalFormatting[0].As.ThreeIconSet;
         Assert.AreEqual(eExcelconditionalFormatting3IconsSetType.TrafficLights2, cf.IconSet);
     }
+
     [TestMethod]
     public void WriteReadFourIcon()
     {
         using ExcelPackage p = new ExcelPackage();
         ExcelWorksheet ws = p.Workbook.Worksheets.Add("FourIcon");
-        IExcelConditionalFormattingFourIconSet<eExcelconditionalFormatting4IconsSetType> cf = ws.Cells["A1"].ConditionalFormatting.AddFourIconSet(eExcelconditionalFormatting4IconsSetType.ArrowsGray);
+
+        IExcelConditionalFormattingFourIconSet<eExcelconditionalFormatting4IconsSetType> cf =
+            ws.Cells["A1"].ConditionalFormatting.AddFourIconSet(eExcelconditionalFormatting4IconsSetType.ArrowsGray);
 
         p.Save();
         using ExcelPackage p2 = new ExcelPackage(p.Stream);
@@ -199,6 +220,7 @@ public class ConditionalFormattingTests : TestBase
         cf = ws.ConditionalFormatting[0].As.FourIconSet;
         Assert.AreEqual(eExcelconditionalFormatting4IconsSetType.ArrowsGray, cf.IconSet);
     }
+
     [TestMethod]
     public void WriteReadFiveIcon()
     {
@@ -212,7 +234,6 @@ public class ConditionalFormattingTests : TestBase
         cf = ws.ConditionalFormatting[0].As.FiveIconSet;
         Assert.AreEqual(eExcelconditionalFormatting5IconsSetType.Arrows, cf.IconSet);
     }
-
 
     [TestMethod]
     public void WriteReadDataBar()
@@ -244,6 +265,7 @@ public class ConditionalFormattingTests : TestBase
         Assert.AreEqual(50, cf.HighValue.Value);
 
         p.Save();
+
         using (ExcelPackage p2 = new ExcelPackage(p.Stream))
         {
             ws = p2.Workbook.Worksheets[0];
@@ -254,6 +276,7 @@ public class ConditionalFormattingTests : TestBase
 
         SaveAndCleanup(p);
     }
+
     [TestMethod]
     public void WriteReadThreeColorScale()
     {
@@ -272,6 +295,7 @@ public class ConditionalFormattingTests : TestBase
         Assert.AreEqual(50, cf.HighValue.Value);
 
         p.Save();
+
         using (ExcelPackage p2 = new ExcelPackage(p.Stream))
         {
             ws = p2.Workbook.Worksheets[0];
@@ -282,6 +306,7 @@ public class ConditionalFormattingTests : TestBase
 
         SaveAndCleanup(p);
     }
+
     [TestMethod]
     public void VerifyReadStyling()
     {
@@ -307,6 +332,7 @@ public class ConditionalFormattingTests : TestBase
         Assert.AreEqual(Color.Red.ToArgb(), cf.Style.Font.Color.Color.Value.ToArgb());
         Assert.AreEqual(expectedFormat, cf.Style.NumberFormat.Format);
     }
+
     [TestMethod]
     public void VerifyExpression()
     {
@@ -318,10 +344,12 @@ public class ConditionalFormattingTests : TestBase
         cf.Style.Fill.BackgroundColor.SetColor(Color.Red);
         SaveAndCleanup(p);
     }
+
     [TestMethod]
     public void TestInsertRowsIntoVeryLongRangeWithConditionalFormatting()
     {
         using ExcelPackage pck = new ExcelPackage();
+
         // Add a sheet with conditional formatting on the whole of column A except row 1
         ExcelWorksheet wks = pck.Workbook.Worksheets.Add("Sheet1");
         string cfAddress = "A2:A1048576";
@@ -337,10 +365,12 @@ public class ConditionalFormattingTests : TestBase
         // Check that the conditional formatting rule still applies to the same range (since there's nowhere to extend it to)
         Assert.AreEqual(cfAddress, cf.Address.Address);
     }
+
     [TestMethod]
     public void TestInsertRowsAboveVeryLongRangeWithConditionalFormatting()
     {
         using ExcelPackage pck = new ExcelPackage();
+
         // Add a sheet with conditional formatting on the whole of column A except rows 1-10
         ExcelWorksheet wks = pck.Workbook.Worksheets.Add("Sheet1");
         string cfAddress = "A11:A1048576";
@@ -361,6 +391,7 @@ public class ConditionalFormattingTests : TestBase
     public void TestInsertRowsToPushConditionalFormattingOffSheet()
     {
         using ExcelPackage pck = new ExcelPackage();
+
         // Add a sheet with conditional formatting on the last two rows of column A
         ExcelWorksheet wks = pck.Workbook.Worksheets.Add("Sheet1");
         string cfAddress = "A1048575:A1048576";
@@ -377,6 +408,7 @@ public class ConditionalFormattingTests : TestBase
         // Check that the conditional formatting rule no longer exists
         Assert.AreEqual(0, wks.ConditionalFormatting.Count);
     }
+
     [TestMethod]
     public void CFWholeSheetRangeDeleteRowShouldNotRemoveCF()
     {
@@ -391,7 +423,6 @@ public class ConditionalFormattingTests : TestBase
         Assert.AreEqual(1, sheet.ConditionalFormatting.Count);
     }
 
-
     [TestMethod]
     public void CFColumnsRangeDeleteRowShouldNotRemoveCF()
     {
@@ -405,6 +436,7 @@ public class ConditionalFormattingTests : TestBase
         sheet.DeleteRow(3);
         Assert.AreEqual(1, sheet.ConditionalFormatting.Count);
     }
+
     [TestMethod]
     public void CFWholeSheetRange2DeleteRowShouldNotRemoveCF()
     {
@@ -418,5 +450,4 @@ public class ConditionalFormattingTests : TestBase
         sheet.DeleteRow(3);
         Assert.AreEqual(1, sheet.ConditionalFormatting.Count);
     }
-
 }

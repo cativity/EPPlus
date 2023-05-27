@@ -10,6 +10,7 @@
  *************************************************************************************************
   01/27/2020         EPPlus Software AB       Initial release EPPlus 5
  *************************************************************************************************/
+
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -20,13 +21,13 @@ using OfficeOpenXml.FormulaParsing.ExpressionGraph;
 
 namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Math;
 
-[FunctionMetadata(
-                     Category = ExcelFunctionCategory.Statistical,
-                     EPPlusVersion = "4",
-                     Description = "Returns the variance of a supplied set of values (which represent a sample of a population) ")]
+[FunctionMetadata(Category = ExcelFunctionCategory.Statistical,
+                  EPPlusVersion = "4",
+                  Description = "Returns the variance of a supplied set of values (which represent a sample of a population) ")]
 internal class Var : HiddenValuesHandlingFunction
 {
-    public Var() : base()
+    public Var()
+        : base()
     {
         this.IgnoreErrors = true;
     }
@@ -35,6 +36,7 @@ internal class Var : HiddenValuesHandlingFunction
     {
         ValidateArguments(arguments, 1);
         IEnumerable<ExcelDoubleCellValue>? args = this.ArgsToDoubleEnumerable(this.IgnoreHiddenValues, this.IgnoreErrors, arguments, context);
+
         return new CompileResult(VarMethods.Var(args), DataType.Decimal);
     }
 }

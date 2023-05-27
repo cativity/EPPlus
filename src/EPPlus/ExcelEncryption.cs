@@ -10,6 +10,7 @@
  *************************************************************************************************
   01/27/2020         EPPlus Software AB       Initial release EPPlus 5
  *************************************************************************************************/
+
 using OfficeOpenXml.Utils;
 using System;
 using System.Collections.Generic;
@@ -28,15 +29,18 @@ public enum EncryptionAlgorithm
     /// 128-bit AES. Default
     /// </summary>
     AES128,
+
     /// <summary>
     /// 192-bit AES.
     /// </summary>
     AES192,
+
     /// <summary>
     /// 256-bit AES. 
     /// </summary>
     AES256
 }
+
 /// <summary>
 /// The major version of the Encryption 
 /// </summary>
@@ -48,6 +52,7 @@ public enum EncryptionVersion
     /// <remarks>Default AES 128 with SHA-1 as the hash algorithm. Spincount is hardcoded to 50000</remarks>
     /// </summary>
     Standard,
+
     /// <summary>
     /// Agile Encryption.
     /// Used in Excel 2010-
@@ -55,6 +60,7 @@ public enum EncryptionVersion
     /// </summary>
     Agile
 }
+
 /// <summary>
 /// How and if the workbook is encrypted
 ///<seealso cref="ExcelProtection"/> 
@@ -70,6 +76,7 @@ public class ExcelEncryption
     {
         this.Algorithm = EncryptionAlgorithm.AES256;
     }
+
     /// <summary>
     /// Constructor
     /// </summary>
@@ -78,19 +85,19 @@ public class ExcelEncryption
     {
         this.Algorithm = encryptionAlgorithm;
     }
+
     bool _isEncrypted = false;
+
     /// <summary>
     /// Is the package encrypted
     /// </summary>
     public bool IsEncrypted
     {
-        get
-        {
-            return this._isEncrypted;
-        }
+        get { return this._isEncrypted; }
         set
         {
             this._isEncrypted = value;
+
             if (this._isEncrypted)
             {
                 this._password ??= "";
@@ -101,36 +108,35 @@ public class ExcelEncryption
             }
         }
     }
+
     string _password = null;
+
     /// <summary>
     /// The password used to encrypt the workbook.
     /// </summary>
     public string Password
     {
-        get
-        {
-            return this._password;
-        }
+        get { return this._password; }
         set
         {
             this._password = value;
             this._isEncrypted = value != null;
         }
     }
+
     /// <summary>
     /// Algorithm used for encrypting the package. Default is AES 128-bit for standard and AES 256 for agile
     /// </summary>
     public EncryptionAlgorithm Algorithm { get; set; }
+
     private EncryptionVersion _version = EncryptionVersion.Agile;
+
     /// <summary>
     /// The version of the encryption.        
     /// </summary>
     public EncryptionVersion Version
     {
-        get
-        {
-            return this._version;
-        }
+        get { return this._version; }
         set
         {
             if (value != this.Version)
@@ -148,6 +154,7 @@ public class ExcelEncryption
             }
         }
     }
+
     /// <summary>
     /// Encrypts a stream using the office encryption.
     /// </summary>
@@ -156,22 +163,29 @@ public class ExcelEncryption
     /// <param name="encryptionVersion">The encryption version</param>
     /// <param name="algorithm">The algorithm to use for the encryption</param>
     /// <returns>A MemoryStream containing the encypted package</returns>
-    public static MemoryStream EncryptPackage(Stream stream, string password, EncryptionVersion encryptionVersion=EncryptionVersion.Agile, EncryptionAlgorithm algorithm = EncryptionAlgorithm.AES256)
+    public static MemoryStream EncryptPackage(Stream stream,
+                                              string password,
+                                              EncryptionVersion encryptionVersion = EncryptionVersion.Agile,
+                                              EncryptionAlgorithm algorithm = EncryptionAlgorithm.AES256)
     {
         EncryptedPackageHandler? e = new EncryptedPackageHandler();
-        if(stream.CanRead==false)
+
+        if (stream.CanRead == false)
         {
             throw new InvalidOperationException("Stream must be readable");
         }
+
         if (stream.CanSeek)
         {
             stream.Seek(0, SeekOrigin.Begin);
         }
-            
+
         byte[]? b = new byte[stream.Length];
         stream.Read(b, 0, (int)stream.Length);
+
         return e.EncryptPackage(b, new ExcelEncryption { Password = password, Algorithm = algorithm, Version = encryptionVersion });
     }
+
     /// <summary>
     /// Decrypts a stream using the office encryption.
     /// </summary>
@@ -181,14 +195,17 @@ public class ExcelEncryption
     public static MemoryStream DecryptPackage(Stream stream, string password)
     {
         EncryptedPackageHandler? e = new EncryptedPackageHandler();
-        if(stream==null)
+
+        if (stream == null)
         {
             throw new ArgumentNullException("Stream must not be null");
         }
+
         if (stream.CanRead == false)
         {
             throw new InvalidOperationException("Stream must be readable");
         }
+
         if (stream.CanSeek)
         {
             stream.Seek(0, SeekOrigin.Begin);
@@ -201,7 +218,8 @@ public class ExcelEncryption
 #endif
 
         MemoryStream ms;
-        if(stream is MemoryStream)
+
+        if (stream is MemoryStream)
         {
             ms = (MemoryStream)stream;
         }
@@ -216,7 +234,7 @@ public class ExcelEncryption
             stream.CopyTo(ms);
 #endif
         }
-        return e.DecryptPackage(ms, new ExcelEncryption() { Password = password, _isEncrypted=true });
-    }
 
+        return e.DecryptPackage(ms, new ExcelEncryption() { Password = password, _isEncrypted = true });
+    }
 }

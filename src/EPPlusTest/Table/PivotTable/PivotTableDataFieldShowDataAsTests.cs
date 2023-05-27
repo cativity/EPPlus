@@ -26,6 +26,7 @@
  *******************************************************************************
   02/11/2020         EPPlus Software AB       Initial release EPPlus 5
  *******************************************************************************/
+
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using OfficeOpenXml;
 using OfficeOpenXml.Table;
@@ -40,6 +41,7 @@ namespace EPPlusTest.Table.PivotTable;
 public class PivotTableDataFieldShowDataAsTests : TestBase
 {
     static ExcelPackage _pck;
+
     [ClassInitialize]
     public static void Init(TestContext context)
     {
@@ -48,11 +50,13 @@ public class PivotTableDataFieldShowDataAsTests : TestBase
         ExcelWorksheet? ws = _pck.Workbook.Worksheets.Add("Data");
         LoadItemData(ws);
     }
+
     [ClassCleanup]
     public static void Cleanup()
     {
         SaveAndCleanup(_pck);
-    }        
+    }
+
     [TestMethod]
     public void ShowAsPercentOfTotal()
     {
@@ -69,6 +73,7 @@ public class PivotTableDataFieldShowDataAsTests : TestBase
 
         Assert.AreEqual(eShowDataAs.PercentOfTotal, df.ShowDataAs.Value);
     }
+
     [TestMethod]
     public void ShowAsPercentOfRow()
     {
@@ -85,6 +90,7 @@ public class PivotTableDataFieldShowDataAsTests : TestBase
 
         Assert.AreEqual(eShowDataAs.PercentOfRow, df.ShowDataAs.Value);
     }
+
     [TestMethod]
     public void ShowAsPercentOfCol()
     {
@@ -101,6 +107,7 @@ public class PivotTableDataFieldShowDataAsTests : TestBase
 
         Assert.AreEqual(eShowDataAs.PercentOfColumn, df.ShowDataAs.Value);
     }
+
     [TestMethod]
     public void ShowAsPercent()
     {
@@ -120,6 +127,7 @@ public class PivotTableDataFieldShowDataAsTests : TestBase
         Assert.AreEqual(rf.Index, df.BaseField);
         Assert.AreEqual(50, df.BaseItem);
     }
+
     [TestMethod]
     public void ShowAsIndex()
     {
@@ -137,6 +145,7 @@ public class PivotTableDataFieldShowDataAsTests : TestBase
 
         Assert.AreEqual(eShowDataAs.Index, df.ShowDataAs.Value);
     }
+
     [TestMethod]
     public void ShowAsDifference()
     {
@@ -156,6 +165,7 @@ public class PivotTableDataFieldShowDataAsTests : TestBase
         Assert.AreEqual(rf.Index, df.BaseField);
         Assert.AreEqual((int)ePrevNextPivotItem.Previous, df.BaseItem);
     }
+
     [TestMethod]
     public void ShowAsPercentageDifference()
     {
@@ -193,6 +203,7 @@ public class PivotTableDataFieldShowDataAsTests : TestBase
         Assert.AreEqual(eShowDataAs.RunningTotal, df.ShowDataAs.Value);
         Assert.AreEqual(rf.Index, df.BaseField);
     }
+
     [TestMethod]
     public void ShowAsPercentOfParent()
     {
@@ -209,6 +220,7 @@ public class PivotTableDataFieldShowDataAsTests : TestBase
 
         Assert.AreEqual(eShowDataAs.PercentOfParent, df.ShowDataAs.Value);
     }
+
     [TestMethod]
     public void ShowAsPercentOfParentRow()
     {
@@ -225,6 +237,7 @@ public class PivotTableDataFieldShowDataAsTests : TestBase
 
         Assert.AreEqual(eShowDataAs.PercentOfParentRow, df.ShowDataAs.Value);
     }
+
     [TestMethod]
     public void ShowAsPercentOfParentCol()
     {
@@ -241,6 +254,7 @@ public class PivotTableDataFieldShowDataAsTests : TestBase
 
         Assert.AreEqual(eShowDataAs.PercentOfParentColumn, df.ShowDataAs.Value);
     }
+
     [TestMethod]
     public void ShowAsPercentOfRunningTotal()
     {
@@ -256,6 +270,7 @@ public class PivotTableDataFieldShowDataAsTests : TestBase
 
         Assert.AreEqual(eShowDataAs.PercentOfRunningTotal, df.ShowDataAs.Value);
     }
+
     [TestMethod]
     public void ShowAsRankAscending()
     {
@@ -271,6 +286,7 @@ public class PivotTableDataFieldShowDataAsTests : TestBase
 
         Assert.AreEqual(eShowDataAs.RankAscending, df.ShowDataAs.Value);
     }
+
     [TestMethod]
     public void ShowAsRankDescending()
     {

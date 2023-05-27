@@ -10,6 +10,7 @@
  *************************************************************************************************
   01/27/2020         EPPlus Software AB       Initial release EPPlus 5
  *************************************************************************************************/
+
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -19,17 +20,17 @@ using OfficeOpenXml.FormulaParsing.ExpressionGraph;
 
 namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Math;
 
-[FunctionMetadata(
-                     Category = ExcelFunctionCategory.MathAndTrig,
-                     EPPlusVersion = "5.1",
-                     Description = "Returns the hyperbolic arccotangent of a number",
-                     IntroducedInExcelVersion = "2013")]
+[FunctionMetadata(Category = ExcelFunctionCategory.MathAndTrig,
+                  EPPlusVersion = "5.1",
+                  Description = "Returns the hyperbolic arccotangent of a number",
+                  IntroducedInExcelVersion = "2013")]
 internal class Acoth : ExcelFunction
 {
     public override CompileResult Execute(IEnumerable<FunctionArgument> arguments, ParsingContext context)
     {
         ValidateArguments(arguments, 1);
         double arg = this.ArgToDecimal(arguments, 0);
+
         if (arg >= -1 && arg <= 1)
         {
             return this.CreateResult(eErrorType.Num);

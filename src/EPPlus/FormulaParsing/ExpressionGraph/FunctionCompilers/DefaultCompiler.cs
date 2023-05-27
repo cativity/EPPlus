@@ -10,6 +10,7 @@
  *************************************************************************************************
   01/27/2020         EPPlus Software AB       Initial release EPPlus 5
  *************************************************************************************************/
+
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -24,16 +25,17 @@ public class DefaultCompiler : FunctionCompiler
     public DefaultCompiler(ExcelFunction function, ParsingContext context)
         : base(function, context)
     {
-
     }
 
     public override CompileResult Compile(IEnumerable<Expression> children)
     {
         List<FunctionArgument>? args = new List<FunctionArgument>();
         this.Function.BeforeInvoke(this.Context);
+
         foreach (Expression? child in children)
         {
             CompileResult? compileResult = child.Compile();
+
             if (compileResult.IsResultOfSubtotal)
             {
                 FunctionArgument? arg = new FunctionArgument(compileResult.Result, compileResult.DataType);
@@ -42,9 +44,10 @@ public class DefaultCompiler : FunctionCompiler
             }
             else
             {
-                BuildFunctionArguments(compileResult, args);     
+                BuildFunctionArguments(compileResult, args);
             }
         }
+
         return this.Function.Execute(args, this.Context);
     }
 }

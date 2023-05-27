@@ -26,6 +26,7 @@
  *******************************************************************************
   01/27/2020         EPPlus Software AB       Initial release EPPlus 5
  *******************************************************************************/
+
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using OfficeOpenXml;
 
@@ -46,6 +47,7 @@ public class WorksheetCoreTests : TestBase
         ws = p2.Workbook.Worksheets[0];
         Assert.AreEqual("A", ws.Cells["A1"].Value);
     }
+
     [TestMethod]
     public void ValidateAutoFitDontShowHiddenColumns()
     {
@@ -121,6 +123,7 @@ public class WorksheetCoreTests : TestBase
         Assert.IsTrue(ws.Cells["C3"].IsRichText);
         Assert.IsTrue(ws.Cells["A3"].IsRichText);
     }
+
     [TestMethod]
     public void FormulaShouldBeCleanedWhenOverwritingWithArray()
     {
@@ -133,6 +136,7 @@ public class WorksheetCoreTests : TestBase
         ws.Cells["A1:B2"].Value = new string[,] { { "Text", "Text" }, { "Text", "Text" } };
         Assert.IsTrue(ws.Cells["A1"].Formula == "");
     }
+
     [TestMethod]
     public void AddAutofilterForMergedCells()
     {

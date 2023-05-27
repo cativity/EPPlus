@@ -10,6 +10,7 @@
  *************************************************************************************************
   05/07/2021         EPPlus Software AB       EPPlus 5.7
  *************************************************************************************************/
+
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -35,6 +36,7 @@ public class TableSortLayer : SortLayerBase
     public TableSortLayerBuilder Column(int column)
     {
         this.SetColumn(column);
+
         return new TableSortLayerBuilder(this._options, this);
     }
 
@@ -47,6 +49,7 @@ public class TableSortLayer : SortLayerBase
     public TableSortLayerBuilder Column(int column, eSortOrder sortOrder)
     {
         this.SetColumn(column, sortOrder);
+
         return new TableSortLayerBuilder(this._options, this);
     }
 
@@ -59,6 +62,7 @@ public class TableSortLayer : SortLayerBase
     {
         int ix = this._options.GetColumnNameIndex(columnName);
         this.SetColumn(ix);
+
         return new TableSortLayerBuilder(this._options, this);
     }
 
@@ -72,6 +76,7 @@ public class TableSortLayer : SortLayerBase
     {
         int ix = this._options.GetColumnNameIndex(columnName);
         this.SetColumn(ix, sortOrder);
+
         return new TableSortLayerBuilder(this._options, this);
     }
 }

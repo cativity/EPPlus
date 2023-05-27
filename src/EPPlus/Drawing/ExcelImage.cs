@@ -10,6 +10,7 @@
  *************************************************************************************************
   01/27/2020         EPPlus Software AB       Initial release EPPlus 5
  *************************************************************************************************/
+
 using OfficeOpenXml.Drawing.Interfaces;
 using OfficeOpenXml.Utils;
 using System;
@@ -17,6 +18,7 @@ using System.IO;
 #if !NET35 && !NET40
 using System.Threading.Tasks;
 #endif
+
 #if NETFULL
 using System.Drawing;
 #endif
@@ -29,21 +31,24 @@ namespace OfficeOpenXml.Drawing
     {
         IPictureContainer _container;
         ePictureType[] _restrictedTypes = new ePictureType[0];
-        internal ExcelImage(IPictureContainer container, ePictureType[] restrictedTypes=null)
+
+        internal ExcelImage(IPictureContainer container, ePictureType[] restrictedTypes = null)
         {
             this._container = container;
+
             if (restrictedTypes != null)
             {
                 this._restrictedTypes = restrictedTypes;
             }
         }
+
         /// <summary>
         /// Creates an ExcelImage to be used as template for adding images.
         /// </summary>
         public ExcelImage()
         {
-
         }
+
         /// <summary>
         /// Creates an ExcelImage to be used as template for adding images.
         /// </summary>
@@ -52,6 +57,7 @@ namespace OfficeOpenXml.Drawing
         {
             this.SetImage(imagePath);
         }
+
         /// <summary>
         /// Creates an ExcelImage to be used as template for adding images.
         /// </summary>
@@ -60,6 +66,7 @@ namespace OfficeOpenXml.Drawing
         {
             this.SetImage(imageFile);
         }
+
         /// <summary>
         /// Creates an ExcelImage to be used as template for adding images.
         /// </summary>
@@ -69,6 +76,7 @@ namespace OfficeOpenXml.Drawing
         {
             this.SetImage(imageStream, pictureType);
         }
+
         /// <summary>
         /// Creates an ExcelImage to be used as template for adding images.
         /// </summary>
@@ -78,66 +86,59 @@ namespace OfficeOpenXml.Drawing
         {
             this.SetImage(imageBytes, pictureType);
         }
+
         /// <summary>
         /// If this object contains an image.
         /// </summary>
         public bool HasImage
         {
-            get
-            {
-                return this.Type.HasValue;
-            }
+            get { return this.Type.HasValue; }
         }
+
         /// <summary>
         /// The type of image.
         /// </summary>
-        public ePictureType? Type
-        {
-            get;
-            internal set;
-        }
+        public ePictureType? Type { get; internal set; }
 
         /// <summary>
         /// The image as a byte array.
         /// </summary>
-        public byte[] ImageBytes 
-        { 
-            get;
-            internal set; 
-        }
+        public byte[] ImageBytes { get; internal set; }
+
         /// <summary>
         /// The image bounds and resolution
         /// </summary>
-        public ExcelImageInfo Bounds
-        {
-            get;            
-            internal set;
-        } = new ExcelImageInfo();
+        public ExcelImageInfo Bounds { get; internal set; } = new ExcelImageInfo();
+
         /// <summary>
         /// Sets a new image. 
         /// </summary>
         /// <param name="imagePath">The path to the image file.</param>
         public void SetImage(string imagePath)
         {
-            if(string.IsNullOrEmpty(imagePath))
+            if (string.IsNullOrEmpty(imagePath))
             {
-                throw new ArgumentNullException(nameof(imagePath),"Image Path cannot be empty");
+                throw new ArgumentNullException(nameof(imagePath), "Image Path cannot be empty");
             }
-            FileInfo? fi=new FileInfo(imagePath); 
-            if(fi.Exists==false)
+
+            FileInfo? fi = new FileInfo(imagePath);
+
+            if (fi.Exists == false)
             {
                 throw new FileNotFoundException(imagePath);
             }
+
             ePictureType type = PictureStore.GetPictureType(fi.Extension);
             this.SetImage(File.ReadAllBytes(imagePath), type, true);
         }
+
         /// <summary>
         /// Sets a new image. 
         /// </summary>
         /// <param name="imageFile">The image file.</param>
         public void SetImage(FileInfo imageFile)
         {
-            if (imageFile==null)
+            if (imageFile == null)
             {
                 throw new ArgumentNullException(nameof(imageFile), "ImageFile cannot be null");
             }
@@ -146,9 +147,11 @@ namespace OfficeOpenXml.Drawing
             {
                 throw new FileNotFoundException(imageFile.FullName);
             }
+
             ePictureType type = PictureStore.GetPictureType(imageFile.Extension);
             this.SetImage(File.ReadAllBytes(imageFile.FullName), type, true);
         }
+
         /// <summary>
         /// Sets a new image. 
         /// </summary>
@@ -156,8 +159,9 @@ namespace OfficeOpenXml.Drawing
         /// <param name="pictureType">The type of image.</param>
         public ExcelImage SetImage(byte[] imageBytes, ePictureType pictureType)
         {
-            return this.SetImage(imageBytes, pictureType, true);            
+            return this.SetImage(imageBytes, pictureType, true);
         }
+
         /// <summary>
         /// Sets a new image. 
         /// </summary>
@@ -165,10 +169,11 @@ namespace OfficeOpenXml.Drawing
         /// <seealso cref="ExcelImage"/>
         public ExcelImage SetImage(ExcelImage image)
         {
-            if(image.Type==null)
+            if (image.Type == null)
             {
                 throw new ArgumentNullException("Image type must not be null");
             }
+
             return this.SetImage(image.ImageBytes, image.Type.Value, true);
         }
 
@@ -179,16 +184,17 @@ namespace OfficeOpenXml.Drawing
         /// <param name="pictureType">The type of image.</param>
         public ExcelImage SetImage(Stream imageStream, ePictureType pictureType)
         {
-            if(imageStream is MemoryStream ms)
+            if (imageStream is MemoryStream ms)
             {
                 return this.SetImage(ms.ToArray(), pictureType, true);
             }
             else
             {
-                if(imageStream.CanRead ==false || imageStream.CanSeek == false)
+                if (imageStream.CanRead == false || imageStream.CanSeek == false)
                 {
                     throw new ArgumentException("Stream must be readable and seekble", nameof(imageStream));
                 }
+
                 byte[]? byRet = new byte[imageStream.Length];
                 imageStream.Seek(0, SeekOrigin.Begin);
                 imageStream.Read(byRet, 0, (int)imageStream.Length);
@@ -214,6 +220,7 @@ namespace OfficeOpenXml.Drawing
                 {
                     throw new ArgumentException("Stream must be readable and seekble", nameof(imageStream));
                 }
+
                 byte[]? byRet = new byte[imageStream.Length];
                 imageStream.Seek(0, SeekOrigin.Begin);
                 await imageStream.ReadAsync(byRet, 0, (int)imageStream.Length);
@@ -221,6 +228,7 @@ namespace OfficeOpenXml.Drawing
                 return this.SetImage(byRet, pictureType);
             }
         }
+
         /// <summary>
         /// Sets a new image. 
         /// </summary>
@@ -231,9 +239,12 @@ namespace OfficeOpenXml.Drawing
             {
                 throw new ArgumentNullException(nameof(imagePath), "Image Path cannot be empty");
             }
+
             FileInfo? fi = new FileInfo(imagePath);
+
             return await this.SetImageAsync(fi);
         }
+
         /// <summary>
         /// Sets a new image. 
         /// </summary>
@@ -249,10 +260,12 @@ namespace OfficeOpenXml.Drawing
             {
                 throw new FileNotFoundException(imageFile.FullName);
             }
+
             ePictureType type = PictureStore.GetPictureType(imageFile.Extension);
             FileStream? fs = imageFile.OpenRead();
             byte[]? b = new byte[fs.Length];
             await fs.ReadAsync(b, 0, b.Length);
+
             return this.SetImage(b, type, true);
         }
 
@@ -260,10 +273,11 @@ namespace OfficeOpenXml.Drawing
         internal ExcelImage SetImageNoContainer(byte[] image, ePictureType pictureType)
         {
             this.Type = pictureType;
-            if (pictureType == ePictureType.Wmz ||
-               pictureType == ePictureType.Emz)
+
+            if (pictureType == ePictureType.Wmz || pictureType == ePictureType.Emz)
             {
                 byte[]? img = ImageReader.ExtractImage(image, out ePictureType? pt);
+
                 if (pt.HasValue)
                 {
                     throw new ArgumentException($"Image is not of type {pictureType}.", nameof(image));
@@ -278,9 +292,16 @@ namespace OfficeOpenXml.Drawing
             {
                 this.ImageBytes = image;
             }
+
             MemoryStream? ms = RecyclableMemory.GetStream(image);
             GenericImageHandler? imageHandler = new GenericImageHandler();
-            if (imageHandler.GetImageBounds(ms, pictureType, out double height, out double width, out double horizontalResolution, out double verticalResolution))
+
+            if (imageHandler.GetImageBounds(ms,
+                                            pictureType,
+                                            out double height,
+                                            out double width,
+                                            out double horizontalResolution,
+                                            out double verticalResolution))
             {
                 this.Bounds.Width = width;
                 this.Bounds.Height = height;
@@ -293,11 +314,11 @@ namespace OfficeOpenXml.Drawing
             }
 
             return this;
-
         }
+
         internal ExcelImage SetImage(byte[] image, ePictureType pictureType, bool removePrevImage)
         {
-            if(this._container == null)
+            if (this._container == null)
             {
                 return this.SetImageNoContainer(image, pictureType);
             }
@@ -311,10 +332,11 @@ namespace OfficeOpenXml.Drawing
         {
             this.ValidatePictureType(pictureType);
             this.Type = pictureType;
-            if (pictureType == ePictureType.Wmz ||
-               pictureType == ePictureType.Emz)
+
+            if (pictureType == ePictureType.Wmz || pictureType == ePictureType.Emz)
             {
                 byte[]? img = ImageReader.ExtractImage(image, out ePictureType? pt);
+
                 if (pt.HasValue)
                 {
                     throw new ArgumentException($"Image is not of type {pictureType}.", nameof(image));
@@ -339,9 +361,16 @@ namespace OfficeOpenXml.Drawing
 
                 this.ImageBytes = image;
             }
+
             PictureStore.SavePicture(image, this._container, pictureType);
             MemoryStream? ms = RecyclableMemory.GetStream(image);
-            if (this._container.RelationDocument.Package.Settings.ImageSettings.GetImageBounds(ms, pictureType, out double height, out double width, out double horizontalResolution, out double verticalResolution))
+
+            if (this._container.RelationDocument.Package.Settings.ImageSettings.GetImageBounds(ms,
+                                                                                               pictureType,
+                                                                                               out double height,
+                                                                                               out double width,
+                                                                                               out double horizontalResolution,
+                                                                                               out double verticalResolution))
             {
                 this.Bounds.Width = width;
                 this.Bounds.Height = height;
@@ -354,6 +383,7 @@ namespace OfficeOpenXml.Drawing
             }
 
             this._container.SetNewImage();
+
             return this;
         }
 
@@ -372,6 +402,7 @@ namespace OfficeOpenXml.Drawing
             this.Type = null;
             this.Bounds = new ExcelImageInfo();
         }
+
         private void RemoveImageContainer()
         {
             this._container.RemoveImage();
@@ -381,4 +412,3 @@ namespace OfficeOpenXml.Drawing
         }
     }
 }
-

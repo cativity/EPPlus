@@ -82,7 +82,6 @@ namespace OfficeOpenXml.Packaging.Ionic.Zip;
 /// <seealso cref="Ionic.Zip.ZipFile.AddEntry(string, WriteDelegate)"/>
 public delegate void WriteDelegate(string entryName, System.IO.Stream stream);
 
-
 /// <summary>
 ///   Delegate in which the application opens the stream, just-in-time, for the named entry.
 /// </summary>
@@ -284,7 +283,6 @@ internal enum ZipProgressEventType
     Error_Saving,
 }
 
-
 /// <summary>
 /// Provides information about the progress of a save, read, or extract operation.
 /// This is a base class; you will probably use one of the classes derived from this one.
@@ -299,8 +297,9 @@ internal class ZipProgressEventArgs : EventArgs
     private Int64 _bytesTransferred;
     private Int64 _totalBytesToTransfer;
 
-
-    internal ZipProgressEventArgs() { }
+    internal ZipProgressEventArgs()
+    {
+    }
 
     internal ZipProgressEventArgs(string archiveName, ZipProgressEventType flavor)
     {
@@ -354,7 +353,6 @@ internal class ZipProgressEventArgs : EventArgs
         set { this._archiveName = value; }
     }
 
-
     /// <summary>
     /// The number of bytes read or written so far for this entry.
     /// </summary>
@@ -363,8 +361,6 @@ internal class ZipProgressEventArgs : EventArgs
         get { return this._bytesTransferred; }
         set { this._bytesTransferred = value; }
     }
-
-
 
     /// <summary>
     /// Total number of bytes that will be read or written for this entry.
@@ -377,24 +373,25 @@ internal class ZipProgressEventArgs : EventArgs
     }
 }
 
-
-
 /// <summary>
 /// Provides information about the progress of a Read operation.
 /// </summary>
 internal class ReadProgressEventArgs : ZipProgressEventArgs
 {
-
-    internal ReadProgressEventArgs() { }
+    internal ReadProgressEventArgs()
+    {
+    }
 
     private ReadProgressEventArgs(string archiveName, ZipProgressEventType flavor)
         : base(archiveName, flavor)
-    { }
+    {
+    }
 
     internal static ReadProgressEventArgs Before(string archiveName, int entriesTotal)
     {
         ReadProgressEventArgs? x = new ReadProgressEventArgs(archiveName, ZipProgressEventType.Reading_BeforeReadEntry);
         x.EntriesTotal = entriesTotal;
+
         return x;
     }
 
@@ -403,12 +400,14 @@ internal class ReadProgressEventArgs : ZipProgressEventArgs
         ReadProgressEventArgs? x = new ReadProgressEventArgs(archiveName, ZipProgressEventType.Reading_AfterReadEntry);
         x.EntriesTotal = entriesTotal;
         x.CurrentEntry = entry;
+
         return x;
     }
 
     internal static ReadProgressEventArgs Started(string archiveName)
     {
         ReadProgressEventArgs? x = new ReadProgressEventArgs(archiveName, ZipProgressEventType.Reading_Started);
+
         return x;
     }
 
@@ -418,49 +417,54 @@ internal class ReadProgressEventArgs : ZipProgressEventArgs
         x.CurrentEntry = entry;
         x.BytesTransferred = bytesXferred;
         x.TotalBytesToTransfer = totalBytes;
+
         return x;
     }
 
     internal static ReadProgressEventArgs Completed(string archiveName)
     {
         ReadProgressEventArgs? x = new ReadProgressEventArgs(archiveName, ZipProgressEventType.Reading_Completed);
+
         return x;
     }
-
 }
-
 
 /// <summary>
 /// Provides information about the progress of a Add operation.
 /// </summary>
 internal class AddProgressEventArgs : ZipProgressEventArgs
 {
-    internal AddProgressEventArgs() { }
+    internal AddProgressEventArgs()
+    {
+    }
 
     private AddProgressEventArgs(string archiveName, ZipProgressEventType flavor)
         : base(archiveName, flavor)
-    { }
+    {
+    }
 
     internal static AddProgressEventArgs AfterEntry(string archiveName, ZipEntry entry, int entriesTotal)
     {
         AddProgressEventArgs? x = new AddProgressEventArgs(archiveName, ZipProgressEventType.Adding_AfterAddEntry);
         x.EntriesTotal = entriesTotal;
         x.CurrentEntry = entry;
+
         return x;
     }
 
     internal static AddProgressEventArgs Started(string archiveName)
     {
         AddProgressEventArgs? x = new AddProgressEventArgs(archiveName, ZipProgressEventType.Adding_Started);
+
         return x;
     }
 
     internal static AddProgressEventArgs Completed(string archiveName)
     {
         AddProgressEventArgs? x = new AddProgressEventArgs(archiveName, ZipProgressEventType.Adding_Completed);
+
         return x;
     }
-
 }
 
 /// <summary>
@@ -486,12 +490,14 @@ internal class SaveProgressEventArgs : ZipProgressEventArgs
         this._entriesSaved = entriesSaved;
     }
 
-    internal SaveProgressEventArgs() { }
+    internal SaveProgressEventArgs()
+    {
+    }
 
     internal SaveProgressEventArgs(string archiveName, ZipProgressEventType flavor)
         : base(archiveName, flavor)
-    { }
-
+    {
+    }
 
     internal static SaveProgressEventArgs ByteUpdate(string archiveName, ZipEntry entry, Int64 bytesXferred, Int64 totalBytes)
     {
@@ -500,18 +506,21 @@ internal class SaveProgressEventArgs : ZipProgressEventArgs
         x.CurrentEntry = entry;
         x.BytesTransferred = bytesXferred;
         x.TotalBytesToTransfer = totalBytes;
+
         return x;
     }
 
     internal static SaveProgressEventArgs Started(string archiveName)
     {
         SaveProgressEventArgs? x = new SaveProgressEventArgs(archiveName, ZipProgressEventType.Saving_Started);
+
         return x;
     }
 
     internal static SaveProgressEventArgs Completed(string archiveName)
     {
         SaveProgressEventArgs? x = new SaveProgressEventArgs(archiveName, ZipProgressEventType.Saving_Completed);
+
         return x;
     }
 
@@ -523,7 +532,6 @@ internal class SaveProgressEventArgs : ZipProgressEventArgs
         get { return this._entriesSaved; }
     }
 }
-
 
 /// <summary>
 /// Provides information about the progress of the extract operation.
@@ -553,21 +561,20 @@ internal class ExtractProgressEventArgs : ZipProgressEventArgs
 
     internal ExtractProgressEventArgs(string archiveName, ZipProgressEventType flavor)
         : base(archiveName, flavor)
-    { }
+    {
+    }
 
     internal ExtractProgressEventArgs()
-    { }
-
+    {
+    }
 
     internal static ExtractProgressEventArgs BeforeExtractEntry(string archiveName, ZipEntry entry, string extractLocation)
     {
         ExtractProgressEventArgs? x = new ExtractProgressEventArgs
         {
-            ArchiveName = archiveName,
-            EventType = ZipProgressEventType.Extracting_BeforeExtractEntry,
-            CurrentEntry = entry,
-            _target = extractLocation,
+            ArchiveName = archiveName, EventType = ZipProgressEventType.Extracting_BeforeExtractEntry, CurrentEntry = entry, _target = extractLocation,
         };
+
         return x;
     }
 
@@ -580,6 +587,7 @@ internal class ExtractProgressEventArgs : ZipProgressEventArgs
             CurrentEntry = entry,
             _target = extractLocation,
         };
+
         return x;
     }
 
@@ -587,11 +595,9 @@ internal class ExtractProgressEventArgs : ZipProgressEventArgs
     {
         ExtractProgressEventArgs? x = new ExtractProgressEventArgs
         {
-            ArchiveName = archiveName,
-            EventType = ZipProgressEventType.Extracting_AfterExtractEntry,
-            CurrentEntry = entry,
-            _target = extractLocation,
+            ArchiveName = archiveName, EventType = ZipProgressEventType.Extracting_AfterExtractEntry, CurrentEntry = entry, _target = extractLocation,
         };
+
         return x;
     }
 
@@ -599,6 +605,7 @@ internal class ExtractProgressEventArgs : ZipProgressEventArgs
     {
         ExtractProgressEventArgs? x = new ExtractProgressEventArgs(archiveName, ZipProgressEventType.Extracting_BeforeExtractAll);
         x._target = extractLocation;
+
         return x;
     }
 
@@ -606,9 +613,9 @@ internal class ExtractProgressEventArgs : ZipProgressEventArgs
     {
         ExtractProgressEventArgs? x = new ExtractProgressEventArgs(archiveName, ZipProgressEventType.Extracting_AfterExtractAll);
         x._target = extractLocation;
+
         return x;
     }
-
 
     internal static ExtractProgressEventArgs ByteUpdate(string archiveName, ZipEntry entry, Int64 bytesWritten, Int64 totalBytes)
     {
@@ -617,10 +624,9 @@ internal class ExtractProgressEventArgs : ZipProgressEventArgs
         x.CurrentEntry = entry;
         x.BytesTransferred = bytesWritten;
         x.TotalBytesToTransfer = totalBytes;
+
         return x;
     }
-
-
 
     /// <summary>
     /// Number of entries extracted so far.  This is set only if the
@@ -639,10 +645,7 @@ internal class ExtractProgressEventArgs : ZipProgressEventArgs
     {
         get { return this._target; }
     }
-
 }
-
-
 
 /// <summary>
 /// Provides information about the an error that occurred while zipping.
@@ -650,16 +653,18 @@ internal class ExtractProgressEventArgs : ZipProgressEventArgs
 internal class ZipErrorEventArgs : ZipProgressEventArgs
 {
     private Exception _exc;
-    private ZipErrorEventArgs() { }
+
+    private ZipErrorEventArgs()
+    {
+    }
+
     internal static ZipErrorEventArgs Saving(string archiveName, ZipEntry entry, Exception exception)
     {
         ZipErrorEventArgs? x = new ZipErrorEventArgs
         {
-            EventType = ZipProgressEventType.Error_Saving,
-            ArchiveName = archiveName,
-            CurrentEntry = entry,
-            _exc = exception
+            EventType = ZipProgressEventType.Error_Saving, ArchiveName = archiveName, CurrentEntry = entry, _exc = exception
         };
+
         return x;
     }
 

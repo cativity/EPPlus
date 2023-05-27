@@ -10,6 +10,7 @@
  *************************************************************************************************
   01/27/2020         EPPlus Software AB       Initial release EPPlus 5
  *************************************************************************************************/
+
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -29,25 +30,35 @@ namespace OfficeOpenXml.Drawing;
 public class ExcelDrawingFill : ExcelDrawingFillBasic
 {
     private readonly IPictureRelationDocument _pictureRelationDocument;
-    internal ExcelDrawingFill(IPictureRelationDocument pictureRelationDocument, XmlNamespaceManager nameSpaceManager, XmlNode topNode, string fillPath, string[] schemaNodeOrder, Action initXml = null) :
-        base(pictureRelationDocument.Package, nameSpaceManager, topNode, fillPath, schemaNodeOrder, false, initXml)
+
+    internal ExcelDrawingFill(IPictureRelationDocument pictureRelationDocument,
+                              XmlNamespaceManager nameSpaceManager,
+                              XmlNode topNode,
+                              string fillPath,
+                              string[] schemaNodeOrder,
+                              Action initXml = null)
+        : base(pictureRelationDocument.Package, nameSpaceManager, topNode, fillPath, schemaNodeOrder, false, initXml)
     {
         this._pictureRelationDocument = pictureRelationDocument;
+
         if (this._fillNode != null)
         {
             this.LoadFill();
         }
     }
+
     /// <summary>
     /// Load the fill from the xml
     /// </summary>
     internal protected override void LoadFill()
     {
-        this._fillTypeNode ??= this._fillNode.SelectSingleNode("a:pattFill", this.NameSpaceManager) ?? this._fillNode.SelectSingleNode("a:blipFill", this.NameSpaceManager);
+        this._fillTypeNode ??= this._fillNode.SelectSingleNode("a:pattFill", this.NameSpaceManager)
+                               ?? this._fillNode.SelectSingleNode("a:blipFill", this.NameSpaceManager);
 
         if (this._fillTypeNode == null)
         {
             base.LoadFill();
+
             return;
         }
 
@@ -56,14 +67,24 @@ public class ExcelDrawingFill : ExcelDrawingFillBasic
             case "pattFill":
                 this._style = eFillStyle.PatternFill;
                 this._patternFill = new ExcelDrawingPatternFill(this.NameSpaceManager, this._fillTypeNode, "", this.SchemaNodeOrder, this._initXml);
+
                 break;
+
             case "blipFill":
                 this._style = eFillStyle.BlipFill;
 
-                this._blipFill = new ExcelDrawingBlipFill(this._pictureRelationDocument, this.NameSpaceManager, this._fillTypeNode, "", this.SchemaNodeOrder, this._initXml);
+                this._blipFill = new ExcelDrawingBlipFill(this._pictureRelationDocument,
+                                                          this.NameSpaceManager,
+                                                          this._fillTypeNode,
+                                                          "",
+                                                          this.SchemaNodeOrder,
+                                                          this._initXml);
+
                 break;
+
             default:
                 base.LoadFill();
+
                 break;
         }
     }
@@ -81,7 +102,7 @@ public class ExcelDrawingFill : ExcelDrawingFillBasic
         switch (this._fillTypeNode.LocalName)
         {
             case "pattFill":
-                this._patternFill    = new ExcelDrawingPatternFill(this.NameSpaceManager, this._fillTypeNode, "", this.SchemaNodeOrder, this._initXml);
+                this._patternFill = new ExcelDrawingPatternFill(this.NameSpaceManager, this._fillTypeNode, "", this.SchemaNodeOrder, this._initXml);
                 this._patternFill.PatternType = eFillPatternStyle.Pct5;
 
                 if (this._patternFill.BackgroundColor.ColorType == eDrawingColorType.None)
@@ -90,12 +111,22 @@ public class ExcelDrawingFill : ExcelDrawingFillBasic
                 }
 
                 this._patternFill.ForegroundColor.SetSchemeColor(eSchemeColor.Text1);
+
                 break;
+
             case "blipFill":
-                this._blipFill = new ExcelDrawingBlipFill(this._pictureRelationDocument, this.NameSpaceManager, this._fillTypeNode, "", this.SchemaNodeOrder, this._initXml);
+                this._blipFill = new ExcelDrawingBlipFill(this._pictureRelationDocument,
+                                                          this.NameSpaceManager,
+                                                          this._fillTypeNode,
+                                                          "",
+                                                          this.SchemaNodeOrder,
+                                                          this._initXml);
+
                 break;
+
             default:
                 base.SetFillProperty();
+
                 break;
         }
     }
@@ -117,30 +148,26 @@ public class ExcelDrawingFill : ExcelDrawingFillBasic
     }
 
     private ExcelDrawingPatternFill _patternFill = null;
+
     /// <summary>
     /// Reference pattern fill properties
     /// This property is only accessable when Type is set to PatternFill
     /// </summary>
     public ExcelDrawingPatternFill PatternFill
     {
-        get
-        {
-            return this._patternFill;
-        }
+        get { return this._patternFill; }
     }
+
     private ExcelDrawingBlipFill _blipFill = null;
+
     /// <summary>
     /// Reference gradient fill properties
     /// This property is only accessable when Type is set to BlipFill
     /// </summary>
     public ExcelDrawingBlipFill BlipFill
     {
-        get
-        {
-            return this._blipFill;
-        }
+        get { return this._blipFill; }
     }
-
 
     /// <summary>
     /// Disposes the object

@@ -26,6 +26,7 @@
  *******************************************************************************
   01/27/2020         EPPlus Software AB       Initial release EPPlus 5
  *******************************************************************************/
+
 using System;
 using System.Diagnostics;
 using System.IO;
@@ -223,13 +224,16 @@ public class TextFunctionsTests
     {
         Stopwatch? sw = new Stopwatch();
         sw.Start();
+
         using (ExcelPackage? pck = new ExcelPackage(new FileInfo(@"c:\temp\denis.xlsx")))
         {
             IFormulaParserLogger? logger = LoggerFactory.CreateTextFileLogger(new FileInfo(@"c:\temp\log1.txt"));
             pck.Workbook.FormulaParser.Configure(x => x.AttachLogger(logger));
             pck.Workbook.Calculate();
+
             //
         }
+
         sw.Stop();
         TimeSpan elapsed = sw.Elapsed;
         Console.WriteLine(string.Format("{0} seconds", elapsed.TotalSeconds));

@@ -10,6 +10,7 @@
  *************************************************************************************************
   01/27/2020         EPPlus Software AB       Initial release EPPlus 5
  *************************************************************************************************/
+
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -28,8 +29,7 @@ internal static class ExcelConditionalFormattingTimePeriodType
     /// </summary>
     /// <param name="type"></param>
     /// <returns></returns>
-    public static string GetAttributeByType(
-        eExcelConditionalFormattingTimePeriodType type)
+    public static string GetAttributeByType(eExcelConditionalFormattingTimePeriodType type)
     {
         switch (type)
         {
@@ -72,8 +72,7 @@ internal static class ExcelConditionalFormattingTimePeriodType
     /// </summary>
     /// <param name="attribute"></param>
     /// <returns></returns>
-    public static eExcelConditionalFormattingTimePeriodType GetTypeByAttribute(
-        string attribute)
+    public static eExcelConditionalFormattingTimePeriodType GetTypeByAttribute(string attribute)
     {
         switch (attribute)
         {
@@ -108,7 +107,6 @@ internal static class ExcelConditionalFormattingTimePeriodType
                 return eExcelConditionalFormattingTimePeriodType.Yesterday;
         }
 
-        throw new Exception(
-                            ExcelConditionalFormattingConstants.Errors.UnexistentTimePeriodTypeAttribute);
+        throw new Exception(ExcelConditionalFormattingConstants.Errors.UnexistentTimePeriodTypeAttribute);
     }
 }

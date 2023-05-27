@@ -10,6 +10,7 @@
  *************************************************************************************************
   10/15/2020         EPPlus Software AB       ToDataTable function
  *************************************************************************************************/
+
 using OfficeOpenXml.FormulaParsing.Utilities;
 using System;
 using System.Collections.Generic;
@@ -33,7 +34,6 @@ public class DataColumnMapping
 
     internal DataColumnMapping()
     {
-
     }
 
     internal bool HasDataColumn => this.DataColumn != null;
@@ -41,11 +41,7 @@ public class DataColumnMapping
     /// <summary>
     /// The <see cref="System.Data.DataColumn"/> used for the mapping
     /// </summary>
-    public DataColumn DataColumn
-    {
-        get;
-        private set;
-    }
+    public DataColumn DataColumn { get; private set; }
 
     /// <summary>
     /// Zero based index of the mappings column in the range
@@ -62,7 +58,7 @@ public class DataColumnMapping
         get { return this.HasDataColumn ? this.DataColumn.ColumnName : this._dataColumnName; }
         set
         {
-            if(this.HasDataColumn)
+            if (this.HasDataColumn)
             {
                 this.DataColumn.ColumnName = value;
             }
@@ -74,6 +70,7 @@ public class DataColumnMapping
     }
 
     private Type _dataColumnType;
+
     /// <summary>
     /// <see cref="Type">Type</see> of the column, corresponds to <see cref="System.Data.DataColumn.DataType"/>
     /// </summary>
@@ -81,7 +78,7 @@ public class DataColumnMapping
     {
         get
         {
-            if(this.HasDataColumn)
+            if (this.HasDataColumn)
             {
                 return this.DataColumn.DataType;
             }
@@ -92,7 +89,7 @@ public class DataColumnMapping
         }
         set
         {
-            if(this.HasDataColumn)
+            if (this.HasDataColumn)
             {
                 this.DataColumn.DataType = value;
             }
@@ -104,6 +101,7 @@ public class DataColumnMapping
     }
 
     private bool _allowNull;
+
     /// <summary>
     /// Indicates whether empty cell values should be allowed. Corresponds to <see cref="System.Data.DataColumn.AllowDBNull"/>
     /// </summary>
@@ -111,7 +109,7 @@ public class DataColumnMapping
     {
         get
         {
-            if(this.HasDataColumn)
+            if (this.HasDataColumn)
             {
                 return this.DataColumn.AllowDBNull;
             }
@@ -122,7 +120,7 @@ public class DataColumnMapping
         }
         set
         {
-            if(this.HasDataColumn)
+            if (this.HasDataColumn)
             {
                 this.DataColumn.AllowDBNull = value;
             }
@@ -146,14 +144,11 @@ public class DataColumnMapping
     /// });
     /// </code>
     /// </example>
-    public Func<object, object> TransformCellValue
-    {
-        get; set;
-    }
+    public Func<object, object> TransformCellValue { get; set; }
 
     internal void Validate()
     {
-        if(string.IsNullOrEmpty(this.DataColumnName))
+        if (string.IsNullOrEmpty(this.DataColumnName))
         {
             throw new ArgumentNullException("DataColumnName");
         }

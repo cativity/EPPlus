@@ -19,20 +19,23 @@ namespace EPPlusTest.Drawing.Chart;
 public class ChartExReadTests : TestBase
 {
     static ExcelPackage _pck;
+
     [ClassInitialize]
     public static void Init(TestContext context)
     {
         _pck = OpenPackage("ChartExRead.xlsx");
     }
+
     [ClassCleanup]
     public static void Cleanup()
     {
     }
+
     [TestMethod]
     public void ReadSunburstChart()
-    {            
+    {
         ExcelWorksheet? ws = GetWorksheet("Sunburst");
-        Assert.AreEqual(1,ws.Drawings.Count);
+        Assert.AreEqual(1, ws.Drawings.Count);
         ExcelSunburstChart? chart = ws.Drawings[0].As.Chart.SunburstChart;
         Assert.AreEqual(1, chart.Series.Count);
         ExcelChartExSerie? serie = chart.Series[0];
@@ -44,7 +47,7 @@ public class ChartExReadTests : TestBase
         Assert.IsTrue(serie.DataLabel.ShowValue);
         Assert.IsFalse(serie.DataLabel.ShowSeriesName);
         Assert.AreEqual(1, serie.DataPoints.Count);
-        ExcelChartExDataPoint? dp=serie.DataPoints[2];
+        ExcelChartExDataPoint? dp = serie.DataPoints[2];
 
         Assert.AreEqual(eFillStyle.PatternFill, dp.Fill.Style);
         Assert.AreEqual(eFillPatternStyle.DashDnDiag, dp.Fill.PatternFill.PatternType);
@@ -55,8 +58,9 @@ public class ChartExReadTests : TestBase
         Assert.IsInstanceOfType(chart, typeof(ExcelSunburstChart));
         Assert.AreEqual(0, chart.Axis.Length);
         Assert.IsNull(chart.XAxis);
-        Assert.IsNull(chart.YAxis);            
+        Assert.IsNull(chart.YAxis);
     }
+
     [TestMethod]
     public void ReadTreemapChart()
     {
@@ -76,10 +80,11 @@ public class ChartExReadTests : TestBase
         chart.StyleManager.SetChartStyle(ePresetChartStyle.TreemapChartStyle9);
         Assert.IsInstanceOfType(chart, typeof(ExcelTreemapChart));
     }
+
     [TestMethod]
     public void ReadBoxWhiskerChart()
     {
-        ExcelWorksheet? ws = GetWorksheet("BoxWhisker"); 
+        ExcelWorksheet? ws = GetWorksheet("BoxWhisker");
         Assert.AreEqual(1, ws.Drawings.Count);
         ExcelBoxWhiskerChart? chart = ws.Drawings[0].As.Chart.BoxWhiskerChart;
         Assert.AreEqual(1, chart.Series.Count);
@@ -101,6 +106,7 @@ public class ChartExReadTests : TestBase
 
         Assert.AreEqual(eQuartileMethod.Exclusive, serie.QuartileMethod);
     }
+
     [TestMethod]
     public void ReadHistogramChart()
     {
@@ -118,6 +124,7 @@ public class ChartExReadTests : TestBase
 
         Assert.IsInstanceOfType(chart, typeof(ExcelHistogramChart));
     }
+
     [TestMethod]
     public void ReadParetoChart()
     {
@@ -141,6 +148,7 @@ public class ChartExReadTests : TestBase
         Assert.AreEqual(eChartType.Pareto, chart.ChartType);
         Assert.AreEqual((int)ePresetChartStyle.HistogramChartStyle4, chart.StyleManager.Style.Id);
     }
+
     [TestMethod]
     public void ReadWaterfallChart()
     {
@@ -168,7 +176,6 @@ public class ChartExReadTests : TestBase
         Assert.AreEqual(eFillStyle.SolidFill, dt.Fill.Style);
         Assert.AreEqual(eSchemeColor.Accent2, dt.Fill.SolidFill.Color.SchemeColor.Color);
 
-
         dt = serie.DataPoints[2];
         Assert.IsFalse(dt.SubTotal);
         Assert.AreEqual(eFillStyle.SolidFill, dt.Fill.Style);
@@ -178,6 +185,7 @@ public class ChartExReadTests : TestBase
 
         Assert.IsInstanceOfType(chart, typeof(ExcelWaterfallChart));
     }
+
     [TestMethod]
     public void ReadFunnelChart()
     {
@@ -188,10 +196,11 @@ public class ChartExReadTests : TestBase
         ExcelChartExSerie? serie = chart.Series[0];
         Assert.AreEqual("Funnel!$D$2:$D$17", serie.Series);
         Assert.AreEqual("Funnel!$A$2:$C$17", serie.XSeries);
-            
+
         Assert.AreEqual((int)ePresetChartStyle.FunnelChartStyle1, chart.StyleManager.Style.Id);
         Assert.IsInstanceOfType(chart, typeof(ExcelFunnelChart));
     }
+
     [TestMethod]
     public void ReadRegionMapChart()
     {
@@ -210,7 +219,7 @@ public class ChartExReadTests : TestBase
         Assert.AreEqual(eStringDataType.ColorString, ((ExcelChartExStringData)serie.DataDimensions[1]).Type);
 
         Assert.AreEqual(eNumberOfColors.ThreeColor, serie.Colors.NumberOfColors);
-        Assert.AreEqual(eSchemeColor.Dark1,serie.Colors.MinColor.Color.SchemeColor.Color);
+        Assert.AreEqual(eSchemeColor.Dark1, serie.Colors.MinColor.Color.SchemeColor.Color);
         Assert.AreEqual(eColorValuePositionType.Number, serie.Colors.MinColor.ValueType);
         Assert.AreEqual(22, serie.Colors.MinColor.PositionValue);
         Assert.AreEqual(eColorValuePositionType.Percent, serie.Colors.MidColor.ValueType);
@@ -218,7 +227,7 @@ public class ChartExReadTests : TestBase
         Assert.AreEqual(eColorValuePositionType.Extreme, serie.Colors.MaxColor.ValueType);
         Assert.AreEqual(Color.Red.ToArgb(), serie.Colors.MaxColor.Color.RgbColor.Color.ToArgb());
 
-        Assert.AreEqual(1,serie.DataLabel.Border.Width);
+        Assert.AreEqual(1, serie.DataLabel.Border.Width);
         Assert.AreEqual(eGeoMappingLevel.DataOnly, serie.ViewedRegionType);
         Assert.AreEqual(eProjectionType.Miller, serie.ProjectionType);
 
@@ -230,18 +239,21 @@ public class ChartExReadTests : TestBase
         Assert.AreEqual("sv", serie.Region.TwoLetterISOLanguageName);
         Assert.AreEqual("sv-SE", serie.Language.Name);
     }
+
     private static ExcelWorksheet GetWorksheet(string wsName)
     {
-        if (_pck == null || _pck.Workbook.Worksheets.Count==0)
+        if (_pck == null || _pck.Workbook.Worksheets.Count == 0)
         {
             Assert.Inconclusive("ChartExRead.xlsx does not exist");
         }
+
         ExcelWorksheet? ws = _pck.Workbook.Worksheets[wsName];
+
         if (ws == null)
         {
             Assert.Inconclusive($"Worksheet {wsName} does not exist");
         }
+
         return ws;
     }
-
 }

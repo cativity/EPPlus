@@ -10,6 +10,7 @@
  *************************************************************************************************
   10/15/2020         EPPlus Software AB       ToDataTable function
  *************************************************************************************************/
+
 using OfficeOpenXml.FormulaParsing.Utilities;
 using System;
 using System.Collections.Generic;
@@ -35,6 +36,7 @@ internal class ToDataTable
     {
         DataTable? dataTable = new DataTableBuilder(this._options, this._range).Build();
         new DataTableExporter(this._options, this._range, dataTable).Export();
+
         return dataTable;
     }
 
@@ -43,6 +45,7 @@ internal class ToDataTable
         Require.That(dataTable).IsNotNull();
         new DataTableMapper(this._options, this._range, dataTable).Map();
         new DataTableExporter(this._options, this._range, dataTable).Export();
+
         return dataTable;
     }
 }

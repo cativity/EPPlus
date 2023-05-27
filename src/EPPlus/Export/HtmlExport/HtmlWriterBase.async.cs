@@ -10,6 +10,7 @@
  *************************************************************************************************
   11/07/2021         EPPlus Software AB       Added Html Export
  *************************************************************************************************/
+
 using OfficeOpenXml.Drawing.Interfaces;
 using OfficeOpenXml.Style;
 using OfficeOpenXml.Style.XmlAccess;
@@ -27,83 +28,118 @@ internal abstract partial class HtmlWriterBase
     protected const string IndentWhiteSpace = "  ";
     protected bool _newLine;
 
-    internal protected HashSet<string> _images=new HashSet<string>();
+    internal protected HashSet<string> _images = new HashSet<string>();
     protected Dictionary<string, int> _styleCache;
+
     internal HtmlWriterBase(Stream stream, Encoding encoding, Dictionary<string, int> styleCache)
     {
         this._stream = stream;
         this._writer = new StreamWriter(stream, encoding);
         this._styleCache = styleCache;
     }
+
     public HtmlWriterBase(StreamWriter writer, Dictionary<string, int> styleCache)
     {
         this._stream = writer.BaseStream;
         this._writer = writer;
         this._styleCache = styleCache;
     }
+
     internal int Indent { get; set; }
 
     protected internal static bool HasStyle(ExcelXfs xfs)
     {
-        return xfs.FontId > 0 ||
-               xfs.FillId > 0 ||
-               xfs.BorderId > 0 ||
-               xfs.HorizontalAlignment != ExcelHorizontalAlignment.General ||
-               xfs.VerticalAlignment != ExcelVerticalAlignment.Bottom ||
-               xfs.TextRotation != 0 ||
-               xfs.Indent > 0 ||
-               xfs.WrapText;
+        return xfs.FontId > 0
+               || xfs.FillId > 0
+               || xfs.BorderId > 0
+               || xfs.HorizontalAlignment != ExcelHorizontalAlignment.General
+               || xfs.VerticalAlignment != ExcelVerticalAlignment.Bottom
+               || xfs.TextRotation != 0
+               || xfs.Indent > 0
+               || xfs.WrapText;
     }
+
     protected internal static string GetStyleKey(ExcelXfs xfs)
     {
         ulong fbfKey = ((ulong)(uint)xfs.FontId << 32) | ((uint)xfs.BorderId << 16) | (uint)xfs.FillId;
-        return fbfKey.ToString() + "|" + ((int)xfs.HorizontalAlignment).ToString() + "|" + ((int)xfs.VerticalAlignment).ToString() + "|" + xfs.Indent.ToString() + "|" + xfs.TextRotation.ToString() + "|" + (xfs.WrapText ? "1" : "0");
+
+        return fbfKey.ToString()
+               + "|"
+               + ((int)xfs.HorizontalAlignment).ToString()
+               + "|"
+               + ((int)xfs.VerticalAlignment).ToString()
+               + "|"
+               + xfs.Indent.ToString()
+               + "|"
+               + xfs.TextRotation.ToString()
+               + "|"
+               + (xfs.WrapText ? "1" : "0");
     }
 
     protected static string GetBorderItemLine(ExcelBorderStyle style, string suffix)
     {
         string? lineStyle = $"border-{suffix}:";
+
         switch (style)
         {
             case ExcelBorderStyle.Hair:
                 lineStyle += "1px solid";
+
                 break;
+
             case ExcelBorderStyle.Thin:
                 lineStyle += $"thin solid";
+
                 break;
+
             case ExcelBorderStyle.Medium:
                 lineStyle += $"medium solid";
+
                 break;
+
             case ExcelBorderStyle.Thick:
                 lineStyle += $"thick solid";
+
                 break;
+
             case ExcelBorderStyle.Double:
                 lineStyle += $"double";
+
                 break;
+
             case ExcelBorderStyle.Dotted:
                 lineStyle += $"dotted";
+
                 break;
+
             case ExcelBorderStyle.Dashed:
             case ExcelBorderStyle.DashDot:
             case ExcelBorderStyle.DashDotDot:
                 lineStyle += $"dashed";
+
                 break;
+
             case ExcelBorderStyle.MediumDashed:
             case ExcelBorderStyle.MediumDashDot:
             case ExcelBorderStyle.MediumDashDotDot:
                 lineStyle += $"medium dashed";
+
                 break;
         }
+
         return lineStyle;
     }
+
     protected static string GetVerticalAlignment(ExcelXfs xfs)
     {
         switch (xfs.VerticalAlignment)
         {
             case ExcelVerticalAlignment.Top:
                 return "top";
+
             case ExcelVerticalAlignment.Center:
                 return "middle";
+
             case ExcelVerticalAlignment.Bottom:
                 return "bottom";
         }
@@ -117,15 +153,18 @@ internal abstract partial class HtmlWriterBase
         {
             case ExcelHorizontalAlignment.Right:
                 return "right";
+
             case ExcelHorizontalAlignment.Center:
             case ExcelHorizontalAlignment.CenterContinuous:
                 return "center";
+
             case ExcelHorizontalAlignment.Left:
                 return "left";
         }
 
         return "";
     }
+
     public void WriteLine()
     {
         this._newLine = true;
@@ -144,6 +183,7 @@ internal abstract partial class HtmlWriterBase
             this._writer.Write(IndentWhiteSpace);
         }
     }
+
     internal void ApplyFormat(bool minify)
     {
         if (minify == false)
@@ -169,6 +209,7 @@ internal abstract partial class HtmlWriterBase
             this.Indent--;
         }
     }
+
     internal void WriteClass(string value, bool minify)
     {
         if (minify)
@@ -181,6 +222,7 @@ internal abstract partial class HtmlWriterBase
             this.Indent = 1;
         }
     }
+
     internal void WriteClassEnd(bool minify)
     {
         if (minify)
@@ -193,6 +235,7 @@ internal abstract partial class HtmlWriterBase
             this.Indent = 0;
         }
     }
+
     internal void WriteCssItem(string value, bool minify)
     {
         if (minify)

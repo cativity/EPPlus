@@ -10,6 +10,7 @@
  *************************************************************************************************
   01/27/2020         EPPlus Software AB       Initial release EPPlus 5
  *************************************************************************************************/
+
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -22,7 +23,6 @@ internal class GroupExpression : Expression
     public GroupExpression(bool isNegated)
         : this(isNegated, new ExpressionCompiler())
     {
-
     }
 
     public GroupExpression(bool isNegated, IExpressionCompiler expressionCompiler)
@@ -34,14 +34,15 @@ internal class GroupExpression : Expression
     private readonly IExpressionCompiler _expressionCompiler;
     private readonly bool _isNegated;
 
-
     public override CompileResult Compile()
     {
         CompileResult? result = this._expressionCompiler.Compile(this.Children);
+
         if (result.IsNumeric && this._isNegated)
         {
             return new CompileResult(result.ResultNumeric * -1, result.DataType);
         }
+
         return result;
     }
 

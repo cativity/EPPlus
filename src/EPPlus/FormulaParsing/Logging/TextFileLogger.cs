@@ -10,6 +10,7 @@
  *************************************************************************************************
   01/27/2020         EPPlus Software AB       Initial release EPPlus 5
  *************************************************************************************************/
+
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -28,6 +29,7 @@ internal class TextFileLogger : IFormulaParserLogger
     private DateTime _startTime = DateTime.Now;
     private Dictionary<string, int> _funcs = new Dictionary<string, int>();
     private Dictionary<string, long> _funcPerformance = new Dictionary<string, long>();
+
     internal TextFileLogger(FileInfo fileInfo)
     {
 #if (Core)
@@ -79,19 +81,22 @@ internal class TextFileLogger : IFormulaParserLogger
     public void LogCellCounted()
     {
         this._count++;
-        if (this._count%500 == 0)
+
+        if (this._count % 500 == 0)
         {
             this._sw.WriteLine(Separator);
             TimeSpan timeEllapsed = DateTime.Now.Subtract(this._startTime);
             this._sw.WriteLine("{0} cells parsed, time {1} seconds", this._count, timeEllapsed.TotalSeconds);
 
             List<string>? funcs = this._funcs.Keys.OrderByDescending(x => this._funcs[x]).ToList();
+
             foreach (string? func in funcs)
             {
                 this._sw.Write(func + "  - " + this._funcs[func]);
+
                 if (this._funcPerformance.ContainsKey(func))
                 {
-                    this._sw.Write(" - avg: " + (this._funcPerformance[func]/ this._funcs[func]) + " milliseconds");
+                    this._sw.Write(" - avg: " + (this._funcPerformance[func] / this._funcs[func]) + " milliseconds");
                 }
 
                 this._sw.WriteLine();
@@ -99,7 +104,6 @@ internal class TextFileLogger : IFormulaParserLogger
 
             this._sw.WriteLine();
             this._funcs.Clear();
-
         }
     }
 

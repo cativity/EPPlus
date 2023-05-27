@@ -10,6 +10,7 @@
  *************************************************************************************************
   12/10/2020         EPPlus Software AB       EPPlus 5.5
  *************************************************************************************************/
+
 using OfficeOpenXml.Table;
 using System;
 using System.Collections.Generic;
@@ -32,13 +33,10 @@ public class EpplusFormulaTableColumnAttribute : EpplusTableColumnAttributeBase
     /// </summary>
     public string Formula
     {
-        get
-        {
-            return this._formula;
-        }
+        get { return this._formula; }
         set
         {
-            if(!string.IsNullOrEmpty(this._formulaR1C1) && !string.IsNullOrEmpty(value))
+            if (!string.IsNullOrEmpty(this._formulaR1C1) && !string.IsNullOrEmpty(value))
             {
                 throw new InvalidOperationException("EpplusFormulaTableColumn attribute: Formula cannot be set if FormulaR1C1 is not null or empty.");
             }
@@ -52,10 +50,7 @@ public class EpplusFormulaTableColumnAttribute : EpplusTableColumnAttributeBase
     /// </summary>
     public string FormulaR1C1
     {
-        get
-        {
-            return this._formulaR1C1;
-        }
+        get { return this._formulaR1C1; }
         set
         {
             if (!string.IsNullOrEmpty(this._formula) && !string.IsNullOrEmpty(value))

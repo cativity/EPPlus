@@ -19,10 +19,11 @@ public class DateDifTests
     {
         CultureInfo? culture = Thread.CurrentThread.CurrentCulture;
         Thread.CurrentThread.CurrentCulture = CultureInfo.InvariantCulture;
+
         using (ExcelPackage? package = new ExcelPackage())
         {
             ExcelWorksheet? sheet = package.Workbook.Worksheets.Add("test");
-                
+
             sheet.Cells["A1"].Value = "1/1/2001";
             sheet.Cells["B1"].Value = new DateTime(2003, 1, 1).ToOADate();
             sheet.Cells["C1"].Formula = "DATEDIF(A1,B1,\"Y\")";
@@ -35,6 +36,7 @@ public class DateDifTests
             sheet.Calculate();
             Assert.AreEqual(1d, sheet.Cells["C1"].Value);
         }
+
         Thread.CurrentThread.CurrentCulture = culture;
     }
 
@@ -43,6 +45,7 @@ public class DateDifTests
     {
         CultureInfo? culture = Thread.CurrentThread.CurrentCulture;
         Thread.CurrentThread.CurrentCulture = CultureInfo.InvariantCulture;
+
         using (ExcelPackage? package = new ExcelPackage())
         {
             ExcelWorksheet? sheet = package.Workbook.Worksheets.Add("test");
@@ -59,6 +62,7 @@ public class DateDifTests
             sheet.Calculate();
             Assert.AreEqual(20d, sheet.Cells["C1"].Value);
         }
+
         Thread.CurrentThread.CurrentCulture = culture;
     }
 
@@ -67,6 +71,7 @@ public class DateDifTests
     {
         CultureInfo? culture = Thread.CurrentThread.CurrentCulture;
         Thread.CurrentThread.CurrentCulture = CultureInfo.InvariantCulture;
+
         using (ExcelPackage? package = new ExcelPackage())
         {
             ExcelWorksheet? sheet = package.Workbook.Worksheets.Add("test");
@@ -83,6 +88,7 @@ public class DateDifTests
             sheet.Calculate();
             Assert.AreEqual(639d, sheet.Cells["C1"].Value);
         }
+
         Thread.CurrentThread.CurrentCulture = culture;
     }
 
@@ -91,6 +97,7 @@ public class DateDifTests
     {
         CultureInfo? culture = Thread.CurrentThread.CurrentCulture;
         Thread.CurrentThread.CurrentCulture = CultureInfo.InvariantCulture;
+
         using (ExcelPackage? package = new ExcelPackage())
         {
             ExcelWorksheet? sheet = package.Workbook.Worksheets.Add("test");
@@ -107,6 +114,7 @@ public class DateDifTests
             sheet.Calculate();
             Assert.AreEqual(11d, sheet.Cells["C1"].Value);
         }
+
         Thread.CurrentThread.CurrentCulture = culture;
     }
 
@@ -115,6 +123,7 @@ public class DateDifTests
     {
         CultureInfo? culture = Thread.CurrentThread.CurrentCulture;
         Thread.CurrentThread.CurrentCulture = CultureInfo.InvariantCulture;
+
         using (ExcelPackage? package = new ExcelPackage())
         {
             ExcelWorksheet? sheet = package.Workbook.Worksheets.Add("test");
@@ -131,6 +140,7 @@ public class DateDifTests
             sheet.Calculate();
             Assert.AreEqual(274d, sheet.Cells["C1"].Value);
         }
+
         Thread.CurrentThread.CurrentCulture = culture;
     }
 
@@ -139,6 +149,7 @@ public class DateDifTests
     {
         CultureInfo? culture = Thread.CurrentThread.CurrentCulture;
         Thread.CurrentThread.CurrentCulture = CultureInfo.InvariantCulture;
+
         using (ExcelPackage? package = new ExcelPackage())
         {
             ExcelWorksheet? sheet = package.Workbook.Worksheets.Add("test");
@@ -155,6 +166,7 @@ public class DateDifTests
             sheet.Calculate();
             Assert.AreEqual(29d, sheet.Cells["C1"].Value);
         }
+
         Thread.CurrentThread.CurrentCulture = culture;
     }
 }

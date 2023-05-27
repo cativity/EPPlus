@@ -10,6 +10,7 @@
  *************************************************************************************************
   05/03/2020         EPPlus Software AB         Implemented function
  *************************************************************************************************/
+
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -23,6 +24,7 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Engineering;
 internal class Conversions
 {
     #region Types
+
     /// <summary>
     /// Types of mapping groups
     /// </summary>
@@ -135,18 +137,24 @@ internal class Conversions
         }
 
         Unit conversion = _conversions[abbrevation];
-        foreach(Prefix prefix in _metricPrefixes)
+
+        foreach (Prefix prefix in _metricPrefixes)
         {
-            switch(conversion.UnitType)
+            switch (conversion.UnitType)
             {
                 case UnitTypes.Area:
                     _conversions[prefix.Abbrevation + abbrevation] = new Unit(MathObj.Pow(prefix.Value, 2) * conversion.Value, conversion.UnitType);
+
                     break;
+
                 case UnitTypes.Liquid:
                     _conversions[prefix.Abbrevation + abbrevation] = new Unit(MathObj.Pow(prefix.Value, 3) * conversion.Value, conversion.UnitType);
+
                     break;
+
                 default:
                     _conversions[prefix.Abbrevation + abbrevation] = new Unit(prefix.Value * conversion.Value, conversion.UnitType);
+
                     break;
             }
         }
@@ -160,7 +168,8 @@ internal class Conversions
         }
 
         Unit conversion = _conversions[abbrevation];
-        foreach(Prefix prefix in _binaryPrefixes)
+
+        foreach (Prefix prefix in _binaryPrefixes)
         {
             _conversions[prefix.Abbrevation + abbrevation] = new Unit(prefix.Value * conversion.Value, conversion.UnitType);
         }
@@ -360,6 +369,7 @@ internal class Conversions
     #endregion
 
     #region Definitions
+
     public class Distance
     {
         public const double Meter = 1d;
@@ -381,8 +391,8 @@ internal class Conversions
         public const double Hour = 1d;
         public const double Year = Day * 365.25;
         public const double Day = Hour * 24;
-        public static double Minute = Hour/60d;
-        public static double Second = Hour/3600d;
+        public static double Minute = Hour / 60d;
+        public static double Second = Hour / 3600d;
     }
 
     public class Speed
@@ -525,10 +535,12 @@ internal class Conversions
                 Init();
             }
         }
+
         if (!_conversions.ContainsKey(unit) && !TemperatureConverter.IsValidUnit(unit))
         {
             return false;
         }
+
         return true;
     }
 
@@ -541,6 +553,7 @@ internal class Conversions
                 Init();
             }
         }
+
         // special case for temperatures which has to be converted with a function in some cases
         if (TemperatureConverter.IsTempMapping(fromUnit, toUnit))
         {
@@ -551,16 +564,20 @@ internal class Conversions
         {
             throw new ArgumentException("Invalid fromUnit", fromUnit);
         }
-        if(!IsValidUnit(toUnit))
+
+        if (!IsValidUnit(toUnit))
         {
             throw new ArgumentException("Invalid toUnit", toUnit);
         }
+
         Unit from = _conversions[fromUnit];
         Unit to = _conversions[toUnit];
+
         if (from.UnitType != to.UnitType)
         {
             throw new ArgumentException("Units are not compatible: " + fromUnit + " and " + toUnit);
         }
+
         return number * (from.Value / to.Value);
     }
 

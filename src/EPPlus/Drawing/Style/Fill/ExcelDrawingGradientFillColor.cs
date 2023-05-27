@@ -10,6 +10,7 @@
  *************************************************************************************************
   01/27/2020         EPPlus Software AB       Initial release EPPlus 5
  *************************************************************************************************/
+
 using OfficeOpenXml.Drawing.Style.Coloring;
 using System;
 using System.Collections.Generic;
@@ -28,9 +29,11 @@ public class ExcelDrawingGradientFillColor
     /// The position of color in a range from 0-100%
     /// </summary>
     public double Position { get; internal set; }
+
     /// <summary>
     /// The color to use.
     /// </summary>
     public ExcelDrawingColorManager Color { get; set; }
+
     internal XmlNode TopNode { get; set; }
 }

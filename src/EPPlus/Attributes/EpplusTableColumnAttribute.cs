@@ -10,6 +10,7 @@
  *************************************************************************************************
   12/10/2020         EPPlus Software AB       EPPlus 5.5
  *************************************************************************************************/
+
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -23,5 +24,4 @@ namespace OfficeOpenXml.Attributes;
 [AttributeUsage(AttributeTargets.Method | AttributeTargets.Property | AttributeTargets.Field)]
 public class EpplusTableColumnAttribute : EpplusTableColumnAttributeBase
 {
-
 }

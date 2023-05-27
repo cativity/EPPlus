@@ -10,6 +10,7 @@
  *************************************************************************************************
   01/27/2020         EPPlus Software AB       Initial release EPPlus 5
  *************************************************************************************************/
+
 using System;
 
 namespace OfficeOpenXml.VBA;
@@ -27,6 +28,7 @@ public class ExcelVbaReferenceControl : ExcelVbaReference
     {
         this.ReferenceRecordID = 0x2F;
     }
+
     /// <summary>
     /// LibIdExternal 
     /// For more info check MS-OVBA 2.1.1.8 LibidReference and 2.3.4.2.2 PROJECTREFERENCES
@@ -35,14 +37,8 @@ public class ExcelVbaReferenceControl : ExcelVbaReference
     [Obsolete("Use LibIdExtended instead of this.")]
     public string LibIdExternal
     {
-        get
-        {
-            return this.LibIdExtended;
-        }
-        set
-        {
-            this.LibIdExtended = value;
-        }
+        get { return this.LibIdExtended; }
+        set { this.LibIdExtended = value; }
     }
 
     /// <summary>
@@ -56,9 +52,11 @@ public class ExcelVbaReferenceControl : ExcelVbaReference
     /// For more info check MS-OVBA 2.1.1.8 LibidReference and 2.3.4.2.2 PROJECTREFERENCES
     /// </summary>
     public string LibIdTwiddled { get; set; }
+
     /// <summary>
     /// A GUID that specifies the Automation type library the extended type library was generated from.
     /// </summary>
     public Guid OriginalTypeLib { get; set; }
+
     internal uint Cookie { get; set; }
 }

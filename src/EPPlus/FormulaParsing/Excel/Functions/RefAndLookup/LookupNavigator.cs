@@ -10,6 +10,7 @@
  *************************************************************************************************
   01/27/2020         EPPlus Software AB       Initial release EPPlus 5
  *************************************************************************************************/
+
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -25,8 +26,6 @@ internal abstract class LookupNavigator
     protected readonly LookupArguments Arguments;
     protected readonly ParsingContext ParsingContext;
 
-
-
     public LookupNavigator(LookupDirection direction, LookupArguments arguments, ParsingContext parsingContext)
     {
         Require.That(arguments).Named("arguments").IsNotNull();
@@ -37,17 +36,11 @@ internal abstract class LookupNavigator
         this.ParsingContext = parsingContext;
     }
 
-    public abstract int Index
-    {
-        get;
-    }
+    public abstract int Index { get; }
 
     public abstract bool MoveNext();
 
-    public abstract object CurrentValue
-    {
-        get;
-    }
+    public abstract object CurrentValue { get; }
 
     public abstract object GetLookupValue();
 }

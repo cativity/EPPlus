@@ -10,6 +10,7 @@
  *************************************************************************************************
   01/27/2020         EPPlus Software AB       Initial release EPPlus 5
  *************************************************************************************************/
+
 using System;
 using System.Collections.Generic;
 using System.Globalization;
@@ -23,6 +24,7 @@ internal abstract class DateParsingFunction : ExcelFunction
     protected System.DateTime ParseDate(IEnumerable<FunctionArgument> arguments, object dateObj, int argIndex)
     {
         System.DateTime date;
+
         if (dateObj is string)
         {
             date = System.DateTime.Parse(dateObj.ToString(), CultureInfo.CurrentCulture);
@@ -32,6 +34,7 @@ internal abstract class DateParsingFunction : ExcelFunction
             double d = this.ArgToDecimal(arguments, argIndex);
             date = System.DateTime.FromOADate(d);
         }
+
         return date;
     }
 

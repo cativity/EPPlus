@@ -10,6 +10,7 @@
  *************************************************************************************************
   01/27/2020         EPPlus Software AB       Initial release EPPlus 5
  *************************************************************************************************/
+
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -29,9 +30,7 @@ internal static class ExcelConditionalFormattingValueObjectType
     /// <param name="position"></param>
     /// <param name="ruleType"></param>
     /// <returns>1, 2 or 3</returns>
-    internal static int GetOrderByPosition(
-        eExcelConditionalFormattingValueObjectPosition position,
-        eExcelConditionalFormattingRuleType ruleType)
+    internal static int GetOrderByPosition(eExcelConditionalFormattingValueObjectPosition position, eExcelConditionalFormattingRuleType ruleType)
     {
         switch (position)
         {
@@ -61,8 +60,7 @@ internal static class ExcelConditionalFormattingValueObjectType
     /// </summary>
     /// <param name="attribute"></param>
     /// <returns></returns>
-    public static eExcelConditionalFormattingValueObjectType GetTypeByAttrbiute(
-        string attribute)
+    public static eExcelConditionalFormattingValueObjectType GetTypeByAttrbiute(string attribute)
     {
         switch (attribute)
         {
@@ -85,8 +83,7 @@ internal static class ExcelConditionalFormattingValueObjectType
                 return eExcelConditionalFormattingValueObjectType.Percentile;
         }
 
-        throw new Exception(
-                            ExcelConditionalFormattingConstants.Errors.UnexistentCfvoTypeAttribute);
+        throw new Exception(ExcelConditionalFormattingConstants.Errors.UnexistentCfvoTypeAttribute);
     }
 
     /// <summary>
@@ -97,26 +94,24 @@ internal static class ExcelConditionalFormattingValueObjectType
     /// <param name="topNode"></param>
     /// <param name="nameSpaceManager"></param>
     /// <returns></returns>
-    public static XmlNode GetCfvoNodeByPosition(
-        eExcelConditionalFormattingValueObjectPosition position,
-        eExcelConditionalFormattingRuleType ruleType,
-        XmlNode topNode,
-        XmlNamespaceManager nameSpaceManager)
+    public static XmlNode GetCfvoNodeByPosition(eExcelConditionalFormattingValueObjectPosition position,
+                                                eExcelConditionalFormattingRuleType ruleType,
+                                                XmlNode topNode,
+                                                XmlNamespaceManager nameSpaceManager)
     {
         // Get the corresponding <cfvo> node (by the position)
-        XmlNode? node = topNode.SelectSingleNode(
-                                                 string.Format(
-                                                               "{0}[position()={1}]",
+        XmlNode? node = topNode.SelectSingleNode(string.Format("{0}[position()={1}]",
+
                                                                // {0}
                                                                ExcelConditionalFormattingConstants.Paths.Cfvo,
+
                                                                // {1}
                                                                GetOrderByPosition(position, ruleType)),
                                                  nameSpaceManager);
 
         if (node == null)
         {
-            throw new Exception(
-                                ExcelConditionalFormattingConstants.Errors.MissingCfvoNode);
+            throw new Exception(ExcelConditionalFormattingConstants.Errors.MissingCfvoNode);
         }
 
         return node;
@@ -127,8 +122,7 @@ internal static class ExcelConditionalFormattingValueObjectType
     /// </summary>
     /// <param name="type"></param>
     /// <returns></returns>
-    public static string GetAttributeByType(
-        eExcelConditionalFormattingValueObjectType type)
+    public static string GetAttributeByType(eExcelConditionalFormattingValueObjectType type)
     {
         switch (type)
         {
@@ -160,8 +154,7 @@ internal static class ExcelConditionalFormattingValueObjectType
     /// </summary>
     /// <param name="ruleType"></param>
     /// <returns></returns>
-    public static string GetParentPathByRuleType(
-        eExcelConditionalFormattingRuleType ruleType)
+    public static string GetParentPathByRuleType(eExcelConditionalFormattingRuleType ruleType)
     {
         switch (ruleType)
         {
@@ -186,10 +179,9 @@ internal static class ExcelConditionalFormattingValueObjectType
     /// </summary>
     /// <param name="nodeType"></param>
     /// <returns></returns>
-    public static string GetNodePathByNodeType(
-        eExcelConditionalFormattingValueObjectNodeType nodeType)
+    public static string GetNodePathByNodeType(eExcelConditionalFormattingValueObjectNodeType nodeType)
     {
-        switch(nodeType)
+        switch (nodeType)
         {
             case eExcelConditionalFormattingValueObjectNodeType.Cfvo:
                 return ExcelConditionalFormattingConstants.Paths.Cfvo;

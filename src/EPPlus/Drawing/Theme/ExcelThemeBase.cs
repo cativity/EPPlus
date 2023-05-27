@@ -10,6 +10,7 @@
  *************************************************************************************************
   01/27/2020         EPPlus Software AB       Initial release EPPlus 5
  *************************************************************************************************/
+
 using System;
 using System.Collections.Generic;
 using System.Xml;
@@ -28,7 +29,8 @@ public class ExcelThemeBase : XmlHelper, IPictureRelationDocument
     readonly string _fontSchemePath = "{0}a:fontScheme";
     readonly string _fmtSchemePath = "{0}a:fmtScheme";
     readonly ExcelPackage _pck;
-    Dictionary<string, HashInfo> _hashes=new Dictionary<string, HashInfo>();
+    Dictionary<string, HashInfo> _hashes = new Dictionary<string, HashInfo>();
+
     internal ExcelThemeBase(ExcelPackage package, XmlNamespaceManager nsm, ZipPackageRelationship rel, string path)
         : base(nsm, null)
     {
@@ -43,19 +45,26 @@ public class ExcelThemeBase : XmlHelper, IPictureRelationDocument
         this._fontSchemePath = string.Format(this._fontSchemePath, path);
         this._fmtSchemePath = string.Format(this._fmtSchemePath, path);
         this._pck = package;
+
         if (!this.NameSpaceManager.HasNamespace("a"))
         {
             this.NameSpaceManager.AddNamespace("a", ExcelPackage.schemaDrawings);
         }
     }
+
     internal Uri ThemeUri { get; set; }
+
     internal ZipPackagePart Part { get; set; }
+
     /// <summary>
     /// The Theme Xml
     /// </summary>
     public XmlDocument ThemeXml { get; internal set; }
+
     internal string RelationshipId { get; set; }
+
     internal ExcelColorScheme _colorScheme = null;
+
     /// <summary>
     /// Defines the color scheme
     /// </summary>
@@ -68,7 +77,9 @@ public class ExcelThemeBase : XmlHelper, IPictureRelationDocument
                            new ExcelColorScheme(this.NameSpaceManager, this.TopNode.SelectSingleNode(this._colorSchemePath, this.NameSpaceManager)));
         }
     }
+
     internal ExcelFontScheme _fontScheme = null;
+
     /// <summary>
     /// Defines the font scheme
     /// </summary>
@@ -82,7 +93,9 @@ public class ExcelThemeBase : XmlHelper, IPictureRelationDocument
                                                               this.TopNode.SelectSingleNode(this._fontSchemePath, this.NameSpaceManager)));
         }
     }
+
     private ExcelFormatScheme _formatScheme = null;
+
     /// <summary>
     /// The background fill styles, effect styles, fill styles, and line styles which define the style matrix for a theme
     /// </summary>
@@ -97,11 +110,23 @@ public class ExcelThemeBase : XmlHelper, IPictureRelationDocument
         }
     }
 
-    ExcelPackage IPictureRelationDocument.Package { get => this._pck; }
+    ExcelPackage IPictureRelationDocument.Package
+    {
+        get => this._pck;
+    }
 
-    Dictionary<string, HashInfo> IPictureRelationDocument.Hashes { get => this._hashes; }
+    Dictionary<string, HashInfo> IPictureRelationDocument.Hashes
+    {
+        get => this._hashes;
+    }
 
-    ZipPackagePart IPictureRelationDocument.RelatedPart { get => this.Part; }
+    ZipPackagePart IPictureRelationDocument.RelatedPart
+    {
+        get => this.Part;
+    }
 
-    Uri IPictureRelationDocument.RelatedUri { get => this.ThemeUri; }
+    Uri IPictureRelationDocument.RelatedUri
+    {
+        get => this.ThemeUri;
+    }
 }

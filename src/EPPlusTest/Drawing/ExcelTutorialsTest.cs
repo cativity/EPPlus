@@ -26,6 +26,7 @@
  *******************************************************************************
   01/27/2020         EPPlus Software AB       Initial release EPPlus 5
  *******************************************************************************/
+
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using OfficeOpenXml;
 using OfficeOpenXml.Drawing;
@@ -45,12 +46,12 @@ namespace EPPlusTest.Drawing;
 /// </summary>
 [TestClass]
 public class ExcelTutorialsTest : TestBase
-{       
+{
     [TestInitialize]
     public void Initialize()
     {
-
     }
+
     [TestMethod]
     public void ReadBeyondPieChartsTutorial()
     {
@@ -63,6 +64,7 @@ public class ExcelTutorialsTest : TestBase
         Assert.AreEqual(eShapeStyle.Rect, ((ExcelShape)grpShp.Drawings[0]).Style);
         Assert.AreEqual(6, p.Workbook.Worksheets[1 + p._worksheetAdd].Drawings[1].As.Chart.PieChart.StyleManager.ColorsManager.Colors.Count);
     }
+
     [TestMethod]
     public void GetMoreOutOfPivotTables()
     {
@@ -71,7 +73,8 @@ public class ExcelTutorialsTest : TestBase
         Assert.AreEqual(4, p.Workbook.Worksheets[0 + p._worksheetAdd].Drawings.Count);
         Assert.AreEqual(6, p.Workbook.Worksheets[1 + p._worksheetAdd].Drawings.Count);
     }
-    [TestMethod]    
+
+    [TestMethod]
     public void FormulaTutorial()
     {
         using ExcelPackage? p = OpenTemplatePackage(@"msCharts\Formula tutorial.xltx");

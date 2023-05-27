@@ -26,6 +26,7 @@
  *******************************************************************************
   01/27/2020         EPPlus Software AB       Initial release EPPlus 5
  *******************************************************************************/
+
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using OfficeOpenXml;
 using System.IO;
@@ -40,7 +41,7 @@ public class Encrypt : TestBase
     [Ignore]
     public void ReadWriteEncrypt()
     {
-        using (ExcelPackage pck = new ExcelPackage(new FileInfo(@"Test\Drawing.xlsx"), true))   
+        using (ExcelPackage pck = new ExcelPackage(new FileInfo(@"Test\Drawing.xlsx"), true))
         {
             pck.Encryption.Password = "EPPlus";
             pck.Encryption.Algorithm = EncryptionAlgorithm.AES192;
@@ -48,28 +49,30 @@ public class Encrypt : TestBase
             pck.Workbook.Protection.LockStructure = true;
             pck.Workbook.Protection.LockWindows = true;
 
-            pck.SaveAs(new FileInfo(@"Test\DrawingEncr.xlsx"));                
+            pck.SaveAs(new FileInfo(@"Test\DrawingEncr.xlsx"));
         }
 
-        using (ExcelPackage pck = new ExcelPackage(new FileInfo(_worksheetPath + @"\DrawingEncr.xlsx"), true, "EPPlus"))            
+        using (ExcelPackage pck = new ExcelPackage(new FileInfo(_worksheetPath + @"\DrawingEncr.xlsx"), true, "EPPlus"))
         {
             pck.Encryption.IsEncrypted = false;
             pck.SaveAs(new FileInfo(_worksheetPath + @"\DrawingNotEncr.xlsx"));
         }
 
         FileStream fs = new FileStream(_worksheetPath + @"\DrawingEncr.xlsx", FileMode.Open, FileAccess.ReadWrite);
+
         using (ExcelPackage pck = new ExcelPackage(fs, "EPPlus"))
         {
             pck.Encryption.IsEncrypted = false;
             pck.SaveAs(new FileInfo(_worksheetPath + @"DrawingNotEncr.xlsx"));
         }
-
     }
+
     [TestMethod]
     [Ignore]
     public void WriteEncrypt()
     {
         ExcelPackage package = new ExcelPackage();
+
         //Load the sheet with one string column, one date column and a few random numbers.
         ExcelWorksheet? ws = package.Workbook.Worksheets.Add("First line test");
 
@@ -87,11 +90,13 @@ public class Encrypt : TestBase
         package.Encryption.IsEncrypted = true;
         package.SaveAs(new FileInfo(@"c:\temp\encrTest.xlsx"));
     }
+
     [TestMethod]
     [Ignore]
     public void WriteProtect()
     {
         ExcelPackage package = new ExcelPackage(new FileInfo(@"c:\temp\workbookprot2.xlsx"), "");
+
         //Load the sheet with one string column, one date column and a few random numbers.
         //package.Workbook.Protection.LockWindows = true;
         //package.Encryption.IsEncrypted = true;
@@ -110,8 +115,8 @@ public class Encrypt : TestBase
         ws.Cells[2, 2].Value = "2; 2";
 
         package.SaveAs(new FileInfo(@"c:\temp\workbookprot2.xlsx"));
-
     }
+
     [TestMethod]
     [Ignore]
     public void DecrypTest()
@@ -121,8 +126,8 @@ public class Encrypt : TestBase
         string? n = p.Workbook.Worksheets[1].Name;
         p.Encryption.Password = null;
         p.SaveAs(new FileInfo(@"c:\temp\encrNew.xlsx"));
-        
     }
+
     [TestMethod, Ignore]
     public void DecrypTestBug()
     {
@@ -131,28 +136,32 @@ public class Encrypt : TestBase
         string? n = p.Workbook.Worksheets[1].Name;
         p.Encryption.Password = null;
         p.SaveAs(new FileInfo(@"c:\temp\encrNew.xlsx"));
-
     }
+
     [TestMethod]
     [Ignore]
     public void EncrypTest()
     {
         FileInfo? f = new FileInfo(@"c:\temp\encrwrite.xlsx");
+
         if (f.Exists)
         {
             f.Delete();
         }
+
         ExcelPackage? p = new ExcelPackage(f);
-            
+
         p.Workbook.Protection.SetPassword("");
         p.Workbook.Protection.LockStructure = true;
         p.Encryption.Version = EncryptionVersion.Agile;
 
         ExcelWorksheet? ws = p.Workbook.Worksheets.Add("Sheet1");
+
         for (int r = 1; r < 1000; r++)
         {
             ws.Cells[r, 1].Value = r;
         }
+
         p.Save();
     }
 

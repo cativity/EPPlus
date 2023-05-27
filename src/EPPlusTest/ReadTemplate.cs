@@ -26,6 +26,7 @@
  *******************************************************************************
   01/27/2020         EPPlus Software AB       Initial release EPPlus 5
  *******************************************************************************/
+
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -39,6 +40,7 @@ using OfficeOpenXml.Drawing;
 using OfficeOpenXml.ConditionalFormatting;
 using System.Threading;
 using System.Drawing;
+
 namespace EPPlusTest;
 
 [TestClass]
@@ -48,13 +50,16 @@ public class ReadTemplate : TestBase
     public void ReadBlankStream()
     {
         MemoryStream stream = new MemoryStream();
+
         using (ExcelPackage pck = new ExcelPackage(stream))
         {
             ExcelWorksheet? ws = pck.Workbook.Worksheets.Add("Perf");
             pck.SaveAs(stream);
         }
+
         stream.Close();
     }
+
     [TestMethod]
     public void OpenXlts()
     {

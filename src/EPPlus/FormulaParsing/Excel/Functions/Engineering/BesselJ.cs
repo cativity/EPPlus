@@ -10,6 +10,7 @@
  *************************************************************************************************
   05/03/2020         EPPlus Software AB         Implemented function
  *************************************************************************************************/
+
 using OfficeOpenXml.FormulaParsing.Excel.Functions.Engineering.Implementations;
 using OfficeOpenXml.FormulaParsing.Excel.Functions.Metadata;
 using OfficeOpenXml.FormulaParsing.ExpressionGraph;
@@ -20,10 +21,7 @@ using OfficeOpenXml.FormulaParsing.Excel.Functions.Finance.Implementations;
 
 namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Engineering;
 
-[FunctionMetadata(
-                     Category = ExcelFunctionCategory.Engineering,
-                     EPPlusVersion = "5.2",
-                     Description = "Calculates the Bessel function Jn(x)")]
+[FunctionMetadata(Category = ExcelFunctionCategory.Engineering, EPPlusVersion = "5.2", Description = "Calculates the Bessel function Jn(x)")]
 internal class BesselJ : ExcelFunction
 {
     public override CompileResult Execute(IEnumerable<FunctionArgument> arguments, ParsingContext context)
@@ -32,6 +30,7 @@ internal class BesselJ : ExcelFunction
         double x = this.ArgToDecimal(arguments, 0);
         int n = this.ArgToInt(arguments, 1);
         FinanceCalcResult<double>? result = BesselJImpl.BesselJ(x, n);
+
         return this.CreateResult(result.Result, DataType.Decimal);
     }
 }

@@ -10,6 +10,7 @@
  *************************************************************************************************
   01/27/2020         EPPlus Software AB       Initial release EPPlus 5
  *************************************************************************************************/
+
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -18,7 +19,7 @@ using System.Globalization;
 using OfficeOpenXml.FormulaParsing;
 using OfficeOpenXml.FormulaParsing.Utilities;
 using OfficeOpenXml.FormulaParsing.Exceptions;
-using util=OfficeOpenXml.Utils;
+using util = OfficeOpenXml.Utils;
 
 namespace OfficeOpenXml.FormulaParsing.Excel.Functions;
 
@@ -27,11 +28,14 @@ public class DoubleArgumentParser : ArgumentParser
     public override object Parse(object obj)
     {
         Require.That(obj).Named("argument").IsNotNull();
+
         if (obj is IRangeInfo)
         {
-            ICellInfo? r=((IRangeInfo)obj).FirstOrDefault();
+            ICellInfo? r = ((IRangeInfo)obj).FirstOrDefault();
+
             return r?.ValueDouble ?? 0;
         }
+
         if (obj is double)
         {
             return obj;
@@ -43,6 +47,7 @@ public class DoubleArgumentParser : ArgumentParser
         }
 
         string? str = obj != null ? obj.ToString() : string.Empty;
+
         try
         {
             if (double.TryParse(str, NumberStyles.Any, CultureInfo.InvariantCulture, out double d))
@@ -52,7 +57,7 @@ public class DoubleArgumentParser : ArgumentParser
 
             return System.DateTime.Parse(str, CultureInfo.CurrentCulture, DateTimeStyles.None).ToOADate();
         }
-        catch// (Exception e)
+        catch // (Exception e)
         {
             throw new ExcelErrorValueException(ExcelErrorValue.Create(eErrorType.Value));
         }

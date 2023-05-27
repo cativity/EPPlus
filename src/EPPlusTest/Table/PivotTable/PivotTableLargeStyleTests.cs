@@ -20,10 +20,12 @@ public class PivotTableLargeStyleTests : TestBase
     {
         InitBase();
     }
+
     [ClassCleanup]
     public static void Cleanup()
     {
     }
+
     [TestMethod]
     public void AddPivotAllStyle()
     {
@@ -62,6 +64,7 @@ public class PivotTableLargeStyleTests : TestBase
         ExcelPivotTableAreaStyle? s6 = pt.Styles.AddLabel(pt.Fields["ZipCode"], pt.Fields["Id"]);
         s6.Style.Fill.PatternType = ExcelFillStyle.LightUp;
         s6.Style.Fill.BackgroundColor.SetColor(Color.Green);
+
         //s6.Conditions.DataFields.Add(1);
         s6.Conditions.Fields[0].Items.AddByValue("02201");
         s6.Offset = "B1:C1";

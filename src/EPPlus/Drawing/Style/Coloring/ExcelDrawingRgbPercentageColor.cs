@@ -10,7 +10,9 @@
  *************************************************************************************************
   01/27/2020         EPPlus Software AB       Initial release EPPlus 5
  *************************************************************************************************/
+
 using System.Xml;
+
 namespace OfficeOpenXml.Drawing.Style.Coloring;
 
 /// <summary>
@@ -20,52 +22,37 @@ namespace OfficeOpenXml.Drawing.Style.Coloring;
 /// </summary>
 public class ExcelDrawingRgbPercentageColor : XmlHelper
 {
-    internal ExcelDrawingRgbPercentageColor(XmlNamespaceManager nsm, XmlNode topNode) : base(nsm, topNode)
+    internal ExcelDrawingRgbPercentageColor(XmlNamespaceManager nsm, XmlNode topNode)
+        : base(nsm, topNode)
     {
-
     }
+
     /// <summary>
     /// The percentage of red.
     /// </summary>
-    public double RedPercentage 
+    public double RedPercentage
     {
-        get
-        {
-            return (double)this.GetXmlNodePercentage("@r");
-        }
-        set
-        {
-            this.SetXmlNodePercentage("@r", value, false);
-                
-        }
+        get { return (double)this.GetXmlNodePercentage("@r"); }
+        set { this.SetXmlNodePercentage("@r", value, false); }
     }
+
     /// <summary>
     /// The percentage of green.
     /// </summary>
     public double GreenPercentage
     {
-        get
-        {
-            return (double)this.GetXmlNodePercentage("@g");
-        }
-        set
-        {
-            this.SetXmlNodePercentage("@g", value, false);
-        }
+        get { return (double)this.GetXmlNodePercentage("@g"); }
+        set { this.SetXmlNodePercentage("@g", value, false); }
     }
+
     /// <summary>
     /// The percentage of blue.
     /// </summary>
     public double BluePercentage
     {
-        get
-        {
-            return (double)this.GetXmlNodePercentage("@b");
-        }
-        set
-        {
-            this.SetXmlNodePercentage("@b", value, false);
-        }
+        get { return (double)this.GetXmlNodePercentage("@b"); }
+        set { this.SetXmlNodePercentage("@b", value, false); }
     }
+
     internal const string NodeName = "a:scrgbClr";
 }

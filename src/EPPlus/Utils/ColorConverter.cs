@@ -10,6 +10,7 @@
  *************************************************************************************************
   11/15/2021         EPPlus Software AB       Html export
  *************************************************************************************************/
+
 using OfficeOpenXml.Drawing;
 using OfficeOpenXml.Drawing.Style.Coloring;
 using System.Drawing;
@@ -22,33 +23,45 @@ internal class ColorConverter
     internal static Color GetThemeColor(ExcelTheme theme, eThemeSchemeColor tc)
     {
         ExcelDrawingThemeColorManager? cm = theme.ColorScheme.GetColorByEnum(tc);
+
         return GetThemeColor(cm);
     }
+
     internal static Color GetThemeColor(ExcelDrawingThemeColorManager cm)
     {
         Color color;
+
         switch (cm.ColorType)
         {
             case eDrawingColorType.Rgb:
                 color = cm.RgbColor.Color;
+
                 break;
+
             case eDrawingColorType.Preset:
                 color = Color.FromName(cm.PresetColor.Color.ToString());
+
                 break;
+
             case eDrawingColorType.System:
                 color = cm.SystemColor.GetColor();
+
                 break;
+
             case eDrawingColorType.RgbPercentage:
                 ExcelDrawingRgbPercentageColor? rp = cm.RgbPercentageColor;
-                color = Color.FromArgb(GetRgpPercentToRgb(rp.RedPercentage),
-                                       GetRgpPercentToRgb(rp.GreenPercentage),
-                                       GetRgpPercentToRgb(rp.BluePercentage));
+                color = Color.FromArgb(GetRgpPercentToRgb(rp.RedPercentage), GetRgpPercentToRgb(rp.GreenPercentage), GetRgpPercentToRgb(rp.BluePercentage));
+
                 break;
+
             case eDrawingColorType.Hsl:
                 color = cm.HslColor.GetRgbColor();
+
                 break;
+
             default:
                 color = Color.Empty;
+
                 break;
         }
 
@@ -71,6 +84,7 @@ internal class ColorConverter
 
         return (int)(percentage * 255 / 100);
     }
+
     internal static Color ApplyTint(Color ret, double tint)
     {
         if (tint == 0)
@@ -80,6 +94,7 @@ internal class ColorConverter
         else
         {
             ExcelDrawingRgbColor.GetHslColor(ret, out double h, out double s, out double l);
+
             if (tint < 0)
             {
                 l *= 1.0 + tint;
@@ -88,8 +103,8 @@ internal class ColorConverter
             {
                 l += (1 - l) * tint;
             }
+
             return ExcelDrawingHslColor.GetRgb(h, s, l);
         }
     }
-        
 }

@@ -10,6 +10,7 @@
  *************************************************************************************************
   01/08/2021         EPPlus Software AB       Table Styling - EPPlus 5.6
  *************************************************************************************************/
+
 using OfficeOpenXml.Style.Dxf;
 using OfficeOpenXml.Utils.Extensions;
 using System;
@@ -23,33 +24,33 @@ namespace OfficeOpenXml.Style;
 public class ExcelTableStyleElement : XmlHelper
 {
     ExcelStyles _styles;
-    internal ExcelTableStyleElement(XmlNamespaceManager nameSpaceManager, XmlNode topNode, ExcelStyles styles, eTableStyleElement type) : base(nameSpaceManager, topNode)
+
+    internal ExcelTableStyleElement(XmlNamespaceManager nameSpaceManager, XmlNode topNode, ExcelStyles styles, eTableStyleElement type)
+        : base(nameSpaceManager, topNode)
     {
         this._styles = styles;
         this.Type = type;
     }
+
     ExcelDxfStyleLimitedFont _style = null;
+
     /// <summary>
     /// Access to style properties
     /// </summary>
     public ExcelDxfStyleLimitedFont Style
     {
         get { return this._style ??= this._styles.GetDxfLimitedFont(this.GetXmlNodeIntNull("@dxfId")); }
-        internal set
-        {
-            this._style = value;
-        }
+        internal set { this._style = value; }
     }
+
     /// <summary>
     /// The type of table style element for a custom table style.
     /// </summary>
-    public eTableStyleElement Type
-    {
-        get;
-    }
+    public eTableStyleElement Type { get; }
+
     internal virtual void CreateNode()
     {
-        if(this.TopNode.LocalName!= "tableStyleElement")
+        if (this.TopNode.LocalName != "tableStyleElement")
         {
             this.TopNode = this.CreateNode("d:tableStyleElement", false, true);
         }

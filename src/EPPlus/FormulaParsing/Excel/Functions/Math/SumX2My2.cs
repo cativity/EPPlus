@@ -10,6 +10,7 @@
  *************************************************************************************************
   04/03/2020         EPPlus Software AB           EPPlus 5.1
  *************************************************************************************************/
+
 using OfficeOpenXml.FormulaParsing.Excel.Functions.Metadata;
 using System;
 using System.Collections.Generic;
@@ -18,21 +19,22 @@ using System.Text;
 
 namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Math;
 
-[FunctionMetadata(
-                     Category = ExcelFunctionCategory.MathAndTrig,
-                     EPPlusVersion = "5.1",
-                     Description = "Returns the sum of the difference of squares of corresponding values in two supplied arrays")]
+[FunctionMetadata(Category = ExcelFunctionCategory.MathAndTrig,
+                  EPPlusVersion = "5.1",
+                  Description = "Returns the sum of the difference of squares of corresponding values in two supplied arrays")]
 internal class SumX2mY2 : SumxBase
 {
     public override double Calculate(double[] set1, double[] set2)
     {
         double result = 0d;
-        for(int x = 0; x < set1.Length; x++)
+
+        for (int x = 0; x < set1.Length; x++)
         {
             double a = set1[x];
             double b = set2[x];
             result += (a * a) - (b * b);
         }
+
         return result;
     }
 }

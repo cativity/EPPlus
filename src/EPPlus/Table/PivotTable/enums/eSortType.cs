@@ -10,6 +10,7 @@
  *************************************************************************************************
   01/27/2020         EPPlus Software AB       Initial release EPPlus 5
  *************************************************************************************************/
+
 namespace OfficeOpenXml.Table.PivotTable;
 
 /// <summary>
@@ -21,10 +22,12 @@ public enum eSortType
     /// No sorting
     /// </summary>
     None,
+
     /// <summary>
     /// Sort ascending
     /// </summary>
     Ascending,
+
     /// <summary>
     /// Sort descending
     /// </summary>

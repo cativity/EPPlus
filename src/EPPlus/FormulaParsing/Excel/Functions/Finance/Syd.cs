@@ -10,6 +10,7 @@
  *************************************************************************************************
   01/27/2020         EPPlus Software AB       Initial release EPPlus 5
  *************************************************************************************************/
+
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -19,10 +20,9 @@ using OfficeOpenXml.FormulaParsing.ExpressionGraph;
 
 namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Finance;
 
-[FunctionMetadata(
-                     Category = ExcelFunctionCategory.Financial,
-                     EPPlusVersion = "5.2",
-                     Description = "Returns the sum-of-years' digits depreciation of an asset for a specified period")]
+[FunctionMetadata(Category = ExcelFunctionCategory.Financial,
+                  EPPlusVersion = "5.2",
+                  Description = "Returns the sum-of-years' digits depreciation of an asset for a specified period")]
 internal class Syd : ExcelFunction
 {
     public override CompileResult Execute(IEnumerable<FunctionArgument> arguments, ParsingContext context)
@@ -39,6 +39,7 @@ internal class Syd : ExcelFunction
         }
 
         double result = (cost - salvage) / (life * (life + 1));
+
         return this.CreateResult(result * (life + 1 - period) * 2, DataType.Decimal);
     }
 

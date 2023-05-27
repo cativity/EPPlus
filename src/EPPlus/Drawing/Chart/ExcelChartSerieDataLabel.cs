@@ -10,6 +10,7 @@
  *************************************************************************************************
   01/27/2020         EPPlus Software AB       Initial release EPPlus 5
  *************************************************************************************************/
+
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -26,19 +27,18 @@ namespace OfficeOpenXml.Drawing.Chart;
 public sealed class ExcelChartSerieDataLabel : ExcelChartDataLabelStandard
 {
     internal ExcelChartSerieDataLabel(ExcelChart chart, XmlNamespaceManager ns, XmlNode node, string[] schemaNodeOrder)
-        : base(chart, ns,node,"dLbls", schemaNodeOrder)
+        : base(chart, ns, node, "dLbls", schemaNodeOrder)
     {
         this.Position = eLabelPosition.Center;
     }
+
     ExcelChartDataLabelCollection _dataLabels = null;
+
     /// <summary>
     /// Individually formatted datalabels.
     /// </summary>
     public ExcelChartDataLabelCollection DataLabels
     {
-        get
-        {
-            return this._dataLabels ??= new ExcelChartDataLabelCollection(this._chart, this.NameSpaceManager, this.TopNode, this.SchemaNodeOrder);
-        }
+        get { return this._dataLabels ??= new ExcelChartDataLabelCollection(this._chart, this.NameSpaceManager, this.TopNode, this.SchemaNodeOrder); }
     }
 }

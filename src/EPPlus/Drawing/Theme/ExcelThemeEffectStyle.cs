@@ -10,6 +10,7 @@
  *************************************************************************************************
   01/27/2020         EPPlus Software AB       Initial release EPPlus 5
  *************************************************************************************************/
+
 using OfficeOpenXml.Drawing.Style.Effect;
 using OfficeOpenXml.Drawing.Style.ThreeD;
 using System.Xml;
@@ -24,7 +25,9 @@ public class ExcelThemeEffectStyle : XmlHelper
     string _path;
     string[] _schemaNodeOrder;
     private readonly ExcelThemeBase _theme;
-    internal ExcelThemeEffectStyle(XmlNamespaceManager nameSpaceManager, XmlNode topNode, string path, string[] schemaNodeOrder, ExcelThemeBase theme) : base(nameSpaceManager, topNode)
+
+    internal ExcelThemeEffectStyle(XmlNamespaceManager nameSpaceManager, XmlNode topNode, string path, string[] schemaNodeOrder, ExcelThemeBase theme)
+        : base(nameSpaceManager, topNode)
     {
         if (!string.IsNullOrEmpty(path))
         {
@@ -35,7 +38,9 @@ public class ExcelThemeEffectStyle : XmlHelper
         this._schemaNodeOrder = schemaNodeOrder;
         this._theme = theme;
     }
+
     ExcelDrawingEffectStyle _effects = null;
+
     /// <summary>
     /// Effects
     /// </summary>
@@ -50,7 +55,9 @@ public class ExcelThemeEffectStyle : XmlHelper
                                                                  this._schemaNodeOrder);
         }
     }
+
     ExcelDrawing3D _threeD = null;
+
     /// <summary>
     /// 3D settings
     /// </summary>

@@ -10,6 +10,7 @@
  *************************************************************************************************
   12/01/2020         EPPlus Software AB       EPPlus 5.5
  *************************************************************************************************/
+
 using OfficeOpenXml.Drawing.Chart;
 using OfficeOpenXml.Utils;
 using OfficeOpenXml.Utils.Extensions;
@@ -52,7 +53,7 @@ internal static class ControlFactory
 
     private static eControlType GetControlType(string input)
     {
-        if(_controlTypeMapping.ContainsKey(input))
+        if (_controlTypeMapping.ContainsKey(input))
         {
             return _controlTypeMapping[input];
         }
@@ -71,9 +72,10 @@ internal static class ControlFactory
         XmlHelper.LoadXmlSafe(controlPropertiesXml, part.GetStream());
         string? objectType = controlPropertiesXml.DocumentElement.Attributes["objectType"]?.Value;
         eControlType controlType = GetControlType(objectType);
-            
-        XmlNode node;            
-        if(parent==null)
+
+        XmlNode node;
+
+        if (parent == null)
         {
             node = drawNode.ParentNode;
         }
@@ -82,68 +84,99 @@ internal static class ControlFactory
             node = drawNode;
         }
 
-        switch(controlType)
+        switch (controlType)
         {
             case eControlType.Button:
                 return new ExcelControlButton(drawings, node, control, part, controlPropertiesXml, parent);
+
             case eControlType.DropDown:
                 return new ExcelControlDropDown(drawings, node, control, part, controlPropertiesXml, parent);
+
             case eControlType.GroupBox:
                 return new ExcelControlGroupBox(drawings, node, control, part, controlPropertiesXml, parent);
+
             case eControlType.Label:
                 return new ExcelControlLabel(drawings, node, control, part, controlPropertiesXml, parent);
+
             case eControlType.ListBox:
                 return new ExcelControlListBox(drawings, node, control, part, controlPropertiesXml, parent);
+
             case eControlType.CheckBox:
                 return new ExcelControlCheckBox(drawings, node, control, part, controlPropertiesXml, parent);
+
             case eControlType.RadioButton:
                 return new ExcelControlRadioButton(drawings, node, control, part, controlPropertiesXml, parent);
+
             case eControlType.ScrollBar:
                 return new ExcelControlScrollBar(drawings, node, control, part, controlPropertiesXml, parent);
+
             case eControlType.SpinButton:
                 return new ExcelControlSpinButton(drawings, node, control, part, controlPropertiesXml, parent);
+
             case eControlType.EditBox:
                 return new ExcelControlEditBox(drawings, node, control, part, controlPropertiesXml, parent);
+
             case eControlType.Dialog:
                 return new ExcelControlDialog(drawings, node, control, part, controlPropertiesXml, parent);
+
             default:
                 throw new NotSupportedException();
         }
+
         throw new NotImplementedException();
     }
 
-    internal static ExcelControl CreateControl(eControlType controlType,ExcelDrawings drawings, XmlElement drawNode, string name)
+    internal static ExcelControl CreateControl(eControlType controlType, ExcelDrawings drawings, XmlElement drawNode, string name)
     {
         ExcelControl ctrl;
+
         switch (controlType)
         {
             case eControlType.Button:
                 ctrl = new ExcelControlButton(drawings, drawNode, name);
+
                 break;
+
             case eControlType.DropDown:
                 ctrl = new ExcelControlDropDown(drawings, drawNode, name);
+
                 break;
+
             case eControlType.GroupBox:
                 ctrl = new ExcelControlGroupBox(drawings, drawNode, name);
+
                 break;
+
             case eControlType.Label:
                 ctrl = new ExcelControlLabel(drawings, drawNode, name);
+
                 break;
+
             case eControlType.ListBox:
                 ctrl = new ExcelControlListBox(drawings, drawNode, name);
+
                 break;
+
             case eControlType.CheckBox:
                 ctrl = new ExcelControlCheckBox(drawings, drawNode, name);
+
                 break;
+
             case eControlType.RadioButton:
                 ctrl = new ExcelControlRadioButton(drawings, drawNode, name);
+
                 break;
+
             case eControlType.ScrollBar:
-                ctrl=new ExcelControlScrollBar(drawings, drawNode, name);
+                ctrl = new ExcelControlScrollBar(drawings, drawNode, name);
+
                 break;
+
             case eControlType.SpinButton:
                 ctrl = new ExcelControlSpinButton(drawings, drawNode, name);
+
                 break;
+
             //case eControlType.EditBox:
             //    return new ExcelControlEditBox(drawings, drawNode);
             //case eControlType.Dialog:
@@ -151,11 +184,14 @@ internal static class ControlFactory
             default:
                 throw new NotSupportedException("Editboxes and Dialogs controls are not supported in worksheets");
         }
-        if(ctrl is ExcelControlWithText t)
+
+        if (ctrl is ExcelControlWithText t)
         {
             t.Text = name;
         }
+
         ctrl.Name = name;
+
         return ctrl;
     }
 }

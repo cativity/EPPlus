@@ -13,7 +13,6 @@ namespace EPPlusTest.LoadFunctions;
 [EpplusTable(PrintHeaders = true)]
 public class Columns17
 {
-
     [EpplusTableColumn(Header = "C01")]
     public int C01 { get; set; }
 
@@ -64,7 +63,6 @@ public class Columns17
 
     [EpplusTableColumn(Header = "C17")]
     public int C17 { get; set; }
-
 }
 
 [TestClass]
@@ -79,6 +77,7 @@ public class LoadFromCollectionColumnSortingTests
     public void ShouldUseIndexWhenMoreThan17Properties()
     {
         using ExcelPackage? excel = new ExcelPackage();
+
         Columns17[]? tableData1 = Enumerable.Range(1, 10)
                                             .Select(_ => new Columns17
                                             {
@@ -99,7 +98,9 @@ public class LoadFromCollectionColumnSortingTests
                                                 C15 = 15,
                                                 C16 = 16,
                                                 C17 = 17
-                                            }).ToArray();
+                                            })
+                                            .ToArray();
+
         ExcelWorksheet? sheet = excel.Workbook.Worksheets.Add("16Columns");
         sheet.Cells["A1"].LoadFromCollection(tableData1);
 

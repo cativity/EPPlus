@@ -10,6 +10,7 @@
  *************************************************************************************************
   01/27/2020         EPPlus Software AB       Initial release EPPlus 5
  *************************************************************************************************/
+
 using System;
 using System.Collections.Generic;
 using System.Globalization;
@@ -27,13 +28,14 @@ internal class MultipleCharSeparatorHandler : SeparatorHandler
     public MultipleCharSeparatorHandler(INameValueProvider nameValueProvider)
         : this(new TokenSeparatorProvider(), nameValueProvider)
     {
-
     }
+
     public MultipleCharSeparatorHandler(ITokenSeparatorProvider tokenSeparatorProvider, INameValueProvider nameValueProvider)
     {
         this._tokenSeparatorProvider = tokenSeparatorProvider;
         this._nameValueProvider = nameValueProvider;
     }
+
     public override bool Handle(char c, Token tokenSeparator, TokenizerContext context, ITokenIndexProvider tokenIndexProvider)
     {
         // two operators in sequence could be "<=" or ">="
@@ -43,13 +45,17 @@ internal class MultipleCharSeparatorHandler : SeparatorHandler
             Token op = this._tokenSeparatorProvider.Tokens[sOp];
             context.ReplaceLastToken(op);
             context.NewToken();
+
             return true;
         }
+
         if (c == ':')
         {
             this.HandleAddressSeparatorToken(c, tokenSeparator, context);
+
             return true;
         }
+
         return false;
     }
 
@@ -61,27 +67,32 @@ internal class MultipleCharSeparatorHandler : SeparatorHandler
         }
         else
         {
-            if(this._nameValueProvider.IsNamedValue(context.CurrentToken, context.Worksheet))
+            if (this._nameValueProvider.IsNamedValue(context.CurrentToken, context.Worksheet))
             {
                 object? nameValue = this._nameValueProvider.GetNamedValue(context.CurrentToken, context.Worksheet);
-                if(nameValue != null)
+
+                if (nameValue != null)
                 {
-                    if(nameValue is IRangeInfo rangeInfo)
+                    if (nameValue is IRangeInfo rangeInfo)
                     {
                         context.IsInDefinedNameAddress = true;
                         context.OverwriteCurrentToken(rangeInfo.Address.Address + ":");
+
                         return true;
                     }
                 }
             }
+
             context.AppendToCurrentToken(c);
         }
+
         return false;
     }
 
     private bool IsPartOfMultipleCharSeparator(TokenizerContext context, char c)
     {
         string? lastTokenVal = string.Empty;
+
         if (!context.LastToken.HasValue)
         {
             return false;
@@ -89,6 +100,7 @@ internal class MultipleCharSeparatorHandler : SeparatorHandler
 
         Token lastToken = context.LastToken.Value;
         lastTokenVal = lastToken.Value ?? string.Empty;
+
         return this._tokenSeparatorProvider.IsOperator(lastTokenVal)
                && this._tokenSeparatorProvider.IsPossibleLastPartOfMultipleCharOperator(c.ToString())
                && !context.CurrentTokenHasValue;

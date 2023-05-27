@@ -11,25 +11,31 @@ namespace OfficeOpenXml.Drawing.Vml;
 /// </summary>
 public class ExcelVmlMeasurementUnit
 {
-    static string[] _suffixes = ((eMeasurementUnits[]) Enum.GetValues(typeof(eMeasurementUnits))).Where(x=>x!=eMeasurementUnits.Pixels).Select(x=>x.TranslateString()).ToArray();
+    static string[] _suffixes = ((eMeasurementUnits[])Enum.GetValues(typeof(eMeasurementUnits))).Where(x => x != eMeasurementUnits.Pixels)
+                                                                                                .Select(x => x.TranslateString())
+                                                                                                .ToArray();
 
-    internal ExcelVmlMeasurementUnit(string value="")
+    internal ExcelVmlMeasurementUnit(string value = "")
     {
         this.SetValue(value);
     }
+
     /// <summary>
     /// The value of the specified unit.
     /// </summary>
     public double Value { get; set; }
+
     /// <summary>
     /// The unit of measurement.
     /// </summary>
-    public eMeasurementUnits Unit { get; set;}
+    public eMeasurementUnits Unit { get; set; }
+
     internal void SetValue(string value)
     {
         this.Value = GetValue(value);
         this.Unit = GetUnit(value);
     }
+
     internal string GetValueString()
     {
         return this.Value.ToString(CultureInfo.InvariantCulture) + this.Unit.TranslateString();
@@ -46,8 +52,10 @@ public class ExcelVmlMeasurementUnit
         {
             return ConvertUtil.GetValueDouble(v.Substring(0, v.Length - 2));
         }
+
         return ConvertUtil.GetValueDouble(v);
     }
+
     private static eMeasurementUnits GetUnit(string v)
     {
         foreach (eMeasurementUnits u in Enum.GetValues(typeof(eMeasurementUnits)))
@@ -57,6 +65,7 @@ public class ExcelVmlMeasurementUnit
                 return u;
             }
         }
+
         return eMeasurementUnits.Pixels;
     }
 

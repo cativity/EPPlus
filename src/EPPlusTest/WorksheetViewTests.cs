@@ -25,7 +25,9 @@
   Date               Author                       Change
  *******************************************************************************
   01/31/2020         EPPlus Software AB       Initial release EPPlus 5
- *******************************************************************************/using Microsoft.VisualStudio.TestTools.UnitTesting;
+ *******************************************************************************/
+
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 using OfficeOpenXml;
 using System;
 using System.Collections.Generic;
@@ -39,12 +41,14 @@ namespace EPPlusTest.Core.Worksheet;
 public class WorksheetViewTests : TestBase
 {
     static ExcelPackage _pck;
+
     [ClassInitialize]
     public static void Init(TestContext context)
     {
         InitBase();
         _pck = OpenPackage("WorksheetView.xlsx", true);
     }
+
     [ClassCleanup]
     public static void Cleanup()
     {
@@ -53,6 +57,7 @@ public class WorksheetViewTests : TestBase
 
         SaveAndCleanup(_pck);
     }
+
     [TestMethod]
     public void SetTopLeftCellToH15()
     {
@@ -61,6 +66,7 @@ public class WorksheetViewTests : TestBase
 
         Assert.AreEqual("H15", ws.View.TopLeftCell);
     }
+
     [TestMethod]
     public void SetTopLeftCellToNullAfterItHasBeenSet()
     {
@@ -72,10 +78,12 @@ public class WorksheetViewTests : TestBase
 
         Assert.AreEqual("", ws.View.TopLeftCell);
     }
+
     [TestMethod]
     public void ReadFrozenPanes()
     {
         using ExcelPackage? p = OpenTemplatePackage("FrozenRead.xlsx");
+
         //Worksheet 1
         ExcelWorksheet? ws = p.Workbook.Worksheets[0];
         Assert.IsNotNull(ws.View);
@@ -97,10 +105,12 @@ public class WorksheetViewTests : TestBase
         Assert.AreEqual(7D, ws.View.PaneSettings.YSplit);
         Assert.AreEqual(3D, ws.View.PaneSettings.XSplit);
     }
+
     [TestMethod]
     public void ReadSplitPanes()
     {
         using ExcelPackage? p = OpenTemplatePackage("SplitPanes.xlsx");
+
         //Worksheet 1
         ExcelWorksheet? ws = p.Workbook.Worksheets[0];
         Assert.IsNotNull(ws.View);
@@ -108,11 +118,11 @@ public class WorksheetViewTests : TestBase
         Assert.AreEqual(ePaneState.Split, ws.View.PaneSettings.State);
         Assert.AreEqual(3, ws.View.Panes.Length);
 
-
         //Assert.AreEqual(4230, ws.View.PaneSettings.XSplit);
         //Assert.AreEqual(3300, ws.View.PaneSettings.YSplit);
         //Assert.AreEqual(3300, ws.Column(1).Width);
     }
+
     [TestMethod]
     public void SplitPanesBoth()
     {
@@ -121,6 +131,7 @@ public class WorksheetViewTests : TestBase
         ws.View.SplitPanes(2, 2);
         ws.View.ActiveCell = "B2";
     }
+
     [TestMethod]
     public void SplitPanesRow()
     {
@@ -146,24 +157,27 @@ public class WorksheetViewTests : TestBase
     public void SplitPanesNormal18()
     {
         ExcelWorksheet? ws = _pck.Workbook.Worksheets.Add("SplitPanesNormal18");
+
         //_pck.Workbook.Styles.NamedStyles[0].Style.Font.Name = "Arial";
         _pck.Workbook.Styles.NamedStyles[0].Style.Font.Size = 18;
         ws.View.TopLeftCell = "G200";
         ws.View.SplitPanes(3, 3);
         ws.View.TopLeftPane.ActiveCell = "B2";
     }
+
     [TestMethod]
     public void SplitPanesPixelsThenRemove()
     {
         ExcelWorksheet? ws = _pck.Workbook.Worksheets.Add("SplitPanesPixelRemove");
         ws.View.TopLeftPane.ActiveCell = "B2";
-            
-        ws.View.SplitPanesPixels(100, 100);            
+
+        ws.View.SplitPanesPixels(100, 100);
         Assert.AreEqual(ePaneState.Split, ws.View.PaneSettings.State);
-            
+
         ws.View.SplitPanesPixels(0, 0);
         Assert.IsNull(ws.View.PaneSettings);
     }
+
     [TestMethod]
     public void SplitPanesPixelsValidatePixls()
     {
@@ -179,8 +193,9 @@ public class WorksheetViewTests : TestBase
 
         ws.View.SplitPanesPixels(100, 100);
         Assert.AreEqual(1800, ws.View.PaneSettings.YSplit);
-        Assert.AreEqual(1890, ws.View.PaneSettings.XSplit);            
+        Assert.AreEqual(1890, ws.View.PaneSettings.XSplit);
     }
+
     [TestMethod]
     public void SplitPanesThenRemove()
     {
@@ -193,6 +208,7 @@ public class WorksheetViewTests : TestBase
         ws.View.SplitPanes(0, 0);
         Assert.IsNull(ws.View.PaneSettings);
     }
+
     [TestMethod]
     public void SplitPanesNormal11Arial()
     {
@@ -206,6 +222,7 @@ public class WorksheetViewTests : TestBase
         Assert.AreEqual(1140, ws.View.PaneSettings.YSplit);
         Assert.AreEqual(3915, ws.View.PaneSettings.XSplit);
     }
+
     [TestMethod]
     public void SplitPanesNormal18BellMT()
     {

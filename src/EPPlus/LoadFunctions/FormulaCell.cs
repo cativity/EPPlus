@@ -10,6 +10,7 @@
  *************************************************************************************************
   12/10/2020         EPPlus Software AB       EPPlus 5.5
  *************************************************************************************************/
+
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -19,18 +20,9 @@ namespace OfficeOpenXml.LoadFunctions;
 
 internal class FormulaCell
 {
-    public string Formula
-    {
-        get; set;
-    }
+    public string Formula { get; set; }
 
-    public string FormulaR1C1
-    {
-        get; set;
-    }
+    public string FormulaR1C1 { get; set; }
 
-    public string NumberFormat
-    {
-        get; set;
-    }
+    public string NumberFormat { get; set; }
 }

@@ -20,40 +20,53 @@ public class ToCollectionTests : TestBase
     public struct Category
     {
         public int CatId { get; set; }
+
         public string Name { get; set; }
+
         public string Description { get; set; }
     }
+
     public class TestDto
     {
-        [DisplayName("Identity")]            
+        [DisplayName("Identity")]
         public int Id { get; set; }
+
         [EpplusTableColumn(Order = 1, Header = "First name")]
         public string Name { get; set; }
+
         public double Ratio { get; set; }
+
         public DateTime TimeStamp { get; set; }
+
         public Category Category { get; set; }
+
         public string FormattedRatio { get; set; }
+
         public string FormattedTimeStamp { get; set; }
     }
+
     #region Range
+
     [TestMethod]
     public void ToCollection_Index()
     {
         using ExcelPackage? p = new ExcelPackage();
         ExcelWorksheet? sheet = LoadTestData(p, "LoadFromCollectionIndex");
-        List<TestDto>? list = sheet.Cells["A2:E3"].ToCollectionWithMappings(
-                                                                            row =>
-                                                                            {
-                                                                                TestDto? dto = new TestDto();
-                                                                                dto.Id = row.GetValue<int>(0);
-                                                                                dto.Name = row.GetValue<string>(1);
-                                                                                dto.Ratio = row.GetValue<double>(2);
-                                                                                dto.TimeStamp = row.GetValue<DateTime>(3);
-                                                                                dto.Category = new Category() { CatId = row.GetValue<int>(4) };
-                                                                                dto.FormattedRatio = row.GetText(2);
-                                                                                dto.FormattedTimeStamp = row.GetText(3);
-                                                                                return dto;
-                                                                            });
+
+        List<TestDto>? list = sheet.Cells["A2:E3"]
+                                   .ToCollectionWithMappings(row =>
+                                   {
+                                       TestDto? dto = new TestDto();
+                                       dto.Id = row.GetValue<int>(0);
+                                       dto.Name = row.GetValue<string>(1);
+                                       dto.Ratio = row.GetValue<double>(2);
+                                       dto.TimeStamp = row.GetValue<DateTime>(3);
+                                       dto.Category = new Category() { CatId = row.GetValue<int>(4) };
+                                       dto.FormattedRatio = row.GetText(2);
+                                       dto.FormattedTimeStamp = row.GetText(3);
+
+                                       return dto;
+                                   });
 
         Assert.AreEqual(2, list.Count);
         Assert.AreEqual(sheet.Cells["A2"].Value, list[0].Id);
@@ -78,18 +91,22 @@ public class ToCollectionTests : TestBase
     {
         using ExcelPackage? p = new ExcelPackage();
         ExcelWorksheet? sheet = LoadTestData(p, "LoadFromCollectionName");
-        List<TestDto>? list = sheet.Cells["A1:E3"].ToCollectionWithMappings(x =>
-        {
-            TestDto? dto = new TestDto();
-            dto.Id = x.GetValue<int>("id");
-            dto.Name = x.GetValue<string>("Name");
-            dto.Ratio = x.GetValue<double>("Ratio");
-            dto.TimeStamp = x.GetValue<DateTime>("TimeStamp");
-            dto.Category = new Category() { CatId = x.GetValue<int>("CategoryId") };
-            dto.FormattedRatio = x.GetText("Ratio");
-            dto.FormattedTimeStamp = x.GetText("TimeStamp");
-            return dto;
-        }, x => x.HeaderRow = 0);
+
+        List<TestDto>? list = sheet.Cells["A1:E3"]
+                                   .ToCollectionWithMappings(x =>
+                                                             {
+                                                                 TestDto? dto = new TestDto();
+                                                                 dto.Id = x.GetValue<int>("id");
+                                                                 dto.Name = x.GetValue<string>("Name");
+                                                                 dto.Ratio = x.GetValue<double>("Ratio");
+                                                                 dto.TimeStamp = x.GetValue<DateTime>("TimeStamp");
+                                                                 dto.Category = new Category() { CatId = x.GetValue<int>("CategoryId") };
+                                                                 dto.FormattedRatio = x.GetText("Ratio");
+                                                                 dto.FormattedTimeStamp = x.GetText("TimeStamp");
+
+                                                                 return dto;
+                                                             },
+                                                             x => x.HeaderRow = 0);
 
         Assert.AreEqual(2, list.Count);
         Assert.AreEqual(sheet.Cells["A2"].Value, list[0].Id);
@@ -108,20 +125,25 @@ public class ToCollectionTests : TestBase
         Assert.AreEqual(sheet.Cells["C3"].Text, list[1].FormattedRatio);
         Assert.AreEqual(sheet.Cells["D3"].Text, list[1].FormattedTimeStamp);
     }
+
     [TestMethod]
     public void ToCollection_AutoMapInMapping()
     {
         using ExcelPackage? p = new ExcelPackage();
         ExcelWorksheet? sheet = LoadTestData(p, "LoadFromCollectionName");
-        List<TestDto>? list = sheet.Cells["A1:E3"].ToCollectionWithMappings((ToCollectionRow row) =>
-        {
-            TestDto? dto = new TestDto();
-            row.Automap(dto);
-            dto.Category = new Category() { CatId = row.GetValue<int>("CategoryId") };
-            dto.FormattedRatio = row.GetText("Ratio");
-            dto.FormattedTimeStamp = row.GetText("TimeStamp");
-            return dto;
-        }, x => x.HeaderRow = 0);
+
+        List<TestDto>? list = sheet.Cells["A1:E3"]
+                                   .ToCollectionWithMappings((ToCollectionRow row) =>
+                                                             {
+                                                                 TestDto? dto = new TestDto();
+                                                                 row.Automap(dto);
+                                                                 dto.Category = new Category() { CatId = row.GetValue<int>("CategoryId") };
+                                                                 dto.FormattedRatio = row.GetText("Ratio");
+                                                                 dto.FormattedTimeStamp = row.GetText("TimeStamp");
+
+                                                                 return dto;
+                                                             },
+                                                             x => x.HeaderRow = 0);
 
         Assert.AreEqual(2, list.Count);
         Assert.AreEqual(sheet.Cells["A2"].Value, list[0].Id);
@@ -136,23 +158,32 @@ public class ToCollectionTests : TestBase
         Assert.AreEqual(sheet.Cells["D3"].GetValue<DateTime>(), list[1].TimeStamp);
         Assert.AreEqual(sheet.Cells["E3"].Value, list[1].Category.CatId);
     }
+
     [TestMethod]
     public void ToCollection_CustomHeaders()
     {
         using ExcelPackage? p = new ExcelPackage();
         ExcelWorksheet? sheet = LoadTestData(p, "LoadFromCollectionHeaders");
-        List<TestDto>? list = sheet.Cells["A2:E3"].ToCollectionWithMappings((ToCollectionRow row) =>
-        {
-            TestDto? dto = new TestDto();
-            dto.Id = row.GetValue<int>("Custom-Id");
-            dto.Name = row.GetText("Custom-Name");
-            dto.Category = new Category() { CatId = row.GetValue<int>("Custom-CategoryId") };
-            dto.Ratio = row.GetValue<double>("Custom-Ratio");
-            dto.FormattedRatio = row.GetText("Custom-Ratio");
-            dto.FormattedTimeStamp = row.GetText("Custom-TimeStamp");
-            dto.TimeStamp = row.GetValue<DateTime>("Custom-TimeStamp");
-            return dto;
-        }, x => x.SetCustomHeaders("Custom-Id", "Custom-Name", "Custom-Ratio", "Custom-TimeStamp", "Custom-CategoryId"));
+
+        List<TestDto>? list = sheet.Cells["A2:E3"]
+                                   .ToCollectionWithMappings((ToCollectionRow row) =>
+                                                             {
+                                                                 TestDto? dto = new TestDto();
+                                                                 dto.Id = row.GetValue<int>("Custom-Id");
+                                                                 dto.Name = row.GetText("Custom-Name");
+                                                                 dto.Category = new Category() { CatId = row.GetValue<int>("Custom-CategoryId") };
+                                                                 dto.Ratio = row.GetValue<double>("Custom-Ratio");
+                                                                 dto.FormattedRatio = row.GetText("Custom-Ratio");
+                                                                 dto.FormattedTimeStamp = row.GetText("Custom-TimeStamp");
+                                                                 dto.TimeStamp = row.GetValue<DateTime>("Custom-TimeStamp");
+
+                                                                 return dto;
+                                                             },
+                                                             x => x.SetCustomHeaders("Custom-Id",
+                                                                                     "Custom-Name",
+                                                                                     "Custom-Ratio",
+                                                                                     "Custom-TimeStamp",
+                                                                                     "Custom-CategoryId"));
 
         Assert.AreEqual(2, list.Count);
         Assert.AreEqual(sheet.Cells["A2"].Value, list[0].Id);
@@ -206,7 +237,7 @@ public class ToCollectionTests : TestBase
                     item.FormattedRatio = x.GetText("Ratio");
                     item.FormattedTimeStamp = x.GetText("TimeStamp");
                     return item;
-                }, x=>x.HeaderRow=0);
+                }, x=>x.HeaderRow = 0);
 
                 Assert.AreEqual(2, list.Count);
                 Assert.AreEqual(sheet.Cells["A2"].Value, list[0].Id);
@@ -222,8 +253,11 @@ public class ToCollectionTests : TestBase
         }
 
 #endif
+
     #endregion
+
     #region Table
+
     [TestMethod]
     public void ToCollectionTable_AutoMap()
     {
@@ -250,19 +284,21 @@ public class ToCollectionTests : TestBase
     {
         using ExcelPackage? p = new ExcelPackage();
         ExcelWorksheet? sheet = LoadTestData(p, "LoadFromCollectionIndex", true);
-        List<TestDto>? list = sheet.Tables[0].ToCollection(
-                                                           row =>
-                                                           {
-                                                               TestDto? dto = new TestDto();
-                                                               dto.Id = row.GetValue<int>(0);
-                                                               dto.Name = row.GetValue<string>(1);
-                                                               dto.Ratio = row.GetValue<double>(2);
-                                                               dto.TimeStamp = row.GetValue<DateTime>(3);
-                                                               dto.Category = new Category() { CatId = row.GetValue<int>(4) };
-                                                               dto.FormattedRatio = row.GetText(2);
-                                                               dto.FormattedTimeStamp = row.GetText(3);
-                                                               return dto;
-                                                           });
+
+        List<TestDto>? list = sheet.Tables[0]
+                                   .ToCollection(row =>
+                                   {
+                                       TestDto? dto = new TestDto();
+                                       dto.Id = row.GetValue<int>(0);
+                                       dto.Name = row.GetValue<string>(1);
+                                       dto.Ratio = row.GetValue<double>(2);
+                                       dto.TimeStamp = row.GetValue<DateTime>(3);
+                                       dto.Category = new Category() { CatId = row.GetValue<int>(4) };
+                                       dto.FormattedRatio = row.GetText(2);
+                                       dto.FormattedTimeStamp = row.GetText(3);
+
+                                       return dto;
+                                   });
 
         Assert.AreEqual(2, list.Count);
         Assert.AreEqual(sheet.Cells["A2"].Value, list[0].Id);
@@ -281,6 +317,7 @@ public class ToCollectionTests : TestBase
         Assert.AreEqual(sheet.Cells["C3"].Text, list[1].FormattedRatio);
         Assert.AreEqual(sheet.Cells["D3"].Text, list[1].FormattedTimeStamp);
     }
+
     [TestMethod]
     public void ToCollectionTable_AutoMapInCallback()
     {
@@ -288,15 +325,18 @@ public class ToCollectionTests : TestBase
         ExcelWorksheet? sheet = LoadTestData(p, "LoadFromCollectionAuto", true);
         sheet.Cells["A1"].Value = "Identity";
         sheet.Cells["B1"].Value = "First name";
-        List<TestDto>? list = sheet.Tables[0].ToCollection(x =>
-        {
-            TestDto? item = new TestDto();
-            x.Automap(item);
-            item.Category = new Category() { CatId = x.GetValue<int>("CategoryId") };
-            item.FormattedRatio = x.GetText("Ratio");
-            item.FormattedTimeStamp = x.GetText("TimeStamp");
-            return item;
-        });
+
+        List<TestDto>? list = sheet.Tables[0]
+                                   .ToCollection(x =>
+                                   {
+                                       TestDto? item = new TestDto();
+                                       x.Automap(item);
+                                       item.Category = new Category() { CatId = x.GetValue<int>("CategoryId") };
+                                       item.FormattedRatio = x.GetText("Ratio");
+                                       item.FormattedTimeStamp = x.GetText("TimeStamp");
+
+                                       return item;
+                                   });
 
         Assert.AreEqual(2, list.Count);
         Assert.AreEqual(sheet.Cells["A2"].Value, list[0].Id);
@@ -309,23 +349,27 @@ public class ToCollectionTests : TestBase
         Assert.AreEqual(sheet.Cells["C3"].Value, list[1].Ratio);
         Assert.AreEqual(sheet.Cells["D3"].Value, list[1].TimeStamp);
     }
+
     [TestMethod]
     public void ToCollectionTable_ColumnNames()
     {
         using ExcelPackage? p = new ExcelPackage();
         ExcelWorksheet? sheet = LoadTestData(p, "LoadFromCollectionName", true);
-        List<TestDto>? list = sheet.Tables[0].ToCollection(x =>
-        {
-            TestDto? dto = new TestDto();
-            dto.Id = x.GetValue<int>("id");
-            dto.Name = x.GetValue<string>("Name");
-            dto.Ratio = x.GetValue<double>("Ratio");
-            dto.TimeStamp = x.GetValue<DateTime>("TimeStamp");
-            dto.Category = new Category() { CatId = x.GetValue<int>("CategoryId") };
-            dto.FormattedRatio = x.GetText("Ratio");
-            dto.FormattedTimeStamp = x.GetText("TimeStamp");
-            return dto;
-        });
+
+        List<TestDto>? list = sheet.Tables[0]
+                                   .ToCollection(x =>
+                                   {
+                                       TestDto? dto = new TestDto();
+                                       dto.Id = x.GetValue<int>("id");
+                                       dto.Name = x.GetValue<string>("Name");
+                                       dto.Ratio = x.GetValue<double>("Ratio");
+                                       dto.TimeStamp = x.GetValue<DateTime>("TimeStamp");
+                                       dto.Category = new Category() { CatId = x.GetValue<int>("CategoryId") };
+                                       dto.FormattedRatio = x.GetText("Ratio");
+                                       dto.FormattedTimeStamp = x.GetText("TimeStamp");
+
+                                       return dto;
+                                   });
 
         Assert.AreEqual(2, list.Count);
         Assert.AreEqual(sheet.Cells["A2"].Value, list[0].Id);
@@ -344,6 +388,7 @@ public class ToCollectionTests : TestBase
         Assert.AreEqual(sheet.Cells["C3"].Text, list[1].FormattedRatio);
         Assert.AreEqual(sheet.Cells["D3"].Text, list[1].FormattedTimeStamp);
     }
+
     [TestMethod]
     [ExpectedException(typeof(EPPlusDataTypeConvertionException))]
     public void ToCollectionTable_ColumnNamesConversionFailure()
@@ -351,37 +396,45 @@ public class ToCollectionTests : TestBase
         using ExcelPackage? p = new ExcelPackage();
         ExcelWorksheet? sheet = LoadTestData(p, "LoadFromCollectionName", true);
         sheet.Cells["C2"].Value = "str";
-        List<TestDto>? list = sheet.Tables[0].ToCollection(x =>
-        {
-            TestDto? dto = new TestDto();
-            dto.Id = x.GetValue<int>("id");
-            dto.Name = x.GetValue<string>("Name");
-            dto.Ratio = x.GetValue<double>("Ratio");
-            dto.TimeStamp = x.GetValue<DateTime>("TimeStamp");
-            dto.Category = new Category() { CatId = x.GetValue<int>("CategoryId") };
-            dto.FormattedRatio = x.GetText("Ratio");
-            dto.FormattedTimeStamp = x.GetText("TimeStamp");
-            return dto;
-        });
+
+        List<TestDto>? list = sheet.Tables[0]
+                                   .ToCollection(x =>
+                                   {
+                                       TestDto? dto = new TestDto();
+                                       dto.Id = x.GetValue<int>("id");
+                                       dto.Name = x.GetValue<string>("Name");
+                                       dto.Ratio = x.GetValue<double>("Ratio");
+                                       dto.TimeStamp = x.GetValue<DateTime>("TimeStamp");
+                                       dto.Category = new Category() { CatId = x.GetValue<int>("CategoryId") };
+                                       dto.FormattedRatio = x.GetText("Ratio");
+                                       dto.FormattedTimeStamp = x.GetText("TimeStamp");
+
+                                       return dto;
+                                   });
     }
+
     [TestMethod]
     public void ToCollectionTable_ColumnNamesConversionDefault()
     {
         using ExcelPackage? p = new ExcelPackage();
         ExcelWorksheet? sheet = LoadTestData(p, "LoadFromCollectionName", true);
         sheet.Cells["C2"].Value = "str";
-        List<TestDto>? list = sheet.Tables[0].ToCollectionWithMappings(x =>
-        {
-            TestDto? dto = new TestDto();
-            dto.Id = x.GetValue<int>("id");
-            dto.Name = x.GetValue<string>("Name");
-            dto.Ratio = x.GetValue<double>("Ratio");
-            dto.TimeStamp = x.GetValue<DateTime>("TimeStamp");
-            dto.Category = new Category() { CatId = x.GetValue<int>("CategoryId") };
-            dto.FormattedRatio = x.GetText("Ratio");
-            dto.FormattedTimeStamp = x.GetText("TimeStamp");
-            return dto;
-        }, x => x.ConversionFailureStrategy = ToCollectionConversionFailureStrategy.SetDefaultValue);
+
+        List<TestDto>? list = sheet.Tables[0]
+                                   .ToCollectionWithMappings(x =>
+                                                             {
+                                                                 TestDto? dto = new TestDto();
+                                                                 dto.Id = x.GetValue<int>("id");
+                                                                 dto.Name = x.GetValue<string>("Name");
+                                                                 dto.Ratio = x.GetValue<double>("Ratio");
+                                                                 dto.TimeStamp = x.GetValue<DateTime>("TimeStamp");
+                                                                 dto.Category = new Category() { CatId = x.GetValue<int>("CategoryId") };
+                                                                 dto.FormattedRatio = x.GetText("Ratio");
+                                                                 dto.FormattedTimeStamp = x.GetText("TimeStamp");
+
+                                                                 return dto;
+                                                             },
+                                                             x => x.ConversionFailureStrategy = ToCollectionConversionFailureStrategy.SetDefaultValue);
 
         Assert.AreEqual(2, list.Count);
         Assert.AreEqual(sheet.Cells["A2"].Value, list[0].Id);
@@ -400,7 +453,9 @@ public class ToCollectionTests : TestBase
         Assert.AreEqual(sheet.Cells["C3"].Text, list[1].FormattedRatio);
         Assert.AreEqual(sheet.Cells["D3"].Text, list[1].FormattedTimeStamp);
     }
+
     #endregion
+
     private static ExcelWorksheet LoadTestData(ExcelPackage p, string wsName, bool addTable = false)
     {
         ExcelWorksheet? sheet = p.Workbook.Worksheets.Add(wsName);
@@ -412,7 +467,7 @@ public class ToCollectionTests : TestBase
         sheet.Cells["A2"].Value = 1;
         sheet.Cells["B2"].Value = "John Doe";
         sheet.Cells["C2"].Value = 1012.38;
-        sheet.Cells["D2"].Value = new DateTime(2022,10,1,13,15,30);
+        sheet.Cells["D2"].Value = new DateTime(2022, 10, 1, 13, 15, 30);
         sheet.Cells["E2"].Value = 1;
         sheet.Cells["A3"].Value = 2;
         sheet.Cells["B3"].Value = "Jane Doe";
@@ -421,15 +476,16 @@ public class ToCollectionTests : TestBase
         sheet.Cells["E3"].Value = 3;
         sheet.Cells["C2:C3"].Style.Numberformat.Format = "#,##0.0";
         sheet.Cells["D2:D3"].Style.Numberformat.Format = "yyyy-MM-dd HH:MM";
-        if(addTable)
+
+        if (addTable)
         {
-            ExcelTable? t=sheet.Tables.Add(sheet.Cells["A1:E3"], $"tbl{wsName}");
+            ExcelTable? t = sheet.Tables.Add(sheet.Cells["A1:E3"], $"tbl{wsName}");
             t.ShowTotal = true;
             t.Columns["Id"].TotalsRowLabel = "Totals";
             t.Columns["Ratio"].TotalsRowFunction = RowFunctions.Sum;
             t.Columns["TimeStamp"].TotalsRowFunction = RowFunctions.Count;
         }
-        return sheet;
 
+        return sheet;
     }
 }

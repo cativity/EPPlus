@@ -10,6 +10,7 @@
  *************************************************************************************************
   01/29/2021         EPPlus Software AB       EPPlus 5.6
  *************************************************************************************************/
+
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -23,10 +24,12 @@ namespace OfficeOpenXml.Style.Dxf;
 public class ExcelDxfGradientFillColorCollection : DxfStyleBase, IEnumerable<ExcelDxfGradientFillColor>
 {
     List<ExcelDxfGradientFillColor> _lst = new List<ExcelDxfGradientFillColor>();
-    internal ExcelDxfGradientFillColorCollection(ExcelStyles styles, Action<eStyleClass, eStyleProperty, object> callback) : base(styles, callback)
+
+    internal ExcelDxfGradientFillColorCollection(ExcelStyles styles, Action<eStyleClass, eStyleProperty, object> callback)
+        : base(styles, callback)
     {
-            
     }
+
     /// <summary>
     /// Get the enumerator
     /// </summary>
@@ -44,6 +47,7 @@ public class ExcelDxfGradientFillColorCollection : DxfStyleBase, IEnumerable<Exc
     {
         return this._lst.GetEnumerator();
     }
+
     /// <summary>
     /// Indexer for the collection
     /// </summary>
@@ -51,11 +55,9 @@ public class ExcelDxfGradientFillColorCollection : DxfStyleBase, IEnumerable<Exc
     /// <returns>The color</returns>
     public ExcelDxfGradientFillColor this[int index]
     {
-        get
-        {
-            return this._lst[index];
-        }
+        get { return this._lst[index]; }
     }
+
     /// <summary>
     /// Gets the first occurance with the color with the specified position
     /// </summary>
@@ -63,11 +65,9 @@ public class ExcelDxfGradientFillColorCollection : DxfStyleBase, IEnumerable<Exc
     /// <returns>The color</returns>
     public ExcelDxfGradientFillColor this[double position]
     {
-        get
-        {
-            return this._lst.Find(i => i.Position == position);
-        }
+        get { return this._lst.Find(i => i.Position == position); }
     }
+
     /// <summary>
     /// Adds a RGB color at the specified position
     /// </summary>
@@ -75,46 +75,47 @@ public class ExcelDxfGradientFillColorCollection : DxfStyleBase, IEnumerable<Exc
     /// <returns>The gradient color position object</returns>
     public ExcelDxfGradientFillColor Add(double position)
     {
-        if(position < 0 && position > 100)
+        if (position < 0 && position > 100)
         {
-            throw new ArgumentOutOfRangeException("position","Must be a value between 0 and 100");
+            throw new ArgumentOutOfRangeException("position", "Must be a value between 0 and 100");
         }
+
         ExcelDxfGradientFillColor? color = new ExcelDxfGradientFillColor(this._styles, position, this._callback);
         color.Color.Auto = true;
         this._lst.Add(color);
+
         return color;
     }
+
     /// <summary>
     /// Number of items in the collection
     /// </summary>
     public int Count
     {
-        get
-        {
-            return this._lst.Count;
-        }
+        get { return this._lst.Count; }
     }
+
     internal override string Id
     {
         get
         {
             string? id = "";
-            foreach (ExcelDxfGradientFillColor? c in this._lst.OrderBy(x=>x.Position))
+
+            foreach (ExcelDxfGradientFillColor? c in this._lst.OrderBy(x => x.Position))
             {
                 id += c.Id;
             }
+
             return id;
         }
     }
+
     /// <summary>
     /// If the style has any value set
     /// </summary>
     public override bool HasValue
     {
-        get
-        {
-            return this._lst.Count > 0;
-        }
+        get { return this._lst.Count > 0; }
     }
 
     /// <summary>
@@ -125,6 +126,7 @@ public class ExcelDxfGradientFillColorCollection : DxfStyleBase, IEnumerable<Exc
     {
         this._lst.RemoveAt(index);
     }
+
     /// <summary>
     /// Remove the style at the position from the collection.
     /// </summary>
@@ -132,11 +134,13 @@ public class ExcelDxfGradientFillColorCollection : DxfStyleBase, IEnumerable<Exc
     public void RemoveAt(double position)
     {
         ExcelDxfGradientFillColor? item = this._lst.Find(i => i.Position == position);
-        if(item!=null)
+
+        if (item != null)
         {
             this._lst.Remove(item);
         }
     }
+
     /// <summary>
     /// Remove the style from the collection
     /// </summary>
@@ -145,6 +149,7 @@ public class ExcelDxfGradientFillColorCollection : DxfStyleBase, IEnumerable<Exc
     {
         this._lst.Remove(item);
     }
+
     /// <summary>
     /// Clear all style items from the collection
     /// </summary>
@@ -155,17 +160,18 @@ public class ExcelDxfGradientFillColorCollection : DxfStyleBase, IEnumerable<Exc
 
     internal override void CreateNodes(XmlHelper helper, string path)
     {
-        if(this._lst.Count>0)
+        if (this._lst.Count > 0)
         {
-            foreach(ExcelDxfGradientFillColor? c in this._lst)
+            foreach (ExcelDxfGradientFillColor? c in this._lst)
             {
                 c.CreateNodes(helper, path);
             }
         }
     }
+
     internal override void SetStyle()
     {
-        if (this._callback!=null && this._lst.Count > 0)
+        if (this._callback != null && this._lst.Count > 0)
         {
             foreach (ExcelDxfGradientFillColor? c in this._lst)
             {
@@ -173,13 +179,16 @@ public class ExcelDxfGradientFillColorCollection : DxfStyleBase, IEnumerable<Exc
             }
         }
     }
+
     internal override DxfStyleBase Clone()
     {
         ExcelDxfGradientFillColorCollection? ret = new ExcelDxfGradientFillColorCollection(this._styles, this._callback);
+
         foreach (ExcelDxfGradientFillColor? c in this._lst)
         {
             ret._lst.Add((ExcelDxfGradientFillColor)c.Clone());
         }
+
         return ret;
     }
 }

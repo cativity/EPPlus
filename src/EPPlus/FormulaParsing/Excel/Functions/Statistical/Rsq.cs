@@ -10,6 +10,7 @@
  *************************************************************************************************
   22/10/2022         EPPlus Software AB           EPPlus v6
  *************************************************************************************************/
+
 using OfficeOpenXml.FormulaParsing.Excel.Functions.Metadata;
 using OfficeOpenXml.FormulaParsing.ExpressionGraph;
 using System;
@@ -19,10 +20,9 @@ using System.Text;
 
 namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Statistical;
 
-[FunctionMetadata(
-                     Category = ExcelFunctionCategory.Statistical,
-                     EPPlusVersion = "6.0",
-                     Description = "Returns the geometric mean of an array or range of positive data.")]
+[FunctionMetadata(Category = ExcelFunctionCategory.Statistical,
+                  EPPlusVersion = "6.0",
+                  Description = "Returns the geometric mean of an array or range of positive data.")]
 internal class Rsq : ExcelFunction
 {
     public override CompileResult Execute(IEnumerable<FunctionArgument> arguments, ParsingContext context)
@@ -33,6 +33,7 @@ internal class Rsq : ExcelFunction
         ExcelDoubleCellValue[]? knownXs = this.ArgsToDoubleEnumerable(false, false, new FunctionArgument[] { arg1 }, context).ToArray();
         ExcelDoubleCellValue[]? knownYs = this.ArgsToDoubleEnumerable(false, false, new FunctionArgument[] { arg2 }, context).ToArray();
         double result = System.Math.Pow(Pearson.PearsonImpl(knownXs.Select(x => x.Value).ToArray(), knownYs.Select(x => x.Value).ToArray()), 2);
+
         return this.CreateResult(result, DataType.Decimal);
     }
 }

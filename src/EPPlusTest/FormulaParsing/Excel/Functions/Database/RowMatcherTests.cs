@@ -26,6 +26,7 @@
  *******************************************************************************
   01/27/2020         EPPlus Software AB       Initial release EPPlus 5
  *******************************************************************************/
+
 using System;
 using System.Collections.Generic;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -41,11 +42,13 @@ public class RowMatcherTests
     private static ExcelDatabaseCriteria GetCriteria(Dictionary<ExcelDatabaseCriteriaField, object> items)
     {
         ExcelDataProvider? provider = A.Fake<ExcelDataProvider>();
-        ExcelDatabaseCriteria? criteria = A.Fake<ExcelDatabaseCriteria>();// (provider, string.Empty);
+        ExcelDatabaseCriteria? criteria = A.Fake<ExcelDatabaseCriteria>(); // (provider, string.Empty);
 
         A.CallTo(() => criteria.Items).Returns(items);
+
         return criteria;
     }
+
     [TestMethod]
     public void IsMatchShouldReturnTrueIfCriteriasMatch()
     {

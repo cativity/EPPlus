@@ -26,6 +26,7 @@
  *******************************************************************************
   01/27/2020         EPPlus Software AB       Initial release EPPlus 5
  *******************************************************************************/
+
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using OfficeOpenXml;
 using OfficeOpenXml.Drawing.Chart;
@@ -44,16 +45,19 @@ namespace EPPlusTest.Drawing.Chart.Styling;
 public class RegionMapChartStylingTest : TestBase
 {
     static ExcelPackage _pck;
+
     [ClassInitialize]
     public static void Init(TestContext context)
     {
         _pck = OpenPackage("RegionMapChartStyling.xlsx", true);
     }
+
     [ClassCleanup]
     public static void Cleanup()
     {
         SaveAndCleanup(_pck);
     }
+
     [TestMethod]
     public void RegionMapChart_Styles()
     {
@@ -61,49 +65,45 @@ public class RegionMapChartStylingTest : TestBase
         LoadGeoTestData(ws);
         RegionMapChartStyle(ws);
     }
+
     private static void RegionMapChartStyle(ExcelWorksheet ws)
     {
         //RegionMap Chart styles
 
         //RegionMap chart Style 1
-        AddChart(ws, ePresetChartStyle.RegionMapChartStyle1, "RegionMapChartStyle1", 0, 5,
+        AddChart(ws,
+                 ePresetChartStyle.RegionMapChartStyle1,
+                 "RegionMapChartStyle1",
+                 0,
+                 5,
                  c =>
                  {
                      c.Title.Text = "RegionMap 1";
-                     c.Series[0].DataLabel.Add(false,true);
+                     c.Series[0].DataLabel.Add(false, true);
                      c.Series[0].RegionLableLayout = eRegionLabelLayout.BestFitOnly;
                      c.Series[0].ViewedRegionType = eGeoMappingLevel.World;
                  });
 
         //RegionMap chart Style 2
-        AddChart(ws, ePresetChartStyle.RegionMapChartStyle2, "RegionMapChartStyle2", 0, 18,
-                 c =>
-                 {
-                     c.Legend.Position = eLegendPosition.Bottom;
-                 });
+        AddChart(ws, ePresetChartStyle.RegionMapChartStyle2, "RegionMapChartStyle2", 0, 18, c => { c.Legend.Position = eLegendPosition.Bottom; });
 
         //RegionMap chart Style 3
-        AddChart(ws, ePresetChartStyle.RegionMapChartStyle3, "RegionMapChartStyle3", 0, 31,
-                 c =>
-                 {
-                     c.Legend.Position = eLegendPosition.Bottom;
-                 });
+        AddChart(ws, ePresetChartStyle.RegionMapChartStyle3, "RegionMapChartStyle3", 0, 31, c => { c.Legend.Position = eLegendPosition.Bottom; });
 
         //RegionMap chart Style 4
-        AddChart(ws, ePresetChartStyle.RegionMapChartStyle4, "RegionMapChartStyle4", 20, 5,
-                 c =>
-                 {
-                     c.Legend.Position = eLegendPosition.Bottom;
-                 });
-
+        AddChart(ws, ePresetChartStyle.RegionMapChartStyle4, "RegionMapChartStyle4", 20, 5, c => { c.Legend.Position = eLegendPosition.Bottom; });
     }
 
-
-    private static ExcelRegionMapChart AddChart(ExcelWorksheet ws, ePresetChartStyle style, string name, int row, int col, Action<ExcelRegionMapChart> SetProperties)
+    private static ExcelRegionMapChart AddChart(ExcelWorksheet ws,
+                                                ePresetChartStyle style,
+                                                string name,
+                                                int row,
+                                                int col,
+                                                Action<ExcelRegionMapChart> SetProperties)
     {
         ExcelRegionMapChart? chart = ws.Drawings.AddRegionMapChart(name);
         chart.SetPosition(row, 0, col, 0);
-        chart.To.Column = col+12;
+        chart.To.Column = col + 12;
         chart.To.ColumnOff = 0;
         chart.To.Row = row + 18;
         chart.To.RowOff = 0;
@@ -112,6 +112,7 @@ public class RegionMapChartStylingTest : TestBase
         SetProperties(chart);
 
         chart.StyleManager.SetChartStyle(style);
+
         return chart;
     }
 }

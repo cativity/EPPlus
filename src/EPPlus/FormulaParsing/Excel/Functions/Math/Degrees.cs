@@ -10,6 +10,7 @@
  *************************************************************************************************
   01/27/2020         EPPlus Software AB       Initial release EPPlus 5
  *************************************************************************************************/
+
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -19,17 +20,15 @@ using OfficeOpenXml.FormulaParsing.ExpressionGraph;
 
 namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Math;
 
-[FunctionMetadata(
-                     Category = ExcelFunctionCategory.MathAndTrig,
-                     EPPlusVersion = "4",
-                     Description = "Converts Radians to Degrees")]
+[FunctionMetadata(Category = ExcelFunctionCategory.MathAndTrig, EPPlusVersion = "4", Description = "Converts Radians to Degrees")]
 internal class Degrees : ExcelFunction
 {
     public override CompileResult Execute(IEnumerable<FunctionArgument> arguments, ParsingContext context)
     {
         ValidateArguments(arguments, 1);
         double angle = this.ArgToDecimal(arguments, 0);
-        double result = angle*180/System.Math.PI;
+        double result = angle * 180 / System.Math.PI;
+
         return this.CreateResult(result, DataType.Decimal);
     }
 }

@@ -26,6 +26,7 @@
  *******************************************************************************
   10/13/2020         EPPlus Software AB       Initial release EPPlus 5
  *******************************************************************************/
+
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using OfficeOpenXml;
 using System;
@@ -48,9 +49,11 @@ public class ProtectionTest : TestBase
         p.Workbook.Protection.WriteProtection.SetReadOnly("Jan Källman", "EPPlus");
         p.Workbook.Protection.WriteProtection.ReadOnlyRecommended = true;
         Assert.IsTrue(p.Workbook.Protection.WriteProtection.ReadOnlyRecommended);
+
         //Assert.IsTrue(p.Workbook.Protection.WriteProtection.IsReadOnly);
         SaveAndCleanup(p);
     }
+
     [TestMethod]
     public void VerifyRemoveReadonly()
     {

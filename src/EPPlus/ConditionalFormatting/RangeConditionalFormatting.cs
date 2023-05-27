@@ -10,6 +10,7 @@
  *************************************************************************************************
   01/27/2020         EPPlus Software AB       Initial release EPPlus 5
  *************************************************************************************************/
+
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -19,18 +20,18 @@ using OfficeOpenXml.ConditionalFormatting.Contracts;
 
 namespace OfficeOpenXml.ConditionalFormatting;
 
-internal class RangeConditionalFormatting
-    : IRangeConditionalFormatting
+internal class RangeConditionalFormatting : IRangeConditionalFormatting
 {
     #region Public Properties
+
     public ExcelWorksheet _worksheet;
     public ExcelAddress _address;
+
     #endregion Public Properties
 
     #region Constructors
-    public RangeConditionalFormatting(
-        ExcelWorksheet worksheet,
-        ExcelAddress address)
+
+    public RangeConditionalFormatting(ExcelWorksheet worksheet, ExcelAddress address)
     {
         Require.Argument(worksheet).IsNotNull("worksheet");
         Require.Argument(address).IsNotNull("address");
@@ -38,9 +39,11 @@ internal class RangeConditionalFormatting
         this._worksheet = worksheet;
         this._address = address;
     }
+
     #endregion Constructors
 
     #region Conditional Formatting Rule Types
+
     /// <summary>
     /// Add AboveOrEqualAverage Conditional Formatting
     /// </summary>
@@ -398,8 +401,7 @@ internal class RangeConditionalFormatting
     ///  <returns></returns>
     public IExcelConditionalFormattingThreeColorScale AddThreeColorScale()
     {
-        return (IExcelConditionalFormattingThreeColorScale)this._worksheet.ConditionalFormatting.AddRule(
-                                                                                                         eExcelConditionalFormattingRuleType.ThreeColorScale,
+        return (IExcelConditionalFormattingThreeColorScale)this._worksheet.ConditionalFormatting.AddRule(eExcelConditionalFormattingRuleType.ThreeColorScale,
                                                                                                          this._address);
     }
 
@@ -409,8 +411,7 @@ internal class RangeConditionalFormatting
     ///  <returns></returns>
     public IExcelConditionalFormattingTwoColorScale AddTwoColorScale()
     {
-        return (IExcelConditionalFormattingTwoColorScale)this._worksheet.ConditionalFormatting.AddRule(
-                                                                                                       eExcelConditionalFormattingRuleType.TwoColorScale,
+        return (IExcelConditionalFormattingTwoColorScale)this._worksheet.ConditionalFormatting.AddRule(eExcelConditionalFormattingRuleType.TwoColorScale,
                                                                                                        this._address);
     }
 
@@ -421,10 +422,12 @@ internal class RangeConditionalFormatting
     /// <returns></returns>
     public IExcelConditionalFormattingThreeIconSet<eExcelconditionalFormatting3IconsSetType> AddThreeIconSet(eExcelconditionalFormatting3IconsSetType IconSet)
     {
-        IExcelConditionalFormattingThreeIconSet<eExcelconditionalFormatting3IconsSetType>? rule = (IExcelConditionalFormattingThreeIconSet<eExcelconditionalFormatting3IconsSetType>)this._worksheet.ConditionalFormatting.AddRule(
-         eExcelConditionalFormattingRuleType.ThreeIconSet,
-         this._address);
+        IExcelConditionalFormattingThreeIconSet<eExcelconditionalFormatting3IconsSetType>? rule =
+            (IExcelConditionalFormattingThreeIconSet<eExcelconditionalFormatting3IconsSetType>)
+            this._worksheet.ConditionalFormatting.AddRule(eExcelConditionalFormattingRuleType.ThreeIconSet, this._address);
+
         rule.IconSet = IconSet;
+
         return rule;
     }
 
@@ -435,10 +438,12 @@ internal class RangeConditionalFormatting
     /// <returns></returns>
     public IExcelConditionalFormattingFourIconSet<eExcelconditionalFormatting4IconsSetType> AddFourIconSet(eExcelconditionalFormatting4IconsSetType IconSet)
     {
-        IExcelConditionalFormattingFourIconSet<eExcelconditionalFormatting4IconsSetType>? rule = (IExcelConditionalFormattingFourIconSet<eExcelconditionalFormatting4IconsSetType>)this._worksheet.ConditionalFormatting.AddRule(
-         eExcelConditionalFormattingRuleType.FourIconSet,
-         this._address);
+        IExcelConditionalFormattingFourIconSet<eExcelconditionalFormatting4IconsSetType>? rule =
+            (IExcelConditionalFormattingFourIconSet<eExcelconditionalFormatting4IconsSetType>)
+            this._worksheet.ConditionalFormatting.AddRule(eExcelConditionalFormattingRuleType.FourIconSet, this._address);
+
         rule.IconSet = IconSet;
+
         return rule;
     }
 
@@ -449,10 +454,12 @@ internal class RangeConditionalFormatting
     /// <returns></returns>
     public IExcelConditionalFormattingFiveIconSet AddFiveIconSet(eExcelconditionalFormatting5IconsSetType IconSet)
     {
-        IExcelConditionalFormattingFiveIconSet? rule = (IExcelConditionalFormattingFiveIconSet)this._worksheet.ConditionalFormatting.AddRule(
-         eExcelConditionalFormattingRuleType.FiveIconSet,
-         this._address);
+        IExcelConditionalFormattingFiveIconSet? rule =
+            (IExcelConditionalFormattingFiveIconSet)this._worksheet.ConditionalFormatting.AddRule(eExcelConditionalFormattingRuleType.FiveIconSet,
+                                                                                                  this._address);
+
         rule.IconSet = IconSet;
+
         return rule;
     }
 
@@ -463,11 +470,13 @@ internal class RangeConditionalFormatting
     /// <returns></returns>
     public IExcelConditionalFormattingDataBarGroup AddDatabar(System.Drawing.Color Color)
     {
-        IExcelConditionalFormattingDataBarGroup? rule = (IExcelConditionalFormattingDataBarGroup)this._worksheet.ConditionalFormatting.AddRule(
-         eExcelConditionalFormattingRuleType.DataBar,
-         this._address);
+        IExcelConditionalFormattingDataBarGroup? rule =
+            (IExcelConditionalFormattingDataBarGroup)this._worksheet.ConditionalFormatting.AddRule(eExcelConditionalFormattingRuleType.DataBar, this._address);
+
         rule.Color = Color;
+
         return rule;
     }
+
     #endregion Conditional Formatting Rule Types
 }

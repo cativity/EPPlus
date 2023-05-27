@@ -26,6 +26,7 @@
  *******************************************************************************
   01/27/2020         EPPlus Software AB       Initial release EPPlus 5
  *******************************************************************************/
+
 using System;
 using System.Linq;
 using System.Threading;
@@ -57,16 +58,18 @@ public class AverageATests
         double value4 = 1;
         double value5 = date1.ToOADate();
         double value6 = date2.ToOADate();
+
         CompileResult? result = average.Execute(new FunctionArgument[]
-        {
-            new FunctionArgument(value1.ToString("n")),
-            new FunctionArgument(value2),
-            new FunctionArgument(value3.ToString("n")),
-            new FunctionArgument(true),
-            new FunctionArgument(date1),
-            new FunctionArgument(date2.ToString("d"))
-        }, ParsingContext.Create());
-        Assert.AreEqual((value1 + value2 + value3 + value4 + value5 + value6) / 6, result.Result, $"Current Culture is {Thread.CurrentThread.CurrentCulture.Name}");
+                                                {
+                                                    new FunctionArgument(value1.ToString("n")), new FunctionArgument(value2),
+                                                    new FunctionArgument(value3.ToString("n")), new FunctionArgument(true), new FunctionArgument(date1),
+                                                    new FunctionArgument(date2.ToString("d"))
+                                                },
+                                                ParsingContext.Create());
+
+        Assert.AreEqual((value1 + value2 + value3 + value4 + value5 + value6) / 6,
+                        result.Result,
+                        $"Current Culture is {Thread.CurrentThread.CurrentCulture.Name}");
     }
 
     [TestMethod]
@@ -75,15 +78,7 @@ public class AverageATests
         // For cell references, AverageA divides by all cells, but only adds actual numbers, dates, and booleans.
         ExcelPackage package = new ExcelPackage();
         ExcelWorksheet? worksheet = package.Workbook.Worksheets.Add("Test");
-        double[] values =
-        {
-            0,
-            2000,
-            0,
-            1,
-            new DateTime(2013, 1, 5).ToOADate(),
-            0
-        };
+        double[] values = { 0, 2000, 0, 1, new DateTime(2013, 1, 5).ToOADate(), 0 };
         ExcelRange range1 = worksheet.Cells[1, 1];
         range1.Formula = "\"1000\"";
         range1.Calculate();
@@ -106,12 +101,13 @@ public class AverageATests
         RangeAddress? address = new RangeAddress();
         address.FromRow = address.ToRow = address.FromCol = address.ToCol = 2;
         context.Scopes.NewScope(address);
+
         CompileResult? result = average.Execute(new FunctionArgument[]
-        {
-            new FunctionArgument(rangeInfo1),
-            new FunctionArgument(rangeInfo2),
-            new FunctionArgument(rangeInfo3)
-        }, context);
+                                                {
+                                                    new FunctionArgument(rangeInfo1), new FunctionArgument(rangeInfo2), new FunctionArgument(rangeInfo3)
+                                                },
+                                                context);
+
         Assert.AreEqual(values.Average(), result.Result);
     }
 
@@ -122,26 +118,19 @@ public class AverageATests
         // numbers are added to the total.  Real dates cannot be specified and string dates are not parsed.
         AverageA average = new AverageA();
         DateTime date = new DateTime(2013, 1, 15);
-        double[] values =
-        {
-            0,
-            2000,
-            0,
-            0,
-            0
-        };
+        double[] values = { 0, 2000, 0, 0, 0 };
+
         CompileResult? result = average.Execute(new FunctionArgument[]
-        {
-            new FunctionArgument(new FunctionArgument[]
-            {
-                new FunctionArgument(1000.ToString("n")),
-                new FunctionArgument(2000),
-                new FunctionArgument(6000.ToString("n")),
-                new FunctionArgument(true),
-                new FunctionArgument(date.ToString("d")),
-                new FunctionArgument("test")
-            })
-        }, ParsingContext.Create());
+                                                {
+                                                    new FunctionArgument(new FunctionArgument[]
+                                                    {
+                                                        new FunctionArgument(1000.ToString("n")), new FunctionArgument(2000),
+                                                        new FunctionArgument(6000.ToString("n")), new FunctionArgument(true),
+                                                        new FunctionArgument(date.ToString("d")), new FunctionArgument("test")
+                                                    })
+                                                },
+                                                ParsingContext.Create());
+
         Assert.AreEqual(values.Average(), result.Result);
     }
 
@@ -151,10 +140,6 @@ public class AverageATests
     {
         // In the case of literals, any unparsable string literal results in a #VALUE.
         AverageA average = new AverageA();
-        CompileResult? result = average.Execute(new FunctionArgument[]
-        {
-            new FunctionArgument(1000),
-            new FunctionArgument("Test")
-        }, ParsingContext.Create());
+        CompileResult? result = average.Execute(new FunctionArgument[] { new FunctionArgument(1000), new FunctionArgument("Test") }, ParsingContext.Create());
     }
 }

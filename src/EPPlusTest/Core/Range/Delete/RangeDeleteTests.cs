@@ -18,17 +18,20 @@ namespace EPPlusTest.Core.Range.Delete;
 public class RangeDeleteTests : TestBase
 {
     public static ExcelPackage _pck;
+
     [ClassInitialize]
     public static void Init(TestContext context)
     {
         InitBase();
         _pck = OpenPackage("WorksheetRangeDelete.xlsx", true);
     }
+
     [ClassCleanup]
     public static void Cleanup()
     {
         SaveAndCleanup(_pck);
     }
+
     [TestMethod]
     public void ValidateFormulasAfterDeleteRow()
     {
@@ -43,11 +46,11 @@ public class RangeDeleteTests : TestBase
         //Act
         ws.DeleteRow(3, 1);
         ExcelWorksheet? wsError = _pck.Workbook.Worksheets["DeleteRow_Sheet1"];
+
         if (wsError != null)
         {
             Assert.AreEqual(1, wsError._sharedFormulas.Count);
         }
-
 
         //Assert
         Assert.AreEqual("Sum(C4:C9)", ws.Cells["A1"].Formula);
@@ -58,6 +61,7 @@ public class RangeDeleteTests : TestBase
         Assert.AreEqual("Sum(DeleteRow_Sheet1!C4:C9)", ws2.Cells["B1"].Formula);
         Assert.AreEqual("Sum(DeleteRow_Sheet1!C5:C10)", ws2.Cells["B2"].Formula);
     }
+
     [TestMethod]
     public void ValidateFormulasAfterDelete2Rows()
     {
@@ -70,6 +74,7 @@ public class RangeDeleteTests : TestBase
         //Act
         ws1.DeleteRow(2, 2);
         ExcelWorksheet? wsError = _pck.Workbook.Worksheets["DeleteRow_Sheet1"];
+
         if (wsError != null)
         {
             Assert.AreEqual(1, wsError._sharedFormulas.Count);
@@ -87,6 +92,7 @@ public class RangeDeleteTests : TestBase
         Assert.AreEqual("DeleteRow2_Sheet1!#REF!+DeleteRow2_Sheet1!C2", ws2.Cells["B5"].Formula);
         Assert.AreEqual("DeleteRow2_Sheet1!A2+DeleteRow2_Sheet1!C3", ws2.Cells["B6"].Formula);
     }
+
     [TestMethod]
     public void ValidateFormulasAfterDeleteColumn()
     {
@@ -101,6 +107,7 @@ public class RangeDeleteTests : TestBase
         //Act
         ws.DeleteColumn(3, 1);
         ExcelWorksheet? wsError = _pck.Workbook.Worksheets["DeleteRow_Sheet1"];
+
         if (wsError != null)
         {
             Assert.AreEqual(1, wsError._sharedFormulas.Count);
@@ -115,6 +122,7 @@ public class RangeDeleteTests : TestBase
         Assert.AreEqual("Sum(DeleteCol_Sheet1!D3:H3)", ws2.Cells["A2"].Formula);
         Assert.AreEqual("Sum(DeleteCol_Sheet1!E3:I3)", ws2.Cells["B2"].Formula);
     }
+
     [TestMethod]
     public void ValidateFormulasAfterDelete2Columns()
     {
@@ -127,6 +135,7 @@ public class RangeDeleteTests : TestBase
         //Act
         ws1.DeleteColumn(2, 2);
         ExcelWorksheet? wsError = _pck.Workbook.Worksheets["DeleteRow_Sheet1"];
+
         if (wsError != null)
         {
             Assert.AreEqual(1, wsError._sharedFormulas.Count);
@@ -144,13 +153,16 @@ public class RangeDeleteTests : TestBase
         Assert.AreEqual("DeleteCol2_Sheet1!#REF!+DeleteCol2_Sheet1!C3", ws2.Cells["E2"].Formula);
         Assert.AreEqual("DeleteCol2_Sheet1!B1+DeleteCol2_Sheet1!D3", ws2.Cells["F2"].Formula);
     }
+
     [TestMethod]
     public void SharedFormulaShouldBeDeletedIfEntireRowIsDeleted()
     {
         using ExcelPackage? p = new ExcelPackage();
+
         //Setup
         ExcelWorksheet? ws = p.Workbook.Worksheets.Add("Sheet1");
         ws.Cells["A2:B2"].Formula = "C2";
+
         //Act
         Assert.AreEqual(1, ws._sharedFormulas.Count);
         ws.DeleteRow(2);
@@ -160,13 +172,16 @@ public class RangeDeleteTests : TestBase
         Assert.AreEqual("", ws.Cells["A2"].Formula);
         Assert.AreEqual("", ws.Cells["B2"].Formula);
     }
+
     [TestMethod]
     public void SharedFormulaShouldBeDeletedIfEntireColumnIsDeleted()
     {
         using ExcelPackage? p = new ExcelPackage();
+
         //Setup
         ExcelWorksheet? ws = p.Workbook.Worksheets.Add("Sheet1");
         ws.Cells["B1:B2"].Formula = "C2";
+
         //Act
         Assert.AreEqual(1, ws._sharedFormulas.Count);
         ws.DeleteColumn(2);
@@ -176,13 +191,16 @@ public class RangeDeleteTests : TestBase
         Assert.AreEqual("", ws.Cells["B1"].Formula);
         Assert.AreEqual("", ws.Cells["B2"].Formula);
     }
+
     [TestMethod]
     public void SharedFormulaShouldBePartialDeletedRow()
     {
         using ExcelPackage? p = new ExcelPackage();
+
         //Setup
         ExcelWorksheet? ws = p.Workbook.Worksheets.Add("Sheet1");
         ws.Cells["A2:B3"].Formula = "C2";
+
         //Act
         Assert.AreEqual(1, ws._sharedFormulas.Count);
         ws.DeleteRow(2);
@@ -194,13 +212,16 @@ public class RangeDeleteTests : TestBase
         Assert.AreEqual("", ws.Cells["A3"].Formula);
         Assert.AreEqual("", ws.Cells["B3"].Formula);
     }
+
     [TestMethod]
     public void SharedFormulaShouldBePartialDeletedColumn()
     {
         using ExcelPackage? p = new ExcelPackage();
+
         //Setup
         ExcelWorksheet? ws = p.Workbook.Worksheets.Add("Sheet1");
         ws.Cells["B1:C2"].Formula = "B3";
+
         //Act
         Assert.AreEqual(1, ws._sharedFormulas.Count);
         ws.DeleteColumn(2);
@@ -212,13 +233,16 @@ public class RangeDeleteTests : TestBase
         Assert.AreEqual("", ws.Cells["C1"].Formula);
         Assert.AreEqual("", ws.Cells["C2"].Formula);
     }
+
     [TestMethod]
     public void SharedFormulaShouldBePartialDeletedRowShareFormulaRetained()
     {
         using ExcelPackage? p = new ExcelPackage();
+
         //Setup
         ExcelWorksheet? ws = p.Workbook.Worksheets.Add("Sheet1");
         ws.Cells["A2:B3"].Formula = "E12";
+
         //Act
         Assert.AreEqual(1, ws._sharedFormulas.Count);
         ws.DeleteRow(2);
@@ -230,13 +254,16 @@ public class RangeDeleteTests : TestBase
         Assert.AreEqual("", ws.Cells["A3"].Formula);
         Assert.AreEqual("", ws.Cells["B3"].Formula);
     }
+
     [TestMethod]
     public void SharedFormulaShouldBePartialDeletedColumnShareFormulaRetained()
     {
         using ExcelPackage? p = new ExcelPackage();
+
         //Setup
         ExcelWorksheet? ws = p.Workbook.Worksheets.Add("Sheet1");
         ws.Cells["B1:C2"].Formula = "E12";
+
         //Act
         Assert.AreEqual(1, ws._sharedFormulas.Count);
         ws.DeleteColumn(2);
@@ -248,15 +275,18 @@ public class RangeDeleteTests : TestBase
         Assert.AreEqual("", ws.Cells["C1"].Formula);
         Assert.AreEqual("", ws.Cells["C2"].Formula);
     }
+
     [TestMethod]
     public void FixedAddressesShouldBeDeletedRow()
     {
         using ExcelPackage? p = new ExcelPackage();
+
         //Setup
         ExcelWorksheet? ws1 = p.Workbook.Worksheets.Add("Sheet1");
         ExcelWorksheet? ws2 = p.Workbook.Worksheets.Add("Sheet2");
         ws1.Cells["A1"].Formula = "SUM($A$5:$A$8)";
         ws2.Cells["A1"].Formula = "SUM(sheet1!$A$5:$A$8)";
+
         //Act
         ws1.DeleteRow(4);
         Assert.AreEqual("SUM($A$4:$A$7)", ws1.Cells["A1"].Formula);
@@ -271,15 +301,18 @@ public class RangeDeleteTests : TestBase
         Assert.AreEqual("SUM($A$4:$A$5)", ws1.Cells["A1"].Formula);
         Assert.AreEqual("SUM(sheet1!$A$4:$A$5)", ws2.Cells["A1"].Formula);
     }
+
     [TestMethod]
     public void FixedAddressesShouldBeDeletedColumn()
     {
         using ExcelPackage? p = new ExcelPackage();
+
         //Setup
         ExcelWorksheet? ws1 = p.Workbook.Worksheets.Add("Sheet1");
         ExcelWorksheet? ws2 = p.Workbook.Worksheets.Add("Sheet2");
         ws1.Cells["A1"].Formula = "SUM($E$1:$H$1)";
         ws2.Cells["A1"].Formula = "SUM(sheet1!$E$1:$H$1)";
+
         //Act
         ws1.DeleteColumn(4);
         Assert.AreEqual("SUM($D$1:$G$1)", ws1.Cells["A1"].Formula);
@@ -297,12 +330,13 @@ public class RangeDeleteTests : TestBase
         Assert.AreEqual("SUM($D$1:$E$1)", ws1.Cells["A1"].Formula);
         Assert.AreEqual("SUM(sheet1!$D$1:$E$1)", ws2.Cells["A1"].Formula);
     }
+
     [TestMethod]
     public void ValidateValuesAfterDeleteRowInRangeShiftUp()
     {
         //Setup
         ExcelWorksheet? ws = _pck.Workbook.Worksheets.Add("DeleteRangeDown");
-        SetValues(ws,3);
+        SetValues(ws, 3);
 
         //Act
         ws.Cells["B2"].Delete(eShiftTypeDelete.Up);
@@ -318,6 +352,7 @@ public class RangeDeleteTests : TestBase
         Assert.AreEqual("C2", ws.Cells["C2"].Value);
         Assert.AreEqual("C3", ws.Cells["C3"].Value);
     }
+
     [TestMethod]
     public void ValidateValuesAfterDeleteRowInRangeShiftLeft()
     {
@@ -340,7 +375,7 @@ public class RangeDeleteTests : TestBase
 
         //Act 2
         ws.Cells["A1:B1"].Delete(eShiftTypeDelete.Left);
-            
+
         //Assert 2
         Assert.AreEqual("C1", ws.Cells["A1"].Value);
         Assert.IsNull(ws.Cells["B1"].Value);
@@ -362,10 +397,11 @@ public class RangeDeleteTests : TestBase
         AssertIsNull(ws.Cells["B3:C4"]);
 
         Assert.AreEqual("B3", ws.Cells["B1"].Value);
-        Assert.AreEqual("B4", ws.Cells["B2"].Value);            
+        Assert.AreEqual("B4", ws.Cells["B2"].Value);
         Assert.AreEqual("C3", ws.Cells["C1"].Value);
         Assert.AreEqual("C4", ws.Cells["C2"].Value);
     }
+
     [TestMethod]
     public void ValidateValuesAfterDeleteInRangeShiftLeftTwoRows()
     {
@@ -384,7 +420,6 @@ public class RangeDeleteTests : TestBase
         Assert.AreEqual("D2", ws.Cells["B2"].Value);
     }
 
-
     [TestMethod]
     public void ValidateCommentsAfterDeleteShiftUp()
     {
@@ -402,6 +437,7 @@ public class RangeDeleteTests : TestBase
         Assert.AreEqual("Comment A3", ws.Cells["A2"].Comment.Text);
         Assert.IsNull(ws.Cells["A3"].Comment);
     }
+
     [TestMethod]
     public void ValidateCommentsAfterDeleteShiftLeft()
     {
@@ -419,6 +455,7 @@ public class RangeDeleteTests : TestBase
         Assert.AreEqual("Comment C1", ws.Cells["B1"].Comment.Text);
         Assert.IsNull(ws.Cells["C1"].Comment);
     }
+
     [TestMethod]
     public void ValidateNameAfterDeleteShiftUp()
     {
@@ -440,6 +477,7 @@ public class RangeDeleteTests : TestBase
         Assert.AreEqual("B1", ws.Names["NameB1"].Address);
         Assert.AreEqual("C1", ws.Names["NameC1"].Address);
     }
+
     [TestMethod]
     public void ValidateNameAfterDeleteShiftUp_MustBeInsideRange()
     {
@@ -495,6 +533,7 @@ public class RangeDeleteTests : TestBase
         Assert.AreEqual("#REF!", ws.Names["NameB2C4"].Address);
         Assert.AreEqual("#REF!", ws.Names["NameA3C6"].Address);
     }
+
     [TestMethod]
     public void ValidateSharedFormulasDeleteShiftUp()
     {
@@ -508,7 +547,7 @@ public class RangeDeleteTests : TestBase
 
         //Assert
         Assert.AreEqual("A2", ws.Cells["B1"].Formula);
-        Assert.AreEqual("",ws.Cells["B2"].Formula);
+        Assert.AreEqual("", ws.Cells["B2"].Formula);
         Assert.AreEqual("#REF!", ws.Cells["C1"].Formula);
         Assert.AreEqual("C1", ws.Cells["D1"].Formula);
         Assert.AreEqual("A1", ws.Cells["C3"].Formula);
@@ -516,9 +555,9 @@ public class RangeDeleteTests : TestBase
         Assert.AreEqual("C1", ws.Cells["E3"].Formula);
         Assert.AreEqual("D1", ws.Cells["F3"].Formula);
 
-
         Assert.AreEqual("D2", ws.Cells["F4"].Formula);
     }
+
     [TestMethod]
     public void ValidateSharedFormulasDeleteShiftLeft()
     {
@@ -540,7 +579,6 @@ public class RangeDeleteTests : TestBase
         Assert.AreEqual("B1", ws.Cells["E3"].Formula);
         Assert.AreEqual("C1", ws.Cells["F3"].Formula);
 
-
         Assert.AreEqual("A1", ws.Cells["C3"].Formula);
         Assert.AreEqual("D2", ws.Cells["F4"].Formula);
     }
@@ -555,6 +593,7 @@ public class RangeDeleteTests : TestBase
 
         Assert.AreEqual("C2:E3", ws.MergedCells[0]);
     }
+
     [TestMethod]
     public void ValidateDeleteMergedCellsLeft()
     {
@@ -565,6 +604,7 @@ public class RangeDeleteTests : TestBase
 
         Assert.AreEqual("B2:D3", ws.MergedCells[0]);
     }
+
     [TestMethod]
     [ExpectedException(typeof(InvalidOperationException))]
     public void ValidateDeleteIntoMergedCellsPartialLeftThrowsException()
@@ -574,6 +614,7 @@ public class RangeDeleteTests : TestBase
         ws.Cells["B2:D3"].Merge = true;
         ws.Cells["A2"].Delete(eShiftTypeDelete.Left);
     }
+
     [TestMethod]
     [ExpectedException(typeof(InvalidOperationException))]
     public void ValidateDeleteIntoMergedCellsPartialUpThrowsException()
@@ -583,6 +624,7 @@ public class RangeDeleteTests : TestBase
         ws.Cells["B2:D3"].Merge = true;
         ws.Cells["C1"].Delete(eShiftTypeDelete.Up);
     }
+
     [TestMethod]
     public void ValidateDeleteIntoMergedCellsPartialLeftShouldNotThrowsException()
     {
@@ -591,6 +633,7 @@ public class RangeDeleteTests : TestBase
         ws.Cells["B2:D3"].Merge = true;
         ws.Cells["C1"].Delete(eShiftTypeDelete.Left);
     }
+
     [TestMethod]
     public void ValidateDeleteIntoMergedCellsPartialUpShouldNotThrowsException()
     {
@@ -623,6 +666,7 @@ public class RangeDeleteTests : TestBase
         ws.DeleteRow(1);
         Assert.AreEqual("B1:D2", ws.MergedCells[0]);
     }
+
     [TestMethod]
     public void ValidateDeleteMergedCellsShouldBeNull()
     {
@@ -644,6 +688,7 @@ public class RangeDeleteTests : TestBase
         Assert.IsFalse(ws.Cells["D3"].Merge);
         Assert.IsNull(ws.MergedCells[1]);
     }
+
     [TestMethod]
     [ExpectedException(typeof(InvalidOperationException))]
     public void ValidateDeleteFromTablePartialLeftThrowsException()
@@ -653,6 +698,7 @@ public class RangeDeleteTests : TestBase
         ws.Tables.Add(ws.Cells["B2:D3"], "table1");
         ws.Cells["A2"].Delete(eShiftTypeDelete.Left);
     }
+
     [TestMethod]
     [ExpectedException(typeof(InvalidOperationException))]
     public void ValidateDeleteFromTablePartialUpThrowsException()
@@ -662,6 +708,7 @@ public class RangeDeleteTests : TestBase
         ws.Tables.Add(ws.Cells["B2:D3"], "table1");
         ws.Cells["C1"].Delete(eShiftTypeDelete.Up);
     }
+
     [TestMethod]
     public void ValidateDeletFromTablePartialLeftShouldNotThrowsException()
     {
@@ -670,6 +717,7 @@ public class RangeDeleteTests : TestBase
         ws.Tables.Add(ws.Cells["B2:D3"], "table1");
         ws.Cells["C1"].Delete(eShiftTypeDelete.Left);
     }
+
     [TestMethod]
     public void ValidateDeleteFromTablePartialUpShouldNotThrowsException()
     {
@@ -678,6 +726,7 @@ public class RangeDeleteTests : TestBase
         ws.Tables.Add(ws.Cells["B2:D3"], "table1");
         ws.Cells["A2"].Delete(eShiftTypeDelete.Up);
     }
+
     [TestMethod]
     [ExpectedException(typeof(InvalidOperationException))]
     public void ValidateDeleteFromPivotTablePartialLeftThrowsException()
@@ -689,6 +738,7 @@ public class RangeDeleteTests : TestBase
         ws.PivotTables.Add(ws.Cells["B2:D3"], ws.Cells["E5:F6"], "table1");
         ws.Cells["A2"].Delete(eShiftTypeDelete.Left);
     }
+
     [TestMethod]
     [ExpectedException(typeof(InvalidOperationException))]
     public void ValidateDeleteFromPivotTablePartialUpThrowsException()
@@ -700,6 +750,7 @@ public class RangeDeleteTests : TestBase
         ws.PivotTables.Add(ws.Cells["B2:D3"], ws.Cells["E5:F6"], "table1");
         ws.Cells["C1"].Delete(eShiftTypeDelete.Up);
     }
+
     [TestMethod]
     public void ValidateDeleteFromPivotTablePartialLeftShouldNotThrowsException()
     {
@@ -710,6 +761,7 @@ public class RangeDeleteTests : TestBase
         ws.PivotTables.Add(ws.Cells["B2:D3"], ws.Cells["E5:F6"], "table1");
         ws.Cells["C1"].Delete(eShiftTypeDelete.Left);
     }
+
     [TestMethod]
     public void ValidateDeleteFromPivotTablePartialUpShouldNotThrowsException()
     {
@@ -720,6 +772,7 @@ public class RangeDeleteTests : TestBase
         ws.PivotTables.Add(ws.Cells["B2:D3"], ws.Cells["E5:F6"], "table1");
         ws.Cells["A2"].Delete(eShiftTypeDelete.Up);
     }
+
     [TestMethod]
     public void ValidateDeleteFromTableShouldShiftUp()
     {
@@ -735,6 +788,7 @@ public class RangeDeleteTests : TestBase
         ws.Cells["B3:E3"].Delete(eShiftTypeDelete.Up);
         Assert.AreEqual("B6:D7", tbl.Address.Address);
     }
+
     [TestMethod]
     public void ValidateDeleteTableShouldShiftLeft()
     {
@@ -750,31 +804,38 @@ public class RangeDeleteTests : TestBase
         ws.Cells["B2:B6"].Delete(eShiftTypeDelete.Left);
         Assert.AreEqual("B2:C4", tbl.Address.Address);
     }
+
     [TestMethod]
     public void DeleteEntireTableRangeShouldDeleteTable()
     {
         using ExcelPackage? p = new ExcelPackage();
+
         //Setup
         ExcelWorksheet? ws = p.Workbook.Worksheets.Add("TableDeleteFull");
         ExcelTable? tbl = ws.Tables.Add(ws.Cells["E2:F4"], "table1");
+
         //Act
         ws.Cells["E2:F4"].Delete(eShiftTypeDelete.Left);
+
         //Assert
         Assert.AreEqual(0, ws.Tables.Count);
         Assert.IsNull(tbl.Address);
     }
+
     [TestMethod]
     public void DeleteEntirePivotTableRangeShouldDeletePivotTable()
     {
         using ExcelPackage? p = new ExcelPackage();
+
         //Setup
         ExcelWorksheet? ws = p.Workbook.Worksheets.Add("PivotTableDeleteFull");
         ws.Cells["E5"].Value = "E5";
         ws.Cells["F5"].Value = "F5";
         ExcelPivotTable? pt = ws.PivotTables.Add(ws.Cells["B2:D3"], ws.Cells["E5:F6"], "pivottable1");
+
         //Act
-        ws.Cells["B2:D3"].Delete
-            (eShiftTypeDelete.Left);
+        ws.Cells["B2:D3"].Delete(eShiftTypeDelete.Left);
+
         //Assert
         Assert.AreEqual(0, ws.PivotTables.Count);
         Assert.IsNull(pt.Address);
@@ -797,6 +858,7 @@ public class RangeDeleteTests : TestBase
         ws.Cells["B5:D5"].Delete(eShiftTypeDelete.Up);
         Assert.AreEqual("B3:D4", pt.Address.Address);
     }
+
     [TestMethod]
     public void ValidateDeletePivotTableShouldShiftLeft()
     {
@@ -814,6 +876,7 @@ public class RangeDeleteTests : TestBase
     }
 
     #region Data validation
+
     [TestMethod]
     public void ValidateDatavalidationFullShiftUp()
     {
@@ -824,6 +887,7 @@ public class RangeDeleteTests : TestBase
 
         Assert.AreEqual("B1:E4", any.Address.Address);
     }
+
     [TestMethod]
     public void ValidateDatavalidationPartialShiftUp_Left()
     {
@@ -834,6 +898,7 @@ public class RangeDeleteTests : TestBase
 
         Assert.AreEqual("B1:C4,D2:E5", any.Address.Address);
     }
+
     [TestMethod]
     public void ValidateDatavalidationPartialShiftUp_Inside()
     {
@@ -845,7 +910,6 @@ public class RangeDeleteTests : TestBase
         Assert.AreEqual("B2:B5,C1:D4,E2:E5", any.Address.Address);
     }
 
-
     [TestMethod]
     public void ValidateDatavalidationPartialShiftUp_Right()
     {
@@ -856,6 +920,7 @@ public class RangeDeleteTests : TestBase
 
         Assert.AreEqual("B2:B5,C1:E4", any.Address.Address);
     }
+
     [TestMethod]
     public void ValidateDatavalidationPartialShiftLeft_Top()
     {
@@ -866,6 +931,7 @@ public class RangeDeleteTests : TestBase
 
         Assert.AreEqual("A2:D4,B5:E5", any.Address.Address);
     }
+
     [TestMethod]
     public void ValidateDatavalidationPartialShiftLeft_Inside()
     {
@@ -898,10 +964,12 @@ public class RangeDeleteTests : TestBase
 
         Assert.AreEqual("A2:D5", any.Address.Address);
     }
+
     [TestMethod]
     public void CheckDatavalidationFormulaAfterDeletingRow()
     {
         using ExcelPackage? p = new ExcelPackage();
+
         // Create a worksheet with conditional formatting 
         ExcelWorksheet? ws = p.Workbook.Worksheets.Add("Sheet1");
         IExcelDataValidationCustom? dv = ws.DataValidations.AddCustomValidation("B5:G5");
@@ -914,10 +982,12 @@ public class RangeDeleteTests : TestBase
         dv = ws.DataValidations[0].As.CustomValidation;
         Assert.AreEqual("=(B$3=0)", dv.Formula.ExcelFormula);
     }
+
     [TestMethod]
     public void CheckDatavalidationFormulaAfterDeletingColumn()
     {
         using ExcelPackage? p = new ExcelPackage();
+
         // Create a worksheet with conditional formatting 
         ExcelWorksheet? ws = p.Workbook.Worksheets.Add("Sheet1");
         IExcelDataValidationCustom? dv = ws.DataValidations.AddCustomValidation("E2:E7");
@@ -932,7 +1002,9 @@ public class RangeDeleteTests : TestBase
     }
 
     #endregion
+
     #region Conditional formatting
+
     [TestMethod]
     public void ValidateConditionalFormattingFullShiftUp()
     {
@@ -943,6 +1015,7 @@ public class RangeDeleteTests : TestBase
 
         Assert.AreEqual("B1:E4", cf.Address.Address);
     }
+
     [TestMethod]
     public void ValidateConditionalFormattingPartialShiftUp_Left()
     {
@@ -954,6 +1027,7 @@ public class RangeDeleteTests : TestBase
 
         Assert.AreEqual("B2:C4,D2:E5", cf.Address.Address);
     }
+
     [TestMethod]
     public void ValidateConditionalFormattingShiftUp_Inside()
     {
@@ -966,7 +1040,6 @@ public class RangeDeleteTests : TestBase
         Assert.AreEqual("B2:B5,C2:D4,E2:E5", cf.Address.Address);
     }
 
-
     [TestMethod]
     public void ValidateConditionalFormattingShiftUp_Right()
     {
@@ -978,6 +1051,7 @@ public class RangeDeleteTests : TestBase
 
         Assert.AreEqual("B2:B5,C2:E3", cf.Address.Address);
     }
+
     [TestMethod]
     public void ValidateConditionalFormattingPartialShiftLeft_Top()
     {
@@ -989,6 +1063,7 @@ public class RangeDeleteTests : TestBase
 
         Assert.AreEqual("A2:D4,B5:E5", cf.Address.Address);
     }
+
     [TestMethod]
     public void ValidateConditionalFormattingPartialShiftLeft_Inside()
     {
@@ -1024,10 +1099,12 @@ public class RangeDeleteTests : TestBase
 
         Assert.AreEqual("A2:D5", cf.Address.Address);
     }
+
     [TestMethod]
     public void CheckConditionalFormattingFormulaAfterDeletingRow()
     {
         using ExcelPackage? p = new ExcelPackage();
+
         // Create a worksheet with conditional formatting 
         ExcelWorksheet? ws = p.Workbook.Worksheets.Add("Sheet1");
         IExcelConditionalFormattingExpression? cf = ws.ConditionalFormatting.AddExpression(ws.Cells["B5:G5"]);
@@ -1040,10 +1117,12 @@ public class RangeDeleteTests : TestBase
         cf = (IExcelConditionalFormattingExpression)ws.ConditionalFormatting[0];
         Assert.AreEqual("=(B$3=0)", cf.Formula);
     }
+
     [TestMethod]
     public void CheckConditionalFormattingFormulaAfterDeletingColumn()
     {
         using ExcelPackage? p = new ExcelPackage();
+
         // Create a worksheet with conditional formatting 
         ExcelWorksheet? ws = p.Workbook.Worksheets.Add("Sheet1");
         IExcelConditionalFormattingExpression? cf = ws.ConditionalFormatting.AddExpression(ws.Cells["E2:E7"]);
@@ -1056,6 +1135,7 @@ public class RangeDeleteTests : TestBase
         cf = (IExcelConditionalFormattingExpression)ws.ConditionalFormatting[0];
         Assert.AreEqual("=($C2=0)", cf.Formula);
     }
+
     #endregion
 
     [TestMethod]
@@ -1069,6 +1149,7 @@ public class RangeDeleteTests : TestBase
         ws.Cells["A50:D50"].Delete(eShiftTypeDelete.Up);
         Assert.AreEqual("A1:D98", ws.AutoFilterAddress.Address);
     }
+
     [TestMethod]
     public void ValidateFilterDeleteFirstRow()
     {
@@ -1078,6 +1159,7 @@ public class RangeDeleteTests : TestBase
         ws.Cells["A1:D1"].Delete(eShiftTypeDelete.Up);
         Assert.IsNull(ws.AutoFilterAddress);
     }
+
     [TestMethod]
     public void ValidateFilterShiftLeft()
     {
@@ -1086,9 +1168,10 @@ public class RangeDeleteTests : TestBase
         ws.AutoFilterAddress = new ExcelAddressBase("B1:E100");
         ws.Cells["A1:A100"].Delete(eShiftTypeDelete.Left);
         Assert.AreEqual("A1:D100", ws.AutoFilterAddress.Address);
-        ws.Cells["C1:C100"].Delete(eShiftTypeDelete.Left); 
+        ws.Cells["C1:C100"].Delete(eShiftTypeDelete.Left);
         Assert.AreEqual("A1:C100", ws.AutoFilterAddress.Address);
     }
+
     [TestMethod]
     public void ValidateFilterDeleteRow()
     {
@@ -1100,6 +1183,7 @@ public class RangeDeleteTests : TestBase
         ws.DeleteRow(5, 2);
         Assert.AreEqual("A1:D97", ws.AutoFilterAddress.Address);
     }
+
     [TestMethod]
     public void ValidateFilterDeleteRowFirstRow()
     {
@@ -1109,6 +1193,7 @@ public class RangeDeleteTests : TestBase
         ws.DeleteRow(1);
         Assert.IsNull(ws.AutoFilterAddress);
     }
+
     [TestMethod]
     public void ValidateFilterDeleteColumn()
     {
@@ -1131,6 +1216,7 @@ public class RangeDeleteTests : TestBase
         ws.AutoFilterAddress = new ExcelAddressBase("A1:D100");
         ws.Cells["A1:C1"].Delete(eShiftTypeDelete.Up);
     }
+
     [TestMethod]
     [ExpectedException(typeof(InvalidOperationException))]
     public void ValidateFilterShiftLeftPartial()
@@ -1141,6 +1227,7 @@ public class RangeDeleteTests : TestBase
         ws.AutoFilterAddress = new ExcelAddressBase("A1:D100");
         ws.Cells["A1:A99"].Delete(eShiftTypeDelete.Left);
     }
+
     [TestMethod]
     public void ValidateSparkLineShiftLeft()
     {
@@ -1156,6 +1243,7 @@ public class RangeDeleteTests : TestBase
         ws.Cells["A3:D3"].Delete(eShiftTypeDelete.Left);
         Assert.IsNull(ws.SparklineGroups[0].Sparklines[1].RangeAddress);
     }
+
     [TestMethod]
     public void ValidateSparkLineShiftUp()
     {
@@ -1168,6 +1256,7 @@ public class RangeDeleteTests : TestBase
         ws.Cells["A1:E1"].Delete(eShiftTypeDelete.Up);
         Assert.AreEqual("B1:E9", ws.SparklineGroups[0].DataRange.Address);
     }
+
     [TestMethod]
     public void ValidateSparkLineDeleteRow()
     {
@@ -1179,6 +1268,7 @@ public class RangeDeleteTests : TestBase
         ws.DeleteRow(1, 1);
         Assert.AreEqual("A1:D8", ws.SparklineGroups[0].DataRange.Address);
     }
+
     [TestMethod]
     public void ValidateSparkLineInsertColumn()
     {
@@ -1191,6 +1281,7 @@ public class RangeDeleteTests : TestBase
         ws.DeleteColumn(1, 1);
         Assert.AreEqual("A2:B10", ws.SparklineGroups[0].DataRange.Address);
     }
+
     [TestMethod]
     public void DeleteFromTemplate1()
     {
@@ -1202,6 +1293,7 @@ public class RangeDeleteTests : TestBase
 
         SaveWorkbook("DeleteTest1.xlsx", p);
     }
+
     [TestMethod]
     public void DeleteFromTemplate2()
     {
@@ -1213,6 +1305,7 @@ public class RangeDeleteTests : TestBase
 
         SaveWorkbook("DeleteTest2.xlsx", p);
     }
+
     [TestMethod]
     public void ValidateConditionalFormattingDeleteColumnMultiRange()
     {
@@ -1224,6 +1317,7 @@ public class RangeDeleteTests : TestBase
 
         Assert.AreEqual("B2:D5,D3:D5", cf.Address.Address);
     }
+
     [TestMethod]
     public void ValidateColumnShifting()
     {
@@ -1253,10 +1347,12 @@ public class RangeDeleteTests : TestBase
         Assert.AreEqual(6, ws.Column(2).Width);
         Assert.AreEqual(9.140625, ws.Column(3).Width);
     }
+
     [TestMethod]
     public void TestDeleteColumnsWithConditionalFormatting()
     {
         using ExcelPackage? pck = new ExcelPackage();
+
         // Add a sheet with conditional formatting over multiple ranges
         ExcelWorksheet? wks = pck.Workbook.Worksheets.Add("Sheet1");
         IExcelConditionalFormattingExpression? cf = wks.ConditionalFormatting.AddExpression(new ExcelAddress("B:C,E:F,H:I,K:L"));
@@ -1265,11 +1361,13 @@ public class RangeDeleteTests : TestBase
         // Delete columns K:L
         wks.DeleteColumn(11, 2);
         Assert.AreEqual("B:C,E:F,H:I", cf.Address.Address);
+
         // Delete columns E:I
         wks.DeleteColumn(5, 5);
 
         Assert.AreEqual("B:C", cf.Address.Address);
     }
+
     [TestMethod]
     public void ValidateDeleteColumnFixedAddresses()
     {
@@ -1293,6 +1391,7 @@ public class RangeDeleteTests : TestBase
         Assert.AreEqual("$A$5", ws.Names["TestName5"].LocalAddress);
         Assert.AreEqual("#REF!", ws.Names["TestName6"].LocalAddress);
     }
+
     [TestMethod]
     public void ValidateDeleteRowFixedAddresses()
     {
@@ -1316,6 +1415,7 @@ public class RangeDeleteTests : TestBase
         Assert.AreEqual("$E$1", ws.Names["TestName5"].LocalAddress);
         Assert.AreEqual("#REF!", ws.Names["TestName6"].LocalAddress);
     }
+
     [TestMethod]
     public void TestColumnWidthsAfterDeletingColumn()
     {
@@ -1330,7 +1430,6 @@ public class RangeDeleteTests : TestBase
         col.ColumnMax = 9;
         col.Width = 19;
 
-
         // Delete column 4 & 7-8
         ws.DeleteColumn(4, 1);
         ws.DeleteColumn(7, 2);
@@ -1343,6 +1442,7 @@ public class RangeDeleteTests : TestBase
         Assert.AreEqual(19, ws.Column(6).Width);
         Assert.AreEqual(ws.DefaultColWidth, ws.Column(7).Width);
     }
+
     [TestMethod]
     public void ValidateTableCalculatedColumnFormulasAfterDeleteRowAndDeleteColumn()
     {
@@ -1364,6 +1464,7 @@ public class RangeDeleteTests : TestBase
 
         //Delete two rows above the tables 
         ws.DeleteRow(5, 2);
+
         //Delete the column between the tables
         ws.DeleteColumn(4, 1);
 
@@ -1373,6 +1474,7 @@ public class RangeDeleteTests : TestBase
         Assert.AreEqual("A10+B10", tbl1.Columns[2].CalculatedColumnFormula);
         Assert.AreEqual("A10+E10", tbl2.Columns[2].CalculatedColumnFormula);
     }
+
     [TestMethod]
     public void ValidateTableCalculatedColumnFormulasAfterDeleteRange()
     {
@@ -1394,6 +1496,7 @@ public class RangeDeleteTests : TestBase
 
         //Delete two rows above the tables 
         ws.Cells["A2:D2"].Delete(eShiftTypeDelete.Up);
+
         //Delete the column between the tables
         ws.Cells["D1:D20"].Delete(eShiftTypeDelete.Left);
 

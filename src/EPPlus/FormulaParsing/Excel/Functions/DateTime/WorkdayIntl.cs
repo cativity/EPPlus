@@ -10,6 +10,7 @@
  *************************************************************************************************
   01/27/2020         EPPlus Software AB       Initial release EPPlus 5
  *************************************************************************************************/
+
 using OfficeOpenXml.FormulaParsing.Excel.Functions.DateTime.Workdays;
 using OfficeOpenXml.FormulaParsing.Excel.Functions.Metadata;
 using OfficeOpenXml.FormulaParsing.ExpressionGraph;
@@ -21,11 +22,11 @@ using System.Text.RegularExpressions;
 
 namespace OfficeOpenXml.FormulaParsing.Excel.Functions.DateTime;
 
-[FunctionMetadata(
-                     Category = ExcelFunctionCategory.DateAndTime,
-                     EPPlusVersion = "5.0",
-                     Description = "Returns a date that is a supplied number of working days (excluding weekends & holidays) ahead of a given start date, using supplied parameters to specify weekend days",
-                     IntroducedInExcelVersion = "2010")]
+[FunctionMetadata(Category = ExcelFunctionCategory.DateAndTime,
+                  EPPlusVersion = "5.0",
+                  Description =
+                      "Returns a date that is a supplied number of working days (excluding weekends & holidays) ahead of a given start date, using supplied parameters to specify weekend days",
+                  IntroducedInExcelVersion = "2010")]
 internal class WorkdayIntl : ExcelFunction
 {
     public override CompileResult Execute(IEnumerable<FunctionArgument> arguments, ParsingContext context)
@@ -36,9 +37,11 @@ internal class WorkdayIntl : ExcelFunction
         int nWorkDays = this.ArgToInt(functionArguments, 1);
         WorkdayCalculator calculator = new WorkdayCalculator();
         HolidayWeekdaysFactory? weekdayFactory = new HolidayWeekdaysFactory();
+
         if (functionArguments.Length > 2)
         {
             object? holidayArg = functionArguments[2].Value;
+
             if (Regex.IsMatch(holidayArg.ToString(), "^[01]{7}"))
             {
                 calculator = new WorkdayCalculator(weekdayFactory.Create(holidayArg.ToString()));
@@ -53,11 +56,14 @@ internal class WorkdayIntl : ExcelFunction
                 return new CompileResult(eErrorType.Value);
             }
         }
+
         WorkdayCalculatorResult? result = calculator.CalculateWorkday(startDate, nWorkDays);
+
         if (functionArguments.Length > 3)
         {
             result = calculator.AdjustResultWithHolidays(result, functionArguments[3]);
         }
+
         return new CompileResult(result.EndDate.ToOADate(), DataType.Integer);
     }
 }

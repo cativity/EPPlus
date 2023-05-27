@@ -10,6 +10,7 @@
  *************************************************************************************************
   01/27/2020         EPPlus Software AB       Initial release EPPlus 5
  *************************************************************************************************/
+
 namespace OfficeOpenXml.Style;
 
 /// <summary>
@@ -21,14 +22,17 @@ public enum ExcelVerticalAlignmentFont
     /// None
     /// </summary>
     None,
+
     /// <summary>
     /// The text in the parent run will be located at the baseline and presented in the same size as surrounding text
     /// </summary>
     Baseline,
+
     /// <summary>
     /// The text will be subscript.
     /// </summary>
     Subscript,
+
     /// <summary>
     /// The text will be superscript.
     /// </summary>

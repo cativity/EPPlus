@@ -10,6 +10,7 @@
  *************************************************************************************************
   01/27/2020         EPPlus Software AB       Initial release EPPlus 5
  *************************************************************************************************/
+
 namespace OfficeOpenXml.Drawing;
 
 /// <summary>
@@ -21,30 +22,37 @@ public enum eLightRigDirection
     /// Bottom
     /// </summary>
     Bottom,
+
     /// <summary>
     /// Bottom Left
     /// </summary>
     BottomLeft,
+
     /// <summary>
     /// Bottom Right
     /// </summary>
     BottomRight,
+
     /// <summary>
     /// Left
     /// </summary>
     Left,
+
     /// <summary>
     /// Right
     /// </summary>
     Right,
+
     /// <summary>
     /// Top
     /// </summary>
     Top,
+
     /// <summary>
     /// Top Left
     /// </summary>
     TopLeft,
+
     /// <summary>
     /// Top Right
     /// </summary>

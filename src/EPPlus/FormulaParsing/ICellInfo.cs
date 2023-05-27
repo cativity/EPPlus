@@ -10,6 +10,7 @@
  *************************************************************************************************
   05/16/2020         EPPlus Software AB           EPPlus 6
  *************************************************************************************************/
+
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -26,15 +27,24 @@ public interface ICellInfo
     string Address { get; }
 
     string WorksheetName { get; }
+
     int Row { get; }
+
     int Column { get; }
 
     ulong Id { get; }
+
     string Formula { get; }
+
     object Value { get; }
+
     double ValueDouble { get; }
+
     double ValueDoubleLogical { get; }
+
     bool IsHiddenRow { get; }
+
     bool IsExcelError { get; }
+
     IList<Token> Tokens { get; }
 }

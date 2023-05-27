@@ -10,6 +10,7 @@
  *************************************************************************************************
   01/27/2020         EPPlus Software AB       Initial release EPPlus 5
  *************************************************************************************************/
+
 using OfficeOpenXml.Drawing.Interfaces;
 using System;
 using System.Collections.Generic;
@@ -30,53 +31,44 @@ public sealed class ExcelAreaChartSerie : ExcelChartSerieWithHorizontalErrorBars
     /// <param name="ns">Namespacemanager</param>
     /// <param name="node">Topnode</param>
     /// <param name="isPivot">Is pivotchart</param>
-    internal ExcelAreaChartSerie(ExcelChart chart, XmlNamespaceManager ns, XmlNode node, bool isPivot) :
-        base(chart, ns, node, isPivot)
+    internal ExcelAreaChartSerie(ExcelChart chart, XmlNamespaceManager ns, XmlNode node, bool isPivot)
+        : base(chart, ns, node, isPivot)
     {
     }
+
     ExcelChartSerieDataLabel _DataLabel = null;
+
     /// <summary>
     /// Datalabel
     /// </summary>
     public ExcelChartSerieDataLabel DataLabel
     {
-        get
-        {
-            return this._DataLabel ??= new ExcelChartSerieDataLabel(this._chart, this.NameSpaceManager, this.TopNode, this.SchemaNodeOrder);
-        }
+        get { return this._DataLabel ??= new ExcelChartSerieDataLabel(this._chart, this.NameSpaceManager, this.TopNode, this.SchemaNodeOrder); }
     }
+
     /// <summary>
     /// If the chart has datalabel
     /// </summary>
     public bool HasDataLabel
     {
-        get
-        {
-            return this.TopNode.SelectSingleNode("c:dLbls", this.NameSpaceManager) != null;
-        }
+        get { return this.TopNode.SelectSingleNode("c:dLbls", this.NameSpaceManager) != null; }
     }
 
     const string INVERTIFNEGATIVE_PATH = "c:invertIfNegative/@val";
+
     internal bool InvertIfNegative
     {
-        get
-        {
-            return this.GetXmlNodeBool(INVERTIFNEGATIVE_PATH, true);
-        }
-        set
-        {
-            this.SetXmlNodeBool(INVERTIFNEGATIVE_PATH, value);
-        }
+        get { return this.GetXmlNodeBool(INVERTIFNEGATIVE_PATH, true); }
+        set { this.SetXmlNodeBool(INVERTIFNEGATIVE_PATH, value); }
     }
+
     ExcelChartDataPointCollection _dataPoints = null;
+
     /// <summary>
     /// A collection of the individual datapoints
     /// </summary>
     public ExcelChartDataPointCollection DataPoints
     {
-        get
-        {
-            return this._dataPoints ??= new ExcelChartDataPointCollection(this._chart, this.NameSpaceManager, this.TopNode, this.SchemaNodeOrder);
-        }
+        get { return this._dataPoints ??= new ExcelChartDataPointCollection(this._chart, this.NameSpaceManager, this.TopNode, this.SchemaNodeOrder); }
     }
 }

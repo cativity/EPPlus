@@ -10,6 +10,7 @@
  *************************************************************************************************
   01/27/2020         EPPlus Software AB       Initial release EPPlus 5
  *************************************************************************************************/
+
 using OfficeOpenXml.Drawing;
 using System;
 using System.Collections.Generic;
@@ -36,64 +37,43 @@ public class ExcelDxfBorderBase : DxfStyleBase
         this.Vertical = new ExcelDxfBorderItem(this._styles, eStyleClass.Border, callback);
         this.Horizontal = new ExcelDxfBorderItem(this._styles, eStyleClass.Border, callback);
     }
+
     /// <summary>
     /// Left border style
     /// </summary>
-    public ExcelDxfBorderItem Left
-    {
-        get;
-        internal set;
-    }
+    public ExcelDxfBorderItem Left { get; internal set; }
+
     /// <summary>
     /// Right border style
     /// </summary>
-    public ExcelDxfBorderItem Right
-    {
-        get;
-        internal set;
-    }
+    public ExcelDxfBorderItem Right { get; internal set; }
+
     /// <summary>
     /// Top border style
     /// </summary>
-    public ExcelDxfBorderItem Top
-    {
-        get;
-        internal set;
-    }
+    public ExcelDxfBorderItem Top { get; internal set; }
+
     /// <summary>
     /// Bottom border style
     /// </summary>
-    public ExcelDxfBorderItem Bottom
-    {
-        get;
-        internal set;
-    }
+    public ExcelDxfBorderItem Bottom { get; internal set; }
+
     /// <summary>
     /// Horizontal border style
     /// </summary>
-    public ExcelDxfBorderItem Horizontal
-    {
-        get;
-        internal set;
-    }
+    public ExcelDxfBorderItem Horizontal { get; internal set; }
+
     /// <summary>
     /// Vertical border style
     /// </summary>
-    public ExcelDxfBorderItem Vertical
-    {
-        get;
-        internal set;
-    }
+    public ExcelDxfBorderItem Vertical { get; internal set; }
 
     /// <summary>
     /// The Id
     /// </summary>
     internal override string Id
     {
-        get
-        {
-            return this.Top.Id + this.Bottom.Id + this.Left.Id + this.Right.Id + this.Vertical.Id + this.Horizontal.Id;
-        }
+        get { return this.Top.Id + this.Bottom.Id + this.Left.Id + this.Right.Id + this.Vertical.Id + this.Horizontal.Id; }
     }
 
     /// <summary>
@@ -110,6 +90,7 @@ public class ExcelDxfBorderBase : DxfStyleBase
         this.Vertical.CreateNodes(helper, path + "/d:vertical");
         this.Horizontal.CreateNodes(helper, path + "/d:horizontal");
     }
+
     internal override void SetStyle()
     {
         if (this._callback != null)
@@ -126,11 +107,12 @@ public class ExcelDxfBorderBase : DxfStyleBase
     /// </summary>
     public override bool HasValue
     {
-        get 
+        get
         {
-            return this.Left.HasValue || this.Right.HasValue || this.Top.HasValue || this.Bottom.HasValue|| this.Vertical.HasValue || this.Horizontal.HasValue;
+            return this.Left.HasValue || this.Right.HasValue || this.Top.HasValue || this.Bottom.HasValue || this.Vertical.HasValue || this.Horizontal.HasValue;
         }
     }
+
     /// <summary>
     /// Clears all properties
     /// </summary>
@@ -149,7 +131,7 @@ public class ExcelDxfBorderBase : DxfStyleBase
     /// </summary>
     /// <param name="borderStyle">The border style</param>
     /// <param name="themeColor">The theme color</param>
-    public void BorderAround(ExcelBorderStyle borderStyle = ExcelBorderStyle.Thin, eThemeSchemeColor themeColor=eThemeSchemeColor.Accent1)
+    public void BorderAround(ExcelBorderStyle borderStyle = ExcelBorderStyle.Thin, eThemeSchemeColor themeColor = eThemeSchemeColor.Accent1)
     {
         this.Top.Style = borderStyle;
         this.Top.Color.SetColor(themeColor);
@@ -160,6 +142,7 @@ public class ExcelDxfBorderBase : DxfStyleBase
         this.Left.Style = borderStyle;
         this.Left.Color.SetColor(themeColor);
     }
+
     /// <summary>
     /// Set the border properties for Top/Bottom/Right and Left.
     /// </summary>
@@ -183,16 +166,17 @@ public class ExcelDxfBorderBase : DxfStyleBase
     /// <returns>A new instance of the object</returns>
     internal override DxfStyleBase Clone()
     {
-        return new ExcelDxfBorderBase(this._styles, this._callback) 
-        { 
-            Bottom = (ExcelDxfBorderItem)this.Bottom.Clone(), 
-            Top= (ExcelDxfBorderItem)this.Top.Clone(), 
-            Left= (ExcelDxfBorderItem)this.Left.Clone(), 
-            Right= (ExcelDxfBorderItem)this.Right.Clone(),
+        return new ExcelDxfBorderBase(this._styles, this._callback)
+        {
+            Bottom = (ExcelDxfBorderItem)this.Bottom.Clone(),
+            Top = (ExcelDxfBorderItem)this.Top.Clone(),
+            Left = (ExcelDxfBorderItem)this.Left.Clone(),
+            Right = (ExcelDxfBorderItem)this.Right.Clone(),
             Vertical = (ExcelDxfBorderItem)this.Vertical.Clone(),
             Horizontal = (ExcelDxfBorderItem)this.Horizontal.Clone(),
         };
     }
+
     internal override void SetValuesFromXml(XmlHelper helper)
     {
         if (helper.ExistsNode("d:border"))
@@ -205,18 +189,22 @@ public class ExcelDxfBorderBase : DxfStyleBase
             this.Horizontal = this.GetBorderItem(helper, "d:border/d:horizontal", eStyleClass.Border);
         }
     }
+
     private ExcelDxfBorderItem GetBorderItem(XmlHelper helper, string path, eStyleClass styleClass)
     {
         ExcelDxfBorderItem bi = new ExcelDxfBorderItem(this._styles, styleClass, this._callback);
         bool exists = helper.ExistsNode(path);
+
         if (exists)
         {
             string? style = helper.GetXmlNodeString(path + "/@style");
             bi.Style = GetBorderStyleEnum(style);
             bi.Color = this.GetColor(helper, path + "/d:color", styleClass);
         }
+
         return bi;
     }
+
     private static ExcelBorderStyle? GetBorderStyleEnum(string style)
     {
         if (style == "")
@@ -225,6 +213,7 @@ public class ExcelDxfBorderBase : DxfStyleBase
         }
 
         string sInStyle = style.Substring(0, 1).ToUpper(CultureInfo.InvariantCulture) + style.Substring(1, style.Length - 1);
+
         try
         {
             return (ExcelBorderStyle)Enum.Parse(typeof(ExcelBorderStyle), sInStyle);
@@ -233,7 +222,5 @@ public class ExcelDxfBorderBase : DxfStyleBase
         {
             return ExcelBorderStyle.None;
         }
-
     }
-
 }

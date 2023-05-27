@@ -10,6 +10,7 @@
  *************************************************************************************************
   01/27/2020         EPPlus Software AB       Initial release EPPlus 5
  *************************************************************************************************/
+
 using System;
 using System.Xml;
 
@@ -34,20 +35,28 @@ internal static class ExcelDataValidationFactory
         {
             case "":
                 return new ExcelDataValidationAny(xr, ws);
+
             case "textLength":
                 return new ExcelDataValidationInt(xr, ws, true);
+
             case "whole":
                 return new ExcelDataValidationInt(xr, ws);
+
             case "decimal":
                 return new ExcelDataValidationDecimal(xr, ws);
+
             case "list":
                 return new ExcelDataValidationList(xr, ws);
+
             case "time":
                 return new ExcelDataValidationTime(xr, ws);
+
             case "date":
                 return new ExcelDataValidationDateTime(xr, ws);
+
             case "custom":
                 return new ExcelDataValidationCustom(xr, ws);
+
             default:
                 throw new InvalidOperationException($"Non supported validationtype: {validationTypeName}");
         }
@@ -57,6 +66,7 @@ internal static class ExcelDataValidationFactory
     {
         ExcelDataValidation? validation = oldValidation.GetClone(added);
         validation.Address = new ExcelDatavalidationAddress(address, validation);
+
         return validation;
     }
 }

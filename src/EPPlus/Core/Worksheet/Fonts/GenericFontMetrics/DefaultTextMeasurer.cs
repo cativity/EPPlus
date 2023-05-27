@@ -10,6 +10,7 @@
  *************************************************************************************************
   12/26/2021         EPPlus Software AB       EPPlus 6.0
  *************************************************************************************************/
+
 using OfficeOpenXml.Core.Worksheet.Core.Worksheet.Fonts;
 using OfficeOpenXml.Interfaces.Drawing.Text;
 using System;
@@ -24,6 +25,7 @@ internal class DefaultTextMeasurer : GenericFontMetricsTextMeasurerBase
     internal TextMeasurement Measure(string text, float size)
     {
         uint fontKey = GetKey(FontMetricsFamilies.Calibri, FontSubFamilies.Regular);
+
         return this.MeasureTextInternal(text, fontKey, MeasurementFontStyles.Regular, size);
     }
 }

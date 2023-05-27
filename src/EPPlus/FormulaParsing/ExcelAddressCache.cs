@@ -10,6 +10,7 @@
  *************************************************************************************************
   01/27/2020         EPPlus Software AB       Initial release EPPlus 5
  *************************************************************************************************/
+
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -33,7 +34,7 @@ public class ExcelAddressCache
     /// <returns></returns>
     public int GetNewId()
     {
-        lock(this._myLock)
+        lock (this._myLock)
         {
             return this._nextId++;
         }
@@ -47,7 +48,7 @@ public class ExcelAddressCache
     /// <returns></returns>
     public bool Add(int id, string address)
     {
-        lock(this._myLock)
+        lock (this._myLock)
         {
             if (this._addressCache.ContainsKey(id))
             {
@@ -55,14 +56,14 @@ public class ExcelAddressCache
             }
 
             this._addressCache.Add(id, address);
-            if(EnableLookupCache && !this._lookupCache.ContainsKey(address))
+
+            if (EnableLookupCache && !this._lookupCache.ContainsKey(address))
             {
                 this._lookupCache.Add(address, id);
             }
 
             return true;
         }
-            
     }
 
     /// <summary>
@@ -93,12 +94,11 @@ public class ExcelAddressCache
     /// </summary>
     public void Clear()
     {
-        lock(this._myLock)
+        lock (this._myLock)
         {
             this._addressCache.Clear();
             this._lookupCache.Clear();
             this._nextId = 1;
-        }  
+        }
     }
-
 }

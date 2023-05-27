@@ -10,6 +10,7 @@
  *************************************************************************************************
   01/27/2020         EPPlus Software AB       Initial release EPPlus 5
  *************************************************************************************************/
+
 using OfficeOpenXml.DataValidation.Events;
 using OfficeOpenXml.DataValidation.Formulas.Contracts;
 using System;
@@ -22,6 +23,7 @@ namespace OfficeOpenXml.DataValidation.Formulas;
 internal class ExcelDataValidationFormulaList : ExcelDataValidationFormula, IExcelDataValidationFormulaList
 {
     #region class DataValidationList
+
     private class DataValidationList : IList<string>, ICollection
     {
         private IList<string> _items = new List<string>();
@@ -42,6 +44,7 @@ internal class ExcelDataValidationFormulaList : ExcelDataValidationFormula, IExc
         }
 
         #region IList members
+
         int IList<string>.IndexOf(string item)
         {
             return this._items.IndexOf(item);
@@ -61,10 +64,7 @@ internal class ExcelDataValidationFormulaList : ExcelDataValidationFormula, IExc
 
         string IList<string>.this[int index]
         {
-            get
-            {
-                return this._items[index];
-            }
+            get { return this._items[index]; }
             set
             {
                 this._items[index] = value;
@@ -108,6 +108,7 @@ internal class ExcelDataValidationFormulaList : ExcelDataValidationFormula, IExc
         {
             bool retVal = this._items.Remove(item);
             this.OnListChanged();
+
             return retVal;
         }
 
@@ -120,6 +121,7 @@ internal class ExcelDataValidationFormulaList : ExcelDataValidationFormula, IExc
         {
             return this._items.GetEnumerator();
         }
+
         #endregion
 
         public void CopyTo(Array array, int index)
@@ -142,6 +144,7 @@ internal class ExcelDataValidationFormulaList : ExcelDataValidationFormula, IExc
             get { return ((ICollection)this._items).SyncRoot; }
         }
     }
+
     #endregion
 
     public ExcelDataValidationFormulaList(string formula, string uid, string sheetName, Action<OnFormulaChangedEventArgs> extListHandler)
@@ -159,12 +162,14 @@ internal class ExcelDataValidationFormulaList : ExcelDataValidationFormula, IExc
     private void SetInitialValues()
     {
         string? @value = this._inputFormula;
+
         if (!string.IsNullOrEmpty(@value))
         {
             if (@value.StartsWith("\"", StringComparison.OrdinalIgnoreCase) && @value.EndsWith("\"", StringComparison.OrdinalIgnoreCase))
             {
                 @value = @value.TrimStart('"').TrimEnd('"');
                 string[]? items = @value.Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries);
+
                 foreach (string? item in items)
                 {
                     this.Values.Add(item);
@@ -183,22 +188,22 @@ internal class ExcelDataValidationFormulaList : ExcelDataValidationFormula, IExc
         {
             this.State = FormulaState.Value;
         }
+
         string? valuesAsString = this.GetValueAsString();
+
         // Excel supports max 255 characters in this field.
         if (valuesAsString.Length > 255)
         {
             throw new InvalidOperationException("The total length of a DataValidation list cannot exceed 255 characters");
         }
     }
-    public IList<string> Values
-    {
-        get;
-        private set;
-    }
+
+    public IList<string> Values { get; private set; }
 
     protected override string GetValueAsString()
     {
         StringBuilder? sb = new StringBuilder();
+
         foreach (string? val in this.Values)
         {
             if (sb.Length == 0)
@@ -211,7 +216,9 @@ internal class ExcelDataValidationFormulaList : ExcelDataValidationFormula, IExc
                 sb.AppendFormat(",{0}", val);
             }
         }
+
         sb.Append("\"");
+
         return sb.ToString();
     }
 

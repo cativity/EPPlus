@@ -9,10 +9,7 @@ using System.Text;
 
 namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Finance;
 
-[FunctionMetadata(
-                     Category = ExcelFunctionCategory.Financial,
-                     EPPlusVersion = "5.2",
-                     Description = "Calculates the discount rate for a security")]
+[FunctionMetadata(Category = ExcelFunctionCategory.Financial, EPPlusVersion = "5.2", Description = "Calculates the discount rate for a security")]
 internal class Disc : ExcelFunction
 {
     public override CompileResult Execute(IEnumerable<FunctionArgument> arguments, ParsingContext context)
@@ -25,16 +22,20 @@ internal class Disc : ExcelFunction
         double pr = this.ArgToDecimal(arguments, 2);
         double redemption = this.ArgToDecimal(arguments, 3);
         int basis = 0;
-        if(arguments.Count() > 4)
+
+        if (arguments.Count() > 4)
         {
             basis = this.ArgToInt(arguments, 4);
         }
-        if(maturity <= settlement || pr <= 0 || redemption <= 0 || basis < 0 || basis > 4)
+
+        if (maturity <= settlement || pr <= 0 || redemption <= 0 || basis < 0 || basis > 4)
         {
             return this.CreateResult(eErrorType.Num);
         }
+
         YearFracProvider? yearFrac = new YearFracProvider(context);
         double result = (1d - (pr / redemption)) / yearFrac.GetYearFrac(settlement, maturity, (DayCountBasis)basis);
+
         return this.CreateResult(result, DataType.Decimal);
     }
 }

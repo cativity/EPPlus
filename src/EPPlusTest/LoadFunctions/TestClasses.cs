@@ -8,13 +8,12 @@ using System.Threading.Tasks;
 
 namespace EPPlusTest.LoadFunctions;
 
-[
-    EpplusTable(AutofitColumns = true, PrintHeaders = true, TableStyle = TableStyles.Medium2),
-    EPPlusTableColumnSortOrder(Properties = new string[] {
-        nameof(PlatformName), nameof(PchDieName), nameof(OtherDieName), nameof(Stepping), nameof(MilestoneDay),
-        nameof(CollateralOwner), nameof(MissionControlLead), nameof(CreatedUtc), nameof(ModifiedUtc)
-    })
-]
+[EpplusTable(AutofitColumns = true, PrintHeaders = true, TableStyle = TableStyles.Medium2),
+ EPPlusTableColumnSortOrder(Properties = new string[]
+ {
+     nameof(PlatformName), nameof(PchDieName), nameof(OtherDieName), nameof(Stepping), nameof(MilestoneDay),
+     nameof(CollateralOwner), nameof(MissionControlLead), nameof(CreatedUtc), nameof(ModifiedUtc)
+ })]
 public class IntegratedPlatformExcelRow
 {
     [EpplusNestedTableColumn(HeaderPrefix = "Collateral Owner")]
@@ -26,7 +25,7 @@ public class IntegratedPlatformExcelRow
     [EpplusTableColumn(Header = "Milestone Day")]
     public string MilestoneDay { get; set; }
 
-    [EpplusNestedTableColumn (HeaderPrefix = "Mission Control Lead")]
+    [EpplusNestedTableColumn(HeaderPrefix = "Mission Control Lead")]
     public WorkerDTO MissionControlLead { get; set; }
 
     [EpplusTableColumn(Header = "Modified (GMT)", NumberFormat = "yyyy-MM-dd HH:MM")]
@@ -57,26 +56,18 @@ public sealed class WorkerDTO
     public int WWID { get; set; }
 }
 
-public static class ExcelItems {
-     
+public static class ExcelItems
+{
     public static IEnumerable<IntegratedPlatformExcelRow> GetItems1()
     {
         return new List<IntegratedPlatformExcelRow>
         {
             new IntegratedPlatformExcelRow
             {
-                CollateralOwner = new WorkerDTO
-                {
-                    Email = "col@owner.com",
-                    Name = "Collateral Owner"
-                },
+                CollateralOwner = new WorkerDTO { Email = "col@owner.com", Name = "Collateral Owner" },
                 CreatedUtc = DateTime.Now,
                 MilestoneDay = "Mile Stone Day 1",
-                MissionControlLead = new WorkerDTO
-                {
-                    Email = "miss@control.com",
-                    Name = "Misson Control Lead"
-                },
+                MissionControlLead = new WorkerDTO { Email = "miss@control.com", Name = "Misson Control Lead" },
                 ModifiedUtc = DateTime.Now,
                 OtherDieName = "Other Die name 1",
                 PchDieName = "Pch Die Name 1",

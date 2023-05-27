@@ -10,6 +10,7 @@
  *************************************************************************************************
   06/18/2020         EPPlus Software AB       EPPlus 5.2
  *************************************************************************************************/
+
 using OfficeOpenXml.FormulaParsing.Excel.Functions.Metadata;
 using OfficeOpenXml.FormulaParsing.ExpressionGraph;
 using System;
@@ -20,11 +21,10 @@ using System.Text;
 
 namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Text;
 
-[FunctionMetadata(
-                     Category = ExcelFunctionCategory.Text,
-                     EPPlusVersion = "5.2",
-                     IntroducedInExcelVersion = "2019",
-                     Description = "Joins together two or more text strings, separated by a delimiter")]
+[FunctionMetadata(Category = ExcelFunctionCategory.Text,
+                  EPPlusVersion = "5.2",
+                  IntroducedInExcelVersion = "2019",
+                  Description = "Joins together two or more text strings, separated by a delimiter")]
 internal class Textjoin : ExcelFunction
 {
     private readonly int MaxReturnLength = 32767;
@@ -35,14 +35,17 @@ internal class Textjoin : ExcelFunction
         string? delimiter = ArgToString(arguments, 0);
         bool ignoreEmpty = this.ArgToBool(arguments, 1);
         StringBuilder? str = new StringBuilder();
-        for(int x = 2; x < arguments.Count() && x < 252; x++)
+
+        for (int x = 2; x < arguments.Count() && x < 252; x++)
         {
             FunctionArgument? arg = arguments.ElementAt(x);
-            if(arg.IsExcelRange)
+
+            if (arg.IsExcelRange)
             {
-                foreach(ICellInfo? cell in arg.ValueAsRangeInfo)
+                foreach (ICellInfo? cell in arg.ValueAsRangeInfo)
                 {
                     string? val = cell.Value != null ? cell.Value.ToString() : string.Empty;
+
                     if (ignoreEmpty && string.IsNullOrEmpty(val))
                     {
                         continue;
@@ -50,20 +53,23 @@ internal class Textjoin : ExcelFunction
 
                     str.Append(val);
                     str.Append(delimiter);
+
                     if (str.Length > this.MaxReturnLength)
                     {
                         return this.CreateResult(eErrorType.Value);
                     }
                 }
             }
-            else if(arg.Value is IEnumerable<FunctionArgument>)
+            else if (arg.Value is IEnumerable<FunctionArgument>)
             {
                 IEnumerable<FunctionArgument>? items = arg.Value as IEnumerable<FunctionArgument>;
-                if(items != null)
+
+                if (items != null)
                 {
-                    foreach(FunctionArgument? item in items)
+                    foreach (FunctionArgument? item in items)
                     {
                         string? val = item.Value != null ? item.Value.ToString() : string.Empty;
+
                         if (ignoreEmpty && string.IsNullOrEmpty(val))
                         {
                             continue;
@@ -71,6 +77,7 @@ internal class Textjoin : ExcelFunction
 
                         str.Append(val);
                         str.Append(delimiter);
+
                         if (str.Length > this.MaxReturnLength)
                         {
                             return this.CreateResult(eErrorType.Value);
@@ -81,6 +88,7 @@ internal class Textjoin : ExcelFunction
             else
             {
                 string? val = arg.Value != null ? arg.Value.ToString() : string.Empty;
+
                 if (ignoreEmpty && string.IsNullOrEmpty(val))
                 {
                     continue;
@@ -88,13 +96,16 @@ internal class Textjoin : ExcelFunction
 
                 str.Append(val);
                 str.Append(delimiter);
+
                 if (str.Length > this.MaxReturnLength)
                 {
                     return this.CreateResult(eErrorType.Value);
                 }
             }
         }
+
         string? resultString = str.ToString().TrimEnd(delimiter.ToCharArray());
+
         return this.CreateResult(resultString, DataType.String);
     }
 }

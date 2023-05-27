@@ -10,6 +10,7 @@
  *************************************************************************************************
   01/27/2020         EPPlus Software AB       Initial release EPPlus 5
  *************************************************************************************************/
+
 namespace OfficeOpenXml.Drawing.Style.Coloring;
 
 /// <summary>
@@ -26,6 +27,7 @@ internal class ExcelColorTransformSimpleItem : IColorTransformItem, ISource
     /// The datatype of the value
     /// </summary>
     public eColorTransformDataType DataType { get; set; }
+
     /// <summary>
     /// The value
     /// </summary>

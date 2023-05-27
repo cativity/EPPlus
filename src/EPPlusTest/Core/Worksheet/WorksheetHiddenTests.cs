@@ -26,6 +26,7 @@
  *******************************************************************************
   01/27/2020         EPPlus Software AB       Initial release EPPlus 5
  *******************************************************************************/
+
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using OfficeOpenXml;
 
@@ -61,6 +62,7 @@ public class WorksheetHiddenTests : TestBase
         Assert.AreEqual(1, pck.Workbook.View.ActiveTab);
         SaveWorkbook("VeryHiddenSecondWorbook.xlsx", pck);
     }
+
     [TestMethod]
     public void HideTest_1Based()
     {

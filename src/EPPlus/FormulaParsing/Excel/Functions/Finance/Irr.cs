@@ -10,6 +10,7 @@
  *************************************************************************************************
   05/03/2020         EPPlus Software AB         Implemented function
  *************************************************************************************************/
+
 using OfficeOpenXml.FormulaParsing.Excel.Functions.Finance.Implementations;
 using OfficeOpenXml.FormulaParsing.Excel.Functions.Metadata;
 using OfficeOpenXml.FormulaParsing.ExpressionGraph;
@@ -20,10 +21,9 @@ using System.Text;
 
 namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Finance;
 
-[FunctionMetadata(
-                     Category = ExcelFunctionCategory.Financial,
-                     EPPlusVersion = "5.2",
-                     Description = "Calculates the internal rate of return for a series of periodic cash flows")]
+[FunctionMetadata(Category = ExcelFunctionCategory.Financial,
+                  EPPlusVersion = "5.2",
+                  Description = "Calculates the internal rate of return for a series of periodic cash flows")]
 internal class Irr : ExcelFunction
 {
     public override CompileResult Execute(IEnumerable<FunctionArgument> arguments, ParsingContext context)
@@ -31,7 +31,8 @@ internal class Irr : ExcelFunction
         ValidateArguments(arguments, 1);
         IEnumerable<ExcelDoubleCellValue>? values = this.ArgsToDoubleEnumerable(new List<FunctionArgument> { arguments.ElementAt(0) }, context);
         FinanceCalcResult<double>? result = default(FinanceCalcResult<double>);
-        if(arguments.Count() == 1)
+
+        if (arguments.Count() == 1)
         {
             result = IrrImpl.Irr(values.Select(x => (double)x).ToArray());
         }
@@ -40,6 +41,7 @@ internal class Irr : ExcelFunction
             double guess = this.ArgToDecimal(arguments, 1);
             result = IrrImpl.Irr(values.Select(x => (double)x).ToArray(), guess);
         }
+
         if (result.HasError)
         {
             return this.CreateResult(result.ExcelErrorType);

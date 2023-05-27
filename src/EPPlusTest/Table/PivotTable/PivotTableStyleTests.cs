@@ -17,6 +17,7 @@ public class PivotTableStyleTests : TestBase
 {
     static ExcelPackage _pck;
     static ExcelWorksheet _ws;
+
     [ClassInitialize]
     public static void Init(TestContext context)
     {
@@ -25,6 +26,7 @@ public class PivotTableStyleTests : TestBase
         _ws = _pck.Workbook.Worksheets.Add("Data1");
         LoadItemData(_ws);
     }
+
     [ClassCleanup]
     public static void Cleanup()
     {
@@ -33,6 +35,7 @@ public class PivotTableStyleTests : TestBase
         SaveAndCleanup(_pck);
         File.Copy(fileName, dirName + "\\PivotTableReadStyle.xlsx", true);
     }
+
     internal static ExcelPivotTable CreatePivotTable(ExcelWorksheet ws)
     {
         ExcelPivotTable? pt = ws.PivotTables.Add(ws.Cells["A3"], _ws.Cells[_ws.Dimension.Address], "PivotTable1");
@@ -41,19 +44,22 @@ public class PivotTableStyleTests : TestBase
         pt.DataFields.Add(pt.Fields[3]);
         pt.DataFields.Add(pt.Fields[2]);
         pt.PageFields.Add(pt.Fields[4]);
+
         return pt;
     }
+
     [TestMethod]
     public void AddPivotAllStyle()
     {
         ExcelWorksheet? ws = _pck.Workbook.Worksheets.Add("StyleAll");
         ExcelPivotTable? pt = CreatePivotTable(ws);
-        ExcelPivotTableAreaStyle? s=pt.Styles.AddWholeTable();
+        ExcelPivotTableAreaStyle? s = pt.Styles.AddWholeTable();
         s.Style.Font.Name = "Bauhaus 93";
 
         Assert.IsTrue(s.Style.HasValue);
         Assert.AreEqual("Bauhaus 93", s.Style.Font.Name);
     }
+
     [TestMethod]
     public void AddPivotLabels()
     {
@@ -63,6 +69,7 @@ public class PivotTableStyleTests : TestBase
         ExcelPivotTableAreaStyle? s = pt.Styles.AddAllLabels();
         s.Style.Font.Color.SetColor(Color.Green);
     }
+
     [TestMethod]
     public void AddPivotAllData()
     {
@@ -81,6 +88,7 @@ public class PivotTableStyleTests : TestBase
         ExcelPivotTableAreaStyle? s = pt.Styles.AddLabel(pt.PageFields[0]);
         s.Style.Font.Color.SetColor(Color.Green);
     }
+
     [TestMethod]
     public void AddPivotLabelColumnField()
     {
@@ -90,6 +98,7 @@ public class PivotTableStyleTests : TestBase
         ExcelPivotTableAreaStyle? s = pt.Styles.AddLabel(pt.ColumnFields[0]);
         s.Style.Font.Color.SetColor(Color.Indigo);
     }
+
     [TestMethod]
     public void AddPivotLabelColumnFieldSingleCell()
     {
@@ -115,6 +124,7 @@ public class PivotTableStyleTests : TestBase
         s.Style.Font.Strike = true;
         s.Style.Font.Name = "Times New Roman";
     }
+
     [TestMethod]
     public void AddPivotDataRowColumnField()
     {
@@ -127,6 +137,7 @@ public class PivotTableStyleTests : TestBase
         s.Style.Font.Strike = true;
         s.Style.Font.Name = "Times New Roman";
     }
+
     [TestMethod]
     public void AddPivotData()
     {
@@ -140,6 +151,7 @@ public class PivotTableStyleTests : TestBase
         s.Style.Font.Strike = true;
         s.Style.Font.Name = "Times New Roman";
     }
+
     [TestMethod]
     public void AddPivotDataGrandColumn()
     {
@@ -153,6 +165,7 @@ public class PivotTableStyleTests : TestBase
         s.Style.Font.Underline = ExcelUnderLineType.Single;
         s.Style.Font.Name = "Times New Roman";
     }
+
     [TestMethod]
     public void AddPivotDataGrandRow()
     {
@@ -179,6 +192,7 @@ public class PivotTableStyleTests : TestBase
         s.Style.Font.Strike = true;
         s.Style.Font.Name = "Times New Roman";
     }
+
     [TestMethod]
     public void AddPivotLabelRowDf1()
     {
@@ -205,6 +219,7 @@ public class PivotTableStyleTests : TestBase
         s.Style.Font.Strike = true;
         s.Style.Font.Name = "Times New Roman";
     }
+
     [TestMethod]
     public void AddPivotLabelRowDataField2AndValue()
     {
@@ -219,6 +234,7 @@ public class PivotTableStyleTests : TestBase
         s.Style.Font.Strike = true;
         s.Style.Font.Name = "Times New Roman";
     }
+
     [TestMethod]
     public void AddPivotDataItemByIndex()
     {
@@ -233,9 +249,11 @@ public class PivotTableStyleTests : TestBase
         s.Style.Fill.Style = eDxfFillStyle.PatternFill;
         s.Style.Fill.BackgroundColor.SetColor(Color.Red);
         s.Outline = true;
+
         //s.Axis = ePivotTableAxis.RowAxis;
         s.Style.Font.Color.SetColor(Color.Blue);
     }
+
     [TestMethod]
     public void AddPivotDataItemByValue()
     {
@@ -250,6 +268,7 @@ public class PivotTableStyleTests : TestBase
         s.Style.Fill.Style = eDxfFillStyle.PatternFill;
         s.Style.Fill.BackgroundColor.SetColor(Color.Red);
         s.Outline = true;
+
         //s.Axis = ePivotTableAxis.RowAxis;
         s.Style.Font.Color.SetColor(Color.Blue);
     }
@@ -273,6 +292,7 @@ public class PivotTableStyleTests : TestBase
         ExcelPivotTableAreaStyle? s = pt.Styles.AddButtonField(ePivotTableAxis.RowAxis);
         s.Style.Font.Underline = ExcelUnderLineType.DoubleAccounting;
     }
+
     [TestMethod]
     public void AddButtonColumnAxis()
     {
@@ -282,6 +302,7 @@ public class PivotTableStyleTests : TestBase
         ExcelPivotTableAreaStyle? s3 = pt.Styles.AddButtonField(ePivotTableAxis.ColumnAxis);
         s3.Style.Font.Italic = true;
     }
+
     [TestMethod]
     public void AddButtonPageAxis()
     {
@@ -291,7 +312,6 @@ public class PivotTableStyleTests : TestBase
         ExcelPivotTableAreaStyle? s4 = pt.Styles.AddButtonField(ePivotTableAxis.PageAxis);
         s4.Style.Font.Color.SetColor(Color.ForestGreen);
     }
-
 
     [TestMethod]
     public void AddTopStart()
@@ -304,6 +324,7 @@ public class PivotTableStyleTests : TestBase
         styleTopLeft.Style.Fill.PatternType = ExcelFillStyle.Solid;
         styleTopLeft.Style.Fill.BackgroundColor.SetColor(Color.Red);
     }
+
     [TestMethod]
     public void AddTopStartOffset0()
     {
@@ -326,6 +347,7 @@ public class PivotTableStyleTests : TestBase
         styleTopRight2.Style.Fill.PatternType = ExcelFillStyle.Solid;
         styleTopRight2.Style.Fill.BackgroundColor.SetColor(Color.Yellow);
     }
+
     [TestMethod]
     public void AddTopEndOffset1()
     {
@@ -334,6 +356,6 @@ public class PivotTableStyleTests : TestBase
 
         ExcelPivotTableAreaStyle? styleTopRight2 = pt.Styles.AddTopEnd("A1");
         styleTopRight2.Style.Fill.PatternType = ExcelFillStyle.Solid;
-        styleTopRight2.Style.Fill.BackgroundColor.SetColor(Color.Yellow);            
+        styleTopRight2.Style.Fill.BackgroundColor.SetColor(Color.Yellow);
     }
 }

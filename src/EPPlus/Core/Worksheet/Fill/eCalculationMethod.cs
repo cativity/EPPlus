@@ -10,6 +10,7 @@
  *************************************************************************************************
     08/11/2021         EPPlus Software AB       EPPlus 5.8
  *************************************************************************************************/
+
 namespace OfficeOpenXml;
 
 /// <summary>
@@ -21,6 +22,7 @@ public enum eCalculationMethod
     /// Add the value to the next fill
     /// </summary>
     Add,
+
     /// <summary>
     /// Multiply the value to the next fill
     /// </summary>

@@ -20,47 +20,50 @@ public class HtmlPictureSettings
 {
     internal HtmlPictureSettings()
     {
-
     }
+
     /// <summary>
     /// If picture drawings should be included in the html. Default is <see cref="ePictureInclude.Exclude"/>
     /// </summary>
     public ePictureInclude Include { get; set; } = ePictureInclude.Exclude;
+
     /// <summary>
     /// If the image should be added as absolut or relative in the css.
     /// </summary>
     public ePicturePosition Position { get; set; } = ePicturePosition.Relative;
+
     /// <summary>
     /// If the margin in pixels from the top corner should be used. 
     /// If this property is set to true, the cells vertical alignment will be set to 'top', 
     /// otherwise alignment will be set to middle.
     /// </summary>
     public bool AddMarginTop { get; set; } = false;
+
     /// <summary>
     /// If the margin in pixels from the left corner should be used.
     /// If this property is set to true, the cells text alignment will be set to 'left', 
     /// otherwise alignment will be set to center.
     /// </summary>
     public bool AddMarginLeft { get; set; } = false;
+
     /// <summary>
     /// If set to true the original size of the image is used, 
     /// otherwise the size in the workbook is used. Default is false.
     /// </summary>
     public bool KeepOriginalSize { get; set; } = false;
+
     /// <summary>
     /// Exclude settings 
     /// </summary>
     public PictureCssExclude CssExclude { get; } = new PictureCssExclude();
+
     /// <summary>
     /// Adds the Picture name as Id for the img element in the HTML.
     /// Characters [A-Z][0-9]-_ are allowed. The first character allows [A-Z]_. 
     /// Other characters will be replaced with an hyphen (-).
     /// </summary>
-    public bool AddNameAsId
-    {
-        get;
-        set;
-    } = true;
+    public bool AddNameAsId { get; set; } = true;
+
     /// <summary>
     /// Reset the setting to it's default values.
     /// </summary>
@@ -73,6 +76,7 @@ public class HtmlPictureSettings
         this.KeepOriginalSize = false;
         this.CssExclude.ResetToDefault();
     }
+
     /// <summary>
     /// Copy the values from another settings object.
     /// </summary>

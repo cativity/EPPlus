@@ -10,6 +10,7 @@
  *************************************************************************************************
   01/27/2020         EPPlus Software AB       Initial release EPPlus 5
  *************************************************************************************************/
+
 namespace OfficeOpenXml.Drawing.Chart;
 
 /// <summary>
@@ -21,14 +22,17 @@ public enum eSurfaceChartType
     /// A surface chart
     /// </summary>
     Surface = 83,
+
     /// <summary>
     /// A surface chart, top view
     /// </summary>
     SurfaceTopView = 85,
+
     /// <summary>
     /// A surface chart, top view and wireframe
     /// </summary>
     SurfaceTopViewWireframe = 86,
+
     /// <summary>
     /// A surface chart, wireframe
     /// </summary>

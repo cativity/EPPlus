@@ -10,6 +10,7 @@
  *************************************************************************************************
   09/05/2022         EPPlus Software AB       EPPlus 6.1
  *************************************************************************************************/
+
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -26,18 +27,22 @@ internal enum ExcelVbaSignatureHashAlgorithm
     /// MD5 hash algorithm
     /// </summary>
     MD5,
+
     /// <summary>
     /// SHA1 hash algorithm
     /// </summary>
     SHA1,
+
     /// <summary>
     /// SHA256 hash algorithm
     /// </summary>
     SHA256,
+
     /// <summary>
     /// SHA384 hash algorithm
     /// </summary>
     SHA384,
+
     /// <summary>
     /// SHA512 hash algorithm
     /// </summary>

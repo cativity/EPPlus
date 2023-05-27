@@ -15,16 +15,19 @@ namespace EPPlusTest.Table.PivotTable;
 public class PivotTableStyleReadTests : TestBase
 {
     static ExcelPackage _pck;
+
     [ClassInitialize]
     public static void Init(TestContext context)
     {
         InitBase();
         _pck = OpenPackage("PivotTableReadStyle.xlsx");
     }
+
     [ClassCleanup]
     public static void Cleanup()
     {
     }
+
     [TestMethod]
     public void ReadPivotAllStyle()
     {
@@ -38,6 +41,7 @@ public class PivotTableStyleReadTests : TestBase
         Assert.IsTrue(s.Style.HasValue);
         Assert.AreEqual("Bauhaus 93", s.Style.Font.Name);
     }
+
     [TestMethod]
     public void ReadPivotLabels()
     {
@@ -53,6 +57,7 @@ public class PivotTableStyleReadTests : TestBase
 
         Assert.AreEqual(Color.Green.ToArgb(), s.Style.Font.Color.Color.Value.ToArgb());
     }
+
     [TestMethod]
     public void ReadPivotAllData()
     {
@@ -87,6 +92,7 @@ public class PivotTableStyleReadTests : TestBase
 
         Assert.AreEqual(Color.Green.ToArgb(), s.Style.Font.Color.Color.Value.ToArgb());
     }
+
     [TestMethod]
     public void ReadPivotLabelColumnField()
     {
@@ -102,6 +108,7 @@ public class PivotTableStyleReadTests : TestBase
 
         Assert.AreEqual(Color.Indigo.ToArgb(), s.Style.Font.Color.Color.Value.ToArgb());
     }
+
     [TestMethod]
     public void AddPivotLabelColumnFieldSingleCell()
     {
@@ -144,6 +151,7 @@ public class PivotTableStyleReadTests : TestBase
         Assert.IsTrue(s.Style.Font.Strike.Value);
         Assert.AreEqual("Times New Roman", s.Style.Font.Name);
     }
+
     [TestMethod]
     public void ReadPivotDataRowColumnField()
     {
@@ -162,6 +170,7 @@ public class PivotTableStyleReadTests : TestBase
         Assert.IsTrue(s.Style.Font.Strike.Value);
         Assert.AreEqual("Times New Roman", s.Style.Font.Name);
     }
+
     [TestMethod]
     public void ReadPivotData()
     {
@@ -180,6 +189,7 @@ public class PivotTableStyleReadTests : TestBase
         Assert.IsTrue(s.Style.Font.Strike.Value);
         Assert.AreEqual("Times New Roman", s.Style.Font.Name);
     }
+
     [TestMethod]
     public void AddPivotDataGrandColumn()
     {
@@ -198,6 +208,7 @@ public class PivotTableStyleReadTests : TestBase
         Assert.AreEqual(ExcelUnderLineType.Single, s.Style.Font.Underline);
         Assert.AreEqual("Times New Roman", s.Style.Font.Name);
     }
+
     [TestMethod]
     public void AddPivotDataGrandRow()
     {
@@ -231,6 +242,7 @@ public class PivotTableStyleReadTests : TestBase
         Assert.IsTrue(s.Style.Font.Strike.Value);
         Assert.AreEqual("Times New Roman", s.Style.Font.Name);
     }
+
     [TestMethod]
     public void AddPivotLabelRowDf1()
     {
@@ -267,6 +279,7 @@ public class PivotTableStyleReadTests : TestBase
         Assert.IsTrue(s.Style.Font.Strike.Value);
         Assert.AreEqual("Times New Roman", s.Style.Font.Name);
     }
+
     [TestMethod]
     public void ReadPivotLabelRowDataField2AndValue()
     {
@@ -288,8 +301,8 @@ public class PivotTableStyleReadTests : TestBase
         Assert.IsTrue(s.Style.Font.Italic.Value);
         Assert.IsTrue(s.Style.Font.Strike.Value);
         Assert.AreEqual("Times New Roman", s.Style.Font.Name);
-
     }
+
     [TestMethod]
     public void ReadPivotDataItemByIndex()
     {
@@ -309,10 +322,11 @@ public class PivotTableStyleReadTests : TestBase
         Assert.AreEqual(0, s.Conditions.Fields[1].Items[0].Index);
 
         Assert.AreEqual(eDxfFillStyle.PatternFill, s.Style.Fill.Style);
-        Assert.AreEqual(Color.Red.ToArgb(), s.Style.Fill.BackgroundColor.Color.Value.ToArgb());            
+        Assert.AreEqual(Color.Red.ToArgb(), s.Style.Fill.BackgroundColor.Color.Value.ToArgb());
         Assert.IsTrue(s.Outline);
-        Assert.AreEqual(Color.Blue.ToArgb(), s.Style.Font.Color.Color.Value.ToArgb());            
+        Assert.AreEqual(Color.Blue.ToArgb(), s.Style.Font.Color.Color.Value.ToArgb());
     }
+
     [TestMethod]
     public void ReadPivotDataItemByValue()
     {
@@ -362,6 +376,7 @@ public class PivotTableStyleReadTests : TestBase
         Assert.AreEqual(ePivotTableAxis.RowAxis, s.Axis);
         Assert.AreEqual(ExcelUnderLineType.DoubleAccounting, s.Style.Font.Underline);
     }
+
     [TestMethod]
     public void ReadButtonColumnAxis()
     {
@@ -372,9 +387,10 @@ public class PivotTableStyleReadTests : TestBase
 
         Assert.AreEqual(ePivotAreaType.FieldButton, s.PivotAreaType);
         Assert.AreEqual(ePivotTableAxis.ColumnAxis, s.Axis);
-            
+
         Assert.IsTrue(s.Style.Font.Italic.Value);
     }
+
     [TestMethod]
     public void ReadButtonPageAxis()
     {
@@ -386,8 +402,8 @@ public class PivotTableStyleReadTests : TestBase
         Assert.AreEqual(ePivotTableAxis.PageAxis, s.Axis);
 
         Assert.AreEqual(Color.ForestGreen.ToArgb(), s.Style.Font.Color.Color.Value.ToArgb());
-
     }
+
     [TestMethod]
     public void ReadTopStart()
     {
@@ -400,6 +416,7 @@ public class PivotTableStyleReadTests : TestBase
         Assert.AreEqual(eDxfFillStyle.PatternFill, s.Style.Fill.Style);
         Assert.AreEqual(Color.Red.ToArgb(), s.Style.Fill.BackgroundColor.Color.Value.ToArgb());
     }
+
     [TestMethod]
     public void ReadTopStartOffset0()
     {
@@ -425,6 +442,7 @@ public class PivotTableStyleReadTests : TestBase
         Assert.AreEqual(eDxfFillStyle.PatternFill, s.Style.Fill.Style);
         Assert.AreEqual(Color.Yellow.ToArgb(), s.Style.Fill.BackgroundColor.Color.Value.ToArgb());
     }
+
     [TestMethod]
     public void AddTopEndOffset1()
     {
@@ -437,5 +455,4 @@ public class PivotTableStyleReadTests : TestBase
         Assert.AreEqual(eDxfFillStyle.PatternFill, s.Style.Fill.Style);
         Assert.AreEqual(Color.Yellow.ToArgb(), s.Style.Fill.BackgroundColor.Color.Value.ToArgb());
     }
-
 }

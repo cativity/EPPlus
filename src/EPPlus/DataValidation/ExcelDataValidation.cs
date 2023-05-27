@@ -10,11 +10,11 @@
  *************************************************************************************************
   01/27/2020         EPPlus Software AB       Initial release EPPlus 5
  *************************************************************************************************/
+
 using OfficeOpenXml.DataValidation.Contracts;
 using OfficeOpenXml.DataValidation.Events;
 using OfficeOpenXml.Utils;
 using OfficeOpenXml.Utils.Extensions;
-
 using System;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
@@ -56,7 +56,7 @@ public abstract class ExcelDataValidation : IExcelDataValidation
     /// Copy-Constructor
     /// </summary>
     /// <param name="validation">Validation to copy from</param>
-    protected ExcelDataValidation(ExcelDataValidation validation,ExcelWorksheet ws)
+    protected ExcelDataValidation(ExcelDataValidation validation, ExcelWorksheet ws)
     {
         this.Uid = validation.Uid;
         this.Address = validation.Address;
@@ -85,7 +85,11 @@ public abstract class ExcelDataValidation : IExcelDataValidation
     /// <summary>
     /// Address of data validation
     /// </summary>
-    public ExcelAddress Address { get { return this._address; } internal set { this._address = (ExcelDatavalidationAddress)value; } }
+    public ExcelAddress Address
+    {
+        get { return this._address; }
+        internal set { this._address = (ExcelDatavalidationAddress)value; }
+    }
 
     /// <summary>
     /// Validation type
@@ -93,6 +97,7 @@ public abstract class ExcelDataValidation : IExcelDataValidation
     public virtual ExcelDataValidationType ValidationType { get; }
 
     string errorStyleString = null;
+
     /// <summary>
     /// Warning style
     /// </summary>
@@ -121,6 +126,7 @@ public abstract class ExcelDataValidation : IExcelDataValidation
     }
 
     string imeModeString = null;
+
     public ExcelDataValidationImeMode ImeMode
     {
         get
@@ -183,7 +189,10 @@ public abstract class ExcelDataValidation : IExcelDataValidation
     /// <summary>
     /// True if the current validation type allows operator.
     /// </summary>
-    public virtual bool AllowsOperator { get { return true; } }
+    public virtual bool AllowsOperator
+    {
+        get { return true; }
+    }
 
     /// <summary>
     /// This method will validate the state of the validation
@@ -194,6 +203,7 @@ public abstract class ExcelDataValidation : IExcelDataValidation
     }
 
     ExcelDataValidationAsType _as = null;
+
     /// <summary>
     /// Us this property to case <see cref="IExcelDataValidation"/>s to its subtypes
     /// </summary>
@@ -211,6 +221,7 @@ public abstract class ExcelDataValidation : IExcelDataValidation
     public bool IsStale { get; } = false;
 
     string operatorString = null;
+
     /// <summary>
     /// Operator for comparison between the entered value and Formula/Formulas.
     /// </summary>
@@ -222,6 +233,7 @@ public abstract class ExcelDataValidation : IExcelDataValidation
             {
                 return (ExcelDataValidationOperator)Enum.Parse(typeof(ExcelDataValidationOperator), this.operatorString, true);
             }
+
             return default(ExcelDataValidationOperator);
         }
         set
@@ -241,18 +253,21 @@ public abstract class ExcelDataValidation : IExcelDataValidation
         {
             throw new FormatException("Multiple addresses may not be commaseparated, use space instead");
         }
+
         address = ConvertUtil._invariantTextInfo.ToUpper(address);
 
         if (IsEntireColumn(address))
         {
             address = AddressUtility.ParseEntireColumnSelections(address);
         }
+
         return address;
     }
 
     static bool IsEntireColumn(string address)
     {
         bool hasColon = false;
+
         foreach (char c in address)
         {
             if ((c >= 'A' && c <= 'Z') || c == ':')
@@ -261,6 +276,7 @@ public abstract class ExcelDataValidation : IExcelDataValidation
                 {
                     hasColon = true;
                 }
+
                 continue;
             }
             else
@@ -284,21 +300,22 @@ public abstract class ExcelDataValidation : IExcelDataValidation
     /// </summary>
     internal InternalValidationType InternalValidationType { get; set; } = InternalValidationType.DataValidation;
 
-
     /// <summary>
     /// Event method for changing internal type when referring to an external worksheet.
     /// </summary>
-    protected Action<OnFormulaChangedEventArgs> OnFormulaChanged => (e) =>
-    {
-        if (e.isExt)
+    protected Action<OnFormulaChangedEventArgs> OnFormulaChanged =>
+        (e) =>
         {
-            this.InternalValidationType = InternalValidationType.ExtLst;
-        }
-    };
+            if (e.isExt)
+            {
+                this.InternalValidationType = InternalValidationType.ExtLst;
+            }
+        };
 
     internal virtual void LoadXML(XmlReader xr)
     {
         string address = xr.GetAttribute("sqref");
+
         if (address == null)
         {
             this.InternalValidationType = InternalValidationType.ExtLst;
@@ -327,20 +344,18 @@ public abstract class ExcelDataValidation : IExcelDataValidation
         if (address == null && xr.ReadUntil(5, "sqref", "dataValidation", "extLst"))
         {
             address = xr.ReadString();
+
             if (address == null)
             {
                 throw new NullReferenceException($"Unable to locate ExtList adress for DataValidation with uid:{this.Uid}");
             }
         }
 
-        this._address = new ExcelDatavalidationAddress
-            (CheckAndFixRangeAddress(address)
-                 .Replace(" ", ","), this);
+        this._address = new ExcelDatavalidationAddress(CheckAndFixRangeAddress(address).Replace(" ", ","), this);
     }
 
     internal virtual void ReadClassSpecificXmlNodes(XmlReader xr)
     {
-
     }
 
     internal static string NewId()

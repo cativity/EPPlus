@@ -10,6 +10,7 @@
  *************************************************************************************************
   05/07/2021         EPPlus Software AB       EPPlus 5.7
  *************************************************************************************************/
+
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -23,7 +24,8 @@ namespace OfficeOpenXml.Sorting;
 /// </summary>
 public class SortCondition : XmlHelper
 {
-    internal SortCondition(XmlNamespaceManager nameSpaceManager, XmlNode topNode) : base(nameSpaceManager, topNode)
+    internal SortCondition(XmlNamespaceManager nameSpaceManager, XmlNode topNode)
+        : base(nameSpaceManager, topNode)
     {
     }
 
@@ -36,29 +38,17 @@ public class SortCondition : XmlHelper
     /// </summary>
     public bool Descending
     {
-        get
-        {
-            return this.GetXmlNodeBool(this._descendingPath);
-        }
-        set
-        {
-            this.SetXmlNodeBool(this._descendingPath, value);
-        }
+        get { return this.GetXmlNodeBool(this._descendingPath); }
+        set { this.SetXmlNodeBool(this._descendingPath, value); }
     }
 
     /// <summary>
     /// Address of the range used by this condition.
     /// </summary>
-    public string Ref 
+    public string Ref
     {
-        get
-        {
-            return this.GetXmlNodeString(this._refPath);
-        }
-        set
-        {
-            this.SetXmlNodeString(this._refPath, value);
-        }
+        get { return this.GetXmlNodeString(this._refPath); }
+        set { this.SetXmlNodeString(this._refPath, value); }
     }
 
     /// <summary>
@@ -69,23 +59,28 @@ public class SortCondition : XmlHelper
         get
         {
             string? list = this.GetXmlNodeString(this._customListPath);
-            if(!string.IsNullOrEmpty(list))
+
+            if (!string.IsNullOrEmpty(list))
             {
                 return list.Split(',').Where(x => !string.IsNullOrEmpty(x)).Select(x => x.Trim()).ToArray();
             }
+
             return null;
         }
         set
         {
-            if(value == null || value.Length == 0)
+            if (value == null || value.Length == 0)
             {
                 this.SetXmlNodeString(this._customListPath, string.Empty, true);
             }
+
             StringBuilder? val = new StringBuilder();
-            for(int x = 0; x < value.Length; x++)
+
+            for (int x = 0; x < value.Length; x++)
             {
                 val.Append(value[x]);
-                if(x < value.Length -1)
+
+                if (x < value.Length - 1)
                 {
                     val.Append(",");
                 }

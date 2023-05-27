@@ -10,6 +10,7 @@
  *************************************************************************************************
   01/27/2020         EPPlus Software AB       Initial release EPPlus 5
  *************************************************************************************************/
+
 using OfficeOpenXml.Drawing;
 using OfficeOpenXml.Drawing.Interfaces;
 using System;
@@ -24,27 +25,26 @@ namespace OfficeOpenXml.Style;
 /// </summary>
 public sealed class ExcelParagraph : ExcelTextFont
 {
-    internal ExcelParagraph(IPictureRelationDocument pictureRelationDocument, XmlNamespaceManager ns, XmlNode rootNode, string path, string[] schemaNodeOrder) : 
-        base(pictureRelationDocument, ns, rootNode, path + "a:rPr", schemaNodeOrder)
-    { 
-
+    internal ExcelParagraph(IPictureRelationDocument pictureRelationDocument, XmlNamespaceManager ns, XmlNode rootNode, string path, string[] schemaNodeOrder)
+        : base(pictureRelationDocument, ns, rootNode, path + "a:rPr", schemaNodeOrder)
+    {
     }
+
     const string TextPath = "../a:t";
+
     /// <summary>
     /// Text
     /// </summary>
     public string Text
     {
-        get
-        {
-            return this.GetXmlNodeString(TextPath);
-        }
+        get { return this.GetXmlNodeString(TextPath); }
         set
         {
             this.CreateTopNode();
             this.SetXmlNodeString(TextPath, value);
         }
     }
+
     /// <summary>
     /// If the paragraph is the first in the collection
     /// </summary>
@@ -53,16 +53,19 @@ public sealed class ExcelParagraph : ExcelTextFont
         get
         {
             XmlNode? parent = this._rootNode.ParentNode;
-            for (int i=0;i<parent.ChildNodes.Count;i++)
+
+            for (int i = 0; i < parent.ChildNodes.Count; i++)
             {
                 if (parent.ChildNodes[i].LocalName == "r")
                 {
                     return parent.ChildNodes[i] == this._rootNode;
                 }
             }
+
             return false;
         }
     }
+
     /// <summary>
     /// If the paragraph is the last in the collection
     /// </summary>
@@ -71,13 +74,15 @@ public sealed class ExcelParagraph : ExcelTextFont
         get
         {
             XmlNode? parent = this._rootNode.ParentNode;
-            for (int i = parent.ChildNodes.Count-1; i >=0 ; i--)
+
+            for (int i = parent.ChildNodes.Count - 1; i >= 0; i--)
             {
                 if (parent.ChildNodes[i].LocalName == "r")
                 {
                     return parent.ChildNodes[i] == this._rootNode;
                 }
             }
+
             return false;
         }
     }

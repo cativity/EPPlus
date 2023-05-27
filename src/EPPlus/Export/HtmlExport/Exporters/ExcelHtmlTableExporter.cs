@@ -10,6 +10,7 @@
  *************************************************************************************************
   6/4/2022         EPPlus Software AB           ExcelTable Html Export
  *************************************************************************************************/
+
 using OfficeOpenXml.Export.HtmlExport.Exporters;
 using OfficeOpenXml.Export.HtmlExport.Interfaces;
 using OfficeOpenXml.Export.HtmlExport.Settings;
@@ -38,7 +39,9 @@ namespace OfficeOpenXml.Export.HtmlExport.Exporters
         private readonly Dictionary<string, int> _styleCache = new Dictionary<string, int>();
 
         public HtmlTableExportSettings Settings
-        { get { return this._settings; } }
+        {
+            get { return this._settings; }
+        }
 
         /// <summary>
         /// Exports an <see cref="ExcelTable"/> to a html string
@@ -47,6 +50,7 @@ namespace OfficeOpenXml.Export.HtmlExport.Exporters
         public string GetHtmlString()
         {
             HtmlTableExporterSync? exporter = HtmlExporterFactory.CreateHtmlTableExporterSync(this._settings, this._table, this._styleCache);
+
             return exporter.GetHtmlString();
         }
 
@@ -66,9 +70,11 @@ namespace OfficeOpenXml.Export.HtmlExport.Exporters
         /// </summary>
         /// <param name="htmlDocument">The html string where to insert the html and the css. The Html will be inserted in string parameter {0} and the Css will be inserted in parameter {1}.</param>
         /// <returns>The html document</returns>
-        public string GetSinglePage(string htmlDocument = "<!DOCTYPE html>\r\n<html>\r\n<head>\r\n<style type=\"text/css\">\r\n{1}</style></head>\r\n<body>\r\n{0}</body>\r\n</html>")
+        public string GetSinglePage(string htmlDocument =
+                                        "<!DOCTYPE html>\r\n<html>\r\n<head>\r\n<style type=\"text/css\">\r\n{1}</style></head>\r\n<body>\r\n{0}</body>\r\n</html>")
         {
             HtmlTableExporterSync? exporter = HtmlExporterFactory.CreateHtmlTableExporterSync(this._settings, this._table, this._styleCache);
+
             return exporter.GetSinglePage(htmlDocument);
         }
 
@@ -79,6 +85,7 @@ namespace OfficeOpenXml.Export.HtmlExport.Exporters
         public string GetCssString()
         {
             CssTableExporterSync? exporter = HtmlExporterFactory.CreateCssExporterTableSync(this._settings, this._table, this._styleCache);
+
             return exporter.GetCssString();
         }
 
@@ -101,6 +108,7 @@ namespace OfficeOpenXml.Export.HtmlExport.Exporters
         public Task<string> GetHtmlStringAsync()
         {
             HtmlTableExporterAsync? exporter = HtmlExporterFactory.CreateHtmlTableExporterAsync(this._settings, this._table, this._styleCache);
+
             return exporter.GetHtmlStringAsync();
         }
 
@@ -112,6 +120,7 @@ namespace OfficeOpenXml.Export.HtmlExport.Exporters
         public Task RenderHtmlAsync(Stream stream)
         {
             HtmlTableExporterAsync? exporter = HtmlExporterFactory.CreateHtmlTableExporterAsync(this._settings, this._table, this._styleCache);
+
             return exporter.RenderHtmlAsync(stream);
         }
 
@@ -120,9 +129,11 @@ namespace OfficeOpenXml.Export.HtmlExport.Exporters
         /// </summary>
         /// <param name="htmlDocument">The html string where to insert the html and the css. The Html will be inserted in string parameter {0} and the Css will be inserted in parameter {1}.</param>
         /// <returns>The html document</returns>
-        public Task<string> GetSinglePageAsync(string htmlDocument = "<!DOCTYPE html>\r\n<html>\r\n<head>\r\n<style type=\"text/css\">\r\n{1}</style></head>\r\n<body>\r\n{0}</body>\r\n</html>")
+        public Task<string> GetSinglePageAsync(string htmlDocument =
+                                                   "<!DOCTYPE html>\r\n<html>\r\n<head>\r\n<style type=\"text/css\">\r\n{1}</style></head>\r\n<body>\r\n{0}</body>\r\n</html>")
         {
             HtmlTableExporterAsync? exporter = HtmlExporterFactory.CreateHtmlTableExporterAsync(this._settings, this._table, this._styleCache);
+
             return exporter.GetSinglePageAsync(htmlDocument);
         }
 
@@ -133,6 +144,7 @@ namespace OfficeOpenXml.Export.HtmlExport.Exporters
         public Task<string> GetCssStringAsync()
         {
             CssTableExporterAsync? exporter = HtmlExporterFactory.CreateCssExporterTableAsync(this._settings, this._table, this._styleCache);
+
             return exporter.GetCssStringAsync();
         }
 
@@ -143,6 +155,7 @@ namespace OfficeOpenXml.Export.HtmlExport.Exporters
         public Task RenderCssAsync(Stream stream)
         {
             CssTableExporterAsync? exporter = HtmlExporterFactory.CreateCssExporterTableAsync(this._settings, this._table, this._styleCache);
+
             return exporter.RenderCssAsync(stream);
         }
 #endif

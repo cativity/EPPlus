@@ -10,6 +10,7 @@
  *************************************************************************************************
   05/11/2021         EPPlus Software AB           ExcelTable Html Export
  *************************************************************************************************/
+
 using System;
 using System.Collections.Generic;
 using System.Globalization;
@@ -22,20 +23,17 @@ namespace OfficeOpenXml.Export.HtmlExport;
 /// </summary>
 public class HtmlRangeExportSettings : HtmlExportSettings
 {
-    int _headerRows=1;
+    int _headerRows = 1;
 
     /// <summary>
     /// Number of header rows before the actual data. Default is 1.
     /// </summary>
-    public int HeaderRows 
-    { 
-        get
-        {
-            return this._headerRows;
-        }
+    public int HeaderRows
+    {
+        get { return this._headerRows; }
         set
         {
-            if(value < 0 || value > ExcelPackage.MaxRows)
+            if (value < 0 || value > ExcelPackage.MaxRows)
             {
                 throw new InvalidOperationException("Can't be negative or exceed number of allowed rows in a worksheet.");
             }
@@ -43,15 +41,17 @@ public class HtmlRangeExportSettings : HtmlExportSettings
             this._headerRows = value;
         }
     }
+
     /// <summary>
     /// If <see cref="HeaderRows"/> is 0, this collection contains the headers. 
     /// If this collection is empty the table will have no headers.
     /// </summary>
     public List<string> Headers { get; } = new List<string>();
+
     /// <summary>
     /// Options to exclude css elements
     /// </summary>
-    public CssRangeExportSettings Css{ get; } = new CssRangeExportSettings();
+    public CssRangeExportSettings Css { get; } = new CssRangeExportSettings();
 
     /// <summary>
     /// Reset the setting to it's default values.
@@ -69,6 +69,7 @@ public class HtmlRangeExportSettings : HtmlExportSettings
         this.Css.ResetToDefault();
         this.Pictures.ResetToDefault();
     }
+
     /// <summary>
     /// Copy the values from another settings object.
     /// </summary>

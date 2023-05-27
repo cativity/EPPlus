@@ -10,6 +10,7 @@
  *************************************************************************************************
   01/27/2020         EPPlus Software AB       Initial release EPPlus 5
  *************************************************************************************************/
+
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -20,16 +21,14 @@ using OfficeOpenXml.FormulaParsing.Excel.Functions.Metadata;
 
 namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Numeric;
 
-[FunctionMetadata(
-                     Category = ExcelFunctionCategory.MathAndTrig,
-                     EPPlusVersion = "4",
-                     Description = "Rounds a number down to the next integer")]
+[FunctionMetadata(Category = ExcelFunctionCategory.MathAndTrig, EPPlusVersion = "4", Description = "Rounds a number down to the next integer")]
 internal class CInt : ExcelFunction
 {
     public override CompileResult Execute(IEnumerable<FunctionArgument> arguments, ParsingContext context)
     {
         ValidateArguments(arguments, 1);
         double num = this.ArgToDecimal(arguments, 0);
+
         return this.CreateResult((int)System.Math.Floor(num), DataType.Integer);
     }
 }

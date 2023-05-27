@@ -10,6 +10,7 @@
  *************************************************************************************************
   07/29/2020         EPPlus Software AB       Threaded comments
  *************************************************************************************************/
+
 using OfficeOpenXml.Utils;
 using System;
 using System.Collections;
@@ -33,13 +34,12 @@ public class ExcelThreadedCommentCollection : XmlHelper, IEnumerable<ExcelThread
     }
 
     private readonly ExcelPackage _package;
+
     internal Uri Uri { get; set; }
+
     internal string RelId { get; set; }
-    internal Packaging.ZipPackagePart Part
-    {
-        get;
-        set;
-    }
+
+    internal Packaging.ZipPackagePart Part { get; set; }
 
     private readonly Dictionary<string, ExcelThreadedComment> _commentsIndex = new Dictionary<string, ExcelThreadedComment>();
     private readonly List<ExcelThreadedComment> _commentList = new List<ExcelThreadedComment>();
@@ -47,11 +47,7 @@ public class ExcelThreadedCommentCollection : XmlHelper, IEnumerable<ExcelThread
     /// <summary>
     /// A reference to the worksheet object
     /// </summary>
-    public ExcelWorksheet Worksheet
-    {
-        get;
-        set;
-    }
+    public ExcelWorksheet Worksheet { get; set; }
 
     /// <summary>
     /// Returns a <see cref="ExcelThreadedComment"/> by its index
@@ -61,10 +57,7 @@ public class ExcelThreadedCommentCollection : XmlHelper, IEnumerable<ExcelThread
     /// <exception cref="ArgumentOutOfRangeException">If the <paramref name="index"/> falls out of range</exception>
     public ExcelThreadedComment this[int index]
     {
-        get
-        {
-            return this._commentList[index];
-        }
+        get { return this._commentList[index]; }
     }
 
     /// <summary>
@@ -77,14 +70,14 @@ public class ExcelThreadedCommentCollection : XmlHelper, IEnumerable<ExcelThread
     {
         get
         {
-            if(!this._commentsIndex.ContainsKey(id))
+            if (!this._commentsIndex.ContainsKey(id))
             {
                 throw new ArgumentException("Id " + id + " was not present in the comments.");
             }
+
             return this._commentsIndex[id];
         }
     }
-
 
     /// <summary>
     /// Returns an enumerator that iterates through the collection.
@@ -94,6 +87,7 @@ public class ExcelThreadedCommentCollection : XmlHelper, IEnumerable<ExcelThread
     {
         return this._commentList.GetEnumerator();
     }
+
     /// <summary>
     /// Returns an enumerator that iterates through the collection.
     /// </summary>
@@ -108,13 +102,14 @@ public class ExcelThreadedCommentCollection : XmlHelper, IEnumerable<ExcelThread
     /// </summary>
     public int Count
     {
-        get { return this._commentList.Count; }   
+        get { return this._commentList.Count; }
     }
 
     private void RebuildIndex()
     {
         this._commentsIndex.Clear();
-        foreach(ExcelThreadedComment? comment in this._commentList)
+
+        foreach (ExcelThreadedComment? comment in this._commentList)
         {
             this._commentsIndex[comment.Id] = comment;
         }
@@ -123,7 +118,8 @@ public class ExcelThreadedCommentCollection : XmlHelper, IEnumerable<ExcelThread
     internal void Add(ExcelThreadedComment comment)
     {
         this._commentList.Add(comment);
-        if(this.TopNode.SelectSingleNode("tc:threadedComment[@id='" + comment.Id + "']", this.NameSpaceManager) == null)
+
+        if (this.TopNode.SelectSingleNode("tc:threadedComment[@id='" + comment.Id + "']", this.NameSpaceManager) == null)
         {
             this.TopNode.AppendChild(comment.TopNode);
         }
@@ -136,6 +132,7 @@ public class ExcelThreadedCommentCollection : XmlHelper, IEnumerable<ExcelThread
         int index = this._commentList.IndexOf(comment);
         this._commentList.Remove(comment);
         XmlNode? commentNode = this.TopNode.SelectSingleNode("tc:threadedComment[@id='" + comment.Id + "']", this.NameSpaceManager);
+
         if (commentNode != null)
         {
             this.TopNode.RemoveChild(commentNode);
@@ -144,6 +141,7 @@ public class ExcelThreadedCommentCollection : XmlHelper, IEnumerable<ExcelThread
             if (index == 0 && this._commentList.Count > 0)
             {
                 ((XmlElement)this._commentList[0].TopNode).RemoveAttribute("parentId");
+
                 for (int i = 1; i < this._commentList.Count; i++)
                 {
                     this._commentList[i].ParentId = this._commentList[0].Id;
@@ -154,7 +152,7 @@ public class ExcelThreadedCommentCollection : XmlHelper, IEnumerable<ExcelThread
 
             return true;
         }
-           
+
         return false;
     }
 
@@ -163,7 +161,7 @@ public class ExcelThreadedCommentCollection : XmlHelper, IEnumerable<ExcelThread
     /// </summary>
     internal void Clear()
     {
-        foreach(XmlNode? node in this._commentList.Select(x => x.TopNode))
+        foreach (XmlNode? node in this._commentList.Select(x => x.TopNode))
         {
             this.TopNode.RemoveChild(node);
         }

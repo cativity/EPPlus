@@ -10,7 +10,8 @@
  *************************************************************************************************
   01/27/2020         EPPlus Software AB       Initial release EPPlus 5
  *************************************************************************************************/
-    using System;
+
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -32,8 +33,8 @@ public class ExcelErrorValueException : Exception
     public ExcelErrorValueException(ExcelErrorValue error)
         : this(error.ToString(), error)
     {
-            
     }
+
     /// <summary>
     /// Constructor
     /// </summary>
@@ -44,6 +45,7 @@ public class ExcelErrorValueException : Exception
     {
         this.ErrorValue = error;
     }
+
     /// <summary>
     /// Constructor
     /// </summary>
@@ -51,7 +53,6 @@ public class ExcelErrorValueException : Exception
     public ExcelErrorValueException(eErrorType errorType)
         : this(ExcelErrorValue.Create(errorType))
     {
-            
     }
 
     /// <summary>

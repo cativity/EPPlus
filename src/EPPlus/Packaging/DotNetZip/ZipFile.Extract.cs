@@ -24,7 +24,6 @@
 // ------------------------------------------------------------------
 //
 
-
 using System;
 using System.IO;
 using System.Collections.Generic;
@@ -33,7 +32,6 @@ namespace OfficeOpenXml.Packaging.Ionic.Zip;
 
 internal partial class ZipFile
 {
-
     /// <summary>
     /// Extracts all of the items in the zip archive, to the specified path in the
     /// filesystem.  The path can be relative or fully-qualified.
@@ -151,8 +149,6 @@ internal partial class ZipFile
         this._InternalExtractAll(path, true);
     }
 
-
-
     /// <summary>
     /// Extracts all of the items in the zip archive, to the specified path in the
     /// filesystem, using the specified behavior when extraction would overwrite an
@@ -221,26 +217,27 @@ internal partial class ZipFile
         this._InternalExtractAll(path, true);
     }
 
-
     private void _InternalExtractAll(string path, bool overrideExtractExistingProperty)
     {
         bool header = this.Verbose;
         this._inExtractAll = true;
+
         try
         {
             this.OnExtractAllStarted(path);
 
             int n = 0;
+
             foreach (ZipEntry e in this._entries.Values)
             {
                 if (header)
                 {
-                    this.StatusMessageTextWriter.WriteLine("\n{1,-22} {2,-8} {3,4}   {4,-8}  {0}",
-                                                           "Name", "Modified", "Size", "Ratio", "Packed");
+                    this.StatusMessageTextWriter.WriteLine("\n{1,-22} {2,-8} {3,4}   {4,-8}  {0}", "Name", "Modified", "Size", "Ratio", "Packed");
 
                     this.StatusMessageTextWriter.WriteLine(new String('-', 72));
                     header = false;
                 }
+
                 if (this.Verbose)
                 {
                     this.StatusMessageTextWriter.WriteLine("{1,-22} {2,-8} {3,4:F0}%   {4,-8} {0}",
@@ -249,13 +246,16 @@ internal partial class ZipFile
                                                            e.UncompressedSize,
                                                            e.CompressionRatio,
                                                            e.CompressedSize);
+
                     if (!String.IsNullOrEmpty(e.Comment))
                     {
                         this.StatusMessageTextWriter.WriteLine("  Comment: {0}", e.Comment);
                     }
                 }
-                e.Password = this._Password;  // this may be null
+
+                e.Password = this._Password; // this may be null
                 this.OnExtractEntry(n, true, e, path);
+
                 if (overrideExtractExistingProperty)
                 {
                     e.ExtractExistingFile = this.ExtractExistingFile;
@@ -264,6 +264,7 @@ internal partial class ZipFile
                 e.Extract(path);
                 n++;
                 this.OnExtractEntry(n, false, e, path);
+
                 if (this._extractOperationCanceled)
                 {
                     break;
@@ -282,9 +283,7 @@ internal partial class ZipFile
                     // check if it is a directory
                     if (e.IsDirectory || e.FileName.EndsWith("/"))
                     {
-                        string outputFile = e.FileName.StartsWith("/")
-                                                ? Path.Combine(path, e.FileName.Substring(1))
-                                                : Path.Combine(path, e.FileName);
+                        string outputFile = e.FileName.StartsWith("/") ? Path.Combine(path, e.FileName.Substring(1)) : Path.Combine(path, e.FileName);
 
                         e._SetTimes(outputFile, false);
                     }
@@ -292,13 +291,10 @@ internal partial class ZipFile
 
                 this.OnExtractAllCompleted(path);
             }
-
         }
         finally
         {
             this._inExtractAll = false;
         }
     }
-
-
 }

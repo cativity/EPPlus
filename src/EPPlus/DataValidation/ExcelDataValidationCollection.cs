@@ -10,6 +10,7 @@
  *************************************************************************************************
   01/27/2020         EPPlus Software AB       Initial release EPPlus 5
  *************************************************************************************************/
+
 using OfficeOpenXml.Core.CellStore;
 using OfficeOpenXml.DataValidation.Contracts;
 using OfficeOpenXml.FormulaParsing.Excel.Functions.RefAndLookup;
@@ -66,6 +67,7 @@ public class ExcelDataValidationCollection : IEnumerable<IExcelDataValidation>
         this.InternalValidationEnabled = true;
         this.ReadDataValidations(xr);
     }
+
     /// <summary>
     /// Read data validation from xml via xr reader
     /// </summary>
@@ -73,9 +75,10 @@ public class ExcelDataValidationCollection : IEnumerable<IExcelDataValidation>
     {
         while (xr.Read())
         {
-            if(xr.LocalName != "dataValidation")
+            if (xr.LocalName != "dataValidation")
             {
                 xr.Read();
+
                 break;
             }
 
@@ -83,18 +86,24 @@ public class ExcelDataValidationCollection : IEnumerable<IExcelDataValidation>
             {
                 ExcelDataValidation? validation = ExcelDataValidationFactory.Create(xr, this._worksheet);
 
-                if(validation.Address.Addresses != null)
+                if (validation.Address.Addresses != null)
                 {
-                    for(int i = 0; i< validation.Address.Addresses.Count; i++) 
+                    for (int i = 0; i < validation.Address.Addresses.Count; i++)
                     {
-                        this._validationsRD.Merge(validation.Address.Addresses[i]._fromRow, validation.Address.Addresses[i]._fromCol,
-                                                  validation.Address.Addresses[i]._toRow, validation.Address.Addresses[i]._toCol, validation);
+                        this._validationsRD.Merge(validation.Address.Addresses[i]._fromRow,
+                                                  validation.Address.Addresses[i]._fromCol,
+                                                  validation.Address.Addresses[i]._toRow,
+                                                  validation.Address.Addresses[i]._toCol,
+                                                  validation);
                     }
                 }
                 else
                 {
-                    this._validationsRD.Merge(validation.Address._fromRow, validation.Address._fromCol, 
-                                              validation.Address._toRow, validation.Address._toCol, validation);
+                    this._validationsRD.Merge(validation.Address._fromRow,
+                                              validation.Address._fromCol,
+                                              validation.Address._toRow,
+                                              validation.Address._toCol,
+                                              validation);
                 }
 
                 this._validations.Add(validation);
@@ -113,14 +122,20 @@ public class ExcelDataValidationCollection : IEnumerable<IExcelDataValidation>
         {
             for (int i = 0; i < validation.Address.Addresses.Count; i++)
             {
-                this._validationsRD.Merge(validation.Address.Addresses[i]._fromRow, validation.Address.Addresses[i]._fromCol,
-                                          validation.Address.Addresses[i]._toRow, validation.Address.Addresses[i]._toCol, validation);
+                this._validationsRD.Merge(validation.Address.Addresses[i]._fromRow,
+                                          validation.Address.Addresses[i]._fromCol,
+                                          validation.Address.Addresses[i]._toRow,
+                                          validation.Address.Addresses[i]._toCol,
+                                          validation);
             }
         }
         else
         {
-            this._validationsRD.Merge(validation.Address._fromRow, validation.Address._fromCol,
-                                      validation.Address._toRow, validation.Address._toCol, validation);
+            this._validationsRD.Merge(validation.Address._fromRow,
+                                      validation.Address._fromCol,
+                                      validation.Address._toRow,
+                                      validation.Address._toCol,
+                                      validation);
         }
     }
 
@@ -135,6 +150,7 @@ public class ExcelDataValidationCollection : IEnumerable<IExcelDataValidation>
                     return true;
                 }
             }
+
             return false;
         }
         else
@@ -146,6 +162,7 @@ public class ExcelDataValidationCollection : IEnumerable<IExcelDataValidation>
     int GetCount(InternalValidationType type)
     {
         int validationCount = 0;
+
         for (int i = 0; i < this.Count; i++)
         {
             if (this._validations[i].InternalValidationType == type)
@@ -153,6 +170,7 @@ public class ExcelDataValidationCollection : IEnumerable<IExcelDataValidation>
                 validationCount++;
             }
         }
+
         return validationCount;
     }
 
@@ -161,7 +179,6 @@ public class ExcelDataValidationCollection : IEnumerable<IExcelDataValidation>
         return this.GetCount(InternalValidationType.DataValidation);
     }
 
-
     internal int GetExtLstCount()
     {
         return this.GetCount(InternalValidationType.ExtLst);
@@ -169,7 +186,6 @@ public class ExcelDataValidationCollection : IEnumerable<IExcelDataValidation>
 
     private static void OnValidationCountChanged()
     {
-
     }
 
     /// <summary>
@@ -188,6 +204,7 @@ public class ExcelDataValidationCollection : IEnumerable<IExcelDataValidation>
 
         // ensure that the new address does not collide with an existing validation.
         ExcelAddress? newAddress = new ExcelAddress(address);
+
         if (this._validations.Count > 0)
         {
             foreach (ExcelDataValidation? validation in this._validations)
@@ -196,10 +213,14 @@ public class ExcelDataValidationCollection : IEnumerable<IExcelDataValidation>
                 {
                     continue;
                 }
+
                 ExcelAddressBase.eAddressCollition result = validation.Address.Collide(newAddress);
+
                 if (result != ExcelAddressBase.eAddressCollition.No)
                 {
-                    throw new InvalidOperationException(string.Format("The address ({0}) collides with an existing validation ({1})", address, validation.Address.Address));
+                    throw new InvalidOperationException(string.Format("The address ({0}) collides with an existing validation ({1})",
+                                                                      address,
+                                                                      validation.Address.Address));
                 }
             }
         }
@@ -228,7 +249,7 @@ public class ExcelDataValidationCollection : IEnumerable<IExcelDataValidation>
     /// <param name="address"></param>
     internal void AddCopyOfDataValidation(ExcelDataValidation dv, ExcelWorksheet added, string address = null)
     {
-        if(address == null)
+        if (address == null)
         {
             this._validations.Add(dv.GetClone(added));
         }
@@ -246,6 +267,7 @@ public class ExcelDataValidationCollection : IEnumerable<IExcelDataValidation>
     public IExcelDataValidationAny AddAnyValidation(string address)
     {
         ExcelDataValidationAny? validation = new ExcelDataValidationAny(ExcelDataValidation.NewId(), address, this._worksheet);
+
         return (IExcelDataValidationAny)this.AddValidation(address, validation);
     }
 
@@ -257,6 +279,7 @@ public class ExcelDataValidationCollection : IEnumerable<IExcelDataValidation>
     public IExcelDataValidationInt AddIntegerValidation(string address)
     {
         ExcelDataValidationInt? validation = new ExcelDataValidationInt(ExcelDataValidation.NewId(), address, this._worksheet);
+
         return (IExcelDataValidationInt)this.AddValidation(address, validation);
     }
 
@@ -267,6 +290,7 @@ public class ExcelDataValidationCollection : IEnumerable<IExcelDataValidation>
     public IExcelDataValidationInt AddTextLengthValidation(string address)
     {
         ExcelDataValidationInt? validation = new ExcelDataValidationInt(ExcelDataValidation.NewId(), address, this._worksheet, true);
+
         return (IExcelDataValidationInt)this.AddValidation(address, validation);
     }
 
@@ -278,6 +302,7 @@ public class ExcelDataValidationCollection : IEnumerable<IExcelDataValidation>
     public IExcelDataValidationDecimal AddDecimalValidation(string address)
     {
         ExcelDataValidationDecimal? validation = new ExcelDataValidationDecimal(ExcelDataValidation.NewId(), address, this._worksheet);
+
         return (IExcelDataValidationDecimal)this.AddValidation(address, validation);
     }
 
@@ -289,6 +314,7 @@ public class ExcelDataValidationCollection : IEnumerable<IExcelDataValidation>
     public IExcelDataValidationList AddListValidation(string address)
     {
         ExcelDataValidationList? validation = new ExcelDataValidationList(ExcelDataValidation.NewId(), address, this._worksheet);
+
         return (IExcelDataValidationList)this.AddValidation(address, validation);
     }
 
@@ -299,6 +325,7 @@ public class ExcelDataValidationCollection : IEnumerable<IExcelDataValidation>
     public IExcelDataValidationDateTime AddDateTimeValidation(string address)
     {
         ExcelDataValidationDateTime? validation = new ExcelDataValidationDateTime(ExcelDataValidation.NewId(), address, this._worksheet);
+
         return (IExcelDataValidationDateTime)this.AddValidation(address, validation);
     }
 
@@ -309,6 +336,7 @@ public class ExcelDataValidationCollection : IEnumerable<IExcelDataValidation>
     public IExcelDataValidationTime AddTimeValidation(string address)
     {
         ExcelDataValidationTime? validation = new ExcelDataValidationTime(ExcelDataValidation.NewId(), address, this._worksheet);
+
         return (IExcelDataValidationTime)this.AddValidation(address, validation);
     }
 
@@ -319,6 +347,7 @@ public class ExcelDataValidationCollection : IEnumerable<IExcelDataValidation>
     public IExcelDataValidationCustom AddCustomValidation(string address)
     {
         ExcelDataValidationCustom? validation = new ExcelDataValidationCustom(ExcelDataValidation.NewId(), address, this._worksheet);
+
         return (IExcelDataValidationCustom)this.AddValidation(address, validation);
     }
 
@@ -339,17 +368,14 @@ public class ExcelDataValidationCollection : IEnumerable<IExcelDataValidation>
 
         foreach (ExcelAddressBase? individualAddress in internalAddress.GetAllAddresses())
         {
-            if (this._validationsRD.Exists(individualAddress._fromRow, individualAddress._fromCol,
-                                           individualAddress._toRow, individualAddress._toCol))
+            if (this._validationsRD.Exists(individualAddress._fromRow, individualAddress._fromCol, individualAddress._toRow, individualAddress._toCol))
             {
-                throw new InvalidOperationException($"A DataValidation already exists at {address}" +
-                                                    $" If using ClearDataValidation this may be because the sheet you're reading has multiple dataValidations on one cell.");
+                throw new InvalidOperationException($"A DataValidation already exists at {address}"
+                                                    + $" If using ClearDataValidation this may be because the sheet you're reading has multiple dataValidations on one cell.");
             }
 
-            this._validationsRD.Add(individualAddress._fromRow, individualAddress._fromCol,
-                                    individualAddress._toRow, individualAddress._toCol, validation);
+            this._validationsRD.Add(individualAddress._fromRow, individualAddress._fromCol, individualAddress._toRow, individualAddress._toCol, validation);
         }
-
     }
 
     /// <summary>
@@ -365,11 +391,7 @@ public class ExcelDataValidationCollection : IEnumerable<IExcelDataValidation>
     /// when they are added and when a workbook is saved. Since this takes some
     /// resources, it can be disabled for improve performance. 
     /// </summary>
-    public bool InternalValidationEnabled
-    {
-        get;
-        set;
-    }
+    public bool InternalValidationEnabled { get; set; }
 
     /// <summary>
     /// Index operator, returns by 0-based index
@@ -392,6 +414,7 @@ public class ExcelDataValidationCollection : IEnumerable<IExcelDataValidation>
         get
         {
             ExcelAddress? searchedAddress = new ExcelAddress(address);
+
             return this._validations.Find(x => x.Address.Collide(searchedAddress) != ExcelAddressBase.eAddressCollition.No);
         }
     }
@@ -415,12 +438,14 @@ public class ExcelDataValidationCollection : IEnumerable<IExcelDataValidation>
     public bool Remove(IExcelDataValidation item)
     {
         Require.Argument(item).IsNotNull("item");
+
         if (!(item is ExcelDataValidation))
         {
             throw new InvalidCastException("The supplied item must inherit OfficeOpenXml.DataValidation.ExcelDataValidation");
         }
 
         bool retVal = this._validations.Remove((ExcelDataValidation)item);
+
         if (retVal)
         {
             OnValidationCountChanged();
@@ -454,6 +479,7 @@ public class ExcelDataValidationCollection : IEnumerable<IExcelDataValidation>
     public void RemoveAll(Predicate<ExcelDataValidation> match)
     {
         List<ExcelDataValidation>? matches = this._validations.FindAll(match);
+
         foreach (ExcelDataValidation? m in matches)
         {
             if (!(m is ExcelDataValidation))
@@ -467,7 +493,7 @@ public class ExcelDataValidationCollection : IEnumerable<IExcelDataValidation>
 
     IEnumerator<IExcelDataValidation> IEnumerable<IExcelDataValidation>.GetEnumerator()
     {
-        for(int i = 0; i < this._validations.Count; i++)
+        for (int i = 0; i < this._validations.Count; i++)
         {
             yield return this._validations[i];
         }
@@ -492,6 +518,7 @@ public class ExcelDataValidationCollection : IEnumerable<IExcelDataValidation>
             }
         }
     }
+
     private void InsertRangeIntoRangeDictionary(ExcelAddressBase address, bool shiftRight)
     {
         if (shiftRight)
@@ -506,14 +533,14 @@ public class ExcelDataValidationCollection : IEnumerable<IExcelDataValidation>
 
     internal void ClearRangeDictionary(ExcelAddressBase address)
     {
-        ExcelAddressBase? internalAddress = new ExcelAddressBase (address.Address.Replace(" ", ","));
+        ExcelAddressBase? internalAddress = new ExcelAddressBase(address.Address.Replace(" ", ","));
+
         foreach (ExcelAddressBase? individualAddress in internalAddress.GetAllAddresses())
         {
-            this._validationsRD.DeleteRow(individualAddress._fromRow, individualAddress.Rows, 
-                                          individualAddress._fromCol, individualAddress._toCol, false);
+            this._validationsRD.DeleteRow(individualAddress._fromRow, individualAddress.Rows, individualAddress._fromCol, individualAddress._toCol, false);
         }
     }
-        
+
     internal void DeleteRangeDictionary(ExcelAddressBase address, bool shiftLeft)
     {
         if (address.Addresses == null)
@@ -528,6 +555,7 @@ public class ExcelDataValidationCollection : IEnumerable<IExcelDataValidation>
             }
         }
     }
+
     private void DeleteRangeInRangeDictionary(ExcelAddressBase address, bool shiftLeft)
     {
         if (shiftLeft)

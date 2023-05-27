@@ -10,6 +10,7 @@
  *************************************************************************************************
   04/30/2021         EPPlus Software AB       EPPlus 5.7
  *************************************************************************************************/
+
 using System.Xml;
 
 namespace OfficeOpenXml.Utils;
@@ -18,7 +19,9 @@ internal class XmlStreamHelper
 {
     internal static void ReadUntil(XmlTextReader reader, string elementName)
     {
-        do { if (!reader.Read())
+        do
+        {
+            if (!reader.Read())
             {
                 break;
             }

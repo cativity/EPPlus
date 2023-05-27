@@ -34,6 +34,7 @@ namespace OfficeOpenXml.Packaging.Ionic.Zip;
 internal static class SharedUtilities
 {
     /// private null constructor
+
     //private SharedUtilities() { }
 
     // workitem 8423
@@ -47,6 +48,7 @@ internal static class SharedUtilities
         long fileLength = 0L;
         FileShare fs = FileShare.ReadWrite;
 #if !NETCF
+
         // FileShare.Delete is not defined for the Compact Framework
         fs |= FileShare.Delete;
 #endif
@@ -54,9 +56,9 @@ internal static class SharedUtilities
         {
             fileLength = s.Length;
         }
+
         return fileLength;
     }
-
 
     [System.Diagnostics.Conditional("NETCF")]
     public static void Workaround_Ladybug318918(Stream s)
@@ -66,7 +68,6 @@ internal static class SharedUtilities
         // It's required only on NETCF.
         s.Flush();
     }
-
 
 #if LEGACY
         /// <summary>
@@ -120,8 +121,7 @@ internal static class SharedUtilities
         }
 #endif
 
-    private static System.Text.RegularExpressions.Regex doubleDotRegex1 =
-        new System.Text.RegularExpressions.Regex(@"^(.*/)?([^/\\.]+/\\.\\./)(.+)$");
+    private static System.Text.RegularExpressions.Regex doubleDotRegex1 = new System.Text.RegularExpressions.Regex(@"^(.*/)?([^/\\.]+/\\.\\./)(.+)$");
 
     private static string SimplifyFwdSlashPath(string path)
     {
@@ -134,9 +134,9 @@ internal static class SharedUtilities
 
         // Replace foo/anything/../bar with foo/bar
         path = doubleDotRegex1.Replace(path, "$1$3");
+
         return path;
     }
-
 
     /// <summary>
     /// Utility routine for transforming path names from filesystem format (on Windows that means backslashes) to
@@ -156,7 +156,7 @@ internal static class SharedUtilities
         // trim volume if necessary
         if (pathName.Length >= 2 && pathName[1] == ':' && pathName[2] == '\\')
         {
-            pathName =  pathName.Substring(3);
+            pathName = pathName.Substring(3);
         }
 
         // swap slashes
@@ -171,9 +171,8 @@ internal static class SharedUtilities
         return SimplifyFwdSlashPath(pathName);
     }
 
-
 #if (Core)
-    static System.Text.Encoding ibm437 = System.Text.Encoding.GetEncoding("UTF-8");   
+    static System.Text.Encoding ibm437 = System.Text.Encoding.GetEncoding("UTF-8");
 #else
         static System.Text.Encoding ibm437 = System.Text.Encoding.GetEncoding("IBM437");
 #endif
@@ -182,8 +181,10 @@ internal static class SharedUtilities
     internal static byte[] StringToByteArray(string value, System.Text.Encoding encoding)
     {
         byte[] a = encoding.GetBytes(value);
+
         return a;
     }
+
     internal static byte[] StringToByteArray(string value)
     {
         return StringToByteArray(value, ibm437);
@@ -208,46 +209,59 @@ internal static class SharedUtilities
     {
         // this form of the GetString() method is required for .NET CF compatibility
         string s = encoding.GetString(buf, 0, buf.Length);
+
         return s;
     }
-
 
     internal static int ReadSignature(Stream s)
     {
         int x = 0;
-        try { x = _ReadFourBytes(s, "n/a"); }
-        catch (BadReadException) { }
+
+        try
+        {
+            x = _ReadFourBytes(s, "n/a");
+        }
+        catch (BadReadException)
+        {
+        }
+
         return x;
     }
-
 
     internal static int ReadEntrySignature(Stream s)
     {
         // handle the case of ill-formatted zip archives - includes a data descriptor
         // when none is expected.
         int x = 0;
+
         try
         {
             x = _ReadFourBytes(s, "n/a");
+
             if (x == ZipConstants.ZipEntryDataDescriptorSignature)
             {
                 // advance past data descriptor - 12 bytes if not zip64
                 s.Seek(12, SeekOrigin.Current);
+
                 // workitem 10178
                 Workaround_Ladybug318918(s);
                 x = _ReadFourBytes(s, "n/a");
+
                 if (x != ZipConstants.ZipEntrySignature)
                 {
                     // Maybe zip64 was in use for the prior entry.
                     // Therefore, skip another 8 bytes.
                     s.Seek(8, SeekOrigin.Current);
+
                     // workitem 10178
                     Workaround_Ladybug318918(s);
                     x = _ReadFourBytes(s, "n/a");
+
                     if (x != ZipConstants.ZipEntrySignature)
                     {
                         // seek back to the first spot
                         s.Seek(-24, SeekOrigin.Current);
+
                         // workitem 10178
                         Workaround_Ladybug318918(s);
                         x = _ReadFourBytes(s, "n/a");
@@ -255,10 +269,12 @@ internal static class SharedUtilities
                 }
             }
         }
-        catch (BadReadException) { }
+        catch (BadReadException)
+        {
+        }
+
         return x;
     }
-
 
     internal static int ReadInt(Stream s)
     {
@@ -286,7 +302,7 @@ internal static class SharedUtilities
             //
             for (int i = 0; i < block.Length; i++)
             {
-                n+= s.Read(block, i, 1);
+                n += s.Read(block, i, 1);
             }
 #else
         int n = s.Read(block, 0, block.Length);
@@ -297,10 +313,9 @@ internal static class SharedUtilities
         }
 
         int data = unchecked((((((block[3] * 256) + block[2]) * 256) + block[1]) * 256) + block[0]);
+
         return data;
     }
-
-
 
     /// <summary>
     ///   Finds a signature in the zip stream. This is useful for finding
@@ -335,9 +350,11 @@ internal static class SharedUtilities
         targetBytes[3] = (byte)(SignatureToFind & 0x000000FF);
         byte[] batch = new byte[BATCH_SIZE];
         bool success = false;
+
         do
         {
             int n = stream.Read(batch, 0, batch.Length);
+
             if (n != 0)
             {
                 for (int i = 0; i < n; i++)
@@ -347,8 +364,10 @@ internal static class SharedUtilities
                         if (i >= BATCH_SIZE - 4)
                         {
                             stream.Seek(stream.Position - 4, SeekOrigin.Begin);
+
                             // workitem 10178
                             Workaround_Ladybug318918(stream);
+
                             break;
                         }
                         else if (batch[i + 1] == targetBytes[2] && batch[i + 2] == targetBytes[1] && batch[i + 3] == targetBytes[0])
@@ -356,13 +375,13 @@ internal static class SharedUtilities
                             stream.Seek(i - n + 4, SeekOrigin.Current);
                             Workaround_Ladybug318918(stream);
                             success = true;
+
                             break;
                         }
                         else
                         {
                             continue;
                         }
-
                     }
                 }
             }
@@ -380,9 +399,11 @@ internal static class SharedUtilities
         if (!success)
         {
             stream.Seek(startingPosition, SeekOrigin.Begin);
+
             // workitem 10178
             Workaround_Ladybug318918(stream);
-            return -1;  // or throw?
+
+            return -1; // or throw?
         }
 
         // subtract 4 for the signature.
@@ -390,7 +411,6 @@ internal static class SharedUtilities
 
         return bytesRead;
     }
-
 
     // If I have a time in the .NET environment, and I want to use it for
     // SetWastWriteTime() etc, then I need to adjust it for Win32.
@@ -402,6 +422,7 @@ internal static class SharedUtilities
         }
 
         DateTime adjusted = time;
+
         if (DateTime.Now.IsDaylightSavingTime() && !time.IsDaylightSavingTime())
         {
             adjusted = time - new TimeSpan(1, 0, 0);
@@ -432,13 +453,12 @@ internal static class SharedUtilities
         }
 #endif
 
-
     internal static DateTime PackedToDateTime(Int32 packedDateTime)
     {
         // workitem 7074 & workitem 7170
         if (packedDateTime == 0xFFFF || packedDateTime == 0)
         {
-            return new DateTime(1995, 1, 1, 0, 0, 0, 0);  // return a fixed date when none is supplied.
+            return new DateTime(1995, 1, 1, 0, 0, 0, 0); // return a fixed date when none is supplied.
         }
 
         Int16 packedTime = unchecked((Int16)(packedDateTime & 0x0000ffff));
@@ -450,21 +470,37 @@ internal static class SharedUtilities
 
         int hour = (packedTime & 0xF800) >> 11;
         int minute = (packedTime & 0x07E0) >> 5;
+
         //int second = packedTime & 0x001F;
         int second = (packedTime & 0x001F) * 2;
 
         // validation and error checking.
         // this is not foolproof but will catch most errors.
-        if (second >= 60) { minute++; second = 0; }
-        if (minute >= 60) { hour++; minute = 0; }
-        if (hour >= 24) { day++; hour = 0; }
+        if (second >= 60)
+        {
+            minute++;
+            second = 0;
+        }
+
+        if (minute >= 60)
+        {
+            hour++;
+            minute = 0;
+        }
+
+        if (hour >= 24)
+        {
+            day++;
+            hour = 0;
+        }
 
         DateTime d = DateTime.Now;
-        bool success= false;
+        bool success = false;
+
         try
         {
             d = new DateTime(year, month, day, hour, minute, second, 0);
-            success= true;
+            success = true;
         }
         catch (ArgumentOutOfRangeException)
         {
@@ -473,19 +509,21 @@ internal static class SharedUtilities
                 try
                 {
                     d = new DateTime(1980, 1, 1, hour, minute, second, 0);
-                    success= true;
+                    success = true;
                 }
                 catch (ArgumentOutOfRangeException)
                 {
                     try
                     {
                         d = new DateTime(1980, 1, 1, 0, 0, 0, 0);
-                        success= true;
+                        success = true;
                     }
-                    catch (ArgumentOutOfRangeException) { }
-
+                    catch (ArgumentOutOfRangeException)
+                    {
+                    }
                 }
             }
+
             // workitem 8814
             // my god, I can't believe how many different ways applications
             // can mess up a simple date format.
@@ -544,32 +582,36 @@ internal static class SharedUtilities
                     }
 
                     d = new DateTime(year, month, day, hour, minute, second, 0);
-                    success= true;
+                    success = true;
                 }
-                catch (ArgumentOutOfRangeException) { }
+                catch (ArgumentOutOfRangeException)
+                {
+                }
             }
         }
+
         if (!success)
         {
             string msg = String.Format("y({0}) m({1}) d({2}) h({3}) m({4}) s({5})", year, month, day, hour, minute, second);
-            throw new ZipException(String.Format("Bad date/time format in the zip file. ({0})", msg));
 
+            throw new ZipException(String.Format("Bad date/time format in the zip file. ({0})", msg));
         }
+
         // workitem 6191
         //d = AdjustTime_Reverse(d);
         d = DateTime.SpecifyKind(d, DateTimeKind.Local);
+
         return d;
     }
 
-
-    internal
-        static Int32 DateTimeToPacked(DateTime time)
+    internal static Int32 DateTimeToPacked(DateTime time)
     {
         // The time is passed in here only for purposes of writing LastModified to the
         // zip archive. It should always be LocalTime, but we convert anyway.  And,
         // since the time is being written out, it needs to be adjusted.
 
         time = time.ToLocalTime();
+
         // workitem 7966
         //time = AdjustTime_Forward(time);
 
@@ -578,9 +620,9 @@ internal static class SharedUtilities
         UInt16 packedTime = (UInt16)(((time.Second / 2) & 0x0000001F) | ((time.Minute << 5) & 0x000007E0) | ((time.Hour << 11) & 0x0000F800));
 
         Int32 result = (Int32)((UInt32)(packedDate << 16) | packedTime);
+
         return result;
     }
-
 
     /// <summary>
     ///   Create a pseudo-random filename, suitable for use as a temporary
@@ -598,9 +640,7 @@ internal static class SharedUtilities
     ///   chosen characters, and creates that file.
     /// </para>
     /// </remarks>
-    public static void CreateAndOpenUniqueTempFile(string dir,
-                                                   out Stream fs,
-                                                   out string filename)
+    public static void CreateAndOpenUniqueTempFile(string dir, out Stream fs, out string filename)
     {
         // workitem 9763
         // http://dotnet.org.za/markn/archive/2006/04/15/51594.aspx
@@ -611,6 +651,7 @@ internal static class SharedUtilities
             {
                 filename = Path.Combine(dir, InternalGetTempFileName());
                 fs = new FileStream(filename, FileMode.CreateNew);
+
                 return;
             }
             catch (IOException)
@@ -621,6 +662,7 @@ internal static class SharedUtilities
                 }
             }
         }
+
         throw new IOException();
     }
 
@@ -658,7 +700,6 @@ internal static class SharedUtilities
 
 #endif
 
-
     /// <summary>
     /// Workitem 7889: handle ERROR_LOCK_VIOLATION during read
     /// </summary>
@@ -670,9 +711,10 @@ internal static class SharedUtilities
     {
         int n = 0;
         bool done = false;
-//#if !NETCF && !SILVERLIGHT
-//            int retries = 0;
-//#endif
+
+        //#if !NETCF && !SILVERLIGHT
+        //            int retries = 0;
+        //#endif
         do
         {
             try
@@ -710,17 +752,17 @@ internal static class SharedUtilities
                 // GetHRForException, and cannot do the subtle handling of
                 // ERROR_LOCK_VIOLATION.  Just bail.
                 throw;
+
                 //}
             }
 #endif
-        }
-        while (!done);
+        } while (!done);
 
         return n;
     }
 
-
 #if !NETCF
+
     // workitem 8009
     //
     // This method must remain separate.
@@ -740,14 +782,12 @@ internal static class SharedUtilities
     // generates the JIT-compile time exception.
     //
 #endif
+
     //private static uint _HRForException(System.Exception ex1)
     //{
     //    return unchecked((uint)System.Runtime.InteropServices.Marshal.GetHRForException(ex1));
     //}
-
 }
-
-
 
 /// <summary>
 ///   A decorator stream. It wraps another stream, and performs bookkeeping
@@ -803,6 +843,7 @@ internal class CountingStream : Stream
         : base()
     {
         this._s = stream;
+
         try
         {
             this._initialOffset = this._s.Position;
@@ -818,10 +859,7 @@ internal class CountingStream : Stream
     /// </summary>
     public Stream WrappedStream
     {
-        get
-        {
-            return this._s;
-        }
+        get { return this._s; }
     }
 
     /// <summary>
@@ -858,6 +896,7 @@ internal class CountingStream : Stream
     public void Adjust(Int64 delta)
     {
         this._bytesWritten -= delta;
+
         if (this._bytesWritten < 0)
         {
             throw new InvalidOperationException();
@@ -880,6 +919,7 @@ internal class CountingStream : Stream
     {
         int n = this._s.Read(buffer, offset, count);
         this._bytesRead += n;
+
         return n;
     }
 
@@ -937,7 +977,7 @@ internal class CountingStream : Stream
     /// </summary>
     public override long Length
     {
-        get { return this._s.Length; }   // bytesWritten??
+        get { return this._s.Length; } // bytesWritten??
     }
 
     /// <summary>
@@ -949,7 +989,6 @@ internal class CountingStream : Stream
         get { return this._initialOffset + this._bytesWritten; }
     }
 
-
     /// <summary>
     ///   The Position of the stream.
     /// </summary>
@@ -959,6 +998,7 @@ internal class CountingStream : Stream
         set
         {
             this._s.Seek(value, SeekOrigin.Begin);
+
             // workitem 10178
             SharedUtilities.Workaround_Ladybug318918(this._s);
         }

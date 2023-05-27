@@ -26,6 +26,7 @@
  *******************************************************************************
   01/27/2020         EPPlus Software AB       Initial release EPPlus 5
  *******************************************************************************/
+
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using OfficeOpenXml;
 using OfficeOpenXml.Drawing;
@@ -39,11 +40,13 @@ namespace EPPlusTest.Drawing;
 public class BorderTest : TestBase
 {
     static ExcelPackage _pck;
+
     [ClassInitialize]
     public static void Init(TestContext context)
     {
         _pck = OpenPackage("DrawingBorder.xlsx", true);
     }
+
     [ClassCleanup]
     public static void Cleanup()
     {
@@ -67,10 +70,11 @@ public class BorderTest : TestBase
         shape.Border.Fill.Color = Color.Red;
 
         //Assert
-        Assert.AreEqual(eFillStyle.SolidFill,shape.Border.Fill.Style);
+        Assert.AreEqual(eFillStyle.SolidFill, shape.Border.Fill.Style);
         Assert.IsNotNull(shape.Border.Fill.SolidFill);
         Assert.AreEqual(Color.Red.ToArgb(), shape.Border.Fill.SolidFill.Color.RgbColor.Color.ToArgb());
     }
+
     [TestMethod]
     public void BorderWidthStyle()
     {
@@ -93,6 +97,7 @@ public class BorderTest : TestBase
         Assert.AreEqual(eLineStyle.Dot, shape.Border.LineStyle);
         Assert.AreEqual(eCompundLineStyle.TripleThinThickThin, shape.Border.CompoundLineStyle);
     }
+
     [TestMethod]
     public void BorderAlignRoundJoin()
     {
@@ -119,6 +124,7 @@ public class BorderTest : TestBase
         Assert.AreEqual(eLineJoin.Round, shape.Border.Join);
         Assert.AreEqual(eLineCap.Square, shape.Border.LineCap);
     }
+
     [TestMethod]
     public void BorderMitterJoin()
     {
@@ -134,7 +140,7 @@ public class BorderTest : TestBase
         shape.Border.CompoundLineStyle = eCompundLineStyle.Double;
         shape.Border.LineCap = eLineCap.Flat;
         shape.Border.Join = eLineJoin.Bevel;
-        shape.Border.MiterJoinLimit=10000;  //Sets join to Miter
+        shape.Border.MiterJoinLimit = 10000; //Sets join to Miter
 
         //Assert
         Assert.AreEqual(eFillStyle.SolidFill, shape.Border.Fill.Style);
@@ -145,6 +151,7 @@ public class BorderTest : TestBase
         Assert.AreEqual(10000, shape.Border.MiterJoinLimit);
         Assert.AreEqual(eLineCap.Flat, shape.Border.LineCap);
     }
+
     [TestMethod]
     public void BorderEnds()
     {
@@ -173,5 +180,4 @@ public class BorderTest : TestBase
         Assert.AreEqual(eEndSize.Medium, shape.Border.TailEnd.Width);
         Assert.AreEqual(eEndSize.Large, shape.Border.TailEnd.Height);
     }
-
 }

@@ -10,6 +10,7 @@
  *************************************************************************************************
   01/27/2020         EPPlus Software AB       Initial release EPPlus 5
  *************************************************************************************************/
+
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -26,10 +27,10 @@ internal class RangeAddressFactory
     private readonly IndexToAddressTranslator _indexToAddressTranslator;
 
     internal RangeAddressFactory(ExcelDataProvider excelDataProvider)
-        : this(excelDataProvider, new AddressTranslator(excelDataProvider), new IndexToAddressTranslator(excelDataProvider, ExcelReferenceType.RelativeRowAndColumn))
+        : this(excelDataProvider,
+               new AddressTranslator(excelDataProvider),
+               new IndexToAddressTranslator(excelDataProvider, ExcelReferenceType.RelativeRowAndColumn))
     {
-           
-            
     }
 
     internal RangeAddressFactory(ExcelDataProvider excelDataProvider, AddressTranslator addressTranslator, IndexToAddressTranslator indexToAddressTranslator)
@@ -51,12 +52,7 @@ internal class RangeAddressFactory
     {
         return new RangeAddress()
         {
-            Address = this._indexToAddressTranslator.ToAddress(col, row),
-            Worksheet = worksheetName,
-            FromCol = col,
-            ToCol = col,
-            FromRow = row,
-            ToRow = row
+            Address = this._indexToAddressTranslator.ToAddress(col, row), Worksheet = worksheetName, FromCol = col, ToCol = col, FromRow = row, ToRow = row
         };
     }
 
@@ -69,10 +65,12 @@ internal class RangeAddressFactory
     public RangeAddress Create(string worksheetName, string address)
     {
         Require.That(address).Named("range").IsNotNullOrEmpty();
+
         //var addressInfo = ExcelAddressInfo.Parse(address);
-        ExcelAddressBase? adr = new ExcelAddressBase(address);  
+        ExcelAddressBase? adr = new ExcelAddressBase(address);
         string? sheet = string.IsNullOrEmpty(adr.WorkSheetName) ? worksheetName : adr.WorkSheetName;
         ExcelCellAddress? dim = this._excelDataProvider.GetDimensionEnd(sheet);
+
         RangeAddress? rangeAddress = new RangeAddress()
         {
             Address = adr.Address,
@@ -97,15 +95,19 @@ internal class RangeAddressFactory
     public RangeAddress Create(string range)
     {
         Require.That(range).Named("range").IsNotNullOrEmpty();
+
         //var addressInfo = ExcelAddressInfo.Parse(range);
         ExcelAddressBase? adr = new ExcelAddressBase(range);
+
         if (adr.Table != null)
         {
             ExcelAddressBase? a = this._excelDataProvider.GetRange(adr.WorkSheetName, range).Address;
+
             //Convert the Table-style Address to an A1C1 address
             adr = new ExcelAddressBase(a._fromRow, a._fromCol, a._toRow, a._toCol);
-            adr._ws = a._ws;                
+            adr._ws = a._ws;
         }
+
         RangeAddress? rangeAddress = new RangeAddress()
         {
             Address = adr.Address,
@@ -115,7 +117,7 @@ internal class RangeAddressFactory
             ToRow = adr._toRow,
             ToCol = adr._toCol
         };
-           
+
         //if (addressInfo.IsMultipleCells)
         //{
         //    HandleMultipleCellAddress(rangeAddress, addressInfo);

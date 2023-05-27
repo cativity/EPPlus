@@ -10,6 +10,7 @@
  *************************************************************************************************
   01/27/2020         EPPlus Software AB       Initial release EPPlus 5
  *************************************************************************************************/
+
 namespace OfficeOpenXml.Drawing.Chart;
 
 /// <summary>
@@ -21,10 +22,12 @@ public enum eDisplayBlanksAs
     /// Blank values will be left as a gap
     /// </summary>
     Gap,
+
     /// <summary>
     /// Blank values will be spanned with a line for line charts
     /// </summary>
     Span,
+
     /// <summary>
     /// Blank values will be treated as zero
     /// </summary>

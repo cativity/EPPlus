@@ -10,6 +10,7 @@
  *************************************************************************************************
   01/27/2020         EPPlus Software AB       Initial release EPPlus 5
  *************************************************************************************************/
+
 using System;
 using System.Collections.Generic;
 using System.Globalization;
@@ -48,7 +49,6 @@ internal class FunctionExpression : AtomicExpression
     private readonly FunctionCompilerFactory _functionCompilerFactory;
     private readonly bool _isNegated;
 
-
     /// <summary>
     /// Compiles the expression
     /// </summary>
@@ -67,41 +67,49 @@ internal class FunctionExpression : AtomicExpression
             }
 
             ExcelFunction? function = this._parsingContext.Configuration.FunctionRepository.GetFunction(funcName);
+
             if (function == null)
             {
                 // Handle unrecognized func name
                 FunctionsPipeline? pipeline = new FunctionsPipeline(this._parsingContext, this.Children);
                 function = pipeline.FindFunction(funcName);
-                if(function == null)
+
+                if (function == null)
                 {
                     if (this._parsingContext.Debug)
                     {
                         this._parsingContext.Configuration.Logger.Log(this._parsingContext, string.Format("'{0}' is not a supported function", funcName));
                     }
+
                     return new CompileResult(ExcelErrorValue.Create(eErrorType.Name), DataType.ExcelError);
                 }
             }
+
             if (this._parsingContext.Debug)
             {
                 this._parsingContext.Configuration.Logger.LogFunction(funcName);
             }
+
             FunctionCompiler? compiler = this._functionCompilerFactory.Create(function);
             CompileResult? result = compiler.Compile(this.HasChildren ? this.Children : Enumerable.Empty<Expression>());
+
             if (this._isNegated)
             {
                 if (!result.IsNumeric)
                 {
                     if (this._parsingContext.Debug)
                     {
-                        string? msg = string.Format("Trying to negate a non-numeric value ({0}) in function '{1}'",
-                                                    result.Result, funcName);
+                        string? msg = string.Format("Trying to negate a non-numeric value ({0}) in function '{1}'", result.Result, funcName);
 
                         this._parsingContext.Configuration.Logger.Log(this._parsingContext, msg);
                     }
+
                     return new CompileResult(ExcelErrorValue.Create(eErrorType.Value), DataType.ExcelError);
                 }
+
                 return new CompileResult(result.ResultNumeric * -1, result.DataType);
             }
+
             return result;
         }
         catch (ExcelErrorValueException e)
@@ -110,9 +118,9 @@ internal class FunctionExpression : AtomicExpression
             {
                 this._parsingContext.Configuration.Logger.Log(this._parsingContext, e);
             }
+
             return new CompileResult(e.ErrorValue, DataType.ExcelError);
         }
-            
     }
 
     /// <summary>
@@ -129,10 +137,7 @@ internal class FunctionExpression : AtomicExpression
     /// </summary>
     public override bool HasChildren
     {
-        get
-        {
-            return this.Children.Any() && this.Children.First().Children.Any();
-        }
+        get { return this.Children.Any() && this.Children.First().Children.Any(); }
     }
 
     /// <summary>
@@ -143,6 +148,7 @@ internal class FunctionExpression : AtomicExpression
     public override Expression AddChild(Expression child)
     {
         this.Children.Last().AddChild(child);
+
         return child;
     }
 }

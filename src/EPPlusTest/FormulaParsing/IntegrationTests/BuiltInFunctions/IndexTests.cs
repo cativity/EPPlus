@@ -14,6 +14,7 @@ namespace EPPlusTest.FormulaParsing.IntegrationTests.BuiltInFunctions;
 public class IndexTests
 {
     private const string InputWorksheet = "Inputs";
+
     private const string ExtractWorksheet = "Test Formulas";
     /*
     [TestCase(1.0, 1.0, 100.1)]
@@ -112,14 +113,9 @@ public class IndexTests
         using ExcelPackage? package = CreateExcelPackage();
         package.Workbook.Worksheets[InputWorksheet].Cells["B1"].Value = row;
         package.Workbook.Worksheets[InputWorksheet].Cells["B2"].Value = column;
-        package.Workbook.Calculate(
-                                   new ExcelCalculationOption
-                                   {
-                                       PrecisionAndRoundingStrategy = PrecisionAndRoundingStrategy.Excel
-                                   });
+        package.Workbook.Calculate(new ExcelCalculationOption { PrecisionAndRoundingStrategy = PrecisionAndRoundingStrategy.Excel });
         object? extractedIndexValue = package.Workbook.Worksheets[ExtractWorksheet].Cells["B1"].Value;
         Assert.AreEqual(expectedValue, Math.Round((double)extractedIndexValue, 10));
-
     }
 
     private static ExcelPackage CreateExcelPackage()
@@ -129,7 +125,8 @@ public class IndexTests
         ExcelWorksheet? sheet1 = package.Workbook.Worksheets.Add("LookupData");
         double b = 100d;
         double c = 200d;
-        for(int x = 1; x < 16; x++)
+
+        for (int x = 1; x < 16; x++)
         {
             b += 0.1;
             c += 0.1;
@@ -137,6 +134,7 @@ public class IndexTests
             sheet1.Cells["B" + x].Value = b;
             sheet1.Cells["C" + x].Value = c;
         }
+
         ExcelWorksheet? sheet2 = package.Workbook.Worksheets.Add(ExtractWorksheet);
         sheet2.Cells["B1:C15"].Formula = "INDEX(Sample_Index_Data;Row_Pos;Col_Pos)";
 
@@ -145,7 +143,7 @@ public class IndexTests
         package.Workbook.Names.Add("Col_Pos", sheet3.Cells["B2"]);
         package.Workbook.Names.Add("Row_Pos", sheet3.Cells["B1"]);
         package.Workbook.Names.Add("Sample_Index_Data", sheet1.Cells["B1:C15"]);
+
         return package;
     }
-
 }

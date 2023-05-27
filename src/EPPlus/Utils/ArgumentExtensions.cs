@@ -23,7 +23,6 @@ namespace OfficeOpenXml.Utils;
 /// </summary>
 public static class ArgumentExtensions
 {
-
     /// <summary>
     /// Throws an ArgumentNullException if argument is null
     /// </summary>
@@ -35,6 +34,7 @@ public static class ArgumentExtensions
         where T : class
     {
         argumentName = string.IsNullOrEmpty(argumentName) ? "value" : argumentName;
+
         if (argument.Value == null)
         {
             throw new ArgumentNullException(argumentName);

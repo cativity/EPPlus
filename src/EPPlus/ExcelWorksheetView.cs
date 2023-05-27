@@ -10,6 +10,7 @@
  *************************************************************************************************
   01/27/2020         EPPlus Software AB       Initial release EPPlus 5
  *************************************************************************************************/
+
 using OfficeOpenXml.Drawing;
 using OfficeOpenXml.Utils.Extensions;
 using System;
@@ -29,16 +30,19 @@ public enum ePaneState
     /// Panes are frozen, but were not split being frozen.In this state, when the panes are unfrozen again, a single pane results, with no split. In this state, the split bars are not adjustable.
     /// </summary>
     Frozen,
+
     /// <summary>
     /// Frozen Split
     /// Panes are frozen and were split before being frozen. In this state, when the panes are unfrozen again, the split remains, but is adjustable.
     /// </summary>
     FrozenSplit,
+
     /// <summary>
     /// Panes are split, but not frozen.In this state, the split bars are adjustable by the user.
     /// </summary>
     Split
 }
+
 /// <summary>
 /// The position of the pane.
 /// </summary>
@@ -50,17 +54,20 @@ public enum ePanePosition
     /// Also used when the worksheet is horizontaly split only, specifying this is the bottom pane.
     /// </summary>
     BottomLeft,
+
     /// <summary>
     /// Bottom Right Pane. 
     /// This property is only used when the worksheet has both vertical and horizontal splits.
     /// </summary>
     BottomRight,
+
     /// <summary>
     /// Top Left Pane.
     /// Used when worksheet view has both vertical and horizontal splits.
     /// Also used when the worksheet is horizontaly split only, specifying this is the top pane.
     /// </summary>
     TopLeft,
+
     /// <summary>
     /// Top Right Pane
     /// Used when the worksheet view has both vertical and horizontal splits.
@@ -79,37 +86,27 @@ public class ExcelWorksheetView : XmlHelper
     /// </summary>
     public class ExcelWorksheetViewPaneSettings : XmlHelper
     {
-        internal ExcelWorksheetViewPaneSettings(XmlNamespaceManager ns, XmlNode topNode) :
-            base(ns, topNode)
+        internal ExcelWorksheetViewPaneSettings(XmlNamespaceManager ns, XmlNode topNode)
+            : base(ns, topNode)
         {
         }
+
         /// <summary>
         /// The state of the pane.
         /// </summary>
         public ePaneState State
         {
-            get
-            {
-                return this.GetXmlEnumNull<ePaneState>("@state", ePaneState.Split).Value;
-            }
-            internal set
-            {
-                this.SetXmlNodeString("@state", value.ToEnumString());
-            }
+            get { return this.GetXmlEnumNull<ePaneState>("@state", ePaneState.Split).Value; }
+            internal set { this.SetXmlNodeString("@state", value.ToEnumString()); }
         }
+
         /// <summary>
         /// The active pane
         /// </summary>
         public ePanePosition ActivePanePosition
         {
-            get
-            {
-                return this.GetXmlEnumNull<ePanePosition>("@activePane", ePanePosition.TopLeft).Value;
-            }
-            set
-            {
-                this.SetXmlNodeString("@activePane", value.ToEnumString());
-            }
+            get { return this.GetXmlEnumNull<ePanePosition>("@activePane", ePanePosition.TopLeft).Value; }
+            set { this.SetXmlNodeString("@activePane", value.ToEnumString()); }
         }
 
         /// <summary>
@@ -117,38 +114,25 @@ public class ExcelWorksheetView : XmlHelper
         /// </summary>
         public double XSplit
         {
-            get
-            {
-                return this.GetXmlNodeDouble("@xSplit");
-            }
-            set
-            {
-                this.SetXmlNodeDouble("@xSplit", value, false);
-            }
+            get { return this.GetXmlNodeDouble("@xSplit"); }
+            set { this.SetXmlNodeDouble("@xSplit", value, false); }
         }
+
         /// <summary>
         /// The vertical position of the split. 1/20 of a point if the pane is split. Number of rows in the left pane if this pane is frozen.
         /// </summary>
         public double YSplit
         {
-            get
-            {
-                return this.GetXmlNodeDouble("@ySplit");
-            }
-            set
-            {
-                this.SetXmlNodeDouble("@ySplit", value, false);
-            }
+            get { return this.GetXmlNodeDouble("@ySplit"); }
+            set { this.SetXmlNodeDouble("@ySplit", value, false); }
         }
+
         /// <summary>
         /// 
         /// </summary>
         public string TopLeftCell
         {
-            get
-            {
-                return this.GetXmlNodeString("@topLeftCell");
-            }
+            get { return this.GetXmlNodeString("@topLeftCell"); }
             set
             {
                 if (string.IsNullOrEmpty(value))
@@ -165,25 +149,30 @@ public class ExcelWorksheetView : XmlHelper
                 }
             }
         }
+
         internal static XmlNode CreatePaneElement(XmlNamespaceManager nameSpaceManager, XmlNode topNode)
         {
             XmlNode? node = topNode.SelectSingleNode("d:pane", nameSpaceManager);
+
             if (node == null)
             {
                 node = topNode.OwnerDocument.CreateElement("pane", ExcelPackage.schemaMain);
                 topNode.PrependChild(node);
             }
+
             return node;
         }
     }
+
     /// <summary>
     /// The selection properties for panes after a freeze or split.
     /// </summary>
     public class ExcelWorksheetPanes : XmlHelper
     {
         XmlElement _selectionNode = null;
-        internal ExcelWorksheetPanes(XmlNamespaceManager ns, XmlNode topNode) :
-            base(ns, topNode)
+
+        internal ExcelWorksheetPanes(XmlNamespaceManager ns, XmlNode topNode)
+            : base(ns, topNode)
         {
             if (topNode.Name == "selection")
             {
@@ -192,6 +181,7 @@ public class ExcelWorksheetView : XmlHelper
         }
 
         const string _activeCellPath = "@activeCell";
+
         /// <summary>
         /// Set the active cell. Must be set within the SelectedRange.
         /// </summary>
@@ -200,15 +190,19 @@ public class ExcelWorksheetView : XmlHelper
             get
             {
                 string address = this.GetXmlNodeString(_activeCellPath);
+
                 if (address == "")
                 {
                     return "A1";
                 }
+
                 return address;
             }
             set
             {
-                int toCol, toRow;
+                int toCol,
+                    toRow;
+
                 if (this._selectionNode == null)
                 {
                     this.CreateSelectionElement();
@@ -216,6 +210,7 @@ public class ExcelWorksheetView : XmlHelper
 
                 ExcelCellBase.GetRowColFromAddress(value, out int fromRow, out int fromCol, out toRow, out toCol);
                 this.SetXmlNodeString(_activeCellPath, value);
+
                 if (((XmlElement)this.TopNode).GetAttribute("sqref") == "")
                 {
                     this.SelectedRange = ExcelCellBase.GetAddress(fromRow, fromCol);
@@ -226,31 +221,29 @@ public class ExcelWorksheetView : XmlHelper
                 }
             }
         }
+
         /// <summary>
         /// The position of the pane.
         /// </summary>
         public ePanePosition Position
         {
-            get
-            {
-                return this.GetXmlEnumNull<ePanePosition>("@pane", ePanePosition.TopLeft).Value;
-            }
+            get { return this.GetXmlEnumNull<ePanePosition>("@pane", ePanePosition.TopLeft).Value; }
         }
+
         /// <summary>
         /// 
         /// </summary>
-        public int ActiveCellId
-        {
-            get;
-            set;
-        }
+        public int ActiveCellId { get; set; }
+
         private void CreateSelectionElement()
         {
             this._selectionNode = this.TopNode.OwnerDocument.CreateElement("selection", ExcelPackage.schemaMain);
             this.TopNode.AppendChild(this._selectionNode);
             this.TopNode = this._selectionNode;
         }
+
         const string _selectionRangePath = "@sqref";
+
         /// <summary>
         /// Selected Cells. Used in combination with ActiveCell
         /// </summary>        
@@ -259,15 +252,19 @@ public class ExcelWorksheetView : XmlHelper
             get
             {
                 string address = this.GetXmlNodeString(_selectionRangePath);
+
                 if (address == "")
                 {
                     return "A1";
                 }
+
                 return address;
             }
             set
             {
-                int toCol, toRow;
+                int toCol,
+                    toRow;
+
                 if (this._selectionNode == null)
                 {
                     this.CreateSelectionElement();
@@ -275,6 +272,7 @@ public class ExcelWorksheetView : XmlHelper
 
                 ExcelCellBase.GetRowColFromAddress(value, out int fromRow, out int fromCol, out toRow, out toCol);
                 this.SetXmlNodeString(_selectionRangePath, value);
+
                 if (((XmlElement)this.TopNode).GetAttribute("activeCell") == "")
                 {
                     this.ActiveCell = ExcelCellBase.GetAddress(fromRow, fromCol);
@@ -285,19 +283,20 @@ public class ExcelWorksheetView : XmlHelper
                 }
             }
         }
-
     }
+
     private ExcelWorksheet _worksheet;
 
     #region ExcelWorksheetView Constructor
+
     /// <summary>
     /// Creates a new ExcelWorksheetView which provides access to all the view states of the worksheet.
     /// </summary>
     /// <param name="ns"></param>
     /// <param name="node"></param>
     /// <param name="xlWorksheet"></param>
-    internal ExcelWorksheetView(XmlNamespaceManager ns, XmlNode node, ExcelWorksheet xlWorksheet) :
-        base(ns, node)
+    internal ExcelWorksheetView(XmlNamespaceManager ns, XmlNode node, ExcelWorksheet xlWorksheet)
+        : base(ns, node)
     {
         this._worksheet = xlWorksheet;
         this.SchemaNodeOrder = new string[] { "sheetViews", "sheetView", "pane", "selection" };
@@ -310,6 +309,7 @@ public class ExcelWorksheetView : XmlHelper
     private void SetPaneSettings()
     {
         XmlNode? n = this.GetNode("d:pane");
+
         if (n == null)
         {
             this.PaneSettings = null;
@@ -321,9 +321,11 @@ public class ExcelWorksheetView : XmlHelper
     }
 
     #endregion
+
     private ExcelWorksheetPanes[] LoadPanes()
     {
         XmlNodeList nodes = this.TopNode.SelectNodes("//d:selection", this.NameSpaceManager);
+
         if (nodes.Count == 0)
         {
             return new ExcelWorksheetPanes[] { new ExcelWorksheetPanes(this.NameSpaceManager, this.TopNode) };
@@ -332,39 +334,41 @@ public class ExcelWorksheetView : XmlHelper
         {
             ExcelWorksheetPanes[] panes = new ExcelWorksheetPanes[nodes.Count];
             int i = 0;
+
             foreach (XmlElement elem in nodes)
             {
                 panes[i++] = new ExcelWorksheetPanes(this.NameSpaceManager, elem);
             }
+
             return panes;
         }
     }
+
     #region SheetViewElement
+
     /// <summary>
     /// Returns a reference to the sheetView element
     /// </summary>
     protected internal XmlElement SheetViewElement
     {
-        get
-        {
-            return (XmlElement)this.TopNode;
-        }
+        get { return (XmlElement)this.TopNode; }
     }
+
     #endregion
+
     #region Public Methods & Properties
+
     /// <summary>
     /// The active cell. Single cell address.                
     /// This cell must be inside the selected range. If not, the selected range is set to the active cell address
     /// </summary>
     public string ActiveCell
     {
-        get
-        {
-            return this.Panes[this.Panes.GetUpperBound(0)].ActiveCell;
-        }
+        get { return this.Panes[this.Panes.GetUpperBound(0)].ActiveCell; }
         set
         {
             ExcelAddressBase? ac = new ExcelAddressBase(value);
+
             if (ac.IsSingleCell == false)
             {
                 throw new InvalidOperationException("ActiveCell must be a single cell.");
@@ -380,16 +384,14 @@ public class ExcelWorksheetView : XmlHelper
             }
         }
     }
+
     /// <summary>
     /// The Top-Left Cell visible. Single cell address.
     /// Empty string or null is the same as A1.
     /// </summary>
     public string TopLeftCell
     {
-        get
-        {
-            return this.GetXmlNodeString("@topLeftCell");
-        }
+        get { return this.GetXmlNodeString("@topLeftCell"); }
         set
         {
             if (string.IsNullOrEmpty(value))
@@ -402,7 +404,9 @@ public class ExcelWorksheetView : XmlHelper
                 {
                     throw new InvalidOperationException("Must be a valid cell address.");
                 }
+
                 ExcelAddressBase? ac = new ExcelAddressBase(value);
+
                 if (ac.IsSingleCell == false)
                 {
                     throw new InvalidOperationException("ActiveCell must be a single cell.");
@@ -420,37 +424,34 @@ public class ExcelWorksheetView : XmlHelper
     /// </summary>
     public string SelectedRange
     {
-        get
-        {
-            return this.Panes[this.Panes.GetUpperBound(0)].SelectedRange;
-        }
+        get { return this.Panes[this.Panes.GetUpperBound(0)].SelectedRange; }
         set
         {
             ExcelAddressBase? ac = new ExcelAddressBase(this.ActiveCell);
 
             /*** Active cell must be inside SelectedRange ***/
-            ExcelAddressBase? sd = new ExcelAddressBase(value.Replace(" ", ","));      //Space delimitered here, replace
+            ExcelAddressBase? sd = new ExcelAddressBase(value.Replace(" ", ",")); //Space delimitered here, replace
 
             this.Panes[this.Panes.GetUpperBound(0)].SelectedRange = value;
+
             if (IsActiveCellInSelection(ac, sd) == false)
             {
                 this.ActiveCell = new ExcelCellAddress(sd._fromRow, sd._fromCol).Address;
             }
         }
     }
+
     ExcelWorksheetViewPaneSettings _paneSettings = null;
+
     /// <summary>
     /// Contains settings for the active pane
     /// </summary>
-    public ExcelWorksheetViewPaneSettings PaneSettings
-    {
-        get;
-        private set;
-    }
+    public ExcelWorksheetViewPaneSettings PaneSettings { get; private set; }
 
     private static bool IsActiveCellInSelection(ExcelAddressBase ac, ExcelAddressBase sd)
     {
         ExcelAddressBase.eAddressCollition c = sd.Collide(ac);
+
         if (c == ExcelAddressBase.eAddressCollition.Equal || c == ExcelAddressBase.eAddressCollition.Inside)
         {
             return true;
@@ -462,6 +463,7 @@ public class ExcelWorksheetView : XmlHelper
                 foreach (ExcelAddressBase? sds in sd.Addresses)
                 {
                     c = sds.Collide(ac);
+
                     if (c == ExcelAddressBase.eAddressCollition.Equal || c == ExcelAddressBase.eAddressCollition.Inside)
                     {
                         return true;
@@ -469,6 +471,7 @@ public class ExcelWorksheetView : XmlHelper
                 }
             }
         }
+
         return false;
     }
 
@@ -477,14 +480,8 @@ public class ExcelWorksheetView : XmlHelper
     /// </summary>
     public bool TabSelected
     {
-        get
-        {
-            return this.GetXmlNodeBool("@tabSelected");
-        }
-        set
-        {
-            this.SetTabSelected(value, false);
-        }
+        get { return this.GetXmlNodeBool("@tabSelected"); }
+        set { this.SetTabSelected(value, false); }
     }
 
     /// <summary>
@@ -492,14 +489,8 @@ public class ExcelWorksheetView : XmlHelper
     /// </summary>
     public bool TabSelectedMulti
     {
-        get
-        {
-            return this.GetXmlNodeBool("@tabSelected");
-        }
-        set
-        {
-            this.SetTabSelected(value, true);
-        }
+        get { return this.GetXmlNodeBool("@tabSelected"); }
+        set { this.SetTabSelected(value, true); }
     }
 
     /// <summary>
@@ -512,6 +503,7 @@ public class ExcelWorksheetView : XmlHelper
         if (isSelected)
         {
             this.SheetViewElement.SetAttribute("tabSelected", "1");
+
             if (!allowMultiple)
             {
                 //    // ensure no other worksheet has its tabSelected attribute set to 1
@@ -520,7 +512,9 @@ public class ExcelWorksheetView : XmlHelper
                     sheet.View.TabSelected = false;
                 }
             }
+
             XmlElement bookView = this._worksheet.Workbook.WorkbookXml.SelectSingleNode("//d:workbookView", this._worksheet.NameSpaceManager) as XmlElement;
+
             if (bookView != null)
             {
                 bookView.SetAttribute("activeTab", this._worksheet.PositionId.ToString());
@@ -537,10 +531,7 @@ public class ExcelWorksheetView : XmlHelper
     /// </summary>
     public bool PageLayoutView
     {
-        get
-        {
-            return this.GetXmlNodeString("@view") == "pageLayout";
-        }
+        get { return this.GetXmlNodeString("@view") == "pageLayout"; }
         set
         {
             if (value)
@@ -553,15 +544,13 @@ public class ExcelWorksheetView : XmlHelper
             }
         }
     }
+
     /// <summary>
     /// Sets the view mode of the worksheet to pagebreak
     /// </summary>
     public bool PageBreakView
     {
-        get
-        {
-            return this.GetXmlNodeString("@view") == "pageBreakPreview";
-        }
+        get { return this.GetXmlNodeString("@view") == "pageBreakPreview"; }
         set
         {
             if (value)
@@ -574,43 +563,31 @@ public class ExcelWorksheetView : XmlHelper
             }
         }
     }
+
     /// <summary>
     /// Show gridlines in the worksheet
     /// </summary>
     public bool ShowGridLines
     {
-        get
-        {
-            return this.GetXmlNodeBool("@showGridLines", true);
-        }
-        set
-        {
-            this.SetXmlNodeString("@showGridLines", value ? "1" : "0");
-        }
+        get { return this.GetXmlNodeBool("@showGridLines", true); }
+        set { this.SetXmlNodeString("@showGridLines", value ? "1" : "0"); }
     }
+
     /// <summary>
     /// Show the Column/Row headers (containg column letters and row numbers)
     /// </summary>
     public bool ShowHeaders
     {
-        get
-        {
-            return this.GetXmlNodeBool("@showRowColHeaders", true);
-        }
-        set
-        {
-            this.SetXmlNodeString("@showRowColHeaders", value ? "1" : "0");
-        }
+        get { return this.GetXmlNodeBool("@showRowColHeaders", true); }
+        set { this.SetXmlNodeString("@showRowColHeaders", value ? "1" : "0"); }
     }
+
     /// <summary>
     /// Window zoom magnification for current view representing percent values.
     /// </summary>
     public int ZoomScale
     {
-        get
-        {
-            return this.GetXmlNodeInt("@zoomScale");
-        }
+        get { return this.GetXmlNodeInt("@zoomScale"); }
         set
         {
             if (value < 10 || value > 400)
@@ -621,81 +598,62 @@ public class ExcelWorksheetView : XmlHelper
             this.SetXmlNodeString("@zoomScale", value.ToString());
         }
     }
+
     /// <summary>
     /// If the sheet is in 'right to left' display mode. Column A is on the far right and column B to the left of A. Text is also 'right to left'.
     /// </summary>
     public bool RightToLeft
     {
-        get
-        {
-            return this.GetXmlNodeBool("@rightToLeft");
-        }
-        set
-        {
-            this.SetXmlNodeString("@rightToLeft", value == true ? "1" : "0");
-        }
+        get { return this.GetXmlNodeBool("@rightToLeft"); }
+        set { this.SetXmlNodeString("@rightToLeft", value == true ? "1" : "0"); }
     }
+
     internal bool WindowProtection
     {
-        get
-        {
-            return this.GetXmlNodeBool("@windowProtection", false);
-        }
-        set
-        {
-            this.SetXmlNodeBool("@windowProtection", value, false);
-        }
+        get { return this.GetXmlNodeBool("@windowProtection", false); }
+        set { this.SetXmlNodeBool("@windowProtection", value, false); }
     }
+
     /// <summary>
     /// Reference to the panes
     /// </summary>
-    public ExcelWorksheetPanes[] Panes
-    {
-        get;
-        internal set;
-    }
+    public ExcelWorksheetPanes[] Panes { get; internal set; }
+
     /// <summary>
     /// The top left pane or the top pane if the sheet is horizontaly split. This property returns null if the pane does not exist in the <see cref="Panes"/> array.
     /// </summary>
     public ExcelWorksheetPanes TopLeftPane
     {
-        get
-        {
-            return this.Panes?.Where(x => x.Position == ePanePosition.TopLeft).FirstOrDefault();
-        }
+        get { return this.Panes?.Where(x => x.Position == ePanePosition.TopLeft).FirstOrDefault(); }
     }
+
     /// <summary>
     /// The top right pane. This property returns null if the pane does not exist in the <see cref="Panes"/> array.
     /// </summary>
     public ExcelWorksheetPanes TopRightPane
     {
-        get
-        {
-            return this.Panes?.Where(x => x.Position == ePanePosition.TopRight).FirstOrDefault();
-        }
+        get { return this.Panes?.Where(x => x.Position == ePanePosition.TopRight).FirstOrDefault(); }
     }
+
     /// <summary>
     /// The bottom left pane. This property returns null if the pane does not exist in the <see cref="Panes"/> array.
     /// </summary>
     public ExcelWorksheetPanes BottomLeftPane
     {
-        get
-        {
-            return this.Panes?.Where(x => x.Position == ePanePosition.BottomLeft).FirstOrDefault();
-        }
+        get { return this.Panes?.Where(x => x.Position == ePanePosition.BottomLeft).FirstOrDefault(); }
     }
+
     /// <summary>
     /// The bottom right pane. This property returns null if the pane does not exist in the <see cref="Panes"/> array.
     /// </summary>
     public ExcelWorksheetPanes BottomRightPane
     {
-        get
-        {
-            return this.Panes?.Where(x => x.Position == ePanePosition.BottomRight).FirstOrDefault();
-        }
+        get { return this.Panes?.Where(x => x.Position == ePanePosition.BottomRight).FirstOrDefault(); }
     }
+
     string _paneNodePath = "d:pane";
     string _selectionNodePath = "d:selection";
+
     /// <summary>
     /// Freeze the columns/rows to left and above the cell
     /// </summary>
@@ -709,10 +667,12 @@ public class ExcelWorksheetView : XmlHelper
         if (Row == 1 && Column == 1)
         {
             this.UnFreezePanes();
+
             return;
         }
 
         bool isSplit;
+
         if (this.PaneSettings == null)
         {
             XmlNode? node = ExcelWorksheetViewPaneSettings.CreatePaneElement(this.NameSpaceManager, this.TopNode);
@@ -721,7 +681,6 @@ public class ExcelWorksheetView : XmlHelper
         }
         else
         {
-
             isSplit = this.PaneSettings.State != ePaneState.Frozen;
             this.PaneSettings.TopNode.RemoveAll();
         }
@@ -747,9 +706,12 @@ public class ExcelWorksheetView : XmlHelper
     {
         this.RemoveSelection();
 
-        string sqRef = this.SelectedRange, activeCell = this.ActiveCell;
+        string sqRef = this.SelectedRange,
+               activeCell = this.ActiveCell;
+
         this.PaneSettings.ActivePanePosition = ePanePosition.BottomRight;
         XmlNode afterNode;
+
         if (isSplit)
         {
             //Top left node, default pane
@@ -766,6 +728,7 @@ public class ExcelWorksheetView : XmlHelper
             this.PaneSettings.ActivePanePosition = ePanePosition.BottomLeft;
             XmlElement sel = this.TopNode.OwnerDocument.CreateElement("selection", ExcelPackage.schemaMain);
             sel.SetAttribute("pane", "bottomLeft");
+
             if (activeCell != "")
             {
                 sel.SetAttribute("activeCell", activeCell);
@@ -783,6 +746,7 @@ public class ExcelWorksheetView : XmlHelper
             this.PaneSettings.ActivePanePosition = ePanePosition.TopRight;
             XmlElement sel = this.TopNode.OwnerDocument.CreateElement("selection", ExcelPackage.schemaMain);
             sel.SetAttribute("pane", "topRight");
+
             if (activeCell != "")
             {
                 sel.SetAttribute("activeCell", activeCell);
@@ -811,9 +775,9 @@ public class ExcelWorksheetView : XmlHelper
             selBL.SetAttribute("sqref", cell);
             selTR.ParentNode.InsertAfter(selBL, selTR);
 
-
             XmlElement selBR = this.TopNode.OwnerDocument.CreateElement("selection", ExcelPackage.schemaMain);
             selBR.SetAttribute("pane", "bottomRight");
+
             if (activeCell != "")
             {
                 selBR.SetAttribute("activeCell", activeCell);
@@ -840,6 +804,7 @@ public class ExcelWorksheetView : XmlHelper
             throw new ArgumentOutOfRangeException($"Column must not be negative or exceed {ExcelPackage.MaxColumns - 1}");
         }
     }
+
     /// <summary>
     /// Split panes at the position in pixels from the top-left corner.
     /// </summary>
@@ -850,12 +815,14 @@ public class ExcelWorksheetView : XmlHelper
         if (pixelsY <= 0 && pixelsX <= 0) //Both row and column is zero, remove the panes.
         {
             this.UnFreezePanes();
+
             return;
         }
 
         this.SetPaneSetting();
 
         ExcelCellAddress? c = this.GetTopLeftCell();
+
         if (pixelsX > 0)
         {
             ExcelStyles? styles = this._worksheet.Workbook.Styles;
@@ -866,6 +833,7 @@ public class ExcelWorksheetView : XmlHelper
             int margin = 5;
             this.PaneSettings.XSplit = (Convert.ToDouble(pixelsX) + (defaultWidth * widthCharRH) + margin) * 15D;
         }
+
         if (pixelsY > 0)
         {
             this.PaneSettings.YSplit = (pixelsY + (this._worksheet.DefaultRowHeight / 0.75)) * 15D;
@@ -873,12 +841,14 @@ public class ExcelWorksheetView : XmlHelper
 
         this.CreateSelectionXml(pixelsY == 0 ? 0 : 1, pixelsX == 0 ? 0 : 1, true);
         this.Panes = this.LoadPanes();
+
         if (pixelsX > 0 && pixelsY > 0)
         {
             ExcelCellAddress? a = new ExcelCellAddress(string.IsNullOrEmpty(this.TopLeftCell) ? "A1" : this.TopLeftCell);
             this.PaneSettings.TopLeftCell = ExcelCellBase.GetAddress(a.Row, a.Column);
         }
     }
+
     /// <summary>
     /// Split the window at the supplied row/column. 
     /// The split is performed using the current width/height of the visible rows and columns, so any changes to column width or row heights after the split will not effect the split position.
@@ -889,15 +859,18 @@ public class ExcelWorksheetView : XmlHelper
     public void SplitPanes(int rowsTop, int columnsLeft)
     {
         ValidateRows(rowsTop, columnsLeft);
+
         if (rowsTop == 0 && columnsLeft == 0) //Both row and column is zero, remove the panes.
         {
             this.UnFreezePanes();
+
             return;
         }
 
         this.SetPaneSetting();
 
         ExcelCellAddress? c = this.GetTopLeftCell();
+
         if (columnsLeft > 0)
         {
             ExcelStyles? styles = this._worksheet.Workbook.Styles;
@@ -906,8 +879,9 @@ public class ExcelWorksheetView : XmlHelper
             decimal defaultWidth = FontSize.GetWidthPixels(nf.Name, nf.Size);
             int widthCharRH = c.Row < 1000 ? 3 : c.Row.ToString(CultureInfo.InvariantCulture).Length;
             int margin = 5;
-            this.PaneSettings.XSplit = Convert.ToDouble(this.GetVisibleColumnWidth(c.Column-1, columnsLeft) + (defaultWidth * widthCharRH) + margin) * 15D;
+            this.PaneSettings.XSplit = Convert.ToDouble(this.GetVisibleColumnWidth(c.Column - 1, columnsLeft) + (defaultWidth * widthCharRH) + margin) * 15D;
         }
+
         if (rowsTop > 0)
         {
             this.PaneSettings.YSplit = (Convert.ToDouble(this.GetVisibleRowWidth(c.Row, rowsTop)) + (this._worksheet.DefaultRowHeight / 0.75)) * 15D;
@@ -956,40 +930,48 @@ public class ExcelWorksheetView : XmlHelper
     {
         decimal mdw = this._worksheet.Workbook.MaxFontWidth;
         decimal width = 0;
+
         for (int c = 0; c < cols; c++)
         {
             width += this._worksheet.GetColumnWidthPixels(topCol + c, mdw);
         }
+
         return width;
     }
+
     private decimal GetVisibleRowWidth(int leftRow, int rows)
     {
         decimal height = 0;
+
         for (int r = 0; r < rows; r++)
         {
             height += Convert.ToDecimal(this._worksheet.GetRowHeight(leftRow + r)) / 0.75M;
         }
-        return height;
 
+        return height;
     }
 
     private void RemoveSelection()
     {
         //Find selection nodes and remove them            
         XmlNodeList selections = this.TopNode.SelectNodes(this._selectionNodePath, this.NameSpaceManager);
+
         foreach (XmlNode sel in selections)
         {
             sel.ParentNode.RemoveChild(sel);
         }
     }
+
     /// <summary>
     /// Unlock all rows and columns to scroll freely
     /// </summary>
     public void UnFreezePanes()
     {
-        string sqRef = this.SelectedRange, activeCell = this.ActiveCell;
+        string sqRef = this.SelectedRange,
+               activeCell = this.ActiveCell;
 
         XmlElement paneNode = this.TopNode.SelectSingleNode(this._paneNodePath, this.NameSpaceManager) as XmlElement;
+
         if (paneNode != null)
         {
             paneNode.ParentNode.RemoveChild(paneNode);
@@ -1003,5 +985,6 @@ public class ExcelWorksheetView : XmlHelper
         this.SelectedRange = sqRef;
         this.ActiveCell = activeCell;
     }
+
     #endregion
 }

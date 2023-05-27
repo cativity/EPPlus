@@ -10,6 +10,7 @@
  *************************************************************************************************
   01/27/2020         EPPlus Software AB       Initial release EPPlus 5
  *************************************************************************************************/
+
 using OfficeOpenXml.FormulaParsing.Excel;
 using OfficeOpenXml.FormulaParsing.Excel.Functions;
 using OfficeOpenXml.FormulaParsing.ExcelUtilities;
@@ -23,7 +24,8 @@ namespace OfficeOpenXml.FormulaParsing.ExpressionGraph.FunctionCompilers;
 
 internal class SumIfCompiler : FunctionCompiler
 {
-    public SumIfCompiler(ExcelFunction function, ParsingContext context) : base(function, context)
+    public SumIfCompiler(ExcelFunction function, ParsingContext context)
+        : base(function, context)
     {
     }
 
@@ -33,43 +35,51 @@ internal class SumIfCompiler : FunctionCompiler
     {
         List<FunctionArgument>? args = new List<FunctionArgument>();
         this.Function.BeforeInvoke(this.Context);
-        if(children.Count() == 3 && children.ElementAt(2).HasChildren)
+
+        if (children.Count() == 3 && children.ElementAt(2).HasChildren)
         {
             Expression? lastExp = children.ElementAt(2).Children.First();
             lastExp.IgnoreCircularReference = true;
             RangeAddress? currentAdr = this.Context.Scopes.Current.Address;
             ExcelAddress? sumRangeAdr = new ExcelAddress(lastExp.ExpressionString);
             string? sumRangeWs = string.IsNullOrEmpty(sumRangeAdr.WorkSheetName) ? currentAdr.Worksheet : sumRangeAdr.WorkSheetName;
-            if(currentAdr.Worksheet == sumRangeWs && sumRangeAdr.Collide(new ExcelAddress(currentAdr.Address)) != ExcelAddressBase.eAddressCollition.No)
+
+            if (currentAdr.Worksheet == sumRangeWs && sumRangeAdr.Collide(new ExcelAddress(currentAdr.Address)) != ExcelAddressBase.eAddressCollition.No)
             {
                 object? candidateArg = children.ElementAt(1)?.Children.FirstOrDefault()?.Compile().Result;
-                if(children.ElementAt(0).HasChildren)
+
+                if (children.ElementAt(0).HasChildren)
                 {
                     int functionRowIndex = currentAdr.FromRow - sumRangeAdr._fromRow;
                     int functionColIndex = currentAdr.FromCol - sumRangeAdr._fromCol;
                     IRangeInfo? firstRangeResult = children.ElementAt(0).Children.First().Compile().Result as IRangeInfo;
-                    if(firstRangeResult != null)
+
+                    if (firstRangeResult != null)
                     {
                         int candidateRowIndex = firstRangeResult.Address._fromRow + functionRowIndex;
                         int candidateColIndex = firstRangeResult.Address._fromCol + functionColIndex;
                         object? candidateValue = firstRangeResult.GetValue(candidateRowIndex, candidateColIndex);
-                        if(this._evaluator.Evaluate(candidateArg, candidateValue.ToString()))
+
+                        if (this._evaluator.Evaluate(candidateArg, candidateValue.ToString()))
                         {
-                            if(this.Context.Configuration.AllowCircularReferences)
+                            if (this.Context.Configuration.AllowCircularReferences)
                             {
                                 return CompileResult.ZeroDecimal;
                             }
+
                             throw new CircularReferenceException("Circular reference detected in " + currentAdr.Address);
                         }
                     }
-                        
                 }
             }
+
             // todo: check circular ref for the actual cell where the SumIf formula resides (currentAdr).
         }
+
         foreach (Expression? child in children)
         {
             CompileResult? compileResult = child.Compile();
+
             if (compileResult.IsResultOfSubtotal)
             {
                 FunctionArgument? arg = new FunctionArgument(compileResult.Result, compileResult.DataType);
@@ -81,6 +91,7 @@ internal class SumIfCompiler : FunctionCompiler
                 BuildFunctionArguments(compileResult, args);
             }
         }
+
         return this.Function.Execute(args, this.Context);
     }
 }

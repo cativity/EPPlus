@@ -10,6 +10,7 @@
  *************************************************************************************************
   07/29/2020         EPPlus Software AB       Threaded comments
  *************************************************************************************************/
+
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -28,7 +29,8 @@ public sealed class ExcelThreadedCommentMentionCollection : XmlHelper, IEnumerab
     /// </summary>
     /// <param name="nameSpaceManager">The Namespacemangager of the package</param>
     /// <param name="topNode">The <see cref="XmlNode"/> representing the parent element of the collection</param>
-    internal ExcelThreadedCommentMentionCollection(XmlNamespaceManager nameSpaceManager, XmlNode topNode) : base(nameSpaceManager, topNode)
+    internal ExcelThreadedCommentMentionCollection(XmlNamespaceManager nameSpaceManager, XmlNode topNode)
+        : base(nameSpaceManager, topNode)
     {
         this.LoadMentions();
     }
@@ -37,7 +39,7 @@ public sealed class ExcelThreadedCommentMentionCollection : XmlHelper, IEnumerab
 
     private void LoadMentions()
     {
-        foreach(object? mentionNode in this.TopNode.ChildNodes)
+        foreach (object? mentionNode in this.TopNode.ChildNodes)
         {
             this._mentionList.Add(new ExcelThreadedCommentMention(this.NameSpaceManager, (XmlNode)mentionNode));
         }
@@ -73,6 +75,7 @@ public sealed class ExcelThreadedCommentMentionCollection : XmlHelper, IEnumerab
         ExcelThreadedCommentMention? mention = new ExcelThreadedCommentMention(this.NameSpaceManager, elem);
         mention.MentionId = ExcelThreadedCommentMention.NewId();
         mention.StartIndex = textPosition;
+
         // + 1 to include the @ prefix...
         mention.Length = person.DisplayName.Length + 1;
         mention.MentionPersonId = person.Id;

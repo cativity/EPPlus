@@ -1,5 +1,4 @@
-﻿
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 using OfficeOpenXml;
 using OfficeOpenXml.Filter;
 using OfficeOpenXml.Table.PivotTable;
@@ -11,6 +10,7 @@ namespace EPPlusTest.Table.PivotTable;
 public class PivotTableDateFilterTests : TestBase
 {
     static ExcelPackage _pck;
+
     [ClassInitialize]
     public static void Init(TestContext context)
     {
@@ -23,11 +23,13 @@ public class PivotTableDateFilterTests : TestBase
         r = LoadItemData(ws);
         ws.Tables.Add(r, "Table2");
     }
+
     [ClassCleanup]
     public static void Cleanup()
     {
         SaveAndCleanup(_pck);
     }
+
     [TestMethod]
     public void AddDateEqualFilter()
     {
@@ -38,8 +40,9 @@ public class PivotTableDateFilterTests : TestBase
         pt.RowFields.Add(pt.Fields[4]);
         pt.DataFields.Add(pt.Fields[3]);
 
-        pt.Fields[4].Filters.AddDateValueFilter(ePivotTableDateValueFilterType.DateEqual, new DateTime(2010,3,31));
+        pt.Fields[4].Filters.AddDateValueFilter(ePivotTableDateValueFilterType.DateEqual, new DateTime(2010, 3, 31));
     }
+
     [TestMethod]
     public void AddDateNotEqualFilter()
     {
@@ -52,6 +55,7 @@ public class PivotTableDateFilterTests : TestBase
 
         pt.Fields[4].Filters.AddDateValueFilter(ePivotTableDateValueFilterType.DateNotEqual, new DateTime(2010, 3, 31));
     }
+
     [TestMethod]
     public void AddDateOlderFilter()
     {
@@ -64,6 +68,7 @@ public class PivotTableDateFilterTests : TestBase
 
         pt.Fields[4].Filters.AddDateValueFilter(ePivotTableDateValueFilterType.DateOlderThan, new DateTime(2010, 3, 31));
     }
+
     [TestMethod]
     public void AddDateOlderOrEqualFilter()
     {
@@ -76,6 +81,7 @@ public class PivotTableDateFilterTests : TestBase
 
         pt.Fields[4].Filters.AddDateValueFilter(ePivotTableDateValueFilterType.DateOlderThanOrEqual, new DateTime(2010, 3, 31));
     }
+
     [TestMethod]
     public void AddDateNewerFilter()
     {
@@ -88,6 +94,7 @@ public class PivotTableDateFilterTests : TestBase
 
         pt.Fields[4].Filters.AddDateValueFilter(ePivotTableDateValueFilterType.DateNewerThan, new DateTime(2010, 3, 31));
     }
+
     [TestMethod]
     public void AddDateNewerOrEqualFilter()
     {
@@ -100,6 +107,7 @@ public class PivotTableDateFilterTests : TestBase
 
         pt.Fields[4].Filters.AddDateValueFilter(ePivotTableDateValueFilterType.DateNewerThanOrEqual, new DateTime(2010, 3, 31));
     }
+
     [TestMethod]
     public void AddDateBetweenFilter()
     {
@@ -112,6 +120,7 @@ public class PivotTableDateFilterTests : TestBase
 
         pt.Fields[4].Filters.AddDateValueFilter(ePivotTableDateValueFilterType.DateBetween, new DateTime(2010, 3, 31), new DateTime(2010, 6, 30));
     }
+
     [TestMethod]
     public void AddDateNotBetweenFilter()
     {
@@ -124,6 +133,7 @@ public class PivotTableDateFilterTests : TestBase
 
         pt.Fields[4].Filters.AddDateValueFilter(ePivotTableDateValueFilterType.DateNotBetween, new DateTime(2010, 3, 31), new DateTime(2010, 6, 30));
     }
+
     [TestMethod]
     public void AddDateLastMonthFilter()
     {
@@ -136,6 +146,7 @@ public class PivotTableDateFilterTests : TestBase
 
         pt.Fields[4].Filters.AddDatePeriodFilter(ePivotTableDatePeriodFilterType.LastMonth);
     }
+
     [TestMethod]
     public void AddDateLastQuarterFilter()
     {
@@ -148,6 +159,7 @@ public class PivotTableDateFilterTests : TestBase
 
         pt.Fields[4].Filters.AddDatePeriodFilter(ePivotTableDatePeriodFilterType.LastQuarter);
     }
+
     [TestMethod]
     public void AddDateLastWeekFilter()
     {
@@ -160,6 +172,7 @@ public class PivotTableDateFilterTests : TestBase
 
         pt.Fields[4].Filters.AddDatePeriodFilter(ePivotTableDatePeriodFilterType.LastWeek);
     }
+
     [TestMethod]
     public void AddDateLastYearFilter()
     {
@@ -172,6 +185,7 @@ public class PivotTableDateFilterTests : TestBase
 
         pt.Fields[4].Filters.AddDatePeriodFilter(ePivotTableDatePeriodFilterType.LastYear);
     }
+
     [TestMethod]
     public void AddDateM1Filter()
     {
@@ -184,6 +198,7 @@ public class PivotTableDateFilterTests : TestBase
 
         pt.Fields[4].Filters.AddDatePeriodFilter(ePivotTableDatePeriodFilterType.M1);
     }
+
     [TestMethod]
     public void AddDateM2Filter()
     {
@@ -196,6 +211,7 @@ public class PivotTableDateFilterTests : TestBase
 
         pt.Fields[4].Filters.AddDatePeriodFilter(ePivotTableDatePeriodFilterType.M2);
     }
+
     [TestMethod]
     public void AddDateM3Filter()
     {
@@ -208,6 +224,7 @@ public class PivotTableDateFilterTests : TestBase
 
         pt.Fields[4].Filters.AddDatePeriodFilter(ePivotTableDatePeriodFilterType.M3);
     }
+
     [TestMethod]
     public void AddDate42Filter()
     {
@@ -220,6 +237,7 @@ public class PivotTableDateFilterTests : TestBase
 
         pt.Fields[4].Filters.AddDatePeriodFilter(ePivotTableDatePeriodFilterType.M4);
     }
+
     [TestMethod]
     public void AddDateM5Filter()
     {
@@ -232,6 +250,7 @@ public class PivotTableDateFilterTests : TestBase
 
         pt.Fields[4].Filters.AddDatePeriodFilter(ePivotTableDatePeriodFilterType.M5);
     }
+
     [TestMethod]
     public void AddDateM6Filter()
     {
@@ -244,6 +263,7 @@ public class PivotTableDateFilterTests : TestBase
 
         pt.Fields[4].Filters.AddDatePeriodFilter(ePivotTableDatePeriodFilterType.M6);
     }
+
     [TestMethod]
     public void AddDateM7Filter()
     {
@@ -256,6 +276,7 @@ public class PivotTableDateFilterTests : TestBase
 
         pt.Fields[4].Filters.AddDatePeriodFilter(ePivotTableDatePeriodFilterType.M7);
     }
+
     [TestMethod]
     public void AddDateM8Filter()
     {
@@ -268,6 +289,7 @@ public class PivotTableDateFilterTests : TestBase
 
         pt.Fields[4].Filters.AddDatePeriodFilter(ePivotTableDatePeriodFilterType.M8);
     }
+
     [TestMethod]
     public void AddDateM9Filter()
     {
@@ -280,6 +302,7 @@ public class PivotTableDateFilterTests : TestBase
 
         pt.Fields[4].Filters.AddDatePeriodFilter(ePivotTableDatePeriodFilterType.M9);
     }
+
     [TestMethod]
     public void AddDateM10Filter()
     {
@@ -292,6 +315,7 @@ public class PivotTableDateFilterTests : TestBase
 
         pt.Fields[4].Filters.AddDatePeriodFilter(ePivotTableDatePeriodFilterType.M10);
     }
+
     [TestMethod]
     public void AddDateM11Filter()
     {
@@ -304,6 +328,7 @@ public class PivotTableDateFilterTests : TestBase
 
         pt.Fields[4].Filters.AddDatePeriodFilter(ePivotTableDatePeriodFilterType.M11);
     }
+
     [TestMethod]
     public void AddDateM12Filter()
     {
@@ -316,6 +341,7 @@ public class PivotTableDateFilterTests : TestBase
 
         pt.Fields[4].Filters.AddDatePeriodFilter(ePivotTableDatePeriodFilterType.M12);
     }
+
     [TestMethod]
     public void AddDateQ1Filter()
     {
@@ -328,6 +354,7 @@ public class PivotTableDateFilterTests : TestBase
 
         pt.Fields[4].Filters.AddDatePeriodFilter(ePivotTableDatePeriodFilterType.Q1);
     }
+
     [TestMethod]
     public void AddDateQ2Filter()
     {
@@ -340,6 +367,7 @@ public class PivotTableDateFilterTests : TestBase
 
         pt.Fields[4].Filters.AddDatePeriodFilter(ePivotTableDatePeriodFilterType.Q2);
     }
+
     [TestMethod]
     public void AddDateQ3Filter()
     {
@@ -352,6 +380,7 @@ public class PivotTableDateFilterTests : TestBase
 
         pt.Fields[4].Filters.AddDatePeriodFilter(ePivotTableDatePeriodFilterType.Q3);
     }
+
     [TestMethod]
     public void AddDateQ4Filter()
     {
@@ -364,6 +393,7 @@ public class PivotTableDateFilterTests : TestBase
 
         pt.Fields[4].Filters.AddDatePeriodFilter(ePivotTableDatePeriodFilterType.Q4);
     }
+
     [TestMethod]
     public void AddDateYesterdayFilter()
     {
@@ -376,6 +406,7 @@ public class PivotTableDateFilterTests : TestBase
 
         pt.Fields[4].Filters.AddDatePeriodFilter(ePivotTableDatePeriodFilterType.Yesterday);
     }
+
     [TestMethod]
     public void AddDateTodayFilter()
     {
@@ -388,6 +419,7 @@ public class PivotTableDateFilterTests : TestBase
 
         pt.Fields[4].Filters.AddDatePeriodFilter(ePivotTableDatePeriodFilterType.Today);
     }
+
     [TestMethod]
     public void AddDateTomorrowFilter()
     {
@@ -400,6 +432,7 @@ public class PivotTableDateFilterTests : TestBase
 
         pt.Fields[4].Filters.AddDatePeriodFilter(ePivotTableDatePeriodFilterType.Tomorrow);
     }
+
     [TestMethod]
     public void AddDateYTDFilter()
     {
@@ -412,6 +445,7 @@ public class PivotTableDateFilterTests : TestBase
 
         pt.Fields[4].Filters.AddDatePeriodFilter(ePivotTableDatePeriodFilterType.YearToDate);
     }
+
     [TestMethod]
     public void AddDateThisMonthFilter()
     {
@@ -424,6 +458,7 @@ public class PivotTableDateFilterTests : TestBase
 
         pt.Fields[4].Filters.AddDatePeriodFilter(ePivotTableDatePeriodFilterType.ThisMonth);
     }
+
     [TestMethod]
     public void AddDateThisQuarterFilter()
     {
@@ -436,6 +471,7 @@ public class PivotTableDateFilterTests : TestBase
 
         pt.Fields[4].Filters.AddDatePeriodFilter(ePivotTableDatePeriodFilterType.ThisQuarter);
     }
+
     [TestMethod]
     public void AddDateThisWeekFilter()
     {
@@ -448,6 +484,7 @@ public class PivotTableDateFilterTests : TestBase
 
         pt.Fields[4].Filters.AddDatePeriodFilter(ePivotTableDatePeriodFilterType.ThisWeek);
     }
+
     [TestMethod]
     public void AddDateThisYearFilter()
     {
@@ -460,6 +497,7 @@ public class PivotTableDateFilterTests : TestBase
 
         pt.Fields[4].Filters.AddDatePeriodFilter(ePivotTableDatePeriodFilterType.ThisYear);
     }
+
     [TestMethod]
     public void AddDateNextMonthFilter()
     {
@@ -472,6 +510,7 @@ public class PivotTableDateFilterTests : TestBase
 
         pt.Fields[4].Filters.AddDatePeriodFilter(ePivotTableDatePeriodFilterType.NextMonth);
     }
+
     [TestMethod]
     public void AddDateNextQuarterFilter()
     {
@@ -484,6 +523,7 @@ public class PivotTableDateFilterTests : TestBase
 
         pt.Fields[4].Filters.AddDatePeriodFilter(ePivotTableDatePeriodFilterType.NextQuarter);
     }
+
     [TestMethod]
     public void AddDateNextWeekFilter()
     {
@@ -496,6 +536,7 @@ public class PivotTableDateFilterTests : TestBase
 
         pt.Fields[4].Filters.AddDatePeriodFilter(ePivotTableDatePeriodFilterType.NextWeek);
     }
+
     [TestMethod]
     public void AddDateNextYearFilter()
     {

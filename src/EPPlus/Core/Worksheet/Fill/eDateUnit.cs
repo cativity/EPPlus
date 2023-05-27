@@ -22,30 +22,37 @@ public enum eDateTimeUnit
     /// Adds a Year
     /// </summary>
     Year,
+
     /// <summary>
     /// Adds a Month
     /// </summary>
     Month,
+
     /// <summary>
     /// Adds 7 Days
     /// </summary>
     Week,
+
     /// <summary>
     /// Adds a Day
     /// </summary>
     Day,
+
     /// <summary>
     /// Adds an Hour
     /// </summary>
     Hour,
+
     /// <summary>
     /// Adds a Minute
     /// </summary>
     Minute,
+
     /// <summary>
     /// Adds a Second
     /// </summary>
     Second,
+
     /// <summary>
     /// Adds ticks
     /// </summary>

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Drawing;
+
 namespace OfficeOpenXml.Drawing.Vml;
 
 /// <summary>
@@ -20,7 +21,8 @@ public class VmlGradiantColor
         {
             throw new ArgumentOutOfRangeException("Percent must be in the interval of 0 to 100");
         }
-        if(color.IsEmpty)
+
+        if (color.IsEmpty)
         {
             throw new ArgumentNullException("Parameter 'color' can't be empty");
         }
@@ -28,20 +30,14 @@ public class VmlGradiantColor
         this.Percent = percent;
         this.Color = color;
     }
+
     /// <summary>
     /// Percent position to insert the color. Range from 0-100
     /// </summary>
-    public double Percent 
-    {
-        get;
-        set;
-    }
+    public double Percent { get; set; }
+
     /// <summary>
     /// The color to use.
     /// </summary>
-    public Color Color
-    {
-        get;
-        set;
-    }
+    public Color Color { get; set; }
 }

@@ -1,4 +1,5 @@
 ﻿using System;
+
 namespace OfficeOpenXml.Drawing.Vml;
 
 internal static class TranslateEnumExtensions
@@ -12,29 +13,31 @@ internal static class TranslateEnumExtensions
                 return defaultValue;
             }
 
-            if(s=="linear sigma")
+            if (s == "linear sigma")
             {
                 return eVmlGradientMethod.LinearSigma;
             }
             else
             {
                 return (eVmlGradientMethod)Enum.Parse(typeof(eVmlGradientMethod), s, true);
-            }                    
+            }
         }
         catch
         {
             return defaultValue;
         }
     }
+
     internal static string ToEnumString(this eVmlGradientMethod enumValue)
     {
-        if(enumValue== eVmlGradientMethod.LinearSigma)
+        if (enumValue == eVmlGradientMethod.LinearSigma)
         {
             return "linear sigma";
         }
         else
         {
             string? s = enumValue.ToString();
+
             return s.Substring(0, 1).ToLower() + s.Substring(1);
         }
     }

@@ -10,6 +10,7 @@
  *************************************************************************************************
   01/27/2020         EPPlus Software AB       Initial release EPPlus 5
  *************************************************************************************************/
+
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -19,10 +20,7 @@ using OfficeOpenXml.FormulaParsing.ExpressionGraph;
 
 namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Math;
 
-[FunctionMetadata(
-                     Category = ExcelFunctionCategory.MathAndTrig,
-                     EPPlusVersion = "4",
-                     Description = "Returns the positive square root of a given number")]
+[FunctionMetadata(Category = ExcelFunctionCategory.MathAndTrig, EPPlusVersion = "4", Description = "Returns the positive square root of a given number")]
 internal class Sqrt : ExcelFunction
 {
     public override CompileResult Execute(IEnumerable<FunctionArgument> arguments, ParsingContext context)
@@ -30,6 +28,7 @@ internal class Sqrt : ExcelFunction
         ValidateArguments(arguments, 1);
         double arg = this.ArgToDecimal(arguments, 0);
         double result = System.Math.Sqrt((double)arg);
+
         return this.CreateResult((double)result, DataType.Decimal);
     }
 }

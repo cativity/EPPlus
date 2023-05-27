@@ -10,6 +10,7 @@
  *************************************************************************************************
   01/27/2020         EPPlus Software AB       Initial release EPPlus 5
  *************************************************************************************************/
+
 using OfficeOpenXml.DataValidation.Contracts;
 using OfficeOpenXml.DataValidation.Events;
 using OfficeOpenXml.DataValidation.Exceptions;
@@ -31,6 +32,7 @@ internal enum FormulaState
     /// Value is set
     /// </summary>
     Value,
+
     /// <summary>
     /// Formula is set
     /// </summary>
@@ -40,9 +42,8 @@ internal enum FormulaState
 /// <summary>
 /// Base class for a formula
 /// </summary>
-internal abstract class ExcelDataValidationFormula :IExcelDataValidationFormula
+internal abstract class ExcelDataValidationFormula : IExcelDataValidationFormula
 {
-
     internal event EventHandler BecomesExt;
 
     private readonly Action<OnFormulaChangedEventArgs> _handler;
@@ -64,14 +65,11 @@ internal abstract class ExcelDataValidationFormula :IExcelDataValidationFormula
     private string _workSheetName;
 
     internal virtual bool HasValue { get; set; } = false;
+
     /// <summary>
     /// State of the validationformula, i.e. tells if value or formula is set
     /// </summary>
-    protected FormulaState State
-    {
-        get;
-        set;
-    }
+    protected FormulaState State { get; set; }
 
     private static int MeasureFormulaLength(string formula)
     {
@@ -81,6 +79,7 @@ internal abstract class ExcelDataValidationFormula :IExcelDataValidationFormula
         }
 
         formula = formula.Replace("_xlfn.", string.Empty).Replace("_xlws.", string.Empty);
+
         return formula.Length;
     }
 
@@ -89,10 +88,7 @@ internal abstract class ExcelDataValidationFormula :IExcelDataValidationFormula
     /// </summary>
     public string ExcelFormula
     {
-        get
-        {
-            return this._formula;
-        }
+        get { return this._formula; }
         set
         {
             if (value != null && MeasureFormulaLength(value) > 255)
@@ -125,27 +121,31 @@ internal abstract class ExcelDataValidationFormula :IExcelDataValidationFormula
         if (!string.IsNullOrEmpty(address) && ExcelCellBase.IsValidAddress(address))
         {
             ExcelAddress? adr = new ExcelAddress(address);
+
             return !string.IsNullOrEmpty(adr.WorkSheetName) && adr.WorkSheetName != this._workSheetName;
         }
         else if (!string.IsNullOrEmpty(address))
         {
             IEnumerable<Token>? tokens = SourceCodeTokenizer.Default.Tokenize(address, this._workSheetName);
+
             if (!tokens.Any())
             {
                 return false;
             }
 
             IEnumerable<Token>? addressTokens = tokens.Where(x => x.TokenTypeIsSet(TokenType.ExcelAddress));
+
             foreach (Token token in addressTokens)
             {
                 ExcelAddress? adr = new ExcelAddress(token.Value);
+
                 if (!string.IsNullOrEmpty(adr.WorkSheetName) && adr.WorkSheetName != this._workSheetName)
                 {
                     return true;
                 }
             }
-
         }
+
         return false;
     }
 
@@ -160,6 +160,7 @@ internal abstract class ExcelDataValidationFormula :IExcelDataValidationFormula
         {
             return this.ExcelFormula;
         }
+
         return this.GetValueAsString();
     }
 

@@ -26,6 +26,7 @@
  *******************************************************************************
   01/27/2020         EPPlus Software AB       Initial release EPPlus 5
  *******************************************************************************/
+
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using OfficeOpenXml;
 using OfficeOpenXml.Drawing;
@@ -38,11 +39,13 @@ namespace EPPlusTest.Drawing;
 public class EffectReadTest : TestBase
 {
     static ExcelPackage _pck;
+
     [ClassInitialize]
     public static void Init(TestContext context)
     {
         _pck = OpenPackage("DrawingEffectRead.xlsx");
     }
+
     [TestMethod]
     public void InnerShadowDefaultRead()
     {
@@ -58,6 +61,7 @@ public class EffectReadTest : TestBase
         Assert.AreEqual(0, shape.Effect.InnerShadow.Direction);
         Assert.AreEqual(0, shape.Effect.InnerShadow.Distance);
     }
+
     [TestMethod]
     public void OuterShadowDefaultRead()
     {
@@ -79,6 +83,7 @@ public class EffectReadTest : TestBase
         Assert.AreEqual(100, shape.Effect.OuterShadow.VerticalScalingFactor);
         Assert.AreEqual(0, shape.Effect.OuterShadow.VerticalSkewAngle);
     }
+
     [TestMethod]
     public void ReflectionDefaultRead()
     {
@@ -100,6 +105,7 @@ public class EffectReadTest : TestBase
         Assert.AreEqual(100, shape.Effect.Reflection.VerticalScalingFactor);
         Assert.AreEqual(0, shape.Effect.Reflection.VerticalSkewAngle);
     }
+
     [TestMethod]
     public void GlowDefaultRead()
     {
@@ -114,16 +120,18 @@ public class EffectReadTest : TestBase
         Assert.AreEqual(eColorTransformType.Alpha, shape.Effect.Glow.Color.Transforms[0].Type);
         Assert.AreEqual(50, shape.Effect.Glow.Color.Transforms[0].Value);
     }
+
     [TestMethod]
     public void BlurDefaultRead()
     {
         //Setup
         ExcelShape? shape = TryGetShape(_pck, "BlurDefault");
-            
+
         //Assert default values
         Assert.AreEqual(0, shape.Effect.Blur.Radius);
         Assert.AreEqual(true, shape.Effect.Blur.GrowBounds);
     }
+
     [TestMethod]
     public void FillOverlayDefaultRead()
     {
@@ -131,7 +139,7 @@ public class EffectReadTest : TestBase
         ExcelShape? shape = TryGetShape(_pck, "FillOverlay");
 
         //Assert default values
-        Assert.AreEqual(eBlendMode.Over,shape.Effect.FillOverlay.Blend);
+        Assert.AreEqual(eBlendMode.Over, shape.Effect.FillOverlay.Blend);
     }
 
     [TestMethod]
@@ -142,13 +150,14 @@ public class EffectReadTest : TestBase
 
         //Assert
         Assert.AreEqual(ePresetShadowType.FrontBottomShadow, shape.Effect.PresetShadow.Type);
-        Assert.AreEqual(6,shape.Effect.PresetShadow.Direction);
+        Assert.AreEqual(6, shape.Effect.PresetShadow.Direction);
         Assert.AreEqual(5, shape.Effect.PresetShadow.Distance);
         Assert.IsInstanceOfType(shape.Effect.PresetShadow.Color.PresetColor, typeof(ExcelDrawingPresetColor));
         Assert.AreEqual(ePresetColor.Black, shape.Effect.PresetShadow.Color.PresetColor.Color);
         Assert.AreEqual(eColorTransformType.Alpha, shape.Effect.PresetShadow.Color.Transforms[0].Type);
         Assert.AreEqual(50, shape.Effect.PresetShadow.Color.Transforms[0].Value);
     }
+
     [TestMethod]
     public void BlurRead()
     {
@@ -162,6 +171,7 @@ public class EffectReadTest : TestBase
     }
 
     #region Private help methods
+
     private static void AddPresetShadowShape(ExcelWorksheet ws, int row, int col, ePresetExcelShadowType preset)
     {
         ExcelShape? shape = AddShape(ws, row, col, preset.ToString());
@@ -173,16 +183,19 @@ public class EffectReadTest : TestBase
         ExcelShape? shape = AddShape(ws, row, col, preset.ToString());
         shape.Effect.SetPresetReflection(preset);
     }
+
     private static void AddPresetGlowShape(ExcelWorksheet ws, int row, int col, ePresetExcelGlowType preset)
     {
         ExcelShape? shape = AddShape(ws, row, col, preset.ToString());
         shape.Effect.SetPresetGlow(preset);
     }
+
     private static void AddPresetSoftEdgesShape(ExcelWorksheet ws, int row, int col, ePresetExcelSoftEdgesType preset)
     {
         ExcelShape? shape = AddShape(ws, row, col, preset.ToString());
         shape.Effect.SetPresetSoftEdges(preset);
     }
+
     private static ExcelShape AddShape(ExcelWorksheet ws, int row, int col, string name)
     {
         ExcelShape? shape = ws.Drawings.AddShape(name, eShapeStyle.RoundRect);
@@ -191,7 +204,9 @@ public class EffectReadTest : TestBase
         shape.TextAnchoring = eTextAnchoringType.Center;
         shape.Font.Color = Color.Black;
         shape.SetPosition(row, 0, col, 0);
+
         return shape;
     }
+
     #endregion
 }

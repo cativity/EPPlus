@@ -10,6 +10,7 @@
  *************************************************************************************************
   01/27/2020         EPPlus Software AB       Initial release EPPlus 5
  *************************************************************************************************/
+
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -19,10 +20,9 @@ using OfficeOpenXml.FormulaParsing.ExpressionGraph;
 
 namespace OfficeOpenXml.FormulaParsing.Excel.Functions.RefAndLookup;
 
-[FunctionMetadata(
-                     Category = ExcelFunctionCategory.LookupAndReference,
-                     EPPlusVersion = "4",
-                     Description = "Returns a reference to a range of cells that is a specified number of rows and columns from an initial supplied range")]
+[FunctionMetadata(Category = ExcelFunctionCategory.LookupAndReference,
+                  EPPlusVersion = "4",
+                  Description = "Returns a reference to a range of cells that is a specified number of rows and columns from an initial supplied range")]
 internal class Offset : LookupFunction
 {
     public override CompileResult Execute(IEnumerable<FunctionArgument> arguments, ParsingContext context)
@@ -32,25 +32,32 @@ internal class Offset : LookupFunction
         string? startRange = ArgToAddress(functionArguments, 0, context);
         int rowOffset = this.ArgToInt(functionArguments, 1);
         int colOffset = this.ArgToInt(functionArguments, 2);
-        int width = 0, height = 0;
+
+        int width = 0,
+            height = 0;
+
         if (functionArguments.Length > 3)
         {
             height = this.ArgToInt(functionArguments, 3);
+
             if (height == 0)
             {
                 return new CompileResult(eErrorType.Ref);
             }
         }
+
         if (functionArguments.Length > 4)
         {
             width = this.ArgToInt(functionArguments, 4);
+
             if (width == 0)
             {
                 return new CompileResult(eErrorType.Ref);
             }
         }
-        string? ws = context.Scopes.Current.Address.Worksheet;            
-        IRangeInfo? r =context.ExcelDataProvider.GetRange(ws, context.Scopes.Current.Address.FromRow, context.Scopes.Current.Address.FromCol, startRange);
+
+        string? ws = context.Scopes.Current.Address.Worksheet;
+        IRangeInfo? r = context.ExcelDataProvider.GetRange(ws, context.Scopes.Current.Address.FromRow, context.Scopes.Current.Address.FromCol, startRange);
         ExcelAddressBase? adr = r.Address;
 
         int fromRow = adr._fromRow + rowOffset;
@@ -59,7 +66,7 @@ internal class Offset : LookupFunction
         int toCol = (width != 0 ? adr._fromCol + width - 1 : adr._toCol) + colOffset;
 
         IRangeInfo? newRange = context.ExcelDataProvider.GetRange(adr.WorkSheetName, fromRow, fromCol, toRow, toCol);
-            
+
         return this.CreateResult(newRange, DataType.Enumerable);
     }
 }

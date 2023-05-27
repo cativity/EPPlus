@@ -10,6 +10,7 @@
  *************************************************************************************************
   01/27/2020         EPPlus Software AB       Initial release EPPlus 5
  *************************************************************************************************/
+
 using System.Xml;
 using OfficeOpenXml.Drawing.Interfaces;
 
@@ -18,7 +19,7 @@ namespace OfficeOpenXml.Drawing.Chart;
 /// <summary>
 /// A base class used for chart series that support ErrorBars
 /// </summary>
-public class ExcelChartSerieWithHorizontalErrorBars : ExcelChartSerieWithErrorBars, IDrawingChartErrorBars  
+public class ExcelChartSerieWithHorizontalErrorBars : ExcelChartSerieWithErrorBars, IDrawingChartErrorBars
 {
     /// <summary>
     /// Default constructor
@@ -27,13 +28,14 @@ public class ExcelChartSerieWithHorizontalErrorBars : ExcelChartSerieWithErrorBa
     /// <param name="ns">Namespacemanager</param>
     /// <param name="node">Topnode</param>
     /// <param name="isPivot">Is pivotchart</param>
-    internal ExcelChartSerieWithHorizontalErrorBars(ExcelChart chart, XmlNamespaceManager ns, XmlNode node, bool isPivot) :
-        base(chart, ns, node, isPivot)
+    internal ExcelChartSerieWithHorizontalErrorBars(ExcelChart chart, XmlNamespaceManager ns, XmlNode node, bool isPivot)
+        : base(chart, ns, node, isPivot)
     {
-        foreach(XmlElement errBarsNode in this.GetNodes("c:errBars"))
+        foreach (XmlElement errBarsNode in this.GetNodes("c:errBars"))
         {
             string? direction = this.GetXmlNodeString(errBarsNode, "c:errDir/@val");
-            if(direction=="x")
+
+            if (direction == "x")
             {
                 this.ErrorBarsX = new ExcelChartErrorBars(this, errBarsNode);
             }
@@ -42,14 +44,15 @@ public class ExcelChartSerieWithHorizontalErrorBars : ExcelChartSerieWithErrorBa
                 this.ErrorBars = new ExcelChartErrorBars(this, errBarsNode);
             }
         }
-
     }
+
     /// <summary>
     /// Horizontal error bars
     /// <seealso cref="ErrorBarsX"/>
     /// <seealso cref="AddErrorBars(eErrorBarType, eErrorValueType)"/>
     /// </summary>
     public ExcelChartErrorBars ErrorBarsX { get; internal set; }
+
     /// <summary>
     /// Adds error bars to the chart serie for both vertical and horizontal directions.
     /// </summary>
@@ -59,6 +62,7 @@ public class ExcelChartSerieWithHorizontalErrorBars : ExcelChartSerieWithErrorBa
     {
         this.AddErrorBars(barType, valueType, null);
     }
+
     /// <summary>
     /// Adds error bars to the chart serie for vertical or horizontal directions.
     /// </summary>
@@ -67,17 +71,16 @@ public class ExcelChartSerieWithHorizontalErrorBars : ExcelChartSerieWithErrorBa
     /// <param name="direction">Direction for the error bars. A value of null will add both horizontal and vertical error bars. </param>
     public void AddErrorBars(eErrorBarType barType, eErrorValueType valueType, eErrorBarDirection? direction)
     {
-        if (this.ErrorBars == null && (direction==null || direction==eErrorBarDirection.Y))
+        if (this.ErrorBars == null && (direction == null || direction == eErrorBarDirection.Y))
         {
             base.AddErrorBars(barType, valueType);
             this.ErrorBars.SetDirection(eErrorBarDirection.Y);
         }
 
-        if (this.ErrorBarsX==null && (direction == null || direction == eErrorBarDirection.X))
+        if (this.ErrorBarsX == null && (direction == null || direction == eErrorBarDirection.X))
         {
             this.ErrorBarsX = this.GetNewErrorBar(barType, valueType, this.ErrorBarsX);
             this.ErrorBarsX.SetDirection(eErrorBarDirection.X);
         }
     }
-
 }

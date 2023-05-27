@@ -10,6 +10,7 @@
  *************************************************************************************************
   04/16/2021         EPPlus Software AB       EPPlus 5.7
  *************************************************************************************************/
+
 using OfficeOpenXml.Core;
 using System.Collections.Generic;
 
@@ -20,7 +21,8 @@ namespace OfficeOpenXml.ExternalReferences;
 /// </summary>
 public class ExcelExternalWorksheetCollection : EPPlusReadOnlyList<ExcelExternalWorksheet>
 {
-    Dictionary<string, int> _sheetNames=new Dictionary<string, int>();
+    Dictionary<string, int> _sheetNames = new Dictionary<string, int>();
+
     /// <summary>
     /// The indexer to reference the external worksheet objects 
     /// </summary>
@@ -34,9 +36,11 @@ public class ExcelExternalWorksheetCollection : EPPlusReadOnlyList<ExcelExternal
             {
                 return this._list[this._sheetNames[name]];
             }
+
             return null;
         }
     }
+
     internal override void Add(ExcelExternalWorksheet item)
     {
         this._sheetNames.Add(item.Name, this._list.Count);

@@ -10,6 +10,7 @@
  *************************************************************************************************
   01/27/2020         EPPlus Software AB       Initial release EPPlus 5
  *************************************************************************************************/
+
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -19,15 +20,15 @@ using OfficeOpenXml.FormulaParsing.ExpressionGraph;
 
 namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Math;
 
-[FunctionMetadata(
-                     Category = ExcelFunctionCategory.MathAndTrig,
-                     EPPlusVersion = "4",
-                     Description = "Rounds a number away from zero (i.e. rounds a positive number up and a negative number down), to a given number of digits")]
+[FunctionMetadata(Category = ExcelFunctionCategory.MathAndTrig,
+                  EPPlusVersion = "4",
+                  Description = "Rounds a number away from zero (i.e. rounds a positive number up and a negative number down), to a given number of digits")]
 internal class Roundup : ExcelFunction
 {
     public override CompileResult Execute(IEnumerable<FunctionArgument> arguments, ParsingContext context)
     {
         ValidateArguments(arguments, 2);
+
         if (arguments.ElementAt(0).Value == null)
         {
             return this.CreateResult(0d, DataType.Decimal);
@@ -35,9 +36,11 @@ internal class Roundup : ExcelFunction
 
         double number = this.ArgToDecimal(arguments, 0, context.Configuration.PrecisionAndRoundingStrategy);
         int nDigits = this.ArgToInt(arguments, 1);
-        double result = number >= 0 
+
+        double result = number >= 0
                             ? System.Math.Ceiling(number * System.Math.Pow(10, nDigits)) / System.Math.Pow(10, nDigits)
                             : System.Math.Floor(number * System.Math.Pow(10, nDigits)) / System.Math.Pow(10, nDigits);
+
         return this.CreateResult(result, DataType.Decimal);
     }
 }

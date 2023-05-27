@@ -36,6 +36,7 @@ public class AutofitWithSerializedFontMetricsTests : TestBase
     public void AutofitWithSerializedFonts(string fontFamily)
     {
         using ExcelPackage? package = new ExcelPackage();
+
         for (FontSubFamilies style = FontSubFamilies.Regular; style <= FontSubFamilies.BoldItalic; style++)
         {
             ExcelWorksheet? sheet = package.Workbook.Worksheets.Add(style.ToString());
@@ -45,6 +46,7 @@ public class AutofitWithSerializedFontMetricsTests : TestBase
             range.Style.Font.Italic = style == FontSubFamilies.Italic || style == FontSubFamilies.BoldItalic;
             range.Style.Font.Bold = style == FontSubFamilies.Bold || style == FontSubFamilies.BoldItalic;
             Random? rnd = new Random();
+
             for (int col = 1; col < 10; col++)
             {
                 for (int row = 1; row < 5; row++)
@@ -52,9 +54,11 @@ public class AutofitWithSerializedFontMetricsTests : TestBase
                     StringBuilder? sb = new StringBuilder();
                     int maxLength = 40 - (col * 2);
                     int nLetters = rnd.Next(4, maxLength);
+
                     for (int x = 0; x < nLetters; x++)
                     {
                         int n = 65;
+
                         if (x % 2 == 0)
                         {
                             n = rnd.Next(65, 90);
@@ -76,9 +80,11 @@ public class AutofitWithSerializedFontMetricsTests : TestBase
 
                         sb.Append((char)n);
                     }
+
                     sheet.Cells[row, col].Value = sb.ToString();
                 }
             }
+
             Stopwatch? sw = new Stopwatch();
             sw.Start();
             sheet.Columns[1, 9].AutoFit();
@@ -90,6 +96,7 @@ public class AutofitWithSerializedFontMetricsTests : TestBase
     }
 
     [DataTestMethod, Ignore]
+
     //[DataRow("Calibri", 1)]
     //[DataRow("Calibri Light", 2)]
     //[DataRow("Arial", 3)]
@@ -99,6 +106,7 @@ public class AutofitWithSerializedFontMetricsTests : TestBase
     //[DataRow("Calisto MT", 7)]
     //[DataRow("Times New Roman", 8)]
     [DataRow("Courier New", 9)]
+
     //[DataRow("Liberation Serif", 10)]
     //[DataRow("Verdana", 11)]
     //[DataRow("Cambria", 12)]
@@ -120,47 +128,33 @@ public class AutofitWithSerializedFontMetricsTests : TestBase
         ExcelWorksheet? reportSheet = !report.Workbook.Worksheets.Any() ? report.Workbook.Worksheets.Add("Report") : report.Workbook.Worksheets["Report"];
         int reportColOffset = 3;
         int reportRow = ((run - 1) * 5) + 2;
-        List<string>? shortList = new List<string>
-        {
-            "One",
-            "12,3456",
-            "Hello"
-        };
-        List<string>? mediumList = new List<string>
-        {
-            "A little longer",
-            "5435.1234556",
-            "Something else"
-        };
+        List<string>? shortList = new List<string> { "One", "12,3456", "Hello" };
+        List<string>? mediumList = new List<string> { "A little longer", "5435.1234556", "Something else" };
+
         List<string>? longList = new List<string>
         {
-            "A little longer than the previous example",
-            "5435.1234556",
-            "Something else that is even longer 12345567 than above"
+            "A little longer than the previous example", "5435.1234556", "Something else that is even longer 12345567 than above"
         };
+
         List<string>? reallyLongList = new List<string>
         {
             "A little longer than the previous example, 333333333333954838!!!!!!!!!!!!!!!!,,,,,",
             "5435.1234556321 - 4.32413254353",
             "Something else that is even longer 12345567 than above, 136542.5439587432 (really, really long)"
         };
+
         List<string>? reallyReallyLongList = new List<string>
         {
             "A little longer than the previous example, 333333333333954838!!!!!!!!!!!!!!!!,,,,,",
             "5435.1234556321 - 4.32413254353",
             "Something else that is even longer 12345567 than above, 136542.5439587432 (really, really long),,,,,,,,,,,.............&%¤#/%¤)%(/#/%#(%/&¤#`??.3123212321"
         };
-        List<List<string>>? lists = new List<List<string>>
-        {
-            shortList,
-            mediumList,
-            longList,
-            reallyLongList,
-            reallyReallyLongList
-        };
+
+        List<List<string>>? lists = new List<List<string>> { shortList, mediumList, longList, reallyLongList, reallyReallyLongList };
         using ExcelPackage? package = new ExcelPackage();
         package.Settings.TextSettings.PrimaryTextMeasurer = new GenericFontMetricsTextMeasurer();
         bool newFont = true;
+
         for (FontSubFamilies style = FontSubFamilies.Regular; style <= FontSubFamilies.BoldItalic; style++)
         {
             ExcelWorksheet? sheet = package.Workbook.Worksheets.Add(style.ToString());
@@ -170,6 +164,7 @@ public class AutofitWithSerializedFontMetricsTests : TestBase
             range.Style.Font.Italic = style == FontSubFamilies.Italic || style == FontSubFamilies.BoldItalic;
             range.Style.Font.Bold = style == FontSubFamilies.Bold || style == FontSubFamilies.BoldItalic;
             Random? rnd = new Random();
+
             for (int col = 1; col < lists.Count + 1; col++)
             {
                 for (int row = 1; row < 4; row++)
@@ -178,19 +173,24 @@ public class AutofitWithSerializedFontMetricsTests : TestBase
                     sheet.Cells[row, col].Value = s;
                 }
             }
+
             Stopwatch? sw = new Stopwatch();
             sw.Start();
             sheet.Columns[1, 9].AutoFit();
+
             if (newFont)
             {
                 reportSheet.Cells[reportRow, 1].Value = range.Style.Font.Name;
                 newFont = false;
             }
+
             reportSheet.Cells[reportRow, 2].Value = style.ToString();
+
             for (int col = 1; col < lists.Count + 1; col++)
             {
                 reportSheet.Cells[reportRow, col + reportColOffset].Value = sheet.Columns[col].Width;
             }
+
             reportRow++;
             sw.Stop();
             long ms = sw.ElapsedMilliseconds;
@@ -225,47 +225,29 @@ public class AutofitWithSerializedFontMetricsTests : TestBase
         ExcelWorksheet? reportSheet = !report.Workbook.Worksheets.Any() ? report.Workbook.Worksheets.Add("Report") : report.Workbook.Worksheets["Report"];
         int reportColOffset = 3;
         int reportRow = ((run - 1) * 5) + 2;
-        List<string>? shortList = new List<string>
-        {
-            "新しい最新スタイルです",
-            "ルの拡張サポート",
-            "ピボット テー"
-        };
-        List<string>? mediumList = new List<string>
-        {
-            "数式計算エンジンの改良点とサポートされる新しい関数",
-            "5435.1234556",
-            "Something else"
-        };
-        List<string>? longList = new List<string>
-        {
-            "A little longer than the previous example",
-            "5435.1234556",
-            "ェクトが完了すると、コードを管理する開発者のライセンスのみが必要"
-        };
+        List<string>? shortList = new List<string> { "新しい最新スタイルです", "ルの拡張サポート", "ピボット テー" };
+        List<string>? mediumList = new List<string> { "数式計算エンジンの改良点とサポートされる新しい関数", "5435.1234556", "Something else" };
+        List<string>? longList = new List<string> { "A little longer than the previous example", "5435.1234556", "ェクトが完了すると、コードを管理する開発者のライセンスのみが必要" };
+
         List<string>? reallyLongList = new List<string>
         {
             "A little longer than the previous example, 333333333333954838!!!!!!!!!!!!!!!!,,,,,",
             "5435.1234556321 - 4.32413254353",
             "EPPlusは3000万回以上ダウンロードされています。世界中の何千もの企業がスプレッドシートデータを管理するために使用しています。"
         };
+
         List<string>? reallyReallyLongList = new List<string>
         {
             "A little longer than the previous example, 333333333333954838!!!!!!!!!!!!!!!!,,,,,",
             "5435.1234556321 - 4.32413254353",
             "場合など)、会社は、ユーザーでもあるため、そのサービスの内部ユーザー (開発者) の数をカバーするサブスクリプションをサブスクライブする必要があります。"
         };
-        List<List<string>>? lists = new List<List<string>>
-        {
-            shortList,
-            mediumList,
-            longList,
-            reallyLongList,
-            reallyReallyLongList
-        };
+
+        List<List<string>>? lists = new List<List<string>> { shortList, mediumList, longList, reallyLongList, reallyReallyLongList };
         using ExcelPackage? package = new ExcelPackage();
         package.Settings.TextSettings.PrimaryTextMeasurer = new GenericFontMetricsTextMeasurer();
         bool newFont = true;
+
         for (FontSubFamilies style = FontSubFamilies.Regular; style <= FontSubFamilies.BoldItalic; style++)
         {
             ExcelWorksheet? sheet = package.Workbook.Worksheets.Add(style.ToString());
@@ -275,6 +257,7 @@ public class AutofitWithSerializedFontMetricsTests : TestBase
             range.Style.Font.Italic = style == FontSubFamilies.Italic || style == FontSubFamilies.BoldItalic;
             range.Style.Font.Bold = style == FontSubFamilies.Bold || style == FontSubFamilies.BoldItalic;
             Random? rnd = new Random();
+
             for (int col = 1; col < lists.Count + 1; col++)
             {
                 for (int row = 1; row < 4; row++)
@@ -283,19 +266,24 @@ public class AutofitWithSerializedFontMetricsTests : TestBase
                     sheet.Cells[row, col].Value = s;
                 }
             }
+
             Stopwatch? sw = new Stopwatch();
             sw.Start();
             sheet.Columns[1, 9].AutoFit();
+
             if (newFont)
             {
                 reportSheet.Cells[reportRow, 1].Value = range.Style.Font.Name;
                 newFont = false;
             }
+
             reportSheet.Cells[reportRow, 2].Value = style.ToString();
+
             for (int col = 1; col < lists.Count + 1; col++)
             {
                 reportSheet.Cells[reportRow, col + reportColOffset].Value = sheet.Columns[col].Width;
             }
+
             reportRow++;
             sw.Stop();
             long ms = sw.ElapsedMilliseconds;
@@ -305,17 +293,20 @@ public class AutofitWithSerializedFontMetricsTests : TestBase
         report.Save();
         report.Dispose();
     }
+
     [TestMethod]
     public void LoadFontSizeFromResource()
     {
         using ExcelPackage? p = new ExcelPackage();
         int expectedLoaded = 895;
+
         if (FontSize._isLoaded == false)
         {
             int expectedDefault = 23;
             Assert.AreEqual(expectedDefault, FontSize.FontHeights.Count);
             Assert.AreEqual(expectedDefault, FontSize.FontWidths.Count);
         }
+
         FontSize.LoadAllFontsFromResource();
         Assert.AreEqual(expectedLoaded, FontSize.FontHeights.Count);
         Assert.AreEqual(expectedLoaded, FontSize.FontWidths.Count);
@@ -337,34 +328,41 @@ public class AutofitWithSerializedFontMetricsTests : TestBase
         string? chars = "aabcdeefghijklmnopqrrssttuvxyzåäö   AABCDEEFGHIJKLMNOPQRSSTTUVXYZÅÄÖ      !!,,,,,,,,, 112233445566778899.....";
         string? numbers = "11122233344455566677788899900000000........,,,,,,,       ";
         Random? rnd = new Random();
+
         for (int x = 0; x < 60; x++)
         {
             StringBuilder? text = new StringBuilder();
+
             for (int i = 0; i < x; i++)
             {
                 int ix = rnd.Next(0, chars.Length);
                 text.Append(chars[ix]);
             }
+
             sheet.Cells[1, x + 1].Value = text.ToString();
             sheet.Columns[x + 1].AutoFit();
             sheet2.Cells[1, x + 1].Value = sheet.Columns[x + 1].Width;
 
             StringBuilder? number = new StringBuilder();
+
             for (int i = 0; i < x; i++)
             {
                 int ix = rnd.Next(0, numbers.Length);
                 number.Append(numbers[ix]);
             }
+
             sheet3.Cells[1, x + 1].Value = number.ToString();
             sheet3.Columns[x + 1].AutoFit();
             sheet2.Cells[2, x + 2].Value = sheet3.Columns[x + 1].Width;
         }
+
         if (!Directory.Exists(@"c:\Temp\FontTests"))
         {
             Directory.CreateDirectory(@"c:\Temp\FontTests");
         }
 
         string? path = $"c:\\Temp\\FontTests\\{font}Measurements.xlsx";
+
         if (File.Exists(path))
         {
             File.Delete(path);
@@ -373,13 +371,12 @@ public class AutofitWithSerializedFontMetricsTests : TestBase
         package.SaveAs(path);
     }
 
-
     [DataTestMethod, Ignore]
     [DataRow("Yu Gothic", 1)]
     [DataRow("Yu Mincho", 2)]
     [DataRow("Arial Rounded MT Bold", 3)]
-    [DataRow("Goudy Stout",4)]
-    [DataRow("Vladimir Script",5)]     
+    [DataRow("Goudy Stout", 4)]
+    [DataRow("Vladimir Script", 5)]
     [DataRow("Bahnschrift SemiBold SemiConden", 6)]
     [DataRow("Copperplate Gothic Bold", 7)]
     [DataRow("Gigi", 8)]
@@ -390,47 +387,30 @@ public class AutofitWithSerializedFontMetricsTests : TestBase
         ExcelWorksheet? reportSheet = !report.Workbook.Worksheets.Any() ? report.Workbook.Worksheets.Add("Report") : report.Workbook.Worksheets["Report"];
         int reportColOffset = 3;
         int reportRow = ((run - 1) * 5) + 2;
-        List<string>? shortList = new List<string>
-        {
-            "新しい最新スタイルです",
-            "ルの拡張サポート",
-            "ピボット テー"
-        };
-        List<string>? mediumList = new List<string>
-        {
-            "数式計算エンジンの改良点とサポートされる新しい関数",
-            "5435.1234556",
-            "Something else"
-        };
-        List<string>? longList = new List<string>
-        {
-            "A little longer than the previous example",
-            "5435.1234556",
-            "ェクトが完了すると、コードを管理する開発者のライセンスのみが必要"
-        };
+        List<string>? shortList = new List<string> { "新しい最新スタイルです", "ルの拡張サポート", "ピボット テー" };
+        List<string>? mediumList = new List<string> { "数式計算エンジンの改良点とサポートされる新しい関数", "5435.1234556", "Something else" };
+        List<string>? longList = new List<string> { "A little longer than the previous example", "5435.1234556", "ェクトが完了すると、コードを管理する開発者のライセンスのみが必要" };
+
         List<string>? reallyLongList = new List<string>
         {
             "A little longer than the previous example, 333333333333954838!!!!!!!!!!!!!!!!,,,,,",
             "5435.1234556321 - 4.32413254353",
             "EPPlusは3000万回以上ダウンロードされています。世界中の何千もの企業がスプレッドシートデータを管理するために使用しています。"
         };
+
         List<string>? reallyReallyLongList = new List<string>
         {
             "A little longer than the previous example, 333333333333954838!!!!!!!!!!!!!!!!,,,,,",
             "5435.1234556321 - 4.32413254353",
             "場合など)、会社は、ユーザーでもあるため、そのサービスの内部ユーザー (開発者) の数をカバーするサブスクリプションをサブスクライブする必要があります。"
         };
-        List<List<string>>? lists = new List<List<string>>
-        {
-            shortList,
-            mediumList,
-            longList,
-            reallyLongList,
-            reallyReallyLongList
-        };
+
+        List<List<string>>? lists = new List<List<string>> { shortList, mediumList, longList, reallyLongList, reallyReallyLongList };
         using ExcelPackage? package = new ExcelPackage();
+
         //package.Settings.TextSettings.PrimaryTextMeasurer = new GenericFontMetricsTextMeasurer();
         bool newFont = true;
+
         for (FontSubFamilies style = FontSubFamilies.Regular; style <= FontSubFamilies.BoldItalic; style++)
         {
             ExcelWorksheet? sheet = package.Workbook.Worksheets.Add(style.ToString());
@@ -440,6 +420,7 @@ public class AutofitWithSerializedFontMetricsTests : TestBase
             range.Style.Font.Italic = style == FontSubFamilies.Italic || style == FontSubFamilies.BoldItalic;
             range.Style.Font.Bold = style == FontSubFamilies.Bold || style == FontSubFamilies.BoldItalic;
             Random? rnd = new Random();
+
             for (int col = 1; col < lists.Count + 1; col++)
             {
                 for (int row = 1; row < 2; row++)
@@ -448,19 +429,24 @@ public class AutofitWithSerializedFontMetricsTests : TestBase
                     sheet.Cells[row, col].Value = s;
                 }
             }
+
             Stopwatch? sw = new Stopwatch();
             sw.Start();
             sheet.Columns[1, 9].AutoFit();
+
             if (newFont)
             {
                 reportSheet.Cells[reportRow, 1].Value = range.Style.Font.Name;
                 newFont = false;
             }
+
             reportSheet.Cells[reportRow, 2].Value = style.ToString();
+
             for (int col = 1; col < lists.Count + 1; col++)
             {
                 reportSheet.Cells[reportRow, col + reportColOffset].Value = sheet.Columns[col].Width;
             }
+
             reportRow++;
             sw.Stop();
             long ms = sw.ElapsedMilliseconds;

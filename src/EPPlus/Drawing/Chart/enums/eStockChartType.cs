@@ -10,6 +10,7 @@
  *************************************************************************************************
   05/25/2020         EPPlus Software AB       Added this enum
  *************************************************************************************************/
+
 namespace OfficeOpenXml.Drawing.Chart;
 
 /// <summary>
@@ -21,14 +22,17 @@ public enum eStockChartType
     /// Stock chart with a High, Low and Close serie
     /// </summary>
     StockHLC = 88,
+
     /// <summary>
     /// Stock chart with an Open, High, Low and Close serie
     /// </summary>
     StockOHLC = 89,
+
     /// <summary>
     /// Stock chart with an Volume, High, Low and Close serie
     /// </summary>
     StockVHLC = 90,
+
     /// <summary>
     /// Stock chart with an Volume, Open, High, Low and Close serie
     /// </summary>

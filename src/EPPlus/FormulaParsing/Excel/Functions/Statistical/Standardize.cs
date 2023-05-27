@@ -10,6 +10,7 @@
  *************************************************************************************************
   22/10/2022         EPPlus Software AB           EPPlus v6
  *************************************************************************************************/
+
 using OfficeOpenXml.FormulaParsing.Excel.Functions.Metadata;
 using OfficeOpenXml.FormulaParsing.ExpressionGraph;
 using System;
@@ -19,10 +20,9 @@ using System.Text;
 
 namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Statistical;
 
-[FunctionMetadata(
-                     Category = ExcelFunctionCategory.Statistical,
-                     EPPlusVersion = "6.0",
-                     Description = "Returns a normalized value from a distribution characterized by mean and standard_dev.")]
+[FunctionMetadata(Category = ExcelFunctionCategory.Statistical,
+                  EPPlusVersion = "6.0",
+                  Description = "Returns a normalized value from a distribution characterized by mean and standard_dev.")]
 internal class Standardize : ExcelFunction
 {
     public override CompileResult Execute(IEnumerable<FunctionArgument> arguments, ParsingContext context)
@@ -32,6 +32,7 @@ internal class Standardize : ExcelFunction
         double avg = this.ArgToDecimal(arguments, 1);
         double stdev = this.ArgToDecimal(arguments, 2);
         double result = (val - avg) / stdev;
+
         return this.CreateResult(result, DataType.Decimal);
     }
 }

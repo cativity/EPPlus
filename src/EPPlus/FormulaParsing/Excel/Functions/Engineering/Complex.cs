@@ -10,6 +10,7 @@
  *************************************************************************************************
   05/25/2020         EPPlus Software AB       Implemented function
  *************************************************************************************************/
+
 using OfficeOpenXml.FormulaParsing.Excel.Functions.Metadata;
 using OfficeOpenXml.FormulaParsing.ExpressionGraph;
 using System;
@@ -19,10 +20,9 @@ using System.Text;
 
 namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Engineering;
 
-[FunctionMetadata(
-                     Category = ExcelFunctionCategory.Engineering,
-                     EPPlusVersion = "5.5",
-                     Description = "Converts user-supplied real and imaginary coefficients into a complex number")]
+[FunctionMetadata(Category = ExcelFunctionCategory.Engineering,
+                  EPPlusVersion = "5.5",
+                  Description = "Converts user-supplied real and imaginary coefficients into a complex number")]
 internal class Complex : ExcelFunction
 {
     public override CompileResult Execute(IEnumerable<FunctionArgument> arguments, ParsingContext context)
@@ -31,20 +31,26 @@ internal class Complex : ExcelFunction
         double real = this.ArgToDecimal(arguments, 0);
         double img = this.ArgToDecimal(arguments, 1);
         string? suffix = "i";
-        if(arguments.Count() > 2)
+
+        if (arguments.Count() > 2)
         {
             suffix = ArgToString(arguments, 2);
+
             if (suffix != "i" && suffix != "j")
             {
                 return this.CreateResult(eErrorType.Value);
             }
         }
+
         string? result = real.ToString();
-        if(img > 0)
+
+        if (img > 0)
         {
             result += "+";
         }
+
         result += img.ToString() + suffix;
+
         return this.CreateResult(result, DataType.String);
     }
 }

@@ -26,6 +26,7 @@
  *******************************************************************************
   01/27/2020         EPPlus Software AB       Initial release EPPlus 5
  *******************************************************************************/
+
 using System;
 using System.Text;
 using System.Collections.Generic;
@@ -196,6 +197,7 @@ public class OperatorsTests
         Assert.AreEqual(number1 * number2, operatorResult.Result);
         operatorResult = Operator.Plus.Apply(result1, result2);
         Assert.AreEqual(number1 + number2, operatorResult.Result);
+
         // Comparison operators always compare string-wise and don't parse out the actual numbers.
         operatorResult = Operator.NotEqualsTo.Apply(result1, new CompileResult(number1.ToString("n0"), DataType.String));
         Assert.IsTrue((bool)operatorResult.Result);
@@ -237,6 +239,7 @@ public class OperatorsTests
         Assert.AreEqual(numericDate1 * numericDate2, operatorResult.Result);
         operatorResult = Operator.Plus.Apply(result1, result2);
         Assert.AreEqual(numericDate1 + numericDate2, operatorResult.Result);
+
         // Comparison operators always compare string-wise and don't parse out the actual numbers.
         operatorResult = Operator.Eq.Apply(result1, new CompileResult(date1.ToString("f"), DataType.String));
         Assert.IsFalse((bool)operatorResult.Result);

@@ -10,6 +10,7 @@
  *************************************************************************************************
   01/27/2020         EPPlus Software AB       Initial release EPPlus 5
  *************************************************************************************************/
+
 using System;
 using System.Collections.Generic;
 using System.Globalization;
@@ -32,32 +33,31 @@ public sealed class ExcelLineChartSerie : ExcelChartSerieWithErrorBars, IDrawing
     /// <param name="ns">Namespacemanager</param>
     /// <param name="node">Topnode</param>
     /// <param name="isPivot">Is pivotchart</param>
-    internal ExcelLineChartSerie(ExcelChart chart, XmlNamespaceManager ns, XmlNode node, bool isPivot) :
-        base(chart, ns, node, isPivot)
+    internal ExcelLineChartSerie(ExcelChart chart, XmlNamespaceManager ns, XmlNode node, bool isPivot)
+        : base(chart, ns, node, isPivot)
     {
     }
+
     ExcelChartSerieDataLabel _DataLabel = null;
+
     /// <summary>
     /// Datalabels
     /// </summary>
     public ExcelChartSerieDataLabel DataLabel
     {
-        get
-        {
-            return this._DataLabel ??= new ExcelChartSerieDataLabel(this._chart, this.NameSpaceManager, this.TopNode, this.SchemaNodeOrder);
-        }
+        get { return this._DataLabel ??= new ExcelChartSerieDataLabel(this._chart, this.NameSpaceManager, this.TopNode, this.SchemaNodeOrder); }
     }
+
     /// <summary>
     /// If the chart has datalabel
     /// </summary>
     public bool HasDataLabel
     {
-        get
-        {
-            return this.TopNode.SelectSingleNode("c:dLbls", this.NameSpaceManager) != null;
-        }
+        get { return this.TopNode.SelectSingleNode("c:dLbls", this.NameSpaceManager) != null; }
     }
+
     ExcelChartMarker _chartMarker = null;
+
     /// <summary>
     /// A reference to marker properties
     /// </summary>
@@ -72,41 +72,37 @@ public sealed class ExcelLineChartSerie : ExcelChartSerieWithErrorBars, IDrawing
             return this._chartMarker ??= new ExcelChartMarker(this._chart, this.NameSpaceManager, this.TopNode, this.SchemaNodeOrder);
         }
     }
+
     /// <summary>
     /// If the serie has markers
     /// </summary>
     /// <returns>True if serie has markers</returns>
     public bool HasMarker()
     {
-        return this.Marker.Style!=eMarkerStyle.None;
+        return this.Marker.Style != eMarkerStyle.None;
     }
 
     const string smoothPath = "c:smooth/@val";
+
     /// <summary>
     /// Smooth lines
     /// </summary>
     public bool Smooth
     {
-        get
-        {
-            return this.GetXmlNodeBool(smoothPath, false);
-        }
-        set
-        {
-            this.SetXmlNodeBool(smoothPath, value);
-        }
+        get { return this.GetXmlNodeBool(smoothPath, false); }
+        set { this.SetXmlNodeBool(smoothPath, value); }
     }
+
     ExcelChartDataPointCollection _dataPoints = null;
+
     /// <summary>
     /// A collection of the individual datapoints
     /// </summary>
     public ExcelChartDataPointCollection DataPoints
     {
-        get
-        {
-            return this._dataPoints ??= new ExcelChartDataPointCollection(this._chart, this.NameSpaceManager, this.TopNode, this.SchemaNodeOrder);
-        }
+        get { return this._dataPoints ??= new ExcelChartDataPointCollection(this._chart, this.NameSpaceManager, this.TopNode, this.SchemaNodeOrder); }
     }
+
     /// <summary>
     /// Line color.
     /// </summary>
@@ -119,7 +115,7 @@ public sealed class ExcelLineChartSerie : ExcelChartSerieWithErrorBars, IDrawing
     {
         get
         {
-            if (this.Border.Fill.Style == eFillStyle.SolidFill && this.Border.Fill.SolidFill.Color.ColorType==eDrawingColorType.Rgb)
+            if (this.Border.Fill.Style == eFillStyle.SolidFill && this.Border.Fill.SolidFill.Color.ColorType == eDrawingColorType.Rgb)
             {
                 return this.Border.Fill.Color;
             }
@@ -128,11 +124,9 @@ public sealed class ExcelLineChartSerie : ExcelChartSerieWithErrorBars, IDrawing
                 return Color.Black;
             }
         }
-        set
-        {
-            this.Border.Fill.Color = value;
-        }
+        set { this.Border.Fill.Color = value; }
     }
+
     /// <summary>
     /// Gets or sets the size of the marker.
     /// </summary>
@@ -149,8 +143,8 @@ public sealed class ExcelLineChartSerie : ExcelChartSerieWithErrorBars, IDrawing
     {
         get
         {
-
             int size = this.Marker.Size;
+
             if (size == 0)
             {
                 return 5;
@@ -160,11 +154,9 @@ public sealed class ExcelLineChartSerie : ExcelChartSerieWithErrorBars, IDrawing
                 return size;
             }
         }
-        set
-        {
-            this.Marker.Size = value;
-        }
+        set { this.Marker.Size = value; }
     }
+
     /// <summary>
     /// Gets or sets the width of the line in pt.
     /// </summary>
@@ -177,6 +169,7 @@ public sealed class ExcelLineChartSerie : ExcelChartSerieWithErrorBars, IDrawing
         get
         {
             double width = this.Border.Width;
+
             if (width == 0)
             {
                 return 2.25;
@@ -186,11 +179,9 @@ public sealed class ExcelLineChartSerie : ExcelChartSerieWithErrorBars, IDrawing
                 return width;
             }
         }
-        set
-        {
-            this.Border.Width = value;
-        }
+        set { this.Border.Width = value; }
     }
+
     /// <summary>
     /// Marker Line color. 
     /// (not to be confused with LineColor)
@@ -212,9 +203,6 @@ public sealed class ExcelLineChartSerie : ExcelChartSerieWithErrorBars, IDrawing
                 return Color.Black;
             }
         }
-        set
-        {
-            this.Marker.Border.Fill.Color= value;
-        }
+        set { this.Marker.Border.Fill.Color = value; }
     }
 }

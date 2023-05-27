@@ -10,6 +10,7 @@
  *************************************************************************************************
     10/21/2020         EPPlus Software AB           Controls 
  *************************************************************************************************/
+
 using OfficeOpenXml.Packaging;
 using System.Xml;
 
@@ -20,14 +21,22 @@ namespace OfficeOpenXml.Drawing.Controls;
 /// </summary>
 public class ExcelControlGroupBox : ExcelControlWithText
 {
-    internal ExcelControlGroupBox(ExcelDrawings drawings, XmlElement drawNode, string name, ExcelGroupShape parent=null) : base(drawings, drawNode, name, parent)
+    internal ExcelControlGroupBox(ExcelDrawings drawings, XmlElement drawNode, string name, ExcelGroupShape parent = null)
+        : base(drawings, drawNode, name, parent)
     {
         this.SetSize(200, 200); //Default size
     }
-    internal ExcelControlGroupBox(ExcelDrawings drawings, XmlNode drawNode, ControlInternal control, ZipPackagePart part, XmlDocument controlPropertiesXml, ExcelGroupShape parent = null)
+
+    internal ExcelControlGroupBox(ExcelDrawings drawings,
+                                  XmlNode drawNode,
+                                  ControlInternal control,
+                                  ZipPackagePart part,
+                                  XmlDocument controlPropertiesXml,
+                                  ExcelGroupShape parent = null)
         : base(drawings, drawNode, control, part, controlPropertiesXml, parent)
     {
     }
+
     /// <summary>
     /// The type of form control
     /// </summary>

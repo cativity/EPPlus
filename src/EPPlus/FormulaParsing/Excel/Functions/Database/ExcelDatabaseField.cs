@@ -10,6 +10,7 @@
  *************************************************************************************************
   01/27/2020         EPPlus Software AB       Initial release EPPlus 5
  *************************************************************************************************/
+
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -19,8 +20,8 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Database;
 
 public class ExcelDatabaseField
 {
-        
     public string FieldName { get; private set; }
+
     public int ColIndex { get; private set; }
 
     public ExcelDatabaseField(string fieldName, int colIndex)

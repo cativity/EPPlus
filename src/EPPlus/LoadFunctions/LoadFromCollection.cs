@@ -10,6 +10,7 @@
  *************************************************************************************************
   07/16/2020         EPPlus Software AB       EPPlus 5.2.1
  *************************************************************************************************/
+
 using OfficeOpenXml.Compatibility;
 using OfficeOpenXml.Table;
 using System;
@@ -28,24 +29,29 @@ namespace OfficeOpenXml.LoadFunctions;
 
 internal class LoadFromCollection<T> : LoadFunctionBase
 {
-    public LoadFromCollection(ExcelRangeBase range, IEnumerable<T> items, LoadFromCollectionParams parameters) : base(range, parameters)
+    public LoadFromCollection(ExcelRangeBase range, IEnumerable<T> items, LoadFromCollectionParams parameters)
+        : base(range, parameters)
     {
         this._items = items;
         this._bindingFlags = parameters.BindingFlags;
         this._headerParsingType = parameters.HeaderParsingType;
         Type? type = typeof(T);
         EpplusTableAttribute? tableAttr = type.GetFirstAttributeOfType<EpplusTableAttribute>();
-        if(tableAttr != null)
+
+        if (tableAttr != null)
         {
             this.ShowFirstColumn = tableAttr.ShowFirstColumn;
             this.ShowLastColumn = tableAttr.ShowLastColumn;
             this.ShowTotal = tableAttr.ShowTotal;
         }
+
         EPPlusTableColumnSortOrderAttribute? classSortOrderAttr = type.GetFirstAttributeOfType<EPPlusTableColumnSortOrderAttribute>();
-        if(classSortOrderAttr != null && classSortOrderAttr.Properties != null && classSortOrderAttr.Properties.Length > 0)
+
+        if (classSortOrderAttr != null && classSortOrderAttr.Properties != null && classSortOrderAttr.Properties.Length > 0)
         {
             this.SortOrderProperties = classSortOrderAttr.Properties.ToList();
         }
+
         if (parameters.Members == null)
         {
             LoadFromCollectionColumns<T>? cols = new LoadFromCollectionColumns<T>(parameters.BindingFlags, this.SortOrderProperties);
@@ -55,10 +61,12 @@ internal class LoadFromCollection<T> : LoadFunctionBase
         else
         {
             this._columns = parameters.Members.Select(x => new ColumnInfo { MemberInfo = x }).ToArray();
-            if (this._columns.Length == 0)   //Fixes issue 15555
+
+            if (this._columns.Length == 0) //Fixes issue 15555
             {
                 throw new ArgumentException("Parameter Members must have at least one property. Length is zero");
             }
+
             foreach (ColumnInfo? columnInfo in this._columns)
             {
                 if (columnInfo.MemberInfo == null)
@@ -67,13 +75,17 @@ internal class LoadFromCollection<T> : LoadFunctionBase
                 }
 
                 MemberInfo? member = columnInfo.MemberInfo;
+
                 if (member.DeclaringType != null && member.DeclaringType != type)
                 {
                     this._isSameType = false;
                 }
 
                 //Fixing inverted check for IsSubclassOf / Pullrequest from tom dam
-                if (member.DeclaringType != null && member.DeclaringType != type && !TypeCompat.IsSubclassOf(type, member.DeclaringType) && !TypeCompat.IsSubclassOf(member.DeclaringType, type))
+                if (member.DeclaringType != null
+                    && member.DeclaringType != type
+                    && !TypeCompat.IsSubclassOf(type, member.DeclaringType)
+                    && !TypeCompat.IsSubclassOf(member.DeclaringType, type))
                 {
                     throw new InvalidCastException("Supplied properties in parameter Properties must be of the same type as T (or an assignable type from T)");
                 }
@@ -87,11 +99,7 @@ internal class LoadFromCollection<T> : LoadFunctionBase
     private readonly IEnumerable<T> _items;
     private readonly bool _isSameType = true;
 
-    internal List<string> SortOrderProperties
-    {
-        get;
-        private set;
-    }
+    internal List<string> SortOrderProperties { get; private set; }
 
     protected override int GetNumberOfColumns()
     {
@@ -110,7 +118,7 @@ internal class LoadFromCollection<T> : LoadFunctionBase
 
     protected override void PostProcessTable(ExcelTable table, ExcelRangeBase range)
     {
-        for(int ix = 0; ix < table.Columns.Count; ix++)
+        for (int ix = 0; ix < table.Columns.Count; ix++)
         {
             if (ix >= this._columns.Length)
             {
@@ -119,11 +127,12 @@ internal class LoadFromCollection<T> : LoadFunctionBase
 
             string? totalsRowFormula = this._columns[ix].TotalsRowFormula;
             string? totalsRowLabel = this._columns[ix].TotalsRowLabel;
+
             if (!string.IsNullOrEmpty(totalsRowFormula))
             {
                 table.Columns[ix].TotalsRowFormula = totalsRowFormula;
             }
-            else if(!string.IsNullOrEmpty(totalsRowLabel))
+            else if (!string.IsNullOrEmpty(totalsRowLabel))
             {
                 table.Columns[ix].TotalsRowLabel = this._columns[ix].TotalsRowLabel;
                 table.Columns[ix].TotalsRowFunction = RowFunctions.None;
@@ -132,8 +141,8 @@ internal class LoadFromCollection<T> : LoadFunctionBase
             {
                 table.Columns[ix].TotalsRowFunction = this._columns[ix].TotalsRowFunction;
             }
-                
-            if(!string.IsNullOrEmpty(this._columns[ix].TotalsRowNumberFormat))
+
+            if (!string.IsNullOrEmpty(this._columns[ix].TotalsRowNumberFormat))
             {
                 int row = range._toRow + 1;
                 int col = range._fromCol + this._columns[ix].Index;
@@ -142,14 +151,14 @@ internal class LoadFromCollection<T> : LoadFunctionBase
         }
     }
 
-
-
     protected override void LoadInternal(object[,] values, out Dictionary<int, FormulaCell> formulaCells, out Dictionary<int, string> columnFormats)
     {
+        int col = 0,
+            row = 0;
 
-        int col = 0, row = 0;
         columnFormats = new Dictionary<int, string>();
         formulaCells = new Dictionary<int, FormulaCell>();
+
         if (this._columns.Length > 0 && this.PrintHeaders)
         {
             this.SetHeaders(values, columnFormats, ref col, ref row);
@@ -163,11 +172,10 @@ internal class LoadFromCollection<T> : LoadFunctionBase
         this.SetValuesAndFormulas(values, formulaCells, ref col, ref row);
     }
 
-        
-
     private void SetValuesAndFormulas(object[,] values, Dictionary<int, FormulaCell> formulaCells, ref int col, ref int row)
     {
         int nMembers = this.GetNumberOfColumns();
+
         foreach (T? item in this._items)
         {
             if (item == null)
@@ -178,31 +186,38 @@ internal class LoadFromCollection<T> : LoadFunctionBase
             {
                 col = 0;
                 Type? t = item.GetType();
+
                 if (item is string || item is decimal || item is DateTime || t.IsPrimitive)
                 {
                     values[row, col++] = item;
                 }
-                else if(t.IsEnum)
-                {                        
-                    values[row, col++] = GetEnumValue(item, t); ;
+                else if (t.IsEnum)
+                {
+                    values[row, col++] = GetEnumValue(item, t);
+                    ;
                 }
                 else
                 {
                     foreach (ColumnInfo? colInfo in this._columns)
                     {
-                        if(!string.IsNullOrEmpty(colInfo.Path) && colInfo.Path.Contains("."))
+                        if (!string.IsNullOrEmpty(colInfo.Path) && colInfo.Path.Contains("."))
                         {
                             values[row, col++] = GetValueByPath(item, colInfo.Path);
+
                             continue;
                         }
+
                         T? obj = item;
+
                         if (colInfo.MemberInfo != null)
                         {
                             MemberInfo? member = colInfo.MemberInfo;
-                            object v=null;
+                            object v = null;
+
                             if (this._isSameType == false && obj.GetType().GetMember(member.Name, this._bindingFlags).Length == 0)
                             {
                                 col++;
+
                                 continue; //Check if the property exists if and inherited class is used
                             }
                             else if (member is PropertyInfo)
@@ -222,14 +237,15 @@ internal class LoadFromCollection<T> : LoadFunctionBase
                             if (v != null)
                             {
                                 Type? type = v.GetType();
+
                                 if (type.IsEnum)
                                 {
-                                    v=GetEnumValue(v, type);
+                                    v = GetEnumValue(v, type);
                                 }
                             }
 #endif
 
-                            values[row, col++] = v;                                
+                            values[row, col++] = v;
                         }
                         else if (!string.IsNullOrEmpty(colInfo.Formula))
                         {
@@ -242,6 +258,7 @@ internal class LoadFromCollection<T> : LoadFunctionBase
                     }
                 }
             }
+
             row++;
         }
     }
@@ -254,15 +271,17 @@ internal class LoadFromCollection<T> : LoadFunctionBase
         string? v = item.ToString();
         MemberInfo? m = t.GetMember(v).FirstOrDefault();
         DescriptionAttribute? da = m.GetCustomAttribute<DescriptionAttribute>();
+
         return da?.Description ?? v;
-#endif            
+#endif
     }
 
     private static object GetValueByPath(object obj, string path)
     {
         string[]? members = path.Split('.');
         object o = obj;
-        foreach(string? member in members)
+
+        foreach (string? member in members)
         {
             if (o == null)
             {
@@ -270,20 +289,23 @@ internal class LoadFromCollection<T> : LoadFunctionBase
             }
 
             MemberInfo[]? memberInfos = o.GetType().GetMember(member);
-            if(memberInfos == null || memberInfos.Length == 0)
+
+            if (memberInfos == null || memberInfos.Length == 0)
             {
                 return null;
             }
+
             MemberInfo? memberInfo = memberInfos.First();
-            if(memberInfo is PropertyInfo pi)
+
+            if (memberInfo is PropertyInfo pi)
             {
                 o = pi.GetValue(o, null);
             }
-            else if(memberInfo is FieldInfo fi)
+            else if (memberInfo is FieldInfo fi)
             {
                 o = fi.GetValue(obj);
             }
-            else if(memberInfo is MethodInfo mi)
+            else if (memberInfo is MethodInfo mi)
             {
                 o = mi.Invoke(obj, null);
             }
@@ -292,16 +314,16 @@ internal class LoadFromCollection<T> : LoadFunctionBase
                 throw new NotSupportedException("Invalid member: '" + memberInfo.Name + "', not supported member type '" + memberInfo.GetType().FullName + "'");
             }
         }
+
         return o;
     }
-        
 
     private void SetHeaders(object[,] values, Dictionary<int, string> columnFormats, ref int col, ref int row)
     {
         foreach (ColumnInfo? colInfo in this._columns)
         {
             string? header = colInfo.Header;
-                
+
             // if the header is already set and contains a space it doesn't need more formatting or validation.
             bool useExistingHeader = !string.IsNullOrEmpty(header) && header.Contains(" ");
 
@@ -310,6 +332,7 @@ internal class LoadFromCollection<T> : LoadFunctionBase
                 // column data based on a property read with reflection
                 MemberInfo? member = colInfo.MemberInfo;
                 EpplusTableColumnAttribute? epplusColumnAttribute = member.GetFirstAttributeOfType<EpplusTableColumnAttribute>();
+
                 if (epplusColumnAttribute != null)
                 {
                     if (!useExistingHeader)
@@ -323,14 +346,16 @@ internal class LoadFromCollection<T> : LoadFunctionBase
                             header = this.ParseHeader(member.Name);
                         }
                     }
+
                     if (!string.IsNullOrEmpty(epplusColumnAttribute.NumberFormat))
                     {
                         columnFormats.Add(col, epplusColumnAttribute.NumberFormat);
                     }
                 }
-                else if(!useExistingHeader)
+                else if (!useExistingHeader)
                 {
                     DescriptionAttribute? descriptionAttribute = member.GetFirstAttributeOfType<DescriptionAttribute>();
+
                     if (descriptionAttribute != null)
                     {
                         header = descriptionAttribute.Description;
@@ -338,13 +363,14 @@ internal class LoadFromCollection<T> : LoadFunctionBase
                     else
                     {
                         DisplayNameAttribute? displayNameAttribute = member.GetFirstAttributeOfType<DisplayNameAttribute>();
+
                         if (displayNameAttribute != null)
                         {
                             header = displayNameAttribute.DisplayName;
                         }
                         else
                         {
-                            if(!string.IsNullOrEmpty(colInfo.Header) && colInfo.Header != member.Name)
+                            if (!string.IsNullOrEmpty(colInfo.Header) && colInfo.Header != member.Name)
                             {
                                 header = colInfo.Header;
                             }
@@ -365,22 +391,28 @@ internal class LoadFromCollection<T> : LoadFunctionBase
 
             values[row, col++] = header;
         }
+
         row++;
     }
 
     private string ParseHeader(string header)
     {
-        switch(this._headerParsingType)
+        switch (this._headerParsingType)
         {
             case HeaderParsingTypes.Preserve:
                 return header;
+
             case HeaderParsingTypes.UnderscoreToSpace:
                 return header.Replace("_", " ");
+
             case HeaderParsingTypes.CamelCaseToSpace:
                 return Regex.Replace(header, "([A-Z])", " $1", RegexOptions.Compiled).Trim();
+
             case HeaderParsingTypes.UnderscoreAndCamelCaseToSpace:
                 header = Regex.Replace(header, "([A-Z])", " $1", RegexOptions.Compiled).Trim();
+
                 return header.Replace("_ ", "_").Replace("_", " ");
+
             default:
                 return header;
         }

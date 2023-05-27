@@ -10,6 +10,7 @@
  *************************************************************************************************
   6/4/2022         EPPlus Software AB           ExcelTable Html Export
  *************************************************************************************************/
+
 using OfficeOpenXml.Drawing;
 using System;
 using System.Collections.Generic;
@@ -21,13 +22,22 @@ namespace OfficeOpenXml.Export.HtmlExport;
 internal class HtmlImage
 {
     public int WorksheetId { get; set; }
+
     public ExcelPicture Picture { get; set; }
+
     public int FromRow { get; set; }
+
     public int FromRowOff { get; set; }
+
     public int ToRow { get; set; }
+
     public int ToRowOff { get; set; }
+
     public int FromColumn { get; set; }
+
     public int FromColumnOff { get; set; }
+
     public int ToColumn { get; set; }
+
     public int ToColumnOff { get; set; }
 }

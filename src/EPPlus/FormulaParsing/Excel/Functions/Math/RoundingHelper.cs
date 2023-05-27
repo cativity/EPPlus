@@ -10,6 +10,7 @@
  *************************************************************************************************
   01/27/2020         EPPlus Software AB       Initial release EPPlus 5
  *************************************************************************************************/
+
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -38,22 +39,25 @@ internal static class RoundingHelper
         bool isNegativeMultiple = multiple < 0;
         double n = isNegativeNumber ? number * -1 : number;
         double m = isNegativeMultiple ? multiple * -1 : multiple;
+
         if (number % multiple == 0)
         {
             return number;
         }
         else if (multiple > -1 && multiple < 1)
         {
-
             double floor = System.Math.Floor(n);
             double rest = n - floor;
             int nSign = (int)(rest / m) + 1;
 
             double upperRound = System.Math.Round(nSign * m, 14);
             double lowerRound = System.Math.Round((nSign - 1) * m, 14);
+
             return ExecuteRounding(n, floor + lowerRound, floor + upperRound, direction, isNegativeNumber);
         }
+
         double result = double.NaN;
+
         if (m == 1)
         {
             if (direction == Direction.Up || direction == Direction.AlwaysUp)
@@ -70,6 +74,7 @@ internal static class RoundingHelper
             else if (direction == Direction.Nearest)
             {
                 result = System.Math.Floor(n);
+
                 if (n % 1 >= 0.5)
                 {
                     result++;
@@ -102,6 +107,7 @@ internal static class RoundingHelper
 
                 return System.Math.Round(number - (number % multiple), 14);
             }
+
             return System.Math.Round(number - (number % multiple) + multiple, 14);
         }
         else if (direction == Direction.Nearest)
@@ -129,12 +135,14 @@ internal static class RoundingHelper
 
             return System.Math.Round(number - (number % multiple), 14);
         }
+
         return isNegativeNumber ? -1 * result : result;
     }
 
     public static double ExecuteRounding(double number, double lowerRound, double upperRound, Direction direction, bool isNegativeNumber)
     {
         double result = double.NaN;
+
         if (direction == Direction.Nearest)
         {
             if (upperRound - number > number - lowerRound)
@@ -162,9 +170,9 @@ internal static class RoundingHelper
         {
             result = lowerRound;
         }
+
         return isNegativeNumber ? -1 * result : result;
     }
-
 
     internal static bool IsInvalidNumberAndSign(double number, double sign)
     {
@@ -179,35 +187,43 @@ internal static class RoundingHelper
     internal static double RoundToSignificantFig(double number, double nSignificantFigures, bool awayFromMidpoint)
     {
         bool isNegative = false;
-        if(number < 0d)
+
+        if (number < 0d)
         {
             number *= -1;
             isNegative = true;
         }
+
         double nFiguresIntPart = GetNumberOfDigitsIntPart(number);
         double nLeadingZeroDecimals = GetNumberOfLeadingZeroDecimals(number);
         double nFiguresDecimalPart = nSignificantFigures - nFiguresIntPart - nLeadingZeroDecimals;
+
         if (number < 1d)
         {
             nFiguresDecimalPart -= nLeadingZeroDecimals;
         }
+
         double tmp = number * System.Math.Pow(10, nFiguresDecimalPart + nLeadingZeroDecimals);
-        double e = awayFromMidpoint? tmp + 0.5 : tmp;
-        if(awayFromMidpoint)
-        { 
+        double e = awayFromMidpoint ? tmp + 0.5 : tmp;
+
+        if (awayFromMidpoint)
+        {
             if ((float)e == (float)System.Math.Ceiling(tmp))
             {
                 double f = System.Math.Ceiling(tmp);
                 int h = (int)f - 2;
+
                 if (h % 2 != 0)
                 {
                     e -= 1;
                 }
             }
         }
+
         double intVersion = System.Math.Floor(e);
         double divideBy = System.Math.Pow(10, nFiguresDecimalPart + nLeadingZeroDecimals);
         double result = intVersion / divideBy;
+
         return isNegative ? result * -1 : result;
     }
 
@@ -220,6 +236,7 @@ internal static class RoundingHelper
     {
         double tmp = n;
         int nFiguresIntPart;
+
         for (nFiguresIntPart = 0; tmp >= 1; ++nFiguresIntPart)
         {
             tmp /= 10;
@@ -237,11 +254,13 @@ internal static class RoundingHelper
 
         double tmp = n;
         int result = 0;
+
         while (tmp < 1d)
         {
             tmp *= 10;
             result++;
         }
+
         return result - 1;
     }
 }

@@ -10,6 +10,7 @@
  *************************************************************************************************
   01/27/2020         EPPlus Software AB       Initial release EPPlus 5
  *************************************************************************************************/
+
 using OfficeOpenXml.Utils.Extensions;
 using System;
 using System.Xml;
@@ -25,9 +26,11 @@ public class ExcelDrawing3DBevel : XmlHelper
     private string _path;
     private readonly string _widthPath = "{0}/@w";
     private readonly string _heightPath = "{0}/@h";
-    private readonly string _typePath="{0}/@prst";
+    private readonly string _typePath = "{0}/@prst";
     private readonly Action<bool> _initParent;
-    internal ExcelDrawing3DBevel(XmlNamespaceManager nameSpaceManager, XmlNode topNode, string[] schemaNodeOrder, string path, Action<bool> initParent) : base(nameSpaceManager, topNode)
+
+    internal ExcelDrawing3DBevel(XmlNamespaceManager nameSpaceManager, XmlNode topNode, string[] schemaNodeOrder, string path, Action<bool> initParent)
+        : base(nameSpaceManager, topNode)
     {
         this.SchemaNodeOrder = schemaNodeOrder;
         this._path = path;
@@ -36,15 +39,13 @@ public class ExcelDrawing3DBevel : XmlHelper
         this._typePath = string.Format(this._typePath, path);
         this._initParent = initParent;
     }
+
     /// <summary>
     /// The width of the bevel in points (pt)
     /// </summary>
     public double Width
     {
-        get
-        {
-            return this.GetXmlNodeEmuToPtNull(this._widthPath) ?? 6;
-        }
+        get { return this.GetXmlNodeEmuToPtNull(this._widthPath) ?? 6; }
         set
         {
             if (!this._isInit)
@@ -58,9 +59,10 @@ public class ExcelDrawing3DBevel : XmlHelper
 
     private void InitXml()
     {
-        if (this._isInit==false)
+        if (this._isInit == false)
         {
             this._isInit = true;
+
             if (!this.ExistsNode(this._typePath))
             {
                 this._initParent(false);
@@ -76,13 +78,10 @@ public class ExcelDrawing3DBevel : XmlHelper
     /// </summary>
     public double Height
     {
-        get
-        {
-            return this.GetXmlNodeEmuToPtNull(this._heightPath) ?? 6;
-        }
+        get { return this.GetXmlNodeEmuToPtNull(this._heightPath) ?? 6; }
         set
         {
-            if(!this._isInit)
+            if (!this._isInit)
             {
                 this.InitXml();
             }
@@ -90,18 +89,16 @@ public class ExcelDrawing3DBevel : XmlHelper
             this.SetXmlNodeEmuToPt(this._heightPath, value);
         }
     }
+
     /// <summary>
     /// A preset bevel that can be applied to a shape.
     /// </summary>
     public eBevelPresetType BevelType
     {
-        get
-        {
-            return this.GetXmlNodeString(this._typePath).ToEnum(eBevelPresetType.Circle);
-        }
+        get { return this.GetXmlNodeString(this._typePath).ToEnum(eBevelPresetType.Circle); }
         set
         {
-            if(value==eBevelPresetType.None)
+            if (value == eBevelPresetType.None)
             {
                 this.DeleteNode(this._typePath);
                 this.DeleteNode(this._heightPath);

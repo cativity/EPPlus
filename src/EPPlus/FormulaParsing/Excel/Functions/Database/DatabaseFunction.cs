@@ -10,6 +10,7 @@
  *************************************************************************************************
   01/27/2020         EPPlus Software AB       Initial release EPPlus 5
  *************************************************************************************************/
+
 using System;
 using System.Collections.Generic;
 using System.Globalization;
@@ -26,7 +27,6 @@ internal abstract class DatabaseFunction : ExcelFunction
     public DatabaseFunction()
         : this(new RowMatcher())
     {
-            
     }
 
     public DatabaseFunction(RowMatcher rowMatcher)
@@ -37,6 +37,7 @@ internal abstract class DatabaseFunction : ExcelFunction
     protected IEnumerable<double> GetMatchingValues(IEnumerable<FunctionArgument> arguments, ParsingContext context)
     {
         string? dbAddress = arguments.ElementAt(0).ValueAsRangeInfo.Address.Address;
+
         //var field = ArgToString(arguments, 1).ToLower(CultureInfo.InvariantCulture);
         object? field = arguments.ElementAt(1).Value;
         string? criteriaRange = arguments.ElementAt(2).ValueAsRangeInfo.Address.Address;
@@ -48,17 +49,22 @@ internal abstract class DatabaseFunction : ExcelFunction
         while (db.HasMoreRows)
         {
             ExcelDatabaseRow? dataRow = db.Read();
+
             if (!this.RowMatcher.IsMatch(dataRow, criteria))
             {
                 continue;
             }
 
-            object? candidate = ConvertUtil.IsNumericOrDate(field) ? dataRow[(int)ConvertUtil.GetValueDouble(field)] : dataRow[field.ToString().ToLower(CultureInfo.InvariantCulture)];
+            object? candidate = ConvertUtil.IsNumericOrDate(field)
+                                    ? dataRow[(int)ConvertUtil.GetValueDouble(field)]
+                                    : dataRow[field.ToString().ToLower(CultureInfo.InvariantCulture)];
+
             if (ConvertUtil.IsNumericOrDate(candidate))
             {
                 values.Add(ConvertUtil.GetValueDouble(candidate));
             }
         }
+
         return values;
     }
 }

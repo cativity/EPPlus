@@ -10,6 +10,7 @@
  *************************************************************************************************
   05/07/2021         EPPlus Software AB       EPPlus 5.7
  *************************************************************************************************/
+
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -36,10 +37,7 @@ public class RangeLeftToRightSortLayerBuilder
     /// </summary>
     public virtual RangeLeftToRightSortLayer ThenSortBy
     {
-        get
-        {
-            return new RangeLeftToRightSortLayer(this._options);
-        }
+        get { return new RangeLeftToRightSortLayer(this._options); }
     }
 
     /// <summary>
@@ -50,6 +48,7 @@ public class RangeLeftToRightSortLayerBuilder
     public RangeLeftToRightSortLayerBuilder UsingCustomList(params string[] values)
     {
         this._sortLayer.SetCustomList(values);
+
         return this;
     }
 }

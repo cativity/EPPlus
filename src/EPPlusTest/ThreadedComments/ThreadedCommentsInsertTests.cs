@@ -13,12 +13,14 @@ namespace EPPlusTest.ThreadedComments;
 public class ThreadedCommentsInsertTests : TestBase
 {
     static ExcelPackage _pck;
+
     [ClassInitialize]
     public static void Init(TestContext context)
     {
         InitBase();
         _pck = OpenPackage("ThreadedCommentInsert.xlsx", true);
     }
+
     [ClassCleanup]
     public static void Cleanup()
     {
@@ -29,7 +31,7 @@ public class ThreadedCommentsInsertTests : TestBase
     public void InsertOneRow()
     {
         ExcelWorksheet? ws = _pck.Workbook.Worksheets.Add("OneRowA1");
-        ExcelThreadedCommentThread? th=ws.ThreadedComments.Add("A1");
+        ExcelThreadedCommentThread? th = ws.ThreadedComments.Add("A1");
         ExcelThreadedCommentPerson? p = ws.ThreadedComments.Persons.Add("Jan Källman");
         th.AddComment(p.Id, "Shift down from A1");
 
@@ -38,6 +40,7 @@ public class ThreadedCommentsInsertTests : TestBase
         Assert.IsNull(ws.Cells["A1"].ThreadedComment);
         Assert.IsNotNull(ws.Cells["A2"].ThreadedComment);
     }
+
     [TestMethod]
     public void InsertOneColumn()
     {
@@ -51,6 +54,7 @@ public class ThreadedCommentsInsertTests : TestBase
         Assert.IsNull(ws.Cells["A1"].ThreadedComment);
         Assert.IsNotNull(ws.Cells["B1"].ThreadedComment);
     }
+
     [TestMethod]
     public void InsertTwoRowA1()
     {
@@ -64,6 +68,7 @@ public class ThreadedCommentsInsertTests : TestBase
         Assert.IsNull(ws.Cells["A1"].ThreadedComment);
         Assert.IsNotNull(ws.Cells["A3"].ThreadedComment);
     }
+
     [TestMethod]
     public void InsertTwoColumnA1()
     {
@@ -77,6 +82,7 @@ public class ThreadedCommentsInsertTests : TestBase
         Assert.IsNull(ws.Cells["A1"].ThreadedComment);
         Assert.IsNotNull(ws.Cells["C1"].ThreadedComment);
     }
+
     [TestMethod]
     public void InsertInRangeColumn()
     {
@@ -97,6 +103,7 @@ public class ThreadedCommentsInsertTests : TestBase
         Assert.IsNotNull(ws.Cells["B3"].ThreadedComment);
         Assert.IsNotNull(ws.Cells["B4"].ThreadedComment);
     }
+
     [TestMethod]
     public void InsertInRangeRow()
     {

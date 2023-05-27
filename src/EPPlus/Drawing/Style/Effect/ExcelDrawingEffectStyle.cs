@@ -10,6 +10,7 @@
  *************************************************************************************************
   01/27/2020         EPPlus Software AB       Initial release EPPlus 5
  *************************************************************************************************/
+
 using OfficeOpenXml.Drawing.Interfaces;
 using OfficeOpenXml.Drawing.Style.Coloring;
 using System;
@@ -22,7 +23,7 @@ namespace OfficeOpenXml.Drawing.Style.Effect;
 /// <summary>
 /// Effect styles of a drawing object
 /// </summary>
-public  class ExcelDrawingEffectStyle : XmlHelper
+public class ExcelDrawingEffectStyle : XmlHelper
 {
     private readonly string _path;
     private readonly string _softEdgeRadiusPath = "{0}a:softEdge/@rad";
@@ -34,9 +35,16 @@ public  class ExcelDrawingEffectStyle : XmlHelper
     private readonly string _presetShadowPath = "{0}a:prstShdw";
     private readonly string _reflectionPath = "{0}a:reflection";
     private readonly IPictureRelationDocument _pictureRelationDocument;
-    internal ExcelDrawingEffectStyle(IPictureRelationDocument pictureRelationDocument, XmlNamespaceManager nameSpaceManager, XmlNode topNode, string path, string[] schemaNodeOrder) : base(nameSpaceManager, topNode)
+
+    internal ExcelDrawingEffectStyle(IPictureRelationDocument pictureRelationDocument,
+                                     XmlNamespaceManager nameSpaceManager,
+                                     XmlNode topNode,
+                                     string path,
+                                     string[] schemaNodeOrder)
+        : base(nameSpaceManager, topNode)
     {
         this._path = path;
+
         if (path.Length > 0 && !path.EndsWith("/"))
         {
             path += "/";
@@ -52,9 +60,11 @@ public  class ExcelDrawingEffectStyle : XmlHelper
         this._reflectionPath = string.Format(this._reflectionPath, path);
         this._pictureRelationDocument = pictureRelationDocument;
 
-        this.AddSchemaNodeOrder(schemaNodeOrder, ExcelShapeBase._shapeNodeOrder);   
+        this.AddSchemaNodeOrder(schemaNodeOrder, ExcelShapeBase._shapeNodeOrder);
     }
+
     ExcelDrawingBlurEffect _blur = null;
+
     /// <summary>
     /// The blur effect
     /// </summary>
@@ -64,6 +74,7 @@ public  class ExcelDrawingEffectStyle : XmlHelper
     }
 
     ExcelDrawingFillOverlayEffect _fillOverlay = null;
+
     /// <summary>
     /// The fill overlay effect. A fill overlay can be used to specify an additional fill for a drawing and blend the two together.
     /// </summary>
@@ -78,7 +89,9 @@ public  class ExcelDrawingEffectStyle : XmlHelper
                                                                            this._fillOverlayPath);
         }
     }
+
     ExcelDrawingGlowEffect _glow = null;
+
     /// <summary>
     /// The glow effect. A color blurred outline is added outside the edges of the drawing
     /// </summary>
@@ -86,7 +99,9 @@ public  class ExcelDrawingEffectStyle : XmlHelper
     {
         get { return this._glow ??= new ExcelDrawingGlowEffect(this.NameSpaceManager, this.TopNode, this.SchemaNodeOrder, this._glowPath); }
     }
+
     ExcelDrawingInnerShadowEffect _innerShadowEffect = null;
+
     /// <summary>
     /// The inner shadow effect. A shadow is applied within the edges of the drawing.
     /// </summary>
@@ -94,10 +109,13 @@ public  class ExcelDrawingEffectStyle : XmlHelper
     {
         get
         {
-            return this._innerShadowEffect ??= new ExcelDrawingInnerShadowEffect(this.NameSpaceManager, this.TopNode, this.SchemaNodeOrder, this._innerShadowPath);
+            return this._innerShadowEffect ??=
+                       new ExcelDrawingInnerShadowEffect(this.NameSpaceManager, this.TopNode, this.SchemaNodeOrder, this._innerShadowPath);
         }
     }
-    ExcelDrawingOuterShadowEffect _outerShadow=null;
+
+    ExcelDrawingOuterShadowEffect _outerShadow = null;
+
     /// <summary>
     /// The outer shadow effect. A shadow is applied outside the edges of the drawing.
     /// </summary>
@@ -108,7 +126,9 @@ public  class ExcelDrawingEffectStyle : XmlHelper
             return this._outerShadow ??= new ExcelDrawingOuterShadowEffect(this.NameSpaceManager, this.TopNode, this.SchemaNodeOrder, this._outerShadowPath);
         }
     }
+
     ExcelDrawingPresetShadowEffect _presetShadow;
+
     /// <summary>
     /// The preset shadow effect.
     /// </summary>
@@ -119,26 +139,23 @@ public  class ExcelDrawingEffectStyle : XmlHelper
             return this._presetShadow ??= new ExcelDrawingPresetShadowEffect(this.NameSpaceManager, this.TopNode, this.SchemaNodeOrder, this._presetShadowPath);
         }
     }
+
     ExcelDrawingReflectionEffect _reflection;
+
     /// <summary>
     /// The reflection effect.
     /// </summary>
     public ExcelDrawingReflectionEffect Reflection
     {
-        get
-        {
-            return this._reflection ??= new ExcelDrawingReflectionEffect(this.NameSpaceManager, this.TopNode, this.SchemaNodeOrder, this._reflectionPath);
-        }
+        get { return this._reflection ??= new ExcelDrawingReflectionEffect(this.NameSpaceManager, this.TopNode, this.SchemaNodeOrder, this._reflectionPath); }
     }
+
     /// <summary>
     /// Soft edge radius. A null value indicates no radius
     /// </summary>
     public double? SoftEdgeRadius
     {
-        get
-        {
-            return this.GetXmlNodeEmuToPtNull(this._softEdgeRadiusPath);
-        }
+        get { return this.GetXmlNodeEmuToPtNull(this._softEdgeRadiusPath); }
         set
         {
             if (value.HasValue)
@@ -150,81 +167,72 @@ public  class ExcelDrawingEffectStyle : XmlHelper
                 this.DeleteNode(this._softEdgeRadiusPath, true);
             }
         }
-    }        
+    }
+
     internal XmlElement EffectElement
     {
         get
         {
-            if(string.IsNullOrEmpty(this._path))
+            if (string.IsNullOrEmpty(this._path))
             {
                 return (XmlElement)this.TopNode;
             }
+
             if (this.ExistsNode(this._path))
             {
                 return (XmlElement)this.GetNode(this._path);
             }
+
             return (XmlElement)this.CreateNode(this._path);
         }
     }
+
     /// <summary>
     /// If the drawing has any inner shadow properties set
     /// </summary>
     public bool HasInnerShadow
     {
-        get
-        {
-            return this.ExistsNode(this._innerShadowPath);
-        }
+        get { return this.ExistsNode(this._innerShadowPath); }
     }
+
     /// <summary>
     /// If the drawing has any outer shadow properties set
     /// </summary>
     public bool HasOuterShadow
     {
-        get
-        {
-            return this.ExistsNode(this._outerShadowPath);
-        }
+        get { return this.ExistsNode(this._outerShadowPath); }
     }
+
     /// <summary>
     /// If the drawing has any preset shadow properties set
     /// </summary>
     public bool HasPresetShadow
     {
-        get
-        {
-            return this.ExistsNode(this._presetShadowPath);
-        }
+        get { return this.ExistsNode(this._presetShadowPath); }
     }
+
     /// <summary>
     /// If the drawing has any blur properties set
     /// </summary>
     public bool HasBlur
     {
-        get
-        {
-            return this.ExistsNode(this._blurPath);
-        }
+        get { return this.ExistsNode(this._blurPath); }
     }
+
     /// <summary>
     /// If the drawing has any glow properties set
     /// </summary>
     public bool HasGlow
     {
-        get
-        {
-            return this.ExistsNode(this._glowPath);
-        }
+        get { return this.ExistsNode(this._glowPath); }
     }
+
     /// <summary>
     /// If the drawing has any fill overlay properties set
     /// </summary>
     public bool HasFillOverlay
     {
-        get
-        {
-            return this.ExistsNode(this._fillOverlayPath);
-        }
+        get { return this.ExistsNode(this._fillOverlayPath); }
     }
 
     internal void SetFromXml(XmlElement copyFromEffectElement)
@@ -235,9 +243,12 @@ public  class ExcelDrawingEffectStyle : XmlHelper
         {
             effectElement.SetAttribute(a.Name, a.NamespaceURI, a.Value);
         }
+
         effectElement.InnerXml = copyFromEffectElement.InnerXml;
     }
+
     #region Private Methods
+
     private void SetPredefinedOuterShadow(ePresetExcelShadowType shadowType)
     {
         this.OuterShadow.Color.SetPresetColor(ePresetColor.Black);
@@ -252,7 +263,9 @@ public  class ExcelDrawingEffectStyle : XmlHelper
                 this.OuterShadow.Alignment = eRectangleAlignment.BottomRight;
                 this.OuterShadow.HorizontalSkewAngle = 20;
                 this.OuterShadow.VerticalScalingFactor = 23;
+
                 break;
+
             case ePresetExcelShadowType.PerspectiveUpperRight:
                 this.OuterShadow.Color.Transforms.AddAlpha(20);
                 this.OuterShadow.BlurRadius = 6;
@@ -261,7 +274,9 @@ public  class ExcelDrawingEffectStyle : XmlHelper
                 this.OuterShadow.Alignment = eRectangleAlignment.BottomLeft;
                 this.OuterShadow.HorizontalSkewAngle = -20;
                 this.OuterShadow.VerticalScalingFactor = 23;
+
                 break;
+
             case ePresetExcelShadowType.PerspectiveBelow:
                 this.OuterShadow.Color.Transforms.AddAlpha(15);
                 this.OuterShadow.BlurRadius = 12;
@@ -269,7 +284,9 @@ public  class ExcelDrawingEffectStyle : XmlHelper
                 this.OuterShadow.Direction = 90;
                 this.OuterShadow.HorizontalScalingFactor = 90;
                 this.OuterShadow.VerticalScalingFactor = -19;
+
                 break;
+
             case ePresetExcelShadowType.PerspectiveLowerLeft:
                 this.OuterShadow.Color.Transforms.AddAlpha(20);
                 this.OuterShadow.BlurRadius = 6;
@@ -278,7 +295,9 @@ public  class ExcelDrawingEffectStyle : XmlHelper
                 this.OuterShadow.Alignment = eRectangleAlignment.BottomRight;
                 this.OuterShadow.HorizontalSkewAngle = 13.34;
                 this.OuterShadow.VerticalScalingFactor = -23;
+
                 break;
+
             case ePresetExcelShadowType.PerspectiveLowerRight:
                 this.OuterShadow.Color.Transforms.AddAlpha(20);
                 this.OuterShadow.BlurRadius = 6;
@@ -287,6 +306,7 @@ public  class ExcelDrawingEffectStyle : XmlHelper
                 this.OuterShadow.Alignment = eRectangleAlignment.BottomLeft;
                 this.OuterShadow.HorizontalSkewAngle = -13.34;
                 this.OuterShadow.VerticalScalingFactor = -23;
+
                 break;
 
             case ePresetExcelShadowType.OuterCenter:
@@ -295,52 +315,71 @@ public  class ExcelDrawingEffectStyle : XmlHelper
                 this.OuterShadow.HorizontalScalingFactor = 102;
                 this.OuterShadow.BlurRadius = 5;
                 this.OuterShadow.Alignment = eRectangleAlignment.Center;
+
                 break;
+
             default:
                 this.OuterShadow.Color.Transforms.AddAlpha(40);
                 this.OuterShadow.BlurRadius = 4;
                 this.OuterShadow.Distance = 3;
+
                 switch (shadowType)
                 {
                     case ePresetExcelShadowType.OuterTopLeft:
                         this.OuterShadow.Direction = 225;
                         this.OuterShadow.Alignment = eRectangleAlignment.BottomRight;
+
                         break;
+
                     case ePresetExcelShadowType.OuterTop:
                         this.OuterShadow.Direction = 270;
                         this.OuterShadow.Alignment = eRectangleAlignment.Bottom;
+
                         break;
+
                     case ePresetExcelShadowType.OuterTopRight:
                         this.OuterShadow.Direction = 315;
                         this.OuterShadow.Alignment = eRectangleAlignment.BottomLeft;
+
                         break;
+
                     case ePresetExcelShadowType.OuterLeft:
                         this.OuterShadow.Direction = 180;
                         this.OuterShadow.Alignment = eRectangleAlignment.Right;
+
                         break;
+
                     case ePresetExcelShadowType.OuterRight:
                         this.OuterShadow.Direction = 0;
                         this.OuterShadow.Alignment = eRectangleAlignment.Left;
+
                         break;
+
                     case ePresetExcelShadowType.OuterBottomLeft:
                         this.OuterShadow.Direction = 135;
                         this.OuterShadow.Alignment = eRectangleAlignment.TopRight;
+
                         break;
+
                     case ePresetExcelShadowType.OuterBottom:
                         this.OuterShadow.Direction = 90;
                         this.OuterShadow.Alignment = eRectangleAlignment.Top;
+
                         break;
+
                     case ePresetExcelShadowType.OuterBottomRight:
                         this.OuterShadow.Direction = 45;
                         this.OuterShadow.Alignment = eRectangleAlignment.TopLeft;
+
                         break;
                 }
+
                 break;
         }
 
         this.OuterShadow.RotateWithShape = false;
-
     }
+
     private void SetPredefinedInnerShadow(ePresetExcelShadowType shadowType)
     {
         this.InnerShadow.Color.SetPresetColor(ePresetColor.Black);
@@ -363,30 +402,46 @@ public  class ExcelDrawingEffectStyle : XmlHelper
         {
             case ePresetExcelShadowType.InnerTopLeft:
                 this.InnerShadow.Direction = 225;
+
                 break;
+
             case ePresetExcelShadowType.InnerTop:
                 this.InnerShadow.Direction = 270;
+
                 break;
+
             case ePresetExcelShadowType.InnerTopRight:
                 this.InnerShadow.Direction = 315;
+
                 break;
+
             case ePresetExcelShadowType.InnerLeft:
                 this.InnerShadow.Direction = 180;
+
                 break;
+
             case ePresetExcelShadowType.InnerRight:
                 this.InnerShadow.Direction = 0;
+
                 break;
+
             case ePresetExcelShadowType.InnerBottomLeft:
                 this.InnerShadow.Direction = 135;
+
                 break;
+
             case ePresetExcelShadowType.InnerBottom:
                 this.InnerShadow.Direction = 90;
+
                 break;
+
             case ePresetExcelShadowType.InnerBottomRight:
                 this.InnerShadow.Direction = 45;
+
                 break;
         }
     }
+
     /// <summary>
     /// Set a predefined glow matching the preset types in Excel
     /// </summary>
@@ -397,28 +452,40 @@ public  class ExcelDrawingEffectStyle : XmlHelper
         {
             case ePresetExcelSoftEdgesType.None:
                 this.SoftEdgeRadius = null;
+
                 break;
+
             case ePresetExcelSoftEdgesType.SoftEdge1Pt:
                 this.SoftEdgeRadius = 1;
+
                 break;
+
             case ePresetExcelSoftEdgesType.SoftEdge2_5Pt:
                 this.SoftEdgeRadius = 2.5;
+
                 break;
+
             case ePresetExcelSoftEdgesType.SoftEdge5Pt:
                 this.SoftEdgeRadius = 5;
+
                 break;
+
             case ePresetExcelSoftEdgesType.SoftEdge10Pt:
                 this.SoftEdgeRadius = 10;
+
                 break;
+
             case ePresetExcelSoftEdgesType.SoftEdge25Pt:
                 this.SoftEdgeRadius = 25;
+
                 break;
+
             case ePresetExcelSoftEdgesType.SoftEdge50Pt:
                 this.SoftEdgeRadius = 50;
+
                 break;
         }
     }
-
 
     /// <summary>
     /// Set a predefined glow matching the preset types in Excel
@@ -427,6 +494,7 @@ public  class ExcelDrawingEffectStyle : XmlHelper
     public void SetPresetGlow(ePresetExcelGlowType glowType)
     {
         this.Glow.Delete();
+
         if (glowType == ePresetExcelGlowType.None)
         {
             return;
@@ -465,6 +533,7 @@ public  class ExcelDrawingEffectStyle : XmlHelper
             this.SetPredefinedOuterShadow(shadowType);
         }
     }
+
     /// <summary>
     /// Set a predefined glow matching the preset types in Excel
     /// </summary>
@@ -472,15 +541,17 @@ public  class ExcelDrawingEffectStyle : XmlHelper
     public void SetPresetReflection(ePresetExcelReflectionType reflectionType)
     {
         this.Reflection.Delete();
-        if (reflectionType == ePresetExcelReflectionType.TightTouching ||
-            reflectionType == ePresetExcelReflectionType.Tight4Pt ||
-            reflectionType == ePresetExcelReflectionType.Tight8Pt)
+
+        if (reflectionType == ePresetExcelReflectionType.TightTouching
+            || reflectionType == ePresetExcelReflectionType.Tight4Pt
+            || reflectionType == ePresetExcelReflectionType.Tight8Pt)
         {
             this.Reflection.Alignment = eRectangleAlignment.BottomLeft;
             this.Reflection.RotateWithShape = false;
             this.Reflection.Direction = 90;
             this.Reflection.VerticalScalingFactor = -100;
             this.Reflection.BlurRadius = 0.5;
+
             if (reflectionType == ePresetExcelReflectionType.TightTouching)
             {
                 this.Reflection.EndPosition = 35;
@@ -503,15 +574,16 @@ public  class ExcelDrawingEffectStyle : XmlHelper
                 this.Reflection.Distance = 8;
             }
         }
-        else if (reflectionType == ePresetExcelReflectionType.HalfTouching ||
-                 reflectionType == ePresetExcelReflectionType.Half4Pt ||
-                 reflectionType == ePresetExcelReflectionType.Half8Pt)
+        else if (reflectionType == ePresetExcelReflectionType.HalfTouching
+                 || reflectionType == ePresetExcelReflectionType.Half4Pt
+                 || reflectionType == ePresetExcelReflectionType.Half8Pt)
         {
             this.Reflection.Alignment = eRectangleAlignment.BottomLeft;
             this.Reflection.RotateWithShape = false;
             this.Reflection.Direction = 90;
             this.Reflection.VerticalScalingFactor = -100;
             this.Reflection.BlurRadius = 0.5;
+
             if (reflectionType == ePresetExcelReflectionType.HalfTouching)
             {
                 this.Reflection.EndPosition = 55;
@@ -534,15 +606,16 @@ public  class ExcelDrawingEffectStyle : XmlHelper
                 this.Reflection.Distance = 8;
             }
         }
-        else if (reflectionType == ePresetExcelReflectionType.FullTouching ||
-                 reflectionType == ePresetExcelReflectionType.Full4Pt ||
-                 reflectionType == ePresetExcelReflectionType.Full8Pt)
+        else if (reflectionType == ePresetExcelReflectionType.FullTouching
+                 || reflectionType == ePresetExcelReflectionType.Full4Pt
+                 || reflectionType == ePresetExcelReflectionType.Full8Pt)
         {
             this.Reflection.Alignment = eRectangleAlignment.BottomLeft;
             this.Reflection.RotateWithShape = false;
             this.Reflection.Direction = 90;
             this.Reflection.VerticalScalingFactor = -100;
             this.Reflection.BlurRadius = 0.5;
+
             if (reflectionType == ePresetExcelReflectionType.FullTouching)
             {
                 this.Reflection.EndPosition = 90;
@@ -566,5 +639,6 @@ public  class ExcelDrawingEffectStyle : XmlHelper
             }
         }
     }
+
     #endregion
 }

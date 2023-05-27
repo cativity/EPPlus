@@ -10,6 +10,7 @@
  *************************************************************************************************
     04/16/2020         EPPlus Software AB       EPPlus 5.2
  *************************************************************************************************/
+
 namespace OfficeOpenXml.Drawing.Chart.ChartEx;
 
 /// <summary>
@@ -21,18 +22,22 @@ public enum eProjectionType
     /// Automatic
     /// </summary>
     Automatic,
+
     /// <summary>
     /// A Mercator projection.
     /// </summary>
     Mercator,
+
     /// <summary>
     /// a Miller cylindrical projection.
     /// </summary>
     Miller,
+
     /// <summary>
     /// A Robinson projection.
     /// </summary>
     Robinson,
+
     /// <summary>
     /// An Albers equal-area conic projection.
     /// </summary>

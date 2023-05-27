@@ -10,6 +10,7 @@
  *************************************************************************************************
   6/4/2022         EPPlus Software AB           ExcelTable Html Export
  *************************************************************************************************/
+
 using OfficeOpenXml.Core.CellStore;
 using OfficeOpenXml.Export.HtmlExport.Settings;
 using OfficeOpenXml.Style.Table;
@@ -26,7 +27,8 @@ namespace OfficeOpenXml.Export.HtmlExport.Exporters;
 
 internal class CssTableExporterSync : CssRangeExporterBase
 {
-    public CssTableExporterSync(HtmlTableExportSettings settings, ExcelTable table) : base(settings, table.Range)
+    public CssTableExporterSync(HtmlTableExportSettings settings, ExcelTable table)
+        : base(settings, table.Range)
     {
         this._table = table;
         this._tableSettings = settings;
@@ -35,15 +37,21 @@ internal class CssTableExporterSync : CssRangeExporterBase
     private readonly ExcelTable _table;
     private readonly HtmlTableExportSettings _tableSettings;
 
-    private static void RenderTableCss(StreamWriter sw, ExcelTable table, HtmlTableExportSettings settings, Dictionary<string, int> styleCache, List<string> datatypes)
+    private static void RenderTableCss(StreamWriter sw,
+                                       ExcelTable table,
+                                       HtmlTableExportSettings settings,
+                                       Dictionary<string, int> styleCache,
+                                       List<string> datatypes)
     {
         EpplusTableCssWriter? styleWriter = new EpplusTableCssWriter(sw, table, settings, styleCache);
+
         if (settings.Minify == false)
         {
             styleWriter.WriteLine();
         }
 
         ExcelTableNamedStyle tblStyle;
+
         if (table.TableStyle == TableStyles.Custom)
         {
             tblStyle = table.WorkSheet.Workbook.Styles.TableStyles[table.StyleName].As.TableStyle;
@@ -55,7 +63,9 @@ internal class CssTableExporterSync : CssRangeExporterBase
             tblStyle.SetFromTemplate(table.TableStyle);
         }
 
-        string? tableClass = $"{TableClass}.{HtmlExportTableUtil.TableStyleClassPrefix}{HtmlExportTableUtil.GetClassName(tblStyle.Name, "EmptyTableStyle").ToLower()}";
+        string? tableClass =
+            $"{TableClass}.{HtmlExportTableUtil.TableStyleClassPrefix}{HtmlExportTableUtil.GetClassName(tblStyle.Name, "EmptyTableStyle").ToLower()}";
+
         styleWriter.AddHyperlinkCss($"{tableClass}", tblStyle.WholeTable);
         styleWriter.AddAlignmentToCss($"{tableClass}", datatypes);
 
@@ -98,10 +108,10 @@ internal class CssTableExporterSync : CssRangeExporterBase
 
     private void RenderCellCss(EpplusCssWriter styleWriter)
     {
-
         ExcelRangeBase? r = this._table.Range;
         ExcelStyles? styles = r.Worksheet.Workbook.Styles;
         CellStoreEnumerator<ExcelValue>? ce = new CellStoreEnumerator<ExcelValue>(r.Worksheet._values, r._fromRow, r._fromCol, r._toRow, r._toCol);
+
         while (ce.Next())
         {
             if (ce.Value._styleId > 0 && ce.Value._styleId < styles.CellXfs.Count)
@@ -109,6 +119,7 @@ internal class CssTableExporterSync : CssRangeExporterBase
                 styleWriter.AddToCss(styles, ce.Value._styleId, this.Settings.StyleClassPrefix, this.Settings.CellStyleClassName);
             }
         }
+
         styleWriter.FlushStream();
     }
 
@@ -122,18 +133,22 @@ internal class CssTableExporterSync : CssRangeExporterBase
         this.RenderCss(ms);
         ms.Position = 0;
         using StreamReader? sr = new StreamReader(ms);
+
         return sr.ReadToEnd();
     }
+
     /// <summary>
     /// Exports the css part of an <see cref="ExcelTable"/> to a html string
     /// </summary>
     /// <returns>A html table</returns>
     public void RenderCss(Stream stream)
     {
-        if ((this._table.TableStyle == TableStyles.None || this._tableSettings.Css.IncludeTableStyles == false) && this._tableSettings.Css.IncludeCellStyles == false)
+        if ((this._table.TableStyle == TableStyles.None || this._tableSettings.Css.IncludeTableStyles == false)
+            && this._tableSettings.Css.IncludeCellStyles == false)
         {
             return;
         }
+
         if (!stream.CanWrite)
         {
             throw new IOException("Parameter stream must be a writeable System.IO.Stream");
@@ -147,8 +162,16 @@ internal class CssTableExporterSync : CssRangeExporterBase
         StreamWriter? sw = new StreamWriter(stream);
 
         List<ExcelRangeBase>? ranges = new List<ExcelRangeBase>() { this._table.Range };
-        EpplusCssWriter? cellCssWriter = new EpplusCssWriter(sw, ranges, this._tableSettings, this._tableSettings.Css, this._tableSettings.Css.Exclude.CellStyle, this._styleCache);
+
+        EpplusCssWriter? cellCssWriter = new EpplusCssWriter(sw,
+                                                             ranges,
+                                                             this._tableSettings,
+                                                             this._tableSettings.Css,
+                                                             this._tableSettings.Css.Exclude.CellStyle,
+                                                             this._styleCache);
+
         cellCssWriter.RenderAdditionalAndFontCss(TableClass);
+
         if (this._tableSettings.Css.IncludeTableStyles)
         {
             RenderTableCss(sw, this._table, this._tableSettings, this._styleCache, this._dataTypes);
@@ -162,11 +185,13 @@ internal class CssTableExporterSync : CssRangeExporterBase
         if (this._tableSettings.Pictures.Include == ePictureInclude.Include)
         {
             this.LoadRangeImages(ranges);
+
             foreach (HtmlImage? p in this._rangePictures)
             {
                 cellCssWriter.AddPictureToCss(p);
             }
         }
+
         cellCssWriter.FlushStream();
     }
 }

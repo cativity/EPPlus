@@ -10,6 +10,7 @@
  *************************************************************************************************
   05/16/2020         EPPlus Software AB           ExcelTable Html Export
  *************************************************************************************************/
+
 using OfficeOpenXml.Export.HtmlExport.Accessibility;
 using System;
 using System.Collections.Generic;
@@ -32,19 +33,12 @@ public class ExcelHtmlOverrideExportSettings
     /// <summary>
     /// Use this property to set additional class names that will be set on the exported html-table.
     /// </summary>
-    public List<string> AdditionalTableClassNames
-    {
-        get;
-        protected internal set;
-    } = new List<string>();
+    public List<string> AdditionalTableClassNames { get; protected internal set; } = new List<string>();
 
     /// <summary>
     /// Settings for usage of accessibility (aria, role) attributes of the table
     /// </summary>
-    public AccessibilitySettings Accessibility
-    {
-        get; private set;
-    } = new AccessibilitySettings();
+    public AccessibilitySettings Accessibility { get; private set; } = new AccessibilitySettings();
 
     int _headerRows = 1;
 
@@ -53,10 +47,7 @@ public class ExcelHtmlOverrideExportSettings
     /// </summary>
     public int HeaderRows
     {
-        get
-        {
-            return this._headerRows;
-        }
+        get { return this._headerRows; }
         set
         {
             if (value < 0 || value > ExcelPackage.MaxRows)
@@ -67,6 +58,7 @@ public class ExcelHtmlOverrideExportSettings
             this._headerRows = value;
         }
     }
+
     /// <summary>
     /// If <see cref="HeaderRows"/> is 0, this collection contains the headers. 
     /// If this collection is empty the table will have no headers.

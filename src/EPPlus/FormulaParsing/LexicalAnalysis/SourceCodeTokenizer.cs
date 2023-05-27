@@ -10,6 +10,7 @@
  *************************************************************************************************
   01/27/2020         EPPlus Software AB       Initial release EPPlus 5
  *************************************************************************************************/
+
 using System;
 using System.Collections.Generic;
 using System.Globalization;
@@ -27,17 +28,18 @@ public class SourceCodeTokenizer : ISourceCodeTokenizer
     {
         get { return new SourceCodeTokenizer(FunctionNameProvider.Empty, NameValueProvider.Empty, false); }
     }
+
     public static ISourceCodeTokenizer R1C1
     {
         get { return new SourceCodeTokenizer(FunctionNameProvider.Empty, NameValueProvider.Empty, true); }
     }
-
 
     public SourceCodeTokenizer(IFunctionNameProvider functionRepository, INameValueProvider nameValueProvider, bool r1c1 = false)
         : this(new TokenFactory(functionRepository, nameValueProvider, r1c1))
     {
         this._nameValueProvider = nameValueProvider;
     }
+
     public SourceCodeTokenizer(ITokenFactory tokenFactory)
     {
         this._tokenFactory = tokenFactory;
@@ -50,20 +52,24 @@ public class SourceCodeTokenizer : ISourceCodeTokenizer
     {
         return this.Tokenize(input, null);
     }
+
     public IEnumerable<Token> Tokenize(string input, string worksheet)
     {
         if (string.IsNullOrEmpty(input))
         {
             return new List<Token>();
         }
+
         // MA 1401: Ignore leading plus in formula.
         input = input.TrimStart('+');
         TokenizerContext? context = new TokenizerContext(input, worksheet, this._tokenFactory);
         TokenHandler? handler = context.CreateHandler(this._nameValueProvider);
+
         while (handler.HasMore())
         {
             handler.Next();
         }
+
         context.PostProcess();
 
         return context.Result;

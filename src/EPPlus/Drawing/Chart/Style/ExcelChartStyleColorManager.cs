@@ -10,6 +10,7 @@
  *************************************************************************************************
   01/27/2020         EPPlus Software AB       Initial release EPPlus 5
  *************************************************************************************************/
+
 using OfficeOpenXml.Drawing.Style.Coloring;
 using System;
 using System.Xml;
@@ -21,8 +22,8 @@ namespace OfficeOpenXml.Drawing.Chart.Style;
 /// </summary>
 public class ExcelChartStyleColorManager : ExcelDrawingColorManager
 {
-    internal ExcelChartStyleColorManager(XmlNamespaceManager nameSpaceManager, XmlNode topNode, string path, string[] schemaNodeOrder, Action initMethod = null) : 
-        base(nameSpaceManager, topNode, path, schemaNodeOrder, initMethod)  
+    internal ExcelChartStyleColorManager(XmlNamespaceManager nameSpaceManager, XmlNode topNode, string path, string[] schemaNodeOrder, Action initMethod = null)
+        : base(nameSpaceManager, topNode, path, schemaNodeOrder, initMethod)
     {
         if (this._pathNode == null || this._colorNode == null)
         {
@@ -34,9 +35,11 @@ public class ExcelChartStyleColorManager : ExcelDrawingColorManager
             case "styleClr":
                 this.ColorType = eDrawingColorType.ChartStyleColor;
                 this.StyleColor = new ExcelChartStyleColor(this._nameSpaceManager, this._pathNode.FirstChild);
+
                 break;
         }
     }
+
     /// <summary>
     /// Sets the style color for a chart style
     /// </summary>
@@ -45,6 +48,7 @@ public class ExcelChartStyleColorManager : ExcelDrawingColorManager
     {
         this.SetStyleColor(false, index);
     }
+
     internal const string NodeName = "a:styleClr";
 
     /// <summary>
@@ -56,18 +60,15 @@ public class ExcelChartStyleColorManager : ExcelDrawingColorManager
     {
         this.ColorType = eDrawingColorType.ChartStyleColor;
         this.ResetColors(NodeName);
-        this.StyleColor=new ExcelChartStyleColor(this._nameSpaceManager, this._colorNode);
+        this.StyleColor = new ExcelChartStyleColor(this._nameSpaceManager, this._colorNode);
 
         this.StyleColor.SetValue(isAuto, index);
     }
+
     /// <summary>
     /// The style color object
     /// </summary>
-    public ExcelChartStyleColor StyleColor
-    {
-        get;
-        private set;
-    }
+    public ExcelChartStyleColor StyleColor { get; private set; }
 
     /// <summary>
     /// Reset the color

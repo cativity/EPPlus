@@ -10,6 +10,7 @@
  *************************************************************************************************
   01/27/2020         EPPlus Software AB       Initial release EPPlus 5
  *************************************************************************************************/
+
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -52,7 +53,6 @@ internal static class MathHelper
     {
         return MathObj.Atan(-x / MathObj.Sqrt((-x * x) + 1)) + (2 * MathObj.Atan(1));
     }
-
 
     // Inverse Secant 
     public static double Arcsec(double x)
@@ -158,10 +158,12 @@ internal static class MathHelper
     public static double Factorial(double number, double devisor)
     {
         double result = 1d;
+
         for (double x = number; x > devisor; x--)
         {
             result *= x;
         }
+
         return result;
     }
 

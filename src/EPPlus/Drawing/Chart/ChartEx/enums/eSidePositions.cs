@@ -10,6 +10,7 @@
  *************************************************************************************************
   04/16/2020         EPPlus Software AB           EPPlus 5.2
  *************************************************************************************************/
+
 namespace OfficeOpenXml.Drawing.Chart.ChartEx;
 
 /// <summary>
@@ -21,14 +22,17 @@ public enum eSidePositions
     /// The title or legend is on the left side.
     /// </summary>
     Left,
+
     /// <summary>
     /// The title or legend is on the top.
     /// </summary>
     Top,
+
     /// <summary>
     /// The title or legend is on the right side.
     /// </summary>
     Right,
+
     /// <summary>
     /// The title or legend is on the bottom.
     /// </summary>

@@ -10,6 +10,7 @@
  *************************************************************************************************
   6/4/2022         EPPlus Software AB           ExcelTable Html Export
  *************************************************************************************************/
+
 using OfficeOpenXml.Core;
 using OfficeOpenXml.Drawing.Interfaces;
 using System;
@@ -21,11 +22,13 @@ namespace OfficeOpenXml.Export.HtmlExport.Exporters;
 
 internal abstract class HtmlRangeExporterSyncBase : HtmlRangeExporterBase
 {
-    internal HtmlRangeExporterSyncBase(HtmlExportSettings settings, ExcelRangeBase range) : base(settings, range)
+    internal HtmlRangeExporterSyncBase(HtmlExportSettings settings, ExcelRangeBase range)
+        : base(settings, range)
     {
     }
 
-    internal HtmlRangeExporterSyncBase(HtmlExportSettings settings, EPPlusReadOnlyList<ExcelRangeBase> ranges) : base(settings, ranges)
+    internal HtmlRangeExporterSyncBase(HtmlExportSettings settings, EPPlusReadOnlyList<ExcelRangeBase> ranges)
+        : base(settings, ranges)
     {
     }
 
@@ -36,11 +39,13 @@ internal abstract class HtmlRangeExporterSyncBase : HtmlRangeExporterBase
         writer.ApplyFormatIncreaseIndent(settings.Minify);
         decimal mdw = _range.Worksheet.Workbook.MaxFontWidth;
         int defColWidth = ExcelColumn.ColumnWidthToPixels(Convert.ToDecimal(ws.DefaultColWidth), mdw);
+
         foreach (int c in this._columns)
         {
             if (settings.SetColumnWidth)
             {
                 double width = ws.GetColumnWidthPixels(c - 1, mdw);
+
                 if (width == defColWidth)
                 {
                     string? clsName = HtmlExportTableUtil.GetWorksheetClassName(settings.StyleClassPrefix, "dcw", ws, isMultiSheet);
@@ -51,14 +56,17 @@ internal abstract class HtmlRangeExporterSyncBase : HtmlRangeExporterBase
                     writer.AddAttribute("style", $"width:{width}px");
                 }
             }
+
             if (settings.HorizontalAlignmentWhenGeneral == eHtmlGeneralAlignmentHandling.ColumnDataType)
             {
                 writer.AddAttribute("class", $"{TableClass}-ar");
             }
+
             writer.AddAttribute("span", "1");
             writer.RenderBeginTag("col", true);
             writer.ApplyFormat(settings.Minify);
         }
+
         writer.Indent--;
         writer.RenderEndTag();
         writer.ApplyFormat(settings.Minify);
@@ -71,10 +79,12 @@ internal abstract class HtmlRangeExporterSyncBase : HtmlRangeExporterBase
             string? name = GetPictureName(image);
             string imageName = HtmlExportTableUtil.GetClassName(image.Picture.Name, ((IPictureContainer)image.Picture).ImageHash);
             writer.AddAttribute("alt", image.Picture.Name);
+
             if (settings.Pictures.AddNameAsId)
             {
                 writer.AddAttribute("id", imageName);
             }
+
             writer.AddAttribute("class", $"{settings.StyleClassPrefix}image-{name} {settings.StyleClassPrefix}image-prop-{imageName}");
             writer.RenderBeginTag(HtmlElements.Img, true);
         }
@@ -100,10 +110,12 @@ internal abstract class HtmlRangeExporterSyncBase : HtmlRangeExporterBase
                 {
                     writer.AddAttribute("href", eurl.AbsoluteUri);
                 }
+
                 if (!string.IsNullOrEmpty(settings.HyperlinkTarget))
                 {
                     writer.AddAttribute("target", settings.HyperlinkTarget);
                 }
+
                 writer.RenderBeginTag(HtmlElements.A);
                 writer.Write(string.IsNullOrEmpty(eurl.Display) ? cell.Text : eurl.Display);
                 writer.RenderEndTag();
@@ -117,10 +129,12 @@ internal abstract class HtmlRangeExporterSyncBase : HtmlRangeExporterBase
         else
         {
             writer.AddAttribute("href", cell.Hyperlink.OriginalString);
+
             if (!string.IsNullOrEmpty(settings.HyperlinkTarget))
             {
                 writer.AddAttribute("target", settings.HyperlinkTarget);
             }
+
             writer.RenderBeginTag(HtmlElements.A);
             writer.Write(GetCellText(cell, settings));
             writer.RenderEndTag();

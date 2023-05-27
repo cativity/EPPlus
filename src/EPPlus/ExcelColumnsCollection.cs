@@ -10,6 +10,7 @@
  *************************************************************************************************
   01/27/2020         EPPlus Software AB       Initial release EPPlus 5
  *************************************************************************************************/
+
 namespace OfficeOpenXml;
 
 /// <summary>
@@ -18,15 +19,19 @@ namespace OfficeOpenXml;
 public class ExcelColumnCollection : ExcelRangeColumn
 {
     ExcelWorksheet _worksheet;
-    internal ExcelColumnCollection(ExcelWorksheet worksheet) : base(worksheet, 1, ExcelPackage.MaxColumns)
+
+    internal ExcelColumnCollection(ExcelWorksheet worksheet)
+        : base(worksheet, 1, ExcelPackage.MaxColumns)
     {
-        this._worksheet = worksheet;            
-        if(worksheet.Dimension!=null)
+        this._worksheet = worksheet;
+
+        if (worksheet.Dimension != null)
         {
             this._fromCol = worksheet.Dimension._fromCol;
             this._toCol = worksheet.Dimension._toCol;
         }
     }
+
     /// <summary>
     /// Indexer referenced by column index
     /// </summary>
@@ -34,11 +39,9 @@ public class ExcelColumnCollection : ExcelRangeColumn
     /// <returns>The column</returns>
     public ExcelRangeColumn this[int column]
     {
-        get
-        {
-            return new ExcelRangeColumn(this._worksheet, column, column);
-        }
+        get { return new ExcelRangeColumn(this._worksheet, column, column); }
     }
+
     /// <summary>
     /// Indexer referenced by from and to column index
     /// </summary>
@@ -47,9 +50,6 @@ public class ExcelColumnCollection : ExcelRangeColumn
     /// <returns></returns>
     public ExcelRangeColumn this[int fromColumn, int toColumn]
     {
-        get
-        {            
-            return new ExcelRangeColumn(this._worksheet, fromColumn, toColumn);
-        }
-    }        
+        get { return new ExcelRangeColumn(this._worksheet, fromColumn, toColumn); }
+    }
 }

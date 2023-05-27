@@ -10,6 +10,7 @@
  *************************************************************************************************
   01/27/2020         EPPlus Software AB       Initial release EPPlus 5
  *************************************************************************************************/
+
 using System;
 using System.Drawing;
 
@@ -22,79 +23,84 @@ internal class PageIndex : IndexBase, IDisposable
         this.Rows = new IndexItem[pageSizeMin];
         this.RowCount = 0;
     }
+
     public PageIndex(IndexItem[] rows, int count)
     {
         this.Rows = rows;
         this.RowCount = count;
     }
+
     public PageIndex(PageIndex pageItem, int start, int size)
         : this(pageItem, start, size, pageItem.Index, pageItem.Offset)
     {
-
     }
+
     public PageIndex(PageIndex pageItem, int start, int size, short index, int offset, int arraySize = -1)
     {
-        if(arraySize<0)
+        if (arraySize < 0)
         {
             arraySize = CellStore<int>.GetSize(size);
         }
 
         this.Rows = new IndexItem[arraySize];
-        Array.Copy(pageItem.Rows, start, this.Rows, 0, pageItem.RowCount-start);
+        Array.Copy(pageItem.Rows, start, this.Rows, 0, pageItem.RowCount - start);
         this.RowCount = size;
         this.Index = index;
         this.Offset = offset;
     }
+
     ~PageIndex()
     {
         this.Rows = null;
     }
+
     internal int Offset = 0;
+
     /// <summary>
     /// Rows in the rows collection. 
     /// </summary>
     internal int RowCount;
+
     internal int IndexOffset
     {
-        get
-        {
-            return this.IndexExpanded + this.Offset;
-        }
+        get { return this.IndexExpanded + this.Offset; }
     }
+
     internal int IndexExpanded
     {
-        get
-        {
-            return this.Index << CellStoreSettings._pageBits;
-        }
+        get { return this.Index << CellStoreSettings._pageBits; }
     }
+
     internal IndexItem[] Rows { get; set; }
+
     /// <summary>
     /// First row index minus last row index
     /// </summary>
     internal int RowSpan
     {
-        get
-        {
-            return this.MaxIndex - this.MinIndex+1;
-        }
+        get { return this.MaxIndex - this.MinIndex + 1; }
     }
 
     internal int GetPosition(int offset)
     {
         return ArrayUtil.OptimizedBinarySearch(this.Rows, offset, this.RowCount);
     }
+
     internal int GetRowPosition(int row)
     {
         int offset = row - this.IndexOffset;
+
         return ArrayUtil.OptimizedBinarySearch(this.Rows, offset, this.RowCount);
     }
+
     internal int GetNextRow(int row)
     {
         int o = this.GetRowPosition(row);
+
         if (o < 0)
         {
             o = ~o;
+
             if (o < this.RowCount)
             {
                 return o;
@@ -104,6 +110,7 @@ internal class PageIndex : IndexBase, IDisposable
                 return -1;
             }
         }
+
         return o;
     }
 
@@ -121,6 +128,7 @@ internal class PageIndex : IndexBase, IDisposable
             }
         }
     }
+
     public int MaxIndex
     {
         get
@@ -135,10 +143,12 @@ internal class PageIndex : IndexBase, IDisposable
             }
         }
     }
+
     public int GetIndex(int pos)
     {
         return this.IndexOffset + this.Rows[pos].Index;
     }
+
     public void Dispose()
     {
         this.Rows = null;
@@ -146,8 +156,9 @@ internal class PageIndex : IndexBase, IDisposable
 
     internal bool IsWithin(int fromRow, int toRow)
     {
-        return fromRow <= this.MinIndex  && toRow >= this.MaxIndex;
+        return fromRow <= this.MinIndex && toRow >= this.MaxIndex;
     }
+
     internal bool StartsWithin(int fromRow, int toRow)
     {
         return fromRow <= this.MaxIndex && toRow >= this.MinIndex;

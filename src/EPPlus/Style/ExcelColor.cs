@@ -10,6 +10,7 @@
  *************************************************************************************************
   01/27/2020         EPPlus Software AB       Initial release EPPlus 5
  *************************************************************************************************/
+
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -24,79 +25,22 @@ namespace OfficeOpenXml.Style;
 /// <summary>
 /// Color for cellstyling
 /// </summary>
-public sealed class ExcelColor :  StyleBase, IColor
+public sealed class ExcelColor : StyleBase, IColor
 {
     internal static string[] indexedColors =
     {
         "#FF000000", // 0
-        "#FFFFFFFF",
-        "#FFFF0000",
-        "#FF00FF00",
-        "#FF0000FF",
-        "#FFFFFF00",
-        "#FFFF00FF",
-        "#FF00FFFF",
-        "#FF000000", // 8
-        "#FFFFFFFF",
-        "#FFFF0000",
-        "#FF00FF00",
-        "#FF0000FF",
-        "#FFFFFF00",
-        "#FFFF00FF",
-        "#FF00FFFF",
-        "#FF800000",
-        "#FF008000",
-        "#FF000080",
-        "#FF808000",
-        "#FF800080",
-        "#FF008080",
-        "#FFC0C0C0",
-        "#FF808080",
-        "#FF9999FF",
-        "#FF993366",
-        "#FFFFFFCC",
-        "#FFCCFFFF",
-        "#FF660066",
-        "#FFFF8080",
-        "#FF0066CC",
-        "#FFCCCCFF",
-        "#FF000080",
-        "#FFFF00FF",
-        "#FFFFFF00",
-        "#FF00FFFF",
-        "#FF800080",
-        "#FF800000",
-        "#FF008080",
-        "#FF0000FF",
-        "#FF00CCFF",
-        "#FFCCFFFF",
-        "#FFCCFFCC",
-        "#FFFFFF99",
-        "#FF99CCFF",
-        "#FFFF99CC",
-        "#FFCC99FF",
-        "#FFFFCC99",
-        "#FF3366FF",
-        "#FF33CCCC",
-        "#FF99CC00",
-        "#FFFFCC00",
-        "#FFFF9900",
-        "#FFFF6600",
-        "#FF666699",
-        "#FF969696",
-        "#FF003366",
-        "#FF339966",
-        "#FF003300",
-        "#FF333300",
-        "#FF993300",
-        "#FF993366",
-        "#FF333399",
-        "#FF333333", // 63
+        "#FFFFFFFF", "#FFFF0000", "#FF00FF00", "#FF0000FF", "#FFFFFF00", "#FFFF00FF", "#FF00FFFF", "#FF000000", // 8
+        "#FFFFFFFF", "#FFFF0000", "#FF00FF00", "#FF0000FF", "#FFFFFF00", "#FFFF00FF", "#FF00FFFF", "#FF800000", "#FF008000", "#FF000080", "#FF808000",
+        "#FF800080", "#FF008080", "#FFC0C0C0", "#FF808080", "#FF9999FF", "#FF993366", "#FFFFFFCC", "#FFCCFFFF", "#FF660066", "#FFFF8080", "#FF0066CC",
+        "#FFCCCCFF", "#FF000080", "#FFFF00FF", "#FFFFFF00", "#FF00FFFF", "#FF800080", "#FF800000", "#FF008080", "#FF0000FF", "#FF00CCFF", "#FFCCFFFF",
+        "#FFCCFFCC", "#FFFFFF99", "#FF99CCFF", "#FFFF99CC", "#FFCC99FF", "#FFFFCC99", "#FF3366FF", "#FF33CCCC", "#FF99CC00", "#FFFFCC00", "#FFFF9900",
+        "#FFFF6600", "#FF666699", "#FF969696", "#FF003366", "#FF339966", "#FF003300", "#FF333300", "#FF993300", "#FF993366", "#FF333399", "#FF333333", // 63
     };
 
     internal static Color GetIndexedColor(int index)
     {
-        if(index >= 0 && index < indexedColors.Length)
+        if (index >= 0 && index < indexedColors.Length)
         {
             string? s = indexedColors[index];
             int a = int.Parse(s.Substring(1, 2), NumberStyles.HexNumber);
@@ -106,18 +50,21 @@ public sealed class ExcelColor :  StyleBase, IColor
 
             return Color.FromArgb(a, r, g, b);
         }
+
         return Color.Empty;
     }
 
     eStyleClass _cls;
     StyleBase _parent;
-    internal ExcelColor(ExcelStyles styles, XmlHelper.ChangedEventHandler ChangedEvent, int worksheetID, string address, eStyleClass cls, StyleBase parent) : 
-        base(styles, ChangedEvent, worksheetID, address)
+
+    internal ExcelColor(ExcelStyles styles, XmlHelper.ChangedEventHandler ChangedEvent, int worksheetID, string address, eStyleClass cls, StyleBase parent)
+        : base(styles, ChangedEvent, worksheetID, address)
     {
         this._parent = parent;
         this._cls = cls;
         this.Index = int.MinValue;
     }
+
     /// <summary>
     /// The theme color
     /// </summary>
@@ -132,11 +79,9 @@ public sealed class ExcelColor :  StyleBase, IColor
 
             return this.GetSource().Theme;
         }
-        internal set
-        {
-            this._ChangedEvent(this, new StyleChangeEventArgs(this._cls, eStyleProperty.Theme, value, this._positionID, this._address));
-        }
+        internal set { this._ChangedEvent(this, new StyleChangeEventArgs(this._cls, eStyleProperty.Theme, value, this._positionID, this._address)); }
     }
+
     /// <summary>
     /// The tint value
     /// </summary>
@@ -161,6 +106,7 @@ public sealed class ExcelColor :  StyleBase, IColor
             this._ChangedEvent(this, new StyleChangeEventArgs(this._cls, eStyleProperty.Tint, value, this._positionID, this._address));
         }
     }
+
     /// <summary>
     /// The RGB value
     /// </summary>
@@ -175,11 +121,9 @@ public sealed class ExcelColor :  StyleBase, IColor
 
             return this.GetSource().Rgb;
         }
-        internal set
-        {
-            this._ChangedEvent(this, new StyleChangeEventArgs(this._cls, eStyleProperty.Color, value, this._positionID, this._address));
-        }
+        internal set { this._ChangedEvent(this, new StyleChangeEventArgs(this._cls, eStyleProperty.Color, value, this._positionID, this._address)); }
     }
+
     /// <summary>
     /// The indexed color number.
     /// A negative value means not set.
@@ -197,7 +141,7 @@ public sealed class ExcelColor :  StyleBase, IColor
         }
         set
         {
-            if(value<0)
+            if (value < 0)
             {
                 throw new ArgumentOutOfRangeException("Indexed", "Cannot be negative");
             }
@@ -205,6 +149,7 @@ public sealed class ExcelColor :  StyleBase, IColor
             this._ChangedEvent(this, new StyleChangeEventArgs(this._cls, eStyleProperty.IndexedColor, value, this._positionID, this._address));
         }
     }
+
     /// <summary>
     /// Auto color
     /// </summary>
@@ -219,10 +164,7 @@ public sealed class ExcelColor :  StyleBase, IColor
 
             return this.GetSource().Auto;
         }
-        private set
-        {
-            this._ChangedEvent(this, new StyleChangeEventArgs(this._cls, eStyleProperty.AutoColor, value, this._positionID, this._address));
-        }
+        private set { this._ChangedEvent(this, new StyleChangeEventArgs(this._cls, eStyleProperty.AutoColor, value, this._positionID, this._address)); }
     }
 
     /// <summary>
@@ -231,16 +173,18 @@ public sealed class ExcelColor :  StyleBase, IColor
     /// <param name="color">The color</param>
     public void SetColor(Color color)
     {
-        this.Rgb = color.ToArgb().ToString("X");       
+        this.Rgb = color.ToArgb().ToString("X");
     }
+
     /// <summary>
     /// Set the color of the object
     /// </summary>
     /// <param name="color">The color</param>
     public void SetColor(eThemeSchemeColor color)
     {
-        this.Theme=color;
+        this.Theme = color;
     }
+
     /// <summary>
     /// Set the color of the object
     /// </summary>
@@ -249,6 +193,7 @@ public sealed class ExcelColor :  StyleBase, IColor
     {
         this.Indexed = (int)color;
     }
+
     /// <summary>
     /// Set the color to automatic
     /// </summary>
@@ -256,6 +201,7 @@ public sealed class ExcelColor :  StyleBase, IColor
     {
         this.Auto = true;
     }
+
     /// <summary>
     /// Set the color of the object
     /// </summary>
@@ -265,55 +211,65 @@ public sealed class ExcelColor :  StyleBase, IColor
     /// <param name="blue">Blue component value</param>
     public void SetColor(int alpha, int red, int green, int blue)
     {
-        if(alpha < 0 || red < 0 || green < 0 ||blue < 0 ||
-           alpha > 255 || red > 255 || green > 255 || blue > 255)
+        if (alpha < 0 || red < 0 || green < 0 || blue < 0 || alpha > 255 || red > 255 || green > 255 || blue > 255)
         {
             throw new ArgumentException("Argument range must be from 0 to 255");
         }
 
         this.Rgb = alpha.ToString("X2") + red.ToString("X2") + green.ToString("X2") + blue.ToString("X2");
     }
+
     internal override string Id
     {
-        get 
-        {
-            return this.Theme.ToString() + this.Tint + this.Rgb + this.Indexed;
-        }
+        get { return this.Theme.ToString() + this.Tint + this.Rgb + this.Indexed; }
     }
 
     private ExcelColorXml GetSource()
     {
         this.Index = this._parent.Index < 0 ? 0 : this._parent.Index;
+
         switch (this._cls)
         {
             case eStyleClass.FillBackgroundColor:
                 return this._styles.Fills[this.Index].BackgroundColor;
+
             case eStyleClass.FillPatternColor:
                 return this._styles.Fills[this.Index].PatternColor;
+
             case eStyleClass.Font:
                 return this._styles.Fonts[this.Index].Color;
+
             case eStyleClass.BorderLeft:
                 return this._styles.Borders[this.Index].Left.Color;
+
             case eStyleClass.BorderTop:
                 return this._styles.Borders[this.Index].Top.Color;
+
             case eStyleClass.BorderRight:
                 return this._styles.Borders[this.Index].Right.Color;
+
             case eStyleClass.BorderBottom:
                 return this._styles.Borders[this.Index].Bottom.Color;
+
             case eStyleClass.BorderDiagonal:
                 return this._styles.Borders[this.Index].Diagonal.Color;
+
             case eStyleClass.FillGradientColor1:
                 return ((ExcelGradientFillXml)this._styles.Fills[this.Index]).GradientColor1;
+
             case eStyleClass.FillGradientColor2:
                 return ((ExcelGradientFillXml)this._styles.Fills[this.Index]).GradientColor2;
+
             default:
                 throw new Exception("Invalid style-class for Color");
         }
     }
+
     internal override void SetIndex(int index)
     {
         this._parent.Index = index;
     }
+
     /// <summary>
     /// Return the RGB hex string for the Indexed or Tint property
     /// </summary>
@@ -322,6 +278,7 @@ public sealed class ExcelColor :  StyleBase, IColor
     {
         return this.LookupColor(this);
     }
+
     /// <summary>
     /// Return the RGB value as a string for the color object that uses the Indexed or Tint property
     /// </summary>
@@ -337,7 +294,7 @@ public sealed class ExcelColor :  StyleBase, IColor
         {
             return "#" + theColor.Rgb;
         }
-        else if(theColor.Theme.HasValue)
+        else if (theColor.Theme.HasValue)
         {
             return this.GetThemeColor(theColor.Theme.Value, Convert.ToDouble(theColor.Tint));
         }
@@ -347,7 +304,8 @@ public sealed class ExcelColor :  StyleBase, IColor
         }
         else
         {
-            string? c = ((int)Math.Round((theColor.Tint+1) * 128)).ToString("X");
+            string? c = ((int)Math.Round((theColor.Tint + 1) * 128)).ToString("X");
+
             return "#FF" + c + c + c;
         }
     }
@@ -356,6 +314,7 @@ public sealed class ExcelColor :  StyleBase, IColor
     {
         ExcelDrawingThemeColorManager? themeColor = this._styles._wb.ThemeManager.GetOrCreateTheme().ColorScheme.GetColorByEnum(theme);
         Color color = Utils.ColorConverter.GetThemeColor(themeColor);
+
         if (tint != 0)
         {
             color = Utils.ColorConverter.ApplyTint(color, tint);

@@ -10,6 +10,7 @@
  *************************************************************************************************
   05/03/2020         EPPlus Software AB         Implemented function
  *************************************************************************************************/
+
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -18,11 +19,11 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Finance.FinancialDayCount
 
 internal class FinancialDays_Actual_360 : FinancialDaysBase, IFinanicalDays
 {
-
     public double GetDaysBetweenDates(System.DateTime startDate, System.DateTime endDate)
     {
         FinancialDay? start = FinancialDayFactory.Create(startDate, DayCountBasis.Actual_360);
         FinancialDay? end = FinancialDayFactory.Create(endDate, DayCountBasis.Actual_360);
+
         return this.GetDaysBetweenDates(start, end, 360);
     }
 
@@ -41,5 +42,8 @@ internal class FinancialDays_Actual_360 : FinancialDaysBase, IFinanicalDays
         return this.DaysPerYear / frequency;
     }
 
-    public double DaysPerYear { get { return 360d; } }
+    public double DaysPerYear
+    {
+        get { return 360d; }
+    }
 }

@@ -10,6 +10,7 @@
  *************************************************************************************************
     10/21/2020         EPPlus Software AB           Controls 
  *************************************************************************************************/
+
 using OfficeOpenXml.Packaging;
 using System.Xml;
 
@@ -20,11 +21,18 @@ namespace OfficeOpenXml.Drawing.Controls;
 /// </summary>
 public class ExcelControlRadioButton : ExcelControlWithColorsAndLines
 {
-    internal ExcelControlRadioButton(ExcelDrawings drawings, XmlNode drawNode, ControlInternal control, ZipPackagePart part, XmlDocument controlPropertiesXml, ExcelGroupShape parent = null)
-        : base(drawings, drawNode, control, part, controlPropertiesXml, parent)            
+    internal ExcelControlRadioButton(ExcelDrawings drawings,
+                                     XmlNode drawNode,
+                                     ControlInternal control,
+                                     ZipPackagePart part,
+                                     XmlDocument controlPropertiesXml,
+                                     ExcelGroupShape parent = null)
+        : base(drawings, drawNode, control, part, controlPropertiesXml, parent)
     {
     }
-    internal ExcelControlRadioButton(ExcelDrawings drawings, XmlElement drawNode, string name, ExcelGroupShape parent=null) : base(drawings, drawNode, name, parent)
+
+    internal ExcelControlRadioButton(ExcelDrawings drawings, XmlElement drawNode, string name, ExcelGroupShape parent = null)
+        : base(drawings, drawNode, name, parent)
     {
     }
 
@@ -32,20 +40,16 @@ public class ExcelControlRadioButton : ExcelControlWithColorsAndLines
     /// The type of form control
     /// </summary>
     public override eControlType ControlType => eControlType.RadioButton;
+
     /// <summary>
     /// Gets or sets the state of the radio box.
     /// </summary>
     public bool Checked
     {
-        get
-        {
-            return this._ctrlProp.GetXmlNodeString("@checked")=="Checked";
-        }
-        set
-        {
-            this._ctrlProp.SetXmlNodeString("@checked", value?"Checked":"Unchecked");
-        }
+        get { return this._ctrlProp.GetXmlNodeString("@checked") == "Checked"; }
+        set { this._ctrlProp.SetXmlNodeString("@checked", value ? "Checked" : "Unchecked"); }
     }
+
     /// <summary>
     /// Gets or sets the address to the cell that is linked to the control. 
     /// </summary>
@@ -53,11 +57,13 @@ public class ExcelControlRadioButton : ExcelControlWithColorsAndLines
     {
         get
         {
-            ExcelAddressBase? v= this.LinkedGroup;
-            if(v!=null)
+            ExcelAddressBase? v = this.LinkedGroup;
+
+            if (v != null)
             {
                 return v;
             }
+
             return this.FmlaLink;
         }
         set
@@ -72,15 +78,13 @@ public class ExcelControlRadioButton : ExcelControlWithColorsAndLines
             }
         }
     }
+
     /// <summary>
     /// Gets or sets if the radio button is the first button in a set of radio buttons
     /// </summary>
     public bool FirstButton
     {
-        get
-        {
-            return this._ctrlProp.GetXmlNodeBool("@firstButton");
-        }
+        get { return this._ctrlProp.GetXmlNodeBool("@firstButton"); }
         set
         {
             this._ctrlProp.SetXmlNodeBool("@firstButton", value);

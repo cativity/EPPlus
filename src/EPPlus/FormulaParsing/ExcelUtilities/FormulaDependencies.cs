@@ -10,6 +10,7 @@
  *************************************************************************************************
   01/27/2020         EPPlus Software AB       Initial release EPPlus 5
  *************************************************************************************************/
+
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -23,7 +24,6 @@ public class FormulaDependencies
     public FormulaDependencies()
         : this(new FormulaDependencyFactory())
     {
-
     }
 
     public FormulaDependencies(FormulaDependencyFactory formulaDependencyFactory)
@@ -34,7 +34,10 @@ public class FormulaDependencies
     private readonly FormulaDependencyFactory _formulaDependencyFactory;
     private readonly Dictionary<string, FormulaDependency> _dependencies = new Dictionary<string, FormulaDependency>();
 
-    public IEnumerable<KeyValuePair<string, FormulaDependency>> Dependencies { get { return this._dependencies; } }
+    public IEnumerable<KeyValuePair<string, FormulaDependency>> Dependencies
+    {
+        get { return this._dependencies; }
+    }
 
     public static void AddFormulaScope(ParsingScope parsingScope)
     {

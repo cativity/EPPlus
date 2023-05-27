@@ -10,6 +10,7 @@
  *************************************************************************************************
   04/27/2020         EPPlus Software AB           EPPlus 5.2
  *************************************************************************************************/
+
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -22,10 +23,12 @@ namespace OfficeOpenXml.Drawing.Chart.ChartEx;
 /// </summary>
 public sealed class ExcelChartExPlotarea : ExcelChartPlotArea
 {
-    internal ExcelChartExPlotarea(XmlNamespaceManager ns, XmlNode node, ExcelChart chart) : base(ns, node, chart, "cx")
+    internal ExcelChartExPlotarea(XmlNamespaceManager ns, XmlNode node, ExcelChart chart)
+        : base(ns, node, chart, "cx")
     {
-        this.SchemaNodeOrder = new string[] { "plotAreaRegion","axis","spPr" };
+        this.SchemaNodeOrder = new string[] { "plotAreaRegion", "axis", "spPr" };
     }
+
     /// <summary>
     /// Not applicable on extended charts. Will throw <see cref="InvalidOperationException"/>
     /// </summary>
@@ -35,6 +38,7 @@ public sealed class ExcelChartExPlotarea : ExcelChartPlotArea
     {
         throw new InvalidOperationException("Extensions charts cannot have a data tables");
     }
+
     /// <summary>
     /// Not applicable on extended charts. Will throw <see cref="InvalidOperationException"/>
     /// </summary>

@@ -10,6 +10,7 @@
  *************************************************************************************************
   05/03/2020         EPPlus Software AB         Implemented function
  *************************************************************************************************/
+
 using OfficeOpenXml.FormulaParsing.Excel.Functions.Helpers;
 using OfficeOpenXml.FormulaParsing.Excel.Functions.Metadata;
 using OfficeOpenXml.FormulaParsing.ExpressionGraph;
@@ -20,10 +21,9 @@ using System.Text;
 
 namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Engineering;
 
-[FunctionMetadata(
-                     Category = ExcelFunctionCategory.Engineering,
-                     EPPlusVersion = "5.2",
-                     Description = "Returns the error function integrated between two supplied limits")]
+[FunctionMetadata(Category = ExcelFunctionCategory.Engineering,
+                  EPPlusVersion = "5.2",
+                  Description = "Returns the error function integrated between two supplied limits")]
 public class Erf : ExcelFunction
 {
     public override CompileResult Execute(IEnumerable<FunctionArgument> arguments, ParsingContext context)
@@ -31,14 +31,14 @@ public class Erf : ExcelFunction
         ValidateArguments(arguments, 1);
         double lowerLimit = this.ArgToDecimal(arguments, 0);
         double? upperLimit = default(double?);
-        if(arguments.Count() > 1)
+
+        if (arguments.Count() > 1)
         {
             upperLimit = this.ArgToDecimal(arguments, 1);
         }
-        double retVal = !upperLimit.HasValue ? ErfHelper.Erf(lowerLimit) : ErfHelper.Erf(lowerLimit, upperLimit.Value); 
+
+        double retVal = !upperLimit.HasValue ? ErfHelper.Erf(lowerLimit) : ErfHelper.Erf(lowerLimit, upperLimit.Value);
+
         return this.CreateResult(retVal, DataType.Decimal);
     }
-
-        
-
 }

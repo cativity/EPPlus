@@ -10,6 +10,7 @@
  *************************************************************************************************
   6/4/2022         EPPlus Software AB           ExcelTable Html Export
  *************************************************************************************************/
+
 using OfficeOpenXml.Core;
 using OfficeOpenXml.Core.CellStore;
 using OfficeOpenXml.Export.HtmlExport.Settings;
@@ -28,7 +29,7 @@ namespace OfficeOpenXml.Export.HtmlExport.Exporters
     internal class CssRangeExporterAsync : CssRangeExporterBase
     {
         public CssRangeExporterAsync(HtmlRangeExportSettings settings, EPPlusReadOnlyList<ExcelRangeBase> ranges)
-         : base(settings, ranges)
+            : base(settings, ranges)
         {
             this._settings = settings;
         }
@@ -51,6 +52,7 @@ namespace OfficeOpenXml.Export.HtmlExport.Exporters
             await this.RenderCssAsync(ms);
             ms.Position = 0;
             using StreamReader? sr = new StreamReader(ms);
+
             return await sr.ReadToEndAsync();
         }
 
@@ -73,27 +75,35 @@ namespace OfficeOpenXml.Export.HtmlExport.Exporters
 
         private async Task RenderCellCssAsync(StreamWriter sw)
         {
-            EpplusCssWriter? styleWriter = new EpplusCssWriter(sw, this._ranges._list, this._settings, this._settings.Css, this._settings.Css.CssExclude, this._styleCache);
+            EpplusCssWriter? styleWriter =
+                new EpplusCssWriter(sw, this._ranges._list, this._settings, this._settings.Css, this._settings.Css.CssExclude, this._styleCache);
 
             await styleWriter.RenderAdditionalAndFontCssAsync(TableClass);
             HashSet<TableStyles>? addedTableStyles = new HashSet<TableStyles>();
+
             foreach (ExcelRangeBase? range in this._ranges._list)
             {
                 ExcelWorksheet? ws = range.Worksheet;
                 ExcelStyles? styles = ws.Workbook.Styles;
-                CellStoreEnumerator<ExcelValue>? ce = new CellStoreEnumerator<ExcelValue>(range.Worksheet._values, range._fromRow, range._fromCol, range._toRow, range._toCol);
+
+                CellStoreEnumerator<ExcelValue>? ce =
+                    new CellStoreEnumerator<ExcelValue>(range.Worksheet._values, range._fromRow, range._fromCol, range._toRow, range._toCol);
+
                 ExcelAddressBase address = null;
+
                 while (ce.Next())
                 {
                     if (ce.Value._styleId > 0 && ce.Value._styleId < styles.CellXfs.Count)
                     {
                         string? ma = ws.MergedCells[ce.Row, ce.Column];
+
                         if (ma != null)
                         {
                             if (address == null || address.Address != ma)
                             {
                                 address = new ExcelAddressBase(ma);
                             }
+
                             int fromRow = address._fromRow < range._fromRow ? range._fromRow : address._fromRow;
                             int fromCol = address._fromCol < range._fromCol ? range._fromCol : address._fromCol;
 
@@ -105,7 +115,13 @@ namespace OfficeOpenXml.Export.HtmlExport.Exporters
                             ExcelAddressBase? mAdr = new ExcelAddressBase(ma);
                             int bottomStyleId = range.Worksheet._values.GetValue(mAdr._toRow, mAdr._fromCol)._styleId;
                             int rightStyleId = range.Worksheet._values.GetValue(mAdr._fromRow, mAdr._toCol)._styleId;
-                            await styleWriter.AddToCssAsync(styles, ce.Value._styleId, bottomStyleId, rightStyleId, this.Settings.StyleClassPrefix, this.Settings.CellStyleClassName);
+
+                            await styleWriter.AddToCssAsync(styles,
+                                                            ce.Value._styleId,
+                                                            bottomStyleId,
+                                                            rightStyleId,
+                                                            this.Settings.StyleClassPrefix,
+                                                            this.Settings.CellStyleClassName);
                         }
                         else
                         {
@@ -113,12 +129,12 @@ namespace OfficeOpenXml.Export.HtmlExport.Exporters
                         }
                     }
                 }
+
                 if (this.Settings.TableStyle == eHtmlRangeTableInclude.Include)
                 {
                     ExcelTable? table = range.GetTable();
-                    if (table != null &&
-                       table.TableStyle != TableStyles.None &&
-                       addedTableStyles.Contains(table.TableStyle) == false)
+
+                    if (table != null && table.TableStyle != TableStyles.None && addedTableStyles.Contains(table.TableStyle) == false)
                     {
                         HtmlTableExportSettings? settings = new HtmlTableExportSettings() { Minify = this.Settings.Minify };
                         await HtmlExportTableUtil.RenderTableCssAsync(sw, table, settings, this._styleCache, this._dataTypes);
@@ -126,14 +142,17 @@ namespace OfficeOpenXml.Export.HtmlExport.Exporters
                     }
                 }
             }
+
             if (this.Settings.Pictures.Include == ePictureInclude.Include)
             {
                 this.LoadRangeImages(this._ranges._list);
+
                 foreach (HtmlImage? p in this._rangePictures)
                 {
                     await styleWriter.AddPictureToCssAsync(p);
                 }
             }
+
             await styleWriter.FlushStreamAsync();
         }
     }

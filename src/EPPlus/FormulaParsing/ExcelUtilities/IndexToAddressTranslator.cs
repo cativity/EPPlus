@@ -10,6 +10,7 @@
  *************************************************************************************************
   01/27/2020         EPPlus Software AB       Initial release EPPlus 5
  *************************************************************************************************/
+
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -24,7 +25,6 @@ internal class IndexToAddressTranslator
     internal IndexToAddressTranslator(ExcelDataProvider excelDataProvider)
         : this(excelDataProvider, ExcelReferenceType.AbsoluteRowAndColumn)
     {
-
     }
 
     internal IndexToAddressTranslator(ExcelDataProvider excelDataProvider, ExcelReferenceType referenceType)
@@ -39,7 +39,6 @@ internal class IndexToAddressTranslator
 
     protected internal static string GetColumnLetter(int iColumnNumber, bool fixedCol)
     {
-
         if (iColumnNumber < 1)
         {
             //throw new Exception("Column number is out of range");
@@ -47,25 +46,30 @@ internal class IndexToAddressTranslator
         }
 
         string sCol = "";
+
         do
         {
             sCol = (char)('A' + ((iColumnNumber - 1) % 26)) + sCol;
             iColumnNumber = (iColumnNumber - ((iColumnNumber - 1) % 26)) / 26;
-        }
-        while (iColumnNumber > 0);
+        } while (iColumnNumber > 0);
+
         return fixedCol ? "$" + sCol : sCol;
     }
 
     public string ToAddress(int col, int row)
     {
-        bool fixedCol = this._excelReferenceType == ExcelReferenceType.AbsoluteRowAndColumn || this._excelReferenceType == ExcelReferenceType.RelativeRowAbsolutColumn;
+        bool fixedCol = this._excelReferenceType == ExcelReferenceType.AbsoluteRowAndColumn
+                        || this._excelReferenceType == ExcelReferenceType.RelativeRowAbsolutColumn;
+
         string? colString = GetColumnLetter(col, fixedCol);
+
         return colString + this.GetRowNumber(row);
     }
 
     private string GetRowNumber(int rowNo)
     {
         string? retVal = rowNo < this._excelDataProvider.ExcelMaxRows ? rowNo.ToString() : string.Empty;
+
         if (!string.IsNullOrEmpty(retVal))
         {
             switch (this._excelReferenceType)
@@ -73,10 +77,12 @@ internal class IndexToAddressTranslator
                 case ExcelReferenceType.AbsoluteRowAndColumn:
                 case ExcelReferenceType.AbsoluteRowRelativeColumn:
                     return "$" + retVal;
+
                 default:
                     return retVal;
             }
         }
+
         return retVal;
     }
 }

@@ -19,6 +19,7 @@ public class ExternalLinksTest : TestBase
     {
         //_pck = OpenPackage("ExternalReferences.xlsx", true);
         string? outDir = _worksheetPath + "ExternalReferences";
+
         if (!Directory.Exists(outDir))
         {
             Directory.CreateDirectory(outDir);
@@ -26,9 +27,10 @@ public class ExternalLinksTest : TestBase
 
         foreach (string? f in Directory.GetFiles(_testInputPath + "ExternalReferences"))
         {
-            File.Copy(f, outDir+"\\"+new FileInfo(f).Name,true);
+            File.Copy(f, outDir + "\\" + new FileInfo(f).Name, true);
         }
     }
+
     [ClassCleanup]
     public static void Cleanup()
     {
@@ -39,6 +41,7 @@ public class ExternalLinksTest : TestBase
 
         //if (File.Exists(fileName)) File.Copy(fileName, dirName + "\\ExternalReferencesRead.xlsx", true);
     }
+
     [TestMethod]
     public void OpenAndReadExternalLink()
     {
@@ -50,11 +53,13 @@ public class ExternalLinksTest : TestBase
         Assert.AreEqual(12D, p.Workbook.ExternalLinks[0].As.ExternalWorkbook.CachedWorksheets["sheet1"].CellValues["C3"].Value);
 
         int c = 0;
-        foreach(ExcelExternalCellValue? cell in p.Workbook.ExternalLinks[0].As.ExternalWorkbook.CachedWorksheets["sheet1"].CellValues)
+
+        foreach (ExcelExternalCellValue? cell in p.Workbook.ExternalLinks[0].As.ExternalWorkbook.CachedWorksheets["sheet1"].CellValues)
         {
             Assert.IsNotNull(cell.Value);
             c++;
         }
+
         Assert.AreEqual(11, c);
     }
 
@@ -86,6 +91,7 @@ public class ExternalLinksTest : TestBase
         Assert.IsInstanceOfType(ws.Cells["F10"].Value, typeof(ExcelErrorValue));
         Assert.AreEqual(eErrorType.Ref, ((ExcelErrorValue)ws.Cells["F10"].Value).Type);
     }
+
     [TestMethod]
     public void OpenAndCalculateExternalLinkFromPackage()
     {
@@ -126,7 +132,7 @@ public class ExternalLinksTest : TestBase
 
         p.Workbook.ExternalLinks.RemoveAt(0);
 
-        SaveWorkbook("ExtRefDeleted.xlsx",p);
+        SaveWorkbook("ExtRefDeleted.xlsx", p);
     }
 
     [TestMethod]
@@ -137,11 +143,13 @@ public class ExternalLinksTest : TestBase
         Assert.AreEqual(62, p.Workbook.ExternalLinks.Count);
 
         int c = 0;
+
         foreach (ExcelExternalCellValue? cell in p.Workbook.ExternalLinks[0].As.ExternalWorkbook.CachedWorksheets[0].CellValues)
         {
             Assert.IsNotNull(cell.Value);
             c++;
         }
+
         Assert.AreEqual(104, c);
     }
 
@@ -154,7 +162,6 @@ public class ExternalLinksTest : TestBase
         p.Workbook.ExternalLinks.RemoveAt(8);
         p.Workbook.ExternalLinks.RemoveAt(5);
 
-
         SaveAndCleanup(p);
     }
 
@@ -166,13 +173,16 @@ public class ExternalLinksTest : TestBase
         Assert.AreEqual(204, p.Workbook.ExternalLinks.Count);
 
         int c = 0;
+
         foreach (ExcelExternalCellValue? cell in p.Workbook.ExternalLinks[0].As.ExternalWorkbook.CachedWorksheets[0].CellValues)
         {
             Assert.IsNotNull(cell.Value);
             c++;
         }
+
         Assert.AreEqual(104, c);
     }
+
     [TestMethod]
     public void OpenAndDeleteExternalLinks2()
     {
@@ -183,6 +193,7 @@ public class ExternalLinksTest : TestBase
         Assert.AreEqual(203, p.Workbook.ExternalLinks.Count);
         SaveAndCleanup(p);
     }
+
     [TestMethod]
     public void OpenAndCalculateExternalLinks1()
     {
@@ -191,6 +202,7 @@ public class ExternalLinksTest : TestBase
         p.Workbook.Calculate();
         SaveAndCleanup(p);
     }
+
     [TestMethod]
     public void OpenAndCalculateExternalLinks2()
     {
@@ -200,6 +212,7 @@ public class ExternalLinksTest : TestBase
         p.Workbook.Calculate();
         SaveAndCleanup(p);
     }
+
     [TestMethod]
     public void OpenAndClearExternalLinks1()
     {
@@ -210,6 +223,7 @@ public class ExternalLinksTest : TestBase
         Assert.AreEqual(0, p.Workbook.ExternalLinks.Count);
         SaveWorkbook("ExternalReferencesText1_Cleared.xlsx", p);
     }
+
     [TestMethod]
     public void OpenAndClearExternalLinks2()
     {
@@ -232,8 +246,6 @@ public class ExternalLinksTest : TestBase
         SaveWorkbook("ExternalReferencesText3_Cleared.xlsx", p);
     }
 
-
-
     [TestMethod]
     public void OpenAndReadExternalLinks3()
     {
@@ -242,13 +254,16 @@ public class ExternalLinksTest : TestBase
         Assert.AreEqual(63, p.Workbook.ExternalLinks.Count);
 
         int c = 0;
+
         foreach (ExcelExternalCellValue? cell in p.Workbook.ExternalLinks[0].As.ExternalWorkbook.CachedWorksheets[0].CellValues)
         {
             Assert.IsNotNull(cell.Value);
             c++;
         }
+
         Assert.AreEqual(104, c);
     }
+
     [TestMethod]
     public void OpenAndCalculateExternalLink3()
     {
@@ -257,6 +272,7 @@ public class ExternalLinksTest : TestBase
         p.Workbook.Calculate();
         SaveAndCleanup(p);
     }
+
     [TestMethod]
     public void OpenAndReadExternalLinkDdeOle()
     {
@@ -268,12 +284,12 @@ public class ExternalLinksTest : TestBase
         p.Workbook.ExternalLinks.LoadWorkbooks();
 
         ExcelExternalWorkbook? book3 = p.Workbook.ExternalLinks[3].As.ExternalWorkbook;
-        Assert.AreEqual(p.File.DirectoryName+"\\fromwb1.xlsx", book3.File.FullName, true);
+        Assert.AreEqual(p.File.DirectoryName + "\\fromwb1.xlsx", book3.File.FullName, true);
         Assert.IsNotNull(book3.Package);
         ExcelExternalWorkbook? book4 = p.Workbook.ExternalLinks[4].As.ExternalWorkbook;
         Assert.AreEqual(p.File.DirectoryName + "\\extref.xlsx", book4.File.FullName, true);
         Assert.IsNotNull(book4.Package);
-        SaveWorkbook("dde.xlsx",p);
+        SaveWorkbook("dde.xlsx", p);
     }
 
     [TestMethod]
@@ -289,11 +305,11 @@ public class ExternalLinksTest : TestBase
 
         foreach (string? key in excelCache.Keys)
         {
-            if(epplusCache.ContainsKey(key))
+            if (epplusCache.ContainsKey(key))
             {
                 //We remove any single quotes as excel adds seems to add ' to all worksheet names.
                 //We also remove any prefixing equal sign in teh GetExternalCache method.
-                Assert.AreEqual(excelCache[key].ToString().Replace("\'","").ToString(), epplusCache[key].ToString().Replace("\'",""));
+                Assert.AreEqual(excelCache[key].ToString().Replace("\'", "").ToString(), epplusCache[key].ToString().Replace("\'", ""));
             }
             else
             {
@@ -316,12 +332,12 @@ public class ExternalLinksTest : TestBase
     public void AddExternalLinkShouldBeSameAsExcel()
     {
         ExcelPackage? p = OpenPackage("AddedExtRef.xlsx", true);
-        ExcelWorksheet? ws1=CreateWorksheet1(p);
+        ExcelWorksheet? ws1 = CreateWorksheet1(p);
         ExcelWorksheet? ws2 = p.Workbook.Worksheets.Add("Sheet2");
-            
+
         ws2.Cells["A1"].Value = 3;
         ws2.Names.Add("SheetDefinedName", ws2.Cells["A1"]);
-            
+
         ws1.Cells["D2"].Formula = "Sheet2!SheetDefinedName";
         ws1.Cells["E2"].Formula = "Table1[[#This Row],[a]]+[1]Sheet1!$A2";
         ws1.Cells["F2"].Formula = "Table1[[#This Row],[b]]+[1]Sheet1!$B2";
@@ -331,7 +347,7 @@ public class ExternalLinksTest : TestBase
         ws1.Cells["G3"].Formula = "Table1[[#This Row],[c]]+'[1]Sheet1'!$C3";
         ws1.Cells["G4"].Formula = "Table1[[#This Row],[c]]+'[1]Sheet8888'!$C3";
         ExcelExternalWorkbook? er = p.Workbook.ExternalLinks.AddExternalWorkbook(new FileInfo(_testInputPath + "externalreferences\\FromWB1.xlsx"));
-            
+
         ws1.Cells["G5"].Formula = $"[{er.Index}]Sheet1!FromF2*[{er.Index}]!CellH5";
 
         er.UpdateCache();
@@ -342,6 +358,7 @@ public class ExternalLinksTest : TestBase
         Assert.AreEqual(2220D, ws1.Cells["G5"].Value);
         SaveAndCleanup(p);
     }
+
     [TestMethod]
     public void AddExternalWorkbookNoUpdate()
     {
@@ -397,20 +414,24 @@ public class ExternalLinksTest : TestBase
         ws.SetValue(3, 3, 12D);
 
         ExcelTable? tbl = ws.Tables.Add(ws.Cells["A1:C3"], "Table1");
+
         //Create Table
         tbl.TableStyle = TableStyles.Medium2;
+
         return ws;
     }
 
     private static Dictionary<string, object> GetExternalCache(ExcelExternalWorkbook ewb)
     {
-        Dictionary<string, object>? d=new Dictionary<string, object>();
-        foreach(ExcelExternalWorksheet ws in ewb.CachedWorksheets)
+        Dictionary<string, object>? d = new Dictionary<string, object>();
+
+        foreach (ExcelExternalWorksheet ws in ewb.CachedWorksheets)
         {
-            foreach(ExcelExternalCellValue v in ws.CellValues)
+            foreach (ExcelExternalCellValue v in ws.CellValues)
             {
                 d.Add(ws.Name + v.Address, v.Value);
             }
+
             foreach (ExcelExternalDefinedName n in ws.CachedNames)
             {
                 if (n.RefersTo.StartsWith("="))
@@ -423,6 +444,7 @@ public class ExternalLinksTest : TestBase
                 }
             }
         }
+
         foreach (ExcelExternalDefinedName n in ewb.CachedNames)
         {
             if (n.RefersTo.StartsWith("="))
@@ -434,8 +456,10 @@ public class ExternalLinksTest : TestBase
                 d.Add(n.Name, n.RefersTo);
             }
         }
+
         return d;
     }
+
     [TestMethod]
     public void RichTextClear()
     {

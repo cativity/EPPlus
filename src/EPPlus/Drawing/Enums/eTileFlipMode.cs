@@ -10,6 +10,7 @@
  *************************************************************************************************
   01/27/2020         EPPlus Software AB       Initial release EPPlus 5
  *************************************************************************************************/
+
 namespace OfficeOpenXml.Drawing;
 
 /// <summary>
@@ -21,14 +22,17 @@ public enum eTileFlipMode
     /// Tiles are not flipped
     /// </summary>
     None,
+
     /// <summary>
     /// Tiles are flipped horizontally.
     /// </summary>
     X,
+
     /// <summary>
     /// Tiles are flipped horizontally and Vertically
     /// </summary>
     XY,
+
     /// <summary>
     /// Tiles are flipped vertically.
     /// </summary>

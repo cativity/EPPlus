@@ -10,6 +10,7 @@
  *************************************************************************************************
   05/03/2020         EPPlus Software AB         Implemented function
  *************************************************************************************************/
+
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -24,10 +25,12 @@ internal static class BinaryHelper
         bool isNegative = chars[0] == '1';
         bool negativeUsed = false;
         result = 0;
+
         for (int x = 1; x < 10; x++)
         {
             char c = chars[x];
             int current = 0;
+
             if (c != '0' && c != '1')
             {
                 return false;
@@ -36,6 +39,7 @@ internal static class BinaryHelper
             if (x == 9)
             {
                 current = c == '1' ? 1 : 0;
+
                 if (isNegative && !negativeUsed)
                 {
                     current *= -1;
@@ -44,6 +48,7 @@ internal static class BinaryHelper
             else if (c == '1')
             {
                 current = (int)System.Math.Pow(raiseToBase, 9 - x);
+
                 if (isNegative && !negativeUsed)
                 {
                     current *= -1;
@@ -51,8 +56,10 @@ internal static class BinaryHelper
 
                 negativeUsed = true;
             }
+
             result += current;
         }
+
         return true;
     }
 }

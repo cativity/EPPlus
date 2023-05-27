@@ -26,6 +26,7 @@
  *******************************************************************************
   02/11/2020         EPPlus Software AB       Initial release EPPlus 5
  *******************************************************************************/
+
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using OfficeOpenXml;
 using OfficeOpenXml.Table;
@@ -39,6 +40,7 @@ namespace EPPlusTest.Table.PivotTable;
 public class PivotTableTests : TestBase
 {
     static ExcelPackage _pck;
+
     [ClassInitialize]
     public static void Init(TestContext context)
     {
@@ -47,11 +49,13 @@ public class PivotTableTests : TestBase
         ExcelWorksheet? ws = _pck.Workbook.Worksheets.Add("Data");
         LoadItemData(ws);
     }
+
     [ClassCleanup]
     public static void Cleanup()
     {
         SaveAndCleanup(_pck);
     }
+
     [TestMethod]
     public void ValidateLoadSaveTableSource()
     {
@@ -90,6 +94,7 @@ public class PivotTableTests : TestBase
         Assert.AreEqual(1, pivotTable1.DataFields.Count);
         Assert.AreEqual(1, pivotTable1.ColumnFields.Count);
     }
+
     [TestMethod]
     public void ValidateLoadSaveAddressSource()
     {
@@ -129,7 +134,7 @@ public class PivotTableTests : TestBase
     [TestMethod]
     public void CreatePivotTableAddressSource()
     {
-        ExcelWorksheet? ws=_pck.Workbook.Worksheets.Add("PivotSourceAddress");
+        ExcelWorksheet? ws = _pck.Workbook.Worksheets.Add("PivotSourceAddress");
         LoadTestdata(ws);
 
         ExcelPivotTable? pivotTable1 = ws.PivotTables.Add(ws.Cells["G1"], ws.Cells["A1:D100"], "PivotTable1");
@@ -139,19 +144,21 @@ public class PivotTableTests : TestBase
         pivotTable1.DataFields.Add(pivotTable1.Fields[1]);
         pivotTable1.DataFields.Add(pivotTable1.Fields[3]);
     }
+
     [TestMethod]
     public void CreatePivotTableTableSource()
     {
         ExcelWorksheet? ws = _pck.Workbook.Worksheets.Add("PivotSourceTable");
         LoadTestdata(ws);
         ExcelTable? table = ws.Tables.Add(ws.Cells["A1:D100"], "table1");
-        ExcelPivotTable? pivotTable1 = ws.PivotTables.Add(ws.Cells["G1"], table , "PivotTable1");
+        ExcelPivotTable? pivotTable1 = ws.PivotTables.Add(ws.Cells["G1"], table, "PivotTable1");
 
         pivotTable1.RowFields.Add(pivotTable1.Fields[0]);
         pivotTable1.RowFields.Add(pivotTable1.Fields[2]);
         pivotTable1.DataFields.Add(pivotTable1.Fields[1]);
         pivotTable1.DataFields.Add(pivotTable1.Fields[3]);
     }
+
     [TestMethod]
     public void RowsDataOnColumns()
     {
@@ -167,6 +174,7 @@ public class PivotTableTests : TestBase
         pt.DataFields[0].Function = DataFieldFunctions.Product;
         pt.DataOnRows = false;
     }
+
     [TestMethod]
     public void RowsDataOnRow()
     {
@@ -180,6 +188,7 @@ public class PivotTableTests : TestBase
         pt.DataFields[0].Function = DataFieldFunctions.Average;
         pt.DataOnRows = true;
     }
+
     [TestMethod]
     public void ColumnsDataOnColumns()
     {
@@ -192,6 +201,7 @@ public class PivotTableTests : TestBase
         pt.DataFields.Add(pt.Fields[2]);
         pt.DataOnRows = false;
     }
+
     [TestMethod]
     public void ColumnsDataOnRows()
     {
@@ -205,6 +215,7 @@ public class PivotTableTests : TestBase
         pt.DataFields.Add(pt.Fields[2]);
         pt.DataOnRows = true;
     }
+
     [TestMethod]
     public void ColumnsRows_DataOnColumns()
     {
@@ -217,6 +228,7 @@ public class PivotTableTests : TestBase
         pt.DataFields.Add(pt.Fields[2]);
         pt.DataOnRows = false;
     }
+
     [TestMethod]
     public void ColumnsRows_DataOnRows()
     {
@@ -230,6 +242,7 @@ public class PivotTableTests : TestBase
         pt.DataOnRows = true;
         ws.Drawings.AddChart("Pivotchart6", OfficeOpenXml.Drawing.Chart.eChartType.BarStacked3D, pt);
     }
+
     [TestMethod]
     public void RowsPage_DataOnColumns()
     {
@@ -258,6 +271,7 @@ public class PivotTableTests : TestBase
         pt.Fields[0].Sort = eSortType.Descending;
         pt.TableStyle = TableStyles.Medium14;
     }
+
     [TestMethod]
     public void Pivot_GroupDate()
     {
@@ -267,7 +281,12 @@ public class PivotTableTests : TestBase
         ExcelPivotTable? pt = ws.PivotTables.Add(ws.Cells["A3"], wsData.Cells["K1:O11"], "Pivottable8");
         pt.RowFields.Add(pt.Fields[1]);
         pt.RowFields.Add(pt.Fields[4]);
-        pt.Fields[4].AddDateGrouping(eDateGroupBy.Years | eDateGroupBy.Months | eDateGroupBy.Days | eDateGroupBy.Quarters, new DateTime(2010, 01, 31), new DateTime(2010, 11, 30));
+
+        pt.Fields[4]
+          .AddDateGrouping(eDateGroupBy.Years | eDateGroupBy.Months | eDateGroupBy.Days | eDateGroupBy.Quarters,
+                           new DateTime(2010, 01, 31),
+                           new DateTime(2010, 11, 30));
+
         pt.RowHeaderCaption = "År";
         pt.Fields[4].Name = "Dag";
         pt.Fields[4].Items[0].Hidden = true;
@@ -297,8 +316,8 @@ public class PivotTableTests : TestBase
         pt.DataFields.Add(pt.Fields[2]);
 
         pt.DataOnRows = true;
-
     }
+
     [TestMethod]
     public void Pivot_GroupNumber()
     {
@@ -316,6 +335,7 @@ public class PivotTableTests : TestBase
         pt.DataOnRows = false;
         pt.TableStyle = TableStyles.Medium14;
     }
+
     [TestMethod]
     public void Pivot_ManyRowFields()
     {
@@ -332,6 +352,7 @@ public class PivotTableTests : TestBase
         pt.ColumnHeaderCaption = "Column Caption";
         pt.RowHeaderCaption = "Row Caption";
     }
+
     [TestMethod]
     public void Pivot_Blank()
     {
@@ -342,10 +363,11 @@ public class PivotTableTests : TestBase
         wsData.Cells["B1"].Value = "Column2";
         ExcelPivotTable? pt = ws.PivotTables.Add(ws.Cells["A1"], wsData.Cells["A1:B2"], "Pivottable11");
         pt.ColumnFields.Add(pt.Fields[1]);
-        ExcelPivotTableField? rf=pt.RowFields.Add(pt.Fields[0]);
+        ExcelPivotTableField? rf = pt.RowFields.Add(pt.Fields[0]);
         rf.SubTotalFunctions = eSubTotalFunctions.None;
         pt.DataOnRows = true;
     }
+
     [TestMethod]
     public void Pivot_SaveDataFalse()
     {
@@ -361,6 +383,7 @@ public class PivotTableTests : TestBase
         pt.DataOnRows = true;
         pt.CacheDefinition.SaveData = false;
     }
+
     [TestMethod]
     public void Pivot_SavedDataTrue()
     {
@@ -374,9 +397,10 @@ public class PivotTableTests : TestBase
         ExcelPivotTableField? rf = pt.RowFields.Add(pt.Fields[0]);
         rf.SubTotalFunctions = eSubTotalFunctions.None;
         pt.DataOnRows = true;
-        pt.CacheDefinition.SaveData = false;    //Remove the record xml
-        pt.CacheDefinition.SaveData = true;     //Add the record xml
+        pt.CacheDefinition.SaveData = false; //Remove the record xml
+        pt.CacheDefinition.SaveData = true; //Add the record xml
     }
+
     [TestMethod]
     public void Pivot_ManyPageFields()
     {
@@ -390,7 +414,6 @@ public class PivotTableTests : TestBase
         pf1.Items.Refresh();
         pf1.Items[1].Hidden = true;
         pf1.Items[8].Hidden = true;
-
 
         ExcelPivotTableField? pf2 = pt.PageFields.Add(pt.Fields[4]);
         pf2.Items.Refresh();
@@ -408,6 +431,7 @@ public class PivotTableTests : TestBase
         Assert.AreEqual(1, pt.DataFields.Count);
         Assert.IsTrue(pf1.MultipleItemSelectionAllowed);
     }
+
     [TestMethod]
     public void Pivot_StylingFieldsFalse()
     {
@@ -417,7 +441,7 @@ public class PivotTableTests : TestBase
         ExcelPivotTable? pt = ws.PivotTables.Add(ws.Cells["A3"], wsData.Cells["K1:O11"], "Pivottable12");
         pt.ColumnFields.Add(pt.Fields[1]);
         pt.RowFields.Add(pt.Fields[0]);
-        ExcelPivotTableDataField? df=pt.DataFields.Add(pt.Fields[3]);
+        ExcelPivotTableDataField? df = pt.DataFields.Add(pt.Fields[3]);
         pt.DataOnRows = true;
         pt.ColumnHeaderCaption = "Column Caption";
         pt.RowHeaderCaption = "Row Caption";
@@ -443,8 +467,8 @@ public class PivotTableTests : TestBase
         Assert.AreEqual(1, pt.ColumnFields.Count);
         Assert.AreEqual(1, pt.RowFields.Count);
         Assert.AreEqual(1, pt.DataFields.Count);
-
     }
+
     [TestMethod]
     public void RowsDataOnRow_WithNumberFormat()
     {
@@ -463,6 +487,7 @@ public class PivotTableTests : TestBase
         Assert.AreEqual(3, pt.Fields[3].NumFmtId);
         Assert.AreEqual(165, pt.Fields[3].Cache.NumFmtId);
     }
+
     [TestMethod]
     public void AddCalculatedField()
     {
@@ -481,6 +506,7 @@ public class PivotTableTests : TestBase
         tbl.DataOnRows = false;
         Assert.AreEqual("NumValue*2", tbl.Fields[4].Cache.Formula);
     }
+
     [TestMethod]
     [ExpectedException(typeof(ArgumentException))]
     public void ShouldThrowExceptionOnAddingCalculatedFieldToColumns()
@@ -493,6 +519,7 @@ public class PivotTableTests : TestBase
         tbl.Fields.AddCalculatedField("NumValueX2", formula);
         ExcelPivotTableField? rf = tbl.ColumnFields.Add(tbl.Fields[4]);
     }
+
     [TestMethod]
     [ExpectedException(typeof(ArgumentException))]
     public void ShouldThrowExceptionOnAddingCalculatedFieldToRow()
@@ -505,6 +532,7 @@ public class PivotTableTests : TestBase
         tbl.Fields.AddCalculatedField("NumValueX2", formula);
         ExcelPivotTableField? rf = tbl.RowFields.Add(tbl.Fields[4]);
     }
+
     [TestMethod]
     [ExpectedException(typeof(ArgumentException))]
     public void ShouldThrowExceptionOnAddingCalculatedFieldToPage()
@@ -517,6 +545,7 @@ public class PivotTableTests : TestBase
         tbl.Fields.AddCalculatedField("NumValueX2", formula);
         ExcelPivotTableField? rf = tbl.PageFields.Add(tbl.Fields[4]);
     }
+
     [TestMethod]
     [ExpectedException(typeof(ArgumentException))]
     public void ShouldThrowExceptionOnAddingCalculatedFieldWithBlankFormula()
@@ -527,13 +556,14 @@ public class PivotTableTests : TestBase
         ExcelPivotTable? tbl = ws.PivotTables.Add(ws.Cells["F1"], ws.Cells["A1:D100"], "PivotTable1");
         tbl.Fields.AddCalculatedField("NumValueX2", "");
     }
+
     [TestMethod]
     public void PivotTableStyleTests()
     {
         ExcelWorksheet? wsData = _pck.Workbook.Worksheets["Data"];
         ExcelWorksheet? ws = _pck.Workbook.Worksheets.Add("StyleTests");
 
-        ExcelPivotTable? pt = ws.PivotTables.Add(ws.Cells["A3"], wsData.Cells["K1:N11"], "Pivottable8");            
+        ExcelPivotTable? pt = ws.PivotTables.Add(ws.Cells["A3"], wsData.Cells["K1:N11"], "Pivottable8");
         pt.PivotTableStyle = PivotTableStyles.None;
         Assert.AreEqual(PivotTableStyles.None, pt.PivotTableStyle);
         Assert.AreEqual(TableStyles.None, pt.TableStyle);
@@ -547,11 +577,10 @@ public class PivotTableTests : TestBase
         Assert.AreEqual(TableStyles.Custom, pt.TableStyle);
         Assert.AreEqual("PivotStyleDark28", pt.StyleName);
 
-        pt.TableStyle= TableStyles.Light15;
+        pt.TableStyle = TableStyles.Light15;
         Assert.AreEqual(PivotTableStyles.Light15, pt.PivotTableStyle);
         Assert.AreEqual(TableStyles.Light15, pt.TableStyle);
         Assert.AreEqual("PivotStyleLight15", pt.StyleName);
-
 
         pt.PivotTableStyle = PivotTableStyles.Light28;
         Assert.AreEqual(PivotTableStyles.Light28, pt.PivotTableStyle);
@@ -578,6 +607,7 @@ public class PivotTableTests : TestBase
         Assert.IsTrue(tbl.ShowValuesRow);
         tbl.ShowValuesRow = false;
     }
+
     [TestMethod]
     public void ValidateSharedItemsAreCaseInsensitive()
     {
@@ -596,6 +626,7 @@ public class PivotTableTests : TestBase
         Assert.AreEqual(1, rf.Cache.SharedItems.Count);
         Assert.AreEqual("Value1", rf.Cache.SharedItems[0]);
     }
+
     [TestMethod]
     public void ValidateAttributesWhenNumbericAndMissing()
     {
@@ -640,7 +671,6 @@ public class PivotTableTests : TestBase
         ws.Cells["I3"].Value = 3.3;
         ws.Cells["I4"].Value = "Value 3";
 
-
         ExcelPivotTable? tbl = ws.PivotTables.Add(ws.Cells["K3"], ws.Cells["A1:I4"], "ptNumberMissing");
         ExcelPivotTableField? pf1 = tbl.PageFields.Add(tbl.Fields[0]);
         ExcelPivotTableField? pf2 = tbl.PageFields.Add(tbl.Fields[1]);
@@ -668,13 +698,20 @@ public class PivotTableTests : TestBase
         AssertShartedItemsAttributes(pf9.Cache.TopNode.FirstChild, 3, true, false, true, false, true);
     }
 
-    private static void AssertShartedItemsAttributes(XmlNode node, int count,bool numberValues, bool intValues, bool containsBlanks, bool semiMixedValues, bool mixedValues)
+    private static void AssertShartedItemsAttributes(XmlNode node,
+                                                     int count,
+                                                     bool numberValues,
+                                                     bool intValues,
+                                                     bool containsBlanks,
+                                                     bool semiMixedValues,
+                                                     bool mixedValues)
     {
-        if(node.Attributes.Count!=count)
+        if (node.Attributes.Count != count)
         {
             Assert.Fail("Wrong attrib Count");
         }
-        AssertContains(node, "containsNumber",numberValues);
+
+        AssertContains(node, "containsNumber", numberValues);
         AssertContains(node, "containsInteger", intValues);
         AssertContains(node, "containsBlank", containsBlanks);
         AssertContains(node, "containsSemiMixedTypes", semiMixedValues);
@@ -686,6 +723,7 @@ public class PivotTableTests : TestBase
     private static void AssertContains(XmlNode node, string attrName, bool value)
     {
         XmlAttribute? a = node.Attributes[attrName];
+
         if (a == null)
         {
             if (value)
@@ -701,6 +739,7 @@ public class PivotTableTests : TestBase
             }
         }
     }
+
     [TestMethod]
     public void CopyPivotTableToExternalPackageSameWorksheetAsData()
     {
@@ -719,6 +758,7 @@ public class PivotTableTests : TestBase
             ExcelWorksheet? wsNew = p2.Workbook.Worksheets.Add("PivotCopy", ws);
             SaveWorkbook("copiedPivot.xlsx", p2);
         }
+
         SaveWorkbook("Pivot.xlsx", p);
     }
 }

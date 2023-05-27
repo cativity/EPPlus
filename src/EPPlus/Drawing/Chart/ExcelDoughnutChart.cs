@@ -10,6 +10,7 @@
  *************************************************************************************************
   01/27/2020         EPPlus Software AB       Initial release EPPlus 5
  *************************************************************************************************/
+
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -24,56 +25,61 @@ namespace OfficeOpenXml.Drawing.Chart;
 /// </summary>
 public class ExcelDoughnutChart : ExcelPieChart
 {
-    internal ExcelDoughnutChart(ExcelDrawings drawings, XmlNode node, eChartType type, bool isPivot, ExcelGroupShape parent = null) :
-        base(drawings, node, type, isPivot, parent)
-    {
-            
-    }
-    internal ExcelDoughnutChart(ExcelDrawings drawings, XmlNode node, eChartType? type, ExcelChart topChart, ExcelPivotTable PivotTableSource, XmlDocument chartXml, ExcelGroupShape parent = null) :
-        base(drawings, node, type, topChart, PivotTableSource, chartXml, parent)
-    {
-    }
-    internal ExcelDoughnutChart(ExcelDrawings drawings, XmlNode node, Uri uriChart, Packaging.ZipPackagePart part, XmlDocument chartXml, XmlNode chartNode, ExcelGroupShape parent = null) :
-        base(drawings, node, uriChart, part, chartXml, chartNode, parent)
+    internal ExcelDoughnutChart(ExcelDrawings drawings, XmlNode node, eChartType type, bool isPivot, ExcelGroupShape parent = null)
+        : base(drawings, node, type, isPivot, parent)
     {
     }
 
-    internal ExcelDoughnutChart(ExcelChart topChart, XmlNode chartNode, ExcelGroupShape parent = null) :
-        base(topChart, chartNode, parent)
+    internal ExcelDoughnutChart(ExcelDrawings drawings,
+                                XmlNode node,
+                                eChartType? type,
+                                ExcelChart topChart,
+                                ExcelPivotTable PivotTableSource,
+                                XmlDocument chartXml,
+                                ExcelGroupShape parent = null)
+        : base(drawings, node, type, topChart, PivotTableSource, chartXml, parent)
+    {
+    }
+
+    internal ExcelDoughnutChart(ExcelDrawings drawings,
+                                XmlNode node,
+                                Uri uriChart,
+                                Packaging.ZipPackagePart part,
+                                XmlDocument chartXml,
+                                XmlNode chartNode,
+                                ExcelGroupShape parent = null)
+        : base(drawings, node, uriChart, part, chartXml, chartNode, parent)
+    {
+    }
+
+    internal ExcelDoughnutChart(ExcelChart topChart, XmlNode chartNode, ExcelGroupShape parent = null)
+        : base(topChart, chartNode, parent)
     {
     }
 
     string _firstSliceAngPath = "c:firstSliceAng/@val";
+
     /// <summary>
     /// Angle of the first slize
     /// </summary>
     public decimal FirstSliceAngle
     {
-        get
-        {
-            return this._chartXmlHelper.GetXmlNodeDecimal(this._firstSliceAngPath);
-        }
-        internal set
-        {
-            this._chartXmlHelper.SetXmlNodeString(this._firstSliceAngPath, value.ToString(CultureInfo.InvariantCulture));
-        }
+        get { return this._chartXmlHelper.GetXmlNodeDecimal(this._firstSliceAngPath); }
+        internal set { this._chartXmlHelper.SetXmlNodeString(this._firstSliceAngPath, value.ToString(CultureInfo.InvariantCulture)); }
     }
+
     //string _holeSizePath = "c:chartSpace/c:chart/c:plotArea/{0}/c:holeSize/@val";
     string _holeSizePath = "c:holeSize/@val";
+
     /// <summary>
     /// Size of the doubnut hole
     /// </summary>
     public decimal HoleSize
     {
-        get
-        {
-            return this._chartXmlHelper.GetXmlNodeDecimal(this._holeSizePath);
-        }
-        internal set
-        {
-            this._chartXmlHelper.SetXmlNodeString(this._holeSizePath, value.ToString(CultureInfo.InvariantCulture));
-        }
+        get { return this._chartXmlHelper.GetXmlNodeDecimal(this._holeSizePath); }
+        internal set { this._chartXmlHelper.SetXmlNodeString(this._holeSizePath, value.ToString(CultureInfo.InvariantCulture)); }
     }
+
     internal override eChartType GetChartType(string name)
     {
         if (name == "doughnutChart")
@@ -87,6 +93,7 @@ public class ExcelDoughnutChart : ExcelPieChart
                 return eChartType.Doughnut;
             }
         }
+
         return base.GetChartType(name);
     }
 }

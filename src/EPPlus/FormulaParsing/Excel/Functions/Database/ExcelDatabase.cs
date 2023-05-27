@@ -10,6 +10,7 @@
  *************************************************************************************************
   01/27/2020         EPPlus Software AB       Initial release EPPlus 5
  *************************************************************************************************/
+
 using System;
 using System.Collections.Generic;
 using System.Globalization;
@@ -50,6 +51,7 @@ internal class ExcelDatabase
     private void Initialize()
     {
         int fieldIx = 0;
+
         for (int colIndex = this._fromCol; colIndex <= this._toCol; colIndex++)
         {
             object? nameObj = this.GetCellValue(this._fieldRow, colIndex);
@@ -72,12 +74,14 @@ internal class ExcelDatabase
     {
         ExcelDatabaseRow? retVal = new ExcelDatabaseRow();
         this._rowIndex++;
+
         foreach (ExcelDatabaseField? field in this.Fields)
         {
             int colIndex = this._fromCol + field.ColIndex;
             object? val = this.GetCellValue(this._rowIndex, colIndex);
             retVal[field.FieldName] = val;
         }
+
         return retVal;
     }
 }

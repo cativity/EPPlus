@@ -26,6 +26,7 @@
  *******************************************************************************
   01/27/2020         EPPlus Software AB       Initial release EPPlus 5
  *******************************************************************************/
+
 using OfficeOpenXml.FormulaParsing;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
@@ -85,6 +86,5 @@ public class ExcelAddressCacheTests
         cache.Clear();
         int id3 = cache.GetNewId();
         Assert.AreEqual(1, id3);
-            
     }
 }

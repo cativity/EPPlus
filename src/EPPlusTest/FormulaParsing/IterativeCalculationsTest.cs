@@ -42,5 +42,4 @@ public class IterativeCalculationsTest
     //    Assert.AreEqual(1d, _sheet.Cells["A1"].Value);
     //    Assert.AreEqual(2d, _sheet.Cells["B1"].Value);
     //}
-
 }

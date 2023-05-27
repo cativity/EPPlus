@@ -10,6 +10,7 @@
  *************************************************************************************************
   05/03/2020         EPPlus Software AB         Implemented function (ported to c# from Microsoft.VisualBasic.Financial.vb (MIT))
  *************************************************************************************************/
+
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -27,6 +28,7 @@ internal static class PpmtImpl
         }
 
         FinanceCalcResult<double>? pmtResult = InternalMethods.PMT_Internal(Rate, NPer, PV, FV, Due);
+
         if (pmtResult.HasError)
         {
             return new FinanceCalcResult<double>(pmtResult.ExcelErrorType);
@@ -35,6 +37,7 @@ internal static class PpmtImpl
         double Pmt = pmtResult.Result;
 
         FinanceCalcResult<double>? iPmtResult = IPmtImpl.Ipmt(Rate, Per, NPer, PV, FV, Due);
+
         if (iPmtResult.HasError)
         {
             return new FinanceCalcResult<double>(iPmtResult.ExcelErrorType);

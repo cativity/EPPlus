@@ -10,6 +10,7 @@
  *************************************************************************************************
   01/27/2020         EPPlus Software AB       Initial release EPPlus 5
  *************************************************************************************************/
+
 using OfficeOpenXml;
 using OfficeOpenXml.Compatibility;
 using OfficeOpenXml.Style.XmlAccess;
@@ -23,7 +24,7 @@ namespace OfficeOpenXml.Utils;
 
 internal static class ValueToTextHandler
 {
-    internal static string GetFormattedText(object Value, ExcelWorkbook wb, int styleId, bool forWidthCalc, CultureInfo cultureInfo=null)
+    internal static string GetFormattedText(object Value, ExcelWorkbook wb, int styleId, bool forWidthCalc, CultureInfo cultureInfo = null)
     {
         if (Value == null)
         {
@@ -33,23 +34,28 @@ internal static class ValueToTextHandler
         ExcelStyles? styles = wb.Styles;
         int nfID = styles.CellXfs[styleId].NumberFormatId;
         ExcelNumberFormatXml.ExcelFormatTranslator nf = null;
+
         for (int i = 0; i < styles.NumberFormats.Count; i++)
         {
             if (nfID == styles.NumberFormats[i].NumFmtId)
             {
                 nf = styles.NumberFormats[i].FormatTranslator;
+
                 break;
             }
         }
+
         //nf should never be null. If so set to General, Issue 173
         nf ??= styles.NumberFormats[0].FormatTranslator;
 
         return FormatValue(Value, forWidthCalc, nf, cultureInfo);
     }
+
     internal static string FormatValue(object v, bool forWidthCalc, ExcelNumberFormatXml.ExcelFormatTranslator nf, CultureInfo overrideCultureInfo)
     {
         ExcelNumberFormatXml.ExcelFormatTranslator.FormatPart? f = nf.GetFormatPart(v);
         string format;
+
         if (forWidthCalc)
         {
             format = f.NetFormatForWidth;
@@ -59,10 +65,10 @@ internal static class ValueToTextHandler
             format = f.NetFormat;
         }
 
-
         if (v is decimal || TypeCompat.IsPrimitive(v))
         {
             double d;
+
             try
             {
                 d = Convert.ToDouble(v);
@@ -75,7 +81,7 @@ internal static class ValueToTextHandler
             if (nf.DataType == ExcelNumberFormatXml.eFormatType.Number)
             {
                 if (string.IsNullOrEmpty(f.FractionFormat))
-                {                        
+                {
                     return FormatNumber(d, format, overrideCultureInfo ?? nf.Culture);
                 }
                 else
@@ -85,9 +91,10 @@ internal static class ValueToTextHandler
             }
             else if (nf.DataType == ExcelNumberFormatXml.eFormatType.DateTime)
             {
-                if (d >= 0 && d<=DateTime.MaxValue.ToOADate())
+                if (d >= 0 && d <= DateTime.MaxValue.ToOADate())
                 {
                     DateTime date = DateTime.FromOADate(d);
+
                     return GetDateText(date, format, f, overrideCultureInfo ?? nf.Culture);
                 }
                 else
@@ -100,9 +107,9 @@ internal static class ValueToTextHandler
             {
                 return null;
             }
-            else if (string.IsNullOrEmpty(format)==false)
+            else if (string.IsNullOrEmpty(format) == false)
             {
-                if(format.IndexOf("{0}")>=0)
+                if (format.IndexOf("{0}") >= 0)
                 {
                     return string.Format(format, d);
                 }
@@ -121,6 +128,7 @@ internal static class ValueToTextHandler
             else
             {
                 double d = dt.ToOADate();
+
                 if (string.IsNullOrEmpty(f.FractionFormat))
                 {
                     return d.ToString(format, nf.Culture);
@@ -135,20 +143,21 @@ internal static class ValueToTextHandler
         {
             if (nf.DataType == ExcelNumberFormatXml.eFormatType.DateTime)
             {
-                return GetDateText(new DateTime(ts.Ticks), format,f, overrideCultureInfo);
+                return GetDateText(new DateTime(ts.Ticks), format, f, overrideCultureInfo);
             }
             else
             {
                 double d = new DateTime(0).Add(ts).ToOADate();
+
                 if (string.IsNullOrEmpty(f.FractionFormat))
                 {
                     return d.ToString(format, nf.Culture);
                 }
                 else
                 {
-                    return ExcelNumberFormatXml.ExcelFormatTranslator.FormatFraction(d,f);
+                    return ExcelNumberFormatXml.ExcelFormatTranslator.FormatFraction(d, f);
                 }
-            }                
+            }
         }
         else
         {
@@ -159,7 +168,7 @@ internal static class ValueToTextHandler
 
             if (f.ContainsTextPlaceholder)
             {
-                return string.Format(format.Replace("\"",""), v);
+                return string.Format(format.Replace("\"", ""), v);
             }
             else
             {
@@ -173,9 +182,12 @@ internal static class ValueToTextHandler
     private static string FormatNumber(double d, string format, CultureInfo cultureInfo)
     {
         string? s = FormatNumberExcel(d, format, cultureInfo);
-        if (string.IsNullOrEmpty(s) == false && (
-                                                    (s.StartsWith("--") && format.StartsWith("-")) ||
-                                                    (s.StartsWith("-(", StringComparison.OrdinalIgnoreCase) && format.StartsWith("(", StringComparison.OrdinalIgnoreCase) && format.IndexOf(")", StringComparison.OrdinalIgnoreCase)>0)))
+
+        if (string.IsNullOrEmpty(s) == false
+            && ((s.StartsWith("--") && format.StartsWith("-"))
+                || (s.StartsWith("-(", StringComparison.OrdinalIgnoreCase)
+                    && format.StartsWith("(", StringComparison.OrdinalIgnoreCase)
+                    && format.IndexOf(")", StringComparison.OrdinalIgnoreCase) > 0)))
         {
             return s.Substring(1);
         }
@@ -198,7 +210,7 @@ internal static class ValueToTextHandler
     }
 
     private static string GetDateText(DateTime d, string format, ExcelNumberFormatXml.ExcelFormatTranslator.FormatPart f, CultureInfo cultureInfo)
-    {           
+    {
         if (f.SpecialDateFormat == ExcelNumberFormatXml.ExcelFormatTranslator.eSystemDateFormat.SystemLongDate)
         {
             return d.ToLongDateString();
@@ -211,6 +223,7 @@ internal static class ValueToTextHandler
         {
             return d.ToShortDateString();
         }
+
         if (format == "d" || format == "D")
         {
             return d.Day.ToString();
@@ -235,6 +248,5 @@ internal static class ValueToTextHandler
         {
             return d.ToString(format, cultureInfo);
         }
-
     }
 }

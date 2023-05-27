@@ -10,6 +10,7 @@
  *************************************************************************************************
   01/27/2020         EPPlus Software AB       Initial release EPPlus 5
  *************************************************************************************************/
+
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -24,7 +25,6 @@ public class BooleanExpression : AtomicExpression
     public BooleanExpression(string expression)
         : base(expression)
     {
-
     }
 
     public BooleanExpression(bool value)
@@ -36,6 +36,7 @@ public class BooleanExpression : AtomicExpression
     public override CompileResult Compile()
     {
         bool result = this._precompiledValue ?? bool.Parse(this.ExpressionString);
+
         return new CompileResult(result, DataType.Boolean);
     }
 }

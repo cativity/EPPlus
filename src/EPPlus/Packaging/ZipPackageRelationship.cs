@@ -10,6 +10,7 @@
  *************************************************************************************************
   01/27/2020         EPPlus Software AB       Initial release EPPlus 5
  *************************************************************************************************/
+
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -26,25 +27,29 @@ public class ZipPackageRelationship
     /// The uri to the source part
     /// </summary>
     public Uri SourceUri { get; internal set; }
+
     /// <summary>
     /// The relationship type
     /// </summary>
     public string RelationshipType { get; internal set; }
+
     /// <summary>
     /// Target, internal or external
     /// </summary>
     public TargetMode TargetMode { get; internal set; }
+
     /// <summary>
     /// The relationship Id
     /// </summary>
     public string Id { get; internal set; }
+
     /// <summary>
     /// The uri to the target part
     /// </summary>
     public Uri TargetUri { get; set; }
+
     /// <summary>
     /// The target if it's not a valid uri, for example an internal reference to a cell withing the package.
     /// </summary>
     public string Target { get; internal set; }
-
 }

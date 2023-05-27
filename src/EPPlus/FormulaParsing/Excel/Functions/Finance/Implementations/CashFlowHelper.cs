@@ -10,6 +10,7 @@
  *************************************************************************************************
   01/27/2020         EPPlus Software AB       Initial release EPPlus 5
  *************************************************************************************************/
+
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -40,7 +41,7 @@ internal static class CashFlowHelper
     /// <returns></returns>
     public static double Fv(double rate, double nper, double pmt = 0d, double pv = 0d, PmtDue type = 0)
     {
-        if(type == PmtDue.EndOfPeriod && rate == -1d)
+        if (type == PmtDue.EndOfPeriod && rate == -1d)
         {
             return -(pv * System.Math.Pow(1d + rate, nper));
         }
@@ -76,11 +77,13 @@ internal static class CashFlowHelper
     public static double Npv(double rate, IEnumerable<double> payments)
     {
         double retVal = 0d;
+
         for (int x = 0; x < payments.Count(); x++)
         {
             double payment = payments.ElementAt(x);
             retVal += payment * (1d / System.Math.Pow(1d + rate, x + 1));
         }
+
         return retVal;
     }
 }

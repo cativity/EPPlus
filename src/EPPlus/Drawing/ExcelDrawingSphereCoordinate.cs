@@ -10,6 +10,7 @@
  *************************************************************************************************
   01/27/2020         EPPlus Software AB       Initial release EPPlus 5
  *************************************************************************************************/
+
 using System;
 using System.Xml;
 
@@ -24,11 +25,14 @@ public class ExcelDrawingSphereCoordinate : XmlHelper
     /// XPath 
     /// </summary>
     internal protected string _path;
-    private readonly string _latPath ="{0}/@lat";
+
+    private readonly string _latPath = "{0}/@lat";
     private readonly string _lonPath = "{0}/@lon";
     private readonly string _revPath = "{0}/@rev";
     private readonly Action<bool> _initParent;
-    internal ExcelDrawingSphereCoordinate(XmlNamespaceManager nameSpaceManager, XmlNode topNode, string path, Action<bool> initParent) : base(nameSpaceManager, topNode)
+
+    internal ExcelDrawingSphereCoordinate(XmlNamespaceManager nameSpaceManager, XmlNode topNode, string path, Action<bool> initParent)
+        : base(nameSpaceManager, topNode)
     {
         this._path = path;
         this._latPath = string.Format(this._latPath, path);
@@ -36,60 +40,57 @@ public class ExcelDrawingSphereCoordinate : XmlHelper
         this._revPath = string.Format(this._revPath, path);
         this._initParent = initParent;
     }
+
     /// <summary>
     /// The latitude value of the rotation
     /// </summary>
     public double Latitude
     {
-        get
-        {
-            return this.GetXmlNodeAngel(this._latPath);
-        }
+        get { return this.GetXmlNodeAngel(this._latPath); }
         set
         {
             this.InitXml();
             this.SetXmlNodeAngel(this._latPath, value, "Latitude");
         }
     }
+
     /// <summary>
     /// The longitude value of the rotation
     /// </summary>
     public double Longitude
     {
-        get
-        {
-            return this.GetXmlNodeAngel(this._lonPath);
-        }
+        get { return this.GetXmlNodeAngel(this._lonPath); }
         set
         {
             this.InitXml();
             this.SetXmlNodeAngel(this._lonPath, value, "Longitude");
         }
     }
+
     /// <summary>
     /// The revolution around the central axis in the rotation
     /// </summary>
     public double Revolution
     {
-        get
-        {
-            return this.GetXmlNodeAngel(this._revPath);
-        }
+        get { return this.GetXmlNodeAngel(this._revPath); }
         set
         {
             this.InitXml();
             this.SetXmlNodeAngel(this._revPath, value, "Revolution");
         }
     }
+
     bool isInit = false;
+
     /// <summary>
     /// All values are required, so init them on any set.
     /// </summary>
     private void InitXml()
     {
-        if(this.isInit==false)
+        if (this.isInit == false)
         {
             this.isInit = true;
+
             if (!this.ExistsNode(this._latPath))
             {
                 this._initParent(false);

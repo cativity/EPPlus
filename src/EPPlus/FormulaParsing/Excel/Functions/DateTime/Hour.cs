@@ -10,6 +10,7 @@
  *************************************************************************************************
   01/27/2020         EPPlus Software AB       Initial release EPPlus 5
  *************************************************************************************************/
+
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -20,10 +21,7 @@ using OfficeOpenXml.FormulaParsing.Excel.Functions.Metadata;
 
 namespace OfficeOpenXml.FormulaParsing.Excel.Functions.DateTime;
 
-[FunctionMetadata(
-                     Category = ExcelFunctionCategory.DateAndTime,
-                     EPPlusVersion = "4",
-                     Description = "Returns the hour part of a user-supplied time")]
+[FunctionMetadata(Category = ExcelFunctionCategory.DateAndTime, EPPlusVersion = "4", Description = "Returns the hour part of a user-supplied time")]
 internal class Hour : DateParsingFunction
 {
     public override CompileResult Execute(IEnumerable<FunctionArgument> arguments, ParsingContext context)
@@ -31,7 +29,7 @@ internal class Hour : DateParsingFunction
         ValidateArguments(arguments, 1);
         object? dateObj = arguments.ElementAt(0).Value;
         System.DateTime date = this.ParseDate(arguments, dateObj);
+
         return this.CreateResult(date.Hour, DataType.Integer);
     }
-
 }

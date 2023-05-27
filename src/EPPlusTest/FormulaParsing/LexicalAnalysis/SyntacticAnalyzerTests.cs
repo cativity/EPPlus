@@ -26,6 +26,7 @@
  *******************************************************************************
   01/27/2020         EPPlus Software AB       Initial release EPPlus 5
  *******************************************************************************/
+
 using System;
 using System.Text;
 using System.Collections.Generic;
@@ -82,9 +83,7 @@ public class SyntacticAnalyzerTests
     {
         List<Token>? input = new List<Token>
         {
-            new Token("'", TokenType.String),
-            new Token("abc123", TokenType.StringContent),
-            new Token("'", TokenType.String)
+            new Token("'", TokenType.String), new Token("abc123", TokenType.StringContent), new Token("'", TokenType.String)
         };
 
         this._analyser.Analyze(input);
@@ -93,23 +92,15 @@ public class SyntacticAnalyzerTests
     [TestMethod, ExpectedException(typeof(FormatException))]
     public void ShouldThrowExceptionIfStringHasNotClosing()
     {
-        List<Token>? input = new List<Token>
-        {
-            new Token("'", TokenType.String),
-            new Token("abc123", TokenType.StringContent)
-        };
+        List<Token>? input = new List<Token> { new Token("'", TokenType.String), new Token("abc123", TokenType.StringContent) };
 
         this._analyser.Analyze(input);
     }
 
-
     [TestMethod, ExpectedException(typeof(UnrecognizedTokenException))]
     public void ShouldThrowExceptionIfThereIsAnUnrecognizedToken()
     {
-        List<Token>? input = new List<Token>
-        {
-            new Token("abc123", TokenType.Unrecognized)
-        };
+        List<Token>? input = new List<Token> { new Token("abc123", TokenType.Unrecognized) };
 
         this._analyser.Analyze(input);
     }

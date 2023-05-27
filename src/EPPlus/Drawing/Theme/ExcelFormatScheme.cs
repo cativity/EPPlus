@@ -10,6 +10,7 @@
  *************************************************************************************************
   01/27/2020         EPPlus Software AB       Initial release EPPlus 5
  *************************************************************************************************/
+
 using OfficeOpenXml.Drawing;
 using OfficeOpenXml.Drawing.Style;
 using System;
@@ -26,28 +27,26 @@ namespace OfficeOpenXml.Drawing.Theme;
 /// </summary>
 public class ExcelFormatScheme : XmlHelper
 {
-
     private readonly ExcelThemeBase _theme;
-    internal ExcelFormatScheme(XmlNamespaceManager nameSpaceManager, XmlNode topNode, ExcelThemeBase theme) : base(nameSpaceManager, topNode)
+
+    internal ExcelFormatScheme(XmlNamespaceManager nameSpaceManager, XmlNode topNode, ExcelThemeBase theme)
+        : base(nameSpaceManager, topNode)
     {
         this._theme = theme;
     }
+
     /// <summary>
     /// The name of the format scheme
     /// </summary>
     public string Name
     {
-        get
-        {
-            return this.GetXmlNodeString("@name");
-        }
-        set
-        {
-            this.SetXmlNodeString("@name", value);
-        }
+        get { return this.GetXmlNodeString("@name"); }
+        set { this.SetXmlNodeString("@name", value); }
     }
+
     const string fillStylePath = "a:fillStyleLst";
     ExcelThemeFillStyles _fillStyle = null;
+
     /// <summary>
     ///  Defines the fill styles for the theme
     /// </summary>
@@ -63,6 +62,7 @@ public class ExcelFormatScheme : XmlHelper
 
     const string lineStylePath = "a:lnStyleLst";
     ExcelThemeLineStyles _lineStyle = null;
+
     /// <summary>
     ///  Defines the line styles for the theme
     /// </summary>
@@ -71,12 +71,13 @@ public class ExcelFormatScheme : XmlHelper
         get
         {
             return this._lineStyle
-                   ?? (this._lineStyle =
-                           new ExcelThemeLineStyles(this.NameSpaceManager, this.TopNode.SelectSingleNode(lineStylePath, this.NameSpaceManager)));
+                   ?? (this._lineStyle = new ExcelThemeLineStyles(this.NameSpaceManager, this.TopNode.SelectSingleNode(lineStylePath, this.NameSpaceManager)));
         }
     }
+
     const string effectStylePath = "a:effectStyleLst";
     ExcelThemeEffectStyles _effectStyle = null;
+
     /// <summary>
     ///  Defines the effect styles for the theme
     /// </summary>
@@ -90,8 +91,10 @@ public class ExcelFormatScheme : XmlHelper
                                                                       this._theme));
         }
     }
+
     const string backgroundFillStylePath = "a:bgFillStyleLst";
     ExcelThemeFillStyles _backgroundFillStyle = null;
+
     /// <summary>
     /// Define background fill styles for the theme
     /// </summary>

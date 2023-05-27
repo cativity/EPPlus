@@ -10,6 +10,7 @@
  *************************************************************************************************
   04/16/2021         EPPlus Software AB       EPPlus 5.7
  *************************************************************************************************/
+
 using System.Collections.Generic;
 
 namespace OfficeOpenXml.ExternalReferences;
@@ -23,6 +24,7 @@ public class ExcelExternalDdeValue
     /// The data type of the value
     /// </summary>
     public eDdeValueType DdeValueType { get; internal set; } = eDdeValueType.Number;
+
     /// <summary>
     /// The value of the item
     /// </summary>

@@ -26,6 +26,7 @@
  *******************************************************************************
   01/27/2020         EPPlus Software AB       Initial release EPPlus 5
  *******************************************************************************/
+
 using System;
 using System.Globalization;
 using System.Text;
@@ -68,7 +69,7 @@ public class CalculationTests
     public void CalulationTestDatatypes()
     {
         ExcelPackage? pck = new ExcelPackage();
-        ExcelWorksheet? ws=pck.Workbook.Worksheets.Add("Calc1");
+        ExcelWorksheet? ws = pck.Workbook.Worksheets.Add("Calc1");
         ws.SetValue("A1", (short)1);
         ws.SetValue("A2", (long)2);
         ws.SetValue("A3", (Single)3);
@@ -83,18 +84,19 @@ public class CalculationTests
         ws.Calculate();
         Assert.AreEqual(21D, ws.Cells["a10"].Value);
         Assert.AreEqual(21D, ws.Cells["a11"].Value);
-        Assert.AreEqual(21D/6, ws.Cells["a12"].Value);
+        Assert.AreEqual(21D / 6, ws.Cells["a12"].Value);
     }
+
     [TestMethod]
     public void CalculateTest()
     {
         ExcelPackage? pck = new ExcelPackage();
         ExcelWorksheet? ws = pck.Workbook.Worksheets.Add("Calc1");
 
-        ws.SetValue("A1",( short)1);
-        object? v=ws.Calculate("2.5-A1+ABS(-3.0)-SIN(3)");
+        ws.SetValue("A1", (short)1);
+        object? v = ws.Calculate("2.5-A1+ABS(-3.0)-SIN(3)");
         Assert.AreEqual(4.3589, Math.Round((double)v, 4));
-                        
+
         ws.Row(1).Hidden = true;
         v = ws.Calculate("subtotal(109,a1:a10)");
         Assert.AreEqual(0D, v);
@@ -102,6 +104,7 @@ public class CalculationTests
         v = ws.Calculate("-subtotal(9,a1:a3)");
         Assert.AreEqual(-1D, v);
     }
+
     [TestMethod]
     public void CalculateTestIsFunctions()
     {
@@ -115,6 +118,7 @@ public class CalculationTests
         ws.SetFormula(1, 5, "Row(a3)");
         ws.Calculate();
     }
+
     [TestMethod, Ignore]
     public void Calulation4()
     {
@@ -128,6 +132,7 @@ public class CalculationTests
         pck.Workbook.Calculate();
         Assert.AreEqual(490D, pck.Workbook.Worksheets[1].Cells["D5"].Value);
     }
+
     [TestMethod, Ignore]
     public void CalulationValidationExcel()
     {
@@ -141,6 +146,7 @@ public class CalculationTests
 
         ExcelWorksheet? ws = pck.Workbook.Worksheets["ValidateFormulas"];
         Dictionary<string, object>? fr = new Dictionary<string, object>();
+
         foreach (ExcelRangeBase? cell in ws.Cells)
         {
             if (!string.IsNullOrEmpty(cell.Formula))
@@ -148,9 +154,11 @@ public class CalculationTests
                 fr.Add(cell.Address, cell.Value);
             }
         }
+
         pck.Workbook.Calculate();
         int nErrors = 0;
         List<Tuple<string, object, object>>? errors = new List<Tuple<string, object, object>>();
+
         foreach (string? adr in fr.Keys)
         {
             try
@@ -159,6 +167,7 @@ public class CalculationTests
                 {
                     double d1 = Convert.ToDouble(fr[adr]);
                     double d2 = Convert.ToDouble(ws.Cells[adr].Value);
+
                     if (Math.Abs(d1 - d2) < 0.0001)
                     {
                         continue;
@@ -180,15 +189,17 @@ public class CalculationTests
             }
         }
     }
+
     [Ignore]
     [TestMethod]
     public void TestOneCell()
     {
         ExcelPackage? pck = new ExcelPackage(new FileInfo(@"C:\temp\EPPlusTestark\Test4.xlsm"));
-        ExcelWorksheet? ws = pck.Workbook.Worksheets.First(); 
+        ExcelWorksheet? ws = pck.Workbook.Worksheets.First();
         pck.Workbook.Worksheets["Räntebärande formaterat utland"].Cells["M13"].Calculate();
-        Assert.AreEqual(0d, pck.Workbook.Worksheets["Räntebärande formaterat utland"].Cells["M13"].Value);  
+        Assert.AreEqual(0d, pck.Workbook.Worksheets["Räntebärande formaterat utland"].Cells["M13"].Value);
     }
+
     [Ignore]
     [TestMethod]
     public void TestPrecedence()
@@ -198,12 +209,14 @@ public class CalculationTests
         pck.Workbook.Calculate();
         Assert.AreEqual(150d, ws.Cells["A1"].Value);
     }
+
     [Ignore]
     [TestMethod]
     public void TestDataType()
     {
         ExcelPackage? pck = new ExcelPackage(new FileInfo(@"c:\temp\EPPlusTestark\calc_amount.xlsx"));
         ExcelWorksheet? ws = pck.Workbook.Worksheets.First();
+
         //ws.Names.Add("Name1",ws.Cells["A1"]);
         //ws.Names.Add("Name2", ws.Cells["A2"]);
         ws.Names["PRICE"].Value = 30;
@@ -216,6 +229,7 @@ public class CalculationTests
 
         ws.Calculate();
     }
+
     [TestMethod]
     public void CalcTwiceError()
     {
@@ -223,7 +237,7 @@ public class CalculationTests
         ExcelWorksheet? ws = pck.Workbook.Worksheets.Add("CalcTest");
         ws.Names.AddValue("PRICE", 10);
         ws.Names.AddValue("QUANTITY", 11);
-        ws.Cells["A1"].Formula="PRICE*QUANTITY";
+        ws.Cells["A1"].Formula = "PRICE*QUANTITY";
         ws.Names.AddFormula("AMOUNT", "PRICE*QUANTITY");
 
         ws.Names["PRICE"].Value = 30;
@@ -239,6 +253,7 @@ public class CalculationTests
         Assert.AreEqual(800D, ws.Cells["A1"].Value);
         Assert.AreEqual(800D, ws.Names["AMOUNT"].Value);
     }
+
     [TestMethod]
     public void IfError()
     {
@@ -257,6 +272,7 @@ public class CalculationTests
 
         ws.Calculate();
     }
+
     [TestMethod]
     public void LeftRightFunctionTest()
     {
@@ -274,6 +290,7 @@ public class CalculationTests
         Assert.AreEqual("sdf", ws.Cells["A4"].Value);
         Assert.AreEqual("asdf", ws.Cells["A5"].Value);
     }
+
     [TestMethod]
     public void IfFunctionTest()
     {
@@ -291,6 +308,7 @@ public class CalculationTests
         Assert.AreEqual(-1d, ws.Cells["A4"].Value);
         Assert.AreEqual(5d, ws.Cells["A5"].Value);
     }
+
     [TestMethod]
     public void INTFunctionTest()
     {
@@ -313,14 +331,14 @@ public class CalculationTests
         Assert.AreEqual(31, ws.Cells["A8"].Value);
     }
 
-
-
     public static void TestAllWorkbooks()
     {
-        StringBuilder sb=new StringBuilder();
+        StringBuilder sb = new StringBuilder();
+
         //Add sheets to test in this directory or change it to your testpath.
         string path = @"C:\temp\EPPlusTestark\workbooks";
-        if(!Directory.Exists(path))
+
+        if (!Directory.Exists(path))
         {
             return;
         }
@@ -333,10 +351,11 @@ public class CalculationTests
         if (sb.Length > 0)
         {
             File.WriteAllText(string.Format("TestAllWorkooks{0}.txt", DateTime.Now.ToString("d") + " " + DateTime.Now.ToString("t")), sb.ToString());
-            throw new Exception("Test failed with\r\n\r\n" + sb.ToString());
 
+            throw new Exception("Test failed with\r\n\r\n" + sb.ToString());
         }
     }
+
     [TestMethod]
     public void CalculateDateMath()
     {
@@ -399,7 +418,6 @@ public class CalculationTests
         result = worksheet.Cells[2, 3];
         Assert.AreEqual(expectedResult, result.Value);
 
-
         sourceCell.Value = $"(10{ds}8)%";
         formulaCell = worksheet.Cells[2, 3];
         formulaCell.Formula = $"VALUE(B2)";
@@ -408,10 +426,12 @@ public class CalculationTests
         result = worksheet.Cells[2, 3];
         Assert.AreEqual(expectedResult, Math.Round((double)result.Value, 3));
     }
+
     private static string GetOutput(string file)
     {
         using ExcelPackage? pck = new ExcelPackage(new FileInfo(file));
         Dictionary<string, object>? fr = new Dictionary<string, object>();
+
         foreach (ExcelWorksheet? ws in pck.Workbook.Worksheets)
         {
             if (!(ws is ExcelChartsheet))
@@ -433,6 +453,7 @@ public class CalculationTests
         ExcelWorksheet sheet = null;
         string adr = "";
         StreamWriter? fileErr = new StreamWriter(new FileStream("c:\\temp\\err.txt", FileMode.Append));
+
         foreach (string? cell in fr.Keys)
         {
             try
@@ -441,10 +462,15 @@ public class CalculationTests
                 int ix = int.Parse(spl[0]);
                 sheet = pck.Workbook.Worksheets[ix];
                 adr = spl[1];
-                if (fr[cell] is double && (sheet.Cells[adr].Value is double || sheet.Cells[adr].Value is decimal || OfficeOpenXml.Compatibility.TypeCompat.IsPrimitive(sheet.Cells[adr].Value)))
+
+                if (fr[cell] is double
+                    && (sheet.Cells[adr].Value is double
+                        || sheet.Cells[adr].Value is decimal
+                        || OfficeOpenXml.Compatibility.TypeCompat.IsPrimitive(sheet.Cells[adr].Value)))
                 {
                     double d1 = Convert.ToDouble(fr[cell]);
                     double d2 = Convert.ToDouble(sheet.Cells[adr].Value);
+
                     //if (Math.Abs(d1 - d2) < double.Epsilon)
                     if (Equals(d1, d2))
                     {
@@ -460,8 +486,16 @@ public class CalculationTests
                 {
                     if ((fr[cell] ?? "").ToString() != (sheet.Cells[adr].Value ?? "").ToString())
                     {
-                        fileErr.WriteLine("String?  cell " + sheet.Name + "!" + adr + "\t" + (fr[cell] ?? "").ToString() + "\t" + (sheet.Cells[adr].Value ?? "").ToString());
+                        fileErr.WriteLine("String?  cell "
+                                          + sheet.Name
+                                          + "!"
+                                          + adr
+                                          + "\t"
+                                          + (fr[cell] ?? "").ToString()
+                                          + "\t"
+                                          + (sheet.Cells[adr].Value ?? "").ToString());
                     }
+
                     //errors.Add(new Tuple<string, object, object>(adr, fr[cell], sheet.Cells[adr].Value));
                 }
             }
@@ -473,7 +507,9 @@ public class CalculationTests
                 nErrors++;
             }
         }
+
         fileErr.Close();
+
         return nErrors.ToString();
     }
 }

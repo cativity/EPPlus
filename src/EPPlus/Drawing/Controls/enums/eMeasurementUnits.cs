@@ -10,6 +10,7 @@
  *************************************************************************************************
     11/24/2020         EPPlus Software AB           Controls 
  *************************************************************************************************/
+
 namespace OfficeOpenXml.Drawing.Controls;
 
 /// <summary>
@@ -21,26 +22,32 @@ public enum eMeasurementUnits
     /// Inches
     /// </summary>
     Inches,
+
     /// <summary>
     /// Centimeters
     /// </summary>
     Centimeters,
+
     /// <summary>
     /// Millimeters
     /// </summary>
     Millimeters,
+
     /// <summary>
     /// Points
     /// </summary>
     Points,
+
     /// <summary>
     /// Picas
     /// </summary>
     Picas,
+
     /// <summary>
     /// Pixels
     /// </summary>
     Pixels,
+
     /// <summary>
     /// English metric unit
     /// </summary>

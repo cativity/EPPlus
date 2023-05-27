@@ -10,10 +10,12 @@
  *************************************************************************************************
   11/18/2020         EPPlus Software AB       EPPlus 5.5
  *************************************************************************************************/
+
 using OfficeOpenXml.Utils;
 using OfficeOpenXml.Utils.Extensions;
 using System;
 using System.Xml;
+
 namespace OfficeOpenXml.Drawing.Vml;
 
 /// <summary>
@@ -21,20 +23,18 @@ namespace OfficeOpenXml.Drawing.Vml;
 /// </summary>
 public class ExcelVmlDrawingBorder : XmlHelper
 {
-    internal ExcelVmlDrawingBorder(ExcelDrawings drawings, XmlNamespaceManager ns, XmlNode topNode, string[] schemaNodeOrder) :
-        base(ns, topNode)
+    internal ExcelVmlDrawingBorder(ExcelDrawings drawings, XmlNamespaceManager ns, XmlNode topNode, string[] schemaNodeOrder)
+        : base(ns, topNode)
     {
         this.SchemaNodeOrder = schemaNodeOrder;
     }
+
     /// <summary>
     /// The style of the border
     /// </summary>
-    public eVmlLineStyle LineStyle 
-    { 
-        get
-        {
-            return this.GetXmlNodeString("v:stroke/@linestyle").ToEnum(eVmlLineStyle.NoLine);
-        }
+    public eVmlLineStyle LineStyle
+    {
+        get { return this.GetXmlNodeString("v:stroke/@linestyle").ToEnum(eVmlLineStyle.NoLine); }
         set
         {
             if (value == eVmlLineStyle.NoLine)
@@ -50,20 +50,16 @@ public class ExcelVmlDrawingBorder : XmlHelper
             }
         }
     }
+
     /// <summary>
     /// Dash style for the border 
     /// </summary>
-    public eVmlDashStyle DashStyle 
-    { 
-        get
-        {
-            return this.CustomDashStyle.ToEnum(eVmlDashStyle.Custom);
-        }
-        set
-        {
-            this.CustomDashStyle = value.ToEnumString();
-        }
+    public eVmlDashStyle DashStyle
+    {
+        get { return this.CustomDashStyle.ToEnum(eVmlDashStyle.Custom); }
+        set { this.CustomDashStyle = value.ToEnumString(); }
     }
+
     /// <summary>
     /// Custom dash style.
     /// A series on numbers representing the width followed by the space between.        
@@ -72,16 +68,12 @@ public class ExcelVmlDrawingBorder : XmlHelper
     /// </summary>
     public string CustomDashStyle
     {
-        get
-        {
-            return this.GetXmlNodeString("v:stroke/@dashstyle");
-        }
-        set
-        {
-            this.SetXmlNodeString("v:stroke/@dashstyle", value);
-        }
+        get { return this.GetXmlNodeString("v:stroke/@dashstyle"); }
+        set { this.SetXmlNodeString("v:stroke/@dashstyle", value); }
     }
+
     ExcelVmlMeasurementUnit _width = null;
+
     /// <summary>
     /// The width of the border
     /// </summary>

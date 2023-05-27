@@ -10,6 +10,7 @@
  *************************************************************************************************
   01/27/2020         EPPlus Software AB       Initial release EPPlus 5
  *************************************************************************************************/
+
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -26,6 +27,7 @@ internal static class VarMethods
         {
             throw new ExcelErrorValueException(eErrorType.Div0);
         }
+
         return left / right;
     }
 
@@ -38,6 +40,7 @@ internal static class VarMethods
     {
         double avg = args.Select(x => (double)x).Average();
         double d = args.Aggregate(0.0, (total, next) => total += System.Math.Pow(next - avg, 2));
+
         return Divide(d, args.Count() - 1);
     }
 
@@ -50,6 +53,7 @@ internal static class VarMethods
     {
         double avg = args.Select(x => (double)x).Average();
         double d = args.Aggregate(0.0, (total, next) => total += System.Math.Pow(next - avg, 2));
-        return Divide(d, args.Count()); 
+
+        return Divide(d, args.Count());
     }
 }

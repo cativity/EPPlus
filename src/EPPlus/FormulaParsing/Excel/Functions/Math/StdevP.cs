@@ -10,6 +10,7 @@
  *************************************************************************************************
   01/27/2020         EPPlus Software AB       Initial release EPPlus 5
  *************************************************************************************************/
+
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -20,25 +21,27 @@ using OfficeOpenXml.FormulaParsing.Excel.Functions.Metadata;
 
 namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Math;
 
-[FunctionMetadata(
-                     Category = ExcelFunctionCategory.Statistical,
-                     EPPlusVersion = "4",
-                     Description = "Returns the standard deviation of a supplied set of values (which represent an entire population)")]
+[FunctionMetadata(Category = ExcelFunctionCategory.Statistical,
+                  EPPlusVersion = "4",
+                  Description = "Returns the standard deviation of a supplied set of values (which represent an entire population)")]
 internal class StdevP : HiddenValuesHandlingFunction
 {
     public StdevP()
     {
         this.IgnoreErrors = false;
     }
+
     public override CompileResult Execute(IEnumerable<FunctionArgument> arguments, ParsingContext context)
     {
         IEnumerable<ExcelDoubleCellValue>? args = this.ArgsToDoubleEnumerable(this.IgnoreHiddenValues, this.IgnoreErrors, arguments, context);
+
         return this.CreateResult(StandardDeviation(args.Select(x => (double)x)), DataType.Decimal);
     }
 
     internal static double StandardDeviation(IEnumerable<double> values)
     {
         double avg = values.Average();
+
         return MathObj.Sqrt(values.Average(v => MathObj.Pow(v - avg, 2)));
     }
 }

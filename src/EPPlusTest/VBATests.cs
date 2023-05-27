@@ -26,6 +26,7 @@
  *******************************************************************************
   01/27/2020         EPPlus Software AB       Initial release EPPlus 5
  *******************************************************************************/
+
 using System;
 using System.Text;
 using System.Collections.Generic;
@@ -49,11 +50,49 @@ public class VBATests : TestBase
     public void ReadVBA()
     {
         ExcelPackage? package = new ExcelPackage(new FileInfo(@"c:\temp\report.xlsm"));
-        File.WriteAllText(@"c:\temp\vba\modules\dir.txt", package.Workbook.VbaProject.CodePage + "," + package.Workbook.VbaProject.Constants + "," + package.Workbook.VbaProject.Description + "," + package.Workbook.VbaProject.HelpContextID.ToString() + "," + package.Workbook.VbaProject.HelpFile1 + "," + package.Workbook.VbaProject.HelpFile2 + "," + package.Workbook.VbaProject.Lcid.ToString() + "," + package.Workbook.VbaProject.LcidInvoke.ToString() + "," + package.Workbook.VbaProject.LibFlags.ToString() + "," + package.Workbook.VbaProject.MajorVersion.ToString() + "," + package.Workbook.VbaProject.MinorVersion.ToString() + "," + package.Workbook.VbaProject.Name + "," + package.Workbook.VbaProject.ProjectID + "," + package.Workbook.VbaProject.SystemKind.ToString() + "," + package.Workbook.VbaProject.Protection.HostProtected.ToString() + "," + package.Workbook.VbaProject.Protection.UserProtected.ToString() + "," + package.Workbook.VbaProject.Protection.VbeProtected.ToString() + "," + package.Workbook.VbaProject.Protection.VisibilityState.ToString());
+
+        File.WriteAllText(@"c:\temp\vba\modules\dir.txt",
+                          package.Workbook.VbaProject.CodePage
+                          + ","
+                          + package.Workbook.VbaProject.Constants
+                          + ","
+                          + package.Workbook.VbaProject.Description
+                          + ","
+                          + package.Workbook.VbaProject.HelpContextID.ToString()
+                          + ","
+                          + package.Workbook.VbaProject.HelpFile1
+                          + ","
+                          + package.Workbook.VbaProject.HelpFile2
+                          + ","
+                          + package.Workbook.VbaProject.Lcid.ToString()
+                          + ","
+                          + package.Workbook.VbaProject.LcidInvoke.ToString()
+                          + ","
+                          + package.Workbook.VbaProject.LibFlags.ToString()
+                          + ","
+                          + package.Workbook.VbaProject.MajorVersion.ToString()
+                          + ","
+                          + package.Workbook.VbaProject.MinorVersion.ToString()
+                          + ","
+                          + package.Workbook.VbaProject.Name
+                          + ","
+                          + package.Workbook.VbaProject.ProjectID
+                          + ","
+                          + package.Workbook.VbaProject.SystemKind.ToString()
+                          + ","
+                          + package.Workbook.VbaProject.Protection.HostProtected.ToString()
+                          + ","
+                          + package.Workbook.VbaProject.Protection.UserProtected.ToString()
+                          + ","
+                          + package.Workbook.VbaProject.Protection.VbeProtected.ToString()
+                          + ","
+                          + package.Workbook.VbaProject.Protection.VisibilityState.ToString());
+
         foreach (ExcelVBAModule? module in package.Workbook.VbaProject.Modules)
         {
             File.WriteAllText(string.Format(@"c:\temp\vba\modules\{0}.txt", module.Name), module.Code);
         }
+
         foreach (ExcelVbaReference? r in package.Workbook.VbaProject.References)
         {
             File.WriteAllText(string.Format(@"c:\temp\vba\modules\{0}.txt", r.Name), r.Libid + " " + r.ReferenceRecordID.ToString());
@@ -63,28 +102,34 @@ public class VBATests : TestBase
         X509Store store = new X509Store(StoreName.My, StoreLocation.CurrentUser);
         store.Open(OpenFlags.ReadOnly);
         package.Workbook.VbaProject.Signature.Certificate = store.Certificates[19];
+
         //package.Workbook.VbaProject.Protection.SetPassword("");
         package.SaveAs(new FileInfo(@"c:\temp\vbaSaved.xlsm"));
     }
+
     [Ignore]
     [TestMethod]
     public void Resign()
     {
         ExcelPackage? package = new ExcelPackage(new FileInfo(@"c:\temp\vbaWrite.xlsm"));
+
         //package.Workbook.VbaProject.Signature.Certificate = store.Certificates[11];
         package.SaveAs(new FileInfo(@"c:\temp\vbaWrite2.xlsm"));
     }
+
     [Ignore]
     [TestMethod]
     public void VbaError()
     {
         DirectoryInfo workingDir = new DirectoryInfo(@"C:\epplusExample\folder");
+
         if (!workingDir.Exists)
         {
             workingDir.Create();
         }
 
         FileInfo f = new FileInfo(workingDir.FullName + "//" + "temp.xlsx");
+
         if (f.Exists)
         {
             f.Delete();
@@ -97,7 +142,8 @@ public class VBATests : TestBase
         ExcelWorksheet excelWorksheet3 = myPackage.Workbook.Worksheets.Add("Sheet3");
         FileInfo f2 = new FileInfo(workingDir.FullName + "//" + "newfile.xlsm");
         ExcelVBAModule excelVbaModule = myPackage.Workbook.VbaProject.Modules.AddModule("Module1");
-        StringBuilder mybuilder = new StringBuilder(); mybuilder.AppendLine("Sub Jiminy()");
+        StringBuilder mybuilder = new StringBuilder();
+        mybuilder.AppendLine("Sub Jiminy()");
         mybuilder.AppendLine("Range(\"D6\").Select");
         mybuilder.AppendLine("ActiveCell.FormulaR1C1 = \"Jiminy\"");
         mybuilder.AppendLine("End Sub");
@@ -105,16 +151,55 @@ public class VBATests : TestBase
         myPackage.SaveAs(f2);
         myPackage.Dispose();
     }
+
     [Ignore]
     [TestMethod]
     public void ReadVBAUnicodeWsName()
     {
         ExcelPackage? package = new ExcelPackage(new FileInfo(@"c:\temp\bug\VbaUnicodeWS.xlsm"));
-        File.WriteAllText(@"c:\temp\vba\modules\dir.txt", package.Workbook.VbaProject.CodePage + "," + package.Workbook.VbaProject.Constants + "," + package.Workbook.VbaProject.Description + "," + package.Workbook.VbaProject.HelpContextID.ToString() + "," + package.Workbook.VbaProject.HelpFile1 + "," + package.Workbook.VbaProject.HelpFile2 + "," + package.Workbook.VbaProject.Lcid.ToString() + "," + package.Workbook.VbaProject.LcidInvoke.ToString() + "," + package.Workbook.VbaProject.LibFlags.ToString() + "," + package.Workbook.VbaProject.MajorVersion.ToString() + "," + package.Workbook.VbaProject.MinorVersion.ToString() + "," + package.Workbook.VbaProject.Name + "," + package.Workbook.VbaProject.ProjectID + "," + package.Workbook.VbaProject.SystemKind.ToString() + "," + package.Workbook.VbaProject.Protection.HostProtected.ToString() + "," + package.Workbook.VbaProject.Protection.UserProtected.ToString() + "," + package.Workbook.VbaProject.Protection.VbeProtected.ToString() + "," + package.Workbook.VbaProject.Protection.VisibilityState.ToString());
+
+        File.WriteAllText(@"c:\temp\vba\modules\dir.txt",
+                          package.Workbook.VbaProject.CodePage
+                          + ","
+                          + package.Workbook.VbaProject.Constants
+                          + ","
+                          + package.Workbook.VbaProject.Description
+                          + ","
+                          + package.Workbook.VbaProject.HelpContextID.ToString()
+                          + ","
+                          + package.Workbook.VbaProject.HelpFile1
+                          + ","
+                          + package.Workbook.VbaProject.HelpFile2
+                          + ","
+                          + package.Workbook.VbaProject.Lcid.ToString()
+                          + ","
+                          + package.Workbook.VbaProject.LcidInvoke.ToString()
+                          + ","
+                          + package.Workbook.VbaProject.LibFlags.ToString()
+                          + ","
+                          + package.Workbook.VbaProject.MajorVersion.ToString()
+                          + ","
+                          + package.Workbook.VbaProject.MinorVersion.ToString()
+                          + ","
+                          + package.Workbook.VbaProject.Name
+                          + ","
+                          + package.Workbook.VbaProject.ProjectID
+                          + ","
+                          + package.Workbook.VbaProject.SystemKind.ToString()
+                          + ","
+                          + package.Workbook.VbaProject.Protection.HostProtected.ToString()
+                          + ","
+                          + package.Workbook.VbaProject.Protection.UserProtected.ToString()
+                          + ","
+                          + package.Workbook.VbaProject.Protection.VbeProtected.ToString()
+                          + ","
+                          + package.Workbook.VbaProject.Protection.VisibilityState.ToString());
+
         foreach (ExcelVBAModule? module in package.Workbook.VbaProject.Modules)
         {
             File.WriteAllText(string.Format(@"c:\temp\vba\modules\{0}.txt", module.Name), module.Code);
         }
+
         foreach (ExcelVbaReference? r in package.Workbook.VbaProject.References)
         {
             File.WriteAllText(string.Format(@"c:\temp\vba\modules\{0}.txt", r.Name), r.Libid + " " + r.ReferenceRecordID.ToString());
@@ -124,9 +209,11 @@ public class VBATests : TestBase
         X509Store store = new X509Store(StoreName.My, StoreLocation.CurrentUser);
         store.Open(OpenFlags.ReadOnly);
         package.Workbook.VbaProject.Signature.Certificate = store.Certificates[19];
+
         //package.Workbook.VbaProject.Protection.SetPassword("");
         package.SaveAs(new FileInfo(@"c:\temp\vbaSaved.xlsm"));
     }
+
     //Issue with chunk overwriting 4096 bytes
     [Ignore]
     [TestMethod]
@@ -138,6 +225,7 @@ public class VBATests : TestBase
         package.Workbook.Worksheets.Add("TestCopy", package.Workbook.Worksheets[1]);
         package.SaveAs(new FileInfo(@"c:\temp\bug\outfile2.xlsm"));
     }
+
     [TestMethod]
     public void DecompressionChunkGreaterThan4k()
     {
@@ -149,16 +237,21 @@ public class VBATests : TestBase
 #else
                 AppDomain.CurrentDomain.BaseDirectory
 #endif
-                                         , @"..\..\workbooks");
+                                          ,
+                                           @"..\..\workbooks");
+
         string? path = Path.Combine(workbookDir, "VBADecompressBug.xlsm");
         FileInfo? f = new FileInfo(path);
+
         if (f.Exists)
         {
             using ExcelPackage? package = new ExcelPackage(f);
+
             // Reading the Workbook.CodeModule.Code will cause an IndexOutOfRange if the problem hasn't been fixed.
             Assert.IsTrue(package.Workbook.CodeModule.Code.Length > 0);
         }
     }
+
     [TestMethod, Ignore]
     public void ReadNewVBA()
     {
@@ -167,6 +260,7 @@ public class VBATests : TestBase
 
         package.SaveAs(new FileInfo(@"c:\temp\bug\makroepp.xlsm"));
     }
+
     [TestMethod, Ignore]
     public void VBASigning()
     {
@@ -190,6 +284,7 @@ public class VBATests : TestBase
 
         SaveAndCleanup(p);
     }
+
     [TestMethod, Ignore]
     public void VBASigningFromFile()
     {

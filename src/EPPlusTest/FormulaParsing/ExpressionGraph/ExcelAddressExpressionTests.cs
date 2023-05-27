@@ -26,6 +26,7 @@
  *******************************************************************************
   01/27/2020         EPPlus Software AB       Initial release EPPlus 5
  *******************************************************************************/
+
 using System;
 using System.IO;
 using System.Linq;
@@ -107,6 +108,7 @@ public class ExcelAddressExpressionTests
     //}
 
     #region Compile Tests
+
     [TestMethod]
     public void CompileSingleCellReference()
     {
@@ -116,6 +118,7 @@ public class ExcelAddressExpressionTests
         using ExcelWorksheet? sheet = package.Workbook.Worksheets.Add("NewSheet");
         using EpplusExcelDataProvider? excelDataProvider = new EpplusExcelDataProvider(package);
         RangeAddressFactory? rangeAddressFactory = new RangeAddressFactory(excelDataProvider);
+
         using (parsingContext.Scopes.NewScope(rangeAddressFactory.Create("NewSheet", 3, 3)))
         {
             ExcelAddressExpression? expression = new ExcelAddressExpression("A1", excelDataProvider, parsingContext);
@@ -134,6 +137,7 @@ public class ExcelAddressExpressionTests
         using EpplusExcelDataProvider? excelDataProvider = new EpplusExcelDataProvider(package);
         sheet.Cells[1, 1].Value = "Value";
         RangeAddressFactory? rangeAddressFactory = new RangeAddressFactory(excelDataProvider);
+
         using (parsingContext.Scopes.NewScope(rangeAddressFactory.Create("NewSheet", 3, 3)))
         {
             ExcelAddressExpression? expression = new ExcelAddressExpression("A1", excelDataProvider, parsingContext);
@@ -152,6 +156,7 @@ public class ExcelAddressExpressionTests
         using EpplusExcelDataProvider? excelDataProvider = new EpplusExcelDataProvider(package);
         sheet.Cells[1, 1].RichText.Text = "Value";
         RangeAddressFactory? rangeAddressFactory = new RangeAddressFactory(excelDataProvider);
+
         using (parsingContext.Scopes.NewScope(rangeAddressFactory.Create("NewSheet", 3, 3)))
         {
             ExcelAddressExpression? expression = new ExcelAddressExpression("A1", excelDataProvider, parsingContext);
@@ -169,6 +174,7 @@ public class ExcelAddressExpressionTests
         using ExcelWorksheet? sheet = package.Workbook.Worksheets.Add("NewSheet");
         using EpplusExcelDataProvider? excelDataProvider = new EpplusExcelDataProvider(package);
         RangeAddressFactory? rangeAddressFactory = new RangeAddressFactory(excelDataProvider);
+
         using (parsingContext.Scopes.NewScope(rangeAddressFactory.Create("NewSheet", 3, 3)))
         {
             ExcelAddressExpression? expression = new ExcelAddressExpression("A1", excelDataProvider, parsingContext);
@@ -189,6 +195,7 @@ public class ExcelAddressExpressionTests
         using ExcelWorksheet? sheet = package.Workbook.Worksheets.Add("NewSheet");
         using EpplusExcelDataProvider? excelDataProvider = new EpplusExcelDataProvider(package);
         RangeAddressFactory? rangeAddressFactory = new RangeAddressFactory(excelDataProvider);
+
         using (parsingContext.Scopes.NewScope(rangeAddressFactory.Create("NewSheet", 3, 3)))
         {
             ExcelAddressExpression? expression = new ExcelAddressExpression("$A1", excelDataProvider, parsingContext);
@@ -209,6 +216,7 @@ public class ExcelAddressExpressionTests
         using ExcelWorksheet? sheet = package.Workbook.Worksheets.Add("NewSheet");
         using EpplusExcelDataProvider? excelDataProvider = new EpplusExcelDataProvider(package);
         RangeAddressFactory? rangeAddressFactory = new RangeAddressFactory(excelDataProvider);
+
         using (parsingContext.Scopes.NewScope(rangeAddressFactory.Create("NewSheet", 3, 3)))
         {
             ExcelAddressExpression? expression = new ExcelAddressExpression("$A1", excelDataProvider, parsingContext);
@@ -229,6 +237,7 @@ public class ExcelAddressExpressionTests
         using ExcelWorksheet? sheet = package.Workbook.Worksheets.Add("NewSheet");
         using EpplusExcelDataProvider? excelDataProvider = new EpplusExcelDataProvider(package);
         RangeAddressFactory? rangeAddressFactory = new RangeAddressFactory(excelDataProvider);
+
         using (parsingContext.Scopes.NewScope(rangeAddressFactory.Create("NewSheet", 3, 3)))
         {
             ExcelAddressExpression? expression = new ExcelAddressExpression("$A$1", excelDataProvider, parsingContext);
@@ -249,6 +258,7 @@ public class ExcelAddressExpressionTests
         using ExcelWorksheet? sheet = package.Workbook.Worksheets.Add("NewSheet");
         using EpplusExcelDataProvider? excelDataProvider = new EpplusExcelDataProvider(package);
         RangeAddressFactory? rangeAddressFactory = new RangeAddressFactory(excelDataProvider);
+
         using (parsingContext.Scopes.NewScope(rangeAddressFactory.Create("NewSheet", 3, 3)))
         {
             ExcelAddressExpression? expression = new ExcelAddressExpression("A1:A5", excelDataProvider, parsingContext);
@@ -256,6 +266,7 @@ public class ExcelAddressExpressionTests
             IRangeInfo? rangeInfo = result.Result as IRangeInfo;
             Assert.IsNotNull(rangeInfo);
             Assert.AreEqual("A1:A5", rangeInfo.Address.Address);
+
             // Enumerating the range still yields no results.
             Assert.AreEqual(0, rangeInfo.Count());
         }
@@ -275,6 +286,7 @@ public class ExcelAddressExpressionTests
         sheet.Cells[4, 1].Value = "Value4";
         sheet.Cells[5, 1].Value = "Value5";
         RangeAddressFactory? rangeAddressFactory = new RangeAddressFactory(excelDataProvider);
+
         using (parsingContext.Scopes.NewScope(rangeAddressFactory.Create("NewSheet", 3, 3)))
         {
             ExcelAddressExpression? expression = new ExcelAddressExpression("A1:A5", excelDataProvider, parsingContext);
@@ -283,6 +295,7 @@ public class ExcelAddressExpressionTests
             Assert.IsNotNull(rangeInfo);
             Assert.AreEqual("A1:A5", rangeInfo.Address.Address);
             Assert.AreEqual(5, rangeInfo.Count());
+
             for (int i = 1; i <= 5; i++)
             {
                 ICellInfo? rangeItem = rangeInfo.ElementAt(i - 1);
@@ -300,6 +313,7 @@ public class ExcelAddressExpressionTests
         using ExcelWorksheet? sheet = package.Workbook.Worksheets.Add("NewSheet");
         using EpplusExcelDataProvider? excelDataProvider = new EpplusExcelDataProvider(package);
         RangeAddressFactory? rangeAddressFactory = new RangeAddressFactory(excelDataProvider);
+
         using (parsingContext.Scopes.NewScope(rangeAddressFactory.Create("NewSheet", 3, 3)))
         {
             ExcelAddressExpression? expression = new ExcelAddressExpression("$A1:$A5", excelDataProvider, parsingContext);
@@ -307,6 +321,7 @@ public class ExcelAddressExpressionTests
             IRangeInfo? rangeInfo = result.Result as IRangeInfo;
             Assert.IsNotNull(rangeInfo);
             Assert.AreEqual("$A1:$A5", rangeInfo.Address.Address);
+
             // Enumerating the range still yields no results.
             Assert.AreEqual(0, rangeInfo.Count());
         }
@@ -321,6 +336,7 @@ public class ExcelAddressExpressionTests
         using ExcelWorksheet? sheet = package.Workbook.Worksheets.Add("NewSheet");
         using EpplusExcelDataProvider? excelDataProvider = new EpplusExcelDataProvider(package);
         RangeAddressFactory? rangeAddressFactory = new RangeAddressFactory(excelDataProvider);
+
         using (parsingContext.Scopes.NewScope(rangeAddressFactory.Create("NewSheet", 3, 3)))
         {
             ExcelAddressExpression? expression = new ExcelAddressExpression("A$1:A$5", excelDataProvider, parsingContext);
@@ -328,6 +344,7 @@ public class ExcelAddressExpressionTests
             IRangeInfo? rangeInfo = result.Result as IRangeInfo;
             Assert.IsNotNull(rangeInfo);
             Assert.AreEqual("A$1:A$5", rangeInfo.Address.Address);
+
             // Enumerating the range still yields no results.
             Assert.AreEqual(0, rangeInfo.Count());
         }
@@ -342,6 +359,7 @@ public class ExcelAddressExpressionTests
         using ExcelWorksheet? sheet = package.Workbook.Worksheets.Add("NewSheet");
         using EpplusExcelDataProvider? excelDataProvider = new EpplusExcelDataProvider(package);
         RangeAddressFactory? rangeAddressFactory = new RangeAddressFactory(excelDataProvider);
+
         using (parsingContext.Scopes.NewScope(rangeAddressFactory.Create("NewSheet", 3, 3)))
         {
             ExcelAddressExpression? expression = new ExcelAddressExpression("$A$1:$A$5", excelDataProvider, parsingContext);
@@ -349,9 +367,11 @@ public class ExcelAddressExpressionTests
             IRangeInfo? rangeInfo = result.Result as IRangeInfo;
             Assert.IsNotNull(rangeInfo);
             Assert.AreEqual("$A$1:$A$5", rangeInfo.Address.Address);
+
             // Enumerating the range still yields no results.
             Assert.AreEqual(0, rangeInfo.Count());
         }
     }
+
     #endregion
 }

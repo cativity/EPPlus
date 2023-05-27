@@ -10,6 +10,7 @@
  *************************************************************************************************
   09/10/2020         EPPlus Software AB       Initial release EPPlus 5
  *************************************************************************************************/
+
 namespace OfficeOpenXml;
 
 /// <summary>
@@ -19,14 +20,15 @@ public class ExcelPackageSettings
 {
     internal ExcelPackageSettings()
     {
-
     }
+
     /// <summary>
     /// Do not call garbage collection when ExcelPackage is disposed.
     /// </summary>
     public bool DoGarbageCollectOnDispose { get; set; } = true;
-        
+
     private ExcelTextSettings _textSettings = null;
+
     /// <summary>
     /// Manage text settings such as measurement of text for the Autofit functions.
     /// </summary>
@@ -34,7 +36,9 @@ public class ExcelPackageSettings
     {
         get { return this._textSettings ??= new ExcelTextSettings(); }
     }
+
     private ExcelImageSettings _imageSettings = null;
+
     /// <summary>
     /// Set the handler for getting image bounds. 
     /// </summary>

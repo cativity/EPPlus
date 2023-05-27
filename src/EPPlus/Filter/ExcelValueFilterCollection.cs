@@ -10,6 +10,7 @@
  *************************************************************************************************
   01/27/2020         EPPlus Software AB       Initial release EPPlus 5
  *************************************************************************************************/
+
 namespace OfficeOpenXml.Filter;
 
 /// <summary>
@@ -21,10 +22,12 @@ public class ExcelValueFilterCollection : ExcelFilterCollectionBase<ExcelFilterI
     /// Flag indicating whether to filter by blank
     /// </summary>
     public bool Blank { get; set; }
+
     /// <summary>
     /// The calendar to be used. To be implemented
     /// </summary>
-    internal eCalendarType? CalendarTyp{get;set;}
+    internal eCalendarType? CalendarTyp { get; set; }
+
     /// <summary>
     /// Add a Date filter item. 
     /// </summary>
@@ -33,8 +36,10 @@ public class ExcelValueFilterCollection : ExcelFilterCollectionBase<ExcelFilterI
     public ExcelFilterDateGroupItem Add(ExcelFilterDateGroupItem value)
     {
         this._list.Add(value);
+
         return value;
     }
+
     /// <summary>
     /// Add a filter value that will be matched agains the ExcelRange.Text property
     /// </summary>
@@ -43,8 +48,10 @@ public class ExcelValueFilterCollection : ExcelFilterCollectionBase<ExcelFilterI
     public ExcelFilterValueItem Add(ExcelFilterValueItem item)
     {
         this._list.Add(item);
+
         return item;
     }
+
     /// <summary>
     /// Add a filter value that will be matched agains the ExcelRange.Text property
     /// </summary>
@@ -54,8 +61,10 @@ public class ExcelValueFilterCollection : ExcelFilterCollectionBase<ExcelFilterI
     {
         ExcelFilterValueItem? v = new ExcelFilterValueItem(value);
         this._list.Add(v);
+
         return v;
     }
+
     /// <summary>
     /// Clears the collection
     /// </summary>
@@ -63,6 +72,7 @@ public class ExcelValueFilterCollection : ExcelFilterCollectionBase<ExcelFilterI
     {
         this._list.Clear();
     }
+
     /// <summary>
     /// Remove the item at the specified index from the list
     /// </summary>
@@ -71,6 +81,7 @@ public class ExcelValueFilterCollection : ExcelFilterCollectionBase<ExcelFilterI
     {
         this._list.RemoveAt(index);
     }
+
     /// <summary>
     /// Remove the item from the list
     /// </summary>

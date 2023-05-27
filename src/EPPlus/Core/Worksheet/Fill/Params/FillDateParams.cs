@@ -26,22 +26,27 @@ public class FillDateParams : FillParams
     /// <seealso cref="FillParams.Direction"/>
     /// </summary>
     public DateTime? StartValue { get; set; } = null;
+
     /// <summary>
     /// When this value is exceeded the fill stops
     /// </summary>
     public DateTime? EndValue { get; set; } = null;
+
     /// <summary>
     /// The value to add for each step. 
     /// </summary>
     public int StepValue { get; set; } = 1;
+
     /// <summary>
     /// The date unit added per cell
     /// </summary>
     public eDateTimeUnit DateTimeUnit { get; set; } = eDateTimeUnit.Day;
+
     /// <summary>
     /// Only fill weekdays
     /// </summary>
     internal HashSet<DayOfWeek> _excludedWeekdays = new HashSet<DayOfWeek>();
+
     /// <summary>
     /// Excludes the week days supplied
     /// </summary>
@@ -50,10 +55,12 @@ public class FillDateParams : FillParams
     {
         this._excludedWeekdays.UnionWith(weekdays);
     }
+
     /// <summary>
     /// A list with week days treated as holidays.
     /// </summary>
     internal HashSet<DateTime> _holidayCalendar { get; } = new HashSet<DateTime>();
+
     /// <summary>
     /// Excludes the dates supplied
     /// </summary>
@@ -62,6 +69,7 @@ public class FillDateParams : FillParams
     {
         this._holidayCalendar.UnionWith(holidayDates);
     }
+
     /// <summary>
     /// Excludes the dates supplied
     /// </summary>

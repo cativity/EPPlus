@@ -10,6 +10,7 @@
  *************************************************************************************************
   01/27/2020         EPPlus Software AB       Initial release EPPlus 5
  *************************************************************************************************/
+
 using System;
 using System.Collections.Generic;
 using System.Globalization;
@@ -56,12 +57,12 @@ public class CompileResult
 
     public CompileResult(object result, DataType dataType)
         : this(result, dataType, 0)
-    { 
+    {
     }
 
     public CompileResult(object result, DataType dataType, int excelAddressReferenceId)
     {
-        if(result is ExcelDoubleCellValue)
+        if (result is ExcelDoubleCellValue)
         {
             this.Result = ((ExcelDoubleCellValue)result).Value;
         }
@@ -87,17 +88,14 @@ public class CompileResult
         this.DataType = DataType.ExcelError;
     }
 
-    public object Result
-    {
-        get;
-        private set;
-    }
+    public object Result { get; private set; }
 
     public object ResultValue
     {
         get
         {
             IRangeInfo? r = this.Result as IRangeInfo;
+
             if (r == null)
             {
                 return this.Result;
@@ -120,7 +118,7 @@ public class CompileResult
                 {
                     this._resultNumeric = this.Result == null ? 0 : Convert.ToDouble(this.Result);
                 }
-                else if(this.IsPercentageString && ConvertUtil.TryParsePercentageString(this.Result.ToString(), out double v))
+                else if (this.IsPercentageString && ConvertUtil.TryParsePercentageString(this.Result.ToString(), out double v))
                 {
                     this._resultNumeric = v;
                 }
@@ -135,6 +133,7 @@ public class CompileResult
                 else if (this.Result is IRangeInfo)
                 {
                     ICellInfo? c = ((IRangeInfo)this.Result).FirstOrDefault();
+
                     if (c == null)
                     {
                         return 0;
@@ -144,6 +143,7 @@ public class CompileResult
                         return c.ValueDoubleLogical;
                     }
                 }
+
                 // The IsNumericString and IsDateString properties will set _resultNumeric for efficiency so we just need
                 // to check them here.
                 else if (!this.IsDateString && !this.IsNumericString)
@@ -151,21 +151,23 @@ public class CompileResult
                     this._resultNumeric = 0;
                 }
             }
+
             return this._resultNumeric.Value;
         }
     }
 
-    public DataType DataType
-    {
-        get;
-        private set;
-    }
-        
+    public DataType DataType { get; private set; }
+
     public bool IsNumeric
     {
-        get 
+        get
         {
-            return this.DataType == DataType.Decimal || this.DataType == DataType.Integer || this.DataType == DataType.Empty || this.DataType == DataType.Boolean || this.DataType == DataType.Date || this.DataType == DataType.Time; 
+            return this.DataType == DataType.Decimal
+                   || this.DataType == DataType.Integer
+                   || this.DataType == DataType.Empty
+                   || this.DataType == DataType.Boolean
+                   || this.DataType == DataType.Date
+                   || this.DataType == DataType.Time;
         }
     }
 
@@ -176,8 +178,10 @@ public class CompileResult
             if (this.DataType == DataType.String && ConvertUtil.TryParseNumericString(this.Result as string, out double result))
             {
                 this._resultNumeric = result;
+
                 return true;
             }
+
             return false;
         }
     }
@@ -189,11 +193,12 @@ public class CompileResult
             if (this.DataType == DataType.String)
             {
                 string? s = this.Result as string;
+
                 return ConvertUtil.IsPercentageString(s);
             }
+
             return false;
         }
-            
     }
 
     public bool IsDateString
@@ -203,8 +208,10 @@ public class CompileResult
             if (this.DataType == DataType.String && ConvertUtil.TryParseDateString(this.Result as string, out DateTime result))
             {
                 this._resultNumeric = result.ToOADate();
+
                 return true;
             }
+
             return false;
         }
     }

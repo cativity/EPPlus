@@ -10,6 +10,7 @@
  *************************************************************************************************
   10/12/2020         EPPlus Software AB       Version 5.5
  *************************************************************************************************/
+
 using OfficeOpenXml.FormulaParsing.Excel.Functions.Metadata;
 using OfficeOpenXml.FormulaParsing.ExpressionGraph;
 using System;
@@ -19,10 +20,9 @@ using System.Text;
 
 namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Math;
 
-[FunctionMetadata(
-                     Category = ExcelFunctionCategory.Statistical,
-                     EPPlusVersion = "5.5",
-                     Description = "Returns covariance, the average of the products of deviations for each data point pair in two data sets.")]
+[FunctionMetadata(Category = ExcelFunctionCategory.Statistical,
+                  EPPlusVersion = "5.5",
+                  Description = "Returns covariance, the average of the products of deviations for each data point pair in two data sets.")]
 internal class CovarianceS : ExcelFunction
 {
     public override CompileResult Execute(IEnumerable<FunctionArgument> arguments, ParsingContext context)
@@ -30,6 +30,7 @@ internal class CovarianceS : ExcelFunction
         ValidateArguments(arguments, 2);
         ExcelDoubleCellValue[]? array1 = this.ArgsToDoubleEnumerable(arguments.Take(1), context).ToArray();
         ExcelDoubleCellValue[]? array2 = this.ArgsToDoubleEnumerable(arguments.Skip(1).Take(1), context).ToArray();
+
         if (array1.Length != array2.Length)
         {
             return this.CreateResult(eErrorType.NA);
@@ -43,11 +44,14 @@ internal class CovarianceS : ExcelFunction
         double avg1 = array1.Select(x => x.Value).Average();
         double avg2 = array2.Select(x => x.Value).Average();
         double result = 0d;
+
         for (int x = 0; x < array1.Length; x++)
         {
             result += (array1[x] - avg1) * (array2[x] - avg2);
         }
+
         result /= array1.Length - 1;
+
         return this.CreateResult(result, DataType.Decimal);
     }
 }

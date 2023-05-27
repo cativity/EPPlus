@@ -10,6 +10,7 @@
  *************************************************************************************************
   01/27/2020         EPPlus Software AB       Initial release EPPlus 5
  *************************************************************************************************/
+
 using System;
 using System.Collections.Generic;
 using System.Globalization;
@@ -20,10 +21,9 @@ using OfficeOpenXml.FormulaParsing.ExpressionGraph;
 
 namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Text;
 
-[FunctionMetadata(
-                     Category = ExcelFunctionCategory.Text,
-                     EPPlusVersion = "4",
-                     Description = "Rounds a supplied number to a specified number of decimal places, and then converts this into text")]
+[FunctionMetadata(Category = ExcelFunctionCategory.Text,
+                  EPPlusVersion = "4",
+                  Description = "Rounds a supplied number to a specified number of decimal places, and then converts this into text")]
 internal class Fixed : ExcelFunction
 {
     public override CompileResult Execute(IEnumerable<FunctionArgument> arguments, ParsingContext context)
@@ -32,22 +32,28 @@ internal class Fixed : ExcelFunction
         double number = this.ArgToDecimal(arguments, 0);
         int nDecimals = 2;
         bool noCommas = false;
+
         if (arguments.Count() > 1)
         {
             nDecimals = this.ArgToInt(arguments, 1);
         }
+
         if (arguments.Count() > 2)
         {
             noCommas = this.ArgToBool(arguments, 2);
         }
+
         string? format = (noCommas ? "F" : "N") + nDecimals.ToString(CultureInfo.InvariantCulture);
+
         if (nDecimals < 0)
         {
             number -= number % System.Math.Pow(10, nDecimals * -1);
             number = System.Math.Floor(number);
             format = noCommas ? "F0" : "N0";
         }
+
         string? retVal = number.ToString(format);
+
         return this.CreateResult(retVal, DataType.String);
     }
 }

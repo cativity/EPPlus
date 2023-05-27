@@ -10,6 +10,7 @@
  *************************************************************************************************
   07/16/2020         EPPlus Software AB       EPPlus 5.2.1
  *************************************************************************************************/
+
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -25,10 +26,12 @@ public class LoadFromTextParams
     /// The first row in the text is the header row
     /// </summary>
     public bool FirstRowIsHeader { get; set; }
+
     /// <summary>
     /// The text to split
     /// </summary>
     public string Text { get; set; }
+
     /// <summary>
     /// Describes how to split a CSV text.
     /// </summary>

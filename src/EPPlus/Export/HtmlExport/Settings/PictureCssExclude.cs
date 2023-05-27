@@ -20,12 +20,13 @@ public class PictureCssExclude
 {
     internal PictureCssExclude()
     {
-
     }
+
     /// <summary>
     /// Exclude image border CSS
     /// </summary>
     public bool Border { get; set; }
+
     /// <summary>
     /// Exclude image alignment CSS
     /// </summary>
@@ -39,6 +40,7 @@ public class PictureCssExclude
         this.Border = false;
         this.Alignment = false;
     }
+
     /// <summary>
     /// Copy the values from another settings object.
     /// </summary>

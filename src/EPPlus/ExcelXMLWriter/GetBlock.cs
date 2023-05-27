@@ -10,6 +10,7 @@
  *************************************************************************************************
   02/10/2023         EPPlus Software AB       Initial release EPPlus 6.2
  *************************************************************************************************/
+
 using System.Text.RegularExpressions;
 
 namespace OfficeOpenXml.ExcelXMLWriter;
@@ -24,9 +25,12 @@ internal static class GetBlock
         {
             start = -1;
             end = -1;
+
             return;
         }
+
         int startPos = startmMatch.Index + start;
+
         if (startmMatch.Value.Substring(startmMatch.Value.Length - 2, 1) == "/")
         {
             end = startPos + startmMatch.Length;
@@ -40,6 +44,7 @@ internal static class GetBlock
                 end = endMatch.Index + endMatch.Length + start;
             }
         }
+
         start = startPos;
     }
 }

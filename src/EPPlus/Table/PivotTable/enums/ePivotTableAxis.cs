@@ -10,6 +10,7 @@
  *************************************************************************************************
   12/28/2020         EPPlus Software AB       Pivot Table Styling - EPPlus 5.6
  *************************************************************************************************/
+
 namespace OfficeOpenXml.Table.PivotTable;
 
 /*************************************************************************************************
@@ -33,18 +34,22 @@ public enum ePivotTableAxis
     /// No axis defined
     /// </summary>
     None,
+
     /// <summary>
     /// Defines the column axis
     /// </summary>
     ColumnAxis,
+
     /// <summary>
     /// Defines the page axis
     /// </summary>
     PageAxis,
+
     /// <summary>
     /// Defines the row axis
     /// </summary>
     RowAxis,
+
     /// <summary>
     /// Defines the values axis
     /// </summary>

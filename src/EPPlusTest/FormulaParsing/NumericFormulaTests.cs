@@ -83,5 +83,4 @@ public class NumericFormulaTests
         object? v = sheet.Cells["B1"].Value;
         Assert.AreEqual(9E+30, v);
     }
-
 }

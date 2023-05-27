@@ -10,6 +10,7 @@
  *************************************************************************************************
   01/29/2021         EPPlus Software AB       EPPlus 5.6
  *************************************************************************************************/
+
 namespace OfficeOpenXml.Style;
 
 /// <summary>
@@ -21,6 +22,7 @@ public enum eDxfGradientFillType
     /// Linear gradient type. Linear gradient type means that the transition from one color to the next is along a line.
     /// </summary>
     Linear,
+
     /// <summary>
     /// Path gradient type. Path gradient type means the that the transition from one color to the next is a rectangle, defined by coordinates.
     /// </summary>

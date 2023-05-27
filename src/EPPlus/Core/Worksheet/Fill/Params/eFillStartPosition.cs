@@ -10,6 +10,7 @@
  *************************************************************************************************
     08/11/2021         EPPlus Software AB       EPPlus 5.8
  *************************************************************************************************/
+
 namespace OfficeOpenXml;
 
 /// <summary>
@@ -22,6 +23,7 @@ public enum eFillStartPosition
     /// The fill starts from the top-left cell and fills to the left and down depending on the <see cref="eFillDirection"/>
     /// </summary>
     TopLeft,
+
     /// <summary>
     /// The fill starts from the bottom-right cell and fills to the right and up depending on the <see cref="eFillDirection"/>
     /// </summary>

@@ -10,6 +10,7 @@
  *************************************************************************************************
   01/27/2020         EPPlus Software AB       Initial release EPPlus 5
  *************************************************************************************************/
+
 using System;
 using System.Drawing;
 using System.Globalization;
@@ -23,9 +24,11 @@ namespace OfficeOpenXml.Drawing.Style.Coloring;
 /// </summary>
 public class ExcelDrawingRgbColor : XmlHelper
 {
-    internal ExcelDrawingRgbColor(XmlNamespaceManager nsm, XmlNode topNode) : base (nsm, topNode)
+    internal ExcelDrawingRgbColor(XmlNamespaceManager nsm, XmlNode topNode)
+        : base(nsm, topNode)
     {
     }
+
     /// <summary>
     /// The color
     /// </summary>s
@@ -34,13 +37,12 @@ public class ExcelDrawingRgbColor : XmlHelper
         get
         {
             string? s = this.GetXmlNodeString("@val");
+
             return GetColorFromString(s);
         }
-        set
-        {
-            this.SetXmlNodeString("@val", (value.ToArgb() & 0xFFFFFF).ToString("X").PadLeft(6, '0'));
-        }
+        set { this.SetXmlNodeString("@val", (value.ToArgb() & 0xFFFFFF).ToString("X").PadLeft(6, '0')); }
     }
+
     internal static Color GetColorFromString(string s)
     {
         if (s.Length == 6)
@@ -59,13 +61,15 @@ public class ExcelDrawingRgbColor : XmlHelper
     }
 
     internal const string NodeName = "a:srgbClr";
+
     internal static void SetXml(XmlNamespaceManager nsm, XmlNode node, bool doInit = false)
     {
-            
     }
+
     internal static void GetXml()
     {
     }
+
     internal void GetHsl(out double hue, out double saturation, out double luminance)
     {
         GetHslColor(this.Color.R, this.Color.G, this.Color.B, out hue, out saturation, out luminance);
@@ -75,6 +79,7 @@ public class ExcelDrawingRgbColor : XmlHelper
     {
         GetHslColor(c.R, c.G, c.B, out hue, out saturation, out luminance);
     }
+
     internal static void GetHslColor(byte red, byte green, byte blue, out double hue, out double saturation, out double luminance)
     {
         //Created using formulas here...https://www.rapidtables.com/convert/color/rgb-to-hsl.html
@@ -82,11 +87,10 @@ public class ExcelDrawingRgbColor : XmlHelper
         double g = green / 255D;
         double b = blue / 255D;
 
-        double[]? ix = new double[]{ r, g, b };
+        double[]? ix = new double[] { r, g, b };
         double cMax = ix.Max();
         double cMin = ix.Min();
         double delta = cMax - cMin;
-
 
         if (delta == 0)
         {
@@ -104,7 +108,7 @@ public class ExcelDrawingRgbColor : XmlHelper
         {
             hue = 60 * (((r - g) / delta) + 4);
         }
-           
+
         if (hue < 0)
         {
             hue += 360;

@@ -10,6 +10,7 @@
  *************************************************************************************************
   01/27/2020         EPPlus Software AB       Initial release EPPlus 5
  *************************************************************************************************/
+
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -20,12 +21,18 @@ namespace OfficeOpenXml.FormulaParsing.ExpressionGraph;
 public class ExpressionGraph
 {
     private List<Expression> _expressions = new List<Expression>();
-    public IEnumerable<Expression> Expressions { get { return this._expressions; } }
+
+    public IEnumerable<Expression> Expressions
+    {
+        get { return this._expressions; }
+    }
+
     public Expression Current { get; private set; }
 
     public Expression Add(Expression expression)
     {
         this._expressions.Add(expression);
+
         if (this.Current != null)
         {
             this.Current.Next = expression;
@@ -33,6 +40,7 @@ public class ExpressionGraph
         }
 
         this.Current = expression;
+
         return expression;
     }
 

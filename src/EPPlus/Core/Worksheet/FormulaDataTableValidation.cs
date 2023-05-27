@@ -10,6 +10,7 @@
  *************************************************************************************************
   02/03/2020         EPPlus Software AB       Added
  *************************************************************************************************/
+
 using System;
 using System.Collections.Generic;
 using OfficeOpenXml.Core.CellStore;
@@ -21,26 +22,32 @@ internal class FormulaDataTableValidation
     internal static void HasPartlyFormulaDataTable(ExcelWorksheet ws, ExcelAddressBase deleteRange, bool isDelete, string errorMsg)
     {
         HashSet<int>? hs = new HashSet<int>();
-        CellStoreEnumerator<object>? cse = new CellStoreEnumerator<object>(ws._formulas, deleteRange._fromRow, deleteRange._fromCol, deleteRange._toRow+1, deleteRange._toCol+1);
-        while(cse.Next())
+
+        CellStoreEnumerator<object>? cse =
+            new CellStoreEnumerator<object>(ws._formulas, deleteRange._fromRow, deleteRange._fromCol, deleteRange._toRow + 1, deleteRange._toCol + 1);
+
+        while (cse.Next())
         {
-            if(cse.Value is int si && hs.Contains(si)==false)
+            if (cse.Value is int si && hs.Contains(si) == false)
             {
                 ExcelWorksheet.Formulas? f = ws._sharedFormulas[si];
-                if(f.FormulaType==ExcelWorksheet.FormulaType.DataTable)
+
+                if (f.FormulaType == ExcelWorksheet.FormulaType.DataTable)
                 {
                     ExcelAddressBase? fa = new ExcelAddressBase(f.Address);
+
                     if (isDelete)
                     {
                         fa._fromRow--;
                         fa._fromCol--;
                     }
 
-                    if (deleteRange.Collide(fa)==ExcelAddressBase.eAddressCollition.Partly)
+                    if (deleteRange.Collide(fa) == ExcelAddressBase.eAddressCollition.Partly)
                     {
                         throw new InvalidOperationException(errorMsg);
                     }
                 }
+
                 hs.Add(si);
             }
         }

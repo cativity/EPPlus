@@ -55,21 +55,27 @@ public class TableExporterTests : TestBase
         table.TableStyle = TableStyles.Dark1;
         table.ShowHeader = true;
         IExcelHtmlTableExporter? exporter = table.CreateHtmlExporter();
+
         exporter.Settings.Configure(x =>
         {
             x.TableId = "myTable";
             x.Minify = true;
             x.Accessibility.TableSettings.AddAccessibilityAttributes = false;
         });
+
         string? html = exporter.GetHtmlString();
         using MemoryStream? ms = new MemoryStream();
         exporter.RenderHtml(ms);
         StreamReader? sr = new StreamReader(ms);
         ms.Position = 0;
         string? result = sr.ReadToEnd();
-        string? expectedHtml = "<table class=\"epplus-table ts-dark1 ts-dark1-header ts-dark1-row-stripes\" id=\"myTable\"><thead><tr><th data-datatype=\"string\" class=\"epp-al\">Name</th><th data-datatype=\"number\" class=\"epp-al\">Age</th></tr></thead><tbody><tr><td>John Doe</td><td data-value=\"23\" class=\"epp-ar\">23</td></tr></tbody></table>";
+
+        string? expectedHtml =
+            "<table class=\"epplus-table ts-dark1 ts-dark1-header ts-dark1-row-stripes\" id=\"myTable\"><thead><tr><th data-datatype=\"string\" class=\"epp-al\">Name</th><th data-datatype=\"number\" class=\"epp-al\">Age</th></tr></thead><tbody><tr><td>John Doe</td><td data-value=\"23\" class=\"epp-ar\">23</td></tr></tbody></table>";
+
         Assert.AreEqual(expectedHtml, result);
     }
+
     [TestMethod]
     public void ShouldExportHeadersWithAccessibilityAttributes()
     {
@@ -84,6 +90,7 @@ public class TableExporterTests : TestBase
         table.ShowHeader = true;
 
         IExcelHtmlTableExporter? exporter = table.CreateHtmlExporter();
+
         exporter.Settings.Configure(x =>
         {
             x.TableId = "myTable";
@@ -95,7 +102,10 @@ public class TableExporterTests : TestBase
         StreamReader? sr = new StreamReader(ms);
         ms.Position = 0;
         string? result = sr.ReadToEnd();
-        string? expectedHtml = "<table class=\"epplus-table ts-dark1 ts-dark1-header ts-dark1-row-stripes\" id=\"myTable\" role=\"table\"><thead role=\"rowgroup\"><tr role=\"row\"><th data-datatype=\"string\" class=\"epp-al\" role=\"columnheader\" scope=\"col\">Name</th><th data-datatype=\"number\" class=\"epp-al\" role=\"columnheader\" scope=\"col\">Age</th></tr></thead><tbody role=\"rowgroup\"><tr role=\"row\" scope=\"row\"><td role=\"cell\">John Doe</td><td data-value=\"23\" role=\"cell\" class=\"epp-ar\">23</td></tr></tbody></table>";
+
+        string? expectedHtml =
+            "<table class=\"epplus-table ts-dark1 ts-dark1-header ts-dark1-row-stripes\" id=\"myTable\" role=\"table\"><thead role=\"rowgroup\"><tr role=\"row\"><th data-datatype=\"string\" class=\"epp-al\" role=\"columnheader\" scope=\"col\">Name</th><th data-datatype=\"number\" class=\"epp-al\" role=\"columnheader\" scope=\"col\">Age</th></tr></thead><tbody role=\"rowgroup\"><tr role=\"row\" scope=\"row\"><td role=\"cell\">John Doe</td><td data-value=\"23\" role=\"cell\" class=\"epp-ar\">23</td></tr></tbody></table>";
+
         Assert.AreEqual(expectedHtml, result);
     }
 
@@ -105,6 +115,7 @@ public class TableExporterTests : TestBase
         string path = _worksheetPath + "TableStyles";
         CreatePathIfNotExists(path);
         using ExcelPackage? p = OpenPackage("TableStylesToHtml.xlsx", true);
+
         foreach (TableStyles e in Enum.GetValues(typeof(TableStyles)))
         {
             if (!(e == TableStyles.Custom || e == TableStyles.None))
@@ -120,14 +131,17 @@ public class TableExporterTests : TestBase
                 File.WriteAllText($"{path}\\table-{tbl.StyleName}.html", html);
             }
         }
+
         SaveAndCleanup(p);
     }
+
     [TestMethod]
     public async Task ExportAllTableStylesAsync()
     {
         string path = _worksheetPath + "TableStylesAsync";
         CreatePathIfNotExists(path);
         using ExcelPackage? p = OpenPackage("TableStylesToHtml.xlsx", true);
+
         foreach (TableStyles e in Enum.GetValues(typeof(TableStyles)))
         {
             if (!(e == TableStyles.Custom || e == TableStyles.None))
@@ -143,6 +157,7 @@ public class TableExporterTests : TestBase
                 File.WriteAllText($"{path}\\table-{tbl.StyleName}.html", html);
             }
         }
+
         SaveAndCleanup(p);
     }
 
@@ -152,6 +167,7 @@ public class TableExporterTests : TestBase
         string path = _worksheetPath + "TableStylesFirstLast";
         CreatePathIfNotExists(path);
         using ExcelPackage? p = OpenPackage("TableStylesToHtmlFirstLastCol.xlsx", true);
+
         foreach (TableStyles e in Enum.GetValues(typeof(TableStyles)))
         {
             if (!(e == TableStyles.Custom || e == TableStyles.None))
@@ -169,14 +185,17 @@ public class TableExporterTests : TestBase
                 File.WriteAllText($"{path}\\table-{tbl.StyleName}.html", html);
             }
         }
+
         SaveAndCleanup(p);
     }
+
     [TestMethod]
     public void ExportAllCustomTableStyles()
     {
         string path = _worksheetPath + "TableStylesCustomFills";
         CreatePathIfNotExists(path);
         using ExcelPackage? p = OpenPackage("TableStylesToHtmlPatternFill.xlsx", true);
+
         foreach (ExcelFillStyle fs in Enum.GetValues(typeof(ExcelFillStyle)))
         {
             ExcelWorksheet? ws = p.Workbook.Worksheets.Add($"PatterFill-{fs}");
@@ -192,14 +211,17 @@ public class TableExporterTests : TestBase
             string? html = exporter.GetSinglePage();
             File.WriteAllText($"{path}\\table-{tbl.StyleName}.html", html);
         }
+
         SaveAndCleanup(p);
     }
+
     [TestMethod]
     public async Task ExportAllCustomTableStylesAsync()
     {
         string path = _worksheetPath + "TableStylesCustomFillsAsync";
         CreatePathIfNotExists(path);
         using ExcelPackage? p = OpenPackage("TableStylesToHtmlPatternFill.xlsx", true);
+
         foreach (ExcelFillStyle fs in Enum.GetValues(typeof(ExcelFillStyle)))
         {
             ExcelWorksheet? ws = p.Workbook.Worksheets.Add($"PatterFill-{fs}");
@@ -215,8 +237,10 @@ public class TableExporterTests : TestBase
             string? html = await exporter.GetSinglePageAsync();
             File.WriteAllText($"{path}\\table-{tbl.StyleName}.html", html);
         }
+
         SaveAndCleanup(p);
     }
+
     [TestMethod]
     public void ExportAllGradientTableStyles()
     {
@@ -247,6 +271,7 @@ public class TableExporterTests : TestBase
         File.WriteAllText($"{path}\\table-{tbl.StyleName}.html", html);
         SaveAndCleanup(p);
     }
+
     [TestMethod]
     public void ExportTableWithCellStylesStyles()
     {
@@ -267,6 +292,7 @@ public class TableExporterTests : TestBase
         File.WriteAllText($"{path}\\table-{tbl.StyleName}-CellStyle.html", html);
         SaveAndCleanup(p);
     }
+
     [TestMethod]
     public void ShouldExportWithOtherCultureInfo()
     {
@@ -289,6 +315,7 @@ public class TableExporterTests : TestBase
 
         File.WriteAllText($"{path}\\table-{tbl.StyleName}-CellStyle.html", html);
     }
+
     [TestMethod]
     public void ValidateConfigureAndResetToDefault()
     {
@@ -299,6 +326,7 @@ public class TableExporterTests : TestBase
         ExcelTable? tbl = ws.Tables.Add(ws.Cells["A1:E101"], $"tblGradient");
         tbl.TableStyle = TableStyles.Dark3;
         IExcelHtmlTableExporter? exporter = tbl.CreateHtmlExporter();
+
         exporter.Settings.Configure(x =>
         {
             x.Encoding = Encoding.Unicode;
@@ -342,6 +370,7 @@ public class TableExporterTests : TestBase
         Assert.AreEqual("table", s.Accessibility.TableSettings.TableRole);
         Assert.IsTrue(s.Accessibility.TableSettings.AddAccessibilityAttributes);
     }
+
     [TestMethod]
     public void ShouldExportRichTextAsInlineHtml()
     {
@@ -388,7 +417,6 @@ public class TableExporterTests : TestBase
         rt2 = rt.Add(" 3");
         rt2.UnderLine = true;
 
-
         ExcelTable? tbl = ws.Tables.Add(ws.Cells["A1:C2"], $"tblRichtext");
         tbl.TableStyle = TableStyles.Dark5;
 
@@ -396,6 +424,7 @@ public class TableExporterTests : TestBase
         string? html = exporter.GetHtmlString();
         string? htmlCss = exporter.GetSinglePage();
     }
+
     [TestMethod]
     public async Task WriteImages_TableAsync()
     {
@@ -412,6 +441,7 @@ public class TableExporterTests : TestBase
         File.WriteAllText("c:\\temp\\" + sheet.Name + "-table-async.html", htmlAsync);
         Assert.AreEqual(html, htmlAsync);
     }
+
     [TestMethod]
     public async Task WriteTableFromRange()
     {
@@ -428,24 +458,27 @@ public class TableExporterTests : TestBase
         string? css = exporterRange.GetCssString();
         string? cssAsync = await exporterRange.GetCssStringAsync();
 
-        string? outputHtml = string.Format("<!DOCTYPE html>\r\n<html>\r\n<head>\r\n<style type=\"text/css\">\r\n{1}</style></head>\r\n<body>\r\n{0}</body>\r\n</html>", html, css);
+        string? outputHtml =
+            string.Format("<!DOCTYPE html>\r\n<html>\r\n<head>\r\n<style type=\"text/css\">\r\n{1}</style></head>\r\n<body>\r\n{0}</body>\r\n</html>",
+                          html,
+                          css);
 
         File.WriteAllText("c:\\temp\\TableRangeCombined.html", outputHtml);
 
         Assert.AreEqual(html, htmlAsync);
         Assert.AreEqual(css, cssAsync);
     }
+
     [TestMethod]
     public async Task WriteMultipleRangeWithTableAndRange()
     {
         using ExcelPackage? p = OpenTemplatePackage("20-CreateAFileSystemReport.xlsx");
         ExcelWorksheet? sheet1 = p.Workbook.Worksheets[0];
         ExcelWorksheet? sheet2 = p.Workbook.Worksheets[1];
-        IExcelHtmlRangeExporter? exporterRange = p.Workbook.CreateHtmlExporter(
-                                                                               sheet2.Tables[0].Range,
-                                                                               sheet1.Cells["A1:E30"],
-                                                                               sheet2.Tables[2].Range,
-                                                                               sheet2.Tables[1].Range);
+
+        IExcelHtmlRangeExporter? exporterRange =
+            p.Workbook.CreateHtmlExporter(sheet2.Tables[0].Range, sheet1.Cells["A1:E30"], sheet2.Tables[2].Range, sheet2.Tables[1].Range);
+
         exporterRange.Settings.SetColumnWidth = true;
         exporterRange.Settings.SetRowHeight = true;
         exporterRange.Settings.Minify = false;
@@ -459,7 +492,13 @@ public class TableExporterTests : TestBase
         string? css = exporterRange.GetCssString();
         string? cssAsync = await exporterRange.GetCssStringAsync();
 
-        string? outputHtml = string.Format("<!DOCTYPE html>\r\n<html>\r\n<head>\r\n<style type=\"text/css\">\r\n{4}</style></head>\r\n<body>\r\n{0}<hr>{1}<hr>{2}<hr>{3}<hr></body>\r\n</html>", html1, html2, html3, html4, css);
+        string? outputHtml =
+            string.Format("<!DOCTYPE html>\r\n<html>\r\n<head>\r\n<style type=\"text/css\">\r\n{4}</style></head>\r\n<body>\r\n{0}<hr>{1}<hr>{2}<hr>{3}<hr></body>\r\n</html>",
+                          html1,
+                          html2,
+                          html3,
+                          html4,
+                          css);
 
         File.WriteAllText("c:\\temp\\RangeAndThreeTables.html", outputHtml);
 

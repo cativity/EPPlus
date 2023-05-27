@@ -10,6 +10,7 @@
  *************************************************************************************************
   01/27/2020         EPPlus Software AB       Initial release EPPlus 5
  *************************************************************************************************/
+
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -60,6 +61,7 @@ public interface IExcelConditionalFormattingRule
     /// Indicates that the conditional formatting is associated with a PivotTable
     /// </summary>
     bool PivotTable { get; set; }
+
     /// <summary>
     /// Type case propterty for the base class.
     /// </summary>

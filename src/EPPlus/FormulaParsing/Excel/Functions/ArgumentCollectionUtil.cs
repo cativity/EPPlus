@@ -10,6 +10,7 @@
  *************************************************************************************************
   01/27/2020         EPPlus Software AB       Initial release EPPlus 5
  *************************************************************************************************/
+
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -25,25 +26,24 @@ public class ArgumentCollectionUtil
     public ArgumentCollectionUtil()
         : this(new DoubleEnumerableArgConverter(), new ObjectEnumerableArgConverter())
     {
-
     }
 
-    public ArgumentCollectionUtil(
-        DoubleEnumerableArgConverter doubleEnumerableArgConverter, 
-        ObjectEnumerableArgConverter objectEnumerableArgConverter)
+    public ArgumentCollectionUtil(DoubleEnumerableArgConverter doubleEnumerableArgConverter, ObjectEnumerableArgConverter objectEnumerableArgConverter)
     {
         this._doubleEnumerableArgConverter = doubleEnumerableArgConverter;
         this._objectEnumerableArgConverter = objectEnumerableArgConverter;
     }
 
-    public virtual IEnumerable<ExcelDoubleCellValue> ArgsToDoubleEnumerable(bool ignoreHidden, bool ignoreErrors, IEnumerable<FunctionArgument> arguments, ParsingContext context, bool ignoreNonNumeric = false)
+    public virtual IEnumerable<ExcelDoubleCellValue> ArgsToDoubleEnumerable(bool ignoreHidden,
+                                                                            bool ignoreErrors,
+                                                                            IEnumerable<FunctionArgument> arguments,
+                                                                            ParsingContext context,
+                                                                            bool ignoreNonNumeric = false)
     {
         return this._doubleEnumerableArgConverter.ConvertArgs(ignoreHidden, ignoreErrors, arguments, context, ignoreNonNumeric);
     }
 
-    public virtual IEnumerable<object> ArgsToObjectEnumerable(bool ignoreHidden,
-                                                              IEnumerable<FunctionArgument> arguments,
-                                                              ParsingContext context)
+    public virtual IEnumerable<object> ArgsToObjectEnumerable(bool ignoreHidden, IEnumerable<FunctionArgument> arguments, ParsingContext context)
     {
         return this._objectEnumerableArgConverter.ConvertArgs(ignoreHidden, arguments, context);
     }
@@ -61,6 +61,7 @@ public class ArgumentCollectionUtil
                 result = action(item, result);
             }
         }
+
         return result;
     }
 }

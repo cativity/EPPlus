@@ -19,6 +19,7 @@
  * 05/20/2020         EPPlus Software AB         Ported code from java to C#
  *************************************************************************************************
  */
+
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -35,10 +36,11 @@ internal static class ErfHelper
         {
             return x > 0 ? 1 : -1;
         }
+
         double ret = GammaHelper.regularizedGammaP(0.5, x * x, 1.0e-15, 10000);
+
         return x < 0 ? -ret : ret;
     }
-
 
     public static double Erf(double x1, double x2)
     {
@@ -47,14 +49,11 @@ internal static class ErfHelper
             return -Erf(x2, x1);
         }
 
-        return
-            x1 < -X_CRIT ?
-                x2 < 0.0 ?
-                    Erfc(-x2) - Erfc(-x1) :
-                    Erf(x2) - Erf(x1) :
-                x2 > X_CRIT && x1 > 0.0 ?
-                    Erfc(x1) - Erfc(x2) :
-                    Erf(x2) - Erf(x1);
+        return x1 < -X_CRIT
+                   ? x2 < 0.0 ? Erfc(-x2) - Erfc(-x1) : Erf(x2) - Erf(x1)
+                   : x2 > X_CRIT && x1 > 0.0
+                       ? Erfc(x1) - Erfc(x2)
+                       : Erf(x2) - Erf(x1);
     }
 
     public static double Erfc(double x)
@@ -63,7 +62,9 @@ internal static class ErfHelper
         {
             return x > 0 ? 0 : 2;
         }
+
         double ret = GammaHelper.regularizedGammaQ(0.5, x * x, 1.0e-15, 10000);
+
         return x < 0 ? 2 - ret : ret;
     }
 
@@ -81,14 +82,14 @@ internal static class ErfHelper
 
         double pp = p < 1 ? p : 2 - p;
         double t = System.Math.Sqrt(-2 * System.Math.Log(pp / 2));
-        double x = -0.70711 * (((2.30753 + (t * 0.27061)) /
-                                (1 + (t * (0.99229 + (t * 0.04481))))) - t);
+        double x = -0.70711 * (((2.30753 + (t * 0.27061)) / (1 + (t * (0.99229 + (t * 0.04481))))) - t);
 
         for (int j = 0; j < 2; j++)
         {
             double err = Erfc(x) - pp;
             x += err / ((1.12837916709551257 * System.Math.Exp(-x * x)) - (x * err));
         }
+
         return p < 1 ? x : -x;
     }
 }

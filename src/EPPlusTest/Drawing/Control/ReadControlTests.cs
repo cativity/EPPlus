@@ -16,23 +16,27 @@ public class ReadControlTests : TestBase
 {
     static ExcelPackage _pck;
     static ExcelWorksheet _ws;
+
     [ClassInitialize]
     public static void Init(TestContext context)
     {
         _pck = OpenTemplatePackage("control.xlsm");
         _ws = _pck.Workbook.Worksheets[0];
     }
+
     [ClassCleanup]
     public static void Cleanup()
     {
         SaveAndCleanup(_pck);
         _pck.Dispose();
     }
+
     [TestMethod]
     public void ValidateNumberOfDrawings()
     {
         Assert.AreEqual(11, _ws.Drawings.Count);
     }
+
     [TestMethod]
     public void ValidateButtonControl()
     {
@@ -47,6 +51,7 @@ public class ReadControlTests : TestBase
         Assert.IsFalse(button.AutoFill);
         Assert.IsFalse(button.DefaultSize);
     }
+
     [TestMethod]
     public void ValidateDropDownControl()
     {
@@ -64,8 +69,8 @@ public class ReadControlTests : TestBase
         Assert.AreEqual(8, dropDown.DropLines);
         Assert.AreEqual("$A$1", dropDown.LinkedCell.Address);
         Assert.AreEqual("$K$4:$K$8", dropDown.InputRange.Address);
-
     }
+
     [TestMethod]
     public void ValidateLabelControl()
     {
@@ -76,6 +81,7 @@ public class ReadControlTests : TestBase
         Assert.AreEqual("Label 6", label.Text);
         Assert.IsTrue(label.LockedText);
     }
+
     [TestMethod]
     public void ValidateListboxControl()
     {
@@ -85,11 +91,15 @@ public class ReadControlTests : TestBase
         Assert.AreEqual("$A$1:$A$2", listBox.LinkedCell.Address);
         Assert.AreEqual(0, listBox.SelectedIndex);
         Assert.AreEqual(eSelectionType.Extended, listBox.SelectionType);
-        Assert.AreEqual(2, listBox.MultiSelection.Length); ;
-        Assert.AreEqual(3, listBox.MultiSelection[0]); ;
-        Assert.AreEqual(2, listBox.MultiSelection[1]); ;
+        Assert.AreEqual(2, listBox.MultiSelection.Length);
+        ;
+        Assert.AreEqual(3, listBox.MultiSelection[0]);
+        ;
+        Assert.AreEqual(2, listBox.MultiSelection[1]);
+        ;
         Assert.AreEqual("List Box 7", listBox.Name);
     }
+
     [TestMethod]
     public void ValidateCheckboxControl()
     {
@@ -102,6 +112,7 @@ public class ReadControlTests : TestBase
         Assert.AreEqual("Check Box 9", checkbox.Name);
         Assert.AreEqual("Check Box 9", checkbox.Text);
     }
+
     [TestMethod]
     public void ValidateCheckboxWithTileControl()
     {
@@ -113,8 +124,8 @@ public class ReadControlTests : TestBase
         Assert.AreEqual("Check Box 12", checkbox.Text);
         Assert.AreEqual(OfficeOpenXml.Drawing.Vml.eVmlFillType.Tile, checkbox.Fill.Style);
         Assert.IsNotNull(checkbox.Fill.PatternPictureSettings.Image);
-
     }
+
     [TestMethod]
     public void ValidateCheckboxWithFrameControl()
     {
@@ -127,6 +138,7 @@ public class ReadControlTests : TestBase
         Assert.AreEqual(OfficeOpenXml.Drawing.Vml.eVmlFillType.Frame, checkbox.Fill.Style);
         Assert.IsNotNull(checkbox.Fill.PatternPictureSettings.Image);
     }
+
     [TestMethod]
     public void ValidateCheckboxWithPatternControl()
     {
@@ -153,6 +165,7 @@ public class ReadControlTests : TestBase
         Assert.AreEqual(18, spin.Value);
         Assert.AreEqual("Spinner 10", spin.Name);
     }
+
     [TestMethod]
     public void ValidateGroupBoxControl()
     {
@@ -162,7 +175,8 @@ public class ReadControlTests : TestBase
         Assert.AreEqual("[0]!GroupBox5_Click", groupBox.Macro);
         Assert.AreEqual("Group Box 5", groupBox.Name);
         Assert.AreEqual("Group Box 5", groupBox.Text);
-    }        
+    }
+
     [TestMethod]
     public void ValidateRadioButtonControl()
     {
@@ -177,6 +191,7 @@ public class ReadControlTests : TestBase
         Assert.AreEqual("Option Button 11", radioButton.Name);
         Assert.AreEqual("Option Button 11", radioButton.Text);
     }
+
     [TestMethod]
     public void ValidateDrawingGroup()
     {
@@ -191,6 +206,7 @@ public class ReadControlTests : TestBase
 
         //grp.Drawings.Clear();
     }
+
     [TestMethod]
     public void ValidateDrawingUnGroup()
     {
@@ -203,5 +219,4 @@ public class ReadControlTests : TestBase
         Assert.AreEqual(eDrawingType.Control, grp.Drawings[0].DrawingType);
         Assert.AreEqual(2028825, grp.Drawings[0].Size.Width);
     }
-
 }

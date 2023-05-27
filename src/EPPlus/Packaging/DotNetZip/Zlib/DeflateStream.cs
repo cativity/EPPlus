@@ -24,9 +24,7 @@
 //
 // ------------------------------------------------------------------
 
-
 using OfficeOpenXml.Utils;
-
 using System;
 using System.IO;
 
@@ -353,10 +351,7 @@ public class DeflateStream : Stream
     /// </remarks>
     public int BufferSize
     {
-        get
-        {
-            return this._baseStream._bufferSize;
-        }
+        get { return this._baseStream._bufferSize; }
         set
         {
             if (this._disposed)
@@ -371,7 +366,9 @@ public class DeflateStream : Stream
 
             if (value < ZlibConstants.WorkingBufferSizeMin)
             {
-                throw new ZlibException(String.Format("Don't be silly. {0} bytes?? Use a bigger buffer, at least {1}.", value, ZlibConstants.WorkingBufferSizeMin));
+                throw new ZlibException(String.Format("Don't be silly. {0} bytes?? Use a bigger buffer, at least {1}.",
+                                                      value,
+                                                      ZlibConstants.WorkingBufferSizeMin));
             }
 
             this._baseStream._bufferSize = value;
@@ -388,10 +385,7 @@ public class DeflateStream : Stream
     /// </remarks>
     public CompressionStrategy Strategy
     {
-        get
-        {
-            return this._baseStream.Strategy;
-        }
+        get { return this._baseStream.Strategy; }
         set
         {
             if (this._disposed)
@@ -406,24 +400,19 @@ public class DeflateStream : Stream
     /// <summary> Returns the total number of bytes input so far.</summary>
     virtual public long TotalIn
     {
-        get
-        {
-            return this._baseStream._z.TotalBytesIn;
-        }
+        get { return this._baseStream._z.TotalBytesIn; }
     }
 
     /// <summary> Returns the total number of bytes output so far.</summary>
     virtual public long TotalOut
     {
-        get
-        {
-            return this._baseStream._z.TotalBytesOut;
-        }
+        get { return this._baseStream._z.TotalBytesOut; }
     }
 
     #endregion
 
     #region System.IO.Stream methods
+
     /// <summary>
     ///   Dispose the stream.
     /// </summary>
@@ -468,8 +457,6 @@ public class DeflateStream : Stream
         }
     }
 
-
-
     /// <summary>
     /// Indicates whether the stream can be read.
     /// </summary>
@@ -499,7 +486,6 @@ public class DeflateStream : Stream
     {
         get { return false; }
     }
-
 
     /// <summary>
     /// Indicates whether the stream can be written.
@@ -607,7 +593,6 @@ public class DeflateStream : Stream
         return this._baseStream.Read(buffer, offset, count);
     }
 
-
     /// <summary>
     /// Calling this method always throws a <see cref="NotImplementedException"/>.
     /// </summary>
@@ -666,10 +651,8 @@ public class DeflateStream : Stream
 
         this._baseStream.Write(buffer, offset, count);
     }
+
     #endregion
-
-
-
 
     /// <summary>
     ///   Compress a string into a byte array using DEFLATE (RFC 1951).
@@ -693,12 +676,11 @@ public class DeflateStream : Stream
     public static byte[] CompressString(String s)
     {
         using MemoryStream? ms = RecyclableMemory.GetStream();
-        Stream compressor =
-            new DeflateStream(ms, CompressionMode.Compress, CompressionLevel.BestCompression);
+        Stream compressor = new DeflateStream(ms, CompressionMode.Compress, CompressionLevel.BestCompression);
         ZlibBaseStream.CompressString(s, compressor);
+
         return ms.ToArray();
     }
-
 
     /// <summary>
     ///   Compress a byte array into a new byte array using DEFLATE.
@@ -721,13 +703,12 @@ public class DeflateStream : Stream
     public static byte[] CompressBuffer(byte[] b)
     {
         using MemoryStream? ms = RecyclableMemory.GetStream();
-        Stream compressor =
-            new DeflateStream(ms, CompressionMode.Compress, CompressionLevel.BestCompression);
+        Stream compressor = new DeflateStream(ms, CompressionMode.Compress, CompressionLevel.BestCompression);
 
         ZlibBaseStream.CompressBuffer(b, compressor);
+
         return ms.ToArray();
     }
-
 
     /// <summary>
     ///   Uncompress a DEFLATE'd byte array into a single string.
@@ -746,12 +727,10 @@ public class DeflateStream : Stream
     public static String UncompressString(byte[] compressed)
     {
         using MemoryStream? input = RecyclableMemory.GetStream(compressed);
-        Stream decompressor =
-            new DeflateStream(input, CompressionMode.Decompress);
+        Stream decompressor = new DeflateStream(input, CompressionMode.Decompress);
 
         return ZlibBaseStream.UncompressString(compressed, decompressor);
     }
-
 
     /// <summary>
     ///   Uncompress a DEFLATE'd byte array into a byte array.
@@ -770,10 +749,8 @@ public class DeflateStream : Stream
     public static byte[] UncompressBuffer(byte[] compressed)
     {
         using MemoryStream? input = RecyclableMemory.GetStream(compressed);
-        Stream decompressor =
-            new DeflateStream(input, CompressionMode.Decompress);
+        Stream decompressor = new DeflateStream(input, CompressionMode.Decompress);
 
         return ZlibBaseStream.UncompressBuffer(compressed, decompressor);
     }
-
 }

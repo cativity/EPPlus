@@ -10,6 +10,7 @@
  *************************************************************************************************
   08/19/2022         EPPlus Software AB       Implementing handling of initialization errors in ExcelPackage class.
  *************************************************************************************************/
+
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -31,12 +32,10 @@ public class ExcelPackageConfiguration
     /// 
     /// Default value of this property is false.
     /// </summary>
-    public bool SuppressInitializationExceptions
-    {
-        get; set;
-    }
+    public bool SuppressInitializationExceptions { get; set; }
 
     private string _jsonConfigBasePath = Directory.GetCurrentDirectory();
+
     /// <summary>
     /// Path of the directory where the json configuration file is located.
     /// Default value is the path returned from <see cref="System.IO.Directory.GetCurrentDirectory"/>
@@ -48,6 +47,7 @@ public class ExcelPackageConfiguration
     }
 
     private string _jsonConfigFileName = "appsettings.json";
+
     /// <summary>
     /// File name of the json configuration file.
     /// Default value is appsettings.json

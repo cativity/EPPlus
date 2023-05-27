@@ -10,6 +10,7 @@
  *************************************************************************************************
   01/27/2020         EPPlus Software AB       Initial release EPPlus 5
  *************************************************************************************************/
+
 using System;
 
 namespace OfficeOpenXml.VBA;
@@ -20,14 +21,17 @@ namespace OfficeOpenXml.VBA;
 public class ExcelVbaModuleCollection : ExcelVBACollectionBase<ExcelVBAModule>
 {
     ExcelVbaProject _project;
-    internal ExcelVbaModuleCollection (ExcelVbaProject project)
+
+    internal ExcelVbaModuleCollection(ExcelVbaProject project)
     {
-        this._project=project;
+        this._project = project;
     }
+
     internal void Add(ExcelVBAModule Item)
     {
         this._list.Add(Item);
     }
+
     /// <summary>
     /// Adds a new VBA Module
     /// </summary>
@@ -39,14 +43,17 @@ public class ExcelVbaModuleCollection : ExcelVBACollectionBase<ExcelVBAModule>
         {
             throw new ArgumentException("Vba modulename already exist.");
         }
+
         ExcelVBAModule? m = new ExcelVBAModule();
         m.Name = Name;
         m.Type = eModuleType.Module;
         m.Attributes._list.Add(new ExcelVbaModuleAttribute() { Name = "VB_Name", Value = Name, DataType = eAttributeDataType.String });
         m.Type = eModuleType.Module;
         this._list.Add(m);
+
         return m;
     }
+
     /// <summary>
     /// Adds a new VBA class
     /// </summary>
@@ -56,21 +63,33 @@ public class ExcelVbaModuleCollection : ExcelVBACollectionBase<ExcelVBAModule>
     public ExcelVBAModule AddClass(string Name, bool Exposed)
     {
         ExcelVBAModule? m = new ExcelVBAModule();
-        m.Name = Name;            
+        m.Name = Name;
         m.Type = eModuleType.Class;
         m.Attributes._list.Add(new ExcelVbaModuleAttribute() { Name = "VB_Name", Value = Name, DataType = eAttributeDataType.String });
-        m.Attributes._list.Add(new ExcelVbaModuleAttribute() { Name = "VB_Base", Value = "0{FCFB3D2A-A0FA-1068-A738-08002B3371B5}", DataType = eAttributeDataType.String });
+
+        m.Attributes._list.Add(new ExcelVbaModuleAttribute()
+        {
+            Name = "VB_Base", Value = "0{FCFB3D2A-A0FA-1068-A738-08002B3371B5}", DataType = eAttributeDataType.String
+        });
+
         m.Attributes._list.Add(new ExcelVbaModuleAttribute() { Name = "VB_GlobalNameSpace", Value = "False", DataType = eAttributeDataType.NonString });
         m.Attributes._list.Add(new ExcelVbaModuleAttribute() { Name = "VB_Creatable", Value = "False", DataType = eAttributeDataType.NonString });
         m.Attributes._list.Add(new ExcelVbaModuleAttribute() { Name = "VB_PredeclaredId", Value = "False", DataType = eAttributeDataType.NonString });
-        m.Attributes._list.Add(new ExcelVbaModuleAttribute() { Name = "VB_Exposed", Value = Exposed ? "True" : "False", DataType = eAttributeDataType.NonString });
+
+        m.Attributes._list.Add(new ExcelVbaModuleAttribute()
+        {
+            Name = "VB_Exposed", Value = Exposed ? "True" : "False", DataType = eAttributeDataType.NonString
+        });
+
         m.Attributes._list.Add(new ExcelVbaModuleAttribute() { Name = "VB_TemplateDerived", Value = "False", DataType = eAttributeDataType.NonString });
         m.Attributes._list.Add(new ExcelVbaModuleAttribute() { Name = "VB_Customizable", Value = "False", DataType = eAttributeDataType.NonString });
 
         //m.Code = _project.GetBlankClassModule(Name, Exposed);
         m.Private = !Exposed;
+
         //m.ClassID=
         this._list.Add(m);
+
         return m;
     }
 }

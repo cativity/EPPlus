@@ -10,8 +10,10 @@
  *************************************************************************************************
   04/16/2020         EPPlus Software AB          EPPlus 5.2
  *************************************************************************************************/
+
 using OfficeOpenXml.Utils.Extensions;
 using System.Xml;
+
 namespace OfficeOpenXml.Drawing.Chart.ChartEx;
 
 /// <summary>
@@ -19,22 +21,17 @@ namespace OfficeOpenXml.Drawing.Chart.ChartEx;
 /// </summary>
 public class ExcelTreemapChartSerie : ExcelChartExSerie
 {
-    internal ExcelTreemapChartSerie(ExcelChartEx chart, XmlNamespaceManager ns, XmlNode node) : base(chart, ns, node)
+    internal ExcelTreemapChartSerie(ExcelChartEx chart, XmlNamespaceManager ns, XmlNode node)
+        : base(chart, ns, node)
     {
-
     }
+
     /// <summary>
     /// The layout type for the parent labels
     /// </summary>
     public eParentLabelLayout ParentLabelLayout
     {
-        get
-        {
-            return this.GetXmlNodeString("cx:layoutPr/cx:parentLabelLayout/@val").ToEnum(eParentLabelLayout.None);
-        }
-        set
-        {
-            this.SetXmlNodeString("cx:layoutPr/cx:parentLabelLayout/@val", value.ToEnumString());
-        }
+        get { return this.GetXmlNodeString("cx:layoutPr/cx:parentLabelLayout/@val").ToEnum(eParentLabelLayout.None); }
+        set { this.SetXmlNodeString("cx:layoutPr/cx:parentLabelLayout/@val", value.ToEnumString()); }
     }
 }

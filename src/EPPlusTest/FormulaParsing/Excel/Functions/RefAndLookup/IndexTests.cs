@@ -26,6 +26,7 @@
  *******************************************************************************
   01/27/2020         EPPlus Software AB       Initial release EPPlus 5
  *******************************************************************************/
+
 using System.IO;
 using EPPlusTest.FormulaParsing.TestHelpers;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -56,17 +57,12 @@ public class IndexTests
     {
         this._package.Dispose();
     }
-        
+
     [TestMethod]
     public void Index_Should_Return_Value_By_Index()
     {
         Index? func = new Index();
-        CompileResult? result = func.Execute(
-                                             FunctionsHelper.CreateArgs(
-                                                                        FunctionsHelper.CreateArgs(1, 2, 5),
-                                                                        3
-                                                                       ),
-                                             this._parsingContext);
+        CompileResult? result = func.Execute(FunctionsHelper.CreateArgs(FunctionsHelper.CreateArgs(1, 2, 5), 3), this._parsingContext);
         Assert.AreEqual(5, result.Result);
     }
 

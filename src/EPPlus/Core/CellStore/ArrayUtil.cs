@@ -10,6 +10,7 @@
  *************************************************************************************************
   01/27/2020         EPPlus Software AB       Initial release EPPlus 5
  *************************************************************************************************/
+
 using System;
 
 namespace OfficeOpenXml.Core.CellStore;
@@ -34,7 +35,8 @@ internal static class ArrayUtil
             return -1;
         }
 
-        int low = 0, high = length - 1;
+        int low = 0,
+            high = length - 1;
 
         while (low <= high)
         {
@@ -55,8 +57,10 @@ internal static class ArrayUtil
                 return mid;
             }
         }
+
         return ~low;
     }
+
     internal static int OptimizedBinarySearch(IndexBase[] store, int pos, int length)
     {
         if (length == 0)
@@ -64,7 +68,8 @@ internal static class ArrayUtil
             return -1;
         }
 
-        int low = 0, high = length - 1;
+        int low = 0,
+            high = length - 1;
 
         while (low <= high)
         {
@@ -85,6 +90,7 @@ internal static class ArrayUtil
                 return mid;
             }
         }
+
         return ~low;
     }
 }

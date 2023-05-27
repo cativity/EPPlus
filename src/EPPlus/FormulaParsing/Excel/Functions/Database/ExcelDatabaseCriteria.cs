@@ -10,6 +10,7 @@
  *************************************************************************************************
   01/27/2020         EPPlus Software AB       Initial release EPPlus 5
  *************************************************************************************************/
+
 using System;
 using System.Collections.Generic;
 using System.Globalization;
@@ -46,19 +47,19 @@ internal class ExcelDatabaseCriteria
         {
             object? fieldObj = this._dataProvider.GetCellValue(this._worksheet, this._fieldRow, x);
             object? val = this._dataProvider.GetCellValue(this._worksheet, this._fieldRow + 1, x);
+
             if (fieldObj != null && val != null)
             {
-                if(fieldObj is string)
-                { 
+                if (fieldObj is string)
+                {
                     ExcelDatabaseCriteriaField? field = new ExcelDatabaseCriteriaField(fieldObj.ToString().ToLower(CultureInfo.InvariantCulture));
                     this._criterias.Add(field, val);
                 }
                 else if (ConvertUtil.IsNumericOrDate(fieldObj))
                 {
-                    ExcelDatabaseCriteriaField? field = new ExcelDatabaseCriteriaField((int) fieldObj);
+                    ExcelDatabaseCriteriaField? field = new ExcelDatabaseCriteriaField((int)fieldObj);
                     this._criterias.Add(field, val);
                 }
-
             }
         }
     }

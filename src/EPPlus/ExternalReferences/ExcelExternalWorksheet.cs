@@ -10,6 +10,7 @@
  *************************************************************************************************
   04/16/2021         EPPlus Software AB       EPPlus 5.7
  *************************************************************************************************/
+
 using OfficeOpenXml.Core;
 using OfficeOpenXml.Core.CellStore;
 using System;
@@ -27,37 +28,37 @@ public class ExcelExternalWorksheet : IExcelExternalNamedItem
         this.CellValues = new ExcelExternalCellCollection(new CellStore<object>(), new CellStore<int>());
     }
 
-    internal ExcelExternalWorksheet(
-        CellStore<object> values,
-        CellStore<int> metaData,
-        ExcelExternalNamedItemCollection<ExcelExternalDefinedName> definedNames)
+    internal ExcelExternalWorksheet(CellStore<object> values, CellStore<int> metaData, ExcelExternalNamedItemCollection<ExcelExternalDefinedName> definedNames)
     {
         this.CachedNames = definedNames;
         this.CellValues = new ExcelExternalCellCollection(values, metaData);
     }
+
     /// <summary>
     /// The sheet id
     /// </summary>
     public int SheetId { get; internal set; }
+
     /// <summary>
     /// The name of the worksheet.
     /// </summary>
     public string Name { get; internal set; }
+
     /// <summary>
     /// If errors have occured on the last update of the cached values.
     /// </summary>
     public bool RefreshError { get; internal set; }
+
     /// <summary>
     /// A collection of cached names for an external worksheet
     /// </summary>
     public ExcelExternalNamedItemCollection<ExcelExternalDefinedName> CachedNames { get; }
+
     /// <summary>
     /// Cached cell values for the worksheet. Only cells referenced in the workbook are stored in the cache.
     /// </summary>
-    public ExcelExternalCellCollection CellValues 
-    { 
-        get; 
-    }
+    public ExcelExternalCellCollection CellValues { get; }
+
     /// <summary>
     /// Returns a string that represents the current object.
     /// </summary>

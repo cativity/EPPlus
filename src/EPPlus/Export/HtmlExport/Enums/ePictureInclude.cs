@@ -22,10 +22,12 @@ public enum ePictureInclude
     /// Do not include pictures in the html export. Default
     /// </summary>
     Exclude,
+
     /// <summary>
     /// Include in css only, so they images can be added manually. 
     /// </summary>
     IncludeInCssOnly,
+
     /// <summary>
     /// Include the images in the html export.
     /// </summary>

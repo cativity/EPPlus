@@ -10,6 +10,7 @@
  *************************************************************************************************
   01/27/2020         EPPlus Software AB       Initial release EPPlus 5
  *************************************************************************************************/
+
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -21,10 +22,9 @@ using OfficeOpenXml.Utils;
 
 namespace OfficeOpenXml.FormulaParsing.Excel.Functions.RefAndLookup;
 
-[FunctionMetadata(
-                     Category = ExcelFunctionCategory.LookupAndReference,
-                     EPPlusVersion = "4",
-                     Description = "Returns a reference to a cell (or range of cells) for requested rows and columns within a supplied range")]
+[FunctionMetadata(Category = ExcelFunctionCategory.LookupAndReference,
+                  EPPlusVersion = "4",
+                  Description = "Returns a reference to a cell (or range of cells) for requested rows and columns within a supplied range")]
 internal class Index : ExcelFunction
 {
     public override CompileResult Execute(IEnumerable<FunctionArgument> arguments, ParsingContext context)
@@ -33,14 +33,18 @@ internal class Index : ExcelFunction
         FunctionArgument? arg1 = arguments.ElementAt(0);
         IEnumerable<FunctionArgument>? args = arg1.Value as IEnumerable<FunctionArgument>;
         CompileResultFactory? crf = new CompileResultFactory();
+
         if (args != null)
         {
             int index = this.ArgToInt(arguments, 1, RoundingMethod.Floor);
+
             if (index > args.Count())
             {
                 throw new ExcelErrorValueException(eErrorType.Ref);
             }
+
             FunctionArgument? candidate = args.ElementAt(index - 1);
+
             //Commented JK-Can be any data type
             //if (!IsNumber(candidate.Value))
             //{
@@ -49,17 +53,20 @@ internal class Index : ExcelFunction
             //return CreateResult(ConvertUtil.GetValueDouble(candidate.Value), DataType.Decimal);
             return crf.Create(candidate.Value);
         }
+
         if (arg1.IsExcelRange)
         {
-            int row = this.ArgToInt(arguments, 1, RoundingMethod.Floor);                 
-            int col = arguments.Count()>2 ? this.ArgToInt(arguments, 2, RoundingMethod.Floor) : 1;
-            IRangeInfo? ri=arg1.ValueAsRangeInfo;
-            if (row > ri.Address._toRow - ri.Address._fromRow + 1 ||
-                col > ri.Address._toCol - ri.Address._fromCol + 1)
+            int row = this.ArgToInt(arguments, 1, RoundingMethod.Floor);
+            int col = arguments.Count() > 2 ? this.ArgToInt(arguments, 2, RoundingMethod.Floor) : 1;
+            IRangeInfo? ri = arg1.ValueAsRangeInfo;
+
+            if (row > ri.Address._toRow - ri.Address._fromRow + 1 || col > ri.Address._toCol - ri.Address._fromCol + 1)
             {
                 ThrowExcelErrorValueException(eErrorType.Ref);
             }
-            object? candidate = ri.GetOffset(row-1, col-1);
+
+            object? candidate = ri.GetOffset(row - 1, col - 1);
+
             //Commented JK-Can be any data type
             //if (!IsNumber(candidate.Value))   
             //{
@@ -67,6 +74,7 @@ internal class Index : ExcelFunction
             //}
             return crf.Create(candidate);
         }
+
         throw new NotImplementedException();
     }
 }

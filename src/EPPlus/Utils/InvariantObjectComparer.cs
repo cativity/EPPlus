@@ -10,6 +10,7 @@
  *************************************************************************************************
   01/27/2020         EPPlus Software AB       Initial release EPPlus 5
  *************************************************************************************************/
+
 using System;
 using System.Collections.Generic;
 
@@ -21,7 +22,7 @@ internal class InvariantObjectComparer : IEqualityComparer<object>
     static StringComparer sc = StringComparer.OrdinalIgnoreCase;
 
     public new bool Equals(object x, object y)
-    {            
+    {
         if (x is string s1 && y is string s2)
         {
             return sc.Equals(s1, s2);
@@ -38,7 +39,7 @@ internal class InvariantObjectComparer : IEqualityComparer<object>
         {
             return s.ToLowerInvariant().GetHashCode();
         }
-            
+
         return obj.GetHashCode();
     }
 }

@@ -10,6 +10,7 @@
  *************************************************************************************************
   01/27/2020         EPPlus Software AB       Initial release EPPlus 5
  *************************************************************************************************/
+
 using OfficeOpenXml.Drawing.Interfaces;
 using OfficeOpenXml.Drawing.Style.Effect;
 using OfficeOpenXml.Drawing.Style.ThreeD;
@@ -23,8 +24,10 @@ namespace OfficeOpenXml.Drawing.Chart;
 /// </summary>
 public class ExcelChartTrendlineLabel : XmlHelper, IDrawingStyle
 {
-    ExcelChartStandardSerie _serie;        
-    internal ExcelChartTrendlineLabel(XmlNamespaceManager namespaceManager, XmlNode topNode, ExcelChartStandardSerie serie) : base(namespaceManager, topNode)
+    ExcelChartStandardSerie _serie;
+
+    internal ExcelChartTrendlineLabel(XmlNamespaceManager namespaceManager, XmlNode topNode, ExcelChartStandardSerie serie)
+        : base(namespaceManager, topNode)
     {
         this._serie = serie;
 
@@ -32,6 +35,7 @@ public class ExcelChartTrendlineLabel : XmlHelper, IDrawingStyle
     }
 
     ExcelDrawingFill _fill = null;
+
     /// <summary>
     /// Access to fill properties
     /// </summary>
@@ -39,14 +43,12 @@ public class ExcelChartTrendlineLabel : XmlHelper, IDrawingStyle
     {
         get
         {
-            return this._fill ??= new ExcelDrawingFill(this._serie._chart,
-                                                       this.NameSpaceManager,
-                                                       this.TopNode,
-                                                       "c:trendlineLbl/c:spPr",
-                                                       this.SchemaNodeOrder);
+            return this._fill ??= new ExcelDrawingFill(this._serie._chart, this.NameSpaceManager, this.TopNode, "c:trendlineLbl/c:spPr", this.SchemaNodeOrder);
         }
     }
+
     ExcelDrawingBorder _border = null;
+
     /// <summary>
     /// Access to border properties
     /// </summary>
@@ -61,7 +63,9 @@ public class ExcelChartTrendlineLabel : XmlHelper, IDrawingStyle
                                                            this.SchemaNodeOrder);
         }
     }
+
     ExcelTextFont _font = null;
+
     /// <summary>
     /// Access to font properties
     /// </summary>
@@ -76,18 +80,19 @@ public class ExcelChartTrendlineLabel : XmlHelper, IDrawingStyle
                                                     this.SchemaNodeOrder);
         }
     }
+
     ExcelTextBody _textBody = null;
+
     /// <summary>
     /// Access to text body properties
     /// </summary>
     public ExcelTextBody TextBody
     {
-        get
-        {
-            return this._textBody ??= new ExcelTextBody(this.NameSpaceManager, this.TopNode, "c:trendlineLbl/c:txPr/a:bodyPr", this.SchemaNodeOrder);
-        }
+        get { return this._textBody ??= new ExcelTextBody(this.NameSpaceManager, this.TopNode, "c:trendlineLbl/c:txPr/a:bodyPr", this.SchemaNodeOrder); }
     }
+
     ExcelDrawingEffectStyle _effect = null;
+
     /// <summary>
     /// Effects
     /// </summary>
@@ -102,23 +107,24 @@ public class ExcelChartTrendlineLabel : XmlHelper, IDrawingStyle
                                                                 this.SchemaNodeOrder);
         }
     }
+
     ExcelDrawing3D _threeD = null;
+
     /// <summary>
     /// 3D properties
     /// </summary>
     public ExcelDrawing3D ThreeD
     {
-        get
-        {
-            return this._threeD ??= new ExcelDrawing3D(this.NameSpaceManager, this.TopNode, "c:trendlineLbl/c:spPr", this.SchemaNodeOrder);
-        }
+        get { return this._threeD ??= new ExcelDrawing3D(this.NameSpaceManager, this.TopNode, "c:trendlineLbl/c:spPr", this.SchemaNodeOrder); }
     }
+
     void IDrawingStyleBase.CreatespPr()
     {
         this.CreatespPrNode("c:trendlineLbl/c:spPr");
     }
 
     ExcelParagraphCollection _richText = null;
+
     /// <summary>
     /// Richtext
     /// </summary>
@@ -133,32 +139,22 @@ public class ExcelChartTrendlineLabel : XmlHelper, IDrawingStyle
                                                                    this.SchemaNodeOrder);
         }
     }
+
     /// <summary>
     /// Numberformat
     /// </summary>
     public string NumberFormat
     {
-        get
-        {
-            return this.GetXmlNodeString("c:trendlineLbl/c:numFmt/@formatCode");
-        }
-        set
-        {
-            this.SetXmlNodeString("c:trendlineLbl/c:numFmt/@formatCode", value);
-        }
+        get { return this.GetXmlNodeString("c:trendlineLbl/c:numFmt/@formatCode"); }
+        set { this.SetXmlNodeString("c:trendlineLbl/c:numFmt/@formatCode", value); }
     }
+
     /// <summary>
     /// If the numberformat is linked to the source data
     /// </summary>
     public bool SourceLinked
     {
-        get
-        {
-            return this.GetXmlNodeBool("c:trendlineLbl/c:numFmt/@sourceLinked");
-        }
-        set
-        {
-            this.SetXmlNodeBool("c:trendlineLbl/c:numFmt/@sourceLinked", value, true);
-        }
-    }        
+        get { return this.GetXmlNodeBool("c:trendlineLbl/c:numFmt/@sourceLinked"); }
+        set { this.SetXmlNodeBool("c:trendlineLbl/c:numFmt/@sourceLinked", value, true); }
+    }
 }

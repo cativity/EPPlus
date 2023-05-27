@@ -10,6 +10,7 @@
  *************************************************************************************************
   01/27/2020         EPPlus Software AB       Initial release EPPlus 5
  *************************************************************************************************/
+
 using System;
 using System.Xml;
 using System.Globalization;
@@ -21,11 +22,13 @@ namespace OfficeOpenXml.Table.PivotTable;
 /// </summary>
 public class ExcelPivotTableFieldDateGroup : ExcelPivotTableFieldGroup
 {
-    internal ExcelPivotTableFieldDateGroup(XmlNamespaceManager ns, XmlNode topNode) :
-        base(ns, topNode)
+    internal ExcelPivotTableFieldDateGroup(XmlNamespaceManager ns, XmlNode topNode)
+        : base(ns, topNode)
     {
     }
+
     const string groupByPath = "d:fieldGroup/d:rangePr/@groupBy";
+
     /// <summary>
     /// How to group the date field
     /// </summary>
@@ -34,6 +37,7 @@ public class ExcelPivotTableFieldDateGroup : ExcelPivotTableFieldGroup
         get
         {
             string v = this.GetXmlNodeString(groupByPath);
+
             if (v != "")
             {
                 return (eDateGroupBy)Enum.Parse(typeof(eDateGroupBy), v, true);
@@ -43,29 +47,22 @@ public class ExcelPivotTableFieldDateGroup : ExcelPivotTableFieldGroup
                 throw new Exception("Invalid date Groupby");
             }
         }
-        private set
-        {
-            this.SetXmlNodeString(groupByPath, value.ToString().ToLower(CultureInfo.InvariantCulture));
-        }
+        private set { this.SetXmlNodeString(groupByPath, value.ToString().ToLower(CultureInfo.InvariantCulture)); }
     }
+
     /// <summary>
     /// Auto detect start date
     /// </summary>
     public bool AutoStart
     {
-        get
-        {
-            return this.GetXmlNodeBool("@autoStart", false);
-        }
+        get { return this.GetXmlNodeBool("@autoStart", false); }
     }
+
     /// <summary>
     /// Auto detect end date
     /// </summary>
     public bool AutoEnd
     {
-        get
-        {
-            return this.GetXmlNodeBool("@autoStart", false);
-        }
+        get { return this.GetXmlNodeBool("@autoStart", false); }
     }
 }

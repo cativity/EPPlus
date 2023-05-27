@@ -10,6 +10,7 @@
  *************************************************************************************************
   12/26/2021         EPPlus Software AB       EPPlus 6.0
  *************************************************************************************************/
+
 using OfficeOpenXml.Core.Worksheet.Core.Worksheet.Fonts;
 using OfficeOpenXml.Core.Worksheet.Core.Worksheet.Fonts.GenericMeasurements;
 using OfficeOpenXml.Interfaces.Drawing.Text;
@@ -50,9 +51,11 @@ internal abstract class GenericFontMetricsTextMeasurerBase
         float width = 0f;
         float widthEA = 0f;
         char[]? chars = text.ToCharArray();
+
         for (int x = 0; x < chars.Length; x++)
         {
             char c = chars[x];
+
             // if east asian char use default regardless of actual font.
             if (IsEastAsianChar(c))
             {
@@ -63,6 +66,7 @@ internal abstract class GenericFontMetricsTextMeasurerBase
                 if (sFont.CharMetrics.ContainsKey(c))
                 {
                     float fw = sFont.ClassWidths[sFont.CharMetrics[c]];
+
                     if (Char.IsDigit(c))
                     {
                         fw *= FontScaleFactors.DigitsScalingFactor;
@@ -75,23 +79,23 @@ internal abstract class GenericFontMetricsTextMeasurerBase
                     width += sFont.ClassWidths[sFont.DefaultWidthClass];
                 }
             }
-
         }
+
         width *= size;
         widthEA *= size;
         float sf = this._fontScaleFactors.GetScaleFactor(fontKey, width);
         width *= sf;
         width += widthEA;
         float height = sFont.LineHeight1em * size;
+
         return new TextMeasurement(width, height);
     }
-
-
 
     internal static uint GetKey(FontMetricsFamilies family, FontSubFamilies subFamily)
     {
         ushort k1 = (ushort)family;
         ushort k2 = (ushort)subFamily;
+
         return (uint)((k1 << 16) | (k2 & 0xffff));
     }
 
@@ -100,14 +104,17 @@ internal abstract class GenericFontMetricsTextMeasurerBase
         string? enumName = fontFamily.Replace(" ", string.Empty);
         Array? values = Enum.GetValues(typeof(FontMetricsFamilies));
         bool supported = false;
+
         foreach (object? enumVal in values)
         {
             if (enumVal.ToString() == enumName)
             {
                 supported = true;
+
                 break;
             }
         }
+
         if (!supported)
         {
             return uint.MaxValue;
@@ -115,30 +122,40 @@ internal abstract class GenericFontMetricsTextMeasurerBase
 
         FontMetricsFamilies family = (FontMetricsFamilies)Enum.Parse(typeof(FontMetricsFamilies), enumName);
         FontSubFamilies subFamily = FontSubFamilies.Regular;
+
         switch (fontStyle)
         {
             case MeasurementFontStyles.Bold:
                 subFamily = FontSubFamilies.Bold;
+
                 break;
+
             case MeasurementFontStyles.Italic:
                 subFamily = FontSubFamilies.Italic;
+
                 break;
+
             case MeasurementFontStyles.Italic | MeasurementFontStyles.Bold:
                 subFamily = FontSubFamilies.BoldItalic;
+
                 break;
+
             default:
                 break;
         }
+
         return GetKey(family, subFamily);
     }
 
     private static float GetEastAsianCharWidth(int cc, MeasurementFontStyles style)
     {
         float emWidth = cc >= 65377 && cc <= 65439 ? 0.5f : 1f;
+
         if ((style & MeasurementFontStyles.Bold) != 0)
         {
             emWidth *= 1.05f;
         }
+
         return emWidth * (96F / 72F) * FontScaleFactors.JapaneseKanjiDefaultScalingFactor;
     }
 
@@ -148,5 +165,4 @@ internal abstract class GenericFontMetricsTextMeasurerBase
 
         return UniCodeRange.JapaneseKanji.Any(x => x.IsInRange(cc));
     }
-
 }

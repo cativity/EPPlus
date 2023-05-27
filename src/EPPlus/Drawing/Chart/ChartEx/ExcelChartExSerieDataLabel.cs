@@ -10,6 +10,7 @@
 *************************************************************************************************
  06/05/2020         EPPlus Software AB           EPPlus 5.2
 *************************************************************************************************/
+
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -31,35 +32,36 @@ public class ExcelChartExSerieDataLabel : ExcelChartExDataLabel
         this.SchemaNodeOrder = schemaNodeOrder;
         this.Position = eLabelPosition.Center;
     }
+
     ExcelChartExDataLabelCollection _dataLabels = null;
+
     /// <summary>
     /// Individually formatted data labels.
     /// </summary>
     public ExcelChartExDataLabelCollection DataLabels
     {
-        get
-        {
-            return this._dataLabels ??= new ExcelChartExDataLabelCollection(this._serie, this.NameSpaceManager, this.TopNode, this.SchemaNodeOrder);
-        }
+        get { return this._dataLabels ??= new ExcelChartExDataLabelCollection(this._serie, this.NameSpaceManager, this.TopNode, this.SchemaNodeOrder); }
     }
+
     /// <summary>
     /// Adds data labels to the series.
     /// </summary>
     /// <param name="showCategory">Show the category name</param>
     /// <param name="showValue">Show values</param>
     /// <param name="showSeriesName">Show series name</param>
-    public void Add(bool showCategory=true, bool showValue=false, bool showSeriesName=false)
+    public void Add(bool showCategory = true, bool showValue = false, bool showSeriesName = false)
     {
         this.SetDataLabelNode();
         this.ShowCategory = showCategory;
         this.ShowValue = showValue;
         this.ShowSeriesName = showSeriesName;
     }
+
     /// <summary>
     /// Removes data labels from the series
     /// </summary>
     public void Remove()
     {
         this._serie.DeleteNode("cx:dataLabels");
-    }        
+    }
 }

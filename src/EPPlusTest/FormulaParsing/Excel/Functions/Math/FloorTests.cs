@@ -51,6 +51,7 @@ public class FloorTests
         CompileResult? result = func.Execute(args, this._parsingContext);
         Assert.AreEqual(-26d, result.Result);
     }
+
     [TestMethod]
     public void FloorBugTest1()
     {
@@ -60,6 +61,7 @@ public class FloorTests
         CompileResult? result = func.Execute(args, this._parsingContext);
         Assert.AreEqual(expectedValue, result.Result);
     }
+
     [TestMethod]
     public void FloorBugTest2()
     {

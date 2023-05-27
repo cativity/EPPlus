@@ -10,6 +10,7 @@
  *************************************************************************************************
   01/27/2020         EPPlus Software AB       Initial release EPPlus 5
  *************************************************************************************************/
+
 namespace OfficeOpenXml.Filter;
 
 /// <summary>
@@ -21,22 +22,27 @@ public enum eFilterOperator
     /// Show results which are equal to the criteria
     /// </summary>
     Equal,
+
     /// <summary>
     /// Show results which are greater than the criteria
     /// </summary>
     GreaterThan,
+
     /// <summary>
     /// Show results which are greater than or equal to the criteria
     /// </summary>
     GreaterThanOrEqual,
+
     /// <summary>
     /// Show results which are less than the criteria
     /// </summary>
     LessThan,
+
     /// <summary>
     /// Show results which are less than or equal to the criteria
     /// </summary>
     LessThanOrEqual,
+
     /// <summary>
     /// Show results which are Not Equal to the criteria
     /// </summary>

@@ -10,6 +10,7 @@
  *************************************************************************************************
   01/27/2020         EPPlus Software AB       Initial release EPPlus 5
  *************************************************************************************************/
+
 using System;
 using System.Drawing;
 using System.Linq;
@@ -26,9 +27,12 @@ internal static class EnumExtensions
     internal static string ToEnumString(this Enum enumValue)
     {
         string? s = enumValue.ToString();
+
         return s.Substring(0, 1).ToLower() + s.Substring(1);
     }
-    internal static T? ToEnum<T>(this string s) where T : struct
+
+    internal static T? ToEnum<T>(this string s)
+        where T : struct
     {
         try
         {
@@ -41,6 +45,7 @@ internal static class EnumExtensions
             {
                 return null;
             }
+
             return (T)Enum.Parse(typeof(T), s, true);
         }
         catch
@@ -49,7 +54,8 @@ internal static class EnumExtensions
         }
     }
 
-    internal static T ToEnum<T>(this string s, T defaultValue) where T : struct
+    internal static T ToEnum<T>(this string s, T defaultValue)
+        where T : struct
     {
         try
         {
@@ -70,14 +76,17 @@ internal static class EnumExtensions
     {
         return boolValue ? "1" : "0";
     }
+
     internal static bool IsInt(this string s)
     {
         return !s.Any(x => x < '0' && x > '9');
     }
+
     internal static string ToColorString(this Color color)
     {
         return (color.ToArgb() & 0xFFFFFF).ToString("X").PadLeft(6, '0');
     }
+
     internal static string GetXmlAttributeValue(this bool value, string attribute, bool? defaultValue)
     {
         if (value == defaultValue)

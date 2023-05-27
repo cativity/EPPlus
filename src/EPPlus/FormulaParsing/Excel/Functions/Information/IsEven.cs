@@ -10,6 +10,7 @@
  *************************************************************************************************
   01/27/2020         EPPlus Software AB       Initial release EPPlus 5
  *************************************************************************************************/
+
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -20,21 +21,23 @@ using OfficeOpenXml.Utils;
 
 namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Information;
 
-[FunctionMetadata(
-                     Category = ExcelFunctionCategory.Information,
-                     EPPlusVersion = "4",
-                     Description = "Tests if a supplied number (or expression) is an even number, and if so, returns TRUE; Otherwise, returns FALSE.")]
+[FunctionMetadata(Category = ExcelFunctionCategory.Information,
+                  EPPlusVersion = "4",
+                  Description = "Tests if a supplied number (or expression) is an even number, and if so, returns TRUE; Otherwise, returns FALSE.")]
 internal class IsEven : ExcelFunction
 {
     public override CompileResult Execute(IEnumerable<FunctionArgument> arguments, ParsingContext context)
     {
         ValidateArguments(arguments, 1);
-        object? arg1 = GetFirstValue(arguments);//arguments.ElementAt(0);
+        object? arg1 = GetFirstValue(arguments); //arguments.ElementAt(0);
+
         if (!ConvertUtil.IsNumericOrDate(arg1))
         {
             return this.CreateResult(eErrorType.Value);
         }
+
         int number = (int)System.Math.Floor(ConvertUtil.GetValueDouble(arg1));
+
         return this.CreateResult(number % 2 == 0, DataType.Boolean);
     }
 }

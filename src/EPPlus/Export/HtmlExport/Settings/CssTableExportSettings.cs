@@ -22,21 +22,21 @@ public class CssTableExportSettings : CssExportSettings
     {
         this.ResetToDefault();
     }
+
     /// <summary>
     /// Include Css for the current table style
     /// </summary>
     public bool IncludeTableStyles { get; set; } = true;
+
     /// <summary>
     /// Include Css for cell styling.
     /// </summary>
     public bool IncludeCellStyles { get; set; } = true;
+
     /// <summary>
     /// Exclude flags for styles
     /// </summary>
-    public CssExcludeStyle Exclude
-    {
-        get;
-    } = new CssExcludeStyle();
+    public CssExcludeStyle Exclude { get; } = new CssExcludeStyle();
 
     /// <summary>
     /// Reset the settings to it's default values.
@@ -50,6 +50,7 @@ public class CssTableExportSettings : CssExportSettings
         this.Exclude.CellStyle.ResetToDefault();
         this.ResetToDefaultInternal();
     }
+
     /// <summary>
     /// Copy the values from another settings object.
     /// </summary>

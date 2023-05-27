@@ -10,6 +10,7 @@
  *************************************************************************************************
   01/27/2020         EPPlus Software AB       Initial release EPPlus 5
  *************************************************************************************************/
+
 namespace OfficeOpenXml.Drawing.Vml;
 
 /// <summary>
@@ -21,30 +22,37 @@ public enum eLineStyleVml
     /// Solid
     /// </summary>
     Solid,
+
     /// <summary>
     /// Round
     /// </summary>
     Round,
+
     /// <summary>
     /// Square
     /// </summary>
     Square,
+
     /// <summary>
     /// Dash
     /// </summary>
     Dash,
+
     /// <summary>
     /// Dash dot
     /// </summary>
     DashDot,
+
     /// <summary>
     /// Long dash
     /// </summary>
     LongDash,
+
     /// <summary>
     /// Long dash dot
     /// </summary>
     LongDashDot,
+
     /// <summary>
     /// Long dash dot dot
     /// </summary>

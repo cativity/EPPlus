@@ -10,6 +10,7 @@
  *************************************************************************************************
   01/27/2020         EPPlus Software AB       Initial release EPPlus 5
  *************************************************************************************************/
+
 namespace OfficeOpenXml.Drawing;
 
 /// <summary>
@@ -20,49 +21,60 @@ public enum eThemeSchemeColor
     /// <summary>
     /// Main Dark Color 1
     /// </summary>
-    Background1=0,
+    Background1 = 0,
+
     /// <summary>
     /// Main Light Color 1
     /// </summary>
-    Text1=1,
+    Text1 = 1,
+
     /// <summary>
     /// Main Dark Color 2
     /// </summary>
-    Background2=2,
+    Background2 = 2,
+
     /// <summary>
     /// Main Light Color 2
     /// </summary>
-    Text2=3,
+    Text2 = 3,
+
     /// <summary>
     /// Extra scheme color 1
     /// </summary>
-    Accent1=4,
+    Accent1 = 4,
+
     /// <summary>
     /// Extra scheme color 2
     /// </summary>
-    Accent2=5,
+    Accent2 = 5,
+
     /// <summary>
     /// Extra scheme color 3
     /// </summary>
-    Accent3=6,
+    Accent3 = 6,
+
     /// <summary>
     /// Extra scheme color 4
     /// </summary>
-    Accent4=7,
+    Accent4 = 7,
+
     /// <summary>
     /// Extra scheme color 5
     /// </summary>
-    Accent5=8,
+    Accent5 = 8,
+
     /// <summary>
     /// Extra scheme color 6
     /// </summary>
-    Accent6=9,
+    Accent6 = 9,
+
     /// <summary>
     /// Regular Hyperlink Color
     /// </summary>
-    Hyperlink=10,
+    Hyperlink = 10,
+
     /// <summary>
     /// Followed Hyperlink Color
     /// </summary>
-    FollowedHyperlink=11
+    FollowedHyperlink = 11
 }

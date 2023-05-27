@@ -10,6 +10,7 @@
  *************************************************************************************************
   01/27/2020         EPPlus Software AB       Initial release EPPlus 5
  *************************************************************************************************/
+
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -25,18 +26,20 @@ internal class UriHelper
         {
             return targetUri;
         }
+
         string[] source = sourceUri.OriginalString.Split('/');
         string[] target = targetUri.OriginalString.Split('/');
 
         int t = target.Length - 1;
         int s;
-        if(sourceUri.OriginalString.EndsWith("/")) //is the source a directory?
+
+        if (sourceUri.OriginalString.EndsWith("/")) //is the source a directory?
         {
-            s = source.Length-1;
+            s = source.Length - 1;
         }
         else
         {
-            s=source.Length-2;
+            s = source.Length - 2;
         }
 
         string file = target[t--];
@@ -57,14 +60,16 @@ internal class UriHelper
                 file = target[t--] + "/" + file;
             }
         }
+
         if (s >= 0)
         {
-            for(int i=s;i>=0;i--)
+            for (int i = s; i >= 0; i--)
             {
                 file = source[i] + "/" + file;
             }
         }
-        return new Uri(file,UriKind.RelativeOrAbsolute);
+
+        return new Uri(file, UriKind.RelativeOrAbsolute);
     }
 
     internal static Uri GetRelativeUri(Uri sourceUri, Uri targetUri)
@@ -73,30 +78,37 @@ internal class UriHelper
         string[] target = targetUri.OriginalString.Split(new char[] { '/' }, StringSplitOptions.RemoveEmptyEntries);
 
         int slen;
+
         if (sourceUri.OriginalString.EndsWith("/"))
         {
             slen = source.Length;
         }
         else
         {
-            slen = source.Length-1;
+            slen = source.Length - 1;
         }
+
         int i = 0;
+
         while (i < slen && i < target.Length && source[i] == target[i])
         {
             i++;
         }
 
-        string dirUp="";
+        string dirUp = "";
+
         for (int s = i; s < slen; s++)
         {
             dirUp += "../";
         }
+
         string file = "";
+
         for (int t = i; t < target.Length; t++)
-        {                
-            file += (file==""?"":"/") + target[t];
+        {
+            file += (file == "" ? "" : "/") + target[t];
         }
-        return new Uri(dirUp+file,UriKind.Relative);
+
+        return new Uri(dirUp + file, UriKind.Relative);
     }
 }

@@ -10,6 +10,7 @@
  *************************************************************************************************
     10/21/2020         EPPlus Software AB           Controls 
  *************************************************************************************************/
+
 using OfficeOpenXml.Packaging;
 using System;
 using System.Xml;
@@ -21,12 +22,18 @@ namespace OfficeOpenXml.Drawing.Controls;
 /// </summary>
 public class ExcelControlSpinButton : ExcelControl
 {
-    internal ExcelControlSpinButton(ExcelDrawings drawings, XmlElement drawNode, string name, ExcelGroupShape parent=null) : base(drawings, drawNode, name, parent)
+    internal ExcelControlSpinButton(ExcelDrawings drawings, XmlElement drawNode, string name, ExcelGroupShape parent = null)
+        : base(drawings, drawNode, name, parent)
     {
         this.SetSize(40, 80); //Default size
     }
 
-    internal ExcelControlSpinButton(ExcelDrawings drawings, XmlNode drawNode, ControlInternal control, ZipPackagePart part, XmlDocument controlPropertiesXml, ExcelGroupShape parent = null)
+    internal ExcelControlSpinButton(ExcelDrawings drawings,
+                                    XmlNode drawNode,
+                                    ControlInternal control,
+                                    ZipPackagePart part,
+                                    XmlDocument controlPropertiesXml,
+                                    ExcelGroupShape parent = null)
         : base(drawings, drawNode, control, part, controlPropertiesXml, parent)
     {
     }
@@ -35,15 +42,13 @@ public class ExcelControlSpinButton : ExcelControl
     /// The type of form control
     /// </summary>
     public override eControlType ControlType => eControlType.SpinButton;
+
     /// <summary>
     /// How much the spin button is incremented for each click
     /// </summary>
     public int Increment
     {
-        get
-        {
-            return this._ctrlProp.GetXmlNodeInt("@inc", 1);
-        }
+        get { return this._ctrlProp.GetXmlNodeInt("@inc", 1); }
         set
         {
             if (value < 0 || value > 30000)
@@ -55,15 +60,13 @@ public class ExcelControlSpinButton : ExcelControl
             this._vmlProp.SetXmlNodeInt("x:Inc", value);
         }
     }
+
     /// <summary>
     /// The value when a spin button is at it's minimum
     /// </summary>
     public int MinValue
     {
-        get
-        {
-            return this._ctrlProp.GetXmlNodeInt("@min", 0);
-        }
+        get { return this._ctrlProp.GetXmlNodeInt("@min", 0); }
         set
         {
             if (value < 0 || value > 30000)
@@ -75,15 +78,13 @@ public class ExcelControlSpinButton : ExcelControl
             this._vmlProp.SetXmlNodeInt("x:Min", value);
         }
     }
+
     /// <summary>
     /// The value when a spin button is at it's maximum
     /// </summary>
     public int MaxValue
     {
-        get
-        {
-            return this._ctrlProp.GetXmlNodeInt("@max", 30000);
-        }
+        get { return this._ctrlProp.GetXmlNodeInt("@max", 30000); }
         set
         {
             if (value < 0 || value > 30000)
@@ -95,15 +96,13 @@ public class ExcelControlSpinButton : ExcelControl
             this._vmlProp.SetXmlNodeInt("x:Max", value);
         }
     }
+
     /// <summary>
     /// The value when a spin button is at it's maximum
     /// </summary>
     public int Value
     {
-        get
-        {
-            return this._ctrlProp.GetXmlNodeInt("@val", 0);
-        }
+        get { return this._ctrlProp.GetXmlNodeInt("@val", 0); }
         set
         {
             if (value < 0 || value > 30000)

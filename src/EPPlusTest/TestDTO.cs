@@ -26,6 +26,7 @@
  *******************************************************************************
   01/27/2020         EPPlus Software AB       Initial release EPPlus 5
  *******************************************************************************/
+
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -39,10 +40,14 @@ public class TestDTO
     public string NameVar;
 
     public int Id { get; set; }
+
     [DisplayName("Name from DisplayNameAttribute")]
     public string Name { get; set; }
+
     public TestDTO dto { get; set; }
+
     public DateTime Date { get; set; }
+
     public bool Boolean { get; set; }
 
     public string GetNameID()
@@ -50,6 +55,7 @@ public class TestDTO
         return this.Id + "," + this.Name;
     }
 }
+
 public class InheritTestDTO : TestDTO
 {
     public string InheritedProp { get; set; }

@@ -10,6 +10,7 @@
  *************************************************************************************************
   01/27/2020         EPPlus Software AB       Initial release EPPlus 5
  *************************************************************************************************/
+
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -20,10 +21,9 @@ using OfficeOpenXml.FormulaParsing.ExpressionGraph;
 
 namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Finance;
 
-[FunctionMetadata(
-                     Category = ExcelFunctionCategory.Financial,
-                     EPPlusVersion = "5.2",
-                     Description = "Calculates the cumulative principal paid on a loan, between two specified periods")]
+[FunctionMetadata(Category = ExcelFunctionCategory.Financial,
+                  EPPlusVersion = "5.2",
+                  Description = "Calculates the cumulative principal paid on a loan, between two specified periods")]
 internal class Cumprinc : ExcelFunction
 {
     public override CompileResult Execute(IEnumerable<FunctionArgument> arguments, ParsingContext context)
@@ -35,6 +35,7 @@ internal class Cumprinc : ExcelFunction
         int startPeriod = this.ArgToInt(arguments, 3);
         int endPeriod = this.ArgToInt(arguments, 4);
         int t = this.ArgToInt(arguments, 5);
+
         if (t < 0 || t > 1)
         {
             return this.CreateResult(eErrorType.Num);
@@ -42,6 +43,7 @@ internal class Cumprinc : ExcelFunction
 
         CumprincImpl? func = new CumprincImpl(new PmtProvider(), new FvProvider());
         FinanceCalcResult<double>? result = func.GetCumprinc(rate, nPer, presentValue, startPeriod, endPeriod, (PmtDue)t);
+
         if (result.HasError)
         {
             return this.CreateResult(result.ExcelErrorType);

@@ -10,6 +10,7 @@
  *************************************************************************************************
   01/27/2020         EPPlus Software AB       Initial release EPPlus 5
  *************************************************************************************************/
+
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -19,27 +20,26 @@ using OfficeOpenXml.FormulaParsing.ExpressionGraph;
 
 namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Database;
 
-[FunctionMetadata(
-                     Category = ExcelFunctionCategory.Database,
-                     EPPlusVersion = "4",
-                     Description = "Calculates the average of values in a field of a list or database, that satisfy specified conditions")]
+[FunctionMetadata(Category = ExcelFunctionCategory.Database,
+                  EPPlusVersion = "4",
+                  Description = "Calculates the average of values in a field of a list or database, that satisfy specified conditions")]
 internal class Daverage : DatabaseFunction
 {
     public Daverage()
         : this(new RowMatcher())
     {
-
     }
 
     public Daverage(RowMatcher rowMatcher)
         : base(rowMatcher)
     {
-
     }
+
     public override CompileResult Execute(IEnumerable<FunctionArgument> arguments, ParsingContext context)
     {
         ValidateArguments(arguments, 3);
         IEnumerable<double>? values = this.GetMatchingValues(arguments, context);
+
         if (!values.Any())
         {
             return this.CreateResult(0d, DataType.Integer);

@@ -10,6 +10,7 @@
  *************************************************************************************************
   01/27/2020         EPPlus Software AB       Initial release EPPlus 5
  *************************************************************************************************/
+
 using System;
 using System.Collections.Generic;
 using System.Globalization;
@@ -26,7 +27,6 @@ namespace OfficeOpenXml.FormulaParsing.ExcelUtilities;
 /// </summary>
 internal class AddressTranslator
 {
-        
     internal enum RangeCalculationBehaviour
     {
         FirstPart,
@@ -67,20 +67,22 @@ internal class AddressTranslator
         string? alphaPart = GetAlphaPart(address);
         col = 0;
         int nLettersInAlphabet = 26;
+
         for (int x = 0; x < alphaPart.Length; x++)
         {
             int pos = alphaPart.Length - x - 1;
             int currentNumericValue = GetNumericAlphaValue(alphaPart[x]);
             col += nLettersInAlphabet * pos * currentNumericValue;
+
             if (pos == 0)
             {
                 col += currentNumericValue;
             }
         }
+
         //col--;
         //row = GetIntPart(address) - 1 ?? GetRowIndexByBehaviour(behaviour);
         row = GetIntPart(address) ?? this.GetRowIndexByBehaviour(behaviour);
-
     }
 
     private int GetRowIndexByBehaviour(RangeCalculationBehaviour behaviour)
@@ -89,6 +91,7 @@ internal class AddressTranslator
         {
             return 1;
         }
+
         return this._excelDataProvider.ExcelMaxRows;
     }
 
@@ -108,6 +111,7 @@ internal class AddressTranslator
         {
             return int.Parse(Regex.Match(address, "[0-9]+").Value);
         }
+
         return null;
     }
 }

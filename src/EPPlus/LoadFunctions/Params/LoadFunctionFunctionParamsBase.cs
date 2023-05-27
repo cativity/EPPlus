@@ -10,6 +10,7 @@
  *************************************************************************************************
   07/16/2020         EPPlus Software AB       EPPlus 5.2.1
  *************************************************************************************************/
+
 using OfficeOpenXml.Table;
 using System;
 using System.Collections.Generic;
@@ -25,25 +26,17 @@ public abstract class LoadFunctionFunctionParamsBase
     /// <summary>
     /// If true a row with headers will be added above the data
     /// </summary>
-    public bool PrintHeaders
-    {
-        get; set;
-    }
+    public bool PrintHeaders { get; set; }
+
     /// <summary>
     /// A custom name for the table, if created. 
     /// The TableName must be unique within the workbook and be a valid table name.
     /// </summary>
-    public string TableName
-    {
-        get;
-        set;
-    }
+    public string TableName { get; set; }
+
     /// <summary>
     /// If set to another value than TableStyles.None the data will be added to a
     /// table with the specified style
     /// </summary>
-    public TableStyles? TableStyle
-    {
-        get; set;
-    } = null;
+    public TableStyles? TableStyle { get; set; } = null;
 }

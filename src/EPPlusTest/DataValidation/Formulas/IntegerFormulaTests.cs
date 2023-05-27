@@ -26,6 +26,7 @@
  *******************************************************************************
   01/27/2020         EPPlus Software AB       Initial release EPPlus 5
  *******************************************************************************/
+
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using OfficeOpenXml;
 using OfficeOpenXml.DataValidation;
@@ -81,8 +82,7 @@ public class IntegerFormulaTests : ValidationTestBase
         sheet.Cells["B1"].Value = 1;
 
         lessThan.Formula.ExcelFormula = "=B1<5";
-        lessThan.ShowErrorMessage= true;
-
+        lessThan.ShowErrorMessage = true;
 
         IExcelDataValidationInt? greaterThan = sheet.DataValidations.AddIntegerValidation("A2");
 

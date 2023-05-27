@@ -26,6 +26,7 @@
  *******************************************************************************
   01/27/2020         EPPlus Software AB       Initial release EPPlus 5
  *******************************************************************************/
+
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -41,6 +42,7 @@ public class FormulaR1C1Tests
 {
     private ExcelPackage _pck;
     private ExcelWorksheet _sheet;
+
     [TestInitialize]
     public void Initialize()
     {
@@ -62,8 +64,9 @@ public class FormulaR1C1Tests
         string f = this._sheet.Cells[5, 1].Formula;
         Assert.AreEqual("$B5", f);
         this._sheet.Cells[5, 1].Formula = f;
-        Assert.AreEqual(fR1C1, this._sheet.Cells[5,1].FormulaR1C1);
+        Assert.AreEqual(fR1C1, this._sheet.Cells[5, 1].FormulaR1C1);
     }
+
     [TestMethod]
     public void C()
     {
@@ -74,6 +77,7 @@ public class FormulaR1C1Tests
         this._sheet.Cells[5, 3].Formula = f;
         Assert.AreEqual(fR1C1, this._sheet.Cells[5, 3].FormulaR1C1);
     }
+
     [TestMethod]
     public void C2Abs()
     {
@@ -82,6 +86,7 @@ public class FormulaR1C1Tests
         string f = this._sheet.Cells[5, 3].Formula;
         Assert.AreEqual("SUM($B:$B)", f);
     }
+
     [TestMethod]
     public void C2AbsWithSheet()
     {
@@ -90,6 +95,7 @@ public class FormulaR1C1Tests
         string f = this._sheet.Cells[5, 3].Formula;
         Assert.AreEqual("SUM(A!$B:$B)", f);
     }
+
     [TestMethod]
     public void C2()
     {
@@ -100,20 +106,21 @@ public class FormulaR1C1Tests
         this._sheet.Cells[5, 3].Formula = f;
         Assert.AreEqual(fR1C1, this._sheet.Cells[5, 3].FormulaR1C1);
     }
+
     [TestMethod]
     public void R2Abs()
     {
         string fR1C1 = "SUM(R2)";
         this._sheet.Cells[5, 3].FormulaR1C1 = fR1C1;
         string f = this._sheet.Cells[5, 3].Formula;
-        Assert.AreEqual("SUM($2:$2)",f);
+        Assert.AreEqual("SUM($2:$2)", f);
 
         fR1C1 = "SUM(TEST2!R2)";
         this._sheet.Cells[5, 3].FormulaR1C1 = fR1C1;
         f = this._sheet.Cells[5, 3].Formula;
         Assert.AreEqual("SUM(TEST2!$2:$2)", f);
-
     }
+
     [TestMethod]
     public void R2()
     {
@@ -124,6 +131,7 @@ public class FormulaR1C1Tests
         this._sheet.Cells[5, 3].Formula = f;
         Assert.AreEqual(fR1C1, this._sheet.Cells[5, 3].FormulaR1C1);
     }
+
     [TestMethod]
     public void RCRelativeToAB()
     {
@@ -132,6 +140,7 @@ public class FormulaR1C1Tests
         string f = this._sheet.Cells[5, 3].Formula;
         Assert.AreEqual("SUMIFS(C:C,$B:$B,$A5)", f);
     }
+
     [TestMethod]
     public void RRelativeToAB()
     {
@@ -140,6 +149,7 @@ public class FormulaR1C1Tests
         string f = this._sheet.Cells[5, 3].Formula;
         Assert.AreEqual("SUMIFS(5:5,$B:$B,$A5)", f);
     }
+
     [TestMethod]
     public void RCRelativeToABToR1C1()
     {
@@ -150,6 +160,7 @@ public class FormulaR1C1Tests
         this._sheet.Cells[5, 3].Formula = f;
         Assert.AreEqual(fR1C1, this._sheet.Cells[5, 3].FormulaR1C1);
     }
+
     [TestMethod]
     public void RCRelativeToABToR1C1_2()
     {
@@ -162,6 +173,7 @@ public class FormulaR1C1Tests
 
         //"RC{colShort} - SUM(RC21:RC12)";
     }
+
     [TestMethod]
     public void RCFixToABToR1C1_2()
     {
@@ -172,6 +184,7 @@ public class FormulaR1C1Tests
         this._sheet.Cells[6, 13].Formula = f;
         Assert.AreEqual(fR1C1, this._sheet.Cells[6, 13].FormulaR1C1);
     }
+
     [TestMethod]
     public void SimpleRelativeR1C1()
     {
@@ -183,6 +196,7 @@ public class FormulaR1C1Tests
         c.Formula = f;
         Assert.AreEqual(fR1C1, c.FormulaR1C1);
     }
+
     [TestMethod]
     public void SimpleAbsR1C1()
     {
@@ -194,6 +208,7 @@ public class FormulaR1C1Tests
         c.Formula = f;
         Assert.AreEqual(fR1C1, c.FormulaR1C1);
     }
+
     [TestMethod]
     public void FullTwoColumn()
     {
@@ -204,6 +219,7 @@ public class FormulaR1C1Tests
         c.FormulaR1C1 = c.FormulaR1C1;
         Assert.AreEqual(c.Formula, formula);
     }
+
     [TestMethod]
     public void FullColumn()
     {
@@ -214,6 +230,7 @@ public class FormulaR1C1Tests
         c.FormulaR1C1 = c.FormulaR1C1;
         Assert.AreEqual(c.Formula, formula);
     }
+
     [TestMethod]
     public void FullTwoRow()
     {
@@ -224,6 +241,7 @@ public class FormulaR1C1Tests
         c.FormulaR1C1 = c.FormulaR1C1;
         Assert.AreEqual(c.Formula, formula);
     }
+
     [TestMethod]
     public void FullRow()
     {
@@ -247,6 +265,5 @@ public class FormulaR1C1Tests
         Assert.AreEqual("#REF!", this._sheet.Cells["B3"].Formula);
         this._sheet.Cells["B3"].FormulaR1C1 = "RC[-1]";
         Assert.AreEqual("A3", this._sheet.Cells["B3"].Formula);
-
     }
 }

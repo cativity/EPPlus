@@ -10,6 +10,7 @@
  *************************************************************************************************
   01/27/2020         EPPlus Software AB       Initial release EPPlus 5
  *************************************************************************************************/
+
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -28,7 +29,8 @@ namespace OfficeOpenXml.FormulaParsing;
 /// </summary>
 public class ParsingContext : IParsingLifetimeEventHandler
 {
-    private ParsingContext() {
+    private ParsingContext()
+    {
         this.SubtotalAddresses = new HashSet<ulong>();
     }
 
@@ -88,12 +90,14 @@ public class ParsingContext : IParsingLifetimeEventHandler
         context.Scopes = new ParsingScopes(context);
         context.AddressCache = new ExcelAddressCache();
         context.NameValueProvider = NvProvider.Empty;
+
         return context;
     }
 
     void IParsingLifetimeEventHandler.ParsingCompleted()
     {
         this.AddressCache.Clear();
+
         // SubtotalAddresses.Clear();
     }
 

@@ -10,6 +10,7 @@
  *************************************************************************************************
   01/27/2020         EPPlus Software AB       Initial release EPPlus 5
  *************************************************************************************************/
+
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -23,24 +24,23 @@ public class ObjectEnumerableArgConverter : CollectionFlattener<object>
 {
     public virtual IEnumerable<object> ConvertArgs(bool ignoreHidden, IEnumerable<FunctionArgument> arguments, ParsingContext context)
     {
-        return base.FuncArgsToFlatEnumerable(arguments, (arg, argList) =>
-            {
-                if (arg.Value is IRangeInfo)
-                {
-                    foreach (ICellInfo? cell in (IRangeInfo)arg.Value)
-                    {
-                        if (!CellStateHelper.ShouldIgnore(ignoreHidden, cell, context))
-                        {
-                            argList.Add(cell.Value);
-                        }
-                    }
-                }
-                else
-                {
-                    argList.Add(arg.Value);
-                }
-            })
-            ;
-
+        return base.FuncArgsToFlatEnumerable(arguments,
+                                             (arg, argList) =>
+                                             {
+                                                 if (arg.Value is IRangeInfo)
+                                                 {
+                                                     foreach (ICellInfo? cell in (IRangeInfo)arg.Value)
+                                                     {
+                                                         if (!CellStateHelper.ShouldIgnore(ignoreHidden, cell, context))
+                                                         {
+                                                             argList.Add(cell.Value);
+                                                         }
+                                                     }
+                                                 }
+                                                 else
+                                                 {
+                                                     argList.Add(arg.Value);
+                                                 }
+                                             });
     }
 }

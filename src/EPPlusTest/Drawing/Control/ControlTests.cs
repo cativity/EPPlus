@@ -20,18 +20,21 @@ public class ControlTests : TestBase
     static ExcelPackage _pck;
     static ExcelWorksheet _ws;
     static ExcelVBAModule _codeModule;
+
     [ClassInitialize]
     public static void Init(TestContext context)
     {
-        _pck = OpenPackage("FormControl.xlsm",true);
+        _pck = OpenPackage("FormControl.xlsm", true);
         _pck.Workbook.CreateVBAProject();
         _codeModule = _pck.Workbook.VbaProject.Modules.AddModule("ControlEvents");
     }
+
     [ClassCleanup]
     public static void Cleanup()
     {
         SaveAndCleanup(_pck);
     }
+
     [TestMethod]
     public void AddButtonTest()
     {
@@ -64,10 +67,10 @@ public class ControlTests : TestBase
         ctrl.Orientation = eShapeOrientation.TopToBottom;
         ctrl.ReadingOrder = eReadingOrder.LeftToRight;
         ctrl.AutomaticSize = true;
-            
-        Assert.AreEqual(eEditAs.Absolute ,ctrl.EditAs);
+
+        Assert.AreEqual(eEditAs.Absolute, ctrl.EditAs);
         Assert.AreEqual("A1", ctrl.FmlaTxbx.Address);
-            
+
         Assert.IsFalse(ctrl.Margin.Automatic);
         Assert.AreEqual(1, ctrl.Margin.LeftMargin.Value);
         Assert.AreEqual(eMeasurementUnits.Millimeters, ctrl.Margin.LeftMargin.Unit);
@@ -85,8 +88,9 @@ public class ControlTests : TestBase
 
         Assert.AreEqual(eLayoutFlow.VerticalIdeographic, ctrl.LayoutFlow);
         Assert.AreEqual(eShapeOrientation.TopToBottom, ctrl.Orientation);
-        Assert.AreEqual(eReadingOrder.LeftToRight, ctrl.ReadingOrder);            
+        Assert.AreEqual(eReadingOrder.LeftToRight, ctrl.ReadingOrder);
     }
+
     [TestMethod]
     public void AddCheckboxTest()
     {
@@ -94,11 +98,15 @@ public class ControlTests : TestBase
         ExcelControlCheckBox? ctrl = _ws.Drawings.AddCheckBoxControl("Checkbox 1");
         ctrl.Macro = "Checkbox_Click";
         ctrl.Fill.Style = eVmlFillType.Gradient;
-        ctrl.Fill.SecondColor.ColorString= "#ff8200";
+        ctrl.Fill.SecondColor.ColorString = "#ff8200";
         ctrl.Fill.GradientSettings.Focus = 100;
         ctrl.Fill.GradientSettings.Angle = -135;
         ctrl.Fill.Color.ColorString = "#000082";
-        ctrl.Fill.GradientSettings.SetGradientColors(new VmlGradiantColor(0, Color.Red), new VmlGradiantColor(50, Color.Orange), new VmlGradiantColor(100, Color.Yellow));            
+
+        ctrl.Fill.GradientSettings.SetGradientColors(new VmlGradiantColor(0, Color.Red),
+                                                     new VmlGradiantColor(50, Color.Orange),
+                                                     new VmlGradiantColor(100, Color.Yellow));
+
         ctrl.Fill.Opacity = 97;
         ctrl.Fill.Recolor = true;
         ctrl.Fill.SecondColorOpacity = 50;
@@ -109,10 +117,11 @@ public class ControlTests : TestBase
         ctrl.Checked = eCheckState.Mixed;
         ctrl.SetPosition(100, 100);
         ctrl.SetSize(200, 100);
-            
+
         ExcelVBAModule? codeModule = _pck.Workbook.VbaProject.Modules.AddModule("CheckboxCode");
         _codeModule.Code += "Sub Checkbox_Click()\r\n  MsgBox \"Clicked Checkbox!!\"\r\nEnd Sub\r\n";
     }
+
     [TestMethod]
     public void AddRadioButtonTest()
     {
@@ -156,6 +165,7 @@ public class ControlTests : TestBase
         ExcelVBAModule? codeModule = _pck.Workbook.VbaProject.Modules.AddModule("RadioButtonCode");
         _codeModule.Code += "Sub RadioButton_Click()\r\n  MsgBox \"Clicked RadioButton!!\"\r\nEnd Sub\r\n";
     }
+
     [TestMethod]
     public void AddCheckboxWithFrameFillTest()
     {
@@ -168,6 +178,7 @@ public class ControlTests : TestBase
         ctrl.SetPosition(100, 100);
         ctrl.SetSize(200, 100);
     }
+
     [TestMethod]
     public void AddCheckboxWithTileFillTest()
     {
@@ -180,6 +191,7 @@ public class ControlTests : TestBase
         ctrl.SetPosition(100, 100);
         ctrl.SetSize(200, 100);
     }
+
     [TestMethod]
     public void AddCheckboxWithPatternFillTest()
     {
@@ -217,6 +229,7 @@ public class ControlTests : TestBase
 
         _codeModule.Code += "Sub DropDown_Click()\r\n  MsgBox \"Selected DropDown!!\"\r\nEnd Sub\r\n";
     }
+
     [TestMethod]
     public void AddListBoxTest()
     {
@@ -225,7 +238,7 @@ public class ControlTests : TestBase
         ctrl.Macro = "ListBox_Click";
         ctrl.SetPosition(500, 100);
         ctrl.SetSize(200, 100);
-            
+
         _ws.Cells["A1"].Value = 1;
         _ws.Cells["A2"].Value = 2;
         _ws.Cells["A3"].Value = 3;
@@ -235,9 +248,10 @@ public class ControlTests : TestBase
 
         ctrl.InputRange = _ws.Cells["A1:A8"];
         ctrl.LinkedCell = _ws.Cells["B1"];
-            
+
         _codeModule.Code += "Sub ListBox_Click()\r\n  MsgBox \"Selected ListBox!!\"\r\nEnd Sub\r\n";
     }
+
     [TestMethod]
     public void AddLabelTest()
     {
@@ -253,6 +267,7 @@ public class ControlTests : TestBase
 
         _codeModule.Code += "Sub Label_Click()\r\n  MsgBox \"Selected Label!!\"\r\nEnd Sub\r\n";
     }
+
     [TestMethod]
     public void AddSpinButtonTest()
     {
@@ -268,6 +283,7 @@ public class ControlTests : TestBase
 
         _codeModule.Code += "Sub SpinButton_Click()\r\n  MsgBox \"Selected SpinButton!!\"\r\nEnd Sub\r\n";
     }
+
     [TestMethod]
     public void AddScrollbarButtonTest()
     {
@@ -275,6 +291,7 @@ public class ControlTests : TestBase
         ExcelControlScrollBar? ctrl = _ws.Drawings.AddScrollBarControl("Scrollbar 1");
         ctrl.Macro = "ScrolbarButton_Click";
         ctrl.SetPosition(500, 100);
+
         //ctrl.SetSize(200, 100);
 
         _ws.Cells["G1"].Value = 3;
@@ -296,7 +313,7 @@ public class ControlTests : TestBase
         ctrl.SetPosition(480, 80);
         ctrl.SetSize(200, 120);
 
-        _ws.Cells["G1"].Value = "Linked Groupbox";            
+        _ws.Cells["G1"].Value = "Linked Groupbox";
         ctrl.LinkedCell = _ws.Cells["G1"];
 
         ExcelControlRadioButton? r1 = _ws.Drawings.AddRadioButtonControl("Option Button 1");
@@ -325,6 +342,7 @@ public class ControlTests : TestBase
 
         _codeModule.Code += "Sub GroupBox_Click()\r\n  MsgBox \"Clicked GroupBox!!\"\r\nEnd Sub\r\n";
     }
+
     [TestMethod]
     public void AddControlHeaderAndComment()
     {
@@ -337,16 +355,18 @@ public class ControlTests : TestBase
         ExcelControlButton? btn = ws.Drawings.AddButtonControl("Button 1");
         btn.SetPosition(100, 100);
     }
+
     [TestMethod]
     public void ValidateVmlGetColor()
     {
-        Assert.AreEqual(Color.FromArgb(0xFF,0x33, 0x99, 0x66).ToArgb(), ExcelVmlDrawingColor.GetColor("#396 [57]").ToArgb());
+        Assert.AreEqual(Color.FromArgb(0xFF, 0x33, 0x99, 0x66).ToArgb(), ExcelVmlDrawingColor.GetColor("#396 [57]").ToArgb());
         Assert.AreEqual(Color.FromArgb(0xFF, 0xFF, 0xCC, 0x99).ToArgb(), ExcelVmlDrawingColor.GetColor("#fc9").ToArgb());
         Assert.AreEqual(Color.FromArgb(0xFF, 0x00, 0x00, 0x82).ToArgb(), ExcelVmlDrawingColor.GetColor("#000082").ToArgb());
         Assert.AreEqual(Color.Red.ToArgb(), ExcelVmlDrawingColor.GetColor("Red").ToArgb());
         Assert.AreEqual(Color.Blue.ToArgb(), (long)ExcelVmlDrawingColor.GetColor("Blue [0]").ToArgb());
-        Assert.AreEqual(Color.FromArgb(0xFF, 200, 100, 0).ToArgb(), ExcelVmlDrawingColor.GetColor("rgb (200, 100, 0)").ToArgb()); 
+        Assert.AreEqual(Color.FromArgb(0xFF, 200, 100, 0).ToArgb(), ExcelVmlDrawingColor.GetColor("rgb (200, 100, 0)").ToArgb());
     }
+
     [TestMethod]
     public void RemoveControlTest()
     {
@@ -354,6 +374,7 @@ public class ControlTests : TestBase
         ExcelControlGroupBox? ctrl = _ws.Drawings.AddGroupBoxControl("GroupBox 1");
         Assert.AreEqual(1, _ws.Drawings.Count);
     }
+
     [TestMethod]
     public void VerifySize2()
     {
@@ -388,5 +409,4 @@ public class ControlTests : TestBase
 
         SaveAndCleanup(p);
     }
-
 }

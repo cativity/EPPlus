@@ -10,6 +10,7 @@
  *************************************************************************************************
   12/28/2020         EPPlus Software AB       Pivot Table Styling - EPPlus 5.6
  *************************************************************************************************/
+
 using OfficeOpenXml.Core;
 using System;
 using System.Xml;
@@ -23,11 +24,13 @@ public class ExcelPivotAreaReferenceCollection : EPPlusReadOnlyList<ExcelPivotAr
 {
     XmlHelper _xmlHelper;
     ExcelPivotTable _pt;
+
     internal ExcelPivotAreaReferenceCollection(XmlNamespaceManager nsm, XmlNode topNode, ExcelPivotTable pt)
     {
         this._xmlHelper = XmlHelperFactory.Create(nsm, topNode);
         this._pt = pt;
     }
+
     /// <summary>
     /// Adds a pivot table field to the collection. The field is usually a column or row field
     /// </summary>
@@ -37,6 +40,7 @@ public class ExcelPivotAreaReferenceCollection : EPPlusReadOnlyList<ExcelPivotAr
     {
         return this.Add(field._pivotTable, field.Index);
     }
+
     /// <summary>
     /// Adds a pivot table field to the collection. The field is usually a column or row field
     /// </summary>
@@ -46,13 +50,16 @@ public class ExcelPivotAreaReferenceCollection : EPPlusReadOnlyList<ExcelPivotAr
     public ExcelPivotAreaReference Add(ExcelPivotTable pivotTable, int fieldIndex)
     {
         XmlNode? n = this._xmlHelper.CreateNode("d:references");
-        XmlNode? rn= this._xmlHelper.CreateNode(n, "d:reference", true);
-        if(pivotTable!= this._pt)
+        XmlNode? rn = this._xmlHelper.CreateNode(n, "d:reference", true);
+
+        if (pivotTable != this._pt)
         {
             throw new InvalidOperationException("The pivot table field is from another pivot table.");
         }
-        ExcelPivotAreaReference? r =new ExcelPivotAreaReference(this._xmlHelper.NameSpaceManager, rn, pivotTable, fieldIndex);
+
+        ExcelPivotAreaReference? r = new ExcelPivotAreaReference(this._xmlHelper.NameSpaceManager, rn, pivotTable, fieldIndex);
         this._list.Add(r);
+
         return r;
     }
 }

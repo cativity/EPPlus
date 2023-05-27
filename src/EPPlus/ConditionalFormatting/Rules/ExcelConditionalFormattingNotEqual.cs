@@ -10,6 +10,7 @@
  *************************************************************************************************
   01/27/2020         EPPlus Software AB       Initial release EPPlus 5
  *************************************************************************************************/
+
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -23,13 +24,12 @@ namespace OfficeOpenXml.ConditionalFormatting;
 /// <summary>
 /// ExcelConditionalFormattingNotEqual
 /// </summary>
-public class ExcelConditionalFormattingNotEqual
-    : ExcelConditionalFormattingRule,
-      IExcelConditionalFormattingNotEqual
+public class ExcelConditionalFormattingNotEqual : ExcelConditionalFormattingRule, IExcelConditionalFormattingNotEqual
 {
     /****************************************************************************************/
 
     #region Constructors
+
     /// <summary>
     /// 
     /// </summary>
@@ -38,21 +38,19 @@ public class ExcelConditionalFormattingNotEqual
     /// <param name="worksheet"></param>
     /// <param name="itemElementNode"></param>
     /// <param name="namespaceManager"></param>
-    internal ExcelConditionalFormattingNotEqual(
-        ExcelAddress address,
-        int priority,
-        ExcelWorksheet worksheet,
-        XmlNode itemElementNode,
-        XmlNamespaceManager namespaceManager)
-        : base(
-               eExcelConditionalFormattingRuleType.NotEqual,
+    internal ExcelConditionalFormattingNotEqual(ExcelAddress address,
+                                                int priority,
+                                                ExcelWorksheet worksheet,
+                                                XmlNode itemElementNode,
+                                                XmlNamespaceManager namespaceManager)
+        : base(eExcelConditionalFormattingRuleType.NotEqual,
                address,
                priority,
                worksheet,
                itemElementNode,
                namespaceManager == null ? worksheet.NameSpaceManager : namespaceManager)
     {
-        if (itemElementNode==null) //Set default values and create attributes if needed
+        if (itemElementNode == null) //Set default values and create attributes if needed
         {
             this.Operator = eExcelConditionalFormattingOperatorType.NotEqual;
             this.Formula = string.Empty;
@@ -66,17 +64,8 @@ public class ExcelConditionalFormattingNotEqual
     /// <param name="address"></param>
     /// <param name="worksheet"></param>
     /// <param name="itemElementNode"></param>
-    internal ExcelConditionalFormattingNotEqual(
-        ExcelAddress address,
-        int priority,
-        ExcelWorksheet worksheet,
-        XmlNode itemElementNode)
-        : this(
-               address,
-               priority,
-               worksheet,
-               itemElementNode,
-               null)
+    internal ExcelConditionalFormattingNotEqual(ExcelAddress address, int priority, ExcelWorksheet worksheet, XmlNode itemElementNode)
+        : this(address, priority, worksheet, itemElementNode, null)
     {
     }
 
@@ -86,18 +75,11 @@ public class ExcelConditionalFormattingNotEqual
     /// <param name="priority"></param>
     /// <param name="address"></param>
     /// <param name="worksheet"></param>
-    internal ExcelConditionalFormattingNotEqual(
-        ExcelAddress address,
-        int priority,
-        ExcelWorksheet worksheet)
-        : this(
-               address,
-               priority,
-               worksheet,
-               null,
-               null)
+    internal ExcelConditionalFormattingNotEqual(ExcelAddress address, int priority, ExcelWorksheet worksheet)
+        : this(address, priority, worksheet, null, null)
     {
     }
+
     #endregion Constructors
 
     /****************************************************************************************/

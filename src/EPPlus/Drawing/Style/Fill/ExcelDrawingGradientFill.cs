@@ -10,6 +10,7 @@
  *************************************************************************************************
   01/27/2020         EPPlus Software AB       Initial release EPPlus 5
  *************************************************************************************************/
+
 using OfficeOpenXml.Drawing.Style.Coloring;
 using OfficeOpenXml.Drawing.Theme;
 using OfficeOpenXml.Utils.Extensions;
@@ -24,7 +25,9 @@ namespace OfficeOpenXml.Drawing.Style.Fill;
 public class ExcelDrawingGradientFill : ExcelDrawingFillBase
 {
     private string[] _schemaNodeOrder;
-    internal ExcelDrawingGradientFill(XmlNamespaceManager nsm, XmlNode topNode, string[]  schemaNodeOrder, Action initXml) : base(nsm, topNode,"", initXml)
+
+    internal ExcelDrawingGradientFill(XmlNamespaceManager nsm, XmlNode topNode, string[] schemaNodeOrder, Action initXml)
+        : base(nsm, topNode, "", initXml)
     {
         this._schemaNodeOrder = schemaNodeOrder;
         this.GetXml();
@@ -34,16 +37,15 @@ public class ExcelDrawingGradientFill : ExcelDrawingFillBase
     /// The direction(s) in which to flip the gradient while tiling
     /// </summary>
     public eTileFlipMode TileFlip { get; set; }
+
     /// <summary>
     /// If the fill rotates along with shape.
     /// </summary>
-    public bool RotateWithShape
-    {
-        get;
-        set;
-    }
+    public bool RotateWithShape { get; set; }
+
     ExcelDrawingGradientFillColorList _colors = null;
     const string ColorsPath = "a:gsLst";
+
     /// <summary>
     /// A list of colors and their positions in percent used to generate the gradiant fill
     /// </summary>
@@ -51,35 +53,32 @@ public class ExcelDrawingGradientFill : ExcelDrawingFillBase
     {
         get { return this._colors ??= new ExcelDrawingGradientFillColorList(this._nsm, this._topNode, ColorsPath, this._schemaNodeOrder); }
     }
+
     /// <summary>
     /// The fill style. 
     /// </summary>
     public override eFillStyle Style
     {
-        get
-        {
-            return eFillStyle.GradientFill;
-        }
+        get { return eFillStyle.GradientFill; }
     }
 
     internal override string NodeName
     {
-        get
-        {
-            return "a:gradFill";
-        }
+        get { return "a:gradFill"; }
     }
 
     internal override void SetXml(XmlNamespaceManager nsm, XmlNode node)
     {
         this._initXml?.Invoke();
+
         if (this._xml == null)
         {
-            this.InitXml(nsm, node,"");
+            this.InitXml(nsm, node, "");
         }
 
         this.CheckTypeChange(this.NodeName);
         this._xml.SetXmlNodeBool("@rotWithShape", this.RotateWithShape);
+
         if (this.TileFlip == eTileFlipMode.None)
         {
             this._xml.DeleteNode("@flip");
@@ -89,15 +88,15 @@ public class ExcelDrawingGradientFill : ExcelDrawingFillBase
             this._xml.SetXmlNodeString("@flip", this.TileFlip.ToString().ToLower());
         }
 
-        if (this.ShadePath==eShadePath.Linear && this.LinearSettings.Angel!=0 && this.LinearSettings.Scaled==false)
+        if (this.ShadePath == eShadePath.Linear && this.LinearSettings.Angel != 0 && this.LinearSettings.Scaled == false)
         {
             this._xml.SetXmlNodeAngel("a:lin/@ang", this.LinearSettings.Angel);
             this._xml.SetXmlNodeBool("a:lin/@scaled", this.LinearSettings.Scaled);
         }
-        else if(this.ShadePath != eShadePath.Linear)
+        else if (this.ShadePath != eShadePath.Linear)
         {
             this._xml.SetXmlNodeString("a:path/@path", GetPathString(this.ShadePath));
-            this._xml.SetXmlNodePercentage("a:path/a:fillToRect/@b", this.FocusPoint.BottomOffset, true, int.MaxValue/10000);
+            this._xml.SetXmlNodePercentage("a:path/a:fillToRect/@b", this.FocusPoint.BottomOffset, true, int.MaxValue / 10000);
             this._xml.SetXmlNodePercentage("a:path/a:fillToRect/@t", this.FocusPoint.TopOffset, true, int.MaxValue / 10000);
             this._xml.SetXmlNodePercentage("a:path/a:fillToRect/@l", this.FocusPoint.LeftOffset, true, int.MaxValue / 10000);
             this._xml.SetXmlNodePercentage("a:path/a:fillToRect/@r", this.FocusPoint.RightOffset, true, int.MaxValue / 10000);
@@ -106,14 +105,17 @@ public class ExcelDrawingGradientFill : ExcelDrawingFillBase
 
     private static string GetPathString(eShadePath shadePath)
     {
-        switch(shadePath)
+        switch (shadePath)
         {
             case eShadePath.Circle:
                 return "circle";
+
             case eShadePath.Rectangle:
                 return "rect";
+
             case eShadePath.Shape:
                 return "shape";
+
             default:
                 throw new ArgumentException("Unhandled ShadePath");
         }
@@ -123,9 +125,11 @@ public class ExcelDrawingGradientFill : ExcelDrawingFillBase
     {
         this._colors = new ExcelDrawingGradientFillColorList(this._xml.NameSpaceManager, this._xml.TopNode, ColorsPath, this._schemaNodeOrder);
         this.RotateWithShape = this._xml.GetXmlNodeBool("@rotWithShape");
+
         try
         {
             string? s = this._xml.GetXmlNodeString("@flip");
+
             if (string.IsNullOrEmpty(s))
             {
                 this.TileFlip = eTileFlipMode.None;
@@ -141,6 +145,7 @@ public class ExcelDrawingGradientFill : ExcelDrawingFillBase
         }
 
         XmlNode? cols = this._xml.TopNode.SelectSingleNode("a:gsLst", this._xml.NameSpaceManager);
+
         if (cols != null)
         {
             foreach (XmlNode c in cols.ChildNodes)
@@ -149,8 +154,10 @@ public class ExcelDrawingGradientFill : ExcelDrawingFillBase
                 this._colors.Add(xml.GetXmlNodeDouble("@pos") / 1000, c);
             }
         }
-        string? path= this._xml.GetXmlNodeString("a:path/@path");
-        if(!string.IsNullOrEmpty(path))
+
+        string? path = this._xml.GetXmlNodeString("a:path/@path");
+
+        if (!string.IsNullOrEmpty(path))
         {
             if (path == "rect")
             {
@@ -163,7 +170,8 @@ public class ExcelDrawingGradientFill : ExcelDrawingFillBase
         {
             this.ShadePath = eShadePath.Linear;
         }
-        if(this.ShadePath==eShadePath.Linear)
+
+        if (this.ShadePath == eShadePath.Linear)
         {
             this.LinearSettings = new ExcelDrawingGradientFillLinearSettings(this._xml);
         }
@@ -172,19 +180,18 @@ public class ExcelDrawingGradientFill : ExcelDrawingFillBase
             this.FocusPoint = new ExcelDrawingRectangle(this._xml, "a:path/a:fillToRect/", 0);
         }
     }
+
     eShadePath _shadePath = eShadePath.Linear;
+
     /// <summary>
     /// Specifies the shape of the path to follow
     /// </summary>
     public eShadePath ShadePath
     {
-        get
-        {
-            return this._shadePath;
-        }
+        get { return this._shadePath; }
         set
         {
-            if(value==eShadePath.Linear)
+            if (value == eShadePath.Linear)
             {
                 this.LinearSettings = new ExcelDrawingGradientFillLinearSettings();
                 this.FocusPoint = null;
@@ -203,20 +210,14 @@ public class ExcelDrawingGradientFill : ExcelDrawingFillBase
     /// The focuspoint when ShadePath is set to a non linear value.
     /// This property is set to null if ShadePath is set to Linear
     /// </summary>
-    public ExcelDrawingRectangle FocusPoint
-    {
-        get;
-        private set;
-    }
+    public ExcelDrawingRectangle FocusPoint { get; private set; }
+
     /// <summary>
     /// Linear gradient settings.
     /// This property is set to null if ShadePath is set to Linear
     /// </summary>
-    public ExcelDrawingGradientFillLinearSettings LinearSettings
-    {
-        get;
-        private set;
-    }
+    public ExcelDrawingGradientFillLinearSettings LinearSettings { get; private set; }
+
     internal override void UpdateXml()
     {
         if (this._xml == null)
@@ -225,6 +226,5 @@ public class ExcelDrawingGradientFill : ExcelDrawingFillBase
         }
 
         this.SetXml(this._nsm, this._xml.TopNode);
-            
     }
 }

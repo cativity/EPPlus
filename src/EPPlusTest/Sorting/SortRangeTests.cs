@@ -21,10 +21,12 @@ public class SortRangeTests
         Random? rnd = new Random();
         ExcelWorksheet? sheet = package.Workbook.Worksheets.Add("Test");
         Assert.IsNull(sheet.SortState, "Worksheet.SortState was not null");
+
         for (int x = 1; x < 10; x++)
         {
             sheet.Cells[x, 1].Value = rnd.Next(1, 20);
         }
+
         sheet.Cells["A1:A10"].Sort(0, true);
         Assert.IsNotNull(sheet.SortState, "Worksheet.SortState was null");
         Assert.AreEqual(1, sheet.SortState.SortConditions.Count());
@@ -37,10 +39,12 @@ public class SortRangeTests
         Random? rnd = new Random();
         ExcelWorksheet? sheet = package.Workbook.Worksheets.Add("Test");
         Assert.IsNull(sheet.SortState, "Worksheet.SortState was not null");
+
         for (int x = 1; x < 10; x++)
         {
             sheet.Cells[x, 1].Value = rnd.Next(1, 20);
         }
+
         sheet.Cells["A1:A10"].Sort(0, true);
         Assert.AreEqual(1, sheet.SortState.TopNode.ChildNodes.Count);
 
@@ -55,10 +59,12 @@ public class SortRangeTests
         Random? rnd = new Random();
         ExcelWorksheet? sheet = package.Workbook.Worksheets.Add("Test");
         Assert.IsNull(sheet.SortState, "Worksheet.SortState was not null");
+
         for (int x = 1; x < 10; x++)
         {
             sheet.Cells[x, 1].Value = rnd.Next(1, 20);
         }
+
         sheet.Cells["A1:A10"].Sort(0, true);
         Assert.AreEqual(1, sheet.SortState.TopNode.ChildNodes.Count);
         Assert.AreEqual(1, sheet.SortState.TopNode.ChildNodes.Count);
@@ -141,10 +147,7 @@ public class SortRangeTests
     public void ShouldConfigureSortOptionsForMultiColumns()
     {
         RangeSortOptions? options = new RangeSortOptions();
-        options
-            .SortBy.Column(0)
-            .ThenSortBy.Column(3, eSortOrder.Descending)
-            .ThenSortBy.Column(2);
+        options.SortBy.Column(0).ThenSortBy.Column(3, eSortOrder.Descending).ThenSortBy.Column(2);
         Assert.AreEqual(3, options.ColumnIndexes.Count);
         Assert.AreEqual(3, options.Descending.Count);
         Assert.AreEqual(0, options.ColumnIndexes.First());
@@ -171,9 +174,7 @@ public class SortRangeTests
         sheet.Cells[3, 3].Value = "C";
         sheet.Cells[4, 3].Value = "B";
 
-        sheet.Cells["A1:C4"].Sort(options => options
-                                             .SortBy.Column(0)
-                                             .ThenSortBy.Column(2, eSortOrder.Descending));
+        sheet.Cells["A1:C4"].Sort(options => options.SortBy.Column(0).ThenSortBy.Column(2, eSortOrder.Descending));
         Assert.IsNotNull(sheet.SortState);
         Assert.AreEqual(2, sheet.SortState.SortConditions.Count());
         Assert.IsTrue(sheet.SortState.SortConditions.Last().Descending);
@@ -432,11 +433,13 @@ public class SortRangeTests
         sheet.Cells[2, 3].Value = 3;
         sheet.Cells[2, 4].Value = 2;
         sheet.Cells[2, 5].Value = 5;
-        sheet.Cells["A1:E2"].Sort(x =>
-        {
-            x.CompareOptions = CompareOptions.IgnoreCase;
-            x.SortLeftToRightBy.Row(0).UsingCustomList("S", "M", "L").ThenSortBy.Row(1);
-        });
+
+        sheet.Cells["A1:E2"]
+             .Sort(x =>
+             {
+                 x.CompareOptions = CompareOptions.IgnoreCase;
+                 x.SortLeftToRightBy.Row(0).UsingCustomList("S", "M", "L").ThenSortBy.Row(1);
+             });
 
         Assert.AreEqual("s", sheet.Cells[1, 1].Value);
         Assert.AreEqual("m", sheet.Cells[1, 2].Value);

@@ -10,6 +10,7 @@
  *************************************************************************************************
   01/27/2020         EPPlus Software AB       Initial release EPPlus 5
  *************************************************************************************************/
+
 using System.Xml;
 using OfficeOpenXml.Drawing.Interfaces;
 
@@ -18,7 +19,7 @@ namespace OfficeOpenXml.Drawing.Chart;
 /// <summary>
 /// A base class used for chart series that support ErrorBars
 /// </summary>
-public class ExcelChartSerieWithErrorBars : ExcelChartStandardSerie, IDrawingChartErrorBars  
+public class ExcelChartSerieWithErrorBars : ExcelChartStandardSerie, IDrawingChartErrorBars
 {
     /// <summary>
     /// Default constructor
@@ -27,20 +28,23 @@ public class ExcelChartSerieWithErrorBars : ExcelChartStandardSerie, IDrawingCha
     /// <param name="ns">Namespacemanager</param>
     /// <param name="node">Topnode</param>
     /// <param name="isPivot">Is pivotchart</param>
-    internal ExcelChartSerieWithErrorBars(ExcelChart chart, XmlNamespaceManager ns, XmlNode node, bool isPivot) :
-        base(chart, ns, node, isPivot)
+    internal ExcelChartSerieWithErrorBars(ExcelChart chart, XmlNamespaceManager ns, XmlNode node, bool isPivot)
+        : base(chart, ns, node, isPivot)
     {
         XmlNode? errorNode = this.GetNode("c:errBars");
-        if (errorNode != null) 
+
+        if (errorNode != null)
         {
             this.ErrorBars = new ExcelChartErrorBars(this, errorNode);
         }
     }
+
     /// <summary>
     /// A collection of error bars
     /// <seealso cref="AddErrorBars(eErrorBarType, eErrorValueType)"/>
     /// </summary>
     public ExcelChartErrorBars ErrorBars { get; internal set; } = null;
+
     /// <summary>
     /// Adds a errorbars to the chart serie
     /// </summary>
@@ -59,6 +63,7 @@ public class ExcelChartSerieWithErrorBars : ExcelChartStandardSerie, IDrawingCha
         errorBars.NoEndCap = false;
 
         this._chart.ApplyStyleOnPart(errorBars, this._chart.StyleManager?.Style?.ErrorBar);
+
         return errorBars;
     }
 

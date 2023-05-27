@@ -26,28 +26,34 @@
  *******************************************************************************
   01/27/2020         EPPlus Software AB       Initial release EPPlus 5
  *******************************************************************************/
+
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using OfficeOpenXml;
 using OfficeOpenXml.Table;
 using System;
+
 namespace EPPlusTest.Table;
 
 [TestClass]
 public class TableInsertTests : TestBase
 {
     static ExcelPackage _pck;
+
     [ClassInitialize]
     public static void Init(TestContext context)
     {
         InitBase();
         _pck = OpenPackage("TableInsert.xlsx", true);
     }
+
     [ClassCleanup]
     public static void Cleanup()
     {
         SaveAndCleanup(_pck);
     }
+
     #region Insert Row
+
     [TestMethod]
     public void TableInsertRowTop()
     {
@@ -69,6 +75,7 @@ public class TableInsertTests : TestBase
         tbl.InsertRow(0, 3);
         Assert.AreEqual("Shift Me Down", ws.Cells["A106"].Value);
     }
+
     [TestMethod]
     public void TableInsertRowBottom()
     {
@@ -84,6 +91,7 @@ public class TableInsertTests : TestBase
         Assert.AreEqual("A1:D104", tbl.Address.Address);
         Assert.AreEqual("Shift Me Down", ws.Cells["A106"].Value);
     }
+
     [TestMethod]
     public void TableInsertRowBottomWithTotal()
     {
@@ -107,6 +115,7 @@ public class TableInsertTests : TestBase
         Assert.AreEqual("Don't Shift Me", ws.Cells["F5"].Value);
         Assert.AreEqual("Shift Me Down", ws.Cells["B106"].Value);
     }
+
     [TestMethod]
     public void TableInsertRowInside()
     {
@@ -122,6 +131,7 @@ public class TableInsertTests : TestBase
         Assert.AreEqual("A1:D104", tbl.Address.Address);
         Assert.AreEqual("Shift Me Down", ws.Cells["A106"].Value);
     }
+
     [TestMethod]
     [ExpectedException(typeof(ArgumentException))]
     public void TableInsertRowPositionNegative()
@@ -132,6 +142,7 @@ public class TableInsertTests : TestBase
         ExcelTable? tbl = ws.Tables.Add(ws.Cells["A1:D100"], "Table1");
         tbl.InsertRow(-1);
     }
+
     [TestMethod]
     [ExpectedException(typeof(ArgumentException))]
     public void TableInsertRowRowsNegative()
@@ -142,6 +153,7 @@ public class TableInsertTests : TestBase
         ExcelTable? tbl = ws.Tables.Add(ws.Cells["A1:D100"], "Table1");
         tbl.InsertRow(0, -1);
     }
+
     [TestMethod]
     public void TableAddRowToMax()
     {
@@ -149,32 +161,41 @@ public class TableInsertTests : TestBase
         ExcelWorksheet? ws = _pck.Workbook.Worksheets.Add("TableMaxRow");
         LoadTestdata(ws, 100);
         ExcelTable? tbl = ws.Tables.Add(ws.Cells["A1:D100"], "TableMaxRow");
+
         //Act
         tbl.AddRow(ExcelPackage.MaxRows - 100);
+
         //Assert
         Assert.AreEqual(ExcelPackage.MaxRows, tbl.Address._toRow);
     }
+
     [TestMethod]
     [ExpectedException(typeof(InvalidOperationException))]
     public void TableAddRowOverMax()
     {
         using ExcelPackage? p = new ExcelPackage();
+
         //Setup
         ExcelWorksheet? ws = p.Workbook.Worksheets.Add("TableOverMaxRow");
         LoadTestdata(ws, 100);
         ExcelTable? tbl = ws.Tables.Add(ws.Cells["A1:D100"], "TableOverMaxRow");
+
         //Act
         tbl.AddRow(ExcelPackage.MaxRows - 99);
+
         //Assert
         Assert.AreEqual(ExcelPackage.MaxRows, tbl.Address._toRow);
     }
+
     #endregion
+
     #region Insert Column
+
     [TestMethod]
     public void TableInsertColumnFirst()
     {
         //Setup
-            
+
         ExcelWorksheet? ws = _pck.Workbook.Worksheets.Add("TableInsertColFirst");
         LoadTestdata(ws, 100);
 
@@ -190,6 +211,7 @@ public class TableInsertTests : TestBase
         tbl.Columns.Insert(0, 3);
         Assert.AreEqual("Shift Me Right", ws.Cells["I10"].Value);
     }
+
     [TestMethod]
     public void TableAddColumn()
     {
@@ -205,6 +227,7 @@ public class TableInsertTests : TestBase
         Assert.AreEqual("A1:H100", tbl.Address.Address);
         Assert.AreEqual("Shift Me Right", ws.Cells["I99"].Value);
     }
+
     [TestMethod]
     public void TableAddColumnWithTotal()
     {
@@ -230,6 +253,7 @@ public class TableInsertTests : TestBase
         Assert.AreEqual("Don't Shift Me", ws.Cells["A50"].Value);
         Assert.AreEqual("Don't Shift Me", ws.Cells["F102"].Value);
     }
+
     [TestMethod]
     public void TableInsertColumnInside()
     {
@@ -239,13 +263,14 @@ public class TableInsertTests : TestBase
         ws.Cells["E9999"].Value = "Don't Me Down";
         ws.Cells["E19999"].Value = "Don't Me Down";
         ExcelTable? tbl = ws.Tables.Add(ws.Cells["A1:D100"], "TableInsertColInside");
-        tbl.Columns.Insert(4,2);
+        tbl.Columns.Insert(4, 2);
         Assert.AreEqual("A1:F100", tbl.Address.Address);
         tbl.Columns.Insert(8, 8);
         Assert.AreEqual("A1:N100", tbl.Address.Address);
         Assert.AreEqual("Don't Me Down", ws.Cells["E9999"].Value);
         Assert.AreEqual("Don't Me Down", ws.Cells["E19999"].Value);
     }
+
     [TestMethod]
     [ExpectedException(typeof(ArgumentException))]
     public void TableInsertColumnPositionNegative()
@@ -256,41 +281,51 @@ public class TableInsertTests : TestBase
         ExcelTable? tbl = ws.Tables.Add(ws.Cells["A1:D100"], "Table1");
         tbl.Columns.Insert(-1);
     }
+
     [TestMethod]
     public void TableAddColumnToMax()
     {
         using ExcelPackage? p = new ExcelPackage(); // We discard this as it takes to long time to save
+
         //Setup
         ExcelWorksheet? ws = p.Workbook.Worksheets.Add("TableMaxColumn");
         LoadTestdata(ws, 100);
         ExcelTable? tbl = ws.Tables.Add(ws.Cells["A1:D100"], "TableMaxColumn");
+
         //Act
         tbl.Columns.Add(ExcelPackage.MaxColumns - 4);
+
         //Assert
         Assert.AreEqual(ExcelPackage.MaxColumns, tbl.Address._toCol);
     }
+
     [TestMethod]
     [ExpectedException(typeof(InvalidOperationException))]
     public void TableAddColumnOverMax()
     {
         using ExcelPackage? p = new ExcelPackage();
+
         //Setup
         ExcelWorksheet? ws = p.Workbook.Worksheets.Add("TableOverMaxColumn");
         LoadTestdata(ws, 100);
         ExcelTable? tbl = ws.Tables.Add(ws.Cells["A1:D100"], "TableOverMaxRow");
+
         //Act
         tbl.Columns.Add(ExcelPackage.MaxColumns - 3);
     }
+
     #endregion
 
     [TestMethod]
     public void AddRowsToTablesOfDifferentWidths_TopWider()
     {
         using ExcelPackage? pck = OpenTemplatePackage("TestTableAddRows.xlsx");
+
         // Get sheet 1 from the workbook, and get the tables we are going to test
         ExcelWorksheet? ws = TryGetWorksheet(pck, "Sheet1");
         ExcelTable? table1 = ws.Tables["Table1"];
         ExcelTable? table2 = ws.Tables["Table2"];
+
         // Make sure the tables are where we expect them to be
         if (table1.Address.ToString() != "B2:E3")
         {
@@ -304,27 +339,34 @@ public class TableInsertTests : TestBase
 
         // Add 10 rows to Table1
         table1.AddRow(10);
+
         // Make sure Table1's address has been correctly updated
         Assert.AreEqual("B2:E13", table1.Address.ToString());
+
         // Make sure Table2 below has been correctly moved
         Assert.AreEqual("B16:C17", table2.Address.ToString());
 
         // Add 10 rows to Table2
         table2.AddRow(10);
+
         // Make sure Table2 has been correctly updated
         Assert.AreEqual("B16:C27", table2.Address.ToString());
+
         // Make sure Table1 hasn't moved
         Assert.AreEqual("B2:E13", table1.Address.ToString());
     }
+
     [TestMethod]
     [ExpectedException(typeof(InvalidOperationException))]
     public void AddRowsToTablesOfDifferentWidths_BottomWider()
     {
         using ExcelPackage? pck = OpenTemplatePackage("TestTableAddRows.xlsx");
+
         // Get sheet 2 from the workbook, and get the tables we are going to test
         ExcelWorksheet? ws = TryGetWorksheet(pck, "Sheet2");
         ExcelTable? table3 = ws.Tables["Table3"];
         ExcelTable? table4 = ws.Tables["Table4"];
+
         // Make sure the tables are where we expect them to be
         if (table3.Address.ToString() != "B2:C3")
         {
@@ -338,18 +380,23 @@ public class TableInsertTests : TestBase
 
         // Add 10 rows to Table3
         table3.AddRow(10);
+
         // Make sure Table3's address has been correctly updated
         Assert.AreEqual("B2:C13", table3.Address.ToString());
+
         // Make sure Table4 below has been correctly moved
         Assert.AreEqual("B16:E17", table4.Address.ToString());
 
         // Add 10 rows to Table4
         table4.AddRow(10);
+
         // Make sure Table4 has been correctly updated
         Assert.AreEqual("B16:E27", table4.Address.ToString());
+
         // Make sure Table3 hasn't moved
         Assert.AreEqual("B2:C13", table3.Address.ToString());
     }
+
     [TestMethod]
     public void TableAddOneColumnStartingFromA()
     {
@@ -360,6 +407,7 @@ public class TableInsertTests : TestBase
         Assert.AreEqual("A1:B10", tbl.Address.Address);
         SaveAndCleanup(p);
     }
+
     [TestMethod]
     public void TableInsertAddRowShowHeaderFalse()
     {
@@ -377,6 +425,7 @@ public class TableInsertTests : TestBase
         tbl.AddRow(1);
         Assert.AreEqual("A1:A13", tbl.Address.Address);
     }
+
     [TestMethod]
     public void TableInsertAddColumnShowHeaderFalse()
     {
@@ -391,6 +440,7 @@ public class TableInsertTests : TestBase
         tbl.InsertColumn(1, 1);
         Assert.AreEqual("A1:C10", tbl.Address.Address);
     }
+
     [TestMethod]
     public void TableDeleteRowShowHeaderFalse()
     {
@@ -429,6 +479,7 @@ public class TableInsertTests : TestBase
         Assert.AreEqual("Table1[[#This Row],[Column1]]", ws.Cells["D12"].Formula);
         SaveAndCleanup(p);
     }
+
     [TestMethod]
     public void TableWithCalculatedFormulaDelete()
     {

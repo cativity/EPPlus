@@ -26,6 +26,7 @@
  *******************************************************************************
   01/27/2020         EPPlus Software AB       Initial release EPPlus 5
  *******************************************************************************/
+
 using OfficeOpenXml;
 using OfficeOpenXml.DataValidation.Contracts;
 using System;
@@ -104,8 +105,7 @@ public abstract class ValidationTestBase : TestBase
 
     protected static T ReadTValidation<T>(ExcelPackage package)
     {
-        ExcelDataValidation? validation = ReadPackageAsNewPackage(package).
-                                          Workbook.Worksheets[0].DataValidations[0];
+        ExcelDataValidation? validation = ReadPackageAsNewPackage(package).Workbook.Worksheets[0].DataValidations[0];
 
         return (T)(Object)validation;
     }

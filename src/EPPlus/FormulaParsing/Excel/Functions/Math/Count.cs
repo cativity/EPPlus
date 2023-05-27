@@ -10,6 +10,7 @@
  *************************************************************************************************
   01/27/2020         EPPlus Software AB       Initial release EPPlus 5
  *************************************************************************************************/
+
 using System;
 using System.Collections.Generic;
 using System.Globalization;
@@ -21,10 +22,9 @@ using OfficeOpenXml.FormulaParsing.ExpressionGraph;
 
 namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Math;
 
-[FunctionMetadata(
-                     Category = ExcelFunctionCategory.Statistical,
-                     EPPlusVersion = "4",
-                     Description = "Returns the number of numerical values in a supplied set of cells or values")]
+[FunctionMetadata(Category = ExcelFunctionCategory.Statistical,
+                  EPPlusVersion = "4",
+                  Description = "Returns the number of numerical values in a supplied set of cells or values")]
 internal class Count : HiddenValuesHandlingFunction
 {
     private enum ItemContext
@@ -39,6 +39,7 @@ internal class Count : HiddenValuesHandlingFunction
         ValidateArguments(arguments, 1);
         double nItems = 0d;
         this.Calculate(arguments, ref nItems, context, ItemContext.SingleArg);
+
         return this.CreateResult(nItems, DataType.Integer);
     }
 
@@ -47,11 +48,13 @@ internal class Count : HiddenValuesHandlingFunction
         foreach (FunctionArgument? item in items)
         {
             IRangeInfo? cs = item.Value as IRangeInfo;
+
             if (cs != null)
             {
                 foreach (ICellInfo? c in cs)
                 {
                     _CheckForAndHandleExcelError(c, context);
+
                     if (this.ShouldIgnore(c, context) == false && ShouldCount(c.Value, ItemContext.InRange))
                     {
                         nItems++;
@@ -61,6 +64,7 @@ internal class Count : HiddenValuesHandlingFunction
             else
             {
                 IEnumerable<FunctionArgument>? value = item.Value as IEnumerable<FunctionArgument>;
+
                 if (value != null)
                 {
                     this.Calculate(value, ref nItems, context, ItemContext.InArray);
@@ -68,6 +72,7 @@ internal class Count : HiddenValuesHandlingFunction
                 else
                 {
                     _CheckForAndHandleExcelError(item, context);
+
                     if (this.ShouldIgnore(item, context) == false && ShouldCount(item.Value, itemContext))
                     {
                         nItems++;
@@ -99,10 +104,13 @@ internal class Count : HiddenValuesHandlingFunction
         {
             case ItemContext.SingleArg:
                 return IsNumeric(value) || IsNumericString(value);
+
             case ItemContext.InRange:
                 return IsNumeric(value);
+
             case ItemContext.InArray:
                 return IsNumeric(value) || IsNumericString(value);
+
             default:
                 throw new ArgumentException("Unknown ItemContext:" + context.ToString());
         }

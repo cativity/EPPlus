@@ -10,6 +10,7 @@
  *************************************************************************************************
   10/15/2020         EPPlus Software AB       ToDataTable function
  *************************************************************************************************/
+
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -30,23 +31,23 @@ internal class DataTablePrimaryKey
 
     private void Initialize()
     {
-        if(this._options.PrimaryKeyNames.Any())
+        if (this._options.PrimaryKeyNames.Any())
         {
-            foreach(string? name in this._options.PrimaryKeyNames)
+            foreach (string? name in this._options.PrimaryKeyNames)
             {
                 this.AddPrimaryKeyName(name);
             }
         }
-        else if(this._options.PrimaryKeyIndexes.Any())
+        else if (this._options.PrimaryKeyIndexes.Any())
         {
-            foreach(int ix in this._options.PrimaryKeyIndexes)
+            foreach (int ix in this._options.PrimaryKeyIndexes)
             {
                 try
                 {
                     DataColumnMapping? mapping = this._options.Mappings.GetByRangeIndex(ix);
                     this.AddPrimaryKeyName(mapping.DataColumnName);
                 }
-                catch(ArgumentOutOfRangeException e)
+                catch (ArgumentOutOfRangeException e)
                 {
                     throw new ArgumentOutOfRangeException("primary key index out of range: " + ix, e);
                 }
@@ -60,6 +61,7 @@ internal class DataTablePrimaryKey
         {
             throw new InvalidOperationException("Duplicate primary key name: " + name);
         }
+
         if (!this._options.Mappings.Exists(x => x.DataColumnName == name))
         {
             throw new InvalidOperationException("Invalid primary key name, no corresponding DataColumn: " + name);

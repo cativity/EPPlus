@@ -10,7 +10,9 @@
  *************************************************************************************************
   01/27/2020         EPPlus Software AB       Initial release EPPlus 5
  *************************************************************************************************/
+
 using System;
+
 namespace OfficeOpenXml.Table.PivotTable;
 
 /// <summary>
@@ -22,6 +24,7 @@ public enum ePrevNextPivotItem
     /// The Previous item
     /// </summary>
     Previous = 1048828,
+
     /// <summary>
     /// The Next item
     /// </summary>
@@ -34,10 +37,12 @@ public enum ePrevNextPivotItem
 public class ExcelPivotTableDataFieldShowDataAs
 {
     ExcelPivotTableDataField _dataField;
+
     internal ExcelPivotTableDataFieldShowDataAs(ExcelPivotTableDataField dataField)
     {
         this._dataField = dataField;
     }
+
     /// <summary>
     /// Sets the show data as to type Normal. This removes the Show data as setting.
     /// </summary>
@@ -57,6 +62,7 @@ public class ExcelPivotTableDataFieldShowDataAs
         this._dataField.BaseField = 0;
         this._dataField.BaseItem = 0;
     }
+
     /// <summary>
     /// Sets the show data as to type Percent Of Row
     /// </summary>
@@ -66,6 +72,7 @@ public class ExcelPivotTableDataFieldShowDataAs
         this._dataField.BaseField = 0;
         this._dataField.BaseItem = 0;
     }
+
     /// <summary>
     /// Sets the show data as to type Percent Of Column
     /// </summary>
@@ -75,6 +82,7 @@ public class ExcelPivotTableDataFieldShowDataAs
         this._dataField.BaseField = 0;
         this._dataField.BaseItem = 0;
     }
+
     /// <summary>
     /// Sets the show data as to type Percent
     /// <param name="baseField">The base field to use</param>
@@ -87,6 +95,7 @@ public class ExcelPivotTableDataFieldShowDataAs
         this._dataField.BaseField = baseField.Index;
         this._dataField.BaseItem = baseItem;
     }
+
     /// <summary>
     /// Sets the show data as to type Percent
     /// <param name="baseField">The base field to use</param>
@@ -133,6 +142,7 @@ public class ExcelPivotTableDataFieldShowDataAs
         this._dataField.BaseField = baseField.Index;
         this._dataField.BaseItem = 0;
     }
+
     /// <summary>
     /// Sets the show data as to type Difference
     /// </summary>
@@ -145,6 +155,7 @@ public class ExcelPivotTableDataFieldShowDataAs
         this._dataField.BaseField = baseField.Index;
         this._dataField.BaseItem = baseItem;
     }
+
     /// <summary>
     /// Sets the show data as to type Difference
     /// </summary>
@@ -170,6 +181,7 @@ public class ExcelPivotTableDataFieldShowDataAs
         this._dataField.BaseField = baseField.Index;
         this._dataField.BaseItem = baseItem;
     }
+
     /// <summary>
     /// Sets the show data as to type Percent Of Total
     /// <param name="baseField">The base field to use</param>
@@ -192,6 +204,7 @@ public class ExcelPivotTableDataFieldShowDataAs
         this._dataField.BaseField = 0;
         this._dataField.BaseItem = 0;
     }
+
     /// <summary>
     /// Sets the show data as to type Percent Of Parent Column
     /// </summary>
@@ -201,6 +214,7 @@ public class ExcelPivotTableDataFieldShowDataAs
         this._dataField.BaseField = 0;
         this._dataField.BaseItem = 0;
     }
+
     /// <summary>
     /// Sets the show data as to type Percent Of Running Total
     /// </summary>
@@ -211,6 +225,7 @@ public class ExcelPivotTableDataFieldShowDataAs
         this._dataField.BaseField = baseField.Index;
         this._dataField.BaseItem = 0;
     }
+
     /// <summary>
     /// Sets the show data as to type Rank Ascending
     /// <param name="baseField">The base field to use</param>
@@ -222,6 +237,7 @@ public class ExcelPivotTableDataFieldShowDataAs
         this._dataField.BaseField = baseField.Index;
         this._dataField.BaseItem = 0;
     }
+
     /// <summary>
     /// Sets the show data as to type Rank Descending
     /// <param name="baseField">The base field to use</param>
@@ -233,33 +249,35 @@ public class ExcelPivotTableDataFieldShowDataAs
         this._dataField.BaseField = baseField.Index;
         this._dataField.BaseItem = 0;
     }
+
     /// <summary>
     /// The value of the "Show Data As" setting
     /// </summary>
     public eShowDataAs Value
     {
-        get
-        {
-            return this._dataField.ShowDataAsInternal;
-        }
+        get { return this._dataField.ShowDataAsInternal; }
     }
+
     private void Validate(ExcelPivotTableField baseField, int? baseItem = null)
     {
         if (baseField._pivotTable != this._dataField.Field._pivotTable)
         {
             throw new ArgumentException("The base field must be from the same pivot table as the data field", nameof(baseField));
         }
+
         if (baseField == this._dataField.Field)
         {
             throw new ArgumentException("The base field and the data field must not be the same.", nameof(baseField));
         }
+
         if (baseItem != null)
         {
-            if (baseItem<0 || baseItem >= baseField.Items.Count)
+            if (baseItem < 0 || baseItem >= baseField.Items.Count)
             {
-                throw new ArgumentException("Base items must be within an index the fields item collection. Please refresh the Items collection of the field to get the items from source.", nameof(baseField));
+                throw new
+                    ArgumentException("Base items must be within an index the fields item collection. Please refresh the Items collection of the field to get the items from source.",
+                                      nameof(baseField));
             }
         }
     }
-
 }

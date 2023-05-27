@@ -10,6 +10,7 @@
  *************************************************************************************************
   01/27/2020         EPPlus Software AB       Initial release EPPlus 5
  *************************************************************************************************/
+
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -22,17 +23,9 @@ namespace OfficeOpenXml.FormulaParsing.ExpressionGraph.FunctionCompilers;
 
 public abstract class FunctionCompiler
 {
-    protected ExcelFunction Function
-    {
-        get;
-        private set;
-    }
+    protected ExcelFunction Function { get; private set; }
 
-    protected ParsingContext Context
-    {
-        get;
-        private set;
-    }
+    protected ParsingContext Context { get; private set; }
 
     public FunctionCompiler(ExcelFunction function, ParsingContext context)
     {
@@ -49,21 +42,25 @@ public abstract class FunctionCompiler
             CompileResultFactory? compileResultFactory = new CompileResultFactory();
             List<FunctionArgument>? argList = new List<FunctionArgument>();
             IEnumerable<object>? objects = compileResult.Result as IEnumerable<object>;
+
             foreach (object? arg in objects)
             {
                 CompileResult? cr = compileResultFactory.Create(arg);
                 BuildFunctionArguments(cr, dataType, argList);
             }
+
             args.Add(new FunctionArgument(argList));
         }
         else
         {
             FunctionArgument? funcArg = new FunctionArgument(compileResult.Result, dataType);
             funcArg.ExcelAddressReferenceId = compileResult.ExcelAddressReferenceId;
-            if(compileResult.IsHiddenCell)
+
+            if (compileResult.IsHiddenCell)
             {
                 funcArg.SetExcelStateFlag(Excel.ExcelCellState.HiddenCell);
             }
+
             args.Add(funcArg);
         }
     }

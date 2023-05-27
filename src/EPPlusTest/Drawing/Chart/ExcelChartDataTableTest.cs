@@ -26,6 +26,7 @@
  *******************************************************************************
   01/27/2020         EPPlus Software AB       Initial release EPPlus 5
  *******************************************************************************/
+
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using OfficeOpenXml;
 using OfficeOpenXml.Drawing.Chart;
@@ -45,19 +46,20 @@ public class ExcelChartDataTableTest : TestBase
     /// <summary>
     /// Basic test to check output with excel. need enhanced to be stand alone checking
     /// </summary>
-    [TestMethod,Ignore]
+    [TestMethod, Ignore]
     public void DataTableFile()
     {
         string outfile = Path.Combine(_worksheetPath, "DataTableFile.xlsx");
         FileInfo? fileinfo = new FileInfo(outfile);
         using ExcelPackage pkg = new ExcelPackage(fileinfo);
+
         // Add worksheet with sample data
         ExcelWorksheet? worksheet = pkg.Workbook.Worksheets.Add("TestData");
         worksheet.Cells["A1"].Value = "Data";
         worksheet.Cells["B1"].Value = "Values";
+
         for (int x = 1; x < 12; ++x)
         {
-
             worksheet.Cells[x + 1, 1].Value = $"Sample {x}";
             worksheet.Cells[x + 1, 2].Value = (double)x / 3.0;
         }

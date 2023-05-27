@@ -228,8 +228,10 @@ internal class ZipOutputStream : Stream
     /// End Sub
     /// </code>
     /// </example>
-    public ZipOutputStream(Stream stream) : this(stream, false) { }
-
+    public ZipOutputStream(Stream stream)
+        : this(stream, false)
+    {
+    }
 
     /// <summary>
     ///   Create a ZipOutputStream that writes to a filesystem file.
@@ -317,7 +319,6 @@ internal class ZipOutputStream : Stream
         this._Init(stream, false, fileName);
     }
 
-
     /// <summary>
     ///   Create a ZipOutputStream.
     /// </summary>
@@ -358,7 +359,6 @@ internal class ZipOutputStream : Stream
 #endif
     }
 
-
     /// <summary>Provides a string representation of the instance.</summary>
     /// <remarks>
     ///   <para>
@@ -368,9 +368,8 @@ internal class ZipOutputStream : Stream
     /// <returns>a string representation of the instance.</returns>
     public override String ToString()
     {
-        return String.Format ("ZipOutputStream::{0}(leaveOpen({1})))", this._name, this._leaveUnderlyingStreamOpen);
+        return String.Format("ZipOutputStream::{0}(leaveOpen({1})))", this._name, this._leaveUnderlyingStreamOpen);
     }
-
 
     /// <summary>
     ///   Sets the password to be used on the <c>ZipOutputStream</c> instance.
@@ -427,10 +426,12 @@ internal class ZipOutputStream : Stream
             if (this._disposed)
             {
                 this._exceptionPending = true;
+
                 throw new InvalidOperationException("The stream has been closed.");
             }
 
             this._password = value;
+
             if (this._password == null)
             {
                 this._encryption = EncryptionAlgorithm.None;
@@ -441,7 +442,6 @@ internal class ZipOutputStream : Stream
             }
         }
     }
-
 
     /// <summary>
     ///   The Encryption to use for entries added to the <c>ZipOutputStream</c>.
@@ -466,27 +466,26 @@ internal class ZipOutputStream : Stream
     /// <seealso cref="ZipEntry.Encryption">ZipEntry.Encryption</seealso>
     public EncryptionAlgorithm Encryption
     {
-        get
-        {
-            return this._encryption;
-        }
+        get { return this._encryption; }
         set
         {
             if (this._disposed)
             {
                 this._exceptionPending = true;
+
                 throw new InvalidOperationException("The stream has been closed.");
             }
+
             if (value == EncryptionAlgorithm.Unsupported)
             {
                 this._exceptionPending = true;
+
                 throw new InvalidOperationException("You may not set Encryption to that value.");
             }
 
             this._encryption = value;
         }
     }
-
 
     /// <summary>
     ///   Size of the work buffer to use for the ZLIB codec during compression.
@@ -498,12 +497,7 @@ internal class ZipOutputStream : Stream
     ///   currently have good recommendations on how to set it.  You can test it if
     ///   you like.
     /// </remarks>
-    public int CodecBufferSize
-    {
-        get;
-        set;
-    }
-
+    public int CodecBufferSize { get; set; }
 
     /// <summary>
     ///   The compression strategy to use for all entries.
@@ -517,12 +511,7 @@ internal class ZipOutputStream : Stream
     ///   of the compresssion.  For more information see <see
     ///   cref="Ionic.Zlib.CompressionStrategy "/>.
     /// </remarks>
-    public CompressionStrategy Strategy
-    {
-        get;
-        set;
-    }
-
+    public CompressionStrategy Strategy { get; set; }
 
     /// <summary>
     ///   The type of timestamp attached to the ZipEntry.
@@ -534,22 +523,19 @@ internal class ZipOutputStream : Stream
     /// </remarks>
     public ZipEntryTimestamp Timestamp
     {
-        get
-        {
-            return this._timestamp;
-        }
+        get { return this._timestamp; }
         set
         {
             if (this._disposed)
             {
                 this._exceptionPending = true;
+
                 throw new InvalidOperationException("The stream has been closed.");
             }
 
             this._timestamp = value;
         }
     }
-
 
     /// <summary>
     ///   Sets the compression level to be used for entries subsequently added to
@@ -582,21 +568,12 @@ internal class ZipOutputStream : Stream
     ///    alone, and accept the default.
     ///  </para>
     /// </remarks>
-    public OfficeOpenXml.Packaging.Ionic.Zlib.CompressionLevel CompressionLevel
-    {
-        get;
-        set;
-    }
+    public OfficeOpenXml.Packaging.Ionic.Zlib.CompressionLevel CompressionLevel { get; set; }
 
     /// <summary>
     ///   The compression method used on each entry added to the ZipOutputStream.
     /// </summary>
-    public CompressionMethod CompressionMethod
-    {
-        get;
-        set;
-    }
-
+    public CompressionMethod CompressionMethod { get; set; }
 
     /// <summary>
     ///   A comment attached to the zip archive.
@@ -644,14 +621,13 @@ internal class ZipOutputStream : Stream
             if (this._disposed)
             {
                 this._exceptionPending = true;
+
                 throw new InvalidOperationException("The stream has been closed.");
             }
 
             this._comment = value;
         }
     }
-
-
 
     /// <summary>
     ///   Specify whether to use ZIP64 extensions when saving a zip archive.
@@ -672,22 +648,19 @@ internal class ZipOutputStream : Stream
     /// </remarks>
     public Zip64Option EnableZip64
     {
-        get
-        {
-            return this._zip64;
-        }
+        get { return this._zip64; }
         set
         {
             if (this._disposed)
             {
                 this._exceptionPending = true;
+
                 throw new InvalidOperationException("The stream has been closed.");
             }
 
             this._zip64 = value;
         }
     }
-
 
     /// <summary>
     ///   Indicates whether ZIP64 extensions were used when saving the zip archive.
@@ -698,12 +671,8 @@ internal class ZipOutputStream : Stream
     /// </remarks>
     public bool OutputUsedZip64
     {
-        get
-        {
-            return this._anyEntriesUsedZip64 || this._directoryNeededZip64;
-        }
+        get { return this._anyEntriesUsedZip64 || this._directoryNeededZip64; }
     }
-
 
     /// <summary>
     ///   Whether the ZipOutputStream should use case-insensitive comparisons when
@@ -726,18 +695,10 @@ internal class ZipOutputStream : Stream
     /// </remarks>
     public bool IgnoreCase
     {
-        get
-        {
-            return !this._DontIgnoreCase;
-        }
+        get { return !this._DontIgnoreCase; }
 
-        set
-        {
-            this._DontIgnoreCase = !value;
-        }
-
+        set { this._DontIgnoreCase = !value; }
     }
-
 
     /// <summary>
     ///   Indicates whether to encode entry filenames and entry comments using
@@ -858,18 +819,13 @@ internal class ZipOutputStream : Stream
     [Obsolete("Beginning with v1.9.1.6 of DotNetZip, this property is obsolete. It will be removed in a future version of the library. Use AlternateEncoding and AlternateEncodingUsage instead.")]
     public bool UseUnicodeAsNecessary
     {
-        get
-        {
-            return this._alternateEncoding == System.Text.Encoding.UTF8 &&
-                   this.AlternateEncodingUsage == ZipOption.AsNecessary;
-        }
+        get { return this._alternateEncoding == System.Text.Encoding.UTF8 && this.AlternateEncodingUsage == ZipOption.AsNecessary; }
         set
         {
             if (value)
             {
                 this._alternateEncoding = System.Text.Encoding.UTF8;
                 this._alternateEncodingUsage = ZipOption.AsNecessary;
-
             }
             else
             {
@@ -878,7 +834,6 @@ internal class ZipOutputStream : Stream
             }
         }
     }
-
 
     /// <summary>
     ///   The text encoding to use when emitting entries into the zip archive, for
@@ -992,14 +947,8 @@ internal class ZipOutputStream : Stream
     /// </remarks>
     public System.Text.Encoding AlternateEncoding
     {
-        get
-        {
-            return this._alternateEncoding;
-        }
-        set
-        {
-            this._alternateEncoding = value;
-        }
+        get { return this._alternateEncoding; }
+        set { this._alternateEncoding = value; }
     }
 
     /// <summary>
@@ -1009,14 +958,8 @@ internal class ZipOutputStream : Stream
     /// </summary>
     public ZipOption AlternateEncodingUsage
     {
-        get
-        {
-            return this._alternateEncodingUsage;
-        }
-        set
-        {
-            this._alternateEncodingUsage = value;
-        }
+        get { return this._alternateEncodingUsage; }
+        set { this._alternateEncodingUsage = value; }
     }
 
     /// <summary>
@@ -1029,13 +972,12 @@ internal class ZipOutputStream : Stream
         get
         {
 #if Core
-            return System.Text.Encoding.GetEncoding("utf-8");     
+            return System.Text.Encoding.GetEncoding("utf-8");
 #else
                                 return System.Text.Encoding.GetEncoding("IBM437");
 #endif
         }
     }
-
 
 #if !NETCF
     /// <summary>
@@ -1107,12 +1049,8 @@ internal class ZipOutputStream : Stream
 
             this._ParallelDeflateThreshold = value;
         }
-        get
-        {
-            return this._ParallelDeflateThreshold;
-        }
+        get { return this._ParallelDeflateThreshold; }
     }
-
 
     /// <summary>
     ///   The maximum number of buffer pairs to use when performing
@@ -1193,16 +1131,12 @@ internal class ZipOutputStream : Stream
     ///
     public int ParallelDeflateMaxBufferPairs
     {
-        get
-        {
-            return this._maxBufferPairs;
-        }
+        get { return this._maxBufferPairs; }
         set
         {
             if (value < 4)
             {
-                throw new ArgumentOutOfRangeException("ParallelDeflateMaxBufferPairs",
-                                                      "Value must be 4 or greater.");
+                throw new ArgumentOutOfRangeException("ParallelDeflateMaxBufferPairs", "Value must be 4 or greater.");
             }
 
             this._maxBufferPairs = value;
@@ -1210,31 +1144,24 @@ internal class ZipOutputStream : Stream
     }
 #endif
 
-
     private void InsureUniqueEntry(ZipEntry ze1)
     {
         if (this._entriesWritten.ContainsKey(ze1.FileName))
         {
             this._exceptionPending = true;
+
             throw new ArgumentException(String.Format("The entry '{0}' already exists in the zip archive.", ze1.FileName));
         }
     }
 
-
     internal Stream OutputStream
     {
-        get
-        {
-            return this._outputStream;
-        }
+        get { return this._outputStream; }
     }
 
     internal String Name
     {
-        get
-        {
-            return this._name;
-        }
+        get { return this._name; }
     }
 
     /// <summary>
@@ -1253,7 +1180,6 @@ internal class ZipOutputStream : Stream
     {
         return this._entriesWritten.ContainsKey(SharedUtilities.NormalizePathForUseInZipFile(name));
     }
-
 
     /// <summary>
     ///   Write the data from the buffer to the stream.
@@ -1274,24 +1200,28 @@ internal class ZipOutputStream : Stream
         if (this._disposed)
         {
             this._exceptionPending = true;
+
             throw new InvalidOperationException("The stream has been closed.");
         }
 
-        if (buffer==null)
+        if (buffer == null)
         {
             this._exceptionPending = true;
+
             throw new ArgumentNullException("buffer");
         }
 
         if (this._currentEntry == null)
         {
             this._exceptionPending = true;
+
             throw new InvalidOperationException("You must call PutNextEntry() before calling Write().");
         }
 
         if (this._currentEntry.IsDirectory)
         {
             this._exceptionPending = true;
+
             throw new InvalidOperationException("You cannot Write() data for an entry that is a directory.");
         }
 
@@ -1305,7 +1235,7 @@ internal class ZipOutputStream : Stream
             this._entryOutputStream.Write(buffer, offset, count);
         }
     }
-        
+
     /// <summary>
     ///   Specify the name of the next entry that will be written to the zip file.
     /// </summary>
@@ -1396,18 +1326,20 @@ internal class ZipOutputStream : Stream
         if (this._disposed)
         {
             this._exceptionPending = true;
+
             throw new InvalidOperationException("The stream has been closed.");
         }
 
         this._FinishCurrentEntry();
         this._currentEntry = ZipEntry.CreateForZipOutputStream(entryName);
         this._currentEntry._container = new ZipContainer(this);
-        this._currentEntry._BitField |= 0x0006;  //Excel wants bit 110 for zipx64. /JK
+        this._currentEntry._BitField |= 0x0006; //Excel wants bit 110 for zipx64. /JK
         this._currentEntry.SetEntryTimes(DateTime.Now, DateTime.Now, DateTime.Now);
         this._currentEntry.CompressionLevel = this.CompressionLevel;
         this._currentEntry.CompressionMethod = this.CompressionMethod;
         this._currentEntry.Password = this._password; // workitem 13909
         this._currentEntry.Encryption = this.Encryption;
+
         // workitem 12634
         this._currentEntry.AlternateEncoding = this.AlternateEncoding;
         this._currentEntry.AlternateEncodingUsage = this.AlternateEncodingUsage;
@@ -1425,8 +1357,6 @@ internal class ZipOutputStream : Stream
         return this._currentEntry;
     }
 
-
-
     private void _InitiateCurrentEntry(bool finishing)
     {
         // If finishing==true, this means we're initiating the entry at the time of
@@ -1437,11 +1367,13 @@ internal class ZipOutputStream : Stream
 
         this._entriesWritten.Add(this._currentEntry.FileName, this._currentEntry);
         this._entryCount++; // could use _entriesWritten.Count, but I don't want to incur
+
         // the cost.
 
         if (this._entryCount > 65534 && this._zip64 == Zip64Option.Never)
         {
             this._exceptionPending = true;
+
             throw new InvalidOperationException("Too many entries. Consider setting ZipOutputStream.EnableZip64.");
         }
 
@@ -1474,8 +1406,6 @@ internal class ZipOutputStream : Stream
         this._needToWriteEntryHeader = false;
     }
 
-
-
     private void _FinishCurrentEntry()
     {
         if (this._currentEntry != null)
@@ -1487,8 +1417,9 @@ internal class ZipOutputStream : Stream
 
             this._currentEntry.FinishOutputStream(this._outputStream, this._outputCounter, this._encryptor, this._deflater, this._entryOutputStream);
             this._currentEntry.PostProcessOutput(this._outputStream);
+
             // workitem 12964
-            if (this._currentEntry.OutputUsedZip64!=null)
+            if (this._currentEntry.OutputUsedZip64 != null)
             {
                 this._anyEntriesUsedZip64 |= this._currentEntry.OutputUsedZip64.Value;
             }
@@ -1499,8 +1430,6 @@ internal class ZipOutputStream : Stream
             this._entryOutputStream = null;
         }
     }
-
-
 
     /// <summary>
     /// Dispose the stream
@@ -1540,8 +1469,10 @@ internal class ZipOutputStream : Stream
                                                                                       this._zip64,
                                                                                       this.Comment,
                                                                                       new ZipContainer(this));
+
                 Stream wrappedStream = null;
                 CountingStream cs = this._outputStream as CountingStream;
+
                 if (cs != null)
                 {
                     wrappedStream = cs.WrappedStream;
@@ -1572,27 +1503,37 @@ internal class ZipOutputStream : Stream
         this._disposed = true;
     }
 
-
+    /// <summary>
+    /// Always returns false.
+    /// </summary>
+    public override bool CanRead
+    {
+        get { return false; }
+    }
 
     /// <summary>
     /// Always returns false.
     /// </summary>
-    public override bool CanRead { get { return false; } }
-
-    /// <summary>
-    /// Always returns false.
-    /// </summary>
-    public override bool CanSeek { get { return false; } }
+    public override bool CanSeek
+    {
+        get { return false; }
+    }
 
     /// <summary>
     /// Always returns true.
     /// </summary>
-    public override bool CanWrite { get { return true; } }
+    public override bool CanWrite
+    {
+        get { return true; }
+    }
 
     /// <summary>
     /// Always returns a NotSupportedException.
     /// </summary>
-    public override long Length { get { throw new NotSupportedException(); } }
+    public override long Length
+    {
+        get { throw new NotSupportedException(); }
+    }
 
     /// <summary>
     /// Setting this property always returns a NotSupportedException. Getting it
@@ -1607,7 +1548,9 @@ internal class ZipOutputStream : Stream
     /// <summary>
     /// This is a no-op.
     /// </summary>
-    public override void Flush() { }
+    public override void Flush()
+    {
+    }
 
     /// <summary>
     /// This method always throws a NotSupportedException.
@@ -1641,7 +1584,6 @@ internal class ZipOutputStream : Stream
         throw new NotSupportedException();
     }
 
-
     private EncryptionAlgorithm _encryption;
     private ZipEntryTimestamp _timestamp;
     internal String _password;
@@ -1653,8 +1595,7 @@ internal class ZipOutputStream : Stream
     private int _entryCount;
     private ZipOption _alternateEncodingUsage = ZipOption.Never;
 #if (Core)
-    private System.Text.Encoding _alternateEncoding
-        = System.Text.Encoding.GetEncoding("utf-8"); // 
+    private System.Text.Encoding _alternateEncoding = System.Text.Encoding.GetEncoding("utf-8"); // 
 #else
         private System.Text.Encoding _alternateEncoding
             = System.Text.Encoding.GetEncoding("IBM437"); // default = IBM437
@@ -1663,7 +1604,10 @@ internal class ZipOutputStream : Stream
     private bool _leaveUnderlyingStreamOpen;
     private bool _disposed;
     private bool _exceptionPending; // **see note below
-    private bool _anyEntriesUsedZip64, _directoryNeededZip64;
+
+    private bool _anyEntriesUsedZip64,
+                 _directoryNeededZip64;
+
     private CountingStream _outputCounter;
     private Stream _encryptor;
     private Stream _deflater;
@@ -1689,10 +1633,7 @@ internal class ZipOutputStream : Stream
     // the _exceptionPending flag is used to track that, and to
     // allow the original exception to be propagated to the
     // application without extra "noise."
-
 }
-
-
 
 internal class ZipContainer
 {
@@ -1831,6 +1772,7 @@ internal class ZipContainer
             return this._zos.ParallelDeflateThreshold;
         }
     }
+
     public int ParallelDeflateMaxBufferPairs
     {
         get
@@ -1898,7 +1840,7 @@ internal class ZipContainer
                 return this._zf.AlternateEncoding;
             }
 
-            if (this._zos!=null)
+            if (this._zos != null)
             {
                 return this._zos.AlternateEncoding;
             }
@@ -1906,6 +1848,7 @@ internal class ZipContainer
             return null;
         }
     }
+
     public System.Text.Encoding DefaultEncoding
     {
         get
@@ -1915,7 +1858,7 @@ internal class ZipContainer
                 return ZipFile.DefaultEncoding;
             }
 
-            if (this._zos!=null)
+            if (this._zos != null)
             {
                 return ZipOutputStream.DefaultEncoding;
             }
@@ -1923,6 +1866,7 @@ internal class ZipContainer
             return null;
         }
     }
+
     public ZipOption AlternateEncodingUsage
     {
         get
@@ -1932,7 +1876,7 @@ internal class ZipContainer
                 return this._zf.AlternateEncodingUsage;
             }
 
-            if (this._zos!=null)
+            if (this._zos != null)
             {
                 return this._zos.AlternateEncodingUsage;
             }

@@ -18,17 +18,20 @@ namespace EPPlusTest.Core.Range.Insert;
 public class RangeInsertTests : TestBase
 {
     public static ExcelPackage _pck;
+
     [ClassInitialize]
     public static void Init(TestContext context)
     {
         InitBase();
         _pck = OpenPackage("WorksheetRangeInsert.xlsx", true);
     }
+
     [ClassCleanup]
     public static void Cleanup()
     {
         SaveAndCleanup(_pck);
     }
+
     [TestMethod]
     public void ValidateFormulasAfterInsertRow()
     {
@@ -54,6 +57,7 @@ public class RangeInsertTests : TestBase
         Assert.AreEqual("Sum(InsertRow_Sheet1!C6:C11)", ws2.Cells["B1"].Formula);
         Assert.AreEqual("Sum(InsertRow_Sheet1!C7:C12)", ws2.Cells["B2"].Formula);
     }
+
     [TestMethod]
     public void ValidateFormulasAfterInsert2Rows()
     {
@@ -77,6 +81,7 @@ public class RangeInsertTests : TestBase
         Assert.AreEqual("Sum(Insert2Rows_Sheet1!C7:C12)", ws2.Cells["B1"].Formula);
         Assert.AreEqual("Sum(Insert2Rows_Sheet1!C8:C13)", ws2.Cells["B2"].Formula);
     }
+
     [TestMethod]
     public void ValidateFormulasAfterInsertColumn()
     {
@@ -100,6 +105,7 @@ public class RangeInsertTests : TestBase
         Assert.AreEqual("Sum(InsertColumn_Sheet1!F1:K1)", ws2.Cells["B1"].Formula);
         Assert.AreEqual("Sum(InsertColumn_Sheet1!G1:L1)", ws2.Cells["C1"].Formula);
     }
+
     [TestMethod]
     public void ValidateFormulasAfterInsert2Columns()
     {
@@ -123,14 +129,17 @@ public class RangeInsertTests : TestBase
         Assert.AreEqual("Sum(Insert2Columns_Sheet1!G1:L1)", ws2.Cells["B1"].Formula);
         Assert.AreEqual("Sum(Insert2Columns_Sheet1!H1:M1)", ws2.Cells["C1"].Formula);
     }
+
     [TestMethod]
     public void InsertingColumnIntoTable()
     {
         using ExcelPackage? p = new ExcelPackage();
+
         //Setup
         ExcelWorksheet? ws = p.Workbook.Worksheets.Add("InsertColumnTable");
         LoadTestdata(ws);
         ExcelTable? tbl = ws.Tables.Add(ws.Cells[1, 1, 100, 5], "Table1");
+
         //Act
         ws.InsertColumn(2, 1);
 
@@ -143,14 +152,17 @@ public class RangeInsertTests : TestBase
         Assert.AreEqual("NumFormattedValue", tbl.Columns[4].Name);
         Assert.AreEqual("Column5", tbl.Columns[5].Name);
     }
+
     [TestMethod]
     public void InsertingRowIntoTable()
     {
         using ExcelPackage? p = new ExcelPackage();
+
         //Setup
         ExcelWorksheet? ws = p.Workbook.Worksheets.Add("InsertRowTable");
         LoadTestdata(ws);
         ExcelTable? tbl = ws.Tables.Add(ws.Cells[1, 1, 100, 5], "Table1");
+
         //Act
         ws.InsertRow(1, 1);
         ws.InsertRow(3, 1);
@@ -159,6 +171,7 @@ public class RangeInsertTests : TestBase
         //Assert
         Assert.AreEqual("A2:E102", tbl.Address.Address);
     }
+
     [TestMethod]
     public void ValidateValuesAfterInsertRowInRangeShiftDown()
     {
@@ -177,6 +190,7 @@ public class RangeInsertTests : TestBase
         Assert.AreEqual("B1", ws.Cells["B2"].Value);
         Assert.AreEqual("C1", ws.Cells["C1"].Value);
     }
+
     [TestMethod]
     public void ValidateValuesAfterInsertRowInRangeShiftDownTwoRows()
     {
@@ -205,6 +219,7 @@ public class RangeInsertTests : TestBase
         Assert.AreEqual("A2", ws.Cells["A2"].Value);
         Assert.AreEqual("D2", ws.Cells["D2"].Value);
     }
+
     [TestMethod]
     public void ValidateValuesAfterInsertRowInRangeShiftRight()
     {
@@ -223,6 +238,7 @@ public class RangeInsertTests : TestBase
         Assert.AreEqual("B1", ws.Cells["C1"].Value);
         Assert.AreEqual("C1", ws.Cells["D1"].Value);
     }
+
     [TestMethod]
     public void ValidateValuesAfterInsertRowInRangeShiftRightTwoRows()
     {
@@ -252,6 +268,7 @@ public class RangeInsertTests : TestBase
         Assert.AreEqual("C2", ws.Cells["E2"].Value);
         Assert.AreEqual("D2", ws.Cells["F2"].Value);
     }
+
     [TestMethod]
     public void ValidateCommentsAfterInsertShiftDown()
     {
@@ -270,12 +287,13 @@ public class RangeInsertTests : TestBase
         Assert.AreEqual("Comment B1", ws.Cells["B1"].Comment.Text);
         Assert.AreEqual("Comment C1", ws.Cells["C1"].Comment.Text);
     }
+
     [TestMethod]
     public void ValidateCommentsAfterInsertShiftRight()
     {
         //Setup
         ExcelWorksheet? ws = _pck.Workbook.Worksheets.Add("InsertRangeCommentsRight");
-        ws.Cells["A1"].AddComment("Comment A1", "EPPlus");  
+        ws.Cells["A1"].AddComment("Comment A1", "EPPlus");
         ws.Cells["B1"].AddComment("Comment B1", "EPPlus");
         ws.Cells["C1"].AddComment("Comment C1", "EPPlus");
 
@@ -289,6 +307,7 @@ public class RangeInsertTests : TestBase
         Assert.AreEqual("Comment C1", ws.Cells["D1"].Comment.Text);
         Assert.IsNull(ws.Cells["A2"].Comment);
     }
+
     [TestMethod]
     public void ValidateNameAfterInsertShiftDown()
     {
@@ -306,6 +325,7 @@ public class RangeInsertTests : TestBase
         Assert.AreEqual("B1", ws.Names["NameB1"].Address);
         Assert.AreEqual("C1", ws.Names["NameC1"].Address);
     }
+
     [TestMethod]
     public void ValidateNameAfterInsertShiftDown_MustBeInsideRange()
     {
@@ -377,11 +397,10 @@ public class RangeInsertTests : TestBase
         Assert.AreEqual("C1", ws.Cells["E3"].Formula);
         Assert.AreEqual("D1", ws.Cells["F3"].Formula);
 
-
         Assert.AreEqual("A1", ws.Cells["C3"].Formula);
         Assert.AreEqual("D2", ws.Cells["F4"].Formula);
-
     }
+
     [TestMethod]
     public void ValidateSharedFormulasInsertShiftRight()
     {
@@ -404,11 +423,10 @@ public class RangeInsertTests : TestBase
         Assert.AreEqual("C1", ws.Cells["D3"].Formula);
         Assert.AreEqual("D1", ws.Cells["E3"].Formula);
 
-
         Assert.AreEqual("A1", ws.Cells["C3"].Formula);
         Assert.AreEqual("D2", ws.Cells["F4"].Formula);
-
     }
+
     [TestMethod]
     public void ValidateInsertMergedCellsDown()
     {
@@ -419,6 +437,7 @@ public class RangeInsertTests : TestBase
 
         Assert.AreEqual("C4:E5", ws.MergedCells[0]);
     }
+
     [TestMethod]
     public void ValidateInsertMergedCellsRight()
     {
@@ -429,6 +448,7 @@ public class RangeInsertTests : TestBase
 
         Assert.AreEqual("D2:F3", ws.MergedCells[0]);
     }
+
     [TestMethod]
     [ExpectedException(typeof(InvalidOperationException))]
     public void ValidateInsertIntoMergedCellsPartialRightThrowsException()
@@ -438,6 +458,7 @@ public class RangeInsertTests : TestBase
         ws.Cells["B2:D3"].Merge = true;
         ws.Cells["A2"].Insert(eShiftTypeInsert.Right);
     }
+
     [TestMethod]
     [ExpectedException(typeof(InvalidOperationException))]
     public void ValidateInsertIntoMergedCellsPartialDownThrowsException()
@@ -447,6 +468,7 @@ public class RangeInsertTests : TestBase
         ws.Cells["B2:D3"].Merge = true;
         ws.Cells["C1"].Insert(eShiftTypeInsert.Down);
     }
+
     [TestMethod]
     public void ValidateDeleteEntireMergeCells()
     {
@@ -463,6 +485,7 @@ public class RangeInsertTests : TestBase
         Assert.IsFalse(ws.Cells["D3"].Merge);
         Assert.IsNull(ws.MergedCells[0]);
     }
+
     [TestMethod]
     public void ValidateInsertMergedCellsShouldBeShifted()
     {
@@ -483,6 +506,7 @@ public class RangeInsertTests : TestBase
         ws.InsertRow(3, 1);
         Assert.AreEqual("B5:D5", ws.MergedCells[0]);
     }
+
     [TestMethod]
     public void ValidateInsertIntoMergedCellsPartialRightShouldNotThrowsException()
     {
@@ -491,6 +515,7 @@ public class RangeInsertTests : TestBase
         ws.Cells["B2:D3"].Merge = true;
         ws.Cells["C1"].Insert(eShiftTypeInsert.Right);
     }
+
     [TestMethod]
     public void ValidateInsertIntoMergedCellsPartialDownShouldNotThrowsException()
     {
@@ -499,6 +524,7 @@ public class RangeInsertTests : TestBase
         ws.Cells["B2:D3"].Merge = true;
         ws.Cells["A2"].Insert(eShiftTypeInsert.Down);
     }
+
     [TestMethod]
     [ExpectedException(typeof(InvalidOperationException))]
     public void ValidateInsertIntoTablePartialRightThrowsException()
@@ -508,6 +534,7 @@ public class RangeInsertTests : TestBase
         ws.Tables.Add(ws.Cells["B2:D3"], "table1");
         ws.Cells["A2"].Insert(eShiftTypeInsert.Right);
     }
+
     [TestMethod]
     [ExpectedException(typeof(InvalidOperationException))]
     public void ValidateInsertIntoTablePartialDownThrowsException()
@@ -517,6 +544,7 @@ public class RangeInsertTests : TestBase
         ws.Tables.Add(ws.Cells["B2:D3"], "table1");
         ws.Cells["C1"].Insert(eShiftTypeInsert.Down);
     }
+
     [TestMethod]
     public void ValidateInsertIntoTablePartialRightShouldNotThrowsException()
     {
@@ -525,6 +553,7 @@ public class RangeInsertTests : TestBase
         ws.Tables.Add(ws.Cells["B2:D3"], "table1");
         ws.Cells["C1"].Insert(eShiftTypeInsert.Right);
     }
+
     [TestMethod]
     public void ValidateInsertIntoTablePartialDownShouldNotThrowsException()
     {
@@ -533,6 +562,7 @@ public class RangeInsertTests : TestBase
         ws.Tables.Add(ws.Cells["B2:D3"], "table1");
         ws.Cells["A2"].Insert(eShiftTypeInsert.Down);
     }
+
     [TestMethod]
     [ExpectedException(typeof(InvalidOperationException))]
     public void ValidateInsertIntoPivotTablePartialRightThrowsException()
@@ -544,6 +574,7 @@ public class RangeInsertTests : TestBase
         ws.PivotTables.Add(ws.Cells["B2:D3"], ws.Cells["E5:F6"], "table1");
         ws.Cells["A2"].Insert(eShiftTypeInsert.Right);
     }
+
     [TestMethod]
     [ExpectedException(typeof(InvalidOperationException))]
     public void ValidateInsertIntoPivotTablePartialDownThrowsException()
@@ -555,6 +586,7 @@ public class RangeInsertTests : TestBase
         ws.PivotTables.Add(ws.Cells["B2:D3"], ws.Cells["E5:F6"], "table1");
         ws.Cells["C1"].Insert(eShiftTypeInsert.Down);
     }
+
     [TestMethod]
     public void ValidateInsertIntoPivotTablePartialRightShouldNotThrowsException()
     {
@@ -565,6 +597,7 @@ public class RangeInsertTests : TestBase
         ws.PivotTables.Add(ws.Cells["B2:D3"], ws.Cells["E5:F6"], "table1");
         ws.Cells["C1"].Insert(eShiftTypeInsert.Right);
     }
+
     [TestMethod]
     public void ValidateInsertIntoPivotTablePartialDownShouldNotThrowsException()
     {
@@ -575,6 +608,7 @@ public class RangeInsertTests : TestBase
         ws.PivotTables.Add(ws.Cells["B2:D3"], ws.Cells["E5:F6"], "table1");
         ws.Cells["A2"].Insert(eShiftTypeInsert.Down);
     }
+
     [TestMethod]
     public void ValidateInsertTableShouldShiftDown()
     {
@@ -600,6 +634,7 @@ public class RangeInsertTests : TestBase
         ws.Cells["B8:F8"].Insert(eShiftTypeInsert.Down);
         Assert.AreEqual("B5:D9", tbl.Address.Address);
     }
+
     [TestMethod]
     public void ValidateInsertTableShouldShiftRight()
     {
@@ -615,6 +650,7 @@ public class RangeInsertTests : TestBase
         ws.Cells["B2:B6"].Insert(eShiftTypeInsert.Right);
         Assert.AreEqual("E2:F4", tbl.Address.Address);
     }
+
     [TestMethod]
     public void ValidateInsertPivotTableShouldShiftDown()
     {
@@ -632,6 +668,7 @@ public class RangeInsertTests : TestBase
         ws.Cells["B6:D7"].Insert(eShiftTypeInsert.Down);
         Assert.AreEqual("B4:D5", pt.Address.Address);
     }
+
     [TestMethod]
     public void ValidateInsertPivotTableShouldShiftRight()
     {
@@ -675,6 +712,7 @@ public class RangeInsertTests : TestBase
         Assert.AreEqual(3, ws.Cells["B4"].StyleID);
         Assert.AreEqual(4, ws.Cells["C4"].StyleID);
     }
+
     [TestMethod]
     public void ValidateStyleShiftRight()
     {
@@ -702,7 +740,9 @@ public class RangeInsertTests : TestBase
         Assert.AreEqual(5, ws.Cells["D2"].StyleID);
         Assert.AreEqual(6, ws.Cells["D3"].StyleID);
     }
+
     #region Data validation
+
     [TestMethod]
     public void ValidateDatavalidationFullShiftDown()
     {
@@ -713,6 +753,7 @@ public class RangeInsertTests : TestBase
 
         Assert.AreEqual("B3:E6", any.Address.Address);
     }
+
     [TestMethod]
     public void ValidateDatavalidationPartialShiftDown_Left()
     {
@@ -723,6 +764,7 @@ public class RangeInsertTests : TestBase
 
         Assert.AreEqual("B3:C6,D2:E5", any.Address.Address);
     }
+
     [TestMethod]
     public void ValidateDatavalidationPartialShiftDown_Inside()
     {
@@ -734,7 +776,6 @@ public class RangeInsertTests : TestBase
         Assert.AreEqual("B2:B5,C3:D6,E2:E5", any.Address.Address);
     }
 
-
     [TestMethod]
     public void ValidateDatavalidationPartialShiftDown_Right()
     {
@@ -745,6 +786,7 @@ public class RangeInsertTests : TestBase
 
         Assert.AreEqual("B2:B5,C4:E7", any.Address.Address);
     }
+
     [TestMethod]
     public void ValidateDatavalidationPartialShiftRight_Top()
     {
@@ -755,6 +797,7 @@ public class RangeInsertTests : TestBase
 
         Assert.AreEqual("C2:F4,B5:E5", any.Address.Address);
     }
+
     [TestMethod]
     public void ValidateDatavalidationPartialShiftRight_Inside()
     {
@@ -765,6 +808,7 @@ public class RangeInsertTests : TestBase
 
         Assert.AreEqual("B2:E2,C3:F4,B5:E5", any.Address.Address);
     }
+
     [TestMethod]
     public void ValidateDatavalidationShiftRight_Inside()
     {
@@ -797,10 +841,12 @@ public class RangeInsertTests : TestBase
 
         Assert.AreEqual("C2:F5", any.Address.Address);
     }
+
     [TestMethod]
     public void CheckDataValidationFormulaAfterInsertingRow()
     {
         using ExcelPackage? p = new ExcelPackage();
+
         // Create a worksheet with conditional formatting 
         ExcelWorksheet? ws = p.Workbook.Worksheets.Add("Sheet1");
         IExcelDataValidationCustom? dv = ws.DataValidations.AddCustomValidation("B5:G5");
@@ -813,10 +859,12 @@ public class RangeInsertTests : TestBase
         dv = ws.DataValidations[0].As.CustomValidation;
         Assert.AreEqual("=(B$5=0)", dv.Formula.ExcelFormula);
     }
+
     [TestMethod]
     public void CheckDataValidationFormulaAfterInsertingColumn()
     {
         using ExcelPackage? p = new ExcelPackage();
+
         // Create a worksheet with conditional formatting 
         ExcelWorksheet? ws = p.Workbook.Worksheets.Add("Sheet1");
         IExcelDataValidationCustom? dv = ws.DataValidations.AddCustomValidation("E2:E7");
@@ -829,8 +877,11 @@ public class RangeInsertTests : TestBase
         dv = ws.DataValidations[0].As.CustomValidation;
         Assert.AreEqual("=($E2=0)", dv.Formula.ExcelFormula);
     }
+
     #endregion
+
     #region Conditional formatting
+
     [TestMethod]
     public void ValidateConditionalFormattingFullShiftDown()
     {
@@ -841,6 +892,7 @@ public class RangeInsertTests : TestBase
 
         Assert.AreEqual("B3:E6", cf.Address.Address);
     }
+
     [TestMethod]
     public void ValidateConditionalFormattingPartialShiftDown_Left()
     {
@@ -852,6 +904,7 @@ public class RangeInsertTests : TestBase
 
         Assert.AreEqual("B3:C6,D2:E5", cf.Address.Address);
     }
+
     [TestMethod]
     public void ValidateConditionalFormattingShiftDown_Inside()
     {
@@ -864,7 +917,6 @@ public class RangeInsertTests : TestBase
         Assert.AreEqual("B2:B5,C3:D6,E2:E5", cf.Address.Address);
     }
 
-
     [TestMethod]
     public void ValidateConditionalFormattingShiftDown_Right()
     {
@@ -876,6 +928,7 @@ public class RangeInsertTests : TestBase
 
         Assert.AreEqual("B2:B5,C4:E7", cf.Address.Address);
     }
+
     [TestMethod]
     public void ValidateConditionalFormattingPartialShiftRight_Top()
     {
@@ -887,6 +940,7 @@ public class RangeInsertTests : TestBase
 
         Assert.AreEqual("C2:F4,B5:E5", cf.Address.Address);
     }
+
     [TestMethod]
     public void ValidateConditionalFormattingPartialShiftRight_Inside()
     {
@@ -922,7 +976,9 @@ public class RangeInsertTests : TestBase
 
         Assert.AreEqual("C2:F5", cf.Address.Address);
     }
+
     #endregion
+
     [TestMethod]
     public void ValidateFilterShiftDown()
     {
@@ -934,6 +990,7 @@ public class RangeInsertTests : TestBase
         ws.Cells["A50:D50"].Insert(eShiftTypeInsert.Down);
         Assert.AreEqual("A2:D102", ws.AutoFilterAddress.Address);
     }
+
     [TestMethod]
     public void ValidateFilterShiftRight()
     {
@@ -945,26 +1002,28 @@ public class RangeInsertTests : TestBase
         ws.Cells["C1:C100"].Insert(eShiftTypeInsert.Right);
         Assert.AreEqual("B1:F100", ws.AutoFilterAddress.Address);
     }
+
     [TestMethod]
     public void ValidateFilterInsertRow()
     {
         ExcelWorksheet? ws = _pck.Workbook.Worksheets.Add("AutoFilterInsertRow");
         LoadTestdata(ws);
         ws.AutoFilterAddress = new ExcelAddressBase("A1:D100");
-        ws.InsertRow(1,1);
+        ws.InsertRow(1, 1);
         Assert.AreEqual("A2:D101", ws.AutoFilterAddress.Address);
         ws.InsertRow(5, 2);
         Assert.AreEqual("A2:D103", ws.AutoFilterAddress.Address);
     }
+
     [TestMethod]
     public void ValidateFilterInsertColumn()
     {
         ExcelWorksheet? ws = _pck.Workbook.Worksheets.Add("AutoFilterInsertCol");
         LoadTestdata(ws);
         ws.AutoFilterAddress = new ExcelAddressBase("A1:D100");
-        ws.InsertColumn(1,1);
+        ws.InsertColumn(1, 1);
         Assert.AreEqual("B1:E100", ws.AutoFilterAddress.Address);
-        ws.InsertColumn(3,2);
+        ws.InsertColumn(3, 2);
         Assert.AreEqual("B1:G100", ws.AutoFilterAddress.Address);
     }
 
@@ -977,6 +1036,7 @@ public class RangeInsertTests : TestBase
         ws.AutoFilterAddress = new ExcelAddressBase("A1:D100");
         ws.Cells["A1:C1"].Insert(eShiftTypeInsert.Down);
     }
+
     [TestMethod]
     [ExpectedException(typeof(InvalidOperationException))]
     public void ValidateFilterShiftRightPartial()
@@ -986,17 +1046,19 @@ public class RangeInsertTests : TestBase
         ws.AutoFilterAddress = new ExcelAddressBase("A1:D100");
         ws.Cells["A1:A99"].Insert(eShiftTypeInsert.Right);
     }
+
     [TestMethod]
     public void ValidateSparkLineShiftRight()
     {
         ExcelWorksheet? ws = _pck.Workbook.Worksheets.Add("SparkLineShiftRight");
-        LoadTestdata(ws,10);
+        LoadTestdata(ws, 10);
         ws.SparklineGroups.Add(OfficeOpenXml.Sparkline.eSparklineType.Column, ws.Cells["E2:E10"], ws.Cells["A2:D10"]);
         ws.Cells["E5"].Insert(eShiftTypeInsert.Right);
         Assert.AreEqual("F5", ws.SparklineGroups[0].Sparklines[3].Cell.Address);
         ws.Cells["A1:A10"].Insert(eShiftTypeInsert.Right);
         Assert.AreEqual("B2:E10", ws.SparklineGroups[0].DataRange.Address);
     }
+
     [TestMethod]
     public void ValidateSparkLineShiftDown()
     {
@@ -1008,6 +1070,7 @@ public class RangeInsertTests : TestBase
         ws.Cells["A1:E1"].Insert(eShiftTypeInsert.Down);
         Assert.AreEqual("A3:D11", ws.SparklineGroups[0].DataRange.Address);
     }
+
     [TestMethod]
     public void ValidateSparkLineInsertRow()
     {
@@ -1019,6 +1082,7 @@ public class RangeInsertTests : TestBase
         ws.InsertRow(1, 1);
         Assert.AreEqual("A3:D12", ws.SparklineGroups[0].DataRange.Address);
     }
+
     [TestMethod]
     public void ValidateSparkLineInsertColumn()
     {
@@ -1042,6 +1106,7 @@ public class RangeInsertTests : TestBase
 
         SaveWorkbook("InsertTest1.xlsx", p);
     }
+
     [TestMethod]
     public void InsertIntoTemplate2()
     {
@@ -1053,6 +1118,7 @@ public class RangeInsertTests : TestBase
 
         SaveWorkbook("InsertTest2.xlsx", p);
     }
+
     [TestMethod]
     public void ValidateConditionalFormattingInsertColumnMultiRange()
     {
@@ -1060,14 +1126,16 @@ public class RangeInsertTests : TestBase
         IExcelConditionalFormattingAverageGroup? cf = ws.ConditionalFormatting.AddAboveAverage(new ExcelAddress("B2:E5,D3:E5"));
         cf.Style.Fill.BackgroundColor.SetColor(eThemeSchemeColor.Accent1);
 
-        ws.InsertColumn(4,1);
+        ws.InsertColumn(4, 1);
 
         Assert.AreEqual("B2:F5,E3:F5", cf.Address.Address);
     }
+
     [TestMethod]
     public void CheckConditionalFormattingFormulaAfterInsertingRow()
     {
         using ExcelPackage? p = new ExcelPackage();
+
         // Create a worksheet with conditional formatting 
         ExcelWorksheet? ws = p.Workbook.Worksheets.Add("Sheet1");
         IExcelConditionalFormattingExpression? cf = ws.ConditionalFormatting.AddExpression(ws.Cells["B5:G5"]);
@@ -1080,10 +1148,12 @@ public class RangeInsertTests : TestBase
         cf = ws.ConditionalFormatting[0].As.Expression;
         Assert.AreEqual("=(B$5=0)", cf.Formula);
     }
+
     [TestMethod]
     public void CheckConditionalFormattingFormulaAfterInsertingColumn()
     {
         using ExcelPackage? p = new ExcelPackage();
+
         // Create a worksheet with conditional formatting 
         ExcelWorksheet? ws = p.Workbook.Worksheets.Add("Sheet1");
         IExcelConditionalFormattingExpression? cf = ws.ConditionalFormatting.AddExpression(ws.Cells["E2:E7"]);
@@ -1113,6 +1183,7 @@ public class RangeInsertTests : TestBase
         Assert.AreEqual("This cell contains a comment.", ws.Cells[commentAddress].GetValue<string>());
         Assert.AreEqual(commentAddress, ws.Comments[0].Address);
     }
+
     [TestMethod]
     public void ValidateCommentsShouldNotShiftRightOnInsertIntoRange()
     {
@@ -1128,6 +1199,7 @@ public class RangeInsertTests : TestBase
         Assert.AreEqual("This cell contains a comment.", ws.Cells[commentAddress].GetValue<string>());
         Assert.AreEqual(commentAddress, ws.Comments[0].Address);
     }
+
     [TestMethod]
     public void ValidateThreadedCommentsShouldShiftRightOnInsertIntoRange()
     {
@@ -1143,6 +1215,7 @@ public class RangeInsertTests : TestBase
         Assert.AreEqual("This cell contains a threaded comment.", ws.Cells[commentAddress].GetValue<string>());
         Assert.AreEqual(commentAddress, ws.ThreadedComments[0].CellAddress.Address);
     }
+
     [TestMethod]
     public void ValidateThreadedCommentsShouldNotShiftRightOnInsertIntoRange()
     {
@@ -1157,6 +1230,7 @@ public class RangeInsertTests : TestBase
         Assert.AreEqual("This cell contains a threaded comment.", ws.Cells[commentAddress].GetValue<string>());
         Assert.AreEqual(commentAddress, ws.ThreadedComments[0].CellAddress.Address);
     }
+
     [TestMethod]
     public void ValidateTableCalculatedColumnFormulasAfterInsertRowAndInsertColumn()
     {
@@ -1178,6 +1252,7 @@ public class RangeInsertTests : TestBase
 
         // Insert two rows above the tables
         ws.InsertRow(5, 2);
+
         // Insert one column from column D
         ws.InsertColumn(4, 1);
 
@@ -1188,6 +1263,7 @@ public class RangeInsertTests : TestBase
         Assert.AreEqual("A14+B14", tbl1.Columns[2].CalculatedColumnFormula);
         Assert.AreEqual("A14+G14", tbl2.Columns[2].CalculatedColumnFormula);
     }
+
     [TestMethod]
     public void ValidateTableCalculatedColumnFormulasAfterInsertRange()
     {
@@ -1209,6 +1285,7 @@ public class RangeInsertTests : TestBase
 
         // Insert two rows above the tables
         ws.Cells["A2:D2"].Insert(eShiftTypeInsert.Down);
+
         // Insert one column from column D
         //ws.InsertColumn(4, 1);
         ws.Cells["A1:A20"].Insert(eShiftTypeInsert.Right);
@@ -1220,5 +1297,4 @@ public class RangeInsertTests : TestBase
         Assert.AreEqual("B13+C13", tbl1.Columns[2].CalculatedColumnFormula);
         Assert.AreEqual("B13+G12", tbl2.Columns[2].CalculatedColumnFormula);
     }
-
 }

@@ -14,11 +14,13 @@ public class WorksheetRowsColumnsTests : TestBase
     {
         _pck = OpenPackage("WorksheetRowCol.xlsx", true);
     }
+
     [ClassCleanup]
     public static void Cleanup()
     {
         SaveAndCleanup(_pck);
     }
+
     [TestMethod]
     public void ValidateRowsCollectionEnumeration()
     {
@@ -27,12 +29,15 @@ public class WorksheetRowsColumnsTests : TestBase
         ws.Cells["A1:A10"].FillNumber(1);
 
         int r = 2;
-        foreach(ExcelRangeRow? row in ws.Rows[2,10])
+
+        foreach (ExcelRangeRow? row in ws.Rows[2, 10])
         {
             Assert.AreEqual(r++, row.StartRow);
         }
+
         Assert.AreEqual(11, r);
     }
+
     [TestMethod]
     public void ValidateRowsCollectionEnumerationEveryOther()
     {
@@ -50,8 +55,10 @@ public class WorksheetRowsColumnsTests : TestBase
             Assert.AreEqual(r, row.StartRow);
             r += 2;
         }
+
         Assert.AreEqual(12, r);
     }
+
     [TestMethod]
     public void ValidateRowsCollectionEnumerationNoRows()
     {
@@ -65,6 +72,7 @@ public class WorksheetRowsColumnsTests : TestBase
             Assert.Fail("No rows should be in the Rows collection.");
         }
     }
+
     [TestMethod]
     public void ValidateRowsCollectionEnumerationNoIndexerParams()
     {
@@ -73,35 +81,43 @@ public class WorksheetRowsColumnsTests : TestBase
         ws.Cells["A2"].Value = 2;
         ws.Cells["A11"].Value = 11;
         int rows = 0;
+
         foreach (ExcelRangeRow? row in ws.Rows)
         {
-            if(row.StartRow!=2 && row.StartRow!=11)
+            if (row.StartRow != 2 && row.StartRow != 11)
             {
                 Assert.Fail("Unknown row in enumeration");
             }
+
             rows++;
         }
+
         Assert.AreEqual(2, rows);
     }
+
     [TestMethod]
     public void ValidateColumnsCollectionEnumeration()
     {
         ExcelWorksheet? ws = _pck.Workbook.Worksheets.Add("Columns");
 
-        ws.Cells["A1:K1"].FillNumber(x=>
-        {
-            x.StartValue = 1;
-            x.StepValue = 1;
-            x.Direction = eFillDirection.Row;
-        });
+        ws.Cells["A1:K1"]
+          .FillNumber(x =>
+          {
+              x.StartValue = 1;
+              x.StepValue = 1;
+              x.Direction = eFillDirection.Row;
+          });
 
         int c = 2;
+
         foreach (ExcelRangeColumn? column in ws.Columns[2, 10])
         {
             Assert.AreEqual(c++, column.StartColumn);
         }
+
         Assert.AreEqual(11, c);
     }
+
     [TestMethod]
     public void ValidateColumnsCollectionEnumerationColumn3_7()
     {
@@ -112,16 +128,20 @@ public class WorksheetRowsColumnsTests : TestBase
         ws.Columns[7].Width = 20;
 
         int columns = 0;
+
         foreach (ExcelRangeColumn? column in ws.Columns[2, 10])
         {
-            if(column.StartColumn < 3 || column.StartColumn > 7)
+            if (column.StartColumn < 3 || column.StartColumn > 7)
             {
                 Assert.Fail("Invalid columns detected in [Columns] collection");
             }
+
             columns++;
         }
+
         Assert.AreEqual(5, columns);
     }
+
     [TestMethod]
     public void ValidateColumnsCollectionEnumerationColumnWithGap()
     {
@@ -134,28 +154,31 @@ public class WorksheetRowsColumnsTests : TestBase
 
         ws.Cells["J13"].Formula = "A1";
         int columns = 0;
+
         foreach (ExcelRangeColumn? column in ws.Columns[2, 10])
         {
             if (!(column.StartColumn == 3 || column.StartColumn == 8 || column.StartColumn == 6 || column.StartColumn == 10))
             {
                 Assert.Fail("Invalid columns detected in [Columns] collection");
             }
-                
+
             columns++;
         }
+
         Assert.AreEqual(4, columns);
     }
+
     [TestMethod]
     public void ValidateColumnsRange()
     {
         ExcelWorksheet? ws = _pck.Workbook.Worksheets.Add("ColumnsRangeProperties");
-            
+
         string? valueCell = "First Cell";
         ExcelRangeColumn? columns = ws.Columns[2, 4];
         columns.Range.SetCellValue(0, 0, valueCell);
         columns.Range.Style.Fill.SetBackground(Color.Aqua, Style.ExcelFillStyle.LightTrellis);
 
-        Assert.AreEqual(valueCell, ws.Cells[1,2].Value);
+        Assert.AreEqual(valueCell, ws.Cells[1, 2].Value);
         Assert.AreEqual(valueCell, columns.Range.GetCellValue<string>(0, 0));
         Assert.AreEqual(Style.ExcelFillStyle.LightTrellis, ws.Cells[50, 3].Style.Fill.PatternType);
         Assert.AreEqual(Color.Aqua.ToArgb().ToString("X"), ws.Cells[50, 3].Style.Fill.BackgroundColor.Rgb);

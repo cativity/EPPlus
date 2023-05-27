@@ -12,6 +12,7 @@ public class WorksheetColumnTest : TestBase
     {
         //   _pck = OpenPackage("ColumnTests.xlsx", true);
     }
+
     [ClassCleanup]
     public static void Cleanup()
     {
@@ -28,35 +29,42 @@ public class WorksheetColumnTest : TestBase
 
         ws.Column(2).Width = ws.DefaultColWidth;
         SaveAndCleanup(p);
-    }        
+    }
+
     [TestMethod, Ignore]
     public void ValidateWidthHeeboLight()
     {
         CreateNormalFontsFiles("Heebo Light");
     }
+
     [TestMethod, Ignore]
     public void ValidateWidthVerdana()
     {
         CreateNormalFontsFiles("Verdana");
     }
+
     [TestMethod, Ignore]
     public void ValidateWidthArial()
     {
         CreateNormalFontsFiles("Arial");
     }
+
     [TestMethod, Ignore]
     public void ValidateWidthCalibri()
     {
         CreateNormalFontsFiles("Calibri");
     }
+
     [TestMethod, Ignore]
     public void ValidateWidthTimesNewRoman()
     {
         CreateNormalFontsFiles("Times New Roman");
-    }        
+    }
+
     private static void CreateNormalFontsFiles(string fontName)
     {
         string? fontNameNoSpace = fontName.Replace(" ", "");
+
         foreach (int size in new int[] { 6, 8, 9, 10, 11, 12, 14, 16, 18, 20, 24, 26, 28, 30, 32, 34, 36, 38, 40, 42, 44, 48, 72, 96, 128, 256 })
         {
             using ExcelPackage? p = OpenPackage($"ColumnWidth\\columnWidth{fontNameNoSpace}{size}.xlsx", true);
@@ -68,6 +76,7 @@ public class WorksheetColumnTest : TestBase
             SaveAndCleanup(p);
         }
     }
+
     [TestMethod]
     public void ValidateAutoFitWidthNormalArial28()
     {
@@ -82,6 +91,7 @@ public class WorksheetColumnTest : TestBase
         ws.Column(2).Width = ws.DefaultColWidth;
         SaveAndCleanup(p);
     }
+
     [TestMethod]
     public void ValidateDefaultWidthArial36()
     {
@@ -93,6 +103,7 @@ public class WorksheetColumnTest : TestBase
         ws.Column(2).Width = ws.DefaultColWidth;
         SaveAndCleanup(p);
     }
+
     [TestMethod]
     public void ValidateDefaultWidthArial72()
     {
@@ -104,5 +115,4 @@ public class WorksheetColumnTest : TestBase
         ws.Column(2).Width = ws.DefaultColWidth;
         SaveAndCleanup(p);
     }
-
 }

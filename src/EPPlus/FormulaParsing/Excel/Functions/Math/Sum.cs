@@ -10,6 +10,7 @@
  *************************************************************************************************
   01/27/2020         EPPlus Software AB       Initial release EPPlus 5
  *************************************************************************************************/
+
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -22,10 +23,7 @@ using OfficeOpenXml.FormulaParsing.Excel.Functions.Metadata;
 
 namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Math;
 
-[FunctionMetadata(
-                     Category = ExcelFunctionCategory.MathAndTrig,
-                     EPPlusVersion = "4",
-                     Description = "Returns the sum of a supplied list of numbers")]
+[FunctionMetadata(Category = ExcelFunctionCategory.MathAndTrig, EPPlusVersion = "4", Description = "Returns the sum of a supplied list of numbers")]
 internal class Sum : HiddenValuesHandlingFunction
 {
     public Sum()
@@ -36,29 +34,32 @@ internal class Sum : HiddenValuesHandlingFunction
     public override CompileResult Execute(IEnumerable<FunctionArgument> arguments, ParsingContext context)
     {
         double retVal = 0d;
+
         if (arguments != null)
         {
             foreach (FunctionArgument? arg in arguments)
             {
-                retVal += this.Calculate(arg, context);                    
+                retVal += this.Calculate(arg, context);
             }
         }
+
         return this.CreateResult(retVal, DataType.Decimal);
     }
 
-        
     private double Calculate(FunctionArgument arg, ParsingContext context)
     {
         double retVal = 0d;
+
         if (this.ShouldIgnore(arg, context))
         {
             return retVal;
         }
+
         if (arg.Value is IEnumerable<FunctionArgument>)
         {
             foreach (FunctionArgument? item in (IEnumerable<FunctionArgument>)arg.Value)
             {
-                if(!this.ShouldIgnore(arg, context))
+                if (!this.ShouldIgnore(arg, context))
                 {
                     retVal += this.Calculate(item, context);
                 }
@@ -80,6 +81,7 @@ internal class Sum : HiddenValuesHandlingFunction
             CheckForAndHandleExcelError(arg);
             retVal += ConvertUtil.GetValueDouble(arg.Value, true);
         }
+
         return retVal;
     }
 }

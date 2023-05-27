@@ -10,6 +10,7 @@
  *************************************************************************************************
   01/27/2020         EPPlus Software AB       Initial release EPPlus 5
  *************************************************************************************************/
+
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -20,10 +21,9 @@ using OfficeOpenXml.FormulaParsing.ExpressionGraph;
 
 namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Information;
 
-[FunctionMetadata(
-                     Category = ExcelFunctionCategory.Information,
-                     EPPlusVersion = "4",
-                     Description = "Tests if a supplied cell is blank (empty), and if so, returns TRUE; Otherwise, returns FALSE")]
+[FunctionMetadata(Category = ExcelFunctionCategory.Information,
+                  EPPlusVersion = "4",
+                  Description = "Tests if a supplied cell is blank (empty), and if so, returns TRUE; Otherwise, returns FALSE")]
 internal class IsBlank : ExcelFunction
 {
     public override CompileResult Execute(IEnumerable<FunctionArgument> arguments, ParsingContext context)
@@ -32,12 +32,15 @@ internal class IsBlank : ExcelFunction
         {
             return this.CreateResult(true, DataType.Boolean);
         }
+
         bool result = true;
+
         foreach (FunctionArgument? arg in arguments)
         {
             if (arg.Value is IRangeInfo)
-            {                    
-                IRangeInfo? r=(IRangeInfo)arg.Value;
+            {
+                IRangeInfo? r = (IRangeInfo)arg.Value;
+
                 if (r.GetValue(r.Address._fromRow, r.Address._fromCol) != null)
                 {
                     result = false;
@@ -48,10 +51,12 @@ internal class IsBlank : ExcelFunction
                 if (arg.Value != null && arg.Value.ToString() != string.Empty)
                 {
                     result = false;
+
                     break;
                 }
             }
         }
+
         return this.CreateResult(result, DataType.Boolean);
     }
 }

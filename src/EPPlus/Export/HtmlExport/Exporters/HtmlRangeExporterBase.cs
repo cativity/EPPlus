@@ -10,6 +10,7 @@
  *************************************************************************************************
   6/4/2022         EPPlus Software AB           ExcelTable Html Export
  *************************************************************************************************/
+
 using OfficeOpenXml.Core;
 using OfficeOpenXml.Drawing.Interfaces;
 using OfficeOpenXml.Export.HtmlExport.Accessibility;
@@ -73,9 +74,11 @@ internal abstract class HtmlRangeExporterBase : AbstractHtmlExporter
     {
         ExcelWorksheet? ws = range.Worksheet;
         this._columns = new List<int>();
+
         for (int col = range._fromCol; col <= range._toCol; col++)
         {
             ExcelColumn? c = ws.GetColumn(col);
+
             if (c == null || (c.Hidden == false && c.Width > 0))
             {
                 this._columns.Add(col);
@@ -110,6 +113,7 @@ internal abstract class HtmlRangeExporterBase : AbstractHtmlExporter
         if (Settings.HiddenRows != eHiddenState.Include)
         {
             ExcelRow? r = ws.Row(row);
+
             if (r.Hidden || r.Height == 0)
             {
                 if (Settings.HiddenRows == eHiddenState.IncludeButHide)
@@ -119,6 +123,7 @@ internal abstract class HtmlRangeExporterBase : AbstractHtmlExporter
                 else
                 {
                     row++;
+
                     return true;
                 }
             }
@@ -130,11 +135,13 @@ internal abstract class HtmlRangeExporterBase : AbstractHtmlExporter
     internal static void AddRowHeightStyle(EpplusHtmlWriter writer, ExcelRangeBase range, int row, string styleClassPrefix, bool isMultiSheet)
     {
         ExcelValue r = range.Worksheet._values.GetValue(row, 0);
+
         if (r._value is RowInternal rowInternal)
         {
             if (rowInternal.Height != -1 && rowInternal.Height != range.Worksheet.DefaultRowHeight)
             {
                 writer.AddAttribute("style", $"height:{rowInternal.Height}pt");
+
                 return;
             }
         }
@@ -157,6 +164,7 @@ internal abstract class HtmlRangeExporterBase : AbstractHtmlExporter
         for (int i = 0; i < this._mergedCells.Count; i++)
         {
             ExcelAddressBase? adr = this._mergedCells[i];
+
             if (adr._toRow < row || (adr._toRow == row && adr._toCol < col))
             {
                 this._mergedCells.RemoveAt(i);
@@ -164,13 +172,13 @@ internal abstract class HtmlRangeExporterBase : AbstractHtmlExporter
             }
             else
             {
-                if (row >= adr._fromRow && row <= adr._toRow &&
-                    col >= adr._fromCol && col <= adr._toCol)
+                if (row >= adr._fromRow && row <= adr._toRow && col >= adr._fromCol && col <= adr._toCol)
                 {
                     return true;
                 }
             }
         }
+
         return false;
     }
 
@@ -179,15 +187,18 @@ internal abstract class HtmlRangeExporterBase : AbstractHtmlExporter
         if (cell.Merge)
         {
             string? address = cell.Worksheet.MergedCells[cell._fromRow, cell._fromCol];
+
             if (address != null)
             {
                 ExcelAddressBase? ma = new ExcelAddressBase(address);
                 bool added = false;
+
                 //ColSpan
                 if (ma._fromCol == cell._fromCol || range._fromCol == cell._fromCol)
                 {
                     int maxCol = Math.Min(ma._toCol, range._toCol);
                     int colSpan = maxCol - ma._fromCol + 1;
+
                     if (colSpan > 1)
                     {
                         writer.AddAttribute("colspan", colSpan.ToString(CultureInfo.InvariantCulture));
@@ -196,15 +207,18 @@ internal abstract class HtmlRangeExporterBase : AbstractHtmlExporter
                     this._mergedCells.Add(ma);
                     added = true;
                 }
+
                 //RowSpan
                 if (ma._fromRow == cell._fromRow || range._fromRow == cell._fromRow)
                 {
                     int maxRow = Math.Min(ma._toRow, range._toRow);
                     int rowSpan = maxRow - ma._fromRow + 1;
+
                     if (rowSpan > 1)
                     {
                         writer.AddAttribute("rowspan", rowSpan.ToString(CultureInfo.InvariantCulture));
                     }
+
                     if (added == false)
                     {
                         this._mergedCells.Add(ma);
@@ -222,13 +236,15 @@ internal abstract class HtmlRangeExporterBase : AbstractHtmlExporter
         }
 
         this._dataTypes = new List<string>();
+
         for (int col = range._fromCol; col <= range._toCol; col++)
         {
-            this._dataTypes.Add(
-                                ColumnDataTypeManager.GetColumnDataType(range.Worksheet, range, range._fromRow + settings.HeaderRows, col));
+            this._dataTypes.Add(ColumnDataTypeManager.GetColumnDataType(range.Worksheet, range, range._fromRow + settings.HeaderRows, col));
         }
     }
+
     bool? _isMultiSheet = null;
+
     protected bool IsMultiSheet
     {
         get
@@ -237,6 +253,7 @@ internal abstract class HtmlRangeExporterBase : AbstractHtmlExporter
             {
                 this._isMultiSheet = this._ranges.Select(x => x.Worksheet).Distinct().Count() > 1;
             }
+
             return this._isMultiSheet.Value;
         }
     }
@@ -252,14 +269,17 @@ internal abstract class HtmlRangeExporterBase : AbstractHtmlExporter
         {
             writer.AddAttribute("role", settings.TableSettings.TableRole);
         }
+
         if (!string.IsNullOrEmpty(settings.TableSettings.AriaLabel))
         {
             writer.AddAttribute(AriaAttributes.AriaLabel.AttributeName, settings.TableSettings.AriaLabel);
         }
+
         if (!string.IsNullOrEmpty(settings.TableSettings.AriaLabelledBy))
         {
             writer.AddAttribute(AriaAttributes.AriaLabelledBy.AttributeName, settings.TableSettings.AriaLabelledBy);
         }
+
         if (!string.IsNullOrEmpty(settings.TableSettings.AriaDescribedBy))
         {
             writer.AddAttribute(AriaAttributes.AriaDescribedBy.AttributeName, settings.TableSettings.AriaDescribedBy);
@@ -274,8 +294,10 @@ internal abstract class HtmlRangeExporterBase : AbstractHtmlExporter
             {
                 return this.Settings.TableId + index.ToString(CultureInfo.InvariantCulture);
             }
+
             return this.Settings.TableId;
         }
+
         return overrideSettings.TableId;
     }
 
@@ -302,10 +324,12 @@ internal abstract class HtmlRangeExporterBase : AbstractHtmlExporter
     protected static void AddClassesAttributes(EpplusHtmlWriter writer, ExcelTable table, string tableId, List<string> additionalTableClassNames)
     {
         string? tableClasses = TableClass;
+
         if (table != null)
         {
             tableClasses += " " + HtmlExportTableUtil.GetTableClasses(table); //Add classes for the table styles if the range corresponds to a table.
         }
+
         if (additionalTableClassNames != null && additionalTableClassNames.Count > 0)
         {
             foreach (string? cls in additionalTableClassNames)
@@ -313,6 +337,7 @@ internal abstract class HtmlRangeExporterBase : AbstractHtmlExporter
                 tableClasses += $" {cls}";
             }
         }
+
         writer.AddAttribute(HtmlAttributes.Class, $"{tableClasses}");
 
         if (!string.IsNullOrEmpty(tableId))

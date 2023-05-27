@@ -10,9 +10,11 @@
  *************************************************************************************************
     11/24/2020         EPPlus Software AB           Controls 
  *************************************************************************************************/
+
 using System.Xml;
 using OfficeOpenXml.Drawing.Vml;
 using OfficeOpenXml.Packaging;
+
 namespace OfficeOpenXml.Drawing.Controls;
 
 /// <summary>
@@ -20,13 +22,19 @@ namespace OfficeOpenXml.Drawing.Controls;
 /// </summary>
 public abstract class ExcelControlWithColorsAndLines : ExcelControlWithText
 {
-
-    internal ExcelControlWithColorsAndLines(ExcelDrawings drawings, XmlElement drawNode, string name, ExcelGroupShape parent) : base(drawings, drawNode, name, parent)
+    internal ExcelControlWithColorsAndLines(ExcelDrawings drawings, XmlElement drawNode, string name, ExcelGroupShape parent)
+        : base(drawings, drawNode, name, parent)
     {
         this.SetSize(90, 30); //Default size        
     }
-    internal ExcelControlWithColorsAndLines(ExcelDrawings drawings, XmlNode drawingNode, ControlInternal control, ZipPackagePart part, XmlDocument ctrlPropXml, ExcelGroupShape parent = null) :
-        base(drawings, drawingNode, control, part, ctrlPropXml, parent)
+
+    internal ExcelControlWithColorsAndLines(ExcelDrawings drawings,
+                                            XmlNode drawingNode,
+                                            ControlInternal control,
+                                            ZipPackagePart part,
+                                            XmlDocument ctrlPropXml,
+                                            ExcelGroupShape parent = null)
+        : base(drawings, drawingNode, control, part, ctrlPropXml, parent)
     {
     }
 
@@ -35,22 +43,19 @@ public abstract class ExcelControlWithColorsAndLines : ExcelControlWithText
     /// </summary>
     public ExcelVmlDrawingFill Fill
     {
-        get
-        {
-            return this._vml.GetFill();
-        }
+        get { return this._vml.GetFill(); }
     }
+
     ExcelVmlDrawingBorder _border = null;
+
     /// <summary>
     /// Border settings for the control
     /// </summary>
     public ExcelVmlDrawingBorder Border
     {
-        get
-        {
-            return this._border ??= new ExcelVmlDrawingBorder(this._drawings, this._vml.NameSpaceManager, this._vml.TopNode, this._vml.SchemaNodeOrder);
-        }
+        get { return this._border ??= new ExcelVmlDrawingBorder(this._drawings, this._vml.NameSpaceManager, this._vml.TopNode, this._vml.SchemaNodeOrder); }
     }
+
     internal override void UpdateXml()
     {
         base.UpdateXml();

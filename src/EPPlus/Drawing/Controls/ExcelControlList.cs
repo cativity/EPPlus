@@ -10,6 +10,7 @@
  *************************************************************************************************
   01/27/2020         EPPlus Software AB       Initial release EPPlus 5
  *************************************************************************************************/
+
 using OfficeOpenXml.FormulaParsing.Excel.Functions.RefAndLookup;
 using OfficeOpenXml.Packaging;
 using OfficeOpenXml.Utils.Extensions;
@@ -25,26 +26,35 @@ namespace OfficeOpenXml.Drawing.Controls;
 /// </summary>
 public abstract class ExcelControlList : ExcelControl
 {
-    internal ExcelControlList(ExcelDrawings drawings, XmlElement drawNode, string name, ExcelGroupShape parent=null) : base(drawings, drawNode, name, parent)
+    internal ExcelControlList(ExcelDrawings drawings, XmlElement drawNode, string name, ExcelGroupShape parent = null)
+        : base(drawings, drawNode, name, parent)
     {
     }
 
-    internal ExcelControlList(ExcelDrawings drawings, XmlNode drawNode, ControlInternal control, ZipPackagePart part, XmlDocument controlPropertiesXml, ExcelGroupShape parent = null)
+    internal ExcelControlList(ExcelDrawings drawings,
+                              XmlNode drawNode,
+                              ControlInternal control,
+                              ZipPackagePart part,
+                              XmlDocument controlPropertiesXml,
+                              ExcelGroupShape parent = null)
         : base(drawings, drawNode, control, part, controlPropertiesXml, parent)
     {
     }
+
     /// <summary>
     /// The range to the items populating the list.
     /// </summary>
-    public ExcelAddressBase InputRange 
-    { 
+    public ExcelAddressBase InputRange
+    {
         get
         {
             string? range = this._ctrlProp.GetXmlNodeString("@fmlaRange");
-            if(ExcelCellBase.IsValidAddress(range))
+
+            if (ExcelCellBase.IsValidAddress(range))
             {
                 return new ExcelAddressBase(range);
             }
+
             return null;
         }
         set
@@ -54,6 +64,7 @@ public abstract class ExcelControlList : ExcelControl
                 this._ctrlProp.DeleteNode("@fmlaRange");
                 this._vmlProp.DeleteNode("x:FmlaRange");
             }
+
             if (value.WorkSheetName.Equals(this._drawings.Worksheet.Name, StringComparison.CurrentCultureIgnoreCase))
             {
                 this._ctrlProp.SetXmlNodeString("@fmlaRange", value.Address);
@@ -66,15 +77,13 @@ public abstract class ExcelControlList : ExcelControl
             }
         }
     }
+
     /// <summary>
     /// The index of a selected item in the list. 
     /// </summary>
     public int SelectedIndex
     {
-        get
-        {
-            return this._ctrlProp.GetXmlNodeInt("@sel", 0) - 1;
-        }
+        get { return this._ctrlProp.GetXmlNodeInt("@sel", 0) - 1; }
         set
         {
             if (value <= 0)
@@ -89,12 +98,10 @@ public abstract class ExcelControlList : ExcelControl
             }
         }
     }
+
     internal int Page
     {
-        get
-        {
-            return this._vmlProp.GetXmlNodeInt("x:Page");
-        }
+        get { return this._vmlProp.GetXmlNodeInt("x:Page"); }
         set
         {
             this._ctrlProp.SetXmlNodeInt("@page", value);

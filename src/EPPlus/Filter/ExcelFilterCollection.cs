@@ -10,6 +10,7 @@
  *************************************************************************************************
   01/27/2020         EPPlus Software AB       Initial release EPPlus 5
  *************************************************************************************************/
+
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -26,7 +27,9 @@ public class ExcelFilterCollectionBase<T> : IEnumerable<T>
     /// A list of columns
     /// </summary>
     internal List<T> _list;
+
     internal readonly bool _maxTwoItems;
+
     internal ExcelFilterCollectionBase()
     {
         if (typeof(T) == typeof(ExcelFilterCustomItem))
@@ -36,6 +39,7 @@ public class ExcelFilterCollectionBase<T> : IEnumerable<T>
 
         this._list = new List<T>();
     }
+
     /// <summary>
     /// Gets the enumerator for the collection
     /// </summary>
@@ -53,7 +57,7 @@ public class ExcelFilterCollectionBase<T> : IEnumerable<T>
     {
         return this._list.GetEnumerator();
     }
-        
+
     /// <summary>
     /// The indexer for the collection
     /// </summary>
@@ -61,22 +65,18 @@ public class ExcelFilterCollectionBase<T> : IEnumerable<T>
     /// <returns>The item at the index.</returns>
     public T this[int index]
     {
-        get
-        {
-            return this._list[index];
-        }
+        get { return this._list[index]; }
     }
+
     /// <summary>
     /// Number of items in the collection
     /// </summary>
     public int Count
     {
-        get
-        {
-            return this._list.Count;
-        }
+        get { return this._list.Count; }
     }
 }
+
 /// <summary>
 /// A collection of filters for a filter column
 /// </summary>
@@ -95,7 +95,7 @@ public class ExcelFilterCollection<T> : ExcelFilterCollectionBase<T>
         }
 
         this._list.Add(value);
+
         return value;
     }
-
 }

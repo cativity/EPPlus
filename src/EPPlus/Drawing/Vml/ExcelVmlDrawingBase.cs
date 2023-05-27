@@ -10,6 +10,7 @@
  *************************************************************************************************
   01/27/2020         EPPlus Software AB       Initial release EPPlus 5
  *************************************************************************************************/
+
 using System.Xml;
 
 namespace OfficeOpenXml.Drawing.Vml;
@@ -19,69 +20,54 @@ namespace OfficeOpenXml.Drawing.Vml;
 /// </summary>
 public class ExcelVmlDrawingBase : XmlHelper
 {
-    internal ExcelVmlDrawingBase(XmlNode topNode, XmlNamespaceManager ns) :
-        base(ns, topNode)
+    internal ExcelVmlDrawingBase(XmlNode topNode, XmlNamespaceManager ns)
+        : base(ns, topNode)
     {
-        this.SchemaNodeOrder = new string[] { "fill", "stroke", "shadow", "path", "textbox", "ClientData", "MoveWithCells", "SizeWithCells", "Anchor", "Locked", "AutoFill", "LockText", "TextHAlign", "TextVAlign", "Row", "Column", "Visible" };
+        this.SchemaNodeOrder = new string[]
+        {
+            "fill", "stroke", "shadow", "path", "textbox", "ClientData", "MoveWithCells", "SizeWithCells", "Anchor", "Locked", "AutoFill", "LockText",
+            "TextHAlign", "TextVAlign", "Row", "Column", "Visible"
+        };
     }
+
     /// <summary>
     /// The Id of the vml drawing
     /// </summary>
-    public string Id 
+    public string Id
     {
-        get
-        {
-            return this.GetXmlNodeString("@id");
-        }
-        set
-        {
-            this.SetXmlNodeString("@id",value);
-        }
+        get { return this.GetXmlNodeString("@id"); }
+        set { this.SetXmlNodeString("@id", value); }
     }
+
     /// <summary>
     /// The Id of the shape drawing
     /// </summary>
     internal string SpId
     {
-        get
-        {
-            return this.GetXmlNodeString("@o:spid");
-        }
-        set
-        {
-            this.SetXmlNodeString("@o:spid", value);
-        }
+        get { return this.GetXmlNodeString("@o:spid"); }
+        set { this.SetXmlNodeString("@o:spid", value); }
     }
+
     /// <summary>
     /// Alternative text to be displayed instead of a graphic.
     /// </summary>
     public string AlternativeText
     {
-        get
-        {
-            return this.GetXmlNodeString("@alt");
-        }
-        set
-        {
-            this.SetXmlNodeString("@alt", value);
-        }
+        get { return this.GetXmlNodeString("@alt"); }
+        set { this.SetXmlNodeString("@alt", value); }
     }
+
     /// <summary>
     /// Anchor coordinates for the drawing
     /// </summary>
     internal string Anchor
     {
-        get
-        {
-            return this.GetXmlNodeString("x:ClientData/x:Anchor");
-        }
-        set
-        {
-            this.SetXmlNodeString("x:ClientData/x:Anchor", value);
-        }
+        get { return this.GetXmlNodeString("x:ClientData/x:Anchor"); }
+        set { this.SetXmlNodeString("x:ClientData/x:Anchor", value); }
     }
 
     #region "Style Handling methods"
+
     /// <summary>
     /// Gets a style from the semi-colo separated list with the specifik key
     /// </summary>
@@ -91,27 +77,34 @@ public class ExcelVmlDrawingBase : XmlHelper
     /// <returns>True if found</returns>
     protected static bool GetStyle(string style, string key, out string value)
     {
-        string[]styles = style.Split(';');
-        foreach(string s in styles)
+        string[] styles = style.Split(';');
+
+        foreach (string s in styles)
         {
             if (s.IndexOf(':') > 0)
             {
                 string[] split = s.Split(':');
+
                 if (split[0] == key)
                 {
-                    value=split[1];
+                    value = split[1];
+
                     return true;
                 }
             }
             else if (s == key)
             {
-                value="";
+                value = "";
+
                 return true;
             }
         }
-        value="";
+
+        value = "";
+
         return false;
     }
+
     /// <summary>
     /// Sets the style in a semicolon separated list
     /// </summary>
@@ -122,28 +115,33 @@ public class ExcelVmlDrawingBase : XmlHelper
     protected internal static string SetStyle(string style, string key, string value)
     {
         string[] styles = style.Split(';');
-        string newStyle="";
+        string newStyle = "";
         bool changed = false;
+
         foreach (string s in styles)
         {
             if (!string.IsNullOrEmpty(s))
             {
                 string[] split = s.Split(':');
+
                 if (split[0].Trim() == key)
                 {
                     if (value.Trim() != "") //If blank remove the item
                     {
                         newStyle += key + ':' + value;
                     }
+
                     changed = true;
                 }
                 else
                 {
                     newStyle += s;
                 }
+
                 newStyle += ';';
             }
         }
+
         if (!changed)
         {
             newStyle += key + ':' + value;
@@ -152,7 +150,9 @@ public class ExcelVmlDrawingBase : XmlHelper
         {
             newStyle = newStyle.Substring(0, newStyle.Length - 1);
         }
+
         return newStyle;
     }
+
     #endregion
 }

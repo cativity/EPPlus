@@ -10,6 +10,7 @@
  *************************************************************************************************
   05/03/2020         EPPlus Software AB         Implemented function
  *************************************************************************************************/
+
 using OfficeOpenXml.FormulaParsing.Excel.Functions.Finance.Implementations;
 using OfficeOpenXml.FormulaParsing.Excel.Functions.Metadata;
 using OfficeOpenXml.FormulaParsing.ExpressionGraph;
@@ -20,10 +21,9 @@ using System.Text;
 
 namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Finance;
 
-[FunctionMetadata(
-                     Category = ExcelFunctionCategory.Financial,
-                     EPPlusVersion = "5.2",
-                     Description = "Calculates the cumulative interest paid between two specified periods")]
+[FunctionMetadata(Category = ExcelFunctionCategory.Financial,
+                  EPPlusVersion = "5.2",
+                  Description = "Calculates the cumulative interest paid between two specified periods")]
 internal class Cumipmt : ExcelFunction
 {
     public override CompileResult Execute(IEnumerable<FunctionArgument> arguments, ParsingContext context)
@@ -35,12 +35,14 @@ internal class Cumipmt : ExcelFunction
         int startPeriod = this.ArgToInt(arguments, 3);
         int endPeriod = this.ArgToInt(arguments, 4);
         int type = this.ArgToInt(arguments, 5);
+
         if (type < 0 || type > 1)
         {
             return this.CreateResult(eErrorType.Value);
         }
 
         FinanceCalcResult<double>? result = CumipmtImpl.GetCumipmt(rate, nper, pv, startPeriod, endPeriod, (PmtDue)type);
+
         if (result.HasError)
         {
             return this.CreateResult(result.ExcelErrorType);

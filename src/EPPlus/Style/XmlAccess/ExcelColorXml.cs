@@ -10,6 +10,7 @@
  *************************************************************************************************
   01/27/2020         EPPlus Software AB       Initial release EPPlus 5
  *************************************************************************************************/
+
 using System;
 using System.Xml;
 using System.Globalization;
@@ -31,46 +32,44 @@ public sealed class ExcelColorXml : StyleXmlHelper
         this._rgb = "";
         this._indexed = int.MinValue;
     }
-    internal ExcelColorXml(XmlNamespaceManager nsm, XmlNode topNode) :
-        base(nsm, topNode)
+
+    internal ExcelColorXml(XmlNamespaceManager nsm, XmlNode topNode)
+        : base(nsm, topNode)
     {
-        if(topNode==null)
+        if (topNode == null)
         {
-            this.Exists=false;
+            this.Exists = false;
         }
         else
         {
             this.Exists = true;
             this._auto = this.GetXmlNodeBool("@auto");
-            int? v= this.GetXmlNodeIntNull("@theme");
-            if(v.HasValue && v>=0 && v<=11)
+            int? v = this.GetXmlNodeIntNull("@theme");
+
+            if (v.HasValue && v >= 0 && v <= 11)
             {
                 this._theme = (eThemeSchemeColor)v;
             }
 
-            this._tint = this.GetXmlNodeDecimalNull("@tint")??decimal.MinValue;
+            this._tint = this.GetXmlNodeDecimalNull("@tint") ?? decimal.MinValue;
             this._rgb = this.GetXmlNodeString("@rgb");
             this._indexed = this.GetXmlNodeIntNull("@indexed") ?? int.MinValue;
         }
     }
-        
+
     internal override string Id
     {
-        get
-        {
-            return this._auto.ToString() + "|" + this._theme?.ToString() + "|" + this._tint + "|" + this._rgb + "|" + this._indexed;
-        }
+        get { return this._auto.ToString() + "|" + this._theme?.ToString() + "|" + this._tint + "|" + this._rgb + "|" + this._indexed; }
     }
+
     bool _auto;
+
     /// <summary>
     /// Set the color to automatic
     /// </summary>
     public bool Auto
     {
-        get
-        {
-            return this._auto;
-        }
+        get { return this._auto; }
         set
         {
             this.Clear();
@@ -78,16 +77,15 @@ public sealed class ExcelColorXml : StyleXmlHelper
             this.Exists = true;
         }
     }
+
     eThemeSchemeColor? _theme;
+
     /// <summary>
     /// Theme color value
     /// </summary>
     public eThemeSchemeColor? Theme
     {
-        get
-        {
-            return this._theme;
-        }
+        get { return this._theme; }
         set
         {
             this.Clear();
@@ -95,7 +93,9 @@ public sealed class ExcelColorXml : StyleXmlHelper
             this.Exists = true;
         }
     }
+
     decimal _tint;
+
     /// <summary>
     /// The Tint value for the color
     /// </summary>
@@ -118,35 +118,33 @@ public sealed class ExcelColorXml : StyleXmlHelper
             this.Exists = true;
         }
     }
+
     string _rgb;
+
     /// <summary>
     /// The RGB value
     /// </summary>
     public string Rgb
     {
-        get
-        {
-            return this._rgb;
-        }
+        get { return this._rgb; }
         set
         {
             this._rgb = value;
-            this.Exists=true;
+            this.Exists = true;
             this._indexed = int.MinValue;
             this._auto = false;
         }
     }
+
     int _indexed;
+
     /// <summary>
     /// Indexed color value.
     /// Returns int.MinValue if indexed colors are not used.
     /// </summary>
     public int Indexed
     {
-        get
-        {
-            return this._indexed;
-        }
+        get { return this._indexed; }
         set
         {
             if (value < 0 || value > 65)
@@ -159,6 +157,7 @@ public sealed class ExcelColorXml : StyleXmlHelper
             this.Exists = true;
         }
     }
+
     internal void Clear()
     {
         this._theme = null;
@@ -167,6 +166,7 @@ public sealed class ExcelColorXml : StyleXmlHelper
         this._rgb = "";
         this._auto = false;
     }
+
     /// <summary>
     /// Sets the color
     /// </summary>
@@ -176,6 +176,7 @@ public sealed class ExcelColorXml : StyleXmlHelper
         this.Clear();
         this._rgb = color.ToArgb().ToString("X");
     }
+
     /// <summary>
     /// Sets a theme color
     /// </summary>
@@ -185,6 +186,7 @@ public sealed class ExcelColorXml : StyleXmlHelper
         this.Clear();
         this._theme = themeColorType;
     }
+
     /// <summary>
     /// Sets an indexed color
     /// </summary>
@@ -197,13 +199,17 @@ public sealed class ExcelColorXml : StyleXmlHelper
 
     internal ExcelColorXml Copy()
     {
-        return new ExcelColorXml(this.NameSpaceManager) {_indexed= this._indexed, _tint= this._tint, _rgb= this._rgb, _theme= this._theme, _auto= this._auto, Exists= this.Exists };
+        return new ExcelColorXml(this.NameSpaceManager)
+        {
+            _indexed = this._indexed, _tint = this._tint, _rgb = this._rgb, _theme = this._theme, _auto = this._auto, Exists = this.Exists
+        };
     }
 
     internal override XmlNode CreateXmlNode(XmlNode topNode)
     {
         this.TopNode = topNode;
-        if(this._rgb!="")
+
+        if (this._rgb != "")
         {
             this.SetXmlNodeString("@rgb", this._rgb);
         }
@@ -219,12 +225,15 @@ public sealed class ExcelColorXml : StyleXmlHelper
         {
             this.SetXmlNodeBool("@auto", this._auto);
         }
+
         if (this._tint != decimal.MinValue)
         {
             this.SetXmlNodeString("@tint", this._tint.ToString(CultureInfo.InvariantCulture));
         }
+
         return this.TopNode;
     }
+
     /// <summary>
     /// True if the record exists in the underlaying xml
     /// </summary>

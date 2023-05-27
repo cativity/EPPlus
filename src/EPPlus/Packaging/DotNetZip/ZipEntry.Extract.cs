@@ -23,7 +23,6 @@
 //
 // ------------------------------------------------------------------
 
-
 using System;
 using System.IO;
 using OfficeOpenXml.Packaging.Ionic.Crc;
@@ -75,7 +74,6 @@ internal partial class ZipEntry
     {
         this.InternalExtract(".", null, null);
     }
-
 
     /// <summary>
     ///   Extract the entry to a file in the filesystem, using the specified
@@ -183,10 +181,6 @@ internal partial class ZipEntry
         this.InternalExtract(baseDirectory, null, null);
     }
 
-
-
-
-
     /// <summary>
     ///   Extract the entry to the filesystem, starting at the specified base
     ///   directory, and using the specified behavior when extraction would
@@ -239,7 +233,6 @@ internal partial class ZipEntry
         this.ExtractExistingFile = extractExistingFile;
         this.InternalExtract(baseDirectory, null, null);
     }
-
 
     /// <summary>
     ///   Extract the entry to the filesystem, using the current working directory
@@ -335,9 +328,6 @@ internal partial class ZipEntry
         this.InternalExtract(baseDirectory, null, password);
     }
 
-
-
-
     /// <summary>
     ///   Extract the entry to a file in the filesystem, relative to the
     ///   current directory, using the specified behavior when extraction
@@ -361,8 +351,6 @@ internal partial class ZipEntry
         this.ExtractExistingFile = extractExistingFile;
         this.InternalExtract(".", null, password);
     }
-
-
 
     /// <summary>
     ///   Extract the entry to the filesystem, starting at the specified base
@@ -419,7 +407,6 @@ internal partial class ZipEntry
     {
         this.InternalExtract(null, stream, password);
     }
-
 
     /// <summary>
     ///   Opens a readable stream corresponding to the zip entry in the
@@ -579,8 +566,6 @@ internal partial class ZipEntry
         return this.InternalOpenReader(password);
     }
 
-
-
     internal CrcCalculatorStream InternalOpenReader(string password)
     {
         this.ValidateCompression();
@@ -597,13 +582,12 @@ internal partial class ZipEntry
         // from the stream AFTER decompression and decryption.
         // It is the uncompressed size, unless ... there is no compression in which
         // case ...?  :< I'm not sure why it's not always UncompressedSize
-        Int64 LeftToRead = this._CompressionMethod_FromZipFile == (short)CompressionMethod.None
-                               ? this._CompressedFileDataSize
-                               : this.UncompressedSize;
+        Int64 LeftToRead = this._CompressionMethod_FromZipFile == (short)CompressionMethod.None ? this._CompressedFileDataSize : this.UncompressedSize;
 
         Stream input = this.ArchiveStream;
 
         this.ArchiveStream.Seek(this.FileDataPosition, SeekOrigin.Begin);
+
         // workitem 10178
         SharedUtilities.Workaround_Ladybug318918(this.ArchiveStream);
 
@@ -613,8 +597,6 @@ internal partial class ZipEntry
         return new CrcCalculatorStream(input3, LeftToRead);
     }
 
-
-
     private void OnExtractProgress(Int64 bytesWritten, Int64 totalBytesToWrite)
     {
         if (this._container.ZipFile != null)
@@ -622,7 +604,6 @@ internal partial class ZipEntry
             this._ioOperationCanceled = this._container.ZipFile.OnExtractBlock(this, bytesWritten, totalBytesToWrite);
         }
     }
-
 
     private void OnBeforeExtract(string path)
     {
@@ -677,7 +658,6 @@ internal partial class ZipEntry
         File.Delete(fileName);
     }
 
-
     private void WriteStatus(string format, params Object[] args)
     {
         if (this._container.ZipFile != null && this._container.ZipFile.Verbose)
@@ -685,7 +665,6 @@ internal partial class ZipEntry
             this._container.ZipFile.StatusMessageTextWriter.WriteLine(format, args);
         }
     }
-
 
     // Pass in either basedir or s, but not both.
     // In other words, you can extract to a stream or to a directory (filesystem), but not both!
@@ -717,6 +696,7 @@ internal partial class ZipEntry
         Stream output = null;
         bool fileExistsBeforeExtraction = false;
         bool checkLaterForResetDirTimes = false;
+
         try
         {
             this.ValidateCompression();
@@ -725,9 +705,11 @@ internal partial class ZipEntry
             if (this.ValidateOutput(baseDir, outstream, out targetFileName))
             {
                 this.WriteStatus("extract dir {0}...", targetFileName);
+
                 // if true, then the entry was a directory and has been created.
                 // We need to fire the Extract Event.
                 this.OnAfterExtract(baseDir);
+
                 return;
             }
 
@@ -748,6 +730,7 @@ internal partial class ZipEntry
                 {
                     fileExistsBeforeExtraction = true;
                     int rc = this.CheckExtractExistingFile(baseDir, targetFileName);
+
                     if (rc == 2)
                     {
                         goto ExitTry; // cancel
@@ -763,6 +746,7 @@ internal partial class ZipEntry
             // If no password explicitly specified, use the password on the entry itself,
             // or on the zipfile itself.
             string p = password ?? this._Password ?? this._container.Password;
+
             if (this._Encryption_FromZipFile != EncryptionAlgorithm.None)
             {
                 if (p == null)
@@ -773,13 +757,13 @@ internal partial class ZipEntry
                 this.SetupCryptoForExtract(p);
             }
 
-
             // set up the output stream
             if (targetFileName != null)
             {
                 this.WriteStatus("extract file {0}...", targetFileName);
                 targetFileName += ".tmp";
                 string? dirName = Path.GetDirectoryName(targetFileName);
+
                 // ensure the target path exists
                 if (!Directory.Exists(dirName))
                 {
@@ -807,7 +791,6 @@ internal partial class ZipEntry
                 output = outstream;
             }
 
-
             if (this._ioOperationCanceled)
             {
                 goto ExitTry;
@@ -832,7 +815,7 @@ internal partial class ZipEntry
                 // move file to permanent home
                 string tmpName = targetFileName;
                 string zombie = null;
-                targetFileName = tmpName.Substring(0,tmpName.Length-4);
+                targetFileName = tmpName.Substring(0, tmpName.Length - 4);
 
                 if (fileExistsBeforeExtraction)
                 {
@@ -873,6 +856,7 @@ internal partial class ZipEntry
                     if (this.FileName.IndexOf('/') != -1)
                     {
                         string dirname = Path.GetDirectoryName(this.FileName);
+
                         if (this._container.ZipFile[dirname] == null)
                         {
                             this._SetTimes(Path.GetDirectoryName(targetFileName), false);
@@ -886,6 +870,7 @@ internal partial class ZipEntry
                         NetCfFile.SetAttributes(targetFileName, (uint)_ExternalFileAttrs);
 
 #else
+
                 // workitem 7071
                 //
                 // We can only apply attributes if they are relevant to the NTFS
@@ -908,6 +893,7 @@ internal partial class ZipEntry
         catch (Exception)
         {
             this._ioOperationCanceled = true;
+
             throw;
         }
         finally
@@ -937,12 +923,13 @@ internal partial class ZipEntry
                             File.Delete(targetFileName);
                         }
                     }
-                    finally { }
+                    finally
+                    {
+                    }
                 }
             }
         }
     }
-
 
 #if NOT
         internal void CalcWinZipAesMac(Stream input)
@@ -962,10 +949,8 @@ internal partial class ZipEntry
         }
 #endif
 
-
     internal void VerifyCrcAfterExtract(Int32 actualCrc32)
     {
-
 #if AESCRYPTO
                 // After extracting, Validate the CRC32
                 if (actualCrc32 != _Crc32)
@@ -993,24 +978,19 @@ internal partial class ZipEntry
                     // side effect: advances file position.
                 }
 
-
-
-
 #else
         if (actualCrc32 != this._Crc32)
         {
-            throw new BadCrcException("CRC error: the file being extracted appears to be corrupted. " +
-                                      String.Format("Expected 0x{0:X8}, Actual 0x{1:X8}", this._Crc32, actualCrc32));
+            throw new BadCrcException("CRC error: the file being extracted appears to be corrupted. "
+                                      + String.Format("Expected 0x{0:X8}, Actual 0x{1:X8}", this._Crc32, actualCrc32));
         }
 #endif
     }
 
-
-
-
     private int CheckExtractExistingFile(string baseDir, string targetFileName)
     {
         int loop = 0;
+
         // returns: 0 == extract, 1 = don't, 2 = cancel
         do
         {
@@ -1018,20 +998,23 @@ internal partial class ZipEntry
             {
                 case ExtractExistingFileAction.OverwriteSilently:
                     this.WriteStatus("the file {0} exists; will overwrite it...", targetFileName);
+
                     return 0;
 
                 case ExtractExistingFileAction.DoNotOverwrite:
                     this.WriteStatus("the file {0} exists; not extracting entry...", this.FileName);
                     this.OnAfterExtract(baseDir);
+
                     return 1;
 
                 case ExtractExistingFileAction.InvokeExtractProgressEvent:
-                    if (loop>0)
+                    if (loop > 0)
                     {
                         throw new ZipException(String.Format("The file {0} already exists.", targetFileName));
                     }
 
                     this.OnExtractExisting(baseDir);
+
                     if (this._ioOperationCanceled)
                     {
                         return 2;
@@ -1044,23 +1027,18 @@ internal partial class ZipEntry
                 default:
                     throw new ZipException(String.Format("The file {0} already exists.", targetFileName));
             }
+
             loop++;
-        }
-        while (true);
+        } while (true);
     }
-
-
-
 
     private void _CheckRead(int nbytes)
     {
         if (nbytes == 0)
         {
-            throw new BadReadException(String.Format("bad read of entry {0} from compressed archive.",
-                                                     this.FileName));
+            throw new BadReadException(String.Format("bad read of entry {0} from compressed archive.", this.FileName));
         }
     }
-
 
     private Stream _inputDecryptorStream;
 
@@ -1073,6 +1051,7 @@ internal partial class ZipEntry
         {
             // change for workitem 8098
             input.Seek(this.FileDataPosition, SeekOrigin.Begin);
+
             // workitem 10178
             SharedUtilities.Workaround_Ladybug318918(input);
 
@@ -1084,18 +1063,18 @@ internal partial class ZipEntry
             // both the encryption flag and the compression flag, and take
             // the proper action in all cases.
 
-            Int64 LeftToRead = this._CompressionMethod_FromZipFile != (short)CompressionMethod.None
-                                   ? this.UncompressedSize
-                                   : this._CompressedFileDataSize;
+            Int64 LeftToRead = this._CompressionMethod_FromZipFile != (short)CompressionMethod.None ? this.UncompressedSize : this._CompressedFileDataSize;
 
             // Get a stream that either decrypts or not.
             this._inputDecryptorStream = this.GetExtractDecryptor(input);
 
-            Stream input3 = this.GetExtractDecompressor(this._inputDecryptorStream );
+            Stream input3 = this.GetExtractDecompressor(this._inputDecryptorStream);
 
             Int64 bytesWritten = 0;
+
             // As we read, we maybe decrypt, and then we maybe decompress. Then we write.
             using CrcCalculatorStream? s1 = new CrcCalculatorStream(input3);
+
             while (LeftToRead > 0)
             {
                 //Console.WriteLine("ExtractOne: LeftToRead {0}", LeftToRead);
@@ -1115,6 +1094,7 @@ internal partial class ZipEntry
 
                 // fire the progress event, check for cancels
                 this.OnExtractProgress(bytesWritten, this.UncompressedSize);
+
                 if (this._ioOperationCanceled)
                 {
                     break;
@@ -1126,11 +1106,13 @@ internal partial class ZipEntry
         finally
         {
             ZipSegmentedStream? zss = input as ZipSegmentedStream;
+
             if (zss != null)
             {
 #if NETCF
                     zss.Close();
 #else
+
                 // need to dispose it
                 zss.Dispose();
 #endif
@@ -1141,8 +1123,6 @@ internal partial class ZipEntry
         return CrcResult;
     }
 
-
-
     internal Stream GetExtractDecompressor(Stream input2)
     {
         // get a stream that either decompresses or not.
@@ -1150,6 +1130,7 @@ internal partial class ZipEntry
         {
             case (short)CompressionMethod.None:
                 return input2;
+
             case (short)CompressionMethod.Deflate:
                 return new Zlib.DeflateStream(input2, Zlib.CompressionMode.Decompress, true);
 #if BZIP
@@ -1161,11 +1142,10 @@ internal partial class ZipEntry
         return null;
     }
 
-
-
     internal Stream GetExtractDecryptor(Stream input)
     {
         Stream input2 = null;
+
         if (this._Encryption_FromZipFile == EncryptionAlgorithm.PkzipWeak)
         {
             input2 = new ZipCipherStream(input, this._zipCrypto_forExtract, CryptoMode.Decrypt);
@@ -1185,14 +1165,12 @@ internal partial class ZipEntry
         return input2;
     }
 
-
-
-
     internal void _SetTimes(string fileOrDirectory, bool isFile)
     {
 #if SILVERLIGHT
                     // punt on setting file times
 #else
+
         // workitem 8807:
         // Because setting the time is not considered to be a fatal error,
         // and because other applications can interfere with the setting
@@ -1268,9 +1246,7 @@ internal partial class ZipEntry
 #endif
     }
 
-
     #region Support methods
-
 
     // workitem 7968
     private string UnsupportedAlgorithm
@@ -1278,49 +1254,76 @@ internal partial class ZipEntry
         get
         {
             string alg = String.Empty;
+
             switch (this._UnsupportedAlgorithmId)
             {
                 case 0:
                     alg = "--";
+
                     break;
+
                 case 0x6601:
                     alg = "DES";
+
                     break;
+
                 case 0x6602: // - RC2 (version needed to extract < 5.2)
                     alg = "RC2";
+
                     break;
+
                 case 0x6603: // - 3DES 168
                     alg = "3DES-168";
+
                     break;
+
                 case 0x6609: // - 3DES 112
                     alg = "3DES-112";
+
                     break;
+
                 case 0x660E: // - AES 128
                     alg = "PKWare AES128";
+
                     break;
+
                 case 0x660F: // - AES 192
                     alg = "PKWare AES192";
+
                     break;
+
                 case 0x6610: // - AES 256
                     alg = "PKWare AES256";
+
                     break;
+
                 case 0x6702: // - RC2 (version needed to extract >= 5.2)
                     alg = "RC2";
+
                     break;
+
                 case 0x6720: // - Blowfish
                     alg = "Blowfish";
+
                     break;
+
                 case 0x6721: // - Twofish
                     alg = "Twofish";
+
                     break;
+
                 case 0x6801: // - RC4
                     alg = "RC4";
+
                     break;
+
                 case 0xFFFF: // - Unknown algorithm
                 default:
                     alg = String.Format("Unknown (0x{0:X4})", this._UnsupportedAlgorithmId);
+
                     break;
             }
+
             return alg;
         }
     }
@@ -1331,44 +1334,63 @@ internal partial class ZipEntry
         get
         {
             string meth = String.Empty;
+
             switch ((int)this._CompressionMethod)
             {
                 case 0:
                     meth = "Store";
+
                     break;
+
                 case 1:
                     meth = "Shrink";
+
                     break;
+
                 case 8:
                     meth = "DEFLATE";
+
                     break;
+
                 case 9:
                     meth = "Deflate64";
+
                     break;
+
                 case 12:
                     meth = "BZIP2"; // only if BZIP not compiled in
+
                     break;
+
                 case 14:
                     meth = "LZMA";
+
                     break;
+
                 case 19:
                     meth = "LZ77";
+
                     break;
+
                 case 98:
                     meth = "PPMd";
+
                     break;
+
                 default:
                     meth = String.Format("Unknown (0x{0:X4})", this._CompressionMethod);
+
                     break;
             }
+
             return meth;
         }
     }
 
-
     internal void ValidateEncryption()
     {
-        if (this.Encryption != EncryptionAlgorithm.PkzipWeak &&
+        if (this.Encryption != EncryptionAlgorithm.PkzipWeak
+            &&
 #if AESCRYPTO
  Encryption != EncryptionAlgorithm.WinZipAes128 &&
                 Encryption != EncryptionAlgorithm.WinZipAes256 &&
@@ -1379,31 +1401,32 @@ internal partial class ZipEntry
             if (this._UnsupportedAlgorithmId != 0)
             {
                 throw new ZipException(String.Format("Cannot extract: Entry {0} is encrypted with an algorithm not supported by DotNetZip: {1}",
-                                                     this.FileName, this.UnsupportedAlgorithm));
+                                                     this.FileName,
+                                                     this.UnsupportedAlgorithm));
             }
             else
             {
                 throw new ZipException(String.Format("Cannot extract: Entry {0} uses an unsupported encryption algorithm ({1:X2})",
-                                                     this.FileName, (int)this.Encryption));
+                                                     this.FileName,
+                                                     (int)this.Encryption));
             }
         }
     }
 
-
     private void ValidateCompression()
     {
-        if (this._CompressionMethod_FromZipFile != (short)CompressionMethod.None &&
-            this._CompressionMethod_FromZipFile != (short)CompressionMethod.Deflate
+        if (this._CompressionMethod_FromZipFile != (short)CompressionMethod.None && this._CompressionMethod_FromZipFile != (short)CompressionMethod.Deflate
 #if BZIP
                 && (_CompressionMethod_FromZipFile != (short)CompressionMethod.BZip2)
 #endif
            )
         {
             throw new ZipException(String.Format("Entry {0} uses an unsupported compression method (0x{1:X2}, {2})",
-                                                 this.FileName, this._CompressionMethod_FromZipFile, this.UnsupportedCompressionMethod));
+                                                 this.FileName,
+                                                 this._CompressionMethod_FromZipFile,
+                                                 this.UnsupportedCompressionMethod));
         }
     }
-
 
     private void SetupCryptoForExtract(string password)
     {
@@ -1421,6 +1444,7 @@ internal partial class ZipEntry
             }
 
             this.ArchiveStream.Seek(this.FileDataPosition - 12, SeekOrigin.Begin);
+
             // workitem 10178
             SharedUtilities.Workaround_Ladybug318918(this.ArchiveStream);
             this._zipCrypto_forExtract = ZipCrypto.ForRead(password, this);
@@ -1452,8 +1476,6 @@ internal partial class ZipEntry
 #endif
     }
 
-
-
     /// <summary>
     /// Validates that the args are consistent.
     /// </summary>
@@ -1468,25 +1490,24 @@ internal partial class ZipEntry
             // Sometimes the name on the entry starts with a slash.
             // Rather than unpack to the root of the volume, we're going to
             // drop the slash and unpack to the specified base directory.
-            string f = this.FileName.Replace("\\","/");
+            string f = this.FileName.Replace("\\", "/");
 
             // workitem 11772: remove drive letter with separator
             if (f.IndexOf(':') == 1)
             {
-                f= f.Substring(2);
+                f = f.Substring(2);
             }
 
             if (f.StartsWith("/", StringComparison.OrdinalIgnoreCase))
             {
-                f= f.Substring(1);
+                f = f.Substring(1);
             }
 
             // String.Contains is not available on .NET CF 2.0
 
             if (this._container.ZipFile.FlattenFoldersOnExtract)
             {
-                outFileName = Path.Combine(basedir,
-                                           f.IndexOf('/') != -1 ? Path.GetFileName(f) : f);
+                outFileName = Path.Combine(basedir, f.IndexOf('/') != -1 ? Path.GetFileName(f) : f);
             }
             else
             {
@@ -1494,7 +1515,7 @@ internal partial class ZipEntry
             }
 
             // workitem 10639
-            outFileName = outFileName.Replace("/","\\");
+            outFileName = outFileName.Replace("/", "\\");
 
             // check if it is a directory
             if (this.IsDirectory || this.FileName.EndsWith("/"))
@@ -1512,26 +1533,28 @@ internal partial class ZipEntry
                         this._SetTimes(outFileName, false);
                     }
                 }
-                return true;  // true == all done, caller will return
+
+                return true; // true == all done, caller will return
             }
-            return false;  // false == work to do by caller.
+
+            return false; // false == work to do by caller.
         }
 
         if (outstream != null)
         {
             outFileName = null;
+
             if (this.IsDirectory || this.FileName.EndsWith("/"))
             {
                 // extract a directory to streamwriter?  nothing to do!
-                return true;  // true == all done!  caller can return
+                return true; // true == all done!  caller can return
             }
+
             return false;
         }
 
         throw new ArgumentNullException("outstream");
     }
 
-
     #endregion
-
 }

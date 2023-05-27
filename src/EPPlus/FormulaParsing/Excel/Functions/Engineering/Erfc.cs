@@ -10,6 +10,7 @@
  *************************************************************************************************
   05/03/2020         EPPlus Software AB         Implemented function
  *************************************************************************************************/
+
 using OfficeOpenXml.FormulaParsing.Excel.Functions.Helpers;
 using OfficeOpenXml.FormulaParsing.Excel.Functions.Metadata;
 using OfficeOpenXml.FormulaParsing.ExpressionGraph;
@@ -20,10 +21,9 @@ using System.Text;
 
 namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Engineering;
 
-[FunctionMetadata(
-                     Category = ExcelFunctionCategory.Engineering,
-                     EPPlusVersion = "5.2",
-                     Description = "Returns the complementary error function integrated between a supplied lower limit and infinity")]
+[FunctionMetadata(Category = ExcelFunctionCategory.Engineering,
+                  EPPlusVersion = "5.2",
+                  Description = "Returns the complementary error function integrated between a supplied lower limit and infinity")]
 public class Erfc : ExcelFunction
 {
     public override CompileResult Execute(IEnumerable<FunctionArgument> arguments, ParsingContext context)
@@ -31,9 +31,7 @@ public class Erfc : ExcelFunction
         ValidateArguments(arguments, 1);
         double x = this.ArgToDecimal(arguments, 0);
         double retVal = ErfHelper.Erfc(x);
+
         return this.CreateResult(retVal, DataType.Decimal);
     }
-
-
-
 }

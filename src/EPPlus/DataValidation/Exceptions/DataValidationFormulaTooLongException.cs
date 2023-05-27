@@ -10,6 +10,7 @@
  *************************************************************************************************
   04/05/2021         EPPlus Software AB       Added class
  *************************************************************************************************/
+
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -26,7 +27,8 @@ public class DataValidationFormulaTooLongException : InvalidOperationException
     /// Initiaize a new <see cref="DataValidationFormulaTooLongException"/>
     /// </summary>
     /// <param name="message">The exception message</param>
-    public DataValidationFormulaTooLongException(string message) : base(message)
+    public DataValidationFormulaTooLongException(string message)
+        : base(message)
     {
     }
 }

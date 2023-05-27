@@ -26,6 +26,7 @@
  *******************************************************************************
   01/27/2020         EPPlus Software AB       Initial release EPPlus 5
  *******************************************************************************/
+
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
 using System.Text;
@@ -38,16 +39,19 @@ namespace EPPlusTest.Filter;
 public class DynamicFilterTest : TestBase
 {
     static ExcelPackage _pck;
+
     [ClassInitialize]
     public static void Init(TestContext context)
     {
         _pck = OpenPackage("ValueFilter.xlsx", true);
     }
+
     [ClassCleanup]
     public static void Cleanup()
     {
         SaveAndCleanup(_pck);
     }
+
     [TestMethod]
     public void AboveAverage()
     {
@@ -56,15 +60,16 @@ public class DynamicFilterTest : TestBase
         SetDateValues(ws);
 
         ws.AutoFilterAddress = ws.Cells["A1:D100"];
-        ExcelDynamicFilterColumn? col=ws.AutoFilter.Columns.AddDynamicFilterColumn(1);
+        ExcelDynamicFilterColumn? col = ws.AutoFilter.Columns.AddDynamicFilterColumn(1);
         col.Type = eDynamicFilterType.AboveAverage;
-        ws.AutoFilter.ApplyFilter();    
+        ws.AutoFilter.ApplyFilter();
         Assert.AreEqual(true, ws.Row(48).Hidden);
         Assert.AreEqual(false, ws.Row(50).Hidden);
         Assert.AreEqual(false, ws.Row(51).Hidden);
         Assert.AreEqual(false, ws.Row(52).Hidden);
         Assert.AreEqual(true, ws.Row(53).Hidden);
     }
+
     [TestMethod]
     public void BelowAverage()
     {
@@ -82,7 +87,9 @@ public class DynamicFilterTest : TestBase
         Assert.AreEqual(true, ws.Row(52).Hidden);
         Assert.AreEqual(false, ws.Row(53).Hidden);
     }
+
     #region Day
+
     [TestMethod]
     public void Yesterday()
     {
@@ -95,7 +102,7 @@ public class DynamicFilterTest : TestBase
         ExcelDynamicFilterColumn? col = ws.AutoFilter.Columns.AddDynamicFilterColumn(0);
         col.Type = eDynamicFilterType.Yesterday;
         ws.AutoFilter.ApplyFilter();
-            
+
         //Assert
         DateTime dt = DateTime.Today.AddDays(-1);
         int row = GetRowFromDate(dt);
@@ -103,6 +110,7 @@ public class DynamicFilterTest : TestBase
         Assert.AreEqual(false, ws.Row(row).Hidden);
         Assert.AreEqual(true, ws.Row(row + 1).Hidden);
     }
+
     [TestMethod]
     public void Today()
     {
@@ -123,6 +131,7 @@ public class DynamicFilterTest : TestBase
         Assert.AreEqual(false, ws.Row(row).Hidden);
         Assert.AreEqual(true, ws.Row(row + 1).Hidden);
     }
+
     [TestMethod]
     public void Tomorrow()
     {
@@ -145,7 +154,9 @@ public class DynamicFilterTest : TestBase
     }
 
     #endregion
+
     #region Week
+
     [TestMethod]
     public void LastWeek()
     {
@@ -159,7 +170,6 @@ public class DynamicFilterTest : TestBase
         col.Type = eDynamicFilterType.LastWeek;
         ws.AutoFilter.ApplyFilter();
 
-
         //Assert
         DateTime dt = GetPrevSunday(DateTime.Today.AddDays(-7));
         int startRow = GetRowFromDate(dt);
@@ -169,6 +179,7 @@ public class DynamicFilterTest : TestBase
         Assert.AreEqual(false, ws.Row(endRow).Hidden);
         Assert.AreEqual(true, ws.Row(endRow + 1).Hidden);
     }
+
     [TestMethod]
     public void ThisWeek()
     {
@@ -191,6 +202,7 @@ public class DynamicFilterTest : TestBase
         Assert.AreEqual(false, ws.Row(endRow).Hidden);
         Assert.AreEqual(true, ws.Row(endRow + 1).Hidden);
     }
+
     [TestMethod]
     public void NextWeek()
     {
@@ -213,8 +225,11 @@ public class DynamicFilterTest : TestBase
         Assert.AreEqual(false, ws.Row(endRow).Hidden);
         Assert.AreEqual(true, ws.Row(endRow + 1).Hidden);
     }
+
     #endregion
+
     #region Month
+
     [TestMethod]
     public void LastMonth()
     {
@@ -228,16 +243,16 @@ public class DynamicFilterTest : TestBase
         col.Type = eDynamicFilterType.LastMonth;
         ws.AutoFilter.ApplyFilter();
 
-
         //Assert
         DateTime dt = DateTime.Today.AddMonths(-1);
         int startRow = GetRowFromDate(new DateTime(dt.Year, dt.Month, 1));
         int endRow = GetRowFromDate(new DateTime(dt.Year, dt.Month, 1).AddMonths(1).AddDays(-1));
-        Assert.AreEqual(true, ws.Row(startRow-1).Hidden);
+        Assert.AreEqual(true, ws.Row(startRow - 1).Hidden);
         Assert.AreEqual(false, ws.Row(startRow).Hidden);
         Assert.AreEqual(false, ws.Row(endRow).Hidden);
-        Assert.AreEqual(true, ws.Row(endRow+1).Hidden);
+        Assert.AreEqual(true, ws.Row(endRow + 1).Hidden);
     }
+
     [TestMethod]
     public void ThisMonth()
     {
@@ -251,7 +266,6 @@ public class DynamicFilterTest : TestBase
         col.Type = eDynamicFilterType.ThisMonth;
         ws.AutoFilter.ApplyFilter();
 
-
         //Assert
         DateTime dt = DateTime.Today;
         int startRow = GetRowFromDate(new DateTime(dt.Year, dt.Month, 1));
@@ -261,6 +275,7 @@ public class DynamicFilterTest : TestBase
         Assert.AreEqual(false, ws.Row(endRow).Hidden);
         Assert.AreEqual(true, ws.Row(endRow + 1).Hidden);
     }
+
     [TestMethod]
     public void NextMonth()
     {
@@ -274,7 +289,6 @@ public class DynamicFilterTest : TestBase
         col.Type = eDynamicFilterType.NextMonth;
         ws.AutoFilter.ApplyFilter();
 
-
         //Assert
         DateTime dt = DateTime.Today.AddMonths(1);
         int startRow = GetRowFromDate(new DateTime(dt.Year, dt.Month, 1));
@@ -284,6 +298,7 @@ public class DynamicFilterTest : TestBase
         Assert.AreEqual(false, ws.Row(endRow).Hidden);
         Assert.AreEqual(true, ws.Row(endRow + 1).Hidden);
     }
+
     [TestMethod]
     public void M1()
     {
@@ -297,18 +312,18 @@ public class DynamicFilterTest : TestBase
         col.Type = eDynamicFilterType.M1;
         ws.AutoFilter.ApplyFilter();
 
-
         //Assert
         DateTime dt = DateTime.Today.AddMonths(1);
         int startRow = GetRowFromDate(new DateTime(dt.Year, 1, 1));
         int endRow = GetRowFromDate(new DateTime(dt.Year, 1, 1).AddMonths(1).AddDays(-1));
+
         //Will only verify this year
         Assert.AreEqual(true, ws.Row(startRow - 1).Hidden);
         Assert.AreEqual(false, ws.Row(startRow).Hidden);
         Assert.AreEqual(false, ws.Row(endRow).Hidden);
         Assert.AreEqual(true, ws.Row(endRow + 1).Hidden);
-
     }
+
     [TestMethod]
     public void M2()
     {
@@ -322,18 +337,18 @@ public class DynamicFilterTest : TestBase
         col.Type = eDynamicFilterType.M2;
         ws.AutoFilter.ApplyFilter();
 
-
         //Assert
         DateTime dt = DateTime.Today.AddMonths(1);
         int startRow = GetRowFromDate(new DateTime(dt.Year, 2, 1));
         int endRow = GetRowFromDate(new DateTime(dt.Year, 2, 1).AddMonths(1).AddDays(-1));
+
         //Will only verify this year
         Assert.AreEqual(true, ws.Row(startRow - 1).Hidden);
         Assert.AreEqual(false, ws.Row(startRow).Hidden);
         Assert.AreEqual(false, ws.Row(endRow).Hidden);
         Assert.AreEqual(true, ws.Row(endRow + 1).Hidden);
-
     }
+
     [TestMethod]
     public void M3()
     {
@@ -347,18 +362,18 @@ public class DynamicFilterTest : TestBase
         col.Type = eDynamicFilterType.M3;
         ws.AutoFilter.ApplyFilter();
 
-
         //Assert
         DateTime dt = DateTime.Today.AddMonths(1);
         int startRow = GetRowFromDate(new DateTime(dt.Year, 3, 1));
         int endRow = GetRowFromDate(new DateTime(dt.Year, 3, 1).AddMonths(1).AddDays(-1));
+
         //Will only verify this year
         Assert.AreEqual(true, ws.Row(startRow - 1).Hidden);
         Assert.AreEqual(false, ws.Row(startRow).Hidden);
         Assert.AreEqual(false, ws.Row(endRow).Hidden);
         Assert.AreEqual(true, ws.Row(endRow + 1).Hidden);
-
     }
+
     [TestMethod]
     public void M4()
     {
@@ -372,18 +387,18 @@ public class DynamicFilterTest : TestBase
         col.Type = eDynamicFilterType.M4;
         ws.AutoFilter.ApplyFilter();
 
-
         //Assert
         DateTime dt = DateTime.Today.AddMonths(1);
         int startRow = GetRowFromDate(new DateTime(dt.Year, 4, 1));
         int endRow = GetRowFromDate(new DateTime(dt.Year, 4, 1).AddMonths(1).AddDays(-1));
+
         //Will only verify this year
         Assert.AreEqual(true, ws.Row(startRow - 1).Hidden);
         Assert.AreEqual(false, ws.Row(startRow).Hidden);
         Assert.AreEqual(false, ws.Row(endRow).Hidden);
         Assert.AreEqual(true, ws.Row(endRow + 1).Hidden);
-
     }
+
     [TestMethod]
     public void M5()
     {
@@ -397,18 +412,18 @@ public class DynamicFilterTest : TestBase
         col.Type = eDynamicFilterType.M5;
         ws.AutoFilter.ApplyFilter();
 
-
         //Assert
         DateTime dt = DateTime.Today.AddMonths(1);
         int startRow = GetRowFromDate(new DateTime(dt.Year, 5, 1));
         int endRow = GetRowFromDate(new DateTime(dt.Year, 5, 1).AddMonths(1).AddDays(-1));
+
         //Will only verify this year
         Assert.AreEqual(true, ws.Row(startRow - 1).Hidden);
         Assert.AreEqual(false, ws.Row(startRow).Hidden);
         Assert.AreEqual(false, ws.Row(endRow).Hidden);
         Assert.AreEqual(true, ws.Row(endRow + 1).Hidden);
-
     }
+
     [TestMethod]
     public void M6()
     {
@@ -422,17 +437,18 @@ public class DynamicFilterTest : TestBase
         col.Type = eDynamicFilterType.M6;
         ws.AutoFilter.ApplyFilter();
 
-
         //Assert
         DateTime dt = DateTime.Today.AddMonths(1);
         int startRow = GetRowFromDate(new DateTime(dt.Year, 6, 1));
         int endRow = GetRowFromDate(new DateTime(dt.Year, 6, 1).AddMonths(1).AddDays(-1));
+
         //Will only verify this year
         Assert.AreEqual(true, ws.Row(startRow - 1).Hidden);
         Assert.AreEqual(false, ws.Row(startRow).Hidden);
         Assert.AreEqual(false, ws.Row(endRow).Hidden);
         Assert.AreEqual(true, ws.Row(endRow + 1).Hidden);
     }
+
     [TestMethod]
     public void M7()
     {
@@ -446,17 +462,18 @@ public class DynamicFilterTest : TestBase
         col.Type = eDynamicFilterType.M7;
         ws.AutoFilter.ApplyFilter();
 
-
         //Assert
         DateTime dt = DateTime.Today.AddMonths(1);
         int startRow = GetRowFromDate(new DateTime(dt.Year, 7, 1));
         int endRow = GetRowFromDate(new DateTime(dt.Year, 7, 1).AddMonths(1).AddDays(-1));
+
         //Will only verify this year
         Assert.AreEqual(true, ws.Row(startRow - 1).Hidden);
         Assert.AreEqual(false, ws.Row(startRow).Hidden);
         Assert.AreEqual(false, ws.Row(endRow).Hidden);
         Assert.AreEqual(true, ws.Row(endRow + 1).Hidden);
     }
+
     [TestMethod]
     public void M8()
     {
@@ -470,17 +487,18 @@ public class DynamicFilterTest : TestBase
         col.Type = eDynamicFilterType.M8;
         ws.AutoFilter.ApplyFilter();
 
-
         //Assert
         DateTime dt = DateTime.Today.AddMonths(1);
         int startRow = GetRowFromDate(new DateTime(dt.Year, 8, 1));
         int endRow = GetRowFromDate(new DateTime(dt.Year, 8, 1).AddMonths(1).AddDays(-1));
+
         //Will only verify this year
         Assert.AreEqual(true, ws.Row(startRow - 1).Hidden);
         Assert.AreEqual(false, ws.Row(startRow).Hidden);
         Assert.AreEqual(false, ws.Row(endRow).Hidden);
         Assert.AreEqual(true, ws.Row(endRow + 1).Hidden);
     }
+
     [TestMethod]
     public void M9()
     {
@@ -494,17 +512,18 @@ public class DynamicFilterTest : TestBase
         col.Type = eDynamicFilterType.M9;
         ws.AutoFilter.ApplyFilter();
 
-
         //Assert
         DateTime dt = DateTime.Today.AddMonths(1);
         int startRow = GetRowFromDate(new DateTime(dt.Year, 9, 1));
         int endRow = GetRowFromDate(new DateTime(dt.Year, 9, 1).AddMonths(1).AddDays(-1));
+
         //Will only verify this year
         Assert.AreEqual(true, ws.Row(startRow - 1).Hidden);
         Assert.AreEqual(false, ws.Row(startRow).Hidden);
         Assert.AreEqual(false, ws.Row(endRow).Hidden);
         Assert.AreEqual(true, ws.Row(endRow + 1).Hidden);
     }
+
     [TestMethod]
     public void M10()
     {
@@ -518,17 +537,18 @@ public class DynamicFilterTest : TestBase
         col.Type = eDynamicFilterType.M10;
         ws.AutoFilter.ApplyFilter();
 
-
         //Assert
         DateTime dt = DateTime.Today.AddMonths(1);
         int startRow = GetRowFromDate(new DateTime(dt.Year, 10, 1));
         int endRow = GetRowFromDate(new DateTime(dt.Year, 10, 1).AddMonths(1).AddDays(-1));
+
         //Will only verify this year
         Assert.AreEqual(true, ws.Row(startRow - 1).Hidden);
         Assert.AreEqual(false, ws.Row(startRow).Hidden);
         Assert.AreEqual(false, ws.Row(endRow).Hidden);
         Assert.AreEqual(true, ws.Row(endRow + 1).Hidden);
     }
+
     [TestMethod]
     public void M11()
     {
@@ -542,17 +562,18 @@ public class DynamicFilterTest : TestBase
         col.Type = eDynamicFilterType.M11;
         ws.AutoFilter.ApplyFilter();
 
-
         //Assert
         DateTime dt = DateTime.Today.AddMonths(1);
         int startRow = GetRowFromDate(new DateTime(dt.Year, 11, 1));
         int endRow = GetRowFromDate(new DateTime(dt.Year, 11, 1).AddMonths(1).AddDays(-1));
+
         //Will only verify this year
         Assert.AreEqual(true, ws.Row(startRow - 1).Hidden);
         Assert.AreEqual(false, ws.Row(startRow).Hidden);
         Assert.AreEqual(false, ws.Row(endRow).Hidden);
         Assert.AreEqual(true, ws.Row(endRow + 1).Hidden);
     }
+
     [TestMethod]
     public void M12()
     {
@@ -566,11 +587,11 @@ public class DynamicFilterTest : TestBase
         col.Type = eDynamicFilterType.M12;
         ws.AutoFilter.ApplyFilter();
 
-
         //Assert
         DateTime dt = DateTime.Today.AddMonths(1);
         int startRow = GetRowFromDate(new DateTime(dt.Year, 12, 1));
         int endRow = GetRowFromDate(new DateTime(dt.Year, 12, 1).AddMonths(1).AddDays(-1));
+
         //Will only verify this year
         Assert.AreEqual(true, ws.Row(startRow - 1).Hidden);
         Assert.AreEqual(false, ws.Row(startRow).Hidden);
@@ -579,7 +600,9 @@ public class DynamicFilterTest : TestBase
     }
 
     #endregion
+
     #region Quarter
+
     [TestMethod]
     public void LastQuarter()
     {
@@ -598,14 +621,17 @@ public class DynamicFilterTest : TestBase
         DateTime endDate = startDate.AddMonths(3).AddDays(-1);
         int startRow = GetRowFromDate(startDate);
         int endRow = GetRowFromDate(endDate);
+
         if (startRow > 2)
         {
             Assert.AreEqual(true, ws.Row(startRow - 1).Hidden);
         }
+
         Assert.AreEqual(false, ws.Row(startRow).Hidden);
         Assert.AreEqual(false, ws.Row(endRow).Hidden);
         Assert.AreEqual(true, ws.Row(endRow + 1).Hidden);
     }
+
     [TestMethod]
     public void ThisQuarter()
     {
@@ -629,6 +655,7 @@ public class DynamicFilterTest : TestBase
         Assert.AreEqual(false, ws.Row(endRow).Hidden);
         Assert.AreEqual(true, ws.Row(endRow + 1).Hidden);
     }
+
     [TestMethod]
     public void NextQuarter()
     {
@@ -652,6 +679,7 @@ public class DynamicFilterTest : TestBase
         Assert.AreEqual(false, ws.Row(endRow).Hidden);
         Assert.AreEqual(true, ws.Row(endRow + 1).Hidden);
     }
+
     [TestMethod]
     public void Q1()
     {
@@ -665,17 +693,18 @@ public class DynamicFilterTest : TestBase
         col.Type = eDynamicFilterType.Q1;
         ws.AutoFilter.ApplyFilter();
 
-
         //Assert
         DateTime dt = DateTime.Today;
         int startRow = GetRowFromDate(new DateTime(dt.Year, 1, 1));
         int endRow = GetRowFromDate(new DateTime(dt.Year, 3, 31));
+
         //Will only verify this year
         Assert.AreEqual(true, ws.Row(startRow - 1).Hidden);
         Assert.AreEqual(false, ws.Row(startRow).Hidden);
         Assert.AreEqual(false, ws.Row(endRow).Hidden);
         Assert.AreEqual(true, ws.Row(endRow + 1).Hidden);
     }
+
     [TestMethod]
     public void Q2()
     {
@@ -689,17 +718,18 @@ public class DynamicFilterTest : TestBase
         col.Type = eDynamicFilterType.Q2;
         ws.AutoFilter.ApplyFilter();
 
-
         //Assert
         DateTime dt = DateTime.Today;
         int startRow = GetRowFromDate(new DateTime(dt.Year, 4, 1));
         int endRow = GetRowFromDate(new DateTime(dt.Year, 6, 30));
+
         //Will only verify this year
         Assert.AreEqual(true, ws.Row(startRow - 1).Hidden);
         Assert.AreEqual(false, ws.Row(startRow).Hidden);
         Assert.AreEqual(false, ws.Row(endRow).Hidden);
         Assert.AreEqual(true, ws.Row(endRow + 1).Hidden);
     }
+
     [TestMethod]
     public void Q3()
     {
@@ -713,17 +743,18 @@ public class DynamicFilterTest : TestBase
         col.Type = eDynamicFilterType.Q3;
         ws.AutoFilter.ApplyFilter();
 
-
         //Assert
         DateTime dt = DateTime.Today;
         int startRow = GetRowFromDate(new DateTime(dt.Year, 7, 1));
         int endRow = GetRowFromDate(new DateTime(dt.Year, 9, 30));
+
         //Will only verify this year
         Assert.AreEqual(true, ws.Row(startRow - 1).Hidden);
         Assert.AreEqual(false, ws.Row(startRow).Hidden);
         Assert.AreEqual(false, ws.Row(endRow).Hidden);
         Assert.AreEqual(true, ws.Row(endRow + 1).Hidden);
     }
+
     [TestMethod]
     public void Q4()
     {
@@ -737,11 +768,11 @@ public class DynamicFilterTest : TestBase
         col.Type = eDynamicFilterType.Q4;
         ws.AutoFilter.ApplyFilter();
 
-
         //Assert
         DateTime dt = DateTime.Today;
         int startRow = GetRowFromDate(new DateTime(dt.Year, 10, 1));
         int endRow = GetRowFromDate(new DateTime(dt.Year, 12, 31));
+
         //Will only verify this year
         Assert.AreEqual(true, ws.Row(startRow - 1).Hidden);
         Assert.AreEqual(false, ws.Row(startRow).Hidden);
@@ -750,7 +781,9 @@ public class DynamicFilterTest : TestBase
     }
 
     #endregion
+
     #region Year
+
     [TestMethod]
     public void LastYear()
     {
@@ -765,7 +798,7 @@ public class DynamicFilterTest : TestBase
         ws.AutoFilter.ApplyFilter();
 
         //Assert
-        DateTime startDate = new DateTime(DateTime.Today.Year-1, 1, 1);
+        DateTime startDate = new DateTime(DateTime.Today.Year - 1, 1, 1);
         DateTime endDate = new DateTime(DateTime.Today.Year - 1, 12, 31);
         int startRow = GetRowFromDate(startDate);
         int endRow = GetRowFromDate(endDate);
@@ -773,6 +806,7 @@ public class DynamicFilterTest : TestBase
         Assert.AreEqual(false, ws.Row(endRow).Hidden);
         Assert.AreEqual(true, ws.Row(endRow + 1).Hidden);
     }
+
     [TestMethod]
     public void ThisYear()
     {
@@ -787,11 +821,11 @@ public class DynamicFilterTest : TestBase
         ws.AutoFilter.ApplyFilter();
 
         //Assert
-        DateTime startDate = new DateTime(DateTime.Today.Year , 1, 1);
+        DateTime startDate = new DateTime(DateTime.Today.Year, 1, 1);
         DateTime endDate = new DateTime(DateTime.Today.Year, 12, 31);
         int startRow = GetRowFromDate(startDate);
         int endRow = GetRowFromDate(endDate);
-        Assert.AreEqual(true, ws.Row(startRow-1).Hidden);
+        Assert.AreEqual(true, ws.Row(startRow - 1).Hidden);
         Assert.AreEqual(false, ws.Row(startRow).Hidden);
         Assert.AreEqual(false, ws.Row(endRow).Hidden);
         Assert.AreEqual(true, ws.Row(endRow + 1).Hidden);
@@ -844,22 +878,27 @@ public class DynamicFilterTest : TestBase
         Assert.AreEqual(false, ws.Row(endRow).Hidden);
         Assert.AreEqual(true, ws.Row(endRow + 1).Hidden);
     }
+
     #endregion
 
     #region Private methods
+
     private static DateTime GetStartOfQuarter(DateTime dt)
     {
         int quarter = (dt.Month - ((dt.Month - 1) % 3) + 1) / 3;
-                      
+
         return new DateTime(dt.Year, (quarter * 3) + 1, 1);
     }
+
     private static DateTime GetPrevSunday(DateTime dt)
     {
         while (dt.DayOfWeek != DayOfWeek.Sunday)
         {
             dt = dt.AddDays(-1);
         }
+
         return dt;
     }
+
     #endregion
 }

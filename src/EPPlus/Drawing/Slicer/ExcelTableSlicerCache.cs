@@ -10,6 +10,7 @@
  *************************************************************************************************
   06/29/2020         EPPlus Software AB       EPPlus 5.3
  *************************************************************************************************/
+
 using OfficeOpenXml.Constants;
 using OfficeOpenXml.FormulaParsing.Excel.Functions.Math;
 using OfficeOpenXml.FormulaParsing.Excel.Functions.RefAndLookup;
@@ -29,8 +30,10 @@ namespace OfficeOpenXml.Drawing.Slicer;
 public class ExcelTableSlicerCache : ExcelSlicerCache
 {
     const string _extPath = "x14:extLst/d:ext";
-    const string _topPath = _extPath+"/x15:tableSlicerCache";
-    internal ExcelTableSlicerCache(XmlNamespaceManager nameSpaceManager) : base(nameSpaceManager)
+    const string _topPath = _extPath + "/x15:tableSlicerCache";
+
+    internal ExcelTableSlicerCache(XmlNamespaceManager nameSpaceManager)
+        : base(nameSpaceManager)
     {
     }
 
@@ -41,12 +44,16 @@ public class ExcelTableSlicerCache : ExcelSlicerCache
         this.SlicerCacheXml = new XmlDocument();
         LoadXmlSafe(this.SlicerCacheXml, this.Part.GetStream());
     }
+
     internal void Init(ExcelTableColumn column, string cacheName)
     {
         this.TableColumn = column;
         ExcelWorkbook? wb = column.Table.WorkSheet.Workbook;
         this.CreatePart(wb);
-        this.SlicerCacheXml.DocumentElement.InnerXml = $"<extLst><x:ext uri=\"{ExtLstUris.TableSlicerCacheUri}\" xmlns:x15=\"http://schemas.microsoft.com/office/spreadsheetml/2010/11/main\"><x15:tableSlicerCache tableId=\"{column.Table.Id}\" column=\"{column.Id}\"/></x:ext></extLst>";
+
+        this.SlicerCacheXml.DocumentElement.InnerXml =
+            $"<extLst><x:ext uri=\"{ExtLstUris.TableSlicerCacheUri}\" xmlns:x15=\"http://schemas.microsoft.com/office/spreadsheetml/2010/11/main\"><x15:tableSlicerCache tableId=\"{column.Table.Id}\" column=\"{column.Id}\"/></x:ext></extLst>";
+
         this.TopNode = this.SlicerCacheXml.DocumentElement;
         this.Name = cacheName;
         this.SourceName = column.Name;
@@ -57,82 +64,62 @@ public class ExcelTableSlicerCache : ExcelSlicerCache
     /// <summary>
     /// The source type for the slicer cache
     /// </summary>
-    public override eSlicerSourceType SourceType 
+    public override eSlicerSourceType SourceType
     {
-        get
-        {
-            return eSlicerSourceType.Table;
-        }
+        get { return eSlicerSourceType.Table; }
     }
+
     /// <summary>
     /// The table column that is the source for the slicer
     /// </summary>
-    public ExcelTableColumn TableColumn
-    {
-        get;
-        private set;
-    }
-        
+    public ExcelTableColumn TableColumn { get; private set; }
+
     const string _sortOrderPath = _topPath + "/@sortOrder";
+
     /// <summary>
     /// How the table slicer items are sorted
     /// </summary>
     public eSortOrder SortOrder
     {
-        get
-        {
-            return this.GetXmlNodeString(_sortOrderPath).ToEnum(eSortOrder.Ascending);
-        }
-        set
-        {
-            this.SetXmlNodeString(_sortOrderPath, value.ToEnumString());
-        }
+        get { return this.GetXmlNodeString(_sortOrderPath).ToEnum(eSortOrder.Ascending); }
+        set { this.SetXmlNodeString(_sortOrderPath, value.ToEnumString()); }
     }
+
     const string _crossFilterPath = _topPath + "/@crossFilter";
+
     /// <summary>
     /// How the items that are used in slicer cross filtering are displayed
     /// </summary>
     public eCrossFilter CrossFilter
     {
-        get
-        {
-            return this.GetXmlNodeString(_crossFilterPath).ToEnum(eCrossFilter.None);
-        }
-        set
-        {
-            this.SetXmlNodeString(_crossFilterPath, value.ToEnumString());
-        }
+        get { return this.GetXmlNodeString(_crossFilterPath).ToEnum(eCrossFilter.None); }
+        set { this.SetXmlNodeString(_crossFilterPath, value.ToEnumString()); }
     }
+
     const string _customListSortPath = _topPath + "/@customListSort";
+
     /// <summary>
     /// If custom lists are used when sorting the items
     /// </summary>
     public bool CustomListSort
     {
-        get
-        {
-            return this.GetXmlNodeBool(_customListSortPath, true);
-        }
-        set
-        {
-            this.SetXmlNodeBool(_customListSortPath, value, true);
-        }
+        get { return this.GetXmlNodeBool(_customListSortPath, true); }
+        set { this.SetXmlNodeBool(_customListSortPath, value, true); }
     }
+
     const string _hideItemsWithNoDataPath = "x15:slicerCacheHideItemsWithNoData";
+
     /// <summary>
     /// If true, items that have no data are not displayed
     /// </summary>
-    public bool HideItemsWithNoData 
-    { 
-        get
-        {
-            return this.ExistsNode(_extPath +"/" + _hideItemsWithNoDataPath);
-        }
+    public bool HideItemsWithNoData
+    {
+        get { return this.ExistsNode(_extPath + "/" + _hideItemsWithNoDataPath); }
         set
         {
-            if(value)
+            if (value)
             {
-                XmlNode? node = this.CreateNode("x14:extLst/d:ext",false,true);
+                XmlNode? node = this.CreateNode("x14:extLst/d:ext", false, true);
                 ((XmlElement)node).SetAttribute("uri", "{470722E0-AACD-4C17-9CDC-17EF765DBC7E}");
                 XmlHelper? helper = XmlHelperFactory.Create(this.NameSpaceManager, node);
                 helper.CreateNode(_hideItemsWithNoDataPath, false, true);
@@ -140,35 +127,28 @@ public class ExcelTableSlicerCache : ExcelSlicerCache
             else
             {
                 XmlNode? hideNode = this.GetNode(_extPath + "/" + _hideItemsWithNoDataPath);
-                if(hideNode!=null)
+
+                if (hideNode != null)
                 {
                     hideNode.ParentNode.ParentNode.RemoveChild(hideNode.ParentNode);
                 }
             }
         }
     }
+
     const string _columnIndexPath = _topPath + "/@column";
+
     internal int ColumnId
     {
-        get
-        {
-            return this.GetXmlNodeInt(_columnIndexPath);
-        }
-        set
-        {
-            this.SetXmlNodeInt(_columnIndexPath, value);
-        }
+        get { return this.GetXmlNodeInt(_columnIndexPath); }
+        set { this.SetXmlNodeInt(_columnIndexPath, value); }
     }
+
     const string _tableIdPath = _topPath + "/@tableId";
+
     internal int TableId
     {
-        get
-        {
-            return this.GetXmlNodeInt(_tableIdPath);
-        }
-        set
-        {
-            this.SetXmlNodeInt(_tableIdPath, value);
-        }
+        get { return this.GetXmlNodeInt(_tableIdPath); }
+        set { this.SetXmlNodeInt(_tableIdPath, value); }
     }
 }

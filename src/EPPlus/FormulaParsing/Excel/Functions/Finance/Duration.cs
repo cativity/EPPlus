@@ -10,6 +10,7 @@
  *************************************************************************************************
   05/03/2020         EPPlus Software AB         Implemented function
  *************************************************************************************************/
+
 using OfficeOpenXml.FormulaParsing.Excel.Functions.Finance.FinancialDayCount;
 using OfficeOpenXml.FormulaParsing.Excel.Functions.Finance.Implementations;
 using OfficeOpenXml.FormulaParsing.Excel.Functions.Metadata;
@@ -21,10 +22,9 @@ using System.Text;
 
 namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Finance;
 
-[FunctionMetadata(
-                     Category = ExcelFunctionCategory.Financial,
-                     EPPlusVersion = "5.2",
-                     Description = "Calculates the Macauley duration of a security with an assumed par value of $100")]
+[FunctionMetadata(Category = ExcelFunctionCategory.Financial,
+                  EPPlusVersion = "5.2",
+                  Description = "Calculates the Macauley duration of a security with an assumed par value of $100")]
 internal class Duration : ExcelFunction
 {
     public override CompileResult Execute(IEnumerable<FunctionArgument> arguments, ParsingContext context)
@@ -36,26 +36,34 @@ internal class Duration : ExcelFunction
         System.DateTime maturity = System.DateTime.FromOADate(maturityNum);
         double coupon = this.ArgToDecimal(arguments, 2);
         double yield = this.ArgToDecimal(arguments, 3);
-        if(coupon < 0 || yield < 0)
+
+        if (coupon < 0 || yield < 0)
         {
             return this.CreateResult(eErrorType.Num);
         }
+
         int frequency = this.ArgToInt(arguments, 4);
-        if(frequency != 1 && frequency != 2 && frequency != 4)
+
+        if (frequency != 1 && frequency != 2 && frequency != 4)
         {
             return this.CreateResult(eErrorType.Num);
         }
+
         int basis = 0;
-        if(arguments.Count() > 5)
+
+        if (arguments.Count() > 5)
         {
             basis = this.ArgToInt(arguments, 5);
         }
-        if(basis < 0 || basis > 4)
+
+        if (basis < 0 || basis > 4)
         {
             return this.CreateResult(eErrorType.Num);
         }
+
         DurationImpl? func = new DurationImpl(new YearFracProvider(context), new CouponProvider());
         double result = func.GetDuration(settlement, maturity, coupon, yield, frequency, (DayCountBasis)basis);
+
         return this.CreateResult(result, DataType.Decimal);
     }
 }

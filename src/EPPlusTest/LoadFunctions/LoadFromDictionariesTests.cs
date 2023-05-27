@@ -19,21 +19,12 @@ public class LoadFromDictionariesTests
     {
         this._items = new List<IDictionary<string, object>>()
         {
-            new Dictionary<string, object>()
-            {
-                { "Id", 1 },
-                { "Name", "TestName 1" }
-            },
-            new Dictionary<string, object>()
-            {
-                { "Id", 2 },
-                { "Name", "TestName 2" }
-            }
+            new Dictionary<string, object>() { { "Id", 1 }, { "Name", "TestName 1" } },
+            new Dictionary<string, object>() { { "Id", 2 }, { "Name", "TestName 2" } }
         };
     }
 
     private IEnumerable<IDictionary<string, object>> _items;
-
 
     [TestMethod]
     public void ShouldLoadDictionaryWithoutHeaders()
@@ -45,7 +36,7 @@ public class LoadFromDictionariesTests
         Assert.AreEqual(1, sheet.Cells["A1"].Value);
         Assert.AreEqual("TestName 2", sheet.Cells["B2"].Value);
     }
-        
+
     [TestMethod]
     public void ShouldLoadDictionaryWithHeaders()
     {
@@ -65,6 +56,7 @@ public class LoadFromDictionariesTests
         {
             item["First_name"] = "test";
         }
+
         using ExcelPackage? package = new ExcelPackage();
         ExcelWorksheet? sheet = package.Workbook.Worksheets.Add("test");
         ExcelRangeBase? r = sheet.Cells["A1"].LoadFromDictionaries(this._items, true, TableStyles.None, null);
@@ -79,13 +71,17 @@ public class LoadFromDictionariesTests
         {
             item["FirstName"] = "test";
         }
+
         using ExcelPackage? package = new ExcelPackage();
         ExcelWorksheet? sheet = package.Workbook.Worksheets.Add("test");
-        ExcelRangeBase? r = sheet.Cells["A1"].LoadFromDictionaries(this._items, c =>
-        {
-            c.PrintHeaders = true;
-            c.HeaderParsingType = HeaderParsingTypes.CamelCaseToSpace;
-        });
+
+        ExcelRangeBase? r = sheet.Cells["A1"]
+                                 .LoadFromDictionaries(this._items,
+                                                       c =>
+                                                       {
+                                                           c.PrintHeaders = true;
+                                                           c.HeaderParsingType = HeaderParsingTypes.CamelCaseToSpace;
+                                                       });
 
         Assert.AreEqual("First Name", sheet.Cells["C1"].Value);
     }
@@ -114,18 +110,22 @@ public class LoadFromDictionariesTests
     [TestMethod]
     public void ShouldLoadDictionaryWithKeysFilterLambdaVersion()
     {
-        foreach(IDictionary<string, object>? item in this._items)
+        foreach (IDictionary<string, object>? item in this._items)
         {
             item["Number"] = 1;
         }
+
         using ExcelPackage? package = new ExcelPackage();
         ExcelWorksheet? sheet = package.Workbook.Worksheets.Add("test");
-        ExcelRangeBase? r = sheet.Cells["A1"].LoadFromDictionaries(this._items, c =>
-        {
-            c.PrintHeaders = false;
-            c.TableStyle = TableStyles.None;
-            c.SetKeys("Name", "Number");
-        });
+
+        ExcelRangeBase? r = sheet.Cells["A1"]
+                                 .LoadFromDictionaries(this._items,
+                                                       c =>
+                                                       {
+                                                           c.PrintHeaders = false;
+                                                           c.TableStyle = TableStyles.None;
+                                                           c.SetKeys("Name", "Number");
+                                                       });
 
         Assert.AreEqual("TestName 1", sheet.Cells["A1"].Value);
         Assert.AreEqual(1, sheet.Cells["B1"].Value);
@@ -141,11 +141,7 @@ public class LoadFromDictionariesTests
         dynamic o2 = new ExpandoObject();
         o2.Id = 2;
         o2.Name = "TestName 2";
-        List<ExpandoObject>? items = new List<ExpandoObject>()
-        {
-            o1,
-            o2
-        };
+        List<ExpandoObject>? items = new List<ExpandoObject>() { o1, o2 };
         using ExcelPackage? package = new ExcelPackage();
         ExcelWorksheet? sheet = package.Workbook.Worksheets.Add("test");
         ExcelRangeBase? r = sheet.Cells["A1"].LoadFromDictionaries(items, true, TableStyles.None, null);
@@ -158,13 +154,9 @@ public class LoadFromDictionariesTests
     [TestMethod]
     public void ShouldLoadDynamicObjects()
     {
-        dynamic o1 = new { Id = 1, Name = "TestName 1"};
+        dynamic o1 = new { Id = 1, Name = "TestName 1" };
         dynamic o2 = new { Id = 2, Name = "TestName 2" };
-        List<dynamic>? items = new List<dynamic>()
-        {
-            o1,
-            o2
-        };
+        List<dynamic>? items = new List<dynamic>() { o1, o2 };
         using ExcelPackage? package = new ExcelPackage();
         ExcelWorksheet? sheet = package.Workbook.Worksheets.Add("test");
         ExcelRangeBase? r = sheet.Cells["A1"].LoadFromDictionaries(items, true, TableStyles.None, null);

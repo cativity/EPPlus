@@ -10,6 +10,7 @@
  *************************************************************************************************
   01/27/2020         EPPlus Software AB       Initial release EPPlus 5
  *************************************************************************************************/
+
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -23,6 +24,7 @@ namespace OfficeOpenXml.FormulaParsing.ExpressionGraph;
 public class ExcelErrorExpression : Expression
 {
     ExcelErrorValue _error;
+
     public ExcelErrorExpression(string expression, ExcelErrorValue error)
         : base(expression)
     {
@@ -32,7 +34,6 @@ public class ExcelErrorExpression : Expression
     public ExcelErrorExpression(ExcelErrorValue error)
         : this(error.ToString(), error)
     {
-            
     }
 
     public override bool IsGroupedExpression
@@ -43,6 +44,7 @@ public class ExcelErrorExpression : Expression
     public override CompileResult Compile()
     {
         return new CompileResult(this._error, DataType.ExcelError);
+
         //if (ParentIsLookupFunction)
         //{
         //    return new CompileResult(ExpressionString, DataType.ExcelError);

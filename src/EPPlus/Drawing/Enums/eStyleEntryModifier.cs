@@ -10,6 +10,7 @@
  *************************************************************************************************
   01/27/2020         EPPlus Software AB       Initial release EPPlus 5
  *************************************************************************************************/
+
 using System;
 
 namespace OfficeOpenXml.Drawing;
@@ -24,6 +25,7 @@ public enum eStyleEntryModifier
     /// This style entry can be replaced with no fill
     /// </summary>
     AllowNoFillOverride = 1,
+
     /// <summary>
     /// This style entry can be replaced with no line
     /// </summary>

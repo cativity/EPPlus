@@ -19,6 +19,7 @@ namespace EPPlusTest.VBA;
 public class VBATests : TestBase
 {
     static ExcelPackage _pck;
+
     [ClassInitialize]
     public static void Init(TestContext context)
     {
@@ -32,6 +33,7 @@ public class VBATests : TestBase
     {
         SaveAndCleanup(_pck);
     }
+
     [TestMethod]
     public void Compression()
     {
@@ -48,14 +50,19 @@ public class VBATests : TestBase
         decompValue = Encoding.GetEncoding(1252).GetString(VBACompression.DecompressPart(compValue));
         Assert.AreEqual(value, decompValue);
     }
+
     [TestMethod]
     public void WriteVBA()
     {
         _pck.Workbook.Worksheets.Add("WriteVBA");
-        _pck.Workbook.VbaProject.Modules["WriteVBA"].Code += "\r\nPrivate Sub Worksheet_SelectionChange(ByVal Target As Range)\r\nMsgBox(\"Test of the VBA Feature!\")\r\nEnd Sub\r\n";
+
+        _pck.Workbook.VbaProject.Modules["WriteVBA"].Code +=
+            "\r\nPrivate Sub Worksheet_SelectionChange(ByVal Target As Range)\r\nMsgBox(\"Test of the VBA Feature!\")\r\nEnd Sub\r\n";
+
         _pck.Workbook.VbaProject.Modules["WriteVBA"].Name = "Blad1";
         _pck.Workbook.CodeModule.Name = "DenHärArbetsboken";
         _pck.Workbook.Worksheets[0].Name = "FirstSheet";
+
         //_pck.Workbook.CodeModule.Code += "\r\nPrivate Sub Workbook_Open()\r\nBlad1.Cells(1,1).Value = \"VBA test\"\r\nMsgBox \"VBA is running!\"\r\nEnd Sub";
         //X509Store store = new X509Store(StoreLocation.CurrentUser);
         //store.Open(OpenFlags.ReadOnly);
@@ -70,6 +77,7 @@ public class VBATests : TestBase
 
         _pck.Workbook.VbaProject.Protection.SetPassword("EPPlus");
     }
+
     [TestMethod]
     public void WriteLongVBAModule()
     {
@@ -78,6 +86,7 @@ public class VBATests : TestBase
         ExcelVBAModule? module = _pck.Workbook.VbaProject.Modules.AddModule("Code");
 
         StringBuilder code = new StringBuilder("Public Sub CreateData()\r\n");
+
         for (int row = 1; row < 30; row++)
         {
             for (int col = 1; col < 30; col++)
@@ -85,6 +94,7 @@ public class VBATests : TestBase
                 code.AppendLine(string.Format("VBASetData.Cells({0},{1}).Value=\"Cell {2}\"", row, col, new ExcelAddressBase(row, col, row, col).Address));
             }
         }
+
         code.AppendLine("End Sub");
         module.Code = code.ToString();
 
@@ -92,6 +102,7 @@ public class VBATests : TestBase
         //store.Open(OpenFlags.ReadOnly);
         //package.Workbook.VbaProject.Signature.Certificate = store.Certificates[19];
     }
+
     [TestMethod]
     public void CreateUnicodeWsName()
     {
@@ -128,6 +139,7 @@ public class VBATests : TestBase
         Assert.AreEqual("Sheet3", p.Workbook.VbaProject.Modules[4].Name);
         Assert.AreEqual("Module_1", p.Workbook.VbaProject.Modules[5].Name);
     }
+
     [TestMethod]
     [ExpectedException(typeof(InvalidOperationException))]
     public void ModuleNameContainsInvalidCharacters()
@@ -137,6 +149,7 @@ public class VBATests : TestBase
         p.Workbook.CreateVBAProject();
         p.Workbook.VbaProject.Modules.AddModule("Mod%ule2");
     }
+
     [TestMethod]
     public void ValidateModuleNameAfterCopyWorksheet()
     {
@@ -169,6 +182,7 @@ public class VBATests : TestBase
         s.V3Signature.CreateSignatureOnSave = false;
         SaveWorkbook("SavedSignedUnsignedWorkbook1.xlsm", package);
     }
+
     [TestMethod]
     public void Verify_SignedWorkbook1_Hash_V3()
     {
@@ -180,7 +194,7 @@ public class VBATests : TestBase
         byte[]? hash = VbaSignHashAlgorithmUtil.GetContentHash(proj, ctx);
         Assert.IsTrue(ctx.SourceHash.SequenceEqual(hash));
     }
-        
+
     [TestMethod]
     public void Verify_SignedWorkbook1_Hash_Agile()
     {
@@ -192,6 +206,7 @@ public class VBATests : TestBase
         byte[]? hash = VbaSignHashAlgorithmUtil.GetContentHash(proj, ctx);
         Assert.IsTrue(ctx.SourceHash.SequenceEqual(hash));
     }
+
     [TestMethod]
     public void Verify_SignedWorkbook1_Hash_Legacy()
     {
@@ -203,6 +218,7 @@ public class VBATests : TestBase
         byte[]? hash = VbaSignHashAlgorithmUtil.GetContentHash(proj, ctx);
         Assert.IsTrue(ctx.SourceHash.SequenceEqual(hash));
     }
+
     [TestMethod]
     public void SignedWorkbook()
     {
@@ -213,6 +229,7 @@ public class VBATests : TestBase
         package.Workbook.VbaProject.Signature.V3Signature.CreateSignatureOnSave = false;
         SaveAndCleanup(package);
     }
+
     [TestMethod]
     public void MyVbaTest_Sign1()
     {
@@ -220,6 +237,7 @@ public class VBATests : TestBase
         using ExcelPackage? package = OpenTemplatePackage(workbook);
         X509Store store = new X509Store(StoreLocation.CurrentUser);
         store.Open(OpenFlags.ReadOnly);
+
         foreach (X509Certificate2? cert in store.Certificates)
         {
             if (cert.HasPrivateKey && cert.NotBefore <= DateTime.Today && cert.NotAfter >= DateTime.Today)
@@ -227,10 +245,12 @@ public class VBATests : TestBase
                 if (cert.Thumbprint == "C0201D22A64D78757EF4655988B267E6734E04B5")
                 {
                     package.Workbook.VbaProject.Signature.Certificate = cert;
+
                     break;
                 }
             }
         }
+
         ExcelVBAModule? module = package.Workbook.VbaProject.Modules.AddModule("TestCode");
         module.Code = "Sub Main\r\nMsgbox(\"Test\")\r\nEnd Sub";
         package.Workbook.VbaProject.Signature.LegacySignature.CreateSignatureOnSave = false;
@@ -238,6 +258,7 @@ public class VBATests : TestBase
         package.Workbook.VbaProject.Signature.AgileSignature.HashAlgorithm = VbaSignatureHashAlgorithm.SHA256;
         SaveWorkbook("SignedUnsignedWorkbook1.xlsm", package);
     }
+
     [TestMethod]
     public void v3ContentSigningSample()
     {
@@ -245,6 +266,7 @@ public class VBATests : TestBase
         using ExcelPackage? package = OpenTemplatePackage(workbook);
         X509Store store = new X509Store(StoreLocation.CurrentUser);
         store.Open(OpenFlags.ReadOnly);
+
         foreach (X509Certificate2? cert in store.Certificates)
         {
             if (cert.HasPrivateKey && cert.NotBefore <= DateTime.Today && cert.NotAfter >= DateTime.Today)
@@ -252,10 +274,12 @@ public class VBATests : TestBase
                 if (cert.Thumbprint == "C0201D22A64D78757EF4655988B267E6734E04B5")
                 {
                     package.Workbook.VbaProject.Signature.Certificate = cert;
+
                     break;
                 }
             }
         }
+
         package.Workbook.VbaProject.Signature.LegacySignature.CreateSignatureOnSave = false;
         package.Workbook.VbaProject.Signature.AgileSignature.CreateSignatureOnSave = false;
         SaveWorkbook("v3Signing\\EPPlusV3ContentSigning.xlsm", package);

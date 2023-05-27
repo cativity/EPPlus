@@ -10,10 +10,12 @@
  *************************************************************************************************
   01/27/2020         EPPlus Software AB       Initial release EPPlus 5
  *************************************************************************************************/
+
 using System;
 using System.Xml;
 using OfficeOpenXml.Filter;
 using OfficeOpenXml.Utils.Extensions;
+
 namespace OfficeOpenXml.Filter;
 
 /// <summary>
@@ -21,16 +23,18 @@ namespace OfficeOpenXml.Filter;
 /// </summary>
 public class ExcelCustomFilterColumn : ExcelFilterColumn
 {
-    internal ExcelCustomFilterColumn(XmlNamespaceManager namespaceManager, XmlNode topNode) : base(namespaceManager, topNode)
+    internal ExcelCustomFilterColumn(XmlNamespaceManager namespaceManager, XmlNode topNode)
+        : base(namespaceManager, topNode)
     {
         this.Filters = new ExcelFilterCollection<ExcelFilterCustomItem>();
         this.LoadFilters(topNode);
     }
+
     private void LoadFilters(XmlNode topNode)
     {
         foreach (XmlElement node in topNode.FirstChild.ChildNodes)
         {
-            if(node.HasAttribute("and"))
+            if (node.HasAttribute("and"))
             {
                 this.And = node.GetAttribute("and") == "1";
             }
@@ -39,6 +43,7 @@ public class ExcelCustomFilterColumn : ExcelFilterColumn
             {
                 case "customFilter":
                     eFilterOperator filterOperator;
+
                     try
                     {
                         filterOperator = (eFilterOperator)Enum.Parse(typeof(eFilterOperator), node.Attributes["operator"].Value, true);
@@ -49,36 +54,34 @@ public class ExcelCustomFilterColumn : ExcelFilterColumn
                     }
 
                     this.Filters.Add(new ExcelFilterCustomItem(node.Attributes["val"].Value, filterOperator));
+
                     break;
             }
         }
     }
+
     bool _isNumericFilterSet;
     bool _isNumericFilter;
+
     /// <summary>
     /// If true filter is numeric otherwise it's textual.
     /// If this property is not set, the value is set from the first value in column of the filtered range
     /// </summary>
     public bool IsNumericFilter
     {
-        get
-        {
-            return this._isNumericFilter;
-        }
+        get { return this._isNumericFilter; }
         set
         {
             this._isNumericFilter = value;
             this._isNumericFilterSet = true;
         }
     }
+
     /// <summary>
     /// Flag indicating whether the two criteria have an "and" relationship. true indicates "and", false indicates "or".
     /// </summary>
-    public bool And
-    {
-        get;
-        set;
-    }
+    public bool And { get; set; }
+
     /// <summary>
     /// The filters to apply
     /// </summary>
@@ -86,14 +89,16 @@ public class ExcelCustomFilterColumn : ExcelFilterColumn
 
     internal override bool Match(object value, string valueText)
     {
-        if(!this._isNumericFilterSet)
+        if (!this._isNumericFilterSet)
         {
             this.IsNumericFilter = Utils.ConvertUtil.IsNumericOrDate(value);
         }
+
         bool match = true;
-        foreach(ExcelFilterCustomItem? filter in this.Filters)
+
+        foreach (ExcelFilterCustomItem? filter in this.Filters)
         {
-            if(this.IsNumericFilter)
+            if (this.IsNumericFilter)
             {
                 match = MatchByOperatorNumeric(value, filter);
             }
@@ -111,6 +116,7 @@ public class ExcelCustomFilterColumn : ExcelFilterColumn
                 return true;
             }
         }
+
         return match;
     }
 
@@ -126,21 +132,28 @@ public class ExcelCustomFilterColumn : ExcelFilterColumn
             {
                 case eFilterOperator.Equal:
                     return filter._valueDouble.Equals(Utils.ConvertUtil.GetValueDouble(value));
+
                 case eFilterOperator.NotEqual:
                     return !filter._valueDouble.Equals(Utils.ConvertUtil.GetValueDouble(value));
+
                 case eFilterOperator.GreaterThan:
                     return Utils.ConvertUtil.GetValueDouble(value) > filter._valueDouble;
+
                 case eFilterOperator.GreaterThanOrEqual:
                     return Utils.ConvertUtil.GetValueDouble(value) >= filter._valueDouble;
+
                 case eFilterOperator.LessThan:
                     return Utils.ConvertUtil.GetValueDouble(value) < filter._valueDouble;
+
                 case eFilterOperator.LessThanOrEqual:
                     return Utils.ConvertUtil.GetValueDouble(value) <= filter._valueDouble;
+
                 default:
                     throw new ArgumentException($"Unhandled filter operator {filter.Operator}");
             }
         }
     }
+
     private static bool MatchByOperatorText(object value, ExcelFilterCustomItem filter)
     {
         if (filter.Operator == null)
@@ -153,16 +166,22 @@ public class ExcelCustomFilterColumn : ExcelFilterColumn
             {
                 case eFilterOperator.Equal:
                     return FilterWildCardMatcher.Match(value.ToString(), filter.Value);
+
                 case eFilterOperator.NotEqual:
                     return !FilterWildCardMatcher.Match(value.ToString(), filter.Value);
+
                 case eFilterOperator.GreaterThan:
                     return string.Compare(value.ToString(), filter.Value, StringComparison.CurrentCultureIgnoreCase) > 0;
+
                 case eFilterOperator.GreaterThanOrEqual:
                     return string.Compare(value.ToString(), filter.Value, StringComparison.CurrentCultureIgnoreCase) >= 0;
+
                 case eFilterOperator.LessThan:
                     return string.Compare(value.ToString(), filter.Value, StringComparison.CurrentCultureIgnoreCase) < 0;
+
                 case eFilterOperator.LessThanOrEqual:
                     return string.Compare(value.ToString(), filter.Value, StringComparison.CurrentCultureIgnoreCase) <= 0;
+
                 default:
                     throw new ArgumentException($"Unhandled filter operator {filter.Operator}");
             }
@@ -173,6 +192,7 @@ public class ExcelCustomFilterColumn : ExcelFilterColumn
     {
         XmlElement? node = (XmlElement)this.CreateNode("d:customFilters");
         node.RemoveAll();
+
         if (this.And)
         {
             node.SetAttribute("and", "1");
@@ -182,7 +202,8 @@ public class ExcelCustomFilterColumn : ExcelFilterColumn
         {
             XmlElement? e = this.TopNode.OwnerDocument.CreateElement("customFilter", ExcelPackage.schemaMain);
             e.SetAttribute("val", f.Value);
-            if(f.Operator.HasValue)
+
+            if (f.Operator.HasValue)
             {
                 e.SetAttribute("operator", f.Operator.Value.ToEnumString());
             }

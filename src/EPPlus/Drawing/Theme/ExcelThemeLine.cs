@@ -10,6 +10,7 @@
  *************************************************************************************************
   01/27/2020         EPPlus Software AB       Initial release EPPlus 5
  *************************************************************************************************/
+
 using OfficeOpenXml.Drawing.Style;
 using OfficeOpenXml.Drawing.Style.Fill;
 using System;
@@ -26,11 +27,14 @@ namespace OfficeOpenXml.Drawing.Theme;
 /// </summary>
 public class ExcelThemeLine : XmlHelper
 {
-    internal ExcelThemeLine(XmlNamespaceManager nameSpaceManager, XmlNode topNode) : base(nameSpaceManager, topNode)
+    internal ExcelThemeLine(XmlNamespaceManager nameSpaceManager, XmlNode topNode)
+        : base(nameSpaceManager, topNode)
     {
         this.SchemaNodeOrder = new string[] { "noFill", "solidFill", "gradientFill", "pattFill", "prstDash", "round", "bevel", "miter", "headEnd", " tailEnd" };
     }
+
     const string widthPath = "@w";
+
     /// <summary>
     /// Line width, in EMU's
     /// 
@@ -41,61 +45,45 @@ public class ExcelThemeLine : XmlHelper
     /// </summary>
     public int Width
     {
-        get
-        {
-            return this.GetXmlNodeInt(widthPath);
-        }
-        set
-        {
-            this.SetXmlNodeString(widthPath, value.ToString(CultureInfo.InvariantCulture));
-        }
+        get { return this.GetXmlNodeInt(widthPath); }
+        set { this.SetXmlNodeString(widthPath, value.ToString(CultureInfo.InvariantCulture)); }
     }
+
     const string CapPath = "@cap";
+
     /// <summary>
     /// The ending caps for the line
     /// </summary>
     public eLineCap Cap
     {
-        get
-        {
-            return EnumTransl.ToLineCap(this.GetXmlNodeString(CapPath));
-        }
-        set
-        {
-            this.SetXmlNodeString(CapPath, EnumTransl.FromLineCap(value));
-        }
+        get { return EnumTransl.ToLineCap(this.GetXmlNodeString(CapPath)); }
+        set { this.SetXmlNodeString(CapPath, EnumTransl.FromLineCap(value)); }
     }
+
     const string CompoundPath = "@cmpd";
+
     /// <summary>
     /// The compound line type to be used for the underline stroke
     /// </summary>
     public eCompundLineStyle CompoundLineStyle
     {
-        get
-        {
-            return EnumTransl.ToLineCompound(this.GetXmlNodeString(CompoundPath));
-        }
-        set
-        {
-            this.SetXmlNodeString(CompoundPath, EnumTransl.FromLineCompound(value));
-        }
+        get { return EnumTransl.ToLineCompound(this.GetXmlNodeString(CompoundPath)); }
+        set { this.SetXmlNodeString(CompoundPath, EnumTransl.FromLineCompound(value)); }
     }
+
     const string PenAlignmentPath = "@algn";
+
     /// <summary>
     /// Specifies the pen alignment type for use within a text body
     /// </summary>
     public ePenAlignment Alignment
     {
-        get
-        {
-            return EnumTransl.ToPenAlignment(this.GetXmlNodeString(PenAlignmentPath));
-        }
-        set
-        {
-            this.SetXmlNodeString(PenAlignmentPath, EnumTransl.FromPenAlignment(value));
-        }
+        get { return EnumTransl.ToPenAlignment(this.GetXmlNodeString(PenAlignmentPath)); }
+        set { this.SetXmlNodeString(PenAlignmentPath, EnumTransl.FromPenAlignment(value)); }
     }
+
     ExcelDrawingFill _fill = null;
+
     /// <summary>
     /// Access to fill properties
     /// </summary>
@@ -116,27 +104,26 @@ public class ExcelThemeLine : XmlHelper
                     this.Fill.SolidFill.Color.SetSchemeColor(eSchemeColor.Style);
                 }
             }
+
             return this._fill;
         }
     }
+
     const string StylePath = "a:prstDash/@val";
+
     /// <summary>
     /// Preset line dash
     /// </summary>
     public eLineStyle Style
     {
-        get
-        {
-            return EnumTransl.ToLineStyle(this.GetXmlNodeString(StylePath));
-        }
-        set
-        {
-            this.SetXmlNodeString(StylePath, EnumTransl.FromLineStyle(value));
-        }
+        get { return EnumTransl.ToLineStyle(this.GetXmlNodeString(StylePath)); }
+        set { this.SetXmlNodeString(StylePath, EnumTransl.FromLineStyle(value)); }
     }
+
     const string BevelPath = "a:bevel";
     const string RoundPath = "a:round";
     const string MiterPath = "a:miter";
+
     /// <summary>
     /// The shape that lines joined together have
     /// </summary>
@@ -183,23 +170,24 @@ public class ExcelThemeLine : XmlHelper
             }
         }
     }
+
     const string MiterJoinLimitPath = "a:miter/@lim";
+
     /// <summary>
     /// How much lines are extended to form a miter join
     /// </summary>
     public double? MiterJoinLimit
     {
-        get
-        {
-            return this.GetXmlNodePercentage(MiterJoinLimitPath);
-        }
+        get { return this.GetXmlNodePercentage(MiterJoinLimitPath); }
         set
         {
             this.Join = eLineJoin.Miter;
             this.SetXmlNodePercentage(MiterJoinLimitPath, value);
         }
     }
+
     ExcelDrawingLineEnd _headEnd = null;
+
     /// <summary>
     /// Properties for drawing line head ends
     /// </summary>
@@ -211,10 +199,13 @@ public class ExcelThemeLine : XmlHelper
             {
                 return new ExcelDrawingLineEnd(this.NameSpaceManager, this.TopNode, "a:headEnd", Init);
             }
+
             return this._headEnd;
         }
     }
+
     ExcelDrawingLineEnd _tailEnd = null;
+
     /// <summary>
     /// Properties for drawing line tail ends
     /// </summary>
@@ -226,20 +217,17 @@ public class ExcelThemeLine : XmlHelper
             {
                 return new ExcelDrawingLineEnd(this.NameSpaceManager, this.TopNode, "a:tailEnd", Init);
             }
+
             return this._tailEnd;
         }
     }
 
     internal XmlElement LineElement
     {
-        get
-        {
-            return this.TopNode as XmlElement;
-        }
+        get { return this.TopNode as XmlElement; }
     }
 
     private static void Init()
     {
-
     }
 }

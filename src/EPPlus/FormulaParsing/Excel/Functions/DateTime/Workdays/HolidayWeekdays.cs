@@ -10,6 +10,7 @@
  *************************************************************************************************
   01/27/2020         EPPlus Software AB       Initial release EPPlus 5
  *************************************************************************************************/
+
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -24,9 +25,8 @@ public class HolidayWeekdays
     private readonly List<DayOfWeek> _holidayDays = new List<DayOfWeek>();
 
     public HolidayWeekdays()
-        :this(DayOfWeek.Saturday, DayOfWeek.Sunday)
+        : this(DayOfWeek.Saturday, DayOfWeek.Sunday)
     {
-            
     }
 
     public int NumberOfWorkdaysPerWeek => 7 - this._holidayDays.Count;
@@ -44,8 +44,7 @@ public class HolidayWeekdays
         return this._holidayDays.Contains(dateTime.DayOfWeek);
     }
 
-    public System.DateTime AdjustResultWithHolidays(System.DateTime resultDate,
-                                                    IEnumerable<FunctionArgument> arguments)
+    public System.DateTime AdjustResultWithHolidays(System.DateTime resultDate, IEnumerable<FunctionArgument> arguments)
     {
         if (arguments.Count() == 2)
         {
@@ -53,6 +52,7 @@ public class HolidayWeekdays
         }
 
         IEnumerable<FunctionArgument>? holidays = arguments.ElementAt(2).Value as IEnumerable<FunctionArgument>;
+
         if (holidays != null)
         {
             foreach (FunctionArgument? arg in holidays)
@@ -61,6 +61,7 @@ public class HolidayWeekdays
                 {
                     double dateSerial = ConvertUtil.GetValueDouble(arg.Value);
                     System.DateTime holidayDate = System.DateTime.FromOADate(dateSerial);
+
                     if (!this.IsHolidayWeekday(holidayDate))
                     {
                         resultDate = resultDate.AddDays(1);
@@ -71,6 +72,7 @@ public class HolidayWeekdays
         else
         {
             IRangeInfo? range = arguments.ElementAt(2).Value as IRangeInfo;
+
             if (range != null)
             {
                 foreach (ICellInfo? cell in range)
@@ -79,6 +81,7 @@ public class HolidayWeekdays
                     {
                         double dateSerial = ConvertUtil.GetValueDouble(cell.Value);
                         System.DateTime holidayDate = System.DateTime.FromOADate(dateSerial);
+
                         if (!this.IsHolidayWeekday(holidayDate))
                         {
                             resultDate = resultDate.AddDays(1);
@@ -87,6 +90,7 @@ public class HolidayWeekdays
                 }
             }
         }
+
         return resultDate;
     }
 
@@ -94,10 +98,12 @@ public class HolidayWeekdays
     {
         int changeParam = (int)direction;
         System.DateTime tmpDate = date.AddDays(changeParam);
+
         while (this.IsHolidayWeekday(tmpDate))
         {
             tmpDate = tmpDate.AddDays(changeParam);
         }
+
         return tmpDate;
     }
 }

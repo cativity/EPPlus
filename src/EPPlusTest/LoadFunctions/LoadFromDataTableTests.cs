@@ -54,6 +54,7 @@ public class LoadFromDataTableTests
         table.Columns.Add("LastName", typeof(string));
         table.Columns["FirstName"].Caption = "First name";
         table.Columns["LastName"].Caption = "Last name";
+
         // add some data
         table.Rows.Add(1, "Bob", "Behnken");
         table.Rows.Add(2, "Doug", "Hurley");
@@ -92,29 +93,35 @@ public class LoadFromDataTableTests
     public void ShouldLoadXmlFromDataset()
     {
         DataSet? dataSet = new DataSet();
-        string? xml = "<?xml version=\"1.0\" encoding=\"utf-8\"?>" +
-                      "<Astronauts>" +
-                      "<Astronaut Id=\"1\">" +
-                      "<FirstName>Bob</FirstName>" +
-                      "<LastName>Behnken</LastName>" +
-                      "</Astronaut>" +
-                      "<Astronaut Id=\"2\">" +
-                      "<FirstName>Doug</FirstName>" +
-                      "<LastName>Hurley</LastName>" +
-                      "</Astronaut>" +
-                      "</Astronauts>";
+
+        string? xml = "<?xml version=\"1.0\" encoding=\"utf-8\"?>"
+                      + "<Astronauts>"
+                      + "<Astronaut Id=\"1\">"
+                      + "<FirstName>Bob</FirstName>"
+                      + "<LastName>Behnken</LastName>"
+                      + "</Astronaut>"
+                      + "<Astronaut Id=\"2\">"
+                      + "<FirstName>Doug</FirstName>"
+                      + "<LastName>Hurley</LastName>"
+                      + "</Astronaut>"
+                      + "</Astronauts>";
+
         XmlReader? reader = XmlReader.Create(new StringReader(xml));
         dataSet.ReadXml(reader);
         using ExcelPackage? package = new ExcelPackage();
         ExcelWorksheet? sheet = package.Workbook.Worksheets.Add("test");
         DataTable? table = dataSet.Tables["Astronaut"];
+
         // default the Id ends up last in the column order. This moves it to the first position.
         table.Columns["Id"].SetOrdinal(0);
+
         // Set caption for the headers
         table.Columns["FirstName"].Caption = "First name";
         table.Columns["LastName"].Caption = "Last name";
+
         // call LoadFromDataTable, print headers and use the Dark1 table style
         sheet.Cells["A1"].LoadFromDataTable(table, true, TableStyles.Dark1);
+
         // AutoFit column with for the entire range
         sheet.Cells[1, 1, sheet.Dimension.End.Row, sheet.Dimension.End.Row].AutoFitColumns();
 
@@ -126,11 +133,14 @@ public class LoadFromDataTableTests
     {
         this._table.Rows.Add("1", "Test name");
 
-        this._worksheet.Cells["A1"].LoadFromDataTable(this._table, c =>
-        {
-            c.PrintHeaders = true;
-            c.TableStyle = TableStyles.Dark1;
-        });
+        this._worksheet.Cells["A1"]
+            .LoadFromDataTable(this._table,
+                               c =>
+                               {
+                                   c.PrintHeaders = true;
+                                   c.TableStyle = TableStyles.Dark1;
+                               });
+
         Assert.AreEqual("Id", this._worksheet.Cells["A1"].Value);
         Assert.AreEqual("1", this._worksheet.Cells["A2"].Value);
     }
@@ -140,11 +150,14 @@ public class LoadFromDataTableTests
     {
         this._table.Rows.Add("1", DBNull.Value);
 
-        this._worksheet.Cells["A1"].LoadFromDataTable(this._table, c =>
-        {
-            c.PrintHeaders = true;
-            c.TableStyle = TableStyles.Dark1;
-        });
+        this._worksheet.Cells["A1"]
+            .LoadFromDataTable(this._table,
+                               c =>
+                               {
+                                   c.PrintHeaders = true;
+                                   c.TableStyle = TableStyles.Dark1;
+                               });
+
         Assert.IsNull(this._worksheet.Cells["B2"].Value);
     }
 
@@ -153,11 +166,14 @@ public class LoadFromDataTableTests
     {
         this._table.Rows.Add("1", null);
 
-        this._worksheet.Cells["A1"].LoadFromDataTable(this._table, c =>
-        {
-            c.PrintHeaders = true;
-            c.TableStyle = TableStyles.Dark1;
-        });
+        this._worksheet.Cells["A1"]
+            .LoadFromDataTable(this._table,
+                               c =>
+                               {
+                                   c.PrintHeaders = true;
+                                   c.TableStyle = TableStyles.Dark1;
+                               });
+
         Assert.IsNull(this._worksheet.Cells["B2"].Value);
     }
 
@@ -167,11 +183,14 @@ public class LoadFromDataTableTests
         this._table.Rows.Add("1", null);
         this._worksheet.Cells["B2"].Value = 2;
 
-        this._worksheet.Cells["A1"].LoadFromDataTable(this._table, c =>
-        {
-            c.PrintHeaders = true;
-            c.TableStyle = TableStyles.Dark1;
-        });
+        this._worksheet.Cells["A1"]
+            .LoadFromDataTable(this._table,
+                               c =>
+                               {
+                                   c.PrintHeaders = true;
+                                   c.TableStyle = TableStyles.Dark1;
+                               });
+
         Assert.IsNull(this._worksheet.Cells["B2"].Value);
     }
 }

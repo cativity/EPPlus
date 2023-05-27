@@ -10,6 +10,7 @@
  *************************************************************************************************
   22/10/2022         EPPlus Software AB           EPPlus v6
  *************************************************************************************************/
+
 using System;
 
 namespace OfficeOpenXml.FormulaParsing.Excel.Functions.DateTime.Implementations;

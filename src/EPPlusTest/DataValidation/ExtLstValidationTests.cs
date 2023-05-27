@@ -186,7 +186,6 @@ public class ExtLstValidationTests : TestBase
 
         if (many)
         {
-
             if (isExtLst)
             {
                 IExcelDataValidationTime? timeValidation = ws.DataValidations.AddTimeValidation("B1");
@@ -194,8 +193,6 @@ public class ExtLstValidationTests : TestBase
 
                 timeValidation.Formula.ExcelFormula = extSheetName + "!B1";
                 timeValidation.Formula2.ExcelFormula = extSheetName + "!B2";
-
-
             }
             else
             {
@@ -260,7 +257,6 @@ public class ExtLstValidationTests : TestBase
         AddDataValidations(ref ws, true, "extAddressSheet");
 
         SaveAndLoadAndSave(pck);
-
     }
 
     [TestMethod]
@@ -297,7 +293,6 @@ public class ExtLstValidationTests : TestBase
         ExcelWorksheet? ws = pck.Workbook.Worksheets.Add("extLstAddressTest");
         ExcelWorksheet? ws2 = pck.Workbook.Worksheets.Add("external");
 
-
         IExcelDataValidationDecimal? validation = ws.DataValidations.AddDecimalValidation("A1:A5 C5:C15 D13");
 
         validation.Formula.ExcelFormula = "external!A1";
@@ -312,7 +307,6 @@ public class ExtLstValidationTests : TestBase
         using ExcelPackage? pck = OpenPackage("DataValidationLocalExtSeperatedAddress.xlsx", true);
         ExcelWorksheet? ws = pck.Workbook.Worksheets.Add("extLstAddressTest");
         ExcelWorksheet? ws2 = pck.Workbook.Worksheets.Add("external");
-
 
         IExcelDataValidationDecimal? extValidation = ws.DataValidations.AddDecimalValidation("A1:A5 C5:C15 D13");
 
@@ -332,8 +326,7 @@ public class ExtLstValidationTests : TestBase
     {
         ExcelPackage? creationPackage = MakePackageWithExtLstIntValidation();
 
-        creationPackage.Workbook.Worksheets[0]
-                       .ConditionalFormatting.AddDatabar(new ExcelAddress("A1:A5"), Color.DarkBlue);
+        creationPackage.Workbook.Worksheets[0].ConditionalFormatting.AddDatabar(new ExcelAddress("A1:A5"), Color.DarkBlue);
 
         MemoryStream? stream = new MemoryStream();
         creationPackage.SaveAs(stream);
@@ -355,15 +348,13 @@ public class ExtLstValidationTests : TestBase
         ExcelPackage? creationPackage = MakePackageWithExtLstIntValidation();
 
         IExcelDataValidationDecimal? decimalValidation = creationPackage.Workbook.Worksheets[0].DataValidations.AddDecimalValidation("B1");
-        decimalValidation.Operator= ExcelDataValidationOperator.between;
+        decimalValidation.Operator = ExcelDataValidationOperator.between;
 
         decimalValidation.Formula.ExcelFormula = "sheet2!B1";
         decimalValidation.Formula2.ExcelFormula = "1.5";
 
-        creationPackage.Workbook.Worksheets[0]
-                       .ConditionalFormatting.AddDatabar(new ExcelAddress("A1:A5"), Color.DarkBlue);
-        creationPackage.Workbook.Worksheets[0]
-                       .ConditionalFormatting.AddDatabar(new ExcelAddress("A1:A5"), Color.Red);
+        creationPackage.Workbook.Worksheets[0].ConditionalFormatting.AddDatabar(new ExcelAddress("A1:A5"), Color.DarkBlue);
+        creationPackage.Workbook.Worksheets[0].ConditionalFormatting.AddDatabar(new ExcelAddress("A1:A5"), Color.Red);
 
         MemoryStream? stream = new MemoryStream();
         creationPackage.SaveAs(stream);
@@ -374,7 +365,6 @@ public class ExtLstValidationTests : TestBase
 
         Assert.AreEqual(eExcelConditionalFormattingRuleType.DataBar, ws.ConditionalFormatting[0].Type);
         Assert.AreEqual(eExcelConditionalFormattingRuleType.DataBar, ws.ConditionalFormatting[1].Type);
-
 
         Assert.AreEqual(ExcelDataValidationOperator.equal, validations[0].Operator);
         Assert.AreEqual("sheet2!A1", validations[0].As.IntegerValidation.Formula.ExcelFormula);
@@ -421,6 +411,7 @@ public class ExtLstValidationTests : TestBase
 
         creationPackage.Workbook.Worksheets[0]
                        .SparklineGroups.Add(OfficeOpenXml.Sparkline.eSparklineType.Line, new ExcelAddress("A1:A5"), new ExcelAddress("B1:B5"));
+
         creationPackage.Workbook.Worksheets[0]
                        .SparklineGroups.Add(OfficeOpenXml.Sparkline.eSparklineType.Column, new ExcelAddress("C1:C5"), new ExcelAddress("D1:D5"));
 
@@ -451,8 +442,8 @@ public class ExtLstValidationTests : TestBase
 
         creationPackage.Workbook.Worksheets[0]
                        .SparklineGroups.Add(OfficeOpenXml.Sparkline.eSparklineType.Line, new ExcelAddress("A1:A5"), new ExcelAddress("B1:B5"));
-        creationPackage.Workbook.Worksheets[0]
-                       .ConditionalFormatting.AddDatabar(new ExcelAddress("A1:A5"), Color.DarkBlue);
+
+        creationPackage.Workbook.Worksheets[0].ConditionalFormatting.AddDatabar(new ExcelAddress("A1:A5"), Color.DarkBlue);
 
         MemoryStream? stream = new MemoryStream();
         creationPackage.SaveAs(stream);
@@ -476,14 +467,12 @@ public class ExtLstValidationTests : TestBase
 
         creationPackage.Workbook.Worksheets[0]
                        .SparklineGroups.Add(OfficeOpenXml.Sparkline.eSparklineType.Line, new ExcelAddress("A1:A5"), new ExcelAddress("B1:B5"));
+
         creationPackage.Workbook.Worksheets[0]
                        .SparklineGroups.Add(OfficeOpenXml.Sparkline.eSparklineType.Column, new ExcelAddress("C1:C5"), new ExcelAddress("D1:D5"));
 
-        creationPackage.Workbook.Worksheets[0]
-                       .ConditionalFormatting.AddDatabar(new ExcelAddress("A1:A5"), Color.DarkBlue);
-        creationPackage.Workbook.Worksheets[0]
-                       .ConditionalFormatting.AddDatabar(new ExcelAddress("A1:A5"), Color.Red);
-
+        creationPackage.Workbook.Worksheets[0].ConditionalFormatting.AddDatabar(new ExcelAddress("A1:A5"), Color.DarkBlue);
+        creationPackage.Workbook.Worksheets[0].ConditionalFormatting.AddDatabar(new ExcelAddress("A1:A5"), Color.Red);
 
         IExcelDataValidationDecimal? decimalValidation = creationPackage.Workbook.Worksheets[0].DataValidations.AddDecimalValidation("B1");
         decimalValidation.Operator = ExcelDataValidationOperator.between;
@@ -513,5 +502,4 @@ public class ExtLstValidationTests : TestBase
         Assert.AreEqual(1.5, validations[1].As.DecimalValidation.Formula2.Value);
         Assert.AreEqual(InternalValidationType.ExtLst, validations[1].InternalValidationType);
     }
-
 }

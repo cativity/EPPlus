@@ -10,6 +10,7 @@
  *************************************************************************************************
   05/25/2020         EPPlus Software AB       Implemented function
  *************************************************************************************************/
+
 using OfficeOpenXml.FormulaParsing.Excel.Functions.Metadata;
 using OfficeOpenXml.FormulaParsing.ExpressionGraph;
 using System;
@@ -18,27 +19,32 @@ using System.Linq;
 
 namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Math;
 
-[FunctionMetadata(
-                     Category = ExcelFunctionCategory.Statistical,
-                     EPPlusVersion = "5.5",
-                     IntroducedInExcelVersion = "2010",
-                     Description = "Performs a specified calculation (e.g. the sum, product, average, etc.) for a list or database, with the option to ignore hidden rows and error values")]
+[FunctionMetadata(Category = ExcelFunctionCategory.Statistical,
+                  EPPlusVersion = "5.5",
+                  IntroducedInExcelVersion = "2010",
+                  Description =
+                      "Performs a specified calculation (e.g. the sum, product, average, etc.) for a list or database, with the option to ignore hidden rows and error values")]
 internal class Aggregate : ExcelFunction
 {
     public override void BeforeInvoke(ParsingContext context)
     {
         base.BeforeInvoke(context);
-        ulong cellId = context.ExcelDataProvider.GetCellId(context.Scopes.Current.Address.Worksheet, context.Scopes.Current.Address.FromRow, context.Scopes.Current.Address.FromCol);
+
+        ulong cellId = context.ExcelDataProvider.GetCellId(context.Scopes.Current.Address.Worksheet,
+                                                           context.Scopes.Current.Address.FromRow,
+                                                           context.Scopes.Current.Address.FromCol);
+
         if (!context.SubtotalAddresses.Contains(cellId))
         {
             context.SubtotalAddresses.Add(cellId);
         }
     }
+
     public override CompileResult Execute(IEnumerable<FunctionArgument> arguments, ParsingContext context)
     {
         ValidateArguments(arguments, 3);
         int funcNum = this.ArgToInt(arguments, 0);
-        int nToSkip = IsNumeric(arguments.ElementAt(1).Value) ? 2 : 1;  
+        int nToSkip = IsNumeric(arguments.ElementAt(1).Value) ? 2 : 1;
         int options = nToSkip == 1 ? 0 : this.ArgToInt(arguments, 1);
 
         if (options < 0 || options > 7)
@@ -46,178 +52,148 @@ internal class Aggregate : ExcelFunction
             return this.CreateResult(eErrorType.Value);
         }
 
-        if(IgnoreNestedSubtotalAndAggregate(options))
+        if (IgnoreNestedSubtotalAndAggregate(options))
         {
             context.Scopes.Current.IsSubtotal = true;
-            ulong cellId = context.ExcelDataProvider.GetCellId(context.Scopes.Current.Address.Worksheet, context.Scopes.Current.Address.FromRow, context.Scopes.Current.Address.FromCol);
-            if(!context.SubtotalAddresses.Contains(cellId))
+
+            ulong cellId = context.ExcelDataProvider.GetCellId(context.Scopes.Current.Address.Worksheet,
+                                                               context.Scopes.Current.Address.FromRow,
+                                                               context.Scopes.Current.Address.FromCol);
+
+            if (!context.SubtotalAddresses.Contains(cellId))
             {
                 context.SubtotalAddresses.Add(cellId);
             }
         }
 
         CompileResult result = null;
-        switch(funcNum)
+
+        switch (funcNum)
         {
             case 1:
-                Average? f1 = new Average()
-                {
-                    IgnoreHiddenValues = IgnoreHidden(options),
-                    IgnoreErrors = IgnoreErrors(options)
-                };
+                Average? f1 = new Average() { IgnoreHiddenValues = IgnoreHidden(options), IgnoreErrors = IgnoreErrors(options) };
                 result = f1.Execute(arguments.Skip(nToSkip), context);
+
                 break;
+
             case 2:
-                Count? f2 = new Count()
-                {
-                    IgnoreHiddenValues = IgnoreHidden(options),
-                    IgnoreErrors = IgnoreErrors(options)
-                };
+                Count? f2 = new Count() { IgnoreHiddenValues = IgnoreHidden(options), IgnoreErrors = IgnoreErrors(options) };
                 result = f2.Execute(arguments.Skip(nToSkip), context);
+
                 break;
+
             case 3:
-                CountA? f3 = new CountA
-                {
-                    IgnoreHiddenValues = IgnoreHidden(options),
-                    IgnoreErrors = IgnoreErrors(options)
-                };
+                CountA? f3 = new CountA { IgnoreHiddenValues = IgnoreHidden(options), IgnoreErrors = IgnoreErrors(options) };
                 result = f3.Execute(arguments.Skip(nToSkip), context);
+
                 break;
+
             case 4:
-                Max? f4 = new Max 
-                { 
-                    IgnoreHiddenValues = IgnoreHidden(options), 
-                    IgnoreErrors = IgnoreErrors(options) 
-                };
+                Max? f4 = new Max { IgnoreHiddenValues = IgnoreHidden(options), IgnoreErrors = IgnoreErrors(options) };
                 result = f4.Execute(arguments.Skip(nToSkip), context);
+
                 break;
+
             case 5:
-                Min? f5 = new Min
-                {
-                    IgnoreHiddenValues = IgnoreHidden(options),
-                    IgnoreErrors = IgnoreErrors(options)
-                };
+                Min? f5 = new Min { IgnoreHiddenValues = IgnoreHidden(options), IgnoreErrors = IgnoreErrors(options) };
                 result = f5.Execute(arguments.Skip(nToSkip), context);
+
                 break;
+
             case 6:
-                Product? f6 = new Product
-                {
-                    IgnoreHiddenValues = IgnoreHidden(options),
-                    IgnoreErrors = IgnoreErrors(options)
-                };
+                Product? f6 = new Product { IgnoreHiddenValues = IgnoreHidden(options), IgnoreErrors = IgnoreErrors(options) };
                 result = f6.Execute(arguments.Skip(nToSkip), context);
+
                 break;
+
             case 7:
-                StdevDotS? f7 = new StdevDotS
-                {
-                    IgnoreHiddenValues = IgnoreHidden(options),
-                    IgnoreErrors = IgnoreErrors(options)
-                };
+                StdevDotS? f7 = new StdevDotS { IgnoreHiddenValues = IgnoreHidden(options), IgnoreErrors = IgnoreErrors(options) };
                 result = f7.Execute(arguments.Skip(nToSkip), context);
+
                 break;
+
             case 8:
-                StdevDotP? f8 = new StdevDotP
-                {
-                    IgnoreHiddenValues = IgnoreHidden(options),
-                    IgnoreErrors = IgnoreErrors(options)
-                };
+                StdevDotP? f8 = new StdevDotP { IgnoreHiddenValues = IgnoreHidden(options), IgnoreErrors = IgnoreErrors(options) };
                 result = f8.Execute(arguments.Skip(nToSkip), context);
+
                 break;
+
             case 9:
-                Sum? f9 = new Sum
-                {
-                    IgnoreHiddenValues = IgnoreHidden(options),
-                    IgnoreErrors = IgnoreErrors(options)
-                };
+                Sum? f9 = new Sum { IgnoreHiddenValues = IgnoreHidden(options), IgnoreErrors = IgnoreErrors(options) };
                 result = f9.Execute(arguments.Skip(nToSkip), context);
+
                 break;
+
             case 10:
-                VarDotS f10 = new VarDotS
-                {
-                    IgnoreHiddenValues = IgnoreHidden(options),
-                    IgnoreErrors = IgnoreErrors(options)
-                };
+                VarDotS f10 = new VarDotS { IgnoreHiddenValues = IgnoreHidden(options), IgnoreErrors = IgnoreErrors(options) };
                 result = f10.Execute(arguments.Skip(nToSkip), context);
+
                 break;
+
             case 11:
-                VarDotP? f11 = new VarDotP
-                {
-                    IgnoreHiddenValues = IgnoreHidden(options),
-                    IgnoreErrors = IgnoreErrors(options)
-                };
+                VarDotP? f11 = new VarDotP { IgnoreHiddenValues = IgnoreHidden(options), IgnoreErrors = IgnoreErrors(options) };
                 result = f11.Execute(arguments.Skip(nToSkip), context);
+
                 break;
+
             case 12:
-                Median? f12 = new Median
-                {
-                    IgnoreHiddenValues = IgnoreHidden(options),
-                    IgnoreErrors = IgnoreErrors(options)
-                };
+                Median? f12 = new Median { IgnoreHiddenValues = IgnoreHidden(options), IgnoreErrors = IgnoreErrors(options) };
                 result = f12.Execute(arguments.Skip(nToSkip), context);
+
                 break;
+
             case 13:
-                ModeSngl? f13 = new ModeSngl
-                {
-                    IgnoreHiddenValues = IgnoreHidden(options),
-                    IgnoreErrors = IgnoreErrors(options)
-                };
+                ModeSngl? f13 = new ModeSngl { IgnoreHiddenValues = IgnoreHidden(options), IgnoreErrors = IgnoreErrors(options) };
                 result = f13.Execute(arguments.Skip(nToSkip), context);
+
                 break;
+
             case 14:
-                Large? f14 = new Large
-                {
-                    IgnoreHiddenValues = IgnoreHidden(options),
-                    IgnoreErrors = IgnoreErrors(options)
-                };
+                Large? f14 = new Large { IgnoreHiddenValues = IgnoreHidden(options), IgnoreErrors = IgnoreErrors(options) };
                 FunctionArgument? a141 = arguments.ElementAt(nToSkip);
                 FunctionArgument? a142 = arguments.ElementAt(nToSkip + 1);
                 result = f14.Execute(new List<FunctionArgument> { a141, a142 }, context);
+
                 break;
+
             case 15:
-                Small? f15 = new Small
-                {
-                    IgnoreHiddenValues = IgnoreHidden(options),
-                    IgnoreErrors = IgnoreErrors(options)
-                };
+                Small? f15 = new Small { IgnoreHiddenValues = IgnoreHidden(options), IgnoreErrors = IgnoreErrors(options) };
                 result = f15.Execute(new List<FunctionArgument> { arguments.ElementAt(nToSkip), arguments.ElementAt(nToSkip + 1) }, context);
+
                 break;
+
             case 16:
-                PercentileInc? f16 = new PercentileInc
-                {
-                    IgnoreHiddenValues = IgnoreHidden(options),
-                    IgnoreErrors = IgnoreErrors(options)
-                };
+                PercentileInc? f16 = new PercentileInc { IgnoreHiddenValues = IgnoreHidden(options), IgnoreErrors = IgnoreErrors(options) };
                 result = f16.Execute(new List<FunctionArgument> { arguments.ElementAt(nToSkip), arguments.ElementAt(nToSkip + 1) }, context);
+
                 break;
+
             case 17:
-                QuartileInc? f17 = new QuartileInc
-                {
-                    IgnoreHiddenValues = IgnoreHidden(options),
-                    IgnoreErrors = IgnoreErrors(options)
-                };
+                QuartileInc? f17 = new QuartileInc { IgnoreHiddenValues = IgnoreHidden(options), IgnoreErrors = IgnoreErrors(options) };
                 result = f17.Execute(new List<FunctionArgument> { arguments.ElementAt(nToSkip), arguments.ElementAt(nToSkip + 1) }, context);
+
                 break;
+
             case 18:
-                PercentileExc? f18 = new PercentileExc
-                {
-                    IgnoreHiddenValues = IgnoreHidden(options),
-                    IgnoreErrors = IgnoreErrors(options)
-                };
+                PercentileExc? f18 = new PercentileExc { IgnoreHiddenValues = IgnoreHidden(options), IgnoreErrors = IgnoreErrors(options) };
                 result = f18.Execute(new List<FunctionArgument> { arguments.ElementAt(nToSkip), arguments.ElementAt(nToSkip + 1) }, context);
+
                 break;
+
             case 19:
-                QuartileExc? f19 = new QuartileExc
-                {
-                    IgnoreHiddenValues = IgnoreHidden(options),
-                    IgnoreErrors = IgnoreErrors(options)
-                };
+                QuartileExc? f19 = new QuartileExc { IgnoreHiddenValues = IgnoreHidden(options), IgnoreErrors = IgnoreErrors(options) };
                 result = f19.Execute(new List<FunctionArgument> { arguments.ElementAt(nToSkip), arguments.ElementAt(nToSkip + 1) }, context);
+
                 break;
+
             default:
                 result = this.CreateResult(eErrorType.Value);
+
                 break;
         }
+
         result.IsResultOfSubtotal = IgnoreNestedSubtotalAndAggregate(options);
+
         return result;
     }
 

@@ -11,11 +11,13 @@ namespace EPPlusTest.Core.Range;
 public class RangeColumnRowTests : TestBase
 {
     static ExcelPackage _pck;
+
     [ClassInitialize]
     public static void Init(TestContext context)
     {
         _pck = OpenPackage("Range_RowColumn.xlsx", true);
     }
+
     [ClassCleanup]
     public static void Cleanup()
     {
@@ -29,7 +31,7 @@ public class RangeColumnRowTests : TestBase
         ws.Cells["A1:E5"].EntireColumn.Width = 30;
         ws.Cells["A1:E5"].EntireColumn.Style.Fill.SetBackground(Color.Red);
 
-        ws.Cells["C10:C20"].EntireColumn.BestFit=true;
+        ws.Cells["C10:C20"].EntireColumn.BestFit = true;
 
         Assert.AreEqual(30, ws.Cells["A1"].EntireColumn.Width);
         Assert.AreEqual(30, ws.Cells["C1"].EntireColumn.Width);
@@ -70,6 +72,7 @@ public class RangeColumnRowTests : TestBase
         Assert.IsTrue(ws.Cells["I1"].EntireColumn.Hidden);
         Assert.IsTrue(ws.Cells["J1"].EntireColumn.Hidden);
     }
+
     [TestMethod]
     public void Column_CollapsChildren_Right_L()
     {
@@ -83,6 +86,7 @@ public class RangeColumnRowTests : TestBase
         Assert.IsFalse(ws.Cells["M1"].EntireColumn.Hidden);
         Assert.IsFalse(ws.Cells["N1"].EntireColumn.Hidden);
     }
+
     [TestMethod]
     public void Column_CollapsChildren_Right_P()
     {
@@ -114,6 +118,7 @@ public class RangeColumnRowTests : TestBase
         Assert.IsTrue(ws.Cells["C1"].EntireColumn.Hidden);
         Assert.IsFalse(ws.Cells["D1"].EntireColumn.Hidden);
     }
+
     [TestMethod]
     public void Column_CollapsChildren_SetLevel1()
     {
@@ -130,6 +135,7 @@ public class RangeColumnRowTests : TestBase
         Assert.IsFalse(ws.Cells["N1"].EntireColumn.Hidden);
         Assert.IsFalse(ws.Cells["K1"].EntireColumn.Hidden);
     }
+
     [TestMethod]
     public void Column_CollapsChildren_SetLevel1_ExpandedChildren()
     {
@@ -146,6 +152,7 @@ public class RangeColumnRowTests : TestBase
         Assert.IsFalse(ws.Cells["N1"].EntireColumn.Hidden);
         Assert.IsFalse(ws.Cells["K1"].EntireColumn.Hidden);
     }
+
     [TestMethod]
     public void Column_CollapsChildren_SetLevel1_AlreadyCollapsed()
     {
@@ -180,6 +187,7 @@ public class RangeColumnRowTests : TestBase
         Assert.IsTrue(ws.Cells["K3"].EntireColumn.Collapsed);
         Assert.IsTrue(ws.Cells["L3"].EntireColumn.Collapsed);
     }
+
     [TestMethod]
     public void Column_CollapsChildren_Left_A()
     {
@@ -187,7 +195,7 @@ public class RangeColumnRowTests : TestBase
         SetupColumnOutlineLeft(ws);
 
         ws.Cells["A1"].EntireColumn.CollapseChildren(false);
-            
+
         Assert.IsFalse(ws.Cells["A1"].EntireColumn.Hidden);
         Assert.IsTrue(ws.Cells["C1"].EntireColumn.Hidden);
         Assert.IsTrue(ws.Cells["D1"].EntireColumn.Hidden);
@@ -199,6 +207,7 @@ public class RangeColumnRowTests : TestBase
         Assert.IsTrue(ws.Cells["J1"].EntireColumn.Hidden);
         Assert.IsTrue(ws.Cells["P10"].EntireColumn.Hidden);
     }
+
     [TestMethod]
     public void Row_CollapsChildren_Top()
     {
@@ -237,6 +246,7 @@ public class RangeColumnRowTests : TestBase
         Assert.IsTrue(ws.Cells["A2"].EntireRow.Collapsed);
         Assert.IsTrue(ws.Cells["A13"].EntireRow.Collapsed);
     }
+
     [TestMethod]
     public void Row_ExpandToLevel3()
     {
@@ -257,6 +267,7 @@ public class RangeColumnRowTests : TestBase
         Assert.IsFalse(ws.Cells["A17"].EntireRow.Hidden);
         Assert.IsFalse(ws.Cells["A19"].EntireRow.Hidden);
     }
+
     [TestMethod]
     public void Row_ExpandAllAndCollapseSubLevel_Top()
     {
@@ -271,11 +282,11 @@ public class RangeColumnRowTests : TestBase
 
         Assert.IsTrue(ws.Cells["A4"].EntireRow.Hidden);
         Assert.IsTrue(ws.Cells["A13"].EntireRow.Hidden);
-            
+
         Assert.IsTrue(ws.Cells["A14"].EntireRow.Hidden);
         Assert.IsTrue(ws.Cells["A15"].EntireRow.Hidden);
-
     }
+
     [TestMethod]
     public void Row_ExpandAllAndCollapseSubLevel_Bottom()
     {
@@ -291,6 +302,7 @@ public class RangeColumnRowTests : TestBase
         Assert.IsTrue(ws.Cells["A4"].EntireRow.Hidden);
         Assert.IsTrue(ws.Cells["A1"].EntireRow.Hidden);
     }
+
     [TestMethod]
     public void Column_ExpandAllAndCollapseSubLevel_Left()
     {
@@ -310,6 +322,7 @@ public class RangeColumnRowTests : TestBase
         Assert.IsTrue(ws.Cells["P1"].EntireColumn.Hidden);
         Assert.IsFalse(ws.Cells["Q1"].EntireColumn.Hidden);
     }
+
     [TestMethod]
     public void Column_ExpandAllAndCollapseSubLevel_Right()
     {
@@ -325,25 +338,28 @@ public class RangeColumnRowTests : TestBase
         Assert.IsTrue(ws.Cells["C1"].EntireColumn.Hidden);
         Assert.IsTrue(ws.Cells["A1"].EntireColumn.Hidden);
     }
+
     [TestMethod]
     public void Column_SetStyleName()
     {
         string? styleName = "Green Fill";
         ExcelNamedStyleXml? ns = _pck.Workbook.Styles.CreateNamedStyle(styleName);
         ns.Style.Fill.SetBackground(Color.Green);
-        ExcelWorksheet? ws = _pck.Workbook.Worksheets.Add("Column_StyleName"); 
-            
+        ExcelWorksheet? ws = _pck.Workbook.Worksheets.Add("Column_StyleName");
+
         ws.Cells["C15:J20"].EntireColumn.StyleName = "Green Fill";
 
         Assert.AreEqual("Green Fill", ws.Cells["E10"].EntireColumn.StyleName);
     }
+
     [TestMethod]
     public void Row_SetStyle()
     {
         ExcelWorksheet? ws = _pck.Workbook.Worksheets.Add("Row_Style");
 
         ws.Cells["C15:J20"].EntireRow.Style.Font.Color.SetAuto();
-        ws.Cells["C15:J20"].EntireRow.Style.Font.Bold = true; ;
+        ws.Cells["C15:J20"].EntireRow.Style.Font.Bold = true;
+        ;
 
         Assert.IsTrue(ws.Cells["E15"].EntireRow.Style.Font.Color.Auto);
         Assert.IsTrue(ws.Cells["E15"].EntireRow.Style.Font.Bold);
@@ -366,6 +382,7 @@ public class RangeColumnRowTests : TestBase
 
         Assert.AreEqual("Blue Fill", ws.Cells["E16"].EntireRow.StyleName);
     }
+
     [TestMethod]
     public void Row_SetPhonetic()
     {
@@ -383,6 +400,7 @@ public class RangeColumnRowTests : TestBase
         Assert.IsTrue(ws.Cells["H16"].EntireRow.Phonetic);
         Assert.IsTrue(ws.Cells["K19"].EntireRow.Phonetic);
     }
+
     [TestMethod]
     public void Row_SetHidden()
     {
@@ -400,6 +418,7 @@ public class RangeColumnRowTests : TestBase
         Assert.IsTrue(ws.Cells["H16"].EntireRow.Hidden);
         Assert.IsTrue(ws.Cells["K19"].EntireRow.Hidden);
     }
+
     [TestMethod]
     public void Row_SetCollapsed()
     {
@@ -417,6 +436,7 @@ public class RangeColumnRowTests : TestBase
         Assert.IsTrue(ws.Cells["H16"].EntireRow.Collapsed);
         Assert.IsTrue(ws.Cells["K19"].EntireRow.Collapsed);
     }
+
     [TestMethod]
     public void Row_SetOutlineLevel()
     {
@@ -433,6 +453,7 @@ public class RangeColumnRowTests : TestBase
         Assert.AreEqual(1, ws.Cells["H16"].EntireRow.OutlineLevel);
         Assert.AreEqual(1, ws.Cells["K19"].EntireRow.OutlineLevel);
     }
+
     [TestMethod]
     public void VerifyRowHeightIsCopied()
     {
@@ -461,6 +482,7 @@ public class RangeColumnRowTests : TestBase
         ws.Columns[12, 13].Group();
         ws.Columns[15, 16].Group();
     }
+
     private static void SetupRowOutlineTop(ExcelWorksheet ws)
     {
         ws.OutLineSummaryBelow = false;

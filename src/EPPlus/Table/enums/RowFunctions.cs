@@ -10,6 +10,7 @@
  *************************************************************************************************
   01/27/2020         EPPlus Software AB       Initial release EPPlus 5
  *************************************************************************************************/
+
 namespace OfficeOpenXml.Table;
 
 /// <summary>
@@ -21,38 +22,47 @@ public enum RowFunctions
     /// Average
     /// </summary>
     Average,
+
     /// <summary>
     /// Count
     /// </summary>
     Count,
+
     /// <summary>
     /// Count, numbers
     /// </summary>
     CountNums,
+
     /// <summary>
     /// Custum function
     /// </summary>
     Custom,
+
     /// <summary>
     /// Maximum
     /// </summary>
     Max,
+
     /// <summary>
     /// Minimum
     /// </summary>
     Min,
+
     /// <summary>
     /// None
     /// </summary>
     None,
+
     /// <summary>
     /// Standard deviation
     /// </summary>
     StdDev,
+
     /// <summary>
     /// Summary
     /// </summary>
     Sum,
+
     /// <summary>
     /// Variation
     /// </summary>

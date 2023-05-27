@@ -10,6 +10,7 @@
  *************************************************************************************************
   01/27/2020         EPPlus Software AB       Initial release EPPlus 5
  *************************************************************************************************/
+
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -20,54 +21,43 @@ namespace OfficeOpenXml.Table.PivotTable;
 /// <summary>
 /// A page / report filter field
 /// </summary>
-public class ExcelPivotTablePageFieldSettings  : XmlHelper
+public class ExcelPivotTablePageFieldSettings : XmlHelper
 {
     internal ExcelPivotTableField _field;
-    internal ExcelPivotTablePageFieldSettings(XmlNamespaceManager ns, XmlNode topNode, ExcelPivotTableField field, int index) :
-        base(ns, topNode)
+
+    internal ExcelPivotTablePageFieldSettings(XmlNamespaceManager ns, XmlNode topNode, ExcelPivotTableField field, int index)
+        : base(ns, topNode)
     {
-        if (this.GetXmlNodeString("@hier")=="")
+        if (this.GetXmlNodeString("@hier") == "")
         {
             this.Hier = -1;
         }
 
         this._field = field;
     }
-    internal int Index 
-    { 
-        get
-        {
-            return this.GetXmlNodeInt("@fld");
-        }
-        set
-        {
-            this.SetXmlNodeString("@fld",value.ToString());
-        }
+
+    internal int Index
+    {
+        get { return this.GetXmlNodeInt("@fld"); }
+        set { this.SetXmlNodeString("@fld", value.ToString()); }
     }
+
     /// <summary>
     /// The Name of the field
     /// </summary>
     public string Name
     {
-        get
-        {
-            return this.GetXmlNodeString("@name");
-        }
-        set
-        {
-            this.SetXmlNodeString("@name", value);
-        }
+        get { return this.GetXmlNodeString("@name"); }
+        set { this.SetXmlNodeString("@name", value); }
     }
+
     /***** Dont work. Need items to be populated. ****/
     /// <summary>
     /// The selected item 
     /// </summary>
     internal int SelectedItem
     {
-        get
-        {
-            return this.GetXmlNodeInt("@item");
-        }
+        get { return this.GetXmlNodeInt("@item"); }
         set
         {
             if (value < 0)
@@ -80,26 +70,16 @@ public class ExcelPivotTablePageFieldSettings  : XmlHelper
             }
         }
     }
+
     internal int NumFmtId
     {
-        get
-        {
-            return this.GetXmlNodeInt("@numFmtId");
-        }
-        set
-        {
-            this.SetXmlNodeString("@numFmtId", value.ToString());
-        }
+        get { return this.GetXmlNodeInt("@numFmtId"); }
+        set { this.SetXmlNodeString("@numFmtId", value.ToString()); }
     }
+
     internal int Hier
     {
-        get
-        {
-            return this.GetXmlNodeInt("@hier");
-        }
-        set
-        {
-            this.SetXmlNodeString("@hier", value.ToString());
-        }
+        get { return this.GetXmlNodeInt("@hier"); }
+        set { this.SetXmlNodeString("@hier", value.ToString()); }
     }
 }

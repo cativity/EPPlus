@@ -10,13 +10,14 @@
  *************************************************************************************************
   09/05/2022         EPPlus Software AB       EPPlus 6.1
  *************************************************************************************************/
+
 using OfficeOpenXml.Packaging;
 
 namespace OfficeOpenXml.VBA.Signatures;
 
 internal class EPPlusVbaSignatureLegacy : EPPlusVbaSignature
 {
-    public EPPlusVbaSignatureLegacy(ZipPackagePart part) 
+    public EPPlusVbaSignatureLegacy(ZipPackagePart part)
         : base(part, ExcelVbaSignatureType.Legacy)
     {
     }

@@ -10,10 +10,12 @@
  *************************************************************************************************
   04/22/2020         EPPlus Software AB       Added this class
  *************************************************************************************************/
+
 using System;
 using System.Xml;
 using System.Globalization;
 using OfficeOpenXml.Utils.Extensions;
+
 namespace OfficeOpenXml.Drawing.Chart;
 
 /// <summary>
@@ -23,50 +25,47 @@ public sealed class ExcelChartAxisStandard : ExcelChartAxis
 {
     internal readonly static string[] _schemaNodeOrderDateShared = new string[]
     {
-        "axId",
-        "scaling",
-        "delete",
-        "axPos",
-        "majorGridlines",
-        "minorGridlines",
-        "title",
-        "numFmt",
-        "majorTickMark",
-        "minorTickMark",
-        "tickLblPos",
-        "spPr",
-        "txPr",
-        "crossAx",
-        "crosses",
-        "crossesAt"
+        "axId", "scaling", "delete", "axPos", "majorGridlines", "minorGridlines", "title", "numFmt", "majorTickMark", "minorTickMark", "tickLblPos", "spPr",
+        "txPr", "crossAx", "crosses", "crossesAt"
     };
-    internal static string[] _schemaNodeOrderCat = new string[] { "auto", "lblAlgn", "lblOffset", "tickLblSkip", "tickMarkSkip", "noMultiLvlLbl", "extLst" };
-    internal static string[] _schemaNodeOrderDate = new string[] { "auto", "lblOffset", "baseTimeUnit", "majorUnit", "majorTimeUnit", "minorUnit", "minorTimeUnit", "extLst" };
-    internal static string[] _schemaNodeOrderSer = new string[] { "tickLblSkip", "tickMarkSkip","extLst" };
-    internal static string[] _schemaNodeOrderVal = new string[] { "crossBetween", "majorUnit", "minorUnit", "dispUnits", "extLst" };      
 
-    internal ExcelChartAxisStandard(ExcelChart chart, XmlNamespaceManager nameSpaceManager, XmlNode topNode, string nsPrefix) : base(chart, nameSpaceManager, topNode, nsPrefix)
+    internal static string[] _schemaNodeOrderCat = new string[] { "auto", "lblAlgn", "lblOffset", "tickLblSkip", "tickMarkSkip", "noMultiLvlLbl", "extLst" };
+
+    internal static string[] _schemaNodeOrderDate =
+        new string[] { "auto", "lblOffset", "baseTimeUnit", "majorUnit", "majorTimeUnit", "minorUnit", "minorTimeUnit", "extLst" };
+
+    internal static string[] _schemaNodeOrderSer = new string[] { "tickLblSkip", "tickMarkSkip", "extLst" };
+    internal static string[] _schemaNodeOrderVal = new string[] { "crossBetween", "majorUnit", "minorUnit", "dispUnits", "extLst" };
+
+    internal ExcelChartAxisStandard(ExcelChart chart, XmlNamespaceManager nameSpaceManager, XmlNode topNode, string nsPrefix)
+        : base(chart, nameSpaceManager, topNode, nsPrefix)
     {
-        this.AddSchemaNodeOrder(new string[] { "axId", "scaling", "delete", "axPos", "majorGridlines", "minorGridlines", "title", "numFmt", "majorTickMark", "minorTickMark", "tickLblPos", "spPr", "txPr", "crossAx", "crosses", "crossesAt", "crossBetween", "auto", "lblOffset", "baseTimeUnit", "majorUnit", "majorTimeUnit", "minorUnit", "minorTimeUnit", "tickLblSkip", "tickMarkSkip", "dispUnits", "noMultiLvlLbl", "logBase", "orientation", "max", "min" },
+        this.AddSchemaNodeOrder(new string[]
+                                {
+                                    "axId", "scaling", "delete", "axPos", "majorGridlines", "minorGridlines", "title", "numFmt", "majorTickMark",
+                                    "minorTickMark", "tickLblPos", "spPr", "txPr", "crossAx", "crosses", "crossesAt", "crossBetween", "auto", "lblOffset",
+                                    "baseTimeUnit", "majorUnit", "majorTimeUnit", "minorUnit", "minorTimeUnit", "tickLblSkip", "tickMarkSkip", "dispUnits",
+                                    "noMultiLvlLbl", "logBase", "orientation", "max", "min"
+                                },
                                 ExcelDrawing._schemaNodeOrderSpPr);
     }
+
     internal override string Id
     {
-        get
-        {
-            return this.GetXmlNodeString("c:axId/@val");
-        }
+        get { return this.GetXmlNodeString("c:axId/@val"); }
     }
 
     const string _majorTickMark = "c:majorTickMark/@val";
+
     /// <summary>
     /// Get or Sets the major tick marks for the axis. 
     /// </summary>
-    public override eAxisTickMark MajorTickMark 
+    public override eAxisTickMark MajorTickMark
     {
         get
         {
             string? v = this.GetXmlNodeString(_majorTickMark);
+
             if (string.IsNullOrEmpty(v))
             {
                 return eAxisTickMark.Cross;
@@ -83,12 +82,11 @@ public sealed class ExcelChartAxisStandard : ExcelChartAxis
                 }
             }
         }
-        set
-        {
-            this.SetXmlNodeString(_majorTickMark, value.ToString().ToLower(CultureInfo.InvariantCulture));
-        }
+        set { this.SetXmlNodeString(_majorTickMark, value.ToString().ToLower(CultureInfo.InvariantCulture)); }
     }
+
     const string _minorTickMark = "c:minorTickMark/@val";
+
     /// <summary>
     /// Get or Sets the minor tick marks for the axis. 
     /// </summary>
@@ -97,6 +95,7 @@ public sealed class ExcelChartAxisStandard : ExcelChartAxis
         get
         {
             string? v = this.GetXmlNodeString(_minorTickMark);
+
             if (string.IsNullOrEmpty(v))
             {
                 return eAxisTickMark.Cross;
@@ -113,12 +112,11 @@ public sealed class ExcelChartAxisStandard : ExcelChartAxis
                 }
             }
         }
-        set
-        {
-            this.SetXmlNodeString(_minorTickMark, value.ToString().ToLower(CultureInfo.InvariantCulture));
-        }
+        set { this.SetXmlNodeString(_minorTickMark, value.ToString().ToLower(CultureInfo.InvariantCulture)); }
     }
+
     private string AXIS_POSITION_PATH = "c:axPos/@val";
+
     /// <summary>
     /// Where the axis is located
     /// </summary>
@@ -130,30 +128,28 @@ public sealed class ExcelChartAxisStandard : ExcelChartAxis
             {
                 case "b":
                     return eAxisPosition.Bottom;
+
                 case "r":
                     return eAxisPosition.Right;
+
                 case "t":
                     return eAxisPosition.Top;
+
                 default:
                     return eAxisPosition.Left;
             }
         }
-        internal set
-        {
-            this.SetXmlNodeString(this.AXIS_POSITION_PATH, value.ToString().ToLower(CultureInfo.InvariantCulture).Substring(0, 1));
-        }
+        internal set { this.SetXmlNodeString(this.AXIS_POSITION_PATH, value.ToString().ToLower(CultureInfo.InvariantCulture).Substring(0, 1)); }
     }
+
     /// <summary>
     /// Chart axis title
     /// </summary>
     public new ExcelChartTitleStandard Title
     {
-        get
-        {
-            return (ExcelChartTitleStandard)this.GetTitle();
-        }
+        get { return (ExcelChartTitleStandard)this.GetTitle(); }
     }
-        
+
     internal override ExcelChartTitle GetTitle()
     {
         if (this._title == null)
@@ -161,19 +157,19 @@ public sealed class ExcelChartAxisStandard : ExcelChartAxis
             this.AddTitleNode();
             this._title = new ExcelChartTitleStandard(this._chart, this.NameSpaceManager, this.TopNode, "c");
         }
+
         return this._title;
     }
+
     const string _minValuePath = "c:scaling/c:min/@val";
+
     /// <summary>
     /// Minimum value for the axis.
     /// Null is automatic
     /// </summary>
     public override double? MinValue
     {
-        get
-        {
-            return this.GetXmlNodeDoubleNull(_minValuePath);
-        }
+        get { return this.GetXmlNodeDoubleNull(_minValuePath); }
         set
         {
             if (value == null)
@@ -186,17 +182,16 @@ public sealed class ExcelChartAxisStandard : ExcelChartAxis
             }
         }
     }
+
     const string _maxValuePath = "c:scaling/c:max/@val";
+
     /// <summary>
     /// Max value for the axis.
     /// Null is automatic
     /// </summary>
     public override double? MaxValue
     {
-        get
-        {
-            return this.GetXmlNodeDoubleNull(_maxValuePath);
-        }
+        get { return this.GetXmlNodeDoubleNull(_maxValuePath); }
         set
         {
             if (value == null)
@@ -209,7 +204,9 @@ public sealed class ExcelChartAxisStandard : ExcelChartAxis
             }
         }
     }
+
     const string _lblPos = "c:tickLblPos/@val";
+
     /// <summary>
     /// The Position of the labels
     /// </summary>
@@ -218,6 +215,7 @@ public sealed class ExcelChartAxisStandard : ExcelChartAxis
         get
         {
             string? v = this.GetXmlNodeString(_lblPos);
+
             if (string.IsNullOrEmpty(v))
             {
                 return eTickLabelPosition.NextTo;
@@ -240,7 +238,9 @@ public sealed class ExcelChartAxisStandard : ExcelChartAxis
             this.SetXmlNodeString(_lblPos, lp.Substring(0, 1).ToLower(CultureInfo.InvariantCulture) + lp.Substring(1, lp.Length - 1));
         }
     }
+
     const string _crossesPath = "c:crosses/@val";
+
     /// <summary>
     /// Where the axis crosses
     /// </summary>
@@ -249,6 +249,7 @@ public sealed class ExcelChartAxisStandard : ExcelChartAxis
         get
         {
             string? v = this.GetXmlNodeString(_crossesPath);
+
             if (string.IsNullOrEmpty(v))
             {
                 return eCrosses.AutoZero;
@@ -271,9 +272,10 @@ public sealed class ExcelChartAxisStandard : ExcelChartAxis
             v = v.Substring(0, 1).ToLower(CultureInfo.InvariantCulture) + v.Substring(1, v.Length - 1);
             this.SetXmlNodeString(_crossesPath, v);
         }
-
     }
+
     const string _crossBetweenPath = "c:crossBetween/@val";
+
     /// <summary>
     /// How the axis are crossed
     /// </summary>
@@ -282,6 +284,7 @@ public sealed class ExcelChartAxisStandard : ExcelChartAxis
         get
         {
             string? v = this.GetXmlNodeString(_crossBetweenPath);
+
             if (string.IsNullOrEmpty(v))
             {
                 return eCrossBetween.Between;
@@ -305,17 +308,16 @@ public sealed class ExcelChartAxisStandard : ExcelChartAxis
             this.SetXmlNodeString(_crossBetweenPath, v);
         }
     }
+
     const string _crossesAtPath = "c:crossesAt/@val";
+
     /// <summary>
     /// The value where the axis cross. 
     /// Null is automatic
     /// </summary>
     public override double? CrossesAt
     {
-        get
-        {
-            return this.GetXmlNodeDoubleNull(_crossesAtPath);
-        }
+        get { return this.GetXmlNodeDoubleNull(_crossesAtPath); }
         set
         {
             if (value == null)
@@ -328,21 +330,18 @@ public sealed class ExcelChartAxisStandard : ExcelChartAxis
             }
         }
     }
+
     /// <summary>
     /// If the axis is deleted
     /// </summary>
     public override bool Deleted
     {
-        get
-        {
-            return this.GetXmlNodeBool("c:delete/@val");
-        }
-        set
-        {
-            this.SetXmlNodeBool("c:delete/@val", value);
-        }
+        get { return this.GetXmlNodeBool("c:delete/@val"); }
+        set { this.SetXmlNodeBool("c:delete/@val", value); }
     }
+
     const string _ticLblPos_Path = "c:tickLblPos/@val";
+
     /// <summary>
     /// Position of the Lables
     /// </summary>
@@ -351,6 +350,7 @@ public sealed class ExcelChartAxisStandard : ExcelChartAxis
         get
         {
             string v = this.GetXmlNodeString(_ticLblPos_Path);
+
             if (v == "")
             {
                 return eTickLabelPosition.None;
@@ -367,8 +367,10 @@ public sealed class ExcelChartAxisStandard : ExcelChartAxis
             this.SetXmlNodeString(_ticLblPos_Path, v);
         }
     }
+
     const string _displayUnitPath = "c:dispUnits/c:builtInUnit/@val";
     const string _custUnitPath = "c:dispUnits/c:custUnit/@val";
+
     /// <summary>
     /// The scaling value of the display units for the value axis
     /// </summary>
@@ -377,9 +379,11 @@ public sealed class ExcelChartAxisStandard : ExcelChartAxis
         get
         {
             string v = this.GetXmlNodeString(_displayUnitPath);
+
             if (string.IsNullOrEmpty(v))
             {
                 double? c = this.GetXmlNodeDoubleNull(_custUnitPath);
+
                 if (c == null)
                 {
                     return 0;
@@ -411,11 +415,13 @@ public sealed class ExcelChartAxisStandard : ExcelChartAxis
                     {
                         this.DeleteNode(_custUnitPath, true);
                         this.SetXmlNodeString(_displayUnitPath, ((eBuildInUnits)value).ToString());
+
                         return;
                     }
                 }
 
                 this.DeleteNode(_displayUnitPath, true);
+
                 if (value != 0)
                 {
                     this.SetXmlNodeString(_custUnitPath, value.ToString(CultureInfo.InvariantCulture));
@@ -423,8 +429,10 @@ public sealed class ExcelChartAxisStandard : ExcelChartAxis
             }
         }
     }
+
     const string _majorUnitPath = "c:majorUnit/@val";
     const string _majorUnitCatPath = "c:tickLblSkip/@val";
+
     /// <summary>
     /// Major unit for the axis.
     /// Null is automatic
@@ -462,7 +470,9 @@ public sealed class ExcelChartAxisStandard : ExcelChartAxis
             }
         }
     }
+
     const string _majorTimeUnitPath = "c:majorTimeUnit/@val";
+
     /// <summary>
     /// Major time unit for the axis.
     /// Null is automatic
@@ -472,6 +482,7 @@ public sealed class ExcelChartAxisStandard : ExcelChartAxis
         get
         {
             string? v = this.GetXmlNodeString(_majorTimeUnitPath);
+
             if (string.IsNullOrEmpty(v))
             {
                 return null;
@@ -493,8 +504,10 @@ public sealed class ExcelChartAxisStandard : ExcelChartAxis
             }
         }
     }
+
     const string _minorUnitPath = "c:minorUnit/@val";
     const string _minorUnitCatPath = "c:tickMarkSkip/@val";
+
     /// <summary>
     /// Minor unit for the axis.
     /// Null is automatic
@@ -532,7 +545,9 @@ public sealed class ExcelChartAxisStandard : ExcelChartAxis
             }
         }
     }
+
     const string _minorTimeUnitPath = "c:minorTimeUnit/@val";
+
     /// <summary>
     /// Minor time unit for the axis.
     /// Null is automatic
@@ -542,6 +557,7 @@ public sealed class ExcelChartAxisStandard : ExcelChartAxis
         get
         {
             string? v = this.GetXmlNodeString(_minorTimeUnitPath);
+
             if (string.IsNullOrEmpty(v))
             {
                 return null;
@@ -563,26 +579,26 @@ public sealed class ExcelChartAxisStandard : ExcelChartAxis
             }
         }
     }
+
     const string _logbasePath = "c:scaling/c:logBase/@val";
+
     /// <summary>
     /// The base for a logaritmic scale
     /// Null for a normal scale
     /// </summary>
     public override double? LogBase
     {
-        get
-        {
-            return this.GetXmlNodeDoubleNull(_logbasePath);
-        }
+        get { return this.GetXmlNodeDoubleNull(_logbasePath); }
         set
         {
             if (value == null)
             {
-                this.DeleteNode(_logbasePath,true);
+                this.DeleteNode(_logbasePath, true);
             }
             else
             {
                 double v = (double)value;
+
                 if (v < 2 || v > 1000)
                 {
                     throw new ArgumentOutOfRangeException("Value must be between 2 and 1000");
@@ -592,7 +608,9 @@ public sealed class ExcelChartAxisStandard : ExcelChartAxis
             }
         }
     }
+
     const string _orientationPath = "c:scaling/c:orientation/@val";
+
     /// <summary>
     /// Axis orientation
     /// </summary>
@@ -601,6 +619,7 @@ public sealed class ExcelChartAxisStandard : ExcelChartAxis
         get
         {
             string v = this.GetXmlNodeString(_orientationPath);
+
             if (v == "")
             {
                 return eAxisOrientation.MinMax;
@@ -625,6 +644,7 @@ public sealed class ExcelChartAxisStandard : ExcelChartAxis
             try
             {
                 string? axType = this.TopNode.LocalName.Substring(0, this.TopNode.LocalName.Length - 2);
+
                 if (axType == "ser")
                 {
                     return eAxisType.Serie;
@@ -638,6 +658,7 @@ public sealed class ExcelChartAxisStandard : ExcelChartAxis
             }
         }
     }
+
     /// <summary>
     /// Adds the axis title and styles it according to the style selected in the StyleManager
     /// </summary>

@@ -10,6 +10,7 @@
  *************************************************************************************************
   06/05/2020         EPPlus Software AB       EPPlus 5.2
  *************************************************************************************************/
+
 using OfficeOpenXml.Drawing.Slicer;
 
 namespace OfficeOpenXml.Drawing;
@@ -20,10 +21,12 @@ namespace OfficeOpenXml.Drawing;
 public class ExcelSlicerAsType
 {
     ExcelDrawing _drawing;
+
     internal ExcelSlicerAsType(ExcelDrawing drawing)
     {
         this._drawing = drawing;
     }
+
     /// <summary>
     /// Returns the drawing as table slicer . 
     /// If this drawing is not a table slicer, null will be returned
@@ -31,11 +34,9 @@ public class ExcelSlicerAsType
     /// <returns>The drawing as a table slicer</returns>
     public ExcelTableSlicer TableSlicer
     {
-        get
-        {
-            return this._drawing as ExcelTableSlicer;
-        }
+        get { return this._drawing as ExcelTableSlicer; }
     }
+
     /// <summary>
     /// Returns the drawing as pivot table slicer . 
     /// If this drawing is not a pivot table slicer, null will be returned
@@ -43,9 +44,6 @@ public class ExcelSlicerAsType
     /// <returns>The drawing as a pivot table slicer</returns>
     public ExcelPivotTableSlicer PivotTableSlicer
     {
-        get
-        {
-            return this._drawing as ExcelPivotTableSlicer;
-        }
+        get { return this._drawing as ExcelPivotTableSlicer; }
     }
 }

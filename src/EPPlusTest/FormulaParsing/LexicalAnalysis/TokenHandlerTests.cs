@@ -26,6 +26,7 @@
  *******************************************************************************
   01/27/2020         EPPlus Software AB       Initial release EPPlus 5
  *******************************************************************************/
+
 using System;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using OfficeOpenXml.FormulaParsing.LexicalAnalysis;
@@ -48,7 +49,6 @@ public class TokenHandlerTests
         this._handler = this._tokenizerContext.CreateHandler(NameValueProvider.Empty);
     }
 
-
     [TestMethod]
     public void HasMoreTokensShouldBeTrueWhenTokensExists()
     {
@@ -58,10 +58,11 @@ public class TokenHandlerTests
     [TestMethod]
     public void HasMoreTokensShouldBeFalseWhenAllAreHandled()
     {
-        for (int x = 0; x < "test".Length; x++ )
+        for (int x = 0; x < "test".Length; x++)
         {
             this._handler.Next();
         }
+
         Assert.IsFalse(this._handler.HasMore());
     }
 }

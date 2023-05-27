@@ -10,6 +10,7 @@
  *************************************************************************************************
   01/27/2020         EPPlus Software AB       Initial release EPPlus 5
  *************************************************************************************************/
+
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -19,10 +20,9 @@ using OfficeOpenXml.FormulaParsing.ExpressionGraph;
 
 namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Math;
 
-[FunctionMetadata(
-                     Category = ExcelFunctionCategory.MathAndTrig,
-                     EPPlusVersion = "4",
-                     Description = "Returns the remainder from a division between two supplied numbers")]
+[FunctionMetadata(Category = ExcelFunctionCategory.MathAndTrig,
+                  EPPlusVersion = "4",
+                  Description = "Returns the remainder from a division between two supplied numbers")]
 internal class Mod : ExcelFunction
 {
     public override CompileResult Execute(IEnumerable<FunctionArgument> arguments, ParsingContext context)
@@ -30,6 +30,7 @@ internal class Mod : ExcelFunction
         ValidateArguments(arguments, 2);
         double n1 = this.ArgToDecimal(arguments, 0);
         double n2 = this.ArgToDecimal(arguments, 1);
+
         return new CompileResult(n1 % n2, DataType.Decimal);
     }
 }

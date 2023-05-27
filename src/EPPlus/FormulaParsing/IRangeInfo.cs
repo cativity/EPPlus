@@ -26,23 +26,28 @@ public interface IRangeInfo : IEnumerator<ICellInfo>, IEnumerable<ICellInfo>
     /// If the range is empty
     /// </summary>
     bool IsEmpty { get; }
+
     /// <summary>
     /// If the contains more than one cell  with a value.
     /// </summary>
     bool IsMulti { get; }
+
     /// <summary>
     /// If the range is not valid and returns #REF!
     /// </summary>
     bool IsRef { get; }
+
     /// <summary>
     /// Get number of cells
     /// </summary>
     /// <returns>Number of cells</returns>
     int GetNCells();
+
     /// <summary>
     /// The address.
     /// </summary>
     ExcelAddressBase Address { get; }
+
     /// <summary>
     /// Get the value from a cell
     /// </summary>
@@ -50,6 +55,7 @@ public interface IRangeInfo : IEnumerator<ICellInfo>, IEnumerable<ICellInfo>
     /// <param name="col">The Column</param>
     /// <returns></returns>
     object GetValue(int row, int col);
+
     /// <summary>
     /// Gets
     /// </summary>
@@ -57,6 +63,7 @@ public interface IRangeInfo : IEnumerator<ICellInfo>, IEnumerable<ICellInfo>
     /// <param name="colOffset"></param>
     /// <returns></returns>
     object GetOffset(int rowOffset, int colOffset);
+
     /// <summary>
     /// The worksheet 
     /// </summary>

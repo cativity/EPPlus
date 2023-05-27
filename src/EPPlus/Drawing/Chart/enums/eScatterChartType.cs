@@ -10,6 +10,7 @@
  *************************************************************************************************
   01/27/2020         EPPlus Software AB       Initial release EPPlus 5
  *************************************************************************************************/
+
 namespace OfficeOpenXml.Drawing.Chart;
 
 /// <summary>
@@ -21,18 +22,22 @@ public enum eScatterChartType
     /// A XY scatter chart
     /// </summary>
     XYScatter = -4169,
+
     /// <summary>
     /// A scatter line chart with markers
     /// </summary>
     XYScatterLines = 74,
+
     /// <summary>
     /// A scatter line chart with no markers
     /// </summary>
     XYScatterLinesNoMarkers = 75,
+
     /// <summary>
     /// A scatter line chart with markers and smooth lines
     /// </summary>
     XYScatterSmooth = 72,
+
     /// <summary>
     /// A scatter line chart with no markers and smooth lines
     /// </summary>

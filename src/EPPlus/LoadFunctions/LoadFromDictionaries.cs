@@ -10,6 +10,7 @@
  *************************************************************************************************
   07/16/2020         EPPlus Software AB       EPPlus 5.2.1
  *************************************************************************************************/
+
 using OfficeOpenXml.LoadFunctions.Params;
 using OfficeOpenXml.Table;
 using System;
@@ -28,17 +29,17 @@ internal class LoadFromDictionaries : LoadFunctionBase
     public LoadFromDictionaries(ExcelRangeBase range, IEnumerable<dynamic> items, LoadFromDictionariesParams parameters)
         : this(range, ConvertToDictionaries(items), parameters)
     {
-
     }
 #endif
 
-    public LoadFromDictionaries(ExcelRangeBase range, IEnumerable<IDictionary<string, object>> items, LoadFromDictionariesParams parameters) 
+    public LoadFromDictionaries(ExcelRangeBase range, IEnumerable<IDictionary<string, object>> items, LoadFromDictionariesParams parameters)
         : base(range, parameters)
     {
         this._items = items;
         this._keys = parameters.Keys;
         this._headerParsingType = parameters.HeaderParsingType;
         this._cultureInfo = parameters.Culture ?? CultureInfo.CurrentCulture;
+
         if (items == null || !items.Any())
         {
             this._keys = Enumerable.Empty<string>();
@@ -46,6 +47,7 @@ internal class LoadFromDictionaries : LoadFunctionBase
         else
         {
             IDictionary<string, object>? firstItem = items.First();
+
             if (this._keys == null || !this._keys.Any())
             {
                 this._keys = firstItem.Keys;
@@ -69,17 +71,21 @@ internal class LoadFromDictionaries : LoadFunctionBase
     private static IEnumerable<IDictionary<string, object>> ConvertToDictionaries(IEnumerable<dynamic> items)
     {
         List<Dictionary<string, object>>? result = new List<Dictionary<string, object>>();
-        foreach(dynamic? item in items)
+
+        foreach (dynamic? item in items)
         {
             object? obj = item as object;
-            if(obj != null)
+
+            if (obj != null)
             {
                 Dictionary<string, object>? dict = new Dictionary<string, object>();
                 MemberInfo[]? members = obj.GetType().GetMembers();
-                foreach(MemberInfo? member in members)
+
+                foreach (MemberInfo? member in members)
                 {
                     string? key = member.Name;
                     object value = null;
+
                     if (member is PropertyInfo)
                     {
                         value = ((PropertyInfo)member).GetValue(obj);
@@ -90,75 +96,92 @@ internal class LoadFromDictionaries : LoadFunctionBase
                         value = ((FieldInfo)member).GetValue(obj);
                         dict.Add(key, value);
                     }
-                        
                 }
-                if(dict.Count > 0)
+
+                if (dict.Count > 0)
                 {
                     result.Add(dict);
                 }
             }
         }
+
         return result;
     }
 
-#endif        
+#endif
 
     protected override void LoadInternal(object[,] values, out Dictionary<int, FormulaCell> formulaCells, out Dictionary<int, string> columnFormats)
     {
         columnFormats = new Dictionary<int, string>();
         formulaCells = new Dictionary<int, FormulaCell>();
-        int col = 0, row = 0;
+
+        int col = 0,
+            row = 0;
+
         if (this.PrintHeaders && this._keys.Count() > 0)
         {
             foreach (string? key in this._keys)
             {
                 values[row, col++] = this.ParseHeader(key);
             }
+
             row++;
         }
+
         foreach (IDictionary<string, object>? item in this._items)
         {
             col = 0;
+
             foreach (string? key in this._keys)
             {
                 if (item.ContainsKey(key))
                 {
                     object? v = item[key];
-                    if(col < this._dataTypes.Length && v != null)
+
+                    if (col < this._dataTypes.Length && v != null)
                     {
                         eDataTypes dataType = this._dataTypes[col];
-                        switch(dataType)
+
+                        switch (dataType)
                         {
                             case eDataTypes.Percent:
                             case eDataTypes.Number:
-                                if(double.TryParse(v.ToString(), NumberStyles.Float | NumberStyles.Number, this._cultureInfo, out double d))
+                                if (double.TryParse(v.ToString(), NumberStyles.Float | NumberStyles.Number, this._cultureInfo, out double d))
                                 {
-                                    if(dataType == eDataTypes.Percent)
+                                    if (dataType == eDataTypes.Percent)
                                     {
                                         d /= 100d;
                                     }
+
                                     values[row, col] = d;
                                 }
+
                                 break;
+
                             case eDataTypes.DateTime:
-                                if(DateTime.TryParse(v.ToString(), out DateTime dt))
+                                if (DateTime.TryParse(v.ToString(), out DateTime dt))
                                 {
                                     values[row, col] = dt;
                                 }
-                                break;
-                            case eDataTypes.String:
-                                values[row, col] = v.ToString();
-                                break;
-                            default:
-                                values[row, col] = v;
+
                                 break;
 
+                            case eDataTypes.String:
+                                values[row, col] = v.ToString();
+
+                                break;
+
+                            default:
+                                values[row, col] = v;
+
+                                break;
                         }
                     }
                     else
                     {
                         values[row, col] = item[key];
                     }
+
                     col++;
                 }
                 else
@@ -166,6 +189,7 @@ internal class LoadFromDictionaries : LoadFunctionBase
                     col++;
                 }
             }
+
             row++;
         }
     }
@@ -196,13 +220,18 @@ internal class LoadFromDictionaries : LoadFunctionBase
         {
             case HeaderParsingTypes.Preserve:
                 return header;
+
             case HeaderParsingTypes.UnderscoreToSpace:
                 return header.Replace("_", " ");
+
             case HeaderParsingTypes.CamelCaseToSpace:
                 return Regex.Replace(header, "([A-Z])", " $1", RegexOptions.Compiled).Trim();
+
             case HeaderParsingTypes.UnderscoreAndCamelCaseToSpace:
                 header = Regex.Replace(header, "([A-Z])", " $1", RegexOptions.Compiled).Trim();
+
                 return header.Replace("_ ", "_").Replace("_", " ");
+
             default:
                 return header;
         }

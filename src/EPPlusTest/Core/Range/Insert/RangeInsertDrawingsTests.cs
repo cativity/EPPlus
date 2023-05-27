@@ -15,26 +15,30 @@ namespace EPPlusTest.Core.Range.Insert;
 public class RangeInsertDrawingsTests : TestBase
 {
     public static ExcelPackage _pck;
+
     [ClassInitialize]
     public static void Init(TestContext context)
     {
         InitBase();
         _pck = OpenPackage("WorksheetRangeInsertDeleteDrawings.xlsx", true);
     }
-    [ClassCleanup] 
+
+    [ClassCleanup]
     public static void Cleanup()
     {
         SaveAndCleanup(_pck);
     }
+
     #region Row Tests
+
     [TestMethod]
     public void InsertRowWithDrawing()
     {
         //Setup
         ExcelWorksheet? ws = _pck.Workbook.Worksheets.Add("DrawingsInsertRow");
-        ExcelShape? shape = ws.Drawings.AddShape("Shape1_TwoCell",eShapeStyle.Rect);
+        ExcelShape? shape = ws.Drawings.AddShape("Shape1_TwoCell", eShapeStyle.Rect);
 
-        ExcelPicture? pic =  ws.Drawings.AddPicture("Picture1_OneCell", Properties.Resources.Test1);
+        ExcelPicture? pic = ws.Drawings.AddPicture("Picture1_OneCell", Properties.Resources.Test1);
         pic.SetPosition(0, 0, 11, 0);
 
         ExcelLineChart? chart = ws.Drawings.AddLineChart("Chart1_TwoCellAbsolute", eLineChartType.Line);
@@ -53,6 +57,7 @@ public class RangeInsertDrawingsTests : TestBase
         Assert.AreEqual(12, shape.To.Row);
         Assert.AreEqual(10, chart.To.Row);
     }
+
     [TestMethod]
     public void InsertRangeWithDrawingFullShiftDown()
     {
@@ -79,6 +84,7 @@ public class RangeInsertDrawingsTests : TestBase
         Assert.AreEqual(12, shape.To.Row);
         Assert.AreEqual(10, chart.To.Row);
     }
+
     [TestMethod]
     public void InsertRangeWithDrawingFullShiftRight()
     {
@@ -105,6 +111,7 @@ public class RangeInsertDrawingsTests : TestBase
         Assert.AreEqual(12, shape.To.Column);
         Assert.AreEqual(32, chart.To.Column);
     }
+
     [TestMethod]
     public void InsertRangeWithDrawingPartialShiftDown()
     {
@@ -133,6 +140,7 @@ public class RangeInsertDrawingsTests : TestBase
         Assert.AreEqual(10, shape.To.Row);
         Assert.AreEqual(10, chart.To.Row);
     }
+
     [TestMethod]
     public void InsertRangeWithDrawingPartialShiftRight()
     {
@@ -163,7 +171,9 @@ public class RangeInsertDrawingsTests : TestBase
     }
 
     #endregion
+
     #region Column Tests
+
     [TestMethod]
     public void InsertColumnWithDrawing()
     {
@@ -190,5 +200,6 @@ public class RangeInsertDrawingsTests : TestBase
         Assert.AreEqual(12, shape.To.Column);
         Assert.AreEqual(10, chart.To.Column);
     }
-    #endregion    
+
+    #endregion
 }

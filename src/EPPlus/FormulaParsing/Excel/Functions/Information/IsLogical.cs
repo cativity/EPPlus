@@ -10,6 +10,7 @@
  *************************************************************************************************
   01/27/2020         EPPlus Software AB       Initial release EPPlus 5
  *************************************************************************************************/
+
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -19,10 +20,9 @@ using OfficeOpenXml.FormulaParsing.ExpressionGraph;
 
 namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Information;
 
-[FunctionMetadata(
-                     Category = ExcelFunctionCategory.Information,
-                     EPPlusVersion = "4",
-                     Description = "Tests if a supplied value is a logical value, and if so, returns TRUE; Otherwise, returns FALSE")]
+[FunctionMetadata(Category = ExcelFunctionCategory.Information,
+                  EPPlusVersion = "4",
+                  Description = "Tests if a supplied value is a logical value, and if so, returns TRUE; Otherwise, returns FALSE")]
 internal class IsLogical : ExcelFunction
 {
     public override CompileResult Execute(IEnumerable<FunctionArgument> arguments, ParsingContext context)
@@ -30,6 +30,7 @@ internal class IsLogical : ExcelFunction
         FunctionArgument[]? functionArguments = arguments as FunctionArgument[] ?? arguments.ToArray();
         ValidateArguments(functionArguments, 1);
         object? v = GetFirstValue(arguments);
+
         return this.CreateResult(v is bool, DataType.Boolean);
     }
 }

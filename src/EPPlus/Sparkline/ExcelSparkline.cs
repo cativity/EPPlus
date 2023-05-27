@@ -10,6 +10,7 @@
  *************************************************************************************************
   01/27/2020         EPPlus Software AB       Initial release EPPlus 5
  *************************************************************************************************/
+
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -23,11 +24,14 @@ namespace OfficeOpenXml.Sparkline;
 /// </summary>
 public class ExcelSparkline : XmlHelper
 {
-    internal ExcelSparkline(XmlNamespaceManager nsm, XmlNode topNode) : base(nsm, topNode)
+    internal ExcelSparkline(XmlNamespaceManager nsm, XmlNode topNode)
+        : base(nsm, topNode)
     {
         this.SchemaNodeOrder = new string[] { "f", "sqref" };
-    }   
+    }
+
     const string _fPath = "xm:f";
+
     /// <summary>
     /// The datarange
     /// </summary>
@@ -36,7 +40,8 @@ public class ExcelSparkline : XmlHelper
         get
         {
             string? v = this.GetXmlNodeString(_fPath);
-            if(string.IsNullOrEmpty(v))
+
+            if (string.IsNullOrEmpty(v))
             {
                 return null;
             }
@@ -47,7 +52,7 @@ public class ExcelSparkline : XmlHelper
         }
         internal set
         {
-            if(value==null || value.Address=="#REF!")
+            if (value == null || value.Address == "#REF!")
             {
                 this.DeleteNode(_fPath);
             }
@@ -57,21 +62,18 @@ public class ExcelSparkline : XmlHelper
             }
         }
     }
+
     const string _sqrefPath = "xm:sqref";
+
     /// <summary>
     /// Location of the sparkline
     /// </summary>
     public ExcelCellAddress Cell
     {
-        get
-        {
-            return new ExcelCellAddress(this.GetXmlNodeString(_sqrefPath));
-        }
-        internal set
-        {
-            this.SetXmlNodeString("xm:sqref", value.Address);
-        }
+        get { return new ExcelCellAddress(this.GetXmlNodeString(_sqrefPath)); }
+        internal set { this.SetXmlNodeString("xm:sqref", value.Address); }
     }
+
     /// <summary>
     /// Returns a string representation of the object
     /// </summary>

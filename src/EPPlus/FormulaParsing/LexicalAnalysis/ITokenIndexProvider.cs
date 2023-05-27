@@ -10,6 +10,7 @@
  *************************************************************************************************
   01/27/2020         EPPlus Software AB       Initial release EPPlus 5
  *************************************************************************************************/
+
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -19,7 +20,7 @@ namespace OfficeOpenXml.FormulaParsing.LexicalAnalysis;
 
 public interface ITokenIndexProvider
 {
-    int Index { get;  }
+    int Index { get; }
 
     void MoveIndexPointerForward();
 }

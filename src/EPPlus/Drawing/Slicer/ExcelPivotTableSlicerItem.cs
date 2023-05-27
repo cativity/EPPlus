@@ -19,31 +19,35 @@ public class ExcelPivotTableSlicerItem
         this._cache = cache;
         this._index = index;
     }
+
     /// <summary>
     /// The value of the item
     /// </summary>
-    public object Value 
-    { 
+    public object Value
+    {
         get
         {
             if (this._index >= this._cache._field.Items.Count)
             {
                 return null;
             }
+
             return this._cache._field.Items[this._index].Value;
         }
     }
+
     /// <summary>
     /// If the value is hidden 
     /// </summary>
-    public bool Hidden 
-    { 
+    public bool Hidden
+    {
         get
         {
             if (this._index >= this._cache._field.Items.Count)
             {
                 throw new IndexOutOfRangeException();
             }
+
             return this._cache._field.Items[this._index].Hidden;
         }
         set
@@ -52,9 +56,11 @@ public class ExcelPivotTableSlicerItem
             {
                 throw new IndexOutOfRangeException();
             }
+
             foreach (ExcelPivotTable? pt in this._cache.PivotTables)
             {
                 ExcelPivotTableField? fld = pt.Fields[this._cache._field.Index];
+
                 if (this._index >= fld.Items.Count || fld.Items[this._index].Type != eItemType.Data)
                 {
                     continue;

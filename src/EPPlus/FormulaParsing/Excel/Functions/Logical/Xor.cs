@@ -10,6 +10,7 @@
  *************************************************************************************************
   01/27/2020         EPPlus Software AB       EPPlus 5.5
  *************************************************************************************************/
+
 using OfficeOpenXml.FormulaParsing.Excel.Functions.Metadata;
 using OfficeOpenXml.FormulaParsing.ExpressionGraph;
 using System;
@@ -19,17 +20,15 @@ using System.Text;
 
 namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Logical;
 
-[FunctionMetadata(
-                     Category = ExcelFunctionCategory.Logical,
-                     EPPlusVersion = "5.5",
-                     Description = "Returns a logical Exclusive Or of all arguments",
-                     IntroducedInExcelVersion = "2013")]
+[FunctionMetadata(Category = ExcelFunctionCategory.Logical,
+                  EPPlusVersion = "5.5",
+                  Description = "Returns a logical Exclusive Or of all arguments",
+                  IntroducedInExcelVersion = "2013")]
 internal class Xor : ExcelFunction
 {
     public Xor()
         : this(new DoubleEnumerableArgConverter())
     {
-
     }
 
     public Xor(DoubleEnumerableArgConverter converter)
@@ -45,14 +44,17 @@ internal class Xor : ExcelFunction
         List<bool>? results = new List<bool>();
         IEnumerable<ExcelDoubleCellValue>? values = this._converter.ConvertArgsIncludingOtherTypes(arguments, false);
         int nTrue = 0;
-        foreach(ExcelDoubleCellValue val in values)
+
+        foreach (ExcelDoubleCellValue val in values)
         {
-            if(val != 0d)
+            if (val != 0d)
             {
                 nTrue++;
             }
         }
+
         bool result = (System.Math.Abs(nTrue) & 1) != 0;
+
         return this.CreateResult(result, DataType.Boolean);
     }
 }

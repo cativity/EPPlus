@@ -10,6 +10,7 @@
  *************************************************************************************************
   01/27/2020         EPPlus Software AB       Initial release EPPlus 5
  *************************************************************************************************/
+
 namespace OfficeOpenXml.Drawing;
 
 /// <summary>
@@ -21,14 +22,17 @@ public enum eShadePath
     /// The gradient folows a linear path
     /// </summary>
     Linear,
+
     /// <summary>
     /// The gradient follows a circular path
     /// </summary>
     Circle,
+
     /// <summary>
     /// The gradient follows a rectangular path
     /// </summary>
     Rectangle,
+
     /// <summary>
     /// The gradient follows the shape
     /// </summary>

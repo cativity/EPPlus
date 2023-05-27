@@ -10,6 +10,7 @@
  *************************************************************************************************
   01/27/2020         EPPlus Software AB       Initial release EPPlus 5
  *************************************************************************************************/
+
 using System;
 using System.Collections.Generic;
 using System.Globalization;
@@ -25,8 +26,8 @@ namespace OfficeOpenXml.Table.PivotTable;
 /// </summary>
 public class ExcelPivotTableDataField : XmlHelper
 {
-    internal ExcelPivotTableDataField(XmlNamespaceManager ns, XmlNode topNode,ExcelPivotTableField field) :
-        base(ns, topNode)
+    internal ExcelPivotTableDataField(XmlNamespaceManager ns, XmlNode topNode, ExcelPivotTableField field)
+        : base(ns, topNode)
     {
         if (topNode.Attributes.Count == 0)
         {
@@ -37,37 +38,27 @@ public class ExcelPivotTableDataField : XmlHelper
 
         this.Field = field;
     }
+
     /// <summary>
     /// The field
     /// </summary>
-    public ExcelPivotTableField Field
-    {
-        get;
-        internal set;
-    }
+    public ExcelPivotTableField Field { get; internal set; }
+
     /// <summary>
     /// The index of the datafield
     /// </summary>
-    public int Index 
-    { 
-        get
-        {
-            return this.GetXmlNodeInt("@fld");
-        }
-        internal set
-        {
-            this.SetXmlNodeString("@fld",value.ToString());
-        }
+    public int Index
+    {
+        get { return this.GetXmlNodeInt("@fld"); }
+        internal set { this.SetXmlNodeString("@fld", value.ToString()); }
     }
+
     /// <summary>
     /// The name of the datafield
     /// </summary>
     public string Name
     {
-        get
-        {
-            return this.GetXmlNodeString("@name");
-        }
+        get { return this.GetXmlNodeString("@name"); }
         set
         {
             if (this.Field._pivotTable.DataFields.ExistsDfName(value, this))
@@ -78,48 +69,34 @@ public class ExcelPivotTableDataField : XmlHelper
             this.SetXmlNodeString("@name", value);
         }
     }
+
     /// <summary>
     /// Field index. Reference to the field collection
     /// </summary>
     public int BaseField
     {
-        get
-        {
-            return this.GetXmlNodeInt("@baseField");
-        }
-        set
-        {
-            this.SetXmlNodeString("@baseField", value.ToString());
-        }
+        get { return this.GetXmlNodeInt("@baseField"); }
+        set { this.SetXmlNodeString("@baseField", value.ToString()); }
     }
+
     /// <summary>
     /// The index to the base item when the ShowDataAs calculation is in use
     /// </summary>
     public int BaseItem
     {
-        get
-        {
-            return this.GetXmlNodeInt("@baseItem");
-        }
-        set
-        {
-            this.SetXmlNodeString("@baseItem", value.ToString());
-        }
+        get { return this.GetXmlNodeInt("@baseItem"); }
+        set { this.SetXmlNodeString("@baseItem", value.ToString()); }
     }
+
     /// <summary>
     /// Number format id. 
     /// </summary>
     internal int NumFmtId
     {
-        get
-        {
-            return this.GetXmlNodeInt("@numFmtId");
-        }
-        set
-        {
-            this.SetXmlNodeString("@numFmtId", value.ToString());
-        }
+        get { return this.GetXmlNodeInt("@numFmtId"); }
+        set { this.SetXmlNodeString("@numFmtId", value.ToString()); }
     }
+
     /// <summary>
     /// The number format for the data field
     /// </summary>
@@ -134,6 +111,7 @@ public class ExcelPivotTableDataField : XmlHelper
                     return nf.Format;
                 }
             }
+
             return this.Field._pivotTable.WorkSheet.Workbook.Styles.NumberFormats[0].Format;
         }
         set
@@ -141,6 +119,7 @@ public class ExcelPivotTableDataField : XmlHelper
             ExcelStyles? styles = this.Field._pivotTable.WorkSheet.Workbook.Styles;
 
             ExcelNumberFormatXml nf = null;
+
             if (!styles.NumberFormats.FindById(value, ref nf))
             {
                 nf = new ExcelNumberFormatXml(this.NameSpaceManager) { Format = value, NumFmtId = styles.NumberFormats.NextId++ };
@@ -150,6 +129,7 @@ public class ExcelPivotTableDataField : XmlHelper
             this.NumFmtId = nf.NumFmtId;
         }
     }
+
     /// <summary>
     /// Type of aggregate function
     /// </summary>
@@ -157,8 +137,9 @@ public class ExcelPivotTableDataField : XmlHelper
     {
         get
         {
-            string s= this.GetXmlNodeString("@subtotal");
-            if(s=="")
+            string s = this.GetXmlNodeString("@subtotal");
+
+            if (s == "")
             {
                 return DataFieldFunctions.None;
             }
@@ -170,29 +151,41 @@ public class ExcelPivotTableDataField : XmlHelper
         set
         {
             string v;
-            switch(value)
+
+            switch (value)
             {
                 case DataFieldFunctions.None:
                     this.DeleteNode("@subtotal");
+
                     return;
+
                 case DataFieldFunctions.CountNums:
-                    v="countNums";
+                    v = "countNums";
+
                     break;
+
                 case DataFieldFunctions.StdDev:
-                    v="stdDev";
+                    v = "stdDev";
+
                     break;
+
                 case DataFieldFunctions.StdDevP:
-                    v="stdDevP";
+                    v = "stdDevP";
+
                     break;
+
                 default:
-                    v=value.ToString().ToLower(CultureInfo.InvariantCulture);
+                    v = value.ToString().ToLower(CultureInfo.InvariantCulture);
+
                     break;
             }
 
             this.SetXmlNodeString("@subtotal", v);
         }
     }
+
     ExcelPivotTableDataFieldShowDataAs _showDataAs = null;
+
     /// <summary>
     /// Represents a pivot fields Show As properties.
     /// </summary>
@@ -200,30 +193,34 @@ public class ExcelPivotTableDataField : XmlHelper
     {
         get { return this._showDataAs ??= new ExcelPivotTableDataFieldShowDataAs(this); }
     }
+
     internal eShowDataAs ShowDataAsInternal
     {
         get
         {
             string s = this.GetXmlNodeString("@showDataAs");
+
             if (s == "")
             {
                 s = this.GetXmlNodeString("d:extLst/d:ext[@uri='{E15A36E0-9728-4e99-A89B-3F7291B0FE68}']/x14:dataField/@pivotShowAs");
+
                 if (s == "")
                 {
                     return eShowDataAs.Normal;
                 }
             }
+
             return s.ToShowDataAs();
         }
         set
         {
-            if(value==eShowDataAs.Normal)
+            if (value == eShowDataAs.Normal)
             {
                 this.DeleteNode("@showDataAs");
             }
             else
             {
-                if(IsShowDataAsExtLst(value))
+                if (IsShowDataAsExtLst(value))
                 {
                     this.DeleteNode("@showDataAs");
                     XmlNode? extNode = this.GetOrCreateExtLstSubNode("{E15A36E0-9728-4e99-A89B-3F7291B0FE68}", "x14");
@@ -242,12 +239,11 @@ public class ExcelPivotTableDataField : XmlHelper
 
     private static bool IsShowDataAsExtLst(eShowDataAs value)
     {
-        return
-            value == eShowDataAs.PercentOfParent ||
-            value == eShowDataAs.PercentOfParentColumn ||
-            value == eShowDataAs.PercentOfParentRow ||
-            value == eShowDataAs.RankAscending ||
-            value == eShowDataAs.RankDescending ||
-            value == eShowDataAs.PercentOfRunningTotal;
+        return value == eShowDataAs.PercentOfParent
+               || value == eShowDataAs.PercentOfParentColumn
+               || value == eShowDataAs.PercentOfParentRow
+               || value == eShowDataAs.RankAscending
+               || value == eShowDataAs.RankDescending
+               || value == eShowDataAs.PercentOfRunningTotal;
     }
 }

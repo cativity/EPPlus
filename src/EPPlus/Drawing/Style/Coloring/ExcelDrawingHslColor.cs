@@ -10,6 +10,7 @@
  *************************************************************************************************
   01/27/2020         EPPlus Software AB       Initial release EPPlus 5
  *************************************************************************************************/
+
 using System;
 using System.Xml;
 using System.Globalization;
@@ -22,52 +23,37 @@ namespace OfficeOpenXml.Drawing.Style.Coloring;
 /// </summary>
 public class ExcelDrawingHslColor : XmlHelper
 {
-    internal ExcelDrawingHslColor(XmlNamespaceManager nsm, XmlNode topNode) : base(nsm, topNode)
+    internal ExcelDrawingHslColor(XmlNamespaceManager nsm, XmlNode topNode)
+        : base(nsm, topNode)
     {
-
     }
+
     /// <summary>
     /// The hue angle in degrees.
     /// Ranges from 0 to 360
     /// </summary>
     public double Hue
     {
-        get
-        {
-            return this.GetXmlNodeAngel("@hue");
-        }
-        set
-        {
-            this.SetXmlNodeAngel("@hue", value, "Hue");
-        }
+        get { return this.GetXmlNodeAngel("@hue"); }
+        set { this.SetXmlNodeAngel("@hue", value, "Hue"); }
     }
+
     /// <summary>
     /// The saturation percentage
     /// </summary>
     public double Saturation
     {
-        get
-        {
-            return this.GetXmlNodePercentage("@sat") ?? 0;
-        }
-        set
-        {
-            this.SetXmlNodePercentage("@sat", value, false);
-        }
+        get { return this.GetXmlNodePercentage("@sat") ?? 0; }
+        set { this.SetXmlNodePercentage("@sat", value, false); }
     }
+
     /// <summary>
     /// The luminance percentage
     /// </summary>
     public double Luminance
     {
-        get
-        {
-            return this.GetXmlNodePercentage("@lum") ?? 0;
-        }
-        set
-        {
-            this.SetXmlNodePercentage("@lum", value, false);
-        }
+        get { return this.GetXmlNodePercentage("@lum") ?? 0; }
+        set { this.SetXmlNodePercentage("@lum", value, false); }
     }
 
     internal const string NodeName = "a:hslClr";
@@ -77,6 +63,7 @@ public class ExcelDrawingHslColor : XmlHelper
         double h = this.Hue;
         double s = this.Saturation / 100;
         double l = this.Luminance / 100;
+
         return GetRgb(h, s, l);
     }
 
@@ -121,7 +108,8 @@ public class ExcelDrawingHslColor : XmlHelper
 
         if (s == 0)
         {
-            int c = (int)Math.Round(l * 255,0);
+            int c = (int)Math.Round(l * 255, 0);
+
             return Color.FromArgb(c, c, c);
         }
         else
@@ -170,7 +158,7 @@ public class ExcelDrawingHslColor : XmlHelper
                 g = 0;
                 b = x;
             }
-                
+
             int red = (int)Math.Round(255 * (r + m), 0);
             int green = (int)Math.Round(255 * (g + m), 0);
             int blue = (int)Math.Round(255 * (b + m), 0);

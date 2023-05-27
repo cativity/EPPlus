@@ -36,6 +36,7 @@ using System.IO;
 using OfficeOpenXml.Packaging.Ionic.Crc;
 using System.Text;
 using System.Linq;
+
 namespace OfficeOpenXml.Packaging.Ionic.Zip;
 
 /// <summary>
@@ -228,9 +229,10 @@ internal class ZipInputStream : Stream
     /// End Sub
     /// </code>
     /// </example>
-    public ZipInputStream(Stream stream)  : this (stream, false) { }
-
-
+    public ZipInputStream(Stream stream)
+        : this(stream, false)
+    {
+    }
 
     /// <summary>
     ///   Create a <c>ZipInputStream</c>, given the name of an existing zip file.
@@ -310,10 +312,9 @@ internal class ZipInputStream : Stream
     /// </example>
     public ZipInputStream(String fileName)
     {
-        Stream stream = File.Open(fileName, FileMode.Open, FileAccess.Read, FileShare.Read );
+        Stream stream = File.Open(fileName, FileMode.Open, FileAccess.Read, FileShare.Read);
         this._Init(stream, false, fileName);
     }
-
 
     /// <summary>
     ///   Create a <c>ZipInputStream</c>, explicitly specifying whether to
@@ -342,18 +343,18 @@ internal class ZipInputStream : Stream
     private void _Init(Stream stream, bool leaveOpen, string name)
     {
         this._inputStream = stream;
+
         if (!this._inputStream.CanRead)
         {
             throw new ZipException("The stream must be readable.");
         }
 
-        this._container= new ZipContainer(this);
+        this._container = new ZipContainer(this);
 
         this._leaveUnderlyingStreamOpen = leaveOpen;
-        this._findRequired= true;
+        this._findRequired = true;
         this._name = name ?? "(stream)";
     }
-
 
     /// <summary>Provides a string representation of the instance.</summary>
     /// <remarks>
@@ -364,8 +365,9 @@ internal class ZipInputStream : Stream
     /// <returns>a string representation of the instance.</returns>
     public override String ToString()
     {
-        return String.Format ("ZipInputStream::{0}(leaveOpen({1})))", this._name, this._leaveUnderlyingStreamOpen);
+        return String.Format("ZipInputStream::{0}(leaveOpen({1})))", this._name, this._leaveUnderlyingStreamOpen);
     }
+
     /// <summary>
     ///   Size of the work buffer to use for the ZLIB codec during decompression.
     /// </summary>
@@ -378,12 +380,7 @@ internal class ZipInputStream : Stream
     ///   recommendations on how to set it.  You'll have to test it yourself. Or
     ///   just leave it alone and accept the default.
     /// </remarks>
-    public int CodecBufferSize
-    {
-        get;
-        set;
-    }
-
+    public int CodecBufferSize { get; set; }
 
     /// <summary>
     ///   Sets the password to be used on the <c>ZipInputStream</c> instance.
@@ -443,6 +440,7 @@ internal class ZipInputStream : Stream
             if (this._closed)
             {
                 this._exceptionPending = true;
+
                 throw new InvalidOperationException("The stream has been closed.");
             }
 
@@ -450,26 +448,19 @@ internal class ZipInputStream : Stream
         }
     }
 
-
     private void SetupStream()
     {
         // Seek to the correct posn in the file, and open a
         // stream that can be read.
-        this._crcStream= this._currentEntry.InternalOpenReader(this._Password);
+        this._crcStream = this._currentEntry.InternalOpenReader(this._Password);
         this._LeftToRead = this._crcStream.Length;
         this._needSetup = false;
     }
 
-
-
     internal Stream ReadStream
     {
-        get
-        {
-            return this._inputStream;
-        }
+        get { return this._inputStream; }
     }
-
 
     /// <summary>
     ///   Read the data from the stream into the buffer.
@@ -498,6 +489,7 @@ internal class ZipInputStream : Stream
         if (this._closed)
         {
             this._exceptionPending = true;
+
             throw new InvalidOperationException("The stream has been closed.");
         }
 
@@ -521,14 +513,13 @@ internal class ZipInputStream : Stream
             int CrcResult = this._crcStream.Crc;
             this._currentEntry.VerifyCrcAfterExtract(CrcResult);
             this._inputStream.Seek(this._endOfEntry, SeekOrigin.Begin);
+
             // workitem 10178
             SharedUtilities.Workaround_Ladybug318918(this._inputStream);
         }
 
         return n;
     }
-
-
 
     /// <summary>
     ///   Read the next entry from the zip file.
@@ -570,6 +561,7 @@ internal class ZipInputStream : Stream
         {
             // find the next signature
             long d = SharedUtilities.FindSignature(this._inputStream, ZipConstants.ZipEntrySignature);
+
             if (d == -1)
             {
                 return null;
@@ -577,29 +569,32 @@ internal class ZipInputStream : Stream
 
             // back up 4 bytes: ReadEntry assumes the file pointer is positioned before the entry signature
             this._inputStream.Seek(-4, SeekOrigin.Current);
+
             // workitem 10178
             SharedUtilities.Workaround_Ladybug318918(this._inputStream);
         }
+
         // workitem 10923
         else if (this._firstEntry)
         {
             // we've already read one entry.
             // Seek to the end of it.
-            this._inputStream.Seek(this._endOfEntry, SeekOrigin.Begin);   
+            this._inputStream.Seek(this._endOfEntry, SeekOrigin.Begin);
             SharedUtilities.Workaround_Ladybug318918(this._inputStream);
         }
 
         this._currentEntry = ZipEntry.ReadEntry(this._container, !this._firstEntry);
+
         // ReadEntry leaves the file position after all the entry
         // data and the optional bit-3 data descriptpr.  This is
         // where the next entry would normally start.
         this._endOfEntry = this._inputStream.Position;
         this._firstEntry = true;
         this._needSetup = true;
-        this._findRequired= false;
+        this._findRequired = false;
+
         return this._currentEntry;
     }
-
 
     /// <summary>
     ///   Dispose the stream.
@@ -660,29 +655,40 @@ internal class ZipInputStream : Stream
             }
         }
 
-        this._closed= true;
+        this._closed = true;
     }
-
 
     /// <summary>
     /// Always returns true.
     /// </summary>
-    public override bool CanRead  { get { return true; }}
+    public override bool CanRead
+    {
+        get { return true; }
+    }
 
     /// <summary>
     /// Returns the value of <c>CanSeek</c> for the underlying (wrapped) stream.
     /// </summary>
-    public override bool CanSeek  { get { return this._inputStream.CanSeek; } }
+    public override bool CanSeek
+    {
+        get { return this._inputStream.CanSeek; }
+    }
 
     /// <summary>
     /// Always returns false.
     /// </summary>
-    public override bool CanWrite { get { return false; } }
+    public override bool CanWrite
+    {
+        get { return false; }
+    }
 
     /// <summary>
     /// Returns the length of the underlying stream.
     /// </summary>
-    public override long Length   { get { return this._inputStream.Length; }}
+    public override long Length
+    {
+        get { return this._inputStream.Length; }
+    }
 
     /// <summary>
     /// Gets or sets the position of the underlying stream.
@@ -692,7 +698,7 @@ internal class ZipInputStream : Stream
     /// </remarks>
     public override long Position
     {
-        get { return this._inputStream.Position;}
+        get { return this._inputStream.Position; }
         set { this.Seek(value, SeekOrigin.Begin); }
     }
 
@@ -704,7 +710,6 @@ internal class ZipInputStream : Stream
         throw new NotSupportedException("Flush");
     }
 
-
     /// <summary>
     /// This method always throws a NotSupportedException.
     /// </summary>
@@ -715,7 +720,6 @@ internal class ZipInputStream : Stream
     {
         throw new NotSupportedException("Write");
     }
-
 
     /// <summary>
     ///   This method seeks in the underlying stream.
@@ -741,10 +745,12 @@ internal class ZipInputStream : Stream
     /// <returns>The new position</returns>
     public override long Seek(long offset, SeekOrigin origin)
     {
-        this._findRequired= true;
+        this._findRequired = true;
         long x = this._inputStream.Seek(offset, origin);
+
         // workitem 10178
         SharedUtilities.Workaround_Ladybug318918(this._inputStream);
+
         return x;
     }
 
@@ -756,7 +762,6 @@ internal class ZipInputStream : Stream
     {
         throw new NotSupportedException();
     }
-
 
     private Stream _inputStream;
     private ZipEntry _currentEntry;

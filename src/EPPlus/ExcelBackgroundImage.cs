@@ -10,6 +10,7 @@
  *************************************************************************************************
   01/27/2020         EPPlus Software AB       Initial release EPPlus 5
  *************************************************************************************************/
+
 using System;
 using System.Xml;
 using System.Drawing;
@@ -27,54 +28,62 @@ namespace OfficeOpenXml;
 public class ExcelBackgroundImage : XmlHelper, IPictureContainer
 {
     ExcelWorksheet _workSheet;
+
     /// <summary>
     /// 
     /// </summary>
     /// <param name="nsm"></param>
     /// <param name="topNode">The topnode of the worksheet</param>
     /// <param name="workSheet">Worksheet reference</param>
-    internal  ExcelBackgroundImage(XmlNamespaceManager nsm, XmlNode topNode, ExcelWorksheet workSheet) :
-        base(nsm, topNode)
+    internal ExcelBackgroundImage(XmlNamespaceManager nsm, XmlNode topNode, ExcelWorksheet workSheet)
+        : base(nsm, topNode)
     {
         this._workSheet = workSheet;
     }
+
     ExcelImage _imageNew;
     const string BACKGROUNDPIC_PATH = "d:picture/@r:id";
+
     /// <summary>
     /// The background image of the worksheet. 
     /// Note that images of type .svg, .ico and .webp is not supported as background images.
     /// </summary>
-    public ExcelImage Image 
-    { 
+    public ExcelImage Image
+    {
         get
         {
             if (this._imageNew == null)
             {
                 string? relId = this.GetXmlNodeString(BACKGROUNDPIC_PATH);
-                this._imageNew = new ExcelImage(this, new ePictureType[] {ePictureType.Svg, ePictureType.Ico, ePictureType.WebP});
+                this._imageNew = new ExcelImage(this, new ePictureType[] { ePictureType.Svg, ePictureType.Ico, ePictureType.WebP });
+
                 if (!string.IsNullOrEmpty(relId))
                 {
                     this._imageNew.ImageBytes = PictureStore.GetPicture(relId, this, out string contentType, out ePictureType pictureType);
                     this._imageNew.Type = pictureType;
                 }
             }
+
             return this._imageNew;
         }
     }
+
     /// <summary>
     /// Set the picture from an image file. 
     /// </summary>
     /// <param name="PictureFile">The image file. Files of type .svg, .ico and .webp is not supported for background images</param>
     public void SetFromFile(FileInfo PictureFile)
     {
-        if(PictureFile.Exists==false)
+        if (PictureFile.Exists == false)
         {
             throw new FileNotFoundException($"Can't find file {PictureFile.FullName}");
         }
+
         ePictureType type = PictureStore.GetPictureType(PictureFile.Extension);
-        byte[]? imgBytes =File.ReadAllBytes(PictureFile.FullName);
+        byte[]? imgBytes = File.ReadAllBytes(PictureFile.FullName);
         this.Image.SetImage(imgBytes, type);
     }
+
     /// <summary>
     /// Set the picture from an image file. 
     /// </summary>
@@ -88,6 +97,7 @@ public class ExcelBackgroundImage : XmlHelper, IPictureContainer
 
         this.SetFromFile(new FileInfo(PictureFilePath));
     }
+
     /// <summary>
     /// Removes the background image.
     /// </summary>
@@ -95,17 +105,17 @@ public class ExcelBackgroundImage : XmlHelper, IPictureContainer
     {
         this.Image.RemoveImage();
     }
-    IPictureRelationDocument IPictureContainer.RelationDocument 
-    { 
-        get 
-        { 
-            return this._workSheet; 
-        } 
-    }
-    string IPictureContainer.ImageHash { get; set; }
-    Uri IPictureContainer.UriPic { get; set; }
-    Packaging.ZipPackageRelationship IPictureContainer.RelPic { get; set; }
 
+    IPictureRelationDocument IPictureContainer.RelationDocument
+    {
+        get { return this._workSheet; }
+    }
+
+    string IPictureContainer.ImageHash { get; set; }
+
+    Uri IPictureContainer.UriPic { get; set; }
+
+    Packaging.ZipPackageRelationship IPictureContainer.RelPic { get; set; }
 
     void IPictureContainer.RemoveImage()
     {

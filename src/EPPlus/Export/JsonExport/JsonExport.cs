@@ -12,11 +12,13 @@ internal abstract partial class JsonExport
     private JsonExportSettings _settings;
     protected string _indent = "";
     protected bool _minify;
+
     internal JsonExport(JsonExportSettings settings)
     {
         this._settings = settings;
         this._minify = settings.Minify;
     }
+
     internal protected void WriteCellData(StreamWriter sw, ExcelRangeBase dr, int headerRows)
     {
         bool dtOnCell = this._settings.AddDataTypesOn == eDataTypeOn.OnCell;
@@ -25,10 +27,12 @@ internal abstract partial class JsonExport
         int commentIx = 0;
         this.WriteItem(sw, $"\"{this._settings.RowsElementName}\":[", true);
         int fromRow = dr._fromRow + headerRows;
+
         for (int r = fromRow; r <= dr._toRow; r++)
         {
             this.WriteStart(sw);
             this.WriteItem(sw, $"\"{this._settings.CellsElementName}\":[", true);
+
             for (int c = dr._fromCol; c <= dr._toCol; c++)
             {
                 ExcelValue cv = ws.GetCoreValueInner(r, c);
@@ -36,6 +40,7 @@ internal abstract partial class JsonExport
                 this.WriteStart(sw);
                 bool hasHyperlink = this._settings.WriteHyperlinks && ws._hyperLinks.Exists(r, c, ref uri);
                 bool hasComment = this._settings.WriteComments && ws._commentsStore.Exists(r, c, ref commentIx);
+
                 if (cv._value == null)
                 {
                     this.WriteItem(sw, $"\"t\":\"{t}\"");
@@ -45,10 +50,11 @@ internal abstract partial class JsonExport
                     string? v = JsonEscape(HtmlRawDataProvider.GetRawValue(cv._value));
                     this.WriteItem(sw, $"\"v\":\"{v}\",");
                     this.WriteItem(sw, $"\"t\":\"{t}\"", false, dtOnCell || hasHyperlink || hasComment);
+
                     if (dtOnCell)
                     {
                         string? dt = HtmlRawDataProvider.GetHtmlDataTypeFromValue(cv._value);
-                        this.WriteItem(sw, $"\"dt\":\"{dt}\"", false, hasHyperlink  || hasComment);
+                        this.WriteItem(sw, $"\"dt\":\"{dt}\"", false, hasHyperlink || hasComment);
                     }
                 }
 
@@ -57,23 +63,24 @@ internal abstract partial class JsonExport
                     this.WriteItem(sw, $"\"uri\":\"{JsonEscape(uri?.OriginalString)}\"", false, hasComment);
                 }
 
-                if(hasComment)
+                if (hasComment)
                 {
                     ExcelComment? comment = ws.Comments[commentIx];
                     this.WriteItem(sw, $"\"comment\":\"{comment.Text}\"");
                 }
 
-                if(c == dr._toCol)
+                if (c == dr._toCol)
                 {
                     this.WriteEnd(sw, "}");
                 }
                 else
                 {
-                    this.WriteEnd(sw,"},");
+                    this.WriteEnd(sw, "},");
                 }
             }
 
-            this.WriteEnd(sw,"]");
+            this.WriteEnd(sw, "]");
+
             if (r == dr._toRow)
             {
                 this.WriteEnd(sw);
@@ -87,6 +94,7 @@ internal abstract partial class JsonExport
         this.WriteEnd(sw, "]");
         this.WriteEnd(sw);
     }
+
     internal static string JsonEscape(string s)
     {
         if (s == null)
@@ -95,31 +103,46 @@ internal abstract partial class JsonExport
         }
 
         StringBuilder? sb = new StringBuilder();
+
         foreach (char c in s)
         {
             switch (c)
             {
                 case '\\':
                     sb.Append("\\\\");
+
                     break;
+
                 case '"':
                     sb.Append("\\\"");
+
                     break;
+
                 case '\b':
                     sb.Append("\\b");
+
                     break;
+
                 case '\f':
                     sb.Append("\\f");
+
                     break;
+
                 case '\n':
                     sb.Append("\\n");
+
                     break;
+
                 case '\r':
                     sb.Append("\\r");
+
                     break;
+
                 case '\t':
                     sb.Append("\\t");
+
                     break;
+
                 default:
                     if (c < 0x20)
                     {
@@ -129,12 +152,15 @@ internal abstract partial class JsonExport
                     {
                         sb.Append(c);
                     }
+
                     break;
             }
         }
+
         return sb.ToString();
     }
-    internal protected void WriteItem(StreamWriter sw, string v, bool indent=false, bool addComma=false)
+
+    internal protected void WriteItem(StreamWriter sw, string v, bool indent = false, bool addComma = false)
     {
         if (addComma)
         {
@@ -148,6 +174,7 @@ internal abstract partial class JsonExport
         else
         {
             sw.WriteLine(this._indent + v);
+
             if (indent)
             {
                 this._indent += "  ";
@@ -159,7 +186,6 @@ internal abstract partial class JsonExport
     {
         if (this._minify)
         {
-            
             sw.Write("{");
         }
         else
@@ -168,7 +194,8 @@ internal abstract partial class JsonExport
             this._indent += "  ";
         }
     }
-    internal protected void WriteEnd(StreamWriter sw, string bracket="}")
+
+    internal protected void WriteEnd(StreamWriter sw, string bracket = "}")
     {
         if (this._minify)
         {

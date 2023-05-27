@@ -10,6 +10,7 @@
  *************************************************************************************************
   01/27/2020         EPPlus Software AB       Initial release EPPlus 5
  *************************************************************************************************/
+
 using OfficeOpenXml.DataValidation.Events;
 using System;
 
@@ -28,21 +29,18 @@ internal abstract class ExcelDataValidationFormulaValue<T> : ExcelDataValidation
     public ExcelDataValidationFormulaValue(string validationUid, string worksheetName, Action<OnFormulaChangedEventArgs> extListHandler)
         : base(validationUid, worksheetName, extListHandler)
     {
-
     }
 
     internal override bool HasValue => this._value == null ? false : true;
 
     private T _value;
+
     /// <summary>
     /// Typed value
     /// </summary>
     public T Value
     {
-        get
-        {
-            return this._value;
-        }
+        get { return this._value; }
         set
         {
             this.State = FormulaState.Value;
@@ -54,5 +52,4 @@ internal abstract class ExcelDataValidationFormulaValue<T> : ExcelDataValidation
     {
         this.Value = default(T);
     }
-
 }

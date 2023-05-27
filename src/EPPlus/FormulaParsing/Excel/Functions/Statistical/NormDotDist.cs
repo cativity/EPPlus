@@ -10,6 +10,7 @@
  *************************************************************************************************
   11/29/2021         EPPlus Software AB       Implemented function
  *************************************************************************************************/
+
 using OfficeOpenXml.FormulaParsing.Excel.Functions.Metadata;
 using OfficeOpenXml.FormulaParsing.ExpressionGraph;
 using System;
@@ -19,11 +20,11 @@ using System.Text;
 
 namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Statistical;
 
-[FunctionMetadata(
-                     Category = ExcelFunctionCategory.Statistical,
-                     IntroducedInExcelVersion = "2010",
-                     EPPlusVersion = "5.8",
-                     Description = "Calculates the Normal Probability Density Function or the Cumulative Normal Distribution. Function for a supplied set of parameters.")]
+[FunctionMetadata(Category = ExcelFunctionCategory.Statistical,
+                  IntroducedInExcelVersion = "2010",
+                  EPPlusVersion = "5.8",
+                  Description =
+                      "Calculates the Normal Probability Density Function or the Cumulative Normal Distribution. Function for a supplied set of parameters.")]
 internal class NormDotDist : Normdist
 {
 }

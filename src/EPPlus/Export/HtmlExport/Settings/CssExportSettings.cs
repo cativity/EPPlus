@@ -10,6 +10,7 @@
  *************************************************************************************************
   05/11/2021         EPPlus Software AB           ExcelTable Html Export
  *************************************************************************************************/
+
 using System.Collections.Generic;
 
 namespace OfficeOpenXml.Export.HtmlExport;
@@ -25,6 +26,7 @@ public abstract class CssExportSettings
     /// Default is true
     /// </summary>
     public bool IncludeSharedClasses { get; set; } = true;
+
     /// <summary>
     /// If true the normal font will be included in the css. Default is true
     /// </summary>
@@ -33,32 +35,29 @@ public abstract class CssExportSettings
     /// <summary>
     /// Css elements added to the table.
     /// </summary>
-    public Dictionary<string, string> AdditionalCssElements
-    {
-        get;
-        internal set;
-    }
+    public Dictionary<string, string> AdditionalCssElements { get; internal set; }
+
     /// <summary>
     /// The value used in the stylesheet for an indentation in a cell
     /// </summary>
     public float IndentValue { get; set; } = 2;
+
     /// <summary>
     /// The unit used in the stylesheet for an indentation in a cell
     /// </summary>
     public string IndentUnit { get; set; } = "em";
+
     internal void ResetToDefaultInternal()
     {
         this.AdditionalCssElements = new Dictionary<string, string>()
         {
-            { "border-spacing", "0" },
-            { "border-collapse", "collapse" },
-            { "word-wrap", "break-word"},
-            { "white-space", "nowrap"},
+            { "border-spacing", "0" }, { "border-collapse", "collapse" }, { "word-wrap", "break-word" }, { "white-space", "nowrap" },
         };
 
         this.IndentValue = 2;
         this.IndentUnit = "em";
     }
+
     internal void CopyInternal(CssExportSettings copy)
     {
         this.AdditionalCssElements = copy.AdditionalCssElements;

@@ -10,6 +10,7 @@
  *************************************************************************************************
   01/27/2020         EPPlus Software AB       Initial release EPPlus 5
  *************************************************************************************************/
+
 using System;
 using System.Xml;
 
@@ -21,9 +22,11 @@ namespace OfficeOpenXml.Drawing;
 public class ExcelDrawingCoordinate : XmlHelper
 {
     internal delegate void SetWidthCallback();
+
     SetWidthCallback _setWidthCallback;
-    internal ExcelDrawingCoordinate(XmlNamespaceManager ns, XmlNode node, SetWidthCallback setWidthCallback=null) :
-        base(ns, node)
+
+    internal ExcelDrawingCoordinate(XmlNamespaceManager ns, XmlNode node, SetWidthCallback setWidthCallback = null)
+        : base(ns, node)
     {
         this._setWidthCallback = setWidthCallback;
         this.Load();
@@ -34,13 +37,18 @@ public class ExcelDrawingCoordinate : XmlHelper
         this._x = this.GetXmlNodeInt(xPath);
         this._y = this.GetXmlNodeInt(yPath);
     }
+
     public void UpdateXml()
     {
         this.SetXmlNodeString(xPath, this._x.ToString());
         this.SetXmlNodeString(yPath, this._y.ToString());
     }
-    int _x, _y;
+
+    int _x,
+        _y;
+
     const string xPath = "@x";
+
     /// <summary>
     /// X coordinate in EMU
     /// 
@@ -51,20 +59,20 @@ public class ExcelDrawingCoordinate : XmlHelper
     /// </summary>
     public int X
     {
-        get
-        {
-            return this._x;
-        }
+        get { return this._x; }
         set
         {
             this._x = value;
-            if(this._setWidthCallback != null)
+
+            if (this._setWidthCallback != null)
             {
                 this._setWidthCallback();
             }
         }
     }
+
     const string yPath = "@y";
+
     /// <summary>
     /// X coordinate in EMU
     /// 
@@ -75,13 +83,11 @@ public class ExcelDrawingCoordinate : XmlHelper
     /// </summary>
     public int Y
     {
-        get
-        {
-            return this._y;
-        }
+        get { return this._y; }
         set
         {
             this._y = value;
+
             if (this._setWidthCallback != null)
             {
                 this._setWidthCallback();

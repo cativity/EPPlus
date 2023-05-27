@@ -10,6 +10,7 @@
  *************************************************************************************************
   01/27/2020         EPPlus Software AB       Initial release EPPlus 5
  *************************************************************************************************/
+
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -28,7 +29,6 @@ internal abstract class LookupFunction : ExcelFunction
     public LookupFunction()
         : this(new LookupValueMatcher(), new CompileResultFactory())
     {
-
     }
 
     public LookupFunction(ValueMatcher valueMatcher, CompileResultFactory compileResultFactory)
@@ -39,10 +39,7 @@ internal abstract class LookupFunction : ExcelFunction
 
     public override bool IsLookupFuction
     {
-        get
-        {
-            return true;
-        }
+        get { return true; }
     }
 
     protected int IsMatch(object searchedValue, object candidate)
@@ -54,6 +51,7 @@ internal abstract class LookupFunction : ExcelFunction
     {
         int nRows = rangeAddress.ToRow - rangeAddress.FromRow;
         int nCols = rangeAddress.ToCol - rangeAddress.FromCol;
+
         return nCols > nRows ? LookupDirection.Horizontal : LookupDirection.Vertical;
     }
 
@@ -62,13 +60,16 @@ internal abstract class LookupFunction : ExcelFunction
         object lastValue = null;
         object lastLookupValue = null;
         int? lastMatchResult = null;
+
         if (lookupArgs.SearchedValue == null)
         {
             return new CompileResult(eErrorType.NA);
         }
+
         do
         {
             int matchResult = this.IsMatch(lookupArgs.SearchedValue, navigator.CurrentValue);
+
             if (matchResult != 0)
             {
                 if (lastValue != null && navigator.CurrentValue == null)
@@ -85,10 +86,12 @@ internal abstract class LookupFunction : ExcelFunction
                 {
                     return new CompileResult(eErrorType.NA);
                 }
+
                 if (lastValue != null && matchResult > 0 && lastMatchResult < 0)
                 {
                     return this._compileResultFactory.Create(lastLookupValue);
                 }
+
                 lastMatchResult = matchResult;
                 lastValue = navigator.CurrentValue;
                 lastLookupValue = navigator.GetLookupValue();
@@ -97,8 +100,7 @@ internal abstract class LookupFunction : ExcelFunction
             {
                 return this._compileResultFactory.Create(navigator.GetLookupValue());
             }
-        }
-        while (navigator.MoveNext());
+        } while (navigator.MoveNext());
 
         return lookupArgs.RangeLookup ? this._compileResultFactory.Create(lastLookupValue) : new CompileResult(eErrorType.NA);
     }

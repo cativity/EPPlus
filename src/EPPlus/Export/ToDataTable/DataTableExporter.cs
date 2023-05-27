@@ -10,6 +10,7 @@
  *************************************************************************************************
   10/15/2020         EPPlus Software AB       ToDataTable function
  *************************************************************************************************/
+
 using OfficeOpenXml.FormulaParsing.Utilities;
 using ConvertUtility = OfficeOpenXml.Utils.ConvertUtil;
 using System;
@@ -44,7 +45,7 @@ internal class DataTableExporter
         int row = this._options.FirstRowIsColumnNames ? this._range.Start.Row + 1 : this._range.Start.Row;
         this.Validate();
         row += this._options.SkipNumberOfRowsStart;
-            
+
         while (row <= this._range.End.Row - this._options.SkipNumberOfRowsEnd)
         {
             DataRow? dataRow = this._dataTable.NewRow();
@@ -52,60 +53,72 @@ internal class DataTableExporter
             bool rowIsEmpty = true;
             string? rowErrorMsg = string.Empty;
             bool rowErrorExists = false;
+
             foreach (DataColumnMapping? mapping in this._options.Mappings)
             {
                 int col = mapping.ZeroBasedColumnIndexInRange + this._range.Start.Column;
                 object? val = this._sheet.GetValueInner(row, col);
+
                 if (val != null && rowIsEmpty)
                 {
                     rowIsEmpty = false;
                 }
 
-                if(!mapping.AllowNull && val == null)
+                if (!mapping.AllowNull && val == null)
                 {
                     rowErrorMsg = $"Value cannot be null, row: {row}, col: {col}";
                     rowErrorExists = true;
                 }
-                else if(ExcelErrorValue.Values.IsErrorValue(val))
+                else if (ExcelErrorValue.Values.IsErrorValue(val))
                 {
-                    switch(this._options.ExcelErrorParsingStrategy)
+                    switch (this._options.ExcelErrorParsingStrategy)
                     {
                         case ExcelErrorParsingStrategy.IgnoreRowWithErrors:
                             ignoreRow = true;
+
                             continue;
+
                         case ExcelErrorParsingStrategy.ThrowException:
                             throw new InvalidOperationException($"Excel error value {val.ToString()} detected at row: {row}, col: {col}");
+
                         default:
                             val = null;
+
                             break;
                     }
                 }
-                if(mapping.TransformCellValue != null)
+
+                if (mapping.TransformCellValue != null)
                 {
                     val = mapping.TransformCellValue.Invoke(val);
                 }
+
                 Type? type = mapping.ColumnDataType ?? this._dataTable.Columns[mapping.DataColumnName].DataType;
                 dataRow[mapping.DataColumnName] = this.CastToColumnDataType(val, type);
             }
-            if(rowIsEmpty)
+
+            if (rowIsEmpty)
             {
-                if(this._options.EmptyRowStrategy == EmptyRowsStrategy.StopAtFirst)
+                if (this._options.EmptyRowStrategy == EmptyRowsStrategy.StopAtFirst)
                 {
                     row++;
+
                     break;
                 }
             }
             else
             {
-                if(rowErrorExists)
+                if (rowErrorExists)
                 {
                     throw new InvalidOperationException(rowErrorMsg);
                 }
+
                 if (!ignoreRow)
                 {
                     this._dataTable.Rows.Add(dataRow);
                 }
             }
+
             row++;
         }
     }
@@ -113,20 +126,22 @@ internal class DataTableExporter
     private void Validate()
     {
         int startRow = this._options.FirstRowIsColumnNames ? this._range.Start.Row + 1 : this._range.Start.Row;
+
         if (this._options.SkipNumberOfRowsStart < 0 || this._options.SkipNumberOfRowsStart > this._range.End.Row - startRow)
         {
             throw new IndexOutOfRangeException("SkipNumberOfRowsStart was out of range: " + this._options.SkipNumberOfRowsStart);
         }
+
         if (this._options.SkipNumberOfRowsEnd < 0 || this._options.SkipNumberOfRowsEnd > this._range.End.Row - startRow)
         {
             throw new IndexOutOfRangeException("SkipNumberOfRowsEnd was out of range: " + this._options.SkipNumberOfRowsEnd);
         }
-        if(this._options.SkipNumberOfRowsEnd + this._options.SkipNumberOfRowsStart > this._range.End.Row - startRow)
+
+        if (this._options.SkipNumberOfRowsEnd + this._options.SkipNumberOfRowsStart > this._range.End.Row - startRow)
         {
             throw new ArgumentException("Total number of skipped rows was larger than number of rows in range");
         }
     }
-
 
     private object CastToColumnDataType(object val, Type dataColumnType)
     {
@@ -136,8 +151,10 @@ internal class DataTableExporter
             {
                 return Activator.CreateInstance(dataColumnType);
             }
+
             return null;
         }
+
         if (val.GetType() == dataColumnType)
         {
             return val;
@@ -154,12 +171,14 @@ internal class DataTableExporter
         {
             try
             {
-                if(!this._convertMethods.ContainsKey(dataColumnType))
+                if (!this._convertMethods.ContainsKey(dataColumnType))
                 {
                     MethodInfo methodInfo = typeof(ConvertUtility).GetMethod(nameof(ConvertUtility.GetTypedCellValue));
                     this._convertMethods.Add(dataColumnType, methodInfo.MakeGenericMethod(dataColumnType));
                 }
+
                 MethodInfo? getTypedCellValue = this._convertMethods[dataColumnType];
+
                 return getTypedCellValue.Invoke(null, new object[] { val });
             }
             catch
@@ -168,6 +187,7 @@ internal class DataTableExporter
                 {
                     return Activator.CreateInstance(dataColumnType);
                 }
+
                 return null;
             }
         }

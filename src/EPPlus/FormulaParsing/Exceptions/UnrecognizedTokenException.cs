@@ -10,6 +10,7 @@
  *************************************************************************************************
   01/27/2020         EPPlus Software AB       Initial release EPPlus 5
  *************************************************************************************************/
+
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -21,8 +22,7 @@ namespace OfficeOpenXml.FormulaParsing.Exceptions;
 public class UnrecognizedTokenException : Exception
 {
     public UnrecognizedTokenException(Token token)
-        : base( "Unrecognized token: " + token.Value)
+        : base("Unrecognized token: " + token.Value)
     {
-
     }
 }

@@ -26,6 +26,7 @@
  *******************************************************************************
   01/27/2020         EPPlus Software AB       Initial release EPPlus 5
  *******************************************************************************/
+
 using EPPlusTest.FormulaParsing.TestHelpers;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using OfficeOpenXml;
@@ -146,10 +147,12 @@ public class TextFunctionsTests
     {
         Concat? func = new Concat();
         List<object> args = new List<object>();
+
         for (int i = 0; i < 255; i++)
         {
             args.Add("arg " + i);
         }
+
         CompileResult? result = func.Execute(FunctionsHelper.CreateArgs(args.ToArray()), this._parsingContext);
         Assert.AreEqual("#VALUE!", result.Result.ToString());
     }
@@ -262,10 +265,12 @@ public class TextFunctionsTests
     public void CleanShouldRemoveNonPrintableChars()
     {
         StringBuilder? input = new StringBuilder();
+
         for (int x = 1; x < 32; x++)
         {
             input.Append((char)x);
         }
+
         input.Append("epplus");
         Clean? func = new Clean();
         CompileResult? result = func.Execute(FunctionsHelper.CreateArgs(input), this._parsingContext);
@@ -401,6 +406,7 @@ public class TextFunctionsTests
     {
         CultureInfo? cc = Thread.CurrentThread.CurrentCulture;
         Thread.CurrentThread.CurrentCulture = new CultureInfo("EN-US");
+
         using (ExcelPackage? package = new ExcelPackage())
         {
             ExcelWorksheet? sheet = package.Workbook.Worksheets.Add("test");
@@ -409,6 +415,7 @@ public class TextFunctionsTests
             sheet.Calculate();
             Assert.AreEqual(1234567.89, sheet.Cells["A2"].Value);
         }
+
         Thread.CurrentThread.CurrentCulture = cc;
     }
 }

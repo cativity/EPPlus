@@ -10,6 +10,7 @@
  *************************************************************************************************
   05/11/2021         EPPlus Software AB           ExcelTable Html Export
  *************************************************************************************************/
+
 using OfficeOpenXml.Export.HtmlExport.Accessibility;
 using OfficeOpenXml.Table;
 using System;
@@ -47,6 +48,7 @@ public class HtmlTableExportSettings : HtmlExportSettings
         this.Css.ResetToDefault();
         this.Pictures.ResetToDefault();
     }
+
     /// <summary>
     /// Copy the values from another settings object.
     /// </summary>
@@ -65,6 +67,7 @@ public class HtmlTableExportSettings : HtmlExportSettings
         this.Css.Copy(copy.Css);
         this.Pictures.Copy(copy.Pictures);
     }
+
     /// <summary>
     /// Configure the settings.
     /// </summary>

@@ -10,6 +10,7 @@
  *************************************************************************************************
   05/11/2021         EPPlus Software AB           ExcelTable Html Export
  *************************************************************************************************/
+
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -32,9 +33,18 @@ internal class AriaAttributes
         public string DefaultValue { get; private set; }
     }
 
-    public static AriaAttribute AriaLabel { get { return new AriaAttribute("aria-label", string.Empty); } }
+    public static AriaAttribute AriaLabel
+    {
+        get { return new AriaAttribute("aria-label", string.Empty); }
+    }
 
-    public static AriaAttribute AriaDescribedBy { get { return new AriaAttribute("aria-describedby", string.Empty); } }
+    public static AriaAttribute AriaDescribedBy
+    {
+        get { return new AriaAttribute("aria-describedby", string.Empty); }
+    }
 
-    public static AriaAttribute AriaLabelledBy { get { return new AriaAttribute("aria-labelledby", string.Empty); } }
+    public static AriaAttribute AriaLabelledBy
+    {
+        get { return new AriaAttribute("aria-labelledby", string.Empty); }
+    }
 }

@@ -10,6 +10,7 @@
  *************************************************************************************************
   01/27/2020         EPPlus Software AB       Initial release EPPlus 5
  *************************************************************************************************/
+
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -20,6 +21,7 @@ using OfficeOpenXml.FormulaParsing.Excel.Functions;
 using OfficeOpenXml.FormulaParsing.LexicalAnalysis;
 using OfficeOpenXml.FormulaParsing.Logging;
 using OfficeOpenXml.FormulaParsing.Utilities;
+
 namespace OfficeOpenXml.FormulaParsing;
 
 /// <summary>
@@ -66,6 +68,7 @@ public class FormulaParserManager
     public void CopyFunctionsFrom(ExcelWorkbook otherWorkbook)
     {
         IEnumerable<KeyValuePair<string, ExcelFunction>>? functions = otherWorkbook.FormulaParserManager.GetImplementedFunctions();
+
         foreach (KeyValuePair<string, ExcelFunction> func in functions)
         {
             this.AddOrReplaceFunction(func.Key, func.Value);
@@ -81,6 +84,7 @@ public class FormulaParserManager
     {
         List<string>? fnList = this._parser.FunctionNames.ToList();
         fnList.Sort((x, y) => String.Compare(x, y, StringComparison.Ordinal));
+
         return fnList;
     }
 
@@ -99,6 +103,7 @@ public class FormulaParserManager
                 functions.Add(new KeyValuePair<string, ExcelFunction>(name, parsingConfiguration.FunctionRepository.GetFunction(name)));
             }
         });
+
         return functions;
     }
 
@@ -141,6 +146,7 @@ public class FormulaParserManager
     {
         this._parser.Configure(c => c.AttachLogger(LoggerFactory.CreateTextFileLogger(logfile)));
     }
+
     /// <summary>
     /// Detaches any attached logger from the formula parser.
     /// </summary>
@@ -152,6 +158,7 @@ public class FormulaParserManager
     public IEnumerable<IFormulaCellInfo> GetCalculationChain(ExcelRangeBase range)
     {
         Require.That(range).IsNotNull();
+
         return this.GetCalculationChain(range, null);
     }
 
@@ -164,19 +171,22 @@ public class FormulaParserManager
         ExcelCalculationOption? opt = options != null ? options : new ExcelCalculationOption();
         DependencyChain? dc = DependencyChainFactory.Create(range, opt);
         List<IFormulaCellInfo>? result = new List<IFormulaCellInfo>();
-        foreach(int co in dc.CalcOrder)
+
+        foreach (int co in dc.CalcOrder)
         {
             FormulaCell? fc = dc.list[co];
             ExcelAddress? adr = new ExcelAddress(fc.Row, fc.Column, fc.Row, fc.Column);
             FormulaCellInfo? fi = new FormulaCellInfo(fc.ws.Name, adr.Address, fc.Formula);
             result.Add(fi);
         }
+
         return result;
     }
 
     private static void Init(ExcelWorkbook workbook)
     {
         workbook._formulaTokens = new CellStore<List<Token>>();
+
         foreach (ExcelWorksheet? ws in workbook.Worksheets)
         {
             if (!(ws is ExcelChartsheet))
@@ -185,6 +195,7 @@ public class FormulaParserManager
                 {
                     ws._formulaTokens.Dispose();
                 }
+
                 ws._formulaTokens = new CellStore<List<Token>>();
             }
         }

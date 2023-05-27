@@ -10,10 +10,12 @@
  *************************************************************************************************
   01/27/2020         EPPlus Software AB       Initial release EPPlus 5
  *************************************************************************************************/
+
 using OfficeOpenXml.DataValidation.Formulas;
 using OfficeOpenXml.DataValidation.Formulas.Contracts;
 using System;
 using System.Xml;
+
 namespace OfficeOpenXml.DataValidation;
 
 /// <summary>
@@ -70,11 +72,7 @@ public abstract class ExcelDataValidationWithFormula2<T> : ExcelDataValidationWi
     /// <summary>
     /// Formula - Either a {T} value or a spreadsheet formula
     /// </summary>
-    public T Formula2
-    {
-        get;
-        protected set;
-    }
+    public T Formula2 { get; protected set; }
 
     //internal override string GetXmlValue()
     //{
@@ -84,15 +82,18 @@ public abstract class ExcelDataValidationWithFormula2<T> : ExcelDataValidationWi
     public override void Validate()
     {
         base.Validate();
+
         if (this.ValidationType.Type != eDataValidationType.List
             && this.ValidationType.Type != eDataValidationType.Custom
             && (this.Operator == ExcelDataValidationOperator.between || this.Operator == ExcelDataValidationOperator.notBetween))
         {
-            if (string.IsNullOrEmpty(this.Formula2.ExcelFormula) &&
-                (this.Formula2 as ExcelDataValidationFormula).HasValue == false &&
-                !(this.AllowBlank ?? false))
+            if (string.IsNullOrEmpty(this.Formula2.ExcelFormula)
+                && (this.Formula2 as ExcelDataValidationFormula).HasValue == false
+                && !(this.AllowBlank ?? false))
             {
-                throw new InvalidOperationException("Validation of " + this.Address.Address + " failed: Formula2 must be set if operator is 'between' or 'notBetween'");
+                throw new InvalidOperationException("Validation of "
+                                                    + this.Address.Address
+                                                    + " failed: Formula2 must be set if operator is 'between' or 'notBetween'");
             }
         }
     }

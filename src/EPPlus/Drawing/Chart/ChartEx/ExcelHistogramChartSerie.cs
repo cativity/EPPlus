@@ -10,8 +10,10 @@
  *************************************************************************************************
   04/16/2020         EPPlus Software AB           EPPlus 5.2
  *************************************************************************************************/
+
 using System;
 using System.Xml;
+
 namespace OfficeOpenXml.Drawing.Chart.ChartEx;
 
 /// <summary>
@@ -20,9 +22,11 @@ namespace OfficeOpenXml.Drawing.Chart.ChartEx;
 public class ExcelHistogramChartSerie : ExcelChartExSerie
 {
     internal int _index;
-    internal ExcelHistogramChartSerie(ExcelChartEx chart, XmlNamespaceManager ns, XmlNode node, int index=-1) : base(chart, ns, node)
+
+    internal ExcelHistogramChartSerie(ExcelChartEx chart, XmlNamespaceManager ns, XmlNode node, int index = -1)
+        : base(chart, ns, node)
     {
-        if(index==-1)
+        if (index == -1)
         {
             this._index = chart.Series.Count * (chart.ChartType == eChartType.Pareto ? 2 : 1);
         }
@@ -31,15 +35,18 @@ public class ExcelHistogramChartSerie : ExcelChartExSerie
             this._index = index;
         }
     }
+
     internal void AddParetoLine()
     {
         int ix = this._chart.Series.Count * 2;
-        XmlElement? serElement = CreateSeriesElement((ExcelChartEx)this._chart, eChartType.Pareto, ix+1, this.TopNode, true);
+        XmlElement? serElement = CreateSeriesElement((ExcelChartEx)this._chart, eChartType.Pareto, ix + 1, this.TopNode, true);
         serElement.SetAttribute("ownerIdx", ix.ToString());
         serElement.InnerXml = "<cx:axisId val=\"2\"/>";
         this.AddParetoLineFromSerie(serElement);
     }
+
     ExcelChartExSerieBinning _binning = null;
+
     /// <summary>
     /// The data binning properties
     /// </summary>
@@ -47,17 +54,16 @@ public class ExcelHistogramChartSerie : ExcelChartExSerie
     {
         get { return this._binning ??= new ExcelChartExSerieBinning(this.NameSpaceManager, this.TopNode); }
     }
+
     internal const string _aggregationPath = "cx:layoutPr/cx:aggregation";
     internal const string _binningPath = "cx:layoutPr/cx:binning";
+
     /// <summary>
     /// If x-axis is per category
     /// </summary>
     public bool Aggregation
     {
-        get
-        {
-            return this.ExistsNode(_aggregationPath);
-        }
+        get { return this.ExistsNode(_aggregationPath); }
         set
         {
             if (value)
@@ -68,28 +74,28 @@ public class ExcelHistogramChartSerie : ExcelChartExSerie
             else
             {
                 this.DeleteNode(_aggregationPath);
-                if(!this.ExistsNode(_binningPath))
+
+                if (!this.ExistsNode(_binningPath))
                 {
                     this.Binning.IntervalClosed = eIntervalClosed.Right;
                 }
             }
         }
     }
+
     internal void AddParetoLineFromSerie(XmlElement serElement)
     {
         this.ParetoLine = new ExcelChartExParetoLine(this._chart, this.NameSpaceManager, serElement);
     }
+
     internal void RemoveParetoLine()
     {
         this.ParetoLine?.DeleteNode(".");
         this.ParetoLine = null;
     }
+
     /// <summary>
     /// Properties for the pareto line.
     /// </summary>
-    public ExcelChartExParetoLine ParetoLine
-    {
-        get;
-        private set;
-    } = null;
+    public ExcelChartExParetoLine ParetoLine { get; private set; } = null;
 }

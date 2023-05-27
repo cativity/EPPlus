@@ -10,6 +10,7 @@
  *************************************************************************************************
   07/29/2020         EPPlus Software AB       Threaded comments
  *************************************************************************************************/
+
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -38,17 +39,16 @@ public class ExcelThreadedComment : XmlHelper
 
     private readonly ExcelWorkbook _workbook;
     private ExcelThreadedCommentThread _thread;
+
     internal ExcelThreadedCommentThread Thread
     {
-        set
-        {
-            this._thread = value ?? throw new ArgumentNullException("Thread");
-        }
+        set { this._thread = value ?? throw new ArgumentNullException("Thread"); }
     }
 
     internal static string NewId()
     {
         Guid guid = Guid.NewGuid();
+
         return "{" + guid.ToString().ToUpper() + "}";
     }
 
@@ -58,10 +58,7 @@ public class ExcelThreadedComment : XmlHelper
     /// </summary>
     public bool ContainsMentions
     {
-        get
-        {
-            return this.Mentions != null && this.Mentions.Any();
-        }
+        get { return this.Mentions != null && this.Mentions.Any(); }
     }
 
     /// <summary>
@@ -69,16 +66,12 @@ public class ExcelThreadedComment : XmlHelper
     /// </summary>
     internal string Ref
     {
-        get
-        {
-            return this.GetXmlNodeString("@ref");
-        }
-        set
-        {
-            this.SetXmlNodeString("@ref", value);
-        }
+        get { return this.GetXmlNodeString("@ref"); }
+        set { this.SetXmlNodeString("@ref", value); }
     }
-    private ExcelCellAddress _cellAddress=null;
+
+    private ExcelCellAddress _cellAddress = null;
+
     /// <summary>
     /// The location of the threaded comment
     /// </summary>
@@ -91,6 +84,7 @@ public class ExcelThreadedComment : XmlHelper
             this.Ref = this.CellAddress.Address;
         }
     }
+
     /// <summary>
     /// Timestamp for when the comment was created
     /// </summary>
@@ -99,16 +93,15 @@ public class ExcelThreadedComment : XmlHelper
         get
         {
             string? dt = this.GetXmlNodeString("@dT");
-            if(DateTime.TryParse(dt, out DateTime result))
+
+            if (DateTime.TryParse(dt, out DateTime result))
             {
                 return result;
             }
+
             throw new InvalidCastException("Could not cast datetime for threaded comment");
         }
-        set
-        {
-            this.SetXmlNodeString("@dT", value.ToString("yyyy-MM-ddTHH:mm:ss.ff"));
-        }
+        set { this.SetXmlNodeString("@dT", value.ToString("yyyy-MM-ddTHH:mm:ss.ff")); }
     }
 
     /// <summary>
@@ -116,14 +109,8 @@ public class ExcelThreadedComment : XmlHelper
     /// </summary>
     public string Id
     {
-        get
-        {
-            return this.GetXmlNodeString("@id");
-        }
-        internal set
-        {
-            this.SetXmlNodeString("@id", value);
-        }
+        get { return this.GetXmlNodeString("@id"); }
+        internal set { this.SetXmlNodeString("@id", value); }
     }
 
     /// <summary>
@@ -131,10 +118,7 @@ public class ExcelThreadedComment : XmlHelper
     /// </summary>
     public string PersonId
     {
-        get
-        {
-            return this.GetXmlNodeString("@personId");
-        }
+        get { return this.GetXmlNodeString("@personId"); }
         set
         {
             this.SetXmlNodeString("@personId", value);
@@ -147,10 +131,7 @@ public class ExcelThreadedComment : XmlHelper
     /// </summary>
     public ExcelThreadedCommentPerson Author
     {
-        get
-        {
-            return this._workbook.ThreadedCommentPersons[this.PersonId];
-        }
+        get { return this._workbook.ThreadedCommentPersons[this.PersonId]; }
     }
 
     /// <summary>
@@ -158,10 +139,7 @@ public class ExcelThreadedComment : XmlHelper
     /// </summary>
     public string ParentId
     {
-        get
-        {
-            return this.GetXmlNodeString("@parentId");
-        }
+        get { return this.GetXmlNodeString("@parentId"); }
         set
         {
             this.SetXmlNodeString("@parentId", value);
@@ -174,10 +152,12 @@ public class ExcelThreadedComment : XmlHelper
         get
         {
             string? val = this.GetXmlNodeString("@done");
-            if(string.IsNullOrEmpty(val))
+
+            if (string.IsNullOrEmpty(val))
             {
                 return null;
             }
+
             if (val == "1")
             {
                 return true;
@@ -187,11 +167,11 @@ public class ExcelThreadedComment : XmlHelper
         }
         set
         {
-            if(value.HasValue && value.Value)
+            if (value.HasValue && value.Value)
             {
                 this.SetXmlNodeInt("@done", 1);
             }
-            else if(value.HasValue && !value.Value)
+            else if (value.HasValue && !value.Value)
             {
                 this.SetXmlNodeInt("@done", 0);
             }
@@ -207,10 +187,7 @@ public class ExcelThreadedComment : XmlHelper
     /// </summary>
     public string Text
     {
-        get
-        {
-            return this.GetXmlNodeString("tc:text");
-        }
+        get { return this.GetXmlNodeString("tc:text"); }
         internal set
         {
             this.SetXmlNodeString("tc:text", value);
@@ -250,9 +227,10 @@ public class ExcelThreadedComment : XmlHelper
     {
         get
         {
-            if(this._mentions == null)
+            if (this._mentions == null)
             {
                 XmlNode? mentionsNode = this.TopNode.SelectSingleNode("tc:mentions", this.NameSpaceManager);
+
                 if (mentionsNode == null)
                 {
                     mentionsNode = this.TopNode.OwnerDocument.CreateElement("mentions", ExcelPackage.schemaThreadedComments);

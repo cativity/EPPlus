@@ -23,6 +23,7 @@ public interface ITextMeasurer
     /// </summary>
     /// <returns>True if the measurer can be used else false.</returns>
     bool ValidForEnvironment();
+
     /// <summary>
     /// Measures width and height of the parameter <paramref name="text"/>.
     /// </summary>

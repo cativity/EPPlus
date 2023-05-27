@@ -10,6 +10,7 @@
  *************************************************************************************************
   01/27/2020         EPPlus Software AB       Initial release EPPlus 5
  *************************************************************************************************/
+
 using System;
 using System.Collections.Generic;
 using System.Globalization;
@@ -35,14 +36,16 @@ public class ExcelNamedStyleCollection<T> : ExcelStyleCollection<T>
     {
         get
         {
-            if(this._dic.ContainsKey(name))
+            if (this._dic.ContainsKey(name))
             {
                 return this._list[this._dic[name]];
             }
+
             return default(T);
         }
     }
 }
+
 /// <summary>
 /// Base collection class for styles.
 /// </summary>
@@ -53,19 +56,25 @@ public class ExcelStyleCollection<T> : IEnumerable<T>
     {
         this._setNextIdManual = false;
     }
+
     bool _setNextIdManual;
+
     internal ExcelStyleCollection(bool SetNextIdManual)
     {
         this._setNextIdManual = SetNextIdManual;
     }
+
     /// <summary>
     /// The top xml node of the collection
     /// </summary>
     public XmlNode TopNode { get; set; }
+
     internal List<T> _list = new List<T>();
     internal Dictionary<string, int> _dic = new Dictionary<string, int>(StringComparer.OrdinalIgnoreCase);
-    internal int NextId=0;
+    internal int NextId = 0;
+
     #region IEnumerable<T> Members
+
     /// <summary>
     /// Returns an enumerator that iterates through a collection.
     /// </summary>
@@ -76,7 +85,9 @@ public class ExcelStyleCollection<T> : IEnumerable<T>
     }
 
     #endregion
+
     #region IEnumerable Members
+
     /// <summary>
     /// Returns an enumerator that iterates through a collection.
     /// </summary>
@@ -85,7 +96,9 @@ public class ExcelStyleCollection<T> : IEnumerable<T>
     {
         return this._list.GetEnumerator();
     }
+
     #endregion
+
     /// <summary>
     /// Indexer for the collection
     /// </summary>
@@ -95,7 +108,7 @@ public class ExcelStyleCollection<T> : IEnumerable<T>
     {
         get
         {
-            if(PositionID < 0)
+            if (PositionID < 0)
             {
                 return default;
             }
@@ -103,19 +116,19 @@ public class ExcelStyleCollection<T> : IEnumerable<T>
             return this._list[PositionID];
         }
     }
+
     /// <summary>
     /// Number of items in the collection
     /// </summary>
     public int Count
     {
-        get
-        {
-            return this._list.Count;
-        }
+        get { return this._list.Count; }
     }
+
     internal int Add(string key, T item)
     {
         this._list.Add(item);
+
         if (!this._dic.ContainsKey(key.ToLower(CultureInfo.InvariantCulture)))
         {
             this._dic.Add(key.ToLower(CultureInfo.InvariantCulture), this._list.Count - 1);
@@ -126,8 +139,9 @@ public class ExcelStyleCollection<T> : IEnumerable<T>
             this.NextId++;
         }
 
-        return this._list.Count-1;
+        return this._list.Count - 1;
     }
+
     /// <summary>
     /// Finds the key 
     /// </summary>
@@ -139,6 +153,7 @@ public class ExcelStyleCollection<T> : IEnumerable<T>
         if (this._dic.ContainsKey(key))
         {
             obj = this._list[this._dic[key.ToLower(CultureInfo.InvariantCulture)]];
+
             return true;
         }
         else
@@ -146,6 +161,7 @@ public class ExcelStyleCollection<T> : IEnumerable<T>
             return false;
         }
     }
+
     /// <summary>
     /// Find Index
     /// </summary>
@@ -162,9 +178,10 @@ public class ExcelStyleCollection<T> : IEnumerable<T>
             return int.MinValue;
         }
     }
+
     internal int FindIndexByBuildInId(int id)
     {
-        for(int i=0;i< this._list.Count;i++)
+        for (int i = 0; i < this._list.Count; i++)
         {
             if (this._list[i] is ExcelNamedStyleXml ns)
             {
@@ -174,6 +191,7 @@ public class ExcelStyleCollection<T> : IEnumerable<T>
                 }
             }
         }
+
         return -1;
     }
 
@@ -181,6 +199,7 @@ public class ExcelStyleCollection<T> : IEnumerable<T>
     {
         return this._dic.ContainsKey(key);
     }
+
     internal void Sort(Comparison<T> c)
     {
         this._list.Sort(c);

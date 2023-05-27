@@ -10,6 +10,7 @@
  *************************************************************************************************
   01/27/2020         EPPlus Software AB       Initial release EPPlus 5
  *************************************************************************************************/
+
 using OfficeOpenXml.Utils.Extensions;
 using System;
 using System.Collections.Generic;
@@ -28,11 +29,13 @@ public class ExcelDrawingScene3D : XmlHelper
     /// The xpath
     /// </summary>
     internal protected string _path;
+
     private readonly string _cameraPath = "{0}/a:camera";
     private readonly string _lightRigPath = "{0}/a:lightRig";
     private readonly string _backDropPath = "{0}/a:backdrop";
 
-    internal ExcelDrawingScene3D(XmlNamespaceManager nameSpaceManager, XmlNode topNode, string[] schemaNodeOrder, string path) : base(nameSpaceManager, topNode)
+    internal ExcelDrawingScene3D(XmlNamespaceManager nameSpaceManager, XmlNode topNode, string[] schemaNodeOrder, string path)
+        : base(nameSpaceManager, topNode)
     {
         this._path = path;
         this.SchemaNodeOrder = schemaNodeOrder;
@@ -40,7 +43,9 @@ public class ExcelDrawingScene3D : XmlHelper
         this._lightRigPath = string.Format(this._lightRigPath, this._path);
         this._backDropPath = string.Format(this._backDropPath, this._path);
     }
+
     ExcelDrawingScene3DCamera _camera = null;
+
     /// <summary>
     /// The placement and properties of the camera in the 3D scene
     /// </summary>
@@ -48,14 +53,12 @@ public class ExcelDrawingScene3D : XmlHelper
     {
         get
         {
-            return this._camera ??= new ExcelDrawingScene3DCamera(this.NameSpaceManager,
-                                                                  this.TopNode,
-                                                                  this.SchemaNodeOrder,
-                                                                  this._cameraPath,
-                                                                  this.InitXml);
+            return this._camera ??= new ExcelDrawingScene3DCamera(this.NameSpaceManager, this.TopNode, this.SchemaNodeOrder, this._cameraPath, this.InitXml);
         }
     }
+
     ExcelDrawingScene3DLightRig _lightRig = null;
+
     /// <summary>
     /// The light rig.
     /// When 3D is used, the light rig defines the lighting properties for the scene
@@ -64,10 +67,13 @@ public class ExcelDrawingScene3D : XmlHelper
     {
         get
         {
-            return this._lightRig ??= new ExcelDrawingScene3DLightRig(this.NameSpaceManager, this.TopNode, this.SchemaNodeOrder, this._lightRigPath, this.InitXml);
+            return this._lightRig ??=
+                       new ExcelDrawingScene3DLightRig(this.NameSpaceManager, this.TopNode, this.SchemaNodeOrder, this._lightRigPath, this.InitXml);
         }
     }
+
     ExcelDrawingScene3DBackDrop _backDropPlane = null;
+
     /// <summary>
     /// The points and vectors contained within the backdrop define a plane in 3D space
     /// </summary>
@@ -75,23 +81,26 @@ public class ExcelDrawingScene3D : XmlHelper
     {
         get
         {
-            return this._backDropPlane ??= new ExcelDrawingScene3DBackDrop(this.NameSpaceManager, this.TopNode, this.SchemaNodeOrder, this._backDropPath, this.InitXml);
+            return this._backDropPlane ??=
+                       new ExcelDrawingScene3DBackDrop(this.NameSpaceManager, this.TopNode, this.SchemaNodeOrder, this._backDropPath, this.InitXml);
         }
     }
+
     bool hasInit = false;
+
     internal void InitXml(bool delete)
     {
-            
-        if(delete)
+        if (delete)
         {
             this.DeleteNode(this._cameraPath);
             this.DeleteNode(this._lightRigPath);
             this.DeleteNode(this._backDropPath);
             this.hasInit = false;
         }
-        else if(this.hasInit==false)
+        else if (this.hasInit == false)
         {
             this.hasInit = true;
+
             if (!this.ExistsNode(this._cameraPath))
             {
                 this.Camera.CameraType = ePresetCameraType.OrthographicFront;

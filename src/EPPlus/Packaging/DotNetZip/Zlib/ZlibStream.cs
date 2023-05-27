@@ -26,7 +26,6 @@
 // ------------------------------------------------------------------
 
 using OfficeOpenXml.Utils;
-
 using System;
 using System.IO;
 
@@ -360,10 +359,7 @@ public class ZlibStream : Stream
     /// </remarks>
     public int BufferSize
     {
-        get
-        {
-            return this._baseStream._bufferSize;
-        }
+        get { return this._baseStream._bufferSize; }
         set
         {
             if (this._disposed)
@@ -378,7 +374,9 @@ public class ZlibStream : Stream
 
             if (value < ZlibConstants.WorkingBufferSizeMin)
             {
-                throw new ZlibException(String.Format("Don't be silly. {0} bytes?? Use a bigger buffer, at least {1}.", value, ZlibConstants.WorkingBufferSizeMin));
+                throw new ZlibException(String.Format("Don't be silly. {0} bytes?? Use a bigger buffer, at least {1}.",
+                                                      value,
+                                                      ZlibConstants.WorkingBufferSizeMin));
             }
 
             this._baseStream._bufferSize = value;
@@ -443,7 +441,6 @@ public class ZlibStream : Stream
             base.Dispose(disposing);
         }
     }
-
 
     /// <summary>
     /// Indicates whether the stream can be read.
@@ -654,8 +651,8 @@ public class ZlibStream : Stream
 
         this._baseStream.Write(buffer, offset, count);
     }
-    #endregion
 
+    #endregion
 
     /// <summary>
     ///   Compress a string into a byte array using ZLIB.
@@ -678,12 +675,11 @@ public class ZlibStream : Stream
     public static byte[] CompressString(String s)
     {
         using MemoryStream? ms = RecyclableMemory.GetStream();
-        Stream compressor =
-            new ZlibStream(ms, CompressionMode.Compress, CompressionLevel.BestCompression);
+        Stream compressor = new ZlibStream(ms, CompressionMode.Compress, CompressionLevel.BestCompression);
         ZlibBaseStream.CompressString(s, compressor);
+
         return ms.ToArray();
     }
-
 
     /// <summary>
     ///   Compress a byte array into a new byte array using ZLIB.
@@ -704,13 +700,12 @@ public class ZlibStream : Stream
     public static byte[] CompressBuffer(byte[] b)
     {
         using MemoryStream? ms = RecyclableMemory.GetStream();
-        Stream compressor =
-            new ZlibStream(ms, CompressionMode.Compress, CompressionLevel.BestCompression);
+        Stream compressor = new ZlibStream(ms, CompressionMode.Compress, CompressionLevel.BestCompression);
 
         ZlibBaseStream.CompressBuffer(b, compressor);
+
         return ms.ToArray();
     }
-
 
     /// <summary>
     ///   Uncompress a ZLIB-compressed byte array into a single string.
@@ -727,12 +722,10 @@ public class ZlibStream : Stream
     public static String UncompressString(byte[] compressed)
     {
         using MemoryStream? input = RecyclableMemory.GetStream(compressed);
-        Stream decompressor =
-            new ZlibStream(input, CompressionMode.Decompress);
+        Stream decompressor = new ZlibStream(input, CompressionMode.Decompress);
 
         return ZlibBaseStream.UncompressString(compressed, decompressor);
     }
-
 
     /// <summary>
     ///   Uncompress a ZLIB-compressed byte array into a byte array.
@@ -749,10 +742,8 @@ public class ZlibStream : Stream
     public static byte[] UncompressBuffer(byte[] compressed)
     {
         using MemoryStream? input = RecyclableMemory.GetStream(compressed);
-        Stream decompressor =
-            new ZlibStream(input, CompressionMode.Decompress);
+        Stream decompressor = new ZlibStream(input, CompressionMode.Decompress);
 
         return ZlibBaseStream.UncompressBuffer(compressed, decompressor);
     }
-
 }

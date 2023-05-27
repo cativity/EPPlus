@@ -10,22 +10,23 @@
  *************************************************************************************************
   01/27/2020         EPPlus Software AB       Initial release EPPlus 5
  *************************************************************************************************/
+
 using System.Collections.Generic;
 using OfficeOpenXml.FormulaParsing.Excel.Functions.Metadata;
 using OfficeOpenXml.FormulaParsing.ExpressionGraph;
 
 namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Information;
 
-[FunctionMetadata(
-                     Category = ExcelFunctionCategory.Information,
-                     EPPlusVersion = "4",
-                     Description = "Tests if a supplied value is a number, and if so, returns TRUE; Otherwise, returns FALSE.")]
+[FunctionMetadata(Category = ExcelFunctionCategory.Information,
+                  EPPlusVersion = "4",
+                  Description = "Tests if a supplied value is a number, and if so, returns TRUE; Otherwise, returns FALSE.")]
 internal class IsNumber : ExcelFunction
 {
     public override CompileResult Execute(IEnumerable<FunctionArgument> arguments, ParsingContext context)
     {
         ValidateArguments(arguments, 1);
         object? arg = GetFirstValue(arguments);
+
         return this.CreateResult(IsNumeric(arg), DataType.Boolean);
     }
 }

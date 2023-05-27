@@ -10,6 +10,7 @@
  *************************************************************************************************
   06/15/2020         EPPlus Software AB       EPPlus 5.2
  *************************************************************************************************/
+
 using OfficeOpenXml.FormulaParsing.Excel.Functions;
 using OfficeOpenXml.FormulaParsing.ExpressionGraph.UnrecognizedFunctionsPipeline.Handlers;
 using System;
@@ -26,7 +27,6 @@ internal class FunctionsPipeline
     public FunctionsPipeline(ParsingContext context, IEnumerable<Expression> children)
         : this(context, children, new RangeOffsetFunctionHandler())
     {
-
     }
 
     public FunctionsPipeline(ParsingContext context, IEnumerable<Expression> children, params UnrecognizedFunctionsHandler[] handlers)
@@ -48,14 +48,14 @@ internal class FunctionsPipeline
     /// <returns>An <see cref="ExcelFunction"/> that can handle the function call</returns>
     internal ExcelFunction FindFunction(string funcName)
     {
-        foreach(UnrecognizedFunctionsHandler? handler in this._handlers)
+        foreach (UnrecognizedFunctionsHandler? handler in this._handlers)
         {
-            if(handler.Handle(funcName, this._children, this._context, out ExcelFunction function))
+            if (handler.Handle(funcName, this._children, this._context, out ExcelFunction function))
             {
                 return function;
             }
         }
+
         return default;
     }
-
 }

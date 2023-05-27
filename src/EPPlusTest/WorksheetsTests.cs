@@ -26,6 +26,7 @@
  *******************************************************************************
   01/27/2020         EPPlus Software AB       Initial release EPPlus 5
  *******************************************************************************/
+
 using System;
 using System.IO;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -150,17 +151,20 @@ public class WorksheetsTests
 
         Assert.AreEqual("NEW1", this.workbook.Worksheets.Last().Name);
     }
+
     [TestMethod]
     public void ShouldHandleResizeOfIndexWhenExceed8Items()
     {
         using ExcelPackage? p = new ExcelPackage();
         ExcelWorksheet wsStart = p.Workbook.Worksheets.Add($"Copy");
+
         for (int i = 0; i < 7; i++)
         {
             ExcelWorksheet wsNew = p.Workbook.Worksheets.Add($"Sheet{i}");
             p.Workbook.Worksheets.MoveBefore(wsStart.Name, wsNew.Name);
         }
     }
+
     [TestMethod]
     public void MoveBeforeByName8Worksheets()
     {
@@ -177,6 +181,7 @@ public class WorksheetsTests
         Assert.AreEqual("NEW8", this.workbook.Worksheets.First().Name);
         Assert.AreEqual("NEW1", this.workbook.Worksheets[1].Name);
     }
+
     private static void CompareOrderOfWorksheetsAfterSaving(ExcelPackage editedPackage)
     {
         MemoryStream? packageStream = new MemoryStream();
@@ -184,12 +189,14 @@ public class WorksheetsTests
 
         ExcelPackage? newPackage = new ExcelPackage(packageStream);
         int positionId = newPackage._worksheetAdd;
+
         foreach (ExcelWorksheet? worksheet in editedPackage.Workbook.Worksheets)
         {
             Assert.AreEqual(worksheet.Name, newPackage.Workbook.Worksheets[positionId].Name, "Worksheets are not in the same order");
             positionId++;
         }
     }
+
     [TestMethod]
     public void CheckAddedWorksheetWithInvalidName()
     {

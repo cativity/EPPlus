@@ -10,6 +10,7 @@
  *************************************************************************************************
   09/02/2020         EPPlus Software AB       EPPlus 5.4
  *************************************************************************************************/
+
 using OfficeOpenXml;
 using OfficeOpenXml.Table.PivotTable;
 using System;
@@ -27,33 +28,37 @@ public abstract class ExcelPivotTableFilterBaseCollection : IEnumerable<ExcelPiv
     internal List<ExcelPivotTableFilter> _filters = new List<ExcelPivotTableFilter>();
     internal readonly ExcelPivotTable _table;
     internal readonly ExcelPivotTableField _field;
+
     internal ExcelPivotTableFilterBaseCollection(ExcelPivotTable table)
     {
         this._table = table;
         XmlNode? filtersNode = this._table.GetNode("d:filters");
+
         if (filtersNode != null)
         {
             foreach (XmlNode node in filtersNode.ChildNodes)
             {
-                ExcelPivotTableFilter? f =new ExcelPivotTableFilter(this._table.NameSpaceManager, node, this._table.WorkSheet.Workbook.Date1904);
+                ExcelPivotTableFilter? f = new ExcelPivotTableFilter(this._table.NameSpaceManager, node, this._table.WorkSheet.Workbook.Date1904);
                 table.SetNewFilterId(f.Id);
                 this._filters.Add(f);
             }
         }
     }
+
     internal ExcelPivotTableFilterBaseCollection(ExcelPivotTableField field)
     {
         this._field = field;
         this._table = field._pivotTable;
 
-        foreach(ExcelPivotTableFilter? filter in this._table.Filters)
+        foreach (ExcelPivotTableFilter? filter in this._table.Filters)
         {
-            if(filter.Fld==field.Index)
+            if (filter.Fld == field.Index)
             {
                 this._filters.Add(filter);
             }
         }
     }
+
     /// <summary>
     /// Returns an enumerator that iterates through the collection.
     /// </summary>
@@ -76,29 +81,29 @@ public abstract class ExcelPivotTableFilterBaseCollection : IEnumerable<ExcelPiv
     {
         return this._table.CreateNode("d:filters");
     }
+
     internal ExcelPivotTableFilter CreateFilter()
     {
         XmlNode? topNode = this.GetOrCreateFiltersNode();
         XmlElement? filterNode = topNode.OwnerDocument.CreateElement("filter", ExcelPackage.schemaMain);
         topNode.AppendChild(filterNode);
+
         ExcelPivotTableFilter? filter = new ExcelPivotTableFilter(this._field.NameSpaceManager, filterNode, this._table.WorkSheet.Workbook.Date1904)
         {
-            EvalOrder = -1,
-            Fld = this._field.Index,
-            Id = this._table.GetNewFilterId()
+            EvalOrder = -1, Fld = this._field.Index, Id = this._table.GetNewFilterId()
         };
+
         return filter;
     }
+
     /// <summary>
     /// Number of items in the collection
     /// </summary>
-    public int Count 
-    { 
-        get
-        {
-            return this._filters.Count;
-        }
+    public int Count
+    {
+        get { return this._filters.Count; }
     }
+
     /// <summary>
     /// The indexer for the collection
     /// </summary>

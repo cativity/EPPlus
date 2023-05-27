@@ -10,6 +10,7 @@
  *************************************************************************************************
   05/11/2021         EPPlus Software AB           ExcelTable Html Export
  *************************************************************************************************/
+
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -31,5 +32,4 @@ public class AccessibilitySettings
     /// Settings for a html table
     /// </summary>
     public TableAccessibilitySettings TableSettings { get; private set; } = new TableAccessibilitySettings();
-
 }

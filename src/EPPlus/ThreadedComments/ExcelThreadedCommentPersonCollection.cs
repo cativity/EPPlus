@@ -10,6 +10,7 @@
  *************************************************************************************************
   07/29/2020         EPPlus Software AB       Threaded comments
  *************************************************************************************************/
+
 using OfficeOpenXml.Packaging;
 using System;
 using System.Collections;
@@ -32,12 +33,15 @@ public class ExcelThreadedCommentPersonCollection : IEnumerable<ExcelThreadedCom
     public ExcelThreadedCommentPersonCollection(ExcelWorkbook workbook)
     {
         this._workbook = workbook;
-        if(workbook._package.ZipPackage.PartExists(workbook.PersonsUri))
+
+        if (workbook._package.ZipPackage.PartExists(workbook.PersonsUri))
         {
             this.PersonsXml = workbook._package.GetXmlFromUri(workbook.PersonsUri);
+
             // lägg upp personerna i listan, loopa på noderna
             XmlElement? listNode = this.PersonsXml.DocumentElement;
-            foreach(object? personNode in listNode.ChildNodes)
+
+            foreach (object? personNode in listNode.ChildNodes)
             {
                 ExcelThreadedCommentPerson? person = new ExcelThreadedCommentPerson(workbook.NameSpaceManager, (XmlNode)personNode);
                 this._personList.Add(person);
@@ -61,12 +65,9 @@ public class ExcelThreadedCommentPersonCollection : IEnumerable<ExcelThreadedCom
     /// <summary>
     /// Number of <see cref="ExcelThreadedCommentPerson"/>s in the collection
     /// </summary>
-    public int Count 
-    { 
-        get 
-        {
-            return this._personList.Count;
-        } 
+    public int Count
+    {
+        get { return this._personList.Count; }
     }
 
     /// <summary>
@@ -76,10 +77,7 @@ public class ExcelThreadedCommentPersonCollection : IEnumerable<ExcelThreadedCom
     /// <returns>The <see cref="ExcelThreadedCommentPerson"/> at the requested index</returns>
     public ExcelThreadedCommentPerson this[int index]
     {
-        get
-        {
-            return this._personList[index];
-        }
+        get { return this._personList[index]; }
     }
 
     /// <summary>
@@ -89,10 +87,7 @@ public class ExcelThreadedCommentPersonCollection : IEnumerable<ExcelThreadedCom
     /// <returns>A <see cref="ExcelThreadedCommentPerson"/> with the requested <paramref name="id"/> or null</returns>
     public ExcelThreadedCommentPerson this[string id]
     {
-        get
-        {
-            return this._personList.FirstOrDefault(x => x.Id == id);
-        }
+        get { return this._personList.FirstOrDefault(x => x.Id == id); }
     }
 
     /// <summary>
@@ -155,6 +150,7 @@ public class ExcelThreadedCommentPersonCollection : IEnumerable<ExcelThreadedCom
         p.UserId = userId;
         p.ProviderId = identityProvider;
         this._personList.Add(p);
+
         return p;
     }
 
@@ -188,7 +184,8 @@ public class ExcelThreadedCommentPersonCollection : IEnumerable<ExcelThreadedCom
     public void Remove(ExcelThreadedCommentPerson person)
     {
         XmlNode? node = this.PersonsXml.DocumentElement.SelectSingleNode("/person[id='" + person.Id + "']");
-        if(node != null)
+
+        if (node != null)
         {
             this.PersonsXml.DocumentElement.RemoveChild(node);
         }
@@ -227,9 +224,10 @@ public class ExcelThreadedCommentPersonCollection : IEnumerable<ExcelThreadedCom
         {
             if (!package.ZipPackage.PartExists(personsUri))
             {
-                ZipPackagePart? p=package.ZipPackage.CreatePart(personsUri, "application/vnd.ms-excel.person+xml");
+                ZipPackagePart? p = package.ZipPackage.CreatePart(personsUri, "application/vnd.ms-excel.person+xml");
                 WorkbookPart.CreateRelationship(personsUri, TargetMode.Internal, ExcelPackage.schemaPersonsRelationShips);
             }
+
             package.SavePart(personsUri, this.PersonsXml);
         }
     }

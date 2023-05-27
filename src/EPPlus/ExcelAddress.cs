@@ -10,6 +10,7 @@
  *************************************************************************************************
   01/27/2020         EPPlus Software AB       Initial release EPPlus 5
  *************************************************************************************************/
+
 using System;
 using System.Collections.Generic;
 using System.Globalization;
@@ -26,7 +27,6 @@ public class ExcelAddress : ExcelAddressBase
     internal ExcelAddress()
         : base()
     {
-
     }
 
     /// <summary>
@@ -41,6 +41,7 @@ public class ExcelAddress : ExcelAddressBase
     {
         this._ws = "";
     }
+
     /// <summary>
     /// Constructor
     /// </summary>
@@ -49,7 +50,7 @@ public class ExcelAddress : ExcelAddressBase
         : base(address)
     {
     }
-        
+
     internal ExcelAddress(string ws, string address)
         : base(address)
     {
@@ -58,6 +59,7 @@ public class ExcelAddress : ExcelAddressBase
             this._ws = ws;
         }
     }
+
     internal ExcelAddress(string ws, string address, bool isName)
         : base(address, isName)
     {
@@ -74,11 +76,11 @@ public class ExcelAddress : ExcelAddressBase
     /// <param name="Address">The Excel Address</param>
     /// <param name="package">Reference to the package to find information about tables and names</param>
     /// <param name="referenceAddress">The address</param>
-    public ExcelAddress(string Address, ExcelPackage package, ExcelAddressBase referenceAddress) :
-        base(Address, package, referenceAddress)
+    public ExcelAddress(string Address, ExcelPackage package, ExcelAddressBase referenceAddress)
+        : base(Address, package, referenceAddress)
     {
-
     }
+
     /// <summary>
     /// The address for the range
     /// </summary>
@@ -87,10 +89,11 @@ public class ExcelAddress : ExcelAddressBase
     {
         get
         {
-            if (string.IsNullOrEmpty(this._address) && this._fromRow>0)
+            if (string.IsNullOrEmpty(this._address) && this._fromRow > 0)
             {
                 this._address = GetAddress(this._fromRow, this._fromCol, this._toRow, this._toCol);
             }
+
             return this._address;
         }
         set

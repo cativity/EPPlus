@@ -26,6 +26,7 @@
  *******************************************************************************
   01/27/2020         EPPlus Software AB       Initial release EPPlus 5
  *******************************************************************************/
+
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using OfficeOpenXml.FormulaParsing.LexicalAnalysis;
 using OfficeOpenXml.FormulaParsing.LexicalAnalysis.PostProcessing;
@@ -41,10 +42,7 @@ public class TokenNaviagorTests
     [TestMethod]
     public void ShouldNotHaveNextWhenOnlyOneToken()
     {
-        List<Token>? tokens = new List<Token>
-        {
-            new Token("1", TokenType.Decimal)
-        };
+        List<Token>? tokens = new List<Token> { new Token("1", TokenType.Decimal) };
         TokenNavigator? navigator = new TokenNavigator(tokens);
 
         Assert.IsFalse(navigator.HasNext());
@@ -53,11 +51,7 @@ public class TokenNaviagorTests
     [TestMethod]
     public void ShouldHaveNextWhenMoreTokens()
     {
-        List<Token>? tokens = new List<Token>
-        {
-            new Token("1", TokenType.Decimal),
-            new Token("2", TokenType.Decimal)
-        };
+        List<Token>? tokens = new List<Token> { new Token("1", TokenType.Decimal), new Token("2", TokenType.Decimal) };
         TokenNavigator? navigator = new TokenNavigator(tokens);
 
         Assert.IsTrue(navigator.HasNext());
@@ -66,11 +60,7 @@ public class TokenNaviagorTests
     [TestMethod]
     public void ShouldNotHavePrevWheFirstToken()
     {
-        List<Token>? tokens = new List<Token>
-        {
-            new Token("1", TokenType.Decimal),
-            new Token("2", TokenType.Decimal)
-        };
+        List<Token>? tokens = new List<Token> { new Token("1", TokenType.Decimal), new Token("2", TokenType.Decimal) };
         TokenNavigator? navigator = new TokenNavigator(tokens);
 
         Assert.AreEqual(0, navigator.Index, "Index was not 0 but " + navigator.Index);
@@ -80,11 +70,7 @@ public class TokenNaviagorTests
     [TestMethod]
     public void IndexShouldIncreaseWhenMoveNext()
     {
-        List<Token>? tokens = new List<Token>
-        {
-            new Token("1", TokenType.Decimal),
-            new Token("2", TokenType.Decimal)
-        };
+        List<Token>? tokens = new List<Token> { new Token("1", TokenType.Decimal), new Token("2", TokenType.Decimal) };
         TokenNavigator? navigator = new TokenNavigator(tokens);
         navigator.MoveNext();
 
@@ -94,11 +80,7 @@ public class TokenNaviagorTests
     [TestMethod]
     public void NextTokenShouldBeReturned()
     {
-        List<Token>? tokens = new List<Token>
-        {
-            new Token("1", TokenType.Decimal),
-            new Token("2", TokenType.Decimal)
-        };
+        List<Token>? tokens = new List<Token> { new Token("1", TokenType.Decimal), new Token("2", TokenType.Decimal) };
         TokenNavigator? navigator = new TokenNavigator(tokens);
 
         Assert.AreEqual("2", navigator.NextToken.Value);
@@ -107,11 +89,7 @@ public class TokenNaviagorTests
     [TestMethod]
     public void MoveToNextAndReturnPrevToken()
     {
-        List<Token>? tokens = new List<Token>
-        {
-            new Token("1", TokenType.Decimal),
-            new Token("2", TokenType.Decimal)
-        };
+        List<Token>? tokens = new List<Token> { new Token("1", TokenType.Decimal), new Token("2", TokenType.Decimal) };
         TokenNavigator? navigator = new TokenNavigator(tokens);
         navigator.MoveNext();
 
@@ -121,12 +99,7 @@ public class TokenNaviagorTests
     [TestMethod]
     public void GetRelativeForward()
     {
-        List<Token>? tokens = new List<Token>
-        {
-            new Token("1", TokenType.Decimal),
-            new Token("2", TokenType.Decimal),
-            new Token("3", TokenType.Decimal)
-        };
+        List<Token>? tokens = new List<Token> { new Token("1", TokenType.Decimal), new Token("2", TokenType.Decimal), new Token("3", TokenType.Decimal) };
         TokenNavigator? navigator = new TokenNavigator(tokens);
         Token token = navigator.GetTokenAtRelativePosition(2);
         Assert.AreEqual("3", token.Value);
@@ -135,12 +108,7 @@ public class TokenNaviagorTests
     [TestMethod]
     public void NumberOfRemainingTokensShouldBeCorrect()
     {
-        List<Token>? tokens = new List<Token>
-        {
-            new Token("1", TokenType.Decimal),
-            new Token("2", TokenType.Decimal),
-            new Token("3", TokenType.Decimal)
-        };
+        List<Token>? tokens = new List<Token> { new Token("1", TokenType.Decimal), new Token("2", TokenType.Decimal), new Token("3", TokenType.Decimal) };
         TokenNavigator? navigator = new TokenNavigator(tokens);
 
         Assert.AreEqual(2, navigator.NbrOfRemainingTokens);
@@ -151,12 +119,7 @@ public class TokenNaviagorTests
     [TestMethod]
     public void MoveIndexShouldSetNewPosition()
     {
-        List<Token>? tokens = new List<Token>
-        {
-            new Token("1", TokenType.Decimal),
-            new Token("2", TokenType.Decimal),
-            new Token("3", TokenType.Decimal)
-        };
+        List<Token>? tokens = new List<Token> { new Token("1", TokenType.Decimal), new Token("2", TokenType.Decimal), new Token("3", TokenType.Decimal) };
         TokenNavigator? navigator = new TokenNavigator(tokens);
         navigator.MoveIndex(1);
         Assert.AreEqual("2", navigator.CurrentToken.Value);
@@ -166,12 +129,7 @@ public class TokenNaviagorTests
     [ExpectedException(typeof(ArgumentOutOfRangeException))]
     public void ShouldThrowWhenIndexMovedOutOfRange()
     {
-        List<Token>? tokens = new List<Token>
-        {
-            new Token("1", TokenType.Decimal),
-            new Token("2", TokenType.Decimal),
-            new Token("3", TokenType.Decimal)
-        };
+        List<Token>? tokens = new List<Token> { new Token("1", TokenType.Decimal), new Token("2", TokenType.Decimal), new Token("3", TokenType.Decimal) };
         TokenNavigator? navigator = new TokenNavigator(tokens);
         navigator.MoveIndex(3);
     }
@@ -180,10 +138,7 @@ public class TokenNaviagorTests
     [ExpectedException(typeof(InvalidOperationException))]
     public void ShouldThrowWhenGetPreviousOutOfRange()
     {
-        List<Token>? tokens = new List<Token>
-        {
-            new Token("1", TokenType.Decimal)
-        };
+        List<Token>? tokens = new List<Token> { new Token("1", TokenType.Decimal) };
         TokenNavigator? navigator = new TokenNavigator(tokens);
         Token token = navigator.PreviousToken.Value;
     }

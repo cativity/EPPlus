@@ -15,6 +15,7 @@ namespace EPPlusTest.Table.PivotTable;
 public class PivotTableAutoSortTests : TestBase
 {
     static ExcelPackage _pck;
+
     [ClassInitialize]
     public static void Init(TestContext context)
     {
@@ -27,20 +28,23 @@ public class PivotTableAutoSortTests : TestBase
         r = LoadItemData(ws);
         ws.Tables.Add(r, "Table2");
     }
+
     [ClassCleanup]
     public static void Cleanup()
     {
         SaveAndCleanup(_pck);
     }
+
     [TestMethod]
     public void SetAutoSortAcending()
     {
         ExcelWorksheet? ws = _pck.Workbook.Worksheets.Add("PivotSameAutoSortAcending");
         ExcelPivotTable? p1 = ws.PivotTables.Add(ws.Cells["A1"], _pck.Workbook.Worksheets[0].Tables[0].Range, "Pivot1");
-        ExcelPivotTableField? rf=p1.RowFields.Add(p1.Fields[0]);
-        ExcelPivotTableDataField? df=p1.DataFields.Add(p1.Fields[3]);
+        ExcelPivotTableField? rf = p1.RowFields.Add(p1.Fields[0]);
+        ExcelPivotTableDataField? df = p1.DataFields.Add(p1.Fields[3]);
         rf.SetAutoSort(df);
     }
+
     [TestMethod]
     public void SetAutoSortDesending()
     {
@@ -50,12 +54,13 @@ public class PivotTableAutoSortTests : TestBase
         ExcelPivotTableDataField? df = p1.DataFields.Add(p1.Fields[3]);
         rf.SetAutoSort(df, eSortType.Descending);
     }
+
     [TestMethod]
     public void SetAutoSortDataAndColumnField1()
     {
         ExcelWorksheet? ws = _pck.Workbook.Worksheets.Add("PivotSameAutoSortDescendingCF1");
-        ExcelPivotTable? p1 = ws.PivotTables.Add(ws.Cells["A1"], _pck.Workbook.Worksheets[0].Tables[0].Range, "Pivot2");            
-        ExcelPivotTableField? rf = p1.RowFields.Add(p1.Fields[0]);            
+        ExcelPivotTable? p1 = ws.PivotTables.Add(ws.Cells["A1"], _pck.Workbook.Worksheets[0].Tables[0].Range, "Pivot2");
+        ExcelPivotTableField? rf = p1.RowFields.Add(p1.Fields[0]);
         ExcelPivotTableField? cf = p1.ColumnFields.Add(p1.Fields[1]);
         ExcelPivotTableDataField? df = p1.DataFields.Add(p1.Fields[3]);
         rf.SetAutoSort(df, eSortType.Descending);
@@ -63,6 +68,7 @@ public class PivotTableAutoSortTests : TestBase
         cf.Items.Refresh();
         reference.Items.AddByValue("Hardware");
     }
+
     [TestMethod]
     public void SetAutoSortDataAndColumnField2()
     {
@@ -76,6 +82,7 @@ public class PivotTableAutoSortTests : TestBase
         cf.Items.Refresh();
         reference.Items.Add(1);
     }
+
     [TestMethod]
     public void SetAutoSortDataAndRowField1()
     {
@@ -89,6 +96,7 @@ public class PivotTableAutoSortTests : TestBase
         rf.Items.Refresh();
         reference.Items.Add(0);
     }
+
     [TestMethod]
     public void SetAutoSortDataAndRowField3()
     {
@@ -102,6 +110,7 @@ public class PivotTableAutoSortTests : TestBase
         rf.Items.Refresh();
         reference.Items.Add(2);
     }
+
     [TestMethod]
     public void ReadAutoSort()
     {
@@ -134,6 +143,7 @@ public class PivotTableAutoSortTests : TestBase
         Assert.AreEqual(1, pivot2.ColumnFields[0].AutoSort.Conditions.DataFields.Count);
         Assert.AreEqual(1, pivot2.ColumnFields[0].AutoSort.Conditions.Fields.Count);
     }
+
     [TestMethod]
     public void RemoveAutoSort()
     {

@@ -10,6 +10,7 @@
  *************************************************************************************************
   01/27/2020         EPPlus Software AB       Initial release EPPlus 5
  *************************************************************************************************/
+
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -25,14 +26,12 @@ namespace OfficeOpenXml.ConditionalFormatting;
 /// </summary>
 public class ExcelConditionalFormattingThreeIconSet : ExcelConditionalFormattingIconSetBase<eExcelconditionalFormatting3IconsSetType>
 {
-    internal ExcelConditionalFormattingThreeIconSet(
-        ExcelAddress address,
-        int priority,
-        ExcelWorksheet worksheet,
-        XmlNode itemElementNode,
-        XmlNamespaceManager namespaceManager)
-        : base(
-               eExcelConditionalFormattingRuleType.ThreeIconSet,
+    internal ExcelConditionalFormattingThreeIconSet(ExcelAddress address,
+                                                    int priority,
+                                                    ExcelWorksheet worksheet,
+                                                    XmlNode itemElementNode,
+                                                    XmlNamespaceManager namespaceManager)
+        : base(eExcelConditionalFormattingRuleType.ThreeIconSet,
                address,
                priority,
                worksheet,
@@ -41,12 +40,11 @@ public class ExcelConditionalFormattingThreeIconSet : ExcelConditionalFormatting
     {
     }
 }
+
 /// <summary>
 /// ExcelConditionalFormattingThreeIconSet
 /// </summary>
-public class ExcelConditionalFormattingIconSetBase<T>
-    : ExcelConditionalFormattingRule,
-      IExcelConditionalFormattingThreeIconSet<T>
+public class ExcelConditionalFormattingIconSetBase<T> : ExcelConditionalFormattingRule, IExcelConditionalFormattingThreeIconSet<T>
 {
     /****************************************************************************************/
 
@@ -57,6 +55,7 @@ public class ExcelConditionalFormattingIconSetBase<T>
     /****************************************************************************************/
 
     #region Constructors
+
     /// <summary>
     /// 
     /// </summary>
@@ -66,67 +65,47 @@ public class ExcelConditionalFormattingIconSetBase<T>
     /// <param name="worksheet"></param>
     /// <param name="itemElementNode"></param>
     /// <param name="namespaceManager"></param>
-    internal ExcelConditionalFormattingIconSetBase(
-        eExcelConditionalFormattingRuleType type,
-        ExcelAddress address,
-        int priority,
-        ExcelWorksheet worksheet,
-        XmlNode itemElementNode,
-        XmlNamespaceManager namespaceManager)
-        : base(
-               type,
-               address,
-               priority,
-               worksheet,
-               itemElementNode,
-               namespaceManager == null ? worksheet.NameSpaceManager : namespaceManager)
+    internal ExcelConditionalFormattingIconSetBase(eExcelConditionalFormattingRuleType type,
+                                                   ExcelAddress address,
+                                                   int priority,
+                                                   ExcelWorksheet worksheet,
+                                                   XmlNode itemElementNode,
+                                                   XmlNamespaceManager namespaceManager)
+        : base(type, address, priority, worksheet, itemElementNode, namespaceManager == null ? worksheet.NameSpaceManager : namespaceManager)
     {
         if (itemElementNode != null && itemElementNode.HasChildNodes)
         {
             int pos = 1;
+
             foreach (XmlNode node in itemElementNode.SelectNodes("d:iconSet/d:cfvo", this.NameSpaceManager))
             {
-                if(pos==1)
+                if (pos == 1)
                 {
-                    this.Icon1 = new ExcelConditionalFormattingIconDataBarValue(
-                                                                                type,
-                                                                                address,
-                                                                                worksheet,
-                                                                                node,
-                                                                                namespaceManager);
+                    this.Icon1 = new ExcelConditionalFormattingIconDataBarValue(type, address, worksheet, node, namespaceManager);
                 }
                 else if (pos == 2)
                 {
-                    this.Icon2 = new ExcelConditionalFormattingIconDataBarValue(
-                                                                                type,
-                                                                                address,
-                                                                                worksheet,
-                                                                                node,
-                                                                                namespaceManager);
+                    this.Icon2 = new ExcelConditionalFormattingIconDataBarValue(type, address, worksheet, node, namespaceManager);
                 }
                 else if (pos == 3)
                 {
-                    this.Icon3 = new ExcelConditionalFormattingIconDataBarValue(
-                                                                                type,
-                                                                                address,
-                                                                                worksheet,
-                                                                                node,
-                                                                                namespaceManager);
+                    this.Icon3 = new ExcelConditionalFormattingIconDataBarValue(type, address, worksheet, node, namespaceManager);
                 }
                 else
                 {
                     break;
                 }
+
                 pos++;
             }
         }
         else
         {
-            XmlNode? iconSetNode = this.CreateComplexNode(this.Node,
-                                                          ExcelConditionalFormattingConstants.Paths.IconSet);
+            XmlNode? iconSetNode = this.CreateComplexNode(this.Node, ExcelConditionalFormattingConstants.Paths.IconSet);
 
             //Create the <iconSet> node inside the <cfRule> node
             double spann;
+
             if (type == eExcelConditionalFormattingRuleType.ThreeIconSet)
             {
                 spann = 3;
@@ -191,19 +170,12 @@ public class ExcelConditionalFormattingIconSetBase<T>
     /// <param name="address"></param>
     /// <param name="worksheet"></param>
     /// <param name="itemElementNode"></param>
-    internal ExcelConditionalFormattingIconSetBase(
-        eExcelConditionalFormattingRuleType type,
-        ExcelAddress address,
-        int priority,
-        ExcelWorksheet worksheet,
-        XmlNode itemElementNode)
-        : this(
-               type,
-               address,
-               priority,
-               worksheet,
-               itemElementNode,
-               null)
+    internal ExcelConditionalFormattingIconSetBase(eExcelConditionalFormattingRuleType type,
+                                                   ExcelAddress address,
+                                                   int priority,
+                                                   ExcelWorksheet worksheet,
+                                                   XmlNode itemElementNode)
+        : this(type, address, priority, worksheet, itemElementNode, null)
     {
     }
 
@@ -214,79 +186,52 @@ public class ExcelConditionalFormattingIconSetBase<T>
     /// <param name="priority"></param>
     /// <param name="address"></param>
     /// <param name="worksheet"></param>
-    internal ExcelConditionalFormattingIconSetBase(
-        eExcelConditionalFormattingRuleType type,
-        ExcelAddress address,
-        int priority,
-        ExcelWorksheet worksheet)
-        : this(
-               type,
-               address,
-               priority,
-               worksheet,
-               null,
-               null)
+    internal ExcelConditionalFormattingIconSetBase(eExcelConditionalFormattingRuleType type, ExcelAddress address, int priority, ExcelWorksheet worksheet)
+        : this(type, address, priority, worksheet, null, null)
     {
     }
+
     #endregion Constructors
 
     /// <summary>
     /// Settings for icon 1 in the iconset
     /// </summary>
-    public ExcelConditionalFormattingIconDataBarValue Icon1
-    {
-        get;
-        internal set;
-    }
+    public ExcelConditionalFormattingIconDataBarValue Icon1 { get; internal set; }
 
     /// <summary>
     /// Settings for icon 2 in the iconset
     /// </summary>
-    public ExcelConditionalFormattingIconDataBarValue Icon2
-    {
-        get;
-        internal set;
-    }
+    public ExcelConditionalFormattingIconDataBarValue Icon2 { get; internal set; }
+
     /// <summary>
     /// Settings for icon 2 in the iconset
     /// </summary>
-    public ExcelConditionalFormattingIconDataBarValue Icon3
-    {
-        get;
-        internal set;
-    }
+    public ExcelConditionalFormattingIconDataBarValue Icon3 { get; internal set; }
+
     private const string _reversePath = "d:iconSet/@reverse";
+
     /// <summary>
     /// Reverse the order of the icons
     /// </summary>
     public bool Reverse
     {
-        get
-        {
-            return this.GetXmlNodeBool(_reversePath, false);
-        }
-        set
-        {
-            this.SetXmlNodeBool(_reversePath, value);
-        }
+        get { return this.GetXmlNodeBool(_reversePath, false); }
+        set { this.SetXmlNodeBool(_reversePath, value); }
     }
 
     private const string _showValuePath = "d:iconSet/@showValue";
+
     /// <summary>
     /// If the cell values are visible
     /// </summary>
     public bool ShowValue
     {
-        get
-        {
-            return this.GetXmlNodeBool(_showValuePath, true);
-        }
-        set
-        {
-            this.SetXmlNodeBool(_showValuePath, value);
-        }
+        get { return this.GetXmlNodeBool(_showValuePath, true); }
+        set { this.SetXmlNodeBool(_showValuePath, value); }
     }
+
     private const string _iconSetPath = "d:iconSet/@iconSet";
+
     /// <summary>
     /// Type of iconset
     /// </summary>
@@ -296,13 +241,12 @@ public class ExcelConditionalFormattingIconSetBase<T>
         {
             string? v = this.GetXmlNodeString(_iconSetPath);
             v = v.Substring(1); //Skip first icon.
+
             return (T)Enum.Parse(typeof(T), v, true);
         }
-        set
-        {
-            this.SetXmlNodeString(_iconSetPath, this.GetIconSetString(value));
-        }
+        set { this.SetXmlNodeString(_iconSetPath, this.GetIconSetString(value)); }
     }
+
     private string GetIconSetString(T value)
     {
         if (this.Type == eExcelConditionalFormattingRuleType.FourIconSet)
@@ -311,14 +255,19 @@ public class ExcelConditionalFormattingIconSetBase<T>
             {
                 case "Arrows":
                     return "4Arrows";
+
                 case "ArrowsGray":
                     return "4ArrowsGray";
+
                 case "Rating":
                     return "4Rating";
+
                 case "RedToBlack":
                     return "4RedToBlack";
+
                 case "TrafficLights":
                     return "4TrafficLights";
+
                 default:
                     throw new ArgumentException("Invalid type");
             }
@@ -329,12 +278,16 @@ public class ExcelConditionalFormattingIconSetBase<T>
             {
                 case "Arrows":
                     return "5Arrows";
+
                 case "ArrowsGray":
                     return "5ArrowsGray";
+
                 case "Quarters":
                     return "5Quarters";
+
                 case "Rating":
                     return "5Rating";
+
                 default:
                     throw new ArgumentException("Invalid type");
             }
@@ -345,20 +298,28 @@ public class ExcelConditionalFormattingIconSetBase<T>
             {
                 case "Arrows":
                     return "3Arrows";
+
                 case "ArrowsGray":
                     return "3ArrowsGray";
+
                 case "Flags":
                     return "3Flags";
+
                 case "Signs":
                     return "3Signs";
+
                 case "Symbols":
                     return "3Symbols";
+
                 case "Symbols2":
                     return "3Symbols2";
+
                 case "TrafficLights1":
                     return "3TrafficLights1";
+
                 case "TrafficLights2":
                     return "3TrafficLights2";
+
                 default:
                     throw new ArgumentException("Invalid type");
             }

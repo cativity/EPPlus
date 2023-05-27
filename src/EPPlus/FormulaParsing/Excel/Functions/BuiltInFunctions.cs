@@ -10,6 +10,7 @@
  *************************************************************************************************
   01/27/2020         EPPlus Software AB       Initial release EPPlus 5
  *************************************************************************************************/
+
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -65,8 +66,10 @@ public class BuiltInFunctions : FunctionsModule
         this.Functions["unichar"] = new Unichar();
         this.Functions["numbervalue"] = new NumberValue();
         this.Functions["dollar"] = new Dollar();
+
         // Numbers
         this.Functions["int"] = new CInt();
+
         // Math
         this.Functions["aggregate"] = new Aggregate();
         this.Functions["abs"] = new Abs();
@@ -186,6 +189,7 @@ public class BuiltInFunctions : FunctionsModule
         this.Functions["degrees"] = new Degrees();
         this.Functions["odd"] = new Odd();
         this.Functions["even"] = new Even();
+
         // Statistical
         this.Functions["confidence.norm"] = new ConfidenceNorm();
         this.Functions["confidence"] = new Confidence();
@@ -230,6 +234,7 @@ public class BuiltInFunctions : FunctionsModule
         this.Functions["chiinv"] = new ChiInv();
         this.Functions["expondist"] = new Expondist();
         this.Functions["expon.dist"] = new ExponDotDist();
+
         // Information
         this.Functions["isblank"] = new IsBlank();
         this.Functions["isnumber"] = new IsNumber();
@@ -246,6 +251,7 @@ public class BuiltInFunctions : FunctionsModule
         this.Functions["n"] = new N();
         this.Functions["type"] = new TypeFunction();
         this.Functions["sheet"] = new Sheet();
+
         // Logical
         this.Functions["if"] = new If();
         this.Functions["ifs"] = new Ifs();
@@ -260,6 +266,7 @@ public class BuiltInFunctions : FunctionsModule
         this.Functions["false"] = new False();
         this.Functions["switch"] = new Switch();
         this.Functions["xor"] = new Xor();
+
         // Reference and lookup
         this.Functions["address"] = new Address();
         this.Functions["hlookup"] = new HLookup();
@@ -274,6 +281,7 @@ public class BuiltInFunctions : FunctionsModule
         this.Functions["index"] = new RefAndLookup.Index();
         this.Functions["indirect"] = new Indirect();
         this.Functions["offset"] = new Offset();
+
         // Date
         this.Functions["date"] = new Date();
         this.Functions["datedif"] = new DateDif();
@@ -300,6 +308,7 @@ public class BuiltInFunctions : FunctionsModule
         this.Functions["networkdays.intl"] = new NetworkdaysIntl();
         this.Functions["datevalue"] = new DateValue();
         this.Functions["timevalue"] = new TimeValue();
+
         // Database
         this.Functions["dget"] = new Dget();
         this.Functions["dcount"] = new Dcount();
@@ -310,6 +319,7 @@ public class BuiltInFunctions : FunctionsModule
         this.Functions["daverage"] = new Daverage();
         this.Functions["dvar"] = new Dvar();
         this.Functions["dvarp"] = new Dvarp();
+
         //Finance
         this.Functions["accrint"] = new Accrint();
         this.Functions["accrintm"] = new AccrintM();
@@ -355,6 +365,7 @@ public class BuiltInFunctions : FunctionsModule
         this.Functions["tbilleq"] = new Tbilleq();
         this.Functions["tbillprice"] = new TbillPrice();
         this.Functions["tbillyield"] = new TbillYield();
+
         //Engineering
         this.Functions["bitand"] = new BitAnd();
         this.Functions["bitor"] = new BitOr();

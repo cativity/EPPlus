@@ -10,6 +10,7 @@
  *************************************************************************************************
   01/27/2020         EPPlus Software AB       Initial release EPPlus 5
  *************************************************************************************************/
+
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -26,15 +27,17 @@ public class ExcelPivotTableCollection : IEnumerable<ExcelPivotTable>
     List<ExcelPivotTable> _pivotTables = new List<ExcelPivotTable>();
     internal Dictionary<string, int> _pivotTableNames = new Dictionary<string, int>();
     ExcelWorksheet _ws;
-        
+
     internal ExcelPivotTableCollection()
     {
     }
+
     internal ExcelPivotTableCollection(ExcelWorksheet ws)
     {
         ZipPackage? pck = ws._package.ZipPackage;
-        this._ws = ws;            
-        foreach(ZipPackageRelationship? rel in ws.Part.GetRelationships())
+        this._ws = ws;
+
+        foreach (ZipPackageRelationship? rel in ws.Part.GetRelationships())
         {
             if (rel.RelationshipType == ExcelPackage.schemaRelationships + "/pivotTable")
             {
@@ -44,14 +47,17 @@ public class ExcelPivotTableCollection : IEnumerable<ExcelPivotTable>
             }
         }
     }
+
     internal ExcelPivotTable Add(ExcelPivotTable tbl)
     {
         this._pivotTables.Add(tbl);
         this._pivotTableNames.Add(tbl.Name, this._pivotTables.Count - 1);
+
         if (tbl.CacheId >= this._ws.Workbook._nextPivotTableID)
         {
             this._ws.Workbook._nextPivotTableID = tbl.CacheId + 1;
         }
+
         return tbl;
     }
 
@@ -70,6 +76,7 @@ public class ExcelPivotTableCollection : IEnumerable<ExcelPivotTable>
         }
 
         this.ValidateAdd(Range, Source, Name);
+
         return this.Add(new ExcelPivotTable(this._ws, Range, Source, Name, this._ws.Workbook._nextPivotTableID++));
     }
 
@@ -79,6 +86,7 @@ public class ExcelPivotTableCollection : IEnumerable<ExcelPivotTable>
         {
             throw new ArgumentException("The Range must contain at least 2 rows", "Source");
         }
+
         if (Range.WorkSheetName != this._ws.Name)
         {
             throw new Exception("The Range must be in the current worksheet");
@@ -87,6 +95,7 @@ public class ExcelPivotTableCollection : IEnumerable<ExcelPivotTable>
         {
             throw new ArgumentException("Tablename is not unique");
         }
+
         foreach (ExcelPivotTable? t in this._pivotTables)
         {
             if (t.Address.Collide(Range) != ExcelAddressBase.eAddressCollition.No)
@@ -94,6 +103,7 @@ public class ExcelPivotTableCollection : IEnumerable<ExcelPivotTable>
                 throw new ArgumentException(string.Format("Table range collides with table {0}", t.Name));
             }
         }
+
         for (int i = 0; i < Source.Columns; i++)
         {
             if (Source.Offset(0, i, 1, 1).Value == null)
@@ -112,18 +122,21 @@ public class ExcelPivotTableCollection : IEnumerable<ExcelPivotTable>
     /// <returns>The pivottable object</returns>
     public ExcelPivotTable Add(ExcelAddressBase Range, ExcelTable Source, string Name)
     {
-        if(Source.WorkSheet.Workbook!= this._ws.Workbook)
+        if (Source.WorkSheet.Workbook != this._ws.Workbook)
         {
             throw new ArgumentException("The table must be in the same package as the pivottable", "Source");
         }
+
         if (string.IsNullOrEmpty(Name))
         {
             Name = this.GetNewTableName();
         }
 
         this.ValidateAdd(Range, Source.Range, Name);
+
         return this.Add(new ExcelPivotTable(this._ws, Range, Source.Range, Name, this._ws.Workbook._nextPivotTableID++));
     }
+
     /// <summary>
     /// Create a pivottable on the supplied range
     /// </summary>
@@ -135,26 +148,28 @@ public class ExcelPivotTableCollection : IEnumerable<ExcelPivotTable>
     {
         return this.Add(new ExcelPivotTable(this._ws, Range, PivotCacheDefinition._cacheReference, Name, this._ws.Workbook._nextPivotTableID++));
     }
+
     internal string GetNewTableName()
     {
         string name = "Pivottable1";
         int i = 2;
+
         while (this._ws.Workbook.ExistsPivotTableName(name))
         {
             name = string.Format("Pivottable{0}", i++);
         }
+
         return name;
     }
+
     /// <summary>
     /// Number of items in the collection
     /// </summary>
     public int Count
     {
-        get
-        {
-            return this._pivotTables.Count;
-        }
+        get { return this._pivotTables.Count; }
     }
+
     /// <summary>
     /// The pivottable Index. Base 0.
     /// </summary>
@@ -168,9 +183,11 @@ public class ExcelPivotTableCollection : IEnumerable<ExcelPivotTable>
             {
                 throw new ArgumentOutOfRangeException("PivotTable index out of range");
             }
+
             return this._pivotTables[Index];
         }
     }
+
     /// <summary>
     /// Pivottabes accesed by name
     /// </summary>
@@ -190,6 +207,7 @@ public class ExcelPivotTableCollection : IEnumerable<ExcelPivotTable>
             }
         }
     }
+
     /// <summary>
     /// Gets the enumerator of the collection
     /// </summary>
@@ -203,12 +221,13 @@ public class ExcelPivotTableCollection : IEnumerable<ExcelPivotTable>
     {
         return this._pivotTables.GetEnumerator();
     }
+
     /// <summary>
     /// Delete the pivottable with the supplied name
     /// </summary>
     /// <param name="Name">The name of the pivottable</param>
     /// <param name="ClearRange">Clear the table range</param>
-    public void Delete(string Name, bool ClearRange=false)
+    public void Delete(string Name, bool ClearRange = false)
     {
         if (!this._pivotTableNames.ContainsKey(Name))
         {
@@ -217,6 +236,7 @@ public class ExcelPivotTableCollection : IEnumerable<ExcelPivotTable>
 
         this.Delete(this._pivotTables[this._pivotTableNames[Name]], ClearRange);
     }
+
     /// <summary>
     /// Delete the pivot table at the specified index
     /// </summary>
@@ -224,13 +244,14 @@ public class ExcelPivotTableCollection : IEnumerable<ExcelPivotTable>
     /// <param name="ClearRange">Clear the table range</param>
     public void Delete(int Index, bool ClearRange = false)
     {
-        if(Index >=0 && Index < this._pivotTables.Count)
+        if (Index >= 0 && Index < this._pivotTables.Count)
         {
             throw new IndexOutOfRangeException();
         }
 
         this.Delete(this._pivotTables[Index], ClearRange);
     }
+
     /// <summary>
     /// Delete the supplied pivot table 
     /// </summary>
@@ -238,10 +259,11 @@ public class ExcelPivotTableCollection : IEnumerable<ExcelPivotTable>
     /// <param name="ClearRange">Clear the table range</param>
     public void Delete(ExcelPivotTable PivotTable, bool ClearRange = false)
     {
-        if(!this._pivotTables.Contains(PivotTable))
+        if (!this._pivotTables.Contains(PivotTable))
         {
             throw new ArgumentException("This pivot table does not exist in the collection");
         }
+
         ZipPackage? pck = this._ws._package.ZipPackage;
 
         PivotTable.CacheDefinition._cacheReference._pivotTables.Remove(PivotTable);

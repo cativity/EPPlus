@@ -10,6 +10,7 @@
  *************************************************************************************************
   01/27/2020         EPPlus Software AB       Initial release EPPlus 5
  *************************************************************************************************/
+
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -23,12 +24,12 @@ namespace OfficeOpenXml.ConditionalFormatting;
 /// <summary>
 /// ExcelConditionalFormattingTomorrow
 /// </summary>
-public class ExcelConditionalFormattingTomorrow
-    : ExcelConditionalFormattingTimePeriodGroup
+public class ExcelConditionalFormattingTomorrow : ExcelConditionalFormattingTimePeriodGroup
 {
     /****************************************************************************************/
 
     #region Constructors
+
     /// <summary>
     /// 
     /// </summary>
@@ -37,27 +38,23 @@ public class ExcelConditionalFormattingTomorrow
     /// <param name="worksheet"></param>
     /// <param name="itemElementNode"></param>
     /// <param name="namespaceManager"></param>
-    internal ExcelConditionalFormattingTomorrow(
-        ExcelAddress address,
-        int priority,
-        ExcelWorksheet worksheet,
-        XmlNode itemElementNode,
-        XmlNamespaceManager namespaceManager)
-        : base(
-               eExcelConditionalFormattingRuleType.Tomorrow,
+    internal ExcelConditionalFormattingTomorrow(ExcelAddress address,
+                                                int priority,
+                                                ExcelWorksheet worksheet,
+                                                XmlNode itemElementNode,
+                                                XmlNamespaceManager namespaceManager)
+        : base(eExcelConditionalFormattingRuleType.Tomorrow,
                address,
                priority,
                worksheet,
                itemElementNode,
                namespaceManager == null ? worksheet.NameSpaceManager : namespaceManager)
     {
-        if (itemElementNode==null) //Set default values and create attributes if needed
+        if (itemElementNode == null) //Set default values and create attributes if needed
         {
             this.TimePeriod = eExcelConditionalFormattingTimePeriodType.Tomorrow;
 
-            this.Formula = string.Format(
-                                         "FLOOR({0},1)=TODAY()+1",
-                                         this.Address.Start.Address);
+            this.Formula = string.Format("FLOOR({0},1)=TODAY()+1", this.Address.Start.Address);
         }
     }
 
@@ -68,17 +65,8 @@ public class ExcelConditionalFormattingTomorrow
     /// <param name="address"></param>
     /// <param name="worksheet"></param>
     /// <param name="itemElementNode"></param>
-    internal ExcelConditionalFormattingTomorrow(
-        ExcelAddress address,
-        int priority,
-        ExcelWorksheet worksheet,
-        XmlNode itemElementNode)
-        : this(
-               address,
-               priority,
-               worksheet,
-               itemElementNode,
-               null)
+    internal ExcelConditionalFormattingTomorrow(ExcelAddress address, int priority, ExcelWorksheet worksheet, XmlNode itemElementNode)
+        : this(address, priority, worksheet, itemElementNode, null)
     {
     }
 
@@ -88,18 +76,11 @@ public class ExcelConditionalFormattingTomorrow
     /// <param name="priority"></param>
     /// <param name="address"></param>
     /// <param name="worksheet"></param>
-    internal ExcelConditionalFormattingTomorrow(
-        ExcelAddress address,
-        int priority,
-        ExcelWorksheet worksheet)
-        : this(
-               address,
-               priority,
-               worksheet,
-               null,
-               null)
+    internal ExcelConditionalFormattingTomorrow(ExcelAddress address, int priority, ExcelWorksheet worksheet)
+        : this(address, priority, worksheet, null, null)
     {
     }
+
     #endregion Constructors
 
     /****************************************************************************************/

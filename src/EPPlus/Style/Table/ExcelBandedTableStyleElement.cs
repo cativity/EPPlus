@@ -10,6 +10,7 @@
  *************************************************************************************************
   01/08/2021         EPPlus Software AB       Table Styling - EPPlus 5.6
  *************************************************************************************************/
+
 using OfficeOpenXml.Style.Dxf;
 using System;
 using System.Xml;
@@ -19,29 +20,28 @@ namespace OfficeOpenXml.Style;
 /// <summary>
 /// A style element for a custom table style with band size
 /// </summary>
-public class ExcelBandedTableStyleElement : ExcelTableStyleElement        
+public class ExcelBandedTableStyleElement : ExcelTableStyleElement
 {
-    internal ExcelBandedTableStyleElement(XmlNamespaceManager nameSpaceManager, XmlNode topNode, ExcelStyles styles, eTableStyleElement type) : 
-        base(nameSpaceManager, topNode, styles, type)
+    internal ExcelBandedTableStyleElement(XmlNamespaceManager nameSpaceManager, XmlNode topNode, ExcelStyles styles, eTableStyleElement type)
+        : base(nameSpaceManager, topNode, styles, type)
     {
-        if(topNode!=null)
+        if (topNode != null)
         {
-            this._bandSize= this.GetXmlNodeInt("@size",1);
+            this._bandSize = this.GetXmlNodeInt("@size", 1);
         }
     }
+
     int _bandSize = 1;
+
     /// <summary>
     /// Band size. Only applicable when <see cref="Type"/> is set to FirstRowStripe, FirstColumnStripe, SecondRowStripe or SecondColumnStripe
     /// </summary>
     public int BandSize
     {
-        get
-        {
-            return this._bandSize;
-        }
+        get { return this._bandSize; }
         set
         {
-            if(value < 1 && value > 9)
+            if (value < 1 && value > 9)
             {
                 throw new InvalidOperationException("BandSize must be between 1 and 9");
             }
@@ -49,9 +49,11 @@ public class ExcelBandedTableStyleElement : ExcelTableStyleElement
             this._bandSize = value;
         }
     }
+
     internal override void CreateNode()
     {
         base.CreateNode();
+
         if (this._bandSize == 1)
         {
             this.DeleteNode("@size");

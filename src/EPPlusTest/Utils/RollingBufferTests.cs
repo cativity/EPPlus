@@ -1,11 +1,12 @@
 ﻿using System;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+
 namespace EPPlusTest.Utils;
 
 [TestClass]
 public class RollingBufferTests
 {
-    [TestMethod]    
+    [TestMethod]
     public void WriteSmallerBuffer()
     {
         RollingBuffer? rb = new RollingBuffer(8);
@@ -18,6 +19,7 @@ public class RollingBufferTests
         Assert.AreEqual(3, b[2]);
         Assert.AreEqual(4, b[3]);
     }
+
     [TestMethod]
     public void WriteSmallerBufferTwoWrites()
     {
@@ -35,6 +37,7 @@ public class RollingBufferTests
         Assert.AreEqual(6, b[5]);
         Assert.AreEqual(7, b[6]);
     }
+
     [TestMethod]
     public void WriteSmallerBufferOverWriteFullBuffer()
     {
@@ -54,13 +57,14 @@ public class RollingBufferTests
         Assert.AreEqual(9, b[6]);
         Assert.AreEqual(10, b[7]);
     }
+
     [TestMethod]
     public void WriteSmallerBufferOverWrite()
     {
         RollingBuffer? rb = new RollingBuffer(8);
         rb.Write(new byte[] { 1, 2, 3, 4 });
         rb.Write(new byte[] { 5, 6, 7, 8, 9 });
-        rb.Write(new byte[] { 10,11,12 });
+        rb.Write(new byte[] { 10, 11, 12 });
         byte[]? b = rb.GetBuffer();
 
         Assert.AreEqual(8, b.Length);
@@ -73,13 +77,14 @@ public class RollingBufferTests
         Assert.AreEqual(11, b[6]);
         Assert.AreEqual(12, b[7]);
     }
+
     [TestMethod]
     public void WriteSmallerBufferOverWriteWithBufferOfSameSize()
     {
         RollingBuffer? rb = new RollingBuffer(8);
         rb.Write(new byte[] { 1, 2, 3, 4 });
         rb.Write(new byte[] { 5, 6, 7, 8, 9 });
-        rb.Write(new byte[] { 10, 11, 12,13,14,15,16,17 });
+        rb.Write(new byte[] { 10, 11, 12, 13, 14, 15, 16, 17 });
         byte[]? b = rb.GetBuffer();
 
         Assert.AreEqual(8, b.Length);
@@ -92,6 +97,7 @@ public class RollingBufferTests
         Assert.AreEqual(16, b[6]);
         Assert.AreEqual(17, b[7]);
     }
+
     [TestMethod]
     public void WriteSmallerBufferOverWriteWithBufferOfLargerSize()
     {
@@ -111,5 +117,4 @@ public class RollingBufferTests
         Assert.AreEqual(17, b[6]);
         Assert.AreEqual(18, b[7]);
     }
-
 }

@@ -10,6 +10,7 @@
  *************************************************************************************************
   01/27/2020         EPPlus Software AB       Initial release EPPlus 5
  *************************************************************************************************/
+
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -18,19 +19,22 @@ using System.Xml;
 namespace OfficeOpenXml.Core.Worksheet;
 
 internal static class MoveSheetXmlNode
-{       
+{
     internal static void RearrangeWorksheets(ExcelWorksheets worksheets, string sourceWorksheetName, string targetWorksheetName, bool before)
     {
         ExcelWorksheet? sourceWorksheet = worksheets[sourceWorksheetName];
-        ExcelWorksheet? targetWorksheet=worksheets[targetWorksheetName];
+        ExcelWorksheet? targetWorksheet = worksheets[targetWorksheetName];
+
         if (sourceWorksheet == null)
         {
             throw new ArgumentException($"Could not find source worksheet {sourceWorksheet} to move.");
         }
+
         if (targetWorksheet == null)
         {
             throw new ArgumentException($"Could not find target worksheet {targetWorksheet} to move.");
         }
+
         RearrangeWorksheets(sourceWorksheet.Workbook.Worksheets, sourceWorksheet.PositionId, targetWorksheet.PositionId, before);
     }
 
@@ -52,6 +56,7 @@ internal static class MoveSheetXmlNode
 
             int from = Math.Min(sourcePositionId, targetPositionId);
             int to = Math.Max(sourcePositionId, targetPositionId);
+
             for (int i = from; i <= to; i++)
             {
                 worksheets[i].PositionId = i;
@@ -65,10 +70,12 @@ internal static class MoveSheetXmlNode
     {
         XmlNode? sourceNode = worksheets.TopNode.SelectSingleNode($"d:sheet[@sheetId = '{sourceWs.SheetId}']", worksheets.NameSpaceManager);
         XmlNode? targetNode = worksheets.TopNode.SelectSingleNode($"d:sheet[@sheetId = '{targetWs.SheetId}']", worksheets.NameSpaceManager);
+
         if (sourceNode == null || targetNode == null)
         {
             throw new InvalidOperationException("Invalid Workbook Xml. Can't find worksheet in workbook list.");
         }
+
         if (before)
         {
             worksheets.TopNode.InsertBefore(sourceNode, targetNode);

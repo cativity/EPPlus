@@ -10,6 +10,7 @@
  *************************************************************************************************
   01/03/2021         EPPlus Software AB       Initial release EPPlus 5
  *************************************************************************************************/
+
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -20,10 +21,9 @@ using OfficeOpenXml.FormulaParsing.ExpressionGraph;
 
 namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Finance;
 
-[FunctionMetadata(
-                     Category = ExcelFunctionCategory.Financial,
-                     EPPlusVersion = "5.5",
-                     Description = "Calculates the depreciation of an asset for a specified period, using the fixed-declining balance method")]
+[FunctionMetadata(Category = ExcelFunctionCategory.Financial,
+                  EPPlusVersion = "5.5",
+                  Description = "Calculates the depreciation of an asset for a specified period, using the fixed-declining balance method")]
 internal class Db : ExcelFunction
 {
     public override CompileResult Execute(IEnumerable<FunctionArgument> arguments, ParsingContext context)
@@ -34,6 +34,7 @@ internal class Db : ExcelFunction
         double life = this.ArgToDecimal(arguments, 2);
         double period = this.ArgToDecimal(arguments, 3);
         int month = 12;
+
         if (arguments.Count() >= 5)
         {
             month = this.ArgToInt(arguments, 4);
@@ -67,6 +68,7 @@ internal class Db : ExcelFunction
         double total = firstDepr;
         double currentPeriodDepr = 0d;
         double toPeriod = period == life ? life - 1 : period;
+
         for (int i = 2; i <= toPeriod; i++)
         {
             currentPeriodDepr = (cost - total) * rate;
@@ -77,11 +79,13 @@ internal class Db : ExcelFunction
         if (period >= life)
         {
             double result = (cost - total) * rate;
-            if(period > life)
+
+            if (period > life)
             {
                 // For the last period, DB uses this formula: ((cost - total depreciation from prior periods) * rate * (12 - month)) / 12
-                result = currentPeriodDepr  * (12 - month) / 12;
+                result = currentPeriodDepr * (12 - month) / 12;
             }
+
             return this.CreateResult(result, DataType.Decimal);
         }
         else

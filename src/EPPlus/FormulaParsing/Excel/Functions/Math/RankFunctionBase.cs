@@ -10,6 +10,7 @@
  *************************************************************************************************
   05/25/2020         EPPlus Software AB       Implemented function
  *************************************************************************************************/
+
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -22,14 +23,17 @@ internal abstract class RankFunctionBase : ExcelFunction
     protected static List<double> GetNumbersFromRange(FunctionArgument refArg, bool sortAscending)
     {
         List<double>? numbers = new List<double>();
+
         foreach (ICellInfo? cell in refArg.ValueAsRangeInfo)
         {
             double cellValue = Utils.ConvertUtil.GetValueDouble(cell.Value, false, true);
+
             if (!double.IsNaN(cellValue))
             {
                 numbers.Add(cellValue);
             }
         }
+
         if (sortAscending)
         {
             numbers.Sort();
@@ -48,6 +52,7 @@ internal abstract class RankFunctionBase : ExcelFunction
                               .Select(x => (double)x)
                               .OrderBy(x => x)
                               .ToArray();
+
         return array;
     }
 
@@ -56,13 +61,16 @@ internal abstract class RankFunctionBase : ExcelFunction
         double smallerThan = 0d;
         double largestBelow = 0d;
         int ix = 0;
+
         while (number > array[ix])
         {
             smallerThan++;
             largestBelow = array[ix];
             ix++;
         }
+
         bool fullMatch = AreEqual(number, array[ix]);
+
         while (ix < array.Length - 1 && AreEqual(number, array[ix]))
         {
             ix++;
@@ -70,6 +78,7 @@ internal abstract class RankFunctionBase : ExcelFunction
 
         double smallestAbove = array[ix];
         int largerThan = AreEqual(number, array[array.Length - 1]) ? 0 : array.Length - ix;
+
         if (fullMatch)
         {
             return smallerThan / (smallerThan + largerThan);
@@ -77,6 +86,7 @@ internal abstract class RankFunctionBase : ExcelFunction
 
         double percentrankLow = PercentRankIncImpl(array, largestBelow);
         double percentrankHigh = PercentRankIncImpl(array, smallestAbove);
+
         return percentrankLow + ((percentrankHigh - percentrankLow) * ((number - largestBelow) / (smallestAbove - largestBelow)));
     }
 
@@ -85,14 +95,17 @@ internal abstract class RankFunctionBase : ExcelFunction
         double smallerThan = 0d;
         double largestBelow = 0d;
         int ix = 0;
+
         while (number > array[ix])
         {
             smallerThan++;
             largestBelow = array[ix];
             ix++;
         }
+
         smallerThan++;
         bool fullMatch = AreEqual(number, array[ix]);
+
         while (ix < array.Length - 1 && AreEqual(number, array[ix]))
         {
             ix++;
@@ -100,6 +113,7 @@ internal abstract class RankFunctionBase : ExcelFunction
 
         double smallestAbove = array[ix];
         int largerThan = AreEqual(number, array[array.Length - 1]) ? 0 : array.Length - ix + 1;
+
         if (fullMatch)
         {
             return smallerThan / (smallerThan + largerThan);
@@ -107,6 +121,7 @@ internal abstract class RankFunctionBase : ExcelFunction
 
         double percentrankLow = PercentRankExcImpl(array, largestBelow);
         double percentrankHigh = PercentRankExcImpl(array, smallestAbove);
+
         return percentrankLow + ((percentrankHigh - percentrankLow) * ((number - largestBelow) / (smallestAbove - largestBelow)));
     }
 

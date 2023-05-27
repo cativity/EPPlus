@@ -10,6 +10,7 @@
  *************************************************************************************************
   01/27/2020         EPPlus Software AB       Initial release EPPlus 5
  *************************************************************************************************/
+
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -30,7 +31,6 @@ internal class LookupArguments
     public LookupArguments(IEnumerable<FunctionArgument> arguments, ParsingContext context)
         : this(arguments, new ArgumentParsers(), context)
     {
-
     }
 
     public LookupArguments(IEnumerable<FunctionArgument> arguments, ArgumentParsers argumentParsers, ParsingContext context)
@@ -39,6 +39,7 @@ internal class LookupArguments
         this.SearchedValue = arguments.ElementAt(0).Value;
         object? arg1 = arguments.ElementAt(1).Value;
         IEnumerable<FunctionArgument>? dataArray = arg1 as IEnumerable<FunctionArgument>;
+
         if (dataArray != null)
         {
             this.DataArray = dataArray;
@@ -48,9 +49,13 @@ internal class LookupArguments
         {
             //if (arg1 is ExcelDataProvider.INameInfo) arg1 = ((ExcelDataProvider.INameInfo) arg1).Value;
             IRangeInfo? rangeInfo = arg1 as IRangeInfo;
+
             if (rangeInfo != null)
             {
-                this.RangeAddress = string.IsNullOrEmpty(rangeInfo.Address.WorkSheetName) ? rangeInfo.Address.Address : "'" + rangeInfo.Address.WorkSheetName + "'!" + rangeInfo.Address.Address;
+                this.RangeAddress = string.IsNullOrEmpty(rangeInfo.Address.WorkSheetName)
+                                        ? rangeInfo.Address.Address
+                                        : "'" + rangeInfo.Address.WorkSheetName + "'!" + rangeInfo.Address.Address;
+
                 this.RangeInfo = rangeInfo;
                 this.ArgumentDataType = LookupArgumentDataType.ExcelRange;
             }
@@ -58,8 +63,9 @@ internal class LookupArguments
             {
                 this.RangeAddress = arg1.ToString();
                 this.ArgumentDataType = LookupArgumentDataType.ExcelRange;
-            }  
+            }
         }
+
         FunctionArgument? indexVal = arguments.ElementAt(2);
 
         if (indexVal.DataType == DataType.ExcelAddress)
@@ -72,7 +78,7 @@ internal class LookupArguments
         {
             this.LookupIndex = (int)this._argumentParsers.GetParser(DataType.Integer).Parse(arguments.ElementAt(2).Value);
         }
-            
+
         if (arguments.Count() > 3)
         {
             this.RangeLookup = (bool)this._argumentParsers.GetParser(DataType.Boolean).Parse(arguments.ElementAt(3).Value);
@@ -109,5 +115,5 @@ internal class LookupArguments
 
     public IRangeInfo RangeInfo { get; private set; }
 
-    public LookupArgumentDataType ArgumentDataType { get; private set; } 
+    public LookupArgumentDataType ArgumentDataType { get; private set; }
 }

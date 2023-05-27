@@ -10,6 +10,7 @@
  *************************************************************************************************
   10/21/2020         EPPlus Software AB           Controls 
  *************************************************************************************************/
+
 using OfficeOpenXml.Drawing.Vml;
 using OfficeOpenXml.Packaging;
 using OfficeOpenXml.Utils.Extensions;
@@ -22,11 +23,17 @@ namespace OfficeOpenXml.Drawing.Controls;
 /// </summary>
 public class ExcelControlCheckBox : ExcelControlWithColorsAndLines
 {
-    internal ExcelControlCheckBox(ExcelDrawings drawings, XmlElement drawNode, string name, ExcelGroupShape parent=null) : base(drawings, drawNode, name, parent)
+    internal ExcelControlCheckBox(ExcelDrawings drawings, XmlElement drawNode, string name, ExcelGroupShape parent = null)
+        : base(drawings, drawNode, name, parent)
     {
     }
 
-    internal ExcelControlCheckBox(ExcelDrawings drawings, XmlNode drawNode, ControlInternal control, ZipPackagePart part, XmlDocument controlPropertiesXml, ExcelGroupShape parent = null)
+    internal ExcelControlCheckBox(ExcelDrawings drawings,
+                                  XmlNode drawNode,
+                                  ControlInternal control,
+                                  ZipPackagePart part,
+                                  XmlDocument controlPropertiesXml,
+                                  ExcelGroupShape parent = null)
         : base(drawings, drawNode, control, part, controlPropertiesXml, parent)
     {
     }
@@ -35,18 +42,16 @@ public class ExcelControlCheckBox : ExcelControlWithColorsAndLines
     /// The type of form control
     /// </summary>
     public override eControlType ControlType => eControlType.CheckBox;
+
     /// <summary>
     /// Gets or sets the state of a check box 
     /// </summary>
-    public eCheckState Checked 
-    { 
-        get
-        {
-            return this._ctrlProp.GetXmlNodeString("@checked").ToEnum(eCheckState.Unchecked);
-        }
+    public eCheckState Checked
+    {
+        get { return this._ctrlProp.GetXmlNodeString("@checked").ToEnum(eCheckState.Unchecked); }
         set
         {
-            if(value==eCheckState.Unchecked)
+            if (value == eCheckState.Unchecked)
             {
                 this._ctrlProp.DeleteNode("@checked");
             }
@@ -55,11 +60,13 @@ public class ExcelControlCheckBox : ExcelControlWithColorsAndLines
                 this._ctrlProp.SetXmlNodeString("@checked", value.ToString());
             }
 
-            this._vmlProp.SetXmlNodeInt("x:Checked",(int)value);
-            if(this.LinkedCell!=null)
+            this._vmlProp.SetXmlNodeInt("x:Checked", (int)value);
+
+            if (this.LinkedCell != null)
             {
                 ExcelWorksheet ws;
-                if(string.IsNullOrEmpty(this.LinkedCell.WorkSheetName))
+
+                if (string.IsNullOrEmpty(this.LinkedCell.WorkSheetName))
                 {
                     ws = this._drawings.Worksheet;
                 }
@@ -68,9 +75,9 @@ public class ExcelControlCheckBox : ExcelControlWithColorsAndLines
                     ws = this._drawings.Worksheet.Workbook.Worksheets[this.LinkedCell.WorkSheetName];
                 }
 
-                if (ws!=null)
+                if (ws != null)
                 {
-                    if(value == eCheckState.Checked)
+                    if (value == eCheckState.Checked)
                     {
                         ws.Cells[this.LinkedCell.Address].Value = true;
                     }
@@ -81,7 +88,7 @@ public class ExcelControlCheckBox : ExcelControlWithColorsAndLines
                     else
                     {
                         ws.Cells[this.LinkedCell.Address].Value = ExcelErrorValue.Create(eErrorType.NA);
-                    }                           
+                    }
                 }
             }
         }

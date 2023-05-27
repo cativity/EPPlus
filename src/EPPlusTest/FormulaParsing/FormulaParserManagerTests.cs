@@ -26,6 +26,7 @@
  *******************************************************************************
   01/27/2020         EPPlus Software AB       Initial release EPPlus 5
  *******************************************************************************/
+
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -62,9 +63,12 @@ public class FormulaParserManagerTests
 
             this.CustomCompilers = new Dictionary<Type, FunctionCompiler>();
         }
+
         public IDictionary<string, ExcelFunction> Functions { get; }
+
         public IDictionary<Type, FunctionCompiler> CustomCompilers { get; }
     }
+
     #endregion
 
     [TestMethod]
@@ -106,6 +110,7 @@ public class FormulaParserManagerTests
         Assert.AreEqual(3, dc.Count());
         Assert.AreEqual("A1", dc.Last().Address);
     }
+
     [TestMethod]
     public void ValidateCalcChainCrossWorkSheet()
     {
@@ -127,6 +132,7 @@ public class FormulaParserManagerTests
         Assert.AreEqual("sheet1", dc.ElementAt(2).Worksheet);
         Assert.AreEqual("A1", dc.ElementAt(2).Address);
     }
+
     [TestMethod]
     public void ValidateCalcChainCrossWorkSheet2()
     {
@@ -158,6 +164,7 @@ public class FormulaParserManagerTests
         Assert.AreEqual("sheet3", dc.ElementAt(4).Worksheet);
         Assert.AreEqual("A1", dc.ElementAt(4).Address);
     }
+
     //[TestMethod]
     //public void ShouldFindAndParseCondFormat()
     //{

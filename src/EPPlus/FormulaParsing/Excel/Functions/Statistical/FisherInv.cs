@@ -10,6 +10,7 @@
  *************************************************************************************************
   22/10/2022         EPPlus Software AB           EPPlus v6
  *************************************************************************************************/
+
 using OfficeOpenXml.FormulaParsing.Excel.Functions.Metadata;
 using OfficeOpenXml.FormulaParsing.ExpressionGraph;
 using System;
@@ -18,10 +19,7 @@ using MathObj = System.Math;
 
 namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Statistical;
 
-[FunctionMetadata(
-                     Category = ExcelFunctionCategory.Statistical,
-                     EPPlusVersion = "6.0",
-                     Description = "Returns the inverse of the Fisher transformation")]
+[FunctionMetadata(Category = ExcelFunctionCategory.Statistical, EPPlusVersion = "6.0", Description = "Returns the inverse of the Fisher transformation")]
 internal class FisherInv : ExcelFunction
 {
     public override CompileResult Execute(IEnumerable<FunctionArgument> arguments, ParsingContext context)
@@ -30,6 +28,7 @@ internal class FisherInv : ExcelFunction
         double y = this.ArgToDecimal(arguments, 0);
         double n = MathObj.Exp(2 * y);
         double result = (n - 1) / (n + 1);
+
         return this.CreateResult(result, DataType.Decimal);
     }
 }

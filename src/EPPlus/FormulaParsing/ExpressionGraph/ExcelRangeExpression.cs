@@ -14,6 +14,7 @@ public class ExcelRangeExpression : Expression
     }
 
     private readonly IRangeInfo _rangeInfo;
+
     public override bool IsGroupedExpression => false;
 
     public override CompileResult Compile()

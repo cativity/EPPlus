@@ -10,6 +10,7 @@
  *************************************************************************************************
   01/27/2020         EPPlus Software AB       Initial release EPPlus 5
  *************************************************************************************************/
+
 using System;
 using System.Collections.Generic;
 using System.Globalization;
@@ -20,10 +21,9 @@ using OfficeOpenXml.FormulaParsing.ExpressionGraph;
 
 namespace OfficeOpenXml.FormulaParsing.Excel.Functions.DateTime;
 
-[FunctionMetadata(
-                     Category = ExcelFunctionCategory.DateAndTime,
-                     EPPlusVersion = "4",
-                     Description = "Returns an integer representing the week number (from 1 to 53) of the year from a user-supplied date")]
+[FunctionMetadata(Category = ExcelFunctionCategory.DateAndTime,
+                  EPPlusVersion = "4",
+                  Description = "Returns an integer representing the week number (from 1 to 53) of the year from a user-supplied date")]
 internal class Weeknum : ExcelFunction
 {
     public override CompileResult Execute(IEnumerable<FunctionArgument> arguments, ParsingContext context)
@@ -32,47 +32,62 @@ internal class Weeknum : ExcelFunction
         double dateSerial = this.ArgToDecimal(arguments, 0);
         System.DateTime date = System.DateTime.FromOADate(dateSerial);
         DayOfWeek startDay = DayOfWeek.Sunday;
+
         if (arguments.Count() > 1)
         {
             int argStartDay = this.ArgToInt(arguments, 1);
+
             switch (argStartDay)
             {
                 case 1:
                     startDay = DayOfWeek.Sunday;
+
                     break;
+
                 case 2:
                 case 11:
                     startDay = DayOfWeek.Monday;
+
                     break;
+
                 case 12:
                     startDay = DayOfWeek.Tuesday;
+
                     break;
+
                 case 13:
                     startDay = DayOfWeek.Wednesday;
+
                     break;
+
                 case 14:
                     startDay = DayOfWeek.Thursday;
+
                     break;
+
                 case 15:
                     startDay = DayOfWeek.Friday;
+
                     break;
+
                 case 16:
                     startDay = DayOfWeek.Saturday;
+
                     break;
+
                 default:
                     // Not supported 
                     return this.CreateResult(eErrorType.Num);
             }
         }
+
         if (DateTimeFormatInfo.CurrentInfo == null)
         {
-            throw new InvalidOperationException(
-                                                "Could not execute Weeknum function because DateTimeFormatInfo.CurrentInfo was null");
+            throw new InvalidOperationException("Could not execute Weeknum function because DateTimeFormatInfo.CurrentInfo was null");
         }
-        int week = DateTimeFormatInfo.CurrentInfo.Calendar.GetWeekOfYear(date, CalendarWeekRule.FirstDay,
-                                                                         startDay);
+
+        int week = DateTimeFormatInfo.CurrentInfo.Calendar.GetWeekOfYear(date, CalendarWeekRule.FirstDay, startDay);
+
         return this.CreateResult(week, DataType.Integer);
     }
-        
-        
 }

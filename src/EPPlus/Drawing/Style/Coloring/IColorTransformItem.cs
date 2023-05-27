@@ -10,6 +10,7 @@
  *************************************************************************************************
   01/27/2020         EPPlus Software AB       Initial release EPPlus 5
  *************************************************************************************************/
+
 namespace OfficeOpenXml.Drawing.Style.Coloring;
 
 /// <summary>
@@ -21,15 +22,18 @@ public interface IColorTransformItem
     /// Type of tranformation
     /// </summary>
     eColorTransformType Type { get; }
+
     /// <summary>
     /// Datetype of the value property
     /// </summary>
     eColorTransformDataType DataType { get; }
+
     /// <summary>
     /// The value
     /// </summary>
     double Value { get; set; }
 }
+
 internal interface ISource
 {
     bool _fromStyleTemplate { get; set; }

@@ -10,6 +10,7 @@
  *************************************************************************************************
   12/26/2021         EPPlus Software AB       EPPlus 6.0
  *************************************************************************************************/
+
 using OfficeOpenXml.Core.Worksheet.Core.Worksheet.Fonts.GenericMeasurements;
 using System;
 using System.Collections.Generic;
@@ -28,7 +29,7 @@ namespace OfficeOpenXml.Core.Worksheet.Fonts.GenericFontMetrics;
 /// </summary>
 internal class FontScaleFactors
 {
-    private Dictionary<uint, FontScaleFactor> _fonts = new Dictionary<uint,FontScaleFactor>();
+    private Dictionary<uint, FontScaleFactor> _fonts = new Dictionary<uint, FontScaleFactor>();
 
     public FontScaleFactors()
     {
@@ -52,6 +53,7 @@ internal class FontScaleFactors
     {
         return new FontScaleFactor(s, m, l, sf);
     }
+
     private void Initialize()
     {
         this._fonts.Add(GetKey(FontMetricsFamilies.Calibri, FontSubFamilies.Regular), CSF(1.4f, 1.16f, 1.15f));
@@ -177,11 +179,13 @@ internal class FontScaleFactors
 
     public float GetScaleFactor(uint key, float width)
     {
-        if(!this._fonts.ContainsKey(key))
+        if (!this._fonts.ContainsKey(key))
         {
             return 1f;
         }
+
         FontScaleFactor? factor = this._fonts[key];
+
         return factor.Calculate(width);
     }
 }

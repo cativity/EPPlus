@@ -26,6 +26,7 @@
  *******************************************************************************
   01/27/2020         EPPlus Software AB       Initial release EPPlus 5
  *******************************************************************************/
+
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using OfficeOpenXml;
 using OfficeOpenXml.Drawing;
@@ -38,11 +39,13 @@ namespace EPPlusTest.Drawing;
 public class View3DTest : TestBase
 {
     static ExcelPackage _pck;
+
     [ClassInitialize]
     public static void Init(TestContext context)
     {
         _pck = OpenPackage("Drawing3D.xlsx", true);
     }
+
     [ClassCleanup]
     public static void Cleanup()
     {
@@ -52,6 +55,7 @@ public class View3DTest : TestBase
         SaveAndCleanup(_pck);
         File.Copy(fileName, dirName + "\\Drawing3DRead.xlsx", true);
     }
+
     [TestMethod]
     public void Scene3dDefaultCamera()
     {
@@ -69,6 +73,7 @@ public class View3DTest : TestBase
         Assert.AreEqual(eRigPresetType.ThreePt, shape.ThreeD.Scene.LightRig.RigType);
         Assert.AreEqual(eLightRigDirection.Top, shape.ThreeD.Scene.LightRig.Direction);
     }
+
     [TestMethod]
     public void Scene3dDefaultLightRigType()
     {
@@ -83,6 +88,7 @@ public class View3DTest : TestBase
 
         //Assert
     }
+
     [TestMethod]
     public void Scene3dDefaultLightRigDir()
     {
@@ -97,6 +103,7 @@ public class View3DTest : TestBase
 
         //Assert
     }
+
     [TestMethod]
     public void Scene3dDefaultLightBackplane()
     {
@@ -108,8 +115,10 @@ public class View3DTest : TestBase
 
         //Act
         shape.ThreeD.Scene.BackDropPlane.AnchorPoint.X = 3;
+
         //Assert
     }
+
     [TestMethod]
     public void View3dBevelBDefault()
     {
@@ -121,11 +130,13 @@ public class View3DTest : TestBase
 
         //Act
         shape.ThreeD.BottomBevel.BevelType = eBevelPresetType.Circle;
+
         //Assert
         Assert.AreEqual(6, shape.ThreeD.BottomBevel.Width);
         Assert.AreEqual(6, shape.ThreeD.BottomBevel.Height);
         Assert.AreEqual(eBevelPresetType.Circle, shape.ThreeD.BottomBevel.BevelType);
     }
+
     [TestMethod]
     public void View3dBevelTDefault()
     {
@@ -136,13 +147,14 @@ public class View3DTest : TestBase
         shape.SetPosition(1, 0, 5, 0);
 
         //Act
-        shape.ThreeD.TopBevel.Width=7;
-            
+        shape.ThreeD.TopBevel.Width = 7;
+
         //Assert
         Assert.AreEqual(7, shape.ThreeD.TopBevel.Width);
         Assert.AreEqual(6, shape.ThreeD.TopBevel.Height);
         Assert.AreEqual(eBevelPresetType.Circle, shape.ThreeD.TopBevel.BevelType);
     }
+
     [TestMethod]
     public void View3dContourColorDefault()
     {
@@ -154,11 +166,13 @@ public class View3DTest : TestBase
 
         //Act
         shape.ThreeD.ContourColor.SetSchemeColor(eSchemeColor.Accent6);
+
         //Assert
-        Assert.AreEqual(eDrawingColorType.Scheme,shape.ThreeD.ContourColor.ColorType);
+        Assert.AreEqual(eDrawingColorType.Scheme, shape.ThreeD.ContourColor.ColorType);
         Assert.AreEqual(eSchemeColor.Accent6, shape.ThreeD.ContourColor.SchemeColor.Color);
         Assert.AreEqual(1, shape.ThreeD.ContourWidth);
     }
+
     [TestMethod]
     public void View3dExtrusionColorDefault()
     {
@@ -170,12 +184,14 @@ public class View3DTest : TestBase
 
         //Act
         shape.ThreeD.ExtrusionColor.SetSchemeColor(eSchemeColor.Background1);
+
         //Assert
 
         Assert.AreEqual(eDrawingColorType.Scheme, shape.ThreeD.ExtrusionColor.ColorType);
         Assert.AreEqual(eSchemeColor.Background1, shape.ThreeD.ExtrusionColor.SchemeColor.Color);
         Assert.AreEqual(1, shape.ThreeD.ExtrusionHeight);
     }
+
     [TestMethod]
     public void View3dMaterialTypeDefault()
     {
@@ -187,10 +203,12 @@ public class View3DTest : TestBase
         shape.SetPosition(1, 0, 5, 0);
 
         //Act
-        shape.ThreeD.MaterialType=expected;
+        shape.ThreeD.MaterialType = expected;
+
         //Assert
         Assert.AreEqual(expected, shape.ThreeD.MaterialType);
     }
+
     [TestMethod]
     public void View3dNoScene()
     {
@@ -229,6 +247,7 @@ public class View3DTest : TestBase
         Assert.AreEqual(eSystemColor.Background, shape.ThreeD.ExtrusionColor.SystemColor.Color);
         Assert.AreEqual(8, shape.ThreeD.ExtrusionHeight);
     }
+
     [TestMethod]
     public void View3dScene()
     {
@@ -244,7 +263,7 @@ public class View3DTest : TestBase
         shape.ThreeD.Scene.Camera.Rotation.Latitude = 100;
         shape.ThreeD.Scene.Camera.Rotation.Longitude = 200;
         shape.ThreeD.Scene.Camera.Rotation.Revolution = 300;
-        shape.ThreeD.Scene.LightRig.RigType=eRigPresetType.Sunset;
+        shape.ThreeD.Scene.LightRig.RigType = eRigPresetType.Sunset;
         shape.ThreeD.Scene.LightRig.Direction = eLightRigDirection.BottomRight;
 
         shape.ThreeD.MaterialType = ePresetMaterialType.LegacyWireframe;
@@ -265,7 +284,6 @@ public class View3DTest : TestBase
         Assert.AreEqual(300, shape.ThreeD.Scene.Camera.Rotation.Revolution);
         Assert.AreEqual(eRigPresetType.Sunset, shape.ThreeD.Scene.LightRig.RigType);
         Assert.AreEqual(eLightRigDirection.BottomRight, shape.ThreeD.Scene.LightRig.Direction);
-            
 
         Assert.AreEqual(ePresetMaterialType.LegacyWireframe, shape.ThreeD.MaterialType);
 
@@ -284,6 +302,7 @@ public class View3DTest : TestBase
         Assert.AreEqual(ePresetColor.Azure, shape.ThreeD.ExtrusionColor.PresetColor.Color);
         Assert.AreEqual(11, shape.ThreeD.ExtrusionHeight);
     }
+
     [TestMethod]
     public void View3dNosp3d()
     {
@@ -312,6 +331,7 @@ public class View3DTest : TestBase
         Assert.AreEqual(eRigPresetType.LegacyNormal3, shape.ThreeD.Scene.LightRig.RigType);
         Assert.AreEqual(eLightRigDirection.TopLeft, shape.ThreeD.Scene.LightRig.Direction);
     }
+
     [TestMethod]
     public void Scene3dThreeD()
     {
@@ -337,6 +357,7 @@ public class View3DTest : TestBase
         shape.ThreeD.ExtrusionColor.Transforms.AddLuminanceModulation(90);
         shape.ThreeD.ContourColor.SetSchemeColor(eSchemeColor.Accent1);
         shape.ThreeD.ContourColor.Transforms.AddLuminanceModulation(75);
+
         //Assert
     }
 }

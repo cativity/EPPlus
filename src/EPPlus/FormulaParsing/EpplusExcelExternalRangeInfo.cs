@@ -10,6 +10,7 @@
  *************************************************************************************************
   01/27/2020         EPPlus Software AB       Initial release EPPlus 5
  *************************************************************************************************/
+
 using System.Collections.Generic;
 using System.Linq;
 using OfficeOpenXml.FormulaParsing;
@@ -32,7 +33,12 @@ public class EpplusExcelExternalRangeInfo : IRangeInfo
 {
     internal ExcelExternalWorksheet _externalWs;
     internal CellStoreEnumerator<object> _values = null;
-    int _fromRow, _toRow, _fromCol, _toCol;
+
+    int _fromRow,
+        _toRow,
+        _fromCol,
+        _toCol;
+
     int _cellCount = 0;
     ExcelAddressBase _address;
     ICellInfo _cell;
@@ -47,6 +53,7 @@ public class EpplusExcelExternalRangeInfo : IRangeInfo
     {
         this.SetAddress(wb, address, externalWb);
     }
+
     private void SetAddress(ExcelWorkbook wb, ExcelAddressBase address, ExcelExternalWorkbook externalWb)
     {
         if (externalWb != null)
@@ -57,6 +64,7 @@ public class EpplusExcelExternalRangeInfo : IRangeInfo
             this._toRow = address._toRow;
             this._toCol = address._toCol;
             this._address = address;
+
             if (this._externalWs != null)
             {
                 this._values = this._externalWs.CellValues.GetCellStore(this._fromRow, this._fromCol, this._toRow, this._toCol);
@@ -64,6 +72,7 @@ public class EpplusExcelExternalRangeInfo : IRangeInfo
             }
         }
     }
+
     /// <summary>
     /// Get the number of cells in the range
     /// </summary>
@@ -72,16 +81,15 @@ public class EpplusExcelExternalRangeInfo : IRangeInfo
     {
         return (this._toRow - this._fromRow + 1) * (this._toCol - this._fromCol + 1);
     }
+
     /// <summary>
     /// If the range is invalid (#REF!)
     /// </summary>
     public bool IsRef
     {
-        get
-        {
-            return this._externalWs == null || this._fromRow < 0 || this._toRow < 0;
-        }
+        get { return this._externalWs == null || this._fromRow < 0 || this._toRow < 0; }
     }
+
     /// <summary>
     /// If the range is empty, ie contains no set cells.
     /// </summary>
@@ -100,6 +108,7 @@ public class EpplusExcelExternalRangeInfo : IRangeInfo
             else if (this._values.Next())
             {
                 this._values.Reset();
+
                 return false;
             }
             else
@@ -108,6 +117,7 @@ public class EpplusExcelExternalRangeInfo : IRangeInfo
             }
         }
     }
+
     /// <summary>
     /// If the range contains more than one set cell.
     /// </summary>
@@ -125,11 +135,13 @@ public class EpplusExcelExternalRangeInfo : IRangeInfo
                 if (this._values.Next() && this._values.Next())
                 {
                     this._values.Reset();
+
                     return true;
                 }
                 else
                 {
                     this._values.Reset();
+
                     return false;
                 }
             }
@@ -137,6 +149,7 @@ public class EpplusExcelExternalRangeInfo : IRangeInfo
             {
                 return true;
             }
+
             return false;
         }
     }
@@ -148,6 +161,7 @@ public class EpplusExcelExternalRangeInfo : IRangeInfo
     {
         get { return this._cell; }
     }
+
     /// <summary>
     /// Not applicable for external ranges.. Returns null
     /// </summary>
@@ -155,6 +169,7 @@ public class EpplusExcelExternalRangeInfo : IRangeInfo
     {
         get { return null; }
     }
+
     /// <summary>
     /// Called when the object is disposed.
     /// </summary>
@@ -164,10 +179,7 @@ public class EpplusExcelExternalRangeInfo : IRangeInfo
 
     object System.Collections.IEnumerator.Current
     {
-        get
-        {
-            return this;
-        }
+        get { return this; }
     }
 
     /// <summary>
@@ -182,8 +194,10 @@ public class EpplusExcelExternalRangeInfo : IRangeInfo
         }
 
         this._cellCount++;
+
         return this._values.MoveNext();
     }
+
     /// <summary>
     /// Resets the enumeration
     /// </summary>
@@ -205,6 +219,7 @@ public class EpplusExcelExternalRangeInfo : IRangeInfo
         }
 
         this._cellCount++;
+
         return this._values.MoveNext();
     }
 
@@ -215,6 +230,7 @@ public class EpplusExcelExternalRangeInfo : IRangeInfo
     public IEnumerator<ICellInfo> GetEnumerator()
     {
         this.Reset();
+
         return this;
     }
 
@@ -230,6 +246,7 @@ public class EpplusExcelExternalRangeInfo : IRangeInfo
     {
         get { return this._address; }
     }
+
     /// <summary>
     /// Gets the value 
     /// </summary>
@@ -240,6 +257,7 @@ public class EpplusExcelExternalRangeInfo : IRangeInfo
     {
         return this._externalWs?.CellValues.GetValue(row, col);
     }
+
     /// <summary>
     /// Get the value from the range with the offset from the top-left cell
     /// </summary>
@@ -271,11 +289,13 @@ public class ExternalCellInfo : ICellInfo
 {
     ExcelExternalWorksheet _ws;
     CellStoreEnumerator<object> _values;
+
     internal ExternalCellInfo(ExcelExternalWorksheet ws, CellStoreEnumerator<object> values)
     {
         this._ws = ws;
         this._values = values;
     }
+
     /// <summary>
     /// The cell address.
     /// </summary>
@@ -283,6 +303,7 @@ public class ExternalCellInfo : ICellInfo
     {
         get { return this._values.CellAddress; }
     }
+
     /// <summary>
     /// The row of the cell
     /// </summary>
@@ -298,26 +319,23 @@ public class ExternalCellInfo : ICellInfo
     {
         get { return this._values.Column; }
     }
+
     /// <summary>
     /// Formula. Always return Empty.String for external cells.
     /// </summary>
     public string Formula
     {
-        get
-        {
-            return "";
-        }
+        get { return ""; }
     }
+
     /// <summary>
     /// The value of the current cell.
     /// </summary>
     public object Value
     {
-        get
-        {
-            return this._values.Value;
-        }
+        get { return this._values.Value; }
     }
+
     /// <summary>
     /// The value as double of the current cell. Bools will be ignored.
     /// </summary>
@@ -325,6 +343,7 @@ public class ExternalCellInfo : ICellInfo
     {
         get { return ConvertUtil.GetValueDouble(this._values.Value, true); }
     }
+
     /// <summary>
     /// The value as double of the current cell.
     /// </summary>
@@ -332,15 +351,13 @@ public class ExternalCellInfo : ICellInfo
     {
         get { return ConvertUtil.GetValueDouble(this._values.Value, false); }
     }
+
     /// <summary>
     /// If the row of the cell is hidden
     /// </summary>
     public bool IsHiddenRow
     {
-        get
-        {
-            return false;
-        }
+        get { return false; }
     }
 
     /// <summary>
@@ -350,26 +367,23 @@ public class ExternalCellInfo : ICellInfo
     {
         get { return ExcelErrorValue.Values.IsErrorValue(this._values.Value); }
     }
+
     /// <summary>
     /// Tokens for the formula. Not applicable to External cells.
     /// </summary>
     public IList<Token> Tokens
     {
-        get
-        {
-            return new List<Token>();
-        }
+        get { return new List<Token>(); }
     }
+
     /// <summary>
     /// The cell id
     /// </summary>
     public ulong Id
     {
-        get
-        {
-            return ExcelCellBase.GetCellId(this._ws.SheetId, this._values.Row, this._values.Column);
-        }
+        get { return ExcelCellBase.GetCellId(this._ws.SheetId, this._values.Row, this._values.Column); }
     }
+
     /// <summary>
     /// The name of the worksheet.
     /// </summary>

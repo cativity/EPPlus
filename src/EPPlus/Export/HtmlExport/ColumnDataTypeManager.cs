@@ -10,6 +10,7 @@
  *************************************************************************************************
   11/07/2021         EPPlus Software AB       Added Html Export
  *************************************************************************************************/
+
 using OfficeOpenXml.FormulaParsing.ExpressionGraph;
 using System;
 using System.Collections.Generic;
@@ -35,33 +36,42 @@ internal static class ColumnDataTypeManager
     {
         int rowIndex = startRow;
         DataType dataType = DataType.Empty;
-        while(rowIndex <= range.End.Row)
+
+        while (rowIndex <= range.End.Row)
         {
             object? v = sheet.Cells[rowIndex, column].Value;
-            if(v != null)
+
+            if (v != null)
             {
                 return HtmlRawDataProvider.GetHtmlDataTypeFromValue(v);
             }
+
             rowIndex++;
         }
+
         return GetHtmlDataType(dataType);
     }
 
     private static string GetHtmlDataType(DataType dataType)
     {
-        switch(dataType)
+        switch (dataType)
         {
             case DataType.Integer:
             case DataType.Decimal:
                 return HtmlDataTypes.Number;
+
             case DataType.String:
                 return HtmlDataTypes.String;
+
             case DataType.Boolean:
                 return HtmlDataTypes.Boolean;
+
             case DataType.Time:
                 return HtmlDataTypes.TimeSpan;
+
             case DataType.Date:
                 return HtmlDataTypes.DateTime;
+
             default:
                 return HtmlDataTypes.String;
         }

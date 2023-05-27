@@ -14,6 +14,7 @@ internal static class ZipHelper
     {
         byte[]? content = new byte[entry.UncompressedSize];
         int size = zipStream.Read(content, 0, (int)entry.UncompressedSize);
+
         return Encoding.UTF8.GetString(content);
     }
 
@@ -22,6 +23,7 @@ internal static class ZipHelper
         Assembly? assembly = Assembly.GetExecutingAssembly();
         Stream? templateStream = assembly.GetManifestResourceStream("OfficeOpenXml.resources.DefaultTableStyles.cst");
         ZipInputStream? zipStream = new ZipInputStream(templateStream);
+
         return zipStream;
     }
 }

@@ -17,6 +17,7 @@ public class SumIfTests
         using ExcelPackage? pck = new ExcelPackage();
         ExcelWorksheet? sheet1 = pck.Workbook.Worksheets.Add("Sheet1");
         sheet1.Cells["A1"].Value = "SumResult";
+
         // This shouldn't be a circular reference, because the 1:1="SUMMABLE" condition should filter out A2
         sheet1.Cells["A2"].Formula = "SUMIF(1:1,\"SUMMABLE\",2:2)";
 
@@ -43,6 +44,7 @@ public class SumIfTests
         using ExcelPackage? pck = new ExcelPackage();
         ExcelWorksheet? sheet1 = pck.Workbook.Worksheets.Add("Sheet1");
         sheet1.Cells["A1"].Value = "SumResult";
+
         // This shouldn't be a circular reference, because the 1:1="SUMMABLE" condition should filter out A2
         sheet1.Cells["B1"].Formula = "SUMIF(A:A,\"SUMMABLE\",B:B)";
 

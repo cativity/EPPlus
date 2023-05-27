@@ -26,6 +26,7 @@
  *******************************************************************************
   01/27/2020         EPPlus Software AB       Initial release EPPlus 5
  *******************************************************************************/
+
 using System;
 using System.IO;
 using System.Text;
@@ -34,6 +35,7 @@ using System.Linq;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using OfficeOpenXml.FormulaParsing;
 using OfficeOpenXml;
+
 namespace EPPlusTest.FormulaParsing.IntegrationTests.BuiltInFunctions;
 
 [TestClass]

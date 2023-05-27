@@ -10,11 +10,11 @@
  *************************************************************************************************
   01/27/2020         EPPlus Software AB       Initial release EPPlus 5
  *************************************************************************************************/
+
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-
 using OfficeOpenXml.ConditionalFormatting;
 
 namespace OfficeOpenXml.ConditionalFormatting.Contracts;
@@ -25,9 +25,11 @@ namespace OfficeOpenXml.ConditionalFormatting.Contracts;
 public interface IExcelConditionalFormattingWithShowValue
 {
     #region Public Properties
+
     /// <summary>
     /// ShowValue Attribute
     /// </summary>
     bool ShowValue { get; set; }
+
     #endregion Public Properties
 }

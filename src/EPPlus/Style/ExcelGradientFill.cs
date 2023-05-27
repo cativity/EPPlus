@@ -10,6 +10,7 @@
  *************************************************************************************************
   01/27/2020         EPPlus Software AB       Initial release EPPlus 5
  *************************************************************************************************/
+
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -24,12 +25,13 @@ namespace OfficeOpenXml.Style;
 /// </summary>
 public class ExcelGradientFill : StyleBase
 {
-    internal ExcelGradientFill(ExcelStyles styles, XmlHelper.ChangedEventHandler ChangedEvent, int PositionID, string address, int index) :
-        base(styles, ChangedEvent, PositionID, address)
+    internal ExcelGradientFill(ExcelStyles styles, XmlHelper.ChangedEventHandler ChangedEvent, int PositionID, string address, int index)
+        : base(styles, ChangedEvent, PositionID, address)
 
     {
         this.Index = index;
     }
+
     /// <summary>
     /// Angle of the linear gradient
     /// </summary>
@@ -49,6 +51,7 @@ public class ExcelGradientFill : StyleBase
             this._ChangedEvent(this, new StyleChangeEventArgs(eStyleClass.GradientFill, eStyleProperty.GradientDegree, value, this._positionID, this._address));
         }
     }
+
     /// <summary>
     /// Linear or Path gradient
     /// </summary>
@@ -68,6 +71,7 @@ public class ExcelGradientFill : StyleBase
             this._ChangedEvent(this, new StyleChangeEventArgs(eStyleClass.GradientFill, eStyleProperty.GradientType, value, this._positionID, this._address));
         }
     }
+
     /// <summary>
     /// The top position of the inner rectangle (color 1) in percentage format (from the top to the bottom). 
     /// Spans from 0 to 1
@@ -93,6 +97,7 @@ public class ExcelGradientFill : StyleBase
             this._ChangedEvent(this, new StyleChangeEventArgs(eStyleClass.GradientFill, eStyleProperty.GradientTop, value, this._positionID, this._address));
         }
     }
+
     /// <summary>
     /// The bottom position of the inner rectangle (color 1) in percentage format (from the top to the bottom). 
     /// Spans from 0 to 1
@@ -118,6 +123,7 @@ public class ExcelGradientFill : StyleBase
             this._ChangedEvent(this, new StyleChangeEventArgs(eStyleClass.GradientFill, eStyleProperty.GradientBottom, value, this._positionID, this._address));
         }
     }
+
     /// <summary>
     /// The left position of the inner rectangle (color 1) in percentage format (from the left to the right). 
     /// Spans from 0 to 1
@@ -143,6 +149,7 @@ public class ExcelGradientFill : StyleBase
             this._ChangedEvent(this, new StyleChangeEventArgs(eStyleClass.GradientFill, eStyleProperty.GradientLeft, value, this._positionID, this._address));
         }
     }
+
     /// <summary>
     /// The right position of the inner rectangle (color 1) in percentage format (from the left to the right). 
     /// Spans from 0 to 1
@@ -168,7 +175,9 @@ public class ExcelGradientFill : StyleBase
             this._ChangedEvent(this, new StyleChangeEventArgs(eStyleClass.GradientFill, eStyleProperty.GradientRight, value, this._positionID, this._address));
         }
     }
+
     ExcelColor _gradientColor1 = null;
+
     /// <summary>
     /// Gradient Color 1
     /// </summary>
@@ -184,7 +193,9 @@ public class ExcelGradientFill : StyleBase
                                                            this);
         }
     }
+
     ExcelColor _gradientColor2 = null;
+
     /// <summary>
     /// Gradient Color 2
     /// </summary>
@@ -200,8 +211,19 @@ public class ExcelGradientFill : StyleBase
                                                            this);
         }
     }
+
     internal override string Id
     {
-        get { return this.Degree.ToString() + this.Type + this.Color1.Id + this.Color2.Id + this.Top.ToString() + this.Bottom.ToString() + this.Left.ToString() + this.Right.ToString(); }
+        get
+        {
+            return this.Degree.ToString()
+                   + this.Type
+                   + this.Color1.Id
+                   + this.Color2.Id
+                   + this.Top.ToString()
+                   + this.Bottom.ToString()
+                   + this.Left.ToString()
+                   + this.Right.ToString();
+        }
     }
 }

@@ -10,6 +10,7 @@
  *************************************************************************************************
   01/27/2020         EPPlus Software AB       Initial release EPPlus 5
  *************************************************************************************************/
+
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -25,10 +26,12 @@ public class CellReferenceProvider
         List<string>? resultCells = new List<string>();
         IEnumerable<Token>? r = context.Configuration.Lexer.Tokenize(cellFormula, context.Scopes.Current.Address.Worksheet);
         IEnumerable<Token>? toAddresses = r.Where(x => x.TokenTypeIsSet(TokenType.ExcelAddress));
+
         foreach (Token toAddress in toAddresses)
         {
             RangeAddress? rangeAddress = context.RangeAddressFactory.Create(toAddress.Value);
             List<string>? rangeCells = new List<string>();
+
             if (rangeAddress.FromRow < rangeAddress.ToRow || rangeAddress.FromCol < rangeAddress.ToCol)
             {
                 for (int col = rangeAddress.FromCol; col <= rangeAddress.ToCol; col++)
@@ -43,8 +46,10 @@ public class CellReferenceProvider
             {
                 rangeCells.Add(toAddress.Value);
             }
+
             resultCells.AddRange(rangeCells);
         }
+
         return resultCells;
     }
 }

@@ -24,26 +24,32 @@ public class ExcelTableAddress
     /// The name of the table
     /// </summary>
     public string Name { get; set; }
+
     /// <summary>
     /// Column span
     /// </summary>
     public string ColumnSpan { get; set; }
+
     /// <summary>
     /// Reference entire table
     /// </summary>
     public bool IsAll { get; set; }
+
     /// <summary>
     /// Reference the table header row
     /// </summary>
     public bool IsHeader { get; set; }
+
     /// <summary>
     /// Reference table data
     /// </summary>
     public bool IsData { get; set; }
+
     /// <summary>
     /// Reference table totals row
     /// </summary>
     public bool IsTotals { get; set; }
+
     /// <summary>
     /// Reference the current table row
     /// </summary>

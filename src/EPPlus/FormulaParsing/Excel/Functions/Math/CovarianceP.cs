@@ -10,6 +10,7 @@
  *************************************************************************************************
   10/12/2020         EPPlus Software AB       Version 5.5
  *************************************************************************************************/
+
 using OfficeOpenXml.FormulaParsing.Excel.Functions.Metadata;
 using System;
 using System.Collections.Generic;
@@ -18,10 +19,9 @@ using System.Text;
 
 namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Math;
 
-[FunctionMetadata(
-                     Category = ExcelFunctionCategory.Statistical,
-                     EPPlusVersion = "5.5",
-                     Description = "Returns covariance, the average of the products of deviations for each data point pair in two data sets.")]
+[FunctionMetadata(Category = ExcelFunctionCategory.Statistical,
+                  EPPlusVersion = "5.5",
+                  Description = "Returns covariance, the average of the products of deviations for each data point pair in two data sets.")]
 internal class CovarianceP : Covar
 {
 }

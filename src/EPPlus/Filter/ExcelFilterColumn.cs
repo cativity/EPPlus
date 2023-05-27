@@ -10,6 +10,7 @@
  *************************************************************************************************
   01/27/2020         EPPlus Software AB       Initial release EPPlus 5
  *************************************************************************************************/
+
 using OfficeOpenXml.Utils;
 using System.Xml;
 
@@ -20,10 +21,11 @@ namespace OfficeOpenXml.Filter;
 /// </summary>
 public abstract class ExcelFilterColumn : XmlHelper
 {
-    internal ExcelFilterColumn(XmlNamespaceManager namespaceManager, XmlNode node) : base(namespaceManager, node)
+    internal ExcelFilterColumn(XmlNamespaceManager namespaceManager, XmlNode node)
+        : base(namespaceManager, node)
     {
-
     }
+
     /// <summary>
     /// Gets the filter value
     /// </summary>
@@ -31,8 +33,7 @@ public abstract class ExcelFilterColumn : XmlHelper
     /// <returns></returns>
     protected internal static object GetFilterValue(string value)
     {
-        if ((value[0] >= '0' && value[0] <= '9') ||
-            (value[value.Length - 1] >= '0' && value[value.Length - 1] <= '9'))
+        if ((value[0] >= '0' && value[0] <= '9') || (value[value.Length - 1] >= '0' && value[value.Length - 1] <= '9'))
         {
             if (ConvertUtil.TryParseNumericString(value, out double d))
             {
@@ -48,45 +49,42 @@ public abstract class ExcelFilterColumn : XmlHelper
             return value;
         }
     }
+
     /// <summary>
     /// Zero-based index indicating the AutoFilter column to which this filter information applies
     /// </summary>
-    public int Position { get => this.GetXmlNodeInt("@colId"); }
+    public int Position
+    {
+        get => this.GetXmlNodeInt("@colId");
+    }
+
     const string _hiddenButtonPath = "@hiddenButton";
+
     /// <summary>
     /// If true the AutoFilter button for this column is hidden.
     /// </summary>
     public bool HiddenButton
     {
-        get
-        {
-            return this.GetXmlNodeBool(_hiddenButtonPath);
-        }
-        set
-        {
-            this.SetXmlNodeBool(_hiddenButtonPath, value, false);
-        }
+        get { return this.GetXmlNodeBool(_hiddenButtonPath); }
+        set { this.SetXmlNodeBool(_hiddenButtonPath, value, false); }
     }
+
     const string _showButtonPath = "@showButton";
+
     /// <summary>
     /// Should filtering interface elements on this cell be shown.
     /// </summary>
     public bool ShowButton
     {
-        get
-        {
-            return this.GetXmlNodeBool(_showButtonPath);
-        }
-        set
-        {
-            this.SetXmlNodeBool(_showButtonPath, value, true);
-        }
+        get { return this.GetXmlNodeBool(_showButtonPath); }
+        set { this.SetXmlNodeBool(_showButtonPath, value, true); }
     }
 
     internal abstract void Save();
+
     internal abstract bool Match(object value, string valueText);
+
     internal virtual void SetFilterValue(ExcelWorksheet worksheet, ExcelAddressBase address)
     {
-
     }
 }

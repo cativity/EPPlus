@@ -10,6 +10,7 @@
  *************************************************************************************************
   12/26/2021         EPPlus Software AB       EPPlus 6.0
  *************************************************************************************************/
+
 using OfficeOpenXml.Core.Worksheet.Fonts.GenericFontMetrics;
 using OfficeOpenXml.Interfaces.Drawing.Text;
 using System;
@@ -30,6 +31,7 @@ internal class GenericFontMetricsTextMeasurer : GenericFontMetricsTextMeasurerBa
     public TextMeasurement MeasureText(string text, MeasurementFont font)
     {
         uint fontKey = GetKey(font.FontFamily, font.Style);
+
         if (!IsValidFont(fontKey))
         {
             return TextMeasurement.Empty;

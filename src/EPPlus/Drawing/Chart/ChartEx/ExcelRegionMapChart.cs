@@ -10,9 +10,11 @@
  *************************************************************************************************
   04/15/2020         EPPlus Software AB           Release EPPlus 5.2
  *************************************************************************************************/
+
 using OfficeOpenXml.Packaging;
 using System;
 using System.Xml;
+
 namespace OfficeOpenXml.Drawing.Chart.ChartEx;
 
 /// <summary>
@@ -20,18 +22,25 @@ namespace OfficeOpenXml.Drawing.Chart.ChartEx;
 /// </summary>
 public class ExcelRegionMapChart : ExcelChartEx
 {
-
-    internal ExcelRegionMapChart(ExcelDrawings drawings, XmlNode drawingsNode, eChartType? type, XmlDocument chartXml = null, ExcelGroupShape parent = null) :
-        base(drawings, drawingsNode, type, chartXml, parent)
+    internal ExcelRegionMapChart(ExcelDrawings drawings, XmlNode drawingsNode, eChartType? type, XmlDocument chartXml = null, ExcelGroupShape parent = null)
+        : base(drawings, drawingsNode, type, chartXml, parent)
     {
         this.Series.Init(this, this.NameSpaceManager, this.TopNode, false, base.Series._list);
         this.StyleManager.SetChartStyle(Chart.Style.ePresetChartStyle.RegionMapChartStyle1);
     }
-    internal ExcelRegionMapChart(ExcelDrawings drawings, XmlNode node, Uri uriChart, ZipPackagePart part, XmlDocument chartXml, XmlNode chartNode, ExcelGroupShape parent = null) :
-        base(drawings, node, uriChart, part, chartXml, chartNode, parent)
+
+    internal ExcelRegionMapChart(ExcelDrawings drawings,
+                                 XmlNode node,
+                                 Uri uriChart,
+                                 ZipPackagePart part,
+                                 XmlDocument chartXml,
+                                 XmlNode chartNode,
+                                 ExcelGroupShape parent = null)
+        : base(drawings, node, uriChart, part, chartXml, chartNode, parent)
     {
         this.Series.Init(this, this.NameSpaceManager, this.TopNode, false, base.Series._list);
     }
+
     /// <summary>
     /// The series for a region map chart
     /// </summary>

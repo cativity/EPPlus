@@ -10,6 +10,7 @@
  *************************************************************************************************
   07/16/2020         EPPlus Software AB       EPPlus 5.2.1
  *************************************************************************************************/
+
 using OfficeOpenXml.Table;
 using System;
 using System.Collections.Generic;
@@ -45,6 +46,7 @@ internal abstract class LoadFunctionBase
     /// If value is other than TableStyles.None the data will be added to a table in the worksheet.
     /// </summary>
     protected TableStyles? TableStyle { get; set; }
+
     protected string TableName { get; set; }
 
     protected bool ShowFirstColumn { get; set; }
@@ -67,7 +69,6 @@ internal abstract class LoadFunctionBase
 
     protected virtual void PostProcessTable(ExcelTable table, ExcelRangeBase range)
     {
-
     }
 
     protected abstract void LoadInternal(object[,] values, out Dictionary<int, FormulaCell> formulaCells, out Dictionary<int, string> columnFormats);
@@ -89,7 +90,8 @@ internal abstract class LoadFunctionBase
 
         this.LoadInternal(values, out Dictionary<int, FormulaCell> formulaCells, out Dictionary<int, string> columnFormats);
         ExcelWorksheet? ws = this.Range.Worksheet;
-        if(formulaCells != null && formulaCells.Keys.Count > 0)
+
+        if (formulaCells != null && formulaCells.Keys.Count > 0)
         {
             this.SetValuesAndFormulas(nRows, nCols, values, formulaCells, ws);
         }
@@ -98,19 +100,20 @@ internal abstract class LoadFunctionBase
             ws.SetRangeValueInner(this.Range._fromRow, this.Range._fromCol, this.Range._fromRow + nRows - 1, this.Range._fromCol + nCols - 1, values, true);
         }
 
-
         //Must have at least 1 row, if header is shown
         if (nRows == 1 && this.PrintHeaders)
         {
             nRows++;
         }
+
         // set number formats
         foreach (int col in columnFormats.Keys)
         {
-            ws.Cells[this.Range._fromRow, this.Range._fromCol + col, this.Range._fromRow + nRows - 1, this.Range._fromCol + col].Style.Numberformat.Format = columnFormats[col];
+            ws.Cells[this.Range._fromRow, this.Range._fromCol + col, this.Range._fromRow + nRows - 1, this.Range._fromCol + col].Style.Numberformat.Format =
+                columnFormats[col];
         }
 
-        if(nRows==0)
+        if (nRows == 0)
         {
             return null;
         }
@@ -127,6 +130,7 @@ internal abstract class LoadFunctionBase
             tbl.ShowTotal = this.ShowTotal;
             this.PostProcessTable(tbl, r);
         }
+
         return r;
     }
 
@@ -137,17 +141,20 @@ internal abstract class LoadFunctionBase
             if (formulaCells.ContainsKey(col))
             {
                 int row = 0;
+
                 if (this.PrintHeaders)
                 {
                     object? header = values[0, col];
                     ws.SetValue(this.Range._fromRow, this.Range._fromCol + col, header);
                     row++;
                 }
+
                 FormulaCell? columnFormula = formulaCells[col];
                 int fromRow = this.Range._fromRow + row;
                 int rangeCol = this.Range._fromCol + col;
                 int toRow = this.Range._fromRow + nRows - 1;
                 ExcelRange? formulaRange = ws.Cells[fromRow, rangeCol, toRow, rangeCol];
+
                 if (!string.IsNullOrEmpty(columnFormula.Formula))
                 {
                     formulaRange.Formula = columnFormula.Formula;
@@ -160,17 +167,18 @@ internal abstract class LoadFunctionBase
             else
             {
                 object[,] columnValues = new object[nRows, 1];
+
                 for (int ix = 0; ix < nRows; ix++)
                 {
                     object? item = values[ix, col];
                     columnValues[ix, 0] = item;
                 }
+
                 int fromRow = this.Range._fromRow;
                 int rangeCol = this.Range._fromCol + col;
                 int toRow = this.Range._fromRow + nRows - 1;
                 ws.SetRangeValueInner(fromRow, rangeCol, toRow, rangeCol, columnValues, true);
             }
-
         }
     }
 }

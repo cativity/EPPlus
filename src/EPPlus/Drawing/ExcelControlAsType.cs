@@ -10,6 +10,7 @@
  *************************************************************************************************
   10/22/2020         EPPlus Software AB       EPPlus 5.5
  *************************************************************************************************/
+
 using OfficeOpenXml.Drawing.Controls;
 using System;
 using System.Collections.Generic;
@@ -23,16 +24,19 @@ namespace OfficeOpenXml.Drawing;
 public class ExcelControlAsType
 {
     ExcelDrawing _drawing;
+
     internal ExcelControlAsType(ExcelDrawing drawing)
     {
         this._drawing = drawing;
     }
+
     /// <summary>
     /// Converts the drawing to it's top level or other nested drawing class.        
     /// </summary>
     /// <typeparam name="T">The type of drawing. T must be inherited from ExcelDrawing</typeparam>
     /// <returns>The drawing as type T</returns>
-    public T Type<T>() where T : ExcelControl
+    public T Type<T>()
+        where T : ExcelControl
     {
         return this._drawing as T;
     }
@@ -46,6 +50,7 @@ public class ExcelControlAsType
     {
         get { return this._drawing as ExcelControlButton; }
     }
+
     /// <summary>
     /// Returns the drawing as a drop-down. 
     /// If this drawing is not a drop-down, null will be returned
@@ -55,6 +60,7 @@ public class ExcelControlAsType
     {
         get { return this._drawing as ExcelControlDropDown; }
     }
+
     /// <summary>
     /// Returns the drawing as a group box. 
     /// If this drawing is not a group box, null will be returned
@@ -64,6 +70,7 @@ public class ExcelControlAsType
     {
         get { return this._drawing as ExcelControlGroupBox; }
     }
+
     /// <summary>
     /// Returns the drawing as a label. 
     /// If this drawing is not a label, null will be returned

@@ -10,6 +10,7 @@
  *************************************************************************************************
   01/27/2020         EPPlus Software AB       Initial release EPPlus 5
  *************************************************************************************************/
+
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -19,10 +20,7 @@ using OfficeOpenXml.FormulaParsing.ExpressionGraph;
 
 namespace OfficeOpenXml.FormulaParsing.Excel.Functions.DateTime;
 
-[FunctionMetadata(
-                     Category = ExcelFunctionCategory.DateAndTime,
-                     EPPlusVersion = "4",
-                     Description = "Returns a date, from a user-supplied year, month and day")]
+[FunctionMetadata(Category = ExcelFunctionCategory.DateAndTime, EPPlusVersion = "4", Description = "Returns a date, from a user-supplied year, month and day")]
 internal class Date : ExcelFunction
 {
     public override CompileResult Execute(IEnumerable<FunctionArgument> arguments, ParsingContext context)
@@ -35,6 +33,7 @@ internal class Date : ExcelFunction
         month -= 1;
         date = date.AddMonths(month);
         date = date.AddDays((double)(day - 1));
+
         return this.CreateResult(date.ToOADate(), DataType.Date);
     }
 }

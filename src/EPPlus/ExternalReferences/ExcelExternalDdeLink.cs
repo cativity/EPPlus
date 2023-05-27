@@ -10,6 +10,7 @@
  *************************************************************************************************
   04/16/2021         EPPlus Software AB       EPPlus 5.7
  *************************************************************************************************/
+
 using OfficeOpenXml.Core.CellStore;
 using OfficeOpenXml.Packaging;
 using OfficeOpenXml.Utils;
@@ -28,11 +29,12 @@ namespace OfficeOpenXml.ExternalReferences;
 /// </summary>
 public class ExcelExternalDdeLink : ExcelExternalLink
 {
-    internal ExcelExternalDdeLink(ExcelWorkbook wb, XmlTextReader reader, ZipPackagePart part, XmlElement workbookElement) : base (wb, reader, part, workbookElement)
+    internal ExcelExternalDdeLink(ExcelWorkbook wb, XmlTextReader reader, ZipPackagePart part, XmlElement workbookElement)
+        : base(wb, reader, part, workbookElement)
     {
         this.DdeService = reader.GetAttribute("ddeService");
         this.DdeTopic = reader.GetAttribute("ddeTopic");
-            
+
         while (reader.Read())
         {
             if (reader.NodeType == XmlNodeType.Element)
@@ -41,6 +43,7 @@ public class ExcelExternalDdeLink : ExcelExternalLink
                 {
                     case "ddeItems":
                         this.ReadDdeItems(reader);
+
                         break;
                 }
             }
@@ -53,6 +56,7 @@ public class ExcelExternalDdeLink : ExcelExternalLink
             }
         }
     }
+
     private void ReadDdeItems(XmlTextReader reader)
     {
         while (reader.Read())
@@ -61,6 +65,7 @@ public class ExcelExternalDdeLink : ExcelExternalLink
             {
                 XmlStreamHelper.ReadUntil(reader, "Fallback");
             }
+
             if (reader.NodeType == XmlNodeType.Element && reader.LocalName == "ddeItem")
             {
                 this.DdeItems.Add(new ExcelExternalDdeItem()
@@ -71,7 +76,7 @@ public class ExcelExternalDdeLink : ExcelExternalLink
                     PreferPicture = XmlHelper.GetBoolFromString(reader.GetAttribute("preferPic")),
                 });
             }
-            else if (reader.NodeType == XmlNodeType.EndElement && reader.LocalName=="ddeItems")
+            else if (reader.NodeType == XmlNodeType.EndElement && reader.LocalName == "ddeItems")
             {
                 break;
             }
@@ -83,15 +88,14 @@ public class ExcelExternalDdeLink : ExcelExternalLink
     /// </summary>
     public override eExternalLinkType ExternalLinkType
     {
-        get
-        {
-            return eExternalLinkType.DdeLink;
-        }
+        get { return eExternalLinkType.DdeLink; }
     }
+
     /// <summary>
     /// Service name for the DDE connection
     /// </summary>
     public string DdeService { get; internal set; }
+
     /// <summary>
     /// Topic for DDE server. 
     /// </summary>
@@ -100,21 +104,21 @@ public class ExcelExternalDdeLink : ExcelExternalLink
     /// <summary>
     /// A collection of <see cref="ExcelExternalDdeItem" />
     /// </summary>
-    public ExcelExternalDdeItemCollection DdeItems
-    {
-        get;
-    } = new ExcelExternalDdeItemCollection();
+    public ExcelExternalDdeItemCollection DdeItems { get; } = new ExcelExternalDdeItemCollection();
+
     internal override void Save(StreamWriter sw)
     {
         sw.Write($"<ddeLink ddeTopic=\"{this.DdeTopic}\" ddeService=\"{this.DdeService}\"><ddeItems>");
+
         foreach (ExcelExternalDdeItem item in this.DdeItems)
-        {                
+        {
             sw.Write(string.Format("<ddeItem name=\"{0}\" {1}{2}{3}/>",
                                    item.Name,
                                    item.Advise.GetXmlAttributeValue("advise", false),
                                    item.Ole.GetXmlAttributeValue("ole", false),
                                    item.PreferPicture.GetXmlAttributeValue("preferPic", false)));
         }
+
         sw.Write("</ddeItems></ddeLink>");
     }
 }

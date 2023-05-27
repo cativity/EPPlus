@@ -10,12 +10,14 @@
  *************************************************************************************************
   01/27/2020         EPPlus Software AB       Initial release EPPlus 5
  *************************************************************************************************/
+
 using System;
 using System.Collections.Generic;
 using System.Text;
 using System.Xml;
 using OfficeOpenXml.Utils;
 using OfficeOpenXml.Encryption;
+
 namespace OfficeOpenXml;
 
 /// <summary>
@@ -24,13 +26,15 @@ namespace OfficeOpenXml;
 ///<seealso cref="ExcelSheetProtection"/> 
 /// </summary>
 public class ExcelProtection : XmlHelper
-{        
-    internal ExcelProtection(XmlNamespaceManager ns, XmlNode topNode, ExcelWorkbook wb) :
-        base(ns, topNode)
+{
+    internal ExcelProtection(XmlNamespaceManager ns, XmlNode topNode, ExcelWorkbook wb)
+        : base(ns, topNode)
     {
-        this.SchemaNodeOrder = wb.SchemaNodeOrder;            
+        this.SchemaNodeOrder = wb.SchemaNodeOrder;
     }
+
     const string workbookPasswordPath = "d:workbookProtection/@workbookPassword";
+
     /// <summary>
     /// Sets a password for the workbook. This does not encrypt the workbook. 
     /// </summary>
@@ -46,36 +50,29 @@ public class ExcelProtection : XmlHelper
             this.SetXmlNodeString(workbookPasswordPath, ((int)EncryptedPackageHandler.CalculatePasswordHash(Password)).ToString("x"));
         }
     }
+
     const string lockStructurePath = "d:workbookProtection/@lockStructure";
+
     /// <summary>
     /// Locks the structure,which prevents users from adding or deleting worksheets or from displaying hidden worksheets.
     /// </summary>
     public bool LockStructure
     {
-        get
-        {
-            return this.GetXmlNodeBool(lockStructurePath, false);
-        }
-        set
-        {
-            this.SetXmlNodeBool(lockStructurePath, value, false);
-        }
+        get { return this.GetXmlNodeBool(lockStructurePath, false); }
+        set { this.SetXmlNodeBool(lockStructurePath, value, false); }
     }
+
     const string lockWindowsPath = "d:workbookProtection/@lockWindows";
+
     /// <summary>
     /// Locks the position of the workbook window.
     /// </summary>
     public bool LockWindows
     {
-        get
-        {
-            return this.GetXmlNodeBool(lockWindowsPath, false);
-        }
-        set
-        {
-            this.SetXmlNodeBool(lockWindowsPath, value, false);
-        }
+        get { return this.GetXmlNodeBool(lockWindowsPath, false); }
+        set { this.SetXmlNodeBool(lockWindowsPath, value, false); }
     }
+
     const string lockRevisionPath = "d:workbookProtection/@lockRevision";
 
     /// <summary>
@@ -83,24 +80,17 @@ public class ExcelProtection : XmlHelper
     /// </summary>
     public bool LockRevision
     {
-        get
-        {
-            return this.GetXmlNodeBool(lockRevisionPath, false);
-        }
-        set
-        {
-            this.SetXmlNodeBool(lockRevisionPath, value, false);
-        }
+        get { return this.GetXmlNodeBool(lockRevisionPath, false); }
+        set { this.SetXmlNodeBool(lockRevisionPath, value, false); }
     }
-    ExcelWriteProtection _writeProtection=null;
+
+    ExcelWriteProtection _writeProtection = null;
+
     /// <summary>
     /// File sharing settings for the workbook.
     /// </summary>
     public ExcelWriteProtection WriteProtection
     {
-        get
-        {
-            return this._writeProtection ??= new ExcelWriteProtection(this.NameSpaceManager, this.TopNode, this.SchemaNodeOrder);
-        }
+        get { return this._writeProtection ??= new ExcelWriteProtection(this.NameSpaceManager, this.TopNode, this.SchemaNodeOrder); }
     }
 }

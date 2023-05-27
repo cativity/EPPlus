@@ -10,6 +10,7 @@
  *************************************************************************************************
   01/27/2020         EPPlus Software AB       Initial release EPPlus 5
  *************************************************************************************************/
+
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -25,25 +26,31 @@ namespace OfficeOpenXml.Style.XmlAccess;
 /// </summary>
 public sealed class ExcelNumberFormatXml : StyleXmlHelper
 {
-    internal ExcelNumberFormatXml(XmlNamespaceManager nameSpaceManager) : base(nameSpaceManager)
+    internal ExcelNumberFormatXml(XmlNamespaceManager nameSpaceManager)
+        : base(nameSpaceManager)
     {
-            
-    }        
-    internal ExcelNumberFormatXml(XmlNamespaceManager nameSpaceManager, bool buildIn): base(nameSpaceManager)
+    }
+
+    internal ExcelNumberFormatXml(XmlNamespaceManager nameSpaceManager, bool buildIn)
+        : base(nameSpaceManager)
     {
         this.BuildIn = buildIn;
     }
-    internal ExcelNumberFormatXml(XmlNamespaceManager nsm, XmlNode topNode) :
-        base(nsm, topNode)
+
+    internal ExcelNumberFormatXml(XmlNamespaceManager nsm, XmlNode topNode)
+        : base(nsm, topNode)
     {
         this._numFmtId = this.GetXmlNodeInt("@numFmtId");
         this._format = this.GetXmlNodeString("@formatCode");
     }
+
     /// <summary>
     /// If the number format is build in
     /// </summary>
     public bool BuildIn { get; private set; }
+
     int _numFmtId;
+
     /// <summary>
     /// Id for number format
     /// 
@@ -80,61 +87,54 @@ public sealed class ExcelNumberFormatXml : StyleXmlHelper
     /// </summary>            
     public int NumFmtId
     {
-        get
-        {
-            return this._numFmtId;
-        }
-        set
-        {
-            this._numFmtId = value;
-        }
+        get { return this._numFmtId; }
+        set { this._numFmtId = value; }
     }
+
     internal override string Id
     {
-        get
-        {
-            return this._format;
-        }
+        get { return this._format; }
     }
+
     const string fmtPath = "@formatCode";
     string _format = string.Empty;
+
     /// <summary>
     /// The numberformat string
     /// </summary>
     public string Format
     {
-        get
-        {
-            return this._format;
-        }
+        get { return this._format; }
         set
         {
             this._numFmtId = ExcelNumberFormat.GetFromBuildIdFromFormat(value);
             this._format = value;
         }
     }
+
     internal static string GetNewID(int NumFmtId, string Format)
-    {            
+    {
         if (NumFmtId < 0)
         {
-            NumFmtId = ExcelNumberFormat.GetFromBuildIdFromFormat(Format);                
+            NumFmtId = ExcelNumberFormat.GetFromBuildIdFromFormat(Format);
         }
+
         return NumFmtId.ToString();
     }
 
     internal static void AddBuildIn(XmlNamespaceManager NameSpaceManager, ExcelStyleCollection<ExcelNumberFormatXml> NumberFormats)
     {
-        NumberFormats.Add("General",new ExcelNumberFormatXml(NameSpaceManager,true){NumFmtId=0,Format="General"});
-        NumberFormats.Add("0", new ExcelNumberFormatXml(NameSpaceManager,true) { NumFmtId = 1, Format = "0" });
-        NumberFormats.Add("0.00", new ExcelNumberFormatXml(NameSpaceManager,true) { NumFmtId = 2, Format = "0.00" });
+        NumberFormats.Add("General", new ExcelNumberFormatXml(NameSpaceManager, true) { NumFmtId = 0, Format = "General" });
+        NumberFormats.Add("0", new ExcelNumberFormatXml(NameSpaceManager, true) { NumFmtId = 1, Format = "0" });
+        NumberFormats.Add("0.00", new ExcelNumberFormatXml(NameSpaceManager, true) { NumFmtId = 2, Format = "0.00" });
         NumberFormats.Add("#,##0", new ExcelNumberFormatXml(NameSpaceManager, true) { NumFmtId = 3, Format = "#,##0" });
         NumberFormats.Add("#,##0.00", new ExcelNumberFormatXml(NameSpaceManager, true) { NumFmtId = 4, Format = "#,##0.00" });
-        NumberFormats.Add("0%", new ExcelNumberFormatXml(NameSpaceManager,true) { NumFmtId = 9, Format = "0%" });
-        NumberFormats.Add("0.00%", new ExcelNumberFormatXml(NameSpaceManager,true) { NumFmtId = 10, Format = "0.00%" });
+        NumberFormats.Add("0%", new ExcelNumberFormatXml(NameSpaceManager, true) { NumFmtId = 9, Format = "0%" });
+        NumberFormats.Add("0.00%", new ExcelNumberFormatXml(NameSpaceManager, true) { NumFmtId = 10, Format = "0.00%" });
         NumberFormats.Add("0.00E+00", new ExcelNumberFormatXml(NameSpaceManager, true) { NumFmtId = 11, Format = "0.00E+00" });
         NumberFormats.Add("# ?/?", new ExcelNumberFormatXml(NameSpaceManager, true) { NumFmtId = 12, Format = "# ?/?" });
-        NumberFormats.Add("# ??/??", new ExcelNumberFormatXml(NameSpaceManager,true) { NumFmtId = 13, Format = "# ??/??" });
-        NumberFormats.Add("mm-dd-yy", new ExcelNumberFormatXml(NameSpaceManager,true) { NumFmtId = 14, Format = "mm-dd-yy" });
+        NumberFormats.Add("# ??/??", new ExcelNumberFormatXml(NameSpaceManager, true) { NumFmtId = 13, Format = "# ??/??" });
+        NumberFormats.Add("mm-dd-yy", new ExcelNumberFormatXml(NameSpaceManager, true) { NumFmtId = 14, Format = "mm-dd-yy" });
         NumberFormats.Add("d-mmm-yy", new ExcelNumberFormatXml(NameSpaceManager, true) { NumFmtId = 15, Format = "d-mmm-yy" });
         NumberFormats.Add("d-mmm", new ExcelNumberFormatXml(NameSpaceManager, true) { NumFmtId = 16, Format = "d-mmm" });
         NumberFormats.Add("mmm-yy", new ExcelNumberFormatXml(NameSpaceManager, true) { NumFmtId = 17, Format = "mmm-yy" });
@@ -161,6 +161,7 @@ public sealed class ExcelNumberFormatXml : StyleXmlHelper
         this.TopNode = topNode;
         this.SetXmlNodeString("@numFmtId", this.NumFmtId.ToString());
         this.SetXmlNodeString("@formatCode", this.Format);
+
         return this.TopNode;
     }
 
@@ -170,12 +171,16 @@ public sealed class ExcelNumberFormatXml : StyleXmlHelper
         Number = 1,
         DateTime = 2,
     }
+
     ExcelFormatTranslator _translator = null;
+
     internal ExcelFormatTranslator FormatTranslator
     {
         get { return this._translator ??= new ExcelFormatTranslator(this.Format, this.NumFmtId); }
     }
+
     #region Excel --> .Net Format
+
     internal class ExcelFormatTranslator
     {
         internal enum eSystemDateFormat
@@ -186,13 +191,19 @@ public sealed class ExcelNumberFormatXml : StyleXmlHelper
             Conditional,
             SystemShortDate,
         }
+
         internal class FormatPart
         {
             internal string NetFormat { get; set; }
+
             internal string NetFormatForWidth { get; set; }
+
             internal string FractionFormat { get; set; }
+
             internal eSystemDateFormat SpecialDateFormat { get; set; }
+
             internal bool ContainsTextPlaceholder { get; set; } = false;
+
             internal void SetFormat(string format, bool containsAmPm, bool forColWidth)
             {
                 if (containsAmPm)
@@ -210,17 +221,19 @@ public sealed class ExcelNumberFormatXml : StyleXmlHelper
                 }
             }
         }
+
         internal ExcelFormatTranslator(string format, int numFmtID)
         {
             FormatPart? f = new FormatPart();
             this.Formats.Add(f);
+
             if (numFmtID == 14)
             {
                 f.NetFormat = f.NetFormatForWidth = "";
                 this.DataType = eFormatType.DateTime;
                 f.SpecialDateFormat = eSystemDateFormat.SystemShortDate;
             }
-            else if (format.Equals("general",StringComparison.OrdinalIgnoreCase))
+            else if (format.Equals("general", StringComparison.OrdinalIgnoreCase))
             {
                 f.NetFormat = f.NetFormatForWidth = "0.#########";
                 this.DataType = eFormatType.Number;
@@ -229,29 +242,26 @@ public sealed class ExcelNumberFormatXml : StyleXmlHelper
             {
                 this.ToNetFormat(format, false);
                 this.ToNetFormat(format, true);
-            }                
+            }
         }
+
         internal List<FormatPart> Formats { get; private set; } = new List<FormatPart>();
+
         CultureInfo _ci = null;
+
         internal CultureInfo Culture
         {
-            get
-            {
-                return this._ci ?? CultureInfo.CurrentCulture;
-            }
-            set
-            {
-                this._ci = value;
-            }
+            get { return this._ci ?? CultureInfo.CurrentCulture; }
+            set { this._ci = value; }
         }
-        internal bool HasCulture 
-        { 
-            get 
-            { 
-                return this._ci != null; 
-            } 
+
+        internal bool HasCulture
+        {
+            get { return this._ci != null; }
         }
+
         internal eFormatType DataType { get; private set; }
+
         private void ToNetFormat(string ExcelFormat, bool forColWidth)
         {
             this.DataType = eFormatType.Unknown;
@@ -263,7 +273,7 @@ public sealed class ExcelNumberFormatXml : StyleXmlHelper
             bool prevUnderScore = false;
             bool ignoreNext = false;
             bool containsAmPm = ExcelFormat.Contains("AM/PM");
-            List<int> lstDec=new List<int>();
+            List<int> lstDec = new List<int>();
             StringBuilder sb = new StringBuilder();
             this.Culture = null;
             int secCount = 0;
@@ -278,6 +288,7 @@ public sealed class ExcelNumberFormatXml : StyleXmlHelper
             for (int pos = 0; pos < ExcelFormat.Length; pos++)
             {
                 char c = ExcelFormat[pos];
+
                 if (c == '"')
                 {
                     isText = !isText;
@@ -288,6 +299,7 @@ public sealed class ExcelNumberFormatXml : StyleXmlHelper
                     if (ignoreNext)
                     {
                         ignoreNext = false;
+
                         continue;
                     }
                     else if (isText && !isBracket)
@@ -299,13 +311,16 @@ public sealed class ExcelNumberFormatXml : StyleXmlHelper
                         if (c == ']')
                         {
                             isBracket = false;
-                            if (bracketText[0] == '$')  //Local Info
+
+                            if (bracketText[0] == '$') //Local Info
                             {
                                 string[] li = Regex.Split(bracketText, "-");
+
                                 if (li[0].Length > 1)
                                 {
-                                    sb.Append("\"" + li[0].Substring(1, li[0].Length - 1) + "\"");     //Currency symbol
+                                    sb.Append("\"" + li[0].Substring(1, li[0].Length - 1) + "\""); //Currency symbol
                                 }
+
                                 if (li.Length > 1)
                                 {
                                     if (li[1].Equals("f800", StringComparison.OrdinalIgnoreCase))
@@ -340,13 +355,11 @@ public sealed class ExcelNumberFormatXml : StyleXmlHelper
                                     }
                                 }
                             }
-                            else if(bracketText.StartsWith("<") ||
-                                    bracketText.StartsWith(">") ||
-                                    bracketText.StartsWith("=")) //Conditional
+                            else if (bracketText.StartsWith("<") || bracketText.StartsWith(">") || bracketText.StartsWith("=")) //Conditional
                             {
                                 f.SpecialDateFormat = eSystemDateFormat.Conditional;
                             }
-                            else 
+                            else
                             {
                                 sb.Append(bracketText);
                                 f.SpecialDateFormat = eSystemDateFormat.Conditional;
@@ -363,6 +376,7 @@ public sealed class ExcelNumberFormatXml : StyleXmlHelper
                         {
                             sb.AppendFormat("\"{0}\"", c);
                         }
+
                         prevUnderScore = false;
                     }
                     else
@@ -371,6 +385,7 @@ public sealed class ExcelNumberFormatXml : StyleXmlHelper
                         {
                             secCount++;
                             f.SetFormat(sb.ToString(), containsAmPm, forColWidth);
+
                             if (secCount < this.Formats.Count)
                             {
                                 f = this.Formats[secCount];
@@ -380,6 +395,7 @@ public sealed class ExcelNumberFormatXml : StyleXmlHelper
                                 f = new FormatPart();
                                 this.Formats.Add(f);
                             }
+
                             sb = new StringBuilder();
                         }
                         else
@@ -404,7 +420,8 @@ public sealed class ExcelNumberFormatXml : StyleXmlHelper
                                 if (c == '.' || c == ',')
                                 {
                                     sb.Append('\\');
-                                }                                    
+                                }
+
                                 sb.Append(c);
                                 prevBslsh = false;
                             }
@@ -417,16 +434,11 @@ public sealed class ExcelNumberFormatXml : StyleXmlHelper
                             {
                                 prevBslsh = true;
                             }
-                            else if (c == '0' ||
-                                     c == '#' ||
-                                     c == '.' ||
-                                     c == ',' ||
-                                     c == '%' ||
-                                     clc == 'd' ||
-                                     clc == 's')
+                            else if (c == '0' || c == '#' || c == '.' || c == ',' || c == '%' || clc == 'd' || clc == 's')
                             {
                                 sb.Append(c);
-                                if(c=='.')
+
+                                if (c == '.')
                                 {
                                     lstDec.Add(sb.Length - 1);
                                 }
@@ -441,6 +453,7 @@ public sealed class ExcelNumberFormatXml : StyleXmlHelper
                                 {
                                     sb.Append('H');
                                 }
+
                                 useMinute = true;
                             }
                             else if (clc == 'm')
@@ -467,32 +480,34 @@ public sealed class ExcelNumberFormatXml : StyleXmlHelper
                                 if (this.DataType == eFormatType.Number)
                                 {
                                     int startPos = pos - 1;
-                                    while (startPos >= 0 &&
-                                           (ExcelFormat[startPos] == '?' ||
-                                            ExcelFormat[startPos] == '#' ||
-                                            ExcelFormat[startPos] == '0'))
+
+                                    while (startPos >= 0 && (ExcelFormat[startPos] == '?' || ExcelFormat[startPos] == '#' || ExcelFormat[startPos] == '0'))
                                     {
                                         startPos--;
                                     }
 
-                                    if (startPos > 0)  //RemovePart
+                                    if (startPos > 0) //RemovePart
                                     {
-                                        sb.Remove(sb.Length-(pos-startPos-1),pos-startPos-1) ;
+                                        sb.Remove(sb.Length - (pos - startPos - 1), pos - startPos - 1);
                                     }
 
                                     int endPos = pos + 1;
-                                    while (endPos < ExcelFormat.Length &&
-                                           (ExcelFormat[endPos] == '?' ||
-                                            ExcelFormat[endPos] == '#' ||
-                                            (ExcelFormat[endPos] >= '0' && ExcelFormat[endPos]<= '9')))
+
+                                    while (endPos < ExcelFormat.Length
+                                           && (ExcelFormat[endPos] == '?'
+                                               || ExcelFormat[endPos] == '#'
+                                               || (ExcelFormat[endPos] >= '0' && ExcelFormat[endPos] <= '9')))
                                     {
                                         endPos++;
                                     }
+
                                     pos = endPos;
+
                                     if (f.FractionFormat != "")
                                     {
-                                        f.FractionFormat = ExcelFormat.Substring(startPos+1, endPos - startPos-1);
+                                        f.FractionFormat = ExcelFormat.Substring(startPos + 1, endPos - startPos - 1);
                                     }
+
                                     sb.Append('?'); //Will be replaced later on by the fraction
                                 }
                                 else
@@ -548,7 +563,8 @@ public sealed class ExcelNumberFormatXml : StyleXmlHelper
 
         internal static string FormatFraction(double d, FormatPart f)
         {
-            int numerator, denomerator;
+            int numerator,
+                denomerator;
 
             int intPart = (int)d;
 
@@ -558,7 +574,7 @@ public sealed class ExcelNumberFormatXml : StyleXmlHelper
             {
                 fixedDenominator = 0;
             }
-                
+
             if (d == 0 || double.IsNaN(d))
             {
                 if (fmt[0].Trim() == "" && fmt[1].Trim() == "")
@@ -573,6 +589,7 @@ public sealed class ExcelNumberFormatXml : StyleXmlHelper
 
             int maxDigits = fmt[1].Length;
             string sign = d < 0 ? "-" : "";
+
             if (fixedDenominator == 0)
             {
                 List<double> numerators = new List<double>() { 1, 0 };
@@ -584,6 +601,7 @@ public sealed class ExcelNumberFormatXml : StyleXmlHelper
                 }
 
                 int maxNum = 0;
+
                 for (int i = 0; i < maxDigits; i++)
                 {
                     maxNum += 9 * (int)Math.Pow((double)10, (double)i);
@@ -591,12 +609,16 @@ public sealed class ExcelNumberFormatXml : StyleXmlHelper
 
                 double divRes = 1 / ((double)Math.Abs(d) - intPart);
                 double prevResult = double.NaN;
-                int listPos = 2, index = 1;
+
+                int listPos = 2,
+                    index = 1;
+
                 while (true)
                 {
                     index++;
                     double intDivRes = Math.Floor(divRes);
                     numerators.Add((intDivRes * numerators[index - 1]) + numerators[index - 2]);
+
                     if (numerators[index] > maxNum)
                     {
                         break;
@@ -605,10 +627,12 @@ public sealed class ExcelNumberFormatXml : StyleXmlHelper
                     denominators.Add((intDivRes * denominators[index - 1]) + denominators[index - 2]);
 
                     double result = numerators[index] / denominators[index];
+
                     if (denominators[index] > maxNum)
                     {
                         break;
                     }
+
                     listPos = index;
 
                     if (result == prevResult)
@@ -623,9 +647,9 @@ public sealed class ExcelNumberFormatXml : StyleXmlHelper
 
                     prevResult = result;
 
-                    divRes = 1 / (divRes - intDivRes);  //Rest
+                    divRes = 1 / (divRes - intDivRes); //Rest
                 }
-                    
+
                 numerator = (int)numerators[listPos];
                 denomerator = (int)denominators[listPos];
             }
@@ -634,9 +658,10 @@ public sealed class ExcelNumberFormatXml : StyleXmlHelper
                 numerator = (int)Math.Round((d - intPart) / (1D / fixedDenominator), 0);
                 denomerator = fixedDenominator;
             }
-            if (numerator == denomerator || numerator==0)
+
+            if (numerator == denomerator || numerator == 0)
             {
-                if(numerator == denomerator)
+                if (numerator == denomerator)
                 {
                     intPart++;
                 }
@@ -657,9 +682,10 @@ public sealed class ExcelNumberFormatXml : StyleXmlHelper
         {
             string v = value.ToString("#");
             string pad = "";
+
             if (v.Length < format.Length)
             {
-                for (int i = format.Length - v.Length-1; i >= 0; i--)
+                for (int i = format.Length - v.Length - 1; i >= 0; i--)
                 {
                     if (format[i] == '?')
                     {
@@ -671,21 +697,23 @@ public sealed class ExcelNumberFormatXml : StyleXmlHelper
                     }
                 }
             }
+
             return pad + v;
         }
 
         internal FormatPart GetFormatPart(object value)
         {
-            if(this.Formats.Count>1)
+            if (this.Formats.Count > 1)
             {
-                if(ConvertUtil.IsNumericOrDate(value))
+                if (ConvertUtil.IsNumericOrDate(value))
                 {
-                    double d=ConvertUtil.GetValueDouble(value);
-                    if(d < 0D && this.Formats.Count > 1)
+                    double d = ConvertUtil.GetValueDouble(value);
+
+                    if (d < 0D && this.Formats.Count > 1)
                     {
                         return this.Formats[1];
                     }
-                    else if(d==0D && this.Formats.Count > 2)
+                    else if (d == 0D && this.Formats.Count > 2)
                     {
                         return this.Formats[2];
                     }
@@ -696,7 +724,7 @@ public sealed class ExcelNumberFormatXml : StyleXmlHelper
                 }
                 else
                 {
-                    if(this.Formats.Count>3)
+                    if (this.Formats.Count > 3)
                     {
                         return this.Formats[3];
                     }
@@ -712,5 +740,6 @@ public sealed class ExcelNumberFormatXml : StyleXmlHelper
             }
         }
     }
+
     #endregion
 }

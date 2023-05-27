@@ -12,44 +12,61 @@ internal static class VmlConvertUtil
         {
             return 0;
         }
+
         if (v.EndsWith("f", StringComparison.OrdinalIgnoreCase))
         {
             ConvertUtil.TryParseNumericString(v.Substring(0, v.Length - 1), out double d);
+
             return d / 0x10000 * 100;
         }
         else if (v.EndsWith("%"))
         {
             ConvertUtil.TryParseNumericString(v.Substring(0, v.Length - 1), out double d);
+
             return d;
         }
         else
         {
             ConvertUtil.TryParseNumericString(v.Substring(0, v.Length - 1), out double d);
+
             return d * 100;
         }
     }
+
     internal static double ConvertToEMU(double v, eMeasurementUnits measure)
     {
         int ratio;
+
         switch (measure)
         {
             case eMeasurementUnits.Millimeters:
                 ratio = ExcelDrawing.EMU_PER_MM;
+
                 break;
+
             case eMeasurementUnits.Centimeters:
                 ratio = ExcelDrawing.EMU_PER_CM;
+
                 break;
+
             case eMeasurementUnits.Points:
                 ratio = ExcelDrawing.EMU_PER_POINT;
+
                 break;
+
             case eMeasurementUnits.Picas:
                 ratio = ExcelDrawing.EMU_PER_PICA;
+
                 break;
+
             case eMeasurementUnits.Inches:
                 ratio = ExcelDrawing.EMU_PER_US_INCH;
+
                 break;
+
             default:
                 ratio = ExcelDrawing.EMU_PER_PIXEL;
+
                 break;
         }
 

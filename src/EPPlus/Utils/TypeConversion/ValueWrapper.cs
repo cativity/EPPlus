@@ -10,6 +10,7 @@
  *************************************************************************************************
   01/27/2020         EPPlus Software AB       Initial release EPPlus 5
  *************************************************************************************************/
+
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -55,7 +56,7 @@ internal class ValueWrapper
     {
         get
         {
-            if(this._object == null)
+            if (this._object == null)
             {
                 return false;
             }
@@ -66,18 +67,12 @@ internal class ValueWrapper
 
     public bool IsDateTime
     {
-        get
-        {
-            return this._object is DateTime;
-        }
+        get { return this._object is DateTime; }
     }
 
     public bool IsTimeSpan
     {
-        get
-        {
-            return this._object is TimeSpan;
-        }
+        get { return this._object is TimeSpan; }
     }
 
     public DateTime ToDateTime()

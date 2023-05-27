@@ -19,6 +19,7 @@ public enum RoundingMethod
     /// Round decimal number to int using Convert.ToInt32
     /// </summary>
     Convert,
+
     /// <summary>
     /// Round decimal number to int using Math.Floor
     /// </summary>

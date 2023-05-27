@@ -10,6 +10,7 @@
  *************************************************************************************************
   01/27/2020         EPPlus Software AB       Initial release EPPlus 5
  *************************************************************************************************/
+
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -25,12 +26,13 @@ namespace OfficeOpenXml.Style;
 /// </summary>
 public class ExcelFill : StyleBase
 {
-    internal ExcelFill(ExcelStyles styles, XmlHelper.ChangedEventHandler ChangedEvent, int PositionID, string address, int index) :
-        base(styles, ChangedEvent, PositionID, address)
+    internal ExcelFill(ExcelStyles styles, XmlHelper.ChangedEventHandler ChangedEvent, int PositionID, string address, int index)
+        : base(styles, ChangedEvent, PositionID, address)
 
     {
         this.Index = index;
     }
+
     /// <summary>
     /// The pattern for solid fills.
     /// </summary>
@@ -57,7 +59,9 @@ public class ExcelFill : StyleBase
             this._ChangedEvent(this, new StyleChangeEventArgs(eStyleClass.Fill, eStyleProperty.PatternType, value, this._positionID, this._address));
         }
     }
+
     ExcelColor _patternColor = null;
+
     /// <summary>
     /// The color of the pattern
     /// </summary>
@@ -68,15 +72,19 @@ public class ExcelFill : StyleBase
             if (this._patternColor == null)
             {
                 this._patternColor = new ExcelColor(this._styles, this._ChangedEvent, this._positionID, this._address, eStyleClass.FillPatternColor, this);
+
                 if (this._gradient != null)
                 {
                     this._gradient = null;
                 }
             }
+
             return this._patternColor;
         }
     }
+
     ExcelColor _backgroundColor = null;
+
     /// <summary>
     /// The background color
     /// </summary>
@@ -86,21 +94,25 @@ public class ExcelFill : StyleBase
         {
             if (this._backgroundColor == null)
             {
-                this._backgroundColor = new ExcelColor(this._styles, this._ChangedEvent, this._positionID, this._address, eStyleClass.FillBackgroundColor, this);
+                this._backgroundColor =
+                    new ExcelColor(this._styles, this._ChangedEvent, this._positionID, this._address, eStyleClass.FillBackgroundColor, this);
+
                 if (this._gradient != null)
                 {
                     this._gradient = null;
                 }
             }
+
             return this._backgroundColor;
-                
         }
     }
-    ExcelGradientFill _gradient=null;
+
+    ExcelGradientFill _gradient = null;
+
     /// <summary>
     /// Access to properties for gradient fill.
     /// </summary>
-    public ExcelGradientFill Gradient 
+    public ExcelGradientFill Gradient
     {
         get
         {
@@ -110,9 +122,11 @@ public class ExcelFill : StyleBase
                 this._backgroundColor = null;
                 this._patternColor = null;
             }
+
             return this._gradient;
         }
     }
+
     internal override string Id
     {
         get
@@ -127,16 +141,18 @@ public class ExcelFill : StyleBase
             }
         }
     }
+
     /// <summary>
     /// Set the background to a specific color and fillstyle
     /// </summary>
     /// <param name="color">the color</param>
     /// <param name="fillStyle">The fillstyle. Default Solid</param>
-    public void SetBackground(Color color, ExcelFillStyle fillStyle=ExcelFillStyle.Solid)
+    public void SetBackground(Color color, ExcelFillStyle fillStyle = ExcelFillStyle.Solid)
     {
         this.PatternType = fillStyle;
         this.BackgroundColor.SetColor(color);
     }
+
     /// <summary>
     /// Set the background to a specific color and fillstyle
     /// </summary>
@@ -147,6 +163,7 @@ public class ExcelFill : StyleBase
         this.PatternType = fillStyle;
         this.BackgroundColor.SetColor(color);
     }
+
     /// <summary>
     /// Set the background to a specific color and fillstyle
     /// </summary>

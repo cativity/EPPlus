@@ -26,6 +26,7 @@
  *******************************************************************************
   01/27/2020         EPPlus Software AB       Initial release EPPlus 5
  *******************************************************************************/
+
 using System;
 using System.IO;
 using System.Text;
@@ -137,6 +138,7 @@ public class RefAndLookupTests : FormulaParserTestBase
         s.Cells[5, 5].Formula = "LOOKUP(4, " + lookupAddress + ")";
         s.Calculate();
         Assert.AreEqual(1, s.Cells[5, 5].Value);
+
         //    A.CallTo(() => _excelDataProvider.GetCellValue(WorksheetName,1, 1)).Returns(3);
         //A.CallTo(() => _excelDataProvider.GetCellValue(WorksheetName,1, 2)).Returns(5);
         //A.CallTo(() => _excelDataProvider.GetCellValue(WorksheetName,2, 1)).Returns(4);
@@ -155,7 +157,6 @@ public class RefAndLookupTests : FormulaParserTestBase
         this._worksheet.Cells["A3"].Formula = "MATCH(3, " + lookupAddress + ")";
         this._worksheet.Calculate();
         Assert.AreEqual(1, this._worksheet.Cells["A3"].Value);
-
     }
 
     [TestMethod]
@@ -344,6 +345,7 @@ public class RefAndLookupTests : FormulaParserTestBase
         using ExcelPackage? package = new ExcelPackage(new FileInfo(@"c:\temp\Book3.xlsx"));
         ExcelWorksheet? s1 = package.Workbook.Worksheets.First();
         string? v = s1.Cells["X10"].Formula;
+
         //s1.Calculate();
         v = s1.Cells["X10"].Formula;
     }
@@ -355,18 +357,21 @@ public class RefAndLookupTests : FormulaParserTestBase
         string? resultAddress = "B1:B5";
         using ExcelPackage? package = new ExcelPackage();
         ExcelWorksheet? s = package.Workbook.Worksheets.Add("test");
+
         //lookup_vector
         s.Cells[1, 1].Value = 4.14;
         s.Cells[2, 1].Value = 4.19;
         s.Cells[3, 1].Value = 5.17;
         s.Cells[4, 1].Value = 5.77;
         s.Cells[5, 1].Value = 6.39;
+
         //result_vector
         s.Cells[1, 2].Value = "red";
         s.Cells[2, 2].Value = "orange";
         s.Cells[3, 2].Value = "yellow";
         s.Cells[4, 2].Value = "green";
         s.Cells[5, 2].Value = "blue";
+
         //lookup_value
         s.Cells[1, 3].Value = 4.14;
         s.Cells[5, 5].Formula = "LOOKUP(C1, " + lookupAddress + ", " + resultAddress + ")";
@@ -380,8 +385,10 @@ public class RefAndLookupTests : FormulaParserTestBase
         DateTime date = new DateTime(2020, 2, 7).Date;
         using ExcelPackage? package = new ExcelPackage();
         ExcelWorksheet? s = package.Workbook.Worksheets.Add("test");
+
         //lookup_vector
         s.Cells[1, 1].Value = date;
+
         //result vector
         s.Cells[1, 2].Value = 10;
 
@@ -391,6 +398,7 @@ public class RefAndLookupTests : FormulaParserTestBase
         s.Calculate();
         Assert.AreEqual(10, s.Cells[1, 4].Value);
     }
+
     [TestMethod]
     public void OffsetInSecondPartOfRange()
     {

@@ -10,6 +10,7 @@
  *************************************************************************************************
   01/27/2020         EPPlus Software AB       Initial release EPPlus 5
  *************************************************************************************************/
+
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -21,29 +22,32 @@ using OfficeOpenXml.FormulaParsing.Excel.Functions.Metadata;
 
 namespace OfficeOpenXml.FormulaParsing.Excel.Functions.RefAndLookup;
 
-[FunctionMetadata(
-                     Category = ExcelFunctionCategory.LookupAndReference,
-                     EPPlusVersion = "4",
-                     Description = "Looks up a supplied value in the first column of a table, and returns the corresponding value from another column")]
+[FunctionMetadata(Category = ExcelFunctionCategory.LookupAndReference,
+                  EPPlusVersion = "4",
+                  Description = "Looks up a supplied value in the first column of a table, and returns the corresponding value from another column")]
 internal class VLookup : LookupFunction
 {
     public override CompileResult Execute(IEnumerable<FunctionArgument> arguments, ParsingContext context)
     {
         Stopwatch sw = null;
+
         if (context.Debug)
         {
             sw = new Stopwatch();
             sw.Start();
         }
+
         ValidateArguments(arguments, 3);
         LookupArguments? lookupArgs = new LookupArguments(arguments, context);
         LookupNavigator? navigator = LookupNavigatorFactory.Create(LookupDirection.Vertical, lookupArgs, context);
         CompileResult? result = this.Lookup(navigator, lookupArgs);
+
         if (context.Debug)
         {
             sw.Stop();
             context.Configuration.Logger.LogFunction("VLOOKUP", sw.ElapsedMilliseconds);
         }
+
         return result;
     }
 }

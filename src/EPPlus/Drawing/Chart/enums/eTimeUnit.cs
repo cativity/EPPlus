@@ -10,6 +10,7 @@
  *************************************************************************************************
   01/27/2020         EPPlus Software AB       Initial release EPPlus 5
  *************************************************************************************************/
+
 namespace OfficeOpenXml.Drawing.Chart;
 
 /// <summary>
@@ -21,10 +22,12 @@ public enum eTimeUnit
     /// Years
     /// </summary>
     Years,
+
     /// <summary>
     /// Months
     /// </summary>
     Months,
+
     /// <summary>
     /// Days
     /// </summary>

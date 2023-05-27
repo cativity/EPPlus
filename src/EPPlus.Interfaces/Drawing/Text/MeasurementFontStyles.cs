@@ -10,6 +10,7 @@
  *************************************************************************************************
   1/4/2021         EPPlus Software AB           EPPlus Interfaces 1.0
  *************************************************************************************************/
+
 using System;
 
 namespace OfficeOpenXml.Interfaces.Drawing.Text;
@@ -21,18 +22,22 @@ public enum MeasurementFontStyles
     // Summary:
     //     Normal text.
     Regular = 0,
+
     //
     // Summary:
     //     Bold text.
     Bold = 1,
+
     //
     // Summary:
     //     Italic text.
     Italic = 2,
+
     //
     // Summary:
     //     Underlined text.
     Underline = 4,
+
     //
     // Summary:
     //     Text with a line through the middle.

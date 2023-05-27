@@ -10,6 +10,7 @@
  *************************************************************************************************
   05/03/2020         EPPlus Software AB         Implemented function
  *************************************************************************************************/
+
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -33,6 +34,7 @@ internal static class PaddingHelper
         {
             input = input.Substring(input.Length - length);
         }
+
         return input;
     }
 
@@ -42,6 +44,7 @@ internal static class PaddingHelper
         {
             input = input.Substring(input.Length - length);
         }
+
         return input;
     }
 }

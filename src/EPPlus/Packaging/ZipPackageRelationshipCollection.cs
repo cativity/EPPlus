@@ -10,6 +10,7 @@
  *************************************************************************************************
   01/27/2020         EPPlus Software AB       Initial release EPPlus 5
  *************************************************************************************************/
+
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -30,10 +31,12 @@ public class ZipPackageRelationshipCollection : IEnumerable<ZipPackageRelationsh
     /// Relationships dictionary
     /// </summary>
     internal protected Dictionary<string, ZipPackageRelationship> _rels = new Dictionary<string, ZipPackageRelationship>(StringComparer.OrdinalIgnoreCase);
+
     internal void Add(ZipPackageRelationship item)
     {
         this._rels.Add(item.Id, item);
     }
+
     /// <summary>
     /// Gets the enumerator for the collection
     /// </summary>
@@ -52,20 +55,21 @@ public class ZipPackageRelationshipCollection : IEnumerable<ZipPackageRelationsh
     {
         this._rels.Remove(id);
     }
+
     internal bool ContainsKey(string id)
     {
         return this._rels.ContainsKey(id);
     }
+
     internal ZipPackageRelationship this[string id]
     {
-        get
-        {
-            return this._rels[id];
-        }
+        get { return this._rels[id]; }
     }
+
     internal ZipPackageRelationshipCollection GetRelationshipsByType(string relationshipType)
     {
         ZipPackageRelationshipCollection? ret = new ZipPackageRelationshipCollection();
+
         foreach (ZipPackageRelationship? rel in this._rels.Values)
         {
             if (rel.RelationshipType == relationshipType)
@@ -73,23 +77,36 @@ public class ZipPackageRelationshipCollection : IEnumerable<ZipPackageRelationsh
                 ret.Add(rel);
             }
         }
+
         return ret;
     }
 
     internal void WriteZip(ZipOutputStream os, string fileName)
     {
-        StringBuilder xml = new StringBuilder("<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"yes\"?><Relationships xmlns=\"http://schemas.openxmlformats.org/package/2006/relationships\">");
+        StringBuilder xml =
+            new
+                StringBuilder("<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"yes\"?><Relationships xmlns=\"http://schemas.openxmlformats.org/package/2006/relationships\">");
+
         foreach (ZipPackageRelationship? rel in this._rels.Values)
         {
-            if(rel.TargetUri==null || rel.TargetUri.OriginalString.StartsWith("Invalid:URI", StringComparison.OrdinalIgnoreCase))
+            if (rel.TargetUri == null || rel.TargetUri.OriginalString.StartsWith("Invalid:URI", StringComparison.OrdinalIgnoreCase))
             {
-                xml.AppendFormat("<Relationship Id=\"{0}\" Type=\"{1}\" Target=\"{2}\"{3}/>", SecurityElement.Escape(rel.Id), rel.RelationshipType, ConvertUtil.CropString(SecurityElement.Escape(rel.Target), 2079), rel.TargetMode == TargetMode.External ? " TargetMode=\"External\"" : "");
+                xml.AppendFormat("<Relationship Id=\"{0}\" Type=\"{1}\" Target=\"{2}\"{3}/>",
+                                 SecurityElement.Escape(rel.Id),
+                                 rel.RelationshipType,
+                                 ConvertUtil.CropString(SecurityElement.Escape(rel.Target), 2079),
+                                 rel.TargetMode == TargetMode.External ? " TargetMode=\"External\"" : "");
             }
             else
             {
-                xml.AppendFormat("<Relationship Id=\"{0}\" Type=\"{1}\" Target=\"{2}\"{3}/>", SecurityElement.Escape(rel.Id), rel.RelationshipType, ConvertUtil.CropString(SecurityElement.Escape(rel.TargetUri.OriginalString), 2079), rel.TargetMode == TargetMode.External ? " TargetMode=\"External\"" : "");
+                xml.AppendFormat("<Relationship Id=\"{0}\" Type=\"{1}\" Target=\"{2}\"{3}/>",
+                                 SecurityElement.Escape(rel.Id),
+                                 rel.RelationshipType,
+                                 ConvertUtil.CropString(SecurityElement.Escape(rel.TargetUri.OriginalString), 2079),
+                                 rel.TargetMode == TargetMode.External ? " TargetMode=\"External\"" : "");
             }
         }
+
         xml.Append("</Relationships>");
 
         os.PutNextEntry(fileName);
@@ -102,9 +119,6 @@ public class ZipPackageRelationshipCollection : IEnumerable<ZipPackageRelationsh
     /// </summary>
     public int Count
     {
-        get
-        {
-            return this._rels.Count;
-        }
+        get { return this._rels.Count; }
     }
 }

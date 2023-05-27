@@ -10,6 +10,7 @@
  *************************************************************************************************
   09/05/2022         EPPlus Software AB       EPPlus 6.1
  *************************************************************************************************/
+
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -28,6 +29,7 @@ internal class EPPlusSignatureContext
         public const string SHA384 = "2.16.840.1.101.3.4.2.2";
         public const string SHA512 = "2.16.840.1.101.3.4.2.3";
     }
+
     public EPPlusSignatureContext(ExcelVbaSignatureType signatureType)
     {
         this._signatureType = signatureType;
@@ -37,11 +39,8 @@ internal class EPPlusSignatureContext
 
     public ExcelVbaSignatureType SignatureType => this._signatureType;
 
-    public string AlgorithmIdentifierOId
-    {
-        get;
-        set;
-    }
+    public string AlgorithmIdentifierOId { get; set; }
+
     public VbaSignatureHashAlgorithm HashAlgorithm
     {
         get
@@ -50,12 +49,16 @@ internal class EPPlusSignatureContext
             {
                 case HashAlgorithmOids.MD5:
                     return VbaSignatureHashAlgorithm.MD5;
+
                 case HashAlgorithmOids.SHA256:
                     return VbaSignatureHashAlgorithm.SHA256;
+
                 case HashAlgorithmOids.SHA384:
                     return VbaSignatureHashAlgorithm.SHA384;
+
                 case HashAlgorithmOids.SHA512:
                     return VbaSignatureHashAlgorithm.SHA512;
+
                 default:
                     return VbaSignatureHashAlgorithm.SHA1;
             }
@@ -66,33 +69,35 @@ internal class EPPlusSignatureContext
             {
                 case VbaSignatureHashAlgorithm.MD5:
                     this.AlgorithmIdentifierOId = HashAlgorithmOids.MD5;
+
                     break;
+
                 case VbaSignatureHashAlgorithm.SHA256:
                     this.AlgorithmIdentifierOId = HashAlgorithmOids.SHA256;
+
                     break;
+
                 case VbaSignatureHashAlgorithm.SHA384:
                     this.AlgorithmIdentifierOId = HashAlgorithmOids.SHA384;
+
                     break;
+
                 case VbaSignatureHashAlgorithm.SHA512:
                     this.AlgorithmIdentifierOId = HashAlgorithmOids.SHA512;
+
                     break;
+
                 default:
                     this.AlgorithmIdentifierOId = HashAlgorithmOids.SHA1;
+
                     break;
             }
         }
     }
-    public byte[] CompiledHash
-    {
-        get;
-        set;
-    }
 
-    public byte[] SourceHash
-    {
-        get;
-        set;
-    }
+    public byte[] CompiledHash { get; set; }
+
+    public byte[] SourceHash { get; set; }
 
     public HashAlgorithm GetHashAlgorithm()
     {
@@ -101,18 +106,23 @@ internal class EPPlusSignatureContext
             return this.GetHashAlgorithmDefault();
         }
 
-        switch(this.AlgorithmIdentifierOId)
+        switch (this.AlgorithmIdentifierOId)
         {
             case HashAlgorithmOids.MD5:
                 return MD5.Create();
+
             case "1.3.14.3.2.26":
                 return SHA1.Create();
+
             case "2.16.840.1.101.3.4.2.1":
                 return SHA256.Create();
+
             case "2.16.840.1.101.3.4.2.2":
                 return SHA384.Create();
+
             case "2.16.840.1.101.3.4.2.3":
-                return SHA512.Create();                    
+                return SHA512.Create();
+
             default:
                 return null;
         }
@@ -120,10 +130,11 @@ internal class EPPlusSignatureContext
 
     private HashAlgorithm GetHashAlgorithmDefault()
     {
-        switch(this._signatureType)
-        {                
+        switch (this._signatureType)
+        {
             case ExcelVbaSignatureType.Legacy:
                 return MD5.Create();
+
             default:
                 return SHA1.Create();
         }
@@ -137,24 +148,33 @@ internal class EPPlusSignatureContext
             {
                 case ExcelVbaSignatureType.Legacy:
                     this.AlgorithmIdentifierOId = HashAlgorithmOids.MD5;
+
                     break;
+
                 default:
                     this.AlgorithmIdentifierOId = HashAlgorithmOids.SHA1;
+
                     break;
             }
         }
+
         switch (this.AlgorithmIdentifierOId)
         {
             case HashAlgorithmOids.MD5:
                 return new byte[] { 0x2A, 0x86, 0x48, 0x86, 0xF7, 0x0D, 0x02, 0x05 };
+
             case HashAlgorithmOids.SHA1:
                 return new byte[] { 0x2B, 0x0E, 0x03, 0x02, 0x1A };
+
             case HashAlgorithmOids.SHA256:
                 return new byte[] { 0x60, 0x86, 0x48, 0x01, 0x65, 0x03, 0x04, 0x02, 0x01 };
+
             case HashAlgorithmOids.SHA384:
                 return new byte[] { 0x60, 0x86, 0x48, 0x01, 0x65, 0x03, 0x04, 0x02, 0x02 };
+
             case HashAlgorithmOids.SHA512:
                 return new byte[] { 0x60, 0x86, 0x48, 0x01, 0x65, 0x03, 0x04, 0x02, 0x03 };
+
             default:
                 return null;
         }
@@ -166,6 +186,7 @@ internal class EPPlusSignatureContext
         {
             case ExcelVbaSignatureType.Legacy:
                 return new byte[] { 0x2B, 0x06, 0x01, 0x04, 0x01, 0x82, 0x37, 0x02, 0x01, 0x1D };
+
             default:
                 return new byte[] { 0x2B, 0x06, 0x01, 0x04, 0x01, 0x82, 0x37, 0x02, 0x01, 0x1F };
         }

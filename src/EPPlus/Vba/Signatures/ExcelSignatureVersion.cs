@@ -10,6 +10,7 @@
  *************************************************************************************************
   01/27/2020         EPPlus Software AB       Initial release EPPlus 5
  *************************************************************************************************/
+
 using System.Security.Cryptography.X509Certificates;
 using System.Security.Cryptography.Pkcs;
 using OfficeOpenXml.VBA.Signatures;
@@ -30,36 +31,33 @@ public class ExcelSignatureVersion
         this.Verifier = this.SignatureHandler.Verifier;
         this.HashAlgorithm = hashAlgorithm;
     }
+
     /// <summary>
     /// A boolean indicating if a signature for the VBA project will be created when the package is saved.
     /// Default is true
     /// </summary>
     public bool CreateSignatureOnSave { get; set; } = true;
+
     /// <summary>
     /// The verifyer
     /// </summary>
     public SignedCms Verifier { get; internal set; }
+
     /// <summary>
     /// The hash algorithm used.
     /// </summary>
-    public VbaSignatureHashAlgorithm HashAlgorithm
-    {
-        get;
-        set;
-    }
+    public VbaSignatureHashAlgorithm HashAlgorithm { get; set; }
+
     internal Packaging.ZipPackagePart Part { get; set; }
+
     internal readonly EPPlusVbaSignature SignatureHandler;
+
     internal X509Certificate2 Certificate
     {
-        get
-        {
-            return this.SignatureHandler.Certificate;
-        }
-        set
-        {
-            this.SignatureHandler.Certificate = value;
-        }
+        get { return this.SignatureHandler.Certificate; }
+        set { this.SignatureHandler.Certificate = value; }
     }
+
     internal void CreateSignature(ExcelVbaProject project)
     {
         this.SignatureHandler.Context.HashAlgorithm = this.HashAlgorithm;

@@ -10,6 +10,7 @@
  *************************************************************************************************
   02/18/2021         EPPlus Software AB       Pivot Table Styling - EPPlus 5.6
  *************************************************************************************************/
+
 using System;
 using System.Xml;
 
@@ -24,6 +25,7 @@ public class ExcelPivotAreaStyleConditions
     {
         this.Fields = new ExcelPivotAreaReferenceCollection(nsm, topNode, pt);
         XmlHelper? xh = XmlHelperFactory.Create(nsm, topNode);
+
         foreach (XmlElement n in xh.GetNodes("d:references/d:reference"))
         {
             if (n.GetAttribute("field") == "4294967294")
@@ -38,24 +40,21 @@ public class ExcelPivotAreaStyleConditions
 
         this.DataFields ??= new ExcelPivotAreaDataFieldReference(nsm, topNode, pt, -2);
     }
+
     /// <summary>
     /// Row and column fields that the conditions will apply to. 
     /// </summary>
-    public ExcelPivotAreaReferenceCollection Fields 
-    { 
-        get;  
-    }
+    public ExcelPivotAreaReferenceCollection Fields { get; }
+
     /// <summary>
     /// The data field that the conditions will apply to. 
     /// </summary>
-    public ExcelPivotAreaDataFieldReference DataFields
-    {
-        get;
-    }
+    public ExcelPivotAreaDataFieldReference DataFields { get; }
 
     internal void UpdateXml()
     {
         this.DataFields.UpdateXml();
+
         foreach (ExcelPivotAreaReference r in this.Fields)
         {
             r.UpdateXml();

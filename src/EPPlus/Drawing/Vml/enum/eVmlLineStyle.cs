@@ -10,6 +10,7 @@
  *************************************************************************************************
   11/23/2020         EPPlus Software AB       EPPlus 5.5
  *************************************************************************************************/
+
 namespace OfficeOpenXml;
 
 /// <summary>
@@ -21,22 +22,27 @@ public enum eVmlLineStyle
     /// No line style
     /// </summary>
     NoLine,
+
     /// <summary>
     /// A single line
     /// </summary>
     Single,
+
     /// <summary>
     /// Thin thin line style
     /// </summary>
     ThinThin,
+
     /// <summary>
     /// Thin thick line style
     /// </summary>
     ThinThick,
+
     /// <summary>
     /// Thick thin line style
     /// </summary>
     ThickThin,
+
     /// <summary>
     /// Thick between thin line style
     /// </summary>

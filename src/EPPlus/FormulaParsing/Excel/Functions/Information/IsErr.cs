@@ -10,6 +10,7 @@
  *************************************************************************************************
   01/27/2020         EPPlus Software AB       Initial release EPPlus 5
  *************************************************************************************************/
+
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -20,36 +21,40 @@ using OfficeOpenXml.FormulaParsing.ExpressionGraph;
 
 namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Information;
 
-[FunctionMetadata(
-                     Category = ExcelFunctionCategory.Information,
-                     EPPlusVersion = "4",
-                     Description = "Tests if an initial supplied value (or expression) returns an error (EXCEPT for the #N/A error) and if so, returns TRUE; Otherwise returns FALSE")]
+[FunctionMetadata(Category = ExcelFunctionCategory.Information,
+                  EPPlusVersion = "4",
+                  Description =
+                      "Tests if an initial supplied value (or expression) returns an error (EXCEPT for the #N/A error) and if so, returns TRUE; Otherwise returns FALSE")]
 internal class IsErr : ErrorHandlingFunction
 {
     public override CompileResult Execute(IEnumerable<FunctionArgument> arguments, ParsingContext context)
     {
         IsError? isError = new IsError();
         CompileResult? result = isError.Execute(arguments, context);
-        if ((bool) result.Result)
+
+        if ((bool)result.Result)
         {
             object? arg = GetFirstValue(arguments);
+
             if (arg is IRangeInfo)
             {
                 IRangeInfo? r = (IRangeInfo)arg;
-                ExcelErrorValue? e=r.GetValue(r.Address._fromRow, r.Address._fromCol) as ExcelErrorValue;
-                if (e !=null && e.Type==eErrorType.NA)
+                ExcelErrorValue? e = r.GetValue(r.Address._fromRow, r.Address._fromCol) as ExcelErrorValue;
+
+                if (e != null && e.Type == eErrorType.NA)
                 {
                     return this.CreateResult(false, DataType.Boolean);
                 }
             }
             else
             {
-                if (arg is ExcelErrorValue && ((ExcelErrorValue)arg).Type==eErrorType.NA)
+                if (arg is ExcelErrorValue && ((ExcelErrorValue)arg).Type == eErrorType.NA)
                 {
                     return this.CreateResult(false, DataType.Boolean);
                 }
             }
         }
+
         return result;
     }
 

@@ -25,7 +25,6 @@
 //
 // ------------------------------------------------------------------
 
-
 using OfficeOpenXml.Packaging.Ionic.Zlib;
 using System;
 using System.Collections.Generic;
@@ -41,6 +40,7 @@ internal partial class ZipEntry
     {
         byte[] bytes = new byte[4096];
         int i = 0;
+
         // signature
         bytes[i++] = (byte)(ZipConstants.ZipDirEntrySignature & 0x000000FF);
         bytes[i++] = (byte)((ZipConstants.ZipDirEntrySignature & 0x0000FF00) >> 8);
@@ -77,6 +77,7 @@ internal partial class ZipEntry
         // workitem 11969: Version Needed To Extract in central directory must be
         // the same as the local entry or MS .NET System.IO.Zip fails read.
         Int16 vNeeded = (Int16)(this.VersionNeeded != 0 ? this.VersionNeeded : 20);
+
         // workitem 12964
         // a zipentry in a zipoutputstream, with zero bytes written
         this._OutputUsesZip64 ??= new Nullable<bool>(this._container.Zip64 == Zip64Option.Always);
@@ -194,8 +195,8 @@ internal partial class ZipEntry
         bytes[i++] = (byte)((commentLength & 0xFF00) >> 8);
 
         // Disk number start
-        bool segmented = this._container.ZipFile != null &&
-                         this._container.ZipFile.MaxOutputSegmentSize != 0;
+        bool segmented = this._container.ZipFile != null && this._container.ZipFile.MaxOutputSegmentSize != 0;
+
         if (segmented) // workitem 13915
         {
             // Emit nonzero disknumber only if saving segmented archive.
@@ -280,6 +281,7 @@ internal partial class ZipEntry
         {
             // now actually write the comment itself into the byte buffer
             Buffer.BlockCopy(this._CommentBytes, 0, bytes, i, commentLength);
+
             // for (j = 0; (j < commentLength) && (i + j < bytes.Length); j++)
             //     bytes[i + j] = _CommentBytes[j];
             i += commentLength;
@@ -287,7 +289,6 @@ internal partial class ZipEntry
 
         s.Write(bytes, 0, i);
     }
-
 
 #if INFOZIP_UTF8
         static private bool FileNameIsUtf8(char[] FileNameChars)
@@ -306,7 +307,6 @@ internal partial class ZipEntry
         }
 #endif
 
-
     private byte[] ConstructExtraField(bool forCentralDirectory)
     {
         List<byte[]>? listOfBlocks = new List<byte[]>();
@@ -323,9 +323,8 @@ internal partial class ZipEntry
         // for the central directory, then we do the same thing.  Or, if the
         // Zip64 option is AsNecessary and it IS for the central directory,
         // and the entry requires zip64, then emit the header.
-        if (this._container.Zip64 == Zip64Option.Always ||
-            (this._container.Zip64 == Zip64Option.AsNecessary &&
-             (!forCentralDirectory || this._entryRequiresZip64.Value)))
+        if (this._container.Zip64 == Zip64Option.Always
+            || (this._container.Zip64 == Zip64Option.AsNecessary && (!forCentralDirectory || this._entryRequiresZip64.Value)))
         {
             // add extra field for zip64 here
             // workitem 7924
@@ -347,7 +346,7 @@ internal partial class ZipEntry
             }
 
             // DataSize
-            block[i++] = (byte)(sz - 4);  // decimal 28 or 16  (workitem 7924)
+            block[i++] = (byte)(sz - 4); // decimal 28 or 16  (workitem 7924)
             block[i++] = 0x00;
 
             // The actual metadata - we may or may not have real values yet...
@@ -355,6 +354,7 @@ internal partial class ZipEntry
             // uncompressed size
             Array.Copy(BitConverter.GetBytes(this._UncompressedSize), 0, block, i, 8);
             i += 8;
+
             // compressed size
             Array.Copy(BitConverter.GetBytes(this._CompressedSize), 0, block, i, 8);
             i += 8;
@@ -371,9 +371,9 @@ internal partial class ZipEntry
                 // starting disk number
                 Array.Copy(BitConverter.GetBytes(0), 0, block, i, 4);
             }
+
             listOfBlocks.Add(block);
         }
-
 
 #if AESCRYPTO
             if (Encryption == EncryptionAlgorithm.WinZipAes128 ||
@@ -419,6 +419,7 @@ internal partial class ZipEntry
         if (this._ntfsTimesAreSet && this._emitNtfsTimes)
         {
             block = new byte[32 + 4];
+
             // HeaderId   2 bytes    0x000a == NTFS times
             // Datasize   2 bytes    32
             // reserved   4 bytes    ?? don't care
@@ -428,6 +429,7 @@ internal partial class ZipEntry
             // atime      8 bytes    win32 ticks since win32epoch
             // ctime      8 bytes    win32 ticks since win32epoch
             int i = 0;
+
             // extra field for NTFS times
             // header id
             block[i++] = 0x0a;
@@ -463,12 +465,14 @@ internal partial class ZipEntry
         if (this._ntfsTimesAreSet && this._emitUnixTimes)
         {
             int len = 5 + 4;
+
             if (!forCentralDirectory)
             {
                 len += 8;
             }
 
             block = new byte[len];
+
             // local form:
             // --------------
             // HeaderId   2 bytes    0x5455 == unix timestamp
@@ -486,6 +490,7 @@ internal partial class ZipEntry
             // mtime      4 bytes    seconds since unix epoch
             //
             int i = 0;
+
             // extra field for "unix" times
             // header id
             block[i++] = 0x55;
@@ -501,6 +506,7 @@ internal partial class ZipEntry
             Int32 z = unchecked((int)(this._Mtime - _unixEpoch).TotalSeconds);
             Array.Copy(BitConverter.GetBytes(z), 0, block, i, 4);
             i += 4;
+
             if (!forCentralDirectory)
             {
                 z = unchecked((int)(this._Atime - _unixEpoch).TotalSeconds);
@@ -510,25 +516,29 @@ internal partial class ZipEntry
                 Array.Copy(BitConverter.GetBytes(z), 0, block, i, 4);
                 i += 4;
             }
+
             listOfBlocks.Add(block);
         }
 
-
         // inject other blocks here...
-
 
         // concatenate any blocks we've got:
         byte[] aggregateBlock = null;
+
         if (listOfBlocks.Count > 0)
         {
             int totalLength = 0;
-            int i, current = 0;
+
+            int i,
+                current = 0;
+
             for (i = 0; i < listOfBlocks.Count; i++)
             {
                 totalLength += listOfBlocks[i].Length;
             }
 
             aggregateBlock = new byte[totalLength];
+
             for (i = 0; i < listOfBlocks.Count; i++)
             {
                 Array.Copy(listOfBlocks[i], 0, aggregateBlock, current, listOfBlocks[i].Length);
@@ -538,8 +548,6 @@ internal partial class ZipEntry
 
         return aggregateBlock;
     }
-
-
 
     // private System.Text.Encoding GenerateCommentBytes()
     // {
@@ -564,7 +572,6 @@ internal partial class ZipEntry
     //     return encoding;
     // }
 
-
     private string NormalizeFileName()
     {
         // here, we need to flip the backslashes to forward-slashes,
@@ -573,16 +580,16 @@ internal partial class ZipEntry
 
         string SlashFixed = this.FileName.Replace("\\", "/");
         string s1 = null;
-        if (this._TrimVolumeFromFullyQualifiedPaths && this.FileName.Length >= 3
-                                                    && this.FileName[1] == ':' && SlashFixed[2] == '/')
+
+        if (this._TrimVolumeFromFullyQualifiedPaths && this.FileName.Length >= 3 && this.FileName[1] == ':' && SlashFixed[2] == '/')
         {
             // trim off volume letter, colon, and slash
             s1 = SlashFixed.Substring(3);
         }
-        else if (this.FileName.Length >= 4 
-                 && SlashFixed[0] == '/' && SlashFixed[1] == '/')
+        else if (this.FileName.Length >= 4 && SlashFixed[0] == '/' && SlashFixed[1] == '/')
         {
             int n = SlashFixed.IndexOf('/', 2);
+
             if (n == -1)
             {
                 throw new ArgumentException("The path for that entry appears to be badly formatted");
@@ -590,8 +597,7 @@ internal partial class ZipEntry
 
             s1 = SlashFixed.Substring(n + 1);
         }
-        else if (this.FileName.Length >= 3 
-                 && SlashFixed[0] == '.' && SlashFixed[1] == '/')
+        else if (this.FileName.Length >= 3 && SlashFixed[0] == '.' && SlashFixed[1] == '/')
         {
             // trim off dot and slash
             s1 = SlashFixed.Substring(2);
@@ -600,9 +606,9 @@ internal partial class ZipEntry
         {
             s1 = SlashFixed;
         }
+
         return s1;
     }
-
 
     /// <summary>
     ///   generate and return a byte array that encodes the filename
@@ -622,7 +628,7 @@ internal partial class ZipEntry
         // workitem 6513
         string? s1 = this.NormalizeFileName();
 
-        switch(this.AlternateEncodingUsage)
+        switch (this.AlternateEncodingUsage)
         {
             case ZipOption.Always:
                 if (!(this._Comment == null || this._Comment.Length == 0))
@@ -631,6 +637,7 @@ internal partial class ZipEntry
                 }
 
                 this._actualEncoding = this.AlternateEncoding;
+
                 return this.AlternateEncoding.GetBytes(s1);
 
             case ZipOption.Never:
@@ -640,6 +647,7 @@ internal partial class ZipEntry
                 }
 
                 this._actualEncoding = ibm437;
+
                 return ibm437.GetBytes(s1);
         }
 
@@ -651,21 +659,25 @@ internal partial class ZipEntry
         // during Read), and when ibm437 will not do.
 
         byte[] result = ibm437.GetBytes(s1);
+
         // need to use this form of GetString() for .NET CF
         string s2 = ibm437.GetString(result, 0, result.Length);
         this._CommentBytes = null;
+
         if (s2 != s1)
         {
             // Encoding the filename with ibm437 does not allow round-trips.
             // Therefore, use the alternate encoding.  Assume it will work,
             // no checking of round trips here.
             result = this.AlternateEncoding.GetBytes(s1);
+
             if (this._Comment != null && this._Comment.Length != 0)
             {
                 this._CommentBytes = this.AlternateEncoding.GetBytes(this._Comment);
             }
 
             this._actualEncoding = this.AlternateEncoding;
+
             return result;
         }
 
@@ -682,7 +694,7 @@ internal partial class ZipEntry
 
         // there is a comment. Get the encoded form.
         byte[] cbytes = ibm437.GetBytes(this._Comment);
-        string c2 = ibm437.GetString(cbytes,0,cbytes.Length);
+        string c2 = ibm437.GetString(cbytes, 0, cbytes.Length);
 
         // Check for round-trip.
         if (c2 != this.Comment)
@@ -693,15 +705,15 @@ internal partial class ZipEntry
             result = this.AlternateEncoding.GetBytes(s1);
             this._CommentBytes = this.AlternateEncoding.GetBytes(this._Comment);
             this._actualEncoding = this.AlternateEncoding;
+
             return result;
         }
 
         // use IBM437
         this._CommentBytes = cbytes;
+
         return result;
     }
-
-
 
     private bool WantReadAgain()
     {
@@ -742,20 +754,21 @@ internal partial class ZipEntry
         return true;
     }
 
-
-
     private void MaybeUnsetCompressionMethodForWriting(int cycle)
     {
         // if we've already tried with compression... turn it off this time
         if (cycle > 1)
         {
             this._CompressionMethod = 0x0;
+
             return;
         }
+
         // compression for directories = 0x00 (No Compression)
         if (this.IsDirectory)
         {
             this._CompressionMethod = 0x0;
+
             return;
         }
 
@@ -777,9 +790,11 @@ internal partial class ZipEntry
             {
                 // Length prop will throw if CanSeek is false
                 long fileLength = this._sourceStream.Length;
+
                 if (fileLength == 0)
                 {
                     this._CompressionMethod = 0x00;
+
                     return;
                 }
             }
@@ -787,6 +802,7 @@ internal partial class ZipEntry
         else if (this._Source == ZipEntrySource.FileSystem && SharedUtilities.GetFileLength(this.LocalFileName) == 0L)
         {
             this._CompressionMethod = 0x00;
+
             return;
         }
 
@@ -808,8 +824,6 @@ internal partial class ZipEntry
 
         return;
     }
-
-
 
     // write the header info for an entry
     internal void WriteHeader(Stream s, int cycle)
@@ -920,15 +934,13 @@ internal partial class ZipEntry
         // Zip64Option.AsNecessary is the same as Zip64Option.Always.
         //
 
-
         // version needed- see AppNote.txt.
         //
         // need v5.1 for PKZIP strong encryption, or v2.0 for no encryption or
         // for PK encryption, 4.5 for zip64.  We may reset this later, as
         // necessary or zip64.
 
-        this._presumeZip64 = this._container.Zip64 == Zip64Option.Always ||
-                             (this._container.Zip64 == Zip64Option.AsNecessary && !s.CanSeek);
+        this._presumeZip64 = this._container.Zip64 == Zip64Option.Always || (this._container.Zip64 == Zip64Option.AsNecessary && !s.CanSeek);
         Int16 VersionNeededToExtract = (Int16)(this._presumeZip64 ? 45 : 20);
 #if BZIP
             if (this.CompressionMethod == Ionic.Zip.CompressionMethod.BZip2)
@@ -953,17 +965,16 @@ internal partial class ZipEntry
         //  bit 6 = strong encryption - for pkware's meaning of strong encryption
         //  bit 11 = UTF-8 encoding is used in the comment and filename
 
-
         // Here we set or unset the encryption bit.
         // _BitField may already be set, as with a ZipEntry added into ZipOutputStream, which
         // has bit 3 always set. We only want to set one bit
         if (this._Encryption == EncryptionAlgorithm.None)
         {
-            this._BitField &= ~1;  // encryption bit OFF
+            this._BitField &= ~1; // encryption bit OFF
         }
         else
         {
-            this._BitField |= 1;   // encryption bit ON
+            this._BitField |= 1; // encryption bit ON
         }
 
         // workitem 7941: WinZip does not the "strong encryption" bit  when using AES.
@@ -1013,8 +1024,8 @@ internal partial class ZipEntry
         {
             // (cycle == 99) indicates a zero-length entry written by ZipOutputStream
 
-            this._BitField &= ~0x0008;  // unset bit 3 - no "data descriptor" - ever
-            this._BitField &= ~0x0001;  // unset bit 1 - no encryption - ever
+            this._BitField &= ~0x0008; // unset bit 3 - no "data descriptor" - ever
+            this._BitField &= ~0x0001; // unset bit 1 - no encryption - ever
             this.Encryption = EncryptionAlgorithm.None;
             this.Password = null;
         }
@@ -1155,10 +1166,12 @@ internal partial class ZipEntry
 
         // get the fixed portion
         Buffer.BlockCopy(block, 0, bytes, 0, i);
+
         //for (j = 0; j < i; j++) bytes[j] = block[j];
 
         // The filename written to the archive.
         Buffer.BlockCopy(fileNameBytes, 0, bytes, i, fileNameBytes.Length);
+
         // for (j = 0; j < fileNameBytes.Length; j++)
         //     bytes[i + j] = fileNameBytes[j];
 
@@ -1168,6 +1181,7 @@ internal partial class ZipEntry
         if (this._Extra != null)
         {
             Buffer.BlockCopy(this._Extra, 0, bytes, i, this._Extra.Length);
+
             // for (j = 0; j < _Extra.Length; j++)
             //     bytes[i + j] = _Extra[j];
             i += this._Extra.Length;
@@ -1177,10 +1191,12 @@ internal partial class ZipEntry
 
         // handle split archives
         ZipSegmentedStream? zss = s as ZipSegmentedStream;
+
         if (zss != null)
         {
             zss.ContiguousWrite = true;
             UInt32 requiredSegment = zss.ComputeSegment(i);
+
             if (requiredSegment != zss.CurrentSegment)
             {
                 this._future_ROLH = 0; // rollover!
@@ -1196,7 +1212,8 @@ internal partial class ZipEntry
         // validate the ZIP64 usage
         if (this._container.Zip64 == Zip64Option.Never && (uint)this._RelativeOffsetOfLocalHeader >= 0xFFFFFFFF)
         {
-            throw new ZipException("Offset within the zip archive exceeds 0xFFFFFFFF. Consider setting the UseZip64WhenSaving property on the ZipFile instance.");
+            throw new
+                ZipException("Offset within the zip archive exceeds 0xFFFFFFFF. Consider setting the UseZip64WhenSaving property on the ZipFile instance.");
         }
 
         // finally, write the header to the stream
@@ -1215,18 +1232,17 @@ internal partial class ZipEntry
         this._EntryHeader = bytes;
     }
 
-
-
-
     private Int32 FigureCrc32()
     {
         if (this._crcCalculated == false)
         {
             Stream input = null;
+
             // get the original stream:
             if (this._Source == ZipEntrySource.WriteDelegate)
             {
                 CrcCalculatorStream? output = new CrcCalculatorStream(Stream.Null);
+
                 // allow the application to write the data
                 this._WriteDelegate(this.FileName, output);
                 this._Crc32 = output.Crc;
@@ -1274,9 +1290,9 @@ internal partial class ZipEntry
 
             this._crcCalculated = true;
         }
+
         return this._Crc32;
     }
-
 
     /// <summary>
     ///   Stores the position of the entry source stream, or, if the position is
@@ -1355,7 +1371,6 @@ internal partial class ZipEntry
         }
     }
 
-
     /// <summary>
     /// Copy metadata that may have been changed by the app.  We do this when
     /// resetting the zipFile instance.  If the app calls Save() on a ZipFile, then
@@ -1380,7 +1395,6 @@ internal partial class ZipEntry
         this._emitNtfsTimes = source._emitNtfsTimes;
     }
 
-
     private void OnWriteBlock(Int64 bytesXferred, Int64 totalBytesToXfer)
     {
         if (this._container.ZipFile != null)
@@ -1388,8 +1402,6 @@ internal partial class ZipEntry
             this._ioOperationCanceled = this._container.ZipFile.OnSaveBlock(this, bytesXferred, totalBytesToXfer);
         }
     }
-
-
 
     private void _WriteEntryData(Stream s)
     {
@@ -1399,6 +1411,7 @@ internal partial class ZipEntry
 
         Stream input = null;
         long fdp = -1L;
+
         try
         {
             // Want to record the position in the zip file of the zip entry
@@ -1416,7 +1429,9 @@ internal partial class ZipEntry
             // (maybe) restreamed.
             fdp = s.Position;
         }
-        catch (Exception) { }
+        catch (Exception)
+        {
+        }
 
         try
         {
@@ -1469,10 +1484,12 @@ internal partial class ZipEntry
                 // synchronously copy the input stream to the output stream-chain
                 byte[] buffer = new byte[this.BufferSize];
                 int n;
+
                 while ((n = SharedUtilities.ReadWithRetry(input, buffer, 0, buffer.Length, this.FileName)) != 0)
                 {
                     output.Write(buffer, 0, n);
                     this.OnWriteBlock(output.TotalBytesSlurped, fileLength);
+
                     if (this._ioOperationCanceled)
                     {
                         break;
@@ -1512,7 +1529,6 @@ internal partial class ZipEntry
         this.PostProcessOutput(s);
     }
 
-
     /// <summary>
     ///   Set the input stream and get its length, if possible.  The length is
     ///   used for progress updates, AND, to allow an optimization in case of
@@ -1522,6 +1538,7 @@ internal partial class ZipEntry
     private long SetInputAndFigureFileLength(ref Stream input)
     {
         long fileLength = -1L;
+
         // get the original stream:
         if (this._Source == ZipEntrySource.Stream)
         {
@@ -1529,8 +1546,13 @@ internal partial class ZipEntry
             input = this._sourceStream;
 
             // Try to get the length, no big deal if not available.
-            try { fileLength = this._sourceStream.Length; }
-            catch (NotSupportedException) { }
+            try
+            {
+                fileLength = this._sourceStream.Length;
+            }
+            catch (NotSupportedException)
+            {
+            }
         }
         else if (this._Source == ZipEntrySource.ZipFile)
         {
@@ -1548,17 +1570,25 @@ internal partial class ZipEntry
 
             this.PrepSourceStream();
             input = this._sourceStream;
-            try { fileLength = this._sourceStream.Length; }
-            catch (NotSupportedException) { }
+
+            try
+            {
+                fileLength = this._sourceStream.Length;
+            }
+            catch (NotSupportedException)
+            {
+            }
         }
         else if (this._Source == ZipEntrySource.FileSystem)
         {
             // workitem 7145
             FileShare fs = FileShare.ReadWrite;
 #if !NETCF
+
             // FileShare.Delete is not defined for the Compact Framework
             fs |= FileShare.Delete;
 #endif
+
             // workitem 8423
             input = File.Open(this.LocalFileName, FileMode.Open, FileAccess.Read, fs);
             fileLength = input.Length;
@@ -1567,13 +1597,7 @@ internal partial class ZipEntry
         return fileLength;
     }
 
-
-
-    internal void FinishOutputStream(Stream s,
-                                     CountingStream entryCounter,
-                                     Stream encryptor,
-                                     Stream compressor,
-                                     CrcCalculatorStream output)
+    internal void FinishOutputStream(Stream s, CountingStream entryCounter, Stream encryptor, Stream compressor, CrcCalculatorStream output)
     {
         if (output == null)
         {
@@ -1582,6 +1606,7 @@ internal partial class ZipEntry
 
         output.Close();
         output.Dispose();
+
         // by calling Close() on the deflate stream, we write the footer bytes, as necessary.
         if (compressor as DeflateStream != null)
         {
@@ -1621,15 +1646,12 @@ internal partial class ZipEntry
             }
 #endif
         this._CompressedFileDataSize = entryCounter.BytesWritten;
-        this._CompressedSize = this._CompressedFileDataSize;   // may be adjusted
+        this._CompressedSize = this._CompressedFileDataSize; // may be adjusted
         this._Crc32 = output.Crc;
 
         // Set _RelativeOffsetOfLocalHeader now, to allow for re-streaming
         this.StoreRelativeOffset();
     }
-
-
-
 
     internal void PostProcessOutput(Stream s)
     {
@@ -1644,12 +1666,13 @@ internal partial class ZipEntry
         {
             if (this._Source == ZipEntrySource.ZipOutputStream)
             {
-                return;  // nothing to do...
+                return; // nothing to do...
             }
 
             if (this._Password != null)
             {
                 int headerBytesToRetract = 0;
+
                 if (this.Encryption == EncryptionAlgorithm.PkzipWeak)
                 {
                     headerBytesToRetract = 12;
@@ -1671,6 +1694,7 @@ internal partial class ZipEntry
                     // seek back in the stream to un-output the security metadata
                     s.Seek(-1 * headerBytesToRetract, SeekOrigin.Current);
                     s.SetLength(s.Position);
+
                     // workitem 10178
                     SharedUtilities.Workaround_Ladybug318918(s);
 
@@ -1746,6 +1770,7 @@ internal partial class ZipEntry
         this._EntryHeader[i++] = (byte)((this._CompressionMethod & 0xFF00) >> 8);
 
         i = 14;
+
         // CRC - the correct value now
         this._EntryHeader[i++] = (byte)(this._Crc32 & 0x000000FF);
         this._EntryHeader[i++] = (byte)((this._Crc32 & 0x0000FF00) >> 8);
@@ -1782,7 +1807,7 @@ internal partial class ZipEntry
             // again, with final values.
 
             i = 30 + filenameLength;
-            this._EntryHeader[i++] = 0x01;  // zip64
+            this._EntryHeader[i++] = 0x01; // zip64
             this._EntryHeader[i++] = 0x00;
 
             i += 2; // skip over data size, which is 16+4
@@ -1814,6 +1839,7 @@ internal partial class ZipEntry
             if (extraFieldLength != 0)
             {
                 i = 30 + filenameLength;
+
                 // For zip archives written by this library, if the zip64
                 // header exists, it is the first header. Because of the logic
                 // used when first writing the _EntryHeader bytes, the
@@ -1822,6 +1848,7 @@ internal partial class ZipEntry
                 // by examining the datasize.  UInt16 HeaderId =
                 // (UInt16)(_EntryHeader[i] + _EntryHeader[i + 1] * 256);
                 Int16 DataSize = (short)(this._EntryHeader[i + 2] + (this._EntryHeader[i + 3] * 256));
+
                 if (DataSize == 16)
                 {
                     // reset to Header Id to dummy value, effectively dummy-ing out the zip64 metadata
@@ -1831,9 +1858,7 @@ internal partial class ZipEntry
             }
         }
 
-
 #if AESCRYPTO
-
             if (Encryption == EncryptionAlgorithm.WinZipAes128 ||
                 Encryption == EncryptionAlgorithm.WinZipAes256)
             {
@@ -1879,11 +1904,11 @@ internal partial class ZipEntry
         // the CRC, to prevent streaming the file twice.  So, test for
         // ZipOutputStream and seekable, and if so, seek back, even if bit 3 is set.
 
-        if ((this._BitField & 0x0008) != 0x0008 ||
-            (this._Source == ZipEntrySource.ZipOutputStream && s.CanSeek))
+        if ((this._BitField & 0x0008) != 0x0008 || (this._Source == ZipEntrySource.ZipOutputStream && s.CanSeek))
         {
             // seek back and rewrite the entry header
             ZipSegmentedStream? zss = s as ZipSegmentedStream;
+
             if (zss != null && this._diskNumber != zss.CurrentSegment)
             {
                 // In this case the entry header is in a different file,
@@ -1961,24 +1986,22 @@ internal partial class ZipEntry
         }
     }
 
-
-
     private void SetZip64Flags()
     {
         // zip64 housekeeping
-        this._entryRequiresZip64 = new Nullable<bool>
-            (this._CompressedSize >= 0xFFFFFFFF || this._UncompressedSize >= 0xFFFFFFFF || this._RelativeOffsetOfLocalHeader >= 0xFFFFFFFF);
+        this._entryRequiresZip64 = new Nullable<bool>(this._CompressedSize >= 0xFFFFFFFF
+                                                      || this._UncompressedSize >= 0xFFFFFFFF
+                                                      || this._RelativeOffsetOfLocalHeader >= 0xFFFFFFFF);
 
         // validate the ZIP64 usage
         if (this._container.Zip64 == Zip64Option.Never && this._entryRequiresZip64.Value)
         {
-            throw new ZipException("Compressed or Uncompressed size, or offset exceeds the maximum value. Consider setting the UseZip64WhenSaving property on the ZipFile instance.");
+            throw new
+                ZipException("Compressed or Uncompressed size, or offset exceeds the maximum value. Consider setting the UseZip64WhenSaving property on the ZipFile instance.");
         }
 
         this._OutputUsesZip64 = new Nullable<bool>(this._container.Zip64 == Zip64Option.Always || this._entryRequiresZip64.Value);
     }
-
-
 
     /// <summary>
     ///   Prepare the given stream for output - wrap it in a CountingStream, and
@@ -2028,23 +2051,23 @@ internal partial class ZipEntry
         {
             encryptor = compressor = outputCounter;
         }
+
         // Wrap a CrcCalculatorStream around that.
         // This will happen BEFORE compression (if any) as we write data out.
         output = new CrcCalculatorStream(compressor, true);
     }
-
-
 
     private Stream MaybeApplyCompression(Stream s, long streamLength)
     {
         if (this._CompressionMethod == 0x08 && this.CompressionLevel != Ionic.Zlib.CompressionLevel.None)
         {
 #if !NETCF
+
             // ParallelDeflateThreshold == 0    means ALWAYS use parallel deflate
             // ParallelDeflateThreshold == -1L  means NEVER use parallel deflate
             // Other values specify the actual threshold.
-            if (this._container.ParallelDeflateThreshold == 0L ||
-                (streamLength > this._container.ParallelDeflateThreshold && this._container.ParallelDeflateThreshold > 0L))
+            if (this._container.ParallelDeflateThreshold == 0L
+                || (streamLength > this._container.ParallelDeflateThreshold && this._container.ParallelDeflateThreshold > 0L))
             {
                 // This is sort of hacky.
                 //
@@ -2067,11 +2090,8 @@ internal partial class ZipEntry
                 // instantiate the ParallelDeflateOutputStream
                 if (this._container.ParallelDeflater == null)
                 {
-                    this._container.ParallelDeflater =
-                        new ParallelDeflateOutputStream(s,
-                                                        this.CompressionLevel,
-                                                        this._container.Strategy,
-                                                        true);
+                    this._container.ParallelDeflater = new ParallelDeflateOutputStream(s, this.CompressionLevel, this._container.Strategy, true);
+
                     // can set the codec buffer size only before the first call to Write().
                     if (this._container.CodecBufferSize > 0)
                     {
@@ -2080,28 +2100,28 @@ internal partial class ZipEntry
 
                     if (this._container.ParallelDeflateMaxBufferPairs > 0)
                     {
-                        this._container.ParallelDeflater.MaxBufferPairs =
-                            this._container.ParallelDeflateMaxBufferPairs;
+                        this._container.ParallelDeflater.MaxBufferPairs = this._container.ParallelDeflateMaxBufferPairs;
                     }
                 }
+
                 // reset it with the new stream
                 ParallelDeflateOutputStream o1 = this._container.ParallelDeflater;
                 o1.Reset(s);
+
                 return o1;
             }
 #endif
-            DeflateStream? o = new DeflateStream(s, CompressionMode.Compress,
-                                                 this.CompressionLevel,
-                                                 true);
+            DeflateStream? o = new DeflateStream(s, CompressionMode.Compress, this.CompressionLevel, true);
+
             if (this._container.CodecBufferSize > 0)
             {
                 o.BufferSize = this._container.CodecBufferSize;
             }
 
             o.Strategy = this._container.Strategy;
+
             return o;
         }
-
 
 #if BZIP
             if (_CompressionMethod == 0x0c)
@@ -2123,8 +2143,6 @@ internal partial class ZipEntry
 
         return s;
     }
-
-
 
     private Stream MaybeApplyEncryption(Stream s)
     {
@@ -2148,8 +2166,6 @@ internal partial class ZipEntry
         return s;
     }
 
-
-
     private void OnZipErrorWhileSaving(Exception e)
     {
         if (this._container.ZipFile != null)
@@ -2158,14 +2174,13 @@ internal partial class ZipEntry
         }
     }
 
-
-
     internal void Write(Stream s)
     {
         CountingStream? cs1 = s as CountingStream;
         ZipSegmentedStream? zss1 = s as ZipSegmentedStream;
 
         bool done = false;
+
         do
         {
             try
@@ -2198,6 +2213,7 @@ internal partial class ZipEntry
                 if (this._Source == ZipEntrySource.ZipFile && !this._restreamRequiredOnSave)
                 {
                     this.CopyThroughOneEntry(s);
+
                     return;
                 }
 
@@ -2208,6 +2224,7 @@ internal partial class ZipEntry
                     this.StoreRelativeOffset();
                     this._entryRequiresZip64 = new Nullable<bool>(this._RelativeOffsetOfLocalHeader >= 0xFFFFFFFF);
                     this._OutputUsesZip64 = new Nullable<bool>(this._container.Zip64 == Zip64Option.Always || this._entryRequiresZip64.Value);
+
                     // handle case for split archives
                     if (zss1 != null)
                     {
@@ -2229,9 +2246,9 @@ internal partial class ZipEntry
                 // causes the bytestream to inflate in size, and if compression was
                 // on, then we turn off compression and do it again.
 
-
                 bool readAgain = true;
                 int nCycles = 0;
+
                 do
                 {
                     nCycles++;
@@ -2276,6 +2293,7 @@ internal partial class ZipEntry
                             zss1.TruncateBackward(this._diskNumber, this._RelativeOffsetOfLocalHeader);
                         }
                         else
+
                             // workitem 8098: ok (output).
                         {
                             s.Seek(this._RelativeOffsetOfLocalHeader, SeekOrigin.Begin);
@@ -2294,8 +2312,7 @@ internal partial class ZipEntry
                             cs1.Adjust(this._TotalEntrySize);
                         }
                     }
-                }
-                while (readAgain);
+                } while (readAgain);
 
                 this._skippedDuringSave = false;
                 done = true;
@@ -2304,6 +2321,7 @@ internal partial class ZipEntry
             {
                 ZipErrorAction orig = this.ZipErrorAction;
                 int loop = 0;
+
                 do
                 {
                     if (this.ZipErrorAction == ZipErrorAction.Throw)
@@ -2317,16 +2335,19 @@ internal partial class ZipEntry
                         // workitem 13903 - seek back only when necessary
                         long p1 = cs1?.ComputedPosition ?? s.Position;
                         long delta = p1 - this._future_ROLH;
+
                         if (delta > 0)
                         {
                             s.Seek(delta, SeekOrigin.Current); // may throw
                             long p2 = s.Position;
-                            s.SetLength(s.Position);  // to prevent garbage if this is the last entry
+                            s.SetLength(s.Position); // to prevent garbage if this is the last entry
+
                             if (cs1 != null)
                             {
                                 cs1.Adjust(p1 - p2);
                             }
                         }
+
                         if (this.ZipErrorAction == ZipErrorAction.Skip)
                         {
                             this.WriteStatus("Skipping file {0} (exception: {1})", this.LocalFileName, exc1.ToString());
@@ -2350,27 +2371,25 @@ internal partial class ZipEntry
                     if (this.ZipErrorAction == ZipErrorAction.InvokeErrorEvent)
                     {
                         this.OnZipErrorWhileSaving(exc1);
+
                         if (this._ioOperationCanceled)
                         {
                             done = true;
+
                             break;
                         }
                     }
-                    loop++;
-                }
-                while (true);
-            }
-        }
-        while (!done);
-    }
 
+                    loop++;
+                } while (true);
+            }
+        } while (!done);
+    }
 
     internal void StoreRelativeOffset()
     {
         this._RelativeOffsetOfLocalHeader = this._future_ROLH;
     }
-
-
 
     internal void NotifySaveComplete()
     {
@@ -2386,10 +2405,10 @@ internal partial class ZipEntry
         this._CompressionMethod_FromZipFile = this._CompressionMethod;
         this._restreamRequiredOnSave = false;
         this._metadataChanged = false;
+
         //_Source = ZipEntrySource.None;
         this._Source = ZipEntrySource.ZipFile; // workitem 10694
     }
-
 
     internal void WriteSecurityMetadata(Stream outstream)
     {
@@ -2477,7 +2496,7 @@ internal partial class ZipEntry
 
             // Write the ciphered bonafide encryption header.
             outstream.Write(cipherText, 0, cipherText.Length);
-            this._LengthOfHeader += cipherText.Length;  // 12 bytes
+            this._LengthOfHeader += cipherText.Length; // 12 bytes
         }
 
 #if AESCRYPTO
@@ -2499,10 +2518,7 @@ internal partial class ZipEntry
 
             }
 #endif
-
     }
-
-
 
     private void CopyThroughOneEntry(Stream outStream)
     {
@@ -2516,11 +2532,11 @@ internal partial class ZipEntry
         }
 
         // is it necessary to re-constitute new metadata for this entry?
-        bool needRecompute = this._metadataChanged ||
-                             this.ArchiveStream is ZipSegmentedStream ||
-                             outStream is ZipSegmentedStream ||
-                             (this._InputUsesZip64 && this._container.UseZip64WhenSaving == Zip64Option.Never) ||
-                             (!this._InputUsesZip64 && this._container.UseZip64WhenSaving == Zip64Option.Always);
+        bool needRecompute = this._metadataChanged
+                             || this.ArchiveStream is ZipSegmentedStream
+                             || outStream is ZipSegmentedStream
+                             || (this._InputUsesZip64 && this._container.UseZip64WhenSaving == Zip64Option.Never)
+                             || (!this._InputUsesZip64 && this._container.UseZip64WhenSaving == Zip64Option.Always);
 
         if (needRecompute)
         {
@@ -2532,14 +2548,12 @@ internal partial class ZipEntry
         }
 
         // zip64 housekeeping
-        this._entryRequiresZip64 = new Nullable<bool>
-            (this._CompressedSize >= 0xFFFFFFFF || this._UncompressedSize >= 0xFFFFFFFF || this._RelativeOffsetOfLocalHeader >= 0xFFFFFFFF
-            );
+        this._entryRequiresZip64 = new Nullable<bool>(this._CompressedSize >= 0xFFFFFFFF
+                                                      || this._UncompressedSize >= 0xFFFFFFFF
+                                                      || this._RelativeOffsetOfLocalHeader >= 0xFFFFFFFF);
 
         this._OutputUsesZip64 = new Nullable<bool>(this._container.Zip64 == Zip64Option.Always || this._entryRequiresZip64.Value);
     }
-
-
 
     private void CopyThroughWithRecompute(Stream outstream)
     {
@@ -2585,6 +2599,7 @@ internal partial class ZipEntry
                 outstream.Write(bytes, 0, n);
                 remaining -= n;
                 this.OnWriteBlock(input.BytesRead, this._CompressedSize);
+
                 if (this._ioOperationCanceled)
                 {
                     break;
@@ -2595,6 +2610,7 @@ internal partial class ZipEntry
             if ((this._BitField & 0x0008) == 0x0008)
             {
                 int size = 16;
+
                 if (this._InputUsesZip64)
                 {
                     size += 8;
@@ -2633,9 +2649,11 @@ internal partial class ZipEntry
                     // signature + CRC
                     byte[] pad = new byte[4];
                     outstream.Write(Descriptor, 0, 8);
+
                     // Compressed
                     outstream.Write(Descriptor, 8, 4);
                     outstream.Write(pad, 0, 4);
+
                     // UnCompressed
                     outstream.Write(Descriptor, 12, 4);
                     outstream.Write(pad, 0, 4);
@@ -2645,6 +2663,7 @@ internal partial class ZipEntry
                 {
                     // same descriptor on input and output. Copy it through.
                     outstream.Write(Descriptor, 0, size);
+
                     //_LengthOfTrailer += size;
                 }
             }
@@ -2652,7 +2671,6 @@ internal partial class ZipEntry
 
         this._TotalEntrySize = this._LengthOfHeader + this._CompressedFileDataSize + this._LengthOfTrailer;
     }
-
 
     private void CopyThroughWithNoChange(Stream outstream)
     {
@@ -2682,17 +2700,17 @@ internal partial class ZipEntry
             // Descriptor, where applicable.
         }
 
-
         // workitem 5616
         // remember the offset, within the output stream, of this particular entry header.
         // This may have changed if any of the other entries changed (eg, if a different
         // entry was removed or added.)
         CountingStream? counter = outstream as CountingStream;
 
-        this._RelativeOffsetOfLocalHeader = counter?.ComputedPosition ?? outstream.Position;  // BytesWritten
+        this._RelativeOffsetOfLocalHeader = counter?.ComputedPosition ?? outstream.Position; // BytesWritten
 
         // copy through the header, filedata, trailer, everything...
         long remaining = this._TotalEntrySize;
+
         while (remaining > 0)
         {
             int len = remaining > bytes.Length ? bytes.Length : (int)remaining;
@@ -2705,15 +2723,13 @@ internal partial class ZipEntry
             outstream.Write(bytes, 0, n);
             remaining -= n;
             this.OnWriteBlock(input.BytesRead, this._TotalEntrySize);
+
             if (this._ioOperationCanceled)
             {
                 break;
             }
         }
     }
-
-
-
 
     [System.Diagnostics.ConditionalAttribute("Trace")]
     private void TraceWriteLine(string format, params object[] varParams)

@@ -10,6 +10,7 @@
  *************************************************************************************************
     08/11/2021         EPPlus Software AB       EPPlus 5.8
  *************************************************************************************************/
+
 namespace OfficeOpenXml.Core.Worksheet.Fill;
 
 /// <summary>
@@ -21,10 +22,12 @@ public class FillParams
     /// If the fill starts from the top-left cell or the bottom right cell.
     /// </summary>
     public eFillStartPosition StartPosition { get; set; } = eFillStartPosition.TopLeft;
+
     /// <summary>
     /// The direction of the fill
     /// </summary>
     public eFillDirection Direction { get; set; } = eFillDirection.Column;
+
     /// <summary>
     /// The number format to be appled to the range.
     /// </summary>

@@ -10,6 +10,7 @@
  *************************************************************************************************
   01/27/2020         EPPlus Software AB       Initial release EPPlus 5
  *************************************************************************************************/
+
 using System;
 using System.Globalization;
 using System.Xml;
@@ -22,10 +23,11 @@ namespace OfficeOpenXml.Filter;
 /// </summary>
 public class ExcelColorFilterColumn : ExcelFilterColumn
 {
-    internal ExcelColorFilterColumn(XmlNamespaceManager namespaceManager, XmlNode topNode) : base(namespaceManager, topNode)
+    internal ExcelColorFilterColumn(XmlNamespaceManager namespaceManager, XmlNode topNode)
+        : base(namespaceManager, topNode)
     {
-
     }
+
     /// <summary>
     /// Indicating whether or not to filter by the cell's fill color. 
     /// True filters by cell fill. 
@@ -33,27 +35,19 @@ public class ExcelColorFilterColumn : ExcelFilterColumn
     /// </summary>
     public bool CellColor
     {
-        get
-        {
-            return this.GetXmlNodeBool("d:cellColor");
-        }
-        set
-        {
-            this.SetXmlNodeBool("d:cellColor", value);
-        }
+        get { return this.GetXmlNodeBool("d:cellColor"); }
+        set { this.SetXmlNodeBool("d:cellColor", value); }
     }
+
     /// <summary>
     /// The differencial Style Id, referencing the DXF styles collection
     /// </summary>
     public int DxfId
     {
-        get
-        {
-            return this.GetXmlNodeInt("d:dxfId");
-        }
+        get { return this.GetXmlNodeInt("d:dxfId"); }
         set
         {
-            if(value<0)
+            if (value < 0)
             {
                 throw new ArgumentOutOfRangeException("DfxId must not be negative");
             }
@@ -69,6 +63,5 @@ public class ExcelColorFilterColumn : ExcelFilterColumn
 
     internal override void Save()
     {
-            
     }
 }

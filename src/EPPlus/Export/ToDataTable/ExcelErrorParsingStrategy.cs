@@ -10,6 +10,7 @@
  *************************************************************************************************
   10/15/2020         EPPlus Software AB       ToDataTable function
  *************************************************************************************************/
+
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -25,10 +26,12 @@ public enum ExcelErrorParsingStrategy
     /// Excel Errors in cells will be handles as blank cells
     /// </summary>
     HandleExcelErrorsAsBlankCells,
+
     /// <summary>
     /// An exception will be thrown when an error occurs in a cell
     /// </summary>
     ThrowException,
+
     /// <summary>
     /// If an error is detected, the entire row will be ignored
     /// </summary>

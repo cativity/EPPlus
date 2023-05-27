@@ -10,6 +10,7 @@
  *************************************************************************************************
   01/27/2020         EPPlus Software AB       Initial release EPPlus 5
  *************************************************************************************************/
+
 using OfficeOpenXml.Utils.Extensions;
 using System;
 using System.Collections.Generic;
@@ -29,11 +30,14 @@ public class ExcelDrawingScene3DLightRig : XmlHelper
     /// The xpath
     /// </summary>
     internal protected string _path;
+
     private readonly string _directionPath = "{0}/@dir";
     private readonly string _typePath = "{0}/@rig";
     private readonly string _rotationPath = "{0}/a:rot";
     private readonly Action<bool> _initParent;
-    internal ExcelDrawingScene3DLightRig(XmlNamespaceManager nameSpaceManager, XmlNode topNode, string[] schemaNodeOrder, string path, Action<bool> initParent) : base(nameSpaceManager, topNode)
+
+    internal ExcelDrawingScene3DLightRig(XmlNamespaceManager nameSpaceManager, XmlNode topNode, string[] schemaNodeOrder, string path, Action<bool> initParent)
+        : base(nameSpaceManager, topNode)
     {
         this._path = path;
         this.SchemaNodeOrder = schemaNodeOrder;
@@ -43,44 +47,39 @@ public class ExcelDrawingScene3DLightRig : XmlHelper
         this._typePath = string.Format(this._typePath, path);
         this._initParent = initParent;
     }
+
     ExcelDrawingSphereCoordinate _rotation = null;
+
     /// <summary>
     /// Defines a rotation in 3D space
     /// </summary>
     public ExcelDrawingSphereCoordinate Rotation
     {
-        get
-        {
-            return this._rotation ??= new ExcelDrawingSphereCoordinate(this.NameSpaceManager, this.TopNode, this._rotationPath, this._initParent);
-        }
+        get { return this._rotation ??= new ExcelDrawingSphereCoordinate(this.NameSpaceManager, this.TopNode, this._rotationPath, this._initParent); }
     }
+
     /// <summary>
     /// The direction from which the light rig is oriented in relation to the scene.
     /// </summary>
     public eLightRigDirection Direction
     {
-        get
-        {
-            return this.GetXmlNodeString(this._directionPath).TranslateLightRigDirection();
-        }
+        get { return this.GetXmlNodeString(this._directionPath).TranslateLightRigDirection(); }
         set
         {
             this._initParent(false);
             this.SetXmlNodeString(this._directionPath, value.TranslateString());
         }
     }
+
     /// <summary>
     /// The preset type of light rig which is to be applied to the 3D scene
     /// </summary>
     public eRigPresetType RigType
     {
-        get
-        {
-            return this.GetXmlNodeString(this._typePath).ToEnum(eRigPresetType.Balanced);
-        }
+        get { return this.GetXmlNodeString(this._typePath).ToEnum(eRigPresetType.Balanced); }
         set
         {
-            if(value==eRigPresetType.None)
+            if (value == eRigPresetType.None)
             {
                 this._initParent(true);
             }
@@ -91,5 +90,4 @@ public class ExcelDrawingScene3DLightRig : XmlHelper
             }
         }
     }
-
 }

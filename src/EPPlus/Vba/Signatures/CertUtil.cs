@@ -10,6 +10,7 @@
  *************************************************************************************************
   09/05/2022         EPPlus Software AB       EPPlus 6.1
  *************************************************************************************************/
+
 using OfficeOpenXml.Utils;
 using System;
 using System.Collections.Generic;
@@ -29,13 +30,12 @@ internal static class CertUtil
         {
             X509Store store = new X509Store(StoreName.My, loc);
             store.Open(OpenFlags.ReadOnly);
+
             try
             {
-                X509Certificate2? storeCert = store.Certificates.Find(
-                                                                      X509FindType.FindByThumbprint,
-                                                                      thumbPrint,
-                                                                      false
-                                                                     ).OfType<X509Certificate2>().FirstOrDefault();
+                X509Certificate2? storeCert =
+                    store.Certificates.Find(X509FindType.FindByThumbprint, thumbPrint, false).OfType<X509Certificate2>().FirstOrDefault();
+
                 return storeCert;
             }
             finally
@@ -72,6 +72,7 @@ internal static class CertUtil
         bw.Write((ulong)0);
 
         bw.Flush();
+
         return ms.ToArray();
     }
 
@@ -79,21 +80,22 @@ internal static class CertUtil
     {
         // [MS-OSHARED] 2.3.2.1 DigSigInfoSerialized
         bw.Write((uint)cert.Length);
-        bw.Write((uint)44);                  //?? 36 ref inside cert ??
-        bw.Write((uint)certStore.Length);    //cbSigningCertStore
-        bw.Write((uint)(cert.Length + 44));  //certStoreOffset
-        bw.Write((uint)0);                   //cbProjectName
-        bw.Write((uint)(cert.Length + certStore.Length + 44));    //projectNameOffset
-        bw.Write((uint)0);    //fTimestamp
-        bw.Write((uint)0);    //cbTimestampUrl
-        bw.Write((uint)(cert.Length + certStore.Length + 44 + 2));    //timestampUrlOffset
+        bw.Write((uint)44); //?? 36 ref inside cert ??
+        bw.Write((uint)certStore.Length); //cbSigningCertStore
+        bw.Write((uint)(cert.Length + 44)); //certStoreOffset
+        bw.Write((uint)0); //cbProjectName
+        bw.Write((uint)(cert.Length + certStore.Length + 44)); //projectNameOffset
+        bw.Write((uint)0); //fTimestamp
+        bw.Write((uint)0); //cbTimestampUrl
+        bw.Write((uint)(cert.Length + certStore.Length + 44 + 2)); //timestampUrlOffset
         bw.Write(cert);
         bw.Write(certStore);
-        bw.Write((ushort)0);//rgchProjectNameBuffer
-        bw.Write((ushort)0);//rgchTimestampBuffer
+        bw.Write((ushort)0); //rgchProjectNameBuffer
+        bw.Write((ushort)0); //rgchTimestampBuffer
         bw.Write((ushort)0);
         bw.Flush();
         byte[]? b = ms.ToArray();
+
         return b;
     }
 
@@ -105,6 +107,7 @@ internal static class CertUtil
         {
             return storeCert;
         }
+
         return null;
     }
 
@@ -114,6 +117,7 @@ internal static class CertUtil
         SignedCms? verifier = new SignedCms(contentInfo);
         CmsSigner? signer = new CmsSigner(signature.Certificate);
         verifier.ComputeSignature(signer, false);
+
         return verifier;
     }
 }

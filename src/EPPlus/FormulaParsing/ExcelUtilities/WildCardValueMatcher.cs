@@ -10,6 +10,7 @@
  *************************************************************************************************
   01/27/2020         EPPlus Software AB       Initial release EPPlus 5
  *************************************************************************************************/
+
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -25,11 +26,13 @@ public class WildCardValueMatcher : ValueMatcher
         if (searchedValue.Contains("*") || searchedValue.Contains("?"))
         {
             string? regexPattern = BuildRegex(searchedValue, candidate);
+
             if (Regex.IsMatch(candidate, regexPattern))
             {
                 return 0;
             }
         }
+
         return base.CompareStringToString(candidate, searchedValue);
     }
 
@@ -41,16 +44,19 @@ public class WildCardValueMatcher : ValueMatcher
         regexPattern = regexPattern.Replace("\\?", "?");
         regexPattern = string.Format("^{0}$", regexPattern);
         bool lastIsTilde = false;
-        foreach(char ch in regexPattern)
+
+        foreach (char ch in regexPattern)
         {
-            if(ch == '~')
+            if (ch == '~')
             {
                 lastIsTilde = true;
+
                 continue;
             }
-            if(ch == '*')
+
+            if (ch == '*')
             {
-                if(lastIsTilde)
+                if (lastIsTilde)
                 {
                     result.Append("\\*");
                 }
@@ -59,7 +65,7 @@ public class WildCardValueMatcher : ValueMatcher
                     result.Append(".*");
                 }
             }
-            else if(ch == '?')
+            else if (ch == '?')
             {
                 if (lastIsTilde)
                 {
@@ -70,7 +76,7 @@ public class WildCardValueMatcher : ValueMatcher
                     result.Append('.');
                 }
             }
-            else if(lastIsTilde)
+            else if (lastIsTilde)
             {
                 result.Append("~" + ch);
             }
@@ -78,8 +84,10 @@ public class WildCardValueMatcher : ValueMatcher
             {
                 result.Append(ch);
             }
+
             lastIsTilde = false;
         }
+
         return result.ToString();
     }
 }

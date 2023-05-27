@@ -10,6 +10,7 @@
  *************************************************************************************************
   01/27/2020         EPPlus Software AB       Initial release EPPlus 5
  *************************************************************************************************/
+
 using OfficeOpenXml.Drawing.Style.Coloring;
 using OfficeOpenXml.Utils.Extensions;
 using System;
@@ -26,76 +27,67 @@ namespace OfficeOpenXml.Drawing.Style.Fill;
 public class ExcelDrawingPatternFill : ExcelDrawingFillBase
 {
     string[] _schemaNodeOrder;
-    internal ExcelDrawingPatternFill(XmlNamespaceManager nameSpaceManager, XmlNode topNode, string fillPath, string[] schemaNodeOrder, Action initXml) : base(nameSpaceManager, topNode, fillPath, initXml)
+
+    internal ExcelDrawingPatternFill(XmlNamespaceManager nameSpaceManager, XmlNode topNode, string fillPath, string[] schemaNodeOrder, Action initXml)
+        : base(nameSpaceManager, topNode, fillPath, initXml)
     {
         this._schemaNodeOrder = XmlHelper.CopyToSchemaNodeOrder(schemaNodeOrder, new string[] { "fgClr", "bgClr" });
         this.GetXml();
     }
+
     /// <summary>
     /// The fillstyle, always PatternFill
     /// </summary>
     public override eFillStyle Style
     {
-        get
-        {
-            return eFillStyle.PatternFill;
-        }
+        get { return eFillStyle.PatternFill; }
     }
+
     private eFillPatternStyle _pattern;
+
     /// <summary>
     /// The preset pattern to use
     /// </summary>
     public eFillPatternStyle PatternType
     {
-        get
-        {
-            return this._pattern;
-        }
-        set
-        {
-            this._pattern = value;
-        }
+        get { return this._pattern; }
+        set { this._pattern = value; }
     }
+
     ExcelDrawingColorManager _fgColor = null;
+
     /// <summary>
     /// Foreground color
     /// </summary>
     public ExcelDrawingColorManager ForegroundColor
     {
-        get
-        {
-            return this._fgColor ??= new ExcelDrawingColorManager(this._nsm, this._topNode, "a:fgClr", this._schemaNodeOrder, this._initXml);
-        }
+        get { return this._fgColor ??= new ExcelDrawingColorManager(this._nsm, this._topNode, "a:fgClr", this._schemaNodeOrder, this._initXml); }
     }
+
     ExcelDrawingColorManager _bgColor = null;
+
     /// <summary>
     /// Background color
     /// </summary>
     public ExcelDrawingColorManager BackgroundColor
     {
-        get
-        {
-            return this._bgColor ??= new ExcelDrawingColorManager(this._nsm, this._topNode, "a:bgClr", this._schemaNodeOrder, this._initXml);
-        }
+        get { return this._bgColor ??= new ExcelDrawingColorManager(this._nsm, this._topNode, "a:bgClr", this._schemaNodeOrder, this._initXml); }
     }
-
 
     internal override string NodeName
     {
-        get
-        {
-            return "a:patternFill";
-        }
+        get { return "a:patternFill"; }
     }
 
     internal override void SetXml(XmlNamespaceManager nsm, XmlNode node)
     {
         this._initXml?.Invoke();
+
         if (this._xml == null)
         {
-            if(string.IsNullOrEmpty(this._fillPath))
+            if (string.IsNullOrEmpty(this._fillPath))
             {
-                this.InitXml(nsm, node,"");
+                this.InitXml(nsm, node, "");
             }
             else
             {
@@ -104,12 +96,13 @@ public class ExcelDrawingPatternFill : ExcelDrawingFillBase
         }
 
         this._xml.SetXmlNodeString("@prst", this.PatternType.ToEnumString());
-        XmlNode? fgNode= this._xml.CreateNode("a:fgClr");
+        XmlNode? fgNode = this._xml.CreateNode("a:fgClr");
         ExcelDrawingThemeColorManager.SetXml(nsm, fgNode);
 
         XmlNode? bgNode = this._xml.CreateNode("a:bgClr");
         ExcelDrawingThemeColorManager.SetXml(nsm, bgNode);
     }
+
     internal override void GetXml()
     {
         this.PatternType = this._xml.GetXmlNodeString("@prst").ToEnum(eFillPatternStyle.Pct5);

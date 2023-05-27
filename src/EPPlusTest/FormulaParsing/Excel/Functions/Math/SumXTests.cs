@@ -27,7 +27,6 @@ public class SumXTests
         this._package.Dispose();
     }
 
-
     [TestMethod]
     public void SumX2My2_TwoRanges()
     {

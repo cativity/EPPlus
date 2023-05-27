@@ -10,8 +10,10 @@
  *************************************************************************************************
   01/27/2020         EPPlus Software AB       Initial release EPPlus 5
  *************************************************************************************************/
+
 using System.Xml;
 using OfficeOpenXml.Drawing.Chart.ChartEx;
+
 namespace OfficeOpenXml.Drawing.Chart;
 
 /// <summary>
@@ -24,10 +26,11 @@ public class ExcelHistogramChartSeries : ExcelChartSeries<ExcelHistogramChartSer
     /// </summary>
     public void AddParetoLine()
     {
-        if(this._chart.ChartType==eChartType.Pareto)
+        if (this._chart.ChartType == eChartType.Pareto)
         {
             return;
         }
+
         if (this._chart.Axis.Length == 2)
         {
             //Add pareto axis
@@ -35,11 +38,13 @@ public class ExcelHistogramChartSeries : ExcelChartSeries<ExcelHistogramChartSer
             axis2.SetAttribute("id", "2");
             axis2.InnerXml = "<cx:valScaling min=\"0\" max=\"1\"/><cx:units unit=\"percentage\"/><cx:tickLabels/>";
         }
-        foreach(ExcelHistogramChartSerie ser in this._list)
+
+        foreach (ExcelHistogramChartSerie ser in this._list)
         {
-            ser.AddParetoLineFromSerie((XmlElement)ser.TopNode);                
+            ser.AddParetoLineFromSerie((XmlElement)ser.TopNode);
         }
     }
+
     /// <summary>
     /// Removes the pareto line for the serie
     /// </summary>
@@ -49,6 +54,7 @@ public class ExcelHistogramChartSeries : ExcelChartSeries<ExcelHistogramChartSer
         {
             return;
         }
+
         if (this._chart.Axis.Length == 2)
         {
             if (this._chart.Axis.Length == 3)

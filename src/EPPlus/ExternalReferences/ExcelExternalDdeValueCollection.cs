@@ -10,6 +10,7 @@
  *************************************************************************************************
   04/16/2021         EPPlus Software AB       EPPlus 5.7
  *************************************************************************************************/
+
 using OfficeOpenXml.Core;
 
 namespace OfficeOpenXml.ExternalReferences;
@@ -23,6 +24,7 @@ public class ExcelExternalDdeValueCollection : EPPlusReadOnlyList<ExcelExternalD
     /// The number of rows returned by the server for this dde item.
     /// </summary>
     public int Rows { get; set; }
+
     /// <summary>
     /// The number of columns returned by the server for this dde item.
     /// </summary>

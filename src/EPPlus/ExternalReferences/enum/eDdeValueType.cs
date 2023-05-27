@@ -10,6 +10,7 @@
  *************************************************************************************************
   04/16/2021         EPPlus Software AB       EPPlus 5.7
  *************************************************************************************************/
+
 namespace OfficeOpenXml.ExternalReferences;
 
 /// <summary>
@@ -21,18 +22,22 @@ public enum eDdeValueType
     /// The value is a boolean.
     /// </summary>
     Boolean,
+
     /// <summary>
     /// The value is an error.
     /// </summary>
     Error,
+
     /// <summary>
     /// The value is a real number.
     /// </summary>
     Number,
+
     /// <summary>
     /// The value is nil.
     /// </summary>
     Nil,
+
     /// <summary>
     /// The value is a string.
     /// </summary>

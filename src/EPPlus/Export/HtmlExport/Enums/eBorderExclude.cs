@@ -10,6 +10,7 @@
  *************************************************************************************************
   05/11/2021         EPPlus Software AB           ExcelTable Html Export
  *************************************************************************************************/
+
 using System;
 
 namespace OfficeOpenXml.Export.HtmlExport;
@@ -24,18 +25,22 @@ public enum eBorderExclude
     /// Exclude all border properties.
     /// </summary>
     All = 0x0F,
+
     /// <summary>
     /// Exclude top border properties
     /// </summary>
     Top = 0x01,
+
     /// <summary>
     /// Exclude bottom border properties
     /// </summary>
     Bottom = 0x02,
+
     /// <summary>
     /// Exclude left border properties
     /// </summary>
     Left = 0x04,
+
     /// <summary>
     /// Exclude right border properties
     /// </summary>

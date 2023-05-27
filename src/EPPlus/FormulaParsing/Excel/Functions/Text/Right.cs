@@ -10,6 +10,7 @@
  *************************************************************************************************
   01/27/2020         EPPlus Software AB       Initial release EPPlus 5
  *************************************************************************************************/
+
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -19,10 +20,9 @@ using OfficeOpenXml.FormulaParsing.ExpressionGraph;
 
 namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Text;
 
-[FunctionMetadata(
-                     Category = ExcelFunctionCategory.Text,
-                     EPPlusVersion = "4",
-                     Description = "Returns a specified number of characters from the end of a supplied text string")]
+[FunctionMetadata(Category = ExcelFunctionCategory.Text,
+                  EPPlusVersion = "4",
+                  Description = "Returns a specified number of characters from the end of a supplied text string")]
 internal class Right : ExcelFunction
 {
     public override CompileResult Execute(IEnumerable<FunctionArgument> arguments, ParsingContext context)
@@ -31,6 +31,7 @@ internal class Right : ExcelFunction
         string? str = ArgToString(arguments, 0);
         int length = this.ArgToInt(arguments, 1);
         int startIx = str.Length - length;
+
         if (startIx < 0)
         {
             startIx = 0;

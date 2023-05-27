@@ -10,6 +10,7 @@
  *************************************************************************************************
   01/27/2020         EPPlus Software AB       Initial release EPPlus 5
  *************************************************************************************************/
+
 using OfficeOpenXml.Constants;
 using OfficeOpenXml.Packaging;
 using OfficeOpenXml.Style.XmlAccess;
@@ -27,12 +28,15 @@ namespace OfficeOpenXml.Drawing.Theme;
 public class ExcelThemeManager
 {
     ExcelWorkbook _wb;
-    internal static string _defaultTheme="";
+    internal static string _defaultTheme = "";
+
     internal ExcelThemeManager(ExcelWorkbook wb)
     {
         this._wb = wb;
     }
+
     ExcelTheme _theme = null;
+
     /// <summary>
     /// The current theme. Null if not theme exists.
     /// <seealso cref="CreateDefaultTheme"/>
@@ -44,17 +48,20 @@ public class ExcelThemeManager
     {
         get
         {
-            if(this._theme==null)
+            if (this._theme == null)
             {
                 ZipPackageRelationshipCollection? rels = this._wb.Part.GetRelationshipsByType(ExcelPackage.schemaThemeRelationships);
-                if (rels.Count>0)
+
+                if (rels.Count > 0)
                 {
                     this._theme = new ExcelTheme(this._wb, rels.First());
                 }
             }
+
             return this._theme;
         }
     }
+
     /// <summary>
     /// Create the default theme.
     /// </summary>
@@ -65,28 +72,32 @@ public class ExcelThemeManager
             throw new InvalidOperationException("Can't create theme. Theme already exists");
         }
 
-        if(string.IsNullOrEmpty(_defaultTheme))
+        if (string.IsNullOrEmpty(_defaultTheme))
         {
             _defaultTheme = StyleResourceManager.GetItem("DefaultTheme.Xml");
         }
-        XmlDocument? themeXml = new XmlDocument();   
+
+        XmlDocument? themeXml = new XmlDocument();
         themeXml.LoadXml(_defaultTheme);
         this.Load(themeXml);
     }
+
     internal ExcelTheme GetOrCreateTheme()
     {
-        if(this.CurrentTheme==null)
+        if (this.CurrentTheme == null)
         {
             this.CreateDefaultTheme();
         }
+
         return this._theme;
     }
+
     /// <summary>
     /// Delete the current theme
     /// </summary>
     public void DeleteCurrentTheme()
     {
-        if(this.CurrentTheme==null)
+        if (this.CurrentTheme == null)
         {
             return;
         }
@@ -95,13 +106,14 @@ public class ExcelThemeManager
         this._wb._package.ZipPackage.DeletePart(this._theme.ThemeUri);
         this._theme = null;
     }
+
     /// <summary>
     /// Loads a .thmx file, exported from a Spread Sheet Application like Excel
     /// </summary>
     /// <param name="thmxFile">The path to the thmx file</param>
     public void Load(FileInfo thmxFile)
     {
-        if(!thmxFile.Exists)
+        if (!thmxFile.Exists)
         {
             throw new FileNotFoundException($"{thmxFile.FullName} does not exist");
         }
@@ -109,6 +121,7 @@ public class ExcelThemeManager
         using MemoryStream? ms = RecyclableMemory.GetStream(File.ReadAllBytes(thmxFile.FullName));
         this.Load(ms);
     }
+
     /// <summary>
     /// Loads a theme XmlDocument. 
     /// Overwrites any previously set theme settings.
@@ -117,6 +130,7 @@ public class ExcelThemeManager
     public void Load(XmlDocument themeXml)
     {
         this.DeleteCurrentTheme();
+
         if (this.CurrentTheme == null)
         {
             Uri? uri = new Uri("/xl/theme/theme1.xml", UriKind.Relative);
@@ -126,28 +140,32 @@ public class ExcelThemeManager
             this._theme = new ExcelTheme(this._wb, rel);
         }
     }
+
     /// <summary>
     /// Loads a .thmx file as a stream. Thmx files are exported from a Spread Sheet Application like Excel
     /// </summary>
     /// <param name="thmxStream">The thmx file as a stream</param>
     public void Load(Stream thmxStream)
     {
-            
         ZipPackage p = new ZipPackage(thmxStream);
-            
-        ZipPackageRelationship? themeManagerRel = p.GetRelationshipsByType("http://schemas.openxmlformats.org/officeDocument/2006/relationships/officeDocument").FirstOrDefault();
+
+        ZipPackageRelationship? themeManagerRel = p.GetRelationshipsByType("http://schemas.openxmlformats.org/officeDocument/2006/relationships/officeDocument")
+                                                   .FirstOrDefault();
+
         if (themeManagerRel != null)
         {
             ZipPackagePart? themeManager = p.GetPart(themeManagerRel.TargetUri);
             ZipPackageRelationship? themeRel = themeManager.GetRelationshipsByType(ExcelPackage.schemaThemeRelationships).FirstOrDefault();
+
             if (themeRel != null)
             {
                 ZipPackagePart? themePart = p.GetPart(UriHelper.ResolvePartUri(themeRel.SourceUri, themeRel.TargetUri));
                 XmlDocument? themeXml = new XmlDocument();
                 XmlHelper.LoadXmlSafe(themeXml, themePart.GetStream());
                 this.Load(themeXml);
+
                 foreach (ZipPackageRelationship? rel in themePart.GetRelationships())
-                {   
+                {
                     ZipPackagePart? partToCopy = p.GetPart(UriHelper.ResolvePartUri(rel.SourceUri, rel.TargetUri));
                     Uri? uri = UriHelper.ResolvePartUri(this._theme.ThemeUri, rel.TargetUri);
                     ZipPackagePart? part = this._wb._package.ZipPackage.CreatePart(uri, partToCopy.ContentType);
@@ -179,7 +197,8 @@ public class ExcelThemeManager
         }
 
         ExcelNamedStyleXml? style = this.GetNormalStyle();
-        foreach(ExcelXfs? xfs in this._wb.Styles.CellXfs)
+
+        foreach (ExcelXfs? xfs in this._wb.Styles.CellXfs)
         {
             if (xfs.XfId == style.StyleXfId)
             {
@@ -196,6 +215,7 @@ public class ExcelThemeManager
     {
         return this._wb.Styles.GetNormalStyle();
     }
+
     internal void Save()
     {
         if (this.CurrentTheme != null)

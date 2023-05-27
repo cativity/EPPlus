@@ -26,6 +26,7 @@
  *******************************************************************************
   01/27/2020         EPPlus Software AB       Initial release EPPlus 5
  *******************************************************************************/
+
 using System;
 using System.Collections.Generic;
 using System.Drawing;
@@ -40,11 +41,13 @@ namespace EPPlusTest;
 public class CommentsTest : TestBase
 {
     static ExcelPackage _pck;
+
     [ClassInitialize]
     public static void Init(TestContext context)
     {
         _pck = OpenPackage("Comment.xlsx", true);
     }
+
     [ClassCleanup]
     public static void Cleanup()
     {
@@ -63,17 +66,20 @@ public class CommentsTest : TestBase
         a1.Comment.Visible = true;
         a1.Comment.Visible = false;
         a1.Comment.Fill.Style = OfficeOpenXml.Drawing.Vml.eVmlFillType.Gradient;
-        a1.Comment.Fill.GradientSettings.SetGradientColors(
-                                                           new OfficeOpenXml.Drawing.Vml.VmlGradiantColor(0, Color.Red),
+
+        a1.Comment.Fill.GradientSettings.SetGradientColors(new OfficeOpenXml.Drawing.Vml.VmlGradiantColor(0, Color.Red),
                                                            new OfficeOpenXml.Drawing.Vml.VmlGradiantColor(100, Color.Orange));
+
         Assert.IsNotNull(a1.Comment);
+
         //check style attribute
         Dictionary<string, string>? stylesDict = new Dictionary<string, string>();
-        string[] styles = a1.Comment.Style
-                            .Split(new[] { ";" }, StringSplitOptions.RemoveEmptyEntries);
+        string[] styles = a1.Comment.Style.Split(new[] { ";" }, StringSplitOptions.RemoveEmptyEntries);
+
         foreach (string? s in styles)
         {
             string[] split = s.Split(':');
+
             if (split.Length == 2)
             {
                 string? k = (split[0] ?? "").Trim().ToLower();
@@ -81,12 +87,14 @@ public class CommentsTest : TestBase
                 stylesDict[k] = v;
             }
         }
+
         Assert.IsTrue(stylesDict.ContainsKey("visibility"));
         Assert.AreEqual("hidden", stylesDict["visibility"]);
         Assert.IsFalse(a1.Comment.Visible);
 
         pkg.Save();
     }
+
     [TestMethod]
     public void CommentInsertColumn()
     {
@@ -98,6 +106,7 @@ public class CommentsTest : TestBase
         ws.InsertColumn(1, 1);
 
         Assert.AreEqual("B1", ws.Cells["B1"].Comment.Address);
+
         //Throws a null reference exception
         ws.Comments.Remove(ws.Cells["B1"].Comment);
 
@@ -105,6 +114,7 @@ public class CommentsTest : TestBase
         ws.DeleteColumn(2);
         Assert.AreEqual(0, ws.Comments.Count);
     }
+
     [TestMethod]
     public void CommentDeleteColumn()
     {
@@ -116,6 +126,7 @@ public class CommentsTest : TestBase
         ws.DeleteColumn(1, 1);
 
         Assert.AreEqual("A1", ws.Cells["A1"].Comment.Address);
+
         //Throws a null reference exception
         ws.Comments.Remove(ws.Cells["A1"].Comment);
 
@@ -123,6 +134,7 @@ public class CommentsTest : TestBase
         ws.DeleteColumn(1);
         Assert.AreEqual(0, ws.Comments.Count);
     }
+
     [TestMethod]
     public void CommentInsertRow()
     {
@@ -135,6 +147,7 @@ public class CommentsTest : TestBase
 
         Assert.AreEqual("A2", ws.Cells["A2"].Comment.Address);
         Assert.IsNull(ws.Cells["A1"].Comment);
+
         //Throws a null reference exception
         ws.Comments.Remove(ws.Cells["A2"].Comment);
 
@@ -142,6 +155,7 @@ public class CommentsTest : TestBase
         ws.DeleteRow(2);
         Assert.AreEqual(0, ws.Comments.Count);
     }
+
     [TestMethod]
     public void CommentDeleteRow()
     {
@@ -153,6 +167,7 @@ public class CommentsTest : TestBase
         ws.DeleteRow(1, 1);
 
         Assert.AreEqual("A1", ws.Cells["A1"].Comment.Address);
+
         //Throws a null reference exception
         ws.Comments.Remove(ws.Cells["A1"].Comment);
 
@@ -160,17 +175,19 @@ public class CommentsTest : TestBase
         ws.DeleteRow(1);
         Assert.AreEqual(0, ws.Comments.Count);
     }
+
     [TestMethod]
     public void RangeShouldClearComment()
     {
         ExcelWorksheet? ws = _pck.Workbook.Worksheets.Add("Sheet1");
+
         for (int i = 0; i < 5; i++)
         {
             ws.Cells[2, 2].Value = "hallo";
             ExcelComment comment = ws.Cells[2, 2].AddComment("hallo\r\nLine 2", "hallo");
             comment.Font.FontName = "Arial";
             comment.AutoFit = true;
-                    
+
             ExcelRange cell = ws.Cells[2, 2];
 
             Assert.AreEqual("Arial", comment.Font.FontName);
@@ -181,9 +198,10 @@ public class CommentsTest : TestBase
             cell.Clear();
 
             Assert.AreEqual(0, ws.Comments.Count);
-            Assert.IsNull(cell.Comment);                                        
+            Assert.IsNull(cell.Comment);
         }
     }
+
     [TestMethod]
     public void SettingRichTextShouldNotEffectComment()
     {
@@ -194,10 +212,12 @@ public class CommentsTest : TestBase
         ws.Cells[1, 1].IsRichText = true;
         Assert.IsNotNull(ws.Cells[1, 1].Comment);
     }
+
     [TestMethod]
     public void CopyCommentInRange()
     {
         using ExcelPackage? p = new ExcelPackage();
+
         // Get the comment object from the worksheet
         ExcelWorksheet? ws = p.Workbook.Worksheets.Add("Sheet1");
         ExcelComment? comment1 = ws.Comments.Add(ws.Cells["B2"], "Test Comment");
@@ -237,10 +257,12 @@ public class CommentsTest : TestBase
         Assert.AreEqual(comment1.Font.UnderLine, comment2.Font.UnderLine);
         Assert.AreEqual(comment1.Font.Color.Name, comment2.Font.Color.Name);
     }
+
     [TestMethod]
     public void TestDeleteCellsWithComment()
     {
         using ExcelPackage? p = new ExcelPackage();
+
         // Add a sheet with comments
         ExcelWorksheet? ws = p.Workbook.Worksheets.Add("Sheet1");
         ws.Comments.Add(ws.Cells["B2"], "This is a comment.", "author");

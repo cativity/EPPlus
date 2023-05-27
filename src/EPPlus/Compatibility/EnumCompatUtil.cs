@@ -11,9 +11,11 @@ internal static class EnumCompatUtil
         where T : Enum
     {
         result = default(T);
+
         try
         {
             result = (T)Enum.Parse(typeof(T), s);
+
             return true;
         }
         catch

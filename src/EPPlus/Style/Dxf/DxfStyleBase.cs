@@ -10,10 +10,12 @@
  *************************************************************************************************
   01/27/2020         EPPlus Software AB       Initial release EPPlus 5
  *************************************************************************************************/
+
 using OfficeOpenXml.Drawing;
 using System;
 using System.Drawing;
 using System.Globalization;
+
 namespace OfficeOpenXml.Style.Dxf;
 
 /// <summary>
@@ -23,38 +25,44 @@ public abstract class DxfStyleBase
 {
     internal ExcelStyles _styles;
     internal Action<eStyleClass, eStyleProperty, object> _callback;
+
     internal DxfStyleBase(ExcelStyles styles, Action<eStyleClass, eStyleProperty, object> callback)
     {
         this._styles = styles;
         this._callback = callback;
         this.AllowChange = false; //Don't touch this value in the styles.xml (by default). When Dxfs is fully implemented this can be removed.
     }
+
     /// <summary>
     /// Reset all properties for the style.
     /// </summary>
     public abstract void Clear();
+
     /// <summary>
     /// The id
     /// </summary>
     internal abstract string Id { get; }
+
     /// <summary>
     /// If the style has any value set
     /// </summary>
-    public abstract bool HasValue{get;}
+    public abstract bool HasValue { get; }
+
     /// <summary>
     /// Create the nodes
     /// </summary>
     /// <param name="helper">The xml helper</param>
     /// <param name="path">The Xpath</param>
     internal abstract void CreateNodes(XmlHelper helper, string path);
+
     /// <summary>
     /// Sets the values from an XmlHelper instance. 
     /// </summary>
     /// <param name="helper">The helper</param>
     internal virtual void SetValuesFromXml(XmlHelper helper)
     {
-
     }
+
     /// <summary>
     /// Set the cell style values from the dxf using the callback method.
     /// </summary>
@@ -65,13 +73,14 @@ public abstract class DxfStyleBase
     /// </summary>
     /// <returns></returns>
     internal abstract DxfStyleBase Clone();
+
     /// <summary>
     /// Set the color value
     /// </summary>
     /// <param name="helper">The xml helper</param>
     /// <param name="path">The x path</param>
     /// <param name="color">The color</param>
-    protected static void SetValueColor(XmlHelper helper,string path, ExcelDxfColor color)
+    protected static void SetValueColor(XmlHelper helper, string path, ExcelDxfColor color)
     {
         if (color != null && color.HasValue)
         {
@@ -91,12 +100,14 @@ public abstract class DxfStyleBase
             {
                 SetValue(helper, path + "/@indexed", (int)color.Index);
             }
+
             if (color.Tint != null)
             {
                 SetValue(helper, path + "/@tint", color.Tint);
             }
         }
     }
+
     /// <summary>
     /// Same as SetValue but will set first char to lower case.
     /// </summary>
@@ -116,6 +127,7 @@ public abstract class DxfStyleBase
             helper.SetXmlNodeString(path, s);
         }
     }
+
     /// <summary>
     /// Sets the value
     /// </summary>
@@ -130,7 +142,7 @@ public abstract class DxfStyleBase
         }
         else
         {
-            if(v is double d)
+            if (v is double d)
             {
                 helper.SetXmlNodeString(path, d.ToString(CultureInfo.InvariantCulture));
             }
@@ -144,6 +156,7 @@ public abstract class DxfStyleBase
             }
         }
     }
+
     /// <summary>
     /// Sets the value
     /// </summary>
@@ -161,6 +174,7 @@ public abstract class DxfStyleBase
             helper.SetXmlNodeString(path, s);
         }
     }
+
     /// <summary>
     /// Sets the value
     /// </summary>
@@ -178,10 +192,12 @@ public abstract class DxfStyleBase
             helper.SetXmlNodeBool(path, (bool)v);
         }
     }
+
     internal static string GetAsString(object v)
     {
         return (v ?? "").ToString();
     }
+
     /// <summary>
     /// Is this value allowed to be changed?
     /// </summary>
@@ -193,26 +209,34 @@ public abstract class DxfStyleBase
         ret.Theme = (eThemeSchemeColor?)helper.GetXmlNodeIntNull(path + "/@theme");
         ret.Index = helper.GetXmlNodeIntNull(path + "/@indexed");
         string rgb = helper.GetXmlNodeString(path + "/@rgb");
+
         if (rgb != "")
         {
             ret.Color = Color.FromArgb(int.Parse(rgb.Replace("#", ""), NumberStyles.HexNumber));
         }
+
         ret.Auto = helper.GetXmlNodeBoolNullable(path + "/@auto");
         ret.Tint = helper.GetXmlNodeDoubleNull(path + "/@tint");
+
         return ret;
     }
+
     internal static ExcelUnderLineType? GetUnderLineEnum(string value)
     {
         switch (value.ToLower(CultureInfo.InvariantCulture))
         {
             case "single":
                 return ExcelUnderLineType.Single;
+
             case "double":
                 return ExcelUnderLineType.Double;
+
             case "singleaccounting":
                 return ExcelUnderLineType.SingleAccounting;
+
             case "doubleaccounting":
                 return ExcelUnderLineType.DoubleAccounting;
+
             default:
                 return null;
         }

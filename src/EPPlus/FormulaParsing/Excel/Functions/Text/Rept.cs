@@ -10,6 +10,7 @@
  *************************************************************************************************
   01/27/2020         EPPlus Software AB       Initial release EPPlus 5
  *************************************************************************************************/
+
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -19,10 +20,9 @@ using OfficeOpenXml.FormulaParsing.ExpressionGraph;
 
 namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Text;
 
-[FunctionMetadata(
-                     Category = ExcelFunctionCategory.Text,
-                     EPPlusVersion = "4",
-                     Description = "Returns a string consisting of a supplied text string, repeated a specified number of times")]
+[FunctionMetadata(Category = ExcelFunctionCategory.Text,
+                  EPPlusVersion = "4",
+                  Description = "Returns a string consisting of a supplied text string, repeated a specified number of times")]
 internal class Rept : ExcelFunction
 {
     public override CompileResult Execute(IEnumerable<FunctionArgument> arguments, ParsingContext context)
@@ -31,10 +31,12 @@ internal class Rept : ExcelFunction
         string? str = ArgToString(arguments, 0);
         int n = this.ArgToInt(arguments, 1);
         StringBuilder? sb = new StringBuilder();
+
         for (int x = 0; x < n; x++)
         {
             sb.Append(str);
         }
+
         return this.CreateResult(sb.ToString(), DataType.String);
     }
 }

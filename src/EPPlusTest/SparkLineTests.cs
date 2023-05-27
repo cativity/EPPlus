@@ -26,6 +26,7 @@
  *******************************************************************************
   01/27/2020         EPPlus Software AB       Initial release EPPlus 5
  *******************************************************************************/
+
 using System;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System.IO;
@@ -39,26 +40,29 @@ public class SparkLineTests : TestBase
 {
     static ExcelPackage _pck;
     string _pckfile;
+
     public SparkLineTests()
     {
         _pck = new ExcelPackage();
         InitBase();
         this._pckfile = "Sparklines.xlsx";
     }
+
     [TestMethod]
     public void StartTest()
     {
         this.WriteSparklines();
         this.ReadSparklines();
     }
+
     public void ReadSparklines()
     {
         _pck = new ExcelPackage();
-        _pck=OpenPackage(this._pckfile);
-        ExcelWorksheet? ws = _pck.Workbook.Worksheets[_pck.Compatibility.IsWorksheets1Based?1:0];
+        _pck = OpenPackage(this._pckfile);
+        ExcelWorksheet? ws = _pck.Workbook.Worksheets[_pck.Compatibility.IsWorksheets1Based ? 1 : 0];
         Assert.AreEqual(4, ws.SparklineGroups.Count);
         ExcelSparklineGroup? sg1 = ws.SparklineGroups[0];
-        Assert.AreEqual("A1:A4",sg1.LocationRange.Address);
+        Assert.AreEqual("A1:A4", sg1.LocationRange.Address);
         Assert.AreEqual("B1:C4", sg1.DataRange.Address);
         Assert.AreEqual(null, sg1.DateAxisRange);
 
@@ -81,8 +85,9 @@ public class SparkLineTests : TestBase
         Assert.AreEqual(eDispBlanksAs.Gap, ec);
         eSparklineType t = sg1.Type;
     }
+
     public void WriteSparklines()
-    {            
+    {
         ExcelWorksheet? ws = _pck.Workbook.Worksheets.Add("Sparklines");
         ws.Cells["B1"].Value = 15;
         ws.Cells["B2"].Value = 30;
@@ -104,7 +109,8 @@ public class SparkLineTests : TestBase
 
         //Row<->Column
         ExcelSparklineGroup? sg3 = ws.SparklineGroups.Add(eSparklineType.Stacked, ws.Cells["A10:B10"], ws.Cells["B1:C4"]);
-        sg3.RightToLeft=true;
+        sg3.RightToLeft = true;
+
         //Row<->Row
         ExcelSparklineGroup? sg4 = ws.SparklineGroups.Add(eSparklineType.Line, ws.Cells["D10:G10"], ws.Cells["B1:C4"]);
         ws.Cells["A20"].Value = new DateTime(2016, 12, 30);

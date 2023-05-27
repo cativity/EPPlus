@@ -13,9 +13,18 @@ public class SystemDrawingImageHandler : IImageHandler
 {
     public SystemDrawingImageHandler()
     {
-        if(IsWindows())
+        if (IsWindows())
         {
-            this.SupportedTypes= new HashSet<ePictureType>() { ePictureType.Bmp, ePictureType.Jpg, ePictureType.Gif, ePictureType.Png, ePictureType.Tif, ePictureType.Emf, ePictureType.Wmf };
+            this.SupportedTypes = new HashSet<ePictureType>()
+            {
+                ePictureType.Bmp,
+                ePictureType.Jpg,
+                ePictureType.Gif,
+                ePictureType.Png,
+                ePictureType.Tif,
+                ePictureType.Emf,
+                ePictureType.Wmf
+            };
         }
         else
         {
@@ -25,11 +34,13 @@ public class SystemDrawingImageHandler : IImageHandler
 
     private static bool IsWindows()
     {
-        if(Environment.OSVersion.Platform == PlatformID.Unix ||
+        if (Environment.OSVersion.Platform == PlatformID.Unix
+            ||
 #if(NET5_0_OR_GREATER)
-           Environment.OSVersion.Platform == PlatformID.Other ||
+            Environment.OSVersion.Platform == PlatformID.Other
+            ||
 #endif
-           Environment.OSVersion.Platform == PlatformID.MacOSX)
+            Environment.OSVersion.Platform == PlatformID.MacOSX)
         {
             return false;
         }
@@ -39,14 +50,16 @@ public class SystemDrawingImageHandler : IImageHandler
         }
     }
 
-    public HashSet<ePictureType> SupportedTypes
-    {
-        get;
-    } 
+    public HashSet<ePictureType> SupportedTypes { get; }
 
     public Exception LastException { get; private set; }
 
-    public bool GetImageBounds(MemoryStream image, ePictureType type, out double width, out double height, out double horizontalResolution, out double verticalResolution)
+    public bool GetImageBounds(MemoryStream image,
+                               ePictureType type,
+                               out double width,
+                               out double height,
+                               out double horizontalResolution,
+                               out double verticalResolution)
     {
         try
         {
@@ -55,19 +68,23 @@ public class SystemDrawingImageHandler : IImageHandler
             height = bmp.Height;
             horizontalResolution = bmp.HorizontalResolution;
             verticalResolution = bmp.VerticalResolution;
+
             return true;
         }
-        catch(Exception ex)
+        catch (Exception ex)
         {
             width = 0;
             height = 0;
             horizontalResolution = 0;
             verticalResolution = 0;
             this.LastException = ex;
+
             return false;
         }
     }
+
     bool? _validForEnvironment = null;
+
     public bool ValidForEnvironment()
     {
         if (this._validForEnvironment.HasValue == false)
@@ -82,6 +99,7 @@ public class SystemDrawingImageHandler : IImageHandler
                 this._validForEnvironment = false;
             }
         }
+
         return this._validForEnvironment.Value;
     }
 }

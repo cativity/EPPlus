@@ -18,26 +18,27 @@ internal static class HtmlExportImageUtil
 
         className = className.Trim().Replace(" ", "-");
         string? newClassName = "";
+
         for (int i = 0; i < className.Length; i++)
         {
             char c = className[i];
+
             if (i == 0)
             {
                 if (c == '-' || (c >= '0' && c <= '9'))
                 {
                     newClassName = "_";
+
                     continue;
                 }
             }
 
-            if ((c >= '0' && c <= '9') ||
-                (c >= 'a' && c <= 'z') ||
-                (c >= 'A' && c <= 'Z') ||
-                c >= 0x00A0)
+            if ((c >= '0' && c <= '9') || (c >= 'a' && c <= 'z') || (c >= 'A' && c <= 'Z') || c >= 0x00A0)
             {
                 newClassName += c;
             }
         }
+
         return string.IsNullOrEmpty(newClassName) ? optionalName : newClassName;
     }
 
@@ -57,10 +58,12 @@ internal static class HtmlExportImageUtil
             string? name = GetPictureName(image);
             string imageName = GetClassName(image.Picture.Name, ((IPictureContainer)image.Picture).ImageHash);
             writer.AddAttribute("alt", image.Picture.Name);
+
             if (settings.Pictures.AddNameAsId)
             {
                 writer.AddAttribute("id", imageName);
             }
+
             writer.AddAttribute("class", $"{settings.StyleClassPrefix}image-{name} {settings.StyleClassPrefix}image-prop-{imageName}");
             writer.RenderBeginTag(HtmlElements.Img, true);
         }

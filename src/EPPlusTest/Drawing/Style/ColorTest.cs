@@ -26,6 +26,7 @@
  *******************************************************************************
   01/27/2020         EPPlus Software AB       Initial release EPPlus 5
  *******************************************************************************/
+
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using OfficeOpenXml;
 using OfficeOpenXml.Drawing;
@@ -39,14 +40,14 @@ using System.Text;
 namespace EPPlusTest.Drawing.Style;
 
 [TestClass]
-public class ColorTest 
+public class ColorTest
 {
     [TestMethod]
     public void VerifyPresetColorEnumCastFromColor()
     {
         Type? t = typeof(Color);
 
-        foreach(PropertyInfo? pi in t.GetProperties(BindingFlags.Static | BindingFlags.Public))
+        foreach (PropertyInfo? pi in t.GetProperties(BindingFlags.Static | BindingFlags.Public))
         {
             if (pi.Name.Equals("transparant", StringComparison.InvariantCultureIgnoreCase))
             {
@@ -57,6 +58,7 @@ public class ColorTest
             }
         }
     }
+
     [TestMethod]
     public void VerifyAlphaPartWhenSetColor()
     {
@@ -67,22 +69,26 @@ public class ColorTest
         shape.SetPosition(1, 0, 5, 0);
 
         //Act
-        shape.Fill.Style=eFillStyle.SolidFill;
-        shape.Fill.SolidFill.Color.SetRgbColor(Color.FromArgb(127,255,0,0), true);
+        shape.Fill.Style = eFillStyle.SolidFill;
+        shape.Fill.SolidFill.Color.SetRgbColor(Color.FromArgb(127, 255, 0, 0), true);
 
         //Assert
         Assert.AreEqual(50, shape.Fill.SolidFill.Color.Transforms[0].Value);
         Assert.AreEqual(0xFFFF0000, (uint)shape.Fill.SolidFill.Color.RgbColor.Color.ToArgb());
     }
+
     private static string TranslateFromColor(Color c)
     {
         if (c.IsEmpty || c.GetType().GetProperty(c.Name, BindingFlags.Public | BindingFlags.Static) == null)
         {
             throw new ArgumentException("A preset color cannot be set to empty or be an unnamed color");
         }
+
         string? s = c.Name.ToString();
+
         return s.Substring(0, 1).ToLower() + s.Substring(1);
     }
+
     [TestMethod]
     public void HslToRgb()
     {
@@ -149,8 +155,9 @@ public class ColorTest
 
         //359, 79%, 21%
         rgb = ExcelDrawingHslColor.GetRgb(359, .79, .21);
-        Assert.AreEqual(0xFF600B0D, (uint)rgb.ToArgb());            
+        Assert.AreEqual(0xFF600B0D, (uint)rgb.ToArgb());
     }
+
     [TestMethod]
     public void RgbToHsl()
     {
@@ -170,7 +177,7 @@ public class ColorTest
         Assert.AreEqual(.5, l);
 
         //Lime 0x00FF00
-        ExcelDrawingRgbColor.GetHslColor(0, 0xFF,  0, out h, out s, out l);
+        ExcelDrawingRgbColor.GetHslColor(0, 0xFF, 0, out h, out s, out l);
         Assert.AreEqual(120, h);
         Assert.AreEqual(1, s);
         Assert.AreEqual(.5, l);
@@ -209,7 +216,7 @@ public class ColorTest
         ExcelDrawingRgbColor.GetHslColor(0x80, 0x80, 0x80, out h, out s, out l);
         Assert.AreEqual(0, h);
         Assert.AreEqual(0, s);
-        Assert.AreEqual(.502, Math.Round(l,3));
+        Assert.AreEqual(.502, Math.Round(l, 3));
 
         //Maroon 800000
         ExcelDrawingRgbColor.GetHslColor(0x80, 0x00, 0x00, out h, out s, out l);
@@ -247,11 +254,10 @@ public class ColorTest
         Assert.AreEqual(1, s);
         Assert.AreEqual(.251, Math.Round(l, 3));
 
-
         //43, 58%, 73%
         ExcelDrawingRgbColor.GetHslColor(0xE2, 0xCB, 0x92, out h, out s, out l);
-        Assert.AreEqual(43, Math.Round(h,0));
-        Assert.AreEqual(.58, Math.Round(s,2));
+        Assert.AreEqual(43, Math.Round(h, 0));
+        Assert.AreEqual(.58, Math.Round(s, 2));
         Assert.AreEqual(.73, Math.Round(l, 2));
 
         //359, 79%, 21%
@@ -260,5 +266,4 @@ public class ColorTest
         Assert.AreEqual(.79, Math.Round(s, 2));
         Assert.AreEqual(.21, Math.Round(l, 2));
     }
-
 }

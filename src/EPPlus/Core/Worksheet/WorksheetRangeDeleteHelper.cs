@@ -10,6 +10,7 @@
  *************************************************************************************************
   02/03/2020         EPPlus Software AB       Added
  *************************************************************************************************/
+
 using OfficeOpenXml.ConditionalFormatting;
 using OfficeOpenXml.ConditionalFormatting.Contracts;
 using OfficeOpenXml.Core.CellStore;
@@ -32,6 +33,7 @@ internal static class WorksheetRangeDeleteHelper
     {
         ws.CheckSheetTypeAndNotDisposed();
         ValidateRow(ws, rowFrom, rows);
+
         lock (ws)
         {
             ExcelAddressBase? delRange = new ExcelAddressBase(rowFrom, 1, rowFrom + rows - 1, ExcelPackage.MaxColumns);
@@ -43,7 +45,6 @@ internal static class WorksheetRangeDeleteHelper
             {
                 FixFormulasDeleteRow(wsToUpdate, rowFrom, rows, ws.Name);
             }
-
 
             WorksheetRangeHelper.FixMergedCellsRow(ws, rowFrom, rows, true);
 
@@ -79,6 +80,7 @@ internal static class WorksheetRangeDeleteHelper
         foreach (ExcelTable? tbl in ws.Tables)
         {
             tbl.Address = tbl.Address.DeleteRow(rowFrom, rows);
+
             foreach (ExcelTableColumn? col in tbl.Columns)
             {
                 if (string.IsNullOrEmpty(col.CalculatedColumnFormula) == false)
@@ -92,6 +94,7 @@ internal static class WorksheetRangeDeleteHelper
     internal static void DeleteColumn(ExcelWorksheet ws, int columnFrom, int columns)
     {
         ValidateColumn(ws, columnFrom, columns);
+
         lock (ws)
         {
             AdjustColumnMinMaxDelete(ws, columnFrom, columns);
@@ -145,6 +148,7 @@ internal static class WorksheetRangeDeleteHelper
             {
                 XmlNode? node = tbl.Columns[0].TopNode.ParentNode;
                 int ix = columnFrom - tbl.Address.Start.Column;
+
                 for (int i = 0; i < columns; i++)
                 {
                     if (node.ChildNodes.Count > ix)
@@ -152,6 +156,7 @@ internal static class WorksheetRangeDeleteHelper
                         node.RemoveChild(node.ChildNodes[ix]);
                     }
                 }
+
                 tbl._cols = new ExcelTableColumnCollection(tbl);
             }
 
@@ -163,7 +168,8 @@ internal static class WorksheetRangeDeleteHelper
                 {
                     if (string.IsNullOrEmpty(col.CalculatedColumnFormula) == false)
                     {
-                        col.CalculatedColumnFormula = ExcelCellBase.UpdateFormulaReferences(col.CalculatedColumnFormula, 0, -columns, 0, columnFrom, ws.Name, ws.Name);
+                        col.CalculatedColumnFormula =
+                            ExcelCellBase.UpdateFormulaReferences(col.CalculatedColumnFormula, 0, -columns, 0, columnFrom, ws.Name, ws.Name);
                     }
                 }
             }
@@ -173,30 +179,37 @@ internal static class WorksheetRangeDeleteHelper
     private static void AdjustColumnMinMaxDelete(ExcelWorksheet ws, int columnFrom, int columns)
     {
         ExcelColumn col = ws.GetValueInner(0, columnFrom) as ExcelColumn;
+
         if (col == null)
         {
             int r = 0;
             int c = columnFrom;
+
             if (ws._values.PrevCell(ref r, ref c))
             {
                 col = ws.GetValueInner(0, c) as ExcelColumn;
+
                 if (col._columnMax >= columnFrom && col._columnMax < ExcelPackage.MaxColumns)
                 {
                     col.ColumnMax = Math.Max(columnFrom - 1, col.ColumnMax - columns);
                 }
             }
         }
+
         int toCol = columnFrom + columns - 1;
         ExcelValue moveValue = new ExcelValue { _styleId = int.MaxValue };
         CellStoreEnumerator<ExcelValue>? cse = new CellStoreEnumerator<ExcelValue>(ws._values, 0, columnFrom, 0, ExcelPackage.MaxColumns);
+
         while (cse.MoveNext())
         {
             ExcelColumn? column = cse.Value._value as ExcelColumn;
+
             if (column != null && column._columnMax > toCol)
             {
                 if (column.ColumnMin > toCol)
                 {
                     column._columnMin -= columns;
+
                     if (column._columnMax < ExcelPackage.MaxColumns)
                     {
                         column._columnMax -= columns;
@@ -208,6 +221,7 @@ internal static class WorksheetRangeDeleteHelper
                     {
                         column._columnMax -= columns;
                     }
+
                     if (column._columnMin > columnFrom)
                     {
                         column._columnMin = columnFrom;
@@ -217,6 +231,7 @@ internal static class WorksheetRangeDeleteHelper
                 }
             }
         }
+
         if (moveValue._styleId != int.MaxValue)
         {
             ws._values.SetValue(0, toCol + 1, moveValue);
@@ -233,6 +248,7 @@ internal static class WorksheetRangeDeleteHelper
         ExcelAddressBase? deleteRange = new ExcelAddressBase(rowFrom, columnFrom, rowFrom + rows - 1, columnFrom + columns - 1);
         FormulaDataTableValidation.HasPartlyFormulaDataTable(ws, deleteRange, true, "Can't delete a part of a data table function");
     }
+
     private static void ValidateColumn(ExcelWorksheet ws, int columnFrom, int columns, int rowFrom = 1, int rows = ExcelPackage.MaxRows)
     {
         if (columnFrom < 1 || columnFrom + columns > ExcelPackage.MaxColumns)
@@ -257,6 +273,7 @@ internal static class WorksheetRangeDeleteHelper
         ws._vmlDrawings?._drawingsCellStore.Delete(rowFrom, columnFrom, rows, columns, true);
         ws._hyperLinks.Delete(rowFrom, columnFrom, rows, columns, true);
         ws.MergedCells._cells.Delete(rowFrom, columnFrom, rows, columns, true);
+
         if (rows == 0 || columns == 0)
         {
             ws._names.Delete(rowFrom, columnFrom, rows, columns);
@@ -277,6 +294,7 @@ internal static class WorksheetRangeDeleteHelper
             ws.Workbook.Names.Delete(rowFrom, columnFrom, rows, 0, n => n.Worksheet == ws, columnFrom, columnTo);
         }
     }
+
     private static void DeleteCellStoresShiftLeft(ExcelWorksheet ws, ExcelRangeBase fromAddress)
     {
         //Store
@@ -294,17 +312,28 @@ internal static class WorksheetRangeDeleteHelper
         ws.Comments.Delete(fromAddress._fromRow, fromAddress._fromCol, 0, fromAddress.Columns, fromAddress._toRow, fromAddress._toCol);
         ws.ThreadedComments.Delete(fromAddress._fromRow, fromAddress._fromCol, 0, fromAddress.Columns, fromAddress._toRow, fromAddress._toCol);
         ws._names.Delete(fromAddress._fromRow, fromAddress._fromCol, 0, fromAddress.Columns, fromAddress._fromRow, fromAddress._toRow);
-        ws.Workbook.Names.Delete(fromAddress._fromRow, fromAddress._fromCol, 0, fromAddress.Columns, n => n.Worksheet == ws, fromAddress._fromRow, fromAddress._toRow);
+
+        ws.Workbook.Names.Delete(fromAddress._fromRow,
+                                 fromAddress._fromCol,
+                                 0,
+                                 fromAddress.Columns,
+                                 n => n.Worksheet == ws,
+                                 fromAddress._fromRow,
+                                 fromAddress._toRow);
     }
+
     private static void AdjustColumnMinMax(ExcelWorksheet ws, int columnFrom, int columns)
     {
         CellStoreEnumerator<ExcelValue>? csec = new CellStoreEnumerator<ExcelValue>(ws._values, 0, columnFrom, 0, columnFrom + columns - 1);
+
         foreach (ExcelValue val in csec)
         {
             object? column = val._value;
+
             if (column is ExcelColumn)
             {
                 ExcelColumn? c = (ExcelColumn)column;
+
                 if (c._columnMin >= columnFrom)
                 {
                     c._columnMin += columns;
@@ -313,14 +342,17 @@ internal static class WorksheetRangeDeleteHelper
             }
         }
     }
+
     static void FixFormulasDeleteRow(ExcelWorksheet ws, int rowFrom, int rows, string workSheetName)
     {
         List<int>? delSF = new List<int>();
+
         foreach (ExcelWorksheet.Formulas? sf in ws._sharedFormulas.Values)
         {
             if (workSheetName == ws.Name)
             {
                 ExcelAddressBase? a = new ExcelAddress(sf.Address).DeleteRow(rowFrom, rows);
+
                 if (a == null)
                 {
                     delSF.Add(sf.Index);
@@ -329,6 +361,7 @@ internal static class WorksheetRangeDeleteHelper
                 {
                     sf.Address = a.Address;
                     sf.Formula = ExcelCellBase.UpdateFormulaReferences(sf.Formula, -rows, 0, rowFrom, 0, ws.Name, workSheetName);
+
                     if (sf.StartRow >= rowFrom)
                     {
                         int r = Math.Max(rowFrom, sf.StartRow - rows);
@@ -346,7 +379,9 @@ internal static class WorksheetRangeDeleteHelper
         {
             ws._sharedFormulas.Remove(ix);
         }
+
         CellStoreEnumerator<object>? cse = new CellStoreEnumerator<object>(ws._formulas, 1, 1, ExcelPackage.MaxRows, ExcelPackage.MaxColumns);
+
         while (cse.Next())
         {
             if (cse.Value is string v)
@@ -358,15 +393,17 @@ internal static class WorksheetRangeDeleteHelper
             }
         }
     }
+
     internal static void FixFormulasDeleteColumn(ExcelWorksheet ws, int columnFrom, int columns, string workSheetName)
     {
         List<int>? delSF = new List<int>();
+
         foreach (ExcelWorksheet.Formulas? sf in ws._sharedFormulas.Values)
         {
-
             if (workSheetName == ws.Name)
             {
                 ExcelAddressBase? a = new ExcelAddress(sf.Address).DeleteColumn(columnFrom, columns);
+
                 if (a == null)
                 {
                     delSF.Add(sf.Index);
@@ -388,12 +425,14 @@ internal static class WorksheetRangeDeleteHelper
                 sf.Formula = ExcelCellBase.UpdateFormulaReferences(sf.Formula, 0, -columns, 0, columnFrom, ws.Name, workSheetName);
             }
         }
+
         foreach (int ix in delSF)
         {
             ws._sharedFormulas.Remove(ix);
         }
 
         CellStoreEnumerator<object>? cse = new CellStoreEnumerator<object>(ws._formulas, 1, 1, ExcelPackage.MaxRows, ExcelPackage.MaxColumns);
+
         while (cse.Next())
         {
             if (cse.Value is string v)
@@ -414,9 +453,11 @@ internal static class WorksheetRangeDeleteHelper
         WorksheetRangeHelper.ValidateIfInsertDeleteIsPossible(range, effectedAddress, GetAffectedRange(range, shift, 1), false);
 
         ExcelWorksheet? ws = range.Worksheet;
+
         lock (ws)
         {
             WorksheetRangeHelper.ConvertEffectedSharedFormulasToCellFormulas(ws, effectedAddress);
+
             if (shift == eShiftTypeDelete.Up)
             {
                 DeleteCellStores(ws, range._fromRow, range._fromCol, range.Rows, range.Columns, range._toCol);
@@ -441,14 +482,17 @@ internal static class WorksheetRangeDeleteHelper
             AdjustDrawings(range, shift);
         }
     }
+
     private static void DeleteSparkLinesAddress(ExcelRangeBase range, eShiftTypeDelete shift, ExcelAddressBase effectedAddress)
     {
         List<ExcelSparklineGroup>? delSparklineGroups = new List<ExcelSparklineGroup>();
+
         foreach (ExcelSparklineGroup? slg in range.Worksheet.SparklineGroups)
         {
             if (slg.DateAxisRange != null && effectedAddress.Collide(slg.DateAxisRange) >= ExcelAddressBase.eAddressCollition.Inside)
             {
                 string address;
+
                 if (shift == eShiftTypeDelete.Up)
                 {
                     address = slg.DateAxisRange.DeleteRow(range._fromRow, range.Rows).Address;
@@ -462,6 +506,7 @@ internal static class WorksheetRangeDeleteHelper
             }
 
             List<ExcelSparkline>? delSparklines = new List<ExcelSparkline>();
+
             foreach (ExcelSparkline? sl in slg.Sparklines)
             {
                 if (range.Collide(sl.Cell.Row, sl.Cell.Column) >= ExcelAddressBase.eAddressCollition.Inside)
@@ -470,8 +515,8 @@ internal static class WorksheetRangeDeleteHelper
                 }
                 else if (shift == eShiftTypeDelete.Up)
                 {
-                    if (effectedAddress.Collide(sl.RangeAddress) >= ExcelAddressBase.eAddressCollition.Inside ||
-                        range.CollideFullRow(sl.RangeAddress._fromRow, sl.RangeAddress._toRow))
+                    if (effectedAddress.Collide(sl.RangeAddress) >= ExcelAddressBase.eAddressCollition.Inside
+                        || range.CollideFullRow(sl.RangeAddress._fromRow, sl.RangeAddress._toRow))
                     {
                         sl.RangeAddress = sl.RangeAddress.DeleteRow(range._fromRow, range.Rows);
                     }
@@ -484,8 +529,7 @@ internal static class WorksheetRangeDeleteHelper
                 else
                 {
                     if (effectedAddress.Collide(sl.RangeAddress) >= ExcelAddressBase.eAddressCollition.Inside
-                        ||
-                        range.CollideFullColumn(sl.RangeAddress._fromCol, sl.RangeAddress._toCol))
+                        || range.CollideFullColumn(sl.RangeAddress._fromCol, sl.RangeAddress._toCol))
                     {
                         sl.RangeAddress = sl.RangeAddress.DeleteColumn(range._fromCol, range.Columns);
                     }
@@ -498,19 +542,27 @@ internal static class WorksheetRangeDeleteHelper
             }
 
             delSparklines.ForEach(x => slg.Sparklines.Remove(x));
+
             if (slg.Sparklines.Count == 0)
             {
                 delSparklineGroups.Add(slg);
             }
         }
+
         delSparklineGroups.ForEach(x => range.Worksheet.SparklineGroups.Remove(x));
     }
+
     private static void DeleteFilterAddress(ExcelRangeBase range, ExcelAddressBase effectedAddress, eShiftTypeDelete shift)
     {
         ExcelWorksheet? ws = range.Worksheet;
+
         if (ws.AutoFilterAddress != null && effectedAddress.Collide(ws.AutoFilterAddress) != ExcelAddressBase.eAddressCollition.No)
         {
-            ExcelAddress? firstRow = new ExcelAddress(ws.AutoFilterAddress._fromRow, ws.AutoFilterAddress._fromCol, ws.AutoFilterAddress._fromRow, ws.AutoFilterAddress._toCol);
+            ExcelAddress? firstRow = new ExcelAddress(ws.AutoFilterAddress._fromRow,
+                                                      ws.AutoFilterAddress._fromCol,
+                                                      ws.AutoFilterAddress._fromRow,
+                                                      ws.AutoFilterAddress._toCol);
+
             if (range.Collide(firstRow, true) >= ExcelAddressBase.eAddressCollition.Inside)
             {
                 ws.AutoFilterAddress = null;
@@ -525,6 +577,7 @@ internal static class WorksheetRangeDeleteHelper
             }
         }
     }
+
     private static void ValidateDelete(ExcelWorksheet ws, ExcelRangeBase range, eShiftTypeDelete shift)
     {
         if (range == null || (range.Addresses != null && range.Addresses.Count > 1))
@@ -558,9 +611,11 @@ internal static class WorksheetRangeDeleteHelper
     {
         //Update Conditional formatting references
         List<IExcelConditionalFormattingRule>? deletedCF = new List<IExcelConditionalFormattingRule>();
+
         foreach (IExcelConditionalFormattingRule? cf in ws.ConditionalFormatting)
         {
             ExcelAddressBase? newAddress = DeleteSplitAddress(cf.Address, range, effectedAddress, shift);
+
             if (newAddress == null)
             {
                 deletedCF.Add(cf);
@@ -578,9 +633,9 @@ internal static class WorksheetRangeDeleteHelper
 
                     ((ExcelConditionalFormattingRule)cf).Address = new ExcelAddress(newAddress.Address);
                 }
-
             }
         }
+
         deletedCF.ForEach(cf => ws.ConditionalFormatting.Remove(cf));
     }
 
@@ -588,9 +643,11 @@ internal static class WorksheetRangeDeleteHelper
     {
         //Update data validation references
         List<ExcelDataValidation>? deletedDV = new List<ExcelDataValidation>();
+
         foreach (ExcelDataValidation dv in ws.DataValidations)
         {
             ExcelAddressBase? newAddress = DeleteSplitAddress(dv.Address, range, effectedAddress, shift);
+
             if (newAddress == null)
             {
                 deletedDV.Add(dv);
@@ -604,14 +661,20 @@ internal static class WorksheetRangeDeleteHelper
                         dvFormula.Formula.ExcelFormula = WorksheetRangeHelper.AdjustStartCellForFormula(dvFormula.Formula.ExcelFormula, dv.Address, newAddress);
                     }
                 }
+
                 dv.SetAddress(newAddress.Address);
             }
+
             ws.DataValidations.DeleteRangeDictionary(range, shift == eShiftTypeDelete.Left || shift == eShiftTypeDelete.EntireColumn);
         }
+
         deletedDV.ForEach(dv => ws.DataValidations.Remove(dv));
     }
 
-    private static ExcelAddressBase DeleteSplitAddress(ExcelAddressBase address, ExcelAddressBase range, ExcelAddressBase effectedAddress, eShiftTypeDelete shift)
+    private static ExcelAddressBase DeleteSplitAddress(ExcelAddressBase address,
+                                                       ExcelAddressBase range,
+                                                       ExcelAddressBase effectedAddress,
+                                                       eShiftTypeDelete shift)
     {
         if (address.Addresses == null)
         {
@@ -620,14 +683,17 @@ internal static class WorksheetRangeDeleteHelper
         else
         {
             string? newAddress = "";
+
             foreach (ExcelAddressBase? a in address.Addresses)
             {
                 ExcelAddressBase? na = DeleteSplitIndividualAddress(a, range, effectedAddress, shift);
+
                 if (na != null)
                 {
                     newAddress += na.Address + ",";
                 }
             }
+
             if (string.IsNullOrEmpty(newAddress))
             {
                 return null;
@@ -639,7 +705,10 @@ internal static class WorksheetRangeDeleteHelper
         }
     }
 
-    private static ExcelAddressBase DeleteSplitIndividualAddress(ExcelAddressBase address, ExcelAddressBase range, ExcelAddressBase effectedAddress, eShiftTypeDelete shift)
+    private static ExcelAddressBase DeleteSplitIndividualAddress(ExcelAddressBase address,
+                                                                 ExcelAddressBase range,
+                                                                 ExcelAddressBase effectedAddress,
+                                                                 eShiftTypeDelete shift)
     {
         if (address.CollideFullRowOrColumn(range))
         {
@@ -661,15 +730,18 @@ internal static class WorksheetRangeDeleteHelper
         else
         {
             ExcelAddressBase.eAddressCollition collide = effectedAddress.Collide(address);
+
             if (collide == ExcelAddressBase.eAddressCollition.Partly)
             {
                 ExcelAddressBase? addressToShift = effectedAddress.Intersect(address);
                 ExcelAddressBase? shiftedAddress = ShiftAddress(addressToShift, range, shift);
                 string? newAddress = "";
+
                 if (address._fromRow < addressToShift._fromRow)
                 {
                     newAddress = ExcelCellBase.GetAddress(address._fromRow, address._fromCol, addressToShift._fromRow - 1, address._toCol) + ",";
                 }
+
                 if (address._fromCol < addressToShift._fromCol)
                 {
                     int fromRow = Math.Max(address._fromRow, addressToShift._fromRow);
@@ -685,10 +757,12 @@ internal static class WorksheetRangeDeleteHelper
                 {
                     newAddress += ExcelCellBase.GetAddress(addressToShift._toRow + 1, address._fromCol, address._toRow, address._toCol) + ",";
                 }
+
                 if (address._toCol > addressToShift._toCol)
                 {
                     newAddress += ExcelCellBase.GetAddress(address._fromRow, addressToShift._toCol + 1, address._toRow, address._toCol) + ",";
                 }
+
                 return new ExcelAddressBase(newAddress.Substring(0, newAddress.Length - 1));
             }
             else if (collide != ExcelAddressBase.eAddressCollition.No)
@@ -696,6 +770,7 @@ internal static class WorksheetRangeDeleteHelper
                 return ShiftAddress(address, range, shift);
             }
         }
+
         return address;
     }
 
@@ -710,9 +785,11 @@ internal static class WorksheetRangeDeleteHelper
             return address.DeleteColumn(range._fromCol, range.Columns);
         }
     }
+
     private static void DeletePivottableAddresses(ExcelWorksheet ws, ExcelRangeBase range, eShiftTypeDelete shift, ExcelAddressBase effectedAddress)
     {
         List<ExcelPivotTable>? deletedPt = new List<ExcelPivotTable>();
+
         foreach (ExcelPivotTable? ptbl in ws.PivotTables)
         {
             if (shift == eShiftTypeDelete.Up)
@@ -729,6 +806,7 @@ internal static class WorksheetRangeDeleteHelper
                     ptbl.Address = ptbl.Address.DeleteColumn(range._fromCol, range.Columns);
                 }
             }
+
             if (ptbl.Address == null)
             {
                 deletedPt.Add(ptbl);
@@ -740,11 +818,13 @@ internal static class WorksheetRangeDeleteHelper
                     if (ptbl.CacheDefinition.SourceRange.Worksheet == wsSource)
                     {
                         ExcelRangeBase? address = ptbl.CacheDefinition.SourceRange;
+
                         if (shift == eShiftTypeDelete.Up)
                         {
                             if (address._fromCol >= range._fromCol && address._toCol <= range._toCol)
                             {
                                 ExcelRange? deletedRange = ws.Cells[address.DeleteRow(range._fromRow, range.Rows).Address];
+
                                 if (deletedRange != null)
                                 {
                                     ptbl.CacheDefinition.SourceRange = deletedRange;
@@ -756,6 +836,7 @@ internal static class WorksheetRangeDeleteHelper
                             if (address._fromRow >= range._fromRow && address._toRow <= range._toRow)
                             {
                                 ExcelRange? deletedRange = ws.Cells[address.DeleteColumn(range._fromCol, range.Columns).Address];
+
                                 if (deletedRange != null)
                                 {
                                     ptbl.CacheDefinition.SourceRange = deletedRange;
@@ -766,13 +847,14 @@ internal static class WorksheetRangeDeleteHelper
                 }
             }
         }
-        deletedPt.ForEach(x => ws.PivotTables.Delete(x));
 
+        deletedPt.ForEach(x => ws.PivotTables.Delete(x));
     }
 
     private static void DeleteTableAddresses(ExcelWorksheet ws, ExcelRangeBase range, eShiftTypeDelete shift, ExcelAddressBase effectedAddress)
     {
         List<ExcelTable>? deletedTbl = new List<ExcelTable>();
+
         foreach (ExcelTable? tbl in ws.Tables)
         {
             if (shift == eShiftTypeDelete.Up)
@@ -801,7 +883,8 @@ internal static class WorksheetRangeDeleteHelper
                 {
                     if (string.IsNullOrEmpty(col.CalculatedColumnFormula) == false)
                     {
-                        col.CalculatedColumnFormula = ExcelCellBase.UpdateFormulaReferences(col.CalculatedColumnFormula, range, effectedAddress, shift, ws.Name, ws.Name);
+                        col.CalculatedColumnFormula =
+                            ExcelCellBase.UpdateFormulaReferences(col.CalculatedColumnFormula, range, effectedAddress, shift, ws.Name, ws.Name);
                     }
                 }
             }
@@ -809,6 +892,7 @@ internal static class WorksheetRangeDeleteHelper
 
         deletedTbl.ForEach(x => ws.Tables.Delete(x));
     }
+
     private static void FixFormulasDelete(ExcelRangeBase range, ExcelAddressBase effectedRange, eShiftTypeDelete shift)
     {
         foreach (ExcelWorksheet? ws in range.Worksheet.Workbook.Worksheets)
@@ -816,6 +900,7 @@ internal static class WorksheetRangeDeleteHelper
             string? workSheetName = range.WorkSheetName;
 
             List<int>? delSF = new List<int>();
+
             foreach (ExcelWorksheet.Formulas? sf in ws._sharedFormulas.Values)
             {
                 if (workSheetName == ws.Name)
@@ -823,11 +908,13 @@ internal static class WorksheetRangeDeleteHelper
                     if (effectedRange.Collide(new ExcelAddressBase(sf.Address)) != ExcelAddressBase.eAddressCollition.No)
                     {
                         ExcelAddressBase a;
+
                         if (shift == eShiftTypeDelete.Up)
                         {
                             int rowFrom = range._fromRow;
                             int rows = range.Rows;
                             a = new ExcelAddress(sf.Address).DeleteRow(range._fromRow, rows);
+
                             if (sf.StartRow >= rowFrom)
                             {
                                 int r = Math.Max(rowFrom, sf.StartRow - rows);
@@ -839,6 +926,7 @@ internal static class WorksheetRangeDeleteHelper
                             int colFrom = range._fromCol;
                             int cols = range.Columns;
                             a = new ExcelAddress(sf.Address).DeleteColumn(range._fromCol, cols);
+
                             if (sf.StartCol >= colFrom)
                             {
                                 int c = Math.Max(colFrom, sf.StartCol - cols);
@@ -868,7 +956,9 @@ internal static class WorksheetRangeDeleteHelper
             {
                 ws._sharedFormulas.Remove(ix);
             }
+
             CellStoreEnumerator<object>? cse = new CellStoreEnumerator<object>(ws._formulas, 1, 1, ExcelPackage.MaxRows, ExcelPackage.MaxColumns);
+
             while (cse.Next())
             {
                 if (cse.Value is string v)
@@ -901,5 +991,4 @@ internal static class WorksheetRangeDeleteHelper
             return new ExcelAddressBase(range._fromRow, 1, ExcelPackage.MaxRows, ExcelPackage.MaxColumns);
         }
     }
-
 }

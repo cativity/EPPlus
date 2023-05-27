@@ -10,6 +10,7 @@
  *************************************************************************************************
   04/16/2020         EPPlus Software AB           EPPlus 5.2
  *************************************************************************************************/
+
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -25,18 +26,23 @@ public class ExcelChartExDataPointCollection : XmlHelper, IEnumerable<ExcelChart
 {
     ExcelChartExSerie _serie;
     internal readonly SortedDictionary<int, ExcelChartExDataPoint> _dic = new SortedDictionary<int, ExcelChartExDataPoint>();
-    internal ExcelChartExDataPointCollection(ExcelChartExSerie serie, XmlNamespaceManager ns, XmlNode topNode, string[] schemaNodeOrder) : base(ns, topNode)
+
+    internal ExcelChartExDataPointCollection(ExcelChartExSerie serie, XmlNamespaceManager ns, XmlNode topNode, string[] schemaNodeOrder)
+        : base(ns, topNode)
     {
         this.SchemaNodeOrder = schemaNodeOrder;
+
         foreach (XmlNode pointNode in this.TopNode.SelectNodes(ExcelChartExDataPoint.dataPtPath, ns))
         {
             ExcelChartExDataPoint? item = new ExcelChartExDataPoint(serie, ns, pointNode, this.SchemaNodeOrder);
             this._dic.Add(item.Index, item);
         }
+
         foreach (XmlElement stNode in this.TopNode.SelectNodes(ExcelChartExDataPoint.SubTotalPath, ns))
         {
             int ix = int.Parse(stNode.GetAttribute("val"));
-            if(this._dic.ContainsKey(ix))
+
+            if (this._dic.ContainsKey(ix))
             {
                 this._dic[ix].SubTotal = true;
             }
@@ -48,8 +54,8 @@ public class ExcelChartExDataPointCollection : XmlHelper, IEnumerable<ExcelChart
         }
 
         this._serie = serie;
-
     }
+
     /// <summary>
     /// Adds a new datapoint to the collection
     /// </summary>
@@ -59,13 +65,14 @@ public class ExcelChartExDataPointCollection : XmlHelper, IEnumerable<ExcelChart
     {
         return this.AddDp(index);
     }
+
     internal ExcelChartExDataPoint AddDp(int idx)
     {
         if (this._dic.ContainsKey(idx))
         {
             throw new ArgumentException($"Data point with index {idx} already exists");
         }
-            
+
         ExcelChartExDataPoint? dp = new ExcelChartExDataPoint(this._serie, this.NameSpaceManager, this.TopNode, idx, this.SchemaNodeOrder);
 
         this._dic.Add(idx, dp);
@@ -82,6 +89,7 @@ public class ExcelChartExDataPointCollection : XmlHelper, IEnumerable<ExcelChart
     {
         return this._dic.ContainsKey(index);
     }
+
     /// <summary>
     /// Indexer
     /// </summary>
@@ -89,21 +97,17 @@ public class ExcelChartExDataPointCollection : XmlHelper, IEnumerable<ExcelChart
     /// <returns></returns>
     public ExcelChartExDataPoint this[int index]
     {
-        get
-        {
-            return this._dic[index];
-        }
+        get { return this._dic[index]; }
     }
+
     /// <summary>
     /// Number of items in the collection
     /// </summary>
     public int Count
     {
-        get
-        {
-            return this._dic.Count;
-        }
+        get { return this._dic.Count; }
     }
+
     /// <summary>
     /// Gets the enumerator for the collection
     /// </summary>

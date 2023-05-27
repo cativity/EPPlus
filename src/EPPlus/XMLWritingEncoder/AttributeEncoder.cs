@@ -16,5 +16,4 @@ internal static class AttributeEncoder
     {
         return s.Replace("&", "&amp;").Replace("<", "&lt;").Replace(">", "&gt;").Replace("\"", "&quot;").Replace("'", "&apos;");
     }
-
 }

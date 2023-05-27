@@ -10,6 +10,7 @@
  *************************************************************************************************
   05/03/2020         EPPlus Software AB         Implemented function (ported to c# from Microsoft.VisualBasic.Financial.vb (MIT))
  *************************************************************************************************/
+
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -39,6 +40,7 @@ internal static class IrrImpl
             dTotal /= divRate;
             dTotal += ValueArray[lIndex];
         }
+
         return dTotal;
     }
 
@@ -77,6 +79,7 @@ internal static class IrrImpl
         {
             return new FinanceCalcResult<double>(eErrorType.Num);
         }
+
         if (lCVal <= 1)
         {
             return new FinanceCalcResult<double>(eErrorType.Num);
@@ -142,7 +145,9 @@ internal static class IrrImpl
                     dRate0 += cnL_IT_STEP;
                 }
             }
+
             dNPv0 = OptPV2(ref ValueArray, dRate0);
+
             if (dNpv1 == dNPv0)
             {
                 return new FinanceCalcResult<double>(eErrorType.Value);
@@ -159,6 +164,7 @@ internal static class IrrImpl
             //Basically give the algorithm a second chance. Helps the
             //algorithm when it starts to diverge to -ve side
             dNPv0 = OptPV2(ref ValueArray, dRate0);
+
             if (dRate0 > dRate1)
             {
                 dTemp = dRate0 - dRate1;
@@ -193,6 +199,7 @@ internal static class IrrImpl
             dRate0 = dRate1;
             dRate1 = dTemp;
         }
+
         return new FinanceCalcResult<double>(eErrorType.Value);
     }
 }

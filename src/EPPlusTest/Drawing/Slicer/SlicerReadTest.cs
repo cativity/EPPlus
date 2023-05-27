@@ -12,15 +12,18 @@ namespace EPPlusTest.Drawing.Slicer;
 public class SlicerReadTest : TestBase
 {
     static ExcelPackage _pck;
+
     [ClassInitialize]
     public static void Init(TestContext context)
     {
         _pck = OpenPackage("SlicerRead.xlsx");
     }
+
     [ClassCleanup]
     public static void Cleanup()
     {
     }
+
     [TestMethod]
     public void ReadTableSlicerDate()
     {
@@ -38,7 +41,7 @@ public class SlicerReadTest : TestBase
 
         Assert.AreEqual(eCrossFilter.None, slicer.Cache.CrossFilter);
         Assert.IsTrue(slicer.Cache.HideItemsWithNoData);
-        slicer.Cache.HideItemsWithNoData = false;       //Validate element is removed
+        slicer.Cache.HideItemsWithNoData = false; //Validate element is removed
         Assert.IsFalse(slicer.Cache.HideItemsWithNoData);
 
         ExcelTableSlicer? slicer2 = ws.Tables[0].Columns[2].Slicer;
@@ -52,6 +55,7 @@ public class SlicerReadTest : TestBase
         Assert.AreEqual("SlicerStyleLight4", slicer2.StyleName);
         Assert.AreEqual(eSlicerStyle.Light4, slicer2.Style);
     }
+
     [TestMethod]
     public void ReadTableSlicerString()
     {
@@ -70,6 +74,7 @@ public class SlicerReadTest : TestBase
         Assert.AreEqual(50, slicer.StartItem);
         Assert.IsFalse(slicer.ShowCaption);
     }
+
     [TestMethod]
     public void ReadPivotTableSlicer()
     {
@@ -78,16 +83,17 @@ public class SlicerReadTest : TestBase
         ExcelPivotTable? tbl = ws.PivotTables["PivotTable1"];
         ExcelPivotTableField? rf = tbl.RowFields[0];
         Assert.IsTrue(rf.Items[0].Hidden);
-        ExcelPivotTableDataField? df=tbl.DataFields[0];
+        ExcelPivotTableDataField? df = tbl.DataFields[0];
         Assert.AreEqual(DataFieldFunctions.Sum, df.Function);
 
         ExcelPivotTableSlicer? slicer = tbl.Fields[1].Slicer;
-            
+
         Assert.IsTrue(slicer.Cache.Data.Items[0].Hidden);
         Assert.IsTrue(slicer.Cache.Data.Items[2].Hidden);
         Assert.IsTrue(slicer.Cache.Data.Items[4].Hidden);
         Assert.AreEqual(eSlicerStyle.Light5, slicer.Style);
     }
+
     [TestMethod]
     public void ReadPivotTableSlicerToTwoPivotTables()
     {
@@ -98,7 +104,7 @@ public class SlicerReadTest : TestBase
         ExcelPivotTable? p2 = ws.PivotTables["Pivot2"];
 
         Assert.AreEqual(1, p1.RowFields.Count);
-        Assert.AreEqual(1, p1.DataFields.Count);            
+        Assert.AreEqual(1, p1.DataFields.Count);
         Assert.IsNotNull(p1.Fields[0].Slicer);
         Assert.AreEqual(99, p1.Fields[0].Slicer.Cache.Data.Items.Count);
 
@@ -119,6 +125,7 @@ public class SlicerReadTest : TestBase
         Assert.IsTrue(p2.Fields[0].Items[0].Hidden);
         Assert.IsTrue(p2.Fields[0].Items[1].Hidden);
     }
+
     [TestMethod]
     public void ReadPivotTableSlicerToTwoPivotTablesWithDateGrouping()
     {
@@ -148,6 +155,7 @@ public class SlicerReadTest : TestBase
         Assert.IsTrue(p2.Fields[0].Items[0].Hidden);
         Assert.IsTrue(p2.Fields[0].Items[1].Hidden);
     }
+
     [TestMethod]
     public void ReadPivotTableSlicerToTwoPivotTablesWithNumberGrouping()
     {

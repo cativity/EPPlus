@@ -10,6 +10,7 @@
  *************************************************************************************************
   01/27/2020         EPPlus Software AB       Initial release EPPlus 5
  *************************************************************************************************/
+
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -20,10 +21,9 @@ using OfficeOpenXml.FormulaParsing.ExpressionGraph;
 
 namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Finance;
 
-[FunctionMetadata(
-                     Category = ExcelFunctionCategory.Financial,
-                     EPPlusVersion = "4",
-                     Description = "Calculates the payments required to reduce a loan, from a supplied present value to a specified future value")]
+[FunctionMetadata(Category = ExcelFunctionCategory.Financial,
+                  EPPlusVersion = "4",
+                  Description = "Calculates the payments required to reduce a loan, from a supplied present value to a specified future value")]
 internal class Pmt : ExcelFunction
 {
     public override CompileResult Execute(IEnumerable<FunctionArgument> arguments, ParsingContext context)
@@ -34,6 +34,7 @@ internal class Pmt : ExcelFunction
         double presentValue = this.ArgToDecimal(arguments, 2);
         int payEndOfPeriod = 0;
         double futureValue = 0d;
+
         if (arguments.Count() > 3)
         {
             futureValue = this.ArgToDecimal(arguments, 3);
@@ -44,7 +45,9 @@ internal class Pmt : ExcelFunction
             payEndOfPeriod = this.ArgToInt(arguments, 4);
         }
 
-        FinanceCalcResult<double>? result = InternalMethods.PMT_Internal(rate, nPer, presentValue, futureValue, payEndOfPeriod == 0 ? PmtDue.EndOfPeriod : PmtDue.BeginningOfPeriod);
+        FinanceCalcResult<double>? result =
+            InternalMethods.PMT_Internal(rate, nPer, presentValue, futureValue, payEndOfPeriod == 0 ? PmtDue.EndOfPeriod : PmtDue.BeginningOfPeriod);
+
         if (result.HasError)
         {
             return this.CreateResult(result.ExcelErrorType);

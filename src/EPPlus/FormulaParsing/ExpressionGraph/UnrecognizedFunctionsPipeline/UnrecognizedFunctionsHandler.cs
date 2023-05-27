@@ -10,6 +10,7 @@
  *************************************************************************************************
   06/15/2020         EPPlus Software AB       EPPlus 5.2
  *************************************************************************************************/
+
 using OfficeOpenXml.FormulaParsing.Excel.Functions;
 using System;
 using System.Collections.Generic;

@@ -10,6 +10,7 @@
  *************************************************************************************************
   01/27/2020         EPPlus Software AB       Initial release EPPlus 5
  *************************************************************************************************/
+
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -32,13 +33,11 @@ internal static class ExcelConditionalFormattingHelper
     /// </summary>
     /// <param name="address"></param>
     /// <returns></returns>
-    public static string CheckAndFixRangeAddress(
-        string address)
+    public static string CheckAndFixRangeAddress(string address)
     {
         if (address.Contains(','))
         {
-            throw new FormatException(
-                                      ExcelConditionalFormattingConstants.Errors.CommaSeparatedAddresses);
+            throw new FormatException(ExcelConditionalFormattingConstants.Errors.CommaSeparatedAddresses);
         }
 
         address = ConvertUtil._invariantTextInfo.ToUpper(address);
@@ -50,13 +49,13 @@ internal static class ExcelConditionalFormattingHelper
 
         return address;
     }
+
     /// <summary>
     /// Convert a color code to Color Object
     /// </summary>
     /// <param name="colorCode">Color Code (Ex. "#FFB43C53" or "FFB43C53")</param>
     /// <returns></returns>
-    public static Color ConvertFromColorCode(
-        string colorCode)
+    public static Color ConvertFromColorCode(string colorCode)
     {
         try
         {
@@ -75,13 +74,12 @@ internal static class ExcelConditionalFormattingHelper
     /// <param name="node"></param>
     /// <param name="attribute"></param>
     /// <returns></returns>
-    public static string GetAttributeString(
-        XmlNode node,
-        string attribute)
+    public static string GetAttributeString(XmlNode node, string attribute)
     {
         try
         {
             string? value = node.Attributes[attribute].Value;
+
             return value == null ? string.Empty : value;
         }
         catch
@@ -96,13 +94,12 @@ internal static class ExcelConditionalFormattingHelper
     /// <param name="node"></param>
     /// <param name="attribute"></param>
     /// <returns></returns>
-    public static int GetAttributeInt(
-        XmlNode node,
-        string attribute)
+    public static int GetAttributeInt(XmlNode node, string attribute)
     {
         try
         {
             string? value = node.Attributes[attribute].Value;
+
             return int.Parse(value, NumberStyles.Integer, CultureInfo.InvariantCulture);
         }
         catch
@@ -117,9 +114,7 @@ internal static class ExcelConditionalFormattingHelper
     /// <param name="node"></param>
     /// <param name="attribute"></param>
     /// <returns></returns>
-    public static int? GetAttributeIntNullable(
-        XmlNode node,
-        string attribute)
+    public static int? GetAttributeIntNullable(XmlNode node, string attribute)
     {
         try
         {
@@ -130,6 +125,7 @@ internal static class ExcelConditionalFormattingHelper
             else
             {
                 string? value = node.Attributes[attribute].Value;
+
                 return int.Parse(value, NumberStyles.Integer, CultureInfo.InvariantCulture);
             }
         }
@@ -145,13 +141,12 @@ internal static class ExcelConditionalFormattingHelper
     /// <param name="node"></param>
     /// <param name="attribute"></param>
     /// <returns></returns>
-    public static bool GetAttributeBool(
-        XmlNode node,
-        string attribute)
+    public static bool GetAttributeBool(XmlNode node, string attribute)
     {
         try
         {
             string? value = node.Attributes[attribute].Value;
+
             return value == "1" || value == "-1" || value.Equals("TRUE", StringComparison.OrdinalIgnoreCase);
         }
         catch
@@ -166,9 +161,7 @@ internal static class ExcelConditionalFormattingHelper
     /// <param name="node"></param>
     /// <param name="attribute"></param>
     /// <returns></returns>
-    public static bool? GetAttributeBoolNullable(
-        XmlNode node,
-        string attribute)
+    public static bool? GetAttributeBoolNullable(XmlNode node, string attribute)
     {
         try
         {
@@ -179,7 +172,8 @@ internal static class ExcelConditionalFormattingHelper
             else
             {
                 string? value = node.Attributes[attribute].Value;
-                return value == "1" || value == "-1" || value.Equals("TRUE",StringComparison.OrdinalIgnoreCase);
+
+                return value == "1" || value == "-1" || value.Equals("TRUE", StringComparison.OrdinalIgnoreCase);
             }
         }
         catch
@@ -194,13 +188,12 @@ internal static class ExcelConditionalFormattingHelper
     /// <param name="node"></param>
     /// <param name="attribute"></param>
     /// <returns></returns>
-    public static double GetAttributeDouble(
-        XmlNode node,
-        string attribute)
+    public static double GetAttributeDouble(XmlNode node, string attribute)
     {
         try
         {
             string? value = node.Attributes[attribute].Value;
+
             return double.Parse(value, NumberStyles.Number, CultureInfo.InvariantCulture);
         }
         catch
@@ -215,13 +208,12 @@ internal static class ExcelConditionalFormattingHelper
     /// <param name="node"></param>
     /// <param name="attribute"></param>
     /// <returns></returns>
-    public static decimal GetAttributeDecimal(
-        XmlNode node,
-        string attribute)
+    public static decimal GetAttributeDecimal(XmlNode node, string attribute)
     {
         try
         {
             string? value = node.Attributes[attribute].Value;
+
             return decimal.Parse(value, NumberStyles.Any, CultureInfo.InvariantCulture);
         }
         catch
@@ -235,8 +227,7 @@ internal static class ExcelConditionalFormattingHelper
     /// </summary>
     /// <param name="s"></param>
     /// <returns></returns>
-    public static string EncodeXML(
-        this string s)
+    public static string EncodeXML(this string s)
     {
         return s.Replace("&", "&amp;").Replace("<", "&lt;").Replace(">", "&gt;").Replace("\"", "&quot;").Replace("'", "&apos;");
     }
@@ -246,8 +237,7 @@ internal static class ExcelConditionalFormattingHelper
     /// </summary>
     /// <param name="s"></param>
     /// <returns></returns>
-    public static string DecodeXML(
-        this string s)
+    public static string DecodeXML(this string s)
     {
         return s.Replace("'", "&apos;").Replace("\"", "&quot;").Replace(">", "&gt;").Replace("<", "&lt;").Replace("&", "&amp;");
     }

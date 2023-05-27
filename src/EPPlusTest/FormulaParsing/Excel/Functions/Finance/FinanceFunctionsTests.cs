@@ -761,7 +761,17 @@ public class FinanceFunctionsTests
     [DataRow(2009, 1, 1, 2010, 10, 1, 2010, 4, 1, -25d, 4)]
     [DataRow(2009, 1, 1, 2009, 12, 1, 2010, 4, 1, 125d, 2)]
     [DataRow(2009, 1, 1, 2009, 12, 1, 2010, 4, 1, 125d, 1)]
-    public void AccrintTestCalcFirstInterest(int iYear, int iMonth, int iDay, int fiYear, int fiMonth, int fiDay, int sYear, int sMonth, int sDay, double expectedResult, int frequency)
+    public void AccrintTestCalcFirstInterest(int iYear,
+                                             int iMonth,
+                                             int iDay,
+                                             int fiYear,
+                                             int fiMonth,
+                                             int fiDay,
+                                             int sYear,
+                                             int sMonth,
+                                             int sDay,
+                                             double expectedResult,
+                                             int frequency)
     {
         DateTime issue = new DateTime(iYear, iMonth, iDay);
         DateTime firstInterest = new DateTime(fiYear, fiMonth, fiDay);
@@ -784,7 +794,17 @@ public class FinanceFunctionsTests
     [DataRow(2009, 1, 1, 2009, 12, 1, 2010, 4, 1, 125d, 4)]
     [DataRow(2009, 2, 15, 2009, 12, 1, 2010, 4, 1, 112.77777778d, 4)]
     [DataRow(2009, 2, 15, 2009, 12, 1, 2009, 4, 2, 13.05555556d, 4)]
-    public void AccrintIssueToSettlementTest(int iYear, int iMonth, int iDay, int fiYear, int fiMonth, int fiDay, int sYear, int sMonth, int sDay, double expectedResult, int frequency)
+    public void AccrintIssueToSettlementTest(int iYear,
+                                             int iMonth,
+                                             int iDay,
+                                             int fiYear,
+                                             int fiMonth,
+                                             int fiDay,
+                                             int sYear,
+                                             int sMonth,
+                                             int sDay,
+                                             double expectedResult,
+                                             int frequency)
     {
         DateTime issue = new DateTime(iYear, iMonth, iDay);
         DateTime firstInterest = new DateTime(fiYear, fiMonth, fiDay);

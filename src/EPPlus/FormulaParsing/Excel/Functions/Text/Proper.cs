@@ -10,6 +10,7 @@
  *************************************************************************************************
   01/27/2020         EPPlus Software AB       Initial release EPPlus 5
  *************************************************************************************************/
+
 using System;
 using System.Collections.Generic;
 using System.Globalization;
@@ -20,10 +21,10 @@ using OfficeOpenXml.FormulaParsing.ExpressionGraph;
 
 namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Text;
 
-[FunctionMetadata(
-                     Category = ExcelFunctionCategory.Text,
-                     EPPlusVersion = "4",
-                     Description = "Converts all characters in a supplied text string to proper case (i.e. letters that do not follow another letter are upper case and all other characters are lower case)")]
+[FunctionMetadata(Category = ExcelFunctionCategory.Text,
+                  EPPlusVersion = "4",
+                  Description =
+                      "Converts all characters in a supplied text string to proper case (i.e. letters that do not follow another letter are upper case and all other characters are lower case)")]
 internal class Proper : ExcelFunction
 {
     public override CompileResult Execute(IEnumerable<FunctionArgument> arguments, ParsingContext context)
@@ -32,6 +33,7 @@ internal class Proper : ExcelFunction
         string? text = ArgToString(arguments, 0).ToLower(CultureInfo.InvariantCulture);
         StringBuilder? sb = new StringBuilder();
         char previousChar = '.';
+
         foreach (char ch in text)
         {
             if (!char.IsLetter(previousChar))
@@ -42,8 +44,10 @@ internal class Proper : ExcelFunction
             {
                 sb.Append(ch);
             }
+
             previousChar = ch;
         }
+
         return this.CreateResult(sb.ToString(), DataType.String);
     }
 }

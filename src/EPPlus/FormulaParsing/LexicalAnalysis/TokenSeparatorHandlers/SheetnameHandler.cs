@@ -10,6 +10,7 @@
  *************************************************************************************************
   01/27/2020         EPPlus Software AB       Initial release EPPlus 5
  *************************************************************************************************/
+
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -38,30 +39,35 @@ internal class SheetnameHandler : SeparatorHandler
             {
                 tokenIndexProvider.MoveIndexPointerForward();
                 context.AppendToCurrentToken(c);
+
                 return true;
             }
-            else if(IsDoubleSingleQuote(tokenSeparator, tokenIndexProvider.Index, context))
+            else if (IsDoubleSingleQuote(tokenSeparator, tokenIndexProvider.Index, context))
             {
                 tokenIndexProvider.MoveIndexPointerForward();
+
                 // double single quotes inside a sheet name should be preserved
                 context.AppendToCurrentToken(c);
                 context.AppendToCurrentToken(c);
+
                 return true;
             }
+
             if (!tokenSeparator.TokenTypeIsSet(TokenType.WorksheetName))
             {
                 context.AppendToCurrentToken(c);
+
                 return true;
             }
         }
 
         if (tokenSeparator.TokenTypeIsSet(TokenType.WorksheetName))
-        {                
+        {
             if (context.LastToken != null && context.LastToken.Value.TokenTypeIsSet(TokenType.WorksheetName))
             {
                 if (context.CurrentToken.StartsWith("!") && context.CurrentToken.EndsWith(":"))
-                {                        
-                    context.AddToken(new Token(context.CurrentToken.Substring(0,context.CurrentToken.Length-1), TokenType.ExcelAddress));
+                {
+                    context.AddToken(new Token(context.CurrentToken.Substring(0, context.CurrentToken.Length - 1), TokenType.ExcelAddress));
                     context.AddToken(new Token(":", TokenType.Colon));
                     context.NewToken();
                 }
@@ -72,25 +78,29 @@ internal class SheetnameHandler : SeparatorHandler
                                          : new Token(context.CurrentToken, TokenType.WorksheetNameContent));
                 }
             }
-            else if(context.CurrentToken.EndsWith(":"))
+            else if (context.CurrentToken.EndsWith(":"))
             {
                 context.AddToken(new Token(context.CurrentToken.Substring(0, context.CurrentToken.Length - 1), TokenType.ExcelAddress));
                 context.AddToken(new Token(":", TokenType.Colon));
                 context.NewToken();
             }
-            if (context.CurrentToken.StartsWith("[") &&
-                context.CurrentToken.EndsWith("]"))
+
+            if (context.CurrentToken.StartsWith("[") && context.CurrentToken.EndsWith("]"))
             {
-                context.AddToken(new Token(context.CurrentToken + "'", TokenType.WorksheetName)); //Append current token, as this can be an external reference index e.g [1]
+                context.AddToken(new Token(context.CurrentToken + "'",
+                                           TokenType.WorksheetName)); //Append current token, as this can be an external reference index e.g [1]
             }
             else
             {
                 context.AddToken(new Token("'", TokenType.WorksheetName)); //Append current token, as this can be an external reference index e.g [1]
             }
+
             context.ToggleIsInSheetName();
             context.NewToken();
+
             return true;
         }
+
         return false;
     }
 }

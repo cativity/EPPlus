@@ -10,10 +10,12 @@
  *************************************************************************************************
   04/16/2020         EPPlus Software AB            EPPlus 5.2
  *************************************************************************************************/
+
 using OfficeOpenXml.Utils.Extensions;
 using System;
 using System.Globalization;
 using System.Xml;
+
 namespace OfficeOpenXml.Drawing.Chart.ChartEx;
 
 /// <summary>
@@ -21,40 +23,38 @@ namespace OfficeOpenXml.Drawing.Chart.ChartEx;
 /// </summary>
 public class ExcelRegionMapChartSerie : ExcelChartExSerie
 {
-    internal ExcelRegionMapChartSerie(ExcelChartEx chart, XmlNamespaceManager ns, XmlNode node) : base(chart, ns, node)
+    internal ExcelRegionMapChartSerie(ExcelChartEx chart, XmlNamespaceManager ns, XmlNode node)
+        : base(chart, ns, node)
     {
-
     }
 
     const string _attributionPath = "cx:layoutPr/cx:geography/@attribution";
+
     /// <summary>
     /// The provider or source of the geographical data. Default is Bing.
     /// </summary>
-    public string Attribution 
-    { 
-        get
-        {
-            return this.GetXmlNodeString(_attributionPath);
-        }
-        set
-        {
-            this.SetXmlNodeString(_attributionPath, value);
-        }
+    public string Attribution
+    {
+        get { return this.GetXmlNodeString(_attributionPath); }
+        set { this.SetXmlNodeString(_attributionPath, value); }
     }
+
     const string _regionPath = "cx:layoutPr/cx:geography/@cultureRegion";
+
     /// <summary>
     /// Specifies the country code. Uses the TwoLetterISOLanguageName property of the CultureInfo object.
     /// </summary>
-    public CultureInfo Region 
-    { 
+    public CultureInfo Region
+    {
         get
         {
-            string? r= this.GetXmlNodeString(_regionPath);
+            string? r = this.GetXmlNodeString(_regionPath);
+
             return new CultureInfo(r);
         }
         set
         {
-            if(value==null || value.TwoLetterISOLanguageName.Length!=2)
+            if (value == null || value.TwoLetterISOLanguageName.Length != 2)
             {
                 throw new InvalidOperationException("Region must have a two letter ISO code");
             }
@@ -64,14 +64,16 @@ public class ExcelRegionMapChartSerie : ExcelChartExSerie
     }
 
     const string _languagePath = "cx:layoutPr/cx:geography/@cultureLanguage";
+
     /// <summary>
     /// Specifies the language. 
     /// </summary>
-    public CultureInfo Language 
+    public CultureInfo Language
     {
         get
         {
             string? r = this.GetXmlNodeString(_languagePath);
+
             return new CultureInfo(r);
         }
         set
@@ -84,16 +86,15 @@ public class ExcelRegionMapChartSerie : ExcelChartExSerie
             this.SetXmlNodeString(_languagePath, value.Name);
         }
     }
+
     const string _projectionTypePath = "cx:layoutPr/cx:geography/@projectionType";
+
     /// <summary>
     /// The cartographic map projection for the series
     /// </summary>
-    public eProjectionType ProjectionType 
-    { 
-        get
-        {
-            return this.GetXmlNodeString(_projectionTypePath).ToEnum(eProjectionType.Automatic);
-        }
+    public eProjectionType ProjectionType
+    {
+        get { return this.GetXmlNodeString(_projectionTypePath).ToEnum(eProjectionType.Automatic); }
         set
         {
             if (value == eProjectionType.Automatic)
@@ -106,29 +107,30 @@ public class ExcelRegionMapChartSerie : ExcelChartExSerie
             }
         }
     }
+
     const string _geoMappingLevelPath = "cx:layoutPr/cx:geography/@viewedRegionType";
+
     /// <summary>
     /// The level of view for the series
     /// </summary>
     public eGeoMappingLevel ViewedRegionType
     {
-        get
-        {
-            return this.GetXmlNodeString(_geoMappingLevelPath).ToEnum(eGeoMappingLevel.Automatic);
-        }
+        get { return this.GetXmlNodeString(_geoMappingLevelPath).ToEnum(eGeoMappingLevel.Automatic); }
         set
         {
-            if(value==eGeoMappingLevel.Automatic)
+            if (value == eGeoMappingLevel.Automatic)
             {
                 this.DeleteNode(_geoMappingLevelPath);
             }
             else
             {
                 this.SetXmlNodeString(_geoMappingLevelPath, value.ToEnumString());
-            }                
+            }
         }
     }
+
     ExcelChartExValueColors _colors = null;
+
     /// <summary>
     /// Colors for the gradient scale of the region map series. 
     /// </summary>
@@ -136,42 +138,38 @@ public class ExcelRegionMapChartSerie : ExcelChartExSerie
     {
         get { return this._colors ??= new ExcelChartExValueColors(this, this.NameSpaceManager, this.TopNode, this.SchemaNodeOrder); }
     }
+
     /// <summary>
     /// Layout type for region labels
     /// </summary>
     public eRegionLabelLayout RegionLableLayout
     {
-        get
-        {
-            return this.GetXmlNodeString("cx:layoutPr/cx:regionLabelLayout/@val").ToEnum(eRegionLabelLayout.None);
-        }
-        set
-        {
-            this.SetXmlNodeString("cx:layoutPr/cx:regionLabelLayout/@val", value.ToEnumString());
-        }
+        get { return this.GetXmlNodeString("cx:layoutPr/cx:regionLabelLayout/@val").ToEnum(eRegionLabelLayout.None); }
+        set { this.SetXmlNodeString("cx:layoutPr/cx:regionLabelLayout/@val", value.ToEnumString()); }
     }
 
     /// <summary>
     /// How to color a region maps chart serie
     /// </summary>
-    public eColorBy ColorBy 
-    { 
+    public eColorBy ColorBy
+    {
         get
         {
-            if(this.DataDimensions.GetValueDimension() is ExcelChartExStringData s)
+            if (this.DataDimensions.GetValueDimension() is ExcelChartExStringData s)
             {
-                if(s.Type==eStringDataType.ColorString)
+                if (s.Type == eStringDataType.ColorString)
                 {
                     return eColorBy.CategoryNames;
                 }
             }
+
             return eColorBy.Value;
         }
         set
         {
-            if(this.ColorBy != value)
+            if (this.ColorBy != value)
             {
-                if(value==eColorBy.Value)
+                if (value == eColorBy.Value)
                 {
                     this.DataDimensions.SetTypeNumeric(1, eNumericDataType.ColorValue);
                 }

@@ -7,6 +7,7 @@ internal static class XmlExtensions
     internal static XmlNode GetChildAtPosition(this XmlNode node, int index, XmlNodeType type = XmlNodeType.Element)
     {
         int i = 0;
+
         foreach (XmlNode c in node.ChildNodes)
         {
             if (c.NodeType == type)
@@ -15,9 +16,11 @@ internal static class XmlExtensions
                 {
                     return c;
                 }
+
                 i++;
             }
         }
+
         return null;
     }
 }

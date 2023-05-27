@@ -10,6 +10,7 @@
  *************************************************************************************************
   05/03/2020         EPPlus Software AB         Implemented function
  *************************************************************************************************/
+
 using OfficeOpenXml.FormulaParsing.Excel.Functions.Finance.Implementations;
 using OfficeOpenXml.FormulaParsing.Excel.Functions.Metadata;
 using OfficeOpenXml.FormulaParsing.ExpressionGraph;
@@ -20,11 +21,10 @@ using System.Text;
 
 namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Finance;
 
-[FunctionMetadata(
-                     Category = ExcelFunctionCategory.Financial,
-                     EPPlusVersion = "5.2",
-                     Description = "Calculates the interest rate required for an investment to grow to a specified future value",
-                     IntroducedInExcelVersion = "2013")]
+[FunctionMetadata(Category = ExcelFunctionCategory.Financial,
+                  EPPlusVersion = "5.2",
+                  Description = "Calculates the interest rate required for an investment to grow to a specified future value",
+                  IntroducedInExcelVersion = "2013")]
 internal class Rri : ExcelFunction
 {
     public override CompileResult Execute(IEnumerable<FunctionArgument> arguments, ParsingContext context)
@@ -33,12 +33,14 @@ internal class Rri : ExcelFunction
         double nper = this.ArgToDecimal(arguments, 0);
         double pv = this.ArgToDecimal(arguments, 1);
         double fv = this.ArgToDecimal(arguments, 2);
+
         if (nper <= 0d || pv <= 0d || fv < 0d)
         {
             return this.CreateResult(eErrorType.Num);
         }
 
         double retVal = System.Math.Pow(fv / pv, 1 / nper) - 1;
+
         return this.CreateResult(retVal, DataType.Decimal);
     }
 }

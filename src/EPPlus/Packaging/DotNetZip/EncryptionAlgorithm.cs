@@ -24,7 +24,6 @@
 // 
 // ------------------------------------------------------------------
 
-
 namespace OfficeOpenXml.Packaging.Ionic.Zip;
 
 /// <summary>
@@ -127,7 +126,6 @@ internal enum EncryptionAlgorithm
     /// An encryption algorithm that is not supported by DotNetZip.
     /// </summary>
     Unsupported = 4,
-
 
     // others... not implemented (yet?)
 }

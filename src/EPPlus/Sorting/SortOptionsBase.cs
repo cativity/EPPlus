@@ -10,6 +10,7 @@
  *************************************************************************************************
   05/07/2021         EPPlus Software AB       EPPlus 5.7
  *************************************************************************************************/
+
 using System;
 using System.Collections.Generic;
 using System.Globalization;
@@ -40,6 +41,7 @@ public abstract class SortOptionsBase
     internal List<int> ColumnIndexes { get; private set; }
 
     internal List<int> RowIndexes { get; private set; }
+
     internal List<bool> Descending { get; private set; }
 
     internal Dictionary<int, string[]> CustomLists { get; private set; }
@@ -47,16 +49,10 @@ public abstract class SortOptionsBase
     /// <summary>
     /// Culture to use in sort
     /// </summary>
-    public CultureInfo Culture
-    {
-        get; set;
-    }
+    public CultureInfo Culture { get; set; }
 
     /// <summary>
     /// Compare options  to use in sort
     /// </summary>
-    public CompareOptions CompareOptions
-    {
-        get; set;
-    }
+    public CompareOptions CompareOptions { get; set; }
 }

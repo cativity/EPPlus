@@ -10,6 +10,7 @@
  *************************************************************************************************
   01/27/2020         EPPlus Software AB       Initial release EPPlus 5
  *************************************************************************************************/
+
 using OfficeOpenXml.FormulaParsing.Excel.Functions.Finance.FinancialDayCount;
 using System;
 using System.Collections.Generic;
@@ -20,7 +21,8 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Finance.Implementations;
 
 internal class CoupncdImpl : Coupbase
 {
-    public CoupncdImpl(FinancialDay settlement, FinancialDay maturity, int frequency, DayCountBasis basis) : base(settlement, maturity, frequency, basis)
+    public CoupncdImpl(FinancialDay settlement, FinancialDay maturity, int frequency, DayCountBasis basis)
+        : base(settlement, maturity, frequency, basis)
     {
     }
 
@@ -28,6 +30,7 @@ internal class CoupncdImpl : Coupbase
     {
         IFinanicalDays? fds = FinancialDaysFactory.Create(this.Basis);
         FinancialPeriod? period = fds.GetCouponPeriod(this.Settlement, this.Maturity, this.Frequency);
+
         return new FinanceCalcResult<System.DateTime>(period.End.ToDateTime());
     }
 }

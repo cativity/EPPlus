@@ -10,6 +10,7 @@
  *************************************************************************************************
   01/27/2020         EPPlus Software AB       Initial release EPPlus 5
  *************************************************************************************************/
+
 using OfficeOpenXml.Packaging;
 using OfficeOpenXml.Drawing.Chart;
 
@@ -23,7 +24,7 @@ public class ExcelThemeOverride : ExcelThemeBase
     ExcelChart _chart;
 
     internal ExcelThemeOverride(ExcelChart chart, ZipPackageRelationship rel)
-        : base(chart._drawings._package, chart.NameSpaceManager, rel,"")
+        : base(chart._drawings._package, chart.NameSpaceManager, rel, "")
     {
         this._chart = chart;
     }

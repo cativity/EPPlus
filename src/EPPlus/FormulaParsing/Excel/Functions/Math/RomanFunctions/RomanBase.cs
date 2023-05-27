@@ -10,6 +10,7 @@
  *************************************************************************************************
   01/27/2020         EPPlus Software AB       Initial release EPPlus 5
  *************************************************************************************************/
+
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -25,6 +26,7 @@ internal abstract class RomanBase
             this.Number = number;
             this.Letter = letter;
         }
+
         public int Number { get; set; }
 
         public string Letter { get; set; }
@@ -56,6 +58,7 @@ internal abstract class RomanBase
         Apply(ref number, this.Five, this.One, roman);
         Apply(ref number, 4, "IV", roman);
         Apply(ref number, this.One, roman);
+
         return roman.ToString();
     }
 
@@ -64,6 +67,7 @@ internal abstract class RomanBase
         if (number >= roman.Number)
         {
             int limit = number / roman.Number;
+
             for (int x = 0; x < limit; x++)
             {
                 result.Append(roman.Letter);
@@ -79,6 +83,7 @@ internal abstract class RomanBase
             result.Append(roman.Letter);
             number -= roman.Number;
             int limit = number / lowerRoman.Number;
+
             for (int x = 0; x < number / lowerRoman.Number; x++)
             {
                 result.Append(lowerRoman.Letter);
@@ -109,9 +114,9 @@ internal abstract class RomanBase
         roman = roman.Replace("CDL", "LD");
         roman = roman.Replace("XCV", "VC");
         roman = roman.Replace("XLV", "VL");
-            
+
         // type 1
-        if(type == 1)
+        if (type == 1)
         {
             roman = roman.Replace("XLIX", "VLIV");
             roman = roman.Replace("CMXCIX", "LMVLIV");
@@ -120,7 +125,8 @@ internal abstract class RomanBase
             roman = roman.Replace("CDVC", "LDVL");
             roman = roman.Replace("CDXC", "LDXL");
         }
-        if(type > 1)
+
+        if (type > 1)
         {
             roman = roman.Replace("XLIX", "IL");
             roman = roman.Replace("XCIX", "IC");
@@ -131,18 +137,21 @@ internal abstract class RomanBase
             roman = roman.Replace("CMIC", "XMIX");
             roman = roman.Replace("CMXC", "XM");
         }
-        if(type > 2)
+
+        if (type > 2)
         {
             roman = roman.Replace("XDV", "VD");
             roman = roman.Replace("XDIX", "VDIV");
             roman = roman.Replace("XMV", "VM");
             roman = roman.Replace("XMIX", "VMIV");
         }
-        if(type == 4)
+
+        if (type == 4)
         {
             roman = roman.Replace("VDIV", "ID");
             roman = roman.Replace("VMIV", "IM");
         }
+
         return roman;
     }
 }

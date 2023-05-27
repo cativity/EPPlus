@@ -10,6 +10,7 @@
  *************************************************************************************************
   11/29/2021         EPPlus Software AB       Implemented function
  *************************************************************************************************/
+
 using OfficeOpenXml.FormulaParsing.Excel.Functions.Helpers;
 using System;
 using System.Collections.Generic;
@@ -27,6 +28,8 @@ internal abstract class NormalDistributionBase : ExcelFunction
 
     protected static double ProbabilityDensity(double x, double mean, double stdDev)
     {
-        return System.Math.Exp((-0.5 * System.Math.Log(2 * System.Math.PI)) - System.Math.Log(stdDev) - (System.Math.Pow(x - mean, 2) / (2 * System.Math.Pow(stdDev, 2))));
+        return System.Math.Exp((-0.5 * System.Math.Log(2 * System.Math.PI))
+                               - System.Math.Log(stdDev)
+                               - (System.Math.Pow(x - mean, 2) / (2 * System.Math.Pow(stdDev, 2))));
     }
 }

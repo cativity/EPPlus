@@ -22,10 +22,12 @@ public enum eHtmlGeneralAlignmentHandling
     /// Dont set any alignment when alignment is set to general
     /// </summary>
     DontSet,
+
     /// <summary>
     /// If the column data type is numeric or date, alignment will be right otherwise left.
     /// </summary>
     ColumnDataType,
+
     /// <summary>
     /// If the cell value data type is numeric or date, alignment will be right otherwise left.
     /// </summary>

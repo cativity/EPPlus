@@ -10,6 +10,7 @@
  *************************************************************************************************
   10/04/2022         EPPlus Software AB       Initial release EPPlus 6.1
  *************************************************************************************************/
+
 namespace OfficeOpenXml.Export.ToCollection;
 
 /// <summary>
@@ -21,6 +22,7 @@ public enum ToCollectionConversionFailureStrategy
     /// Throw an Exception if the conversion fails. Blank values will return the default value for the type. An <see cref="Exceptions.EPPlusDataTypeConvertionException"/> will be thrown on any datatype conversion failure when mapping properties.
     /// </summary>
     Exception,
+
     /// <summary>
     /// Set the default value for the property.
     /// </summary>

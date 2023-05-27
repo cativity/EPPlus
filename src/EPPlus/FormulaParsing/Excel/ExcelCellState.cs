@@ -10,6 +10,7 @@
  *************************************************************************************************
   01/27/2020         EPPlus Software AB       Initial release EPPlus 5
  *************************************************************************************************/
+
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -27,10 +28,12 @@ public enum ExcelCellState
     /// The cell is hidden
     /// </summary>
     HiddenCell = 1,
+
     /// <summary>
     /// The cell contains a cell error
     /// </summary>
     ContainsError = 2,
+
     /// <summary>
     /// The cell contains a result of a subtotal function.
     /// </summary>

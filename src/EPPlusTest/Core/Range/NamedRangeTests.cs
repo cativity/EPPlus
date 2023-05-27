@@ -12,16 +12,17 @@ public class NamedRangeTests
     [TestMethod]
     public void IsValidName()
     {
-        Assert.IsFalse(ExcelAddressUtil.IsValidName("123sa"));  //invalid start char 
-        Assert.IsFalse(ExcelAddressUtil.IsValidName("*d"));     //invalid start char
-        Assert.IsFalse(ExcelAddressUtil.IsValidName("\t"));     //invalid start char
-        Assert.IsFalse(ExcelAddressUtil.IsValidName("\\t"));    //Backslash at least three chars
-        Assert.IsFalse(ExcelAddressUtil.IsValidName("A+1"));   //invalid char
-        Assert.IsFalse(ExcelAddressUtil.IsValidName("A%we"));   //Address invalid
-        Assert.IsFalse(ExcelAddressUtil.IsValidName("BB73"));   //Address invalid
-        Assert.IsTrue(ExcelAddressUtil.IsValidName("BBBB75"));  //Valid
+        Assert.IsFalse(ExcelAddressUtil.IsValidName("123sa")); //invalid start char 
+        Assert.IsFalse(ExcelAddressUtil.IsValidName("*d")); //invalid start char
+        Assert.IsFalse(ExcelAddressUtil.IsValidName("\t")); //invalid start char
+        Assert.IsFalse(ExcelAddressUtil.IsValidName("\\t")); //Backslash at least three chars
+        Assert.IsFalse(ExcelAddressUtil.IsValidName("A+1")); //invalid char
+        Assert.IsFalse(ExcelAddressUtil.IsValidName("A%we")); //Address invalid
+        Assert.IsFalse(ExcelAddressUtil.IsValidName("BB73")); //Address invalid
+        Assert.IsTrue(ExcelAddressUtil.IsValidName("BBBB75")); //Valid
         Assert.IsTrue(ExcelAddressUtil.IsValidName("BB1500005")); //Valid
     }
+
     [TestMethod]
     public void NamedRangeMovesDownIfRowInsertedAbove()
     {
@@ -142,6 +143,7 @@ public class NamedRangeTests
 
         Assert.AreEqual("B2:C3", namedRange.Address);
     }
+
     [TestMethod]
     public void NamedRangeIsEqual()
     {
@@ -151,7 +153,6 @@ public class NamedRangeTests
         ExcelWorksheet? ws2 = p1.Workbook.Worksheets.Add("sheet2");
 
         ExcelWorksheet? ws1_p2 = p2.Workbook.Worksheets.Add("sheet1");
-
 
         ExcelNamedRange? wbName1 = p1.Workbook.Names.Add("Name1", ws1.Cells["sheet1!A1"]);
         ExcelNamedRange? wsName1 = ws1.Names.Add("Name1", ws1.Cells["A1"]);
@@ -172,12 +173,14 @@ public class NamedRangeTests
     public void WorkbookNamedRange_ShouldRetain_FixedAddress()
     {
         using MemoryStream? ms = new MemoryStream();
+
         using (ExcelPackage? package = new ExcelPackage(ms))
         {
             ExcelWorksheet? sheet = package.Workbook.Worksheets.Add("test");
             package.Workbook.Names.Add("MyName", sheet.Cells["$A$1:$A$3"]);
             package.Save();
         }
+
         ms.Position = 0;
         using ExcelPackage? package2 = new ExcelPackage(ms);
         string? nameAddress = package2.Workbook.Names["MyName"].ToInternalAddress().Address;
@@ -188,12 +191,14 @@ public class NamedRangeTests
     public void WorksheetNamedRange_ShouldRetain_FixedAddress()
     {
         using MemoryStream? ms = new MemoryStream();
+
         using (ExcelPackage? package = new ExcelPackage(ms))
         {
             ExcelWorksheet? sheet = package.Workbook.Worksheets.Add("test");
             sheet.Names.Add("MyName", sheet.Cells["$A$1:$A$3"]);
             package.Save();
         }
+
         ms.Position = 0;
         using ExcelPackage? package2 = new ExcelPackage(ms);
         string? nameAddress = package2.Workbook.Worksheets["test"].Names["MyName"].ToInternalAddress().Address;
@@ -204,12 +209,14 @@ public class NamedRangeTests
     public void WorkbookNamedRange_ShouldRetainRelativeAddress_WhenIsRelativeIsTrue()
     {
         using MemoryStream? ms = new MemoryStream();
+
         using (ExcelPackage? package = new ExcelPackage(ms))
         {
             ExcelWorksheet? sheet = package.Workbook.Worksheets.Add("test");
             package.Workbook.Names.Add("MyName", sheet.Cells["A1:A3"], true);
             package.Save();
         }
+
         ms.Position = 0;
         using ExcelPackage? package2 = new ExcelPackage(ms);
         string? nameAddress = package2.Workbook.Names["MyName"].ToInternalAddress().Address;
@@ -220,12 +227,14 @@ public class NamedRangeTests
     public void WorksheetNamedRange_ShouldRetainRelativeAddress_WhenIsRelativeIsTrue()
     {
         using MemoryStream? ms = new MemoryStream();
+
         using (ExcelPackage? package = new ExcelPackage(ms))
         {
             ExcelWorksheet? sheet = package.Workbook.Worksheets.Add("test");
             sheet.Names.Add("MyName", sheet.Cells["A1:A3"], true);
             package.Save();
         }
+
         ms.Position = 0;
         using ExcelPackage? package2 = new ExcelPackage(ms);
         string? nameAddress = package2.Workbook.Worksheets["test"].Names["MyName"].ToInternalAddress().Address;
@@ -236,12 +245,14 @@ public class NamedRangeTests
     public void WorkbookNamedRange_ShouldNotRetainRelativeAddress_WhenIsRelativeIsFalse()
     {
         using MemoryStream? ms = new MemoryStream();
+
         using (ExcelPackage? package = new ExcelPackage(ms))
         {
             ExcelWorksheet? sheet = package.Workbook.Worksheets.Add("test");
             package.Workbook.Names.Add("MyName", sheet.Cells["A1:A3"], false);
             package.Save();
         }
+
         ms.Position = 0;
         using ExcelPackage? package2 = new ExcelPackage(ms);
         string? nameAddress = package2.Workbook.Names["MyName"].ToInternalAddress().Address;
@@ -252,12 +263,14 @@ public class NamedRangeTests
     public void WorksheetNamedRange_ShouldNotRetainRelativeAddress_WhenIsRelativeIsFalse()
     {
         using MemoryStream? ms = new MemoryStream();
+
         using (ExcelPackage? package = new ExcelPackage(ms))
         {
             ExcelWorksheet? sheet = package.Workbook.Worksheets.Add("test");
             sheet.Names.Add("MyName", sheet.Cells["A1:A3"], false);
             package.Save();
         }
+
         ms.Position = 0;
         using ExcelPackage? package2 = new ExcelPackage(ms);
         string? nameAddress = package2.Workbook.Worksheets["test"].Names["MyName"].ToInternalAddress().Address;
@@ -268,12 +281,14 @@ public class NamedRangeTests
     public void WorkbookNamedRange_ShouldAlwaysSetFixedAddress_WhenNotLoadingFromFile()
     {
         using MemoryStream? ms = new MemoryStream();
+
         using (ExcelPackage? package = new ExcelPackage(ms))
         {
             ExcelWorksheet? sheet = package.Workbook.Worksheets.Add("test");
             package.Workbook.Names.Add("MyName", sheet.Cells["A1:A3"]);
             package.Save();
         }
+
         ms.Position = 0;
         using ExcelPackage? package2 = new ExcelPackage(ms);
         string? nameAddress = package2.Workbook.Names["MyName"].ToInternalAddress().Address;
@@ -284,12 +299,14 @@ public class NamedRangeTests
     public void WorksheetNamedRange_ShouldAlwaysSetFixedAddress_WhenNotLoadingFromFile()
     {
         using MemoryStream? ms = new MemoryStream();
+
         using (ExcelPackage? package = new ExcelPackage(ms))
         {
             ExcelWorksheet? sheet = package.Workbook.Worksheets.Add("test");
             sheet.Names.Add("MyName", sheet.Cells["A1:A3"]);
             package.Save();
         }
+
         ms.Position = 0;
         using ExcelPackage? package2 = new ExcelPackage(ms);
         string? nameAddress = package2.Workbook.Worksheets["test"].Names["MyName"].ToInternalAddress().Address;

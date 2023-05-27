@@ -24,7 +24,6 @@ public class EmptyCellCalculationTests
         this._package = new ExcelPackage();
         this._sheet = this._package.Workbook.Worksheets.Add("Test");
         this._parser = this._package.Workbook.FormulaParser;
-
     }
 
     [TestCleanup]
@@ -108,6 +107,7 @@ public class EmptyCellCalculationTests
         object? result = this._sheet.Cells["A2"].Value;
         Assert.AreEqual(1d, result);
     }
+
     [TestMethod]
     public void IfConditionEmptyCellReferenceEqualsEmptyString()
     {
@@ -116,6 +116,7 @@ public class EmptyCellCalculationTests
         object? result = this._sheet.Cells["A2"].Value;
         Assert.AreEqual(1d, result);
     }
+
     [TestMethod]
     public void IfConditionEmptyCellReferenceEqualsFalse()
     {

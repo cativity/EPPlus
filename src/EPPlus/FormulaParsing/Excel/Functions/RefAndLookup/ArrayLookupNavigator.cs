@@ -10,6 +10,7 @@
  *************************************************************************************************
   01/27/2020         EPPlus Software AB       Initial release EPPlus 5
  *************************************************************************************************/
+
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -24,7 +25,7 @@ internal class ArrayLookupNavigator : LookupNavigator
     private readonly FunctionArgument[] _arrayData;
     private int _index = 0;
     private object _currentValue;
- 
+
     public ArrayLookupNavigator(LookupDirection direction, LookupArguments arguments, ParsingContext parsingContext)
         : base(direction, arguments, parsingContext)
     {
@@ -42,7 +43,6 @@ internal class ArrayLookupNavigator : LookupNavigator
         }
 
         this.SetCurrentValue();
-
     }
 
     public override int Index
@@ -80,6 +80,7 @@ internal class ArrayLookupNavigator : LookupNavigator
         }
 
         this.SetCurrentValue();
+
         return true;
     }
 

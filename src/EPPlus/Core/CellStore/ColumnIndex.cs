@@ -10,6 +10,7 @@
  *************************************************************************************************
   01/27/2020         EPPlus Software AB       Initial release EPPlus 5
  *************************************************************************************************/
+
 using System;
 using System.Collections.Generic;
 
@@ -24,14 +25,17 @@ internal class ColumnIndex<T> : IndexBase, IDisposable
         this._pages = new PageIndex[CellStoreSettings.PagesPerColumnMin];
         this.PageCount = 0;
     }
+
     ~ColumnIndex()
     {
         this._pages = null;
     }
+
     internal int GetPagePosition(int Row)
     {
         int page = Row >> CellStoreSettings._pageBits;
         int pagePos;
+
         if (page >= 0 && page < this.PageCount && this._pages[page].Index == page)
         {
             pagePos = page;
@@ -44,6 +48,7 @@ internal class ColumnIndex<T> : IndexBase, IDisposable
         if (pagePos >= 0)
         {
             this.GetPage(Row, ref pagePos);
+
             return pagePos;
         }
         else
@@ -74,8 +79,8 @@ internal class ColumnIndex<T> : IndexBase, IDisposable
                 do
                 {
                     pagePos++;
-                }
-                while (pagePos + 1 < this.PageCount && this._pages[pagePos + 1].MinIndex <= Row);
+                } while (pagePos + 1 < this.PageCount && this._pages[pagePos + 1].MinIndex <= Row);
+
                 return true;
             }
             else if (pagePos - 1 >= 0 && this._pages[pagePos - 1].MaxIndex >= Row)
@@ -83,26 +88,29 @@ internal class ColumnIndex<T> : IndexBase, IDisposable
                 do
                 {
                     pagePos--;
-                }
-                while (pagePos - 1 > 0 && this._pages[pagePos - 1].MaxIndex >= Row);
+                } while (pagePos - 1 > 0 && this._pages[pagePos - 1].MaxIndex >= Row);
+
                 return true;
             }
+
             return false;
         }
     }
+
     internal int GetNextRow(int row)
     {
         int p = this.GetPagePosition(row);
+
         if (p < 0)
         {
             p = ~p;
+
             if (p >= this.PageCount)
             {
                 return -1;
             }
             else
             {
-
                 if (this._pages[p].IndexOffset + this._pages[p].Rows[0].Index < row)
                 {
                     if (p + 1 >= this.PageCount)
@@ -125,6 +133,7 @@ internal class ColumnIndex<T> : IndexBase, IDisposable
             if (p < this.PageCount)
             {
                 int r = this._pages[p].GetNextRow(row);
+
                 if (r >= 0)
                 {
                     return this._pages[p].IndexOffset + this._pages[p].Rows[r].Index;
@@ -147,15 +156,19 @@ internal class ColumnIndex<T> : IndexBase, IDisposable
             }
         }
     }
+
     internal int GetPointer(int Row)
     {
         int pos = this.GetPagePosition(Row);
+
         if (pos >= 0 && pos < this.PageCount)
         {
             PageIndex? pageItem = this._pages[pos];
+
             if (pageItem.MinIndex > Row)
             {
                 pos--;
+
                 if (pos < 0)
                 {
                     return -1;
@@ -165,8 +178,10 @@ internal class ColumnIndex<T> : IndexBase, IDisposable
                     pageItem = this._pages[pos];
                 }
             }
+
             int ix = Row - pageItem.IndexOffset;
             int cellPos = ArrayUtil.OptimizedBinarySearch(pageItem.Rows, ix, pageItem.RowCount);
+
             if (cellPos >= 0)
             {
                 return pageItem.Rows[cellPos].IndexPointer;
@@ -193,6 +208,7 @@ internal class ColumnIndex<T> : IndexBase, IDisposable
     //}
     internal PageIndex[] _pages;
     internal int PageCount;
+
     public void Dispose()
     {
         if (this._pages == null)
@@ -206,6 +222,7 @@ internal class ColumnIndex<T> : IndexBase, IDisposable
         }
 
         this._pages = null;
+
         if (this._values != null)
         {
             this._values.Clear();

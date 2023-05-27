@@ -10,6 +10,7 @@
  *************************************************************************************************
   05/07/2021         EPPlus Software AB       EPPlus 5.7
  *************************************************************************************************/
+
 using OfficeOpenXml.Core.CellStore;
 using OfficeOpenXml.Utils;
 using System;
@@ -22,7 +23,11 @@ namespace OfficeOpenXml.Sorting.Internal;
 
 internal class EPPlusSortComparerLeftToRight : EPPlusSortComparerBase<SortItemLeftToRight<ExcelValue>, ExcelValue>
 {
-    public EPPlusSortComparerLeftToRight(int[] rows, bool[] descending, Dictionary<int, string[]> customLists, CultureInfo culture = null, CompareOptions compareOptions = CompareOptions.None)
+    public EPPlusSortComparerLeftToRight(int[] rows,
+                                         bool[] descending,
+                                         Dictionary<int, string[]> customLists,
+                                         CultureInfo culture = null,
+                                         CompareOptions compareOptions = CompareOptions.None)
         : base(descending, customLists, culture, compareOptions)
     {
         this._rows = rows;
@@ -36,6 +41,7 @@ internal class EPPlusSortComparerLeftToRight : EPPlusSortComparerBase<SortItemLe
         {
             object? x1 = x.Items[this._rows[i]]._value;
             object? y1 = y.Items[this._rows[i]]._value;
+
             if (x1 == null && y1 != null)
             {
                 return 1;
@@ -47,10 +53,12 @@ internal class EPPlusSortComparerLeftToRight : EPPlusSortComparerBase<SortItemLe
             }
 
             int ret;
+
             if (this.CustomLists != null && this.CustomLists.ContainsKey(this._rows[i]))
             {
                 int weight1 = this.GetSortWeightByCustomList(x1.ToString(), this.CustomLists[this._rows[i]]);
                 int weight2 = this.GetSortWeightByCustomList(y1.ToString(), this.CustomLists[this._rows[i]]);
+
                 if (weight1 != CustomListNotFound && weight2 != CustomListNotFound)
                 {
                     ret = weight1.CompareTo(weight2);
@@ -78,6 +86,7 @@ internal class EPPlusSortComparerLeftToRight : EPPlusSortComparerBase<SortItemLe
                 return ret * (this.Descending[i] ? -1 : 1);
             }
         }
+
         return 0;
     }
 }

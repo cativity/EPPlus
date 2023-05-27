@@ -10,6 +10,7 @@
  *************************************************************************************************
   01/27/2020         EPPlus Software AB       Initial release EPPlus 5
  *************************************************************************************************/
+
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -17,6 +18,7 @@ using System.Text;
 using System.IO;
 using System.Xml;
 using OfficeOpenXml.Packaging.Ionic.Zlib;
+
 namespace OfficeOpenXml.Packaging;
 
 /// <summary>
@@ -27,13 +29,16 @@ public abstract class ZipPackagePartBase
     /// <summary>
     /// Relationships collection
     /// </summary>
-    protected internal ZipPackageRelationshipCollection _rels = new ZipPackageRelationshipCollection();        
+    protected internal ZipPackageRelationshipCollection _rels = new ZipPackageRelationshipCollection();
+
     int maxRId = 1;
+
     internal void DeleteRelationship(string id)
     {
         this._rels.Remove(id);
         UpdateMaxRId(id, ref this.maxRId);
     }
+
     /// <summary>
     /// Updates the maximum id for the relationship
     /// </summary>
@@ -52,6 +57,7 @@ public abstract class ZipPackagePartBase
             }
         }
     }
+
     internal virtual ZipPackageRelationship CreateRelationship(Uri targetUri, TargetMode targetMode, string relationshipType)
     {
         ZipPackageRelationship? rel = new ZipPackageRelationship();
@@ -60,8 +66,10 @@ public abstract class ZipPackagePartBase
         rel.RelationshipType = relationshipType;
         rel.Id = "rId" + (this.maxRId++).ToString();
         this._rels.Add(rel);
+
         return rel;
     }
+
     internal virtual ZipPackageRelationship CreateRelationship(string target, TargetMode targetMode, string relationshipType)
     {
         ZipPackageRelationship? rel = new ZipPackageRelationship();
@@ -70,6 +78,7 @@ public abstract class ZipPackagePartBase
         rel.RelationshipType = relationshipType;
         rel.Id = "rId" + (this.maxRId++).ToString();
         this._rels.Add(rel);
+
         return rel;
     }
 
@@ -77,18 +86,22 @@ public abstract class ZipPackagePartBase
     {
         return this._rels.ContainsKey(id);
     }
+
     internal ZipPackageRelationshipCollection GetRelationshipsByType(string schema)
     {
         return this._rels.GetRelationshipsByType(schema);
     }
+
     internal ZipPackageRelationshipCollection GetRelationships()
     {
         return this._rels;
     }
+
     internal ZipPackageRelationship GetRelationship(string id)
     {
         return this._rels[id];
     }
+
     internal void ReadRelation(string xml, string source)
     {
         XmlDocument? doc = new XmlDocument();
@@ -100,13 +113,14 @@ public abstract class ZipPackagePartBase
             ZipPackageRelationship? rel = new ZipPackageRelationship();
             rel.Id = c.GetAttribute("Id");
             rel.RelationshipType = c.GetAttribute("Type");
-            rel.TargetMode = c.GetAttribute("TargetMode").Equals("external",StringComparison.OrdinalIgnoreCase) ? TargetMode.External : TargetMode.Internal;
-            if(target.StartsWith("#"))
+            rel.TargetMode = c.GetAttribute("TargetMode").Equals("external", StringComparison.OrdinalIgnoreCase) ? TargetMode.External : TargetMode.Internal;
+
+            if (target.StartsWith("#"))
             {
                 rel.Target = c.GetAttribute("Target");
             }
             else
-            {                    
+            {
                 try
                 {
                     rel.TargetUri = new Uri(c.GetAttribute("Target"), UriKind.RelativeOrAbsolute);
@@ -114,14 +128,16 @@ public abstract class ZipPackagePartBase
                 catch
                 {
                     //The URI is not a valid URI. Encode it to make i valid.
-                    rel.TargetUri = new Uri("Invalid:URI "+ Uri.EscapeDataString(c.GetAttribute("Target")), UriKind.RelativeOrAbsolute);
+                    rel.TargetUri = new Uri("Invalid:URI " + Uri.EscapeDataString(c.GetAttribute("Target")), UriKind.RelativeOrAbsolute);
                     rel.Target = c.GetAttribute("Target");
                 }
             }
+
             if (!string.IsNullOrEmpty(source))
             {
                 rel.SourceUri = new Uri(source, UriKind.Relative);
             }
+
             if (rel.Id.StartsWith("rid", StringComparison.OrdinalIgnoreCase))
             {
                 if (int.TryParse(rel.Id.Substring(3), out int id))

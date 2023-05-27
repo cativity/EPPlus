@@ -10,6 +10,7 @@
  *************************************************************************************************
   05/25/2020         EPPlus Software AB       Implemented function
  *************************************************************************************************/
+
 using OfficeOpenXml.FormulaParsing.Excel.Functions.Metadata;
 using System;
 using System.Collections.Generic;
@@ -18,11 +19,10 @@ using System.Text;
 
 namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Statistical;
 
-[FunctionMetadata(
-                     Category = ExcelFunctionCategory.Statistical,
-                     EPPlusVersion = "5.5",
-                     IntroducedInExcelVersion = "2010",
-                     Description = "Calculates the natural logarithm of the gamma function for a supplied value")]
+[FunctionMetadata(Category = ExcelFunctionCategory.Statistical,
+                  EPPlusVersion = "5.5",
+                  IntroducedInExcelVersion = "2010",
+                  Description = "Calculates the natural logarithm of the gamma function for a supplied value")]
 internal class GammalnPrecise : Gammaln
 {
 }

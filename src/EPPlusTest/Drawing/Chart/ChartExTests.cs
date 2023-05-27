@@ -14,22 +14,26 @@ namespace EPPlusTest.Drawing.Chart;
 public class ChartExTests : TestBase
 {
     static ExcelPackage _pck;
+
     [ClassInitialize]
     public static void Init(TestContext context)
     {
         _pck = OpenPackage("ChartEx.xlsx", true);
     }
+
     [ClassCleanup]
     public static void Cleanup()
     {
         string? dirName = _pck.File.DirectoryName;
         string? fileName = _pck.File.FullName;
         SaveAndCleanup(_pck);
+
         if (File.Exists(fileName))
         {
             File.Copy(fileName, dirName + "\\ChartExRead.xlsx", true);
         }
     }
+
     [TestMethod]
     public void ReadChartEx()
     {
@@ -56,6 +60,7 @@ public class ChartExTests : TestBase
         Assert.IsInstanceOfType(chart1.Series[1].DataDimensions[1], typeof(ExcelChartExNumericData));
         Assert.AreEqual("_xlchart.v1.4", chart1.Series[1].DataDimensions[1].Formula);
     }
+
     [TestMethod]
     public void AddSunburstChart()
     {
@@ -65,10 +70,10 @@ public class ChartExTests : TestBase
         ExcelChartExSerie? serie = chart.Series.Add("Sunburst!$D$2:$D$17", "Sunburst!$A$2:$C$17");
         chart.SetPosition(2, 0, 15, 0);
         chart.SetSize(1600, 900);
-        serie.DataLabel.Position = eLabelPosition.Center;   
+        serie.DataLabel.Position = eLabelPosition.Center;
         serie.DataLabel.ShowCategory = true;
-        serie.DataLabel.ShowValue=true;
-        ExcelChartExDataPoint? dp=serie.DataPoints.Add(2);
+        serie.DataLabel.ShowValue = true;
+        ExcelChartExDataPoint? dp = serie.DataPoints.Add(2);
         dp.Fill.Style = eFillStyle.PatternFill;
         dp.Fill.PatternFill.PatternType = eFillPatternStyle.DashDnDiag;
         dp.Fill.PatternFill.BackgroundColor.SetRgbColor(Color.Red);
@@ -79,8 +84,9 @@ public class ChartExTests : TestBase
         Assert.IsInstanceOfType(chart, typeof(ExcelSunburstChart));
         Assert.AreEqual(0, chart.Axis.Length);
         Assert.IsNull(chart.XAxis);
-        Assert.IsNull(chart.YAxis);            
+        Assert.IsNull(chart.YAxis);
     }
+
     [TestMethod]
     public void AddSunburstChartSheet()
     {
@@ -101,7 +107,6 @@ public class ChartExTests : TestBase
         Assert.AreEqual(0, chart.Axis.Length);
         Assert.IsNull(chart.XAxis);
         Assert.IsNull(chart.YAxis);
-
     }
 
     [TestMethod]
@@ -120,10 +125,11 @@ public class ChartExTests : TestBase
         chart.StyleManager.SetChartStyle(ePresetChartStyle.TreemapChartStyle9);
         Assert.IsInstanceOfType(chart, typeof(ExcelTreemapChart));
     }
+
     [TestMethod]
     public void AddBoxWhiskerChart()
     {
-        ExcelWorksheet? ws = _pck.Workbook.Worksheets.Add("BoxWhisker");    
+        ExcelWorksheet? ws = _pck.Workbook.Worksheets.Add("BoxWhisker");
         LoadHierarkiTestData(ws);
         ExcelBoxWhiskerChart? chart = ws.Drawings.AddBoxWhiskerChart("BoxWhisker");
         ExcelBoxWhiskerChartSerie? serie = chart.Series.Add("BoxWhisker!$D$2:$D$17", "BoxWhisker!$A$2:$C$17");
@@ -143,6 +149,7 @@ public class ChartExTests : TestBase
 
         Assert.AreEqual(eQuartileMethod.Exclusive, serie.QuartileMethod);
     }
+
     [TestMethod]
     public void AddHistogramChart()
     {
@@ -159,6 +166,7 @@ public class ChartExTests : TestBase
 
         Assert.IsInstanceOfType(chart, typeof(ExcelHistogramChart));
     }
+
     [TestMethod]
     public void AddParetoChart()
     {
@@ -172,11 +180,12 @@ public class ChartExTests : TestBase
         Assert.IsInstanceOfType(chart, typeof(ExcelHistogramChart));
         Assert.IsNotNull(serie.ParetoLine);
         serie.ParetoLine.Fill.Style = eFillStyle.SolidFill;
-        serie.ParetoLine.Fill.SolidFill.Color.SetRgbColor(Color.FromArgb(128,255,0,0),true);
+        serie.ParetoLine.Fill.SolidFill.Color.SetRgbColor(Color.FromArgb(128, 255, 0, 0), true);
         serie.ParetoLine.Effect.SetPresetShadow(ePresetExcelShadowType.OuterBottomRight);
         Assert.AreEqual(eChartType.Pareto, chart.ChartType);
         chart.StyleManager.SetChartStyle(ePresetChartStyle.HistogramChartStyle4);
     }
+
     [TestMethod]
     public void AddWaterfallChart()
     {
@@ -189,7 +198,7 @@ public class ChartExTests : TestBase
         ExcelChartExDataPoint? dt = chart.Series[0].DataPoints.Add(15);
         dt.SubTotal = true;
         dt = serie.DataPoints.Add(0);
-        dt.SubTotal = true;            
+        dt.SubTotal = true;
         dt = serie.DataPoints.Add(4);
         dt.Fill.Style = eFillStyle.SolidFill;
         dt.Fill.SolidFill.Color.SetSchemeColor(eSchemeColor.Accent2);
@@ -208,7 +217,7 @@ public class ChartExTests : TestBase
         chart.StyleManager.SetChartStyle(ePresetChartStyle.WaterfallChartStyle4);
 
         Assert.IsInstanceOfType(chart, typeof(ExcelWaterfallChart));
-        Assert.AreEqual(4,serie.DataPoints.Count);
+        Assert.AreEqual(4, serie.DataPoints.Count);
         Assert.IsTrue(serie.DataPoints[0].SubTotal);
         Assert.AreEqual(eFillStyle.GradientFill, serie.DataPoints[0].Border.Fill.Style);
         Assert.AreEqual(3, serie.DataPoints[0].Border.Fill.GradientFill.Colors.Count);
@@ -216,6 +225,7 @@ public class ChartExTests : TestBase
         Assert.AreEqual(eSchemeColor.Accent1, serie.DataPoints[0].Fill.SolidFill.Color.SchemeColor.Color);
         Assert.IsTrue(serie.DataPoints[15].SubTotal);
     }
+
     [TestMethod]
     public void AddFunnelChart()
     {
@@ -226,6 +236,7 @@ public class ChartExTests : TestBase
         chart.SetPosition(2, 0, 15, 0);
         chart.SetSize(1600, 900);
     }
+
     [TestMethod]
     public void AddRegionMapChart()
     {
@@ -264,6 +275,7 @@ public class ChartExTests : TestBase
         Assert.AreEqual("sv", serie.Region.TwoLetterISOLanguageName);
         Assert.AreEqual("sv-SE", serie.Language.Name);
     }
+
     [TestMethod]
     public void CopyBoxWhisker()
     {
@@ -277,11 +289,11 @@ public class ChartExTests : TestBase
         chart3.SetSize(750, 470);
         chart3.Title.Text = "Test BoxWhiskers";
         chart3.XAxis.Deleted = true;
-        chart3.YAxis.AddTitle("Test");            
-        chart3.Legend.Position   = eLegendPosition.TopRight;
+        chart3.YAxis.AddTitle("Test");
+        chart3.Legend.Position = eLegendPosition.TopRight;
         chart3.StyleManager.SetChartStyle(ePresetChartStyleMultiSeries.BoxWhiskerChartStyle6); //BoxWhiskerChartStyle3);
-            
-        ExcelWorksheet? ws=package.Workbook.Worksheets.Add(worksheet1.Name, worksheet1);
+
+        ExcelWorksheet? ws = package.Workbook.Worksheets.Add(worksheet1.Name, worksheet1);
         ExcelBoxWhiskerChart? chart = ws.Drawings[0].As.Chart.BoxWhiskerChart;
         Assert.IsTrue(string.IsNullOrEmpty(chart.Series[0].XSeries));
     }

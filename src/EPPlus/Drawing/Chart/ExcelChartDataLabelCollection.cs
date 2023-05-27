@@ -10,6 +10,7 @@
  *************************************************************************************************
   01/27/2020         EPPlus Software AB       Initial release EPPlus 5
  *************************************************************************************************/
+
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -24,10 +25,13 @@ public class ExcelChartDataLabelCollection : XmlHelper, IEnumerable<ExcelChartDa
 {
     ExcelChart _chart;
     private readonly List<ExcelChartDataLabelItem> _list;
-    internal ExcelChartDataLabelCollection(ExcelChart chart, XmlNamespaceManager ns, XmlNode topNode, string[] schemaNodeOrder) : base(ns, topNode)
+
+    internal ExcelChartDataLabelCollection(ExcelChart chart, XmlNamespaceManager ns, XmlNode topNode, string[] schemaNodeOrder)
+        : base(ns, topNode)
     {
         this.SchemaNodeOrder = schemaNodeOrder;
         this._list = new List<ExcelChartDataLabelItem>();
+
         foreach (XmlNode pointNode in this.TopNode.SelectNodes(ExcelChartDataPoint.topNodePath, ns))
         {
             this._list.Add(new ExcelChartDataLabelItem(chart, ns, pointNode, "idx", schemaNodeOrder));
@@ -35,6 +39,7 @@ public class ExcelChartDataLabelCollection : XmlHelper, IEnumerable<ExcelChartDa
 
         this._chart = chart;
     }
+
     /// <summary>
     /// Adds a new chart label to the collection
     /// </summary>
@@ -49,10 +54,12 @@ public class ExcelChartDataLabelCollection : XmlHelper, IEnumerable<ExcelChartDa
         else
         {
             int ix = this.GetItemAfter(index);
+
             if (this._list[ix].Index == index)
             {
                 throw new ArgumentException($"Data label with index {index} already exists");
             }
+
             return this.CreateDataLabel(ix);
         }
     }
@@ -61,7 +68,7 @@ public class ExcelChartDataLabelCollection : XmlHelper, IEnumerable<ExcelChartDa
     {
         int pos = this.GetItemAfter(idx);
         XmlElement element = this.CreateElement(idx);
-        ExcelChartDataLabelItem? dl = new ExcelChartDataLabelItem(this._chart, this.NameSpaceManager, element, "dLbl", this.SchemaNodeOrder) { Index=idx };
+        ExcelChartDataLabelItem? dl = new ExcelChartDataLabelItem(this._chart, this.NameSpaceManager, element, "dLbl", this.SchemaNodeOrder) { Index = idx };
 
         if (idx < this._list.Count)
         {
@@ -78,6 +85,7 @@ public class ExcelChartDataLabelCollection : XmlHelper, IEnumerable<ExcelChartDa
     private XmlElement CreateElement(int idx)
     {
         XmlElement pointNode;
+
         if (idx < this._list.Count)
         {
             pointNode = this.TopNode.OwnerDocument.CreateElement("c", "dLbl", ExcelPackage.schemaMain);
@@ -87,6 +95,7 @@ public class ExcelChartDataLabelCollection : XmlHelper, IEnumerable<ExcelChartDa
         {
             pointNode = (XmlElement)this.CreateNode("c:dLbl");
         }
+
         return pointNode;
     }
 
@@ -99,8 +108,10 @@ public class ExcelChartDataLabelCollection : XmlHelper, IEnumerable<ExcelChartDa
                 return i;
             }
         }
+
         return this._list.Count;
     }
+
     /// <summary>
     /// Indexer for the collection
     /// </summary>
@@ -108,21 +119,17 @@ public class ExcelChartDataLabelCollection : XmlHelper, IEnumerable<ExcelChartDa
     /// <returns></returns>
     public ExcelChartDataLabelItem this[int index]
     {
-        get
-        {
-            return this._list[index];
-        }
+        get { return this._list[index]; }
     }
+
     /// <summary>
     /// Number of items in the collection
     /// </summary>
     public int Count
     {
-        get
-        {
-            return this._list.Count;
-        }
+        get { return this._list.Count; }
     }
+
     /// <summary>
     /// Gets the enumerator for the collection
     /// </summary>

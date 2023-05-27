@@ -10,6 +10,7 @@
  *************************************************************************************************
   01/29/2021         EPPlus Software AB       EPPlus 5.6
  *************************************************************************************************/
+
 namespace OfficeOpenXml.Style;
 
 /// <summary>
@@ -21,6 +22,7 @@ public enum eDxfFillStyle
     /// Fill using the selected pattern and color
     /// </summary>
     PatternFill,
+
     /// <summary>
     /// A gradient fill using multiple colors.        
     /// </summary>

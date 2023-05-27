@@ -22,14 +22,17 @@ public class ExcelExternalDefinedName : IExcelExternalNamedItem
     /// The name
     /// </summary>
     public string Name { get; internal set; }
+
     /// <summary>
     /// The address that the defined name referes to
     /// </summary>
     public string RefersTo { get; internal set; }
+
     /// <summary>
     /// The sheet id
     /// </summary>
     public int SheetId { get; internal set; }
+
     /// <summary>
     /// The string representation of the name
     /// </summary>

@@ -26,6 +26,7 @@
  *******************************************************************************
   01/27/2020         EPPlus Software AB       Initial release EPPlus 5
  *******************************************************************************/
+
 using System;
 using System.Text;
 using System.Collections.Generic;
@@ -57,18 +58,12 @@ public class ExpressionGraphBuilderTests
     [TestCleanup]
     public void Cleanup()
     {
-
     }
 
     [TestMethod]
     public void BuildShouldNotUseStringIdentifyersWhenBuildingStringExpression()
     {
-        List<Token>? tokens = new List<Token>
-        {
-            new Token("'", TokenType.String),
-            new Token("abc", TokenType.StringContent),
-            new Token("'", TokenType.String)
-        };
+        List<Token>? tokens = new List<Token> { new Token("'", TokenType.String), new Token("abc", TokenType.StringContent), new Token("'", TokenType.String) };
 
         OfficeOpenXml.FormulaParsing.ExpressionGraph.ExpressionGraph? result = this._graphBuilder.Build(tokens);
 
@@ -80,9 +75,7 @@ public class ExpressionGraphBuilderTests
     {
         List<Token>? tokens = new List<Token>
         {
-            new Token("'", TokenType.String),
-            new Token("1 + 2", TokenType.StringContent),
-            new Token("'", TokenType.String)
+            new Token("'", TokenType.String), new Token("1 + 2", TokenType.StringContent), new Token("'", TokenType.String)
         };
 
         OfficeOpenXml.FormulaParsing.ExpressionGraph.ExpressionGraph? result = this._graphBuilder.Build(tokens);
@@ -103,10 +96,10 @@ public class ExpressionGraphBuilderTests
             new Token("*", TokenType.Operator),
             new Token("2", TokenType.Integer)
         };
+
         OfficeOpenXml.FormulaParsing.ExpressionGraph.ExpressionGraph? result = this._graphBuilder.Build(tokens);
 
         Assert.AreEqual(Operator.Multiply.Operator, result.Expressions.First().Operator.Operator);
-
     }
 
     [TestMethod]
@@ -122,6 +115,7 @@ public class ExpressionGraphBuilderTests
             new Token("*", TokenType.Operator),
             new Token("2", TokenType.Integer)
         };
+
         OfficeOpenXml.FormulaParsing.ExpressionGraph.ExpressionGraph? result = this._graphBuilder.Build(tokens);
 
         Assert.IsInstanceOfType(result.Expressions.First(), typeof(GroupExpression));
@@ -141,11 +135,11 @@ public class ExpressionGraphBuilderTests
             new Token("*", TokenType.Operator),
             new Token("2", TokenType.Integer)
         };
+
         OfficeOpenXml.FormulaParsing.ExpressionGraph.ExpressionGraph? result = this._graphBuilder.Build(tokens);
 
         Assert.IsNotNull(result.Expressions.First().Next);
         Assert.IsInstanceOfType(result.Expressions.First().Next, typeof(IntegerExpression));
-
     }
 
     [TestMethod]
@@ -158,6 +152,7 @@ public class ExpressionGraphBuilderTests
             new Token("2", TokenType.Integer),
             new Token(")", TokenType.ClosingParenthesis),
         };
+
         OfficeOpenXml.FormulaParsing.ExpressionGraph.ExpressionGraph? result = this._graphBuilder.Build(tokens);
 
         Assert.AreEqual(1, result.Expressions.Count());
@@ -174,6 +169,7 @@ public class ExpressionGraphBuilderTests
             new Token("2", TokenType.Integer),
             new Token(")", TokenType.ClosingParenthesis)
         };
+
         OfficeOpenXml.FormulaParsing.ExpressionGraph.ExpressionGraph? result = this._graphBuilder.Build(tokens);
 
         Assert.AreEqual(1, result.Expressions.First().Children.Count());
@@ -194,6 +190,7 @@ public class ExpressionGraphBuilderTests
             new Token("&", TokenType.Operator),
             new Token("A", TokenType.StringContent)
         };
+
         OfficeOpenXml.FormulaParsing.ExpressionGraph.ExpressionGraph? result = this._graphBuilder.Build(tokens);
 
         Assert.AreEqual(1, result.Expressions.First().Children.Count());
@@ -223,11 +220,7 @@ public class ExpressionGraphBuilderTests
     [TestMethod]
     public void BuildShouldCreateASingleExpressionOutOfANegatorAndANumericToken()
     {
-        List<Token>? tokens = new List<Token>
-        {
-            new Token("-", TokenType.Negator),
-            new Token("2", TokenType.Integer),
-        };
+        List<Token>? tokens = new List<Token> { new Token("-", TokenType.Negator), new Token("2", TokenType.Integer), };
 
         OfficeOpenXml.FormulaParsing.ExpressionGraph.ExpressionGraph? result = this._graphBuilder.Build(tokens);
 
@@ -279,7 +272,10 @@ public class ExpressionGraphBuilderTests
     public void ShouldHandleInnerFunctionCall3()
     {
         ParsingContext? ctx = ParsingContext.Create();
-        const string formula = "IF(I10>=0;IF(O10>I10;((O10-I10)*$B10)/$C$27;IF(O10<0;(O10*$B10)/$C$27;\"\"));IF(O10<0;((O10-I10)*$B10)/$C$27;IF(O10>0;(O10*$B10)/$C$27;)))";
+
+        const string formula =
+            "IF(I10>=0;IF(O10>I10;((O10-I10)*$B10)/$C$27;IF(O10<0;(O10*$B10)/$C$27;\"\"));IF(O10<0;((O10-I10)*$B10)/$C$27;IF(O10>0;(O10*$B10)/$C$27;)))";
+
         SourceCodeTokenizer? tokenizer = new SourceCodeTokenizer(ctx.Configuration.FunctionRepository, ctx.NameValueProvider);
         IEnumerable<Token>? tokens = tokenizer.Tokenize(formula);
         OfficeOpenXml.FormulaParsing.ExpressionGraph.ExpressionGraph? expression = this._graphBuilder.Build(tokens);
@@ -287,11 +283,13 @@ public class ExpressionGraphBuilderTests
         Expression? exp1 = expression.Expressions.First();
         Assert.AreEqual(3, exp1.Children.Count());
     }
+
     [TestMethod, Ignore]
     public void RemoveDuplicateOperators1()
     {
         ParsingContext? ctx = ParsingContext.Create();
         const string formula = "++1--2++-3+-1----3-+2";
+
         // the formula above equals 1+2-3-1+3+2
         SourceCodeTokenizer? tokenizer = new SourceCodeTokenizer(ctx.Configuration.FunctionRepository, ctx.NameValueProvider);
         List<Token>? tokens = tokenizer.Tokenize(formula).ToList();
@@ -303,6 +301,7 @@ public class ExpressionGraphBuilderTests
         Assert.AreEqual("+", tokens[7].Value);
         Assert.AreEqual("-", tokens[9].Value);
     }
+
     [TestMethod, Ignore]
     public void RemoveDuplicateOperators2()
     {
@@ -315,10 +314,7 @@ public class ExpressionGraphBuilderTests
     [TestMethod]
     public void BuildExcelAddressExpressionSimple()
     {
-        List<Token>? tokens = new List<Token>
-        {
-            new Token("A1", TokenType.ExcelAddress)
-        };
+        List<Token>? tokens = new List<Token> { new Token("A1", TokenType.ExcelAddress) };
 
         OfficeOpenXml.FormulaParsing.ExpressionGraph.ExpressionGraph? result = this._graphBuilder.Build(tokens);
         Assert.IsInstanceOfType(result.Expressions.First(), typeof(ExcelAddressExpression));

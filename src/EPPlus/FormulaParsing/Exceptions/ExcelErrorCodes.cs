@@ -10,6 +10,7 @@
  *************************************************************************************************
   01/27/2020         EPPlus Software AB       Initial release EPPlus 5
  *************************************************************************************************/
+
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -26,14 +27,11 @@ public class ExcelErrorCodes
     {
         this.Code = code;
     }
+
     /// <summary>
     /// The error code
     /// </summary>
-    public string Code
-    {
-        get;
-        private set;
-    }
+    public string Code { get; private set; }
 
     /// <summary>
     /// Returns the hash code for this string.
@@ -43,6 +41,7 @@ public class ExcelErrorCodes
     {
         return this.Code.GetHashCode();
     }
+
     /// <summary>
     /// Determines whether the specified object is equal to the current object.
     /// </summary>
@@ -54,6 +53,7 @@ public class ExcelErrorCodes
         {
             return ((ExcelErrorCodes)obj).Code.Equals(this.Code);
         }
+
         return false;
     }
 
@@ -63,10 +63,11 @@ public class ExcelErrorCodes
     /// <param name="c1">The first error code to match</param>
     /// <param name="c2">The second error code to match</param>
     /// <returns></returns>
-    public static bool operator == (ExcelErrorCodes c1, ExcelErrorCodes c2)
+    public static bool operator ==(ExcelErrorCodes c1, ExcelErrorCodes c2)
     {
         return c1.Code.Equals(c2.Code);
     }
+
     /// <summary>
     /// Not equal operator
     /// </summary>
@@ -91,11 +92,14 @@ public class ExcelErrorCodes
         {
             return false;
         }
+
         string? candidate = valueToTest.ToString();
+
         if (Codes.FirstOrDefault(x => x == candidate) != null)
         {
             return true;
         }
+
         return false;
     }
 
@@ -114,6 +118,7 @@ public class ExcelErrorCodes
     {
         get { return new ExcelErrorCodes("#NAME?"); }
     }
+
     /// <summary>
     /// Reprecents a N/A error
     /// </summary>

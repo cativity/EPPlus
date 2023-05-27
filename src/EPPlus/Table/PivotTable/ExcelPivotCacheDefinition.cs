@@ -10,6 +10,7 @@
  *************************************************************************************************
   01/27/2020         EPPlus Software AB       Initial release EPPlus 5
  *************************************************************************************************/
+
 using System;
 using System.Text;
 using System.Xml;
@@ -28,6 +29,7 @@ public class ExcelPivotCacheDefinition
     ExcelWorkbook _wb;
     internal PivotTableCacheInternal _cacheReference;
     XmlNamespaceManager _nsm;
+
     internal ExcelPivotCacheDefinition(XmlNamespaceManager nsm, ExcelPivotTable pivotTable)
     {
         this.Relationship = pivotTable.Part.GetRelationshipsByType(ExcelPackage.schemaRelationships + "/pivotCacheDefinition").FirstOrDefault();
@@ -35,10 +37,15 @@ public class ExcelPivotCacheDefinition
         this.PivotTable = pivotTable;
         this._wb = pivotTable.WorkSheet.Workbook;
         this._nsm = nsm;
-        ExcelWorkbook.PivotTableCacheRangeInfo? c = this._wb._pivotTableCaches.Values.FirstOrDefault(x => x.PivotCaches.Exists(y=>y.CacheDefinitionUri.OriginalString == cacheDefinitionUri.OriginalString));
+
+        ExcelWorkbook.PivotTableCacheRangeInfo? c =
+            this._wb._pivotTableCaches.Values.FirstOrDefault(x => x.PivotCaches.Exists(y => y.CacheDefinitionUri.OriginalString
+                                                                                            == cacheDefinitionUri.OriginalString));
+
         if (c == null)
         {
             ZipPackage? pck = pivotTable.WorkSheet._package.ZipPackage;
+
             if (this._wb._pivotTableIds.ContainsKey(cacheDefinitionUri))
             {
                 int cid = this._wb._pivotTableIds[cacheDefinitionUri];
@@ -57,6 +64,7 @@ public class ExcelPivotCacheDefinition
 
         this._cacheReference._pivotTables.Add(pivotTable);
     }
+
     internal ExcelPivotCacheDefinition(XmlNamespaceManager nsm, ExcelPivotTable pivotTable, ExcelRangeBase sourceRange)
     {
         this.PivotTable = pivotTable;
@@ -65,14 +73,19 @@ public class ExcelPivotCacheDefinition
         this._cacheReference = new PivotTableCacheInternal(nsm, this._wb);
         this._cacheReference.InitNew(pivotTable, sourceRange, null);
         this._wb.AddPivotTableCache(this._cacheReference);
-        this.Relationship = pivotTable.Part.CreateRelationship(UriHelper.ResolvePartUri(pivotTable.PivotTableUri, this._cacheReference.CacheDefinitionUri), TargetMode.Internal, ExcelPackage.schemaRelationships + "/pivotCacheDefinition");
+
+        this.Relationship = pivotTable.Part.CreateRelationship(UriHelper.ResolvePartUri(pivotTable.PivotTableUri, this._cacheReference.CacheDefinitionUri),
+                                                               TargetMode.Internal,
+                                                               ExcelPackage.schemaRelationships + "/pivotCacheDefinition");
     }
+
     internal ExcelPivotCacheDefinition(XmlNamespaceManager nsm, ExcelPivotTable pivotTable, PivotTableCacheInternal cache)
     {
         this.PivotTable = pivotTable;
         this._wb = this.PivotTable.WorkSheet.Workbook;
         this._nsm = nsm;
-        if(cache._wb != this._wb)
+
+        if (cache._wb != this._wb)
         {
             throw new InvalidOperationException("The pivot table and the cache must be in the same workbook.");
         }
@@ -80,7 +93,10 @@ public class ExcelPivotCacheDefinition
         this._cacheReference = cache;
         this._cacheReference._pivotTables.Add(pivotTable);
 
-        ZipPackageRelationship? rel = pivotTable.Part.CreateRelationship(UriHelper.ResolvePartUri(pivotTable.PivotTableUri, this._cacheReference.CacheDefinitionUri), TargetMode.Internal, ExcelPackage.schemaRelationships + "/pivotCacheDefinition");
+        ZipPackageRelationship? rel =
+            pivotTable.Part.CreateRelationship(UriHelper.ResolvePartUri(pivotTable.PivotTableUri, this._cacheReference.CacheDefinitionUri),
+                                               TargetMode.Internal,
+                                               ExcelPackage.schemaRelationships + "/pivotCacheDefinition");
     }
 
     internal void Refresh()
@@ -88,49 +104,36 @@ public class ExcelPivotCacheDefinition
         this._cacheReference.RefreshFields();
     }
 
-    internal ZipPackagePart Part
-    {
-        get;
-        set;
-    }
+    internal ZipPackagePart Part { get; set; }
+
     /// <summary>
     /// Provides access to the XML data representing the cache definition in the package.
     /// </summary>
     public XmlDocument CacheDefinitionXml
     {
-        get
-        {
-            return this._cacheReference.CacheDefinitionXml;
-        }
+        get { return this._cacheReference.CacheDefinitionXml; }
     }
+
     /// <summary>
     /// The package internal URI to the pivottable cache definition Xml Document.
     /// </summary>
     public Uri CacheDefinitionUri
     {
-        get
-        {
-            return this._cacheReference.CacheDefinitionUri;
-        }
+        get { return this._cacheReference.CacheDefinitionUri; }
     }
-    internal ZipPackageRelationship Relationship
-    {
-        get;
-        set;
-    }
+
+    internal ZipPackageRelationship Relationship { get; set; }
+
     /// <summary>
     /// Referece to the PivotTable object
     /// </summary>
-    public ExcelPivotTable PivotTable
-    {
-        get;
-        private set;
-    }
+    public ExcelPivotTable PivotTable { get; private set; }
 
     const string _sourceWorksheetPath = "d:cacheSource/d:worksheetSource/@sheet";
     internal const string _sourceNamePath = "d:cacheSource/d:worksheetSource/@name";
     internal const string _sourceAddressPath = "d:cacheSource/d:worksheetSource/@ref";
     internal ExcelRangeBase _sourceRange = null;
+
     /// <summary>
     /// The source data range when the pivottable has a worksheet datasource. 
     /// The number of columns in the range must be intact if this property is changed.
@@ -138,10 +141,7 @@ public class ExcelPivotCacheDefinition
     /// </summary>
     public ExcelRangeBase SourceRange
     {
-        get
-        {
-            return this._cacheReference.SourceRange;
-        }
+        get { return this._cacheReference.SourceRange; }
         set
         {
             if (this.PivotTable.WorkSheet.Workbook != value.Worksheet.Workbook)
@@ -150,6 +150,7 @@ public class ExcelPivotCacheDefinition
             }
 
             ExcelRangeBase? sr = this.SourceRange;
+
             if (value.End.Column - value.Start.Column != sr.End.Column - sr.Start.Column)
             {
                 throw new ArgumentException("Cannot change the number of columns(fields) in the SourceRange");
@@ -171,6 +172,7 @@ public class ExcelPivotCacheDefinition
             else if (this._cacheReference._pivotTables.Count == 1)
             {
                 string sourceName = this.SourceRange.GetName();
+
                 if (string.IsNullOrEmpty(sourceName))
                 {
                     this._cacheReference.SetXmlNodeString(_sourceWorksheetPath, value.Worksheet.Name);
@@ -195,28 +197,21 @@ public class ExcelPivotCacheDefinition
             }
         }
     }
+
     /// <summary>
     /// If Excel will save the source data with the pivot table.
     /// </summary>
     public bool SaveData
     {
-        get
-        {
-            return this._cacheReference.SaveData;
-        }
-        set
-        {
-            this._cacheReference.SaveData = value;
-        }
+        get { return this._cacheReference.SaveData; }
+        set { this._cacheReference.SaveData = value; }
     }
+
     /// <summary>
     /// Type of source data
     /// </summary>
     public eSourceType CacheSource
     {
-        get
-        {
-            return this._cacheReference.CacheSource;
-        }
+        get { return this._cacheReference.CacheSource; }
     }
 }

@@ -10,6 +10,7 @@
  *************************************************************************************************
   01/27/2020         EPPlus Software AB       Initial release EPPlus 5
  *************************************************************************************************/
+
 using OfficeOpenXml.Drawing.Style;
 using OfficeOpenXml.Drawing.Style.Effect;
 using System;
@@ -26,15 +27,19 @@ public class ExcelThemeEffectStyles : XmlHelper, IEnumerable<ExcelThemeEffectSty
 {
     List<ExcelThemeEffectStyle> _list;
     private readonly ExcelThemeBase _theme;
-    internal ExcelThemeEffectStyles(XmlNamespaceManager nameSpaceManager, XmlNode topNode, ExcelThemeBase theme) : base(nameSpaceManager, topNode)
+
+    internal ExcelThemeEffectStyles(XmlNamespaceManager nameSpaceManager, XmlNode topNode, ExcelThemeBase theme)
+        : base(nameSpaceManager, topNode)
     {
         this._theme = theme;
         this._list = new List<ExcelThemeEffectStyle>();
+
         foreach (XmlNode node in topNode.ChildNodes)
         {
             this._list.Add(new ExcelThemeEffectStyle(nameSpaceManager, node, "", null, this._theme));
         }
     }
+
     /// <summary>
     /// Gets the enumerator for the collection
     /// </summary>
@@ -48,6 +53,7 @@ public class ExcelThemeEffectStyles : XmlHelper, IEnumerable<ExcelThemeEffectSty
     {
         return this._list.GetEnumerator();
     }
+
     /// <summary>
     /// Indexer for the collection
     /// </summary>
@@ -55,11 +61,9 @@ public class ExcelThemeEffectStyles : XmlHelper, IEnumerable<ExcelThemeEffectSty
     /// <returns>The effect style</returns>
     public ExcelThemeEffectStyle this[int index]
     {
-        get
-        {
-            return this._list[index];
-        }
+        get { return this._list[index]; }
     }
+
     /// <summary>
     /// Adds a new effect style
     /// </summary>
@@ -68,8 +72,10 @@ public class ExcelThemeEffectStyles : XmlHelper, IEnumerable<ExcelThemeEffectSty
     {
         XmlElement? node = this.TopNode.OwnerDocument.CreateElement("a", "effectStyle", ExcelPackage.schemaMain);
         this.TopNode.AppendChild(node);
+
         return new ExcelThemeEffectStyle(this.NameSpaceManager, this.TopNode, "", null, this._theme);
     }
+
     /// <summary>
     /// Removes an effect style. The collection must have at least three effect styles.
     /// </summary>
@@ -87,6 +93,7 @@ public class ExcelThemeEffectStyles : XmlHelper, IEnumerable<ExcelThemeEffectSty
             item.TopNode.ParentNode.RemoveChild(item.TopNode);
         }
     }
+
     /// <summary>
     /// Remove the effect style at the specified index. The collection must have at least three effect styles.
     /// </summary>
@@ -111,9 +118,6 @@ public class ExcelThemeEffectStyles : XmlHelper, IEnumerable<ExcelThemeEffectSty
     /// </summary>
     public int Count
     {
-        get
-        {
-            return this._list.Count;
-        }
+        get { return this._list.Count; }
     }
 }

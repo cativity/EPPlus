@@ -10,6 +10,7 @@
  *************************************************************************************************
   01/27/2020         EPPlus Software AB       Initial release EPPlus 5
  *************************************************************************************************/
+
 using System;
 
 namespace OfficeOpenXml.FormulaParsing.Logging;
@@ -25,17 +26,20 @@ public interface IFormulaParserLogger : IDisposable
     /// <param name="context"></param>
     /// <param name="ex"></param>
     void Log(ParsingContext context, Exception ex);
+
     /// <summary>
     /// Called each time information should be logged during formula parsing.
     /// </summary>
     /// <param name="context"></param>
     /// <param name="message"></param>
     void Log(ParsingContext context, string message);
+
     /// <summary>
     /// Called to log a message outside the parsing context.
     /// </summary>
     /// <param name="message"></param>
     void Log(string message);
+
     /// <summary>
     /// Called each time a cell within the calc chain is accessed during formula parsing.
     /// </summary>
@@ -46,6 +50,7 @@ public interface IFormulaParserLogger : IDisposable
     /// </summary>
     /// <param name="func"></param>
     void LogFunction(string func);
+
     /// <summary>
     /// Some functions measure performance, if so this function will be called.
     /// </summary>

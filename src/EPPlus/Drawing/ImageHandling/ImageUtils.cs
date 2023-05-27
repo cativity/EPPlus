@@ -1,5 +1,4 @@
-﻿
-#if(NETFULL)
+﻿#if (NETFULL)
 using System.Drawing;
 using System.Drawing.Imaging;
 using System.IO;

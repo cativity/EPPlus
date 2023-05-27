@@ -26,6 +26,7 @@
  *******************************************************************************
   01/27/2020         EPPlus Software AB       Initial release EPPlus 5
  *******************************************************************************/
+
 using System;
 using System.IO;
 using EPPlusTest.FormulaParsing.TestHelpers;
@@ -70,7 +71,7 @@ public class LookupNavigatorFactoryTests
     [TestMethod]
     public void Should_Return_ArrayLookupNavigator_When_Array_Is_Supplied()
     {
-        LookupArguments? args = new LookupArguments(FunctionsHelper.CreateArgs(8, FunctionsHelper.CreateArgs(1,2), 1), ParsingContext.Create());
+        LookupArguments? args = new LookupArguments(FunctionsHelper.CreateArgs(8, FunctionsHelper.CreateArgs(1, 2), 1), ParsingContext.Create());
         LookupNavigator? navigator = LookupNavigatorFactory.Create(LookupDirection.Horizontal, args, this._context);
         Assert.IsInstanceOfType(navigator, typeof(ArrayLookupNavigator));
     }

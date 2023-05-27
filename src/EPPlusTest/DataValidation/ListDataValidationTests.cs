@@ -66,6 +66,7 @@ public class ListDataValidationTests : ValidationTestBase
         this._validation.Formula.ExcelFormula = "abc!A2";
         Assert.AreEqual("abc!A2", this._validation.Formula.ExcelFormula);
     }
+
     [TestMethod]
     public void ListDataValidation_CanAssignDefinedName()
     {
@@ -102,6 +103,7 @@ public class ListDataValidationTests : ValidationTestBase
 
         // add a validation and set values
         IExcelDataValidationList? validation = sheet.DataValidations.AddListValidation("A1");
+
         // Alternatively:
         // var validation = sheet.Cells["A1"].DataValidation.AddListDataValidation();
         validation.ShowErrorMessage = true;
@@ -126,6 +128,7 @@ public class ListDataValidationTests : ValidationTestBase
 
         // add a validation and set values
         IExcelDataValidationList? validation = sheet.DataValidations.AddListValidation("A1");
+
         // Alternatively:
         // var validation = sheet.Cells["A1"].DataValidation.AddListDataValidation();
         validation.HideDropDown = true;
@@ -195,6 +198,7 @@ public class ListDataValidationTests : ValidationTestBase
         ExcelWorksheet? sheet = excel.Workbook.Worksheets.Add("Sheet1");
         sheet.Cells[1, 1].Value = "Column1";
         IExcelDataValidationList? boolValidator = sheet.Cells["A2:A1048576"].DataValidation.AddListDataValidation();
+
         {
             boolValidator.Formula.Values.Add("");
             boolValidator.Formula.Values.Add("True");

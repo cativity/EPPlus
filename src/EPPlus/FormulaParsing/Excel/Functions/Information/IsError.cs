@@ -10,6 +10,7 @@
  *************************************************************************************************
   01/27/2020         EPPlus Software AB       Initial release EPPlus 5
  *************************************************************************************************/
+
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -21,10 +22,9 @@ using OfficeOpenXml.FormulaParsing.Excel.Functions.Metadata;
 
 namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Information;
 
-[FunctionMetadata(
-                     Category = ExcelFunctionCategory.Information,
-                     EPPlusVersion = "4",
-                     Description = "Tests if an initial supplied value (or expression) returns an error and if so, returns TRUE; Otherwise returns FALSE")]
+[FunctionMetadata(Category = ExcelFunctionCategory.Information,
+                  EPPlusVersion = "4",
+                  Description = "Tests if an initial supplied value (or expression) returns an error and if so, returns TRUE; Otherwise returns FALSE")]
 internal class IsError : ErrorHandlingFunction
 {
     public override CompileResult Execute(IEnumerable<FunctionArgument> arguments, ParsingContext context)
@@ -33,11 +33,13 @@ internal class IsError : ErrorHandlingFunction
         {
             return this.CreateResult(false, DataType.Boolean);
         }
+
         foreach (FunctionArgument? argument in arguments)
         {
             if (argument.Value is IRangeInfo)
             {
                 IRangeInfo? r = (IRangeInfo)argument.Value;
+
                 if (ExcelErrorValue.Values.IsErrorValue(r.GetValue(r.Address._fromRow, r.Address._fromCol)))
                 {
                     return this.CreateResult(true, DataType.Boolean);
@@ -49,8 +51,9 @@ internal class IsError : ErrorHandlingFunction
                 {
                     return this.CreateResult(true, DataType.Boolean);
                 }
-            }                
+            }
         }
+
         return this.CreateResult(false, DataType.Boolean);
     }
 

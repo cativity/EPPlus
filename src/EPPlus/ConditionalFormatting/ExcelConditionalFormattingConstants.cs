@@ -10,6 +10,7 @@
  *************************************************************************************************
   01/27/2020         EPPlus Software AB       Initial release EPPlus 5
  *************************************************************************************************/
+
 using System;
 using System.Collections.Generic;
 using System.Drawing;
@@ -25,11 +26,15 @@ namespace OfficeOpenXml.ConditionalFormatting;
 internal static class ExcelConditionalFormattingConstants
 {
     #region Errors
+
     internal class Errors
     {
         internal const string CommaSeparatedAddresses = @"Multiple addresses may not be commaseparated, use space instead";
         internal const string InvalidCfruleObject = @"The supplied item must inherit OfficeOpenXml.ConditionalFormatting.ExcelConditionalFormattingRule";
-        internal const string InvalidConditionalFormattingObject = @"The supplied item must inherit OfficeOpenXml.ConditionalFormatting.ExcelConditionalFormatting";
+
+        internal const string InvalidConditionalFormattingObject =
+            @"The supplied item must inherit OfficeOpenXml.ConditionalFormatting.ExcelConditionalFormatting";
+
         internal const string InvalidPriority = @"Invalid priority number. Must be bigger than zero";
         internal const string InvalidRemoveRuleOperation = @"Invalid remove rule operation";
         internal const string MissingCfvoNode = @"Missing 'cfvo' node in Conditional Formatting";
@@ -49,9 +54,11 @@ internal static class ExcelConditionalFormattingConstants
         internal const string UnexpectedRuleTypeName = @"Unexpected eExcelConditionalFormattingRuleType TypeName in Conditional Formatting Rule";
         internal const string WrongNumberCfvoColorNodes = @"Wrong number of 'cfvo'/'color' nodes in Conditional Formatting Rule";
     }
+
     #endregion Errors
 
     #region Nodes
+
     internal class Nodes
     {
         internal const string Worksheet = "worksheet";
@@ -64,9 +71,11 @@ internal static class ExcelConditionalFormattingConstants
         internal const string IconSet = "iconSet";
         internal const string Formula = "formula";
     }
+
     #endregion Nodes
 
     #region Attributes
+
     internal class Attributes
     {
         internal const string AboveAverage = "aboveAverage";
@@ -92,9 +101,11 @@ internal static class ExcelConditionalFormattingConstants
         internal const string Val = "val";
         internal const string Gte = "gte";
     }
+
     #endregion Attributes
 
     #region XML Paths
+
     internal class Paths
     {
         // Main node and attributes
@@ -150,9 +161,11 @@ internal static class ExcelConditionalFormattingConstants
         internal const string ValAttribute = "@" + Attributes.Val;
         internal const string GteAttribute = "@" + Attributes.Gte;
     }
+
     #endregion XML Paths
 
     #region Rule Type ST_CfType §18.18.12 (with small EPPlus changes)
+
     internal class RuleType
     {
         internal const string AboveAverage = "aboveAverage";
@@ -208,9 +221,11 @@ internal static class ExcelConditionalFormattingConstants
         internal const string TwoColorScale = "twoColorScale";
         internal const string Yesterday = "yesterday";
     }
+
     #endregion Rule Type ST_CfType §18.18.12 (with small EPPlus changes)
 
     #region CFVO Type ST_CfvoType §18.18.13
+
     internal class CfvoType
     {
         internal const string Min = "min";
@@ -220,9 +235,11 @@ internal static class ExcelConditionalFormattingConstants
         internal const string Percent = "percent";
         internal const string Percentile = "percentile";
     }
+
     #endregion CFVO Type ST_CfvoType §18.18.13
 
     #region Operator Type ST_ConditionalFormattingOperator §18.18.15
+
     internal class Operators
     {
         internal const string BeginsWith = "beginsWith";
@@ -238,9 +255,11 @@ internal static class ExcelConditionalFormattingConstants
         internal const string NotContains = "notContains";
         internal const string NotEqual = "notEqual";
     }
+
     #endregion Operator Type ST_ConditionalFormattingOperator §18.18.15
 
     #region Time Period Type ST_TimePeriod §18.18.82
+
     internal class TimePeriods
     {
         internal const string Last7Days = "last7Days";
@@ -254,14 +273,17 @@ internal static class ExcelConditionalFormattingConstants
         internal const string Tomorrow = "tomorrow";
         internal const string Yesterday = "yesterday";
     }
+
     #endregion Time Period Type ST_TimePeriod §18.18.82
 
     #region Colors
+
     internal class Colors
     {
-        internal static readonly Color CfvoLowValue = Color.FromArgb(0xFF,0xF8,0x69,0x6B);
-        internal static readonly Color CfvoMiddleValue = Color.FromArgb(0xFF,0xFF,0xEB,0x84);
-        internal static readonly Color CfvoHighValue = Color.FromArgb(0xFF,0x63,0xBE,0x7B);
+        internal static readonly Color CfvoLowValue = Color.FromArgb(0xFF, 0xF8, 0x69, 0x6B);
+        internal static readonly Color CfvoMiddleValue = Color.FromArgb(0xFF, 0xFF, 0xEB, 0x84);
+        internal static readonly Color CfvoHighValue = Color.FromArgb(0xFF, 0x63, 0xBE, 0x7B);
     }
+
     #endregion Colors
 }

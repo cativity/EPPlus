@@ -10,6 +10,7 @@
  *************************************************************************************************
   01/27/2020         EPPlus Software AB       Initial release EPPlus 5
  *************************************************************************************************/
+
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -19,10 +20,9 @@ using OfficeOpenXml.FormulaParsing.ExpressionGraph;
 
 namespace OfficeOpenXml.FormulaParsing.Excel.Functions.RefAndLookup;
 
-[FunctionMetadata(
-                     Category = ExcelFunctionCategory.LookupAndReference,
-                     EPPlusVersion = "4",
-                     Description = "Returns a cell or range reference that is represented by a supplied text string")]
+[FunctionMetadata(Category = ExcelFunctionCategory.LookupAndReference,
+                  EPPlusVersion = "4",
+                  Description = "Returns a cell or range reference that is represented by a supplied text string")]
 internal class Indirect : ExcelFunction
 {
     public override CompileResult Execute(IEnumerable<FunctionArgument> arguments, ParsingContext context)
@@ -30,14 +30,16 @@ internal class Indirect : ExcelFunction
         ValidateArguments(arguments, 1);
         string? address = ArgToAddress(arguments, 0);
         ExcelAddressBase adr;
+
         if (ExcelCellBase.IsValidAddress(address) || ExcelAddressBase.IsTableAddress(address))
         {
             adr = new ExcelAddressBase(address);
         }
         else
-        {                
-            INameInfo? n=context.ExcelDataProvider.GetName(context.Scopes.Current.Address.Worksheet, address);
-            if(n.Value is EpplusExcelDataProvider.RangeInfo ri)
+        {
+            INameInfo? n = context.ExcelDataProvider.GetName(context.Scopes.Current.Address.Worksheet, address);
+
+            if (n.Value is EpplusExcelDataProvider.RangeInfo ri)
             {
                 adr = ri.Address;
             }
@@ -45,22 +47,28 @@ internal class Indirect : ExcelFunction
             {
                 adr = new ExcelAddressBase(n.Formula);
             }
+
             address = adr.Address;
         }
+
         string? ws = adr.WorkSheetName;
+
         if (string.IsNullOrEmpty(ws))
         {
             ws = context.Scopes.Current.Address.Worksheet;
         }
+
         IRangeInfo? result = context.ExcelDataProvider.GetRange(ws, context.Scopes.Current.Address.FromRow, context.Scopes.Current.Address.FromCol, address);
+
         if (result.IsEmpty)
         {
             return CompileResult.Empty;
         }
-        else if(!result.IsMulti)
+        else if (!result.IsMulti)
         {
             ICellInfo? cell = result.FirstOrDefault();
             object? val = cell?.Value;
+
             if (val == null)
             {
                 return CompileResult.Empty;
@@ -68,6 +76,7 @@ internal class Indirect : ExcelFunction
 
             return new CompileResultFactory().Create(val);
         }
+
         return new CompileResult(result, DataType.Enumerable);
     }
 }

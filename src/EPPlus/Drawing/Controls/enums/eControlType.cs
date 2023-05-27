@@ -10,6 +10,7 @@
  *************************************************************************************************
     10/21/2020         EPPlus Software AB           Controls 
  *************************************************************************************************/
+
 namespace OfficeOpenXml.Drawing.Controls;
 
 /// <summary>
@@ -21,42 +22,52 @@ public enum eControlType
     /// A button
     /// </summary>
     Button,
+
     /// <summary>
     /// A check box
     /// </summary>
     CheckBox,
+
     /// <summary>
     /// A combo box
     /// </summary>
     DropDown,
+
     /// <summary>
     /// A group box
     /// </summary>
     GroupBox,
+
     /// <summary>
     /// A label
     /// </summary>
     Label,
+
     /// <summary>
     /// A list box
     /// </summary>
     ListBox,
+
     /// <summary>
     /// A radio button (option button)
     /// </summary>
     RadioButton,
+
     /// <summary>
     /// A scroll bar
     /// </summary>
     ScrollBar,
+
     /// <summary>
     /// A spin button
     /// </summary>
     SpinButton,
+
     /// <summary>
     /// An edit box. Unsupported. Editboxes can only be used in dialog sheets.
     /// </summary>
     EditBox,
+
     /// <summary>
     /// A dialog. Unsupported.
     /// </summary>

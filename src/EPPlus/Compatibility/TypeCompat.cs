@@ -10,25 +10,28 @@
  *************************************************************************************************
   01/27/2020         EPPlus Software AB       Initial release EPPlus 5
  *************************************************************************************************/
- using System;
+
+using System;
 using System.Collections.Generic;
 using System.Text;
 using System.Reflection;
+
 namespace OfficeOpenXml.Compatibility;
 
 internal class TypeCompat
 {
     public static bool IsPrimitive(object v)
     {
-#if (Core)            
+#if (Core)
         return v.GetType().GetTypeInfo().IsPrimitive;
 #else
             return v.GetType().IsPrimitive;
 #endif
     }
+
     public static bool IsSubclassOf(Type t, Type c)
     {
-#if (Core)            
+#if (Core)
         return t.GetTypeInfo().IsSubclassOf(c);
 #else
             return t.IsSubclassOf(c);
@@ -37,13 +40,13 @@ internal class TypeCompat
 
     internal static bool IsGenericType(Type t)
     {
-#if (Core)            
+#if (Core)
         return t.GetTypeInfo().IsGenericType;
 #else
             return t.IsGenericType;
 #endif
-
     }
+
     public static object GetPropertyValue(object v, string name)
     {
 #if (Core)

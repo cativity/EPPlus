@@ -10,7 +10,9 @@
  *************************************************************************************************
   01/27/2020         EPPlus Software AB       Initial release EPPlus 5
  *************************************************************************************************/
+
 using System;
+
 namespace OfficeOpenXml.Core.CellStore;
 
 /// <summary>
@@ -19,7 +21,7 @@ namespace OfficeOpenXml.Core.CellStore;
 internal static class CellStoreSettings
 {
     /**** Size constants ****/
-    internal const int _pageBits = 13;   // 13bits = 8192  Note: Maximum is 13 bits since short is used (PageMax=16K)
+    internal const int _pageBits = 13; // 13bits = 8192  Note: Maximum is 13 bits since short is used (PageMax=16K)
     internal const int _pageSize = 1 << _pageBits;
     internal const int _pageSizeMax = _pageSize << 1;
     internal const int _pageSizeMin = 64; //1 << _pageBits;
@@ -50,6 +52,7 @@ internal class CellStore<T> : IDisposable
 {
     internal ColumnIndex<T>[] _columnIndex;
     internal int ColumnCount;
+
     /// <summary>
     /// For internal use only. 
     /// Must be set before any instance of the CellStore is created.
@@ -58,10 +61,12 @@ internal class CellStore<T> : IDisposable
     {
         this._columnIndex = new ColumnIndex<T>[CellStoreSettings.ColSizeMin];
     }
+
     ~CellStore()
     {
         this._columnIndex = null;
     }
+
     internal bool HasValues
     {
         get
@@ -78,38 +83,49 @@ internal class CellStore<T> : IDisposable
                     return true;
                 }
             }
+
             return false;
         }
     }
+
     internal int GetClosestColumnPosition(int column)
     {
         int pos = this.GetColumnPosition(column);
+
         if (pos < 0)
         {
             return ~pos;
         }
+
         return pos;
     }
+
     internal int GetColumnPosition(int column)
     {
         return ArrayUtil.OptimizedBinarySearch(this._columnIndex, column, this.ColumnCount);
     }
+
     internal ColumnIndex<T> GetColumnIndex(int column)
     {
         int pos = ArrayUtil.OptimizedBinarySearch(this._columnIndex, column, this.ColumnCount);
+
         if (pos >= 0 && pos <= this.ColumnCount)
         {
             return this._columnIndex[pos];
         }
+
         return null;
     }
+
     internal CellStore<T> Clone()
     {
         CellStore<T>? ret = new CellStore<T>();
+
         for (int c = 0; c < this.ColumnCount; c++)
         {
             ColumnIndex<T>? colIx = this._columnIndex[c];
             int col = colIx.Index;
+
             for (int p = 0; p < colIx.PageCount; p++)
             {
                 for (int r = 0; r < colIx._pages[p].RowCount; r++)
@@ -119,13 +135,16 @@ internal class CellStore<T> : IDisposable
                 }
             }
         }
+
         return ret;
     }
+
     internal int Count
     {
         get
         {
             int count = 0;
+
             for (int c = 0; c < this.ColumnCount; c++)
             {
                 for (int p = 0; p < this._columnIndex[c].PageCount; p++)
@@ -133,6 +152,7 @@ internal class CellStore<T> : IDisposable
                     count += this._columnIndex[c]._pages[p].RowCount;
                 }
             }
+
             return count;
         }
     }
@@ -148,12 +168,14 @@ internal class CellStore<T> : IDisposable
         if (this.ColumnCount == 0)
         {
             fromRow = fromCol = toRow = toCol = 0;
+
             return false;
         }
         else
         {
             fromCol = this._columnIndex[0].Index;
             int fromIndex = 0;
+
             if (fromCol <= 0 && this.ColumnCount > 1)
             {
                 fromCol = this._columnIndex[1].Index;
@@ -162,34 +184,48 @@ internal class CellStore<T> : IDisposable
             else if (this.ColumnCount == 1 && fromCol <= 0)
             {
                 fromRow = fromCol = toRow = toCol = 0;
+
                 return false;
             }
+
             int col = this.ColumnCount - 1;
+
             while (col > 0)
             {
-                if (this._columnIndex[col].PageCount == 0 || this._columnIndex[col]._pages[0].RowCount > 1 || this._columnIndex[col]._pages[0].Rows[0].Index > 0)
+                if (this._columnIndex[col].PageCount == 0
+                    || this._columnIndex[col]._pages[0].RowCount > 1
+                    || this._columnIndex[col]._pages[0].Rows[0].Index > 0)
                 {
                     break;
                 }
+
                 col--;
             }
+
             toCol = this._columnIndex[col].Index;
+
             if (toCol == 0)
             {
                 fromRow = fromCol = toRow = toCol = 0;
+
                 return false;
             }
+
             fromRow = toRow = 0;
 
             for (int c = fromIndex; c < this.ColumnCount; c++)
             {
-                int first, last;
+                int first,
+                    last;
+
                 if (this._columnIndex[c].PageCount == 0)
                 {
                     continue;
                 }
 
-                if (this._columnIndex[c]._pages[0].RowCount > 0 && this._columnIndex[c]._pages[0].Rows[0].Index >= 0 && this._columnIndex[c]._pages[0].IndexOffset + this._columnIndex[c]._pages[0].Rows[0].Index > 0)
+                if (this._columnIndex[c]._pages[0].RowCount > 0
+                    && this._columnIndex[c]._pages[0].Rows[0].Index >= 0
+                    && this._columnIndex[c]._pages[0].IndexOffset + this._columnIndex[c]._pages[0].Rows[0].Index > 0)
                 {
                     first = this._columnIndex[c]._pages[0].IndexOffset + this._columnIndex[c]._pages[0].Rows[0].Index;
                 }
@@ -208,12 +244,16 @@ internal class CellStore<T> : IDisposable
                         first = 0;
                     }
                 }
+
                 int lp = this._columnIndex[c].PageCount - 1;
+
                 while (this._columnIndex[c]._pages[lp].RowCount == 0 && lp != 0)
                 {
                     lp--;
                 }
+
                 PageIndex? p = this._columnIndex[c]._pages[lp];
+
                 if (p.RowCount > 0)
                 {
                     last = p.IndexOffset + p.Rows[p.RowCount - 1].Index;
@@ -222,18 +262,22 @@ internal class CellStore<T> : IDisposable
                 {
                     last = first;
                 }
+
                 if (first > 0 && (first < fromRow || fromRow == 0))
                 {
                     fromRow = first;
                 }
+
                 if (first > 0 && (last > toRow || toRow == 0))
                 {
                     toRow = last;
                 }
             }
+
             if (fromRow <= 0 || toRow <= 0)
             {
                 fromRow = fromCol = toRow = toCol = 0;
+
                 return false;
             }
             else
@@ -242,31 +286,40 @@ internal class CellStore<T> : IDisposable
             }
         }
     }
+
     internal int FindNext(int Column)
     {
         int c = this.GetColumnPosition(Column);
+
         if (c < 0)
         {
             return ~c;
         }
+
         return c;
     }
+
     internal T GetValue(int Row, int Column)
     {
         ColumnIndex<T>? c = this.GetColumnIndex(Column);
+
         if (c != null)
         {
             int i = c.GetPointer(Row);
+
             if (i >= 0)
             {
                 return c._values[i];
             }
         }
+
         return default(T);
     }
+
     internal bool Exists(int Row, int Column)
     {
         ColumnIndex<T>? c = this.GetColumnIndex(Column);
+
         if (c == null)
         {
             return false;
@@ -278,15 +331,18 @@ internal class CellStore<T> : IDisposable
     internal bool Exists(int Row, int Column, ref T value)
     {
         ColumnIndex<T>? c = this.GetColumnIndex(Column);
+
         if (c == null)
         {
             return false;
         }
 
         int p = c.GetPointer(Row);
+
         if (p >= 0)
         {
             value = c._values[p];
+
             return true;
         }
         else
@@ -294,6 +350,7 @@ internal class CellStore<T> : IDisposable
             return false;
         }
     }
+
     internal void SetValue(int row, int column, T value)
     {
         lock (this._columnIndex)
@@ -306,13 +363,16 @@ internal class CellStore<T> : IDisposable
     private int SetValueColumn(int row, int column, T value, int colPos)
     {
         short page = (short)(row >> CellStoreSettings._pageBits);
-        if (colPos >= 0)    //Column Found
+
+        if (colPos >= 0) //Column Found
         {
             ColumnIndex<T>? col = this._columnIndex[colPos];
             int pagePos = col.GetPagePosition(row);
+
             if (pagePos < 0)
             {
                 pagePos = ~pagePos;
+
                 if (pagePos - 1 < 0 || col._pages[pagePos - 1].IndexOffset + CellStoreSettings._pageSize - 1 < row)
                 {
                     AddPage(col, pagePos, page);
@@ -326,10 +386,12 @@ internal class CellStore<T> : IDisposable
             {
                 AddPage(col, pagePos, page);
             }
+
             PageIndex? pageItem = col._pages[pagePos];
 
             short ix = (short)(row - pageItem.IndexOffset);
             int cellPos = ArrayUtil.OptimizedBinarySearch(pageItem.Rows, ix, pageItem.RowCount);
+
             if (cellPos < 0)
             {
                 cellPos = ~cellPos;
@@ -371,10 +433,12 @@ internal class CellStore<T> : IDisposable
 
                 //Entire column
                 int col = this.GetColumnPosition(fromCol);
+
                 if (col < 0)
                 {
                     col = ~col;
                 }
+
                 for (int c = col; c < this.ColumnCount; c++)
                 {
                     this._columnIndex[c].Index += (short)columns;
@@ -388,20 +452,24 @@ internal class CellStore<T> : IDisposable
                 {
                     ColumnIndex<T>? column = this._columnIndex[c];
                     int pagePos = column.GetPagePosition(fromRow);
+
                     if (pagePos >= 0)
                     {
                         if (IsWithinPage(fromRow, column, pagePos)) //The row is inside the page
                         {
                             int rowPos = column._pages[pagePos].GetRowPosition(fromRow);
+
                             if (rowPos < 0)
                             {
                                 rowPos = ~rowPos;
                             }
+
                             InsertRowIntoPage(column, pagePos, rowPos, fromRow, rows);
                         }
                         else if (pagePos > 0 && IsWithinPage(fromRow, column, pagePos - 1)) //The row is inside the previous page
                         {
                             int rowPos = column._pages[pagePos - 1].GetRowPosition(fromRow);
+
                             if (rowPos > 0 && pagePos > 0)
                             {
                                 InsertRowIntoPage(column, pagePos - 1, rowPos, fromRow, rows);
@@ -410,10 +478,12 @@ internal class CellStore<T> : IDisposable
                         else if (column.PageCount >= pagePos + 1)
                         {
                             int rowPos = column._pages[pagePos].GetRowPosition(fromRow);
+
                             if (rowPos < 0)
                             {
                                 rowPos = ~rowPos;
                             }
+
                             if (column._pages[pagePos].RowCount > rowPos)
                             {
                                 InsertRowIntoPage(column, pagePos, rowPos, fromRow, rows);
@@ -446,6 +516,7 @@ internal class CellStore<T> : IDisposable
             fromColPos = this.GetClosestColumnPosition(fromCol);
             toColPos = this.GetClosestColumnPosition(endCol);
             toColPos = Math.Min(toColPos, this.ColumnCount - 1);
+
             if (fromColPos < this.ColumnCount && this._columnIndex[fromColPos].Index < fromCol)
             {
                 fromColPos++;
@@ -467,10 +538,12 @@ internal class CellStore<T> : IDisposable
     {
         this.Delete(fromRow, fromCol, rows, columns, false);
     }
+
     internal void Delete(int fromRow, int fromCol, int rows, int columns)
     {
         this.Delete(fromRow, fromCol, rows, columns, true);
     }
+
     internal void Delete(int fromRow, int fromCol, int rows, int columns, bool shift)
     {
         lock (this._columnIndex)
@@ -491,9 +564,11 @@ internal class CellStore<T> : IDisposable
                 for (int c = fromColPos; c <= toColPos; c++)
                 {
                     ColumnIndex<T>? column = this._columnIndex[c];
+
                     if (column.Index >= fromCol)
                     {
                         int toCol = fromCol + columns - 1;
+
                         if (column.Index > toCol)
                         {
                             break;
@@ -509,6 +584,7 @@ internal class CellStore<T> : IDisposable
     private static void DeleteColumn(ColumnIndex<T> column, int fromRow, int rows, bool shift)
     {
         int pagePos = column.GetPagePosition(fromRow);
+
         if (pagePos < 0)
         {
             pagePos = ~pagePos;
@@ -518,6 +594,7 @@ internal class CellStore<T> : IDisposable
         {
             int toRow = fromRow + rows - 1;
             PageIndex? page = column._pages[pagePos];
+
             if (page.StartsWithin(fromRow, toRow))
             {
                 //The deleted range starts within the page
@@ -526,6 +603,7 @@ internal class CellStore<T> : IDisposable
             else if (column.PageCount > pagePos + 1)
             {
                 PageIndex? nextPage = column._pages[pagePos + 1];
+
                 if (nextPage.StartsWithin(fromRow, toRow))
                 {
                     pagePos = DeleteRows(column, pagePos + 1, fromRow, rows, shift);
@@ -563,6 +641,7 @@ internal class CellStore<T> : IDisposable
         {
             short maxCol = this._columnIndex[this.ColumnCount - 1].Index;
             int cols = fromAddress.Columns;
+
             for (int srcCol = fromAddress._toCol + 1; srcCol <= maxCol; srcCol++)
             {
                 int destCol = srcCol - cols;
@@ -572,6 +651,7 @@ internal class CellStore<T> : IDisposable
             this.Delete(fromAddress._fromRow, maxCol - cols + 1, fromAddress.Rows, cols, false);
         }
     }
+
     internal void InsertShiftRight(ExcelAddressBase fromAddress)
     {
         if (this.ColumnCount == 0)
@@ -582,6 +662,7 @@ internal class CellStore<T> : IDisposable
         lock (this._columnIndex)
         {
             short maxCol = this._columnIndex[this.ColumnCount - 1].Index;
+
             for (int sourceCol = maxCol; sourceCol >= fromAddress._fromCol; sourceCol--)
             {
                 int destCol = fromAddress._toCol + 1 + (sourceCol - fromAddress._fromCol);
@@ -598,43 +679,52 @@ internal class CellStore<T> : IDisposable
         int destColPos = this.GetColumnPosition(destCol);
 
         int rows = sourceEndRow - sourceStartRow + 1;
-        if (sourceColPos < 0 && destColPos < 0)             //Neither source nor destiontion exists, so we're done
+
+        if (sourceColPos < 0 && destColPos < 0) //Neither source nor destiontion exists, so we're done
         {
             return;
         }
-        else if (sourceColPos < 0 && destCol >= 0)          //Source column does not exist, delete range in destintation column
+        else if (sourceColPos < 0 && destCol >= 0) //Source column does not exist, delete range in destintation column
         {
             this.Delete(destStartRow, destCol, rows, 1, false);
+
             return;
         }
 
         ColumnIndex<T>? sourceColIx = this._columnIndex[sourceColPos];
         int sourcePagePos = sourceColIx.GetPagePosition(sourceStartRow);
+
         if (sourcePagePos < 0)
         {
             sourcePagePos = ~sourcePagePos;
         }
+
         if (sourcePagePos > sourceColIx._pages.Length - 1 || sourceColIx.PageCount == 0)
         {
             this.Delete(destStartRow, destCol, rows, 1, false);
+
             return;
         }
 
         PageIndex? sourcePage = sourceColIx._pages[sourcePagePos];
 
         int sourceRowIx = sourcePage.GetRowPosition(sourceStartRow);
+
         if (sourceRowIx < 0)
         {
             sourceRowIx = ~sourceRowIx;
+
             if (sourceRowIx >= sourcePage.RowCount || sourcePage.GetRow(sourceRowIx) < sourceStartRow)
             {
                 this.Delete(destStartRow, destCol, rows, 1, false);
+
                 return;
             }
         }
 
         //Get and create the destination column
         ColumnIndex<T> destColIx;
+
         if (destColPos < 0 && sourceRowIx >= 0 && sourcePage.GetRow(sourceRowIx) <= sourceEndRow)
         {
             destColPos = ~destColPos;
@@ -644,6 +734,7 @@ internal class CellStore<T> : IDisposable
         else if (destColPos >= 0)
         {
             destColIx = this._columnIndex[destColPos];
+
             //No rows to move, just clear the destination
             DeleteColumn(destColIx, destStartRow, rows, false);
         }
@@ -661,18 +752,22 @@ internal class CellStore<T> : IDisposable
         int sourceRow = sourcePage.GetRow(sourceRowIx);
         int prevDestPagePos = -1;
         int destRowIx = -1;
+
         do
         {
             int destRow = destStartRow + (sourceRow - sourceStartRow);
             int destPagePos = destColIx.GetPagePosition(destRow);
+
             if (destPagePos < 0)
             {
                 destPagePos = ~destPagePos;
                 short page = (short)(destRow >> CellStoreSettings._pageBits);
                 AddPage(destColIx, destPagePos, page);
             }
+
             PageIndex? destPage = destColIx._pages[destPagePos];
             destColIx._values.Add(sourceColIx._values[sourcePage.Rows[sourceRowIx].IndexPointer]);
+
             if (prevDestPagePos == destPagePos)
             {
                 AddCellPointer(destColIx, ref destPagePos, ref destRowIx, (short)(destRow - destPage.IndexOffset), destColIx._values.Count - 1);
@@ -690,11 +785,14 @@ internal class CellStore<T> : IDisposable
 
                 AddCellPointer(destColIx, ref destPagePos, ref destRowIx, (short)(destRow - destPage.IndexOffset), destColIx._values.Count - 1);
             }
+
             sourceRowIx++;
             destRowIx++;
+
             if (sourceRowIx == sourcePage.RowCount)
             {
                 sourcePagePos++;
+
                 if (sourcePagePos >= sourceColIx.PageCount)
                 {
                     break;
@@ -703,10 +801,10 @@ internal class CellStore<T> : IDisposable
                 sourcePage = sourceColIx._pages[sourcePagePos];
                 sourceRowIx = 0;
             }
+
             sourceRow = sourcePage.GetRow(sourceRowIx);
             prevDestPagePos = destPagePos;
-        }
-        while (sourceRow <= sourceEndRow);
+        } while (sourceRow <= sourceEndRow);
     }
 
     /// <summary>
@@ -728,6 +826,7 @@ internal class CellStore<T> : IDisposable
         {
             //DeleteCells
             rowsLeft = DeleteRowsInsidePage(column, pagePos, fromRow, toRow, shift);
+
             if (rowsLeft > 0)
             {
                 pagePos++;
@@ -738,10 +837,12 @@ internal class CellStore<T> : IDisposable
         {
             int delFromRow = shift ? fromRow : toRow - rowsLeft + 1;
             rowsLeft = DeletePages(delFromRow, rowsLeft, column, pagePos, shift);
+
             if (rowsLeft > 0)
             {
                 delFromRow = shift ? fromRow : toRow - rowsLeft + 1;
                 pagePos = column.GetPagePosition(delFromRow);
+
                 if (pagePos < 0)
                 {
                     pagePos = ~pagePos;
@@ -753,6 +854,7 @@ internal class CellStore<T> : IDisposable
 
         return pagePos;
     }
+
     private static void UpdatePageOffset(ColumnIndex<T> column, int pagePos, int rows)
     {
         //Update Pageoffsets
@@ -769,6 +871,7 @@ internal class CellStore<T> : IDisposable
     private static int UpdatePageOffsetSinglePage(ColumnIndex<T> column, int pagePos, int rows)
     {
         PageIndex? page = column._pages[pagePos];
+
         if (Math.Abs(page.Offset + rows) < CellStoreSettings._pageSize)
         {
             page.Offset += rows;
@@ -783,6 +886,7 @@ internal class CellStore<T> : IDisposable
             if (pagePos > 0 && page.Index == column._pages[pagePos - 1].Index)
             {
                 MergePage(column, pagePos - 1);
+
                 return pagePos - 1;
             }
         }
@@ -804,9 +908,8 @@ internal class CellStore<T> : IDisposable
         PageIndex page = column._pages[pagePos];
         int pageStartRow = fromRow;
         int startRows = rows;
-        while (page != null && page.MinIndex >= fromRow &&
-               ((shift && page.MaxIndex < fromRow + rows) ||
-                (!shift && page.MaxIndex < fromRow + startRows)))
+
+        while (page != null && page.MinIndex >= fromRow && ((shift && page.MaxIndex < fromRow + rows) || (!shift && page.MaxIndex < fromRow + startRows)))
         {
             //Delete entire page.
             int delSize = page.MaxIndex - pageStartRow + 1;
@@ -820,10 +923,12 @@ internal class CellStore<T> : IDisposable
             {
                 return 0;
             }
+
             if (shift)
             {
                 UpdatePageOffset(column, pagePos, -delSize);
             }
+
             if (column.PageCount > pagePos)
             {
                 if (shift)
@@ -841,6 +946,7 @@ internal class CellStore<T> : IDisposable
                 {
                     pageStartRow = prevMaxIndex + 1;
                 }
+
                 page = column._pages[pagePos];
             }
             else
@@ -849,8 +955,10 @@ internal class CellStore<T> : IDisposable
                 return 0;
             }
         }
+
         return rows;
     }
+
     ///
     private static int DeleteRowsInsidePage(ColumnIndex<T> column, int pagePos, int fromRow, int toRow, bool shift)
     {
@@ -858,11 +966,14 @@ internal class CellStore<T> : IDisposable
         int deletedRows = 0;
 
         int fromPos = page.GetRowPosition(fromRow);
+
         if (fromPos < 0)
         {
             fromPos = ~fromPos;
         }
+
         int toPos = page.GetRowPosition(toRow);
+
         if (toPos < 0)
         {
             toPos = ~toPos - 1;
@@ -871,23 +982,27 @@ internal class CellStore<T> : IDisposable
         if (fromPos < page.RowCount)
         {
             int maxRow = page.MaxIndex;
+
             if (toRow >= maxRow)
             {
                 if (fromRow == page.MinIndex) //Delete entire page, TODO: Remove when tests a good,
                 {
                     throw new Exception("Invalid cell delete: DeleteCells");
                 }
+
                 page.RowCount -= page.RowCount - fromPos;
                 deletedRows = maxRow - fromRow + 1;
             }
             else
             {
                 deletedRows = toRow - fromRow + 1;
+
                 if (fromPos <= toPos)
                 {
                     Array.Copy(page.Rows, toPos + 1, page.Rows, fromPos, page.RowCount - toPos - 1);
                     page.RowCount -= toPos - fromPos + 1;
                 }
+
                 if (shift && fromPos > 0)
                 {
                     //If the page is not updated from start, we must update the row indexs. Otherwise we will update the whole page in the UpdatePageOffset futher down.
@@ -906,8 +1021,10 @@ internal class CellStore<T> : IDisposable
             {
                 pagePos++;
             }
+
             UpdatePageOffset(column, pagePos, -deletedRows);
         }
+
         return toRow - fromRow + 1 - deletedRows;
     }
 
@@ -922,14 +1039,18 @@ internal class CellStore<T> : IDisposable
     private void DeleteColumns(int fromCol, int columns, bool shift)
     {
         int fPos = this.GetColumnPosition(fromCol);
+
         if (fPos < 0)
         {
             fPos = ~fPos;
         }
+
         int tPos = fPos;
+
         for (int c = fPos; c <= this.ColumnCount; c++)
         {
             tPos = c;
+
             if (tPos == this.ColumnCount || this._columnIndex[c].Index >= fromCol + columns)
             {
                 break;
@@ -950,6 +1071,7 @@ internal class CellStore<T> : IDisposable
 
             this.ColumnCount -= tPos - fPos;
         }
+
         if (shift)
         {
             for (int c = fPos; c < this.ColumnCount; c++)
@@ -963,10 +1085,11 @@ internal class CellStore<T> : IDisposable
     {
         if (pagePos >= column.PageCount)
         {
-            return;    //A page after last cell.
+            return; //A page after last cell.
         }
 
         PageIndex? page = column._pages[pagePos];
+
         if (rowPos > 0) //RowPos is 0 then we can update the page index instead
         {
             if (rows >= CellStoreSettings._pageSize)
@@ -990,7 +1113,7 @@ internal class CellStore<T> : IDisposable
 
     private static int ValidateAndSplitPageIfNeeded(ColumnIndex<T> column, PageIndex page, int pagePos)
     {
-        if (page.RowSpan >= CellStoreSettings._pageSizeMax)   //Cannot be larger than the max size of the page.
+        if (page.RowSpan >= CellStoreSettings._pageSizeMax) //Cannot be larger than the max size of the page.
         {
             pagePos = SplitPage(column, pagePos);
         }
@@ -1006,6 +1129,7 @@ internal class CellStore<T> : IDisposable
             page.Rows[r].Index += rows;
         }
     }
+
     private static void MergePage(ColumnIndex<T> column, int pagePos)
     {
         PageIndex? Page1 = column._pages[pagePos];
@@ -1015,6 +1139,7 @@ internal class CellStore<T> : IDisposable
         newPage.RowCount = Page1.RowCount + Page2.RowCount;
         Array.Copy(Page1.Rows, 0, newPage.Rows, 0, Page1.RowCount);
         Array.Copy(Page2.Rows, 0, newPage.Rows, Page1.RowCount, Page2.RowCount);
+
         for (int r = Page1.RowCount; r < newPage.RowCount; r++)
         {
             newPage.Rows[r].Index += (short)(Page2.IndexOffset - Page1.IndexOffset);
@@ -1032,12 +1157,15 @@ internal class CellStore<T> : IDisposable
     internal static int GetSize(int size)
     {
         int newSize = 16;
+
         while (newSize < size)
         {
             newSize <<= 1;
         }
+
         return newSize;
     }
+
     private static void AddCell(ColumnIndex<T> columnIndex, int pagePos, int pos, short ix, T value)
     {
         PageIndex pageItem = MakeRoomInPage(columnIndex, ref pagePos, ref pos);
@@ -1045,20 +1173,24 @@ internal class CellStore<T> : IDisposable
         columnIndex._values.Add(value);
         pageItem.RowCount++;
     }
+
     private static void AddCellPointer(ColumnIndex<T> columnIndex, ref int pagePos, ref int pos, short ix, int pointer)
     {
         PageIndex pageItem = MakeRoomInPage(columnIndex, ref pagePos, ref pos);
         pageItem.Rows[pos] = new IndexItem() { Index = ix, IndexPointer = pointer };
         pageItem.RowCount++;
     }
+
     private static PageIndex MakeRoomInPage(ColumnIndex<T> columnIndex, ref int pagePos, ref int pos)
     {
         PageIndex? pageItem = columnIndex._pages[pagePos];
+
         if (pageItem.RowCount == pageItem.Rows.Length)
         {
             if (pageItem.RowCount == CellStoreSettings._pageSizeMax) //Max size-->Split
             {
                 pagePos = SplitPage(columnIndex, pagePos);
+
                 if (columnIndex._pages[pagePos - 1].RowCount > pos)
                 {
                     pagePos--;
@@ -1067,6 +1199,7 @@ internal class CellStore<T> : IDisposable
                 {
                     pos -= columnIndex._pages[pagePos - 1].RowCount;
                 }
+
                 pageItem = columnIndex._pages[pagePos];
             }
             else //Expand to double size.
@@ -1076,10 +1209,12 @@ internal class CellStore<T> : IDisposable
                 pageItem.Rows = rowsTmp;
             }
         }
+
         if (pos < pageItem.RowCount)
         {
             Array.Copy(pageItem.Rows, pos, pageItem.Rows, pos + 1, pageItem.RowCount - pos);
         }
+
         return pageItem;
     }
 
@@ -1090,12 +1225,14 @@ internal class CellStore<T> : IDisposable
 
         //Find split position
         int splitPos = ArrayUtil.OptimizedBinarySearch(page.Rows, CellStoreSettings._pageSize, page.RowCount);
+
         if (splitPos < 0)
         {
             splitPos = ~splitPos;
         }
 
         SplitPageAtPosition(columnIndex, pagePos, page, splitPos);
+
         return pagePos + 1;
     }
 
@@ -1116,7 +1253,7 @@ internal class CellStore<T> : IDisposable
     {
         if (columnIndex.PageCount >= columnIndex._pages.Length)
         {
-            PageIndex[]? pageTmp = new PageIndex[columnIndex._pages.Length << 1];    //Double size
+            PageIndex[]? pageTmp = new PageIndex[columnIndex._pages.Length << 1]; //Double size
             Array.Copy(columnIndex._pages, 0, pageTmp, 0, columnIndex.PageCount);
             columnIndex._pages = pageTmp;
         }
@@ -1128,6 +1265,7 @@ internal class CellStore<T> : IDisposable
         {
             int offset = page.Offset;
             page.Offset = 0;
+
             for (int r = 0; r < page.RowCount; r++)
             {
                 page.Rows[r].Index += (short)offset;
@@ -1139,15 +1277,18 @@ internal class CellStore<T> : IDisposable
     {
         AddPage(column, pos);
         column._pages[pos] = new PageIndex(CellStoreSettings._pageSizeMin) { Index = index };
+
         if (pos > 0)
         {
             PageIndex? pp = column._pages[pos - 1];
+
             if (pp.RowCount > 0 && pp.Rows[pp.RowCount - 1].Index > CellStoreSettings._pageSize)
             {
                 column._pages[pos].Offset = pp.Rows[pp.RowCount - 1].Index - CellStoreSettings._pageSize;
             }
         }
     }
+
     /// <summary>
     /// Add a new page to the collection
     /// </summary>
@@ -1159,6 +1300,7 @@ internal class CellStore<T> : IDisposable
         AddPage(column, pos);
         column._pages[pos] = page;
     }
+
     /// <summary>
     /// Add a new page to the collection
     /// </summary>
@@ -1172,8 +1314,10 @@ internal class CellStore<T> : IDisposable
         {
             Array.Copy(column._pages, pos, column._pages, pos + 1, column.PageCount - pos);
         }
+
         column.PageCount++;
     }
+
     private void AddColumn(int pos, int Column)
     {
         if (this.ColumnCount == this._columnIndex.Length)
@@ -1182,6 +1326,7 @@ internal class CellStore<T> : IDisposable
             Array.Copy(this._columnIndex, 0, colTmp, 0, this.ColumnCount);
             this._columnIndex = colTmp;
         }
+
         if (pos < this.ColumnCount)
         {
             Array.Copy(this._columnIndex, pos, this._columnIndex, pos + 1, this.ColumnCount - pos);
@@ -1211,20 +1356,23 @@ internal class CellStore<T> : IDisposable
 
     internal bool NextCell(ref int row, ref int col)
     {
-
         return this.NextCell(ref row, ref col, 0, 0, ExcelPackage.MaxRows, ExcelPackage.MaxColumns);
     }
+
     internal bool NextCell(ref int row, ref int col, int minRow, int minColPos, int maxRow, int maxColPos)
     {
         if (minColPos >= this.ColumnCount)
         {
             return false;
         }
+
         if (maxColPos >= this.ColumnCount)
         {
             maxColPos = this.ColumnCount - 1;
         }
+
         int c = this.GetColumnPosition(col);
+
         if (c >= 0)
         {
             if (c > maxColPos)
@@ -1233,19 +1381,23 @@ internal class CellStore<T> : IDisposable
                 {
                     return false;
                 }
+
                 col = minColPos;
+
                 return this.NextCell(ref row, ref col);
             }
             else
             {
                 bool r = this.GetNextCell(ref row, ref c, minColPos, maxRow, maxColPos);
                 col = this._columnIndex[c].Index;
+
                 return r;
             }
         }
         else
         {
             c = ~c;
+
             if (c >= this.ColumnCount)
             {
                 c = this.ColumnCount - 1;
@@ -1257,20 +1409,25 @@ internal class CellStore<T> : IDisposable
                 {
                     return false;
                 }
+
                 col = minColPos;
+
                 return this.NextCell(ref row, ref col, minRow, minColPos, maxRow, maxColPos);
             }
             else
             {
                 bool r = this.GetNextCell(ref row, ref c, minColPos, maxRow, maxColPos);
+
                 if (r)
                 {
                     col = this._columnIndex[c].Index;
                 }
+
                 return r;
             }
         }
     }
+
     internal bool GetNextCell(ref int row, ref int colPos, int startColPos, int endRow, int endColPos)
     {
         if (this.ColumnCount == 0)
@@ -1282,13 +1439,16 @@ internal class CellStore<T> : IDisposable
             if (++colPos < this.ColumnCount && colPos <= endColPos)
             {
                 int r = this._columnIndex[colPos].GetNextRow(row);
+
                 if (r == row) //Exists next Row
                 {
                     return true;
                 }
                 else
                 {
-                    int minRow, minCol;
+                    int minRow,
+                        minCol;
+
                     if (r > row)
                     {
                         minRow = r;
@@ -1301,38 +1461,50 @@ internal class CellStore<T> : IDisposable
                     }
 
                     int c = colPos + 1;
+
                     while (c < this.ColumnCount && c <= endColPos)
                     {
                         r = this._columnIndex[c].GetNextRow(row);
+
                         if (r == row) //Exists next Row
                         {
                             colPos = c;
+
                             return true;
                         }
+
                         if (r > row && r < minRow)
                         {
                             minRow = r;
                             minCol = c;
                         }
+
                         c++;
                     }
+
                     c = startColPos;
+
                     if (row < endRow)
                     {
                         row++;
+
                         while (c < colPos)
                         {
                             r = this._columnIndex[c].GetNextRow(row);
+
                             if (r == row) //Exists next Row
                             {
                                 colPos = c;
+
                                 return true;
                             }
+
                             if (r > row && (r < minRow || (r == minRow && c < minCol)) && r <= endRow)
                             {
                                 minRow = r;
                                 minCol = c;
                             }
+
                             c++;
                         }
                     }
@@ -1345,6 +1517,7 @@ internal class CellStore<T> : IDisposable
                     {
                         row = minRow;
                         colPos = minCol;
+
                         return true;
                     }
                 }
@@ -1355,12 +1528,15 @@ internal class CellStore<T> : IDisposable
                 {
                     return false;
                 }
+
                 colPos = startColPos - 1;
                 row++;
+
                 return this.GetNextCell(ref row, ref colPos, startColPos, endRow, endColPos);
             }
         }
     }
+
     internal bool GetNextCell(ref int row, ref int colPos, int startColPos, int endRow, int endColPos, ref int[] pagePos, ref int[] cellPos)
     {
         if (colPos == endColPos)
@@ -1393,6 +1569,7 @@ internal class CellStore<T> : IDisposable
         }
 
         int r = this._columnIndex[colPos]._pages[pagePos[colPos]].IndexOffset + this._columnIndex[colPos]._pages[pagePos[colPos]].Rows[cellPos[colPos]].Index;
+
         if (r == row)
         {
             row = r;
@@ -1400,23 +1577,29 @@ internal class CellStore<T> : IDisposable
         else
         {
         }
+
         return true;
     }
+
     internal bool PrevCell(ref int row, ref int col)
     {
         return this.PrevCell(ref row, ref col, 0, 0, ExcelPackage.MaxRows, ExcelPackage.MaxColumns);
     }
+
     internal bool PrevCell(ref int row, ref int col, int minRow, int minColPos, int maxRow, int maxColPos)
     {
         if (minColPos >= this.ColumnCount)
         {
             return false;
         }
+
         if (maxColPos >= this.ColumnCount)
         {
             maxColPos = this.ColumnCount - 1;
         }
+
         int c = this.GetColumnPosition(col);
+
         if (c >= 0)
         {
             if (c == 0)
@@ -1425,48 +1608,59 @@ internal class CellStore<T> : IDisposable
                 {
                     return false;
                 }
+
                 if (row == minRow)
                 {
                     return false;
                 }
+
                 row--;
                 col = maxColPos;
+
                 return this.PrevCell(ref row, ref col, minRow, minColPos, maxRow, maxColPos);
             }
             else
             {
                 bool ret = this.GetPrevCell(ref row, ref c, minRow, minColPos, maxColPos);
+
                 if (ret)
                 {
                     col = this._columnIndex[c].Index;
                 }
+
                 return ret;
             }
         }
         else
         {
             c = ~c;
+
             if (c == 0)
             {
                 if (col >= maxColPos || row <= 0)
                 {
                     return false;
                 }
+
                 col = maxColPos;
                 row--;
+
                 return this.PrevCell(ref row, ref col, minRow, minColPos, maxRow, maxColPos);
             }
             else
             {
                 bool ret = this.GetPrevCell(ref row, ref c, minRow, minColPos, maxColPos);
+
                 if (ret)
                 {
                     col = this._columnIndex[c].Index;
                 }
+
                 return ret;
             }
         }
     }
+
     internal bool GetPrevCell(ref int row, ref int colPos, int startRow, int startColPos, int endColPos)
     {
         if (this.ColumnCount == 0)
@@ -1478,13 +1672,16 @@ internal class CellStore<T> : IDisposable
             if (--colPos >= startColPos)
             {
                 int r = this._columnIndex[colPos].GetNextRow(row);
+
                 if (r == row) //Exists next Row
                 {
                     return true;
                 }
                 else
                 {
-                    int minRow, minCol;
+                    int minRow,
+                        minCol;
+
                     if (r > row && r >= startRow)
                     {
                         minRow = r;
@@ -1497,44 +1694,56 @@ internal class CellStore<T> : IDisposable
                     }
 
                     int c = colPos - 1;
+
                     if (c >= startColPos)
                     {
                         while (c >= startColPos)
                         {
                             r = this._columnIndex[c].GetNextRow(row);
+
                             if (r == row) //Exists next Row
                             {
                                 colPos = c;
+
                                 return true;
                             }
+
                             if (r > row && r < minRow && r >= startRow)
                             {
                                 minRow = r;
                                 minCol = c;
                             }
+
                             c--;
                         }
                     }
+
                     if (row > startRow)
                     {
                         c = endColPos;
                         row--;
+
                         while (c > colPos)
                         {
                             r = this._columnIndex[c].GetNextRow(row);
+
                             if (r == row) //Exists next Row
                             {
                                 colPos = c;
+
                                 return true;
                             }
+
                             if (r > row && r < minRow && r >= startRow)
                             {
                                 minRow = r;
                                 minCol = c;
                             }
+
                             c--;
                         }
                     }
+
                     if (minRow == int.MaxValue || startRow < minRow)
                     {
                         return false;
@@ -1543,6 +1752,7 @@ internal class CellStore<T> : IDisposable
                     {
                         row = minRow;
                         colPos = minCol;
+
                         return true;
                     }
                 }
@@ -1551,6 +1761,7 @@ internal class CellStore<T> : IDisposable
             {
                 colPos = this.ColumnCount;
                 row--;
+
                 if (row < startRow)
                 {
                     return false;
@@ -1562,6 +1773,7 @@ internal class CellStore<T> : IDisposable
             }
         }
     }
+
     /// <summary>
     /// Before enumerating columns where values are set to the cells store, 
     /// this method makes sure the columns are created before the enumerator is created, so the positions will not get out of sync when a new column is added.
@@ -1573,6 +1785,7 @@ internal class CellStore<T> : IDisposable
         for (int col = fromCol; col <= toCol; col++)
         {
             int colPos = this.GetColumnPosition(col);
+
             if (colPos < 0)
             {
                 colPos = ~colPos;

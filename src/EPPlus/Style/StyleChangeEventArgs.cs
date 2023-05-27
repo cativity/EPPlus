@@ -10,7 +10,9 @@
  *************************************************************************************************
   01/27/2020         EPPlus Software AB       Initial release EPPlus 5
  *************************************************************************************************/
+
 using System;
+
 namespace OfficeOpenXml.Style;
 
 internal class StyleChangeEventArgs : EventArgs
@@ -18,16 +20,21 @@ internal class StyleChangeEventArgs : EventArgs
     internal StyleChangeEventArgs(eStyleClass styleclass, eStyleProperty styleProperty, object value, int positionID, string address)
     {
         this.StyleClass = styleclass;
-        this.StyleProperty=styleProperty;
+        this.StyleProperty = styleProperty;
         this.Value = value;
         this.Address = address;
         this.PositionID = positionID;
     }
+
     internal eStyleClass StyleClass;
+
     internal eStyleProperty StyleProperty;
+
     //internal string PropertyName;
     internal object Value;
+
     internal int PositionID { get; set; }
+
     //internal string Address;
     internal string Address;
 }

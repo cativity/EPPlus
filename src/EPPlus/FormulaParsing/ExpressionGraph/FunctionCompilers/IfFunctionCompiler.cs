@@ -10,6 +10,7 @@
  *************************************************************************************************
   01/27/2020         EPPlus Software AB       Initial release EPPlus 5
  *************************************************************************************************/
+
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -34,6 +35,7 @@ public class IfFunctionCompiler : FunctionCompiler
         : base(function, context)
     {
         Require.That(function).Named("function").IsNotNull();
+
         if (!(function is If))
         {
             throw new ArgumentException("function must be of type If");
@@ -62,18 +64,22 @@ public class IfFunctionCompiler : FunctionCompiler
         if (v is IRangeInfo)
         {
             IRangeInfo? r = (IRangeInfo)v;
+
             if (r.GetNCells() > 1)
             {
                 throw new ArgumentException("Logical can't be more than one cell");
             }
+
             v = r.GetOffset(0, 0);
         }
+
         bool boolVal;
+
         if (v is bool)
         {
             boolVal = (bool)v;
         }
-        else if(v is ExcelErrorValue eev)
+        else if (v is ExcelErrorValue eev)
         {
             return new CompileResult(eev.Type);
         }
@@ -91,6 +97,7 @@ public class IfFunctionCompiler : FunctionCompiler
         /****  End Handle names and ranges ****/
 
         args.Add(new FunctionArgument(boolVal));
+
         if (boolVal)
         {
             CompileResult? result = children.ElementAt(1).Compile();
@@ -101,6 +108,7 @@ public class IfFunctionCompiler : FunctionCompiler
         {
             object val;
             Expression? child = children.ElementAtOrDefault(2);
+
             if (child == null)
             {
                 // if no false expression given, Excel returns false
@@ -111,9 +119,11 @@ public class IfFunctionCompiler : FunctionCompiler
                 CompileResult? result = child.Compile();
                 val = result == CompileResult.Empty ? 0d : result.Result;
             }
+
             args.Add(new FunctionArgument(null));
             args.Add(new FunctionArgument(val));
         }
+
         return this.Function.Execute(args, this.Context);
     }
 }

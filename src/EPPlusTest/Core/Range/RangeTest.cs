@@ -47,12 +47,14 @@ public class RangeTest : TestBase
     public void ArrayToCellString()
     {
         MemoryStream? ms = new MemoryStream();
+
         using (ExcelPackage? p = new ExcelPackage(ms))
         {
             ExcelWorksheet? sheet = p.Workbook.Worksheets.Add("Sheet1");
             sheet.Cells[1, 1].Value = new[] { "string1", "string2", "string3" };
             p.Save();
         }
+
         using (ExcelPackage? p = new ExcelPackage(ms))
         {
             ExcelWorksheet? sheet = p.Workbook.Worksheets["Sheet1"];
@@ -64,34 +66,40 @@ public class RangeTest : TestBase
     public void ArrayToCellNull()
     {
         MemoryStream? ms = new MemoryStream();
+
         using (ExcelPackage? p = new ExcelPackage(ms))
         {
             ExcelWorksheet? sheet = p.Workbook.Worksheets.Add("Sheet1");
             sheet.Cells[1, 1].Value = new[] { null, "string2", "string3" };
             p.Save();
         }
+
         using (ExcelPackage? p = new ExcelPackage(ms))
         {
             ExcelWorksheet? sheet = p.Workbook.Worksheets["Sheet1"];
             Assert.AreEqual(string.Empty, sheet.Cells[1, 1].Value);
         }
     }
+
     [TestMethod]
     public void ArrayToCellInt()
     {
         MemoryStream? ms = new MemoryStream();
+
         using (ExcelPackage? p = new ExcelPackage(ms))
         {
             ExcelWorksheet? sheet = p.Workbook.Worksheets.Add("Sheet1");
             sheet.Cells[1, 1].Value = new object[] { 1, "string2", "string3" };
             p.Save();
         }
+
         using (ExcelPackage? p = new ExcelPackage(ms))
         {
             ExcelWorksheet? sheet = p.Workbook.Worksheets["Sheet1"];
             Assert.AreEqual(1D, sheet.Cells[1, 1].Value);
         }
     }
+
     [TestMethod]
     public void ClearRangeWithCommaseparatedAddress()
     {
@@ -106,6 +114,7 @@ public class RangeTest : TestBase
         Assert.IsNull(ws.Dimension);
         p2.Save();
     }
+
     [TestMethod]
     public void MergeCellsShouldBeSaved()
     {
@@ -125,6 +134,7 @@ public class RangeTest : TestBase
         Assert.AreEqual(1, ws.MergedCells.Count);
         Assert.AreEqual("A1:E1", ws.MergedCells[0]);
     }
+
     [TestMethod]
     public void LoadFromCollectionObjectDynamic()
     {
@@ -141,6 +151,7 @@ public class RangeTest : TestBase
         range = ws.Cells["C1"].LoadFromCollection(new List<dynamic>() { new TestDTO { Name = "Test" } });
         Assert.AreEqual("C1", range.Address);
     }
+
     [TestMethod]
     public void EncodingCharInFormulaAndValue()
     {
@@ -161,6 +172,7 @@ public class RangeTest : TestBase
         Assert.AreEqual(textA1, ws.Cells["A1"].Formula);
         Assert.AreEqual(textB1, ws.GetFormula(1, 2));
     }
+
     [TestMethod]
     public void ValidateMergedCell()
     {
@@ -186,6 +198,7 @@ public class RangeTest : TestBase
             if (!string.IsNullOrEmpty(addr))
             {
                 ExcelAddressBase? a = new ExcelAddressBase(addr);
+
                 for (int r = a._fromRow; r <= a._toRow; r++)
                 {
                     for (int c = a._fromCol; c <= a._toCol; c++)
@@ -204,8 +217,10 @@ public class RangeTest : TestBase
             ws.Cells["B41:D42"].Merge = true;
             p2.Save();
         }
+
         SaveAndCleanup(p);
     }
+
     [TestMethod]
     public void ValidateMergedCellAroundTableShouldNotThrowException()
     {
@@ -218,6 +233,7 @@ public class RangeTest : TestBase
         ws.Cells["C6:F6"].Merge = true;
         ws.Cells["F3:F5"].Merge = true;
     }
+
     [TestMethod]
     [ExpectedException(typeof(InvalidOperationException))]
     public void ValidateMergedCellInsideTableShouldThrowException()
@@ -228,6 +244,7 @@ public class RangeTest : TestBase
 
         ws.Cells["D4:D5"].Merge = true;
     }
+
     [TestMethod]
     [ExpectedException(typeof(InvalidOperationException))]
     public void ValidateMergedCellPartlyWithTableShouldThrowException()
@@ -238,6 +255,7 @@ public class RangeTest : TestBase
 
         ws.Cells["D3:D4"].Merge = true;
     }
+
     [TestMethod]
     [ExpectedException(typeof(InvalidOperationException))]
     public void ValidateMergedCellEqualTableShouldThrowException()
@@ -248,6 +266,7 @@ public class RangeTest : TestBase
 
         ws.Cells["D4:E5"].Merge = true;
     }
+
     [TestMethod]
     [ExpectedException(typeof(ArgumentException))]
     public void ValidateTableAddShouldThrowExceptionMergedCellEqual()
@@ -257,6 +276,7 @@ public class RangeTest : TestBase
         ws.Cells["D4:E5"].Merge = true;
         ws.Tables.Add(ws.Cells["D4:E5"], "Table1");
     }
+
     [TestMethod]
     [ExpectedException(typeof(ArgumentException))]
     public void ValidateTableAddShouldThrowExceptionMergedCellInside()
@@ -266,6 +286,7 @@ public class RangeTest : TestBase
         ws.Cells["D4:D5"].Merge = true;
         ws.Tables.Add(ws.Cells["D4:E5"], "Table1");
     }
+
     [TestMethod]
     [ExpectedException(typeof(ArgumentException))]
     public void ValidateTableAddShouldThrowExceptionMergedCellPartly()
@@ -275,6 +296,7 @@ public class RangeTest : TestBase
         ws.Cells["D3:D4"].Merge = true;
         ws.Tables.Add(ws.Cells["D4:E5"], "Table1");
     }
+
     public static void ValidateDeleted()
     {
         using ExcelPackage? p = new ExcelPackage();
@@ -282,5 +304,4 @@ public class RangeTest : TestBase
         ws.Cells["D3:D4"].Merge = true;
         ws.Tables.Add(ws.Cells["D4:E5"], "Table1");
     }
-
 }

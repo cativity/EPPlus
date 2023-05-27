@@ -17,16 +17,17 @@ public class RangeRichTextTests : TestBase
 {
     static ExcelPackage _pck;
     static ExcelWorksheet _ws;
+
     [ClassInitialize]
     public static void Init(TestContext context)
     {
         _pck = OpenPackage("RangeRichText.xlsx", true);
         _ws = _pck.Workbook.Worksheets.Add("Richtext");
     }
+
     [ClassCleanup]
     public static void Cleanup()
     {
-
         SaveAndCleanup(_pck);
     }
 
@@ -34,7 +35,7 @@ public class RangeRichTextTests : TestBase
     public void AddThreeParagraphsAndValidate()
     {
         ExcelRange? r = _ws.Cells["A1"];
-        ExcelRichText? r1=r.RichText.Add("Line1\n");
+        ExcelRichText? r1 = r.RichText.Add("Line1\n");
         r1.PreserveSpace = true;
         ExcelRichText? r2 = r.RichText.Add("Line2\n");
         r2.PreserveSpace = true;
@@ -47,18 +48,21 @@ public class RangeRichTextTests : TestBase
         Assert.AreEqual("Line1\nLine2\nLine3", r.Text);
         Assert.AreEqual("Line1\nLine2\nLine3", r.RichText.Text);
     }
+
     [TestMethod]
     [ExpectedException(typeof(ArgumentException))]
     public void AddEmptyStringShouldThrowArgumentException()
     {
         _ws.Cells["D1"].RichText.Add(null);
     }
+
     [TestMethod]
     [ExpectedException(typeof(ArgumentException))]
     public void AddNullShouldThrowArgumentException()
     {
         _ws.Cells["D1"].RichText.Add(null);
     }
+
     [TestMethod]
     [ExpectedException(typeof(InvalidOperationException))]
     public void SettingNameToEmptyStringShouldThrowInvalidOperationException()
@@ -66,6 +70,7 @@ public class RangeRichTextTests : TestBase
         _ws.Cells["D1"].RichText.Add(" ");
         _ws.Cells["D1"].RichText[0].Text = null;
     }
+
     [TestMethod]
     [ExpectedException(typeof(InvalidOperationException))]
     public void SettingTextToNullShouldThrowInvalidOperationException()
@@ -73,6 +78,7 @@ public class RangeRichTextTests : TestBase
         _ws.Cells["D1"].RichText.Add(" ");
         _ws.Cells["D1"].RichText[0].Text = null;
     }
+
     [TestMethod]
     public void SettingRichTextTextToNullShouldClearRichText()
     {
@@ -82,6 +88,7 @@ public class RangeRichTextTests : TestBase
         Assert.AreEqual(0, _ws.Cells["D1"].RichText.Count);
         Assert.IsFalse(_ws.Cells["D1"].IsRichText);
     }
+
     [TestMethod]
     public void SettingRichTextTextToEmptyStringShouldClearRichText()
     {
@@ -91,14 +98,16 @@ public class RangeRichTextTests : TestBase
         Assert.AreEqual(0, _ws.Cells["D1"].RichText.Count);
         Assert.IsFalse(_ws.Cells["D1"].IsRichText);
     }
+
     [TestMethod]
     public void RemoveVerticalAlign()
     {
-        ExcelRichText? p=_ws.Cells["G1"].RichText.Add("RemoveVerticalAlign");
+        ExcelRichText? p = _ws.Cells["G1"].RichText.Add("RemoveVerticalAlign");
         p.VerticalAlign = ExcelVerticalAlignmentFont.Baseline;
         p.VerticalAlign = ExcelVerticalAlignmentFont.None;
         Assert.AreEqual(p.VerticalAlign, ExcelVerticalAlignmentFont.None);
     }
+
     [TestMethod]
     public void ValidateIsRichTextValuesAndTexts()
     {
@@ -118,15 +127,17 @@ public class RangeRichTextTests : TestBase
 
         p2.Save();
     }
+
     [TestMethod]
     public void ValidateRichTextOverwriteByArray()
     {
         ExcelWorksheet? ws = _pck.Workbook.Worksheets.Add("RichTextOverwriteArray");
-        for(int row=1;row<10;row++)
+
+        for (int row = 1; row < 10; row++)
         {
             for (int col = 1; col < 10; col++)
             {
-                ws.Cells[row, col].RichText.Text = $"Cell {ExcelCellBase.GetAddress(row,col)}";
+                ws.Cells[row, col].RichText.Text = $"Cell {ExcelCellBase.GetAddress(row, col)}";
             }
         }
 
@@ -148,6 +159,7 @@ public class RangeRichTextTests : TestBase
         Assert.AreEqual("Cell A4", ws.Cells["A4"].Value);
         Assert.AreEqual("Cell D5", ws.Cells["D5"].Value);
     }
+
     [TestMethod]
     public void IsRichTextShouldKeepValues()
     {
@@ -159,7 +171,7 @@ public class RangeRichTextTests : TestBase
         ws.Cells["A2"].Value = 2;
         ws.Cells["B2"].Value = 3.2;
 
-        ws.Cells["A1:B2"].IsRichText=true;
+        ws.Cells["A1:B2"].IsRichText = true;
 
         Assert.IsTrue(ws.Cells["A1"].IsRichText);
         Assert.IsTrue(ws.Cells["B1"].IsRichText);
@@ -196,6 +208,6 @@ public class RangeRichTextTests : TestBase
         Assert.AreEqual("12", range.Text);
         range.RichText.Remove(second);
         Assert.AreEqual(1, range.RichText.Count);
-        Assert.AreEqual("1", range.Text);  // FAILS as "12"
+        Assert.AreEqual("1", range.Text); // FAILS as "12"
     }
 }

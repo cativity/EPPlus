@@ -10,6 +10,7 @@
  *************************************************************************************************
   01/27/2020         EPPlus Software AB       Initial release EPPlus 5
  *************************************************************************************************/
+
 using System.Text;
 
 namespace OfficeOpenXml.VBA;
@@ -21,12 +22,13 @@ public class ExcelVbaModuleAttributesCollection : ExcelVBACollectionBase<ExcelVb
 {
     internal string GetAttributeText()
     {
-        StringBuilder sb=new StringBuilder();
+        StringBuilder sb = new StringBuilder();
 
         foreach (ExcelVbaModuleAttribute? attr in this)
         {
-            sb.AppendFormat("Attribute {0} = {1}\r\n", attr.Name, attr.DataType==eAttributeDataType.String ? "\"" + attr.Value + "\"" : attr.Value);
+            sb.AppendFormat("Attribute {0} = {1}\r\n", attr.Name, attr.DataType == eAttributeDataType.String ? "\"" + attr.Value + "\"" : attr.Value);
         }
+
         return sb.ToString();
     }
 }

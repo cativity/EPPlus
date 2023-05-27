@@ -10,6 +10,7 @@
  *************************************************************************************************
   05/03/2020         EPPlus Software AB         Implemented function
  *************************************************************************************************/
+
 using OfficeOpenXml.FormulaParsing.Excel.Functions.Metadata;
 using OfficeOpenXml.FormulaParsing.ExpressionGraph;
 using System;
@@ -19,16 +20,16 @@ using System.Text;
 
 namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Engineering;
 
-[FunctionMetadata(
-                     Category = ExcelFunctionCategory.Engineering,
-                     EPPlusVersion = "5.1",
-                     Description = "Returns a number shifted left by a specified number of bits",
-                     IntroducedInExcelVersion = "2013")]
+[FunctionMetadata(Category = ExcelFunctionCategory.Engineering,
+                  EPPlusVersion = "5.1",
+                  Description = "Returns a number shifted left by a specified number of bits",
+                  IntroducedInExcelVersion = "2013")]
 internal class BitLshift : ExcelFunction
 {
     public override CompileResult Execute(IEnumerable<FunctionArgument> arguments, ParsingContext context)
     {
         ValidateArguments(arguments, 2);
+
         if (!IsNumeric(arguments.ElementAt(0).Value) || !IsNumeric(arguments.ElementAt(1).Value))
         {
             return this.CreateResult(eErrorType.Value);
@@ -41,6 +42,7 @@ internal class BitLshift : ExcelFunction
 
         int number = this.ArgToInt(arguments, 0);
         int shiftAmount = this.ArgToInt(arguments, 1);
+
         if (number < 0 || shiftAmount < 0)
         {
             return this.CreateResult(eErrorType.Num);

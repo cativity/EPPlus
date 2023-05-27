@@ -10,6 +10,7 @@
  *************************************************************************************************
   01/27/2020         EPPlus Software AB       Initial release EPPlus 5
  *************************************************************************************************/
+
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -19,10 +20,9 @@ using OfficeOpenXml.FormulaParsing.ExpressionGraph;
 
 namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Math;
 
-[FunctionMetadata(
-                     Category = ExcelFunctionCategory.MathAndTrig,
-                     EPPlusVersion = "4",
-                     Description = "Returns the Arctangent of a given pair of x and y coordinates")]
+[FunctionMetadata(Category = ExcelFunctionCategory.MathAndTrig,
+                  EPPlusVersion = "4",
+                  Description = "Returns the Arctangent of a given pair of x and y coordinates")]
 internal class Atan2 : ExcelFunction
 {
     public override CompileResult Execute(IEnumerable<FunctionArgument> arguments, ParsingContext context)
@@ -30,6 +30,7 @@ internal class Atan2 : ExcelFunction
         ValidateArguments(arguments, 2);
         double arg1 = this.ArgToDecimal(arguments, 0);
         double arg2 = this.ArgToDecimal(arguments, 1);
+
         // Had to switch order of the arguments to get the same result as in excel /MA
         return this.CreateResult(System.Math.Atan2(arg2, arg1), DataType.Decimal);
     }

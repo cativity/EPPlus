@@ -10,6 +10,7 @@
  *************************************************************************************************
   01/27/2020         EPPlus Software AB       Initial release EPPlus 5
  *************************************************************************************************/
+
 using OfficeOpenXml.FormulaParsing.Excel.Functions.Math;
 using OfficeOpenXml.FormulaParsing.Excel.Functions.Metadata;
 using OfficeOpenXml.FormulaParsing.ExpressionGraph;
@@ -20,10 +21,7 @@ using System.Linq;
 
 namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Text;
 
-[FunctionMetadata(
-                     Category = ExcelFunctionCategory.Text,
-                     EPPlusVersion = "5.5",
-                     Description = "Converts a supplied number into text, using a currency format")]
+[FunctionMetadata(Category = ExcelFunctionCategory.Text, EPPlusVersion = "5.5", Description = "Converts a supplied number into text, using a currency format")]
 internal class Dollar : ExcelFunction
 {
     public override CompileResult Execute(IEnumerable<FunctionArgument> arguments, ParsingContext context)
@@ -31,12 +29,15 @@ internal class Dollar : ExcelFunction
         ValidateArguments(arguments, 1);
         double number = this.ArgToDecimal(arguments, 0, context.Configuration.PrecisionAndRoundingStrategy);
         int decimals = 2;
-        if(arguments.Count() > 1)
+
+        if (arguments.Count() > 1)
         {
             decimals = this.ArgToInt(arguments, 1);
         }
+
         double result = 0d;
-        if(decimals >= 0)
+
+        if (decimals >= 0)
         {
             result = System.Math.Round(number, decimals);
         }
@@ -44,6 +45,7 @@ internal class Dollar : ExcelFunction
         {
             result = System.Math.Round(number * System.Math.Pow(10, decimals)) / System.Math.Pow(10, decimals);
         }
+
         return this.CreateResult(result.ToString(GetFormatString(decimals), CultureInfo.CurrentCulture), DataType.String);
     }
 

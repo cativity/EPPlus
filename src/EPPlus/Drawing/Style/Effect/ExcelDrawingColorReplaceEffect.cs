@@ -10,6 +10,7 @@
  *************************************************************************************************
   01/27/2020         EPPlus Software AB       Initial release EPPlus 5
  *************************************************************************************************/
+
 using OfficeOpenXml.Drawing.Style.Coloring;
 using System;
 using System.Collections.Generic;
@@ -23,11 +24,13 @@ namespace OfficeOpenXml.Drawing.Style.Effect;
 /// </summary>
 public class ExcelDrawingColorReplaceEffect : XmlHelper
 {
-    internal ExcelDrawingColorReplaceEffect(XmlNamespaceManager nsm, XmlNode topNode) : base(nsm, topNode)
+    internal ExcelDrawingColorReplaceEffect(XmlNamespaceManager nsm, XmlNode topNode)
+        : base(nsm, topNode)
     {
-
     }
-    private  ExcelDrawingColorManager _color;
+
+    private ExcelDrawingColorManager _color;
+
     /// <summary>
     /// The color to replace with
     /// </summary>

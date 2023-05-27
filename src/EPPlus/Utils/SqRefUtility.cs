@@ -10,6 +10,7 @@
  *************************************************************************************************
   01/27/2020         EPPlus Software AB       Initial release EPPlus 5
  *************************************************************************************************/
+
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -33,6 +34,7 @@ public static class SqRefUtility
         Require.Argument(address).IsNotNullOrEmpty(address);
         address = address.Replace(",", " ");
         address = new Regex("[ ]+").Replace(address, " ");
+
         return address;
     }
 
@@ -45,6 +47,7 @@ public static class SqRefUtility
     {
         Require.Argument(address).IsNotNullOrEmpty(address);
         address = address.Replace(" ", ",");
+
         return address;
     }
 }

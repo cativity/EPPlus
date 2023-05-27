@@ -10,6 +10,7 @@
  *************************************************************************************************
   01/27/2020         EPPlus Software AB       Initial release EPPlus 5
  *************************************************************************************************/
+
 using System;
 using System.Collections.Generic;
 using System.Xml;
@@ -23,27 +24,38 @@ namespace OfficeOpenXml.Drawing.Chart;
 /// </summary>
 public class ExcelPieChart : ExcelChartStandard, IDrawingDataLabel
 {
-    internal ExcelPieChart(ExcelDrawings drawings, XmlNode node, eChartType type, bool isPivot, ExcelGroupShape parent = null) :
-        base(drawings, node, type, isPivot, parent)
+    internal ExcelPieChart(ExcelDrawings drawings, XmlNode node, eChartType type, bool isPivot, ExcelGroupShape parent = null)
+        : base(drawings, node, type, isPivot, parent)
     {
-            
-    }
-    internal ExcelPieChart(ExcelDrawings drawings, XmlNode node, eChartType? type, ExcelChart topChart, ExcelPivotTable PivotTableSource, XmlDocument chartXml, ExcelGroupShape parent = null) :
-        base(drawings, node, type, topChart, PivotTableSource, chartXml, parent)
-    {
-            
     }
 
-    internal ExcelPieChart(ExcelDrawings drawings, XmlNode node, Uri uriChart, Packaging.ZipPackagePart part, XmlDocument chartXml, XmlNode chartNode, ExcelGroupShape parent = null) :
-        base(drawings, node, uriChart, part, chartXml, chartNode, parent)
+    internal ExcelPieChart(ExcelDrawings drawings,
+                           XmlNode node,
+                           eChartType? type,
+                           ExcelChart topChart,
+                           ExcelPivotTable PivotTableSource,
+                           XmlDocument chartXml,
+                           ExcelGroupShape parent = null)
+        : base(drawings, node, type, topChart, PivotTableSource, chartXml, parent)
     {
-            
     }
-    internal ExcelPieChart(ExcelChart topChart, XmlNode chartNode, ExcelGroupShape parent = null) :
-        base(topChart, chartNode, parent)
+
+    internal ExcelPieChart(ExcelDrawings drawings,
+                           XmlNode node,
+                           Uri uriChart,
+                           Packaging.ZipPackagePart part,
+                           XmlDocument chartXml,
+                           XmlNode chartNode,
+                           ExcelGroupShape parent = null)
+        : base(drawings, node, uriChart, part, chartXml, chartNode, parent)
     {
-            
     }
+
+    internal ExcelPieChart(ExcelChart topChart, XmlNode chartNode, ExcelGroupShape parent = null)
+        : base(topChart, chartNode, parent)
+    {
+    }
+
     internal override void InitSeries(ExcelChart chart, XmlNamespaceManager ns, XmlNode node, bool isPivot, List<ExcelChartSerie> list = null)
     {
         base.InitSeries(chart, ns, node, isPivot, list);
@@ -51,6 +63,7 @@ public class ExcelPieChart : ExcelChartStandard, IDrawingDataLabel
     }
 
     ExcelChartDataLabel _dataLabel = null;
+
     /// <summary>
     /// Access to datalabel properties
     /// </summary>
@@ -58,24 +71,24 @@ public class ExcelPieChart : ExcelChartStandard, IDrawingDataLabel
     {
         get
         {
-            return this._dataLabel ??= new ExcelChartDataLabelStandard(this, this.NameSpaceManager, this.ChartNode, "dLbls", this._chartXmlHelper.SchemaNodeOrder);
+            return this._dataLabel ??=
+                       new ExcelChartDataLabelStandard(this, this.NameSpaceManager, this.ChartNode, "dLbls", this._chartXmlHelper.SchemaNodeOrder);
         }
     }
+
     /// <summary>
     /// If the chart has datalabel
     /// </summary>
     public bool HasDataLabel
     {
-        get
-        {
-            return this.ChartNode.SelectSingleNode("c:dLbls", this.NameSpaceManager) != null;
-        }
+        get { return this.ChartNode.SelectSingleNode("c:dLbls", this.NameSpaceManager) != null; }
     }
+
     internal override eChartType GetChartType(string name)
     {
         if (name == "pieChart")
         {
-            if (this.Series.Count > 0 && this.Series[0].Explosion>0)
+            if (this.Series.Count > 0 && this.Series[0].Explosion > 0)
             {
                 return eChartType.PieExploded;
             }
@@ -95,11 +108,12 @@ public class ExcelPieChart : ExcelChartStandard, IDrawingDataLabel
                 return eChartType.Pie3D;
             }
         }
+
         return base.GetChartType(name);
     }
+
     /// <summary>
     /// A collection of series for a Pie Chart
     /// </summary>
     public new ExcelChartSeries<ExcelPieChartSerie> Series { get; } = new ExcelChartSeries<ExcelPieChartSerie>();
-
 }

@@ -10,6 +10,7 @@
  *************************************************************************************************
   01/27/2020         EPPlus Software AB       Initial release EPPlus 5
  *************************************************************************************************/
+
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -23,6 +24,7 @@ public class ExcelDatabaseRow
     private Dictionary<int, string> _fieldIndexes = new Dictionary<int, string>();
     private readonly Dictionary<string, object> _items = new Dictionary<string, object>();
     private int _colIndex = 1;
+
     public object this[string field]
     {
         get { return this._items[field]; }
@@ -39,9 +41,8 @@ public class ExcelDatabaseRow
         get
         {
             string? field = this._fieldIndexes[index];
+
             return this._items[field];
         }
     }
-        
-        
 }

@@ -10,23 +10,27 @@ namespace OfficeOpenXml.Core.Worksheet;
 internal class WorksheetOutlineHelper
 {
     ExcelWorksheet _worksheet;
+
     internal WorksheetOutlineHelper(ExcelWorksheet worksheet)
     {
         this._worksheet = worksheet;
     }
+
     #region Row
+
     internal int CollapseRow(int rowNo, int level, bool collapsed, bool collapseChildren, int addValue, bool parentIsHidden = false)
     {
         RowInternal? row = this.GetRow(rowNo);
         int startLevel = 0;
+
         if (row != null)
         {
             startLevel = row.OutlineLevel;
         }
-        if (row==null)
-        {
-            this._worksheet.Row(rowNo).Collapsed=collapsed;
 
+        if (row == null)
+        {
+            this._worksheet.Row(rowNo).Collapsed = collapsed;
         }
         else
         {
@@ -34,6 +38,7 @@ internal class WorksheetOutlineHelper
         }
 
         bool? hidden;
+
         if (collapsed)
         {
             hidden = null;
@@ -46,11 +51,13 @@ internal class WorksheetOutlineHelper
 
         int r = rowNo + addValue;
         row = this.GetRow(r);
-        while (row != null && (row.OutlineLevel > startLevel || (row.OutlineLevel >= level && level>=0)))
+
+        while (row != null && (row.OutlineLevel > startLevel || (row.OutlineLevel >= level && level >= 0)))
         {
             if (level < row.OutlineLevel)
             {
                 row.Hidden = hidden ?? collapsed;
+
                 if (collapseChildren && level != -2)
                 {
                     row.Collapsed = collapsed;
@@ -65,13 +72,14 @@ internal class WorksheetOutlineHelper
                 else
                 {
                     row.Hidden = hidden ?? !collapsed;
+
                     if (level > row.OutlineLevel)
                     {
                         row.Collapsed = !collapsed;
                     }
                 }
             }
-                
+
             if (addValue < 0)
             {
                 row = this.GetRow(r--);
@@ -99,21 +107,27 @@ internal class WorksheetOutlineHelper
 
         return this._worksheet.GetValueInner(row, 0) as RowInternal;
     }
+
     #endregion
+
     #region Column
+
     internal int CollapseColumn(int colNo, int level, bool collapsed, bool collapseChildren, int addValue)
     {
         ExcelColumn? col = this.GetColumn(colNo);
         int startLevel = 0;
-        if(col!=null)
+
+        if (col != null)
         {
             startLevel = col.OutlineLevel;
         }
+
         col ??= this._worksheet.Column(colNo);
 
         col.Collapsed = collapsed;
 
         bool? hidden;
+
         if (collapsed)
         {
             hidden = null;
@@ -125,11 +139,13 @@ internal class WorksheetOutlineHelper
         }
 
         col = this.GetColumn(colNo + addValue);
-        while(col!=null && (col.OutlineLevel > startLevel || (col.OutlineLevel >= level && level >= 0)))
+
+        while (col != null && (col.OutlineLevel > startLevel || (col.OutlineLevel >= level && level >= 0)))
         {
             if (level < col.OutlineLevel)
             {
-                col.Hidden = hidden??collapsed;
+                col.Hidden = hidden ?? collapsed;
+
                 if (collapseChildren && level != -2)
                 {
                     col.Collapsed = collapsed;
@@ -143,14 +159,16 @@ internal class WorksheetOutlineHelper
                 }
                 else
                 {
-                    col.Hidden = hidden??!collapsed;
-                    if(level > col.OutlineLevel)
+                    col.Hidden = hidden ?? !collapsed;
+
+                    if (level > col.OutlineLevel)
                     {
                         col.Collapsed = !collapsed;
                     }
                 }
             }
-            if(addValue<0)
+
+            if (addValue < 0)
             {
                 col = this.GetColumn(col.ColumnMin - 1);
             }
@@ -158,6 +176,7 @@ internal class WorksheetOutlineHelper
             {
                 col = this.GetColumn(col.ColumnMax + 1);
             }
+
             if (col != null)
             {
                 colNo = col.ColumnMax;
@@ -166,6 +185,7 @@ internal class WorksheetOutlineHelper
 
         return colNo;
     }
+
     private ExcelColumn GetColumn(int col, bool ignoreFromCol = true)
     {
         if (col < 1)
@@ -174,22 +194,28 @@ internal class WorksheetOutlineHelper
         }
 
         ExcelColumn? currentCol = this._worksheet.GetValueInner(0, col) as ExcelColumn;
+
         if (currentCol == null)
         {
-            int r = 0, c = col;
+            int r = 0,
+                c = col;
+
             if (this._worksheet._values.PrevCell(ref r, ref c))
             {
                 if (c > 0)
                 {
                     ExcelColumn prevCol = this._worksheet.GetValueInner(0, c) as ExcelColumn;
+
                     if (prevCol.ColumnMax < col)
                     {
                         return null;
                     }
+
                     return prevCol;
                 }
             }
         }
+
         return currentCol;
     }
 

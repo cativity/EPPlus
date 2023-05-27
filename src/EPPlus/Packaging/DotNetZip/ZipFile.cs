@@ -37,13 +37,13 @@
 // Thu, 08 Oct 2009  17:04
 //
 
-
 using System;
 using System.IO;
 using System.Collections.Generic;
 using System.Reflection;
 using Interop = System.Runtime.InteropServices;
 using OfficeOpenXml.Packaging.Ionic.Zlib;
+
 namespace OfficeOpenXml.Packaging.Ionic.Zip;
 
 /// <summary>
@@ -128,12 +128,8 @@ namespace OfficeOpenXml.Packaging.Ionic.Zip;
 //#if !NETCF
 //    [Interop.ClassInterface(Interop.ClassInterfaceType.AutoDispatch)]
 //#endif
-internal partial class ZipFile :
-    System.Collections.IEnumerable,
-    IEnumerable<ZipEntry>,
-    IDisposable
+internal partial class ZipFile : System.Collections.IEnumerable, IEnumerable<ZipEntry>, IDisposable
 {
-
     #region public properties
 
     /// <summary>
@@ -191,12 +187,7 @@ internal partial class ZipFile :
     /// </code>
     /// </example>
     ///
-    public bool FullScan
-    {
-        get;
-        set;
-    }
-
+    public bool FullScan { get; set; }
 
     /// <summary>
     ///   Whether to sort the ZipEntries before saving the file.
@@ -226,13 +217,7 @@ internal partial class ZipFile :
     /// </code>
     /// </example>
     ///
-    public bool SortEntriesBeforeSaving
-    {
-        get;
-        set;
-    }
-
-
+    public bool SortEntriesBeforeSaving { get; set; }
 
     /// <summary>
     ///   Indicates whether NTFS Reparse Points, like junctions, should be
@@ -258,7 +243,6 @@ internal partial class ZipFile :
     /// </code>
     /// </example>
     public bool AddDirectoryWillTraverseReparsePoints { get; set; }
-
 
     /// <summary>
     ///   Size of the IO buffer used while saving.
@@ -348,11 +332,7 @@ internal partial class ZipFile :
     ///     yourself. Or just leave it alone and accept the default.
     ///   </para>
     /// </remarks>
-    public int CodecBufferSize
-    {
-        get;
-        set;
-    }
+    public int CodecBufferSize { get; set; }
 
     /// <summary>
     ///   Indicates whether extracted files should keep their paths as
@@ -381,12 +361,7 @@ internal partial class ZipFile :
     ///  </para>
     ///
     /// </remarks>
-    public bool FlattenFoldersOnExtract
-    {
-        get;
-        set;
-    }
-
+    public bool FlattenFoldersOnExtract { get; set; }
 
     /// <summary>
     ///   The compression strategy to use for all entries.
@@ -406,7 +381,6 @@ internal partial class ZipFile :
         get { return this._Strategy; }
         set { this._Strategy = value; }
     }
-
 
     /// <summary>
     ///   The name of the <c>ZipFile</c>, on disk.
@@ -437,7 +411,6 @@ internal partial class ZipFile :
         get { return this._name; }
         set { this._name = value; }
     }
-
 
     /// <summary>
     ///   Sets the compression level to be used for entries subsequently added to
@@ -472,11 +445,7 @@ internal partial class ZipFile :
     ///    alone, and accept the default.
     ///  </para>
     /// </remarks>
-    public OfficeOpenXml.Packaging.Ionic.Zlib.CompressionLevel CompressionLevel
-    {
-        get;
-        set;
-    }
+    public OfficeOpenXml.Packaging.Ionic.Zlib.CompressionLevel CompressionLevel { get; set; }
 
     /// <summary>
     ///   The compression method for the zipfile.
@@ -489,17 +458,9 @@ internal partial class ZipFile :
     /// <seealso cref="Ionic.Zip.CompressionMethod" />
     internal CompressionMethod CompressionMethod
     {
-        get
-        {
-            return this._compressionMethod;
-        }
-        set
-        {
-            this._compressionMethod = value;
-        }
+        get { return this._compressionMethod; }
+        set { this._compressionMethod = value; }
     }
-
-
 
     /// <summary>
     ///   A comment attached to the zip archive.
@@ -560,9 +521,6 @@ internal partial class ZipFile :
             this._contentsChanged = true;
         }
     }
-
-
-
 
     /// <summary>
     ///   Specifies whether the Creation, Access, and Modified times for entries
@@ -674,16 +632,9 @@ internal partial class ZipFile :
     /// <seealso cref="EmitTimesInUnixFormatWhenSaving" />
     public bool EmitTimesInWindowsFormatWhenSaving
     {
-        get
-        {
-            return this._emitNtfsTimes;
-        }
-        set
-        {
-            this._emitNtfsTimes = value;
-        }
+        get { return this._emitNtfsTimes; }
+        set { this._emitNtfsTimes = value; }
     }
-
 
     /// <summary>
     /// Specifies whether the Creation, Access, and Modified times
@@ -765,17 +716,9 @@ internal partial class ZipFile :
     /// <seealso cref="EmitTimesInWindowsFormatWhenSaving" />
     public bool EmitTimesInUnixFormatWhenSaving
     {
-        get
-        {
-            return this._emitUnixTimes;
-        }
-        set
-        {
-            this._emitUnixTimes = value;
-        }
+        get { return this._emitUnixTimes; }
+        set { this._emitUnixTimes = value; }
     }
-
-
 
     /// <summary>
     ///   Indicates whether verbose output is sent to the <see
@@ -792,7 +735,6 @@ internal partial class ZipFile :
         get { return this._StatusMessageTextWriter != null; }
     }
 
-
     /// <summary>
     ///   Returns true if an entry by the given name exists in the ZipFile.
     /// </summary>
@@ -805,8 +747,6 @@ internal partial class ZipFile :
         // workitem 12534
         return this._entries.ContainsKey(SharedUtilities.NormalizePathForUseInZipFile(name));
     }
-
-
 
     /// <summary>
     ///   Indicates whether to perform case-sensitive matching on the filename when
@@ -823,10 +763,7 @@ internal partial class ZipFile :
     /// </remarks>
     public bool CaseSensitiveRetrieval
     {
-        get
-        {
-            return this._CaseSensitiveRetrieval;
-        }
+        get { return this._CaseSensitiveRetrieval; }
 
         set
         {
@@ -838,7 +775,6 @@ internal partial class ZipFile :
             }
         }
     }
-
 
     /// <summary>
     ///   Indicates whether to encode entry filenames and entry comments using Unicode
@@ -958,18 +894,13 @@ internal partial class ZipFile :
     [Obsolete("Beginning with v1.9.1.6 of DotNetZip, this property is obsolete.  It will be removed in a future version of the library. Your applications should  use AlternateEncoding and AlternateEncodingUsage instead.")]
     public bool UseUnicodeAsNecessary
     {
-        get
-        {
-            return this._alternateEncoding == System.Text.Encoding.GetEncoding("UTF-8") &&
-                   this._alternateEncodingUsage == ZipOption.AsNecessary;
-        }
+        get { return this._alternateEncoding == System.Text.Encoding.GetEncoding("UTF-8") && this._alternateEncodingUsage == ZipOption.AsNecessary; }
         set
         {
             if (value)
             {
                 this._alternateEncoding = System.Text.Encoding.GetEncoding("UTF-8");
                 this._alternateEncodingUsage = ZipOption.AsNecessary;
-
             }
             else
             {
@@ -978,7 +909,6 @@ internal partial class ZipFile :
             }
         }
     }
-
 
     /// <summary>
     ///   Specify whether to use ZIP64 extensions when saving a zip archive.
@@ -1022,17 +952,9 @@ internal partial class ZipFile :
     /// <seealso cref="RequiresZip64"/>
     internal Zip64Option UseZip64WhenSaving
     {
-        get
-        {
-            return this._zip64;
-        }
-        set
-        {
-            this._zip64 = value;
-        }
+        get { return this._zip64; }
+        set { this._zip64 = value; }
     }
-
-
 
     /// <summary>
     ///   Indicates whether the archive requires ZIP64 extensions.
@@ -1107,7 +1029,6 @@ internal partial class ZipFile :
         }
     }
 
-
     /// <summary>
     ///   Indicates whether the most recent <c>Save()</c> operation used ZIP64 extensions.
     /// </summary>
@@ -1147,12 +1068,8 @@ internal partial class ZipFile :
     /// <seealso cref="RequiresZip64"/>
     public Nullable<bool> OutputUsedZip64
     {
-        get
-        {
-            return this._OutputUsesZip64;
-        }
+        get { return this._OutputUsesZip64; }
     }
-
 
     /// <summary>
     ///   Indicates whether the most recent <c>Read()</c> operation read a zip file that uses
@@ -1186,10 +1103,10 @@ internal partial class ZipFile :
                     return true;
                 }
             }
+
             return false;
         }
     }
-
 
     /// <summary>
     ///   The text encoding to use when writing new entries to the <c>ZipFile</c>,
@@ -1353,7 +1270,6 @@ internal partial class ZipFile :
         }
     }
 
-
     /// <summary>
     ///   A Text Encoding to use when encoding the filenames and comments for
     ///   all the ZipEntry items, during a ZipFile.Save() operation.
@@ -1366,16 +1282,9 @@ internal partial class ZipFile :
     /// </remarks>
     public System.Text.Encoding AlternateEncoding
     {
-        get
-        {
-            return this._alternateEncoding;
-        }
-        set
-        {
-            this._alternateEncoding = value;
-        }
+        get { return this._alternateEncoding; }
+        set { this._alternateEncoding = value; }
     }
-
 
     /// <summary>
     ///   A flag that tells if and when this instance should apply
@@ -1384,16 +1293,9 @@ internal partial class ZipFile :
     /// </summary>
     internal ZipOption AlternateEncodingUsage
     {
-        get
-        {
-            return this._alternateEncodingUsage;
-        }
-        set
-        {
-            this._alternateEncodingUsage = value;
-        }
+        get { return this._alternateEncodingUsage; }
+        set { this._alternateEncodingUsage = value; }
     }
-
 
     /// <summary>
     /// The default text encoding used in zip archives.  It is numeric 437, also
@@ -1402,12 +1304,8 @@ internal partial class ZipFile :
     /// <seealso cref="Ionic.Zip.ZipFile.ProvisionalAlternateEncoding"/>
     public static System.Text.Encoding DefaultEncoding
     {
-        get
-        {
-            return _defaultEncoding;
-        }
+        get { return _defaultEncoding; }
     }
-
 
     /// <summary>
     /// Gets or sets the <c>TextWriter</c> to which status messages are delivered
@@ -1481,9 +1379,6 @@ internal partial class ZipFile :
         set { this._StatusMessageTextWriter = value; }
     }
 
-
-
-
     /// <summary>
     ///   Gets or sets the name for the folder to store the temporary file
     ///   this library writes when saving a zip archive.
@@ -1541,6 +1436,7 @@ internal partial class ZipFile :
         set
         {
             this._TempFileFolder = value;
+
             if (value == null)
             {
                 return;
@@ -1698,6 +1594,7 @@ internal partial class ZipFile :
         set
         {
             this._Password = value;
+
             if (this._Password == null)
             {
                 this.Encryption = EncryptionAlgorithm.None;
@@ -1707,15 +1604,8 @@ internal partial class ZipFile :
                 this.Encryption = EncryptionAlgorithm.PkzipWeak;
             }
         }
-        private get
-        {
-            return this._Password;
-        }
+        private get { return this._Password; }
     }
-
-
-
-
 
     /// <summary>
     ///   The action the library should take when extracting a file that already
@@ -1737,12 +1627,7 @@ internal partial class ZipFile :
     /// </para>
     /// </remarks>
     /// <seealso cref="ZipEntry.ExtractExistingFile"/>
-    internal ExtractExistingFileAction ExtractExistingFile
-    {
-        get;
-        set;
-    }
-
+    internal ExtractExistingFileAction ExtractExistingFile { get; set; }
 
     /// <summary>
     ///   The action the library should take when an error is encountered while
@@ -1850,13 +1735,13 @@ internal partial class ZipFile :
         set
         {
             this._zipErrorAction = value;
+
             if (this._zipErrorAction != ZipErrorAction.InvokeErrorEvent && this.ZipError != null)
             {
                 this.ZipError = null;
             }
         }
     }
-
 
     /// <summary>
     ///   The Encryption to use for entries added to the <c>ZipFile</c>.
@@ -1977,10 +1862,7 @@ internal partial class ZipFile :
     /// <seealso cref="ZipEntry.Encryption">ZipEntry.Encryption</seealso>
     internal EncryptionAlgorithm Encryption
     {
-        get
-        {
-            return this._Encryption;
-        }
+        get { return this._Encryption; }
         set
         {
             if (value == EncryptionAlgorithm.Unsupported)
@@ -1991,8 +1873,6 @@ internal partial class ZipFile :
             this._Encryption = value;
         }
     }
-
-
 
     /// <summary>
     ///   A callback that allows the application to specify the compression level
@@ -2039,12 +1919,7 @@ internal partial class ZipFile :
     /// </para>
     ///
     /// </remarks>
-    public SetCompressionCallback SetCompression
-    {
-        get;
-        set;
-    }
-
+    public SetCompressionCallback SetCompression { get; set; }
 
     /// <summary>
     /// The maximum size of an output segment, when saving a split Zip file.
@@ -2124,10 +1999,7 @@ internal partial class ZipFile :
     /// <seealso cref="NumberOfSegmentsForMostRecentSave"/>
     public Int32 MaxOutputSegmentSize
     {
-        get
-        {
-            return this._maxOutputSegmentSize;
-        }
+        get { return this._maxOutputSegmentSize; }
         set
         {
             if (value < 65536 && value != 0)
@@ -2138,7 +2010,6 @@ internal partial class ZipFile :
             this._maxOutputSegmentSize = value;
         }
     }
-
 
     /// <summary>
     ///   Returns the number of segments used in the most recent Save() operation.
@@ -2160,12 +2031,8 @@ internal partial class ZipFile :
     /// <seealso cref="MaxOutputSegmentSize"/>
     public Int32 NumberOfSegmentsForMostRecentSave
     {
-        get
-        {
-            return unchecked((Int32)this._numberOfSegmentsForMostRecentSave + 1);
-        }
+        get { return unchecked((Int32)this._numberOfSegmentsForMostRecentSave + 1); }
     }
-
 
 #if !NETCF
     /// <summary>
@@ -2236,10 +2103,7 @@ internal partial class ZipFile :
 
             this._ParallelDeflateThreshold = value;
         }
-        get
-        {
-            return this._ParallelDeflateThreshold;
-        }
+        get { return this._ParallelDeflateThreshold; }
     }
 
     /// <summary>
@@ -2320,16 +2184,12 @@ internal partial class ZipFile :
     ///
     public int ParallelDeflateMaxBufferPairs
     {
-        get
-        {
-            return this._maxBufferPairs;
-        }
+        get { return this._maxBufferPairs; }
         set
         {
             if (value < 4)
             {
-                throw new ArgumentOutOfRangeException("ParallelDeflateMaxBufferPairs",
-                                                      "Value must be 4 or greater.");
+                throw new ArgumentOutOfRangeException("ParallelDeflateMaxBufferPairs", "Value must be 4 or greater.");
             }
 
             this._maxBufferPairs = value;
@@ -2337,14 +2197,12 @@ internal partial class ZipFile :
     }
 #endif
 
-
     /// <summary>Provides a string representation of the instance.</summary>
     /// <returns>a string representation of the instance.</returns>
     public override String ToString()
     {
         return String.Format("ZipFile::{0}", this.Name);
     }
-
 
     /// <summary>
     /// Returns the version number on the DotNetZip assembly.
@@ -2364,10 +2222,7 @@ internal partial class ZipFile :
     /// </remarks>
     public static Version LibraryVersion
     {
-        get
-        {
-            return Assembly.GetExecutingAssembly().GetName().Version;
-        }
+        get { return Assembly.GetExecutingAssembly().GetName().Version; }
     }
 
     internal void NotifyEntryChanged()
@@ -2375,21 +2230,16 @@ internal partial class ZipFile :
         this._contentsChanged = true;
     }
 
-
     internal Stream StreamForDiskNumber(uint diskNumber)
     {
-        if (diskNumber + 1 == this._diskNumberWithCd ||
-            (diskNumber == 0 && this._diskNumberWithCd == 0))
+        if (diskNumber + 1 == this._diskNumberWithCd || (diskNumber == 0 && this._diskNumberWithCd == 0))
         {
             //return (this.ReadStream as FileStream);
             return this.ReadStream;
         }
-        return ZipSegmentedStream.ForReading(this._readName ?? this._name,
-                                             diskNumber,
-                                             this._diskNumberWithCd);
+
+        return ZipSegmentedStream.ForReading(this._readName ?? this._name, diskNumber, this._diskNumberWithCd);
     }
-
-
 
     // called by ZipEntry in ZipEntry.Extract(), when there is no stream set for the
     // ZipEntry.
@@ -2401,12 +2251,11 @@ internal partial class ZipFile :
             using (ZipFile x = new ZipFile())
             {
                 // workitem 10735
-                x._readName = x._name = whileSaving
-                                            ? this._readName ?? this._name
-                                            : this._name;
+                x._readName = x._name = whileSaving ? this._readName ?? this._name : this._name;
                 x.AlternateEncoding = this.AlternateEncoding;
                 x.AlternateEncodingUsage = this.AlternateEncodingUsage;
                 ReadIntoInstance(x);
+
                 // copy the contents of the entries.
                 // cannot just replace the entries - the app may be holding them
                 foreach (ZipEntry e1 in x)
@@ -2416,6 +2265,7 @@ internal partial class ZipFile :
                         if (e1.FileName == e2.FileName)
                         {
                             e2.CopyMetaData(e1);
+
                             break;
                         }
                     }
@@ -2425,7 +2275,6 @@ internal partial class ZipFile :
             this._JustSaved = false;
         }
     }
-
 
     #endregion
 
@@ -2533,7 +2382,6 @@ internal partial class ZipFile :
         }
     }
 
-
     /// <summary>
     ///   Creates a new <c>ZipFile</c> instance, using the specified name for the
     ///   filename, and the specified Encoding.
@@ -2584,8 +2432,6 @@ internal partial class ZipFile :
             throw new ZipException(String.Format("{0} is not a valid zip file", fileName), e1);
         }
     }
-
-
 
     /// <summary>
     ///   Create a zip file, without specifying a target filename or stream to save to.
@@ -2646,7 +2492,6 @@ internal partial class ZipFile :
         this._InitInstance(null, null);
     }
 
-
     /// <summary>
     ///   Create a zip file, specifying a text Encoding, but without specifying a
     ///   target filename or stream to save to.
@@ -2671,7 +2516,6 @@ internal partial class ZipFile :
         this.AlternateEncodingUsage = ZipOption.Always;
         this._InitInstance(null, null);
     }
-
 
     /// <summary>
     ///   Creates a new <c>ZipFile</c> instance, using the specified name for the
@@ -2753,7 +2597,6 @@ internal partial class ZipFile :
         }
     }
 
-
     /// <summary>
     ///   Creates a new <c>ZipFile</c> instance, using the specified name for the
     ///   filename, the specified status message writer, and the specified Encoding.
@@ -2812,8 +2655,7 @@ internal partial class ZipFile :
     /// The Encoding is used as the default alternate encoding for entries with
     /// filenames or comments that cannot be encoded with the IBM437 code page.
     /// </param>
-    public ZipFile(string fileName, TextWriter statusMessageWriter,
-                   System.Text.Encoding encoding)
+    public ZipFile(string fileName, TextWriter statusMessageWriter, System.Text.Encoding encoding)
     {
         try
         {
@@ -2826,9 +2668,6 @@ internal partial class ZipFile :
             throw new ZipException(String.Format("{0} is not a valid zip file", fileName), e1);
         }
     }
-
-
-
 
     /// <summary>
     ///   Initialize a <c>ZipFile</c> instance by reading in a zip file.
@@ -2864,18 +2703,13 @@ internal partial class ZipFile :
         }
     }
 
-
-
     private void _initEntriesDictionary()
     {
         // workitem 9868
         StringComparer sc = this.CaseSensitiveRetrieval ? StringComparer.Ordinal : StringComparer.OrdinalIgnoreCase;
 
-        this._entries = this._entries == null
-                            ? new Dictionary<String, ZipEntry>(sc)
-                            : new Dictionary<String, ZipEntry>(this._entries, sc);
+        this._entries = this._entries == null ? new Dictionary<String, ZipEntry>(sc) : new Dictionary<String, ZipEntry>(this._entries, sc);
     }
-
 
     private void _InitInstance(string zipFileName, TextWriter statusMessageWriter)
     {
@@ -2883,11 +2717,12 @@ internal partial class ZipFile :
         this._name = zipFileName;
         this._StatusMessageTextWriter = statusMessageWriter;
         this._contentsChanged = true;
-        this.AddDirectoryWillTraverseReparsePoints = true;  // workitem 8617
+        this.AddDirectoryWillTraverseReparsePoints = true; // workitem 8617
         this.CompressionLevel = OfficeOpenXml.Packaging.Ionic.Zlib.CompressionLevel.Default;
 #if !NETCF
         this.ParallelDeflateThreshold = 512 * 1024;
 #endif
+
         // workitem 7685, 9868
         this._initEntriesDictionary();
 
@@ -2907,9 +2742,8 @@ internal partial class ZipFile :
 
         return;
     }
+
     #endregion
-
-
 
     #region Indexers and Collections
 
@@ -2957,12 +2791,8 @@ internal partial class ZipFile :
     public ZipEntry this[int ix]
     {
         // workitem 6402
-        get
-        {
-            return this.ZipEntriesAsList[ix];
-        }
+        get { return this.ZipEntriesAsList[ix]; }
     }
-
 
     /// <summary>
     ///   This is a name-based indexer into the Zip archive.
@@ -3050,6 +2880,7 @@ internal partial class ZipFile :
         get
         {
             string? key = SharedUtilities.NormalizePathForUseInZipFile(fileName);
+
             if (this._entries.ContainsKey(key))
             {
                 return this._entries[key];
@@ -3057,6 +2888,7 @@ internal partial class ZipFile :
 
             // workitem 11056
             key = key.Replace("/", "\\");
+
             if (this._entries.ContainsKey(key))
             {
                 return this._entries[key];
@@ -3115,7 +2947,6 @@ internal partial class ZipFile :
         }
     }
 
-
     /// <summary>
     ///   The list of filenames for the entries contained within the zip archive.
     /// </summary>
@@ -3171,12 +3002,8 @@ internal partial class ZipFile :
     ///
     public ICollection<String> EntryFileNames
     {
-        get
-        {
-            return this._entries.Keys;
-        }
+        get { return this._entries.Keys; }
     }
-
 
     /// <summary>
     ///   Returns the readonly collection of entries in the Zip archive.
@@ -3198,12 +3025,8 @@ internal partial class ZipFile :
     /// <seealso cref="EntriesSorted"/>
     public ICollection<ZipEntry> Entries
     {
-        get
-        {
-            return this._entries.Values;
-        }
+        get { return this._entries.Values; }
     }
-
 
     /// <summary>
     ///   Returns a readonly collection of entries in the Zip archive, sorted by FileName.
@@ -3254,30 +3077,27 @@ internal partial class ZipFile :
         get
         {
             List<ZipEntry>? coll = new List<ZipEntry>();
+
             foreach (ZipEntry? e in this.Entries)
             {
                 coll.Add(e);
             }
+
             StringComparison sc = this.CaseSensitiveRetrieval ? StringComparison.Ordinal : StringComparison.OrdinalIgnoreCase;
 
             coll.Sort((x, y) => { return String.Compare(x.FileName, y.FileName, sc); });
+
             return coll.AsReadOnly();
         }
     }
-
 
     /// <summary>
     /// Returns the number of entries in the Zip archive.
     /// </summary>
     public int Count
     {
-        get
-        {
-            return this._entries.Count;
-        }
+        get { return this._entries.Count; }
     }
-
-
 
     /// <summary>
     ///   Removes the given <c>ZipEntry</c> from the zip archive.
@@ -3394,9 +3214,6 @@ internal partial class ZipFile :
         this._contentsChanged = true;
     }
 
-
-
-
     /// <summary>
     /// Removes the <c>ZipEntry</c> with the given filename from the zip archive.
     /// </summary>
@@ -3461,6 +3278,7 @@ internal partial class ZipFile :
     {
         string modifiedName = ZipEntry.NameInArchive(fileName, null);
         ZipEntry e = this[modifiedName];
+
         if (e == null)
         {
             throw new ArgumentException("The entry you specified was not found in the zip archive.");
@@ -3468,7 +3286,6 @@ internal partial class ZipFile :
 
         this.RemoveEntry(e);
     }
-
 
     #endregion
 
@@ -3568,6 +3385,7 @@ internal partial class ZipFile :
                         this._readstream = null;
                     }
                 }
+
                 // only dispose the writestream if there is a backing file
                 if (this._temporaryFileName != null && this._name != null)
                 {
@@ -3584,6 +3402,7 @@ internal partial class ZipFile :
                 }
 
 #if !NETCF
+
                 // workitem 10030
                 if (this.ParallelDeflater != null)
                 {
@@ -3592,11 +3411,12 @@ internal partial class ZipFile :
                 }
 #endif
             }
+
             this._disposed = true;
         }
     }
-    #endregion
 
+    #endregion
 
     #region private properties
 
@@ -3606,21 +3426,17 @@ internal partial class ZipFile :
         {
             if (this._readstream == null)
             {
-                if (this._readName != null || this._name !=null)
+                if (this._readName != null || this._name != null)
                 {
-                    this._readstream = File.Open(this._readName ?? this._name,
-                                                 FileMode.Open,
-                                                 FileAccess.Read,
-                                                 FileShare.Read | FileShare.Write);
+                    this._readstream = File.Open(this._readName ?? this._name, FileMode.Open, FileAccess.Read, FileShare.Read | FileShare.Write);
 
                     this._ReadStreamIsOurs = true;
                 }
             }
+
             return this._readstream;
         }
     }
-
-
 
     private Stream WriteStream
     {
@@ -3640,12 +3456,14 @@ internal partial class ZipFile :
             if (this._maxOutputSegmentSize != 0)
             {
                 this._writestream = ZipSegmentedStream.ForWriting(this._name, this._maxOutputSegmentSize);
+
                 return this._writestream;
             }
 
             SharedUtilities.CreateAndOpenUniqueTempFile(this.TempFileFolder ?? Path.GetDirectoryName(this._name),
                                                         out this._writestream,
                                                         out this._temporaryFileName);
+
             return this._writestream;
         }
         set
@@ -3658,9 +3476,11 @@ internal partial class ZipFile :
             this._writestream = null;
         }
     }
+
     #endregion
 
     #region private fields
+
     private TextWriter _StatusMessageTextWriter;
     private bool _CaseSensitiveRetrieval;
     private Stream _readstream;
@@ -3671,7 +3491,9 @@ internal partial class ZipFile :
     private Int32 _maxOutputSegmentSize;
     private UInt32 _numberOfSegmentsForMostRecentSave;
     private ZipErrorAction _zipErrorAction;
+
     private bool _disposed;
+
     //private System.Collections.Generic.List<ZipEntry> _entries;
     private Dictionary<String, ZipEntry> _entries;
     private List<ZipEntry> _zipEntriesAsList;
@@ -3701,9 +3523,9 @@ internal partial class ZipFile :
     private Nullable<bool> _OutputUsesZip64;
     internal bool _inExtractAll;
 #if (Core)
-    private System.Text.Encoding _alternateEncoding = System.Text.Encoding.GetEncoding("UTF-8"); 
+    private System.Text.Encoding _alternateEncoding = System.Text.Encoding.GetEncoding("UTF-8");
 #else
-        private System.Text.Encoding _alternateEncoding = System.Text.Encoding.GetEncoding("IBM437"); 
+        private System.Text.Encoding _alternateEncoding = System.Text.Encoding.GetEncoding("IBM437");
 #endif
     private ZipOption _alternateEncodingUsage = ZipOption.Never;
 #if (Core)
@@ -3805,11 +3627,13 @@ internal enum Zip64Option
     /// (For COM clients, this is a 0 (zero).)
     /// </summary>
     Default = 0,
+
     /// <summary>
     /// Do not use ZIP64 extensions when writing zip archives.
     /// (For COM clients, this is a 0 (zero).)
     /// </summary>
     Never = 0,
+
     /// <summary>
     /// Use ZIP64 extensions when writing zip archives, as necessary.
     /// For example, when a single entry exceeds 0xFFFFFFFF in size, or when the archive as a whole
@@ -3817,13 +3641,13 @@ internal enum Zip64Option
     /// (For COM clients, this is a 1.)
     /// </summary>
     AsNecessary = 1,
+
     /// <summary>
     /// Always use ZIP64 extensions when writing zip archives, even when unnecessary.
     /// (For COM clients, this is a 2.)
     /// </summary>
     Always
 }
-
 
 /// <summary>
 ///  An enum representing the values on a three-way toggle switch
@@ -3838,23 +3662,25 @@ internal enum ZipOption
     /// (For COM clients, this is a 0 (zero).)
     /// </summary>
     Default = 0,
+
     /// <summary>
     /// Never use the associated option.
     /// (For COM clients, this is a 0 (zero).)
     /// </summary>
     Never = 0,
+
     /// <summary>
     /// Use the associated behavior "as necessary."
     /// (For COM clients, this is a 1.)
     /// </summary>
     AsNecessary = 1,
+
     /// <summary>
     /// Use the associated behavior Always, whether necessary or not.
     /// (For COM clients, this is a 2.)
     /// </summary>
     Always
 }
-
 
 enum AddOrUpdateAction
 {
@@ -3978,4 +3804,3 @@ enum AddOrUpdateAction
 //            9-15 year (since 1980)
 //
 // see http://msdn.microsoft.com/en-us/library/ms724274(VS.85).aspx
-

@@ -10,6 +10,7 @@
  *************************************************************************************************
     08/11/2021         EPPlus Software AB       EPPlus 5.8
  *************************************************************************************************/
+
 using OfficeOpenXml.Utils;
 using System;
 using System.Collections.Generic;
@@ -23,6 +24,7 @@ internal class FillMethods
     {
         object startValue;
         GetStartCell(options, fromRow, toRow, fromCol, toCol, out int startRow, out int startCol);
+
         if (options.StartValue.HasValue)
         {
             startValue = options.StartValue;
@@ -32,11 +34,14 @@ internal class FillMethods
         {
             startValue = worksheet.GetValue(startRow, startCol);
         }
+
         double value = ConvertUtil.GetValueDouble(startValue, true, true);
 
         SkipFirstCell(ref fromRow, ref fromCol, ref toRow, ref toCol, options);
 
-        int r = startRow, c = startCol;
+        int r = startRow,
+            c = startCol;
+
         while (GetNextCell(options, fromRow, toRow, fromCol, toCol, ref r, ref c))
         {
             FillCellNumber(worksheet, options, ref value, r, c);
@@ -59,6 +64,7 @@ internal class FillMethods
             {
                 value *= options.StepValue;
             }
+
             if (options.EndValue.HasValue && options.EndValue.Value < value)
             {
                 worksheet.SetValue(r, c, null);
@@ -74,6 +80,7 @@ internal class FillMethods
     {
         object startValue;
         GetStartCell(options, fromRow, toRow, fromCol, toCol, out int startRow, out int startCol);
+
         if (options.StartValue.HasValue)
         {
             startValue = options.StartValue;
@@ -83,13 +90,16 @@ internal class FillMethods
         {
             startValue = worksheet.GetValue(startRow, startCol);
         }
+
         //if (options.Direction == eFillDirection.Column) fromRow++; else fromCol++;
         SkipFirstCell(ref fromRow, ref fromCol, ref toRow, ref toCol, options);
 
         DateTime? value = ConvertUtil.GetValueDate(startValue);
         bool isLastDayOfMonth = value.HasValue && value.Value.Month != value.Value.AddDays(1).Month;
 
-        int r = startRow, c = startCol;
+        int r = startRow,
+            c = startCol;
+
         while (GetNextCell(options, fromRow, toRow, fromCol, toCol, ref r, ref c))
         {
             FillCellDate(worksheet, options, ref value, isLastDayOfMonth, c, r);
@@ -104,7 +114,9 @@ internal class FillMethods
             {
                 case eDateTimeUnit.Year:
                     value = value.Value.AddYears(options.StepValue);
+
                     break;
+
                 case eDateTimeUnit.Month:
                     if (isLastDayOfMonth)
                     {
@@ -115,29 +127,43 @@ internal class FillMethods
                     {
                         value = value.Value.AddMonths(options.StepValue);
                     }
+
                     break;
+
                 case eDateTimeUnit.Week:
                     value = value.Value.AddDays(options.StepValue * 7);
+
                     break;
+
                 case eDateTimeUnit.Day:
                     value = value.Value.AddDays(options.StepValue);
+
                     break;
+
                 case eDateTimeUnit.Hour:
                     value = value.Value.AddHours(options.StepValue);
+
                     break;
+
                 case eDateTimeUnit.Minute:
                     value = value.Value.AddMinutes(options.StepValue);
+
                     break;
+
                 case eDateTimeUnit.Second:
                     value = value.Value.AddSeconds(options.StepValue);
+
                     break;
+
                 case eDateTimeUnit.Ticks:
                     value = value.Value.AddTicks(options.StepValue);
+
                     break;
             }
+
             DateTime d;
-            if (options._holidayCalendar.Count > 0 || 
-                options._excludedWeekdays.Count > 0)
+
+            if (options._holidayCalendar.Count > 0 || options._excludedWeekdays.Count > 0)
             {
                 d = GetWeekday(value.Value, options);
             }
@@ -161,17 +187,18 @@ internal class FillMethods
         }
     }
 
-    internal static void FillList<T>(ExcelWorksheet worksheet, int fromRow, int toRow, int fromCol, int toCol,IEnumerable<T> enumList, FillListParams options)
+    internal static void FillList<T>(ExcelWorksheet worksheet, int fromRow, int toRow, int fromCol, int toCol, IEnumerable<T> enumList, FillListParams options)
     {
         List<T>? list = enumList.ToList();
 
-        if (list.Count==0)
+        if (list.Count == 0)
         {
             worksheet.Cells[fromRow, fromCol, toRow, toCol].Clear();
+
             return;
         }
 
-        if (options.StartIndex<0 || options.StartIndex>=list.Count)
+        if (options.StartIndex < 0 || options.StartIndex >= list.Count)
         {
             throw new InvalidOperationException("StartIndex must be within the list");
         }
@@ -181,7 +208,9 @@ internal class FillMethods
         worksheet.SetValue(startRow, startCol, list[ix++]);
         SkipFirstCell(ref fromRow, ref fromCol, ref toRow, ref toCol, options);
 
-        int r = startRow, c = startCol;
+        int r = startRow,
+            c = startCol;
+
         while (GetNextCell(options, fromRow, toRow, fromCol, toCol, ref r, ref c))
         {
             if (ix == list.Count)
@@ -192,35 +221,46 @@ internal class FillMethods
             worksheet.SetValue(r, c, list[ix++]);
         }
     }
+
     private static bool GetNextCell(FillParams options, int fromRow, int toRow, int fromCol, int toCol, ref int r, ref int c)
     {
         switch (options.StartPosition)
         {
             case eFillStartPosition.TopLeft:
                 c++;
+
                 if (c > toCol)
                 {
                     r++;
+
                     if (r > toRow)
                     {
                         return false;
                     }
+
                     c = fromCol;
                 }
+
                 break;
+
             default:
                 c--;
+
                 if (c < fromCol)
                 {
                     r--;
+
                     if (r < fromRow)
                     {
                         return false;
                     }
+
                     c = toCol;
                 }
+
                 break;
         }
+
         return true;
     }
 
@@ -231,13 +271,17 @@ internal class FillMethods
             case eFillStartPosition.TopLeft:
                 startRow = fromRow;
                 startCol = fromCol;
+
                 break;
+
             default:
                 startRow = toRow;
                 startCol = toCol;
+
                 break;
         }
     }
+
     private static void SkipFirstCell(ref int fromRow, ref int fromCol, ref int toRow, ref int toCol, FillParams options)
     {
         if (options.StartPosition == eFillStartPosition.TopLeft)
@@ -262,7 +306,6 @@ internal class FillMethods
                 toCol--;
             }
         }
-
     }
 
     static DateTime GetWeekday(DateTime value, FillDateParams o)
@@ -271,6 +314,7 @@ internal class FillMethods
         {
             value = value.AddDays(-1);
         }
+
         return value;
     }
 }

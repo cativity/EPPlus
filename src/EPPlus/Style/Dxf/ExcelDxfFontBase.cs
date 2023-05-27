@@ -10,6 +10,7 @@
  *************************************************************************************************
   01/27/2020         EPPlus Software AB       Initial release EPPlus 5
  *************************************************************************************************/
+
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -31,68 +32,65 @@ public class ExcelDxfFontBase : DxfStyleBase
     {
         this.Color = new ExcelDxfColor(styles, eStyleClass.Font, callback);
     }
+
     bool? _bold;
+
     /// <summary>
     /// Font bold
     /// </summary>
     public bool? Bold
     {
-        get
-        {
-            return this._bold;
-        }
+        get { return this._bold; }
         set
         {
             this._bold = value;
             this._callback?.Invoke(eStyleClass.Font, eStyleProperty.Bold, value);
         }
     }
+
     bool? _italic;
+
     /// <summary>
     /// Font Italic
     /// </summary>
     public bool? Italic
     {
-        get
-        {
-            return this._italic;
-        }
+        get { return this._italic; }
         set
         {
             this._italic = value;
             this._callback?.Invoke(eStyleClass.Font, eStyleProperty.Italic, value);
         }
     }
+
     bool? _strike;
+
     /// <summary>
     /// Font-Strikeout
     /// </summary>
     public bool? Strike
     {
-        get
-        {
-            return this._strike;
-        }
+        get { return this._strike; }
         set
         {
             this._strike = value;
             this._callback?.Invoke(eStyleClass.Font, eStyleProperty.Strike, value);
         }
     }
+
     /// <summary>
     /// The color of the text
     /// </summary>
     public ExcelDxfColor Color { get; set; }
+
     ExcelUnderLineType? _underline;
+
     /// <summary>
     /// The underline type
     /// </summary>
     public ExcelUnderLineType? Underline
     {
-        get
-        {
-            return this._underline;
-        }
+        get { return this._underline; }
         set
         {
             this._underline = value;
@@ -107,7 +105,15 @@ public class ExcelDxfFontBase : DxfStyleBase
     {
         get
         {
-            return GetAsString(this.Bold) + "|" + GetAsString(this.Italic) + "|" + GetAsString(this.Strike) + "|" + (this.Color == null ? "" : this.Color.Id) + "|" + GetAsString(this.Underline)
+            return GetAsString(this.Bold)
+                   + "|"
+                   + GetAsString(this.Italic)
+                   + "|"
+                   + GetAsString(this.Strike)
+                   + "|"
+                   + (this.Color == null ? "" : this.Color.Id)
+                   + "|"
+                   + GetAsString(this.Underline)
                    + "|||||||||";
         }
     }
@@ -123,9 +129,10 @@ public class ExcelDxfFontBase : DxfStyleBase
         SetValueBool(helper, path + "/d:b/@val", this.Bold);
         SetValueBool(helper, path + "/d:i/@val", this.Italic);
         SetValueBool(helper, path + "/d:strike/@val", this.Strike);
-        SetValue(helper, path + "/d:u/@val", this.Underline==null?null: this.Underline.ToEnumString());
+        SetValue(helper, path + "/d:u/@val", this.Underline == null ? null : this.Underline.ToEnumString());
         SetValueColor(helper, path + "/d:color", this.Color);
     }
+
     internal override void SetStyle()
     {
         if (this._callback != null)
@@ -137,16 +144,15 @@ public class ExcelDxfFontBase : DxfStyleBase
             this.Color.SetStyle();
         }
     }
+
     /// <summary>
     /// If the object has any properties set
     /// </summary>
     public override bool HasValue
     {
-        get
-        {
-            return this.Bold != null || this.Italic != null || this.Strike != null || this.Underline != null || this.Color.HasValue;
-        }
+        get { return this.Bold != null || this.Italic != null || this.Strike != null || this.Underline != null || this.Color.HasValue; }
     }
+
     /// <summary>
     /// Clears all properties
     /// </summary>
@@ -158,14 +164,19 @@ public class ExcelDxfFontBase : DxfStyleBase
         this.Underline = null;
         this.Color.Clear();
     }
+
     /// <summary>
     /// Clone the object
     /// </summary>
     /// <returns>A new instance of the object</returns>
     internal override DxfStyleBase Clone()
     {
-        return new ExcelDxfFontBase(this._styles, this._callback) { Bold = this.Bold, Color = (ExcelDxfColor)this.Color.Clone(), Italic = this.Italic, Strike = this.Strike, Underline = this.Underline };
+        return new ExcelDxfFontBase(this._styles, this._callback)
+        {
+            Bold = this.Bold, Color = (ExcelDxfColor)this.Color.Clone(), Italic = this.Italic, Strike = this.Strike, Underline = this.Underline
+        };
     }
+
     internal override void SetValuesFromXml(XmlHelper helper)
     {
         if (helper.ExistsNode("d:font"))
@@ -183,6 +194,7 @@ public class ExcelDxfFontBase : DxfStyleBase
         if (helper.ExistsNode("d:font/d:u"))
         {
             string? v = helper.GetXmlNodeString("d:font/d:u/@val");
+
             if (string.IsNullOrEmpty(v))
             {
                 return ExcelUnderLineType.Single;

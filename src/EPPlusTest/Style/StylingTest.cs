@@ -26,6 +26,7 @@
  *******************************************************************************
   01/27/2020         EPPlus Software AB       Initial release EPPlus 5
  *******************************************************************************/
+
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using OfficeOpenXml;
 using OfficeOpenXml.Drawing;
@@ -48,16 +49,18 @@ public class StylingTest : TestBase
     {
         _pck = OpenPackage("Style.xlsx", true);
     }
+
     [ClassCleanup]
     public static void Cleanup()
     {
         SaveAndCleanup(_pck);
     }
+
     [TestMethod]
     public void VerifyColumnStyle()
     {
-        ExcelWorksheet? ws=_pck.Workbook.Worksheets.Add("RangeStyle");
-        LoadTestdata(ws, 100,2,2);
+        ExcelWorksheet? ws = _pck.Workbook.Worksheets.Add("RangeStyle");
+        LoadTestdata(ws, 100, 2, 2);
 
         ws.Row(3).Style.Fill.SetBackground(ExcelIndexedColor.Indexed5);
         ws.Column(3).Style.Fill.SetBackground(ExcelIndexedColor.Indexed7);
@@ -88,22 +91,26 @@ public class StylingTest : TestBase
 
         _pck.Save();
     }
+
     [TestMethod]
     public void TextRotation255()
     {
         ExcelWorksheet? ws = _pck.Workbook.Worksheets.Add("TextRotation");
 
-        ws.Cells["A1:A182"].Value="RotatedText";
-        for(int i=1;i<=180;i++)
+        ws.Cells["A1:A182"].Value = "RotatedText";
+
+        for (int i = 1; i <= 180; i++)
         {
-            ws.Cells[i,1].Style.TextRotation = i;
+            ws.Cells[i, 1].Style.TextRotation = i;
         }
+
         ws.Cells[181, 1].Style.TextRotation = 255;
         ws.Cells[182, 1].Style.SetTextVertical();
 
         Assert.AreEqual(255, ws.Cells[181, 1].Style.TextRotation);
         Assert.AreEqual(255, ws.Cells[182, 1].Style.TextRotation);
     }
+
     [TestMethod]
     public void ValidateGradient()
     {
@@ -145,6 +152,7 @@ public class StylingTest : TestBase
         gradient.Color2.SetAuto();
         Assert.IsTrue(gradient.Color2.Auto);
     }
+
     [TestMethod]
     public void ValidateFontCharsetCondenseExtendAndShadow()
     {
@@ -153,10 +161,11 @@ public class StylingTest : TestBase
 
         Assert.IsNull(ws.Cells["A1"].Style.Font.Charset);
 
-        ws.Cells["A1"].Style.Font.Charset=2;
+        ws.Cells["A1"].Style.Font.Charset = 2;
 
         Assert.AreEqual(2, ws.Cells["A1"].Style.Font.Charset);
     }
+
     [TestMethod]
     public void NormalStyleIssue()
     {
@@ -171,6 +180,7 @@ public class StylingTest : TestBase
         ExcelWorksheet ws = p.Workbook.Worksheets.Add("test");
         Assert.AreEqual("Calibri", normal.Font.Name);
         Assert.AreEqual(10, normal.Font.Size);
+
         //p.Workbook.Styles.UpdateXml();
         Assert.AreEqual("Calibri", normal.Font.Name);
         Assert.AreEqual(10, normal.Font.Size);
@@ -179,6 +189,7 @@ public class StylingTest : TestBase
         Assert.AreEqual(10, ws.Cells["A1"].Style.Font.Size);
         SaveAndCleanup(p);
     }
+
     [TestMethod]
     public void ChangingTheNormalStyleFontWithAutofitColumns()
     {
@@ -195,6 +206,7 @@ public class StylingTest : TestBase
         ExcelWorkbook workbook = p.Workbook;
         ExcelWorksheet ws = p.Workbook.Worksheets.Add("sheet");
         ExcelStyle style = workbook.Styles.CreateNamedStyle("style").Style;
+
         //ws.SetValue(1, 1, "very long text very long text very long text");
         ws.Cells["A1"].Value = "番番番番(番番番)番番番番(番番番)番番番番(番番番)番番番番(番番番)番番番番(番番番)";
 
@@ -203,6 +215,7 @@ public class StylingTest : TestBase
         ws.Cells.AutoFitColumns(1);
         SaveWorkbook("AutoFitColumnWithStyle.xlsx", p);
     }
+
     [TestMethod]
     public void SetThemeFontIssue()
     {
@@ -229,11 +242,13 @@ public class StylingTest : TestBase
 
         SaveAndCleanup(p);
     }
+
     [TestMethod]
     public void VerifyDateText()
     {
         CultureInfo? ci = CultureInfo.CurrentCulture;
         CultureInfo.CurrentCulture = new CultureInfo("en-US");
+
         try
         {
             using ExcelPackage? p = new ExcelPackage();
@@ -251,6 +266,7 @@ public class StylingTest : TestBase
             CultureInfo.CurrentCulture = ci;
         }
     }
+
     [TestMethod]
     public void VerifyStyleXfsCount()
     {
@@ -266,6 +282,7 @@ public class StylingTest : TestBase
         string? count = wb.StylesXml.SelectSingleNode("//d:styleSheet/d:cellXfs/@count", wb.NameSpaceManager).Value;
         Assert.AreEqual("6", count);
     }
+
     [TestMethod]
     public void VerifyStyleForLastColumns()
     {
@@ -294,5 +311,4 @@ public class StylingTest : TestBase
         Assert.AreEqual("Arial", ws.Cells["B4"].Style.Font.Name);
         Assert.AreEqual("Arial", ws.Cells["D4"].Style.Font.Name);
     }
-
 }

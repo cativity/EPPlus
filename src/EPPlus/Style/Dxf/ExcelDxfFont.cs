@@ -10,6 +10,7 @@
  *************************************************************************************************
   02/01/2021         EPPlus Software AB       EPPlus 5.6
  *************************************************************************************************/
+
 using System;
 using OfficeOpenXml.Drawing.Theme;
 using OfficeOpenXml.Utils.Extensions;
@@ -25,146 +26,126 @@ public class ExcelDxfFont : ExcelDxfFontBase
         : base(styles, callback)
     {
     }
+
     float? _size;
+
     /// <summary>
     /// The font size 
     /// </summary>
     public float? Size
     {
-        get
-        {
-            return this._size;
-        }
+        get { return this._size; }
         set
         {
             this._size = value;
             this._callback?.Invoke(eStyleClass.Font, eStyleProperty.Size, value);
         }
     }
+
     string _name;
+
     /// <summary>
     /// The name of the font
     /// </summary>
     public string Name
     {
-        get
-        {
-            return this._name;
-        }
+        get { return this._name; }
         set
         {
             this._name = value;
             this._callback?.Invoke(eStyleClass.Font, eStyleProperty.Name, value);
         }
     }
+
     int? _family;
+
     /// <summary>
     /// Font family 
     /// </summary>
     public int? Family
     {
-        get
-        {
-            return this._family;
-        }
+        get { return this._family; }
         set
         {
             this._family = value;
             this._callback?.Invoke(eStyleClass.Font, eStyleProperty.Family, value);
         }
     }
+
     ExcelVerticalAlignmentFont _verticalAlign = ExcelVerticalAlignmentFont.None;
+
     /// <summary>
     /// Font-Vertical Align
     /// </summary>
     public ExcelVerticalAlignmentFont VerticalAlign
     {
-        get
-        {
-            return this._verticalAlign;
-        }
+        get { return this._verticalAlign; }
         set
         {
             this._verticalAlign = value;
             this._callback?.Invoke(eStyleClass.Font, eStyleProperty.VerticalAlign, value);
         }
     }
+
     bool? _outline;
+
     /// <summary>
     /// Displays only the inner and outer borders of each character. Similar to bold
     /// </summary>
     public bool? Outline
     {
-        get
-        {
-            return this._outline;
-        }
-        set
-        {
-            this._outline = value;                
-        }
+        get { return this._outline; }
+        set { this._outline = value; }
     }
+
     bool? _shadow;
+
     /// <summary>
     /// Shadow for the font. Used on Macintosh only.
     /// </summary>
     public bool? Shadow
     {
-        get
-        {
-            return this._shadow;
-        }
-        set
-        {
-            this._shadow = value;
-        }
+        get { return this._shadow; }
+        set { this._shadow = value; }
     }
+
     bool? _condense;
+
     /// <summary>
     /// Condence (squeeze it together). Used on Macintosh only.
     /// </summary>
-    public bool? Condense 
+    public bool? Condense
     {
-        get
-        {
-            return this._condense;
-        }
-        set
-        {
-            this._condense = value;
-        }
+        get { return this._condense; }
+        set { this._condense = value; }
     }
+
     bool? _extend;
+
     /// <summary>
     /// Extends or stretches the text. Legacy property used in older speadsheet applications.
     /// </summary>
     public bool? Extend
     {
-        get
-        {
-            return this._extend;
-        }
-        set
-        {
-            this._extend = value;
-        }
+        get { return this._extend; }
+        set { this._extend = value; }
     }
+
     eThemeFontCollectionType? _scheme;
+
     /// <summary>
     /// Which font scheme to use from the theme
     /// </summary>
     public eThemeFontCollectionType? Scheme
     {
-        get
-        {
-            return this._scheme;
-        }
+        get { return this._scheme; }
         set
         {
             this._scheme = value;
             this._callback?.Invoke(eStyleClass.Font, eStyleProperty.Scheme, value);
         }
     }
+
     /// <summary>
     /// The Id to identify the font uniquely
     /// </summary>
@@ -172,14 +153,39 @@ public class ExcelDxfFont : ExcelDxfFontBase
     {
         get
         {
-            return GetAsString(this.Bold) + "|" + GetAsString(this.Italic) + "|" + GetAsString(this.Strike) + "|" + (this.Color == null ? "" : this.Color.Id) + "|" + GetAsString(this.Underline)
-                   + "|" + GetAsString(this.Name) + "|" + GetAsString(this.Size) + "|" + GetAsString(this.Family) + "|" + this.GetVAlign() + "|" + GetAsString(this.Outline) + "|" + GetAsString(this.Shadow) + "|" + GetAsString(this.Condense) + "|" + GetAsString(this.Extend) + "|" + GetAsString(this.Scheme);
+            return GetAsString(this.Bold)
+                   + "|"
+                   + GetAsString(this.Italic)
+                   + "|"
+                   + GetAsString(this.Strike)
+                   + "|"
+                   + (this.Color == null ? "" : this.Color.Id)
+                   + "|"
+                   + GetAsString(this.Underline)
+                   + "|"
+                   + GetAsString(this.Name)
+                   + "|"
+                   + GetAsString(this.Size)
+                   + "|"
+                   + GetAsString(this.Family)
+                   + "|"
+                   + this.GetVAlign()
+                   + "|"
+                   + GetAsString(this.Outline)
+                   + "|"
+                   + GetAsString(this.Shadow)
+                   + "|"
+                   + GetAsString(this.Condense)
+                   + "|"
+                   + GetAsString(this.Extend)
+                   + "|"
+                   + GetAsString(this.Scheme);
         }
     }
 
     private string GetVAlign()
     {
-        return this.VerticalAlign==ExcelVerticalAlignmentFont.None ? "" : GetAsString(this.VerticalAlign);
+        return this.VerticalAlign == ExcelVerticalAlignmentFont.None ? "" : GetAsString(this.VerticalAlign);
     }
 
     /// <summary>
@@ -188,24 +194,25 @@ public class ExcelDxfFont : ExcelDxfFontBase
     /// <returns>A new instance of the object</returns>
     internal override DxfStyleBase Clone()
     {
-        return new ExcelDxfFont(this._styles, this._callback) 
+        return new ExcelDxfFont(this._styles, this._callback)
         {
             Name = this.Name,
             Size = this.Size,
             Family = this.Family,
-            Bold = this.Bold, 
-            Color = (ExcelDxfColor)this.Color.Clone(), 
-            Italic = this.Italic, 
-            Strike = this.Strike, 
-            Underline = this.Underline,  
+            Bold = this.Bold,
+            Color = (ExcelDxfColor)this.Color.Clone(),
+            Italic = this.Italic,
+            Strike = this.Strike,
+            Underline = this.Underline,
             Condense = this.Condense,
             Extend = this.Extend,
-            Scheme= this.Scheme,
-            Outline= this.Outline,
-            Shadow= this.Shadow,
-            VerticalAlign= this.VerticalAlign
+            Scheme = this.Scheme,
+            Outline = this.Outline,
+            Shadow = this.Shadow,
+            VerticalAlign = this.VerticalAlign
         };
     }
+
     /// <summary>
     /// If the object has any properties set
     /// </summary>
@@ -213,11 +220,19 @@ public class ExcelDxfFont : ExcelDxfFontBase
     {
         get
         {
-            return base.HasValue ||
-                   string.IsNullOrEmpty(this.Name) == false || this.Size.HasValue || this.Family.HasValue || this.Condense.HasValue || this.Extend.HasValue || this.Scheme.HasValue || this.Outline.HasValue || this.Shadow.HasValue || this.VerticalAlign != ExcelVerticalAlignmentFont.None
-                ;
+            return base.HasValue
+                   || string.IsNullOrEmpty(this.Name) == false
+                   || this.Size.HasValue
+                   || this.Family.HasValue
+                   || this.Condense.HasValue
+                   || this.Extend.HasValue
+                   || this.Scheme.HasValue
+                   || this.Outline.HasValue
+                   || this.Shadow.HasValue
+                   || this.VerticalAlign != ExcelVerticalAlignmentFont.None;
         }
     }
+
     /// <summary>
     /// Clears all properties
     /// </summary>
@@ -234,6 +249,7 @@ public class ExcelDxfFont : ExcelDxfFontBase
         this.Shadow = null;
         this.VerticalAlign = ExcelVerticalAlignmentFont.None;
     }
+
     internal override void CreateNodes(XmlHelper helper, string path)
     {
         helper.CreateNode(path);
@@ -249,8 +265,9 @@ public class ExcelDxfFont : ExcelDxfFontBase
         SetValueColor(helper, path + "/d:color", this.Color);
         SetValue(helper, path + "/d:name/@val", this.Name);
         SetValue(helper, path + "/d:family/@val", this.Family);
-        SetValue(helper, path + "/d:vertAlign/@val", this.VerticalAlign==ExcelVerticalAlignmentFont.None ? null : this.VerticalAlign.ToEnumString());
+        SetValue(helper, path + "/d:vertAlign/@val", this.VerticalAlign == ExcelVerticalAlignmentFont.None ? null : this.VerticalAlign.ToEnumString());
     }
+
     internal override void SetValuesFromXml(XmlHelper helper)
     {
         this.Size = helper.GetXmlNodeIntNull("d:font/d:sz/@val");
@@ -261,14 +278,15 @@ public class ExcelDxfFont : ExcelDxfFontBase
         this.Condense = helper.GetXmlNodeBoolNullable("d:font/d:condense/@val");
         this.Extend = helper.GetXmlNodeBoolNullable("d:font/d:extend/@val");
         this.Outline = helper.GetXmlNodeBoolNullable("d:font/d:outline/@val");
-            
+
         string? v = helper.GetXmlNodeString("d:font/d:vertAlign/@val");
-        this.VerticalAlign = string.IsNullOrEmpty(v)?ExcelVerticalAlignmentFont.None: v.ToEnum(ExcelVerticalAlignmentFont.None);
+        this.VerticalAlign = string.IsNullOrEmpty(v) ? ExcelVerticalAlignmentFont.None : v.ToEnum(ExcelVerticalAlignmentFont.None);
 
         this.Family = helper.GetXmlNodeIntNull("d:font/d:family/@val");
         this.Scheme = helper.GetXmlEnumNull<eThemeFontCollectionType>("d:font/d:scheme/@val");
         this.Shadow = helper.GetXmlNodeBoolNullable("d:font/d:shadow/@val");
     }
+
     internal override void SetStyle()
     {
         if (this._callback != null)
@@ -279,7 +297,6 @@ public class ExcelDxfFont : ExcelDxfFontBase
             this._callback?.Invoke(eStyleClass.Font, eStyleProperty.Family, this._family);
             this._callback?.Invoke(eStyleClass.Font, eStyleProperty.Scheme, this._scheme);
             this._callback?.Invoke(eStyleClass.Font, eStyleProperty.VerticalAlign, this._verticalAlign);
-
         }
     }
 }

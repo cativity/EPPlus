@@ -450,5 +450,5 @@ public class MiscStatisticalTests
         sheet.Calculate();
         result = sheet.Cells["A2"].Value;
         Assert.AreEqual(1.35335283, System.Math.Round((double)result, 8));
-    }  
+    }
 }

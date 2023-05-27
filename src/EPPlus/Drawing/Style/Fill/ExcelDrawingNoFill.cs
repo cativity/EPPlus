@@ -10,6 +10,7 @@
  *************************************************************************************************
   01/27/2020         EPPlus Software AB       Initial release EPPlus 5
  *************************************************************************************************/
+
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -23,32 +24,26 @@ namespace OfficeOpenXml.Drawing.Style.Fill;
 /// </summary>
 public class ExcelDrawingNoFill : ExcelDrawingFillBase
 {
-    internal ExcelDrawingNoFill(ExcelDrawing drawing) : base ()
+    internal ExcelDrawingNoFill(ExcelDrawing drawing)
+        : base()
     {
-
     }
+
     /// <summary>
     /// The type of fill
     /// </summary>
     public override eFillStyle Style
     {
-        get
-        {
-            return eFillStyle.NoFill;
-        }
+        get { return eFillStyle.NoFill; }
     }
 
     internal override string NodeName
     {
-        get
-        {
-            return "a:noFill";
-        }
+        get { return "a:noFill"; }
     }
 
     internal override void GetXml()
     {
-
     }
 
     internal override void SetXml(XmlNamespaceManager nsm, XmlNode node)
@@ -63,6 +58,5 @@ public class ExcelDrawingNoFill : ExcelDrawingFillBase
 
     internal override void UpdateXml()
     {
-            
     }
 }

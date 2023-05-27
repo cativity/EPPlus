@@ -10,6 +10,7 @@
  *************************************************************************************************
   08/19/2022         EPPlus Software AB       Implementing handling of initialization errors in ExcelPackage class.
  *************************************************************************************************/
+
 using OfficeOpenXml.Utils;
 using System;
 using System.Collections.Generic;
@@ -39,7 +40,6 @@ public class ExcelInitializationError
 
     private ExcelInitializationError()
     {
-
     }
 
     /// <summary>

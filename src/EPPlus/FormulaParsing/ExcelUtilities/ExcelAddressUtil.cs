@@ -10,6 +10,7 @@
  *************************************************************************************************
   01/27/2020         EPPlus Software AB       Initial release EPPlus 5
  *************************************************************************************************/
+
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -21,18 +22,22 @@ namespace OfficeOpenXml.FormulaParsing.ExcelUtilities;
 public static class ExcelAddressUtil
 {
     static char[] SheetNameInvalidChars = new char[] { '?', ':', '*', '/', '\\' };
+
     public static bool IsValidAddress(string token)
     {
         int ix;
+
         if (token[0] == '\'')
         {
             ix = token.LastIndexOf('\'');
+
             if (ix > 0 && ix < token.Length - 1 && token[ix + 1] == '!')
             {
                 if (token.IndexOfAny(SheetNameInvalidChars, 1, ix - 1) > 0)
                 {
                     return false;
                 }
+
                 token = token.Substring(ix + 2);
             }
             else
@@ -46,18 +51,27 @@ public static class ExcelAddressUtil
             {
                 return false;
             }
+
             token = token.Substring(token.IndexOf('!') + 1);
         }
+
         return ExcelCellBase.IsValidAddress(token);
     }
-    readonly static char[] NameInvalidChars = new char[] { '!', '@', '#', '$', '£', '%', '&', '/', '(', ')', '[', ']', '{', '}', '<', '>', '=', '+', '*', '-', '~', '^', ':', ';', '|', ',', ' ' };
+
+    readonly static char[] NameInvalidChars = new char[]
+    {
+        '!', '@', '#', '$', '£', '%', '&', '/', '(', ')', '[', ']', '{', '}', '<', '>', '=', '+', '*', '-', '~', '^', ':', ';', '|', ',', ' '
+    };
+
     public static bool IsValidName(string name)
     {
         if (string.IsNullOrEmpty(name))
         {
             return false;
         }
+
         char fc = name[0];
+
         if (!(char.IsLetter(fc) || fc == '_' || (fc == '\\' && name.Length > 2)))
         {
             return false;
@@ -68,7 +82,7 @@ public static class ExcelAddressUtil
             return false;
         }
 
-        if(ExcelCellBase.IsValidAddress(name))
+        if (ExcelCellBase.IsValidAddress(name))
         {
             return false;
         }
@@ -76,6 +90,7 @@ public static class ExcelAddressUtil
         //TODO:Add check for functionnames.
         return true;
     }
+
     public static string GetValidName(string name)
     {
         if (string.IsNullOrEmpty(name))
@@ -84,12 +99,14 @@ public static class ExcelAddressUtil
         }
 
         char fc = name[0];
+
         if (!(char.IsLetter(fc) || fc == '_' || (fc == '\\' && name.Length > 2)))
         {
             name = "_" + name.Substring(1);
         }
 
-        name=NameInvalidChars.Aggregate(name, (c1, c2) => c1.Replace(c2, '_'));
+        name = NameInvalidChars.Aggregate(name, (c1, c2) => c1.Replace(c2, '_'));
+
         return name;
     }
 }

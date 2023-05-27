@@ -22,6 +22,7 @@ public struct PivotItemReference
     /// The index of the item in items of the pivot table field
     /// </summary>
     public int Index { get; internal set; }
+
     /// <summary>
     /// The value of the item
     /// </summary>

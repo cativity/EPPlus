@@ -10,6 +10,7 @@
  *************************************************************************************************
   01/27/2020         EPPlus Software AB       Initial release EPPlus 5
  *************************************************************************************************/
+
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -21,32 +22,29 @@ public class HolidayWeekdaysFactory
 {
     private readonly DayOfWeek[] _dayOfWeekArray = new DayOfWeek[]
     {
-        DayOfWeek.Monday, 
-        DayOfWeek.Tuesday, 
-        DayOfWeek.Wednesday, 
-        DayOfWeek.Thursday,
-        DayOfWeek.Friday, 
-        DayOfWeek.Saturday,
-        DayOfWeek.Sunday
+        DayOfWeek.Monday, DayOfWeek.Tuesday, DayOfWeek.Wednesday, DayOfWeek.Thursday, DayOfWeek.Friday, DayOfWeek.Saturday, DayOfWeek.Sunday
     };
 
     public HolidayWeekdays Create(string weekdays)
     {
-        if(string.IsNullOrEmpty(weekdays) || weekdays.Length != 7)
+        if (string.IsNullOrEmpty(weekdays) || weekdays.Length != 7)
         {
             throw new ArgumentException("Illegal weekday string", nameof(Weekday));
         }
 
         List<DayOfWeek>? retVal = new List<DayOfWeek>();
         char[]? arr = weekdays.ToCharArray();
-        for(int i = 0; i < arr.Length;i++)
+
+        for (int i = 0; i < arr.Length; i++)
         {
             char ch = arr[i];
+
             if (ch == '1')
             {
                 retVal.Add(this._dayOfWeekArray[i]);
             }
         }
+
         return new HolidayWeekdays(retVal.ToArray());
     }
 
@@ -56,32 +54,46 @@ public class HolidayWeekdaysFactory
         {
             case 1:
                 return new HolidayWeekdays(DayOfWeek.Saturday, DayOfWeek.Sunday);
+
             case 2:
                 return new HolidayWeekdays(DayOfWeek.Sunday, DayOfWeek.Monday);
+
             case 3:
                 return new HolidayWeekdays(DayOfWeek.Monday, DayOfWeek.Tuesday);
+
             case 4:
                 return new HolidayWeekdays(DayOfWeek.Tuesday, DayOfWeek.Wednesday);
+
             case 5:
                 return new HolidayWeekdays(DayOfWeek.Wednesday, DayOfWeek.Thursday);
+
             case 6:
                 return new HolidayWeekdays(DayOfWeek.Thursday, DayOfWeek.Friday);
+
             case 7:
                 return new HolidayWeekdays(DayOfWeek.Friday, DayOfWeek.Saturday);
+
             case 11:
                 return new HolidayWeekdays(DayOfWeek.Sunday);
+
             case 12:
                 return new HolidayWeekdays(DayOfWeek.Monday);
+
             case 13:
                 return new HolidayWeekdays(DayOfWeek.Tuesday);
+
             case 14:
                 return new HolidayWeekdays(DayOfWeek.Wednesday);
+
             case 15:
                 return new HolidayWeekdays(DayOfWeek.Thursday);
+
             case 16:
                 return new HolidayWeekdays(DayOfWeek.Friday);
+
             case 17:
                 return new HolidayWeekdays(DayOfWeek.Saturday);
+
             default:
                 throw new ArgumentException("Invalid code supplied to HolidayWeekdaysFactory: " + code);
         }

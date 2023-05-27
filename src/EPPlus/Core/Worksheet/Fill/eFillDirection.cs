@@ -10,6 +10,7 @@
  *************************************************************************************************
     08/11/2021         EPPlus Software AB       EPPlus 5.8
  *************************************************************************************************/
+
 namespace OfficeOpenXml;
 
 /// <summary>
@@ -22,6 +23,7 @@ public enum eFillDirection
     /// The fill is performed row-wise
     /// </summary>
     Row,
+
     /// <summary>
     /// The fill is performed column-wise
     /// </summary>

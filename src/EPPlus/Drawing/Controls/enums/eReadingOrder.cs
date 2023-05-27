@@ -10,6 +10,7 @@
  *************************************************************************************************
     11/24/2020         EPPlus Software AB           Controls 
  *************************************************************************************************/
+
 namespace OfficeOpenXml.Drawing.Controls;
 
 /// <summary>
@@ -21,10 +22,12 @@ public enum eReadingOrder
     /// Reading order is determined by the first non-whitespace character
     /// </summary>
     ContextDependent = 0,
+
     /// <summary>
     /// Left to Right
     /// </summary>
     LeftToRight = 1,
+
     /// <summary>
     /// Right to Left
     /// </summary>

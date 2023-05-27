@@ -10,6 +10,7 @@
  *************************************************************************************************
   05/03/2020         EPPlus Software AB         Implemented function
  *************************************************************************************************/
+
 using OfficeOpenXml.FormulaParsing.Excel.Functions.Engineering.Implementations;
 using OfficeOpenXml.FormulaParsing.Excel.Functions.Metadata;
 using OfficeOpenXml.FormulaParsing.ExpressionGraph;
@@ -20,10 +21,7 @@ using OfficeOpenXml.FormulaParsing.Excel.Functions.Finance.Implementations;
 
 namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Engineering;
 
-[FunctionMetadata(
-                     Category = ExcelFunctionCategory.Engineering, 
-                     EPPlusVersion = "5.2", 
-                     Description = "Calculates the modified Bessel function Kn(x)")]
+[FunctionMetadata(Category = ExcelFunctionCategory.Engineering, EPPlusVersion = "5.2", Description = "Calculates the modified Bessel function Kn(x)")]
 internal class BesselK : ExcelFunction
 {
     public override CompileResult Execute(IEnumerable<FunctionArgument> arguments, ParsingContext context)
@@ -32,6 +30,7 @@ internal class BesselK : ExcelFunction
         double x = this.ArgToDecimal(arguments, 0);
         int n = this.ArgToInt(arguments, 1);
         FinanceCalcResult<double>? result = BesselKImpl.BesselK(x, n);
+
         return this.CreateResult(result.Result, DataType.Decimal);
     }
 }

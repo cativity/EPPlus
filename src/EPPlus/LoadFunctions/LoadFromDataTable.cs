@@ -10,6 +10,7 @@
  *************************************************************************************************
   07/16/2020         EPPlus Software AB       EPPlus 5.2.1
  *************************************************************************************************/
+
 using OfficeOpenXml.LoadFunctions.Params;
 using OfficeOpenXml.Table;
 using System;
@@ -51,15 +52,21 @@ internal class LoadFromDataTable
 
         //var rowArray = new List<object[]>();
         int row = this._range._fromRow;
+
         if (this._printHeaders)
         {
-            this._worksheet._values.SetValueRow_Value(this._range._fromRow, this._range._fromCol, this._dataTable.Columns.Cast<DataColumn>().Select((dc) => { return dc.Caption; }).ToArray());
+            this._worksheet._values.SetValueRow_Value(this._range._fromRow,
+                                                      this._range._fromCol,
+                                                      this._dataTable.Columns.Cast<DataColumn>().Select((dc) => { return dc.Caption; }).ToArray());
+
             row++;
         }
+
         foreach (DataRow dr in this._dataTable.Rows)
         {
             this._range.Worksheet._values.SetValueRow_Value(row++, this._range._fromCol, dr.ItemArray);
         }
+
         if (row != this._range._fromRow)
         {
             row--;
@@ -67,9 +74,15 @@ internal class LoadFromDataTable
 
         // set table style
         int rows = (this._dataTable.Rows.Count == 0 ? 1 : this._dataTable.Rows.Count) + (this._printHeaders ? 1 : 0);
+
         if (rows >= 0 && this._dataTable.Columns.Count > 0 && this._tableStyle.HasValue)
         {
-            ExcelTable? tbl = this._worksheet.Tables.Add(new ExcelAddressBase(this._range._fromRow, this._range._fromCol, this._range._fromRow + rows - 1, this._range._fromCol + this._dataTable.Columns.Count - 1), this._dataTable.TableName);
+            ExcelTable? tbl = this._worksheet.Tables.Add(new ExcelAddressBase(this._range._fromRow,
+                                                                              this._range._fromCol,
+                                                                              this._range._fromRow + rows - 1,
+                                                                              this._range._fromCol + this._dataTable.Columns.Count - 1),
+                                                         this._dataTable.TableName);
+
             tbl.ShowHeader = this._printHeaders;
             tbl.TableStyle = this._tableStyle.Value;
         }

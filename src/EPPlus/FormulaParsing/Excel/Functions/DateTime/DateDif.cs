@@ -10,6 +10,7 @@
  *************************************************************************************************
   11/27/2020         EPPlus Software AB       EPPlus 5.5
  *************************************************************************************************/
+
 using OfficeOpenXml.FormulaParsing.Excel.Functions.Metadata;
 using OfficeOpenXml.FormulaParsing.ExpressionGraph;
 using System;
@@ -18,10 +19,7 @@ using System.Linq;
 
 namespace OfficeOpenXml.FormulaParsing.Excel.Functions.DateTime;
 
-[FunctionMetadata(
-                     Category = ExcelFunctionCategory.DateAndTime,
-                     EPPlusVersion = "5.5",
-                     Description = "Get days, months, or years between two dates")]
+[FunctionMetadata(Category = ExcelFunctionCategory.DateAndTime, EPPlusVersion = "5.5", Description = "Get days, months, or years between two dates")]
 internal class DateDif : DateParsingFunction
 {
     public override CompileResult Execute(IEnumerable<FunctionArgument> arguments, ParsingContext context)
@@ -31,32 +29,44 @@ internal class DateDif : DateParsingFunction
         System.DateTime startDate = this.ParseDate(arguments, startDateObj);
         object? endDateObj = arguments.ElementAt(1).Value;
         System.DateTime endDate = this.ParseDate(arguments, endDateObj, 1);
+
         if (startDate > endDate)
         {
             return this.CreateResult(eErrorType.Num);
         }
 
         string? unit = ArgToString(arguments, 2);
-        switch(unit.ToLower())
+
+        switch (unit.ToLower())
         {
             case "y":
                 return this.CreateResult(DateDiffYears(startDate, endDate), DataType.Integer);
+
             case "m":
                 return this.CreateResult(DateDiffMonths(startDate, endDate), DataType.Integer);
+
             case "d":
                 double daysD = endDate.Subtract(startDate).TotalDays;
+
                 return this.CreateResult(daysD, DataType.Integer);
+
             case "ym":
                 double monthsYm = DateDiffMonthsY(startDate, endDate);
+
                 return this.CreateResult(monthsYm, DataType.Integer);
+
             case "yd":
                 double daysYd = GetStartYearEndDateY(startDate, endDate).Subtract(startDate).TotalDays;
+
                 return this.CreateResult(daysYd, DataType.Integer);
+
             case "md":
                 // NB! Excel calculates wrong here sometimes. Example DATEDIF(2001-04-02, 2003-01-01, "md") = 30 (it should be 29)
                 // we have not implemented this bug in EPPlus. Microsoft advices not to use the DateDif function due to this and other bugs.
                 double daysMd = GetStartYearEndDateMd(startDate, endDate).Subtract(startDate).TotalDays;
+
                 return this.CreateResult(daysMd, DataType.Integer);
+
             default:
                 return this.CreateResult(eErrorType.Num);
         }
@@ -66,10 +76,12 @@ internal class DateDif : DateParsingFunction
     {
         double result = Convert.ToDouble(end.Year - start.Year);
         System.DateTime tmpEnd = GetStartYearEndDate(start, end);
+
         if (start > tmpEnd)
         {
             result -= 1;
         }
+
         return result;
     }
 
@@ -78,16 +90,18 @@ internal class DateDif : DateParsingFunction
         double years = DateDiffYears(start, end);
         double result = years * 12;
         System.DateTime tmpEnd = GetStartYearEndDate(start, end);
-        if(start > tmpEnd)
+
+        if (start > tmpEnd)
         {
             result += 12;
+
             while (start > tmpEnd)
             {
                 tmpEnd = tmpEnd.AddMonths(1);
                 result--;
             }
         }
-            
+
         return result;
     }
 
@@ -96,19 +110,20 @@ internal class DateDif : DateParsingFunction
         System.DateTime endDate = GetStartYearEndDateY(start, end);
         double nMonths = 0d;
         System.DateTime tmpDate = start;
-        if(tmpDate.AddMonths(1) < endDate)
+
+        if (tmpDate.AddMonths(1) < endDate)
         {
             do
             {
                 tmpDate = tmpDate.AddMonths(1);
-                if(tmpDate < endDate)
+
+                if (tmpDate < endDate)
                 {
                     nMonths++;
                 }
-            }
-            while (tmpDate < endDate);
+            } while (tmpDate < endDate);
         }
-            
+
         return nMonths;
     }
 
@@ -120,20 +135,24 @@ internal class DateDif : DateParsingFunction
     private static System.DateTime GetStartYearEndDateY(System.DateTime start, System.DateTime end)
     {
         System.DateTime dt = new System.DateTime(start.Year, end.Month, end.Day, end.Hour, end.Minute, end.Second, end.Millisecond);
-        if(dt < start)
+
+        if (dt < start)
         {
             dt = dt.AddYears(1);
         }
+
         return dt;
     }
 
     private static System.DateTime GetStartYearEndDateMd(System.DateTime start, System.DateTime end)
     {
         System.DateTime dt = new System.DateTime(start.Year, start.Month, end.Day, end.Hour, end.Minute, end.Second, end.Millisecond);
+
         if (dt < start)
         {
             dt = dt.AddMonths(1);
         }
+
         return dt;
     }
 }

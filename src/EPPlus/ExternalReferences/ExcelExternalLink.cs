@@ -10,6 +10,7 @@
  *************************************************************************************************
   04/28/2021         EPPlus Software AB       EPPlus 5.7
  *************************************************************************************************/
+
 using OfficeOpenXml.Packaging;
 using System.Collections.Generic;
 using System.IO;
@@ -24,6 +25,7 @@ namespace OfficeOpenXml.ExternalReferences;
 public abstract class ExcelExternalLink
 {
     internal ExcelWorkbook _wb;
+
     internal ExcelExternalLink(ExcelWorkbook wb)
     {
         this._wb = wb;
@@ -31,6 +33,7 @@ public abstract class ExcelExternalLink
         this.Part = null;
         this.WorkbookElement = null;
     }
+
     internal ExcelExternalLink(ExcelWorkbook wb, XmlTextReader reader, ZipPackagePart part, XmlElement workbookElement)
     {
         this._wb = wb;
@@ -38,32 +41,23 @@ public abstract class ExcelExternalLink
         this.Part = part;
         this.WorkbookElement = workbookElement;
     }
+
     /// <summary>
     /// The type of external link
     /// </summary>
-    public abstract eExternalLinkType ExternalLinkType
-    {
-        get;
-    }
-    internal abstract void Save(StreamWriter sw);
-    internal XmlElement WorkbookElement
-    {
-        get;
-        set;
-    }
+    public abstract eExternalLinkType ExternalLinkType { get; }
 
-    internal ZipPackagePart Part
-    {
-        get;
-        set;
-    }
+    internal abstract void Save(StreamWriter sw);
+
+    internal XmlElement WorkbookElement { get; set; }
+
+    internal ZipPackagePart Part { get; set; }
+
     /// <summary>
     /// Provides an easy way to type cast the object to it's top level class
     /// </summary>
-    public ExcelExternalLinkAsType As
-    {
-        get;
-    }
+    public ExcelExternalLinkAsType As { get; }
+
     /// <summary>
     /// Returns the string representation of the object.
     /// </summary>
@@ -72,6 +66,7 @@ public abstract class ExcelExternalLink
     {
         return this.ExternalLinkType.ToString();
     }
+
     /// <summary>
     /// The index of the external link. The index can be used in formulas between brackets to reference this link.
     /// </summary>
@@ -80,25 +75,21 @@ public abstract class ExcelExternalLink
     /// </example>
     public int Index
     {
-        get
-        {
-            return this._wb.ExternalLinks.GetIndex(this)+1;
-        }
+        get { return this._wb.ExternalLinks.GetIndex(this) + 1; }
     }
+
     internal static bool HasWebProtocol(string uriPath)
     {
         return uriPath.StartsWith("http:") || uriPath.StartsWith("https:") || uriPath.StartsWith("ftp:") || uriPath.StartsWith("ftps:");
     }
+
     internal List<string> _errors = new List<string>();
+
     /// <summary>
     /// A list of errors that occured during load or update of the external workbook.
     /// </summary>
     public List<string> ErrorLog
     {
-        get
-        {
-            return this._errors;
-        }
+        get { return this._errors; }
     }
-
 }

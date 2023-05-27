@@ -19,7 +19,6 @@ public class FormulaParserTests : FormulaParserTestBase
         ExcelWorksheet? sheetA = wb.Worksheets.Add("A");
         ExcelWorksheet? sheetB = wb.Worksheets.Add("B");
 
-
         sheetA.SetValue("A1", 1);
         sheetA.SetFormula(1, 2, "A1");
         sheetA.SetFormula(1, 3, "B!A1");
@@ -50,6 +49,7 @@ public class FormulaParserTests : FormulaParserTestBase
     static string QStr(string s)
     {
         char quotechar = '\"';
+
         return $"{quotechar}{s}{quotechar}";
     }
 }

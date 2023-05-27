@@ -10,6 +10,7 @@
  *************************************************************************************************
   09/05/2022         EPPlus Software AB       EPPlus 6.1
  *************************************************************************************************/
+
 using OfficeOpenXml.Utils.CompundDocument;
 using OfficeOpenXml.VBA;
 using System;
@@ -22,7 +23,8 @@ namespace OfficeOpenXml.Vba.ContentHash;
 
 internal class FormsNormalizedDataHashInputProvider : ContentHashInputProvider
 {
-    public FormsNormalizedDataHashInputProvider(ExcelVbaProject project) : base(project)
+    public FormsNormalizedDataHashInputProvider(ExcelVbaProject project)
+        : base(project)
     {
     }
 
@@ -38,16 +40,19 @@ internal class FormsNormalizedDataHashInputProvider : ContentHashInputProvider
         ExcelVbaProject? p = this.Project;
         IList<string>? designers = GetDesigners(p);
         List<SortItem>? list = new List<SortItem>();
+
         foreach (string? designer in designers)
         {
             AppendDesignerStreams(p, list, designer);
         }
+
         WriteDesignerStreams(bw, p, list);
     }
 
     private static void WriteDesignerStreams(BinaryWriter bw, ExcelVbaProject p, List<SortItem> list)
     {
         HashSet<string>? hs = new HashSet<string>(list.Where(x => x.IsStream).Select(x => x.Name));
+
         foreach (CompoundDocumentItem? dir in p.Document.Directories)
         {
             if (hs.Contains(dir.FullName) && dir.StreamSize > 0)
@@ -73,22 +78,25 @@ internal class FormsNormalizedDataHashInputProvider : ContentHashInputProvider
     private static void NormalizeStorage(CompoundDocument.StoragePart storage, List<SortItem> list, string parentName)
     {
         IList<SortItem>? children = GetSortedChildren(storage);
+
         foreach (SortItem? child in children)
         {
             string? newChildName = parentName + "/" + child.Name;
-            if (child.IsStream==false)
+
+            if (child.IsStream == false)
             {
                 NormalizeStorage(storage.SubStorage[child.Name], list, newChildName);
             }
+
             child.Name = newChildName;
             list.Add(child);
         }
-
     }
 
     private static void WriteStreamData(BinaryWriter bw, byte[] b)
     {
         int streamLength;
+
         if (b != null)
         {
             bw.Write(b);
@@ -98,7 +106,9 @@ internal class FormsNormalizedDataHashInputProvider : ContentHashInputProvider
         {
             streamLength = 0;
         }
-        int zeros = 1023-(streamLength % 1023);
+
+        int zeros = 1023 - (streamLength % 1023);
+
         for (int i = 0; i < zeros; i++)
         {
             bw.Write((byte)0);
@@ -112,27 +122,32 @@ internal class FormsNormalizedDataHashInputProvider : ContentHashInputProvider
             this.Name = name;
             this.IsStream = isStream;
         }
-    
+
         public string Name { get; set; }
+
         public bool IsStream { get; set; }
     }
+
     private static IList<SortItem> GetSortedChildren(CompoundDocument.StoragePart storage)
     {
         List<SortItem>? list = new List<SortItem>();
         list.AddRange(storage.DataStreams.Keys.Select(x => new SortItem(x, true)));
         list.AddRange(storage.SubStorage.Keys.Select(x => new SortItem(x, false)));
+
         return list;
     }
 
     private static IList<string> GetDesigners(ExcelVbaProject p)
     {
         IEnumerable<string>? designerModules = p.Modules.Where(x => x.Type == eModuleType.Designer).Select(x => x.streamName);
+
         return designerModules.ToList();
     }
 
     private static void NormalizeDesignerStorage(ExcelVBAModule designerModule, BinaryWriter bw)
     {
         BufferedStream? buffer = new BufferedStream(bw.BaseStream, 1023);
+
         //var ds = p.Document.Storage.SubStorage[designerModule.streamName];
     }
 }

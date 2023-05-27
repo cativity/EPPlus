@@ -79,12 +79,7 @@ public class OuterWithHeaders
 }
 
 [EpplusTable(PrintHeaders = true)]
-[EPPlusTableColumnSortOrder(Properties = new string[]
-{
-    nameof(Acknowledged),
-    "Organization.OrgLevel4",
-    nameof(ApprovedUtc)
-})]
+[EPPlusTableColumnSortOrder(Properties = new string[] { nameof(Acknowledged), "Organization.OrgLevel4", nameof(ApprovedUtc) })]
 public class OuterWithSortOrderOnClassLevelV1
 {
     [EpplusTableColumn(Header = nameof(ApprovedUtc), Order = 1)]

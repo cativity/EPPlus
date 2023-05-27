@@ -10,11 +10,11 @@
  *************************************************************************************************
   01/27/2020         EPPlus Software AB       Initial release EPPlus 5
  *************************************************************************************************/
+
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-
 using OfficeOpenXml.ConditionalFormatting;
 
 namespace OfficeOpenXml.ConditionalFormatting.Contracts;
@@ -25,9 +25,11 @@ namespace OfficeOpenXml.ConditionalFormatting.Contracts;
 public interface IExcelConditionalFormattingFourIconSet<T> : IExcelConditionalFormattingThreeIconSet<T>
 {
     #region Public Properties
+
     /// <summary>
     /// Icon4 (part of the 4 ou 5 Icon Set)
     /// </summary>
-    ExcelConditionalFormattingIconDataBarValue Icon4 { get; }      
+    ExcelConditionalFormattingIconDataBarValue Icon4 { get; }
+
     #endregion Public Properties
 }

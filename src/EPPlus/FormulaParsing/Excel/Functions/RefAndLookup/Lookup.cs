@@ -10,6 +10,7 @@
  *************************************************************************************************
   01/27/2020         EPPlus Software AB       Initial release EPPlus 5
  *************************************************************************************************/
+
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -23,19 +24,21 @@ using OfficeOpenXml.FormulaParsing.Excel.Functions.Metadata;
 
 namespace OfficeOpenXml.FormulaParsing.Excel.Functions.RefAndLookup;
 
-[FunctionMetadata(
-                     Category = ExcelFunctionCategory.LookupAndReference,
-                     EPPlusVersion = "4",
-                     Description = "Searches for a specific value in one data vector, and returns a value from the corresponding position of a second data vector")]
+[FunctionMetadata(Category = ExcelFunctionCategory.LookupAndReference,
+                  EPPlusVersion = "4",
+                  Description =
+                      "Searches for a specific value in one data vector, and returns a value from the corresponding position of a second data vector")]
 internal class Lookup : LookupFunction
 {
     public override CompileResult Execute(IEnumerable<FunctionArgument> arguments, ParsingContext context)
     {
         ValidateArguments(arguments, 2);
+
         if (HaveTwoRanges(arguments))
         {
             return this.HandleTwoRanges(arguments, context);
         }
+
         return this.HandleSingleRange(arguments, context);
     }
 
@@ -60,13 +63,16 @@ internal class Lookup : LookupFunction
         int nCols = address.ToCol - address.FromCol;
         int lookupIndex = nCols + 1;
         LookupDirection lookupDirection = LookupDirection.Vertical;
+
         if (nCols > nRows)
         {
             lookupIndex = nRows + 1;
             lookupDirection = LookupDirection.Horizontal;
         }
+
         LookupArguments? lookupArgs = new LookupArguments(searchedValue, firstAddress, lookupIndex, 0, true, arguments.ElementAt(1).ValueAsRangeInfo);
         LookupNavigator? navigator = LookupNavigatorFactory.Create(lookupDirection, lookupArgs, context);
+
         return this.Lookup(navigator, lookupArgs);
     }
 
@@ -83,13 +89,18 @@ internal class Lookup : LookupFunction
         int lookupIndex = address2.FromCol - address1.FromCol + 1;
         int lookupOffset = address2.FromRow - address1.FromRow;
         LookupDirection lookupDirection = GetLookupDirection(address1);
+
         if (lookupDirection == LookupDirection.Horizontal)
         {
             lookupIndex = address2.FromRow - address1.FromRow + 1;
             lookupOffset = address2.FromCol - address1.FromCol;
         }
-        LookupArguments? lookupArgs = new LookupArguments(searchedValue, firstAddress, lookupIndex, lookupOffset,  true, arguments.ElementAt(1).ValueAsRangeInfo);
+
+        LookupArguments? lookupArgs =
+            new LookupArguments(searchedValue, firstAddress, lookupIndex, lookupOffset, true, arguments.ElementAt(1).ValueAsRangeInfo);
+
         LookupNavigator? navigator = LookupNavigatorFactory.Create(lookupDirection, lookupArgs, context);
+
         return this.Lookup(navigator, lookupArgs);
     }
 }

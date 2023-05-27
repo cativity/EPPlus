@@ -10,11 +10,13 @@
  *************************************************************************************************
   01/27/2020         EPPlus Software AB       Initial release EPPlus 5
  *************************************************************************************************/
+
 using OfficeOpenXml.Drawing.Interfaces;
 using OfficeOpenXml.Drawing.Style.Effect;
 using OfficeOpenXml.Drawing.Style.ThreeD;
 using System;
 using System.Xml;
+
 namespace OfficeOpenXml.Drawing.Chart;
 
 /// <summary>
@@ -23,26 +25,27 @@ namespace OfficeOpenXml.Drawing.Chart;
 public class ExcelChartSurface : XmlHelper, IDrawingStyleBase
 {
     ExcelChart _chart;
+
     internal ExcelChartSurface(ExcelChart chart, XmlNamespaceManager ns, XmlNode node)
-        : base(ns,node)
+        : base(ns, node)
     {
         this.SchemaNodeOrder = new string[] { "thickness", "spPr", "pictureOptions" };
         this._chart = chart;
     }
+
     #region "Public properties"
+
     const string THICKNESS_PATH = "c:thickness/@val";
+
     /// <summary>
     /// Show the values 
     /// </summary>
     public int Thickness
     {
-        get
-        {
-            return this.GetXmlNodeInt(THICKNESS_PATH);
-        }
+        get { return this.GetXmlNodeInt(THICKNESS_PATH); }
         set
         {
-            if(value < 0 && value > 9)
+            if (value < 0 && value > 9)
             {
                 throw new ArgumentOutOfRangeException("Thickness out of range. (0-9)");
             }
@@ -50,7 +53,9 @@ public class ExcelChartSurface : XmlHelper, IDrawingStyleBase
             this.SetXmlNodeString(THICKNESS_PATH, value.ToString());
         }
     }
+
     ExcelDrawingFill _fill = null;
+
     /// <summary>
     /// Access fill properties
     /// </summary>
@@ -58,18 +63,19 @@ public class ExcelChartSurface : XmlHelper, IDrawingStyleBase
     {
         get { return this._fill ??= new ExcelDrawingFill(this._chart, this.NameSpaceManager, this.TopNode, "c:spPr", this.SchemaNodeOrder); }
     }
+
     ExcelDrawingBorder _border = null;
+
     /// <summary>
     /// Access border properties
     /// </summary>
     public ExcelDrawingBorder Border
     {
-        get
-        {
-            return this._border ??= new ExcelDrawingBorder(this._chart, this.NameSpaceManager, this.TopNode, "c:spPr/a:ln", this.SchemaNodeOrder);
-        }
+        get { return this._border ??= new ExcelDrawingBorder(this._chart, this.NameSpaceManager, this.TopNode, "c:spPr/a:ln", this.SchemaNodeOrder); }
     }
+
     ExcelDrawingEffectStyle _effect = null;
+
     /// <summary>
     /// Effects
     /// </summary>
@@ -77,14 +83,12 @@ public class ExcelChartSurface : XmlHelper, IDrawingStyleBase
     {
         get
         {
-            return this._effect ??= new ExcelDrawingEffectStyle(this._chart,
-                                                                this.NameSpaceManager,
-                                                                this.TopNode,
-                                                                "c:spPr/a:effectLst",
-                                                                this.SchemaNodeOrder);
+            return this._effect ??= new ExcelDrawingEffectStyle(this._chart, this.NameSpaceManager, this.TopNode, "c:spPr/a:effectLst", this.SchemaNodeOrder);
         }
     }
+
     ExcelDrawing3D _threeD = null;
+
     /// <summary>
     /// 3D properties
     /// </summary>
@@ -92,6 +96,7 @@ public class ExcelChartSurface : XmlHelper, IDrawingStyleBase
     {
         get { return this._threeD ??= new ExcelDrawing3D(this.NameSpaceManager, this.TopNode, "c:spPr", this.SchemaNodeOrder); }
     }
+
     void IDrawingStyleBase.CreatespPr()
     {
         this.CreatespPrNode();

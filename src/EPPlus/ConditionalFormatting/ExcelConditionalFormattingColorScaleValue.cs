@@ -10,6 +10,7 @@
  *************************************************************************************************
   01/27/2020         EPPlus Software AB       Initial release EPPlus 5
  *************************************************************************************************/
+
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -27,20 +28,22 @@ namespace OfficeOpenXml.ConditionalFormatting;
 /// 18.3.1.11 cfvo (Conditional Format Value Object)
 /// Describes the values of the interpolation points in a gradient scale.
 /// </summary>
-public class ExcelConditionalFormattingColorScaleValue
-    : XmlHelper
+public class ExcelConditionalFormattingColorScaleValue : XmlHelper
 {
     /****************************************************************************************/
 
     #region Private Properties
+
     private eExcelConditionalFormattingValueObjectPosition _position;
     private eExcelConditionalFormattingRuleType _ruleType;
     private ExcelWorksheet _worksheet;
+
     #endregion Private Properties
 
     /****************************************************************************************/
 
     #region Constructors
+
     /// <summary>
     /// Initialize the cfvo (§18.3.1.11) node
     /// </summary>
@@ -56,21 +59,18 @@ public class ExcelConditionalFormattingColorScaleValue
     /// <param name="itemElementNode">The cfvo (§18.3.1.11) node parent. Can be any of the following:
     /// colorScale (§18.3.1.16); dataBar (§18.3.1.28); iconSet (§18.3.1.49)</param>
     /// <param name="namespaceManager"></param>
-    internal ExcelConditionalFormattingColorScaleValue(
-        eExcelConditionalFormattingValueObjectPosition position,
-        eExcelConditionalFormattingValueObjectType type,
-        Color color,
-        double value,
-        string formula,
-        eExcelConditionalFormattingRuleType ruleType,
-        ExcelAddress address,
-        int priority,
-        ExcelWorksheet worksheet,
-        XmlNode itemElementNode,
-        XmlNamespaceManager namespaceManager)
-        : base(
-               namespaceManager,
-               itemElementNode)
+    internal ExcelConditionalFormattingColorScaleValue(eExcelConditionalFormattingValueObjectPosition position,
+                                                       eExcelConditionalFormattingValueObjectType type,
+                                                       Color color,
+                                                       double value,
+                                                       string formula,
+                                                       eExcelConditionalFormattingRuleType ruleType,
+                                                       ExcelAddress address,
+                                                       int priority,
+                                                       ExcelWorksheet worksheet,
+                                                       XmlNode itemElementNode,
+                                                       XmlNamespaceManager namespaceManager)
+        : base(namespaceManager, itemElementNode)
     {
         Require.Argument(address).IsNotNull("address");
         Require.Argument(worksheet).IsNotNull("worksheet");
@@ -79,11 +79,7 @@ public class ExcelConditionalFormattingColorScaleValue
         this._worksheet = worksheet;
 
         // Schema order list
-        this.SchemaNodeOrder = new string[]
-        {
-            ExcelConditionalFormattingConstants.Nodes.Cfvo,
-            ExcelConditionalFormattingConstants.Nodes.Color
-        };
+        this.SchemaNodeOrder = new string[] { ExcelConditionalFormattingConstants.Nodes.Cfvo, ExcelConditionalFormattingConstants.Nodes.Color };
 
         this.Position = position;
         this.RuleType = ruleType;
@@ -92,32 +88,35 @@ public class ExcelConditionalFormattingColorScaleValue
         if (itemElementNode == null)
         {
             // Get the parent node path by the rule type
-            string parentNodePath = ExcelConditionalFormattingValueObjectType.GetParentPathByRuleType(
-                                                                                                      ruleType);
+            string parentNodePath = ExcelConditionalFormattingValueObjectType.GetParentPathByRuleType(ruleType);
 
             // Check for en error (rule type does not have <cfvo>)
             if (parentNodePath == string.Empty)
             {
-                throw new Exception(
-                                    ExcelConditionalFormattingConstants.Errors.MissingCfvoParentNode);
+                throw new Exception(ExcelConditionalFormattingConstants.Errors.MissingCfvoParentNode);
             }
 
             // Point to the <cfvo> parent node
-            itemElementNode = this._worksheet.WorksheetXml.SelectSingleNode(
-                                                                            string.Format(
-                                                                                          "//{0}[{1}='{2}']/{3}[{4}='{5}']/{6}",
+            itemElementNode = this._worksheet.WorksheetXml.SelectSingleNode(string.Format("//{0}[{1}='{2}']/{3}[{4}='{5}']/{6}",
+
                                                                                           // {0}
                                                                                           ExcelConditionalFormattingConstants.Paths.ConditionalFormatting,
+
                                                                                           // {1}
                                                                                           ExcelConditionalFormattingConstants.Paths.SqrefAttribute,
+
                                                                                           // {2}
                                                                                           address.Address,
+
                                                                                           // {3}
                                                                                           ExcelConditionalFormattingConstants.Paths.CfRule,
+
                                                                                           // {4}
                                                                                           ExcelConditionalFormattingConstants.Paths.PriorityAttribute,
+
                                                                                           // {5}
                                                                                           priority,
+
                                                                                           // {6}
                                                                                           parentNodePath),
                                                                             this._worksheet.NameSpaceManager);
@@ -153,29 +152,17 @@ public class ExcelConditionalFormattingColorScaleValue
     /// <param name="address"></param>
     /// <param name="worksheet"></param>
     /// <param name="namespaceManager"></param>
-    internal ExcelConditionalFormattingColorScaleValue(
-        eExcelConditionalFormattingValueObjectPosition position,
-        eExcelConditionalFormattingValueObjectType type,
-        Color color,
-        double value,
-        string formula,
-        eExcelConditionalFormattingRuleType ruleType,
-        ExcelAddress address,
-        int priority,
-        ExcelWorksheet worksheet,
-        XmlNamespaceManager namespaceManager)
-        : this(
-               position,
-               type,
-               color,
-               value,
-               formula,
-               ruleType,
-               address,
-               priority,
-               worksheet,
-               null,
-               namespaceManager)
+    internal ExcelConditionalFormattingColorScaleValue(eExcelConditionalFormattingValueObjectPosition position,
+                                                       eExcelConditionalFormattingValueObjectType type,
+                                                       Color color,
+                                                       double value,
+                                                       string formula,
+                                                       eExcelConditionalFormattingRuleType ruleType,
+                                                       ExcelAddress address,
+                                                       int priority,
+                                                       ExcelWorksheet worksheet,
+                                                       XmlNamespaceManager namespaceManager)
+        : this(position, type, color, value, formula, ruleType, address, priority, worksheet, null, namespaceManager)
     {
     }
 
@@ -191,35 +178,25 @@ public class ExcelConditionalFormattingColorScaleValue
     /// <param name="worksheet"></param>
     /// <param name="itemElementNode"></param>
     /// <param name="namespaceManager"></param>
-    internal ExcelConditionalFormattingColorScaleValue(
-        eExcelConditionalFormattingValueObjectPosition position,
-        eExcelConditionalFormattingValueObjectType type,
-        Color color,
-        eExcelConditionalFormattingRuleType ruleType,
-        ExcelAddress address,
-        int priority,
-        ExcelWorksheet worksheet,
-        XmlNode itemElementNode,
-        XmlNamespaceManager namespaceManager)
-        : this(
-               position,
-               type,
-               color,
-               0,
-               null,
-               ruleType,
-               address,
-               priority,
-               worksheet,
-               itemElementNode,
-               namespaceManager)
+    internal ExcelConditionalFormattingColorScaleValue(eExcelConditionalFormattingValueObjectPosition position,
+                                                       eExcelConditionalFormattingValueObjectType type,
+                                                       Color color,
+                                                       eExcelConditionalFormattingRuleType ruleType,
+                                                       ExcelAddress address,
+                                                       int priority,
+                                                       ExcelWorksheet worksheet,
+                                                       XmlNode itemElementNode,
+                                                       XmlNamespaceManager namespaceManager)
+        : this(position, type, color, 0, null, ruleType, address, priority, worksheet, itemElementNode, namespaceManager)
     {
     }
+
     #endregion Constructors
 
     /****************************************************************************************/
 
     #region Methods
+
     /// <summary>
     /// Get the node order (1, 2 ou 3) according to the Position (Low, Middle and High)
     /// and the Rule Type (TwoColorScale ou ThreeColorScale).
@@ -232,20 +209,17 @@ public class ExcelConditionalFormattingColorScaleValue
 
     /// <summary>
     /// Create the 'cfvo'/'color' nodes in the right order. They should appear like this:
-    ///		"cfvo"   --> Low Value (value object)
-    ///		"cfvo"   --> Middle Value (value object)
-    ///		"cfvo"   --> High Value (value object)
-    ///		"color"  --> Low Value (color)
-    ///		"color"  --> Middle Value (color)
-    ///		"color"  --> High Value (color)
+    ///     "cfvo"   --> Low Value (value object)
+    ///     "cfvo"   --> Middle Value (value object)
+    ///     "cfvo"   --> High Value (value object)
+    ///     "color"  --> Low Value (color)
+    ///     "color"  --> Middle Value (color)
+    ///     "color"  --> High Value (color)
     /// </summary>
     /// <param name="nodeType"></param>
     /// <param name="attributePath"></param>
     /// <param name="attributeValue"></param>
-    private void CreateNodeByOrdem(
-        eExcelConditionalFormattingValueObjectNodeType nodeType,
-        string attributePath,
-        string attributeValue)
+    private void CreateNodeByOrdem(eExcelConditionalFormattingValueObjectNodeType nodeType, string attributePath, string attributeValue)
     {
         // Save the current TopNode
         XmlNode currentTopNode = this.TopNode;
@@ -258,11 +232,11 @@ public class ExcelConditionalFormattingColorScaleValue
         if (nodeOrder > 1)
         {
             // Find the node just before the one we need to include
-            referenceNode = this.TopNode.SelectSingleNode(
-                                                          string.Format(
-                                                                        "{0}[position()={1}]",
+            referenceNode = this.TopNode.SelectSingleNode(string.Format("{0}[position()={1}]",
+
                                                                         // {0}
                                                                         nodePath,
+
                                                                         // {1}
                                                                         nodeOrder - 1),
                                                           this._worksheet.NameSpaceManager);
@@ -276,10 +250,11 @@ public class ExcelConditionalFormattingColorScaleValue
 
         // Create the node in the right order
         XmlNode? node = this.CreateComplexNode(this.TopNode,
-                                               string.Format(
-                                                             "{0}[position()={1}]",
+                                               string.Format("{0}[position()={1}]",
+
                                                              // {0}
                                                              nodePath,
+
                                                              // {1}
                                                              nodeOrder),
                                                nodeInsertOrder,
@@ -289,20 +264,18 @@ public class ExcelConditionalFormattingColorScaleValue
         this.TopNode = node;
 
         // Add/Remove the attribute (if the attributeValue is empty then it will be removed)
-        this.SetXmlNodeString(
-                              node,
-                              attributePath,
-                              attributeValue,
-                              true);
+        this.SetXmlNodeString(node, attributePath, attributeValue, true);
 
         // Point back to the <cfvo>/<color> parent node
         this.TopNode = currentTopNode;
     }
+
     #endregion Methos
 
     /****************************************************************************************/
 
     #region Exposed Properties
+
     /// <summary>
     /// The position
     /// </summary>
@@ -328,13 +301,14 @@ public class ExcelConditionalFormattingColorScaleValue
     {
         get
         {
-            string? typeAttribute = this.GetXmlNodeString(
-                                                          string.Format(
-                                                                        "{0}[position()={1}]/{2}",
+            string? typeAttribute = this.GetXmlNodeString(string.Format("{0}[position()={1}]/{2}",
+
                                                                         // {0}
                                                                         ExcelConditionalFormattingConstants.Paths.Cfvo,
+
                                                                         // {1}
                                                                         this.GetNodeOrder(),
+
                                                                         // {2}
                                                                         ExcelConditionalFormattingConstants.Paths.TypeAttribute));
 
@@ -342,8 +316,7 @@ public class ExcelConditionalFormattingColorScaleValue
         }
         set
         {
-            this.CreateNodeByOrdem(
-                                   eExcelConditionalFormattingValueObjectNodeType.Cfvo,
+            this.CreateNodeByOrdem(eExcelConditionalFormattingValueObjectNodeType.Cfvo,
                                    ExcelConditionalFormattingConstants.Paths.TypeAttribute,
                                    ExcelConditionalFormattingValueObjectType.GetAttributeByType(value));
 
@@ -356,24 +329,26 @@ public class ExcelConditionalFormattingColorScaleValue
                 case eExcelConditionalFormattingValueObjectType.Min:
                 case eExcelConditionalFormattingValueObjectType.Max:
                     removeValAttribute = true;
+
                     break;
             }
 
             // Check if we need to remove the @val attribute
             if (removeValAttribute)
             {
-                string nodePath = ExcelConditionalFormattingValueObjectType.GetNodePathByNodeType(
-                                                                                                  eExcelConditionalFormattingValueObjectNodeType.Cfvo);
+                string nodePath = ExcelConditionalFormattingValueObjectType.GetNodePathByNodeType(eExcelConditionalFormattingValueObjectNodeType.Cfvo);
                 int nodeOrder = this.GetNodeOrder();
 
                 // Remove the attribute (removed when the value = '')
                 this.CreateComplexNode(this.TopNode,
-                                       string.Format(
-                                                     "{0}[position()={1}]/{2}=''",
+                                       string.Format("{0}[position()={1}]/{2}=''",
+
                                                      // {0}
                                                      nodePath,
+
                                                      // {1}
                                                      nodeOrder,
+
                                                      // {2}
                                                      ExcelConditionalFormattingConstants.Paths.ValAttribute));
             }
@@ -388,13 +363,14 @@ public class ExcelConditionalFormattingColorScaleValue
         get
         {
             // Color Code like "FF5B34F2"
-            string? colorCode = this.GetXmlNodeString(
-                                                      string.Format(
-                                                                    "{0}[position()={1}]/{2}",
+            string? colorCode = this.GetXmlNodeString(string.Format("{0}[position()={1}]/{2}",
+
                                                                     // {0}
                                                                     ExcelConditionalFormattingConstants.Paths.Color,
+
                                                                     // {1}
                                                                     this.GetNodeOrder(),
+
                                                                     // {2}
                                                                     ExcelConditionalFormattingConstants.Paths.RgbAttribute));
 
@@ -403,8 +379,7 @@ public class ExcelConditionalFormattingColorScaleValue
         set
         {
             // Use the color code to store (Ex. "FF5B35F2")
-            this.CreateNodeByOrdem(
-                                   eExcelConditionalFormattingValueObjectNodeType.Color,
+            this.CreateNodeByOrdem(eExcelConditionalFormattingValueObjectNodeType.Color,
                                    ExcelConditionalFormattingConstants.Paths.RgbAttribute,
                                    value.ToArgb().ToString("x"));
         }
@@ -417,13 +392,14 @@ public class ExcelConditionalFormattingColorScaleValue
     {
         get
         {
-            return this.GetXmlNodeDouble(
-                                         string.Format(
-                                                       "{0}[position()={1}]/{2}",
+            return this.GetXmlNodeDouble(string.Format("{0}[position()={1}]/{2}",
+
                                                        // {0}
                                                        ExcelConditionalFormattingConstants.Paths.Cfvo,
+
                                                        // {1}
                                                        this.GetNodeOrder(),
+
                                                        // {2}
                                                        ExcelConditionalFormattingConstants.Paths.ValAttribute));
         }
@@ -439,10 +415,7 @@ public class ExcelConditionalFormattingColorScaleValue
                 valueToStore = value.ToString(CultureInfo.InvariantCulture);
             }
 
-            this.CreateNodeByOrdem(
-                                   eExcelConditionalFormattingValueObjectNodeType.Cfvo,
-                                   ExcelConditionalFormattingConstants.Paths.ValAttribute,
-                                   valueToStore);
+            this.CreateNodeByOrdem(eExcelConditionalFormattingValueObjectNodeType.Cfvo, ExcelConditionalFormattingConstants.Paths.ValAttribute, valueToStore);
         }
     }
 
@@ -460,13 +433,14 @@ public class ExcelConditionalFormattingColorScaleValue
             }
 
             // Excel stores the formula in the @val attribute
-            return this.GetXmlNodeString(
-                                         string.Format(
-                                                       "{0}[position()={1}]/{2}",
+            return this.GetXmlNodeString(string.Format("{0}[position()={1}]/{2}",
+
                                                        // {0}
                                                        ExcelConditionalFormattingConstants.Paths.Cfvo,
+
                                                        // {1}
                                                        this.GetNodeOrder(),
+
                                                        // {2}
                                                        ExcelConditionalFormattingConstants.Paths.ValAttribute));
         }
@@ -475,13 +449,13 @@ public class ExcelConditionalFormattingColorScaleValue
             // Only store the formula if the Object Value type is Formula
             if (this.Type == eExcelConditionalFormattingValueObjectType.Formula)
             {
-                this.CreateNodeByOrdem(
-                                       eExcelConditionalFormattingValueObjectNodeType.Cfvo,
+                this.CreateNodeByOrdem(eExcelConditionalFormattingValueObjectNodeType.Cfvo,
                                        ExcelConditionalFormattingConstants.Paths.ValAttribute,
                                        value == null ? string.Empty : value.ToString());
             }
         }
     }
+
     #endregion Exposed Properties
 
     /****************************************************************************************/

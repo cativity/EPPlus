@@ -18,6 +18,7 @@ public class ExcelPivotTableSlicerItemCollection : IEnumerable<ExcelPivotTableSl
     //private readonly ExcelPivotTableSlicer _slicer;
     private readonly ExcelPivotTableSlicerCache _cache;
     private readonly List<ExcelPivotTableSlicerItem> _items;
+
     internal ExcelPivotTableSlicerItemCollection(ExcelPivotTableSlicerCache cache)
     {
         this._cache = cache;
@@ -35,7 +36,9 @@ public class ExcelPivotTableSlicerItemCollection : IEnumerable<ExcelPivotTableSl
 
     internal void RefreshMe()
     {
-        EPPlusReadOnlyList<object>? cacheItems = this._cache._field.Cache.Grouping == null ? this._cache._field.Cache.SharedItems : this._cache._field.Cache.GroupItems;
+        EPPlusReadOnlyList<object>? cacheItems =
+            this._cache._field.Cache.Grouping == null ? this._cache._field.Cache.SharedItems : this._cache._field.Cache.GroupItems;
+
         if (cacheItems.Count == this._items.Count)
         {
             return;
@@ -63,6 +66,7 @@ public class ExcelPivotTableSlicerItemCollection : IEnumerable<ExcelPivotTableSl
     public IEnumerator<ExcelPivotTableSlicerItem> GetEnumerator()
     {
         this.Refresh();
+
         return this._items.GetEnumerator();
     }
 
@@ -73,18 +77,18 @@ public class ExcelPivotTableSlicerItemCollection : IEnumerable<ExcelPivotTableSl
     IEnumerator IEnumerable.GetEnumerator()
     {
         this.Refresh();
+
         return this._items.GetEnumerator();
     }
+
     /// <summary>
     /// Number of items in the collection.
     /// </summary>
-    public int Count 
-    { 
-        get
-        {
-            return this._items.Count;
-        }
+    public int Count
+    {
+        get { return this._items.Count; }
     }
+
     /// <summary>
     /// Get the value at the specific position in the collection
     /// </summary>
@@ -92,11 +96,9 @@ public class ExcelPivotTableSlicerItemCollection : IEnumerable<ExcelPivotTableSl
     /// <returns></returns>
     public ExcelPivotTableSlicerItem this[int index]
     {
-        get
-        {
-            return this._items[index];
-        }
+        get { return this._items[index]; }
     }
+
     /// <summary>
     /// Get the item with supplied value.
     /// </summary>
@@ -104,12 +106,14 @@ public class ExcelPivotTableSlicerItemCollection : IEnumerable<ExcelPivotTableSl
     /// <returns>The item matching the supplied value. Returns null if no value matches.</returns>
     public ExcelPivotTableSlicerItem GetByValue(object value)
     {
-        if (this._cache._field.Cache._cacheLookup.TryGetValue(value??"", out int ix))
+        if (this._cache._field.Cache._cacheLookup.TryGetValue(value ?? "", out int ix))
         {
             return this._items[ix];
         }
+
         return null;
     }
+
     /// <summary>
     /// Get the index of the item with supplied value.
     /// </summary>
@@ -121,8 +125,10 @@ public class ExcelPivotTableSlicerItemCollection : IEnumerable<ExcelPivotTableSl
         {
             return ix;
         }
+
         return -1;
     }
+
     /// <summary>
     /// It the object exists in the cache
     /// </summary>

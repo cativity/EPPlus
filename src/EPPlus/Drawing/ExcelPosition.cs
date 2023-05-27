@@ -10,6 +10,7 @@
  *************************************************************************************************
   01/27/2020         EPPlus Software AB       Initial release EPPlus 5
  *************************************************************************************************/
+
 using System.Xml;
 
 namespace OfficeOpenXml.Drawing;
@@ -20,51 +21,57 @@ namespace OfficeOpenXml.Drawing;
 public class ExcelPosition : XmlHelper
 {
     internal delegate void SetWidthCallback();
+
     XmlNode _node;
     XmlNamespaceManager _ns;
     SetWidthCallback _setWidthCallback;
-    internal ExcelPosition(XmlNamespaceManager ns, XmlNode node, SetWidthCallback setWidthCallback) :
-        base(ns, node)
+
+    internal ExcelPosition(XmlNamespaceManager ns, XmlNode node, SetWidthCallback setWidthCallback)
+        : base(ns, node)
     {
         this._node = node;
         this._ns = ns;
         this._setWidthCallback = setWidthCallback;
         this.Load();
     }
+
     const string colPath = "xdr:col";
-    int _column, _row, _columnOff, _rowOff;        
+
+    int _column,
+        _row,
+        _columnOff,
+        _rowOff;
+
     /// <summary>
     /// The column
     /// </summary>
     public int Column
     {
-        get
-        {
-            return this._column;
-        }
+        get { return this._column; }
         set
         {
             this._column = value;
             this._setWidthCallback?.Invoke();
         }
     }
+
     const string rowPath = "xdr:row";
+
     /// <summary>
     /// The row
     /// </summary>
     public int Row
     {
-        get
-        {
-            return this._row;
-        }
+        get { return this._row; }
         set
         {
             this._row = value;
             this._setWidthCallback?.Invoke();
         }
     }
+
     const string colOffPath = "xdr:colOff";
+
     /// <summary>
     /// Column Offset in EMU
     /// ss
@@ -74,17 +81,16 @@ public class ExcelPosition : XmlHelper
     /// </summary>
     public int ColumnOff
     {
-        get
-        {
-            return this._columnOff;
-        }
+        get { return this._columnOff; }
         set
         {
             this._columnOff = value;
             this._setWidthCallback?.Invoke();
         }
     }
+
     const string rowOffPath = "xdr:rowOff";
+
     /// <summary>
     /// Row Offset in EMU
     /// 
@@ -94,16 +100,14 @@ public class ExcelPosition : XmlHelper
     /// </summary>
     public int RowOff
     {
-        get
-        {
-            return this._rowOff;
-        }
+        get { return this._rowOff; }
         set
         {
             this._rowOff = value;
             this._setWidthCallback?.Invoke();
         }
     }
+
     public void Load()
     {
         this._column = this.GetXmlNodeInt(colPath);
@@ -111,6 +115,7 @@ public class ExcelPosition : XmlHelper
         this._row = this.GetXmlNodeInt(rowPath);
         this._rowOff = this.GetXmlNodeInt(rowOffPath);
     }
+
     public void UpdateXml()
     {
         this.SetXmlNodeString(colPath, this._column.ToString());

@@ -10,6 +10,7 @@
  *************************************************************************************************
   6/4/2022         EPPlus Software AB           ExcelTable Html Export
  *************************************************************************************************/
+
 using OfficeOpenXml.Export.HtmlExport.Settings;
 using OfficeOpenXml.Style.Table;
 using OfficeOpenXml.Table;
@@ -27,7 +28,6 @@ namespace OfficeOpenXml.Export.HtmlExport.Exporters
 {
     internal static class HtmlExportTableUtil
     {
-
         internal const string TableStyleClassPrefix = "ts-";
         internal const string TableClass = "epplus-table";
 
@@ -40,26 +40,27 @@ namespace OfficeOpenXml.Export.HtmlExport.Exporters
 
             className = className.Trim().Replace(" ", "-");
             string? newClassName = "";
+
             for (int i = 0; i < className.Length; i++)
             {
                 char c = className[i];
+
                 if (i == 0)
                 {
                     if (c == '-' || (c >= '0' && c <= '9'))
                     {
                         newClassName = "_";
+
                         continue;
                     }
                 }
 
-                if ((c >= '0' && c <= '9') ||
-                   (c >= 'a' && c <= 'z') ||
-                   (c >= 'A' && c <= 'Z') ||
-                    c >= 0x00A0)
+                if ((c >= '0' && c <= '9') || (c >= 'a' && c <= 'z') || (c >= 'A' && c <= 'Z') || c >= 0x00A0)
                 {
                     newClassName += c;
                 }
             }
+
             return string.IsNullOrEmpty(newClassName) ? optionalName : newClassName;
         }
 
@@ -78,6 +79,7 @@ namespace OfficeOpenXml.Export.HtmlExport.Exporters
         internal static string GetTableClasses(ExcelTable table)
         {
             string styleClass;
+
             if (table.TableStyle == TableStyles.Custom)
             {
                 styleClass = TableStyleClassPrefix + table.StyleName.Replace(" ", "-").ToLowerInvariant();
@@ -88,6 +90,7 @@ namespace OfficeOpenXml.Export.HtmlExport.Exporters
             }
 
             string? tblClasses = $"{styleClass}";
+
             if (table.ShowHeader)
             {
                 tblClasses += $" {styleClass}-header";
@@ -131,6 +134,7 @@ namespace OfficeOpenXml.Export.HtmlExport.Exporters
             {
                 string? tblClasses = $"{TableClass} ";
                 tblClasses += GetTableClasses(table);
+
                 if (settings.AdditionalTableClassNames.Count > 0)
                 {
                     foreach (string? cls in settings.AdditionalTableClassNames)
@@ -141,21 +145,28 @@ namespace OfficeOpenXml.Export.HtmlExport.Exporters
 
                 writer.AddAttribute(HtmlAttributes.Class, tblClasses);
             }
+
             if (!string.IsNullOrEmpty(settings.TableId))
             {
                 writer.AddAttribute(HtmlAttributes.Id, settings.TableId);
             }
         }
 
-        internal static void RenderTableCss(StreamWriter sw, ExcelTable table, HtmlTableExportSettings settings, Dictionary<string, int> styleCache, List<string> datatypes)
+        internal static void RenderTableCss(StreamWriter sw,
+                                            ExcelTable table,
+                                            HtmlTableExportSettings settings,
+                                            Dictionary<string, int> styleCache,
+                                            List<string> datatypes)
         {
             EpplusTableCssWriter? styleWriter = new EpplusTableCssWriter(sw, table, settings, styleCache);
+
             if (settings.Minify == false)
             {
                 styleWriter.WriteLine();
             }
 
             ExcelTableNamedStyle tblStyle;
+
             if (table.TableStyle == TableStyles.Custom)
             {
                 tblStyle = table.WorkSheet.Workbook.Styles.TableStyles[table.StyleName].As.TableStyle;
@@ -208,15 +219,21 @@ namespace OfficeOpenXml.Export.HtmlExport.Exporters
             styleWriter.FlushStream();
         }
 #if !NET35 && !NET40
-        internal static async Task RenderTableCssAsync(StreamWriter sw, ExcelTable table, HtmlTableExportSettings settings, Dictionary<string, int> styleCache, List<string> datatypes)
+        internal static async Task RenderTableCssAsync(StreamWriter sw,
+                                                       ExcelTable table,
+                                                       HtmlTableExportSettings settings,
+                                                       Dictionary<string, int> styleCache,
+                                                       List<string> datatypes)
         {
             EpplusTableCssWriter? styleWriter = new EpplusTableCssWriter(sw, table, settings, styleCache);
+
             if (settings.Minify == false)
             {
                 await styleWriter.WriteLineAsync();
             }
 
             ExcelTableNamedStyle tblStyle;
+
             if (table.TableStyle == TableStyles.Custom)
             {
                 tblStyle = table.WorkSheet.Workbook.Styles.TableStyles[table.StyleName].As.TableStyle;
@@ -265,7 +282,6 @@ namespace OfficeOpenXml.Export.HtmlExport.Exporters
             //First column
             string? tableClassFC = $"{tableClass}-first-column";
             await styleWriter.AddToCssAsync($"{tableClassFC}", tblStyle.FirstColumn, " tbody tr td:first-child");
-
 
             await styleWriter.FlushStreamAsync();
         }

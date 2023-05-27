@@ -10,6 +10,7 @@
  *************************************************************************************************
   01/27/2020         EPPlus Software AB       Initial release EPPlus 5
  *************************************************************************************************/
+
 using OfficeOpenXml.Drawing.Interfaces;
 using OfficeOpenXml.Drawing.Style.Effect;
 using OfficeOpenXml.Drawing.Style.ThreeD;
@@ -25,42 +26,40 @@ namespace OfficeOpenXml.Drawing.Chart;
 public class ExcelChartLegendEntry : XmlHelper, IDrawingStyle
 {
     internal ExcelChartStandard _chart;
-    internal ExcelChartLegendEntry(XmlNamespaceManager nsm, XmlNode topNode, ExcelChartStandard chart) : base(nsm, topNode)
+
+    internal ExcelChartLegendEntry(XmlNamespaceManager nsm, XmlNode topNode, ExcelChartStandard chart)
+        : base(nsm, topNode)
     {
         this.Init(chart);
         this.Index = this.GetXmlNodeInt("c:idx/@val");
         this.HasValue = true;
     }
 
-    internal ExcelChartLegendEntry(XmlNamespaceManager nsm, XmlNode legendNode, ExcelChartStandard chart, int serieIndex) : base(nsm)
+    internal ExcelChartLegendEntry(XmlNamespaceManager nsm, XmlNode legendNode, ExcelChartStandard chart, int serieIndex)
+        : base(nsm)
     {
         this.Init(chart);
         this.TopNode = legendNode;
         this.Index = serieIndex;
     }
+
     private void Init(ExcelChartStandard chart)
     {
         this._chart = chart;
         this.SchemaNodeOrder = new string[] { "idx", "deleted", "txPr" };
     }
+
     /// <summary>
     /// The index of the item
     /// </summary>
-    public int Index
-    {
-        get;
-        internal set;
+    public int Index { get; internal set; }
 
-    }
     /// <summary>
     /// If the items has been deleted or is visible.
     /// </summary>
     public bool Deleted
     {
-        get
-        {
-            return this.GetXmlNodeBool("c:delete/@val");
-        }
+        get { return this.GetXmlNodeBool("c:delete/@val"); }
         set
         {
             this.CreateTopNode();
@@ -68,14 +67,17 @@ public class ExcelChartLegendEntry : XmlHelper, IDrawingStyle
             this.SetXmlNodeBool("c:delete/@val", value);
         }
     }
+
     internal bool HasValue { get; set; }
+
     private void CreateTopNode()
     {
-        if(this.TopNode.LocalName != "legendEntry")
+        if (this.TopNode.LocalName != "legendEntry")
         {
             ExcelChartLegend? legend = this._chart.Legend;
             int preIx = legend.GetPreEntryIndex(this.Index);
             XmlNode legendEntryNode;
+
             if (preIx == -1)
             {
                 legendEntryNode = legend.CreateNode("c:legendEntry", false, true);
@@ -93,6 +95,7 @@ public class ExcelChartLegendEntry : XmlHelper, IDrawingStyle
     }
 
     ExcelTextFont _font = null;
+
     /// <summary>
     /// The Font properties
     /// </summary>
@@ -103,11 +106,19 @@ public class ExcelChartLegendEntry : XmlHelper, IDrawingStyle
             if (this._font == null)
             {
                 this.CreateTopNode();
-                this._font = new ExcelTextFont(this._chart, this.NameSpaceManager, this.TopNode, $"c:txPr/a:p/a:pPr/a:defRPr", this.SchemaNodeOrder, this.InitChartXml);                    
+
+                this._font = new ExcelTextFont(this._chart,
+                                               this.NameSpaceManager,
+                                               this.TopNode,
+                                               $"c:txPr/a:p/a:pPr/a:defRPr",
+                                               this.SchemaNodeOrder,
+                                               this.InitChartXml);
             }
+
             return this._font;
         }
     }
+
     internal void InitChartXml()
     {
         if (this.HasValue)
@@ -117,6 +128,7 @@ public class ExcelChartLegendEntry : XmlHelper, IDrawingStyle
 
         this.HasValue = true;
         this._font.CreateTopNode();
+
         if (this._chart.StyleManager.Style == null)
         {
             return;
@@ -127,22 +139,22 @@ public class ExcelChartLegendEntry : XmlHelper, IDrawingStyle
             XmlElement? node = (XmlElement)this.CreateNode("c:txPr/a:p/a:pPr/a:defRPr");
             CopyElement(this._chart.StyleManager.Style.Legend.DefaultTextRun.PathElement, node);
         }
+
         if (this._chart.StyleManager.Style.Legend.HasTextBody)
         {
             XmlElement? node = (XmlElement)this.CreateNode("c:txPr/a:bodyPr");
             CopyElement(this._chart.StyleManager.Style.Legend.DefaultTextBody.PathElement, node);
         }
     }
+
     ExcelTextBody _textBody = null;
+
     /// <summary>
     /// Access to text body properties
     /// </summary>
     public ExcelTextBody TextBody
     {
-        get
-        {
-            return this._textBody ??= new ExcelTextBody(this.NameSpaceManager, this.TopNode, $"c:txPr/a:bodyPr", this.SchemaNodeOrder);
-        }
+        get { return this._textBody ??= new ExcelTextBody(this.NameSpaceManager, this.TopNode, $"c:txPr/a:bodyPr", this.SchemaNodeOrder); }
     }
 
     /// <summary>
@@ -150,20 +162,15 @@ public class ExcelChartLegendEntry : XmlHelper, IDrawingStyle
     /// </summary>
     public ExcelDrawingBorder Border
     {
-        get
-        {
-            return null;
-        }
+        get { return null; }
     }
+
     /// <summary>
     /// Access to effects styling properties
     /// </summary>
     public ExcelDrawingEffectStyle Effect
     {
-        get
-        {
-            return null;
-        }
+        get { return null; }
     }
 
     /// <summary>
@@ -171,10 +178,7 @@ public class ExcelChartLegendEntry : XmlHelper, IDrawingStyle
     /// </summary>
     public ExcelDrawingFill Fill
     {
-        get
-        {
-            return null;
-        }
+        get { return null; }
     }
 
     /// <summary>
@@ -182,16 +186,12 @@ public class ExcelChartLegendEntry : XmlHelper, IDrawingStyle
     /// </summary>
     public ExcelDrawing3D ThreeD
     {
-        get
-        {
-            return null;
-        }
+        get { return null; }
     }
-
 
     internal void Save()
     {
-        if(this.Deleted==true)
+        if (this.Deleted == true)
         {
             this.DeleteNode("c:txPr");
         }
@@ -210,6 +210,5 @@ public class ExcelChartLegendEntry : XmlHelper, IDrawingStyle
 
     void IDrawingStyleBase.CreatespPr()
     {
-            
     }
 }

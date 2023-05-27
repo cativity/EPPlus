@@ -10,6 +10,7 @@
  *************************************************************************************************
   01/27/2020         EPPlus Software AB       Initial release EPPlus 5
  *************************************************************************************************/
+
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -24,7 +25,6 @@ public class NameValueProvider : INameValueProvider
 {
     private NameValueProvider()
     {
-
     }
 
     /// <summary>
@@ -61,7 +61,6 @@ public class NameValueProvider : INameValueProvider
     /// </summary>
     public void Reload()
     {
-            
     }
 
     public object GetNamedValue(string key, string worksheet)

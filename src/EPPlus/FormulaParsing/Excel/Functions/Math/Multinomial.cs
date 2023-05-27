@@ -10,6 +10,7 @@
  *************************************************************************************************
   12/10/2020         EPPlus Software AB       EPPlus 5.5
  *************************************************************************************************/
+
 using OfficeOpenXml.FormulaParsing.Excel.Functions.Metadata;
 using OfficeOpenXml.FormulaParsing.ExpressionGraph;
 using System;
@@ -19,10 +20,9 @@ using System.Text;
 
 namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Math;
 
-[FunctionMetadata(
-                     Category = ExcelFunctionCategory.MathAndTrig,
-                     EPPlusVersion = "5.5",
-                     Description = "Returns the ratio of the factorial of a sum of values to the product of factorials.")]
+[FunctionMetadata(Category = ExcelFunctionCategory.MathAndTrig,
+                  EPPlusVersion = "5.5",
+                  Description = "Returns the ratio of the factorial of a sum of values to the product of factorials.")]
 internal class Multinomial : ExcelFunction
 {
     public override CompileResult Execute(IEnumerable<FunctionArgument> arguments, ParsingContext context)
@@ -31,12 +31,15 @@ internal class Multinomial : ExcelFunction
         IEnumerable<ExcelDoubleCellValue>? numbers = this.ArgsToDoubleEnumerable(arguments, context);
         double part1 = 0d;
         double part2 = 1d;
-        foreach(ExcelDoubleCellValue number in numbers)
+
+        foreach (ExcelDoubleCellValue number in numbers)
         {
             part1 += number;
             part2 *= MathHelper.Factorial(number);
         }
+
         double result = MathHelper.Factorial(part1) / part2;
+
         return this.CreateResult(result, DataType.Decimal);
     }
 }

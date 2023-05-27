@@ -10,6 +10,7 @@
  *************************************************************************************************
   22/10/2022         EPPlus Software AB           EPPlus v6
  *************************************************************************************************/
+
 using OfficeOpenXml.FormulaParsing.Excel.Functions.Metadata;
 using OfficeOpenXml.FormulaParsing.ExpressionGraph;
 using System;
@@ -19,10 +20,7 @@ using MathObj = System.Math;
 
 namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Statistical;
 
-[FunctionMetadata(
-                     Category = ExcelFunctionCategory.Statistical,
-                     EPPlusVersion = "6.0",
-                     Description = "Returns the correlation coefficient of two cell ranges")]
+[FunctionMetadata(Category = ExcelFunctionCategory.Statistical, EPPlusVersion = "6.0", Description = "Returns the correlation coefficient of two cell ranges")]
 internal class Correl : ExcelFunction
 {
     public override CompileResult Execute(IEnumerable<FunctionArgument> arguments, ParsingContext context)
@@ -32,6 +30,7 @@ internal class Correl : ExcelFunction
         FunctionArgument? arg2 = arguments.ElementAt(1);
         ExcelDoubleCellValue[]? arr1 = this.ArgsToDoubleEnumerable(new FunctionArgument[] { arg1 }, context).ToArray();
         ExcelDoubleCellValue[]? arr2 = this.ArgsToDoubleEnumerable(new FunctionArgument[] { arg2 }, context).ToArray();
+
         if (arr2.Count() != arr1.Count())
         {
             return this.CreateResult(eErrorType.NA);
@@ -43,12 +42,14 @@ internal class Correl : ExcelFunction
         }
 
         double result = Covar(arr1, arr2) / StandardDeviation(arr1) / StandardDeviation(arr2);
+
         return this.CreateResult(result, DataType.Decimal);
     }
 
     private static double StandardDeviation(ExcelDoubleCellValue[] values)
     {
         double avg = values.Average(x => x.Value);
+
         return MathObj.Sqrt(values.Average(v => MathObj.Pow(v - avg, 2)));
     }
 
@@ -57,11 +58,14 @@ internal class Correl : ExcelFunction
         double avg1 = array1.Select(x => x.Value).Average();
         double avg2 = array2.Select(x => x.Value).Average();
         double result = 0d;
+
         for (int x = 0; x < array1.Length; x++)
         {
             result += (array1[x] - avg1) * (array2[x] - avg2);
         }
+
         result /= array1.Length;
+
         return result;
     }
 }

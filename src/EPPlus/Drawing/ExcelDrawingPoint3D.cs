@@ -10,6 +10,7 @@
  *************************************************************************************************
   01/27/2020         EPPlus Software AB       Initial release EPPlus 5
  *************************************************************************************************/
+
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -28,7 +29,14 @@ public class ExcelDrawingPoint3D : XmlHelper
     private readonly string _zPath = "{0}/@{1}z";
     private readonly Action<bool> _initParent;
     bool isInit = false;
-    internal ExcelDrawingPoint3D(XmlNamespaceManager nameSpaceManager, XmlNode topNode, string[] schemaNodeOrder, string path, string prefix, Action<bool> initParent) : base(nameSpaceManager, topNode)
+
+    internal ExcelDrawingPoint3D(XmlNamespaceManager nameSpaceManager,
+                                 XmlNode topNode,
+                                 string[] schemaNodeOrder,
+                                 string path,
+                                 string prefix,
+                                 Action<bool> initParent)
+        : base(nameSpaceManager, topNode)
     {
         this.SchemaNodeOrder = schemaNodeOrder;
         this._xPath = string.Format(this._xPath, path, prefix);
@@ -36,18 +44,16 @@ public class ExcelDrawingPoint3D : XmlHelper
         this._zPath = string.Format(this._zPath, path, prefix);
         this._initParent = initParent;
     }
+
     /// <summary>
     /// The X coordinate in point
     /// </summary>
     public double X
     {
-        get
-        {
-            return this.GetXmlNodeEmuToPtNull(this._xPath) ?? 0;
-        }
+        get { return this.GetXmlNodeEmuToPtNull(this._xPath) ?? 0; }
         set
         {
-            if(this.isInit==false)
+            if (this.isInit == false)
             {
                 this._initParent(false);
             }
@@ -55,15 +61,13 @@ public class ExcelDrawingPoint3D : XmlHelper
             this.SetXmlNodeEmuToPt(this._xPath, value);
         }
     }
+
     /// <summary>
     /// The Y coordinate
     /// </summary>
     public double Y
     {
-        get
-        {
-            return this.GetXmlNodeEmuToPtNull(this._yPath) ?? 0;
-        }
+        get { return this.GetXmlNodeEmuToPtNull(this._yPath) ?? 0; }
         set
         {
             if (this.isInit == false)
@@ -74,15 +78,13 @@ public class ExcelDrawingPoint3D : XmlHelper
             this.SetXmlNodeEmuToPt(this._yPath, value);
         }
     }
+
     /// <summary>
     /// The Z coordinate
     /// </summary>
     public double Z
     {
-        get
-        {
-            return this.GetXmlNodeEmuToPtNull(this._zPath) ?? 0;
-        }
+        get { return this.GetXmlNodeEmuToPtNull(this._zPath) ?? 0; }
         set
         {
             if (this.isInit == false)
@@ -93,11 +95,13 @@ public class ExcelDrawingPoint3D : XmlHelper
             this.SetXmlNodeEmuToPt(this._zPath, value);
         }
     }
+
     internal void InitXml()
     {
-        if (this.isInit==false)
+        if (this.isInit == false)
         {
             this.isInit = true;
+
             if (!this.ExistsNode(this._xPath))
             {
                 this.X = 0;
@@ -106,5 +110,4 @@ public class ExcelDrawingPoint3D : XmlHelper
             }
         }
     }
-
 }

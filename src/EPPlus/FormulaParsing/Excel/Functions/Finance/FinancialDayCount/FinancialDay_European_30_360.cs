@@ -10,6 +10,7 @@
  *************************************************************************************************
   05/03/2020         EPPlus Software AB         Implemented function
  *************************************************************************************************/
+
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -18,11 +19,13 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Finance.FinancialDayCount
 
 internal class FinancialDay_European_30_360 : FinancialDay
 {
-    public FinancialDay_European_30_360(System.DateTime date) : base(date)
+    public FinancialDay_European_30_360(System.DateTime date)
+        : base(date)
     {
     }
 
-    public FinancialDay_European_30_360(int year, int month, int day) : base(year, month, day)
+    public FinancialDay_European_30_360(int year, int month, int day)
+        : base(year, month, day)
     {
     }
 

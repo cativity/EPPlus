@@ -10,6 +10,7 @@
  *************************************************************************************************
   05/03/2020         EPPlus Software AB         Implemented function
  *************************************************************************************************/
+
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -30,10 +31,11 @@ internal static class TwoComplementHelper
 
     public static double ParseDecFromString(string number, int fromBase)
     {
-        if(IsNegativeNumber(number, fromBase))
+        if (IsNegativeNumber(number, fromBase))
         {
             return NegativeFromBase(number, fromBase) * -1;
         }
+
         return Convert.ToInt32(number, fromBase);
     }
 
@@ -47,10 +49,12 @@ internal static class TwoComplementHelper
         int len = number.Length;
         char[]? numArr = number.ToCharArray();
         string? result = string.Empty;
+
         for (int x = len - 1; x >= 0; x--)
         {
             int part = Convert.ToInt32(numArr[x].ToString(), fromBase);
-            if(fromBase == 16)
+
+            if (fromBase == 16)
             {
                 result = (fromBase - 1 - part).ToString("X") + result;
             }
@@ -59,7 +63,9 @@ internal static class TwoComplementHelper
                 result = (fromBase - 1 - part).ToString() + result;
             }
         }
+
         int decResult = Convert.ToInt32(result, fromBase) + 1;
+
         return decResult;
     }
 }

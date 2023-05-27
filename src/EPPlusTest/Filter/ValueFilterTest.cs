@@ -26,6 +26,7 @@
  *******************************************************************************
   01/27/2020         EPPlus Software AB       Initial release EPPlus 5
  *******************************************************************************/
+
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
 using System.Text;
@@ -40,11 +41,13 @@ namespace EPPlusTest.Filter;
 public class ValueFilter : TestBase
 {
     static ExcelPackage _pck;
+
     [ClassInitialize]
     public static void Init(TestContext context)
     {
         _pck = OpenPackage("ValueFilter.xlsx", true);
     }
+
     [ClassCleanup]
     public static void Cleanup()
     {
@@ -56,9 +59,9 @@ public class ValueFilter : TestBase
     {
         ExcelWorksheet? ws = _pck.Workbook.Worksheets.Add("ValueFilter");
         LoadTestdata(ws);
-            
+
         ws.AutoFilterAddress = ws.Cells["A1:D100"];
-        ExcelValueFilterColumn? col=ws.AutoFilter.Columns.AddValueFilterColumn(1);
+        ExcelValueFilterColumn? col = ws.AutoFilter.Columns.AddValueFilterColumn(1);
         col.Filters.Add("7");
         col.Filters.Add("14");
         col.Filters.Add("88");
@@ -77,6 +80,7 @@ public class ValueFilter : TestBase
         Assert.AreEqual(true, ws.Row(100).Hidden);
         Assert.AreEqual(false, ws.Row(101).Hidden);
     }
+
     [TestMethod]
     public void DateFilterYear()
     {
@@ -93,9 +97,10 @@ public class ValueFilter : TestBase
         Assert.AreEqual(false, ws.Row(row).Hidden);
         row = GetRowFromDate(new DateTime(year, 12, 31));
         Assert.AreEqual(false, ws.Row(row).Hidden);
-        row = GetRowFromDate(new DateTime(year+1, 1, 1));
+        row = GetRowFromDate(new DateTime(year + 1, 1, 1));
         Assert.AreEqual(true, ws.Row(row).Hidden);
     }
+
     [TestMethod]
     public void DateFilterMonth()
     {
@@ -105,10 +110,10 @@ public class ValueFilter : TestBase
         ws.AutoFilterAddress = ws.Cells["A1:D200"];
         ExcelValueFilterColumn? col = ws.AutoFilter.Columns.AddValueFilterColumn(0);
         int year = DateTime.Today.Year;
-        col.Filters.Add(new ExcelFilterDateGroupItem(year,1));
+        col.Filters.Add(new ExcelFilterDateGroupItem(year, 1));
         ws.AutoFilter.ApplyFilter();
 
-        int row = GetRowFromDate(new DateTime(year-1, 12, 31));
+        int row = GetRowFromDate(new DateTime(year - 1, 12, 31));
         Assert.AreEqual(true, ws.Row(row).Hidden);
         row = GetRowFromDate(new DateTime(year, 1, 1));
         Assert.AreEqual(false, ws.Row(row).Hidden);
@@ -117,6 +122,7 @@ public class ValueFilter : TestBase
         row = GetRowFromDate(new DateTime(year, 2, 1));
         Assert.AreEqual(true, ws.Row(row).Hidden);
     }
+
     [TestMethod]
     public void DateFilterDay()
     {
@@ -136,6 +142,7 @@ public class ValueFilter : TestBase
         row = GetRowFromDate(new DateTime(year, 1, 13));
         Assert.AreEqual(true, ws.Row(row).Hidden);
     }
+
     [TestMethod]
     public void DateFilterHour()
     {
@@ -156,6 +163,7 @@ public class ValueFilter : TestBase
         row++;
         Assert.AreEqual(true, ws.Row(row).Hidden);
     }
+
     [TestMethod]
     public void DateFilterMinute()
     {
@@ -176,6 +184,7 @@ public class ValueFilter : TestBase
         row++;
         Assert.AreEqual(true, ws.Row(row).Hidden);
     }
+
     [TestMethod]
     public void DateFilterSecond()
     {
@@ -196,6 +205,7 @@ public class ValueFilter : TestBase
         row++;
         Assert.AreEqual(true, ws.Row(row).Hidden);
     }
+
     [TestMethod]
     public void TextFilter()
     {
@@ -224,6 +234,7 @@ public class ValueFilter : TestBase
         Assert.AreEqual(false, ws.Row(102).Hidden); //Verify blanks
         Assert.AreEqual(false, ws.Row(103).Hidden);
     }
+
     [TestMethod]
     public void NumericFormattedFilter()
     {
@@ -256,7 +267,6 @@ public class ValueFilter : TestBase
         Assert.AreEqual(false, ws.Row(96).Hidden);
         Assert.AreEqual(true, ws.Row(97).Hidden);
 
-        Thread.CurrentThread.CurrentCulture= currentCulture;
+        Thread.CurrentThread.CurrentCulture = currentCulture;
     }
-
 }

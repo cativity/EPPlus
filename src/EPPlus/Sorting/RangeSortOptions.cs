@@ -10,6 +10,7 @@
  *************************************************************************************************
   05/07/2021         EPPlus Software AB       EPPlus 5.7
  *************************************************************************************************/
+
 using System;
 using System.Collections.Generic;
 using System.Globalization;
@@ -28,7 +29,6 @@ public class RangeSortOptions : SortOptionsBase
 
     internal RangeSortOptions()
     {
-
     }
 
     /// <summary>
@@ -39,7 +39,6 @@ public class RangeSortOptions : SortOptionsBase
     {
         return new RangeSortOptions();
     }
-
 
     /// <summary>
     /// Creates the first sort layer (i.e. the first sort condition) for a row based/top to bottom sort.

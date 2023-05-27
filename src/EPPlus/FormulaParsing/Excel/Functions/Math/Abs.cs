@@ -10,6 +10,7 @@
  *************************************************************************************************
   01/27/2020         EPPlus Software AB       Initial release EPPlus 5
  *************************************************************************************************/
+
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -19,25 +20,28 @@ using OfficeOpenXml.FormulaParsing.ExpressionGraph;
 
 namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Math;
 
-[FunctionMetadata(
-                     Category = ExcelFunctionCategory.MathAndTrig,
-                     EPPlusVersion = "4",
-                     Description = "Returns the absolute value (i.e. the modulus) of a supplied number")]
+[FunctionMetadata(Category = ExcelFunctionCategory.MathAndTrig,
+                  EPPlusVersion = "4",
+                  Description = "Returns the absolute value (i.e. the modulus) of a supplied number")]
 internal class Abs : ExcelFunction
 {
     public override CompileResult Execute(IEnumerable<FunctionArgument> arguments, ParsingContext context)
     {
         FunctionArgument[]? functionArguments = arguments as FunctionArgument[] ?? arguments.ToArray();
         ValidateArguments(functionArguments, 1);
+
         if (functionArguments.ElementAt(0).Value == null)
         {
             return this.CreateResult(0d, DataType.Decimal);
         }
+
         double val = this.ArgToDecimal(functionArguments, 0);
+
         if (val < 0)
         {
             val *= -1;
         }
+
         return this.CreateResult(val, DataType.Decimal);
     }
 }

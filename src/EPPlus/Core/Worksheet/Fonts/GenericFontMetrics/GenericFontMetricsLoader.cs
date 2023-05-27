@@ -10,6 +10,7 @@
  *************************************************************************************************
   12/26/2021         EPPlus Software AB       EPPlus 6.0
  *************************************************************************************************/
+
 using OfficeOpenXml.Packaging.Ionic.Zip;
 using OfficeOpenXml.Utils;
 using System;
@@ -33,10 +34,12 @@ internal static class GenericFontMetricsLoader
     {
         Dictionary<uint, SerializedFontMetrics>? fonts = new Dictionary<uint, SerializedFontMetrics>();
         Assembly? assembly = Assembly.GetExecutingAssembly();
+
         using (Stream? stream = assembly.GetManifestResourceStream("OfficeOpenXml.resources.TextMetrics.zip"))
         {
             ZipInputStream? zipStream = new ZipInputStream(stream);
             ZipEntry entry;
+
             while ((entry = zipStream.GetNextEntry()) != null)
             {
                 if (!entry.IsDirectory && Path.GetExtension(entry.FileName) == ".fmtr")
@@ -46,10 +49,10 @@ internal static class GenericFontMetricsLoader
                     using MemoryStream? ms = RecyclableMemory.GetStream(bytes);
                     SerializedFontMetrics? fnt = GenericFontMetricsSerializer.Deserialize(ms);
                     fonts.Add(fnt.GetKey(), fnt);
-
                 }
-            }  
+            }
         }
+
         return fonts;
     }
 }

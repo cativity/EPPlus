@@ -10,6 +10,7 @@
  *************************************************************************************************
   01/27/2020         EPPlus Software AB       Initial release EPPlus 5
  *************************************************************************************************/
+
 using OfficeOpenXml.FormulaParsing.LexicalAnalysis.TokenSeparatorHandlers;
 using System.Linq;
 using System.Text.RegularExpressions;
@@ -21,9 +22,12 @@ internal class TokenHandler : ITokenIndexProvider
     public TokenHandler(TokenizerContext context, ITokenFactory tokenFactory, ITokenSeparatorProvider tokenProvider, INameValueProvider nameValueProvider)
         : this(context, tokenFactory, tokenProvider, new TokenSeparatorHandler(tokenProvider, nameValueProvider))
     {
-
     }
-    public TokenHandler(TokenizerContext context, ITokenFactory tokenFactory, ITokenSeparatorProvider tokenProvider, TokenSeparatorHandler tokenSeparatorHandler)
+
+    public TokenHandler(TokenizerContext context,
+                        ITokenFactory tokenFactory,
+                        ITokenSeparatorProvider tokenProvider,
+                        TokenSeparatorHandler tokenSeparatorHandler)
     {
         this._context = context;
         this._tokenFactory = tokenFactory;
@@ -60,11 +64,11 @@ internal class TokenHandler : ITokenIndexProvider
             {
                 return;
             }
-                                              
+
             if (this._context.CurrentTokenHasValue)
             {
                 //if (Regex.IsMatch(_context.CurrentToken, "^\"*$"))
-                if(this._context.CurrentToken.StartsWith("\"") && this._context.CurrentToken.EndsWith("\""))
+                if (this._context.CurrentToken.StartsWith("\"") && this._context.CurrentToken.EndsWith("\""))
                 {
                     this._context.AddToken(this._tokenFactory.Create(this._context.CurrentToken, TokenType.StringContent));
                 }
@@ -73,22 +77,26 @@ internal class TokenHandler : ITokenIndexProvider
                     this._context.AddToken(this.CreateToken(this._context, this.Worksheet));
                 }
 
-
                 //If the a next token is an opening parantheses and the previous token is interpeted as an address or name, then the currenct token is a function
-                if (tokenSeparator.TokenTypeIsSet(TokenType.OpeningParenthesis) && (this._context.LastToken.Value.TokenTypeIsSet(TokenType.ExcelAddress) || this._context.LastToken.Value.TokenTypeIsSet(TokenType.NameValue)))
+                if (tokenSeparator.TokenTypeIsSet(TokenType.OpeningParenthesis)
+                    && (this._context.LastToken.Value.TokenTypeIsSet(TokenType.ExcelAddress)
+                        || this._context.LastToken.Value.TokenTypeIsSet(TokenType.NameValue)))
                 {
                     Token newToken = this._context.LastToken.Value.CloneWithNewTokenType(TokenType.Function);
                     this._context.ReplaceLastToken(newToken);
                 }
             }
+
             if (TokenIsNegator(tokenSeparator.Value, this._context))
             {
                 this._context.AddToken(new Token("-", TokenType.Negator));
+
                 return;
             }
 
             this._context.AddToken(tokenSeparator);
             this._context.NewToken();
+
             return;
         }
 
@@ -99,6 +107,7 @@ internal class TokenHandler : ITokenIndexProvider
     {
         bool result = this._tokenProvider.Tokens.ContainsKey(c.ToString());
         token = result ? token = this._tokenProvider.Tokens[c.ToString()] : default(Token);
+
         return result;
     }
 
@@ -115,16 +124,12 @@ internal class TokenHandler : ITokenIndexProvider
         }
 
         Token t = context.LastToken.Value;
-            
+
         return t.TokenTypeIsSet(TokenType.Operator)
-               ||
-               t.TokenTypeIsSet(TokenType.OpeningParenthesis)
-               ||
-               t.TokenTypeIsSet(TokenType.Comma)
-               ||
-               t.TokenTypeIsSet(TokenType.SemiColon)
-               ||
-               t.TokenTypeIsSet(TokenType.OpeningEnumerable);
+               || t.TokenTypeIsSet(TokenType.OpeningParenthesis)
+               || t.TokenTypeIsSet(TokenType.Comma)
+               || t.TokenTypeIsSet(TokenType.SemiColon)
+               || t.TokenTypeIsSet(TokenType.OpeningEnumerable);
     }
 
     private Token CreateToken(TokenizerContext context, string worksheet)
@@ -136,6 +141,7 @@ internal class TokenHandler : ITokenIndexProvider
                 return new Token("-", TokenType.Negator);
             }
         }
+
         return this._tokenFactory.Create(context.Result, context.CurrentToken, worksheet);
     }
 
@@ -143,7 +149,6 @@ internal class TokenHandler : ITokenIndexProvider
     {
         get { return this._tokenIndex; }
     }
-
 
     void ITokenIndexProvider.MoveIndexPointerForward()
     {

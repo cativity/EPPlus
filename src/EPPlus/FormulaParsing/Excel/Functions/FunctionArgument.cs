@@ -10,6 +10,7 @@
  *************************************************************************************************
   01/27/2020         EPPlus Software AB       Initial release EPPlus 5
  *************************************************************************************************/
+
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -28,7 +29,7 @@ public class FunctionArgument
     }
 
     public FunctionArgument(object val, DataType dataType)
-        :this(val)
+        : this(val)
     {
         this.DataType = dataType;
     }
@@ -85,6 +86,7 @@ public class FunctionArgument
     {
         get { return this.Value as IRangeInfo; }
     }
+
     public object ValueFirst
     {
         get
@@ -93,8 +95,10 @@ public class FunctionArgument
             {
                 this.Value = ((INameInfo)this.Value).Value;
             }
+
             IRangeInfo? v = this.Value as IRangeInfo;
-            if (v==null)
+
+            if (v == null)
             {
                 return this.Value;
             }
@@ -110,6 +114,7 @@ public class FunctionArgument
         get
         {
             object? v = this.ValueFirst;
+
             if (v == null)
             {
                 return default(string);
@@ -118,5 +123,4 @@ public class FunctionArgument
             return this.ValueFirst.ToString();
         }
     }
-
 }

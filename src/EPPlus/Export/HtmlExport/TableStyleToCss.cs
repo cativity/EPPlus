@@ -10,6 +10,7 @@
  *************************************************************************************************
   11/07/2021         EPPlus Software AB       Added Html Export
  *************************************************************************************************/
+
 using OfficeOpenXml.Drawing;
 using OfficeOpenXml.Drawing.Style.Coloring;
 using OfficeOpenXml.Style;
@@ -27,17 +28,17 @@ namespace OfficeOpenXml.Export.HtmlExport;
 internal class TableStyleToCss
 {
     ExcelTable _table;
+
     internal TableStyleToCss(ExcelTable table)
     {
         this._table = table;
     }
+
     internal void Render(StreamWriter sw)
     {
-        if(this._table.TableStyle==TableStyles.None)
+        if (this._table.TableStyle == TableStyles.None)
         {
             return;
         }
     }
-
-
 }

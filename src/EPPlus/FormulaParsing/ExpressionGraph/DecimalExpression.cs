@@ -10,6 +10,7 @@
  *************************************************************************************************
   01/27/2020         EPPlus Software AB       Initial release EPPlus 5
  *************************************************************************************************/
+
 using System.Globalization;
 
 namespace OfficeOpenXml.FormulaParsing.ExpressionGraph;
@@ -22,7 +23,6 @@ public class DecimalExpression : AtomicExpression
     public DecimalExpression(string expression)
         : this(expression, false)
     {
-            
     }
 
     public DecimalExpression(string expression, bool negate)
@@ -41,6 +41,7 @@ public class DecimalExpression : AtomicExpression
     {
         double result = this._compiledValue ?? double.Parse(this.ExpressionString, CultureInfo.InvariantCulture);
         result = this._negate ? result * -1 : result;
+
         return new CompileResult(result, DataType.Decimal);
     }
 }

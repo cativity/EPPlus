@@ -10,6 +10,7 @@
  *************************************************************************************************
     04/16/2020         EPPlus Software AB       EPPlus 5.2
  *************************************************************************************************/
+
 namespace OfficeOpenXml.Drawing.Chart.ChartEx;
 
 /// <summary>
@@ -21,6 +22,7 @@ public enum eFormulaDirection
     /// The formula is interpreted column-wise
     /// </summary>
     Column,
+
     /// <summary>
     /// The formula is interpreted row-wise
     /// </summary>

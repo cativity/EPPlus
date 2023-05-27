@@ -10,6 +10,7 @@
  *************************************************************************************************
   01/27/2020         EPPlus Software AB       Initial release EPPlus 5
  *************************************************************************************************/
+
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -32,10 +33,12 @@ public class ParsingConfiguration
     /// Configures the formula calc engine to allow circular references.
     /// </summary>
     public bool AllowCircularReferences { get; internal set; }
+
     /// <summary>
     /// In some functions EPPlus will round double values to 15 significant figures before the value is handled. This is an option for Excel compatibility.
     /// </summary>
     public PrecisionAndRoundingStrategy PrecisionAndRoundingStrategy { get; internal set; }
+
     /// <summary>
     /// The <see cref="ILexer"/> of the parser
     /// </summary>
@@ -54,17 +57,17 @@ public class ParsingConfiguration
     /// <summary>
     /// The <see cref="IExpressionCompiler"/> of the parser
     /// </summary>
-    public IExpressionCompiler ExpressionCompiler{ get; private set; }
+    public IExpressionCompiler ExpressionCompiler { get; private set; }
 
     /// <summary>
     /// The <see cref="FunctionRepository"/> of the parser
     /// </summary>
-    public FunctionRepository FunctionRepository{ get; private set; }
+    public FunctionRepository FunctionRepository { get; private set; }
 
     /// <summary>
     /// Constructor
     /// </summary>
-    private ParsingConfiguration() 
+    private ParsingConfiguration()
     {
         this.FunctionRepository = FunctionRepository.Create();
     }
@@ -86,6 +89,7 @@ public class ParsingConfiguration
     public ParsingConfiguration SetLexer(ILexer lexer)
     {
         this.Lexer = lexer;
+
         return this;
     }
 
@@ -97,6 +101,7 @@ public class ParsingConfiguration
     internal ParsingConfiguration SetGraphBuilder(IExpressionGraphBuilder graphBuilder)
     {
         this.GraphBuilder = graphBuilder;
+
         return this;
     }
 
@@ -108,6 +113,7 @@ public class ParsingConfiguration
     public ParsingConfiguration SetExpresionCompiler(IExpressionCompiler expressionCompiler)
     {
         this.ExpressionCompiler = expressionCompiler;
+
         return this;
     }
 
@@ -120,6 +126,7 @@ public class ParsingConfiguration
     {
         Require.That(logger).Named("logger").IsNotNull();
         this.Logger = logger;
+
         return this;
     }
 
@@ -130,6 +137,7 @@ public class ParsingConfiguration
     public ParsingConfiguration DetachLogger()
     {
         this.Logger = null;
+
         return this;
     }
 }

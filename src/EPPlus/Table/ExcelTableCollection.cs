@@ -10,6 +10,7 @@
  *************************************************************************************************
   01/27/2020         EPPlus Software AB       Initial release EPPlus 5
  *************************************************************************************************/
+
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -27,27 +28,32 @@ public class ExcelTableCollection : IEnumerable<ExcelTable>
 {
     List<ExcelTable> _tables = new List<ExcelTable>();
     internal Dictionary<string, int> _tableNames = new Dictionary<string, int>(StringComparer.OrdinalIgnoreCase);
-    ExcelWorksheet _ws;        
+    ExcelWorksheet _ws;
+
     internal ExcelTableCollection(ExcelWorksheet ws)
     {
         ZipPackage? pck = ws._package.ZipPackage;
         this._ws = ws;
-        foreach(XmlElement node in ws.WorksheetXml.SelectNodes("//d:tableParts/d:tablePart", ws.NameSpaceManager))
+
+        foreach (XmlElement node in ws.WorksheetXml.SelectNodes("//d:tableParts/d:tablePart", ws.NameSpaceManager))
         {
-            ZipPackageRelationship? rel = ws.Part.GetRelationship(node.GetAttribute("id",ExcelPackage.schemaRelationships));
+            ZipPackageRelationship? rel = ws.Part.GetRelationship(node.GetAttribute("id", ExcelPackage.schemaRelationships));
             ExcelTable? tbl = new ExcelTable(rel, ws);
             this._tableNames.Add(tbl.Name, this._tables.Count);
             this._tables.Add(tbl);
         }
     }
+
     private ExcelTable Add(ExcelTable tbl)
     {
         this._tables.Add(tbl);
         this._tableNames.Add(tbl.Name, this._tables.Count - 1);
+
         if (tbl.Id >= this._ws.Workbook._nextTableID)
         {
             this._ws.Workbook._nextTableID = tbl.Id + 1;
         }
+
         return tbl;
     }
 
@@ -85,6 +91,7 @@ public class ExcelTableCollection : IEnumerable<ExcelTable>
                 throw new ArgumentException(string.Format("Table range collides with table {0}", t.Name));
             }
         }
+
         foreach (string? mc in this._ws.MergedCells)
         {
             if (mc == null)
@@ -109,6 +116,7 @@ public class ExcelTableCollection : IEnumerable<ExcelTable>
         }
 
         char c = name[0];
+
         if (char.IsLetter(c) == false && c != '\\' && c != '_')
         {
             throw new ArgumentException("Tablename start with invalid character", "Name");
@@ -119,6 +127,7 @@ public class ExcelTableCollection : IEnumerable<ExcelTable>
             throw new ArgumentException("Tablename is not valid", "Name");
         }
     }
+
     /// <summary>
     /// Delete the table at the specified index
     /// </summary>
@@ -144,7 +153,6 @@ public class ExcelTableCollection : IEnumerable<ExcelTable>
         this.Delete(this[Name], ClearRange);
     }
 
-
     /// <summary>
     /// Delete the table
     /// </summary>
@@ -156,11 +164,13 @@ public class ExcelTableCollection : IEnumerable<ExcelTable>
         {
             throw new ArgumentOutOfRangeException("Table", String.Format("Table {0} does not exist in this collection", Table.Name));
         }
+
         lock (this)
         {
             int tIx = this._tableNames[Table.Name];
             this._tableNames.Remove(Table.Name);
             this._tables.Remove(Table);
+
             foreach (ExcelWorksheet? sheet in Table.WorkSheet.Workbook.Worksheets)
             {
                 if (sheet is ExcelChartsheet)
@@ -175,45 +185,49 @@ public class ExcelTableCollection : IEnumerable<ExcelTable>
                         t.Id--;
                     }
                 }
+
                 Table.WorkSheet.Workbook._nextTableID--;
             }
-            foreach(string? name in this._tableNames.Keys.ToArray())
-            { 
-                if(this._tableNames[name] > tIx)
+
+            foreach (string? name in this._tableNames.Keys.ToArray())
+            {
+                if (this._tableNames[name] > tIx)
                 {
                     this._tableNames[name]--;
                 }
             }
+
             Table.DeleteMe();
+
             if (ClearRange)
             {
                 ExcelRange? range = this._ws.Cells[Table.Address.Address];
                 range.Clear();
-            }                
+            }
         }
-
     }
 
     internal string GetNewTableName()
     {
         string name = "Table1";
         int i = 2;
+
         while (this._ws.Workbook.ExistsTableName(name))
         {
             name = string.Format("Table{0}", i++);
         }
+
         return name;
     }
+
     /// <summary>
     /// Number of items in the collection
     /// </summary>
     public int Count
     {
-        get
-        {
-            return this._tables.Count;
-        }
+        get { return this._tables.Count; }
     }
+
     /// <summary>
     /// Get the table object from a range.
     /// </summary>
@@ -228,8 +242,10 @@ public class ExcelTableCollection : IEnumerable<ExcelTable>
                 return tbl;
             }
         }
+
         return null;
     }
+
     /// <summary>
     /// The table Index. Base 0.
     /// </summary>
@@ -243,9 +259,11 @@ public class ExcelTableCollection : IEnumerable<ExcelTable>
             {
                 throw new ArgumentOutOfRangeException("Table index out of range");
             }
+
             return this._tables[Index];
         }
     }
+
     /// <summary>
     /// Indexer
     /// </summary>
@@ -265,6 +283,7 @@ public class ExcelTableCollection : IEnumerable<ExcelTable>
             }
         }
     }
+
     /// <summary>
     /// Gets the enumerator for the collection
     /// </summary>

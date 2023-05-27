@@ -10,6 +10,7 @@
  *************************************************************************************************
   05/03/2020         EPPlus Software AB         Implemented function
  *************************************************************************************************/
+
 using OfficeOpenXml.FormulaParsing.Excel.Functions.Helpers;
 using OfficeOpenXml.FormulaParsing.Excel.Functions.Metadata;
 using OfficeOpenXml.FormulaParsing.ExpressionGraph;
@@ -20,10 +21,7 @@ using System.Text;
 
 namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Engineering;
 
-[FunctionMetadata(
-                     Category = ExcelFunctionCategory.Engineering,
-                     EPPlusVersion = "5.1",
-                     Description = "Converts a binary number to hexadecimal")]
+[FunctionMetadata(Category = ExcelFunctionCategory.Engineering, EPPlusVersion = "5.1", Description = "Converts a binary number to hexadecimal")]
 internal class Bin2Hex : ExcelFunction
 {
     public override CompileResult Execute(IEnumerable<FunctionArgument> arguments, ParsingContext context)
@@ -31,9 +29,11 @@ internal class Bin2Hex : ExcelFunction
         ValidateArguments(arguments, 1);
         string? number = ArgToString(arguments, 0);
         string? formatString = "X";
-        if(arguments.Count() > 1)
+
+        if (arguments.Count() > 1)
         {
             int padding = this.ArgToInt(arguments, 1);
+
             if ((padding < 0) ^ (padding > 10))
             {
                 return this.CreateResult(eErrorType.Num);
@@ -41,6 +41,7 @@ internal class Bin2Hex : ExcelFunction
 
             formatString += padding;
         }
+
         if (number.Length > 10)
         {
             return this.CreateResult(eErrorType.Num);
@@ -49,6 +50,7 @@ internal class Bin2Hex : ExcelFunction
         if (number.Length < 10)
         {
             int n = Convert.ToInt32(number, 2);
+
             return this.CreateResult(n.ToString(formatString), DataType.Decimal);
         }
         else
@@ -59,10 +61,12 @@ internal class Bin2Hex : ExcelFunction
             }
 
             string? hexStr = result.ToString(formatString);
-            if(result < 0)
+
+            if (result < 0)
             {
                 hexStr = PaddingHelper.EnsureLength(hexStr, 10, "F");
             }
+
             return this.CreateResult(hexStr, DataType.String);
         }
     }

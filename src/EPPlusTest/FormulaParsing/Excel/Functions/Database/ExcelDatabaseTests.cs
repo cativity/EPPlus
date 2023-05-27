@@ -26,6 +26,7 @@
  *******************************************************************************
   01/27/2020         EPPlus Software AB       Initial release EPPlus 5
  *******************************************************************************/
+
 using System;
 using System.Linq;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -56,7 +57,6 @@ public class ExcelDatabaseTests
         ExcelDatabase? database = GetDatabase(package);
 
         Assert.IsTrue(database.HasMoreRows);
-
     }
 
     [TestMethod]
@@ -67,7 +67,6 @@ public class ExcelDatabaseTests
         database.Read();
 
         Assert.IsFalse(database.HasMoreRows);
-
     }
 
     [TestMethod]
@@ -79,7 +78,6 @@ public class ExcelDatabaseTests
 
         Assert.AreEqual(1, row["col1"]);
         Assert.AreEqual(2, row["col2"]);
-
     }
 
     private static ExcelDatabase GetDatabase(ExcelPackage package)
@@ -91,6 +89,7 @@ public class ExcelDatabaseTests
         sheet.Cells["B1"].Value = "col2";
         sheet.Cells["B2"].Value = 2;
         ExcelDatabase? database = new ExcelDatabase(provider, "A1:B2");
+
         return database;
     }
 }

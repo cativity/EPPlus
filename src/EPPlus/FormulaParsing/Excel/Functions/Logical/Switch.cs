@@ -10,6 +10,7 @@
  *************************************************************************************************
   01/27/2020         EPPlus Software AB       Initial release EPPlus 5
  *************************************************************************************************/
+
 using OfficeOpenXml.FormulaParsing.Excel.Functions.Metadata;
 using OfficeOpenXml.FormulaParsing.ExpressionGraph;
 using System;
@@ -19,18 +20,18 @@ using System.Text;
 
 namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Logical;
 
-[FunctionMetadata(
-                     Category = ExcelFunctionCategory.Logical,
-                     EPPlusVersion = "5.0",
-                     Description = "Compares a number of supplied values to a supplied test expression and returns a result corresponding to the first value that matches the test expression. ",
-                     IntroducedInExcelVersion = "2019")]
+[FunctionMetadata(Category = ExcelFunctionCategory.Logical,
+                  EPPlusVersion = "5.0",
+                  Description =
+                      "Compares a number of supplied values to a supplied test expression and returns a result corresponding to the first value that matches the test expression. ",
+                  IntroducedInExcelVersion = "2019")]
 internal class Switch : ExcelFunction
 {
     public Switch()
         : this(new CompileResultFactory())
     {
-
     }
+
     public Switch(CompileResultFactory compileResultFactory)
     {
         this._compileResultFactory = compileResultFactory;
@@ -43,14 +44,17 @@ internal class Switch : ExcelFunction
         ValidateArguments(arguments, 3);
         object? expression = arguments.ElementAt(0).ValueFirst;
         int maxLength = 1 + (126 * 2);
-        for(int x = 1; x < arguments.Count() - 1 || x >= maxLength; x += 2)
+
+        for (int x = 1; x < arguments.Count() - 1 || x >= maxLength; x += 2)
         {
             object? candidate = arguments.ElementAt(x).Value;
-            if(IsMatch(expression, candidate))
+
+            if (IsMatch(expression, candidate))
             {
                 return this._compileResultFactory.Create(arguments.ElementAt(x + 1).Value);
             }
         }
+
         if (arguments.Count() % 2 == 0)
         {
             return this._compileResultFactory.Create(arguments.Last().Value);
@@ -61,16 +65,19 @@ internal class Switch : ExcelFunction
 
     private static bool IsMatch(object right, object left)
     {
-        if(IsNumeric(right) || IsNumeric(left))
+        if (IsNumeric(right) || IsNumeric(left))
         {
             double r = GetNumericValue(right);
             double l = GetNumericValue(left);
+
             return r.Equals(l);
         }
-        if(right == null && left == null)
+
+        if (right == null && left == null)
         {
             return true;
         }
+
         if (right == null)
         {
             return false;
@@ -81,14 +88,16 @@ internal class Switch : ExcelFunction
 
     private static double GetNumericValue(object obj)
     {
-        if(obj is System.DateTime)
+        if (obj is System.DateTime)
         {
             return ((System.DateTime)obj).ToOADate();
         }
-        if(obj is TimeSpan)
+
+        if (obj is TimeSpan)
         {
             return ((TimeSpan)obj).TotalMilliseconds;
         }
+
         return Convert.ToDouble(obj);
     }
 }

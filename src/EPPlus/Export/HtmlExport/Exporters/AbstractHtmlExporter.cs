@@ -10,6 +10,7 @@
  *************************************************************************************************
   6/4/2022         EPPlus Software AB           ExcelTable Html Export
  *************************************************************************************************/
+
 using OfficeOpenXml.Drawing;
 using OfficeOpenXml.Table;
 using OfficeOpenXml.Utils;
@@ -40,10 +41,10 @@ internal abstract class AbstractHtmlExporter
     protected void GetDataTypes(ExcelAddressBase adr, ExcelTable table)
     {
         this._dataTypes = new List<string>();
+
         for (int col = adr._fromCol; col <= adr._toCol; col++)
         {
-            this._dataTypes.Add(
-                                ColumnDataTypeManager.GetColumnDataType(table.WorkSheet, table.Range, 2, col));
+            this._dataTypes.Add(ColumnDataTypeManager.GetColumnDataType(table.WorkSheet, table.Range, 2, col));
         }
     }
 
@@ -55,6 +56,7 @@ internal abstract class AbstractHtmlExporter
         }
 
         this._rangePictures = new List<HtmlImage>();
+
         //Render in-cell images.
         foreach (ExcelWorksheet? worksheet in ranges.Select(x => x.Worksheet).Distinct())
         {
@@ -114,6 +116,7 @@ internal abstract class AbstractHtmlExporter
                 return p;
             }
         }
+
         return null;
     }
 }

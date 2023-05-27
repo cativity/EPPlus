@@ -10,7 +10,8 @@
  *************************************************************************************************
   05/03/2020         EPPlus Software AB         Implemented function
  *************************************************************************************************/
- using System;
+
+using System;
 using System.Collections.Generic;
 using System.Text;
 
@@ -23,6 +24,7 @@ internal class FinancialPeriod
         this.Start = start;
         this.End = end;
     }
+
     internal FinancialDay Start { get; }
 
     internal FinancialDay End { get; }

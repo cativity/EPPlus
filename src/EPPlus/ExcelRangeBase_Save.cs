@@ -10,6 +10,7 @@
  *************************************************************************************************
   01/27/2020         EPPlus Software AB       Initial release EPPlus 5
  *************************************************************************************************/
+
 using OfficeOpenXml.Style;
 using OfficeOpenXml.Utils;
 using System;
@@ -32,6 +33,7 @@ using OfficeOpenXml.Export.ToCollection.Exceptions;
 #if !NET35 && !NET40
 using System.Threading.Tasks;
 #endif
+
 namespace OfficeOpenXml
 {
     public partial class ExcelRangeBase
@@ -56,6 +58,7 @@ namespace OfficeOpenXml
         {
             ToDataTableOptions? o = ToDataTableOptions.Default;
             configHandler.Invoke(o);
+
             return this.ToDataTable(o);
         }
 
@@ -67,6 +70,7 @@ namespace OfficeOpenXml
         public DataTable ToDataTable(ToDataTableOptions options)
         {
             ToDataTable? func = new ToDataTable(options, this);
+
             return func.Execute();
         }
 
@@ -80,6 +84,7 @@ namespace OfficeOpenXml
         {
             ToDataTableOptions? o = ToDataTableOptions.Default;
             configHandler.Invoke(o);
+
             return this.ToDataTable(o, dataTable);
         }
 
@@ -102,10 +107,14 @@ namespace OfficeOpenXml
         public DataTable ToDataTable(ToDataTableOptions options, DataTable dataTable)
         {
             ToDataTable? func = new ToDataTable(options, this);
+
             return func.Execute(dataTable);
         }
+
         #endregion
+
         #region ToText / SaveToText
+
         /// <summary>
         /// Converts a range to text in CSV format.
         /// </summary>
@@ -114,6 +123,7 @@ namespace OfficeOpenXml
         {
             return this.ToText(null);
         }
+
         /// <summary>
         /// Converts a range to text in CSV format.
         /// Invariant culture is used by default.
@@ -126,8 +136,10 @@ namespace OfficeOpenXml
             this.SaveToText(ms, Format);
             ms.Position = 0;
             StreamReader? sr = new StreamReader(ms);
+
             return sr.ReadToEnd();
         }
+
         /// <summary>
         /// Converts a range to text in CSV format.
         /// Invariant culture is used by default.
@@ -139,6 +151,7 @@ namespace OfficeOpenXml
             FileStream? fileStream = file.Open(FileMode.Create, FileAccess.Write, FileShare.Write);
             this.SaveToText(fileStream, Format);
         }
+
         /// <summary>
         /// Converts a range to text in CSV format.
         /// Invariant culture is used by default.
@@ -150,6 +163,7 @@ namespace OfficeOpenXml
             Format ??= new ExcelOutputTextFormat();
 
             StreamWriter? sw = new StreamWriter(stream, Format.Encoding);
+
             if (!string.IsNullOrEmpty(Format.Header))
             {
                 sw.Write(Format.Header + Format.EOL);
@@ -161,14 +175,15 @@ namespace OfficeOpenXml
             string doubleTextQualifiers = new string(Format.TextQualifier, 2);
             int skipLinesBegining = Format.SkipLinesBeginning + (Format.FirstRowIsHeader ? 1 : 0);
             CultureInfo ci = GetCultureInfo(Format);
+
             for (int row = this._fromRow; row <= this._toRow; row++)
             {
                 if (row == this._fromRow && Format.FirstRowIsHeader)
                 {
                     sw.Write(this.WriteHeaderRow(Format, hasTextQ, row, ci));
+
                     continue;
                 }
-
 
                 if (this.SkipLines(Format, row, skipLinesBegining))
                 {
@@ -189,16 +204,19 @@ namespace OfficeOpenXml
                     {
                         sw.Write(t);
                     }
+
                     if (col != this._toCol)
                     {
                         sw.Write(Format.Delimiter);
                     }
                 }
+
                 if (row != this._toRow - Format.SkipLinesEnd)
                 {
                     sw.Write(Format.EOL);
                 }
             }
+
             if (!string.IsNullOrEmpty(Format.Footer))
             {
                 sw.Write(Format.EOL + Format.Footer);
@@ -206,8 +224,11 @@ namespace OfficeOpenXml
 
             sw.Flush();
         }
+
         #endregion
+
         #region ToText / SaveToText async
+
 #if !NET35 && !NET40
         /// <summary>
         /// Converts a range to text in CSV format.
@@ -217,6 +238,7 @@ namespace OfficeOpenXml
         {
             return await this.ToTextAsync(null).ConfigureAwait(false);
         }
+
         /// <summary>
         /// Converts a range to text in CSV format.
         /// Invariant culture is used by default.
@@ -229,8 +251,10 @@ namespace OfficeOpenXml
             await this.SaveToTextAsync(ms, Format).ConfigureAwait(false);
             ms.Position = 0;
             StreamReader? sr = new StreamReader(ms);
+
             return await sr.ReadToEndAsync().ConfigureAwait(false);
         }
+
         /// <summary>
         /// Converts a range to text in CSV format.
         /// Invariant culture is used by default.
@@ -242,6 +266,7 @@ namespace OfficeOpenXml
             FileStream? fileStream = file.Open(FileMode.Create, FileAccess.Write, FileShare.Write);
             await this.SaveToTextAsync(fileStream, Format).ConfigureAwait(false);
         }
+
         /// <summary>
         /// Converts a range to text in CSV format.
         /// Invariant culture is used by default.
@@ -253,6 +278,7 @@ namespace OfficeOpenXml
             Format ??= new ExcelOutputTextFormat();
 
             StreamWriter? sw = new StreamWriter(stream, Format.Encoding);
+
             if (!string.IsNullOrEmpty(Format.Header))
             {
                 sw.Write(Format.Header + Format.EOL);
@@ -262,17 +288,21 @@ namespace OfficeOpenXml
 
             bool hasTextQ = Format.TextQualifier != '\0';
             string encodedTextQualifier = "";
+
             if (hasTextQ)
             {
                 encodedTextQualifier = Format.EncodedTextQualifiers ?? new string(Format.TextQualifier, 2);
             }
+
             int skipLinesBegining = Format.SkipLinesBeginning + (Format.FirstRowIsHeader ? 1 : 0);
             CultureInfo ci = GetCultureInfo(Format);
+
             for (int row = this._fromRow; row <= this._toRow; row++)
             {
                 if (row == this._fromRow && Format.FirstRowIsHeader)
                 {
                     await sw.WriteAsync(this.WriteHeaderRow(Format, hasTextQ, row, ci)).ConfigureAwait(false);
+
                     continue;
                 }
 
@@ -287,22 +317,26 @@ namespace OfficeOpenXml
 
                     if (hasTextQ && isText)
                     {
-                        await sw.WriteAsync(Format.TextQualifier + t.Replace(Format.TextQualifier.ToString(), encodedTextQualifier) + Format.TextQualifier).ConfigureAwait(false);
+                        await sw.WriteAsync(Format.TextQualifier + t.Replace(Format.TextQualifier.ToString(), encodedTextQualifier) + Format.TextQualifier)
+                                .ConfigureAwait(false);
                     }
                     else
                     {
                         await sw.WriteAsync(t).ConfigureAwait(false);
                     }
+
                     if (col != this._toCol)
                     {
                         await sw.WriteAsync(Format.Delimiter).ConfigureAwait(false);
                     }
                 }
+
                 if (row != this._toRow - Format.SkipLinesEnd)
                 {
                     await sw.WriteAsync(Format.EOL).ConfigureAwait(false);
                 }
             }
+
             if (!string.IsNullOrEmpty(Format.Footer))
             {
                 await sw.WriteAsync(Format.EOL + Format.Footer).ConfigureAwait(false);
@@ -311,8 +345,11 @@ namespace OfficeOpenXml
             sw.Flush();
         }
 #endif
+
         #endregion
+
         #region ToJson
+
         /// <summary>
         /// Returns the range as JSON
         /// </summary>
@@ -322,8 +359,10 @@ namespace OfficeOpenXml
             JsonRangeExport? re = new JsonRangeExport(this, new JsonRangeExportSettings());
             MemoryStream? ms = RecyclableMemory.GetStream();
             re.Export(ms);
+
             return Encoding.UTF8.GetString(ms.ToArray());
         }
+
         /// <summary>
         /// Returns the range as JSON
         /// </summary>
@@ -336,8 +375,10 @@ namespace OfficeOpenXml
             JsonRangeExport? re = new JsonRangeExport(this, s);
             MemoryStream? ms = RecyclableMemory.GetStream();
             re.Export(ms);
+
             return s.Encoding.GetString(ms.ToArray());
         }
+
         /// <summary>
         /// Saves the range as JSON to a stream.
         /// </summary>
@@ -347,6 +388,7 @@ namespace OfficeOpenXml
             JsonRangeExport? re = new JsonRangeExport(this, new JsonRangeExportSettings());
             re.Export(stream);
         }
+
         /// <summary>
         /// Saves the range as JSON to a stream.
         /// </summary>
@@ -359,8 +401,11 @@ namespace OfficeOpenXml
             JsonRangeExport? re = new JsonRangeExport(this, s);
             re.Export(stream);
         }
+
         #endregion
+
         #region SaveToJson Async
+
 #if !NET35 && !NET40
         /// <summary>
         /// Save the range to json
@@ -372,6 +417,7 @@ namespace OfficeOpenXml
             JsonRangeExport? re = new JsonRangeExport(this, new JsonRangeExportSettings());
             await re.ExportAsync(stream);
         }
+
         /// <summary>
         /// Save the range to json
         /// </summary>
@@ -386,14 +432,18 @@ namespace OfficeOpenXml
             await re.ExportAsync(stream);
         }
 #endif
+
         #endregion
+
         private static CultureInfo GetCultureInfo(ExcelOutputTextFormat Format)
         {
             CultureInfo? ci = (CultureInfo)(Format.Culture.Clone() ?? CultureInfo.InvariantCulture.Clone());
+
             if (Format.DecimalSeparator != null)
             {
                 ci.NumberFormat.NumberDecimalSeparator = Format.DecimalSeparator;
             }
+
             if (Format.ThousandsSeparator != null)
             {
                 ci.NumberFormat.NumberGroupSeparator = Format.ThousandsSeparator;
@@ -404,8 +454,7 @@ namespace OfficeOpenXml
 
         private bool SkipLines(ExcelOutputTextFormat Format, int row, int skipLinesBegining)
         {
-            return skipLinesBegining > row - this._fromRow ||
-                               Format.SkipLinesEnd > this._toRow - row;
+            return skipLinesBegining > row - this._fromRow || Format.SkipLinesEnd > this._toRow - row;
         }
 
         private string GetText(ExcelOutputTextFormat Format, int maxFormats, CultureInfo ci, int row, int col, out bool isText)
@@ -415,6 +464,7 @@ namespace OfficeOpenXml
             int ix = col - this._fromCol;
             isText = false;
             string fmt;
+
             if (ix < maxFormats)
             {
                 fmt = Format.Formats[ix];
@@ -423,6 +473,7 @@ namespace OfficeOpenXml
             {
                 fmt = "";
             }
+
             string t;
 
             if (string.IsNullOrEmpty(fmt))
@@ -430,6 +481,7 @@ namespace OfficeOpenXml
                 if (Format.UseCellFormat)
                 {
                     t = ValueToTextHandler.GetFormattedText(v._value, this._workbook, v._styleId, false, ci);
+
                     if (!ConvertUtil.IsNumericOrDate(v._value))
                     {
                         isText = true;
@@ -464,6 +516,7 @@ namespace OfficeOpenXml
                     {
                         t = v._value.ToString();
                     }
+
                     isText = true;
                 }
                 else if (ConvertUtil.IsNumeric(v._value))
@@ -494,25 +547,35 @@ namespace OfficeOpenXml
             {
                 isText = true;
             }
+
             return t;
         }
 
         private ExcelValue GetCellStoreValue(int row, int col)
         {
             ExcelValue v = this._worksheet.GetCoreValueInner(row, col);
+
             if (this._worksheet._flags.GetFlagValue(row, col, CellFlags.RichText))
             {
                 XmlDocument? xml = new XmlDocument();
-                XmlHelper.LoadXmlSafe(xml, "<d:si xmlns:d=\"http://schemas.openxmlformats.org/spreadsheetml/2006/main\" >" + v._value.ToString() + "</d:si>", Encoding.UTF8);
-                ExcelRichTextCollection? rt = new ExcelRichTextCollection(this._worksheet.NameSpaceManager, xml.SelectSingleNode("d:si", this._worksheet.NameSpaceManager), this);
+
+                XmlHelper.LoadXmlSafe(xml,
+                                      "<d:si xmlns:d=\"http://schemas.openxmlformats.org/spreadsheetml/2006/main\" >" + v._value.ToString() + "</d:si>",
+                                      Encoding.UTF8);
+
+                ExcelRichTextCollection? rt =
+                    new ExcelRichTextCollection(this._worksheet.NameSpaceManager, xml.SelectSingleNode("d:si", this._worksheet.NameSpaceManager), this);
+
                 v._value = rt.Text;
             }
+
             return v;
         }
 
         private string WriteHeaderRow(ExcelOutputTextFormat Format, bool hasTextQ, int row, CultureInfo ci)
         {
             StringBuilder? sb = new StringBuilder();
+
             for (int col = this._fromCol; col <= this._toCol; col++)
             {
                 ExcelValue v = this.GetCellStoreValue(row, col);
@@ -534,6 +597,7 @@ namespace OfficeOpenXml
                     sb.Append(Format.Delimiter);
                 }
             }
+
             if (row != this._toRow)
             {
                 sb.Append(Format.EOL);
@@ -541,6 +605,7 @@ namespace OfficeOpenXml
 
             return sb.ToString();
         }
+
         /// <summary>
         /// Returns a collection of T for the range. 
         /// If the range contains multiple addresses the first range is used.
@@ -553,6 +618,7 @@ namespace OfficeOpenXml
         {
             return this.ToCollectionWithMappings(setRow, new ToCollectionRangeOptions());
         }
+
         /// <summary>
         /// Returns a collection of T for the range. 
         /// If the range contains multiple addresses the first range is used.
@@ -566,6 +632,7 @@ namespace OfficeOpenXml
         {
             ToCollectionRangeOptions? o = new ToCollectionRangeOptions();
             options.Invoke(o);
+
             return this.ToCollectionWithMappings(setRow, o);
         }
 
@@ -582,6 +649,7 @@ namespace OfficeOpenXml
         {
             return ToCollectionRange.ToCollection(this, setRow, options);
         }
+
         /// <summary>
         /// Returns a collection of T for the range. 
         /// If the range contains multiple addresses the first range is used.
@@ -595,6 +663,7 @@ namespace OfficeOpenXml
         {
             return this.ToCollection<T>(new ToCollectionRangeOptions() { HeaderRow = 0 });
         }
+
         /// <summary>
         /// Automatically maps the range to the properties <see cref="T"/> using the headers.
         /// Using this method requires a headers.
@@ -608,8 +677,10 @@ namespace OfficeOpenXml
         {
             ToCollectionRangeOptions? o = new ToCollectionRangeOptions();
             options.Invoke(o);
+
             return this.ToCollection<T>(o);
         }
+
         /// <summary>
         /// Automatically maps the range to the properties <see cref="T"/> using the headers.
         /// Using this method requires a headers.

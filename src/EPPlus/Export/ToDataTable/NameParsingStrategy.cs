@@ -10,6 +10,7 @@
  *************************************************************************************************
   10/15/2020         EPPlus Software AB       ToDataTable function
  *************************************************************************************************/
+
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -25,10 +26,12 @@ public enum NameParsingStrategy
     /// Preserve the input string as it is
     /// </summary>
     Preserve,
+
     /// <summary>
     /// Replace any spaces with underscore
     /// </summary>
     SpaceToUnderscore,
+
     /// <summary>
     /// Remove all spaces
     /// </summary>

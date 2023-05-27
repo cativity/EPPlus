@@ -26,6 +26,7 @@
  *******************************************************************************
   01/27/2020         EPPlus Software AB       Initial release EPPlus 5
  *******************************************************************************/
+
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using OfficeOpenXml;
 using System;
@@ -65,6 +66,7 @@ public class RangeAddressTests
         Assert.AreEqual("Sheet1", split[0][1]);
         Assert.AreEqual("A1", split[0][2]);
     }
+
     [TestMethod]
     public void AddressWithWorksheetWithApostrophe()
     {
@@ -73,6 +75,7 @@ public class RangeAddressTests
         Assert.AreEqual("sheet ''1", split[0][1]);
         Assert.AreEqual("A1", split[0][2]);
     }
+
     [TestMethod]
     public void AddressWithWorksheetWithoutApostrophe()
     {
@@ -95,6 +98,7 @@ public class RangeAddressTests
         Assert.AreEqual(addr.DeleteRow(1, 3), null);
         Assert.AreEqual(addr.DeleteColumn(1, 2), null);
     }
+
     [TestMethod]
     public void SplitAddress()
     {
@@ -108,6 +112,7 @@ public class RangeAddressTests
         addr.Insert(new ExcelAddressBase("D:D"), eShiftTypeInsert.Right);
         addr.Insert(new ExcelAddressBase("5:5"), eShiftTypeInsert.Down);
     }
+
     [TestMethod]
     public void Addresses()
     {
@@ -154,6 +159,7 @@ public class RangeAddressTests
         Assert.IsFalse(ExcelCellBase.IsValidCellAddress("Table1!A1048576:XFD1048576"));
         Assert.IsFalse(ExcelCellBase.IsValidCellAddress("Table1!XFD1:XFD1048576"));
     }
+
     [TestMethod]
     public void ShouldHandleWorksheetSpec()
     {
@@ -163,6 +169,7 @@ public class RangeAddressTests
         Assert.AreEqual(1, excelAddress._fromRow);
         Assert.AreEqual(2, excelAddress._toRow);
     }
+
     [TestMethod]
     [ExpectedException(typeof(InvalidOperationException))]
     public void AddressWithFullColumnInEndAndCellIsNotValid()
@@ -172,6 +179,7 @@ public class RangeAddressTests
         ExcelWorksheet? sheet1 = package.Workbook.Worksheets.Add("NEW");
         ExcelRange? v = sheet1.Cells["A1:B"]; //Invalid address
     }
+
     [TestMethod]
     [ExpectedException(typeof(InvalidOperationException))]
     public void AddressWithFullColumnAtStartAndCellIsNotValid()
@@ -181,6 +189,7 @@ public class RangeAddressTests
         ExcelWorksheet? sheet1 = package.Workbook.Worksheets.Add("NEW");
         ExcelRange? v = sheet1.Cells["A:B1"]; //Invalid address
     }
+
     [TestMethod]
     [ExpectedException(typeof(InvalidOperationException))]
     public void AddressWithFullRowInEndAndCellIsNotValid()
@@ -190,6 +199,7 @@ public class RangeAddressTests
         ExcelWorksheet? sheet1 = package.Workbook.Worksheets.Add("NEW");
         ExcelRange? v = sheet1.Cells["A1:2"]; //Invalid address
     }
+
     [TestMethod]
     [ExpectedException(typeof(InvalidOperationException))]
     public void AddressWithFullRowAtStartAndCellIsNotValid()
@@ -199,6 +209,7 @@ public class RangeAddressTests
         ExcelWorksheet? sheet1 = package.Workbook.Worksheets.Add("NEW");
         ExcelRange? v = sheet1.Cells["1:B1"]; //Invalid address
     }
+
     [TestMethod]
     public void IsValidAddress()
     {
@@ -224,6 +235,7 @@ public class RangeAddressTests
         Assert.IsFalse(ExcelCellBase.IsValidAddress("A12:B"));
         Assert.IsFalse(ExcelCellBase.IsValidAddress("A:B12"));
     }
+
     [TestMethod]
     public void ClearShouldNotClearSurroundingCells()
     {
@@ -239,6 +251,7 @@ public class RangeAddressTests
         Assert.IsNull(ws.Cells[2, 3].Value);
         Assert.AreEqual("D2", ws.Cells[2, 4].Value);
     }
+
     [TestMethod]
     public void VerifyFullAddress()
     {
@@ -246,8 +259,8 @@ public class RangeAddressTests
         ExcelWorksheet? ws = pck.Workbook.Worksheets.Add("AddressVerify");
         Assert.AreEqual("AddressVerify!B6:D8", ws.Cells["B6:D8"].FullAddress);
         Assert.AreEqual("AddressVerify!B6:D8,AddressVerify!B10:D11", ws.Cells["B6:D8,B10:D11"].FullAddress);
-
     }
+
     [TestMethod]
     public void VerifyFullWorksheetAddress()
     {
@@ -269,6 +282,7 @@ public class RangeAddressTests
         Assert.AreEqual("Row 2", ws2.Cells["A1"].Value);
         Assert.AreEqual("Row 3", ws2.Cells["A2"].Value);
     }
+
     [TestMethod]
     public void VerifyFullWorksheetAddressR1C1Start()
     {
@@ -299,6 +313,7 @@ public class RangeAddressTests
         n = wb.Names.Add("Name4", ws.Cells["A1"]);
         Assert.AreEqual("'R009_cc'!$A$1", n.FullAddressAbsolute);
     }
+
     [TestMethod]
     public void R1C1OffSheetReferenceShouldNotBeASharedFormula()
     {
@@ -315,6 +330,7 @@ public class RangeAddressTests
         ws.Cells[1, 1, 4, 1].FormulaR1C1 = "COUNTIF(Sheet2!R1C3:R4C3, RC2)";
         Assert.AreEqual(0, ws._sharedFormulas.Count);
     }
+
     [TestMethod]
     public void R1C1ReferenceShouldBeASharedFormula()
     {
@@ -330,6 +346,7 @@ public class RangeAddressTests
         ws.Cells["A10:A14"].FormulaR1C1 = "COUNTIF(R1C3:R4C3, RC2)";
         Assert.AreEqual(1, ws._sharedFormulas.Count);
     }
+
     [TestMethod]
     public void ValidateMultiAddress_b1_b5_c4()
     {
@@ -340,6 +357,7 @@ public class RangeAddressTests
         Assert.AreEqual(5, a1.End.Row);
         Assert.AreEqual(3, a1.End.Column);
     }
+
     [TestMethod]
     public void ValidateMultiAddress_b4_b1_c4()
     {
@@ -350,6 +368,7 @@ public class RangeAddressTests
         Assert.AreEqual(5, a1.End.Row);
         Assert.AreEqual(3, a1.End.Column);
     }
+
     [TestMethod]
     public void ValidateMultiAddress_F5_G2_F7_G8()
     {
@@ -360,6 +379,7 @@ public class RangeAddressTests
         Assert.AreEqual(8, a1.End.Row);
         Assert.AreEqual(7, a1.End.Column);
     }
+
     [TestMethod]
     public void ValidateMultiAddress_G8_F7_G2_F5()
     {
@@ -370,14 +390,16 @@ public class RangeAddressTests
         Assert.AreEqual(8, a1.End.Row);
         Assert.AreEqual(7, a1.End.Column);
     }
+
     [TestMethod]
     public void ValidateInsertIntoWorksheetNameWithApostrophe()
     {
         ExcelAddressBase a1 = new ExcelAddressBase("'d''étude'!A1");
 
-        ExcelAddressBase? a2 = a1.AddRow(1, 1).AddColumn(1,1);
+        ExcelAddressBase? a2 = a1.AddRow(1, 1).AddColumn(1, 1);
         Assert.AreEqual("'d''étude'!B2", a2.Address);
     }
+
     [TestMethod]
     public void ValidateAddressWithDoubleWorksheetReferences()
     {
@@ -389,6 +411,7 @@ public class RangeAddressTests
         Assert.AreEqual(1, a1._toCol);
         Assert.AreEqual("A1:A3", a1.LocalAddress);
     }
+
     [TestMethod]
     public void ValidateLocalAddressWhenMultiAddress()
     {
@@ -409,6 +432,7 @@ public class RangeAddressTests
         ExcelAddressBase.GetWorksheetPart("'sheet 1'!A1:A2", "Sheet1", ref ix);
         Assert.AreEqual(10, ix);
     }
+
     [TestMethod]
     public void IntersectReversedTopLeftTest()
     {
@@ -418,8 +442,8 @@ public class RangeAddressTests
         Assert.AreEqual(2, ia1.Addresses.Count);
         Assert.AreEqual("D2:D4", ia1.Addresses[0].Address);
         Assert.AreEqual("B4:C4", ia1.Addresses[1].Address);
-
     }
+
     [TestMethod]
     public void IntersectReversedTopRightTest()
     {
@@ -429,7 +453,6 @@ public class RangeAddressTests
         Assert.AreEqual(2, ia1.Addresses.Count);
         Assert.AreEqual("B2:B4", ia1.Addresses[0].Address);
         Assert.AreEqual("C4:D4", ia1.Addresses[1].Address);
-
     }
 
     [TestMethod]
@@ -440,6 +463,7 @@ public class RangeAddressTests
         ExcelAddressBase? ia1 = address.IntersectReversed(new ExcelAddressBase("A2:D3"));
         Assert.AreEqual("B4:D4", ia1.Address);
     }
+
     [TestMethod]
     public void IntersectReversedLeftTest()
     {
@@ -448,6 +472,7 @@ public class RangeAddressTests
         ExcelAddressBase? ia1 = address.IntersectReversed(new ExcelAddressBase("A2:C4"));
         Assert.AreEqual("D2:D4", ia1.Address);
     }
+
     [TestMethod]
     public void IntersectReversedOutSideTest()
     {
@@ -458,6 +483,7 @@ public class RangeAddressTests
         ExcelAddressBase? ia2 = address.IntersectReversed(new ExcelAddressBase("A1:E5"));
         Assert.IsNull(ia2);
     }
+
     [TestMethod]
     public void IntersectReversedInsideTest()
     {
@@ -480,8 +506,8 @@ public class RangeAddressTests
         Assert.AreEqual(2, ia1.Addresses.Count);
         Assert.AreEqual("B2:D3", ia1.Addresses[0].Address);
         Assert.AreEqual("C4:D4", ia1.Addresses[1].Address);
-
     }
+
     [TestMethod]
     public void IntersectReversedBottomRightTest()
     {
@@ -501,6 +527,7 @@ public class RangeAddressTests
         ExcelAddressBase? ia1 = address.IntersectReversed(new ExcelAddressBase("A4:E5"));
         Assert.AreEqual("B2:D3", ia1.Address);
     }
+
     [TestMethod]
     public void IntersectReversedRightTest()
     {
@@ -509,6 +536,7 @@ public class RangeAddressTests
         ExcelAddressBase? ia1 = address.IntersectReversed(new ExcelAddressBase("C2:E4"));
         Assert.AreEqual("B2:B4", ia1.Address);
     }
+
     [TestMethod]
     public void GetAllAddressesSingle()
     {
@@ -523,6 +551,7 @@ public class RangeAddressTests
         Assert.AreEqual(1, address.GetAllAddresses().Count);
         Assert.AreEqual(address, address.GetAllAddresses()[0]);
     }
+
     [TestMethod]
     public void GetAllAddressesMulti()
     {

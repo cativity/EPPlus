@@ -10,6 +10,7 @@
  *************************************************************************************************
   01/27/2020         EPPlus Software AB       Initial release EPPlus 5
  *************************************************************************************************/
+
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -23,10 +24,9 @@ using Require = OfficeOpenXml.FormulaParsing.Utilities.Require;
 
 namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Math;
 
-[FunctionMetadata(
-                     Category = ExcelFunctionCategory.Statistical,
-                     EPPlusVersion = "4",
-                     Description = "Returns the number of cells (of a supplied range), that satisfy a given criteria")]
+[FunctionMetadata(Category = ExcelFunctionCategory.Statistical,
+                  EPPlusVersion = "4",
+                  Description = "Returns the number of cells (of a supplied range), that satisfy a given criteria")]
 internal class CountIf : ExcelFunction
 {
     private readonly ExpressionEvaluator _expressionEvaluator;
@@ -34,7 +34,6 @@ internal class CountIf : ExcelFunction
     public CountIf()
         : this(new ExpressionEvaluator())
     {
-
     }
 
     public CountIf(ExpressionEvaluator evaluator)
@@ -46,14 +45,17 @@ internal class CountIf : ExcelFunction
     private bool Evaluate(object obj, string expression)
     {
         double? candidate = default(double?);
+
         if (IsNumeric(obj))
         {
             candidate = ConvertUtil.GetValueDouble(obj);
         }
+
         if (candidate.HasValue)
         {
             return this._expressionEvaluator.Evaluate(candidate.Value, expression, false);
         }
+
         return this._expressionEvaluator.Evaluate(obj, expression, false);
     }
 
@@ -64,9 +66,11 @@ internal class CountIf : ExcelFunction
         FunctionArgument? range = functionArguments.ElementAt(0);
         string? criteria = functionArguments.ElementAt(1).ValueFirstString;
         double result = 0d;
+
         if (range.IsExcelRange)
         {
             IRangeInfo? rangeInfo = range.ValueAsRangeInfo;
+
             for (int row = rangeInfo.Address.Start.Row; row < rangeInfo.Address.End.Row + 1; row++)
             {
                 for (int col = rangeInfo.Address.Start.Column; col < rangeInfo.Address.End.Column + 1; col++)
@@ -80,9 +84,9 @@ internal class CountIf : ExcelFunction
         }
         else if (range.Value is IEnumerable<FunctionArgument>)
         {
-            foreach (FunctionArgument? arg in (IEnumerable<FunctionArgument>) range.Value)
+            foreach (FunctionArgument? arg in (IEnumerable<FunctionArgument>)range.Value)
             {
-                if(this.Evaluate(arg.Value, criteria))
+                if (this.Evaluate(arg.Value, criteria))
                 {
                     result++;
                 }
@@ -95,6 +99,7 @@ internal class CountIf : ExcelFunction
                 result++;
             }
         }
+
         return this.CreateResult(result, DataType.Integer);
     }
 }

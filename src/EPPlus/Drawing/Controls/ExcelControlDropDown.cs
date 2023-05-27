@@ -10,6 +10,7 @@
  *************************************************************************************************
   10/21/2020         EPPlus Software AB           Controls 
  *************************************************************************************************/
+
 using OfficeOpenXml.Packaging;
 using System.Xml;
 
@@ -20,11 +21,18 @@ namespace OfficeOpenXml.Drawing.Controls;
 /// </summary>
 public class ExcelControlDropDown : ExcelControlList
 {
-    internal ExcelControlDropDown(ExcelDrawings drawings, XmlElement drawNode, string name, ExcelGroupShape parent=null) : base(drawings, drawNode, name, parent)
+    internal ExcelControlDropDown(ExcelDrawings drawings, XmlElement drawNode, string name, ExcelGroupShape parent = null)
+        : base(drawings, drawNode, name, parent)
     {
         this.SetSize(150, 20); //Default size
     }
-    internal ExcelControlDropDown(ExcelDrawings drawings, XmlNode drawNode, ControlInternal control, ZipPackagePart part, XmlDocument controlPropertiesXml, ExcelGroupShape parent = null)
+
+    internal ExcelControlDropDown(ExcelDrawings drawings,
+                                  XmlNode drawNode,
+                                  ControlInternal control,
+                                  ZipPackagePart part,
+                                  XmlDocument controlPropertiesXml,
+                                  ExcelGroupShape parent = null)
         : base(drawings, drawNode, control, part, controlPropertiesXml, parent)
     {
     }
@@ -33,36 +41,33 @@ public class ExcelControlDropDown : ExcelControlList
     /// The type of form control
     /// </summary>
     public override eControlType ControlType => eControlType.DropDown;
+
     /// <summary>
     /// Gets or sets whether a drop-down object has a color applied to it
     /// </summary>
-    public bool Colored 
+    public bool Colored
     {
-        get
-        {
-            return this._ctrlProp.GetXmlNodeBool("@colored");
-        }
+        get { return this._ctrlProp.GetXmlNodeBool("@colored"); }
         set
         {
             this._ctrlProp.SetXmlNodeBool("@colored", value);
             this._vmlProp.SetXmlNodeBool("x:Colored", value);
         }
     }
+
     /// <summary>
     /// Gets or sets the number of lines before a scroll bar is added to the drop-down.
     /// </summary>
     public int DropLines
     {
-        get
-        {
-            return this._ctrlProp.GetXmlNodeInt("@dropLines", 8);
-        }
+        get { return this._ctrlProp.GetXmlNodeInt("@dropLines", 8); }
         set
         {
             this._ctrlProp.SetXmlNodeInt("@dropLines", value, null, false);
             this._vmlProp.SetXmlNodeInt("x:DropLines", value);
         }
     }
+
     /// <summary>
     /// The style of the drop-down.
     /// </summary>
@@ -70,12 +75,14 @@ public class ExcelControlDropDown : ExcelControlList
     {
         get
         {
-            switch(this._ctrlProp.GetXmlNodeString("@dropStyle"))
+            switch (this._ctrlProp.GetXmlNodeString("@dropStyle"))
             {
                 case "comboedit":
                     return eDropStyle.ComboEdit;
+
                 case "simple":
                     return eDropStyle.Simple;
+
                 default:
                     return eDropStyle.Combo;
             }
@@ -86,18 +93,16 @@ public class ExcelControlDropDown : ExcelControlList
             this._vmlProp.SetXmlNodeString("x:DropStyle", value.ToString());
         }
     }
+
     /// <summary>
     /// Minimum width 
     /// </summary>
     public int? MinimumWidth
     {
-        get
-        {
-            return this._ctrlProp.GetXmlNodeIntNull("@widthMin");
-        }
+        get { return this._ctrlProp.GetXmlNodeIntNull("@widthMin"); }
         set
         {
-            this._ctrlProp.SetXmlNodeInt("@widthMin", value,null, false);
+            this._ctrlProp.SetXmlNodeInt("@widthMin", value, null, false);
             this._ctrlProp.SetXmlNodeInt("x:WidthMin", value);
         }
     }

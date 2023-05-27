@@ -10,6 +10,7 @@
  *************************************************************************************************
   01/27/2020         EPPlus Software AB       Initial release EPPlus 5
  *************************************************************************************************/
+
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -50,6 +51,7 @@ public class ArgumentInfo<T>
     public ArgumentInfo<T> Named(string argName)
     {
         this.Name = argName;
+
         return this;
     }
 }

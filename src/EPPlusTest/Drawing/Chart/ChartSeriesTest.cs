@@ -16,17 +16,21 @@ namespace EPPlusTest.Drawing.Chart;
 public class ChartSeriesTest : TestBase
 {
     static ExcelPackage _pck;
+
     [ClassInitialize]
     public static void Init(TestContext context)
     {
         _pck = OpenPackage("ChartSingleSerie.xlsx", true);
     }
+
     [ClassCleanup]
     public static void Cleanup()
     {
         SaveAndCleanup(_pck);
     }
+
     #region Single Serie
+
     [TestMethod]
     public void AddSunburstChartSingleSerie()
     {
@@ -46,8 +50,8 @@ public class ChartSeriesTest : TestBase
         Assert.AreEqual(0, chart.Axis.Length);
         Assert.IsNull(chart.XAxis);
         Assert.IsNull(chart.YAxis);
-
     }
+
     [TestMethod]
     public void AddPieChartSingleSerie()
     {
@@ -67,8 +71,8 @@ public class ChartSeriesTest : TestBase
         Assert.AreEqual(0, chart.Axis.Length);
         Assert.IsNull(chart.XAxis);
         Assert.IsNull(chart.YAxis);
-
     }
+
     [TestMethod]
     public void AddColumnChartSingleSerieWithSecondSerieWithCategory()
     {
@@ -90,7 +94,6 @@ public class ChartSeriesTest : TestBase
         Assert.AreEqual(2, chart.Axis.Length);
         Assert.IsNotNull(chart.XAxis);
         Assert.IsNotNull(chart.YAxis);
-
     }
 
     [TestMethod]
@@ -103,6 +106,7 @@ public class ChartSeriesTest : TestBase
         //Change chart colorMethod from Cylce to WithinLinear
         chart.StyleManager.SetChartStyle(OfficeOpenXml.Drawing.Chart.Style.ePresetChartStyleMultiSeries.Column3dChartStyle1,
                                          OfficeOpenXml.Drawing.Chart.Style.ePresetChartColors.ColorfulPalette1);
+
         chart.StyleManager.ColorsManager.Method = OfficeOpenXml.Drawing.Chart.Style.eChartColorStyleMethod.WithinLinear;
 
         //make series only have range of 1 so that the serie2(index=1) is the same as the number of cells in the range
@@ -143,7 +147,7 @@ public class ChartSeriesTest : TestBase
         Assert.IsTrue(chart.Legend.Entries[1].Deleted);
         Assert.AreEqual("Serie 3-Font Changed", serie3.Header);
 
-        Assert.AreEqual(eFillStyle.SolidFill,chart.Legend.Entries[2].Font.Fill.Style);
+        Assert.AreEqual(eFillStyle.SolidFill, chart.Legend.Entries[2].Font.Fill.Style);
         Assert.AreEqual(Color.Red.ToArgb(), chart.Legend.Entries[2].Font.Fill.SolidFill.Color.RgbColor.Color.ToArgb());
     }
 
@@ -208,5 +212,6 @@ public class ChartSeriesTest : TestBase
         Assert.AreEqual(eFillStyle.SolidFill, chart.Legend.Entries[2].Font.Fill.Style);
         Assert.AreEqual(Color.Red.ToArgb(), chart.Legend.Entries[2].Font.Fill.SolidFill.Color.RgbColor.Color.ToArgb());
     }
+
     #endregion
 }

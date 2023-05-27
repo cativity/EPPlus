@@ -10,6 +10,7 @@
  *************************************************************************************************
   01/27/2020         EPPlus Software AB       Initial release EPPlus 5
  *************************************************************************************************/
+
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -24,12 +25,13 @@ public class ErrorHandlingFunctionCompiler : FunctionCompiler
     public ErrorHandlingFunctionCompiler(ExcelFunction function, ParsingContext context)
         : base(function, context)
     {
-
     }
+
     public override CompileResult Compile(IEnumerable<Expression> children)
     {
         List<FunctionArgument>? args = new List<FunctionArgument>();
         this.Function.BeforeInvoke(this.Context);
+
         foreach (Expression? child in children)
         {
             try
@@ -41,12 +43,12 @@ public class ErrorHandlingFunctionCompiler : FunctionCompiler
             {
                 return ((ErrorHandlingFunction)this.Function).HandleError(efe.ErrorValue.ToString());
             }
-            catch// (Exception e)
+            catch // (Exception e)
             {
                 return ((ErrorHandlingFunction)this.Function).HandleError(ExcelErrorValue.Values.Value);
             }
-                
         }
+
         return this.Function.Execute(args, this.Context);
     }
 }

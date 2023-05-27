@@ -10,6 +10,7 @@
  *************************************************************************************************
   04/05/2021         EPPlus Software AB       Added class
  *************************************************************************************************/
+
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -22,8 +23,8 @@ namespace OfficeOpenXml.DataValidation.Exceptions;
 /// </summary>
 public class DataValidationStaleException : InvalidOperationException
 {
-
-    internal DataValidationStaleException(string message) : base(message)
+    internal DataValidationStaleException(string message)
+        : base(message)
     {
     }
 }

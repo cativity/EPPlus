@@ -10,6 +10,7 @@
  *************************************************************************************************
   01/27/2020         EPPlus Software AB       Initial release EPPlus 5
  *************************************************************************************************/
+
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -26,15 +27,18 @@ public enum eDispBlanksAs
     /// Connect datapoints with line
     /// </summary>
     Span,
+
     /// <summary>
     /// A gap
     /// </summary>
     Gap,
+
     /// <summary>
     /// As Zero
     /// </summary>
     Zero
 }
+
 /// <summary>
 /// Type of sparkline
 /// </summary>
@@ -44,15 +48,18 @@ public enum eSparklineType
     /// Line Sparkline
     /// </summary>
     Line,
+
     /// <summary>
     /// Column Sparkline
     /// </summary>
     Column,
+
     /// <summary>
     /// Win/Loss Sparkline
     /// </summary>
     Stacked
 }
+
 /// <summary>
 /// Axis min/max settings
 /// </summary>
@@ -62,10 +69,12 @@ public enum eSparklineAxisMinMax
     /// Individual per sparklines
     /// </summary>
     Individual,
+
     /// <summary>
     /// Same for all sparklines
     /// </summary>
     Group,
+
     /// <summary>
     /// A custom value
     /// </summary>

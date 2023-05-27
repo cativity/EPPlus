@@ -10,6 +10,7 @@
  *************************************************************************************************
   01/27/2020         EPPlus Software AB       Initial release EPPlus 5
  *************************************************************************************************/
+
 using System.Collections.Generic;
 using System.Linq;
 using OfficeOpenXml.FormulaParsing;
@@ -23,11 +24,10 @@ using Require = OfficeOpenXml.FormulaParsing.Utilities.Require;
 
 namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Math;
 
-[FunctionMetadata(
-                     Category = ExcelFunctionCategory.Statistical,
-                     EPPlusVersion = "4",
-                     Description = "Calculates the Average of the cells in a supplied range, that satisfy a given criteria",
-                     IntroducedInExcelVersion = "2007")]
+[FunctionMetadata(Category = ExcelFunctionCategory.Statistical,
+                  EPPlusVersion = "4",
+                  Description = "Calculates the Average of the cells in a supplied range, that satisfy a given criteria",
+                  IntroducedInExcelVersion = "2007")]
 internal class AverageIf : HiddenValuesHandlingFunction
 {
     private readonly ExpressionEvaluator _expressionEvaluator;
@@ -35,7 +35,6 @@ internal class AverageIf : HiddenValuesHandlingFunction
     public AverageIf()
         : this(new ExpressionEvaluator())
     {
-
     }
 
     public AverageIf(ExpressionEvaluator evaluator)
@@ -47,14 +46,17 @@ internal class AverageIf : HiddenValuesHandlingFunction
     private bool Evaluate(object obj, string expression)
     {
         double? candidate = default(double?);
+
         if (IsNumeric(obj))
         {
             candidate = ConvertUtil.GetValueDouble(obj);
         }
+
         if (candidate.HasValue)
         {
             return this._expressionEvaluator.Evaluate(candidate.Value, expression);
         }
+
         return this._expressionEvaluator.Evaluate(obj, expression);
     }
 
@@ -69,15 +71,15 @@ internal class AverageIf : HiddenValuesHandlingFunction
         IRangeInfo? argRange = ArgToRangeInfo(arguments, 0);
         string? criteria = GetCriteraFromArg(arguments);
         double returnValue;
+
         if (argRange == null)
         {
             object? val = arguments.ElementAt(0).Value;
+
             if (criteria != null && this.Evaluate(val, criteria))
             {
                 IRangeInfo? lookupRange = ArgToRangeInfo(arguments, 2);
-                returnValue = arguments.Count() > 2
-                                  ? lookupRange.First().ValueDouble
-                                  : ConvertUtil.GetValueDouble(val, true);
+                returnValue = arguments.Count() > 2 ? lookupRange.First().ValueDouble : ConvertUtil.GetValueDouble(val, true);
             }
             else
             {
@@ -93,6 +95,7 @@ internal class AverageIf : HiddenValuesHandlingFunction
         {
             returnValue = this.CalculateSingleRange(argRange, criteria, context);
         }
+
         return this.CreateResult(returnValue, DataType.Decimal);
     }
 
@@ -100,25 +103,29 @@ internal class AverageIf : HiddenValuesHandlingFunction
     {
         double returnValue = 0d;
         int nMatches = 0;
+
         foreach (ICellInfo? cell in argRange)
         {
             if (criteria != null && this.Evaluate(cell.Value, criteria))
             {
                 int rowOffset = cell.Row - argRange.Address._fromRow;
                 int columnOffset = cell.Column - argRange.Address._fromCol;
-                if (sumRange.Address._fromRow + rowOffset <= sumRange.Address._toRow &&
-                    sumRange.Address._fromCol + columnOffset <= sumRange.Address._toCol)
+
+                if (sumRange.Address._fromRow + rowOffset <= sumRange.Address._toRow && sumRange.Address._fromCol + columnOffset <= sumRange.Address._toCol)
                 {
                     object? val = sumRange.GetOffset(rowOffset, columnOffset);
+
                     if (val is ExcelErrorValue)
                     {
                         ThrowExcelErrorValueException((ExcelErrorValue)val);
                     }
+
                     nMatches++;
                     returnValue += ConvertUtil.GetValueDouble(val, true);
                 }
             }
         }
+
         return Divide(returnValue, nMatches);
     }
 
@@ -126,19 +133,21 @@ internal class AverageIf : HiddenValuesHandlingFunction
     {
         double returnValue = 0d;
         int nMatches = 0;
+
         foreach (ICellInfo? candidate in range)
         {
             if (expression != null && IsNumeric(candidate.Value) && this.Evaluate(candidate.Value, expression))
             {
-                    
                 if (candidate.IsExcelError)
                 {
                     ThrowExcelErrorValueException((ExcelErrorValue)candidate.Value);
                 }
+
                 returnValue += candidate.ValueDouble;
                 nMatches++;
             }
         }
+
         return Divide(returnValue, nMatches);
     }
 }

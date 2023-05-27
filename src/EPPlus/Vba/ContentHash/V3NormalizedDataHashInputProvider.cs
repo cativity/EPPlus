@@ -10,6 +10,7 @@
  *************************************************************************************************
   09/05/2022         EPPlus Software AB       EPPlus 6.1
  *************************************************************************************************/
+
 using OfficeOpenXml.Utils;
 using OfficeOpenXml.VBA;
 using System;
@@ -24,7 +25,8 @@ namespace OfficeOpenXml.Vba.ContentHash;
 
 internal class V3NormalizedDataHashInputProvider : ContentHashInputProvider
 {
-    public V3NormalizedDataHashInputProvider(ExcelVbaProject project) : base(project)
+    public V3NormalizedDataHashInputProvider(ExcelVbaProject project)
+        : base(project)
     {
     }
 
@@ -67,14 +69,14 @@ internal class V3NormalizedDataHashInputProvider : ContentHashInputProvider
         bw.Write((ushort)0x0001);
 
         // APPEND Buffer WITH PROJECTSYSKIND.Size (section 2.3.4.2.1.1) of Storage
-        bw.Write((uint)0x00000004); 
+        bw.Write((uint)0x00000004);
 
         /******************************************
          * 2.3.4.2.1.4 PROJECTLCIDINVOKE Record   *
          ******************************************/
 
         // APPEND Buffer WITH PROJECTLCID.Id (section 2.3.4.2.1.3) of Storage
-            
+
         bw.Write((ushort)0x0002);
 
         // APPEND Buffer WITH PROJECTLCID.Size (section 2.3.4.2.1.3) of Storage
@@ -148,7 +150,7 @@ internal class V3NormalizedDataHashInputProvider : ContentHashInputProvider
 
         // APPEND Buffer WITH PROJECTHELPFILEPATH.SizeOfHelpFile1 (section 2.3.4.2.1.8) of Storage
         byte[]? helpFile1Bytes = encoding.GetBytes(p.HelpFile1);
-        bw.Write((uint)helpFile1Bytes.Length);  // PROJECTHELPFILEPATH.SizeOfHelpFile1            
+        bw.Write((uint)helpFile1Bytes.Length); // PROJECTHELPFILEPATH.SizeOfHelpFile1            
 
         // APPEND Buffer WITH PROJECTHELPFILEPATH.Reserved (section 2.3.4.2.1.8) of Storage
         bw.Write((ushort)0x003D);
@@ -257,7 +259,7 @@ internal class V3NormalizedDataHashInputProvider : ContentHashInputProvider
         /*
          * FOR EACH Module IN ProjectModules
          */
-        foreach(ExcelVBAModule? module in p.Modules)
+        foreach (ExcelVBAModule? module in p.Modules)
         {
             /******************************************
              * 2.3.4.2.2.1 REFERENCE Record           *
@@ -267,9 +269,9 @@ internal class V3NormalizedDataHashInputProvider : ContentHashInputProvider
 
         // APPEND Buffer WITH Terminator (section 2.3.4.2) of Storage
         bw.Write((ushort)0x0010);
+
         // APPEND Buffer WITH Reserved (section 2.3.4.2) of Storage
         bw.Write((uint)0x00000000);
-
     }
 
     private static void HandleProjectReference(ExcelVbaProject p, BinaryWriter bw, ExcelVbaReference reference)
@@ -294,6 +296,7 @@ internal class V3NormalizedDataHashInputProvider : ContentHashInputProvider
             bw.Write((ushort)0x33);
 
             byte[]? libIdBytes = encoding.GetBytes(reference.Libid);
+
             // APPEND Buffer with REFERENCE.ReferenceOriginal.SizeOfLibidOriginal (section 2.3.4.2.2.4)
             bw.Write((uint)libIdBytes.Length);
 
@@ -335,6 +338,7 @@ internal class V3NormalizedDataHashInputProvider : ContentHashInputProvider
                 bw.Write((ushort)0x0030);
 
                 byte[]? libIdExtendedBytes = encoding.GetBytes(controlRef.LibIdExtended);
+
                 // APPEND Buffer with REFERENCE.ReferenceControl.SizeOfLibidExtended (section 2.3.4.2.2.3)           
                 bw.Write((uint)libIdExtendedBytes.Length);
 
@@ -354,6 +358,7 @@ internal class V3NormalizedDataHashInputProvider : ContentHashInputProvider
                 bw.Write(controlRef.Cookie);
             }
         }
+
         // ELSE IF REFERENCE.ReferenceRecord.Id = 0x000D THEN
         else if (reference.ReferenceRecordID == 0x000D)
         {
@@ -365,6 +370,7 @@ internal class V3NormalizedDataHashInputProvider : ContentHashInputProvider
             bw.Write((ushort)0x000D);
 
             byte[]? libIdBytes = Encoding.Unicode.GetBytes(reference.Libid);
+
             // APPEND Buffer with REFERENCE.ReferenceRegistered.SizeOfLibid (section 2.3.4.2.2.5)
             bw.Write((uint)reference.Libid.Length);
 
@@ -377,6 +383,7 @@ internal class V3NormalizedDataHashInputProvider : ContentHashInputProvider
             // APPEND Buffer with REFERENCE.ReferenceRegistered.Reserved2 (section 2.3.4.2.2.5)
             bw.Write((ushort)0x0000);
         }
+
         // ELSE IF REFERENCE.ReferenceRecord.Id = 0x000E THEN
         else if (reference.ReferenceRecordID == 0x000E)
         {
@@ -441,22 +448,24 @@ internal class V3NormalizedDataHashInputProvider : ContentHashInputProvider
         // IF Module.ModuleType.Id = 0x21 THEN
         if (module.Type == eModuleType.Module)
         {
-            bw.Write((ushort)0x0021);           // Id
-            bw.Write((uint)0x00000000);         // Reserved
+            bw.Write((ushort)0x0021); // Id
+            bw.Write((uint)0x00000000); // Reserved
         }
 
         // 2.3.4.2.3.2.9 MODULEREADONLY Record
         if (module.ReadOnly)
         {
-            bw.Write((ushort)0x0025);           // Id
-            bw.Write((uint)0x00000000);         // Reserved
+            bw.Write((ushort)0x0025); // Id
+            bw.Write((uint)0x00000000); // Reserved
         }
+
         // 2.3.4.2.3.2.10 MODULEPRIVATE Record
         if (module.Private)
         {
-            bw.Write((ushort)0x0028);           // Id
-            bw.Write((uint)0x00000000);         // Reserved
+            bw.Write((ushort)0x0028); // Id
+            bw.Write((uint)0x00000000); // Reserved
         }
+
         /*
          * DEFINE CompressedContainer AS array of bytes
          * DEFINE Text AS array of bytes
@@ -471,9 +480,10 @@ internal class V3NormalizedDataHashInputProvider : ContentHashInputProvider
         List<byte[]>? lines = new List<byte[]>();
         List<byte>? textBuffer = new List<byte>();
         byte pc = 0x0;
-        foreach(byte ch in text)
+
+        foreach (byte ch in text)
         {
-            if(ch == 0xA || ch == 0xD)
+            if (ch == 0xA || ch == 0xD)
             {
                 if (pc == 0xD)
                 {
@@ -485,14 +495,17 @@ internal class V3NormalizedDataHashInputProvider : ContentHashInputProvider
             {
                 textBuffer.Add(ch);
             }
+
             pc = ch;
         }
 
         bool hashModuleNameFlag = false;
         byte endOfLine = 0xA;
+
         foreach (byte[]? line in lines)
         {
             string? lineText = Encoding.GetEncoding(p.CodePage).GetString(line);
+
             /*
              * IF Line NOT start with “attribute” when ignoring case THEN 
              *    SET HashModuleNameFlag TO true 
@@ -519,13 +532,14 @@ internal class V3NormalizedDataHashInputProvider : ContentHashInputProvider
              *    APPEND Buffer WITH Line 
              *    APPEND Buffer WITH “\n”
              */
-            else if(this.DefaultAttributes.Contains(lineText) == false)
+            else if (this.DefaultAttributes.Contains(lineText) == false)
             {
                 hashModuleNameFlag = true;
                 bw.Write(line);
                 bw.Write(endOfLine);
             }
         }
+
         // IF HashModuleNameFlag IS true
         if (hashModuleNameFlag)
         {
@@ -542,11 +556,12 @@ internal class V3NormalizedDataHashInputProvider : ContentHashInputProvider
                 byte[]? nameUnicodeBytes = Encoding.Unicode.GetBytes(module.NameUnicode);
                 bw.Write(nameUnicodeBytes);
             }
-            else if(!string.IsNullOrEmpty(module.Name))
+            else if (!string.IsNullOrEmpty(module.Name))
             {
                 byte[]? nameBytes = Encoding.GetEncoding(p.CodePage).GetBytes(module.Name);
                 bw.Write(nameBytes);
             }
+
             bw.Write(endOfLine);
         }
     }
@@ -560,10 +575,12 @@ internal class V3NormalizedDataHashInputProvider : ContentHashInputProvider
     private void NormalizeProjectStream(BinaryWriter bw)
     {
         ExcelVbaProject? p = this.Project;
-        if(string.IsNullOrEmpty(p.ProjectStreamText))
+
+        if (string.IsNullOrEmpty(p.ProjectStreamText))
         {
             return;
         }
+
         Encoding? encoding = Encoding.GetEncoding(p.CodePage);
         string[]? lines = Regex.Split(p.ProjectStreamText, "\r\n");
         string? currentCategory = string.Empty;
@@ -572,26 +589,31 @@ internal class V3NormalizedDataHashInputProvider : ContentHashInputProvider
         /***************************************************************
          * For definition of properties, see 2.3.1.1 ProjectProperties *
          ***************************************************************/
-        foreach(string? line in lines)
+        foreach (string? line in lines)
         {
-            if(line.StartsWith("[") && line.EndsWith("]"))
+            if (line.StartsWith("[") && line.EndsWith("]"))
             {
                 currentCategory = line.Substring(1, line.Length - 2);
+
                 continue;
             }
-            if(currentCategory == HostExtenderInfo && !string.IsNullOrEmpty(line))
+
+            if (currentCategory == HostExtenderInfo && !string.IsNullOrEmpty(line))
             {
                 hostExtenders.Add(line);
+
                 continue;
             }
-            else if(!string.IsNullOrEmpty(currentCategory))
+            else if (!string.IsNullOrEmpty(currentCategory))
             {
                 continue;
             }
-            if(!string.IsNullOrEmpty(line) && line.Contains("="))
+
+            if (!string.IsNullOrEmpty(line) && line.Contains("="))
             {
                 string? propertyName = line.Split('=')[0];
                 string? propertyValue = line.Split('=')[1];
+
                 /*
                  * IF property is ProjectDesignerModule THEN 
                  *   APPEND Buffer WITH output of NormalizeDesignerStorage(ProjectDesignerModule) (section 2.4.2.2) 
@@ -601,6 +623,7 @@ internal class V3NormalizedDataHashInputProvider : ContentHashInputProvider
                 {
                     FormsNormalizedDataHashInputProvider.NormalizeDesigner(p, bw, propertyValue);
                 }
+
                 /*
                  * IF property NOT is ProjectId (section 2.3.1.2) 
                  * OR ProjectDocModule (section 2.3.1.4) 
@@ -609,11 +632,11 @@ internal class V3NormalizedDataHashInputProvider : ContentHashInputProvider
                  * OR ProjectVisibilityState (section 2.3.1.17) 
                  * THEN
                  **/
-                if(propertyName != "ID" && propertyName != "Document" && propertyName != "CMG" && propertyName != "DPB" && propertyName != "GC")
+                if (propertyName != "ID" && propertyName != "Document" && propertyName != "CMG" && propertyName != "DPB" && propertyName != "GC")
                 {
                     if (propertyValue.StartsWith("\""))
                     {
-                        propertyValue = propertyValue.Substring(1, propertyValue.Length - 2);   //Remove leading and trailing double-quotes
+                        propertyValue = propertyValue.Substring(1, propertyValue.Length - 2); //Remove leading and trailing double-quotes
                     }
 
                     bw.Write(encoding.GetBytes(propertyName));
@@ -621,6 +644,7 @@ internal class V3NormalizedDataHashInputProvider : ContentHashInputProvider
                 }
             }
         }
+
         /*
          * IF exist string “[Host Extender Info]” THEN 
          *    APPEND Buffer WITH the string “Host Extender Info” 
@@ -631,7 +655,8 @@ internal class V3NormalizedDataHashInputProvider : ContentHashInputProvider
         {
             bw.Write(encoding.GetBytes(HostExtenderInfo));
         }
-        foreach(string? hostExtender in hostExtenders)
+
+        foreach (string? hostExtender in hostExtenders)
         {
             bw.Write(encoding.GetBytes(hostExtender));
         }

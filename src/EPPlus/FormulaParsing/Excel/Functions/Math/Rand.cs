@@ -10,6 +10,7 @@
  *************************************************************************************************
   01/27/2020         EPPlus Software AB       Initial release EPPlus 5
  *************************************************************************************************/
+
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -19,22 +20,16 @@ using OfficeOpenXml.FormulaParsing.ExpressionGraph;
 
 namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Math;
 
-[FunctionMetadata(
-                     Category = ExcelFunctionCategory.MathAndTrig,
-                     EPPlusVersion = "4",
-                     Description = "Returns a random number between 0 and 1")]
+[FunctionMetadata(Category = ExcelFunctionCategory.MathAndTrig, EPPlusVersion = "4", Description = "Returns a random number between 0 and 1")]
 internal class Rand : ExcelFunction
 {
-    private static int Seed
-    {
-        get;
-        set;
-    }
+    private static int Seed { get; set; }
 
     public override CompileResult Execute(IEnumerable<FunctionArgument> arguments, ParsingContext context)
     {
         Seed = Seed > 50 ? 0 : Seed + 5;
         double val = new Random(System.DateTime.Now.Millisecond + Seed).NextDouble();
+
         return this.CreateResult(val, DataType.Decimal);
     }
 }

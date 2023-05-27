@@ -26,6 +26,7 @@
  *******************************************************************************
   01/27/2020         EPPlus Software AB       Initial release EPPlus 5
  *******************************************************************************/
+
 using EPPlusTest.Properties;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using OfficeOpenXml;
@@ -43,34 +44,38 @@ namespace EPPlusTest.Drawing.Chart.Styling;
 public class ChartTemplateTests : TestBase
 {
     static ExcelPackage _pck;
+
     [ClassInitialize]
     public static void Init(TestContext context)
     {
         _pck = OpenPackage("ChartTemplate.xlsx", true);
     }
+
     [ClassCleanup]
     public static void Cleanup()
     {
         SaveAndCleanup(_pck);
     }
+
     [TestMethod]
     public void LoadChartStyle()
     {
         ExcelWorksheet? ws = _pck.Workbook.Worksheets.Add("ChartTemplate");
         LoadTestdata(ws);
 
-        ExcelLineChart? chart=ws.Drawings.AddLineChart("LineChart1", eLineChartType.Line);
+        ExcelLineChart? chart = ws.Drawings.AddLineChart("LineChart1", eLineChartType.Line);
         ExcelLineChartSerie? serie = chart.Series.Add("D2:D100", "A2:A100");
 
         chart.StyleManager.LoadTemplateStyles(Resources.TestLine3Crtx);
     }
+
     [TestMethod]
     public void AddChartFromTemplate()
     {
         ExcelWorksheet? ws = _pck.Workbook.Worksheets.Add("NewChartFromTemplate");
-        LoadTestdata(ws);            
+        LoadTestdata(ws);
         ExcelChart? chart = ws.Drawings.AddChartFromTemplate(Resources.TestLine3Crtx, "LineChart1", null);
-        chart.Series.Add("D2:D100","A2:A100");
+        chart.Series.Add("D2:D100", "A2:A100");
         chart.Series.Add("c2:c100", "A2:A100");
         chart.StyleManager.ApplyStyles();
     }

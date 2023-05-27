@@ -10,6 +10,7 @@
  *************************************************************************************************
   04/28/2021         EPPlus Software AB       EPPlus 5.7
  *************************************************************************************************/
+
 namespace OfficeOpenXml.ExternalReferences;
 
 /// <summary>
@@ -21,10 +22,12 @@ public enum eExternalLinkType
     /// The external link is of type <see cref="ExcelExternalWorkbook" />
     /// </summary>
     ExternalWorkbook,
+
     /// <summary>
     /// The external link is of type <see cref="ExcelExternalDdeLink" />
     /// </summary>
     DdeLink,
+
     /// <summary>
     /// The external link is of type <see cref="ExcelExternalOleLink" />
     /// </summary>

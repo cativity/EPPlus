@@ -10,6 +10,7 @@
  *************************************************************************************************
   01/27/2020         EPPlus Software AB       Initial release EPPlus 5
  *************************************************************************************************/
+
 using OfficeOpenXml.Drawing.Interfaces;
 using System;
 using System.Xml;
@@ -23,11 +24,21 @@ public class ExcelDrawingBorder : XmlHelper
 {
     string _linePath;
     IPictureRelationDocument _pictureRelationDocument;
-    bool isSpInit=false;
-    internal ExcelDrawingBorder(IPictureRelationDocument pictureRelationDocument, XmlNamespaceManager nameSpaceManager, XmlNode topNode, string linePath, string[] schemaNodeOrder) : 
-        base(nameSpaceManager, topNode)
+    bool isSpInit = false;
+
+    internal ExcelDrawingBorder(IPictureRelationDocument pictureRelationDocument,
+                                XmlNamespaceManager nameSpaceManager,
+                                XmlNode topNode,
+                                string linePath,
+                                string[] schemaNodeOrder)
+        : base(nameSpaceManager, topNode)
     {
-        this.AddSchemaNodeOrder(schemaNodeOrder, new string[] { "noFill", "solidFill", "gradFill", "pattFill", "prstDash", "custDash", "round","bevel","miter","headEnd","tailEnd" });
+        this.AddSchemaNodeOrder(schemaNodeOrder,
+                                new string[]
+                                {
+                                    "noFill", "solidFill", "gradFill", "pattFill", "prstDash", "custDash", "round", "bevel", "miter", "headEnd", "tailEnd"
+                                });
+
         this._linePath = linePath;
         this._lineStylePath = string.Format(this._lineStylePath, linePath);
         this._lineCapPath = string.Format(this._lineCapPath, linePath);
@@ -45,7 +56,9 @@ public class ExcelDrawingBorder : XmlHelper
     }
 
     #region "Public properties"
+
     ExcelDrawingFillBasic _fill = null;
+
     /// <summary>
     /// Access to fill properties
     /// </summary>
@@ -61,7 +74,9 @@ public class ExcelDrawingBorder : XmlHelper
                                                             true);
         }
     }
+
     string _lineStylePath = "{0}/a:prstDash/@val";
+
     /// <summary>
     /// Preset line dash
     /// </summary>
@@ -70,6 +85,7 @@ public class ExcelDrawingBorder : XmlHelper
         get
         {
             string? v = this.GetXmlNodeString(this._lineStylePath);
+
             if (string.IsNullOrEmpty(v))
             {
                 return null;
@@ -83,7 +99,8 @@ public class ExcelDrawingBorder : XmlHelper
         {
             this.InitSpPr();
             this.CreateNode(this._linePath, false);
-            if(value.HasValue)
+
+            if (value.HasValue)
             {
                 this.SetXmlNodeString(this._lineStylePath, EnumTransl.FromLineStyle(value.Value));
             }
@@ -96,9 +113,9 @@ public class ExcelDrawingBorder : XmlHelper
 
     private void InitSpPr()
     {
-        if(this.isSpInit==false)
+        if (this.isSpInit == false)
         {
-            if(this.CreateNodeUntil(this._linePath, "spPr", out XmlNode spPrNode))
+            if (this.CreateNodeUntil(this._linePath, "spPr", out XmlNode spPrNode))
             {
                 spPrNode.InnerXml = "<a:ln><a:noFill/></a:ln ><a:effectLst/>";
             }
@@ -107,74 +124,70 @@ public class ExcelDrawingBorder : XmlHelper
         this.isSpInit = true;
     }
 
-
     string _compoundLineTypePath = "{0}/@cmpd";
+
     /// <summary>
     /// The compound line type that is to be used for lines with text such as underlines
     /// </summary>
     public eCompundLineStyle CompoundLineStyle
     {
-        get
-        {
-            return EnumTransl.ToLineCompound(this.GetXmlNodeString(this._compoundLineTypePath));
-        }
+        get { return EnumTransl.ToLineCompound(this.GetXmlNodeString(this._compoundLineTypePath)); }
         set
         {
             this.InitSpPr();
             this.SetXmlNodeString(this._compoundLineTypePath, EnumTransl.FromLineCompound(value));
         }
     }
+
     string _alignmentPath = "{0}/@algn";
+
     /// <summary>
     /// The pen alignment type for use within a text body
     /// </summary>
     public ePenAlignment Alignment
     {
-        get
-        {
-            return EnumTransl.ToPenAlignment(this.GetXmlNodeString(this._alignmentPath));
-        }
+        get { return EnumTransl.ToPenAlignment(this.GetXmlNodeString(this._alignmentPath)); }
         set
         {
             this.InitSpPr();
             this.SetXmlNodeString(this._alignmentPath, EnumTransl.FromPenAlignment(value));
         }
     }
+
     string _lineCapPath = "{0}/@cap";
+
     /// <summary>
     /// Specifies how to cap the ends of lines
     /// </summary>
     public eLineCap LineCap
     {
-        get
-        {
-            return EnumTransl.ToLineCap(this.GetXmlNodeString(this._lineCapPath));
-        }
+        get { return EnumTransl.ToLineCap(this.GetXmlNodeString(this._lineCapPath)); }
         set
         {
             this.InitSpPr();
             this.SetXmlNodeString(this._lineCapPath, EnumTransl.FromLineCap(value));
         }
     }
+
     string _lineWidth = "{0}/@w";
+
     /// <summary>
     /// Width in pixels
     /// </summary>
     public double Width
     {
-        get
-        {
-            return this.GetXmlNodeEmuToPt(this._lineWidth);
-        }
+        get { return this.GetXmlNodeEmuToPt(this._lineWidth); }
         set
         {
             this.InitSpPr();
             this.SetXmlNodeEmuToPt(this._lineWidth, value);
         }
     }
+
     string _bevelPath = "{0}/a:bevel";
     string _roundPath = "{0}/a:round";
     string _miterPath = "{0}/a:miter";
+
     /// <summary>
     /// How connected lines are joined
     /// </summary>
@@ -202,6 +215,7 @@ public class ExcelDrawingBorder : XmlHelper
         set
         {
             this.InitSpPr();
+
             if (value == eLineJoin.Bevel)
             {
                 this.CreateNode(this._bevelPath);
@@ -222,25 +236,26 @@ public class ExcelDrawingBorder : XmlHelper
             }
         }
     }
+
     string _miterJoinLimitPath = "{0}/a:miter/@lim";
+
     /// <summary>
     /// The amount by which lines is extended to form a miter join 
     /// Otherwise miter joins can extend infinitely far.
     /// </summary>
     public double? MiterJoinLimit
     {
-        get
-        {
-            return this.GetXmlNodePercentage(this._miterJoinLimitPath);
-        }
+        get { return this.GetXmlNodePercentage(this._miterJoinLimitPath); }
         set
         {
             this.Join = eLineJoin.Miter;
             this.SetXmlNodePercentage(this._miterJoinLimitPath, value, false, double.MaxValue);
         }
     }
+
     string _headEndPath = "{0}/a:headEnd";
     ExcelDrawingLineEnd _headEnd = null;
+
     /// <summary>
     /// Head end style for the line
     /// </summary>
@@ -252,11 +267,14 @@ public class ExcelDrawingBorder : XmlHelper
             {
                 return new ExcelDrawingLineEnd(this.NameSpaceManager, this.TopNode, this._headEndPath, this.InitSpPr);
             }
+
             return this._headEnd;
         }
     }
+
     string _tailEndPath = "{0}/a:tailEnd";
     ExcelDrawingLineEnd _tailEnd = null;
+
     /// <summary>
     /// Tail end style for the line
     /// </summary>
@@ -268,31 +286,33 @@ public class ExcelDrawingBorder : XmlHelper
             {
                 return new ExcelDrawingLineEnd(this.NameSpaceManager, this.TopNode, this._tailEndPath, this.InitSpPr);
             }
+
             return this._tailEnd;
         }
     }
 
     #endregion
+
     internal XmlElement LineElement
     {
-        get
-        {
-            return this.TopNode.SelectSingleNode(this._linePath, this.NameSpaceManager) as XmlElement;
-        }   
+        get { return this.TopNode.SelectSingleNode(this._linePath, this.NameSpaceManager) as XmlElement; }
     }
+
     internal void SetFromXml(XmlElement copyFromLineElement)
     {
         this.InitSpPr();
-        XmlElement lineElement= this.LineElement;
-        if(lineElement==null)
+        XmlElement lineElement = this.LineElement;
+
+        if (lineElement == null)
         {
             this.CreateNode(this._linePath);
         }
+
         foreach (XmlAttribute a in copyFromLineElement.Attributes)
         {
             lineElement.SetAttribute(a.Name, a.NamespaceURI, a.Value);
         }
+
         lineElement.InnerXml = copyFromLineElement.InnerXml;
     }
-
 }

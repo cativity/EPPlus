@@ -26,6 +26,7 @@
  *******************************************************************************
   01/27/2020         EPPlus Software AB       Initial release EPPlus 5
  *******************************************************************************/
+
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using OfficeOpenXml;
 using System.IO;
@@ -39,7 +40,7 @@ namespace EPPlusTest.Core;
 [TestClass]
 public class ExcelPackageAsyncTest : TestBase
 {
-    private const int noRows= 10000;
+    private const int noRows = 10000;
 
     public ExcelPackageAsyncTest()
     {
@@ -50,7 +51,7 @@ public class ExcelPackageAsyncTest : TestBase
         string? dirName = file.DirectoryName;
         string? fileName = file.FullName;
 
-        File.Copy(fileName, dirName + $"\\{file.Name.Substring(0, file.Name.Length-file.Extension.Length)}Read.xlsx", true);
+        File.Copy(fileName, dirName + $"\\{file.Name.Substring(0, file.Name.Length - file.Extension.Length)}Read.xlsx", true);
     }
 
     [TestMethod]
@@ -62,6 +63,7 @@ public class ExcelPackageAsyncTest : TestBase
         await pck.SaveAsync().ConfigureAwait(false);
         CopyRead(pck.File);
     }
+
     [TestMethod]
     public async Task SaveAsyncEncryptedTest()
     {
@@ -71,6 +73,7 @@ public class ExcelPackageAsyncTest : TestBase
         await pck.SaveAsync("EPPlus").ConfigureAwait(false);
         CopyRead(pck.File);
     }
+
     [TestMethod]
     public async Task LoadAsyncTest()
     {
@@ -79,6 +82,7 @@ public class ExcelPackageAsyncTest : TestBase
         ExcelWorksheet? ws = TryGetWorksheet(pck, "AsyncSave");
         Assert.AreEqual($"A1:D{noRows}", ws.Dimension.Address);
     }
+
     [TestMethod]
     public async Task LoadAsyncEncryptedTest()
     {
@@ -87,6 +91,7 @@ public class ExcelPackageAsyncTest : TestBase
         ExcelWorksheet? ws = TryGetWorksheet(pck, "AsyncEncryptedSave");
         Assert.AreEqual($"A1:D{noRows}", ws.Dimension.Address);
     }
+
     [TestMethod]
     public async Task GetAsByteArrayLoadStreamTest()
     {
@@ -102,6 +107,7 @@ public class ExcelPackageAsyncTest : TestBase
         ws = TryGetWorksheet(pck2, "AsyncSave");
         Assert.AreEqual($"A1:D{noRows}", ws.Dimension.Address);
     }
+
     [TestMethod]
     public async Task GetAsByteArrayEncryptedLoadStreamEncryptedTest()
     {

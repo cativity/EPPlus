@@ -10,6 +10,7 @@
  *************************************************************************************************
   01/27/2020         EPPlus Software AB       Initial release EPPlus 5
  *************************************************************************************************/
+
 using OfficeOpenXml.DataValidation.Formulas;
 using OfficeOpenXml.DataValidation.Formulas.Contracts;
 using System.Xml;
@@ -54,7 +55,7 @@ public class ExcelDataValidationInt : ExcelDataValidationWithFormula2<IExcelData
     /// Copy constructor
     /// </summary>
     /// <param name="copy"></param>
-    internal ExcelDataValidationInt(ExcelDataValidationInt copy, ExcelWorksheet ws) 
+    internal ExcelDataValidationInt(ExcelDataValidationInt copy, ExcelWorksheet ws)
         : base(copy, ws)
     {
         this.Formula = copy.Formula;
@@ -65,9 +66,7 @@ public class ExcelDataValidationInt : ExcelDataValidationWithFormula2<IExcelData
     /// Property for determining type of validation
     /// </summary>
     public override ExcelDataValidationType ValidationType =>
-        this._isTextLength ?
-            new ExcelDataValidationType(eDataValidationType.TextLength) :
-            new ExcelDataValidationType(eDataValidationType.Whole);
+        this._isTextLength ? new ExcelDataValidationType(eDataValidationType.TextLength) : new ExcelDataValidationType(eDataValidationType.Whole);
 
     internal override IExcelDataValidationFormulaInt DefineFormulaClassType(string formulaValue, string worksheetName)
     {
@@ -84,7 +83,6 @@ public class ExcelDataValidationInt : ExcelDataValidationWithFormula2<IExcelData
         return new ExcelDataValidationInt(this, copy);
     }
 
-
     /// <summary>
     /// Return a deep-copy clone of validation
     /// </summary>
@@ -93,5 +91,4 @@ public class ExcelDataValidationInt : ExcelDataValidationWithFormula2<IExcelData
     {
         return (ExcelDataValidationInt)this.GetClone();
     }
-
 }

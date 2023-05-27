@@ -10,6 +10,7 @@
  *************************************************************************************************
   05/11/2021         EPPlus Software AB           ExcelTable Html Export
  *************************************************************************************************/
+
 using OfficeOpenXml.Table;
 
 namespace OfficeOpenXml.Export.HtmlExport;
@@ -21,12 +22,13 @@ public class CssExcludeStyle
 {
     internal CssExcludeStyle()
     {
-
     }
+
     /// <summary>
     /// Css settings for table styles
     /// </summary>
     public CssExclude TableStyle { get; } = new CssExclude();
+
     /// <summary>
     /// Css settings for cell styles.
     /// </summary>

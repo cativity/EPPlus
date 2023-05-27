@@ -10,6 +10,7 @@
  *************************************************************************************************
   01/27/2020         EPPlus Software AB       Initial release EPPlus 5
  *************************************************************************************************/
+
 namespace OfficeOpenXml.Drawing;
 
 /// <summary>
@@ -21,22 +22,27 @@ public enum eFillStyle
     /// No fill
     /// </summary>
     NoFill,
+
     /// <summary>
     /// A solid fill
     /// </summary>
     SolidFill,
+
     /// <summary>
     /// A smooth gradual transition from one color to the next
     /// </summary>
     GradientFill,
+
     /// <summary>
     /// A preset pattern  fill
     /// </summary>
     PatternFill,
+
     /// <summary>
     /// Picturefill
     /// </summary>
     BlipFill,
+
     /// <summary>
     /// Inherited fill from the parent in the group.
     /// </summary>

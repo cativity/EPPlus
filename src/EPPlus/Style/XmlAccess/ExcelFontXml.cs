@@ -10,6 +10,7 @@
  *************************************************************************************************
   01/27/2020         EPPlus Software AB       Initial release EPPlus 5
  *************************************************************************************************/
+
 using System;
 using System.Collections.Generic;
 #if NETFULL
@@ -18,6 +19,7 @@ using System.Drawing;
 using System.Globalization;
 using System.Text;
 using System.Xml;
+
 namespace OfficeOpenXml.Style.XmlAccess;
 
 /// <summary>
@@ -36,16 +38,17 @@ public sealed class ExcelFontXml : StyleXmlHelper
         this._bold = false;
         this._italic = false;
         this._strike = false;
-        this._underlineType = ExcelUnderLineType.None ;
+        this._underlineType = ExcelUnderLineType.None;
         this._verticalAlign = "";
         this._charset = null;
     }
-    internal ExcelFontXml(XmlNamespaceManager nsm, XmlNode topNode) :
-        base(nsm, topNode)
+
+    internal ExcelFontXml(XmlNamespaceManager nsm, XmlNode topNode)
+        : base(nsm, topNode)
     {
         this._name = this.GetXmlNodeString(namePath);
         this._size = (float)this.GetXmlNodeDecimal(sizePath);
-        this._family = this.GetXmlNodeIntNull(familyPath)??int.MinValue;
+        this._family = this.GetXmlNodeIntNull(familyPath) ?? int.MinValue;
         this._scheme = this.GetXmlNodeString(schemePath);
         this._color = new ExcelColorXml(nsm, topNode.SelectSingleNode(_colorPath, nsm));
         this._bold = this.GetBoolValue(topNode, boldPath);
@@ -53,9 +56,11 @@ public sealed class ExcelFontXml : StyleXmlHelper
         this._strike = this.GetBoolValue(topNode, strikePath);
         this._verticalAlign = this.GetXmlNodeString(verticalAlignPath);
         this._charset = this.GetXmlNodeIntNull(_charsetPath);
+
         if (topNode.SelectSingleNode(underLinedPath, this.NameSpaceManager) != null)
         {
             string ut = this.GetXmlNodeString(underLinedPath + "/@val");
+
             if (ut == "")
             {
                 this._underlineType = ExcelUnderLineType.Single;
@@ -75,187 +80,168 @@ public sealed class ExcelFontXml : StyleXmlHelper
     {
         get
         {
-            return this.Name + "|" + this.Size + "|" + this.Family + "|" + this.Color.Id + "|" + this.Scheme + "|" + this.Bold.ToString() + "|" + this.Italic.ToString() + "|" + this.Strike.ToString() + "|" + this.VerticalAlign + "|" + this.UnderLineType.ToString() + "|" + (this.Charset.HasValue ? this.Charset.ToString() : "");
+            return this.Name
+                   + "|"
+                   + this.Size
+                   + "|"
+                   + this.Family
+                   + "|"
+                   + this.Color.Id
+                   + "|"
+                   + this.Scheme
+                   + "|"
+                   + this.Bold.ToString()
+                   + "|"
+                   + this.Italic.ToString()
+                   + "|"
+                   + this.Strike.ToString()
+                   + "|"
+                   + this.VerticalAlign
+                   + "|"
+                   + this.UnderLineType.ToString()
+                   + "|"
+                   + (this.Charset.HasValue ? this.Charset.ToString() : "");
         }
     }
+
     const string namePath = "d:name/@val";
     string _name;
+
     /// <summary>
     /// The name of the font
     /// </summary>
     public string Name
     {
-        get
-        {
-            return this._name;
-        }
+        get { return this._name; }
         set
         {
-            this.Scheme = "";        //Reset schema to avoid corrupt file if unsupported font is selected.
+            this.Scheme = ""; //Reset schema to avoid corrupt file if unsupported font is selected.
             this._name = value;
         }
     }
+
     const string sizePath = "d:sz/@val";
     float _size;
+
     /// <summary>
     /// Font size
     /// </summary>
     public float Size
     {
-        get
-        {
-            return this._size;
-        }
-        set
-        {
-            this._size = value;
-        }
+        get { return this._size; }
+        set { this._size = value; }
     }
+
     const string familyPath = "d:family/@val";
     int _family;
+
     /// <summary>
     /// Font family
     /// </summary>
     public int Family
     {
-        get
-        {
-            return this._family == int.MinValue ? 0 : this._family;
-        }
-        set
-        {
-            this._family=value;
-        }
+        get { return this._family == int.MinValue ? 0 : this._family; }
+        set { this._family = value; }
     }
+
     ExcelColorXml _color = null;
     const string _colorPath = "d:color";
+
     /// <summary>
     /// Text color
     /// </summary>
     public ExcelColorXml Color
     {
-        get
-        {
-            return this._color;
-        }
-        internal set 
-        {
-            this._color=value;
-        }
+        get { return this._color; }
+        internal set { this._color = value; }
     }
+
     const string schemePath = "d:scheme/@val";
-    string _scheme="";
+    string _scheme = "";
+
     /// <summary>
     /// Font Scheme
     /// </summary>
     public string Scheme
     {
-        get
-        {
-            return this._scheme;
-        }
-        internal set
-        {
-            this._scheme=value;
-        }
+        get { return this._scheme; }
+        internal set { this._scheme = value; }
     }
+
     const string boldPath = "d:b";
     bool _bold;
+
     /// <summary>
     /// If the font is bold
     /// </summary>
     public bool Bold
     {
-        get
-        {
-            return this._bold;
-        }
-        set
-        {
-            this._bold=value;
-        }
+        get { return this._bold; }
+        set { this._bold = value; }
     }
+
     const string italicPath = "d:i";
     bool _italic;
+
     /// <summary>
     /// If the font is italic
     /// </summary>
     public bool Italic
     {
-        get
-        {
-            return this._italic;
-        }
-        set
-        {
-            this._italic=value;
-        }
+        get { return this._italic; }
+        set { this._italic = value; }
     }
+
     const string strikePath = "d:strike";
     bool _strike;
+
     /// <summary>
     /// If the font is striked out
     /// </summary>
     public bool Strike
     {
-        get
-        {
-            return this._strike;
-        }
-        set
-        {
-            this._strike=value;
-        }
+        get { return this._strike; }
+        set { this._strike = value; }
     }
+
     const string underLinedPath = "d:u";
+
     /// <summary>
     /// If the font is underlined.
     /// When set to true a the text is underlined with a single line
     /// </summary>
     public bool UnderLine
     {
-        get
-        {
-            return this.UnderLineType!=ExcelUnderLineType.None;
-        }
-        set
-        {
-            this._underlineType=value ? ExcelUnderLineType.Single : ExcelUnderLineType.None;
-        }
+        get { return this.UnderLineType != ExcelUnderLineType.None; }
+        set { this._underlineType = value ? ExcelUnderLineType.Single : ExcelUnderLineType.None; }
     }
+
     ExcelUnderLineType _underlineType;
+
     /// <summary>
     /// If the font is underlined
     /// </summary>
     public ExcelUnderLineType UnderLineType
     {
-        get
-        {
-            return this._underlineType;
-        }
-        set
-        {
-            this._underlineType = value;
-        }
+        get { return this._underlineType; }
+        set { this._underlineType = value; }
     }
+
     const string verticalAlignPath = "d:vertAlign/@val";
     string _verticalAlign;
+
     /// <summary>
     /// Vertical aligned
     /// </summary>
     public string VerticalAlign
     {
-        get
-        {
-            return this._verticalAlign;
-        }
-        set
-        {
-            this._verticalAlign=value;
-        }
+        get { return this._verticalAlign; }
+        set { this._verticalAlign = value; }
     }
+
     const string _charsetPath = "d:charset/@val";
-    int? _charset=null;
+    int? _charset = null;
+
     /// <summary>
     /// The character set for the font
     /// </summary>
@@ -288,15 +274,10 @@ public sealed class ExcelFontXml : StyleXmlHelper
     /// </remarks>
     public int? Charset
     {
-        get
-        {
-            return this._charset;
-        }
-        set
-        {
-            this._charset = value;
-        }
+        get { return this._charset; }
+        set { this._charset = value; }
     }
+
     /// <summary>
     /// Set the font properties
     /// </summary>
@@ -308,14 +289,16 @@ public sealed class ExcelFontXml : StyleXmlHelper
     /// <param name="strikeout"></param>
     public void SetFromFont(string name, float size, bool bold = false, bool italic = false, bool underline = false, bool strikeout = false)
     {
-        this.Name=name;
+        this.Name = name;
+
         //Family=fnt.FontFamily.;
-        this.Size= size;
-        this.Strike= strikeout;
+        this.Size = size;
+        this.Strike = strikeout;
         this.Bold = bold;
-        this.UnderLine= underline;
-        this.Italic= italic;            
+        this.UnderLine = underline;
+        this.Italic = italic;
     }
+
     /// <summary>
     /// Gets the height of the font in 
     /// </summary>
@@ -325,8 +308,10 @@ public sealed class ExcelFontXml : StyleXmlHelper
     internal static float GetFontHeight(string name, float size)
     {
         name = name.StartsWith("@") ? name.Substring(1) : name;
+
         return Convert.ToSingle(ExcelWorkbook.GetHeightPixels(name, size));
     }
+
     internal ExcelFontXml Copy()
     {
         ExcelFontXml newFont = new ExcelFontXml(this.NameSpaceManager);
@@ -341,11 +326,14 @@ public sealed class ExcelFontXml : StyleXmlHelper
         newFont.VerticalAlign = this._verticalAlign;
         newFont.Color = this.Color.Copy();
         newFont.Charset = this._charset;
+
         return newFont;
     }
+
     internal override XmlNode CreateXmlNode(XmlNode topElement)
     {
         this.TopNode = topElement;
+
         if (this._bold)
         {
             this.CreateNode(boldPath);
@@ -377,22 +365,22 @@ public sealed class ExcelFontXml : StyleXmlHelper
         {
             this.DeleteAllNode(underLinedPath);
         }
-        else if(this._underlineType==ExcelUnderLineType.Single)
+        else if (this._underlineType == ExcelUnderLineType.Single)
         {
             this.CreateNode(underLinedPath);
         }
         else
         {
-            string? v= this._underlineType.ToString();
+            string? v = this._underlineType.ToString();
             this.SetXmlNodeString(underLinedPath + "/@val", v.Substring(0, 1).ToLower(CultureInfo.InvariantCulture) + v.Substring(1));
         }
 
-        if (this._verticalAlign!="")
+        if (this._verticalAlign != "")
         {
             this.SetXmlNodeString(verticalAlignPath, this._verticalAlign.ToString());
         }
 
-        if(this._size>0)
+        if (this._size > 0)
         {
             this.SetXmlNodeString(sizePath, this._size.ToString(CultureInfo.InvariantCulture));
         }
@@ -408,12 +396,13 @@ public sealed class ExcelFontXml : StyleXmlHelper
             this.SetXmlNodeString(namePath, this._name);
         }
 
-        if(this._family>int.MinValue)
+        if (this._family > int.MinValue)
         {
             this.SetXmlNodeString(familyPath, this._family.ToString());
         }
 
         this.SetXmlNodeInt(_charsetPath, this.Charset);
+
         if (this._scheme != "")
         {
             this.SetXmlNodeString(schemePath, this._scheme.ToString());

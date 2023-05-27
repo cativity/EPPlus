@@ -26,6 +26,7 @@
  *******************************************************************************
   01/27/2020         EPPlus Software AB       Initial release EPPlus 5
  *******************************************************************************/
+
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using OfficeOpenXml.Core;
 using System.Diagnostics;
@@ -42,6 +43,7 @@ public class ChangeableDictionaryTest
 
         //Validate order
         int prev = -1;
+
         foreach (int item in d)
         {
             Assert.IsTrue(prev < item);
@@ -52,6 +54,7 @@ public class ChangeableDictionaryTest
         Assert.AreEqual(60, d[6]);
         Assert.AreEqual(90, d[9]);
     }
+
     [TestMethod]
     public void Insert()
     {
@@ -64,6 +67,7 @@ public class ChangeableDictionaryTest
         Assert.AreEqual(80, d[9]);
         Assert.AreEqual(90, d[10]);
     }
+
     [TestMethod]
     public void Remove()
     {
@@ -88,6 +92,7 @@ public class ChangeableDictionaryTest
         d.Add(4, 40);
         d.Add(7, 70);
         d.Add(9, 90);
+
         return d;
     }
 }

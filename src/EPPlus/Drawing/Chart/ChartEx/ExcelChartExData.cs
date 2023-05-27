@@ -10,7 +10,8 @@
  *************************************************************************************************
   04/15/2020         EPPlus Software AB       EPPlus 5.2
  *************************************************************************************************/
- using OfficeOpenXml.Utils.Extensions;
+
+using OfficeOpenXml.Utils.Extensions;
 using System;
 using System.Xml;
 
@@ -22,19 +23,19 @@ namespace OfficeOpenXml.Drawing.Chart.ChartEx;
 public abstract class ExcelChartExData : XmlHelper
 {
     string _worksheetName;
-    internal ExcelChartExData(string worksheetName, XmlNamespaceManager nsm, XmlNode topNode) : base(nsm, topNode)
+
+    internal ExcelChartExData(string worksheetName, XmlNamespaceManager nsm, XmlNode topNode)
+        : base(nsm, topNode)
     {
         this._worksheetName = worksheetName;
     }
+
     /// <summary>
     /// Data formula
     /// </summary>
-    public string Formula 
-    { 
-        get
-        {
-            return this.GetXmlNodeString("cx:f");
-        }
+    public string Formula
+    {
+        get { return this.GetXmlNodeString("cx:f"); }
         set
         {
             if (ExcelCellBase.IsValidAddress(value))
@@ -47,19 +48,14 @@ public abstract class ExcelChartExData : XmlHelper
             }
         }
     }
+
     /// <summary>
     /// The direction of the formula
     /// </summary>
     public eFormulaDirection FormulaDirection
     {
-        get
-        {
-            return this.GetXmlNodeString("cx:f/@dir").ToEnum(eFormulaDirection.Column);
-        }
-        set
-        {
-            this.SetXmlNodeString("cx:f/@dir", value.ToEnumString());
-        }
+        get { return this.GetXmlNodeString("cx:f/@dir").ToEnum(eFormulaDirection.Column); }
+        set { this.SetXmlNodeString("cx:f/@dir", value.ToEnumString()); }
     }
 
     /// <summary>
@@ -69,7 +65,7 @@ public abstract class ExcelChartExData : XmlHelper
     {
         get
         {
-            if(this.ExistsNode("cx:nf"))
+            if (this.ExistsNode("cx:nf"))
             {
                 return this.GetXmlNodeString("cx:nf");
             }
@@ -80,7 +76,7 @@ public abstract class ExcelChartExData : XmlHelper
         }
         set
         {
-            if(ExcelCellBase.IsValidAddress(value))
+            if (ExcelCellBase.IsValidAddress(value))
             {
                 this.SetXmlNodeString("cx:nf", ExcelCellBase.GetFullAddress(this._worksheetName, value), true);
             }
@@ -90,11 +86,12 @@ public abstract class ExcelChartExData : XmlHelper
             }
         }
     }
+
     /// <summary>
     /// Direction for the name formula
     /// </summary>
-    public eFormulaDirection? NameFormulaDirection 
-    { 
+    public eFormulaDirection? NameFormulaDirection
+    {
         get
         {
             if (this.ExistsNode("cx:nf"))
@@ -108,7 +105,7 @@ public abstract class ExcelChartExData : XmlHelper
         }
         set
         {
-            if(value==null)
+            if (value == null)
             {
                 this.DeleteNode("cx:nf/@dir");
             }

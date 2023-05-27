@@ -10,6 +10,7 @@
  *************************************************************************************************
   01/27/2020         EPPlus Software AB       Initial release EPPlus 5
  *************************************************************************************************/
+
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -27,97 +28,107 @@ public class ExcelDxfColor : DxfStyleBase
 
 {
     eStyleClass _styleClass;
-    internal ExcelDxfColor(ExcelStyles styles, eStyleClass styleClass, Action<eStyleClass, eStyleProperty, object> callback) : base(styles, callback)
+
+    internal ExcelDxfColor(ExcelStyles styles, eStyleClass styleClass, Action<eStyleClass, eStyleProperty, object> callback)
+        : base(styles, callback)
     {
         this._styleClass = styleClass;
     }
-    eThemeSchemeColor? _theme=null;
+
+    eThemeSchemeColor? _theme = null;
+
     /// <summary>
     /// Gets or sets a theme color
     /// </summary>
-    public eThemeSchemeColor? Theme 
-    { 
-        get
-        {
-            return this._theme;
-        }
+    public eThemeSchemeColor? Theme
+    {
+        get { return this._theme; }
         set
         {
             this._theme = value;
             this._callback?.Invoke(this._styleClass, eStyleProperty.Theme, value);
         }
     }
+
     int? _index;
+
     /// <summary>
     /// Gets or sets an indexed color
     /// </summary>
     public int? Index
     {
-        get
-        {
-            return this._index;
-        }
+        get { return this._index; }
         set
         {
             this._index = value;
             this._callback?.Invoke(this._styleClass, eStyleProperty.IndexedColor, value);
         }
     }
+
     bool? _auto;
+
     /// <summary>
     /// Gets or sets the color to automativ
     /// </summary>
     public bool? Auto
     {
-        get
-        {
-            return this._auto;
-        }
+        get { return this._auto; }
         set
         {
             this._auto = value;
             this._callback?.Invoke(this._styleClass, eStyleProperty.AutoColor, value);
         }
     }
+
     double? _tint;
+
     /// <summary>
     /// Gets or sets the Tint value for the color
     /// </summary>
     public double? Tint
     {
-        get
-        {
-            return this._tint;
-        }
+        get { return this._tint; }
         set
         {
             this._tint = value;
             this._callback?.Invoke(this._styleClass, eStyleProperty.Tint, value);
         }
     }
+
     Color? _color;
+
     /// <summary>
     /// Sets the color.
     /// </summary>
-    public Color? Color 
+    public Color? Color
     {
-        get
-        {
-            return this._color;
-        }
+        get { return this._color; }
         set
         {
             this._color = value;
             this._callback?.Invoke(this._styleClass, eStyleProperty.Color, value);
         }
     }
+
     /// <summary>
     /// The Id
     /// </summary>
     internal override string Id
     {
-        get { return GetAsString(this.Theme) + "|" + GetAsString(this.Index) + "|" + GetAsString(this.Auto) + "|" + GetAsString(this.Tint) + "|" + GetAsString(this.Color==null ? "" : this.Color.Value.ToArgb().ToString("x")); }
+        get
+        {
+            return GetAsString(this.Theme)
+                   + "|"
+                   + GetAsString(this.Index)
+                   + "|"
+                   + GetAsString(this.Auto)
+                   + "|"
+                   + GetAsString(this.Tint)
+                   + "|"
+                   + GetAsString(this.Color == null ? "" : this.Color.Value.ToArgb().ToString("x"));
+        }
     }
+
     /// <summary>
     /// Set the color of the drawing
     /// </summary>
@@ -129,6 +140,7 @@ public class ExcelDxfColor : DxfStyleBase
         this.Index = null;
         this.Color = color;
     }
+
     /// <summary>
     /// Set the color of the drawing
     /// </summary>
@@ -140,6 +152,7 @@ public class ExcelDxfColor : DxfStyleBase
         this.Index = null;
         this.Theme = color;
     }
+
     /// <summary>
     /// Set the color of the drawing
     /// </summary>
@@ -151,6 +164,7 @@ public class ExcelDxfColor : DxfStyleBase
         this.Auto = null;
         this.Index = (int)color;
     }
+
     /// <summary>
     /// Set the color to automatic
     /// </summary>
@@ -161,6 +175,7 @@ public class ExcelDxfColor : DxfStyleBase
         this.Index = null;
         this.Auto = true;
     }
+
     internal override void SetStyle()
     {
         if (this._callback != null)
@@ -172,24 +187,27 @@ public class ExcelDxfColor : DxfStyleBase
             this._callback.Invoke(this._styleClass, eStyleProperty.Tint, this._tint);
         }
     }
+
     /// <summary>
     /// Clone the object
     /// </summary>
     /// <returns>A new instance of the object</returns>
     internal override DxfStyleBase Clone()
     {
-        return new ExcelDxfColor(this._styles, this._styleClass, this._callback) { Theme = this.Theme, Index = this.Index, Color = this.Color, Auto = this.Auto, Tint = this.Tint };
+        return new ExcelDxfColor(this._styles, this._styleClass, this._callback)
+        {
+            Theme = this.Theme, Index = this.Index, Color = this.Color, Auto = this.Auto, Tint = this.Tint
+        };
     }
+
     /// <summary>
     /// If the object has any properties set
     /// </summary>
     public override bool HasValue
     {
-        get
-        {
-            return this.Theme != null || this.Index != null || this.Auto != null || this.Tint != null || this.Color != null;
-        }
+        get { return this.Theme != null || this.Index != null || this.Auto != null || this.Tint != null || this.Color != null; }
     }
+
     /// <summary>
     /// Clears all properties
     /// </summary>
@@ -201,6 +219,7 @@ public class ExcelDxfColor : DxfStyleBase
         this.Tint = null;
         this.Color = null;
     }
+
     /// <summary>
     /// Creates the the xml node
     /// </summary>

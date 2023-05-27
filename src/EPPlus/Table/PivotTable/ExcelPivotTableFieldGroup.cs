@@ -10,6 +10,7 @@
  *************************************************************************************************
   01/27/2020         EPPlus Software AB       Initial release EPPlus 5
  *************************************************************************************************/
+
 using System.Xml;
 
 namespace OfficeOpenXml.Table.PivotTable;
@@ -19,29 +20,24 @@ namespace OfficeOpenXml.Table.PivotTable;
 /// </summary>
 public class ExcelPivotTableFieldGroup : XmlHelper
 {
-    internal ExcelPivotTableFieldGroup(XmlNamespaceManager ns, XmlNode topNode) :
-        base(ns, topNode)
+    internal ExcelPivotTableFieldGroup(XmlNamespaceManager ns, XmlNode topNode)
+        : base(ns, topNode)
     {
-            
     }
+
     /// <summary>
     /// The index of the base field for this group field
     /// </summary>
     public int? BaseIndex
     {
-        get
-        {
-            return this.GetXmlNodeIntNull("d:fieldGroup/@base");
-        }
+        get { return this.GetXmlNodeIntNull("d:fieldGroup/@base"); }
     }
+
     /// <summary>
     /// The index of the parent field from this group field
     /// </summary>
     public int? ParentIndex
     {
-        get
-        {
-            return this.GetXmlNodeIntNull("d:fieldGroup/@par");
-        }
+        get { return this.GetXmlNodeIntNull("d:fieldGroup/@par"); }
     }
 }

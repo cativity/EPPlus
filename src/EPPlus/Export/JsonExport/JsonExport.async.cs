@@ -6,6 +6,7 @@ using System.Text;
 using OfficeOpenXml.Core.CellStore;
 #if !NET35 && !NET40
 using System.Threading.Tasks;
+
 namespace OfficeOpenXml
 {
     internal abstract partial class JsonExport
@@ -18,10 +19,12 @@ namespace OfficeOpenXml
             int commentIx = 0;
             await this.WriteItemAsync(sw, $"\"{this._settings.RowsElementName}\":[", true);
             int fromRow = dr._fromRow + headerRows;
+
             for (int r = fromRow; r <= dr._toRow; r++)
             {
                 await this.WriteStartAsync(sw);
                 await this.WriteItemAsync(sw, $"\"{this._settings.CellsElementName}\":[", true);
+
                 for (int c = dr._fromCol; c <= dr._toCol; c++)
                 {
                     ExcelValue cv = ws.GetCoreValueInner(r, c);
@@ -29,6 +32,7 @@ namespace OfficeOpenXml
                     await this.WriteStartAsync(sw);
                     bool hasHyperlink = this._settings.WriteHyperlinks && ws._hyperLinks.Exists(r, c, ref uri);
                     bool hasComment = this._settings.WriteComments && ws._commentsStore.Exists(r, c, ref commentIx);
+
                     if (cv._value == null)
                     {
                         await this.WriteItemAsync(sw, $"\"t\":\"{t}\"");
@@ -38,6 +42,7 @@ namespace OfficeOpenXml
                         string? v = JsonEscape(HtmlRawDataProvider.GetRawValue(cv._value));
                         await this.WriteItemAsync(sw, $"\"v\":\"{v}\",");
                         await this.WriteItemAsync(sw, $"\"t\":\"{t}\"", false, dtOnCell || hasHyperlink || hasComment);
+
                         if (dtOnCell)
                         {
                             string? dt = HtmlRawDataProvider.GetHtmlDataTypeFromValue(cv._value);
@@ -65,7 +70,9 @@ namespace OfficeOpenXml
                         await this.WriteEndAsync(sw, "},");
                     }
                 }
+
                 await this.WriteEndAsync(sw, "]");
+
                 if (r == dr._toRow)
                 {
                     await this.WriteEndAsync(sw);
@@ -75,9 +82,11 @@ namespace OfficeOpenXml
                     await this.WriteEndAsync(sw, "},");
                 }
             }
+
             await this.WriteEndAsync(sw, "]");
             await this.WriteEndAsync(sw);
         }
+
         internal protected async Task WriteItemAsync(StreamWriter sw, string v, bool indent = false, bool addComma = false)
         {
             if (addComma)
@@ -92,6 +101,7 @@ namespace OfficeOpenXml
             else
             {
                 await sw.WriteLineAsync(this._indent + v);
+
                 if (indent)
                 {
                     this._indent += "  ";
@@ -111,6 +121,7 @@ namespace OfficeOpenXml
                 this._indent += "  ";
             }
         }
+
         internal protected async Task WriteEndAsync(StreamWriter sw, string bracket = "}")
         {
             if (this._minify)

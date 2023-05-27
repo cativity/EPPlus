@@ -10,6 +10,7 @@
  *************************************************************************************************
   04/28/2021         EPPlus Software AB       EPPlus 5.7
  *************************************************************************************************/
+
 namespace OfficeOpenXml.ExternalReferences;
 
 /// <summary>
@@ -18,48 +19,44 @@ namespace OfficeOpenXml.ExternalReferences;
 public class ExcelExternalLinkAsType
 {
     ExcelExternalLink _externalLink;
+
     internal ExcelExternalLinkAsType(ExcelExternalLink externalLink)
     {
         this._externalLink = externalLink;
     }
+
     /// <summary>
     /// Converts the external link to it's top level .
     /// </summary>
     /// <typeparam name="T">The type of external link. T must be inherited from ExcelExternalLink</typeparam>
     /// <returns>The external link as type T</returns>
-    public T Type<T>() where T : ExcelExternalLink
+    public T Type<T>()
+        where T : ExcelExternalLink
     {
         return this._externalLink as T;
     }
+
     /// <summary>
     /// Return the external link as an external workbook. If the external link is not of type <see cref="ExcelExternalWorkbook" />, null is returned
     /// </summary>
     public ExcelExternalWorkbook ExternalWorkbook
     {
-        get
-        {
-            return this._externalLink as ExcelExternalWorkbook;
-        }
+        get { return this._externalLink as ExcelExternalWorkbook; }
     }
+
     /// <summary>
     /// Return the external link as a dde link. If the external link is not of type <see cref="ExcelExternalDdeLink"/>, null is returned
     /// </summary>
     public ExcelExternalDdeLink DdeLink
     {
-        get
-        {
-            return this._externalLink as ExcelExternalDdeLink;
-        }
+        get { return this._externalLink as ExcelExternalDdeLink; }
     }
+
     /// <summary>
     /// Return the external link as a ole link. If the external link is not of type <see cref="ExcelExternalOleLink"/>, null is returned
     /// </summary>
     public ExcelExternalOleLink OleLink
     {
-        get
-        {
-            return this._externalLink as ExcelExternalOleLink;
-        }
+        get { return this._externalLink as ExcelExternalOleLink; }
     }
-
 }

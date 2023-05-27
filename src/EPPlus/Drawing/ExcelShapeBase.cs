@@ -10,6 +10,7 @@
  *************************************************************************************************
   01/27/2020         EPPlus Software AB       Initial release EPPlus 5
  *************************************************************************************************/
+
 using OfficeOpenXml.Drawing.Style;
 using OfficeOpenXml.Drawing.Style.Effect;
 using OfficeOpenXml.Drawing.Style.ThreeD;
@@ -44,11 +45,13 @@ public class ExcelShapeBase : ExcelDrawing
     private string _textVerticalPath = "{0}xdr:txBody/a:bodyPr/@vert";
     private string _fontPath = "{0}xdr:txBody/a:p/a:pPr/a:defRPr";
     private string _textBodyPath = "{0}xdr:txBody/a:bodyPr";
-    internal ExcelShapeBase(ExcelDrawings drawings, XmlNode node, string topPath, string nvPrPath, ExcelGroupShape parent=null) :
-        base(drawings, node, topPath, nvPrPath, parent)
+
+    internal ExcelShapeBase(ExcelDrawings drawings, XmlNode node, string topPath, string nvPrPath, ExcelGroupShape parent = null)
+        : base(drawings, node, topPath, nvPrPath, parent)
     {
         this.Init(string.IsNullOrEmpty(this._topPath) ? "" : this._topPath + "/");
     }
+
     private void Init(string topPath)
     {
         this._shapeStylePath = string.Format(this._shapeStylePath, topPath);
@@ -67,18 +70,24 @@ public class ExcelShapeBase : ExcelDrawing
         this._textVerticalPath = string.Format(this._textVerticalPath, topPath);
         this._fontPath = string.Format(this._fontPath, topPath);
         this._textBodyPath = string.Format(this._textBodyPath, topPath);
-        this.AddSchemaNodeOrder(this.SchemaNodeOrder, new string[] { "nvSpPr", "spPr", "txSp", "style", "txBody", "hlinkClick", "hlinkHover", "xfrm", "custGeom", "prstGeom", "noFill", "solidFill", "blipFill", "gradFill", "pattFill", "grpFill", "ln", "effectLst", "effectDag", "scene3d", "sp3d", "pPr", "r", "br", "fld", "endParaRPr", "lnRef", "fillRef", "effectRef", "fontRef" });
+
+        this.AddSchemaNodeOrder(this.SchemaNodeOrder,
+                                new string[]
+                                {
+                                    "nvSpPr", "spPr", "txSp", "style", "txBody", "hlinkClick", "hlinkHover", "xfrm", "custGeom", "prstGeom", "noFill",
+                                    "solidFill", "blipFill", "gradFill", "pattFill", "grpFill", "ln", "effectLst", "effectDag", "scene3d", "sp3d", "pPr",
+                                    "r", "br", "fld", "endParaRPr", "lnRef", "fillRef", "effectRef", "fontRef"
+                                });
     }
+
     /// <summary>
     /// The type of drawing
     /// </summary>
     public override eDrawingType DrawingType
     {
-        get
-        {
-            return eDrawingType.Shape;
-        }
+        get { return eDrawingType.Shape; }
     }
+
     /// <summary>
     /// Shape style
     /// </summary>
@@ -87,6 +96,7 @@ public class ExcelShapeBase : ExcelDrawing
         get
         {
             string v = this.GetXmlNodeString(this._shapeStylePath);
+
             try
             {
                 return (eShapeStyle)Enum.Parse(typeof(eShapeStyle), v, true);
@@ -103,29 +113,29 @@ public class ExcelShapeBase : ExcelDrawing
             this.SetXmlNodeString(this._shapeStylePath, v);
         }
     }
+
     ExcelDrawingFill _fill = null;
+
     /// <summary>
     /// Access Fill properties
     /// </summary>
     public ExcelDrawingFill Fill
     {
-        get
-        {
-            return this._fill ??= new ExcelDrawingFill(this._drawings, this.NameSpaceManager, this.TopNode, this._fillPath, this.SchemaNodeOrder);
-        }
+        get { return this._fill ??= new ExcelDrawingFill(this._drawings, this.NameSpaceManager, this.TopNode, this._fillPath, this.SchemaNodeOrder); }
     }
+
     ExcelDrawingBorder _border = null;
+
     /// <summary>
     /// Access to Border propesties
     /// </summary>
     public ExcelDrawingBorder Border
     {
-        get
-        {
-            return this._border ??= new ExcelDrawingBorder(this._drawings, this.NameSpaceManager, this.TopNode, this._borderPath, this.SchemaNodeOrder);
-        }
+        get { return this._border ??= new ExcelDrawingBorder(this._drawings, this.NameSpaceManager, this.TopNode, this._borderPath, this.SchemaNodeOrder); }
     }
+
     ExcelDrawingEffectStyle _effect = null;
+
     /// <summary>
     /// Drawing effect properties
     /// </summary>
@@ -133,14 +143,12 @@ public class ExcelShapeBase : ExcelDrawing
     {
         get
         {
-            return this._effect ??= new ExcelDrawingEffectStyle(this._drawings,
-                                                                this.NameSpaceManager,
-                                                                this.TopNode,
-                                                                this._effectPath,
-                                                                this.SchemaNodeOrder);
+            return this._effect ??= new ExcelDrawingEffectStyle(this._drawings, this.NameSpaceManager, this.TopNode, this._effectPath, this.SchemaNodeOrder);
         }
     }
+
     ExcelDrawing3D _threeD = null;
+
     /// <summary>
     /// Defines 3D properties to apply to an object
     /// </summary>
@@ -148,7 +156,9 @@ public class ExcelShapeBase : ExcelDrawing
     {
         get { return this._threeD ??= new ExcelDrawing3D(this.NameSpaceManager, this.TopNode, this._fillPath, this.SchemaNodeOrder); }
     }
+
     ExcelDrawingLineEnd _headEnd = null;
+
     /// <summary>
     /// Head line end
     /// </summary>
@@ -156,7 +166,9 @@ public class ExcelShapeBase : ExcelDrawing
     {
         get { return this._headEnd ??= new ExcelDrawingLineEnd(this.NameSpaceManager, this.TopNode, this._headEndPath, this.InitSpPr); }
     }
+
     ExcelDrawingLineEnd _tailEnd = null;
+
     /// <summary>
     /// Tail line end
     /// </summary>
@@ -164,7 +176,9 @@ public class ExcelShapeBase : ExcelDrawing
     {
         get { return this._tailEnd ??= new ExcelDrawingLineEnd(this.NameSpaceManager, this.TopNode, this._tailEndPath, this.InitSpPr); }
     }
+
     ExcelTextFont _font = null;
+
     /// <summary>
     /// Font properties
     /// </summary>
@@ -175,18 +189,22 @@ public class ExcelShapeBase : ExcelDrawing
             if (this._font == null)
             {
                 XmlNode node = this.TopNode.SelectSingleNode(this._paragraphPath, this.NameSpaceManager);
+
                 if (node == null)
                 {
-                    this.Text = "";    //Creates the node p element
+                    this.Text = ""; //Creates the node p element
                     node = this.TopNode.SelectSingleNode(this._paragraphPath, this.NameSpaceManager);
                 }
 
                 this._font = new ExcelTextFont(this._drawings, this.NameSpaceManager, this.TopNode, this._fontPath, this.SchemaNodeOrder);
             }
+
             return this._font;
         }
     }
+
     bool isSpInit = false;
+
     private void InitSpPr()
     {
         if (this.isSpInit == false)
@@ -200,72 +218,55 @@ public class ExcelShapeBase : ExcelDrawing
         this.isSpInit = true;
     }
 
-
     /// <summary>
     /// Text inside the shape
     /// </summary>
     public string Text
     {
-        get
-        {
-            return this.RichText.Text;
-        }
-        set
-        {
-            this.RichText.Text = value;
-        }
-
+        get { return this.RichText.Text; }
+        set { this.RichText.Text = value; }
     }
+
     /// <summary>
     /// Lock drawing
     /// </summary>
     public bool LockText
     {
-        get
-        {
-            return this.GetXmlNodeBool(this._lockTextPath, true);
-        }
-        set
-        {
-            this.SetXmlNodeBool(this._lockTextPath, value);
-        }
+        get { return this.GetXmlNodeBool(this._lockTextPath, true); }
+        set { this.SetXmlNodeBool(this._lockTextPath, value); }
     }
+
     ExcelParagraphCollection _richText = null;
-    internal static string[] _shapeNodeOrder= new string[] { "ln", "headEnd", "tailEnd", "effectLst", "blur", "fillOverlay", "glow", "innerShdw", "outerShdw", "prstShdw", "reflection", "softEdges", "effectDag", "scene3d", "scene3D", "sp3d", "bevelT", "bevelB", "extrusionClr", "contourClr" };
+
+    internal static string[] _shapeNodeOrder = new string[]
+    {
+        "ln", "headEnd", "tailEnd", "effectLst", "blur", "fillOverlay", "glow", "innerShdw", "outerShdw", "prstShdw", "reflection", "softEdges",
+        "effectDag", "scene3d", "scene3D", "sp3d", "bevelT", "bevelB", "extrusionClr", "contourClr"
+    };
 
     /// <summary>
     /// Richtext collection. Used to format specific parts of the text
     /// </summary>
     public ExcelParagraphCollection RichText
     {
-        get
-        {
-            return this._richText ??= new ExcelParagraphCollection(this, this.NameSpaceManager, this.TopNode, this._paragraphPath, this.SchemaNodeOrder);
-        }
+        get { return this._richText ??= new ExcelParagraphCollection(this, this.NameSpaceManager, this.TopNode, this._paragraphPath, this.SchemaNodeOrder); }
     }
+
     /// <summary>
     /// Text Anchoring
     /// </summary>
     public eTextAnchoringType TextAnchoring
     {
-        get
-        {
-            return this.GetXmlNodeString(this._textAnchoringPath).TranslateTextAchoring();
-        }
-        set
-        {
-            this.SetXmlNodeString(this._textAnchoringPath, value.TranslateTextAchoringText());
-        }
+        get { return this.GetXmlNodeString(this._textAnchoringPath).TranslateTextAchoring(); }
+        set { this.SetXmlNodeString(this._textAnchoringPath, value.TranslateTextAchoringText()); }
     }
+
     /// <summary>
     /// The centering of the text box.
     /// </summary>
     public bool TextAnchoringControl
     {
-        get
-        {
-            return this.GetXmlNodeBool(this._textAnchoringCtlPath);
-        }
+        get { return this.GetXmlNodeBool(this._textAnchoringCtlPath); }
         set
         {
             if (value)
@@ -278,6 +279,7 @@ public class ExcelShapeBase : ExcelDrawing
             }
         }
     }
+
     /// <summary>
     /// How the text is aligned
     /// </summary>
@@ -289,16 +291,22 @@ public class ExcelShapeBase : ExcelDrawing
             {
                 case "ctr":
                     return eTextAlignment.Center;
+
                 case "r":
                     return eTextAlignment.Right;
+
                 case "dist":
                     return eTextAlignment.Distributed;
+
                 case "just":
                     return eTextAlignment.Justified;
+
                 case "justLow":
                     return eTextAlignment.JustifiedLow;
+
                 case "thaiDist":
                     return eTextAlignment.ThaiDistributed;
+
                 default:
                     return eTextAlignment.Left;
             }
@@ -309,37 +317,48 @@ public class ExcelShapeBase : ExcelDrawing
             {
                 case eTextAlignment.Right:
                     this.SetXmlNodeString(this._textAlignPath, "r");
+
                     break;
+
                 case eTextAlignment.Center:
                     this.SetXmlNodeString(this._textAlignPath, "ctr");
+
                     break;
+
                 case eTextAlignment.Distributed:
                     this.SetXmlNodeString(this._textAlignPath, "dist");
+
                     break;
+
                 case eTextAlignment.Justified:
                     this.SetXmlNodeString(this._textAlignPath, "just");
+
                     break;
+
                 case eTextAlignment.JustifiedLow:
                     this.SetXmlNodeString(this._textAlignPath, "justLow");
+
                     break;
+
                 case eTextAlignment.ThaiDistributed:
                     this.SetXmlNodeString(this._textAlignPath, "thaiDist");
+
                     break;
+
                 default:
                     this.DeleteNode(this._textAlignPath);
+
                     break;
             }
         }
     }
+
     /// <summary>
     /// Indentation
     /// </summary>
     public int Indent
     {
-        get
-        {
-            return this.GetXmlNodeInt(this._indentAlignPath);
-        }
+        get { return this.GetXmlNodeInt(this._indentAlignPath); }
         set
         {
             if (value < 0 || value > 8)
@@ -350,35 +369,30 @@ public class ExcelShapeBase : ExcelDrawing
             this.SetXmlNodeString(this._indentAlignPath, value.ToString());
         }
     }
+
     /// <summary>
     /// Vertical text
     /// </summary>
     public eTextVerticalType TextVertical
     {
-        get
-        {
-            return this.GetXmlNodeString(this._textVerticalPath).TranslateTextVertical();
-        }
-        set
-        {
-            this.SetXmlNodeString(this._textVerticalPath, value.TranslateTextVerticalText());
-        }
+        get { return this.GetXmlNodeString(this._textVerticalPath).TranslateTextVertical(); }
+        set { this.SetXmlNodeString(this._textVerticalPath, value.TranslateTextVerticalText()); }
     }
+
     ExcelTextBody _textBody = null;
+
     /// <summary>
     /// Access to text body properties.
     /// </summary>
     public ExcelTextBody TextBody
     {
-        get
-        {
-            return this._textBody ??= new ExcelTextBody(this.NameSpaceManager, this.TopNode, this._textBodyPath, this.SchemaNodeOrder);
-        }
+        get { return this._textBody ??= new ExcelTextBody(this.NameSpaceManager, this.TopNode, this._textBodyPath, this.SchemaNodeOrder); }
     }
 
     internal override void CellAnchorChanged()
     {
         base.CellAnchorChanged();
+
         if (this._fill != null)
         {
             this._fill.SetTopNode(this.TopNode);

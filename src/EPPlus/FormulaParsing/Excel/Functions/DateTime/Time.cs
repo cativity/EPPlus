@@ -10,6 +10,7 @@
  *************************************************************************************************
   01/27/2020         EPPlus Software AB       Initial release EPPlus 5
  *************************************************************************************************/
+
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -19,27 +20,28 @@ using OfficeOpenXml.FormulaParsing.ExpressionGraph;
 
 namespace OfficeOpenXml.FormulaParsing.Excel.Functions.DateTime;
 
-[FunctionMetadata(
-                     Category = ExcelFunctionCategory.DateAndTime,
-                     EPPlusVersion = "4",
-                     Description = "Returns a time, from a user-supplied hour, minute and second")]
+[FunctionMetadata(Category = ExcelFunctionCategory.DateAndTime,
+                  EPPlusVersion = "4",
+                  Description = "Returns a time, from a user-supplied hour, minute and second")]
 internal class Time : TimeBaseFunction
 {
     public Time()
         : base()
     {
-
     }
 
     public override CompileResult Execute(IEnumerable<FunctionArgument> arguments, ParsingContext context)
     {
         ValidateArguments(arguments, 1);
         string? firstArg = arguments.ElementAt(0).Value.ToString();
-        if(arguments.Count() == 1 && this.TimeStringParser.CanParse(firstArg))
+
+        if (arguments.Count() == 1 && this.TimeStringParser.CanParse(firstArg))
         {
             double result = this.TimeStringParser.Parse(firstArg);
+
             return new CompileResult(result, DataType.Time);
         }
+
         ValidateArguments(arguments, 3);
         int hour = this.ArgToInt(arguments, 0);
         int min = this.ArgToInt(arguments, 1);
@@ -61,6 +63,7 @@ internal class Time : TimeBaseFunction
         }
 
         double secondsOfThisTime = (double)((hour * 60 * 60) + (min * 60) + sec);
+
         return this.CreateResult(GetTimeSerialNumber(secondsOfThisTime), DataType.Time);
     }
 }

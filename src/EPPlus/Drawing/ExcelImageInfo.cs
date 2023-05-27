@@ -10,6 +10,7 @@
  *************************************************************************************************
   01/27/2020         EPPlus Software AB       Initial release EPPlus 5
  *************************************************************************************************/
+
 using OfficeOpenXml.Drawing.Interfaces;
 using System;
 using System.Drawing;
@@ -25,36 +26,24 @@ public class ExcelImageInfo
     internal ExcelImageInfo()
     {
     }
+
     /// <summary>
     /// The width of the image
     /// </summary>
-    public double Width
-    {
-        get;
-        internal set;
-    }
+    public double Width { get; internal set; }
+
     /// <summary>
     /// The height of the image
     /// </summary>
-    public double Height
-    {
-        get;
-        internal set;
-    }
+    public double Height { get; internal set; }
+
     /// <summary>
     /// The horizontal resolution of the image
     /// </summary>
-    public double HorizontalResolution
-    {
-        get;
-        internal set;
-    } = ExcelDrawing.STANDARD_DPI;
+    public double HorizontalResolution { get; internal set; } = ExcelDrawing.STANDARD_DPI;
+
     /// <summary>
     /// The vertical resolution of the image
     /// </summary>
-    public double VerticalResolution
-    {
-        get;
-        internal set;
-    } = ExcelDrawing.STANDARD_DPI;
+    public double VerticalResolution { get; internal set; } = ExcelDrawing.STANDARD_DPI;
 }

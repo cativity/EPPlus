@@ -10,6 +10,7 @@
  *************************************************************************************************
   01/27/2020         EPPlus Software AB       Initial release EPPlus 5
  *************************************************************************************************/
+
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -23,19 +24,22 @@ internal static class NumericTypeConversions
         { typeof(byte), (o) => Convert.ToByte(o) },
         { typeof(uint), (o) => Convert.ToUInt32(o) },
         { typeof(int), (o) => Convert.ToInt32(o) },
-        { typeof(float), (o) => {
-            if(o == null)
+        {
+            typeof(float), (o) =>
             {
+                if (o == null)
+                {
+                    return null;
+                }
+
+                if (float.TryParse(o.ToString(), out float output))
+                {
+                    return output;
+                }
+
                 return null;
             }
-
-            if(float.TryParse(o.ToString(), out float output))
-            {
-                return output;
-            }
-
-            return null;
-        } },
+        },
         { typeof(double), (o) => Convert.ToDouble(o) },
         { typeof(decimal), (o) => Convert.ToDecimal(o) },
         { typeof(ulong), (o) => Convert.ToUInt64(o) },
@@ -52,12 +56,15 @@ internal static class NumericTypeConversions
     public static bool TryConvert(object obj, out object convertedObj, Type convertToType)
     {
         convertedObj = obj;
+
         if (_numericTypes.ContainsKey(convertToType))
         {
             Func<object, object>? conversionFunc = _numericTypes[convertToType];
             convertedObj = conversionFunc(obj);
+
             return true;
         }
+
         return false;
     }
 }

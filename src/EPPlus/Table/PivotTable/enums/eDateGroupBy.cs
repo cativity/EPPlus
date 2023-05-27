@@ -10,6 +10,7 @@
  *************************************************************************************************
   01/27/2020         EPPlus Software AB       Initial release EPPlus 5
  *************************************************************************************************/
+
 using System;
 
 namespace OfficeOpenXml.Table.PivotTable;
@@ -24,26 +25,32 @@ public enum eDateGroupBy
     /// Group by years
     /// </summary>
     Years = 1,
+
     /// <summary>
     /// Group by  quarters
     /// </summary>
     Quarters = 2,
+
     /// <summary>
     /// Group by months
     /// </summary>
     Months = 4,
+
     /// <summary>
     /// Group by days
     /// </summary>
     Days = 8,
+
     /// <summary>
     /// Group by hours
     /// </summary>
     Hours = 16,
+
     /// <summary>
     /// Group by minutes
     /// </summary>
     Minutes = 32,
+
     /// <summary>
     /// Group by seconds
     /// </summary>

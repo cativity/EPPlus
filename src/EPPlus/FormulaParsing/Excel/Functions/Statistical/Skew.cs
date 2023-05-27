@@ -10,6 +10,7 @@
  *************************************************************************************************
   22/10/2022         EPPlus Software AB           EPPlus v6
  *************************************************************************************************/
+
 using OfficeOpenXml.FormulaParsing.Excel.Functions.Math;
 using OfficeOpenXml.FormulaParsing.Excel.Functions.Metadata;
 using OfficeOpenXml.FormulaParsing.ExpressionGraph;
@@ -20,10 +21,7 @@ using System.Text;
 
 namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Statistical;
 
-[FunctionMetadata(
-                     Category = ExcelFunctionCategory.Statistical,
-                     EPPlusVersion = "6.0",
-                     Description = "Returns the skewness of a distribution")]
+[FunctionMetadata(Category = ExcelFunctionCategory.Statistical, EPPlusVersion = "6.0", Description = "Returns the skewness of a distribution")]
 internal class Skew : ExcelFunction
 {
     public override CompileResult Execute(IEnumerable<FunctionArgument> arguments, ParsingContext context)
@@ -33,11 +31,14 @@ internal class Skew : ExcelFunction
         int n = numbers.Length;
         double avg = numbers.Average();
         double s = 0d;
+
         for (int ix = 0; ix < n; ix++)
         {
             s += System.Math.Pow(numbers[ix] - avg, 3);
         }
+
         double result = n * s / ((n - 1) * (n - 2) * System.Math.Pow(Stdev.StandardDeviation(numbers), 3));
+
         return this.CreateResult(result, DataType.Decimal);
     }
 }

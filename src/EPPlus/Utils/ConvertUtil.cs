@@ -10,6 +10,7 @@
  *************************************************************************************************
   01/27/2020         EPPlus Software AB       Initial release EPPlus 5
  *************************************************************************************************/
+
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -32,6 +33,7 @@ internal static class ConvertUtil
         public static NumberStyles Number = NumberStyles.Float | NumberStyles.AllowThousands;
         public static DateTimeStyles DateTime = DateTimeStyles.AllowWhiteSpaces | DateTimeStyles.AssumeLocal;
     }
+
     internal static bool IsNumericOrDate(object candidate)
     {
         if (candidate == null)
@@ -45,8 +47,10 @@ internal static class ConvertUtil
         }
 
         Type? t = candidate.GetType();
+
         return t == typeof(double) || t == typeof(decimal) || t == typeof(long) || t == typeof(DateTime) || t == typeof(TimeSpan);
     }
+
     internal static bool IsNumeric(object candidate)
     {
         if (candidate == null)
@@ -60,6 +64,7 @@ internal static class ConvertUtil
         }
 
         Type? t = candidate.GetType();
+
         return t == typeof(double) || t == typeof(decimal) || t == typeof(long);
     }
 
@@ -71,23 +76,29 @@ internal static class ConvertUtil
         }
 
         s = s.Trim();
+
         if (s.Trim().EndsWith("%"))
         {
             string? tmp = s;
             int n = 0;
+
             while (tmp.Length > 0 && tmp.Last() == '%')
             {
                 tmp = tmp.Substring(0, tmp.Length - 1);
                 n++;
+
                 if (n > 1)
                 {
                     return false;
                 }
             }
+
             return double.TryParse(tmp, out double n2);
         }
+
         return false;
     }
+
     /// <summary>
     /// Tries to parse a double from the specified <paramref name="candidateString"/> which is expected to be a string value.
     /// </summary>
@@ -101,32 +112,40 @@ internal static class ConvertUtil
         {
             return double.TryParse(candidateString, ParseArguments.Number, cultureInfo ?? CultureInfo.CurrentCulture, out numericValue);
         }
+
         numericValue = 0;
+
         return false;
     }
 
     internal static bool TryParsePercentageString(string s, out double numericValue, CultureInfo cultureInfo = null)
     {
         numericValue = 0;
+
         if (string.IsNullOrEmpty(s))
         {
             return false;
         }
 
         s = s.Trim();
+
         if (s.Trim().EndsWith("%"))
         {
             string? tmp = s;
+
             while (tmp.Length > 0 && tmp.Last() == '%')
             {
                 tmp = tmp.Substring(0, tmp.Length - 1);
             }
-            if(TryParseNumericString(tmp, out numericValue, cultureInfo))
+
+            if (TryParseNumericString(tmp, out numericValue, cultureInfo))
             {
                 numericValue /= 100d;
+
                 return true;
             }
         }
+
         return false;
     }
 
@@ -140,14 +159,16 @@ internal static class ConvertUtil
     {
         if (!string.IsNullOrEmpty(candidateString))
         {
-            if(candidateString == "-1"  || candidateString == "1")
+            if (candidateString == "-1" || candidateString == "1")
             {
                 result = true;
+
                 return true;
             }
             else if (candidateString == "0")
             {
                 result = false;
+
                 return true;
             }
             else
@@ -155,9 +176,12 @@ internal static class ConvertUtil
                 return bool.TryParse(candidateString, out result);
             }
         }
+
         result = false;
+
         return false;
     }
+
     /// <summary>
     /// Tries to parse an int value from the specificed <paramref name="candidateString"/>.
     /// </summary>
@@ -172,6 +196,7 @@ internal static class ConvertUtil
         }
 
         result = 0;
+
         return false;
     }
 
@@ -187,9 +212,12 @@ internal static class ConvertUtil
         {
             return DateTime.TryParse(candidateString, CultureInfo.CurrentCulture, ParseArguments.DateTime, out result);
         }
+
         result = DateTime.MinValue;
+
         return false;
     }
+
     /// <summary>
     /// Convert an object value to a double 
     /// </summary>
@@ -197,15 +225,17 @@ internal static class ConvertUtil
     /// <param name="ignoreBool"></param>
     /// <param name="retNaN">Return NaN if invalid double otherwise 0</param>
     /// <returns></returns>
-    internal static double GetValueDouble(object v, bool ignoreBool = false, bool retNaN=false)
+    internal static double GetValueDouble(object v, bool ignoreBool = false, bool retNaN = false)
     {
         double d;
+
         try
         {
             if (ignoreBool && v is bool)
             {
                 return 0;
             }
+
             if (IsNumericOrDate(v))
             {
                 if (v is DateTime)
@@ -231,8 +261,10 @@ internal static class ConvertUtil
         {
             d = retNaN ? double.NaN : 0;
         }
+
         return d;
     }
+
     internal static DateTime? GetValueDate(object v)
     {
         if (v is DateTime d)
@@ -246,6 +278,7 @@ internal static class ConvertUtil
                 if (IsNumericOrDate(v))
                 {
                     double n = GetValueDouble(v);
+
                     if (double.IsNaN(n))
                     {
                         return null;
@@ -261,14 +294,15 @@ internal static class ConvertUtil
                 return null;
             }
         }
+
         return null;
     }
+
     internal static string ExcelEscapeString(string s)
     {
-        return s.Replace("&", "&amp;").
-                 Replace("<", "&lt;").
-                 Replace(">", "&gt;");
+        return s.Replace("&", "&amp;").Replace("<", "&lt;").Replace(">", "&gt;");
     }
+
     /// <summary>
     /// Return true if preserve space attribute is set.
     /// </summary>
@@ -281,6 +315,7 @@ internal static class ConvertUtil
         {
             Match? match = Regex.Match(t, "(_x[0-9A-F]{4,4}_)");
             int indexAdd = 0;
+
             while (match.Success)
             {
                 t = t.Insert(match.Index + indexAdd, "_x005F");
@@ -288,13 +323,14 @@ internal static class ConvertUtil
                 match = match.NextMatch();
             }
         }
+
         for (int i = 0; i < t.Length; i++)
         {
             if (t[i] <= 0x1f && t[i] != '\t' && t[i] != '\n' && t[i] != '\r') //Not Tab, CR or LF
             {
                 sw.Write("_x00{0}_", (t[i] < 0xf ? "0" : "") + ((int)t[i]).ToString("X"));
             }
-            else if(t[i]>0xFFFD)
+            else if (t[i] > 0xFFFD)
             {
                 sw.Write($"_x{((int)t[i]).ToString("X")}_");
             }
@@ -303,8 +339,8 @@ internal static class ConvertUtil
                 sw.Write(t[i]);
             }
         }
-
     }
+
     /// <summary>
     /// Return true if preserve space attribute is set.
     /// </summary>
@@ -312,12 +348,13 @@ internal static class ConvertUtil
     /// <param name="t"></param>
     /// <param name="encodeTabLF"></param>
     /// <returns></returns>
-    internal static void ExcelEncodeString(StringBuilder sb, string t, bool encodeTabLF=false)
+    internal static void ExcelEncodeString(StringBuilder sb, string t, bool encodeTabLF = false)
     {
         if (Regex.IsMatch(t, "(_x[0-9A-F]{4,4}_)"))
         {
             Match? match = Regex.Match(t, "(_x[0-9A-F]{4,4}_)");
             int indexAdd = 0;
+
             while (match.Success)
             {
                 t = t.Insert(match.Index + indexAdd, "_x005F");
@@ -325,6 +362,7 @@ internal static class ConvertUtil
                 match = match.NextMatch();
             }
         }
+
         for (int i = 0; i < t.Length; i++)
         {
             if (t[i] <= 0x1f && ((t[i] != '\n' && encodeTabLF == false) || encodeTabLF)) //Not Tab, CR or LF
@@ -340,16 +378,18 @@ internal static class ConvertUtil
                 sb.Append(t[i]);
             }
         }
-
     }
+
     internal static string ExcelEscapeAndEncodeString(string t)
     {
         if (string.IsNullOrEmpty(t))
         {
             return t;
         }
+
         return ExcelEncodeString(ExcelEscapeString(t));
     }
+
     /// <summary>
     /// Return true if preserve space attribute is set.
     /// </summary>
@@ -357,14 +397,17 @@ internal static class ConvertUtil
     /// <returns></returns>
     internal static string ExcelEncodeString(string t)
     {
-        StringBuilder sb=new StringBuilder();
-        t=t.Replace("\r\n", "\n"); //For some reason can't table name have cr in them. Replace with nl
+        StringBuilder sb = new StringBuilder();
+        t = t.Replace("\r\n", "\n"); //For some reason can't table name have cr in them. Replace with nl
         ExcelEncodeString(sb, t, true);
+
         return sb.ToString();
     }
+
     internal static string ExcelDecodeString(string t)
     {
         Match? match = Regex.Match(t, "(_x005F|_x[0-9A-F]{4,4}_)");
+
         if (!match.Success)
         {
             return t;
@@ -373,6 +416,7 @@ internal static class ConvertUtil
         bool useNextValue = false;
         StringBuilder? ret = new StringBuilder();
         int prevIndex = 0;
+
         while (match.Success)
         {
             if (prevIndex < match.Index)
@@ -396,12 +440,16 @@ internal static class ConvertUtil
                     ret.Append((char)int.Parse(match.Value.Substring(2, 4), NumberStyles.AllowHexSpecifier));
                 }
             }
+
             prevIndex = match.Index + match.Length;
             match = match.NextMatch();
         }
+
         ret.Append(t.Substring(prevIndex, t.Length - prevIndex));
+
         return ret.ToString();
     }
+
     /// <summary>
     ///     Convert cell value to desired type, including nullable structs.
     ///     When converting blank string to nullable struct (e.g. ' ' to int?) null is returned.
@@ -429,11 +477,12 @@ internal static class ConvertUtil
     {
         return GetTypedCellValueInner<T>(value, false);
     }
+
     internal static T GetTypedCellValueInner<T>(object value, bool returnDefaultIfException)
     {
         TypeConvertUtil<T>? conversion = new TypeConvertUtil<T>(value);
 
-        if(value == null || (conversion.ReturnType.IsNullable && conversion.Value.IsEmptyString))
+        if (value == null || (conversion.ReturnType.IsNullable && conversion.Value.IsEmptyString))
         {
             return default;
         }
@@ -453,7 +502,8 @@ internal static class ConvertUtil
         {
             return (T)ts;
         }
-        if(returnDefaultIfException)
+
+        if (returnDefaultIfException)
         {
             try
             {
@@ -472,7 +522,7 @@ internal static class ConvertUtil
             }
             else
             {
-                if(conversion.ReturnType.Type == typeof(object))
+                if (conversion.ReturnType.Type == typeof(object))
                 {
                     return (T)value;
                 }
@@ -483,16 +533,18 @@ internal static class ConvertUtil
             }
         }
     }
+
     internal static string GetValueForXml(object v, bool date1904)
     {
         string s;
+
         try
         {
             if (v is DateTime dt)
             {
                 double sdv = dt.ToOADate();
 
-                if(date1904)
+                if (date1904)
                 {
                     sdv -= ExcelWorkbook.date1904Offset;
                 }
@@ -505,8 +557,7 @@ internal static class ConvertUtil
             }
             else if (TypeCompat.IsPrimitive(v) || v is double || v is decimal)
             {
-                if ((v is double && double.IsNaN((double)v)) ||
-                    (v is float && float.IsNaN((float)v)))
+                if ((v is double && double.IsNaN((double)v)) || (v is float && float.IsNaN((float)v)))
                 {
                     s = "";
                 }
@@ -529,17 +580,21 @@ internal static class ConvertUtil
         {
             s = "0";
         }
+
         return s;
     }
+
     internal static object GetValueFromType(XmlReader xr, string type, int styleId, ExcelWorkbook workbook)
     {
         if (type == "s")
         {
             string? s = xr.ReadElementContentAsString();
+
             if (int.TryParse(s, out int sId))
             {
                 return sId;
             }
+
             return s;
         }
         else if (type == "str")
@@ -553,12 +608,14 @@ internal static class ConvertUtil
         else if (type == "e")
         {
             string? v = xr.ReadElementContentAsString();
+
             return ExcelErrorValue.Parse(_invariantTextInfo.ToUpper(v));
         }
         else
         {
             string v = xr.ReadElementContentAsString();
             int nf = workbook.Styles.CellXfs[styleId].NumberFormatId;
+
             if ((nf >= 14 && nf <= 22) || (nf >= 45 && nf <= 47))
             {
                 if (double.TryParse(v, NumberStyles.Any, CultureInfo.InvariantCulture, out double res))
@@ -567,6 +624,7 @@ internal static class ConvertUtil
                     {
                         res += ExcelWorkbook.date1904Offset;
                     }
+
                     if (res >= -657435.0 && res < 2958465.9999999)
                     {
                         return DateTime.FromOADate(res);
@@ -594,6 +652,7 @@ internal static class ConvertUtil
             }
         }
     }
+
     internal static string GetCellType(object v, bool allowStr = false)
     {
         if (v is bool)
@@ -625,7 +684,9 @@ internal static class ConvertUtil
     }
 
     #region internal cache objects
+
     internal static TextInfo _invariantTextInfo = CultureInfo.InvariantCulture.TextInfo;
-    internal static CompareInfo _invariantCompareInfo = CompareInfo.GetCompareInfo(CultureInfo.InvariantCulture.Name);  //TODO:Check that it works
+    internal static CompareInfo _invariantCompareInfo = CompareInfo.GetCompareInfo(CultureInfo.InvariantCulture.Name); //TODO:Check that it works
+
     #endregion
 }

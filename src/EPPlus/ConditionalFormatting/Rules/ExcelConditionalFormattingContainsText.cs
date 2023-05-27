@@ -10,6 +10,7 @@
  *************************************************************************************************
   01/27/2020         EPPlus Software AB       Initial release EPPlus 5
  *************************************************************************************************/
+
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -23,13 +24,12 @@ namespace OfficeOpenXml.ConditionalFormatting;
 /// <summary>
 /// ExcelConditionalFormattingContainsText
 /// </summary>
-public class ExcelConditionalFormattingContainsText
-    : ExcelConditionalFormattingRule,
-      IExcelConditionalFormattingContainsText
+public class ExcelConditionalFormattingContainsText : ExcelConditionalFormattingRule, IExcelConditionalFormattingContainsText
 {
     /****************************************************************************************/
 
     #region Constructors
+
     /// <summary>
     /// 
     /// </summary>
@@ -38,21 +38,19 @@ public class ExcelConditionalFormattingContainsText
     /// <param name="worksheet"></param>
     /// <param name="itemElementNode"></param>
     /// <param name="namespaceManager"></param>
-    internal ExcelConditionalFormattingContainsText(
-        ExcelAddress address,
-        int priority,
-        ExcelWorksheet worksheet,
-        XmlNode itemElementNode,
-        XmlNamespaceManager namespaceManager)
-        : base(
-               eExcelConditionalFormattingRuleType.ContainsText,
+    internal ExcelConditionalFormattingContainsText(ExcelAddress address,
+                                                    int priority,
+                                                    ExcelWorksheet worksheet,
+                                                    XmlNode itemElementNode,
+                                                    XmlNamespaceManager namespaceManager)
+        : base(eExcelConditionalFormattingRuleType.ContainsText,
                address,
                priority,
                worksheet,
                itemElementNode,
                namespaceManager == null ? worksheet.NameSpaceManager : namespaceManager)
     {
-        if (itemElementNode==null) //Set default values and create attributes if needed
+        if (itemElementNode == null) //Set default values and create attributes if needed
         {
             this.Operator = eExcelConditionalFormattingOperatorType.ContainsText;
             this.Text = string.Empty;
@@ -66,17 +64,8 @@ public class ExcelConditionalFormattingContainsText
     /// <param name="address"></param>
     /// <param name="worksheet"></param>
     /// <param name="itemElementNode"></param>
-    internal ExcelConditionalFormattingContainsText(
-        ExcelAddress address,
-        int priority,
-        ExcelWorksheet worksheet,
-        XmlNode itemElementNode)
-        : this(
-               address,
-               priority,
-               worksheet,
-               itemElementNode,
-               null)
+    internal ExcelConditionalFormattingContainsText(ExcelAddress address, int priority, ExcelWorksheet worksheet, XmlNode itemElementNode)
+        : this(address, priority, worksheet, itemElementNode, null)
     {
     }
 
@@ -86,45 +75,31 @@ public class ExcelConditionalFormattingContainsText
     /// <param name="priority"></param>
     /// <param name="address"></param>
     /// <param name="worksheet"></param>
-    internal ExcelConditionalFormattingContainsText(
-        ExcelAddress address,
-        int priority,
-        ExcelWorksheet worksheet)
-        : this(
-               address,
-               priority,
-               worksheet,
-               null,
-               null)
+    internal ExcelConditionalFormattingContainsText(ExcelAddress address, int priority, ExcelWorksheet worksheet)
+        : this(address, priority, worksheet, null, null)
     {
     }
+
     #endregion Constructors
 
     /****************************************************************************************/
 
     #region Exposed Properties
+
     /// <summary>
     /// The text to search inside the cell
     /// </summary>
     public string Text
     {
-        get
-        {
-            return this.GetXmlNodeString(
-                                         ExcelConditionalFormattingConstants.Paths.TextAttribute);
-        }
+        get { return this.GetXmlNodeString(ExcelConditionalFormattingConstants.Paths.TextAttribute); }
         set
         {
-            this.SetXmlNodeString(
-                                  ExcelConditionalFormattingConstants.Paths.TextAttribute,
-                                  value);
+            this.SetXmlNodeString(ExcelConditionalFormattingConstants.Paths.TextAttribute, value);
 
-            this.Formula = string.Format(
-                                         "NOT(ISERROR(SEARCH(\"{1}\",{0})))",
-                                         this.Address.Start.Address,
-                                         value.Replace("\"", "\"\""));
+            this.Formula = string.Format("NOT(ISERROR(SEARCH(\"{1}\",{0})))", this.Address.Start.Address, value.Replace("\"", "\"\""));
         }
     }
+
     #endregion Exposed Properties
 
     /****************************************************************************************/

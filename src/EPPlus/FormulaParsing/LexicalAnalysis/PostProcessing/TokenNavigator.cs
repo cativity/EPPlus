@@ -10,6 +10,7 @@
  *************************************************************************************************
   01/27/2020         EPPlus Software AB       Initial release EPPlus 5
  *************************************************************************************************/
+
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -95,7 +96,7 @@ public class TokenNavigator
             return this._tokens[this.Index + 1];
         }
     }
-        
+
     /// <summary>
     /// Moves to a position relative to current token
     /// </summary>
@@ -103,6 +104,7 @@ public class TokenNavigator
     public void MoveIndex(int relativePosition)
     {
         int newPosition = this.Index + relativePosition;
+
         if (newPosition < 0 || newPosition >= this._tokens.Count)
         {
             throw new ArgumentOutOfRangeException("MoveIndex: new index out of range");
@@ -119,6 +121,7 @@ public class TokenNavigator
     public Token GetTokenAtRelativePosition(int relativePosition)
     {
         int newPosition = this.Index + relativePosition;
+
         if (newPosition < 0 || newPosition >= this._tokens.Count)
         {
             throw new ArgumentOutOfRangeException("¨GetTokenAtRelativePosition: new index out of range");

@@ -26,6 +26,7 @@
  *******************************************************************************
   01/27/2020         EPPlus Software AB       Initial release EPPlus 5
  *******************************************************************************/
+
 using EPPlusTest;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using OfficeOpenXml;
@@ -46,6 +47,7 @@ public class RangeToTextTests : TestBase
 {
     static ExcelPackage _pck;
     static ExcelWorksheet _ws;
+
     [ClassInitialize]
     public static void Init(TestContext context)
     {
@@ -57,7 +59,9 @@ public class RangeToTextTests : TestBase
 
         _ws.SetValue("C6", "\"" + _ws.GetValue<string>(6, 3) + "\"");
     }
+
     #region ToText
+
     [TestMethod]
     public void ToTextDefault()
     {
@@ -66,21 +70,19 @@ public class RangeToTextTests : TestBase
         string? text = _ws.Cells["A1:D5"].ToText(fmt);
         string[]? lines = text.Split(new string[] { fmt.EOL }, StringSplitOptions.None);
         string[]? cols = lines[1].Split(fmt.Delimiter);
-            
+
         //Assert
         Assert.AreEqual(_ws.Cells["A2"].Text, cols[0]);
         Assert.AreEqual(_ws.Cells["B2"].Text, cols[1]);
         Assert.AreEqual(_ws.Cells["C2"].Text, cols[2]);
         Assert.AreEqual("66.00", cols[3]);
     }
+
     [TestMethod]
     public void ToTextNoCellFormat()
     {
         //Setup
-        ExcelOutputTextFormat? fmt = new ExcelOutputTextFormat()
-        {
-            UseCellFormat = false
-        };
+        ExcelOutputTextFormat? fmt = new ExcelOutputTextFormat() { UseCellFormat = false };
         string? text = _ws.Cells["A1:D5"].ToText(fmt);
         string[]? lines = text.Split(new string[] { fmt.EOL }, StringSplitOptions.None);
         string[]? cols = lines[1].Split(fmt.Delimiter);
@@ -91,15 +93,13 @@ public class RangeToTextTests : TestBase
         Assert.AreEqual(_ws.Cells["C2"].Text, cols[2]);
         Assert.AreEqual(_ws.Cells["D2"].GetValue<double>().ToString("r", CultureInfo.InvariantCulture), cols[3]);
     }
+
     [TestMethod]
     public void ToTextSwedishCulture()
     {
         //Setup
         CultureInfo? culture = new CultureInfo("sv-SE");
-        ExcelOutputTextFormat? fmt = new ExcelOutputTextFormat()
-        {
-            Culture = culture,
-        };
+        ExcelOutputTextFormat? fmt = new ExcelOutputTextFormat() { Culture = culture, };
         string? text = _ws.Cells["A1:D5"].ToText(fmt);
         string[]? lines = text.Split(new string[] { fmt.EOL }, StringSplitOptions.None);
         string[]? cols = lines[1].Split(fmt.Delimiter);
@@ -110,15 +110,12 @@ public class RangeToTextTests : TestBase
         Assert.AreEqual(_ws.Cells["C2"].Text, cols[2]);
         Assert.IsTrue(lines[1].EndsWith(_ws.Cells["D2"].GetValue<double>().ToString("0.00", culture)));
     }
+
     [TestMethod]
     public void ToTextFormatAndTextQualifier()
     {
         //Setup
-        ExcelOutputTextFormat? fmt = new ExcelOutputTextFormat()
-        {
-            TextQualifier='"',
-            Formats=new string[] { "yyyy-MM-dd", null, null, "0.00" },
-        };
+        ExcelOutputTextFormat? fmt = new ExcelOutputTextFormat() { TextQualifier = '"', Formats = new string[] { "yyyy-MM-dd", null, null, "0.00" }, };
         string? text = _ws.Cells["A1:D5"].ToText(fmt);
         string[]? lines = text.Split(new string[] { fmt.EOL }, StringSplitOptions.None);
         string[]? cols = lines[1].Split(fmt.Delimiter);
@@ -129,15 +126,12 @@ public class RangeToTextTests : TestBase
         Assert.AreEqual(fmt.TextQualifier + _ws.Cells["C2"].Text + fmt.TextQualifier, cols[2]);
         Assert.AreEqual(_ws.Cells["D2"].GetValue<double>().ToString("0.00", CultureInfo.InvariantCulture), cols[3]);
     }
+
     [TestMethod]
     public void ToTextTextQualifierDouble()
     {
         //Setup
-        ExcelOutputTextFormat? fmt = new ExcelOutputTextFormat()
-        {
-            TextQualifier = '"',
-            Formats = new string[] { "yyyy-MM-dd" }
-        };
+        ExcelOutputTextFormat? fmt = new ExcelOutputTextFormat() { TextQualifier = '"', Formats = new string[] { "yyyy-MM-dd" } };
         string? text = _ws.Cells["A1:D6"].ToText(fmt);
         string[]? lines = text.Split(new string[] { fmt.EOL }, StringSplitOptions.None);
         string[]? cols = lines[5].Split(fmt.Delimiter);
@@ -145,19 +139,19 @@ public class RangeToTextTests : TestBase
         //Assert
         Assert.AreEqual(_ws.Cells["A6"].GetValue<DateTime>().ToString("yyyy-MM-dd"), cols[0]);
         Assert.AreEqual(_ws.Cells["B6"].Text, cols[1]);
-        Assert.AreEqual(new string (fmt.TextQualifier,2) + _ws.Cells["C6"].Text + new string(fmt.TextQualifier, 2), cols[2]);
+        Assert.AreEqual(new string(fmt.TextQualifier, 2) + _ws.Cells["C6"].Text + new string(fmt.TextQualifier, 2), cols[2]);
         Assert.AreEqual("198.00", cols[3]);
     }
+
     [TestMethod]
     public void ToTextDelimiterAndCustomDecimalDelimiter()
     {
         //Setup
         ExcelOutputTextFormat? fmt = new ExcelOutputTextFormat()
         {
-            Delimiter=';',
-            DecimalSeparator=",",
-            Formats=new string[] {null,null,null,"0.00"}
+            Delimiter = ';', DecimalSeparator = ",", Formats = new string[] { null, null, null, "0.00" }
         };
+
         string? text = _ws.Cells["A1:D6"].ToText(fmt);
         string[]? lines = text.Split(new string[] { fmt.EOL }, StringSplitOptions.None);
         string[]? cols = lines[1].Split(fmt.Delimiter);
@@ -168,17 +162,16 @@ public class RangeToTextTests : TestBase
         Assert.AreEqual(_ws.Cells["C2"].Text, cols[2]);
         Assert.AreEqual("66,00", cols[3]);
     }
+
     [TestMethod]
     public void ToTextCustomThousandSeparator()
     {
         //Setup
         ExcelOutputTextFormat? fmt = new ExcelOutputTextFormat()
         {
-            Delimiter = '|',
-            DecimalSeparator = ",",
-            ThousandsSeparator = " ",
-            Formats = new string[] { null, null, null, "#,##0.00" }
+            Delimiter = '|', DecimalSeparator = ",", ThousandsSeparator = " ", Formats = new string[] { null, null, null, "#,##0.00" }
         };
+
         string? text = _ws.Cells["A1:D35"].ToText(fmt);
         string[]? lines = text.Split(new string[] { fmt.EOL }, StringSplitOptions.None);
         string[]? cols = lines[34].Split(fmt.Delimiter);
@@ -189,16 +182,12 @@ public class RangeToTextTests : TestBase
         Assert.AreEqual(_ws.Cells["C35"].Text, cols[2]);
         Assert.AreEqual("1 155,00", cols[3]);
     }
+
     [TestMethod]
     public void ToTextFormatTextNoCellFormat()
     {
         //Setup
-        ExcelOutputTextFormat? fmt = new ExcelOutputTextFormat()
-        {
-            TextQualifier = '\'',
-            UseCellFormat = false,
-            Formats = new string[] { "$", "$", "$", "$" }
-        };
+        ExcelOutputTextFormat? fmt = new ExcelOutputTextFormat() { TextQualifier = '\'', UseCellFormat = false, Formats = new string[] { "$", "$", "$", "$" } };
         string? text = _ws.Cells["A1:D5"].ToText(fmt);
         string[]? lines = text.Split(new string[] { fmt.EOL }, StringSplitOptions.None);
         string[]? cols = lines[1].Split(fmt.Delimiter);
@@ -209,20 +198,19 @@ public class RangeToTextTests : TestBase
         Assert.AreEqual(fmt.TextQualifier.ToString() + _ws.Cells["C2"].Value.ToString() + fmt.TextQualifier.ToString(), cols[2]);
         Assert.AreEqual(fmt.TextQualifier.ToString() + _ws.Cells["D2"].Value.ToString() + fmt.TextQualifier.ToString(), cols[3]);
     }
+
     [TestMethod]
     public void ToTextFormatTextAndCellFormat()
     {
         CultureInfo? ci = Thread.CurrentThread.CurrentCulture;
         Thread.CurrentThread.CurrentCulture = new CultureInfo("en-US");
+
         //Setup
         ExcelOutputTextFormat? fmt = new ExcelOutputTextFormat()
         {
-            Delimiter='.',
-            TextQualifier = '\'',
-            UseCellFormat=true,
-            Culture=new CultureInfo("sv-SE"),
-            Formats = new string[] { "", "$", "$", null}
+            Delimiter = '.', TextQualifier = '\'', UseCellFormat = true, Culture = new CultureInfo("sv-SE"), Formats = new string[] { "", "$", "$", null }
         };
+
         string? text = _ws.Cells["A1:D5"].ToText(fmt);
         string[]? lines = text.Split(new string[] { fmt.EOL }, StringSplitOptions.None);
         string[]? cols = lines[1].Split(fmt.Delimiter);
@@ -235,15 +223,12 @@ public class RangeToTextTests : TestBase
 
         Thread.CurrentThread.CurrentCulture = ci;
     }
+
     [TestMethod]
     public void ToTextSkipLines()
     {
         //Setup
-        ExcelOutputTextFormat? fmt = new ExcelOutputTextFormat()
-        {
-            SkipLinesBeginning =1,
-            SkipLinesEnd=1
-        };
+        ExcelOutputTextFormat? fmt = new ExcelOutputTextFormat() { SkipLinesBeginning = 1, SkipLinesEnd = 1 };
         string? text = _ws.Cells["A1:D5"].ToText(fmt);
         string[]? lines = text.Split(new string[] { fmt.EOL }, StringSplitOptions.None);
         string[]? colsHeaders = lines[0].Split(fmt.Delimiter);
@@ -262,23 +247,23 @@ public class RangeToTextTests : TestBase
         Assert.AreEqual(_ws.Cells["C3"].Text, cols[2]);
         Assert.AreEqual("99.00", cols[3]);
     }
+
     [TestMethod]
     public void ToTextHeaderAndFooter()
     {
         //Setup
-        ExcelOutputTextFormat? fmt = new ExcelOutputTextFormat()
-        {
-            Header = "Starts With",
-            Footer = "Ends With"
-        };
+        ExcelOutputTextFormat? fmt = new ExcelOutputTextFormat() { Header = "Starts With", Footer = "Ends With" };
         string? text = _ws.Cells["A1:D5"].ToText(fmt);
 
         //Assert
         Assert.IsTrue(text.StartsWith(fmt.Header + fmt.EOL));
         Assert.IsTrue(text.EndsWith(fmt.EOL + fmt.Footer));
     }
+
     #endregion
+
     #region ToTextAsync
+
     [TestMethod]
     public async Task ToTextDefaultAsync()
     {
@@ -294,14 +279,12 @@ public class RangeToTextTests : TestBase
         Assert.AreEqual(_ws.Cells["C2"].Text, cols[2]);
         Assert.AreEqual("66.00", cols[3]);
     }
+
     [TestMethod]
     public async Task ToTextNoCellFormatAsync()
     {
         //Setup
-        ExcelOutputTextFormat? fmt = new ExcelOutputTextFormat()
-        {
-            UseCellFormat = false
-        };
+        ExcelOutputTextFormat? fmt = new ExcelOutputTextFormat() { UseCellFormat = false };
         string? text = await _ws.Cells["A1:D5"].ToTextAsync(fmt).ConfigureAwait(false);
         string[]? lines = text.Split(new string[] { fmt.EOL }, StringSplitOptions.None);
         string[]? cols = lines[1].Split(fmt.Delimiter);
@@ -312,15 +295,13 @@ public class RangeToTextTests : TestBase
         Assert.AreEqual(_ws.Cells["C2"].Text, cols[2]);
         Assert.AreEqual(_ws.Cells["D2"].GetValue<double>().ToString("r", CultureInfo.InvariantCulture), cols[3]);
     }
+
     [TestMethod]
     public async Task ToTextSwedishCultureAsync()
     {
         //Setup
         CultureInfo? culture = new CultureInfo("sv-SE");
-        ExcelOutputTextFormat? fmt = new ExcelOutputTextFormat()
-        {
-            Culture = culture,
-        };
+        ExcelOutputTextFormat? fmt = new ExcelOutputTextFormat() { Culture = culture, };
         string? text = await _ws.Cells["A1:D5"].ToTextAsync(fmt).ConfigureAwait(false);
         string[]? lines = text.Split(new string[] { fmt.EOL }, StringSplitOptions.None);
         string[]? cols = lines[1].Split(fmt.Delimiter);
@@ -331,15 +312,12 @@ public class RangeToTextTests : TestBase
         Assert.AreEqual(_ws.Cells["C2"].Text, cols[2]);
         Assert.IsTrue(lines[1].EndsWith(_ws.Cells["D2"].GetValue<double>().ToString("0.00", culture)));
     }
+
     [TestMethod]
     public async Task ToTextFormatAndTextQualifierAsync()
     {
         //Setup
-        ExcelOutputTextFormat? fmt = new ExcelOutputTextFormat()
-        {
-            TextQualifier = '"',
-            Formats = new string[] { "yyyy-MM-dd", null, null, "0.00" },
-        };
+        ExcelOutputTextFormat? fmt = new ExcelOutputTextFormat() { TextQualifier = '"', Formats = new string[] { "yyyy-MM-dd", null, null, "0.00" }, };
         string? text = await _ws.Cells["A1:D5"].ToTextAsync(fmt).ConfigureAwait(false);
         string[]? lines = text.Split(new string[] { fmt.EOL }, StringSplitOptions.None);
         string[]? cols = lines[1].Split(fmt.Delimiter);
@@ -350,15 +328,12 @@ public class RangeToTextTests : TestBase
         Assert.AreEqual(fmt.TextQualifier + _ws.Cells["C2"].Text + fmt.TextQualifier, cols[2]);
         Assert.AreEqual(_ws.Cells["D2"].GetValue<double>().ToString("0.00", CultureInfo.InvariantCulture), cols[3]);
     }
+
     [TestMethod]
     public async Task ToTextTextQualifierDoubleAsync()
     {
         //Setup
-        ExcelOutputTextFormat? fmt = new ExcelOutputTextFormat()
-        {
-            TextQualifier = '"',
-            Formats = new string[] { "yyyy-MM-dd" }
-        };
+        ExcelOutputTextFormat? fmt = new ExcelOutputTextFormat() { TextQualifier = '"', Formats = new string[] { "yyyy-MM-dd" } };
         string? text = await _ws.Cells["A1:D6"].ToTextAsync(fmt).ConfigureAwait(false);
         string[]? lines = text.Split(new string[] { fmt.EOL }, StringSplitOptions.None);
         string[]? cols = lines[5].Split(fmt.Delimiter);
@@ -369,16 +344,16 @@ public class RangeToTextTests : TestBase
         Assert.AreEqual(new string(fmt.TextQualifier, 2) + _ws.Cells["C6"].Text + new string(fmt.TextQualifier, 2), cols[2]);
         Assert.AreEqual("198.00", cols[3]);
     }
+
     [TestMethod]
     public async Task ToTextDelimiterAndCustomDecimalDelimiterAsync()
     {
         //Setup
         ExcelOutputTextFormat? fmt = new ExcelOutputTextFormat()
         {
-            Delimiter = ';',
-            DecimalSeparator = ",",
-            Formats = new string[] { null, null, null, "0.00" }
+            Delimiter = ';', DecimalSeparator = ",", Formats = new string[] { null, null, null, "0.00" }
         };
+
         string? text = await _ws.Cells["A1:D6"].ToTextAsync(fmt).ConfigureAwait(false);
         string[]? lines = text.Split(new string[] { fmt.EOL }, StringSplitOptions.None);
         string[]? cols = lines[1].Split(fmt.Delimiter);
@@ -389,17 +364,16 @@ public class RangeToTextTests : TestBase
         Assert.AreEqual(_ws.Cells["C2"].Text, cols[2]);
         Assert.AreEqual("66,00", cols[3]);
     }
+
     [TestMethod]
     public async Task ToTextCustomThousandSeparatorAsync()
     {
         //Setup
         ExcelOutputTextFormat? fmt = new ExcelOutputTextFormat()
         {
-            Delimiter = '|',
-            DecimalSeparator = ",",
-            ThousandsSeparator = " ",
-            Formats = new string[] { null, null, null, "#,##0.00" }
+            Delimiter = '|', DecimalSeparator = ",", ThousandsSeparator = " ", Formats = new string[] { null, null, null, "#,##0.00" }
         };
+
         string? text = await _ws.Cells["A1:D35"].ToTextAsync(fmt).ConfigureAwait(false);
         string[]? lines = text.Split(new string[] { fmt.EOL }, StringSplitOptions.None);
         string[]? cols = lines[34].Split(fmt.Delimiter);
@@ -410,16 +384,12 @@ public class RangeToTextTests : TestBase
         Assert.AreEqual(_ws.Cells["C35"].Text, cols[2]);
         Assert.AreEqual("1 155,00", cols[3]);
     }
+
     [TestMethod]
     public async Task ToTextFormatTextNoCellFormatAsync()
     {
         //Setup
-        ExcelOutputTextFormat? fmt = new ExcelOutputTextFormat()
-        {
-            TextQualifier = '\'',
-            UseCellFormat = false,
-            Formats = new string[] { "$", "$", "$", "$" }
-        };
+        ExcelOutputTextFormat? fmt = new ExcelOutputTextFormat() { TextQualifier = '\'', UseCellFormat = false, Formats = new string[] { "$", "$", "$", "$" } };
         string? text = await _ws.Cells["A1:D5"].ToTextAsync(fmt).ConfigureAwait(false);
         string[]? lines = text.Split(new string[] { fmt.EOL }, StringSplitOptions.None);
         string[]? cols = lines[1].Split(fmt.Delimiter);
@@ -430,20 +400,19 @@ public class RangeToTextTests : TestBase
         Assert.AreEqual(fmt.TextQualifier.ToString() + _ws.Cells["C2"].Value.ToString() + fmt.TextQualifier.ToString(), cols[2]);
         Assert.AreEqual(fmt.TextQualifier.ToString() + _ws.Cells["D2"].Value.ToString() + fmt.TextQualifier.ToString(), cols[3]);
     }
+
     [TestMethod]
     public async Task ToTextFormatTextAndCellFormatAsync()
     {
         CultureInfo? ci = Thread.CurrentThread.CurrentCulture;
         Thread.CurrentThread.CurrentCulture = new CultureInfo("en-US");
+
         //Setup
         ExcelOutputTextFormat? fmt = new ExcelOutputTextFormat()
         {
-            Delimiter = '.',
-            TextQualifier = '\'',
-            UseCellFormat = true,
-            Culture = new CultureInfo("sv-SE"),
-            Formats = new string[] { "", "$", "$", null }
+            Delimiter = '.', TextQualifier = '\'', UseCellFormat = true, Culture = new CultureInfo("sv-SE"), Formats = new string[] { "", "$", "$", null }
         };
+
         string? text = await _ws.Cells["A1:D5"].ToTextAsync(fmt).ConfigureAwait(false);
         string[]? lines = text.Split(new string[] { fmt.EOL }, StringSplitOptions.None);
         string[]? cols = lines[1].Split(fmt.Delimiter);
@@ -455,15 +424,12 @@ public class RangeToTextTests : TestBase
         Assert.AreEqual("66,00", cols[3]);
         Thread.CurrentThread.CurrentCulture = ci;
     }
+
     [TestMethod]
     public async Task ToTextSkipLinesAsync()
     {
         //Setup
-        ExcelOutputTextFormat? fmt = new ExcelOutputTextFormat()
-        {
-            SkipLinesBeginning = 1,
-            SkipLinesEnd = 1
-        };
+        ExcelOutputTextFormat? fmt = new ExcelOutputTextFormat() { SkipLinesBeginning = 1, SkipLinesEnd = 1 };
         string? text = await _ws.Cells["A1:D5"].ToTextAsync(fmt).ConfigureAwait(false);
         string[]? lines = text.Split(new string[] { fmt.EOL }, StringSplitOptions.None);
         string[]? colsHeaders = lines[0].Split(fmt.Delimiter);
@@ -482,26 +448,25 @@ public class RangeToTextTests : TestBase
         Assert.AreEqual(_ws.Cells["C3"].Text, cols[2]);
         Assert.AreEqual("99.00", cols[3]);
     }
+
     [TestMethod]
     public async Task ToTextHeaderAndFooterAsync()
     {
         //Setup
-        ExcelOutputTextFormat? fmt = new ExcelOutputTextFormat()
-        {
-            Header = "Starts With",
-            Footer = "Ends With"
-        };
+        ExcelOutputTextFormat? fmt = new ExcelOutputTextFormat() { Header = "Starts With", Footer = "Ends With" };
         string? text = await _ws.Cells["A1:D5"].ToTextAsync(fmt).ConfigureAwait(false);
 
         //Assert
         Assert.IsTrue(text.StartsWith(fmt.Header + fmt.EOL));
         Assert.IsTrue(text.EndsWith(fmt.EOL + fmt.Footer));
     }
+
     [TestMethod]
     public void ToTextHandleRichTextCells()
     {
         using ExcelPackage? p = new ExcelPackage();
         ExcelWorksheet? ws = p.Workbook.Worksheets.Add("RichText");
+
         //Setup
         ws.Cells["A1"].RichText.Add("RichText 1");
         ExcelRichTextCollection? rt = ws.Cells["A2"].RichText;

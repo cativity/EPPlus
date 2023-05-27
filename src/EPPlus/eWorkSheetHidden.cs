@@ -22,10 +22,12 @@ public enum eWorkSheetHidden
     /// The worksheet is visible
     /// </summary>
     Visible,
+
     /// <summary>
     /// The worksheet is hidden but can be shown by the user via the user interface
     /// </summary>
     Hidden,
+
     /// <summary>
     /// The worksheet is hidden and cannot be shown by the user via the user interface
     /// </summary>

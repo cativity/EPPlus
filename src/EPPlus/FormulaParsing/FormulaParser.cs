@@ -10,6 +10,7 @@
  *************************************************************************************************
   01/27/2020         EPPlus Software AB       Initial release EPPlus 5
  *************************************************************************************************/
+
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -43,7 +44,6 @@ public class FormulaParser : IDisposable
     public FormulaParser(ExcelPackage package)
         : this(new EpplusExcelDataProvider(package))
     {
-
     }
 
     /// <summary>
@@ -53,7 +53,6 @@ public class FormulaParser : IDisposable
     internal FormulaParser(ExcelDataProvider excelDataProvider)
         : this(excelDataProvider, ParsingContext.Create())
     {
-           
     }
 
     /// <summary>
@@ -72,11 +71,10 @@ public class FormulaParser : IDisposable
 
         this.Configure(configuration =>
         {
-            configuration
-                .SetLexer(new Lexer(this._parsingContext.Configuration.FunctionRepository, this._parsingContext.NameValueProvider))
-                .SetGraphBuilder(new ExpressionGraphBuilder(excelDataProvider, this._parsingContext))
-                .SetExpresionCompiler(new ExpressionCompiler())
-                .FunctionRepository.LoadModule(new BuiltInFunctions());
+            configuration.SetLexer(new Lexer(this._parsingContext.Configuration.FunctionRepository, this._parsingContext.NameValueProvider))
+                         .SetGraphBuilder(new ExpressionGraphBuilder(excelDataProvider, this._parsingContext))
+                         .SetExpresionCompiler(new ExpressionCompiler())
+                         .FunctionRepository.LoadModule(new BuiltInFunctions());
         });
     }
 
@@ -96,8 +94,15 @@ public class FormulaParser : IDisposable
     private IExpressionGraphBuilder _graphBuilder;
     private IExpressionCompiler _compiler;
 
-    internal ILexer Lexer { get { return this._lexer; } }
-    internal IEnumerable<string> FunctionNames { get { return this._parsingContext.Configuration.FunctionRepository.FunctionNames; } } 
+    internal ILexer Lexer
+    {
+        get { return this._lexer; }
+    }
+
+    internal IEnumerable<string> FunctionNames
+    {
+        get { return this._parsingContext.Configuration.FunctionRepository.FunctionNames; }
+    }
 
     /// <summary>
     /// Contains information about filters on a workbook's worksheets.
@@ -109,10 +114,12 @@ public class FormulaParser : IDisposable
         using ParsingScope? scope = this._parsingContext.Scopes.NewScope(rangeAddress);
         IEnumerable<Token>? tokens = this._lexer.Tokenize(formula);
         ExpressionGraph.ExpressionGraph? graph = this._graphBuilder.Build(tokens);
+
         if (graph.Expressions.Count() == 0)
         {
             return null;
         }
+
         return this._compiler.Compile(graph.Expressions).Result;
     }
 
@@ -121,27 +128,35 @@ public class FormulaParser : IDisposable
         RangeAddress? rangeAddress = this._parsingContext.RangeAddressFactory.Create(address);
         using ParsingScope? scope = this._parsingContext.Scopes.NewScope(rangeAddress);
         ExpressionGraph.ExpressionGraph? graph = this._graphBuilder.Build(tokens);
+
         if (graph.Expressions.Count() == 0)
         {
             return null;
         }
+
         return this._compiler.Compile(graph.Expressions).Result;
     }
+
     internal virtual object ParseCell(IEnumerable<Token> tokens, string worksheet, int row, int column)
     {
         RangeAddress? rangeAddress = this._parsingContext.RangeAddressFactory.Create(worksheet, column, row);
         using ParsingScope? scope = this._parsingContext.Scopes.NewScope(rangeAddress);
+
         //    _parsingContext.Dependencies.AddFormulaScope(scope);
         ExpressionGraph.ExpressionGraph? graph = this._graphBuilder.Build(tokens);
+
         if (graph.Expressions.Count() == 0)
         {
             return 0d;
         }
+
         try
         {
             CompileResult? compileResult = this._compiler.Compile(graph.Expressions);
+
             // quick solution for the fact that an excelrange can be returned.
             IRangeInfo? rangeInfo = compileResult.Result as IRangeInfo;
+
             if (rangeInfo == null)
             {
                 return compileResult.Result ?? 0d;
@@ -152,22 +167,25 @@ public class FormulaParser : IDisposable
                 {
                     return 0d;
                 }
+
                 if (!rangeInfo.IsMulti)
                 {
                     return rangeInfo.First().Value ?? 0d;
                 }
+
                 // ok to return multicell if it is a workbook scoped name.
                 if (string.IsNullOrEmpty(worksheet))
                 {
                     return rangeInfo;
                 }
+
                 if (this._parsingContext.Debug)
                 {
-                    string? msg = string.Format("A range with multiple cell was returned at row {0}, column {1}",
-                                                row, column);
+                    string? msg = string.Format("A range with multiple cell was returned at row {0}, column {1}", row, column);
 
                     this._parsingContext.Configuration.Logger.Log(this._parsingContext, msg);
                 }
+
                 return ExcelErrorValue.Create(eErrorType.Value);
             }
         }
@@ -177,6 +195,7 @@ public class FormulaParser : IDisposable
             {
                 this._parsingContext.Configuration.Logger.Log(this._parsingContext, ex);
             }
+
             return ex.ErrorValue;
         }
     }
@@ -191,7 +210,7 @@ public class FormulaParser : IDisposable
     {
         return this.Parse(formula, this._parsingContext.RangeAddressFactory.Create(address));
     }
-        
+
     /// <summary>
     /// Parses a formula
     /// </summary>
@@ -211,6 +230,7 @@ public class FormulaParser : IDisposable
     {
         Require.That(address).Named("address").IsNotNullOrEmpty();
         RangeAddress? rangeAddress = this._parsingContext.RangeAddressFactory.Create(address);
+
         return this.ParseAt(rangeAddress.Worksheet, rangeAddress.FromRow, rangeAddress.FromCol);
     }
 
@@ -224,14 +244,16 @@ public class FormulaParser : IDisposable
     public virtual object ParseAt(string worksheetName, int row, int col)
     {
         string? f = this._excelDataProvider.GetRangeFormula(worksheetName, row, col);
+
         if (string.IsNullOrEmpty(f))
         {
             return this._excelDataProvider.GetRangeValue(worksheetName, row, col);
         }
         else
         {
-            return this.Parse(f, this._parsingContext.RangeAddressFactory.Create(worksheetName,col,row));
+            return this.Parse(f, this._parsingContext.RangeAddressFactory.Create(worksheetName, col, row));
         }
+
         //var dataItem = _excelDataProvider.GetRangeValues(address).FirstOrDefault();
         //if (dataItem == null /*|| (dataItem.Value == null && dataItem.Formula == null)*/) return null;
         //if (!string.IsNullOrEmpty(dataItem.Formula))
@@ -241,11 +263,11 @@ public class FormulaParser : IDisposable
         //return Parse(dataItem.Value.ToString(), _parsingContext.RangeAddressFactory.Create(address));
     }
 
-
     internal void InitNewCalc(FilterInfo filterInfo)
     {
         this.FilterInfo = filterInfo;
-        if(this._excelDataProvider!=null)
+
+        if (this._excelDataProvider != null)
         {
             this._excelDataProvider.Reset();
         }

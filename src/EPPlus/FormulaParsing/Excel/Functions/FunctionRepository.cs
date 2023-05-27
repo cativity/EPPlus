@@ -10,6 +10,7 @@
  *************************************************************************************************
   01/27/2020         EPPlus Software AB       Initial release EPPlus 5
  *************************************************************************************************/
+
 using System;
 using System.Collections.Generic;
 using System.Globalization;
@@ -30,7 +31,7 @@ public class FunctionRepository : IFunctionNameProvider
     private Dictionary<Type, FunctionCompiler> _customCompilers = new Dictionary<Type, FunctionCompiler>();
 
     private Dictionary<string, ExcelFunction> _functions = new Dictionary<string, ExcelFunction>(StringComparer.Ordinal);
-        
+
     /// <summary>
     /// Gets a <see cref="Dictionary{Type, FunctionCompiler}" /> of custom <see cref="FunctionCompiler"/>s.
     /// </summary>
@@ -41,13 +42,13 @@ public class FunctionRepository : IFunctionNameProvider
 
     private FunctionRepository()
     {
-
     }
 
     public static FunctionRepository Create()
     {
         FunctionRepository? repo = new FunctionRepository();
         repo.LoadModule(new BuiltInFunctions());
+
         return repo;
     }
 
@@ -62,6 +63,7 @@ public class FunctionRepository : IFunctionNameProvider
             string? lowerKey = key.ToLower(CultureInfo.InvariantCulture);
             this._functions[lowerKey] = module.Functions[key];
         }
+
         foreach (Type? key in module.CustomCompilers.Keys)
         {
             this.CustomCompilers[key] = module.CustomCompilers[key];
@@ -70,12 +72,13 @@ public class FunctionRepository : IFunctionNameProvider
 
     public virtual ExcelFunction GetFunction(string name)
     {
-        if(!this._functions.ContainsKey(name.ToLower(CultureInfo.InvariantCulture)))
+        if (!this._functions.ContainsKey(name.ToLower(CultureInfo.InvariantCulture)))
         {
             //throw new InvalidOperationException("Non supported function: " + name);
             //throw new ExcelErrorValueException("Non supported function: " + name, ExcelErrorValue.Create(eErrorType.Name));
             return null;
         }
+
         return this._functions[name.ToLower(CultureInfo.InvariantCulture)];
     }
 
@@ -115,6 +118,7 @@ public class FunctionRepository : IFunctionNameProvider
         Require.That(functionName).Named("functionName").IsNotNullOrEmpty();
         Require.That(functionImpl).Named("functionImpl").IsNotNull();
         string? fName = functionName.ToLower(CultureInfo.InvariantCulture);
+
         if (this._functions.ContainsKey(fName))
         {
             this._functions.Remove(fName);

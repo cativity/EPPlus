@@ -10,6 +10,7 @@
  *************************************************************************************************
   02/10/2023         EPPlus Software AB       Initial release EPPlus 6.2
  *************************************************************************************************/
+
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -28,7 +29,9 @@ internal class ExtLstHelper
 
     private void ParseIntialXmlToList(string xml)
     {
-        int start = 0, end = 0;
+        int start = 0,
+            end = 0;
+
         GetBlock.Pos(xml, "extLst", ref start, ref end);
 
         //If the node isn't just a placeholder
@@ -52,6 +55,7 @@ internal class ExtLstHelper
             }
         }
     }
+
     /// <summary>
     /// Inserts content after the uriNode
     /// Note that this is only intended to be done once per type of node and it will throw error
@@ -63,6 +67,7 @@ internal class ExtLstHelper
     internal void InsertExt(string uri, string content, string uriOfNodeBefore)
     {
         int indexOfNode = -1;
+
         if (uriOfNodeBefore != "")
         {
             indexOfNode = this.uriToIndex[uriOfNodeBefore];
@@ -73,6 +78,7 @@ internal class ExtLstHelper
         if (indexOfNode == -1)
         {
             this.listOfExts.Insert(0, content);
+
             foreach (string key in keys)
             {
                 this.uriToIndex[key] += 1;
@@ -89,6 +95,7 @@ internal class ExtLstHelper
             else
             {
                 this.listOfExts.Insert(indexOfNode + 1, content);
+
                 foreach (string key in keys)
                 {
                     if (indexOfNode + 1 >= this.uriToIndex[key])
@@ -112,6 +119,7 @@ internal class ExtLstHelper
         }
 
         extLstString += "</extLst>";
+
         return extLstString;
     }
 }

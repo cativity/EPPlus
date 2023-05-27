@@ -10,6 +10,7 @@
  *************************************************************************************************
   04/16/2021         EPPlus Software AB       EPPlus 5.7
  *************************************************************************************************/
+
 using OfficeOpenXml.Core.CellStore;
 using System;
 using System.Collections;
@@ -20,8 +21,7 @@ namespace OfficeOpenXml.ExternalReferences;
 /// <summary>
 /// A collection of <see cref="ExcelExternalCellValue" />
 /// </summary>
-public class ExcelExternalCellCollection
-    : IEnumerable<ExcelExternalCellValue>, IEnumerator<ExcelExternalCellValue>
+public class ExcelExternalCellCollection : IEnumerable<ExcelExternalCellValue>, IEnumerator<ExcelExternalCellValue>
 {
     internal CellStore<object> _values;
     private CellStore<int> _metaData;
@@ -32,6 +32,7 @@ public class ExcelExternalCellCollection
         this._values = values;
         this._metaData = metaData;
     }
+
     /// <summary>
     /// An indexer to access the the external cell values 
     /// </summary>
@@ -41,13 +42,15 @@ public class ExcelExternalCellCollection
     {
         get
         {
-            if(ExcelCellBase.GetRowColFromAddress(cellAddress, out int row, out int column))
+            if (ExcelCellBase.GetRowColFromAddress(cellAddress, out int row, out int column))
             {
                 return this[row, column];
             }
+
             throw new ArgumentException("Address is not valid");
         }
     }
+
     /// <summary>
     /// An indexer to access the the external cell values 
     /// </summary>
@@ -58,26 +61,24 @@ public class ExcelExternalCellCollection
     {
         get
         {
-            if(row < 1 || column < 1 || row > ExcelPackage.MaxRows || column > ExcelPackage.MaxColumns)
+            if (row < 1 || column < 1 || row > ExcelPackage.MaxRows || column > ExcelPackage.MaxColumns)
             {
                 throw new ArgumentOutOfRangeException();
             }
 
             return new ExcelExternalCellValue()
             {
-                Row = row,
-                Column = column,
-                Value = this._values.GetValue(row, column),
-                MetaDataReference = this._metaData.GetValue(row, column)
+                Row = row, Column = column, Value = this._values.GetValue(row, column), MetaDataReference = this._metaData.GetValue(row, column)
             };
         }
     }
+
     /// <summary>
     /// The current value of the <see cref="IEnumerable"/>
     /// </summary>
     public ExcelExternalCellValue Current
     {
-        get 
+        get
         {
             if (this._valuesEnum == null)
             {
@@ -99,11 +100,9 @@ public class ExcelExternalCellCollection
     /// </summary>
     object IEnumerator.Current
     {
-        get
-        {
-            return this.Current;
-        }
+        get { return this.Current; }
     }
+
     /// <summary>
     /// Disposed the object
     /// </summary>
@@ -111,6 +110,7 @@ public class ExcelExternalCellCollection
     {
         this._valuesEnum.Dispose();
     }
+
     /// <summary>
     /// Get the enumerator for this collection
     /// </summary>
@@ -118,8 +118,10 @@ public class ExcelExternalCellCollection
     public IEnumerator<ExcelExternalCellValue> GetEnumerator()
     {
         this.Reset();
+
         return this;
     }
+
     /// <summary>
     /// Move to the next item in the collection
     /// </summary>
@@ -133,6 +135,7 @@ public class ExcelExternalCellCollection
 
         return this._valuesEnum.Next();
     }
+
     /// <summary>
     /// Resets the enumeration
     /// </summary>
@@ -141,6 +144,7 @@ public class ExcelExternalCellCollection
         this._valuesEnum = new CellStoreEnumerator<object>(this._values);
         this._valuesEnum.Init();
     }
+
     /// <summary>
     /// Get the enumerator for this collection
     /// </summary>
@@ -149,13 +153,14 @@ public class ExcelExternalCellCollection
     {
         return this;
     }
+
     internal CellStoreEnumerator<object> GetCellStore(int fromRow, int fromCol, int toRow, int toCol)
     {
         return new CellStoreEnumerator<object>(this._values, fromRow, fromCol, toRow, toCol);
     }
+
     internal object GetValue(int row, int col)
     {
         return this._values.GetValue(row, col);
     }
-
 }

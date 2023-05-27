@@ -10,6 +10,7 @@
  *************************************************************************************************
   6/4/2022         EPPlus Software AB           ExcelTable Html Export
  *************************************************************************************************/
+
 using OfficeOpenXml.Core;
 using OfficeOpenXml.Export.HtmlExport.Settings;
 using OfficeOpenXml.Table;
@@ -26,13 +27,17 @@ internal static class HtmlExporterFactory
     {
         HtmlRangeExporterSync? exporter = new HtmlRangeExporterSync(settings, range);
         exporter.SetStyleCache(styleCache);
+
         return exporter;
     }
 
-    public static HtmlRangeExporterSync CreateHtmlExporterSync(HtmlRangeExportSettings settings, EPPlusReadOnlyList<ExcelRangeBase> ranges, Dictionary<string, int> styleCache)
+    public static HtmlRangeExporterSync CreateHtmlExporterSync(HtmlRangeExportSettings settings,
+                                                               EPPlusReadOnlyList<ExcelRangeBase> ranges,
+                                                               Dictionary<string, int> styleCache)
     {
         HtmlRangeExporterSync? exporter = new HtmlRangeExporterSync(settings, ranges);
         exporter.SetStyleCache(styleCache);
+
         return exporter;
     }
 
@@ -40,6 +45,7 @@ internal static class HtmlExporterFactory
     {
         HtmlTableExporterSync? exporter = new HtmlTableExporterSync(settings, table);
         exporter.SetStyleCache(styleCache);
+
         return exporter;
     }
 
@@ -47,13 +53,17 @@ internal static class HtmlExporterFactory
     {
         CssRangeExporterSync? exporter = new CssRangeExporterSync(settings, range);
         exporter.SetStyleCache(styleCache);
+
         return exporter;
     }
 
-    public static CssRangeExporterSync CreateCssExporterSync(HtmlRangeExportSettings settings, EPPlusReadOnlyList<ExcelRangeBase> ranges, Dictionary<string, int> styleCache)
+    public static CssRangeExporterSync CreateCssExporterSync(HtmlRangeExportSettings settings,
+                                                             EPPlusReadOnlyList<ExcelRangeBase> ranges,
+                                                             Dictionary<string, int> styleCache)
     {
         CssRangeExporterSync? exporter = new CssRangeExporterSync(settings, ranges);
         exporter.SetStyleCache(styleCache);
+
         return exporter;
     }
 
@@ -61,6 +71,7 @@ internal static class HtmlExporterFactory
     {
         CssTableExporterSync? exporter = new CssTableExporterSync(settings, table);
         exporter.SetStyleCache(styleCache);
+
         return exporter;
     }
 
@@ -69,13 +80,17 @@ internal static class HtmlExporterFactory
     {
         HtmlRangeExporterAsync? exporter = new HtmlRangeExporterAsync(settings, range);
         exporter.SetStyleCache(styleCache);
+
         return exporter;
     }
 
-    public static HtmlRangeExporterAsync CreateHtmlExporterAsync(HtmlRangeExportSettings settings, EPPlusReadOnlyList<ExcelRangeBase> ranges, Dictionary<string, int> styleCache)
+    public static HtmlRangeExporterAsync CreateHtmlExporterAsync(HtmlRangeExportSettings settings,
+                                                                 EPPlusReadOnlyList<ExcelRangeBase> ranges,
+                                                                 Dictionary<string, int> styleCache)
     {
         HtmlRangeExporterAsync? exporter = new HtmlRangeExporterAsync(settings, ranges);
         exporter.SetStyleCache(styleCache);
+
         return exporter;
     }
 
@@ -83,6 +98,7 @@ internal static class HtmlExporterFactory
     {
         HtmlTableExporterAsync? exporter = new HtmlTableExporterAsync(settings, table);
         exporter.SetStyleCache(styleCache);
+
         return exporter;
     }
 
@@ -90,13 +106,17 @@ internal static class HtmlExporterFactory
     {
         CssRangeExporterAsync? exporter = new CssRangeExporterAsync(settings, range);
         exporter.SetStyleCache(styleCache);
+
         return exporter;
     }
 
-    public static CssRangeExporterAsync CreateCssExporterAsync(HtmlRangeExportSettings settings, EPPlusReadOnlyList<ExcelRangeBase> ranges, Dictionary<string, int> styleCache)
+    public static CssRangeExporterAsync CreateCssExporterAsync(HtmlRangeExportSettings settings,
+                                                               EPPlusReadOnlyList<ExcelRangeBase> ranges,
+                                                               Dictionary<string, int> styleCache)
     {
         CssRangeExporterAsync? exporter = new CssRangeExporterAsync(settings, ranges);
         exporter.SetStyleCache(styleCache);
+
         return exporter;
     }
 
@@ -104,6 +124,7 @@ internal static class HtmlExporterFactory
     {
         CssTableExporterAsync? exporter = new CssTableExporterAsync(settings, table);
         exporter.SetStyleCache(styleCache);
+
         return exporter;
     }
 #endif

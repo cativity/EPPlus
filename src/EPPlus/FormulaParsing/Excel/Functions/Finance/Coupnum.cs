@@ -10,6 +10,7 @@
  *************************************************************************************************
   05/13/2020         EPPlus Software AB       Implemented function
  *************************************************************************************************/
+
 using OfficeOpenXml.FormulaParsing.Excel.Functions.Finance.FinancialDayCount;
 using OfficeOpenXml.FormulaParsing.Excel.Functions.Finance.Implementations;
 using OfficeOpenXml.FormulaParsing.Excel.Functions.Metadata;
@@ -21,15 +22,18 @@ using System.Text;
 
 namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Finance;
 
-[FunctionMetadata(
-                     Category = ExcelFunctionCategory.Financial,
-                     EPPlusVersion = "5.2",
-                     Description = "Returns the number of coupons payable between the settlement date and maturity date")]
+[FunctionMetadata(Category = ExcelFunctionCategory.Financial,
+                  EPPlusVersion = "5.2",
+                  Description = "Returns the number of coupons payable between the settlement date and maturity date")]
 internal class Coupnum : CoupFunctionBase<int>
 {
-    protected override FinanceCalcResult<int> ExecuteFunction(FinancialDay settlementDate, FinancialDay maturityDate, int frequency, DayCountBasis basis = DayCountBasis.US_30_360)
+    protected override FinanceCalcResult<int> ExecuteFunction(FinancialDay settlementDate,
+                                                              FinancialDay maturityDate,
+                                                              int frequency,
+                                                              DayCountBasis basis = DayCountBasis.US_30_360)
     {
         CoupnumImpl? impl = new CoupnumImpl(settlementDate, maturityDate, frequency, basis);
+
         return impl.GetCoupnum();
     }
 }

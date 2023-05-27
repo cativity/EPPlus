@@ -47,12 +47,14 @@ public class WorksheetOutlineTests
         sheet1.Row(15).StyleID = 2;
         sheet1.Cells["A15"].StyleID = 3;
         sheet1.InsertRow(2, 10, 15);
+
         for (int i = 2; i < 12; i++)
         {
             Assert.AreEqual(1, sheet1.Row(i).OutlineLevel, $"The outline level of row {i} is not set.");
             Assert.AreEqual(2, sheet1.Row(i).StyleID, $"The row style for row {i} is not set.");
             Assert.AreEqual(3, sheet1.Cells[i, 1].StyleID, $"The cell style for row {i} is not set.");
         }
+
         Assert.AreEqual(1, sheet1.Row(25).OutlineLevel);
         Assert.AreEqual(2, sheet1.Row(25).StyleID);
         Assert.AreEqual(3, sheet1.Cells[25, 1].StyleID);
@@ -67,12 +69,14 @@ public class WorksheetOutlineTests
         sheet1.Column(15).StyleID = 2;
         sheet1.Cells[1, 15].StyleID = 3;
         sheet1.InsertColumn(2, 10, 15);
+
         for (int i = 2; i < 12; i++)
         {
             Assert.AreEqual(1, sheet1.Column(i).OutlineLevel, $"The outline level of column {i} is not set.");
             Assert.AreEqual(2, sheet1.Column(i).StyleID, $"The column style for column {i} is not set.");
             Assert.AreEqual(3, sheet1.Cells[1, i].StyleID, $"The cell style for column {i} is not set.");
         }
+
         Assert.AreEqual(1, sheet1.Column(25).OutlineLevel);
         Assert.AreEqual(2, sheet1.Column(25).StyleID);
         Assert.AreEqual(3, sheet1.Cells[1, 25].StyleID);
@@ -112,6 +116,7 @@ public class WorksheetOutlineTests
         sheet1.Row(4).OutlineLevel = 0;
 
         ExcelWorksheet? sheet2 = package.Workbook.Worksheets.Add("Sheet2");
+
         // Set outline levels on rows to be copied over.
         sheet2.Row(6).OutlineLevel = 17;
         sheet2.Row(7).OutlineLevel = 25;

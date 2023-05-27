@@ -10,6 +10,7 @@
  *************************************************************************************************
   12/28/2020         EPPlus Software AB       Pivot Table Styling - EPPlus 5.6
  *************************************************************************************************/
+
 using System;
 using System.Collections.Generic;
 using System.Globalization;
@@ -25,13 +26,16 @@ namespace OfficeOpenXml.Table.PivotTable;
 /// </summary>
 public class ExcelPivotAreaReference : ExcelPivotAreaReferenceBase
 {
-    internal ExcelPivotAreaReference(XmlNamespaceManager nsm, XmlNode topNode, ExcelPivotTable pt, int fieldIndex = -1) : base(nsm, topNode, pt)
+    internal ExcelPivotAreaReference(XmlNamespaceManager nsm, XmlNode topNode, ExcelPivotTable pt, int fieldIndex = -1)
+        : base(nsm, topNode, pt)
     {
         this.Items = new ExcelPivotAreaReferenceItems(this);
+
         if (fieldIndex != -1)
         {
             this.FieldIndex = fieldIndex;
         }
+
         if (this.FieldIndex >= 0)
         {
             foreach (XmlNode n in topNode.ChildNodes)
@@ -39,6 +43,7 @@ public class ExcelPivotAreaReference : ExcelPivotAreaReferenceBase
                 if (n.LocalName == "x")
                 {
                     int ix = int.Parse(n.Attributes["v"].Value);
+
                     if (ix < this.Field.Items.Count)
                     {
                         this.Items.Add(new PivotItemReference() { Index = ix, Value = this.Field.Items[ix].Value });
@@ -47,6 +52,7 @@ public class ExcelPivotAreaReference : ExcelPivotAreaReferenceBase
             }
         }
     }
+
     /// <summary>
     /// The pivot table field referenced
     /// </summary>
@@ -58,13 +64,16 @@ public class ExcelPivotAreaReference : ExcelPivotAreaReferenceBase
             {
                 return this._pt.Fields[this.FieldIndex];
             }
+
             return null;
         }
     }
+
     /// <summary>
     /// References to the pivot table cache or within the table.
     /// </summary>
     public ExcelPivotAreaReferenceItems Items { get; }
+
     internal override void UpdateXml()
     {
         //Remove reference, so they can be re-written 
@@ -79,6 +88,7 @@ public class ExcelPivotAreaReference : ExcelPivotAreaReferenceBase
         if (this.FieldIndex >= 0 && this.FieldIndex < this._pt.Fields.Count)
         {
             ExcelPivotTableFieldItemsCollection? items = this.Field.Items;
+
             foreach (PivotItemReference r in this.Items)
             {
                 if (r.Index >= 0 && r.Index < items.Count && r.Value.Equals(items[r.Index]))
@@ -89,6 +99,7 @@ public class ExcelPivotAreaReference : ExcelPivotAreaReferenceBase
                 else
                 {
                     int ix = items._list.FindIndex(x => (x.Value != null && x.Value.Equals(r.Value)) || (x.Text != null && x.Text.Equals(r.Value)));
+
                     if (ix >= 0)
                     {
                         XmlElement? n = (XmlElement)this.CreateNode("d:x", false, true);

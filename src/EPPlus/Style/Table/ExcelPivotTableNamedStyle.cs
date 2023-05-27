@@ -10,6 +10,7 @@
  *************************************************************************************************
   01/08/2021         EPPlus Software AB       Table Styling - EPPlus 5.6
  *************************************************************************************************/
+
 using System.Xml;
 
 namespace OfficeOpenXml.Style.Table;
@@ -19,18 +20,17 @@ namespace OfficeOpenXml.Style.Table;
 /// </summary>
 public class ExcelPivotTableNamedStyle : ExcelTableNamedStyleBase
 {
-    internal ExcelPivotTableNamedStyle(XmlNamespaceManager nameSpaceManager, XmlNode topNode, ExcelStyles styles) : base(nameSpaceManager, topNode, styles)
+    internal ExcelPivotTableNamedStyle(XmlNamespaceManager nameSpaceManager, XmlNode topNode, ExcelStyles styles)
+        : base(nameSpaceManager, topNode, styles)
     {
     }
+
     /// <summary>
     /// If the style applies to tables, pivot table or both
     /// </summary>
     public override eTableNamedStyleAppliesTo AppliesTo
     {
-        get
-        {
-            return eTableNamedStyleAppliesTo.PivotTables;
-        }
+        get { return eTableNamedStyleAppliesTo.PivotTables; }
     }
 
     /// <summary>
@@ -38,149 +38,118 @@ public class ExcelPivotTableNamedStyle : ExcelTableNamedStyleBase
     /// </summary>
     public ExcelTableStyleElement PageFieldLabels
     {
-        get
-        {
-            return this.GetTableStyleElement(eTableStyleElement.PageFieldLabels);
-        }
+        get { return this.GetTableStyleElement(eTableStyleElement.PageFieldLabels); }
     }
+
     /// <summary>
     /// Applies to the page field values of a pivot table
     /// </summary>
     public ExcelTableStyleElement PageFieldValues
     {
-        get
-        {
-            return this.GetTableStyleElement(eTableStyleElement.PageFieldValues);
-        }
+        get { return this.GetTableStyleElement(eTableStyleElement.PageFieldValues); }
     }
+
     /// <summary>
     /// Applies to the first subtotal column of a pivot table
     /// </summary>
     public ExcelTableStyleElement FirstSubtotalColumn
     {
-        get
-        {
-            return this.GetTableStyleElement(eTableStyleElement.FirstSubtotalColumn);
-        }
+        get { return this.GetTableStyleElement(eTableStyleElement.FirstSubtotalColumn); }
     }
+
     /// <summary>
     /// Applies to the second subtotal column of a pivot table
     /// </summary>
     public ExcelTableStyleElement SecondSubtotalColumn
     {
-        get
-        {
-            return this.GetTableStyleElement(eTableStyleElement.SecondSubtotalColumn);
-        }
+        get { return this.GetTableStyleElement(eTableStyleElement.SecondSubtotalColumn); }
     }
+
     /// <summary>
     /// Applies to the third subtotal column of a pivot table
     /// </summary>
     public ExcelTableStyleElement ThirdSubtotalColumn
     {
-        get
-        {
-            return this.GetTableStyleElement(eTableStyleElement.ThirdSubtotalColumn);
-        }
+        get { return this.GetTableStyleElement(eTableStyleElement.ThirdSubtotalColumn); }
     }
+
     /// <summary>
     /// Applies to blank rows of a pivot table
     /// </summary>
     public ExcelTableStyleElement BlankRow
     {
-        get
-        {
-            return this.GetTableStyleElement(eTableStyleElement.BlankRow);
-        }
+        get { return this.GetTableStyleElement(eTableStyleElement.BlankRow); }
     }
+
     /// <summary>
     /// Applies to the first subtotal row of a pivot table
     /// </summary>
     public ExcelTableStyleElement FirstSubtotalRow
     {
-        get
-        {
-            return this.GetTableStyleElement(eTableStyleElement.FirstSubtotalRow);
-        }
+        get { return this.GetTableStyleElement(eTableStyleElement.FirstSubtotalRow); }
     }
+
     /// <summary>
     /// Applies to the second subtotal row of a pivot table
     /// </summary>
     public ExcelTableStyleElement SecondSubtotalRow
     {
-        get
-        {
-            return this.GetTableStyleElement(eTableStyleElement.SecondSubtotalRow);
-        }
+        get { return this.GetTableStyleElement(eTableStyleElement.SecondSubtotalRow); }
     }
+
     /// <summary>
     /// Applies to the third subtotal row of a pivot table
     /// </summary>
     public ExcelTableStyleElement ThirdSubtotalRow
     {
-        get
-        {
-            return this.GetTableStyleElement(eTableStyleElement.ThirdSubtotalRow);
-        }
+        get { return this.GetTableStyleElement(eTableStyleElement.ThirdSubtotalRow); }
     }
+
     /// <summary>
     /// Applies to the first column subheading of a pivot table
     /// </summary>
     public ExcelTableStyleElement FirstColumnSubheading
     {
-        get
-        {
-            return this.GetTableStyleElement(eTableStyleElement.FirstColumnSubheading);
-        }
+        get { return this.GetTableStyleElement(eTableStyleElement.FirstColumnSubheading); }
     }
+
     /// <summary>
     /// Applies to the second column subheading of a pivot table
     /// </summary>
     public ExcelTableStyleElement SecondColumnSubheading
     {
-        get
-        {
-            return this.GetTableStyleElement(eTableStyleElement.SecondColumnSubheading);
-        }
+        get { return this.GetTableStyleElement(eTableStyleElement.SecondColumnSubheading); }
     }
+
     /// <summary>
     /// Applies to the third column subheading of a pivot table
     /// </summary>
     public ExcelTableStyleElement ThirdColumnSubheading
     {
-        get
-        {
-            return this.GetTableStyleElement(eTableStyleElement.ThirdColumnSubheading);
-        }
+        get { return this.GetTableStyleElement(eTableStyleElement.ThirdColumnSubheading); }
     }
+
     /// <summary>
     /// Applies to the first row subheading of a pivot table
     /// </summary>
     public ExcelTableStyleElement FirstRowSubheading
     {
-        get
-        {
-            return this.GetTableStyleElement(eTableStyleElement.FirstRowSubheading);
-        }
+        get { return this.GetTableStyleElement(eTableStyleElement.FirstRowSubheading); }
     }
+
     /// <summary>
     /// Applies to the second row subheading of a pivot table
     /// </summary>
     public ExcelTableStyleElement SecondRowSubheading
     {
-        get
-        {
-            return this.GetTableStyleElement(eTableStyleElement.SecondRowSubheading);
-        }
+        get { return this.GetTableStyleElement(eTableStyleElement.SecondRowSubheading); }
     }
+
     /// <summary>
     /// Applies to the third row subheading of a pivot table
     /// </summary>
     public ExcelTableStyleElement ThirdRowSubheading
     {
-        get
-        {
-            return this.GetTableStyleElement(eTableStyleElement.ThirdRowSubheading);
-        }
+        get { return this.GetTableStyleElement(eTableStyleElement.ThirdRowSubheading); }
     }
 }

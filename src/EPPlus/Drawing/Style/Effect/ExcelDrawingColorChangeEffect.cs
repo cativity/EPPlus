@@ -10,6 +10,7 @@
  *************************************************************************************************
   01/27/2020         EPPlus Software AB       Initial release EPPlus 5
  *************************************************************************************************/
+
 using OfficeOpenXml.Drawing.Style.Coloring;
 using System;
 using System.Collections.Generic;
@@ -23,11 +24,13 @@ namespace OfficeOpenXml.Drawing.Style.Effect;
 /// </summary>
 public class ExcelDrawingColorChangeEffect : XmlHelper
 {
-    internal ExcelDrawingColorChangeEffect(XmlNamespaceManager nsm, XmlNode topNode) : base(nsm, topNode)
+    internal ExcelDrawingColorChangeEffect(XmlNamespaceManager nsm, XmlNode topNode)
+        : base(nsm, topNode)
     {
-
     }
-    private  ExcelDrawingColorManager _colorFrom;
+
+    private ExcelDrawingColorManager _colorFrom;
+
     /// <summary>
     /// The color to transform from
     /// </summary>
@@ -40,10 +43,13 @@ public class ExcelDrawingColorChangeEffect : XmlHelper
                 XmlNode? node = this.CreateNode("a:clrFrom");
                 this._colorFrom = new ExcelDrawingColorManager(this.NameSpaceManager, node, "", this.SchemaNodeOrder);
             }
+
             return this._colorFrom;
         }
     }
+
     private ExcelDrawingColorManager _colorTo;
+
     /// <summary>
     /// The color to transform to
     /// </summary>
@@ -56,8 +62,8 @@ public class ExcelDrawingColorChangeEffect : XmlHelper
                 XmlNode? node = this.CreateNode("a:clrTo");
                 this._colorTo = new ExcelDrawingColorManager(this.NameSpaceManager, node, "", this.SchemaNodeOrder);
             }
+
             return this._colorTo;
         }
-
     }
 }

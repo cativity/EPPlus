@@ -10,6 +10,7 @@
  *************************************************************************************************
   01/27/2020         EPPlus Software AB       Initial release EPPlus 5
  *************************************************************************************************/
+
 using OfficeOpenXml.Constants;
 using OfficeOpenXml.Drawing.Interfaces;
 using OfficeOpenXml.Drawing.Style.Coloring;
@@ -37,15 +38,19 @@ public class ExcelChartStyleManager : XmlHelper
 {
     internal readonly ExcelChart _chart;
     private readonly ExcelThemeManager _theme;
-    private static bool _hasLoadedLibraryFiles=false;
-    internal ExcelChartStyleManager(XmlNamespaceManager nameSpaceManager, ExcelChart chart) : base(nameSpaceManager)
+    private static bool _hasLoadedLibraryFiles = false;
+
+    internal ExcelChartStyleManager(XmlNamespaceManager nameSpaceManager, ExcelChart chart)
+        : base(nameSpaceManager)
     {
         this._chart = chart;
         this.LoadStyleAndColors(chart);
+
         if (this.StylePart != null)
         {
             this.Style = new ExcelChartStyle(nameSpaceManager, this.StyleXml.DocumentElement, this);
         }
+
         if (this.ColorsPart != null)
         {
             this.ColorsManager = new ExcelChartColorsManager(nameSpaceManager, this.ColorsXml.DocumentElement);
@@ -53,23 +58,27 @@ public class ExcelChartStyleManager : XmlHelper
 
         this._theme = chart.WorkSheet.Workbook.ThemeManager;
     }
+
     /// <summary>
     /// A library where chart styles can be loaded for easier access.
     /// EPPlus loads most buildin styles into this collection.
     /// </summary>
     public static Dictionary<int, ExcelChartStyleLibraryItem> StyleLibrary = new Dictionary<int, ExcelChartStyleLibraryItem>();
+
     /// <summary>
     /// A library where chart color styles can be loaded for easier access
     /// </summary>
     public static Dictionary<int, ExcelChartStyleLibraryItem> ColorsLibrary = new Dictionary<int, ExcelChartStyleLibraryItem>();
+
     /// <summary>
     /// Creates an empty style and color for chart, ready to be customized 
     /// </summary>
-    public void CreateEmptyStyle(eChartStyle fallBackStyle=eChartStyle.Style2)
+    public void CreateEmptyStyle(eChartStyle fallBackStyle = eChartStyle.Style2)
     {
         if (fallBackStyle == eChartStyle.None)
         {
-            throw new InvalidOperationException("The chart must have a style. Please set the charts Style property to a value different than None or Call LoadStyleXml with the fallBackStyle parameter");
+            throw new
+                InvalidOperationException("The chart must have a style. Please set the charts Style property to a value different than None or Call LoadStyleXml with the fallBackStyle parameter");
         }
 
         ZipPackage? p = this._chart.WorkSheet.Workbook._package.ZipPackage;
@@ -92,7 +101,9 @@ public class ExcelChartStyleManager : XmlHelper
 
         this.ColorsManager = new ExcelChartColorsManager(this.NameSpaceManager, this.ColorsXml.DocumentElement);
     }
+
     #region LoadStyles
+
     /// <summary>
     /// Loads the default chart style library from the internal resource library.
     /// Loads styles, colors and the default theme.
@@ -104,22 +115,25 @@ public class ExcelChartStyleManager : XmlHelper
 
         LoadStyles(defaultStyleLibrary);
     }
+
     /// <summary>
     /// Load all chart style library files (*.ecs) into memory from the supplied directory
     /// </summary>
     /// <param name="directory">Load all *.ecs files from the directory</param>
     /// <param name="clearLibrary">If true, clear the library before load.</param>
-    public static void LoadStyles(DirectoryInfo directory, bool clearLibrary=true)
+    public static void LoadStyles(DirectoryInfo directory, bool clearLibrary = true)
     {
         if (clearLibrary)
         {
             StyleLibrary.Clear();
         }
+
         foreach (FileInfo? ecsFile in directory.GetFiles("*.ecs"))
         {
             LoadStyles(ecsFile, false);
         }
     }
+
     /// <summary>
     /// Load a single chart style library file (*.ecs) into memory
     /// </summary>
@@ -130,6 +144,7 @@ public class ExcelChartStyleManager : XmlHelper
         using FileStream? fs = ecsFile.Open(FileMode.Open, FileAccess.Read, FileShare.Read);
         LoadStyles(fs, clearLibrary, fs.Name);
     }
+
     /// <summary>
     /// Load a single chart style library stream into memory from the supplied directory
     /// </summary>
@@ -139,18 +154,21 @@ public class ExcelChartStyleManager : XmlHelper
     {
         LoadStyles(stream, clearLibrary, "The stream");
     }
+
     private static void LoadStyles(Stream stream, bool clearLibrary, string filename)
     {
         if (clearLibrary)
         {
             StyleLibrary.Clear();
         }
+
         try
         {
             using (stream)
             {
                 ZipInputStream? zipStream = new ZipInputStream(stream);
                 ZipEntry entry;
+
                 while ((entry = zipStream.GetNextEntry()) != null)
                 {
                     if (entry.IsDirectory || !entry.FileName.EndsWith(".xml") || entry.UncompressedSize <= 0)
@@ -160,11 +178,13 @@ public class ExcelChartStyleManager : XmlHelper
 
                     string? name = new FileInfo(entry.FileName).Name;
                     int id;
+
                     try
                     {
                         if (name.StartsWith("colors", StringComparison.InvariantCultureIgnoreCase))
                         {
                             id = int.Parse(name.Substring(6, name.Length - 10));
+
                             if (ColorsLibrary.ContainsKey(id))
                             {
                                 continue;
@@ -173,6 +193,7 @@ public class ExcelChartStyleManager : XmlHelper
                         else if (name.StartsWith("style", StringComparison.InvariantCultureIgnoreCase))
                         {
                             id = int.Parse(name.Substring(5, name.Length - 9));
+
                             if (StyleLibrary.ContainsKey(id))
                             {
                                 continue;
@@ -182,22 +203,25 @@ public class ExcelChartStyleManager : XmlHelper
                         {
                             string? themeXml = UncompressEntry(zipStream, entry);
                             ExcelThemeManager._defaultTheme = themeXml;
+
                             continue;
                         }
                         else
                         {
-                            throw new InvalidDataException($"{filename} contains a the file {entry.FileName}, with an invalid filename. Please make sure files in the library are named Colors[id].xml or style[id].xml, where [id] is replaced by the id to access the style in the library");
+                            throw new
+                                InvalidDataException($"{filename} contains a the file {entry.FileName}, with an invalid filename. Please make sure files in the library are named Colors[id].xml or style[id].xml, where [id] is replaced by the id to access the style in the library");
                         }
                     }
                     catch
                     {
-                        throw new InvalidDataException($"{filename} contains a the file {entry.FileName}, with an invalid filename. Please make sure files in the library are named Colors[id].xml or style[id].xml, where [id] is replaced by the id to access the style in the library");
+                        throw new
+                            InvalidDataException($"{filename} contains a the file {entry.FileName}, with an invalid filename. Please make sure files in the library are named Colors[id].xml or style[id].xml, where [id] is replaced by the id to access the style in the library");
                     }
-
 
                     //Extract and set
                     string? uncompressedContent = UncompressEntry(zipStream, entry);
                     ExcelChartStyleLibraryItem? item = new ExcelChartStyleLibraryItem() { Id = id, XmlString = uncompressedContent };
+
                     if (name[0] == 'c') //Colors
                     {
                         ColorsLibrary.Add(item.Id, item);
@@ -209,9 +233,9 @@ public class ExcelChartStyleManager : XmlHelper
                 }
             }
         }
-        catch(Exception ex)
+        catch (Exception ex)
         {
-            if(ex is InvalidDataException)
+            if (ex is InvalidDataException)
             {
                 throw;
             }
@@ -226,9 +250,12 @@ public class ExcelChartStyleManager : XmlHelper
     {
         byte[]? content = new byte[entry.UncompressedSize];
         int size = zipStream.Read(content, 0, (int)entry.UncompressedSize);
-        return Encoding.UTF8.GetString(content);            
+
+        return Encoding.UTF8.GetString(content);
     }
+
     #endregion
+
     /// <summary>
     /// Loads a chart style xml file, and applies the style.
     /// </summary>
@@ -247,8 +274,10 @@ public class ExcelChartStyleManager : XmlHelper
         {
             this._chart.Style = eChartStyle.Style2;
         }
+
         return this.LoadStyleXml(this.StyleXml, this._chart.Style, colorXml);
     }
+
     /// <summary>
     /// Loads a crtx file and applies it to the chart. Crtx files are exported from a Spreadsheet Application like Excel.
     /// Loading a template will only apply the styles to the chart, not change settings for the chart.
@@ -262,7 +291,9 @@ public class ExcelChartStyleManager : XmlHelper
         {
             throw new FileNotFoundException($"{crtxFile.FullName} cannot be found.");
         }
+
         FileStream fs = null;
+
         try
         {
             fs = crtxFile.Open(FileMode.Open, FileAccess.Read, FileShare.Read);
@@ -280,6 +311,7 @@ public class ExcelChartStyleManager : XmlHelper
             }
         }
     }
+
     /// <summary>
     /// Loads a crtx file and applies it to the chart. Crtx files are exported from a Spreadsheet Application like Excel.
     /// Loading a template will only apply the styles to the chart, not change settings for the chart, override themes etc.
@@ -295,6 +327,7 @@ public class ExcelChartStyleManager : XmlHelper
     private void LoadTemplateStyles(Stream crtxStream, string name)
     {
         CrtxTemplateHelper.LoadCrtx(crtxStream, out XmlDocument chartXml, out XmlDocument styleXml, out XmlDocument colorsXml, out _, name);
+
         if (!(styleXml == null && colorsXml == null))
         {
             //TODO:Add theme override rel to chart.
@@ -315,7 +348,7 @@ public class ExcelChartStyleManager : XmlHelper
     /// <param name="styleXml">The chart style xml document</param>
     /// <param name="colorsXml">The chart colord xml document</param>
     /// <returns>The id of the Style loaded</returns>
-    public int LoadStyleXml(XmlDocument styleXml, eChartStyle fallBackStyle, XmlDocument colorsXml=null)
+    public int LoadStyleXml(XmlDocument styleXml, eChartStyle fallBackStyle, XmlDocument colorsXml = null)
     {
         this.LoadStyleAndColorsXml(styleXml, fallBackStyle, colorsXml);
 
@@ -329,19 +362,24 @@ public class ExcelChartStyleManager : XmlHelper
         }
 
         return this.Style.Id;
-    }   
+    }
+
     internal void LoadStyleAndColorsXml(XmlDocument styleXml, eChartStyle fallBackStyle, XmlDocument colorsXml)
     {
         if (fallBackStyle == eChartStyle.None)
         {
             throw new ArgumentException("fallBackStyle", "fallBackStyle can't be None");
         }
+
         if (this._chart.Style != eChartStyle.None && this._chart.Style != fallBackStyle)
         {
             this._chart.Style = fallBackStyle;
         }
 
-        if (styleXml == null || styleXml.DocumentElement == null || styleXml.DocumentElement.LocalName != "chartStyle" || styleXml.DocumentElement.ChildNodes.Count != 31)
+        if (styleXml == null
+            || styleXml.DocumentElement == null
+            || styleXml.DocumentElement.LocalName != "chartStyle"
+            || styleXml.DocumentElement.ChildNodes.Count != 31)
         {
             throw new ArgumentException("xml", "StyleXml is null or not in the correct format");
         }
@@ -362,11 +400,13 @@ public class ExcelChartStyleManager : XmlHelper
         }
 
         this.LoadColorXml(colorsXml);
-        if (this._chart._isChartEx==false)
+
+        if (this._chart._isChartEx == false)
         {
             this._chart.InitChartTheme((int)fallBackStyle);
         }
     }
+
     /// <summary>
     /// Loads a theme override xml document for the chart.
     /// </summary>
@@ -376,6 +416,7 @@ public class ExcelChartStyleManager : XmlHelper
         ZipPackageRelationship? rel = this.CreateThemeOverridePart(this._chart.WorkSheet.Workbook._package.ZipPackage, themePart);
         this.ThemeOverride = new ExcelThemeOverride(this._chart, rel);
     }
+
     /// <summary>
     /// Applies a preset chart style loaded into the StyleLibrary to the chart.
     /// </summary>
@@ -385,6 +426,7 @@ public class ExcelChartStyleManager : XmlHelper
     {
         this.SetChartStyle(style, ePresetChartColors.ColorfulPalette1);
     }
+
     /// <summary>
     /// Applies a preset chart style loaded into the StyleLibrary to the chart.
     /// </summary>
@@ -394,6 +436,7 @@ public class ExcelChartStyleManager : XmlHelper
     {
         this.SetChartStyle(style, ePresetChartColors.ColorfulPalette1);
     }
+
     /// <summary>
     /// Applies a preset chart style loaded into the StyleLibrary to the chart. 
     /// This enums matches Excel's styles for single series for common scenarios. 
@@ -407,6 +450,7 @@ public class ExcelChartStyleManager : XmlHelper
     {
         this.SetChartStyle((int)style, (int)colors);
     }
+
     /// <summary>
     /// Applies a preset chart style loaded into the StyleLibrary to the chart.
     /// This enums matches Excel's styles for multiple series for common scenarios. 
@@ -420,6 +464,7 @@ public class ExcelChartStyleManager : XmlHelper
     {
         this.SetChartStyle((int)style, (int)colors);
     }
+
     /// <summary>
     /// Applies a chart style loaded into the StyleLibrary to the chart.
     /// </summary>
@@ -435,9 +480,10 @@ public class ExcelChartStyleManager : XmlHelper
 
         if (!StyleLibrary.ContainsKey(style))
         {
-            if(Enum.IsDefined(typeof(ePresetChartColors), style))
+            if (Enum.IsDefined(typeof(ePresetChartColors), style))
             {
-                throw new KeyNotFoundException($"Style {(ePresetChartStyle)style} ({style}) cannot be found in the StyleLibrary. Please load it into the StyleLibrary.");
+                throw new
+                    KeyNotFoundException($"Style {(ePresetChartStyle)style} ({style}) cannot be found in the StyleLibrary. Please load it into the StyleLibrary.");
             }
             else
             {
@@ -449,7 +495,8 @@ public class ExcelChartStyleManager : XmlHelper
         {
             if (Enum.IsDefined(typeof(ePresetChartColors), colors.Value))
             {
-                throw new KeyNotFoundException($"Colors scheme {(ePresetChartColors)colors} ({colors}) cannot be found in the ColorsLibrary. Please load it into the ColorsLibrary.");
+                throw new
+                    KeyNotFoundException($"Colors scheme {(ePresetChartColors)colors} ({colors}) cannot be found in the ColorsLibrary. Please load it into the ColorsLibrary.");
             }
             else
             {
@@ -458,6 +505,7 @@ public class ExcelChartStyleManager : XmlHelper
         }
 
         this._chart.Style = eChartStyle.None;
+
         if (colors.HasValue)
         {
             this.LoadStyleXml(StyleLibrary[style].XmlDocument, eChartStyle.Style2, ColorsLibrary[colors.Value].XmlDocument);
@@ -467,13 +515,17 @@ public class ExcelChartStyleManager : XmlHelper
             this.LoadStyleXml(StyleLibrary[style].XmlDocument, eChartStyle.Style2);
         }
     }
+
     /// <summary>
     /// Load a color xml documents
     /// </summary>
     /// <param name="colorXml">The color xml</param>
     public void LoadColorXml(XmlDocument colorXml)
     {
-        if (colorXml == null || colorXml.DocumentElement == null || colorXml.DocumentElement.LocalName != "colorStyle" || colorXml.DocumentElement.ChildNodes.Count == 0)
+        if (colorXml == null
+            || colorXml.DocumentElement == null
+            || colorXml.DocumentElement.LocalName != "colorStyle"
+            || colorXml.DocumentElement.ChildNodes.Count == 0)
         {
             throw new ArgumentException("xml", "ColorXml is null or not in the correct format");
         }
@@ -489,6 +541,7 @@ public class ExcelChartStyleManager : XmlHelper
 
         this.ColorsManager = new ExcelChartColorsManager(this.NameSpaceManager, this.ColorsXml.DocumentElement);
     }
+
     /// <summary>
     /// Apply the chart and color style to the chart.
     /// <seealso cref="Style"/>
@@ -502,10 +555,11 @@ public class ExcelChartStyleManager : XmlHelper
             this._theme.CreateDefaultTheme();
         }
 
-        if (this._chart._topChart!=null)
+        if (this._chart._topChart != null)
         {
             throw new InvalidOperationException("Please style the parent chart only");
         }
+
         if (this._chart.VaryColors)
         {
             this.GenerateDataPoints();
@@ -519,7 +573,7 @@ public class ExcelChartStyleManager : XmlHelper
             this.ApplyStyle(this._chart.PlotArea, this.Style.PlotArea3D);
             this.ApplyStyle(this._chart.Floor, this.Style.Floor);
             this.ApplyStyle(this._chart.SideWall, this.Style.Wall);
-            this.ApplyStyle(this._chart.BackWall, this.Style.Wall);                
+            this.ApplyStyle(this._chart.BackWall, this.Style.Wall);
         }
         else
         {
@@ -532,17 +586,18 @@ public class ExcelChartStyleManager : XmlHelper
             this.ApplyStyle(this._chart.Title, this.Style.Title);
         }
 
-        if (this._chart.PlotArea.DataTable!=null)
+        if (this._chart.PlotArea.DataTable != null)
         {
             this.ApplyStyle(this._chart.PlotArea.DataTable, this.Style.DataTable);
         }
 
         this.ApplyDataLabels();
-            
+
         if (this._chart.HasLegend)
         {
             this.ApplyStyle(this._chart.Legend, this.Style.Legend);
-            if(!this._chart._isChartEx)
+
+            if (!this._chart._isChartEx)
             {
                 if (this._chart.Legend._entries != null)
                 {
@@ -556,8 +611,8 @@ public class ExcelChartStyleManager : XmlHelper
                 }
             }
         }
-            
-        if(this._chart is ExcelStandardChartWithLines lineChart)
+
+        if (this._chart is ExcelStandardChartWithLines lineChart)
         {
             if (!(lineChart.DropLine is null))
             {
@@ -583,6 +638,7 @@ public class ExcelChartStyleManager : XmlHelper
         this.ApplyAxis();
         this.ApplySeries();
     }
+
     /// <summary>
     /// Apply the chart and color style to the chart.
     /// <seealso cref="Style"/>
@@ -609,8 +665,9 @@ public class ExcelChartStyleManager : XmlHelper
 
         this.ApplyAxis();
     }
+
     private void GenerateDataPoints()
-    {            
+    {
         foreach (ExcelChartSerie? serie in this._chart.Series)
         {
             this.GenerateDataPointsSerie(serie);
@@ -619,24 +676,26 @@ public class ExcelChartStyleManager : XmlHelper
 
     private void GenerateDataPointsSerie(ExcelChartSerie serie)
     {
-        if(serie is IDrawingChartDataPoints dtpSerie)
+        if (serie is IDrawingChartDataPoints dtpSerie)
         {
             int points;
-            if(this._chart.PivotTableSource==null)
+
+            if (this._chart.PivotTableSource == null)
             {
                 ExcelRangeBase? address = this._chart.WorkSheet.Workbook.GetRange(this._chart.WorkSheet, serie.Series);
+
                 if (address == null)
                 {
                     return;
                 }
 
                 points = address.Rows == 1 ? address.Columns : address.Rows;
-                    
             }
             else
             {
                 points = 48;
             }
+
             for (int i = 0; i < points; i++)
             {
                 if (!dtpSerie.DataPoints.ContainsKey(i))
@@ -655,6 +714,7 @@ public class ExcelChartStyleManager : XmlHelper
             {
                 this.ApplyStyle(dataLabel.DataLabel, this.Style.DataLabel);
             }
+
             foreach (IDrawingSerieDataLabel serie in this._chart.Series)
             {
                 if (serie.HasDataLabel)
@@ -668,6 +728,7 @@ public class ExcelChartStyleManager : XmlHelper
     private void ApplyDataLabelSerie(ExcelChartSerieDataLabel dataLabel)
     {
         this.ApplyStyle(dataLabel, this.Style.DataLabel);
+
         foreach (ExcelChartDataLabelItem? lbl in dataLabel.DataLabels)
         {
             this.ApplyStyle(lbl, this.Style.DataLabel);
@@ -679,11 +740,10 @@ public class ExcelChartStyleManager : XmlHelper
         foreach (ExcelChartAxis? axis in this._chart.Axis)
         {
             ExcelChartStyleEntry currStyle;
-            if (axis.AxisType == eAxisType.Cat ||
-                axis.AxisType == eAxisType.Date)
+
+            if (axis.AxisType == eAxisType.Cat || axis.AxisType == eAxisType.Date)
             {
                 currStyle = this.Style.CategoryAxis;
-
             }
             else if (axis.AxisType == eAxisType.Serie)
             {
@@ -693,7 +753,7 @@ public class ExcelChartStyleManager : XmlHelper
             {
                 currStyle = this.Style.ValueAxis;
             }
-                
+
             if (this._chart._isChartEx == false || axis._title != null)
             {
                 this.ApplyStyle(axis, currStyle);
@@ -704,6 +764,7 @@ public class ExcelChartStyleManager : XmlHelper
                 this.ApplyStyleBorder(axis.MajorGridlines, this.Style.GridlineMajor, 0, 0);
                 this.ApplyStyleEffect(axis.MajorGridlineEffects, this.Style.GridlineMajor, 0, 0);
             }
+
             if (axis.HasMinorGridlines)
             {
                 this.ApplyStyleBorder(axis.MinorGridlines, this.Style.GridlineMinor, 0, 0);
@@ -713,34 +774,41 @@ public class ExcelChartStyleManager : XmlHelper
     }
 
     internal void ApplySeries()
-    {   
+    {
         foreach (ExcelChart? chart in this._chart.PlotArea.ChartTypes)
         {
             ExcelChartStyleEntry? dataPoint = this.GetDataPointStyle(chart);
-            bool applyFill = !chart.IsTypeLine() || chart.ChartType == eChartType.Line3D || chart.ChartType == eChartType.XYScatter;   //Lines have no fill, except Line3D
+
+            bool applyFill =
+                !chart.IsTypeLine() || chart.ChartType == eChartType.Line3D || chart.ChartType == eChartType.XYScatter; //Lines have no fill, except Line3D
+
             int serieNo = 0;
+
             foreach (ExcelChartSerie serie in chart.Series)
             {
                 //Note: Datalabels are applied in the ApplyDataLabels method
                 //Marker
-                bool applyBorder = !(chart.IsTypeStock() && serie.Border.Width==0);
+                bool applyBorder = !(chart.IsTypeStock() && serie.Border.Width == 0);
                 this.ApplyStyle(serie, dataPoint, serieNo, chart.Series.Count, applyFill, applyBorder);
-                if (serie is IDrawingChartMarker serieMarker && serieMarker.HasMarker())     //Applies to Line and Scatterchart series
+
+                if (serie is IDrawingChartMarker serieMarker && serieMarker.HasMarker()) //Applies to Line and Scatterchart series
                 {
                     this.ApplyStyle(serieMarker.Marker, this.Style.DataPointMarker, serieNo, chart.Series.Count);
                     serieMarker.Marker.Size = this.Style.DataPointMarkerLayout.Size;
+
                     if (this.Style.DataPointMarkerLayout.Style != eMarkerStyle.None)
                     {
                         serieMarker.Marker.Style = this.Style.DataPointMarkerLayout.Style;
                     }
                 }
-                    
+
                 //Trendlines
                 foreach (ExcelChartTrendline? tl in serie.TrendLines)
                 {
                     serieNo++;
                     this.ApplyStyle(tl, this.Style.Trendline, serieNo);
-                    if(tl.HasLbl)
+
+                    if (tl.HasLbl)
                     {
                         this.ApplyStyle(tl.Label, this.Style.TrendlineLabel, serieNo);
                     }
@@ -750,14 +818,17 @@ public class ExcelChartStyleManager : XmlHelper
                 if (serie is IDrawingChartDataPoints dps)
                 {
                     int items = serie.NumberOfItems;
+
                     foreach (ExcelChartDataPoint? dp in dps.DataPoints)
                     {
                         applyBorder = !(chart.IsTypeStock() && dp.Border.Width == 0);
                         this.ApplyStyle(dp, dataPoint, dp.Index, items, applyFill, applyBorder);
+
                         if (dp.HasMarker())
                         {
                             this.ApplyStyle(dp.Marker, this.Style.DataPointMarker, dp.Index, items);
                             dp.Marker.Size = this.Style.DataPointMarkerLayout.Size;
+
                             if (this.Style.DataPointMarkerLayout.Style != eMarkerStyle.None)
                             {
                                 dp.Marker.Style = this.Style.DataPointMarkerLayout.Style;
@@ -767,10 +838,11 @@ public class ExcelChartStyleManager : XmlHelper
                 }
 
                 //Errorbars
-                if(serie is ExcelChartSerieWithErrorBars chartSerieWithErrorBars && chartSerieWithErrorBars.ErrorBars!=null)
+                if (serie is ExcelChartSerieWithErrorBars chartSerieWithErrorBars && chartSerieWithErrorBars.ErrorBars != null)
                 {
                     this.ApplyStyle(chartSerieWithErrorBars.ErrorBars, this.Style.ErrorBar);
                 }
+
                 serieNo++;
             }
         }
@@ -779,13 +851,14 @@ public class ExcelChartStyleManager : XmlHelper
     internal ExcelChartStyleEntry GetDataPointStyle(ExcelChart chart)
     {
         ExcelChartStyleEntry dataPoint;
+
         if (chart.IsType3D())
         {
             dataPoint = this.Style.DataPoint3D;
         }
-        else if (chart.IsTypeLine() ||
-                 (chart.IsTypeScatter() && chart.ChartType != eChartType.XYScatter) ||
-                 (chart.IsTypeRadar() && chart.ChartType != eChartType.RadarFilled))
+        else if (chart.IsTypeLine()
+                 || (chart.IsTypeScatter() && chart.ChartType != eChartType.XYScatter)
+                 || (chart.IsTypeRadar() && chart.ChartType != eChartType.RadarFilled))
         {
             dataPoint = this.Style.DataPointLine;
         }
@@ -797,39 +870,49 @@ public class ExcelChartStyleManager : XmlHelper
         return dataPoint;
     }
 
-    internal void ApplyStyle(IDrawingStyleBase chartPart, ExcelChartStyleEntry section, int indexForColor=0, int numberOfItems=0, bool applyFill=true, bool applyBorder=true)
+    internal void ApplyStyle(IDrawingStyleBase chartPart,
+                             ExcelChartStyleEntry section,
+                             int indexForColor = 0,
+                             int numberOfItems = 0,
+                             bool applyFill = true,
+                             bool applyBorder = true)
     {
-        if(chartPart is IStyleMandatoryProperties setMandatoryProperties)
+        if (chartPart is IStyleMandatoryProperties setMandatoryProperties)
         {
             setMandatoryProperties.SetMandatoryProperties();
         }
+
         chartPart.CreatespPr();
-        if(applyFill)
+
+        if (applyFill)
         {
             this.ApplyStyleFill(chartPart, section, indexForColor, numberOfItems);
         }
 
-        if(applyBorder)
+        if (applyBorder)
         {
             this.ApplyStyleBorder(chartPart.Border, section, indexForColor, numberOfItems);
         }
 
         this.ApplyStyleEffect(chartPart.Effect, section, indexForColor, numberOfItems);
         this.ApplyStyle3D(chartPart, section, indexForColor, numberOfItems);
+
         if (chartPart is IDrawingStyle chartPartWithFont)
         {
             this.ApplyStyleFont(section, indexForColor, chartPartWithFont, numberOfItems);
         }
     }
+
     private void ApplyStyleFill(IDrawingStyleBase chartPart, ExcelChartStyleEntry section, int indexForColor, int numberOfItems)
     {
-        if (section.HasFill)  //Has inner fill section
+        if (section.HasFill) //Has inner fill section
         {
             chartPart.Fill.SetFromXml(section.Fill);
         }
-        else if (section.FillReference.Index > 0)//From theme
+        else if (section.FillReference.Index > 0) //From theme
         {
             ExcelThemeBase? theme = this.GetTheme();
+
             if (theme.FormatScheme.FillStyle.Count > section.FillReference.Index - 1)
             {
                 ExcelDrawingFill? fill = theme.FormatScheme.FillStyle[section.FillReference.Index - 1];
@@ -841,15 +924,16 @@ public class ExcelChartStyleManager : XmlHelper
         chartPart.Fill.UpdateFillTypeNode();
     }
 
-    private void ApplyStyleBorder(ExcelDrawingBorder chartBorder, ExcelChartStyleEntry section, int indexForColor,int numberOfItems)
+    private void ApplyStyleBorder(ExcelDrawingBorder chartBorder, ExcelChartStyleEntry section, int indexForColor, int numberOfItems)
     {
-        if (section.HasBorder)  //Has border inner section
+        if (section.HasBorder) //Has border inner section
         {
             chartBorder.SetFromXml(section.Border.LineElement);
         }
         else if (section.BorderReference.Index > 0) //From theme
         {
             ExcelThemeBase? theme = this.GetTheme();
+
             if (theme.FormatScheme.BorderStyle.Count > section.BorderReference.Index - 1)
             {
                 ExcelThemeLine? border = theme.FormatScheme.BorderStyle[section.BorderReference.Index - 1];
@@ -869,6 +953,7 @@ public class ExcelChartStyleManager : XmlHelper
         else if (section.EffectReference.Index > 0) //From theme
         {
             ExcelThemeBase? theme = this.GetTheme();
+
             if (theme.FormatScheme.EffectStyle.Count > section.EffectReference.Index - 1)
             {
                 ExcelThemeEffectStyle? effect = theme.FormatScheme.EffectStyle[section.EffectReference.Index - 1];
@@ -878,9 +963,11 @@ public class ExcelChartStyleManager : XmlHelper
 
         this.TransformColorEffect(chartEffect, section.EffectReference.Color, indexForColor, numberOfItems);
     }
+
     private void ApplyStyle3D(IDrawingStyleBase chartThreeD, ExcelChartStyleEntry section, int indexForColor, int numberOfItems)
     {
         bool tranformColor = false;
+
         if (section.HasThreeD)
         {
             chartThreeD.ThreeD.SetFromXml(section.ThreeD.Scene3DElement, section.ThreeD.Sp3DElement);
@@ -889,6 +976,7 @@ public class ExcelChartStyleManager : XmlHelper
         else if (section.EffectReference.Index > 0) //From theme
         {
             ExcelThemeBase? theme = this.GetTheme();
+
             if (theme.FormatScheme.EffectStyle.Count > section.EffectReference.Index - 1)
             {
                 ExcelThemeEffectStyle? effect = theme.FormatScheme.EffectStyle[section.EffectReference.Index - 1];
@@ -896,31 +984,37 @@ public class ExcelChartStyleManager : XmlHelper
                 tranformColor = effect.ThreeD.Sp3DElement != null;
             }
         }
+
         if (tranformColor)
         {
             this.TransformColorThreeD(chartThreeD.ThreeD, section.EffectReference.Color, indexForColor, numberOfItems);
         }
     }
+
     private void ApplyStyleFont(ExcelChartStyleEntry section, int indexForColor, IDrawingStyle chartPartWithFont, int numberOfItems)
     {
         if (section.HasTextBody)
         {
             chartPartWithFont.TextBody.SetFromXml(section.DefaultTextBody.PathElement);
         }
+
         if (section.HasTextRun)
-        {                
-            chartPartWithFont.Font.SetFromXml(section.DefaultTextRun.PathElement);                
+        {
+            chartPartWithFont.Font.SetFromXml(section.DefaultTextRun.PathElement);
         }
 
         if (section.FontReference.HasColor)
         {
             chartPartWithFont.Font.Fill.Style = eFillStyle.SolidFill;
+
             if (section.FontReference.Color.ColorType == eDrawingColorType.ChartStyleColor)
             {
                 this.ColorsManager.Transform(section.FontReference.Color, indexForColor == -1 ? 0 : indexForColor, numberOfItems);
             }
+
             chartPartWithFont.Font.Fill.SolidFill.Color.ApplyNewColor(section.FontReference.Color);
         }
+
         if (section.FontReference.Index != eThemeFontCollectionType.None)
         {
             chartPartWithFont.Font.LatinFont = $"+{(section.FontReference.Index == eThemeFontCollectionType.Minor ? "mn" : "mj")}-lt";
@@ -928,11 +1022,13 @@ public class ExcelChartStyleManager : XmlHelper
             chartPartWithFont.Font.ComplexFont = $"+{(section.FontReference.Index == eThemeFontCollectionType.Minor ? "mn" : "mj")}-cs";
         }
     }
+
     private void TransformColorBorder(ExcelDrawingBorder border, ExcelChartStyleColorManager color, int colorIndex, int numberOfItems)
     {
         this.TransformColorFillBasic(border.Fill, color, colorIndex, numberOfItems);
         border.Fill.UpdateFillTypeNode();
     }
+
     private void TransformColorFill(ExcelDrawingFill fill, ExcelChartStyleColorManager color, int colorIndex, int numberOfItems)
     {
         switch (fill.Style)
@@ -940,16 +1036,21 @@ public class ExcelChartStyleManager : XmlHelper
             case eFillStyle.PatternFill:
                 this.TransformColor(fill.PatternFill.BackgroundColor, color, colorIndex, numberOfItems);
                 this.TransformColor(fill.PatternFill.ForegroundColor, color, colorIndex, numberOfItems);
+
                 break;
+
             case eFillStyle.BlipFill:
-                if(fill.BlipFill.Effects.Duotone!=null)
+                if (fill.BlipFill.Effects.Duotone != null)
                 {
                     this.TransformColor(fill.BlipFill.Effects.Duotone.Color1, color, colorIndex, numberOfItems);
                     this.TransformColor(fill.BlipFill.Effects.Duotone.Color2, color, colorIndex, numberOfItems);
                 }
+
                 break;
+
             default:
                 this.TransformColorFillBasic(fill, color, colorIndex, numberOfItems);
+
                 break;
         }
     }
@@ -960,56 +1061,76 @@ public class ExcelChartStyleManager : XmlHelper
         {
             case eFillStyle.SolidFill:
                 this.TransformColor(fill.SolidFill.Color, color, colorIndex, numberOfItems);
+
                 break;
+
             case eFillStyle.GradientFill:
                 foreach (ExcelDrawingGradientFillColor? grad in fill.GradientFill.Colors)
                 {
                     this.TransformColor(grad.Color, color, colorIndex, numberOfItems);
                 }
+
                 break;
         }
     }
+
     private void TransformColorEffect(ExcelDrawingEffectStyle effect, ExcelChartStyleColorManager color, int colorIndex, int numberOfItems)
     {
-        if (effect.HasInnerShadow && effect.InnerShadow.Color.ColorType == eDrawingColorType.Scheme && effect.InnerShadow.Color.SchemeColor.Color==eSchemeColor.Style)
+        if (effect.HasInnerShadow
+            && effect.InnerShadow.Color.ColorType == eDrawingColorType.Scheme
+            && effect.InnerShadow.Color.SchemeColor.Color == eSchemeColor.Style)
         {
             this.TransformColor(effect.InnerShadow.Color, color, colorIndex, numberOfItems);
         }
-        if(effect.HasOuterShadow && effect.OuterShadow.Color.ColorType == eDrawingColorType.Scheme && effect.OuterShadow.Color.SchemeColor.Color == eSchemeColor.Style)
+
+        if (effect.HasOuterShadow
+            && effect.OuterShadow.Color.ColorType == eDrawingColorType.Scheme
+            && effect.OuterShadow.Color.SchemeColor.Color == eSchemeColor.Style)
         {
             this.TransformColor(effect.OuterShadow.Color, color, colorIndex, numberOfItems);
         }
-        if (effect.HasPresetShadow && effect.PresetShadow.Color.ColorType == eDrawingColorType.Scheme && effect.PresetShadow.Color.SchemeColor.Color == eSchemeColor.Style)
+
+        if (effect.HasPresetShadow
+            && effect.PresetShadow.Color.ColorType == eDrawingColorType.Scheme
+            && effect.PresetShadow.Color.SchemeColor.Color == eSchemeColor.Style)
         {
             this.TransformColor(effect.PresetShadow.Color, color, colorIndex, numberOfItems);
         }
+
         if (effect.HasGlow && effect.Glow.Color.ColorType == eDrawingColorType.Scheme && effect.Glow.Color.SchemeColor.Color == eSchemeColor.Style)
         {
             this.TransformColor(effect.Glow.Color, color, colorIndex, numberOfItems);
         }
+
         if (effect.HasFillOverlay)
         {
             this.TransformColorFill(effect.FillOverlay.Fill, color, colorIndex, numberOfItems);
         }
     }
+
     private void TransformColorThreeD(ExcelDrawing3D threeD, ExcelChartStyleColorManager color, int colorIndex, int numberOfItems)
     {
-        if (threeD.ExtrusionColor.ColorType==eDrawingColorType.Scheme && threeD.ExtrusionColor.SchemeColor.Color == eSchemeColor.Style)
+        if (threeD.ExtrusionColor.ColorType == eDrawingColorType.Scheme && threeD.ExtrusionColor.SchemeColor.Color == eSchemeColor.Style)
         {
             this.TransformColor(threeD.ExtrusionColor, color, colorIndex, numberOfItems);
         }
-        if(threeD.ContourColor.ColorType == eDrawingColorType.Scheme && threeD.ContourColor.SchemeColor.Color == eSchemeColor.Style)
+
+        if (threeD.ContourColor.ColorType == eDrawingColorType.Scheme && threeD.ContourColor.SchemeColor.Color == eSchemeColor.Style)
         {
             this.TransformColor(threeD.ContourColor, color, colorIndex, numberOfItems);
         }
     }
+
     private void TransformColor(ExcelDrawingColorManager color, ExcelChartStyleColorManager templateColor, int colorIndex, int numberOfItems)
     {
-        if(templateColor!=null && templateColor.ColorType==eDrawingColorType.ChartStyleColor && color.ColorType == eDrawingColorType.Scheme && color.SchemeColor.Color == eSchemeColor.Style)
+        if (templateColor != null
+            && templateColor.ColorType == eDrawingColorType.ChartStyleColor
+            && color.ColorType == eDrawingColorType.Scheme
+            && color.SchemeColor.Color == eSchemeColor.Style)
         {
             this.ColorsManager.Transform(color, templateColor.StyleColor.Index ?? colorIndex, numberOfItems);
         }
-        else if (color.ColorType==eDrawingColorType.Scheme && color.SchemeColor.Color==eSchemeColor.Style)
+        else if (color.ColorType == eDrawingColorType.Scheme && color.SchemeColor.Color == eSchemeColor.Style)
         {
             this.ColorsManager.Transform(color, colorIndex, numberOfItems);
         }
@@ -1021,21 +1142,28 @@ public class ExcelChartStyleManager : XmlHelper
         this.StyleUri = GetNewUri(p, "/xl/charts/style{0}.xml", ref id);
         this._chart.Part.CreateRelationship(this.StyleUri, TargetMode.Internal, ExcelPackage.schemaChartStyleRelationships);
         this.StylePart = p.CreatePart(this.StyleUri, ContentTypes.contentTypeChartStyle);
+
         return id;
     }
+
     private int CreateColorPart(ZipPackage p)
     {
         int id = GetIxFromChartUri(this._chart.UriChart.OriginalString);
         this.ColorsUri = GetNewUri(p, "/xl/charts/colors{0}.xml", ref id);
         this._chart.Part.CreateRelationship(this.ColorsUri, TargetMode.Internal, ExcelPackage.schemaChartColorStyleRelationships);
         this.ColorsPart = p.CreatePart(this.ColorsUri, ContentTypes.contentTypeChartColorStyle);
+
         return id;
     }
+
     private ZipPackageRelationship CreateThemeOverridePart(ZipPackage p, ZipPackagePart partToCopy)
     {
         int id = GetIxFromChartUri(this._chart.UriChart.OriginalString);
         this.ThemeOverrideUri = GetNewUri(p, "/xl/theme/themeOverride{0}.xml", ref id);
-        ZipPackageRelationship? rel= this._chart.Part.CreateRelationship(this.ThemeOverrideUri, TargetMode.Internal, ExcelPackage.schemaThemeOverrideRelationships);
+
+        ZipPackageRelationship? rel =
+            this._chart.Part.CreateRelationship(this.ThemeOverrideUri, TargetMode.Internal, ExcelPackage.schemaThemeOverrideRelationships);
+
         this.ThemeOverridePart = p.CreatePart(this.ThemeOverrideUri, ContentTypes.contentTypeThemeOverride);
 
         this.ThemeOverrideXml = new XmlDocument();
@@ -1044,7 +1172,7 @@ public class ExcelChartStyleManager : XmlHelper
         foreach (ZipPackageRelationship? themeRel in partToCopy.GetRelationships())
         {
             Uri? uri = UriHelper.ResolvePartUri(new Uri("/xl/chart/theme1.xml", UriKind.Relative), themeRel.TargetUri);
-            ZipPackagePart? toPart = this._chart.Part.Package.CreatePart(uri, PictureStore.GetContentType(uri.OriginalString));                
+            ZipPackagePart? toPart = this._chart.Part.Package.CreatePart(uri, PictureStore.GetContentType(uri.OriginalString));
             ZipPackageRelationship? imageRel = this.ThemeOverridePart.CreateRelationship(uri, TargetMode.Internal, themeRel.RelationshipType);
             this.SetRelIdInThemeDoc(this.ThemeOverrideXml, themeRel.Id, imageRel.Id);
             Stream? stream = partToCopy.GetStream();
@@ -1054,18 +1182,19 @@ public class ExcelChartStyleManager : XmlHelper
 
         this.ThemeOverrideXml.Save(this.ThemeOverridePart.GetStream(FileMode.CreateNew));
         partToCopy.Package.Dispose();
+
         return rel;
     }
 
     private void SetRelIdInThemeDoc(XmlDocument themeOverrideXml, string fromRelId, string toRelId)
     {
-        foreach(XmlElement fill in themeOverrideXml.SelectNodes("//a:blipFill/a:blip", this.NameSpaceManager))
-        { 
-                
-            if(fill!=null)
+        foreach (XmlElement fill in themeOverrideXml.SelectNodes("//a:blipFill/a:blip", this.NameSpaceManager))
+        {
+            if (fill != null)
             {
-                string? relId=fill.GetAttribute("r:embed");
-                if(relId==fromRelId)
+                string? relId = fill.GetAttribute("r:embed");
+
+                if (relId == fromRelId)
                 {
                     fill.SetAttribute("r:embed", toRelId);
                 }
@@ -1112,34 +1241,39 @@ public class ExcelChartStyleManager : XmlHelper
 
         return sb.ToString();
     }
+
     private static void AppendDefaultStyleSection(StringBuilder sb, string section)
     {
         sb.Append($"<cs:{section}><cs:lnRef idx=\"0\"/><cs:fillRef idx=\"0\"/><cs:effectRef idx=\"0\"/><cs:fontRef idx=\"minor\"></cs:fontRef></cs:{section}>");
     }
+
     private static string GetStartColorXml()
     {
-        return $"<cs:colorStyle xmlns:cs=\"http://schemas.microsoft.com/office/drawing/2012/chartStyle\" xmlns:a=\"http://schemas.openxmlformats.org/drawingml/2006/main\" meth=\"cycle\" id=\"10\">" +
-               "<a:schemeClr val=\"accent1\"/>" +
-               "<a:schemeClr val=\"accent2\"/>" +
-               "<a:schemeClr val=\"accent3\"/>" +
-               "<a:schemeClr val=\"accent4\"/>" +
-               "<a:schemeClr val=\"accent5\"/>" +
-               "<a:schemeClr val=\"accent6\"/>" +
-               "<cs:variation/><cs:variation><a:lumMod val=\"60000\"/></cs:variation>" +
-               "<cs:variation><a:lumMod val=\"80000\"/><a:lumOff val=\"20000\"/></cs:variation>" +
-               "<cs:variation><a:lumMod val=\"80000\"/></cs:variation>" +
-               "<cs:variation><a:lumMod val=\"60000\"/><a:lumOff val=\"40000\"/></cs:variation>" +
-               "<cs:variation><a:lumMod val=\"50000\"/></cs:variation>" +
-               "<cs:variation><a:lumMod val=\"70000\"/><a:lumOff val=\"30000\"/></cs:variation>" +
-               "<cs:variation><a:lumMod val=\"70000\"/></cs:variation>" +
-               "<cs:variation><a:lumMod val=\"50000\"/><a:lumOff val=\"50000\"/></cs:variation>" +
-               "</cs:colorStyle>";
+        return
+            $"<cs:colorStyle xmlns:cs=\"http://schemas.microsoft.com/office/drawing/2012/chartStyle\" xmlns:a=\"http://schemas.openxmlformats.org/drawingml/2006/main\" meth=\"cycle\" id=\"10\">"
+            + "<a:schemeClr val=\"accent1\"/>"
+            + "<a:schemeClr val=\"accent2\"/>"
+            + "<a:schemeClr val=\"accent3\"/>"
+            + "<a:schemeClr val=\"accent4\"/>"
+            + "<a:schemeClr val=\"accent5\"/>"
+            + "<a:schemeClr val=\"accent6\"/>"
+            + "<cs:variation/><cs:variation><a:lumMod val=\"60000\"/></cs:variation>"
+            + "<cs:variation><a:lumMod val=\"80000\"/><a:lumOff val=\"20000\"/></cs:variation>"
+            + "<cs:variation><a:lumMod val=\"80000\"/></cs:variation>"
+            + "<cs:variation><a:lumMod val=\"60000\"/><a:lumOff val=\"40000\"/></cs:variation>"
+            + "<cs:variation><a:lumMod val=\"50000\"/></cs:variation>"
+            + "<cs:variation><a:lumMod val=\"70000\"/><a:lumOff val=\"30000\"/></cs:variation>"
+            + "<cs:variation><a:lumMod val=\"70000\"/></cs:variation>"
+            + "<cs:variation><a:lumMod val=\"50000\"/><a:lumOff val=\"50000\"/></cs:variation>"
+            + "</cs:colorStyle>";
     }
+
     private static int GetIxFromChartUri(string name)
     {
         if (name.StartsWith("chart", StringComparison.InvariantCultureIgnoreCase) && name.EndsWith(".xml", StringComparison.InvariantCultureIgnoreCase))
         {
             string? n = name.Substring(5, name.Length - 9);
+
             try
             {
                 return int.Parse(n);
@@ -1148,10 +1282,11 @@ public class ExcelChartStyleManager : XmlHelper
             {
                 return 1;
             }
-
         }
+
         return 1;
     }
+
     private void LoadStyleAndColors(ExcelChart chart)
     {
         if (chart.Part == null)
@@ -1160,6 +1295,7 @@ public class ExcelChartStyleManager : XmlHelper
         }
 
         ExcelPackage? p = chart.WorkSheet.Workbook._package;
+
         foreach (ZipPackageRelationship? rel in chart.Part.GetRelationships())
         {
             if (rel.RelationshipType == ExcelPackage.schemaChartStyleRelationships)
@@ -1178,6 +1314,7 @@ public class ExcelChartStyleManager : XmlHelper
             }
         }
     }
+
     private ExcelThemeBase GetTheme()
     {
         if (this.ThemeOverride == null)
@@ -1193,43 +1330,42 @@ public class ExcelChartStyleManager : XmlHelper
     /// <summary>
     /// A reference to style settings for the chart
     /// </summary>
-    public ExcelChartStyle Style
-    {
-        get;
-        private set;
-    }
+    public ExcelChartStyle Style { get; private set; }
+
     /// <summary>
     /// A reference to color style settings for the chart
     /// </summary>
-    public ExcelChartColorsManager ColorsManager
-    {
-        get;
-        private set;
-    }
+    public ExcelChartColorsManager ColorsManager { get; private set; }
+
     /// <summary>
     /// If the chart has a different theme than the theme in the workbook, this property defines that theme.
     /// </summary>
-    public ExcelThemeOverride ThemeOverride
-    {
-        get;
-        private set;
-    } = null;
+    public ExcelThemeOverride ThemeOverride { get; private set; } = null;
+
     /// <summary>
     /// The chart style xml document
     /// </summary>
     public XmlDocument StyleXml { get; private set; }
+
     /// <summary>
     /// The color xml document
     /// </summary>
     public XmlDocument ColorsXml { get; private set; }
+
     /// <summary>
     /// Overrides the current theme for the chart.
     /// </summary>
     public XmlDocument ThemeOverrideXml { get; private set; }
+
     internal Uri StyleUri { get; set; }
+
     internal ZipPackagePart StylePart { get; set; }
+
     internal Uri ColorsUri { get; set; }
+
     internal ZipPackagePart ColorsPart { get; set; }
+
     internal Uri ThemeOverrideUri { get; set; }
+
     internal ZipPackagePart ThemeOverridePart { get; set; }
 }

@@ -10,10 +10,12 @@
  *************************************************************************************************
   01/27/2020         EPPlus Software AB       Initial release EPPlus 5
  *************************************************************************************************/
+
 using System;
 using System.Xml;
 using OfficeOpenXml.Core.CellStore;
 using OfficeOpenXml.Style;
+
 namespace OfficeOpenXml;
 
 /// <summary>
@@ -24,6 +26,7 @@ public class ExcelColumn : IRangeID
     private ExcelWorksheet _worksheet;
 
     #region ExcelColumn Constructor
+
     /// <summary>
     /// Creates a new instance of the ExcelColumn class.  
     /// For internal use only!
@@ -37,25 +40,30 @@ public class ExcelColumn : IRangeID
         this._columnMax = col;
         this._width = this._worksheet.DefaultColWidth;
     }
+
     #endregion
+
     internal int _columnMin;
+
     /// <summary>
     /// Sets the first column the definition refers to.
     /// </summary>
-    public int ColumnMin 
+    public int ColumnMin
     {
         get { return this._columnMin; }
+
         //set { _columnMin=value; } 
     }
 
     internal int _columnMax;
+
     /// <summary>
     /// Sets the last column the definition refers to.
     /// </summary>
-    public int ColumnMax 
-    { 
+    public int ColumnMax
+    {
         get { return this._columnMax; }
-        set 
+        set
         {
             if (value < this._columnMin && value > ExcelPackage.MaxColumns)
             {
@@ -63,42 +71,42 @@ public class ExcelColumn : IRangeID
             }
 
             CellStoreEnumerator<ExcelValue>? cse = new CellStoreEnumerator<ExcelValue>(this._worksheet._values, 0, 0, 0, ExcelPackage.MaxColumns);
-            while(cse.Next())
+
+            while (cse.Next())
             {
                 ExcelColumn? c = cse.Value._value as ExcelColumn;
-                if (cse.Column > this._columnMin && c.ColumnMax <= value && cse.Column!= this._columnMin)
+
+                if (cse.Column > this._columnMin && c.ColumnMax <= value && cse.Column != this._columnMin)
                 {
-                    throw new Exception(string.Format("ColumnMax cannot span over existing column {0}.",c.ColumnMin));
+                    throw new Exception(string.Format("ColumnMax cannot span over existing column {0}.", c.ColumnMin));
                 }
             }
 
-            this._columnMax = value; 
-        } 
+            this._columnMax = value;
+        }
     }
+
     /// <summary>
     /// Internal range id for the column
     /// </summary>
     internal ulong ColumnID
     {
-        get
-        {
-            return GetColumnID(this._worksheet.SheetId, this.ColumnMin);
-        }
+        get { return GetColumnID(this._worksheet.SheetId, this.ColumnMin); }
     }
+
     #region ExcelColumn Hidden
+
     /// <summary>
     /// Allows the column to be hidden in the worksheet
     /// </summary>
-    internal bool _hidden=false;
+    internal bool _hidden = false;
+
     /// <summary>
     /// Defines if the column is visible or hidden
     /// </summary>
     public bool Hidden
     {
-        get
-        {
-            return this._hidden;
-        }
+        get { return this._hidden; }
         set
         {
             if (this._worksheet._package.DoAdjustDrawings)
@@ -113,14 +121,16 @@ public class ExcelColumn : IRangeID
             }
         }
     }
+
     #endregion
 
     #region ExcelColumn Width
+
     internal double VisualWidth
     {
         get
         {
-            if (this._hidden || (this.Collapsed && this.OutlineLevel>0))
+            if (this._hidden || (this.Collapsed && this.OutlineLevel > 0))
             {
                 return 0;
             }
@@ -130,17 +140,16 @@ public class ExcelColumn : IRangeID
             }
         }
     }
+
     internal double _width;
+
     /// <summary>
     /// Sets the width of the column in the worksheet
     /// </summary>
     public double Width
     {
-        get
-        {
-            return this._width;
-        }
-        set	
+        get { return this._width; }
+        set
         {
             if (this._worksheet._package.DoAdjustDrawings)
             {
@@ -153,39 +162,37 @@ public class ExcelColumn : IRangeID
                 this._width = value;
             }
 
-            if (this._hidden && value!=0)
+            if (this._hidden && value != 0)
             {
                 this._hidden = false;
             }
         }
     }
+
     /// <summary>
     /// If set to true a column automaticlly resize(grow wider) when a user inputs numbers in a cell. 
     /// </summary>
-    public bool BestFit
-    {
-        get;
-        set;
-    }
+    public bool BestFit { get; set; }
+
     /// <summary>
     /// If the column is collapsed in outline mode
     /// </summary>
     public bool Collapsed { get; set; }
+
     /// <summary>
     /// Outline level. Zero if no outline
     /// </summary>
-    public int OutlineLevel 
-    { 
-        get;
-        set; 
-    }
+    public int OutlineLevel { get; set; }
+
     /// <summary>
     /// Phonetic
     /// </summary>
     public bool Phonetic { get; set; }
+
     #endregion
 
     #region ExcelColumn Style
+
     /// <summary>
     /// The Style applied to the whole column. Only effects cells with no individual style set. 
     /// Use Range object if you want to set specific styles.
@@ -196,61 +203,49 @@ public class ExcelColumn : IRangeID
         {
             string letter = ExcelCellBase.GetColumnLetter(this.ColumnMin);
             string endLetter = ExcelCellBase.GetColumnLetter(this.ColumnMax);
+
             return this._worksheet.Workbook.Styles.GetStyleObject(this.StyleID, this._worksheet.PositionId, letter + ":" + endLetter);
         }
     }
-    internal string _styleName="";
+
+    internal string _styleName = "";
+
     /// <summary>
     /// Sets the style for the entire column using a style name.
     /// </summary>
     public string StyleName
     {
-        get
-        {
-            return this._styleName;
-        }
+        get { return this._styleName; }
         set
         {
             this.StyleID = this._worksheet.Workbook.Styles.GetStyleIdFromName(value);
             this._styleName = value;
         }
     }
+
     /// <summary>
     /// Sets the style for the entire column using the style ID.           
     /// </summary>
     public int StyleID
     {
-        get
-        {
-            return this._worksheet.GetStyleInner(0, this.ColumnMin);
-        }
-        set
-        {
-            this._worksheet.SetStyleInner(0, this.ColumnMin, value);
-        }
+        get { return this._worksheet.GetStyleInner(0, this.ColumnMin); }
+        set { this._worksheet.SetStyleInner(0, this.ColumnMin, value); }
     }
+
     /// <summary>
     /// Adds a manual page break after the column.
     /// </summary>
-    public bool PageBreak
-    {
-        get;
-        set;
-    }
+    public bool PageBreak { get; set; }
+
     /// <summary>
     /// Merges all cells of the column
     /// </summary>
     public bool Merged
     {
-        get
-        {
-            return this._worksheet.MergedCells[0, this.ColumnMin] != null;
-        }
-        set
-        {
-            this._worksheet.MergedCells.Add(new ExcelAddressBase(1, this.ColumnMin, ExcelPackage.MaxRows, this.ColumnMax), true);
-        }
+        get { return this._worksheet.MergedCells[0, this.ColumnMin] != null; }
+        set { this._worksheet.MergedCells.Add(new ExcelAddressBase(1, this.ColumnMin, ExcelPackage.MaxRows, this.ColumnMax), true); }
     }
+
     #endregion
 
     /// <summary>
@@ -261,6 +256,7 @@ public class ExcelColumn : IRangeID
     {
         return string.Format("Column Range: {0} to {1}", this.ColumnMin, this.ColumnMax);
     }
+
     /// <summary>
     /// Set the column width from the content of the range. The minimum width is the value of the ExcelWorksheet.defaultColumnWidth property.
     /// Note: Cells containing formulas are ignored unless a calculation is performed.
@@ -304,6 +300,7 @@ public class ExcelColumn : IRangeID
     {
         return (ulong)sheetID + ((ulong)column << 15);
     }
+
     internal static int ColumnWidthToPixels(decimal columnWidth, decimal mdw)
     {
         return (int)decimal.Truncate(((256 * columnWidth) + decimal.Truncate(128 / mdw)) / 256 * mdw);
@@ -313,15 +310,13 @@ public class ExcelColumn : IRangeID
 
     ulong IRangeID.RangeID
     {
-        get
-        {
-            return this.ColumnID;
-        }
+        get { return this.ColumnID; }
         set
         {
             int prevColMin = this._columnMin;
             this._columnMin = (int)(value >> 15) & 0x3FF;
             this._columnMax += prevColMin - this.ColumnMin;
+
             //Todo:More Validation
             if (this._columnMax > ExcelPackage.MaxColumns)
             {
@@ -340,6 +335,7 @@ public class ExcelColumn : IRangeID
     {
         return this.Clone(added, this.ColumnMin);
     }
+
     internal ExcelColumn Clone(ExcelWorksheet added, int col)
     {
         ExcelColumn newCol = added.Column(col);
@@ -353,6 +349,7 @@ public class ExcelColumn : IRangeID
         newCol.StyleID = this.StyleID;
         newCol.Width = this.Width;
         newCol.Hidden = this.Hidden;
+
         return newCol;
     }
 }

@@ -10,6 +10,7 @@
  *************************************************************************************************
   01/27/2020         EPPlus Software AB       Initial release EPPlus 5
  *************************************************************************************************/
+
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -24,28 +25,30 @@ namespace OfficeOpenXml.Style.Dxf;
 public class ExcelDxfBorderItem : DxfStyleBase
 {
     eStyleClass _styleClass;
-    internal ExcelDxfBorderItem(ExcelStyles styles, eStyleClass styleClass, Action<eStyleClass, eStyleProperty, object> callback) :
-        base(styles, callback)
+
+    internal ExcelDxfBorderItem(ExcelStyles styles, eStyleClass styleClass, Action<eStyleClass, eStyleProperty, object> callback)
+        : base(styles, callback)
     {
         this._styleClass = styleClass;
-        this.Color =new ExcelDxfColor(styles, this._styleClass, callback);
+        this.Color = new ExcelDxfColor(styles, this._styleClass, callback);
     }
+
     ExcelBorderStyle? _style;
+
     /// <summary>
     /// The border style
     /// </summary>
     public ExcelBorderStyle? Style
     {
-        get
-        {
-            return this._style;
-        }
+        get { return this._style; }
         set
         {
             this._style = value;
             this._callback?.Invoke(this._styleClass, eStyleProperty.Style, value);
         }
-    }        /// <summary>
+    }
+
+    /// <summary>
     /// The color of the border
     /// </summary>
     public ExcelDxfColor Color { get; internal set; }
@@ -55,10 +58,7 @@ public class ExcelDxfBorderItem : DxfStyleBase
     /// </summary>
     internal override string Id
     {
-        get
-        {
-            return GetAsString(this.Style) + "|" + (this.Color == null ? "" : this.Color.Id);
-        }
+        get { return GetAsString(this.Style) + "|" + (this.Color == null ? "" : this.Color.Id); }
     }
 
     /// <summary>
@@ -71,16 +71,15 @@ public class ExcelDxfBorderItem : DxfStyleBase
         SetValueEnum(helper, path + "/@style", this.Style);
         SetValueColor(helper, path + "/d:color", this.Color);
     }
+
     /// <summary>
     /// If the object has any properties set
     /// </summary>
     public override bool HasValue
     {
-        get 
-        {
-            return (this.Style != null && this.Style!=ExcelBorderStyle.None) || this.Color.HasValue;
-        }
+        get { return (this.Style != null && this.Style != ExcelBorderStyle.None) || this.Color.HasValue; }
     }
+
     /// <summary>
     /// Clears all properties
     /// </summary>
@@ -89,6 +88,7 @@ public class ExcelDxfBorderItem : DxfStyleBase
         this.Style = null;
         this.Color.Clear();
     }
+
     internal override void SetStyle()
     {
         if (this._callback != null)
@@ -97,6 +97,7 @@ public class ExcelDxfBorderItem : DxfStyleBase
             this.Color.SetStyle();
         }
     }
+
     /// <summary>
     /// Clone the object
     /// </summary>

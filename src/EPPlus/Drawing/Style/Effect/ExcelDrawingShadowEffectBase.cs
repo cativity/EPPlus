@@ -10,6 +10,7 @@
  *************************************************************************************************
   01/27/2020         EPPlus Software AB       Initial release EPPlus 5
  *************************************************************************************************/
+
 using System.Xml;
 
 namespace OfficeOpenXml.Drawing.Style.Effect;
@@ -17,27 +18,22 @@ namespace OfficeOpenXml.Drawing.Style.Effect;
 /// <summary>
 /// Base class for shadow effects
 /// </summary>
-public abstract class ExcelDrawingShadowEffectBase : ExcelDrawingEffectBase 
+public abstract class ExcelDrawingShadowEffectBase : ExcelDrawingEffectBase
 {
     private readonly string _distancePath = "{0}/@dist";
 
-    internal ExcelDrawingShadowEffectBase(XmlNamespaceManager nameSpaceManager, XmlNode topNode, string[] schemaNodeOrder, string path) : base(nameSpaceManager, topNode, schemaNodeOrder, path)
+    internal ExcelDrawingShadowEffectBase(XmlNamespaceManager nameSpaceManager, XmlNode topNode, string[] schemaNodeOrder, string path)
+        : base(nameSpaceManager, topNode, schemaNodeOrder, path)
     {
         this._distancePath = string.Format(this._distancePath, path);
     }
-        
+
     /// <summary>
     /// How far to offset the shadow is in pixels
     /// </summary>
     public double Distance
     {
-        get
-        {
-            return this.GetXmlNodeEmuToPt(this._distancePath);
-        }
-        set
-        {
-            this.SetXmlNodeEmuToPt(this._distancePath, value);
-        }
-    }        
+        get { return this.GetXmlNodeEmuToPt(this._distancePath); }
+        set { this.SetXmlNodeEmuToPt(this._distancePath, value); }
+    }
 }

@@ -10,6 +10,7 @@
  *************************************************************************************************
   05/25/2020         EPPlus Software AB       Implemented function
  *************************************************************************************************/
+
 using OfficeOpenXml.FormulaParsing.Excel.Functions.Metadata;
 using OfficeOpenXml.FormulaParsing.ExpressionGraph;
 using System;
@@ -19,16 +20,16 @@ using System.Text;
 
 namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Statistical;
 
-[FunctionMetadata(
-                     Category = ExcelFunctionCategory.Statistical,
-                     EPPlusVersion = "5.5",
-                     Description = "Returns the sum of the squares of the deviations of a set of data points from their sample mean")]
+[FunctionMetadata(Category = ExcelFunctionCategory.Statistical,
+                  EPPlusVersion = "5.5",
+                  Description = "Returns the sum of the squares of the deviations of a set of data points from their sample mean")]
 internal class Devsq : ExcelFunction
 {
     public override CompileResult Execute(IEnumerable<FunctionArgument> arguments, ParsingContext context)
     {
         ValidateArguments(arguments, 1);
         IEnumerable<ExcelDoubleCellValue>? arr = this.ArgsToDoubleEnumerable(arguments, context);
+
         if (!arr.Any())
         {
             return this.CreateResult(eErrorType.Num);
@@ -36,6 +37,7 @@ internal class Devsq : ExcelFunction
 
         double mean = arr.Select(x => (double)x).Average();
         double result = arr.Aggregate(0d, (val, x) => val += System.Math.Pow(x - mean, 2));
+
         return this.CreateResult(result, DataType.Decimal);
     }
 }

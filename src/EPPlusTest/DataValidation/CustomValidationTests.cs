@@ -26,6 +26,7 @@
  *******************************************************************************
   01/27/2020         EPPlus Software AB       Initial release EPPlus 5
  *******************************************************************************/
+
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
 using System.Text;
@@ -63,6 +64,7 @@ public class CustomValidationTests : ValidationTestBase
     {
         // Arrange
         StringBuilder? sb = new StringBuilder();
+
         for (int x = 0; x < 257; x++)
         {
             sb.Append("x");

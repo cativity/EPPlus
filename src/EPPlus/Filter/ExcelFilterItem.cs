@@ -10,6 +10,7 @@
  *************************************************************************************************
   01/27/2020         EPPlus Software AB       Initial release EPPlus 5
  *************************************************************************************************/
+
 using System.Globalization;
 
 namespace OfficeOpenXml.Filter;
@@ -19,8 +20,8 @@ namespace OfficeOpenXml.Filter;
 /// </summary>
 public abstract class ExcelFilterItem
 {
-
 }
+
 /// <summary>
 /// A filter item for a value filter
 /// </summary>
@@ -35,9 +36,11 @@ public class ExcelFilterValueItem : ExcelFilterItem
         this.Value = value;
         Utils.ConvertUtil.TryParseNumericString(value, out this._valueDouble, CultureInfo.InvariantCulture);
     }
+
     /// <summary>
     /// A value to be filtered.
     /// </summary>
     public string Value { get; }
+
     internal double _valueDouble;
 }

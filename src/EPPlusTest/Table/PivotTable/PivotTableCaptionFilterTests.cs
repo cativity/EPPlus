@@ -9,6 +9,7 @@ namespace EPPlusTest.Table.PivotTable;
 public class PivotTableCaptionFilterTests : TestBase
 {
     static ExcelPackage _pck;
+
     [ClassInitialize]
     public static void Init(TestContext context)
     {
@@ -21,11 +22,13 @@ public class PivotTableCaptionFilterTests : TestBase
         r = LoadItemData(ws);
         ws.Tables.Add(r, "Table2");
     }
+
     [ClassCleanup]
     public static void Cleanup()
     {
         SaveAndCleanup(_pck);
     }
+
     [TestMethod]
     public void AddCaptionEqualFilter()
     {
@@ -38,6 +41,7 @@ public class PivotTableCaptionFilterTests : TestBase
 
         pt.Fields[1].Filters.AddCaptionFilter(ePivotTableCaptionFilterType.CaptionEqual, "Hardware");
     }
+
     [TestMethod]
     public void AddCaptionNotEqualFilter()
     {
@@ -50,6 +54,7 @@ public class PivotTableCaptionFilterTests : TestBase
 
         pt.Fields[1].Filters.AddCaptionFilter(ePivotTableCaptionFilterType.CaptionNotEqual, "Hardware");
     }
+
     [TestMethod]
     public void AddCaptionBeginsWithFilter()
     {
@@ -62,6 +67,7 @@ public class PivotTableCaptionFilterTests : TestBase
 
         pt.Fields[1].Filters.AddCaptionFilter(ePivotTableCaptionFilterType.CaptionBeginsWith, "H");
     }
+
     [TestMethod]
     public void AddCaptionNotBeginsWithFilter()
     {
@@ -87,6 +93,7 @@ public class PivotTableCaptionFilterTests : TestBase
 
         pt.Fields[1].Filters.AddCaptionFilter(ePivotTableCaptionFilterType.CaptionEndsWith, "ware");
     }
+
     [TestMethod]
     public void AddCaptionNotEndsWithFilter()
     {
@@ -99,6 +106,7 @@ public class PivotTableCaptionFilterTests : TestBase
 
         pt.Fields[1].Filters.AddCaptionFilter(ePivotTableCaptionFilterType.CaptionNotEndsWith, "ware");
     }
+
     [TestMethod]
     public void AddCaptionContainsFilter()
     {
@@ -111,6 +119,7 @@ public class PivotTableCaptionFilterTests : TestBase
 
         pt.Fields[1].Filters.AddCaptionFilter(ePivotTableCaptionFilterType.CaptionContains, "roc");
     }
+
     [TestMethod]
     public void AddCaptionNotContainsFilter()
     {
@@ -123,6 +132,7 @@ public class PivotTableCaptionFilterTests : TestBase
 
         pt.Fields[1].Filters.AddCaptionFilter(ePivotTableCaptionFilterType.CaptionNotContains, "roc");
     }
+
     [TestMethod]
     public void AddCaptionGreaterThanFilter()
     {
@@ -135,6 +145,7 @@ public class PivotTableCaptionFilterTests : TestBase
 
         pt.Fields[1].Filters.AddCaptionFilter(ePivotTableCaptionFilterType.CaptionGreaterThan, "H");
     }
+
     [TestMethod]
     public void AddCaptionGreaterThanOrEqualFilter()
     {
@@ -147,6 +158,7 @@ public class PivotTableCaptionFilterTests : TestBase
 
         pt.Fields[1].Filters.AddCaptionFilter(ePivotTableCaptionFilterType.CaptionGreaterThanOrEqual, "H");
     }
+
     [TestMethod]
     public void AddCaptionLessThanFilter()
     {
@@ -159,6 +171,7 @@ public class PivotTableCaptionFilterTests : TestBase
 
         pt.Fields[1].Filters.AddCaptionFilter(ePivotTableCaptionFilterType.CaptionLessThan, "H");
     }
+
     [TestMethod]
     public void AddCaptionLessThanOrEqualFilter()
     {
@@ -188,6 +201,7 @@ public class PivotTableCaptionFilterTests : TestBase
         Assert.AreEqual("I", pt.Fields[1].Filters[0].StringValue2);
         Assert.AreEqual(2, ((ExcelCustomFilterColumn)pt.Fields[1].Filters[0].Filter).Filters.Count);
     }
+
     [TestMethod]
     public void AddCaptionNotBetweenWithFilter()
     {

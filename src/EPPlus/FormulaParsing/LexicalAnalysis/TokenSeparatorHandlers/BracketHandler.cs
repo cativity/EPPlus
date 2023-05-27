@@ -10,6 +10,7 @@
  *************************************************************************************************
   01/27/2020         EPPlus Software AB       Initial release EPPlus 5
  *************************************************************************************************/
+
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -30,19 +31,25 @@ internal class BracketHandler : SeparatorHandler
         {
             context.AppendToCurrentToken(c);
             context.BracketCount++;
+
             return true;
         }
+
         if (tokenSeparator.TokenTypeIsSet(TokenType.ClosingBracket))
         {
             context.AppendToCurrentToken(c);
             context.BracketCount--;
+
             return true;
         }
+
         if (context.BracketCount > 0)
         {
             context.AppendToCurrentToken(c);
+
             return true;
         }
+
         return false;
     }
 }

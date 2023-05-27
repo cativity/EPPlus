@@ -10,6 +10,7 @@
  *************************************************************************************************
   01/27/2020         EPPlus Software AB       Initial release EPPlus 5
  *************************************************************************************************/
+
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -22,7 +23,7 @@ using OfficeOpenXml.FormulaParsing;
 
 namespace OfficeOpenXml.FormulaParsing.ExpressionGraph;
 
-internal class ExpressionGraphBuilder :IExpressionGraphBuilder
+internal class ExpressionGraphBuilder : IExpressionGraphBuilder
 {
     private readonly ExpressionGraph _graph = new ExpressionGraph();
     private readonly IExpressionFactory _expressionFactory;
@@ -35,7 +36,6 @@ internal class ExpressionGraphBuilder :IExpressionGraphBuilder
     public ExpressionGraphBuilder(ExcelDataProvider excelDataProvider, ParsingContext parsingContext)
         : this(new ExpressionFactory(excelDataProvider, parsingContext), parsingContext)
     {
-
     }
 
     public ExpressionGraphBuilder(IExpressionFactory expressionFactory, ParsingContext parsingContext)
@@ -50,6 +50,7 @@ internal class ExpressionGraphBuilder :IExpressionGraphBuilder
         this._graph.Reset();
         Token[]? tokensArr = tokens != null ? tokens.ToArray() : new Token[0];
         this.BuildUp(tokensArr, null);
+
         return this._graph;
     }
 
@@ -85,7 +86,7 @@ internal class ExpressionGraphBuilder :IExpressionGraphBuilder
             {
                 break;
             }
-            else if(token.TokenTypeIsSet(TokenType.WorksheetName))
+            else if (token.TokenTypeIsSet(TokenType.WorksheetName))
             {
                 StringBuilder? sb = new StringBuilder();
                 sb.Append(tokens[this._tokenIndex++].Value);
@@ -99,9 +100,10 @@ internal class ExpressionGraphBuilder :IExpressionGraphBuilder
             {
                 this._negateNextExpression = !this._negateNextExpression;
             }
-            else if(token.TokenTypeIsSet(TokenType.Percent))
+            else if (token.TokenTypeIsSet(TokenType.Percent))
             {
                 this.SetOperatorOnExpression(parent, Operator.Percent);
+
                 if (parent == null)
                 {
                     this._graph.Add(ConstantExpressions.Percent);
@@ -142,18 +144,21 @@ internal class ExpressionGraphBuilder :IExpressionGraphBuilder
             return;
         }
 
-        if (parent != null && 
-            (token.TokenTypeIsSet(TokenType.Comma) || token.TokenTypeIsSet(TokenType.SemiColon)))
+        if (parent != null && (token.TokenTypeIsSet(TokenType.Comma) || token.TokenTypeIsSet(TokenType.SemiColon)))
         {
             parent = parent.PrepareForNextChild();
+
             return;
         }
+
         if (this._negateNextExpression)
         {
             token = token.CloneWithNegatedValue(true);
             this._negateNextExpression = false;
         }
+
         Expression? expression = this._expressionFactory.Create(token);
+
         if (parent == null)
         {
             this._graph.Add(expression);
@@ -170,20 +175,22 @@ internal class ExpressionGraphBuilder :IExpressionGraphBuilder
         {
             return true;
         }
+
         return false;
     }
 
     private void BuildRangeOffsetExpression(Token[] tokens, Expression parent, Token token)
     {
-        if(this._nRangeOffsetTokens++ % 2 == 0)
+        if (this._nRangeOffsetTokens++ % 2 == 0)
         {
             this._rangeOffsetExpression = new RangeOffsetExpression(this._parsingContext);
-            if(token.TokenTypeIsSet(TokenType.Function) && token.Value.ToLower() == "offset")
+
+            if (token.TokenTypeIsSet(TokenType.Function) && token.Value.ToLower() == "offset")
             {
                 this._rangeOffsetExpression.OffsetExpression1 = new FunctionExpression("offset", this._parsingContext, false);
                 this.HandleFunctionArguments(tokens, this._rangeOffsetExpression.OffsetExpression1);
             }
-            else if(token.TokenTypeIsSet(TokenType.ExcelAddress))
+            else if (token.TokenTypeIsSet(TokenType.ExcelAddress))
             {
                 this._rangeOffsetExpression.AddressExpression2 = this._expressionFactory.Create(token) as ExcelAddressExpression;
             }
@@ -198,6 +205,7 @@ internal class ExpressionGraphBuilder :IExpressionGraphBuilder
             {
                 parent.AddChild(this._rangeOffsetExpression);
             }
+
             if (token.TokenTypeIsSet(TokenType.Function) && token.Value.ToLower() == "offset")
             {
                 this._rangeOffsetExpression.OffsetExpression2 = new FunctionExpression("offset", this._parsingContext, this._negateNextExpression);
@@ -231,6 +239,7 @@ internal class ExpressionGraphBuilder :IExpressionGraphBuilder
     {
         this._tokenIndex++;
         Token token = tokens.ElementAt(this._tokenIndex);
+
         if (!token.TokenTypeIsSet(TokenType.OpeningParenthesis))
         {
             throw new ExcelErrorValueException(eErrorType.Value);
@@ -271,6 +280,7 @@ internal class ExpressionGraphBuilder :IExpressionGraphBuilder
         else
         {
             Expression candidate;
+
             if (parent is FunctionArgumentExpression)
             {
                 candidate = parent.Children.Last();
@@ -278,11 +288,13 @@ internal class ExpressionGraphBuilder :IExpressionGraphBuilder
             else
             {
                 candidate = parent.Children.Last();
+
                 if (candidate is FunctionArgumentExpression)
                 {
                     candidate = candidate.Children.Last();
                 }
             }
+
             candidate.Operator = op;
         }
     }

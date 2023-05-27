@@ -10,6 +10,7 @@
  *************************************************************************************************
   01/27/2020         EPPlus Software AB       Initial release EPPlus 5
  *************************************************************************************************/
+
 using OfficeOpenXml.Utils;
 using System;
 using System.Collections.Generic;
@@ -33,13 +34,15 @@ public class ExcelProtectedRangeCollection : XmlHelper, IEnumerable<ExcelProtect
     private const string _collectionNodePath = "d:protectedRanges";
     private const string _itemNodePath = "protectedRange";
     private XmlElement _collectionNode;
+
     internal ExcelProtectedRangeCollection(ExcelWorksheet ws)
         : base(ws.NameSpaceManager, ws.TopNode)
     {
         this._ws = ws;
         this.SchemaNodeOrder = ws.SchemaNodeOrder;
         this._collectionNode = (XmlElement)this.GetNode(_collectionNodePath);
-        if(this._collectionNode!=null)
+
+        if (this._collectionNode != null)
         {
             foreach (XmlNode node in this._collectionNode.ChildNodes)
             {
@@ -57,7 +60,8 @@ public class ExcelProtectedRangeCollection : XmlHelper, IEnumerable<ExcelProtect
     public ExcelProtectedRange Add(string name, ExcelAddress address)
     {
         XmlNode node;
-        if (this._list.Count==0)
+
+        if (this._list.Count == 0)
         {
             node = this.CreateNode($"{_collectionNodePath}/d:{_itemNodePath}");
             this._collectionNode = (XmlElement)node.ParentNode;
@@ -67,14 +71,18 @@ public class ExcelProtectedRangeCollection : XmlHelper, IEnumerable<ExcelProtect
             node = this._collectionNode.OwnerDocument.CreateElement(_itemNodePath, ExcelPackage.schemaMain);
             this._collectionNode.AppendChild(node);
         }
-        if(this._list.Any(x=>x.Name.Equals(name, StringComparison.CurrentCultureIgnoreCase)))
+
+        if (this._list.Any(x => x.Name.Equals(name, StringComparison.CurrentCultureIgnoreCase)))
         {
             throw new InvalidOperationException($"An item with name {name} already exists");
         }
-        ExcelProtectedRange? pr = new ExcelProtectedRange(this._ws.NameSpaceManager, node) { Name=name, Address=address };
+
+        ExcelProtectedRange? pr = new ExcelProtectedRange(this._ws.NameSpaceManager, node) { Name = name, Address = address };
         this._list.Add(pr);
+
         return pr;
     }
+
     /// <summary>
     /// Clears all protected ranges
     /// </summary>
@@ -83,6 +91,7 @@ public class ExcelProtectedRangeCollection : XmlHelper, IEnumerable<ExcelProtect
         this.DeleteNode(_collectionNodePath);
         this._list.Clear();
     }
+
     /// <summary>
     /// Checks if the collection contains a specific item.
     /// </summary>
@@ -92,6 +101,7 @@ public class ExcelProtectedRangeCollection : XmlHelper, IEnumerable<ExcelProtect
     {
         return this._list.Contains(item);
     }
+
     /// <summary>
     /// Copies the entire collection to a compatible one-dimensional
     /// array, starting at the specified index of the target array.
@@ -110,6 +120,7 @@ public class ExcelProtectedRangeCollection : XmlHelper, IEnumerable<ExcelProtect
     {
         get { return this._list.Count; }
     }
+
     /// <summary>
     /// Remove the specified item from the collection
     /// </summary>
@@ -117,12 +128,14 @@ public class ExcelProtectedRangeCollection : XmlHelper, IEnumerable<ExcelProtect
     /// <returns></returns>
     public bool Remove(ExcelProtectedRange item)
     {
-        item.TopNode.ParentNode.RemoveChild(item.TopNode);            
+        item.TopNode.ParentNode.RemoveChild(item.TopNode);
         bool ret = this._list.Remove(item);
-        if (this._list.Count==0)
+
+        if (this._list.Count == 0)
         {
             this._collectionNode.ParentNode.RemoveChild(this._collectionNode);
         }
+
         return ret;
     }
 
@@ -142,13 +155,14 @@ public class ExcelProtectedRangeCollection : XmlHelper, IEnumerable<ExcelProtect
     /// <param name="index"></param>
     public void RemoveAt(int index)
     {
-        if(index<0 || index >= this._list.Count)
+        if (index < 0 || index >= this._list.Count)
         {
             throw new IndexOutOfRangeException();
         }
 
         this.Remove(this._list[index]);
     }
+
     /// <summary>
     /// Indexer for the collection
     /// </summary>
@@ -156,11 +170,9 @@ public class ExcelProtectedRangeCollection : XmlHelper, IEnumerable<ExcelProtect
     /// <returns></returns>
     public ExcelProtectedRange this[int index]
     {
-        get
-        {
-            return this._list[index];
-        }
+        get { return this._list[index]; }
     }
+
     /// <summary>
     /// Get the enumerator
     /// </summary>
@@ -169,6 +181,7 @@ public class ExcelProtectedRangeCollection : XmlHelper, IEnumerable<ExcelProtect
     {
         return this._list.GetEnumerator();
     }
+
     /// <summary>
     /// Get the enumerator
     /// </summary>

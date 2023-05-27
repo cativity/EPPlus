@@ -10,6 +10,7 @@
  *************************************************************************************************
   01/27/2020         EPPlus Software AB       Initial release EPPlus 5
  *************************************************************************************************/
+
 using OfficeOpenXml.Drawing.Interfaces;
 using System;
 using System.Collections.Generic;
@@ -30,21 +31,19 @@ public sealed class ExcelPieChartSerie : ExcelChartStandardSerie, IDrawingSerieD
     /// <param name="ns">Namespacemanager</param>
     /// <param name="node">Topnode</param>
     /// <param name="isPivot">Is pivotchart</param>
-    internal ExcelPieChartSerie(ExcelChart chart, XmlNamespaceManager ns, XmlNode node, bool isPivot) :
-        base(chart, ns, node, isPivot)
+    internal ExcelPieChartSerie(ExcelChart chart, XmlNamespaceManager ns, XmlNode node, bool isPivot)
+        : base(chart, ns, node, isPivot)
     {
-
     }
+
     const string explosionPath = "c:explosion/@val";
+
     /// <summary>
     /// Explosion for Piecharts
     /// </summary>
     public int Explosion
     {
-        get
-        {
-            return this.GetXmlNodeInt(explosionPath);
-        }
+        get { return this.GetXmlNodeInt(explosionPath); }
         set
         {
             if (value < 0 || value > 400)
@@ -55,37 +54,32 @@ public sealed class ExcelPieChartSerie : ExcelChartStandardSerie, IDrawingSerieD
             this.SetXmlNodeString(explosionPath, value.ToString());
         }
     }
+
     ExcelChartSerieDataLabel _DataLabel = null;
+
     /// <summary>
     /// DataLabels
     /// </summary>
     public ExcelChartSerieDataLabel DataLabel
     {
-        get
-        {
-            return this._DataLabel ??= new ExcelChartSerieDataLabel(this._chart, this.NameSpaceManager, this.TopNode, this.SchemaNodeOrder);
-        }
+        get { return this._DataLabel ??= new ExcelChartSerieDataLabel(this._chart, this.NameSpaceManager, this.TopNode, this.SchemaNodeOrder); }
     }
+
     /// <summary>
     /// If the chart has datalabel
     /// </summary>
     public bool HasDataLabel
     {
-        get
-        {
-            return this.TopNode.SelectSingleNode("c:dLbls", this.NameSpaceManager) != null;
-        }
+        get { return this.TopNode.SelectSingleNode("c:dLbls", this.NameSpaceManager) != null; }
     }
+
     ExcelChartDataPointCollection _dataPoints = null;
+
     /// <summary>
     /// A collection of the individual datapoints
     /// </summary>
     public ExcelChartDataPointCollection DataPoints
     {
-        get
-        {
-            return this._dataPoints ??= new ExcelChartDataPointCollection(this._chart, this.NameSpaceManager, this.TopNode, this.SchemaNodeOrder);
-        }
+        get { return this._dataPoints ??= new ExcelChartDataPointCollection(this._chart, this.NameSpaceManager, this.TopNode, this.SchemaNodeOrder); }
     }
-
 }

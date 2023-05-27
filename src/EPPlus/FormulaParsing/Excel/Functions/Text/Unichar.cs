@@ -10,6 +10,7 @@
  *************************************************************************************************
   01/27/2020         EPPlus Software AB       Initial release EPPlus 5
  *************************************************************************************************/
+
 using OfficeOpenXml.FormulaParsing.Excel.Functions.Metadata;
 using OfficeOpenXml.FormulaParsing.ExpressionGraph;
 using System;
@@ -19,23 +20,21 @@ using System.Text;
 
 namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Text;
 
-[FunctionMetadata(
-                     Category = ExcelFunctionCategory.Text,
-                     EPPlusVersion = "5.0",
-                     Description = "Returns the Unicode character that is referenced by the given numeric value",
-                     IntroducedInExcelVersion = "2013")]
+[FunctionMetadata(Category = ExcelFunctionCategory.Text,
+                  EPPlusVersion = "5.0",
+                  Description = "Returns the Unicode character that is referenced by the given numeric value",
+                  IntroducedInExcelVersion = "2013")]
 internal class Unichar : ExcelFunction
 {
     public override CompileResult Execute(IEnumerable<FunctionArgument> arguments, ParsingContext context)
     {
         ValidateArguments(arguments, 1);
-        if (
-            IsNumeric(arguments.ElementAt(0).Value)
-            &&
-            short.TryParse(ArgToString(arguments, 0), out short arg))
+
+        if (IsNumeric(arguments.ElementAt(0).Value) && short.TryParse(ArgToString(arguments, 0), out short arg))
         {
             return this.CreateResult(char.ConvertFromUtf32(arg), DataType.Integer);
         }
+
         return this.CreateResult(ExcelErrorValue.Values.Value, DataType.ExcelError);
     }
 }

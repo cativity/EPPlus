@@ -24,7 +24,6 @@
 // ------------------------------------------------------------------
 //
 
-
 using System;
 using System.IO;
 using System.Collections.Generic;
@@ -35,7 +34,6 @@ namespace OfficeOpenXml.Packaging.Ionic.Zip;
 
 internal partial class ZipFile
 {
-
     /// <summary>
     ///   Delete file with retry on UnauthorizedAccessException.
     /// </summary>
@@ -54,7 +52,8 @@ internal partial class ZipFile
     {
         bool done = false;
         int nRetries = 3;
-        for (int i=0; i < nRetries && !done; i++)
+
+        for (int i = 0; i < nRetries && !done; i++)
         {
             try
             {
@@ -64,11 +63,10 @@ internal partial class ZipFile
             catch (UnauthorizedAccessException)
             {
                 Console.WriteLine("************************************************** Retry delete.");
-                System.Threading.Thread.Sleep(200+(i*200));
+                System.Threading.Thread.Sleep(200 + (i * 200));
             }
         }
     }
-
 
     /// <summary>
     ///   Saves the Zip archive to a file, specified by the Name property of the
@@ -150,6 +148,7 @@ internal partial class ZipFile
             if (!this._contentsChanged)
             {
                 this.OnSaveCompleted();
+
                 if (this.Verbose)
                 {
                     this.StatusMessageTextWriter.WriteLine("No save is necessary....");
@@ -173,12 +172,15 @@ internal partial class ZipFile
 
             // write an entry in the zip for each file
             int n = 0;
+
             // workitem 9831
             ICollection<ZipEntry> c = this.SortEntriesBeforeSaving ? this.EntriesSorted : this.Entries;
+
             foreach (ZipEntry e in c) // _entries.Values
             {
                 this.OnSaveEntry(n, e, true);
                 e.Write(this.WriteStream);
+
                 if (this._saveOperationCanceled)
                 {
                     break;
@@ -186,6 +188,7 @@ internal partial class ZipFile
 
                 n++;
                 this.OnSaveEntry(n, e, false);
+
                 if (this._saveOperationCanceled)
                 {
                     break;
@@ -198,8 +201,6 @@ internal partial class ZipFile
                 }
             }
 
-
-
             if (this._saveOperationCanceled)
             {
                 return;
@@ -210,13 +211,12 @@ internal partial class ZipFile
             this._numberOfSegmentsForMostRecentSave = zss?.CurrentSegment ?? 1;
 
             bool directoryNeededZip64 =
-                ZipOutput.WriteCentralDirectoryStructure
-                    (this.WriteStream,
-                     c,
-                     this._numberOfSegmentsForMostRecentSave,
-                     this._zip64,
-                     this.Comment,
-                     new ZipContainer(this));
+                ZipOutput.WriteCentralDirectoryStructure(this.WriteStream,
+                                                         c,
+                                                         this._numberOfSegmentsForMostRecentSave,
+                                                         this._zip64,
+                                                         this.Comment,
+                                                         new ZipContainer(this));
 
             this.OnSaveEvent(ZipProgressEventType.Saving_AfterSaveTempArchive);
 
@@ -226,10 +226,8 @@ internal partial class ZipFile
             thisSaveUsedZip64 |= directoryNeededZip64;
             this._OutputUsesZip64 = new Nullable<bool>(thisSaveUsedZip64);
 
-
             // do the rename as necessary
-            if (this._name != null &&
-                (this._temporaryFileName!=null || zss != null))
+            if (this._name != null && (this._temporaryFileName != null || zss != null))
             {
                 // _temporaryFileName may remain null if we are writing to a stream.
                 // only close the stream if there is a file behind it.
@@ -250,10 +248,12 @@ internal partial class ZipFile
                     // orig file, first.
                     this._readstream.Close();
                     this._readstream = null;
+
                     // the archiveStream for each entry needs to be null
                     foreach (ZipEntry? e in c)
                     {
                         ZipSegmentedStream? zss1 = e._archiveStream as ZipSegmentedStream;
+
                         if (zss1 != null)
 #if NETCF
                                 zss1.Close();
@@ -267,6 +267,7 @@ internal partial class ZipFile
                 }
 
                 string tmpName = null;
+
                 if (File.Exists(this._name))
                 {
                     // the steps:
@@ -336,7 +337,6 @@ internal partial class ZipFile
                     {
                         // don't care about exceptions here.
                     }
-
                 }
 
                 this._fileAlreadyExists = true;
@@ -356,16 +356,13 @@ internal partial class ZipFile
         return;
     }
 
-
-
     private static void NotifyEntriesSaveComplete(ICollection<ZipEntry> c)
     {
-        foreach (ZipEntry e in  c)
+        foreach (ZipEntry e in c)
         {
             e.NotifySaveComplete();
         }
     }
-
 
     private void RemoveTempFile()
     {
@@ -385,7 +382,6 @@ internal partial class ZipFile
         }
     }
 
-
     private void CleanupAfterSaveOperation()
     {
         if (this._name != null)
@@ -402,7 +398,9 @@ internal partial class ZipFile
                     this._writestream.Dispose();
 #endif
                 }
-                catch (IOException) { }
+                catch (IOException)
+                {
+                }
             }
 
             this._writestream = null;
@@ -414,7 +412,6 @@ internal partial class ZipFile
             }
         }
     }
-
 
     /// <summary>
     /// Save the file to a new zipfile, with the given name.
@@ -506,6 +503,7 @@ internal partial class ZipFile
         }
 
         this._name = fileName;
+
         if (Directory.Exists(this._name))
         {
             throw new ZipException("Bad Directory", new ArgumentException("That name specifies an existing directory. Please specify a filename.", "fileName"));
@@ -515,7 +513,6 @@ internal partial class ZipFile
         this._fileAlreadyExists = File.Exists(this._name);
         this.Save();
     }
-
 
     /// <summary>
     ///   Save the zip archive to the specified stream.
@@ -627,11 +624,7 @@ internal partial class ZipFile
         this._fileAlreadyExists = false;
         this.Save();
     }
-
-
 }
-
-
 
 internal static class ZipOutput
 {
@@ -643,6 +636,7 @@ internal static class ZipOutput
                                                       ZipContainer container)
     {
         ZipSegmentedStream? zss = s as ZipSegmentedStream;
+
         if (zss != null)
         {
             zss.ContiguousWrite = true;
@@ -651,6 +645,7 @@ internal static class ZipOutput
         // write to a memory stream in order to keep the
         // CDR contiguous
         Int64 aLength = 0;
+
         using (MemoryStream? ms = RecyclableMemory.GetStream())
         {
             foreach (ZipEntry e in entries)
@@ -661,11 +656,11 @@ internal static class ZipOutput
                     e.WriteCentralDirectoryEntry(ms);
                 }
             }
+
             byte[]? a = ms.ToArray();
             s.Write(a, 0, a.Length);
             aLength = a.Length;
         }
-
 
         // We need to keep track of the start and
         // Finish of the Central Directory Structure.
@@ -684,7 +679,7 @@ internal static class ZipOutput
         // output stream.
 
         CountingStream? output = s as CountingStream;
-        long Finish = output?.ComputedPosition ?? s.Position;  // BytesWritten
+        long Finish = output?.ComputedPosition ?? s.Position; // BytesWritten
         long Start = Finish - aLength;
 
         // need to know which segment the EOCD record starts in
@@ -694,11 +689,7 @@ internal static class ZipOutput
 
         int countOfEntries = CountEntries(entries);
 
-        bool needZip64CentralDirectory =
-            zip64 == Zip64Option.Always ||
-            countOfEntries >= 0xFFFF ||
-            SizeOfCentralDirectory > 0xFFFFFFFF ||
-            Start > 0xFFFFFFFF;
+        bool needZip64CentralDirectory = zip64 == Zip64Option.Always || countOfEntries >= 0xFFFF || SizeOfCentralDirectory > 0xFFFFFFFF || Start > 0xFFFFFFFF;
 
         byte[] a2 = null;
 
@@ -716,23 +707,26 @@ internal static class ZipOutput
                     else
                         throw new ZipException("The archive requires a ZIP64 Central Directory. Consider setting the ZipOutputStream.EnableZip64 property.");
 #endif
-
             }
 
             byte[]? a = GenZip64EndOfCentralDirectory(Start, Finish, countOfEntries, numSegments);
             a2 = GenCentralDirectoryFooter(Start, Finish, zip64, countOfEntries, comment, container);
+
             if (startSegment != 0)
             {
                 UInt32 thisSegment = zss.ComputeSegment(a.Length + a2.Length);
                 int i = 16;
+
                 // number of this disk
                 Array.Copy(BitConverter.GetBytes(thisSegment), 0, a, i, 4);
                 i += 4;
+
                 // number of the disk with the start of the central directory
                 //Array.Copy(BitConverter.GetBytes(startSegment), 0, a, i, 4);
                 Array.Copy(BitConverter.GetBytes(thisSegment), 0, a, i, 4);
 
                 i = 60;
+
                 // offset 60
                 // number of the disk with the start of the zip64 eocd
                 Array.Copy(BitConverter.GetBytes(thisSegment), 0, a, i, 4);
@@ -743,6 +737,7 @@ internal static class ZipOutput
                 // total number of disks
                 Array.Copy(BitConverter.GetBytes(thisSegment), 0, a, i, 4);
             }
+
             s.Write(a, 0, a.Length);
         }
         else
@@ -756,11 +751,13 @@ internal static class ZipOutput
             // The assumption is the central directory is never split across
             // segment boundaries.
 
-            UInt16 thisSegment = (UInt16) zss.ComputeSegment(a2.Length);
+            UInt16 thisSegment = (UInt16)zss.ComputeSegment(a2.Length);
             int i = 4;
+
             // number of this disk
             Array.Copy(BitConverter.GetBytes(thisSegment), 0, a2, i, 2);
             i += 2;
+
             // number of the disk with the start of the central directory
             //Array.Copy(BitConverter.GetBytes((UInt16)startSegment), 0, a2, i, 2);
             Array.Copy(BitConverter.GetBytes(thisSegment), 0, a2, i, 2);
@@ -778,26 +775,28 @@ internal static class ZipOutput
         return needZip64CentralDirectory;
     }
 
-
     private static Encoding GetEncoding(ZipContainer container, string t)
     {
         switch (container.AlternateEncodingUsage)
         {
             case ZipOption.Always:
                 return container.AlternateEncoding;
+
             case ZipOption.Never:
                 return container.DefaultEncoding;
         }
 
         // AsNecessary is in force
         Encoding? e = container.DefaultEncoding;
+
         if (t == null)
         {
             return e;
         }
 
         byte[]? bytes = e.GetBytes(t);
-        string? t2 = e.GetString(bytes,0,bytes.Length);
+        string? t2 = e.GetString(bytes, 0, bytes.Length);
+
         if (t2.Equals(t))
         {
             return e;
@@ -805,8 +804,6 @@ internal static class ZipOutput
 
         return container.AlternateEncoding;
     }
-
-
 
     private static byte[] GenCentralDirectoryFooter(long StartOfCentralDirectory,
                                                     long EndOfCentralDirectory,
@@ -820,19 +817,22 @@ internal static class ZipOutput
         int bufferLength = 22;
         byte[] block = null;
         Int16 commentLength = 0;
+
         if (comment != null && comment.Length != 0)
         {
             block = encoding.GetBytes(comment);
             commentLength = (Int16)block.Length;
         }
+
         bufferLength += commentLength;
         byte[] bytes = new byte[bufferLength];
 
         int i = 0;
+
         // signature
         byte[] sig = BitConverter.GetBytes(ZipConstants.EndOfCentralDirectorySignature);
         Array.Copy(sig, 0, bytes, i, 4);
-        i+=4;
+        i += 4;
 
         // number of this disk
         // (this number may change later)
@@ -891,7 +891,6 @@ internal static class ZipOutput
             bytes[i++] = (byte)((StartOfCentralDirectory & 0xFF000000) >> 24);
         }
 
-
         // zip archive comment
         if (comment == null || comment.Length == 0)
         {
@@ -917,6 +916,7 @@ internal static class ZipOutput
                 {
                     bytes[i + j] = block[j];
                 }
+
                 i += j;
             }
         }
@@ -925,22 +925,18 @@ internal static class ZipOutput
         return bytes;
     }
 
-
-
-    private static byte[] GenZip64EndOfCentralDirectory(long StartOfCentralDirectory,
-                                                        long EndOfCentralDirectory,
-                                                        int entryCount,
-                                                        uint numSegments)
+    private static byte[] GenZip64EndOfCentralDirectory(long StartOfCentralDirectory, long EndOfCentralDirectory, int entryCount, uint numSegments)
     {
         const int bufferLength = 12 + 44 + 20;
 
         byte[] bytes = new byte[bufferLength];
 
         int i = 0;
+
         // signature
         byte[] sig = BitConverter.GetBytes(ZipConstants.Zip64EndOfCentralDirectoryRecordSignature);
         Array.Copy(sig, 0, bytes, i, 4);
-        i+=4;
+        i += 4;
 
         // There is a possibility to include "Extensible" data in the zip64
         // end-of-central-dir record.  I cannot figure out what it might be used to
@@ -986,14 +982,14 @@ internal static class ZipOutput
         // signature
         sig = BitConverter.GetBytes(ZipConstants.Zip64EndOfCentralDirectoryLocatorSignature);
         Array.Copy(sig, 0, bytes, i, 4);
-        i+=4;
+        i += 4;
 
         // offset 60
         // number of the disk with the start of the zip64 eocd
         // (this will change later)  (it will?)
-        uint x2 = numSegments==0?0:(uint)(numSegments-1);
+        uint x2 = numSegments == 0 ? 0 : (uint)(numSegments - 1);
         Array.Copy(BitConverter.GetBytes(x2), 0, bytes, i, 4);
-        i+=4;
+        i += 4;
 
         // offset 64
         // relative offset of the zip64 eocd
@@ -1004,18 +1000,17 @@ internal static class ZipOutput
         // total number of disks
         // (this will change later)
         Array.Copy(BitConverter.GetBytes(numSegments), 0, bytes, i, 4);
-        i+=4;
+        i += 4;
 
         return bytes;
     }
-
-
 
     private static int CountEntries(ICollection<ZipEntry> _entries)
     {
         // Cannot just emit _entries.Count, because some of the entries
         // may have been skipped.
         int count = 0;
+
         foreach (ZipEntry? entry in _entries)
         {
             if (entry.IncludedInMostRecentSave)
@@ -1026,8 +1021,4 @@ internal static class ZipOutput
 
         return count;
     }
-
-
-
-
 }

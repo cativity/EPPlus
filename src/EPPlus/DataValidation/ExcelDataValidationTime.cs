@@ -10,6 +10,7 @@
  *************************************************************************************************
   01/27/2020         EPPlus Software AB       Initial release EPPlus 5
  *************************************************************************************************/
+
 using OfficeOpenXml.DataValidation.Contracts;
 using OfficeOpenXml.DataValidation.Formulas;
 using OfficeOpenXml.DataValidation.Formulas.Contracts;
@@ -49,7 +50,7 @@ public class ExcelDataValidationTime : ExcelDataValidationWithFormula2<IExcelDat
     /// Copy constructor
     /// </summary>
     /// <param name="copy"></param>
-    internal ExcelDataValidationTime(ExcelDataValidationTime copy, ExcelWorksheet ws) 
+    internal ExcelDataValidationTime(ExcelDataValidationTime copy, ExcelWorksheet ws)
         : base(copy, ws)
     {
         this.Formula = copy.Formula;

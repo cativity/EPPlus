@@ -24,30 +24,37 @@ public enum eDataValidationType
     /// Any value
     /// </summary>
     Any,
+
     /// <summary>
     /// Integer value
     /// </summary>
     Whole,
+
     /// <summary>
     /// Decimal values
     /// </summary>
     Decimal,
+
     /// <summary>
     /// List of values
     /// </summary>
     List,
+
     /// <summary>
     /// Text length validation
     /// </summary>
     TextLength,
+
     /// <summary>
     /// DateTime validation
     /// </summary>
     DateTime,
+
     /// <summary>
     /// Time validation
     /// </summary>
     Time,
+
     /// <summary>
     /// Custom validation
     /// </summary>
@@ -72,8 +79,10 @@ internal static class DataValidationSchemaNames
 /// </summary>
 public class ExcelDataValidationType
 {
-    internal ExcelDataValidationType(eDataValidationType validationType) {
-        this.Type = validationType; }
+    internal ExcelDataValidationType(eDataValidationType validationType)
+    {
+        this.Type = validationType;
+    }
 
     /// <summary>
     /// Validation type
@@ -91,20 +100,28 @@ public class ExcelDataValidationType
         {
             case eDataValidationType.Any:
                 return DataValidationSchemaNames.Any;
+
             case eDataValidationType.Whole:
                 return DataValidationSchemaNames.Whole;
+
             case eDataValidationType.List:
                 return DataValidationSchemaNames.List;
+
             case eDataValidationType.Decimal:
                 return DataValidationSchemaNames.Decimal;
+
             case eDataValidationType.TextLength:
                 return DataValidationSchemaNames.TextLength;
+
             case eDataValidationType.DateTime:
                 return DataValidationSchemaNames.Date;
+
             case eDataValidationType.Time:
                 return DataValidationSchemaNames.Time;
+
             case eDataValidationType.Custom:
                 return DataValidationSchemaNames.Custom;
+
             default:
                 throw new InvalidOperationException("Non supported Validationtype : " + this.Type.ToString());
         }

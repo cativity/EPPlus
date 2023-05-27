@@ -10,6 +10,7 @@
  *************************************************************************************************
   05/16/2020         EPPlus Software AB           ExcelTable Html Export
  *************************************************************************************************/
+
 using OfficeOpenXml.Style;
 using OfficeOpenXml.Utils;
 using System;
@@ -26,7 +27,8 @@ namespace OfficeOpenXml.Export.HtmlExport
 {
     internal partial class EpplusHtmlWriter : HtmlWriterBase
     {
-        internal EpplusHtmlWriter(Stream stream, Encoding encoding, Dictionary<string, int> styleCache) : base(stream, encoding, styleCache)
+        internal EpplusHtmlWriter(Stream stream, Encoding encoding, Dictionary<string, int> styleCache)
+            : base(stream, encoding, styleCache)
         {
         }
 
@@ -39,16 +41,19 @@ namespace OfficeOpenXml.Export.HtmlExport
             Require.Argument(attributeValue).IsNotNullOrEmpty("attributeValue");
             this._attributes.Add(new EpplusHtmlAttribute { AttributeName = attributeName, Value = attributeValue });
         }
+
         public void RenderBeginTag(string elementName, bool closeElement = false)
         {
             this._newLine = false;
+
             // avoid writing indent characters for a hyperlinks or images inside a td element
-            if(elementName != HtmlElements.A && elementName != HtmlElements.Img)
+            if (elementName != HtmlElements.A && elementName != HtmlElements.Img)
             {
                 this.WriteIndent();
             }
 
             this._writer.Write($"<{elementName}");
+
             foreach (EpplusHtmlAttribute? attribute in this._attributes)
             {
                 this._writer.Write($" {attribute.AttributeName}=\"{attribute.Value}\"");
@@ -81,10 +86,11 @@ namespace OfficeOpenXml.Export.HtmlExport
         }
 
         internal void SetClassAttributeFromStyle(ExcelRangeBase cell, bool isHeader, HtmlExportSettings settings, string additionalClasses)
-        {            
+        {
             string cls = string.IsNullOrEmpty(additionalClasses) ? "" : additionalClasses;
             int styleId = cell.StyleID;
             ExcelStyles styles = cell.Worksheet.Workbook.Styles;
+
             if (styleId < 0 || styleId >= styles.CellXfs.Count)
             {
                 return;
@@ -92,8 +98,9 @@ namespace OfficeOpenXml.Export.HtmlExport
 
             ExcelXfs? xfs = styles.CellXfs[styleId];
             string? styleClassPrefix = settings.StyleClassPrefix;
-            if (settings.HorizontalAlignmentWhenGeneral == eHtmlGeneralAlignmentHandling.CellDataType &&
-               xfs.HorizontalAlignment == ExcelHorizontalAlignment.General)
+
+            if (settings.HorizontalAlignmentWhenGeneral == eHtmlGeneralAlignmentHandling.CellDataType
+                && xfs.HorizontalAlignment == ExcelHorizontalAlignment.General)
             {
                 if (ConvertUtil.IsNumericOrDate(cell.Value))
                 {
@@ -118,6 +125,7 @@ namespace OfficeOpenXml.Export.HtmlExport
             string key = GetStyleKey(xfs);
 
             string? ma = cell.Worksheet.MergedCells[cell._fromRow, cell._fromCol];
+
             if (ma != null)
             {
                 ExcelAddressBase? address = new ExcelAddressBase(ma);
@@ -127,6 +135,7 @@ namespace OfficeOpenXml.Export.HtmlExport
             }
 
             int id;
+
             if (this._styleCache.ContainsKey(key))
             {
                 id = this._styleCache[key];
@@ -136,6 +145,7 @@ namespace OfficeOpenXml.Export.HtmlExport
                 id = this._styleCache.Count + 1;
                 this._styleCache.Add(key, id);
             }
+
             cls += $" {styleClassPrefix}{settings.CellStyleClassName}{id}";
             this.AddAttribute("class", cls.Trim());
         }

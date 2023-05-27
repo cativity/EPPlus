@@ -10,6 +10,7 @@
  *************************************************************************************************
   01/27/2020         EPPlus Software AB       Initial release EPPlus 5
  *************************************************************************************************/
+
 using System.Xml;
 
 namespace OfficeOpenXml.Drawing.Style.Effect;
@@ -21,19 +22,18 @@ public class ExcelDrawingInnerShadowEffect : ExcelDrawingShadowEffect
 {
     private readonly string _blurRadPath = "{0}/@blurRad";
 
-    internal ExcelDrawingInnerShadowEffect(XmlNamespaceManager nameSpaceManager, XmlNode topNode, string[] schemaNodeOrder, string path) : base(nameSpaceManager, topNode, schemaNodeOrder, path)
+    internal ExcelDrawingInnerShadowEffect(XmlNamespaceManager nameSpaceManager, XmlNode topNode, string[] schemaNodeOrder, string path)
+        : base(nameSpaceManager, topNode, schemaNodeOrder, path)
     {
         this._blurRadPath = string.Format(this._blurRadPath, path);
     }
+
     /// <summary>
     /// The blur radius.
     /// </summary>
     public double? BlurRadius
     {
-        get
-        {
-            return this.GetXmlNodeEmuToPt(this._blurRadPath);
-        }
+        get { return this.GetXmlNodeEmuToPt(this._blurRadPath); }
         set
         {
             this.SetXmlNodeEmuToPt(this._blurRadPath, value);

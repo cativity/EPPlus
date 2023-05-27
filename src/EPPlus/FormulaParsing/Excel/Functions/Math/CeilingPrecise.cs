@@ -10,6 +10,7 @@
  *************************************************************************************************
   01/27/2020         EPPlus Software AB       Initial release EPPlus 5
  *************************************************************************************************/
+
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -19,16 +20,16 @@ using OfficeOpenXml.FormulaParsing.ExpressionGraph;
 
 namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Math;
 
-[FunctionMetadata(
-                     Category = ExcelFunctionCategory.MathAndTrig,
-                     EPPlusVersion = "5.1",
-                     Description = "Rounds a number up, regardless of the sign of the number, to a multiple of significance",
-                     IntroducedInExcelVersion = "2010")]
+[FunctionMetadata(Category = ExcelFunctionCategory.MathAndTrig,
+                  EPPlusVersion = "5.1",
+                  Description = "Rounds a number up, regardless of the sign of the number, to a multiple of significance",
+                  IntroducedInExcelVersion = "2010")]
 internal class CeilingPrecise : ExcelFunction
 {
     public override CompileResult Execute(IEnumerable<FunctionArgument> arguments, ParsingContext context)
     {
         ValidateArguments(arguments, 1);
+
         if (arguments.ElementAt(0).Value == null)
         {
             return this.CreateResult(0d, DataType.Decimal);
@@ -36,7 +37,8 @@ internal class CeilingPrecise : ExcelFunction
 
         double number = this.ArgToDecimal(arguments, 0, context.Configuration.PrecisionAndRoundingStrategy);
         double significance = 1d;
-        if(arguments.Count() > 1)
+
+        if (arguments.Count() > 1)
         {
             significance = this.ArgToDecimal(arguments, 1);
         }

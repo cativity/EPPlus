@@ -10,6 +10,7 @@
  *************************************************************************************************
   01/27/2020         EPPlus Software AB       Initial release EPPlus 5
  *************************************************************************************************/
+
 using OfficeOpenXml.Packaging.Ionic.Zip;
 using System;
 using System.IO;
@@ -23,12 +24,13 @@ internal class StyleResourceManager
     internal static string GetItem(string name)
     {
         Assembly? assembly = Assembly.GetExecutingAssembly();
-        Stream? stream=assembly.GetManifestResourceStream("OfficeOpenXml.resources.DefaultChartStyles.ecs");
+        Stream? stream = assembly.GetManifestResourceStream("OfficeOpenXml.resources.DefaultChartStyles.ecs");
 
         using (stream)
         {
             ZipInputStream? zipStream = new ZipInputStream(stream);
             ZipEntry entry;
+
             while ((entry = zipStream.GetNextEntry()) != null)
             {
                 if (entry.IsDirectory || !entry.FileName.EndsWith(".xml") || entry.UncompressedSize <= 0)
@@ -38,15 +40,17 @@ internal class StyleResourceManager
 
                 string? fileName = new FileInfo(entry.FileName).Name;
 
-                if(fileName.Equals(name, StringComparison.InvariantCultureIgnoreCase))
+                if (fileName.Equals(name, StringComparison.InvariantCultureIgnoreCase))
                 {
                     //Extract and set
                     byte[]? content = new byte[entry.UncompressedSize];
                     int size = zipStream.Read(content, 0, (int)entry.UncompressedSize);
+
                     return Encoding.UTF8.GetString(content);
                 }
             }
         }
+
         return null;
     }
 }

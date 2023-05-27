@@ -10,6 +10,7 @@
  *************************************************************************************************
   05/7/2021         EPPlus Software AB       EPPlus 5.7
  *************************************************************************************************/
+
 using OfficeOpenXml.Core.CellStore;
 using System;
 using System.Collections.Generic;
@@ -30,7 +31,8 @@ internal static class SortItemLeftToRightFactory
         {
             int currentRow = 0;
             SortItemLeftToRight<ExcelValue>? sortItem = new SortItemLeftToRight<ExcelValue> { Column = col, Items = new ExcelValue[nRows] };
-            while(currentRow < nRows)
+
+            while (currentRow < nRows)
             {
                 int row = currentRow + range._fromRow;
                 ExcelRange? cell = range.Worksheet.Cells[row, col, row, col];
@@ -40,9 +42,11 @@ internal static class SortItemLeftToRightFactory
                 sortItem.Items[currentRow] = v;
                 currentRow++;
             }
+
             sortItems.Add(sortItem);
             col++;
         }
+
         return sortItems;
     }
 }

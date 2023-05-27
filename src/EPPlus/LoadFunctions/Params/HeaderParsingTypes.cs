@@ -10,6 +10,7 @@
  *************************************************************************************************
   07/16/2020         EPPlus Software AB       EPPlus 5.2.1
  *************************************************************************************************/
+
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -25,14 +26,17 @@ public enum HeaderParsingTypes
     /// Leaves the header as it is
     /// </summary>
     Preserve,
+
     /// <summary>
     /// Replaces any underscore characters with a space
     /// </summary>
     UnderscoreToSpace,
+
     /// <summary>
     /// Adds a space between camel cased words ('MyProp' => 'My Prop')
     /// </summary>
     CamelCaseToSpace,
+
     /// <summary>
     /// Replaces any underscore characters with a space and adds a space between camel cased words ('MyProp' => 'My Prop')
     /// </summary>

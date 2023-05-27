@@ -10,6 +10,7 @@
  *************************************************************************************************
   01/27/2020         EPPlus Software AB       Initial release EPPlus 5
  *************************************************************************************************/
+
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -19,21 +20,19 @@ using OfficeOpenXml.FormulaParsing.ExpressionGraph;
 
 namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Math;
 
-[FunctionMetadata(
-                     Category = ExcelFunctionCategory.Statistical,
-                     EPPlusVersion = "4",
-                     Description = "Returns the statistical rank of a given value, within a supplied array of values")]
+[FunctionMetadata(Category = ExcelFunctionCategory.Statistical,
+                  EPPlusVersion = "4",
+                  Description = "Returns the statistical rank of a given value, within a supplied array of values")]
 internal class Rank : RankFunctionBase
 {
     public Rank()
         : this(false)
     {
-
     }
-        
+
     public Rank(bool isAvg)
     {
-        this._isAvg=isAvg;
+        this._isAvg = isAvg;
     }
 
     private readonly bool _isAvg;
@@ -46,18 +45,18 @@ internal class Rank : RankFunctionBase
         bool sortAscending = arguments.Count() > 2 ? this.ArgToBool(arguments, 2) : false;
         List<double>? numbers = GetNumbersFromRange(refArg, sortAscending);
         double rank = numbers.IndexOf(number) + 1;
-        if(this._isAvg)
+
+        if (this._isAvg)
         {
             int lastRank = numbers.LastIndexOf(number) + 1;
             rank += (lastRank - rank) / 2d;
         }
-            
+
         if (rank <= 0 || rank > numbers.Count)
         {
             return new CompileResult(ExcelErrorValue.Create(eErrorType.NA), DataType.ExcelError);
         }
+
         return this.CreateResult(rank, DataType.Decimal);
     }
-
-        
 }

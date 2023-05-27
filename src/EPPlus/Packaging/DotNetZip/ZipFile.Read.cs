@@ -24,7 +24,6 @@
 // ------------------------------------------------------------------
 //
 
-
 using System;
 using System.IO;
 using System.Collections.Generic;
@@ -85,7 +84,6 @@ internal class ReadOptions
     public System.Text.Encoding @Encoding { get; set; }
 }
 
-
 internal partial class ZipFile
 {
     /// <summary>
@@ -119,7 +117,6 @@ internal partial class ZipFile
     {
         return Read(fileName, null, null, null);
     }
-
 
     /// <summary>
     ///   Reads a zip file archive from the named filesystem file using the
@@ -274,18 +271,14 @@ internal partial class ZipFile
     ///
     /// <seealso cref="ZipFile.Read(Stream, ReadOptions)"/>
     ///
-    internal static ZipFile Read(string fileName,
-                                 ReadOptions options)
+    internal static ZipFile Read(string fileName, ReadOptions options)
     {
         if (options == null)
         {
             throw new ArgumentNullException("options");
         }
 
-        return Read(fileName,
-                    options.StatusMessageWriter,
-                    options.Encoding,
-                    options.ReadProgress);
+        return Read(fileName, options.StatusMessageWriter, options.Encoding, options.ReadProgress);
     }
 
     /// <summary>
@@ -330,6 +323,7 @@ internal partial class ZipFile
         zf.AlternateEncodingUsage = ZipOption.Always;
         zf._StatusMessageTextWriter = statusMessageWriter;
         zf._name = fileName;
+
         if (readProgress != null)
         {
             zf.ReadProgress = readProgress;
@@ -477,13 +471,8 @@ internal partial class ZipFile
             throw new ArgumentNullException("options");
         }
 
-        return Read(zipStream,
-                    options.StatusMessageWriter,
-                    options.Encoding,
-                    options.ReadProgress);
+        return Read(zipStream, options.StatusMessageWriter, options.Encoding, options.ReadProgress);
     }
-
-
 
     /// <summary>
     /// Reads a zip archive from a stream, using the specified text Encoding, the
@@ -544,35 +533,37 @@ internal partial class ZipFile
         zf._StatusMessageTextWriter = statusMessageWriter;
         zf._alternateEncoding = encoding ?? DefaultEncoding;
         zf._alternateEncodingUsage = ZipOption.Always;
+
         if (readProgress != null)
         {
             zf.ReadProgress += readProgress;
         }
 
-        zf._readstream = zipStream.Position == 0L
-                             ? zipStream
-                             : new OffsetStream(zipStream);
+        zf._readstream = zipStream.Position == 0L ? zipStream : new OffsetStream(zipStream);
         zf._ReadStreamIsOurs = false;
+
         if (zf.Verbose)
         {
             zf._StatusMessageTextWriter.WriteLine("reading from stream...");
         }
 
         ReadIntoInstance(zf);
+
         return zf;
     }
-
-
 
     private static void ReadIntoInstance(ZipFile zf)
     {
         Stream s = zf.ReadStream;
+
         try
         {
             zf._readName = zf._name; // workitem 13915
+
             if (!s.CanSeek)
             {
                 ReadIntoInstance_Orig(zf);
+
                 return;
             }
 
@@ -601,34 +592,36 @@ internal partial class ZipFile
             // EndOfCentralDirectorySignature
             long posn = s.Length - 64;
             long maxSeekback = Math.Max(s.Length - 0x4000, 10);
+
             do
             {
                 if (posn < 0)
                 {
-                    posn = 0;  // BOF
+                    posn = 0; // BOF
                 }
 
                 s.Seek(posn, SeekOrigin.Begin);
                 long bytesRead = SharedUtilities.FindSignature(s, (int)ZipConstants.EndOfCentralDirectorySignature);
+
                 if (bytesRead != -1)
                 {
                     success = true;
                 }
                 else
                 {
-                    if (posn==0)
+                    if (posn == 0)
                     {
                         break; // started at the BOF and found nothing
                     }
 
                     nTries++;
+
                     // Weird: with NETCF, negative offsets from SeekOrigin.End DO
                     // NOT WORK. So rather than seek a negative offset, we seek
                     // from SeekOrigin.Begin using a smaller number.
                     posn -= 32 * (nTries + 1) * nTries;
                 }
-            }
-            while (!success && posn > maxSeekback);
+            } while (!success && posn > maxSeekback);
 
             if (success)
             {
@@ -649,7 +642,8 @@ internal partial class ZipFile
 
                 int i = 12;
 
-                uint offset32 = (uint) BitConverter.ToUInt32(block, i);
+                uint offset32 = (uint)BitConverter.ToUInt32(block, i);
+
                 if (offset32 == 0xFFFFFFFF)
                 {
                     Zip64SeekToCentralDirectory(zf);
@@ -657,6 +651,7 @@ internal partial class ZipFile
                 else
                 {
                     zf._OffsetOfCentralDirectory = offset32;
+
                     // change for workitem 8098
                     s.Seek(offset32, SeekOrigin.Begin);
                 }
@@ -686,7 +681,9 @@ internal partial class ZipFile
 #endif
                     zf._readstream = null;
                 }
-                finally { }
+                finally
+                {
+                }
             }
 
             throw new ZipException("Cannot read that as a ZipFile", ex1);
@@ -695,8 +692,6 @@ internal partial class ZipFile
         // the instance has been read in
         zf._contentsChanged = false;
     }
-
-
 
     private static void Zip64SeekToCentralDirectory(ZipFile zf)
     {
@@ -711,11 +706,14 @@ internal partial class ZipFile
         Int64 offset64 = BitConverter.ToInt64(block, 8);
         zf._OffsetOfCentralDirectory = 0xFFFFFFFF;
         zf._OffsetOfCentralDirectory64 = offset64;
+
         // change for workitem 8098
         s.Seek(offset64, SeekOrigin.Begin);
+
         //zf.SeekFromOrigin(Offset64);
 
         uint datum = (uint)SharedUtilities.ReadInt(s);
+
         if (datum != ZipConstants.Zip64EndOfCentralDirectoryRecordSignature)
         {
             throw new BadReadException(String.Format("  Bad signature (0x{0:X8}) looking for ZIP64 EoCD Record at position 0x{1:X8}", datum, s.Position));
@@ -728,19 +726,19 @@ internal partial class ZipFile
         s.Read(block, 0, block.Length);
 
         offset64 = BitConverter.ToInt64(block, 36);
+
         // change for workitem 8098
         s.Seek(offset64, SeekOrigin.Begin);
+
         //zf.SeekFromOrigin(Offset64);
     }
-
 
     private static uint ReadFirstFourBytes(Stream s)
     {
         uint datum = (uint)SharedUtilities.ReadInt(s);
+
         return datum;
     }
-
-
 
     private static void ReadCentralDirectory(ZipFile zf)
     {
@@ -754,8 +752,10 @@ internal partial class ZipFile
         // workitem 9214
         bool inputUsesZip64 = false;
         ZipEntry de;
+
         // in lieu of hashset, use a dictionary
-        Dictionary<string, object>? previouslySeen = new Dictionary<String,object>();
+        Dictionary<string, object>? previouslySeen = new Dictionary<String, object>();
+
         while ((de = ZipEntry.ReadDirEntry(zf, previouslySeen)) != null)
         {
             de.ResetDirEntry();
@@ -766,7 +766,7 @@ internal partial class ZipFile
                 zf.StatusMessageTextWriter.WriteLine("entry {0}", de.FileName);
             }
 
-            zf._entries.Add(de.FileName,de);
+            zf._entries.Add(de.FileName, de);
 
             // workitem 9214
             if (de._InputUsesZip64)
@@ -806,17 +806,16 @@ internal partial class ZipFile
         zf.OnReadCompleted();
     }
 
-
-
-
     // build the TOC by reading each entry in the file.
     private static void ReadIntoInstance_Orig(ZipFile zf)
     {
         zf.OnReadStarted();
+
         //zf._entries = new System.Collections.Generic.List<ZipEntry>();
-        zf._entries = new Dictionary<String,ZipEntry>();
+        zf._entries = new Dictionary<String, ZipEntry>();
 
         ZipEntry e;
+
         if (zf.Verbose)
         {
             if (zf.Name == null)
@@ -832,6 +831,7 @@ internal partial class ZipFile
         // work item 6647:  PK00 (packed to removable disk)
         bool firstEntry = true;
         ZipContainer zc = new ZipContainer(zf);
+
         while ((e = ZipEntry.ReadEntry(zc, firstEntry)) != null)
         {
             if (zf.Verbose)
@@ -839,7 +839,7 @@ internal partial class ZipFile
                 zf.StatusMessageTextWriter.WriteLine("  {0}", e.FileName);
             }
 
-            zf._entries.Add(e.FileName,e);
+            zf._entries.Add(e.FileName, e);
             firstEntry = false;
         }
 
@@ -849,8 +849,10 @@ internal partial class ZipFile
         try
         {
             ZipEntry de;
+
             // in lieu of hashset, use a dictionary
-            Dictionary<string, object>? previouslySeen = new Dictionary<String,Object>();
+            Dictionary<string, object>? previouslySeen = new Dictionary<String, Object>();
+
             while ((de = ZipEntry.ReadDirEntry(zf, previouslySeen)) != null)
             {
                 // Housekeeping: Since ZipFile exposes ZipEntry elements in the enumerator,
@@ -859,15 +861,18 @@ internal partial class ZipFile
                 // Also since ZipEntry is used to Write zip files, we need to copy the
                 // file attributes to the ZipEntry as appropriate.
                 ZipEntry e1 = zf._entries[de.FileName];
+
                 if (e1 != null)
                 {
                     e1._Comment = de.Comment;
+
                     if (de.IsDirectory)
                     {
                         e1.MarkAsDirectory();
                     }
                 }
-                previouslySeen.Add(de.FileName,null); // to prevent dupes
+
+                previouslySeen.Add(de.FileName, null); // to prevent dupes
             }
 
             // workitem 8299
@@ -883,14 +888,15 @@ internal partial class ZipFile
                 zf.StatusMessageTextWriter.WriteLine("Zip file Comment: {0}", zf.Comment);
             }
         }
-        catch (ZipException) { }
-        catch (IOException) { }
+        catch (ZipException)
+        {
+        }
+        catch (IOException)
+        {
+        }
 
         zf.OnReadCompleted();
     }
-
-
-
 
     private static void ReadCentralDirectoryFooter(ZipFile zf)
     {
@@ -899,6 +905,7 @@ internal partial class ZipFile
 
         byte[] block = null;
         int j = 0;
+
         if (signature == ZipConstants.Zip64EndOfCentralDirectoryRecordSignature)
         {
             // We have a ZIP64 EOCD
@@ -919,7 +926,7 @@ internal partial class ZipFile
             block = new byte[8 + 44];
             s.Read(block, 0, block.Length);
 
-            Int64 DataSize = BitConverter.ToInt64(block, 0);  // == 44 + the variable length
+            Int64 DataSize = BitConverter.ToInt64(block, 0); // == 44 + the variable length
 
             if (DataSize < 44)
             {
@@ -938,9 +945,11 @@ internal partial class ZipFile
             // read the extended block
             block = new byte[DataSize - 44];
             s.Read(block, 0, block.Length);
+
             // discard the result
 
             signature = SharedUtilities.ReadSignature(s);
+
             if (signature != ZipConstants.Zip64EndOfCentralDirectoryLocatorSignature)
             {
                 throw new ZipException("Inconsistent metadata in the ZIP64 Central Directory.");
@@ -948,6 +957,7 @@ internal partial class ZipFile
 
             block = new byte[16];
             s.Read(block, 0, block.Length);
+
             // discard the result
 
             signature = SharedUtilities.ReadSignature(s);
@@ -958,8 +968,8 @@ internal partial class ZipFile
         if (signature != ZipConstants.EndOfCentralDirectorySignature)
         {
             s.Seek(-4, SeekOrigin.Current);
-            throw new BadReadException(String.Format("Bad signature ({0:X8}) at position 0x{1:X8}",
-                                                     signature, s.Position));
+
+            throw new BadReadException(String.Format("Bad signature ({0:X8}) at position 0x{1:X8}", signature, s.Position));
         }
 
         // read the End-of-Central-Directory-Record
@@ -981,14 +991,13 @@ internal partial class ZipFile
         if (zf._diskNumberWithCd == 0)
         {
             zf._diskNumberWithCd = BitConverter.ToUInt16(block, 2);
+
             //zf._diskNumberWithCd++; // hack!!
         }
 
         // read the comment here
         ReadZipFileComment(zf);
     }
-
-
 
     private static void ReadZipFileComment(ZipFile zf)
     {
@@ -997,6 +1006,7 @@ internal partial class ZipFile
         zf.ReadStream.Read(block, 0, block.Length);
 
         Int16 commentLength = (short)(block[0] + (block[1] * 256));
+
         if (commentLength > 0)
         {
             block = new byte[commentLength];
@@ -1014,7 +1024,6 @@ internal partial class ZipFile
         }
     }
 
-
     // private static bool BlocksAreEqual(byte[] a, byte[] b)
     // {
     //     if (a.Length != b.Length) return false;
@@ -1024,8 +1033,6 @@ internal partial class ZipFile
     //     }
     //     return true;
     // }
-
-
 
     /// <summary>
     /// Checks the given file to see if it appears to be a valid zip file.
@@ -1044,7 +1051,6 @@ internal partial class ZipFile
     {
         return IsZipFile(fileName, false);
     }
-
 
     /// <summary>
     /// Checks a file to see if it is a valid zip file.
@@ -1085,6 +1091,7 @@ internal partial class ZipFile
     public static bool IsZipFile(string fileName, bool testExtract)
     {
         bool result = false;
+
         try
         {
             if (!File.Exists(fileName))
@@ -1095,11 +1102,15 @@ internal partial class ZipFile
             using FileStream? s = File.Open(fileName, FileMode.Open, FileAccess.Read, FileShare.ReadWrite);
             result = IsZipFile(s, testExtract);
         }
-        catch (IOException) { }
-        catch (ZipException) { }
+        catch (IOException)
+        {
+        }
+        catch (ZipException)
+        {
+        }
+
         return result;
     }
-
 
     /// <summary>
     /// Checks a stream to see if it contains a valid zip archive.
@@ -1146,6 +1157,7 @@ internal partial class ZipFile
         }
 
         bool result = false;
+
         try
         {
             if (!stream.CanRead)
@@ -1168,14 +1180,16 @@ internal partial class ZipFile
                     }
                 }
             }
+
             result = true;
         }
-        catch (IOException) { }
-        catch (ZipException) { }
+        catch (IOException)
+        {
+        }
+        catch (ZipException)
+        {
+        }
+
         return result;
     }
-
-
-
-
 }

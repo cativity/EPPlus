@@ -10,6 +10,7 @@
  *************************************************************************************************
   01/27/2020         EPPlus Software AB       Initial release EPPlus 5
  *************************************************************************************************/
+
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -19,10 +20,9 @@ using OfficeOpenXml.FormulaParsing.ExpressionGraph;
 
 namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Text;
 
-[FunctionMetadata(
-                     Category = ExcelFunctionCategory.Text,
-                     EPPlusVersion = "4",
-                     Description = "Returns the position of a supplied character or text string from within a supplied text string (non-case-sensitive)")]
+[FunctionMetadata(Category = ExcelFunctionCategory.Text,
+                  EPPlusVersion = "4",
+                  Description = "Returns the position of a supplied character or text string from within a supplied text string (non-case-sensitive)")]
 internal class Search : ExcelFunction
 {
     public override CompileResult Execute(IEnumerable<FunctionArgument> arguments, ParsingContext context)
@@ -32,15 +32,19 @@ internal class Search : ExcelFunction
         string? search = ArgToString(functionArguments, 0);
         string? searchIn = ArgToString(functionArguments, 1);
         int startIndex = 0;
+
         if (functionArguments.Count() > 2)
         {
             startIndex = this.ArgToInt(functionArguments, 2) - 1;
         }
+
         int result = searchIn.IndexOf(search, startIndex, StringComparison.OrdinalIgnoreCase);
+
         if (result == -1)
         {
             return this.CreateResult(ExcelErrorValue.Create(eErrorType.Value), DataType.ExcelError);
         }
+
         // Adding 1 because Excel uses 1-based index
         return this.CreateResult(result + 1, DataType.Integer);
     }

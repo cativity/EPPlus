@@ -10,6 +10,7 @@
  *************************************************************************************************
   01/27/2020         EPPlus Software AB       Initial release EPPlus 5
  *************************************************************************************************/
+
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -23,21 +24,23 @@ public class LookupFunctionCompiler : FunctionCompiler
     public LookupFunctionCompiler(ExcelFunction function, ParsingContext context)
         : base(function, context)
     {
-
     }
 
     public override CompileResult Compile(IEnumerable<Expression> children)
     {
         List<FunctionArgument>? args = new List<FunctionArgument>();
         this.Function.BeforeInvoke(this.Context);
-        for(int x = 0; x < children.Count(); x++)
+
+        for (int x = 0; x < children.Count(); x++)
         {
             Expression? child = children.ElementAt(x);
+
             //if (x > 0 || Function.SkipArgumentEvaluation)
             //{
             //    child.ParentIsLookupFunction = Function.IsLookupFuction;
             //}
             CompileResult? arg = child.Compile();
+
             if (arg != null)
             {
                 BuildFunctionArguments(arg, arg.DataType, args);
@@ -45,8 +48,9 @@ public class LookupFunctionCompiler : FunctionCompiler
             else
             {
                 BuildFunctionArguments(null, DataType.Unknown, args);
-            } 
+            }
         }
+
         return this.Function.Execute(args, this.Context);
     }
 }

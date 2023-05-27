@@ -10,6 +10,7 @@
  *************************************************************************************************
   01/27/2020         EPPlus Software AB       Initial release EPPlus 5
  *************************************************************************************************/
+
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -20,10 +21,9 @@ using OfficeOpenXml.FormulaParsing.Excel.Functions.Metadata;
 
 namespace OfficeOpenXml.FormulaParsing.Excel.Functions.RefAndLookup;
 
-[FunctionMetadata(
-                     Category = ExcelFunctionCategory.LookupAndReference,
-                     EPPlusVersion = "4",
-                     Description = "Finds the relative position of a value in a supplied array")]
+[FunctionMetadata(Category = ExcelFunctionCategory.LookupAndReference,
+                  EPPlusVersion = "4",
+                  Description = "Finds the relative position of a value in a supplied array")]
 internal class Match : LookupFunction
 {
     private enum MatchType
@@ -36,7 +36,6 @@ internal class Match : LookupFunction
     public Match()
         : base(new WildCardValueMatcher(), new CompileResultFactory())
     {
-
     }
 
     public override CompileResult Execute(IEnumerable<FunctionArgument> arguments, ParsingContext context)
@@ -44,7 +43,7 @@ internal class Match : LookupFunction
         ValidateArguments(arguments, 2);
 
         object? searchedValue = arguments.ElementAt(0).Value;
-        string? address =  ArgToAddress(arguments,1, context); 
+        string? address = ArgToAddress(arguments, 1, context);
         RangeAddressFactory? rangeAddressFactory = new RangeAddressFactory(context.ExcelDataProvider);
         RangeAddress? rangeAddress = rangeAddressFactory.Create(address);
         MatchType matchType = this.GetMatchType(arguments);
@@ -52,6 +51,7 @@ internal class Match : LookupFunction
         LookupDirection lookupDirection = GetLookupDirection(rangeAddress);
         LookupNavigator? navigator = LookupNavigatorFactory.Create(lookupDirection, args, context);
         int? lastValidIndex = null;
+
         do
         {
             int matchResult = this.IsMatch(searchedValue, navigator.CurrentValue);
@@ -66,13 +66,13 @@ internal class Match : LookupFunction
             {
                 lastValidIndex = navigator.Index + 1;
             }
+
             // If matchType is ClosestBelow or ClosestAbove and the match result test failed, no more searching is required
             else if (matchType == MatchType.ClosestBelow || matchType == MatchType.ClosestAbove)
             {
                 break;
             }
-        }
-        while (navigator.MoveNext());
+        } while (navigator.MoveNext());
 
         if (matchType == MatchType.ExactMatch && !lastValidIndex.HasValue)
         {
@@ -85,10 +85,12 @@ internal class Match : LookupFunction
     private MatchType GetMatchType(IEnumerable<FunctionArgument> arguments)
     {
         MatchType matchType = MatchType.ClosestBelow;
+
         if (arguments.Count() > 2)
         {
             matchType = (MatchType)this.ArgToInt(arguments, 2);
         }
+
         return matchType;
     }
 }

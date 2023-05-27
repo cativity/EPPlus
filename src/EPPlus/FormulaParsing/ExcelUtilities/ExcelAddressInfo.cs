@@ -10,6 +10,7 @@
  *************************************************************************************************
   01/27/2020         EPPlus Software AB       Initial release EPPlus 5
  *************************************************************************************************/
+
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -23,16 +24,18 @@ namespace OfficeOpenXml.FormulaParsing.ExcelUtilities;
 /// </summary>
 public class ExcelAddressInfo
 {
-    private ExcelAddressInfo(string address) 
-    {   
+    private ExcelAddressInfo(string address)
+    {
         string? addressOnSheet = address;
         this.Worksheet = string.Empty;
+
         if (address.Contains("!"))
         {
             string[]? worksheetArr = address.Split('!');
             this.Worksheet = worksheetArr[0];
             addressOnSheet = worksheetArr[1];
         }
+
         if (addressOnSheet.Contains(":"))
         {
             string[]? rangeArr = addressOnSheet.Split(':');
@@ -50,6 +53,7 @@ public class ExcelAddressInfo
     public static ExcelAddressInfo Parse(string address)
     {
         Require.That(address).Named("address").IsNotNullOrEmpty();
+
         return new ExcelAddressInfo(address);
     }
 
@@ -63,21 +67,15 @@ public class ExcelAddressInfo
     /// </summary>
     public bool WorksheetIsSpecified
     {
-        get
-        {
-            return !string.IsNullOrEmpty(this.Worksheet);
-        }
+        get { return !string.IsNullOrEmpty(this.Worksheet); }
     }
 
     /// <summary>
     /// If the address reference multiple cells.
     /// </summary>
-    public bool IsMultipleCells 
-    { 
-        get 
-        { 
-            return !string.IsNullOrEmpty(this.EndCell); 
-        } 
+    public bool IsMultipleCells
+    {
+        get { return !string.IsNullOrEmpty(this.EndCell); }
     }
 
     /// <summary>

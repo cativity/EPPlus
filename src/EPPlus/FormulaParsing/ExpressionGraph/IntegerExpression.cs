@@ -10,6 +10,7 @@
  *************************************************************************************************
   01/27/2020         EPPlus Software AB       Initial release EPPlus 5
  *************************************************************************************************/
+
 using System;
 using System.Collections.Generic;
 using System.Globalization;
@@ -26,7 +27,6 @@ public class IntegerExpression : AtomicExpression
     public IntegerExpression(string expression)
         : this(expression, false)
     {
-
     }
 
     public IntegerExpression(string expression, bool negate)
@@ -45,6 +45,7 @@ public class IntegerExpression : AtomicExpression
     {
         double result = this._compiledValue ?? double.Parse(this.ExpressionString, CultureInfo.InvariantCulture);
         result = this._negate ? result * -1 : result;
+
         return new CompileResult(result, DataType.Integer);
     }
 }

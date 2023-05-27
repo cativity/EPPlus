@@ -10,6 +10,7 @@
  *************************************************************************************************
   01/27/2020         EPPlus Software AB       Initial release EPPlus 5
  *************************************************************************************************/
+
 namespace OfficeOpenXml.Table.PivotTable;
 
 /// <summary>
@@ -21,46 +22,57 @@ public enum DataFieldFunctions
     /// Average
     /// </summary>
     Average,
+
     /// <summary>
     /// Count
     /// </summary>
     Count,
+
     /// <summary>
     /// Count, numbers
     /// </summary>
     CountNums,
+
     /// <summary>
     /// Max value
     /// </summary>
     Max,
+
     /// <summary>
     /// Minimum value
     /// </summary>
     Min,
+
     /// <summary>
     /// The product
     /// </summary>
     Product,
+
     /// <summary>
     /// None
     /// </summary>
     None,
+
     /// <summary>
     /// Standard deviation
     /// </summary>
     StdDev,
+
     /// <summary>
     /// Standard deviation of a population,
     /// </summary>
     StdDevP,
+
     /// <summary>
     /// Sum
     /// </summary>
     Sum,
+
     /// <summary>
     /// Variation
     /// </summary>
     Var,
+
     /// <summary>
     /// The variance of a population
     /// </summary>

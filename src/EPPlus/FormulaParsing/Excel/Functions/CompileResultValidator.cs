@@ -18,6 +18,7 @@ public abstract class CompileResultValidator
     public abstract void Validate(object obj);
 
     private static CompileResultValidator _empty;
+
     public static CompileResultValidator Empty
     {
         get { return _empty ??= new EmptyCompileResultValidator(); }

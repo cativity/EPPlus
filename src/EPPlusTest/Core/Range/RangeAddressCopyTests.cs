@@ -26,6 +26,7 @@
  *******************************************************************************
   01/27/2020         EPPlus Software AB       Initial release EPPlus 5
  *******************************************************************************/
+
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using OfficeOpenXml;
 using OfficeOpenXml.DataValidation;
@@ -79,6 +80,7 @@ public class RangeAddressCopyTests : TestBase
         ws.Cells["J3"].Copy(ws.Cells["J1"]);
         Assert.AreEqual("C$3", ws.Cells["J1"].Formula);
     }
+
     [TestMethod]
     public void ValidateCopyFormulasMultiCellRow()
     {
@@ -107,6 +109,7 @@ public class RangeAddressCopyTests : TestBase
         ws1.Cells["D3"].Copy(ws2.Cells["D4"]);
         Assert.AreEqual("SUM(A2:B2)", ws2.Cells["D4"].Formula);
     }
+
     [TestMethod]
     public void ValidateCopyFormulasMultiCellFullColumn()
     {
@@ -135,6 +138,7 @@ public class RangeAddressCopyTests : TestBase
         ws1.Cells["D3"].Copy(ws2.Cells["D4"]);
         Assert.AreEqual("SUM(A:A)", ws2.Cells["D4"].Formula);
     }
+
     [TestMethod]
     public void ValidateCopyFormulasMultiCellFullColumnFixed()
     {
@@ -163,6 +167,7 @@ public class RangeAddressCopyTests : TestBase
         ws1.Cells["D3"].Copy(ws2.Cells["D4"]);
         Assert.AreEqual("SUM($A:$A)", ws2.Cells["D4"].Formula);
     }
+
     [TestMethod]
     public void ValidateCopyFormulasMultiCellFullRow()
     {
@@ -191,6 +196,7 @@ public class RangeAddressCopyTests : TestBase
         ws1.Cells["D3"].Copy(ws2.Cells["D4"]);
         Assert.AreEqual("SUM(2:2)", ws2.Cells["D4"].Formula);
     }
+
     [TestMethod]
     public void ValidateCopyFormulasMultiCellFullRowFixed()
     {
@@ -219,6 +225,7 @@ public class RangeAddressCopyTests : TestBase
         ws1.Cells["D3"].Copy(ws2.Cells["D4"]);
         Assert.AreEqual("SUM($1:$1)", ws2.Cells["D4"].Formula);
     }
+
     [TestMethod]
     public void Copy_Formula_From_Other_Workbook_Issue_Test()
     {
@@ -237,27 +244,18 @@ public class RangeAddressCopyTests : TestBase
         ws.Cells["A1"].Copy(ws.Cells[2, 1], ExcelRangeCopyOptionFlags.ExcludeFormulas);
         ws.Cells["A2"].Formula = ws.Cells[1, 1].Formula;
 
-        Assert.IsFalse(
-                       string.IsNullOrWhiteSpace(ws.Cells["A2"].Formula)
-                     , "A2 formula should be set"
-                      );
+        Assert.IsFalse(string.IsNullOrWhiteSpace(ws.Cells["A2"].Formula), "A2 formula should be set");
 
-        Assert.AreEqual(
-                        ws.Cells["A1"].Formula
-                      , ws.Cells["A2"].Formula
-                      , $"{ws.Cells["A2"].Formula} != {ws.Cells["A1"].Formula}"
-                       );
+        Assert.AreEqual(ws.Cells["A1"].Formula, ws.Cells["A2"].Formula, $"{ws.Cells["A2"].Formula} != {ws.Cells["A1"].Formula}");
 
         //Cell copy to cell A3 - FAILS
         ws.Cells["A1"].Copy(ws.Cells["A3"]);
 
-        Assert.IsFalse(
-                       string.IsNullOrWhiteSpace(ws.Cells["A3"].Formula)
-                     , "A3 formula should be set"
-                      );
+        Assert.IsFalse(string.IsNullOrWhiteSpace(ws.Cells["A3"].Formula), "A3 formula should be set");
 
         Assert.AreEqual("VLOOKUP($B$1,Sheet2!A:B,2,FALSE)", ws.Cells["A3"].Formula);
     }
+
     [TestMethod]
     public void CopyValuesOnly()
     {
@@ -275,6 +273,7 @@ public class RangeAddressCopyTests : TestBase
         Assert.IsFalse(ws.Cells["B6"].Style.Font.Italic);
         Assert.AreEqual("0", ws.Cells["B5"].Style.Numberformat.Format);
     }
+
     [TestMethod]
     public void CopyStylesOnly()
     {
@@ -291,6 +290,7 @@ public class RangeAddressCopyTests : TestBase
         Assert.IsTrue(ws.Cells["B6"].Style.Font.Bold);
         Assert.IsTrue(ws.Cells["B6"].Style.Font.Italic);
     }
+
     [TestMethod]
     public void CopyDataValidationsSameWorksheet()
     {
@@ -305,6 +305,7 @@ public class RangeAddressCopyTests : TestBase
 
         Assert.AreEqual("B2:D5,F6:G8", dv.Address.Address);
     }
+
     [TestMethod]
     public void CopyDataValidationsNewWorksheet()
     {
@@ -328,6 +329,7 @@ public class RangeAddressCopyTests : TestBase
 
         SaveWorkbook("dvcopy.xlsx", p);
     }
+
     [TestMethod]
     public void CopyDataValidationNewPackage()
     {
@@ -352,6 +354,7 @@ public class RangeAddressCopyTests : TestBase
 
         SaveWorkbook("dvcopy.xlsx", p2);
     }
+
     [TestMethod]
     public void CopyConditionalFormattingSameWorkbook()
     {
@@ -385,6 +388,7 @@ public class RangeAddressCopyTests : TestBase
         Assert.AreEqual(ExcelFillStyle.Solid, cf2.Style.Fill.PatternType);
         Assert.AreEqual(Color.Red.ToArgb(), cf2.Style.Fill.BackgroundColor.Color.Value.ToArgb());
     }
+
     [TestMethod]
     public void CopyConditionalFormattingNewPackage()
     {
@@ -431,6 +435,7 @@ public class RangeAddressCopyTests : TestBase
         Assert.IsTrue(ws.Cells["C6"].Style.Font.Bold);
         Assert.IsTrue(ws.Cells["C6"].Style.Font.Italic);
     }
+
     [TestMethod]
     public void CopyThreadedComments()
     {
@@ -479,6 +484,7 @@ public class RangeAddressCopyTests : TestBase
         Assert.IsTrue(ws.Cells["C6"].Style.Font.Bold);
         Assert.IsTrue(ws.Cells["C6"].Style.Font.Italic);
     }
+
     [TestMethod]
     public void CopyHyperLinks()
     {
@@ -503,6 +509,7 @@ public class RangeAddressCopyTests : TestBase
         Assert.IsTrue(ws.Cells["C6"].Style.Font.Bold);
         Assert.IsTrue(ws.Cells["C6"].Style.Font.Italic);
     }
+
     [TestMethod]
     public void CopyStylesWithinWorkbook()
     {
@@ -532,9 +539,9 @@ public class RangeAddressCopyTests : TestBase
         Assert.AreEqual(ExcelUnderLineType.None, ws.Cells["D6"].Style.Font.UnderLineType);
         Assert.AreEqual(ExcelUnderLineType.None, ws.Cells["F8"].Style.Font.UnderLineType);
 
-
         //SaveWorkbook("styleCopy.xlsx", p);
     }
+
     [TestMethod]
     public void CopyStylesToNewWorkbook()
     {
@@ -577,6 +584,7 @@ public class RangeAddressCopyTests : TestBase
         ws.Cells["A1:A2"].Style.Font.Bold = true;
         ws.Cells["A2"].Style.Font.Italic = true;
         ws.Calculate();
+
         return ws;
     }
 }

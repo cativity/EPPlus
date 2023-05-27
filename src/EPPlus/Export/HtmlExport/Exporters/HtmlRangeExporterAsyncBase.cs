@@ -10,6 +10,7 @@
  *************************************************************************************************
   6/4/2022         EPPlus Software AB           ExcelTable Html Export
  *************************************************************************************************/
+
 using OfficeOpenXml.Core;
 using OfficeOpenXml.Drawing.Interfaces;
 using OfficeOpenXml.Export.HtmlExport.Accessibility;
@@ -25,25 +26,31 @@ namespace OfficeOpenXml.Export.HtmlExport.Exporters
 {
     internal abstract class HtmlRangeExporterAsyncBase : HtmlRangeExporterBase
     {
-        internal HtmlRangeExporterAsyncBase
-            (HtmlExportSettings settings, ExcelRangeBase range) : base(settings, range)
+        internal HtmlRangeExporterAsyncBase(HtmlExportSettings settings, ExcelRangeBase range)
+            : base(settings, range)
         {
             this._settings = settings;
         }
 
-        internal HtmlRangeExporterAsyncBase(HtmlExportSettings settings, EPPlusReadOnlyList<ExcelRangeBase> ranges) : base(settings, ranges)
+        internal HtmlRangeExporterAsyncBase(HtmlExportSettings settings, EPPlusReadOnlyList<ExcelRangeBase> ranges)
+            : base(settings, ranges)
         {
             this._settings = settings;
         }
 
         private readonly HtmlExportSettings _settings;
 
-        protected async Task RenderTableRowsAsync(ExcelRangeBase range, EpplusHtmlWriter writer, ExcelTable table, AccessibilitySettings accessibilitySettings, int headerRows)
+        protected async Task RenderTableRowsAsync(ExcelRangeBase range,
+                                                  EpplusHtmlWriter writer,
+                                                  ExcelTable table,
+                                                  AccessibilitySettings accessibilitySettings,
+                                                  int headerRows)
         {
             if (accessibilitySettings.TableSettings.AddAccessibilityAttributes && !string.IsNullOrEmpty(accessibilitySettings.TableSettings.TbodyRole))
             {
                 writer.AddAttribute("role", accessibilitySettings.TableSettings.TbodyRole);
             }
+
             await writer.RenderBeginTagAsync(HtmlElements.Tbody);
             await writer.ApplyFormatIncreaseIndentAsync(this.Settings.Minify);
             int row = range._fromRow + headerRows;
@@ -51,6 +58,7 @@ namespace OfficeOpenXml.Export.HtmlExport.Exporters
             ExcelWorksheet? ws = range.Worksheet;
             HtmlImage image = null;
             bool hasFooter = table != null && table.ShowTotal;
+
             while (row <= endRow)
             {
                 if (HandleHiddenRow(writer, range.Worksheet, this.Settings, ref row))
@@ -76,6 +84,7 @@ namespace OfficeOpenXml.Export.HtmlExport.Exporters
 
                 await writer.RenderBeginTagAsync(HtmlElements.TableRow);
                 await writer.ApplyFormatIncreaseIndentAsync(this.Settings.Minify);
+
                 foreach (int col in this._columns)
                 {
                     if (this.InMergeCellSpan(row, col))
@@ -115,19 +124,27 @@ namespace OfficeOpenXml.Export.HtmlExport.Exporters
                 writer.Indent--;
                 await writer.RenderEndTagAsync();
                 await writer.ApplyFormatAsync(this.Settings.Minify);
+
                 if (hasFooter && row == endRow)
                 {
                     await writer.RenderEndTagAsync();
                 }
+
                 row++;
             }
 
             await writer.ApplyFormatDecreaseIndentAsync(this.Settings.Minify);
+
             // end tag tbody
             await writer.RenderEndTagAsync();
         }
 
-        protected async Task RenderHeaderRowAsync(ExcelRangeBase range, EpplusHtmlWriter writer, ExcelTable table, AccessibilitySettings accessibilitySettings, int headerRows, List<string> headers)
+        protected async Task RenderHeaderRowAsync(ExcelRangeBase range,
+                                                  EpplusHtmlWriter writer,
+                                                  ExcelTable table,
+                                                  AccessibilitySettings accessibilitySettings,
+                                                  int headerRows,
+                                                  List<string> headers)
         {
             if (table != null && table.ShowHeader == false)
             {
@@ -138,8 +155,10 @@ namespace OfficeOpenXml.Export.HtmlExport.Exporters
             {
                 writer.AddAttribute("role", this.Settings.Accessibility.TableSettings.TheadRole);
             }
+
             await writer.RenderBeginTagAsync(HtmlElements.Thead);
             await writer.ApplyFormatIncreaseIndentAsync(this.Settings.Minify);
+
             if (table == null)
             {
                 headerRows = headerRows == 0 ? 1 : headerRows;
@@ -150,13 +169,16 @@ namespace OfficeOpenXml.Export.HtmlExport.Exporters
             }
 
             HtmlImage image = null;
+
             for (int i = 0; i < headerRows; i++)
             {
                 if (accessibilitySettings.TableSettings.AddAccessibilityAttributes)
                 {
                     writer.AddAttribute("role", "row");
                 }
+
                 int row = range._fromRow + i;
+
                 if (this.Settings.SetRowHeight)
                 {
                     AddRowHeightStyle(writer, range, row, this.Settings.StyleClassPrefix, this.IsMultiSheet);
@@ -164,6 +186,7 @@ namespace OfficeOpenXml.Export.HtmlExport.Exporters
 
                 await writer.RenderBeginTagAsync(HtmlElements.TableRow);
                 await writer.ApplyFormatIncreaseIndentAsync(this.Settings.Minify);
+
                 foreach (int col in this._columns)
                 {
                     if (this.InMergeCellSpan(row, col))
@@ -172,21 +195,25 @@ namespace OfficeOpenXml.Export.HtmlExport.Exporters
                     }
 
                     ExcelRange? cell = range.Worksheet.Cells[row, col];
+
                     if (this.Settings.RenderDataTypes)
                     {
                         writer.AddAttribute("data-datatype", this._dataTypes[col - range._fromCol]);
                     }
 
                     this.SetColRowSpan(range, writer, cell);
+
                     if (this.Settings.IncludeCssClassNames)
                     {
                         string? imageCellClassName = GetImageCellClassName(image, this.Settings);
                         writer.SetClassAttributeFromStyle(cell, true, this.Settings, imageCellClassName);
                     }
+
                     if (this.Settings.Pictures.Include == ePictureInclude.Include)
                     {
                         image = this.GetImage(cell.Worksheet.PositionId, cell._fromRow, cell._fromCol);
                     }
+
                     await writer.RenderBeginTagAsync(HtmlElements.TableHeader);
                     await AddImageAsync(writer, this.Settings, image, cell.Value);
 
@@ -209,9 +236,11 @@ namespace OfficeOpenXml.Export.HtmlExport.Exporters
                     await writer.RenderEndTagAsync();
                     await writer.ApplyFormatAsync(this.Settings.Minify);
                 }
+
                 writer.Indent--;
                 await writer.RenderEndTagAsync();
             }
+
             await writer.ApplyFormatDecreaseIndentAsync(this.Settings.Minify);
             await writer.RenderEndTagAsync();
             await writer.ApplyFormatAsync(this.Settings.Minify);
@@ -231,10 +260,12 @@ namespace OfficeOpenXml.Export.HtmlExport.Exporters
                     {
                         writer.AddAttribute("href", eurl.AbsoluteUri);
                     }
+
                     if (!string.IsNullOrEmpty(settings.HyperlinkTarget))
                     {
                         writer.AddAttribute("target", settings.HyperlinkTarget);
                     }
+
                     await writer.RenderBeginTagAsync(HtmlElements.A);
                     await writer.WriteAsync(string.IsNullOrEmpty(eurl.Display) ? cell.Text : eurl.Display);
                     await writer.RenderEndTagAsync();
@@ -261,10 +292,12 @@ namespace OfficeOpenXml.Export.HtmlExport.Exporters
                 string? name = GetPictureName(image);
                 string imageName = HtmlExportTableUtil.GetClassName(image.Picture.Name, ((IPictureContainer)image.Picture).ImageHash);
                 writer.AddAttribute("alt", image.Picture.Name);
+
                 if (settings.Pictures.AddNameAsId)
                 {
                     writer.AddAttribute("id", imageName);
                 }
+
                 writer.AddAttribute("class", $"{settings.StyleClassPrefix}image-{name} {settings.StyleClassPrefix}image-prop-{imageName}");
                 await writer.RenderBeginTagAsync(HtmlElements.Img, true);
             }
@@ -277,11 +310,13 @@ namespace OfficeOpenXml.Export.HtmlExport.Exporters
             await writer.ApplyFormatIncreaseIndentAsync(settings.Minify);
             decimal mdw = _range.Worksheet.Workbook.MaxFontWidth;
             int defColWidth = ExcelColumn.ColumnWidthToPixels(Convert.ToDecimal(ws.DefaultColWidth), mdw);
+
             foreach (int c in this._columns)
             {
                 if (settings.SetColumnWidth)
                 {
                     double width = ws.GetColumnWidthPixels(c - 1, mdw);
+
                     if (width == defColWidth)
                     {
                         string? clsName = HtmlExportTableUtil.GetWorksheetClassName(settings.StyleClassPrefix, "dcw", ws, isMultiSheet);
@@ -302,6 +337,7 @@ namespace OfficeOpenXml.Export.HtmlExport.Exporters
                 await writer.RenderBeginTagAsync("col", true);
                 await writer.ApplyFormatAsync(settings.Minify);
             }
+
             writer.Indent--;
             await writer.RenderEndTagAsync();
             await writer.ApplyFormatAsync(settings.Minify);

@@ -10,6 +10,7 @@
  *************************************************************************************************
   13/5/2020         EPPlus Software AB       Implemented Excel COUP functions
  *************************************************************************************************/
+
 using OfficeOpenXml.FormulaParsing.Excel.Functions.Finance.FinancialDayCount;
 using System;
 using System.Collections.Generic;
@@ -28,13 +29,17 @@ internal abstract class Coupbase
     }
 
     protected FinancialDay Settlement { get; }
+
     protected FinancialDay Maturity { get; }
+
     protected int Frequency { get; }
+
     protected DayCountBasis Basis { get; }
 
     protected FinancialDay GetCouponPeriodBySettlement()
     {
         IFinanicalDays? financialDays = FinancialDaysFactory.Create(this.Basis);
+
         throw new NotImplementedException();
     }
 }

@@ -24,7 +24,6 @@
 // 
 // ------------------------------------------------------------------
 
-
 namespace OfficeOpenXml.Packaging.Ionic.Zip;
 
 /// <summary>

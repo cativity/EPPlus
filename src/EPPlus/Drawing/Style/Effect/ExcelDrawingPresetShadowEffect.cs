@@ -10,6 +10,7 @@
  *************************************************************************************************
   01/27/2020         EPPlus Software AB       Initial release EPPlus 5
  *************************************************************************************************/
+
 using System;
 using System.Xml;
 
@@ -21,19 +22,19 @@ namespace OfficeOpenXml.Drawing.Style.Effect;
 public class ExcelDrawingPresetShadowEffect : ExcelDrawingShadowEffect
 {
     private readonly string _typePath = "{0}/@prst";
-    internal ExcelDrawingPresetShadowEffect(XmlNamespaceManager nameSpaceManager, XmlNode topNode, string[] schemaNodeOrder, string path) : base(nameSpaceManager, topNode, schemaNodeOrder, path)
+
+    internal ExcelDrawingPresetShadowEffect(XmlNamespaceManager nameSpaceManager, XmlNode topNode, string[] schemaNodeOrder, string path)
+        : base(nameSpaceManager, topNode, schemaNodeOrder, path)
     {
         this._typePath = string.Format(this._typePath, path);
     }
+
     /// <summary>
     /// The preset shadow type
     /// </summary>
     public ePresetShadowType Type
     {
-        get
-        {
-            return this.GetXmlNodeString(this._typePath).TranslatePresetShadowType();
-        }
+        get { return this.GetXmlNodeString(this._typePath).TranslatePresetShadowType(); }
         set
         {
             this.SetXmlNodeString(this._typePath, value.TranslateString());

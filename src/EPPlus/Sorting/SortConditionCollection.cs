@@ -10,6 +10,7 @@
  *************************************************************************************************
   05/07/2021         EPPlus Software AB       EPPlus 5.7
  *************************************************************************************************/
+
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -24,12 +25,14 @@ namespace OfficeOpenXml.Sorting;
 /// </summary>
 public class SortConditionCollection : XmlHelper, IEnumerable<SortCondition>
 {
-    internal SortConditionCollection(XmlNamespaceManager nameSpaceManager, XmlNode topNode) : base(nameSpaceManager, topNode)
+    internal SortConditionCollection(XmlNamespaceManager nameSpaceManager, XmlNode topNode)
+        : base(nameSpaceManager, topNode)
     {
         XmlNodeList? conditionNodes = topNode.SelectNodes("//d:sortCondition", nameSpaceManager);
-        if(conditionNodes != null)
+
+        if (conditionNodes != null)
         {
-            foreach(object? node in conditionNodes)
+            foreach (object? node in conditionNodes)
             {
                 SortCondition? condition = new SortCondition(nameSpaceManager, (XmlNode)node);
                 this._sortConditions.Add(condition);
@@ -39,6 +42,7 @@ public class SortConditionCollection : XmlHelper, IEnumerable<SortCondition>
 
     private readonly List<SortCondition> _sortConditions = new List<SortCondition>();
     private readonly string _sortConditionPath = "d:sortCondition";
+
     /// <summary>
     /// Returns an enumerator that iterates through the collection.
     /// </summary>
@@ -72,7 +76,8 @@ public class SortConditionCollection : XmlHelper, IEnumerable<SortCondition>
         XmlNode? node = this.CreateNode(this.TopNode, this._sortConditionPath, true);
         SortCondition? condition = new SortCondition(this.NameSpaceManager, node);
         condition.Ref = @ref;
-        if(decending.HasValue)
+
+        if (decending.HasValue)
         {
             condition.Descending = decending.Value;
         }
@@ -97,10 +102,12 @@ public class SortConditionCollection : XmlHelper, IEnumerable<SortCondition>
         XmlNode? node = this.CreateNode(this.TopNode, this._sortConditionPath, true);
         SortCondition? condition = new SortCondition(this.NameSpaceManager, node);
         condition.Ref = @ref;
+
         if (decending.HasValue)
         {
             condition.Descending = decending.Value;
         }
+
         condition.CustomList = customList;
         this.TopNode.AppendChild(condition.TopNode);
         this._sortConditions.Add(condition);

@@ -13,30 +13,29 @@ namespace EPPlusTest.FormulaParsing.Excel.Functions.Finance;
 public class CoupInternalTests
 {
     #region COUPDAYBS
+
     [TestMethod]
     public void Coupdaybs_ShouldReturnCorrectResult_ActualActual()
     {
         DateTime settlement = new DateTime(2018, 12, 01);
         DateTime maturity = new DateTime(2019, 3, 15);
 
-        CoupdaybsImpl? func = new CoupdaybsImpl(
-                                                FinancialDayFactory.Create(settlement, DayCountBasis.Actual_Actual),
+        CoupdaybsImpl? func = new CoupdaybsImpl(FinancialDayFactory.Create(settlement, DayCountBasis.Actual_Actual),
                                                 FinancialDayFactory.Create(maturity, DayCountBasis.Actual_Actual),
                                                 4,
-                                                DayCountBasis.Actual_Actual
-                                               );
+                                                DayCountBasis.Actual_Actual);
+
         FinanceCalcResult<int>? result = func.Coupdaybs();
         Assert.AreEqual(77, result.Result);
 
         settlement = new DateTime(2016, 02, 01);
         maturity = new DateTime(2019, 05, 31);
 
-        func = new CoupdaybsImpl(
-                                 FinancialDayFactory.Create(settlement, DayCountBasis.Actual_Actual),
+        func = new CoupdaybsImpl(FinancialDayFactory.Create(settlement, DayCountBasis.Actual_Actual),
                                  FinancialDayFactory.Create(maturity, DayCountBasis.Actual_Actual),
                                  2,
-                                 DayCountBasis.Actual_Actual
-                                );
+                                 DayCountBasis.Actual_Actual);
+
         result = func.Coupdaybs();
         Assert.AreEqual(63, result.Result);
     }
@@ -47,24 +46,22 @@ public class CoupInternalTests
         DateTime settlement = new DateTime(2018, 12, 01);
         DateTime maturity = new DateTime(2019, 3, 15);
 
-        CoupdaybsImpl? func = new CoupdaybsImpl(
-                                                FinancialDayFactory.Create(settlement, DayCountBasis.US_30_360),
+        CoupdaybsImpl? func = new CoupdaybsImpl(FinancialDayFactory.Create(settlement, DayCountBasis.US_30_360),
                                                 FinancialDayFactory.Create(maturity, DayCountBasis.US_30_360),
                                                 4,
-                                                DayCountBasis.US_30_360
-                                               );
+                                                DayCountBasis.US_30_360);
+
         FinanceCalcResult<int>? result = func.Coupdaybs();
         Assert.AreEqual(76, result.Result);
 
         settlement = new DateTime(2016, 02, 01);
         maturity = new DateTime(2019, 05, 31);
 
-        func = new CoupdaybsImpl(
-                                 FinancialDayFactory.Create(settlement, DayCountBasis.US_30_360),
+        func = new CoupdaybsImpl(FinancialDayFactory.Create(settlement, DayCountBasis.US_30_360),
                                  FinancialDayFactory.Create(maturity, DayCountBasis.US_30_360),
                                  2,
-                                 DayCountBasis.US_30_360
-                                );
+                                 DayCountBasis.US_30_360);
+
         result = func.Coupdaybs();
         Assert.AreEqual(61, result.Result);
     }
@@ -75,24 +72,22 @@ public class CoupInternalTests
         DateTime settlement = new DateTime(2018, 12, 01);
         DateTime maturity = new DateTime(2019, 3, 15);
 
-        CoupdaybsImpl? func = new CoupdaybsImpl(
-                                                FinancialDayFactory.Create(settlement, DayCountBasis.Actual_360),
+        CoupdaybsImpl? func = new CoupdaybsImpl(FinancialDayFactory.Create(settlement, DayCountBasis.Actual_360),
                                                 FinancialDayFactory.Create(maturity, DayCountBasis.Actual_360),
                                                 4,
-                                                DayCountBasis.Actual_360
-                                               );
+                                                DayCountBasis.Actual_360);
+
         FinanceCalcResult<int>? result = func.Coupdaybs();
         Assert.AreEqual(77, result.Result);
 
         settlement = new DateTime(2016, 02, 01);
         maturity = new DateTime(2019, 05, 31);
 
-        func = new CoupdaybsImpl(
-                                 FinancialDayFactory.Create(settlement, DayCountBasis.Actual_360),
+        func = new CoupdaybsImpl(FinancialDayFactory.Create(settlement, DayCountBasis.Actual_360),
                                  FinancialDayFactory.Create(maturity, DayCountBasis.Actual_360),
                                  2,
-                                 DayCountBasis.Actual_360
-                                );
+                                 DayCountBasis.Actual_360);
+
         result = func.Coupdaybs();
         Assert.AreEqual(63, result.Result);
     }
@@ -103,24 +98,22 @@ public class CoupInternalTests
         DateTime settlement = new DateTime(2018, 12, 01);
         DateTime maturity = new DateTime(2019, 3, 15);
 
-        CoupdaybsImpl? func = new CoupdaybsImpl(
-                                                FinancialDayFactory.Create(settlement, DayCountBasis.Actual_365),
+        CoupdaybsImpl? func = new CoupdaybsImpl(FinancialDayFactory.Create(settlement, DayCountBasis.Actual_365),
                                                 FinancialDayFactory.Create(maturity, DayCountBasis.Actual_365),
                                                 4,
-                                                DayCountBasis.Actual_365
-                                               );
+                                                DayCountBasis.Actual_365);
+
         FinanceCalcResult<int>? result = func.Coupdaybs();
         Assert.AreEqual(77, result.Result);
 
         settlement = new DateTime(2016, 02, 01);
         maturity = new DateTime(2019, 05, 31);
 
-        func = new CoupdaybsImpl(
-                                 FinancialDayFactory.Create(settlement, DayCountBasis.Actual_365),
+        func = new CoupdaybsImpl(FinancialDayFactory.Create(settlement, DayCountBasis.Actual_365),
                                  FinancialDayFactory.Create(maturity, DayCountBasis.Actual_365),
                                  2,
-                                 DayCountBasis.Actual_365
-                                );
+                                 DayCountBasis.Actual_365);
+
         result = func.Coupdaybs();
         Assert.AreEqual(63, result.Result);
     }
@@ -131,24 +124,22 @@ public class CoupInternalTests
         DateTime settlement = new DateTime(2018, 12, 01);
         DateTime maturity = new DateTime(2019, 3, 15);
 
-        CoupdaybsImpl? func = new CoupdaybsImpl(
-                                                FinancialDayFactory.Create(settlement, DayCountBasis.European_30_360),
+        CoupdaybsImpl? func = new CoupdaybsImpl(FinancialDayFactory.Create(settlement, DayCountBasis.European_30_360),
                                                 FinancialDayFactory.Create(maturity, DayCountBasis.European_30_360),
                                                 4,
-                                                DayCountBasis.European_30_360
-                                               );
+                                                DayCountBasis.European_30_360);
+
         FinanceCalcResult<int>? result = func.Coupdaybs();
         Assert.AreEqual(76, result.Result);
 
         settlement = new DateTime(2016, 02, 01);
         maturity = new DateTime(2019, 05, 31);
 
-        func = new CoupdaybsImpl(
-                                 FinancialDayFactory.Create(settlement, DayCountBasis.European_30_360),
+        func = new CoupdaybsImpl(FinancialDayFactory.Create(settlement, DayCountBasis.European_30_360),
                                  FinancialDayFactory.Create(maturity, DayCountBasis.European_30_360),
                                  2,
-                                 DayCountBasis.European_30_360
-                                );
+                                 DayCountBasis.European_30_360);
+
         result = func.Coupdaybs();
         Assert.AreEqual(61, result.Result);
     }
@@ -156,18 +147,18 @@ public class CoupInternalTests
     #endregion
 
     #region COUPDAYS
+
     [TestMethod]
     public void Coupdays_ShouldReturnNumberOfDays_ActualActual()
     {
         DateTime settlement = new DateTime(2012, 2, 29);
         DateTime maturity = new DateTime(2019, 3, 15);
 
-        CoupdaysImpl? func = new CoupdaysImpl(
-                                              FinancialDayFactory.Create(settlement, DayCountBasis.Actual_Actual),
+        CoupdaysImpl? func = new CoupdaysImpl(FinancialDayFactory.Create(settlement, DayCountBasis.Actual_Actual),
                                               FinancialDayFactory.Create(maturity, DayCountBasis.Actual_Actual),
                                               4,
-                                              DayCountBasis.Actual_Actual
-                                             );
+                                              DayCountBasis.Actual_Actual);
+
         FinanceCalcResult<double>? result = func.GetCoupdays();
         Assert.AreEqual(91d, result.Result);
 
@@ -176,12 +167,11 @@ public class CoupInternalTests
         settlement = new DateTime(2017, 2, 1);
         maturity = new DateTime(2019, 5, 31);
 
-        func = new CoupdaysImpl(
-                                FinancialDayFactory.Create(settlement, DayCountBasis.Actual_Actual),
+        func = new CoupdaysImpl(FinancialDayFactory.Create(settlement, DayCountBasis.Actual_Actual),
                                 FinancialDayFactory.Create(maturity, DayCountBasis.Actual_Actual),
                                 4,
-                                DayCountBasis.Actual_Actual
-                               );
+                                DayCountBasis.Actual_Actual);
+
         result = func.GetCoupdays();
         Assert.AreEqual(90d, result.Result);
     }
@@ -192,25 +182,22 @@ public class CoupInternalTests
         DateTime settlement = new DateTime(2012, 2, 29);
         DateTime maturity = new DateTime(2019, 3, 15);
 
-        CoupdaysImpl? func = new CoupdaysImpl(
-                                              FinancialDayFactory.Create(settlement, DayCountBasis.US_30_360),
+        CoupdaysImpl? func = new CoupdaysImpl(FinancialDayFactory.Create(settlement, DayCountBasis.US_30_360),
                                               FinancialDayFactory.Create(maturity, DayCountBasis.US_30_360),
                                               4,
-                                              DayCountBasis.US_30_360
-                                             );
+                                              DayCountBasis.US_30_360);
+
         FinanceCalcResult<double>? result = func.GetCoupdays();
         Assert.AreEqual(90d, result.Result);
-
 
         settlement = new DateTime(2017, 2, 1);
         maturity = new DateTime(2019, 5, 31);
 
-        func = new CoupdaysImpl(
-                                FinancialDayFactory.Create(settlement, DayCountBasis.US_30_360),
+        func = new CoupdaysImpl(FinancialDayFactory.Create(settlement, DayCountBasis.US_30_360),
                                 FinancialDayFactory.Create(maturity, DayCountBasis.US_30_360),
                                 4,
-                                DayCountBasis.US_30_360
-                               );
+                                DayCountBasis.US_30_360);
+
         result = func.GetCoupdays();
         Assert.AreEqual(90d, result.Result);
     }
@@ -221,25 +208,22 @@ public class CoupInternalTests
         DateTime settlement = new DateTime(2012, 2, 29);
         DateTime maturity = new DateTime(2019, 3, 15);
 
-        CoupdaysImpl? func = new CoupdaysImpl(
-                                              FinancialDayFactory.Create(settlement, DayCountBasis.Actual_360),
+        CoupdaysImpl? func = new CoupdaysImpl(FinancialDayFactory.Create(settlement, DayCountBasis.Actual_360),
                                               FinancialDayFactory.Create(maturity, DayCountBasis.Actual_360),
                                               4,
-                                              DayCountBasis.Actual_360
-                                             );
+                                              DayCountBasis.Actual_360);
+
         FinanceCalcResult<double>? result = func.GetCoupdays();
         Assert.AreEqual(90d, result.Result);
-
 
         settlement = new DateTime(2017, 2, 1);
         maturity = new DateTime(2019, 5, 31);
 
-        func = new CoupdaysImpl(
-                                FinancialDayFactory.Create(settlement, DayCountBasis.Actual_360),
+        func = new CoupdaysImpl(FinancialDayFactory.Create(settlement, DayCountBasis.Actual_360),
                                 FinancialDayFactory.Create(maturity, DayCountBasis.Actual_360),
                                 4,
-                                DayCountBasis.Actual_360
-                               );
+                                DayCountBasis.Actual_360);
+
         result = func.GetCoupdays();
         Assert.AreEqual(90d, result.Result);
     }
@@ -250,25 +234,22 @@ public class CoupInternalTests
         DateTime settlement = new DateTime(2012, 2, 29);
         DateTime maturity = new DateTime(2019, 3, 15);
 
-        CoupdaysImpl? func = new CoupdaysImpl(
-                                              FinancialDayFactory.Create(settlement, DayCountBasis.Actual_365),
+        CoupdaysImpl? func = new CoupdaysImpl(FinancialDayFactory.Create(settlement, DayCountBasis.Actual_365),
                                               FinancialDayFactory.Create(maturity, DayCountBasis.Actual_365),
                                               4,
-                                              DayCountBasis.Actual_365
-                                             );
+                                              DayCountBasis.Actual_365);
+
         FinanceCalcResult<double>? result = func.GetCoupdays();
         Assert.AreEqual(91.25, result.Result);
-
 
         settlement = new DateTime(2017, 2, 1);
         maturity = new DateTime(2019, 5, 31);
 
-        func = new CoupdaysImpl(
-                                FinancialDayFactory.Create(settlement, DayCountBasis.Actual_365),
+        func = new CoupdaysImpl(FinancialDayFactory.Create(settlement, DayCountBasis.Actual_365),
                                 FinancialDayFactory.Create(maturity, DayCountBasis.Actual_365),
                                 4,
-                                DayCountBasis.Actual_365
-                               );
+                                DayCountBasis.Actual_365);
+
         result = func.GetCoupdays();
         Assert.AreEqual(91.25, result.Result);
     }
@@ -279,25 +260,22 @@ public class CoupInternalTests
         DateTime settlement = new DateTime(2012, 2, 29);
         DateTime maturity = new DateTime(2019, 3, 15);
 
-        CoupdaysImpl? func = new CoupdaysImpl(
-                                              FinancialDayFactory.Create(settlement, DayCountBasis.European_30_360),
+        CoupdaysImpl? func = new CoupdaysImpl(FinancialDayFactory.Create(settlement, DayCountBasis.European_30_360),
                                               FinancialDayFactory.Create(maturity, DayCountBasis.European_30_360),
                                               4,
-                                              DayCountBasis.European_30_360
-                                             );
+                                              DayCountBasis.European_30_360);
+
         FinanceCalcResult<double>? result = func.GetCoupdays();
         Assert.AreEqual(90d, result.Result);
-
 
         settlement = new DateTime(2017, 2, 1);
         maturity = new DateTime(2019, 5, 31);
 
-        func = new CoupdaysImpl(
-                                FinancialDayFactory.Create(settlement, DayCountBasis.European_30_360),
+        func = new CoupdaysImpl(FinancialDayFactory.Create(settlement, DayCountBasis.European_30_360),
                                 FinancialDayFactory.Create(maturity, DayCountBasis.European_30_360),
                                 4,
-                                DayCountBasis.European_30_360
-                               );
+                                DayCountBasis.European_30_360);
+
         result = func.GetCoupdays();
         Assert.AreEqual(90d, result.Result);
     }
@@ -305,30 +283,29 @@ public class CoupInternalTests
     #endregion
 
     #region COUPDAYSNC
+
     [TestMethod]
     public void CoupdaysNc_ShouldReturnNumberOfDays_ActualActual()
     {
         DateTime settlement = new DateTime(2016, 02, 01);
         DateTime maturity = new DateTime(2019, 5, 31);
 
-        CoupdaysncImpl? func = new CoupdaysncImpl(
-                                                  FinancialDayFactory.Create(settlement, DayCountBasis.Actual_Actual),
+        CoupdaysncImpl? func = new CoupdaysncImpl(FinancialDayFactory.Create(settlement, DayCountBasis.Actual_Actual),
                                                   FinancialDayFactory.Create(maturity, DayCountBasis.Actual_Actual),
                                                   4,
-                                                  DayCountBasis.Actual_Actual
-                                                 );
+                                                  DayCountBasis.Actual_Actual);
+
         FinanceCalcResult<double>? result = func.Coupdaysnc();
         Assert.AreEqual(28d, result.Result);
 
         settlement = new DateTime(2016, 05, 30);
         maturity = new DateTime(2019, 5, 31);
 
-        func = new CoupdaysncImpl(
-                                  FinancialDayFactory.Create(settlement, DayCountBasis.Actual_Actual),
+        func = new CoupdaysncImpl(FinancialDayFactory.Create(settlement, DayCountBasis.Actual_Actual),
                                   FinancialDayFactory.Create(maturity, DayCountBasis.Actual_Actual),
                                   4,
-                                  DayCountBasis.Actual_Actual
-                                 );
+                                  DayCountBasis.Actual_Actual);
+
         result = func.Coupdaysnc();
         Assert.AreEqual(1d, result.Result);
     }
@@ -339,36 +316,33 @@ public class CoupInternalTests
         DateTime settlement = new DateTime(2016, 02, 01);
         DateTime maturity = new DateTime(2019, 5, 31);
 
-        CoupdaysncImpl? func = new CoupdaysncImpl(
-                                                  FinancialDayFactory.Create(settlement, DayCountBasis.US_30_360),
+        CoupdaysncImpl? func = new CoupdaysncImpl(FinancialDayFactory.Create(settlement, DayCountBasis.US_30_360),
                                                   FinancialDayFactory.Create(maturity, DayCountBasis.US_30_360),
                                                   4,
-                                                  DayCountBasis.US_30_360
-                                                 );
+                                                  DayCountBasis.US_30_360);
+
         FinanceCalcResult<double>? result = func.Coupdaysnc();
         Assert.AreEqual(29d, result.Result);
 
         settlement = new DateTime(2016, 05, 30);
         maturity = new DateTime(2019, 5, 31);
 
-        func = new CoupdaysncImpl(
-                                  FinancialDayFactory.Create(settlement, DayCountBasis.US_30_360),
+        func = new CoupdaysncImpl(FinancialDayFactory.Create(settlement, DayCountBasis.US_30_360),
                                   FinancialDayFactory.Create(maturity, DayCountBasis.US_30_360),
                                   4,
-                                  DayCountBasis.US_30_360
-                                 );
+                                  DayCountBasis.US_30_360);
+
         result = func.Coupdaysnc();
         Assert.AreEqual(0d, result.Result);
 
         settlement = new DateTime(2018, 08, 01);
         maturity = new DateTime(2019, 03, 15);
 
-        func = new CoupdaysncImpl(
-                                  FinancialDayFactory.Create(settlement, DayCountBasis.US_30_360),
+        func = new CoupdaysncImpl(FinancialDayFactory.Create(settlement, DayCountBasis.US_30_360),
                                   FinancialDayFactory.Create(maturity, DayCountBasis.US_30_360),
                                   4,
-                                  DayCountBasis.US_30_360
-                                 );
+                                  DayCountBasis.US_30_360);
+
         result = func.Coupdaysnc();
         Assert.AreEqual(44d, result.Result);
 
@@ -377,12 +351,11 @@ public class CoupInternalTests
         settlement = new DateTime(2018, 08, 01);
         maturity = new DateTime(2020, 02, 29);
 
-        func = new CoupdaysncImpl(
-                                  FinancialDayFactory.Create(settlement, DayCountBasis.US_30_360),
+        func = new CoupdaysncImpl(FinancialDayFactory.Create(settlement, DayCountBasis.US_30_360),
                                   FinancialDayFactory.Create(maturity, DayCountBasis.US_30_360),
                                   4,
-                                  DayCountBasis.US_30_360
-                                 );
+                                  DayCountBasis.US_30_360);
+
         result = func.Coupdaysnc();
         Assert.AreEqual(28d, result.Result);
     }
@@ -393,36 +366,33 @@ public class CoupInternalTests
         DateTime settlement = new DateTime(2016, 02, 01);
         DateTime maturity = new DateTime(2019, 5, 31);
 
-        CoupdaysncImpl? func = new CoupdaysncImpl(
-                                                  FinancialDayFactory.Create(settlement, DayCountBasis.Actual_360),
+        CoupdaysncImpl? func = new CoupdaysncImpl(FinancialDayFactory.Create(settlement, DayCountBasis.Actual_360),
                                                   FinancialDayFactory.Create(maturity, DayCountBasis.Actual_360),
                                                   4,
-                                                  DayCountBasis.Actual_360
-                                                 );
+                                                  DayCountBasis.Actual_360);
+
         FinanceCalcResult<double>? result = func.Coupdaysnc();
         Assert.AreEqual(28d, result.Result);
 
         settlement = new DateTime(2016, 05, 30);
         maturity = new DateTime(2019, 5, 31);
 
-        func = new CoupdaysncImpl(
-                                  FinancialDayFactory.Create(settlement, DayCountBasis.Actual_360),
+        func = new CoupdaysncImpl(FinancialDayFactory.Create(settlement, DayCountBasis.Actual_360),
                                   FinancialDayFactory.Create(maturity, DayCountBasis.Actual_360),
                                   4,
-                                  DayCountBasis.Actual_360
-                                 );
+                                  DayCountBasis.Actual_360);
+
         result = func.Coupdaysnc();
         Assert.AreEqual(1d, result.Result);
 
         settlement = new DateTime(2018, 08, 01);
         maturity = new DateTime(2019, 03, 15);
 
-        func = new CoupdaysncImpl(
-                                  FinancialDayFactory.Create(settlement, DayCountBasis.Actual_360),
+        func = new CoupdaysncImpl(FinancialDayFactory.Create(settlement, DayCountBasis.Actual_360),
                                   FinancialDayFactory.Create(maturity, DayCountBasis.Actual_360),
                                   4,
-                                  DayCountBasis.Actual_360
-                                 );
+                                  DayCountBasis.Actual_360);
+
         result = func.Coupdaysnc();
         Assert.AreEqual(45d, result.Result);
     }
@@ -433,36 +403,33 @@ public class CoupInternalTests
         DateTime settlement = new DateTime(2016, 02, 01);
         DateTime maturity = new DateTime(2019, 5, 31);
 
-        CoupdaysncImpl? func = new CoupdaysncImpl(
-                                                  FinancialDayFactory.Create(settlement, DayCountBasis.Actual_365),
+        CoupdaysncImpl? func = new CoupdaysncImpl(FinancialDayFactory.Create(settlement, DayCountBasis.Actual_365),
                                                   FinancialDayFactory.Create(maturity, DayCountBasis.Actual_365),
                                                   4,
-                                                  DayCountBasis.Actual_365
-                                                 );
+                                                  DayCountBasis.Actual_365);
+
         FinanceCalcResult<double>? result = func.Coupdaysnc();
         Assert.AreEqual(28d, result.Result);
 
         settlement = new DateTime(2016, 05, 30);
         maturity = new DateTime(2019, 5, 31);
 
-        func = new CoupdaysncImpl(
-                                  FinancialDayFactory.Create(settlement, DayCountBasis.Actual_365),
+        func = new CoupdaysncImpl(FinancialDayFactory.Create(settlement, DayCountBasis.Actual_365),
                                   FinancialDayFactory.Create(maturity, DayCountBasis.Actual_365),
                                   4,
-                                  DayCountBasis.Actual_365
-                                 );
+                                  DayCountBasis.Actual_365);
+
         result = func.Coupdaysnc();
         Assert.AreEqual(1d, result.Result);
 
         settlement = new DateTime(2018, 08, 01);
         maturity = new DateTime(2019, 03, 15);
 
-        func = new CoupdaysncImpl(
-                                  FinancialDayFactory.Create(settlement, DayCountBasis.Actual_365),
+        func = new CoupdaysncImpl(FinancialDayFactory.Create(settlement, DayCountBasis.Actual_365),
                                   FinancialDayFactory.Create(maturity, DayCountBasis.Actual_365),
                                   4,
-                                  DayCountBasis.Actual_365
-                                 );
+                                  DayCountBasis.Actual_365);
+
         result = func.Coupdaysnc();
         Assert.AreEqual(45d, result.Result);
     }
@@ -473,36 +440,33 @@ public class CoupInternalTests
         DateTime settlement = new DateTime(2016, 02, 01);
         DateTime maturity = new DateTime(2019, 5, 31);
 
-        CoupdaysncImpl? func = new CoupdaysncImpl(
-                                                  FinancialDayFactory.Create(settlement, DayCountBasis.European_30_360),
+        CoupdaysncImpl? func = new CoupdaysncImpl(FinancialDayFactory.Create(settlement, DayCountBasis.European_30_360),
                                                   FinancialDayFactory.Create(maturity, DayCountBasis.European_30_360),
                                                   4,
-                                                  DayCountBasis.European_30_360
-                                                 );
+                                                  DayCountBasis.European_30_360);
+
         FinanceCalcResult<double>? result = func.Coupdaysnc();
         Assert.AreEqual(28d, result.Result);
 
         settlement = new DateTime(2016, 05, 30);
         maturity = new DateTime(2019, 5, 31);
 
-        func = new CoupdaysncImpl(
-                                  FinancialDayFactory.Create(settlement, DayCountBasis.European_30_360),
+        func = new CoupdaysncImpl(FinancialDayFactory.Create(settlement, DayCountBasis.European_30_360),
                                   FinancialDayFactory.Create(maturity, DayCountBasis.European_30_360),
                                   4,
-                                  DayCountBasis.European_30_360
-                                 );
+                                  DayCountBasis.European_30_360);
+
         result = func.Coupdaysnc();
         Assert.AreEqual(0d, result.Result);
 
         settlement = new DateTime(2018, 08, 01);
         maturity = new DateTime(2019, 03, 15);
 
-        func = new CoupdaysncImpl(
-                                  FinancialDayFactory.Create(settlement, DayCountBasis.European_30_360),
+        func = new CoupdaysncImpl(FinancialDayFactory.Create(settlement, DayCountBasis.European_30_360),
                                   FinancialDayFactory.Create(maturity, DayCountBasis.European_30_360),
                                   4,
-                                  DayCountBasis.European_30_360
-                                 );
+                                  DayCountBasis.European_30_360);
+
         result = func.Coupdaysnc();
         Assert.AreEqual(44d, result.Result);
     }
@@ -518,30 +482,30 @@ public class CoupInternalTests
         DateTime settlement = new DateTime(2016, 02, 01);
         DateTime maturity = new DateTime(2019, 3, 15);
 
-        CoupnumImpl? func = new CoupnumImpl(
-                                            FinancialDayFactory.Create(settlement, DayCountBasis.Actual_Actual),
+        CoupnumImpl? func = new CoupnumImpl(FinancialDayFactory.Create(settlement, DayCountBasis.Actual_Actual),
                                             FinancialDayFactory.Create(maturity, DayCountBasis.Actual_Actual),
                                             4,
-                                            DayCountBasis.Actual_Actual
-                                           );
+                                            DayCountBasis.Actual_Actual);
+
         FinanceCalcResult<int>? result = func.GetCoupnum();
         Assert.AreEqual(13d, result.Result);
 
         settlement = new DateTime(2018, 12, 01);
         maturity = new DateTime(2019, 5, 31);
 
-        func = new CoupnumImpl(
-                               FinancialDayFactory.Create(settlement, DayCountBasis.Actual_Actual),
+        func = new CoupnumImpl(FinancialDayFactory.Create(settlement, DayCountBasis.Actual_Actual),
                                FinancialDayFactory.Create(maturity, DayCountBasis.Actual_Actual),
                                2,
-                               DayCountBasis.Actual_Actual
-                              );
+                               DayCountBasis.Actual_Actual);
+
         result = func.GetCoupnum();
         Assert.AreEqual(1d, result.Result);
     }
+
     #endregion
 
     #region COUPNCD
+
     [TestMethod]
     public void Coupncd_ShouldReturnCorrectDate_ActualActual()
     {
@@ -549,30 +513,30 @@ public class CoupInternalTests
         DateTime settlement = new DateTime(2017, 02, 01);
         DateTime maturity = new DateTime(2020, 05, 31);
 
-        CoupncdImpl? func = new CoupncdImpl(
-                                            FinancialDayFactory.Create(settlement, DayCountBasis.Actual_Actual),
+        CoupncdImpl? func = new CoupncdImpl(FinancialDayFactory.Create(settlement, DayCountBasis.Actual_Actual),
                                             FinancialDayFactory.Create(maturity, DayCountBasis.Actual_Actual),
                                             4,
-                                            DayCountBasis.Actual_Actual
-                                           );
+                                            DayCountBasis.Actual_Actual);
+
         FinanceCalcResult<DateTime>? result = func.GetCoupncd();
         Assert.AreEqual(new DateTime(2017, 2, 28), result.Result);
 
         settlement = new DateTime(2016, 02, 01);
         maturity = new DateTime(2019, 5, 31);
 
-        func = new CoupncdImpl(
-                               FinancialDayFactory.Create(settlement, DayCountBasis.Actual_Actual),
+        func = new CoupncdImpl(FinancialDayFactory.Create(settlement, DayCountBasis.Actual_Actual),
                                FinancialDayFactory.Create(maturity, DayCountBasis.Actual_Actual),
                                4,
-                               DayCountBasis.Actual_Actual
-                              );
+                               DayCountBasis.Actual_Actual);
+
         result = func.GetCoupncd();
         Assert.AreEqual(new DateTime(2016, 2, 29), result.Result);
     }
+
     #endregion
 
     #region COUPPCD
+
     [TestMethod]
     public void Couppcd_ShouldReturnCorrectDate_ActualActual()
     {
@@ -580,26 +544,25 @@ public class CoupInternalTests
         DateTime settlement = new DateTime(2017, 05, 30);
         DateTime maturity = new DateTime(2020, 05, 31);
 
-        CouppcdImpl? func = new CouppcdImpl(
-                                            FinancialDayFactory.Create(settlement, DayCountBasis.Actual_Actual),
+        CouppcdImpl? func = new CouppcdImpl(FinancialDayFactory.Create(settlement, DayCountBasis.Actual_Actual),
                                             FinancialDayFactory.Create(maturity, DayCountBasis.Actual_Actual),
                                             4,
-                                            DayCountBasis.Actual_Actual
-                                           );
+                                            DayCountBasis.Actual_Actual);
+
         FinanceCalcResult<DateTime>? result = func.GetCouppcd();
         Assert.AreEqual(new DateTime(2017, 2, 28), result.Result);
 
         settlement = new DateTime(2016, 02, 01);
         maturity = new DateTime(2019, 5, 31);
 
-        func = new CouppcdImpl(
-                               FinancialDayFactory.Create(settlement, DayCountBasis.Actual_Actual),
+        func = new CouppcdImpl(FinancialDayFactory.Create(settlement, DayCountBasis.Actual_Actual),
                                FinancialDayFactory.Create(maturity, DayCountBasis.Actual_Actual),
                                4,
-                               DayCountBasis.Actual_Actual
-                              );
+                               DayCountBasis.Actual_Actual);
+
         result = func.GetCouppcd();
         Assert.AreEqual(new DateTime(2015, 11, 30), result.Result);
     }
+
     #endregion
 }

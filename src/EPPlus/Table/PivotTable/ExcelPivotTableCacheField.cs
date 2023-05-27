@@ -10,6 +10,7 @@
  *************************************************************************************************
   01/27/2020         EPPlus Software AB       Initial release EPPlus 5
  *************************************************************************************************/
+
 using OfficeOpenXml.ConditionalFormatting;
 using OfficeOpenXml.Constants;
 using OfficeOpenXml.Core;
@@ -43,80 +44,76 @@ public class ExcelPivotTableCacheField : XmlHelper
         Error = 0x30,
         Float = 0x40,
     }
+
     internal PivotTableCacheInternal _cache;
-    internal ExcelPivotTableCacheField(XmlNamespaceManager nsm, XmlNode topNode, PivotTableCacheInternal cache, int index) : base(nsm, topNode)
+
+    internal ExcelPivotTableCacheField(XmlNamespaceManager nsm, XmlNode topNode, PivotTableCacheInternal cache, int index)
+        : base(nsm, topNode)
     {
         this._cache = cache;
         this.Index = index;
         this.SetCacheFieldNode();
+
         if (this.NumFmtId.HasValue)
         {
             ExcelStyles? styles = cache._wb.Styles;
             int ix = styles.NumberFormats.FindIndexById(this.NumFmtId.Value.ToString(CultureInfo.InvariantCulture));
+
             if (ix >= 0)
             {
                 this.Format = styles.NumberFormats[ix].Format;
             }
         }
     }
+
     /// <summary>
     /// The index in the collection of the pivot field
     /// </summary>
     public int Index { get; set; }
+
     /// <summary>
     /// The name for the field
     /// </summary>
     public string Name
     {
-        get
-        {
-            return this.GetXmlNodeString("@name");
-        }
-        internal set
-        {
-            this.SetXmlNodeString("@name", value);
-        }
+        get { return this.GetXmlNodeString("@name"); }
+        internal set { this.SetXmlNodeString("@name", value); }
     }
+
     /// <summary>
     /// A list of unique items for the field 
     /// </summary>
-    public EPPlusReadOnlyList<object> SharedItems
-    {
-        get;
-    } = new EPPlusReadOnlyList<object>();
+    public EPPlusReadOnlyList<object> SharedItems { get; } = new EPPlusReadOnlyList<object>();
+
     /// <summary>
     /// A list of group items, if the field has grouping.
     /// <seealso cref="Grouping"/>
     /// </summary>
-    public EPPlusReadOnlyList<object> GroupItems
-    {
-        get;
-        set;
-    } = new EPPlusReadOnlyList<object>();
+    public EPPlusReadOnlyList<object> GroupItems { get; set; } = new EPPlusReadOnlyList<object>();
+
     internal Dictionary<object, int> _cacheLookup = null;
+
     /// <summary>
     /// The type of date grouping
     /// </summary>
     public eDateGroupBy DateGrouping { get; private set; }
+
     /// <summary>
     /// Grouping proprerties, if the field has grouping
     /// </summary>
     public ExcelPivotTableFieldGroup Grouping { get; set; }
+
     /// <summary>
     /// The number format for the field
     /// </summary>
     public string Format { get; set; }
+
     internal int? NumFmtId
     {
-        get
-        {
-            return this.GetXmlNodeIntNull("@numFmtId");
-        }
-        set
-        {
-            this.SetXmlNodeInt("@numFmtId", value);
-        }
+        get { return this.GetXmlNodeIntNull("@numFmtId"); }
+        set { this.SetXmlNodeInt("@numFmtId", value); }
     }
+
     internal void WriteSharedItems(XmlElement fieldNode, XmlNamespaceManager nsm)
     {
         XmlElement? shNode = (XmlElement)fieldNode.SelectSingleNode("d:sharedItems", nsm);
@@ -125,21 +122,24 @@ public class ExcelPivotTableCacheField : XmlHelper
         DataTypeFlags flags = this.GetFlags();
 
         this._cacheLookup = new Dictionary<object, int>(new CacheComparer());
+
         if (this.IsRowColumnOrPage || this.HasSlicer)
         {
             this.AppendSharedItems(shNode);
         }
+
         int noTypes = GetNoOfTypes(flags);
-        if (noTypes > 1 && 
-            flags != (DataTypeFlags.Int | DataTypeFlags.Number) &&
-            flags != (DataTypeFlags.Float | DataTypeFlags.Number) &&
-            flags != (DataTypeFlags.Int | DataTypeFlags.Float | DataTypeFlags.Number) &&
-            flags != (DataTypeFlags.Int | DataTypeFlags.Number | DataTypeFlags.Empty) &&
-            flags != (DataTypeFlags.Float | DataTypeFlags.Number | DataTypeFlags.Empty) &&
-            flags != (DataTypeFlags.Int | DataTypeFlags.Float | DataTypeFlags.Number | DataTypeFlags.Empty) && this.SharedItems.Count > 1)
+
+        if (noTypes > 1
+            && flags != (DataTypeFlags.Int | DataTypeFlags.Number)
+            && flags != (DataTypeFlags.Float | DataTypeFlags.Number)
+            && flags != (DataTypeFlags.Int | DataTypeFlags.Float | DataTypeFlags.Number)
+            && flags != (DataTypeFlags.Int | DataTypeFlags.Number | DataTypeFlags.Empty)
+            && flags != (DataTypeFlags.Float | DataTypeFlags.Number | DataTypeFlags.Empty)
+            && flags != (DataTypeFlags.Int | DataTypeFlags.Float | DataTypeFlags.Number | DataTypeFlags.Empty)
+            && this.SharedItems.Count > 1)
         {
-            if ((flags & DataTypeFlags.String) == DataTypeFlags.String ||
-                (flags & DataTypeFlags.String) == DataTypeFlags.Empty)
+            if ((flags & DataTypeFlags.String) == DataTypeFlags.String || (flags & DataTypeFlags.String) == DataTypeFlags.Empty)
             {
                 shNode.SetAttribute("containsMixedTypes", "1");
             }
@@ -147,20 +147,23 @@ public class ExcelPivotTableCacheField : XmlHelper
             {
                 shNode.SetAttribute("containsMixedTypes", "1");
             }
+
             SetFlags(shNode, flags);
         }
         else
         {
-            if ((flags & DataTypeFlags.String) != DataTypeFlags.String &&
-                (flags & DataTypeFlags.Empty) != DataTypeFlags.Empty &&
-                (flags & DataTypeFlags.Boolean) != DataTypeFlags.Boolean)
+            if ((flags & DataTypeFlags.String) != DataTypeFlags.String
+                && (flags & DataTypeFlags.Empty) != DataTypeFlags.Empty
+                && (flags & DataTypeFlags.Boolean) != DataTypeFlags.Boolean)
             {
                 shNode.SetAttribute("containsSemiMixedTypes", "0");
                 shNode.SetAttribute("containsString", "0");
             }
+
             SetFlags(shNode, flags);
         }
     }
+
     internal bool IsRowColumnOrPage
     {
         get
@@ -170,9 +173,8 @@ public class ExcelPivotTableCacheField : XmlHelper
                 if (this.Index < pt.Fields.Count)
                 {
                     ePivotFieldAxis axis = pt.Fields[this.Index].Axis;
-                    if (axis == ePivotFieldAxis.Column ||
-                        axis == ePivotFieldAxis.Row ||
-                        axis == ePivotFieldAxis.Page)
+
+                    if (axis == ePivotFieldAxis.Column || axis == ePivotFieldAxis.Row || axis == ePivotFieldAxis.Page)
                     {
                         return true;
                     }
@@ -182,9 +184,11 @@ public class ExcelPivotTableCacheField : XmlHelper
                     return false;
                 }
             }
+
             return false;
         }
     }
+
     /// <summary>
     /// The formula for cache field.
     /// The formula for the calculated field. 
@@ -194,16 +198,14 @@ public class ExcelPivotTableCacheField : XmlHelper
     /// </summary>
     public string Formula
     {
-        get
-        {
-            return this.GetXmlNodeString("@formula");
-        }
+        get { return this.GetXmlNodeString("@formula"); }
         set
         {
-            if(this.DatabaseField)
+            if (this.DatabaseField)
             {
                 throw new InvalidOperationException("Can't set a formula to a database field");
             }
+
             if (string.IsNullOrEmpty(value) || value.Trim() == "")
             {
                 throw new ArgumentException("The formula can't be blank", "formula");
@@ -212,36 +214,35 @@ public class ExcelPivotTableCacheField : XmlHelper
             this.SetXmlNodeString("@formula", value);
         }
     }
+
     internal bool DatabaseField
     {
-        get
-        {
-            return this.GetXmlNodeBool("@databaseField", true);
-        }
-        set
-        {
-            this.SetXmlNodeBool("@databaseField", value, true);
-        }
+        get { return this.GetXmlNodeBool("@databaseField", true); }
+        set { this.SetXmlNodeBool("@databaseField", value, true); }
     }
+
     internal bool HasSlicer
     {
         get
         {
             foreach (ExcelPivotTable? pt in this._cache._pivotTables)
             {
-                if (pt.Fields.Count> this.Index && pt.Fields[this.Index].Slicer != null)
+                if (pt.Fields.Count > this.Index && pt.Fields[this.Index].Slicer != null)
                 {
                     return true;
                 }
             }
+
             return false;
         }
     }
+
     internal void UpdateSlicers()
     {
         foreach (ExcelPivotTable? pt in this._cache._pivotTables)
         {
             ExcelPivotTableSlicer? s = pt.Fields[this.Index].Slicer;
+
             if (s != null)
             {
                 s.Cache.Data.Items.RefreshMe();
@@ -249,49 +250,56 @@ public class ExcelPivotTableCacheField : XmlHelper
         }
     }
 
-
     private static void SetFlags(XmlElement shNode, DataTypeFlags flags)
     {
-        if((flags & DataTypeFlags.DateTime) == DataTypeFlags.DateTime)
+        if ((flags & DataTypeFlags.DateTime) == DataTypeFlags.DateTime)
         {
             shNode.SetAttribute("containsDate", "1");
         }
+
         if ((flags & DataTypeFlags.Number) == DataTypeFlags.Number)
         {
             shNode.SetAttribute("containsNumber", "1");
         }
-        if ((flags & DataTypeFlags.Int) == DataTypeFlags.Int &&
-            (flags & DataTypeFlags.Float) != DataTypeFlags.Float)
+
+        if ((flags & DataTypeFlags.Int) == DataTypeFlags.Int && (flags & DataTypeFlags.Float) != DataTypeFlags.Float)
         {
             shNode.SetAttribute("containsInteger", "1");
         }
+
         if ((flags & DataTypeFlags.Empty) == DataTypeFlags.Empty)
         {
             shNode.SetAttribute("containsBlank", "1");
         }
-        if((flags & DataTypeFlags.String) != DataTypeFlags.String &&
-           (flags & DataTypeFlags.Boolean) != DataTypeFlags.Boolean &&
-           (flags & DataTypeFlags.Error) != DataTypeFlags.Error)
+
+        if ((flags & DataTypeFlags.String) != DataTypeFlags.String
+            && (flags & DataTypeFlags.Boolean) != DataTypeFlags.Boolean
+            && (flags & DataTypeFlags.Error) != DataTypeFlags.Error)
         {
             shNode.SetAttribute("containsString", "0");
         }
     }
+
     private static int GetNoOfTypes(DataTypeFlags flags)
     {
         int types = 0;
+
         foreach (DataTypeFlags v in Enum.GetValues(typeof(DataTypeFlags)))
         {
-            if (v!=DataTypeFlags.Empty && (flags & v)==v)
+            if (v != DataTypeFlags.Empty && (flags & v) == v)
             {
                 types++;
             }
         }
+
         return types;
     }
+
     private void AppendSharedItems(XmlElement shNode)
     {
         int index = 0;
         bool isLongText = false;
+
         foreach (object? si in this.SharedItems)
         {
             if (si == null || si.Equals(ExcelPivotTable.PivotNullValue))
@@ -326,9 +334,12 @@ public class ExcelPivotTableCacheField : XmlHelper
                         {
                             AppendItem(shNode, "n", ConvertUtil.GetValueForXml(si, false));
                         }
+
                         break;
+
                     case TypeCode.DateTime:
                         DateTime d = (DateTime)si;
+
                         if (d.Year > 1899)
                         {
                             AppendItem(shNode, "d", d.ToString("s"));
@@ -337,17 +348,24 @@ public class ExcelPivotTableCacheField : XmlHelper
                         {
                             AppendItem(shNode, "d", d.ToString("HH:mm:ss", CultureInfo.InvariantCulture));
                         }
+
                         break;
+
                     case TypeCode.Boolean:
                         AppendItem(shNode, "b", ConvertUtil.GetValueForXml(si, false));
+
                         break;
+
                     case TypeCode.Empty:
                         AppendItem(shNode, "m", null);
+
                         break;
+
                     default:
                         if (t == typeof(TimeSpan))
                         {
                             d = new DateTime(((TimeSpan)si).Ticks);
+
                             if (d.Year > 1899)
                             {
                                 AppendItem(shNode, "d", d.ToString("s"));
@@ -365,15 +383,18 @@ public class ExcelPivotTableCacheField : XmlHelper
                         {
                             string? s = si.ToString();
                             AppendItem(shNode, "s", s);
+
                             if (s.Length > 255 && isLongText == false)
                             {
                                 isLongText = true;
                             }
                         }
+
                         break;
                 }
             }
         }
+
         if (isLongText)
         {
             shNode.SetAttribute("longText", "1");
@@ -383,6 +404,7 @@ public class ExcelPivotTableCacheField : XmlHelper
     private DataTypeFlags GetFlags()
     {
         DataTypeFlags flags = 0;
+
         foreach (object? si in this.SharedItems)
         {
             if (si == null || si.Equals(ExcelPivotTable.PivotNullValue))
@@ -392,12 +414,15 @@ public class ExcelPivotTableCacheField : XmlHelper
             else
             {
                 Type? t = si.GetType();
+
                 switch (Type.GetTypeCode(t))
                 {
                     case TypeCode.String:
                     case TypeCode.Char:
                         flags |= DataTypeFlags.String;
+
                         break;
+
                     case TypeCode.Byte:
                     case TypeCode.SByte:
                     case TypeCode.UInt16:
@@ -406,7 +431,7 @@ public class ExcelPivotTableCacheField : XmlHelper
                     case TypeCode.Int16:
                     case TypeCode.Int32:
                     case TypeCode.Int64:
-                        if(t.IsEnum)
+                        if (t.IsEnum)
                         {
                             flags |= DataTypeFlags.String;
                         }
@@ -414,11 +439,14 @@ public class ExcelPivotTableCacheField : XmlHelper
                         {
                             flags |= DataTypeFlags.Number | DataTypeFlags.Int;
                         }
+
                         break;
+
                     case TypeCode.Decimal:
                     case TypeCode.Double:
                     case TypeCode.Single:
                         flags |= DataTypeFlags.Number;
+
                         if ((flags & DataTypeFlags.Int) != DataTypeFlags.Int && Convert.ToDouble(si) % 1 == 0)
                         {
                             flags |= DataTypeFlags.Int;
@@ -427,22 +455,30 @@ public class ExcelPivotTableCacheField : XmlHelper
                         {
                             flags |= DataTypeFlags.Float;
                         }
+
                         break;
+
                     case TypeCode.DateTime:
                         flags |= DataTypeFlags.DateTime;
+
                         break;
+
                     case TypeCode.Boolean:
                         flags |= DataTypeFlags.Boolean;
+
                         break;
+
                     case TypeCode.Empty:
                         flags |= DataTypeFlags.Empty;
+
                         break;
+
                     default:
                         if (t == typeof(TimeSpan))
                         {
                             flags |= DataTypeFlags.DateTime;
                         }
-                        else if(t==typeof(ExcelErrorValue))
+                        else if (t == typeof(ExcelErrorValue))
                         {
                             flags |= DataTypeFlags.Error;
                         }
@@ -450,27 +486,35 @@ public class ExcelPivotTableCacheField : XmlHelper
                         {
                             flags |= DataTypeFlags.String;
                         }
+
                         break;
                 }
             }
         }
+
         return flags;
     }
+
     private static void AppendItem(XmlElement shNode, string elementName, string value)
     {
         XmlElement? e = shNode.OwnerDocument.CreateElement(elementName, ExcelPackage.schemaMain);
+
         if (value != null)
         {
             e.SetAttribute("v", value);
         }
+
         shNode.AppendChild(e);
     }
+
     internal void SetCacheFieldNode()
     {
         XmlNode? groupNode = this.GetNode("d:fieldGroup");
+
         if (groupNode != null)
         {
             XmlNode? groupBy = groupNode.SelectSingleNode("d:rangePr/@groupBy", this.NameSpaceManager);
+
             if (groupBy == null)
             {
                 this.Grouping = new ExcelPivotTableFieldNumericGroup(this.NameSpaceManager, this.TopNode);
@@ -480,7 +524,9 @@ public class ExcelPivotTableCacheField : XmlHelper
                 this.DateGrouping = (eDateGroupBy)Enum.Parse(typeof(eDateGroupBy), groupBy.Value, true);
                 this.Grouping = new ExcelPivotTableFieldDateGroup(this.NameSpaceManager, groupNode);
             }
+
             XmlNode? groupItems = groupNode.SelectSingleNode("d:groupItems", this.NameSpaceManager);
+
             if (groupItems != null)
             {
                 this.AddItems(this.GroupItems, groupItems, true);
@@ -488,11 +534,11 @@ public class ExcelPivotTableCacheField : XmlHelper
         }
 
         XmlNode? si = this.GetNode("d:sharedItems");
+
         if (si != null)
         {
-            this.AddItems(this.SharedItems, si, groupNode==null);
+            this.AddItems(this.SharedItems, si, groupNode == null);
         }
-
     }
 
     private void AddItems(EPPlusReadOnlyList<Object> items, XmlNode itemsNode, bool updateCacheLookup)
@@ -556,9 +602,11 @@ public class ExcelPivotTableCacheField : XmlHelper
             {
                 items.Add(ExcelPivotTable.PivotNullValue);
             }
-            if(updateCacheLookup)
+
+            if (updateCacheLookup)
             {
                 object? key = items[items.Count - 1];
+
                 if (this._cacheLookup.ContainsKey(key))
                 {
                     items._list.Remove(key);
@@ -570,7 +618,9 @@ public class ExcelPivotTableCacheField : XmlHelper
             }
         }
     }
+
     #region Grouping
+
     internal ExcelPivotTableFieldDateGroup SetDateGroup(ExcelPivotTableField field, eDateGroupBy groupBy, DateTime StartDate, DateTime EndDate, int interval)
     {
         ExcelPivotTableFieldDateGroup group = new(this.NameSpaceManager, this.TopNode);
@@ -578,7 +628,9 @@ public class ExcelPivotTableCacheField : XmlHelper
         this.SetXmlNodeBool("d:sharedItems/@containsNonDate", false);
         this.SetXmlNodeBool("d:sharedItems/@containsSemiMixedTypes", false);
 
-        group.TopNode.InnerXml += string.Format("<fieldGroup base=\"{0}\"><rangePr groupBy=\"{1}\" /><groupItems /></fieldGroup>", field.BaseIndex, groupBy.ToString().ToLower(CultureInfo.InvariantCulture));
+        group.TopNode.InnerXml += string.Format("<fieldGroup base=\"{0}\"><rangePr groupBy=\"{1}\" /><groupItems /></fieldGroup>",
+                                                field.BaseIndex,
+                                                groupBy.ToString().ToLower(CultureInfo.InvariantCulture));
 
         if (StartDate.Year < 1900)
         {
@@ -604,8 +656,10 @@ public class ExcelPivotTableCacheField : XmlHelper
 
         this.Grouping = group;
         this.DateGrouping = groupBy;
+
         return group;
     }
+
     internal ExcelPivotTableFieldNumericGroup SetNumericGroup(int baseIndex, double start, double end, double interval)
     {
         ExcelPivotTableFieldNumericGroup group = new(this.NameSpaceManager, this.TopNode);
@@ -614,11 +668,16 @@ public class ExcelPivotTableCacheField : XmlHelper
         this.SetXmlNodeBool("d:sharedItems/@containsSemiMixedTypes", false);
         this.SetXmlNodeBool("d:sharedItems/@containsString", false);
 
-        group.TopNode.InnerXml += string.Format("<fieldGroup base=\"{0}\"><rangePr autoStart=\"0\" autoEnd=\"0\" startNum=\"{1}\" endNum=\"{2}\" groupInterval=\"{3}\"/><groupItems /></fieldGroup>",
-                                                baseIndex, start.ToString(CultureInfo.InvariantCulture), end.ToString(CultureInfo.InvariantCulture), interval.ToString(CultureInfo.InvariantCulture));
+        group.TopNode.InnerXml +=
+            string.Format("<fieldGroup base=\"{0}\"><rangePr autoStart=\"0\" autoEnd=\"0\" startNum=\"{1}\" endNum=\"{2}\" groupInterval=\"{3}\"/><groupItems /></fieldGroup>",
+                          baseIndex,
+                          start.ToString(CultureInfo.InvariantCulture),
+                          end.ToString(CultureInfo.InvariantCulture),
+                          interval.ToString(CultureInfo.InvariantCulture));
 
         int items = this.AddNumericGroupItems(group, start, end, interval);
         this.Grouping = group;
+
         return group;
     }
 
@@ -628,6 +687,7 @@ public class ExcelPivotTableCacheField : XmlHelper
         {
             throw new Exception("The interval must be a positiv");
         }
+
         if (start > end)
         {
             throw new Exception("Then End number must be larger than the Start number");
@@ -635,6 +695,7 @@ public class ExcelPivotTableCacheField : XmlHelper
 
         XmlElement groupItemsNode = group.TopNode.SelectSingleNode("d:fieldGroup/d:groupItems", group.NameSpaceManager) as XmlElement;
         int items = 2;
+
         //First date
         double index = start;
         double nextIndex = start + interval;
@@ -643,7 +704,9 @@ public class ExcelPivotTableCacheField : XmlHelper
 
         while (index < end)
         {
-            this.AddGroupItem(groupItemsNode, string.Format("{0}-{1}", index.ToString(CultureInfo.CurrentCulture), nextIndex.ToString(CultureInfo.CurrentCulture)));
+            this.AddGroupItem(groupItemsNode,
+                              string.Format("{0}-{1}", index.ToString(CultureInfo.CurrentCulture), nextIndex.ToString(CultureInfo.CurrentCulture)));
+
             index = nextIndex;
             nextIndex += interval;
             items++;
@@ -652,13 +715,16 @@ public class ExcelPivotTableCacheField : XmlHelper
         this.AddGroupItem(groupItemsNode, ">" + index.ToString(CultureInfo.CurrentCulture));
 
         this.UpdateCacheLookupFromItems(this.GroupItems._list);
+
         return items;
     }
+
     private int AddDateGroupItems(ExcelPivotTableFieldGroup group, eDateGroupBy GroupBy, DateTime StartDate, DateTime EndDate, int interval)
     {
         XmlElement groupItemsNode = group.TopNode.SelectSingleNode("d:fieldGroup/d:groupItems", group.NameSpaceManager) as XmlElement;
         int items = 2;
         this.GroupItems.Clear();
+
         //First date
         this.AddGroupItem(groupItemsNode, "<" + StartDate.ToString("s", CultureInfo.InvariantCulture).Substring(0, 10));
 
@@ -668,26 +734,33 @@ public class ExcelPivotTableCacheField : XmlHelper
             case eDateGroupBy.Minutes:
                 this.AddTimeSerie(60, groupItemsNode);
                 items += 60;
+
                 break;
+
             case eDateGroupBy.Hours:
                 this.AddTimeSerie(24, groupItemsNode);
                 items += 24;
+
                 break;
+
             case eDateGroupBy.Days:
                 if (interval == 1)
                 {
                     DateTime dt = new DateTime(2008, 1, 1); //pick a year with 366 days
+
                     while (dt.Year == 2008)
                     {
                         this.AddGroupItem(groupItemsNode, dt.ToString("dd-MMM"));
                         dt = dt.AddDays(1);
                     }
+
                     items += 366;
                 }
                 else
                 {
                     DateTime dt = StartDate;
                     items = 0;
+
                     while (dt < EndDate)
                     {
                         this.AddGroupItem(groupItemsNode, dt.ToString("dd-MMM"));
@@ -695,7 +768,9 @@ public class ExcelPivotTableCacheField : XmlHelper
                         items++;
                     }
                 }
+
                 break;
+
             case eDateGroupBy.Months:
                 this.AddGroupItem(groupItemsNode, "jan");
                 this.AddGroupItem(groupItemsNode, "feb");
@@ -710,14 +785,18 @@ public class ExcelPivotTableCacheField : XmlHelper
                 this.AddGroupItem(groupItemsNode, "nov");
                 this.AddGroupItem(groupItemsNode, "dec");
                 items += 12;
+
                 break;
+
             case eDateGroupBy.Quarters:
                 this.AddGroupItem(groupItemsNode, "Qtr1");
                 this.AddGroupItem(groupItemsNode, "Qtr2");
                 this.AddGroupItem(groupItemsNode, "Qtr3");
                 this.AddGroupItem(groupItemsNode, "Qtr4");
                 items += 4;
+
                 break;
+
             case eDateGroupBy.Years:
                 if (StartDate.Year >= 1900 && EndDate != DateTime.MaxValue)
                 {
@@ -725,9 +804,12 @@ public class ExcelPivotTableCacheField : XmlHelper
                     {
                         this.AddGroupItem(groupItemsNode, year.ToString());
                     }
+
                     items += EndDate.Year - StartDate.Year + 1;
                 }
+
                 break;
+
             default:
                 throw new Exception("unsupported grouping");
         }
@@ -743,9 +825,11 @@ public class ExcelPivotTableCacheField : XmlHelper
     private void UpdateCacheLookupFromItems(List<object> items)
     {
         this._cacheLookup = new Dictionary<object, int>(new CacheComparer());
+
         for (int i = 0; i < items.Count; i++)
         {
             object? key = items[i];
+
             if (!this._cacheLookup.ContainsKey(key))
             {
                 this._cacheLookup.Add(key, i);
@@ -769,8 +853,8 @@ public class ExcelPivotTableCacheField : XmlHelper
         this.GroupItems.Add(value);
     }
 
-
     #endregion
+
     internal void Refresh()
     {
         if (!string.IsNullOrEmpty(this.Formula))
@@ -791,10 +875,11 @@ public class ExcelPivotTableCacheField : XmlHelper
     private void UpdateGroupItems()
     {
         foreach (ExcelPivotTable? pt in this._cache._pivotTables)
-        {                
-            if (pt.Fields[this.Index].IsRowField ||
-                pt.Fields[this.Index].IsColumnField ||
-                pt.Fields[this.Index].IsPageField || pt.Fields[this.Index].Cache.HasSlicer )
+        {
+            if (pt.Fields[this.Index].IsRowField
+                || pt.Fields[this.Index].IsColumnField
+                || pt.Fields[this.Index].IsPageField
+                || pt.Fields[this.Index].Cache.HasSlicer)
             {
                 if (pt.Fields[this.Index].Items.Count == 0)
                 {
@@ -811,6 +896,7 @@ public class ExcelPivotTableCacheField : XmlHelper
     private void UpdateSharedItems()
     {
         ExcelRangeBase? range = this._cache.SourceRange;
+
         if (range == null)
         {
             return;
@@ -827,15 +913,17 @@ public class ExcelPivotTableCacheField : XmlHelper
         {
             AddSharedItemToHashSet(hs, ws.GetValue(row, column));
         }
+
         //A pivot table cache can reference multiple Pivot tables, so we need to update them all
         foreach (ExcelPivotTable? pt in this._cache._pivotTables)
         {
             HashSet<object>? existingItems = new HashSet<object>();
             List<ExcelPivotTableFieldItem>? list = pt.Fields[this.Index].Items._list;
-                
+
             for (int ix = 0; ix < list.Count; ix++)
             {
                 object? v = list[ix].Value ?? ExcelPivotTable.PivotNullValue;
+
                 if (!hs.Contains(v) || existingItems.Contains(v))
                 {
                     list.RemoveAt(ix);
@@ -846,7 +934,9 @@ public class ExcelPivotTableCacheField : XmlHelper
                     existingItems.Add(v);
                 }
             }
-            int hasSubTotalSubt=list.Count > 0 && list[list.Count-1].Type==eItemType.Default ? 1 : 0;
+
+            int hasSubTotalSubt = list.Count > 0 && list[list.Count - 1].Type == eItemType.Default ? 1 : 0;
+
             foreach (object? c in hs)
             {
                 if (!existingItems.Contains(c))
@@ -863,11 +953,13 @@ public class ExcelPivotTableCacheField : XmlHelper
 
         this.SharedItems._list = hs.ToList();
         this.UpdateCacheLookupFromItems(this.SharedItems._list);
+
         if (this.HasSlicer)
         {
             this.UpdateSlicers();
         }
     }
+
     internal static object AddSharedItemToHashSet(HashSet<object> hs, object o)
     {
         if (o == null)
@@ -877,14 +969,17 @@ public class ExcelPivotTableCacheField : XmlHelper
         else
         {
             Type? t = o.GetType();
+
             if (t == typeof(TimeSpan))
             {
                 long ticks = ((TimeSpan)o).Ticks + (TimeSpan.TicksPerSecond / 2);
                 o = new DateTime(ticks - (ticks % TimeSpan.TicksPerSecond));
             }
+
             if (t == typeof(DateTime))
             {
                 long ticks = ((DateTime)o).Ticks;
+
                 if (ticks % TimeSpan.TicksPerSecond != 0)
                 {
                     ticks += TimeSpan.TicksPerSecond / 2;
@@ -892,6 +987,7 @@ public class ExcelPivotTableCacheField : XmlHelper
                 }
             }
         }
+
         if (!hs.Contains(o))
         {
             hs.Add(o);
@@ -899,7 +995,6 @@ public class ExcelPivotTableCacheField : XmlHelper
 
         return o;
     }
-
 }
 
 internal class CacheComparer : IEqualityComparer<object>

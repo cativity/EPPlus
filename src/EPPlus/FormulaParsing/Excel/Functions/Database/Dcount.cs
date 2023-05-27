@@ -10,6 +10,7 @@
  *************************************************************************************************
   01/27/2020         EPPlus Software AB       Initial release EPPlus 5
  *************************************************************************************************/
+
 using System;
 using System.Collections.Generic;
 using System.Globalization;
@@ -21,10 +22,9 @@ using OfficeOpenXml.Utils;
 
 namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Database;
 
-[FunctionMetadata(
-                     Category = ExcelFunctionCategory.Database,
-                     EPPlusVersion = "4",
-                     Description = "Returns the number of cells containing numbers in a field of a list or database that satisfy specified conditions")]
+[FunctionMetadata(Category = ExcelFunctionCategory.Database,
+                  EPPlusVersion = "4",
+                  Description = "Returns the number of cells containing numbers in a field of a list or database that satisfy specified conditions")]
 internal class Dcount : ExcelFunction
 {
     private readonly RowMatcher _rowMatcher;
@@ -32,7 +32,6 @@ internal class Dcount : ExcelFunction
     public Dcount()
         : this(new RowMatcher())
     {
-            
     }
 
     public Dcount(RowMatcher rowMatcher)
@@ -46,6 +45,7 @@ internal class Dcount : ExcelFunction
         string? dbAddress = arguments.ElementAt(0).ValueAsRangeInfo.Address.Address;
         string field = null;
         string criteriaRange = null;
+
         if (arguments.Count() == 2)
         {
             criteriaRange = arguments.ElementAt(1).ValueAsRangeInfo.Address.Address;
@@ -54,14 +54,17 @@ internal class Dcount : ExcelFunction
         {
             field = ArgToString(arguments, 1).ToLower(CultureInfo.InvariantCulture);
             criteriaRange = arguments.ElementAt(2).ValueAsRangeInfo.Address.Address;
-        } 
+        }
+
         ExcelDatabase? db = new ExcelDatabase(context.ExcelDataProvider, dbAddress);
         ExcelDatabaseCriteria? criteria = new ExcelDatabaseCriteria(context.ExcelDataProvider, criteriaRange);
 
         int nHits = 0;
+
         while (db.HasMoreRows)
         {
             ExcelDatabaseRow? dataRow = db.Read();
+
             if (this._rowMatcher.IsMatch(dataRow, criteria))
             {
                 // if a fieldname is supplied, count only this row if the value
@@ -69,6 +72,7 @@ internal class Dcount : ExcelFunction
                 if (!string.IsNullOrEmpty(field))
                 {
                     object? candidate = dataRow[field];
+
                     if (ConvertUtil.IsNumericOrDate(candidate))
                     {
                         nHits++;
@@ -77,10 +81,11 @@ internal class Dcount : ExcelFunction
                 else
                 {
                     // no fieldname was supplied, always count matching row.
-                    nHits++;    
+                    nHits++;
                 }
             }
         }
+
         return this.CreateResult(nHits, DataType.Integer);
     }
 }

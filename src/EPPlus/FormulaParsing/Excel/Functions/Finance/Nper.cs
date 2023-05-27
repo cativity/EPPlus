@@ -10,6 +10,7 @@
  *************************************************************************************************
   05/03/2020         EPPlus Software AB         Implemented function
  *************************************************************************************************/
+
 using OfficeOpenXml.FormulaParsing.Excel.Functions.Finance.Implementations;
 using OfficeOpenXml.FormulaParsing.Excel.Functions.Metadata;
 using OfficeOpenXml.FormulaParsing.ExpressionGraph;
@@ -20,10 +21,9 @@ using System.Text;
 
 namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Finance;
 
-[FunctionMetadata(
-                     Category = ExcelFunctionCategory.Financial,
-                     EPPlusVersion = "5.2",
-                     Description = "Returns the number of periods for an investment with periodic constant payments and a constant interest rate")]
+[FunctionMetadata(Category = ExcelFunctionCategory.Financial,
+                  EPPlusVersion = "5.2",
+                  Description = "Returns the number of periods for an investment with periodic constant payments and a constant interest rate")]
 internal class Nper : ExcelFunction
 {
     public override CompileResult Execute(IEnumerable<FunctionArgument> arguments, ParsingContext context)
@@ -33,16 +33,21 @@ internal class Nper : ExcelFunction
         double pmt = this.ArgToDecimal(arguments, 1);
         double pv = this.ArgToDecimal(arguments, 2);
         double fv = 0d;
+
         if (arguments.Count() >= 4)
         {
             fv = this.ArgToDecimal(arguments, 3);
         }
+
         int type = 0;
+
         if (arguments.Count() >= 5)
         {
             type = this.ArgToInt(arguments, 4);
         }
+
         FinanceCalcResult<double>? retVal = NperImpl.NPer(rate, pmt, pv, fv, (PmtDue)type);
+
         if (retVal.HasError)
         {
             return this.CreateResult(retVal.ExcelErrorType);

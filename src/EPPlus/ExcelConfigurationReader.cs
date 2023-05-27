@@ -10,6 +10,7 @@
  *************************************************************************************************
   08/19/2022         EPPlus Software AB       Implementing handling of initialization errors in ExcelPackage class.
  *************************************************************************************************/
+
 #if (Core)
 using Microsoft.Extensions.Configuration;
 #else
@@ -34,9 +35,13 @@ internal static class ExcelConfigurationReader
     /// <param name="config">Configuration of the package</param>
     /// <param name="initErrors">A list of logged <see cref="ExcelInitializationError"/> objects.</param>
     /// <returns>The value of the environment variable</returns>
-    internal static string GetEnvironmentVariable(string key, EnvironmentVariableTarget target, ExcelPackageConfiguration config, List<ExcelInitializationError> initErrors)
+    internal static string GetEnvironmentVariable(string key,
+                                                  EnvironmentVariableTarget target,
+                                                  ExcelPackageConfiguration config,
+                                                  List<ExcelInitializationError> initErrors)
     {
         bool supressInitExceptions = config.SuppressInitializationExceptions;
+
         try
         {
             return Environment.GetEnvironmentVariable(key, target);
@@ -54,6 +59,7 @@ internal static class ExcelConfigurationReader
                 throw;
             }
         }
+
         return default;
     }
 
@@ -64,12 +70,10 @@ internal static class ExcelConfigurationReader
         string? basePath = config.JsonConfigBasePath;
         string? configFileName = config.JsonConfigFileName;
         IConfigurationRoot? configRoot = default(IConfigurationRoot);
+
         try
         {
-                
-            IConfigurationBuilder? build = new ConfigurationBuilder()
-                                           .SetBasePath(basePath)
-                                           .AddJsonFile(configFileName, true, false);
+            IConfigurationBuilder? build = new ConfigurationBuilder().SetBasePath(basePath).AddJsonFile(configFileName, true, false);
             configRoot = build.Build();
         }
         catch (Exception ex)
@@ -85,11 +89,13 @@ internal static class ExcelConfigurationReader
                 throw;
             }
         }
+
         if (configRoot != null)
         {
             try
             {
                 string? v = configRoot[key];
+
                 return v;
             }
             catch (Exception ex)
@@ -99,11 +105,14 @@ internal static class ExcelConfigurationReader
                     string? errorMessage = $"Could read key \"{key}\" from appsettings.json";
                     ExcelInitializationError? error = new ExcelInitializationError(errorMessage, ex);
                     initErrors.Add(error);
+
                     return null;
                 }
+
                 throw;
             }
         }
+
         return null;
     }
 #endif

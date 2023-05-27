@@ -10,6 +10,7 @@
  *************************************************************************************************
   10/04/2022         EPPlus Software AB       Initial release EPPlus 6.1
  *************************************************************************************************/
+
 using OfficeOpenXml.Core.CellStore;
 using OfficeOpenXml.Export.ToCollection.Exceptions;
 using OfficeOpenXml.Utils;
@@ -26,26 +27,31 @@ public class ToCollectionRow
 {
     private ExcelWorkbook _workbook;
     private ToCollectionConversionFailureStrategy _failureStrategy;
+
     internal ToCollectionRow(List<string> headers, ExcelWorkbook workbook, ToCollectionConversionFailureStrategy failureStrategy)
     {
         this._workbook = workbook;
         this._failureStrategy = failureStrategy;
         this.Headers = headers;
-        for(int i = 0; i < headers.Count; i++)
+
+        for (int i = 0; i < headers.Count; i++)
         {
             this._headers.Add(headers[i], i);
         }
     }
 
-    internal Dictionary<string, int> _headers=new Dictionary<string, int>(StringComparer.CurrentCultureIgnoreCase);
+    internal Dictionary<string, int> _headers = new Dictionary<string, int>(StringComparer.CurrentCultureIgnoreCase);
+
     /// <summary>
     /// Headers used to access cell values.
     /// </summary>
     public List<string> Headers { get; }
+
     /// <summary>
     /// The rows values
     /// </summary>
-    internal List<ExcelValue> _cellValues{ get; set; }
+    internal List<ExcelValue> _cellValues { get; set; }
+
     /// <summary>
     /// Returns the value of the row at the column index
     /// </summary>
@@ -59,9 +65,11 @@ public class ToCollectionRow
             {
                 throw new ArgumentOutOfRangeException("index");
             }
+
             return this._cellValues[index];
         }
     }
+
     /// <summary>
     /// Returns the value of the row at the column index
     /// </summary>
@@ -75,13 +83,16 @@ public class ToCollectionRow
             {
                 throw new ArgumentException($"This range has no headers. Please specify headers or use GetValue<T>(int).");
             }
+
             if (this._headers.ContainsKey(columnName) == false)
             {
                 throw new ArgumentException($"Column name {columnName} does not exist in the range.");
             }
+
             return this[this._headers[columnName]];
         }
     }
+
     /// <summary>
     /// Returns the typed value of the cell at the column index within the row of the range.
     /// </summary>
@@ -91,23 +102,26 @@ public class ToCollectionRow
     /// <exception cref="EPPlusDataTypeConvertionException">Returned if the data type conversion fails and <see cref="ToCollectionOptions.ConversionFailureStrategy"/> is set to Exception</exception>
     public T GetValue<T>(int index)
     {
-        if(index < 0 || index >= this._cellValues.Count)
+        if (index < 0 || index >= this._cellValues.Count)
         {
             throw new ArgumentOutOfRangeException("index");
         }
+
         try
         {
             return ConvertUtil.GetTypedCellValue<T>(this._cellValues[index]._value);
         }
         catch (Exception ex)
         {
-            if(this._failureStrategy==ToCollectionConversionFailureStrategy.Exception)
+            if (this._failureStrategy == ToCollectionConversionFailureStrategy.Exception)
             {
                 throw new EPPlusDataTypeConvertionException($"Failure to convert value {this._cellValues[index]._value} for index {index}", ex);
             }
+
             return default;
         }
     }
+
     /// <summary>
     /// Returns the typed value of the cell at the column index within the row of the range.
     /// </summary>
@@ -117,16 +131,19 @@ public class ToCollectionRow
     /// <exception cref="EPPlusDataTypeConvertionException">Returned if the data type conversion fails and <see cref="ToCollectionOptions.ConversionFailureStrategy"/> is set to Exception</exception>
     public T GetValue<T>(string columnName)
     {
-        if(this._headers.Count==0)
+        if (this._headers.Count == 0)
         {
             throw new ArgumentException($"This range has no headers. Please specify headers or use GetValue<T>(int).");
         }
-        if (this._headers.ContainsKey(columnName)==false)
+
+        if (this._headers.ContainsKey(columnName) == false)
         {
             throw new ArgumentException($"Column name {columnName} does not exist in the range.");
         }
+
         return this.GetValue<T>(this._headers[columnName]);
     }
+
     /// <summary>
     /// Returns formatted value of the cell at the column index within the row of the range.
     /// </summary>
@@ -141,6 +158,7 @@ public class ToCollectionRow
 
         return ValueToTextHandler.GetFormattedText(this._cellValues[index]._value, this._workbook, this._cellValues[index]._styleId, false);
     }
+
     /// <summary>
     /// Returns formatted value of the cell at the column index within the row of the range.
     /// </summary>
@@ -152,15 +170,17 @@ public class ToCollectionRow
         {
             throw new ArgumentException($"This range has no headers. Please specify headers or use GetValue<T>(int).");
         }
+
         if (this._headers.ContainsKey(columnName) == false)
         {
             throw new ArgumentException($"Column name {columnName} does not exist in the range.");
         }
-            
+
         return this.GetText(this._headers[columnName]);
     }
 
     List<MappedProperty> _members;
+
     /// <summary>
     /// Maps properties on the item to values matching the column header with the property name or attibutes without white spaces.
     /// The attributes that can be used are: EpplusTableColumnAttributeBase.Header, DescriptionAttribute.Description or DisplayNameAttribute.Name.
@@ -180,17 +200,21 @@ public class ToCollectionRow
                 {
                     m.PropertyInfo.SetValue(item, this._cellValues[m.Index]._value, null);
                 }
-                catch(Exception ex)
+                catch (Exception ex)
                 {
                     if (this._failureStrategy == ToCollectionConversionFailureStrategy.Exception)
                     {
-                        EPPlusDataTypeConvertionException? dtcExeption = new EPPlusDataTypeConvertionException($"Can not convert item {this._cellValues[m.Index]._value} to datatype {m.PropertyInfo.DeclaringType}", ex);
+                        EPPlusDataTypeConvertionException? dtcExeption =
+                            new
+                                EPPlusDataTypeConvertionException($"Can not convert item {this._cellValues[m.Index]._value} to datatype {m.PropertyInfo.DeclaringType}",
+                                                                  ex);
+
                         throw dtcExeption;
                     }
                     else
                     {
                         //Set the default value
-                        if(m.PropertyInfo.DeclaringType.IsValueType)
+                        if (m.PropertyInfo.DeclaringType.IsValueType)
                         {
                             m.PropertyInfo.SetValue(item, null, null);
                         }

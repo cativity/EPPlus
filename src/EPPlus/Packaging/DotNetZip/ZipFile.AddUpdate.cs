@@ -25,7 +25,6 @@
 // ------------------------------------------------------------------
 //
 
-
 using System;
 using System.IO;
 using System.Collections.Generic;
@@ -85,7 +84,6 @@ internal partial class ZipFile
     {
         return this.AddItem(fileOrDirectoryName, null);
     }
-
 
     /// <summary>
     ///   Adds an item, either a file or a directory, to a zip file archive,
@@ -213,8 +211,7 @@ internal partial class ZipFile
             return this.AddDirectory(fileOrDirectoryName, directoryPathInArchive);
         }
 
-        throw new FileNotFoundException(String.Format("That file or directory ({0}) does not exist!",
-                                                      fileOrDirectoryName));
+        throw new FileNotFoundException(String.Format("That file or directory ({0}) does not exist!", fileOrDirectoryName));
     }
 
     /// <summary>
@@ -300,10 +297,6 @@ internal partial class ZipFile
     {
         return this.AddFile(fileName, null);
     }
-
-
-
-
 
     /// <summary>
     ///   Adds a File to a Zip file archive, potentially overriding the path to be
@@ -409,6 +402,7 @@ internal partial class ZipFile
     {
         string nameInArchive = ZipEntry.NameInArchive(fileName, directoryPathInArchive);
         ZipEntry ze = ZipEntry.CreateFromFile(fileName, nameInArchive);
+
         if (this.Verbose)
         {
             this.StatusMessageTextWriter.WriteLine("adding {0}...", fileName);
@@ -416,7 +410,6 @@ internal partial class ZipFile
 
         return this._InternalAddEntry(ze);
     }
-
 
     /// <summary>
     ///   This method removes a collection of entries from the <c>ZipFile</c>.
@@ -445,7 +438,6 @@ internal partial class ZipFile
         }
     }
 
-
     /// <summary>
     ///   This method removes a collection of entries from the <c>ZipFile</c>, by name.
     /// </summary>
@@ -470,7 +462,6 @@ internal partial class ZipFile
             this.RemoveEntry(e);
         }
     }
-
 
     /// <summary>
     ///   This method adds a set of files to the <c>ZipFile</c>.
@@ -532,7 +523,6 @@ internal partial class ZipFile
         this.AddFiles(fileNames, null);
     }
 
-
     /// <summary>
     ///   Adds or updates a set of files in the <c>ZipFile</c>.
     /// </summary>
@@ -562,7 +552,6 @@ internal partial class ZipFile
     {
         this.UpdateFiles(fileNames, null);
     }
-
 
     /// <summary>
     ///   Adds a set of files to the <c>ZipFile</c>, using the
@@ -610,8 +599,6 @@ internal partial class ZipFile
     {
         this.AddFiles(fileNames, false, directoryPathInArchive);
     }
-
-
 
     /// <summary>
     ///   Adds a set of files to the <c>ZipFile</c>, using the specified directory
@@ -672,9 +659,7 @@ internal partial class ZipFile
     ///   the entries added to the ZipFile.
     /// </param>
     /// <seealso cref="Ionic.Zip.ZipFile.AddSelectedFiles(String, String)" />
-    public void AddFiles(IEnumerable<String> fileNames,
-                         bool preserveDirHierarchy,
-                         String directoryPathInArchive)
+    public void AddFiles(IEnumerable<String> fileNames, bool preserveDirHierarchy, String directoryPathInArchive)
     {
         if (fileNames == null)
         {
@@ -683,6 +668,7 @@ internal partial class ZipFile
 
         this._addOperationCanceled = false;
         this.OnAddStarted();
+
         if (preserveDirHierarchy)
         {
             foreach (string? f in fileNames)
@@ -716,12 +702,12 @@ internal partial class ZipFile
                 this.AddFile(f, directoryPathInArchive);
             }
         }
+
         if (!this._addOperationCanceled)
         {
             this.OnAddCompleted();
         }
     }
-
 
     /// <summary>
     ///   Adds or updates a set of files to the <c>ZipFile</c>, using the specified
@@ -770,6 +756,7 @@ internal partial class ZipFile
         }
 
         this.OnAddStarted();
+
         foreach (string? f in fileNames)
         {
             this.UpdateFile(f, directoryPathInArchive);
@@ -777,9 +764,6 @@ internal partial class ZipFile
 
         this.OnAddCompleted();
     }
-
-
-
 
     /// <summary>
     ///   Adds or Updates a File in a Zip file archive.
@@ -868,8 +852,6 @@ internal partial class ZipFile
         return this.UpdateFile(fileName, null);
     }
 
-
-
     /// <summary>
     ///   Adds or Updates a File in a Zip file archive.
     /// </summary>
@@ -930,6 +912,7 @@ internal partial class ZipFile
     {
         // ideally this would all be transactional!
         string? key = ZipEntry.NameInArchive(fileName, directoryPathInArchive);
+
         if (this[key] != null)
         {
             this.RemoveEntry(key);
@@ -937,10 +920,6 @@ internal partial class ZipFile
 
         return this.AddFile(fileName, directoryPathInArchive);
     }
-
-
-
-
 
     /// <summary>
     ///   Add or update a directory in a zip archive.
@@ -972,7 +951,6 @@ internal partial class ZipFile
     {
         return this.UpdateDirectory(directoryName, null);
     }
-
 
     /// <summary>
     ///   Add or update a directory in the zip archive at the specified root
@@ -1016,10 +994,6 @@ internal partial class ZipFile
         return this.AddOrUpdateDirectoryImpl(directoryName, directoryPathInArchive, AddOrUpdateAction.AddOrUpdate);
     }
 
-
-
-
-
     /// <summary>
     ///   Add or update a file or directory in the zip archive.
     /// </summary>
@@ -1054,7 +1028,6 @@ internal partial class ZipFile
     {
         this.UpdateItem(itemName, null);
     }
-
 
     /// <summary>
     ///   Add or update a file or directory.
@@ -1121,9 +1094,6 @@ internal partial class ZipFile
         }
     }
 
-
-
-
     /// <summary>
     ///   Adds a named entry into the zip archive, taking content for the entry
     ///   from a string.
@@ -1180,7 +1150,8 @@ internal partial class ZipFile
 #if SILVERLIGHT
             return AddEntry(entryName, content, System.Text.Encoding.UTF8);
 #else
-        return this.AddEntry(entryName, content,
+        return this.AddEntry(entryName,
+                             content,
 #if Core
                              System.Text.Encoding.GetEncoding("UTF-8")
 #else
@@ -1189,8 +1160,6 @@ internal partial class ZipFile
                             );
 #endif
     }
-
-
 
     /// <summary>
     ///   Adds a named entry into the zip archive, taking content for the entry
@@ -1255,7 +1224,6 @@ internal partial class ZipFile
 
         // must not dispose the MemoryStream - it will be used later.
     }
-
 
     /// <summary>
     ///   Create an entry in the <c>ZipFile</c> using the given <c>Stream</c>
@@ -1341,7 +1309,8 @@ internal partial class ZipFile
     public ZipEntry AddEntry(string entryName, Stream stream)
     {
         ZipEntry ze = ZipEntry.CreateForStream(entryName, stream);
-        ze.SetEntryTimes(DateTime.Now,DateTime.Now,DateTime.Now);
+        ze.SetEntryTimes(DateTime.Now, DateTime.Now, DateTime.Now);
+
         if (this.Verbose)
         {
             this.StatusMessageTextWriter.WriteLine("adding {0}...", entryName);
@@ -1349,8 +1318,6 @@ internal partial class ZipFile
 
         return this._InternalAddEntry(ze);
     }
-
-
 
     /// <summary>
     ///   Add a ZipEntry for which content is written directly by the application.
@@ -1536,6 +1503,7 @@ internal partial class ZipFile
     public ZipEntry AddEntry(string entryName, WriteDelegate writer)
     {
         ZipEntry ze = ZipEntry.CreateForWriter(entryName, writer);
+
         if (this.Verbose)
         {
             this.StatusMessageTextWriter.WriteLine("adding {0}...", entryName);
@@ -1543,7 +1511,6 @@ internal partial class ZipFile
 
         return this._InternalAddEntry(ze);
     }
-
 
     /// <summary>
     ///   Add an entry, for which the application will provide a stream
@@ -1654,7 +1621,8 @@ internal partial class ZipFile
     public ZipEntry AddEntry(string entryName, OpenDelegate opener, CloseDelegate closer)
     {
         ZipEntry ze = ZipEntry.CreateForJitStreamProvider(entryName, opener, closer);
-        ze.SetEntryTimes(DateTime.Now,DateTime.Now,DateTime.Now);
+        ze.SetEntryTimes(DateTime.Now, DateTime.Now, DateTime.Now);
+
         if (this.Verbose)
         {
             this.StatusMessageTextWriter.WriteLine("adding {0}...", entryName);
@@ -1662,8 +1630,6 @@ internal partial class ZipFile
 
         return this._InternalAddEntry(ze);
     }
-
-
 
     private ZipEntry _InternalAddEntry(ZipEntry ze)
     {
@@ -1680,14 +1646,13 @@ internal partial class ZipFile
         ze.Encryption = this.Encryption;
         ze.EmitTimesInWindowsFormatWhenSaving = this._emitNtfsTimes;
         ze.EmitTimesInUnixFormatWhenSaving = this._emitUnixTimes;
+
         //string key = DictionaryKeyForEntry(ze);
-        this.InternalAddEntry(ze.FileName,ze);
+        this.InternalAddEntry(ze.FileName, ze);
         this.AfterAddEntry(ze);
+
         return ze;
     }
-
-
-
 
     /// <summary>
     ///   Updates the given entry in the <c>ZipFile</c>, using the given
@@ -1723,7 +1688,8 @@ internal partial class ZipFile
 #if SILVERLIGHT
             return UpdateEntry(entryName, content, System.Text.Encoding.UTF8);
 #else
-        return this.UpdateEntry(entryName, content,
+        return this.UpdateEntry(entryName,
+                                content,
 #if Core
                                 System.Text.Encoding.GetEncoding("UTF-8")
 #else
@@ -1732,7 +1698,6 @@ internal partial class ZipFile
                                );
 #endif
     }
-
 
     /// <summary>
     ///   Updates the given entry in the <c>ZipFile</c>, using the given string as
@@ -1765,10 +1730,9 @@ internal partial class ZipFile
     public ZipEntry UpdateEntry(string entryName, string content, System.Text.Encoding encoding)
     {
         this.RemoveEntryForUpdate(entryName);
+
         return this.AddEntry(entryName, content, encoding);
     }
-
-
 
     /// <summary>
     ///   Updates the given entry in the <c>ZipFile</c>, using the given delegate
@@ -1793,10 +1757,9 @@ internal partial class ZipFile
     public ZipEntry UpdateEntry(string entryName, WriteDelegate writer)
     {
         this.RemoveEntryForUpdate(entryName);
+
         return this.AddEntry(entryName, writer);
     }
-
-
 
     /// <summary>
     ///   Updates the given entry in the <c>ZipFile</c>, using the given delegates
@@ -1826,9 +1789,9 @@ internal partial class ZipFile
     public ZipEntry UpdateEntry(string entryName, OpenDelegate opener, CloseDelegate closer)
     {
         this.RemoveEntryForUpdate(entryName);
+
         return this.AddEntry(entryName, opener, closer);
     }
-
 
     /// <summary>
     ///   Updates the given entry in the <c>ZipFile</c>, using the given stream as
@@ -1872,9 +1835,9 @@ internal partial class ZipFile
     public ZipEntry UpdateEntry(string entryName, Stream stream)
     {
         this.RemoveEntryForUpdate(entryName);
+
         return this.AddEntry(entryName, stream);
     }
-
 
     private void RemoveEntryForUpdate(string entryName)
     {
@@ -1884,20 +1847,20 @@ internal partial class ZipFile
         }
 
         string directoryPathInArchive = null;
+
         if (entryName.IndexOf('\\') != -1)
         {
             directoryPathInArchive = Path.GetDirectoryName(entryName);
             entryName = Path.GetFileName(entryName);
         }
+
         string? key = ZipEntry.NameInArchive(entryName, directoryPathInArchive);
+
         if (this[key] != null)
         {
             this.RemoveEntry(key);
         }
     }
-
-
-
 
     /// <summary>
     ///   Add an entry into the zip archive using the given filename and
@@ -1920,9 +1883,9 @@ internal partial class ZipFile
         }
 
         MemoryStream? ms = RecyclableMemory.GetStream(byteContent);
+
         return this.AddEntry(entryName, ms);
     }
-
 
     /// <summary>
     ///   Updates the given entry in the <c>ZipFile</c>, using the given byte
@@ -1947,16 +1910,15 @@ internal partial class ZipFile
     public ZipEntry UpdateEntry(string entryName, byte[] byteContent)
     {
         this.RemoveEntryForUpdate(entryName);
+
         return this.AddEntry(entryName, byteContent);
     }
 
-
-//         private string DictionaryKeyForEntry(ZipEntry ze1)
-//         {
-//             var filename = SharedUtilities.NormalizePathForUseInZipFile(ze1.FileName);
-//             return filename;
-//         }
-
+    //         private string DictionaryKeyForEntry(ZipEntry ze1)
+    //         {
+    //             var filename = SharedUtilities.NormalizePathForUseInZipFile(ze1.FileName);
+    //             return filename;
+    //         }
 
     /// <summary>
     ///   Adds the contents of a filesystem directory to a Zip file archive.
@@ -2007,7 +1969,6 @@ internal partial class ZipFile
     {
         return this.AddDirectory(directoryName, null);
     }
-
 
     /// <summary>
     ///   Adds the contents of a filesystem directory to a Zip file archive,
@@ -2078,7 +2039,6 @@ internal partial class ZipFile
         return this.AddOrUpdateDirectoryImpl(directoryName, directoryPathInArchive, AddOrUpdateAction.AddOnly);
     }
 
-
     /// <summary>
     ///   Creates a directory in the zip archive.
     /// </summary>
@@ -2110,29 +2070,26 @@ internal partial class ZipFile
         ZipEntry dir = ZipEntry.CreateFromNothing(directoryNameInArchive);
         dir._container = new ZipContainer(this);
         dir.MarkAsDirectory();
-        dir.AlternateEncoding = this.AlternateEncoding;  // workitem 8984
+        dir.AlternateEncoding = this.AlternateEncoding; // workitem 8984
         dir.AlternateEncodingUsage = this.AlternateEncodingUsage;
-        dir.SetEntryTimes(DateTime.Now,DateTime.Now,DateTime.Now);
+        dir.SetEntryTimes(DateTime.Now, DateTime.Now, DateTime.Now);
         dir.EmitTimesInWindowsFormatWhenSaving = this._emitNtfsTimes;
         dir.EmitTimesInUnixFormatWhenSaving = this._emitUnixTimes;
         dir._Source = ZipEntrySource.Stream;
+
         //string key = DictionaryKeyForEntry(dir);
-        this.InternalAddEntry(dir.FileName,dir);
+        this.InternalAddEntry(dir.FileName, dir);
         this.AfterAddEntry(dir);
+
         return dir;
     }
 
-
-
-    private ZipEntry AddOrUpdateDirectoryImpl(string directoryName,
-                                              string rootDirectoryPathInArchive,
-                                              AddOrUpdateAction action)
+    private ZipEntry AddOrUpdateDirectoryImpl(string directoryName, string rootDirectoryPathInArchive, AddOrUpdateAction action)
     {
         rootDirectoryPathInArchive ??= "";
 
         return this.AddOrUpdateDirectoryImpl(directoryName, rootDirectoryPathInArchive, action, true, 0);
     }
-
 
     internal void InternalAddEntry(String name, ZipEntry entry)
     {
@@ -2141,19 +2098,11 @@ internal partial class ZipFile
         this._contentsChanged = true;
     }
 
-
-
-    private ZipEntry AddOrUpdateDirectoryImpl(string directoryName,
-                                              string rootDirectoryPathInArchive,
-                                              AddOrUpdateAction action,
-                                              bool recurse,
-                                              int level)
+    private ZipEntry AddOrUpdateDirectoryImpl(string directoryName, string rootDirectoryPathInArchive, AddOrUpdateAction action, bool recurse, int level)
     {
         if (this.Verbose)
         {
-            this.StatusMessageTextWriter.WriteLine("{0} {1}...",
-                                                   action == AddOrUpdateAction.AddOnly ? "adding" : "Adding or updating",
-                                                   directoryName);
+            this.StatusMessageTextWriter.WriteLine("{0} {1}...", action == AddOrUpdateAction.AddOnly ? "adding" : "Adding or updating", directoryName);
         }
 
         if (level == 0)
@@ -2174,6 +2123,7 @@ internal partial class ZipFile
         if (level > 0)
         {
             int f = directoryName.Length;
+
             for (int i = level; i > 0; i--)
             {
                 f = directoryName.LastIndexOfAny("/\\".ToCharArray(), f - 1, f - 1);
@@ -2188,7 +2138,7 @@ internal partial class ZipFile
         {
             baseDir = ZipEntry.CreateFromFile(directoryName, dirForEntries);
             baseDir._container = new ZipContainer(this);
-            baseDir.AlternateEncoding = this.AlternateEncoding;  // workitem 6410
+            baseDir.AlternateEncoding = this.AlternateEncoding; // workitem 6410
             baseDir.AlternateEncodingUsage = this.AlternateEncodingUsage;
             baseDir.MarkAsDirectory();
             baseDir.EmitTimesInWindowsFormatWhenSaving = this._emitNtfsTimes;
@@ -2198,15 +2148,15 @@ internal partial class ZipFile
             // It's not an error if it already exists.
             if (!this._entries.ContainsKey(baseDir.FileName))
             {
-                this.InternalAddEntry(baseDir.FileName,baseDir);
+                this.InternalAddEntry(baseDir.FileName, baseDir);
                 this.AfterAddEntry(baseDir);
             }
+
             dirForEntries = baseDir.FileName;
         }
 
         if (!this._addOperationCanceled)
         {
-
             String[] filenames = Directory.GetFiles(directoryName);
 
             if (recurse)
@@ -2233,6 +2183,7 @@ internal partial class ZipFile
                 {
                     // add the subdirectories:
                     String[] dirnames = Directory.GetDirectories(directoryName);
+
                     foreach (String dir in dirnames)
                     {
                         // workitem 8617: Optionally traverse reparse points
@@ -2251,7 +2202,6 @@ internal partial class ZipFile
                             this.AddOrUpdateDirectoryImpl(dir, rootDirectoryPathInArchive, action, recurse, level + 1);
                         }
                     }
-
                 }
             }
         }
@@ -2263,5 +2213,4 @@ internal partial class ZipFile
 
         return baseDir;
     }
-
 }

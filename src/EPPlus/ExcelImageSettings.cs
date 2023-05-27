@@ -10,6 +10,7 @@
  *************************************************************************************************
   12/26/2021         EPPlus Software AB       EPPlus 6.0
  *************************************************************************************************/
+
 using OfficeOpenXml.Core.Worksheet.Core.Worksheet.Fonts.GenericMeasurements;
 using OfficeOpenXml.Drawing;
 using OfficeOpenXml.Interfaces.Drawing.Image;
@@ -30,8 +31,9 @@ public class ExcelImageSettings
 {
     internal ExcelImageSettings()
     {
-        SystemDrawingImageHandler? m=new SystemDrawingImageHandler();
-        if(m.ValidForEnvironment())
+        SystemDrawingImageHandler? m = new SystemDrawingImageHandler();
+
+        if (m.ValidForEnvironment())
         {
             this.PrimaryImageHandler = m;
             this.SecondaryImageHandler = new GenericImageHandler();
@@ -60,21 +62,35 @@ public class ExcelImageSettings
     /// </summary>
     public IImageHandler TertiaryImageHandler { get; set; } = null;
 
-    internal bool GetImageBounds(MemoryStream ms, ePictureType type, out double width, out double height, out double horizontalResolution, out double verticalResolution)
+    internal bool GetImageBounds(MemoryStream ms,
+                                 ePictureType type,
+                                 out double width,
+                                 out double height,
+                                 out double horizontalResolution,
+                                 out double verticalResolution)
     {
-        if(this.PrimaryImageHandler.SupportedTypes.Contains(type) && this.PrimaryImageHandler.GetImageBounds(ms, type,out width, out height, out horizontalResolution, out verticalResolution))
+        if (this.PrimaryImageHandler.SupportedTypes.Contains(type)
+            && this.PrimaryImageHandler.GetImageBounds(ms, type, out width, out height, out horizontalResolution, out verticalResolution))
         {
             return true;
         }
-        if (this.SecondaryImageHandler != null && this.SecondaryImageHandler.SupportedTypes.Contains(type) && this.SecondaryImageHandler.GetImageBounds(ms, type, out width, out height, out horizontalResolution, out verticalResolution))
+
+        if (this.SecondaryImageHandler != null
+            && this.SecondaryImageHandler.SupportedTypes.Contains(type)
+            && this.SecondaryImageHandler.GetImageBounds(ms, type, out width, out height, out horizontalResolution, out verticalResolution))
         {
             return true;
         }
-        if (this.TertiaryImageHandler != null && this.TertiaryImageHandler.SupportedTypes.Contains(type) && this.TertiaryImageHandler.GetImageBounds(ms, type, out width, out height, out horizontalResolution, out verticalResolution))
+
+        if (this.TertiaryImageHandler != null
+            && this.TertiaryImageHandler.SupportedTypes.Contains(type)
+            && this.TertiaryImageHandler.GetImageBounds(ms, type, out width, out height, out horizontalResolution, out verticalResolution))
         {
             return true;
         }
+
         width = height = horizontalResolution = verticalResolution = 0;
+
         return false;
     }
 }

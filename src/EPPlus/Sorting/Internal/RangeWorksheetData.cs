@@ -10,6 +10,7 @@
  *************************************************************************************************
   05/7/2021         EPPlus Software AB       EPPlus 5.7
  *************************************************************************************************/
+
 using OfficeOpenXml.Core.CellStore;
 using System;
 using System.Collections.Generic;
@@ -47,10 +48,12 @@ internal class RangeWorksheetData
     {
         CellStoreEnumerator<T>? e = new CellStoreEnumerator<T>(store, r._fromRow, r._fromCol, r._toRow, r._toCol);
         Dictionary<string, T>? l = new Dictionary<string, T>();
+
         while (e.Next())
         {
             l.Add(e.CellAddress, e.Value);
         }
+
         return l;
     }
 }

@@ -10,6 +10,7 @@
  *************************************************************************************************
   05/25/2020         EPPlus Software AB       Implemented function
  *************************************************************************************************/
+
 using OfficeOpenXml.FormulaParsing.Excel.Functions.Helpers;
 using OfficeOpenXml.FormulaParsing.Excel.Functions.Metadata;
 using OfficeOpenXml.FormulaParsing.ExpressionGraph;
@@ -20,11 +21,10 @@ using System.Text;
 
 namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Statistical;
 
-[FunctionMetadata(
-                     Category = ExcelFunctionCategory.Statistical,
-                     EPPlusVersion = "5.5",
-                     IntroducedInExcelVersion = "2010",
-                     Description = "Returns the confidence interval for a population mean, using a Student's t distribution")]
+[FunctionMetadata(Category = ExcelFunctionCategory.Statistical,
+                  EPPlusVersion = "5.5",
+                  IntroducedInExcelVersion = "2010",
+                  Description = "Returns the confidence interval for a population mean, using a Student's t distribution")]
 internal class ConfidenceT : ExcelFunction
 {
     public override CompileResult Execute(IEnumerable<FunctionArgument> arguments, ParsingContext context)
@@ -50,14 +50,15 @@ internal class ConfidenceT : ExcelFunction
         }
 
         double result = System.Math.Abs(StudentInv(alpha / 2, size - 1) * sigma / System.Math.Sqrt(size));
+
         return this.CreateResult(result, DataType.Decimal);
     }
-
 
     private static double StudentInv(double p, double dof)
     {
         double x = BetaHelper.IBetaInv(2 * System.Math.Min(p, 1 - p), 0.5 * dof, 0.5);
         x = System.Math.Sqrt(dof * (1 - x) / x);
+
         return p > 0.5 ? x : -x;
     }
 }

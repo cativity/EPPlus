@@ -10,6 +10,7 @@
  *************************************************************************************************
   01/27/2020         EPPlus Software AB       Initial release EPPlus 5
  *************************************************************************************************/
+
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -34,6 +35,7 @@ public class ParsingScopes
     {
         this._lifetimeEventHandler = lifetimeEventHandler;
     }
+
     private Stack<ParsingScope> _scopes = new Stack<ParsingScope>();
 
     /// <summary>
@@ -44,6 +46,7 @@ public class ParsingScopes
     public virtual ParsingScope NewScope(RangeAddress address)
     {
         ParsingScope scope;
+
         if (this._scopes.Count() > 0)
         {
             scope = new ParsingScope(this, this._scopes.Peek(), address);
@@ -54,9 +57,9 @@ public class ParsingScopes
         }
 
         this._scopes.Push(scope);
+
         return scope;
     }
-
 
     /// <summary>
     /// The current parsing scope.
@@ -73,6 +76,7 @@ public class ParsingScopes
     public virtual void KillScope(ParsingScope parsingScope)
     {
         this._scopes.Pop();
+
         if (this._scopes.Count() == 0)
         {
             this._lifetimeEventHandler.ParsingCompleted();

@@ -10,6 +10,7 @@
  *************************************************************************************************
   01/27/2020         EPPlus Software AB       Initial release EPPlus 5
  *************************************************************************************************/
+
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -32,6 +33,7 @@ internal partial class ZipPackage : ZipPackagePartBase, IDisposable
         internal string Name;
         internal bool IsExtension;
         internal string Match;
+
         public ContentType(string name, bool isExtension, string match)
         {
             this.Name = name;
@@ -39,9 +41,11 @@ internal partial class ZipPackage : ZipPackagePartBase, IDisposable
             this.Match = match;
         }
     }
+
     Dictionary<string, ZipPackagePart> Parts = new Dictionary<string, ZipPackagePart>(StringComparer.OrdinalIgnoreCase);
     internal Dictionary<string, ContentType> _contentTypes = new Dictionary<string, ContentType>(StringComparer.OrdinalIgnoreCase);
-    internal char _dirSeparator='0';
+    internal char _dirSeparator = '0';
+
     internal ZipPackage()
     {
         this.AddNew();
@@ -52,10 +56,13 @@ internal partial class ZipPackage : ZipPackagePartBase, IDisposable
         this._contentTypes.Add("xml", new ContentType(ExcelPackage.schemaXmlExtension, true, "xml"));
         this._contentTypes.Add("rels", new ContentType(ExcelPackage.schemaRelsExtension, true, "rels"));
     }
+
     internal ZipInputStream _zip;
+
     internal ZipPackage(Stream stream)
     {
         bool hasContentTypeXml = false;
+
         if (stream == null || stream.Length == 0)
         {
             this.AddNew();
@@ -64,19 +71,22 @@ internal partial class ZipPackage : ZipPackagePartBase, IDisposable
         {
             Dictionary<string, string>? rels = new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase);
             stream.Seek(0, SeekOrigin.Begin);
+
             //using (ZipInputStream zip = new ZipInputStream(stream))
             //{
             this._zip = new ZipInputStream(stream);
             ZipEntry? e = this._zip.GetNextEntry();
+
             if (e == null)
             {
-                throw new InvalidDataException("The file is not a valid Package file. If the file is encrypted, please supply the password in the constructor.");
+                throw
+                    new InvalidDataException("The file is not a valid Package file. If the file is encrypted, please supply the password in the constructor.");
             }
 
             while (e != null)
             {
                 this.GetDirSeparator(e);
-                        
+
                 if (e.UncompressedSize > 0)
                 {
                     if (e.FileName.Equals("[content_types].xml", StringComparison.OrdinalIgnoreCase))
@@ -97,10 +107,12 @@ internal partial class ZipPackage : ZipPackagePartBase, IDisposable
                     else
                     {
                         this.ExtractEntryToPart(this._zip, e);
-                    }                            
+                    }
                 }
+
                 e = this._zip.GetNextEntry();
             }
+
             if (this._dirSeparator == '0')
             {
                 this._dirSeparator = '/';
@@ -111,10 +123,12 @@ internal partial class ZipPackage : ZipPackagePartBase, IDisposable
                 string name = Path.GetFileName(p.Key);
                 string extension = Path.GetExtension(p.Key);
                 string relFile = string.Format("{0}_rels/{1}.rels", p.Key.Substring(0, p.Key.Length - name.Length), name);
+
                 if (rels.ContainsKey(relFile))
                 {
                     p.Value.ReadRelation(rels[relFile], p.Value.Uri.OriginalString);
                 }
+
                 if (this._contentTypes.ContainsKey(p.Key))
                 {
                     p.Value.ContentType = this._contentTypes[p.Key].Name;
@@ -124,14 +138,19 @@ internal partial class ZipPackage : ZipPackagePartBase, IDisposable
                     p.Value.ContentType = this._contentTypes[extension.Substring(1)].Name;
                 }
             }
+
             if (!hasContentTypeXml)
             {
-                throw new InvalidDataException("The file is not a valid Package file. If the file is encrypted, please supply the password in the constructor.");
+                throw
+                    new InvalidDataException("The file is not a valid Package file. If the file is encrypted, please supply the password in the constructor.");
             }
+
             if (!hasContentTypeXml)
             {
-                throw new InvalidDataException("The file is not a valid Package file. If the file is encrypted, please supply the password in the constructor.");
+                throw
+                    new InvalidDataException("The file is not a valid Package file. If the file is encrypted, please supply the password in the constructor.");
             }
+
             //zip.Close();
             //zip.Dispose();
             //}
@@ -142,15 +161,16 @@ internal partial class ZipPackage : ZipPackagePartBase, IDisposable
     {
         byte[]? b = new byte[e.UncompressedSize];
         int size = zip.Read(b, 0, (int)e.UncompressedSize);
+
         return b;
     }
 
     private void ExtractEntryToPart(ZipInputStream zip, ZipEntry e)
     {
-
         ZipPackagePart? part = new ZipPackagePart(this, e);
 
         long rest = e.UncompressedSize;
+
         if (rest > int.MaxValue)
         {
             part.Stream = null; //Over 2GB, we use the zip stream directly instead.
@@ -159,6 +179,7 @@ internal partial class ZipPackage : ZipPackagePartBase, IDisposable
         {
             const int BATCH_SIZE = 0x100000;
             part.Stream = RecyclableMemory.GetStream();
+
             while (rest > 0)
             {
                 int bufferSize = rest > BATCH_SIZE ? BATCH_SIZE : (int)rest;
@@ -195,6 +216,7 @@ internal partial class ZipPackage : ZipPackagePartBase, IDisposable
         foreach (XmlElement c in doc.DocumentElement.ChildNodes)
         {
             ContentType ct;
+
             if (string.IsNullOrEmpty(c.GetAttribute("Extension")))
             {
                 ct = new ContentType(c.GetAttribute("ContentType"), false, c.GetAttribute("PartName"));
@@ -209,11 +231,13 @@ internal partial class ZipPackage : ZipPackagePartBase, IDisposable
     }
 
     #region Methods
+
     internal ZipPackagePart CreatePart(Uri partUri, string contentType)
     {
         return this.CreatePart(partUri, contentType, CompressionLevel.Default);
     }
-    internal ZipPackagePart CreatePart(Uri partUri, string contentType, CompressionLevel compressionLevel, string extension=null)
+
+    internal ZipPackagePart CreatePart(Uri partUri, string contentType, CompressionLevel compressionLevel, string extension = null)
     {
         if (this.PartExists(partUri))
         {
@@ -221,7 +245,8 @@ internal partial class ZipPackage : ZipPackagePartBase, IDisposable
         }
 
         ZipPackagePart? part = new ZipPackagePart(this, partUri, contentType, compressionLevel);
-        if(string.IsNullOrEmpty(extension))
+
+        if (string.IsNullOrEmpty(extension))
         {
             this._contentTypes.Add(GetUriKey(part.Uri.OriginalString), new ContentType(contentType, false, part.Uri.OriginalString));
         }
@@ -234,8 +259,10 @@ internal partial class ZipPackage : ZipPackagePartBase, IDisposable
         }
 
         this.Parts.Add(GetUriKey(part.Uri.OriginalString), part);
+
         return part;
     }
+
     internal ZipPackagePart CreatePart(Uri partUri, ZipPackagePart sourcePart)
     {
         ZipPackagePart? destPart = this.CreatePart(partUri, sourcePart.ContentType);
@@ -244,14 +271,17 @@ internal partial class ZipPackage : ZipPackagePartBase, IDisposable
         byte[]? b = ((MemoryStream)sourceStream).GetBuffer();
         destStream.Write(b, 0, b.Length);
         destStream.Flush();
+
         return destPart;
     }
+
     internal ZipPackagePart CreatePart(Uri partUri, string contentType, string xml)
     {
         ZipPackagePart? destPart = this.CreatePart(partUri, contentType);
         StreamWriter? destStream = new StreamWriter(destPart.GetStream(FileMode.Create, FileAccess.Write));
         destStream.Write(xml);
         destStream.Flush();
+
         return destPart;
     }
 
@@ -259,7 +289,7 @@ internal partial class ZipPackage : ZipPackagePartBase, IDisposable
     {
         if (this.PartExists(partUri))
         {
-            return this.Parts.Single(x => x.Key.Equals(GetUriKey(partUri.OriginalString),StringComparison.OrdinalIgnoreCase)).Value;
+            return this.Parts.Single(x => x.Key.Equals(GetUriKey(partUri.OriginalString), StringComparison.OrdinalIgnoreCase)).Value;
         }
         else
         {
@@ -270,53 +300,65 @@ internal partial class ZipPackage : ZipPackagePartBase, IDisposable
     internal static string GetUriKey(string uri)
     {
         string ret = uri.Replace('\\', '/');
+
         if (ret[0] != '/')
         {
             ret = '/' + ret;
         }
+
         return ret;
     }
+
     internal bool PartExists(Uri partUri)
     {
         string? uriKey = GetUriKey(partUri.OriginalString.ToLowerInvariant());
+
         return this.Parts.ContainsKey(uriKey);
     }
+
     #endregion
 
     internal void DeletePart(Uri Uri)
     {
-        List<object[]>? delList=new List<object[]>(); 
+        List<object[]>? delList = new List<object[]>();
+
         foreach (ZipPackagePart? p in this.Parts.Values)
         {
             foreach (ZipPackageRelationship? r in p.GetRelationships())
-            {                    
-                if (r.TargetUri !=null && UriHelper.ResolvePartUri(p.Uri, r.TargetUri).OriginalString.Equals(Uri.OriginalString, StringComparison.OrdinalIgnoreCase))
-                {                        
-                    delList.Add(new object[]{r.Id, p});
+            {
+                if (r.TargetUri != null
+                    && UriHelper.ResolvePartUri(p.Uri, r.TargetUri).OriginalString.Equals(Uri.OriginalString, StringComparison.OrdinalIgnoreCase))
+                {
+                    delList.Add(new object[] { r.Id, p });
                 }
             }
         }
+
         foreach (object[]? o in delList)
         {
             ((ZipPackagePart)o[1]).DeleteRelationship(o[0].ToString());
         }
+
         ZipPackageRelationshipCollection? rels = this.GetPart(Uri).GetRelationships();
+
         while (rels.Count > 0)
         {
             rels.Remove(rels.First().Id);
         }
-        rels=null;
+
+        rels = null;
         this._contentTypes.Remove(GetUriKey(Uri.OriginalString));
+
         //remove all relations
         this.Parts.Remove(GetUriKey(Uri.OriginalString));
-            
     }
+
     internal void Save(Stream stream)
     {
         Encoding? enc = Encoding.UTF8;
         ZipOutputStream os = new ZipOutputStream(stream, true);
         os.EnableZip64 = Zip64Option.AsNecessary;
-        os.CompressionLevel = (OfficeOpenXml.Packaging.Ionic.Zlib.CompressionLevel)this._compression;            
+        os.CompressionLevel = (OfficeOpenXml.Packaging.Ionic.Zlib.CompressionLevel)this._compression;
 
         /**** ContentType****/
         ZipEntry? entry = os.PutNextEntry("[Content_Types].xml");
@@ -324,9 +366,9 @@ internal partial class ZipPackage : ZipPackagePartBase, IDisposable
         os.Write(b, 0, b.Length);
         /**** Top Rels ****/
         this._rels.WriteZip(os, $"_rels/.rels");
-        ZipPackagePart ssPart=null;
+        ZipPackagePart ssPart = null;
 
-        foreach(ZipPackagePart? part in this.Parts.Values)
+        foreach (ZipPackagePart? part in this.Parts.Values)
         {
             if (part.ContentType != ContentTypes.contentTypeSharedString)
             {
@@ -343,17 +385,21 @@ internal partial class ZipPackage : ZipPackagePartBase, IDisposable
         {
             ssPart.WriteZip(os);
         }
+
         os.Flush();
-            
+
         os.Close();
-        os.Dispose();  
-            
+        os.Dispose();
+
         //return ms;
     }
 
     private string GetContentTypeXml()
     {
-        StringBuilder xml = new StringBuilder("<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"yes\"?><Types xmlns=\"http://schemas.openxmlformats.org/package/2006/content-types\">");
+        StringBuilder xml =
+            new
+                StringBuilder("<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"yes\"?><Types xmlns=\"http://schemas.openxmlformats.org/package/2006/content-types\">");
+
         foreach (ContentType ct in this._contentTypes.Values)
         {
             if (ct.IsExtension)
@@ -365,21 +411,23 @@ internal partial class ZipPackage : ZipPackagePartBase, IDisposable
                 xml.AppendFormat("<Override ContentType=\"{0}\" PartName=\"{1}\" />", ct.Name, GetUriKey(ct.Match));
             }
         }
+
         xml.Append("</Types>");
+
         return xml.ToString();
     }
+
     internal static void Flush()
     {
-
     }
+
     internal static void Close()
     {
-            
     }
 
     public void Dispose()
     {
-        foreach(ZipPackagePart? part in this.Parts.Values)
+        foreach (ZipPackagePart? part in this.Parts.Values)
         {
             part.Dispose();
         }
@@ -388,15 +436,13 @@ internal partial class ZipPackage : ZipPackagePartBase, IDisposable
     }
 
     CompressionLevel _compression = CompressionLevel.Default;
+
     /// <summary>
     /// Compression level
     /// </summary>
-    public CompressionLevel Compression 
-    { 
-        get
-        {
-            return this._compression;
-        }
+    public CompressionLevel Compression
+    {
+        get { return this._compression; }
         set
         {
             foreach (ZipPackagePart? part in this.Parts.Values)

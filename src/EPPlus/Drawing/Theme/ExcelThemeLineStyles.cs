@@ -10,6 +10,7 @@
  *************************************************************************************************
   01/27/2020         EPPlus Software AB       Initial release EPPlus 5
  *************************************************************************************************/
+
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -25,14 +26,18 @@ namespace OfficeOpenXml.Drawing.Theme;
 public class ExcelThemeLineStyles : XmlHelper, IEnumerable<ExcelThemeLine>
 {
     List<ExcelThemeLine> _list;
-    internal ExcelThemeLineStyles(XmlNamespaceManager nameSpaceManager, XmlNode topNode) : base(nameSpaceManager, topNode)
+
+    internal ExcelThemeLineStyles(XmlNamespaceManager nameSpaceManager, XmlNode topNode)
+        : base(nameSpaceManager, topNode)
     {
         this._list = new List<ExcelThemeLine>();
+
         foreach (XmlNode node in topNode.ChildNodes)
         {
             this._list.Add(new ExcelThemeLine(nameSpaceManager, node));
         }
     }
+
     /// <summary>
     /// Gets the enumerator for the collection
     /// </summary>
@@ -41,10 +46,12 @@ public class ExcelThemeLineStyles : XmlHelper, IEnumerable<ExcelThemeLine>
     {
         return this._list.GetEnumerator();
     }
+
     IEnumerator IEnumerable.GetEnumerator()
     {
         return this._list.GetEnumerator();
     }
+
     /// <summary>
     /// Indexer for the collection
     /// </summary>
@@ -52,11 +59,9 @@ public class ExcelThemeLineStyles : XmlHelper, IEnumerable<ExcelThemeLine>
     /// <returns>The line style</returns>
     public ExcelThemeLine this[int index]
     {
-        get
-        {
-            return this._list[index];
-        }
+        get { return this._list[index]; }
     }
+
     /// <summary>
     /// Adds a new line to the collection
     /// </summary>
@@ -65,8 +70,10 @@ public class ExcelThemeLineStyles : XmlHelper, IEnumerable<ExcelThemeLine>
     {
         XmlElement? node = this.TopNode.OwnerDocument.CreateElement("a", "ln", ExcelPackage.schemaMain);
         this.TopNode.AppendChild(node);
+
         return new ExcelThemeLine(this.NameSpaceManager, this.TopNode);
     }
+
     /// <summary>
     /// Removes a line item from the collection
     /// </summary>
@@ -84,6 +91,7 @@ public class ExcelThemeLineStyles : XmlHelper, IEnumerable<ExcelThemeLine>
             item.TopNode.ParentNode.RemoveChild(item.TopNode);
         }
     }
+
     /// <summary>
     /// Remove the line style at the specified index. The collection must have at least three line styles.
     /// </summary>
@@ -102,14 +110,12 @@ public class ExcelThemeLineStyles : XmlHelper, IEnumerable<ExcelThemeLine>
 
         this._list.Remove(this._list[Index]);
     }
+
     /// <summary>
     /// Number of items in the collection
     /// </summary>
     public int Count
     {
-        get
-        {
-            return this._list.Count;
-        }
+        get { return this._list.Count; }
     }
 }

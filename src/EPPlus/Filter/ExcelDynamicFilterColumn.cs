@@ -10,6 +10,7 @@
  *************************************************************************************************
   01/27/2020         EPPlus Software AB       Initial release EPPlus 5
  *************************************************************************************************/
+
 using OfficeOpenXml.Utils;
 using OfficeOpenXml.Utils.Extensions;
 using System;
@@ -24,7 +25,8 @@ namespace OfficeOpenXml.Filter;
 /// </summary>
 public class ExcelDynamicFilterColumn : ExcelFilterColumn
 {
-    internal ExcelDynamicFilterColumn(XmlNamespaceManager namespaceManager, XmlNode topNode) : base(namespaceManager, topNode)
+    internal ExcelDynamicFilterColumn(XmlNamespaceManager namespaceManager, XmlNode topNode)
+        : base(namespaceManager, topNode)
     {
         DynamicDateFilterMatcher.SetMatchDates(this);
     }
@@ -33,15 +35,17 @@ public class ExcelDynamicFilterColumn : ExcelFilterColumn
     /// Type of filter
     /// </summary>
     public eDynamicFilterType Type { get; set; }
+
     /// <summary>
     /// The value of the filter. Can be the Average or minimum value depending on the type
     /// </summary>
     public double? Value { get; internal set; }
+
     /// <summary>
     /// The maximum value for for a daterange, for example ThisMonth
     /// </summary>
     public double? MaxValue { get; internal set; }
-        
+
     internal override bool Match(object value, string valueText)
     {
         if (this.Type == eDynamicFilterType.AboveAverage)
@@ -55,6 +59,7 @@ public class ExcelDynamicFilterColumn : ExcelFilterColumn
         else
         {
             DateTime? date = ConvertUtil.GetValueDate(value);
+
             if (date.HasValue == false)
             {
                 return false;
@@ -69,25 +74,28 @@ public class ExcelDynamicFilterColumn : ExcelFilterColumn
         XmlElement? node = (XmlElement)this.CreateNode("d:dynamicFilter");
         node.RemoveAll();
         string? type = this.Type.ToEnumString();
+
         if (type.Length <= 3)
         {
-            type = type.ToUpper();    //For M1, M12, Q1 etc
+            type = type.ToUpper(); //For M1, M12, Q1 etc
         }
 
         node.SetAttribute("type", GetTypeForXml(this.Type));
-        if(this.Value.HasValue)
+
+        if (this.Value.HasValue)
         {
             node.SetAttribute("val", this.Value.Value.ToString("R15", CultureInfo.InvariantCulture));
         }
 
-        if(this.MaxValue.HasValue)
+        if (this.MaxValue.HasValue)
         {
             node.SetAttribute("maxVal", this.MaxValue.Value.ToString("R15", CultureInfo.InvariantCulture));
         }
     }
+
     private static string GetTypeForXml(eDynamicFilterType type)
     {
-        if(type.ToString().Length>3)
+        if (type.ToString().Length > 3)
         {
             return type.ToEnumString();
         }
@@ -115,16 +123,19 @@ public class ExcelDynamicFilterColumn : ExcelFilterColumn
         int count = 0;
         double sum = 0;
         int col = address._fromCol + this.Position;
+
         for (int row = address._fromRow + 1; row <= address._toRow; row++)
         {
             object? v = worksheet.GetValue(row, col);
+
             if (ConvertUtil.IsNumericOrDate(v))
             {
                 sum += ConvertUtil.GetValueDouble(v);
                 count++;
             }
         }
-        if(count==0)
+
+        if (count == 0)
         {
             return 0;
         }

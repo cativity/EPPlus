@@ -10,6 +10,7 @@
  *************************************************************************************************
   12/10/2020         EPPlus Software AB       EPPlus 5.5
  *************************************************************************************************/
+
 using OfficeOpenXml.Table;
 using System;
 using System.Collections.Generic;
@@ -31,67 +32,40 @@ public class EpplusTableAttribute : Attribute
     {
         this.TableStyle = TableStyles.None;
     }
+
     /// <summary>
     /// Table style
     /// </summary>
-    public TableStyles TableStyle
-    {
-        get;
-        set;
-    }
+    public TableStyles TableStyle { get; set; }
 
     /// <summary>
     /// If true, there will be a header row with column names over the data
     /// </summary>
-    public bool PrintHeaders
-    {
-        get;
-        set;
-    }
+    public bool PrintHeaders { get; set; }
 
     /// <summary>
     /// If true, the first column of the table is highlighted
     /// </summary>
-    public bool ShowFirstColumn
-    {
-        get;
-        set;
-    }
+    public bool ShowFirstColumn { get; set; }
 
     /// <summary>
     /// If true, the last column of the table is highlighted
     /// </summary>
-    public bool ShowLastColumn
-    {
-        get;
-        set;
-    }
+    public bool ShowLastColumn { get; set; }
 
     /// <summary>
     /// If true, a totals row will be added under the table data. This should be used in combination with <see cref="EpplusTableColumnAttributeBase.TotalsRowFunction"/> on the column attributes.
     /// </summary>
-    public bool ShowTotal
-    {
-        get;
-        set;
-    }
+    public bool ShowTotal { get; set; }
 
     /// <summary>
     /// If true, column width will be adjusted to cell content
     /// </summary>
-    public bool AutofitColumns
-    {
-        get;
-        set;
-    }
+    public bool AutofitColumns { get; set; }
 
     /// <summary>
     /// If true, EPPlus will calculate the table range when the data has been read into the spreadsheet and store the results
     /// in the Value property of each cell.
     /// </summary>
-    public bool AutoCalculate
-    {
-        get;
-        set;
-    }
+    public bool AutoCalculate { get; set; }
 }

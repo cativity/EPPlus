@@ -26,6 +26,7 @@
  *******************************************************************************
   01/27/2020         EPPlus Software AB       Initial release EPPlus 5
  *******************************************************************************/
+
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using OfficeOpenXml;
 using System;
@@ -37,16 +38,19 @@ namespace EPPlusTest.Drawing.Chart;
 public class SeriesTest : TestBase
 {
     static ExcelPackage _pck;
+
     [ClassInitialize]
     public static void Init(TestContext context)
     {
         _pck = OpenPackage("SeriesTest.xlsx", true);
     }
+
     [ClassCleanup]
     public static void Cleanup()
     {
         SaveAndCleanup(_pck);
     }
+
     [TestMethod]
     public void ChartSeriesRangeAddress()
     {
@@ -57,6 +61,7 @@ public class SeriesTest : TestBase
         Assert.AreEqual("SeriesAddress!A1:A12", serie.Series);
         Assert.AreEqual("SeriesAddress!B1:B12", serie.XSeries);
     }
+
     [TestMethod]
     public void ChartSeriesFullRangeAddress()
     {
@@ -67,6 +72,7 @@ public class SeriesTest : TestBase
         Assert.AreEqual("SeriesFullAddress!A1:A12", serie.Series);
         Assert.AreEqual("SeriesFullAddress!B1:B12", serie.XSeries);
     }
+
     [TestMethod]
     public void ChartSeriesName()
     {
@@ -77,23 +83,24 @@ public class SeriesTest : TestBase
         Assert.AreEqual("SeriesName!Name1", serie.Series);
         Assert.AreEqual("Name2", serie.XSeries);
     }
+
     [TestMethod]
     public void ChartSeriesLitStringXNumY()
     {
         ExcelWorksheet? ws = _pck.Workbook.Worksheets.Add("StrLitAndNumLit");
         LoadTestdata(ws);
         ExcelLineChart? lineChart = ws.Drawings.AddLineChart("LineChart1", eLineChartType.Line);
-        ExcelLineChartSerie? serie=lineChart.Series.Add("{120.3,14,5000.0005}", "{\"Label1\",\"Label 2\",\"Something else\"}");
+        ExcelLineChartSerie? serie = lineChart.Series.Add("{120.3,14,5000.0005}", "{\"Label1\",\"Label 2\",\"Something else\"}");
         Assert.AreEqual(serie.StringLiteralsX.Length, 3);
         Assert.AreEqual(serie.StringLiteralsX[0], "Label1");
         Assert.AreEqual(serie.StringLiteralsX[1], "Label 2");
         Assert.AreEqual(serie.StringLiteralsX[2], "Something else");
         Assert.AreEqual(serie.NumberLiteralsY.Length, 3);
-        Assert.AreEqual(serie.NumberLiteralsY[0], 120,3);
+        Assert.AreEqual(serie.NumberLiteralsY[0], 120, 3);
         Assert.AreEqual(serie.NumberLiteralsY[1], 14);
         Assert.AreEqual(serie.NumberLiteralsY[2], 5000.0005);
-
     }
+
     [TestMethod]
     public void ChartSeriesLitNumXNumY()
     {
@@ -109,8 +116,8 @@ public class SeriesTest : TestBase
         Assert.AreEqual(serie.NumberLiteralsY[0], 120, 3);
         Assert.AreEqual(serie.NumberLiteralsY[1], 14);
         Assert.AreEqual(serie.NumberLiteralsY[2], 5000.0005);
-
     }
+
     [TestMethod]
     [ExpectedException(typeof(ArgumentException))]
     public void ChartSeriesLitStringYNumX()

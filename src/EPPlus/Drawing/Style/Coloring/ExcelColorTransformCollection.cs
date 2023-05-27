@@ -10,6 +10,7 @@
  *************************************************************************************************
   01/27/2020         EPPlus Software AB       Initial release EPPlus 5
  *************************************************************************************************/
+
 using OfficeOpenXml.Utils.Extensions;
 using System;
 using System.Collections;
@@ -26,22 +27,26 @@ public class ExcelColorTransformCollection : IEnumerable<IColorTransformItem>
     List<IColorTransformItem> _list = new List<IColorTransformItem>();
     XmlNamespaceManager _namespaceManager;
     XmlNode _topNode;
+
     /// <summary>
     /// For internal transformation calculations only. 
     /// </summary>
     internal ExcelColorTransformCollection()
     {
     }
+
     internal ExcelColorTransformCollection(XmlNamespaceManager nsm, XmlNode topNode)
     {
         this._namespaceManager = nsm;
         this._topNode = topNode;
-        foreach(XmlElement e in topNode.ChildNodes)
+
+        foreach (XmlElement e in topNode.ChildNodes)
         {
             eColorTransformType type = e.LocalName.ToEnum(eColorTransformType.Alpha);
             this._list.Add(new ExcelColorTransformItem(nsm, e, type));
         }
     }
+
     /// <summary>
     /// Indexer for the colletion
     /// </summary>
@@ -49,17 +54,15 @@ public class ExcelColorTransformCollection : IEnumerable<IColorTransformItem>
     /// <returns></returns>
     public IColorTransformItem this[int index]
     {
-        get
-        {
-            return this._list[index];
-        }
+        get { return this._list[index]; }
     }
+
     /// <summary>
     /// Clear all items
     /// </summary>
     public void Clear()
     {
-        foreach(IColorTransformItem? item in this._list)
+        foreach (IColorTransformItem? item in this._list)
         {
             if (item is ExcelColorTransformItem colorItem)
             {
@@ -69,6 +72,7 @@ public class ExcelColorTransformCollection : IEnumerable<IColorTransformItem>
 
         this._list.Clear();
     }
+
     /// <summary>
     /// Remote item at a specific position
     /// </summary>
@@ -77,6 +81,7 @@ public class ExcelColorTransformCollection : IEnumerable<IColorTransformItem>
     {
         this.Remove(this._list[index]);
     }
+
     /// <summary>
     /// Removes the specific item
     /// </summary>
@@ -90,23 +95,27 @@ public class ExcelColorTransformCollection : IEnumerable<IColorTransformItem>
 
         this._list.Remove(item);
     }
+
     /// <summary>
     /// Remove all items of a specific type
     /// </summary>
     /// <param name="type">The transformation type</param>
     public void RemoveOfType(eColorTransformType type)
     {
-        for(int i=0;i< this._list.Count;i++)
+        for (int i = 0; i < this._list.Count; i++)
         {
-            if(this._list[i].Type==type)
+            if (this._list[i].Type == type)
             {
                 this._list.RemoveAt(i);
                 i--;
             }
         }
     }
+
     #region Add methods
+
     #region Alpha
+
     /// <summary>
     /// The opacity as expressed by a percentage value
     /// Alpha equals 100-Transparancy
@@ -116,6 +125,7 @@ public class ExcelColorTransformCollection : IEnumerable<IColorTransformItem>
     {
         this.AddValue("alpha", eColorTransformType.Alpha, value);
     }
+
     /// <summary>
     /// Specifies a more or less opaque version of its input color
     /// Alpha equals 100-Transparancy
@@ -125,6 +135,7 @@ public class ExcelColorTransformCollection : IEnumerable<IColorTransformItem>
     {
         this.AddValue("alphaMod", eColorTransformType.AlphaMod, value);
     }
+
     /// <summary>
     /// Adds an alpha offset value. 
     /// </summary>
@@ -133,8 +144,11 @@ public class ExcelColorTransformCollection : IEnumerable<IColorTransformItem>
     {
         this.AddValue("alphaOff", eColorTransformType.AlphaOff, value);
     }
+
     #endregion
+
     #region Hue
+
     /// <summary>
     /// Specifies the input color with the specified hue, but with its saturation and luminance unchanged
     /// </summary>
@@ -143,6 +157,7 @@ public class ExcelColorTransformCollection : IEnumerable<IColorTransformItem>
     {
         this.AddValue("hue", eColorTransformType.Hue, value);
     }
+
     /// <summary>
     /// Specifies the hue as expressed by a percentage relative to the input color
     /// </summary>
@@ -151,6 +166,7 @@ public class ExcelColorTransformCollection : IEnumerable<IColorTransformItem>
     {
         this.AddValue("hueMod", eColorTransformType.HueMod, value);
     }
+
     /// <summary>
     /// Specifies the actual angular value of the shift. The result of the shift shall be between 0 and 360 degrees.Shifts resulting in angular values less than 0 are treated as 0. 
     /// Shifts resulting in angular values greater than 360 are treated as 360.
@@ -160,8 +176,11 @@ public class ExcelColorTransformCollection : IEnumerable<IColorTransformItem>
     {
         this.AddValue("hueOff", eColorTransformType.HueOff, value);
     }
+
     #endregion
+
     #region Saturation
+
     /// <summary>
     /// Specifies the input color with the specified saturation, but with its hue and luminance unchanged
     /// </summary>
@@ -170,6 +189,7 @@ public class ExcelColorTransformCollection : IEnumerable<IColorTransformItem>
     {
         this.AddValue("sat", eColorTransformType.Sat, value);
     }
+
     /// <summary>
     /// Specifies the saturation as expressed by a percentage relative to the input color
     /// </summary>
@@ -178,6 +198,7 @@ public class ExcelColorTransformCollection : IEnumerable<IColorTransformItem>
     {
         this.AddValue("satMod", eColorTransformType.SatMod, value);
     }
+
     /// <summary>
     /// Specifies the saturation as expressed by a percentage offset increase or decrease to the input color.
     /// Increases never increase the saturation beyond 100%, decreases never decrease the saturation below 0%.
@@ -187,8 +208,11 @@ public class ExcelColorTransformCollection : IEnumerable<IColorTransformItem>
     {
         this.AddValue("satOff", eColorTransformType.SatOff, value);
     }
+
     #endregion
+
     #region Luminance
+
     /// <summary>
     /// Specifies the input color with the specified luminance, but with its hue and saturation unchanged
     /// </summary>
@@ -197,6 +221,7 @@ public class ExcelColorTransformCollection : IEnumerable<IColorTransformItem>
     {
         this.AddValue("lum", eColorTransformType.Lum, value);
     }
+
     /// <summary>
     /// Specifies the luminance as expressed by a percentage relative to the input color
     /// </summary>
@@ -205,6 +230,7 @@ public class ExcelColorTransformCollection : IEnumerable<IColorTransformItem>
     {
         this.AddValue("lumMod", eColorTransformType.LumMod, value);
     }
+
     /// <summary>
     /// Specifies the luminance as expressed by a percentage offset increase or decrease to the input color.
     /// Increases never increase the luminance beyond 100%, decreases never decrease the saturation below 0%.
@@ -214,8 +240,11 @@ public class ExcelColorTransformCollection : IEnumerable<IColorTransformItem>
     {
         this.AddValue("lumOff", eColorTransformType.LumOff, value);
     }
+
     #endregion
+
     #region Red
+
     /// <summary>
     /// Specifies the input color with the specific red component
     /// </summary>
@@ -224,6 +253,7 @@ public class ExcelColorTransformCollection : IEnumerable<IColorTransformItem>
     {
         this.AddValue("red", eColorTransformType.Red, value);
     }
+
     /// <summary>
     /// Specifies the red component as expressed by a percentage relative to the input color component
     /// </summary>
@@ -232,6 +262,7 @@ public class ExcelColorTransformCollection : IEnumerable<IColorTransformItem>
     {
         this.AddValue("redMod", eColorTransformType.RedMod, value);
     }
+
     /// <summary>
     /// Specifies the red component as expressed by a percentage offset increase or decrease to the input color component
     /// </summary>
@@ -240,8 +271,11 @@ public class ExcelColorTransformCollection : IEnumerable<IColorTransformItem>
     {
         this.AddValue("redOff", eColorTransformType.RedOff, value);
     }
+
     #endregion
+
     #region Green
+
     /// <summary>
     /// Specifies the input color with the specific green component
     /// </summary>
@@ -250,6 +284,7 @@ public class ExcelColorTransformCollection : IEnumerable<IColorTransformItem>
     {
         this.AddValue("green", eColorTransformType.Green, value);
     }
+
     /// <summary>
     /// Specifies the green component as expressed by a percentage relative to the input color component
     /// </summary>
@@ -258,6 +293,7 @@ public class ExcelColorTransformCollection : IEnumerable<IColorTransformItem>
     {
         this.AddValue("greenMod", eColorTransformType.GreenMod, value);
     }
+
     /// <summary>
     /// Specifies the green component as expressed by a percentage offset increase or decrease to the input color component
     /// </summary>
@@ -266,8 +302,11 @@ public class ExcelColorTransformCollection : IEnumerable<IColorTransformItem>
     {
         this.AddValue("greenOff", eColorTransformType.GreenOff, value);
     }
+
     #endregion
+
     #region Blue
+
     /// <summary>
     /// Specifies the input color with the specific blue component
     /// </summary>
@@ -281,6 +320,7 @@ public class ExcelColorTransformCollection : IEnumerable<IColorTransformItem>
     {
         return this._list.Find(x => x.Type == alpha)?.Value ?? 0;
     }
+
     internal IColorTransformItem Find(eColorTransformType alpha)
     {
         return this._list.Find(x => x.Type == alpha);
@@ -294,6 +334,7 @@ public class ExcelColorTransformCollection : IEnumerable<IColorTransformItem>
     {
         this.AddValue("blueMod", eColorTransformType.BlueMod, value);
     }
+
     /// <summary>
     /// Specifies the blue component as expressed by a percentage offset increase or decrease to the input color component
     /// </summary>
@@ -302,7 +343,9 @@ public class ExcelColorTransformCollection : IEnumerable<IColorTransformItem>
     {
         this.AddValue("blueOff", eColorTransformType.BlueOff, value);
     }
+
     #endregion
+
     /// <summary>
     /// Specifies a lighter version of its input color
     /// </summary>
@@ -311,6 +354,7 @@ public class ExcelColorTransformCollection : IEnumerable<IColorTransformItem>
     {
         this.AddValue("tint", eColorTransformType.Tint, value);
     }
+
     /// <summary>
     /// Specifies a lighter version of its input color
     /// </summary>
@@ -319,7 +363,9 @@ public class ExcelColorTransformCollection : IEnumerable<IColorTransformItem>
     {
         this.AddValue("shade", eColorTransformType.Shade, value);
     }
+
     #region Boolean Types
+
     /// <summary>
     /// Specifies that the color rendered should be the complement of its input color with the complement being defined as such.
     /// Two colors are called complementary if, when mixed they produce a shade of grey.For instance, the complement of red which is RGB (255, 0, 0) is cyan which is RGB(0, 255, 255)
@@ -328,6 +374,7 @@ public class ExcelColorTransformCollection : IEnumerable<IColorTransformItem>
     {
         this.AddValue("comp", eColorTransformType.Comp);
     }
+
     /// <summary>
     /// Specifies that the output color rendered by the generating application should be the sRGB gamma shift of the input color.
     /// </summary>
@@ -335,6 +382,7 @@ public class ExcelColorTransformCollection : IEnumerable<IColorTransformItem>
     {
         this.AddValue("gamma", eColorTransformType.Gamma);
     }
+
     /// <summary>
     /// Specifies a grayscale of its input color, taking into relative intensities of the red, green, and blue primaries.
     /// </summary>
@@ -342,6 +390,7 @@ public class ExcelColorTransformCollection : IEnumerable<IColorTransformItem>
     {
         this.AddValue("gray", eColorTransformType.Gray);
     }
+
     /// <summary>
     /// Specifies the inverse of its input color
     /// </summary>
@@ -349,6 +398,7 @@ public class ExcelColorTransformCollection : IEnumerable<IColorTransformItem>
     {
         this.AddValue("inv", eColorTransformType.Inv);
     }
+
     /// <summary>
     /// Specifies that the output color rendered by the generating application should be the inverse sRGB gamma shift of the input color
     /// </summary>
@@ -356,12 +406,14 @@ public class ExcelColorTransformCollection : IEnumerable<IColorTransformItem>
     {
         this.AddValue("invGamma", eColorTransformType.InvGamma);
     }
+
     #endregion
+
     private void AddValue(string name, eColorTransformType type)
     {
         if (this._namespaceManager == null)
         {
-            this._list.Add(new ExcelColorTransformSimpleItem() { Type=type });
+            this._list.Add(new ExcelColorTransformSimpleItem() { Type = type });
         }
         else
         {
@@ -369,18 +421,23 @@ public class ExcelColorTransformCollection : IEnumerable<IColorTransformItem>
             this._list.Add(new ExcelColorTransformItem(this._namespaceManager, node, type));
         }
     }
+
     private void AddValue(string name, eColorTransformType type, double value)
     {
         this.AddValue(name, type);
         this._list[this._list.Count - 1].Value = value;
     }
+
     private XmlElement AddNode(string name)
     {
         XmlElement? node = this._topNode.OwnerDocument.CreateElement("a", name, ExcelPackage.schemaDrawings);
         this._topNode.AppendChild(node);
+
         return node;
     }
+
     #endregion
+
     /// <summary>
     /// Gets the enumerator for the collection
     /// </summary>
@@ -394,14 +451,12 @@ public class ExcelColorTransformCollection : IEnumerable<IColorTransformItem>
     {
         return this._list.GetEnumerator();
     }
+
     /// <summary>
     /// Number of items in the collection
     /// </summary>
     public int Count
     {
-        get
-        {
-            return this._list.Count;
-        }
+        get { return this._list.Count; }
     }
 }

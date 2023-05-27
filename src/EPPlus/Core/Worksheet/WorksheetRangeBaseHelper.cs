@@ -10,6 +10,7 @@
  *************************************************************************************************
   02/03/2020         EPPlus Software AB       Added
  *************************************************************************************************/
+
 using OfficeOpenXml.ConditionalFormatting;
 using OfficeOpenXml.DataValidation;
 using OfficeOpenXml.DataValidation.Contracts;
@@ -26,9 +27,11 @@ internal static class WorksheetRangeCommonHelper
             if (dv is ExcelDataValidationWithFormula<IExcelDataValidationFormula> dvFormula)
             {
                 dvFormula.Formula.ExcelFormula = ExcelCellBase.UpdateFormulaReferences(dvFormula.Formula.ExcelFormula, rows, 0, rowFrom, 0, ws.Name, ws.Name);
+
                 if (dv is ExcelDataValidationWithFormula2<IExcelDataValidationFormula> dvFormula2)
                 {
-                    dvFormula2.Formula2.ExcelFormula = ExcelCellBase.UpdateFormulaReferences(dvFormula2.Formula2.ExcelFormula, rows, 0, rowFrom, 0, ws.Name, ws.Name);
+                    dvFormula2.Formula2.ExcelFormula =
+                        ExcelCellBase.UpdateFormulaReferences(dvFormula2.Formula2.ExcelFormula, rows, 0, rowFrom, 0, ws.Name, ws.Name);
                 }
             }
         }
@@ -39,12 +42,14 @@ internal static class WorksheetRangeCommonHelper
             {
                 cf.Formula = ExcelCellBase.UpdateFormulaReferences(cf.Formula, rows, 0, rowFrom, 0, ws.Name, ws.Name);
             }
+
             if (!string.IsNullOrEmpty(cf.Formula2))
             {
                 cf.Formula2 = ExcelCellBase.UpdateFormulaReferences(cf.Formula2, rows, 0, rowFrom, 0, ws.Name, ws.Name);
             }
         }
     }
+
     //internal static void AdjustDvAndCfFormulasDelete(ExcelRangeBase range, ExcelAddressBase affectedRange, eShiftTypeDelete shift)
     //{
     //    var ws=range.Worksheet;
@@ -106,10 +111,13 @@ internal static class WorksheetRangeCommonHelper
         {
             if (dv is ExcelDataValidationWithFormula<IExcelDataValidationFormula> dvFormula)
             {
-                dvFormula.Formula.ExcelFormula = ExcelCellBase.UpdateFormulaReferences(dvFormula.Formula.ExcelFormula, 0, columns, 0, columnFrom, ws.Name, ws.Name);
+                dvFormula.Formula.ExcelFormula =
+                    ExcelCellBase.UpdateFormulaReferences(dvFormula.Formula.ExcelFormula, 0, columns, 0, columnFrom, ws.Name, ws.Name);
+
                 if (dv is ExcelDataValidationWithFormula2<IExcelDataValidationFormula> dvFormula2)
                 {
-                    dvFormula2.Formula2.ExcelFormula = ExcelCellBase.UpdateFormulaReferences(dvFormula2.Formula2.ExcelFormula, 0, columns, 0, columnFrom, ws.Name, ws.Name);
+                    dvFormula2.Formula2.ExcelFormula =
+                        ExcelCellBase.UpdateFormulaReferences(dvFormula2.Formula2.ExcelFormula, 0, columns, 0, columnFrom, ws.Name, ws.Name);
                 }
             }
         }
@@ -120,11 +128,11 @@ internal static class WorksheetRangeCommonHelper
             {
                 cf.Formula = ExcelCellBase.UpdateFormulaReferences(cf.Formula, 0, columns, 0, columnFrom, ws.Name, ws.Name);
             }
+
             if (!string.IsNullOrEmpty(cf.Formula2))
             {
                 cf.Formula2 = ExcelCellBase.UpdateFormulaReferences(cf.Formula2, 0, columns, 0, columnFrom, ws.Name, ws.Name);
             }
         }
     }
-
 }

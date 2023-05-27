@@ -26,6 +26,7 @@
  *******************************************************************************
   01/27/2020         EPPlus Software AB       Initial release EPPlus 5
  *******************************************************************************/
+
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
 using System.Text;
@@ -37,22 +38,22 @@ namespace EPPlusTest.Filter;
 
 [TestClass]
 public class AutoFilterReadWriteTest : TestBase
-{        
+{
     [TestMethod]
     public void ValuesFilter()
     {
-        ExcelPackage? pck=OpenPackage("AutoFilterValues.xlsx", true);
+        ExcelPackage? pck = OpenPackage("AutoFilterValues.xlsx", true);
         ExcelWorksheet? ws = pck.Workbook.Worksheets.Add("Values");
         LoadTestdata(ws);
 
         ws.AutoFilterAddress = ws.Cells["A1:D100"];
-        ExcelValueFilterColumn? col=ws.AutoFilter.Columns.AddValueFilterColumn(1);
+        ExcelValueFilterColumn? col = ws.AutoFilter.Columns.AddValueFilterColumn(1);
         col.Filters.Add("3");
         col.Filters.Add("6");
         col.Filters.Add("19");
         col.Filters.Blank = true;
         col.Filters.Add(new ExcelFilterDateGroupItem(2018, 12));
-            
+
         ExcelValueFilterColumn? col2 = ws.AutoFilter.Columns.AddValueFilterColumn(2);
         col2.Filters.Add("Value 6");
         ws.AutoFilter.ApplyFilter();
@@ -74,6 +75,7 @@ public class AutoFilterReadWriteTest : TestBase
         Assert.AreEqual(1, ((ExcelValueFilterColumn)ws.AutoFilter.Columns[2]).Filters.Count);
         pck.Dispose();
     }
+
     [TestMethod]
     public void TableValuesFilter()
     {
@@ -81,7 +83,7 @@ public class AutoFilterReadWriteTest : TestBase
         ExcelWorksheet? ws = pck.Workbook.Worksheets.Add("TableValues");
         LoadTestdata(ws);
 
-        ExcelTable? tbl =ws.Tables.Add(ws.Cells["A1:D100"], "Table1");
+        ExcelTable? tbl = ws.Tables.Add(ws.Cells["A1:D100"], "Table1");
 
         tbl.ShowFilter = true;
         ExcelValueFilterColumn? col = tbl.AutoFilter.Columns.AddValueFilterColumn(1);
@@ -104,13 +106,14 @@ public class AutoFilterReadWriteTest : TestBase
         pck.Dispose();
 
         /*** Reopen and validate ***/
-        pck=OpenPackage("TableFilterValues.xlsx", false);
+        pck = OpenPackage("TableFilterValues.xlsx", false);
         tbl = pck.Workbook.Worksheets["TableValues"].Tables[0];
         Assert.AreEqual(2, tbl.AutoFilter.Columns.Count);
         Assert.AreEqual(4, ((ExcelValueFilterColumn)tbl.AutoFilter.Columns[1]).Filters.Count);
         Assert.AreEqual(1, ((ExcelValueFilterColumn)tbl.AutoFilter.Columns[2]).Filters.Count);
         pck.Dispose();
     }
+
     [TestMethod]
     public void CustomFilter()
     {
@@ -119,7 +122,7 @@ public class AutoFilterReadWriteTest : TestBase
         LoadTestdata(ws);
 
         ws.AutoFilterAddress = ws.Cells["A1:D100"];
-        ExcelCustomFilterColumn? col = ws.AutoFilter.Columns.AddCustomFilterColumn(2);            
+        ExcelCustomFilterColumn? col = ws.AutoFilter.Columns.AddCustomFilterColumn(2);
         col.And = true;
         col.Filters.Add(new ExcelFilterCustomItem("Val*"));
         col.Filters.Add(new ExcelFilterCustomItem("*3"));
@@ -140,6 +143,7 @@ public class AutoFilterReadWriteTest : TestBase
         ws.AutoFilter.Save();
         pck.Save();
     }
+
     [TestMethod]
     public void Top10Filter_100()
     {
@@ -179,12 +183,11 @@ public class AutoFilterReadWriteTest : TestBase
         col.Top = true;
         col.Percent = true;
 
-
         pck.Save();
         pck.Dispose();
 
         /*** Reopen and validate ***/
-        pck=OpenPackage("AutoFilterTop10_100.xlsx", false);
+        pck = OpenPackage("AutoFilterTop10_100.xlsx", false);
         ws = pck.Workbook.Worksheets["Bottom12"];
         ExcelTop10FilterColumn? top10Col = (ExcelTop10FilterColumn)ws.AutoFilter.Columns[1];
         Assert.AreEqual(13, top10Col.FilterValue);
@@ -203,6 +206,7 @@ public class AutoFilterReadWriteTest : TestBase
 
         pck.Dispose();
     }
+
     [TestMethod]
     public void Top10Filter_500()
     {
@@ -244,12 +248,11 @@ public class AutoFilterReadWriteTest : TestBase
         col.Top = true;
         col.Percent = true;
 
-
         pck.Save();
         pck.Dispose();
 
         /*** Reopen and validate ***/
-        pck=OpenPackage("AutoFilterTop10_500.xlsx", false);
+        pck = OpenPackage("AutoFilterTop10_500.xlsx", false);
         ws = pck.Workbook.Worksheets["Bottom12"];
         ExcelTop10FilterColumn? top10Col = (ExcelTop10FilterColumn)ws.AutoFilter.Columns[1];
         Assert.AreEqual(13, top10Col.FilterValue);
@@ -310,7 +313,6 @@ public class AutoFilterReadWriteTest : TestBase
         col.Top = true;
         col.Percent = true;
 
-
         pck.Save();
         pck.Dispose();
 
@@ -334,6 +336,7 @@ public class AutoFilterReadWriteTest : TestBase
 
         pck.Dispose();
     }
+
     [TestMethod]
     public void ColorFilter()
     {
@@ -343,8 +346,9 @@ public class AutoFilterReadWriteTest : TestBase
         ExcelWorksheet? ws = pck.Workbook.Worksheets.Add("ColorFilter");
         LoadTestdata(ws, 100);
         ws.AutoFilterAddress = ws.Cells["A1:D733"];
-        ExcelColorFilterColumn? col = ws.AutoFilter.Columns.AddColorFilterColumn(1);            
+        ExcelColorFilterColumn? col = ws.AutoFilter.Columns.AddColorFilterColumn(1);
     }
+
     [TestMethod]
     public void IconFilter()
     {

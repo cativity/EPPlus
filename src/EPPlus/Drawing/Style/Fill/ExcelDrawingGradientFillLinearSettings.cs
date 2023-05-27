@@ -10,6 +10,7 @@
  *************************************************************************************************
   01/27/2020         EPPlus Software AB       Initial release EPPlus 5
  *************************************************************************************************/
+
 namespace OfficeOpenXml.Drawing.Style.Fill;
 
 /// <summary>
@@ -20,6 +21,7 @@ public class ExcelDrawingGradientFillLinearSettings
     internal ExcelDrawingGradientFillLinearSettings()
     {
     }
+
     internal ExcelDrawingGradientFillLinearSettings(XmlHelper xml)
     {
         this.Angel = xml.GetXmlNodeAngel("a:lin/@ang");
@@ -31,8 +33,9 @@ public class ExcelDrawingGradientFillLinearSettings
     /// be x measured clockwise.Then( -sin x, cos x) is a vector parallel to the line of constant color in the gradient fill.
     /// </summary>
     public double Angel { get; set; }
+
     /// <summary>
     /// If the gradient angle scales with the fill.
     /// </summary>
-    public bool Scaled { get; set; }       
+    public bool Scaled { get; set; }
 }

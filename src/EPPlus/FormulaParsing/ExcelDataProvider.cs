@@ -10,6 +10,7 @@
  *************************************************************************************************
   01/27/2020         EPPlus Software AB       Initial release EPPlus 5
  *************************************************************************************************/
+
 using OfficeOpenXml.FormulaParsing.LexicalAnalysis;
 using OfficeOpenXml.Table;
 using System;
@@ -25,18 +26,22 @@ namespace OfficeOpenXml.FormulaParsing;
 /// </summary>
 internal abstract class ExcelDataProvider : IDisposable
 {
-    internal ExcelDataProvider() { }
+    internal ExcelDataProvider()
+    {
+    }
 
     /// <summary>
     /// Returns the names of the worksheets in a workbook
     /// </summary>
     /// <returns></returns>
     public abstract IEnumerable<string> GetWorksheets();
+
     /// <summary>
     /// Returns the names of all worksheet names
     /// </summary>
     /// <returns></returns>
     public abstract ExcelNamedRangeCollection GetWorksheetNames(string worksheet);
+
     /// <summary>
     /// Returns the names of all worksheet names
     /// </summary>
@@ -44,6 +49,7 @@ internal abstract class ExcelDataProvider : IDisposable
     public abstract bool IsExternalName(string name);
 
     public abstract ExcelTable GetExcelTable(string name);
+
     /// <summary>
     /// Returns the number of a worksheet in the workbook
     /// </summary>
@@ -56,6 +62,7 @@ internal abstract class ExcelDataProvider : IDisposable
     /// </summary>
     /// <returns></returns>
     public abstract ExcelNamedRangeCollection GetWorkbookNameValues();
+
     /// <summary>
     /// Returns values from the required range.
     /// </summary>
@@ -65,6 +72,7 @@ internal abstract class ExcelDataProvider : IDisposable
     /// <param name="address">The reference address</param>
     /// <returns></returns>
     public abstract IRangeInfo GetRange(string worksheetName, int row, int column, string address);
+
     /// <summary>
     /// Returns values from the required range.
     /// </summary>
@@ -72,12 +80,15 @@ internal abstract class ExcelDataProvider : IDisposable
     /// <param name="address">The reference address</param>
     /// <returns></returns>
     public abstract IRangeInfo GetRange(string worksheetName, string address);
+
     public abstract INameInfo GetName(string worksheet, string name);
 
     public abstract IEnumerable<object> GetRangeValues(string address);
 
     public abstract string GetRangeFormula(string worksheetName, int row, int column);
+
     public abstract List<Token> GetRangeFormulaTokens(string worksheetName, int row, int column);
+
     public abstract bool IsRowHidden(string worksheetName, int row);
     ///// <summary>
     ///// Returns a single cell value
@@ -134,8 +145,10 @@ internal abstract class ExcelDataProvider : IDisposable
     public abstract int ExcelMaxRows { get; }
 
     public abstract object GetRangeValue(string worksheetName, int row, int column);
+
     public abstract string GetFormat(object value, string format);
 
     public abstract void Reset();
+
     public abstract IRangeInfo GetRange(string worksheet, int fromRow, int fromCol, int toRow, int toCol);
 }

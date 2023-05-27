@@ -10,6 +10,7 @@
  *************************************************************************************************
   09/02/2020         EPPlus Software AB       EPPlus 5.4
  *************************************************************************************************/
+
 using OfficeOpenXml;
 using OfficeOpenXml.Filter;
 using OfficeOpenXml.Table.PivotTable;
@@ -26,7 +27,8 @@ namespace OfficeOpenXml.Table.PivotTable.Filter;
 /// </summary>
 public class ExcelPivotTableFilterCollection : ExcelPivotTableFilterBaseCollection
 {
-    internal ExcelPivotTableFilterCollection(ExcelPivotTable table) : base(table)
+    internal ExcelPivotTableFilterCollection(ExcelPivotTable table)
+        : base(table)
     {
     }
 }

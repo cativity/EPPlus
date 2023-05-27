@@ -10,6 +10,7 @@
  *************************************************************************************************
   05/03/2020         EPPlus Software AB         Implemented function
  *************************************************************************************************/
+
 using OfficeOpenXml.FormulaParsing.Excel.Functions.Metadata;
 using OfficeOpenXml.FormulaParsing.ExpressionGraph;
 using System;
@@ -18,10 +19,9 @@ using System.Text;
 
 namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Finance;
 
-[FunctionMetadata(
-                     Category = ExcelFunctionCategory.Financial,
-                     EPPlusVersion = "5.2",
-                     Description = "Calculates the effective annual interest rate from a supplied Nominal interest rate and number of periods")]
+[FunctionMetadata(Category = ExcelFunctionCategory.Financial,
+                  EPPlusVersion = "5.2",
+                  Description = "Calculates the effective annual interest rate from a supplied Nominal interest rate and number of periods")]
 internal class Effect : ExcelFunction
 {
     public override CompileResult Execute(IEnumerable<FunctionArgument> arguments, ParsingContext context)
@@ -29,12 +29,14 @@ internal class Effect : ExcelFunction
         ValidateArguments(arguments, 2);
         double nominalRate = this.ArgToDecimal(arguments, 0);
         int npery = this.ArgToInt(arguments, 1);
+
         if (nominalRate <= 0 || npery < 1)
         {
             return this.CreateResult(eErrorType.Num);
         }
 
-        double result = System.Math.Pow((nominalRate/npery) + 1d, npery) - 1d;
+        double result = System.Math.Pow((nominalRate / npery) + 1d, npery) - 1d;
+
         return this.CreateResult(result, DataType.Decimal);
     }
 }

@@ -10,6 +10,7 @@
  *************************************************************************************************
   01/27/2020         EPPlus Software AB       Initial release EPPlus 5
  *************************************************************************************************/
+
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -37,15 +38,18 @@ internal class ExcelAddressExpression : AtomicExpression
     internal ExcelAddressExpression(string expression, ExcelDataProvider excelDataProvider, ParsingContext parsingContext)
         : this(expression, excelDataProvider, parsingContext, new RangeAddressFactory(excelDataProvider), false)
     {
-
     }
+
     internal ExcelAddressExpression(string expression, ExcelDataProvider excelDataProvider, ParsingContext parsingContext, bool negate)
         : this(expression, excelDataProvider, parsingContext, new RangeAddressFactory(excelDataProvider), negate)
     {
-
     }
 
-    internal ExcelAddressExpression(string expression, ExcelDataProvider excelDataProvider, ParsingContext parsingContext, RangeAddressFactory rangeAddressFactory, bool negate)
+    internal ExcelAddressExpression(string expression,
+                                    ExcelDataProvider excelDataProvider,
+                                    ParsingContext parsingContext,
+                                    RangeAddressFactory rangeAddressFactory,
+                                    bool negate)
         : base(expression)
     {
         Require.That(excelDataProvider).Named("excelDataProvider").IsNotNull();
@@ -65,30 +69,31 @@ internal class ExcelAddressExpression : AtomicExpression
     /// <summary>
     /// Returns true if this address has a circular reference from the cell it is in.
     /// </summary>
-    public bool HasCircularReference
-    {
-        get;
-        internal set;
-    }
+    public bool HasCircularReference { get; internal set; }
 
     public override CompileResult Compile()
     {
-        if(this.HasCircularReference && !this.IgnoreCircularReference)
+        if (this.HasCircularReference && !this.IgnoreCircularReference)
         {
-            if(this._parsingContext.Configuration.AllowCircularReferences)
+            if (this._parsingContext.Configuration.AllowCircularReferences)
             {
                 return CompileResult.Empty;
             }
+
             throw new CircularReferenceException("Circular reference occurred at " + this._parsingContext.Scopes.Current.Address.Address);
         }
+
         ExcelAddressCache? cache = this._parsingContext.AddressCache;
         int cacheId = cache.GetNewId();
-        if(!cache.Add(cacheId, this.ExpressionString))
+
+        if (!cache.Add(cacheId, this.ExpressionString))
         {
             throw new InvalidOperationException("Catastropic error occurred, address caching failed");
         }
+
         CompileResult? compileResult = this.CompileRangeValues();
         compileResult.ExcelAddressReferenceId = cacheId;
+
         return compileResult;
     }
 
@@ -96,14 +101,17 @@ internal class ExcelAddressExpression : AtomicExpression
     {
         ParsingScope? c = this._parsingContext.Scopes.Current;
         IRangeInfo? resultRange = this._excelDataProvider.GetRange(c.Address.Worksheet, c.Address.FromRow, c.Address.FromCol, this.ExpressionString);
+
         if (resultRange == null)
         {
             if (resultRange.IsRef)
             {
                 return new CompileResult(eErrorType.Ref);
             }
+
             return CompileResult.Empty;
         }
+
         if (this.ResolveAsRange || resultRange.Address.Rows > 1 || resultRange.Address.Columns > 1)
         {
             return new CompileResult(resultRange, DataType.Enumerable);
@@ -117,21 +125,27 @@ internal class ExcelAddressExpression : AtomicExpression
     private CompileResult CompileSingleCell(IRangeInfo result)
     {
         ICellInfo? cell = result.FirstOrDefault();
+
         if (cell == null)
         {
             if (result.IsRef)
             {
                 return new CompileResult(eErrorType.Ref);
             }
+
             return CompileResult.Empty;
         }
+
         CompileResultFactory? factory = new CompileResultFactory();
         CompileResult? compileResult = factory.Create(cell.Value);
+
         if (this._negate && compileResult.IsNumeric)
         {
             compileResult = new CompileResult(compileResult.ResultNumeric * -1, compileResult.DataType);
         }
+
         compileResult.IsHiddenCell = cell.IsHiddenRow;
+
         return compileResult;
     }
 }

@@ -224,7 +224,6 @@ public class AggregateTests
         Assert.AreEqual(ExcelErrorValue.Create(eErrorType.Div0), this._sheet.Cells["A6"].Value);
     }
 
-
     [TestMethod]
     public void Errors_ShouldHandleSum()
     {

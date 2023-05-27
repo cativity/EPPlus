@@ -10,6 +10,7 @@
  *************************************************************************************************
   01/27/2020         EPPlus Software AB       Initial release EPPlus 5
  *************************************************************************************************/
+
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -24,7 +25,9 @@ namespace OfficeOpenXml.Drawing.Style.ThreeD;
 public class ExcelDrawing3DText : ExcelDrawing3D
 {
     private readonly string _flatTextZCoordinatePath = "{0}/a:flatTx/@z";
-    internal ExcelDrawing3DText(XmlNamespaceManager nameSpaceManager, XmlNode topNode, string[] schemaNodeOrder, string path) : base(nameSpaceManager, topNode, path, schemaNodeOrder)
+
+    internal ExcelDrawing3DText(XmlNamespaceManager nameSpaceManager, XmlNode topNode, string[] schemaNodeOrder, string path)
+        : base(nameSpaceManager, topNode, path, schemaNodeOrder)
     {
         this._flatTextZCoordinatePath = string.Format(this._flatTextZCoordinatePath, path);
     }
@@ -34,10 +37,7 @@ public class ExcelDrawing3DText : ExcelDrawing3D
     /// </summary>
     public double FlatTextZCoordinate
     {
-        get
-        {
-            return this.GetXmlNodeEmuToPtNull(this._flatTextZCoordinatePath) ?? 0;
-        }
+        get { return this.GetXmlNodeEmuToPtNull(this._flatTextZCoordinatePath) ?? 0; }
         set
         {
             this.InitXml(true);

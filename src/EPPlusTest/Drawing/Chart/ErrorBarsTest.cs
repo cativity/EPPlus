@@ -26,6 +26,7 @@
  *******************************************************************************
   01/27/2020         EPPlus Software AB       Initial release EPPlus 5
  *******************************************************************************/
+
 using EPPlusTest.Properties;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using OfficeOpenXml;
@@ -42,16 +43,19 @@ namespace EPPlusTest.Drawing.Chart;
 public class ErrorBarsTest : TestBase
 {
     static ExcelPackage _pck;
+
     [ClassInitialize]
     public static void Init(TestContext context)
     {
         _pck = OpenPackage("ErrorBars.xlsx", true);
     }
+
     [ClassCleanup]
     public static void Cleanup()
     {
         SaveAndCleanup(_pck);
     }
+
     [TestMethod]
     public void ErrorBars_StdDev()
     {
@@ -71,6 +75,7 @@ public class ErrorBarsTest : TestBase
         Assert.AreEqual(eErrorBarDirection.Y, serie.ErrorBars.Direction);
         Assert.AreEqual(false, serie.ErrorBars.NoEndCap);
     }
+
     [TestMethod]
     public void ErrorBars_StdErr()
     {
@@ -89,6 +94,7 @@ public class ErrorBarsTest : TestBase
         Assert.AreEqual(eErrorBarDirection.X, serie.ErrorBars.Direction);
         Assert.AreEqual(true, serie.ErrorBars.NoEndCap);
     }
+
     [TestMethod]
     public void ErrorBars_Percentage()
     {
@@ -106,6 +112,7 @@ public class ErrorBarsTest : TestBase
         Assert.AreEqual(eErrorBarDirection.Y, serie.ErrorBars.Direction);
         Assert.AreEqual(false, serie.ErrorBars.NoEndCap);
     }
+
     [TestMethod]
     public void ErrorBars_Fixed()
     {
@@ -122,6 +129,7 @@ public class ErrorBarsTest : TestBase
         Assert.AreEqual(eErrorValueType.FixedValue, serie.ErrorBars.ValueType);
         Assert.AreEqual(false, serie.ErrorBars.NoEndCap);
     }
+
     [TestMethod]
     public void ErrorBars_Custom()
     {
@@ -144,6 +152,7 @@ public class ErrorBarsTest : TestBase
         Assert.AreEqual("{1}", serie.ErrorBars.Plus.ValuesSource);
         Assert.AreEqual("A2:A15", serie.ErrorBars.Minus.ValuesSource);
     }
+
     [TestMethod]
     public void ErrorBars_Scatter()
     {
@@ -181,6 +190,7 @@ public class ErrorBarsTest : TestBase
         Assert.AreEqual("{2}", serie.ErrorBarsX.Plus.ValuesSource);
         Assert.AreEqual("ErrorBarScatter!$A$2:$A$16", serie.ErrorBarsX.Minus.ValuesSource);
     }
+
     [TestMethod]
     public void ErrorBars_ReadScatter()
     {
@@ -225,6 +235,7 @@ public class ErrorBarsTest : TestBase
         Assert.AreEqual("{2}", serie.ErrorBarsX.Plus.ValuesSource);
         Assert.AreEqual("ErrorBarsScatter!$A$2:$A$16", serie.ErrorBarsX.Minus.ValuesSource);
     }
+
     [TestMethod]
     public void ErrorBars_Bubble()
     {
@@ -262,6 +273,7 @@ public class ErrorBarsTest : TestBase
         Assert.AreEqual("{2}", serie.ErrorBarsX.Plus.ValuesSource);
         Assert.AreEqual("ErrorBar_Bubble!$A$2:$A$16", serie.ErrorBarsX.Minus.ValuesSource);
     }
+
     [TestMethod]
     public void ErrorBars_ReadBubble()
     {
@@ -306,6 +318,7 @@ public class ErrorBarsTest : TestBase
         Assert.AreEqual("{2}", serie.ErrorBarsX.Plus.ValuesSource);
         Assert.AreEqual("ErrorBars!$A$2:$A$16", serie.ErrorBarsX.Minus.ValuesSource);
     }
+
     [TestMethod]
     public void ErrorBars_Area()
     {
@@ -343,6 +356,7 @@ public class ErrorBarsTest : TestBase
         Assert.AreEqual("{2}", serie.ErrorBarsX.Plus.ValuesSource);
         Assert.AreEqual("ErrorBar_Area!$A$2:$A$16", serie.ErrorBarsX.Minus.ValuesSource);
     }
+
     [TestMethod]
     public void ErrorBars_ReadArea()
     {
@@ -387,6 +401,7 @@ public class ErrorBarsTest : TestBase
         Assert.AreEqual("{2}", serie.ErrorBarsX.Plus.ValuesSource);
         Assert.AreEqual("ErrorBars!$A$2:$A$16", serie.ErrorBarsX.Minus.ValuesSource);
     }
+
     [TestMethod]
     public void ErrorBars_Delete()
     {
@@ -407,6 +422,7 @@ public class ErrorBarsTest : TestBase
         serie.ErrorBars.Remove();
         Assert.IsNull(serie.ErrorBars);
     }
+
     [TestMethod]
     public void ErrorBarsScatter_Delete()
     {
@@ -426,7 +442,5 @@ public class ErrorBarsTest : TestBase
         serie.ErrorBarsX.Remove();
         Assert.IsNull(serie.ErrorBars);
         Assert.IsNull(serie.ErrorBarsX);
-
     }
-
 }

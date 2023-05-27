@@ -10,6 +10,7 @@
  *************************************************************************************************
   01/27/2020         EPPlus Software AB       Initial release EPPlus 5
  *************************************************************************************************/
+
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -26,15 +27,16 @@ namespace OfficeOpenXml.Drawing.Vml;
 /// Base collection for VML drawings
 /// </summary>
 public class ExcelVmlDrawingBaseCollection
-{        
+{
     internal ExcelPackage _package;
     internal ExcelWorksheet _ws;
+
     internal ExcelVmlDrawingBaseCollection(ExcelWorksheet ws, Uri uri, string worksheetRelIdPath)
     {
         this.VmlDrawingXml = new XmlDocument();
         this.VmlDrawingXml.PreserveWhitespace = false;
-            
-        NameTable nt=new NameTable();
+
+        NameTable nt = new NameTable();
         this.NameSpaceManager = new XmlNamespaceManager(nt);
         this.NameSpaceManager.AddNamespace("v", ExcelPackage.schemaMicrosoftVml);
         this.NameSpaceManager.AddNamespace("o", ExcelPackage.schemaMicrosoftOffice);
@@ -42,15 +44,17 @@ public class ExcelVmlDrawingBaseCollection
         this.Uri = uri;
         this._package = ws.Workbook._package;
         this._ws = ws;
+
         if (uri == null)
         {
             int id = this._ws.SheetId;
         }
         else
         {
-            this.Part= this._package.ZipPackage.GetPart(uri);
+            this.Part = this._package.ZipPackage.GetPart(uri);
+
             try
-            {                    
+            {
                 XmlHelper.LoadXmlSafe(this.VmlDrawingXml, this.Part.GetStream());
             }
             catch
@@ -69,10 +73,15 @@ public class ExcelVmlDrawingBaseCollection
     }
 
     internal XmlDocument VmlDrawingXml { get; set; }
+
     internal Uri Uri { get; set; }
+
     internal string RelId { get; set; }
+
     internal ZipPackagePart Part { get; set; }
+
     internal XmlNamespaceManager NameSpaceManager { get; set; }
+
     internal void CreateVmlPart()
     {
         if (this.Uri == null)
@@ -80,10 +89,15 @@ public class ExcelVmlDrawingBaseCollection
             int id = this._ws.SheetId;
             this.Uri = XmlHelper.GetNewUri(this._package.ZipPackage, @"/xl/drawings/vmlDrawing{0}.vml", ref id);
         }
+
         if (this.Part == null)
         {
             this.Part = this._package.ZipPackage.CreatePart(this.Uri, ContentTypes.contentTypeVml, this._package.Compression);
-            ZipPackageRelationship? rel = this._ws.Part.CreateRelationship(UriHelper.GetRelativeUri(this._ws.WorksheetUri, this.Uri), TargetMode.Internal, ExcelPackage.schemaRelationships + "/vmlDrawing");
+
+            ZipPackageRelationship? rel = this._ws.Part.CreateRelationship(UriHelper.GetRelativeUri(this._ws.WorksheetUri, this.Uri),
+                                                                           TargetMode.Internal,
+                                                                           ExcelPackage.schemaRelationships + "/vmlDrawing");
+
             this._ws.SetXmlNodeString("d:legacyDrawing/@r:id", rel.Id);
             this.RelId = rel.Id;
         }

@@ -10,6 +10,7 @@
  *************************************************************************************************
   01/27/2020         EPPlus Software AB       Initial release EPPlus 5
  *************************************************************************************************/
+
 using System;
 using System.Collections.Generic;
 using System.Globalization;
@@ -33,11 +34,12 @@ public class ExcelChartLegend : XmlHelper, IDrawingStyle, IStyleMandatoryPropert
     private readonly string OVERLAY_PATH;
 
     internal ExcelChartLegend(XmlNamespaceManager ns, XmlNode node, ExcelChart chart, string nsPrefix)
-        : base(ns,node)
+        : base(ns, node)
     {
-        this._chart=chart;
+        this._chart = chart;
         this._nsPrefix = nsPrefix;
-        if(chart._isChartEx)
+
+        if (chart._isChartEx)
         {
             this.OVERLAY_PATH = "@overlay";
         }
@@ -46,9 +48,10 @@ public class ExcelChartLegend : XmlHelper, IDrawingStyle, IStyleMandatoryPropert
             this.OVERLAY_PATH = "c:overlay/@val";
         }
 
-        this.AddSchemaNodeOrder(new string[] { "legendPos","legendEntry", "layout", "overlay", "spPr", "txPr" }, ExcelDrawing._schemaNodeOrderSpPr);
+        this.AddSchemaNodeOrder(new string[] { "legendPos", "legendEntry", "layout", "overlay", "spPr", "txPr" }, ExcelDrawing._schemaNodeOrderSpPr);
         this.LoadLegendEntries();
     }
+
     internal void LoadEntries()
     {
         if (this._chart._isChartEx)
@@ -58,11 +61,13 @@ public class ExcelChartLegend : XmlHelper, IDrawingStyle, IStyleMandatoryPropert
 
         this._entries = new EPPlusReadOnlyList<ExcelChartLegendEntry>();
         List<ExcelChartLegendEntry>? e = this.LoadLegendEntries();
+
         foreach (ExcelChart? c in this._chart.PlotArea.ChartTypes)
         {
             for (int i = 0; i < this._chart.Series.Count; i++)
             {
                 int ix = e.FindIndex(x => x.Index == i);
+
                 if (ix >= 0)
                 {
                     this._entries.Add(e[ix]);
@@ -73,18 +78,19 @@ public class ExcelChartLegend : XmlHelper, IDrawingStyle, IStyleMandatoryPropert
                 }
             }
         }
-
     }
 
     internal void AddNewEntry(ExcelChartSerie serie)
     {
         ExcelAddressBase? a = new ExcelAddressBase(serie.Series);
+
         if (a.Rows < 1 || a.Columns < 1)
         {
             return;
         }
 
         int seriesCount = a.Rows == 1 ? a.Rows : a.Columns;
+
         for (int i = 0; i < seriesCount; i++)
         {
             ExcelChartLegendEntry? entry = new ExcelChartLegendEntry(this.NameSpaceManager, this.TopNode, (ExcelChartStandard)this._chart, this._entries.Count);
@@ -96,13 +102,15 @@ public class ExcelChartLegend : XmlHelper, IDrawingStyle, IStyleMandatoryPropert
     {
         for (int i = 0; i < this.Entries.Count; i++)
         {
-            if (this.Entries[i].Index > serieIndex && this.Entries[i].TopNode.LocalName== "legendEntry")
+            if (this.Entries[i].Index > serieIndex && this.Entries[i].TopNode.LocalName == "legendEntry")
             {
                 return i;
             }
         }
+
         return -1;
     }
+
     internal EPPlusReadOnlyList<ExcelChartLegendEntry> _entries = null;
 
     /// <summary>
@@ -112,13 +120,14 @@ public class ExcelChartLegend : XmlHelper, IDrawingStyle, IStyleMandatoryPropert
     {
         get
         {
-            if(this._entries==null)
+            if (this._entries == null)
             {
                 this.LoadEntries();
             }
+
             return this._entries;
         }
-    } 
+    }
 
     internal XmlElement GetOrCreateEntry()
     {
@@ -134,31 +143,38 @@ public class ExcelChartLegend : XmlHelper, IDrawingStyle, IStyleMandatoryPropert
 
         List<ExcelChartLegendEntry>? entries = new List<ExcelChartLegendEntry>();
         XmlNodeList? nodes = this.GetNodes("c:legendEntry");
-        foreach(XmlNode n in nodes)
+
+        foreach (XmlNode n in nodes)
         {
             entries.Add(new ExcelChartLegendEntry(this.NameSpaceManager, n, (ExcelChartStandard)this._chart));
         }
+
         return entries;
     }
 
     const string POSITION_PATH = "c:legendPos/@val";
+
     /// <summary>
     /// The position of the Legend
     /// </summary>
-    public virtual eLegendPosition Position 
+    public virtual eLegendPosition Position
     {
         get
         {
-            switch(this.GetXmlNodeString(POSITION_PATH).ToLower(CultureInfo.InvariantCulture))
+            switch (this.GetXmlNodeString(POSITION_PATH).ToLower(CultureInfo.InvariantCulture))
             {
                 case "t":
                     return eLegendPosition.Top;
+
                 case "b":
                     return eLegendPosition.Bottom;
+
                 case "l":
                     return eLegendPosition.Left;
+
                 case "tr":
                     return eLegendPosition.TopRight;
+
                 default:
                     return eLegendPosition.Right;
             }
@@ -174,31 +190,38 @@ public class ExcelChartLegend : XmlHelper, IDrawingStyle, IStyleMandatoryPropert
             {
                 case eLegendPosition.Top:
                     this.SetXmlNodeString(POSITION_PATH, "t");
+
                     break;
+
                 case eLegendPosition.Bottom:
                     this.SetXmlNodeString(POSITION_PATH, "b");
+
                     break;
+
                 case eLegendPosition.Left:
                     this.SetXmlNodeString(POSITION_PATH, "l");
+
                     break;
+
                 case eLegendPosition.TopRight:
                     this.SetXmlNodeString(POSITION_PATH, "tr");
+
                     break;
+
                 default:
                     this.SetXmlNodeString(POSITION_PATH, "r");
+
                     break;
             }
         }
     }
+
     /// <summary>
     /// If the legend overlays other objects
     /// </summary>
     public virtual bool Overlay
     {
-        get
-        {
-            return this.GetXmlNodeBool(this.OVERLAY_PATH);
-        }
+        get { return this.GetXmlNodeBool(this.OVERLAY_PATH); }
         set
         {
             if (this.TopNode == null)
@@ -209,7 +232,9 @@ public class ExcelChartLegend : XmlHelper, IDrawingStyle, IStyleMandatoryPropert
             this.SetXmlNodeBool(this.OVERLAY_PATH, value);
         }
     }
+
     ExcelDrawingFill _fill = null;
+
     /// <summary>
     /// The Fill style
     /// </summary>
@@ -217,7 +242,9 @@ public class ExcelChartLegend : XmlHelper, IDrawingStyle, IStyleMandatoryPropert
     {
         get { return this._fill ??= new ExcelDrawingFill(this._chart, this.NameSpaceManager, this.TopNode, "c:spPr", this.SchemaNodeOrder); }
     }
+
     ExcelDrawingBorder _border = null;
+
     /// <summary>
     /// The Border style
     /// </summary>
@@ -232,7 +259,9 @@ public class ExcelChartLegend : XmlHelper, IDrawingStyle, IStyleMandatoryPropert
                                                            this.SchemaNodeOrder);
         }
     }
+
     ExcelTextFont _font = null;
+
     /// <summary>
     /// The Font properties
     /// </summary>
@@ -247,19 +276,19 @@ public class ExcelChartLegend : XmlHelper, IDrawingStyle, IStyleMandatoryPropert
                                                     this.SchemaNodeOrder);
         }
     }
+
     ExcelTextBody _textBody = null;
+
     /// <summary>
     /// Access to text body properties
     /// </summary>
     public ExcelTextBody TextBody
     {
-        get
-        {
-            return this._textBody ??= new ExcelTextBody(this.NameSpaceManager, this.TopNode, $"{this._nsPrefix}:txPr/a:bodyPr", this.SchemaNodeOrder);
-        }
+        get { return this._textBody ??= new ExcelTextBody(this.NameSpaceManager, this.TopNode, $"{this._nsPrefix}:txPr/a:bodyPr", this.SchemaNodeOrder); }
     }
 
     ExcelDrawingEffectStyle _effect = null;
+
     /// <summary>
     /// Effects
     /// </summary>
@@ -274,17 +303,17 @@ public class ExcelChartLegend : XmlHelper, IDrawingStyle, IStyleMandatoryPropert
                                                                 this.SchemaNodeOrder);
         }
     }
+
     ExcelDrawing3D _threeD = null;
+
     /// <summary>
     /// 3D properties
     /// </summary>
     public ExcelDrawing3D ThreeD
     {
-        get
-        {
-            return this._threeD ??= new ExcelDrawing3D(this.NameSpaceManager, this.TopNode, $"{this._nsPrefix}:spPr", this.SchemaNodeOrder);
-        }
+        get { return this._threeD ??= new ExcelDrawing3D(this.NameSpaceManager, this.TopNode, $"{this._nsPrefix}:spPr", this.SchemaNodeOrder); }
     }
+
     void IDrawingStyleBase.CreatespPr()
     {
         this.CreatespPrNode($"{this._nsPrefix}:spPr");
@@ -303,23 +332,24 @@ public class ExcelChartLegend : XmlHelper, IDrawingStyle, IStyleMandatoryPropert
         this.TopNode.ParentNode.RemoveChild(this.TopNode);
         this.TopNode = null;
     }
+
     /// <summary>
     /// Adds a legend to the chart
     /// </summary>
     public virtual void Add()
     {
-        if(this.TopNode!=null)
+        if (this.TopNode != null)
         {
             return;
         }
 
         //XmlHelper xml = new XmlHelper(NameSpaceManager, _chart.ChartXml);
         XmlHelper xml = XmlHelperFactory.Create(this.NameSpaceManager, this._chart.ChartXml);
-        xml.SchemaNodeOrder= this._chart.SchemaNodeOrder;
+        xml.SchemaNodeOrder = this._chart.SchemaNodeOrder;
 
         xml.CreateNode("c:chartSpace/c:chart/c:legend");
         this.TopNode = this._chart.ChartXml.SelectSingleNode("c:chartSpace/c:chart/c:legend", this.NameSpaceManager);
-        this.TopNode.InnerXml= "<c:legendPos val=\"r\" /><c:layout /><c:spPr><a:noFill/><a:ln><a:noFill/></a:ln><a:effectLst/></c:spPr>";
+        this.TopNode.InnerXml = "<c:legendPos val=\"r\" /><c:layout /><c:spPr><a:noFill/><a:ln><a:noFill/></a:ln><a:effectLst/></c:spPr>";
     }
 
     void IStyleMandatoryProperties.SetMandatoryProperties()

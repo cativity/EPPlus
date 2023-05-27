@@ -10,6 +10,7 @@
  *************************************************************************************************
   22/10/2022         EPPlus Software AB           EPPlus v6
  *************************************************************************************************/
+
 using OfficeOpenXml.FormulaParsing.Excel.Functions.Metadata;
 using OfficeOpenXml.FormulaParsing.ExpressionGraph;
 using System;
@@ -19,10 +20,9 @@ using System.Text;
 
 namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Statistical;
 
-[FunctionMetadata(
-                     Category = ExcelFunctionCategory.Statistical,
-                     EPPlusVersion = "6.0",
-                     Description = "Returns the Pearson product moment correlation coefficient.")]
+[FunctionMetadata(Category = ExcelFunctionCategory.Statistical,
+                  EPPlusVersion = "6.0",
+                  Description = "Returns the Pearson product moment correlation coefficient.")]
 internal class Pearson : ExcelFunction
 {
     public override CompileResult Execute(IEnumerable<FunctionArgument> arguments, ParsingContext context)
@@ -32,6 +32,7 @@ internal class Pearson : ExcelFunction
         FunctionArgument? arg2 = arguments.ElementAt(1);
         double[]? array1 = this.ArgsToDoubleEnumerable(new FunctionArgument[] { arg1 }, context).Select(x => x.Value).ToArray();
         double[]? array2 = this.ArgsToDoubleEnumerable(new FunctionArgument[] { arg2 }, context).Select(x => x.Value).ToArray();
+
         if (array1.Count() != array2.Count())
         {
             return this.CreateResult(eErrorType.NA);
@@ -43,6 +44,7 @@ internal class Pearson : ExcelFunction
         }
 
         double result = PearsonImpl(array1, array2);
+
         return this.CreateResult(result, DataType.Decimal);
     }
 
@@ -52,13 +54,17 @@ internal class Pearson : ExcelFunction
         double avg2 = arr2.Average();
         int length = arr1.Count();
         double number = 0d;
-        double d1 = 0d, d2 = 0d;
-        for(int x = 0; x < length; x++)
+
+        double d1 = 0d,
+               d2 = 0d;
+
+        for (int x = 0; x < length; x++)
         {
             number += (arr1.ElementAt(x) - avg1) * (arr2.ElementAt(x) - avg2);
             d1 += System.Math.Pow(arr1.ElementAt(x) - avg1, 2);
             d2 += System.Math.Pow(arr2.ElementAt(x) - avg2, 2);
         }
+
         return number / System.Math.Sqrt(d1 * d2);
     }
 }

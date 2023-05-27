@@ -26,6 +26,7 @@
  *******************************************************************************
   01/27/2020         EPPlus Software AB       Initial release EPPlus 5
  *******************************************************************************/
+
 using System;
 using System.Globalization;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -37,7 +38,9 @@ namespace EPPlusTest.DataValidation;
 public class ExcelTimeTests
 {
     private ExcelTime _time;
+
     private readonly decimal SecondsPerHour = 3600;
+
     // private readonly decimal HoursPerDay = 24;
     private readonly decimal SecondsPerDay = 3600 * 24;
 
@@ -105,9 +108,9 @@ public class ExcelTimeTests
     {
         // Act
         this._time.Hour = 1;
-            
+
         // Assert
-        Assert.AreEqual(Round(this.SecondsPerHour/ this.SecondsPerDay), this._time.ToExcelTime());
+        Assert.AreEqual(Round(this.SecondsPerHour / this.SecondsPerDay), this._time.ToExcelTime());
     }
 
     [TestMethod]
@@ -115,12 +118,13 @@ public class ExcelTimeTests
     {
         // Arrange
         decimal expected = this.SecondsPerHour + (20M * 60M);
+
         // Act
         this._time.Hour = 1;
         this._time.Minute = 20;
 
         // Assert
-        Assert.AreEqual(Round(expected/ this.SecondsPerDay), this._time.ToExcelTime());
+        Assert.AreEqual(Round(expected / this.SecondsPerDay), this._time.ToExcelTime());
     }
 
     [TestMethod]
@@ -128,6 +132,7 @@ public class ExcelTimeTests
     {
         // Arrange
         decimal expected = this.SecondsPerHour + (20M * 60M) + 10M;
+
         // Act
         this._time.Hour = 1;
         this._time.Minute = 20;
@@ -141,7 +146,7 @@ public class ExcelTimeTests
     public void ExcelTimeTests_ConstructorWithValue_ShouldSetHour()
     {
         // Arrange
-        decimal value = 3660M/(decimal)this.SecondsPerDay;
+        decimal value = 3660M / (decimal)this.SecondsPerDay;
 
         // Act
         ExcelTime? time = new ExcelTime(value);
@@ -179,8 +184,8 @@ public class ExcelTimeTests
     [TestMethod]
     public void ExcelTimeTests_HourRoundingCheck()
     {
-        decimal hour1 = decimal.Parse("0.416666666666667",CultureInfo.InvariantCulture);
-        decimal hour2 = decimal.Parse("0.458333333333333",CultureInfo.InvariantCulture);
+        decimal hour1 = decimal.Parse("0.416666666666667", CultureInfo.InvariantCulture);
+        decimal hour2 = decimal.Parse("0.458333333333333", CultureInfo.InvariantCulture);
 
         ExcelTime? time1 = new ExcelTime(hour1);
         ExcelTime? time2 = new ExcelTime(hour2);

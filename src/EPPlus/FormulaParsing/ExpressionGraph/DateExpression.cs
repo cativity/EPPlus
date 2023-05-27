@@ -10,6 +10,7 @@
  *************************************************************************************************
   01/27/2020         EPPlus Software AB       Initial release EPPlus 5
  *************************************************************************************************/
+
 using System;
 using System.Collections.Generic;
 using System.Globalization;
@@ -23,12 +24,12 @@ public class DateExpression : AtomicExpression
     public DateExpression(string expression)
         : base(expression)
     {
-
     }
 
     public override CompileResult Compile()
     {
         double date = double.Parse(this.ExpressionString);
+
         return new CompileResult(DateTime.FromOADate(date), DataType.Date);
     }
 }

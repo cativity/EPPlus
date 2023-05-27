@@ -10,6 +10,7 @@
  *************************************************************************************************
   09/02/2020         EPPlus Software AB       EPPlus 5.4
  *************************************************************************************************/
+
 using OfficeOpenXml.Table.PivotTable;
 using System;
 
@@ -20,7 +21,8 @@ namespace OfficeOpenXml.Table.PivotTable.Filter;
 /// </summary>
 public class ExcelPivotTableFieldFilterCollection : ExcelPivotTableFilterBaseCollection
 {
-    internal ExcelPivotTableFieldFilterCollection(ExcelPivotTableField field) : base(field)
+    internal ExcelPivotTableFieldFilterCollection(ExcelPivotTableField field)
+        : base(field)
     {
     }
 
@@ -31,7 +33,7 @@ public class ExcelPivotTableFieldFilterCollection : ExcelPivotTableFilterBaseCol
     /// <param name="value1">Value 1</param>
     /// <param name="value2">Value 2. Set to null, if not used</param>
     /// <returns></returns>
-    public ExcelPivotTableFilter AddCaptionFilter(ePivotTableCaptionFilterType type, string value1, string value2=null)
+    public ExcelPivotTableFilter AddCaptionFilter(ePivotTableCaptionFilterType type, string value1, string value2 = null)
     {
         ExcelPivotTableFilter filter = this.CreateFilter();
         filter.Type = (ePivotTableFilterType)type;
@@ -39,6 +41,7 @@ public class ExcelPivotTableFieldFilterCollection : ExcelPivotTableFilterBaseCol
         filter.StringValue1 = value1;
         filter.Value1 = value1;
         filter.Value2 = value2;
+
         if (!string.IsNullOrEmpty(value2))
         {
             filter.StringValue2 = value2;
@@ -48,16 +51,21 @@ public class ExcelPivotTableFieldFilterCollection : ExcelPivotTableFilterBaseCol
         {
             case ePivotTableCaptionFilterType.CaptionEqual:
                 filter.CreateValueFilter();
+
                 break;
+
             default:
                 filter.CreateCaptionCustomFilter(type);
+
                 break;
         }
 
         filter.Filter.Save();
         this._filters.Add(filter);
+
         return filter;
     }
+
     /// <summary>
     /// Adds a date filter for a pivot table field
     /// </summary>
@@ -68,12 +76,11 @@ public class ExcelPivotTableFieldFilterCollection : ExcelPivotTableFilterBaseCol
     /// <exception cref="ArgumentNullException">Thrown if value is between and <paramref name="value2"/> is null</exception>
     public ExcelPivotTableFilter AddDateValueFilter(ePivotTableDateValueFilterType type, DateTime value1, DateTime? value2 = null)
     {
-        if(value2.HasValue==false &&
-           (type == ePivotTableDateValueFilterType.DateBetween || 
-            type == ePivotTableDateValueFilterType.DateNotBetween))
+        if (value2.HasValue == false && (type == ePivotTableDateValueFilterType.DateBetween || type == ePivotTableDateValueFilterType.DateNotBetween))
         {
             throw new ArgumentNullException("value2", "Between filters require two values");
         }
+
         ExcelPivotTableFilter filter = this.CreateFilter();
         filter.Type = (ePivotTableFilterType)type;
         filter.Value1 = value1;
@@ -82,6 +89,7 @@ public class ExcelPivotTableFieldFilterCollection : ExcelPivotTableFilterBaseCol
 
         filter.Filter.Save();
         this._filters.Add(filter);
+
         return filter;
     }
 
@@ -99,8 +107,10 @@ public class ExcelPivotTableFieldFilterCollection : ExcelPivotTableFilterBaseCol
 
         filter.Filter.Save();
         this._filters.Add(filter);
+
         return filter;
     }
+
     /// <summary>
     /// Adds a pivot table value filter.
     /// </summary>
@@ -114,13 +124,15 @@ public class ExcelPivotTableFieldFilterCollection : ExcelPivotTableFilterBaseCol
     public ExcelPivotTableFilter AddValueFilter(ePivotTableValueFilterType type, ExcelPivotTableDataField dataField, object value1, object value2 = null)
     {
         int dfIx = this._table.DataFields._list.IndexOf(dataField);
-        if(dfIx<0)
+
+        if (dfIx < 0)
         {
             throw new ArgumentException("This datafield is not in the pivot tables DataFields collection", "dataField");
         }
-        return this.AddValueFilter(type, dfIx, value1, value2);
 
+        return this.AddValueFilter(type, dfIx, value1, value2);
     }
+
     /// <summary>
     /// Adds a pivot table value filter.
     /// </summary>
@@ -133,14 +145,12 @@ public class ExcelPivotTableFieldFilterCollection : ExcelPivotTableFilterBaseCol
     /// <exception cref="ArgumentNullException">If value2 is not set when type is set to between</exception>
     public ExcelPivotTableFilter AddValueFilter(ePivotTableValueFilterType type, int dataFieldIndex, object value1, object value2 = null)
     {
-        if(dataFieldIndex<0 || dataFieldIndex >= this._table.DataFields.Count)
+        if (dataFieldIndex < 0 || dataFieldIndex >= this._table.DataFields.Count)
         {
             throw new ArgumentException("dataFieldIndex must point to an item in the pivot tables DataFields collection", "dataFieldIndex");
         }
 
-        if (value2 == null &&
-            (type == ePivotTableValueFilterType.ValueBetween ||
-             type == ePivotTableValueFilterType.ValueNotBetween))
+        if (value2 == null && (type == ePivotTableValueFilterType.ValueBetween || type == ePivotTableValueFilterType.ValueNotBetween))
         {
             throw new ArgumentNullException("value2", "Between filters require two values");
         }
@@ -155,8 +165,10 @@ public class ExcelPivotTableFieldFilterCollection : ExcelPivotTableFilterBaseCol
 
         filter.Filter.Save();
         this._filters.Add(filter);
+
         return filter;
     }
+
     /// <summary>
     /// Adds a top 10 filter to the field
     /// </summary>
@@ -168,13 +180,15 @@ public class ExcelPivotTableFieldFilterCollection : ExcelPivotTableFilterBaseCol
     public ExcelPivotTableFilter AddTop10Filter(ePivotTableTop10FilterType type, ExcelPivotTableDataField dataField, double value, bool isTop = true)
     {
         int dfIx = this._table.DataFields._list.IndexOf(dataField);
+
         if (dfIx < 0)
         {
             throw new ArgumentException("This data field is not in the pivot tables DataFields collection", "dataField");
         }
-        return this.AddTop10Filter(type, dfIx, value, isTop);
 
+        return this.AddTop10Filter(type, dfIx, value, isTop);
     }
+
     /// <summary>
     /// Adds a top 10 filter to the field
     /// </summary>
@@ -183,7 +197,7 @@ public class ExcelPivotTableFieldFilterCollection : ExcelPivotTableFilterBaseCol
     /// <param name="value">The top or bottom value to relate to </param>
     /// <param name="isTop">Top or bottom. true is Top, false is Bottom</param>
     /// <returns></returns>
-    public ExcelPivotTableFilter AddTop10Filter(ePivotTableTop10FilterType type, int dataFieldIndex, double value, bool isTop=true)
+    public ExcelPivotTableFilter AddTop10Filter(ePivotTableTop10FilterType type, int dataFieldIndex, double value, bool isTop = true)
     {
         if (dataFieldIndex < 0 || dataFieldIndex >= this._table.DataFields.Count)
         {
@@ -199,6 +213,7 @@ public class ExcelPivotTableFieldFilterCollection : ExcelPivotTableFilterBaseCol
 
         filter.Filter.Save();
         this._filters.Add(filter);
+
         return filter;
     }
 }

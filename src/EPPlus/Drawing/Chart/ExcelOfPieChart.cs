@@ -10,6 +10,7 @@
  *************************************************************************************************
   01/27/2020         EPPlus Software AB       Initial release EPPlus 5
  *************************************************************************************************/
+
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -24,24 +25,38 @@ namespace OfficeOpenXml.Drawing.Chart;
 /// </summary>
 public class ExcelOfPieChart : ExcelPieChart
 {
-    internal ExcelOfPieChart(ExcelDrawings drawings, XmlNode node, eChartType type, bool isPivot, ExcelGroupShape parent = null) :
-        base(drawings, node, type, isPivot, parent)
-    {
-        this.SetTypeProperties();
-    }
-    internal ExcelOfPieChart(ExcelDrawings drawings, XmlNode node, eChartType? type, ExcelChart topChart, ExcelPivotTable PivotTableSource, XmlDocument chartXml, ExcelGroupShape parent = null) :
-        base(drawings, node, type, topChart, PivotTableSource, chartXml, parent)
+    internal ExcelOfPieChart(ExcelDrawings drawings, XmlNode node, eChartType type, bool isPivot, ExcelGroupShape parent = null)
+        : base(drawings, node, type, isPivot, parent)
     {
         this.SetTypeProperties();
     }
 
-    internal ExcelOfPieChart(ExcelDrawings drawings, XmlNode node, Uri uriChart, Packaging.ZipPackagePart part, XmlDocument chartXml, XmlNode chartNode, ExcelGroupShape parent = null) :
-        base(drawings, node, uriChart, part, chartXml, chartNode, parent)
+    internal ExcelOfPieChart(ExcelDrawings drawings,
+                             XmlNode node,
+                             eChartType? type,
+                             ExcelChart topChart,
+                             ExcelPivotTable PivotTableSource,
+                             XmlDocument chartXml,
+                             ExcelGroupShape parent = null)
+        : base(drawings, node, type, topChart, PivotTableSource, chartXml, parent)
     {
         this.SetTypeProperties();
     }
-    internal ExcelOfPieChart(ExcelChart topChart, XmlNode chartNode, ExcelGroupShape parent = null) :
-        base(topChart, chartNode, parent)
+
+    internal ExcelOfPieChart(ExcelDrawings drawings,
+                             XmlNode node,
+                             Uri uriChart,
+                             Packaging.ZipPackagePart part,
+                             XmlDocument chartXml,
+                             XmlNode chartNode,
+                             ExcelGroupShape parent = null)
+        : base(drawings, node, uriChart, part, chartXml, chartNode, parent)
+    {
+        this.SetTypeProperties();
+    }
+
+    internal ExcelOfPieChart(ExcelChart topChart, XmlNode chartNode, ExcelGroupShape parent = null)
+        : base(topChart, chartNode, parent)
     {
         this.SetTypeProperties();
     }
@@ -59,6 +74,7 @@ public class ExcelOfPieChart : ExcelPieChart
     }
 
     const string pieTypePath = "c:ofPieType/@val";
+
     /// <summary>
     /// Type, pie or bar
     /// </summary>
@@ -83,25 +99,21 @@ public class ExcelOfPieChart : ExcelPieChart
     }
 
     readonly string _gapWidthPath = "c:gapWidth/@val";
+
     /// <summary>
     /// The size of the gap between two adjacent bars/columns
     /// </summary>
     public int GapWidth
     {
-        get
-        {
-            return this._chartXmlHelper.GetXmlNodeInt(this._gapWidthPath);
-        }
-        set
-        {
-            this._chartXmlHelper.SetXmlNodeString(this._gapWidthPath, value.ToString(CultureInfo.InvariantCulture));
-        }
+        get { return this._chartXmlHelper.GetXmlNodeInt(this._gapWidthPath); }
+        set { this._chartXmlHelper.SetXmlNodeString(this._gapWidthPath, value.ToString(CultureInfo.InvariantCulture)); }
     }
+
     internal override eChartType GetChartType(string name)
     {
         if (name == "ofPieChart")
         {
-            if (this.OfPieType==ePieType.Bar)
+            if (this.OfPieType == ePieType.Bar)
             {
                 return eChartType.BarOfPie;
             }
@@ -110,6 +122,7 @@ public class ExcelOfPieChart : ExcelPieChart
                 return eChartType.PieOfPie;
             }
         }
+
         return base.GetChartType(name);
     }
 }

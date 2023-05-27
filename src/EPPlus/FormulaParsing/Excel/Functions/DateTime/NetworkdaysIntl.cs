@@ -10,6 +10,7 @@
  *************************************************************************************************
   01/27/2020         EPPlus Software AB       Initial release EPPlus 5
  *************************************************************************************************/
+
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -21,11 +22,11 @@ using OfficeOpenXml.FormulaParsing.ExpressionGraph;
 
 namespace OfficeOpenXml.FormulaParsing.Excel.Functions.DateTime;
 
-[FunctionMetadata(
-                     Category = ExcelFunctionCategory.DateAndTime,
-                     EPPlusVersion = "4",
-                     Description = "Returns the number of whole networkdays (excluding weekends & holidays), between two supplied dates, using parameters to specify weekend days",
-                     IntroducedInExcelVersion = "2010")]
+[FunctionMetadata(Category = ExcelFunctionCategory.DateAndTime,
+                  EPPlusVersion = "4",
+                  Description =
+                      "Returns the number of whole networkdays (excluding weekends & holidays), between two supplied dates, using parameters to specify weekend days",
+                  IntroducedInExcelVersion = "2010")]
 internal class NetworkdaysIntl : ExcelFunction
 {
     public override CompileResult Execute(IEnumerable<FunctionArgument> arguments, ParsingContext context)
@@ -36,9 +37,11 @@ internal class NetworkdaysIntl : ExcelFunction
         System.DateTime endDate = System.DateTime.FromOADate(this.ArgToInt(functionArguments, 1));
         WorkdayCalculator calculator = new WorkdayCalculator();
         HolidayWeekdaysFactory? weekdayFactory = new HolidayWeekdaysFactory();
+
         if (functionArguments.Length > 2)
         {
             object? holidayArg = functionArguments[2].Value;
+
             if (Regex.IsMatch(holidayArg.ToString(), "^[01]{7}"))
             {
                 calculator = new WorkdayCalculator(weekdayFactory.Create(holidayArg.ToString()));
@@ -53,11 +56,14 @@ internal class NetworkdaysIntl : ExcelFunction
                 return new CompileResult(eErrorType.Value);
             }
         }
+
         WorkdayCalculatorResult? result = calculator.CalculateNumberOfWorkdays(startDate, endDate);
+
         if (functionArguments.Length > 3)
         {
             result = calculator.ReduceWorkdaysWithHolidays(result, functionArguments[3]);
         }
+
         return new CompileResult(result.NumberOfWorkdays, DataType.Integer);
     }
 }

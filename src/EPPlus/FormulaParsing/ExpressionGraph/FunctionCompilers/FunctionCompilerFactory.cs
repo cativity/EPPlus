@@ -10,6 +10,7 @@
  *************************************************************************************************
   01/27/2020         EPPlus Software AB       Initial release EPPlus 5
  *************************************************************************************************/
+
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -27,6 +28,7 @@ public class FunctionCompilerFactory
 {
     private readonly Dictionary<Type, FunctionCompiler> _specialCompilers = new Dictionary<Type, FunctionCompiler>();
     private readonly ParsingContext _context;
+
     public FunctionCompilerFactory(FunctionRepository repository, ParsingContext context)
     {
         Require.That(context).Named("context").IsNotNull();
@@ -42,6 +44,7 @@ public class FunctionCompilerFactory
         this._specialCompilers.Add(typeof(Column), new IgnoreCircularRefLookupCompiler(repository.GetFunction("column"), context));
         this._specialCompilers.Add(typeof(Columns), new IgnoreCircularRefLookupCompiler(repository.GetFunction("columns"), context));
         this._specialCompilers.Add(typeof(IndexFunc), new IgnoreCircularRefLookupCompiler(repository.GetFunction("index"), context));
+
         foreach (Type? key in repository.CustomCompilers.Keys)
         {
             this._specialCompilers.Add(key, repository.CustomCompilers[key]);
@@ -51,6 +54,7 @@ public class FunctionCompilerFactory
     private FunctionCompiler GetCompilerByType(ExcelFunction function)
     {
         Type? funcType = function.GetType();
+
         if (this._specialCompilers.ContainsKey(funcType))
         {
             return this._specialCompilers[funcType];
@@ -66,8 +70,9 @@ public class FunctionCompilerFactory
 
         return new DefaultCompiler(function, this._context);
     }
+
     public virtual FunctionCompiler Create(ExcelFunction function)
-    { 
+    {
         return this.GetCompilerByType(function);
     }
 }

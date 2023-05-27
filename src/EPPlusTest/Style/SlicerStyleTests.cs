@@ -26,12 +26,12 @@
  *******************************************************************************
   01/27/2020         EPPlus Software AB       Initial release EPPlus 5
  *******************************************************************************/
+
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using OfficeOpenXml;
 using OfficeOpenXml.Drawing;
 using OfficeOpenXml.Style;
-using OfficeOpenXml.Style.
-    Table;
+using OfficeOpenXml.Style.Table;
 using System.Drawing;
 using System.Globalization;
 using System.IO;
@@ -52,6 +52,7 @@ public class SlicerStyleTests : TestBase
     {
         _pck = OpenPackage("SlicerStyle.xlsx", true);
     }
+
     [ClassCleanup]
     public static void Cleanup()
     {
@@ -59,20 +60,22 @@ public class SlicerStyleTests : TestBase
         string? fileName = _pck.File.FullName;
 
         SaveAndCleanup(_pck);
+
         if (File.Exists(fileName))
         {
             File.Copy(fileName, dirName + "\\SlicerStyleRead.xlsx", true);
         }
     }
+
     [TestMethod]
     public void AddSlicerStyle()
     {
         ExcelWorksheet? ws = _pck.Workbook.Worksheets.Add("SlicerStyleAdd");
-        ExcelSlicerNamedStyle? s=_pck.Workbook.Styles.CreateSlicerStyle("CustomSlicerStyle1");
+        ExcelSlicerNamedStyle? s = _pck.Workbook.Styles.CreateSlicerStyle("CustomSlicerStyle1");
         s.WholeTable.Style.Font.Color.SetColor(Color.LightGray);
         s.HeaderRow.Style.Fill.BackgroundColor.SetColor(Color.DarkGray);
 
-        s.SelectedItemWithData.Style.Font.Bold=true;
+        s.SelectedItemWithData.Style.Font.Bold = true;
         s.SelectedItemWithData.Style.Border.Top.Style = ExcelBorderStyle.Dotted;
         s.SelectedItemWithData.Style.Border.Bottom.Style = ExcelBorderStyle.Hair;
         s.SelectedItemWithData.Style.Border.Bottom.Color.SetColor(Color.Green);
@@ -82,11 +85,11 @@ public class SlicerStyleTests : TestBase
         s.HoveredUnselectedItemWithData.Style.Fill.BackgroundColor.SetColor(Color.LightGoldenrodYellow);
 
         LoadTestdata(ws);
-        ExcelTable? tbl=ws.Tables.Add(ws.Cells["A1:D101"], "Table1");
+        ExcelTable? tbl = ws.Tables.Add(ws.Cells["A1:D101"], "Table1");
         ExcelTableSlicer? slicer = tbl.Columns[0].AddSlicer();
         slicer.SetPosition(100, 100);
         slicer.StyleName = "CustomSlicerStyle1";
-            
+
         //Assert
         Assert.AreEqual("CustomSlicerStyle1", slicer.StyleName);
         Assert.AreEqual(Color.LightGray.ToArgb(), s.WholeTable.Style.Font.Color.Color.Value.ToArgb());
@@ -100,6 +103,7 @@ public class SlicerStyleTests : TestBase
         Assert.AreEqual(eThemeSchemeColor.Accent4, s.HoveredSelectedItemWithData.Style.Fill.BackgroundColor.Theme);
         Assert.AreEqual(Color.LightGoldenrodYellow.ToArgb(), s.HoveredUnselectedItemWithData.Style.Fill.BackgroundColor.Color.Value.ToArgb());
     }
+
     [TestMethod]
     public void AddSlicerStyleFromTemplate()
     {
@@ -123,13 +127,14 @@ public class SlicerStyleTests : TestBase
         Assert.AreEqual(Color.FromArgb(0xFF, 0XFC, 0XF7, 0XE0), s.HoveredSelectedItemWithData.Style.Fill.Gradient.Colors[1].Color.Color);
         Assert.AreEqual(100, s.HoveredSelectedItemWithData.Style.Fill.Gradient.Colors[1].Position);
     }
+
     [TestMethod]
     public void AddSlicerStyleFromOther()
     {
         ExcelWorksheet? ws = _pck.Workbook.Worksheets.Add("SlicerStyleCopyOther");
         ExcelSlicerNamedStyle? s = _pck.Workbook.Styles.CreateSlicerStyle("CustomSlicerStyleToCopy", eSlicerStyle.Other2);
 
-        ExcelSlicerNamedStyle? sc= _pck.Workbook.Styles.CreateSlicerStyle("CustomSlicerStyleCopy", s);
+        ExcelSlicerNamedStyle? sc = _pck.Workbook.Styles.CreateSlicerStyle("CustomSlicerStyleCopy", s);
 
         sc.SelectedItemWithData.Style.Fill.Style = eDxfFillStyle.PatternFill;
         sc.SelectedItemWithData.Style.Fill.BackgroundColor.SetColor(eThemeSchemeColor.Background2);
@@ -167,12 +172,12 @@ public class SlicerStyleTests : TestBase
         SaveWorkbook("SlicerStyleNewPackage.Xlsx", p);
     }
 
-
     [TestMethod]
     public void ReadSlicerStyle()
     {
         using ExcelPackage? p = OpenTemplatePackage("SlicerStyleRead.xlsx");
         ExcelSlicerNamedStyle? s = p.Workbook.Styles.SlicerStyles["CustomSlicerStyle1"];
+
         if (s == null)
         {
             Assert.Inconclusive("Custom style does not exists");

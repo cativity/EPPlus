@@ -120,7 +120,8 @@ public class MinAndMaxifsTests
     {
         this._worksheet.Cells["F1"].Formula = "MINIFS(D3:D7,C3:C7,\"P\")";
         this._worksheet.Calculate();
-        Assert.AreEqual(0d, this._worksheet.Cells["F1"].Value); ;
+        Assert.AreEqual(0d, this._worksheet.Cells["F1"].Value);
+        ;
     }
 
     [TestMethod]

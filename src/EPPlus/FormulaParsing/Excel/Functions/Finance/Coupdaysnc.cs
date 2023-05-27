@@ -10,6 +10,7 @@
  *************************************************************************************************
   05/13/2020         EPPlus Software AB       Implemented function
  *************************************************************************************************/
+
 using OfficeOpenXml.FormulaParsing.Excel.Functions.Finance.FinancialDayCount;
 using OfficeOpenXml.FormulaParsing.Excel.Functions.Finance.Implementations;
 using OfficeOpenXml.FormulaParsing.Excel.Functions.Metadata;
@@ -21,15 +22,18 @@ using System.Text;
 
 namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Finance;
 
-[FunctionMetadata(
-                     Category = ExcelFunctionCategory.Financial,
-                     EPPlusVersion = "5.2",
-                     Description = "Calculates the number of days from the settlement date to the next coupon date")]
+[FunctionMetadata(Category = ExcelFunctionCategory.Financial,
+                  EPPlusVersion = "5.2",
+                  Description = "Calculates the number of days from the settlement date to the next coupon date")]
 internal class Coupdaysnc : CoupFunctionBase<double>
 {
-    protected override FinanceCalcResult<double> ExecuteFunction(FinancialDay settlementDate, FinancialDay maturityDate, int frequency, DayCountBasis basis = DayCountBasis.US_30_360)
+    protected override FinanceCalcResult<double> ExecuteFunction(FinancialDay settlementDate,
+                                                                 FinancialDay maturityDate,
+                                                                 int frequency,
+                                                                 DayCountBasis basis = DayCountBasis.US_30_360)
     {
         CoupdaysncImpl? impl = new CoupdaysncImpl(settlementDate, maturityDate, frequency, basis);
+
         return impl.Coupdaysnc();
     }
 }

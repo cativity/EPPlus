@@ -26,6 +26,7 @@
  *******************************************************************************
   01/27/2020         EPPlus Software AB       Initial release EPPlus 5
  *******************************************************************************/
+
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using OfficeOpenXml;
 using OfficeOpenXml.DataValidation;
@@ -107,8 +108,7 @@ public class TimeFormulaTests : ValidationTestBase
 
         string timeString = lessThan.Formula.Value.ToExcelString();
 
-        lessThan.Formula.ExcelFormula = $"=IF(B1<\"{timeString}\"," +
-                                        $"\"{time.ToExcelString()}\",\"{timeString}\")";
+        lessThan.Formula.ExcelFormula = $"=IF(B1<\"{timeString}\"," + $"\"{time.ToExcelString()}\",\"{timeString}\")";
         lessThan.ShowErrorMessage = true;
 
         IExcelDataValidationTime? greaterThan = sheet.DataValidations.AddTimeValidation("A2");
@@ -126,9 +126,9 @@ public class TimeFormulaTests : ValidationTestBase
 
         ExcelDataValidationCollection? validations = loadedSheet.DataValidations;
 
-        Assert.AreEqual(((ExcelDataValidationTime)validations[0]).Formula.ExcelFormula, 
-                        $"=IF(B1<\"{timeString}\"," +
-                        $"\"{time.ToExcelString()}\",\"{timeString}\")");
+        Assert.AreEqual(((ExcelDataValidationTime)validations[0]).Formula.ExcelFormula,
+                        $"=IF(B1<\"{timeString}\"," + $"\"{time.ToExcelString()}\",\"{timeString}\")");
+
         Assert.AreEqual(((ExcelDataValidationTime)validations[1]).Formula.ExcelFormula, $"=B1>\"{time.ToExcelString()}\"");
     }
 
@@ -151,6 +151,7 @@ public class TimeFormulaTests : ValidationTestBase
         ExcelTime? time = new ExcelTime();
 
         Assert.IsNull(equals.Formula2.ExcelFormula);
+
         //Formula2 has default value instead of null so users do not have to assign "new Exceltime()"
         Assert.AreEqual(time.Hour, equals.Formula2.Value.Hour);
         Assert.AreEqual(time.Minute, equals.Formula2.Value.Minute);
@@ -173,7 +174,6 @@ public class TimeFormulaTests : ValidationTestBase
 
         between.PromptTitle = $"Time between 10 and 11";
         between.Prompt = $"Test for read-write";
-
 
         IExcelDataValidationTime? notBetween = sheet.DataValidations.AddTimeValidation("A2");
         notBetween.Operator = ExcelDataValidationOperator.notBetween;

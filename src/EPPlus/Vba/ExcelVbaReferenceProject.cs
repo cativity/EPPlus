@@ -10,6 +10,7 @@
  *************************************************************************************************
   01/27/2020         EPPlus Software AB       Initial release EPPlus 5
  *************************************************************************************************/
+
 namespace OfficeOpenXml.VBA;
 
 /// <summary>
@@ -25,15 +26,18 @@ public class ExcelVbaReferenceProject : ExcelVbaReference
     {
         this.ReferenceRecordID = 0x0E;
     }
+
     /// <summary>
     /// LibIdRelative
     /// For more info check MS-OVBA 2.1.1.8 LibidReference and 2.3.4.2.2 PROJECTREFERENCES
     /// </summary>
     public string LibIdRelative { get; set; }
+
     /// <summary>
     /// Major version of the referenced VBA project
     /// </summary>
     public uint MajorVersion { get; set; }
+
     /// <summary>
     /// Minor version of the referenced VBA project
     /// </summary>

@@ -10,6 +10,7 @@
  *************************************************************************************************
   01/27/2020         EPPlus Software AB       Initial release EPPlus 5
  *************************************************************************************************/
+
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -19,16 +20,17 @@ using OfficeOpenXml.FormulaParsing.ExpressionGraph;
 
 namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Information;
 
-[FunctionMetadata(
-                     Category = ExcelFunctionCategory.Information,
-                     EPPlusVersion = "4",
-                     Description = "Tests if an initial supplied value (or expression) returns the Excel #N/A error and if so, returns TRUE; Otherwise returns FALSE")]
+[FunctionMetadata(Category = ExcelFunctionCategory.Information,
+                  EPPlusVersion = "4",
+                  Description =
+                      "Tests if an initial supplied value (or expression) returns the Excel #N/A error and if so, returns TRUE; Otherwise returns FALSE")]
 internal class IsNonText : ExcelFunction
 {
     public override CompileResult Execute(IEnumerable<FunctionArgument> arguments, ParsingContext context)
     {
         ValidateArguments(arguments, 1);
         FunctionArgument? firstArg = arguments.ElementAt(0);
+
         if (firstArg.Value == null || firstArg.ValueIsExcelError)
         {
             return this.CreateResult(false, DataType.Boolean);

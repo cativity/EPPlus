@@ -10,6 +10,7 @@
  *************************************************************************************************
   01/27/2020         EPPlus Software AB       Initial release EPPlus 5
  *************************************************************************************************/
+
 using OfficeOpenXml.FormulaParsing.LexicalAnalysis;
 using System;
 using System.Collections.Generic;
@@ -26,22 +27,24 @@ internal static class DependencyChainFactory
     internal static DependencyChain Create(ExcelWorkbook wb, ExcelCalculationOption options)
     {
         DependencyChain? depChain = new DependencyChain();
+
         foreach (ExcelWorksheet? ws in wb.Worksheets)
         {
             if (!(ws is ExcelChartsheet))
             {
                 GetChain(depChain, wb.FormulaParser.Lexer, ws.Cells, options);
-                GetWorksheetNames
-                    (ws, depChain, options);
+                GetWorksheetNames(ws, depChain, options);
             }
         }
+
         foreach (ExcelNamedRange? name in wb.Names)
         {
-            if (name.NameValue==null)
+            if (name.NameValue == null)
             {
                 GetChain(depChain, wb.FormulaParser.Lexer, name, options);
             }
         }
+
         return depChain;
     }
 
@@ -56,13 +59,14 @@ internal static class DependencyChainFactory
 
         return depChain;
     }
+
     internal static DependencyChain Create(ExcelWorksheet ws, string Formula, ExcelCalculationOption options)
     {
         ws.CheckSheetTypeAndNotDisposed();
         DependencyChain? depChain = new DependencyChain();
 
         GetChain(depChain, ws.Workbook.FormulaParser.Lexer, ws, Formula, options);
-            
+
         return depChain;
     }
 
@@ -76,6 +80,7 @@ internal static class DependencyChainFactory
             }
         }
     }
+
     internal static DependencyChain Create(ExcelRangeBase range, ExcelCalculationOption options)
     {
         DependencyChain? depChain = new DependencyChain();
@@ -84,16 +89,20 @@ internal static class DependencyChainFactory
 
         return depChain;
     }
+
     private static void GetChain(DependencyChain depChain, ILexer lexer, ExcelNamedRange name, ExcelCalculationOption options)
     {
         ExcelWorksheet? ws = name.Worksheet;
-        ulong id = ExcelCellBase.GetCellId(ws==null || ws.IsDisposed ? -1 : ws.IndexInList, name.Index, 0);
+        ulong id = ExcelCellBase.GetCellId(ws == null || ws.IsDisposed ? -1 : ws.IndexInList, name.Index, 0);
+
         if (!depChain.index.ContainsKey(id))
         {
-            FormulaCell? f = new FormulaCell() { ws=ws, wsIndex = ws?.IndexInList ?? -1, Row = name.Index, Column = 0, Formula=name.NameFormula };
+            FormulaCell? f = new FormulaCell() { ws = ws, wsIndex = ws?.IndexInList ?? -1, Row = name.Index, Column = 0, Formula = name.NameFormula };
+
             if (!string.IsNullOrEmpty(f.Formula))
             {
                 f.Tokens = lexer.Tokenize(f.Formula, ws?.Name).ToList();
+
                 if (ws == null)
                 {
                     name._workbook._formulaTokens.SetValue(name.Index, 0, f.Tokens);
@@ -102,15 +111,18 @@ internal static class DependencyChainFactory
                 {
                     ws._formulaTokens.SetValue(name.Index, 0, f.Tokens);
                 }
+
                 depChain.Add(f);
-                FollowChain(depChain, lexer,name._workbook, ws, f, options);
+                FollowChain(depChain, lexer, name._workbook, ws, f, options);
             }
         }
     }
+
     private static void GetChain(DependencyChain depChain, ILexer lexer, ExcelWorksheet ws, string formula, ExcelCalculationOption options)
     {
         FormulaCell? f = new FormulaCell() { ws = ws, wsIndex = ws.IndexInList, Row = -1, Column = -1 };
         f.Formula = formula;
+
         if (!string.IsNullOrEmpty(f.Formula))
         {
             f.Tokens = lexer.Tokenize(f.Formula, ws.Name).ToList();
@@ -123,6 +135,7 @@ internal static class DependencyChainFactory
     {
         ExcelWorksheet? ws = Range.Worksheet;
         CellStoreEnumerator<object>? fs = new CellStoreEnumerator<object>(ws._formulas, Range.Start.Row, Range.Start.Column, Range.End.Row, Range.End.Column);
+
         while (fs.Next())
         {
             if (fs.Value == null || fs.Value.ToString().Trim() == "")
@@ -131,9 +144,11 @@ internal static class DependencyChainFactory
             }
 
             ulong id = ExcelCellBase.GetCellId(ws.IndexInList, fs.Row, fs.Column);
+
             if (!depChain.index.ContainsKey(id))
             {
                 FormulaCell? f = new FormulaCell() { ws = ws, wsIndex = ws.IndexInList, Row = fs.Row, Column = fs.Column };
+
                 if (fs.Value is int)
                 {
                     f.Formula = ws._sharedFormulas[(int)fs.Value].GetFormula(fs.Row, fs.Column, ws.Name);
@@ -142,6 +157,7 @@ internal static class DependencyChainFactory
                 {
                     f.Formula = fs.Value.ToString();
                 }
+
                 if (!string.IsNullOrEmpty(f.Formula))
                 {
                     f.Tokens = lexer.Tokenize(f.Formula, Range.Worksheet.Name).ToList();
@@ -152,6 +168,7 @@ internal static class DependencyChainFactory
             }
         }
     }
+
     /// <summary>
     /// This method follows the calculation chain to get the order of the calculation
     /// Goto (!) is used internally to prevent stackoverflow on extremly larget dependency trees (that is, many recursive formulas).
@@ -166,28 +183,36 @@ internal static class DependencyChainFactory
     {
         Stack<FormulaCell> stack = new Stack<FormulaCell>();
         iterateToken:
+
         while (f.tokenIx < f.Tokens.Count)
         {
             Token t = f.Tokens[f.tokenIx];
+
             if (t.TokenTypeIsSet(TokenType.ExcelAddress))
             {
-                ExcelFormulaAddress? adr = new ExcelFormulaAddress(t.Value, f.ws??ws);
+                ExcelFormulaAddress? adr = new ExcelFormulaAddress(t.Value, f.ws ?? ws);
+
                 if (adr.Table != null)
                 {
                     adr.SetRCFromTable(ws._package, new ExcelAddressBase(f.Row, f.Column, f.Row, f.Column));
                 }
 
-                if (ws!=null && adr.WorkSheetName.Equals(ws.Name, StringComparison.OrdinalIgnoreCase) && string.IsNullOrEmpty(adr._wb) && adr.Collide(new ExcelAddressBase(f.Row, f.Column, f.Row, f.Column))!=ExcelAddressBase.eAddressCollition.No)
+                if (ws != null
+                    && adr.WorkSheetName.Equals(ws.Name, StringComparison.OrdinalIgnoreCase)
+                    && string.IsNullOrEmpty(adr._wb)
+                    && adr.Collide(new ExcelAddressBase(f.Row, f.Column, f.Row, f.Column)) != ExcelAddressBase.eAddressCollition.No)
                 {
                     TokenType tt = t.GetTokenTypeFlags() | TokenType.CircularReference;
                     f.Tokens[f.tokenIx] = t.CloneWithNewTokenType(tt);
                     f.tokenIx++;
+
                     continue;
+
                     //throw (new CircularReferenceException(string.Format("Circular Reference in cell {0}", ExcelAddressBase.GetAddress(f.Row, f.Column))));
                 }
 
                 if (adr._fromRow > 0 && adr._fromCol > 0)
-                {                        
+                {
                     if (string.IsNullOrEmpty(adr.WorkSheetName))
                     {
                         if (f.iteratorWs == null)
@@ -207,6 +232,7 @@ internal static class DependencyChainFactory
                     if (f.iteratorWs != null)
                     {
                         f.iterator = new CellStoreEnumerator<object>(f.iteratorWs._formulas, adr.Start.Row, adr.Start.Column, adr.End.Row, adr.End.Column);
+
                         goto iterateCells;
                     }
                 }
@@ -214,19 +240,21 @@ internal static class DependencyChainFactory
             else if (t.TokenTypeIsSet(TokenType.NameValue))
             {
                 ExcelNamedRange name;
-                ExcelAddressBase.SplitAddress(t.Value, out string adrWb, out string adrWs, out string adrName, f.ws==null ? "" : f.ws.Name);
-                if(!string.IsNullOrEmpty(adrWb))
+                ExcelAddressBase.SplitAddress(t.Value, out string adrWb, out string adrWs, out string adrName, f.ws == null ? "" : f.ws.Name);
+
+                if (!string.IsNullOrEmpty(adrWb))
                 {
                     name = null; //TODO:We should build a dependency across workbooks here when external links are fully implemented. Now we only use cached values.
                 }
                 else if (!string.IsNullOrEmpty(adrWs))
                 {
                     f.iteratorWs = wb.Worksheets[adrWs];
+
                     //if (f.ws == null)
                     //{
                     //    f.ws = f.iteratorWs;
                     //}
-                    if(f.iteratorWs!=null && f.iteratorWs.Names.ContainsKey(adrName))
+                    if (f.iteratorWs != null && f.iteratorWs.Names.ContainsKey(adrName))
                     {
                         name = f.iteratorWs.Names[adrName];
                     }
@@ -238,7 +266,8 @@ internal static class DependencyChainFactory
                     {
                         name = null;
                     }
-                    if(name != null)
+
+                    if (name != null)
                     {
                         f.iteratorWs = name.Worksheet;
                     }
@@ -246,6 +275,7 @@ internal static class DependencyChainFactory
                 else if (wb.Names.ContainsKey(adrName))
                 {
                     name = wb.Names[t.Value];
+
                     if (string.IsNullOrEmpty(adrWs))
                     {
                         f.ws = name.Worksheet;
@@ -258,16 +288,21 @@ internal static class DependencyChainFactory
 
                 if (name != null)
                 {
-        
                     if (string.IsNullOrEmpty(name.NameFormula))
                     {
                         if (name.NameValue == null)
                         {
                             f.iteratorWs = name.Worksheet;
-                            if (f.iteratorWs._formulas != null) //If the worksheet has been deleted the formulas will be set to null. The value will be set to #REF!
+
+                            if (f.iteratorWs._formulas
+                                != null) //If the worksheet has been deleted the formulas will be set to null. The value will be set to #REF!
                             {
-                                f.iterator = new CellStoreEnumerator<object>(f.iteratorWs._formulas, name.Start.Row,
-                                                                             name.Start.Column, name.End.Row, name.End.Column);
+                                f.iterator = new CellStoreEnumerator<object>(f.iteratorWs._formulas,
+                                                                             name.Start.Row,
+                                                                             name.Start.Column,
+                                                                             name.End.Row,
+                                                                             name.End.Column);
+
                                 goto iterateCells;
                             }
                         }
@@ -280,15 +315,18 @@ internal static class DependencyChainFactory
                         {
                             FormulaCell? rf = new FormulaCell() { wsIndex = name.LocalSheetId, Row = name.Index, Column = 0 };
                             rf.Formula = name.NameFormula;
+
                             if (rf.wsIndex >= 0 && rf.wsIndex < wb.Worksheets.Count)
                             {
                                 rf.iteratorWs = wb.Worksheets._worksheets[rf.wsIndex];
                             }
-                            rf.Tokens = rf.iteratorWs==null ? lexer.Tokenize(rf.Formula).ToList() : lexer.Tokenize(rf.Formula, rf.iteratorWs.Name).ToList();
+
+                            rf.Tokens = rf.iteratorWs == null ? lexer.Tokenize(rf.Formula).ToList() : lexer.Tokenize(rf.Formula, rf.iteratorWs.Name).ToList();
 
                             depChain.Add(rf);
                             stack.Push(f);
                             f = rf;
+
                             goto iterateToken;
                         }
                         else
@@ -303,7 +341,9 @@ internal static class DependencyChainFactory
                                         TokenType tt = t.GetTokenTypeFlags() | TokenType.CircularReference;
                                         f.Tokens[f.tokenIx] = t.CloneWithNewTokenType(tt);
                                         f.tokenIx++;
+
                                         continue;
+
                                         //throw (new CircularReferenceException(string.Format("Circular Reference in name {0}", name.Name)));
                                     }
                                 }
@@ -312,28 +352,38 @@ internal static class DependencyChainFactory
                     }
                 }
             }
+
             f.tokenIx++;
         }
+
         depChain.CalcOrder.Add(f.Index);
+
         if (stack.Count > 0)
         {
             f = stack.Pop();
+
             goto iterateCells;
         }
+
         return;
+
         iterateCells:
+
         while (f.iterator != null && f.iterator.Next())
         {
             object? v = f.iterator.Value;
+
             if (v == null || v.ToString().Trim() == "")
             {
                 continue;
             }
 
             ulong id = ExcelCellBase.GetCellId(f.iteratorWs.IndexInList, f.iterator.Row, f.iterator.Column);
+
             if (!depChain.index.ContainsKey(id))
             {
                 FormulaCell? rf = new FormulaCell() { wsIndex = f.iteratorWs.IndexInList, Row = f.iterator.Row, Column = f.iterator.Column };
+
                 if (f.iterator.Value is int)
                 {
                     rf.Formula = f.iteratorWs._sharedFormulas[(int)v].GetFormula(f.iterator.Row, f.iterator.Column, f.iteratorWs.Name);
@@ -342,12 +392,14 @@ internal static class DependencyChainFactory
                 {
                     rf.Formula = v.ToString();
                 }
+
                 rf.ws = f.iteratorWs;
                 rf.Tokens = lexer.Tokenize(rf.Formula, f.iteratorWs.Name).ToList();
                 ws._formulaTokens.SetValue(rf.Row, rf.Column, rf.Tokens);
                 depChain.Add(rf);
                 stack.Push(f);
                 f = rf;
+
                 goto iterateToken;
             }
             else
@@ -360,17 +412,22 @@ internal static class DependencyChainFactory
                         //Check for circular references
                         foreach (FormulaCell? par in stack)
                         {
-                            if ((par.iteratorWs!=null && par.iterator!=null && ExcelCellBase.GetCellId(par.iteratorWs.IndexInList, par.iterator.Row, par.iterator.Column) == id) ||
-                                ExcelCellBase.GetCellId(par.wsIndex, par.Row, par.Column) == id)  //This is only neccesary for the first cell in the chain.
+                            if ((par.iteratorWs != null
+                                 && par.iterator != null
+                                 && ExcelCellBase.GetCellId(par.iteratorWs.IndexInList, par.iterator.Row, par.iterator.Column) == id)
+                                || ExcelCellBase.GetCellId(par.wsIndex, par.Row, par.Column) == id) //This is only neccesary for the first cell in the chain.
                             {
                                 if (options.AllowCircularReferences == false)
                                 {
-                                    throw new CircularReferenceException(string.Format("Circular Reference in cell {0}!{1}", par.ws.Name, ExcelCellBase.GetAddress(f.Row, f.Column)));
+                                    throw new CircularReferenceException(string.Format("Circular Reference in cell {0}!{1}",
+                                                                                       par.ws.Name,
+                                                                                       ExcelCellBase.GetAddress(f.Row, f.Column)));
                                 }
                                 else
                                 {
                                     // TODO: Find out circular reference from and to cell
                                     f = stack.Pop();
+
                                     goto iterateCells;
                                 }
                             }
@@ -379,7 +436,9 @@ internal static class DependencyChainFactory
                 }
             }
         }
+
         f.tokenIx++;
+
         goto iterateToken;
     }
 }

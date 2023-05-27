@@ -10,6 +10,7 @@
  *************************************************************************************************
   01/27/2020         EPPlus Software AB       Initial release EPPlus 5
  *************************************************************************************************/
+
 namespace OfficeOpenXml.Drawing;
 
 /// <summary>
@@ -21,38 +22,47 @@ public enum ePresetExcelReflectionType
     /// No reflection
     /// </summary>
     None,
+
     /// <summary>
     /// Tight touching
     /// </summary>
     TightTouching,
+
     /// <summary>
     /// Half touching,
     /// </summary>
     HalfTouching,
+
     /// <summary>
     /// Full touching
     /// </summary>
     FullTouching,
+
     /// <summary>
     /// Tight 4pt
     /// </summary>
     Tight4Pt,
+
     /// <summary>
     /// Half 4pt
     /// </summary>
     Half4Pt,
+
     /// <summary>
     /// Full 4pt
     /// </summary>
     Full4Pt,
+
     /// <summary>
     /// Tight 8pt
     /// </summary>
     Tight8Pt,
+
     /// <summary>
     /// Half 8pt
     /// </summary>
     Half8Pt,
+
     /// <summary>
     /// Full 8pt
     /// </summary>

@@ -26,6 +26,7 @@
  *******************************************************************************
   01/27/2020         EPPlus Software AB       Initial release EPPlus 5
  *******************************************************************************/
+
 using System;
 using System.Text;
 using System.Collections.Generic;
@@ -74,7 +75,6 @@ public class DateAndTimeFunctionsTests : FormulaParserTestBase
         sheet.Calculate();
         object? result = sheet.Cells["A2"].Value;
         Assert.AreEqual(new DateTime(2012, 2, 2).ToOADate(), result);
-
     }
 
     [TestMethod]
@@ -115,7 +115,7 @@ public class DateAndTimeFunctionsTests : FormulaParserTestBase
     [TestMethod]
     public void TimeShouldReturnCorrectResult()
     {
-        double expectedResult = (double)((12 * 60 * 60) + (13 * 60) + 14)/(double)(24 * 60 * 60);
+        double expectedResult = (double)((12 * 60 * 60) + (13 * 60) + 14) / (double)(24 * 60 * 60);
         object? result = this._parser.Parse("Time(12, 13, 14)");
         Assert.AreEqual(expectedResult, result);
     }

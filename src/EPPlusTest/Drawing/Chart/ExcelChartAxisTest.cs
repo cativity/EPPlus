@@ -26,6 +26,7 @@
  *******************************************************************************
   01/27/2020         EPPlus Software AB       Initial release EPPlus 5
  *******************************************************************************/
+
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using OfficeOpenXml;
 using OfficeOpenXml.Drawing.Chart;
@@ -43,7 +44,7 @@ namespace EPPlusTest.Drawing.Chart;
 public class ExcelChartAxisTest
 {
     private ExcelChartAxis axis;
-        
+
     [TestInitialize]
     public void Initialize()
     {
@@ -54,7 +55,7 @@ public class ExcelChartAxisTest
         xmlNsm.AddNamespace("a", ExcelPackage.schemaDrawings);
         XmlElement? node = xmlDoc.CreateElement("axis");
         xmlDoc.DocumentElement.AppendChild(node);
-        this.axis = new ExcelChartAxisStandard(null,xmlNsm, node, "c");
+        this.axis = new ExcelChartAxisStandard(null, xmlNsm, node, "c");
     }
 
     [TestMethod]
@@ -98,48 +99,49 @@ public class ExcelChartAxisTest
         this.axis.MaxValue = 1.2e-6;
         Assert.AreEqual(this.axis.MaxValue, 1.2e-6);
     }
-    [TestMethod] 
+
+    [TestMethod]
     public void Gridlines_Set_IsNotNull()
-    { 
+    {
         ExcelDrawingBorder? major = this.axis.MajorGridlines;
         major.Width = 1;
-        Assert.IsTrue(this.axis.ExistsNode("c:majorGridlines")); 
-  
+        Assert.IsTrue(this.axis.ExistsNode("c:majorGridlines"));
+
         ExcelDrawingBorder? minor = this.axis.MinorGridlines;
         minor.Width = 1;
-        Assert.IsTrue(this.axis.ExistsNode("c:minorGridlines")); 
-    } 
-  
-    [TestMethod] 
+        Assert.IsTrue(this.axis.ExistsNode("c:minorGridlines"));
+    }
+
+    [TestMethod]
     public void Gridlines_Remove_IsNull()
-    { 
+    {
         ExcelDrawingBorder? major = this.axis.MajorGridlines;
         major.Width = 1;
         ExcelDrawingBorder? minor = this.axis.MinorGridlines;
         minor.Width = 1;
 
-        this.axis.RemoveGridlines(); 
-  
-        Assert.IsFalse(this.axis.ExistsNode("c:majorGridlines")); 
-        Assert.IsFalse(this.axis.ExistsNode("c:minorGridlines")); 
-  
-        major = this.axis.MajorGridlines;
-        major.Width = 1;
-        minor = this.axis.MinorGridlines;
-        minor.Width = 1;
+        this.axis.RemoveGridlines();
 
-        this.axis.RemoveGridlines(true, false); 
-  
-        Assert.IsFalse(this.axis.ExistsNode("c:majorGridlines")); 
-        Assert.IsTrue(this.axis.ExistsNode("c:minorGridlines")); 
-  
-        major = this.axis.MajorGridlines;
+        Assert.IsFalse(this.axis.ExistsNode("c:majorGridlines"));
+        Assert.IsFalse(this.axis.ExistsNode("c:minorGridlines"));
+
+        major = this.axis.MajorGridlines;
         major.Width = 1;
         minor = this.axis.MinorGridlines;
         minor.Width = 1;
 
-        this.axis.RemoveGridlines(false, true); 
-  
+        this.axis.RemoveGridlines(true, false);
+
+        Assert.IsFalse(this.axis.ExistsNode("c:majorGridlines"));
+        Assert.IsTrue(this.axis.ExistsNode("c:minorGridlines"));
+
+        major = this.axis.MajorGridlines;
+        major.Width = 1;
+        minor = this.axis.MinorGridlines;
+        minor.Width = 1;
+
+        this.axis.RemoveGridlines(false, true);
+
         Assert.IsTrue(this.axis.ExistsNode("c:majorGridlines"));
         Assert.IsFalse(this.axis.ExistsNode("c:minorGridlines"));
     }

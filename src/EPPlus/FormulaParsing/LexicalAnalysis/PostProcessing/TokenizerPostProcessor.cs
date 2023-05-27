@@ -10,6 +10,7 @@
  *************************************************************************************************
   01/27/2020         EPPlus Software AB       Initial release EPPlus 5
  *************************************************************************************************/
+
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -25,8 +26,8 @@ internal class TokenizerPostProcessor
     public TokenizerPostProcessor(TokenizerContext context)
         : this(context, new TokenNavigator(context.Result))
     {
-
     }
+
     public TokenizerPostProcessor(TokenizerContext context, TokenNavigator navigator)
     {
         this._context = context;
@@ -44,9 +45,11 @@ internal class TokenizerPostProcessor
     public void Process()
     {
         bool hasColon = false;
+
         while (this._navigator.HasNext())
         {
             Token token = this._navigator.CurrentToken;
+
             if (token.TokenTypeIsSet(TokenType.Unrecognized))
             {
                 this.HandleUnrecognizedToken();
@@ -74,15 +77,19 @@ internal class TokenizerPostProcessor
         if (hasColon)
         {
             this._navigator.MoveIndex(-this._navigator.Index);
+
             while (this._navigator.HasNext())
             {
                 Token token = this._navigator.CurrentToken;
+
                 if (token.TokenTypeIsSet(TokenType.Colon) && this._context.Result.Count > this._navigator.Index + 1)
                 {
-                    if (this._navigator.PreviousToken != null && this._navigator.PreviousToken.Value.TokenTypeIsSet(TokenType.ExcelAddress) && this._navigator.NextToken.TokenTypeIsSet(TokenType.ExcelAddress))
+                    if (this._navigator.PreviousToken != null
+                        && this._navigator.PreviousToken.Value.TokenTypeIsSet(TokenType.ExcelAddress)
+                        && this._navigator.NextToken.TokenTypeIsSet(TokenType.ExcelAddress))
                     {
-                        string? newToken= this._navigator.PreviousToken.Value.Value+":"+ this._navigator.NextToken.Value;
-                        this._context.Result[this._navigator.Index-1] = new Token(newToken, TokenType.ExcelAddress);
+                        string? newToken = this._navigator.PreviousToken.Value.Value + ":" + this._navigator.NextToken.Value;
+                        this._context.Result[this._navigator.Index - 1] = new Token(newToken, TokenType.ExcelAddress);
                         this._context.RemoveAt(this._navigator.Index);
                         this._context.RemoveAt(this._navigator.Index);
                         this._navigator.MoveIndex(-1);
@@ -93,6 +100,7 @@ internal class TokenizerPostProcessor
             }
         }
     }
+
     private void ChangeTokenTypeOnCurrentToken(TokenType tokenType)
     {
         this._context.ChangeTokenType(tokenType, this._navigator.Index);
@@ -112,16 +120,19 @@ internal class TokenizerPostProcessor
     {
         Token prevToken = this._navigator.GetTokenAtRelativePosition(-1);
         Token nextToken = this._navigator.GetTokenAtRelativePosition(1);
+
         if (prevToken.TokenTypeIsSet(TokenType.ClosingParenthesis))
         {
             // Previous expression should be an OFFSET function
             int index = 0;
             int openedParenthesis = 0;
             int closedParethesis = 0;
-            while(openedParenthesis == 0 || openedParenthesis > closedParethesis)
+
+            while (openedParenthesis == 0 || openedParenthesis > closedParethesis)
             {
                 index--;
                 Token token = this._navigator.GetTokenAtRelativePosition(index);
+
                 if (token.TokenTypeIsSet(TokenType.ClosingParenthesis))
                 {
                     openedParenthesis++;
@@ -131,23 +142,26 @@ internal class TokenizerPostProcessor
                     closedParethesis++;
                 }
             }
+
             Token offsetCandidate = this._navigator.GetTokenAtRelativePosition(--index);
-            if(IsOffsetFunctionToken(offsetCandidate))
+
+            if (IsOffsetFunctionToken(offsetCandidate))
             {
                 this._context.ChangeTokenType(TokenType.Function | TokenType.RangeOffset, this._navigator.Index + index);
+
                 if (nextToken.TokenTypeIsSet(TokenType.ExcelAddress))
                 {
                     // OFFSET:A1
                     this._context.ChangeTokenType(TokenType.ExcelAddress | TokenType.RangeOffset, this._navigator.Index + 1);
                 }
-                else if(IsOffsetFunctionToken(nextToken))
+                else if (IsOffsetFunctionToken(nextToken))
                 {
                     // OFFSET:OFFSET
                     this._context.ChangeTokenType(TokenType.Function | TokenType.RangeOffset, this._navigator.Index + 1);
                 }
             }
         }
-        else if(prevToken.TokenTypeIsSet(TokenType.ExcelAddress) && IsOffsetFunctionToken(nextToken))
+        else if (prevToken.TokenTypeIsSet(TokenType.ExcelAddress) && IsOffsetFunctionToken(nextToken))
         {
             // A1: OFFSET
             this._context.ChangeTokenType(TokenType.ExcelAddress | TokenType.RangeOffset, this._navigator.Index - 1);
@@ -158,14 +172,20 @@ internal class TokenizerPostProcessor
     private void HandleNegators()
     {
         Token token = this._navigator.CurrentToken;
+
         //Remove '+' from start of formula and formula arguments
-        if (token.Value == "+" && (!this._navigator.HasPrev() || this._navigator.PreviousToken.Value.TokenTypeIsSet(TokenType.OpeningParenthesis) || this._navigator.PreviousToken.Value.TokenTypeIsSet(TokenType.Comma)))
+        if (token.Value == "+"
+            && (!this._navigator.HasPrev()
+                || this._navigator.PreviousToken.Value.TokenTypeIsSet(TokenType.OpeningParenthesis)
+                || this._navigator.PreviousToken.Value.TokenTypeIsSet(TokenType.Comma)))
         {
             this.RemoveTokenAndSetNegatorOperator();
+
             return;
         }
 
         Token nextToken = this._navigator.NextToken;
+
         if (nextToken.TokenTypeIsSet(TokenType.Operator) || nextToken.TokenTypeIsSet(TokenType.Negator))
         {
             // Remove leading '+' from operator combinations
@@ -173,11 +193,13 @@ internal class TokenizerPostProcessor
             {
                 this.RemoveTokenAndSetNegatorOperator();
             }
+
             // Remove trailing '+' from a negator operation
             else if (token.Value == "-" && nextToken.Value == "+")
             {
                 this.RemoveTokenAndSetNegatorOperator(1);
             }
+
             // Convert double negator operation to positive declaration
             else if (token.Value == "-" && nextToken.Value == "-")
             {
@@ -213,7 +235,6 @@ internal class TokenizerPostProcessor
         }
     }
 
-
     private void HandleWorksheetNameToken()
     {
         // use this and the following three tokens
@@ -222,13 +243,14 @@ internal class TokenizerPostProcessor
         this.ChangeTokenTypeOnCurrentToken(tokenType);
         StringBuilder? sb = new StringBuilder();
         int nToRemove = 3;
+
         if (this._navigator.NbrOfRemainingTokens < nToRemove)
         {
             this.ChangeTokenTypeOnCurrentToken(TokenType.InvalidReference);
             nToRemove = this._navigator.NbrOfRemainingTokens;
         }
-        if (relativeToken.TokenTypeIsSet(TokenType.Comma) ||
-            relativeToken.TokenTypeIsSet(TokenType.ClosingParenthesis))
+
+        if (relativeToken.TokenTypeIsSet(TokenType.Comma) || relativeToken.TokenTypeIsSet(TokenType.ClosingParenthesis))
         {
             for (int ix = 0; ix < 3; ix++)
             {
@@ -238,14 +260,14 @@ internal class TokenizerPostProcessor
             this.ChangeTokenTypeOnCurrentToken(TokenType.ExcelAddress);
             nToRemove = 2;
         }
-        else if (!relativeToken.TokenTypeIsSet(TokenType.ExcelAddress) &&
-                 !relativeToken.TokenTypeIsSet(TokenType.ExcelAddressR1C1) &&
-                 !relativeToken.TokenTypeIsSet(TokenType.NameValue) &&
-                 !relativeToken.TokenTypeIsSet(TokenType.InvalidReference))
+        else if (!relativeToken.TokenTypeIsSet(TokenType.ExcelAddress)
+                 && !relativeToken.TokenTypeIsSet(TokenType.ExcelAddressR1C1)
+                 && !relativeToken.TokenTypeIsSet(TokenType.NameValue)
+                 && !relativeToken.TokenTypeIsSet(TokenType.InvalidReference))
         {
             this.ChangeTokenTypeOnCurrentToken(TokenType.InvalidReference);
             nToRemove--;
-        }            
+        }
         else
         {
             for (int ix = 0; ix < 4; ix++)
@@ -255,6 +277,7 @@ internal class TokenizerPostProcessor
         }
 
         this.ChangeValueOnCurrentToken(sb.ToString());
+
         for (int ix = 0; ix < nToRemove; ix++)
         {
             this._context.RemoveAt(this._navigator.Index + 1);
@@ -264,6 +287,7 @@ internal class TokenizerPostProcessor
     private void SetNegatorOperator(int i)
     {
         Token token = this._context.Result[i];
+
         if (token.Value == "-" && i > 0 && (token.TokenTypeIsSet(TokenType.Operator) || token.TokenTypeIsSet(TokenType.Negator)))
         {
             if (TokenIsNegator(this._context.Result[i - 1]))
@@ -281,23 +305,21 @@ internal class TokenizerPostProcessor
     {
         return TokenIsNegator(context.LastToken.Value);
     }
+
     private static bool TokenIsNegator(Token t)
     {
         return t.TokenTypeIsSet(TokenType.Operator)
-               ||
-               t.TokenTypeIsSet(TokenType.OpeningParenthesis)
-               ||
-               t.TokenTypeIsSet(TokenType.Comma)
-               ||
-               t.TokenTypeIsSet(TokenType.SemiColon)
-               ||
-               t.TokenTypeIsSet(TokenType.OpeningEnumerable);
+               || t.TokenTypeIsSet(TokenType.OpeningParenthesis)
+               || t.TokenTypeIsSet(TokenType.Comma)
+               || t.TokenTypeIsSet(TokenType.SemiColon)
+               || t.TokenTypeIsSet(TokenType.OpeningEnumerable);
     }
 
     private void RemoveTokenAndSetNegatorOperator(int offset = 0)
     {
         this._context.Result.RemoveAt(this._navigator.Index + offset);
         this.SetNegatorOperator(this._navigator.Index);
+
         if (this._navigator.Index > 0)
         {
             this._navigator.MoveIndex(-1);

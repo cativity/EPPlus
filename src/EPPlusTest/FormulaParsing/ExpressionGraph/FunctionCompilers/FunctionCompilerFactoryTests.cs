@@ -26,6 +26,7 @@
  *******************************************************************************
   01/27/2020         EPPlus Software AB       Initial release EPPlus 5
  *******************************************************************************/
+
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -53,7 +54,9 @@ public class FunctionCompilerFactoryTests
     {
         this._context = ParsingContext.Create();
     }
+
     #region Create Tests
+
     [TestMethod]
     public void CreateHandlesStandardFunctionCompiler()
     {
@@ -124,9 +127,11 @@ public class FunctionCompilerFactoryTests
         FunctionCompiler? functionCompiler = functionCompilerFactory.Create(function);
         Assert.IsInstanceOfType(functionCompiler, typeof(MyFunctionCompiler));
     }
+
     #endregion
 
     #region Nested Classes
+
     public class TestFunctionModule : FunctionsModule
     {
         public TestFunctionModule(ParsingContext context)
@@ -141,6 +146,7 @@ public class FunctionCompilerFactoryTests
     public class MyFunction : ExcelFunction
     {
         public const string Name = "MyFunction";
+
         public override CompileResult Execute(IEnumerable<FunctionArgument> arguments, ParsingContext context)
         {
             throw new NotImplementedException();
@@ -149,11 +155,16 @@ public class FunctionCompilerFactoryTests
 
     public class MyFunctionCompiler : FunctionCompiler
     {
-        public MyFunctionCompiler(MyFunction function, ParsingContext context) : base(function, context) { }
+        public MyFunctionCompiler(MyFunction function, ParsingContext context)
+            : base(function, context)
+        {
+        }
+
         public override CompileResult Compile(IEnumerable<Expression> children)
         {
             throw new NotImplementedException();
         }
     }
+
     #endregion
 }

@@ -10,6 +10,7 @@
  *************************************************************************************************
   01/27/2020         EPPlus Software AB       Initial release EPPlus 5
  *************************************************************************************************/
+
 namespace OfficeOpenXml.Drawing.Chart;
 
 /// <summary>
@@ -21,14 +22,17 @@ public enum eGrouping
     /// Standard grouping
     /// </summary>
     Standard,
+
     /// <summary>
     /// Clustered grouping
     /// </summary>
     Clustered,
+
     /// <summary>
     /// Stacked grouping
     /// </summary>
     Stacked,
+
     /// <summary>
     /// 100% stacked grouping
     /// </summary>

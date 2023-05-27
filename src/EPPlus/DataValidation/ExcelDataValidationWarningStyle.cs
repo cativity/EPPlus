@@ -23,14 +23,17 @@ public enum ExcelDataValidationWarningStyle
     /// Excel will default this to Stop warning style.
     /// </summary>
     undefined,
+
     /// <summary>
     /// stop warning style, invalid changes will not be accepted
     /// </summary>
     stop,
+
     /// <summary>
     /// warning will be presented when an attempt to an invalid change is done, but the change will be accepted.
     /// </summary>
     warning,
+
     /// <summary>
     /// information warning style.
     /// </summary>

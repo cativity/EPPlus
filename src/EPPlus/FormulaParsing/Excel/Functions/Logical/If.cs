@@ -10,6 +10,7 @@
  *************************************************************************************************
   01/27/2020         EPPlus Software AB       Initial release EPPlus 5
  *************************************************************************************************/
+
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -19,10 +20,9 @@ using OfficeOpenXml.FormulaParsing.ExpressionGraph;
 
 namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Logical;
 
-[FunctionMetadata(
-                     Category = ExcelFunctionCategory.Logical,
-                     EPPlusVersion = "4",
-                     Description = "Tests a user-defined condition and returns one result if the condition is TRUE, and another result if the condition is FALSE")]
+[FunctionMetadata(Category = ExcelFunctionCategory.Logical,
+                  EPPlusVersion = "4",
+                  Description = "Tests a user-defined condition and returns one result if the condition is TRUE, and another result if the condition is FALSE")]
 internal class If : ExcelFunction
 {
     public override CompileResult Execute(IEnumerable<FunctionArgument> arguments, ParsingContext context)
@@ -32,6 +32,7 @@ internal class If : ExcelFunction
         object? firstStatement = arguments.ElementAt(1).Value;
         object? secondStatement = arguments.ElementAt(2).Value;
         CompileResultFactory? factory = new CompileResultFactory();
+
         return condition ? factory.Create(firstStatement) : factory.Create(secondStatement);
     }
 }

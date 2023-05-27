@@ -10,6 +10,7 @@
  *************************************************************************************************
   04/16/2021         EPPlus Software AB       EPPlus 5.7
  *************************************************************************************************/
+
 using OfficeOpenXml.Core;
 using System;
 using System.Collections.Generic;
@@ -20,9 +21,11 @@ namespace OfficeOpenXml.ExternalReferences;
 /// A collection of cached defined names in an external workbook
 /// </summary>
 /// <typeparam name="T"></typeparam>
-public class ExcelExternalNamedItemCollection<T> : EPPlusReadOnlyList<T> where T : IExcelExternalNamedItem
+public class ExcelExternalNamedItemCollection<T> : EPPlusReadOnlyList<T>
+    where T : IExcelExternalNamedItem
 {
     Dictionary<string, int> _names = new Dictionary<string, int>(StringComparer.OrdinalIgnoreCase);
+
     /// <summary>
     /// Indexer for the collection
     /// </summary>
@@ -36,19 +39,23 @@ public class ExcelExternalNamedItemCollection<T> : EPPlusReadOnlyList<T> where T
             {
                 return this._list[this._names[name]];
             }
+
             return default(T);
         }
     }
+
     internal override void Add(T item)
     {
         this._names.Add(item.Name, this._list.Count);
         base.Add(item);
     }
+
     internal override void Clear()
     {
         base.Clear();
         this._names.Clear();
     }
+
     /// <summary>
     /// If the name exists in the collection
     /// </summary>

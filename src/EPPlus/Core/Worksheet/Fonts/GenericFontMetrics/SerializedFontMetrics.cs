@@ -10,6 +10,7 @@
  *************************************************************************************************
   12/26/2021         EPPlus Software AB       EPPlus 6.0
  *************************************************************************************************/
+
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -30,22 +31,16 @@ internal class SerializedFontMetrics
     public FontSubFamilies SubFamily { get; set; }
 
     public ushort Version { get; set; }
+
     public uint FontKey { get; set; }
+
     public float LineHeight1em { get; set; }
 
     public FontMetricsClass DefaultWidthClass { get; set; }
 
-    public Dictionary<FontMetricsClass, float> ClassWidths
-    {
-        get;
-        private set;
-    }
+    public Dictionary<FontMetricsClass, float> ClassWidths { get; private set; }
 
-    public Dictionary<char, FontMetricsClass> CharMetrics
-    {
-        get;
-        private set;
-    }
+    public Dictionary<char, FontMetricsClass> CharMetrics { get; private set; }
 
     public uint GetKey()
     {
@@ -56,7 +51,7 @@ internal class SerializedFontMetrics
     {
         ushort k1 = (ushort)family;
         ushort k2 = (ushort)subFamily;
+
         return (uint)((k1 << 16) | (k2 & 0xffff));
     }
-
 }

@@ -10,6 +10,7 @@
  *************************************************************************************************
   6/4/2022         EPPlus Software AB           ExcelTable Html Export
  *************************************************************************************************/
+
 using OfficeOpenXml.Core;
 using OfficeOpenXml.Table;
 using OfficeOpenXml.Utils;
@@ -26,13 +27,14 @@ namespace OfficeOpenXml.Export.HtmlExport.Exporters
 {
     internal class HtmlRangeExporterAsync : HtmlRangeExporterAsyncBase
     {
-        internal HtmlRangeExporterAsync
-           (HtmlRangeExportSettings settings, ExcelRangeBase range) : base(settings, range)
+        internal HtmlRangeExporterAsync(HtmlRangeExportSettings settings, ExcelRangeBase range)
+            : base(settings, range)
         {
             this._settings = settings;
         }
 
-        internal HtmlRangeExporterAsync(HtmlRangeExportSettings settings, EPPlusReadOnlyList<ExcelRangeBase> ranges) : base(settings, ranges)
+        internal HtmlRangeExporterAsync(HtmlRangeExportSettings settings, EPPlusReadOnlyList<ExcelRangeBase> ranges)
+            : base(settings, ranges)
         {
             this._settings = settings;
         }
@@ -49,8 +51,10 @@ namespace OfficeOpenXml.Export.HtmlExport.Exporters
             await this.RenderHtmlAsync(ms, 0);
             ms.Position = 0;
             using StreamReader? sr = new StreamReader(ms);
+
             return sr.ReadToEnd();
         }
+
         /// <summary>
         /// Exports an <see cref="ExcelTable"/> to a html string
         /// </summary>
@@ -63,6 +67,7 @@ namespace OfficeOpenXml.Export.HtmlExport.Exporters
             await this.RenderHtmlAsync(ms, rangeIndex, settings);
             ms.Position = 0;
             using StreamReader? sr = new StreamReader(ms);
+
             return sr.ReadToEnd();
         }
 
@@ -76,6 +81,7 @@ namespace OfficeOpenXml.Export.HtmlExport.Exporters
         {
             ExcelHtmlOverrideExportSettings? settings = new ExcelHtmlOverrideExportSettings();
             config.Invoke(settings);
+
             return await this.GetHtmlStringAsync(rangeIndex, settings);
         }
 
@@ -99,6 +105,7 @@ namespace OfficeOpenXml.Export.HtmlExport.Exporters
         public async Task RenderHtmlAsync(Stream stream, int rangeIndex, ExcelHtmlOverrideExportSettings overrideSettings = null)
         {
             this.ValidateRangeIndex(rangeIndex);
+
             if (!stream.CanWrite)
             {
                 throw new IOException("Parameter stream must be a writeable System.IO.Stream");
@@ -109,6 +116,7 @@ namespace OfficeOpenXml.Export.HtmlExport.Exporters
             this.GetDataTypes(this._ranges[rangeIndex], this._settings);
 
             ExcelTable table = null;
+
             if (this.Settings.TableStyle != eHtmlRangeTableInclude.Exclude)
             {
                 table = range.GetTable();
@@ -126,6 +134,7 @@ namespace OfficeOpenXml.Export.HtmlExport.Exporters
 
             await writer.ApplyFormatIncreaseIndentAsync(this.Settings.Minify);
             this.LoadVisibleColumns(range);
+
             if (this.Settings.SetColumnWidth || this.Settings.HorizontalAlignmentWhenGeneral == eHtmlGeneralAlignmentHandling.ColumnDataType)
             {
                 await this.SetColumnGroupAsync(writer, range, this.Settings, this.IsMultiSheet);
@@ -135,10 +144,12 @@ namespace OfficeOpenXml.Export.HtmlExport.Exporters
             {
                 await this.RenderHeaderRowAsync(range, writer, table, accessibilitySettings, headerRows, headers);
             }
+
             // table rows
             await this.RenderTableRowsAsync(range, writer, table, accessibilitySettings, this._settings.HeaderRows);
 
             await writer.ApplyFormatDecreaseIndentAsync(this.Settings.Minify);
+
             // end tag table
             await writer.RenderEndTagAsync();
         }
@@ -162,7 +173,8 @@ namespace OfficeOpenXml.Export.HtmlExport.Exporters
         /// </summary>
         /// <param name="htmlDocument">The html string where to insert the html and the css. The Html will be inserted in string parameter {0} and the Css will be inserted in parameter {1}.</param>
         /// <returns>The html document</returns>
-        public async Task<string> GetSinglePageAsync(string htmlDocument = "<!DOCTYPE html>\r\n<html>\r\n<head>\r\n<style type=\"text/css\">\r\n{1}</style></head>\r\n<body>\r\n{0}\r\n</body>\r\n</html>")
+        public async Task<string> GetSinglePageAsync(string htmlDocument =
+                                                         "<!DOCTYPE html>\r\n<html>\r\n<head>\r\n<style type=\"text/css\">\r\n{1}</style></head>\r\n<body>\r\n{0}\r\n</body>\r\n</html>")
         {
             if (this.Settings.Minify)
             {
@@ -172,6 +184,7 @@ namespace OfficeOpenXml.Export.HtmlExport.Exporters
             string? html = await this.GetHtmlStringAsync();
             CssRangeExporterAsync? cssExporter = HtmlExporterFactory.CreateCssExporterAsync(this._settings, this._ranges, this._styleCache);
             string? css = await cssExporter.GetCssStringAsync();
+
             return string.Format(htmlDocument, html, css);
         }
     }

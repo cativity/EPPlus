@@ -10,6 +10,7 @@
  *************************************************************************************************
   09/05/2022         EPPlus Software AB       EPPlus 6.1
  *************************************************************************************************/
+
 using OfficeOpenXml.Packaging;
 using OfficeOpenXml.Utils;
 using System;
@@ -24,6 +25,7 @@ internal static class SignaturePartUtil
         ZipPackageRelationship? rel = (ZipPackageRelationship)proj.Part.GetRelationshipsByType(signature.SchemaRelation).FirstOrDefault();
         ZipPackagePart? part = signature.Part;
         Uri? uri = default(Uri);
+
         if (part == null)
         {
             if (rel != null)
@@ -34,16 +36,19 @@ internal static class SignaturePartUtil
             else
             {
                 uri = GetUriByType(signature.Context.SignatureType, UriKind.Relative);
-                    
+
                 part = proj._pck.CreatePart(uri, signature.ContentType);
             }
         }
+
         if (rel == null)
         {
             proj.Part.CreateRelationship(UriHelper.ResolvePartUri(proj.Uri, uri), TargetMode.Internal, signature.SchemaRelation);
         }
+
         return part;
     }
+
     internal static void DeleteParts(params ZipPackagePart[] parts)
     {
         foreach (ZipPackagePart? part in parts)
@@ -66,6 +71,7 @@ internal static class SignaturePartUtil
         {
             part.DeleteRelationship(r.Id);
         }
+
         part.Package.DeletePart(part.Uri);
     }
 
@@ -75,8 +81,10 @@ internal static class SignaturePartUtil
         {
             case ExcelVbaSignatureType.Agile:
                 return new Uri("/xl/vbaProjectSignatureAgile.bin", uriKind);
+
             case ExcelVbaSignatureType.V3:
                 return new Uri("/xl/vbaProjectSignatureV3.bin", uriKind);
+
             default:
                 return new Uri("/xl/vbaProjectSignature.bin", uriKind);
         }

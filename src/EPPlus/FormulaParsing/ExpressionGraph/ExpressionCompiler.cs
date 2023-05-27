@@ -10,6 +10,7 @@
  *************************************************************************************************
   01/27/2020         EPPlus Software AB       Initial release EPPlus 5
  *************************************************************************************************/
+
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -28,7 +29,6 @@ public class ExpressionCompiler : IExpressionCompiler
     public ExpressionCompiler()
         : this(new ExpressionConverter(), new CompileStrategyFactory())
     {
- 
     }
 
     public ExpressionCompiler(IExpressionConverter expressionConverter, ICompileStrategyFactory compileStrategyFactory)
@@ -40,26 +40,32 @@ public class ExpressionCompiler : IExpressionCompiler
     public CompileResult Compile(IEnumerable<Expression> expressions)
     {
         this._expressions = expressions;
+
         return this.PerformCompilation();
     }
+
     public CompileResult Compile(string worksheet, int row, int column, IEnumerable<Expression> expressions)
     {
         this._expressions = expressions;
+
         return this.PerformCompilation(worksheet, row, column);
     }
 
-    private CompileResult PerformCompilation(string worksheet="", int row=-1, int column=-1)
+    private CompileResult PerformCompilation(string worksheet = "", int row = -1, int column = -1)
     {
         IEnumerable<Expression>? compiledExpressions = this.HandleGroupedExpressions();
-        while(compiledExpressions.Any(x => x.Operator != null))
+
+        while (compiledExpressions.Any(x => x.Operator != null))
         {
             int prec = this.FindLowestPrecedence();
             compiledExpressions = this.HandlePrecedenceLevel(prec);
         }
+
         if (this._expressions.Any())
         {
             return compiledExpressions.First().Compile();
         }
+
         return CompileResult.Empty;
     }
 
@@ -72,9 +78,11 @@ public class ExpressionCompiler : IExpressionCompiler
 
         Expression? first = this._expressions.First();
         IEnumerable<Expression>? groupedExpressions = this._expressions.Where(x => x.IsGroupedExpression);
-        foreach(Expression? groupedExpression in groupedExpressions)
+
+        foreach (Expression? groupedExpression in groupedExpressions)
         {
             CompileResult? result = groupedExpression.Compile();
+
             if (result == CompileResult.Empty)
             {
                 continue;
@@ -84,19 +92,23 @@ public class ExpressionCompiler : IExpressionCompiler
             newExp.Operator = groupedExpression.Operator;
             newExp.Prev = groupedExpression.Prev;
             newExp.Next = groupedExpression.Next;
+
             if (groupedExpression.Prev != null)
             {
                 groupedExpression.Prev.Next = newExp;
             }
+
             if (groupedExpression.Next != null)
             {
                 groupedExpression.Next.Prev = newExp;
             }
+
             if (groupedExpression == first)
             {
                 first = newExp;
             }
         }
+
         return this.RefreshList(first);
     }
 
@@ -106,22 +118,25 @@ public class ExpressionCompiler : IExpressionCompiler
         IEnumerable<Expression>? expressionsToHandle = this._expressions.Where(x => x.Operator != null && x.Operator.Precedence == precedence);
         Expression? last = expressionsToHandle.Last();
         Expression? expression = expressionsToHandle.First();
+
         do
         {
             CompileStrategy.CompileStrategy? strategy = this._compileStrategyFactory.Create(expression);
             Expression? compiledExpression = strategy.Compile();
-            if(compiledExpression is ExcelErrorExpression)
+
+            if (compiledExpression is ExcelErrorExpression)
             {
                 return this.RefreshList(compiledExpression);
             }
+
             if (expression == first)
             {
                 first = compiledExpression;
             }
 
             expression = compiledExpression;
-        }
-        while (expression != null && expression.Operator != null && expression.Operator.Precedence == precedence);
+        } while (expression != null && expression.Operator != null && expression.Operator.Precedence == precedence);
+
         return this.RefreshList(first);
     }
 
@@ -135,6 +150,7 @@ public class ExpressionCompiler : IExpressionCompiler
         List<Expression>? resultList = new List<Expression>();
         Expression? exp = first;
         resultList.Add(exp);
+
         while (exp.Next != null)
         {
             resultList.Add(exp.Next);
@@ -142,6 +158,7 @@ public class ExpressionCompiler : IExpressionCompiler
         }
 
         this._expressions = resultList;
+
         return resultList;
     }
 }

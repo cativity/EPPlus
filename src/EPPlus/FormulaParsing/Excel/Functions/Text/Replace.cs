@@ -10,6 +10,7 @@
  *************************************************************************************************
   01/27/2020         EPPlus Software AB       Initial release EPPlus 5
  *************************************************************************************************/
+
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -19,10 +20,9 @@ using OfficeOpenXml.FormulaParsing.ExpressionGraph;
 
 namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Text;
 
-[FunctionMetadata(
-                     Category = ExcelFunctionCategory.Text,
-                     EPPlusVersion = "4",
-                     Description = "Replaces all or part of a text string with another string (from a user supplied position)")]
+[FunctionMetadata(Category = ExcelFunctionCategory.Text,
+                  EPPlusVersion = "4",
+                  Description = "Replaces all or part of a text string with another string (from a user supplied position)")]
 internal class Replace : ExcelFunction
 {
     public override CompileResult Execute(IEnumerable<FunctionArgument> arguments, ParsingContext context)
@@ -35,6 +35,7 @@ internal class Replace : ExcelFunction
         string? firstPart = GetFirstPart(oldText, startPos);
         string? lastPart = GetLastPart(oldText, startPos, nCharsToReplace);
         string? result = string.Concat(firstPart, newText, lastPart);
+
         return this.CreateResult(result, DataType.String);
     }
 
@@ -45,8 +46,9 @@ internal class Replace : ExcelFunction
 
     private static string GetLastPart(string text, int startPos, int nCharactersToReplace)
     {
-        int startIx = startPos -1;
+        int startIx = startPos - 1;
         startIx += nCharactersToReplace;
+
         return text.Substring(startIx, text.Length - startIx);
     }
 }

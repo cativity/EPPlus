@@ -60,20 +60,23 @@ internal class ZipCrypto
     ///   Seriously.
     /// </remarks>
     ///
-    private ZipCrypto() { }
+    private ZipCrypto()
+    {
+    }
 
     public static ZipCrypto ForWrite(string password)
     {
         ZipCrypto z = new ZipCrypto();
+
         if (password == null)
         {
             throw new BadPasswordException("This entry requires a password.");
         }
 
         z.InitCipher(password);
+
         return z;
     }
-
 
     public static ZipCrypto ForRead(string password, ZipEntry e)
     {
@@ -141,11 +144,9 @@ internal class ZipCrypto
         {
             // A-OK
         }
+
         return z;
     }
-
-
-
 
     /// <summary>
     /// From AppNote.txt:
@@ -160,6 +161,7 @@ internal class ZipCrypto
         get
         {
             UInt16 t = (UInt16)((UInt16)(this._Keys[2] & 0xFFFF) | 2);
+
             return (byte)((t * (t ^ 1)) >> 8);
         }
     }
@@ -171,7 +173,6 @@ internal class ZipCrypto
     //     update_keys(C)
     //     buffer(i) := C
     // end loop
-
 
     /// <summary>
     ///   Call this method on a cipher text to render the plaintext. You must
@@ -209,12 +210,14 @@ internal class ZipCrypto
         }
 
         byte[] plainText = new byte[length];
+
         for (int i = 0; i < length; i++)
         {
             byte C = (byte)(cipherText[i] ^ this.MagicByte);
             this.UpdateKeys(C);
             plainText[i] = C;
         }
+
         return plainText;
     }
 
@@ -245,15 +248,16 @@ internal class ZipCrypto
         }
 
         byte[] cipherText = new byte[length];
+
         for (int i = 0; i < length; i++)
         {
             byte C = plainText[i];
             cipherText[i] = (byte)(plainText[i] ^ this.MagicByte);
             this.UpdateKeys(C);
         }
+
         return cipherText;
     }
-
 
     /// <summary>
     ///   This initializes the cipher with the given password.
@@ -308,12 +312,12 @@ internal class ZipCrypto
     public void InitCipher(string passphrase)
     {
         byte[] p = SharedUtilities.StringToByteArray(passphrase);
+
         for (int i = 0; i < passphrase.Length; i++)
         {
             this.UpdateKeys(p[i]);
         }
     }
-
 
     private void UpdateKeys(byte byteValue)
     {
@@ -352,7 +356,6 @@ internal class ZipCrypto
     // private fields for the crypto stuff:
     private UInt32[] _Keys = { 0x12345678, 0x23456789, 0x34567890 };
     private Crc.CRC32 crc32 = new Crc.CRC32();
-
 }
 
 internal enum CryptoMode
@@ -398,10 +401,12 @@ internal class ZipCipherStream : System.IO.Stream
         byte[] db = new byte[count];
         int n = this._s.Read(db, 0, count);
         byte[] decrypted = this._cipher.DecryptMessage(db, n);
+
         for (int i = 0; i < n; i++)
         {
             buffer[offset + i] = decrypted[i];
         }
+
         return n;
     }
 
@@ -424,9 +429,11 @@ internal class ZipCipherStream : System.IO.Stream
         }
 
         byte[] plaintext = null;
+
         if (offset != 0)
         {
             plaintext = new byte[count];
+
             for (int i = 0; i < count; i++)
             {
                 plaintext[i] = buffer[offset + i];
@@ -441,11 +448,11 @@ internal class ZipCipherStream : System.IO.Stream
         this._s.Write(encrypted, 0, encrypted.Length);
     }
 
-
     public override bool CanRead
     {
         get { return this._mode == CryptoMode.Decrypt; }
     }
+
     public override bool CanSeek
     {
         get { return false; }
@@ -471,6 +478,7 @@ internal class ZipCipherStream : System.IO.Stream
         get { throw new NotSupportedException(); }
         set { throw new NotSupportedException(); }
     }
+
     public override long Seek(long offset, System.IO.SeekOrigin origin)
     {
         throw new NotSupportedException();

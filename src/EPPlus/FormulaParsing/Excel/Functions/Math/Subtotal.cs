@@ -10,6 +10,7 @@
  *************************************************************************************************
   01/27/2020         EPPlus Software AB       Initial release EPPlus 5
  *************************************************************************************************/
+
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -19,14 +20,13 @@ using OfficeOpenXml.FormulaParsing.ExpressionGraph;
 
 namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Math;
 
-[FunctionMetadata(
-                     Category = ExcelFunctionCategory.MathAndTrig,
-                     EPPlusVersion = "4",
-                     Description = "Performs a specified calculation (e.g. the sum, product, average, etc.) for a supplied set of values")]
+[FunctionMetadata(Category = ExcelFunctionCategory.MathAndTrig,
+                  EPPlusVersion = "4",
+                  Description = "Performs a specified calculation (e.g. the sum, product, average, etc.) for a supplied set of values")]
 internal class Subtotal : ExcelFunction
 {
     private Dictionary<int, HiddenValuesHandlingFunction> _functions = new Dictionary<int, HiddenValuesHandlingFunction>();
-        
+
     public Subtotal()
     {
         this.Initialize();
@@ -69,7 +69,11 @@ internal class Subtotal : ExcelFunction
     {
         base.BeforeInvoke(context);
         context.Scopes.Current.IsSubtotal = true;
-        ulong cellId = context.ExcelDataProvider.GetCellId(context.Scopes.Current.Address.Worksheet, context.Scopes.Current.Address.FromRow, context.Scopes.Current.Address.FromCol);
+
+        ulong cellId = context.ExcelDataProvider.GetCellId(context.Scopes.Current.Address.Worksheet,
+                                                           context.Scopes.Current.Address.FromRow,
+                                                           context.Scopes.Current.Address.FromCol);
+
         if (!context.SubtotalAddresses.Contains(cellId))
         {
             context.SubtotalAddresses.Add(cellId);
@@ -80,14 +84,17 @@ internal class Subtotal : ExcelFunction
     {
         ValidateArguments(arguments, 2);
         int funcNum = this.ArgToInt(arguments, 0);
+
         if (context.Scopes.Current.Parent != null && context.Scopes.Current.Parent.IsSubtotal)
         {
             return this.CreateResult(0d, DataType.Empty);
         }
+
         IEnumerable<FunctionArgument>? actualArgs = arguments.Skip(1);
         ExcelFunction function = this.GetFunctionByCalcType(funcNum);
         CompileResult? compileResult = function.Execute(actualArgs, context);
         compileResult.IsResultOfSubtotal = true;
+
         return compileResult;
     }
 
@@ -96,8 +103,10 @@ internal class Subtotal : ExcelFunction
         if (!this._functions.ContainsKey(funcNum))
         {
             ThrowExcelErrorValueException(eErrorType.Value);
+
             //throw new ArgumentException("Invalid funcNum " + funcNum + ", valid ranges are 1-11 and 101-111");
         }
+
         return this._functions[funcNum];
     }
 }

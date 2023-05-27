@@ -10,6 +10,7 @@
  *************************************************************************************************
   05/07/2021         EPPlus Software AB       EPPlus 5.7
  *************************************************************************************************/
+
 using OfficeOpenXml.Table;
 using System;
 using System.Collections.Generic;
@@ -24,16 +25,19 @@ namespace OfficeOpenXml.Sorting;
 /// </summary>
 public class SortState : XmlHelper
 {
-    internal SortState(XmlNamespaceManager nameSpaceManager, XmlNode topNode) : base(nameSpaceManager, topNode)
+    internal SortState(XmlNamespaceManager nameSpaceManager, XmlNode topNode)
+        : base(nameSpaceManager, topNode)
     {
         this._sortConditions = new SortConditionCollection(nameSpaceManager, topNode);
     }
 
-    internal SortState(XmlNamespaceManager nameSpaceManager, ExcelWorksheet worksheet) : base(nameSpaceManager, null)
+    internal SortState(XmlNamespaceManager nameSpaceManager, ExcelWorksheet worksheet)
+        : base(nameSpaceManager, null)
     {
         this.SchemaNodeOrder = worksheet.SchemaNodeOrder;
         this.TopNode = worksheet.WorksheetXml.SelectSingleNode(this._sortStatePath, nameSpaceManager);
-        if(this.TopNode == null)
+
+        if (this.TopNode == null)
         {
             this.TopNode = this.CreateNode(worksheet.WorksheetXml.DocumentElement, this._sortStatePath);
             XmlAttribute? attr = worksheet.WorksheetXml.CreateAttribute("xmlns:xlrd2");
@@ -48,10 +52,12 @@ public class SortState : XmlHelper
         this._sortConditions = new SortConditionCollection(nameSpaceManager, this.TopNode);
     }
 
-    internal SortState(XmlNamespaceManager nameSpaceManager, ExcelTable table) : base(nameSpaceManager, null)
+    internal SortState(XmlNamespaceManager nameSpaceManager, ExcelTable table)
+        : base(nameSpaceManager, null)
     {
         this.SchemaNodeOrder = table.SchemaNodeOrder;
         this.TopNode = table.TableXml.SelectSingleNode(this._sortStatePath, nameSpaceManager);
+
         if (this.TopNode == null)
         {
             this.TopNode = this.CreateNode(table.TableXml.DocumentElement, this._sortStatePath);
@@ -83,10 +89,7 @@ public class SortState : XmlHelper
     /// </summary>
     public SortConditionCollection SortConditions
     {
-        get
-        {
-            return this._sortConditions;
-        }
+        get { return this._sortConditions; }
     }
 
     /// <summary>
@@ -94,14 +97,8 @@ public class SortState : XmlHelper
     /// </summary>
     public bool CaseSensitive
     {
-        get
-        {
-            return this.GetXmlNodeBool(this._caseSensitivePath);
-        }
-        internal set
-        {
-            this.SetXmlNodeBool(this._caseSensitivePath, value, false);
-        }
+        get { return this.GetXmlNodeBool(this._caseSensitivePath); }
+        internal set { this.SetXmlNodeBool(this._caseSensitivePath, value, false); }
     }
 
     /// <summary>
@@ -109,14 +106,8 @@ public class SortState : XmlHelper
     /// </summary>
     public bool ColumnSort
     {
-        get
-        {
-            return this.GetXmlNodeBool(this._columnSortPath);
-        }
-        internal set
-        {
-            this.SetXmlNodeBool(this._columnSortPath, value, false);
-        }
+        get { return this.GetXmlNodeBool(this._columnSortPath); }
+        internal set { this.SetXmlNodeBool(this._columnSortPath, value, false); }
     }
 
     /// <summary>
@@ -124,13 +115,7 @@ public class SortState : XmlHelper
     /// </summary>
     public string Ref
     {
-        get
-        {
-            return this.GetXmlNodeString(this._refPath);
-        }
-        internal set
-        {
-            this.SetXmlNodeString(this._refPath, value);
-        }
+        get { return this.GetXmlNodeString(this._refPath); }
+        internal set { this.SetXmlNodeString(this._refPath, value); }
     }
 }

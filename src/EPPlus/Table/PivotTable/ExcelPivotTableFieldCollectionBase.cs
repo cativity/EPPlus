@@ -10,6 +10,7 @@
  *************************************************************************************************
   01/27/2020         EPPlus Software AB       Initial release EPPlus 5
  *************************************************************************************************/
+
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -23,11 +24,14 @@ public class ExcelPivotTableFieldItemsCollection : ExcelPivotTableFieldCollectio
 {
     ExcelPivotTableField _field;
     private readonly ExcelPivotTableCacheField _cache;
-    internal ExcelPivotTableFieldItemsCollection(ExcelPivotTableField field) : base()
+
+    internal ExcelPivotTableFieldItemsCollection(ExcelPivotTableField field)
+        : base()
     {
         this._field = field;
         this._cache = field.Cache;
     }
+
     /// <summary>
     /// It the object exists in the cache
     /// </summary>
@@ -37,6 +41,7 @@ public class ExcelPivotTableFieldItemsCollection : ExcelPivotTableFieldCollectio
     {
         return this._cache._cacheLookup.ContainsKey(value);
     }
+
     /// <summary>
     /// Get the item with the value supplied. If the value does not exist, null is returned.
     /// </summary>
@@ -44,12 +49,14 @@ public class ExcelPivotTableFieldItemsCollection : ExcelPivotTableFieldCollectio
     /// <returns>The pivot table field</returns>
     public ExcelPivotTableFieldItem GetByValue(object value)
     {
-        if(this._cache._cacheLookup.TryGetValue(value, out int ix))
+        if (this._cache._cacheLookup.TryGetValue(value, out int ix))
         {
             return this._list[ix];
         }
+
         return null;
     }
+
     /// <summary>
     /// Get the index of the item with the value supplied. If the value does not exist, null is returned.
     /// </summary>
@@ -61,30 +68,34 @@ public class ExcelPivotTableFieldItemsCollection : ExcelPivotTableFieldCollectio
         {
             return ix;
         }
+
         return -1;
     }
+
     /// <summary>
     /// Set Hidden to false for all items in the collection
     /// </summary>
     public void ShowAll()
     {
-        foreach(ExcelPivotTableFieldItem? item in this._list)
+        foreach (ExcelPivotTableFieldItem? item in this._list)
         {
             item.Hidden = false;
         }
 
         this._field.PageFieldSettings.SelectedItem = -1;
     }
+
     /// <summary>
     /// Set the ShowDetails for all items.
     /// </summary>
     /// <param name="isExpanded">The value of true is set all items to be expanded. The value of false set all items to be collapsed</param>
-    public void ShowDetails(bool isExpanded=true)
+    public void ShowDetails(bool isExpanded = true)
     {
-        if(!(this._field.IsRowField || this._field.IsColumnField))
+        if (!(this._field.IsRowField || this._field.IsColumnField))
         {
             //TODO: Add exception
         }
+
         if (this._list.Count == 0)
         {
             this.Refresh();
@@ -92,15 +103,16 @@ public class ExcelPivotTableFieldItemsCollection : ExcelPivotTableFieldCollectio
 
         foreach (ExcelPivotTableFieldItem? item in this._list)
         {
-            item.ShowDetails= isExpanded;
+            item.ShowDetails = isExpanded;
         }
     }
+
     /// <summary>
     /// Hide all items except the item at the supplied index
     /// </summary>
     public void SelectSingleItem(int index)
     {
-        if(index <0 || index >= this._list.Count)
+        if (index < 0 || index >= this._list.Count)
         {
             throw new ArgumentOutOfRangeException("index", "Index is out of range");
         }
@@ -113,12 +125,14 @@ public class ExcelPivotTableFieldItemsCollection : ExcelPivotTableFieldCollectio
             }
         }
 
-        this._list[index].Hidden=false;
-        if(this._field.IsPageField)
+        this._list[index].Hidden = false;
+
+        if (this._field.IsPageField)
         {
             this._field.PageFieldSettings.SelectedItem = index;
         }
     }
+
     /// <summary>
     /// Refreshes the data of the cache field
     /// </summary>
@@ -127,6 +141,7 @@ public class ExcelPivotTableFieldItemsCollection : ExcelPivotTableFieldCollectio
         this._cache.Refresh();
     }
 }
+
 /// <summary>
 /// Base collection class for pivottable fields
 /// </summary>
@@ -134,9 +149,11 @@ public class ExcelPivotTableFieldItemsCollection : ExcelPivotTableFieldCollectio
 public abstract class ExcelPivotTableFieldCollectionBase<T> : IEnumerable<T>
 {
     internal List<T> _list = new List<T>();
+
     internal ExcelPivotTableFieldCollectionBase()
     {
     }
+
     /// <summary>
     /// Gets the enumerator of the collection
     /// </summary>
@@ -150,24 +167,25 @@ public abstract class ExcelPivotTableFieldCollectionBase<T> : IEnumerable<T>
     {
         return this._list.GetEnumerator();
     }
+
     /// <summary>
     /// Number of items in the collection
     /// </summary>
     public int Count
     {
-        get
-        {
-            return this._list.Count;
-        }
+        get { return this._list.Count; }
     }
+
     internal void AddInternal(T field)
     {
         this._list.Add(field);
     }
+
     internal void Clear()
     {
         this._list.Clear();
     }
+
     /// <summary>
     /// Indexer for the  collection
     /// </summary>
@@ -181,9 +199,11 @@ public abstract class ExcelPivotTableFieldCollectionBase<T> : IEnumerable<T>
             {
                 throw new ArgumentOutOfRangeException("Index out of range");
             }
+
             return this._list[Index];
         }
     }
+
     /// <summary>
     /// Returns the zero-based index of the item.
     /// </summary>

@@ -10,6 +10,7 @@
  *************************************************************************************************
   05/25/2020         EPPlus Software AB       Implemented function
  *************************************************************************************************/
+
 using OfficeOpenXml.FormulaParsing.Excel.Functions.Finance.FinancialDayCount;
 using OfficeOpenXml.FormulaParsing.Excel.Functions.Finance.Implementations;
 using OfficeOpenXml.FormulaParsing.Excel.Functions.Metadata;
@@ -21,10 +22,9 @@ using System.Text;
 
 namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Finance;
 
-[FunctionMetadata(
-                     Category = ExcelFunctionCategory.Financial,
-                     EPPlusVersion = "5.2",
-                     Description = "Calculates the yield of a security that pays periodic interest")]
+[FunctionMetadata(Category = ExcelFunctionCategory.Financial,
+                  EPPlusVersion = "5.2",
+                  Description = "Calculates the yield of a security that pays periodic interest")]
 internal class Yield : ExcelFunction
 {
     public override CompileResult Execute(IEnumerable<FunctionArgument> arguments, ParsingContext context)
@@ -37,12 +37,15 @@ internal class Yield : ExcelFunction
         double redemption = this.ArgToDecimal(arguments, 4);
         int frequency = this.ArgToInt(arguments, 5);
         DayCountBasis basis = DayCountBasis.US_30_360;
-        if(arguments.Count() > 6)
+
+        if (arguments.Count() > 6)
         {
             basis = (DayCountBasis)this.ArgToInt(arguments, 6);
         }
+
         YieldImpl? func = new YieldImpl(new CouponProvider(), new PriceProvider());
         double result = func.GetYield(settlement, maturity, rate, pr, redemption, frequency, basis);
+
         return this.CreateResult(result, DataType.Decimal);
     }
 }

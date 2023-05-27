@@ -10,6 +10,7 @@
  *************************************************************************************************
   04/16/2021         EPPlus Software AB       EPPlus 5.7
  *************************************************************************************************/
+
 using OfficeOpenXml.Core.CellStore;
 using OfficeOpenXml.Packaging;
 using OfficeOpenXml.Utils;
@@ -35,19 +36,27 @@ public class ExcelExternalWorkbook : ExcelExternalLink
     Dictionary<string, int> _sheetNames = new Dictionary<string, int>();
     Dictionary<int, CellStore<object>> _sheetValues = new Dictionary<int, CellStore<object>>();
     Dictionary<int, CellStore<int>> _sheetMetaData = new Dictionary<int, CellStore<int>>();
-    Dictionary<int, ExcelExternalNamedItemCollection<ExcelExternalDefinedName>> _definedNamesValues = new Dictionary<int, ExcelExternalNamedItemCollection<ExcelExternalDefinedName>>();
+
+    Dictionary<int, ExcelExternalNamedItemCollection<ExcelExternalDefinedName>> _definedNamesValues =
+        new Dictionary<int, ExcelExternalNamedItemCollection<ExcelExternalDefinedName>>();
+
     HashSet<int> _sheetRefresh = new HashSet<int>();
-    internal ExcelExternalWorkbook(ExcelWorkbook wb, ExcelPackage p) : base(wb)
+
+    internal ExcelExternalWorkbook(ExcelWorkbook wb, ExcelPackage p)
+        : base(wb)
     {
         this.CachedWorksheets = new ExcelExternalNamedItemCollection<ExcelExternalWorksheet>();
         this.CachedNames = new ExcelExternalNamedItemCollection<ExcelExternalDefinedName>();
         this.CacheStatus = eExternalWorkbookCacheStatus.NotUpdated;
         this.SetPackage(p, false);
     }
-    internal ExcelExternalWorkbook(ExcelWorkbook wb, XmlTextReader reader, ZipPackagePart part, XmlElement workbookElement)  : base(wb, reader, part, workbookElement)
+
+    internal ExcelExternalWorkbook(ExcelWorkbook wb, XmlTextReader reader, ZipPackagePart part, XmlElement workbookElement)
+        : base(wb, reader, part, workbookElement)
     {
         string? rId = reader.GetAttribute("id", ExcelPackage.schemaRelationships);
         this.Relation = part.GetRelationship(rId);
+
         while (reader.Read())
         {
             if (reader.NodeType == XmlNodeType.Element)
@@ -56,20 +65,26 @@ public class ExcelExternalWorkbook : ExcelExternalLink
                 {
                     case "sheetNames":
                         this.ReadSheetNames(reader);
+
                         break;
+
                     case "definedNames":
                         this.ReadDefinedNames(reader);
+
                         break;
+
                     case "sheetDataSet":
                         this.ReadSheetDataSet(reader, wb);
+
                         break;
                 }
             }
-            else if(reader.NodeType==XmlNodeType.EndElement)
+            else if (reader.NodeType == XmlNodeType.EndElement)
             {
-                if(reader.Name=="externalBook")
+                if (reader.Name == "externalBook")
                 {
                     reader.Close();
+
                     break;
                 }
             }
@@ -77,17 +92,14 @@ public class ExcelExternalWorkbook : ExcelExternalLink
 
         this.CachedWorksheets = new ExcelExternalNamedItemCollection<ExcelExternalWorksheet>();
         this.CachedNames = this.GetNames(-1);
+
         foreach (string? sheetName in this._sheetNames.Keys)
         {
             int sheetId = this._sheetNames[sheetName];
 
-            this.CachedWorksheets.Add(new ExcelExternalWorksheet(this._sheetValues[sheetId],
-                                                                 this._sheetMetaData[sheetId],
-                                                                 this._definedNamesValues[sheetId]) 
-            { 
-                SheetId  = sheetId, 
-                Name =sheetName, 
-                RefreshError= this._sheetRefresh.Contains(sheetId)
+            this.CachedWorksheets.Add(new ExcelExternalWorksheet(this._sheetValues[sheetId], this._sheetMetaData[sheetId], this._definedNamesValues[sheetId])
+            {
+                SheetId = sheetId, Name = sheetName, RefreshError = this._sheetRefresh.Contains(sheetId)
             });
         }
 
@@ -99,15 +111,12 @@ public class ExcelExternalWorkbook : ExcelExternalLink
     /// </summary>
     public override eExternalLinkType ExternalLinkType
     {
-        get
-        {
-            return eExternalLinkType.ExternalWorkbook;
-        }
+        get { return eExternalLinkType.ExternalWorkbook; }
     }
 
     private ExcelExternalNamedItemCollection<ExcelExternalDefinedName> GetNames(int ix)
     {
-        if(this._definedNamesValues.ContainsKey(ix))
+        if (this._definedNamesValues.ContainsKey(ix))
         {
             return this._definedNamesValues[ix];
         }
@@ -116,6 +125,7 @@ public class ExcelExternalWorkbook : ExcelExternalLink
             return new ExcelExternalNamedItemCollection<ExcelExternalDefinedName>();
         }
     }
+
     private void ReadSheetDataSet(XmlTextReader reader, ExcelWorkbook wb)
     {
         while (reader.Read())
@@ -124,16 +134,18 @@ public class ExcelExternalWorkbook : ExcelExternalLink
             {
                 break;
             }
-            else if(reader.NodeType == XmlNodeType.Element && reader.Name == "sheetData")
+            else if (reader.NodeType == XmlNodeType.Element && reader.Name == "sheetData")
             {
                 this.ReadSheetData(reader, wb);
             }
         }
     }
+
     private void ReadSheetData(XmlTextReader reader, ExcelWorkbook wb)
     {
         int sheetId = int.Parse(reader.GetAttribute("sheetId"));
-        if(reader.GetAttribute("refreshError")=="1" && !this._sheetRefresh.Contains(sheetId))
+
+        if (reader.GetAttribute("refreshError") == "1" && !this._sheetRefresh.Contains(sheetId))
         {
             this._sheetRefresh.Add(sheetId);
         }
@@ -141,38 +153,48 @@ public class ExcelExternalWorkbook : ExcelExternalLink
         CellStore<object> cellStoreValues = this._sheetValues[sheetId];
         CellStore<int> cellStoreMetaData = this._sheetMetaData[sheetId];
 
-        int row=0, col=0;
-        string type="";
+        int row = 0,
+            col = 0;
+
+        string type = "";
+
         while (reader.Read())
         {
             if (reader.NodeType == XmlNodeType.EndElement && reader.Name == "sheetData")
             {
                 break;
             }
-            else if(reader.NodeType==XmlNodeType.Element)
+            else if (reader.NodeType == XmlNodeType.Element)
             {
-                switch(reader.Name)
+                switch (reader.Name)
                 {
                     case "row":
                         row = int.Parse(reader.GetAttribute("r"));
+
                         break;
+
                     case "cell":
                         ExcelCellBase.GetRowCol(reader.GetAttribute("r"), out row, out col, false);
                         type = reader.GetAttribute("t");
                         string? vm = reader.GetAttribute("vm");
-                        if(!string.IsNullOrEmpty(vm))
+
+                        if (!string.IsNullOrEmpty(vm))
                         {
                             cellStoreMetaData.SetValue(row, col, int.Parse(vm));
                         }
+
                         break;
+
                     case "v":
                         object? v = ConvertUtil.GetValueFromType(reader, type, 0, wb);
                         cellStoreValues.SetValue(row, col, v);
+
                         break;
                 }
             }
         }
     }
+
     private void ReadDefinedNames(XmlTextReader reader)
     {
         while (reader.Read())
@@ -185,6 +207,7 @@ public class ExcelExternalWorkbook : ExcelExternalLink
             {
                 int sheetId;
                 string? sheetIdAttr = reader.GetAttribute("sheetId");
+
                 if (string.IsNullOrEmpty(sheetIdAttr))
                 {
                     sheetId = -1; // -1 represents the workbook level.
@@ -193,7 +216,7 @@ public class ExcelExternalWorkbook : ExcelExternalLink
                 {
                     sheetId = int.Parse(sheetIdAttr);
                 }
-                    
+
                 ExcelExternalNamedItemCollection<ExcelExternalDefinedName> names = this._definedNamesValues[sheetId];
 
                 string? name = reader.GetAttribute("name");
@@ -201,42 +224,43 @@ public class ExcelExternalWorkbook : ExcelExternalLink
             }
         }
     }
+
     private void ReadSheetNames(XmlTextReader reader)
     {
         int ix = 0;
         this._definedNamesValues.Add(-1, new ExcelExternalNamedItemCollection<ExcelExternalDefinedName>());
+
         while (reader.Read())
         {
-            if(reader.NodeType==XmlNodeType.EndElement && reader.Name== "sheetNames")
+            if (reader.NodeType == XmlNodeType.EndElement && reader.Name == "sheetNames")
             {
                 break;
             }
-            else if(reader.NodeType==XmlNodeType.Element && reader.Name== "sheetName")
+            else if (reader.NodeType == XmlNodeType.Element && reader.Name == "sheetName")
             {
                 this._sheetValues.Add(ix, new CellStore<object>());
                 this._sheetMetaData.Add(ix, new CellStore<int>());
                 this._definedNamesValues.Add(ix, new ExcelExternalNamedItemCollection<ExcelExternalDefinedName>());
-                this._sheetNames.Add(reader.GetAttribute("val"), ix++);                    
-
+                this._sheetNames.Add(reader.GetAttribute("val"), ix++);
             }
         }
     }
+
     /// <summary>
     /// The Uri to the external workbook. This property will be set by the <see cref="File"/> property on save, if it has been set.
     /// </summary>
     public Uri ExternalLinkUri
     {
-        get
-        {
-            return this.Relation?.TargetUri;
-        }
+        get { return this.Relation?.TargetUri; }
         set
         {
             this.Relation.TargetUri = value;
             this._file = null;
         }
     }
-    FileInfo _file=null;
+
+    FileInfo _file = null;
+
     /// <summary>
     /// If the external reference is a file in the filesystem
     /// </summary>
@@ -244,9 +268,10 @@ public class ExcelExternalWorkbook : ExcelExternalLink
     {
         get
         {
-            if(this._file==null)
+            if (this._file == null)
             {
                 string? filePath = this.Relation?.TargetUri?.OriginalString;
+
                 if (string.IsNullOrEmpty(filePath) || HasWebProtocol(filePath))
                 {
                     return null;
@@ -259,8 +284,7 @@ public class ExcelExternalWorkbook : ExcelExternalLink
 
                 try
                 {
-                        
-                    if(this._wb._package.File!=null)
+                    if (this._wb._package.File != null)
                     {
                         if (string.IsNullOrEmpty(Path.GetDirectoryName(filePath)) || Path.IsPathRooted(filePath) == false)
                         {
@@ -268,7 +292,7 @@ public class ExcelExternalWorkbook : ExcelExternalLink
                         }
                         else
                         {
-                            if(Path.IsPathRooted(filePath) == true && filePath[0]==Path.DirectorySeparatorChar)
+                            if (Path.IsPathRooted(filePath) == true && filePath[0] == Path.DirectorySeparatorChar)
                             {
                                 filePath = this._wb._package.File.Directory.Root.Name + filePath;
                             }
@@ -276,7 +300,8 @@ public class ExcelExternalWorkbook : ExcelExternalLink
                     }
 
                     this._file = new FileInfo(filePath);
-                    if(!this._file.Exists && this._wb.ExternalLinks.Directories.Count>0)
+
+                    if (!this._file.Exists && this._wb.ExternalLinks.Directories.Count > 0)
                     {
                         this.SetDirectoryIfExists();
                     }
@@ -286,12 +311,14 @@ public class ExcelExternalWorkbook : ExcelExternalLink
                     return null;
                 }
             }
+
             return this._file;
         }
         set
         {
             this._file = value;
-            if(this._package!=null)
+
+            if (this._package != null)
             {
                 this._package.File = this.File;
             }
@@ -300,34 +327,37 @@ public class ExcelExternalWorkbook : ExcelExternalLink
 
     private void SetDirectoryIfExists()
     {
-        foreach(DirectoryInfo? d in this._wb.ExternalLinks.Directories)
+        foreach (DirectoryInfo? d in this._wb.ExternalLinks.Directories)
         {
             string? file = d.FullName;
+
             if (file.EndsWith(Path.DirectorySeparatorChar.ToString()) == false)
             {
                 file += Path.DirectorySeparatorChar;
             }
+
             file += this._file.Name;
+
             if (System.IO.File.Exists(file))
             {
                 this._file = new FileInfo(FileHelper.GetRelativeFile(this._wb._package.File, new FileInfo(file)));
+
                 return;
             }
         }
     }
 
-    ExcelPackage _package =null;
+    ExcelPackage _package = null;
+
     /// <summary>
     /// A reference to the external package, it it has been loaded.
     /// <seealso cref="Load()"/>
     /// </summary>
     public ExcelPackage Package
     {
-        get
-        {
-            return this._package;
-        }
+        get { return this._package; }
     }
+
     /// <summary>
     /// Tries to Loads the external package using the External Uri into the <see cref="Package"/> property
     /// </summary>
@@ -336,6 +366,7 @@ public class ExcelExternalWorkbook : ExcelExternalLink
     {
         return this.Load(this.File);
     }
+
     /// <summary>
     /// Tries to Loads the external package using the External Uri into the <see cref="Package"/> property
     /// </summary>
@@ -344,15 +375,17 @@ public class ExcelExternalWorkbook : ExcelExternalLink
     {
         if (packageFile != null && packageFile.Exists)
         {
-            if (!(packageFile.Extension.EndsWith("xlsx", StringComparison.OrdinalIgnoreCase) ||
-                  packageFile.Extension.EndsWith(".xlsm", StringComparison.OrdinalIgnoreCase) ||
-                  packageFile.Extension.EndsWith(".xlst", StringComparison.OrdinalIgnoreCase)))
+            if (!(packageFile.Extension.EndsWith("xlsx", StringComparison.OrdinalIgnoreCase)
+                  || packageFile.Extension.EndsWith(".xlsm", StringComparison.OrdinalIgnoreCase)
+                  || packageFile.Extension.EndsWith(".xlst", StringComparison.OrdinalIgnoreCase)))
             {
                 this._errors.Add("EPPlus only supports updating references to files of type xlsx, xlsm and xlst");
+
                 return false;
             }
 
             this.SetPackage(packageFile);
+
             return true;
         }
 
@@ -360,6 +393,7 @@ public class ExcelExternalWorkbook : ExcelExternalLink
 
         return false;
     }
+
     /// <summary>
     /// Tries to Loads the external package using the External Uri into the <see cref="Package"/> property
     /// </summary>
@@ -369,12 +403,14 @@ public class ExcelExternalWorkbook : ExcelExternalLink
         if (package == null || package == this._wb._package)
         {
             this._errors.Add("Load failed. The package can't be null or load itself.");
+
             return false;
         }
 
         if (package.File == null)
         {
             this._errors.Add("Load failed. The package must have the File property set to be added as an external reference.");
+
             return false;
         }
 
@@ -388,16 +424,19 @@ public class ExcelExternalWorkbook : ExcelExternalLink
         this._package = package;
         this._package._loadedPackage = this._wb._package;
         this._file = this._package.File;
+
         if (setTarget)
         {
             this.SetTarget(this._file);
         }
     }
+
     private void SetPackage(FileInfo file)
     {
         if (this._wb._package.File.Name.Equals(file.Name, StringComparison.CurrentCultureIgnoreCase))
         {
             this._package = this._wb._package;
+
             return;
         }
 
@@ -438,6 +477,7 @@ public class ExcelExternalWorkbook : ExcelExternalLink
     /// <see cref="File"/>
     /// </summary>
     public bool IsPathRelative { get; set; } = true;
+
     private bool SetPackageFromOtherReference(ExcelExternalLinksCollection erCollection, FileInfo file)
     {
         if (erCollection == null)
@@ -447,18 +487,21 @@ public class ExcelExternalWorkbook : ExcelExternalLink
 
         foreach (ExcelExternalLink? er in erCollection)
         {
-            if (er!=this && er.ExternalLinkType == eExternalLinkType.ExternalWorkbook)
+            if (er != this && er.ExternalLinkType == eExternalLinkType.ExternalWorkbook)
             {
                 ExcelExternalWorkbook? wb = er.As.ExternalWorkbook;
-                if (wb._package!=null && wb.File!=null && wb.File.Name.Equals(file.Name, StringComparison.CurrentCultureIgnoreCase))
+
+                if (wb._package != null && wb.File != null && wb.File.Name.Equals(file.Name, StringComparison.CurrentCultureIgnoreCase))
                 {
-                    this._package=wb._package;
+                    this._package = wb._package;
+
                     return true;
                 }
 
                 this.SetPackageFromOtherReference(wb._package?._workbook?._externalLinks, file);
             }
         }
+
         return false;
     }
 
@@ -476,6 +519,7 @@ public class ExcelExternalWorkbook : ExcelExternalLink
             {
                 this.CacheStatus = eExternalWorkbookCacheStatus.Failed;
                 this._errors.Add($"Load failed. Can't update cache.");
+
                 return false;
             }
         }
@@ -488,6 +532,7 @@ public class ExcelExternalWorkbook : ExcelExternalLink
         this._sheetMetaData.Clear();
         this._sheetNames.Clear();
         this._definedNamesValues.Add(-1, this.CachedNames);
+
         foreach (ExcelWorksheet? ws in this._package.Workbook.Worksheets)
         {
             int ix = this.CachedWorksheets.Count;
@@ -495,12 +540,17 @@ public class ExcelExternalWorkbook : ExcelExternalLink
             this._sheetValues.Add(ix, new CellStore<object>());
             this._sheetMetaData.Add(ix, new CellStore<int>());
             this._definedNamesValues.Add(ix, new ExcelExternalNamedItemCollection<ExcelExternalDefinedName>());
-            this.CachedWorksheets.Add(new ExcelExternalWorksheet(this._sheetValues[ix], this._sheetMetaData[ix], this._definedNamesValues[ix]) { Name = ws.Name, RefreshError = false });
+
+            this.CachedWorksheets.Add(new ExcelExternalWorksheet(this._sheetValues[ix], this._sheetMetaData[ix], this._definedNamesValues[ix])
+            {
+                Name = ws.Name, RefreshError = false
+            });
         }
 
         this.UpdateCacheFromCells();
         this.UpdateCacheFromNames(this._wb, this._wb.Names);
         this.CacheStatus = eExternalWorkbookCacheStatus.Updated;
+
         return true;
     }
 
@@ -509,11 +559,13 @@ public class ExcelExternalWorkbook : ExcelExternalLink
         foreach (ExcelWorksheet? ws in this._wb.Worksheets)
         {
             CellStoreEnumerator<object>? formulas = new CellStoreEnumerator<object>(ws._formulas);
+
             foreach (object? f in formulas)
             {
                 if (f is int sfIx)
                 {
                     ExcelWorksheet.Formulas? sf = ws._sharedFormulas[sfIx];
+
                     if (sf.Formula.Contains("["))
                     {
                         this.UpdateCacheForFormula(this._wb, sf.Formula, sf.Address);
@@ -522,6 +574,7 @@ public class ExcelExternalWorkbook : ExcelExternalLink
                 else
                 {
                     string? s = f.ToString();
+
                     if (s.Contains("["))
                     {
                         this.UpdateCacheForFormula(this._wb, s, "");
@@ -532,23 +585,26 @@ public class ExcelExternalWorkbook : ExcelExternalLink
             this.UpdateCacheFromNames(this._wb, ws.Names);
 
             //Update cache for chart references.
-            foreach(ExcelDrawing? d in ws.Drawings)
+            foreach (ExcelDrawing? d in ws.Drawings)
             {
-                if(d is ExcelChart c)
+                if (d is ExcelChart c)
                 {
-                    foreach(ExcelChartSerie? s in c.Series)
+                    foreach (ExcelChartSerie? s in c.Series)
                     {
-                        if(s.Series.Contains("["))
+                        if (s.Series.Contains("["))
                         {
                             ExcelAddressBase? a = new ExcelAddressBase(s.Series);
+
                             if (a.IsExternal)
                             {
                                 this.UpdateCacheForAddress(a, "");
                             }
                         }
+
                         if (s.XSeries.Contains("["))
                         {
                             ExcelAddressBase? a = new ExcelAddressBase(s.XSeries);
+
                             if (a.IsExternal)
                             {
                                 this.UpdateCacheForAddress(a, "");
@@ -585,6 +641,7 @@ public class ExcelExternalWorkbook : ExcelExternalLink
     /// <seealso cref="ExcelExternalLink.ErrorLog"/>
     /// </summary>
     public eExternalWorkbookCacheStatus CacheStatus { get; private set; }
+
     private void UpdateCacheForFormula(ExcelWorkbook wb, string formula, string address)
     {
         IEnumerable<Token>? tokens = wb.FormulaParser.Lexer.Tokenize(formula);
@@ -595,10 +652,11 @@ public class ExcelExternalWorkbook : ExcelExternalLink
             {
                 if (ExcelCellBase.IsExternalAddress(t.Value))
                 {
-                    if(t.TokenTypeIsSet(TokenType.ExcelAddress))
+                    if (t.TokenTypeIsSet(TokenType.ExcelAddress))
                     {
                         ExcelAddressBase a = new ExcelAddressBase(t.Value);
                         int ix = this._wb.ExternalLinks.GetExternalLink(a._wb);
+
                         if (ix >= 0 && this._wb.ExternalLinks[ix] == this)
                         {
                             this.UpdateCacheForAddress(a, address);
@@ -607,19 +665,22 @@ public class ExcelExternalWorkbook : ExcelExternalLink
                     else
                     {
                         ExcelAddressBase.SplitAddress(t.Value, out string wbRef, out string wsRef, out string nameRef);
+
                         if (!string.IsNullOrEmpty(wbRef))
                         {
                             int ix = this._wb.ExternalLinks.GetExternalLink(wbRef);
+
                             if (ix >= 0 && this._wb.ExternalLinks[ix] == this)
                             {
                                 string name;
-                                if(string.IsNullOrEmpty(wsRef))
+
+                                if (string.IsNullOrEmpty(wsRef))
                                 {
                                     name = nameRef;
                                 }
                                 else
                                 {
-                                    name = ExcelCellBase.GetQuotedWorksheetName(wsRef)+"!"+nameRef;
+                                    name = ExcelCellBase.GetQuotedWorksheetName(wsRef) + "!" + nameRef;
                                 }
 
                                 this.UpdateCacheForName(name);
@@ -635,12 +696,14 @@ public class ExcelExternalWorkbook : ExcelExternalLink
     {
         int ix = 0;
         string? wsName = ExcelAddressBase.GetWorksheetPart(name, "", ref ix);
+
         if (!string.IsNullOrEmpty(wsName))
         {
             name = name.Substring(ix);
         }
 
         ExcelNamedRange namedRange;
+
         if (string.IsNullOrEmpty(wsName))
         {
             namedRange = this._package.Workbook.Names.ContainsKey(name) ? this._package.Workbook.Names[name] : null;
@@ -648,6 +711,7 @@ public class ExcelExternalWorkbook : ExcelExternalLink
         else
         {
             ExcelWorksheet? ws = this._package.Workbook.Worksheets[wsName];
+
             if (ws == null)
             {
                 namedRange = null;
@@ -657,8 +721,10 @@ public class ExcelExternalWorkbook : ExcelExternalLink
                 namedRange = ws.Names.ContainsKey(name) ? ws.Names[name] : null;
             }
         }
+
         ExcelAddressBase referensTo;
-        if(namedRange != null && namedRange._fromRow>0)
+
+        if (namedRange != null && namedRange._fromRow > 0)
         {
             referensTo = new ExcelAddressBase(namedRange.WorkbookLocalAddress);
         }
@@ -667,18 +733,19 @@ public class ExcelExternalWorkbook : ExcelExternalLink
             referensTo = new ExcelAddressBase("#REF!");
         }
 
-        if(namedRange==null || namedRange.LocalSheetId < 0)
+        if (namedRange == null || namedRange.LocalSheetId < 0)
         {
             if (!this.CachedNames.ContainsKey(name))
             {
-                this.CachedNames.Add(new ExcelExternalDefinedName() { Name = name, RefersTo = referensTo.Address, SheetId=-1 });
+                this.CachedNames.Add(new ExcelExternalDefinedName() { Name = name, RefersTo = referensTo.Address, SheetId = -1 });
                 this.UpdateCacheForAddress(referensTo, "");
             }
         }
         else
         {
             ExcelExternalWorksheet? cws = this.CachedWorksheets[namedRange.LocalSheet.Name];
-            if(cws != null)
+
+            if (cws != null)
             {
                 if (!cws.CachedNames.ContainsKey(name))
                 {
@@ -688,9 +755,10 @@ public class ExcelExternalWorkbook : ExcelExternalLink
             }
         }
     }
+
     private void UpdateCacheForAddress(ExcelAddressBase formulaAddress, string sfAddress)
     {
-        if ((formulaAddress==null && formulaAddress._fromRow < 0) || formulaAddress._fromCol < 0)
+        if ((formulaAddress == null && formulaAddress._fromRow < 0) || formulaAddress._fromCol < 0)
         {
             return;
         }
@@ -698,6 +766,7 @@ public class ExcelExternalWorkbook : ExcelExternalLink
         if (string.IsNullOrEmpty(sfAddress) == false)
         {
             ExcelAddress? a = new ExcelAddress(sfAddress);
+
             if (formulaAddress._toColFixed == false)
             {
                 formulaAddress._toCol += a.Columns - 1;
@@ -708,6 +777,7 @@ public class ExcelExternalWorkbook : ExcelExternalLink
         if (!string.IsNullOrEmpty(formulaAddress.WorkSheetName))
         {
             ExcelWorksheet? ws = this._package.Workbook.Worksheets[formulaAddress.WorkSheetName];
+
             if (ws == null)
             {
                 if (!this.CachedWorksheets.ContainsKey(formulaAddress.WorkSheetName))
@@ -718,16 +788,23 @@ public class ExcelExternalWorkbook : ExcelExternalLink
             else
             {
                 ExcelExternalWorksheet? cws = this.CachedWorksheets[formulaAddress.WorkSheetName];
+
                 if (cws != null)
                 {
-                    CellStoreEnumerator<ExcelValue>? cse = new CellStoreEnumerator<ExcelValue>(ws._values, formulaAddress._fromRow, formulaAddress._fromCol, formulaAddress._toRow, formulaAddress._toCol);
+                    CellStoreEnumerator<ExcelValue>? cse =
+                        new CellStoreEnumerator<ExcelValue>(ws._values,
+                                                            formulaAddress._fromRow,
+                                                            formulaAddress._fromCol,
+                                                            formulaAddress._toRow,
+                                                            formulaAddress._toCol);
+
                     foreach (ExcelValue v in cse)
                     {
                         cws.CellValues._values.SetValue(cse.Row, cse.Column, v._value);
                     }
                 }
             }
-        }            
+        }
     }
 
     /// <summary>
@@ -745,54 +822,51 @@ public class ExcelExternalWorkbook : ExcelExternalLink
             return base.ToString();
         }
     }
-    internal ZipPackageRelationship Relation
-    {
-        get;
-        set;
-    }
+
+    internal ZipPackageRelationship Relation { get; set; }
 
     /// <summary>
     /// A collection of cached defined names in the external workbook
     /// </summary>
-    public ExcelExternalNamedItemCollection<ExcelExternalDefinedName> CachedNames
-    {
-        get;
-    }
+    public ExcelExternalNamedItemCollection<ExcelExternalDefinedName> CachedNames { get; }
+
     /// <summary>
     /// A collection of cached worksheets in the external workbook
     /// </summary>
-    public ExcelExternalNamedItemCollection<ExcelExternalWorksheet> CachedWorksheets
-    {
-        get;
-    }
+    public ExcelExternalNamedItemCollection<ExcelExternalWorksheet> CachedWorksheets { get; }
 
     internal override void Save(StreamWriter sw)
     {
-        if(this.File==null && this.Relation?.TargetUri==null)
+        if (this.File == null && this.Relation?.TargetUri == null)
         {
             throw new InvalidOperationException($"External reference with Index {this.Index} has no File or Uri set");
         }
+
         //If sheet names is 0, no update has been performed. Update the cache.
-        if(this._sheetNames.Count==0)
+        if (this._sheetNames.Count == 0)
         {
-            if(this.UpdateCache()==false || this._sheetNames.Count == 0)
+            if (this.UpdateCache() == false || this._sheetNames.Count == 0)
             {
-                throw new InvalidDataException($"External reference {this.File.FullName} can't be updated saved. Make sure it contains at least one worksheet. For any errors please check the ErrorLog property of the object after UpdateCache has been called.");
+                throw new
+                    InvalidDataException($"External reference {this.File.FullName} can't be updated saved. Make sure it contains at least one worksheet. For any errors please check the ErrorLog property of the object after UpdateCache has been called.");
             }
         }
 
         sw.Write($"<externalBook xmlns:r=\"http://schemas.openxmlformats.org/officeDocument/2006/relationships\" r:id=\"{this.Relation.Id}\">");
         sw.Write("<sheetNames>");
-        foreach(KeyValuePair<string, int> sheet in this._sheetNames.OrderBy(x=>x.Value))
+
+        foreach (KeyValuePair<string, int> sheet in this._sheetNames.OrderBy(x => x.Value))
         {
             sw.Write($"<sheetName val=\"{ConvertUtil.ExcelEscapeString(sheet.Key)}\"/>");
         }
+
         sw.Write("</sheetNames><definedNames>");
+
         foreach (int sheet in this._definedNamesValues.Keys)
         {
             foreach (ExcelExternalDefinedName name in this._definedNamesValues[sheet])
             {
-                if(name.SheetId<0)
+                if (name.SheetId < 0)
                 {
                     sw.Write($"<definedName name=\"{ConvertUtil.ExcelEscapeString(name.Name)}\" refersTo=\"{name.RefersTo}\" />");
                 }
@@ -802,25 +876,31 @@ public class ExcelExternalWorkbook : ExcelExternalLink
                 }
             }
         }
+
         sw.Write("</definedNames><sheetDataSet>");
+
         foreach (int sheetId in this._sheetValues.Keys)
         {
             sw.Write($"<sheetData sheetId=\"{sheetId}\"{(this._sheetRefresh.Contains(sheetId) ? " refreshError=\"1\"" : "")}>");
             CellStoreEnumerator<object>? cellEnum = new CellStoreEnumerator<object>(this._sheetValues[sheetId]);
             CellStore<int>? mdStore = this._sheetMetaData[sheetId];
             int r = -1;
-            while(cellEnum.Next())
+
+            while (cellEnum.Next())
             {
-                if(r!=cellEnum.Row)
+                if (r != cellEnum.Row)
                 {
-                    if(r!=-1)
+                    if (r != -1)
                     {
                         sw.Write("</row>");
                     }
-                    sw.Write($"<row r=\"{cellEnum.Row}\">");                        
+
+                    sw.Write($"<row r=\"{cellEnum.Row}\">");
                 }
-                int md=-1;
-                if(mdStore.Exists(cellEnum.Row, cellEnum.Column, ref md))
+
+                int md = -1;
+
+                if (mdStore.Exists(cellEnum.Row, cellEnum.Column, ref md))
                 {
                     sw.Write($"<cell r=\"{ExcelCellBase.GetAddress(cellEnum.Row, cellEnum.Column)}\" md=\"{md}\"{ConvertUtil.GetCellType(cellEnum.Value, true)}><v>{ConvertUtil.ExcelEscapeAndEncodeString(ConvertUtil.GetValueForXml(cellEnum.Value, this._wb.Date1904))}</v></cell>");
                 }
@@ -828,14 +908,18 @@ public class ExcelExternalWorkbook : ExcelExternalLink
                 {
                     sw.Write($"<cell r=\"{ExcelCellBase.GetAddress(cellEnum.Row, cellEnum.Column)}\"{ConvertUtil.GetCellType(cellEnum.Value, true)}><v>{ConvertUtil.ExcelEscapeAndEncodeString(ConvertUtil.GetValueForXml(cellEnum.Value, this._wb.Date1904))}</v></cell>");
                 }
+
                 r = cellEnum.Row;
             }
+
             if (r != -1)
             {
                 sw.Write("</row>");
             }
+
             sw.Write("</sheetData>");
         }
-        sw.Write("</sheetDataSet></externalBook>");            
-    }        
+
+        sw.Write("</sheetDataSet></externalBook>");
+    }
 }

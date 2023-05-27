@@ -10,6 +10,7 @@
  *************************************************************************************************
   07/29/2020         EPPlus Software AB       Threaded comments
  *************************************************************************************************/
+
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -27,13 +28,15 @@ public class ExcelThreadedCommentMention : XmlHelper
     /// </summary>
     /// <param name="nameSpaceManager">Namespace manager of the <see cref="ExcelPackage"/></param>
     /// <param name="topNode">An <see cref="XmlNode"/> representing the mention</param>
-    public ExcelThreadedCommentMention(XmlNamespaceManager nameSpaceManager, XmlNode topNode) : base(nameSpaceManager, topNode)
+    public ExcelThreadedCommentMention(XmlNamespaceManager nameSpaceManager, XmlNode topNode)
+        : base(nameSpaceManager, topNode)
     {
     }
 
     internal static string NewId()
     {
         Guid guid = Guid.NewGuid();
+
         return "{" + guid.ToString().ToUpper() + "}";
     }
 

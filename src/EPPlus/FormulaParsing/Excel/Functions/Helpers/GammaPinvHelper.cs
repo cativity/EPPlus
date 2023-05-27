@@ -58,17 +58,18 @@ internal class GammaPinvHelper
             double pp = p < 0.5 ? p : 1 - p;
             t = System.Math.Sqrt(-2 * System.Math.Log(pp));
             x = ((2.30753 + (t * 0.27061)) / (1 + (t * (0.99229 + (t * 0.04481))))) - t;
+
             if (p < 0.5)
             {
                 x = -x;
             }
 
-            x = System.Math.Max(1e-3,
-                                a * System.Math.Pow(1 - (1 / (9 * a)) - (x / (3 * System.Math.Sqrt(a))), 3));
+            x = System.Math.Max(1e-3, a * System.Math.Pow(1 - (1 / (9 * a)) - (x / (3 * System.Math.Sqrt(a))), 3));
         }
         else
         {
             t = 1 - (a * (0.253 + (a * 0.12)));
+
             if (p < t)
             {
                 x = System.Math.Pow(p / t, 1 / a);
@@ -100,6 +101,7 @@ internal class GammaPinvHelper
 
             double u = err / t;
             x -= t = u / (1 - (0.5 * System.Math.Min(1, u * (((a - 1) / x) - 1))));
+
             if (x <= 0)
             {
                 x = 0.5 * (x + t);

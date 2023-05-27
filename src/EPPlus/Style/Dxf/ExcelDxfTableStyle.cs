@@ -10,8 +10,10 @@
  *************************************************************************************************
   12/28/2020         EPPlus Software AB       EPPlus 5.6
  *************************************************************************************************/
+
 using System;
 using System.Xml;
+
 namespace OfficeOpenXml.Style.Dxf;
 
 /// <summary>
@@ -19,13 +21,13 @@ namespace OfficeOpenXml.Style.Dxf;
 /// </summary>
 public class ExcelDxfTableStyle : ExcelDxfStyleLimitedFont
 {
-    internal ExcelDxfTableStyle(XmlNamespaceManager nameSpaceManager, XmlNode topNode, ExcelStyles styles) 
-        : this(nameSpaceManager,topNode, styles, null)
+    internal ExcelDxfTableStyle(XmlNamespaceManager nameSpaceManager, XmlNode topNode, ExcelStyles styles)
+        : this(nameSpaceManager, topNode, styles, null)
     {
     }
+
     internal ExcelDxfTableStyle(XmlNamespaceManager nameSpaceManager, XmlNode topNode, ExcelStyles styles, Action<eStyleClass, eStyleProperty, object> callback)
         : base(nameSpaceManager, topNode, styles, callback)
     {
-
     }
 }

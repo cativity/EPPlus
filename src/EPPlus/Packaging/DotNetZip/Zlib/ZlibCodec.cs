@@ -63,9 +63,8 @@
 //
 // -----------------------------------------------------------------------
 
-
 using System;
-using Interop=System.Runtime.InteropServices;
+using Interop = System.Runtime.InteropServices;
 
 namespace OfficeOpenXml.Packaging.Ionic.Zlib;
 
@@ -176,12 +175,13 @@ sealed public class ZlibCodec
     /// </remarks>
     public CompressionStrategy Strategy = CompressionStrategy.Default;
 
-
     /// <summary>
     /// The Adler32 checksum on the data transferred through the codec so far. You probably don't need to look at this.
     /// </summary>
-    public int Adler32 { get { return (int)this._Adler32; } }
-
+    public int Adler32
+    {
+        get { return (int)this._Adler32; }
+    }
 
     /// <summary>
     /// Create a ZlibCodec.
@@ -191,7 +191,9 @@ sealed public class ZlibCodec
     /// InitializeInflate() or InitializeDeflate() before using the ZlibCodec to compress 
     /// or decompress. 
     /// </remarks>
-    public ZlibCodec() { }
+    public ZlibCodec()
+    {
+    }
 
     /// <summary>
     /// Create a ZlibCodec that either compresses or decompresses.
@@ -204,6 +206,7 @@ sealed public class ZlibCodec
         if (mode == CompressionMode.Compress)
         {
             int rc = this.InitializeDeflate();
+
             if (rc != ZlibConstants.Z_OK)
             {
                 throw new ZlibException("Cannot initialize for deflate.");
@@ -212,6 +215,7 @@ sealed public class ZlibCodec
         else if (mode == CompressionMode.Decompress)
         {
             int rc = this.InitializeInflate();
+
             if (rc != ZlibConstants.Z_OK)
             {
                 throw new ZlibException("Cannot initialize for inflate.");
@@ -267,7 +271,8 @@ sealed public class ZlibCodec
     /// <returns>Z_OK if all goes well.</returns>
     public int InitializeInflate(int windowBits)
     {
-        this.WindowBits = windowBits;            
+        this.WindowBits = windowBits;
+
         return this.InitializeInflate(windowBits, true);
     }
 
@@ -293,12 +298,14 @@ sealed public class ZlibCodec
     public int InitializeInflate(int windowBits, bool expectRfc1950Header)
     {
         this.WindowBits = windowBits;
+
         if (this.dstate != null)
         {
             throw new ZlibException("You may not call InitializeInflate() after calling InitializeDeflate().");
         }
 
         this.istate = new InflateManager(expectRfc1950Header);
+
         return this.istate.Initialize(this, windowBits);
     }
 
@@ -375,7 +382,6 @@ sealed public class ZlibCodec
         return this.istate.Inflate(flush);
     }
 
-
     /// <summary>
     /// Ends an inflation session. 
     /// </summary>
@@ -394,6 +400,7 @@ sealed public class ZlibCodec
 
         int ret = this.istate.End();
         this.istate = null;
+
         return ret;
     }
 
@@ -468,9 +475,9 @@ sealed public class ZlibCodec
     public int InitializeDeflate(CompressionLevel level)
     {
         this.CompressLevel = level;
+
         return this._InternalInitializeDeflate(true);
     }
-
 
     /// <summary>
     /// Initialize the ZlibCodec for deflation operation, using the specified CompressionLevel, 
@@ -489,9 +496,9 @@ sealed public class ZlibCodec
     public int InitializeDeflate(CompressionLevel level, bool wantRfc1950Header)
     {
         this.CompressLevel = level;
+
         return this._InternalInitializeDeflate(wantRfc1950Header);
     }
-
 
     /// <summary>
     /// Initialize the ZlibCodec for deflation operation, using the specified CompressionLevel, 
@@ -507,6 +514,7 @@ sealed public class ZlibCodec
     {
         this.CompressLevel = level;
         this.WindowBits = bits;
+
         return this._InternalInitializeDeflate(true);
     }
 
@@ -524,6 +532,7 @@ sealed public class ZlibCodec
     {
         this.CompressLevel = level;
         this.WindowBits = bits;
+
         return this._InternalInitializeDeflate(wantRfc1950Header);
     }
 
@@ -635,6 +644,7 @@ sealed public class ZlibCodec
         // TODO: dinoch Tue, 03 Nov 2009  15:39 (test this)
         //int ret = dstate.End();
         this.dstate = null;
+
         return ZlibConstants.Z_OK; //ret;
     }
 
@@ -657,7 +667,6 @@ sealed public class ZlibCodec
         this.dstate.Reset();
     }
 
-
     /// <summary>
     /// Set the CompressionStrategy and CompressionLevel for a deflation session.
     /// </summary>
@@ -673,7 +682,6 @@ sealed public class ZlibCodec
 
         return this.dstate.SetParams(level, strategy);
     }
-
 
     /// <summary>
     /// Set the dictionary to be used for either Inflation or Deflation.
@@ -713,18 +721,24 @@ sealed public class ZlibCodec
             return;
         }
 
-        if (this.dstate.pending.Length <= this.dstate.nextPending || this.OutputBuffer.Length <= this.NextOut || this.dstate.pending.Length < this.dstate.nextPending + len || this.OutputBuffer.Length < this.NextOut + len)
+        if (this.dstate.pending.Length <= this.dstate.nextPending
+            || this.OutputBuffer.Length <= this.NextOut
+            || this.dstate.pending.Length < this.dstate.nextPending + len
+            || this.OutputBuffer.Length < this.NextOut + len)
         {
-            throw new ZlibException(String.Format("Invalid State. (pending.Length={0}, pendingCount={1})", this.dstate.pending.Length, this.dstate.pendingCount));
+            throw new ZlibException(String.Format("Invalid State. (pending.Length={0}, pendingCount={1})",
+                                                  this.dstate.pending.Length,
+                                                  this.dstate.pendingCount));
         }
 
         Array.Copy(this.dstate.pending, this.dstate.nextPending, this.OutputBuffer, this.NextOut, len);
 
-        this.NextOut             += len;
-        this.dstate.nextPending  += len;
-        this.TotalBytesOut       += len;
-        this.AvailableBytesOut   -= len;
+        this.NextOut += len;
+        this.dstate.nextPending += len;
+        this.TotalBytesOut += len;
+        this.AvailableBytesOut -= len;
         this.dstate.pendingCount -= len;
+
         if (this.dstate.pendingCount == 0)
         {
             this.dstate.nextPending = 0;
@@ -756,10 +770,11 @@ sealed public class ZlibCodec
         {
             this._Adler32 = Adler.Adler32(this._Adler32, this.InputBuffer, this.NextIn, len);
         }
+
         Array.Copy(this.InputBuffer, this.NextIn, buf, start, len);
         this.NextIn += len;
         this.TotalBytesIn += len;
+
         return len;
     }
-
 }

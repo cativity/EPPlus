@@ -10,6 +10,7 @@
  *************************************************************************************************
   01/27/2020         EPPlus Software AB       Initial release EPPlus 5
  *************************************************************************************************/
+
 using OfficeOpenXml.Drawing.Chart;
 using System;
 using System.Collections.Generic;
@@ -20,7 +21,8 @@ namespace OfficeOpenXml.Drawing.Interfaces;
 interface IDrawingChartErrorBars
 {
     void AddErrorBars(eErrorBarType barType, eErrorValueType valueType);
-    bool HasErrorBars();
-    ExcelChartErrorBars ErrorBars { get; }
 
+    bool HasErrorBars();
+
+    ExcelChartErrorBars ErrorBars { get; }
 }

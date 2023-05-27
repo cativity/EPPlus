@@ -10,6 +10,7 @@
  *************************************************************************************************
   01/27/2020         EPPlus Software AB       Initial release EPPlus 5
  *************************************************************************************************/
+
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -24,6 +25,7 @@ namespace OfficeOpenXml.ConditionalFormatting;
 public enum eExcelConditionalFormattingRuleType
 {
     #region Average
+
     /// <summary>
     /// Highlights cells that are above the average for all values in the range.
     /// </summary>
@@ -47,9 +49,11 @@ public enum eExcelConditionalFormattingRuleType
     /// </summary>
     /// <remarks>AboveAverage Excel CF Rule Type</remarks>
     BelowOrEqualAverage,
+
     #endregion
 
     #region StdDev
+
     /// <summary>
     /// Highlights cells that are above the standard deviation for all values in the range.
     /// <remarks>AboveAverage Excel CF Rule Type</remarks>
@@ -61,9 +65,11 @@ public enum eExcelConditionalFormattingRuleType
     /// </summary>
     /// <remarks>AboveAverage Excel CF Rule Type</remarks>
     BelowStdDev,
+
     #endregion
 
     #region TopBottom
+
     /// <summary>
     /// Highlights cells whose values fall in the bottom N bracket as specified.
     /// </summary>
@@ -87,9 +93,11 @@ public enum eExcelConditionalFormattingRuleType
     /// </summary>
     /// <remarks>Top10 Excel CF Rule Type</remarks>
     TopPercent,
+
     #endregion
 
     #region TimePeriod
+
     /// <summary>
     /// Highlights cells containing dates in the last 7 days.
     /// </summary>
@@ -149,9 +157,11 @@ public enum eExcelConditionalFormattingRuleType
     /// </summary>
     /// <remarks>TimePeriod Excel CF Rule Type</remarks>
     Yesterday,
+
     #endregion
 
     #region CellIs
+
     /// <summary>
     /// Highlights cells in the range that begin with the given text.
     /// </summary>
@@ -302,9 +312,11 @@ public enum eExcelConditionalFormattingRuleType
     /// </summary>
     /// <remarks>UniqueValues Excel CF Rule Type</remarks>
     UniqueValues,
+
     #endregion
 
     #region ColorScale
+
     /// <summary>
     /// Three Color Scale (Low, Middle and High Color Scale)
     /// </summary>
@@ -316,9 +328,11 @@ public enum eExcelConditionalFormattingRuleType
     /// </summary>
     /// <remarks>ColorScale Excel CF Rule Type</remarks>
     TwoColorScale,
+
     #endregion
 
     #region IconSet
+
     /// <summary>
     /// This conditional formatting rule applies a 3 set icons to cells according
     /// to their values.
@@ -339,14 +353,17 @@ public enum eExcelConditionalFormattingRuleType
     /// </summary>
     /// <remarks>IconSet Excel CF Rule Type</remarks>
     FiveIconSet,
+
     #endregion
 
     #region DataBar
+
     /// <summary>
     /// This conditional formatting rule displays a gradated data bar in the range of cells.
     /// </summary>
     /// <remarks>DataBar Excel CF Rule Type</remarks>
     DataBar
+
     #endregion
 }
 
@@ -647,6 +664,7 @@ public enum eExcelconditionalFormatting5IconsSetType
     /// </summary>
     Rating
 }
+
 /// <summary>
 /// 18.18.42 ST_IconSetType (Icon Set Type)
 /// </summary>
@@ -691,7 +709,7 @@ public enum eExcelconditionalFormattingIconsSetType
     /// 3 traffic lights icon set with thick black border.
     /// </summary>
     ThreeTrafficLights2,
- 
+
     /// <summary>
     /// 4 arrows icon set.
     /// </summary>

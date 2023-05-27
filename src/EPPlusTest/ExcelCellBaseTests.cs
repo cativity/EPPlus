@@ -26,6 +26,7 @@
  *******************************************************************************
   01/27/2020         EPPlus Software AB       Initial release EPPlus 5
  *******************************************************************************/
+
 using System;
 using System.Text.RegularExpressions;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -37,6 +38,7 @@ namespace EPPlusTest;
 public class ExcelCellBaseTest
 {
     #region UpdateFormulaReferences Tests
+
     [TestMethod]
     public void UpdateFormulaReferencesOnTheSameSheet()
     {
@@ -78,15 +80,18 @@ public class ExcelCellBaseTest
         string? result = ExcelCellBase.UpdateFormulaReferences("'boring sheet'!C3", 3, 3, 2, 2, "boring sheet", "updated sheet");
         Assert.AreEqual("'boring sheet'!C3", result);
     }
+
     #endregion
 
     #region UpdateCrossSheetReferenceNames Tests
+
     [TestMethod]
     public void UpdateFormulaSheetReferences()
     {
         string? result = ExcelCellBase.UpdateSheetNameInFormula("5+'OldSheet'!$G3+'Some Other Sheet'!C3+SUM(1,2,3)", "OldSheet", "NewSheet");
         Assert.AreEqual("5+'NewSheet'!$G3+'Some Other Sheet'!C3+SUM(1,2,3)", result);
     }
+
     [TestMethod]
     [ExpectedException(typeof(ArgumentNullException))]
     public void UpdateFormulaSheetReferencesNullOldSheetThrowsException()
@@ -114,5 +119,6 @@ public class ExcelCellBaseTest
     {
         ExcelCellBase.UpdateSheetNameInFormula("formula", "sheet1", string.Empty);
     }
+
     #endregion
 }

@@ -10,6 +10,7 @@
  *************************************************************************************************
   01/27/2020         EPPlus Software AB       Initial release EPPlus 5
  *************************************************************************************************/
+
 using System.Xml;
 
 namespace OfficeOpenXml.Drawing;
@@ -20,9 +21,11 @@ namespace OfficeOpenXml.Drawing;
 public class ExcelDrawingSize : XmlHelper
 {
     internal delegate void SetWidthCallback();
+
     SetWidthCallback _setWidthCallback;
-    internal ExcelDrawingSize(XmlNamespaceManager ns, XmlNode node, SetWidthCallback setWidthCallback=null) :
-        base (ns,node)
+
+    internal ExcelDrawingSize(XmlNamespaceManager ns, XmlNode node, SetWidthCallback setWidthCallback = null)
+        : base(ns, node)
     {
         this._setWidthCallback = setWidthCallback;
         this.Load();
@@ -33,13 +36,16 @@ public class ExcelDrawingSize : XmlHelper
         this._height = this.GetXmlNodeLong(colOffPath);
         this._width = this.GetXmlNodeLong(rowOffPath);
     }
+
     public void UpdateXml()
     {
         this.SetXmlNodeString(colOffPath, this._height.ToString());
         this.SetXmlNodeString(rowOffPath, this._width.ToString());
     }
+
     const string colOffPath = "@cy";
-    long _height=long.MinValue;
+    long _height = long.MinValue;
+
     /// <summary>
     /// Column Offset
     /// 
@@ -49,21 +55,21 @@ public class ExcelDrawingSize : XmlHelper
     /// </summary>
     public long Height
     {
-        get
-        {
-            return this._height;
-        }
+        get { return this._height; }
         set
         {
             this._height = value;
+
             if (this._setWidthCallback != null)
             {
                 this._setWidthCallback();
             }
         }
     }
+
     const string rowOffPath = "@cx";
     long _width = long.MinValue;
+
     /// <summary>
     /// Row Offset
     /// 
@@ -73,13 +79,11 @@ public class ExcelDrawingSize : XmlHelper
     /// </summary>
     public long Width
     {
-        get
-        {
-            return this._width;                
-        }
+        get { return this._width; }
         set
         {
             this._width = value;
+
             if (this._setWidthCallback != null)
             {
                 this._setWidthCallback();

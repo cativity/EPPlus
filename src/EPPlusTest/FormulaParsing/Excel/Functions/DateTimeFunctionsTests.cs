@@ -26,6 +26,7 @@
  *******************************************************************************
   01/27/2020         EPPlus Software AB       Initial release EPPlus 5
  *******************************************************************************/
+
 using System;
 using System.Text;
 using System.Collections.Generic;
@@ -51,8 +52,10 @@ public class DateTimeFunctionsTests
     {
         double secInADay = DateTime.Today.AddDays(1).Subtract(DateTime.Today).TotalSeconds;
         double secondsOfExample = (double)((hour * 60 * 60) + (minute * 60) + second);
+
         return secondsOfExample / secInADay;
     }
+
     [TestMethod]
     public void DateFunctionShouldReturnADate()
     {
@@ -187,7 +190,7 @@ public class DateTimeFunctionsTests
         double expectedResult = GetTime(10, 11, 12);
         Time? func = new Time();
         CompileResult? result = func.Execute(FunctionsHelper.CreateArgs(10, 11, 12), this._parsingContext);
-        Assert.AreEqual(expectedResult, result.Result);  
+        Assert.AreEqual(expectedResult, result.Result);
     }
 
     [TestMethod]
@@ -331,7 +334,7 @@ public class DateTimeFunctionsTests
         CompileResult? r2 = func.Execute(FunctionsHelper.CreateArgs(dt2arg, -1), this._parsingContext);
         CompileResult? r3 = func.Execute(FunctionsHelper.CreateArgs(dt3arg, 2), this._parsingContext);
 
-        DateTime dt1 = DateTime.FromOADate((double) r1.Result);
+        DateTime dt1 = DateTime.FromOADate((double)r1.Result);
         DateTime dt2 = DateTime.FromOADate((double)r2.Result);
         DateTime dt3 = DateTime.FromOADate((double)r3.Result);
 
@@ -418,7 +421,7 @@ public class DateTimeFunctionsTests
 
         CompileResult? result = func.Execute(FunctionsHelper.CreateArgs(dt1arg, dt2arg), this._parsingContext);
 
-        double roundedResult = Math.Round((double) result.Result, 4);
+        double roundedResult = Math.Round((double)result.Result, 4);
 
         Assert.IsTrue(Math.Abs(0.0861 - roundedResult) < double.Epsilon);
     }
@@ -617,6 +620,7 @@ public class DateTimeFunctionsTests
             using ExcelPackage? package = new ExcelPackage();
             package.Load(ms);
         }
+
         using (ExcelPackage? package = new ExcelPackage())
         {
             ExcelWorksheet? ws = package.Workbook.Worksheets.Add("test");

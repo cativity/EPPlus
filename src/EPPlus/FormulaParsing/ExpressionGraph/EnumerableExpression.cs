@@ -10,6 +10,7 @@
  *************************************************************************************************
   01/27/2020         EPPlus Software AB       Initial release EPPlus 5
  *************************************************************************************************/
+
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -22,7 +23,6 @@ public class EnumerableExpression : Expression
     public EnumerableExpression()
         : this(new ExpressionCompiler())
     {
-
     }
 
     public EnumerableExpression(IExpressionCompiler expressionCompiler)
@@ -45,10 +45,12 @@ public class EnumerableExpression : Expression
     public override CompileResult Compile()
     {
         List<object>? result = new List<object>();
+
         foreach (Expression? childExpression in this.Children)
         {
-            result.Add(this._expressionCompiler.Compile(new List<Expression>{ childExpression }).Result);
+            result.Add(this._expressionCompiler.Compile(new List<Expression> { childExpression }).Result);
         }
+
         return new CompileResult(result, DataType.Enumerable);
     }
 }

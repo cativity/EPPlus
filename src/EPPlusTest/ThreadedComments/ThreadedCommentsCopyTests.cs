@@ -13,17 +13,20 @@ namespace EPPlusTest.ThreadedComments;
 public class ThreadedCommentsCopyTests : TestBase
 {
     static ExcelPackage _pck;
+
     [ClassInitialize]
     public static void Init(TestContext context)
     {
         InitBase();
         _pck = OpenPackage("ThreadedCommentCopy.xlsx", true);
     }
+
     [ClassCleanup]
     public static void Cleanup()
     {
         SaveAndCleanup(_pck);
     }
+
     [TestMethod]
     public void ShouldCopyThreadedCommentWithinSheet()
     {
@@ -43,6 +46,7 @@ public class ThreadedCommentsCopyTests : TestBase
         Assert.AreEqual("Hello @Jane Doe, how are you?", c2.Text);
         Assert.AreEqual(1, thread.Comments[1].Mentions.Count());
     }
+
     [TestMethod]
     public void ShouldCopyThreadedCommentToNewSheet()
     {
@@ -63,6 +67,7 @@ public class ThreadedCommentsCopyTests : TestBase
         Assert.AreEqual("Hello @Jane Doe, how are you?", c2.Text);
         Assert.AreEqual(1, thread.Comments[1].Mentions.Count());
     }
+
     [TestMethod]
     public void ShouldCopyThreadedCommentToNewPackage()
     {
@@ -85,6 +90,7 @@ public class ThreadedCommentsCopyTests : TestBase
         Assert.AreEqual(1, thread.Comments[1].Mentions.Count());
         SaveWorkbook("ThreadedCommentCopy_NewPackage.xlsx", pck2);
     }
+
     [TestMethod]
     public void ShouldCopyWorksheetWithThreadedComment()
     {
@@ -104,6 +110,7 @@ public class ThreadedCommentsCopyTests : TestBase
         Assert.AreEqual("Hello @Jane Doe, how are you?", c2.Text);
         Assert.AreEqual(1, thread.Comments[1].Mentions.Count());
     }
+
     [TestMethod]
     public void ShouldCopyWorksheetWithThreadedCommentToNewPackage()
     {

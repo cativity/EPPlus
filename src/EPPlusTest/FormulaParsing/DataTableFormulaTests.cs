@@ -22,6 +22,7 @@ public class DataTableFormulaTests : TestBase
         Assert.AreEqual(2900D, ws.Cells["T20"].Value);
         SaveAndCleanup(p);
     }
+
     [TestMethod]
     public void CheckSaveWhatif_CopyWorksheetInsertRow()
     {
@@ -32,6 +33,7 @@ public class DataTableFormulaTests : TestBase
         copy.InsertRow(7, 1);
         SaveAndCleanup(p);
     }
+
     [TestMethod]
     [ExpectedException(typeof(InvalidOperationException))]
     public void CheckSaveWhatif_InsertInsideRow()
@@ -42,6 +44,7 @@ public class DataTableFormulaTests : TestBase
         copy.InsertRow(3, 1);
         SaveAndCleanup(p);
     }
+
     [TestMethod]
     public void CheckSaveWhatif_CopyWorksheetInsertColumn()
     {
@@ -52,6 +55,7 @@ public class DataTableFormulaTests : TestBase
         copy.InsertColumn(8, 1);
         SaveAndCleanup(p);
     }
+
     [TestMethod]
     [ExpectedException(typeof(InvalidOperationException))]
     public void CheckSaveWhatif_InsertInsideColumn()
@@ -62,6 +66,7 @@ public class DataTableFormulaTests : TestBase
         copy.InsertColumn(4, 1);
         SaveAndCleanup(p);
     }
+
     [TestMethod]
     public void CheckSaveWhatif_CopyWorksheetDeleteRow()
     {
@@ -72,6 +77,7 @@ public class DataTableFormulaTests : TestBase
         copy.DeleteRow(6, 1);
         SaveAndCleanup(p);
     }
+
     [TestMethod]
     [ExpectedException(typeof(InvalidOperationException))]
     public void CheckSaveWhatif_DeleteInsideRow()
@@ -93,6 +99,7 @@ public class DataTableFormulaTests : TestBase
         copy.DeleteColumn(8, 1);
         SaveAndCleanup(p);
     }
+
     [TestMethod]
     [ExpectedException(typeof(InvalidOperationException))]
     public void CheckSaveWhatif_DeleteInsideColumn()
@@ -103,6 +110,7 @@ public class DataTableFormulaTests : TestBase
         copy.DeleteColumn(4, 1);
         SaveAndCleanup(p);
     }
+
     [TestMethod]
     public void CheckSaveWhatif_CopyRange()
     {

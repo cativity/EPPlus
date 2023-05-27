@@ -10,6 +10,7 @@
  *************************************************************************************************
   01/27/2020         EPPlus Software AB       Initial release EPPlus 5
  *************************************************************************************************/
+
 using System;
 
 namespace OfficeOpenXml;
@@ -17,41 +18,49 @@ namespace OfficeOpenXml;
 /// <summary>
 /// Flag enum, specify all flags that you want to exclude from the copy.
 /// </summary>
-[Flags]    
+[Flags]
 public enum ExcelRangeCopyOptionFlags : int
 {
     /// <summary>
     /// Exclude formulas from being copied. Only the value of the cell will be copied
     /// </summary>
     ExcludeFormulas = 0x1,
+
     /// <summary>
     /// Will exclude formulas and values from being copied
     /// </summary>
     ExcludeValues = 0x2,
+
     /// <summary>
     /// Exclude styles from being copied. 
     /// </summary>
     ExcludeStyles = 0x4,
+
     /// <summary>
     /// Exclude comments from being copied. 
     /// </summary>
     ExcludeComments = 0x8,
+
     /// <summary>
     /// Exclude threaded comments from being copied. 
     /// </summary>
     ExcludeThreadedComments = 0x10,
+
     /// <summary>
     /// Exclude hyperlinks from being copied. 
     /// </summary>
     ExcludeHyperLinks = 0x20,
+
     /// <summary>
     /// Exclude merged cells from being copied. 
     /// </summary>
     ExcludeMergedCells = 0x40,
+
     /// <summary>
     /// Exclude data validations from being copied. 
     /// </summary>
     ExcludeDataValidations = 0x80,
+
     /// <summary>
     /// Exclude conditional formatting from being copied. 
     /// </summary>

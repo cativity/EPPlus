@@ -10,6 +10,7 @@
  *************************************************************************************************
   01/27/2020         EPPlus Software AB       Initial release EPPlus 5
  *************************************************************************************************/
+
 using System;
 using System.ComponentModel;
 using System.Linq;
@@ -23,11 +24,13 @@ namespace OfficeOpenXml.Table.PivotTable;
 public class ExcelPivotTableFieldCollection : ExcelPivotTableFieldCollectionBase<ExcelPivotTableField>
 {
     private readonly ExcelPivotTable _table;
-    internal ExcelPivotTableFieldCollection(ExcelPivotTable table) :
-        base()
+
+    internal ExcelPivotTableFieldCollection(ExcelPivotTable table)
+        : base()
     {
         this._table = table;
     }
+
     /// <summary>
     /// Indexer by name
     /// </summary>
@@ -39,14 +42,16 @@ public class ExcelPivotTableFieldCollection : ExcelPivotTableFieldCollectionBase
         {
             foreach (ExcelPivotTableField? field in this._list)
             {
-                if (field.Name.Equals(name,StringComparison.OrdinalIgnoreCase))
+                if (field.Name.Equals(name, StringComparison.OrdinalIgnoreCase))
                 {
                     return field;
                 }
             }
+
             return null;
         }
     }
+
     /// <summary>
     /// Returns the date group field.
     /// </summary>
@@ -61,8 +66,10 @@ public class ExcelPivotTableFieldCollection : ExcelPivotTableFieldCollectionBase
                 return fld;
             }
         }
+
         return null;
     }
+
     /// <summary>
     /// Returns the numeric group field.
     /// </summary>
@@ -76,6 +83,7 @@ public class ExcelPivotTableFieldCollection : ExcelPivotTableFieldCollectionBase
                 return fld;
             }
         }
+
         return null;
     }
 
@@ -88,8 +96,10 @@ public class ExcelPivotTableFieldCollection : ExcelPivotTableFieldCollectionBase
         ExcelPivotTableField? field = new ExcelPivotTableField(this._table.NameSpaceManager, fieldNode, this._table, this._table.Fields.Count, index);
 
         this._list.Add(field);
+
         return field;
     }
+
     internal ExcelPivotTableField AddField(int index)
     {
         //Pivot field
@@ -99,6 +109,7 @@ public class ExcelPivotTableFieldCollection : ExcelPivotTableFieldCollectionBase
         ExcelPivotTableField? field = new ExcelPivotTableField(this._table.NameSpaceManager, fieldNode, this._table, this._table.Fields.Count, index);
 
         this._list.Add(field);
+
         return field;
     }
 
@@ -111,6 +122,7 @@ public class ExcelPivotTableFieldCollection : ExcelPivotTableFieldCollectionBase
         fieldNode.SetAttribute("showAll", "0");
         fieldNode.SetAttribute("defaultSubtotal", "0");
         topNode.AppendChild(fieldNode);
+
         return fieldNode;
     }
 
@@ -123,11 +135,12 @@ public class ExcelPivotTableFieldCollection : ExcelPivotTableFieldCollectionBase
     /// <seealso cref="ExcelPivotTableCacheField.Formula"/></param>
     /// <returns>The new calculated field</returns>
     public ExcelPivotTableField AddCalculatedField(string name, string formula)
-    {            
-        if(this._list.Exists(x=>x.Name.Equals(name,StringComparison.OrdinalIgnoreCase)))
+    {
+        if (this._list.Exists(x => x.Name.Equals(name, StringComparison.OrdinalIgnoreCase)))
         {
             throw new InvalidOperationException($"Field with name {name} already exists in the collection");
         }
+
         PivotTableCacheInternal? cache = this._table.CacheDefinition._cacheReference;
         ExcelPivotTableCacheField? cacheField = cache.AddFormula(name, formula);
 
@@ -141,12 +154,15 @@ public class ExcelPivotTableFieldCollection : ExcelPivotTableFieldCollectionBase
             field._cacheField = cacheField;
             pt.Fields.AddInternal(field);
         }
+
         return this._table.Fields[cacheField.Index];
     }
+
     internal void RemoveAt(int index)
     {
         this.Remove(this._list[index]);
     }
+
     internal void Remove(ExcelPivotTableField item)
     {
         item.TopNode.ParentNode.RemoveChild(item.TopNode);

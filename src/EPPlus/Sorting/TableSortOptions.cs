@@ -10,6 +10,7 @@
  *************************************************************************************************
   05/07/2021         EPPlus Software AB       EPPlus 5.7
  *************************************************************************************************/
+
 using OfficeOpenXml.Table;
 using System;
 using System.Collections.Generic;
@@ -21,17 +22,19 @@ namespace OfficeOpenXml.Sorting;
 /// <summary>
 /// Sort options for sorting an <see cref="ExcelTable"/>
 /// </summary>
-public class TableSortOptions : SortOptionsBase 
+public class TableSortOptions : SortOptionsBase
 {
     /// <summary>
     /// Constructor
     /// </summary>
     /// <param name="table">The table sort</param>
-    public TableSortOptions(ExcelTable table) : base()
+    public TableSortOptions(ExcelTable table)
+        : base()
     {
         this._table = table;
         this._columnNameIndexes = new Dictionary<string, int>();
-        for(int x = 0; x < table.Columns.Count(); x++)
+
+        for (int x = 0; x < table.Columns.Count(); x++)
         {
             this._columnNameIndexes[table.Columns.ElementAt(x).Name] = x;
         }
@@ -48,10 +51,11 @@ public class TableSortOptions : SortOptionsBase
 
     internal int GetColumnNameIndex(string name)
     {
-        if(!this._columnNameIndexes.ContainsKey(name))
+        if (!this._columnNameIndexes.ContainsKey(name))
         {
             throw new InvalidOperationException($"Table {this._table.Name} does not contain column {name}");
         }
+
         return this._columnNameIndexes[name];
     }
 

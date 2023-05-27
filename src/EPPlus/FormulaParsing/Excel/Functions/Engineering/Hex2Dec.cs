@@ -10,6 +10,7 @@
  *************************************************************************************************
   05/03/2020         EPPlus Software AB         Implemented function
  *************************************************************************************************/
+
 using OfficeOpenXml.FormulaParsing.Excel.Functions.Helpers;
 using OfficeOpenXml.FormulaParsing.Excel.Functions.Metadata;
 using OfficeOpenXml.FormulaParsing.ExpressionGraph;
@@ -20,10 +21,7 @@ using System.Text;
 
 namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Engineering;
 
-[FunctionMetadata(
-                     Category = ExcelFunctionCategory.Engineering,
-                     EPPlusVersion = "5.1",
-                     Description = "Converts a hexadecimal number to a decimal")]
+[FunctionMetadata(Category = ExcelFunctionCategory.Engineering, EPPlusVersion = "5.1", Description = "Converts a hexadecimal number to a decimal")]
 internal class Hex2Dec : ExcelFunction
 {
     public override CompileResult Execute(IEnumerable<FunctionArgument> arguments, ParsingContext context)
@@ -31,6 +29,7 @@ internal class Hex2Dec : ExcelFunction
         ValidateArguments(arguments, 1);
         string? number = ArgToString(arguments, 0);
         double result = TwoComplementHelper.ParseDecFromString(number, 16);
+
         return this.CreateResult(result, DataType.Integer);
     }
 }

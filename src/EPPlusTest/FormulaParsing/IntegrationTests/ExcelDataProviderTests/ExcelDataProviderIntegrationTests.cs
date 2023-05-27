@@ -26,6 +26,7 @@
  *******************************************************************************
   01/27/2020         EPPlus Software AB       Initial release EPPlus 5
  *******************************************************************************/
+
 using System;
 using System.Text;
 using System.Collections.Generic;
@@ -44,8 +45,6 @@ public class ExcelDataProviderIntegrationTests
     {
         return new ExcelCell(val, null, 0, row);
     }
-
-      
 
     //[TestMethod]
     //public void ShouldExecuteFormulaInRange()

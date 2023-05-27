@@ -10,6 +10,7 @@
  *************************************************************************************************
   05/13/2020         EPPlus Software AB       Implemented function Implemented function (ported to c# from Microsoft.VisualBasic.Financial.vb (MIT))
  *************************************************************************************************/
+
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -22,7 +23,7 @@ internal static class IPmtImpl
     {
         double dTemp;
 
-        if(Due != PmtDue.EndOfPeriod)
+        if (Due != PmtDue.EndOfPeriod)
         {
             dTemp = 2d;
         }
@@ -32,18 +33,19 @@ internal static class IPmtImpl
         }
 
         // Type = 0 or non-zero only. Offset to calculate FV
-        if(Per <= 0 || Per >= NPer + 1)
+        if (Per <= 0 || Per >= NPer + 1)
         {
             return new FinanceCalcResult<double>(eErrorType.Value);
         }
 
-        if(Due != PmtDue.EndOfPeriod && Per == 1.0)
+        if (Due != PmtDue.EndOfPeriod && Per == 1.0)
         {
             return new FinanceCalcResult<double>(0d);
         }
 
         //   Calculate PMT (i.e. annuity) for given parms. Rqrd for FV
         FinanceCalcResult<double>? result = InternalMethods.PMT_Internal(Rate, NPer, PV, FV, Due);
+
         if (result.HasError)
         {
             return new FinanceCalcResult<double>(eErrorType.Num);
@@ -51,7 +53,7 @@ internal static class IPmtImpl
 
         double Pmt = result.Result;
 
-        if(Due != PmtDue.EndOfPeriod)
+        if (Due != PmtDue.EndOfPeriod)
         {
             PV += Pmt;
         }

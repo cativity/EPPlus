@@ -26,6 +26,7 @@
  *******************************************************************************
   01/27/2020         EPPlus Software AB       Initial release EPPlus 5
  *******************************************************************************/
+
 using System;
 using System.Linq;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -93,5 +94,4 @@ public class CriteriaTests
         Assert.AreEqual("crit1", criteria.Items.Keys.First().ToString());
         Assert.AreEqual(1, criteria.Items.Values.Last());
     }
-
 }

@@ -13,7 +13,6 @@ namespace EPPlusTest.ThreadedComments;
 [TestClass]
 public class ThreadedCommentsUnitTests
 {
-
     [TestMethod]
     public void ShouldRemoveOnePerson()
     {
@@ -26,6 +25,7 @@ public class ThreadedCommentsUnitTests
         Assert.AreEqual(1, package.Workbook.ThreadedCommentPersons.Count);
         Assert.AreEqual("John Doe", package.Workbook.ThreadedCommentPersons.First().DisplayName);
     }
+
     [TestMethod]
     public void ShouldAddOneComment()
     {
@@ -65,7 +65,6 @@ public class ThreadedCommentsUnitTests
     public void ShouldRemoveOneComment()
     {
         using ExcelPackage? package = new ExcelPackage();
-
 
         ExcelWorksheet? sheet = package.Workbook.Worksheets.Add("test");
         ExcelThreadedCommentPerson? person = sheet.ThreadedComments.Persons.Add("John Doe");

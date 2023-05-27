@@ -100,6 +100,8 @@ public class EPPlusHtmlWriterTests
         StreamReader? reader = new StreamReader(ms);
         ms.Position = 0;
         string? result = reader.ReadToEnd();
-        Assert.AreEqual($"<table>{Environment.NewLine}  <thead>{Environment.NewLine}    <tr></tr>{Environment.NewLine}  </thead>{Environment.NewLine}</table>", result);
+
+        Assert.AreEqual($"<table>{Environment.NewLine}  <thead>{Environment.NewLine}    <tr></tr>{Environment.NewLine}  </thead>{Environment.NewLine}</table>",
+                        result);
     }
 }

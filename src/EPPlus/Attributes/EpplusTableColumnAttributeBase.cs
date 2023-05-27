@@ -10,6 +10,7 @@
  *************************************************************************************************
   12/10/2020         EPPlus Software AB       EPPlus 5.5
  *************************************************************************************************/
+
 using OfficeOpenXml.Table;
 using System;
 using System.Collections.Generic;
@@ -23,67 +24,38 @@ namespace OfficeOpenXml.Attributes;
 /// </summary>
 public abstract class EpplusTableColumnAttributeBase : Attribute
 {
-
     /// <summary>
     /// Order of the columns value, default value is 0
     /// </summary>
-    public int Order
-    {
-        get;
-        set;
-    }
+    public int Order { get; set; }
 
     /// <summary>
     /// Name shown in the header row, overriding the property name
     /// </summary>
-    public string Header
-    {
-        get;
-        set;
-    }
+    public string Header { get; set; }
 
     /// <summary>
     /// Excel format string for the column
     /// </summary>
-    public string NumberFormat
-    {
-        get;
-        set;
-    }
+    public string NumberFormat { get; set; }
 
     /// <summary>
     /// If not <see cref="RowFunctions.None"/> the last cell in the column (the totals row) will contain a formula of the specified type.
     /// </summary>
-    public RowFunctions TotalsRowFunction
-    {
-        get;
-        set;
-    } = RowFunctions.None;
+    public RowFunctions TotalsRowFunction { get; set; } = RowFunctions.None;
 
     /// <summary>
     /// Formula for the total row of this column.
     /// </summary>
-    public string TotalsRowFormula
-    {
-        get;
-        set;
-    }
+    public string TotalsRowFormula { get; set; }
 
     /// <summary>
     /// Number format for this columns cell in the totals row.
     /// </summary>
-    public string TotalsRowNumberFormat
-    {
-        get;
-        set;
-    }
+    public string TotalsRowNumberFormat { get; set; }
 
     /// <summary>
     /// Text in this columns cell in the totals row
     /// </summary>
-    public string TotalsRowLabel
-    {
-        get;
-        set;
-    }
+    public string TotalsRowLabel { get; set; }
 }

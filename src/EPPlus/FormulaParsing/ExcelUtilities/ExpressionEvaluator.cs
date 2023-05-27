@@ -10,6 +10,7 @@
  *************************************************************************************************
   01/27/2020         EPPlus Software AB       Initial release EPPlus 5
  *************************************************************************************************/
+
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -30,7 +31,6 @@ internal class ExpressionEvaluator
     public ExpressionEvaluator()
         : this(new WildCardValueMatcher(), new CompileResultFactory())
     {
-
     }
 
     public ExpressionEvaluator(WildCardValueMatcher wildCardValueMatcher, CompileResultFactory compileResultFactory)
@@ -42,9 +42,11 @@ internal class ExpressionEvaluator
     private static string GetNonAlphanumericStartChars(string expr)
     {
         string? result = string.Empty;
+
         if (!string.IsNullOrEmpty(expr))
         {
             expr = expr.Trim();
+
             if (expr.Length > 1 && !char.IsLetterOrDigit(expr[0]) && !char.IsLetterOrDigit(expr[1]))
             {
                 if (char.IsWhiteSpace(expr[1]))
@@ -61,7 +63,7 @@ internal class ExpressionEvaluator
                 result = expr.Substring(0, 1);
             }
         }
-            
+
         return result;
     }
 
@@ -70,10 +72,12 @@ internal class ExpressionEvaluator
         CompileResult? leftResult = this._compileResultFactory.Create(left);
         CompileResult? rightResult = this._compileResultFactory.Create(right);
         CompileResult? result = op.Apply(leftResult, rightResult);
+
         if (result.DataType != DataType.Boolean)
         {
             throw new ArgumentException("Illegal operator in expression");
         }
+
         return (bool)result.Result;
     }
 
@@ -82,11 +86,13 @@ internal class ExpressionEvaluator
         if (op is double || op is int || op is decimal)
         {
             d = Convert.ToDouble(op);
+
             return true;
         }
         else if (op is DateTime)
         {
-            d = ((DateTime) op).ToOADate();
+            d = ((DateTime)op).ToOADate();
+
             return true;
         }
         else if (op != null && convertNumericString)
@@ -96,7 +102,9 @@ internal class ExpressionEvaluator
                 return true;
             }
         }
+
         d = 0;
+
         return false;
     }
 
@@ -113,15 +121,17 @@ internal class ExpressionEvaluator
             return false;
         }
 
-        foreach(string? expression in expressions)
+        foreach (string? expression in expressions)
         {
-            if(this.Evaluate(left, expression))
+            if (this.Evaluate(left, expression))
             {
                 return true;
             }
         }
+
         return false;
     }
+
     /// <summary>
     /// Returns true if the supplied expression evaluates to true
     /// </summary>
@@ -146,29 +156,34 @@ internal class ExpressionEvaluator
         {
             return left == null || left.ToString() == string.Empty;
         }
+
         if (expression == "=" && left == null)
         {
             return true;
         }
 
         string? operatorCandidate = GetNonAlphanumericStartChars(expression);
-        if(!string.IsNullOrEmpty(operatorCandidate))
+
+        if (!string.IsNullOrEmpty(operatorCandidate))
         {
             if (operatorCandidate.Length > 1 && operatorCandidate.StartsWith("="))
             {
                 operatorCandidate = operatorCandidate.Substring(1);
                 expression = expression.Substring(1);
             }
+
             // ignore the wildcard operator *
             if (operatorCandidate != "*")
             {
                 if (OperatorsDict.Instance.TryGetValue(operatorCandidate, out IOperator op))
                 {
                     string? right = expression.Replace(operatorCandidate, string.Empty);
+
                     if (left == null && string.IsNullOrEmpty(right))
                     {
                         return op.Operator == Operators.Equals;
                     }
+
                     if ((left == null) ^ string.IsNullOrEmpty(right))
                     {
                         return op.Operator == Operators.NotEqualTo;
@@ -177,43 +192,53 @@ internal class ExpressionEvaluator
                     bool leftIsNumeric = TryConvertToDouble(left, out double leftNum, convertNumericString);
                     bool rightIsNumeric = this.TryConvertStringToDouble(right, out double rightNum);
                     bool rightIsDate = DateTime.TryParse(right, out DateTime date);
+
                     if (rightIsNumeric && op.Operator == Operators.Minus)
                     {
                         rightNum *= -1;
                         op = OperatorsDict.Instance["="];
                     }
+
                     if (leftIsNumeric && rightIsNumeric)
                     {
                         return this.EvaluateOperator(leftNum, rightNum, op);
                     }
+
                     if (leftIsNumeric && rightIsDate)
                     {
                         return this.EvaluateOperator(leftNum, date.ToOADate(), op);
                     }
+
                     if (leftIsNumeric != rightIsNumeric)
                     {
                         return op.Operator == Operators.NotEqualTo;
                     }
+
                     return this.EvaluateOperator(left, right, op);
                 }
             }
         }
+
         return this._wildCardValueMatcher.IsMatch(expression, left) == 0;
     }
 
     private bool TryConvertStringToDouble(string right, out double result)
     {
         result = 0d;
-        if(double.TryParse(right, out double val))
+
+        if (double.TryParse(right, out double val))
         {
             result = val;
+
             return true;
         }
-        else if(this.IsTimeString(right))
+        else if (this.IsTimeString(right))
         {
             result = this._timeStringParser.Parse(right);
+
             return true;
         }
+
         return false;
     }
 

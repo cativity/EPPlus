@@ -10,6 +10,7 @@
  *************************************************************************************************
   01/08/2021         EPPlus Software AB       Table Styling - EPPlus 5.6
  *************************************************************************************************/
+
 using System.Xml;
 
 namespace OfficeOpenXml.Style.Table;
@@ -19,47 +20,40 @@ namespace OfficeOpenXml.Style.Table;
 /// </summary>
 public class ExcelTableAndPivotTableNamedStyle : ExcelPivotTableNamedStyle
 {
-    internal ExcelTableAndPivotTableNamedStyle(XmlNamespaceManager nameSpaceManager, XmlNode topNode, ExcelStyles styles) : base(nameSpaceManager, topNode, styles)
+    internal ExcelTableAndPivotTableNamedStyle(XmlNamespaceManager nameSpaceManager, XmlNode topNode, ExcelStyles styles)
+        : base(nameSpaceManager, topNode, styles)
     {
     }
+
     /// <summary>
     /// If the style applies to tables, pivot table or both
     /// </summary>
     public override eTableNamedStyleAppliesTo AppliesTo
     {
-        get
-        {
-            return eTableNamedStyleAppliesTo.TablesAndPivotTables;
-        }
+        get { return eTableNamedStyleAppliesTo.TablesAndPivotTables; }
     }
+
     /// <summary>
     /// Applies to the last header cell of a table
     /// </summary>
     public ExcelTableStyleElement LastHeaderCell
     {
-        get
-        {
-            return this.GetTableStyleElement(eTableStyleElement.LastHeaderCell);
-        }
+        get { return this.GetTableStyleElement(eTableStyleElement.LastHeaderCell); }
     }
+
     /// <summary>
     /// Applies to the first total cell of a table
     /// </summary>
     public ExcelTableStyleElement FirstTotalCell
     {
-        get
-        {
-            return this.GetTableStyleElement(eTableStyleElement.FirstTotalCell);
-        }
+        get { return this.GetTableStyleElement(eTableStyleElement.FirstTotalCell); }
     }
+
     /// <summary>
     /// Applies to the last total cell of a table
     /// </summary>
     public ExcelTableStyleElement LastTotalCell
     {
-        get
-        {
-            return this.GetTableStyleElement(eTableStyleElement.LastTotalCell);
-        }
+        get { return this.GetTableStyleElement(eTableStyleElement.LastTotalCell); }
     }
 }

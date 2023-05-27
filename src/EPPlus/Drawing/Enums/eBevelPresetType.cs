@@ -10,6 +10,7 @@
  *************************************************************************************************
   01/27/2020         EPPlus Software AB       Initial release EPPlus 5
  *************************************************************************************************/
+
 namespace OfficeOpenXml.Drawing;
 
 /// <summary>
@@ -21,50 +22,62 @@ public enum eBevelPresetType
     /// No Bevel
     /// </summary>
     None,
+
     /// <summary>
     /// Angle
     /// </summary>
     Angle,
+
     /// <summary>
     /// Round Convex
     /// </summary>
     ArtDeco,
+
     /// <summary>
     /// Round
     /// </summary>
     Circle,
+
     /// <summary>
     /// Convex
     /// </summary>
     Convex,
+
     /// <summary>
     /// Cool slant
     /// </summary>
     CoolSlant,
+
     /// <summary>
     /// Cross
     /// </summary>
     Cross,
+
     /// <summary>
     /// Divot
     /// </summary>
     Divot,
+
     /// <summary>
     /// Hard Edge
     /// </summary>
     HardEdge,
+
     /// <summary>
     /// Relaxed Inset
     /// </summary>
     RelaxedInset,
+
     /// <summary>
     /// Riblet
     /// </summary>
     Riblet,
+
     /// <summary>
     /// Slope
     /// </summary>
     Slope,
+
     /// <summary>
     /// Soft Round
     /// </summary>

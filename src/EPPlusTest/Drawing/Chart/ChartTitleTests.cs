@@ -15,6 +15,7 @@ public class ChartTitleTests : TestBase
 {
     static ExcelPackage _pck;
     static ExcelWorksheet _wsData;
+
     [ClassInitialize]
     public static void Init(TestContext context)
     {
@@ -22,17 +23,20 @@ public class ChartTitleTests : TestBase
         _wsData = _pck.Workbook.Worksheets.Add("Data");
         LoadItemData(_wsData);
     }
+
     [ClassCleanup]
     public static void Cleanup()
     {
         string? dirName = _pck.File.DirectoryName;
         string? fileName = _pck.File.FullName;
         SaveAndCleanup(_pck);
+
         if (File.Exists(fileName))
         {
             File.Copy(fileName, dirName + "\\ChartTitleRead.xlsx", true);
         }
     }
+
     [TestMethod]
     public void AddLineChartWithTextTitle()
     {
@@ -41,6 +45,7 @@ public class ChartTitleTests : TestBase
         chart.Title.Text = "LineChart - Text";
         chart.Series.Add("Data!N1:N10", "Data!K1:K10");
     }
+
     [TestMethod]
     public void AddLineChartWithCellLinkTitle()
     {
@@ -51,17 +56,19 @@ public class ChartTitleTests : TestBase
         chart.Series.Add("Data!N1:N10", "Data!K1:K10");
         Assert.AreEqual("Linked Cell Title", chart.Title.Text);
     }
+
     [TestMethod]
     public void AddLineChart_With_Text_Then_CellLink_Title()
     {
         ExcelWorksheet? ws = _pck.Workbook.Worksheets.Add("LineChartLinkTitleOverride");
         ExcelLineChart? chart = ws.Drawings.AddLineChart("lineChart3", eLineChartType.Line);
         chart.Title.Text = "Line Chart - Text";
-        _wsData.Cells["A1"].Value = "Linked Cell Title-DataSheet";            
+        _wsData.Cells["A1"].Value = "Linked Cell Title-DataSheet";
         chart.Title.LinkedCell = _wsData.Cells["A1"];
         chart.Series.Add("Data!N1:N10", "Data!K1:K10");
         Assert.AreEqual("Linked Cell Title-DataSheet", chart.Title.Text);
     }
+
     [TestMethod]
     public void AddLineChart_With_CellLink_Then_Text_Title()
     {
@@ -73,6 +80,7 @@ public class ChartTitleTests : TestBase
         chart.Series.Add("Data!N1:N10", "Data!K1:K10");
         Assert.AreEqual("Line Chart - Text", chart.Title.Text);
     }
+
     [TestMethod]
     public void AddBarChartWithAxisTextTitle()
     {
@@ -81,6 +89,7 @@ public class ChartTitleTests : TestBase
         chart.Series.Add("Data!N1:N10", "Data!K1:K10");
         chart.XAxis.AddTitle("Linked Cell Title");
     }
+
     [TestMethod]
     public void AddBarChartWithAxisLinkedTitle()
     {

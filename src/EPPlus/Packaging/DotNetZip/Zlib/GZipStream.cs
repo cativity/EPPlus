@@ -26,9 +26,7 @@
 //
 // ------------------------------------------------------------------
 
-
 using OfficeOpenXml.Utils;
-
 using System;
 using System.IO;
 
@@ -121,8 +119,6 @@ public class GZipStream : Stream
     // all optional fields get 0, except for the OS, which gets 255.
     //
 
-
-
     /// <summary>
     ///   The comment on the GZIP stream.
     /// </summary>
@@ -145,10 +141,7 @@ public class GZipStream : Stream
     /// </remarks>
     public String Comment
     {
-        get
-        {
-            return this._Comment;
-        }
+        get { return this._Comment; }
         set
         {
             if (this._disposed)
@@ -194,6 +187,7 @@ public class GZipStream : Stream
             }
 
             this._FileName = value;
+
             if (this._FileName == null)
             {
                 return;
@@ -203,6 +197,7 @@ public class GZipStream : Stream
             {
                 this._FileName = this._FileName.Replace("/", "\\");
             }
+
             if (this._FileName.EndsWith("\\"))
             {
                 throw new Exception("Illegal filename");
@@ -234,7 +229,10 @@ public class GZipStream : Stream
     /// <remarks>
     /// This is used for internal error checking. You probably don't need to look at this property.
     /// </remarks>
-    public int Crc32 { get { return this._Crc32; } }
+    public int Crc32
+    {
+        get { return this._Crc32; }
+    }
 
     private int _headerByteCount;
     internal ZlibBaseStream _baseStream;
@@ -243,7 +241,6 @@ public class GZipStream : Stream
     string _FileName;
     string _Comment;
     int _Crc32;
-
 
     /// <summary>
     ///   Create a <c>GZipStream</c> using the specified <c>CompressionMode</c>.
@@ -564,7 +561,8 @@ public class GZipStream : Stream
     virtual public FlushType FlushMode
     {
         get { return this._baseStream._flushMode; }
-        set {
+        set
+        {
             if (this._disposed)
             {
                 throw new ObjectDisposedException("GZipStream");
@@ -593,10 +591,7 @@ public class GZipStream : Stream
     /// </remarks>
     public int BufferSize
     {
-        get
-        {
-            return this._baseStream._bufferSize;
-        }
+        get { return this._baseStream._bufferSize; }
         set
         {
             if (this._disposed)
@@ -611,30 +606,25 @@ public class GZipStream : Stream
 
             if (value < ZlibConstants.WorkingBufferSizeMin)
             {
-                throw new ZlibException(String.Format("Don't be silly. {0} bytes?? Use a bigger buffer, at least {1}.", value, ZlibConstants.WorkingBufferSizeMin));
+                throw new ZlibException(String.Format("Don't be silly. {0} bytes?? Use a bigger buffer, at least {1}.",
+                                                      value,
+                                                      ZlibConstants.WorkingBufferSizeMin));
             }
 
             this._baseStream._bufferSize = value;
         }
     }
 
-
     /// <summary> Returns the total number of bytes input so far.</summary>
     virtual public long TotalIn
     {
-        get
-        {
-            return this._baseStream._z.TotalBytesIn;
-        }
+        get { return this._baseStream._z.TotalBytesIn; }
     }
 
     /// <summary> Returns the total number of bytes output so far.</summary>
     virtual public long TotalOut
     {
-        get
-        {
-            return this._baseStream._z.TotalBytesOut;
-        }
+        get { return this._baseStream._z.TotalBytesOut; }
     }
 
     #endregion
@@ -685,7 +675,6 @@ public class GZipStream : Stream
         }
     }
 
-
     /// <summary>
     /// Indicates whether the stream can be read.
     /// </summary>
@@ -715,7 +704,6 @@ public class GZipStream : Stream
     {
         get { return false; }
     }
-
 
     /// <summary>
     /// Indicates whether the stream can be written.
@@ -837,10 +825,9 @@ public class GZipStream : Stream
             this.FileName = this._baseStream._GzipFileName;
             this.Comment = this._baseStream._GzipComment;
         }
+
         return n;
     }
-
-
 
     /// <summary>
     ///   Calling this method always throws a <see cref="NotImplementedException"/>.
@@ -907,8 +894,8 @@ public class GZipStream : Stream
 
         this._baseStream.Write(buffer, offset, count);
     }
-    #endregion
 
+    #endregion
 
     internal static readonly DateTime _unixEpoch = new DateTime(1970, 1, 1, 0, 0, 0, DateTimeKind.Utc);
 #if SILVERLIGHT || NETCF
@@ -916,7 +903,6 @@ public class GZipStream : Stream
 #else
     internal static readonly System.Text.Encoding iso8859dash1 = System.Text.Encoding.GetEncoding("iso-8859-1");
 #endif
-
 
     private int EmitHeader()
     {
@@ -929,6 +915,7 @@ public class GZipStream : Stream
         int bufferLength = 10 + cbLength + fnLength;
         byte[] header = new byte[bufferLength];
         int i = 0;
+
         // ID
         header[i++] = 0x1F;
         header[i++] = 0x8B;
@@ -936,6 +923,7 @@ public class GZipStream : Stream
         // compression method
         header[i++] = 8;
         byte flag = 0;
+
         if (this.Comment != null)
         {
             flag ^= 0x10;
@@ -958,7 +946,8 @@ public class GZipStream : Stream
         i += 4;
 
         // xflg
-        header[i++] = 0;    // this field is totally useless
+        header[i++] = 0; // this field is totally useless
+
         // OS
         header[i++] = 0xFF; // 0xFF == unspecified
 
@@ -987,8 +976,6 @@ public class GZipStream : Stream
         return header.Length; // bytes written
     }
 
-
-
     /// <summary>
     ///   Compress a string into a byte array using GZip.
     /// </summary>
@@ -1009,12 +996,11 @@ public class GZipStream : Stream
     public static byte[] CompressString(String s)
     {
         using MemoryStream? ms = RecyclableMemory.GetStream();
-        Stream compressor =
-            new GZipStream(ms, CompressionMode.Compress, CompressionLevel.BestCompression);
+        Stream compressor = new GZipStream(ms, CompressionMode.Compress, CompressionLevel.BestCompression);
         ZlibBaseStream.CompressString(s, compressor);
+
         return ms.ToArray();
     }
-
 
     /// <summary>
     ///   Compress a byte array into a new byte array using GZip.
@@ -1035,13 +1021,12 @@ public class GZipStream : Stream
     public static byte[] CompressBuffer(byte[] b)
     {
         using MemoryStream? ms = RecyclableMemory.GetStream();
-        Stream compressor =
-            new GZipStream(ms, CompressionMode.Compress, CompressionLevel.BestCompression);
+        Stream compressor = new GZipStream(ms, CompressionMode.Compress, CompressionLevel.BestCompression);
 
         ZlibBaseStream.CompressBuffer(b, compressor);
+
         return ms.ToArray();
     }
-
 
     /// <summary>
     ///   Uncompress a GZip'ed byte array into a single string.
@@ -1059,9 +1044,9 @@ public class GZipStream : Stream
     {
         using MemoryStream? input = RecyclableMemory.GetStream(compressed);
         Stream decompressor = new GZipStream(input, CompressionMode.Decompress);
+
         return ZlibBaseStream.UncompressString(compressed, decompressor);
     }
-
 
     /// <summary>
     ///   Uncompress a GZip'ed byte array into a byte array.
@@ -1078,11 +1063,8 @@ public class GZipStream : Stream
     public static byte[] UncompressBuffer(byte[] compressed)
     {
         using MemoryStream? input = RecyclableMemory.GetStream(compressed);
-        Stream decompressor =
-            new GZipStream(input, CompressionMode.Decompress);
+        Stream decompressor = new GZipStream(input, CompressionMode.Decompress);
 
         return ZlibBaseStream.UncompressBuffer(compressed, decompressor);
     }
-
-
 }

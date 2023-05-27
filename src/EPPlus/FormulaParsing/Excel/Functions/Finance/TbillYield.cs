@@ -10,6 +10,7 @@
  *************************************************************************************************
   22/10/2022         EPPlus Software AB           EPPlus v6
  *************************************************************************************************/
+
 using OfficeOpenXml.FormulaParsing.Excel.Functions.Finance.FinancialDayCount;
 using OfficeOpenXml.FormulaParsing.Excel.Functions.Metadata;
 using OfficeOpenXml.FormulaParsing.ExpressionGraph;
@@ -18,10 +19,7 @@ using System.Collections.Generic;
 
 namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Finance;
 
-[FunctionMetadata(
-                     Category = ExcelFunctionCategory.Financial,
-                     EPPlusVersion = "6.0",
-                     Description = "Calculates the yield for a treasury bill")]
+[FunctionMetadata(Category = ExcelFunctionCategory.Financial, EPPlusVersion = "6.0", Description = "Calculates the yield for a treasury bill")]
 internal class TbillYield : ExcelFunction
 {
     public override CompileResult Execute(IEnumerable<FunctionArgument> arguments, ParsingContext context)
@@ -30,6 +28,7 @@ internal class TbillYield : ExcelFunction
         System.DateTime settlementDate = System.DateTime.FromOADate(this.ArgToInt(arguments, 0));
         System.DateTime maturityDate = System.DateTime.FromOADate(this.ArgToInt(arguments, 1));
         double pr = this.ArgToDecimal(arguments, 2);
+
         if (settlementDate >= maturityDate)
         {
             return this.CreateResult(eErrorType.Num);
@@ -47,7 +46,8 @@ internal class TbillYield : ExcelFunction
 
         IFinanicalDays? finDays = FinancialDaysFactory.Create(DayCountBasis.Actual_360);
         double nDaysInPeriod = finDays.GetDaysBetweenDates(settlementDate, maturityDate);
-        double result = (100d - pr)/pr * (360d/nDaysInPeriod);
+        double result = (100d - pr) / pr * (360d / nDaysInPeriod);
+
         return this.CreateResult(result, DataType.Decimal);
     }
 }

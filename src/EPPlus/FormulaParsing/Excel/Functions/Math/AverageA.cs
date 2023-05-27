@@ -10,6 +10,7 @@
  *************************************************************************************************
   01/27/2020         EPPlus Software AB       Initial release EPPlus 5
  *************************************************************************************************/
+
 using System;
 using System.Collections.Generic;
 using System.Globalization;
@@ -21,10 +22,10 @@ using OfficeOpenXml.Utils;
 
 namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Math;
 
-[FunctionMetadata(
-                     Category = ExcelFunctionCategory.Statistical,
-                     EPPlusVersion = "4",
-                     Description = "Returns the Average of a list of supplied numbers, counting text and the logical value FALSE as the value 0 and counting the logical value TRUE as the value 1")]
+[FunctionMetadata(Category = ExcelFunctionCategory.Statistical,
+                  EPPlusVersion = "4",
+                  Description =
+                      "Returns the Average of a list of supplied numbers, counting text and the logical value FALSE as the value 0 and counting the logical value TRUE as the value 1")]
 internal class AverageA : HiddenValuesHandlingFunction
 {
     public AverageA()
@@ -35,11 +36,15 @@ internal class AverageA : HiddenValuesHandlingFunction
     public override CompileResult Execute(IEnumerable<FunctionArgument> arguments, ParsingContext context)
     {
         ValidateArguments(arguments, 1, eErrorType.Div0);
-        double nValues = 0d, result = 0d;
+
+        double nValues = 0d,
+               result = 0d;
+
         foreach (FunctionArgument? arg in arguments)
         {
             this.Calculate(arg, context, ref result, ref nValues);
         }
+
         return this.CreateResult(Divide(result, nValues), DataType.Decimal);
     }
 
@@ -49,6 +54,7 @@ internal class AverageA : HiddenValuesHandlingFunction
         {
             return;
         }
+
         if (arg.Value is IEnumerable<FunctionArgument>)
         {
             foreach (FunctionArgument? item in (IEnumerable<FunctionArgument>)arg.Value)
@@ -66,6 +72,7 @@ internal class AverageA : HiddenValuesHandlingFunction
                 }
 
                 CheckForAndHandleExcelError(c);
+
                 if (IsBool(c.Value))
                 {
                     nValues++;
@@ -85,6 +92,7 @@ internal class AverageA : HiddenValuesHandlingFunction
         else
         {
             double? numericValue = GetNumericValue(arg.Value, isInArray);
+
             if (numericValue.HasValue)
             {
                 nValues++;
@@ -98,10 +106,11 @@ internal class AverageA : HiddenValuesHandlingFunction
                 }
                 else
                 {
-                    ThrowExcelErrorValueException(eErrorType.Value);   
+                    ThrowExcelErrorValueException(eErrorType.Value);
                 }
             }
         }
+
         CheckForAndHandleExcelError(arg);
     }
 
@@ -111,6 +120,7 @@ internal class AverageA : HiddenValuesHandlingFunction
         {
             return ConvertUtil.GetValueDouble(obj);
         }
+
         if (!isInArray)
         {
             if (obj is bool)
@@ -131,6 +141,7 @@ internal class AverageA : HiddenValuesHandlingFunction
                 return date.ToOADate();
             }
         }
+
         return default;
     }
 }

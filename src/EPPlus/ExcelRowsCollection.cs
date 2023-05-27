@@ -10,6 +10,7 @@
  *************************************************************************************************
   01/27/2020         EPPlus Software AB       Initial release EPPlus 5
  *************************************************************************************************/
+
 using System.Collections;
 using System.Collections.Generic;
 
@@ -21,10 +22,13 @@ namespace OfficeOpenXml;
 public class ExcelRowsCollection : ExcelRangeRow
 {
     ExcelWorksheet _worksheet;
-    internal ExcelRowsCollection(ExcelWorksheet worksheet) : base(worksheet, 1, ExcelPackage.MaxRows)
+
+    internal ExcelRowsCollection(ExcelWorksheet worksheet)
+        : base(worksheet, 1, ExcelPackage.MaxRows)
     {
         this._worksheet = worksheet;
     }
+
     /// <summary>
     /// Indexer for the collection
     /// </summary>
@@ -32,11 +36,9 @@ public class ExcelRowsCollection : ExcelRangeRow
     /// <returns>The <see cref="ExcelRangeRow"/></returns>
     public ExcelRangeRow this[int row]
     {
-        get
-        {
-            return new ExcelRangeRow(this._worksheet, row, row);
-        }
+        get { return new ExcelRangeRow(this._worksheet, row, row); }
     }
+
     /// <summary>
     /// Indexer for the collection
     /// </summary>
@@ -45,9 +47,6 @@ public class ExcelRowsCollection : ExcelRangeRow
     /// <returns>The <see cref="ExcelRangeRow"/></returns>
     public ExcelRangeRow this[int fromRow, int toRow]
     {
-        get
-        {            
-            return new ExcelRangeRow(this._worksheet, fromRow, toRow);
-        }
-    }        
+        get { return new ExcelRangeRow(this._worksheet, fromRow, toRow); }
+    }
 }

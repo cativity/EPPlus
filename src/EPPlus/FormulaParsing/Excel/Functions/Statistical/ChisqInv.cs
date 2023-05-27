@@ -10,6 +10,7 @@
  *************************************************************************************************
   22/10/2022         EPPlus Software AB           EPPlus v6
  *************************************************************************************************/
+
 using OfficeOpenXml.FormulaParsing.Excel.Functions.Helpers;
 using OfficeOpenXml.FormulaParsing.Excel.Functions.Metadata;
 using OfficeOpenXml.FormulaParsing.ExpressionGraph;
@@ -20,11 +21,10 @@ using System.Text;
 
 namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Statistical;
 
-[FunctionMetadata(
-                     Category = ExcelFunctionCategory.Statistical,
-                     EPPlusVersion = "6.0",
-                     IntroducedInExcelVersion = "2010",
-                     Description = "Calculates the inverse of the left-tailed probability of the Chi-Square Distribution.")]
+[FunctionMetadata(Category = ExcelFunctionCategory.Statistical,
+                  EPPlusVersion = "6.0",
+                  IntroducedInExcelVersion = "2010",
+                  Description = "Calculates the inverse of the left-tailed probability of the Chi-Square Distribution.")]
 internal class ChisqInv : ExcelFunction
 {
     public override CompileResult Execute(IEnumerable<FunctionArgument> arguments, ParsingContext context)
@@ -32,11 +32,14 @@ internal class ChisqInv : ExcelFunction
         ValidateArguments(arguments, 2);
         double n = this.ArgToDecimal(arguments, 0);
         int degreesOfFreedom = this.ArgToInt(arguments, 1);
+
         if (n < 0d || degreesOfFreedom < 1 || degreesOfFreedom > System.Math.Pow(10, 10))
         {
             return this.CreateResult(eErrorType.Num);
         }
-        double result = 2d * GammaPinvHelper.gammapinv(n, (double)degreesOfFreedom/2d);
+
+        double result = 2d * GammaPinvHelper.gammapinv(n, (double)degreesOfFreedom / 2d);
+
         return this.CreateResult(result, DataType.Decimal);
     }
 }

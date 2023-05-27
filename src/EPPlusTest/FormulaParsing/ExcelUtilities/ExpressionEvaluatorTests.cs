@@ -26,9 +26,11 @@
  *******************************************************************************
   01/27/2020         EPPlus Software AB       Initial release EPPlus 5
  *******************************************************************************/
+
 using System;
 using System.Text;
 using System.Collections.Generic;
+
 //using System.Diagnostics.Design;
 using System.Globalization;
 using System.Linq;
@@ -50,6 +52,7 @@ public class ExpressionEvaluatorTests
     }
 
     #region Numeric Expression Tests
+
     [TestMethod]
     public void EvaluateShouldReturnTrueIfOperandsAreEqual()
     {
@@ -90,15 +93,18 @@ public class ExpressionEvaluatorTests
     {
         bool result = this._evaluator.Evaluate(1d, "+1");
     }
+
     [TestMethod]
-    public void EvaluateShouldEvaluateToGreaterThanMinusOne ()
+    public void EvaluateShouldEvaluateToGreaterThanMinusOne()
     {
         bool result = this._evaluator.Evaluate(1d, "<>-1");
         Assert.IsTrue(result);
     }
+
     #endregion
 
     #region Date tests
+
     [TestMethod]
     public void EvaluateShouldHandleDateArg()
     {
@@ -106,12 +112,11 @@ public class ExpressionEvaluatorTests
             var ci = Thread.CurrentThread.CurrentCulture;
             Thread.CurrentThread.CurrentCulture = CultureInfo.InvariantCulture;
 #endif
-        bool result = this._evaluator.Evaluate(new DateTime(2016,6,28), "2016-06-28");
+        bool result = this._evaluator.Evaluate(new DateTime(2016, 6, 28), "2016-06-28");
         Assert.IsTrue(result);
 #if (!Core)
             Thread.CurrentThread.CurrentCulture = ci;
 #endif
-
     }
 
     [TestMethod]
@@ -127,9 +132,11 @@ public class ExpressionEvaluatorTests
             Thread.CurrentThread.CurrentCulture = ci;
 #endif
     }
+
     #endregion
 
     #region Blank Expression Tests
+
     [TestMethod]
     public void EvaluateBlankExpressionEqualsNull()
     {
@@ -150,9 +157,11 @@ public class ExpressionEvaluatorTests
         bool result = this._evaluator.Evaluate(0d, "");
         Assert.IsFalse(result);
     }
+
     #endregion
 
     #region Quotes Expression Tests
+
     [TestMethod]
     public void EvaluateQuotesExpressionEqualsNull()
     {
@@ -173,9 +182,11 @@ public class ExpressionEvaluatorTests
         bool result = this._evaluator.Evaluate("a", "\"\"");
         Assert.IsFalse(result);
     }
+
     #endregion
 
     #region NotEqualToZero Expression Tests
+
     [TestMethod]
     public void EvaluateNotEqualToZeroExpressionEqualsNull()
     {
@@ -210,9 +221,11 @@ public class ExpressionEvaluatorTests
         bool result = this._evaluator.Evaluate(0d, "<>0");
         Assert.IsFalse(result);
     }
+
     #endregion
 
     #region NotEqualToBlank Expression Tests
+
     [TestMethod]
     public void EvaluateNotEqualToBlankExpressionEqualsNull()
     {
@@ -247,9 +260,11 @@ public class ExpressionEvaluatorTests
         bool result = this._evaluator.Evaluate(0d, "<>");
         Assert.IsTrue(result);
     }
+
     #endregion
 
     #region Character Expression Tests
+
     [TestMethod]
     public void EvaluateCharacterExpressionEqualNull()
     {
@@ -284,9 +299,11 @@ public class ExpressionEvaluatorTests
         bool result = this._evaluator.Evaluate("b", "a");
         Assert.IsFalse(result);
     }
+
     #endregion
 
     #region CharacterWithOperator Expression Tests
+
     [TestMethod]
     public void EvaluateCharacterWithOperatorExpressionEqualNull()
     {
@@ -351,5 +368,6 @@ public class ExpressionEvaluatorTests
         result = this._evaluator.Evaluate("b", "< a");
         Assert.IsFalse(result);
     }
+
     #endregion
 }

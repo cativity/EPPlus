@@ -10,6 +10,7 @@
  *************************************************************************************************
   01/27/2020         EPPlus Software AB       Initial release EPPlus 5
  *************************************************************************************************/
+
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -26,46 +27,57 @@ public enum DataType
     /// An integer 
     /// </summary>
     Integer,
+
     /// <summary>
     /// A decimal or floating point
     /// </summary>
     Decimal,
+
     /// <summary>
     /// A string 
     /// </summary>
     String,
+
     /// <summary>
     /// A boolean
     /// </summary>
     Boolean,
+
     /// <summary>
     /// A date or date/time
     /// </summary>
     Date,
+
     /// <summary>
     /// A time
     /// </summary>
     Time,
+
     /// <summary>
     /// A range or a collection
     /// </summary>
     Enumerable,
+
     /// <summary>
     /// A lookup array
     /// </summary>
     LookupArray,
+
     /// <summary>
     /// A range reference
     /// </summary>
     ExcelAddress,
+
     /// <summary>
     /// An error code
     /// </summary>
     ExcelError,
+
     /// <summary>
     /// Null or empty string
     /// </summary>
     Empty,
+
     /// <summary>
     /// An unknown data type
     /// </summary>

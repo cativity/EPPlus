@@ -10,6 +10,7 @@
  *************************************************************************************************
   01/27/2020         EPPlus Software AB       Initial release EPPlus 5
  *************************************************************************************************/
+
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -19,9 +20,10 @@ namespace OfficeOpenXml;
 /// <summary>
 /// A named range. 
 /// </summary>
-public sealed class ExcelNamedRange : ExcelRangeBase 
+public sealed class ExcelNamedRange : ExcelRangeBase
 {
     ExcelWorksheet _sheet;
+
     /// <summary>
     /// A named range
     /// </summary>
@@ -31,16 +33,17 @@ public sealed class ExcelNamedRange : ExcelRangeBase
     /// <param name="address">The address</param>
     /// <param name="index">The index in the collection</param>
     /// <param name="allowRelativeAddress">If true, the address will be retained as it is, if false the address will always be converted to an absolute/fixed address</param>
-    internal ExcelNamedRange(string name, ExcelWorksheet nameSheet , ExcelWorksheet sheet, string address, int index, bool allowRelativeAddress = false) :
-        base(sheet, address)
+    internal ExcelNamedRange(string name, ExcelWorksheet nameSheet, ExcelWorksheet sheet, string address, int index, bool allowRelativeAddress = false)
+        : base(sheet, address)
     {
         this.Name = name;
         this._sheet = nameSheet;
         this.Index = index;
         this.AllowRelativeAddress = allowRelativeAddress;
     }
-    internal ExcelNamedRange(string name,ExcelWorkbook wb, ExcelWorksheet nameSheet, int index, bool allowRelativeAddress = false) :
-        base(wb, nameSheet, name, true)
+
+    internal ExcelNamedRange(string name, ExcelWorkbook wb, ExcelWorksheet nameSheet, int index, bool allowRelativeAddress = false)
+        : base(wb, nameSheet, name, true)
     {
         this.Name = name;
         this._sheet = nameSheet;
@@ -51,11 +54,8 @@ public sealed class ExcelNamedRange : ExcelRangeBase
     /// <summary>
     /// Name of the range
     /// </summary>
-    public string Name
-    {
-        get;
-        internal set;
-    }
+    public string Name { get; internal set; }
+
     /// <summary>
     /// Is the named range local for the sheet 
     /// </summary>
@@ -73,31 +73,25 @@ public sealed class ExcelNamedRange : ExcelRangeBase
             }
         }
     }
+
     internal ExcelWorksheet LocalSheet => this._sheet;
 
-    internal int Index
-    {
-        get;
-        set;
-    }
+    internal int Index { get; set; }
+
     /// <summary>
     /// Is the name hidden
     /// </summary>
-    public bool IsNameHidden
-    {
-        get;
-        set;
-    }
+    public bool IsNameHidden { get; set; }
+
     /// <summary>
     /// A comment for the Name
     /// </summary>
-    public string NameComment
-    {
-        get;
-        set;
-    }
+    public string NameComment { get; set; }
+
     internal object NameValue { get; set; }
+
     internal string NameFormula { get; set; }
+
     /// <summary>
     /// Returns a string representation of the object
     /// </summary>
@@ -106,6 +100,7 @@ public sealed class ExcelNamedRange : ExcelRangeBase
     {
         return this.Name;
     }
+
     /// <summary>
     /// Returns true if the name is equal to the obj
     /// </summary>
@@ -113,11 +108,11 @@ public sealed class ExcelNamedRange : ExcelRangeBase
     /// <returns>true if equal</returns>
     public override bool Equals(object obj)
     {
-        if(obj is ExcelNamedRange name)
+        if (obj is ExcelNamedRange name)
         {
-            return name.Name.Equals(this.Name, StringComparison.OrdinalIgnoreCase) && 
-                   name.LocalSheetId == this.LocalSheetId && 
-                   name._workbook == this._workbook;
+            return name.Name.Equals(this.Name, StringComparison.OrdinalIgnoreCase)
+                   && name.LocalSheetId == this.LocalSheetId
+                   && name._workbook == this._workbook;
         }
         else
         {
@@ -128,10 +123,7 @@ public sealed class ExcelNamedRange : ExcelRangeBase
     /// <summary>
     ///  If true, the address will be retained as it is, if false the address will always be converted to an absolute/fixed address
     /// </summary>
-    internal bool AllowRelativeAddress
-    {
-        get; private set;
-    }
+    internal bool AllowRelativeAddress { get; private set; }
 
     /// <summary>
     /// Serves as the default hash function.

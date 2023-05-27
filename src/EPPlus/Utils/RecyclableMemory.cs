@@ -21,28 +21,33 @@ public static class RecyclableMemory
         get
         {
             RecyclableMemoryStreamManager? manager = default(RecyclableMemoryStreamManager);
+
             if (_lazyInitializeFailed && _dataInitialized)
             {
                 return _memoryManager;
             }
+
             // This has failed on dalvikvm (android), so adding a fallback handling of Exceptions /MA 2022-08-31
             try
             {
                 manager = LazyInitializer.EnsureInitialized(ref _memoryManager, ref _dataInitialized, ref _dataLock);
             }
-            catch(Exception)
+            catch (Exception)
             {
-                lock(_dataLock)
+                lock (_dataLock)
                 {
                     _lazyInitializeFailed = true;
+
                     if (_memoryManager == null)
                     {
                         _memoryManager = new RecyclableMemoryStreamManager();
                         _dataInitialized = true;
                     }
                 }
+
                 manager = _memoryManager;
             }
+
             return manager;
         }
     }
@@ -64,7 +69,7 @@ public static class RecyclableMemory
     internal static MemoryStream GetStream()
     {
 #if NET35
-			return new MemoryStream();
+            return new MemoryStream();
 #else
         return MemoryManager.GetStream();
 #endif
@@ -77,11 +82,12 @@ public static class RecyclableMemory
     internal static MemoryStream GetStream(byte[] array)
     {
 #if NET35
-			return new MemoryStream(array);
+            return new MemoryStream(array);
 #else
         return MemoryManager.GetStream(array);
 #endif
     }
+
     /// <summary>
     /// Get a new memory stream initiated with a byte-array
     /// </summary>
@@ -90,7 +96,7 @@ public static class RecyclableMemory
     internal static MemoryStream GetStream(int capacity)
     {
 #if NET35
-			return new MemoryStream(capacity);
+            return new MemoryStream(capacity);
 #else
         return MemoryManager.GetStream(null, capacity);
 #endif

@@ -26,6 +26,7 @@
  *******************************************************************************
   01/27/2020         EPPlus Software AB       Initial release EPPlus 5
  *******************************************************************************/
+
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using OfficeOpenXml;
 using OfficeOpenXml.Style;
@@ -51,8 +52,10 @@ public class DateHandlingTest
             var us = CultureInfo.CreateSpecificCulture("en-US");
             Thread.CurrentThread.CurrentCulture = us;
 #endif
-        double usEoMonth = 0d, usEdate = 0d;
-        Thread? thread = new Thread(delegate ()
+        double usEoMonth = 0d,
+               usEdate = 0d;
+
+        Thread? thread = new Thread(delegate()
         {
             using ExcelPackage? package = new ExcelPackage();
             ExcelWorksheet? ws = package.Workbook.Worksheets.Add("Sheet1");
@@ -63,6 +66,7 @@ public class DateHandlingTest
             usEoMonth = Convert.ToDouble(ws.Cells[2, 3].Value);
             usEdate = Convert.ToDouble(ws.Cells[3, 3].Value);
         });
+
         thread.Start();
         thread.Join();
         Assert.AreEqual(41654.0, usEoMonth);
@@ -79,8 +83,10 @@ public class DateHandlingTest
     {
         CultureInfo? currentCulture = CultureInfo.CurrentCulture;
 
-        double gbEoMonth = 0d, gbEdate = 0d;
-        Thread? thread = new Thread(delegate ()
+        double gbEoMonth = 0d,
+               gbEdate = 0d;
+
+        Thread? thread = new Thread(delegate()
         {
             Thread.CurrentThread.CurrentCulture = CultureInfo.CreateSpecificCulture("en-GB");
             using ExcelPackage? package = new ExcelPackage();
@@ -89,6 +95,7 @@ public class DateHandlingTest
             ws.Cells[3, 3].Formula = "EOMONTH(C2, 0)";
             ws.Cells[2, 3].Formula = "EDATE(B2, 0)";
             ws.Calculate();
+
             try
             {
                 gbEoMonth = Convert.ToDouble(ws.Cells[2, 3].Value);
@@ -99,6 +106,7 @@ public class DateHandlingTest
                 Assert.Fail($"Fail culture {Thread.CurrentThread.CurrentCulture.Name}\r\n{ex.Message}\r\n{ex.StackTrace}");
             }
         });
+
         thread.Start();
         thread.Join();
         Assert.AreEqual(41654.0, gbEoMonth);
@@ -111,6 +119,7 @@ public class DateHandlingTest
     }
 
     #region Date1904 Test Cases
+
     [TestMethod]
     public void TestDate1904WithoutSetting()
     {
@@ -123,7 +132,6 @@ public class DateHandlingTest
         ws.Cells[1, 1].Value = dt1;
         ws.Cells[2, 1].Value = dt2;
         pck.Save();
-
 
         ExcelPackage? pck2 = new ExcelPackage(pck.Stream);
         ExcelWorksheet? ws2 = pck2.Workbook.Worksheets["test"];
@@ -158,6 +166,7 @@ public class DateHandlingTest
         pck.Dispose();
         pck2.Dispose();
     }
+
     [TestMethod]
     public void TestDate1904SetAndRemoveSetting()
     {
@@ -171,7 +180,6 @@ public class DateHandlingTest
         ws.Cells[1, 1].Value = dt1;
         ws.Cells[2, 1].Value = dt2;
         pck.Save();
-
 
         ExcelPackage? pck2 = new ExcelPackage(pck.Stream);
         pck2.Workbook.Date1904 = false;
@@ -203,11 +211,9 @@ public class DateHandlingTest
         ws.Cells[2, 1].Value = dt2;
         pck.Save();
 
-
         ExcelPackage? pck2 = new ExcelPackage(pck.Stream);
-        pck2.Workbook.Date1904 = true;  // Only the cells must be updated when this change, if set the same nothing must change
+        pck2.Workbook.Date1904 = true; // Only the cells must be updated when this change, if set the same nothing must change
         pck2.Save();
-
 
         ExcelPackage? pck3 = new ExcelPackage(pck2.Stream);
         ExcelWorksheet? ws3 = pck3.Workbook.Worksheets["test"];
@@ -218,5 +224,6 @@ public class DateHandlingTest
         pck2.Dispose();
         pck3.Dispose();
     }
+
     #endregion
 }

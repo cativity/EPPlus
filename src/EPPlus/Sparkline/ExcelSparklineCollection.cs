@@ -10,6 +10,7 @@
  *************************************************************************************************
   01/27/2020         EPPlus Software AB       Initial release EPPlus 5
  *************************************************************************************************/
+
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -26,32 +27,34 @@ public class ExcelSparklineCollection : IEnumerable<ExcelSparkline>
 {
     ExcelSparklineGroup _slg;
     List<ExcelSparkline> _lst;
+
     internal ExcelSparklineCollection(ExcelSparklineGroup slg)
     {
         this._slg = slg;
         this._lst = new List<ExcelSparkline>();
         this.LoadSparklines();
     }
+
     const string _topPath = "x14:sparklines/x14:sparkline";
+
     /// <summary>
     /// Number of sparklines in the collection
     /// </summary>
     public int Count
     {
-        get
-        {
-            return this._lst.Count;
-        }            
+        get { return this._lst.Count; }
     }
 
     private void LoadSparklines()
     {
-        XmlNodeList? grps= this._slg.TopNode.SelectNodes(_topPath, this._slg.NameSpaceManager);
-        foreach(XmlElement grp in grps)
+        XmlNodeList? grps = this._slg.TopNode.SelectNodes(_topPath, this._slg.NameSpaceManager);
+
+        foreach (XmlElement grp in grps)
         {
             this._lst.Add(new ExcelSparkline(this._slg.NameSpaceManager, grp));
         }
     }
+
     /// <summary>
     /// Returns the sparklinegroup at the specified position.  
     /// </summary>
@@ -59,11 +62,9 @@ public class ExcelSparklineCollection : IEnumerable<ExcelSparkline>
     /// <returns></returns>
     public ExcelSparkline this[int index]
     {
-        get
-        {
-            return this._lst[index];
-        }
+        get { return this._lst[index]; }
     }
+
     /// <summary>
     /// Gets the enumerator for the collection
     /// </summary>
@@ -80,7 +81,7 @@ public class ExcelSparklineCollection : IEnumerable<ExcelSparkline>
 
     internal void Add(ExcelCellAddress cell, string worksheetName, ExcelAddressBase sqref)
     {
-        XmlElement? sparkline = this._slg.TopNode.OwnerDocument.CreateElement("x14","sparkline", ExcelPackage.schemaMainX14);            
+        XmlElement? sparkline = this._slg.TopNode.OwnerDocument.CreateElement("x14", "sparkline", ExcelPackage.schemaMainX14);
         XmlNode? sls = this._slg.TopNode.SelectSingleNode("x14:sparklines", this._slg.NameSpaceManager);
 
         sls.AppendChild(sparkline);
@@ -90,6 +91,7 @@ public class ExcelSparklineCollection : IEnumerable<ExcelSparkline>
         sl.RangeAddress = sqref;
         this._lst.Add(sl);
     }
+
     internal void Remove(ExcelSparkline sparkline)
     {
         sparkline.TopNode.ParentNode.RemoveChild(sparkline.TopNode);

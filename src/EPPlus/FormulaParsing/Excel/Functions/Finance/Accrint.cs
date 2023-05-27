@@ -10,6 +10,7 @@
  *************************************************************************************************
   22/10/2022         EPPlus Software AB           EPPlus v6
  *************************************************************************************************/
+
 using OfficeOpenXml.FormulaParsing.Excel.Functions.Finance.FinancialDayCount;
 using OfficeOpenXml.FormulaParsing.Excel.Functions.Finance.Implementations;
 using OfficeOpenXml.FormulaParsing.Excel.Functions.Metadata;
@@ -21,15 +22,15 @@ using System.Text;
 
 namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Finance;
 
-[FunctionMetadata(
-                     Category = ExcelFunctionCategory.Financial,
-                     EPPlusVersion = "6.0",
-                     Description = "Calculates the accrued interest for a security that pays periodic interest.")]
+[FunctionMetadata(Category = ExcelFunctionCategory.Financial,
+                  EPPlusVersion = "6.0",
+                  Description = "Calculates the accrued interest for a security that pays periodic interest.")]
 internal class Accrint : ExcelFunction
 {
     public override CompileResult Execute(IEnumerable<FunctionArgument> arguments, ParsingContext context)
     {
         ValidateArguments(arguments, 6);
+
         // collect input
         System.DateTime issueDate = System.DateTime.FromOADate(this.ArgToInt(arguments, 0));
         System.DateTime firstInterestDate = System.DateTime.FromOADate(this.ArgToInt(arguments, 1));
@@ -38,12 +39,15 @@ internal class Accrint : ExcelFunction
         double par = this.ArgToDecimal(arguments, 4);
         int frequency = this.ArgToInt(arguments, 5);
         int basis = 0;
-        if(arguments.Count() >= 7)
+
+        if (arguments.Count() >= 7)
         {
             basis = this.ArgToInt(arguments, 6);
         }
+
         bool issueToSettlement = true;
-        if(arguments.Count() >= 8)
+
+        if (arguments.Count() >= 8)
         {
             issueToSettlement = this.ArgToBool(arguments, 7);
         }
@@ -75,31 +79,42 @@ internal class Accrint : ExcelFunction
         FinancialDay? issue = FinancialDayFactory.Create(issueDate, dayCountBasis);
         FinancialDay? settlement = FinancialDayFactory.Create(settlementDate, dayCountBasis);
         FinancialDay? firstInterest = FinancialDayFactory.Create(firstInterestDate.AddDays((firstInterestDate.Day * -1) + 1), dayCountBasis);
-            
-        if(issueToSettlement)
+
+        if (issueToSettlement)
         {
             YearFracProvider? yearFrac = new YearFracProvider(context);
             double r = yearFrac.GetYearFrac(issueDate, settlementDate, dayCountBasis) * rate * par;
+
             return this.CreateResult(r, DataType.Decimal);
         }
         else
         {
             double r = CalculateInterest(issue, firstInterest, settlement, rate, par, frequency, dayCountBasis, context);
+
             return this.CreateResult(r, DataType.Decimal);
         }
     }
 
-    private static double CalculateInterest(FinancialDay issue, FinancialDay firstInterest, FinancialDay settlement, double rate, double par, int frequency, DayCountBasis basis, ParsingContext context)
+    private static double CalculateInterest(FinancialDay issue,
+                                            FinancialDay firstInterest,
+                                            FinancialDay settlement,
+                                            double rate,
+                                            double par,
+                                            int frequency,
+                                            DayCountBasis basis,
+                                            ParsingContext context)
     {
         YearFracProvider? yearFrac = new YearFracProvider(context);
         IFinanicalDays? fds = FinancialDaysFactory.Create(basis);
         int nAdditionalPeriods = frequency == 1 ? 0 : 1;
-        if(firstInterest <= settlement)
+
+        if (firstInterest <= settlement)
         {
             IEnumerable<FinancialPeriod>? p = fds.GetCalendarYearPeriodsBackwards(settlement, firstInterest, frequency, nAdditionalPeriods);
             IEnumerable<FinancialPeriod>? p2 = fds.GetCalendarYearPeriodsBackwards(firstInterest, settlement, frequency, nAdditionalPeriods);
             FinancialPeriod? firstPeriod = settlement >= firstInterest ? p.Last() : p.First();
             double yearFrac2 = yearFrac.GetYearFrac(firstPeriod.Start.ToDateTime(), settlement.ToDateTime(), basis);
+
             return yearFrac2 * rate * par;
         }
         else
@@ -107,6 +122,7 @@ internal class Accrint : ExcelFunction
             IEnumerable<FinancialPeriod>? p2 = fds.GetCalendarYearPeriodsBackwards(firstInterest, settlement, frequency, nAdditionalPeriods);
             FinancialPeriod? firstInterestPeriod = p2.FirstOrDefault(x => x.Start < firstInterest && x.End >= firstInterest);
             double yearFrac2 = yearFrac.GetYearFrac(settlement.ToDateTime(), firstInterestPeriod.Start.ToDateTime(), basis) * -1;
+
             return yearFrac2 * rate * par;
         }
     }

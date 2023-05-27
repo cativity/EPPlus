@@ -10,6 +10,7 @@
  *************************************************************************************************
   04/29/2020         EPPlus Software AB           EPPlus 5.2
  *************************************************************************************************/
+
 using OfficeOpenXml.Utils.Extensions;
 using System.Xml;
 
@@ -20,23 +21,28 @@ namespace OfficeOpenXml.Drawing.Chart.ChartEx;
 /// </summary>
 public class ExcelChartExNumericData : ExcelChartExData
 {
-    internal ExcelChartExNumericData(string worksheetName, XmlNamespaceManager nsm, XmlNode topNode) : base(worksheetName, nsm, topNode)
+    internal ExcelChartExNumericData(string worksheetName, XmlNamespaceManager nsm, XmlNode topNode)
+        : base(worksheetName, nsm, topNode)
     {
     }
+
     /// <summary>
     /// The type of data.
     /// </summary>
-    public eNumericDataType Type 
-    { 
+    public eNumericDataType Type
+    {
         get
         {
             string? s = this.GetXmlNodeString("@type");
+
             switch (s)
             {
                 case "val":
                     return eNumericDataType.Value;
+
                 case "colorVal":
                     return eNumericDataType.ColorValue;
+
                 default:
                     return s.ToEnum(eNumericDataType.Value);
             }
@@ -44,16 +50,22 @@ public class ExcelChartExNumericData : ExcelChartExData
         set
         {
             string s;
-            switch(value)
+
+            switch (value)
             {
                 case eNumericDataType.Value:
                     s = "val";
+
                     break;
+
                 case eNumericDataType.ColorValue:
                     s = "colorVal";
+
                     break;
+
                 default:
                     s = value.ToEnumString();
+
                     break;
             }
 

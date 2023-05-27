@@ -10,6 +10,7 @@
  *************************************************************************************************
   01/27/2020         EPPlus Software AB       Initial release EPPlus 5
  *************************************************************************************************/
+
 namespace OfficeOpenXml.Drawing;
 
 /// <summary>
@@ -21,6 +22,7 @@ public enum eTextHorizontalOverflow
     /// When a character doesn't fit into a line, clip it at the end.
     /// </summary>
     Clip,
+
     /// <summary>
     /// When a character doesn't fit into a line, allow an overflow.
     /// </summary>

@@ -26,6 +26,7 @@
  *******************************************************************************
   01/27/2020         EPPlus Software AB       Initial release EPPlus 5
  *******************************************************************************/
+
 using System;
 using System.ComponentModel;
 using System.Globalization;
@@ -72,7 +73,7 @@ public class ConvertUtilTest
         Assert.IsTrue(ConvertUtil.TryParseNumericString(numericString as string, out result));
         Assert.AreEqual(expected, result);
     }
-		
+
     [TestMethod]
     public void TryParseDateString()
     {
@@ -102,7 +103,6 @@ public class ConvertUtilTest
         Assert.AreEqual(new DateTime(2013, 1, 15, 15, 26, 0), result);
     }
 
-        
     // This is just illustration of the bug in old implementation
     //[TestMethod]
     public static void TextToIntInOldImplementation()
@@ -119,18 +119,22 @@ public class ConvertUtilTest
         {
             return default(T);
         }
+
         Type fromType = v.GetType();
         Type toType = typeof(T);
-            
+
         Type toType2 = TypeCompat.IsGenericType(toType) && toType.GetGenericTypeDefinition().Equals(typeof(Nullable<>))
                            ? Nullable.GetUnderlyingType(toType)
                            : null;
+
         if (fromType == toType || fromType == toType2)
         {
             return (T)v;
         }
+
         TypeConverter? cnv = TypeDescriptor.GetConverter(fromType);
-        if (toType == typeof(DateTime) || toType2 == typeof(DateTime))    //Handle dates
+
+        if (toType == typeof(DateTime) || toType2 == typeof(DateTime)) //Handle dates
         {
             if (fromType == typeof(TimeSpan))
             {
@@ -146,7 +150,6 @@ public class ConvertUtilTest
                 {
                     return default(T);
                 }
-
             }
             else
             {
@@ -160,7 +163,7 @@ public class ConvertUtilTest
                 }
             }
         }
-        else if (toType == typeof(TimeSpan) || toType2 == typeof(TimeSpan))    //Handle timespan
+        else if (toType == typeof(TimeSpan) || toType2 == typeof(TimeSpan)) //Handle timespan
         {
             if (fromType == typeof(DateTime))
             {
@@ -181,7 +184,6 @@ public class ConvertUtilTest
             {
                 if (cnv.CanConvertTo(typeof(double)))
                 {
-
                     return (T)(object)new TimeSpan(DateTime.FromOADate((double)cnv.ConvertTo(v, typeof(double))).Ticks);
                 }
                 else
@@ -212,6 +214,7 @@ public class ConvertUtilTest
                 if (toType2 != null)
                 {
                     toType = toType2;
+
                     if (cnv.CanConvertTo(toType))
                     {
                         return (T)cnv.ConvertTo(v, toType); //Fixes issue 15377
@@ -233,5 +236,4 @@ public class ConvertUtilTest
             }
         }
     }
-
 }

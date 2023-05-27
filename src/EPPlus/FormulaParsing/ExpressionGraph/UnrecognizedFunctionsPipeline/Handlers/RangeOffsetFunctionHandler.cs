@@ -10,6 +10,7 @@
  *************************************************************************************************
   06/15/2020         EPPlus Software AB       EPPlus 5.2
  *************************************************************************************************/
+
 using OfficeOpenXml.FormulaParsing.Excel.Functions;
 /*************************************************************************************************
   Required Notice: Copyright (C) EPPlus Software AB. 
@@ -42,23 +43,23 @@ internal class RangeOffsetFunctionHandler : UnrecognizedFunctionsHandler
     public override bool Handle(string funcName, IEnumerable<Expression> children, ParsingContext context, out ExcelFunction function)
     {
         function = null;
-        if(funcName.Contains(":OFFSET"))
+
+        if (funcName.Contains(":OFFSET"))
         {
             FunctionCompilerFactory? functionCompilerFactory = new FunctionCompilerFactory(context.Configuration.FunctionRepository, context);
             string? startRange = funcName.Split(':')[0];
             ParsingScope? c = context.Scopes.Current;
             IRangeInfo? resultRange = context.ExcelDataProvider.GetRange(c.Address.Worksheet, c.Address.FromRow, c.Address.FromCol, startRange);
-            RangeOffset? rangeOffset = new RangeOffset
-            {
-                StartRange = resultRange
-            };
+            RangeOffset? rangeOffset = new RangeOffset { StartRange = resultRange };
             FunctionCompiler? compiler = functionCompilerFactory.Create(new Offset());
             children.First().Children.First().IgnoreCircularReference = true;
             CompileResult? compileResult = compiler.Compile(children);
             rangeOffset.EndRange = compileResult.Result as IRangeInfo;
             function = rangeOffset;
+
             return true;
         }
+
         return false;
     }
 }

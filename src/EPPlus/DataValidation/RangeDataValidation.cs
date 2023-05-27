@@ -10,6 +10,7 @@
  *************************************************************************************************
   01/27/2020         EPPlus Software AB       Initial release EPPlus 5
  *************************************************************************************************/
+
 using OfficeOpenXml.DataValidation.Contracts;
 using OfficeOpenXml.FormulaParsing.Excel.Functions.Helpers;
 using OfficeOpenXml.FormulaParsing.Excel.Functions.RefAndLookup;
@@ -41,9 +42,11 @@ internal class RangeDataValidation : IRangeDataValidation
     public void ClearDataValidation(bool deleteIfEmpty = false)
     {
         ExcelAddress? address = new ExcelAddress(this._address);
-        List<ExcelDataValidation>? validations = this._worksheet.DataValidations._validationsRD.GetValuesFromRange(address._fromRow, address._fromCol, address._toRow, address._toCol);
 
-        foreach( ExcelDataValidation? validation in validations)
+        List<ExcelDataValidation>? validations =
+            this._worksheet.DataValidations._validationsRD.GetValuesFromRange(address._fromRow, address._fromCol, address._toRow, address._toCol);
+
+        foreach (ExcelDataValidation? validation in validations)
         {
             ExcelAddressBase? excelAddress = new ExcelAddressBase(validation.Address.Address.Replace(" ", ","));
             List<ExcelAddressBase>? addresses = excelAddress.GetAllAddresses();
@@ -53,10 +56,10 @@ internal class RangeDataValidation : IRangeDataValidation
             foreach (ExcelAddressBase? validationAddress in addresses)
             {
                 ExcelAddressBase? nullOrAddress = validationAddress.IntersectReversed(address);
-                    
+
                 if (nullOrAddress != null)
                 {
-                    newAddress+= nullOrAddress.Address + " ";
+                    newAddress += nullOrAddress.Address + " ";
                 }
             }
 
@@ -68,9 +71,9 @@ internal class RangeDataValidation : IRangeDataValidation
                 }
                 else
                 {
-                    throw new InvalidOperationException($"Cannot remove last address in validation of type {validation.ValidationType.Type} " +
-                                                        $"with uid {validation.Uid} without deleting it." +
-                                                        $" Add other addresses or use ClearDataValidation(true)");
+                    throw new InvalidOperationException($"Cannot remove last address in validation of type {validation.ValidationType.Type} "
+                                                        + $"with uid {validation.Uid} without deleting it."
+                                                        + $" Add other addresses or use ClearDataValidation(true)");
                 }
             }
             else

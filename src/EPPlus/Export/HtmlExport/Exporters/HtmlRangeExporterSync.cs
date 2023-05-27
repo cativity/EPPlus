@@ -10,6 +10,7 @@
  *************************************************************************************************
   6/4/2022         EPPlus Software AB           ExcelTable Html Export
  *************************************************************************************************/
+
 using OfficeOpenXml.Core;
 using OfficeOpenXml.Export.HtmlExport.Accessibility;
 using OfficeOpenXml.Table;
@@ -25,13 +26,14 @@ namespace OfficeOpenXml.Export.HtmlExport.Exporters;
 
 internal class HtmlRangeExporterSync : HtmlRangeExporterSyncBase
 {
-    internal HtmlRangeExporterSync
-        (HtmlRangeExportSettings settings, ExcelRangeBase range) : base(settings, range)
+    internal HtmlRangeExporterSync(HtmlRangeExportSettings settings, ExcelRangeBase range)
+        : base(settings, range)
     {
         this._settings = settings;
     }
 
-    internal HtmlRangeExporterSync(HtmlRangeExportSettings settings, EPPlusReadOnlyList<ExcelRangeBase> ranges) : base(settings, ranges)
+    internal HtmlRangeExporterSync(HtmlRangeExportSettings settings, EPPlusReadOnlyList<ExcelRangeBase> ranges)
+        : base(settings, ranges)
     {
         this._settings = settings;
     }
@@ -48,8 +50,10 @@ internal class HtmlRangeExporterSync : HtmlRangeExporterSyncBase
         this.RenderHtml(ms, 0);
         ms.Position = 0;
         using StreamReader? sr = new StreamReader(ms);
+
         return sr.ReadToEnd();
     }
+
     /// <summary>
     /// Exports an <see cref="ExcelTable"/> to a html string
     /// </summary>
@@ -61,6 +65,7 @@ internal class HtmlRangeExporterSync : HtmlRangeExporterSyncBase
         this.RenderHtml(ms, rangeIndex);
         ms.Position = 0;
         using StreamReader? sr = new StreamReader(ms);
+
         return sr.ReadToEnd();
     }
 
@@ -77,6 +82,7 @@ internal class HtmlRangeExporterSync : HtmlRangeExporterSyncBase
         this.RenderHtml(ms, rangeIndex, settings);
         ms.Position = 0;
         using StreamReader? sr = new StreamReader(ms);
+
         return sr.ReadToEnd();
     }
 
@@ -90,6 +96,7 @@ internal class HtmlRangeExporterSync : HtmlRangeExporterSyncBase
     {
         ExcelHtmlOverrideExportSettings? settings = new ExcelHtmlOverrideExportSettings();
         config.Invoke(settings);
+
         return this.GetHtmlString(rangeIndex, settings);
     }
 
@@ -102,6 +109,7 @@ internal class HtmlRangeExporterSync : HtmlRangeExporterSyncBase
     {
         this.RenderHtml(stream, 0);
     }
+
     /// <summary>
     /// Exports an <see cref="ExcelTable"/> to a html string
     /// </summary>
@@ -123,6 +131,7 @@ internal class HtmlRangeExporterSync : HtmlRangeExporterSyncBase
         this.GetDataTypes(range, this._settings);
 
         ExcelTable table = null;
+
         if (this.Settings.TableStyle != eHtmlRangeTableInclude.Exclude)
         {
             table = range.GetTable();
@@ -140,6 +149,7 @@ internal class HtmlRangeExporterSync : HtmlRangeExporterSyncBase
 
         writer.ApplyFormatIncreaseIndent(this.Settings.Minify);
         this.LoadVisibleColumns(range);
+
         if (this.Settings.SetColumnWidth || this.Settings.HorizontalAlignmentWhenGeneral == eHtmlGeneralAlignmentHandling.ColumnDataType)
         {
             this.SetColumnGroup(writer, range, this.Settings, this.IsMultiSheet);
@@ -149,10 +159,12 @@ internal class HtmlRangeExporterSync : HtmlRangeExporterSyncBase
         {
             this.RenderHeaderRow(range, writer, table, accessibilitySettings, headerRows, headers);
         }
+
         // table rows
         this.RenderTableRows(range, writer, table, accessibilitySettings);
 
         writer.ApplyFormatDecreaseIndent(this.Settings.Minify);
+
         // end tag table
         writer.RenderEndTag();
     }
@@ -176,10 +188,7 @@ internal class HtmlRangeExporterSync : HtmlRangeExporterSyncBase
     /// </summary>
     public EPPlusReadOnlyList<ExcelRangeBase> Ranges
     {
-        get
-        {
-            return this._ranges;
-        }
+        get { return this._ranges; }
     }
 
     /// <summary>
@@ -187,7 +196,8 @@ internal class HtmlRangeExporterSync : HtmlRangeExporterSyncBase
     /// </summary>
     /// <param name="htmlDocument">The html string where to insert the html and the css. The Html will be inserted in string parameter {0} and the Css will be inserted in parameter {1}.</param>
     /// <returns>The html document</returns>
-    public string GetSinglePage(string htmlDocument = "<!DOCTYPE html>\r\n<html>\r\n<head>\r\n<style type=\"text/css\">\r\n{1}</style></head>\r\n<body>\r\n{0}\r\n</body>\r\n</html>")
+    public string GetSinglePage(string htmlDocument =
+                                    "<!DOCTYPE html>\r\n<html>\r\n<head>\r\n<style type=\"text/css\">\r\n{1}</style></head>\r\n<body>\r\n{0}\r\n</body>\r\n</html>")
     {
         if (this.Settings.Minify)
         {
@@ -197,6 +207,7 @@ internal class HtmlRangeExporterSync : HtmlRangeExporterSyncBase
         string? html = this.GetHtmlString();
         CssRangeExporterSync? exporter = HtmlExporterFactory.CreateCssExporterSync(this._settings, this._ranges, this._styleCache);
         string? css = exporter.GetCssString();
+
         return string.Format(htmlDocument, html, css);
     }
 
@@ -206,6 +217,7 @@ internal class HtmlRangeExporterSync : HtmlRangeExporterSyncBase
         {
             writer.AddAttribute("role", accessibilitySettings.TableSettings.TbodyRole);
         }
+
         writer.RenderBeginTag(HtmlElements.Tbody);
         writer.ApplyFormatIncreaseIndent(this.Settings.Minify);
         int row = range._fromRow + this._settings.HeaderRows;
@@ -213,6 +225,7 @@ internal class HtmlRangeExporterSync : HtmlRangeExporterSyncBase
         ExcelWorksheet? ws = range.Worksheet;
         HtmlImage image = null;
         bool hasFooter = table != null && table.ShowTotal;
+
         while (row <= endRow)
         {
             if (HandleHiddenRow(writer, range.Worksheet, this.Settings, ref row))
@@ -238,6 +251,7 @@ internal class HtmlRangeExporterSync : HtmlRangeExporterSyncBase
 
             writer.RenderBeginTag(HtmlElements.TableRow);
             writer.ApplyFormatIncreaseIndent(this.Settings.Minify);
+
             foreach (int col in this._columns)
             {
                 if (this.InMergeCellSpan(row, col))
@@ -277,18 +291,27 @@ internal class HtmlRangeExporterSync : HtmlRangeExporterSyncBase
             writer.Indent--;
             writer.RenderEndTag();
             writer.ApplyFormat(this.Settings.Minify);
+
             if (hasFooter && row == endRow)
             {
                 writer.RenderEndTag();
             }
+
             row++;
         }
 
         writer.ApplyFormatDecreaseIndent(this.Settings.Minify);
+
         // end tag tbody
         writer.RenderEndTag();
     }
-    private void RenderHeaderRow(ExcelRangeBase range, EpplusHtmlWriter writer, ExcelTable table, AccessibilitySettings accessibilitySettings, int headerRows, List<string> headers)
+
+    private void RenderHeaderRow(ExcelRangeBase range,
+                                 EpplusHtmlWriter writer,
+                                 ExcelTable table,
+                                 AccessibilitySettings accessibilitySettings,
+                                 int headerRows,
+                                 List<string> headers)
     {
         if (table != null && table.ShowHeader == false)
         {
@@ -299,8 +322,10 @@ internal class HtmlRangeExporterSync : HtmlRangeExporterSyncBase
         {
             writer.AddAttribute("role", this.Settings.Accessibility.TableSettings.TheadRole);
         }
+
         writer.RenderBeginTag(HtmlElements.Thead);
         writer.ApplyFormatIncreaseIndent(this.Settings.Minify);
+
         if (table == null)
         {
             headerRows = this._settings.HeaderRows == 0 ? 1 : this._settings.HeaderRows;
@@ -311,13 +336,16 @@ internal class HtmlRangeExporterSync : HtmlRangeExporterSyncBase
         }
 
         HtmlImage image = null;
+
         for (int i = 0; i < headerRows; i++)
         {
             if (accessibilitySettings.TableSettings.AddAccessibilityAttributes)
             {
                 writer.AddAttribute("role", "row");
             }
+
             int row = range._fromRow + i;
+
             if (this.Settings.SetRowHeight)
             {
                 AddRowHeightStyle(writer, range, row, this.Settings.StyleClassPrefix, this.IsMultiSheet);
@@ -325,6 +353,7 @@ internal class HtmlRangeExporterSync : HtmlRangeExporterSyncBase
 
             writer.RenderBeginTag(HtmlElements.TableRow);
             writer.ApplyFormatIncreaseIndent(this.Settings.Minify);
+
             foreach (int col in this._columns)
             {
                 if (this.InMergeCellSpan(row, col))
@@ -333,21 +362,25 @@ internal class HtmlRangeExporterSync : HtmlRangeExporterSyncBase
                 }
 
                 ExcelRange? cell = range.Worksheet.Cells[row, col];
+
                 if (this.Settings.RenderDataTypes)
                 {
                     writer.AddAttribute("data-datatype", this._dataTypes[col - range._fromCol]);
                 }
 
                 this.SetColRowSpan(range, writer, cell);
+
                 if (this.Settings.IncludeCssClassNames)
                 {
                     string? imageCellClassName = GetImageCellClassName(image, this.Settings);
                     writer.SetClassAttributeFromStyle(cell, true, this.Settings, imageCellClassName);
                 }
+
                 if (this.Settings.Pictures.Include == ePictureInclude.Include)
                 {
                     image = this.GetImage(cell.Worksheet.PositionId, cell._fromRow, cell._fromCol);
                 }
+
                 writer.RenderBeginTag(HtmlElements.TableHeader);
                 AddImage(writer, this.Settings, image, cell.Value);
 
@@ -370,9 +403,11 @@ internal class HtmlRangeExporterSync : HtmlRangeExporterSyncBase
                 writer.RenderEndTag();
                 writer.ApplyFormat(this.Settings.Minify);
             }
+
             writer.Indent--;
             writer.RenderEndTag();
         }
+
         writer.ApplyFormatDecreaseIndent(this.Settings.Minify);
         writer.RenderEndTag();
         writer.ApplyFormat(this.Settings.Minify);

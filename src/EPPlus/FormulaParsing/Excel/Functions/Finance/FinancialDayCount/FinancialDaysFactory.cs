@@ -10,6 +10,7 @@
  *************************************************************************************************
   05/03/2020         EPPlus Software AB         Implemented function
  *************************************************************************************************/
+
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -20,18 +21,23 @@ internal static class FinancialDaysFactory
 {
     internal static IFinanicalDays Create(DayCountBasis basis)
     {
-        switch(basis)
+        switch (basis)
         {
             case DayCountBasis.US_30_360:
                 return new FinancialDaysUs_30_360();
+
             case DayCountBasis.Actual_Actual:
                 return new FinancialDays_Actual_Actual();
+
             case DayCountBasis.Actual_360:
                 return new FinancialDays_Actual_360();
+
             case DayCountBasis.Actual_365:
                 return new FinancialDays_Actual_365();
+
             case DayCountBasis.European_30_360:
                 return new FinancialDaysEuropean_30_360();
+
             default:
                 throw new ArgumentException("basis");
         }

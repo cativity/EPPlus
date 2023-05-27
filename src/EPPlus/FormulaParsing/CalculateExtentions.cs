@@ -54,7 +54,6 @@ public static class CalculationExtension
         Calculate(workbook, option);
     }
 
-
     /// <summary>
     /// Calculate all formulas in the current workbook
     /// </summary>
@@ -67,6 +66,7 @@ public static class CalculationExtension
         DependencyChain? dc = DependencyChainFactory.Create(workbook, options);
         FilterInfo? filterInfo = new FilterInfo(workbook);
         workbook.FormulaParser.InitNewCalc(filterInfo);
+
         if (workbook.FormulaParser.Logger != null)
         {
             string? msg = string.Format("Starting... number of cells to parse: {0}", dc.list.Count);
@@ -75,6 +75,7 @@ public static class CalculationExtension
 
         CalcChain(workbook, workbook.FormulaParser, dc, options);
     }
+
     /// <summary>
     /// Calculate all formulas in the current worksheet
     /// </summary>
@@ -108,18 +109,21 @@ public static class CalculationExtension
     /// <param name="options">Calculation options</param>
     public static void Calculate(this ExcelWorksheet worksheet, ExcelCalculationOption options)
     {
-        Init(worksheet.Workbook);       
+        Init(worksheet.Workbook);
         DependencyChain? dc = DependencyChainFactory.Create(worksheet, options);
         FormulaParser? parser = worksheet.Workbook.FormulaParser;
         FilterInfo? filterInfo = new FilterInfo(worksheet.Workbook);
         parser.InitNewCalc(filterInfo);
+
         if (parser.Logger != null)
         {
             string? msg = string.Format("Starting... number of cells to parse: {0}", dc.list.Count);
             parser.Logger.Log(msg);
         }
+
         CalcChain(worksheet.Workbook, parser, dc, options);
     }
+
     /// <summary>
     /// Calculate all formulas in the current range
     /// </summary>
@@ -171,6 +175,7 @@ public static class CalculationExtension
     {
         return Calculate(worksheet, Formula, new ExcelCalculationOption());
     }
+
     /// <summary>
     /// Calculate all formulas in the current range
     /// </summary>
@@ -183,7 +188,8 @@ public static class CalculationExtension
         try
         {
             worksheet.CheckSheetTypeAndNotDisposed();
-            if(string.IsNullOrEmpty(Formula.Trim()))
+
+            if (string.IsNullOrEmpty(Formula.Trim()))
             {
                 return null;
             }
@@ -192,6 +198,7 @@ public static class CalculationExtension
             FormulaParser? parser = worksheet.Workbook.FormulaParser;
             FilterInfo? filterInfo = new FilterInfo(worksheet.Workbook);
             parser.InitNewCalc(filterInfo);
+
             if (Formula[0] == '=')
             {
                 Formula = Formula.Substring(1); //Remove any starting equal sign
@@ -210,6 +217,7 @@ public static class CalculationExtension
             return new ExcelErrorValueException(ex.Message, ExcelErrorValue.Create(eErrorType.Value));
         }
     }
+
     private static void CalcChain(ExcelWorkbook wb, FormulaParser parser, DependencyChain dc, ExcelCalculationOption options)
     {
         wb.FormulaParser.Configure(config =>
@@ -217,13 +225,17 @@ public static class CalculationExtension
             config.AllowCircularReferences = options.AllowCircularReferences;
             config.PrecisionAndRoundingStrategy = options.PrecisionAndRoundingStrategy;
         });
+
         bool debug = parser.Logger != null;
+
         foreach (int ix in dc.CalcOrder)
         {
             FormulaCell? item = dc.list[ix];
+
             try
             {
                 object v;
+
                 if (item.wsIndex >= 0 && item.wsIndex < wb.Worksheets.Count)
                 {
                     ExcelWorksheet? ws = wb.Worksheets._worksheets[item.wsIndex];
@@ -231,7 +243,7 @@ public static class CalculationExtension
                 }
                 else
                 {
-                    if(item.Column == 0 && item.Row >= 0 && item.Row < wb.Names.Count)
+                    if (item.Column == 0 && item.Row >= 0 && item.Row < wb.Names.Count)
                     {
                         v = parser.ParseCell(item.Tokens, null, item.Row, item.Column);
                     }
@@ -240,20 +252,22 @@ public static class CalculationExtension
                         v = ExcelErrorValue.Create(eErrorType.Ref);
                     }
                 }
-                    
+
                 SetValue(wb, item, v);
+
                 if (debug)
                 {
                     parser.Logger.LogCellCounted();
                 }
-                if(ix % 1000 == 0)
+
+                if (ix % 1000 == 0)
                 {
                     Thread.Sleep(0);
                 }
             }
-            catch(Exception e)
+            catch (Exception e)
             {
-                if(e is CircularReferenceException)
+                if (e is CircularReferenceException)
                 {
                     throw;
                 }
@@ -265,9 +279,12 @@ public static class CalculationExtension
             }
         }
     }
+
     internal static void Init(ExcelWorkbook workbook)
     {
-        workbook._formulaTokens = new CellStore<List<Token>>();;
+        workbook._formulaTokens = new CellStore<List<Token>>();
+        ;
+
         foreach (ExcelWorksheet? ws in workbook.Worksheets)
         {
             if (!(ws is ExcelChartsheet))
@@ -276,10 +293,12 @@ public static class CalculationExtension
                 {
                     ws._formulaTokens.Dispose();
                 }
+
                 ws._formulaTokens = new CellStore<List<Token>>();
             }
         }
     }
+
     private static void SetValue(ExcelWorkbook workbook, FormulaCell item, object v)
     {
         if (item.Column == 0)

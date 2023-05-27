@@ -10,6 +10,7 @@
  *************************************************************************************************
   22/10/2022         EPPlus Software AB           EPPlus v6
  *************************************************************************************************/
+
 using System;
 using System.Collections.Generic;
 using System.Globalization;
@@ -51,23 +52,28 @@ internal static class Days360Impl
             {
                 endDay = 30;
             }
+
             // If the investment is EOM and (Date1 is the last day of February), then change D1 to 30.
             if (startMonth == 2 && startDay == nDaysInFeb)
             {
                 startDay = 30;
             }
+
             // If D2 is 31 and D1 is 30 or 31, then change D2 to 30.
             if (endDay == 31 && (startDay == 30 || startDay == 31))
             {
                 endDay = 30;
             }
+
             // If D1 is 31, then change D1 to 30.
             if (startDay == 31)
             {
                 startDay = 30;
             }
         }
+
         int result = (endYear * 12 * 30) + (endMonth * 30) + endDay - ((startYear * 12 * 30) + (startMonth * 30) + startDay);
+
         return result;
     }
 }

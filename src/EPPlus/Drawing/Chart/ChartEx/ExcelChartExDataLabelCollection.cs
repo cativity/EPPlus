@@ -10,6 +10,7 @@
  *************************************************************************************************
   04/16/2020         EPPlus Software AB       EPPlus 5.2
  *************************************************************************************************/
+
 using OfficeOpenXml.Drawing.Interfaces;
 using System;
 using System.Collections;
@@ -23,22 +24,26 @@ namespace OfficeOpenXml.Drawing.Chart.ChartEx;
 /// </summary>
 public class ExcelChartExDataLabelCollection : ExcelChartExDataLabel, IDrawingStyle, IEnumerable<ExcelChartExDataLabelItem>
 {
-    SortedDictionary<int, ExcelChartExDataLabelItem> _dic=new SortedDictionary<int, ExcelChartExDataLabelItem>();
-    internal ExcelChartExDataLabelCollection(ExcelChartExSerie serie, XmlNamespaceManager ns, XmlNode node, string[] schemaNodeOrder) : 
-        base(serie, ns, node)
+    SortedDictionary<int, ExcelChartExDataLabelItem> _dic = new SortedDictionary<int, ExcelChartExDataLabelItem>();
+
+    internal ExcelChartExDataLabelCollection(ExcelChartExSerie serie, XmlNamespaceManager ns, XmlNode node, string[] schemaNodeOrder)
+        : base(serie, ns, node)
     {
         this._chart = serie._chart;
-        this.AddSchemaNodeOrder(schemaNodeOrder, new string[]{ "numFmt","spPr", "txPr", "visibility", "separator"});
+        this.AddSchemaNodeOrder(schemaNodeOrder, new string[] { "numFmt", "spPr", "txPr", "visibility", "separator" });
+
         foreach (XmlNode pointNode in this.TopNode.SelectNodes(_dataLabelPath, ns))
         {
             ExcelChartExDataLabelItem? item = new ExcelChartExDataLabelItem(serie, ns, pointNode);
             this._dic.Add(item.Index, item);
         }
     }
+
     void IDrawingStyleBase.CreatespPr()
     {
         this.CreatespPrNode("cx:spPr");
     }
+
     /// <summary>
     /// Adds an individual data label for customization.
     /// </summary>
@@ -46,13 +51,16 @@ public class ExcelChartExDataLabelCollection : ExcelChartExDataLabel, IDrawingSt
     /// <returns></returns>
     public ExcelChartExDataLabelItem Add(int index)
     {
-        if(this._dic.ContainsKey(index))
+        if (this._dic.ContainsKey(index))
         {
             throw new InvalidOperationException($"Data label with index {index} already exists.");
         }
+
         XmlNode? node = this._serie.CreateNode("cx:dataLabels/cx:dataLabel", false, true);
+
         return new ExcelChartExDataLabelItem(this._serie, this.NameSpaceManager, node, index);
     }
+
     /// <summary>
     /// Returns tje data label at the specific position.  
     /// </summary>
@@ -66,9 +74,11 @@ public class ExcelChartExDataLabelCollection : ExcelChartExDataLabel, IDrawingSt
             {
                 return this._dic[index];
             }
+
             return null;
         }
     }
+
     /// <summary>
     /// Get the enumerator
     /// </summary>

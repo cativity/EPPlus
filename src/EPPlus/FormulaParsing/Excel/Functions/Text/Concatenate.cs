@@ -10,6 +10,7 @@
  *************************************************************************************************
   01/27/2020         EPPlus Software AB       Initial release EPPlus 5
  *************************************************************************************************/
+
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -19,10 +20,7 @@ using OfficeOpenXml.FormulaParsing.ExpressionGraph;
 
 namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Text;
 
-[FunctionMetadata(
-                     Category = ExcelFunctionCategory.Text,
-                     EPPlusVersion = "4",
-                     Description = "Joins together two or more text strings")]
+[FunctionMetadata(Category = ExcelFunctionCategory.Text, EPPlusVersion = "4", Description = "Joins together two or more text strings")]
 internal class Concatenate : ExcelFunction
 {
     public override CompileResult Execute(IEnumerable<FunctionArgument> arguments, ParsingContext context)
@@ -31,15 +29,19 @@ internal class Concatenate : ExcelFunction
         {
             return this.CreateResult(string.Empty, DataType.String);
         }
+
         StringBuilder? sb = new StringBuilder();
+
         foreach (FunctionArgument? arg in arguments)
         {
             object? v = arg.ValueFirst;
+
             if (v != null)
             {
                 sb.Append(v);
             }
         }
+
         return this.CreateResult(sb.ToString(), DataType.String);
     }
 }

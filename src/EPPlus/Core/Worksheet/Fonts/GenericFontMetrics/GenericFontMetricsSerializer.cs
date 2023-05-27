@@ -10,6 +10,7 @@
  *************************************************************************************************
   12/26/2021         EPPlus Software AB       EPPlus 6.0
  *************************************************************************************************/
+
 using OfficeOpenXml.Core.Worksheet.Core.Worksheet.Fonts.GenericMeasurements;
 using System;
 using System.Collections.Generic;
@@ -33,31 +34,39 @@ internal static class GenericFontMetricsSerializer
         metrics.LineHeight1em = reader.ReadSingle();
         metrics.DefaultWidthClass = (FontMetricsClass)reader.ReadByte();
         ushort nClassWidths = reader.ReadUInt16();
+
         if (nClassWidths == 0)
         {
             return metrics;
         }
+
         for (int x = 0; x < nClassWidths; x++)
         {
             FontMetricsClass cls = (FontMetricsClass)reader.ReadByte();
             float width = reader.ReadSingle();
             metrics.ClassWidths[cls] = width;
         }
+
         ushort nClasses = reader.ReadUInt16();
+
         for (int x = 0; x < nClasses; x++)
         {
             FontMetricsClass cls = (FontMetricsClass)reader.ReadByte();
             ushort nRanges = reader.ReadUInt16();
+
             for (int rngIx = 0; rngIx < nRanges; rngIx++)
             {
                 ushort start = reader.ReadUInt16();
                 ushort end = reader.ReadUInt16();
+
                 for (ushort c = start; c <= end; c++)
                 {
                     metrics.CharMetrics[Convert.ToChar(c)] = cls;
                 }
             }
+
             ushort nCharactersInClass = reader.ReadUInt16();
+
             if (nCharactersInClass == 0)
             {
                 continue;
@@ -70,6 +79,7 @@ internal static class GenericFontMetricsSerializer
                 metrics.CharMetrics[c] = cls;
             }
         }
+
         return metrics;
     }
 }

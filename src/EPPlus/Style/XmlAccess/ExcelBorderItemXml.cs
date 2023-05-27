@@ -10,12 +10,14 @@
  *************************************************************************************************
   01/27/2020         EPPlus Software AB       Initial release EPPlus 5
  *************************************************************************************************/
+
 using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Text;
 using System.Xml;
 using OfficeOpenXml.Style;
+
 namespace OfficeOpenXml.Style.XmlAccess;
 
 /// <summary>
@@ -23,13 +25,15 @@ namespace OfficeOpenXml.Style.XmlAccess;
 /// </summary>
 public sealed class ExcelBorderItemXml : StyleXmlHelper
 {
-    internal ExcelBorderItemXml(XmlNamespaceManager nameSpaceManager) : base(nameSpaceManager)
+    internal ExcelBorderItemXml(XmlNamespaceManager nameSpaceManager)
+        : base(nameSpaceManager)
     {
-        this._borderStyle=ExcelBorderStyle.None;
+        this._borderStyle = ExcelBorderStyle.None;
         this._color = new ExcelColorXml(this.NameSpaceManager);
     }
-    internal ExcelBorderItemXml(XmlNamespaceManager nsm, XmlNode topNode) :
-        base(nsm, topNode)
+
+    internal ExcelBorderItemXml(XmlNamespaceManager nsm, XmlNode topNode)
+        : base(nsm, topNode)
     {
         if (topNode != null)
         {
@@ -45,12 +49,13 @@ public sealed class ExcelBorderItemXml : StyleXmlHelper
 
     private static ExcelBorderStyle GetBorderStyle(string style)
     {
-        if(style=="")
+        if (style == "")
         {
             return ExcelBorderStyle.None;
         }
 
         string sInStyle = style.Substring(0, 1).ToUpper(CultureInfo.InvariantCulture) + style.Substring(1, style.Length - 1);
+
         try
         {
             return (ExcelBorderStyle)Enum.Parse(typeof(ExcelBorderStyle), sInStyle);
@@ -59,43 +64,38 @@ public sealed class ExcelBorderItemXml : StyleXmlHelper
         {
             return ExcelBorderStyle.None;
         }
-
     }
+
     ExcelBorderStyle _borderStyle = ExcelBorderStyle.None;
+
     /// <summary>
     /// Cell Border style
     /// </summary>
     public ExcelBorderStyle Style
     {
-        get
-        {
-            return this._borderStyle;
-        }
+        get { return this._borderStyle; }
         set
         {
             this._borderStyle = value;
             this.Exists = true;
         }
     }
+
     ExcelColorXml _color = null;
     const string _colorPath = "d:color";
+
     /// <summary>
     /// The color of the line
     /// </summary>s
     public ExcelColorXml Color
     {
-        get
-        {
-            return this._color;
-        }
-        internal set
-        {
-            this._color = value;
-        }
+        get { return this._color; }
+        internal set { this._color = value; }
     }
+
     internal override string Id
     {
-        get 
+        get
         {
             if (this.Exists)
             {
@@ -112,7 +112,8 @@ public sealed class ExcelBorderItemXml : StyleXmlHelper
     {
         ExcelBorderItemXml? borderItem = new ExcelBorderItemXml(this.NameSpaceManager);
         borderItem.Style = this._borderStyle;
-        borderItem.Color = this._color==null ? new ExcelColorXml(this.NameSpaceManager) { Auto = true } : this._color.Copy();
+        borderItem.Color = this._color == null ? new ExcelColorXml(this.NameSpaceManager) { Auto = true } : this._color.Copy();
+
         return borderItem;
     }
 
@@ -123,20 +124,24 @@ public sealed class ExcelBorderItemXml : StyleXmlHelper
         if (this.Style != ExcelBorderStyle.None)
         {
             this.SetXmlNodeString("@style", SetBorderString(this.Style));
+
             if (this.Color.Exists)
             {
                 this.CreateNode(_colorPath);
                 topNode.AppendChild(this.Color.CreateXmlNode(this.TopNode.SelectSingleNode(_colorPath, this.NameSpaceManager)));
             }
         }
+
         return this.TopNode;
     }
 
     private static string SetBorderString(ExcelBorderStyle Style)
     {
-        string newName=Enum.GetName(typeof(ExcelBorderStyle), Style);
+        string newName = Enum.GetName(typeof(ExcelBorderStyle), Style);
+
         return newName.Substring(0, 1).ToLower(CultureInfo.InvariantCulture) + newName.Substring(1, newName.Length - 1);
     }
+
     /// <summary>
     /// True if the record exists in the underlaying xml
     /// </summary>

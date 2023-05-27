@@ -10,6 +10,7 @@
  *************************************************************************************************
   01/27/2020         EPPlus Software AB       Initial release EPPlus 5
  *************************************************************************************************/
+
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -30,9 +31,13 @@ public class SyntacticAnalyzer : ISyntacticAnalyzer
     private class AnalyzingContext
     {
         public int NumberOfOpenedParentheses { get; set; }
+
         public int NumberOfClosedParentheses { get; set; }
+
         public int OpenedStrings { get; set; }
+
         public int ClosedStrings { get; set; }
+
         public bool IsInString { get; set; }
     }
 
@@ -43,15 +48,18 @@ public class SyntacticAnalyzer : ISyntacticAnalyzer
     public void Analyze(IEnumerable<Token> tokens)
     {
         AnalyzingContext? context = new AnalyzingContext();
+
         foreach (Token token in tokens)
         {
             if (token.TokenTypeIsSet(TokenType.Unrecognized))
             {
                 throw new UnrecognizedTokenException(token);
             }
+
             EnsureParenthesesAreWellFormed(token, context);
             EnsureStringsAreWellFormed(token, context);
         }
+
         Validate(context);
     }
 
@@ -61,6 +69,7 @@ public class SyntacticAnalyzer : ISyntacticAnalyzer
         {
             throw new FormatException("Number of opened and closed parentheses does not match");
         }
+
         if (context.OpenedStrings != context.ClosedStrings)
         {
             throw new FormatException("Unterminated string");

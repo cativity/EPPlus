@@ -10,6 +10,7 @@
  *************************************************************************************************
   06/05/2020         EPPlus Software AB       EPPlus 5.2
  *************************************************************************************************/
+
 using OfficeOpenXml.Drawing.Chart;
 using OfficeOpenXml.Drawing.Chart.ChartEx;
 using OfficeOpenXml.Drawing.Controls;
@@ -24,19 +25,23 @@ namespace OfficeOpenXml.Drawing;
 public class ExcelDrawingAsType
 {
     ExcelDrawing _drawing;
+
     internal ExcelDrawingAsType(ExcelDrawing drawing)
     {
         this._drawing = drawing;
     }
+
     /// <summary>
     /// Converts the drawing to it's top level or other nested drawing class.        
     /// </summary>
     /// <typeparam name="T">The type of drawing. T must be inherited from ExcelDrawing</typeparam>
     /// <returns>The drawing as type T</returns>
-    public T Type<T>() where T : ExcelDrawing
+    public T Type<T>()
+        where T : ExcelDrawing
     {
         return this._drawing as T;
     }
+
     /// <summary>
     /// Returns the drawing as a shape. 
     /// If this drawing is not a shape, null will be returned
@@ -44,11 +49,9 @@ public class ExcelDrawingAsType
     /// <returns>The drawing as a shape</returns>
     public ExcelShape Shape
     {
-        get
-        {
-            return this._drawing as ExcelShape;
-        }
+        get { return this._drawing as ExcelShape; }
     }
+
     /// <summary>
     /// Returns the drawing as a picture/image. 
     /// If this drawing is not a picture, null will be returned
@@ -56,12 +59,11 @@ public class ExcelDrawingAsType
     /// <returns>The drawing as a picture</returns>
     public ExcelPicture Picture
     {
-        get
-        {
-            return this._drawing as ExcelPicture;
-        }
+        get { return this._drawing as ExcelPicture; }
     }
+
     ExcelChartAsType _chartAsType;
+
     /// <summary>
     /// An object that containing properties that type-casts the drawing to a chart.
     /// </summary>
@@ -71,11 +73,12 @@ public class ExcelDrawingAsType
     }
 
     ExcelSlicerAsType _slicerAsType;
+
     /// <summary>
     /// An object that containing properties that type-casts the drawing to a slicer.
     /// </summary>
-    public ExcelSlicerAsType Slicer 
-    { 
+    public ExcelSlicerAsType Slicer
+    {
         get { return this._slicerAsType ??= new ExcelSlicerAsType(this._drawing); }
     }
 

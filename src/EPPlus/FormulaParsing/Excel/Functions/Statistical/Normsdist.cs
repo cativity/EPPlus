@@ -10,6 +10,7 @@
  *************************************************************************************************
   22/10/2022         EPPlus Software AB           EPPlus v6
  *************************************************************************************************/
+
 using OfficeOpenXml.FormulaParsing.Excel.Functions.Metadata;
 using OfficeOpenXml.FormulaParsing.ExpressionGraph;
 using System;
@@ -19,10 +20,9 @@ using System.Text;
 
 namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Statistical;
 
-[FunctionMetadata(
-                     Category = ExcelFunctionCategory.Statistical,
-                     EPPlusVersion = "6.0",
-                     Description = "Calculates the Standard Normal Cumulative Distribution Function for a supplied value.")]
+[FunctionMetadata(Category = ExcelFunctionCategory.Statistical,
+                  EPPlusVersion = "6.0",
+                  Description = "Calculates the Standard Normal Cumulative Distribution Function for a supplied value.")]
 internal class Normsdist : NormalDistributionBase
 {
     public override CompileResult Execute(IEnumerable<FunctionArgument> arguments, ParsingContext context)
@@ -30,6 +30,7 @@ internal class Normsdist : NormalDistributionBase
         ValidateArguments(arguments, 1);
         double z = this.ArgToDecimal(arguments, 0);
         double result = CumulativeDistribution(z, 0, 1);
+
         return this.CreateResult(result, DataType.Decimal);
     }
 }

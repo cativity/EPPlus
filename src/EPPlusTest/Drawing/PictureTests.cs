@@ -16,17 +16,20 @@ namespace EPPlusTest.Drawing;
 public class PictureTests : TestBase
 {
     private static ExcelPackage _pck;
+
     [ClassInitialize]
     public static void Init(TestContext context)
     {
         InitBase();
         _pck = OpenPackage("Pictures.xlsx", true);
     }
+
     [ClassCleanup]
     public static void Cleanup()
     {
         SaveAndCleanup(_pck);
     }
+
     [TestMethod]
     public void AddPictureBmp()
     {
@@ -37,6 +40,7 @@ public class PictureTests : TestBase
         pic.From.Row = 0;
         pic.From.Column = 0;
     }
+
     [TestMethod]
     public void AddPictureWmf()
     {
@@ -47,6 +51,7 @@ public class PictureTests : TestBase
         pic.From.Row = 0;
         pic.From.Column = 0;
     }
+
     [TestMethod]
     public void AddPictureJpeg()
     {
@@ -57,6 +62,7 @@ public class PictureTests : TestBase
         pic.From.Row = 0;
         pic.From.Column = 0;
     }
+
     [TestMethod]
     public void AddPictureGif()
     {
@@ -67,6 +73,7 @@ public class PictureTests : TestBase
         pic.From.Row = 0;
         pic.From.Column = 0;
     }
+
     [TestMethod]
     public void AddPicturePng()
     {
@@ -77,6 +84,7 @@ public class PictureTests : TestBase
         pic.From.Row = 0;
         pic.From.Column = 0;
     }
+
     [TestMethod]
     public void AddPictureEmf()
     {
@@ -89,6 +97,7 @@ public class PictureTests : TestBase
         pic.PreferRelativeResize = false;
         pic.LockAspectRatio = true;
     }
+
     [TestMethod]
     public void AddPictureTif()
     {
@@ -113,17 +122,19 @@ public class PictureTests : TestBase
         pic.From.Row = 0;
         pic.From.Column = 0;
     }
+
     [TestMethod]
     public void AddPictureWmfFromStream()
     {
         ExcelWorkbook? workbook = _pck.Workbook;
         ExcelWorksheet? ws = workbook.Worksheets.Add("WmfImageStream");
 
-        FileStream? imageStream = new FileStream(GetResourceFile("Vector Drawing.wmf").FullName, FileMode.Open, FileAccess.Read) ;
+        FileStream? imageStream = new FileStream(GetResourceFile("Vector Drawing.wmf").FullName, FileMode.Open, FileAccess.Read);
         ExcelPicture? pic = ws.Drawings.AddPicture("wmfStream", imageStream, ePictureType.Wmf);
         pic.From.Row = 0;
         pic.From.Column = 0;
     }
+
     [TestMethod]
     public async Task AddPictureJpgFromStreamAsync()
     {
@@ -135,6 +146,7 @@ public class PictureTests : TestBase
         pic.From.Row = 0;
         pic.From.Column = 0;
     }
+
     [TestMethod]
     public async Task AddPictureGifFromFileAsync()
     {
@@ -145,7 +157,9 @@ public class PictureTests : TestBase
         pic.From.Row = 0;
         pic.From.Column = 0;
     }
+
     #region Changed Normal Font
+
     [TestMethod]
     public void AddNormalCalibri6()
     {
@@ -154,15 +168,17 @@ public class PictureTests : TestBase
         ExcelWorksheet? ws = wb.Worksheets.Add("jpgCalibri6");
         ExcelPicture? pic = ws.Drawings.AddPicture("jpgFile3", GetResourceFile("Test1.jpg"));
     }
+
     [TestMethod]
     public void AddNormalBroadway8()
     {
         ExcelWorkbook? wb = _pck.Workbook;
-        wb.Styles.NamedStyles[0].Style.Font.Name= "Broadway";
+        wb.Styles.NamedStyles[0].Style.Font.Name = "Broadway";
         wb.Styles.NamedStyles[0].Style.Font.Size = 8;
         ExcelWorksheet? ws = wb.Worksheets.Add("jpgBroadway8");
         ExcelPicture? pic = ws.Drawings.AddPicture("jpgFile3", GetResourceFile("Test1.jpg"));
     }
+
     [TestMethod]
     public void AddNormalBroadway16()
     {
@@ -179,7 +195,8 @@ public class PictureTests : TestBase
         ExcelWorkbook? wb = _pck.Workbook;
         wb.Styles.NamedStyles[0].Style.Font.Size = 18;
         ExcelWorksheet? ws = wb.Worksheets.Add("jpgCalibri18");
-        ExcelPicture? pic = ws.Drawings.AddPicture("jpgFile2", GetResourceFile("Test1.jpg"));			
+        ExcelPicture? pic = ws.Drawings.AddPicture("jpgFile2", GetResourceFile("Test1.jpg"));
     }
+
     #endregion
 }

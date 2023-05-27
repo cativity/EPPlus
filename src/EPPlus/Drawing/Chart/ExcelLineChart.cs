@@ -10,6 +10,7 @@
  *************************************************************************************************
   01/27/2020         EPPlus Software AB       Initial release EPPlus 5
  *************************************************************************************************/
+
 using System;
 using System.Collections.Generic;
 using System.Globalization;
@@ -25,46 +26,52 @@ namespace OfficeOpenXml.Drawing.Chart;
 /// </summary>
 public abstract class ExcelStandardChartWithLines : ExcelChartStandard, IDrawingDataLabel
 {
-    internal ExcelStandardChartWithLines(ExcelDrawings drawings, XmlNode node, Uri uriChart, Packaging.ZipPackagePart part, XmlDocument chartXml, XmlNode chartNode, ExcelGroupShape parent = null) :
-        base(drawings, node, uriChart, part, chartXml, chartNode, parent)
+    internal ExcelStandardChartWithLines(ExcelDrawings drawings,
+                                         XmlNode node,
+                                         Uri uriChart,
+                                         Packaging.ZipPackagePart part,
+                                         XmlDocument chartXml,
+                                         XmlNode chartNode,
+                                         ExcelGroupShape parent = null)
+        : base(drawings, node, uriChart, part, chartXml, chartNode, parent)
     {
     }
 
-    internal ExcelStandardChartWithLines(ExcelChart topChart, XmlNode chartNode, ExcelGroupShape parent = null) :
-        base(topChart, chartNode, parent)
+    internal ExcelStandardChartWithLines(ExcelChart topChart, XmlNode chartNode, ExcelGroupShape parent = null)
+        : base(topChart, chartNode, parent)
     {
     }
-    internal ExcelStandardChartWithLines(ExcelDrawings drawings, XmlNode node, eChartType? type, ExcelChart topChart, ExcelPivotTable PivotTableSource, XmlDocument chartXml, ExcelGroupShape parent = null) :
-        base(drawings, node, type, topChart, PivotTableSource, chartXml, parent)
-    {
 
+    internal ExcelStandardChartWithLines(ExcelDrawings drawings,
+                                         XmlNode node,
+                                         eChartType? type,
+                                         ExcelChart topChart,
+                                         ExcelPivotTable PivotTableSource,
+                                         XmlDocument chartXml,
+                                         ExcelGroupShape parent = null)
+        : base(drawings, node, type, topChart, PivotTableSource, chartXml, parent)
+    {
     }
+
     string MARKER_PATH = "c:marker/@val";
+
     /// <summary>
     /// If the series has markers
     /// </summary>
     public bool Marker
     {
-        get
-        {
-            return this._chartXmlHelper.GetXmlNodeBool(this.MARKER_PATH, false);
-        }
-        set
-        {
-            this._chartXmlHelper.SetXmlNodeBool(this.MARKER_PATH, value, false);
-        }
+        get { return this._chartXmlHelper.GetXmlNodeBool(this.MARKER_PATH, false); }
+        set { this._chartXmlHelper.SetXmlNodeBool(this.MARKER_PATH, value, false); }
     }
 
     string SMOOTH_PATH = "c:smooth/@val";
+
     /// <summary>
     /// If the series has smooth lines
     /// </summary>
     public bool Smooth
     {
-        get
-        {
-            return this._chartXmlHelper.GetXmlNodeBool(this.SMOOTH_PATH, false);
-        }
+        get { return this._chartXmlHelper.GetXmlNodeBool(this.SMOOTH_PATH, false); }
         set
         {
             if (this.ChartType == eChartType.Line3D)
@@ -75,8 +82,10 @@ public abstract class ExcelStandardChartWithLines : ExcelChartStandard, IDrawing
             this._chartXmlHelper.SetXmlNodeBool(this.SMOOTH_PATH, value);
         }
     }
+
     //string _chartTopPath = "c:chartSpace/c:chart/c:plotArea/{0}";
     ExcelChartDataLabel _dataLabel = null;
+
     /// <summary>
     /// Access to datalabel properties
     /// </summary>
@@ -84,35 +93,34 @@ public abstract class ExcelStandardChartWithLines : ExcelChartStandard, IDrawing
     {
         get
         {
-            return this._dataLabel ??= new ExcelChartDataLabelStandard(this, this.NameSpaceManager, this.ChartNode, "dLbls", this._chartXmlHelper.SchemaNodeOrder);
+            return this._dataLabel ??=
+                       new ExcelChartDataLabelStandard(this, this.NameSpaceManager, this.ChartNode, "dLbls", this._chartXmlHelper.SchemaNodeOrder);
         }
     }
+
     /// <summary>
     /// If the chart has datalabel
     /// </summary>
     public bool HasDataLabel
     {
-        get
-        {
-            return this.ChartNode.SelectSingleNode("c:dLbls", this.NameSpaceManager) != null;
-        }
+        get { return this.ChartNode.SelectSingleNode("c:dLbls", this.NameSpaceManager) != null; }
     }
+
     const string _gapWidthPath = "c:upDownBars/c:gapWidth/@val";
+
     /// <summary>
     /// The gap width between the up and down bars
     /// </summary>
     public double? UpDownBarGapWidth
     {
-        get
-        {
-            return this._chartXmlHelper.GetXmlNodeIntNull(_gapWidthPath);
-        }
+        get { return this._chartXmlHelper.GetXmlNodeIntNull(_gapWidthPath); }
         set
         {
             if (value == null)
             {
                 this._chartXmlHelper.DeleteNode(_gapWidthPath, true);
             }
+
             if (value < 0 || value > 500)
             {
                 throw new ArgumentOutOfRangeException("GapWidth ranges between 0 and 500");
@@ -121,42 +129,40 @@ public abstract class ExcelStandardChartWithLines : ExcelChartStandard, IDrawing
             this._chartXmlHelper.SetXmlNodeString(_gapWidthPath, value.Value.ToString(CultureInfo.InvariantCulture));
         }
     }
+
     ExcelChartStyleItem _upBar = null;
     const string _upBarPath = "c:upDownBars/c:upBars";
+
     /// <summary>
     /// Format the up bars on the chart
     /// </summary>
     public ExcelChartStyleItem UpBar
     {
-        get
-        {
-            return this._upBar;
-        }
+        get { return this._upBar; }
     }
+
     ExcelChartStyleItem _downBar = null;
     const string _downBarPath = "c:upDownBars/c:downBars";
+
     /// <summary>
     /// Format the down bars on the chart
     /// </summary>
     public ExcelChartStyleItem DownBar
     {
-        get
-        {
-            return this._downBar;
-        }
+        get { return this._downBar; }
     }
+
     ExcelChartStyleItem _hiLowLines = null;
     const string _hiLowLinesPath = "c:hiLowLines";
+
     /// <summary>
     /// Format the high-low lines for the series.
     /// </summary>
     public ExcelChartStyleItem HighLowLine
     {
-        get
-        {
-            return this._hiLowLines;
-        }
+        get { return this._hiLowLines; }
     }
+
     ExcelChartStyleItem _dropLines = null;
     const string _dropLinesPath = "c:dropLines";
 
@@ -165,11 +171,9 @@ public abstract class ExcelStandardChartWithLines : ExcelChartStandard, IDrawing
     /// </summary>
     public ExcelChartStyleItem DropLine
     {
-        get
-        {
-            return this._dropLines;
-        }
+        get { return this._dropLines; }
     }
+
     /// <summary>
     /// Adds up and/or down bars to the chart.        
     /// </summary>
@@ -183,6 +187,7 @@ public abstract class ExcelStandardChartWithLines : ExcelChartStandard, IDrawing
             ExcelChart? chart = this._topChart ?? this;
             chart.ApplyStyleOnPart(this._upBar, chart.StyleManager?.Style?.UpBar);
         }
+
         if (downBars && this._downBar == null)
         {
             this._downBar = new ExcelChartStyleItem(this.NameSpaceManager, this.ChartNode, this, _downBarPath, this.RemoveDownBar);
@@ -190,6 +195,7 @@ public abstract class ExcelStandardChartWithLines : ExcelChartStandard, IDrawing
             chart.ApplyStyleOnPart(this._upBar, chart.StyleManager?.Style?.DownBar);
         }
     }
+
     /// <summary>
     /// Adds droplines to the chart.        
     /// </summary>
@@ -201,8 +207,10 @@ public abstract class ExcelStandardChartWithLines : ExcelChartStandard, IDrawing
             ExcelChart? chart = this._topChart ?? this;
             chart.ApplyStyleOnPart(this._upBar, chart.StyleManager?.Style?.DropLine);
         }
+
         return this._dropLines;
     }
+
     /// <summary>
     /// Adds High-Low lines to the chart.        
     /// </summary>
@@ -214,8 +222,10 @@ public abstract class ExcelStandardChartWithLines : ExcelChartStandard, IDrawing
             ExcelChart? chart = this._topChart ?? this;
             chart.ApplyStyleOnPart(this._upBar, chart.StyleManager?.Style?.HighLowLine);
         }
+
         return this.HighLowLine;
     }
+
     //TODO: Consider adding this method later (for all charts with datalabels)
     ///// <summary>
     ///// Adds datalabels to the chart
@@ -277,8 +287,10 @@ public abstract class ExcelStandardChartWithLines : ExcelChartStandard, IDrawing
         {
             return eChartType.Line3D;
         }
+
         return base.GetChartType(name);
     }
+
     internal override void InitSeries(ExcelChart chart, XmlNamespaceManager ns, XmlNode node, bool isPivot, List<ExcelChartSerie> list = null)
     {
         base.InitSeries(chart, ns, node, isPivot, list);
@@ -286,7 +298,7 @@ public abstract class ExcelStandardChartWithLines : ExcelChartStandard, IDrawing
         this.Series.Init(chart, ns, node, isPivot, base.Series._list);
 
         //Up bars
-        if (this._upBar==null && this.ExistsNode(node, _upBarPath))
+        if (this._upBar == null && this.ExistsNode(node, _upBarPath))
         {
             this._upBar = new ExcelChartStyleItem(ns, node, this, _upBarPath, this.RemoveUpBar);
         }
@@ -308,36 +320,36 @@ public abstract class ExcelStandardChartWithLines : ExcelChartStandard, IDrawing
         {
             this._hiLowLines = new ExcelChartStyleItem(ns, node, this, _hiLowLinesPath, this.RemoveHiLowLines);
         }
-
-
     }
 
     /// <summary>
     /// The series for the chart
     /// </summary>
-    public new ExcelChartSeries<ExcelLineChartSerie> Series
-    {
-        get;
-    } = new ExcelChartSeries<ExcelLineChartSerie>();
+    public new ExcelChartSeries<ExcelLineChartSerie> Series { get; } = new ExcelChartSeries<ExcelLineChartSerie>();
+
     #region Remove Line/Bar
+
     private void RemoveUpBar()
     {
         this._upBar = null;
     }
+
     private void RemoveDownBar()
     {
         this._downBar = null;
     }
+
     private void RemoveDropLines()
     {
         this._dropLines = null;
     }
+
     private void RemoveHiLowLines()
     {
         this._hiLowLines = null;
     }
-    #endregion
 
+    #endregion
 }
 
 /// <summary>
@@ -346,22 +358,37 @@ public abstract class ExcelStandardChartWithLines : ExcelChartStandard, IDrawing
 public class ExcelLineChart : ExcelStandardChartWithLines
 {
     #region "Constructors"
-    internal ExcelLineChart(ExcelDrawings drawings, XmlNode node, Uri uriChart, Packaging.ZipPackagePart part, XmlDocument chartXml, XmlNode chartNode, ExcelGroupShape parent = null) :
-        base(drawings, node, uriChart, part, chartXml, chartNode, parent)
+
+    internal ExcelLineChart(ExcelDrawings drawings,
+                            XmlNode node,
+                            Uri uriChart,
+                            Packaging.ZipPackagePart part,
+                            XmlDocument chartXml,
+                            XmlNode chartNode,
+                            ExcelGroupShape parent = null)
+        : base(drawings, node, uriChart, part, chartXml, chartNode, parent)
     {
     }
 
-    internal ExcelLineChart (ExcelChart topChart, XmlNode chartNode, ExcelGroupShape parent = null) :
-        base(topChart, chartNode, parent)
+    internal ExcelLineChart(ExcelChart topChart, XmlNode chartNode, ExcelGroupShape parent = null)
+        : base(topChart, chartNode, parent)
     {
     }
-    internal ExcelLineChart(ExcelDrawings drawings, XmlNode node, eChartType? type, ExcelChart topChart, ExcelPivotTable PivotTableSource, XmlDocument chartXml, ExcelGroupShape parent = null) :
-        base(drawings, node, type, topChart, PivotTableSource, chartXml, parent)
+
+    internal ExcelLineChart(ExcelDrawings drawings,
+                            XmlNode node,
+                            eChartType? type,
+                            ExcelChart topChart,
+                            ExcelPivotTable PivotTableSource,
+                            XmlDocument chartXml,
+                            ExcelGroupShape parent = null)
+        : base(drawings, node, type, topChart, PivotTableSource, chartXml, parent)
     {
         if (type != eChartType.Line3D)
         {
             this.Smooth = false;
         }
     }
+
     #endregion
 }

@@ -33,6 +33,4 @@ public static class Require
     {
         return new Argument<T>(argument);
     }
-
-
 }

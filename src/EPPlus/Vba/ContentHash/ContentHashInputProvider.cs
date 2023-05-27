@@ -10,6 +10,7 @@
  *************************************************************************************************
   09/05/2022         EPPlus Software AB       EPPlus 6.1
  *************************************************************************************************/
+
 using OfficeOpenXml.VBA;
 using OfficeOpenXml.Utils;
 using System;
@@ -29,9 +30,10 @@ internal abstract class ContentHashInputProvider
     }
 
     private readonly ExcelVbaProject _project;
-    private readonly Encoding _hashEncoding; 
+    private readonly Encoding _hashEncoding;
 
     protected ExcelVbaProject Project => this._project;
+
     protected Encoding HashEncoding => this._hashEncoding;
 
     public void CreateHashInput(MemoryStream ms)

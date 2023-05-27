@@ -10,6 +10,7 @@
  *************************************************************************************************
   01/27/2020         EPPlus Software AB       Initial release EPPlus 5
  *************************************************************************************************/
+
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -19,13 +20,13 @@ using OfficeOpenXml.FormulaParsing.ExpressionGraph;
 
 namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Math;
 
-[FunctionMetadata(
-                     Category = ExcelFunctionCategory.Statistical,
-                     EPPlusVersion = "4",
-                     Description = "Returns the smallest value from a list of supplied numbers")]
+[FunctionMetadata(Category = ExcelFunctionCategory.Statistical,
+                  EPPlusVersion = "4",
+                  Description = "Returns the smallest value from a list of supplied numbers")]
 internal class Min : HiddenValuesHandlingFunction
 {
-    public Min() : base()
+    public Min()
+        : base()
     {
         this.IgnoreErrors = false;
     }
@@ -34,10 +35,12 @@ internal class Min : HiddenValuesHandlingFunction
     {
         ValidateArguments(arguments, 1);
         IEnumerable<ExcelDoubleCellValue>? values = this.ArgsToDoubleEnumerable(this.IgnoreHiddenValues, this.IgnoreErrors, arguments, context, true);
-        if(!values.Any())
+
+        if (!values.Any())
         {
             return this.CreateResult(0d, DataType.Decimal);
         }
+
         return this.CreateResult(values.Min(), DataType.Decimal);
     }
 }

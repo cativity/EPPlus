@@ -26,6 +26,7 @@
  *******************************************************************************
   01/27/2020         EPPlus Software AB       Initial release EPPlus 5
  *******************************************************************************/
+
 using System;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using OfficeOpenXml;
@@ -54,15 +55,15 @@ public class AverageTests
         double value4 = 1;
         double value5 = date1.ToOADate();
         double value6 = date2.ToOADate();
+
         CompileResult? result = average.Execute(new FunctionArgument[]
-        {
-            new FunctionArgument(value1.ToString("n")),
-            new FunctionArgument(value2),
-            new FunctionArgument(value3.ToString("n")),
-            new FunctionArgument(true),
-            new FunctionArgument(date1),
-            new FunctionArgument(date2.ToString("d"))
-        }, ParsingContext.Create());
+                                                {
+                                                    new FunctionArgument(value1.ToString("n")), new FunctionArgument(value2),
+                                                    new FunctionArgument(value3.ToString("n")), new FunctionArgument(true), new FunctionArgument(date1),
+                                                    new FunctionArgument(date2.ToString("d"))
+                                                },
+                                                ParsingContext.Create());
+
         Assert.AreEqual((value1 + value2 + value3 + value4 + value5 + value6) / 6, result.Result);
     }
 
@@ -94,12 +95,13 @@ public class AverageTests
         RangeAddress? address = new RangeAddress();
         address.FromRow = address.ToRow = address.FromCol = address.ToCol = 2;
         context.Scopes.NewScope(address);
+
         CompileResult? result = average.Execute(new FunctionArgument[]
-        {
-            new FunctionArgument(rangeInfo1),
-            new FunctionArgument(rangeInfo2),
-            new FunctionArgument(rangeInfo3)
-        }, context);
+                                                {
+                                                    new FunctionArgument(rangeInfo1), new FunctionArgument(rangeInfo2), new FunctionArgument(rangeInfo3)
+                                                },
+                                                context);
+
         Assert.AreEqual((2000 + new DateTime(2013, 1, 5).ToOADate()) / 2, result.Result);
     }
 
@@ -111,19 +113,19 @@ public class AverageTests
         DateTime date1 = new DateTime(2013, 1, 5);
         DateTime date2 = new DateTime(2013, 1, 15);
         double value = 2000;
+
         CompileResult? result = average.Execute(new FunctionArgument[]
-        {
-            new FunctionArgument(new FunctionArgument[]
-            {
-                new FunctionArgument(1000.ToString("n")),
-                new FunctionArgument(value),
-                new FunctionArgument(6000.ToString("n")),
-                new FunctionArgument(true),
-                new FunctionArgument(date1),
-                new FunctionArgument(date2.ToString("d")),
-                new FunctionArgument("test")
-            })
-        }, ParsingContext.Create());
+                                                {
+                                                    new FunctionArgument(new FunctionArgument[]
+                                                    {
+                                                        new FunctionArgument(1000.ToString("n")), new FunctionArgument(value),
+                                                        new FunctionArgument(6000.ToString("n")), new FunctionArgument(true),
+                                                        new FunctionArgument(date1), new FunctionArgument(date2.ToString("d")),
+                                                        new FunctionArgument("test")
+                                                    })
+                                                },
+                                                ParsingContext.Create());
+
         Assert.AreEqual((2000 + date1.ToOADate()) / 2, result.Result);
     }
 
@@ -133,10 +135,6 @@ public class AverageTests
     {
         // In the case of literals, any unparsable string literal results in a #VALUE.
         Average average = new Average();
-        CompileResult? result = average.Execute(new FunctionArgument[]
-        {
-            new FunctionArgument(1000),
-            new FunctionArgument("Test")
-        }, ParsingContext.Create());
+        CompileResult? result = average.Execute(new FunctionArgument[] { new FunctionArgument(1000), new FunctionArgument("Test") }, ParsingContext.Create());
     }
 }

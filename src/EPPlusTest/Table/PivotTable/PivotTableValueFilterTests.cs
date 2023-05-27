@@ -13,6 +13,7 @@ namespace EPPlusTest.Table.PivotTable;
 public class PivotTableValueFilterTests : TestBase
 {
     static ExcelPackage _pck;
+
     [ClassInitialize]
     public static void Init(TestContext context)
     {
@@ -25,11 +26,13 @@ public class PivotTableValueFilterTests : TestBase
         r = LoadItemData(ws);
         ws.Tables.Add(r, "Table2");
     }
+
     [ClassCleanup]
     public static void Cleanup()
     {
         SaveAndCleanup(_pck);
     }
+
     [TestMethod]
     public void AddValueEqualFilter()
     {
@@ -42,6 +45,7 @@ public class PivotTableValueFilterTests : TestBase
 
         pt.Fields[4].Filters.AddValueFilter(ePivotTableValueFilterType.ValueEqual, 0, 5);
     }
+
     [TestMethod]
     public void AddValueNotEqualFilter()
     {
@@ -50,10 +54,12 @@ public class PivotTableValueFilterTests : TestBase
 
         ExcelPivotTable? pt = ws.PivotTables.Add(ws.Cells["A1"], wsData.Cells["K1:O11"], "Pivottable1");
         pt.RowFields.Add(pt.Fields[4]);
-        ExcelPivotTableDataField? df=pt.DataFields.Add(pt.Fields[3]);
+        ExcelPivotTableDataField? df = pt.DataFields.Add(pt.Fields[3]);
         pt.Fields[4].Filters.AddValueFilter(ePivotTableValueFilterType.ValueNotEqual, 0, 12.2);
+
         //pt.Fields[4].Filters.AddValueFilter(ePivotTableValueFilterType.ValueNotEqual, 0, 85.2);
     }
+
     [TestMethod]
     public void AddValueGreaterThanFilter()
     {
@@ -67,6 +73,7 @@ public class PivotTableValueFilterTests : TestBase
         pt.Fields[3].Filters.AddValueFilter(ePivotTableValueFilterType.ValueGreaterThan, 0, 12.2);
         pt.Fields[4].Filters.AddValueFilter(ePivotTableValueFilterType.ValueLessThan, 0, 500);
     }
+
     [TestMethod]
     public void AddValueGreaterThanOrEqualFilter()
     {
@@ -79,6 +86,7 @@ public class PivotTableValueFilterTests : TestBase
 
         pt.Fields[4].Filters.AddValueFilter(ePivotTableValueFilterType.ValueGreaterThanOrEqual, 0, 12.2);
     }
+
     [TestMethod]
     public void AddValueLessThanFilter()
     {
@@ -91,6 +99,7 @@ public class PivotTableValueFilterTests : TestBase
 
         pt.Fields[4].Filters.AddValueFilter(ePivotTableValueFilterType.ValueLessThan, 0, 12.2);
     }
+
     [TestMethod]
     public void AddValueLessThanOrEqualFilter()
     {
@@ -103,6 +112,7 @@ public class PivotTableValueFilterTests : TestBase
 
         pt.Fields[4].Filters.AddValueFilter(ePivotTableValueFilterType.ValueLessThanOrEqual, 0, 12.2);
     }
+
     [TestMethod]
     public void AddValueBetweenFilter()
     {
@@ -115,6 +125,7 @@ public class PivotTableValueFilterTests : TestBase
 
         pt.Fields[4].Filters.AddValueFilter(ePivotTableValueFilterType.ValueBetween, 0, 4, 10);
     }
+
     [TestMethod]
     public void AddValueNotBetweenFilter()
     {
@@ -127,6 +138,7 @@ public class PivotTableValueFilterTests : TestBase
 
         pt.Fields[4].Filters.AddValueFilter(ePivotTableValueFilterType.ValueNotBetween, df, 4, 10);
     }
+
     [TestMethod]
     public void AddTop10CountFilter()
     {
@@ -139,6 +151,7 @@ public class PivotTableValueFilterTests : TestBase
 
         pt.Fields[4].Filters.AddTop10Filter(ePivotTableTop10FilterType.Count, df, 15);
     }
+
     [TestMethod]
     public void AddTop10PercentFilter()
     {
@@ -151,6 +164,7 @@ public class PivotTableValueFilterTests : TestBase
 
         pt.Fields[4].Filters.AddTop10Filter(ePivotTableTop10FilterType.Percent, df, 20);
     }
+
     [TestMethod]
     public void AddTop10SumFilter()
     {
@@ -163,6 +177,7 @@ public class PivotTableValueFilterTests : TestBase
 
         pt.Fields[4].Filters.AddTop10Filter(ePivotTableTop10FilterType.Sum, df, 25);
     }
+
     [TestMethod]
     public void AddBottom10CountFilter()
     {
@@ -175,6 +190,7 @@ public class PivotTableValueFilterTests : TestBase
 
         pt.Fields[4].Filters.AddTop10Filter(ePivotTableTop10FilterType.Count, df, 15, false);
     }
+
     [TestMethod]
     public void AddBottom10PercentFilter()
     {
@@ -187,6 +203,7 @@ public class PivotTableValueFilterTests : TestBase
 
         pt.Fields[4].Filters.AddTop10Filter(ePivotTableTop10FilterType.Percent, df, 20, false);
     }
+
     [TestMethod]
     public void AddBottom10SumFilter()
     {

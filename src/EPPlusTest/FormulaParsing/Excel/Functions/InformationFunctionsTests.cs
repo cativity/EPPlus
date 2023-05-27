@@ -26,6 +26,7 @@
  *******************************************************************************
   01/27/2020         EPPlus Software AB       Initial release EPPlus 5
  *******************************************************************************/
+
 using System;
 using System.Text;
 using System.Collections.Generic;
@@ -56,7 +57,7 @@ public class InformationFunctionsTests
     public void IsBlankShouldReturnTrueIfFirstArgIsNull()
     {
         IsBlank? func = new IsBlank();
-        IEnumerable<FunctionArgument>? args = FunctionsHelper.CreateArgs(new object[]{null});
+        IEnumerable<FunctionArgument>? args = FunctionsHelper.CreateArgs(new object[] { null });
         CompileResult? result = func.Execute(args, this._context);
         Assert.IsTrue((bool)result.Result);
     }

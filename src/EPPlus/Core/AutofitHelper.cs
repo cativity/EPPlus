@@ -27,25 +27,29 @@ internal class AutofitHelper
     private ExcelRangeBase _range;
     ITextMeasurer _genericMeasurer = new GenericFontMetricsTextMeasurer();
     MeasurementFont _nonExistingFont = new MeasurementFont() { FontFamily = FontSize.NonExistingFont };
-    Dictionary<float, short> _fontWidthDefault=null;
+    Dictionary<float, short> _fontWidthDefault = null;
     Dictionary<int, MeasurementFont> _fontCache;
+
     public AutofitHelper(ExcelRangeBase range)
     {
-        this._range = range;            
-        if(FontSize.FontWidths.ContainsKey(FontSize.NonExistingFont))
+        this._range = range;
+
+        if (FontSize.FontWidths.ContainsKey(FontSize.NonExistingFont))
         {
             FontSize.LoadAllFontsFromResource();
-            this._fontWidthDefault = FontSize.FontWidths[FontSize.NonExistingFont];            }
-
+            this._fontWidthDefault = FontSize.FontWidths[FontSize.NonExistingFont];
+        }
     }
 
     internal void AutofitColumn(double MinimumWidth, double MaximumWidth)
     {
         ExcelWorksheet? ws = this._range._worksheet;
+
         if (ws.Dimension == null)
         {
             return;
         }
+
         if (this._range._fromCol < 1 || this._range._fromRow < 1)
         {
             this._range.SetToSelectedRange();
@@ -81,14 +85,17 @@ internal class AutofitHelper
 
         //Get any autofilter to widen these columns
         List<ExcelAddressBase>? afAddr = new List<ExcelAddressBase>();
+
         if (ws.AutoFilterAddress != null)
         {
-            afAddr.Add(new ExcelAddressBase(    ws.AutoFilterAddress._fromRow,
-                                                ws.AutoFilterAddress._fromCol,
-                                                ws.AutoFilterAddress._fromRow,
-                                                ws.AutoFilterAddress._toCol));
+            afAddr.Add(new ExcelAddressBase(ws.AutoFilterAddress._fromRow,
+                                            ws.AutoFilterAddress._fromCol,
+                                            ws.AutoFilterAddress._fromRow,
+                                            ws.AutoFilterAddress._toCol));
+
             afAddr[afAddr.Count - 1]._ws = this._range.WorkSheetName;
         }
+
         foreach (ExcelTable? tbl in ws.Tables)
         {
             if (tbl.AutoFilterAddress != null)
@@ -97,6 +104,7 @@ internal class AutofitHelper
                                                 tbl.AutoFilterAddress._fromCol,
                                                 tbl.AutoFilterAddress._fromRow,
                                                 tbl.AutoFilterAddress._toCol));
+
                 afAddr[afAddr.Count - 1]._ws = this._range.WorkSheetName;
             }
         }
@@ -104,6 +112,7 @@ internal class AutofitHelper
         ExcelStyles? styles = ws.Workbook.Styles;
         ExcelNamedStyleXml? ns = styles.GetNormalStyle();
         int normalXfId = ns?.StyleXfId ?? 0;
+
         if (normalXfId < 0 || normalXfId >= styles.CellStyleXfs.Count)
         {
             normalXfId = 0;
@@ -111,6 +120,7 @@ internal class AutofitHelper
 
         ExcelFontXml? nf = styles.Fonts[styles.CellStyleXfs[normalXfId].FontId];
         MeasurementFontStyles fs = MeasurementFontStyles.Regular;
+
         if (nf.Bold)
         {
             fs |= MeasurementFontStyles.Bold;
@@ -131,19 +141,14 @@ internal class AutofitHelper
             fs |= MeasurementFontStyles.Strikeout;
         }
 
-        MeasurementFont? nfont = new MeasurementFont
-        {
-            FontFamily = nf.Name,
-            Style = fs,
-            Size = nf.Size
-        };
+        MeasurementFont? nfont = new MeasurementFont { FontFamily = nf.Name, Style = fs, Size = nf.Size };
 
         float normalSize = Convert.ToSingle(FontSize.GetWidthPixels(nf.Name, nf.Size));
         ExcelTextSettings? textSettings = this._range._workbook._package.Settings.TextSettings;
 
         foreach (ExcelRangeBase? cell in this._range)
         {
-            if (ws.Column(cell.Start.Column).Hidden)    //Issue 15338
+            if (ws.Column(cell.Start.Column).Hidden) //Issue 15338
             {
                 continue;
             }
@@ -155,6 +160,7 @@ internal class AutofitHelper
 
             int fntID = styles.CellXfs[cell.StyleID].FontId;
             MeasurementFont f;
+
             if (this._fontCache.ContainsKey(fntID))
             {
                 f = this._fontCache[fntID];
@@ -163,6 +169,7 @@ internal class AutofitHelper
             {
                 ExcelFontXml? fnt = styles.Fonts[fntID];
                 fs = MeasurementFontStyles.Regular;
+
                 if (fnt.Bold)
                 {
                     fs |= MeasurementFontStyles.Bold;
@@ -183,18 +190,15 @@ internal class AutofitHelper
                     fs |= MeasurementFontStyles.Strikeout;
                 }
 
-                f = new MeasurementFont
-                {
-                    FontFamily = fnt.Name,
-                    Style = fs,
-                    Size = fnt.Size
-                };
+                f = new MeasurementFont { FontFamily = fnt.Name, Style = fs, Size = fnt.Size };
 
                 this._fontCache.Add(fntID, f);
             }
+
             int ind = styles.CellXfs[cell.StyleID].Indent;
             string? textForWidth = cell.TextForWidth;
             string? t = textForWidth + (ind > 0 && !string.IsNullOrEmpty(textForWidth) ? new string('_', ind) : "");
+
             if (t.Length > 32000)
             {
                 t = t.Substring(0, 32000); //Issue
@@ -204,6 +208,7 @@ internal class AutofitHelper
 
             double width;
             double r = styles.CellXfs[cell.StyleID].TextRotation;
+
             if (r <= 0)
             {
                 int padding = 0; // 5
@@ -220,6 +225,7 @@ internal class AutofitHelper
                 if (a.Collide(cell) != eAddressCollition.No)
                 {
                     width += 2.25;
+
                     break;
                 }
             }
@@ -229,40 +235,49 @@ internal class AutofitHelper
                 ws.Column(cell._fromCol).Width = width > MaximumWidth ? MaximumWidth : width;
             }
         }
+
         ws.Drawings.AdjustWidth(drawWidths);
         ws._package.DoAdjustDrawings = doAdjust;
     }
+
     private TextMeasurement MeasureString(string t, int fntID, ExcelTextSettings ts)
     {
         Dictionary<ulong, TextMeasurement>? measureCache = new Dictionary<ulong, TextMeasurement>();
         ulong key = ((ulong)(uint)t.GetHashCode() << 32) | (uint)fntID;
+
         if (!measureCache.TryGetValue(key, out TextMeasurement measurement))
         {
             ITextMeasurer? measurer = ts.PrimaryTextMeasurer;
             MeasurementFont? font = this._fontCache[fntID];
             measurement = measurer.MeasureText(t, font);
+
             if (measurement.IsEmpty && ts.FallbackTextMeasurer != null && ts.FallbackTextMeasurer != ts.PrimaryTextMeasurer)
             {
                 measurer = ts.FallbackTextMeasurer;
                 measurement = measurer.MeasureText(t, font);
             }
+
             if (measurement.IsEmpty && this._fontWidthDefault != null)
             {
                 measurement = this.MeasureGeneric(t, ts, font);
             }
+
             if (!measurement.IsEmpty && ts.AutofitScaleFactor != 1f)
             {
                 measurement.Height *= ts.AutofitScaleFactor;
                 measurement.Width *= ts.AutofitScaleFactor;
             }
+
             measureCache.Add(key, measurement);
         }
+
         return measurement;
     }
 
     private TextMeasurement MeasureGeneric(string t, ExcelTextSettings ts, MeasurementFont font)
     {
         TextMeasurement measurement;
+
         if (FontSize.FontWidths.ContainsKey(font.FontFamily))
         {
             decimal width = FontSize.GetWidthPixels(font.FontFamily, font.Size);
@@ -292,23 +307,28 @@ internal class AutofitHelper
     {
         CellStoreEnumerator<ExcelValue>? iterator = new CellStoreEnumerator<ExcelValue>(ws._values, 0, fromCol, 0, toCol);
         int prevCol = fromCol;
+
         foreach (ExcelValue val in iterator)
         {
             ExcelColumn? col = (ExcelColumn)val._value;
+
             if (col.Hidden)
             {
                 continue;
             }
 
             col.Width = minimumWidth;
+
             if (ws.DefaultColWidth > minimumWidth && col.ColumnMin > prevCol)
             {
                 ExcelColumn? newCol = ws.Column(prevCol);
                 newCol.ColumnMax = col.ColumnMin - 1;
                 newCol.Width = minimumWidth;
             }
+
             prevCol = col.ColumnMax + 1;
         }
+
         if (ws.DefaultColWidth > minimumWidth && prevCol < toCol)
         {
             ExcelColumn? newCol = ws.Column(prevCol);

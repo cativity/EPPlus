@@ -10,6 +10,7 @@
  *************************************************************************************************
   10/15/2020         EPPlus Software AB       ToDataTable function
  *************************************************************************************************/
+
 using System;
 using System.Collections.Generic;
 using System.Data;
@@ -24,9 +25,10 @@ namespace OfficeOpenXml.Export.ToDataTable;
 public class DataColumnMappingCollection : List<DataColumnMapping>
 {
     private readonly Dictionary<int, DataColumnMapping> _mappingIndexes = new Dictionary<int, DataColumnMapping>();
+
     internal void Validate()
     {
-        foreach(DataColumnMapping? mapping in this)
+        foreach (DataColumnMapping? mapping in this)
         {
             mapping.Validate();
         }
@@ -53,14 +55,14 @@ public class DataColumnMappingCollection : List<DataColumnMapping>
     {
         DataColumnMapping? mapping = new DataColumnMapping(dataColumn)
         {
-            ZeroBasedColumnIndexInRange = zeroBasedIndexInRange,
-            TransformCellValue = transformCellValueFunc
+            ZeroBasedColumnIndexInRange = zeroBasedIndexInRange, TransformCellValue = transformCellValueFunc
         };
 
         this._mappingIndexes[mapping.ZeroBasedColumnIndexInRange] = mapping;
         this.Add(mapping);
         this.Sort((x, y) => x.ZeroBasedColumnIndexInRange.CompareTo(y.ZeroBasedColumnIndexInRange));
     }
+
     /// <summary>
     /// Adds a <see cref="DataColumnMapping"/>
     /// </summary>
@@ -135,7 +137,9 @@ public class DataColumnMappingCollection : List<DataColumnMapping>
             AllowNull = allowNull,
             TransformCellValue = transformCellValueFunc
         };
+
         mapping.Validate();
+
         if (this.Any(x => x.ZeroBasedColumnIndexInRange == zeroBasedIndexInRange))
         {
             throw new InvalidOperationException("Duplicate index in range: " + zeroBasedIndexInRange);

@@ -10,6 +10,7 @@
  *************************************************************************************************
   05/03/2020         EPPlus Software AB         Implemented function
  *************************************************************************************************/
+
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -18,7 +19,6 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Finance.FinancialDayCount
 
 internal abstract class FinancialDay
 {
-
     public FinancialDay(System.DateTime date)
     {
         this.Year = Convert.ToInt16(date.Year);
@@ -46,18 +46,12 @@ internal abstract class FinancialDay
 
     public bool IsLastDayOfFebruary
     {
-        get
-        {
-            return this.Month == 2 && this.Day == System.DateTime.DaysInMonth(this.Year, this.Month);
-        }
+        get { return this.Month == 2 && this.Day == System.DateTime.DaysInMonth(this.Year, this.Month); }
     }
 
     public bool IsLastDayOfMonth
     {
-        get
-        {
-            return this.Day == System.DateTime.DaysInMonth(this.Year, this.Month);
-        }
+        get { return this.Day == System.DateTime.DaysInMonth(this.Year, this.Month); }
     }
 
     public System.DateTime ToDateTime()
@@ -68,10 +62,12 @@ internal abstract class FinancialDay
     public FinancialDay SubtractYears(int years)
     {
         short day = this.Day;
+
         if (this.IsLastDayOfFebruary && System.DateTime.IsLeapYear(this.Year) && !System.DateTime.IsLeapYear(this.Year + years))
         {
             day -= 1;
         }
+
         return this.Factory((short)(this.Year - years), this.Month, day);
     }
 
@@ -143,6 +139,7 @@ internal abstract class FinancialDay
         short year = this.Year;
         short actualDay = day;
         short month = this.Month;
+
         if (this.Month - months < 1)
         {
             year -= 1;
@@ -152,6 +149,7 @@ internal abstract class FinancialDay
         {
             month = (short)(this.Month - Convert.ToInt16(months));
         }
+
         if (this.IsLastDayOfFebruary && System.DateTime.IsLeapYear(this.Year) && !System.DateTime.IsLeapYear(year))
         {
             actualDay -= 1;
@@ -160,6 +158,7 @@ internal abstract class FinancialDay
         {
             actualDay = (short)System.DateTime.DaysInMonth(year, month);
         }
+
         return this.Factory(year, month, actualDay);
     }
 
@@ -180,11 +179,13 @@ internal abstract class FinancialDay
     public double SubtractDays(FinancialDay day)
     {
         IFinanicalDays? financialDays = FinancialDaysFactory.Create(this.Basis);
+
         return financialDays.GetDaysBetweenDates(this.ToDateTime(), day.ToDateTime());
     }
+
     public override bool Equals(object obj)
     {
-        if(obj is FinancialDay b)
+        if (obj is FinancialDay b)
         {
             return b == this;
         }
@@ -193,6 +194,7 @@ internal abstract class FinancialDay
             return false;
         }
     }
+
     public override int GetHashCode()
     {
         return base.GetHashCode();

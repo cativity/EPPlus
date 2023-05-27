@@ -10,6 +10,7 @@
  *************************************************************************************************
   04/16/2021         EPPlus Software AB       EPPlus 5.7
  *************************************************************************************************/
+
 using OfficeOpenXml.Packaging;
 using OfficeOpenXml.Utils;
 using OfficeOpenXml.Utils.Extensions;
@@ -23,15 +24,18 @@ namespace OfficeOpenXml.ExternalReferences;
 /// </summary>
 public class ExcelExternalOleLink : ExcelExternalLink
 {
-    internal ExcelExternalOleLink(ExcelWorkbook wb, XmlTextReader reader, ZipPackagePart part, XmlElement workbookElement) : base(wb, reader, part, workbookElement)
+    internal ExcelExternalOleLink(ExcelWorkbook wb, XmlTextReader reader, ZipPackagePart part, XmlElement workbookElement)
+        : base(wb, reader, part, workbookElement)
     {
         string? rId = reader.GetAttribute("id", ExcelPackage.schemaRelationships);
-        if(!string.IsNullOrEmpty(rId))
+
+        if (!string.IsNullOrEmpty(rId))
         {
             this.Relation = part.GetRelationship(rId);
         }
 
         this.ProgId = reader.GetAttribute("progId");
+
         while (reader.Read())
         {
             if (reader.NodeType == XmlNodeType.Element)
@@ -40,6 +44,7 @@ public class ExcelExternalOleLink : ExcelExternalLink
                 {
                     case "oleItems":
                         this.ReadOleItems(reader);
+
                         break;
                 }
             }
@@ -52,6 +57,7 @@ public class ExcelExternalOleLink : ExcelExternalLink
             }
         }
     }
+
     private void ReadOleItems(XmlTextReader reader)
     {
         while (reader.Read())
@@ -60,6 +66,7 @@ public class ExcelExternalOleLink : ExcelExternalLink
             {
                 XmlStreamHelper.ReadUntil(reader, "Fallback");
             }
+
             if (reader.NodeType == XmlNodeType.Element && reader.LocalName == "oleItem")
             {
                 this.OleItems.Add(new ExcelExternalOleItem()
@@ -78,23 +85,16 @@ public class ExcelExternalOleLink : ExcelExternalLink
     /// </summary>
     public override eExternalLinkType ExternalLinkType
     {
-        get
-        {
-            return eExternalLinkType.OleLink;
-        }
+        get { return eExternalLinkType.OleLink; }
     }
-    internal ZipPackageRelationship Relation
-    {
-        get;
-        set;
-    }
+
+    internal ZipPackageRelationship Relation { get; set; }
+
     /// <summary>
     /// A collection of OLE items
     /// </summary>
-    public ExcelExternalOleItemsCollection OleItems
-    {
-        get;
-    } = new ExcelExternalOleItemsCollection();
+    public ExcelExternalOleItemsCollection OleItems { get; } = new ExcelExternalOleItemsCollection();
+
     /// <summary>
     /// The id for the connection. This is the ProgID of the OLE object
     /// </summary>
@@ -103,6 +103,7 @@ public class ExcelExternalOleLink : ExcelExternalLink
     internal override void Save(StreamWriter sw)
     {
         sw.Write($"<oleLink progId=\"{this.ProgId}\" r:id=\"{this.Relation.Id}\" xmlns:r=\"http://schemas.openxmlformats.org/officeDocument/2006/relationships\"><oleItems>");
+
         foreach (ExcelExternalOleItem item in this.OleItems)
         {
             sw.Write(string.Format("<mc:AlternateContent><mc:Choice Requires=\"x14\"><x14:oleItem name=\"{0}\" {1}{2}{3}/></mc:Choice><mc:Fallback><oleItem name=\"{0}\" {1}{2}{3}/></mc:Fallback></mc:AlternateContent>",
@@ -111,6 +112,7 @@ public class ExcelExternalOleLink : ExcelExternalLink
                                    item.Icon.GetXmlAttributeValue("icon", false),
                                    item.PreferPicture.GetXmlAttributeValue("preferPic", false)));
         }
+
         sw.Write("</oleItems></oleLink>");
     }
 }

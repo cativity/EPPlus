@@ -10,6 +10,7 @@
  *************************************************************************************************
   01/27/2020         EPPlus Software AB       Initial release EPPlus 5
  *************************************************************************************************/
+
 namespace OfficeOpenXml.Drawing.Theme;
 
 /// <summary>
@@ -17,13 +18,12 @@ namespace OfficeOpenXml.Drawing.Theme;
 /// </summary>
 public class ExcelDrawingRectangle
 {
-
     internal ExcelDrawingRectangle(XmlHelper xml, string path, double defaultValue)
     {
         this.TopOffset = xml.GetXmlNodePercentage(path + "@t") ?? defaultValue;
         this.BottomOffset = xml.GetXmlNodePercentage(path + "@b") ?? defaultValue;
         this.LeftOffset = xml.GetXmlNodePercentage(path + "@l") ?? defaultValue;
-        this.RightOffset = xml.GetXmlNodePercentage(path+"@r") ?? defaultValue;
+        this.RightOffset = xml.GetXmlNodePercentage(path + "@r") ?? defaultValue;
     }
 
     internal ExcelDrawingRectangle(double defaultValue)
@@ -33,18 +33,22 @@ public class ExcelDrawingRectangle
         this.LeftOffset = defaultValue;
         this.RightOffset = defaultValue;
     }
+
     /// <summary>
     /// Top offset in percentage
     /// </summary>
     public double TopOffset { get; set; }
+
     /// <summary>
     /// Bottom offset in percentage
     /// </summary>
     public double BottomOffset { get; set; }
+
     /// <summary>
     /// Left offset in percentage
     /// </summary>
     public double LeftOffset { get; set; }
+
     /// <summary>
     /// Right offset in percentage
     /// </summary>

@@ -10,6 +10,7 @@
  *************************************************************************************************
   01/27/2020         EPPlus Software AB       Initial release EPPlus 5
  *************************************************************************************************/
+
 using System;
 using System.Collections.Generic;
 using System.Globalization;
@@ -22,10 +23,7 @@ using OfficeOpenXml.FormulaParsing.ExpressionGraph;
 
 namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Text;
 
-[FunctionMetadata(
-                     Category = ExcelFunctionCategory.Text,
-                     EPPlusVersion = "4",
-                     Description = "Converts a text string into a numeric value")]
+[FunctionMetadata(Category = ExcelFunctionCategory.Text, EPPlusVersion = "4", Description = "Converts a text string into a numeric value")]
 internal class Value : ExcelFunction
 {
     public Value(CultureInfo ci)
@@ -50,6 +48,7 @@ internal class Value : ExcelFunction
         ValidateArguments(arguments, 1);
         string? val = ArgToString(arguments, 0);
         double result = 0d;
+
         if (string.IsNullOrEmpty(val))
         {
             return this.CreateResult(result, DataType.Integer);
@@ -57,42 +56,56 @@ internal class Value : ExcelFunction
 
         val = val.TrimEnd(' ');
         bool isPercentage = false;
-        if(val.EndsWith("%"))
+
+        if (val.EndsWith("%"))
         {
             val = val.TrimEnd('%');
             isPercentage = true;
         }
-        if(val.StartsWith("(", StringComparison.OrdinalIgnoreCase) && val.EndsWith(")", StringComparison.OrdinalIgnoreCase))
+
+        if (val.StartsWith("(", StringComparison.OrdinalIgnoreCase) && val.EndsWith(")", StringComparison.OrdinalIgnoreCase))
         {
             string? numCandidate = val.Substring(1, val.Length - 2);
-            if(double.TryParse(numCandidate, NumberStyles.Any, this._cultureInfo, out double tmp))
+
+            if (double.TryParse(numCandidate, NumberStyles.Any, this._cultureInfo, out double tmp))
             {
                 val = "-" + numCandidate;
             }
         }
-        if (Regex.IsMatch(val, $"^[\\d]*({Regex.Escape(this._groupSeparator)}?[\\d]*)*?({Regex.Escape(this._decimalSeparator)}[\\d]*)?[ ?% ?]?$", RegexOptions.Compiled))
+
+        if (Regex.IsMatch(val,
+                          $"^[\\d]*({Regex.Escape(this._groupSeparator)}?[\\d]*)*?({Regex.Escape(this._decimalSeparator)}[\\d]*)?[ ?% ?]?$",
+                          RegexOptions.Compiled))
         {
             result = double.Parse(val, this._cultureInfo);
-            return this.CreateResult(isPercentage ? result/100 : result, DataType.Decimal);
+
+            return this.CreateResult(isPercentage ? result / 100 : result, DataType.Decimal);
         }
+
         if (double.TryParse(val, NumberStyles.Float, this._cultureInfo, out result))
         {
-            return this.CreateResult(isPercentage ? result/100d : result, DataType.Decimal);
+            return this.CreateResult(isPercentage ? result / 100d : result, DataType.Decimal);
         }
+
         string? timeSeparator = Regex.Escape(this._timeSeparator);
+
         if (Regex.IsMatch(val, @"^[\d]{1,2}" + timeSeparator + @"[\d]{2}(" + timeSeparator + @"[\d]{2})?$", RegexOptions.Compiled))
         {
             CompileResult? timeResult = this._timeValueFunc.Execute(val);
+
             if (timeResult.DataType == DataType.Date)
             {
                 return timeResult;
             }
         }
+
         CompileResult? dateResult = this._dateValueFunc.Execute(val);
+
         if (dateResult.DataType == DataType.Date)
         {
             return dateResult;
         }
+
         return this.CreateResult(ExcelErrorValue.Create(eErrorType.Value), DataType.ExcelError);
     }
 }

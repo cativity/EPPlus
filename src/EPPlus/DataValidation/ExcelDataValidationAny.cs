@@ -10,6 +10,7 @@
  *************************************************************************************************
   01/27/2020         EPPlus Software AB       Initial release EPPlus 5
  *************************************************************************************************/
+
 using OfficeOpenXml.DataValidation.Contracts;
 using System.Xml;
 
@@ -25,7 +26,8 @@ public class ExcelDataValidationAny : ExcelDataValidation, IExcelDataValidationA
     /// </summary>
     /// <param name="uid">Uid of the data validation, format should be a Guid surrounded by curly braces.</param>
     /// <param name="address"></param>
-    internal ExcelDataValidationAny(string uid, string address, ExcelWorksheet ws) : base(uid, address, ws)
+    internal ExcelDataValidationAny(string uid, string address, ExcelWorksheet ws)
+        : base(uid, address, ws)
     {
     }
 
@@ -33,7 +35,8 @@ public class ExcelDataValidationAny : ExcelDataValidation, IExcelDataValidationA
     /// Constructor for reading data
     /// </summary>
     /// <param name="xr">The XmlReader to read from</param>
-    internal ExcelDataValidationAny(XmlReader xr, ExcelWorksheet ws) : base(xr, ws)
+    internal ExcelDataValidationAny(XmlReader xr, ExcelWorksheet ws)
+        : base(xr, ws)
     {
     }
 
@@ -41,14 +44,18 @@ public class ExcelDataValidationAny : ExcelDataValidation, IExcelDataValidationA
     /// Copy constructor
     /// </summary>
     /// <param name="copy"></param>
-    internal ExcelDataValidationAny(ExcelDataValidationAny copy, ExcelWorksheet ws) : base(copy, ws)
+    internal ExcelDataValidationAny(ExcelDataValidationAny copy, ExcelWorksheet ws)
+        : base(copy, ws)
     {
     }
 
     /// <summary>
     /// True if the current validation type allows operator.
     /// </summary>
-    public override bool AllowsOperator { get { return false; } }
+    public override bool AllowsOperator
+    {
+        get { return false; }
+    }
 
     /// <summary>
     /// Validation type
@@ -69,6 +76,4 @@ public class ExcelDataValidationAny : ExcelDataValidation, IExcelDataValidationA
     {
         return (ExcelDataValidationAny)this.GetClone();
     }
-
-
 }

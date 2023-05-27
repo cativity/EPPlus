@@ -10,6 +10,7 @@
  *************************************************************************************************
   01/27/2020         EPPlus Software AB       Initial release EPPlus 5
  *************************************************************************************************/
+
 using OfficeOpenXml.ConditionalFormatting;
 using System;
 using System.Globalization;
@@ -23,19 +24,17 @@ namespace OfficeOpenXml.Filter;
 /// <remarks>Note that EPPlus does not filter icon columns</remarks>
 public class ExcelIconFilterColumn : ExcelFilterColumn
 {
-    internal ExcelIconFilterColumn(XmlNamespaceManager namespaceManager, XmlNode topNode) : base(namespaceManager, topNode)
+    internal ExcelIconFilterColumn(XmlNamespaceManager namespaceManager, XmlNode topNode)
+        : base(namespaceManager, topNode)
     {
-
     }
+
     /// <summary>
     /// The icon Id within the icon set
     /// </summary>
     public int IconId
     {
-        get
-        {
-            return this.GetXmlNodeInt("d:iconId");
-        }
+        get { return this.GetXmlNodeInt("d:iconId"); }
         set
         {
             if (value < 0)
@@ -46,6 +45,7 @@ public class ExcelIconFilterColumn : ExcelFilterColumn
             this.SetXmlNodeString("d:iconId", value.ToString(CultureInfo.InvariantCulture));
         }
     }
+
     /// <summary>
     /// The Iconset to filter by
     /// </summary>
@@ -53,11 +53,14 @@ public class ExcelIconFilterColumn : ExcelFilterColumn
     {
         get
         {
-            string? v= this.GetXmlNodeString("d:iconSet");
+            string? v = this.GetXmlNodeString("d:iconSet");
             v = v.Replace("3", "Three").Replace("4", "four").Replace("5", "Five");
+
             try
             {
-                eExcelconditionalFormattingIconsSetType r = (eExcelconditionalFormattingIconsSetType)Enum.Parse(typeof(eExcelconditionalFormattingIconsSetType), v);
+                eExcelconditionalFormattingIconsSetType r =
+                    (eExcelconditionalFormattingIconsSetType)Enum.Parse(typeof(eExcelconditionalFormattingIconsSetType), v);
+
                 return r;
             }
             catch
@@ -80,6 +83,5 @@ public class ExcelIconFilterColumn : ExcelFilterColumn
 
     internal override void Save()
     {
-            
     }
 }

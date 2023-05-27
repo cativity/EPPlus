@@ -52,11 +52,14 @@ public class ToDataTableTests
         sheet.Cells["B1"].Value = "Name";
         sheet.Cells["A2"].Value = 1;
         sheet.Cells["B2"].Value = "John Doe";
-        DataTable? dt = sheet.Cells["A1:B2"].ToDataTable(o =>
-        {
-            o.PredefinedMappingsOnly = true;
-            o.Mappings.Add(1, "Name");
-        });
+
+        DataTable? dt = sheet.Cells["A1:B2"]
+                             .ToDataTable(o =>
+                             {
+                                 o.PredefinedMappingsOnly = true;
+                                 o.Mappings.Add(1, "Name");
+                             });
+
         Assert.AreEqual(1, dt.Rows.Count);
         Assert.AreEqual(1, dt.Columns.Count);
         Assert.AreEqual(typeof(string), dt.Columns[0].DataType);
@@ -76,11 +79,14 @@ public class ToDataTableTests
         DataColumn? col = new DataColumn();
         col.ColumnName = "Name";
         col.DataType = typeof(string);
-        DataTable? dt = sheet.Cells["A1:B2"].ToDataTable(o =>
-        {
-            o.PredefinedMappingsOnly = true;
-            o.Mappings.Add(1, col);
-        });
+
+        DataTable? dt = sheet.Cells["A1:B2"]
+                             .ToDataTable(o =>
+                             {
+                                 o.PredefinedMappingsOnly = true;
+                                 o.Mappings.Add(1, col);
+                             });
+
         Assert.AreEqual(1, dt.Rows.Count);
         Assert.AreEqual(1, dt.Columns.Count);
         Assert.AreEqual(typeof(string), dt.Columns[0].DataType);
@@ -96,10 +102,7 @@ public class ToDataTableTests
         sheet.Cells["B1"].Value = "Name";
         sheet.Cells["A2"].Value = 1;
         sheet.Cells["B2"].Value = "John Doe";
-        ToDataTableOptions? options = ToDataTableOptions.Create(o =>
-        {
-            o.DataTableNamespace = "ns1";
-        });
+        ToDataTableOptions? options = ToDataTableOptions.Create(o => { o.DataTableNamespace = "ns1"; });
         DataTable? dt = sheet.Cells["A1:B2"].ToDataTable(options);
         Assert.AreEqual("ns1", dt.Namespace);
     }
@@ -117,32 +120,20 @@ public class ToDataTableTests
         sheet.Cells["C2"].Value = "Doe";
 
         // One column
-        DataTable? dt = sheet.Cells["A1:C2"].ToDataTable(o =>
-        {
-            o.SetPrimaryKey("Id");
-        });
+        DataTable? dt = sheet.Cells["A1:C2"].ToDataTable(o => { o.SetPrimaryKey("Id"); });
         Assert.AreEqual("Id", dt.PrimaryKey[0].ColumnName);
 
         // two columns
-        dt = sheet.Cells["A1:C2"].ToDataTable(o =>
-        {
-            o.SetPrimaryKey("Id", "LastName");
-        });
+        dt = sheet.Cells["A1:C2"].ToDataTable(o => { o.SetPrimaryKey("Id", "LastName"); });
         Assert.AreEqual("Id", dt.PrimaryKey[0].ColumnName);
         Assert.AreEqual("LastName", dt.PrimaryKey[1].ColumnName);
 
         // one column by index
-        dt = sheet.Cells["A1:C2"].ToDataTable(o =>
-        {
-            o.SetPrimaryKey(0);
-        });
+        dt = sheet.Cells["A1:C2"].ToDataTable(o => { o.SetPrimaryKey(0); });
         Assert.AreEqual("Id", dt.PrimaryKey[0].ColumnName);
 
         // two columns by index
-        dt = sheet.Cells["A1:C2"].ToDataTable(o =>
-        {
-            o.SetPrimaryKey(0, 2);
-        });
+        dt = sheet.Cells["A1:C2"].ToDataTable(o => { o.SetPrimaryKey(0, 2); });
         Assert.AreEqual("Id", dt.PrimaryKey[0].ColumnName);
         Assert.AreEqual("LastName", dt.PrimaryKey[1].ColumnName);
     }
@@ -173,10 +164,7 @@ public class ToDataTableTests
         sheet.Cells["B1"].Value = "Date";
         sheet.Cells["A2"].Value = 1;
         sheet.Cells["B2"].Value = date;
-        ToDataTableOptions? options = ToDataTableOptions.Create(o =>
-        {
-            o.Mappings.Add(0, "Id", typeof(string));
-        });
+        ToDataTableOptions? options = ToDataTableOptions.Create(o => { o.Mappings.Add(0, "Id", typeof(string)); });
         DataTable? dt = sheet.Cells["A1:B2"].ToDataTable(options);
         Assert.AreEqual(1, dt.Rows.Count);
         Assert.AreEqual("1", dt.Rows[0]["Id"]);
@@ -193,16 +181,12 @@ public class ToDataTableTests
         sheet.Cells["B1"].Value = "Date";
         sheet.Cells["A2"].Value = 1;
         sheet.Cells["B2"].Value = date;
-        ToDataTableOptions? options = ToDataTableOptions.Create(o =>
-        {
-            o.Mappings.Add(0, "Id", typeof(string), true, c => "Id: " + c.ToString());
-        });
+        ToDataTableOptions? options = ToDataTableOptions.Create(o => { o.Mappings.Add(0, "Id", typeof(string), true, c => "Id: " + c.ToString()); });
         DataTable? dt = sheet.Cells["A1:B2"].ToDataTable(options);
         Assert.AreEqual(1, dt.Rows.Count);
         Assert.AreEqual("Id: 1", dt.Rows[0]["Id"]);
         Assert.AreEqual(date, dt.Rows[0]["Date"]);
     }
-
 
     [TestMethod]
     public void ToDataTableShouldHandleIntAndBool()
@@ -231,10 +215,7 @@ public class ToDataTableTests
         sheet.Cells["B1"].Value = "Date";
         sheet.Cells["A2"].Value = 1;
         sheet.Cells["B2"].Value = date;
-        ToDataTableOptions? options = ToDataTableOptions.Create(o =>
-        {
-            o.Mappings.Add(1, "MyDate", typeof(DateTime));
-        });
+        ToDataTableOptions? options = ToDataTableOptions.Create(o => { o.Mappings.Add(1, "MyDate", typeof(DateTime)); });
         DataTable? dt = sheet.Cells["A1:B2"].ToDataTable(options);
         Assert.AreEqual(1, dt.Rows.Count);
         Assert.AreEqual(1, dt.Rows[0]["Id"]);
@@ -284,7 +265,7 @@ public class ToDataTableTests
         Assert.AreEqual(3, dt.Rows[0]["Id"]);
         Assert.AreEqual("Rob", dt.Rows[0]["Name"]);
     }
-        
+
     [TestMethod]
     public void ToDataTableShouldSkipEmptyRows()
     {
@@ -350,10 +331,7 @@ public class ToDataTableTests
         sheet.Cells["A3"].Value = 3;
         sheet.Cells["B3"].Value = null;
 
-        DataTable? dt = sheet.Cells["A1:B3"].ToDataTable(o =>
-        {
-            o.Mappings.Add(1, "Name", typeof(string), false);
-        });
+        DataTable? dt = sheet.Cells["A1:B3"].ToDataTable(o => { o.Mappings.Add(1, "Name", typeof(string), false); });
     }
 
     [TestMethod]
@@ -371,7 +349,6 @@ public class ToDataTableTests
         sheet.Cells["A3"].Value = 3;
         sheet.Cells["B3"].Value = "Rob";
         sheet.Cells["C3"].Value = "Robs email";
-
 
         DataTable? table = new DataTable("dt1", "ns1");
         table.Columns.Add("Id", typeof(int));

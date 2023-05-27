@@ -10,6 +10,7 @@
  *************************************************************************************************
   01/27/2020         EPPlus Software AB       Initial release EPPlus 5
  *************************************************************************************************/
+
 using System.Collections.Generic;
 using System.Linq;
 using OfficeOpenXml.FormulaParsing.ExcelUtilities;
@@ -37,7 +38,12 @@ internal class EpplusExcelDataProvider : ExcelDataProvider
     {
         internal ExcelWorksheet _ws;
         CellStoreEnumerator<ExcelValue> _values = null;
-        int _fromRow, _toRow, _fromCol, _toCol;
+
+        int _fromRow,
+            _toRow,
+            _fromCol,
+            _toCol;
+
         int _cellCount = 0;
         ExcelAddressBase _address;
         ICellInfo _cell;
@@ -66,6 +72,7 @@ internal class EpplusExcelDataProvider : ExcelDataProvider
         {
             this.SetAddress(ws, address);
         }
+
         private void SetAddress(ExcelWorksheet ws, ExcelAddressBase address)
         {
             this._ws = ws;
@@ -74,6 +81,7 @@ internal class EpplusExcelDataProvider : ExcelDataProvider
             this._toRow = address._toRow;
             this._toCol = address._toCol;
             this._address = address;
+
             if (this._ws != null && this._ws.IsDisposed == false)
             {
                 this._values = new CellStoreEnumerator<ExcelValue>(this._ws._values, this._fromRow, this._fromCol, this._toRow, this._toCol);
@@ -95,11 +103,9 @@ internal class EpplusExcelDataProvider : ExcelDataProvider
         /// </summary>
         public bool IsRef
         {
-            get
-            {
-                return this._ws == null || this._fromRow < 0 || this._toRow < 0;
-            }
+            get { return this._ws == null || this._fromRow < 0 || this._toRow < 0; }
         }
+
         /// <summary>
         /// Returns true if the range is empty
         /// </summary>
@@ -118,6 +124,7 @@ internal class EpplusExcelDataProvider : ExcelDataProvider
                 else if (this._values.Next())
                 {
                     this._values.Reset();
+
                     return false;
                 }
                 else
@@ -144,11 +151,13 @@ internal class EpplusExcelDataProvider : ExcelDataProvider
                     if (this._values.Next() && this._values.Next())
                     {
                         this._values.Reset();
+
                         return true;
                     }
                     else
                     {
                         this._values.Reset();
+
                         return false;
                     }
                 }
@@ -156,6 +165,7 @@ internal class EpplusExcelDataProvider : ExcelDataProvider
                 {
                     return true;
                 }
+
                 return false;
             }
         }
@@ -191,10 +201,7 @@ internal class EpplusExcelDataProvider : ExcelDataProvider
         /// </summary>
         object System.Collections.IEnumerator.Current
         {
-            get
-            {
-                return this;
-            }
+            get { return this; }
         }
 
         /// <summary>
@@ -209,6 +216,7 @@ internal class EpplusExcelDataProvider : ExcelDataProvider
             }
 
             this._cellCount++;
+
             return this._values.MoveNext();
         }
 
@@ -220,7 +228,6 @@ internal class EpplusExcelDataProvider : ExcelDataProvider
             this._cellCount = 0;
             this._values?.Init();
         }
-
 
         /// <summary>
         /// Moves to next cell
@@ -234,6 +241,7 @@ internal class EpplusExcelDataProvider : ExcelDataProvider
             }
 
             this._cellCount++;
+
             return this._values.MoveNext();
         }
 
@@ -244,6 +252,7 @@ internal class EpplusExcelDataProvider : ExcelDataProvider
         public IEnumerator<ICellInfo> GetEnumerator()
         {
             this.Reset();
+
             return this;
         }
 
@@ -255,7 +264,7 @@ internal class EpplusExcelDataProvider : ExcelDataProvider
         {
             return this;
         }
-            
+
         /// <summary>
         /// Address of the range
         /// </summary>
@@ -297,11 +306,13 @@ internal class EpplusExcelDataProvider : ExcelDataProvider
     {
         ExcelWorksheet _ws;
         CellStoreEnumerator<ExcelValue> _values;
+
         internal CellInfo(ExcelWorksheet ws, CellStoreEnumerator<ExcelValue> values)
         {
             this._ws = ws;
             this._values = values;
         }
+
         public string Address
         {
             get { return this._values.CellAddress; }
@@ -319,17 +330,14 @@ internal class EpplusExcelDataProvider : ExcelDataProvider
 
         public string Formula
         {
-            get 
-            {
-                return this._ws.GetFormula(this._values.Row, this._values.Column);
-            }
+            get { return this._ws.GetFormula(this._values.Row, this._values.Column); }
         }
 
         public object Value
         {
-            get 
-            { 
-                if(this._ws._flags.GetFlagValue(this._values.Row, this._values.Column, CellFlags.RichText))
+            get
+            {
+                if (this._ws._flags.GetFlagValue(this._values.Row, this._values.Column, CellFlags.RichText))
                 {
                     return this._ws.GetRichText(this._values.Row, this._values.Column, null).Text;
                 }
@@ -339,23 +347,26 @@ internal class EpplusExcelDataProvider : ExcelDataProvider
                 }
             }
         }
-            
+
         public double ValueDouble
         {
             get { return ConvertUtil.GetValueDouble(this._values.Value._value, true); }
         }
+
         public double ValueDoubleLogical
         {
             get { return ConvertUtil.GetValueDouble(this._values.Value._value, false); }
         }
+
         public bool IsHiddenRow
         {
-            get 
-            { 
-                RowInternal? row= this._ws.GetValueInner(this._values.Row, 0) as RowInternal;
-                if(row != null)
+            get
+            {
+                RowInternal? row = this._ws.GetValueInner(this._values.Row, 0) as RowInternal;
+
+                if (row != null)
                 {
-                    return row.Hidden || row.Height==0;
+                    return row.Hidden || row.Height == 0;
                 }
                 else
                 {
@@ -371,18 +382,12 @@ internal class EpplusExcelDataProvider : ExcelDataProvider
 
         public IList<Token> Tokens
         {
-            get 
-            {
-                return this._ws._formulaTokens.GetValue(this._values.Row, this._values.Column);
-            }
+            get { return this._ws._formulaTokens.GetValue(this._values.Row, this._values.Column); }
         }
 
         public ulong Id
         {
-            get
-            {
-                return ExcelCellBase.GetCellId(this._ws.IndexInList, this._values.Row, this._values.Column);
-            }
+            get { return ExcelCellBase.GetCellId(this._ws.IndexInList, this._values.Row, this._values.Column); }
         }
 
         public string WorksheetName
@@ -390,25 +395,30 @@ internal class EpplusExcelDataProvider : ExcelDataProvider
             get { return this._ws.Name; }
         }
     }
+
     public class NameInfo : INameInfo
     {
         public ulong Id { get; set; }
+
         public string Worksheet { get; set; }
+
         public string Name { get; set; }
+
         public string Formula { get; set; }
+
         public IList<Token> Tokens { get; internal set; }
+
         public object Value { get; set; }
     }
 
     private readonly ExcelPackage _package;
     private ExcelWorksheet _currentWorksheet;
     private RangeAddressFactory _rangeAddressFactory;
-    private Dictionary<ulong, INameInfo> _names=new Dictionary<ulong,INameInfo>();
+    private Dictionary<ulong, INameInfo> _names = new Dictionary<ulong, INameInfo>();
 
     internal EpplusExcelDataProvider()
         : this(new ExcelPackage())
     {
-
     }
 
     public EpplusExcelDataProvider(ExcelPackage package)
@@ -425,7 +435,8 @@ internal class EpplusExcelDataProvider : ExcelDataProvider
 
     public override ExcelNamedRangeCollection GetWorksheetNames(string worksheet)
     {
-        ExcelWorksheet? ws= this._package.Workbook.Worksheets[worksheet];
+        ExcelWorksheet? ws = this._package.Workbook.Worksheets[worksheet];
+
         if (ws != null)
         {
             return ws.Names;
@@ -441,11 +452,13 @@ internal class EpplusExcelDataProvider : ExcelDataProvider
         for (int ix = 1; ix <= this._package.Workbook.Worksheets.Count; ix++)
         {
             ExcelWorksheet? ws = this._package.Workbook.Worksheets[ix - 1];
+
             if (string.Compare(worksheetName, ws.Name, true) == 0)
             {
                 return ix;
             }
         }
+
         return -1;
     }
 
@@ -463,6 +476,7 @@ internal class EpplusExcelDataProvider : ExcelDataProvider
                 return ws.Tables[name];
             }
         }
+
         return null;
     }
 
@@ -476,6 +490,7 @@ internal class EpplusExcelDataProvider : ExcelDataProvider
         this.SetCurrentWorksheet(worksheet);
         string? wsName = string.IsNullOrEmpty(worksheet) ? this._currentWorksheet.Name : worksheet;
         ExcelWorksheet? ws = this._package.Workbook.Worksheets[wsName];
+
         if (ws == null)
         {
             throw new ExcelErrorValueException(eErrorType.Ref);
@@ -485,24 +500,30 @@ internal class EpplusExcelDataProvider : ExcelDataProvider
             return new RangeInfo(ws, fromRow, fromCol, toRow, toCol);
         }
     }
+
     public override IRangeInfo GetRange(string worksheet, int row, int column, string address)
     {
         this.SetCurrentWorksheet(worksheet);
         ExcelAddressBase? addr = new ExcelAddressBase(address, this._package.Workbook, worksheet);
+
         if (addr.Table != null && string.IsNullOrEmpty(addr._wb))
         {
             addr = ConvertToA1C1(this._package, addr, new ExcelAddressBase(row, column, row, column));
         }
+
         return this.GetRangeInternal(addr);
     }
+
     public override IRangeInfo GetRange(string worksheet, string address)
     {
         this.SetCurrentWorksheet(worksheet);
         ExcelAddressBase? addr = new ExcelAddressBase(address, this._package.Workbook, worksheet);
+
         if (addr.Table != null)
         {
             addr = ConvertToA1C1(this._package, addr, addr);
         }
+
         return this.GetRangeInternal(addr);
     }
 
@@ -516,6 +537,7 @@ internal class EpplusExcelDataProvider : ExcelDataProvider
         {
             string? wsName = string.IsNullOrEmpty(addr.WorkSheetName) ? this._currentWorksheet.Name : addr.WorkSheetName;
             ExcelWorksheet? ws = this._package.Workbook.Worksheets[wsName];
+
             if (ws == null)
             {
                 throw new ExcelErrorValueException(eErrorType.Ref);
@@ -529,6 +551,7 @@ internal class EpplusExcelDataProvider : ExcelDataProvider
     {
         ExcelExternalWorkbook externalWb;
         int ix = wb.ExternalLinks.GetExternalLink(addr._wb);
+
         if (ix >= 0)
         {
             externalWb = wb.ExternalLinks[ix].As.ExternalWorkbook;
@@ -537,18 +560,21 @@ internal class EpplusExcelDataProvider : ExcelDataProvider
         {
             throw new ExcelErrorValueException(eErrorType.Ref);
         }
+
         if (externalWb?.Package == null)
         {
-            if(addr.Table!=null)
+            if (addr.Table != null)
             {
                 throw new ExcelErrorValueException(eErrorType.Ref);
             }
+
             return new EpplusExcelExternalRangeInfo(externalWb, wb, addr);
         }
         else
         {
             addr = addr.ToInternalAddress();
             ExcelWorksheet ws;
+
             if (addr.Table == null)
             {
                 ws = externalWb.Package.Workbook.Worksheets[wsName];
@@ -562,18 +588,20 @@ internal class EpplusExcelDataProvider : ExcelDataProvider
             return new RangeInfo(ws, addr);
         }
     }
+
     private static ExcelAddress ConvertToA1C1(ExcelPackage package, ExcelAddressBase addr, ExcelAddressBase refAddress)
     {
         //Convert the Table-style Address to an A1C1 address
         addr.SetRCFromTable(package, refAddress);
         ExcelAddress? a = new ExcelAddress(addr._fromRow, addr._fromCol, addr._toRow, addr._toCol);
-        a._ws = addr._ws;            
+        a._ws = addr._ws;
+
         return a;
     }
 
     public override INameInfo GetName(string worksheet, string name)
     {
-        if(ExcelCellBase.IsExternalAddress(name))
+        if (ExcelCellBase.IsExternalAddress(name))
         {
             return this.GetExternalName(name);
         }
@@ -587,10 +615,12 @@ internal class EpplusExcelDataProvider : ExcelDataProvider
     {
         string? extRef = ExcelCellBase.GetWorkbookFromAddress(name);
         int ix = this._package.Workbook.ExternalLinks.GetExternalLink(extRef);
+
         if (ix >= 0)
         {
             ExcelExternalWorkbook? externalWorkbook = this._package.Workbook.ExternalLinks[ix].As.ExternalWorkbook;
-            if(externalWorkbook!=null)
+
+            if (externalWorkbook != null)
             {
                 if (externalWorkbook.Package == null)
                 {
@@ -599,6 +629,7 @@ internal class EpplusExcelDataProvider : ExcelDataProvider
                 else
                 {
                     name = name.Substring(name.IndexOf("]") + 1);
+
                     if (name.StartsWith("!"))
                     {
                         name = name.Substring(1);
@@ -608,6 +639,7 @@ internal class EpplusExcelDataProvider : ExcelDataProvider
                 }
             }
         }
+
         return null;
     }
 
@@ -615,8 +647,9 @@ internal class EpplusExcelDataProvider : ExcelDataProvider
     {
         ExcelExternalDefinedName nameItem;
 
-        int ix=-1;
+        int ix = -1;
         string? sheetName = ExcelAddressBase.GetWorksheetPart(name, "", ref ix);
+
         if (string.IsNullOrEmpty(sheetName))
         {
             if (ix > 0)
@@ -637,10 +670,12 @@ internal class EpplusExcelDataProvider : ExcelDataProvider
         }
 
         object value;
+
         if (!string.IsNullOrEmpty(nameItem.RefersTo))
         {
             string? nameAddress = nameItem.RefersTo.TrimStart('=');
             ExcelAddressBase address = new ExcelAddressBase(nameAddress);
+
             if (address.Address == "#REF!")
             {
                 value = ExcelErrorValue.Create(eErrorType.Ref);
@@ -654,11 +689,8 @@ internal class EpplusExcelDataProvider : ExcelDataProvider
         {
             value = ExcelErrorValue.Create(eErrorType.Name);
         }
-        return new NameInfo()
-        {
-            Name = name,
-            Value = value
-        };
+
+        return new NameInfo() { Name = name, Value = value };
     }
 
     private INameInfo GetLocalName(ExcelPackage package, string worksheet, string name)
@@ -666,15 +698,18 @@ internal class EpplusExcelDataProvider : ExcelDataProvider
         ExcelNamedRange nameItem;
         ExcelWorksheet ws;
         int ix = name.IndexOf('!');
-        if(ix>0)
+
+        if (ix > 0)
         {
-            string? wsName=ExcelAddressBase.GetWorksheetPart(name, worksheet, ref ix);
-            if(!string.IsNullOrEmpty(wsName))
+            string? wsName = ExcelAddressBase.GetWorksheetPart(name, worksheet, ref ix);
+
+            if (!string.IsNullOrEmpty(wsName))
             {
                 name = name.Substring(ix);
                 worksheet = wsName;
             }
         }
+
         if (string.IsNullOrEmpty(worksheet))
         {
             if (package._workbook.Names.ContainsKey(name))
@@ -685,11 +720,13 @@ internal class EpplusExcelDataProvider : ExcelDataProvider
             {
                 return null;
             }
+
             ws = null;
         }
         else
         {
             ws = package._workbook.Worksheets[worksheet];
+
             if (ws != null && ws.Names.ContainsKey(name))
             {
                 nameItem = ws.Names[name];
@@ -701,6 +738,7 @@ internal class EpplusExcelDataProvider : ExcelDataProvider
             else
             {
                 ExcelTable? tbl = ws.Tables[name];
+
                 if (tbl != null)
                 {
                     nameItem = new ExcelNamedRange(name, ws, ws, tbl.DataRange.Address, -1);
@@ -708,14 +746,17 @@ internal class EpplusExcelDataProvider : ExcelDataProvider
                 else
                 {
                     ExcelWorksheet? wsName = package.Workbook.Worksheets[name];
+
                     if (wsName == null)
                     {
                         return null;
                     }
+
                     nameItem = new ExcelNamedRange(name, ws, wsName, "A:XFD", -1);
                 }
             }
         }
+
         ulong id = ExcelCellBase.GetCellId(nameItem.LocalSheetId, nameItem.Index, 0);
 
         if (this._names.ContainsKey(id))
@@ -731,6 +772,7 @@ internal class EpplusExcelDataProvider : ExcelDataProvider
                 Worksheet = string.IsNullOrEmpty(worksheet) ? nameItem.Worksheet == null ? nameItem._ws : nameItem.Worksheet.Name : worksheet,
                 Formula = nameItem.Formula
             };
+
             if (nameItem._fromRow > 0)
             {
                 ni.Value = new RangeInfo(nameItem.Worksheet ?? ws, nameItem._fromRow, nameItem._fromCol, nameItem._toRow, nameItem._toCol);
@@ -741,6 +783,7 @@ internal class EpplusExcelDataProvider : ExcelDataProvider
             }
 
             this._names.Add(id, ni);
+
             return ni;
         }
     }
@@ -751,9 +794,9 @@ internal class EpplusExcelDataProvider : ExcelDataProvider
         ExcelAddress? addr = new ExcelAddress(address);
         string? wsName = string.IsNullOrEmpty(addr.WorkSheetName) ? this._currentWorksheet.Name : addr.WorkSheetName;
         ExcelWorksheet? ws = this._package.Workbook.Worksheets[wsName];
+
         return (IEnumerable<object>)new CellStoreEnumerator<ExcelValue>(ws._values, addr._fromRow, addr._fromCol, addr._toRow, addr._toCol);
     }
-
 
     public object GetValue(int row, int column)
     {
@@ -768,12 +811,16 @@ internal class EpplusExcelDataProvider : ExcelDataProvider
 
     public bool IsHidden(int row, int column)
     {
-        return this._currentWorksheet.Column(column).Hidden || this._currentWorksheet.Column(column).Width == 0 || this._currentWorksheet.Row(row).Hidden || this._currentWorksheet.Row(column).Height == 0;
+        return this._currentWorksheet.Column(column).Hidden
+               || this._currentWorksheet.Column(column).Width == 0
+               || this._currentWorksheet.Row(row).Hidden
+               || this._currentWorksheet.Row(column).Height == 0;
     }
 
     public override object GetCellValue(string sheetName, int row, int col)
     {
         this.SetCurrentWorksheet(sheetName);
+
         return this._currentWorksheet.GetValueInner(row, col);
     }
 
@@ -786,18 +833,22 @@ internal class EpplusExcelDataProvider : ExcelDataProvider
 
         ExcelWorksheet? worksheet = this._package.Workbook.Worksheets[sheetName];
         int wsIx = worksheet != null ? worksheet.IndexInList : 0;
+
         return ExcelCellBase.GetCellId(wsIx, row, col);
     }
 
     public override ExcelCellAddress GetDimensionEnd(string worksheet)
     {
         ExcelCellAddress address = null;
+
         try
         {
             address = this._package.Workbook.Worksheets[worksheet].Dimension.End;
         }
-        catch{}
-            
+        catch
+        {
+        }
+
         return address;
     }
 
@@ -817,13 +868,12 @@ internal class EpplusExcelDataProvider : ExcelDataProvider
     {
         if (!string.IsNullOrEmpty(worksheetName))
         {
-            this._currentWorksheet = this._package.Workbook.Worksheets[worksheetName];    
+            this._currentWorksheet = this._package.Workbook.Worksheets[worksheetName];
         }
         else
         {
-            this._currentWorksheet = this._package.Workbook.Worksheets.First(); 
+            this._currentWorksheet = this._package.Workbook.Worksheets.First();
         }
-            
     }
 
     //public override void SetCellValue(string address, object value)
@@ -854,29 +904,37 @@ internal class EpplusExcelDataProvider : ExcelDataProvider
     public override string GetRangeFormula(string worksheetName, int row, int column)
     {
         this.SetCurrentWorksheet(worksheetName);
+
         return this._currentWorksheet.GetFormula(row, column);
     }
 
     public override object GetRangeValue(string worksheetName, int row, int column)
     {
         this.SetCurrentWorksheet(worksheetName);
+
         return this._currentWorksheet.GetValue(row, column);
     }
+
     public override string GetFormat(object value, string format)
     {
         ExcelStyles? styles = this._package.Workbook.Styles;
-        ExcelNumberFormatXml.ExcelFormatTranslator ft=null;
-        foreach(ExcelNumberFormatXml? f in styles.NumberFormats)
+        ExcelNumberFormatXml.ExcelFormatTranslator ft = null;
+
+        foreach (ExcelNumberFormatXml? f in styles.NumberFormats)
         {
-            if(f.Format==format)
+            if (f.Format == format)
             {
-                ft=f.FormatTranslator;
+                ft = f.FormatTranslator;
+
                 break;
             }
         }
+
         ft ??= new ExcelNumberFormatXml.ExcelFormatTranslator(format, -1);
-        return ValueToTextHandler.FormatValue(value,false, ft, null);
+
+        return ValueToTextHandler.FormatValue(value, false, ft, null);
     }
+
     public override List<Token> GetRangeFormulaTokens(string worksheetName, int row, int column)
     {
         return this._package.Workbook.Worksheets[worksheetName]._formulaTokens.GetValue(row, column);
@@ -902,22 +960,26 @@ internal class EpplusExcelDataProvider : ExcelDataProvider
         }
 
         int ixEnd = name.IndexOf("]");
-        if(ixEnd>0)
+
+        if (ixEnd > 0)
         {
-            string? ix = name.Substring(1,ixEnd-1);
-            int extRef= this._package.Workbook.ExternalLinks.GetExternalLink(ix);
+            string? ix = name.Substring(1, ixEnd - 1);
+            int extRef = this._package.Workbook.ExternalLinks.GetExternalLink(ix);
+
             if (extRef < 0)
             {
                 return false;
             }
 
             ExcelExternalWorkbook? extBook = this._package.Workbook.ExternalLinks[extRef].As.ExternalWorkbook;
-            if(extBook==null)
+
+            if (extBook == null)
             {
                 return false;
             }
 
-            string? address = name.Substring(ixEnd+1);
+            string? address = name.Substring(ixEnd + 1);
+
             if (address.StartsWith("!"))
             {
                 return extBook.CachedNames.ContainsKey(address.Substring(1));
@@ -926,12 +988,14 @@ internal class EpplusExcelDataProvider : ExcelDataProvider
             {
                 int addressStart = -1;
                 string? sheetName = ExcelAddressBase.GetWorksheetPart(address, "", ref addressStart);
-                if (extBook.CachedWorksheets.ContainsKey(sheetName) && addressStart>0)
+
+                if (extBook.CachedWorksheets.ContainsKey(sheetName) && addressStart > 0)
                 {
                     return extBook.CachedWorksheets[sheetName].CachedNames.ContainsKey(address.Substring(addressStart));
                 }
             }
         }
+
         return false;
     }
 

@@ -10,6 +10,7 @@
  *************************************************************************************************
   11/05/2021         EPPlus Software AB           Bugfix
  *************************************************************************************************/
+
 using static OfficeOpenXml.FormulaParsing.ExcelDataProvider;
 
 namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Math;

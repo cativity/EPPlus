@@ -10,6 +10,7 @@
  *************************************************************************************************
   01/27/2020         EPPlus Software AB       Initial release EPPlus 5
  *************************************************************************************************/
+
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -23,13 +24,12 @@ namespace OfficeOpenXml.ConditionalFormatting;
 /// <summary>
 /// ExcelConditionalFormattingTimePeriodGroup
 /// </summary>
-public class ExcelConditionalFormattingTimePeriodGroup
-    : ExcelConditionalFormattingRule,
-      IExcelConditionalFormattingTimePeriodGroup
+public class ExcelConditionalFormattingTimePeriodGroup : ExcelConditionalFormattingRule, IExcelConditionalFormattingTimePeriodGroup
 {
     /****************************************************************************************/
 
     #region Constructors
+
     /// <summary>
     /// 
     /// </summary>
@@ -39,20 +39,13 @@ public class ExcelConditionalFormattingTimePeriodGroup
     /// <param name="worksheet"></param>
     /// <param name="itemElementNode"></param>
     /// <param name="namespaceManager"></param>
-    internal ExcelConditionalFormattingTimePeriodGroup(
-        eExcelConditionalFormattingRuleType type,
-        ExcelAddress address,
-        int priority,
-        ExcelWorksheet worksheet,
-        XmlNode itemElementNode,
-        XmlNamespaceManager namespaceManager)
-        : base(
-               type,
-               address,
-               priority,
-               worksheet,
-               itemElementNode,
-               namespaceManager == null ? worksheet.NameSpaceManager : namespaceManager)
+    internal ExcelConditionalFormattingTimePeriodGroup(eExcelConditionalFormattingRuleType type,
+                                                       ExcelAddress address,
+                                                       int priority,
+                                                       ExcelWorksheet worksheet,
+                                                       XmlNode itemElementNode,
+                                                       XmlNamespaceManager namespaceManager)
+        : base(type, address, priority, worksheet, itemElementNode, namespaceManager == null ? worksheet.NameSpaceManager : namespaceManager)
     {
     }
 
@@ -64,19 +57,12 @@ public class ExcelConditionalFormattingTimePeriodGroup
     /// <param name="address"></param>
     /// <param name="worksheet"></param>
     /// <param name="itemElementNode"></param>
-    internal ExcelConditionalFormattingTimePeriodGroup(
-        eExcelConditionalFormattingRuleType type,
-        ExcelAddress address,
-        int priority,
-        ExcelWorksheet worksheet,
-        XmlNode itemElementNode)
-        : this(
-               type,
-               address,
-               priority,
-               worksheet,
-               itemElementNode,
-               null)
+    internal ExcelConditionalFormattingTimePeriodGroup(eExcelConditionalFormattingRuleType type,
+                                                       ExcelAddress address,
+                                                       int priority,
+                                                       ExcelWorksheet worksheet,
+                                                       XmlNode itemElementNode)
+        : this(type, address, priority, worksheet, itemElementNode, null)
     {
     }
 
@@ -87,20 +73,11 @@ public class ExcelConditionalFormattingTimePeriodGroup
     /// <param name="address"></param>
     /// <param name="priority"></param>
     /// <param name="worksheet"></param>
-    internal ExcelConditionalFormattingTimePeriodGroup(
-        eExcelConditionalFormattingRuleType type,
-        ExcelAddress address,
-        int priority,
-        ExcelWorksheet worksheet)
-        : this(
-               type,
-               address,
-               priority,
-               worksheet,
-               null,
-               null)
+    internal ExcelConditionalFormattingTimePeriodGroup(eExcelConditionalFormattingRuleType type, ExcelAddress address, int priority, ExcelWorksheet worksheet)
+        : this(type, address, priority, worksheet, null, null)
     {
     }
+
     #endregion Constructors
 
     /****************************************************************************************/

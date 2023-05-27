@@ -10,6 +10,7 @@
  *************************************************************************************************
   04/16/2020         EPPlus Software AB           Initial release EPPlus 5.2
  *************************************************************************************************/
+
 using OfficeOpenXml.Drawing.Style.Coloring;
 using System;
 using System.Globalization;
@@ -24,21 +25,24 @@ public class ExcelChartExValueColors : XmlHelper
 {
     private ExcelRegionMapChartSerie _series;
 
-    internal ExcelChartExValueColors(ExcelRegionMapChartSerie series, XmlNamespaceManager nameSpaceManager, XmlNode topNode, string[] schemaNodeOrder) : base (nameSpaceManager, topNode)
+    internal ExcelChartExValueColors(ExcelRegionMapChartSerie series, XmlNamespaceManager nameSpaceManager, XmlNode topNode, string[] schemaNodeOrder)
+        : base(nameSpaceManager, topNode)
     {
         this._series = series;
         this.SchemaNodeOrder = schemaNodeOrder;
     }
+
     /// <summary>
     /// Number of colors to create the series gradient color scale.
     /// If two colors, the mid color is null.
     /// </summary>
-    public eNumberOfColors NumberOfColors 
-    { 
+    public eNumberOfColors NumberOfColors
+    {
         get
         {
-            string? v= this.GetXmlNodeString("cx:valueColorPositions/@count");
-            if(v=="3")
+            string? v = this.GetXmlNodeString("cx:valueColorPositions/@count");
+
+            if (v == "3")
             {
                 return eNumberOfColors.ThreeColor;
             }
@@ -47,20 +51,21 @@ public class ExcelChartExValueColors : XmlHelper
                 return eNumberOfColors.TwoColor;
             }
         }
-        set
-        {
-            this.SetXmlNodeString("cx:valueColorPositions/@count", ((int)value).ToString(CultureInfo.InvariantCulture));
-        }
+        set { this.SetXmlNodeString("cx:valueColorPositions/@count", ((int)value).ToString(CultureInfo.InvariantCulture)); }
     }
+
     ExcelChartExValueColor _minColor = null;
+
     /// <summary>
     /// The minimum color value.
     /// </summary>
-    public ExcelChartExValueColor MinColor 
+    public ExcelChartExValueColor MinColor
     {
         get { return this._minColor ??= new ExcelChartExValueColor(this.NameSpaceManager, this.TopNode, this.SchemaNodeOrder, "min"); }
     }
+
     ExcelChartExValueColor _midColor = null;
+
     /// <summary>
     /// The mid color value. Null if NumberOfcolors is set to TwoColors
     /// </summary>
@@ -76,7 +81,9 @@ public class ExcelChartExValueColors : XmlHelper
             return this._midColor ??= new ExcelChartExValueColor(this.NameSpaceManager, this.TopNode, this.SchemaNodeOrder, "mid");
         }
     }
+
     ExcelChartExValueColor _maxColor = null;
+
     /// <summary>
     /// The maximum color value.
     /// </summary>

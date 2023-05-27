@@ -10,33 +10,39 @@
  *************************************************************************************************
   01/27/2020         EPPlus Software AB       Initial release EPPlus 5
  *************************************************************************************************/
+
 namespace OfficeOpenXml.Drawing;
 
 /// <summary>
 /// Line end style.
 /// </summary>
-public enum eEndStyle   //ST_LineEndType
+public enum eEndStyle //ST_LineEndType
 {
     /// <summary>
     /// No end
     /// </summary>
     None,
+
     /// <summary>
     /// Triangle arrow head
     /// </summary>
     Triangle,
+
     /// <summary>
     /// Stealth arrow head
     /// </summary>
     Stealth,
+
     /// <summary>
     /// Diamond
     /// </summary>
     Diamond,
+
     /// <summary>
     /// Oval
     /// </summary>
     Oval,
+
     /// <summary>
     /// Line arrow head
     /// </summary>

@@ -26,6 +26,7 @@
  *******************************************************************************
   01/27/2020         EPPlus Software AB       Initial release EPPlus 5
  *******************************************************************************/
+
 using EPPlusTest;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using OfficeOpenXml;
@@ -37,27 +38,32 @@ namespace EPPlusTest.Core.Range;
 public class ProtectedRangesTests : TestBase
 {
     static ExcelPackage _pck;
+
     [ClassInitialize]
     public static void Init(TestContext context)
     {
         _pck = OpenPackage("ProtectedRanges.xlsx", true);
     }
+
     [ClassCleanup]
     public static void CleanUp()
     {
         SaveAndCleanup(_pck);
     }
+
     [TestMethod]
     public void AddProtectedRange()
     {
         ExcelWorksheet? ws = _pck.Workbook.Worksheets.Add("SingleProtectedRange");
         LoadTestdata(ws);
         ws.ProtectedRanges.Add("ProtectedRange", ws.Cells["A1:B2"]);
+
         //Assert
         Assert.AreEqual(1, ws.ProtectedRanges.Count);
         Assert.AreEqual("ProtectedRange", ws.ProtectedRanges[0].Name);
         Assert.AreEqual("A1:B2", ws.ProtectedRanges[0].Address.Address);
     }
+
     [TestMethod]
     public void AddThreeProtectedRanges()
     {
@@ -68,6 +74,7 @@ public class ProtectedRangesTests : TestBase
         ExcelProtectedRange? pr2 = ws.ProtectedRanges.Add("ProtectedRange2", ws.Cells["C1:D2"]);
         pr2.SetPassword("EPPlus2");
         ExcelProtectedRange? pr3 = ws.ProtectedRanges.Add("ProtectedRange3", ws.Cells["B1:E8"]);
+
         //Assert
         pr3.SetPassword("EPPlus3");
 
@@ -79,6 +86,7 @@ public class ProtectedRangesTests : TestBase
         Assert.AreEqual("C1:D2", pr2.Address.Address);
         Assert.AreEqual("B1:E8", pr3.Address.Address);
     }
+
     [TestMethod]
     public void RemoveProtectedRange()
     {
@@ -87,10 +95,12 @@ public class ProtectedRangesTests : TestBase
         ws.ProtectedRanges.Add("ProtectedRange", ws.Cells["A1:B2"]);
         Assert.AreEqual(1, ws.ProtectedRanges.Count);
         ws.ProtectedRanges.Remove(ws.ProtectedRanges[0]);
+
         //Assert
         Assert.AreEqual(0, ws.ProtectedRanges.Count);
         Assert.IsFalse(ws.ProtectedRanges.ExistsNode("d:protectedRanges"));
     }
+
     [TestMethod]
     public void RemoveAtProtectedRange()
     {
@@ -99,10 +109,12 @@ public class ProtectedRangesTests : TestBase
         ws.ProtectedRanges.Add("ProtectedRange", ws.Cells["A1:B2"]);
         Assert.AreEqual(1, ws.ProtectedRanges.Count);
         ws.ProtectedRanges.RemoveAt(0);
+
         //Assert
         Assert.AreEqual(0, ws.ProtectedRanges.Count);
         Assert.IsFalse(ws.ProtectedRanges.ExistsNode("d:protectedRanges"));
     }
+
     [TestMethod]
     public void ClearProtectedRange()
     {
@@ -113,6 +125,7 @@ public class ProtectedRangesTests : TestBase
         ws.ProtectedRanges.Add("ProtectedRange3", ws.Cells["A3:B4"]);
         Assert.AreEqual(3, ws.ProtectedRanges.Count);
         ws.ProtectedRanges.Clear();
+
         //Assert
         Assert.AreEqual(0, ws.ProtectedRanges.Count);
         Assert.IsFalse(ws.ProtectedRanges.ExistsNode("d:protectedRanges"));
@@ -127,5 +140,4 @@ public class ProtectedRangesTests : TestBase
         ws.ProtectedRanges.Add("Range", ws.Cells["A1:B2"]);
         ws.ProtectedRanges.Add("range", ws.Cells["A4:B5"]);
     }
-
 }

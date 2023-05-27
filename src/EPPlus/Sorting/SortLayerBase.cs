@@ -10,6 +10,7 @@
  *************************************************************************************************
   05/07/2021         EPPlus Software AB       EPPlus 5.7
  *************************************************************************************************/
+
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -79,7 +80,7 @@ public abstract class SortLayerBase
 
     internal void SetCustomList(params string[] values)
     {
-        if(this._options.CustomLists.ContainsKey(this._column))
+        if (this._options.CustomLists.ContainsKey(this._column))
         {
             throw new ArgumentException("Custom list is already defined for column index " + this._column);
         }

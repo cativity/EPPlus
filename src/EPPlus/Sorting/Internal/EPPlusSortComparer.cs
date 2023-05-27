@@ -10,6 +10,7 @@
  *************************************************************************************************
   05/07/2021         EPPlus Software AB       EPPlus 5.7
  *************************************************************************************************/
+
 using OfficeOpenXml.Core.CellStore;
 using OfficeOpenXml.Utils;
 using System;
@@ -22,20 +23,25 @@ namespace OfficeOpenXml.Sorting.Internal;
 
 internal class EPPlusSortComparer : EPPlusSortComparerBase<SortItem<ExcelValue>, ExcelValue>
 {
-    public EPPlusSortComparer(int[] columns, bool[] descending, Dictionary<int, string[]> customLists, CultureInfo culture = null, CompareOptions compareOptions = CompareOptions.None)
+    public EPPlusSortComparer(int[] columns,
+                              bool[] descending,
+                              Dictionary<int, string[]> customLists,
+                              CultureInfo culture = null,
+                              CompareOptions compareOptions = CompareOptions.None)
         : base(descending, customLists, culture, compareOptions)
     {
         this._columns = columns;
     }
 
     private readonly int[] _columns;
-        
+
     public override int Compare(SortItem<ExcelValue> x, SortItem<ExcelValue> y)
     {
         for (int i = 0; i < this._columns.Length; i++)
         {
             object? x1 = x.Items[this._columns[i]]._value;
             object? y1 = y.Items[this._columns[i]]._value;
+
             if (x1 == null && y1 != null)
             {
                 return 1;
@@ -47,10 +53,12 @@ internal class EPPlusSortComparer : EPPlusSortComparerBase<SortItem<ExcelValue>,
             }
 
             int ret;
+
             if (this.CustomLists != null && this.CustomLists.ContainsKey(this._columns[i]))
             {
                 int weight1 = this.GetSortWeightByCustomList(x1.ToString(), this.CustomLists[this._columns[i]]);
                 int weight2 = this.GetSortWeightByCustomList(y1.ToString(), this.CustomLists[this._columns[i]]);
+
                 if (weight1 != CustomListNotFound && weight2 != CustomListNotFound)
                 {
                     ret = weight1.CompareTo(weight2);
@@ -72,11 +80,13 @@ internal class EPPlusSortComparer : EPPlusSortComparerBase<SortItem<ExcelValue>,
             {
                 ret = CompareObjects(x1, y1);
             }
+
             if (ret != 0)
             {
                 return ret * (this.Descending[i] ? -1 : 1);
             }
         }
+
         return 0;
     }
 }

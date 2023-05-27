@@ -10,6 +10,7 @@
  *************************************************************************************************
   02/03/2020         EPPlus Software AB       Added
  *************************************************************************************************/
+
 using OfficeOpenXml.ConditionalFormatting;
 using OfficeOpenXml.Core.CellStore;
 using OfficeOpenXml.DataValidation;
@@ -70,6 +71,7 @@ internal static class WorksheetRangeInsertHelper
         foreach (ExcelTable? tbl in ws.Tables)
         {
             tbl.Address = tbl.Address.AddRow(rowFrom, rows);
+
             foreach (ExcelTableColumn? col in tbl.Columns)
             {
                 if (string.IsNullOrEmpty(col.CalculatedColumnFormula) == false)
@@ -130,6 +132,7 @@ internal static class WorksheetRangeInsertHelper
             {
                 ptbl.Address = ptbl.Address.AddColumn(columnFrom, columns);
             }
+
             if (columnFrom <= ptbl.CacheDefinition.SourceRange.End.Column)
             {
                 if (ptbl.CacheDefinition.CacheSource == eSourceType.Worksheet)
@@ -151,13 +154,15 @@ internal static class WorksheetRangeInsertHelper
             }
 
             tbl.Address = tbl.Address.AddColumn(columnFrom, columns);
+
             if (columnFrom <= tbl.Address._toCol)
             {
                 foreach (ExcelTableColumn? col in tbl.Columns)
                 {
                     if (string.IsNullOrEmpty(col.CalculatedColumnFormula) == false)
                     {
-                        col.CalculatedColumnFormula = ExcelCellBase.UpdateFormulaReferences(col.CalculatedColumnFormula, 0, columns, 0, columnFrom, ws.Name, ws.Name);
+                        col.CalculatedColumnFormula =
+                            ExcelCellBase.UpdateFormulaReferences(col.CalculatedColumnFormula, 0, columns, 0, columnFrom, ws.Name, ws.Name);
                     }
                 }
             }
@@ -172,6 +177,7 @@ internal static class WorksheetRangeInsertHelper
         WorksheetRangeHelper.ValidateIfInsertDeleteIsPossible(range, effectedAddress, GetAffectedRange(range, shift, 1), true);
 
         ExcelWorksheet? ws = range.Worksheet;
+
         lock (ws)
         {
             List<int>? styleList = GetStylesForRange(range, shift);
@@ -185,6 +191,7 @@ internal static class WorksheetRangeInsertHelper
             {
                 InsertCellStoreShiftRight(range._worksheet, range);
             }
+
             AdjustFormulasInsert(range, effectedAddress, shift);
             InsertFilterAddress(range, effectedAddress, shift);
             WorksheetRangeHelper.FixMergedCells(ws, range, shift);
@@ -213,13 +220,19 @@ internal static class WorksheetRangeInsertHelper
         }
     }
 
-    private static void InsertConditionalFormatting(ExcelRangeBase range, eShiftTypeInsert shift, ExcelAddressBase effectedAddress, ExcelWorksheet ws, bool isTable)
+    private static void InsertConditionalFormatting(ExcelRangeBase range,
+                                                    eShiftTypeInsert shift,
+                                                    ExcelAddressBase effectedAddress,
+                                                    ExcelWorksheet ws,
+                                                    bool isTable)
     {
         List<IExcelConditionalFormattingRule>? delCF = new List<IExcelConditionalFormattingRule>();
+
         //Update Conditional formatting references
         foreach (IExcelConditionalFormattingRule? cf in ws.ConditionalFormatting)
         {
             ExcelAddressBase? newAddress = InsertSplitAddress(cf.Address, range, effectedAddress, shift, isTable);
+
             if (newAddress == null)
             {
                 delCF.Add(cf);
@@ -227,6 +240,7 @@ internal static class WorksheetRangeInsertHelper
             else
             {
                 ExcelConditionalFormattingRule? cfr = (ExcelConditionalFormattingRule)cf;
+
                 if (cfr.Address.Address != newAddress.Address)
                 {
                     if (cfr.Address.FirstCellAddressRelative != newAddress.FirstCellAddressRelative)
@@ -234,7 +248,7 @@ internal static class WorksheetRangeInsertHelper
                         cfr.Formula = WorksheetRangeHelper.AdjustStartCellForFormula(cfr.Formula, cfr.Address, newAddress);
                         cfr.Formula2 = WorksheetRangeHelper.AdjustStartCellForFormula(cfr.Formula2, cfr.Address, newAddress);
                     }
-                        
+
                     cfr.Address = new ExcelAddress(newAddress.Address);
                 }
             }
@@ -249,10 +263,12 @@ internal static class WorksheetRangeInsertHelper
     private static void InsertDataValidation(ExcelRangeBase range, eShiftTypeInsert shift, ExcelAddressBase effectedAddress, ExcelWorksheet ws, bool isTable)
     {
         List<ExcelDataValidation>? delDV = new List<ExcelDataValidation>();
+
         //Update data validation references
         foreach (ExcelDataValidation dv in ws.DataValidations)
         {
             ExcelAddressBase? newAddress = InsertSplitAddress(dv.Address, range, effectedAddress, shift, isTable);
+
             if (newAddress == null)
             {
                 delDV.Add(dv);
@@ -265,15 +281,18 @@ internal static class WorksheetRangeInsertHelper
                     {
                         if (dv.Address.FirstCellAddressRelative != newAddress.FirstCellAddressRelative)
                         {
-                            dvFormula.Formula.ExcelFormula = WorksheetRangeHelper.AdjustStartCellForFormula(dvFormula.Formula.ExcelFormula, dv.Address, newAddress);
+                            dvFormula.Formula.ExcelFormula =
+                                WorksheetRangeHelper.AdjustStartCellForFormula(dvFormula.Formula.ExcelFormula, dv.Address, newAddress);
                         }
                     }
+
                     dv.SetAddress(newAddress.Address);
                 }
-                    
             }
+
             ws.DataValidations.InsertRangeDictionary(range, shift == eShiftTypeInsert.Right || shift == eShiftTypeInsert.EntireColumn);
         }
+
         foreach (ExcelDataValidation? dv in delDV)
         {
             ws.DataValidations.Remove(dv);
@@ -283,6 +302,7 @@ internal static class WorksheetRangeInsertHelper
     private static void InsertFilterAddress(ExcelRangeBase range, ExcelAddressBase effectedAddress, eShiftTypeInsert shift)
     {
         ExcelWorksheet? ws = range.Worksheet;
+
         if (ws.AutoFilterAddress != null && effectedAddress.Collide(ws.AutoFilterAddress) != ExcelAddressBase.eAddressCollition.No)
         {
             if (shift == eShiftTypeInsert.Down)
@@ -295,6 +315,7 @@ internal static class WorksheetRangeInsertHelper
             }
         }
     }
+
     private static void InsertSparkLinesAddress(ExcelRangeBase range, eShiftTypeInsert shift, ExcelAddressBase effectedAddress)
     {
         foreach (ExcelSparklineGroup? slg in range.Worksheet.SparklineGroups)
@@ -302,6 +323,7 @@ internal static class WorksheetRangeInsertHelper
             if (slg.DateAxisRange != null && effectedAddress.Collide(slg.DateAxisRange) >= ExcelAddressBase.eAddressCollition.Inside)
             {
                 string address;
+
                 if (shift == eShiftTypeInsert.Down)
                 {
                     address = slg.DateAxisRange.AddRow(range._fromRow, range.Rows).Address;
@@ -310,6 +332,7 @@ internal static class WorksheetRangeInsertHelper
                 {
                     address = slg.DateAxisRange.AddColumn(range._fromCol, range.Columns).Address;
                 }
+
                 slg.DateAxisRange = range.Worksheet.Cells[address];
             }
 
@@ -317,8 +340,8 @@ internal static class WorksheetRangeInsertHelper
             {
                 if (shift == eShiftTypeInsert.Down)
                 {
-                    if (effectedAddress.Collide(sl.RangeAddress) >= ExcelAddressBase.eAddressCollition.Inside ||
-                        range.CollideFullRow(sl.RangeAddress._fromRow, sl.RangeAddress._toRow))
+                    if (effectedAddress.Collide(sl.RangeAddress) >= ExcelAddressBase.eAddressCollition.Inside
+                        || range.CollideFullRow(sl.RangeAddress._fromRow, sl.RangeAddress._toRow))
                     {
                         sl.RangeAddress = sl.RangeAddress.AddRow(range._fromRow, range.Rows);
                     }
@@ -330,8 +353,8 @@ internal static class WorksheetRangeInsertHelper
                 }
                 else
                 {
-                    if (effectedAddress.Collide(sl.RangeAddress) >= ExcelAddressBase.eAddressCollition.Inside ||
-                        range.CollideFullColumn(sl.RangeAddress._fromCol, sl.RangeAddress._toCol))
+                    if (effectedAddress.Collide(sl.RangeAddress) >= ExcelAddressBase.eAddressCollition.Inside
+                        || range.CollideFullColumn(sl.RangeAddress._fromCol, sl.RangeAddress._toCol))
                     {
                         sl.RangeAddress = sl.RangeAddress.AddColumn(range._fromCol, range.Columns);
                     }
@@ -353,7 +376,11 @@ internal static class WorksheetRangeInsertHelper
         }
     }
 
-    private static ExcelAddressBase InsertSplitAddress(ExcelAddressBase address, ExcelAddressBase range, ExcelAddressBase effectedAddress, eShiftTypeInsert shift, bool isTable)
+    private static ExcelAddressBase InsertSplitAddress(ExcelAddressBase address,
+                                                       ExcelAddressBase range,
+                                                       ExcelAddressBase effectedAddress,
+                                                       eShiftTypeInsert shift,
+                                                       bool isTable)
     {
         if (address.Addresses == null)
         {
@@ -362,16 +389,21 @@ internal static class WorksheetRangeInsertHelper
         else
         {
             string? newAddress = "";
+
             foreach (ExcelAddressBase? a in address.Addresses)
             {
                 newAddress += InsertSplitIndividualAddress(a, range, effectedAddress, shift, isTable) + ",";
             }
+
             return new ExcelAddressBase(newAddress.Substring(0, newAddress.Length - 1));
         }
-
     }
 
-    private static ExcelAddressBase InsertSplitIndividualAddress(ExcelAddressBase address, ExcelAddressBase range, ExcelAddressBase effectedAddress, eShiftTypeInsert shift, bool isTable)
+    private static ExcelAddressBase InsertSplitIndividualAddress(ExcelAddressBase address,
+                                                                 ExcelAddressBase range,
+                                                                 ExcelAddressBase effectedAddress,
+                                                                 eShiftTypeInsert shift,
+                                                                 bool isTable)
     {
         if (address.CollideFullColumn(range._fromCol, range._toCol) && (shift == eShiftTypeInsert.Down || shift == eShiftTypeInsert.EntireRow))
         {
@@ -384,15 +416,18 @@ internal static class WorksheetRangeInsertHelper
         else
         {
             ExcelAddressBase.eAddressCollition collide = effectedAddress.Collide(address);
+
             if (collide == ExcelAddressBase.eAddressCollition.Partly)
             {
                 ExcelAddressBase? addressToShift = effectedAddress.Intersect(address);
                 ExcelAddressBase? shiftedAddress = ShiftAddress(addressToShift, range, shift);
                 string? newAddress = "";
+
                 if (address._fromRow < addressToShift._fromRow)
                 {
                     newAddress = ExcelCellBase.GetAddress(address._fromRow, address._fromCol, addressToShift._fromRow - 1, address._toCol) + ",";
                 }
+
                 if (address._fromCol < addressToShift._fromCol)
                 {
                     int fromRow = Math.Max(address._fromRow, addressToShift._fromRow);
@@ -405,10 +440,12 @@ internal static class WorksheetRangeInsertHelper
                 {
                     newAddress += ExcelCellBase.GetAddress(addressToShift._toRow + 1, address._fromCol, address._toRow, address._toCol) + ",";
                 }
+
                 if (address._toCol > addressToShift._toCol)
                 {
                     newAddress += ExcelCellBase.GetAddress(address._fromRow, addressToShift._toCol + 1, address._toRow, address._toCol) + ",";
                 }
+
                 return new ExcelAddressBase(newAddress.Substring(0, newAddress.Length - 1));
             }
             else if (collide != ExcelAddressBase.eAddressCollition.No)
@@ -416,6 +453,7 @@ internal static class WorksheetRangeInsertHelper
                 return ShiftAddress(address, range, shift);
             }
         }
+
         return address;
     }
 
@@ -453,6 +491,7 @@ internal static class WorksheetRangeInsertHelper
             if (ptbl.CacheDefinition.SourceRange.Worksheet == ws)
             {
                 ExcelRangeBase? address = ptbl.CacheDefinition.SourceRange;
+
                 if (shift == eShiftTypeInsert.Down)
                 {
                     if (address._fromCol >= range._fromCol && address._toCol <= range._toCol)
@@ -492,13 +531,15 @@ internal static class WorksheetRangeInsertHelper
 
             //Update CalculatedColumnFormula
             ExcelAddressBase? address = tbl.Address.Intersect(range);
+
             foreach (ExcelTableColumn? col in tbl.Columns)
             {
                 if (string.IsNullOrEmpty(col.CalculatedColumnFormula) == false)
                 {
                     string? cf = ExcelCellBase.UpdateFormulaReferences(col.CalculatedColumnFormula, range, effectedAddress, shift, ws.Name, ws.Name);
                     col.SetFormula(cf);
-                    if (address != null && tbl.Address._fromCol+col.Position-1 >= effectedAddress._fromCol)
+
+                    if (address != null && tbl.Address._fromCol + col.Position - 1 >= effectedAddress._fromCol)
                     {
                         int fromRow = tbl.ShowHeader && address._fromRow == tbl.Address._fromRow ? address._fromRow + 1 : address._fromRow;
                         int toRow = tbl.ShowTotal ? address._toRow - 1 : address._toRow;
@@ -513,6 +554,7 @@ internal static class WorksheetRangeInsertHelper
     private static List<int> GetStylesForRange(ExcelRangeBase range, eShiftTypeInsert shift)
     {
         List<int>? list = new List<int>();
+
         if (shift == eShiftTypeInsert.Down)
         {
             for (int i = 0; i < range.Columns; i++)
@@ -541,6 +583,7 @@ internal static class WorksheetRangeInsertHelper
                 }
             }
         }
+
         return list;
     }
 
@@ -557,7 +600,6 @@ internal static class WorksheetRangeInsertHelper
         {
             for (int i = 0; i < range.Rows; i++)
             {
-
                 range.Offset(i, 0, 1, range.Columns).StyleID = list[i];
             }
         }
@@ -595,7 +637,10 @@ internal static class WorksheetRangeInsertHelper
 
             //Get styles to a cached list, 
             List<int[]>? l = new List<int[]>();
-            CellStoreEnumerator<ExcelValue>? sce = new CellStoreEnumerator<ExcelValue>(ws._values, 0, copyStylesFromColumn, ExcelPackage.MaxRows, copyStylesFromColumn);
+
+            CellStoreEnumerator<ExcelValue>? sce =
+                new CellStoreEnumerator<ExcelValue>(ws._values, 0, copyStylesFromColumn, ExcelPackage.MaxRows, copyStylesFromColumn);
+
             lock (sce)
             {
                 while (sce.Next())
@@ -616,7 +661,7 @@ internal static class WorksheetRangeInsertHelper
                 {
                     if (sc[0] == 0)
                     {
-                        ExcelColumn? col = ws.Column(columnFrom + c);   //Create the column
+                        ExcelColumn? col = ws.Column(columnFrom + c); //Create the column
                         col.StyleID = sc[1];
                     }
                     else
@@ -625,7 +670,9 @@ internal static class WorksheetRangeInsertHelper
                     }
                 }
             }
+
             int newOutlineLevel = ws.Column(copyStylesFromColumn).OutlineLevel;
+
             for (int c = 0; c < columns; c++)
             {
                 ws.Column(columnFrom + c).OutlineLevel = newOutlineLevel;
@@ -637,9 +684,11 @@ internal static class WorksheetRangeInsertHelper
     {
         CellStoreEnumerator<ExcelValue>? csec = new CellStoreEnumerator<ExcelValue>(ws._values, 0, 1, 0, ExcelPackage.MaxColumns);
         List<ExcelColumn>? lst = new List<ExcelColumn>();
+
         foreach (ExcelValue val in csec)
         {
             object? col = val._value;
+
             if (col is ExcelColumn)
             {
                 lst.Add((ExcelColumn)col);
@@ -649,6 +698,7 @@ internal static class WorksheetRangeInsertHelper
         for (int i = lst.Count - 1; i >= 0; i--)
         {
             ExcelColumn? c = lst[i];
+
             if (c._columnMin >= columnFrom)
             {
                 if (c._columnMin + columns <= ExcelPackage.MaxColumns)
@@ -677,6 +727,7 @@ internal static class WorksheetRangeInsertHelper
             }
         }
     }
+
     private static void AdjustFormulasInsert(ExcelRangeBase range, ExcelAddressBase effectedAddress, eShiftTypeInsert shift)
     {
         //Adjust formulas
@@ -692,15 +743,18 @@ internal static class WorksheetRangeInsertHelper
                 {
                     ExcelAddressBase? a = new ExcelAddressBase(f.Address);
                     ExcelAddressBase.eAddressCollition c = effectedAddress.Collide(a);
+
                     if (c == ExcelAddressBase.eAddressCollition.Partly && (effectedAddress._fromCol > a._fromCol || effectedAddress._toCol < a._toCol))
                     {
                         throw new Exception("Invalid shared formula"); //This should never happend!
                     }
-                    if (f.StartCol >= columnFrom && c != ExcelAddressBase.eAddressCollition.No )
+
+                    if (f.StartCol >= columnFrom && c != ExcelAddressBase.eAddressCollition.No)
                     {
-                        if(shift == eShiftTypeInsert.Down || shift == eShiftTypeInsert.EntireRow)
+                        if (shift == eShiftTypeInsert.Down || shift == eShiftTypeInsert.EntireRow)
                         {
                             int rows = range.Rows;
+
                             if (f.StartRow >= rowFrom)
                             {
                                 f.StartRow += rows;
@@ -719,6 +773,7 @@ internal static class WorksheetRangeInsertHelper
                         else
                         {
                             int cols = range.Columns;
+
                             if (f.StartCol >= columnFrom)
                             {
                                 f.StartCol += cols;
@@ -734,6 +789,7 @@ internal static class WorksheetRangeInsertHelper
                                 a._toCol += cols;
                             }
                         }
+
                         f.Address = ExcelCellBase.GetAddress(a._fromRow, a._fromCol, a._toRow, a._toCol);
                         f.Formula = ExcelCellBase.UpdateFormulaReferences(f.Formula, range, effectedAddress, shift, ws.Name, workSheetName);
                     }
@@ -742,6 +798,7 @@ internal static class WorksheetRangeInsertHelper
                 {
                     f.Formula = ExcelCellBase.UpdateFormulaReferences(f.Formula, range, effectedAddress, shift, ws.Name, workSheetName);
                 }
+
                 if (f.FormulaType == ExcelWorksheet.FormulaType.DataTable)
                 {
                     if (string.IsNullOrEmpty(f.R1CellAddress) == false)
@@ -752,6 +809,7 @@ internal static class WorksheetRangeInsertHelper
             }
 
             CellStoreEnumerator<object>? cse = new CellStoreEnumerator<object>(ws._formulas);
+
             while (cse.Next())
             {
                 if (cse.Value is string v)
@@ -788,6 +846,7 @@ internal static class WorksheetRangeInsertHelper
                         }
 
                         ExcelAddressBase? a = new ExcelAddressBase(f.Address);
+
                         if (a._fromRow >= rowFrom)
                         {
                             a._fromRow += rows;
@@ -797,6 +856,7 @@ internal static class WorksheetRangeInsertHelper
                         {
                             a._toRow += rows;
                         }
+
                         f.Address = ExcelCellBase.GetAddress(a._fromRow, a._fromCol, a._toRow, a._toCol);
                         f.Formula = ExcelCellBase.UpdateFormulaReferences(f.Formula, rows, 0, rowFrom, 0, wsToUpdate.Name, ws.Name);
                     }
@@ -808,6 +868,7 @@ internal static class WorksheetRangeInsertHelper
             }
 
             CellStoreEnumerator<object>? cse = new CellStoreEnumerator<object>(wsToUpdate._formulas);
+
             while (cse.Next())
             {
                 if (cse.Value is string v)
@@ -822,7 +883,8 @@ internal static class WorksheetRangeInsertHelper
                         IEnumerable<Token>? tokens = GetTokens(wsToUpdate, cse.Row, cse.Column, v);
                         cse.Value = ExcelCellBase.UpdateFormulaReferences(v, rows, 0, rowFrom, 0, wsToUpdate.Name, ws.Name, false, false, tokens);
                     }
-                    if(v!=cse.Value.ToString())
+
+                    if (v != cse.Value.ToString())
                     {
                         wsToUpdate._formulaTokens.SetValue(cse.Row, cse.Column, null);
                     }
@@ -832,12 +894,12 @@ internal static class WorksheetRangeInsertHelper
     }
 
     private static SourceCodeTokenizer _sct = new SourceCodeTokenizer(FunctionNameProvider.Empty, NameValueProvider.Empty);
+
     private static IEnumerable<Token> GetTokens(ExcelWorksheet ws, int row, int column, string formula)
     {
-        return string.IsNullOrEmpty(formula) ? 
-                   new List<Token>() : 
-                   (List<Token>)_sct.Tokenize(formula, ws.Name);
+        return string.IsNullOrEmpty(formula) ? new List<Token>() : (List<Token>)_sct.Tokenize(formula, ws.Name);
     }
+
     private static void FixFormulasInsertColumn(ExcelWorksheet ws, int columnFrom, int columns)
     {
         foreach (ExcelWorksheet? wsToUpdate in ws.Workbook.Worksheets)
@@ -852,6 +914,7 @@ internal static class WorksheetRangeInsertHelper
                     }
 
                     ExcelAddressBase? a = new ExcelAddressBase(f.Address);
+
                     if (a._fromCol >= columnFrom)
                     {
                         a._fromCol += columns;
@@ -872,6 +935,7 @@ internal static class WorksheetRangeInsertHelper
             }
 
             CellStoreEnumerator<object>? cse = new CellStoreEnumerator<object>(wsToUpdate._formulas);
+
             while (cse.Next())
             {
                 if (cse.Value is string v)
@@ -888,6 +952,7 @@ internal static class WorksheetRangeInsertHelper
             }
         }
     }
+
     private static void ValidateInsertColumn(ExcelWorksheet ws, int columnFrom, int columns, int rowFrom = 1, int rows = ExcelPackage.MaxRows)
     {
         ws.CheckSheetTypeAndNotDisposed();
@@ -897,7 +962,7 @@ internal static class WorksheetRangeInsertHelper
         {
             throw new ArgumentOutOfRangeException("columnFrom can't be lesser that 1");
         }
-            
+
         //Check that cells aren't shifted outside the boundries.
         if (d != null && d.End.Column > columnFrom && d.End.Column + columns > ExcelPackage.MaxColumns)
         {
@@ -907,7 +972,9 @@ internal static class WorksheetRangeInsertHelper
         ExcelAddressBase? insertRange = new ExcelAddressBase(rowFrom, columnFrom, rowFrom + rows - 1, columnFrom + columns - 1);
         FormulaDataTableValidation.HasPartlyFormulaDataTable(ws, insertRange, false, "Can't insert a part of a data table function");
     }
+
     #region private methods
+
     private static void ValidateInsertRow(ExcelWorksheet ws, int rowFrom, int rows, int columnFrom = 1, int columns = ExcelPackage.MaxColumns)
     {
         ws.CheckSheetTypeAndNotDisposed();
@@ -927,6 +994,7 @@ internal static class WorksheetRangeInsertHelper
         ExcelAddressBase? insertRange = new ExcelAddressBase(rowFrom, columnFrom, rowFrom + rows - 1, columnFrom + columns - 1);
         FormulaDataTableValidation.HasPartlyFormulaDataTable(ws, insertRange, false, "Can't insert into a part of a data table function");
     }
+
     internal static void InsertCellStores(ExcelWorksheet ws, int rowFrom, int columnFrom, int rows, int columns, int columnTo = ExcelPackage.MaxColumns)
     {
         ws._values.Insert(rowFrom, columnFrom, rows, columns);
@@ -956,6 +1024,7 @@ internal static class WorksheetRangeInsertHelper
             ws.Workbook.Names.Insert(rowFrom, columnFrom, rows, 0, n => n.Worksheet == ws, columnFrom, columnTo);
         }
     }
+
     internal static void InsertCellStoreShiftRight(ExcelWorksheet ws, ExcelAddressBase fromAddress)
     {
         ws._values.InsertShiftRight(fromAddress);
@@ -968,12 +1037,19 @@ internal static class WorksheetRangeInsertHelper
         ws._flags.InsertShiftRight(fromAddress);
         ws._metadataStore.InsertShiftRight(fromAddress);
         ws._vmlDrawings?._drawingsCellStore.InsertShiftRight(fromAddress);
-        ws.MergedCells._cells.InsertShiftRight(fromAddress); 
+        ws.MergedCells._cells.InsertShiftRight(fromAddress);
 
         ws.Comments.Insert(fromAddress._fromRow, fromAddress._fromCol, 0, fromAddress.Columns, fromAddress._toRow, fromAddress._toCol);
         ws.ThreadedComments.Insert(fromAddress._fromRow, fromAddress._fromCol, 0, fromAddress.Columns, fromAddress._toRow, fromAddress._toCol);
         ws._names.Insert(fromAddress._fromRow, fromAddress._fromCol, 0, fromAddress.Columns, fromAddress._fromRow, fromAddress._toRow);
-        ws.Workbook.Names.Insert(fromAddress._fromRow, fromAddress._fromCol, 0, fromAddress.Columns, n => n.Worksheet == ws, fromAddress._fromRow, fromAddress._toRow);
+
+        ws.Workbook.Names.Insert(fromAddress._fromRow,
+                                 fromAddress._fromCol,
+                                 0,
+                                 fromAddress.Columns,
+                                 n => n.Worksheet == ws,
+                                 fromAddress._fromRow,
+                                 fromAddress._toRow);
     }
 
     private static void CopyFromStyleRow(ExcelWorksheet ws, int rowFrom, int rows, int copyStylesFromRow)
@@ -984,7 +1060,8 @@ internal static class WorksheetRangeInsertHelper
         }
 
         //Copy style from style row
-        using (CellStoreEnumerator<ExcelValue>? cseS = new CellStoreEnumerator<ExcelValue>(ws._values, copyStylesFromRow, 0, copyStylesFromRow, ExcelPackage.MaxColumns))
+        using (CellStoreEnumerator<ExcelValue>? cseS =
+               new CellStoreEnumerator<ExcelValue>(ws._values, copyStylesFromRow, 0, copyStylesFromRow, ExcelPackage.MaxColumns))
         {
             while (cseS.Next())
             {
@@ -1002,30 +1079,31 @@ internal static class WorksheetRangeInsertHelper
 
         //Copy outline
         int styleRowOutlineLevel = ws.Row(copyStylesFromRow).OutlineLevel;
+
         for (int r = rowFrom; r < rowFrom + rows; r++)
         {
             ws.Row(r).OutlineLevel = styleRowOutlineLevel;
         }
     }
+
     private static void InsertTableColumns(int columnFrom, int columns, ExcelTable tbl)
     {
         XmlNode? node = tbl.Columns[0].TopNode.ParentNode;
         int ix = columnFrom - tbl.Address.Start.Column - 1;
         XmlNode? insPos = node.ChildNodes[ix];
         ix += 2;
+
         for (int i = 0; i < columns; i++)
         {
-            string? name =
-                tbl.Columns.GetUniqueName(string.Format("Column{0}",
-                                                        (ix++).ToString(CultureInfo.InvariantCulture)));
-            XmlElement tableColumn =
-                (XmlElement)tbl.TableXml.CreateNode(XmlNodeType.Element, "tableColumn", ExcelPackage.schemaMain);
+            string? name = tbl.Columns.GetUniqueName(string.Format("Column{0}", (ix++).ToString(CultureInfo.InvariantCulture)));
+            XmlElement tableColumn = (XmlElement)tbl.TableXml.CreateNode(XmlNodeType.Element, "tableColumn", ExcelPackage.schemaMain);
             tableColumn.SetAttribute("id", (tbl.Columns.Count + i + 1).ToString(CultureInfo.InvariantCulture));
             tableColumn.SetAttribute("name", name);
             insPos = node.InsertAfter(tableColumn, insPos);
         } //Create tbl Column
+
         tbl._cols = new ExcelTableColumnCollection(tbl);
     }
-
 }
+
 #endregion

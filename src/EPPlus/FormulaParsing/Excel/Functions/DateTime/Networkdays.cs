@@ -10,6 +10,7 @@
  *************************************************************************************************
   01/27/2020         EPPlus Software AB       Initial release EPPlus 5
  *************************************************************************************************/
+
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -20,10 +21,9 @@ using OfficeOpenXml.FormulaParsing.ExpressionGraph;
 
 namespace OfficeOpenXml.FormulaParsing.Excel.Functions.DateTime;
 
-[FunctionMetadata(
-                     Category = ExcelFunctionCategory.DateAndTime,
-                     EPPlusVersion = "4",
-                     Description = "Returns the number of whole networkdays (excluding weekends & holidays), between two supplied dates")]
+[FunctionMetadata(Category = ExcelFunctionCategory.DateAndTime,
+                  EPPlusVersion = "4",
+                  Description = "Returns the number of whole networkdays (excluding weekends & holidays), between two supplied dates")]
 internal class Networkdays : ExcelFunction
 {
     public override CompileResult Execute(IEnumerable<FunctionArgument> arguments, ParsingContext context)
@@ -34,11 +34,12 @@ internal class Networkdays : ExcelFunction
         System.DateTime endDate = System.DateTime.FromOADate(this.ArgToInt(functionArguments, 1));
         WorkdayCalculator? calculator = new WorkdayCalculator();
         WorkdayCalculatorResult? result = calculator.CalculateNumberOfWorkdays(startDate, endDate);
+
         if (functionArguments.Length > 2)
         {
             result = calculator.ReduceWorkdaysWithHolidays(result, functionArguments[2]);
         }
-            
+
         return new CompileResult(result.NumberOfWorkdays, DataType.Integer);
     }
 }

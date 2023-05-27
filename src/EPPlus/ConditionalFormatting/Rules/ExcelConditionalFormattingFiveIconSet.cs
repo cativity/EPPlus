@@ -10,6 +10,7 @@
  *************************************************************************************************
   01/27/2020         EPPlus Software AB       Initial release EPPlus 5
  *************************************************************************************************/
+
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -23,8 +24,8 @@ namespace OfficeOpenXml.ConditionalFormatting;
 /// <summary>
 /// Conditional formatting with a five icon set
 /// </summary>
-public class ExcelConditionalFormattingFiveIconSet
-    : ExcelConditionalFormattingIconSetBase<eExcelconditionalFormatting5IconsSetType>, IExcelConditionalFormattingFiveIconSet
+public class ExcelConditionalFormattingFiveIconSet : ExcelConditionalFormattingIconSetBase<eExcelconditionalFormatting5IconsSetType>,
+                                                     IExcelConditionalFormattingFiveIconSet
 {
     /****************************************************************************************/
 
@@ -35,6 +36,7 @@ public class ExcelConditionalFormattingFiveIconSet
     /****************************************************************************************/
 
     #region Constructors
+
     /// <summary>
     /// 
     /// </summary>
@@ -43,14 +45,12 @@ public class ExcelConditionalFormattingFiveIconSet
     /// <param name="worksheet"></param>
     /// <param name="itemElementNode"></param>
     /// <param name="namespaceManager"></param>
-    internal ExcelConditionalFormattingFiveIconSet(
-        ExcelAddress address,
-        int priority,
-        ExcelWorksheet worksheet,
-        XmlNode itemElementNode,
-        XmlNamespaceManager namespaceManager)
-        : base(
-               eExcelConditionalFormattingRuleType.FiveIconSet,
+    internal ExcelConditionalFormattingFiveIconSet(ExcelAddress address,
+                                                   int priority,
+                                                   ExcelWorksheet worksheet,
+                                                   XmlNode itemElementNode,
+                                                   XmlNamespaceManager namespaceManager)
+        : base(eExcelConditionalFormattingRuleType.FiveIconSet,
                address,
                priority,
                worksheet,
@@ -61,17 +61,15 @@ public class ExcelConditionalFormattingFiveIconSet
         {
             XmlNode iconNode4 = this.TopNode.SelectSingleNode("d:iconSet/d:cfvo[position()=4]", this.NameSpaceManager);
 
-            this.Icon4 = new ExcelConditionalFormattingIconDataBarValue(
-                                                                        eExcelConditionalFormattingRuleType.FiveIconSet,
+            this.Icon4 = new ExcelConditionalFormattingIconDataBarValue(eExcelConditionalFormattingRuleType.FiveIconSet,
                                                                         address,
                                                                         worksheet,
                                                                         iconNode4,
                                                                         namespaceManager);
-            
+
             XmlNode iconNode5 = this.TopNode.SelectSingleNode("d:iconSet/d:cfvo[position()=5]", this.NameSpaceManager);
 
-            this.Icon5 = new ExcelConditionalFormattingIconDataBarValue(
-                                                                        eExcelConditionalFormattingRuleType.FiveIconSet,
+            this.Icon5 = new ExcelConditionalFormattingIconDataBarValue(eExcelConditionalFormattingRuleType.FiveIconSet,
                                                                         address,
                                                                         worksheet,
                                                                         iconNode5,
@@ -115,17 +113,8 @@ public class ExcelConditionalFormattingFiveIconSet
     /// <param name="address"></param>
     /// <param name="worksheet"></param>
     /// <param name="itemElementNode"></param>
-    internal ExcelConditionalFormattingFiveIconSet(
-        ExcelAddress address,
-        int priority,
-        ExcelWorksheet worksheet,
-        XmlNode itemElementNode)
-        : this(
-               address,
-               priority,
-               worksheet,
-               itemElementNode,
-               null)
+    internal ExcelConditionalFormattingFiveIconSet(ExcelAddress address, int priority, ExcelWorksheet worksheet, XmlNode itemElementNode)
+        : this(address, priority, worksheet, itemElementNode, null)
     {
     }
 
@@ -135,35 +124,20 @@ public class ExcelConditionalFormattingFiveIconSet
     /// <param name="priority"></param>
     /// <param name="address"></param>
     /// <param name="worksheet"></param>
-    internal ExcelConditionalFormattingFiveIconSet(
-        ExcelAddress address,
-        int priority,
-        ExcelWorksheet worksheet)
-        : this(
-               address,
-               priority,
-               worksheet,
-               null,
-               null)
+    internal ExcelConditionalFormattingFiveIconSet(ExcelAddress address, int priority, ExcelWorksheet worksheet)
+        : this(address, priority, worksheet, null, null)
     {
     }
+
     #endregion Constructors
 
     /// <summary>
     /// Icon 5 value
     /// </summary>
-    public ExcelConditionalFormattingIconDataBarValue Icon5
-    {
-        get;
-        internal set;
-    }
+    public ExcelConditionalFormattingIconDataBarValue Icon5 { get; internal set; }
 
     /// <summary>
     /// Icon 4 value
     /// </summary>
-    public ExcelConditionalFormattingIconDataBarValue Icon4
-    {
-        get;
-        internal set;
-    }
+    public ExcelConditionalFormattingIconDataBarValue Icon4 { get; internal set; }
 }

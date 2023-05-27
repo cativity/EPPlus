@@ -20,11 +20,13 @@ public class LoadSaveTests : TestBase
     {
         _pck = OpenPackage("LoadSaveTest.xlsx", true);
     }
+
     [ClassCleanup]
     public static void Cleanup()
     {
         SaveAndCleanup(_pck);
     }
+
     [TestMethod]
     public void CheckCfLfIsRetained()
     {
@@ -40,6 +42,7 @@ public class LoadSaveTests : TestBase
         ws = p1.Workbook.Worksheets["CrLf"];
         Assert.AreEqual(expected, ws.Cells["A1"].Value);
     }
+
     [TestMethod]
     public void SaveTwiceShouldNotCorruptPackage()
     {
@@ -53,6 +56,7 @@ public class LoadSaveTests : TestBase
         byte[]? b = p.GetAsByteArray();
         Assert.AreEqual(length, b.Length);
     }
+
     [TestMethod]
     public async Task SaveTwiceShouldNotCorruptPackageAsync()
     {
@@ -73,8 +77,7 @@ public class LoadSaveTests : TestBase
     {
         using ExcelPackage? p = new ExcelPackage();
         ExcelWorksheet? s1 = p.Workbook.Worksheets.Add("Table1");
-        ExcelChartsheet? s2 = p.Workbook.Worksheets.AddChart("Chart1",
-                                                             OfficeOpenXml.Drawing.Chart.eChartType.Area);
+        ExcelChartsheet? s2 = p.Workbook.Worksheets.AddChart("Chart1", OfficeOpenXml.Drawing.Chart.eChartType.Area);
         ExcelWorksheet? s3 = p.Workbook.Worksheets.Add("Table2");
 
         DataTable dt = new DataTable();
@@ -112,18 +115,18 @@ public class LoadSaveTests : TestBase
         Assert.AreEqual(s1, p2.Workbook.Worksheets[0].Cells["A1"].Value);
         Assert.AreEqual(s2, p2.Workbook.Worksheets[0].Cells["A2"].Value);
     }
+
     [TestMethod]
     public void LoadFromText_VerifyWithApostrophes()
     {
-
         string? textToLoad = "\"dog 1\"\"\"\"\"\"\",\"dog 2\"\"\"\"\"\"\",\"dog 3\"\"\"\"\"\"\"\r\n"
                              + "\"cat 1\",\"cat 2\",\"cat 3\"\"\"\"\"\r\n"
                              + "\"mouse 1\"\"\"\"\",\"mouse 2\"\"\"\"\",\"mouse 3\"\"\"\"\"";
 
         ExcelPackage? excelPackage = new ExcelPackage();
         ExcelWorksheet? ws = excelPackage.Workbook.Worksheets.Add("LoadFromText");
-        ws.Cells["B2"].LoadFromText(textToLoad, new ExcelTextFormat() { TextQualifier='\"'});
-            
+        ws.Cells["B2"].LoadFromText(textToLoad, new ExcelTextFormat() { TextQualifier = '\"' });
+
         //Assert
         Assert.AreEqual("dog 1\"\"\"", ws.GetValue(2, 2));
         Assert.AreEqual("dog 2\"\"\"", ws.GetValue(2, 3));
@@ -137,10 +140,12 @@ public class LoadSaveTests : TestBase
         Assert.AreEqual("mouse 2\"\"", ws.GetValue(4, 3));
         Assert.AreEqual("mouse 3\"\"", ws.GetValue(4, 4));
     }
+
     [TestMethod]
     public void SaveToText_VerifyWithApostrophes()
     {
         MemoryStream? ms = new MemoryStream();
+
         using (ExcelPackage? p = new ExcelPackage())
         {
             ExcelWorksheet? ws = p.Workbook.Worksheets.Add("SaveToText");
@@ -161,6 +166,7 @@ public class LoadSaveTests : TestBase
 
         string? result = "";
         ms.Position = 0;
+
         using (StreamReader? reader = new StreamReader(ms))
         {
             result = reader.ReadToEnd();
@@ -169,7 +175,7 @@ public class LoadSaveTests : TestBase
         //Assert
         string? expectedText = "\"dog 1\"\"\"\"\"\"\",\"dog 2\"\"\"\"\"\"\",\"dog 3\"\"\"\"\"\"\"\r\n"
                                + "\"cat 1\",\"cat 2\",\"cat 3\"\"\"\"\"\r\n"
-                               + "\"mouse 1\"\"\"\"\",\"mouse 2\"\"\"\"\",\"mouse 3\"\"\"\"\""; 
+                               + "\"mouse 1\"\"\"\"\",\"mouse 2\"\"\"\"\",\"mouse 3\"\"\"\"\"";
 
         Assert.AreEqual(expectedText, result);
     }
@@ -179,6 +185,7 @@ public class LoadSaveTests : TestBase
         ExcelPackage? excelPackage = new ExcelPackage();
         ExcelWorksheet? sheet = excelPackage.Workbook.Worksheets.Add("bugs");
         sheet.Cells.LoadFromText(file, format);
+
         return excelPackage;
     }
 }

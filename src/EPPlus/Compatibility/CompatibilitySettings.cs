@@ -10,7 +10,8 @@
  *************************************************************************************************
   01/27/2020         EPPlus Software AB       Initial release EPPlus 5
  *************************************************************************************************/
- using System;
+
+using System;
 using System.Collections.Generic;
 using System.Text;
 using OfficeOpenXml;
@@ -23,7 +24,6 @@ namespace OfficeOpenXml.Compatibility;
 public class CompatibilitySettings
 {
     private ExcelPackage excelPackage;
-
 
     internal CompatibilitySettings(ExcelPackage excelPackage)
     {
@@ -60,17 +60,14 @@ public class CompatibilitySettings
 
     public bool IsWorksheets1Based
     {
-        get
-        {
-            return this.excelPackage._worksheetAdd==1;
-        }
+        get { return this.excelPackage._worksheetAdd == 1; }
         set
         {
             this.excelPackage._worksheetAdd = value ? 1 : 0;
-            if(this.excelPackage._workbook!=null && this.excelPackage._workbook._worksheets!=null)
+
+            if (this.excelPackage._workbook != null && this.excelPackage._workbook._worksheets != null)
             {
                 this.excelPackage.Workbook.Worksheets.ReindexWorksheetDictionary();
-
             }
         }
     }

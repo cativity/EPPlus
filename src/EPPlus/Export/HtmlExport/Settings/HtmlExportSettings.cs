@@ -10,6 +10,7 @@
  *************************************************************************************************
   05/11/2021         EPPlus Software AB           ExcelTable Html Export
  *************************************************************************************************/
+
 using OfficeOpenXml.Export.HtmlExport.Accessibility;
 using System.Collections.Generic;
 using System.Globalization;
@@ -26,62 +27,63 @@ public abstract class HtmlExportSettings
     /// The html id attribute for the exported table. The id attribute is only added to the table if this property is not null or empty.
     /// </summary>
     public string TableId { get; set; }
+
     /// <summary>
     /// If set to true the rendered html will be formatted with indents and linebreaks.
     /// </summary>
     public bool Minify { get; set; } = true;
+
     /// <summary>
     /// How hidden rows will be handled. Default is <see cref="eHiddenState.Exclude"/> 
     /// </summary>
     public eHiddenState HiddenRows { get; set; } = eHiddenState.Exclude;
+
     /// <summary>
     /// How to set the alignment for a cell if it's alignment is set to General.
     /// </summary>
     public eHtmlGeneralAlignmentHandling HorizontalAlignmentWhenGeneral { get; set; } = eHtmlGeneralAlignmentHandling.CellDataType;
+
     /// <summary>
     /// Settings for usage of accessibility (aria, role) attributes of the table
     /// </summary>
-    public AccessibilitySettings Accessibility
-    {
-        get; private set;
-    } = new AccessibilitySettings();
+    public AccessibilitySettings Accessibility { get; private set; } = new AccessibilitySettings();
+
     /// <summary>
     /// Use this property to set additional class names that will be set on the exported html-table.
     /// </summary>
-    public List<string> AdditionalTableClassNames
-    {
-        get;
-        protected internal set;
-    } = new List<string>();
+    public List<string> AdditionalTableClassNames { get; protected internal set; } = new List<string>();
+
     /// <summary>
     /// Use this property to set the name of the html data-* attribute that contains the raw value.
     /// Default value is "value" which means that the name of the attribute is "data-value".
     /// To change the name to "data-x", set this property to "x"
     /// </summary>
-    public string DataValueAttributeName
-    {
-        get; set;
-    } = "value";
+    public string DataValueAttributeName { get; set; } = "value";
+
     /// <summary>
     /// The culture used when formatting the cell output.
     /// </summary>
     public CultureInfo Culture { get; set; } = CultureInfo.CurrentCulture;
+
     /// <summary>
     /// Encoding for the output
     /// </summary>
     public Encoding Encoding { get; set; } = Encoding.UTF8;
+
     /// <summary>
     /// Set the column width for columns in the table via the columngroup/col element.
     /// Columns with the default width will have the default column width class set, ({Settings.StyleClassPrefix}dcw). 
     /// Columns with custom column width will have the width set directly via the style attribute.
     /// </summary>
     public bool SetColumnWidth { get; set; } = false;
+
     /// <summary>
     /// Set the row height for rows in the table.
     /// Rows with the default height will have the default row height class set, ({Settings.StyleClassPrefix}drh). 
     /// Rows with custom row height will have the height set directly via the style attribute.
     /// </summary>
     public bool SetRowHeight { get; set; } = false;
+
     /// <summary>
     /// Prefix for style classes added by EPPlus. 
     /// <list type="table">
@@ -100,18 +102,17 @@ public abstract class HtmlExportSettings
     /// <seealso cref="Pictures"/>
     /// </summary>
     public string StyleClassPrefix { get; set; } = "epp-";
+
     /// <summary>
     /// The name of the classes used for cell styles. 
     /// The name will be prefixed with the <see cref="StyleClassPrefix"/> and suffixed with the cell style index.
     /// </summary>
     public string CellStyleClassName { get; set; } = "s";
+
     /// <summary>
     /// If picture drawings will be included. Default is true.
     /// </summary>
-    public HtmlPictureSettings Pictures
-    {
-        get;
-    } = new HtmlPictureSettings();
+    public HtmlPictureSettings Pictures { get; } = new HtmlPictureSettings();
 
     /// <summary>
     /// If set to true classes that identifies Excel table styling will be included in the html. Default value is true.
@@ -128,15 +129,13 @@ public abstract class HtmlExportSettings
     /// If and how table styles should export, if the range is a table.
     /// The range must be the same as the table range.
     /// </summary>
-    public eHtmlRangeTableInclude TableStyle
-    {
-        get;
-        set;
-    } = eHtmlRangeTableInclude.Include;
+    public eHtmlRangeTableInclude TableStyle { get; set; } = eHtmlRangeTableInclude.Include;
+
     /// <summary>
     /// If true data-* attributes will be rendered
     /// </summary>
     public bool RenderDataAttributes { get; set; } = true;
+
     /// <summary>
     /// If true, data types are renedered on the header objects.
     /// </summary>

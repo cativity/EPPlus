@@ -10,6 +10,7 @@
  *************************************************************************************************
   07/29/2020         EPPlus Software AB       Threaded comments
  *************************************************************************************************/
+
 using OfficeOpenXml.FormulaParsing.Excel.Functions;
 using OfficeOpenXml.Packaging;
 using OfficeOpenXml.Utils;
@@ -41,24 +42,18 @@ public class ExcelWorksheetThreadedComments
     internal readonly List<ExcelThreadedCommentThread> _threads = new List<ExcelThreadedCommentThread>();
     private readonly List<int> _threadsIndex = new List<int>();
     internal int _nextId = 0;
+
     /// <summary>
     /// A collection of persons referenced by the threaded comments.
     /// </summary>
-    public ExcelThreadedCommentPersonCollection Persons
-    {
-        get;
-        private set;
-    }
+    public ExcelThreadedCommentPersonCollection Persons { get; private set; }
 
     /// <summary>
     /// An enumerable of the existing <see cref="ExcelThreadedCommentThread"/>s on the <see cref="ExcelWorksheet">worksheet</see>
     /// </summary>
     public IEnumerable<ExcelThreadedCommentThread> Threads
     {
-        get
-        {
-            return this._threads.Where(x=>x!=null);
-        }
+        get { return this._threads.Where(x => x != null); }
     }
 
     /// <summary>
@@ -72,14 +67,12 @@ public class ExcelWorksheetThreadedComments
     /// <summary>
     /// The raw xml for the threaded comments
     /// </summary>
-    public XmlDocument ThreadedCommentsXml
-    {
-        get; private set;
-    }
+    public XmlDocument ThreadedCommentsXml { get; private set; }
 
     private void LoadThreads()
     {
         ZipPackageRelationshipCollection? commentRels = this._worksheet.Part.GetRelationshipsByType(ExcelPackage.schemaThreadedComment);
+
         foreach (ZipPackageRelationship? commentPart in commentRels)
         {
             Uri? uri = UriHelper.ResolvePartUri(commentPart.SourceUri, commentPart.TargetUri);
@@ -99,13 +92,15 @@ public class ExcelWorksheetThreadedComments
             ExcelCellAddress? cellAddress = comment.CellAddress;
             int i = -1;
             ExcelThreadedCommentThread thread;
+
             if (this._worksheet._threadedCommentsStore.Exists(cellAddress.Row, cellAddress.Column, ref i))
             {
-                thread= this._threads[this._threadsIndex[i]]; 
+                thread = this._threads[this._threadsIndex[i]];
             }
             else
             {
                 thread = new ExcelThreadedCommentThread(cellAddress, this.ThreadedCommentsXml, this._worksheet);
+
                 lock (this._worksheet._threadedCommentsStore)
                 {
                     i = this._threads.Count;
@@ -114,6 +109,7 @@ public class ExcelWorksheetThreadedComments
                     this._threads.Add(thread);
                 }
             }
+
             comment.Thread = thread;
             thread.AddComment(comment);
         }
@@ -122,6 +118,7 @@ public class ExcelWorksheetThreadedComments
     private static void ValidateCellAddress(string cellAddress)
     {
         Require.Argument(cellAddress).IsNotNullOrEmpty("cellAddress");
+
         if (!ExcelCellBase.IsValidCellAddress(cellAddress))
         {
             throw new ArgumentException(cellAddress + " is not a valid cell address. Use A1 format.");
@@ -137,6 +134,7 @@ public class ExcelWorksheetThreadedComments
     public ExcelThreadedCommentThread Add(string cellAddress)
     {
         ValidateCellAddress(cellAddress);
+
         return this.Add(new ExcelCellAddress(cellAddress));
     }
 
@@ -150,24 +148,33 @@ public class ExcelWorksheetThreadedComments
     public ExcelThreadedCommentThread Add(ExcelCellAddress cellAddress)
     {
         Require.Argument(cellAddress).IsNotNull("cellAddress");
+
         if (this._worksheet._threadedCommentsStore.Exists(cellAddress.Row, cellAddress.Column))
         {
             throw new ArgumentException("There is an existing threaded comment thread in cell " + cellAddress.Address);
         }
+
         if (this._worksheet.Comments[cellAddress] != null)
         {
-            throw new InvalidOperationException("There is an existing legacy comment/Note in this cell (" + cellAddress + "). See the Worksheet.Comments property. Legacy comments and threaded comments cannot reside in the same cell.");
+            throw new InvalidOperationException("There is an existing legacy comment/Note in this cell ("
+                                                + cellAddress
+                                                + "). See the Worksheet.Comments property. Legacy comments and threaded comments cannot reside in the same cell.");
         }
-        if(this.ThreadedCommentsXml == null)
+
+        if (this.ThreadedCommentsXml == null)
         {
             this.ThreadedCommentsXml = new XmlDocument();
             this.ThreadedCommentsXml.PreserveWhitespace = true;
-            this.ThreadedCommentsXml.LoadXml("<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"yes\" ?><ThreadedComments xmlns=\"http://schemas.microsoft.com/office/spreadsheetml/2018/threadedcomments\" xmlns:x=\"http://schemas.openxmlformats.org/spreadsheetml/2006/main\"/>");
+
+            this.ThreadedCommentsXml
+                .LoadXml("<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"yes\" ?><ThreadedComments xmlns=\"http://schemas.microsoft.com/office/spreadsheetml/2018/threadedcomments\" xmlns:x=\"http://schemas.openxmlformats.org/spreadsheetml/2006/main\"/>");
         }
+
         ExcelThreadedCommentThread? thread = new ExcelThreadedCommentThread(cellAddress, this.ThreadedCommentsXml, this._worksheet);
         this._worksheet._threadedCommentsStore.SetValue(cellAddress.Row, cellAddress.Column, this._threads.Count);
         this._threadsIndex.Add(this._threads.Count);
         this._threads.Add(thread);
+
         return thread;
     }
 
@@ -181,6 +188,7 @@ public class ExcelWorksheetThreadedComments
         get
         {
             ValidateCellAddress(cellAddress);
+
             return this[new ExcelCellAddress(cellAddress)];
         }
     }
@@ -195,6 +203,7 @@ public class ExcelWorksheetThreadedComments
         get
         {
             int i = 0;
+
             if (this._worksheet._threadedCommentsStore.Exists(cellAddress.Row, cellAddress.Column, ref i))
             {
                 return this._threads[i];
@@ -203,6 +212,7 @@ public class ExcelWorksheetThreadedComments
             return null;
         }
     }
+
     /// <summary>
     /// Returns a <see cref="ExcelThreadedCommentThread"/> for the requested <paramref name="index"/>.
     /// </summary>
@@ -216,9 +226,11 @@ public class ExcelWorksheetThreadedComments
             {
                 throw new ArgumentOutOfRangeException("Threaded comment index out of range");
             }
+
             return this._threads[this._threadsIndex[index]];
         }
     }
+
     /// <summary>
     /// Removes the <see cref="ExcelThreadedCommentThread"/> index position in the collection
     /// </summary>
@@ -227,6 +239,7 @@ public class ExcelWorksheetThreadedComments
     {
         this.Remove(this[index]);
     }
+
     /// <summary>
     /// Removes the <see cref="ExcelThreadedCommentThread"/> supplied
     /// </summary>
@@ -235,6 +248,7 @@ public class ExcelWorksheetThreadedComments
     {
         int i = -1;
         ExcelThreadedCommentThread c = null;
+
         if (this._worksheet._threadedCommentsStore.Exists(threadedComment.CellAddress.Row, threadedComment.CellAddress.Column, ref i))
         {
             c = this._threads[i];
@@ -244,12 +258,15 @@ public class ExcelWorksheetThreadedComments
         {
             ExcelCellAddress? address = threadedComment.CellAddress;
             ExcelComment? comment = this._worksheet.Comments[address];
+
             if (comment != null) //Check if the underlaying comment exists.
             {
                 this._worksheet.Comments.Remove(comment); //If so, Remove it.
             }
+
             IEnumerable<XmlNode>? nodes = threadedComment.Comments.Select(x => x.TopNode);
-            foreach(XmlNode? node in nodes)
+
+            foreach (XmlNode? node in nodes)
             {
                 node.ParentNode.RemoveChild(node); //Remove xml node
             }
@@ -263,6 +280,7 @@ public class ExcelWorksheetThreadedComments
             throw new ArgumentException("Comment does not exist in the worksheet");
         }
     }
+
     /// <summary>
     /// Shifts all comments based on their address and the location of inserted rows and columns.
     /// </summary>
@@ -275,19 +293,21 @@ public class ExcelWorksheetThreadedComments
     internal void Delete(int fromRow, int fromCol, int rows, int columns, int toRow = ExcelPackage.MaxRows, int toCol = ExcelPackage.MaxColumns)
     {
         List<ExcelThreadedCommentThread> deletedComments = new List<ExcelThreadedCommentThread>();
+
         foreach (ExcelThreadedCommentThread? threadedComment in this._threads.Where(x => x != null))
         {
             ExcelAddressBase? address = new ExcelAddressBase(threadedComment.CellAddress.Address);
-            if (columns > 0 && address._fromCol >= fromCol &&
-                address._fromRow >= fromRow && address._toRow <= toRow)
+
+            if (columns > 0 && address._fromCol >= fromCol && address._fromRow >= fromRow && address._toRow <= toRow)
             {
                 address = address.DeleteColumn(fromCol, columns);
             }
-            if (rows > 0 && address._fromRow >= fromRow &&
-                address._fromCol >= fromCol && address._toCol <= toCol)
+
+            if (rows > 0 && address._fromRow >= fromRow && address._fromCol >= fromCol && address._toCol <= toCol)
             {
                 address = address.DeleteRow(fromRow, rows);
             }
+
             if (address == null || address.Address == "#REF!")
             {
                 deletedComments.Add(threadedComment);
@@ -304,11 +324,13 @@ public class ExcelWorksheetThreadedComments
             {
                 c.TopNode.ParentNode.RemoveChild(c.TopNode);
             }
+
             int ix = this._threads.IndexOf(comment);
             this._threadsIndex.Remove(ix);
             this._threads[ix] = null;
         }
     }
+
     /// <summary>
     /// Shifts all comments based on their address and the location of inserted rows and columns.
     /// </summary>
@@ -323,18 +345,19 @@ public class ExcelWorksheetThreadedComments
         foreach (ExcelThreadedCommentThread? comment in this._threads.Where(x => x != null))
         {
             ExcelAddressBase? address = new ExcelAddressBase(comment.CellAddress.Address);
-            if (rows > 0 && address._fromRow >= fromRow &&
-                address._fromCol >= fromCol && address._toCol <= toCol)
+
+            if (rows > 0 && address._fromRow >= fromRow && address._fromCol >= fromCol && address._toCol <= toCol)
             {
                 comment.CellAddress = new ExcelCellAddress(address.AddRow(fromRow, rows).Address);
             }
-            if (columns > 0 && address._fromCol >= fromCol &&
-                address._fromRow >= fromRow && address._toRow <= toRow)
+
+            if (columns > 0 && address._fromCol >= fromCol && address._fromRow >= fromRow && address._toRow <= toRow)
             {
                 comment.CellAddress = new ExcelCellAddress(address.AddColumn(fromCol, columns).Address);
             }
         }
     }
+
     /// <summary>
     ///     Returns a string that represents the current object.
     /// </summary>

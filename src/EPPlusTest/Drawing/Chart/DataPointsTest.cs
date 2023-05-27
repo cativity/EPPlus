@@ -26,6 +26,7 @@
  *******************************************************************************
   01/27/2020         EPPlus Software AB       Initial release EPPlus 5
  *******************************************************************************/
+
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using OfficeOpenXml;
 using OfficeOpenXml.Drawing;
@@ -41,11 +42,13 @@ namespace EPPlusTest.Drawing.Chart;
 public class DataPointsTest : TestBase
 {
     static ExcelPackage _pck;
+
     [ClassInitialize]
     public static void Init(TestContext context)
     {
         _pck = OpenPackage("DataPoints.xlsx", true);
     }
+
     [ClassCleanup]
     public static void Cleanup()
     {
@@ -58,7 +61,7 @@ public class DataPointsTest : TestBase
         ExcelWorksheet? ws = _pck.Workbook.Worksheets.Add("LineChart");
         LoadTestdata(ws);
 
-        ExcelLineChart? chart=ws.Drawings.AddLineChart("LineChart1", eLineChartType.Line);
+        ExcelLineChart? chart = ws.Drawings.AddLineChart("LineChart1", eLineChartType.Line);
         ExcelLineChartSerie? serie = chart.Series.Add("D2:D100", "A2:A100");
         ExcelChartDataPoint? point = serie.DataPoints.Add(3);
         point.Border.Fill.Color = Color.Red;
@@ -66,6 +69,7 @@ public class DataPointsTest : TestBase
         point.Fill.Color = Color.Green;
         chart.SetPosition(1, 0, 5, 0);
     }
+
     [TestMethod]
     public void PieChart()
     {
@@ -80,8 +84,9 @@ public class DataPointsTest : TestBase
         point.Fill.Color = Color.Green;
         chart.SetPosition(1, 0, 5, 0);
     }
+
     [TestMethod]
-    public void BarChart()  
+    public void BarChart()
     {
         ExcelWorksheet? ws = _pck.Workbook.Worksheets.Add("BarChart");
         LoadTestdata(ws);
@@ -93,7 +98,7 @@ public class DataPointsTest : TestBase
         point.Border.Fill.Style = eFillStyle.SolidFill;
         point.Fill.Style = eFillStyle.SolidFill;
         point.Fill.SolidFill.Color.SetRgbColor(Color.Yellow);
-        point.Fill.Transparancy = 5;            
+        point.Fill.Transparancy = 5;
         Assert.AreEqual(eColorTransformType.Alpha, point.Fill.SolidFill.Color.Transforms[0].Type);
         Assert.AreEqual(95, point.Fill.SolidFill.Color.Transforms[0].Value);
         chart.SetPosition(1, 0, 5, 0);

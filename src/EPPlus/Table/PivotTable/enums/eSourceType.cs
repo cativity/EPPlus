@@ -10,6 +10,7 @@
  *************************************************************************************************
   01/27/2020         EPPlus Software AB       Initial release EPPlus 5
  *************************************************************************************************/
+
 namespace OfficeOpenXml.Table.PivotTable;
 
 /// <summary>
@@ -21,14 +22,17 @@ public enum eSourceType
     /// The cache contains data that consolidates ranges
     /// </summary>
     Consolidation,
+
     /// <summary>
     /// The cache contains data from an external data source
     /// </summary>
     External,
+
     /// <summary>
     /// The cache contains a scenario summary report
     /// </summary>
     Scenario,
+
     /// <summary>
     /// The cache contains worksheet data
     /// </summary>

@@ -10,6 +10,7 @@
  *************************************************************************************************
   11/07/2021         EPPlus Software AB       Added Html Export
  *************************************************************************************************/
+
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -26,11 +27,14 @@ namespace OfficeOpenXml.Export.HtmlExport
         public async Task RenderBeginTagAsync(string elementName, bool closeElement = false)
         {
             this._newLine = false;
+
             if (elementName != HtmlElements.A && elementName != HtmlElements.Img)
             {
                 await this.WriteIndentAsync();
             }
+
             await this._writer.WriteAsync($"<{elementName}");
+
             foreach (EpplusHtmlAttribute? attribute in this._attributes)
             {
                 await this._writer.WriteAsync($" {attribute.AttributeName}=\"{attribute.Value}\"");

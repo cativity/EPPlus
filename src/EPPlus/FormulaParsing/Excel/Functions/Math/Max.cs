@@ -10,6 +10,7 @@
  *************************************************************************************************
   01/27/2020         EPPlus Software AB       Initial release EPPlus 5
  *************************************************************************************************/
+
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -19,24 +20,25 @@ using OfficeOpenXml.FormulaParsing.ExpressionGraph;
 
 namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Math;
 
-[FunctionMetadata(
-                     Category = ExcelFunctionCategory.Statistical,
-                     EPPlusVersion = "4",
-                     Description = "Returns the largest value from a list of supplied numbers")]
+[FunctionMetadata(Category = ExcelFunctionCategory.Statistical, EPPlusVersion = "4", Description = "Returns the largest value from a list of supplied numbers")]
 internal class Max : HiddenValuesHandlingFunction
 {
-    public Max() : base()
+    public Max()
+        : base()
     {
         this.IgnoreErrors = false;
     }
+
     public override CompileResult Execute(IEnumerable<FunctionArgument> arguments, ParsingContext context)
     {
         ValidateArguments(arguments, 1);
         IEnumerable<ExcelDoubleCellValue>? values = this.ArgsToDoubleEnumerable(this.IgnoreHiddenValues, this.IgnoreErrors, arguments, context);
+
         if (!values.Any())
         {
             return this.CreateResult(0d, DataType.Decimal);
         }
+
         return this.CreateResult(values.Max(), DataType.Decimal);
     }
 }

@@ -10,6 +10,7 @@
  *************************************************************************************************
   01/27/2020         EPPlus Software AB       Initial release EPPlus 5
  *************************************************************************************************/
+
 using System;
 using OfficeOpenXml.Drawing.Interfaces;
 using System.Xml;
@@ -26,92 +27,68 @@ namespace OfficeOpenXml.Drawing.Vml;
 public class ExcelVmlDrawingPicture : ExcelVmlDrawingBase, IPictureContainer
 {
     ExcelWorksheet _worksheet;
-    internal ExcelVmlDrawingPicture(XmlNode topNode, XmlNamespaceManager ns, ExcelWorksheet ws) :
-        base(topNode, ns)
+
+    internal ExcelVmlDrawingPicture(XmlNode topNode, XmlNamespaceManager ns, ExcelWorksheet ws)
+        : base(topNode, ns)
     {
         this._worksheet = ws;
     }
+
     /// <summary>
     /// Position ID
     /// </summary>
     public string Position
     {
-        get
-        {
-            return this.GetXmlNodeString("@id");
-        }
+        get { return this.GetXmlNodeString("@id"); }
     }
+
     /// <summary>
     /// The width in points
     /// </summary>
     public double Width
     {
-        get
-        {
-            return this.GetStyleProp("width");
-        }
-        set
-        {
-            this.SetStyleProp("width",value.ToString(CultureInfo.InvariantCulture) + "pt");
-        }
+        get { return this.GetStyleProp("width"); }
+        set { this.SetStyleProp("width", value.ToString(CultureInfo.InvariantCulture) + "pt"); }
     }
+
     /// <summary>
     /// The height in points
     /// </summary>
     public double Height
     {
-        get
-        {
-            return this.GetStyleProp("height");
-        }
-        set
-        {
-            this.SetStyleProp("height", value.ToString(CultureInfo.InvariantCulture) + "pt");
-        }
+        get { return this.GetStyleProp("height"); }
+        set { this.SetStyleProp("height", value.ToString(CultureInfo.InvariantCulture) + "pt"); }
     }
+
     /// <summary>
     /// Margin Left in points
     /// </summary>
     public double Left
     {
-        get
-        {
-            return this.GetStyleProp("left");
-        }
-        set
-        {
-            this.SetStyleProp("left", value.ToString(CultureInfo.InvariantCulture));
-        }
+        get { return this.GetStyleProp("left"); }
+        set { this.SetStyleProp("left", value.ToString(CultureInfo.InvariantCulture)); }
     }
+
     /// <summary>
     /// Margin top in points
     /// </summary>
     public double Top
     {
-        get
-        {
-            return this.GetStyleProp("top");
-        }
-        set
-        {
-            this.SetStyleProp("top", value.ToString(CultureInfo.InvariantCulture));
-        }
+        get { return this.GetStyleProp("top"); }
+        set { this.SetStyleProp("top", value.ToString(CultureInfo.InvariantCulture)); }
     }
+
     /// <summary>
     /// The Title of the image
     /// </summary>
     public string Title
     {
-        get
-        {
-            return this.GetXmlNodeString("v:imagedata/@o:title");
-        }
-        set
-        {
-            this.SetXmlNodeString("v:imagedata/@o:title",value);
-        }
+        get { return this.GetXmlNodeString("v:imagedata/@o:title"); }
+        set { this.SetXmlNodeString("v:imagedata/@o:title", value); }
     }
+
     ExcelImage _image;
+
     /// <summary>
     /// The Image
     /// </summary>
@@ -119,10 +96,11 @@ public class ExcelVmlDrawingPicture : ExcelVmlDrawingBase, IPictureContainer
     {
         get
         {
-            if(this._image==null)
+            if (this._image == null)
             {
                 this._image = new ExcelImage(this, new ePictureType[] { ePictureType.Svg, ePictureType.Ico, ePictureType.WebP });
                 ZipPackage? pck = this._worksheet._package.ZipPackage;
+
                 if (pck.PartExists(this.ImageUri))
                 {
                     ZipPackagePart? part = pck.GetPart(this.ImageUri);
@@ -133,34 +111,25 @@ public class ExcelVmlDrawingPicture : ExcelVmlDrawingBase, IPictureContainer
                     return null;
                 }
             }
+
             return this._image;
         }
     }
-    internal Uri ImageUri
-    {
-        get;
-        set;
-    }
+
+    internal Uri ImageUri { get; set; }
+
     internal string RelId
     {
-        get
-        {
-            return this.GetXmlNodeString("v:imagedata/@o:relid");
-        }
-        set
-        {
-            this.SetXmlNodeString("v:imagedata/@o:relid",value);
-        }
-    }        
+        get { return this.GetXmlNodeString("v:imagedata/@o:relid"); }
+        set { this.SetXmlNodeString("v:imagedata/@o:relid", value); }
+    }
+
     /// <summary>
     /// Determines whether an image will be displayed in black and white
     /// </summary>
     public bool BiLevel
     {
-        get
-        {
-            return this.GetXmlNodeString("v:imagedata/@bilevel")=="t";
-        }
+        get { return this.GetXmlNodeString("v:imagedata/@bilevel") == "t"; }
         set
         {
             if (value)
@@ -173,15 +142,13 @@ public class ExcelVmlDrawingPicture : ExcelVmlDrawingBase, IPictureContainer
             }
         }
     }
+
     /// <summary>
     /// Determines whether a picture will be displayed in grayscale mode
     /// </summary>
     public bool GrayScale
     {
-        get
-        {
-            return this.GetXmlNodeString("v:imagedata/@grayscale")=="t";
-        }
+        get { return this.GetXmlNodeString("v:imagedata/@grayscale") == "t"; }
         set
         {
             if (value)
@@ -194,6 +161,7 @@ public class ExcelVmlDrawingPicture : ExcelVmlDrawingBase, IPictureContainer
             }
         }
     }
+
     /// <summary>
     /// Defines the intensity of all colors in an image
     /// Default value is 1
@@ -203,7 +171,8 @@ public class ExcelVmlDrawingPicture : ExcelVmlDrawingBase, IPictureContainer
         get
         {
             string v = this.GetXmlNodeString("v:imagedata/@gain");
-            return GetFracDT(v,1);
+
+            return GetFracDT(v, 1);
         }
         set
         {
@@ -211,6 +180,7 @@ public class ExcelVmlDrawingPicture : ExcelVmlDrawingBase, IPictureContainer
             {
                 throw new ArgumentOutOfRangeException("Value must be positive");
             }
+
             if (value == 1)
             {
                 this.DeleteNode("v:imagedata/@gamma");
@@ -221,6 +191,7 @@ public class ExcelVmlDrawingPicture : ExcelVmlDrawingBase, IPictureContainer
             }
         }
     }
+
     /// <summary>
     /// Defines the amount of contrast for an image
     /// Default value is 0;
@@ -230,7 +201,8 @@ public class ExcelVmlDrawingPicture : ExcelVmlDrawingBase, IPictureContainer
         get
         {
             string v = this.GetXmlNodeString("v:imagedata/@gamma");
-            return GetFracDT(v,0);
+
+            return GetFracDT(v, 0);
         }
         set
         {
@@ -244,6 +216,7 @@ public class ExcelVmlDrawingPicture : ExcelVmlDrawingBase, IPictureContainer
             }
         }
     }
+
     /// <summary>
     /// Defines the intensity of black in an image
     /// Default value is 0
@@ -253,6 +226,7 @@ public class ExcelVmlDrawingPicture : ExcelVmlDrawingBase, IPictureContainer
         get
         {
             string v = this.GetXmlNodeString("v:imagedata/@blacklevel");
+
             return GetFracDT(v, 0);
         }
         set
@@ -269,12 +243,15 @@ public class ExcelVmlDrawingPicture : ExcelVmlDrawingBase, IPictureContainer
     }
 
     #region Private Methods
+
     private static double GetFracDT(string v, double def)
     {
         double d;
+
         if (v.EndsWith("f"))
         {
             v = v.Substring(0, v.Length - 1);
+
             if (double.TryParse(v, NumberStyles.Any, CultureInfo.InvariantCulture, out d))
             {
                 d /= 65535;
@@ -291,16 +268,20 @@ public class ExcelVmlDrawingPicture : ExcelVmlDrawingBase, IPictureContainer
                 d = def;
             }
         }
+
         return d;
     }
+
     private void SetStyleProp(string propertyName, string value)
     {
         string style = this.GetXmlNodeString("@style");
         string newStyle = "";
         bool found = false;
+
         foreach (string prop in style.Split(';'))
         {
             string[] split = prop.Split(':');
+
             if (split[0] == propertyName)
             {
                 newStyle += propertyName + ":" + value + ";";
@@ -311,6 +292,7 @@ public class ExcelVmlDrawingPicture : ExcelVmlDrawingBase, IPictureContainer
                 newStyle += prop + ";";
             }
         }
+
         if (!found)
         {
             newStyle += propertyName + ":" + value + ";";
@@ -318,12 +300,15 @@ public class ExcelVmlDrawingPicture : ExcelVmlDrawingBase, IPictureContainer
 
         this.SetXmlNodeString("@style", newStyle.Substring(0, newStyle.Length - 1));
     }
+
     private double GetStyleProp(string propertyName)
     {
         string style = this.GetXmlNodeString("@style");
+
         foreach (string prop in style.Split(';'))
         {
             string[] split = prop.Split(':');
+
             if (split[0] == propertyName && split.Length > 1)
             {
                 string value = split[1].EndsWith("pt") ? split[1].Substring(0, split[1].Length - 2) : split[1];
@@ -338,35 +323,48 @@ public class ExcelVmlDrawingPicture : ExcelVmlDrawingBase, IPictureContainer
                 }
             }
         }
+
         return 0;
     }
 
     IPictureRelationDocument RelationDocument
     {
-        get
-        {
-            return this._worksheet.VmlDrawings;
-        }
+        get { return this._worksheet.VmlDrawings; }
     }
 
     string ImageHash { get; set; }
+
     Uri UriPic { get; set; }
+
     ZipPackageRelationship RelPic { get; set; }
 
     IPictureRelationDocument IPictureContainer.RelationDocument => throw new NotImplementedException();
 
-    string IPictureContainer.ImageHash { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
-    Uri IPictureContainer.UriPic { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
-    ZipPackageRelationship IPictureContainer.RelPic { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
+    string IPictureContainer.ImageHash
+    {
+        get => throw new NotImplementedException();
+        set => throw new NotImplementedException();
+    }
+
+    Uri IPictureContainer.UriPic
+    {
+        get => throw new NotImplementedException();
+        set => throw new NotImplementedException();
+    }
+
+    ZipPackageRelationship IPictureContainer.RelPic
+    {
+        get => throw new NotImplementedException();
+        set => throw new NotImplementedException();
+    }
 
     void IPictureContainer.RemoveImage()
     {
-            
     }
 
     void IPictureContainer.SetNewImage()
     {
-            
     }
+
     #endregion
 }

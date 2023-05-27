@@ -10,6 +10,7 @@
  *************************************************************************************************
   01/27/2020         EPPlus Software AB       Initial release EPPlus 5
  *************************************************************************************************/
+
 using OfficeOpenXml.DataValidation.Contracts;
 using OfficeOpenXml.DataValidation.Formulas;
 using OfficeOpenXml.DataValidation.Formulas.Contracts;
@@ -47,7 +48,8 @@ public class ExcelDataValidationCustom : ExcelDataValidationWithFormula<IExcelDa
     /// Copy constructor
     /// </summary>
     /// <param name="copy"></param>
-    internal ExcelDataValidationCustom(ExcelDataValidationCustom copy, ExcelWorksheet ws) : base(copy, ws)
+    internal ExcelDataValidationCustom(ExcelDataValidationCustom copy, ExcelWorksheet ws)
+        : base(copy, ws)
     {
         this.Formula = copy.Formula;
     }
@@ -60,13 +62,13 @@ public class ExcelDataValidationCustom : ExcelDataValidationWithFormula<IExcelDa
     override internal IExcelDataValidationFormula DefineFormulaClassType(string formulaValue, string sheetName)
     {
         return new ExcelDataValidationFormulaCustom(formulaValue, this.Uid, sheetName, this.OnFormulaChanged);
-
     }
 
     internal override ExcelDataValidation GetClone()
     {
         return new ExcelDataValidationCustom(this, this._ws);
     }
+
     internal override ExcelDataValidation GetClone(ExcelWorksheet copy)
     {
         return new ExcelDataValidationCustom(this, copy);

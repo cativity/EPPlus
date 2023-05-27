@@ -10,12 +10,14 @@
  *************************************************************************************************
   10/04/2022         EPPlus Software AB       Initial release EPPlus 6.1
  *************************************************************************************************/
+
 using OfficeOpenXml.Attributes;
 using OfficeOpenXml.Utils;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Reflection;
+
 namespace OfficeOpenXml.Export.ToCollection;
 
 internal class ToCollectionAutomap
@@ -25,26 +27,33 @@ internal class ToCollectionAutomap
         Type? t = typeof(T);
 
         List<MappedProperty>? pl = new List<MappedProperty>();
+
         foreach (PropertyInfo? m in t.GetProperties(BindingFlags.Instance | BindingFlags.Public))
         {
             int ix = h.FindIndex(x => RemoveWS(x).Equals(m.Name, StringComparison.CurrentCultureIgnoreCase));
+
             if (ix < 0)
             {
                 EpplusTableColumnAttributeBase? tca = m.GetFirstAttributeOfType<EpplusTableColumnAttributeBase>(true);
+
                 if (tca != null)
                 {
                     ix = h.FindIndex(x => RemoveWS(x).Equals(RemoveWS(tca.Header), StringComparison.CurrentCultureIgnoreCase));
                 }
+
                 if (ix < 0)
                 {
                     DescriptionAttribute? da = m.GetFirstAttributeOfType<DescriptionAttribute>();
+
                     if (da != null)
                     {
                         ix = h.FindIndex(x => RemoveWS(x).Equals(RemoveWS(da.Description), StringComparison.CurrentCultureIgnoreCase));
                     }
+
                     if (ix < 0)
                     {
                         DisplayNameAttribute? dna = m.GetFirstAttributeOfType<DisplayNameAttribute>();
+
                         if (dna != null)
                         {
                             ix = h.FindIndex(x => RemoveWS(x).Equals(RemoveWS(dna.DisplayName), StringComparison.CurrentCultureIgnoreCase));
@@ -52,20 +61,23 @@ internal class ToCollectionAutomap
                     }
                 }
             }
+
             if (ix >= 0)
             {
                 pl.Add(new MappedProperty(ix, m));
             }
         }
+
         return pl;
     }
 
     private static string RemoveWS(string v)
     {
-        if(v != null)
+        if (v != null)
         {
             return v.Replace(" ", "").Replace("\t", "").Replace("\r", "").Replace("\n", "");
         }
+
         return v;
     }
 }

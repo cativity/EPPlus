@@ -10,6 +10,7 @@
  *************************************************************************************************
   01/27/2020         EPPlus Software AB       Initial release EPPlus 5
  *************************************************************************************************/
+
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -26,28 +27,46 @@ namespace OfficeOpenXml.Drawing.Chart;
 public sealed class ExcelAreaChart : ExcelChartStandard, IDrawingDataLabel
 {
     #region "Constructors"
-    internal ExcelAreaChart(ExcelDrawings drawings, XmlNode node, eChartType? type, ExcelChart topChart, ExcelPivotTable PivotTableSource, XmlDocument chartXml, ExcelGroupShape parent = null) :
-        base(drawings, node, type, topChart, PivotTableSource, chartXml, parent)
+
+    internal ExcelAreaChart(ExcelDrawings drawings,
+                            XmlNode node,
+                            eChartType? type,
+                            ExcelChart topChart,
+                            ExcelPivotTable PivotTableSource,
+                            XmlDocument chartXml,
+                            ExcelGroupShape parent = null)
+        : base(drawings, node, type, topChart, PivotTableSource, chartXml, parent)
     {
     }
 
-    internal ExcelAreaChart(ExcelDrawings drawings, XmlNode node, Uri uriChart, Packaging.ZipPackagePart part, XmlDocument chartXml, XmlNode chartNode, ExcelGroupShape parent = null) :
-        base(drawings, node, uriChart, part, chartXml, chartNode, parent)
+    internal ExcelAreaChart(ExcelDrawings drawings,
+                            XmlNode node,
+                            Uri uriChart,
+                            Packaging.ZipPackagePart part,
+                            XmlDocument chartXml,
+                            XmlNode chartNode,
+                            ExcelGroupShape parent = null)
+        : base(drawings, node, uriChart, part, chartXml, chartNode, parent)
     {
     }
 
-    internal ExcelAreaChart(ExcelChart topChart, XmlNode chartNode, ExcelGroupShape parent = null) : 
-        base(topChart, chartNode, parent)
+    internal ExcelAreaChart(ExcelChart topChart, XmlNode chartNode, ExcelGroupShape parent = null)
+        : base(topChart, chartNode, parent)
     {
     }
+
     #endregion
+
     internal override void InitSeries(ExcelChart chart, XmlNamespaceManager ns, XmlNode node, bool isPivot, List<ExcelChartSerie> list = null)
     {
         base.InitSeries(chart, ns, node, isPivot, list);
         this.Series.Init(chart, ns, node, isPivot, base.Series._list);
-    }        
+    }
+
     #region DataLabel
+
     ExcelChartDataLabel _DataLabel = null;
+
     /// <summary>
     /// Access to datalabel properties
     /// </summary>
@@ -55,20 +74,21 @@ public sealed class ExcelAreaChart : ExcelChartStandard, IDrawingDataLabel
     {
         get
         {
-            return this._DataLabel ??= new ExcelChartDataLabelStandard(this, this.NameSpaceManager, this.ChartNode, "dLbls", this._chartXmlHelper.SchemaNodeOrder);
+            return this._DataLabel ??=
+                       new ExcelChartDataLabelStandard(this, this.NameSpaceManager, this.ChartNode, "dLbls", this._chartXmlHelper.SchemaNodeOrder);
         }
     }
+
     /// <summary>
     /// If the chart has datalabel
     /// </summary>
     public bool HasDataLabel
     {
-        get
-        {
-            return this.ChartNode.SelectSingleNode("c:dLbls", this.NameSpaceManager) != null;
-        }
+        get { return this.ChartNode.SelectSingleNode("c:dLbls", this.NameSpaceManager) != null; }
     }
+
     #endregion
+
     /// <summary>
     /// The series for the Area Chart
     /// </summary>s

@@ -15,11 +15,18 @@ internal class YearFracProvider : IYearFracProvider
     }
 
     private readonly ParsingContext _context;
+
     public double GetYearFrac(System.DateTime date1, System.DateTime date2, DayCountBasis basis)
     {
         Yearfrac? func = new Yearfrac();
-        List<FunctionArgument>? args = new List<FunctionArgument> { new FunctionArgument(date1.ToOADate()), new FunctionArgument(date2.ToOADate()), new FunctionArgument((int)basis) };
+
+        List<FunctionArgument>? args = new List<FunctionArgument>
+        {
+            new FunctionArgument(date1.ToOADate()), new FunctionArgument(date2.ToOADate()), new FunctionArgument((int)basis)
+        };
+
         CompileResult? result = func.Execute(args, this._context);
+
         return result.ResultNumeric;
     }
 }

@@ -13,6 +13,7 @@ public enum EmptyRowsStrategy
     /// Ignore the empty row and continue with next
     /// </summary>
     Ignore,
+
     /// <summary>
     /// Stop reading when the first empty row occurs
     /// </summary>

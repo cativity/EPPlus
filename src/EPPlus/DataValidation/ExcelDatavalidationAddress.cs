@@ -15,7 +15,8 @@ public class ExcelDatavalidationAddress : ExcelAddress
 {
     ExcelDataValidation _val;
 
-    internal ExcelDatavalidationAddress(string address, ExcelDataValidation val) : base(address) 
+    internal ExcelDatavalidationAddress(string address, ExcelDataValidation val)
+        : base(address)
     {
         this._val = val;
     }

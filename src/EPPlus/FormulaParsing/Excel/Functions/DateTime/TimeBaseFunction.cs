@@ -10,6 +10,7 @@
  *************************************************************************************************
   01/27/2020         EPPlus Software AB       Initial release EPPlus 5
  *************************************************************************************************/
+
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -25,17 +26,9 @@ internal abstract class TimeBaseFunction : ExcelFunction
         this.TimeStringParser = new TimeStringParser();
     }
 
-    protected TimeStringParser TimeStringParser
-    {
-        get;
-        private set;
-    }
+    protected TimeStringParser TimeStringParser { get; private set; }
 
-    protected double SerialNumber
-    {
-        get;
-        private set;
-    }
+    protected double SerialNumber { get; private set; }
 
     public void ValidateAndInitSerialNumber(IEnumerable<FunctionArgument> arguments)
     {
@@ -45,7 +38,7 @@ internal abstract class TimeBaseFunction : ExcelFunction
 
     protected static double SecondsInADay
     {
-        get{ return 24 * 60 * 60; }
+        get { return 24 * 60 * 60; }
     }
 
     protected static double GetTimeSerialNumber(double seconds)
@@ -61,6 +54,7 @@ internal abstract class TimeBaseFunction : ExcelFunction
     protected static double GetHour(double serialNumber)
     {
         double seconds = GetSeconds(serialNumber);
+
         return (int)seconds / (60 * 60);
     }
 
@@ -68,6 +62,7 @@ internal abstract class TimeBaseFunction : ExcelFunction
     {
         double seconds = GetSeconds(serialNumber);
         seconds -= GetHour(serialNumber) * 60 * 60;
+
         return (seconds - (seconds % 60)) / 60;
     }
 

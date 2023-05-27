@@ -10,6 +10,7 @@
  *************************************************************************************************
   6/4/2022         EPPlus Software AB           ExcelTable Html Export
  *************************************************************************************************/
+
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -51,12 +52,12 @@ public abstract class ExcelHtmlExporterBase
     internal ExcelHtmlExporterBase(params ExcelRangeBase[] ranges)
     {
         this._ranges = new EPPlusReadOnlyList<ExcelRangeBase>();
+
         foreach (ExcelRangeBase? range in ranges)
         {
             this.AddRange(range);
         }
     }
-
 
     private readonly EPPlusReadOnlyList<ExcelRangeBase> _ranges;
 
@@ -65,10 +66,7 @@ public abstract class ExcelHtmlExporterBase
     /// </summary>
     public EPPlusReadOnlyList<ExcelRangeBase> Ranges
     {
-        get
-        {
-            return this._ranges;
-        }
+        get { return this._ranges; }
     }
 
     private void AddRange(ExcelRangeBase range)

@@ -10,6 +10,7 @@
  *************************************************************************************************
   01/18/2021         EPPlus Software AB       Improved handling of hidden cells for SUBTOTAL and AGGREGATE.
  *************************************************************************************************/
+
 using System;
 using System.Collections.Generic;
 using OfficeOpenXml.Table;
@@ -35,25 +36,28 @@ internal class FilterInfo
 
     private void Initialize()
     {
-        foreach(ExcelWorksheet? worksheet in this._workbook.Worksheets)
+        foreach (ExcelWorksheet? worksheet in this._workbook.Worksheets)
         {
             if (worksheet.IsChartSheet)
             {
                 continue;
             }
 
-            if(worksheet.AutoFilter != null && worksheet.AutoFilter.Columns != null && worksheet.AutoFilter.Columns.Count > 0)
+            if (worksheet.AutoFilter != null && worksheet.AutoFilter.Columns != null && worksheet.AutoFilter.Columns.Count > 0)
             {
                 this._worksheetFilters.Add(worksheet.Name);
+
                 continue;
             }
-            foreach(ExcelTable? table in worksheet.Tables)
-            {                    
-                if(table.AutoFilter != null && table.AutoFilter.Columns != null && table.AutoFilter.Columns.Count > 0)
+
+            foreach (ExcelTable? table in worksheet.Tables)
+            {
+                if (table.AutoFilter != null && table.AutoFilter.Columns != null && table.AutoFilter.Columns.Count > 0)
                 {
-                    if(!this._worksheetFilters.Contains(worksheet.Name))
+                    if (!this._worksheetFilters.Contains(worksheet.Name))
                     {
                         this._worksheetFilters.Add(worksheet.Name);
+
                         continue;
                     }
                 }

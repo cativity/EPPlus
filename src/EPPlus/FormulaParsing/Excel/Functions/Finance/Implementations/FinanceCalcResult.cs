@@ -10,6 +10,7 @@
  *************************************************************************************************
   05/03/2020         EPPlus Software AB         Implemented function
  *************************************************************************************************/
+
 using OfficeOpenXml.FormulaParsing.ExpressionGraph;
 using System;
 using System.Collections.Generic;
@@ -22,15 +23,16 @@ public class FinanceCalcResult<T>
     public FinanceCalcResult(T result)
     {
         this.Result = result;
-        if(result is double)
+
+        if (result is double)
         {
             this.DataType = DataType.Decimal;
         }
-        else if(result is int)
+        else if (result is int)
         {
             this.DataType = DataType.Integer;
         }
-        else if(result is System.DateTime)
+        else if (result is System.DateTime)
         {
             this.DataType = DataType.Date;
         }
@@ -39,6 +41,7 @@ public class FinanceCalcResult<T>
             this.DataType = DataType.Unknown;
         }
     }
+
     public FinanceCalcResult(T result, DataType dataType)
     {
         this.Result = result;
@@ -55,10 +58,7 @@ public class FinanceCalcResult<T>
 
     public DataType DataType { get; private set; }
 
-    public bool HasError
-    {
-        get; private set;
-    }
+    public bool HasError { get; private set; }
 
     public eErrorType ExcelErrorType { get; private set; }
 }

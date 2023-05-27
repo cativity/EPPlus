@@ -10,6 +10,7 @@
  *************************************************************************************************
   01/08/2021         EPPlus Software AB       Table Styling - EPPlus 5.6
  *************************************************************************************************/
+
 namespace OfficeOpenXml;
 
 /// <summary>
@@ -21,10 +22,12 @@ public enum eTableNamedStyleAppliesTo
     /// The named style applies to tables only
     /// </summary>
     Tables,
+
     /// <summary>
     /// The named style applies to pivot tables only
     /// </summary>
     PivotTables,
+
     /// <summary>
     /// The named style can be applied to both tables and pivot tables
     /// </summary>

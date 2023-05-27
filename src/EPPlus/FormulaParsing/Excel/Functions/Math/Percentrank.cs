@@ -10,6 +10,7 @@
  *************************************************************************************************
   05/25/2020         EPPlus Software AB       Implemented function
  *************************************************************************************************/
+
 using OfficeOpenXml.FormulaParsing.Excel.Functions.Metadata;
 using OfficeOpenXml.FormulaParsing.ExpressionGraph;
 using System;
@@ -19,10 +20,10 @@ using System.Text;
 
 namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Math;
 
-[FunctionMetadata(
-                     Category = ExcelFunctionCategory.Statistical,
-                     EPPlusVersion = "5.2",
-                     Description = "The Excel Percentrank function calculates the relative position, between 0 and 1 (inclusive), of a specified value within a supplied array.")]
+[FunctionMetadata(Category = ExcelFunctionCategory.Statistical,
+                  EPPlusVersion = "5.2",
+                  Description =
+                      "The Excel Percentrank function calculates the relative position, between 0 and 1 (inclusive), of a specified value within a supplied array.")]
 internal class Percentrank : RankFunctionBase
 {
     public override CompileResult Execute(IEnumerable<FunctionArgument> arguments, ParsingContext context)
@@ -30,18 +31,22 @@ internal class Percentrank : RankFunctionBase
         ValidateArguments(arguments, 2);
         double[]? array = this.GetNumbersFromArgs(arguments, 0, context);
         double number = this.ArgToDecimal(arguments, 1);
+
         if (number < array.First() || number > array.Last())
         {
             return this.CreateResult(eErrorType.NA);
         }
 
         int significance = 3;
+
         if (arguments.Count() > 2)
         {
             significance = this.ArgToInt(arguments, 2);
         }
+
         double result = PercentRankIncImpl(array, number);
         result = RoundResult(result, significance);
+
         return this.CreateResult(result, DataType.Decimal);
     }
 }

@@ -10,6 +10,7 @@
  *************************************************************************************************
   12/26/2021         EPPlus Software AB       EPPlus 6.0
  *************************************************************************************************/
+
 using OfficeOpenXml.Core.Worksheet.Core.Worksheet.Fonts.GenericMeasurements;
 using OfficeOpenXml.Core.Worksheet.Fonts.GenericFontMetrics;
 using OfficeOpenXml.Interfaces.Drawing.Text;
@@ -25,10 +26,10 @@ public class ExcelTextSettings
 {
     internal ExcelTextSettings()
     {
-        if(Environment.OSVersion.Platform==PlatformID.Unix ||
-           Environment.OSVersion.Platform==PlatformID.MacOSX)
+        if (Environment.OSVersion.Platform == PlatformID.Unix || Environment.OSVersion.Platform == PlatformID.MacOSX)
         {
             this.PrimaryTextMeasurer = new GenericFontMetricsTextMeasurer();
+
             try
             {
                 this.FallbackTextMeasurer = new SystemDrawingTextMeasurer();
@@ -43,6 +44,7 @@ public class ExcelTextSettings
             try
             {
                 SystemDrawingTextMeasurer? m = new SystemDrawingTextMeasurer();
+
                 if (m.ValidForEnvironment())
                 {
                     this.PrimaryTextMeasurer = m;
@@ -76,15 +78,13 @@ public class ExcelTextSettings
     /// All measurements of texts will be multiplied with this value. Default is 1.
     /// </summary>
     public float AutofitScaleFactor { get; set; }
+
     /// <summary>
     /// Returns an instance of the internal generic text measurer
     /// </summary>
     public static ITextMeasurer GenericTextMeasurer
     {
-        get
-        {
-            return new GenericFontMetricsTextMeasurer();
-        }
+        get { return new GenericFontMetricsTextMeasurer(); }
     }
 
     /// <summary>

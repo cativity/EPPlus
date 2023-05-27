@@ -21,15 +21,20 @@ internal class YieldImpl
         return System.Math.Abs(x - y) < 0.000000001;
     }
 
-    public double GetYield(System.DateTime settlement, System.DateTime maturity, double rate, double pr, double redemption, int frequency, DayCountBasis basis = DayCountBasis.US_30_360)
+    public double GetYield(System.DateTime settlement,
+                           System.DateTime maturity,
+                           double rate,
+                           double pr,
+                           double redemption,
+                           int frequency,
+                           DayCountBasis basis = DayCountBasis.US_30_360)
     {
-            
         double A = this._couponProvider.GetCoupdaybs(settlement, maturity, frequency, basis);
         double N = this._couponProvider.GetCoupnum(settlement, maturity, frequency, basis);
         double E = this._couponProvider.GetCoupdays(settlement, maturity, frequency, basis);
 
         if (N <= -1)
-        { 
+        {
             double DSR = E - A;
             double part1 = (redemption / 100) + (rate / frequency) - ((pr / 100d) + (A / E * rate / frequency));
             double part2 = (pr / 100d) + (A / E * rate / frequency);
@@ -45,7 +50,6 @@ internal class YieldImpl
             double fPrice1 = this._priceProvider.GetPrice(settlement, maturity, rate, fYield1, redemption, frequency, basis);
             double fPrice2 = this._priceProvider.GetPrice(settlement, maturity, rate, fYield2, redemption, frequency, basis);
             double fYieldN = (fYield2 - fYield1) * 0.5;
-
 
             for (int nIter = 0; nIter < 100 && !AreEqual(fPriceN, pr); nIter++)
             {
@@ -86,12 +90,13 @@ internal class YieldImpl
                     fYieldN = fYield2 - ((fYield2 - fYield1) * ((pr - fPrice2) / (fPrice1 - fPrice2)));
                 }
             }
+
             if (System.Math.Abs(pr - fPriceN) > pr / 100d)
             {
                 throw new Exception("Result not precise enough");
             }
 
-            return fYieldN;      
+            return fYieldN;
         }
     }
 }

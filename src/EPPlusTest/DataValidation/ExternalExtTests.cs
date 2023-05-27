@@ -23,6 +23,7 @@ public class ExternalExtTests : TestBase
     {
         //_pck = OpenPackage("ExternalReferences.xlsx", true);
         string? outDir = _worksheetPath + "ExternalDataValidations";
+
         if (!Directory.Exists(outDir))
         {
             Directory.CreateDirectory(outDir);
@@ -46,7 +47,7 @@ public class ExternalExtTests : TestBase
 
     internal static void AddDataValidations(ref ExcelWorksheet ws, bool isExtLst = false, string extSheetName = "", bool many = false)
     {
-        if(isExtLst)
+        if (isExtLst)
         {
             IExcelDataValidationInt? intValidation = ws.DataValidations.AddIntegerValidation("A1");
             intValidation.Operator = ExcelDataValidationOperator.equal;
@@ -59,7 +60,7 @@ public class ExternalExtTests : TestBase
             intValidation.Formula2.Value = 3;
         }
 
-        if(many)
+        if (many)
         {
             IExcelDataValidationTime? timeValidation = ws.DataValidations.AddTimeValidation("B1");
             timeValidation.Operator = ExcelDataValidationOperator.between;
@@ -68,8 +69,6 @@ public class ExternalExtTests : TestBase
             {
                 timeValidation.Formula.ExcelFormula = extSheetName + "!B1";
                 timeValidation.Formula2.ExcelFormula = extSheetName + "!B2";
-
-
             }
             else
             {
@@ -118,7 +117,6 @@ public class ExternalExtTests : TestBase
 
         AddDataValidations(ref ws, false, "", true);
         SaveAndLoadAndSave(pck);
-
     }
 
     [TestMethod]
@@ -130,7 +128,6 @@ public class ExternalExtTests : TestBase
 
         ws.ConditionalFormatting.AddDatabar(new ExcelAddress(1, 1, 2, 1), Color.Blue);
         ws.ConditionalFormatting.AddDatabar(new ExcelAddress(1, 1, 2, 1), Color.Blue);
-
 
         AddDataValidations(ref ws, false, "", true);
         SaveAndLoadAndSave(pck);

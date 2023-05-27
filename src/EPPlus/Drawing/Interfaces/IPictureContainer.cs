@@ -10,6 +10,7 @@
  *************************************************************************************************
   01/27/2020         EPPlus Software AB       Initial release EPPlus 5
  *************************************************************************************************/
+
 using OfficeOpenXml.Packaging;
 using System;
 using System.Collections.Generic;
@@ -24,22 +25,34 @@ internal class HashInfo
     {
         this.RelId = relId;
     }
+
     public string RelId { get; set; }
+
     public int RefCount { get; set; }
 }
+
 internal interface IPictureRelationDocument
 {
     ExcelPackage Package { get; }
+
     Dictionary<string, HashInfo> Hashes { get; }
+
     ZipPackagePart RelatedPart { get; }
+
     Uri RelatedUri { get; }
 }
+
 internal interface IPictureContainer
 {
     IPictureRelationDocument RelationDocument { get; }
+
     string ImageHash { get; set; }
+
     Uri UriPic { get; set; }
+
     ZipPackageRelationship RelPic { get; set; }
+
     void RemoveImage();
+
     void SetNewImage();
 }

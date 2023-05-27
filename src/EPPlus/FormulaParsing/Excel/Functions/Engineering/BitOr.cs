@@ -19,16 +19,16 @@ using System.Text;
 
 namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Engineering;
 
-[FunctionMetadata(
-                     Category = ExcelFunctionCategory.Engineering,
-                     EPPlusVersion = "5.1",
-                     Description = "Returns a Bitwise 'Or' of two numbers",
-                     IntroducedInExcelVersion = "2013")]
+[FunctionMetadata(Category = ExcelFunctionCategory.Engineering,
+                  EPPlusVersion = "5.1",
+                  Description = "Returns a Bitwise 'Or' of two numbers",
+                  IntroducedInExcelVersion = "2013")]
 internal class BitOr : ExcelFunction
 {
     public override CompileResult Execute(IEnumerable<FunctionArgument> arguments, ParsingContext context)
     {
         ValidateArguments(arguments, 2);
+
         if (!IsNumeric(arguments.ElementAt(0).Value) || !IsNumeric(arguments.ElementAt(1).Value))
         {
             return this.CreateResult(eErrorType.Value);
@@ -41,6 +41,7 @@ internal class BitOr : ExcelFunction
 
         int number1 = this.ArgToInt(arguments, 0);
         int number2 = this.ArgToInt(arguments, 1);
+
         if (number1 < 0 || number2 < 0)
         {
             return this.CreateResult(eErrorType.Num);

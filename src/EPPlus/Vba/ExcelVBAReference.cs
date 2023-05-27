@@ -10,6 +10,7 @@
  *************************************************************************************************
   01/27/2020         EPPlus Software AB       Initial release EPPlus 5
  *************************************************************************************************/
+
 namespace OfficeOpenXml.VBA;
 
 /// <summary>
@@ -25,23 +26,28 @@ public class ExcelVbaReference
     {
         this.ReferenceRecordID = 0xD;
     }
+
     /// <summary>
     /// The reference record ID. See MS-OVBA documentation for more info. 
     /// </summary>
     public int ReferenceRecordID { get; internal set; }
+
     /// <summary>
     /// The reference record ID. See MS-OVBA documentation for more info. 
     /// </summary>
     public int SecondaryReferenceRecordID { get; internal set; }
+
     /// <summary>
     /// The name of the reference
     /// </summary>
     public string Name { get; set; }
+
     /// <summary>
     /// LibID
     /// For more info check MS-OVBA 2.1.1.8 LibidReference and 2.3.4.2.2 PROJECTREFERENCES
     /// </summary>
     public string Libid { get; set; }
+
     /// <summary>
     /// A string representation of the object (the Name)
     /// </summary>

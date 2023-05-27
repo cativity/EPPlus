@@ -25,7 +25,6 @@
 // 
 // ------------------------------------------------------------------
 
-
 using System;
 using System.IO;
 
@@ -75,10 +74,7 @@ internal class OffsetStream : Stream, IDisposable
 
     public override long Length
     {
-        get
-        {
-            return this._innerStream.Length;
-        }
+        get { return this._innerStream.Length; }
     }
 
     public override long Position
@@ -87,12 +83,10 @@ internal class OffsetStream : Stream, IDisposable
         set { this._innerStream.Position = this._originalPosition + value; }
     }
 
-
     public override long Seek(long offset, SeekOrigin origin)
     {
         return this._innerStream.Seek(this._originalPosition + offset, origin) - this._originalPosition;
     }
-
 
     public override void SetLength(long value)
     {
@@ -103,6 +97,7 @@ internal class OffsetStream : Stream, IDisposable
     {
         this.Close();
     }
+
     public override void Close()
     {
         base.Close();

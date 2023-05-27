@@ -10,6 +10,7 @@
  *************************************************************************************************
   01/27/2020         EPPlus Software AB       Initial release EPPlus 5 (ported to c# from Microsoft.VisualBasic.Financial.vb (MIT))
  *************************************************************************************************/
+
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -23,7 +24,7 @@ internal static class DdbImpl
         double dRet;
         double dTemp;
 
-        if(Factor <= 0d || Salvage < 0d || Period <= 0d || Period > Life)
+        if (Factor <= 0d || Salvage < 0d || Period <= 0d || Period > Life)
         {
             return new FinanceCalcResult<double>(eErrorType.Value);
         }
@@ -33,25 +34,26 @@ internal static class DdbImpl
             return new FinanceCalcResult<double>(0.0d);
         }
 
-        if(Life < 2d)
+        if (Life < 2d)
         {
             return new FinanceCalcResult<double>(Cost - Salvage);
         }
 
-        if(Life == 2d && Period > 1d)
+        if (Life == 2d && Period > 1d)
         {
             return new FinanceCalcResult<double>(0d);
         }
 
-        if(Life == 2d && Period <= 1d)
+        if (Life == 2d && Period <= 1d)
         {
             return new FinanceCalcResult<double>(Cost - Salvage);
         }
 
-        if(Period <= 1d)
+        if (Period <= 1d)
         {
             dRet = Cost * Factor / Life;
             dTemp = Cost - Salvage;
+
             if (dRet > dTemp)
             {
                 return new FinanceCalcResult<double>(dTemp);
@@ -75,15 +77,16 @@ internal static class DdbImpl
         double dTot = Cost * (1 - System.Math.Pow(dTemp, Period));
         double dExcess = dTot - Cost + Salvage;
 
-        if(dExcess > 0d)
+        if (dExcess > 0d)
         {
             dRet -= dExcess;
         }
 
-        if(dRet >= 0d)
+        if (dRet >= 0d)
         {
             return new FinanceCalcResult<double>(dRet);
         }
+
         return new FinanceCalcResult<double>(0d);
     }
 }

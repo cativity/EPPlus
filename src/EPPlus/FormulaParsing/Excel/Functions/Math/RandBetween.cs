@@ -10,6 +10,7 @@
  *************************************************************************************************
   01/27/2020         EPPlus Software AB       Initial release EPPlus 5
  *************************************************************************************************/
+
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -19,10 +20,7 @@ using OfficeOpenXml.FormulaParsing.ExpressionGraph;
 
 namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Math;
 
-[FunctionMetadata(
-                     Category = ExcelFunctionCategory.MathAndTrig,
-                     EPPlusVersion = "4",
-                     Description = "Returns a random number between two given integers")]
+[FunctionMetadata(Category = ExcelFunctionCategory.MathAndTrig, EPPlusVersion = "4", Description = "Returns a random number between two given integers")]
 internal class RandBetween : ExcelFunction
 {
     public override CompileResult Execute(IEnumerable<FunctionArgument> arguments, ParsingContext context)
@@ -33,6 +31,7 @@ internal class RandBetween : ExcelFunction
         object? rand = new Rand().Execute(new FunctionArgument[0], context).Result;
         double randPart = (CalulateDiff(high, low) * (double)rand) + 1;
         randPart = System.Math.Floor(randPart);
+
         return this.CreateResult(low + randPart, DataType.Integer);
     }
 
@@ -40,12 +39,13 @@ internal class RandBetween : ExcelFunction
     {
         if (high > 0 && low < 0)
         {
-            return high + (low * - 1);
+            return high + (low * -1);
         }
         else if (high < 0 && low < 0)
         {
             return (high * -1) - (low * -1);
         }
+
         return high - low;
     }
 }

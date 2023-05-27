@@ -10,6 +10,7 @@
  *************************************************************************************************
   01/27/2020         EPPlus Software AB       Initial release EPPlus 5
  *************************************************************************************************/
+
 using System;
 using System.Xml;
 
@@ -28,6 +29,7 @@ public abstract class ExcelDrawingFillBase
     internal protected ExcelDrawingFillBase()
     {
     }
+
     /// <summary>
     /// Creates an instance of ExcelDrawingFillBase
     /// </summary>
@@ -45,6 +47,7 @@ public abstract class ExcelDrawingFillBase
     /// Type of fill
     /// </summary>
     public abstract eFillStyle Style { get; }
+
     /// <summary>
     /// Internal Check for type change
     /// </summary>
@@ -59,18 +62,22 @@ public abstract class ExcelDrawingFillBase
             this._xml.TopNode = newNode;
         }
     }
+
     /// <summary>
     /// The Xml helper
     /// </summary>
     internal protected XmlHelper _xml = null;
+
     /// <summary>
     /// The top node
     /// </summary>
     internal protected XmlNode _topNode = null;
+
     /// <summary>
     /// The name space manager
     /// </summary>
     internal protected XmlNamespaceManager _nsm = null;
+
     /// <summary>
     /// The XPath
     /// </summary>
@@ -87,6 +94,7 @@ public abstract class ExcelDrawingFillBase
         this._fillPath = fillPath;
         this._nsm = nsm;
         this._topNode = node;
+
         if (string.IsNullOrEmpty(fillPath))
         {
             this._xml = XmlHelperFactory.Create(nsm, node);
@@ -96,18 +104,28 @@ public abstract class ExcelDrawingFillBase
             this._xml = null;
         }
     }
+
     /// <summary>
     /// Create the Xml Helper
     /// </summary>
     protected internal void CreateXmlHelper()
     {
         this._xml = XmlHelperFactory.Create(this._nsm, this._topNode);
-        this._xml.SchemaNodeOrder = new string[] { "tickLblPos", "spPr", "txPr", "dLblPos", "crossAx", "printSettings", "showVal", "prstGeom", "noFill", "solidFill", "blipFill", "gradFill", "noFill", "pattFill", "ln", "prstDash", "blip", "srcRect", "tile", "stretch" };
-        this._xml.TopNode = this._xml.CreateNode(this._fillPath+"/"+ this.NodeName);
-            
+
+        this._xml.SchemaNodeOrder = new string[]
+        {
+            "tickLblPos", "spPr", "txPr", "dLblPos", "crossAx", "printSettings", "showVal", "prstGeom", "noFill", "solidFill", "blipFill", "gradFill",
+            "noFill", "pattFill", "ln", "prstDash", "blip", "srcRect", "tile", "stretch"
+        };
+
+        this._xml.TopNode = this._xml.CreateNode(this._fillPath + "/" + this.NodeName);
     }
+
     internal abstract string NodeName { get; }
+
     internal abstract void GetXml();
+
     internal abstract void SetXml(XmlNamespaceManager nsm, XmlNode node);
+
     internal abstract void UpdateXml();
 }

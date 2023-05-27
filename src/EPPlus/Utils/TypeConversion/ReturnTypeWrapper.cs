@@ -10,6 +10,7 @@
  *************************************************************************************************
   01/27/2020         EPPlus Software AB       Initial release EPPlus 5
  *************************************************************************************************/
+
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -39,10 +40,7 @@ public class ReturnTypeWrapper<T>
     /// </summary>
     public Type Type
     {
-        get
-        {
-            return this.IsNullable ? this._underlyingType : this._returnType;
-        }
+        get { return this.IsNullable ? this._underlyingType : this._returnType; }
     }
 
     /// <summary>
@@ -50,10 +48,7 @@ public class ReturnTypeWrapper<T>
     /// </summary>
     public bool IsNumeric
     {
-        get
-        {
-            return NumericTypeConversions.IsNumeric(this.Type);
-        }
+        get { return NumericTypeConversions.IsNumeric(this.Type); }
     }
 
     /// <summary>
@@ -61,10 +56,7 @@ public class ReturnTypeWrapper<T>
     /// </summary>
     public bool IsNullable
     {
-        get
-        {
-            return this._underlyingType != null;
-        }
+        get { return this._underlyingType != null; }
     }
 
     /// <summary>
@@ -72,10 +64,7 @@ public class ReturnTypeWrapper<T>
     /// </summary>
     public bool IsDateTime
     {
-        get
-        {
-            return this.Type == typeof(DateTime);
-        }
+        get { return this.Type == typeof(DateTime); }
     }
 
     /// <summary>
@@ -83,9 +72,6 @@ public class ReturnTypeWrapper<T>
     /// </summary>
     public bool IsTimeSpan
     {
-        get
-        {
-            return this.Type == typeof(TimeSpan);
-        }
+        get { return this.Type == typeof(TimeSpan); }
     }
 }

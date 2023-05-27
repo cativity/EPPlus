@@ -31,7 +31,6 @@
 //
 // ------------------------------------------------------------------
 
-
 using System;
 using System.IO;
 using System.Collections.Generic;
@@ -41,7 +40,6 @@ using System.Globalization;
 
 namespace OfficeOpenXml.Packaging.Ionic.Zip
 {
-
     partial class ZipFile
     {
         /// <summary>
@@ -370,7 +368,6 @@ namespace OfficeOpenXml.Packaging.Ionic.Zip
             this.AddSelectedFiles(selectionCriteria, directoryOnDisk, null, false);
         }
 
-
         /// <summary>
         ///   Adds to the ZipFile a set of files from the specified directory on disk,
         ///   that conform to the specified criteria.
@@ -446,7 +443,6 @@ namespace OfficeOpenXml.Packaging.Ionic.Zip
             this.AddSelectedFiles(selectionCriteria, directoryOnDisk, null, recurseDirectories);
         }
 
-
         /// <summary>
         ///   Adds to the ZipFile a selection of files from the specified directory on
         ///   disk, that conform to the specified criteria, and using a specified root
@@ -506,9 +502,7 @@ namespace OfficeOpenXml.Packaging.Ionic.Zip
         ///   the empty string ("") will insert the item at the root path within the
         ///   archive.
         /// </param>
-        public void AddSelectedFiles(String selectionCriteria,
-                                     String directoryOnDisk,
-                                     String directoryPathInArchive)
+        public void AddSelectedFiles(String selectionCriteria, String directoryOnDisk, String directoryPathInArchive)
         {
             this.AddSelectedFiles(selectionCriteria, directoryOnDisk, directoryPathInArchive, false);
         }
@@ -574,16 +568,9 @@ namespace OfficeOpenXml.Packaging.Ionic.Zip
         ///   If true, the method also scans subdirectories for files matching the
         ///   criteria.
         /// </param>
-        public void AddSelectedFiles(String selectionCriteria,
-                                     String directoryOnDisk,
-                                     String directoryPathInArchive,
-                                     bool recurseDirectories)
+        public void AddSelectedFiles(String selectionCriteria, String directoryOnDisk, String directoryPathInArchive, bool recurseDirectories)
         {
-            this._AddOrUpdateSelectedFiles(selectionCriteria,
-                                           directoryOnDisk,
-                                           directoryPathInArchive,
-                                           recurseDirectories,
-                                           false);
+            this._AddOrUpdateSelectedFiles(selectionCriteria, directoryOnDisk, directoryPathInArchive, recurseDirectories, false);
         }
 
         /// <summary>
@@ -626,18 +613,10 @@ namespace OfficeOpenXml.Packaging.Ionic.Zip
         /// </param>
         ///
         /// <seealso cref="AddSelectedFiles(String, String, String, bool)" />
-        public void UpdateSelectedFiles(String selectionCriteria,
-                                     String directoryOnDisk,
-                                     String directoryPathInArchive,
-                                     bool recurseDirectories)
+        public void UpdateSelectedFiles(String selectionCriteria, String directoryOnDisk, String directoryPathInArchive, bool recurseDirectories)
         {
-            this._AddOrUpdateSelectedFiles(selectionCriteria,
-                                           directoryOnDisk,
-                                           directoryPathInArchive,
-                                           recurseDirectories,
-                                           true);
+            this._AddOrUpdateSelectedFiles(selectionCriteria, directoryOnDisk, directoryPathInArchive, recurseDirectories, true);
         }
-
 
         private static string EnsureendInSlash(string s)
         {
@@ -673,8 +652,7 @@ namespace OfficeOpenXml.Packaging.Ionic.Zip
 
             if (this.Verbose)
             {
-                this.StatusMessageTextWriter.WriteLine("adding selection '{0}' from dir '{1}'...",
-                                                       selectionCriteria, directoryOnDisk);
+                this.StatusMessageTextWriter.WriteLine("adding selection '{0}' from dir '{1}'...", selectionCriteria, directoryOnDisk);
             }
 
             FileSelector ff = new FileSelector(selectionCriteria, this.AddDirectoryWillTraverseReparsePoints);
@@ -688,15 +666,15 @@ namespace OfficeOpenXml.Packaging.Ionic.Zip
             this.OnAddStarted();
 
             AddOrUpdateAction action = wantUpdate ? AddOrUpdateAction.AddOrUpdate : AddOrUpdateAction.AddOnly;
+
             foreach (string? item in itemsToAdd)
             {
                 // workitem 10153
                 string dirInArchive = directoryPathInArchive == null
-                    ? null
-                    // workitem 12260
-                    : ReplaceLeadingDirectory(Path.GetDirectoryName(item),
-                                              directoryOnDisk,
-                                              directoryPathInArchive);
+                                          ? null
+
+                                          // workitem 12260
+                                          : ReplaceLeadingDirectory(Path.GetDirectoryName(item), directoryOnDisk, directoryPathInArchive);
 
                 if (File.Exists(item))
                 {
@@ -719,15 +697,13 @@ namespace OfficeOpenXml.Packaging.Ionic.Zip
             this.OnAddCompleted();
         }
 
-
         // workitem 12260
-        private static string ReplaceLeadingDirectory(string original,
-                                                      string pattern,
-                                                      string replacement)
+        private static string ReplaceLeadingDirectory(string original, string pattern, string replacement)
         {
             string upperString = original.ToUpper(CultureInfo.InvariantCulture);
             string upperPattern = pattern.ToUpper(CultureInfo.InvariantCulture);
             int p1 = upperString.IndexOf(upperPattern);
+
             if (p1 != 0)
             {
                 return original;
@@ -751,14 +727,14 @@ namespace OfficeOpenXml.Packaging.Ionic.Zip
             while( (position1 = upperString.IndexOf(upperPattern,
                                                     position0)) != -1 )
             {
-                for ( int i=position0 ; i < position1 ; ++i )
+                for ( int i = position0 ; i < position1 ; ++i )
                     chars[count++] = original[i];
-                for ( int i=0 ; i < replacement.Length ; ++i )
+                for ( int i = 0 ; i < replacement.Length ; ++i )
                     chars[count++] = replacement[i];
                 position0 = position1+pattern.Length;
             }
             if ( position0 == 0 ) return original;
-            for ( int i=position0 ; i < original.Length ; ++i )
+            for ( int i = position0 ; i < original.Length ; ++i )
                 chars[count++] = original[i];
             return new string(chars, 0, count);
         }
@@ -824,9 +800,9 @@ namespace OfficeOpenXml.Packaging.Ionic.Zip
         public ICollection<ZipEntry> SelectEntries(String selectionCriteria)
         {
             FileSelector ff = new FileSelector(selectionCriteria, this.AddDirectoryWillTraverseReparsePoints);
+
             return ff.SelectEntries(this);
         }
-
 
         /// <summary>
         /// Retrieve entries from the zipfile by specified criteria.
@@ -896,10 +872,9 @@ namespace OfficeOpenXml.Packaging.Ionic.Zip
         public ICollection<ZipEntry> SelectEntries(String selectionCriteria, string directoryPathInArchive)
         {
             FileSelector ff = new FileSelector(selectionCriteria, this.AddDirectoryWillTraverseReparsePoints);
+
             return ff.SelectEntries(this, directoryPathInArchive);
         }
-
-
 
         /// <summary>
         /// Remove entries from the zipfile by specified criteria.
@@ -958,9 +933,9 @@ namespace OfficeOpenXml.Packaging.Ionic.Zip
         {
             ICollection<ZipEntry>? selection = this.SelectEntries(selectionCriteria);
             this.RemoveEntries(selection);
+
             return selection.Count;
         }
-
 
         /// <summary>
         /// Remove entries from the zipfile by specified criteria, and within the specified
@@ -1024,9 +999,9 @@ namespace OfficeOpenXml.Packaging.Ionic.Zip
         {
             ICollection<ZipEntry>? selection = this.SelectEntries(selectionCriteria, directoryPathInArchive);
             this.RemoveEntries(selection);
+
             return selection.Count;
         }
-
 
         /// <summary>
         /// Selects and Extracts a set of Entries from the ZipFile.
@@ -1071,7 +1046,6 @@ namespace OfficeOpenXml.Packaging.Ionic.Zip
             }
         }
 
-
         /// <summary>
         /// Selects and Extracts a set of Entries from the ZipFile.
         /// </summary>
@@ -1114,7 +1088,6 @@ namespace OfficeOpenXml.Packaging.Ionic.Zip
                 e.Extract(extractExistingFile);
             }
         }
-
 
         /// <summary>
         /// Selects and Extracts a set of Entries from the ZipFile.
@@ -1167,7 +1140,6 @@ namespace OfficeOpenXml.Packaging.Ionic.Zip
             }
         }
 
-
         /// <summary>
         /// Selects and Extracts a set of Entries from the ZipFile.
         /// </summary>
@@ -1202,7 +1174,6 @@ namespace OfficeOpenXml.Packaging.Ionic.Zip
                 e.Extract(extractDirectory);
             }
         }
-
 
         /// <summary>
         /// Selects and Extracts a set of Entries from the ZipFile.
@@ -1251,7 +1222,10 @@ namespace OfficeOpenXml.Packaging.Ionic.Zip
         /// The action to take if extraction would overwrite an existing file.
         /// </param>
         ///
-        internal void ExtractSelectedEntries(String selectionCriteria, string directoryPathInArchive, string extractDirectory, ExtractExistingFileAction extractExistingFile)
+        internal void ExtractSelectedEntries(String selectionCriteria,
+                                             string directoryPathInArchive,
+                                             string extractDirectory,
+                                             ExtractExistingFileAction extractExistingFile)
         {
             foreach (ZipEntry e in this.SelectEntries(selectionCriteria, directoryPathInArchive))
             {
@@ -1259,12 +1233,8 @@ namespace OfficeOpenXml.Packaging.Ionic.Zip
                 e.Extract(extractDirectory, extractExistingFile);
             }
         }
-
     }
-
 }
-
-
 
 namespace OfficeOpenXml.Packaging.Ionic
 {
@@ -1272,7 +1242,6 @@ namespace OfficeOpenXml.Packaging.Ionic
     {
         internal abstract bool Evaluate(ZipEntry entry);
     }
-
 
     internal partial class NameCriterion : SelectionCriterion
     {
@@ -1284,7 +1253,6 @@ namespace OfficeOpenXml.Packaging.Ionic
             return this._Evaluate(transformedFileName);
         }
     }
-
 
     internal partial class SizeCriterion : SelectionCriterion
     {
@@ -1299,31 +1267,37 @@ namespace OfficeOpenXml.Packaging.Ionic
         internal override bool Evaluate(ZipEntry entry)
         {
             DateTime x;
+
             switch (this.Which)
             {
                 case WhichTime.atime:
                     x = entry.AccessedTime;
+
                     break;
+
                 case WhichTime.mtime:
                     x = entry.ModifiedTime;
+
                     break;
+
                 case WhichTime.ctime:
                     x = entry.CreationTime;
+
                     break;
-                default: throw new ArgumentException("??time");
+
+                default:
+                    throw new ArgumentException("??time");
             }
+
             return this._Evaluate(x);
         }
     }
-
 
     internal partial class TypeCriterion : SelectionCriterion
     {
         internal override bool Evaluate(ZipEntry entry)
         {
-            bool result = this.ObjectType == 'D'
-                ? entry.IsDirectory
-                : !entry.IsDirectory;
+            bool result = this.ObjectType == 'D' ? entry.IsDirectory : !entry.IsDirectory;
 
             if (this.Operator != ComparisonOperator.EqualTo)
             {
@@ -1340,6 +1314,7 @@ namespace OfficeOpenXml.Packaging.Ionic
         internal override bool Evaluate(ZipEntry entry)
         {
             FileAttributes fileAttrs = entry.Attributes;
+
             return this._Evaluate(fileAttrs);
         }
     }
@@ -1350,6 +1325,7 @@ namespace OfficeOpenXml.Packaging.Ionic
         internal override bool Evaluate(ZipEntry entry)
         {
             bool result = this.Left.Evaluate(entry);
+
             switch (this.Conjunction)
             {
                 case LogicalConjunction.AND:
@@ -1359,6 +1335,7 @@ namespace OfficeOpenXml.Packaging.Ionic
                     }
 
                     break;
+
                 case LogicalConjunction.OR:
                     if (!result)
                     {
@@ -1366,21 +1343,23 @@ namespace OfficeOpenXml.Packaging.Ionic
                     }
 
                     break;
+
                 case LogicalConjunction.XOR:
                     result ^= this.Right.Evaluate(entry);
+
                     break;
             }
+
             return result;
         }
     }
-
-
 
     internal partial class FileSelector
     {
         private bool Evaluate(ZipEntry entry)
         {
             bool result = this._Criterion.Evaluate(entry);
+
             return result;
         }
 
@@ -1432,7 +1411,6 @@ namespace OfficeOpenXml.Packaging.Ionic
             return list;
         }
 
-
         /// <summary>
         /// Retrieve the ZipEntry items in the ZipFile that conform to the specified criteria.
         /// </summary>
@@ -1479,8 +1457,10 @@ namespace OfficeOpenXml.Packaging.Ionic
             }
 
             List<ZipEntry>? list = new List<ZipEntry>();
+
             // workitem 8559
             string slashSwapped = directoryPathInArchive == null ? null : directoryPathInArchive.Replace("/", "\\");
+
             // workitem 9174
             if (slashSwapped != null)
             {
@@ -1489,9 +1469,11 @@ namespace OfficeOpenXml.Packaging.Ionic
                     slashSwapped = slashSwapped.Substring(0, slashSwapped.Length - 1);
                 }
             }
+
             foreach (ZipEntry e in zip)
             {
-                if (directoryPathInArchive == null || Path.GetDirectoryName(e.FileName) == directoryPathInArchive
+                if (directoryPathInArchive == null
+                    || Path.GetDirectoryName(e.FileName) == directoryPathInArchive
                     || Path.GetDirectoryName(e.FileName) == slashSwapped) // workitem 8559
                 {
                     if (this.Evaluate(e))
@@ -1503,6 +1485,5 @@ namespace OfficeOpenXml.Packaging.Ionic
 
             return list;
         }
-
     }
 }

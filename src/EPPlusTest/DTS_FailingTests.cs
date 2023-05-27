@@ -26,6 +26,7 @@
  *******************************************************************************
   01/27/2020         EPPlus Software AB       Initial release EPPlus 5
  *******************************************************************************/
+
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using OfficeOpenXml;
 using OfficeOpenXml.Drawing;
@@ -40,11 +41,11 @@ namespace EPPlusTest;
 [TestClass]
 public class DTS_FailingTests
 {
-
     [TestMethod]
     public void DeleteWorksheetWithReferencedImage()
     {
         MemoryStream? ms = new MemoryStream();
+
         using (ExcelPackage? pck = new ExcelPackage())
         {
             ExcelWorksheet? ws = pck.Workbook.Worksheets.Add("original");
@@ -52,6 +53,7 @@ public class DTS_FailingTests
             pck.Workbook.Worksheets.Copy("original", "copy");
             pck.SaveAs(ms);
         }
+
         ms.Position = 0;
 
         using (ExcelPackage? pck = new ExcelPackage(ms))

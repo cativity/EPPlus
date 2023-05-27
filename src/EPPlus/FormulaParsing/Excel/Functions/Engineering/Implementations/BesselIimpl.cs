@@ -7,6 +7,7 @@
  *************************************************************************************************
   05/20/2020         EPPlus Software AB       Implemented function
  *************************************************************************************************/
+
 using OfficeOpenXml.FormulaParsing.Excel.Functions.Finance.Implementations;
 using System;
 using System.Collections.Generic;
@@ -20,6 +21,7 @@ public class BesselIimpl : BesselBase
     {
         const int nMaxIteration = 2000;
         double fXHalf = x / 2.0;
+
         if (n < 0)
         {
             return new FinanceCalcResult<double>(eErrorType.Num);
@@ -31,17 +33,20 @@ public class BesselIimpl : BesselBase
          */
         int nK = 0;
         double fTerm = 1.0;
+
         // avoid overflow in Fak(n)
         for (nK = 1; nK <= n; ++nK)
         {
             fTerm = fTerm / nK * fXHalf;
         }
+
         double fResult = fTerm; // Start result with TERM(n,0).
 
         if (fTerm != 0.0)
         {
             nK = 1;
             const double fEpsilon = 1.0E-15;
+
             do
             {
                 /*  Calculation of TERM(n,k) from TERM(n,k-1):
@@ -65,10 +70,9 @@ public class BesselIimpl : BesselBase
                 fTerm = fTerm * fXHalf / nK * fXHalf / (nK + n);
                 fResult += fTerm;
                 nK++;
-            }
-            while (System.Math.Abs(fTerm) > System.Math.Abs(fResult) * fEpsilon && nK < nMaxIteration);
-
+            } while (System.Math.Abs(fTerm) > System.Math.Abs(fResult) * fEpsilon && nK < nMaxIteration);
         }
+
         return new FinanceCalcResult<double>(fResult);
     }
 }

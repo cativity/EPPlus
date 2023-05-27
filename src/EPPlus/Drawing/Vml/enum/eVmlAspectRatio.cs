@@ -9,10 +9,12 @@ public enum eVmlAspectRatio
     /// Ignore aspect issues. Default.
     /// </summary>
     Ignore,
+
     /// <summary>
     /// Image is at least as big as Size.
     /// </summary>
     AtLeast,
+
     /// <summary>
     /// Image is no bigger than Size.
     /// </summary>

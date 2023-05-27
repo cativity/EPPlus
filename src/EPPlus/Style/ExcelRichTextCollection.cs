@@ -10,6 +10,7 @@
  *************************************************************************************************
   01/27/2020         EPPlus Software AB       Initial release EPPlus 5
  *************************************************************************************************/
+
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -26,28 +27,31 @@ namespace OfficeOpenXml.Style;
 public class ExcelRichTextCollection : XmlHelper, IEnumerable<ExcelRichText>
 {
     List<ExcelRichText> _list = new List<ExcelRichText>();
-    internal ExcelRangeBase _cells=null;
+    internal ExcelRangeBase _cells = null;
     internal ExcelWorksheet _ws;
-    internal ExcelRichTextCollection(XmlNamespaceManager ns, XmlNode topNode, ExcelWorksheet ws) :
-        base(ns, topNode)
+
+    internal ExcelRichTextCollection(XmlNamespaceManager ns, XmlNode topNode, ExcelWorksheet ws)
+        : base(ns, topNode)
     {
         XmlNodeList? nl = topNode.SelectNodes("d:r", this.NameSpaceManager);
+
         if (nl != null)
         {
             foreach (XmlNode n in nl)
             {
-                this._list.Add(new ExcelRichText(ns, n,this));
+                this._list.Add(new ExcelRichText(ns, n, this));
             }
         }
 
         this._ws = ws;
     }
-    internal ExcelRichTextCollection(XmlNamespaceManager ns, XmlNode topNode, ExcelRangeBase cells) :
-        this(ns, topNode, cells._worksheet)
+
+    internal ExcelRichTextCollection(XmlNamespaceManager ns, XmlNode topNode, ExcelRangeBase cells)
+        : this(ns, topNode, cells._worksheet)
     {
         this._cells = cells;
+    }
 
-    }        
     /// <summary>
     /// Collection containing the richtext objects
     /// </summary>
@@ -57,8 +61,9 @@ public class ExcelRichTextCollection : XmlHelper, IEnumerable<ExcelRichText>
     {
         get
         {
-            ExcelRichText? item= this._list[Index];
-            if(this._cells!=null)
+            ExcelRichText? item = this._list[Index];
+
+            if (this._cells != null)
             {
                 item.SetCallback(this.UpdateCells);
             }
@@ -66,16 +71,15 @@ public class ExcelRichTextCollection : XmlHelper, IEnumerable<ExcelRichText>
             return item;
         }
     }
+
     /// <summary>
     /// Items in the list
     /// </summary>
     public int Count
     {
-        get
-        {
-            return this._list.Count;
-        }
+        get { return this._list.Count; }
     }
+
     /// <summary>
     /// Add a rich text string
     /// </summary>
@@ -100,13 +104,14 @@ public class ExcelRichTextCollection : XmlHelper, IEnumerable<ExcelRichText>
     /// <returns></returns>
     public ExcelRichText Insert(int index, string text)
     {
-        if (text==null)
+        if (text == null)
         {
-            throw new ArgumentException("Text can't be null","text");
+            throw new ArgumentException("Text can't be null", "text");
         }
 
         this.ConvertRichtext();
         XmlDocument doc;
+
         if (this.TopNode is XmlDocument)
         {
             doc = this.TopNode as XmlDocument;
@@ -115,7 +120,9 @@ public class ExcelRichTextCollection : XmlHelper, IEnumerable<ExcelRichText>
         {
             doc = this.TopNode.OwnerDocument;
         }
+
         XmlElement? node = doc.CreateElement("d", "r", ExcelPackage.schemaMain);
+
         if (index < this._list.Count)
         {
             this.TopNode.InsertBefore(node, this.TopNode.ChildNodes[index]);
@@ -124,12 +131,15 @@ public class ExcelRichTextCollection : XmlHelper, IEnumerable<ExcelRichText>
         {
             this.TopNode.AppendChild(node);
         }
+
         ExcelRichText? rt = new ExcelRichText(this.NameSpaceManager, node, this);
+
         if (this._list.Count > 0)
         {
             ExcelRichText prevItem = this._list[index < this._list.Count ? index : this._list.Count - 1];
             rt.FontName = prevItem.FontName;
             rt.Size = prevItem.Size;
+
             if (prevItem.Color.IsEmpty)
             {
                 rt.Color = Color.Black;
@@ -138,13 +148,14 @@ public class ExcelRichTextCollection : XmlHelper, IEnumerable<ExcelRichText>
             {
                 rt.Color = prevItem.Color;
             }
+
             rt.PreserveSpace = rt.PreserveSpace;
             rt.Bold = prevItem.Bold;
             rt.Italic = prevItem.Italic;
             rt.UnderLine = prevItem.UnderLine;
         }
         else if (this._cells == null)
-        {                
+        {
             rt.FontName = "Calibri";
             rt.Size = 11;
         }
@@ -157,8 +168,10 @@ public class ExcelRichTextCollection : XmlHelper, IEnumerable<ExcelRichText>
             rt.Italic = style.Font.Italic;
             this._cells.SetIsRichTextFlag(true);
         }
+
         rt.Text = text;
         rt.PreserveSpace = true;
+
         if (this._cells != null)
         {
             rt.SetCallback(this.UpdateCells);
@@ -166,6 +179,7 @@ public class ExcelRichTextCollection : XmlHelper, IEnumerable<ExcelRichText>
         }
 
         this._list.Insert(index, rt);
+
         return rt;
     }
 
@@ -177,12 +191,17 @@ public class ExcelRichTextCollection : XmlHelper, IEnumerable<ExcelRichText>
         }
 
         bool isRt = this._cells.Worksheet._flags.GetFlagValue(this._cells._fromRow, this._cells._fromCol, CellFlags.RichText);
+
         if (this.Count == 1 && isRt == false)
         {
             this._cells.Worksheet._flags.SetFlagValue(this._cells._fromRow, this._cells._fromCol, true, CellFlags.RichText);
             int s = this._cells.Worksheet.GetStyleInner(this._cells._fromRow, this._cells._fromCol);
+
             //var fnt = cell.Style.Font;
-            ExcelFont? fnt = this._cells.Worksheet.Workbook.Styles.GetStyleObject(s, this._cells.Worksheet.PositionId, ExcelCellBase.GetAddress(this._cells._fromRow, this._cells._fromCol)).Font;
+            ExcelFont? fnt = this._cells.Worksheet.Workbook.Styles
+                                 .GetStyleObject(s, this._cells.Worksheet.PositionId, ExcelCellBase.GetAddress(this._cells._fromRow, this._cells._fromCol))
+                                 .Font;
+
             this[0].PreserveSpace = true;
             this[0].Bold = fnt.Bold;
             this[0].FontName = fnt.Name;
@@ -196,10 +215,12 @@ public class ExcelRichTextCollection : XmlHelper, IEnumerable<ExcelRichText>
             }
         }
     }
+
     internal void UpdateCells()
     {
         this._cells.SetValueRichText(this.TopNode.InnerXml);
     }
+
     /// <summary>
     /// Clear the collection
     /// </summary>
@@ -207,12 +228,14 @@ public class ExcelRichTextCollection : XmlHelper, IEnumerable<ExcelRichText>
     {
         this._list.Clear();
         this.TopNode.RemoveAll();
+
         if (this._cells != null)
         {
             this._cells.DeleteMe(this._cells, false, true, true, true, false, true, false, false, false);
             this._cells.SetIsRichTextFlag(false);
         }
     }
+
     /// <summary>
     /// Removes an item at the specific index
     /// </summary>
@@ -221,11 +244,13 @@ public class ExcelRichTextCollection : XmlHelper, IEnumerable<ExcelRichText>
     {
         this.TopNode.RemoveChild(this._list[Index].TopNode);
         this._list.RemoveAt(Index);
-        if (this._cells != null && this._list.Count==0)
+
+        if (this._cells != null && this._list.Count == 0)
         {
             this._cells.SetIsRichTextFlag(false);
         }
     }
+
     /// <summary>
     /// Removes an item
     /// </summary>
@@ -235,11 +260,13 @@ public class ExcelRichTextCollection : XmlHelper, IEnumerable<ExcelRichText>
         this.TopNode.RemoveChild(Item.TopNode);
         this._list.Remove(Item);
         this.UpdateCells();
+
         if (this._cells != null && this._list.Count == 0)
         {
             this._cells.SetIsRichTextFlag(false);
         }
-    }       
+    }
+
     /// <summary>
     /// The text
     /// </summary>
@@ -247,11 +274,13 @@ public class ExcelRichTextCollection : XmlHelper, IEnumerable<ExcelRichText>
     {
         get
         {
-            StringBuilder sb=new StringBuilder();
+            StringBuilder sb = new StringBuilder();
+
             foreach (ExcelRichText? item in this._list)
             {
                 sb.Append(item.Text);
             }
+
             return sb.ToString();
         }
         set
@@ -267,6 +296,7 @@ public class ExcelRichTextCollection : XmlHelper, IEnumerable<ExcelRichText>
             else
             {
                 this[0].Text = value;
+
                 for (int ix = 1; ix < this.Count; ix++)
                 {
                     this.RemoveAt(ix);
@@ -274,6 +304,7 @@ public class ExcelRichTextCollection : XmlHelper, IEnumerable<ExcelRichText>
             }
         }
     }
+
     /// <summary>
     /// Returns the rich text as a html string.
     /// </summary>
@@ -281,19 +312,28 @@ public class ExcelRichTextCollection : XmlHelper, IEnumerable<ExcelRichText>
     {
         get
         {
-            StringBuilder? sb=new StringBuilder();
-            foreach(ExcelRichText? item in this._list)
+            StringBuilder? sb = new StringBuilder();
+
+            foreach (ExcelRichText? item in this._list)
             {
                 item.WriteHtmlText(sb);
             }
+
             return sb.ToString();
         }
     }
+
     #region IEnumerable<ExcelRichText> Members
 
     IEnumerator<ExcelRichText> IEnumerable<ExcelRichText>.GetEnumerator()
     {
-        return this._list.Select(x => { x.SetCallback(this.UpdateCells); return x; }).GetEnumerator();
+        return this._list.Select(x =>
+                   {
+                       x.SetCallback(this.UpdateCells);
+
+                       return x;
+                   })
+                   .GetEnumerator();
     }
 
     #endregion
@@ -302,7 +342,13 @@ public class ExcelRichTextCollection : XmlHelper, IEnumerable<ExcelRichText>
 
     System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator()
     {
-        return this._list.Select(x => { x.SetCallback(this.UpdateCells); return x; }).GetEnumerator();
+        return this._list.Select(x =>
+                   {
+                       x.SetCallback(this.UpdateCells);
+
+                       return x;
+                   })
+                   .GetEnumerator();
     }
 
     #endregion

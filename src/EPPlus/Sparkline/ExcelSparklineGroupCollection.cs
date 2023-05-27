@@ -10,6 +10,7 @@
  *************************************************************************************************
   01/27/2020         EPPlus Software AB       Initial release EPPlus 5
  *************************************************************************************************/
+
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -26,12 +27,14 @@ public class ExcelSparklineGroupCollection : IEnumerable<ExcelSparklineGroup>
 {
     ExcelWorksheet _ws;
     List<ExcelSparklineGroup> _lst;
+
     internal ExcelSparklineGroupCollection(ExcelWorksheet ws)
     {
         this._ws = ws;
         this._lst = new List<ExcelSparklineGroup>();
         this.LoadSparklines();
     }
+
     const string _extPath = "/d:worksheet/d:extLst/d:ext";
     const string _searchPath = "[@uri='{05C60535-1F16-4fd2-B633-F4F36F0B64E0}']";
     const string _topSearchPath = _extPath + _searchPath + "/x14:sparklineGroups";
@@ -42,11 +45,9 @@ public class ExcelSparklineGroupCollection : IEnumerable<ExcelSparklineGroup>
     /// </summary>
     public int Count
     {
-        get
-        {
-            return this._lst.Count;
-        }            
+        get { return this._lst.Count; }
     }
+
     /// <summary>
     /// Adds a new sparklinegroup to the collection
     /// </summary>
@@ -56,13 +57,13 @@ public class ExcelSparklineGroupCollection : IEnumerable<ExcelSparklineGroup>
     /// <returns></returns>
     public ExcelSparklineGroup Add(eSparklineType type, ExcelAddressBase locationRange, ExcelAddressBase dataRange)
     {
-        if(locationRange.Rows==1)
+        if (locationRange.Rows == 1)
         {
-            if(locationRange.Columns==dataRange.Rows)
+            if (locationRange.Columns == dataRange.Rows)
             {
                 return this.AddGroup(type, locationRange, dataRange, true);
             }
-            else if(locationRange.Columns== dataRange.Columns)
+            else if (locationRange.Columns == dataRange.Columns)
             {
                 return this.AddGroup(type, locationRange, dataRange, false);
             }
@@ -71,13 +72,13 @@ public class ExcelSparklineGroupCollection : IEnumerable<ExcelSparklineGroup>
                 throw new ArgumentException("dataRange is not valid. dataRange columns or rows must match number of rows in locationRange");
             }
         }
-        else if(locationRange.Columns==1)
+        else if (locationRange.Columns == 1)
         {
-            if (locationRange.Rows== dataRange.Columns)
+            if (locationRange.Rows == dataRange.Columns)
             {
                 return this.AddGroup(type, locationRange, dataRange, false);
             }
-            else if (locationRange.Rows== dataRange.Rows)
+            else if (locationRange.Rows == dataRange.Rows)
             {
                 return this.AddGroup(type, locationRange, dataRange, true);
             }
@@ -104,16 +105,22 @@ public class ExcelSparklineGroupCollection : IEnumerable<ExcelSparklineGroup>
         int drToRow = isRows ? dataRange._fromRow : dataRange._toRow;
         int drToCol = isRows ? dataRange._toCol : dataRange._fromCol;
 
-        int cells = (locationRange._fromRow==locationRange._toRow ? locationRange._toCol - locationRange._fromCol: locationRange._toRow- locationRange._fromRow)+1;
+        int cells = (locationRange._fromRow == locationRange._toRow
+                         ? locationRange._toCol - locationRange._fromCol
+                         : locationRange._toRow - locationRange._fromRow)
+                    + 1;
+
         int cell = 0;
         string? wsName = dataRange?.WorkSheetName ?? this._ws.Name;
+
         while (cell < cells)
         {
             ExcelCellAddress? f = new ExcelCellAddress(row, col);
             ExcelAddressBase? sqref = new ExcelAddressBase(wsName, drFromRow, drFromCol, drToRow, drToCol);
             group.Sparklines.Add(f, wsName, sqref);
             cell++;
-            if(locationRange._fromRow == locationRange._toRow)
+
+            if (locationRange._fromRow == locationRange._toRow)
             {
                 col++;
             }
@@ -121,7 +128,8 @@ public class ExcelSparklineGroupCollection : IEnumerable<ExcelSparklineGroup>
             {
                 row++;
             }
-            if(isRows)
+
+            if (isRows)
             {
                 drFromRow++;
                 drToRow++;
@@ -142,38 +150,47 @@ public class ExcelSparklineGroupCollection : IEnumerable<ExcelSparklineGroup>
         group.ColorHigh.Rgb = "FFD00000";
         group.ColorLow.Rgb = "FFD00000";
         this._lst.Add(group);
+
         return group;
     }
 
     private ExcelSparklineGroup NewSparklineGroup()
     {
-        XmlHelperInstance? xh = new XmlHelperInstance(this._ws.NameSpaceManager, this._ws.WorksheetXml); //SelectSingleNode("/d:worksheet", _ws.NameSpaceManager)
+        XmlHelperInstance? xh =
+            new XmlHelperInstance(this._ws.NameSpaceManager, this._ws.WorksheetXml); //SelectSingleNode("/d:worksheet", _ws.NameSpaceManager)
+
         if (!xh.ExistsNode(_extPath + _searchPath))
         {
             XmlNode? ext = xh.CreateNode(_extPath, false, true);
+
             if (ext.Attributes["uri"] == null)
             {
-                ((XmlElement)ext).SetAttribute("uri", "{05C60535-1F16-4fd2-B633-F4F36F0B64E0}");        //Guid URI for sparklines... https://msdn.microsoft.com/en-us/library/dd905242(v=office.12).aspx
+                ((XmlElement)ext).SetAttribute("uri",
+                                               "{05C60535-1F16-4fd2-B633-F4F36F0B64E0}"); //Guid URI for sparklines... https://msdn.microsoft.com/en-us/library/dd905242(v=office.12).aspx
             }
         }
+
         XmlNode? parent = xh.CreateNode(_topSearchPath);
 
-        XmlElement? topNode = this._ws.WorksheetXml.CreateElement("x14","sparklineGroup", ExcelPackage.schemaMainX14);
+        XmlElement? topNode = this._ws.WorksheetXml.CreateElement("x14", "sparklineGroup", ExcelPackage.schemaMainX14);
         topNode.SetAttribute("xmlns:xm", ExcelPackage.schemaMainXm);
         topNode.SetAttribute("uid", ExcelPackage.schemaXr2, $"{{{Guid.NewGuid().ToString()}}}");
         parent.AppendChild(topNode);
         topNode.AppendChild(topNode.OwnerDocument.CreateElement("x14", "sparklines", ExcelPackage.schemaMainX14));
+
         return new ExcelSparklineGroup(this._ws.NameSpaceManager, topNode, this._ws);
     }
 
     private void LoadSparklines()
     {
-        XmlNodeList? grps= this._ws.WorksheetXml.SelectNodes(_topPath + "/x14:sparklineGroup", this._ws.NameSpaceManager);
+        XmlNodeList? grps = this._ws.WorksheetXml.SelectNodes(_topPath + "/x14:sparklineGroup", this._ws.NameSpaceManager);
+
         foreach (XmlElement grp in grps)
         {
             this._lst.Add(new ExcelSparklineGroup(this._ws.NameSpaceManager, grp, this._ws));
         }
     }
+
     /// <summary>
     /// Returns the sparklinegroup at the specified position.  
     /// </summary>
@@ -181,11 +198,9 @@ public class ExcelSparklineGroupCollection : IEnumerable<ExcelSparklineGroup>
     /// <returns></returns>
     public ExcelSparklineGroup this[int index]
     {
-        get
-        {
-            return this._lst[index];
-        }
+        get { return this._lst[index]; }
     }
+
     /// <summary>
     /// The enumerator for the collection
     /// </summary>
@@ -199,6 +214,7 @@ public class ExcelSparklineGroupCollection : IEnumerable<ExcelSparklineGroup>
     {
         return this._lst.GetEnumerator();
     }
+
     /// <summary>
     /// Removes the sparkline.
     /// </summary>
@@ -207,6 +223,7 @@ public class ExcelSparklineGroupCollection : IEnumerable<ExcelSparklineGroup>
     {
         this.Remove(this._lst[index]);
     }
+
     /// <summary>
     /// Removes the sparkline.
     /// </summary>

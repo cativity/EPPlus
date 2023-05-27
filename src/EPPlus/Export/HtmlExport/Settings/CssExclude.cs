@@ -20,36 +20,43 @@ public class CssExclude
 {
     internal CssExclude()
     {
-
     }
+
     /// <summary>
     /// Exclude Font styles.
     /// </summary>
     public eFontExclude Font { get; set; }
+
     /// <summary>
     /// Exclude Border styles
     /// </summary>
     public eBorderExclude Border { get; set; }
+
     /// <summary>
     /// Exclude Fill styles
     /// </summary>
     public bool Fill { get; set; }
+
     /// <summary>
     /// Exclude vertical alignment.
     /// </summary>
     public bool VerticalAlignment { get; set; }
+
     /// <summary>
     /// Exclude horizontal alignment.
     /// </summary>
     public bool HorizontalAlignment { get; set; }
+
     /// <summary>
     /// Exclude Wrap Text
     /// </summary>
     public bool WrapText { get; set; }
+
     /// <summary>
     /// Exclude Text Rotation
     /// </summary>
     public bool TextRotation { get; set; }
+
     /// <summary>
     /// Exclude Indent.
     /// </summary>
@@ -69,6 +76,7 @@ public class CssExclude
         this.TextRotation = false;
         this.Indent = false;
     }
+
     /// <summary>
     /// Copy the values from another settings object.
     /// </summary>
@@ -83,5 +91,5 @@ public class CssExclude
         this.WrapText = copy.WrapText;
         this.TextRotation = copy.TextRotation;
         this.Indent = copy.Indent;
-    }        
+    }
 }

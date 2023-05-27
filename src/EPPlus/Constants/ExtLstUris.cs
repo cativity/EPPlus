@@ -10,6 +10,7 @@
  *************************************************************************************************
   12/14/2020         EPPlus Software AB       EPPlus 5.5
  *************************************************************************************************/
+
 namespace OfficeOpenXml.Constants;
 
 internal class ExtLstUris
@@ -25,7 +26,7 @@ internal class ExtLstUris
     internal const string PivotTableDefinition16Uri = "{747A6164-185A-40DC-8AA5-F01512510D54}";
 
     //Pivot Table Cache Defintion
-    internal const string PivotCacheDefinitionUri = "{725AE2AE-9491-48be-B2B4-4EB974FC3084}";           //Excel require lower case on 48be???
+    internal const string PivotCacheDefinitionUri = "{725AE2AE-9491-48be-B2B4-4EB974FC3084}"; //Excel require lower case on 48be???
     internal const string TimelinePivotCacheDefinitionUri = "{5DA0FC9A-693D-419c-AD59-312A39285967}";
     internal const string PivotCacheIdVersionUri = "{ABF5C744-AB39-4b91-8756-CFA1BBC848D5}";
 
@@ -37,9 +38,9 @@ internal class ExtLstUris
     //Slicer in worksheet
     internal const string WorkbookSlicerPivotTableUri = "{BBE1A952-AA13-448e-AADC-164F8A28A991}";
     internal const string WorkbookSlicerTableUri = "{46BE6895-7355-4a93-B00E-2C351335B9C9}";
-        
+
     //Slicer in worksheet
-    internal const string WorksheetSlicerPivotTableUri = "{A8765BA9-456A-4dab-B4F3-ACF838C121DE}";        
+    internal const string WorksheetSlicerPivotTableUri = "{A8765BA9-456A-4dab-B4F3-ACF838C121DE}";
     internal const string WorksheetSlicerTableUri = "{3A4CF648-6AED-40f4-86FF-DC5316D8AED3}";
 
     //Slicer styles

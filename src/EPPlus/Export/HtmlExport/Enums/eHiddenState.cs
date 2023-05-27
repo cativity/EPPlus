@@ -22,10 +22,12 @@ public enum eHiddenState
     /// Exclude hidden rows
     /// </summary>
     Exclude,
+
     /// <summary>
     /// Include hidden rows, but hide them.
     /// </summary>
     IncludeButHide,
+
     /// <summary>
     /// Include hidden rows.
     /// </summary>

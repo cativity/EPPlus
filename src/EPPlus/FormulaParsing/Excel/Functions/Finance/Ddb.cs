@@ -10,6 +10,7 @@
  *************************************************************************************************
   01/27/2020         EPPlus Software AB       Initial release EPPlus 5
  *************************************************************************************************/
+
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -20,10 +21,10 @@ using OfficeOpenXml.FormulaParsing.ExpressionGraph;
 
 namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Finance;
 
-[FunctionMetadata(
-                     Category = ExcelFunctionCategory.Financial,
-                     EPPlusVersion = "5.2",
-                     Description = "Calculates the depreciation of an asset for a specified period, using the double-declining balance method, or some other user-specified method")]
+[FunctionMetadata(Category = ExcelFunctionCategory.Financial,
+                  EPPlusVersion = "5.2",
+                  Description =
+                      "Calculates the depreciation of an asset for a specified period, using the double-declining balance method, or some other user-specified method")]
 internal class Ddb : ExcelFunction
 {
     public override CompileResult Execute(IEnumerable<FunctionArgument> arguments, ParsingContext context)
@@ -34,7 +35,8 @@ internal class Ddb : ExcelFunction
         double life = this.ArgToDecimal(arguments, 2);
         double period = this.ArgToDecimal(arguments, 3);
         double factor = 2d;
-        if(arguments.Count() >= 5)
+
+        if (arguments.Count() >= 5)
         {
             factor = this.ArgToDecimal(arguments, 4);
         }
@@ -45,6 +47,7 @@ internal class Ddb : ExcelFunction
         }
 
         FinanceCalcResult<double>? result = DdbImpl.Ddb(cost, salvage, life, period, factor);
+
         if (result.HasError)
         {
             return this.CreateResult(result.ExcelErrorType);

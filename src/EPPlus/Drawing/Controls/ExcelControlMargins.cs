@@ -10,8 +10,10 @@
  *************************************************************************************************
     11/24/2020         EPPlus Software AB           Controls 
  *************************************************************************************************/
+
 using OfficeOpenXml.Drawing.Vml;
 using OfficeOpenXml.Utils;
+
 namespace OfficeOpenXml.Drawing.Controls;
 
 /// <summary>
@@ -21,6 +23,7 @@ public class ExcelControlMargin
 {
     private ExcelControlWithText _control;
     private XmlHelper _vmlHelper;
+
     internal ExcelControlMargin(ExcelControlWithText control)
     {
         this._control = control;
@@ -41,12 +44,13 @@ public class ExcelControlMargin
         v = margin.GetCsvPosition(3);
         this.BottomMargin.SetValue(v);
     }
+
     /// <summary>
     /// Sets the margin value and unit of measurement for all margins.
     /// </summary>
     /// <param name="marginValue">Margin value to set for all margins</param>
     /// <param name="unit">The unit to set for all margins. Default <see cref="eMeasurementUnits.Points" /></param>
-    public void SetValue(double marginValue, eMeasurementUnits unit=eMeasurementUnits.Points)
+    public void SetValue(double marginValue, eMeasurementUnits unit = eMeasurementUnits.Points)
     {
         this.LeftMargin.Value = marginValue;
         this.TopMargin.Value = marginValue;
@@ -54,6 +58,7 @@ public class ExcelControlMargin
         this.BottomMargin.Value = marginValue;
         this.SetUnit(unit);
     }
+
     /// <summary>
     /// Sets the margin unit of measurement for all margins.
     /// </summary>
@@ -74,12 +79,18 @@ public class ExcelControlMargin
         }
         else
         {
-            this._vmlHelper.DeleteNode("@o:insetmode");    //Custom
+            this._vmlHelper.DeleteNode("@o:insetmode"); //Custom
         }
 
         if (this.LeftMargin.Value != 0 && this.TopMargin.Value != 0 && this.RightMargin.Value != 0 && this.BottomMargin.Value != 0)
         {
-            string? v = this.LeftMargin.GetValueString() + "," + this.TopMargin.GetValueString() + "," + this.RightMargin.GetValueString() + "," + this.BottomMargin.GetValueString();
+            string? v = this.LeftMargin.GetValueString()
+                        + ","
+                        + this.TopMargin.GetValueString()
+                        + ","
+                        + this.RightMargin.GetValueString()
+                        + ","
+                        + this.BottomMargin.GetValueString();
 
             this._control.TextBody.LeftInsert = this.LeftMargin.ToEmu();
             this._control.TextBody.TopInsert = this.TopMargin.ToEmu();
@@ -93,40 +104,29 @@ public class ExcelControlMargin
             this._vmlHelper.DeleteNode("v:textbox/@inset");
         }
     }
+
     /// <summary>
     /// Margin is autiomatic
     /// </summary>
-    public bool Automatic
-    {
-        get;
-        set;
-    }
+    public bool Automatic { get; set; }
+
     /// <summary>
     /// Left Margin
     /// </summary>
-    public ExcelVmlMeasurementUnit LeftMargin
-    {
-        get;
-    } = new ExcelVmlMeasurementUnit();
+    public ExcelVmlMeasurementUnit LeftMargin { get; } = new ExcelVmlMeasurementUnit();
+
     /// <summary>
     /// Right Margin
     /// </summary>
-    public ExcelVmlMeasurementUnit RightMargin
-    {
-        get;
-    } = new ExcelVmlMeasurementUnit();
+    public ExcelVmlMeasurementUnit RightMargin { get; } = new ExcelVmlMeasurementUnit();
+
     /// <summary>
     /// Top Margin
     /// </summary>
-    public ExcelVmlMeasurementUnit TopMargin
-    {
-        get;
-    } = new ExcelVmlMeasurementUnit();
+    public ExcelVmlMeasurementUnit TopMargin { get; } = new ExcelVmlMeasurementUnit();
+
     /// <summary>
     /// Bottom margin
     /// </summary>
-    public ExcelVmlMeasurementUnit BottomMargin
-    {
-        get;
-    } = new ExcelVmlMeasurementUnit();
+    public ExcelVmlMeasurementUnit BottomMargin { get; } = new ExcelVmlMeasurementUnit();
 }

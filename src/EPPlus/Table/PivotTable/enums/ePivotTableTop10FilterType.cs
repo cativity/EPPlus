@@ -10,6 +10,7 @@
  *************************************************************************************************
   09/02/2020         EPPlus Software AB       EPPlus 5.4
  *************************************************************************************************/
+
 namespace OfficeOpenXml.Table.PivotTable;
 
 /// <summary>
@@ -21,10 +22,12 @@ public enum ePivotTableTop10FilterType
     /// A top/bottom filter - Count
     /// </summary>
     Count = ePivotTableFilterType.Count,
+
     /// <summary>
     /// A top/bottom filter - Sum
     /// </summary>
     Sum = ePivotTableFilterType.Sum,
+
     /// <summary>
     /// A top/bottom filter - Percent
     /// </summary>

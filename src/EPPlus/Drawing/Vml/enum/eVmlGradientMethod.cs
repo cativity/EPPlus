@@ -9,18 +9,22 @@ public enum eVmlGradientMethod
     /// No sigma fill.
     /// </summary>
     None,
+
     /// <summary>
     /// Linear fill.
     /// </summary>
     Linear,
+
     /// <summary>
     /// Linear sigma fill.
     /// </summary>
     LinearSigma,
+
     /// <summary>
     /// Sigma fill. Default.
     /// </summary>
     Sigma,
+
     /// <summary>
     /// Any sigma fill.
     /// </summary>

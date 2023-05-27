@@ -10,6 +10,7 @@
  *************************************************************************************************
   04/16/2020         EPPlus Software AB           EPPlus 5.2
  *************************************************************************************************/
+
 using OfficeOpenXml.Drawing.Style.Coloring;
 using System;
 using System.Globalization;
@@ -24,7 +25,9 @@ public class ExcelChartExValueColor : XmlHelper
 {
     string _prefix;
     string _positionPath;
-    internal ExcelChartExValueColor(XmlNamespaceManager nameSpaceManager, XmlNode topNode, string[] schemaNodeOrder, string prefix) : base(nameSpaceManager, topNode)
+
+    internal ExcelChartExValueColor(XmlNamespaceManager nameSpaceManager, XmlNode topNode, string[] schemaNodeOrder, string prefix)
+        : base(nameSpaceManager, topNode)
     {
         this.SchemaNodeOrder = schemaNodeOrder;
         this._prefix = prefix;
@@ -32,6 +35,7 @@ public class ExcelChartExValueColor : XmlHelper
     }
 
     ExcelDrawingColorManager _color = null;
+
     /// <summary>
     /// The color
     /// </summary>
@@ -45,6 +49,7 @@ public class ExcelChartExValueColor : XmlHelper
                                                                 this.SchemaNodeOrder);
         }
     }
+
     /// <summary>
     /// The color variation type.
     /// </summary>
@@ -52,11 +57,11 @@ public class ExcelChartExValueColor : XmlHelper
     {
         get
         {
-            if(this.ExistsNode($"{this._positionPath}/cx:number"))
+            if (this.ExistsNode($"{this._positionPath}/cx:number"))
             {
                 return eColorValuePositionType.Number;
             }
-            else if(this.ExistsNode($"{this._positionPath}/cx:percent"))
+            else if (this.ExistsNode($"{this._positionPath}/cx:percent"))
             {
                 return eColorValuePositionType.Percent;
             }
@@ -67,19 +72,25 @@ public class ExcelChartExValueColor : XmlHelper
         }
         set
         {
-            if(this.ValueType!=value)
+            if (this.ValueType != value)
             {
                 this.ClearChildren(this._positionPath);
-                switch(value)
+
+                switch (value)
                 {
                     case eColorValuePositionType.Extreme:
                         this.CreateNode($"{this._positionPath}/cx:extremeValue");
+
                         break;
+
                     case eColorValuePositionType.Percent:
                         this.SetXmlNodeString($"{this._positionPath}/cx:percent/@val", "0");
+
                         break;
+
                     default:
                         this.SetXmlNodeString($"{this._positionPath}/cx:number/@val", "0");
+
                         break;
                 }
             }
@@ -94,27 +105,29 @@ public class ExcelChartExValueColor : XmlHelper
         get
         {
             eColorValuePositionType t = this.ValueType;
-            if (t==eColorValuePositionType.Extreme)
+
+            if (t == eColorValuePositionType.Extreme)
             {
                 return 0;
             }
-            else if(this.ValueType==eColorValuePositionType.Number)
+            else if (this.ValueType == eColorValuePositionType.Number)
             {
                 return this.GetXmlNodeDouble($"{this._positionPath}/cx:number/@val");
             }
             else
             {
-                return this.GetXmlNodeDoubleNull($"{this._positionPath}/cx:percent/@val")??0;
+                return this.GetXmlNodeDoubleNull($"{this._positionPath}/cx:percent/@val") ?? 0;
             }
         }
         set
         {
             eColorValuePositionType t = this.ValueType;
-            if (t==eColorValuePositionType.Extreme)
+
+            if (t == eColorValuePositionType.Extreme)
             {
                 throw new InvalidOperationException("Can't set PositionValue when ValueType is Extreme");
             }
-            else if (t==eColorValuePositionType.Number)
+            else if (t == eColorValuePositionType.Number)
             {
                 this.SetXmlNodeString($"{this._positionPath}/cx:number/@val", value.ToString(CultureInfo.InvariantCulture));
             }

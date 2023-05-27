@@ -10,34 +10,40 @@
  *************************************************************************************************
   01/27/2020         EPPlus Software AB       Initial release EPPlus 5
  *************************************************************************************************/
+
 using System;
 using System.Collections.Generic;
 using System.Text;
 using System.Xml;
+
 namespace OfficeOpenXml.Style.XmlAccess;
 
 /// <summary>
 /// Xml helper class for cell style classes
 /// </summary>
-public abstract class  StyleXmlHelper : XmlHelper
+public abstract class StyleXmlHelper : XmlHelper
 {
-    internal StyleXmlHelper(XmlNamespaceManager nameSpaceManager) : base(nameSpaceManager)
-    { 
+    internal StyleXmlHelper(XmlNamespaceManager nameSpaceManager)
+        : base(nameSpaceManager)
+    {
+    }
 
-    }
-    internal StyleXmlHelper(XmlNamespaceManager nameSpaceManager, XmlNode topNode) : base(nameSpaceManager, topNode)
+    internal StyleXmlHelper(XmlNamespaceManager nameSpaceManager, XmlNode topNode)
+        : base(nameSpaceManager, topNode)
     {
     }
+
     internal abstract XmlNode CreateXmlNode(XmlNode top);
-    internal abstract string Id
-    {
-        get;
-    }
-    internal long useCnt=0;
-    internal int newID=int.MinValue;
+
+    internal abstract string Id { get; }
+
+    internal long useCnt = 0;
+    internal int newID = int.MinValue;
+
     internal bool GetBoolValue(XmlNode topNode, string path)
     {
         XmlNode? node = topNode.SelectSingleNode(path, this.NameSpaceManager);
+
         if (node is XmlAttribute)
         {
             return node.Value != "0";
@@ -51,8 +57,7 @@ public abstract class  StyleXmlHelper : XmlHelper
             else
             {
                 return false;
-            }                
+            }
         }
     }
-
 }

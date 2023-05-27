@@ -10,6 +10,7 @@
  *************************************************************************************************
   01/27/2020         EPPlus Software AB       Initial release EPPlus 5
  *************************************************************************************************/
+
 using System;
 using System.Collections.Generic;
 using System.Globalization;
@@ -24,22 +25,25 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions.DateTime;
 /// Simple implementation of DateValue function, just using .NET built-in
 /// function System.DateTime.TryParse, based on current culture
 /// </summary>
-[FunctionMetadata(
-                     Category = ExcelFunctionCategory.DateAndTime,
-                     EPPlusVersion = "4",
-                     Description = "Converts a text string showing a date, to an integer that represents the date in Excel's date-time code")]
+[FunctionMetadata(Category = ExcelFunctionCategory.DateAndTime,
+                  EPPlusVersion = "4",
+                  Description = "Converts a text string showing a date, to an integer that represents the date in Excel's date-time code")]
 internal class DateValue : ExcelFunction
 {
     public override CompileResult Execute(IEnumerable<FunctionArgument> arguments, ParsingContext context)
     {
         ValidateArguments(arguments, 1);
         string? dateString = ArgToString(arguments, 0);
+
         return this.Execute(dateString);
     }
 
     internal CompileResult Execute(string dateString)
     {
         System.DateTime.TryParse(dateString, out System.DateTime result);
-        return result != System.DateTime.MinValue ? this.CreateResult(result.ToOADate(), DataType.Date) : this.CreateResult(ExcelErrorValue.Create(eErrorType.Value), DataType.ExcelError);
+
+        return result != System.DateTime.MinValue
+                   ? this.CreateResult(result.ToOADate(), DataType.Date)
+                   : this.CreateResult(ExcelErrorValue.Create(eErrorType.Value), DataType.ExcelError);
     }
 }

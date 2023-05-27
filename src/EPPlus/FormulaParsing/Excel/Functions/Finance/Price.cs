@@ -10,6 +10,7 @@
  *************************************************************************************************
   05/27/2020         EPPlus Software AB       Implemented function
  *************************************************************************************************/
+
 using OfficeOpenXml.FormulaParsing.Excel.Functions.Finance.FinancialDayCount;
 using OfficeOpenXml.FormulaParsing.Excel.Functions.Finance.Implementations;
 using OfficeOpenXml.FormulaParsing.Excel.Functions.Metadata;
@@ -21,10 +22,9 @@ using System.Text;
 
 namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Finance;
 
-[FunctionMetadata(
-                     Category = ExcelFunctionCategory.Financial,
-                     EPPlusVersion = "5.2",
-                     Description = "Calculates the price per $100 face value of a security that pays periodic interest")]
+[FunctionMetadata(Category = ExcelFunctionCategory.Financial,
+                  EPPlusVersion = "5.2",
+                  Description = "Calculates the price per $100 face value of a security that pays periodic interest")]
 internal class Price : ExcelFunction
 {
     public override CompileResult Execute(IEnumerable<FunctionArgument> arguments, ParsingContext context)
@@ -37,17 +37,32 @@ internal class Price : ExcelFunction
         double redemption = this.ArgToDecimal(arguments, 4);
         int frequency = this.ArgToInt(arguments, 5);
         int basis = 0;
+
         if (arguments.Count() >= 7)
         {
             basis = this.ArgToInt(arguments, 6);
         }
+
         // validate input
-        if (settlementDate > maturityDate || rate < 0 || yield < 0 || redemption <= 0 || (frequency != 1 && frequency != 2 && frequency != 4) || basis < 0 || basis > 4)
+        if (settlementDate > maturityDate
+            || rate < 0
+            || yield < 0
+            || redemption <= 0
+            || (frequency != 1 && frequency != 2 && frequency != 4)
+            || basis < 0
+            || basis > 4)
         {
             return this.CreateResult(eErrorType.Num);
         }
 
-        FinanceCalcResult<double>? result = PriceImpl.GetPrice(FinancialDayFactory.Create(settlementDate, (DayCountBasis)basis), FinancialDayFactory.Create(maturityDate, (DayCountBasis)basis), rate, yield, redemption, frequency, (DayCountBasis)basis);
+        FinanceCalcResult<double>? result = PriceImpl.GetPrice(FinancialDayFactory.Create(settlementDate, (DayCountBasis)basis),
+                                                               FinancialDayFactory.Create(maturityDate, (DayCountBasis)basis),
+                                                               rate,
+                                                               yield,
+                                                               redemption,
+                                                               frequency,
+                                                               (DayCountBasis)basis);
+
         if (result.HasError)
         {
             return this.CreateResult(result.ExcelErrorType);

@@ -10,6 +10,7 @@
  *************************************************************************************************
   07/29/2020         EPPlus Software AB       Threaded comments
  *************************************************************************************************/
+
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -26,10 +27,12 @@ public class ExcelThreadedCommentPerson : XmlHelper, IEqualityComparer<ExcelThre
     internal static string NewId()
     {
         Guid guid = Guid.NewGuid();
+
         return "{" + guid.ToString().ToUpper() + "}";
     }
 
-    internal ExcelThreadedCommentPerson(XmlNamespaceManager nameSpaceManager, XmlNode topNode) : base(nameSpaceManager, topNode)
+    internal ExcelThreadedCommentPerson(XmlNamespaceManager nameSpaceManager, XmlNode topNode)
+        : base(nameSpaceManager, topNode)
     {
         this.TopNode = topNode;
         this.SchemaNodeOrder = new string[] { "displayName", "id", "userId", "providerId" };
@@ -69,20 +72,23 @@ public class ExcelThreadedCommentPerson : XmlHelper, IEqualityComparer<ExcelThre
     /// </summary>
     public IdentityProvider ProviderId
     {
-        get 
-        { 
+        get
+        {
             string? id = this.GetXmlNodeString("@providerId");
+
             if (string.IsNullOrEmpty(this.UserId) && this.UserId == "AD")
             {
                 throw new InvalidOperationException("Cannot get ProviderId when UserId is not set");
             }
 
-            switch(id)
+            switch (id)
             {
                 case "Windows Live":
                     return IdentityProvider.WindowsLiveId;
+
                 case "PeoplePicker":
                     return IdentityProvider.PeoplePicker;
+
                 case "AD":
                     if (this.UserId.Contains("::"))
                     {
@@ -90,29 +96,38 @@ public class ExcelThreadedCommentPerson : XmlHelper, IEqualityComparer<ExcelThre
                     }
 
                     return IdentityProvider.ActiveDirectory;
+
                 default:
                     return IdentityProvider.NoProvider;
             }
-            
         }
-        set 
+        set
         {
-            switch(value)
+            switch (value)
             {
                 case IdentityProvider.ActiveDirectory:
                     this.SetXmlNodeString("@providerId", "AD");
+
                     break;
+
                 case IdentityProvider.WindowsLiveId:
                     this.SetXmlNodeString("@providerId", "Windows Live");
+
                     break;
+
                 case IdentityProvider.Office365:
                     this.SetXmlNodeString("@providerId", "AD");
+
                     break;
+
                 case IdentityProvider.PeoplePicker:
                     this.SetXmlNodeString("@providerId", "PeoplePicker");
+
                     break;
+
                 default:
                     this.SetXmlNodeString("@providerId", "None");
+
                     break;
             }
         }
@@ -143,6 +158,7 @@ public class ExcelThreadedCommentPerson : XmlHelper, IEqualityComparer<ExcelThre
 
         return false;
     }
+
     /// <summary>
     /// Returns a hash code for the specified object.
     /// </summary>

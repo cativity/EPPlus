@@ -10,6 +10,7 @@
  *************************************************************************************************
   06/23/2020         EPPlus Software AB       EPPlus 5.2
  *************************************************************************************************/
+
 using OfficeOpenXml.FormulaParsing.Excel.Functions.Metadata;
 using System;
 using System.Collections.Generic;
@@ -17,10 +18,9 @@ using System.Text;
 
 namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Math;
 
-[FunctionMetadata(
-                     Category = ExcelFunctionCategory.Statistical,
-                     EPPlusVersion = "5.2",
-                     Description = "Returns the Mode (the most frequently occurring value) of a list of supplied numbers ")]
+[FunctionMetadata(Category = ExcelFunctionCategory.Statistical,
+                  EPPlusVersion = "5.2",
+                  Description = "Returns the Mode (the most frequently occurring value) of a list of supplied numbers ")]
 internal class ModeSngl : Mode
 {
 }

@@ -10,6 +10,7 @@
  *************************************************************************************************
     04/15/2020         EPPlus Software AB       EPPlus 5.2
  *************************************************************************************************/
+
 namespace OfficeOpenXml.Drawing.Chart.ChartEx;
 
 /// <summary>
@@ -21,10 +22,12 @@ public enum eRegionLabelLayout
     /// No region labels appear in a geospatial series
     /// </summary>
     None,
+
     /// <summary>
     /// Region labels only appear if they can fit in their respective containing geometries in a geospatial series
     /// </summary>
     BestFitOnly,
+
     /// <summary>
     /// All region labels appear
     /// </summary>

@@ -10,6 +10,7 @@
  *************************************************************************************************
   01/27/2020         EPPlus Software AB       Initial release EPPlus 5
  *************************************************************************************************/
+
 using System.Xml;
 using System.Globalization;
 
@@ -20,53 +21,41 @@ namespace OfficeOpenXml.Table.PivotTable;
 /// </summary>
 public class ExcelPivotTableFieldNumericGroup : ExcelPivotTableFieldGroup
 {
-    internal ExcelPivotTableFieldNumericGroup(XmlNamespaceManager ns, XmlNode topNode) :
-        base(ns, topNode)
+    internal ExcelPivotTableFieldNumericGroup(XmlNamespaceManager ns, XmlNode topNode)
+        : base(ns, topNode)
     {
     }
+
     const string startPath = "d:fieldGroup/d:rangePr/@startNum";
+
     /// <summary>
     /// Start value
     /// </summary>
     public double Start
     {
-        get
-        {
-            return (double)this.GetXmlNodeDoubleNull(startPath);
-        }
-        private set
-        {
-            this.SetXmlNodeString(startPath,value.ToString(CultureInfo.InvariantCulture));
-        }
+        get { return (double)this.GetXmlNodeDoubleNull(startPath); }
+        private set { this.SetXmlNodeString(startPath, value.ToString(CultureInfo.InvariantCulture)); }
     }
+
     const string endPath = "d:fieldGroup/d:rangePr/@endNum";
+
     /// <summary>
     /// End value
     /// </summary>
     public double End
     {
-        get
-        {
-            return (double)this.GetXmlNodeDoubleNull(endPath);
-        }
-        private set
-        {
-            this.SetXmlNodeString(endPath, value.ToString(CultureInfo.InvariantCulture));
-        }
+        get { return (double)this.GetXmlNodeDoubleNull(endPath); }
+        private set { this.SetXmlNodeString(endPath, value.ToString(CultureInfo.InvariantCulture)); }
     }
+
     const string groupIntervalPath = "d:fieldGroup/d:rangePr/@groupInterval";
+
     /// <summary>
     /// Interval
     /// </summary>
     public double Interval
     {
-        get
-        {
-            return (double)this.GetXmlNodeDoubleNull(groupIntervalPath);
-        }
-        private set
-        {
-            this.SetXmlNodeString(groupIntervalPath, value.ToString(CultureInfo.InvariantCulture));
-        }
+        get { return (double)this.GetXmlNodeDoubleNull(groupIntervalPath); }
+        private set { this.SetXmlNodeString(groupIntervalPath, value.ToString(CultureInfo.InvariantCulture)); }
     }
 }

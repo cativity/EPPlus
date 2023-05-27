@@ -10,6 +10,7 @@
  *************************************************************************************************
     10/21/2020         EPPlus Software AB           Controls 
  *************************************************************************************************/
+
 namespace OfficeOpenXml.Drawing.Controls;
 
 /// <summary>
@@ -21,18 +22,22 @@ internal enum eHorizontalAlignmentControl
     /// Left alignment
     /// </summary>
     Left,
+
     /// <summary>
     /// Center alignment
     /// </summary>
     Center,
+
     /// <summary>
     /// Right alignment
     /// </summary>
     Right,
+
     /// <summary>
     /// Justify alignment
     /// </summary>
     Justify,
+
     /// <summary>
     /// Distributed alignment
     /// </summary>

@@ -19,11 +19,11 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Finance.FinancialDayCount
 
 internal class FinancialDays_Actual_Actual : FinancialDaysBase, IFinanicalDays
 {
-
     public double GetDaysBetweenDates(System.DateTime startDate, System.DateTime endDate)
     {
         FinancialDay? start = FinancialDayFactory.Create(startDate, DayCountBasis.Actual_Actual);
         FinancialDay? end = FinancialDayFactory.Create(endDate, DayCountBasis.Actual_Actual);
+
         return this.GetDaysBetweenDates(start, end, 365);
     }
 
@@ -42,5 +42,8 @@ internal class FinancialDays_Actual_Actual : FinancialDaysBase, IFinanicalDays
         return end.ToDateTime().Subtract(start.ToDateTime()).TotalDays;
     }
 
-    public double DaysPerYear { get { return 365d; } }
+    public double DaysPerYear
+    {
+        get { return 365d; }
+    }
 }

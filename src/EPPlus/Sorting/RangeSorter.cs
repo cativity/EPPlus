@@ -10,6 +10,7 @@
  *************************************************************************************************
   05/7/2021         EPPlus Software AB       EPPlus 5.7
  *************************************************************************************************/
+
 using OfficeOpenXml.Core.CellStore;
 using OfficeOpenXml.Sorting.Internal;
 using OfficeOpenXml.Table;
@@ -34,11 +35,13 @@ internal class RangeSorter
     private static void ValidateColumnArray(ExcelRangeBase range, int[] columns)
     {
         int cols = range._toCol - range._fromCol + 1;
+
         foreach (int c in columns)
         {
             if (c > cols - 1 || c < 0)
             {
-                throw new ArgumentException("Cannot reference columns outside the boundries of the range. Note that column references are zero-based within the range");
+                throw new
+                    ArgumentException("Cannot reference columns outside the boundries of the range. Note that column references are zero-based within the range");
             }
         }
     }
@@ -46,11 +49,13 @@ internal class RangeSorter
     private static void ValidateRowsArray(ExcelRangeBase range, int[] rows)
     {
         int nRows = range._toRow - range._fromRow + 1;
+
         foreach (int r in rows)
         {
             if (r > nRows - 1 || r < 0)
             {
-                throw new ArgumentException("Cannot reference rows outside the boundries of the range. Note that row references are zero-based within the range");
+                throw new
+                    ArgumentException("Cannot reference rows outside the boundries of the range. Note that row references are zero-based within the range");
             }
         }
     }
@@ -58,20 +63,21 @@ internal class RangeSorter
     private static bool[] CreateDefaultDescendingArray(int[] sortParams)
     {
         bool[]? descending = new bool[sortParams.Length];
+
         for (int i = 0; i < sortParams.Length; i++)
         {
             descending[i] = false;
         }
+
         return descending;
     }
 
-    public void Sort(
-        ExcelRangeBase range, 
-        int[] columns, 
-        ref bool[] descending, 
-        CultureInfo culture = null, 
-        CompareOptions compareOptions = CompareOptions.None, 
-        Dictionary<int, string[]> customLists = null)
+    public void Sort(ExcelRangeBase range,
+                     int[] columns,
+                     ref bool[] descending,
+                     CultureInfo culture = null,
+                     CompareOptions compareOptions = CompareOptions.None,
+                     Dictionary<int, string[]> customLists = null)
     {
         columns ??= new int[] { 0 };
         ValidateColumnArray(range, columns);
@@ -84,20 +90,21 @@ internal class RangeSorter
         this.ApplySortedRange(range, sortItems, wsd);
     }
 
-    public void SortLeftToRight(
-        ExcelRangeBase range,
-        int[] rows,
-        ref bool[] descending,
-        CultureInfo culture,
-        CompareOptions compareOptions = CompareOptions.None,
-        Dictionary<int, string[]> customLists = null
-    )
+    public void SortLeftToRight(ExcelRangeBase range,
+                                int[] rows,
+                                ref bool[] descending,
+                                CultureInfo culture,
+                                CompareOptions compareOptions = CompareOptions.None,
+                                Dictionary<int, string[]> customLists = null)
     {
         rows ??= new int[] { 0 };
         ValidateRowsArray(range, rows);
         descending ??= CreateDefaultDescendingArray(rows);
         List<SortItemLeftToRight<ExcelValue>>? sortItems = SortItemLeftToRightFactory.Create(range);
-        EPPlusSortComparerLeftToRight? comp = new EPPlusSortComparerLeftToRight(rows, descending, customLists, culture ?? CultureInfo.CurrentCulture, compareOptions);
+
+        EPPlusSortComparerLeftToRight? comp =
+            new EPPlusSortComparerLeftToRight(rows, descending, customLists, culture ?? CultureInfo.CurrentCulture, compareOptions);
+
         sortItems.Sort(comp);
         RangeWorksheetData? wsd = new RangeWorksheetData(range);
 
@@ -109,17 +116,21 @@ internal class RangeSorter
         //Sort the values and styles.
         int nColumnsInRange = range._toCol - range._fromCol + 1;
         this._worksheet._values.Clear(range._fromRow, range._fromCol, range._toRow - range._fromRow + 1, nColumnsInRange);
+
         for (int r = 0; r < sortItems.Count; r++)
         {
             for (int c = 0; c < nColumnsInRange; c++)
             {
                 int row = range._fromRow + r;
                 int col = range._fromCol + c;
+
                 //_worksheet._values.SetValueSpecial(row, col, SortSetValue, l[r].Items[c]);
                 this._worksheet._values.SetValue(row, col, sortItems[r].Items[c]);
                 string? addr = ExcelCellBase.GetAddress(sortItems[r].Row, range._fromCol + c);
+
                 //Move flags
                 this.HandleFlags(wsd, row, col, addr);
+
                 //Move metadata
                 this.HandleMetadata(wsd, row, col, addr);
 
@@ -140,17 +151,21 @@ internal class RangeSorter
         //Sort the values and styles.
         int nRowsInRange = range._toRow - range._fromRow + 1;
         this._worksheet._values.Clear(range._fromRow, range._fromCol, range._toRow - range._fromRow + 1, range._toCol);
+
         for (int c = 0; c < sortItems.Count; c++)
         {
             for (int r = 0; r < nRowsInRange; r++)
             {
                 int row = range._fromRow + r;
                 int col = range._fromCol + c;
+
                 //_worksheet._values.SetValueSpecial(row, col, SortSetValue, l[r].Items[c]);
                 this._worksheet._values.SetValue(row, col, sortItems[c].Items[r]);
                 string? addr = ExcelCellBase.GetAddress(range._fromRow + r, sortItems[c].Column);
+
                 //Move flags
                 this.HandleFlags(wsd, row, col, addr);
+
                 //Move metadata
                 this.HandleMetadata(wsd, row, col, addr);
 
@@ -206,12 +221,14 @@ internal class RangeSorter
         if (wsd.Formulas.ContainsKey(addr))
         {
             this._worksheet._formulas.SetValue(row, col, wsd.Formulas[addr]);
-            if(wsd.Formulas[addr] is string)
+
+            if (wsd.Formulas[addr] is string)
             {
                 string? formula = wsd.Formulas[addr].ToString();
-                string? newFormula = initialRow != row ?
-                                         AddressUtility.ShiftAddressRowsInFormula(string.Empty, formula, initialRow, row - initialRow) :
-                                         AddressUtility.ShiftAddressColumnsInFormula(string.Empty, formula, initialCol, col - initialCol);
+
+                string? newFormula = initialRow != row
+                                         ? AddressUtility.ShiftAddressRowsInFormula(string.Empty, formula, initialRow, row - initialRow)
+                                         : AddressUtility.ShiftAddressColumnsInFormula(string.Empty, formula, initialCol, col - initialCol);
 
                 this._worksheet._formulas.SetValue(row, col, newFormula);
             }
@@ -220,6 +237,7 @@ internal class RangeSorter
                 int sfIx = (int)wsd.Formulas[addr];
                 ExcelAddress? startAddr = new ExcelAddress(this._worksheet._sharedFormulas[sfIx].Address);
                 ExcelWorksheet.Formulas? f = this._worksheet._sharedFormulas[sfIx];
+
                 if (startAddr._fromRow > row)
                 {
                     f.Formula = ExcelCellBase.TranslateFromR1C1(ExcelCellBase.TranslateToR1C1(f.Formula, f.StartRow, f.StartCol), row, f.StartCol);
@@ -234,23 +252,32 @@ internal class RangeSorter
         }
     }
 
-    internal void SetWorksheetSortState(ExcelRangeBase range, int[] columnsOrRows, bool[] descending, CompareOptions compareOptions, bool leftToRight, Dictionary<int, string[]> customLists)
+    internal void SetWorksheetSortState(ExcelRangeBase range,
+                                        int[] columnsOrRows,
+                                        bool[] descending,
+                                        CompareOptions compareOptions,
+                                        bool leftToRight,
+                                        Dictionary<int, string[]> customLists)
     {
         //Set sort state
         SortState? sortState = new SortState(this._worksheet.NameSpaceManager, this._worksheet);
         sortState.Ref = range.Address;
         sortState.ColumnSort = leftToRight;
         sortState.CaseSensitive = compareOptions == CompareOptions.IgnoreCase || compareOptions == CompareOptions.OrdinalIgnoreCase;
+
         for (int ix = 0; ix < columnsOrRows.Length; ix++)
         {
             bool? desc = null;
+
             if (descending.Length > ix && descending[ix])
             {
                 desc = true;
             }
-            string? adr = leftToRight ?
-                              ExcelCellBase.GetAddress(range._fromRow + columnsOrRows[ix], range._fromCol, range._fromRow + columnsOrRows[ix], range._toCol) :
-                              ExcelCellBase.GetAddress(range._fromRow, range._fromCol + columnsOrRows[ix], range._toRow, range._fromCol + columnsOrRows[ix]);
+
+            string? adr = leftToRight
+                              ? ExcelCellBase.GetAddress(range._fromRow + columnsOrRows[ix], range._fromCol, range._fromRow + columnsOrRows[ix], range._toCol)
+                              : ExcelCellBase.GetAddress(range._fromRow, range._fromCol + columnsOrRows[ix], range._toRow, range._fromCol + columnsOrRows[ix]);
+
             if (customLists != null && customLists.ContainsKey(columnsOrRows[ix]))
             {
                 sortState.SortConditions.Add(adr, desc, customLists[columnsOrRows[ix]]);

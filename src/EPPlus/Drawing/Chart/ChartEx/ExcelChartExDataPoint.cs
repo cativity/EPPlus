@@ -10,6 +10,7 @@
  *************************************************************************************************
   04/16/2020         EPPlus Software AB           EPPlus 5.2
  *************************************************************************************************/
+
 using OfficeOpenXml.Drawing.Interfaces;
 using OfficeOpenXml.Drawing.Style.Effect;
 using OfficeOpenXml.Drawing.Style.ThreeD;
@@ -27,13 +28,17 @@ namespace OfficeOpenXml.Drawing.Chart.ChartEx;
 public class ExcelChartExDataPoint : XmlHelper, IDrawingStyleBase
 {
     ExcelChartExSerie _serie;
-    internal ExcelChartExDataPoint(ExcelChartExSerie serie, XmlNamespaceManager ns, XmlNode topNode, string[] schemaNodeOrder) : base(ns, topNode)
+
+    internal ExcelChartExDataPoint(ExcelChartExSerie serie, XmlNamespaceManager ns, XmlNode topNode, string[] schemaNodeOrder)
+        : base(ns, topNode)
     {
         this._serie = serie;
         this.AddSchemaNodeOrder(schemaNodeOrder, new string[] { "spPr" });
         this.Index = this.GetXmlNodeInt(indexPath);
     }
-    internal ExcelChartExDataPoint(ExcelChartExSerie serie, XmlNamespaceManager ns, XmlNode topNode, int index, string[] schemaNodeOrder) : base(ns, topNode)
+
+    internal ExcelChartExDataPoint(ExcelChartExSerie serie, XmlNamespaceManager ns, XmlNode topNode, int index, string[] schemaNodeOrder)
+        : base(ns, topNode)
     {
         this._serie = serie;
         this.AddSchemaNodeOrder(schemaNodeOrder, new string[] { "spPr" });
@@ -43,26 +48,22 @@ public class ExcelChartExDataPoint : XmlHelper, IDrawingStyleBase
     internal const string dataPtPath = "cx:dataPt";
     internal const string SubTotalPath = "cx:layoutPr/cx:subtotals/cx:idx";
     const string indexPath = "@idx";
+
     /// <summary>
     /// The index of the datapoint
     /// </summary>
-    public int Index
-    {
-        get;
-        private set;
-    }
+    public int Index { get; private set; }
+
     /// <summary>
     /// The data point is a subtotal. Applies for waterfall charts.
     /// </summary>
     public bool SubTotal
     {
-        get
-        {
-            return this.ExistsNode($"{this.GetSubTotalPath()}[@val={this.Index}]");
-        }
+        get { return this.ExistsNode($"{this.GetSubTotalPath()}[@val={this.Index}]"); }
         set
         {
             string? path = this.GetSubTotalPath();
+
             if (value)
             {
                 if (!this.ExistsNode($"{path}[@val={this.Index}]"))
@@ -80,7 +81,7 @@ public class ExcelChartExDataPoint : XmlHelper, IDrawingStyleBase
 
     private string GetSubTotalPath()
     {
-        if(this.TopNode.LocalName=="series")
+        if (this.TopNode.LocalName == "series")
         {
             return "cx:layoutPr/cx:subtotals/cx:idx";
         }
@@ -91,6 +92,7 @@ public class ExcelChartExDataPoint : XmlHelper, IDrawingStyleBase
     }
 
     ExcelDrawingFill _fill = null;
+
     /// <summary>
     /// A reference to fill properties
     /// </summary>
@@ -103,11 +105,13 @@ public class ExcelChartExDataPoint : XmlHelper, IDrawingStyleBase
                 this.CreateDp();
                 this._fill = new ExcelDrawingFill(this._serie._chart, this.NameSpaceManager, this.TopNode, "cx:spPr", this.SchemaNodeOrder);
             }
+
             return this._fill;
         }
     }
 
     ExcelDrawingBorder _line = null;
+
     /// <summary>
     /// A reference to line properties
     /// </summary>
@@ -120,10 +124,13 @@ public class ExcelChartExDataPoint : XmlHelper, IDrawingStyleBase
                 this.CreateDp();
                 this._line = new ExcelDrawingBorder(this._serie._chart, this.NameSpaceManager, this.TopNode, "cx:spPr/a:ln", this.SchemaNodeOrder);
             }
+
             return this._line;
         }
     }
+
     private ExcelDrawingEffectStyle _effect = null;
+
     /// <summary>
     /// A reference to line properties
     /// </summary>
@@ -134,12 +141,20 @@ public class ExcelChartExDataPoint : XmlHelper, IDrawingStyleBase
             if (this._effect == null)
             {
                 this.CreateDp();
-                this._effect = new ExcelDrawingEffectStyle(this._serie._chart, this.NameSpaceManager, this.TopNode, "cx:spPr/a:effectLst", this.SchemaNodeOrder);
+
+                this._effect = new ExcelDrawingEffectStyle(this._serie._chart,
+                                                           this.NameSpaceManager,
+                                                           this.TopNode,
+                                                           "cx:spPr/a:effectLst",
+                                                           this.SchemaNodeOrder);
             }
+
             return this._effect;
         }
     }
+
     ExcelDrawing3D _threeD = null;
+
     /// <summary>
     /// 3D properties
     /// </summary>
@@ -152,15 +167,18 @@ public class ExcelChartExDataPoint : XmlHelper, IDrawingStyleBase
                 this.CreateDp();
                 this._threeD = new ExcelDrawing3D(this.NameSpaceManager, this.TopNode, "cx:spPr", this.SchemaNodeOrder);
             }
+
             return this._threeD;
         }
     }
+
     private void CreateDp()
     {
         if (this.TopNode.LocalName == "series")
         {
             XmlElement pointElement;
             XmlElement? prepend = this.GetPrependItem();
+
             if (prepend == null)
             {
                 pointElement = (XmlElement)this.CreateNode(dataPtPath);
@@ -170,6 +188,7 @@ public class ExcelChartExDataPoint : XmlHelper, IDrawingStyleBase
                 pointElement = this.TopNode.OwnerDocument.CreateElement(dataPtPath, ExcelPackage.schemaChartExMain);
                 prepend.ParentNode.InsertBefore(pointElement, prepend);
             }
+
             pointElement.SetAttribute("idx", this.Index.ToString(CultureInfo.InvariantCulture));
             this.TopNode = pointElement;
         }
@@ -179,6 +198,7 @@ public class ExcelChartExDataPoint : XmlHelper, IDrawingStyleBase
     {
         SortedDictionary<int, ExcelChartExDataPoint>? dic = this._serie.DataPoints._dic;
         int prevKey = -1;
+
         foreach (ExcelChartExDataPoint? v in dic.Values)
         {
             if (v.TopNode.LocalName == "dataPt" && prevKey < v.Index)
@@ -186,6 +206,7 @@ public class ExcelChartExDataPoint : XmlHelper, IDrawingStyleBase
                 return (XmlElement)v.TopNode;
             }
         }
+
         return null;
     }
 

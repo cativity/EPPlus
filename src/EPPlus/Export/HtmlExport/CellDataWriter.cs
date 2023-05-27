@@ -10,6 +10,7 @@
  *************************************************************************************************
   05/16/2020         EPPlus Software AB           ExcelTable Html Export
  *************************************************************************************************/
+
 using OfficeOpenXml.Drawing.Interfaces;
 using OfficeOpenXml.Export.HtmlExport.Accessibility;
 using OfficeOpenXml.FormulaParsing.ExpressionGraph;
@@ -21,34 +22,44 @@ using System.Text;
 #if !NET35 && !NET40
 using System.Threading.Tasks;
 #endif
+
 namespace OfficeOpenXml.Export.HtmlExport
 {
     internal class CellDataWriter
     {
-        
-
-        public static void Write(ExcelRangeBase cell, string dataType, EpplusHtmlWriter writer, HtmlExportSettings settings, AccessibilitySettings accessibilitySettings, bool addRowScope, HtmlImage image)
+        public static void Write(ExcelRangeBase cell,
+                                 string dataType,
+                                 EpplusHtmlWriter writer,
+                                 HtmlExportSettings settings,
+                                 AccessibilitySettings accessibilitySettings,
+                                 bool addRowScope,
+                                 HtmlImage image)
         {
             if (dataType != ColumnDataTypeManager.HtmlDataTypes.String && settings.RenderDataAttributes)
             {
                 string? v = HtmlRawDataProvider.GetRawValue(cell.Value, dataType);
+
                 if (string.IsNullOrEmpty(v) == false)
                 {
                     writer.AddAttribute($"data-{settings.DataValueAttributeName}", v);
                 }
             }
+
             if (accessibilitySettings.TableSettings.AddAccessibilityAttributes)
             {
                 writer.AddAttribute("role", "cell");
+
                 if (addRowScope)
                 {
                     writer.AddAttribute("scope", "row");
                 }
             }
+
             string? imageCellClassName = image == null ? "" : settings.StyleClassPrefix + "image-cell";
             writer.SetClassAttributeFromStyle(cell, false, settings, imageCellClassName);
             writer.RenderBeginTag(HtmlElements.TableData);
             HtmlExportImageUtil.AddImage(writer, settings, image, cell.Value);
+
             if (cell.IsRichText)
             {
                 writer.Write(cell.RichText.HtmlText);
@@ -62,28 +73,39 @@ namespace OfficeOpenXml.Export.HtmlExport
             writer.ApplyFormat(settings.Minify);
         }
 #if !NET35
-        public static async Task WriteAsync(ExcelRangeBase cell, string dataType, EpplusHtmlWriter writer, HtmlExportSettings settings, AccessibilitySettings accessibilitySettings, bool addRowScope, HtmlImage image)
+        public static async Task WriteAsync(ExcelRangeBase cell,
+                                            string dataType,
+                                            EpplusHtmlWriter writer,
+                                            HtmlExportSettings settings,
+                                            AccessibilitySettings accessibilitySettings,
+                                            bool addRowScope,
+                                            HtmlImage image)
         {
             if (dataType != ColumnDataTypeManager.HtmlDataTypes.String && settings.RenderDataAttributes)
             {
                 string? v = HtmlRawDataProvider.GetRawValue(cell.Value, dataType);
+
                 if (string.IsNullOrEmpty(v) == false)
                 {
                     writer.AddAttribute($"data-{settings.DataValueAttributeName}", v);
                 }
             }
+
             if (accessibilitySettings.TableSettings.AddAccessibilityAttributes)
             {
                 writer.AddAttribute("role", "cell");
+
                 if (addRowScope)
                 {
                     writer.AddAttribute("scope", "row");
                 }
             }
+
             string? imageCellClassName = image == null ? "" : settings.StyleClassPrefix + "image-cell";
             writer.SetClassAttributeFromStyle(cell, false, settings, imageCellClassName);
             await writer.RenderBeginTagAsync(HtmlElements.TableData);
             HtmlExportImageUtil.AddImage(writer, settings, image, cell.Value);
+
             if (cell.IsRichText)
             {
                 await writer.WriteAsync(cell.RichText.HtmlText);
@@ -92,6 +114,7 @@ namespace OfficeOpenXml.Export.HtmlExport
             {
                 await writer.WriteAsync(ValueToTextHandler.GetFormattedText(cell.Value, cell.Worksheet.Workbook, cell.StyleID, false, settings.Culture));
             }
+
             await writer.RenderEndTagAsync();
             await writer.ApplyFormatAsync(settings.Minify);
         }

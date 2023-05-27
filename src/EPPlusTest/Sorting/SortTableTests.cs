@@ -20,10 +20,12 @@ public class SortTableTests
         sheet.Cells[1, 1].Value = "Header1";
         sheet.Cells[1, 2].Value = "Header2";
         sheet.Cells[1, 3].Value = "Header3";
+
         // row 1
         sheet.Cells[2, 1].Value = 10;
         sheet.Cells[2, 2].Value = 2;
         sheet.Cells[2, 3].Value = 3;
+
         // row 2
         sheet.Cells[3, 1].Value = 5;
         sheet.Cells[3, 2].Value = 2;
@@ -35,6 +37,7 @@ public class SortTableTests
         table.Columns[0].TotalsRowFunction = RowFunctions.Sum;
         table.Columns[1].TotalsRowFunction = RowFunctions.Sum;
         table.Columns[2].TotalsRowFunction = RowFunctions.Sum;
+
         return table;
     }
 
@@ -74,30 +77,37 @@ public class SortTableTests
     {
         using ExcelPackage? package = new ExcelPackage();
         ExcelWorksheet? sheet = package.Workbook.Worksheets.Add("test");
+
         // header
         sheet.Cells[1, 1].Value = "Size";
         sheet.Cells[1, 2].Value = "Price";
         sheet.Cells[1, 3].Value = "Color";
+
         // row 1
         sheet.Cells[2, 1].Value = "M";
         sheet.Cells[2, 2].Value = 20;
         sheet.Cells[2, 3].Value = "Blue";
+
         // row 2
         sheet.Cells[3, 1].Value = "XL";
         sheet.Cells[3, 2].Value = 25;
         sheet.Cells[3, 3].Value = "Yellow";
+
         // row 3
         sheet.Cells[4, 1].Value = "S";
         sheet.Cells[4, 2].Value = 10;
         sheet.Cells[4, 3].Value = "Yellow";
+
         // row 4
         sheet.Cells[5, 1].Value = "L";
         sheet.Cells[5, 2].Value = 21;
         sheet.Cells[5, 3].Value = "Blue";
+
         // row 5
         sheet.Cells[6, 1].Value = "S";
         sheet.Cells[6, 2].Value = 20;
         sheet.Cells[6, 3].Value = "Blue";
+
         // row 6
         sheet.Cells[7, 1].Value = "S";
         sheet.Cells[7, 2].Value = 10;
@@ -105,10 +115,11 @@ public class SortTableTests
 
         ExcelTable? table = sheet.Tables.Add(sheet.Cells["A1:C7"], "myTable");
 
-        table.Sort(x => x.SortBy.ColumnNamed("Size").UsingCustomList("S", "M", "L", "XL")
+        table.Sort(x => x.SortBy.ColumnNamed("Size")
+                         .UsingCustomList("S", "M", "L", "XL")
                          .ThenSortBy.ColumnNamed("Price", eSortOrder.Descending)
-                         .ThenSortBy.Column(2).UsingCustomList("Blue", "Yellow"));
-
+                         .ThenSortBy.Column(2)
+                         .UsingCustomList("Blue", "Yellow"));
 
         Assert.AreEqual("S", sheet.Cells[2, 1].Value, $"First row, first col not 'S' but '{sheet.Cells[2, 1].Value}'");
         Assert.AreEqual(20, sheet.Cells[2, 2].Value, $"First row, second col not 20 but '{sheet.Cells[2, 2].Value}'");
@@ -125,7 +136,6 @@ public class SortTableTests
         Assert.AreEqual("M", sheet.Cells[5, 1].Value);
         Assert.AreEqual("L", sheet.Cells[6, 1].Value);
         Assert.AreEqual("XL", sheet.Cells[7, 1].Value);
-
 
         //package.SaveAs(new FileInfo(@"c:\Temp\TableSort2.xlsx"));
     }
@@ -174,9 +184,7 @@ public class SortTableTests
         ws.Cells["C11"].Value = 2;
         ws.Cells["C12"].Value = 1;
 
-
         tbl.Sort(x => x.SortBy.Column(1, eSortOrder.Ascending));
         Assert.AreEqual("TestTable[[#This Row],[123]]+TestTable[[#This Row],[Column2]]", tbl.Columns[14].CalculatedColumnFormula);
     }
-
 }

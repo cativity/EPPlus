@@ -10,6 +10,7 @@
  *************************************************************************************************
   01/27/2020         EPPlus Software AB       Initial release EPPlus 5
  *************************************************************************************************/
+
 using OfficeOpenXml.Compatibility;
 using System;
 using System.Collections.Generic;
@@ -25,7 +26,8 @@ public class ExcelVBACollectionBase<T> : IEnumerable<T>
     /// <summary>
     /// A list of vba objects
     /// </summary>
-    internal protected List<T> _list=new List<T>();
+    internal protected List<T> _list = new List<T>();
+
     /// <summary>
     /// Gets the enumerator for the collection
     /// </summary>
@@ -39,18 +41,17 @@ public class ExcelVBACollectionBase<T> : IEnumerable<T>
     {
         return this._list.GetEnumerator();
     }
+
     /// <summary>
     /// Indexer
     /// </summary>
     /// <param name="Name">Name</param>
     /// <returns></returns>
-    public T this [string Name]
+    public T this[string Name]
     {
-        get
-        {
-            return this._list.Find((f) => TypeCompat.GetPropertyValue(f,"Name").ToString().Equals(Name,StringComparison.OrdinalIgnoreCase));
-        }
+        get { return this._list.Find((f) => TypeCompat.GetPropertyValue(f, "Name").ToString().Equals(Name, StringComparison.OrdinalIgnoreCase)); }
     }
+
     /// <summary>
     /// Indexer
     /// </summary>
@@ -58,11 +59,9 @@ public class ExcelVBACollectionBase<T> : IEnumerable<T>
     /// <returns></returns>
     public T this[int Index]
     {
-        get
-        {
-            return this._list[Index];
-        }
+        get { return this._list[Index]; }
     }
+
     /// <summary>
     /// Number of items in the collection
     /// </summary>
@@ -70,6 +69,7 @@ public class ExcelVBACollectionBase<T> : IEnumerable<T>
     {
         get { return this._list.Count; }
     }
+
     /// <summary>
     /// If a specific name exists in the collection
     /// </summary>
@@ -77,8 +77,9 @@ public class ExcelVBACollectionBase<T> : IEnumerable<T>
     /// <returns>True if the name exists</returns>
     public bool Exists(string Name)
     {
-        return this._list.Exists((f) => TypeCompat.GetPropertyValue(f,"Name").ToString().Equals(Name,StringComparison.OrdinalIgnoreCase));
+        return this._list.Exists((f) => TypeCompat.GetPropertyValue(f, "Name").ToString().Equals(Name, StringComparison.OrdinalIgnoreCase));
     }
+
     /// <summary>
     /// Removes the item
     /// </summary>
@@ -87,6 +88,7 @@ public class ExcelVBACollectionBase<T> : IEnumerable<T>
     {
         this._list.Remove(Item);
     }
+
     /// <summary>
     /// Removes the item at the specified index
     /// </summary>
@@ -95,7 +97,7 @@ public class ExcelVBACollectionBase<T> : IEnumerable<T>
     {
         this._list.RemoveAt(index);
     }
-        
+
     internal void Clear()
     {
         this._list.Clear();

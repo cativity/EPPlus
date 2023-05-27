@@ -26,6 +26,7 @@
  *******************************************************************************
   01/27/2020         EPPlus Software AB       Initial release EPPlus 5
  *******************************************************************************/
+
 using System.Globalization;
 using System.Threading;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -40,7 +41,7 @@ public class CompileResultFactoryTests
         [TestMethod]
         public void CalculateUsingEuropeanDates()
         {
-            var ci=Thread.CurrentThread.CurrentCulture;
+            var ci = Thread.CurrentThread.CurrentCulture;
             var us = new CultureInfo("en-US");
             Thread.CurrentThread.CurrentCulture = us;
             var crf = new CompileResultFactory();

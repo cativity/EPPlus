@@ -10,6 +10,7 @@
  *************************************************************************************************
   01/27/2020         EPPlus Software AB       Initial release EPPlus 5
  *************************************************************************************************/
+
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -28,65 +29,69 @@ public abstract class HiddenValuesHandlingFunction : ExcelFunction
     {
         this.IgnoreErrors = true;
     }
+
     /// <summary>
     /// Set to true or false to indicate whether the function should ignore hidden values.
     /// </summary>
-    public bool IgnoreHiddenValues
-    {
-        get;
-        set;
-    }
+    public bool IgnoreHiddenValues { get; set; }
 
     /// <summary>
     /// Set to true to indicate whether the function should ignore error values
     /// </summary>
-    public bool IgnoreErrors
-    {
-        get; set;
-    }
+    public bool IgnoreErrors { get; set; }
 
     protected override IEnumerable<ExcelDoubleCellValue> ArgsToDoubleEnumerable(IEnumerable<FunctionArgument> arguments, ParsingContext context)
     {
         return this.ArgsToDoubleEnumerable(arguments, context, this.IgnoreErrors, false);
     }
 
-    protected IEnumerable<ExcelDoubleCellValue> ArgsToDoubleEnumerable(IEnumerable<FunctionArgument> arguments, ParsingContext context, bool ignoreErrors, bool ignoreNonNumeric)
+    protected IEnumerable<ExcelDoubleCellValue> ArgsToDoubleEnumerable(IEnumerable<FunctionArgument> arguments,
+                                                                       ParsingContext context,
+                                                                       bool ignoreErrors,
+                                                                       bool ignoreNonNumeric)
     {
         if (!arguments.Any())
         {
             return Enumerable.Empty<ExcelDoubleCellValue>();
         }
+
         if (this.IgnoreHiddenValues)
         {
             IEnumerable<FunctionArgument>? nonHidden = arguments.Where(x => !x.ExcelStateFlagIsSet(ExcelCellState.HiddenCell));
+
             return base.ArgsToDoubleEnumerable(this.IgnoreHiddenValues, nonHidden, context);
         }
+
         return base.ArgsToDoubleEnumerable(this.IgnoreHiddenValues, ignoreErrors, arguments, context, ignoreNonNumeric);
     }
 
     protected bool ShouldIgnore(ICellInfo c, ParsingContext context)
     {
-        if(CellStateHelper.ShouldIgnore(this.IgnoreHiddenValues, c, context))
+        if (CellStateHelper.ShouldIgnore(this.IgnoreHiddenValues, c, context))
         {
             return true;
         }
-        if(this.IgnoreErrors && c.IsExcelError)
+
+        if (this.IgnoreErrors && c.IsExcelError)
         {
             return true;
         }
+
         return false;
     }
+
     protected bool ShouldIgnore(FunctionArgument arg, ParsingContext context)
     {
         if (CellStateHelper.ShouldIgnore(this.IgnoreHiddenValues, arg, context))
         {
             return true;
         }
-        if(this.IgnoreErrors && arg.ValueIsExcelError)
+
+        if (this.IgnoreErrors && arg.ValueIsExcelError)
         {
             return true;
         }
+
         return false;
     }
-
 }

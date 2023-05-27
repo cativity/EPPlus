@@ -10,6 +10,7 @@
  *************************************************************************************************
   07/29/2020         EPPlus Software AB       Threaded comments
  *************************************************************************************************/
+
 using OfficeOpenXml.FormulaParsing.Utilities;
 using System;
 using System.Collections.Generic;
@@ -46,22 +47,17 @@ public class ExcelThreadedCommentThread
     /// <summary>
     /// The worksheet where this comment thread resides
     /// </summary>
-    public ExcelWorksheet Worksheet
-    {
-        get; private set;
-    }
+    public ExcelWorksheet Worksheet { get; private set; }
 
     /// <summary>
     /// The raw xml representing this comment thread.
     /// </summary>
-    public XmlDocument ThreadedCommentsXml
-    {
-        get; private set;
-    }
+    public XmlDocument ThreadedCommentsXml { get; private set; }
 
     private void ReplicateThreadToLegacyComment()
     {
         IEnumerable<ExcelThreadedComment>? tc = this.Comments as IEnumerable<ExcelThreadedComment>;
+
         if (!tc.Any())
         {
             return;
@@ -72,9 +68,10 @@ public class ExcelThreadedCommentThread
         string? authorId = "tc=" + tc.First().Id;
         commentText.AppendLine("This comment reflects a threaded comment in this cell, a feature that might be supported by newer versions of your spreadsheet program (for example later versions of Excel). Any edits will be overwritten if opened in a spreadsheet program that supports threaded comments.");
         commentText.AppendLine();
-        foreach(ExcelThreadedComment? threadedComment in tc)
+
+        foreach (ExcelThreadedComment? threadedComment in tc)
         {
-            if(tcIndex == 0)
+            if (tcIndex == 0)
             {
                 commentText.AppendLine("Comment:");
             }
@@ -82,10 +79,13 @@ public class ExcelThreadedCommentThread
             {
                 commentText.AppendLine("Reply:");
             }
+
             commentText.AppendLine(threadedComment.Text);
             tcIndex++;
         }
+
         ExcelComment? comment = this.Worksheet.Comments[this.CellAddress];
+
         if (comment == null)
         {
             this.Worksheet.Comments.Add(this.Worksheet.Cells[this.CellAddress.Address], commentText.ToString(), authorId);
@@ -120,10 +120,12 @@ public class ExcelThreadedCommentThread
         Require.That(text).Named("text").IsNotNullOrEmpty();
         Require.That(personId).Named("personId").IsNotNullOrEmpty();
         string? parentId = string.Empty;
+
         if (this.Comments.Any())
         {
             parentId = this.Comments.First().Id;
         }
+
         XmlElement? xmlNode = this.ThreadedCommentsXml.CreateElement("threadedComment", ExcelPackage.schemaThreadedComments);
         this.ThreadedCommentsXml.SelectSingleNode("tc:ThreadedComments", this.Worksheet.NameSpaceManager).AppendChild(xmlNode);
         ExcelThreadedComment? newComment = new ExcelThreadedComment(xmlNode, this.Worksheet.NameSpaceManager, this.Worksheet.Workbook, this);
@@ -132,13 +134,15 @@ public class ExcelThreadedCommentThread
         newComment.Text = text;
         newComment.PersonId = personId;
         newComment.DateCreated = DateTime.Now;
+
         if (!string.IsNullOrEmpty(parentId))
         {
             newComment.ParentId = parentId;
         }
 
         this.Comments.Add(newComment);
-        if(replicateLegacyComment)
+
+        if (replicateLegacyComment)
         {
             this.ReplicateThreadToLegacyComment();
         }
@@ -152,8 +156,6 @@ public class ExcelThreadedCommentThread
         this.ReplicateThreadToLegacyComment();
     }
 
-       
-
     /// <summary>
     /// Adds a <see cref="ExcelThreadedComment"/> with mentions in the text to the thread.
     /// </summary>
@@ -165,6 +167,7 @@ public class ExcelThreadedCommentThread
     {
         ExcelThreadedComment? comment = this.AddComment(personId, textWithFormats, true);
         MentionsHelper.InsertMentions(comment, textWithFormats, personsToMention);
+
         return comment;
     }
 
@@ -175,11 +178,13 @@ public class ExcelThreadedCommentThread
     /// <returns>true if the comment was removed, otherwise false</returns>
     public bool Remove(ExcelThreadedComment comment)
     {
-        if(this.Comments.Remove(comment))
+        if (this.Comments.Remove(comment))
         {
             this.ReplicateThreadToLegacyComment();
+
             return true;
         }
+
         return false;
     }
 
@@ -231,7 +236,8 @@ public class ExcelThreadedCommentThread
     public void DeleteThread()
     {
         this.Comments.Clear();
-        if(this.Worksheet.Comments[this.CellAddress] != null)
+
+        if (this.Worksheet.Comments[this.CellAddress] != null)
         {
             ExcelComment? comment = this.Worksheet.Comments[this.CellAddress];
             this.Worksheet.Comments.Remove(comment);
@@ -242,13 +248,14 @@ public class ExcelThreadedCommentThread
     {
         XmlElement? xmlNode = this.ThreadedCommentsXml.CreateElement("threadedComment", ExcelPackage.schemaThreadedComments);
         this.ThreadedCommentsXml.SelectSingleNode("tc:ThreadedComments", this.Worksheet.NameSpaceManager).AppendChild(xmlNode);
-        foreach(XmlAttribute attr in copyFromElement.Attributes)
+
+        foreach (XmlAttribute attr in copyFromElement.Attributes)
         {
-            if(attr.LocalName=="ref")
+            if (attr.LocalName == "ref")
             {
                 xmlNode.SetAttribute("ref", this.CellAddress.Address);
             }
-            else if(attr.LocalName == "id")
+            else if (attr.LocalName == "id")
             {
                 xmlNode.SetAttribute("id", ExcelThreadedComment.NewId());
             }
@@ -257,13 +264,16 @@ public class ExcelThreadedCommentThread
                 xmlNode.SetAttribute(attr.LocalName, attr.Value);
             }
         }
+
         xmlNode.InnerXml = copyFromElement.InnerXml;
         ExcelThreadedComment? tc = new ExcelThreadedComment(xmlNode, this.Worksheet.NameSpaceManager, this.Worksheet.Workbook, this);
-        if(this.Comments.Count>0)
+
+        if (this.Comments.Count > 0)
         {
             tc.ParentId = this.Comments[0].Id;
         }
-        foreach(ExcelThreadedCommentMention? m in tc.Mentions)
+
+        foreach (ExcelThreadedCommentMention? m in tc.Mentions)
         {
             m.MentionId = ExcelThreadedComment.NewId();
         }

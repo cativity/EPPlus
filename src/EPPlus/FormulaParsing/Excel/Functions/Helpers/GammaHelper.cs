@@ -19,6 +19,7 @@
  * 05/20/2020         EPPlus Software AB         Ported code from java to C#
  *************************************************************************************************
  */
+
 using OfficeOpenXml.FormulaParsing.Excel.Functions.Helpers;
 using System;
 using System.Collections.Generic;
@@ -30,10 +31,12 @@ internal static class GammaHelper
 {
     private readonly static double HALF_LOG_2_PI = 0.5 * System.Math.Log(2.0 * System.Math.PI);
     private readonly static double LANCZOS_G = 607.0 / 128.0;
+
     /** The constant value of radic;(2pi;). */
     private static readonly double SQRT_TWO_PI = 2.506628274631000502;
 
     #region Gamma constants
+
     /*
     * Constants for the computation of double invGamma1pm1(double).
     * Copied from DGAM1 in the NSWC library.
@@ -95,6 +98,7 @@ internal static class GammaHelper
 
     /** The constant {@code Q2} defined in {@code DGAM1}. */
     private static readonly double INV_GAMMA1P_M1_Q2 = .5464213086042296536016E-01;
+
     /** The constant {@code Q3} defined in {@code DGAM1}. */
     private static readonly double INV_GAMMA1P_M1_Q3 = .4956830093825887312020E-02;
 
@@ -145,29 +149,20 @@ internal static class GammaHelper
 
     /** The constant {@code C13} defined in {@code DGAM1}. */
     private static readonly double INV_GAMMA1P_M1_C13 = -.205633841697760710345015413002057E-06;
+
     #endregion
 
-    private static readonly double[] LANCZOS = {
-        0.99999999999999709182,
-        57.156235665862923517,
-        -59.597960355475491248,
-        14.136097974741747174,
-        -0.49191381609762019978,
-        .33994649984811888699e-4,
-        .46523628927048575665e-4,
-        -.98374475304879564677e-4,
-        .15808870322491248884e-3,
-        -.21026444172410488319e-3,
-        .21743961811521264320e-3,
-        -.16431810653676389022e-3,
-        .84418223983852743293e-4,
-        -.26190838401581408670e-4,
-        .36899182659531622704e-5,
+    private static readonly double[] LANCZOS =
+    {
+        0.99999999999999709182, 57.156235665862923517, -59.597960355475491248, 14.136097974741747174, -0.49191381609762019978, .33994649984811888699e-4,
+        .46523628927048575665e-4, -.98374475304879564677e-4, .15808870322491248884e-3, -.21026444172410488319e-3, .21743961811521264320e-3,
+        -.16431810653676389022e-3, .84418223983852743293e-4, -.26190838401581408670e-4, .36899182659531622704e-5,
     };
 
     public static double regularizedGammaP(double a, double x, double epsilon, int maxIterations)
     {
         double ret;
+
         if (double.IsNaN(a) || double.IsNaN(x) || a <= 0.0 || x < 0.0)
         {
             ret = double.NaN;
@@ -188,9 +183,8 @@ internal static class GammaHelper
             double n = 0.0; // current element index
             double an = 1.0 / a; // n-th element in the series
             double sum = an; // partial sum
-            while (System.Math.Abs(an / sum) > epsilon &&
-                   n < maxIterations &&
-                   sum < double.PositiveInfinity)
+
+            while (System.Math.Abs(an / sum) > epsilon && n < maxIterations && sum < double.PositiveInfinity)
             {
                 // compute next element in the series
                 n += 1.0;
@@ -199,6 +193,7 @@ internal static class GammaHelper
                 // update partial sum
                 sum += an;
             }
+
             if (n >= maxIterations)
             {
                 throw new Exception("n > maxIterations (" + maxIterations + ")");
@@ -216,10 +211,7 @@ internal static class GammaHelper
         return ret;
     }
 
-    public static double regularizedGammaQ(double a,
-                                           double x,
-                                           double epsilon,
-                                           int maxIterations)
+    public static double regularizedGammaQ(double a, double x, double epsilon, int maxIterations)
     {
         double ret;
 
@@ -271,18 +263,19 @@ internal static class GammaHelper
         {
             int n = (int)System.Math.Floor(x - 1.5);
             double prod = 1.0;
+
             for (int i = 1; i <= n; i++)
             {
                 prod *= x - i;
             }
+
             return logGamma1p(x - (n + 1)) + System.Math.Log(prod);
         }
         else
         {
             double sum = lanczos(x);
             double tmp = x + LANCZOS_G + .5;
-            ret = ((x + .5) * System.Math.Log(tmp)) - tmp +
-                  HALF_LOG_2_PI + System.Math.Log(sum / x);
+            ret = ((x + .5) * System.Math.Log(tmp)) - tmp + HALF_LOG_2_PI + System.Math.Log(sum / x);
         }
 
         return ret;
@@ -291,20 +284,22 @@ internal static class GammaHelper
     public static double lanczos(double x)
     {
         double sum = 0.0;
+
         for (int i = LANCZOS.Length - 1; i > 0; --i)
         {
             sum += LANCZOS[i] / (x + i);
         }
+
         return sum + LANCZOS[0];
     }
 
     public static double logGamma1p(double x)
     {
-
         if (x < -0.5)
         {
             throw new ArgumentException("logGamma1p: Number too small (< -0.5): " + x);
         }
+
         if (x > 1.5)
         {
             throw new ArgumentException("logGamma1p: Number too large (> 1.5): " + x);
@@ -315,11 +310,11 @@ internal static class GammaHelper
 
     public static double invGamma1pm1(double x)
     {
-
         if (x < -0.5)
         {
             throw new ArgumentException("invGamma1pm1: Number too small(< -0.5): " + x);
         }
+
         if (x > 1.5)
         {
             throw new ArgumentException("invGamma1pm1: Number too large (> 1.5): " + x);
@@ -327,6 +322,7 @@ internal static class GammaHelper
 
         double ret;
         double t = x <= 0.5 ? x : x - 0.5 - 0.5;
+
         if (t < 0.0)
         {
             double a = INV_GAMMA1P_M1_A0 + (t * INV_GAMMA1P_M1_A1);
@@ -354,6 +350,7 @@ internal static class GammaHelper
             c = INV_GAMMA1P_M1_C2 + (t * c);
             c = INV_GAMMA1P_M1_C1 + (t * c);
             c = INV_GAMMA1P_M1_C + (t * c);
+
             if (x > 0.5)
             {
                 ret = t * c / x;
@@ -417,10 +414,8 @@ internal static class GammaHelper
      * @param x Argument.
      * @return the value of {@code Gamma(x)}.
      */
-        
     public static double gamma(double x)
     {
-
         if (x == System.Math.Round(x) && x <= 0.0)
         {
             return Double.NaN;
@@ -428,6 +423,7 @@ internal static class GammaHelper
 
         double ret;
         double absX = System.Math.Abs(x);
+
         if (absX <= 20.0)
         {
             if (x >= 1.0)
@@ -442,11 +438,13 @@ internal static class GammaHelper
                  */
                 double prod = 1.0;
                 double t = x;
+
                 while (t > 2.5)
                 {
                     t -= 1.0;
                     prod *= t;
                 }
+
                 ret = prod / (1.0 + invGamma1pm1(t - 1.0));
             }
             else
@@ -460,20 +458,21 @@ internal static class GammaHelper
                  */
                 double prod = x;
                 double t = x;
+
                 while (t < -0.5)
                 {
                     t += 1.0;
                     prod *= t;
                 }
+
                 ret = 1.0 / (prod * (1.0 + invGamma1pm1(t)));
             }
         }
         else
         {
             double y = absX + LANCZOS_G + 0.5;
-            double gammaAbs = SQRT_TWO_PI / absX *
-                              System.Math.Pow(y, absX + 0.5) *
-                              System.Math.Exp(-y) * lanczos(absX);
+            double gammaAbs = SQRT_TWO_PI / absX * System.Math.Pow(y, absX + 0.5) * System.Math.Exp(-y) * lanczos(absX);
+
             if (x > 0.0)
             {
                 ret = gammaAbs;
@@ -488,12 +487,10 @@ internal static class GammaHelper
                  * it is found
                  * Gamma(x) = -pi / [x * sin(pi * x) * Gamma(-x)].
                  */
-                ret = -System.Math.PI /
-                      (x * System.Math.Sin(System.Math.PI * x) * gammaAbs);
+                ret = -System.Math.PI / (x * System.Math.Sin(System.Math.PI * x) * gammaAbs);
             }
         }
+
         return ret;
     }
-
-
 }

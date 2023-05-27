@@ -10,6 +10,7 @@
  *************************************************************************************************
   11/07/2021         EPPlus Software AB       Added Html Export
  *************************************************************************************************/
+
 #if !NET35 && !NET40
 using System.Threading.Tasks;
 #endif
@@ -37,6 +38,7 @@ namespace OfficeOpenXml.Export.HtmlExport
                 await this._writer.WriteAsync(IndentWhiteSpace);
             }
         }
+
         internal async Task ApplyFormatAsync(bool minify)
         {
             if (minify == false)
@@ -62,6 +64,7 @@ namespace OfficeOpenXml.Export.HtmlExport
                 this.Indent--;
             }
         }
+
         internal async Task WriteClassAsync(string value, bool minify)
         {
             if (minify)
@@ -74,6 +77,7 @@ namespace OfficeOpenXml.Export.HtmlExport
                 this.Indent = 1;
             }
         }
+
         internal async Task WriteClassEndAsync(bool minify)
         {
             if (minify)
@@ -86,6 +90,7 @@ namespace OfficeOpenXml.Export.HtmlExport
                 this.Indent = 0;
             }
         }
+
         internal async Task WriteCssItemAsync(string value, bool minify)
         {
             if (minify)

@@ -10,6 +10,7 @@
  *************************************************************************************************
   04/16/2020         EPPlus Software AB           EPPlus 5.2
  *************************************************************************************************/
+
 using OfficeOpenXml.Drawing.Style.Effect;
 using System.Xml;
 
@@ -21,11 +22,15 @@ namespace OfficeOpenXml.Drawing.Chart.ChartEx;
 public class ExcelChartExParetoLine : ExcelDrawingBorder
 {
     private readonly ExcelChart _chart;
-    internal ExcelChartExParetoLine(ExcelChart chart, XmlNamespaceManager nsm, XmlNode node) : base(chart, nsm, node, "cx:spPr/a:ln", new string[] { "spPr", "axisId" })
+
+    internal ExcelChartExParetoLine(ExcelChart chart, XmlNamespaceManager nsm, XmlNode node)
+        : base(chart, nsm, node, "cx:spPr/a:ln", new string[] { "spPr", "axisId" })
     {
         this._chart = chart;
     }
+
     ExcelDrawingEffectStyle _effect = null;
+
     /// <summary>
     /// Effects
     /// </summary>
@@ -33,11 +38,7 @@ public class ExcelChartExParetoLine : ExcelDrawingBorder
     {
         get
         {
-            return this._effect ??= new ExcelDrawingEffectStyle(this._chart,
-                                                                this.NameSpaceManager,
-                                                                this.TopNode,
-                                                                "cx:spPr/a:effectLst",
-                                                                this.SchemaNodeOrder);
+            return this._effect ??= new ExcelDrawingEffectStyle(this._chart, this.NameSpaceManager, this.TopNode, "cx:spPr/a:effectLst", this.SchemaNodeOrder);
         }
     }
 }

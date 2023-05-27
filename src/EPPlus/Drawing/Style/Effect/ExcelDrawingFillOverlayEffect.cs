@@ -10,6 +10,7 @@
  *************************************************************************************************
   01/27/2020         EPPlus Software AB       Initial release EPPlus 5
  *************************************************************************************************/
+
 using OfficeOpenXml.Drawing.Interfaces;
 using OfficeOpenXml.Drawing.Style.Fill;
 using OfficeOpenXml.Utils.Extensions;
@@ -25,31 +26,32 @@ namespace OfficeOpenXml.Drawing.Style.Effect;
 public class ExcelDrawingFillOverlayEffect : ExcelDrawingEffectBase
 {
     private readonly IPictureRelationDocument _pictureRelationDocument;
-    internal ExcelDrawingFillOverlayEffect(IPictureRelationDocument pictureRelationDocument, XmlNamespaceManager nameSpaceManager, XmlNode topNode, string[] schemaNodeOrder, string path) : base(nameSpaceManager, topNode, schemaNodeOrder, path)
+
+    internal ExcelDrawingFillOverlayEffect(IPictureRelationDocument pictureRelationDocument,
+                                           XmlNamespaceManager nameSpaceManager,
+                                           XmlNode topNode,
+                                           string[] schemaNodeOrder,
+                                           string path)
+        : base(nameSpaceManager, topNode, schemaNodeOrder, path)
     {
         this._pictureRelationDocument = pictureRelationDocument;
     }
+
     /// <summary>
     /// The fill to blend with
     /// </summary>
-    public ExcelDrawingFill Fill
-    {
-        get;
-        private set;
-    }
+    public ExcelDrawingFill Fill { get; private set; }
+
     /// <summary>
     /// How to blend the overlay
     /// Default is Over
     /// </summary>
     public eBlendMode Blend
     {
-        get
-        {
-            return this.GetXmlNodeString(this._path+"/@blend").ToEnum(eBlendMode.Over);
-        }
+        get { return this.GetXmlNodeString(this._path + "/@blend").ToEnum(eBlendMode.Over); }
         set
         {
-            if(this.Fill==null)
+            if (this.Fill == null)
             {
                 this.Create();
             }
@@ -57,6 +59,7 @@ public class ExcelDrawingFillOverlayEffect : ExcelDrawingEffectBase
             this.SetXmlNodeString(this._path + "/@blend", value.ToString().ToLowerInvariant());
         }
     }
+
     /// <summary>
     /// Creates a fill overlay with BlendMode = Over
     /// </summary>
@@ -65,7 +68,8 @@ public class ExcelDrawingFillOverlayEffect : ExcelDrawingEffectBase
         if (this.Fill == null)
         {
             this.Fill = new ExcelDrawingFill(this._pictureRelationDocument, this.NameSpaceManager, this.TopNode, this._path, this.SchemaNodeOrder);
-            if(this.Fill._fillTypeNode==null)
+
+            if (this.Fill._fillTypeNode == null)
             {
                 this.Fill.Style = eFillStyle.NoFill;
             }
@@ -76,6 +80,7 @@ public class ExcelDrawingFillOverlayEffect : ExcelDrawingEffectBase
             this.Blend = eBlendMode.Over;
         }
     }
+
     /// <summary>
     /// Removes any fill overlay
     /// </summary>
@@ -84,5 +89,4 @@ public class ExcelDrawingFillOverlayEffect : ExcelDrawingEffectBase
         this.DeleteNode($"{this._path}");
         this.Fill = null;
     }
-
 }

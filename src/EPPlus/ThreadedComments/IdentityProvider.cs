@@ -23,20 +23,24 @@ public enum IdentityProvider
     /// No provider, Person's userId should be a name
     /// </summary>
     NoProvider,
+
     /// <summary>
     /// ActiveDirectory, Person's userId should be an ActiveDirectory Security Identifier (SID) as specified here:
     /// https://docs.microsoft.com/en-us/openspecs/windows_protocols/MS-DTYP/cca27429-5689-4a16-b2b4-9325d93e4ba2
     /// </summary>
     ActiveDirectory,
+
     /// <summary>
     /// Windows Live, Person's userId should be a 64-bit signed decimal that uniquely identifies a user on Windows Live
     /// </summary>
     WindowsLiveId,
+
     /// <summary>
     /// Office 365. The Person's userId should be a string that uniquely identifies a user. It SHOULD be comprised
     /// of three individual values separated by a &quot;::&quot; delimiter. 
     /// </summary>
     Office365,
+
     /// <summary>
     /// People Picker, The Persons userId should be an email address provided by People Picker.
     /// </summary>

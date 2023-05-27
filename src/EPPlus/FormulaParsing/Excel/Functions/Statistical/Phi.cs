@@ -10,6 +10,7 @@
  *************************************************************************************************
   22/10/2022         EPPlus Software AB           EPPlus v6
  *************************************************************************************************/
+
 using OfficeOpenXml.FormulaParsing.Excel.Functions.Metadata;
 using OfficeOpenXml.FormulaParsing.ExpressionGraph;
 using System;
@@ -19,11 +20,10 @@ using System.Text;
 
 namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Statistical;
 
-[FunctionMetadata(
-                     Category = ExcelFunctionCategory.Statistical,
-                     EPPlusVersion = "6.0",
-                     IntroducedInExcelVersion = "2013",
-                     Description = "Calculates the value of the density function for a standard normal distribution for a supplied number.")]
+[FunctionMetadata(Category = ExcelFunctionCategory.Statistical,
+                  EPPlusVersion = "6.0",
+                  IntroducedInExcelVersion = "2013",
+                  Description = "Calculates the value of the density function for a standard normal distribution for a supplied number.")]
 internal class Phi : ExcelFunction
 {
     public override CompileResult Execute(IEnumerable<FunctionArgument> arguments, ParsingContext context)
@@ -31,6 +31,7 @@ internal class Phi : ExcelFunction
         ValidateArguments(arguments, 1);
         double n = this.ArgToDecimal(arguments, 0);
         double result = System.Math.Exp(-0.5 * System.Math.Pow(n, 2)) / System.Math.Sqrt(System.Math.PI * 2);
+
         return this.CreateResult(result, DataType.Decimal);
     }
 }

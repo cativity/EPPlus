@@ -10,6 +10,7 @@
  *************************************************************************************************
   07/29/2020         EPPlus Software AB       Threaded comments
  *************************************************************************************************/
+
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -29,10 +30,12 @@ internal static class MentionsHelper
     {
         string? str = textWithFormats;
         Dictionary<string, bool>? isMentioned = new Dictionary<string, bool>();
+
         for (int index = 0; index < personsToMention.Length; index++)
         {
             ExcelThreadedCommentPerson? person = personsToMention[index];
             string? format = "{" + index + "}";
+
             while (str.IndexOf(format) > -1)
             {
                 int placeHolderPos = str.IndexOf("{" + index + "}", StringComparison.OrdinalIgnoreCase);
@@ -48,6 +51,7 @@ internal static class MentionsHelper
                 }
             }
         }
+
         comment.Mentions.SortAndAddMentionsToXml();
         comment.Text = str;
     }

@@ -10,6 +10,7 @@
  *************************************************************************************************
   05/03/2020         EPPlus Software AB         Implemented function
  *************************************************************************************************/
+
 using OfficeOpenXml.FormulaParsing.Excel.Functions.Finance.Implementations;
 using OfficeOpenXml.FormulaParsing.Excel.Functions.Metadata;
 using OfficeOpenXml.FormulaParsing.ExpressionGraph;
@@ -20,10 +21,9 @@ using System.Text;
 
 namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Finance;
 
-[FunctionMetadata(
-                     Category = ExcelFunctionCategory.Financial,
-                     EPPlusVersion = "5.2",
-                     Description = "Calculates the future value of an investment with periodic constant payments and a constant interest rate")]
+[FunctionMetadata(Category = ExcelFunctionCategory.Financial,
+                  EPPlusVersion = "5.2",
+                  Description = "Calculates the future value of an investment with periodic constant payments and a constant interest rate")]
 internal class Fv : ExcelFunction
 {
     public override CompileResult Execute(IEnumerable<FunctionArgument> arguments, ParsingContext context)
@@ -32,21 +32,28 @@ internal class Fv : ExcelFunction
         double rate = this.ArgToDecimal(arguments, 0);
         double nPer = this.ArgToDecimal(arguments, 1);
         double pmt = 0d;
-        if(arguments.Count() >= 3)
+
+        if (arguments.Count() >= 3)
         {
             pmt = this.ArgToDecimal(arguments, 2);
         }
+
         double pv = 0d;
-        if(arguments.Count() >= 4)
+
+        if (arguments.Count() >= 4)
         {
             pv = this.ArgToDecimal(arguments, 3);
         }
+
         int type = 0;
-        if(arguments.Count() >= 5)
+
+        if (arguments.Count() >= 5)
         {
             type = this.ArgToInt(arguments, 4);
         }
+
         FinanceCalcResult<double>? retVal = FvImpl.Fv(rate, nPer, pmt, pv, (PmtDue)type);
+
         if (retVal.HasError)
         {
             return this.CreateResult(retVal.ExcelErrorType);

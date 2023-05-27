@@ -7,6 +7,7 @@ Date               Author                       Change
 *************************************************************************************************
 05/20/2020         EPPlus Software AB       Implemented function
 *************************************************************************************************/
+
 using OfficeOpenXml.FormulaParsing.Excel.Functions.Finance.FinancialDayCount;
 using System;
 using System.Collections.Generic;
@@ -31,7 +32,7 @@ internal class DurationImpl
         double fNumOfCoups = this._couponProvider.GetCoupnum(settlement, maturity, nFreq, nBase);
         double fDur = 0.0;
         const double f100 = 100.0;
-        coupon *= f100 / (double)nFreq;    // fCoup is used as cash flow
+        coupon *= f100 / (double)nFreq; // fCoup is used as cash flow
         yield /= nFreq;
         yield += 1.0;
 
@@ -47,6 +48,7 @@ internal class DurationImpl
         fDur += (fNumOfCoups + nDiff) * (coupon + f100) / System.Math.Pow(yield, fNumOfCoups + nDiff);
 
         double p = 0.0;
+
         for (t = 1.0; t < fNumOfCoups; t++)
         {
             p += coupon / System.Math.Pow(yield, t + nDiff);

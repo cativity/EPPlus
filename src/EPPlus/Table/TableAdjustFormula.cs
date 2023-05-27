@@ -8,6 +8,7 @@ namespace OfficeOpenXml.Table;
 internal class TableAdjustFormula
 {
     ExcelTable _tbl;
+
     public TableAdjustFormula(ExcelTable tbl)
     {
         this._tbl = tbl;
@@ -29,6 +30,7 @@ internal class TableAdjustFormula
             }
 
             CellStoreEnumerator<object>? cse = new CellStoreEnumerator<object>(ws._formulas);
+
             while (cse.Next())
             {
                 if (cse.Value is string f)
@@ -82,11 +84,13 @@ internal class TableAdjustFormula
     {
         IEnumerable<Token>? tokens = this._tbl.WorkSheet.Workbook.FormulaParser.Lexer.Tokenize(formula);
         string? f = "";
+
         foreach (Token t in tokens)
         {
             if (t.TokenTypeIsSet(TokenType.ExcelAddress))
             {
                 ExcelAddressBase? a = new ExcelAddressBase(t.Value);
+
                 if (a.Table == null)
                 {
                     f += t.Value;

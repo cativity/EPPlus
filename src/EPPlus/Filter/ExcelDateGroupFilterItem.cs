@@ -10,6 +10,7 @@
  *************************************************************************************************
   01/27/2020         EPPlus Software AB       Initial release EPPlus 5
  *************************************************************************************************/
+
 using System;
 using System.Globalization;
 using System.Xml;
@@ -44,6 +45,7 @@ public class ExcelFilterDateGroupItem : ExcelFilterItem
         this.Month = month;
         this.Validate();
     }
+
     /// <summary>
     /// Filter out the specified year, month and day
     /// </summary>
@@ -58,6 +60,7 @@ public class ExcelFilterDateGroupItem : ExcelFilterItem
         this.Day = day;
         this.Validate();
     }
+
     /// <summary>
     /// Filter out the specified year, month, day and hour
     /// </summary>
@@ -74,6 +77,7 @@ public class ExcelFilterDateGroupItem : ExcelFilterItem
         this.Hour = hour;
         this.Validate();
     }
+
     /// <summary>
     /// Filter out the specified year, month, day, hour and and minute
     /// </summary>
@@ -92,6 +96,7 @@ public class ExcelFilterDateGroupItem : ExcelFilterItem
         this.Minute = minute;
         this.Validate();
     }
+
     /// <summary>
     /// Filter out the specified year, month, day, hour and and minute
     /// </summary>
@@ -112,6 +117,7 @@ public class ExcelFilterDateGroupItem : ExcelFilterItem
         this.Second = second;
         this.Validate();
     }
+
     private void Validate()
     {
         if (this.Year < 0 && this.Year > 9999)
@@ -128,6 +134,7 @@ public class ExcelFilterDateGroupItem : ExcelFilterItem
         {
             throw new ArgumentException("Month out of range(1-12)");
         }
+
         if (this.Grouping == eDateTimeGrouping.Month)
         {
             return;
@@ -137,6 +144,7 @@ public class ExcelFilterDateGroupItem : ExcelFilterItem
         {
             throw new ArgumentException("Month out of range(1-31)");
         }
+
         if (this.Grouping == eDateTimeGrouping.Day)
         {
             return;
@@ -146,6 +154,7 @@ public class ExcelFilterDateGroupItem : ExcelFilterItem
         {
             throw new ArgumentException("Hour out of range(0-23)");
         }
+
         if (this.Grouping == eDateTimeGrouping.Hour)
         {
             return;
@@ -155,6 +164,7 @@ public class ExcelFilterDateGroupItem : ExcelFilterItem
         {
             throw new ArgumentException("Minute out of range(0-59)");
         }
+
         if (this.Grouping == eDateTimeGrouping.Minute)
         {
             return;
@@ -175,15 +185,19 @@ public class ExcelFilterDateGroupItem : ExcelFilterItem
         if (this.Month.HasValue)
         {
             e.SetAttribute("month", this.Month.Value.ToString(CultureInfo.InvariantCulture));
+
             if (this.Day.HasValue)
             {
                 e.SetAttribute("day", this.Day.Value.ToString(CultureInfo.InvariantCulture));
+
                 if (this.Hour.HasValue)
                 {
                     e.SetAttribute("hour", this.Hour.Value.ToString(CultureInfo.InvariantCulture));
+
                     if (this.Minute.HasValue)
                     {
                         e.SetAttribute("minute", this.Minute.Value.ToString(CultureInfo.InvariantCulture));
+
                         if (this.Second.HasValue)
                         {
                             e.SetAttribute("second", this.Second.Value.ToString(CultureInfo.InvariantCulture));
@@ -200,18 +214,22 @@ public class ExcelFilterDateGroupItem : ExcelFilterItem
     {
         bool match = value.Year == this.Year;
 
-        if(match && this.Month.HasValue)
+        if (match && this.Month.HasValue)
         {
             match = value.Month == this.Month;
-            if(match && this.Day.HasValue)
+
+            if (match && this.Day.HasValue)
             {
                 match = value.Day == this.Day;
+
                 if (match && this.Hour.HasValue)
                 {
                     match = value.Hour == this.Hour;
+
                     if (match && this.Minute.HasValue)
                     {
                         match = value.Minute == this.Minute;
+
                         if (match && this.Second.HasValue)
                         {
                             match = value.Second == this.Second;
@@ -220,34 +238,42 @@ public class ExcelFilterDateGroupItem : ExcelFilterItem
                 }
             }
         }
+
         return match;
     }
+
     /// <summary>
     /// The grouping. Is set depending on the selected constructor
     /// </summary>
-    public eDateTimeGrouping Grouping{ get; }
+    public eDateTimeGrouping Grouping { get; }
+
     /// <summary>
     /// Year to filter on
     /// </summary>
     public int Year { get; }
+
     /// <summary>
     /// Month to filter on
     /// </summary>
     public int? Month { get; }
+
     /// <summary>
     /// Day to filter on
     /// </summary>
     public int? Day { get; }
+
     /// <summary>
     /// Hour to filter on
     /// </summary>
     public int? Hour { get; }
+
     /// <summary>
     /// Minute to filter on
     /// </summary>
-    public int? Minute { get;  }
+    public int? Minute { get; }
+
     /// <summary>
     /// Second to filter on
     /// </summary>
-    public int? Second { get;  }
+    public int? Second { get; }
 }

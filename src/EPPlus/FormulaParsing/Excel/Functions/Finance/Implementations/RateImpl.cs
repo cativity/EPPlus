@@ -10,6 +10,7 @@
  *************************************************************************************************
   05/03/2020         EPPlus Software AB         Implemented function (ported to c# from Microsoft.VisualBasic.Financial.vb (MIT))
  *************************************************************************************************/
+
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -33,6 +34,7 @@ public static class RateImpl
 
         double dRate0 = Guess;
         double dY0 = LEvalRate(dRate0, NPer, Pmt, PV, FV, Due);
+
         if (dY0 > 0)
         {
             dRate1 = dRate0 / 2;
@@ -58,6 +60,7 @@ public static class RateImpl
                 }
 
                 dY0 = LEvalRate(dRate0, NPer, Pmt, PV, FV, Due);
+
                 if (dY1 == dY0)
                 {
                     return new FinanceCalcResult<double>(eErrorType.Num);
@@ -68,6 +71,7 @@ public static class RateImpl
 
             // Secant method of generating next approximation
             dY0 = LEvalRate(dRate0, NPer, Pmt, PV, FV, Due);
+
             if (System.Math.Abs(dY0) < cnL_IT_EPSILON)
             {
                 return new FinanceCalcResult<double>(dRate0);

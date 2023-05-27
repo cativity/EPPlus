@@ -10,6 +10,7 @@
  *************************************************************************************************
   01/27/2020         EPPlus Software AB       Initial release EPPlus 5
  *************************************************************************************************/
+
 using OfficeOpenXml.Drawing.Chart;
 using OfficeOpenXml.Drawing.Chart.Style;
 using OfficeOpenXml.Drawing.Chart.ChartEx;
@@ -47,6 +48,7 @@ public class ExcelDrawings : IEnumerable<ExcelDrawing>, IDisposable, IPictureRel
     internal class ImageCompare
     {
         internal byte[] image { get; set; }
+
         internal string relID { get; set; }
 
         internal bool Comparer(byte[] compareImg)
@@ -63,12 +65,15 @@ public class ExcelDrawings : IEnumerable<ExcelDrawing>, IDisposable, IPictureRel
                     return false;
                 }
             }
+
             return true; //Equal
         }
     }
+
     internal ExcelPackage _package;
     internal ZipPackageRelationship _drawingRelation = null;
     internal string _seriesTemplateXml;
+
     internal ExcelDrawings(ExcelPackage xlPackage, ExcelWorksheet sheet)
     {
         xlPackage.Workbook.LoadAllDrawings(sheet.Name);
@@ -82,6 +87,7 @@ public class ExcelDrawings : IEnumerable<ExcelDrawing>, IDisposable, IPictureRel
         this._drawingNames = new Dictionary<string, int>(StringComparer.OrdinalIgnoreCase);
         this.CreateNSM();
         XmlNode node = sheet.WorksheetXml.SelectSingleNode("//d:drawing", sheet.NameSpaceManager);
+
         if (node != null && sheet != null)
         {
             this._drawingRelation = sheet.Part.GetRelationship(node.Attributes["r:id"].Value);
@@ -101,33 +107,37 @@ public class ExcelDrawings : IEnumerable<ExcelDrawing>, IDisposable, IPictureRel
     /// </summary>
     public XmlDocument DrawingXml
     {
-        get
-        {
-            return this._drawingsXml;
-        }
+        get { return this._drawingsXml; }
     }
+
     private void AddDrawings()
     {
-        XmlNodeList list = this._drawingsXml.SelectNodes("//*[self::xdr:oneCellAnchor or self::xdr:twoCellAnchor or self::xdr:absoluteAnchor]", this.NameSpaceManager);
+        XmlNodeList list =
+            this._drawingsXml.SelectNodes("//*[self::xdr:oneCellAnchor or self::xdr:twoCellAnchor or self::xdr:absoluteAnchor]", this.NameSpaceManager);
 
         foreach (XmlNode node in list)
         {
-
             ExcelDrawing dr;
+
             switch (node.LocalName)
             {
                 case "oneCellAnchor":
                 case "twoCellAnchor":
                 case "absoluteAnchor":
                     dr = ExcelDrawing.GetDrawing(this, node);
+
                     break;
+
                 default:
                     dr = null;
+
                     break;
             }
+
             if (dr != null)
             {
                 this._drawingsList.Add(dr);
+
                 if (!this._drawingNames.ContainsKey(dr.Name))
                 {
                     this._drawingNames.Add(dr.Name, this._drawingsList.Count - 1);
@@ -136,8 +146,8 @@ public class ExcelDrawings : IEnumerable<ExcelDrawing>, IDisposable, IPictureRel
         }
     }
 
-
     #region NamespaceManager
+
     /// <summary>
     /// Creates the NamespaceManager. 
     /// </summary>
@@ -164,9 +174,13 @@ public class ExcelDrawings : IEnumerable<ExcelDrawing>, IDisposable, IPictureRel
         this.NameSpaceManager.AddNamespace("a14", ExcelPackage.schemaDrawings2010);
         this.NameSpaceManager.AddNamespace("asvg", "http://schemas.microsoft.com/office/drawing/2016/SVG/main");
     }
+
     internal XmlNamespaceManager NameSpaceManager { get; private set; } = null;
+
     #endregion
+
     #region IEnumerable Members
+
     /// <summary>
     /// Get the enumerator
     /// </summary>
@@ -175,6 +189,7 @@ public class ExcelDrawings : IEnumerable<ExcelDrawing>, IDisposable, IPictureRel
     {
         return this._drawingsList.GetEnumerator();
     }
+
     #region IEnumerable<ExcelDrawing> Members
 
     IEnumerator<ExcelDrawing> IEnumerable<ExcelDrawing>.GetEnumerator()
@@ -191,10 +206,7 @@ public class ExcelDrawings : IEnumerable<ExcelDrawing>, IDisposable, IPictureRel
     /// <returns></returns>
     public ExcelDrawing this[int PositionID]
     {
-        get
-        {
-            return this._drawingsList[PositionID];
-        }
+        get { return this._drawingsList[PositionID]; }
     }
 
     /// <summary>
@@ -216,6 +228,7 @@ public class ExcelDrawings : IEnumerable<ExcelDrawing>, IDisposable, IPictureRel
             }
         }
     }
+
     /// <summary>
     /// Number of items in the collection
     /// </summary>
@@ -233,26 +246,25 @@ public class ExcelDrawings : IEnumerable<ExcelDrawing>, IDisposable, IPictureRel
             }
         }
     }
+
     ZipPackagePart _part = null;
+
     internal ZipPackagePart Part
     {
-        get
-        {
-            return this._part;
-        }
+        get { return this._part; }
     }
+
     Uri _uriDrawing = null;
     internal int _nextChartStyleId = 100;
+
     /// <summary>
     /// The uri to the drawing xml file inside the package
     /// </summary>
     internal Uri UriDrawing
     {
-        get
-        {
-            return this._uriDrawing;
-        }
+        get { return this._uriDrawing; }
     }
+
     ExcelPackage IPictureRelationDocument.Package => this._package;
 
     Dictionary<string, HashInfo> IPictureRelationDocument.Hashes => this._hashes;
@@ -260,8 +272,11 @@ public class ExcelDrawings : IEnumerable<ExcelDrawing>, IDisposable, IPictureRel
     ZipPackagePart IPictureRelationDocument.RelatedPart => this._part;
 
     Uri IPictureRelationDocument.RelatedUri => this._uriDrawing;
+
     #endregion
+
     #region Add functions
+
     /// <summary>
     /// Adds a new chart to the worksheet.
     /// Stock charts cannot be added by this method. See <see cref="ExcelDrawings.AddStockChart(string, eStockChartType, ExcelRangeBase)"/>
@@ -299,6 +314,7 @@ public class ExcelDrawings : IEnumerable<ExcelDrawing>, IDisposable, IPictureRel
         chart.Name = Name;
         this._drawingsList.Add(chart);
         this._drawingNames.Add(Name, this._drawingsList.Count - 1);
+
         return chart;
     }
 
@@ -313,6 +329,7 @@ public class ExcelDrawings : IEnumerable<ExcelDrawing>, IDisposable, IPictureRel
     {
         return this.AddChart(Name, ChartType, null);
     }
+
     /// <summary>
     /// Adds a new chart to the worksheet.
     /// </summary>
@@ -323,6 +340,7 @@ public class ExcelDrawings : IEnumerable<ExcelDrawing>, IDisposable, IPictureRel
     {
         return (ExcelChartEx)this.AddAllChartTypes(Name, (eChartType)ChartType, null);
     }
+
     /// <summary>
     /// Adds a new sunburst chart to the worksheet.
     /// </summary>
@@ -332,6 +350,7 @@ public class ExcelDrawings : IEnumerable<ExcelDrawing>, IDisposable, IPictureRel
     {
         return (ExcelSunburstChart)this.AddAllChartTypes(Name, eChartType.Sunburst, null);
     }
+
     /// <summary>
     /// Adds a new treemap chart to the worksheet.
     /// </summary>
@@ -341,6 +360,7 @@ public class ExcelDrawings : IEnumerable<ExcelDrawing>, IDisposable, IPictureRel
     {
         return (ExcelTreemapChart)this.AddAllChartTypes(Name, eChartType.Treemap, null);
     }
+
     /// <summary>
     /// Adds a new box &amp; whisker chart to the worksheet.
     /// </summary>
@@ -350,6 +370,7 @@ public class ExcelDrawings : IEnumerable<ExcelDrawing>, IDisposable, IPictureRel
     {
         return (ExcelBoxWhiskerChart)this.AddAllChartTypes(Name, eChartType.BoxWhisker, null);
     }
+
     /// <summary>
     /// Adds a new Histogram or Pareto chart to the worksheet.
     /// </summary>
@@ -360,6 +381,7 @@ public class ExcelDrawings : IEnumerable<ExcelDrawing>, IDisposable, IPictureRel
     {
         return (ExcelHistogramChart)this.AddAllChartTypes(Name, AddParetoLine ? eChartType.Pareto : eChartType.Histogram, null);
     }
+
     /// <summary>
     /// Adds a waterfall chart to the worksheet.
     /// </summary>
@@ -369,6 +391,7 @@ public class ExcelDrawings : IEnumerable<ExcelDrawing>, IDisposable, IPictureRel
     {
         return (ExcelWaterfallChart)this.AddAllChartTypes(Name, eChartType.Waterfall, null);
     }
+
     /// <summary>
     /// Adds a funnel chart to the worksheet.
     /// </summary>
@@ -378,6 +401,7 @@ public class ExcelDrawings : IEnumerable<ExcelDrawing>, IDisposable, IPictureRel
     {
         return (ExcelFunnelChart)this.AddAllChartTypes(Name, eChartType.Funnel, null);
     }
+
     /// <summary>
     /// Adds a region map chart to the worksheet.
     /// Note that EPPlus rely on the spreadsheet application to create the geocache data
@@ -388,6 +412,7 @@ public class ExcelDrawings : IEnumerable<ExcelDrawing>, IDisposable, IPictureRel
     {
         return (ExcelRegionMapChart)this.AddAllChartTypes(Name, eChartType.RegionMap, null);
     }
+
     /// <summary>
     /// Adds a new extended chart to the worksheet.
     /// Extended charts are 
@@ -400,6 +425,7 @@ public class ExcelDrawings : IEnumerable<ExcelDrawing>, IDisposable, IPictureRel
     {
         return (ExcelChartEx)this.AddAllChartTypes(Name, (eChartType)ChartType, PivotTableSource);
     }
+
     /// <summary>
     /// Adds a new stock chart to the worksheet.
     /// Requires a range with four, five or six columns depending on the stock chart type.
@@ -416,34 +442,43 @@ public class ExcelDrawings : IEnumerable<ExcelDrawing>, IDisposable, IPictureRel
         int startCol = Range.Start.Column;
         int endRow = Range.End.Row;
         ExcelWorksheet? ws = Range.Worksheet;
+
         switch (ChartType)
         {
             case eStockChartType.StockHLC:
                 if (Range.Columns != 4)
                 {
-                    throw new InvalidOperationException("Range must contain 4 columns with the Category serie to the left and the High Price, Low Price and Close Price series");
+                    throw new
+                        InvalidOperationException("Range must contain 4 columns with the Category serie to the left and the High Price, Low Price and Close Price series");
                 }
+
                 return this.AddStockChart(Name,
                                           ws.Cells[startRow, startCol, endRow, startCol],
                                           ws.Cells[startRow, startCol + 1, endRow, startCol + 1],
                                           ws.Cells[startRow, startCol + 2, endRow, startCol + 2],
                                           ws.Cells[startRow, startCol + 3, endRow, startCol + 3]);
+
             case eStockChartType.StockOHLC:
                 if (Range.Columns != 5)
                 {
-                    throw new InvalidOperationException("Range must contain 5 columns with the Category serie to the left and the Opening Price, High Price, Low Price and Close Price series");
+                    throw new
+                        InvalidOperationException("Range must contain 5 columns with the Category serie to the left and the Opening Price, High Price, Low Price and Close Price series");
                 }
+
                 return this.AddStockChart(Name,
                                           ws.Cells[startRow, startCol, endRow, startCol],
                                           ws.Cells[startRow, startCol + 2, endRow, startCol + 2],
                                           ws.Cells[startRow, startCol + 3, endRow, startCol + 3],
                                           ws.Cells[startRow, startCol + 4, endRow, startCol + 4],
                                           ws.Cells[startRow, startCol + 1, endRow, startCol + 1]);
+
             case eStockChartType.StockVHLC:
                 if (Range.Columns != 5)
                 {
-                    throw new InvalidOperationException("Range must contain 5 columns with the Category serie to the left and the Volume, High Price, Low Price and Close Price series");
+                    throw new
+                        InvalidOperationException("Range must contain 5 columns with the Category serie to the left and the Volume, High Price, Low Price and Close Price series");
                 }
+
                 return this.AddStockChart(Name,
                                           ws.Cells[startRow, startCol, endRow, startCol],
                                           ws.Cells[startRow, startCol + 2, endRow, startCol + 2],
@@ -451,11 +486,14 @@ public class ExcelDrawings : IEnumerable<ExcelDrawing>, IDisposable, IPictureRel
                                           ws.Cells[startRow, startCol + 4, endRow, startCol + 4],
                                           null,
                                           ws.Cells[startRow, startCol + 1, endRow, startCol + 1]);
+
             case eStockChartType.StockVOHLC:
                 if (Range.Columns != 6)
                 {
-                    throw new InvalidOperationException("Range must contain 6 columns with the Category serie to the left and the Volume, Opening Price, High Price, Low Price and Close Price series");
+                    throw new
+                        InvalidOperationException("Range must contain 6 columns with the Category serie to the left and the Volume, Opening Price, High Price, Low Price and Close Price series");
                 }
+
                 return this.AddStockChart(Name,
                                           ws.Cells[startRow, startCol, endRow, startCol],
                                           ws.Cells[startRow, startCol + 3, endRow, startCol + 3],
@@ -463,10 +501,12 @@ public class ExcelDrawings : IEnumerable<ExcelDrawing>, IDisposable, IPictureRel
                                           ws.Cells[startRow, startCol + 5, endRow, startCol + 5],
                                           ws.Cells[startRow, startCol + 2, endRow, startCol + 2],
                                           ws.Cells[startRow, startCol + 1, endRow, startCol + 1]);
+
             default:
                 throw new InvalidOperationException("Unknown eStockChartType");
         }
     }
+
     /// <summary>
     /// Adds a new stock chart to the worksheet.
     /// The stock chart type will depend on if the parameters OpenSerie and/or VolumeSerie is supplied
@@ -479,13 +519,20 @@ public class ExcelDrawings : IEnumerable<ExcelDrawing>, IDisposable, IPictureRel
     /// <param name="OpenSerie">The opening price serie. Supplying this serie will create a StockOHLC or StockVOHLC chart</param>
     /// <param name="VolumeSerie">The volume represented as a column chart. Supplying this serie will create a StockVHLC or StockVOHLC chart</param>
     /// <returns>The chart</returns>
-    public ExcelStockChart AddStockChart(string Name, ExcelRangeBase CategorySerie, ExcelRangeBase HighSerie, ExcelRangeBase LowSerie, ExcelRangeBase CloseSerie, ExcelRangeBase OpenSerie = null, ExcelRangeBase VolumeSerie = null)
+    public ExcelStockChart AddStockChart(string Name,
+                                         ExcelRangeBase CategorySerie,
+                                         ExcelRangeBase HighSerie,
+                                         ExcelRangeBase LowSerie,
+                                         ExcelRangeBase CloseSerie,
+                                         ExcelRangeBase OpenSerie = null,
+                                         ExcelRangeBase VolumeSerie = null)
     {
         ValidateSeries(CategorySerie, LowSerie, HighSerie, CloseSerie);
 
         eChartType chartType = ExcelStockChart.GetChartType(OpenSerie, VolumeSerie);
 
         ExcelStockChart? chart = (ExcelStockChart)this.AddAllChartTypes(Name, chartType, null);
+
         if (CategorySerie.Rows > 1)
         {
             if (CategorySerie.Offset(1, 0, 1, 1).Value is string)
@@ -493,7 +540,9 @@ public class ExcelDrawings : IEnumerable<ExcelDrawing>, IDisposable, IPictureRel
                 chart.XAxis.ChangeAxisType(eAxisType.Date);
             }
         }
+
         chart.AddHighLowLines();
+
         if (chartType == eChartType.StockOHLC || chartType == eChartType.StockVOHLC)
         {
             chart.AddUpDownBars(true, true);
@@ -503,6 +552,7 @@ public class ExcelDrawings : IEnumerable<ExcelDrawing>, IDisposable, IPictureRel
         {
             chart.PlotArea.ChartTypes[0].Series.Add(VolumeSerie, CategorySerie);
         }
+
         if (chartType == eChartType.StockOHLC || chartType == eChartType.StockVOHLC)
         {
             chart.Series.Add(OpenSerie, CategorySerie);
@@ -511,8 +561,10 @@ public class ExcelDrawings : IEnumerable<ExcelDrawing>, IDisposable, IPictureRel
         chart.Series.Add(HighSerie, CategorySerie);
         chart.Series.Add(LowSerie, CategorySerie);
         chart.Series.Add(CloseSerie, CategorySerie);
+
         return chart;
     }
+
     /// <summary>
     /// Adds a new stock chart to the worksheet.
     /// The stock chart type will depend on if the parameters OpenSerie and/or VolumeSerie is supplied
@@ -525,12 +577,19 @@ public class ExcelDrawings : IEnumerable<ExcelDrawing>, IDisposable, IPictureRel
     /// <param name="OpenSerie">The opening price serie. Supplying this serie will create a StockOHLC or StockVOHLC chart</param>
     /// <param name="VolumeSerie">The volume represented as a column chart. Supplying this serie will create a StockVHLC or StockVOHLC chart</param>
     /// <returns>The chart</returns>
-    public ExcelStockChart AddStockChart(string Name, string CategorySerie, string HighSerie, string LowSerie, string CloseSerie, string OpenSerie = null, string VolumeSerie = null)
+    public ExcelStockChart AddStockChart(string Name,
+                                         string CategorySerie,
+                                         string HighSerie,
+                                         string LowSerie,
+                                         string CloseSerie,
+                                         string OpenSerie = null,
+                                         string VolumeSerie = null)
     {
         eChartType chartType = ExcelStockChart.GetChartType(OpenSerie, VolumeSerie);
 
         ExcelStockChart? chart = (ExcelStockChart)this.AddAllChartTypes(Name, chartType, null);
         ExcelStockChart.SetStockChartSeries(chart, chartType, CategorySerie, HighSerie, LowSerie, CloseSerie, OpenSerie, VolumeSerie);
+
         return chart;
     }
 
@@ -564,6 +623,7 @@ public class ExcelDrawings : IEnumerable<ExcelDrawing>, IDisposable, IPictureRel
     {
         return (ExcelLineChart)this.AddAllChartTypes(Name, (eChartType)ChartType, null);
     }
+
     /// <summary>
     /// Adds a new linechart to the worksheet.
     /// </summary>
@@ -575,6 +635,7 @@ public class ExcelDrawings : IEnumerable<ExcelDrawing>, IDisposable, IPictureRel
     {
         return (ExcelLineChart)this.AddAllChartTypes(Name, (eChartType)ChartType, PivotTableSource);
     }
+
     /// <summary>
     /// Add a new area chart to the worksheet.
     /// </summary>
@@ -585,6 +646,7 @@ public class ExcelDrawings : IEnumerable<ExcelDrawing>, IDisposable, IPictureRel
     {
         return (ExcelAreaChart)this.AddAllChartTypes(Name, (eChartType)ChartType, null);
     }
+
     /// <summary>
     /// Adds a new area chart to the worksheet.
     /// </summary>
@@ -596,6 +658,7 @@ public class ExcelDrawings : IEnumerable<ExcelDrawing>, IDisposable, IPictureRel
     {
         return (ExcelAreaChart)this.AddAllChartTypes(Name, (eChartType)ChartType, PivotTableSource);
     }
+
     /// <summary>
     /// Adds a new barchart to the worksheet.
     /// </summary>
@@ -606,6 +669,7 @@ public class ExcelDrawings : IEnumerable<ExcelDrawing>, IDisposable, IPictureRel
     {
         return (ExcelBarChart)this.AddAllChartTypes(Name, (eChartType)ChartType, null);
     }
+
     /// <summary>
     /// Adds a new column- or bar- chart to the worksheet.
     /// </summary>
@@ -617,6 +681,7 @@ public class ExcelDrawings : IEnumerable<ExcelDrawing>, IDisposable, IPictureRel
     {
         return (ExcelBarChart)this.AddAllChartTypes(Name, (eChartType)ChartType, PivotTableSource);
     }
+
     /// <summary>
     /// Adds a new pie chart to the worksheet.
     /// </summary>
@@ -627,6 +692,7 @@ public class ExcelDrawings : IEnumerable<ExcelDrawing>, IDisposable, IPictureRel
     {
         return (ExcelPieChart)this.AddAllChartTypes(Name, (eChartType)ChartType, null);
     }
+
     /// <summary>
     /// Adds a new pie chart to the worksheet.
     /// </summary>
@@ -638,6 +704,7 @@ public class ExcelDrawings : IEnumerable<ExcelDrawing>, IDisposable, IPictureRel
     {
         return (ExcelPieChart)this.AddAllChartTypes(Name, (eChartType)ChartType, PivotTableSource);
     }
+
     /// <summary>
     /// Adds a new doughnut chart to the worksheet.
     /// </summary>
@@ -649,6 +716,7 @@ public class ExcelDrawings : IEnumerable<ExcelDrawing>, IDisposable, IPictureRel
     {
         return (ExcelDoughnutChart)this.AddAllChartTypes(Name, (eChartType)ChartType, PivotTableSource);
     }
+
     /// <summary>
     /// Adds a new doughnut chart to the worksheet.
     /// </summary>
@@ -659,6 +727,7 @@ public class ExcelDrawings : IEnumerable<ExcelDrawing>, IDisposable, IPictureRel
     {
         return (ExcelDoughnutChart)this.AddAllChartTypes(Name, (eChartType)ChartType, null);
     }
+
     /// <summary>
     /// Adds a new line chart to the worksheet.
     /// </summary>
@@ -669,6 +738,7 @@ public class ExcelDrawings : IEnumerable<ExcelDrawing>, IDisposable, IPictureRel
     {
         return (ExcelOfPieChart)this.AddAllChartTypes(Name, (eChartType)ChartType, null);
     }
+
     /// <summary>
     /// Add a new pie of pie or bar of pie chart to the worksheet.
     /// </summary>
@@ -680,6 +750,7 @@ public class ExcelDrawings : IEnumerable<ExcelDrawing>, IDisposable, IPictureRel
     {
         return (ExcelOfPieChart)this.AddAllChartTypes(Name, (eChartType)ChartType, PivotTableSource);
     }
+
     /// <summary>
     /// Adds a new bubble chart to the worksheet.
     /// </summary>
@@ -690,6 +761,7 @@ public class ExcelDrawings : IEnumerable<ExcelDrawing>, IDisposable, IPictureRel
     {
         return (ExcelBubbleChart)this.AddAllChartTypes(Name, (eChartType)ChartType, null);
     }
+
     /// <summary>
     /// Adds a new bubble chart to the worksheet.
     /// </summary>
@@ -701,6 +773,7 @@ public class ExcelDrawings : IEnumerable<ExcelDrawing>, IDisposable, IPictureRel
     {
         return (ExcelBubbleChart)this.AddAllChartTypes(Name, (eChartType)ChartType, PivotTableSource);
     }
+
     /// <summary>
     /// Adds a new scatter chart to the worksheet.
     /// </summary>
@@ -712,6 +785,7 @@ public class ExcelDrawings : IEnumerable<ExcelDrawing>, IDisposable, IPictureRel
     {
         return (ExcelScatterChart)this.AddAllChartTypes(Name, (eChartType)ChartType, PivotTableSource);
     }
+
     /// <summary>
     /// Adds a new scatter chart to the worksheet.
     /// </summary>
@@ -722,6 +796,7 @@ public class ExcelDrawings : IEnumerable<ExcelDrawing>, IDisposable, IPictureRel
     {
         return (ExcelScatterChart)this.AddAllChartTypes(Name, (eChartType)ChartType, null);
     }
+
     /// <summary>
     /// Adds a new radar chart to the worksheet.
     /// </summary>
@@ -733,6 +808,7 @@ public class ExcelDrawings : IEnumerable<ExcelDrawing>, IDisposable, IPictureRel
     {
         return (ExcelRadarChart)this.AddAllChartTypes(Name, (eChartType)ChartType, PivotTableSource);
     }
+
     /// <summary>
     /// Adds a new radar chart to the worksheet.
     /// </summary>
@@ -743,6 +819,7 @@ public class ExcelDrawings : IEnumerable<ExcelDrawing>, IDisposable, IPictureRel
     {
         return (ExcelRadarChart)this.AddAllChartTypes(Name, (eChartType)ChartType, null);
     }
+
     /// <summary>
     /// Adds a new surface chart to the worksheet.
     /// </summary>
@@ -754,6 +831,7 @@ public class ExcelDrawings : IEnumerable<ExcelDrawing>, IDisposable, IPictureRel
     {
         return (ExcelSurfaceChart)this.AddAllChartTypes(Name, (eChartType)ChartType, PivotTableSource);
     }
+
     /// <summary>
     /// Adds a new surface chart to the worksheet.
     /// </summary>
@@ -764,6 +842,7 @@ public class ExcelDrawings : IEnumerable<ExcelDrawing>, IDisposable, IPictureRel
     {
         return (ExcelSurfaceChart)this.AddAllChartTypes(Name, (eChartType)ChartType, null);
     }
+
     /// <summary>
     /// Adds a picture to the worksheet
     /// </summary>
@@ -774,6 +853,7 @@ public class ExcelDrawings : IEnumerable<ExcelDrawing>, IDisposable, IPictureRel
     {
         return this.AddPicture(Name, ImageFile, null);
     }
+
     /// <summary>
     /// Adds a picture to the worksheet
     /// </summary>
@@ -789,8 +869,10 @@ public class ExcelDrawings : IEnumerable<ExcelDrawing>, IDisposable, IPictureRel
         ExcelPicture? pic = new ExcelPicture(this, drawNode, Hyperlink, type);
         pic.LoadImage(new FileStream(ImageFile.FullName, FileMode.Open, FileAccess.Read), type);
         this.AddPicture(Name, pic);
+
         return pic;
     }
+
     /// <summary>
     /// Adds a picture to the worksheet using a stream. EPPlus will identify the type of image automatically.
     /// </summary>
@@ -801,6 +883,7 @@ public class ExcelDrawings : IEnumerable<ExcelDrawing>, IDisposable, IPictureRel
     {
         return this.AddImageInternal(Name, PictureStream, null, null);
     }
+
     /// <summary>
     /// Adds a picture to the worksheet from a stream. EPPlus will identify the type of image automatically.
     /// </summary>
@@ -812,6 +895,7 @@ public class ExcelDrawings : IEnumerable<ExcelDrawing>, IDisposable, IPictureRel
     {
         return this.AddImageInternal(Name, PictureStream, null, Hyperlink);
     }
+
     /// <summary>
     /// Adds a picture to the worksheet
     /// </summary>
@@ -824,6 +908,7 @@ public class ExcelDrawings : IEnumerable<ExcelDrawing>, IDisposable, IPictureRel
     {
         return this.AddPicture(Name, PictureStream, PictureType, null);
     }
+
     /// <summary>
     /// Adds a picture to the worksheet
     /// </summary>
@@ -844,6 +929,7 @@ public class ExcelDrawings : IEnumerable<ExcelDrawing>, IDisposable, IPictureRel
         {
             throw new ArgumentNullException("Stream cannot be null");
         }
+
         if (!pictureStream.CanRead || !pictureStream.CanSeek)
         {
             throw new IOException("Stream must be readable and seekable");
@@ -855,6 +941,7 @@ public class ExcelDrawings : IEnumerable<ExcelDrawing>, IDisposable, IPictureRel
         ExcelPicture? pic = new ExcelPicture(this, drawNode, Hyperlink, pictureType.Value);
         pic.LoadImage(pictureStream, pictureType.Value);
         this.AddPicture(Name, pic);
+
         return pic;
     }
 
@@ -865,9 +952,12 @@ public class ExcelDrawings : IEnumerable<ExcelDrawing>, IDisposable, IPictureRel
         grp.Name = $"Group {grp.Id}";
         this._drawingsList.Add(grp);
         this._drawingNames.Add(grp.Name, this._drawingsList.Count - 1);
+
         return grp;
     }
+
     #region AddPictureAsync
+
 #if !NET35 && !NET40
     /// <summary>
     /// Adds a picture to the worksheet
@@ -879,6 +969,7 @@ public class ExcelDrawings : IEnumerable<ExcelDrawing>, IDisposable, IPictureRel
     {
         return await this.AddPictureAsync(Name, ImageFile, null);
     }
+
     /// <summary>
     /// Adds a picture to the worksheet
     /// </summary>
@@ -894,8 +985,10 @@ public class ExcelDrawings : IEnumerable<ExcelDrawing>, IDisposable, IPictureRel
         ExcelPicture? pic = new ExcelPicture(this, drawNode, Hyperlink, type);
         await pic.LoadImageAsync(new FileStream(ImageFile.FullName, FileMode.Open, FileAccess.Read), type);
         this.AddPicture(Name, pic);
+
         return pic;
     }
+
     /// <summary>
     /// Adds a picture to the worksheet
     /// </summary>
@@ -906,6 +999,7 @@ public class ExcelDrawings : IEnumerable<ExcelDrawing>, IDisposable, IPictureRel
     {
         return await this.AddPictureAsync(Name, new FileInfo(ImagePath), null);
     }
+
     /// <summary>
     /// Adds a picture to the worksheet
     /// </summary>
@@ -917,6 +1011,7 @@ public class ExcelDrawings : IEnumerable<ExcelDrawing>, IDisposable, IPictureRel
     {
         return await this.AddPictureAsync(Name, new FileInfo(ImagePath), Hyperlink);
     }
+
     /// <summary>
     /// Adds a picture to the worksheet from a stream. EPPlus will identify the type of image automatically.
     /// </summary>
@@ -927,6 +1022,7 @@ public class ExcelDrawings : IEnumerable<ExcelDrawing>, IDisposable, IPictureRel
     {
         return await this.AddPictureInternalAsync(Name, PictureStream, null, null);
     }
+
     /// <summary>
     /// Adds a picture to the worksheet from a stream. EPPlus will identify the type of image automatically.
     /// </summary>
@@ -938,6 +1034,7 @@ public class ExcelDrawings : IEnumerable<ExcelDrawing>, IDisposable, IPictureRel
     {
         return await this.AddPictureInternalAsync(Name, PictureStream, null, Hyperlink);
     }
+
     /// <summary>
     /// Adds a picture to the worksheet
     /// </summary>
@@ -950,6 +1047,7 @@ public class ExcelDrawings : IEnumerable<ExcelDrawing>, IDisposable, IPictureRel
     {
         return await this.AddPictureInternalAsync(Name, PictureStream, PictureType, null);
     }
+
     /// <summary>
     /// Adds a picture to the worksheet
     /// </summary>
@@ -963,12 +1061,14 @@ public class ExcelDrawings : IEnumerable<ExcelDrawing>, IDisposable, IPictureRel
     {
         return await this.AddPictureInternalAsync(Name, pictureStream, pictureType, Hyperlink);
     }
+
     private async Task<ExcelPicture> AddPictureInternalAsync(string Name, Stream pictureStream, ePictureType? pictureType, Uri Hyperlink)
     {
         if (pictureStream == null)
         {
             throw new ArgumentNullException("Stream cannot be null");
         }
+
         if (!pictureStream.CanRead || !pictureStream.CanSeek)
         {
             throw new IOException("Stream must be readable and seekable");
@@ -980,17 +1080,20 @@ public class ExcelDrawings : IEnumerable<ExcelDrawing>, IDisposable, IPictureRel
         ExcelPicture? pic = new ExcelPicture(this, drawNode, Hyperlink, pictureType.Value);
         await pic.LoadImageAsync(pictureStream, pictureType.Value);
         this.AddPicture(Name, pic);
-        return pic;
 
+        return pic;
     }
 #endif
+
     #endregion
+
     private void AddPicture(string Name, ExcelPicture pic)
     {
         pic.Name = Name;
         this._drawingsList.Add(pic);
         this._drawingNames.Add(Name, this._drawingsList.Count - 1);
     }
+
     /// <summary>
     /// Adds a picture to the worksheet
     /// </summary>
@@ -1003,8 +1106,10 @@ public class ExcelDrawings : IEnumerable<ExcelDrawing>, IDisposable, IPictureRel
         {
             return this.AddPicture(Name, new FileInfo(ImagePath), null);
         }
+
         throw new Exception("AddPicture: Image path can't be null");
     }
+
     /// <summary>
     /// Adds a picture to the worksheet
     /// </summary>
@@ -1018,18 +1123,22 @@ public class ExcelDrawings : IEnumerable<ExcelDrawing>, IDisposable, IPictureRel
         {
             return this.AddPicture(Name, new FileInfo(ImagePath), Hyperlink);
         }
+
         throw new Exception("AddPicture: Image path can't be null");
     }
+
     private void ValidatePictureFile(string Name, FileInfo ImageFile)
     {
         if (this.Worksheet is ExcelChartsheet && this._drawingsList.Count > 0)
         {
             throw new InvalidOperationException("Chart worksheets can't have more than one drawing");
         }
+
         if (ImageFile == null)
         {
             throw new Exception("AddPicture: ImageFile can't be null");
         }
+
         if (!ImageFile.Exists)
         {
             throw new FileNotFoundException("Cant find file.", ImageFile.FullName);
@@ -1051,6 +1160,7 @@ public class ExcelDrawings : IEnumerable<ExcelDrawing>, IDisposable, IPictureRel
     {
         return this.AddChartFromTemplate(crtxFile, name, null);
     }
+
     /// <summary>
     /// Adds a new chart using an crtx template
     /// </summary>
@@ -1064,10 +1174,13 @@ public class ExcelDrawings : IEnumerable<ExcelDrawing>, IDisposable, IPictureRel
         {
             throw new FileNotFoundException($"{crtxFile.FullName} cannot be found.");
         }
+
         FileStream fs = null;
+
         try
         {
             fs = crtxFile.Open(FileMode.Open, FileAccess.Read, FileShare.Read);
+
             return this.AddChartFromTemplate(fs, name);
         }
         catch
@@ -1093,6 +1206,7 @@ public class ExcelDrawings : IEnumerable<ExcelDrawing>, IDisposable, IPictureRel
     {
         return this.AddChartFromTemplate(crtxStream, name, null);
     }
+
     /// <summary>
     /// Adds a new chart using an crtx template
     /// </summary>
@@ -1106,18 +1220,28 @@ public class ExcelDrawings : IEnumerable<ExcelDrawing>, IDisposable, IPictureRel
         {
             throw new InvalidOperationException("Chart worksheets can't have more than one drawing");
         }
-        CrtxTemplateHelper.LoadCrtx(crtxStream, out XmlDocument chartXml, out XmlDocument styleXml, out XmlDocument colorsXml, out ZipPackagePart themePart, "The crtx stream");
+
+        CrtxTemplateHelper.LoadCrtx(crtxStream,
+                                    out XmlDocument chartXml,
+                                    out XmlDocument styleXml,
+                                    out XmlDocument colorsXml,
+                                    out ZipPackagePart themePart,
+                                    "The crtx stream");
+
         if (chartXml == null)
         {
             throw new InvalidDataException("Crtx file is corrupt.");
         }
+
         XmlHelper? chartXmlHelper = XmlHelperFactory.Create(this.NameSpaceManager, chartXml.DocumentElement);
         XmlNode? serNode = chartXmlHelper.GetNode("/c:chartSpace/c:chart/c:plotArea/*[substring(name(), string-length(name()) - 4) = 'Chart']/c:ser");
+
         if (serNode != null)
         {
             this._seriesTemplateXml = serNode.InnerXml;
             serNode.ParentNode.RemoveChild(serNode);
         }
+
         XmlElement drawNode = this.CreateDrawingXml(eEditAs.TwoCell);
         eChartType? chartType = ExcelChart.GetChartTypeFromNodeName(GetChartNodeName(chartXmlHelper));
         ExcelChart? chart = ExcelChart.GetNewChart(this, drawNode, chartType, null, pivotTableSource, chartXml);
@@ -1126,21 +1250,26 @@ public class ExcelDrawings : IEnumerable<ExcelDrawing>, IDisposable, IPictureRel
         this._drawingsList.Add(chart);
         this._drawingNames.Add(name, this._drawingsList.Count - 1);
         eChartStyle chartStyle = chart.Style;
+
         if (chartStyle == eChartStyle.None)
         {
             chartStyle = eChartStyle.Style2;
         }
+
         if (themePart != null)
         {
             chart.StyleManager.LoadThemeOverrideXml(themePart);
         }
+
         chart.StyleManager.LoadStyleXml(styleXml, chartStyle, colorsXml);
 
         return chart;
     }
+
     private static string GetChartNodeName(XmlHelper xmlHelper)
     {
         XmlNode? ploterareaNode = xmlHelper.GetNode(ExcelChart.plotAreaPath);
+
         foreach (XmlNode node in ploterareaNode?.ChildNodes)
         {
             if (node.LocalName.EndsWith("Chart"))
@@ -1148,34 +1277,40 @@ public class ExcelDrawings : IEnumerable<ExcelDrawing>, IDisposable, IPictureRel
                 return node.LocalName;
             }
         }
+
         return "";
     }
+
     /// <summary>
     /// Adds a new shape to the worksheet
     /// </summary>
     /// <param name="Name">Name</param>
     /// <param name="Style">Shape style</param>
     /// <returns>The shape object</returns>
-
     public ExcelShape AddShape(string Name, eShapeStyle Style)
     {
         if (this.Worksheet is ExcelChartsheet && this._drawingsList.Count > 0)
         {
             throw new InvalidOperationException("Chart worksheets can't have more than one drawing");
         }
+
         if (this._drawingNames.ContainsKey(Name))
         {
             throw new Exception("Name already exists in the drawings collection");
         }
+
         XmlElement drawNode = this.CreateDrawingXml();
 
         ExcelShape shape = new ExcelShape(this, drawNode, Style);
         shape.Name = Name;
         this._drawingsList.Add(shape);
         this._drawingNames.Add(Name, this._drawingsList.Count - 1);
+
         return shape;
     }
+
     #region Add Slicers
+
     /// <summary>
     /// Adds a slicer to a table column
     /// </summary>
@@ -1192,11 +1327,9 @@ public class ExcelDrawings : IEnumerable<ExcelDrawing>, IDisposable, IPictureRel
         {
             TableColumn.Table.AutoFilter.Columns.AddValueFilterColumn(TableColumn.Position);
         }
+
         XmlElement drawNode = this.CreateDrawingXml();
-        ExcelTableSlicer? slicer = new ExcelTableSlicer(this, drawNode, TableColumn)
-        {
-            EditAs = eEditAs.OneCell,
-        };
+        ExcelTableSlicer? slicer = new ExcelTableSlicer(this, drawNode, TableColumn) { EditAs = eEditAs.OneCell, };
         slicer.SetSize(192, 260);
 
         this._drawingsList.Add(slicer);
@@ -1204,6 +1337,7 @@ public class ExcelDrawings : IEnumerable<ExcelDrawing>, IDisposable, IPictureRel
 
         return slicer;
     }
+
     /// <summary>
     /// Adds a slicer to a pivot table field
     /// </summary>
@@ -1215,26 +1349,28 @@ public class ExcelDrawings : IEnumerable<ExcelDrawing>, IDisposable, IPictureRel
         {
             throw new InvalidOperationException("Chart worksheets can't have more than one drawing");
         }
+
         if (!string.IsNullOrEmpty(Field.Cache.Formula))
         {
             throw new InvalidOperationException("Can't add a slicer to a calculated field");
         }
+
         if (Field._pivotTable.CacheId == 0)
         {
             Field._pivotTable.ChangeCacheId(0); //Slicers can for some reason not have a cache id of 0.
         }
+
         XmlElement drawNode = this.CreateDrawingXml();
-        ExcelPivotTableSlicer? slicer = new ExcelPivotTableSlicer(this, drawNode, Field)
-        {
-            EditAs = eEditAs.OneCell,
-        };
+        ExcelPivotTableSlicer? slicer = new ExcelPivotTableSlicer(this, drawNode, Field) { EditAs = eEditAs.OneCell, };
         slicer.SetSize(192, 260);
         this._drawingsList.Add(slicer);
         this._drawingNames.Add(slicer.Name, this._drawingsList.Count - 1);
 
         return slicer;
     }
+
     #endregion
+
     ///// <summary>
     ///// Adds a line connectin two shapes
     ///// </summary>
@@ -1275,10 +1411,12 @@ public class ExcelDrawings : IEnumerable<ExcelDrawing>, IDisposable, IPictureRel
         {
             throw new InvalidOperationException("Chart worksheets can't have more than one drawing");
         }
+
         if (this._drawingNames.ContainsKey(Name))
         {
             throw new Exception("Name already exists in the drawings collection");
         }
+
         XmlElement drawNode = this.CreateDrawingXml();
         drawNode.InnerXml = Source.TopNode.InnerXml;
 
@@ -1287,9 +1425,12 @@ public class ExcelDrawings : IEnumerable<ExcelDrawing>, IDisposable, IPictureRel
         shape.Style = Source.Style;
         this._drawingsList.Add(shape);
         this._drawingNames.Add(Name, this._drawingsList.Count - 1);
+
         return shape;
     }
+
     #region Form Controls
+
     /// <summary>
     /// Adds a form control to the worksheet
     /// </summary>
@@ -1304,6 +1445,7 @@ public class ExcelDrawings : IEnumerable<ExcelDrawing>, IDisposable, IPictureRel
         {
             throw new InvalidOperationException("Chart worksheets can't have more than one drawing");
         }
+
         if (this._drawingNames.ContainsKey(Name))
         {
             throw new ArgumentException("Name already exists in the drawings collection");
@@ -1315,8 +1457,10 @@ public class ExcelDrawings : IEnumerable<ExcelDrawing>, IDisposable, IPictureRel
         control.EditAs = ExcelControl.GetControlEditAs(ControlType);
         this._drawingsList.Add(control);
         this._drawingNames.Add(Name, this._drawingsList.Count - 1);
+
         return control;
     }
+
     /// <summary>
     /// Adds a button form control to the worksheet
     /// </summary>
@@ -1326,6 +1470,7 @@ public class ExcelDrawings : IEnumerable<ExcelDrawing>, IDisposable, IPictureRel
     {
         return (ExcelControlButton)this.AddControl(Name, eControlType.Button);
     }
+
     /// <summary>
     /// Adds a checkbox form control to the worksheet
     /// </summary>
@@ -1335,6 +1480,7 @@ public class ExcelDrawings : IEnumerable<ExcelDrawing>, IDisposable, IPictureRel
     {
         return (ExcelControlCheckBox)this.AddControl(Name, eControlType.CheckBox);
     }
+
     /// <summary>
     /// Adds a radio button form control to the worksheet
     /// </summary>
@@ -1344,6 +1490,7 @@ public class ExcelDrawings : IEnumerable<ExcelDrawing>, IDisposable, IPictureRel
     {
         return (ExcelControlRadioButton)this.AddControl(Name, eControlType.RadioButton);
     }
+
     /// <summary>
     /// Adds a list box form control to the worksheet
     /// </summary>
@@ -1353,6 +1500,7 @@ public class ExcelDrawings : IEnumerable<ExcelDrawing>, IDisposable, IPictureRel
     {
         return (ExcelControlListBox)this.AddControl(Name, eControlType.ListBox);
     }
+
     /// <summary>
     /// Adds a drop-down form control to the worksheet
     /// </summary>
@@ -1362,6 +1510,7 @@ public class ExcelDrawings : IEnumerable<ExcelDrawing>, IDisposable, IPictureRel
     {
         return (ExcelControlDropDown)this.AddControl(Name, eControlType.DropDown);
     }
+
     /// <summary>
     /// Adds a group box form control to the worksheet
     /// </summary>
@@ -1371,6 +1520,7 @@ public class ExcelDrawings : IEnumerable<ExcelDrawing>, IDisposable, IPictureRel
     {
         return (ExcelControlGroupBox)this.AddControl(Name, eControlType.GroupBox);
     }
+
     /// <summary>
     /// Adds a label form control to the worksheet
     /// </summary>
@@ -1380,6 +1530,7 @@ public class ExcelDrawings : IEnumerable<ExcelDrawing>, IDisposable, IPictureRel
     {
         return (ExcelControlLabel)this.AddControl(Name, eControlType.Label);
     }
+
     /// <summary>
     /// Adds a spin button control to the worksheet
     /// </summary>
@@ -1389,6 +1540,7 @@ public class ExcelDrawings : IEnumerable<ExcelDrawing>, IDisposable, IPictureRel
     {
         return (ExcelControlSpinButton)this.AddControl(Name, eControlType.SpinButton);
     }
+
     /// <summary>
     /// Adds a scroll bar control to the worksheet
     /// </summary>
@@ -1398,21 +1550,26 @@ public class ExcelDrawings : IEnumerable<ExcelDrawing>, IDisposable, IPictureRel
     {
         return (ExcelControlScrollBar)this.AddControl(Name, eControlType.ScrollBar);
     }
+
     #endregion
+
     private XmlElement CreateDrawingXml(eEditAs topNodeType = eEditAs.TwoCell, bool asAlterniveContent = false)
     {
         if (this.DrawingXml.DocumentElement == null)
         {
-            this.DrawingXml.LoadXml(string.Format("<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"yes\"?><xdr:wsDr xmlns:xdr=\"{0}\" xmlns:a=\"{1}\" />", ExcelPackage.schemaSheetDrawings, ExcelPackage.schemaDrawings));
+            this.DrawingXml.LoadXml(string.Format("<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"yes\"?><xdr:wsDr xmlns:xdr=\"{0}\" xmlns:a=\"{1}\" />",
+                                                  ExcelPackage.schemaSheetDrawings,
+                                                  ExcelPackage.schemaDrawings));
+
             ZipPackage package = this.Worksheet._package.ZipPackage;
 
             //Check for existing part, issue #100
             int id = this.Worksheet.SheetId;
+
             do
             {
                 this._uriDrawing = new Uri(string.Format("/xl/drawings/drawing{0}.xml", id++), UriKind.Relative);
-            }
-            while (package.PartExists(this._uriDrawing));
+            } while (package.PartExists(this._uriDrawing));
 
             this._part = package.CreatePart(this._uriDrawing, "application/vnd.openxmlformats-officedocument.drawing+xml", this._package.Compression);
 
@@ -1421,16 +1578,21 @@ public class ExcelDrawings : IEnumerable<ExcelDrawing>, IDisposable, IPictureRel
             streamChart.Close();
             ZipPackage.Flush();
 
-            this._drawingRelation = this.Worksheet.Part.CreateRelationship(UriHelper.GetRelativeUri(this.Worksheet.WorksheetUri, this._uriDrawing), TargetMode.Internal, ExcelPackage.schemaRelationships + "/drawing");
+            this._drawingRelation = this.Worksheet.Part.CreateRelationship(UriHelper.GetRelativeUri(this.Worksheet.WorksheetUri, this._uriDrawing),
+                                                                           TargetMode.Internal,
+                                                                           ExcelPackage.schemaRelationships + "/drawing");
+
             XmlElement e = (XmlElement)this.Worksheet.CreateNode("d:drawing");
             e.SetAttribute("id", ExcelPackage.schemaRelationships, this._drawingRelation.Id);
 
             ZipPackage.Flush();
         }
+
         XmlNode colNode = this._drawingsXml.SelectSingleNode("//xdr:wsDr", this.NameSpaceManager);
 
         string? topElementname = $"{topNodeType.ToEnumString()}Anchor";
         XmlElement drawNode = this._drawingsXml.CreateElement("xdr", topElementname, ExcelPackage.schemaSheetDrawings);
+
         if (asAlterniveContent)
         {
             XmlElement? acNode = (XmlElement)this._drawingsXml.CreateElement("mc", "AlternateContent", ExcelPackage.schemaMarkupCompatibility);
@@ -1443,6 +1605,7 @@ public class ExcelDrawings : IEnumerable<ExcelDrawing>, IDisposable, IPictureRel
         {
             colNode.AppendChild(drawNode);
         }
+
         if (topNodeType == eEditAs.OneCell || topNodeType == eEditAs.TwoCell)
         {
             //Add from position Element;
@@ -1477,8 +1640,11 @@ public class ExcelDrawings : IEnumerable<ExcelDrawing>, IDisposable, IPictureRel
 
         return drawNode;
     }
+
     #endregion
+
     #region Remove methods
+
     /// <summary>
     /// Removes a drawing.
     /// </summary>
@@ -1496,6 +1662,7 @@ public class ExcelDrawings : IEnumerable<ExcelDrawing>, IDisposable, IPictureRel
     internal void RemoveDrawing(int Index, bool DeleteXmlNode = true)
     {
         ExcelDrawing? draw = this._drawingsList[Index];
+
         if (DeleteXmlNode)
         {
             draw.DeleteMe();
@@ -1508,7 +1675,7 @@ public class ExcelDrawings : IEnumerable<ExcelDrawing>, IDisposable, IPictureRel
 
     internal void ReIndexNames(int Index, int increase)
     {
-        for (int i = this._drawingsList.Count-1; i >= Index; i--)
+        for (int i = this._drawingsList.Count - 1; i >= Index; i--)
         {
             this._drawingNames[this._drawingsList[i].Name] = i;
         }
@@ -1522,6 +1689,7 @@ public class ExcelDrawings : IEnumerable<ExcelDrawing>, IDisposable, IPictureRel
     {
         this.Remove(this._drawingNames[Drawing.Name]);
     }
+
     /// <summary>
     /// Removes a drawing.
     /// </summary>
@@ -1530,6 +1698,7 @@ public class ExcelDrawings : IEnumerable<ExcelDrawing>, IDisposable, IPictureRel
     {
         this.Remove(this._drawingNames[Name]);
     }
+
     /// <summary>
     /// Removes all drawings from the collection
     /// </summary>
@@ -1550,12 +1719,16 @@ public class ExcelDrawings : IEnumerable<ExcelDrawing>, IDisposable, IPictureRel
             this.RemoveDrawing(0);
         }
     }
+
     #endregion
+
     #region BringToFront & SendToBack
+
     internal void BringToFront(ExcelDrawing drawing)
     {
         int index = this._drawingsList.IndexOf(drawing);
         int endIndex = this._drawingsList.Count - 1;
+
         if (index == endIndex)
         {
             return;
@@ -1572,14 +1745,17 @@ public class ExcelDrawings : IEnumerable<ExcelDrawing>, IDisposable, IPictureRel
 
         //Reindex dictionary
         this._drawingNames[drawing.Name] = endIndex;
+
         for (int i = index + 0; i < endIndex; i++)
         {
             this._drawingNames[this._drawingsList[i].Name]--;
         }
     }
+
     internal void SendToBack(ExcelDrawing drawing)
     {
         int index = this._drawingsList.IndexOf(drawing);
+
         if (index == 0)
         {
             return;
@@ -1596,15 +1772,19 @@ public class ExcelDrawings : IEnumerable<ExcelDrawing>, IDisposable, IPictureRel
 
         //Reindex dictionary
         this._drawingNames[drawing.Name] = 0;
+
         for (int i = 1; i <= index; i++)
         {
             this._drawingNames[this._drawingsList[i].Name]++;
         }
     }
+
     #endregion
+
     internal void AdjustWidth(double[,] pos)
     {
         int ix = 0;
+
         //Now set the size for all drawings depending on the editAs property.
         foreach (ExcelDrawing d in this)
         {
@@ -1614,18 +1794,23 @@ public class ExcelDrawings : IEnumerable<ExcelDrawing>, IDisposable, IPictureRel
                 {
                     d.SetPixelLeft(pos[ix, 0]);
                 }
+
                 d.SetPixelWidth(pos[ix, 1]);
             }
+
             if (d is ExcelGroupShape gr)
             {
                 gr.AdjustChildrenForResizeColumn(pos[ix, 0]);
             }
+
             ix++;
         }
     }
+
     internal void AdjustHeight(double[,] pos)
     {
         int ix = 0;
+
         //Now set the size for all drawings depending on the editAs property.
         foreach (ExcelDrawing d in this)
         {
@@ -1635,39 +1820,49 @@ public class ExcelDrawings : IEnumerable<ExcelDrawing>, IDisposable, IPictureRel
                 {
                     d.SetPixelTop(pos[ix, 0]);
                 }
+
                 d.SetPixelHeight(pos[ix, 1]);
             }
+
             if (d is ExcelGroupShape gr)
             {
                 gr.AdjustChildrenForResizeRow(pos[ix, 0]);
             }
+
             ix++;
         }
     }
+
     internal double[,] GetDrawingWidths()
     {
         double[,] pos = new double[this.Count, 2];
         int ix = 0;
+
         //Save the size for all drawings
         foreach (ExcelDrawing d in this)
         {
             pos[ix, 0] = d.GetPixelLeft();
             pos[ix++, 1] = d.GetPixelWidth();
         }
+
         return pos;
     }
+
     internal double[,] GetDrawingHeight()
     {
         double[,] pos = new double[this.Count, 2];
         int ix = 0;
+
         //Save the size for all drawings
         foreach (ExcelDrawing d in this)
         {
             pos[ix, 0] = d.GetPixelTop();
             pos[ix++, 1] = d.GetPixelHeight();
         }
+
         return pos;
     }
+
     /// <summary>
     /// Disposes the object
     /// </summary>
@@ -1678,6 +1873,7 @@ public class ExcelDrawings : IEnumerable<ExcelDrawing>, IDisposable, IPictureRel
         this._drawingNames.Clear();
         this._drawingNames = null;
         this._drawingRelation = null;
+
         foreach (ExcelDrawing? d in this._drawingsList)
         {
             d.Dispose();
@@ -1696,7 +1892,7 @@ public class ExcelDrawings : IEnumerable<ExcelDrawing>, IDisposable, IPictureRel
                 return d;
             }
         }
+
         return null;
     }
-
 }

@@ -10,6 +10,7 @@
  *************************************************************************************************
   01/27/2020         EPPlus Software AB       Initial release EPPlus 5
  *************************************************************************************************/
+
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -23,11 +24,13 @@ namespace OfficeOpenXml.Style.Dxf;
 /// </summary>
 public class ExcelDxfNumberFormat : DxfStyleBase
 {
-    internal ExcelDxfNumberFormat(ExcelStyles styles, Action<eStyleClass, eStyleProperty, object> callback) : base(styles, callback)
+    internal ExcelDxfNumberFormat(ExcelStyles styles, Action<eStyleClass, eStyleProperty, object> callback)
+        : base(styles, callback)
     {
-
     }
-    int _numFmtID=int.MinValue;
+
+    int _numFmtID = int.MinValue;
+
     /// <summary>
     /// Id for number format
     /// 
@@ -62,27 +65,20 @@ public class ExcelDxfNumberFormat : DxfStyleBase
     /// 48  ##0.0E+0 
     /// 49  @
     /// </summary>            
-    public int NumFmtID 
-    { 
-        get
-        {
-            return this._numFmtID;
-        }
-        internal set
-        {
-            this._numFmtID = value;
-        }
+    public int NumFmtID
+    {
+        get { return this._numFmtID; }
+        internal set { this._numFmtID = value; }
     }
-    string _format="";
+
+    string _format = "";
+
     /// <summary>
     /// The number format
     /// </summary>s
     public string Format
-    { 
-        get
-        {
-            return this._format;
-        }
+    {
+        get { return this._format; }
         set
         {
             this._format = value;
@@ -96,10 +92,7 @@ public class ExcelDxfNumberFormat : DxfStyleBase
     /// </summary>
     internal override string Id
     {
-        get
-        {
-            return this.Format;
-        }
+        get { return this.Format; }
     }
 
     /// <summary>
@@ -113,20 +106,20 @@ public class ExcelDxfNumberFormat : DxfStyleBase
         {
             this.NumFmtID = this._styles._nextDfxNumFmtID++;
         }
+
         helper.CreateNode(path);
         SetValue(helper, path + "/@numFmtId", this.NumFmtID);
         SetValue(helper, path + "/@formatCode", this.Format);
     }
+
     /// <summary>
     /// If the object has any properties set
     /// </summary>
     public override bool HasValue
     {
-        get 
-        { 
-            return !string.IsNullOrEmpty(this.Format) && this.NumFmtID!=0; 
-        }
+        get { return !string.IsNullOrEmpty(this.Format) && this.NumFmtID != 0; }
     }
+
     /// <summary>
     /// Clears all properties
     /// </summary>
@@ -135,6 +128,7 @@ public class ExcelDxfNumberFormat : DxfStyleBase
         this.Format = null;
         this.NumFmtID = int.MinValue;
     }
+
     /// <summary>
     /// Clone the object
     /// </summary>
@@ -143,18 +137,21 @@ public class ExcelDxfNumberFormat : DxfStyleBase
     {
         return new ExcelDxfNumberFormat(this._styles, this._callback) { NumFmtID = this.NumFmtID, Format = this.Format };
     }
+
     internal override void SetValuesFromXml(XmlHelper helper)
     {
         if (helper.ExistsNode("d:numFmt"))
         {
             this.NumFmtID = helper.GetXmlNodeInt("d:numFmt/@numFmtId");
             this.Format = helper.GetXmlNodeString("d:numFmt/@formatCode");
+
             if (this.NumFmtID < 164 && string.IsNullOrEmpty(this.Format))
             {
                 this.Format = ExcelNumberFormat.GetFromBuildInFromID(this.NumFmtID);
             }
         }
     }
+
     internal override void SetStyle()
     {
         if (this._callback != null)

@@ -10,6 +10,7 @@
  *************************************************************************************************
   01/27/2020         EPPlus Software AB       Initial release EPPlus 5
  *************************************************************************************************/
+
 using OfficeOpenXml.FormulaParsing.LexicalAnalysis.PostProcessing;
 using OfficeOpenXml.FormulaParsing.Utilities;
 using System;
@@ -36,6 +37,7 @@ internal class TokenizerContext
         {
             this.FormulaChars = formula.ToArray();
         }
+
         Require.That(tokenFactory).IsNotNull();
         this._result = new List<Token>();
         this._currentToken = new StringBuilder();
@@ -51,15 +53,13 @@ internal class TokenizerContext
     /// <summary>
     /// The formula split into a character array
     /// </summary>
-    public char[] FormulaChars
-    {
-        get; private set;
-    }
+    public char[] FormulaChars { get; private set; }
 
     public TokenHandler CreateHandler(INameValueProvider nameValueProvider)
     {
         TokenHandler? handler = new TokenHandler(this, this._tokenFactory, TokenSeparatorProvider.Instance, nameValueProvider);
         handler.Worksheet = this._worksheet;
+
         return handler;
     }
 
@@ -73,7 +73,7 @@ internal class TokenizerContext
 
     internal string Worksheet
     {
-        get { return this._worksheet;}
+        get { return this._worksheet; }
     }
 
     /// <summary>
@@ -115,6 +115,7 @@ internal class TokenizerContext
                 return new Token("-", TokenType.Negator);
             }
         }
+
         return this._tokenFactory.Create(this.Result, this.CurrentToken, worksheet);
     }
 
@@ -156,20 +157,12 @@ internal class TokenizerContext
     /// <summary>
     /// Returns true if the current position is inside a string, otherwise false.
     /// </summary>
-    public bool IsInString
-    {
-        get;
-        private set;
-    }
+    public bool IsInString { get; private set; }
 
     /// <summary>
     /// Returns true if the current position is inside a sheetname, otherwise false.
     /// </summary>
-    public bool IsInSheetName
-    {
-        get;
-        private set;
-    }
+    public bool IsInSheetName { get; private set; }
 
     /// <summary>
     /// Toggles the IsInString state.
@@ -187,17 +180,9 @@ internal class TokenizerContext
         this.IsInSheetName = !this.IsInSheetName;
     }
 
-    internal int BracketCount
-    {
-        get;
-        set;
-    }
+    internal int BracketCount { get; set; }
 
-    internal bool IsInDefinedNameAddress
-    {
-        get;
-        set;
-    }
+    internal bool IsInDefinedNameAddress { get; set; }
 
     /// <summary>
     /// Returns the current
@@ -272,9 +257,10 @@ internal class TokenizerContext
     public void ReplaceLastToken(Token newToken)
     {
         int count = this._result.Count;
+
         if (count > 0)
         {
-            this._result.RemoveAt(count - 1);   
+            this._result.RemoveAt(count - 1);
         }
 
         this._result.Add(newToken);
@@ -287,5 +273,4 @@ internal class TokenizerContext
     {
         get { return this._result.Count > 0 ? this._result.Last() : default(Token?); }
     }
-
 }

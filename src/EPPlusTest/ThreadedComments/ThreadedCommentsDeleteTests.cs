@@ -14,12 +14,14 @@ namespace EPPlusTest.ThreadedComments;
 public class ThreadedCommentsDeleteTests : TestBase
 {
     static ExcelPackage _pck;
+
     [ClassInitialize]
     public static void Init(TestContext context)
     {
         InitBase();
         _pck = OpenPackage("ThreadedCommentDelete.xlsx", true);
     }
+
     [ClassCleanup]
     public static void Cleanup()
     {
@@ -30,7 +32,7 @@ public class ThreadedCommentsDeleteTests : TestBase
     public void DeleteOneRowShiftUp()
     {
         ExcelWorksheet? ws = _pck.Workbook.Worksheets.Add("OneRowA2");
-        ExcelThreadedCommentThread? th=ws.ThreadedComments.Add("A2");
+        ExcelThreadedCommentThread? th = ws.ThreadedComments.Add("A2");
         ExcelThreadedCommentPerson? p = ws.ThreadedComments.Persons.Add("Jan Källman");
         th.AddComment(p.Id, "Shift up from A2");
 
@@ -39,6 +41,7 @@ public class ThreadedCommentsDeleteTests : TestBase
         Assert.IsNull(ws.Cells["A2"].ThreadedComment);
         Assert.IsNotNull(ws.Cells["A1"].ThreadedComment);
     }
+
     [TestMethod]
     public void DeleteOneColumnShiftLeft()
     {
@@ -52,6 +55,7 @@ public class ThreadedCommentsDeleteTests : TestBase
         Assert.IsNull(ws.Cells["B1"].ThreadedComment);
         Assert.IsNotNull(ws.Cells["A1"].ThreadedComment);
     }
+
     [TestMethod]
     public void DeleteOneRowDeleteThreadedComment()
     {
@@ -66,6 +70,7 @@ public class ThreadedCommentsDeleteTests : TestBase
         Assert.AreEqual(0, ws.ThreadedComments.Count);
         Assert.IsNull(ws.Cells["A1"].ThreadedComment);
     }
+
     [TestMethod]
     public void DeleteOneColumnThreadedComment()
     {
@@ -80,6 +85,7 @@ public class ThreadedCommentsDeleteTests : TestBase
         Assert.AreEqual(0, ws.ThreadedComments.Count);
         Assert.IsNull(ws.Cells["A1"].ThreadedComment);
     }
+
     [TestMethod]
     public void DeleteTwoRowA3()
     {
@@ -93,6 +99,7 @@ public class ThreadedCommentsDeleteTests : TestBase
         Assert.IsNotNull(ws.Cells["A1"].ThreadedComment);
         Assert.IsNull(ws.Cells["A3"].ThreadedComment);
     }
+
     [TestMethod]
     public void DeleteTwoColumnC1()
     {
@@ -106,6 +113,7 @@ public class ThreadedCommentsDeleteTests : TestBase
         Assert.IsNotNull(ws.Cells["A1"].ThreadedComment);
         Assert.IsNull(ws.Cells["C1"].ThreadedComment);
     }
+
     [TestMethod]
     public void DeleteInRangeColumn()
     {
@@ -125,6 +133,7 @@ public class ThreadedCommentsDeleteTests : TestBase
         Assert.IsNotNull(ws.Cells["B3"].ThreadedComment);
         Assert.IsNotNull(ws.Cells["B4"].ThreadedComment);
     }
+
     [TestMethod]
     public void DeleteInRangeRow()
     {

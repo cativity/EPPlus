@@ -10,6 +10,7 @@
  *************************************************************************************************
   01/27/2020         EPPlus Software AB       Initial release EPPlus 5
  *************************************************************************************************/
+
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -22,23 +23,29 @@ namespace OfficeOpenXml.FormulaParsing.ExpressionGraph;
 public abstract class Expression
 {
     internal string ExpressionString { get; private set; }
+
     private readonly List<Expression> _children = new List<Expression>();
-    public IEnumerable<Expression> Children { get { return this._children; } }
+
+    public IEnumerable<Expression> Children
+    {
+        get { return this._children; }
+    }
+
     public Expression Next { get; set; }
+
     public Expression Prev { get; set; }
+
     public IOperator Operator { get; set; }
+
     public abstract bool IsGroupedExpression { get; }
+
     /// <summary>
     /// If set to true, <see cref="ExcelAddressExpression"></see>s that has a circular reference to their cell will be ignored when compiled
     /// </summary>
-    public virtual bool IgnoreCircularReference
-    {
-        get; set;
-    }
+    public virtual bool IgnoreCircularReference { get; set; }
 
     public Expression()
     {
-
     }
 
     public Expression(string expression)
@@ -52,7 +59,7 @@ public abstract class Expression
         get { return this._children.Any(); }
     }
 
-    public virtual Expression  PrepareForNextChild()
+    public virtual Expression PrepareForNextChild()
     {
         return this;
     }
@@ -67,22 +74,27 @@ public abstract class Expression
         }
 
         this._children.Add(child);
+
         return child;
     }
 
     public virtual Expression MergeWithNext()
     {
         Expression? expression = this;
+
         if (this.Next != null && this.Operator != null)
         {
             CompileResult? result = this.Operator.Apply(this.Compile(), this.Next.Compile());
             expression = ExpressionConverter.Instance.FromCompileResult(result);
+
             if (expression is ExcelErrorExpression)
             {
                 expression.Next = null;
                 expression.Prev = null;
+
                 return expression;
             }
+
             if (this.Next != null)
             {
                 expression.Operator = this.Next.Operator;
@@ -91,7 +103,9 @@ public abstract class Expression
             {
                 expression.Operator = null;
             }
+
             expression.Next = this.Next.Next;
+
             if (expression.Next != null)
             {
                 expression.Next.Prev = expression;
@@ -103,13 +117,14 @@ public abstract class Expression
         {
             throw new FormatException("Invalid formula syntax. Operator missing expression.");
         }
+
         if (this.Prev != null)
         {
             this.Prev.Next = expression;
-        }            
+        }
+
         return expression;
     }
 
     public abstract CompileResult Compile();
-
 }

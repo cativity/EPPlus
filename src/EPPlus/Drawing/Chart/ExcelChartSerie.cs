@@ -10,6 +10,7 @@
  *************************************************************************************************
   01/27/2020         EPPlus Software AB       Initial release EPPlus 5
  *************************************************************************************************/
+
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -20,6 +21,7 @@ using System.Globalization;
 using OfficeOpenXml.Drawing.Interfaces;
 using OfficeOpenXml.Drawing.Style.Effect;
 using OfficeOpenXml.Drawing.Style.ThreeD;
+
 namespace OfficeOpenXml.Drawing.Chart;
 
 /// <summary>
@@ -29,56 +31,66 @@ public abstract class ExcelChartSerie : XmlHelper, IDrawingStyleBase
 {
     internal ExcelChart _chart;
     string _prefix;
-    internal ExcelChartSerie(ExcelChart chart, XmlNamespaceManager ns, XmlNode node, string prefix="c")
+
+    internal ExcelChartSerie(ExcelChart chart, XmlNamespaceManager ns, XmlNode node, string prefix = "c")
         : base(ns, node)
     {
         this._chart = chart;
         this._prefix = prefix;
     }
+
     /// <summary>
     /// The header for the chart serie
     /// </summary>
     public abstract string Header { get; set; }
+
     /// <summary>
     /// Literals for the Y serie, if the literal values are numeric
     /// </summary>
     public double[] NumberLiteralsY { get; protected set; } = null;
+
     /// <summary>
     /// Literals for the X serie, if the literal values are numeric
     /// </summary>
     public double[] NumberLiteralsX { get; protected set; } = null;
+
     /// <summary>
     /// Literals for the X serie, if the literal values are strings
     /// </summary>
     public string[] StringLiteralsX { get; protected set; } = null;
+
     void IDrawingStyleBase.CreatespPr()
     {
         this.CreatespPrNode();
     }
+
     /// <summary>
     /// The header address for the serie.
     /// </summary>
     public abstract ExcelAddressBase HeaderAddress { get; set; }
+
     /// <summary>
     /// The address for the vertical series.
     /// </summary>
     public abstract string Series { get; set; }
+
     /// <summary>
     /// The address for the horizontal series.
     /// </summary>
     public abstract string XSeries { get; set; }
+
     ExcelDrawingFill _fill = null;
+
     /// <summary>
     /// Access to fill properties
     /// </summary>
     public ExcelDrawingFill Fill
     {
-        get
-        {
-            return this._fill ??= new ExcelDrawingFill(this._chart, this.NameSpaceManager, this.TopNode, $"{this._prefix}:spPr", this.SchemaNodeOrder);
-        }
+        get { return this._fill ??= new ExcelDrawingFill(this._chart, this.NameSpaceManager, this.TopNode, $"{this._prefix}:spPr", this.SchemaNodeOrder); }
     }
+
     ExcelDrawingBorder _border = null;
+
     /// <summary>
     /// Access to border properties
     /// </summary>
@@ -86,14 +98,12 @@ public abstract class ExcelChartSerie : XmlHelper, IDrawingStyleBase
     {
         get
         {
-            return this._border ??= new ExcelDrawingBorder(this._chart,
-                                                           this.NameSpaceManager,
-                                                           this.TopNode,
-                                                           $"{this._prefix}:spPr/a:ln",
-                                                           this.SchemaNodeOrder);
+            return this._border ??= new ExcelDrawingBorder(this._chart, this.NameSpaceManager, this.TopNode, $"{this._prefix}:spPr/a:ln", this.SchemaNodeOrder);
         }
     }
+
     ExcelDrawingEffectStyle _effect = null;
+
     /// <summary>
     /// Effects
     /// </summary>
@@ -108,26 +118,29 @@ public abstract class ExcelChartSerie : XmlHelper, IDrawingStyleBase
                                                                 this.SchemaNodeOrder);
         }
     }
+
     ExcelDrawing3D _threeD = null;
+
     /// <summary>
     /// 3D properties
     /// </summary>
     public ExcelDrawing3D ThreeD
     {
-        get
-        {
-            return this._threeD ??= new ExcelDrawing3D(this.NameSpaceManager, this.TopNode, $"{this._prefix}:spPr", this.SchemaNodeOrder);
-        }
+        get { return this._threeD ??= new ExcelDrawing3D(this.NameSpaceManager, this.TopNode, $"{this._prefix}:spPr", this.SchemaNodeOrder); }
     }
+
     /// <summary>
     /// Number of items in the serie.
     /// </summary>
     public abstract int NumberOfItems { get; }
+
     /// <summary>
     /// A collection of trend lines for the chart serie.
     /// </summary>
-    public abstract ExcelChartTrendlineCollection TrendLines{ get; }
+    public abstract ExcelChartTrendlineCollection TrendLines { get; }
+
     internal abstract void SetID(string id);
+
     internal string ToFullAddress(string value)
     {
         if (ExcelCellBase.IsValidAddress(value))
@@ -139,5 +152,4 @@ public abstract class ExcelChartSerie : XmlHelper, IDrawingStyleBase
             return value;
         }
     }
-
 }

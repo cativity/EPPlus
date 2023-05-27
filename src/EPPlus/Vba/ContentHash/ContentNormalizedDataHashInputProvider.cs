@@ -10,6 +10,7 @@
  *************************************************************************************************
   09/05/2022         EPPlus Software AB       EPPlus 6.1
  *************************************************************************************************/
+
 using OfficeOpenXml.Utils;
 using OfficeOpenXml.VBA;
 using System;
@@ -22,7 +23,8 @@ namespace OfficeOpenXml.Vba.ContentHash;
 
 internal class ContentNormalizedDataHashInputProvider : ContentHashInputProvider
 {
-    public ContentNormalizedDataHashInputProvider(ExcelVbaProject project) : base(project)
+    public ContentNormalizedDataHashInputProvider(ExcelVbaProject project)
+        : base(project)
     {
     }
 
@@ -37,6 +39,7 @@ internal class ContentNormalizedDataHashInputProvider : ContentHashInputProvider
         BinaryWriter bw = new BinaryWriter(ms);
         bw.Write(this.HashEncoding.GetBytes(this.Project.Name));
         bw.Write(this.HashEncoding.GetBytes(this.Project.Constants));
+
         foreach (ExcelVbaReference? reference in this.Project.References)
         {
             if (reference.ReferenceRecordID == 0x0D)
@@ -45,7 +48,9 @@ internal class ContentNormalizedDataHashInputProvider : ContentHashInputProvider
             }
             else if (reference.ReferenceRecordID == 0x0E)
             {
-                foreach (byte b in BitConverter.GetBytes((uint)reference.Libid.Length))  //Length will never be an UInt with 4 bytes that aren't 0 (> 0x00FFFFFF), so no need for the rest of the properties.
+                foreach (byte b in
+                         BitConverter.GetBytes((uint)reference.Libid
+                                                              .Length)) //Length will never be an UInt with 4 bytes that aren't 0 (> 0x00FFFFFF), so no need for the rest of the properties.
                 {
                     if (b != 0)
                     {
@@ -58,9 +63,11 @@ internal class ContentNormalizedDataHashInputProvider : ContentHashInputProvider
                 }
             }
         }
+
         foreach (ExcelVBAModule? module in this.Project.Modules)
         {
             string[]? lines = module.Code.Split(new char[] { '\r', '\n' }, StringSplitOptions.RemoveEmptyEntries);
+
             foreach (string? line in lines)
             {
                 if (!line.StartsWith("attribute", StringComparison.OrdinalIgnoreCase))

@@ -29,28 +29,21 @@ internal static class TemperatureConverter
     private static double Fah2Kel(double f)
     {
         double c = Fah2Cel(f);
+
         return Cel2Kel(c);
     }
 
     private static double Kel2Fah(double k)
     {
         double c = Kel2Cel(k);
+
         return Cel2Fah(c);
     }
 
     public static bool IsValidUnit(string candidate)
     {
-        return new List<string>
-        {
-            "C",
-            "cel",
-            "F",
-            "fah",
-            "K",
-            "kel"
-        }.Contains(candidate);
+        return new List<string> { "C", "cel", "F", "fah", "K", "kel" }.Contains(candidate);
     }
-
 
     public static Dictionary<string, Func<double, double>> Conversions = new Dictionary<string, Func<double, double>>
     {
@@ -79,8 +72,6 @@ internal static class TemperatureConverter
         { "kel>F", Kel2Fah },
         { "kel>fah", Kel2Fah }
     };
-
-       
 
     public static bool IsTempMapping(string from, string to)
     {

@@ -23,7 +23,6 @@
 //
 // ------------------------------------------------------------------
 
-
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -37,13 +36,16 @@ internal class ZipSegmentedStream : Stream
         None = 0,
         ReadOnly = 1,
         Write = 2,
+
         //Update = 3
     }
 
     private RwMode rwMode;
     private bool _exceptionPending; // **see note below
     private string _baseName;
+
     private string _baseDir;
+
     //private bool _isDisposed;
     private string _currentName;
     private string _currentTempName;
@@ -63,21 +65,17 @@ internal class ZipSegmentedStream : Stream
     // appropriate. Need to be careful: any additional exceptions
     // will mask the original one.
 
-    private ZipSegmentedStream() : base()
+    private ZipSegmentedStream()
+        : base()
     {
         this._exceptionPending = false;
     }
 
-    public static ZipSegmentedStream ForReading(string name,
-                                                uint initialDiskNumber,
-                                                uint maxDiskNumber)
+    public static ZipSegmentedStream ForReading(string name, uint initialDiskNumber, uint maxDiskNumber)
     {
         ZipSegmentedStream zss = new ZipSegmentedStream()
         {
-            rwMode = RwMode.ReadOnly,
-            CurrentSegment = initialDiskNumber,
-            _maxDiskNumber = maxDiskNumber,
-            _baseName = name,
+            rwMode = RwMode.ReadOnly, CurrentSegment = initialDiskNumber, _maxDiskNumber = maxDiskNumber, _baseName = name,
         };
 
         // Console.WriteLine("ZSS: ForReading ({0})",
@@ -88,22 +86,17 @@ internal class ZipSegmentedStream : Stream
         return zss;
     }
 
-
     public static ZipSegmentedStream ForWriting(string name, int maxSegmentSize)
     {
         ZipSegmentedStream zss = new ZipSegmentedStream()
         {
-            rwMode = RwMode.Write,
-            CurrentSegment = 0,
-            _baseName = name,
-            _maxSegmentSize = maxSegmentSize,
-            _baseDir = Path.GetDirectoryName(name)
+            rwMode = RwMode.Write, CurrentSegment = 0, _baseName = name, _maxSegmentSize = maxSegmentSize, _baseDir = Path.GetDirectoryName(name)
         };
 
         // workitem 9522
-        if (zss._baseDir=="")
+        if (zss._baseDir == "")
         {
-            zss._baseDir=".";
+            zss._baseDir = ".";
         }
 
         zss._SetWriteStream(0);
@@ -113,7 +106,6 @@ internal class ZipSegmentedStream : Stream
 
         return zss;
     }
-
 
     /// <summary>
     ///   Sort-of like a factory method, ForUpdate is used only when
@@ -140,11 +132,7 @@ internal class ZipSegmentedStream : Stream
             throw new ArgumentOutOfRangeException("diskNumber");
         }
 
-        string fname =
-            String.Format("{0}.z{1:D2}",
-                          Path.Combine(Path.GetDirectoryName(name),
-                                       Path.GetFileNameWithoutExtension(name)),
-                          diskNumber + 1);
+        string fname = String.Format("{0}.z{1:D2}", Path.Combine(Path.GetDirectoryName(name), Path.GetFileNameWithoutExtension(name)), diskNumber + 1);
 
         // Console.WriteLine("ZSS: ForUpdate ({0})",
         //                   Path.GetFileName(fname));
@@ -154,25 +142,14 @@ internal class ZipSegmentedStream : Stream
         // update of zip metadata. It never will try to write beyond
         // the end of a segment.
 
-        return File.Open(fname,
-                         FileMode.Open,
-                         FileAccess.ReadWrite,
-                         FileShare.None);
+        return File.Open(fname, FileMode.Open, FileAccess.ReadWrite, FileShare.None);
     }
 
-    public bool ContiguousWrite
-    {
-        get;
-        set;
-    }
-
+    public bool ContiguousWrite { get; set; }
 
     public UInt32 CurrentSegment
     {
-        get
-        {
-            return this._currentDiskNumber;
-        }
+        get { return this._currentDiskNumber; }
         private set
         {
             this._currentDiskNumber = value;
@@ -196,13 +173,9 @@ internal class ZipSegmentedStream : Stream
         get { return this._currentName ??= this._NameForSegment(this.CurrentSegment); }
     }
 
-
     public String CurrentTempName
     {
-        get
-        {
-            return this._currentTempName;
-        }
+        get { return this._currentTempName; }
     }
 
     private string _NameForSegment(uint diskNumber)
@@ -210,15 +183,14 @@ internal class ZipSegmentedStream : Stream
         if (diskNumber >= 99)
         {
             this._exceptionPending = true;
+
             throw new OverflowException("The number of zip segments would exceed 99.");
         }
 
         return String.Format("{0}.z{1:D2}",
-                             Path.Combine(Path.GetDirectoryName(this._baseName),
-                                          Path.GetFileNameWithoutExtension(this._baseName)),
+                             Path.Combine(Path.GetDirectoryName(this._baseName), Path.GetFileNameWithoutExtension(this._baseName)),
                              diskNumber + 1);
     }
-
 
     // Returns the segment that WILL be current if writing
     // a block of the given length.
@@ -227,6 +199,7 @@ internal class ZipSegmentedStream : Stream
     public UInt32 ComputeSegment(int length)
     {
         if (this._innerStream.Position + length > this._maxSegmentSize)
+
             // the block will go AT LEAST into the next segment
         {
             return this.CurrentSegment + 1;
@@ -236,16 +209,10 @@ internal class ZipSegmentedStream : Stream
         return this.CurrentSegment;
     }
 
-
     public override String ToString()
     {
-        return String.Format("{0}[{1}][{2}], pos=0x{3:X})",
-                             "ZipSegmentedStream",
-                             this.CurrentName,
-                             this.rwMode.ToString(),
-                             this.Position);
+        return String.Format("{0}[{1}][{2}], pos=0x{3:X})", "ZipSegmentedStream", this.CurrentName, this.rwMode.ToString(), this.Position);
     }
-
 
     private void _SetReadStream()
     {
@@ -269,7 +236,6 @@ internal class ZipSegmentedStream : Stream
         this._innerStream = File.OpenRead(this.CurrentName);
     }
 
-
     /// <summary>
     /// Read from the stream
     /// </summary>
@@ -282,6 +248,7 @@ internal class ZipSegmentedStream : Stream
         if (this.rwMode != RwMode.ReadOnly)
         {
             this._exceptionPending = true;
+
             throw new InvalidOperationException("Stream Error: Cannot Read.");
         }
 
@@ -293,8 +260,8 @@ internal class ZipSegmentedStream : Stream
             if (this._innerStream.Position != this._innerStream.Length)
             {
                 this._exceptionPending = true;
-                throw new ZipException(String.Format("Read error in file {0}", this.CurrentName));
 
+                throw new ZipException(String.Format("Read error in file {0}", this.CurrentName));
             }
 
             if (this.CurrentSegment + 1 == this._maxDiskNumber)
@@ -309,10 +276,9 @@ internal class ZipSegmentedStream : Stream
             r1 = this._innerStream.Read(buffer, offset, count);
             r += r1;
         }
+
         return r;
     }
-
-
 
     private void _SetWriteStream(uint increment)
     {
@@ -329,6 +295,7 @@ internal class ZipSegmentedStream : Stream
             }
 
             File.Move(this._currentTempName, this.CurrentName);
+
             // Console.WriteLine("ZSS: SWS close ({0})",
             //                   Path.GetFileName(CurrentName));
         }
@@ -338,9 +305,7 @@ internal class ZipSegmentedStream : Stream
             this.CurrentSegment += increment;
         }
 
-        SharedUtilities.CreateAndOpenUniqueTempFile(this._baseDir,
-                                                    out this._innerStream,
-                                                    out this._currentTempName);
+        SharedUtilities.CreateAndOpenUniqueTempFile(this._baseDir, out this._innerStream, out this._currentTempName);
 
         // Console.WriteLine("ZSS: SWS open ({0})",
         //                   Path.GetFileName(_currentTempName));
@@ -350,7 +315,6 @@ internal class ZipSegmentedStream : Stream
             this._innerStream.Write(BitConverter.GetBytes(ZipConstants.SplitArchiveSignature), 0, 4);
         }
     }
-
 
     /// <summary>
     /// Write to the stream.
@@ -363,9 +327,9 @@ internal class ZipSegmentedStream : Stream
         if (this.rwMode != RwMode.Write)
         {
             this._exceptionPending = true;
+
             throw new InvalidOperationException("Stream Error: Cannot Write.");
         }
-
 
         if (this.ContiguousWrite)
         {
@@ -390,7 +354,6 @@ internal class ZipSegmentedStream : Stream
         this._innerStream.Write(buffer, offset, count);
     }
 
-
     public long TruncateBackward(uint diskNumber, long offset)
     {
         // Console.WriteLine("***ZSS.Trunc to disk {0}", diskNumber);
@@ -403,6 +366,7 @@ internal class ZipSegmentedStream : Stream
         if (this.rwMode != RwMode.Write)
         {
             this._exceptionPending = true;
+
             throw new ZipException("bad state.");
         }
 
@@ -412,8 +376,10 @@ internal class ZipSegmentedStream : Stream
         if (diskNumber == this.CurrentSegment)
         {
             long x = this._innerStream.Seek(offset, SeekOrigin.Begin);
+
             // workitem 10178
             SharedUtilities.Workaround_Ladybug318918(this._innerStream);
+
             return x;
         }
 
@@ -434,9 +400,10 @@ internal class ZipSegmentedStream : Stream
         }
 
         // Now, remove intervening segments.
-        for (uint j= this.CurrentSegment-1; j > diskNumber; j--)
+        for (uint j = this.CurrentSegment - 1; j > diskNumber; j--)
         {
             string s = this._NameForSegment(j);
+
             // Console.WriteLine("***ZSS.Trunc:  removing file {0}", s);
             if (File.Exists(s))
             {
@@ -453,11 +420,13 @@ internal class ZipSegmentedStream : Stream
             try
             {
                 this._currentTempName = SharedUtilities.InternalGetTempFileName();
+
                 // move the .z0x file back to a temp name
                 File.Move(this.CurrentName, this._currentTempName);
+
                 break; // workitem 12403
             }
-            catch(IOException)
+            catch (IOException)
             {
                 if (i == 2)
                 {
@@ -477,34 +446,19 @@ internal class ZipSegmentedStream : Stream
         return r;
     }
 
-
-
     public override bool CanRead
     {
-        get
-        {
-            return this.rwMode == RwMode.ReadOnly &&
-                   this._innerStream != null && this._innerStream.CanRead;
-        }
+        get { return this.rwMode == RwMode.ReadOnly && this._innerStream != null && this._innerStream.CanRead; }
     }
-
 
     public override bool CanSeek
     {
-        get
-        {
-            return this._innerStream != null && this._innerStream.CanSeek;
-        }
+        get { return this._innerStream != null && this._innerStream.CanSeek; }
     }
-
 
     public override bool CanWrite
     {
-        get
-        {
-            return this.rwMode == RwMode.Write &&
-                   this._innerStream != null && this._innerStream.CanWrite;
-        }
+        get { return this.rwMode == RwMode.Write && this._innerStream != null && this._innerStream.CanWrite; }
     }
 
     public override void Flush()
@@ -514,10 +468,7 @@ internal class ZipSegmentedStream : Stream
 
     public override long Length
     {
-        get
-        {
-            return this._innerStream.Length;
-        }
+        get { return this._innerStream.Length; }
     }
 
     public override long Position
@@ -529,8 +480,10 @@ internal class ZipSegmentedStream : Stream
     public override long Seek(long offset, SeekOrigin origin)
     {
         long x = this._innerStream.Seek(offset, origin);
+
         // workitem 10178
         SharedUtilities.Workaround_Ladybug318918(this._innerStream);
+
         return x;
     }
 
@@ -539,12 +492,12 @@ internal class ZipSegmentedStream : Stream
         if (this.rwMode != RwMode.Write)
         {
             this._exceptionPending = true;
+
             throw new InvalidOperationException();
         }
 
         this._innerStream.SetLength(value);
     }
-
 
     protected override void Dispose(bool disposing)
     {
@@ -563,6 +516,7 @@ internal class ZipSegmentedStream : Stream
 #else
                 this._innerStream.Dispose();
 #endif
+
                 //_innerStream = null;
                 if (this.rwMode == RwMode.Write)
                 {
@@ -587,5 +541,4 @@ internal class ZipSegmentedStream : Stream
             base.Dispose(disposing);
         }
     }
-
 }

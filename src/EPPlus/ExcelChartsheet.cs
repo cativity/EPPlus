@@ -10,6 +10,7 @@
  *************************************************************************************************
   01/27/2020         EPPlus Software AB       Initial release EPPlus 5
  *************************************************************************************************/
+
 using System;
 using System.Xml;
 using OfficeOpenXml.Drawing;
@@ -24,25 +25,40 @@ namespace OfficeOpenXml;
 public class ExcelChartsheet : ExcelWorksheet
 {
     //ExcelDrawings draws;
-    internal ExcelChartsheet(XmlNamespaceManager ns, ExcelPackage pck, string relID, Uri uriWorksheet, string sheetName, int sheetID, int positionID, eWorkSheetHidden? hidden, eChartType chartType, ExcelPivotTable pivotTableSource ) :
-        base(ns, pck, relID, uriWorksheet, sheetName, sheetID, positionID, hidden)
+    internal ExcelChartsheet(XmlNamespaceManager ns,
+                             ExcelPackage pck,
+                             string relID,
+                             Uri uriWorksheet,
+                             string sheetName,
+                             int sheetID,
+                             int positionID,
+                             eWorkSheetHidden? hidden,
+                             eChartType chartType,
+                             ExcelPivotTable pivotTableSource)
+        : base(ns, pck, relID, uriWorksheet, sheetName, sheetID, positionID, hidden)
     {
         this.IsChartSheet = true;
         this.Drawings.AddAllChartTypes("Chart 1", chartType, pivotTableSource, eEditAs.Absolute);
     }
-    internal ExcelChartsheet(XmlNamespaceManager ns, ExcelPackage pck, string relID, Uri uriWorksheet, string sheetName, int sheetID, int positionID, eWorkSheetHidden? hidden) :
-        base(ns, pck, relID, uriWorksheet, sheetName, sheetID, positionID, hidden)
+
+    internal ExcelChartsheet(XmlNamespaceManager ns,
+                             ExcelPackage pck,
+                             string relID,
+                             Uri uriWorksheet,
+                             string sheetName,
+                             int sheetID,
+                             int positionID,
+                             eWorkSheetHidden? hidden)
+        : base(ns, pck, relID, uriWorksheet, sheetName, sheetID, positionID, hidden)
     {
         this.IsChartSheet = true;
     }
+
     /// <summary>
     /// The worksheet chart object
     /// </summary>
-    public ExcelChart Chart 
+    public ExcelChart Chart
     {
-        get
-        {
-            return (ExcelChart)this.Drawings[0];
-        }
+        get { return (ExcelChart)this.Drawings[0]; }
     }
 }

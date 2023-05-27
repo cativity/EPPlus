@@ -10,6 +10,7 @@
  *************************************************************************************************
   22/10/2022         EPPlus Software AB           EPPlus v6
  *************************************************************************************************/
+
 using OfficeOpenXml.FormulaParsing.Excel.Functions.Metadata;
 using OfficeOpenXml.FormulaParsing.ExpressionGraph;
 using System;
@@ -19,10 +20,9 @@ using System.Text;
 
 namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Statistical;
 
-[FunctionMetadata(
-                     Category = ExcelFunctionCategory.Statistical,
-                     EPPlusVersion = "6.0",
-                     Description = "Calculate, or predict, a future value by using existing values. The future value is a y-value for a given x-value.")]
+[FunctionMetadata(Category = ExcelFunctionCategory.Statistical,
+                  EPPlusVersion = "6.0",
+                  Description = "Calculate, or predict, a future value by using existing values. The future value is a y-value for a given x-value.")]
 internal class ForecastLinear : ExcelFunction
 {
     public override CompileResult Execute(IEnumerable<FunctionArgument> arguments, ParsingContext context)
@@ -33,6 +33,7 @@ internal class ForecastLinear : ExcelFunction
         FunctionArgument? arg2 = arguments.ElementAt(2);
         double[]? arrayY = this.ArgsToDoubleEnumerable(false, false, new FunctionArgument[] { arg1 }, context).Select(a => a.Value).ToArray();
         double[]? arrayX = this.ArgsToDoubleEnumerable(false, false, new FunctionArgument[] { arg2 }, context).Select(b => b.Value).ToArray();
+
         if (arrayY.Count() != arrayX.Count())
         {
             return this.CreateResult(eErrorType.NA);
@@ -44,6 +45,7 @@ internal class ForecastLinear : ExcelFunction
         }
 
         double result = Forecast.ForecastImpl(x, arrayY, arrayX);
+
         return this.CreateResult(result, DataType.Decimal);
     }
 }

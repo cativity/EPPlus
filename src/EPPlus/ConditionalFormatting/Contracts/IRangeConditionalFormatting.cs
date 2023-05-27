@@ -10,6 +10,7 @@
  *************************************************************************************************
   01/27/2020         EPPlus Software AB       Initial release EPPlus 5
  *************************************************************************************************/
+
 using OfficeOpenXml.ConditionalFormatting.Contracts;
 using System.Drawing;
 
@@ -273,18 +274,21 @@ public interface IRangeConditionalFormatting
     /// <param name="IconSet"></param>
     /// <returns></returns>
     IExcelConditionalFormattingThreeIconSet<eExcelconditionalFormatting3IconsSetType> AddThreeIconSet(eExcelconditionalFormatting3IconsSetType IconSet);
+
     /// <summary>
     /// Adds a <see cref="IExcelConditionalFormattingFourIconSet&lt;eExcelconditionalFormatting4IconsSetType&gt;"/> to the range
     /// </summary>
     /// <param name="IconSet"></param>
     /// <returns></returns>
     IExcelConditionalFormattingFourIconSet<eExcelconditionalFormatting4IconsSetType> AddFourIconSet(eExcelconditionalFormatting4IconsSetType IconSet);
+
     /// <summary>
     /// Adds a <see cref="IExcelConditionalFormattingFiveIconSet"/> to the range
     /// </summary>
     /// <param name="IconSet"></param>
     /// <returns></returns>
     IExcelConditionalFormattingFiveIconSet AddFiveIconSet(eExcelconditionalFormatting5IconsSetType IconSet);
+
     /// <summary>
     /// Adds a <see cref="IExcelConditionalFormattingDataBarGroup"/> to the range
     /// </summary>

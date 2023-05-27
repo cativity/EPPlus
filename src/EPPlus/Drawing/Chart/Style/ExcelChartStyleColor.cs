@@ -10,6 +10,7 @@
  *************************************************************************************************
   01/27/2020         EPPlus Software AB       Initial release EPPlus 5
  *************************************************************************************************/
+
 using System;
 using System.Globalization;
 using System.Xml;
@@ -21,10 +22,11 @@ namespace OfficeOpenXml.Drawing.Chart.Style;
 /// </summary>
 public class ExcelChartStyleColor : XmlHelper
 {
-    internal ExcelChartStyleColor(XmlNamespaceManager nsm, XmlNode topNode) : base(nsm, topNode)
+    internal ExcelChartStyleColor(XmlNamespaceManager nsm, XmlNode topNode)
+        : base(nsm, topNode)
     {
-
     }
+
     /// <summary>
     /// Color is automatic
     /// </summary>
@@ -33,22 +35,22 @@ public class ExcelChartStyleColor : XmlHelper
         get
         {
             string? v = this.GetXmlNodeString("@val");
-            return v == "auto";                    
+
+            return v == "auto";
         }
     }
+
     /// <summary>
     /// The index, maps to the style matrix in the theme
     /// </summary>
     public int? Index
     {
-        get
-        {
-            return this.GetXmlNodeIntNull("@val");
-        }
+        get { return this.GetXmlNodeIntNull("@val"); }
     }
+
     internal void SetValue(bool isAuto, int index)
     {
-        if(this.Auto)
+        if (this.Auto)
         {
             this.SetXmlNodeString("@val", "auto");
         }
@@ -61,6 +63,5 @@ public class ExcelChartStyleColor : XmlHelper
 
             this.SetXmlNodeString("@val", index.ToString(CultureInfo.InvariantCulture));
         }
-
     }
 }

@@ -10,6 +10,7 @@
  *************************************************************************************************
   09/05/2022         EPPlus Software AB       EPPlus 6.1
  *************************************************************************************************/
+
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -22,7 +23,7 @@ namespace OfficeOpenXml.VBA.Signatures;
 internal class SignatureInfo
 {
     public uint cbSignature;
-    public uint signatureOffset;     //44 ??
+    public uint signatureOffset; //44 ??
     public uint cbSigningCertStore;
     public uint certStoreOffset;
     public uint cbProjectName;
@@ -41,5 +42,6 @@ internal class SignatureInfo
     internal ushort rgchTimestampBuffer;
 
     public X509Certificate2 Certificate { get; internal set; }
+
     public SignedCms Verifier { get; internal set; }
 }

@@ -10,6 +10,7 @@
  *************************************************************************************************
   01/27/2020         EPPlus Software AB       Initial release EPPlus 5
  *************************************************************************************************/
+
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -40,24 +41,25 @@ namespace OfficeOpenXml.Table
     /// </summary>
     public class ExcelTable : ExcelTableDxfBase, IEqualityComparer<ExcelTable>
     {
-        internal ExcelTable(ZipPackageRelationship rel, ExcelWorksheet sheet) : 
-            base(sheet.NameSpaceManager)
+        internal ExcelTable(ZipPackageRelationship rel, ExcelWorksheet sheet)
+            : base(sheet.NameSpaceManager)
         {
             this.WorkSheet = sheet;
             this.TableUri = UriHelper.ResolvePartUri(rel.SourceUri, rel.TargetUri);
             this.RelationshipID = rel.Id;
             ZipPackage? pck = sheet._package.ZipPackage;
-            this.Part=pck.GetPart(this.TableUri);
+            this.Part = pck.GetPart(this.TableUri);
 
             this.TableXml = new XmlDocument();
             LoadXmlSafe(this.TableXml, this.Part.GetStream());
             this.Init();
             this.Address = new ExcelAddressBase(this.GetXmlNodeString("@ref"));
-            this._tableStyle = GetTableStyle(this.StyleName);            
+            this._tableStyle = GetTableStyle(this.StyleName);
         }
-        internal ExcelTable(ExcelWorksheet sheet, ExcelAddressBase address, string name, int tblId) : 
-            base(sheet.NameSpaceManager)
-	    {
+
+        internal ExcelTable(ExcelWorksheet sheet, ExcelAddressBase address, string name, int tblId)
+            : base(sheet.NameSpaceManager)
+        {
             this.WorkSheet = sheet;
             this._address = address;
 
@@ -71,7 +73,8 @@ namespace OfficeOpenXml.Table
             {
                 this.ShowHeader = false;
             }
-            if(this.AutoFilterAddress!=null)
+
+            if (this.AutoFilterAddress != null)
             {
                 this.SetAutoFilter();
             }
@@ -91,118 +94,113 @@ namespace OfficeOpenXml.Table
         {
             name = ConvertUtil.ExcelEscapeString(name);
             string xml = "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"yes\" ?>";
-            xml += string.Format("<table xmlns=\"http://schemas.openxmlformats.org/spreadsheetml/2006/main\" id=\"{0}\" name=\"{1}\" displayName=\"{2}\" ref=\"{3}\" headerRowCount=\"1\">",
-            tblId,
-            name,
-            ExcelAddressUtil.GetValidName(name),
-            this.Address.Address);
+
+            xml +=
+                string.Format("<table xmlns=\"http://schemas.openxmlformats.org/spreadsheetml/2006/main\" id=\"{0}\" name=\"{1}\" displayName=\"{2}\" ref=\"{3}\" headerRowCount=\"1\">",
+                              tblId,
+                              name,
+                              ExcelAddressUtil.GetValidName(name),
+                              this.Address.Address);
+
             xml += string.Format("<autoFilter ref=\"{0}\" />", this.Address.Address);
 
-            int cols= this.Address._toCol- this.Address._fromCol+1;
-            xml += string.Format("<tableColumns count=\"{0}\">",cols);
-            HashSet<string>? names = new HashSet<string>();            
-            for(int i=1;i<=cols;i++)
+            int cols = this.Address._toCol - this.Address._fromCol + 1;
+            xml += string.Format("<tableColumns count=\"{0}\">", cols);
+            HashSet<string>? names = new HashSet<string>();
+
+            for (int i = 1; i <= cols; i++)
             {
-                ExcelRange? cell = this.WorkSheet.Cells[this.Address._fromRow, this.Address._fromCol+i-1];
-                string colName= SecurityElement.Escape(cell.Value?.ToString());
+                ExcelRange? cell = this.WorkSheet.Cells[this.Address._fromRow, this.Address._fromCol + i - 1];
+                string colName = SecurityElement.Escape(cell.Value?.ToString());
+
                 if (cell.Value == null || names.Contains(colName))
                 {
                     //Get an unique name
-                    int a=i;
+                    int a = i;
+
                     do
                     {
                         colName = string.Format("Column{0}", a++);
-                    }
-                    while (names.Contains(colName));
+                    } while (names.Contains(colName));
                 }
+
                 names.Add(colName);
-                xml += string.Format("<tableColumn id=\"{0}\" name=\"{1}\" />", i,colName);
+                xml += string.Format("<tableColumn id=\"{0}\" name=\"{1}\" />", i, colName);
             }
+
             xml += "</tableColumns>";
             xml += "<tableStyleInfo name=\"TableStyleMedium9\" showFirstColumn=\"0\" showLastColumn=\"0\" showRowStripes=\"1\" showColumnStripes=\"0\" /> ";
             xml += "</table>";
 
             return xml;
         }
-        internal static string CleanDisplayName(string name) 
+
+        internal static string CleanDisplayName(string name)
         {
             return Regex.Replace(name, @"[^\w\.-_]", "_");
         }
-        internal ZipPackagePart Part
-        {
-            get;
-            set;
-        }
+
+        internal ZipPackagePart Part { get; set; }
+
         /// <summary>
         /// Provides access to the XML data representing the table in the package.
         /// </summary>
-        public XmlDocument TableXml
-        {
-            get;
-            set;
-        }
+        public XmlDocument TableXml { get; set; }
+
         /// <summary>
         /// The package internal URI to the Table Xml Document.
         /// </summary>
-        public Uri TableUri
-        {
-            get;
-            internal set;
-        }
-        internal string RelationshipID
-        {
-            get;
-            set;
-        }
+        public Uri TableUri { get; internal set; }
+
+        internal string RelationshipID { get; set; }
+
         const string ID_PATH = "@id";
-        internal int Id 
+
+        internal int Id
         {
-            get
-            {
-                return this.GetXmlNodeInt(ID_PATH);
-            }
-            set
-            {
-                this.SetXmlNodeString(ID_PATH, value.ToString());
-            }
+            get { return this.GetXmlNodeInt(ID_PATH); }
+            set { this.SetXmlNodeString(ID_PATH, value.ToString()); }
         }
+
         const string NAME_PATH = "@name";
         const string DISPLAY_NAME_PATH = "@displayName";
+
         /// <summary>
         /// The name of the table object in Excel
         /// </summary>
         public string Name
         {
-            get
+            get { return this.GetXmlNodeString(NAME_PATH); }
+            set
             {
-                return this.GetXmlNodeString(NAME_PATH);
-            }
-            set 
-            {
-                if(this.Name.Equals(value, StringComparison.CurrentCultureIgnoreCase)==false && this.WorkSheet.Workbook.ExistsTableName(value))
+                if (this.Name.Equals(value, StringComparison.CurrentCultureIgnoreCase) == false && this.WorkSheet.Workbook.ExistsTableName(value))
                 {
                     throw new ArgumentException("Tablename is not unique");
                 }
+
                 string prevName = this.Name;
+
                 if (this.WorkSheet.Tables._tableNames.ContainsKey(prevName))
                 {
-                    int ix= this.WorkSheet.Tables._tableNames[prevName];
+                    int ix = this.WorkSheet.Tables._tableNames[prevName];
                     this.WorkSheet.Tables._tableNames.Remove(prevName);
-                    this.WorkSheet.Tables._tableNames.Add(value,ix);
+                    this.WorkSheet.Tables._tableNames.Add(value, ix);
                 }
+
                 TableAdjustFormula? ta = new TableAdjustFormula(this);
                 ta.AdjustFormulas(prevName, value);
                 this.SetXmlNodeString(NAME_PATH, value);
                 this.SetXmlNodeString(DISPLAY_NAME_PATH, ExcelAddressUtil.GetValidName(value));
             }
         }
-        
+
         internal void DeleteMe()
         {
             if (this.RelationshipID != null)
             {
                 this.WorkSheet.DeleteNode($"d:tableParts/d:tablePart[@r:id='{this.RelationshipID}']");
             }
+
             if (this.TableUri != null && this.WorkSheet._package.ZipPackage.PartExists(this.TableUri))
             {
                 this.WorkSheet._package.ZipPackage.DeletePart(this.TableUri);
@@ -212,48 +210,42 @@ namespace OfficeOpenXml.Table
         /// <summary>
         /// The worksheet of the table
         /// </summary>
-        public ExcelWorksheet WorkSheet
-        {
-            get;
-            set;
-        }
+        public ExcelWorksheet WorkSheet { get; set; }
 
         private ExcelAddressBase _address = null;
+
         /// <summary>
         /// The address of the table
         /// </summary>
         public ExcelAddressBase Address
         {
-            get
-            {
-                return this._address;
-            }
+            get { return this._address; }
             internal set
             {
                 this._address = value;
-                if(value!=null)
+
+                if (value != null)
                 {
                     this.SetXmlNodeString("@ref", value.Address);
                     this.WriteAutoFilter(this.ShowTotal);
                 }
             }
         }
+
         /// <summary>
         /// The table range
         /// </summary>
         public ExcelRangeBase Range
         {
-            get
-            {
-                return this.WorkSheet.Cells[this._address._fromRow, this._address._fromCol, this._address._toRow, this._address._toCol];
-            }
+            get { return this.WorkSheet.Cells[this._address._fromRow, this._address._fromCol, this._address._toRow, this._address._toCol]; }
         }
+
         internal ExcelRangeBase DataRange
         {
             get
             {
                 int fromRow = this.ShowHeader ? this._address._fromRow + 1 : this._address._fromRow;
-                int toRow = this.ShowTotal ? this._address._toRow - 1: this._address._toRow;
+                int toRow = this.ShowTotal ? this._address._toRow - 1 : this._address._toRow;
 
                 return this.WorkSheet.Cells[fromRow, this._address._fromCol, toRow, this._address._toCol];
             }
@@ -270,6 +262,7 @@ namespace OfficeOpenXml.Table
         {
             return this.Range.ToText();
         }
+
         /// <summary>
         /// Creates an <see cref="IExcelHtmlTableExporter"/> object to export the table to HTML
         /// </summary>
@@ -366,6 +359,7 @@ namespace OfficeOpenXml.Table
             JsonTableExportSettings? s = new JsonTableExportSettings();
             await this.SaveToJsonInternalAsync(stream, s);
         }
+
         /// <summary>
         /// Save the table to json
         /// </summary>
@@ -377,7 +371,8 @@ namespace OfficeOpenXml.Table
             JsonTableExportSettings? s = new JsonTableExportSettings();
             settings.Invoke(s);
             await this.SaveToJsonInternalAsync(stream, s);
-        }        
+        }
+
         private async Task SaveToJsonInternalAsync(Stream stream, JsonTableExportSettings s)
         {
             JsonTableExport? exporter = new JsonTableExport(this, s);
@@ -395,6 +390,7 @@ namespace OfficeOpenXml.Table
         {
             return this.Range.ToDataTable();
         }
+
         /// <summary>
         /// Returns the table as a JSON string
         /// </summary>
@@ -402,8 +398,10 @@ namespace OfficeOpenXml.Table
         public string ToJson()
         {
             JsonTableExportSettings? s = new JsonTableExportSettings();
+
             return this.ToJsonString(s);
         }
+
         /// <summary>
         /// Returns the table as a JSON string
         /// </summary>
@@ -411,10 +409,12 @@ namespace OfficeOpenXml.Table
         /// <returns>A string containing the JSON document.</returns>
         public string ToJson(Action<JsonTableExportSettings> settings)
         {
-            JsonTableExportSettings? s=new JsonTableExportSettings();
+            JsonTableExportSettings? s = new JsonTableExportSettings();
             settings.Invoke(s);
+
             return this.ToJsonString(s);
         }
+
         /// <summary>
         /// Saves the table as a JSON string to a string
         /// </summary>
@@ -424,6 +424,7 @@ namespace OfficeOpenXml.Table
             JsonTableExportSettings? s = new JsonTableExportSettings();
             this.SaveToJsonInternal(stream, s);
         }
+
         /// <summary>
         /// Saves the table as a JSON string to a string
         /// </summary>
@@ -448,6 +449,7 @@ namespace OfficeOpenXml.Table
             JsonTableExport? exporter = new JsonTableExport(this, s);
             MemoryStream? ms = RecyclableMemory.GetStream();
             exporter.Export(ms);
+
             return s.Encoding.GetString(ms.ToArray());
         }
 
@@ -472,6 +474,7 @@ namespace OfficeOpenXml.Table
         }
 
         #endregion
+
 #if (!NET35)
         /// <summary>
         /// Returns a collection of T for the tables data range. The total row is not included.
@@ -483,12 +486,14 @@ namespace OfficeOpenXml.Table
         /// <returns>A list of T</returns>
         public List<T> ToCollection<T>()
         {
-            if(this.ShowHeader==false)
+            if (this.ShowHeader == false)
             {
                 throw new InvalidOperationException("The table must have headers.");
             }
+
             return this.ToCollection<T>(ToCollectionTableOptions.Default);
         }
+
         /// <summary>
         /// Returns a collection of T for the tables data range. The total row is not included.
         /// The table must have headers.
@@ -502,8 +507,10 @@ namespace OfficeOpenXml.Table
         {
             ToCollectionTableOptions? o = new ToCollectionTableOptions();
             options.Invoke(o);
+
             return this.ToCollection<T>(o);
         }
+
         /// <summary>
         /// Returns a collection of T for the tables data range. The total row is not included.
         /// The table must have headers.
@@ -515,15 +522,17 @@ namespace OfficeOpenXml.Table
         /// <returns>A list of T</returns>
         public List<T> ToCollection<T>(ToCollectionTableOptions options)
         {
-            
-            if (this.ShowHeader == false && (options.Headers==null || options.Headers.Length == 0))
+            if (this.ShowHeader == false && (options.Headers == null || options.Headers.Length == 0))
             {
                 throw new InvalidOperationException("The table must have headers or the headers must be supplied in the options.");
             }
+
             ToCollectionRangeOptions? ro = new ToCollectionRangeOptions(options) { HeaderRow = 0 };
+
             if (this.ShowTotal)
             {
                 ExcelRangeBase? r = this.Range;
+
                 return this.WorkSheet.Cells[r._fromRow, r._fromCol, r._toRow - 1, r._toCol].ToCollection<T>(ro);
             }
             else
@@ -563,6 +572,7 @@ namespace OfficeOpenXml.Table
         {
             ToCollectionTableOptions? o = ToCollectionTableOptions.Default;
             options.Invoke(o);
+
             return this.ToCollectionWithMappings(setRow, o);
         }
 
@@ -583,11 +593,14 @@ namespace OfficeOpenXml.Table
             {
                 throw new InvalidOperationException("The table must have headers or the headers must be supplied in the options.");
             }
+
             ToCollectionRangeOptions? ro = new ToCollectionRangeOptions(options);
             ro.HeaderRow = 0;
+
             if (this.ShowTotal)
             {
                 ExcelRangeBase? r = this.Range;
+
                 return this.WorkSheet.Cells[r._fromRow, r._fromCol, r._toRow - 1, r._toCol].ToCollectionWithMappings(setRow, ro);
             }
             else
@@ -595,8 +608,9 @@ namespace OfficeOpenXml.Table
                 return this.Range.ToCollectionWithMappings(setRow, ro);
             }
         }
-        
+
         internal ExcelTableColumnCollection _cols = null;
+
         /// <summary>
         /// Collection of the columns in the table
         /// </summary>
@@ -604,37 +618,36 @@ namespace OfficeOpenXml.Table
         {
             get { return this._cols ??= new ExcelTableColumnCollection(this); }
         }
+
         TableStyles _tableStyle = TableStyles.Medium6;
+
         /// <summary>
         /// The table style. If this property is custom, the style from the StyleName propery is used.
         /// </summary>
         public TableStyles TableStyle
         {
-            get
-            {                
-                return this._tableStyle;
-            }
+            get { return this._tableStyle; }
             set
             {
-                this._tableStyle=value;
+                this._tableStyle = value;
+
                 if (value != TableStyles.Custom)
                 {
                     this.SetXmlNodeString(STYLENAME_PATH, "TableStyle" + value.ToString());
                 }
             }
         }
+
         const string HEADERROWCOUNT_PATH = "@headerRowCount";
         const string AUTOFILTER_PATH = "d:autoFilter";
         const string AUTOFILTER_ADDRESS_PATH = AUTOFILTER_PATH + "/@ref";
+
         /// <summary>
         /// If the header row is visible or not
         /// </summary>
         public bool ShowHeader
         {
-            get
-            {
-                return this.GetXmlNodeInt(HEADERROWCOUNT_PATH)!=0;
-            }
+            get { return this.GetXmlNodeInt(HEADERROWCOUNT_PATH) != 0; }
             set
             {
                 if ((this.Address._toRow - this.Address._fromRow < 0 && value) || (this.Address._toRow - this.Address._fromRow == 1 && value && this.ShowTotal))
@@ -642,14 +655,16 @@ namespace OfficeOpenXml.Table
                     throw new Exception("Cant set ShowHeader-property. Table has too few rows");
                 }
 
-                if(value)
+                if (value)
                 {
                     this.DeleteNode(HEADERROWCOUNT_PATH);
                     this.WriteAutoFilter(this.ShowTotal);
+
                     for (int i = 0; i < this.Columns.Count; i++)
                     {
                         string? v = this.WorkSheet.GetValue<string>(this.Address._fromRow, this.Address._fromCol + i);
-                        if(string.IsNullOrEmpty(v))
+
+                        if (string.IsNullOrEmpty(v))
                         {
                             this.WorkSheet.SetValue(this.Address._fromRow, this.Address._fromCol + i, this._cols[i].Name);
                         }
@@ -660,6 +675,7 @@ namespace OfficeOpenXml.Table
                     }
 
                     this.HeaderRowStyle.SetStyle();
+
                     foreach (ExcelTableColumn? c in this.Columns)
                     {
                         c.HeaderRowStyle.SetStyle();
@@ -673,11 +689,13 @@ namespace OfficeOpenXml.Table
                 }
             }
         }
+
         internal ExcelAddressBase AutoFilterAddress
         {
             get
             {
-                string a= this.GetXmlNodeString(AUTOFILTER_ADDRESS_PATH);
+                string a = this.GetXmlNodeString(AUTOFILTER_ADDRESS_PATH);
+
                 if (a == "")
                 {
                     return null;
@@ -688,7 +706,9 @@ namespace OfficeOpenXml.Table
                 }
             }
         }
-        ExcelAutoFilter _autoFilter=null;
+
+        ExcelAutoFilter _autoFilter = null;
+
         /// <summary>
         /// Autofilter settings for the table
         /// </summary>
@@ -696,7 +716,7 @@ namespace OfficeOpenXml.Table
         {
             get
             {
-                if(this.ShowFilter)
+                if (this.ShowFilter)
                 {
                     return this._autoFilter;
                 }
@@ -706,6 +726,7 @@ namespace OfficeOpenXml.Table
                 }
             }
         }
+
         private void WriteAutoFilter(bool showTotal)
         {
             if (this.ShowHeader)
@@ -734,18 +755,14 @@ namespace OfficeOpenXml.Table
                 this._autoFilter = new ExcelAutoFilter(this.NameSpaceManager, node, this);
                 this._autoFilter.Address = this.AutoFilterAddress;
             }
-
         }
 
         /// <summary>
         /// If the header row has an autofilter
         /// </summary>
-        public bool ShowFilter 
-        { 
-            get
-            {
-                return this.ShowHeader && this.AutoFilterAddress != null;
-            }
+        public bool ShowFilter
+        {
+            get { return this.ShowHeader && this.AutoFilterAddress != null; }
             set
             {
                 if (this.ShowHeader)
@@ -754,48 +771,57 @@ namespace OfficeOpenXml.Table
                     {
                         this.WriteAutoFilter(this.ShowTotal);
                     }
-                    else 
+                    else
                     {
                         this.DeleteAllNode(AUTOFILTER_PATH);
                         this._autoFilter = null;
                     }
                 }
-                else if(value)
+                else if (value)
                 {
                     throw new InvalidOperationException("Filter can only be applied when ShowHeader is set to true");
                 }
             }
         }
+
         const string TOTALSROWCOUNT_PATH = "@totalsRowCount";
         const string TOTALSROWSHOWN_PATH = "@totalsRowShown";
+
         /// <summary>
         /// If the total row is visible or not
         /// </summary>
         public bool ShowTotal
         {
-            get
-            {
-                return this.GetXmlNodeInt(TOTALSROWCOUNT_PATH) == 1;
-            }
+            get { return this.GetXmlNodeInt(TOTALSROWCOUNT_PATH) == 1; }
             set
             {
                 if (value != this.ShowTotal)
                 {
                     if (value)
                     {
-                        this.Address=new ExcelAddress(this.WorkSheet.Name, ExcelCellBase.GetAddress(this.Address.Start.Row, this.Address.Start.Column, this.Address.End.Row+1, this.Address.End.Column));
+                        this.Address = new ExcelAddress(this.WorkSheet.Name,
+                                                        ExcelCellBase.GetAddress(this.Address.Start.Row,
+                                                                                 this.Address.Start.Column,
+                                                                                 this.Address.End.Row + 1,
+                                                                                 this.Address.End.Column));
                     }
                     else
                     {
-                        this.Address = new ExcelAddress(this.WorkSheet.Name, ExcelCellBase.GetAddress(this.Address.Start.Row, this.Address.Start.Column, this.Address.End.Row - 1, this.Address.End.Column));
+                        this.Address = new ExcelAddress(this.WorkSheet.Name,
+                                                        ExcelCellBase.GetAddress(this.Address.Start.Row,
+                                                                                 this.Address.Start.Column,
+                                                                                 this.Address.End.Row - 1,
+                                                                                 this.Address.End.Column));
                     }
 
                     this.SetXmlNodeString("@ref", this.Address.Address);
+
                     if (value)
                     {
                         this.SetXmlNodeString(TOTALSROWCOUNT_PATH, "1");
                         this.SetXmlNodeString(TOTALSROWSHOWN_PATH, "1");
                         this.TotalsRowStyle.SetStyle();
+
                         foreach (ExcelTableColumn? c in this.Columns)
                         {
                             c.TotalsRowStyle.SetStyle();
@@ -811,20 +837,20 @@ namespace OfficeOpenXml.Table
                 }
             }
         }
+
         const string STYLENAME_PATH = "d:tableStyleInfo/@name";
+
         /// <summary>
         /// The style name for custum styles
         /// </summary>
         public string StyleName
         {
-            get
-            {
-                return this.GetXmlNodeString(STYLENAME_PATH);
-            }
+            get { return this.GetXmlNodeString(STYLENAME_PATH); }
             set
             {
                 this._tableStyle = GetTableStyle(value);
-                if(this._tableStyle==TableStyles.None)
+
+                if (this._tableStyle == TableStyles.None)
                 {
                     this.DeleteAllNode(STYLENAME_PATH);
                 }
@@ -859,76 +885,57 @@ namespace OfficeOpenXml.Table
         }
 
         const string SHOWFIRSTCOLUMN_PATH = "d:tableStyleInfo/@showFirstColumn";
+
         /// <summary>
         /// Display special formatting for the first row
         /// </summary>
         public bool ShowFirstColumn
         {
-            get
-            {
-                return this.GetXmlNodeBool(SHOWFIRSTCOLUMN_PATH);
-            }
-            set
-            {
-                this.SetXmlNodeBool(SHOWFIRSTCOLUMN_PATH, value, false);
-            }   
+            get { return this.GetXmlNodeBool(SHOWFIRSTCOLUMN_PATH); }
+            set { this.SetXmlNodeBool(SHOWFIRSTCOLUMN_PATH, value, false); }
         }
+
         const string SHOWLASTCOLUMN_PATH = "d:tableStyleInfo/@showLastColumn";
+
         /// <summary>
         /// Display special formatting for the last row
         /// </summary>
         public bool ShowLastColumn
         {
-            get
-            {
-                return this.GetXmlNodeBool(SHOWLASTCOLUMN_PATH);
-            }
-            set
-            {
-                this.SetXmlNodeBool(SHOWLASTCOLUMN_PATH, value, false);
-            }
+            get { return this.GetXmlNodeBool(SHOWLASTCOLUMN_PATH); }
+            set { this.SetXmlNodeBool(SHOWLASTCOLUMN_PATH, value, false); }
         }
+
         const string SHOWROWSTRIPES_PATH = "d:tableStyleInfo/@showRowStripes";
+
         /// <summary>
         /// Display banded rows
         /// </summary>
         public bool ShowRowStripes
         {
-            get
-            {
-                return this.GetXmlNodeBool(SHOWROWSTRIPES_PATH);
-            }
-            set
-            {
-                this.SetXmlNodeBool(SHOWROWSTRIPES_PATH, value, false);
-            }
+            get { return this.GetXmlNodeBool(SHOWROWSTRIPES_PATH); }
+            set { this.SetXmlNodeBool(SHOWROWSTRIPES_PATH, value, false); }
         }
+
         const string SHOWCOLUMNSTRIPES_PATH = "d:tableStyleInfo/@showColumnStripes";
+
         /// <summary>
         /// Display banded columns
         /// </summary>
         public bool ShowColumnStripes
         {
-            get
-            {
-                return this.GetXmlNodeBool(SHOWCOLUMNSTRIPES_PATH);
-            }
-            set
-            {
-                this.SetXmlNodeBool(SHOWCOLUMNSTRIPES_PATH, value, false);
-            }
+            get { return this.GetXmlNodeBool(SHOWCOLUMNSTRIPES_PATH); }
+            set { this.SetXmlNodeBool(SHOWCOLUMNSTRIPES_PATH, value, false); }
         }
 
         const string TOTALSROWCELLSTYLE_PATH = "@totalsRowCellStyle";
+
         /// <summary>
         /// Named style used for the total row
         /// </summary>
         public string TotalsRowCellStyle
         {
-            get
-            {
-                return this.GetXmlNodeString(TOTALSROWCELLSTYLE_PATH);
-            }
+            get { return this.GetXmlNodeString(TOTALSROWCELLSTYLE_PATH); }
             set
             {
                 if (this.WorkSheet.Workbook.Styles.NamedStyles.FindIndexById(value) < 0)
@@ -944,16 +951,15 @@ namespace OfficeOpenXml.Table
                 }
             }
         }
+
         const string DATACELLSTYLE_PATH = "@dataCellStyle";
+
         /// <summary>
         /// Named style used for the data cells
         /// </summary>
         public string DataCellStyleName
         {
-            get
-            {
-                return this.GetXmlNodeString(DATACELLSTYLE_PATH);
-            }
+            get { return this.GetXmlNodeString(DATACELLSTYLE_PATH); }
             set
             {
                 if (this.WorkSheet.Workbook.Styles.NamedStyles.FindIndexById(value) < 0)
@@ -972,16 +978,15 @@ namespace OfficeOpenXml.Table
                 }
             }
         }
+
         const string HEADERROWCELLSTYLE_PATH = "@headerRowCellStyle";
+
         /// <summary>
         /// Named style used for the header row
         /// </summary>
         public string HeaderRowCellStyle
         {
-            get
-            {
-                return this.GetXmlNodeString(HEADERROWCELLSTYLE_PATH);
-            }
+            get { return this.GetXmlNodeString(HEADERROWCELLSTYLE_PATH); }
             set
             {
                 if (this.WorkSheet.Workbook.Styles.NamedStyles.FindIndexById(value) < 0)
@@ -995,9 +1000,9 @@ namespace OfficeOpenXml.Table
                 {
                     this.WorkSheet.Cells[this.Address._fromRow, this.Address._fromCol, this.Address._fromRow, this.Address._toCol].StyleName = value;
                 }
-
             }
         }
+
         /// <summary>
         /// Checkes if two tables are the same
         /// </summary>
@@ -1008,6 +1013,7 @@ namespace OfficeOpenXml.Table
         {
             return x.WorkSheet == y.WorkSheet && x.Id == y.Id && x.TableXml.OuterXml == y.TableXml.OuterXml;
         }
+
         /// <summary>
         /// Returns a hashcode generated from the TableXml
         /// </summary>
@@ -1017,6 +1023,7 @@ namespace OfficeOpenXml.Table
         {
             return obj.TableXml.OuterXml.GetHashCode();
         }
+
         /// <summary>
         /// Adds new rows to the table. 
         /// </summary>
@@ -1026,6 +1033,7 @@ namespace OfficeOpenXml.Table
         {
             return this.InsertRow(int.MaxValue, rows);
         }
+
         /// <summary>
         /// Inserts one or more rows before the specified position in the table.
         /// </summary>
@@ -1033,53 +1041,73 @@ namespace OfficeOpenXml.Table
         /// <param name="rows">Number of rows to insert.</param>
         /// <param name="copyStyles">Copy styles from the row above. If inserting a row at position 0, the first row will be used as a template.</param>
         /// <returns>The inserted range</returns>
-        public ExcelRangeBase InsertRow(int position, int rows=1, bool copyStyles=true)
+        public ExcelRangeBase InsertRow(int position, int rows = 1, bool copyStyles = true)
         {
-            if(position < 0)
+            if (position < 0)
             {
                 throw new ArgumentException("position", "position can't be negative");
             }
+
             if (rows < 0)
             {
                 throw new ArgumentException("position", "rows can't be negative");
             }
+
             int firstRow = this._address._fromRow;
             bool isFirstRow = position == 0;
             int subtact = this.ShowTotal ? 2 : 1;
-            if (position>=ExcelPackage.MaxRows || position > this._address._fromRow + position + rows - subtact)
+
+            if (position >= ExcelPackage.MaxRows || position > this._address._fromRow + position + rows - subtact)
             {
                 position = this._address.Rows - subtact;
             }
-            if (this._address._fromRow+position+rows>ExcelPackage.MaxRows)
+
+            if (this._address._fromRow + position + rows > ExcelPackage.MaxRows)
             {
                 throw new InvalidOperationException("Insert will exceed the maximum number of rows in the worksheet");
             }
-            if(this.ShowHeader)
+
+            if (this.ShowHeader)
             {
                 position++;
             }
 
-            string? address = ExcelCellBase.GetAddress(this._address._fromRow + position, this._address._fromCol, this._address._fromRow + position + rows - 1, this._address._toCol);
+            string? address = ExcelCellBase.GetAddress(this._address._fromRow + position,
+                                                       this._address._fromCol,
+                                                       this._address._fromRow + position + rows - 1,
+                                                       this._address._toCol);
+
             ExcelRangeBase? range = new ExcelRangeBase(this.WorkSheet, address);
 
-            WorksheetRangeInsertHelper.Insert(range,eShiftTypeInsert.Down, false, true);
+            WorksheetRangeInsertHelper.Insert(range, eShiftTypeInsert.Down, false, true);
 
             this.ExtendCalculatedFormulas(range);
 
             if (copyStyles)
             {
                 int copyFromRow = isFirstRow ? this.DataRange._fromRow + rows + 1 : this._address._fromRow + position - 1;
+
                 if (range._toRow > this._address._toRow)
                 {
                     this.Address = this._address.AddRow(this._address._toRow, rows);
                 }
 
-                this.CopyStylesFromRow(address, copyFromRow);    //Separate copy instead of using Insert paramter 3 as the first row should not copy the styles from the header row.
+                this.CopyStylesFromRow(address,
+                                       copyFromRow); //Separate copy instead of using Insert paramter 3 as the first row should not copy the styles from the header row.
             }
 
             if (this._address._fromRow > firstRow)
             {
-                this._address = new ExcelAddressBase(firstRow, this._address._fromCol, this._address._toRow, this._address._toCol, this._address._fromRowFixed, this._address._fromColFixed, this._address._toRowFixed, this._address._toColFixed, this._address.WorkSheetName, null);
+                this._address = new ExcelAddressBase(firstRow,
+                                                     this._address._fromCol,
+                                                     this._address._toRow,
+                                                     this._address._toCol,
+                                                     this._address._fromRowFixed,
+                                                     this._address._fromColFixed,
+                                                     this._address._toRowFixed,
+                                                     this._address._toColFixed,
+                                                     this._address.WorkSheetName,
+                                                     null);
             }
 
             return range;
@@ -1087,9 +1115,9 @@ namespace OfficeOpenXml.Table
 
         private void ExtendCalculatedFormulas(ExcelRangeBase range)
         {
-            foreach(ExcelTableColumn? c in this.Columns)
+            foreach (ExcelTableColumn? c in this.Columns)
             {
-                if(!string.IsNullOrEmpty(c.CalculatedColumnFormula))
+                if (!string.IsNullOrEmpty(c.CalculatedColumnFormula))
                 {
                     c.SetFormulaCells(range._fromRow, range._toRow, range._fromCol + c.Position);
                 }
@@ -1099,9 +1127,11 @@ namespace OfficeOpenXml.Table
         private void CopyStylesFromRow(string address, int copyRow)
         {
             ExcelRange? range = this.WorkSheet.Cells[address];
+
             for (int col = range._fromCol; col <= range._toCol; col++)
             {
                 int styleId = this.WorkSheet.Cells[copyRow, col].StyleID;
+
                 if (styleId != 0)
                 {
                     for (int row = range._fromRow; row <= range._toRow; row++)
@@ -1111,17 +1141,20 @@ namespace OfficeOpenXml.Table
                 }
             }
         }
+
         private void CopyStylesFromColumn(string address, int copyColumn)
         {
             ExcelRange? range = this.WorkSheet.Cells[address];
+
             for (int row = range._fromRow; row <= range._toRow; row++)
             {
                 int styleId = this.WorkSheet.Cells[row, copyColumn].StyleID;
+
                 if (styleId != 0)
                 {
-                for (int col = range._fromCol; col <= range._toCol; col++)
-                {
-                    this.WorkSheet.SetStyleInner(row, col, styleId);
+                    for (int col = range._fromCol; col <= range._toCol; col++)
+                    {
+                        this.WorkSheet.SetStyleInner(row, col, styleId);
                     }
                 }
             }
@@ -1139,25 +1172,37 @@ namespace OfficeOpenXml.Table
             {
                 throw new ArgumentException("position", "position can't be negative");
             }
+
             if (rows < 0)
             {
                 throw new ArgumentException("position", "rows can't be negative");
             }
+
             if (this._address._fromRow + position + rows + (this.ShowHeader ? 0 : -1) > this._address._toRow)
             {
                 throw new InvalidOperationException("Delete will exceed the number of rows in the table");
             }
+
             int subtract = this.ShowTotal ? 2 : 1;
-            if(position==0 && rows+subtract >= this._address.Rows)
+
+            if (position == 0 && rows + subtract >= this._address.Rows)
             {
                 throw new InvalidOperationException("Can't delete all table rows. A table must have at least one row.");
             }
+
             position += this.ShowHeader ? 1 : 0; //Header row should not be deleted.
-            string? address = ExcelCellBase.GetAddress(this._address._fromRow + position, this._address._fromCol, this._address._fromRow + position + rows - 1, this._address._toCol);
+
+            string? address = ExcelCellBase.GetAddress(this._address._fromRow + position,
+                                                       this._address._fromCol,
+                                                       this._address._fromRow + position + rows - 1,
+                                                       this._address._toCol);
+
             ExcelRangeBase? range = new ExcelRangeBase(this.WorkSheet, address);
             range.Delete(eShiftTypeDelete.Up);
+
             return range;
         }
+
         /// <summary>
         /// Inserts one or more columns before the specified position in the table.
         /// </summary>
@@ -1165,17 +1210,20 @@ namespace OfficeOpenXml.Table
         /// <param name="columns">Number of rows to insert.</param>
         /// <param name="copyStyles">Copy styles from the column to the left.</param>
         /// <returns>The inserted range</returns>
-        internal ExcelRangeBase InsertColumn(int position, int columns, bool copyStyles=false)
+        internal ExcelRangeBase InsertColumn(int position, int columns, bool copyStyles = false)
         {
             if (position < 0)
             {
                 throw new ArgumentException("position", "position can't be negative");
             }
+
             if (columns < 0)
             {
                 throw new ArgumentException("columns", "columns can't be negative");
             }
+
             bool isFirstColumn = position == 0;
+
             if (position >= ExcelPackage.MaxColumns || position > this._address._fromCol + position + columns - 1)
             {
                 position = this._address.Columns;
@@ -1186,7 +1234,11 @@ namespace OfficeOpenXml.Table
                 throw new InvalidOperationException("Insert will exceed the maximum number of columns in the worksheet");
             }
 
-            string? address = ExcelCellBase.GetAddress(this._address._fromRow, this._address._fromCol + position, this._address._toRow, this._address._fromCol + position + columns - 1);
+            string? address = ExcelCellBase.GetAddress(this._address._fromRow,
+                                                       this._address._fromCol + position,
+                                                       this._address._toRow,
+                                                       this._address._fromCol + position + columns - 1);
+
             ExcelRangeBase? range = new ExcelRangeBase(this.WorkSheet, address);
 
             WorksheetRangeInsertHelper.Insert(range, eShiftTypeInsert.Right, true, false);
@@ -1197,10 +1249,10 @@ namespace OfficeOpenXml.Table
             }
             else if (range._toCol > this._address._toCol)
             {
-                this.Address = new ExcelAddressBase(this._address._fromRow, this._address._fromCol, this._address._toRow, this._address._toCol+columns);
+                this.Address = new ExcelAddressBase(this._address._fromRow, this._address._fromCol, this._address._toRow, this._address._toCol + columns);
             }
-            
-            if(copyStyles && isFirstColumn==false)
+
+            if (copyStyles && isFirstColumn == false)
             {
                 int copyFromCol = this._address._fromCol + position - 1;
                 this.CopyStylesFromColumn(address, copyFromCol);
@@ -1208,6 +1260,7 @@ namespace OfficeOpenXml.Table
 
             return range;
         }
+
         /// <summary>
         /// Deletes one or more columns at the specified position in the table.
         /// </summary>
@@ -1220,6 +1273,7 @@ namespace OfficeOpenXml.Table
             {
                 throw new ArgumentException("position", "position can't be negative");
             }
+
             if (columns < 0)
             {
                 throw new ArgumentException("columns", "columns can't be negative");
@@ -1230,45 +1284,42 @@ namespace OfficeOpenXml.Table
                 throw new InvalidOperationException("Delete will exceed the number of columns in the table");
             }
 
-            string? address = ExcelCellBase.GetAddress(this._address._fromRow, this._address._fromCol + position, this._address._toRow, this._address._fromCol + position + columns - 1);
+            string? address = ExcelCellBase.GetAddress(this._address._fromRow,
+                                                       this._address._fromCol + position,
+                                                       this._address._toRow,
+                                                       this._address._fromCol + position + columns - 1);
+
             ExcelRangeBase? range = new ExcelRangeBase(this.WorkSheet, address);
 
             WorksheetRangeDeleteHelper.Delete(range, eShiftTypeDelete.Left);
 
             return range;
         }
+
         internal int? HeaderRowBorderDxfId
         {
-            get
-            {
-                return this.GetXmlNodeIntNull("@headerRowBorderDxfId");
-            }
-            set
-            {
-                this.SetXmlNodeInt("@headerRowBorderDxfId", value);
-            }
+            get { return this.GetXmlNodeIntNull("@headerRowBorderDxfId"); }
+            set { this.SetXmlNodeInt("@headerRowBorderDxfId", value); }
         }
+
         /// <summary>
         /// Sets differential formatting styles for the table header row border style.
         /// </summary>
         public ExcelDxfBorderBase HeaderRowBorderStyle { get; set; }
+
         internal int? TableBorderDxfId
         {
-            get
-            {
-                return this.GetXmlNodeIntNull("@tableBorderDxfId");
-            }
-            set
-            {
-                this.SetXmlNodeInt("@tableBorderDxfId", value);
-            }
+            get { return this.GetXmlNodeIntNull("@tableBorderDxfId"); }
+            set { this.SetXmlNodeInt("@tableBorderDxfId", value); }
         }
+
         /// <summary>
         /// Sets differential formatting styles for the tables row border style.
         /// </summary>
         public ExcelDxfBorderBase TableBorderStyle { get; set; }
 
-#region Sorting
+        #region Sorting
+
         private TableSorter _tableSorter = null;
         const string SortStatePath = "d:sortState";
         SortState _sortState = null;
@@ -1285,6 +1336,7 @@ namespace OfficeOpenXml.Table
                 if (this._sortState == null)
                 {
                     XmlNode? node = this.TableXml.SelectSingleNode($"//{SortStatePath}", this.NameSpaceManager);
+
                     if (node == null)
                     {
                         return null;
@@ -1292,6 +1344,7 @@ namespace OfficeOpenXml.Table
 
                     this._sortState = new SortState(this.NameSpaceManager, node);
                 }
+
                 return this._sortState;
             }
         }
@@ -1304,15 +1357,20 @@ namespace OfficeOpenXml.Table
             ExcelRangeBase? dataRange = this.DataRange;
             sortState.Ref = dataRange.Address;
             sortState.CaseSensitive = compareOptions == CompareOptions.IgnoreCase || compareOptions == CompareOptions.OrdinalIgnoreCase;
+
             for (int ix = 0; ix < columns.Length; ix++)
             {
                 bool? desc = null;
+
                 if (descending.Length > ix && descending[ix])
                 {
                     desc = true;
                 }
-                string? adr = ExcelCellBase.GetAddress(dataRange._fromRow, dataRange._fromCol + columns[ix], dataRange._toRow, dataRange._fromCol + columns[ix]);
-                if(customLists.ContainsKey(columns[ix]))
+
+                string? adr =
+                    ExcelCellBase.GetAddress(dataRange._fromRow, dataRange._fromCol + columns[ix], dataRange._toRow, dataRange._fromCol + columns[ix]);
+
+                if (customLists.ContainsKey(columns[ix]))
                 {
                     sortState.SortConditions.Add(adr, desc, customLists[columns[ix]]);
                 }
@@ -1352,6 +1410,6 @@ namespace OfficeOpenXml.Table
             this._tableSorter.Sort(configuration);
         }
 
-#endregion
+        #endregion
     }
 }

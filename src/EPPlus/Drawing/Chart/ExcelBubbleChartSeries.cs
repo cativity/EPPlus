@@ -10,6 +10,7 @@
  *************************************************************************************************
   01/27/2020         EPPlus Software AB       Initial release EPPlus 5
  *************************************************************************************************/
+
 using System.Collections.Generic;
 using System.Xml;
 
@@ -24,6 +25,7 @@ public sealed class ExcelBubbleChartSeries : ExcelChartSeries<ExcelBubbleChartSe
     {
         this.Init(chart, ns, node, isPivot, list);
     }
+
     /// <summary>
     /// Adds a new serie to a bubble chart
     /// </summary>
@@ -35,6 +37,7 @@ public sealed class ExcelBubbleChartSeries : ExcelChartSeries<ExcelBubbleChartSe
     {
         return this.AddSeries(Serie.FullAddressAbsolute, XSerie.FullAddressAbsolute, BubbleSize?.FullAddressAbsolute);
     }
+
     /// <summary>
     /// 
     /// </summary>

@@ -10,6 +10,7 @@
  *************************************************************************************************
   04/29/2020         EPPlus Software AB       EPPlus 5.2
  *************************************************************************************************/
+
 using OfficeOpenXml.FormulaParsing.Excel.Functions.Math;
 using OfficeOpenXml.Utils.Extensions;
 using System;
@@ -25,33 +26,35 @@ namespace OfficeOpenXml.Drawing.Chart.ChartEx;
 /// </summary>
 public class ExcelChartExDataCollection : XmlHelper, IEnumerable<ExcelChartExData>
 {
-    List<ExcelChartExData> _list=new List<ExcelChartExData>();
+    List<ExcelChartExData> _list = new List<ExcelChartExData>();
     ExcelChartExSerie _serie;
-    internal ExcelChartExDataCollection(ExcelChartExSerie serie, XmlNamespaceManager nsm, XmlNode topNode) : base(nsm, topNode)
+
+    internal ExcelChartExDataCollection(ExcelChartExSerie serie, XmlNamespaceManager nsm, XmlNode topNode)
+        : base(nsm, topNode)
     {
         this._serie = serie;
-        foreach(XmlElement c in topNode.ChildNodes)
+
+        foreach (XmlElement c in topNode.ChildNodes)
         {
-            if(c.LocalName=="numDim")
+            if (c.LocalName == "numDim")
             {
                 this._list.Add(new ExcelChartExNumericData(serie._chart.WorkSheet.Name, this.NameSpaceManager, c));
             }
-            else if(c.LocalName == "strDim")
+            else if (c.LocalName == "strDim")
             {
                 this._list.Add(new ExcelChartExStringData(serie._chart.WorkSheet.Name, this.NameSpaceManager, c));
             }
         }
     }
+
     /// <summary>
     /// The id of the data
     /// </summary>
-    public int Id 
-    { 
-        get
-        {
-            return this.GetXmlNodeInt("@id");
-        }
+    public int Id
+    {
+        get { return this.GetXmlNodeInt("@id"); }
     }
+
     /// <summary>
     /// Adds a numeric dimension
     /// </summary>
@@ -62,8 +65,10 @@ public class ExcelChartExDataCollection : XmlHelper, IEnumerable<ExcelChartExDat
         XmlNode? node = this.CreateNode("cx:numDim", false, true);
         ExcelChartExNumericData? nd = new ExcelChartExNumericData(this._serie._chart.WorkSheet.Name, this.NameSpaceManager, node) { Formula = formula };
         this._list.Add(nd);
+
         return nd;
     }
+
     /// <summary>
     /// Adds a string dimension
     /// </summary>
@@ -74,11 +79,13 @@ public class ExcelChartExDataCollection : XmlHelper, IEnumerable<ExcelChartExDat
         XmlNode? node = this.CreateNode("cx:strDim", false, true);
         ExcelChartExStringData? nd = new ExcelChartExStringData(this._serie._chart.WorkSheet.Name, this.NameSpaceManager, node) { Formula = formula };
         this._list.Add(nd);
+
         return nd;
     }
+
     internal void SetTypeNumeric(int index, eNumericDataType type)
     {
-        if(index < 0 || index >= this._list.Count)
+        if (index < 0 || index >= this._list.Count)
         {
             throw new IndexOutOfRangeException("index is out of range");
         }
@@ -100,6 +107,7 @@ public class ExcelChartExDataCollection : XmlHelper, IEnumerable<ExcelChartExDat
             ((ExcelChartExNumericData)this._list[index]).Type = type;
         }
     }
+
     internal void SetTypeString(int index, eStringDataType type)
     {
         if (index < 0 || index >= this._list.Count)
@@ -124,6 +132,7 @@ public class ExcelChartExDataCollection : XmlHelper, IEnumerable<ExcelChartExDat
             ((ExcelChartExStringData)this._list[index]).Type = type;
         }
     }
+
     /// <summary>
     /// Indexer
     /// </summary>
@@ -131,20 +140,15 @@ public class ExcelChartExDataCollection : XmlHelper, IEnumerable<ExcelChartExDat
     /// <returns></returns>
     public ExcelChartExData this[int index]
     {
-        get
-        {
-            return this._list[index];
-        }
+        get { return this._list[index]; }
     }
+
     /// <summary>
     /// Number of items in the collection
     /// </summary>
     public int Count
     {
-        get
-        {
-            return this._list.Count;
-        }
+        get { return this._list.Count; }
     }
 
     /// <summary>
@@ -167,20 +171,21 @@ public class ExcelChartExDataCollection : XmlHelper, IEnumerable<ExcelChartExDat
 
     internal ExcelChartExData GetValueDimension()
     {
-        foreach(ExcelChartExData? d in this._list)
+        foreach (ExcelChartExData? d in this._list)
         {
-            if(d is ExcelChartExStringData s)
+            if (d is ExcelChartExStringData s)
             {
                 if (s.Type != eStringDataType.Category)
                 {
                     return d;
                 }
             }
-            else if(d is ExcelChartExNumericData n)
+            else if (d is ExcelChartExNumericData n)
             {
                 return n;
             }
         }
+
         return null;
     }
 }

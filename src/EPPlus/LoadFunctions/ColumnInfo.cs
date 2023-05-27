@@ -31,6 +31,7 @@ internal class ColumnInfo
     public int SortOrder { get; set; }
 
     public List<int> SortOrderLevels { get; set; }
+
     public int Index { get; set; }
 
     public MemberInfo MemberInfo { get; set; }
@@ -55,10 +56,11 @@ internal class ColumnInfo
 
     public override string ToString()
     {
-        if(!string.IsNullOrEmpty(this.Header))
+        if (!string.IsNullOrEmpty(this.Header))
         {
             return this.Header;
         }
+
         return base.ToString();
     }
 }

@@ -10,6 +10,7 @@
  *************************************************************************************************
   01/27/2020         EPPlus Software AB       Initial release EPPlus 5
  *************************************************************************************************/
+
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -23,6 +24,7 @@ internal class ChangeableDictionary<T> : IEnumerable<T>
     internal List<T> _items;
     internal int _count;
     int _defaultSize;
+
     internal ChangeableDictionary(int size = 8)
     {
         this._defaultSize = size;
@@ -34,7 +36,8 @@ internal class ChangeableDictionary<T> : IEnumerable<T>
         get
         {
             int pos = Array.BinarySearch(this._index[0], 0, this._count, key);
-            if(pos>=0)
+
+            if (pos >= 0)
             {
                 return this._items[this._index[1][pos]];
             }
@@ -48,34 +51,44 @@ internal class ChangeableDictionary<T> : IEnumerable<T>
     internal void InsertAndShift(int fromPosition, int add)
     {
         int pos = Array.BinarySearch(this._index[0], 0, this._count, fromPosition);
-        if(pos<0)
+
+        if (pos < 0)
         {
             pos = ~pos;
         }
+
         Array.Copy(this._index[0], pos, this._index[0], pos + 1, this._count - pos);
         Array.Copy(this._index[1], pos, this._index[1], pos + 1, this._count - pos);
         this._count++;
-        for (int i=pos;i< this.Count;i++)
+
+        for (int i = pos; i < this.Count; i++)
         {
             this._index[0][i] += add;
         }
     }
-        
-    internal int Count { get { return this._count; } }
+
+    internal int Count
+    {
+        get { return this._count; }
+    }
 
     public void Add(int key, T value)
     {
         int pos = Array.BinarySearch(this._index[0], 0, this._count, key);
+
         if (pos >= 0)
         {
             throw new ArgumentException("Key already exists");
         }
+
         pos = ~pos;
+
         if (pos >= this._index[0].Length - 1)
         {
             Array.Resize(ref this._index[0], this._index[0].Length << 1);
             Array.Resize(ref this._index[1], this._index[1].Length << 1);
         }
+
         if (pos < this.Count)
         {
             Array.Copy(this._index[0], pos, this._index[0], pos + 1, this._index[0].Length - pos - 1);
@@ -98,7 +111,7 @@ internal class ChangeableDictionary<T> : IEnumerable<T>
         int listItem = this._index[1][fromPosition];
         int insertPos = before ? toPosition : toPosition + 1;
 
-        if(insertPos>fromPosition)
+        if (insertPos > fromPosition)
         {
             this.InsertAndShift(insertPos, 1);
             this.RemoveAndShift(fromPosition, false);
@@ -126,7 +139,7 @@ internal class ChangeableDictionary<T> : IEnumerable<T>
     {
         return Array.BinarySearch(this._index[0], 0, this._count, key) >= 0;
     }
-    
+
     public IEnumerator<T> GetEnumerator()
     {
         return new ChangeableDictionaryEnumerator<T>(this);
@@ -140,6 +153,7 @@ internal class ChangeableDictionary<T> : IEnumerable<T>
     private bool RemoveAndShift(int key, bool dispose)
     {
         int pos = Array.BinarySearch(this._index[0], 0, this._count, key);
+
         if (pos >= 0)
         {
             if (dispose)
@@ -155,42 +169,52 @@ internal class ChangeableDictionary<T> : IEnumerable<T>
             }
 
             this._count--;
+
             for (int i = pos; i < this._count; i++)
             {
                 this._index[0][i]--;
             }
+
             return true;
         }
+
         return false;
     }
 
     public bool TryGetValue(int key, out T value)
     {
         int pos = Array.BinarySearch(this._index[0], 0, this._count, key);
+
         if (pos >= 0)
         {
             value = this._items[pos];
+
             return true;
         }
         else
         {
             value = default(T);
+
             return false;
         }
     }
+
     IEnumerator IEnumerable.GetEnumerator()
     {
         return new ChangeableDictionaryEnumerator<T>(this);
     }
 }
+
 internal class ChangeableDictionaryEnumerator<T> : IEnumerator<T>
 {
-    int _index=-1;
+    int _index = -1;
     ChangeableDictionary<T> _ts;
+
     public ChangeableDictionaryEnumerator(ChangeableDictionary<T> ts)
     {
         this._ts = ts;
     }
+
     public T Current
     {
         get
@@ -216,10 +240,12 @@ internal class ChangeableDictionaryEnumerator<T> : IEnumerator<T>
     public bool MoveNext()
     {
         this._index++;
+
         if (this._ts.Count == this._index)
         {
             return false;
         }
+
         return true;
     }
 

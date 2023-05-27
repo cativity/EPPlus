@@ -10,6 +10,7 @@
  *************************************************************************************************
   05/13/2020         EPPlus Software AB       Implemented function (ported to c# from Microsoft.VisualBasic.Financial.vb (MIT))
  *************************************************************************************************/
+
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -26,7 +27,7 @@ internal class InternalMethods
             return new FinanceCalcResult<double>(eErrorType.Value);
         }
 
-        if(Rate == 0.0)
+        if (Rate == 0.0)
         {
             return new FinanceCalcResult<double>((-FV - PV) / NPer);
         }
@@ -49,6 +50,7 @@ internal class InternalMethods
             //       to make sure that they (pow and ^) are same for all conditions
             double dTemp2 = System.Math.Pow(dTemp3, NPer);
             double result = (-FV - (PV * dTemp2)) / (dTemp * (dTemp2 - 1.0)) * Rate;
+
             return new FinanceCalcResult<double>(result);
         }
     }

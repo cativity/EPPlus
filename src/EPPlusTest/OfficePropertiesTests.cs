@@ -11,7 +11,6 @@ namespace EPPlusTest;
 [TestClass]
 public class OfficePropertiesTests
 {
-        
     [TestMethod]
     public void ValidateLong()
     {
@@ -25,6 +24,7 @@ public class OfficePropertiesTests
         using ExcelPackage? pck2 = new ExcelPackage(pck.Stream);
         Assert.AreEqual((double)ticks, pck.Workbook.Properties.GetCustomPropertyValue("Timestamp"));
     }
+
     [TestMethod]
     public void ValidateCaseInsensitiveCustomProperties()
     {
@@ -35,6 +35,7 @@ public class OfficePropertiesTests
 
         Assert.AreEqual("bAR", p.Workbook.Properties.GetCustomPropertyValue("fOo"));
     }
+
     [TestMethod]
     public void ValidateCaseInsensitiveCustomProperties_Loading()
     {

@@ -26,6 +26,7 @@
  *******************************************************************************
   01/27/2020         EPPlus Software AB       Initial release EPPlus 5
  *******************************************************************************/
+
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using OfficeOpenXml;
 using OfficeOpenXml.DataValidation;
@@ -66,7 +67,6 @@ public class ListFormulaTests : ValidationTestBase
         validationOrig.Formula.Values.Add("5");
         validationOrig.Formula.Values.Add("15");
 
-
         ExcelDataValidationList? validation = ReadTValidation<ExcelDataValidationList>(package);
 
         CollectionAssert.AreEquivalent(new List<string> { "5", "15" }, (ICollection)validation.Formula.Values);
@@ -102,7 +102,6 @@ public class ListFormulaTests : ValidationTestBase
         lessThan.HideDropDown = false;
 
         lessThan.ShowErrorMessage = true;
-
 
         IExcelDataValidationList? greaterThan = sheet.DataValidations.AddListValidation("A2");
 

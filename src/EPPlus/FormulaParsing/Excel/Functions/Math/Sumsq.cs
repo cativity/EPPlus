@@ -10,6 +10,7 @@
  *************************************************************************************************
   01/27/2020         EPPlus Software AB       Initial release EPPlus 5
  *************************************************************************************************/
+
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -21,15 +22,15 @@ using OfficeOpenXml.Utils;
 
 namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Math;
 
-[FunctionMetadata(
-                     Category = ExcelFunctionCategory.MathAndTrig,
-                     EPPlusVersion = "4",
-                     Description = "Returns the sum of the squares of a supplied list of numbers")]
+[FunctionMetadata(Category = ExcelFunctionCategory.MathAndTrig,
+                  EPPlusVersion = "4",
+                  Description = "Returns the sum of the squares of a supplied list of numbers")]
 internal class Sumsq : HiddenValuesHandlingFunction
 {
     public override CompileResult Execute(IEnumerable<FunctionArgument> arguments, ParsingContext context)
     {
         double retVal = 0d;
+
         if (arguments != null)
         {
             foreach (FunctionArgument? arg in arguments)
@@ -37,17 +38,19 @@ internal class Sumsq : HiddenValuesHandlingFunction
                 retVal += this.Calculate(arg, context);
             }
         }
+
         return this.CreateResult(retVal, DataType.Decimal);
     }
-
 
     private double Calculate(FunctionArgument arg, ParsingContext context, bool isInArray = false)
     {
         double retVal = 0d;
+
         if (this.ShouldIgnore(arg, context))
         {
             return retVal;
         }
+
         if (arg.Value is IEnumerable<FunctionArgument>)
         {
             foreach (FunctionArgument? item in (IEnumerable<FunctionArgument>)arg.Value)
@@ -58,6 +61,7 @@ internal class Sumsq : HiddenValuesHandlingFunction
         else
         {
             IRangeInfo? cs = arg.Value as IRangeInfo;
+
             if (cs != null)
             {
                 foreach (ICellInfo? c in cs)
@@ -72,15 +76,18 @@ internal class Sumsq : HiddenValuesHandlingFunction
             else
             {
                 CheckForAndHandleExcelError(arg);
+
                 if (IsNumericString(arg.Value) && !isInArray)
                 {
                     double value = ConvertUtil.GetValueDouble(arg.Value);
+
                     return System.Math.Pow(value, 2);
                 }
 
                 retVal += System.Math.Pow(ConvertUtil.GetValueDouble(arg.Value, isInArray), 2);
             }
         }
+
         return retVal;
     }
 }

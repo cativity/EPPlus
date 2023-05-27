@@ -10,6 +10,7 @@
  *************************************************************************************************
   05/03/2020         EPPlus Software AB         Implemented function (ported to c# from Microsoft.VisualBasic.Financial.vb (MIT))
  *************************************************************************************************/
+
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -29,23 +30,23 @@ internal static class MirrImpl
         int lLower = 0;
         int lUpper = ValueArray.Length - 1;
 
-        for(int I = lLower; I <= lUpper; I++)
+        for (int I = lLower; I <= lUpper; I++)
         {
             double dTVal = ValueArray[I];
             dTemp2 += dTemp2 * Rate;
 
-            if(!((bSkipPos && dTVal > 0.0) || (bSkipNeg && dTVal< 0.0)))
+            if (!((bSkipPos && dTVal > 0.0) || (bSkipNeg && dTVal < 0.0)))
             {
                 dTotal += dTVal / dTemp2;
             }
-           
         }
+
         return dTotal;
     }
 
     internal static FinanceCalcResult<double> MIRR(double[] ValueArray, double FinanceRate, double ReinvestRate)
     {
-        if(ValueArray.Rank != 1)
+        if (ValueArray.Rank != 1)
         {
             return new FinanceCalcResult<double>(eErrorType.Value);
         }
@@ -54,17 +55,17 @@ internal static class MirrImpl
         int lUpper = ValueArray.Length - 1;
         int lCVal = lUpper - lLower + 1;
 
-        if(FinanceRate == -1d)
+        if (FinanceRate == -1d)
         {
             return new FinanceCalcResult<double>(eErrorType.Num);
         }
 
-        if(ReinvestRate == -1d)
+        if (ReinvestRate == -1d)
         {
             return new FinanceCalcResult<double>(eErrorType.Num);
         }
 
-        if(lCVal <= 1d)
+        if (lCVal <= 1d)
         {
             return new FinanceCalcResult<double>(eErrorType.Num);
         }
@@ -91,5 +92,4 @@ internal static class MirrImpl
 
         return new FinanceCalcResult<double>(System.Math.Pow(dTemp, dTemp1) - 1.0);
     }
-
 }

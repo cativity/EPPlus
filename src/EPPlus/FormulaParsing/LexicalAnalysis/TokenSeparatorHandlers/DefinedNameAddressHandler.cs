@@ -10,6 +10,7 @@
  *************************************************************************************************
   02/16/2022         EPPlus Software AB       Fix for issue #593
  *************************************************************************************************/
+
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -26,6 +27,7 @@ internal class DefinedNameAddressHandler : SeparatorHandler
     {
         this._nameValueProvider = nameValueProvider;
     }
+
     public override bool Handle(char c, Token tokenSeparator, TokenizerContext context, ITokenIndexProvider tokenIndexProvider)
     {
         if (context.IsInDefinedNameAddress && (c == ')' || c == ','))
@@ -33,11 +35,14 @@ internal class DefinedNameAddressHandler : SeparatorHandler
             if (context.IsInDefinedNameAddress)
             {
                 context.IsInDefinedNameAddress = false;
+
                 // the first name is already resolved to an address followed by a dot
                 string? tokenValue = context.CurrentToken?.ToString();
+
                 if (!string.IsNullOrEmpty(tokenValue))
                 {
                     string[]? parts = tokenValue.Split(':');
+
                     if (parts.Length < 2)
                     {
                         return false;
@@ -46,6 +51,7 @@ internal class DefinedNameAddressHandler : SeparatorHandler
                     string? part1 = parts[0];
                     string? name = parts[1];
                     object? nameValue = this._nameValueProvider.GetNamedValue(name, context.Worksheet);
+
                     if (nameValue != null)
                     {
                         if (nameValue is IRangeInfo rangeInfo)
@@ -55,12 +61,14 @@ internal class DefinedNameAddressHandler : SeparatorHandler
                             context.AddToken(addressToken);
                             context.AddToken(tokenSeparator);
                             context.NewToken();
+
                             return true;
                         }
                     }
                 }
             }
         }
+
         return false;
     }
 }

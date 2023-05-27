@@ -18,13 +18,15 @@ internal static class XmlReaderHelper
             do
             {
                 xr.Read();
+
                 if (xr.EOF)
                 {
                     return false;
                 }
-            } while (!(xr.Depth == depth && xr.NodeType==XmlNodeType.Element));
+            } while (!(xr.Depth == depth && xr.NodeType == XmlNodeType.Element));
         }
-        return xr.NodeType==XmlNodeType.Element && ConvertUtil._invariantCompareInfo.IsSuffix(xr.LocalName, tagName[0]) ;
+
+        return xr.NodeType == XmlNodeType.Element && ConvertUtil._invariantCompareInfo.IsSuffix(xr.LocalName, tagName[0]);
     }
 
     /// <summary>
@@ -53,9 +55,10 @@ internal static class XmlReaderHelper
 
         return xr.NodeType == XmlNodeType.Element && ConvertUtil._invariantCompareInfo.IsSuffix(xr.LocalName, tagName[0]);
     }
+
     internal static bool ReadUntil(this XmlReader xr, int depth, Dictionary<string, int> nodeOrder, string tag)
     {
-        if(xr.EOF == false && nodeOrder.TryGetValue(tag, out int tagIx))
+        if (xr.EOF == false && nodeOrder.TryGetValue(tag, out int tagIx))
         {
             if (nodeOrder.TryGetValue(xr.LocalName, out int currentNodeIx))
             {
@@ -70,15 +73,17 @@ internal static class XmlReaderHelper
                             return false;
                         }
                     } while (xr.Depth != depth);
+
                     if (!nodeOrder.TryGetValue(xr.LocalName, out currentNodeIx))
                     {
                         return false;
                     }
                 }
+
                 return xr.NodeType == XmlNodeType.Element && ConvertUtil._invariantCompareInfo.IsSuffix(xr.LocalName, tag);
             }
         }
+
         return false;
     }
-
 }

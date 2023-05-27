@@ -10,6 +10,7 @@
  *************************************************************************************************
   01/27/2020         EPPlus Software AB       Initial release EPPlus 5
  *************************************************************************************************/
+
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -19,10 +20,9 @@ using OfficeOpenXml.FormulaParsing.ExpressionGraph;
 
 namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Math;
 
-[FunctionMetadata(
-                     Category = ExcelFunctionCategory.MathAndTrig,
-                     EPPlusVersion = "4",
-                     Description = "Returns the integer portion of a division between two supplied numbers")]
+[FunctionMetadata(Category = ExcelFunctionCategory.MathAndTrig,
+                  EPPlusVersion = "4",
+                  Description = "Returns the integer portion of a division between two supplied numbers")]
 internal class Quotient : ExcelFunction
 {
     public override CompileResult Execute(IEnumerable<FunctionArgument> arguments, ParsingContext context)
@@ -30,12 +30,14 @@ internal class Quotient : ExcelFunction
         ValidateArguments(arguments, 2);
         double num = this.ArgToDecimal(arguments, 0);
         double denom = this.ArgToDecimal(arguments, 1);
+
         if ((int)denom == 0)
         {
             return this.CreateResult(eErrorType.Div0);
         }
 
-        int result = (int)(num/denom);
+        int result = (int)(num / denom);
+
         return this.CreateResult(result, DataType.Integer);
     }
 }

@@ -10,6 +10,7 @@
  *************************************************************************************************
   04/15/2020         EPPlus Software AB           EPPlus 5.2
  *************************************************************************************************/
+
 using OfficeOpenXml.Drawing.Chart;
 using OfficeOpenXml.Drawing.Chart.ChartEx;
 using OfficeOpenXml.Drawing.Style.Effect;
@@ -25,6 +26,7 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Xml;
+
 namespace OfficeOpenXml.Drawing.Chart.ChartEx;
 
 /// <summary>
@@ -32,13 +34,20 @@ namespace OfficeOpenXml.Drawing.Chart.ChartEx;
 /// </summary>
 public class ExcelSunburstChart : ExcelChartEx
 {
-    internal ExcelSunburstChart(ExcelDrawings drawings, XmlNode drawingsNode, eChartType? type, XmlDocument chartXml = null, ExcelGroupShape parent = null) :
-        base(drawings, drawingsNode, type, chartXml, parent)
+    internal ExcelSunburstChart(ExcelDrawings drawings, XmlNode drawingsNode, eChartType? type, XmlDocument chartXml = null, ExcelGroupShape parent = null)
+        : base(drawings, drawingsNode, type, chartXml, parent)
     {
         this.StyleManager.SetChartStyle(Chart.Style.ePresetChartStyle.SunburstChartStyle1);
     }
-    internal ExcelSunburstChart(ExcelDrawings drawings, XmlNode node, Uri uriChart, ZipPackagePart part, XmlDocument chartXml, XmlNode chartNode, ExcelGroupShape parent = null) :
-        base(drawings, node, uriChart, part, chartXml, chartNode, parent)
+
+    internal ExcelSunburstChart(ExcelDrawings drawings,
+                                XmlNode node,
+                                Uri uriChart,
+                                ZipPackagePart part,
+                                XmlDocument chartXml,
+                                XmlNode chartNode,
+                                ExcelGroupShape parent = null)
+        : base(drawings, node, uriChart, part, chartXml, chartNode, parent)
     {
     }
 }

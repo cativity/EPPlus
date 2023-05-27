@@ -10,6 +10,7 @@
  *************************************************************************************************
   01/27/2020         EPPlus Software AB       Initial release EPPlus 5
  *************************************************************************************************/
+
 namespace OfficeOpenXml.VBA;
 
 /// <summary>
@@ -20,9 +21,10 @@ public enum eAttributeDataType
     /// <summary>
     /// A string
     /// </summary>
-    String=0,
+    String = 0,
+
     /// <summary>
     /// Not a string
     /// </summary>
-    NonString=1
+    NonString = 1
 }

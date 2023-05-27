@@ -22,12 +22,12 @@
 // This module defines exceptions used in the class library.
 //
 
-
-
 using System;
 using System.Collections.Generic;
 using System.Text;
+
 #if !NETCF
+
 //using System.Runtime.Serialization;
 #endif
 
@@ -39,22 +39,23 @@ namespace OfficeOpenXml.Packaging.Ionic.Zip
     //[AttributeUsage(AttributeTargets.Class)]
     //public class ZipExceptionAttribute : Attribute { }
 
-
-
     /// <summary>
     /// Issued when an <c>ZipEntry.ExtractWithPassword()</c> method is invoked
     /// with an incorrect password.
     /// </summary>
-//#if !SILVERLIGHT
-//    [Serializable]
-//#endif
-//    [System.Runtime.InteropServices.GuidAttribute("ebc25cf6-9120-4283-b972-0e5520d0000B")]
+
+    //#if !SILVERLIGHT
+    //    [Serializable]
+    //#endif
+    //    [System.Runtime.InteropServices.GuidAttribute("ebc25cf6-9120-4283-b972-0e5520d0000B")]
     public class BadPasswordException : ZipException
     {
         /// <summary>
         /// Default ctor.
         /// </summary>
-        public BadPasswordException() { }
+        public BadPasswordException()
+        {
+        }
 
         /// <summary>
         /// Come on, you know how exceptions work. Why are you looking at this documentation?
@@ -62,7 +63,8 @@ namespace OfficeOpenXml.Packaging.Ionic.Zip
         /// <param name="message">The message in the exception.</param>
         public BadPasswordException(String message)
             : base(message)
-        { }
+        {
+        }
 
         /// <summary>
         /// Come on, you know how exceptions work. Why are you looking at this documentation?
@@ -74,7 +76,6 @@ namespace OfficeOpenXml.Packaging.Ionic.Zip
         {
         }
 
-
 #if ! (NETCF || SILVERLIGHT)
         ///// <summary>
         ///// Come on, you know how exceptions work. Why are you looking at this documentation?
@@ -85,23 +86,25 @@ namespace OfficeOpenXml.Packaging.Ionic.Zip
         //    : base(info, context)
         //  {  }
 #endif
-
     }
 
     /// <summary>
     /// Indicates that a read was attempted on a stream, and bad or incomplete data was
     /// received.
     /// </summary>
-//#if !SILVERLIGHT
-//    [Serializable]
-//#endif
-//    [System.Runtime.InteropServices.GuidAttribute("ebc25cf6-9120-4283-b972-0e5520d0000A")]
+
+    //#if !SILVERLIGHT
+    //    [Serializable]
+    //#endif
+    //    [System.Runtime.InteropServices.GuidAttribute("ebc25cf6-9120-4283-b972-0e5520d0000A")]
     public class BadReadException : ZipException
     {
         /// <summary>
         /// Default ctor.
         /// </summary>
-        public BadReadException() { }
+        public BadReadException()
+        {
+        }
 
         /// <summary>
         /// Come on, you know how exceptions work. Why are you looking at this documentation?
@@ -109,7 +112,8 @@ namespace OfficeOpenXml.Packaging.Ionic.Zip
         /// <param name="message">The message in the exception.</param>
         public BadReadException(String message)
             : base(message)
-        { }
+        {
+        }
 
         /// <summary>
         /// Come on, you know how exceptions work. Why are you looking at this documentation?
@@ -121,34 +125,34 @@ namespace OfficeOpenXml.Packaging.Ionic.Zip
         {
         }
 
-//#if ! (NETCF || SILVERLIGHT)
-//        /// <summary>
-//        /// Come on, you know how exceptions work. Why are you looking at this documentation?
-//        /// </summary>
-//        /// <param name="info">The serialization info for the exception.</param>
-//        /// <param name="context">The streaming context from which to deserialize.</param>
-//        protected BadReadException(SerializationInfo info, StreamingContext context)
-//            : base(info, context)
-//          {  }
-//#endif
-
+        //#if ! (NETCF || SILVERLIGHT)
+        //        /// <summary>
+        //        /// Come on, you know how exceptions work. Why are you looking at this documentation?
+        //        /// </summary>
+        //        /// <param name="info">The serialization info for the exception.</param>
+        //        /// <param name="context">The streaming context from which to deserialize.</param>
+        //        protected BadReadException(SerializationInfo info, StreamingContext context)
+        //            : base(info, context)
+        //          {  }
+        //#endif
     }
-
-
 
     /// <summary>
     /// Issued when an CRC check fails upon extracting an entry from a zip archive.
     /// </summary>
-//#if !SILVERLIGHT
-//    [Serializable]
-//#endif
-//    [System.Runtime.InteropServices.GuidAttribute("ebc25cf6-9120-4283-b972-0e5520d00009")]
+
+    //#if !SILVERLIGHT
+    //    [Serializable]
+    //#endif
+    //    [System.Runtime.InteropServices.GuidAttribute("ebc25cf6-9120-4283-b972-0e5520d00009")]
     public class BadCrcException : ZipException
     {
         /// <summary>
         /// Default ctor.
         /// </summary>
-        public BadCrcException() { }
+        public BadCrcException()
+        {
+        }
 
         /// <summary>
         /// Come on, you know how exceptions work. Why are you looking at this documentation?
@@ -156,36 +160,37 @@ namespace OfficeOpenXml.Packaging.Ionic.Zip
         /// <param name="message">The message in the exception.</param>
         public BadCrcException(String message)
             : base(message)
-        { }
+        {
+        }
 
-
-//#if ! (NETCF || SILVERLIGHT)
-//        /// <summary>
-//        /// Come on, you know how exceptions work. Why are you looking at this documentation?
-//        /// </summary>
-//        /// <param name="info">The serialization info for the exception.</param>
-//        /// <param name="context">The streaming context from which to deserialize.</param>
-//        protected BadCrcException(SerializationInfo info, StreamingContext context)
-//            : base(info, context)
-//          {  }
-//#endif
-
+        //#if ! (NETCF || SILVERLIGHT)
+        //        /// <summary>
+        //        /// Come on, you know how exceptions work. Why are you looking at this documentation?
+        //        /// </summary>
+        //        /// <param name="info">The serialization info for the exception.</param>
+        //        /// <param name="context">The streaming context from which to deserialize.</param>
+        //        protected BadCrcException(SerializationInfo info, StreamingContext context)
+        //            : base(info, context)
+        //          {  }
+        //#endif
     }
-
 
     /// <summary>
     /// Issued when errors occur saving a self-extracting archive.
     /// </summary>
-//#if !SILVERLIGHT
-//    [Serializable]
-//#endif
-//    [System.Runtime.InteropServices.GuidAttribute("ebc25cf6-9120-4283-b972-0e5520d00008")]
+
+    //#if !SILVERLIGHT
+    //    [Serializable]
+    //#endif
+    //    [System.Runtime.InteropServices.GuidAttribute("ebc25cf6-9120-4283-b972-0e5520d00008")]
     public class SfxGenerationException : ZipException
     {
         /// <summary>
         /// Default ctor.
         /// </summary>
-        public SfxGenerationException() { }
+        public SfxGenerationException()
+        {
+        }
 
         /// <summary>
         /// Come on, you know how exceptions work. Why are you looking at this documentation?
@@ -193,21 +198,20 @@ namespace OfficeOpenXml.Packaging.Ionic.Zip
         /// <param name="message">The message in the exception.</param>
         public SfxGenerationException(String message)
             : base(message)
-        { }
+        {
+        }
 
-//#if ! (NETCF || SILVERLIGHT)
-//        /// <summary>
-//        /// Come on, you know how exceptions work. Why are you looking at this documentation?
-//        /// </summary>
-//        /// <param name="info">The serialization info for the exception.</param>
-//        /// <param name="context">The streaming context from which to deserialize.</param>
-//        protected SfxGenerationException(SerializationInfo info, StreamingContext context)
-//            : base(info, context)
-//          {  }
-//#endif
-
+        //#if ! (NETCF || SILVERLIGHT)
+        //        /// <summary>
+        //        /// Come on, you know how exceptions work. Why are you looking at this documentation?
+        //        /// </summary>
+        //        /// <param name="info">The serialization info for the exception.</param>
+        //        /// <param name="context">The streaming context from which to deserialize.</param>
+        //        protected SfxGenerationException(SerializationInfo info, StreamingContext context)
+        //            : base(info, context)
+        //          {  }
+        //#endif
     }
-
 
     /// <summary>
     /// Indicates that an operation was attempted on a ZipFile which was not possible
@@ -219,7 +223,9 @@ namespace OfficeOpenXml.Packaging.Ionic.Zip
         /// <summary>
         /// Default ctor.
         /// </summary>
-        public BadStateException() { }
+        public BadStateException()
+        {
+        }
 
         /// <summary>
         /// Come on, you know how exceptions work. Why are you looking at this documentation?
@@ -227,7 +233,8 @@ namespace OfficeOpenXml.Packaging.Ionic.Zip
         /// <param name="message">The message in the exception.</param>
         public BadStateException(String message)
             : base(message)
-        { }
+        {
+        }
 
         /// <summary>
         /// Come on, you know how exceptions work. Why are you looking at this documentation?
@@ -236,40 +243,46 @@ namespace OfficeOpenXml.Packaging.Ionic.Zip
         /// <param name="innerException">The innerException for this exception.</param>
         public BadStateException(String message, Exception innerException)
             : base(message, innerException)
-        {}
+        {
+        }
 
-//#if ! (NETCF || SILVERLIGHT)
-//        /// <summary>
-//        /// Come on, you know how exceptions work. Why are you looking at this documentation?
-//        /// </summary>
-//        /// <param name="info">The serialization info for the exception.</param>
-//        /// <param name="context">The streaming context from which to deserialize.</param>
-//        protected BadStateException(SerializationInfo info, StreamingContext context)
-//            : base(info, context)
-//          {  }
-//#endif
-
+        //#if ! (NETCF || SILVERLIGHT)
+        //        /// <summary>
+        //        /// Come on, you know how exceptions work. Why are you looking at this documentation?
+        //        /// </summary>
+        //        /// <param name="info">The serialization info for the exception.</param>
+        //        /// <param name="context">The streaming context from which to deserialize.</param>
+        //        protected BadStateException(SerializationInfo info, StreamingContext context)
+        //            : base(info, context)
+        //          {  }
+        //#endif
     }
 
     /// <summary>
     /// Base class for all exceptions defined by and throw by the Zip library.
     /// </summary>
-//#if !SILVERLIGHT
-//    [Serializable]
-//#endif
-//    [System.Runtime.InteropServices.GuidAttribute("ebc25cf6-9120-4283-b972-0e5520d00006")]
+
+    //#if !SILVERLIGHT
+    //    [Serializable]
+    //#endif
+    //    [System.Runtime.InteropServices.GuidAttribute("ebc25cf6-9120-4283-b972-0e5520d00006")]
     public class ZipException : Exception
     {
         /// <summary>
         /// Default ctor.
         /// </summary>
-        public ZipException() { }
+        public ZipException()
+        {
+        }
 
         /// <summary>
         /// Come on, you know how exceptions work. Why are you looking at this documentation?
         /// </summary>
         /// <param name="message">The message in the exception.</param>
-        public ZipException(String message) : base(message) { }
+        public ZipException(String message)
+            : base(message)
+        {
+        }
 
         /// <summary>
         /// Come on, you know how exceptions work. Why are you looking at this documentation?
@@ -278,19 +291,18 @@ namespace OfficeOpenXml.Packaging.Ionic.Zip
         /// <param name="innerException">The innerException for this exception.</param>
         public ZipException(String message, Exception innerException)
             : base(message, innerException)
-        { }
+        {
+        }
 
-//#if ! (NETCF || SILVERLIGHT)
-//        /// <summary>
-//        /// Come on, you know how exceptions work. Why are you looking at this documentation?
-//        /// </summary>
-//        /// <param name="info">The serialization info for the exception.</param>
-//        /// <param name="context">The streaming context from which to deserialize.</param>
-//        //protected ZipException(SerializationInfo info, StreamingContext context)
-//        //    : base(info, context)
-//        //{ }
-//#endif
-
+        //#if ! (NETCF || SILVERLIGHT)
+        //        /// <summary>
+        //        /// Come on, you know how exceptions work. Why are you looking at this documentation?
+        //        /// </summary>
+        //        /// <param name="info">The serialization info for the exception.</param>
+        //        /// <param name="context">The streaming context from which to deserialize.</param>
+        //        //protected ZipException(SerializationInfo info, StreamingContext context)
+        //        //    : base(info, context)
+        //        //{ }
+        //#endif
     }
-
 }

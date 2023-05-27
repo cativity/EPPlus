@@ -10,6 +10,7 @@
  *************************************************************************************************
     08/11/2021         EPPlus Software AB       EPPlus 5.8
  *************************************************************************************************/
+
 namespace OfficeOpenXml.Core.Worksheet.Fill;
 
 /// <summary>
@@ -22,15 +23,18 @@ public class FillNumberParams : FillParams
     /// <seealso cref="FillParams.Direction"/>
     /// </summary>
     public double? StartValue { get; set; } = null;
+
     /// <summary>
     /// When this value is exceeded the fill stops
     /// </summary>
     public double? EndValue { get; set; } = null;
+
     /// <summary>
     /// The value to use in the calculation for each step. 
     /// <seealso cref="CalculationMethod"/>
     /// </summary>
     public double StepValue { get; set; } = 1;
+
     /// <summary>
     /// The calculation method to use 
     /// </summary>

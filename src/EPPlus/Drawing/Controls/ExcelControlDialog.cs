@@ -10,6 +10,7 @@
  *************************************************************************************************
   10/21/2020         EPPlus Software AB           Controls 
  *************************************************************************************************/
+
 using OfficeOpenXml.Packaging;
 using System.Xml;
 
@@ -20,10 +21,17 @@ namespace OfficeOpenXml.Drawing.Controls;
 /// </summary>
 public class ExcelControlDialog : ExcelControl
 {
-    internal ExcelControlDialog(ExcelDrawings drawings, XmlElement drawNode, string name, ExcelGroupShape parent=null) : base(drawings, drawNode, name, parent)
+    internal ExcelControlDialog(ExcelDrawings drawings, XmlElement drawNode, string name, ExcelGroupShape parent = null)
+        : base(drawings, drawNode, name, parent)
     {
     }
-    internal ExcelControlDialog(ExcelDrawings drawings, XmlNode drawNode, ControlInternal control, ZipPackagePart part, XmlDocument controlPropertiesXml, ExcelGroupShape parent = null)
+
+    internal ExcelControlDialog(ExcelDrawings drawings,
+                                XmlNode drawNode,
+                                ControlInternal control,
+                                ZipPackagePart part,
+                                XmlDocument controlPropertiesXml,
+                                ExcelGroupShape parent = null)
         : base(drawings, drawNode, control, part, controlPropertiesXml, parent)
     {
     }
@@ -32,5 +40,4 @@ public class ExcelControlDialog : ExcelControl
     /// The type of form control
     /// </summary>
     public override eControlType ControlType => eControlType.Dialog;
-
 }

@@ -8,7 +8,8 @@ namespace OfficeOpenXml.FormulaParsing.ExpressionGraph;
 
 internal class ColonExpression : FunctionExpression
 {
-    public ColonExpression(string expression, ParsingContext parsingContext) : base(expression, parsingContext, false)
+    public ColonExpression(string expression, ParsingContext parsingContext)
+        : base(expression, parsingContext, false)
     {
     }
 
@@ -29,15 +30,15 @@ internal class ColonExpression : FunctionExpression
             return new CompileResult(eErrorType.Value);
         }
 
-        if(prevIsAddress && nextIsOffset)
+        if (prevIsAddress && nextIsOffset)
         {
             return InternalCompile(this.Prev.Compile().Result.ToString(), this.Next.Compile().Result as IRangeInfo);
         }
-        else if(prevIsOffset && nextIsAddress)
+        else if (prevIsOffset && nextIsAddress)
         {
             return InternalCompile(this.Prev.Compile().Result as IRangeInfo, this.Next.Compile().Result.ToString());
         }
-        else if(prevIsOffset && nextIsOffset)
+        else if (prevIsOffset && nextIsOffset)
         {
             return InternalCompile(this.Prev.Compile().Result as IRangeInfo, this.Next.Compile().Result as IRangeInfo);
         }
@@ -47,14 +48,16 @@ internal class ColonExpression : FunctionExpression
 
     public override Expression MergeWithNext()
     {
-        if(this.Prev.Prev != null)
+        if (this.Prev.Prev != null)
         {
             this.Prev.Prev.Next = this;
         }
-        if(this.Next.Next != null)
+
+        if (this.Next.Next != null)
         {
             this.Next.Next.Prev = this;
         }
+
         return this;
     }
 

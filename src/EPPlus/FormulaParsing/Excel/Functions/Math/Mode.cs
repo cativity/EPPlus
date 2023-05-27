@@ -10,6 +10,7 @@
  *************************************************************************************************
   06/23/2020         EPPlus Software AB       EPPlus 5.2
  *************************************************************************************************/
+
 using OfficeOpenXml.FormulaParsing.Excel.Functions.Metadata;
 using OfficeOpenXml.FormulaParsing.ExpressionGraph;
 using System;
@@ -19,19 +20,20 @@ using System.Text;
 
 namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Math;
 
-[FunctionMetadata(
-                     Category = ExcelFunctionCategory.Statistical,
-                     EPPlusVersion = "5.2",
-                     Description = "Returns the Mode (the most frequently occurring value) of a list of supplied numbers ")]
+[FunctionMetadata(Category = ExcelFunctionCategory.Statistical,
+                  EPPlusVersion = "5.2",
+                  Description = "Returns the Mode (the most frequently occurring value) of a list of supplied numbers ")]
 internal class Mode : HiddenValuesHandlingFunction
 {
     public Mode()
     {
         this.IgnoreErrors = false;
     }
+
     public override CompileResult Execute(IEnumerable<FunctionArgument> arguments, ParsingContext context)
     {
         ValidateArguments(arguments, 1);
+
         if (arguments.Count() > 255)
         {
             return this.CreateResult(eErrorType.Value);
@@ -40,7 +42,8 @@ internal class Mode : HiddenValuesHandlingFunction
         IEnumerable<ExcelDoubleCellValue>? numbers = this.ArgsToDoubleEnumerable(this.IgnoreHiddenValues, this.IgnoreErrors, arguments, context);
         Dictionary<double, int>? counts = new Dictionary<double, int>();
         double? maxCountValue = default;
-        foreach(ExcelDoubleCellValue number in numbers)
+
+        foreach (ExcelDoubleCellValue number in numbers)
         {
             if (!counts.ContainsKey(number))
             {
@@ -51,9 +54,9 @@ internal class Mode : HiddenValuesHandlingFunction
                 counts[number] += 1;
             }
 
-            if(counts[number] > 1 && (!maxCountValue.HasValue || counts[number] >= counts[maxCountValue.Value]))
+            if (counts[number] > 1 && (!maxCountValue.HasValue || counts[number] >= counts[maxCountValue.Value]))
             {
-                if(!maxCountValue.HasValue)
+                if (!maxCountValue.HasValue)
                 {
                     maxCountValue = number;
                 }
@@ -67,6 +70,7 @@ internal class Mode : HiddenValuesHandlingFunction
                 }
             }
         }
+
         if (!maxCountValue.HasValue)
         {
             return this.CreateResult(eErrorType.Num);

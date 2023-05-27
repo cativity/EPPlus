@@ -10,6 +10,7 @@
  *************************************************************************************************
   22/10/2022         EPPlus Software AB           EPPlus v6
  *************************************************************************************************/
+
 using OfficeOpenXml.FormulaParsing.Excel.Functions.Metadata;
 using OfficeOpenXml.FormulaParsing.ExpressionGraph;
 using System;
@@ -19,10 +20,9 @@ using System.Text;
 
 namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Statistical;
 
-[FunctionMetadata(
-                     Category = ExcelFunctionCategory.Statistical,
-                     EPPlusVersion = "6.0",
-                     Description = "Returns the value of the exponential distribution for a give value of x. Same implementation as EXPON.DIST")]
+[FunctionMetadata(Category = ExcelFunctionCategory.Statistical,
+                  EPPlusVersion = "6.0",
+                  Description = "Returns the value of the exponential distribution for a give value of x. Same implementation as EXPON.DIST")]
 internal class Expondist : ExcelFunction
 {
     public override CompileResult Execute(IEnumerable<FunctionArgument> arguments, ParsingContext context)
@@ -31,6 +31,7 @@ internal class Expondist : ExcelFunction
         double x = this.ArgToDecimal(arguments, 0);
         double lambda = this.ArgToDecimal(arguments, 1);
         bool cumulative = this.ArgToBool(arguments, 2);
+
         if (lambda <= 0d)
         {
             return this.CreateResult(eErrorType.Num);
@@ -42,14 +43,16 @@ internal class Expondist : ExcelFunction
         }
 
         double result = 0d;
+
         if (cumulative && x >= 0)
         {
             result = 1d - System.Math.Exp(x * -lambda);
         }
-        else if(!cumulative && x >= 0)
+        else if (!cumulative && x >= 0)
         {
             result = lambda * System.Math.Exp(x * -lambda);
         }
+
         return this.CreateResult(result, DataType.Decimal);
     }
 }

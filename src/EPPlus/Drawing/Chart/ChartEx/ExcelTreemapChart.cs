@@ -10,12 +10,14 @@
  *************************************************************************************************
   04/15/2020         EPPlus Software AB           EPPlus 5.2
  *************************************************************************************************/
+
 using OfficeOpenXml.Drawing.Chart;
 using OfficeOpenXml.Drawing.Chart.ChartEx;
 using OfficeOpenXml.Packaging;
 using System;
 using System.Collections.Generic;
 using System.Xml;
+
 namespace OfficeOpenXml.Drawing.Chart.ChartEx;
 
 /// <summary>
@@ -23,22 +25,27 @@ namespace OfficeOpenXml.Drawing.Chart.ChartEx;
 /// </summary>
 public class ExcelTreemapChart : ExcelChartEx
 {
-    internal ExcelTreemapChart(ExcelDrawings drawings, XmlNode drawingsNode, eChartType? type, XmlDocument chartXml = null, ExcelGroupShape parent = null) :
-        base(drawings, drawingsNode, type, chartXml, parent)
+    internal ExcelTreemapChart(ExcelDrawings drawings, XmlNode drawingsNode, eChartType? type, XmlDocument chartXml = null, ExcelGroupShape parent = null)
+        : base(drawings, drawingsNode, type, chartXml, parent)
     {
         this.Series.Init(this, this.NameSpaceManager, this.TopNode, false, base.Series._list);
         this.StyleManager.SetChartStyle(Chart.Style.ePresetChartStyle.TreemapChartStyle1);
     }
-    internal ExcelTreemapChart(ExcelDrawings drawings, XmlNode node, Uri uriChart, ZipPackagePart part, XmlDocument chartXml, XmlNode chartNode, ExcelGroupShape parent = null) :
-        base(drawings, node, uriChart, part, chartXml, chartNode, parent)
+
+    internal ExcelTreemapChart(ExcelDrawings drawings,
+                               XmlNode node,
+                               Uri uriChart,
+                               ZipPackagePart part,
+                               XmlDocument chartXml,
+                               XmlNode chartNode,
+                               ExcelGroupShape parent = null)
+        : base(drawings, node, uriChart, part, chartXml, chartNode, parent)
     {
         this.Series.Init(this, this.NameSpaceManager, this.TopNode, false, base.Series._list);
     }
+
     /// <summary>
     /// The series for a treemap chart
     /// </summary>
-    public new ExcelChartSeries<ExcelTreemapChartSerie> Series
-    {
-        get;
-    } = new ExcelChartSeries<ExcelTreemapChartSerie>();
+    public new ExcelChartSeries<ExcelTreemapChartSerie> Series { get; } = new ExcelChartSeries<ExcelTreemapChartSerie>();
 }

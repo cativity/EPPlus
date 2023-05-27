@@ -10,6 +10,7 @@
  *************************************************************************************************
   01/27/2020         EPPlus Software AB       Initial release EPPlus 5
  *************************************************************************************************/
+
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -32,13 +33,14 @@ internal class FunctionArgumentExpression : GroupExpression
         get { return false; }
     }
 
-    public override bool IgnoreCircularReference 
-    { 
-        get => base.IgnoreCircularReference; 
+    public override bool IgnoreCircularReference
+    {
+        get => base.IgnoreCircularReference;
         set
         {
             base.IgnoreCircularReference = value;
-            foreach(Expression? childExpression in this.Children)
+
+            foreach (Expression? childExpression in this.Children)
             {
                 childExpression.IgnoreCircularReference = value;
             }

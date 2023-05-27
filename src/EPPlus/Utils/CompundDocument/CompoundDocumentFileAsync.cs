@@ -10,6 +10,7 @@
  *************************************************************************************************
   01/27/2020         EPPlus Software AB       Initial release EPPlus 5
  *************************************************************************************************/
+
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -20,9 +21,10 @@ using System.Threading;
 #if !NET35 && !NET40
 using System.Threading.Tasks;
 #endif
+
 namespace OfficeOpenXml.Utils.CompundDocument
 {
-    internal partial class CompoundDocumentFile 
+    internal partial class CompoundDocumentFile
     {
 #if !NET35 && !NET40
         /// <summary>
@@ -38,12 +40,13 @@ namespace OfficeOpenXml.Utils.CompundDocument
                 FileStream? fs = fi.OpenRead();
                 byte[]? b = new byte[8];
                 await fs.ReadAsync(b, 0, 8, cancellationToken).ConfigureAwait(false);
+
                 return IsCompoundDocument(b);
             }
             catch
             {
                 return false;
-            }            
+            }
         }
 
         /// <summary>
@@ -56,13 +59,13 @@ namespace OfficeOpenXml.Utils.CompundDocument
         {
             long pos = ms.Position;
             ms.Position = 0;
-            byte[]? b=new byte[8];
+            byte[]? b = new byte[8];
             await ms.ReadAsync(b, 0, 8, cancellationToken).ConfigureAwait(false);
             ms.Position = pos;
+
             return IsCompoundDocument(b);
         }
 
 #endif
     }
 }
-

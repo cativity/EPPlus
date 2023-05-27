@@ -10,12 +10,14 @@
  *************************************************************************************************
   10/27/2022         EPPlus Software AB       Initial release EPPlus 6.1
  *************************************************************************************************/
+
 using System;
 using System.IO;
 using System.Threading;
 #if !NET35
 using System.Threading.Tasks;
 #endif
+
 namespace OfficeOpenXml.Utils
 {
     internal class StreamUtil
@@ -32,10 +34,12 @@ namespace OfficeOpenXml.Utils
             {
                 throw new Exception("Cannot read from the input stream");
             }
+
             if (!outputStream.CanWrite)
             {
                 throw new Exception("Cannot write to the output stream");
             }
+
             if (inputStream.CanSeek)
             {
                 inputStream.Seek(0, SeekOrigin.Begin);
@@ -43,19 +47,22 @@ namespace OfficeOpenXml.Utils
 
             const int bufferLength = 8096;
             byte[]? buffer = new Byte[bufferLength];
+
             lock (_lock)
             {
                 int bytesRead = inputStream.Read(buffer, 0, bufferLength);
+
                 // write the required bytes
                 while (bytesRead > 0)
                 {
                     outputStream.Write(buffer, 0, bytesRead);
                     bytesRead = inputStream.Read(buffer, 0, bufferLength);
                 }
+
                 outputStream.Flush();
             }
         }
-        #if !NET35
+#if !NET35
         /// <summary>
         /// Copies the input stream to the output stream.
         /// </summary>
@@ -68,10 +75,12 @@ namespace OfficeOpenXml.Utils
             {
                 throw new Exception("Cannot read from the input stream");
             }
+
             if (!outputStream.CanWrite)
             {
                 throw new Exception("Cannot write to the output stream");
             }
+
             if (inputStream.CanSeek)
             {
                 inputStream.Seek(0, SeekOrigin.Begin);
@@ -80,14 +89,16 @@ namespace OfficeOpenXml.Utils
             const int bufferLength = 8096;
             byte[]? buffer = new byte[bufferLength];
             int bytesRead = await inputStream.ReadAsync(buffer, 0, bufferLength, cancellationToken).ConfigureAwait(false);
+
             // write the required bytes
             while (bytesRead > 0)
             {
                 await outputStream.WriteAsync(buffer, 0, bytesRead, cancellationToken).ConfigureAwait(false);
                 bytesRead = await inputStream.ReadAsync(buffer, 0, bufferLength, cancellationToken).ConfigureAwait(false);
             }
+
             await outputStream.FlushAsync(cancellationToken).ConfigureAwait(false);
         }
-        #endif
+#endif
     }
 }

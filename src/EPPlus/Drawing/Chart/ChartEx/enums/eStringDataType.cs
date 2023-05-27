@@ -10,6 +10,7 @@
  *************************************************************************************************
   04/16/2020         EPPlus Software AB           EPPlus 5.2
  *************************************************************************************************/
+
 namespace OfficeOpenXml.Drawing.Chart.ChartEx;
 
 /// <summary>
@@ -21,10 +22,12 @@ public enum eStringDataType
     /// The category string dimension data type.
     /// </summary>
     Category,
+
     /// <summary>
     /// The string dimension associated with a color.
     /// </summary>
     ColorString,
+
     /// <summary>
     /// The geographical entity identifier string dimension data type. 
     /// This dimension can be used to provide locations to a geospatial series in a Geographic chart. 

@@ -10,6 +10,7 @@
  *************************************************************************************************
   01/27/2020         EPPlus Software AB       Initial release EPPlus 5
  *************************************************************************************************/
+
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -27,7 +28,6 @@ public class ExcelCellAddress
     public ExcelCellAddress()
         : this(1, 1)
     {
-
     }
 
     private int _row;
@@ -35,6 +35,7 @@ public class ExcelCellAddress
     private int _column;
     private bool _isColumnFixed;
     private string _address;
+
     /// <summary>
     /// Initializes a new instance of the ExcelCellAddress class.
     /// </summary>
@@ -58,31 +59,32 @@ public class ExcelCellAddress
             this._address = "#REF!";
         }
     }
+
     /// <summary>
     /// Initializes a new instance of the ExcelCellAddress class.
     /// </summary>
     ///<param name="address">The address</param>
     public ExcelCellAddress(string address)
     {
-        this.Address = address; 
+        this.Address = address;
     }
+
     /// <summary>
     /// Row
     /// </summary>
     public int Row
     {
-        get
-        {
-            return this._row;
-        }
+        get { return this._row; }
         private set
         {
             if (value <= 0)
             {
                 throw new ArgumentOutOfRangeException("value", "Row cannot be less than 1.");
             }
+
             this._row = value;
-            if(this._column>0)
+
+            if (this._column > 0)
             {
                 this._address = ExcelCellBase.GetAddress(this._row, this._column);
             }
@@ -92,22 +94,22 @@ public class ExcelCellAddress
             }
         }
     }
+
     /// <summary>
     /// Column
     /// </summary>
     public int Column
     {
-        get
-        {
-            return this._column;
-        }
+        get { return this._column; }
         private set
         {
             if (value <= 0)
             {
                 throw new ArgumentOutOfRangeException("value", "Column cannot be less than 1.");
             }
+
             this._column = value;
+
             if (this._row > 0)
             {
                 this._address = ExcelCellBase.GetAddress(this._row, this._column);
@@ -118,40 +120,34 @@ public class ExcelCellAddress
             }
         }
     }
+
     /// <summary>
     /// Celladdress
     /// </summary>
     public string Address
     {
-        get
-        {
-            return this._address;
-        }
+        get { return this._address; }
         internal set
         {
             this._address = value;
-            ExcelCellBase.GetRowColFromAddress(this._address, out this._row, out this._column,out this._isRowFixed, out this._isColumnFixed);
+            ExcelCellBase.GetRowColFromAddress(this._address, out this._row, out this._column, out this._isRowFixed, out this._isColumnFixed);
         }
     }
+
     /// <summary>
     /// Returns true if the row is fixed 
     /// </summary>
-    public bool IsRowFixed 
-    { 
-        get
-        {
-            return this._isRowFixed;
-        }
+    public bool IsRowFixed
+    {
+        get { return this._isRowFixed; }
     }
+
     /// <summary>
     /// Returns true if the column is fixed
     /// </summary>
     public bool IsColumnFixed
     {
-        get
-        {
-            return this._isColumnFixed;
-        }
+        get { return this._isColumnFixed; }
     }
 
     /// <summary>
@@ -159,10 +155,7 @@ public class ExcelCellAddress
     /// </summary>
     public bool IsRef
     {
-        get
-        {
-            return this._row <= 0;
-        }
+        get { return this._row <= 0; }
     }
 
     /// <summary>
@@ -176,6 +169,7 @@ public class ExcelCellAddress
         {
             throw new InvalidOperationException("Invalid 1-based column index: " + column + ". Valid range is 1 to " + ExcelPackage.MaxColumns);
         }
+
         return ExcelCellBase.GetColumnLetter(column);
     }
 }

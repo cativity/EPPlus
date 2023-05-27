@@ -10,6 +10,7 @@
  *************************************************************************************************
   01/27/2020         EPPlus Software AB       Initial release EPPlus 5
  *************************************************************************************************/
+
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -26,24 +27,29 @@ public enum eDataTypes
     /// Let the the import decide.
     /// </summary>
     Unknown,
+
     /// <summary>
     /// Always a string.
     /// </summary>
     String,
+
     /// <summary>
     /// Try to convert it to a number. If it fails then add it as a string.
     /// </summary>
     Number,
+
     /// <summary>
     /// Try to convert it to a date. If it fails then add it as a string.
     /// </summary>
     DateTime,
+
     /// <summary>
     /// Try to convert it to a number and divide with 100. 
     /// Removes any tailing percent sign (%). If it fails then add it as a string.
     /// </summary>
     Percent
 }
+
 /// <summary>
 /// Describes how to split a CSV text. Used by the ExcelRange.LoadFromText method.
 /// Base class for ExcelTextFormat and ExcelOutputTextFormat
@@ -58,30 +64,37 @@ public class ExcelTextFormatBase
     public ExcelTextFormatBase()
     {
     }
+
     /// <summary>
     /// Delimiter character
     /// </summary>
     public char Delimiter { get; set; } = ',';
+
     /// <summary>
     /// Text qualifier character. Default no TextQualifier (\0)
     /// </summary>
     public char TextQualifier { get; set; } = '\0';
+
     /// <summary>
     /// End of line characters. Default is CRLF
     /// </summary>
     public string EOL { get; set; } = "\r\n";
+
     /// <summary>
     /// Culture used when parsing. Default CultureInfo.InvariantCulture
     /// </summary>
     public CultureInfo Culture { get; set; } = CultureInfo.InvariantCulture;
+
     /// <summary>
     /// Number of lines skipped in the begining of the file. Default 0.
     /// </summary>
     public int SkipLinesBeginning { get; set; } = 0;
+
     /// <summary>
     /// Number of lines skipped at the end of the file. Default 0.
     /// </summary>
     public int SkipLinesEnd { get; set; } = 0;
+
     /// <summary>
     /// Only used when reading/writing files from disk using a FileInfo object. Default AscII
     /// </summary>
@@ -109,10 +122,12 @@ public class ExcelTextFormat : ExcelTextFormatBase
     /// <item><term>Encoding</term><description>Encoding.ASCII</description></item>
     /// </list>
     /// </summary>
-    public ExcelTextFormat() : base()
+    public ExcelTextFormat()
+        : base()
     {
-        this.DataTypes=null;
+        this.DataTypes = null;
     }
+
     /// <summary>
     /// Datatypes list for each column (if column is not present Unknown is assumed)
     /// </summary>
@@ -146,23 +161,27 @@ public class ExcelOutputTextFormat : ExcelTextFormatBase
     /// <item><term>ThousandsSeparator</term><description>From Culture(null)</description></item>
     /// </list> 
     /// </summary>
-    public ExcelOutputTextFormat() : base()
+    public ExcelOutputTextFormat()
+        : base()
     {
-            
     }
+
     /// <summary>
     /// A text written at the start of the file.
     /// </summary>
     public string Header { get; set; }
+
     /// <summary>
     /// A text written at the end of the file
     /// </summary>
     public string Footer { get; set; }
+
     /// <summary>
     /// First row of the range contains the headers.
     /// All header cells will be treated as strings.
     /// </summary>
     public bool FirstRowIsHeader { get; set; } = true;
+
     /// <summary>
     /// Use the cells Text property with the applied culture.
     /// This only applies to columns with no format set in the Formats collection.
@@ -170,20 +189,24 @@ public class ExcelOutputTextFormat : ExcelTextFormatBase
     /// If a TextQualifier is set, non numeric and date columns will be wrapped with the TextQualifier
     /// </summary>
     public bool UseCellFormat { get; set; } = true;
+
     /// <summary>
     /// A specific .NET format for the column.
     /// Format is applied with the used culture.
     /// For a text column use $ as format
     /// </summary>        
-    public string[] Formats { get; set; }=null;
+    public string[] Formats { get; set; } = null;
+
     /// <summary>
     /// Decimal separator, if other than the used culture.
     /// </summary>
     public string DecimalSeparator { get; set; } = null;
+
     /// <summary>
     /// Thousands separator, if other than the used culture.
     /// </summary>
     public string ThousandsSeparator { get; set; } = null;
+
     /// <summary>
     /// What to replace Text Qualifiers inside a text, when Text Qualifiers is set.
     /// Default is two Text Qualifiers characters. For example " is replaced with "".

@@ -10,6 +10,7 @@
  *************************************************************************************************
   01/27/2020         EPPlus Software AB       Initial release EPPlus 5
  *************************************************************************************************/
+
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -19,10 +20,9 @@ using OfficeOpenXml.FormulaParsing.ExpressionGraph;
 
 namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Math;
 
-[FunctionMetadata(
-                     Category = ExcelFunctionCategory.Statistical,
-                     EPPlusVersion = "4",
-                     Description = "Returns the Kth LARGEST value from a list of supplied numbers, for a given value K")]
+[FunctionMetadata(Category = ExcelFunctionCategory.Statistical,
+                  EPPlusVersion = "4",
+                  Description = "Returns the Kth LARGEST value from a list of supplied numbers, for a given value K")]
 internal class Large : HiddenValuesHandlingFunction
 {
     public Large()
@@ -30,18 +30,21 @@ internal class Large : HiddenValuesHandlingFunction
         this.IgnoreHiddenValues = false;
         this.IgnoreErrors = false;
     }
+
     public override CompileResult Execute(IEnumerable<FunctionArgument> arguments, ParsingContext context)
     {
         ValidateArguments(arguments, 2);
         FunctionArgument? args = arguments.ElementAt(0);
         int index = this.ArgToInt(arguments, 1, this.IgnoreErrors) - 1;
-        IEnumerable<ExcelDoubleCellValue>? values = this.ArgsToDoubleEnumerable(new List<FunctionArgument> {args}, context);
+        IEnumerable<ExcelDoubleCellValue>? values = this.ArgsToDoubleEnumerable(new List<FunctionArgument> { args }, context);
+
         if (index < 0 || index >= values.Count())
         {
             return this.CreateResult(eErrorType.Num);
         }
 
         ExcelDoubleCellValue result = values.OrderByDescending(x => x).ElementAt(index);
+
         return this.CreateResult(result, DataType.Decimal);
     }
 }

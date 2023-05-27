@@ -11,8 +11,10 @@
   01/27/2020         EPPlus Software AB       Initial release EPPlus 5
   02/26/2021         EPPlus Software AB       Modified to work with dxf styling for tables
  *************************************************************************************************/
+
 using System;
 using System.Xml;
+
 namespace OfficeOpenXml.Style.Dxf;
 
 /// <summary>
@@ -24,43 +26,41 @@ public class ExcelDxfStyleFont : ExcelDxfStyleBase
         : base(nameSpaceManager, topNode, styles, callback)
     {
         this.Font = new ExcelDxfFont(this._styles, callback);
+
         if (topNode != null)
         {
             this.Font.SetValuesFromXml(this._helper);
         }
     }
+
     /// <summary>
     /// Font formatting settings
     /// </summary>
     public ExcelDxfFont Font { get; internal set; }
+
     internal override string Id
     {
-        get
-        {
-            return base.Id + this.Font.Id;
-        }
+        get { return base.Id + this.Font.Id; }
     }
+
     /// <summary>
     /// If the object has any properties set
     /// </summary>
     public override bool HasValue
     {
-        get
-        {
-            return base.HasValue || this.Font.HasValue;
-        }
+        get { return base.HasValue || this.Font.HasValue; }
     }
+
     internal override DxfStyleBase Clone()
     {
         ExcelDxfStyleFont? s = new ExcelDxfStyleFont(this._helper.NameSpaceManager, null, this._styles, this._callback)
         {
-            Font = (ExcelDxfFont)this.Font.Clone(),
-            Fill = (ExcelDxfFill)this.Fill.Clone(),
-            Border = (ExcelDxfBorderBase)this.Border.Clone(),
+            Font = (ExcelDxfFont)this.Font.Clone(), Fill = (ExcelDxfFill)this.Fill.Clone(), Border = (ExcelDxfBorderBase)this.Border.Clone(),
         };
 
         return s;
     }
+
     internal override void CreateNodes(XmlHelper helper, string path)
     {
         if (this.Font.HasValue)
@@ -78,6 +78,7 @@ public class ExcelDxfStyleFont : ExcelDxfStyleBase
             this.Border.CreateNodes(helper, "d:border");
         }
     }
+
     internal override void SetStyle()
     {
         if (this._callback != null)
@@ -86,6 +87,7 @@ public class ExcelDxfStyleFont : ExcelDxfStyleBase
             this.Font.SetStyle();
         }
     }
+
     /// <summary>
     /// Clears all properties
     /// </summary>

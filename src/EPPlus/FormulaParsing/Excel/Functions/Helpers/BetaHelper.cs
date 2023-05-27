@@ -26,6 +26,7 @@
  * 01/02/2021         EPPlus Software AB         Ported code from JavaScript to C# (https://github.com/jstat/jstat/blob/1.x/dist/jstat.js)
  *************************************************************************************************
  */
+
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -41,9 +42,12 @@ internal static class BetaHelper
         double a1 = a - 1;
         double b1 = b - 1;
         int j = 0;
-        double t, u,
+
+        double t,
+               u,
                x,
                w;
+
         if (p <= 0)
         {
             return 0;
@@ -59,6 +63,7 @@ internal static class BetaHelper
             double pp = p < 0.5 ? p : 1 - p;
             t = System.Math.Sqrt(-2 * System.Math.Log(pp));
             x = ((2.30753 + (t * 0.27061)) / (1 + (t * (0.99229 + (t * 0.04481))))) - t;
+
             if (p < 0.5)
             {
                 x = -x;
@@ -66,8 +71,7 @@ internal static class BetaHelper
 
             double al = ((x * x) - 3) / 6;
             double h = 2 / ((1 / ((2 * a) - 1)) + (1 / ((2 * b) - 1)));
-            w = (x * System.Math.Sqrt(al + h) / h) - (((1 / ((2 * b) - 1)) - (1 / ((2 * a) - 1))) *
-                                                      (al + (5 / 6) - (2 / (3 * h))));
+            w = (x * System.Math.Sqrt(al + h) / h) - (((1 / ((2 * b) - 1)) - (1 / ((2 * a) - 1))) * (al + (5 / 6) - (2 / (3 * h))));
             x = a / (a + (b * System.Math.Exp(2 * w)));
         }
         else
@@ -77,6 +81,7 @@ internal static class BetaHelper
             t = System.Math.Exp(a * lna) / a;
             u = System.Math.Exp(b * lnb) / b;
             w = t + u;
+
             if (p < t / w)
             {
                 x = System.Math.Pow(a * w * p, 1 / a);
@@ -89,6 +94,7 @@ internal static class BetaHelper
 
         //afac = -jStat.gammaln(a) - jStat.gammaln(b) + jStat.gammaln(a + b);
         double afac = -GammaHelper.logGamma(a) - GammaHelper.logGamma(b) + GammaHelper.logGamma(a + b);
+
         for (; j < 10; j++)
         {
             if (x == 0 || x == 1)
@@ -100,6 +106,7 @@ internal static class BetaHelper
             t = System.Math.Exp((a1 * System.Math.Log(x)) + (b1 * System.Math.Log(1 - x)) + afac);
             u = err / t;
             x -= t = u / (1 - (0.5 * System.Math.Min(1, u * ((a1 / x) - (b1 / (1 - x))))));
+
             if (x <= 0)
             {
                 x = 0.5 * (x + t);
@@ -115,6 +122,7 @@ internal static class BetaHelper
                 break;
             }
         }
+
         return x;
     }
 
@@ -128,16 +136,21 @@ internal static class BetaHelper
     internal static double IBeta(double x, double a, double b)
     {
         // Factors in front of the continued fraction.
-        double bt = x == 0 || x == 1 ? 0 :
-                        System.Math.Exp(GammaHelper.logGamma(a + b) - GammaHelper.logGamma(a) -
-                                        GammaHelper.logGamma(b) + (a * System.Math.Log(x)) + (b *
-                                                                                              System.Math.Log(1 - x)));
+        double bt = x == 0 || x == 1
+                        ? 0
+                        : System.Math.Exp(GammaHelper.logGamma(a + b)
+                                          - GammaHelper.logGamma(a)
+                                          - GammaHelper.logGamma(b)
+                                          + (a * System.Math.Log(x))
+                                          + (b * System.Math.Log(1 - x)));
+
         if (x < 0 || x > 1)
         {
             return 0d; // previously return false
         }
 
         if (x < (a + 1) / (a + b + 2))
+
             // Use continued fraction directly.
         {
             return bt * BetaCf(x, a, b) / a;
@@ -156,9 +169,7 @@ internal static class BetaHelper
         }
 
         // make sure x + y doesn't exceed the upper limit of usable values
-        return x + y > 170
-                   ? System.Math.Exp(Betaln(x, y))
-                   : GammaHelper.gamma(x) * GammaHelper.gamma(y) / GammaHelper.gamma(x + y);
+        return x + y > 170 ? System.Math.Exp(Betaln(x, y)) : GammaHelper.gamma(x) * GammaHelper.gamma(y) / GammaHelper.gamma(x + y);
     }
 
     internal static double Betaln(double x, double y)
@@ -168,10 +179,11 @@ internal static class BetaHelper
 
     internal static double BetaCdf(double x, double a, double b)
     {
-        if( x > 1 || x < 0)
+        if (x > 1 || x < 0)
         {
             return x > 1 ? 1 : 0;
         }
+
         return IBeta(x, a, b);
     }
 
@@ -190,15 +202,14 @@ internal static class BetaHelper
 
         if (a < 512 && b < 512)
         {
-            double result = System.Math.Pow(x, a - 1) * System.Math.Pow(1 - x, b - 1) /
-                            Beta(a, b);
+            double result = System.Math.Pow(x, a - 1) * System.Math.Pow(1 - x, b - 1) / Beta(a, b);
+
             return result / 2d;
         }
         else
         {
-            double result = System.Math.Exp(((a - 1) * System.Math.Log(x)) +
-                                            ((b - 1) * System.Math.Log(1 - x)) -
-                                            Betaln(a, b));
+            double result = System.Math.Exp(((a - 1) * System.Math.Log(x)) + ((b - 1) * System.Math.Log(1 - x)) - Betaln(a, b));
+
             return result / 2d;
         }
     }
@@ -236,12 +247,14 @@ internal static class BetaHelper
 
             // One step (the even one) of the recurrence
             d = 1 + (aa * d);
+
             if (System.Math.Abs(d) < fpmin)
             {
                 d = fpmin;
             }
 
             c = 1d + (aa / c);
+
             if (System.Math.Abs(c) < fpmin)
             {
                 c = fpmin;
@@ -250,14 +263,17 @@ internal static class BetaHelper
             d = 1 / d;
             h *= d * c;
             aa = -(a + m) * (qab + m) * x / ((a + m2) * (qap + m2));
+
             // Next step of the recurrence (the odd one)
             d = 1 + (aa * d);
+
             if (System.Math.Abs(d) < fpmin)
             {
                 d = fpmin;
             }
 
             c = 1 + (aa / c);
+
             if (System.Math.Abs(c) < fpmin)
             {
                 c = fpmin;
@@ -266,6 +282,7 @@ internal static class BetaHelper
             d = 1 / d;
             double del = d * c;
             h *= del;
+
             if (System.Math.Abs(del - 1.0) < 3e-7)
             {
                 break;

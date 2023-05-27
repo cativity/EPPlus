@@ -10,6 +10,7 @@
  *************************************************************************************************
   01/27/2020         EPPlus Software AB       Initial release EPPlus 5
  *************************************************************************************************/
+
 using OfficeOpenXml.Constants;
 using OfficeOpenXml.DataValidation.Formulas;
 using OfficeOpenXml.DataValidation.Formulas.Contracts;
@@ -71,8 +72,7 @@ public abstract class ExcelDataValidationWithFormula<T> : ExcelDataValidation
 
         if (xr.LocalName != formulaIdentifier && formulaIdentifier != "formula2")
         {
-            throw new NullReferenceException($"Cannot find DataValidation formula for {this.Uid}. " +
-                                             $"Missing node name: {formulaIdentifier}");
+            throw new NullReferenceException($"Cannot find DataValidation formula for {this.Uid}. " + $"Missing node name: {formulaIdentifier}");
         }
 
         bool isExt = xr.NamespaceURI == ExcelPackage.schemaMainX14;
@@ -90,11 +90,7 @@ public abstract class ExcelDataValidationWithFormula<T> : ExcelDataValidation
     /// <summary>
     /// Formula - Either a {T} value (except for custom validation) or a spreadsheet formula
     /// </summary>
-    public T Formula
-    {
-        get;
-        protected set;
-    }
+    public T Formula { get; protected set; }
 
     /// <summary>
     /// Validates the configuration of the validation.
@@ -116,18 +112,20 @@ public abstract class ExcelDataValidationWithFormula<T> : ExcelDataValidation
         if (this.ValidationType.Type == eDataValidationType.List)
         {
             ExcelDataValidationFormulaList? formulaList = (ExcelDataValidationFormulaList)formula;
+
             if (string.IsNullOrEmpty(formulaList.ExcelFormula) && formulaList.Values.Count <= 0)
             {
-                throw new InvalidOperationException($"Formula in Datavalidation of type: {eDataValidationType.List} with Uid: {this.Uid} must have a Value or ExcelFormula");
+                throw new
+                    InvalidOperationException($"Formula in Datavalidation of type: {eDataValidationType.List} with Uid: {this.Uid} must have a Value or ExcelFormula");
             }
+
             return;
         }
 
-        if (formula.HasValue == false 
-            && string.IsNullOrEmpty(formula.ExcelFormula) 
-            && !(this.AllowBlank ?? false))
+        if (formula.HasValue == false && string.IsNullOrEmpty(formula.ExcelFormula) && !(this.AllowBlank ?? false))
         {
-            throw new InvalidOperationException($"Formula in Datavalidation of type: {this.ValidationType.Type} with Uid: {this.Uid} must have a Value or ExcelFormula");
+            throw new
+                InvalidOperationException($"Formula in Datavalidation of type: {this.ValidationType.Type} with Uid: {this.Uid} must have a Value or ExcelFormula");
         }
     }
 }

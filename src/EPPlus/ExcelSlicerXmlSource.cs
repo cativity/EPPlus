@@ -10,6 +10,7 @@
  *************************************************************************************************
   01/27/2020         EPPlus Software AB       Initial release EPPlus 5
  *************************************************************************************************/
+
 using OfficeOpenXml.Packaging;
 using OfficeOpenXml.Utils;
 using System;
@@ -27,62 +28,79 @@ internal class ExcelSlicerXmlSources : XmlHelper
     const string _pivotTableUId = "{A8765BA9-456A-4dab-B4F3-ACF838C121DE}";
     internal List<ExcelSlicerXmlSource> _list = new List<ExcelSlicerXmlSource>();
     internal ZipPackagePart _part;
-    internal ExcelSlicerXmlSources(XmlNamespaceManager nsm, XmlNode topNode, ZipPackagePart part) : base(nsm, topNode)
+
+    internal ExcelSlicerXmlSources(XmlNamespaceManager nsm, XmlNode topNode, ZipPackagePart part)
+        : base(nsm, topNode)
     {
         this._part = part;
+
         foreach (XmlNode node in this.GetNodes("d:extLst/d:ext"))
         {
             switch (node.Attributes["uri"].Value)
             {
-                case _tableUId:  //Table slicer
+                case _tableUId: //Table slicer
                     foreach (XmlNode slicerNode in node.SelectNodes("x14:slicerList/x14:slicer", this.NameSpaceManager))
                     {
                         this._list.Add(new ExcelSlicerXmlSource(eSlicerSourceType.Table, part, slicerNode.Attributes["r:id"].Value));
                     }
+
                     break;
+
                 case _pivotTableUId: //Pivot table slicer
                     foreach (XmlNode slicerNode in node.SelectNodes("x14:slicerList/x14:slicer", this.NameSpaceManager))
                     {
                         this._list.Add(new ExcelSlicerXmlSource(eSlicerSourceType.PivotTable, part, slicerNode.Attributes["r:id"].Value));
                     }
+
                     break;
+
                 default:
                     break;
             }
         }
     }
+
     internal ExcelSlicerXmlSource GetOrCreateSource(eSlicerSourceType sourceType)
     {
         ExcelSlicerXmlSource? src = this.GetSources(sourceType).FirstOrDefault();
-        if(src==null)
+
+        if (src == null)
         {
-            switch(sourceType)
+            switch (sourceType)
             {
                 case eSlicerSourceType.Table:
-                    src=new ExcelSlicerXmlSource(eSlicerSourceType.Table, this._part, null);
+                    src = new ExcelSlicerXmlSource(eSlicerSourceType.Table, this._part, null);
                     this._list.Add(src);
 
                     break;
+
                 case eSlicerSourceType.PivotTable:
                     src = new ExcelSlicerXmlSource(eSlicerSourceType.PivotTable, this._part, null);
                     this._list.Add(src);
+
                     break;
             }
         }
+
         return src;
     }
+
     internal XmlNode GetSource(string name, eSlicerSourceType sourceType, out ExcelSlicerXmlSource source)
     {
         foreach (ExcelSlicerXmlSource? s in this.GetSources(sourceType))
         {
             XmlNode? n = s.XmlDocument.DocumentElement.SelectSingleNode($"x14:slicer[@name=\"{name}\"]", this.NameSpaceManager);
+
             if (n != null)
             {
                 source = s;
+
                 return n;
             }
         }
+
         source = null;
+
         return null;
     }
 
@@ -93,12 +111,13 @@ internal class ExcelSlicerXmlSources : XmlHelper
 
     internal void Save()
     {
-        foreach(ExcelSlicerXmlSource? xs in this._list)
+        foreach (ExcelSlicerXmlSource? xs in this._list)
         {
             StreamWriter? stream = new StreamWriter(xs.Part.GetStream(FileMode.Create, FileAccess.Write));
-            xs.XmlDocument.Save(stream);                
+            xs.XmlDocument.Save(stream);
         }
     }
+
     internal void Remove(ExcelSlicerXmlSource source)
     {
         this._list.Remove(source);
@@ -108,15 +127,18 @@ internal class ExcelSlicerXmlSources : XmlHelper
 
 internal class ExcelSlicerXmlSource : ExcelXmlSource
 {
-    internal ExcelSlicerXmlSource(eSlicerSourceType type, ZipPackagePart relPart, string relId) : base(relPart, relId)
+    internal ExcelSlicerXmlSource(eSlicerSourceType type, ZipPackagePart relPart, string relId)
+        : base(relPart, relId)
     {
         this.Type = type;
     }
+
     public eSlicerSourceType Type { get; }
 }
+
 internal class ExcelXmlSource
 {
-    internal ExcelXmlSource(ZipPackagePart relPart, string relId)  
+    internal ExcelXmlSource(ZipPackagePart relPart, string relId)
     {
         if (string.IsNullOrEmpty(relId))
         {
@@ -124,7 +146,11 @@ internal class ExcelXmlSource
             this.Part = relPart.Package.CreatePart(this.Uri, "application/vnd.ms-excel.slicer+xml", CompressionLevel.Default);
             this.Rel = relPart.CreateRelationship(UriHelper.GetRelativeUri(relPart.Uri, this.Uri), TargetMode.Internal, ExcelPackage.schemaRelationshipsSlicer);
             XmlDocument? xml = new XmlDocument();
-            XmlHelper.LoadXmlSafe(xml, "<slicers xmlns:xr10=\"http://schemas.microsoft.com/office/spreadsheetml/2016/revision10\" xmlns:x=\"http://schemas.openxmlformats.org/spreadsheetml/2006/main\" mc:Ignorable=\"x xr10\" xmlns:mc=\"http://schemas.openxmlformats.org/markup-compatibility/2006\" xmlns=\"http://schemas.microsoft.com/office/spreadsheetml/2009/9/main\" />", Encoding.UTF8);
+
+            XmlHelper.LoadXmlSafe(xml,
+                                  "<slicers xmlns:xr10=\"http://schemas.microsoft.com/office/spreadsheetml/2016/revision10\" xmlns:x=\"http://schemas.openxmlformats.org/spreadsheetml/2006/main\" mc:Ignorable=\"x xr10\" xmlns:mc=\"http://schemas.openxmlformats.org/markup-compatibility/2006\" xmlns=\"http://schemas.microsoft.com/office/spreadsheetml/2009/9/main\" />",
+                                  Encoding.UTF8);
+
             this.XmlDocument = xml;
         }
         else
@@ -138,21 +164,12 @@ internal class ExcelXmlSource
             this.XmlDocument = xml;
         }
     }
-    internal ZipPackageRelationship Rel
-    {
-        get;
-    }
-    internal ZipPackagePart Part
-    {
-        get;
-    }
-    internal Uri Uri
-    {
-        get;
-    }
-    public XmlDocument XmlDocument
-    {
-        get;
-    }
 
+    internal ZipPackageRelationship Rel { get; }
+
+    internal ZipPackagePart Part { get; }
+
+    internal Uri Uri { get; }
+
+    public XmlDocument XmlDocument { get; }
 }

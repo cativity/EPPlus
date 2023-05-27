@@ -10,6 +10,7 @@
  *************************************************************************************************
   05/11/2021         EPPlus Software AB           ExcelTable Html Export
  *************************************************************************************************/
+
 namespace OfficeOpenXml;
 
 /// <summary>
@@ -21,10 +22,12 @@ public enum eHtmlRangeTableInclude
     /// Do not set the table style css classes on the html table or create the table style css.
     /// </summary>
     Exclude,
+
     /// <summary>
     /// Set the css table style classes on the table, but do not include the table classes in the css.
     /// </summary>
     ClassNamesOnly,
+
     /// <summary>
     /// Include the css table style for the table and set the corresponding classes on the html table.
     /// </summary>

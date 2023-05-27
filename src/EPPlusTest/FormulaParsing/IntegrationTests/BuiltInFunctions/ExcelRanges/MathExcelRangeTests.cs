@@ -26,6 +26,7 @@
  *******************************************************************************
   01/27/2020         EPPlus Software AB       Initial release EPPlus 5
  *******************************************************************************/
+
 using System;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using OfficeOpenXml;
@@ -109,7 +110,8 @@ public class MathExcelRangeTests
         this._worksheet.Cells["A1"].Value = "CustomerAge";
         this._worksheet.Cells["B1"].Value = "SiteName";
         this._worksheet.Cells["C1"].Value = "Points";
-        for(int i = 0; i < ages.Length; i++)
+
+        for (int i = 0; i < ages.Length; i++)
         {
             this._worksheet.Cells["A" + (i + 2)].Value = ages[i];
             this._worksheet.Cells["B" + (i + 2)].Value = "MyCompany";
@@ -145,7 +147,7 @@ public class MathExcelRangeTests
         this._worksheet.Cells["A4"].Formula = "Average(A1:A3)";
         this._worksheet.Calculate();
         object? result = this._worksheet.Cells["A4"].Value;
-        Assert.AreEqual(3d + (1d/3d), result);
+        Assert.AreEqual(3d + (1d / 3d), result);
     }
 
     [TestMethod]

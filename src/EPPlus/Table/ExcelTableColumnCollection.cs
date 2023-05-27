@@ -10,6 +10,7 @@
  *************************************************************************************************
   01/27/2020         EPPlus Software AB       Initial release EPPlus 5
  *************************************************************************************************/
+
 using OfficeOpenXml.Core;
 using System;
 using System.Collections.Generic;
@@ -28,39 +29,38 @@ public class ExcelTableColumnCollection : IEnumerable<ExcelTableColumn>
     List<ExcelTableColumn> _cols = new List<ExcelTableColumn>();
     Dictionary<string, int> _colNames = new Dictionary<string, int>(StringComparer.OrdinalIgnoreCase);
     internal int _maxId = 1;
+
     internal ExcelTableColumnCollection(ExcelTable table)
     {
         this.Table = table;
-        foreach(XmlNode node in table.TableXml.SelectNodes("//d:table/d:tableColumns/d:tableColumn",table.NameSpaceManager))
+
+        foreach (XmlNode node in table.TableXml.SelectNodes("//d:table/d:tableColumns/d:tableColumn", table.NameSpaceManager))
         {
             ExcelTableColumn? item = new ExcelTableColumn(table.NameSpaceManager, node, table, this._cols.Count);
             this._cols.Add(item);
             this._colNames.Add(this._cols[this._cols.Count - 1].Name, this._cols.Count - 1);
             int id = item.Id;
-            if (id>= this._maxId)
+
+            if (id >= this._maxId)
             {
-                this._maxId = id+1;
+                this._maxId = id + 1;
             }
         }
     }
+
     /// <summary>
     /// A reference to the table object
     /// </summary>
-    public ExcelTable Table
-    {
-        get;
-        private set;
-    }
+    public ExcelTable Table { get; private set; }
+
     /// <summary>
     /// Number of items in the collection
     /// </summary>
     public int Count
     {
-        get
-        {
-            return this._cols.Count;
-        }
+        get { return this._cols.Count; }
     }
+
     /// <summary>
     /// The column Index. Base 0.
     /// </summary>
@@ -74,9 +74,11 @@ public class ExcelTableColumnCollection : IEnumerable<ExcelTableColumn>
             {
                 throw new ArgumentOutOfRangeException("Column index out of range");
             }
+
             return this._cols[Index] as ExcelTableColumn;
         }
     }
+
     /// <summary>
     /// Indexer
     /// </summary>
@@ -106,21 +108,25 @@ public class ExcelTableColumnCollection : IEnumerable<ExcelTableColumn>
     {
         return this._cols.GetEnumerator();
     }
+
     internal string GetUniqueName(string name)
-    {            
+    {
         if (this._colNames.ContainsKey(name))
         {
             string? newName = name;
             int i = 2;
+
             do
             {
-                newName = name+(i++).ToString(CultureInfo.InvariantCulture);
-            }
-            while (this._colNames.ContainsKey(newName));
+                newName = name + (i++).ToString(CultureInfo.InvariantCulture);
+            } while (this._colNames.ContainsKey(newName));
+
             return newName;
         }
+
         return name;
     }
+
     /// <summary>
     /// Adds one or more columns at the end of the table.
     /// </summary>
@@ -130,6 +136,7 @@ public class ExcelTableColumnCollection : IEnumerable<ExcelTableColumn>
     {
         return this.Insert(int.MaxValue, columns);
     }
+
     /// <summary>
     /// Inserts one or more columns before the specified position in the table.
     /// </summary>
@@ -138,10 +145,11 @@ public class ExcelTableColumnCollection : IEnumerable<ExcelTableColumn>
     /// <returns>The inserted range</returns>
     public ExcelRangeBase Insert(int position, int columns = 1)
     {
-        lock(this.Table)
+        lock (this.Table)
         {
             ExcelRangeBase? range = this.Table.InsertColumn(position, columns);
             XmlNode refNode;
+
             if (position >= this._cols.Count)
             {
                 refNode = this._cols[this._cols.Count - 1].TopNode;
@@ -151,6 +159,7 @@ public class ExcelTableColumnCollection : IEnumerable<ExcelTableColumn>
             {
                 refNode = this._cols[position].TopNode;
             }
+
             for (int i = position; i < position + columns; i++)
             {
                 XmlElement? node = this.Table.TableXml.CreateElement("tableColumn", ExcelPackage.schemaMain);
@@ -163,20 +172,24 @@ public class ExcelTableColumnCollection : IEnumerable<ExcelTableColumn>
                 {
                     refNode.ParentNode.InsertBefore(node, refNode);
                 }
+
                 ExcelTableColumn? item = new ExcelTableColumn(this.Table.NameSpaceManager, node, this.Table, i);
                 item.Name = this.GetUniqueName($"Column{i + 1}");
                 item.Id = this._maxId++;
                 this._cols.Insert(i, item);
             }
+
             for (int i = position; i < this._cols.Count; i++)
             {
                 this._cols[i].Position = i;
             }
 
             this._colNames = this._cols.ToDictionary(x => x.Name, y => y.Position);
+
             return range;
         }
     }
+
     /// <summary>
     /// Deletes one or more columns from the specified position in the table.
     /// </summary>
@@ -191,6 +204,7 @@ public class ExcelTableColumnCollection : IEnumerable<ExcelTableColumn>
             {
                 throw new ArgumentException("position", "position can't be negative");
             }
+
             if (columns < 0)
             {
                 throw new ArgumentException("columns", "columns can't be negative");
@@ -208,6 +222,7 @@ public class ExcelTableColumnCollection : IEnumerable<ExcelTableColumn>
                 this.Table.Columns._colNames.Remove(this._cols[i].Name);
                 this.Table.Columns._cols.RemoveAt(i);
             }
+
             for (int i = position; i < this._cols.Count; i++)
             {
                 this._cols[i].Position = i;
@@ -216,8 +231,8 @@ public class ExcelTableColumnCollection : IEnumerable<ExcelTableColumn>
             this._colNames = this._cols.ToDictionary(x => x.Name, y => y.Position);
 
             ExcelRangeBase? range = this.Table.DeleteColumn(position, columns);
+
             return range;
         }
     }
-
 }

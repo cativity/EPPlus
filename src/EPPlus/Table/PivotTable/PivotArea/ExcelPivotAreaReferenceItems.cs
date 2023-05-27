@@ -10,6 +10,7 @@
  *************************************************************************************************
   12/28/2020         EPPlus Software AB       Pivot Table Styling - EPPlus 5.6
  *************************************************************************************************/
+
 using OfficeOpenXml.Core;
 using System;
 using System.Linq;
@@ -22,10 +23,12 @@ namespace OfficeOpenXml.Table.PivotTable;
 public class ExcelPivotAreaReferenceItems : EPPlusReadOnlyList<PivotItemReference>
 {
     private ExcelPivotAreaReference _reference;
+
     internal ExcelPivotAreaReferenceItems(ExcelPivotAreaReference reference)
     {
         this._reference = reference;
     }
+
     /// <summary>
     /// Adds the item at the index to the condition. The index referes to the pivot cache.
     /// </summary>
@@ -33,7 +36,10 @@ public class ExcelPivotAreaReferenceItems : EPPlusReadOnlyList<PivotItemReferenc
     public void Add(int index)
     {
         {
-            EPPlusReadOnlyList<object>? items = this._reference.Field.Cache.SharedItems.Count == 0 ? this._reference.Field.Cache.GroupItems : this._reference.Field.Cache.SharedItems;
+            EPPlusReadOnlyList<object>? items = this._reference.Field.Cache.SharedItems.Count == 0
+                                                    ? this._reference.Field.Cache.GroupItems
+                                                    : this._reference.Field.Cache.SharedItems;
+
             if (items.Count > index)
             {
                 this.Add(new PivotItemReference() { Index = index, Value = items[index] });
@@ -44,6 +50,7 @@ public class ExcelPivotAreaReferenceItems : EPPlusReadOnlyList<PivotItemReferenc
             }
         }
     }
+
     /// <summary>
     /// Adds a specific cache item to the condition. The value is matched against the values in the pivot cache, either the shared items or the group items.
     /// </summary>
@@ -51,12 +58,15 @@ public class ExcelPivotAreaReferenceItems : EPPlusReadOnlyList<PivotItemReferenc
     /// <returns>true if the value has been added, otherwise false</returns>
     public bool AddByValue(object value)
     {
-        int index = this._reference.Field.Items._list.FindIndex(x => (x.Value!=null && x.Value.Equals(value)) || (x.Text!=null && x.Text.Equals(value)));
+        int index = this._reference.Field.Items._list.FindIndex(x => (x.Value != null && x.Value.Equals(value)) || (x.Text != null && x.Text.Equals(value)));
+
         if (index >= 0)
         {
             this.Add(new PivotItemReference() { Index = index, Value = value });
+
             return true;
         }
+
         return false;
     }
 }

@@ -10,6 +10,7 @@
  *************************************************************************************************
   01/27/2020         EPPlus Software AB       Initial release EPPlus 5
  *************************************************************************************************/
+
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -36,13 +37,9 @@ public abstract class ExcelFunction
     public ExcelFunction()
         : this(new ArgumentCollectionUtil(), new ArgumentParsers(), new CompileResultValidators())
     {
-
     }
 
-    public ExcelFunction(
-        ArgumentCollectionUtil argumentCollectionUtil, 
-        ArgumentParsers argumentParsers,
-        CompileResultValidators compileResultValidators)
+    public ExcelFunction(ArgumentCollectionUtil argumentCollectionUtil, ArgumentParsers argumentParsers, CompileResultValidators compileResultValidators)
     {
         this._argumentCollectionUtil = argumentCollectionUtil;
         this._argumentParsers = argumentParsers;
@@ -66,43 +63,43 @@ public abstract class ExcelFunction
     /// If overridden, this method is called before Execute is called.
     /// </summary>
     /// <param name="context"></param>
-    public virtual void BeforeInvoke(ParsingContext context) { }
+    public virtual void BeforeInvoke(ParsingContext context)
+    {
+    }
 
-    public virtual bool IsLookupFuction 
-    { 
-        get 
-        { 
-            return false; 
-        } 
+    public virtual bool IsLookupFuction
+    {
+        get { return false; }
     }
 
     public virtual bool IsErrorHandlingFunction
     {
-        get
-        {
-            return false;
-        }
+        get { return false; }
     }
-        
+
     /// <summary>
     /// Used for some Lookupfunctions to indicate that function arguments should
     /// not be compiled before the function is called.
     /// </summary>
+
     //public bool SkipArgumentEvaluation { get; set; }
     protected static object GetFirstValue(IEnumerable<FunctionArgument> val)
     {
         FunctionArgument? arg = ((IEnumerable<FunctionArgument>)val).FirstOrDefault();
-        if(arg.Value is IRangeInfo)
+
+        if (arg.Value is IRangeInfo)
         {
             //var r=((ExcelDataProvider.IRangeInfo)arg);
             IRangeInfo? r = arg.ValueAsRangeInfo;
+
             return r.GetValue(r.Address._fromRow, r.Address._fromCol);
         }
         else
         {
-            return arg==null?null:arg.Value;
+            return arg == null ? null : arg.Value;
         }
     }
+
     /// <summary>
     /// This functions validates that the supplied <paramref name="arguments"/> contains at least
     /// (the value of) <paramref name="minLength"/> elements. If one of the arguments is an
@@ -112,35 +109,40 @@ public abstract class ExcelFunction
     /// <param name="arguments"></param>
     /// <param name="minLength"></param>
     /// <param name="errorTypeToThrow">The <see cref="eErrorType"/> of the <see cref="ExcelErrorValueException"/> that will be thrown if <paramref name="minLength"/> is not met.</param>
-    protected static void ValidateArguments(IEnumerable<FunctionArgument> arguments, int minLength,
-                                            eErrorType errorTypeToThrow)
+    protected static void ValidateArguments(IEnumerable<FunctionArgument> arguments, int minLength, eErrorType errorTypeToThrow)
     {
         Require.That(arguments).Named("arguments").IsNotNull();
-        ThrowExcelErrorValueExceptionIf(() =>
-        {
-            int nArgs = 0;
-            if (arguments.Any())
-            {
-                foreach (FunctionArgument? arg in arguments)
-                {
-                    nArgs++;
-                    if (nArgs >= minLength)
-                    {
-                        return false;
-                    }
 
-                    if (arg.IsExcelRange)
-                    {
-                        nArgs += arg.ValueAsRangeInfo.GetNCells();
-                        if (nArgs >= minLength)
-                        {
-                            return false;
-                        }
-                    }
-                }
-            }
-            return true;
-        }, errorTypeToThrow);
+        ThrowExcelErrorValueExceptionIf(() =>
+                                        {
+                                            int nArgs = 0;
+
+                                            if (arguments.Any())
+                                            {
+                                                foreach (FunctionArgument? arg in arguments)
+                                                {
+                                                    nArgs++;
+
+                                                    if (nArgs >= minLength)
+                                                    {
+                                                        return false;
+                                                    }
+
+                                                    if (arg.IsExcelRange)
+                                                    {
+                                                        nArgs += arg.ValueAsRangeInfo.GetNCells();
+
+                                                        if (nArgs >= minLength)
+                                                        {
+                                                            return false;
+                                                        }
+                                                    }
+                                                }
+                                            }
+
+                                            return true;
+                                        },
+                                        errorTypeToThrow);
     }
 
     /// <summary>
@@ -155,44 +157,54 @@ public abstract class ExcelFunction
     protected static void ValidateArguments(IEnumerable<FunctionArgument> arguments, int minLength)
     {
         Require.That(arguments).Named("arguments").IsNotNull();
-        ThrowArgumentExceptionIf(() =>
-        {
-            int nArgs = 0;
-            if (arguments.Any())
-            {
-                foreach (FunctionArgument? arg in arguments)
-                {
-                    nArgs++;
-                    if (nArgs >= minLength)
-                    {
-                        return false;
-                    }
 
-                    if (arg.IsExcelRange)
-                    {
-                        nArgs += arg.ValueAsRangeInfo.GetNCells();
-                        if (nArgs >= minLength)
-                        {
-                            return false;
-                        }
-                    }
-                }
-            }
-            return true;
-        }, "Expecting at least {0} arguments", minLength.ToString());
+        ThrowArgumentExceptionIf(() =>
+                                 {
+                                     int nArgs = 0;
+
+                                     if (arguments.Any())
+                                     {
+                                         foreach (FunctionArgument? arg in arguments)
+                                         {
+                                             nArgs++;
+
+                                             if (nArgs >= minLength)
+                                             {
+                                                 return false;
+                                             }
+
+                                             if (arg.IsExcelRange)
+                                             {
+                                                 nArgs += arg.ValueAsRangeInfo.GetNCells();
+
+                                                 if (nArgs >= minLength)
+                                                 {
+                                                     return false;
+                                                 }
+                                             }
+                                         }
+                                     }
+
+                                     return true;
+                                 },
+                                 "Expecting at least {0} arguments",
+                                 minLength.ToString());
     }
+
     protected static string ArgToAddress(IEnumerable<FunctionArgument> arguments, int index)
-    {            
+    {
         return arguments.ElementAt(index).IsExcelRange ? arguments.ElementAt(index).ValueAsRangeInfo.Address.FullAddress : ArgToString(arguments, index);
     }
 
     protected static string ArgToAddress(IEnumerable<FunctionArgument> arguments, int index, ParsingContext context)
     {
         FunctionArgument? arg = arguments.ElementAt(index);
-        if(arg.ExcelAddressReferenceId > 0)
+
+        if (arg.ExcelAddressReferenceId > 0)
         {
             return context.AddressCache.Get(arg.ExcelAddressReferenceId);
         }
+
         return ArgToAddress(arguments, index);
     }
 
@@ -207,11 +219,14 @@ public abstract class ExcelFunction
     protected int ArgToInt(IEnumerable<FunctionArgument> arguments, int index)
     {
         FunctionArgument? arg = arguments.ElementAt(index);
+
         if (arg.ValueIsExcelError)
         {
             throw new ExcelErrorValueException(arg.ValueAsExcelErrorValue);
         }
+
         object? val = arg.ValueFirst;
+
         return (int)this._argumentParsers.GetParser(DataType.Integer).Parse(val);
     }
 
@@ -226,10 +241,12 @@ public abstract class ExcelFunction
     protected int ArgToInt(IEnumerable<FunctionArgument> arguments, int index, bool ignoreErrors)
     {
         FunctionArgument? arg = arguments.ElementAt(index);
-        if(arg.ValueIsExcelError && !ignoreErrors)
+
+        if (arg.ValueIsExcelError && !ignoreErrors)
         {
             throw new ExcelErrorValueException(arg.ValueAsExcelErrorValue.Type);
         }
+
         return (int)this._argumentParsers.GetParser(DataType.Integer).Parse(arg.ValueFirst);
     }
 
@@ -245,11 +262,14 @@ public abstract class ExcelFunction
     protected int ArgToInt(IEnumerable<FunctionArgument> arguments, int index, RoundingMethod roundingMethod)
     {
         FunctionArgument? arg = arguments.ElementAt(index);
+
         if (arg.ValueIsExcelError)
         {
             throw new ExcelErrorValueException(arg.ValueAsExcelErrorValue);
         }
+
         object? val = arg.ValueFirst;
+
         return (int)this._argumentParsers.GetParser(DataType.Integer).Parse(val, roundingMethod);
     }
 
@@ -263,6 +283,7 @@ public abstract class ExcelFunction
     protected static string ArgToString(IEnumerable<FunctionArgument> arguments, int index)
     {
         object? obj = arguments.ElementAt(index).ValueFirst;
+
         return obj != null ? obj.ToString() : string.Empty;
     }
 
@@ -287,10 +308,12 @@ public abstract class ExcelFunction
     protected double ArgToDecimal(object obj, PrecisionAndRoundingStrategy precisionAndRoundingStrategy)
     {
         double result = this.ArgToDecimal(obj);
+
         if (precisionAndRoundingStrategy == PrecisionAndRoundingStrategy.Excel)
         {
             result = RoundingHelper.RoundToSignificantFig(result, this.NumberOfSignificantFigures);
         }
+
         return result;
     }
 
@@ -305,10 +328,12 @@ public abstract class ExcelFunction
     protected double ArgToDecimal(IEnumerable<FunctionArgument> arguments, int index)
     {
         FunctionArgument? arg = arguments.ElementAt(index);
+
         if (arg.ValueIsExcelError)
         {
             throw new ExcelErrorValueException(arg.ValueAsExcelErrorValue);
         }
+
         return this.ArgToDecimal(arg.Value, PrecisionAndRoundingStrategy.DotNet);
     }
 
@@ -324,10 +349,12 @@ public abstract class ExcelFunction
     protected double ArgToDecimal(IEnumerable<FunctionArgument> arguments, int index, PrecisionAndRoundingStrategy precisionAndRoundingStrategy)
     {
         FunctionArgument? arg = arguments.ElementAt(index);
+
         if (arg.ValueIsExcelError)
         {
             throw new ExcelErrorValueException(arg.ValueAsExcelErrorValue);
         }
+
         return this.ArgToDecimal(arg.Value, precisionAndRoundingStrategy);
     }
 
@@ -348,7 +375,8 @@ public abstract class ExcelFunction
         {
             throw new ExcelErrorValueException(eErrorType.Div0);
         }
-        return left/right;
+
+        return left / right;
     }
 
     protected static bool IsNumericString(object value)
@@ -382,6 +410,7 @@ public abstract class ExcelFunction
     protected bool ArgToBool(IEnumerable<FunctionArgument> arguments, int index)
     {
         object? obj = arguments.ElementAt(index).Value ?? string.Empty;
+
         return (bool)this._argumentParsers.GetParser(DataType.Boolean).Parse(obj);
     }
 
@@ -419,6 +448,7 @@ public abstract class ExcelFunction
     {
         throw new ExcelErrorValueException("An excel function error occurred", ExcelErrorValue.Create(errorType));
     }
+
     /// <summary>
     /// Throws an <see cref="ExcelErrorValueException"/> with the type of given <paramref name="value"/> set.
     /// </summary>
@@ -452,7 +482,7 @@ public abstract class ExcelFunction
             return false;
         }
 
-        return TypeCompat.IsPrimitive(val) || val is double || val is decimal  || val is System.DateTime || val is TimeSpan;
+        return TypeCompat.IsPrimitive(val) || val is double || val is decimal || val is System.DateTime || val is TimeSpan;
     }
 
     protected static bool IsBool(object val)
@@ -493,8 +523,7 @@ public abstract class ExcelFunction
     /// <param name="arguments"></param>
     /// <param name="context"></param>
     /// <returns></returns>
-    protected virtual IEnumerable<ExcelDoubleCellValue> ArgsToDoubleEnumerable(IEnumerable<FunctionArgument> arguments,
-                                                                               ParsingContext context)
+    protected virtual IEnumerable<ExcelDoubleCellValue> ArgsToDoubleEnumerable(IEnumerable<FunctionArgument> arguments, ParsingContext context)
     {
         return this.ArgsToDoubleEnumerable(false, arguments, context);
     }
@@ -507,7 +536,10 @@ public abstract class ExcelFunction
     /// <param name="arguments"></param>
     /// <param name="context"></param>
     /// <returns></returns>
-    protected virtual IEnumerable<ExcelDoubleCellValue> ArgsToDoubleEnumerable(bool ignoreHiddenCells, bool ignoreErrors, IEnumerable<FunctionArgument> arguments, ParsingContext context)
+    protected virtual IEnumerable<ExcelDoubleCellValue> ArgsToDoubleEnumerable(bool ignoreHiddenCells,
+                                                                               bool ignoreErrors,
+                                                                               IEnumerable<FunctionArgument> arguments,
+                                                                               ParsingContext context)
     {
         return this._argumentCollectionUtil.ArgsToDoubleEnumerable(ignoreHiddenCells, ignoreErrors, arguments, context, false);
     }
@@ -521,7 +553,11 @@ public abstract class ExcelFunction
     /// <param name="context"></param>
     /// <param name="ignoreNonNumeric"></param>
     /// <returns></returns>
-    protected virtual IEnumerable<ExcelDoubleCellValue> ArgsToDoubleEnumerable(bool ignoreHiddenCells, bool ignoreErrors, IEnumerable<FunctionArgument> arguments, ParsingContext context, bool ignoreNonNumeric)
+    protected virtual IEnumerable<ExcelDoubleCellValue> ArgsToDoubleEnumerable(bool ignoreHiddenCells,
+                                                                               bool ignoreErrors,
+                                                                               IEnumerable<FunctionArgument> arguments,
+                                                                               ParsingContext context,
+                                                                               bool ignoreNonNumeric)
     {
         return this._argumentCollectionUtil.ArgsToDoubleEnumerable(ignoreHiddenCells, ignoreErrors, arguments, context, ignoreNonNumeric);
     }
@@ -534,11 +570,13 @@ public abstract class ExcelFunction
     /// <param name="context"></param>
     /// <param name="ignoreNonNumeric"></param>
     /// <returns></returns>
-    protected virtual IEnumerable<ExcelDoubleCellValue> ArgsToDoubleEnumerable(bool ignoreHiddenCells, IEnumerable<FunctionArgument> arguments, ParsingContext context, bool ignoreNonNumeric)
+    protected virtual IEnumerable<ExcelDoubleCellValue> ArgsToDoubleEnumerable(bool ignoreHiddenCells,
+                                                                               IEnumerable<FunctionArgument> arguments,
+                                                                               ParsingContext context,
+                                                                               bool ignoreNonNumeric)
     {
         return this.ArgsToDoubleEnumerable(ignoreHiddenCells, true, arguments, context, ignoreNonNumeric);
     }
-
 
     /// <summary>
     /// Will return the arguments as an enumerable of doubles.
@@ -547,7 +585,9 @@ public abstract class ExcelFunction
     /// <param name="arguments"></param>
     /// <param name="context"></param>        
     /// <returns></returns>
-    protected virtual IEnumerable<ExcelDoubleCellValue> ArgsToDoubleEnumerable(bool ignoreHiddenCells, IEnumerable<FunctionArgument> arguments, ParsingContext context)
+    protected virtual IEnumerable<ExcelDoubleCellValue> ArgsToDoubleEnumerable(bool ignoreHiddenCells,
+                                                                               IEnumerable<FunctionArgument> arguments,
+                                                                               ParsingContext context)
     {
         return this.ArgsToDoubleEnumerable(ignoreHiddenCells, true, arguments, context, false);
     }
@@ -566,6 +606,7 @@ public abstract class ExcelFunction
         List<double>? resultList = new List<double>();
         int from = horizontal ? startCol : startRow;
         int to = horizontal ? endCol : endRow;
+
         for (int row = from; row <= to; row++)
         {
             if (dict.ContainsKey(row))
@@ -577,6 +618,7 @@ public abstract class ExcelFunction
                 resultList.Add(0d);
             }
         }
+
         return resultList;
     }
 
@@ -602,6 +644,7 @@ public abstract class ExcelFunction
     {
         CompileResultValidator? validator = this._compileResultValidators.GetValidator(dataType);
         validator.Validate(result);
+
         return new CompileResult(result, dataType);
     }
 
@@ -619,7 +662,7 @@ public abstract class ExcelFunction
     /// <param name="result"></param>
     /// <param name="action"></param>
     /// <returns></returns>
-    protected virtual double CalculateCollection(IEnumerable<FunctionArgument> collection, double result, Func<FunctionArgument,double,double> action)
+    protected virtual double CalculateCollection(IEnumerable<FunctionArgument> collection, double result, Func<FunctionArgument, double, double> action)
     {
         return this._argumentCollectionUtil.CalculateCollection(collection, result, action);
     }
@@ -657,18 +700,22 @@ public abstract class ExcelFunction
         {
             return this.CreateResult(result, DataType.Decimal);
         }
+
         if (result is string)
         {
             return this.CreateResult(result, DataType.String);
         }
+
         if (ExcelErrorValue.Values.IsErrorValue(result))
         {
             return this.CreateResult(result, DataType.ExcelAddress);
         }
+
         if (result == null)
         {
             return CompileResult.Empty;
         }
+
         return this.CreateResult(result, DataType.Enumerable);
     }
 }

@@ -10,6 +10,7 @@
  *************************************************************************************************
   01/27/2020         EPPlus Software AB       Initial release EPPlus 5
  *************************************************************************************************/
+
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -20,10 +21,9 @@ using OfficeOpenXml.FormulaParsing.ExpressionGraph;
 
 namespace OfficeOpenXml.FormulaParsing.Excel.Functions.DateTime;
 
-[FunctionMetadata(
-                     Category = ExcelFunctionCategory.DateAndTime,
-                     EPPlusVersion = "4",
-                     Description = "Calculates the number of days between 2 dates, based on a 360-day year (12 x 30 months)")]
+[FunctionMetadata(Category = ExcelFunctionCategory.DateAndTime,
+                  EPPlusVersion = "4",
+                  Description = "Calculates the number of days between 2 dates, based on a 360-day year (12 x 30 months)")]
 internal class Days360 : ExcelFunction
 {
     public override CompileResult Execute(IEnumerable<FunctionArgument> arguments, ParsingContext context)
@@ -35,9 +35,11 @@ internal class Days360 : ExcelFunction
         System.DateTime dt2 = System.DateTime.FromOADate(numDate2);
 
         Days360Calctype calcType = Days360Calctype.Us;
+
         if (arguments.Count() > 2)
         {
             bool european = this.ArgToBool(arguments, 2);
+
             if (european)
             {
                 calcType = Days360Calctype.European;
@@ -45,6 +47,7 @@ internal class Days360 : ExcelFunction
         }
 
         int result = Days360Impl.CalcDays360(dt1, dt2, calcType);
+
         return this.CreateResult(result, DataType.Integer);
     }
 
@@ -52,6 +55,7 @@ internal class Days360 : ExcelFunction
     {
         System.DateTime startDate = new System.DateTime(dt1.Year, dt1.Month, 1).AddMonths(1);
         System.DateTime endDate = new System.DateTime(dt2.Year, dt2.Month, 1);
-        return ((endDate.Year - startDate.Year)*12) + (endDate.Month - startDate.Month);
+
+        return ((endDate.Year - startDate.Year) * 12) + (endDate.Month - startDate.Month);
     }
 }

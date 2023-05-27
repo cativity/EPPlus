@@ -26,6 +26,7 @@
  *******************************************************************************
   01/27/2020         EPPlus Software AB       Initial release EPPlus 5
  *******************************************************************************/
+
 using System;
 using System.Text;
 using System.Collections.Generic;
@@ -40,7 +41,6 @@ namespace EPPlusTest.FormulaParsing.IntegrationTests;
 [TestClass]
 public class PrecedenceTests : FormulaParserTestBase
 {
-
     [TestInitialize]
     public void Setup()
     {

@@ -10,6 +10,7 @@
  *************************************************************************************************
   01/27/2020         EPPlus Software AB       Initial release EPPlus 5
  *************************************************************************************************/
+
 namespace OfficeOpenXml.Style;
 
 /// <summary>
@@ -21,10 +22,12 @@ public enum eStrikeType
     /// Double-lined font strike
     /// </summary>
     Double,
+
     /// <summary>
     /// No font strike
     /// </summary>
     No,
+
     /// <summary>
     /// Single-lined font strike
     /// </summary>

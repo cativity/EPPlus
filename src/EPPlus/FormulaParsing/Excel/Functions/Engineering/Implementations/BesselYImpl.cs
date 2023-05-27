@@ -7,6 +7,7 @@
  *************************************************************************************************
   05/20/2020         EPPlus Software AB       Implemented function
  *************************************************************************************************/
+
 using OfficeOpenXml.FormulaParsing.Excel.Functions.Finance.Implementations;
 using System;
 using System.Collections.Generic;
@@ -24,10 +25,10 @@ public class BesselYImpl : BesselBase
         }
 
         const double fMaxIteration = 9000000.0; // should not be reached
+
         if (fX > 5.0e+6) // iteration is not considerable better then approximation
         {
-            return new FinanceCalcResult<double>(System.Math.Sqrt(1 / f_PI / fX)
-                                                 * (System.Math.Sin(fX) - System.Math.Cos(fX)));
+            return new FinanceCalcResult<double>(System.Math.Sqrt(1 / f_PI / fX) * (System.Math.Sin(fX) - System.Math.Cos(fX)));
         }
 
         const double epsilon = 1.0e-15;
@@ -45,10 +46,12 @@ public class BesselYImpl : BesselBase
         double sign_alpha = 1.0;
         bool bHasFound = false;
         k += 1;
+
         do
         {
             double km1mod2 = (k - 1.0) % 2.0;
             double m_bar = 2.0 * km1mod2 * f_bar;
+
             if (km1mod2 == 0.0)
             {
                 alpha = 0.0;
@@ -58,6 +61,7 @@ public class BesselYImpl : BesselBase
                 alpha = sign_alpha * (4.0 / k);
                 sign_alpha = -sign_alpha;
             }
+
             g_bar_delta_u = (f_bar * alpha) - (g * delta_u) - (m_bar * u);
             g_bar = m_bar - (2.0 * k / fX) + g;
             delta_u = g_bar_delta_u / g_bar;
@@ -66,8 +70,8 @@ public class BesselYImpl : BesselBase
             f_bar *= g;
             bHasFound = System.Math.Abs(delta_u) <= System.Math.Abs(u) * epsilon;
             k += 1;
-        }
-        while (!bHasFound && k < fMaxIteration);
+        } while (!bHasFound && k < fMaxIteration);
+
         if (!bHasFound)
         {
             return new FinanceCalcResult<double>(eErrorType.Num); // not likely to happen
@@ -88,10 +92,10 @@ public class BesselYImpl : BesselBase
         }
 
         const double fMaxIteration = 9000000.0; // should not be reached
+
         if (fX > 5.0e+6) // iteration is not considerable better then approximation
         {
-            return new FinanceCalcResult<double>(-System.Math.Sqrt(1 / f_PI / fX)
-                                                 * (System.Math.Sin(fX) + System.Math.Cos(fX)));
+            return new FinanceCalcResult<double>(-System.Math.Sqrt(1 / f_PI / fX) * (System.Math.Sin(fX) + System.Math.Cos(fX)));
         }
 
         const double epsilon = 1.0e-15;
@@ -110,11 +114,13 @@ public class BesselYImpl : BesselBase
         double sign_alpha = -1.0;
         bool bHasFound = false;
         k += 1.0;
+
         do
         {
             double km1mod2 = (k - 1.0) % 2.0;
             double m_bar = 2.0 * km1mod2 * f_bar;
             double q = (k - 1.0) / 2.0;
+
             if (km1mod2 == 0.0) // k is odd
             {
                 alpha = sign_alpha * ((1.0 / q) + (1.0 / (q + 1.0)));
@@ -133,8 +139,8 @@ public class BesselYImpl : BesselBase
             f_bar *= g;
             bHasFound = System.Math.Abs(delta_u) <= System.Math.Abs(u) * epsilon;
             k += 1;
-        }
-        while (!bHasFound && k < fMaxIteration);
+        } while (!bHasFound && k < fMaxIteration);
+
         if (!bHasFound)
         {
             new FinanceCalcResult<double>(eErrorType.Num);
@@ -143,17 +149,21 @@ public class BesselYImpl : BesselBase
         return new FinanceCalcResult<double>(-u * 2.0 / f_PI);
     }
 
-
     public static FinanceCalcResult<double> BesselY(double fNum, int nOrder)
     {
         switch (nOrder)
         {
-            case 0: return Bessely0(fNum);
-            case 1: return Bessely1(fNum);
+            case 0:
+                return Bessely0(fNum);
+
+            case 1:
+                return Bessely1(fNum);
+
             default:
             {
                 double fTox = 2.0 / fNum;
                 FinanceCalcResult<double>? y0Result = Bessely0(fNum);
+
                 if (y0Result.HasError)
                 {
                     return y0Result;
@@ -161,6 +171,7 @@ public class BesselYImpl : BesselBase
 
                 double fBym = y0Result.Result;
                 FinanceCalcResult<double>? y1Result = Bessely1(fNum);
+
                 if (y1Result.HasError)
                 {
                     return y1Result;

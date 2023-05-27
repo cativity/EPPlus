@@ -26,6 +26,7 @@
  *******************************************************************************
   01/27/2020         EPPlus Software AB       Initial release EPPlus 5
  *******************************************************************************/
+
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using OfficeOpenXml;
 
@@ -83,6 +84,7 @@ public class WorksheetReferenceTests : TestBase
         Assert.AreEqual("'Sheet2'!M3", sheet1.Cells[2, 2].Formula);
         Assert.AreEqual("Hello, world!", sheet1.Cells[2, 2].Value);
     }
+
     [TestMethod]
     public void CrossSheetInsertRowAfterReferencesHasNoEffect()
     {
@@ -198,6 +200,7 @@ public class WorksheetReferenceTests : TestBase
         Assert.AreEqual("Hello, world!", sheet1.Cells[3, 3].Value);
         Assert.AreEqual("Goodbye, world!", sheet1.Cells[4, 4].Value);
     }
+
     [TestMethod]
     public void AddWorksheetWithDollarSign()
     {
@@ -218,10 +221,12 @@ public class WorksheetReferenceTests : TestBase
         Assert.AreEqual(sheet1, package.Workbook.Worksheets[sheetName]);
         Assert.AreEqual("'Sheet1$'!A1", sheet1.Names["DefinedName1"].FullAddress);
     }
+
     [TestMethod]
     public void VerifyAddressFullAddress()
     {
         using ExcelPackage? package = new ExcelPackage();
+
         //var ws1 = package.Workbook.Worksheets.Add("sheet1");
         //var n = ws1.Names.Add("Name1", ws1.Cells["A1:B5"]);
         //n.Address = "A2:D6";

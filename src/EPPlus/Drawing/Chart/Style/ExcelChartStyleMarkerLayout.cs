@@ -10,6 +10,7 @@
  *************************************************************************************************
   01/27/2020         EPPlus Software AB       Initial release EPPlus 5
  *************************************************************************************************/
+
 using OfficeOpenXml.Utils.Extensions;
 using System;
 using System.Globalization;
@@ -22,25 +23,20 @@ namespace OfficeOpenXml.Drawing.Chart.Style;
 /// </summary>
 public class ExcelChartStyleMarkerLayout : XmlHelper
 {
-
-    internal ExcelChartStyleMarkerLayout(XmlNamespaceManager ns, XmlNode topNode) : base(ns, topNode)
+    internal ExcelChartStyleMarkerLayout(XmlNamespaceManager ns, XmlNode topNode)
+        : base(ns, topNode)
     {
-
     }
+
     /// <summary>
     /// The marker style
     /// </summary>
     public eMarkerStyle Style
     {
-        get
-        {
-            return this.GetXmlNodeString("@symbol").ToEnum(eMarkerStyle.None);
-        }
-        set
-        {
-            this.SetXmlNodeString("@symbol", value.ToEnumString());
-        }
+        get { return this.GetXmlNodeString("@symbol").ToEnum(eMarkerStyle.None); }
+        set { this.SetXmlNodeString("@symbol", value.ToEnumString()); }
     }
+
     /// <summary>
     /// The size of the marker.
     /// Ranges from 2 to 72
@@ -50,10 +46,12 @@ public class ExcelChartStyleMarkerLayout : XmlHelper
         get
         {
             int v = this.GetXmlNodeInt("@size");
+
             if (v < 0)
             {
-                return 5;   //Default value;
+                return 5; //Default value;
             }
+
             return v;
         }
         set

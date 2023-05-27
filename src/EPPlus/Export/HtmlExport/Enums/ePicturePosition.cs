@@ -22,10 +22,12 @@ public enum ePicturePosition
     /// No CSS is added for Position
     /// </summary>
     DontSet,
+
     /// <summary>
     /// Position is Absolute in the CSS
     /// </summary>
     Absolute,
+
     /// <summary>
     /// Position is Relative in the CSS
     /// </summary>

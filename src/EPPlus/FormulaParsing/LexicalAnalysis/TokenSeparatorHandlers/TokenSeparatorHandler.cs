@@ -10,6 +10,7 @@
  *************************************************************************************************
   01/27/2020         EPPlus Software AB       Initial release EPPlus 5
  *************************************************************************************************/
+
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -26,13 +27,12 @@ internal class TokenSeparatorHandler
     public TokenSeparatorHandler(ITokenSeparatorProvider tokenSeparatorProvider, INameValueProvider nameValueProvider)
         : this(new SeparatorHandler[]
         {
-            new StringHandler(),
-            new BracketHandler(),
-            new SheetnameHandler(),
-            new MultipleCharSeparatorHandler(tokenSeparatorProvider, nameValueProvider),
-            new DefinedNameAddressHandler(nameValueProvider),
+            new StringHandler(), new BracketHandler(), new SheetnameHandler(),
+            new MultipleCharSeparatorHandler(tokenSeparatorProvider, nameValueProvider), new DefinedNameAddressHandler(nameValueProvider),
             new ExponentialNumberHandler()
-        }){}
+        })
+    {
+    }
 
     public TokenSeparatorHandler(params SeparatorHandler[] handlers)
     {
@@ -51,13 +51,14 @@ internal class TokenSeparatorHandler
     /// <returns>Returns true if the tokenseparator was handled.</returns>
     public bool Handle(char c, Token tokenSeparator, TokenizerContext context, ITokenIndexProvider tokenIndexProvider)
     {
-        foreach(SeparatorHandler? handler in this._handlers)
+        foreach (SeparatorHandler? handler in this._handlers)
         {
-            if(handler.Handle(c, tokenSeparator, context, tokenIndexProvider))
+            if (handler.Handle(c, tokenSeparator, context, tokenIndexProvider))
             {
                 return true;
             }
         }
+
         return false;
     }
 }

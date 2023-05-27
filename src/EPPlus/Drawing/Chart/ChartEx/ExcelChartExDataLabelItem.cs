@@ -10,6 +10,7 @@
  *************************************************************************************************
   04/27/2020         EPPlus Software AB           EPPlus 5.2
  *************************************************************************************************/
+
 using OfficeOpenXml.Utils.Extensions;
 using System;
 using System.Collections.Generic;
@@ -24,25 +25,23 @@ namespace OfficeOpenXml.Drawing.Chart.ChartEx;
 /// </summary>
 public class ExcelChartExDataLabelItem : ExcelChartExDataLabel
 {
-    internal ExcelChartExDataLabelItem(ExcelChartExSerie serie, XmlNamespaceManager nsm, XmlNode node) : base(serie, nsm, node)
+    internal ExcelChartExDataLabelItem(ExcelChartExSerie serie, XmlNamespaceManager nsm, XmlNode node)
+        : base(serie, nsm, node)
     {
     }
-    internal ExcelChartExDataLabelItem(ExcelChartExSerie serie, XmlNamespaceManager nsm, XmlNode node, int index) : base(serie, nsm, node)
+
+    internal ExcelChartExDataLabelItem(ExcelChartExSerie serie, XmlNamespaceManager nsm, XmlNode node, int index)
+        : base(serie, nsm, node)
     {
         this.Index = index;
     }
+
     /// <summary>
     /// The index of the datapoint the label is attached to
     /// </summary>
-    public int Index 
-    { 
-        get
-        {
-            return this.GetXmlNodeInt("@idx");
-        }
-        private set
-        {
-            this.SetXmlNodeInt("@idx", value);
-        }
+    public int Index
+    {
+        get { return this.GetXmlNodeInt("@idx"); }
+        private set { this.SetXmlNodeInt("@idx", value); }
     }
 }

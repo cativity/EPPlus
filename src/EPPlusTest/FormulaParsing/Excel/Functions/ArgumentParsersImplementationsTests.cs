@@ -26,6 +26,7 @@
  *******************************************************************************
   01/27/2020         EPPlus Software AB       Initial release EPPlus 5
  *******************************************************************************/
+
 using System;
 using System.Text;
 using System.Collections.Generic;
@@ -137,6 +138,6 @@ public class ArgumentParsersImplementationsTests
     {
         DoubleArgumentParser? parser = new DoubleArgumentParser();
         object? result = parser.Parse("3.3.2015");
-        Assert.AreEqual(new DateTime(2015,3,3).ToOADate(), result);
+        Assert.AreEqual(new DateTime(2015, 3, 3).ToOADate(), result);
     }
 }

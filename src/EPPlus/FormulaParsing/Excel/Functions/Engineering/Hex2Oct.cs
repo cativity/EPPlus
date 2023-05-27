@@ -10,6 +10,7 @@
  *************************************************************************************************
   05/03/2020         EPPlus Software AB         Implemented function
  *************************************************************************************************/
+
 using OfficeOpenXml.FormulaParsing.Excel.Functions.Helpers;
 using OfficeOpenXml.FormulaParsing.Excel.Functions.Metadata;
 using OfficeOpenXml.FormulaParsing.ExpressionGraph;
@@ -20,10 +21,7 @@ using System.Text;
 
 namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Engineering;
 
-[FunctionMetadata(
-                     Category = ExcelFunctionCategory.Engineering,
-                     EPPlusVersion = "5.1",
-                     Description = "Converts a hexadecimal number to octal")]
+[FunctionMetadata(Category = ExcelFunctionCategory.Engineering, EPPlusVersion = "5.1", Description = "Converts a hexadecimal number to octal")]
 internal class Hex2Oct : ExcelFunction
 {
     public override CompileResult Execute(IEnumerable<FunctionArgument> arguments, ParsingContext context)
@@ -31,16 +29,20 @@ internal class Hex2Oct : ExcelFunction
         ValidateArguments(arguments, 1);
         string? number = ArgToString(arguments, 0);
         int? padding = default(int?);
+
         if (arguments.Count() > 1)
         {
             padding = this.ArgToInt(arguments, 1);
+
             if ((padding.Value < 0) ^ (padding.Value > 10))
             {
                 return this.CreateResult(eErrorType.Num);
             }
         }
+
         double decNumber = TwoComplementHelper.ParseDecFromString(number, 16);
         string? result = Convert.ToString(Convert.ToInt32(decNumber), 8);
+
         if (decNumber < 0)
         {
             result = PaddingHelper.EnsureLength(result, 10, "7");
@@ -53,6 +55,7 @@ internal class Hex2Oct : ExcelFunction
         {
             result = PaddingHelper.EnsureMinLength(result, 10);
         }
+
         return this.CreateResult(result, DataType.String);
     }
 }

@@ -10,8 +10,10 @@
  *************************************************************************************************
   01/27/2020         EPPlus Software AB       Initial release EPPlus 5
  *************************************************************************************************/
+
 using System;
 using System.Xml;
+
 namespace OfficeOpenXml.Style.Dxf;
 
 /// <summary>
@@ -19,15 +21,20 @@ namespace OfficeOpenXml.Style.Dxf;
 /// </summary>
 public class ExcelDxfStyleLimitedFont : ExcelDxfStyleBase
 {
-    internal ExcelDxfStyleLimitedFont(XmlNamespaceManager nameSpaceManager, XmlNode topNode, ExcelStyles styles, Action<eStyleClass, eStyleProperty, object> callback)
+    internal ExcelDxfStyleLimitedFont(XmlNamespaceManager nameSpaceManager,
+                                      XmlNode topNode,
+                                      ExcelStyles styles,
+                                      Action<eStyleClass, eStyleProperty, object> callback)
         : base(nameSpaceManager, topNode, styles, callback)
     {
         this.Font = new ExcelDxfFont(styles, this._callback);
+
         if (topNode != null)
         {
             this.Font.SetValuesFromXml(this._helper);
         }
     }
+
     /// <summary>
     /// Font formatting settings
     /// </summary>
@@ -41,13 +48,12 @@ public class ExcelDxfStyleLimitedFont : ExcelDxfStyleBase
     {
         ExcelDxfStyleLimitedFont? s = new ExcelDxfStyleLimitedFont(this._helper.NameSpaceManager, null, this._styles, this._callback)
         {
-            Font = (ExcelDxfFont)this.Font.Clone(),
-            Fill = (ExcelDxfFill)this.Fill.Clone(),
-            Border = (ExcelDxfBorderBase)this.Border.Clone()
+            Font = (ExcelDxfFont)this.Font.Clone(), Fill = (ExcelDxfFill)this.Fill.Clone(), Border = (ExcelDxfBorderBase)this.Border.Clone()
         };
 
         return s;
     }
+
     internal override void CreateNodes(XmlHelper helper, string path)
     {
         if (this.Font.HasValue)
@@ -65,16 +71,15 @@ public class ExcelDxfStyleLimitedFont : ExcelDxfStyleBase
             this.Border.CreateNodes(helper, "d:border");
         }
     }
+
     /// <summary>
     /// If the object has any properties set
     /// </summary>
     public override bool HasValue
     {
-        get
-        {
-            return this.Font.HasValue || base.HasValue;
-        }
+        get { return this.Font.HasValue || base.HasValue; }
     }
+
     internal override void SetStyle()
     {
         if (this._callback != null)
@@ -83,6 +88,7 @@ public class ExcelDxfStyleLimitedFont : ExcelDxfStyleBase
             this.Font.SetStyle();
         }
     }
+
     /// <summary>
     /// Clears all properties
     /// </summary>
@@ -91,11 +97,9 @@ public class ExcelDxfStyleLimitedFont : ExcelDxfStyleBase
         base.Clear();
         this.Font.Clear();
     }
+
     internal override string Id
     {
-        get
-        {
-            return base.Id + this.Font.Id;                    
-        }
+        get { return base.Id + this.Font.Id; }
     }
 }

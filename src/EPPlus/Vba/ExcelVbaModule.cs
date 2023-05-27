@@ -10,6 +10,7 @@
  *************************************************************************************************
   01/27/2020         EPPlus Software AB       Initial release EPPlus 5
  *************************************************************************************************/
+
 using System;
 using System.Linq;
 using System.Text.RegularExpressions;
@@ -25,40 +26,47 @@ public class ExcelVBAModule
 {
     string _name = "";
     ModuleNameChange _nameChangeCallback = null;
-    private static readonly char[] _nonValidChars = new char[] { '!', '\\', '"', '@', '#', '$', '%', '&', '/', '{', '}', '[', ']', '(', ')', '<', '>', '=', '+', '-', '?', '`', '~', '^', '\'', '*', ';', ':' };
+
+    private static readonly char[] _nonValidChars = new char[]
+    {
+        '!', '\\', '"', '@', '#', '$', '%', '&', '/', '{', '}', '[', ']', '(', ')', '<', '>', '=', '+', '-', '?', '`', '~', '^', '\'', '*', ';', ':'
+    };
+
     //private const string _validModulePattern = "^[a-zA-Z][a-zA-Z0-9_ ]*$";
     internal ExcelVBAModule()
     {
         this.Attributes = new ExcelVbaModuleAttributesCollection();
     }
-    internal ExcelVBAModule(ModuleNameChange nameChangeCallback) :
-        this()
+
+    internal ExcelVBAModule(ModuleNameChange nameChangeCallback)
+        : this()
     {
         this._nameChangeCallback = nameChangeCallback;
     }
+
     /// <summary>
     /// The name of the module
     /// </summary>
     public string Name
     {
-        get
-        {
-            return this._name;
-        }
+        get { return this._name; }
         set
         {
             if (value.Any(c => c > 255))
             {
                 throw new InvalidOperationException("Vba module names can't contain unicode characters");
             }
+
             if (!IsValidModuleName(value))
             {
                 throw new InvalidOperationException("Name contains invalid characters");
             }
+
             if (value != this._name)
             {
                 this._name = value;
                 this.streamName = value;
+
                 if (this._nameChangeCallback != null)
                 {
                     this._nameChangeCallback(value);
@@ -75,13 +83,17 @@ public class ExcelVBAModule
     internal static bool IsValidModuleName(string name)
     {
         //return Regex.IsMatch(name, _validModulePattern);
-        if (string.IsNullOrEmpty(name) ||           //Not null or empty
-            (name[0] >= '0' && name[0] <= '9') ||        //Don't start with a number
-            name[0] == '_' ||                        //Don't start with a underscore
-            name.Any(x => x < 0x20 || x > 255 || _nonValidChars.Contains(x)))      //Don't contain invalid or unicode chars 
+        if (string.IsNullOrEmpty(name)
+            || //Not null or empty
+            (name[0] >= '0' && name[0] <= '9')
+            || //Don't start with a number
+            name[0] == '_'
+            || //Don't start with a underscore
+            name.Any(x => x < 0x20 || x > 255 || _nonValidChars.Contains(x))) //Don't contain invalid or unicode chars 
         {
             return false;
         }
+
         return true;
     }
 
@@ -89,50 +101,61 @@ public class ExcelVBAModule
     /// A description of the module
     /// </summary>
     public string Description { get; set; }
+
     private string _code = "";
+
     /// <summary>
     /// The code without any module level attributes.
     /// <remarks>Can contain function level attributes.</remarks> 
     /// </summary>
-    public string Code {
-        get
-        {
-            return this._code;
-        }
+    public string Code
+    {
+        get { return this._code; }
         set
         {
             if (value.StartsWith("Attribute", StringComparison.OrdinalIgnoreCase) || value.StartsWith("VERSION", StringComparison.OrdinalIgnoreCase))
             {
-                throw new InvalidOperationException("Code can't start with an Attribute or VERSION keyword. Attributes can be accessed through the Attributes collection.");
+                throw new
+                    InvalidOperationException("Code can't start with an Attribute or VERSION keyword. Attributes can be accessed through the Attributes collection.");
             }
 
             this._code = value;
         }
     }
+
     /// <summary>
     /// A reference to the helpfile
     /// </summary>
     public int HelpContext { get; set; }
+
     /// <summary>
     /// Module level attributes.
     /// </summary>
     public ExcelVbaModuleAttributesCollection Attributes { get; internal set; }
+
     /// <summary>
     /// Type of module
     /// </summary>
     public eModuleType Type { get; internal set; }
+
     /// <summary>
     /// If the module is readonly
     /// </summary>
     public bool ReadOnly { get; set; }
+
     /// <summary>
     /// If the module is private
     /// </summary>
     public bool Private { get; set; }
+
     internal string streamName { get; set; }
+
     internal ushort Cookie { get; set; }
+
     internal uint ModuleOffset { get; set; }
+
     internal string ClassID { get; set; }
+
     /// <summary>
     /// Converts the object to a string
     /// </summary>

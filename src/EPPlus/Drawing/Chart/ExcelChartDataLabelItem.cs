@@ -10,6 +10,7 @@
  *************************************************************************************************
   01/27/2020         EPPlus Software AB       Initial release EPPlus 5
  *************************************************************************************************/
+
 using OfficeOpenXml.Drawing.Interfaces;
 using OfficeOpenXml.Drawing.Style.Effect;
 using OfficeOpenXml.Style;
@@ -32,18 +33,13 @@ public class ExcelChartDataLabelItem : ExcelChartDataLabelStandard
         : base(chart, ns, node, nodeName, schemaNodeOrder)
     {
     }
+
     /// <summary>
     /// The index of an individual datalabel
     /// </summary>
     public int Index
     {
-        get
-        {
-            return this.GetXmlNodeInt("c:idx/@val");
-        }
-        set
-        {
-            this.SetXmlNodeString("c:idx/@val", value.ToString(CultureInfo.InvariantCulture));
-        }
+        get { return this.GetXmlNodeInt("c:idx/@val"); }
+        set { this.SetXmlNodeString("c:idx/@val", value.ToString(CultureInfo.InvariantCulture)); }
     }
 }

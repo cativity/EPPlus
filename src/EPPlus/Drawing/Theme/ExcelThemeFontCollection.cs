@@ -10,6 +10,7 @@
  *************************************************************************************************
   01/27/2020         EPPlus Software AB       Initial release EPPlus 5
  *************************************************************************************************/
+
 using OfficeOpenXml.Drawing.Style;
 using OfficeOpenXml.Drawing.Style.Font;
 using System;
@@ -27,12 +28,15 @@ public class ExcelThemeFontCollection : XmlHelper, IEnumerable<ExcelDrawingFontB
 {
     List<ExcelDrawingFontBase> _lst = new List<ExcelDrawingFontBase>();
     ExcelPackage _pck;
-    internal ExcelThemeFontCollection(ExcelPackage pck, XmlNamespaceManager nameSpaceManager, XmlNode topNode) : base(nameSpaceManager,topNode)
+
+    internal ExcelThemeFontCollection(ExcelPackage pck, XmlNamespaceManager nameSpaceManager, XmlNode topNode)
+        : base(nameSpaceManager, topNode)
     {
         this._pck = pck;
+
         foreach (XmlNode node in topNode.ChildNodes)
         {
-            if(node.LocalName=="font")
+            if (node.LocalName == "font")
             {
                 this._lst.Add(new ExcelDrawingFont(nameSpaceManager, node));
             }
@@ -42,6 +46,7 @@ public class ExcelThemeFontCollection : XmlHelper, IEnumerable<ExcelDrawingFontB
             }
         }
     }
+
     /// <summary>
     /// The collection index
     /// </summary>
@@ -49,11 +54,9 @@ public class ExcelThemeFontCollection : XmlHelper, IEnumerable<ExcelDrawingFontB
     /// <returns></returns>
     public ExcelDrawingFontBase this[int index]
     {
-        get
-        {
-            return this._lst[index];
-        }
+        get { return this._lst[index]; }
     }
+
     /// <summary>
     /// Adds a normal font to the collection
     /// </summary>
@@ -62,12 +65,14 @@ public class ExcelThemeFontCollection : XmlHelper, IEnumerable<ExcelDrawingFontB
     /// <returns>The font</returns>
     public ExcelDrawingFont Add(string typeface, string script)
     {
-        XmlNode e= this.TopNode.OwnerDocument.CreateElement("a","font",ExcelPackage.schemaDrawings);
+        XmlNode e = this.TopNode.OwnerDocument.CreateElement("a", "font", ExcelPackage.schemaDrawings);
         this.TopNode.AppendChild(e);
-        ExcelDrawingFont? f = new ExcelDrawingFont(this.NameSpaceManager, e) { Typeface=typeface, Script=script };
+        ExcelDrawingFont? f = new ExcelDrawingFont(this.NameSpaceManager, e) { Typeface = typeface, Script = script };
         this._lst.Add(f);
+
         return f;
     }
+
     /// <summary>
     /// Removes the item from the collection
     /// </summary>
@@ -81,6 +86,7 @@ public class ExcelThemeFontCollection : XmlHelper, IEnumerable<ExcelDrawingFontB
 
         this.Remove(this._lst[index]);
     }
+
     /// <summary>
     /// Removes the item from the collection
     /// </summary>
@@ -91,6 +97,7 @@ public class ExcelThemeFontCollection : XmlHelper, IEnumerable<ExcelDrawingFontB
         {
             throw new InvalidOperationException("Cant remove this type of font.");
         }
+
         item.TopNode.ParentNode.RemoveChild(item.TopNode);
         this._lst.Remove(item);
     }
@@ -101,7 +108,7 @@ public class ExcelThemeFontCollection : XmlHelper, IEnumerable<ExcelDrawingFontB
     /// <param name="typeface">The typeface, or name of the font</param>
     public void SetLatinFont(string typeface)
     {
-        if (this._pck.Workbook.Styles.Fonts.Count > 0 && string.IsNullOrEmpty(typeface)==false)
+        if (this._pck.Workbook.Styles.Fonts.Count > 0 && string.IsNullOrEmpty(typeface) == false)
         {
             string? id = this._pck.Workbook.Styles.Fonts[0].Id;
             this._pck.Workbook.Styles.Fonts[0].Name = typeface;
@@ -109,8 +116,9 @@ public class ExcelThemeFontCollection : XmlHelper, IEnumerable<ExcelDrawingFontB
             this._pck.Workbook.Styles.Fonts._dic.Add(this._pck.Workbook.Styles.Fonts[0].Id, 0);
         }
 
-        this.SetSpecialFont(typeface, eFontType.Latin);            
+        this.SetSpecialFont(typeface, eFontType.Latin);
     }
+
     /// <summary>
     /// Set the complex font of the collection
     /// </summary>
@@ -119,6 +127,7 @@ public class ExcelThemeFontCollection : XmlHelper, IEnumerable<ExcelDrawingFontB
     {
         this.SetSpecialFont(typeface, eFontType.Complex);
     }
+
     /// <summary>
     /// Set the East Asian font of the collection
     /// </summary>
@@ -130,7 +139,8 @@ public class ExcelThemeFontCollection : XmlHelper, IEnumerable<ExcelDrawingFontB
 
     private void SetSpecialFont(string typeface, eFontType fontType)
     {
-        ExcelDrawingFontBase? f = this._lst.Where(x => x is ExcelDrawingFontSpecial sf && sf.Type == fontType).FirstOrDefault() ?? this.AddSpecialFont(fontType, typeface);
+        ExcelDrawingFontBase? f = this._lst.Where(x => x is ExcelDrawingFontSpecial sf && sf.Type == fontType).FirstOrDefault()
+                                  ?? this.AddSpecialFont(fontType, typeface);
 
         f.Typeface = typeface;
     }
@@ -144,27 +154,38 @@ public class ExcelThemeFontCollection : XmlHelper, IEnumerable<ExcelDrawingFontB
     public ExcelDrawingFontSpecial AddSpecialFont(eFontType type, string typeface)
     {
         string typeName;
+
         switch (type)
         {
             case eFontType.Complex:
                 typeName = "cs";
+
                 break;
+
             case eFontType.EastAsian:
                 typeName = "ea";
+
                 break;
+
             case eFontType.Latin:
                 typeName = "latin";
+
                 break;
+
             case eFontType.Symbol:
                 typeName = "sym";
+
                 break;
+
             default:
                 throw new ArgumentException("Please use the Add method to add normal fonts");
         }
+
         XmlNode e = this.TopNode.OwnerDocument.CreateElement("a", typeName, ExcelPackage.schemaDrawings);
         this.TopNode.AppendChild(e);
-        ExcelDrawingFontSpecial? f = new ExcelDrawingFontSpecial(this.NameSpaceManager, e) { Typeface=typeface };
+        ExcelDrawingFontSpecial? f = new ExcelDrawingFontSpecial(this.NameSpaceManager, e) { Typeface = typeface };
         this._lst.Add(f);
+
         return f;
     }
 
@@ -173,11 +194,9 @@ public class ExcelThemeFontCollection : XmlHelper, IEnumerable<ExcelDrawingFontB
     /// </summary>
     public int Count
     {
-        get
-        {
-            return this._lst.Count;
-        }
+        get { return this._lst.Count; }
     }
+
     /// <summary>
     /// Gets an enumerator for the collection
     /// </summary>

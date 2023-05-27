@@ -10,6 +10,7 @@
  *************************************************************************************************
   05/03/2020         EPPlus Software AB         Implemented function
  *************************************************************************************************/
+
 using OfficeOpenXml.FormulaParsing.Excel.Functions.Helpers;
 using OfficeOpenXml.FormulaParsing.Excel.Functions.Metadata;
 using OfficeOpenXml.FormulaParsing.ExpressionGraph;
@@ -19,16 +20,14 @@ using System.Text;
 
 namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Engineering;
 
-[FunctionMetadata(
-                     Category = ExcelFunctionCategory.Engineering,
-                     EPPlusVersion = "5.1",
-                     Description = "Converts a binary number to a decimal")]
+[FunctionMetadata(Category = ExcelFunctionCategory.Engineering, EPPlusVersion = "5.1", Description = "Converts a binary number to a decimal")]
 internal class Bin2Dec : ExcelFunction
 {
     public override CompileResult Execute(IEnumerable<FunctionArgument> arguments, ParsingContext context)
     {
         ValidateArguments(arguments, 1);
         string? number = ArgToString(arguments, 0);
+
         if (number.Length > 10)
         {
             return this.CreateResult(eErrorType.Num);
@@ -38,6 +37,7 @@ internal class Bin2Dec : ExcelFunction
         {
             return this.CreateResult(Convert.ToInt32(number, 2), DataType.Decimal);
         }
+
         if (!BinaryHelper.TryParseBinaryToDecimal(number, 2, out int result))
         {
             return this.CreateResult(eErrorType.Num);

@@ -10,6 +10,7 @@
  *************************************************************************************************
   01/27/2020         EPPlus Software AB       Initial release EPPlus 5
  *************************************************************************************************/
+
 namespace OfficeOpenXml.Drawing;
 
 /// <summary>
@@ -20,11 +21,13 @@ public enum eLineCap
     /// <summary>
     /// A flat line cap
     /// </summary>
-    Flat,   //flat
+    Flat, //flat
+
     /// <summary>
     /// A round line cap
     /// </summary>
     Round,
+
     /// <summary>
     /// A Square line cap
     /// </summary>

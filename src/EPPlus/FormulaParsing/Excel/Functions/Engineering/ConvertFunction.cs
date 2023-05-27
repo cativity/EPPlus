@@ -10,6 +10,7 @@
  *************************************************************************************************
   05/03/2020         EPPlus Software AB         Implemented function
  *************************************************************************************************/
+
 using OfficeOpenXml.FormulaParsing.Excel.Functions.Metadata;
 using OfficeOpenXml.FormulaParsing.ExpressionGraph;
 using System;
@@ -18,10 +19,7 @@ using System.Text;
 
 namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Engineering;
 
-[FunctionMetadata(
-                     Category = ExcelFunctionCategory.Engineering,
-                     EPPlusVersion = "5.1",
-                     Description = "Calculates the modified Bessel function Yn(x)")]
+[FunctionMetadata(Category = ExcelFunctionCategory.Engineering, EPPlusVersion = "5.1", Description = "Calculates the modified Bessel function Yn(x)")]
 public class ConvertFunction : ExcelFunction
 {
     public override CompileResult Execute(IEnumerable<FunctionArgument> arguments, ParsingContext context)
@@ -30,6 +28,7 @@ public class ConvertFunction : ExcelFunction
         double number = this.ArgToDecimal(arguments, 0);
         string? fromUnit = ArgToString(arguments, 1);
         string? toUnit = ArgToString(arguments, 2);
+
         if (!Conversions.IsValidUnit(fromUnit))
         {
             return this.CreateResult(eErrorType.NA);
@@ -41,10 +40,12 @@ public class ConvertFunction : ExcelFunction
         }
 
         double result = Conversions.Convert(number, fromUnit, toUnit);
-        if(double.IsNaN(result))
+
+        if (double.IsNaN(result))
         {
             return this.CreateResult(eErrorType.NA);
         }
+
         return this.CreateResult(result, DataType.Decimal);
     }
 }

@@ -10,6 +10,7 @@
  *************************************************************************************************
   01/27/2020         EPPlus Software AB       Initial release EPPlus 5
  *************************************************************************************************/
+
 namespace OfficeOpenXml.Drawing;
 
 /// <summary>
@@ -21,10 +22,12 @@ public enum eEditAs
     /// The Drawing is positioned absolute to the top left corner of the worksheet and is NOT resized when rows and columns are resized. 
     /// </summary>
     Absolute,
+
     /// <summary>
     /// The Drawing will move with the worksheet but is NOT resized when rows and columns are resized. 
     /// </summary>
     OneCell,
+
     /// <summary>
     /// The Drawing will move and resize when rows and columns are resized. 
     /// </summary>

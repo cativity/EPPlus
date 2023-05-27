@@ -10,6 +10,7 @@
  *************************************************************************************************
   01/27/2020         EPPlus Software AB       Initial release EPPlus 5
  *************************************************************************************************/
+
 using OfficeOpenXml.Drawing.Style.Effect;
 using OfficeOpenXml.Drawing.Style.Font;
 using OfficeOpenXml.Drawing.Style.ThreeD;
@@ -29,23 +30,28 @@ internal interface IDrawingStyleBase
     /// Create the spPr element within the drawing part if does not exist.
     /// </summary>
     void CreatespPr();
+
     /// <summary>
     /// Border settings
     /// </summary>
     ExcelDrawingBorder Border { get; }
+
     /// <summary>
     /// Effect settings
     /// </summary>
     ExcelDrawingEffectStyle Effect { get; }
+
     /// <summary>
     /// Fill settings
     /// </summary>
     ExcelDrawingFill Fill { get; }
+
     /// <summary>
     /// 3D settings
     /// </summary>
     ExcelDrawing3D ThreeD { get; }
 }
+
 /// <summary>
 /// Interface to handle font styles on a chart part
 /// </summary>
@@ -54,12 +60,14 @@ internal interface IDrawingStyle : IDrawingStyleBase
     /// <summary>
     /// Font settings
     /// </summary>
-    ExcelTextFont Font { get;  }
+    ExcelTextFont Font { get; }
+
     /// <summary>
     /// Text body settings
     /// </summary>
     ExcelTextBody TextBody { get; }
 }
+
 internal interface IStyleMandatoryProperties
 {
     void SetMandatoryProperties();

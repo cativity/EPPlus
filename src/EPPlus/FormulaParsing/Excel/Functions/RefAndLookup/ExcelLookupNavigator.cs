@@ -10,6 +10,7 @@
  *************************************************************************************************
   01/27/2020         EPPlus Software AB       Initial release EPPlus 5
  *************************************************************************************************/
+
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -37,6 +38,7 @@ internal class ExcelLookupNavigator : LookupNavigator
     {
         this._index = 0;
         RangeAddressFactory? factory = new RangeAddressFactory(this.ParsingContext.ExcelDataProvider);
+
         if (this.Arguments.RangeInfo == null)
         {
             this._rangeAddress = factory.Create(this.ParsingContext.Scopes.Current.Address.Worksheet, this.Arguments.RangeAddress);
@@ -91,6 +93,7 @@ internal class ExcelLookupNavigator : LookupNavigator
 
         this._index++;
         this.SetCurrentValue();
+
         return true;
     }
 
@@ -103,6 +106,7 @@ internal class ExcelLookupNavigator : LookupNavigator
     {
         int row = this._currentRow;
         int col = this._currentCol;
+
         if (this.Direction == LookupDirection.Vertical)
         {
             col += this.Arguments.LookupIndex - 1;
@@ -113,6 +117,7 @@ internal class ExcelLookupNavigator : LookupNavigator
             row += this.Arguments.LookupIndex - 1;
             col += this.Arguments.LookupOffset;
         }
-        return this.ParsingContext.ExcelDataProvider.GetCellValue(this._rangeAddress.Worksheet, row, col); 
+
+        return this.ParsingContext.ExcelDataProvider.GetCellValue(this._rangeAddress.Worksheet, row, col);
     }
 }

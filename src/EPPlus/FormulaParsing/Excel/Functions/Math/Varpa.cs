@@ -10,6 +10,7 @@
  *************************************************************************************************
   05/25/2020         EPPlus Software AB       Implemented function
  *************************************************************************************************/
+
 using OfficeOpenXml.FormulaParsing.Excel.Functions.Metadata;
 using OfficeOpenXml.FormulaParsing.ExpressionGraph;
 using OfficeOpenXml.Utils;
@@ -20,10 +21,10 @@ using System.Text;
 
 namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Math;
 
-[FunctionMetadata(
-                     Category = ExcelFunctionCategory.Statistical,
-                     EPPlusVersion = "5.5",
-                     Description = "Returns the variance of a supplied set of values (which represent a sample of a population), counting text and the logical value FALSE as the value 0 and counting the logical value TRUE as the value 1")]
+[FunctionMetadata(Category = ExcelFunctionCategory.Statistical,
+                  EPPlusVersion = "5.5",
+                  Description =
+                      "Returns the variance of a supplied set of values (which represent a sample of a population), counting text and the logical value FALSE as the value 0 and counting the logical value TRUE as the value 1")]
 internal class Varpa : ExcelFunction
 {
     private readonly DoubleEnumerableArgConverter _argConverter;
@@ -31,7 +32,6 @@ internal class Varpa : ExcelFunction
     public Varpa()
         : this(new DoubleEnumerableArgConverter())
     {
-
     }
 
     public Varpa(DoubleEnumerableArgConverter argConverter)
@@ -49,6 +49,7 @@ internal class Varpa : ExcelFunction
 
         IEnumerable<ExcelDoubleCellValue>? values = this._argConverter.ConvertArgsIncludingOtherTypes(arguments, false);
         double result = VarMethods.VarP(values);
+
         return this.CreateResult(result, DataType.Decimal);
     }
 }

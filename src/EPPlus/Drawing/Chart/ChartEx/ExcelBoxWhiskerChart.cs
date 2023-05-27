@@ -10,6 +10,7 @@
  *************************************************************************************************
   04/16/2020         EPPlus Software AB       EPPlus 5.2
  *************************************************************************************************/
+
 using OfficeOpenXml.Drawing.Chart;
 using OfficeOpenXml.Drawing.Chart.ChartEx;
 using OfficeOpenXml.Drawing.Style.Effect;
@@ -25,6 +26,7 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Xml;
+
 namespace OfficeOpenXml.Drawing.Chart.ChartEx;
 
 /// <summary>
@@ -32,17 +34,25 @@ namespace OfficeOpenXml.Drawing.Chart.ChartEx;
 /// </summary>
 public class ExcelBoxWhiskerChart : ExcelChartEx
 {
-    internal ExcelBoxWhiskerChart(ExcelDrawings drawings, XmlNode drawingsNode, eChartType? type, XmlDocument chartXml = null, ExcelGroupShape parent = null) :
-        base(drawings, drawingsNode, type, chartXml, parent)
+    internal ExcelBoxWhiskerChart(ExcelDrawings drawings, XmlNode drawingsNode, eChartType? type, XmlDocument chartXml = null, ExcelGroupShape parent = null)
+        : base(drawings, drawingsNode, type, chartXml, parent)
     {
         this.Series.Init(this, this.NameSpaceManager, this.TopNode, false, base.Series._list);
         this.StyleManager.SetChartStyle(Chart.Style.ePresetChartStyle.BoxWhiskerChartStyle1);
     }
-    internal ExcelBoxWhiskerChart(ExcelDrawings drawings, XmlNode node, Uri uriChart, ZipPackagePart part, XmlDocument chartXml, XmlNode chartNode, ExcelGroupShape parent = null) :
-        base(drawings, node, uriChart, part, chartXml, chartNode, parent)
+
+    internal ExcelBoxWhiskerChart(ExcelDrawings drawings,
+                                  XmlNode node,
+                                  Uri uriChart,
+                                  ZipPackagePart part,
+                                  XmlDocument chartXml,
+                                  XmlNode chartNode,
+                                  ExcelGroupShape parent = null)
+        : base(drawings, node, uriChart, part, chartXml, chartNode, parent)
     {
         this.Series.Init(this, this.NameSpaceManager, this.TopNode, false, base.Series._list);
     }
+
     /// <summary>
     /// The series for a Box &amp; Whisker chart
     /// </summary>

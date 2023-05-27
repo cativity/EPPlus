@@ -19,6 +19,7 @@
  * 05/20/2020         EPPlus Software AB         Ported code from java to C#
  *************************************************************************************************
  */
+
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -29,19 +30,14 @@ internal class ContinuedFraction
 {
     private const double DEFAULT_EPSILON = 10e-9;
 
-    public Func<int, double, double> GetA
-    {
-        get; set;
-    }
+    public Func<int, double, double> GetA { get; set; }
 
-    public Func<int, double, double> GetB
-    {
-        get; set;
-    }
+    public Func<int, double, double> GetB { get; set; }
 
     private static bool PrecisionEquals(double x, double y, double eps)
     {
         double diff = System.Math.Abs(x * eps);
+
         return System.Math.Abs(x - y) <= diff;
     }
 
@@ -82,11 +78,14 @@ internal class ContinuedFraction
             double b = this.GetB.Invoke(n, x);
 
             double dN = a + (b * dPrev);
+
             if (PrecisionEquals(dN, 0.0, small))
             {
                 dN = small;
             }
+
             double cN = a + (b / cPrev);
+
             if (PrecisionEquals(cN, 0.0, small))
             {
                 cN = small;
@@ -100,6 +99,7 @@ internal class ContinuedFraction
             {
                 throw new Exception("Continued fraction infinity divergence: " + x);
             }
+
             if (double.IsNaN(hN))
             {
                 throw new Exception("Continued fraction NAN divergence: " + x);

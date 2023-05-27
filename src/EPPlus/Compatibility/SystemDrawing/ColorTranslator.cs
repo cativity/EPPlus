@@ -2,9 +2,9 @@
 // System.Drawing.ColorTranslator.cs
 //
 // Authors:
-//	Dennis Hayes (dennish@raytek.com)
-//	Ravindra (rkumar@novell.com)
-//	Sebastien Pouliot  <sebastien@ximian.com>
+//  Dennis Hayes (dennish@raytek.com)
+//  Ravindra (rkumar@novell.com)
+//  Sebastien Pouliot  <sebastien@ximian.com>
 //
 // Copyright (C) 2001 Ximian, Inc.  http://www.ximian.com
 // Copyright (C) 2004,2006-2007 Novell, Inc (http://www.novell.com)
@@ -38,7 +38,6 @@ namespace OfficeOpenXml.Compatibility.System.Drawing;
 
 internal sealed class ColorTranslator
 {
-
     private ColorTranslator()
     {
     }
@@ -55,23 +54,32 @@ internal sealed class ColorTranslator
             case "buttonface":
             case "threedface":
                 return EPPlusSystemColors.Control;
+
             case "buttonhighlight":
             case "threedlightshadow":
                 return EPPlusSystemColors.ControlLightLight;
+
             case "buttonshadow":
                 return EPPlusSystemColors.ControlDark;
+
             case "captiontext":
                 return EPPlusSystemColors.ActiveCaptionText;
+
             case "threeddarkshadow":
                 return EPPlusSystemColors.ControlDarkDark;
+
             case "threedhighlight":
                 return EPPlusSystemColors.ControlLight;
+
             case "background":
                 return EPPlusSystemColors.Desktop;
+
             case "buttontext":
                 return EPPlusSystemColors.ControlText;
+
             case "infobackground":
                 return EPPlusSystemColors.Info;
+
             // special case for Color.LightGray versus html's LightGrey (#340917)
             case "lightgrey":
                 return Color.LightGray;
@@ -79,11 +87,15 @@ internal sealed class ColorTranslator
 
         if (htmlColor[0] == '#' && htmlColor.Length == 4)
         {
-            char r = htmlColor[1], g = htmlColor[2], b = htmlColor[3];
+            char r = htmlColor[1],
+                 g = htmlColor[2],
+                 b = htmlColor[3];
+
             htmlColor = new string(new char[] { '#', r, r, g, g, b, b });
         }
 
         TypeConverter converter = TypeDescriptor.GetConverter(typeof(Color));
+
         return (Color)converter.ConvertFromString(htmlColor);
     }
 }

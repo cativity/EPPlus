@@ -10,6 +10,7 @@
  *************************************************************************************************
   01/27/2020         EPPlus Software AB       Initial release EPPlus 5
  *************************************************************************************************/
+
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -19,10 +20,7 @@ using OfficeOpenXml.FormulaParsing.ExpressionGraph;
 
 namespace OfficeOpenXml.FormulaParsing.Excel.Functions.DateTime;
 
-[FunctionMetadata(
-                     Category = ExcelFunctionCategory.DateAndTime,
-                     EPPlusVersion = "4",
-                     Description = "Returns the minute part of a user-supplied time")]
+[FunctionMetadata(Category = ExcelFunctionCategory.DateAndTime, EPPlusVersion = "4", Description = "Returns the minute part of a user-supplied time")]
 internal class Minute : ExcelFunction
 {
     public override CompileResult Execute(IEnumerable<FunctionArgument> arguments, ParsingContext context)
@@ -30,6 +28,7 @@ internal class Minute : ExcelFunction
         ValidateArguments(arguments, 1);
         object? dateObj = arguments.ElementAt(0).Value;
         System.DateTime date = System.DateTime.MinValue;
+
         if (dateObj is string)
         {
             date = System.DateTime.Parse(dateObj.ToString());
@@ -39,6 +38,7 @@ internal class Minute : ExcelFunction
             double d = this.ArgToDecimal(arguments, 0);
             date = System.DateTime.FromOADate(d);
         }
+
         return this.CreateResult(date.Minute, DataType.Integer);
     }
 }

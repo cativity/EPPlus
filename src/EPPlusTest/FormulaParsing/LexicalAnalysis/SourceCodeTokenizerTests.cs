@@ -26,6 +26,7 @@
  *******************************************************************************
   01/27/2020         EPPlus Software AB       Initial release EPPlus 5
  *******************************************************************************/
+
 using System;
 using System.IO;
 using System.Text;
@@ -197,12 +198,14 @@ public class SourceCodeTokenizerTests
         //(( W60 -(- W63 )-( W29 + W30 + W31 ))/( W23 + W28 + W42 - W51 )* W4 )
         using ExcelPackage? pck = new ExcelPackage();
         ExcelWorksheet? ws1 = pck.Workbook.Worksheets.Add("test");
+
         for (int x = 1; x <= 10; x++)
         {
             ws1.Cells[x, 1].Value = x;
         }
 
         ws1.Cells["A11"].Formula = "(( A1 -(- A2 )-( A3 + A4 + A5 ))/( A6 + A7 + A8 - A9 )* A5 )";
+
         //ws1.Cells["A11"].Formula = "(-A2 + 1 )";
         ws1.Calculate();
         object? result = ws1.Cells["A11"].Value;
@@ -393,6 +396,7 @@ public class SourceCodeTokenizerTests
         Assert.IsTrue(tokens[7].TokenTypeIsSet(TokenType.Integer));
         Assert.IsTrue(tokens[8].TokenTypeIsSet(TokenType.ClosingParenthesis));
     }
+
     [TestMethod]
     public void TokenizeWorksheetName()
     {
@@ -410,6 +414,7 @@ public class SourceCodeTokenizerTests
         Assert.AreEqual(1, tokens.Length);
         Assert.IsTrue(tokens[0].TokenTypeIsSet(TokenType.NameValue));
     }
+
     [TestMethod]
     public void TokenizeExternalWorksheetName()
     {
@@ -427,6 +432,7 @@ public class SourceCodeTokenizerTests
         Assert.AreEqual(1, tokens.Length);
         Assert.IsTrue(tokens[0].TokenTypeIsSet(TokenType.NameValue));
     }
+
     [TestMethod]
     public void TokenizeExternalWorkbookName()
     {
@@ -435,6 +441,7 @@ public class SourceCodeTokenizerTests
         Assert.AreEqual(1, tokens.Length);
         Assert.IsTrue(tokens[0].TokenTypeIsSet(TokenType.NameValue));
     }
+
     [TestMethod]
     public void TokenizeExternalWorkbookInvalidRef()
     {
@@ -443,6 +450,7 @@ public class SourceCodeTokenizerTests
         Assert.AreEqual(1, tokens.Length);
         Assert.IsTrue(tokens[0].TokenTypeIsSet(TokenType.InvalidReference));
     }
+
     [TestMethod]
     public void TokenizeExternalWorksheetInvalidRef()
     {

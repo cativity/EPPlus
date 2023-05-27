@@ -25,7 +25,6 @@
 //
 // ------------------------------------------------------------------
 
-
 using System;
 using Interop = System.Runtime.InteropServices;
 
@@ -54,10 +53,7 @@ internal class CRC32
     /// </summary>
     public Int64 TotalBytesRead
     {
-        get
-        {
-            return this._TotalBytesRead;
-        }
+        get { return this._TotalBytesRead; }
     }
 
     /// <summary>
@@ -65,10 +61,7 @@ internal class CRC32
     /// </summary>
     public Int32 Crc32Result
     {
-        get
-        {
-            return unchecked((Int32)(~this._register));
-        }
+        get { return unchecked((Int32)(~this._register)); }
     }
 
     /// <summary>
@@ -102,16 +95,19 @@ internal class CRC32
 
             this._TotalBytesRead = 0;
             int count = input.Read(buffer, 0, readSize);
+
             if (output != null)
             {
                 output.Write(buffer, 0, count);
             }
 
             this._TotalBytesRead += count;
+
             while (count > 0)
             {
                 this.SlurpBlock(buffer, 0, count);
                 count = input.Read(buffer, 0, readSize);
+
                 if (output != null)
                 {
                     output.Write(buffer, 0, count);
@@ -123,7 +119,6 @@ internal class CRC32
             return (Int32)(~this._register);
         }
     }
-
 
     /// <summary>
     ///   Get the CRC32 for the given (word,byte) combo.  This is a
@@ -141,7 +136,6 @@ internal class CRC32
     {
         return (Int32)(this.crc32Table[(W ^ B) & 0xFF] ^ (W >> 8));
     }
-
 
     /// <summary>
     /// Update the value for the running CRC32 using the given block of bytes.
@@ -162,6 +156,7 @@ internal class CRC32
         {
             int x = offset + i;
             byte b = block[x];
+
             if (this.reverseBits)
             {
                 UInt32 temp = (this._register >> 24) ^ b;
@@ -176,7 +171,6 @@ internal class CRC32
 
         this._TotalBytesRead += count;
     }
-
 
     /// <summary>
     ///   Process one byte in the CRC.
@@ -218,23 +212,16 @@ internal class CRC32
             {
                 uint temp = (this._register >> 24) ^ b;
 
-                this._register = (this._register << 8) ^ this.crc32Table[temp >= 0
-                                                                             ? temp
-                                                                             : temp + 256];
+                this._register = (this._register << 8) ^ this.crc32Table[temp >= 0 ? temp : temp + 256];
             }
             else
             {
                 UInt32 temp = (this._register & 0x000000FF) ^ b;
 
-                this._register = (this._register >> 8) ^ this.crc32Table[temp >= 0
-                                                                             ? temp
-                                                                             : temp + 256];
-
+                this._register = (this._register >> 8) ^ this.crc32Table[temp >= 0 ? temp : temp + 256];
             }
         }
     }
-
-
 
     private static uint ReverseBits(uint data)
     {
@@ -245,6 +232,7 @@ internal class CRC32
             ret = ((ret & 0x33333333) << 2) | ((ret >> 2) & 0x33333333);
             ret = ((ret & 0x0F0F0F0F) << 4) | ((ret >> 4) & 0x0F0F0F0F);
             ret = (ret << 24) | ((ret & 0xFF00) << 8) | ((ret >> 8) & 0xFF00) | (ret >> 24);
+
             return ret;
         }
     }
@@ -257,21 +245,23 @@ internal class CRC32
             uint m = 0x01044010;
             uint s = u & m;
             uint t = (u << 2) & (m << 1);
+
             return (byte)((0x01001001 * (s + t)) >> 24);
         }
     }
 
-
-
     private void GenerateLookupTable()
     {
         this.crc32Table = new UInt32[256];
+
         unchecked
         {
             byte i = 0;
+
             do
             {
                 UInt32 dwCrc = i;
+
                 for (byte j = 8; j > 0; j--)
                 {
                     if ((dwCrc & 1) == 1)
@@ -283,6 +273,7 @@ internal class CRC32
                         dwCrc >>= 1;
                     }
                 }
+
                 if (this.reverseBits)
                 {
                     this.crc32Table[ReverseBits(i)] = ReverseBits(dwCrc);
@@ -291,17 +282,18 @@ internal class CRC32
                 {
                     this.crc32Table[i] = dwCrc;
                 }
+
                 i++;
-            } while (i!=0);
+            } while (i != 0);
         }
 
 #if VERBOSE
             Console.WriteLine();
             Console.WriteLine("private static readonly UInt32[] crc32Table = {");
-            for (int i = 0; i < crc32Table.Length; i+=4)
+            for (int i = 0; i < crc32Table.Length; i += 4)
             {
                 Console.Write("   ");
-                for (int j=0; j < 4; j++)
+                for (int j = 0; j < 4; j++)
                 {
                     Console.Write(" 0x{0:X8}U,", crc32Table[i+j]);
                 }
@@ -312,14 +304,14 @@ internal class CRC32
 #endif
     }
 
-
     private static uint gf2_matrix_times(uint[] matrix, uint vec)
     {
         uint sum = 0;
-        int i=0;
+        int i = 0;
+
         while (vec != 0)
         {
-            if ((vec & 0x01)== 0x01)
+            if ((vec & 0x01) == 0x01)
             {
                 sum ^= matrix[i];
             }
@@ -327,6 +319,7 @@ internal class CRC32
             vec >>= 1;
             i++;
         }
+
         return sum;
     }
 
@@ -337,8 +330,6 @@ internal class CRC32
             square[i] = gf2_matrix_times(mat, mat[i]);
         }
     }
-
-
 
     /// <summary>
     ///   Combines the given CRC32 value with the current running total.
@@ -353,20 +344,21 @@ internal class CRC32
     /// <param name="length">the length of data the CRC value was calculated on</param>
     public void Combine(int crc, int length)
     {
-        uint[] even = new uint[32];     // even-power-of-two zeros operator
-        uint[] odd = new uint[32];      // odd-power-of-two zeros operator
+        uint[] even = new uint[32]; // even-power-of-two zeros operator
+        uint[] odd = new uint[32]; // odd-power-of-two zeros operator
 
         if (length == 0)
         {
             return;
         }
 
-        uint crc1= ~this._register;
-        uint crc2= (uint) crc;
+        uint crc1 = ~this._register;
+        uint crc2 = (uint)crc;
 
         // put operator for one zero bit in odd
-        odd[0] = this.dwPolynomial;  // the CRC-32 polynomial
+        odd[0] = this.dwPolynomial; // the CRC-32 polynomial
         uint row = 1;
+
         for (int i = 1; i < 32; i++)
         {
             odd[i] = row;
@@ -379,15 +371,16 @@ internal class CRC32
         // put operator for four zero bits in odd
         gf2_matrix_square(odd, even);
 
-        uint len2 = (uint) length;
+        uint len2 = (uint)length;
 
         // apply len2 zeros to crc1 (first square will put the operator for one
         // zero byte, eight zero bits, in even)
-        do {
+        do
+        {
             // apply zeros operator for this bit of len2
             gf2_matrix_square(even, odd);
 
-            if ((len2 & 1)== 1)
+            if ((len2 & 1) == 1)
             {
                 crc1 = gf2_matrix_times(even, crc1);
             }
@@ -401,30 +394,29 @@ internal class CRC32
 
             // another iteration of the loop with odd and even swapped
             gf2_matrix_square(odd, even);
-            if ((len2 & 1)==1)
+
+            if ((len2 & 1) == 1)
             {
                 crc1 = gf2_matrix_times(odd, crc1);
             }
 
             len2 >>= 1;
-
-
         } while (len2 != 0);
 
         crc1 ^= crc2;
 
-        this._register= ~crc1;
+        this._register = ~crc1;
 
         //return (int) crc1;
         return;
     }
 
-
     /// <summary>
     ///   Create an instance of the CRC32 class using the default settings: no
     ///   bit reversal, and a polynomial of 0xEDB88320.
     /// </summary>
-    public CRC32() : this(false)
+    public CRC32()
+        : this(false)
     {
     }
 
@@ -444,11 +436,10 @@ internal class CRC32
     ///     those, you should pass false.
     ///   </para>
     /// </remarks>
-    public CRC32(bool reverseBits) :
-        this( unchecked((int)0xEDB88320), reverseBits)
+    public CRC32(bool reverseBits)
+        : this(unchecked((int)0xEDB88320), reverseBits)
     {
     }
-
 
     /// <summary>
     ///   Create an instance of the CRC32 class, specifying the polynomial and
@@ -478,7 +469,7 @@ internal class CRC32
     public CRC32(int polynomial, bool reverseBits)
     {
         this.reverseBits = reverseBits;
-        this.dwPolynomial = (uint) polynomial;
+        this.dwPolynomial = (uint)polynomial;
         this.GenerateLookupTable();
     }
 
@@ -504,7 +495,6 @@ internal class CRC32
     private const int BUFFER_SIZE = 8192;
     private UInt32 _register = 0xFFFFFFFFU;
 }
-
 
 /// <summary>
 /// A Stream that calculates a CRC32 (a checksum) on all bytes read,
@@ -633,8 +623,7 @@ internal class CrcCalculatorStream : System.IO.Stream, IDisposable
     /// <param name="leaveOpen">true to leave the underlying stream
     /// open upon close of the <c>CrcCalculatorStream</c>; false otherwise.</param>
     /// <param name="crc32">the CRC32 instance to use to calculate the CRC32</param>
-    public CrcCalculatorStream(System.IO.Stream stream, Int64 length, bool leaveOpen,
-                               CRC32 crc32)
+    public CrcCalculatorStream(System.IO.Stream stream, Int64 length, bool leaveOpen, CRC32 crc32)
         : this(leaveOpen, length, stream, crc32)
     {
         if (length < 0)
@@ -643,14 +632,12 @@ internal class CrcCalculatorStream : System.IO.Stream, IDisposable
         }
     }
 
-
     // This ctor is private - no validation is done here.  This is to allow the use
     // of a (specific) negative value for the _lengthLimit, to indicate that there
     // is no length set.  So we validate the length limit in those ctors that use an
     // explicit param, otherwise we don't validate, because it could be our special
     // value.
-    private CrcCalculatorStream
-        (bool leaveOpen, Int64 length, System.IO.Stream stream, CRC32 crc32)
+    private CrcCalculatorStream(bool leaveOpen, Int64 length, System.IO.Stream stream, CRC32 crc32)
         : base()
     {
         this._innerStream = stream;
@@ -658,7 +645,6 @@ internal class CrcCalculatorStream : System.IO.Stream, IDisposable
         this._lengthLimit = length;
         this._leaveOpen = leaveOpen;
     }
-
 
     /// <summary>
     ///   Gets the total number of bytes run through the CRC32 calculator.
@@ -725,12 +711,15 @@ internal class CrcCalculatorStream : System.IO.Stream, IDisposable
             }
 
             Int64 bytesRemaining = this._lengthLimit - this._Crc32.TotalBytesRead;
+
             if (bytesRemaining < count)
             {
                 bytesToRead = (int)bytesRemaining;
             }
         }
+
         int n = this._innerStream.Read(buffer, offset, bytesToRead);
+
         if (n > 0)
         {
             this._Crc32.SlurpBlock(buffer, offset, n);

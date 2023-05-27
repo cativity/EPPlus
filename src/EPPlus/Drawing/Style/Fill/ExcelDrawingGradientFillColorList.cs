@@ -10,6 +10,7 @@
  *************************************************************************************************
   01/27/2020         EPPlus Software AB       Initial release EPPlus 5
  *************************************************************************************************/
+
 using OfficeOpenXml.Drawing.Style.Coloring;
 using System;
 using System.Collections;
@@ -27,9 +28,10 @@ public class ExcelDrawingGradientFillColorList : IEnumerable<ExcelDrawingGradien
     List<ExcelDrawingGradientFillColor> _lst = new List<ExcelDrawingGradientFillColor>();
     private XmlNamespaceManager _nsm;
     private XmlNode _topNode;
-    private XmlNode _gsLst=null;
+    private XmlNode _gsLst = null;
     private string _path;
     private string[] _schemaNodeOrder;
+
     internal ExcelDrawingGradientFillColorList(XmlNamespaceManager nsm, XmlNode topNode, string path, string[] schemaNodeOrder)
     {
         this._nsm = nsm;
@@ -37,6 +39,7 @@ public class ExcelDrawingGradientFillColorList : IEnumerable<ExcelDrawingGradien
         this._path = path;
         this._schemaNodeOrder = schemaNodeOrder;
     }
+
     /// <summary>
     /// Indexer for the collection
     /// </summary>
@@ -44,21 +47,17 @@ public class ExcelDrawingGradientFillColorList : IEnumerable<ExcelDrawingGradien
     /// <returns>The color</returns>
     public ExcelDrawingGradientFillColor this[int index]
     {
-        get
-        {
-            return this._lst[index];
-        }
+        get { return this._lst[index]; }
     }
+
     /// <summary>
     /// Number of items in the collection
     /// </summary>
     public int Count
     {
-        get
-        {
-            return this._lst.Count;
-        }
+        get { return this._lst.Count; }
     }
+
     /// <summary>
     /// Gets the first occurance with the color with the specified position
     /// </summary>
@@ -66,11 +65,9 @@ public class ExcelDrawingGradientFillColorList : IEnumerable<ExcelDrawingGradien
     /// <returns>The color</returns>
     public ExcelDrawingGradientFillColor this[double position]
     {
-        get
-        {
-            return this._lst.Find(i => i.Position == position);
-        }
+        get { return this._lst.Find(i => i.Position == position); }
     }
+
     /// <summary>
     /// Adds a RGB color at the specified position
     /// </summary>
@@ -82,6 +79,7 @@ public class ExcelDrawingGradientFillColorList : IEnumerable<ExcelDrawingGradien
         gs.Color.SetRgbColor(color);
         this._lst.Add(gs);
     }
+
     /// <summary>
     /// Adds a RGB percentage color at the specified position
     /// </summary>
@@ -95,6 +93,7 @@ public class ExcelDrawingGradientFillColorList : IEnumerable<ExcelDrawingGradien
         gs.Color.SetRgbPercentageColor(redPercentage, greenPercentage, bluePercentage);
         this._lst.Add(gs);
     }
+
     /// <summary>
     /// Adds a theme color at the specified position
     /// </summary>
@@ -106,6 +105,7 @@ public class ExcelDrawingGradientFillColorList : IEnumerable<ExcelDrawingGradien
         gs.Color.SetSchemeColor(color);
         this._lst.Add(gs);
     }
+
     /// <summary>
     /// Adds a system color at the specified position
     /// </summary>
@@ -117,6 +117,7 @@ public class ExcelDrawingGradientFillColorList : IEnumerable<ExcelDrawingGradien
         gs.Color.SetSystemColor(color);
         this._lst.Add(gs);
     }
+
     /// <summary>
     /// Adds a HSL color at the specified position
     /// </summary>
@@ -125,11 +126,12 @@ public class ExcelDrawingGradientFillColorList : IEnumerable<ExcelDrawingGradien
     /// <param name="saturation">The saturation part. Percentage</param>
     /// <param name="luminance">The luminance part. Percentage</param>
     public void AddHsl(double position, double hue, double saturation, double luminance)
-    {            
+    {
         ExcelDrawingGradientFillColor? gs = this.GetGradientFillColor(position);
         gs.Color.SetHslColor(hue, saturation, luminance);
         this._lst.Add(gs);
     }
+
     /// <summary>
     /// Adds a HSL color at the specified position
     /// </summary>
@@ -148,7 +150,9 @@ public class ExcelDrawingGradientFillColorList : IEnumerable<ExcelDrawingGradien
         {
             throw new ArgumentOutOfRangeException("Position must be between 0 and 100");
         }
+
         XmlNode node = null;
+
         for (int i = 0; i < this._lst.Count; i++)
         {
             if (this._lst[i].Position > position)
@@ -156,25 +160,27 @@ public class ExcelDrawingGradientFillColorList : IEnumerable<ExcelDrawingGradien
                 node = this.AddGs(position, this._lst[i].TopNode);
             }
         }
+
         node = this.AddGs(position, null);
 
         ExcelDrawingGradientFillColor? tc = new ExcelDrawingGradientFillColor()
         {
-            Position = position,
-            Color = new ExcelDrawingColorManager(this._nsm, node, "", this._schemaNodeOrder),
-            TopNode = node
+            Position = position, Color = new ExcelDrawingColorManager(this._nsm, node, "", this._schemaNodeOrder), TopNode = node
         };
+
         return tc;
     }
 
     private XmlElement AddGs(double position, XmlNode node)
     {
-        if(this._gsLst==null)
+        if (this._gsLst == null)
         {
             XmlHelper? xml = XmlHelperFactory.Create(this._nsm, this._topNode);
-            this._gsLst=xml.CreateNode(this._path);
+            this._gsLst = xml.CreateNode(this._path);
         }
+
         XmlElement? gs = this._gsLst.OwnerDocument.CreateElement("a", "gs", ExcelPackage.schemaDrawings);
+
         if (node == null)
         {
             this._gsLst.AppendChild(gs);
@@ -183,9 +189,12 @@ public class ExcelDrawingGradientFillColorList : IEnumerable<ExcelDrawingGradien
         {
             this._gsLst.InsertBefore(gs, node);
         }
+
         gs.SetAttribute("pos", (position * 1000).ToString());
+
         return gs;
     }
+
     /// <summary>
     /// Gets the enumerator for the collection
     /// </summary>
@@ -204,9 +213,7 @@ public class ExcelDrawingGradientFillColorList : IEnumerable<ExcelDrawingGradien
     {
         this._lst.Add(new ExcelDrawingGradientFillColor()
         {
-            Position = position,
-            Color = new ExcelDrawingColorManager(this._nsm, node, "", this._schemaNodeOrder),
-            TopNode = node
+            Position = position, Color = new ExcelDrawingColorManager(this._nsm, node, "", this._schemaNodeOrder), TopNode = node
         });
     }
 }

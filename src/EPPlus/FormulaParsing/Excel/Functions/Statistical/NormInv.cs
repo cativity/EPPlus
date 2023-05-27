@@ -10,6 +10,7 @@
  *************************************************************************************************
   11/29/2021         EPPlus Software AB       Implemented function
  *************************************************************************************************/
+
 using OfficeOpenXml.FormulaParsing.Excel.Functions.Metadata;
 using OfficeOpenXml.FormulaParsing.ExpressionGraph;
 using System;
@@ -19,10 +20,10 @@ using System.Text;
 
 namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Statistical;
 
-[FunctionMetadata(
-                     Category = ExcelFunctionCategory.Statistical,
-                     EPPlusVersion = "5.8",
-                     Description = "Calculates the inverse of the Cumulative Normal Distribution Function for a supplied value of x, and a supplied distribution mean & standard deviation.")]
+[FunctionMetadata(Category = ExcelFunctionCategory.Statistical,
+                  EPPlusVersion = "5.8",
+                  Description =
+                      "Calculates the inverse of the Cumulative Normal Distribution Function for a supplied value of x, and a supplied distribution mean & standard deviation.")]
 internal class NormInv : NormInvBase
 {
     public override CompileResult Execute(IEnumerable<FunctionArgument> arguments, ParsingContext context)
@@ -31,11 +32,14 @@ internal class NormInv : NormInvBase
         double probability = this.ArgToDecimal(arguments, 0);
         double mean = this.ArgToDecimal(arguments, 1);
         double stdev = this.ArgToDecimal(arguments, 2);
-        if(probability < 0 || probability > 1 || stdev <= 0)
+
+        if (probability < 0 || probability > 1 || stdev <= 0)
         {
             return this.CreateResult(eErrorType.Num);
         }
+
         double result = NormsInv(probability, mean, stdev);
+
         return this.CreateResult(result, DataType.Decimal);
     }
 }

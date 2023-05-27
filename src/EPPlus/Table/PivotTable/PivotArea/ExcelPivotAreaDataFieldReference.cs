@@ -10,6 +10,7 @@
  *************************************************************************************************
   12/28/2020         EPPlus Software AB       Pivot Table Styling - EPPlus 5.6
  *************************************************************************************************/
+
 using System;
 using System.Collections.Generic;
 using System.Globalization;
@@ -24,15 +25,18 @@ namespace OfficeOpenXml.Table.PivotTable;
 public class ExcelPivotAreaDataFieldReference : ExcelPivotAreaReferenceBase, IEnumerable<ExcelPivotTableDataField>
 {
     List<ExcelPivotTableDataField> _dataFields = new List<ExcelPivotTableDataField>();
-    internal ExcelPivotAreaDataFieldReference(XmlNamespaceManager nsm, XmlNode topNode, ExcelPivotTable pt, int fieldIndex = -1) : base(nsm, topNode, pt)
+
+    internal ExcelPivotAreaDataFieldReference(XmlNamespaceManager nsm, XmlNode topNode, ExcelPivotTable pt, int fieldIndex = -1)
+        : base(nsm, topNode, pt)
     {
-        if(this.TopNode.LocalName=="reference")
+        if (this.TopNode.LocalName == "reference")
         {
             foreach (XmlNode c in this.TopNode.ChildNodes)
             {
                 if (c.LocalName == "x")
                 {
                     int ix = int.Parse(c.Attributes["v"].Value);
+
                     if (ix < pt.DataFields.Count)
                     {
                         this._dataFields.Add(pt.DataFields[ix]);
@@ -41,6 +45,7 @@ public class ExcelPivotAreaDataFieldReference : ExcelPivotAreaReferenceBase, IEn
             }
         }
     }
+
     /// <summary>
     /// The indexer
     /// </summary>
@@ -48,25 +53,22 @@ public class ExcelPivotAreaDataFieldReference : ExcelPivotAreaReferenceBase, IEn
     /// <returns></returns>
     public ExcelPivotTableDataField this[int index]
     {
-        get
-        {
-            return this._dataFields[index];
-        }
+        get { return this._dataFields[index]; }
     }
+
     /// <summary>
     /// Number of items in the collection
     /// </summary>
-    public int Count 
-    { 
-        get
-        {
-            return this._dataFields.Count;
-        }
+    public int Count
+    {
+        get { return this._dataFields.Count; }
     }
+
     internal void AddInternal(ExcelPivotTableDataField item)
     {
         this._dataFields.Add(item);
     }
+
     /// <summary>
     /// Adds the data field at the specific index
     /// </summary>
@@ -82,6 +84,7 @@ public class ExcelPivotAreaDataFieldReference : ExcelPivotAreaReferenceBase, IEn
             throw new IndexOutOfRangeException("Index is out of range for referenced data field.");
         }
     }
+
     /// <summary>
     /// Adds a data field from the pivot table to the pivot area
     /// </summary>
@@ -92,6 +95,7 @@ public class ExcelPivotAreaDataFieldReference : ExcelPivotAreaReferenceBase, IEn
         {
             throw new ArgumentNullException("The pivot table field must not be null.");
         }
+
         if (field.Field._pivotTable != this._pt)
         {
             throw new ArgumentException("The pivot table field is from another pivot table.");
@@ -111,12 +115,13 @@ public class ExcelPivotAreaDataFieldReference : ExcelPivotAreaReferenceBase, IEn
             }
         }
 
-        if (this._dataFields.Count==0 && this.FieldIndex>=0)
+        if (this._dataFields.Count == 0 && this.FieldIndex >= 0)
         {
-            if(this.TopNode.LocalName == "reference")
+            if (this.TopNode.LocalName == "reference")
             {
                 this.TopNode.ParentNode.ParentNode.RemoveChild(this.TopNode.ParentNode);
             }
+
             return;
         }
         else
@@ -135,18 +140,21 @@ public class ExcelPivotAreaDataFieldReference : ExcelPivotAreaReferenceBase, IEn
             if (r.Field.IsDataField)
             {
                 int ix = this._pt.DataFields._list.IndexOf(r);
+
                 if (ix >= 0)
                 {
                     XmlElement? n = (XmlElement)this.CreateNode("d:x", false, true);
                     n.SetAttribute("v", ix.ToString(CultureInfo.InvariantCulture));
                 }
             }
-        }            
+        }
     }
+
     internal void Clear()
     {
         this._dataFields.Clear();
     }
+
     /// <summary>
     /// Gets the enumerator
     /// </summary>

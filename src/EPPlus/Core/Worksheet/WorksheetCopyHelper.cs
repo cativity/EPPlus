@@ -10,6 +10,7 @@
  *************************************************************************************************
   12/14/2020         EPPlus Software AB       EPPlus 5.5
  *************************************************************************************************/
+
 using System;
 using System.Collections.Generic;
 using OfficeOpenXml.Packaging;
@@ -42,10 +43,12 @@ internal static class WorksheetCopyHelper
         {
             throw new ArgumentException("Cannot copy a chartsheet");
         }
+
         if (worksheets.GetByName(name) != null)
         {
             throw new InvalidOperationException(ExcelWorksheets.ERR_DUP_WORKSHEET);
         }
+
         ExcelPackage? pck = worksheets._pck;
         XmlNamespaceManager? nsm = worksheets.NameSpaceManager;
         worksheets.GetSheetURI(ref name, out int sheetID, out Uri uriWorksheet, false);
@@ -73,7 +76,7 @@ internal static class WorksheetCopyHelper
         {
             CopyComment(copy, added);
         }
-        else if (copy.VmlDrawings.Count > 0)    //Vml drawings are copied as part of the comments. 
+        else if (copy.VmlDrawings.Count > 0) //Vml drawings are copied as part of the comments. 
         {
             CopyVmlDrawing(copy, added);
         }
@@ -87,6 +90,7 @@ internal static class WorksheetCopyHelper
             CopySlicers(copy, added);
             CopyDrawing(pck, nsm, copy, added);
         }
+
         if (copy.Tables.Count > 0)
         {
             CopyTable(copy, added);
@@ -96,13 +100,15 @@ internal static class WorksheetCopyHelper
         {
             CopyPivotTable(copy, added);
         }
+
         if (copy.Names.Count > 0)
         {
             CopySheetNames(copy, added);
         }
-        if(copy.DataValidations.Count > 0) 
+
+        if (copy.DataValidations.Count > 0)
         {
-            foreach(ExcelDataValidation dv in copy.DataValidations)
+            foreach (ExcelDataValidation dv in copy.DataValidations)
             {
                 added.DataValidations.AddCopyOfDataValidation(dv, added);
             }
@@ -112,19 +118,19 @@ internal static class WorksheetCopyHelper
         CloneCellsAndStyles(copy, added);
 
         //Copy the VBA code
-            
+
         if (pck.Workbook.VbaProject != null && copy.CodeModule != null)
         {
             string? wsName = pck.Workbook.VbaProject.GetModuleNameFromWorksheet(added);
-            pck.Workbook.VbaProject.Modules.Add(
-                                                new ExcelVBAModule(added.CodeNameChange)
-                                                {
-                                                    Name = wsName,
-                                                    Code = copy.CodeModule.Code,
-                                                    Attributes = ExcelVbaProject.GetDocumentAttributes(name, "0{00020820-0000-0000-C000-000000000046}"),
-                                                    Type = eModuleType.Document,
-                                                    HelpContext = 0
-                                                });
+
+            pck.Workbook.VbaProject.Modules.Add(new ExcelVBAModule(added.CodeNameChange)
+            {
+                Name = wsName,
+                Code = copy.CodeModule.Code,
+                Attributes = ExcelVbaProject.GetDocumentAttributes(name, "0{00020820-0000-0000-C000-000000000046}"),
+                Type = eModuleType.Document,
+                HelpContext = 0
+            });
 
             added.CodeModuleName = wsName;
         }
@@ -135,12 +141,15 @@ internal static class WorksheetCopyHelper
 
         //Remove any relation to printersettings.
         XmlNode pageSetup = added.WorksheetXml.SelectSingleNode("//d:pageSetup", nsm);
+
         if (pageSetup != null)
         {
             XmlAttribute attr = (XmlAttribute)pageSetup.Attributes.GetNamedItem("id", ExcelPackage.schemaRelationships);
+
             if (attr != null)
             {
                 relID = attr.Value;
+
                 // first delete the attribute from the XML
                 pageSetup.Attributes.Remove(attr);
             }
@@ -169,8 +178,9 @@ internal static class WorksheetCopyHelper
 
         bool doAdjust = added._package.DoAdjustDrawings;
         added._package.DoAdjustDrawings = false;
+
         //Merged cells
-        foreach (string? r in Copy.MergedCells)     //Issue #94
+        foreach (string? r in Copy.MergedCells) //Issue #94
         {
             if (r != null)
             {
@@ -186,16 +196,20 @@ internal static class WorksheetCopyHelper
 
         Dictionary<int, int> styleCashe = new Dictionary<int, int>();
         bool hasMetadata = Copy._metadataStore.HasValues && sameWorkbook;
+
         //Cells
         CellStoreEnumerator<ExcelValue>? val = new CellStoreEnumerator<ExcelValue>(Copy._values);
+
         while (val.Next())
         {
             int row = val.Row;
             int col = val.Column;
             int styleID = 0;
+
             if (row == 0) //Column
             {
                 ExcelColumn? c = Copy.GetValueInner(row, col) as ExcelColumn;
+
                 if (c != null)
                 {
                     ExcelColumn? clone = c.Clone(added, c.ColumnMin);
@@ -207,17 +221,18 @@ internal static class WorksheetCopyHelper
             else if (col == 0) //Row
             {
                 ExcelRow? r = Copy.Row(row);
+
                 if (r != null)
                 {
                     r.Clone(added);
                     styleID = r.StyleID;
                 }
-
             }
             else
             {
                 styleID = CopyValues(Copy, added, row, col, hasMetadata);
             }
+
             if (!sameWorkbook && styleID != 0)
             {
                 if (styleCashe.ContainsKey(styleID))
@@ -241,6 +256,7 @@ internal static class WorksheetCopyHelper
 
         added._package.DoAdjustDrawings = doAdjust;
     }
+
     private static void CopyDrawing(ExcelPackage pck, XmlNamespaceManager nsm, ExcelWorksheet copy, ExcelWorksheet added)
     {
         //First copy the drawing XML                
@@ -253,18 +269,25 @@ internal static class WorksheetCopyHelper
 
         XmlDocument drawXml = new XmlDocument();
         drawXml.LoadXml(xml);
+
         //Add the relationship ID to the worksheet xml.
-        ZipPackageRelationship? drawRelation = added.Part.CreateRelationship(UriHelper.GetRelativeUri(added.WorksheetUri, uriDraw), TargetMode.Internal, ExcelPackage.schemaRelationships + "/drawing");
+        ZipPackageRelationship? drawRelation = added.Part.CreateRelationship(UriHelper.GetRelativeUri(added.WorksheetUri, uriDraw),
+                                                                             TargetMode.Internal,
+                                                                             ExcelPackage.schemaRelationships + "/drawing");
+
         XmlElement e = added.WorksheetXml.SelectSingleNode("//d:drawing", nsm) as XmlElement;
         e.SetAttribute("id", ExcelPackage.schemaRelationships, drawRelation.Id);
+
         for (int i = 0; i < copy.Drawings.Count; i++)
         {
             ExcelDrawing draw = copy.Drawings[i];
+
             if (draw is ExcelChart chart)
             {
                 xml = chart.ChartXml.InnerXml;
                 Uri uriChart;
                 ZipPackagePart chartPart;
+
                 if (chart._isChartEx)
                 {
                     uriChart = XmlHelper.GetNewUri(pck.ZipPackage, "/xl/charts/chartEx{0}.xml");
@@ -275,26 +298,43 @@ internal static class WorksheetCopyHelper
                     uriChart = XmlHelper.GetNewUri(pck.ZipPackage, "/xl/charts/chart{0}.xml");
                     chartPart = pck.ZipPackage.CreatePart(uriChart, ContentTypes.contentTypeChart, pck.Compression);
                 }
+
                 StreamWriter streamChart = new StreamWriter(chartPart.GetStream(FileMode.Create, FileAccess.Write));
                 streamChart.Write(xml);
                 streamChart.Flush();
+
                 //Now create the new relationship to the copied chart xml
                 XmlNode relNode;
+
                 if (chart._isChartEx)
                 {
-                    relNode=draw.TopNode.SelectSingleNode("mc:AlternateContent/mc:Choice[@Requires='cx1' or @Requires='cx2']/xdr:graphicFrame/a:graphic/a:graphicData/cx:chart/@r:id", copy.Drawings.NameSpaceManager);
-                    string prevRelID = relNode?.Value;
-                    ZipPackageRelationship? rel = partDraw.CreateRelationship(UriHelper.GetRelativeUri(uriDraw, uriChart), TargetMode.Internal, ExcelPackage.schemaChartExRelationships);
-                    XmlAttribute relAtt = drawXml.SelectSingleNode(string.Format("//cx:chart/@r:id[.='{0}']", prevRelID), copy.Drawings.NameSpaceManager) as XmlAttribute;
-                    relAtt.Value = rel.Id;
+                    relNode =
+                        draw.TopNode
+                            .SelectSingleNode("mc:AlternateContent/mc:Choice[@Requires='cx1' or @Requires='cx2']/xdr:graphicFrame/a:graphic/a:graphicData/cx:chart/@r:id",
+                                              copy.Drawings.NameSpaceManager);
 
+                    string prevRelID = relNode?.Value;
+
+                    ZipPackageRelationship? rel =
+                        partDraw.CreateRelationship(UriHelper.GetRelativeUri(uriDraw, uriChart), TargetMode.Internal, ExcelPackage.schemaChartExRelationships);
+
+                    XmlAttribute relAtt =
+                        drawXml.SelectSingleNode(string.Format("//cx:chart/@r:id[.='{0}']", prevRelID), copy.Drawings.NameSpaceManager) as XmlAttribute;
+
+                    relAtt.Value = rel.Id;
                 }
                 else
                 {
-                    relNode=draw.TopNode.SelectSingleNode("xdr:graphicFrame/a:graphic/a:graphicData/c:chart/@r:id", copy.Drawings.NameSpaceManager);
+                    relNode = draw.TopNode.SelectSingleNode("xdr:graphicFrame/a:graphic/a:graphicData/c:chart/@r:id", copy.Drawings.NameSpaceManager);
                     string prevRelID = relNode?.Value;
-                    ZipPackageRelationship? rel = partDraw.CreateRelationship(UriHelper.GetRelativeUri(uriDraw, uriChart), TargetMode.Internal, ExcelPackage.schemaRelationships + "/chart");
-                    XmlAttribute relAtt = drawXml.SelectSingleNode(string.Format("//c:chart/@r:id[.='{0}']", prevRelID), copy.Drawings.NameSpaceManager) as XmlAttribute;
+
+                    ZipPackageRelationship? rel = partDraw.CreateRelationship(UriHelper.GetRelativeUri(uriDraw, uriChart),
+                                                                              TargetMode.Internal,
+                                                                              ExcelPackage.schemaRelationships + "/chart");
+
+                    XmlAttribute relAtt =
+                        drawXml.SelectSingleNode(string.Format("//c:chart/@r:id[.='{0}']", prevRelID), copy.Drawings.NameSpaceManager) as XmlAttribute;
+
                     relAtt.Value = rel.Id;
                 }
 
@@ -306,13 +346,14 @@ internal static class WorksheetCopyHelper
                 Uri? uri = container.UriPic;
                 ImageInfo? ii = added.Workbook._package.PictureStore.AddImage(pic.Image.ImageBytes, null, pic.Image.Type);
 
-                ZipPackageRelationship? rel = partDraw.CreateRelationship(UriHelper.GetRelativeUri(added.WorksheetUri, ii.Uri), TargetMode.Internal, ExcelPackage.schemaRelationships + "/image");
+                ZipPackageRelationship? rel = partDraw.CreateRelationship(UriHelper.GetRelativeUri(added.WorksheetUri, ii.Uri),
+                                                                          TargetMode.Internal,
+                                                                          ExcelPackage.schemaRelationships + "/image");
+
                 //Fixes problem with invalid image when the same image is used more than once.
                 XmlNode relAtt =
-                    drawXml.SelectSingleNode(
-                                             string.Format(
-                                                           "//xdr:pic/xdr:nvPicPr/xdr:cNvPr/@name[.='{0}']/../../../xdr:blipFill/a:blip/@r:embed",
-                                                           pic.Name), copy.Drawings.NameSpaceManager);
+                    drawXml.SelectSingleNode(string.Format("//xdr:pic/xdr:nvPicPr/xdr:cNvPr/@name[.='{0}']/../../../xdr:blipFill/a:blip/@r:embed", pic.Name),
+                                             copy.Drawings.NameSpaceManager);
 
                 if (relAtt != null)
                 {
@@ -325,6 +366,7 @@ internal static class WorksheetCopyHelper
                 ExcelTableSlicer? newSlicer = added.Drawings[i] as ExcelTableSlicer;
                 newSlicer.Name = name;
                 newSlicer.SlicerName = name;
+
                 //The slicer still reference the copied slicers cache. We need to create a new cache for the copied slicer.
                 newSlicer.CreateNewCache();
             }
@@ -334,10 +376,11 @@ internal static class WorksheetCopyHelper
                 ExcelPivotTableSlicer? newSlicer = added.Drawings[i] as ExcelPivotTableSlicer;
                 newSlicer.Name = name;
                 newSlicer.SlicerName = name;
+
                 //The slicer still reference the copied slicers cache. We need to create a new cache for the copied slicer.
                 newSlicer.CreateNewCache(ptSlicer.Cache._field);
             }
-            else if(draw is ExcelControl ctrl)
+            else if (draw is ExcelControl ctrl)
             {
                 Uri? UriCtrl = XmlHelper.GetNewUri(pck.ZipPackage, "/xl/ctrlProps/ctrlProp{0}.xml");
                 ZipPackagePart? ctrlPart = pck.ZipPackage.CreatePart(UriCtrl, ContentTypes.contentTypeControlProperties, pck.Compression);
@@ -346,8 +389,14 @@ internal static class WorksheetCopyHelper
                 streamChart.Flush();
 
                 string? prevRelID = ctrl._control.RelationshipId;
-                ZipPackageRelationship? rel = added.Part.CreateRelationship(UriHelper.GetRelativeUri(added.WorksheetUri, UriCtrl), TargetMode.Internal, ExcelPackage.schemaRelationships + "/ctrlProp");
-                XmlAttribute relAtt = added.WorksheetXml.SelectSingleNode(string.Format("//d:control/@r:id[.='{0}']", prevRelID), added.NameSpaceManager) as XmlAttribute;
+
+                ZipPackageRelationship? rel = added.Part.CreateRelationship(UriHelper.GetRelativeUri(added.WorksheetUri, UriCtrl),
+                                                                            TargetMode.Internal,
+                                                                            ExcelPackage.schemaRelationships + "/ctrlProp");
+
+                XmlAttribute relAtt =
+                    added.WorksheetXml.SelectSingleNode(string.Format("//d:control/@r:id[.='{0}']", prevRelID), added.NameSpaceManager) as XmlAttribute;
+
                 relAtt.Value = rel.Id;
             }
             else if (draw is ExcelShape shp)
@@ -358,6 +407,7 @@ internal static class WorksheetCopyHelper
             if (draw.HypRel != null)
             {
                 ZipPackageRelationship rel;
+
                 if (string.IsNullOrEmpty(draw.HypRel.Target))
                 {
                     rel = partDraw.CreateRelationship(draw.HypRel.TargetUri.OriginalString, draw.HypRel.TargetMode, draw.HypRel.RelationshipType);
@@ -367,9 +417,7 @@ internal static class WorksheetCopyHelper
                     rel = partDraw.CreateRelationship(draw.HypRel.Target, draw.HypRel.TargetMode, draw.HypRel.RelationshipType);
                 }
 
-                XmlNode relAtt =
-                    drawXml.SelectSingleNode(
-                                             $"//{draw._nvPrPath}[@name='{draw.Name}']/a:hlinkClick/@r:id", copy.Drawings.NameSpaceManager);
+                XmlNode relAtt = drawXml.SelectSingleNode($"//{draw._nvPrPath}[@name='{draw.Name}']/a:hlinkClick/@r:id", copy.Drawings.NameSpaceManager);
 
                 if (relAtt != null)
                 {
@@ -388,6 +436,7 @@ internal static class WorksheetCopyHelper
         {
             ExcelDrawing? draw = copy.Drawings[i];
             ExcelDrawing? c = added.Drawings[i];
+
             if (c != null)
             {
                 c._left = draw._left;
@@ -395,33 +444,37 @@ internal static class WorksheetCopyHelper
                 c._height = draw._height;
                 c._width = draw._width;
             }
+
             if (c is ExcelChart chart)
             {
                 for (int j = 0; j < chart.Series.Count; j++)
                 {
                     ExcelChartSerie? s = chart.Series[j];
+
                     if (ExcelCellBase.IsValidAddress(s.Series))
                     {
                         ExcelAddressBase? a = new ExcelAddressBase(s.Series);
+
                         if (a.WorkSheetName.Equals(copy.Name))
                         {
                             s.Series = ExcelCellBase.GetFullAddress(added.Name, a.LocalAddress);
                         }
                     }
+
                     if (string.IsNullOrEmpty(s.XSeries) == false && ExcelCellBase.IsValidAddress(s.XSeries))
                     {
                         ExcelAddressBase? a = new ExcelAddressBase(s.XSeries);
+
                         if (a.WorkSheetName.Equals(copy.Name))
                         {
                             s.XSeries = ExcelCellBase.GetFullAddress(added.Name, a.LocalAddress);
                         }
                     }
 
-                    if (s.HeaderAddress!=null&&s.HeaderAddress.WorkSheetName.Equals(copy.Name))
+                    if (s.HeaderAddress != null && s.HeaderAddress.WorkSheetName.Equals(copy.Name))
                     {
                         s.HeaderAddress = new ExcelAddressBase(ExcelCellBase.GetFullAddress(added.Name, s.HeaderAddress.LocalAddress));
                     }
-
                 }
             }
         }
@@ -432,11 +485,12 @@ internal static class WorksheetCopyHelper
         foreach (ZipPackageRelationship? relCopy in chart.Part.GetRelationships())
         {
             Uri? uri = UriHelper.ResolvePartUri(relCopy.SourceUri, relCopy.TargetUri);
+
             if (relCopy.TargetMode == TargetMode.Internal)
             {
                 if (relCopy.RelationshipType == ExcelPackage.schemaChartStyleRelationships)
                 {
-                    uri=XmlHelper.GetNewUri(added._package.ZipPackage, "/xl/charts/style{0}.xml");
+                    uri = XmlHelper.GetNewUri(added._package.ZipPackage, "/xl/charts/style{0}.xml");
                     chartPart.Package.CreatePart(uri, ContentTypes.contentTypeChartStyle, chart.StyleManager.StyleXml.OuterXml);
                 }
                 else if (relCopy.RelationshipType == ExcelPackage.schemaChartColorStyleRelationships)
@@ -444,24 +498,30 @@ internal static class WorksheetCopyHelper
                     uri = XmlHelper.GetNewUri(added._package.ZipPackage, "/xl/charts/colors{0}.xml");
                     chartPart.Package.CreatePart(uri, ContentTypes.contentTypeChartColorStyle, chart.StyleManager.ColorsXml.OuterXml);
                 }
-                else if(added.Workbook != copy.Workbook)
+                else if (added.Workbook != copy.Workbook)
                 {
                     if (relCopy.RelationshipType == ExcelPackage.schemaRelationships + "/image")
                     {
-                        if (added._package.ZipPackage.PartExists(uri)==false)
+                        if (added._package.ZipPackage.PartExists(uri) == false)
                         {
-                            ZipPackagePart? destImgUri=copy._package.ZipPackage.GetPart(uri);
+                            ZipPackagePart? destImgUri = copy._package.ZipPackage.GetPart(uri);
                             ZipPackagePart? v = added._package.ZipPackage.CreatePart(uri, destImgUri);
                         }
                     }
                 }
             }
+
             ZipPackageRelationship? relAdded = chartPart.CreateRelationship(uri, relCopy.TargetMode, relCopy.RelationshipType);
             relAdded.Id = relCopy.Id;
         }
     }
 
-    private static void CopyBlipFillDrawing(ExcelWorksheet added, ZipPackagePart part, XmlDocument drawXml, ExcelDrawing draw, ExcelDrawingFill fill, Uri uriDraw)
+    private static void CopyBlipFillDrawing(ExcelWorksheet added,
+                                            ZipPackagePart part,
+                                            XmlDocument drawXml,
+                                            ExcelDrawing draw,
+                                            ExcelDrawingFill fill,
+                                            Uri uriDraw)
     {
         if (fill.Style == eFillStyle.BlipFill)
         {
@@ -470,13 +530,12 @@ internal static class WorksheetCopyHelper
             byte[]? img = fill.BlipFill.Image.ImageBytes;
             ImageInfo? ii = added.Workbook._package.PictureStore.AddImage(img, uri, null);
 
-            ZipPackageRelationship? rel = part.CreateRelationship(UriHelper.GetRelativeUri(uriDraw, ii.Uri), TargetMode.Internal, ExcelPackage.schemaRelationships + "/image");
+            ZipPackageRelationship? rel =
+                part.CreateRelationship(UriHelper.GetRelativeUri(uriDraw, ii.Uri), TargetMode.Internal, ExcelPackage.schemaRelationships + "/image");
+
             //Fixes problem with invalid image when the same image is used more than once.
-            XmlNode relAtt =
-                drawXml.SelectSingleNode(
-                                         string.Format(
-                                                       "//xdr:cNvPr/@name[.='{0}']/../../../xdr:spPr/xdr:blipFill/a:blip/@r:embed",
-                                                       draw.Name), draw.NameSpaceManager);
+            XmlNode relAtt = drawXml.SelectSingleNode(string.Format("//xdr:cNvPr/@name[.='{0}']/../../../xdr:spPr/xdr:blipFill/a:blip/@r:embed", draw.Name),
+                                                      draw.NameSpaceManager);
 
             if (relAtt != null)
             {
@@ -489,19 +548,28 @@ internal static class WorksheetCopyHelper
     {
         string? xml = origSheet.VmlDrawings.VmlDrawingXml.OuterXml;
         Uri? vmlUri = new Uri(string.Format("/xl/drawings/vmlDrawing{0}.vml", newSheet.SheetId), UriKind.Relative);
-        ZipPackagePart? part = newSheet._package.ZipPackage.CreatePart(vmlUri, "application/vnd.openxmlformats-officedocument.vmlDrawing", newSheet._package.Compression);
+
+        ZipPackagePart? part =
+            newSheet._package.ZipPackage.CreatePart(vmlUri, "application/vnd.openxmlformats-officedocument.vmlDrawing", newSheet._package.Compression);
+
         StreamWriter? streamDrawing = new StreamWriter(part.GetStream(FileMode.Create, FileAccess.Write));
         streamDrawing.Write(xml);
         streamDrawing.Flush();
 
         //Add the relationship ID to the worksheet xml.
-        ZipPackageRelationship? vmlRelation = newSheet.Part.CreateRelationship(UriHelper.GetRelativeUri(newSheet.WorksheetUri, vmlUri), TargetMode.Internal, ExcelPackage.schemaRelationships + "/vmlDrawing");
-        XmlElement? e = newSheet.WorksheetXml.SelectSingleNode("//d:legacyDrawing", newSheet.NameSpaceManager) as XmlElement ?? newSheet.WorksheetXml.CreateNode(XmlNodeType.Entity, "//d:legacyDrawing", newSheet.NameSpaceManager.LookupNamespace("d")) as XmlElement;
+        ZipPackageRelationship? vmlRelation = newSheet.Part.CreateRelationship(UriHelper.GetRelativeUri(newSheet.WorksheetUri, vmlUri),
+                                                                               TargetMode.Internal,
+                                                                               ExcelPackage.schemaRelationships + "/vmlDrawing");
+
+        XmlElement? e = newSheet.WorksheetXml.SelectSingleNode("//d:legacyDrawing", newSheet.NameSpaceManager) as XmlElement
+                        ?? newSheet.WorksheetXml.CreateNode(XmlNodeType.Entity, "//d:legacyDrawing", newSheet.NameSpaceManager.LookupNamespace("d")) as
+                            XmlElement;
 
         if (e != null)
         {
             e.SetAttribute("id", ExcelPackage.schemaRelationships, vmlRelation.Id);
         }
+
         CopyVmlRelations(origSheet, newSheet);
     }
 
@@ -510,37 +578,48 @@ internal static class WorksheetCopyHelper
         //First copy the drawing XML
         string xml = Copy.Comments.CommentXml.InnerXml;
         Uri? uriComment = new Uri(string.Format("/xl/comments{0}.xml", added.SheetId), UriKind.Relative);
+
         if (added._package.ZipPackage.PartExists(uriComment))
         {
             uriComment = XmlHelper.GetNewUri(added._package.ZipPackage, "/xl/comments{0}.xml");
         }
 
-        ZipPackagePart? part = added._package.ZipPackage.CreatePart(uriComment, "application/vnd.openxmlformats-officedocument.spreadsheetml.comments+xml", added._package.Compression);
+        ZipPackagePart? part = added._package.ZipPackage.CreatePart(uriComment,
+                                                                    "application/vnd.openxmlformats-officedocument.spreadsheetml.comments+xml",
+                                                                    added._package.Compression);
 
         StreamWriter streamDrawing = new StreamWriter(part.GetStream(FileMode.Create, FileAccess.Write));
         streamDrawing.Write(xml);
         streamDrawing.Flush();
 
         //Add the relationship ID to the worksheet xml.
-        ZipPackageRelationship? commentRelation = added.Part.CreateRelationship(UriHelper.GetRelativeUri(added.WorksheetUri, uriComment), TargetMode.Internal, ExcelPackage.schemaRelationships + "/comments");
+        ZipPackageRelationship? commentRelation = added.Part.CreateRelationship(UriHelper.GetRelativeUri(added.WorksheetUri, uriComment),
+                                                                                TargetMode.Internal,
+                                                                                ExcelPackage.schemaRelationships + "/comments");
 
         xml = Copy.VmlDrawings.VmlDrawingXml.InnerXml;
 
         Uri? uriVml = new Uri(string.Format("/xl/drawings/vmldrawing{0}.vml", added.SheetId), UriKind.Relative);
+
         if (added._package.ZipPackage.PartExists(uriVml))
         {
             uriVml = XmlHelper.GetNewUri(added._package.ZipPackage, "/xl/drawings/vmldrawing{0}.vml");
         }
 
-        ZipPackagePart? vmlPart = added._package.ZipPackage.CreatePart(uriVml, "application/vnd.openxmlformats-officedocument.vmlDrawing", added._package.Compression);
+        ZipPackagePart? vmlPart =
+            added._package.ZipPackage.CreatePart(uriVml, "application/vnd.openxmlformats-officedocument.vmlDrawing", added._package.Compression);
+
         StreamWriter streamVml = new StreamWriter(vmlPart.GetStream(FileMode.Create, FileAccess.Write));
         streamVml.Write(xml);
         streamVml.Flush();
 
-        ZipPackageRelationship? newVmlRel = added.Part.CreateRelationship(UriHelper.GetRelativeUri(added.WorksheetUri, uriVml), TargetMode.Internal, ExcelPackage.schemaRelationships + "/vmlDrawing");
+        ZipPackageRelationship? newVmlRel = added.Part.CreateRelationship(UriHelper.GetRelativeUri(added.WorksheetUri, uriVml),
+                                                                          TargetMode.Internal,
+                                                                          ExcelPackage.schemaRelationships + "/vmlDrawing");
 
         //Add the relationship ID to the worksheet xml.
         XmlElement e = added.WorksheetXml.SelectSingleNode("//d:legacyDrawing", added.NameSpaceManager) as XmlElement;
+
         if (e == null)
         {
             added.CreateNode("d:legacyDrawing");
@@ -563,15 +642,18 @@ internal static class WorksheetCopyHelper
         foreach (ZipPackageRelationship? r in Copy._vmlDrawings.Part.GetRelationships())
         {
             ZipPackageRelationship? newRel = added._vmlDrawings.Part.CreateRelationship(r.TargetUri, r.TargetMode, r.RelationshipType);
+
             if (newRel.Id != r.Id) //Make sure the id's are the same.
             {
                 newRel.Id = r.Id;
             }
+
             if (Copy.Workbook != added.Workbook)
             {
                 Uri? uri = UriHelper.ResolvePartUri(r.SourceUri, r.TargetUri);
+
                 if (!added.Part.Package.PartExists(uri))
-                {                        
+                {
                     ZipPackagePart? sourcePart = Copy._package.ZipPackage.GetPart(uri);
                     added._package.ZipPackage.CreatePart(uri, sourcePart);
                 }
@@ -584,6 +666,7 @@ internal static class WorksheetCopyHelper
         foreach (ExcelNamedRange? name in Copy.Names)
         {
             ExcelNamedRange newName;
+
             if (!name.IsName)
             {
                 if (name.WorkSheetName == Copy.Name)
@@ -603,6 +686,7 @@ internal static class WorksheetCopyHelper
             {
                 newName = added.Names.AddValue(name.Name, name.Value);
             }
+
             newName.NameComment = name.NameComment;
         }
     }
@@ -610,6 +694,7 @@ internal static class WorksheetCopyHelper
     private static void CopyTable(ExcelWorksheet Copy, ExcelWorksheet added)
     {
         string prevName = "";
+
         //First copy the table XML
         foreach (ExcelTable? tbl in Copy.Tables)
         {
@@ -626,6 +711,7 @@ internal static class WorksheetCopyHelper
                 {
                     int ix = int.Parse(prevName.Substring(5)) + 1;
                     name = string.Format("Table{0}", ix);
+
                     while (added._package.Workbook.ExistsPivotTableName(name))
                     {
                         name = string.Format("Table{0}", ++ix);
@@ -651,35 +737,48 @@ internal static class WorksheetCopyHelper
 
             //var uriTbl = new Uri(string.Format("/xl/tables/table{0}.xml", Id), UriKind.Relative);
             Uri? uriTbl = XmlHelper.GetNewUri(added._package.ZipPackage, "/xl/tables/table{0}.xml", ref Id);
+
             if (added.Workbook._nextTableID < Id)
             {
                 added.Workbook._nextTableID = Id;
             }
 
-            ZipPackagePart? part = added._package.ZipPackage.CreatePart(uriTbl, "application/vnd.openxmlformats-officedocument.spreadsheetml.table+xml", added._package.Compression);
+            ZipPackagePart? part =
+                added._package.ZipPackage.CreatePart(uriTbl,
+                                                     "application/vnd.openxmlformats-officedocument.spreadsheetml.table+xml",
+                                                     added._package.Compression);
+
             StreamWriter streamTbl = new StreamWriter(part.GetStream(FileMode.Create, FileAccess.Write));
             streamTbl.Write(xml);
+
             //streamTbl.Close();
             streamTbl.Flush();
 
             //create the relationship and add the ID to the worksheet xml.
-            ZipPackageRelationship? rel = added.Part.CreateRelationship(UriHelper.GetRelativeUri(added.WorksheetUri, uriTbl), TargetMode.Internal, ExcelPackage.schemaRelationships + "/table");
+            ZipPackageRelationship? rel = added.Part.CreateRelationship(UriHelper.GetRelativeUri(added.WorksheetUri, uriTbl),
+                                                                        TargetMode.Internal,
+                                                                        ExcelPackage.schemaRelationships + "/table");
 
             if (tbl.RelationshipID == null)
             {
                 XmlNode? topNode = added.WorksheetXml.SelectSingleNode("//d:tableParts", tbl.NameSpaceManager);
+
                 if (topNode == null)
                 {
                     added.CreateNode("d:tableParts");
                     topNode = added.WorksheetXml.SelectSingleNode("//d:tableParts", tbl.NameSpaceManager);
                 }
+
                 XmlElement elem = added.WorksheetXml.CreateElement("tablePart", ExcelPackage.schemaMain);
                 topNode.AppendChild(elem);
                 elem.SetAttribute("id", ExcelPackage.schemaRelationships, rel.Id);
             }
             else
             {
-                XmlAttribute relAtt = added.WorksheetXml.SelectSingleNode(string.Format("//d:tableParts/d:tablePart/@r:id[.='{0}']", tbl.RelationshipID), tbl.NameSpaceManager) as XmlAttribute;
+                XmlAttribute relAtt =
+                    added.WorksheetXml.SelectSingleNode(string.Format("//d:tableParts/d:tablePart/@r:id[.='{0}']", tbl.RelationshipID), tbl.NameSpaceManager) as
+                        XmlAttribute;
+
                 relAtt.Value = rel.Id;
             }
 
@@ -689,6 +788,7 @@ internal static class WorksheetCopyHelper
                 if (col.Slicer != null)
                 {
                     ExcelTableColumn? newCol = added.Tables[name].Columns[col.Position];
+
                     foreach (ExcelDrawing? d in added.Drawings)
                     {
                         if (d is ExcelTableSlicer slicer)
@@ -697,6 +797,7 @@ internal static class WorksheetCopyHelper
                             {
                                 slicer.Cache.TableId = newCol.Table.Id;
                                 slicer.TableColumn = newCol;
+
                                 break;
                             }
                         }
@@ -705,6 +806,7 @@ internal static class WorksheetCopyHelper
             }
         }
     }
+
     private static void CopyPivotTable(ExcelWorksheet Copy, ExcelWorksheet added)
     {
         Copy._package.Workbook.ReadAllPivotTables();
@@ -712,10 +814,12 @@ internal static class WorksheetCopyHelper
         Dictionary<string, string>? worksheetMap = new Dictionary<string, string>();
         Dictionary<string, string>? nameMap = new Dictionary<string, string>();
         ExcelWorkbook? wbAdded = added._package.Workbook;
+
         foreach (ExcelPivotTable? tbl in Copy.PivotTables)
         {
             string xml = tbl.PivotTableXml.OuterXml;
             string name;
+
             if (Copy.Workbook == added.Workbook || added.PivotTables._pivotTableNames.ContainsKey(tbl.Name))
             {
                 if (prevName == "")
@@ -726,6 +830,7 @@ internal static class WorksheetCopyHelper
                 {
                     int ix = int.Parse(prevName.Substring(10)) + 1;
                     name = string.Format("PivotTable{0}", ix);
+
                     while (added.Workbook.ExistsPivotTableName(name))
                     {
                         name = string.Format("PivotTable{0}", ++ix);
@@ -740,6 +845,7 @@ internal static class WorksheetCopyHelper
             nameMap.Add(tbl.Name, name);
             prevName = name;
             XmlDocument xmlDoc = new XmlDocument();
+
             //TODO: Fix save pivottable here
             xmlDoc.LoadXml(xml);
             xmlDoc.SelectSingleNode("//d:pivotTableDefinition/@name", tbl.NameSpaceManager).Value = name;
@@ -747,6 +853,7 @@ internal static class WorksheetCopyHelper
 
             int Id = added._package.Workbook._nextPivotTableID++;
             Uri? uriTbl = XmlHelper.GetNewUri(added._package.ZipPackage, "/xl/pivotTables/pivotTable{0}.xml", ref Id);
+
             if (added.Workbook._nextPivotTableID < Id)
             {
                 added.Workbook._nextPivotTableID = Id;
@@ -758,19 +865,23 @@ internal static class WorksheetCopyHelper
             streamTbl.Flush();
 
             //create the relationship and add the ID to the worksheet xml.
-            added.Part.CreateRelationship(UriHelper.ResolvePartUri(added.WorksheetUri, uriTbl), TargetMode.Internal, ExcelPackage.schemaRelationships + "/pivotTable");
+            added.Part.CreateRelationship(UriHelper.ResolvePartUri(added.WorksheetUri, uriTbl),
+                                          TargetMode.Internal,
+                                          ExcelPackage.schemaRelationships + "/pivotTable");
+
             if (Copy.Workbook == added.Workbook)
             {
-                partTbl.CreateRelationship(tbl.CacheDefinition.CacheDefinitionUri, tbl.CacheDefinition.Relationship.TargetMode, tbl.CacheDefinition.Relationship.RelationshipType);
+                partTbl.CreateRelationship(tbl.CacheDefinition.CacheDefinitionUri,
+                                           tbl.CacheDefinition.Relationship.TargetMode,
+                                           tbl.CacheDefinition.Relationship.RelationshipType);
             }
             else
             {
                 CreateCacheInNewPackage(added, wbAdded, tbl, partTbl);
             }
-
         }
 
-        added._pivotTables = null;   //Reset collection so it's reloaded when accessing the collection next time.
+        added._pivotTables = null; //Reset collection so it's reloaded when accessing the collection next time.
 
         //Refresh all items in the copied table.
         foreach (ExcelPivotTable? copiedTbl in added.PivotTables)
@@ -781,6 +892,7 @@ internal static class WorksheetCopyHelper
             }
 
             ChangeToWsLocalPivotTable(added, nameMap);
+
             foreach (ExcelPivotTableField? fld in copiedTbl.Fields)
             {
                 fld.Cache.Refresh();
@@ -793,6 +905,7 @@ internal static class WorksheetCopyHelper
         string xmlCache = tbl.CacheDefinition.CacheDefinitionXml.OuterXml;
         int cacheId = wbAdded._nextPivotCacheId;
         Uri? uriCache = XmlHelper.GetNewUri(added._package.ZipPackage, "/xl/pivotCache/pivotCacheDefinition{0}.xml", ref cacheId);
+
         if (wbAdded._nextPivotCacheId < cacheId)
         {
             wbAdded._nextPivotCacheId = cacheId;
@@ -831,6 +944,7 @@ internal static class WorksheetCopyHelper
             if (d is ExcelPivotTableSlicer s)
             {
                 List<ExcelPivotTable>? list = s.Cache.PivotTables._list;
+
                 for (int i = 0; i < list.Count; i++)
                 {
                     if (nameMap.ContainsKey(list[i].Name))
@@ -841,6 +955,7 @@ internal static class WorksheetCopyHelper
             }
         }
     }
+
     private static void CopyDxfStyles(ExcelWorksheet copy, ExcelWorksheet added)
     {
         Dictionary<string, int>? dxfStyleCashe = new Dictionary<string, int>();
@@ -848,13 +963,15 @@ internal static class WorksheetCopyHelper
         CopyDxfStylesPivotTables(copy, added, dxfStyleCashe);
         CopyDxfStylesConditionalFormatting(copy, added, dxfStyleCashe);
     }
+
     private static void CopyDxfStylesTables(ExcelWorksheet copy, ExcelWorksheet added, Dictionary<string, int> dxfStyleCashe)
     {
         //Table formats
-        for(int i=0;i<copy.Tables.Count; i++)
+        for (int i = 0; i < copy.Tables.Count; i++)
         {
             ExcelTable? tblFrom = copy.Tables[i];
             ExcelTable? tblTo = added.Tables[i];
+
             if (tblFrom.HeaderRowStyle.HasValue)
             {
                 tblTo.HeaderRowStyle = (ExcelDxfStyle)tblFrom.HeaderRowStyle.Clone();
@@ -880,10 +997,11 @@ internal static class WorksheetCopyHelper
                 tblTo.TotalsRowStyle = (ExcelDxfStyle)tblFrom.TotalsRowStyle.Clone();
             }
 
-            for (int c=0;c < tblFrom.Columns.Count;c++)
+            for (int c = 0; c < tblFrom.Columns.Count; c++)
             {
                 ExcelTableColumn? colFrom = tblFrom.Columns[c];
                 ExcelTableColumn? colTo = tblTo.Columns[c];
+
                 if (colFrom.HeaderRowStyle.HasValue)
                 {
                     colTo.HeaderRowStyle = (ExcelDxfStyle)colFrom.HeaderRowStyle.Clone();
@@ -901,25 +1019,27 @@ internal static class WorksheetCopyHelper
             }
         }
     }
+
     private static void CopyDxfStylesPivotTables(ExcelWorksheet copy, ExcelWorksheet added, Dictionary<string, int> dxfStyleCashe)
     {
         //Table formats
         foreach (ExcelPivotTable? pt in copy.PivotTables)
         {
-            foreach(ExcelPivotTableAreaStyle? a in pt.Styles._list)
+            foreach (ExcelPivotTableAreaStyle? a in pt.Styles._list)
             {
                 AppendDxf(copy.Workbook.Styles, added.Workbook.Styles, dxfStyleCashe, a.Style.DxfId);
-            }                
+            }
         }
 
         foreach (ExcelPivotTable? pt in added.PivotTables)
         {
             foreach (ExcelPivotTableAreaStyle? a in pt.Styles._list)
             {
-                a.Style.DxfId= dxfStyleCashe[a.Style.DxfId.ToString()];
+                a.Style.DxfId = dxfStyleCashe[a.Style.DxfId.ToString()];
             }
         }
     }
+
     private static void CopyDxfStylesConditionalFormatting(ExcelWorksheet copy, ExcelWorksheet added, Dictionary<string, int> dxfStyleCashe)
     {
         //Conditional Formatting
@@ -928,15 +1048,19 @@ internal static class WorksheetCopyHelper
             IExcelConditionalFormattingRule? cfSource = copy.ConditionalFormatting[i];
             XmlElement? dxfElement = (XmlElement)cfSource.Node;
             string? dxfId = dxfElement.GetAttribute("dxfId");
+
             if (ConvertUtil.TryParseIntString(dxfId, out int dxfIdInt))
             {
                 AppendDxf(copy.Workbook.Styles, added.Workbook.Styles, dxfStyleCashe, dxfIdInt);
             }
         }
+
         XmlNodeList? nodes = added.WorksheetXml.SelectNodes("//d:conditionalFormatting/d:cfRule", added.NameSpaceManager);
+
         foreach (XmlElement cfRule in nodes)
         {
             string? dxfId = cfRule.GetAttribute("dxfId");
+
             if (dxfStyleCashe.ContainsKey(dxfId))
             {
                 cfRule.SetAttribute("dxfId", dxfStyleCashe[dxfId].ToString());
@@ -964,13 +1088,16 @@ internal static class WorksheetCopyHelper
         added.SetValueStyleIdInner(row, col, valueCore._value, valueCore._styleId);
 
         byte fl = 0;
+
         if (Copy._flags.Exists(row, col, ref fl))
         {
             added._flags.SetValue(row, col, fl);
         }
+
         if (hasMetadata)
         {
             ExcelWorksheet.MetaDataReference md = new ExcelWorksheet.MetaDataReference();
+
             if (Copy._metadataStore.Exists(row, col, ref md))
             {
                 added._metadataStore.SetValue(row, col, md);
@@ -978,16 +1105,19 @@ internal static class WorksheetCopyHelper
         }
 
         object? v = Copy._formulas.GetValue(row, col);
+
         if (v != null)
         {
             added.SetFormula(row, col, v);
         }
 
         Uri? hyperLink = Copy._hyperLinks.GetValue(row, col);
+
         if (hyperLink != null)
         {
             added._hyperLinks.SetValue(row, col, hyperLink);
         }
+
         return valueCore._styleId;
     }
 
@@ -999,7 +1129,9 @@ internal static class WorksheetCopyHelper
         //First copy the drawing XML
         string xml = copy.ThreadedComments.ThreadedCommentsXml.InnerXml;
         int ix = added.SheetId;
-        Uri? tcUri = UriHelper.ResolvePartUri(added.WorksheetUri, XmlHelper.GetNewUri(added._package.ZipPackage, "/xl/threadedComments/threadedComment{0}.xml", ref ix));
+
+        Uri? tcUri = UriHelper.ResolvePartUri(added.WorksheetUri,
+                                              XmlHelper.GetNewUri(added._package.ZipPackage, "/xl/threadedComments/threadedComment{0}.xml", ref ix));
 
         ZipPackagePart? part = added._package.ZipPackage.CreatePart(tcUri, "application/vnd.ms-excel.threadedcomments+xml", added._package.Compression);
 
@@ -1011,11 +1143,13 @@ internal static class WorksheetCopyHelper
         added.Part.CreateRelationship(tcUri, TargetMode.Internal, ExcelPackage.schemaThreadedComment);
 
         added.LoadThreadedComments();
+
         foreach (ExcelThreadedCommentThread? t in added.ThreadedComments._threads)
         {
             for (int i = 0; i < t.Comments.Count; i++)
             {
                 t.Comments[i].Id = ExcelThreadedComment.NewId();
+
                 if (i == 0)
                 {
                     added.Comments[t.CellAddress].Author = "tc=" + t.Comments[i].Id;
@@ -1030,12 +1164,14 @@ internal static class WorksheetCopyHelper
         if (copy.Workbook != added.Workbook) //Different package. Copy all persons from source package.
         {
             ExcelWorkbook? wbDest = added.Workbook;
+
             foreach (ExcelThreadedCommentPerson? p in copy.Workbook.ThreadedCommentPersons)
             {
                 wbDest.ThreadedCommentPersons.Add(p.DisplayName, p.UserId, p.ProviderId, p.Id);
             }
         }
     }
+
     private static void CopyHeaderFooterPictures(ExcelWorksheet Copy, ExcelWorksheet added)
     {
         if (Copy.TopNode != null && Copy.GetNode("d:headerFooter") == null)
@@ -1085,14 +1221,17 @@ internal static class WorksheetCopyHelper
             foreach (ExcelVmlDrawingPicture pic in Copy.HeaderFooter.Pictures)
             {
                 ExcelVmlDrawingPicture? item = added.HeaderFooter.Pictures.Add(pic.Id, pic.ImageUri, pic.Title, pic.Width, pic.Height);
+
                 foreach (XmlAttribute att in pic.TopNode.Attributes)
                 {
                     (item.TopNode as XmlElement).SetAttribute(att.Name, att.Value);
                 }
+
                 item.TopNode.InnerXml = pic.TopNode.InnerXml;
             }
         }
     }
+
     private static void CopyText(ExcelHeaderFooterText from, ExcelHeaderFooterText to)
     {
         to.LeftAlignedText = from.LeftAlignedText;
@@ -1114,7 +1253,10 @@ internal static class WorksheetCopyHelper
             xml.Save(stream);
 
             //Now create the new relationship between the worksheet and the slicer.
-            XmlElement? relNode = (XmlElement)added.WorksheetXml.DocumentElement.SelectSingleNode($"d:extLst/d:ext/x14:slicerList/x14:slicer[@r:id='{source.Rel.Id}']", added.NameSpaceManager);
+            XmlElement? relNode =
+                (XmlElement)added.WorksheetXml.DocumentElement.SelectSingleNode($"d:extLst/d:ext/x14:slicerList/x14:slicer[@r:id='{source.Rel.Id}']",
+                                                                                added.NameSpaceManager);
+
             relNode.Attributes["r:id"].Value = rel.Id;
         }
     }

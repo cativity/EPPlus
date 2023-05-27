@@ -10,6 +10,7 @@
  *************************************************************************************************
   01/27/2020         EPPlus Software AB       Initial release EPPlus 5
  *************************************************************************************************/
+
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -43,6 +44,7 @@ public class RangeAddress
     }
 
     private static RangeAddress _empty = new RangeAddress();
+
     public static RangeAddress Empty
     {
         get { return _empty; }
@@ -59,11 +61,12 @@ public class RangeAddress
         {
             return false;
         }
-        if (other.FromRow > this.ToRow || other.FromCol > this.ToCol
-                                       || this.FromRow > other.ToRow || this.FromCol > other.ToCol)
+
+        if (other.FromRow > this.ToRow || other.FromCol > this.ToCol || this.FromRow > other.ToRow || this.FromCol > other.ToCol)
         {
             return false;
         }
+
         return true;
     }
 }

@@ -10,6 +10,7 @@
  *************************************************************************************************
   01/27/2020         EPPlus Software AB       Initial release EPPlus 5
  *************************************************************************************************/
+
 using OfficeOpenXml.Drawing.Style;
 using System.Xml;
 
@@ -20,22 +21,17 @@ namespace OfficeOpenXml.Drawing.Style.Font;
 /// </summary>
 public class ExcelDrawingFontBase : XmlHelper
 {
-    internal ExcelDrawingFontBase(XmlNamespaceManager nameSpaceManager, XmlNode topNode) : base(nameSpaceManager, topNode)
+    internal ExcelDrawingFontBase(XmlNamespaceManager nameSpaceManager, XmlNode topNode)
+        : base(nameSpaceManager, topNode)
     {
-
     }
+
     /// <summary>
     /// The typeface or the name of the font
     /// </summary>
     public string Typeface
     {
-        get
-        {
-            return this.GetXmlNodeString("@typeface");
-        }
-        internal set
-        {
-            this.SetXmlNodeString("@typeface", value);
-        }
+        get { return this.GetXmlNodeString("@typeface"); }
+        internal set { this.SetXmlNodeString("@typeface", value); }
     }
 }

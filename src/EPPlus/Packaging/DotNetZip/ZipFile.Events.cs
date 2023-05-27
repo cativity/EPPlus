@@ -33,10 +33,7 @@ internal partial class ZipFile
 {
     private string ArchiveNameForEvent
     {
-        get
-        {
-            return this._name != null ? this._name : "(stream)";
-        }
+        get { return this._name != null ? this._name : "(stream)"; }
     }
 
     #region Save
@@ -517,30 +514,33 @@ internal partial class ZipFile
     /// <seealso cref="Ionic.Zip.ZipFile.ExtractProgress"/>
     internal event EventHandler<SaveProgressEventArgs> SaveProgress;
 
-
     internal bool OnSaveBlock(ZipEntry entry, Int64 bytesXferred, Int64 totalBytesToXfer)
     {
         EventHandler<SaveProgressEventArgs> sp = this.SaveProgress;
+
         if (sp != null)
         {
-            SaveProgressEventArgs? e = SaveProgressEventArgs.ByteUpdate(this.ArchiveNameForEvent, entry,
-                                                                        bytesXferred, totalBytesToXfer);
+            SaveProgressEventArgs? e = SaveProgressEventArgs.ByteUpdate(this.ArchiveNameForEvent, entry, bytesXferred, totalBytesToXfer);
             sp(this, e);
+
             if (e.Cancel)
             {
                 this._saveOperationCanceled = true;
             }
         }
+
         return this._saveOperationCanceled;
     }
 
     private void OnSaveEntry(int current, ZipEntry entry, bool before)
     {
         EventHandler<SaveProgressEventArgs> sp = this.SaveProgress;
+
         if (sp != null)
         {
             SaveProgressEventArgs? e = new SaveProgressEventArgs(this.ArchiveNameForEvent, before, this._entries.Count, current, entry);
             sp(this, e);
+
             if (e.Cancel)
             {
                 this._saveOperationCanceled = true;
@@ -551,10 +551,12 @@ internal partial class ZipFile
     private void OnSaveEvent(ZipProgressEventType eventFlavor)
     {
         EventHandler<SaveProgressEventArgs> sp = this.SaveProgress;
+
         if (sp != null)
         {
             SaveProgressEventArgs? e = new SaveProgressEventArgs(this.ArchiveNameForEvent, eventFlavor);
             sp(this, e);
+
             if (e.Cancel)
             {
                 this._saveOperationCanceled = true;
@@ -565,29 +567,34 @@ internal partial class ZipFile
     private void OnSaveStarted()
     {
         EventHandler<SaveProgressEventArgs> sp = this.SaveProgress;
+
         if (sp != null)
         {
             SaveProgressEventArgs? e = SaveProgressEventArgs.Started(this.ArchiveNameForEvent);
             sp(this, e);
+
             if (e.Cancel)
             {
                 this._saveOperationCanceled = true;
             }
         }
     }
+
     private void OnSaveCompleted()
     {
         EventHandler<SaveProgressEventArgs> sp = this.SaveProgress;
+
         if (sp != null)
         {
             SaveProgressEventArgs? e = SaveProgressEventArgs.Completed(this.ArchiveNameForEvent);
             sp(this, e);
         }
     }
+
     #endregion
 
-
     #region Read
+
     /// <summary>
     /// An event handler invoked before, during, and after the reading of a zip archive.
     /// </summary>
@@ -650,6 +657,7 @@ internal partial class ZipFile
     private void OnReadStarted()
     {
         EventHandler<ReadProgressEventArgs> rp = this.ReadProgress;
+
         if (rp != null)
         {
             ReadProgressEventArgs? e = ReadProgressEventArgs.Started(this.ArchiveNameForEvent);
@@ -660,6 +668,7 @@ internal partial class ZipFile
     private void OnReadCompleted()
     {
         EventHandler<ReadProgressEventArgs> rp = this.ReadProgress;
+
         if (rp != null)
         {
             ReadProgressEventArgs? e = ReadProgressEventArgs.Completed(this.ArchiveNameForEvent);
@@ -670,12 +679,10 @@ internal partial class ZipFile
     internal void OnReadBytes(ZipEntry entry)
     {
         EventHandler<ReadProgressEventArgs> rp = this.ReadProgress;
+
         if (rp != null)
         {
-            ReadProgressEventArgs? e = ReadProgressEventArgs.ByteUpdate(this.ArchiveNameForEvent,
-                                                                        entry,
-                                                                        this.ReadStream.Position,
-                                                                        this.LengthOfReadStream);
+            ReadProgressEventArgs? e = ReadProgressEventArgs.ByteUpdate(this.ArchiveNameForEvent, entry, this.ReadStream.Position, this.LengthOfReadStream);
             rp(this, e);
         }
     }
@@ -683,33 +690,36 @@ internal partial class ZipFile
     internal void OnReadEntry(bool before, ZipEntry entry)
     {
         EventHandler<ReadProgressEventArgs> rp = this.ReadProgress;
+
         if (rp != null)
         {
             ReadProgressEventArgs e = before
                                           ? ReadProgressEventArgs.Before(this.ArchiveNameForEvent, this._entries.Count)
                                           : ReadProgressEventArgs.After(this.ArchiveNameForEvent, entry, this._entries.Count);
+
             rp(this, e);
         }
     }
 
     private Int64 _lengthOfReadStream = -99;
+
     private Int64 LengthOfReadStream
     {
         get
         {
             if (this._lengthOfReadStream == -99)
             {
-                this._lengthOfReadStream = this._ReadStreamIsOurs
-                                               ? SharedUtilities.GetFileLength(this._name)
-                                               : -1L;
+                this._lengthOfReadStream = this._ReadStreamIsOurs ? SharedUtilities.GetFileLength(this._name) : -1L;
             }
+
             return this._lengthOfReadStream;
         }
     }
+
     #endregion
 
-
     #region Extract
+
     /// <summary>
     ///   An event handler invoked before, during, and after extraction of
     ///   entries in the zip archive.
@@ -861,104 +871,107 @@ internal partial class ZipFile
     /// <seealso cref="Ionic.Zip.ZipFile.AddProgress"/>
     internal event EventHandler<ExtractProgressEventArgs> ExtractProgress;
 
-
-
     private void OnExtractEntry(int current, bool before, ZipEntry currentEntry, string path)
     {
         EventHandler<ExtractProgressEventArgs> ep = this.ExtractProgress;
+
         if (ep != null)
         {
             ExtractProgressEventArgs? e = new ExtractProgressEventArgs(this.ArchiveNameForEvent, before, this._entries.Count, current, currentEntry, path);
             ep(this, e);
+
             if (e.Cancel)
             {
                 this._extractOperationCanceled = true;
             }
         }
     }
-
 
     // Can be called from within ZipEntry._ExtractOne.
     internal bool OnExtractBlock(ZipEntry entry, Int64 bytesWritten, Int64 totalBytesToWrite)
     {
         EventHandler<ExtractProgressEventArgs> ep = this.ExtractProgress;
+
         if (ep != null)
         {
-            ExtractProgressEventArgs? e = ExtractProgressEventArgs.ByteUpdate(this.ArchiveNameForEvent, entry,
-                                                                              bytesWritten, totalBytesToWrite);
+            ExtractProgressEventArgs? e = ExtractProgressEventArgs.ByteUpdate(this.ArchiveNameForEvent, entry, bytesWritten, totalBytesToWrite);
             ep(this, e);
+
             if (e.Cancel)
             {
                 this._extractOperationCanceled = true;
             }
         }
+
         return this._extractOperationCanceled;
     }
-
 
     // Can be called from within ZipEntry.InternalExtract.
     internal bool OnSingleEntryExtract(ZipEntry entry, string path, bool before)
     {
         EventHandler<ExtractProgressEventArgs> ep = this.ExtractProgress;
+
         if (ep != null)
         {
             ExtractProgressEventArgs? e = before
                                               ? ExtractProgressEventArgs.BeforeExtractEntry(this.ArchiveNameForEvent, entry, path)
                                               : ExtractProgressEventArgs.AfterExtractEntry(this.ArchiveNameForEvent, entry, path);
+
             ep(this, e);
+
             if (e.Cancel)
             {
                 this._extractOperationCanceled = true;
             }
         }
+
         return this._extractOperationCanceled;
     }
 
     internal bool OnExtractExisting(ZipEntry entry, string path)
     {
         EventHandler<ExtractProgressEventArgs> ep = this.ExtractProgress;
+
         if (ep != null)
         {
             ExtractProgressEventArgs? e = ExtractProgressEventArgs.ExtractExisting(this.ArchiveNameForEvent, entry, path);
             ep(this, e);
+
             if (e.Cancel)
             {
                 this._extractOperationCanceled = true;
             }
         }
+
         return this._extractOperationCanceled;
     }
-
 
     private void OnExtractAllCompleted(string path)
     {
         EventHandler<ExtractProgressEventArgs> ep = this.ExtractProgress;
+
         if (ep != null)
         {
-            ExtractProgressEventArgs? e = ExtractProgressEventArgs.ExtractAllCompleted(this.ArchiveNameForEvent,
-                                                                                       path );
+            ExtractProgressEventArgs? e = ExtractProgressEventArgs.ExtractAllCompleted(this.ArchiveNameForEvent, path);
             ep(this, e);
         }
     }
-
 
     private void OnExtractAllStarted(string path)
     {
         EventHandler<ExtractProgressEventArgs> ep = this.ExtractProgress;
+
         if (ep != null)
         {
-            ExtractProgressEventArgs? e = ExtractProgressEventArgs.ExtractAllStarted(this.ArchiveNameForEvent,
-                                                                                     path );
+            ExtractProgressEventArgs? e = ExtractProgressEventArgs.ExtractAllStarted(this.ArchiveNameForEvent, path);
             ep(this, e);
         }
     }
 
-
     #endregion
 
-
-
     #region Add
+
     /// <summary>
     /// An event handler invoked before, during, and after Adding entries to a zip archive.
     /// </summary>
@@ -1042,10 +1055,12 @@ internal partial class ZipFile
     private void OnAddStarted()
     {
         EventHandler<AddProgressEventArgs> ap = this.AddProgress;
+
         if (ap != null)
         {
             AddProgressEventArgs? e = AddProgressEventArgs.Started(this.ArchiveNameForEvent);
             ap(this, e);
+
             if (e.Cancel) // workitem 13371
             {
                 this._addOperationCanceled = true;
@@ -1056,6 +1071,7 @@ internal partial class ZipFile
     private void OnAddCompleted()
     {
         EventHandler<AddProgressEventArgs> ap = this.AddProgress;
+
         if (ap != null)
         {
             AddProgressEventArgs? e = AddProgressEventArgs.Completed(this.ArchiveNameForEvent);
@@ -1066,10 +1082,12 @@ internal partial class ZipFile
     internal void AfterAddEntry(ZipEntry entry)
     {
         EventHandler<AddProgressEventArgs> ap = this.AddProgress;
+
         if (ap != null)
         {
             AddProgressEventArgs? e = AddProgressEventArgs.AfterEntry(this.ArchiveNameForEvent, entry, this._entries.Count);
             ap(this, e);
+
             if (e.Cancel) // workitem 13371
             {
                 this._addOperationCanceled = true;
@@ -1079,9 +1097,8 @@ internal partial class ZipFile
 
     #endregion
 
-
-
     #region Error
+
     /// <summary>
     /// An event that is raised when an error occurs during open or read of files
     /// while saving a zip archive.
@@ -1227,14 +1244,16 @@ internal partial class ZipFile
             {
                 ZipErrorEventArgs? e = ZipErrorEventArgs.Saving(this.Name, entry, exc);
                 this.ZipError(this, e);
+
                 if (e.Cancel)
                 {
                     this._saveOperationCanceled = true;
                 }
             }
         }
+
         return this._saveOperationCanceled;
     }
-    #endregion
 
+    #endregion
 }

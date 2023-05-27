@@ -26,6 +26,7 @@
  *******************************************************************************
   01/27/2020         EPPlus Software AB       Initial release EPPlus 5
  *******************************************************************************/
+
 using System;
 using System.IO;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -58,7 +59,7 @@ public class CalcExtensionsTests
 
         ws.SetValue("A1", (short)1);
         object? v = pck.Workbook.FormulaParserManager.Parse("2.5-Calc1!A1+ABS(-3.0)-SIN(3)*abs(5)");
-        Assert.AreEqual(3.79439996, Math.Round((double)v,9));
+        Assert.AreEqual(3.79439996, Math.Round((double)v, 9));
     }
 
     [TestMethod]

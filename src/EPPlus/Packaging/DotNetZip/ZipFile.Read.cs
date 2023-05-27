@@ -751,12 +751,11 @@ internal partial class ZipFile
 
         // workitem 9214
         bool inputUsesZip64 = false;
-        ZipEntry de;
 
         // in lieu of hashset, use a dictionary
         Dictionary<string, object>? previouslySeen = new Dictionary<String, object>();
 
-        while ((de = ZipEntry.ReadDirEntry(zf, previouslySeen)) != null)
+        while (ZipEntry.ReadDirEntry(zf, previouslySeen) is { } de)
         {
             de.ResetDirEntry();
             zf.OnReadEntry(true, null);
@@ -814,8 +813,6 @@ internal partial class ZipFile
         //zf._entries = new System.Collections.Generic.List<ZipEntry>();
         zf._entries = new Dictionary<String, ZipEntry>();
 
-        ZipEntry e;
-
         if (zf.Verbose)
         {
             if (zf.Name == null)
@@ -832,7 +829,7 @@ internal partial class ZipFile
         bool firstEntry = true;
         ZipContainer zc = new ZipContainer(zf);
 
-        while ((e = ZipEntry.ReadEntry(zc, firstEntry)) != null)
+        while (ZipEntry.ReadEntry(zc, firstEntry) is { } e)
         {
             if (zf.Verbose)
             {
@@ -848,12 +845,10 @@ internal partial class ZipFile
         // But, because it may be corrupted, ignore errors.
         try
         {
-            ZipEntry de;
-
             // in lieu of hashset, use a dictionary
             Dictionary<string, object>? previouslySeen = new Dictionary<String, Object>();
 
-            while ((de = ZipEntry.ReadDirEntry(zf, previouslySeen)) != null)
+            while (ZipEntry.ReadDirEntry(zf, previouslySeen) is { } de)
             {
                 // Housekeeping: Since ZipFile exposes ZipEntry elements in the enumerator,
                 // we need to copy the comment that we grab from the ZipDirEntry

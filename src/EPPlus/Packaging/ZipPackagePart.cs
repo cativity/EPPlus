@@ -130,11 +130,9 @@ internal class ZipPackagePart : ZipPackagePartBase, IDisposable
 
     internal void WriteZip(ZipOutputStream os)
     {
-        byte[] b;
-
         if (this.SaveHandler == null)
         {
-            b = ((MemoryStream)this.GetStream()).ToArray();
+            byte[] b = ((MemoryStream)this.GetStream()).ToArray();
 
             if (b.Length == 0) //Make sure the file isn't empty. DotNetZip streams does not seems to handle zero sized files.
             {

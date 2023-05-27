@@ -57,8 +57,7 @@ internal class TokenFactory : ITokenFactory
 
     public Token Create(IEnumerable<Token> tokens, string token, string worksheet)
     {
-        Token tokenSeparator;
-        if (this._tokenSeparatorProvider.Tokens.TryGetValue(token, out tokenSeparator))
+        if (this._tokenSeparatorProvider.Tokens.TryGetValue(token, out Token tokenSeparator))
         {
             return tokenSeparator;
         }

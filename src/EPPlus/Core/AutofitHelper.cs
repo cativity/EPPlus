@@ -119,7 +119,7 @@ internal class AutofitHelper
         }
 
         ExcelFontXml? nf = styles.Fonts[styles.CellStyleXfs[normalXfId].FontId];
-        MeasurementFontStyles fs;
+
         //MeasurementFontStyles fs = MeasurementFontStyles.Regular;
 
         //if (nf.Bold)
@@ -167,7 +167,7 @@ internal class AutofitHelper
             else
             {
                 ExcelFontXml? fnt = styles.Fonts[fntID];
-                fs = MeasurementFontStyles.Regular;
+                MeasurementFontStyles fs = MeasurementFontStyles.Regular;
 
                 if (fnt.Bold)
                 {

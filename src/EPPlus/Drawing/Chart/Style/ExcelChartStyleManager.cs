@@ -167,9 +167,8 @@ public class ExcelChartStyleManager : XmlHelper
             using (stream)
             {
                 ZipInputStream? zipStream = new ZipInputStream(stream);
-                ZipEntry entry;
 
-                while ((entry = zipStream.GetNextEntry()) != null)
+                while (zipStream.GetNextEntry() is { } entry)
                 {
                     if (entry.IsDirectory || !entry.FileName.EndsWith(".xml") || entry.UncompressedSize <= 0)
                     {

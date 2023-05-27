@@ -3030,9 +3030,8 @@ public static class FontSize
             using (stream)
             {
                 ZipInputStream? zipStream = new ZipInputStream(stream);
-                ZipEntry entry;
 
-                while ((entry = zipStream.GetNextEntry()) != null)
+                while (zipStream.GetNextEntry() is { } entry)
                 {
                     if (entry.FileName.Equals("fontsize.bin", StringComparison.OrdinalIgnoreCase))
                     {

@@ -215,9 +215,8 @@ public abstract class ExcelTableNamedStyleBase : XmlHelper
     private void LoadTableTemplate(string folder, string styleName)
     {
         ZipInputStream? zipStream = ZipHelper.OpenZipResource();
-        ZipEntry entry;
 
-        while ((entry = zipStream.GetNextEntry()) != null)
+        while (zipStream.GetNextEntry() is { } entry)
         {
             if (entry.IsDirectory || !entry.FileName.EndsWith(".xml") || entry.UncompressedSize <= 0 || !entry.FileName.StartsWith(folder))
             {

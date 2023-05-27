@@ -57,8 +57,7 @@ internal class TokenFactory : ITokenFactory
 
     public Token Create(IEnumerable<Token> tokens, string token, string worksheet)
     {
-        Token tokenSeparator = default(Token);
-
+        Token tokenSeparator;
         if (this._tokenSeparatorProvider.Tokens.TryGetValue(token, out tokenSeparator))
         {
             return tokenSeparator;
@@ -73,8 +72,7 @@ internal class TokenFactory : ITokenFactory
 
             if (i > 0)
             {
-                string addr = "";
-
+                string addr;
                 if (tokenList[i].TokenTypeIsSet(TokenType.StringContent))
                 {
                     addr = "'" + tokenList[i].Value.Replace("'", "''") + "'";

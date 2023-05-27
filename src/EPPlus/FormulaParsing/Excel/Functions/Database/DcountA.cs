@@ -42,8 +42,7 @@ internal class DcountA : DatabaseFunction
         ValidateArguments(arguments, 2);
         string? dbAddress = arguments.ElementAt(0).ValueAsRangeInfo.Address.Address;
         string field = null;
-        string criteriaRange = null;
-
+        string criteriaRange;
         if (arguments.Count() == 2)
         {
             criteriaRange = arguments.ElementAt(1).ValueAsRangeInfo.Address.Address;

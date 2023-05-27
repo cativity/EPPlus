@@ -174,7 +174,6 @@ internal static class SignatureReader
 
     private static byte[] ReadOctStringBytes(BinaryReader bw)
     {
-        string? s = "";
         byte id = bw.ReadByte(); //Octet String Tag Identifier
 
         if (id == 4)

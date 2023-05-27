@@ -61,8 +61,7 @@ internal static class PriceImpl
         int N = coupnumResult.Result;
         int A = coupdaysbsResult.Result;
 
-        double retVal = -1d;
-
+        double retVal;
         if (N > 1)
         {
             double part1 = redemption / System.Math.Pow(1d + (yield / frequency), N - 1d + (DSC / E));

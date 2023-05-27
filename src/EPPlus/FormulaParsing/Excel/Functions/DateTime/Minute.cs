@@ -27,8 +27,7 @@ internal class Minute : ExcelFunction
     {
         ValidateArguments(arguments, 1);
         object? dateObj = arguments.ElementAt(0).Value;
-        System.DateTime date = System.DateTime.MinValue;
-
+        System.DateTime date;
         if (dateObj is string)
         {
             date = System.DateTime.Parse(dateObj.ToString());

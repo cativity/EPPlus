@@ -100,9 +100,9 @@ internal abstract class FinancialDaysBase
     [System.Diagnostics.CodeAnalysis.SuppressMessage("Performance", "CA1822:Mark members as static", Justification = "<Pending>")]
     private static FinancialPeriod CreateCalendarPeriod(System.DateTime startDate, int frequency, DayCountBasis basis, bool createFuturePeriod)
     {
-        System.DateTime d1 = System.DateTime.MinValue;
         int factor = createFuturePeriod ? 1 : -1;
 
+        System.DateTime d1;
         switch (frequency)
         {
             case 1:
@@ -136,8 +136,7 @@ internal abstract class FinancialDaysBase
 
     private static FinancialPeriod GetSettlementCalendarYearPeriod(FinancialDay date, int frequency)
     {
-        System.DateTime startDate = default(System.DateTime);
-
+        System.DateTime startDate;
         if (frequency == 1)
         {
             startDate = new System.DateTime(date.Year, 1, 1);

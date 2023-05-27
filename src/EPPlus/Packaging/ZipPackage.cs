@@ -346,7 +346,6 @@ internal partial class ZipPackage : ZipPackagePartBase, IDisposable
             rels.Remove(rels.First().Id);
         }
 
-        rels = null;
         _ = this._contentTypes.Remove(GetUriKey(Uri.OriginalString));
 
         //remove all relations

@@ -1468,10 +1468,10 @@ public class ExcelAddressBase : ExcelCellBase
             return this;
         }
 
-        string retAddress = "";
-
         if (Shift == eShiftTypeInsert.Right)
         {
+
+            string retAddress;
             if (address._fromRow > this._fromRow)
             {
                 retAddress = GetAddress(this._fromRow,

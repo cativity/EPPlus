@@ -1507,8 +1507,6 @@ sealed class InflateCodes
                                     {
                                         Array.Copy(s.window, r, s.window, q, e);
                                         q += e;
-                                        r += e;
-                                        e = 0;
                                     }
 
                                     r = 0; // copy rest from start of window
@@ -1527,8 +1525,6 @@ sealed class InflateCodes
                             {
                                 Array.Copy(s.window, r, s.window, q, c);
                                 q += c;
-                                r += c;
-                                c = 0;
                             }
 
                             break;
@@ -1878,7 +1874,6 @@ internal sealed class InflateManager
                         return r;
                     }
 
-                    r = f;
                     this._codec.AvailableBytesIn--;
                     this._codec.TotalBytesIn++;
                     this.expectedCheck += (uint)(this._codec.InputBuffer[this._codec.NextIn++] & 0x000000ff);

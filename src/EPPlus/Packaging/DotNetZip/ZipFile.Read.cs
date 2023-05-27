@@ -903,9 +903,10 @@ internal partial class ZipFile
         Stream s = zf.ReadStream;
         int signature = SharedUtilities.ReadSignature(s);
 
-        byte[] block = null;
         int j = 0;
 
+
+        byte[] block;
         if (signature == ZipConstants.Zip64EndOfCentralDirectoryRecordSignature)
         {
             // We have a ZIP64 EOCD
@@ -938,7 +939,6 @@ internal partial class ZipFile
             zf._versionNeededToExtract = BitConverter.ToUInt16(block, j);
             j += 2;
             zf._diskNumberWithCd = BitConverter.ToUInt32(block, j);
-            j += 2;
 
             //zf._diskNumberWithCd++; // hack!!
 

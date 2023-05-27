@@ -27,13 +27,14 @@ public class BesselIimpl : BesselBase
             return new FinanceCalcResult<double>(eErrorType.Num);
         }
 
+        double fTerm = 1.0;
+
+
         /*  Start the iteration without TERM(n,0), which is set here.
 
                 TERM(n,0) = (x/2)^n / n!
          */
-        int nK = 0;
-        double fTerm = 1.0;
-
+        int nK;
         // avoid overflow in Fak(n)
         for (nK = 1; nK <= n; ++nK)
         {

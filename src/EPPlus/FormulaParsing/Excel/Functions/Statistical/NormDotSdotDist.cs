@@ -32,8 +32,7 @@ internal class NormDotSdotDist : NormalDistributionBase
         ValidateArguments(arguments, 2);
         double z = this.ArgToDecimal(arguments, 0);
         bool cumulative = this.ArgToBool(arguments, 1);
-        double result = default(double);
-
+        double result;
         if (cumulative)
         {
             result = CumulativeDistribution(z, 0, 1);

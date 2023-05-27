@@ -119,27 +119,28 @@ internal class AutofitHelper
         }
 
         ExcelFontXml? nf = styles.Fonts[styles.CellStyleXfs[normalXfId].FontId];
-        MeasurementFontStyles fs = MeasurementFontStyles.Regular;
+        MeasurementFontStyles fs;
+        //MeasurementFontStyles fs = MeasurementFontStyles.Regular;
 
-        if (nf.Bold)
-        {
-            fs |= MeasurementFontStyles.Bold;
-        }
+        //if (nf.Bold)
+        //{
+        //    fs |= MeasurementFontStyles.Bold;
+        //}
 
-        if (nf.UnderLine)
-        {
-            fs |= MeasurementFontStyles.Underline;
-        }
+        //if (nf.UnderLine)
+        //{
+        //    fs |= MeasurementFontStyles.Underline;
+        //}
 
-        if (nf.Italic)
-        {
-            fs |= MeasurementFontStyles.Italic;
-        }
+        //if (nf.Italic)
+        //{
+        //    fs |= MeasurementFontStyles.Italic;
+        //}
 
-        if (nf.Strike)
-        {
-            fs |= MeasurementFontStyles.Strikeout;
-        }
+        //if (nf.Strike)
+        //{
+        //    fs |= MeasurementFontStyles.Strikeout;
+        //}
 
         float normalSize = Convert.ToSingle(FontSize.GetWidthPixels(nf.Name, nf.Size));
         ExcelTextSettings? textSettings = this._range._workbook._package.Settings.TextSettings;

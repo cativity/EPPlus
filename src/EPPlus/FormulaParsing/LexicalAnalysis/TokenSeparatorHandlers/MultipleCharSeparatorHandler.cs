@@ -91,16 +91,13 @@ internal class MultipleCharSeparatorHandler : SeparatorHandler
 
     private bool IsPartOfMultipleCharSeparator(TokenizerContext context, char c)
     {
-        string? lastTokenVal = string.Empty;
-
         if (!context.LastToken.HasValue)
         {
             return false;
         }
 
         Token lastToken = context.LastToken.Value;
-        lastTokenVal = lastToken.Value ?? string.Empty;
-
+        string? lastTokenVal = lastToken.Value ?? string.Empty;
         return this._tokenSeparatorProvider.IsOperator(lastTokenVal)
                && this._tokenSeparatorProvider.IsPossibleLastPartOfMultipleCharOperator(c.ToString())
                && !context.CurrentTokenHasValue;

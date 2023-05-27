@@ -49,7 +49,7 @@ internal static class IrrImpl
         double dTemp;
         double dRate1;
         int lIndex;
-        int lUpper = 0;
+        int lUpper;
 
         // Compiler assures that rank of ValueArray is always 1, no need to check it.  
         // WARSI Check for error codes returned by UBound. Check if they match with C code

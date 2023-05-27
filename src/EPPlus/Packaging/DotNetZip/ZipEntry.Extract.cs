@@ -1253,8 +1253,7 @@ internal partial class ZipEntry
     {
         get
         {
-            string alg = String.Empty;
-
+            string alg;
             switch (this._UnsupportedAlgorithmId)
             {
                 case 0:
@@ -1333,8 +1332,7 @@ internal partial class ZipEntry
     {
         get
         {
-            string meth = String.Empty;
-
+            string meth;
             switch ((int)this._CompressionMethod)
             {
                 case 0:

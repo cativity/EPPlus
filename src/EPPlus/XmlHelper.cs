@@ -202,7 +202,6 @@ public abstract class XmlHelper
                 string nodeName;
                 string nodePrefix;
 
-                string nameSpaceURI = "";
                 string[] nameSplit = subPath.Split(':');
 
                 if (this.SchemaNodeOrder != null && subPath[0] != '@')
@@ -211,6 +210,8 @@ public abstract class XmlHelper
                     prependNode = this.GetPrependNode(subPath, node, ref lastUsedOrderIndex);
                 }
 
+
+                string nameSpaceURI;
                 if (nameSplit.Length > 1)
                 {
                     nodePrefix = nameSplit[0];
@@ -434,7 +435,6 @@ public abstract class XmlHelper
         }
 
         XmlNode node = topNode;
-        string nameSpaceURI = string.Empty;
         int lastIndex = 0;
 
         //TODO: BUG: when the "path" contains "/" in an attrribue value, it gives an error.
@@ -517,7 +517,7 @@ public abstract class XmlHelper
                         string nodeName;
                         string nodePrefix;
                         string[] nameSplit = subPath.Split(':');
-                        nameSpaceURI = string.Empty;
+                        string nameSpaceURI = string.Empty;
 
                         // Check if the name has a prefix like "d:nodeName"
                         if (nameSplit.Length > 1)

@@ -136,8 +136,7 @@ namespace OfficeOpenXml.Packaging.Ionic
 
         private bool _Evaluate(Int64 Length)
         {
-            bool result = false;
-
+            bool result;
             switch (this.Operator)
             {
                 case ComparisonOperator.GreaterThanOrEqualTo:
@@ -229,8 +228,7 @@ namespace OfficeOpenXml.Packaging.Ionic
 
         private bool _Evaluate(DateTime x)
         {
-            bool result = false;
-
+            bool result;
             switch (this.Operator)
             {
                 case ComparisonOperator.GreaterThanOrEqualTo:
@@ -516,8 +514,7 @@ namespace OfficeOpenXml.Packaging.Ionic
 
         private bool _EvaluateOne(FileAttributes fileAttrs, FileAttributes criterionAttrs)
         {
-            bool result = false;
-
+            bool result;
             if ((this._Attributes & criterionAttrs) == criterionAttrs)
             {
                 result = (fileAttrs & criterionAttrs) == criterionAttrs;

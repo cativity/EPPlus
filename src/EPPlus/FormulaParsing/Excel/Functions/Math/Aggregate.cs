@@ -66,8 +66,7 @@ internal class Aggregate : ExcelFunction
             }
         }
 
-        CompileResult result = null;
-
+        CompileResult result;
         switch (funcNum)
         {
             case 1:

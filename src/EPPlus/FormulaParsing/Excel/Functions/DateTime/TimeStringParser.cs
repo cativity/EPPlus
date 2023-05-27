@@ -76,8 +76,7 @@ internal class TimeStringParser
 
     private static double Parse12HourTimeString(string input)
     {
-        string dayPart = string.Empty;
-        dayPart = input.Substring(input.Length - 2, 2);
+        string dayPart = input.Substring(input.Length - 2, 2);
         GetValuesFromString(input, out int hour, out int minute, out int second);
 
         if (dayPart == "PM")
@@ -100,7 +99,6 @@ internal class TimeStringParser
 
     private static void GetValuesFromString(string input, out int hour, out int minute, out int second)
     {
-        hour = 0;
         minute = 0;
         second = 0;
 

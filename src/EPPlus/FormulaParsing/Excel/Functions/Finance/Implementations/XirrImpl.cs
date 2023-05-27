@@ -36,9 +36,9 @@ public static class XirrImpl
         int nIter = 0;
         double fResultRate = rGuessRate;
         int nIterScan = 0;
-        bool bContLoop = false;
-        bool bResultRateScanEnd = false;
 
+        bool bContLoop;
+        bool bResultRateScanEnd;
         // First the inner while-loop will be executed using the default Value fResultRate
         // or the user guessed fResultRate if those do not deliver a solution for the
         // Newton's method then the range from -0.99 to +0.99 will be scanned with a

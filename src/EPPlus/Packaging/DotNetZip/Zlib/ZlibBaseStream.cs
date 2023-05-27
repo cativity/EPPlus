@@ -157,8 +157,7 @@ internal class ZlibBaseStream : Stream
         this.z.InputBuffer = buffer;
         this._z.NextIn = offset;
         this._z.AvailableBytesIn = count;
-        bool done = false;
-
+        bool done;
         do
         {
             this._z.OutputBuffer = this.workingBuffer;
@@ -193,8 +192,7 @@ internal class ZlibBaseStream : Stream
 
         if (this._streamMode == StreamMode.Writer)
         {
-            bool done = false;
-
+            bool done;
             do
             {
                 this._z.OutputBuffer = this.workingBuffer;
@@ -548,7 +546,6 @@ internal class ZlibBaseStream : Stream
             throw new ArgumentOutOfRangeException("count");
         }
 
-        int rc = 0;
 
         // set up the output of the deflate/inflate codec:
         this._z.OutputBuffer = buffer;
@@ -560,6 +557,8 @@ internal class ZlibBaseStream : Stream
         // may initialize it.)
         this._z.InputBuffer = this.workingBuffer;
 
+
+        int rc;
         do
         {
             // need data in _workingBuffer in order to deflate/inflate.  Here, we check if we have any.

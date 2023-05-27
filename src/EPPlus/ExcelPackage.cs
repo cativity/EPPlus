@@ -525,7 +525,6 @@ namespace OfficeOpenXml
                     EncryptedPackageHandler? encrHandler = new EncryptedPackageHandler();
                     ms.Dispose();
                     ms = encrHandler.DecryptPackage(template, this.Encryption);
-                    encrHandler = null;
                 }
                 else
                 {

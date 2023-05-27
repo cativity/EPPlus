@@ -44,9 +44,9 @@ public class BesselYImpl : BesselBase
         double f_bar = -1 * g;
 
         double sign_alpha = 1.0;
-        bool bHasFound = false;
         k += 1;
 
+        bool bHasFound;
         do
         {
             double km1mod2 = (k - 1.0) % 2.0;
@@ -112,9 +112,9 @@ public class BesselYImpl : BesselBase
         double g = -1.0 / g_bar;
         f_bar *= g;
         double sign_alpha = -1.0;
-        bool bHasFound = false;
         k += 1.0;
 
+        bool bHasFound;
         do
         {
             double km1mod2 = (k - 1.0) % 2.0;

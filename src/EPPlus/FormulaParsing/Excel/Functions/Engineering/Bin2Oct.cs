@@ -45,8 +45,7 @@ internal class Bin2Oct : ExcelFunction
             return this.CreateResult(eErrorType.Num);
         }
 
-        string? octStr = string.Empty;
-
+        string? octStr;
         if (number.Length < 10)
         {
             int n = Convert.ToInt32(number, 2);

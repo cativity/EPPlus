@@ -56,8 +56,7 @@ internal static class RoundingHelper
             return ExecuteRounding(n, floor + lowerRound, floor + upperRound, direction, isNegativeNumber);
         }
 
-        double result = double.NaN;
-
+        double result;
         if (m == 1)
         {
             if (direction == Direction.Up || direction == Direction.AlwaysUp)
@@ -141,8 +140,7 @@ internal static class RoundingHelper
 
     public static double ExecuteRounding(double number, double lowerRound, double upperRound, Direction direction, bool isNegativeNumber)
     {
-        double result = double.NaN;
-
+        double result;
         if (direction == Direction.Nearest)
         {
             if (upperRound - number > number - lowerRound)

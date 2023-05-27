@@ -53,8 +53,6 @@ public class BesselJImpl : BesselBase
         }
 
         const double epsilon = 1.0e-15; // relative error
-        bool bHasfound = false;
-        double k = 0.0;
 
         // e_{-1} = 0; e_0 = alpha_0 / b_2
         double u; // u_0 = e_0/f_0 = alpha_0/m_0 = alpha_0
@@ -70,6 +68,7 @@ public class BesselJImpl : BesselBase
         double delta_u = 0.0; // dummy initialize, first used with * 0
         double f_bar = -1.0; // f_bar_k = 1/f_k, but only used for k=0
 
+        double k;
         if (N == 0)
         {
             //k=0; alpha_0 = 1.0
@@ -114,6 +113,7 @@ public class BesselJImpl : BesselBase
             k += 1.0;
         }
 
+        bool bHasfound;
         do
         {
             m_bar = 2.0 * ((k - 1.0) % 2.0) * f_bar;

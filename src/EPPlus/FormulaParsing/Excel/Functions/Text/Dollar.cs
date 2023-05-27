@@ -35,8 +35,7 @@ internal class Dollar : ExcelFunction
             decimals = this.ArgToInt(arguments, 1);
         }
 
-        double result = 0d;
-
+        double result;
         if (decimals >= 0)
         {
             result = System.Math.Round(number, decimals);

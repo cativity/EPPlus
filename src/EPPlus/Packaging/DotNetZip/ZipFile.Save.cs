@@ -813,7 +813,6 @@ internal static class ZipOutput
                                                     ZipContainer container)
     {
         Encoding encoding = GetEncoding(container, comment);
-        int j = 0;
         int bufferLength = 22;
         byte[] block = null;
         Int16 commentLength = 0;
@@ -844,6 +843,7 @@ internal static class ZipOutput
         bytes[i++] = 0;
         bytes[i++] = 0;
 
+        int j;
         // handle ZIP64 extensions for the end-of-central-directory
         if (entryCount >= 0xFFFF || zip64 == Zip64Option.Always)
         {
@@ -916,8 +916,6 @@ internal static class ZipOutput
                 {
                     bytes[i + j] = block[j];
                 }
-
-                i += j;
             }
         }
 
@@ -1000,7 +998,6 @@ internal static class ZipOutput
         // total number of disks
         // (this will change later)
         Array.Copy(BitConverter.GetBytes(numSegments), 0, bytes, i, 4);
-        i += 4;
 
         return bytes;
     }

@@ -899,8 +899,7 @@ public class ParallelDeflateOutputStream : Stream
                                              ? -1
                                              : 0;
 
-            int nextToWrite = -1;
-
+            int nextToWrite;
             do
             {
                 if (Monitor.TryEnter(this._toWrite, millisecondsToWait))

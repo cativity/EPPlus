@@ -428,8 +428,7 @@ internal class ZipCipherStream : System.IO.Stream
             return;
         }
 
-        byte[] plaintext = null;
-
+        byte[] plaintext;
         if (offset != 0)
         {
             plaintext = new byte[count];

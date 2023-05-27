@@ -342,7 +342,6 @@ internal static class WorksheetCopyHelper
             }
             else if (draw is ExcelPicture pic)
             {
-                IPictureContainer container = pic;
                 ImageInfo? ii = added.Workbook._package.PictureStore.AddImage(pic.Image.ImageBytes, null, pic.Image.Type);
 
                 ZipPackageRelationship? rel = partDraw.CreateRelationship(UriHelper.GetRelativeUri(added.WorksheetUri, ii.Uri),

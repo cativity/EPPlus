@@ -84,8 +84,7 @@ internal class LoadFromDictionaries : LoadFunctionBase
                 foreach (MemberInfo? member in members)
                 {
                     string? key = member.Name;
-                    object value = null;
-
+                    object value;
                     if (member is PropertyInfo)
                     {
                         value = ((PropertyInfo)member).GetValue(obj);

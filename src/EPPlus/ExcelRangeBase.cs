@@ -609,7 +609,6 @@ public partial class ExcelRangeBase : ExcelAddress, IExcelCell, IDisposable, IEn
         set
         {
             this._styleID = this._worksheet.Workbook.Styles.GetStyleIdFromName(value);
-            int col = this._fromCol;
 
             if (this._fromRow == 1 && this._toRow == ExcelPackage.MaxRows) //Full column
             {
@@ -632,8 +631,6 @@ public partial class ExcelRangeBase : ExcelAddress, IExcelCell, IDisposable, IEn
 
                 if (cols.Next())
                 {
-                    col = this._fromCol;
-
                     while (column.ColumnMin <= this._toCol)
                     {
                         if (column.ColumnMax > this._toCol)

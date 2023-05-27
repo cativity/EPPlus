@@ -113,9 +113,9 @@ public class ExcelTableColumnCollection : IEnumerable<ExcelTableColumn>
     {
         if (this._colNames.ContainsKey(name))
         {
-            string? newName = name;
             int i = 2;
 
+            string? newName;
             do
             {
                 newName = name + (i++).ToString(CultureInfo.InvariantCulture);

@@ -151,8 +151,7 @@ public class ExcelDrawingGradientFillColorList : IEnumerable<ExcelDrawingGradien
             throw new ArgumentOutOfRangeException("Position must be between 0 and 100");
         }
 
-        XmlNode node = null;
-
+        XmlNode node;
         for (int i = 0; i < this._lst.Count; i++)
         {
             if (this._lst[i].Position > position)

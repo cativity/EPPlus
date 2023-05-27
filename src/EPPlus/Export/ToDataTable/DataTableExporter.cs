@@ -101,8 +101,6 @@ internal class DataTableExporter
             {
                 if (this._options.EmptyRowStrategy == EmptyRowsStrategy.StopAtFirst)
                 {
-                    row++;
-
                     break;
                 }
             }

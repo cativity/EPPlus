@@ -579,8 +579,7 @@ internal partial class ZipEntry
         // and finally, we need to remove any leading .\
 
         string SlashFixed = this.FileName.Replace("\\", "/");
-        string s1 = null;
-
+        string s1;
         if (this._TrimVolumeFromFullyQualifiedPaths && this.FileName.Length >= 3 && this.FileName[1] == ':' && SlashFixed[2] == '/')
         {
             // trim off volume letter, colon, and slash

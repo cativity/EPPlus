@@ -57,8 +57,7 @@ public class AutofitWithSerializedFontMetricsTests : TestBase
 
                     for (int x = 0; x < nLetters; x++)
                     {
-                        int n = 65;
-
+                        int n;
                         if (x % 2 == 0)
                         {
                             n = rnd.Next(65, 90);

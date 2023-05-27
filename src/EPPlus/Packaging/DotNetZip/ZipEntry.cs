@@ -2259,8 +2259,7 @@ internal partial class ZipEntry
 
     internal static string NameInArchive(String filename, string directoryPathInArchive)
     {
-        string result = null;
-
+        string result;
         if (directoryPathInArchive == null)
         {
             result = filename;

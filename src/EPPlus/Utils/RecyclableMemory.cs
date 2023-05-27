@@ -20,13 +20,12 @@ public static class RecyclableMemory
     {
         get
         {
-            RecyclableMemoryStreamManager? manager = default(RecyclableMemoryStreamManager);
-
             if (_lazyInitializeFailed && _dataInitialized)
             {
                 return _memoryManager;
             }
 
+            RecyclableMemoryStreamManager? manager;
             // This has failed on dalvikvm (android), so adding a fallback handling of Exceptions /MA 2022-08-31
             try
             {

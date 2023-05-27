@@ -36,9 +36,10 @@ internal class CountBlank : ExcelFunction
             throw new InvalidOperationException("CountBlank only support ranges as arguments");
         }
 
-        int result = 0;
         IRangeInfo range;
 
+
+        int result;
         if (arg.IsExcelRange)
         {
             range = arg.ValueAsRangeInfo;

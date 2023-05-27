@@ -31,7 +31,7 @@ public class LoadFromDictionariesTests
     {
         using ExcelPackage? package = new ExcelPackage();
         ExcelWorksheet? sheet = package.Workbook.Worksheets.Add("test");
-        ExcelRangeBase? r = sheet.Cells["A1"].LoadFromDictionaries(this._items);
+        _ = sheet.Cells["A1"].LoadFromDictionaries(this._items);
 
         Assert.AreEqual(1, sheet.Cells["A1"].Value);
         Assert.AreEqual("TestName 2", sheet.Cells["B2"].Value);
@@ -42,7 +42,7 @@ public class LoadFromDictionariesTests
     {
         using ExcelPackage? package = new ExcelPackage();
         ExcelWorksheet? sheet = package.Workbook.Worksheets.Add("test");
-        ExcelRangeBase? r = sheet.Cells["A1"].LoadFromDictionaries(this._items, true, TableStyles.None, null);
+        _ = sheet.Cells["A1"].LoadFromDictionaries(this._items, true, TableStyles.None, null);
 
         Assert.AreEqual("Id", sheet.Cells["A1"].Value);
         Assert.AreEqual(1, sheet.Cells["A2"].Value);
@@ -59,7 +59,7 @@ public class LoadFromDictionariesTests
 
         using ExcelPackage? package = new ExcelPackage();
         ExcelWorksheet? sheet = package.Workbook.Worksheets.Add("test");
-        ExcelRangeBase? r = sheet.Cells["A1"].LoadFromDictionaries(this._items, true, TableStyles.None, null);
+        _ = sheet.Cells["A1"].LoadFromDictionaries(this._items, true, TableStyles.None, null);
 
         Assert.AreEqual("First name", sheet.Cells["C1"].Value);
     }
@@ -75,13 +75,13 @@ public class LoadFromDictionariesTests
         using ExcelPackage? package = new ExcelPackage();
         ExcelWorksheet? sheet = package.Workbook.Worksheets.Add("test");
 
-        ExcelRangeBase? r = sheet.Cells["A1"]
-                                 .LoadFromDictionaries(this._items,
-                                                       c =>
-                                                       {
-                                                           c.PrintHeaders = true;
-                                                           c.HeaderParsingType = HeaderParsingTypes.CamelCaseToSpace;
-                                                       });
+        _ = sheet.Cells["A1"]
+             .LoadFromDictionaries(this._items,
+                                   c =>
+                                   {
+                                       c.PrintHeaders = true;
+                                       c.HeaderParsingType = HeaderParsingTypes.CamelCaseToSpace;
+                                   });
 
         Assert.AreEqual("First Name", sheet.Cells["C1"].Value);
     }
@@ -91,7 +91,7 @@ public class LoadFromDictionariesTests
     {
         using ExcelPackage? package = new ExcelPackage();
         ExcelWorksheet? sheet = package.Workbook.Worksheets.Add("test");
-        ExcelRangeBase? r = sheet.Cells["A1"].LoadFromDictionaries(this._items, true, TableStyles.Dark1, null);
+        _ = sheet.Cells["A1"].LoadFromDictionaries(this._items, true, TableStyles.Dark1, null);
 
         Assert.AreEqual(1, sheet.Tables.Count);
         Assert.AreEqual(TableStyles.Dark1, sheet.Tables.First().TableStyle);
@@ -102,7 +102,7 @@ public class LoadFromDictionariesTests
     {
         using ExcelPackage? package = new ExcelPackage();
         ExcelWorksheet? sheet = package.Workbook.Worksheets.Add("test");
-        ExcelRangeBase? r = sheet.Cells["A1"].LoadFromDictionaries(this._items, false, TableStyles.None, new string[] { "Name" });
+        _ = sheet.Cells["A1"].LoadFromDictionaries(this._items, false, TableStyles.None, new string[] { "Name" });
 
         Assert.AreEqual("TestName 1", sheet.Cells["A1"].Value);
     }
@@ -118,14 +118,14 @@ public class LoadFromDictionariesTests
         using ExcelPackage? package = new ExcelPackage();
         ExcelWorksheet? sheet = package.Workbook.Worksheets.Add("test");
 
-        ExcelRangeBase? r = sheet.Cells["A1"]
-                                 .LoadFromDictionaries(this._items,
-                                                       c =>
-                                                       {
-                                                           c.PrintHeaders = false;
-                                                           c.TableStyle = TableStyles.None;
-                                                           c.SetKeys("Name", "Number");
-                                                       });
+        _ = sheet.Cells["A1"]
+             .LoadFromDictionaries(this._items,
+                                   c =>
+                                   {
+                                       c.PrintHeaders = false;
+                                       c.TableStyle = TableStyles.None;
+                                       c.SetKeys("Name", "Number");
+                                   });
 
         Assert.AreEqual("TestName 1", sheet.Cells["A1"].Value);
         Assert.AreEqual(1, sheet.Cells["B1"].Value);
@@ -144,7 +144,7 @@ public class LoadFromDictionariesTests
         List<ExpandoObject>? items = new List<ExpandoObject>() { o1, o2 };
         using ExcelPackage? package = new ExcelPackage();
         ExcelWorksheet? sheet = package.Workbook.Worksheets.Add("test");
-        ExcelRangeBase? r = sheet.Cells["A1"].LoadFromDictionaries(items, true, TableStyles.None, null);
+        _ = sheet.Cells["A1"].LoadFromDictionaries(items, true, TableStyles.None, null);
 
         Assert.AreEqual("Id", sheet.Cells["A1"].Value);
         Assert.AreEqual(1, sheet.Cells["A2"].Value);
@@ -159,7 +159,7 @@ public class LoadFromDictionariesTests
         List<dynamic>? items = new List<dynamic>() { o1, o2 };
         using ExcelPackage? package = new ExcelPackage();
         ExcelWorksheet? sheet = package.Workbook.Worksheets.Add("test");
-        ExcelRangeBase? r = sheet.Cells["A1"].LoadFromDictionaries(items, true, TableStyles.None, null);
+        _ = sheet.Cells["A1"].LoadFromDictionaries(items, true, TableStyles.None, null);
 
         Assert.AreEqual("Id", sheet.Cells["A1"].Value);
         Assert.AreEqual(1, sheet.Cells["A2"].Value);

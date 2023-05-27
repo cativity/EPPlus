@@ -78,7 +78,7 @@ public static class AddressUtility
             }
             else
             {
-                List<ExcelCellAddress>? addresses = new List<ExcelCellAddress>();
+                //_ = new List<ExcelCellAddress>();
                 ExcelAddressBase? adr = new ExcelAddressBase(token.Value);
 
                 // if the formula is a table formula (relative) keep it as it is
@@ -99,7 +99,7 @@ public static class AddressUtility
 
         foreach (Token token in resultTokens)
         {
-            result.Append(token.Value);
+            _ = result.Append(token.Value);
         }
 
         return result.ToString();
@@ -129,7 +129,7 @@ public static class AddressUtility
             }
             else
             {
-                List<ExcelCellAddress>? addresses = new List<ExcelCellAddress>();
+                //_ = new List<ExcelCellAddress>();
                 ExcelAddressBase? adr = new ExcelAddressBase(token.Value);
 
                 // if the formula is a table formula (relative) keep it as it is
@@ -150,7 +150,7 @@ public static class AddressUtility
 
         foreach (Token token in resultTokens)
         {
-            result.Append(token.Value);
+            _ = result.Append(token.Value);
         }
 
         return result.ToString();

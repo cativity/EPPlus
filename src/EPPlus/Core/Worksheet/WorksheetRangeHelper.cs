@@ -433,11 +433,11 @@ internal static class WorksheetRangeHelper
             if (t.TokenTypeIsSet(TokenType.ExcelAddress)
                 && t.Value == firstCell) //If the first cell has been change we adjust any formula that reference it. This will not adjust custom formulas.
             {
-                sb.Append(newAddress.FirstCellAddressRelative);
+                _ = sb.Append(newAddress.FirstCellAddressRelative);
             }
             else
             {
-                sb.Append(t.Value);
+                _ = sb.Append(t.Value);
             }
         }
 

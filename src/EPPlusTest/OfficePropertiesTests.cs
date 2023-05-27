@@ -17,7 +17,7 @@ public class OfficePropertiesTests
         using ExcelPackage? pck = new ExcelPackage();
         long ticks = DateTime.Now.Ticks;
         pck.Workbook.Properties.SetCustomPropertyValue("Timestamp", ticks);
-        pck.Workbook.Worksheets.Add("Test");
+        _ = pck.Workbook.Worksheets.Add("Test");
 
         pck.Save();
 
@@ -29,7 +29,7 @@ public class OfficePropertiesTests
     public void ValidateCaseInsensitiveCustomProperties()
     {
         using ExcelPackage? p = new ExcelPackage();
-        p.Workbook.Worksheets.Add("CustomProperties");
+        _ = p.Workbook.Worksheets.Add("CustomProperties");
         p.Workbook.Properties.SetCustomPropertyValue("Foo", "Bar");
         p.Workbook.Properties.SetCustomPropertyValue("fOO", "bAR");
 
@@ -40,7 +40,7 @@ public class OfficePropertiesTests
     public void ValidateCaseInsensitiveCustomProperties_Loading()
     {
         ExcelPackage? p = new ExcelPackage();
-        p.Workbook.Worksheets.Add("CustomProperties");
+        _ = p.Workbook.Worksheets.Add("CustomProperties");
         p.Workbook.Properties.SetCustomPropertyValue("fOO", "bAR");
         p.Workbook.Properties.SetCustomPropertyValue("Foo", "Bar");
 

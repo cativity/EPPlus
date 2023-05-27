@@ -140,6 +140,6 @@ public class TokenNaviagorTests
     {
         List<Token>? tokens = new List<Token> { new Token("1", TokenType.Decimal) };
         TokenNavigator? navigator = new TokenNavigator(tokens);
-        Token token = navigator.PreviousToken.Value;
+        _ = navigator.PreviousToken.Value;
     }
 }

@@ -338,7 +338,7 @@ internal class EncryptedPackageHandler
     {
         CompoundDocument.StoragePart? ds = new CompoundDocument.StoragePart();
         doc.Storage.SubStorage.Add("\x06" + "DataSpaces", ds);
-        CompoundDocument.StoragePart? ver = new CompoundDocument.StoragePart();
+        //_ = new CompoundDocument.StoragePart();
         ds.DataStreams.Add("Version", CreateVersionStream());
         ds.DataStreams.Add("DataSpaceMap", CreateDataSpaceMap());
 
@@ -920,7 +920,6 @@ internal class EncryptedPackageHandler
 
         CryptoStream cryptoStream = new CryptoStream(ms, encryptor, CryptoStreamMode.Write);
 
-        long cryptoSize = size % encr.BlockSize == 0 ? size : size + (encr.BlockSize - (size % encr.BlockSize));
         byte[]? buffer = new byte[size];
         Array.Copy(data, (int)pos, buffer, 0, (int)size);
         cryptoStream.Write(buffer, 0, (int)size);

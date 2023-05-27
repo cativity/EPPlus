@@ -78,11 +78,11 @@ public class SortCondition : XmlHelper
 
             for (int x = 0; x < value.Length; x++)
             {
-                val.Append(value[x]);
+                _ = val.Append(value[x]);
 
                 if (x < value.Length - 1)
                 {
-                    val.Append(",");
+                    _ = val.Append(",");
                 }
             }
 

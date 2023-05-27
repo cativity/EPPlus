@@ -124,7 +124,7 @@ namespace OfficeOpenXml.Table
                     } while (names.Contains(colName));
                 }
 
-                names.Add(colName);
+                _ = names.Add(colName);
                 xml += string.Format("<tableColumn id=\"{0}\" name=\"{1}\" />", i, colName);
             }
 
@@ -183,7 +183,7 @@ namespace OfficeOpenXml.Table
                 if (this.WorkSheet.Tables._tableNames.ContainsKey(prevName))
                 {
                     int ix = this.WorkSheet.Tables._tableNames[prevName];
-                    this.WorkSheet.Tables._tableNames.Remove(prevName);
+                    _ = this.WorkSheet.Tables._tableNames.Remove(prevName);
                     this.WorkSheet.Tables._tableNames.Add(value, ix);
                 }
 

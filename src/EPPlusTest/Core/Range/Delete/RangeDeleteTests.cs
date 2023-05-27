@@ -425,9 +425,9 @@ public class RangeDeleteTests : TestBase
     {
         //Setup
         ExcelWorksheet? ws = _pck.Workbook.Worksheets.Add("DeleteRangeCommentsUp");
-        ws.Cells["A1"].AddComment("Comment A1", "EPPlus");
-        ws.Cells["A2"].AddComment("Comment A2", "EPPlus");
-        ws.Cells["A3"].AddComment("Comment A3", "EPPlus");
+        _ = ws.Cells["A1"].AddComment("Comment A1", "EPPlus");
+        _ = ws.Cells["A2"].AddComment("Comment A2", "EPPlus");
+        _ = ws.Cells["A3"].AddComment("Comment A3", "EPPlus");
 
         //Act
         ws.Cells["A2"].Delete(eShiftTypeDelete.Up);
@@ -443,9 +443,9 @@ public class RangeDeleteTests : TestBase
     {
         //Setup
         ExcelWorksheet? ws = _pck.Workbook.Worksheets.Add("DeleteRangeCommentsLeft");
-        ws.Cells["A1"].AddComment("Comment A1", "EPPlus");
-        ws.Cells["B1"].AddComment("Comment B1", "EPPlus");
-        ws.Cells["C1"].AddComment("Comment C1", "EPPlus");
+        _ = ws.Cells["A1"].AddComment("Comment A1", "EPPlus");
+        _ = ws.Cells["B1"].AddComment("Comment B1", "EPPlus");
+        _ = ws.Cells["C1"].AddComment("Comment C1", "EPPlus");
 
         //Act
         ws.Cells["B1"].Delete(eShiftTypeDelete.Left);
@@ -461,12 +461,12 @@ public class RangeDeleteTests : TestBase
     {
         //Setup
         ExcelWorksheet? ws = _pck.Workbook.Worksheets.Add("InsertRangeNamesDown");
-        ws.Names.Add("NameA1", ws.Cells["A1"]);
-        ws.Names.Add("NameA2", ws.Cells["A2"]);
-        ws.Names.Add("NameB1", ws.Cells["B1"]);
-        ws.Names.Add("NameB2", ws.Cells["B2"]);
-        ws.Names.Add("NameC1", ws.Cells["C1"]);
-        ws.Names.Add("NameC2", ws.Cells["C2"]);
+        _ = ws.Names.Add("NameA1", ws.Cells["A1"]);
+        _ = ws.Names.Add("NameA2", ws.Cells["A2"]);
+        _ = ws.Names.Add("NameB1", ws.Cells["B1"]);
+        _ = ws.Names.Add("NameB2", ws.Cells["B2"]);
+        _ = ws.Names.Add("NameC1", ws.Cells["C1"]);
+        _ = ws.Names.Add("NameC2", ws.Cells["C2"]);
 
         //Act
         ws.Cells["A1"].Delete(eShiftTypeDelete.Up);
@@ -483,9 +483,9 @@ public class RangeDeleteTests : TestBase
     {
         //Setup
         ExcelWorksheet? ws = _pck.Workbook.Worksheets.Add("InsertRangeInsideNamesDown");
-        ws.Names.Add("NameA2B4", ws.Cells["A2:B4"]);
-        ws.Names.Add("NameB2D3", ws.Cells["B2:D3"]);
-        ws.Names.Add("NameC1F3", ws.Cells["C1:F3"]);
+        _ = ws.Names.Add("NameA2B4", ws.Cells["A2:B4"]);
+        _ = ws.Names.Add("NameB2D3", ws.Cells["B2:D3"]);
+        _ = ws.Names.Add("NameC1F3", ws.Cells["C1:F3"]);
 
         //Act
         ws.Cells["A2:B3"].Delete(eShiftTypeDelete.Up);
@@ -511,9 +511,9 @@ public class RangeDeleteTests : TestBase
     {
         //Setup
         ExcelWorksheet? ws = _pck.Workbook.Worksheets.Add("InsertRangeInsideNamesRight");
-        ws.Names.Add("NameB1D2", ws.Cells["D1:F2"]);
-        ws.Names.Add("NameB2C4", ws.Cells["D2:F4"]);
-        ws.Names.Add("NameA3C6", ws.Cells["A3:C6"]);
+        _ = ws.Names.Add("NameB1D2", ws.Cells["D1:F2"]);
+        _ = ws.Names.Add("NameB2C4", ws.Cells["D2:F4"]);
+        _ = ws.Names.Add("NameA3C6", ws.Cells["A3:C6"]);
 
         //Act
         ws.Cells["B1:C2"].Delete(eShiftTypeDelete.Left);
@@ -695,7 +695,7 @@ public class RangeDeleteTests : TestBase
     {
         using ExcelPackage? p = new ExcelPackage();
         ExcelWorksheet? ws = p.Workbook.Worksheets.Add("TableDelete");
-        ws.Tables.Add(ws.Cells["B2:D3"], "table1");
+        _ = ws.Tables.Add(ws.Cells["B2:D3"], "table1");
         ws.Cells["A2"].Delete(eShiftTypeDelete.Left);
     }
 
@@ -705,7 +705,7 @@ public class RangeDeleteTests : TestBase
     {
         using ExcelPackage? p = new ExcelPackage();
         ExcelWorksheet? ws = p.Workbook.Worksheets.Add("TableDelete");
-        ws.Tables.Add(ws.Cells["B2:D3"], "table1");
+        _ = ws.Tables.Add(ws.Cells["B2:D3"], "table1");
         ws.Cells["C1"].Delete(eShiftTypeDelete.Up);
     }
 
@@ -714,7 +714,7 @@ public class RangeDeleteTests : TestBase
     {
         using ExcelPackage? p = new ExcelPackage();
         ExcelWorksheet? ws = p.Workbook.Worksheets.Add("TableDelete");
-        ws.Tables.Add(ws.Cells["B2:D3"], "table1");
+        _ = ws.Tables.Add(ws.Cells["B2:D3"], "table1");
         ws.Cells["C1"].Delete(eShiftTypeDelete.Left);
     }
 
@@ -723,7 +723,7 @@ public class RangeDeleteTests : TestBase
     {
         using ExcelPackage? p = new ExcelPackage();
         ExcelWorksheet? ws = p.Workbook.Worksheets.Add("TableDelete");
-        ws.Tables.Add(ws.Cells["B2:D3"], "table1");
+        _ = ws.Tables.Add(ws.Cells["B2:D3"], "table1");
         ws.Cells["A2"].Delete(eShiftTypeDelete.Up);
     }
 
@@ -735,7 +735,7 @@ public class RangeDeleteTests : TestBase
         ExcelWorksheet? ws = p.Workbook.Worksheets.Add("PivotTableDelete");
         ws.Cells["E5"].Value = "E5";
         ws.Cells["F5"].Value = "F5";
-        ws.PivotTables.Add(ws.Cells["B2:D3"], ws.Cells["E5:F6"], "table1");
+        _ = ws.PivotTables.Add(ws.Cells["B2:D3"], ws.Cells["E5:F6"], "table1");
         ws.Cells["A2"].Delete(eShiftTypeDelete.Left);
     }
 
@@ -747,7 +747,7 @@ public class RangeDeleteTests : TestBase
         ExcelWorksheet? ws = p.Workbook.Worksheets.Add("PivotTableDelete");
         ws.Cells["E5"].Value = "E5";
         ws.Cells["F5"].Value = "F5";
-        ws.PivotTables.Add(ws.Cells["B2:D3"], ws.Cells["E5:F6"], "table1");
+        _ = ws.PivotTables.Add(ws.Cells["B2:D3"], ws.Cells["E5:F6"], "table1");
         ws.Cells["C1"].Delete(eShiftTypeDelete.Up);
     }
 
@@ -758,7 +758,7 @@ public class RangeDeleteTests : TestBase
         ExcelWorksheet? ws = p.Workbook.Worksheets.Add("PivotTableDelte");
         ws.Cells["E5"].Value = "E5";
         ws.Cells["F5"].Value = "F5";
-        ws.PivotTables.Add(ws.Cells["B2:D3"], ws.Cells["E5:F6"], "table1");
+        _ = ws.PivotTables.Add(ws.Cells["B2:D3"], ws.Cells["E5:F6"], "table1");
         ws.Cells["C1"].Delete(eShiftTypeDelete.Left);
     }
 
@@ -769,7 +769,7 @@ public class RangeDeleteTests : TestBase
         ExcelWorksheet? ws = p.Workbook.Worksheets.Add("PivotTableDelete");
         ws.Cells["E5"].Value = "E5";
         ws.Cells["F5"].Value = "F5";
-        ws.PivotTables.Add(ws.Cells["B2:D3"], ws.Cells["E5:F6"], "table1");
+        _ = ws.PivotTables.Add(ws.Cells["B2:D3"], ws.Cells["E5:F6"], "table1");
         ws.Cells["A2"].Delete(eShiftTypeDelete.Up);
     }
 
@@ -1233,7 +1233,7 @@ public class RangeDeleteTests : TestBase
     {
         ExcelWorksheet? ws = _pck.Workbook.Worksheets.Add("SparklineShiftLeft");
         LoadTestdata(ws, 10, 2);
-        ws.SparklineGroups.Add(OfficeOpenXml.Sparkline.eSparklineType.Line, ws.Cells["F2:F10"], ws.Cells["B2:E10"]);
+        _ = ws.SparklineGroups.Add(OfficeOpenXml.Sparkline.eSparklineType.Line, ws.Cells["F2:F10"], ws.Cells["B2:E10"]);
         ws.Cells["F5"].Delete(eShiftTypeDelete.Left);
         Assert.AreEqual("F6", ws.SparklineGroups[0].Sparklines[3].Cell.Address);
         ws.Cells["A1:A10"].Delete(eShiftTypeDelete.Left);
@@ -1249,7 +1249,7 @@ public class RangeDeleteTests : TestBase
     {
         ExcelWorksheet? ws = _pck.Workbook.Worksheets.Add("SparklineShiftUp");
         LoadTestdata(ws, 10);
-        ws.SparklineGroups.Add(OfficeOpenXml.Sparkline.eSparklineType.Column, ws.Cells["F2:F10"], ws.Cells["B2:E10"]);
+        _ = ws.SparklineGroups.Add(OfficeOpenXml.Sparkline.eSparklineType.Column, ws.Cells["F2:F10"], ws.Cells["B2:E10"]);
         ws.Cells["F5"].Delete(eShiftTypeDelete.Up);
         Assert.AreEqual("F5", ws.SparklineGroups[0].Sparklines[3].Cell.Address);
         Assert.AreEqual("SparklineShiftUp!B6:E6", ws.SparklineGroups[0].Sparklines[3].RangeAddress.Address);
@@ -1262,7 +1262,7 @@ public class RangeDeleteTests : TestBase
     {
         ExcelWorksheet? ws = _pck.Workbook.Worksheets.Add("SparklineDeleteRow");
         LoadTestdata(ws, 10);
-        ws.SparklineGroups.Add(OfficeOpenXml.Sparkline.eSparklineType.Column, ws.Cells["E2:E10"], ws.Cells["A2:D10"]);
+        _ = ws.SparklineGroups.Add(OfficeOpenXml.Sparkline.eSparklineType.Column, ws.Cells["E2:E10"], ws.Cells["A2:D10"]);
         ws.DeleteRow(5, 1);
         Assert.AreEqual("E5", ws.SparklineGroups[0].Sparklines[3].Cell.Address);
         ws.DeleteRow(1, 1);
@@ -1274,7 +1274,7 @@ public class RangeDeleteTests : TestBase
     {
         ExcelWorksheet? ws = _pck.Workbook.Worksheets.Add("SparklineDeleteColumn");
         LoadTestdata(ws, 10);
-        ws.SparklineGroups.Add(OfficeOpenXml.Sparkline.eSparklineType.Column, ws.Cells["E2:E10"], ws.Cells["A2:D10"]);
+        _ = ws.SparklineGroups.Add(OfficeOpenXml.Sparkline.eSparklineType.Column, ws.Cells["E2:E10"], ws.Cells["A2:D10"]);
         ws.DeleteColumn(2, 1);
         Assert.AreEqual("D5", ws.SparklineGroups[0].Sparklines[3].Cell.Address);
         Assert.AreEqual("A5:C5", ws.SparklineGroups[0].Sparklines[3].RangeAddress.FirstAddress);
@@ -1373,12 +1373,12 @@ public class RangeDeleteTests : TestBase
     {
         using ExcelPackage? p = new ExcelPackage();
         ExcelWorksheet? ws = p.Workbook.Worksheets.Add("Sheet1");
-        ws.Names.Add("TestName1", ws.Cells["$A$1"]);
-        ws.Names.Add("TestName2", ws.Cells["$B$1"]);
-        ws.Names.Add("TestName3", ws.Cells["$C$1"]);
-        ws.Names.Add("TestName4", ws.Cells["$B$3:$D$3"]);
-        ws.Names.Add("TestName5", ws.Cells["$A$5:$C$5"]);
-        ws.Names.Add("TestName6", ws.Cells["$B$7:$C$7"]);
+        _ = ws.Names.Add("TestName1", ws.Cells["$A$1"]);
+        _ = ws.Names.Add("TestName2", ws.Cells["$B$1"]);
+        _ = ws.Names.Add("TestName3", ws.Cells["$C$1"]);
+        _ = ws.Names.Add("TestName4", ws.Cells["$B$3:$D$3"]);
+        _ = ws.Names.Add("TestName5", ws.Cells["$A$5:$C$5"]);
+        _ = ws.Names.Add("TestName6", ws.Cells["$B$7:$C$7"]);
 
         //Assert
         ws.DeleteColumn(2, 2);
@@ -1397,12 +1397,12 @@ public class RangeDeleteTests : TestBase
     {
         using ExcelPackage? p = new ExcelPackage();
         ExcelWorksheet? ws = p.Workbook.Worksheets.Add("Sheet1");
-        ws.Names.Add("TestName1", ws.Cells["$A$1"]);
-        ws.Names.Add("TestName2", ws.Cells["$A$2"]);
-        ws.Names.Add("TestName3", ws.Cells["$A$3"]);
-        ws.Names.Add("TestName4", ws.Cells["$C$2:$C$4"]);
-        ws.Names.Add("TestName5", ws.Cells["$E$1:$E$3"]);
-        ws.Names.Add("TestName6", ws.Cells["$G$2:$G$3"]);
+        _ = ws.Names.Add("TestName1", ws.Cells["$A$1"]);
+        _ = ws.Names.Add("TestName2", ws.Cells["$A$2"]);
+        _ = ws.Names.Add("TestName3", ws.Cells["$A$3"]);
+        _ = ws.Names.Add("TestName4", ws.Cells["$C$2:$C$4"]);
+        _ = ws.Names.Add("TestName5", ws.Cells["$E$1:$E$3"]);
+        _ = ws.Names.Add("TestName6", ws.Cells["$G$2:$G$3"]);
 
         //Assert
         ws.DeleteRow(2, 2);

@@ -541,7 +541,7 @@ public class ExcelDrawings : IEnumerable<ExcelDrawing>, IDisposable, IPictureRel
             }
         }
 
-        chart.AddHighLowLines();
+        _ = chart.AddHighLowLines();
 
         if (chartType == eChartType.StockOHLC || chartType == eChartType.StockVOHLC)
         {
@@ -550,17 +550,17 @@ public class ExcelDrawings : IEnumerable<ExcelDrawing>, IDisposable, IPictureRel
 
         if (chartType == eChartType.StockVHLC || chartType == eChartType.StockVOHLC)
         {
-            chart.PlotArea.ChartTypes[0].Series.Add(VolumeSerie, CategorySerie);
+            _ = chart.PlotArea.ChartTypes[0].Series.Add(VolumeSerie, CategorySerie);
         }
 
         if (chartType == eChartType.StockOHLC || chartType == eChartType.StockVOHLC)
         {
-            chart.Series.Add(OpenSerie, CategorySerie);
+            _ = chart.Series.Add(OpenSerie, CategorySerie);
         }
 
-        chart.Series.Add(HighSerie, CategorySerie);
-        chart.Series.Add(LowSerie, CategorySerie);
-        chart.Series.Add(CloseSerie, CategorySerie);
+        _ = chart.Series.Add(HighSerie, CategorySerie);
+        _ = chart.Series.Add(LowSerie, CategorySerie);
+        _ = chart.Series.Add(CloseSerie, CategorySerie);
 
         return chart;
     }
@@ -1239,7 +1239,7 @@ public class ExcelDrawings : IEnumerable<ExcelDrawing>, IDisposable, IPictureRel
         if (serNode != null)
         {
             this._seriesTemplateXml = serNode.InnerXml;
-            serNode.ParentNode.RemoveChild(serNode);
+            _ = serNode.ParentNode.RemoveChild(serNode);
         }
 
         XmlElement drawNode = this.CreateDrawingXml(eEditAs.TwoCell);
@@ -1261,7 +1261,7 @@ public class ExcelDrawings : IEnumerable<ExcelDrawing>, IDisposable, IPictureRel
             chart.StyleManager.LoadThemeOverrideXml(themePart);
         }
 
-        chart.StyleManager.LoadStyleXml(styleXml, chartStyle, colorsXml);
+        _ = chart.StyleManager.LoadStyleXml(styleXml, chartStyle, colorsXml);
 
         return chart;
     }
@@ -1325,7 +1325,7 @@ public class ExcelDrawings : IEnumerable<ExcelDrawing>, IDisposable, IPictureRel
 
         if (TableColumn.Table.AutoFilter.Columns[TableColumn.Position] == null)
         {
-            TableColumn.Table.AutoFilter.Columns.AddValueFilterColumn(TableColumn.Position);
+            _ = TableColumn.Table.AutoFilter.Columns.AddValueFilterColumn(TableColumn.Position);
         }
 
         XmlElement drawNode = this.CreateDrawingXml();
@@ -1357,7 +1357,7 @@ public class ExcelDrawings : IEnumerable<ExcelDrawing>, IDisposable, IPictureRel
 
         if (Field._pivotTable.CacheId == 0)
         {
-            Field._pivotTable.ChangeCacheId(0); //Slicers can for some reason not have a cache id of 0.
+            _ = Field._pivotTable.ChangeCacheId(0); //Slicers can for some reason not have a cache id of 0.
         }
 
         XmlElement drawNode = this.CreateDrawingXml();
@@ -1583,7 +1583,7 @@ public class ExcelDrawings : IEnumerable<ExcelDrawing>, IDisposable, IPictureRel
                                                                            ExcelPackage.schemaRelationships + "/drawing");
 
             XmlElement e = (XmlElement)this.Worksheet.CreateNode("d:drawing");
-            e.SetAttribute("id", ExcelPackage.schemaRelationships, this._drawingRelation.Id);
+            _ = e.SetAttribute("id", ExcelPackage.schemaRelationships, this._drawingRelation.Id);
 
             ZipPackage.Flush();
         }
@@ -1598,19 +1598,19 @@ public class ExcelDrawings : IEnumerable<ExcelDrawing>, IDisposable, IPictureRel
             XmlElement? acNode = (XmlElement)this._drawingsXml.CreateElement("mc", "AlternateContent", ExcelPackage.schemaMarkupCompatibility);
             acNode.SetAttribute("xmlns:mc", ExcelPackage.schemaMarkupCompatibility);
             acNode.InnerXml = "<mc:Choice Requires=\"a14\" xmlns:a14=\"http://schemas.microsoft.com/office/drawing/2010/main\"></mc:Choice><mc:Fallback/>";
-            acNode.FirstChild.AppendChild(drawNode);
-            colNode.AppendChild(acNode);
+            _ = acNode.FirstChild.AppendChild(drawNode);
+            _ = colNode.AppendChild(acNode);
         }
         else
         {
-            colNode.AppendChild(drawNode);
+            _ = colNode.AppendChild(drawNode);
         }
 
         if (topNodeType == eEditAs.OneCell || topNodeType == eEditAs.TwoCell)
         {
             //Add from position Element;
             XmlElement fromNode = this._drawingsXml.CreateElement("xdr", "from", ExcelPackage.schemaSheetDrawings);
-            drawNode.AppendChild(fromNode);
+            _ = drawNode.AppendChild(fromNode);
             fromNode.InnerXml = "<xdr:col>0</xdr:col><xdr:colOff>0</xdr:colOff><xdr:row>0</xdr:row><xdr:rowOff>0</xdr:rowOff>";
         }
         else
@@ -1619,14 +1619,14 @@ public class ExcelDrawings : IEnumerable<ExcelDrawing>, IDisposable, IPictureRel
             XmlElement posNode = this._drawingsXml.CreateElement("xdr", "pos", ExcelPackage.schemaSheetDrawings);
             posNode.SetAttribute("x", "0");
             posNode.SetAttribute("y", "0");
-            drawNode.AppendChild(posNode);
+            _ = drawNode.AppendChild(posNode);
         }
 
         if (topNodeType == eEditAs.TwoCell)
         {
             //Add to position Element;
             XmlElement toNode = this._drawingsXml.CreateElement("xdr", "to", ExcelPackage.schemaSheetDrawings);
-            drawNode.AppendChild(toNode);
+            _ = drawNode.AppendChild(toNode);
             toNode.InnerXml = "<xdr:col>10</xdr:col><xdr:colOff>0</xdr:colOff><xdr:row>10</xdr:row><xdr:rowOff>0</xdr:rowOff>";
         }
         else
@@ -1635,7 +1635,7 @@ public class ExcelDrawings : IEnumerable<ExcelDrawing>, IDisposable, IPictureRel
             XmlElement posNode = this._drawingsXml.CreateElement("xdr", "ext", ExcelPackage.schemaSheetDrawings);
             posNode.SetAttribute("cx", "6072876");
             posNode.SetAttribute("cy", "9299263");
-            drawNode.AppendChild(posNode);
+            _ = drawNode.AppendChild(posNode);
         }
 
         return drawNode;
@@ -1668,8 +1668,8 @@ public class ExcelDrawings : IEnumerable<ExcelDrawing>, IDisposable, IPictureRel
             draw.DeleteMe();
         }
 
-        this._drawingNames.Remove(draw.Name);
-        this._drawingsList.Remove(draw);
+        _ = this._drawingNames.Remove(draw.Name);
+        _ = this._drawingsList.Remove(draw);
         this.ReIndexNames(Index, -1);
     }
 
@@ -1736,8 +1736,8 @@ public class ExcelDrawings : IEnumerable<ExcelDrawing>, IDisposable, IPictureRel
 
         //Move in Xml
         XmlNode? parentNode = drawing.TopNode.ParentNode;
-        parentNode.RemoveChild(drawing.TopNode);
-        parentNode.InsertAfter(drawing.TopNode, parentNode.LastChild);
+        _ = parentNode.RemoveChild(drawing.TopNode);
+        _ = parentNode.InsertAfter(drawing.TopNode, parentNode.LastChild);
 
         //Move in list 
         this._drawingsList.RemoveAt(index);
@@ -1763,8 +1763,8 @@ public class ExcelDrawings : IEnumerable<ExcelDrawing>, IDisposable, IPictureRel
 
         //Move in Xml
         XmlNode? parentNode = drawing.TopNode.ParentNode;
-        parentNode.RemoveChild(drawing.TopNode);
-        parentNode.InsertBefore(drawing.TopNode, parentNode.FirstChild);
+        _ = parentNode.RemoveChild(drawing.TopNode);
+        _ = parentNode.InsertBefore(drawing.TopNode, parentNode.FirstChild);
 
         //Move in list 
         this._drawingsList.RemoveAt(index);

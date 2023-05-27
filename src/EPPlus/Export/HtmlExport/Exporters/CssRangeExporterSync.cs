@@ -136,7 +136,7 @@ internal class CssRangeExporterSync : CssRangeExporterBase
                 {
                     HtmlTableExportSettings? settings = new HtmlTableExportSettings() { Minify = this.Settings.Minify };
                     HtmlExportTableUtil.RenderTableCss(sw, table, settings, this._styleCache, this._dataTypes);
-                    addedTableStyles.Add(table.TableStyle);
+                    _ = addedTableStyles.Add(table.TableStyle);
                 }
             }
         }

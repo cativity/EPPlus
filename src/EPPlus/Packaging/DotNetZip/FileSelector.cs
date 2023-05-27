@@ -121,7 +121,7 @@ namespace OfficeOpenXml.Packaging.Ionic
         public override String ToString()
         {
             StringBuilder sb = new StringBuilder();
-            sb.Append("size ").Append(EnumUtil.GetDescription(this.Operator)).Append(" ").Append(this.Size.ToString());
+            _ = sb.Append("size ").Append(EnumUtil.GetDescription(this.Operator)).Append(" ").Append(this.Size.ToString());
 
             return sb.ToString();
         }
@@ -188,7 +188,7 @@ namespace OfficeOpenXml.Packaging.Ionic
         {
             StringBuilder sb = new StringBuilder();
 
-            sb.Append(this.Which.ToString())
+            _ = sb.Append(this.Which.ToString())
               .Append(" ")
               .Append(EnumUtil.GetDescription(this.Operator))
               .Append(" ")
@@ -313,7 +313,7 @@ namespace OfficeOpenXml.Packaging.Ionic
         public override String ToString()
         {
             StringBuilder sb = new StringBuilder();
-            sb.Append("name ").Append(EnumUtil.GetDescription(this.Operator)).Append(" '").Append(this._MatchingFileSpec).Append("'");
+            _ = sb.Append("name ").Append(EnumUtil.GetDescription(this.Operator)).Append(" '").Append(this._MatchingFileSpec).Append("'");
 
             return sb.ToString();
         }
@@ -366,7 +366,7 @@ namespace OfficeOpenXml.Packaging.Ionic
         public override String ToString()
         {
             StringBuilder sb = new StringBuilder();
-            sb.Append("type ").Append(EnumUtil.GetDescription(this.Operator)).Append(" ").Append(this.AttributeString);
+            _ = sb.Append("type ").Append(EnumUtil.GetDescription(this.Operator)).Append(" ").Append(this.AttributeString);
 
             return sb.ToString();
         }
@@ -509,7 +509,7 @@ namespace OfficeOpenXml.Packaging.Ionic
         public override String ToString()
         {
             StringBuilder sb = new StringBuilder();
-            sb.Append("attributes ").Append(EnumUtil.GetDescription(this.Operator)).Append(" ").Append(this.AttributeString);
+            _ = sb.Append("attributes ").Append(EnumUtil.GetDescription(this.Operator)).Append(" ").Append(this.AttributeString);
 
             return sb.ToString();
         }
@@ -651,7 +651,7 @@ namespace OfficeOpenXml.Packaging.Ionic
         {
             StringBuilder sb = new StringBuilder();
 
-            sb.Append("(")
+            _ = sb.Append("(")
               .Append(this.Left != null ? this.Left.ToString() : "null")
               .Append(" ")
               .Append(this.Conjunction.ToString())

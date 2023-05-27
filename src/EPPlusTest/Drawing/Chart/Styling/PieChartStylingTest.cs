@@ -78,44 +78,44 @@ public class PieChartStylingTest : TestBase
     private static void PieStyles(ExcelWorksheet ws, ePieChartType chartType)
     {
         //Style 1
-        AddPie(ws, chartType, "PieChartStyle1", 0, 5, ePresetChartStyle.PieChartStyle1, c => { c.Legend.Position = eLegendPosition.Bottom; });
+        _ = AddPie(ws, chartType, "PieChartStyle1", 0, 5, ePresetChartStyle.PieChartStyle1, c => { c.Legend.Position = eLegendPosition.Bottom; });
 
         //Style 2
-        ExcelPieChart? chart2 = AddPie(ws,
-                                       chartType,
-                                       "PieChartStyle2",
-                                       0,
-                                       18,
-                                       ePresetChartStyle.PieChartStyle2,
-                                       c => { c.Legend.Position = eLegendPosition.Top; });
+        _ = AddPie(ws,
+               chartType,
+               "PieChartStyle2",
+               0,
+               18,
+               ePresetChartStyle.PieChartStyle2,
+               c => { c.Legend.Position = eLegendPosition.Top; });
 
         //Style 3
-        ExcelPieChart? chart3 = AddPie(ws,
-                                       chartType,
-                                       "PieChartStyle3",
-                                       0,
-                                       31,
-                                       ePresetChartStyle.PieChartStyle3,
-                                       c =>
-                                       {
-                                           c.DataLabel.ShowPercent = true;
-                                           c.DataLabel.Position = eLabelPosition.Center;
-                                       });
+        _ = AddPie(ws,
+               chartType,
+               "PieChartStyle3",
+               0,
+               31,
+               ePresetChartStyle.PieChartStyle3,
+               c =>
+               {
+                   c.DataLabel.ShowPercent = true;
+                   c.DataLabel.Position = eLabelPosition.Center;
+               });
 
         //Style 4
-        AddPie(ws, chartType, "PieChartStyle4", 22, 5, ePresetChartStyle.PieChartStyle4, c => { c.Legend.Position = eLegendPosition.Bottom; });
+        _ = AddPie(ws, chartType, "PieChartStyle4", 22, 5, ePresetChartStyle.PieChartStyle4, c => { c.Legend.Position = eLegendPosition.Bottom; });
 
         //Style 5
-        AddPie(ws, chartType, "PieChartStyle5", 22, 18, ePresetChartStyle.PieChartStyle5, c => { c.Legend.Position = eLegendPosition.Bottom; });
+        _ = AddPie(ws, chartType, "PieChartStyle5", 22, 18, ePresetChartStyle.PieChartStyle5, c => { c.Legend.Position = eLegendPosition.Bottom; });
 
         //Style 6
-        AddPie(ws, chartType, "PieChartStyle6", 22, 31, ePresetChartStyle.PieChartStyle6, c => { });
+        _ = AddPie(ws, chartType, "PieChartStyle6", 22, 31, ePresetChartStyle.PieChartStyle6, c => { });
 
         //Style 7
-        AddPie(ws, chartType, "PieChartStyle7", 44, 5, ePresetChartStyle.PieChartStyle7, c => { c.Legend.Position = eLegendPosition.Bottom; });
+        _ = AddPie(ws, chartType, "PieChartStyle7", 44, 5, ePresetChartStyle.PieChartStyle7, c => { c.Legend.Position = eLegendPosition.Bottom; });
 
         //Style 8
-        AddPie(ws,
+        _ = AddPie(ws,
                chartType,
                "PieChartStyle8",
                44,
@@ -129,7 +129,7 @@ public class PieChartStylingTest : TestBase
                });
 
         //Style 9
-        AddPie(ws,
+        _ = AddPie(ws,
                chartType,
                "PieChartStyle9",
                44,
@@ -145,7 +145,7 @@ public class PieChartStylingTest : TestBase
                });
 
         //Style 10
-        AddPie(ws,
+        _ = AddPie(ws,
                chartType,
                "PieChartStyle10",
                66,
@@ -161,7 +161,7 @@ public class PieChartStylingTest : TestBase
                });
 
         //Style 11
-        AddPie(ws,
+        _ = AddPie(ws,
                chartType,
                "PieChartStyle11",
                66,
@@ -174,7 +174,7 @@ public class PieChartStylingTest : TestBase
                });
 
         //Style 12
-        AddPie(ws,
+        _ = AddPie(ws,
                chartType,
                "PieChartStyle12",
                66,
@@ -208,28 +208,28 @@ public class PieChartStylingTest : TestBase
     private static void Pie3DStyles(ExcelWorksheet ws, ePieChartType ePieChartType)
     {
         //Style 1
-        AddPie(ws, ePieChartType, "PieChartStyle1", 0, 5, ePresetChartStyle.Pie3dChartStyle1, c => { c.Legend.Position = eLegendPosition.Bottom; });
+        _ = AddPie(ws, ePieChartType, "PieChartStyle1", 0, 5, ePresetChartStyle.Pie3dChartStyle1, c => { c.Legend.Position = eLegendPosition.Bottom; });
 
         //Style 2
-        ExcelPieChart? chart2 = AddPie(ws,
-                                       ePieChartType,
-                                       "PieChartStyle2",
-                                       0,
-                                       18,
-                                       ePresetChartStyle.Pie3dChartStyle2,
-                                       c =>
-                                       {
-                                           c.Legend.Remove();
-                                           c.DataLabel.ShowCategory = true;
-                                           c.DataLabel.ShowValue = true;
-                                           c.View3D.RotY = 50;
-                                           c.View3D.RotX = 50;
-                                           c.View3D.DepthPercent = 100;
-                                           c.View3D.RightAngleAxes = false;
-                                       });
+        _ = AddPie(ws,
+               ePieChartType,
+               "PieChartStyle2",
+               0,
+               18,
+               ePresetChartStyle.Pie3dChartStyle2,
+               c =>
+               {
+                   c.Legend.Remove();
+                   c.DataLabel.ShowCategory = true;
+                   c.DataLabel.ShowValue = true;
+                   c.View3D.RotY = 50;
+                   c.View3D.RotX = 50;
+                   c.View3D.DepthPercent = 100;
+                   c.View3D.RightAngleAxes = false;
+               });
 
         //Style 3
-        AddPie(ws,
+        _ = AddPie(ws,
                ePieChartType,
                "PieChartStyle3",
                0,
@@ -242,19 +242,19 @@ public class PieChartStylingTest : TestBase
                });
 
         //Style 4
-        AddPie(ws, ePieChartType, "PieChartStyle4", 22, 5, ePresetChartStyle.Pie3dChartStyle4, c => { c.Legend.Position = eLegendPosition.Bottom; });
+        _ = AddPie(ws, ePieChartType, "PieChartStyle4", 22, 5, ePresetChartStyle.Pie3dChartStyle4, c => { c.Legend.Position = eLegendPosition.Bottom; });
 
         //Style 5
-        AddPie(ws, ePieChartType, "PieChartStyle5", 22, 18, ePresetChartStyle.Pie3dChartStyle5, c => { c.Legend.Position = eLegendPosition.Bottom; });
+        _ = AddPie(ws, ePieChartType, "PieChartStyle5", 22, 18, ePresetChartStyle.Pie3dChartStyle5, c => { c.Legend.Position = eLegendPosition.Bottom; });
 
         //Style 6
-        AddPie(ws, ePieChartType, "PieChartStyle6", 22, 31, ePresetChartStyle.Pie3dChartStyle6, c => { });
+        _ = AddPie(ws, ePieChartType, "PieChartStyle6", 22, 31, ePresetChartStyle.Pie3dChartStyle6, c => { });
 
         //Style 7
-        AddPie(ws, ePieChartType, "PieChartStyle7", 44, 5, ePresetChartStyle.Pie3dChartStyle7, c => { c.Legend.Position = eLegendPosition.Bottom; });
+        _ = AddPie(ws, ePieChartType, "PieChartStyle7", 44, 5, ePresetChartStyle.Pie3dChartStyle7, c => { c.Legend.Position = eLegendPosition.Bottom; });
 
         //Style 8
-        AddPie(ws,
+        _ = AddPie(ws,
                ePieChartType,
                "PieChartStyle8",
                44,
@@ -268,7 +268,7 @@ public class PieChartStylingTest : TestBase
                });
 
         //Style 9
-        AddPie(ws,
+        _ = AddPie(ws,
                ePieChartType,
                "PieChartStyle9",
                44,
@@ -284,7 +284,7 @@ public class PieChartStylingTest : TestBase
                });
 
         //Style 10
-        AddPie(ws,
+        _ = AddPie(ws,
                ePieChartType,
                "PieChartStyle10",
                66,

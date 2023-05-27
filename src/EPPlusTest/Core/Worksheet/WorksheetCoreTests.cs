@@ -81,7 +81,7 @@ public class WorksheetCoreTests : TestBase
         using ExcelPackage? p = new ExcelPackage();
         ExcelWorksheet? ws = p.Workbook.Worksheets.Add("RichTextOverwriteValue");
 
-        ws.Cells["A1:B2"].RichText.Add("RichText");
+        _ = ws.Cells["A1:B2"].RichText.Add("RichText");
 
         ws.Cells["A1"].Value = "Text";
         ws.Cells["B2"].Value = "Text";
@@ -97,7 +97,7 @@ public class WorksheetCoreTests : TestBase
         using ExcelPackage? p = new ExcelPackage();
         ExcelWorksheet? ws = p.Workbook.Worksheets.Add("RichTextOverwriteAddress");
 
-        ws.Cells["A1:B2"].RichText.Add("RichText");
+        _ = ws.Cells["A1:B2"].RichText.Add("RichText");
         Assert.IsTrue(ws.Cells["A1"].IsRichText);
         Assert.IsTrue(ws.Cells["B2"].IsRichText);
 
@@ -112,7 +112,7 @@ public class WorksheetCoreTests : TestBase
         using ExcelPackage? p = new ExcelPackage();
         ExcelWorksheet? ws = p.Workbook.Worksheets.Add("RichTextOverwrite");
 
-        ws.Cells["A1:C3"].RichText.Add("RichText");
+        _ = ws.Cells["A1:C3"].RichText.Add("RichText");
         Assert.IsTrue(ws.Cells["A1"].IsRichText);
         Assert.IsTrue(ws.Cells["B2"].IsRichText);
 
@@ -153,7 +153,7 @@ public class WorksheetCoreTests : TestBase
         ws.Cells["C3"].Value = 200;
         ws.Cells["A1:B1"].Merge = true;
         ws.Cells["A1:C3"].AutoFilter = true;
-        ws.AutoFilter.Columns.AddValueFilterColumn(0);
+        _ = ws.AutoFilter.Columns.AddValueFilterColumn(0);
         ws.AutoFilter.Columns[0].ShowButton = false;
         SaveAndCleanup(p);
     }

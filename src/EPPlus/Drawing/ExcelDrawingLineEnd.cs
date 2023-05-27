@@ -139,7 +139,7 @@ public sealed class ExcelDrawingLineEnd : XmlHelper
         {
             if (doCreate)
             {
-                this.CreateNode(this._linePath, false);
+                _ = this.CreateNode(this._linePath, false);
             }
 
             return this._linePath + "/";
@@ -148,8 +148,6 @@ public sealed class ExcelDrawingLineEnd : XmlHelper
 
     private static string TranslateEndSizeText(eEndSize value)
     {
-        string text = value.ToString();
-
         switch (value)
         {
             case eEndSize.Small:

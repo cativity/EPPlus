@@ -52,9 +52,6 @@ public class WorksheetViewTests : TestBase
     [ClassCleanup]
     public static void Cleanup()
     {
-        string? dirName = _pck.File.DirectoryName;
-        string? fileName = _pck.File.FullName;
-
         SaveAndCleanup(_pck);
     }
 

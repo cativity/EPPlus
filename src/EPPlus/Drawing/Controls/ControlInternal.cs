@@ -164,11 +164,11 @@ internal class ControlInternal : XmlHelper
 
         if (node?.LocalName == "AlternateContent")
         {
-            node.ParentNode.RemoveChild(node);
+            _ = node.ParentNode.RemoveChild(node);
         }
         else
         {
-            this.TopNode.ParentNode.RemoveChild(this.TopNode);
+            _ = this.TopNode.ParentNode.RemoveChild(this.TopNode);
         }
     }
 }

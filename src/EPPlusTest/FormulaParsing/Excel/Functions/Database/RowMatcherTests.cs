@@ -41,10 +41,10 @@ public class RowMatcherTests
 {
     private static ExcelDatabaseCriteria GetCriteria(Dictionary<ExcelDatabaseCriteriaField, object> items)
     {
-        ExcelDataProvider? provider = A.Fake<ExcelDataProvider>();
+        _ = A.Fake<ExcelDataProvider>();
         ExcelDatabaseCriteria? criteria = A.Fake<ExcelDatabaseCriteria>(); // (provider, string.Empty);
 
-        A.CallTo(() => criteria.Items).Returns(items);
+        _ = A.CallTo(() => criteria.Items).Returns(items);
 
         return criteria;
     }

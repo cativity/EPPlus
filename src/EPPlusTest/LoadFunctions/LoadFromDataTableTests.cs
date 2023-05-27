@@ -22,8 +22,8 @@ public class LoadFromDataTableTests
         this._worksheet = this._package.Workbook.Worksheets.Add("test");
         this._dataSet = new DataSet();
         this._table = this._dataSet.Tables.Add("table");
-        this._table.Columns.Add("Id", typeof(string));
-        this._table.Columns.Add("Name", typeof(string));
+        _ = this._table.Columns.Add("Id", typeof(string));
+        _ = this._table.Columns.Add("Name", typeof(string));
     }
 
     [TestCleanup]
@@ -40,8 +40,8 @@ public class LoadFromDataTableTests
     [TestMethod]
     public void ShouldLoadTable()
     {
-        this._table.Rows.Add("1", "Test name");
-        this._worksheet.Cells["A1"].LoadFromDataTable(this._table, false);
+        _ = this._table.Rows.Add("1", "Test name");
+        _ = this._worksheet.Cells["A1"].LoadFromDataTable(this._table, false);
         Assert.AreEqual("1", this._worksheet.Cells["A1"].Value);
     }
 
@@ -49,27 +49,27 @@ public class LoadFromDataTableTests
     public void CreateAndFillDataTable()
     {
         DataTable? table = new DataTable("Astronauts");
-        table.Columns.Add("Id", typeof(int));
-        table.Columns.Add("FirstName", typeof(string));
-        table.Columns.Add("LastName", typeof(string));
+        _ = table.Columns.Add("Id", typeof(int));
+        _ = table.Columns.Add("FirstName", typeof(string));
+        _ = table.Columns.Add("LastName", typeof(string));
         table.Columns["FirstName"].Caption = "First name";
         table.Columns["LastName"].Caption = "Last name";
 
         // add some data
-        table.Rows.Add(1, "Bob", "Behnken");
-        table.Rows.Add(2, "Doug", "Hurley");
+        _ = table.Rows.Add(1, "Bob", "Behnken");
+        _ = table.Rows.Add(2, "Doug", "Hurley");
 
         //create a workbook with a spreadsheet and load the data table
         using ExcelPackage? package = new ExcelPackage();
         ExcelWorksheet? sheet = package.Workbook.Worksheets.Add("Astronauts");
-        sheet.Cells["A1"].LoadFromDataTable(table);
+        _ = sheet.Cells["A1"].LoadFromDataTable(table);
     }
 
     [TestMethod]
     public void ShouldLoadTableWithTableStyle()
     {
-        this._table.Rows.Add("1", "Test name");
-        this._worksheet.Cells["A1"].LoadFromDataTable(this._table, false, TableStyles.Dark1);
+        _ = this._table.Rows.Add("1", "Test name");
+        _ = this._worksheet.Cells["A1"].LoadFromDataTable(this._table, false, TableStyles.Dark1);
         Assert.AreEqual(1, this._worksheet.Tables.Count);
     }
 
@@ -78,14 +78,14 @@ public class LoadFromDataTableTests
     {
         this._table.Columns["Id"].Caption = "An Id";
         this._table.Columns["Name"].Caption = "A name";
-        this._worksheet.Cells["A1"].LoadFromDataTable(this._table, true);
+        _ = this._worksheet.Cells["A1"].LoadFromDataTable(this._table, true);
         Assert.AreEqual("An Id", this._worksheet.Cells["A1"].Value);
     }
 
     [TestMethod]
     public void ShouldUseColumnNameForHeaderIfNoCaption()
     {
-        this._worksheet.Cells["A1"].LoadFromDataTable(this._table, true);
+        _ = this._worksheet.Cells["A1"].LoadFromDataTable(this._table, true);
         Assert.AreEqual("Id", this._worksheet.Cells["A1"].Value);
     }
 
@@ -107,7 +107,7 @@ public class LoadFromDataTableTests
                       + "</Astronauts>";
 
         XmlReader? reader = XmlReader.Create(new StringReader(xml));
-        dataSet.ReadXml(reader);
+        _ = dataSet.ReadXml(reader);
         using ExcelPackage? package = new ExcelPackage();
         ExcelWorksheet? sheet = package.Workbook.Worksheets.Add("test");
         DataTable? table = dataSet.Tables["Astronaut"];
@@ -120,7 +120,7 @@ public class LoadFromDataTableTests
         table.Columns["LastName"].Caption = "Last name";
 
         // call LoadFromDataTable, print headers and use the Dark1 table style
-        sheet.Cells["A1"].LoadFromDataTable(table, true, TableStyles.Dark1);
+        _ = sheet.Cells["A1"].LoadFromDataTable(table, true, TableStyles.Dark1);
 
         // AutoFit column with for the entire range
         sheet.Cells[1, 1, sheet.Dimension.End.Row, sheet.Dimension.End.Row].AutoFitColumns();
@@ -131,9 +131,9 @@ public class LoadFromDataTableTests
     [TestMethod]
     public void ShouldUseLambdaConfig()
     {
-        this._table.Rows.Add("1", "Test name");
+        _ = this._table.Rows.Add("1", "Test name");
 
-        this._worksheet.Cells["A1"]
+        _ = this._worksheet.Cells["A1"]
             .LoadFromDataTable(this._table,
                                c =>
                                {
@@ -148,9 +148,9 @@ public class LoadFromDataTableTests
     [TestMethod]
     public void ShouldSetDbNullToNull()
     {
-        this._table.Rows.Add("1", DBNull.Value);
+        _ = this._table.Rows.Add("1", DBNull.Value);
 
-        this._worksheet.Cells["A1"]
+        _ = this._worksheet.Cells["A1"]
             .LoadFromDataTable(this._table,
                                c =>
                                {
@@ -164,9 +164,9 @@ public class LoadFromDataTableTests
     [TestMethod]
     public void ShouldSetNullToNull()
     {
-        this._table.Rows.Add("1", null);
+        _ = this._table.Rows.Add("1", null);
 
-        this._worksheet.Cells["A1"]
+        _ = this._worksheet.Cells["A1"]
             .LoadFromDataTable(this._table,
                                c =>
                                {
@@ -180,10 +180,10 @@ public class LoadFromDataTableTests
     [TestMethod]
     public void ShouldReplaceWithNullIfDbNull()
     {
-        this._table.Rows.Add("1", null);
+        _ = this._table.Rows.Add("1", null);
         this._worksheet.Cells["B2"].Value = 2;
 
-        this._worksheet.Cells["A1"]
+        _ = this._worksheet.Cells["A1"]
             .LoadFromDataTable(this._table,
                                c =>
                                {

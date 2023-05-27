@@ -64,7 +64,7 @@ public class ChartTemplateTests : TestBase
         LoadTestdata(ws);
 
         ExcelLineChart? chart = ws.Drawings.AddLineChart("LineChart1", eLineChartType.Line);
-        ExcelLineChartSerie? serie = chart.Series.Add("D2:D100", "A2:A100");
+        _ = chart.Series.Add("D2:D100", "A2:A100");
 
         chart.StyleManager.LoadTemplateStyles(Resources.TestLine3Crtx);
     }
@@ -75,8 +75,8 @@ public class ChartTemplateTests : TestBase
         ExcelWorksheet? ws = _pck.Workbook.Worksheets.Add("NewChartFromTemplate");
         LoadTestdata(ws);
         ExcelChart? chart = ws.Drawings.AddChartFromTemplate(Resources.TestLine3Crtx, "LineChart1", null);
-        chart.Series.Add("D2:D100", "A2:A100");
-        chart.Series.Add("c2:c100", "A2:A100");
+        _ = chart.Series.Add("D2:D100", "A2:A100");
+        _ = chart.Series.Add("c2:c100", "A2:A100");
         chart.StyleManager.ApplyStyles();
     }
 }

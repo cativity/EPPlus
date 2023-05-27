@@ -93,7 +93,7 @@ public class ExcelOfPieChart : ExcelPieChart
         }
         internal set
         {
-            this._chartXmlHelper.CreateNode(pieTypePath, true);
+            _ = this._chartXmlHelper.CreateNode(pieTypePath, true);
             this._chartXmlHelper.SetXmlNodeString(pieTypePath, value == ePieType.Bar ? "bar" : "pie");
         }
     }

@@ -146,7 +146,7 @@ internal class FormsNormalizedDataHashInputProvider : ContentHashInputProvider
 
     private static void NormalizeDesignerStorage(ExcelVBAModule designerModule, BinaryWriter bw)
     {
-        BufferedStream? buffer = new BufferedStream(bw.BaseStream, 1023);
+        //_ = new BufferedStream(bw.BaseStream, 1023);
 
         //var ds = p.Document.Storage.SubStorage[designerModule.streamName];
     }

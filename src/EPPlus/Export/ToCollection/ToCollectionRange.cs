@@ -99,7 +99,7 @@ internal class ToCollectionRange
 
         List<MappedProperty>? mappings = ToCollectionAutomap.GetAutomapList<T>(h);
         List<T>? l = new List<T>();
-        List<ExcelValue>? values = new List<ExcelValue>();
+        //_ = new List<ExcelValue>();
         int startRow = options.DataStartRow ?? (options.HeaderRow ?? -1) + 1;
 
         for (int r = range._fromRow + startRow; r <= range._toRow; r++)

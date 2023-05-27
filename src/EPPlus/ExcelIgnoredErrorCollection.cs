@@ -78,7 +78,7 @@ public class ExcelIgnoredErrorCollection : IEnumerable<ExcelIgnoredError>, IDisp
     public ExcelIgnoredError Add(ExcelAddressBase address)
     {
         XmlElement? node = this._excelWorksheet.WorksheetXml.CreateElement("ignoredError", ExcelPackage.schemaMain);
-        this.TopNode.AppendChild(node);
+        _ = this.TopNode.AppendChild(node);
         ExcelIgnoredError? item = new ExcelIgnoredError(this._nameSpaceManager, node, address);
         this._list.Add(item);
 

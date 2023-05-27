@@ -195,7 +195,7 @@ internal class PictureStore : IDisposable
                 if (ii.RefCount == 0)
                 {
                     this._pck.ZipPackage.DeletePart(ii.Uri);
-                    this._images.Remove(hash);
+                    _ = this._images.Remove(hash);
                 }
             }
 
@@ -205,7 +205,7 @@ internal class PictureStore : IDisposable
 
                 if (container.RelationDocument.Hashes[hash].RefCount <= 0)
                 {
-                    container.RelationDocument.Hashes.Remove(hash);
+                    _ = container.RelationDocument.Hashes.Remove(hash);
                 }
             }
         }

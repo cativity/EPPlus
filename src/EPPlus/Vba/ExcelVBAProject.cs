@@ -157,7 +157,7 @@ public class ExcelVbaProject
     {
         Stream? stream = this.Part.GetStream();
         byte[] vba = new byte[stream.Length];
-        stream.Read(vba, 0, (int)stream.Length);
+        _ = stream.Read(vba, 0, (int)stream.Length);
         this.Document = new CompoundDocument(vba);
 
         this.ReadDirStream();
@@ -340,7 +340,6 @@ public class ExcelVbaProject
 
                         if (dpb.Length >= 28)
                         {
-                            byte reserved = dpb[0];
                             byte[]? flags = new byte[3];
                             Array.Copy(dpb, 1, flags, 0, 3);
                             byte[]? keyNoNulls = new byte[4];
@@ -411,8 +410,6 @@ public class ExcelVbaProject
             dec[i] = (byte)(enc[i + 1] ^ (enc[i - 1] + dec[i - 1]));
         }
 
-        byte version = dec[0];
-        byte projKey = dec[1];
         byte ignoredLength = (byte)((seed & 6) / 2);
         int datalength = BitConverter.ToInt32(dec, ignoredLength + 2);
         byte[]? data = new byte[datalength];
@@ -585,8 +582,8 @@ public class ExcelVbaProject
                     regRef.Name = referenceName;
                     regRef.ReferenceRecordID = id;
                     regRef.Libid = this.GetString(br, sizeLibID);
-                    uint reserved1 = br.ReadUInt32();
-                    ushort reserved2 = br.ReadUInt16();
+                    _ = br.ReadUInt32();
+                    _ = br.ReadUInt16();
                     this.References.Add(regRef);
 
                     break;
@@ -606,12 +603,12 @@ public class ExcelVbaProject
                     break;
 
                 case 0x0F:
-                    ushort modualCount = br.ReadUInt16();
+                    _ = br.ReadUInt16();
 
                     break;
 
                 case 0x13:
-                    ushort cookie = br.ReadUInt16();
+                    _ = br.ReadUInt16();
 
                     break;
 
@@ -679,8 +676,8 @@ public class ExcelVbaProject
                     uint sizeExt = br.ReadUInt32();
                     extRef.LibIdExtended = this.GetString(br, sizeExt);
 
-                    uint reserved4 = br.ReadUInt32();
-                    ushort reserved5 = br.ReadUInt16();
+                    _ = br.ReadUInt32();
+                    _ = br.ReadUInt16();
                     extRef.OriginalTypeLib = new Guid(br.ReadBytes(16));
                     extRef.Cookie = br.ReadUInt32();
 
@@ -701,8 +698,8 @@ public class ExcelVbaProject
 
                     uint sizeTwiddled = br.ReadUInt32();
                     contrRef.LibIdTwiddled = this.GetString(br, sizeTwiddled);
-                    uint r1 = br.ReadUInt32();
-                    ushort r2 = br.ReadUInt16();
+                    _ = br.ReadUInt32();
+                    _ = br.ReadUInt16();
 
                     break;
 
@@ -722,7 +719,7 @@ public class ExcelVbaProject
                     break;
 
                 default:
-                    br.ReadBytes((int)size);
+                    _ = br.ReadBytes((int)size);
 
                     break;
             }
@@ -781,7 +778,7 @@ public class ExcelVbaProject
             {
                 this.Uri = new Uri(PartUri, UriKind.Relative);
                 this.Part = this._pck.CreatePart(this.Uri, ContentTypes.contentTypeVBA);
-                ZipPackageRelationship? rel = this._wb.Part.CreateRelationship(this.Uri, TargetMode.Internal, schemaRelVba);
+                _ = this._wb.Part.CreateRelationship(this.Uri, TargetMode.Internal, schemaRelVba);
             }
 
             Stream? st = this.Part.GetStream(FileMode.Create);
@@ -1115,73 +1112,73 @@ public class ExcelVbaProject
     private byte[] CreateProjectStream()
     {
         StringBuilder sb = new StringBuilder();
-        sb.AppendFormat("ID=\"{0}\"\r\n", this.ProjectID);
+        _ = sb.AppendFormat("ID=\"{0}\"\r\n", this.ProjectID);
 
         foreach (ExcelVBAModule? module in this.Modules)
         {
             if (module.Type == eModuleType.Document)
             {
-                sb.AppendFormat("Document={0}/&H00000000\r\n", module.Name);
+                _ = sb.AppendFormat("Document={0}/&H00000000\r\n", module.Name);
             }
             else if (module.Type == eModuleType.Module)
             {
-                sb.AppendFormat("Module={0}\r\n", module.Name);
+                _ = sb.AppendFormat("Module={0}\r\n", module.Name);
             }
             else if (module.Type == eModuleType.Class)
             {
-                sb.AppendFormat("Class={0}\r\n", module.Name);
+                _ = sb.AppendFormat("Class={0}\r\n", module.Name);
             }
             else
             {
                 //Designer
                 if (string.IsNullOrEmpty(module.ClassID) == false)
                 {
-                    sb.AppendFormat("Package={0}\r\n", module.ClassID);
+                    _ = sb.AppendFormat("Package={0}\r\n", module.ClassID);
                 }
 
-                sb.AppendFormat("BaseClass={0}\r\n", module.Name);
+                _ = sb.AppendFormat("BaseClass={0}\r\n", module.Name);
             }
         }
 
         if (this.HelpFile1 != "")
         {
-            sb.AppendFormat("HelpFile={0}\r\n", this.HelpFile1);
+            _ = sb.AppendFormat("HelpFile={0}\r\n", this.HelpFile1);
         }
 
-        sb.AppendFormat("Name=\"{0}\"\r\n", this.Name);
-        sb.AppendFormat("HelpContextID={0}\r\n", this.HelpContextID);
+        _ = sb.AppendFormat("Name=\"{0}\"\r\n", this.Name);
+        _ = sb.AppendFormat("HelpContextID={0}\r\n", this.HelpContextID);
 
         if (!string.IsNullOrEmpty(this.Description))
         {
-            sb.AppendFormat("Description=\"{0}\"\r\n", this.Description);
+            _ = sb.AppendFormat("Description=\"{0}\"\r\n", this.Description);
         }
 
-        sb.AppendFormat("VersionCompatible32=\"393222000\"\r\n");
+        _ = sb.AppendFormat("VersionCompatible32=\"393222000\"\r\n");
 
-        sb.AppendFormat("CMG=\"{0}\"\r\n", this.WriteProtectionStat());
-        sb.AppendFormat("DPB=\"{0}\"\r\n", this.WritePassword());
-        sb.AppendFormat("GC=\"{0}\"\r\n\r\n", this.WriteVisibilityState());
+        _ = sb.AppendFormat("CMG=\"{0}\"\r\n", this.WriteProtectionStat());
+        _ = sb.AppendFormat("DPB=\"{0}\"\r\n", this.WritePassword());
+        _ = sb.AppendFormat("GC=\"{0}\"\r\n\r\n", this.WriteVisibilityState());
 
-        sb.Append("[Host Extender Info]\r\n");
+        _ = sb.Append("[Host Extender Info]\r\n");
 
         if (this._HostExtenders.Count == 0)
         {
-            sb.Append("&H00000001={3832D640-CF90-11CF-8E43-00A0C911005A};VBE;&H00000000\r\n");
+            _ = sb.Append("&H00000001={3832D640-CF90-11CF-8E43-00A0C911005A};VBE;&H00000000\r\n");
         }
         else
         {
             foreach (string? line in this._HostExtenders)
             {
-                sb.Append($"{line}\r\n");
+                _ = sb.Append($"{line}\r\n");
             }
         }
 
-        sb.Append("\r\n");
-        sb.Append("[Workspace]\r\n");
+        _ = sb.Append("\r\n");
+        _ = sb.Append("[Workspace]\r\n");
 
         foreach (ExcelVBAModule? module in this.Modules)
         {
-            sb.AppendFormat("{0}=0, 0, 0, 0, C \r\n", module.Name);
+            _ = sb.AppendFormat("{0}=0, 0, 0, 0, C \r\n", module.Name);
         }
 
         string s = sb.ToString();
@@ -1284,7 +1281,7 @@ public class ExcelVbaProject
     private string GetStringAndUnicodeString(BinaryReader br, uint size)
     {
         string s = this.GetString(br, size);
-        int reserved = br.ReadUInt16();
+        _ = br.ReadUInt16();
         uint sizeUC = br.ReadUInt32();
         string sUC = GetString(br, sizeUC, Encoding.Unicode);
 

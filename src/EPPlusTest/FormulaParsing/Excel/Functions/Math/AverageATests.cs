@@ -100,7 +100,7 @@ public class AverageATests
         ParsingContext? context = ParsingContext.Create();
         RangeAddress? address = new RangeAddress();
         address.FromRow = address.ToRow = address.FromCol = address.ToCol = 2;
-        context.Scopes.NewScope(address);
+        _ = context.Scopes.NewScope(address);
 
         CompileResult? result = average.Execute(new FunctionArgument[]
                                                 {
@@ -140,6 +140,6 @@ public class AverageATests
     {
         // In the case of literals, any unparsable string literal results in a #VALUE.
         AverageA average = new AverageA();
-        CompileResult? result = average.Execute(new FunctionArgument[] { new FunctionArgument(1000), new FunctionArgument("Test") }, ParsingContext.Create());
+        _ = average.Execute(new FunctionArgument[] { new FunctionArgument(1000), new FunctionArgument("Test") }, ParsingContext.Create());
     }
 }

@@ -268,10 +268,10 @@ public class TextFunctionsTests
 
         for (int x = 1; x < 32; x++)
         {
-            input.Append((char)x);
+            _ = input.Append((char)x);
         }
 
-        input.Append("epplus");
+        _ = input.Append("epplus");
         Clean? func = new Clean();
         CompileResult? result = func.Execute(FunctionsHelper.CreateArgs(input), this._parsingContext);
         Assert.AreEqual("epplus", result.Result);

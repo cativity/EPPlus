@@ -239,13 +239,13 @@ public class ExcelCommentCollection : IEnumerable, IDisposable
 
         if (comment == c)
         {
-            comment.TopNode.ParentNode.RemoveChild(comment.TopNode); //Remove VML
-            comment._commentHelper.TopNode.ParentNode.RemoveChild(comment._commentHelper.TopNode); //Remove Comment
+            _ = comment.TopNode.ParentNode.RemoveChild(comment.TopNode); //Remove VML
+            _ = comment._commentHelper.TopNode.ParentNode.RemoveChild(comment._commentHelper.TopNode); //Remove Comment
 
             this.Worksheet.VmlDrawings._drawingsCellStore.Delete(comment.Range._fromRow, comment.Range._fromCol, 1, 1, shift);
             this.Worksheet._commentsStore.Delete(comment.Range._fromRow, comment.Range._fromCol, 1, 1, shift);
             this._list[i] = null;
-            this._listIndex.Remove(i);
+            _ = this._listIndex.Remove(i);
 
             //if(_listIndex.Count==0)
             //{
@@ -297,11 +297,11 @@ public class ExcelCommentCollection : IEnumerable, IDisposable
 
         foreach (ExcelComment? comment in deletedComments)
         {
-            comment.TopNode.ParentNode.RemoveChild(comment.TopNode); //Remove VML
-            comment._commentHelper.TopNode.ParentNode.RemoveChild(comment._commentHelper.TopNode); //Remove Comment
+            _ = comment.TopNode.ParentNode.RemoveChild(comment.TopNode); //Remove VML
+            _ = comment._commentHelper.TopNode.ParentNode.RemoveChild(comment._commentHelper.TopNode); //Remove Comment
             int ix = this._list.IndexOf(comment);
             this._list[ix] = null;
-            this._listIndex.Remove(ix);
+            _ = this._listIndex.Remove(ix);
         }
     }
 

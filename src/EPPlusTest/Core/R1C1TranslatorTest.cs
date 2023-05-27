@@ -87,7 +87,7 @@ public class R1C1TranslatorTest
     {
         string? r1c1 = "R[1]C";
         string? expectedAddress = "B4";
-        string? address = R1C1Translator.FromR1C1(r1c1, 3, 3);
+        _ = R1C1Translator.FromR1C1(r1c1, 3, 3);
         AssertAddresses(r1c1, expectedAddress);
     }
 

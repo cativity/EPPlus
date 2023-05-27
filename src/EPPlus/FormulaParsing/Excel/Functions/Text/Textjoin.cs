@@ -51,8 +51,8 @@ internal class Textjoin : ExcelFunction
                         continue;
                     }
 
-                    str.Append(val);
-                    str.Append(delimiter);
+                    _ = str.Append(val);
+                    _ = str.Append(delimiter);
 
                     if (str.Length > this.MaxReturnLength)
                     {
@@ -75,8 +75,8 @@ internal class Textjoin : ExcelFunction
                             continue;
                         }
 
-                        str.Append(val);
-                        str.Append(delimiter);
+                        _ = str.Append(val);
+                        _ = str.Append(delimiter);
 
                         if (str.Length > this.MaxReturnLength)
                         {
@@ -94,8 +94,8 @@ internal class Textjoin : ExcelFunction
                     continue;
                 }
 
-                str.Append(val);
-                str.Append(delimiter);
+                _ = str.Append(val);
+                _ = str.Append(delimiter);
 
                 if (str.Length > this.MaxReturnLength)
                 {

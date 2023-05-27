@@ -312,7 +312,7 @@ public sealed class ExcelSheetProtection : XmlHelper
 
             if (node != null)
             {
-                (node as XmlAttribute).OwnerElement.Attributes.Remove(node as XmlAttribute);
+                _ = (node as XmlAttribute).OwnerElement.Attributes.Remove(node as XmlAttribute);
             }
 
             return;

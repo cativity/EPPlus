@@ -61,7 +61,7 @@ public class CommentsTest : TestBase
         ExcelWorksheet? ws = pkg.Workbook.Worksheets.Add("Comment");
         ExcelRange? a1 = ws.Cells["A1"];
         a1.Value = "Justin Dearing";
-        a1.AddComment("I am A1s comment", "JD");
+        _ = a1.AddComment("I am A1s comment", "JD");
         Assert.IsFalse(a1.Comment.Visible); // Comments are by default invisible 
         a1.Comment.Visible = true;
         a1.Comment.Visible = false;
@@ -100,7 +100,7 @@ public class CommentsTest : TestBase
     {
         using ExcelPackage? pkg = new ExcelPackage();
         ExcelWorksheet? ws = pkg.Workbook.Worksheets.Add("CommentInsert");
-        ws.Cells["A1"].AddComment("na", "test");
+        _ = ws.Cells["A1"].AddComment("na", "test");
         Assert.AreEqual(1, ws.Comments.Count);
 
         ws.InsertColumn(1, 1);
@@ -120,7 +120,7 @@ public class CommentsTest : TestBase
     {
         using ExcelPackage? pkg = new ExcelPackage();
         ExcelWorksheet? ws = pkg.Workbook.Worksheets.Add("CommentInsert");
-        ws.Cells["B1"].AddComment("na", "test");
+        _ = ws.Cells["B1"].AddComment("na", "test");
         Assert.AreEqual(1, ws.Comments.Count);
 
         ws.DeleteColumn(1, 1);
@@ -140,7 +140,7 @@ public class CommentsTest : TestBase
     {
         using ExcelPackage? pkg = new ExcelPackage();
         ExcelWorksheet? ws = pkg.Workbook.Worksheets.Add("CommentInsert");
-        ws.Cells["A1"].AddComment("na", "test");
+        _ = ws.Cells["A1"].AddComment("na", "test");
         Assert.AreEqual(1, ws.Comments.Count);
 
         ws.InsertRow(1, 1);
@@ -161,7 +161,7 @@ public class CommentsTest : TestBase
     {
         using ExcelPackage? pkg = new ExcelPackage();
         ExcelWorksheet? ws = pkg.Workbook.Worksheets.Add("CommentInsert");
-        ws.Cells["A2"].AddComment("na", "test");
+        _ = ws.Cells["A2"].AddComment("na", "test");
         Assert.AreEqual(1, ws.Comments.Count);
 
         ws.DeleteRow(1, 1);
@@ -207,7 +207,7 @@ public class CommentsTest : TestBase
     {
         using ExcelPackage? p = new ExcelPackage();
         ExcelWorksheet? ws = p.Workbook.Worksheets.Add("Sheet1");
-        ExcelComment comment = ws.Cells[1, 1].AddComment("My Comment", "Me");
+        _ = ws.Cells[1, 1].AddComment("My Comment", "Me");
         Assert.IsNotNull(ws.Cells[1, 1].Comment);
         ws.Cells[1, 1].IsRichText = true;
         Assert.IsNotNull(ws.Cells[1, 1].Comment);
@@ -265,7 +265,7 @@ public class CommentsTest : TestBase
 
         // Add a sheet with comments
         ExcelWorksheet? ws = p.Workbook.Worksheets.Add("Sheet1");
-        ws.Comments.Add(ws.Cells["B2"], "This is a comment.", "author");
+        _ = ws.Comments.Add(ws.Cells["B2"], "This is a comment.", "author");
         Assert.AreEqual(1, ws.Comments.Count);
 
         // Delete cells B1:B3 (including the comment in B2)

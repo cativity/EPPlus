@@ -53,7 +53,7 @@ public class ReadTemplate : TestBase
 
         using (ExcelPackage pck = new ExcelPackage(stream))
         {
-            ExcelWorksheet? ws = pck.Workbook.Worksheets.Add("Perf");
+            _ = pck.Workbook.Worksheets.Add("Perf");
             pck.SaveAs(stream);
         }
 
@@ -64,7 +64,6 @@ public class ReadTemplate : TestBase
     public void OpenXlts()
     {
         using ExcelPackage? pck = OpenTemplatePackage("Template.xltx");
-        ExcelWorksheet? ws = pck.Workbook.Worksheets[0];
         SaveWorkbook("Template.xlsx", pck);
     }
 }

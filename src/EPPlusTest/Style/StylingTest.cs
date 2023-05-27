@@ -205,7 +205,7 @@ public class StylingTest : TestBase
         normal.Font.Size = CustomFont.Size;
         ExcelWorkbook workbook = p.Workbook;
         ExcelWorksheet ws = p.Workbook.Worksheets.Add("sheet");
-        ExcelStyle style = workbook.Styles.CreateNamedStyle("style").Style;
+        _ = workbook.Styles.CreateNamedStyle("style").Style;
 
         //ws.SetValue(1, 1, "very long text very long text very long text");
         ws.Cells["A1"].Value = "番番番番(番番番)番番番番(番番番)番番番番(番番番)番番番番(番番番)番番番番(番番番)";

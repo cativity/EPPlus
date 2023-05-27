@@ -274,9 +274,9 @@ public class RangeInsertTests : TestBase
     {
         //Setup
         ExcelWorksheet? ws = _pck.Workbook.Worksheets.Add("InsertRangeCommentsDown");
-        ws.Cells["A1"].AddComment("Comment A1", "EPPlus");
-        ws.Cells["B1"].AddComment("Comment B1", "EPPlus");
-        ws.Cells["C1"].AddComment("Comment C1", "EPPlus");
+        _ = ws.Cells["A1"].AddComment("Comment A1", "EPPlus");
+        _ = ws.Cells["B1"].AddComment("Comment B1", "EPPlus");
+        _ = ws.Cells["C1"].AddComment("Comment C1", "EPPlus");
 
         //Act
         ws.Cells["A1"].Insert(eShiftTypeInsert.Down);
@@ -293,9 +293,9 @@ public class RangeInsertTests : TestBase
     {
         //Setup
         ExcelWorksheet? ws = _pck.Workbook.Worksheets.Add("InsertRangeCommentsRight");
-        ws.Cells["A1"].AddComment("Comment A1", "EPPlus");
-        ws.Cells["B1"].AddComment("Comment B1", "EPPlus");
-        ws.Cells["C1"].AddComment("Comment C1", "EPPlus");
+        _ = ws.Cells["A1"].AddComment("Comment A1", "EPPlus");
+        _ = ws.Cells["B1"].AddComment("Comment B1", "EPPlus");
+        _ = ws.Cells["C1"].AddComment("Comment C1", "EPPlus");
 
         //Act
         ws.Cells["A1"].Insert(eShiftTypeInsert.Right);
@@ -313,9 +313,9 @@ public class RangeInsertTests : TestBase
     {
         //Setup
         ExcelWorksheet? ws = _pck.Workbook.Worksheets.Add("InsertRangeNamesDown");
-        ws.Names.Add("NameA1", ws.Cells["A1"]);
-        ws.Names.Add("NameB1", ws.Cells["B1"]);
-        ws.Names.Add("NameC1", ws.Cells["C1"]);
+        _ = ws.Names.Add("NameA1", ws.Cells["A1"]);
+        _ = ws.Names.Add("NameB1", ws.Cells["B1"]);
+        _ = ws.Names.Add("NameC1", ws.Cells["C1"]);
 
         //Act
         ws.Cells["A1"].Insert(eShiftTypeInsert.Down);
@@ -331,9 +331,9 @@ public class RangeInsertTests : TestBase
     {
         //Setup
         ExcelWorksheet? ws = _pck.Workbook.Worksheets.Add("InsertRangeInsideNamesDown");
-        ws.Names.Add("NameA2B4", ws.Cells["A2:B4"]);
-        ws.Names.Add("NameB2D3", ws.Cells["B2:D3"]);
-        ws.Names.Add("NameC1F3", ws.Cells["C1:F3"]);
+        _ = ws.Names.Add("NameA2B4", ws.Cells["A2:B4"]);
+        _ = ws.Names.Add("NameB2D3", ws.Cells["B2:D3"]);
+        _ = ws.Names.Add("NameC1F3", ws.Cells["C1:F3"]);
 
         //Act
         ws.Cells["A2:B3"].Insert(eShiftTypeInsert.Down);
@@ -359,9 +359,9 @@ public class RangeInsertTests : TestBase
     {
         //Setup
         ExcelWorksheet? ws = _pck.Workbook.Worksheets.Add("InsertRangeInsideNamesRight");
-        ws.Names.Add("NameB1D2", ws.Cells["B1:D2"]);
-        ws.Names.Add("NameB2C4", ws.Cells["B2:D4"]);
-        ws.Names.Add("NameA3C6", ws.Cells["A3:C6"]);
+        _ = ws.Names.Add("NameB1D2", ws.Cells["B1:D2"]);
+        _ = ws.Names.Add("NameB2C4", ws.Cells["B2:D4"]);
+        _ = ws.Names.Add("NameA3C6", ws.Cells["A3:C6"]);
 
         //Act
         ws.Cells["B1:C2"].Insert(eShiftTypeInsert.Right);
@@ -531,7 +531,7 @@ public class RangeInsertTests : TestBase
     {
         using ExcelPackage? p = new ExcelPackage();
         ExcelWorksheet? ws = p.Workbook.Worksheets.Add("TableDelete");
-        ws.Tables.Add(ws.Cells["B2:D3"], "table1");
+        _ = ws.Tables.Add(ws.Cells["B2:D3"], "table1");
         ws.Cells["A2"].Insert(eShiftTypeInsert.Right);
     }
 
@@ -541,7 +541,7 @@ public class RangeInsertTests : TestBase
     {
         using ExcelPackage? p = new ExcelPackage();
         ExcelWorksheet? ws = p.Workbook.Worksheets.Add("TableDelete");
-        ws.Tables.Add(ws.Cells["B2:D3"], "table1");
+        _ = ws.Tables.Add(ws.Cells["B2:D3"], "table1");
         ws.Cells["C1"].Insert(eShiftTypeInsert.Down);
     }
 
@@ -550,7 +550,7 @@ public class RangeInsertTests : TestBase
     {
         using ExcelPackage? p = new ExcelPackage();
         ExcelWorksheet? ws = p.Workbook.Worksheets.Add("TableDelete");
-        ws.Tables.Add(ws.Cells["B2:D3"], "table1");
+        _ = ws.Tables.Add(ws.Cells["B2:D3"], "table1");
         ws.Cells["C1"].Insert(eShiftTypeInsert.Right);
     }
 
@@ -559,7 +559,7 @@ public class RangeInsertTests : TestBase
     {
         using ExcelPackage? p = new ExcelPackage();
         ExcelWorksheet? ws = p.Workbook.Worksheets.Add("TableDelete");
-        ws.Tables.Add(ws.Cells["B2:D3"], "table1");
+        _ = ws.Tables.Add(ws.Cells["B2:D3"], "table1");
         ws.Cells["A2"].Insert(eShiftTypeInsert.Down);
     }
 
@@ -571,7 +571,7 @@ public class RangeInsertTests : TestBase
         ExcelWorksheet? ws = p.Workbook.Worksheets.Add("PivotTableInsert");
         ws.Cells["E5"].Value = "E5";
         ws.Cells["F5"].Value = "F5";
-        ws.PivotTables.Add(ws.Cells["B2:D3"], ws.Cells["E5:F6"], "table1");
+        _ = ws.PivotTables.Add(ws.Cells["B2:D3"], ws.Cells["E5:F6"], "table1");
         ws.Cells["A2"].Insert(eShiftTypeInsert.Right);
     }
 
@@ -583,7 +583,7 @@ public class RangeInsertTests : TestBase
         ExcelWorksheet? ws = p.Workbook.Worksheets.Add("PivotTableInsert");
         ws.Cells["E5"].Value = "E5";
         ws.Cells["F5"].Value = "F5";
-        ws.PivotTables.Add(ws.Cells["B2:D3"], ws.Cells["E5:F6"], "table1");
+        _ = ws.PivotTables.Add(ws.Cells["B2:D3"], ws.Cells["E5:F6"], "table1");
         ws.Cells["C1"].Insert(eShiftTypeInsert.Down);
     }
 
@@ -594,7 +594,7 @@ public class RangeInsertTests : TestBase
         ExcelWorksheet? ws = p.Workbook.Worksheets.Add("PivotTableInsert");
         ws.Cells["E5"].Value = "E5";
         ws.Cells["F5"].Value = "F5";
-        ws.PivotTables.Add(ws.Cells["B2:D3"], ws.Cells["E5:F6"], "table1");
+        _ = ws.PivotTables.Add(ws.Cells["B2:D3"], ws.Cells["E5:F6"], "table1");
         ws.Cells["C1"].Insert(eShiftTypeInsert.Right);
     }
 
@@ -605,7 +605,7 @@ public class RangeInsertTests : TestBase
         ExcelWorksheet? ws = p.Workbook.Worksheets.Add("PivotTableInsert");
         ws.Cells["E5"].Value = "E5";
         ws.Cells["F5"].Value = "F5";
-        ws.PivotTables.Add(ws.Cells["B2:D3"], ws.Cells["E5:F6"], "table1");
+        _ = ws.PivotTables.Add(ws.Cells["B2:D3"], ws.Cells["E5:F6"], "table1");
         ws.Cells["A2"].Insert(eShiftTypeInsert.Down);
     }
 
@@ -813,7 +813,7 @@ public class RangeInsertTests : TestBase
     public void ValidateDatavalidationShiftRight_Inside()
     {
         ExcelWorksheet? ws = _pck.Workbook.Worksheets.Add("dvright");
-        IExcelDataValidationAny? any = ws.DataValidations.AddAnyValidation("B2");
+        _ = ws.DataValidations.AddAnyValidation("B2");
 
         ws.Cells["B2:C5"].Insert(eShiftTypeInsert.Right);
 
@@ -1052,7 +1052,7 @@ public class RangeInsertTests : TestBase
     {
         ExcelWorksheet? ws = _pck.Workbook.Worksheets.Add("SparkLineShiftRight");
         LoadTestdata(ws, 10);
-        ws.SparklineGroups.Add(OfficeOpenXml.Sparkline.eSparklineType.Column, ws.Cells["E2:E10"], ws.Cells["A2:D10"]);
+        _ = ws.SparklineGroups.Add(OfficeOpenXml.Sparkline.eSparklineType.Column, ws.Cells["E2:E10"], ws.Cells["A2:D10"]);
         ws.Cells["E5"].Insert(eShiftTypeInsert.Right);
         Assert.AreEqual("F5", ws.SparklineGroups[0].Sparklines[3].Cell.Address);
         ws.Cells["A1:A10"].Insert(eShiftTypeInsert.Right);
@@ -1064,7 +1064,7 @@ public class RangeInsertTests : TestBase
     {
         ExcelWorksheet? ws = _pck.Workbook.Worksheets.Add("SparkLineShiftDown");
         LoadTestdata(ws, 10);
-        ws.SparklineGroups.Add(OfficeOpenXml.Sparkline.eSparklineType.Column, ws.Cells["E2:E10"], ws.Cells["A2:D10"]);
+        _ = ws.SparklineGroups.Add(OfficeOpenXml.Sparkline.eSparklineType.Column, ws.Cells["E2:E10"], ws.Cells["A2:D10"]);
         ws.Cells["E5"].Insert(eShiftTypeInsert.Down);
         Assert.AreEqual("E6", ws.SparklineGroups[0].Sparklines[3].Cell.Address);
         ws.Cells["A1:E1"].Insert(eShiftTypeInsert.Down);
@@ -1076,7 +1076,7 @@ public class RangeInsertTests : TestBase
     {
         ExcelWorksheet? ws = _pck.Workbook.Worksheets.Add("SparkLineInsertRow");
         LoadTestdata(ws, 10);
-        ws.SparklineGroups.Add(OfficeOpenXml.Sparkline.eSparklineType.Column, ws.Cells["E2:E10"], ws.Cells["A2:D10"]);
+        _ = ws.SparklineGroups.Add(OfficeOpenXml.Sparkline.eSparklineType.Column, ws.Cells["E2:E10"], ws.Cells["A2:D10"]);
         ws.InsertRow(5, 1);
         Assert.AreEqual("E6", ws.SparklineGroups[0].Sparklines[3].Cell.Address);
         ws.InsertRow(1, 1);
@@ -1088,7 +1088,7 @@ public class RangeInsertTests : TestBase
     {
         ExcelWorksheet? ws = _pck.Workbook.Worksheets.Add("SparkLineInsertColumn");
         LoadTestdata(ws, 10);
-        ws.SparklineGroups.Add(OfficeOpenXml.Sparkline.eSparklineType.Column, ws.Cells["E2:E10"], ws.Cells["A2:D10"]);
+        _ = ws.SparklineGroups.Add(OfficeOpenXml.Sparkline.eSparklineType.Column, ws.Cells["E2:E10"], ws.Cells["A2:D10"]);
         ws.InsertColumn(2, 1);
         Assert.AreEqual("F5", ws.SparklineGroups[0].Sparklines[3].Cell.Address);
         ws.InsertColumn(1, 1);
@@ -1172,7 +1172,7 @@ public class RangeInsertTests : TestBase
     {
         ExcelWorksheet? ws = _pck.Workbook.Worksheets.Add("InsertRightComment");
         string? commentAddress = "B2";
-        ws.Comments.Add(ws.Cells[commentAddress], "This is a comment.", "author");
+        _ = ws.Comments.Add(ws.Cells[commentAddress], "This is a comment.", "author");
         ws.Cells[commentAddress].Value = "This cell contains a comment.";
 
         ws.Cells["B1:B3"].Insert(eShiftTypeInsert.Right);
@@ -1189,7 +1189,7 @@ public class RangeInsertTests : TestBase
     {
         ExcelWorksheet? ws = _pck.Workbook.Worksheets.Add("InsertRightComment2");
         string? commentAddress = "B4";
-        ws.Comments.Add(ws.Cells[commentAddress], "This is a comment.", "author");
+        _ = ws.Comments.Add(ws.Cells[commentAddress], "This is a comment.", "author");
         ws.Cells[commentAddress].Value = "This cell contains a comment.";
 
         ws.Cells["B1:B3"].Insert(eShiftTypeInsert.Right);
@@ -1205,7 +1205,7 @@ public class RangeInsertTests : TestBase
     {
         ExcelWorksheet? ws = _pck.Workbook.Worksheets.Add("InsertRightTC");
         string? commentAddress = "B2";
-        ws.ThreadedComments.Add(commentAddress);
+        _ = ws.ThreadedComments.Add(commentAddress);
         ws.Cells[commentAddress].Value = "This cell contains a threaded comment.";
 
         ws.Cells["B1:B3"].Insert(eShiftTypeInsert.Right);
@@ -1221,7 +1221,7 @@ public class RangeInsertTests : TestBase
     {
         ExcelWorksheet? ws = _pck.Workbook.Worksheets.Add("InsertRightTC2");
         string? commentAddress = "B4";
-        ws.ThreadedComments.Add(commentAddress);
+        _ = ws.ThreadedComments.Add(commentAddress);
         ws.Cells[commentAddress].Value = "This cell contains a threaded comment.";
 
         ws.Cells["B1:B3"].Insert(eShiftTypeInsert.Right);

@@ -140,9 +140,9 @@ public class IndexTests
 
         ExcelWorksheet? sheet3 = package.Workbook.Worksheets.Add(InputWorksheet);
 
-        package.Workbook.Names.Add("Col_Pos", sheet3.Cells["B2"]);
-        package.Workbook.Names.Add("Row_Pos", sheet3.Cells["B1"]);
-        package.Workbook.Names.Add("Sample_Index_Data", sheet1.Cells["B1:C15"]);
+        _ = package.Workbook.Names.Add("Col_Pos", sheet3.Cells["B2"]);
+        _ = package.Workbook.Names.Add("Row_Pos", sheet3.Cells["B1"]);
+        _ = package.Workbook.Names.Add("Sample_Index_Data", sheet1.Cells["B1:C15"]);
 
         return package;
     }

@@ -166,11 +166,11 @@ public class ExcelTableColumnCollection : IEnumerable<ExcelTableColumn>
 
                 if (i >= this._cols.Count)
                 {
-                    refNode.ParentNode.AppendChild(node);
+                    _ = refNode.ParentNode.AppendChild(node);
                 }
                 else
                 {
-                    refNode.ParentNode.InsertBefore(node, refNode);
+                    _ = refNode.ParentNode.InsertBefore(node, refNode);
                 }
 
                 ExcelTableColumn? item = new ExcelTableColumn(this.Table.NameSpaceManager, node, this.Table, i);
@@ -218,8 +218,8 @@ public class ExcelTableColumnCollection : IEnumerable<ExcelTableColumn>
             for (int i = position + columns - 1; i >= position; i--)
             {
                 XmlNode? n = this.Table.Columns[i].TopNode;
-                n.ParentNode.RemoveChild(n);
-                this.Table.Columns._colNames.Remove(this._cols[i].Name);
+                _ = n.ParentNode.RemoveChild(n);
+                _ = this.Table.Columns._colNames.Remove(this._cols[i].Name);
                 this.Table.Columns._cols.RemoveAt(i);
             }
 

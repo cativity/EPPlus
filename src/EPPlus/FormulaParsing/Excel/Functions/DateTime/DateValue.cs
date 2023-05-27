@@ -40,7 +40,7 @@ internal class DateValue : ExcelFunction
 
     internal CompileResult Execute(string dateString)
     {
-        System.DateTime.TryParse(dateString, out System.DateTime result);
+        _ = System.DateTime.TryParse(dateString, out System.DateTime result);
 
         return result != System.DateTime.MinValue
                    ? this.CreateResult(result.ToOADate(), DataType.Date)

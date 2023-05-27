@@ -57,7 +57,7 @@ public class DrawingGroupingTests : TestBase
         r3.SetSize(100, 25);
         r3.FirstButton = true;
 
-        ctrl.Group(r1, r2, r3);
+        _ = ctrl.Group(r1, r2, r3);
     }
 
     [TestMethod]
@@ -68,7 +68,7 @@ public class DrawingGroupingTests : TestBase
         ctrl.SetPosition(480, 80);
         ctrl.SetSize(200, 120);
 
-        ctrl.Group();
+        _ = ctrl.Group();
     }
 
     [TestMethod]
@@ -95,7 +95,7 @@ public class DrawingGroupingTests : TestBase
         ctrl.SetPosition(480, 80);
         ctrl.SetSize(200, 120);
 
-        ctrl.Group();
+        _ = ctrl.Group();
         ctrl.UnGroup();
     }
 
@@ -165,7 +165,7 @@ public class DrawingGroupingTests : TestBase
         ExcelShape? shape = _ws.Drawings.AddShape("Shape 1", eShapeStyle.Octagon);
         shape.SetPosition(200, 200);
 
-        chart.Group(shape);
+        _ = chart.Group(shape);
     }
 
     [TestMethod]
@@ -179,7 +179,7 @@ public class DrawingGroupingTests : TestBase
         ExcelTableSlicer? slicer = tbl.Columns[0].AddSlicer();
         slicer.SetPosition(200, 200);
 
-        pic.Group(slicer);
+        _ = pic.Group(slicer);
     }
 
     [TestMethod]
@@ -202,7 +202,7 @@ public class DrawingGroupingTests : TestBase
         ExcelControlRadioButton? r1 = ws2.Drawings.AddRadioButtonControl("Option Button 1");
         r1.SetPosition(500, 100);
         r1.SetSize(100, 25);
-        ExcelGroupShape? g = ctrl1.Group(r1);
+        _ = ctrl1.Group(r1);
     }
 
     [TestMethod]
@@ -224,8 +224,8 @@ public class DrawingGroupingTests : TestBase
         ExcelControlRadioButton? r1 = ws.Drawings.AddRadioButtonControl("Option Button 1");
         r1.SetPosition(500, 100);
         r1.SetSize(100, 25);
-        ExcelGroupShape? g = ctrl1.Group(r1);
+        _ = ctrl1.Group(r1);
 
-        ctrl2.Group(r1);
+        _ = ctrl2.Group(r1);
     }
 }

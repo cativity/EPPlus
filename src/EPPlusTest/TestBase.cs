@@ -76,7 +76,7 @@ public abstract class TestBase
 
         if (!Directory.Exists(_clipartPath))
         {
-            Directory.CreateDirectory(_clipartPath);
+            _ = Directory.CreateDirectory(_clipartPath);
         }
 
         if (Environment.GetEnvironmentVariable("EPPlusTestInputPath") != null)
@@ -182,7 +182,7 @@ public abstract class TestBase
     {
         if (!Directory.Exists(path))
         {
-            Directory.CreateDirectory(path);
+            _ = Directory.CreateDirectory(path);
         }
     }
 
@@ -337,7 +337,7 @@ public abstract class TestBase
             new SalesData { Continent = "North America", Country = "USA", State = "San Fransico", Sales = 411 },
         };
 
-        ws.Cells["A1"].LoadFromCollection(l, true, OfficeOpenXml.Table.TableStyles.Medium12);
+        _ = ws.Cells["A1"].LoadFromCollection(l, true, OfficeOpenXml.Table.TableStyles.Medium12);
     }
 
     protected static void LoadGeoTestData(ExcelWorksheet ws)
@@ -356,7 +356,7 @@ public abstract class TestBase
             new GeoData { Country = "Sweden", State = "Södermanland", Sales = 57 },
         };
 
-        ws.Cells["A1"].LoadFromCollection(l, true, OfficeOpenXml.Table.TableStyles.Medium12);
+        _ = ws.Cells["A1"].LoadFromCollection(l, true, OfficeOpenXml.Table.TableStyles.Medium12);
     }
 
     protected static ExcelRangeBase LoadItemData(ExcelWorksheet ws)

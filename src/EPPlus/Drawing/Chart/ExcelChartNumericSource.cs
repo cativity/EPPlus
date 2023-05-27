@@ -76,7 +76,7 @@ public class ExcelChartNumericSource : XmlHelper
         {
             if (this._sourceElement != null)
             {
-                this._sourceElement.ParentNode.RemoveChild(this._sourceElement);
+                _ = this._sourceElement.ParentNode.RemoveChild(this._sourceElement);
             }
 
             value = value.Trim();
@@ -152,7 +152,7 @@ public class ExcelChartNumericSource : XmlHelper
             foreach (string? num in nums)
             {
                 XmlElement? child = this.CreateLit(num.Trim(), idx++);
-                litNode.AppendChild(child);
+                _ = litNode.AppendChild(child);
             }
         }
     }
@@ -163,7 +163,7 @@ public class ExcelChartNumericSource : XmlHelper
         ptNode.SetAttribute("idx", idx.ToString(CultureInfo.InvariantCulture));
         XmlElement? vNode = this.TopNode.OwnerDocument.CreateElement("c", "v", ExcelPackage.schemaChart);
         vNode.InnerText = num;
-        ptNode.AppendChild(vNode);
+        _ = ptNode.AppendChild(vNode);
 
         return ptNode;
     }

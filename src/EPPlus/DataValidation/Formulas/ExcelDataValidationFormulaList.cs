@@ -208,16 +208,16 @@ internal class ExcelDataValidationFormulaList : ExcelDataValidationFormula, IExc
         {
             if (sb.Length == 0)
             {
-                sb.Append("\"");
-                sb.Append(val);
+                _ = sb.Append("\"");
+                _ = sb.Append(val);
             }
             else
             {
-                sb.AppendFormat(",{0}", val);
+                _ = sb.AppendFormat(",{0}", val);
             }
         }
 
-        sb.Append("\"");
+        _ = sb.Append("\"");
 
         return sb.ToString();
     }

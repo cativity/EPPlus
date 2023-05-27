@@ -70,7 +70,7 @@ internal abstract class RomanBase
 
             for (int x = 0; x < limit; x++)
             {
-                result.Append(roman.Letter);
+                _ = result.Append(roman.Letter);
                 number -= roman.Number;
             }
         }
@@ -80,13 +80,12 @@ internal abstract class RomanBase
     {
         if (number >= roman.Number)
         {
-            result.Append(roman.Letter);
+            _ = result.Append(roman.Letter);
             number -= roman.Number;
-            int limit = number / lowerRoman.Number;
 
             for (int x = 0; x < number / lowerRoman.Number; x++)
             {
-                result.Append(lowerRoman.Letter);
+                _ = result.Append(lowerRoman.Letter);
                 number -= lowerRoman.Number;
             }
         }
@@ -96,7 +95,7 @@ internal abstract class RomanBase
     {
         if (number >= limit)
         {
-            result.Append(letters);
+            _ = result.Append(letters);
             number -= limit;
         }
     }

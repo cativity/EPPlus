@@ -164,7 +164,7 @@ namespace OfficeOpenXml.Export.HtmlExport
                 }
 
                 await this.WriteClassEndAsync(this._settings.Minify);
-                this._images.Add(pc.ImageHash);
+                _ = this._images.Add(pc.ImageHash);
             }
 
             await this.AddPicturePropertiesToCssAsync(p);
@@ -208,7 +208,7 @@ namespace OfficeOpenXml.Export.HtmlExport
             {
                 if (this.IsAddedToCache(xfs, out int id) == false || this._addedToCss.Contains(id) == false)
                 {
-                    this._addedToCss.Add(id);
+                    _ = this._addedToCss.Add(id);
                     await this.WriteClassAsync($".{styleClassPrefix}{cellStyleClassName}{id}{{", this._settings.Minify);
 
                     if (xfs.FillId > 0)
@@ -248,7 +248,7 @@ namespace OfficeOpenXml.Export.HtmlExport
             {
                 if (this.IsAddedToCache(xfs, out int id, bottomStyleId, rightStyleId) == false || this._addedToCss.Contains(id) == false)
                 {
-                    this._addedToCss.Add(id);
+                    _ = this._addedToCss.Add(id);
                     await this.WriteClassAsync($".{styleClassPrefix}{cellStyleClassName}{id}{{", this._settings.Minify);
 
                     if (xfs.FillId > 0)
@@ -358,14 +358,14 @@ namespace OfficeOpenXml.Export.HtmlExport
             if (bi.Style != ExcelBorderStyle.None)
             {
                 StringBuilder? sb = new StringBuilder();
-                sb.Append(GetBorderItemLine(bi.Style, suffix));
+                _ = sb.Append(GetBorderItemLine(bi.Style, suffix));
 
                 if (bi.Color != null && bi.Color.Exists)
                 {
-                    sb.Append($" {this.GetColor(bi.Color)}");
+                    _ = sb.Append($" {this.GetColor(bi.Color)}");
                 }
 
-                sb.Append(";");
+                _ = sb.Append(";");
 
                 await this.WriteCssItemAsync(sb.ToString(), this._settings.Minify);
             }

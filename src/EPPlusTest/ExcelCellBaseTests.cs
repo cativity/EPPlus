@@ -96,28 +96,28 @@ public class ExcelCellBaseTest
     [ExpectedException(typeof(ArgumentNullException))]
     public void UpdateFormulaSheetReferencesNullOldSheetThrowsException()
     {
-        ExcelCellBase.UpdateSheetNameInFormula("formula", null, "sheet2");
+        _ = ExcelCellBase.UpdateSheetNameInFormula("formula", null, "sheet2");
     }
 
     [TestMethod]
     [ExpectedException(typeof(ArgumentNullException))]
     public void UpdateFormulaSheetReferencesEmptyOldSheetThrowsException()
     {
-        ExcelCellBase.UpdateSheetNameInFormula("formula", string.Empty, "sheet2");
+        _ = ExcelCellBase.UpdateSheetNameInFormula("formula", string.Empty, "sheet2");
     }
 
     [TestMethod]
     [ExpectedException(typeof(ArgumentNullException))]
     public void UpdateFormulaSheetReferencesNullNewSheetThrowsException()
     {
-        ExcelCellBase.UpdateSheetNameInFormula("formula", "sheet1", null);
+        _ = ExcelCellBase.UpdateSheetNameInFormula("formula", "sheet1", null);
     }
 
     [TestMethod]
     [ExpectedException(typeof(ArgumentNullException))]
     public void UpdateFormulaSheetReferencesEmptyNewSheetThrowsException()
     {
-        ExcelCellBase.UpdateSheetNameInFormula("formula", "sheet1", string.Empty);
+        _ = ExcelCellBase.UpdateSheetNameInFormula("formula", "sheet1", string.Empty);
     }
 
     #endregion

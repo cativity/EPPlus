@@ -88,6 +88,6 @@ public class ExcelValueFilterCollection : ExcelFilterCollectionBase<ExcelFilterI
     /// <param name="item">The item to remove</param>
     public void Remove(ExcelFilterItem item)
     {
-        this._list.Remove(item);
+        _ = this._list.Remove(item);
     }
 }

@@ -112,12 +112,12 @@ internal class ZlibBaseStream : Stream
 
                 if (this._compressionMode == CompressionMode.Decompress)
                 {
-                    this._z.InitializeInflate(wantRfc1950Header);
+                    _ = this._z.InitializeInflate(wantRfc1950Header);
                 }
                 else
                 {
                     this._z.Strategy = this.Strategy;
-                    this._z.InitializeDeflate(this._level, wantRfc1950Header);
+                    _ = this._z.InitializeDeflate(this._level, wantRfc1950Header);
                 }
             }
 
@@ -318,11 +318,11 @@ internal class ZlibBaseStream : Stream
 
         if (this._wantCompress)
         {
-            this._z.EndDeflate();
+            _ = this._z.EndDeflate();
         }
         else
         {
-            this._z.EndInflate();
+            _ = this._z.EndInflate();
         }
 
         this._z = null;
@@ -473,7 +473,7 @@ internal class ZlibBaseStream : Stream
 
         if ((header[3] & 0x02) == 0x02)
         {
-            this.Read(this._buf1, 0, 1); // CRC16, ignore
+            _ = this.Read(this._buf1, 0, 1); // CRC16, ignore
         }
 
         return totalBytesRead;
@@ -705,7 +705,7 @@ internal class ZlibBaseStream : Stream
         }
 
         // reset to allow read from start
-        output.Seek(0, SeekOrigin.Begin);
+        _ = output.Seek(0, SeekOrigin.Begin);
         StreamReader? sr = new StreamReader(output, encoding);
 
         return sr.ReadToEnd();

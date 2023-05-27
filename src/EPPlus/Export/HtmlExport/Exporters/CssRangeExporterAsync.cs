@@ -138,7 +138,7 @@ namespace OfficeOpenXml.Export.HtmlExport.Exporters
                     {
                         HtmlTableExportSettings? settings = new HtmlTableExportSettings() { Minify = this.Settings.Minify };
                         await HtmlExportTableUtil.RenderTableCssAsync(sw, table, settings, this._styleCache, this._dataTypes);
-                        addedTableStyles.Add(table.TableStyle);
+                        _ = addedTableStyles.Add(table.TableStyle);
                     }
                 }
             }

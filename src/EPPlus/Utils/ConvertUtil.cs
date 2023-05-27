@@ -93,7 +93,7 @@ internal static class ConvertUtil
                 }
             }
 
-            return double.TryParse(tmp, out double n2);
+            return double.TryParse(tmp, out double _);
         }
 
         return false;
@@ -367,15 +367,15 @@ internal static class ConvertUtil
         {
             if (t[i] <= 0x1f && ((t[i] != '\n' && encodeTabLF == false) || encodeTabLF)) //Not Tab, CR or LF
             {
-                sb.AppendFormat("_x00{0}_", (t[i] <= 0xf ? "0" : "") + ((int)t[i]).ToString("X"));
+                _ = sb.AppendFormat("_x00{0}_", (t[i] <= 0xf ? "0" : "") + ((int)t[i]).ToString("X"));
             }
             else if (t[i] > 0xFFFD)
             {
-                sb.Append($"_x{((int)t[i]).ToString("X")}_");
+                _ = sb.Append($"_x{((int)t[i]).ToString("X")}_");
             }
             else
             {
-                sb.Append(t[i]);
+                _ = sb.Append(t[i]);
             }
         }
     }
@@ -421,7 +421,7 @@ internal static class ConvertUtil
         {
             if (prevIndex < match.Index)
             {
-                ret.Append(t.Substring(prevIndex, match.Index - prevIndex));
+                _ = ret.Append(t.Substring(prevIndex, match.Index - prevIndex));
             }
 
             if (!useNextValue && match.Value == "_x005F")
@@ -432,12 +432,12 @@ internal static class ConvertUtil
             {
                 if (useNextValue)
                 {
-                    ret.Append(match.Value);
+                    _ = ret.Append(match.Value);
                     useNextValue = false;
                 }
                 else
                 {
-                    ret.Append((char)int.Parse(match.Value.Substring(2, 4), NumberStyles.AllowHexSpecifier));
+                    _ = ret.Append((char)int.Parse(match.Value.Substring(2, 4), NumberStyles.AllowHexSpecifier));
                 }
             }
 
@@ -445,7 +445,7 @@ internal static class ConvertUtil
             match = match.NextMatch();
         }
 
-        ret.Append(t.Substring(prevIndex, t.Length - prevIndex));
+        _ = ret.Append(t.Substring(prevIndex, t.Length - prevIndex));
 
         return ret.ToString();
     }

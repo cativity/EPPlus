@@ -109,48 +109,48 @@ internal abstract partial class JsonExport
             switch (c)
             {
                 case '\\':
-                    sb.Append("\\\\");
+                    _ = sb.Append("\\\\");
 
                     break;
 
                 case '"':
-                    sb.Append("\\\"");
+                    _ = sb.Append("\\\"");
 
                     break;
 
                 case '\b':
-                    sb.Append("\\b");
+                    _ = sb.Append("\\b");
 
                     break;
 
                 case '\f':
-                    sb.Append("\\f");
+                    _ = sb.Append("\\f");
 
                     break;
 
                 case '\n':
-                    sb.Append("\\n");
+                    _ = sb.Append("\\n");
 
                     break;
 
                 case '\r':
-                    sb.Append("\\r");
+                    _ = sb.Append("\\r");
 
                     break;
 
                 case '\t':
-                    sb.Append("\\t");
+                    _ = sb.Append("\\t");
 
                     break;
 
                 default:
                     if (c < 0x20)
                     {
-                        sb.Append($"\\u{(short)c:X4}");
+                        _ = sb.Append($"\\u{(short)c:X4}");
                     }
                     else
                     {
-                        sb.Append(c);
+                        _ = sb.Append(c);
                     }
 
                     break;

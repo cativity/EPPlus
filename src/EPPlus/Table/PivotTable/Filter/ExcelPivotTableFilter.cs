@@ -113,17 +113,17 @@ public class ExcelPivotTableFilter : XmlHelper
         }
 
         ExcelFilterCustomItem? item1 = new ExcelFilterCustomItem(v, t);
-        cf.Filters.Add(item1);
+        _ = cf.Filters.Add(item1);
 
         if (type == ePivotTableDateValueFilterType.DateBetween)
         {
             cf.And = true;
-            cf.Filters.Add(new ExcelFilterCustomItem(ConvertUtil.GetValueForXml(this.Value2, this._date1904), eFilterOperator.LessThanOrEqual));
+            _ = cf.Filters.Add(new ExcelFilterCustomItem(ConvertUtil.GetValueForXml(this.Value2, this._date1904), eFilterOperator.LessThanOrEqual));
         }
         else if (type == ePivotTableDateValueFilterType.DateNotBetween)
         {
             cf.And = false;
-            cf.Filters.Add(new ExcelFilterCustomItem(ConvertUtil.GetValueForXml(this.Value2, this._date1904), eFilterOperator.GreaterThan));
+            _ = cf.Filters.Add(new ExcelFilterCustomItem(ConvertUtil.GetValueForXml(this.Value2, this._date1904), eFilterOperator.GreaterThan));
         }
 
         this._filter = cf;
@@ -384,17 +384,17 @@ public class ExcelPivotTableFilter : XmlHelper
         }
 
         ExcelFilterCustomItem? item1 = new ExcelFilterCustomItem(v, t);
-        cf.Filters.Add(item1);
+        _ = cf.Filters.Add(item1);
 
         if (type == ePivotTableCaptionFilterType.CaptionBetween)
         {
             cf.And = true;
-            cf.Filters.Add(new ExcelFilterCustomItem(this.StringValue2, eFilterOperator.LessThanOrEqual));
+            _ = cf.Filters.Add(new ExcelFilterCustomItem(this.StringValue2, eFilterOperator.LessThanOrEqual));
         }
         else if (type == ePivotTableCaptionFilterType.CaptionNotBetween)
         {
             cf.And = false;
-            cf.Filters.Add(new ExcelFilterCustomItem(this.StringValue2, eFilterOperator.GreaterThan));
+            _ = cf.Filters.Add(new ExcelFilterCustomItem(this.StringValue2, eFilterOperator.GreaterThan));
         }
 
         this._filter = cf;
@@ -444,17 +444,17 @@ public class ExcelPivotTableFilter : XmlHelper
         }
 
         ExcelFilterCustomItem? item1 = new ExcelFilterCustomItem(v1, t);
-        cf.Filters.Add(item1);
+        _ = cf.Filters.Add(item1);
 
         if (type == ePivotTableValueFilterType.ValueBetween)
         {
             cf.And = true;
-            cf.Filters.Add(new ExcelFilterCustomItem(GetFilterValueAsString(this.Value2), eFilterOperator.LessThanOrEqual));
+            _ = cf.Filters.Add(new ExcelFilterCustomItem(GetFilterValueAsString(this.Value2), eFilterOperator.LessThanOrEqual));
         }
         else if (type == ePivotTableValueFilterType.ValueNotBetween)
         {
             cf.And = false;
-            cf.Filters.Add(new ExcelFilterCustomItem(GetFilterValueAsString(this.Value2), eFilterOperator.GreaterThan));
+            _ = cf.Filters.Add(new ExcelFilterCustomItem(GetFilterValueAsString(this.Value2), eFilterOperator.GreaterThan));
         }
 
         this._filter = cf;
@@ -476,7 +476,7 @@ public class ExcelPivotTableFilter : XmlHelper
     {
         this._filterColumnNode.InnerXml = "<filters/>";
         ExcelValueFilterColumn? f = new ExcelValueFilterColumn(this.NameSpaceManager, this._filterColumnNode);
-        f.Filters.Add(this.StringValue1);
+        _ = f.Filters.Add(this.StringValue1);
         this._filter = f;
     }
 

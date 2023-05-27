@@ -71,7 +71,7 @@ public class SystemDrawingTextMeasurer : ITextMeasurer
             try
             {
                 Graphics? g = Graphics.FromHwnd(IntPtr.Zero);
-                g.MeasureString("d", new Font("Calibri", 11, FontStyle.Regular));
+                _ = g.MeasureString("d", new Font("Calibri", 11, FontStyle.Regular));
                 this._validForEnvironment = true;
             }
             catch

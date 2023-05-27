@@ -75,7 +75,7 @@ public class ParsingScopes
     /// <param name="parsingScope"></param>
     public virtual void KillScope(ParsingScope parsingScope)
     {
-        this._scopes.Pop();
+        _ = this._scopes.Pop();
 
         if (this._scopes.Count() == 0)
         {

@@ -143,7 +143,7 @@ public sealed class ExcelGradientFillXml : ExcelFillXml
     internal override XmlNode CreateXmlNode(XmlNode topNode)
     {
         this.TopNode = topNode;
-        this.CreateNode("d:gradientFill");
+        _ = this.CreateNode("d:gradientFill");
 
         if (this.Type == ExcelFillGradientType.Path)
         {
@@ -161,19 +161,19 @@ public sealed class ExcelGradientFillXml : ExcelFillXml
             XmlNode? node = this.TopNode.SelectSingleNode("d:gradientFill", this.NameSpaceManager);
             XmlElement? stopNode = node.OwnerDocument.CreateElement("stop", ExcelPackage.schemaMain);
             stopNode.SetAttribute("position", "0");
-            node.AppendChild(stopNode);
+            _ = node.AppendChild(stopNode);
             XmlElement? colorNode = node.OwnerDocument.CreateElement("color", ExcelPackage.schemaMain);
-            stopNode.AppendChild(colorNode);
-            this.GradientColor1.CreateXmlNode(colorNode);
+            _ = stopNode.AppendChild(colorNode);
+            _ = this.GradientColor1.CreateXmlNode(colorNode);
 
             /*** Gradient color node 2***/
             stopNode = node.OwnerDocument.CreateElement("stop", ExcelPackage.schemaMain);
             stopNode.SetAttribute("position", "1");
-            node.AppendChild(stopNode);
+            _ = node.AppendChild(stopNode);
             colorNode = node.OwnerDocument.CreateElement("color", ExcelPackage.schemaMain);
-            stopNode.AppendChild(colorNode);
+            _ = stopNode.AppendChild(colorNode);
 
-            this.GradientColor2.CreateXmlNode(colorNode);
+            _ = this.GradientColor2.CreateXmlNode(colorNode);
         }
 
         if (!double.IsNaN(this.Top))

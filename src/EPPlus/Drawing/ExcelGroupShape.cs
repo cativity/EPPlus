@@ -103,8 +103,8 @@ public class ExcelDrawingsGroup : IEnumerable<ExcelDrawing>, IDisposable
 
         if (xFrmNode.ChildNodes.Count == 0)
         {
-            d.CreateNode(xFrmNode, "a:off");
-            d.CreateNode(xFrmNode, "a:ext");
+            _ = d.CreateNode(xFrmNode, "a:off");
+            _ = d.CreateNode(xFrmNode, "a:ext");
         }
 
         XmlElement? offNode = (XmlElement)xFrmNode.SelectSingleNode("a:off", this._nsm);
@@ -115,19 +115,19 @@ public class ExcelDrawingsGroup : IEnumerable<ExcelDrawing>, IDisposable
         extNode.SetAttribute("cx", Math.Round(width * ExcelDrawing.EMU_PER_PIXEL, 0).ToString());
 
         d.SetGroupChild(offNode, extNode);
-        node.ParentNode.RemoveChild(node);
+        _ = node.ParentNode.RemoveChild(node);
 
         if (d.TopNode.ParentNode?.ParentNode?.LocalName == "AlternateContent")
         {
             XmlNode? containerNode = d.TopNode.ParentNode?.ParentNode;
-            d.TopNode.ParentNode.RemoveChild(d.TopNode);
-            containerNode.ParentNode.RemoveChild(containerNode);
-            containerNode.FirstChild.AppendChild(node);
+            _ = d.TopNode.ParentNode.RemoveChild(d.TopNode);
+            _ = containerNode.ParentNode.RemoveChild(containerNode);
+            _ = containerNode.FirstChild.AppendChild(node);
             node = containerNode;
         }
         else
         {
-            d.TopNode.ParentNode.RemoveChild(d.TopNode);
+            _ = d.TopNode.ParentNode.RemoveChild(d.TopNode);
         }
 
         d.AdjustXPathsForGrouping(true);
@@ -140,7 +140,6 @@ public class ExcelDrawingsGroup : IEnumerable<ExcelDrawing>, IDisposable
         double width = d.GetPixelWidth();
         int top = d.GetPixelTop();
         int left = d.GetPixelLeft();
-        XmlDocument? xmlDoc = this._parent.TopNode.OwnerDocument;
         XmlNode drawingNode;
 
         if (this._parent.TopNode.ParentNode?.ParentNode?.LocalName == "AlternateContent") //Create alternat content above ungrouped drawing.
@@ -148,18 +147,18 @@ public class ExcelDrawingsGroup : IEnumerable<ExcelDrawing>, IDisposable
             //drawingNode = xmlDoc.CreateElement("mc", "AlternateContent", ExcelPackage.schemaMarkupCompatibility);
             drawingNode = this._parent.TopNode.ParentNode.ParentNode.CloneNode(false);
             XmlNode? choiceNode = this._parent.TopNode.ParentNode.CloneNode(false);
-            drawingNode.AppendChild(choiceNode);
-            d.TopNode.ParentNode.RemoveChild(d.TopNode);
-            choiceNode.AppendChild(d.TopNode);
+            _ = drawingNode.AppendChild(choiceNode);
+            _ = d.TopNode.ParentNode.RemoveChild(d.TopNode);
+            _ = choiceNode.AppendChild(d.TopNode);
             drawingNode = this.CreateAnchorNode(drawingNode);
             XmlNode? addBeforeNode = this._parent.TopNode.ParentNode.ParentNode;
-            addBeforeNode.ParentNode.InsertBefore(drawingNode, addBeforeNode);
+            _ = addBeforeNode.ParentNode.InsertBefore(drawingNode, addBeforeNode);
         }
         else
         {
-            d.TopNode.ParentNode.RemoveChild(d.TopNode);
+            _ = d.TopNode.ParentNode.RemoveChild(d.TopNode);
             drawingNode = this.CreateAnchorNode(d.TopNode);
-            this._parent.TopNode.ParentNode.InsertBefore(drawingNode, this._parent.TopNode);
+            _ = this._parent.TopNode.ParentNode.InsertBefore(drawingNode, this._parent.TopNode);
         }
 
         d.AdjustXPathsForGrouping(false);
@@ -171,14 +170,14 @@ public class ExcelDrawingsGroup : IEnumerable<ExcelDrawing>, IDisposable
     private XmlNode CreateAnchorNode(XmlNode drawingNode)
     {
         XmlNode? topNode = this._parent.TopNode.CloneNode(false);
-        topNode.AppendChild(this._parent.TopNode.GetChildAtPosition(0).CloneNode(true));
-        topNode.AppendChild(this._parent.TopNode.GetChildAtPosition(1).CloneNode(true));
-        topNode.AppendChild(drawingNode);
+        _ = topNode.AppendChild(this._parent.TopNode.GetChildAtPosition(0).CloneNode(true));
+        _ = topNode.AppendChild(this._parent.TopNode.GetChildAtPosition(1).CloneNode(true));
+        _ = topNode.AppendChild(drawingNode);
         int ix = 3;
 
         while (ix < this._parent.TopNode.ChildNodes.Count)
         {
-            topNode.AppendChild(this._parent.TopNode.ChildNodes[ix].CloneNode(true));
+            _ = topNode.AppendChild(this._parent.TopNode.ChildNodes[ix].CloneNode(true));
             ix++;
         }
 
@@ -189,11 +188,11 @@ public class ExcelDrawingsGroup : IEnumerable<ExcelDrawing>, IDisposable
     {
         if (drawingNode.ParentNode?.ParentNode?.LocalName == "AlternateContent")
         {
-            this._topNode.AppendChild(drawingNode.ParentNode.ParentNode);
+            _ = this._topNode.AppendChild(drawingNode.ParentNode.ParentNode);
         }
         else
         {
-            this._topNode.AppendChild(drawingNode);
+            _ = this._topNode.AppendChild(drawingNode);
         }
     }
 
@@ -265,7 +264,7 @@ public class ExcelDrawingsGroup : IEnumerable<ExcelDrawing>, IDisposable
     public void Remove(ExcelDrawing drawing)
     {
         this.CheckNotDisposed();
-        this._groupDrawings.Remove(drawing);
+        _ = this._groupDrawings.Remove(drawing);
         this.AdjustXmlAndMoveFromGroup(drawing);
         int ix = this._parent._drawings._drawingsList.IndexOf(this._parent);
         this._parent._drawings._drawingsList.Insert(ix, drawing);
@@ -312,7 +311,7 @@ public class ExcelGroupShape : ExcelDrawing
 
         if (parent == null)
         {
-            this.CreateNode("xdr:clientData");
+            _ = this.CreateNode("xdr:clientData");
         }
     }
 

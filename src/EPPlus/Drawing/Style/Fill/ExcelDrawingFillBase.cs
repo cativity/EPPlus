@@ -58,7 +58,7 @@ public abstract class ExcelDrawingFillBase
         {
             XmlNode? p = this._xml.TopNode.ParentNode;
             XmlElement? newNode = this._xml.TopNode.OwnerDocument.CreateElement(type, ExcelPackage.schemaDrawings);
-            p.ReplaceChild(newNode, this._xml.TopNode);
+            _ = p.ReplaceChild(newNode, this._xml.TopNode);
             this._xml.TopNode = newNode;
         }
     }

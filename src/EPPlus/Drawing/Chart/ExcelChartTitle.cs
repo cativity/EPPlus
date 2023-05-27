@@ -124,7 +124,7 @@ public abstract class ExcelChartTitle : XmlHelper, IDrawingStyle, IStyleMandator
             {
                 if (this._richText == null || this._richText.Count == 0)
                 {
-                    this.RichText.Add("");
+                    _ = this.RichText.Add("");
                 }
 
                 this._font = new ExcelTextFont(this._chart,

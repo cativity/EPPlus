@@ -116,7 +116,6 @@ public class ExpressionCompiler : IExpressionCompiler
     {
         Expression? first = this._expressions.First();
         IEnumerable<Expression>? expressionsToHandle = this._expressions.Where(x => x.Operator != null && x.Operator.Precedence == precedence);
-        Expression? last = expressionsToHandle.Last();
         Expression? expression = expressionsToHandle.First();
 
         do

@@ -680,17 +680,17 @@ namespace OfficeOpenXml.Packaging.Ionic.Zip
                 {
                     if (wantUpdate)
                     {
-                        this.UpdateFile(item, dirInArchive);
+                        _ = this.UpdateFile(item, dirInArchive);
                     }
                     else
                     {
-                        this.AddFile(item, dirInArchive);
+                        _ = this.AddFile(item, dirInArchive);
                     }
                 }
                 else
                 {
                     // this adds "just" the directory, without recursing to the contained files
-                    this.AddOrUpdateDirectoryImpl(item, dirInArchive, action, false, 0);
+                    _ = this.AddOrUpdateDirectoryImpl(item, dirInArchive, action, false, 0);
                 }
             }
 

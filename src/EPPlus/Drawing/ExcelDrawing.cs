@@ -303,7 +303,7 @@ public class ExcelDrawing : XmlHelper, IDisposable
     {
         if (this.CellAnchor == eEditAs.OneCell)
         {
-            this.GetToRowFromPixels(this._height, out int row, out int pixOff);
+            this.GetToRowFromPixels(this._height, out int row, out int _);
 
             return (this.From.Row > rowFrom - 1 || (this.From.Row == rowFrom - 1 && this.From.RowOff == 0)) && row <= rowTo;
         }
@@ -884,7 +884,6 @@ public class ExcelDrawing : XmlHelper, IDisposable
     internal void CalcRowFromPixelTop(double pixels, out int row, out int rowOff)
     {
         ExcelWorksheet ws = this._drawings.Worksheet;
-        decimal mdw = ws.Workbook.MaxFontWidth;
         double prevPix = 0;
         double pix = ws.GetRowHeight(1) / 0.75;
         int r = 2;
@@ -1168,24 +1167,24 @@ public class ExcelDrawing : XmlHelper, IDisposable
             case eEditAs.OneCell:
                 this.DeleteNode("xdr:to");
                 this.DeleteNode("xdr:pos");
-                this.CreateNode("xdr:from");
-                this.CreateNode("xdr:ext");
+                _ = this.CreateNode("xdr:from");
+                _ = this.CreateNode("xdr:ext");
 
                 break;
 
             case eEditAs.Absolute:
                 this.DeleteNode("xdr:to");
                 this.DeleteNode("xdr:from");
-                this.CreateNode("xdr:pos");
-                this.CreateNode("xdr:ext");
+                _ = this.CreateNode("xdr:pos");
+                _ = this.CreateNode("xdr:ext");
 
                 break;
 
             default:
                 this.DeleteNode("xdr:pos");
                 this.DeleteNode("xdr:ext");
-                this.CreateNode("xdr:from");
-                this.CreateNode("xdr:to");
+                _ = this.CreateNode("xdr:from");
+                _ = this.CreateNode("xdr:to");
 
                 break;
         }
@@ -1371,7 +1370,7 @@ public class ExcelDrawing : XmlHelper, IDisposable
 
     internal virtual void DeleteMe()
     {
-        this.TopNode.ParentNode.RemoveChild(this.TopNode);
+        _ = this.TopNode.ParentNode.RemoveChild(this.TopNode);
     }
 
     /// <summary>
@@ -1436,7 +1435,7 @@ public class ExcelDrawing : XmlHelper, IDisposable
         XmlElement shapeNode = this.TopNode.OwnerDocument.CreateElement("xdr", "sp", ExcelPackage.schemaSheetDrawings);
         shapeNode.SetAttribute("macro", "");
         shapeNode.SetAttribute("textlink", "");
-        this.TopNode.AppendChild(shapeNode);
+        _ = this.TopNode.AppendChild(shapeNode);
 
         return shapeNode;
     }
@@ -1445,8 +1444,8 @@ public class ExcelDrawing : XmlHelper, IDisposable
     {
         XmlElement clientDataNode = this.TopNode.OwnerDocument.CreateElement("xdr", "clientData", ExcelPackage.schemaSheetDrawings);
         clientDataNode.SetAttribute("fPrintsWithSheet", "0");
-        this.TopNode.GetChildAtPosition(2).GetChildAtPosition(0).GetChildAtPosition(0).AppendChild(clientDataNode);
-        this.TopNode.AppendChild(clientDataNode);
+        _ = this.TopNode.GetChildAtPosition(2).GetChildAtPosition(0).GetChildAtPosition(0).AppendChild(clientDataNode);
+        _ = this.TopNode.AppendChild(clientDataNode);
 
         return clientDataNode;
     }

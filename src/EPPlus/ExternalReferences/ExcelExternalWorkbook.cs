@@ -147,7 +147,7 @@ public class ExcelExternalWorkbook : ExcelExternalLink
 
         if (reader.GetAttribute("refreshError") == "1" && !this._sheetRefresh.Contains(sheetId))
         {
-            this._sheetRefresh.Add(sheetId);
+            _ = this._sheetRefresh.Add(sheetId);
         }
 
         CellStore<object> cellStoreValues = this._sheetValues[sheetId];
@@ -174,7 +174,7 @@ public class ExcelExternalWorkbook : ExcelExternalLink
                         break;
 
                     case "cell":
-                        ExcelCellBase.GetRowCol(reader.GetAttribute("r"), out row, out col, false);
+                        _ = ExcelCellBase.GetRowCol(reader.GetAttribute("r"), out row, out col, false);
                         type = reader.GetAttribute("t");
                         string? vm = reader.GetAttribute("vm");
 
@@ -219,7 +219,7 @@ public class ExcelExternalWorkbook : ExcelExternalLink
 
                 ExcelExternalNamedItemCollection<ExcelExternalDefinedName> names = this._definedNamesValues[sheetId];
 
-                string? name = reader.GetAttribute("name");
+                _ = reader.GetAttribute("name");
                 names.Add(new ExcelExternalDefinedName() { Name = reader.GetAttribute("name"), RefersTo = reader.GetAttribute("refersTo"), SheetId = sheetId });
             }
         }
@@ -498,7 +498,7 @@ public class ExcelExternalWorkbook : ExcelExternalLink
                     return true;
                 }
 
-                this.SetPackageFromOtherReference(wb._package?._workbook?._externalLinks, file);
+                _ = this.SetPackageFromOtherReference(wb._package?._workbook?._externalLinks, file);
             }
         }
 
@@ -524,7 +524,6 @@ public class ExcelExternalWorkbook : ExcelExternalLink
             }
         }
 
-        ILexer? lexer = this._wb.FormulaParser.Lexer;
         this.CachedWorksheets.Clear();
         this.CachedNames.Clear();
         this._definedNamesValues.Clear();

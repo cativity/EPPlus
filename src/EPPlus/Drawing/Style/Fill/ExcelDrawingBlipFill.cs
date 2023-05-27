@@ -189,7 +189,7 @@ public class ExcelDrawingBlipFill : ExcelDrawingFillBase, IPictureContainer
         byte[]? img = File.ReadAllBytes(file.FullName);
         string? extension = file.Extension;
         this.ContentType = PictureStore.GetContentType(extension);
-        this.Image.SetImage(img, PictureStore.GetPictureType(extension));
+        _ = this.Image.SetImage(img, PictureStore.GetPictureType(extension));
     }
 
     #region IPictureContainer
@@ -213,7 +213,7 @@ public class ExcelDrawingBlipFill : ExcelDrawingFillBase, IPictureContainer
         IPictureContainer container = this;
         this._pictureRelationDocument.Package.PictureStore.RemoveImage(container.ImageHash, this);
         this._pictureRelationDocument.RelatedPart.DeleteRelationship(container.RelPic.Id);
-        this._pictureRelationDocument.Hashes.Remove(container.ImageHash);
+        _ = this._pictureRelationDocument.Hashes.Remove(container.ImageHash);
     }
 
     internal string ContentType { get; set; }

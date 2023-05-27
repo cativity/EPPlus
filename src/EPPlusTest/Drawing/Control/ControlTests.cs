@@ -118,7 +118,7 @@ public class ControlTests : TestBase
         ctrl.SetPosition(100, 100);
         ctrl.SetSize(200, 100);
 
-        ExcelVBAModule? codeModule = _pck.Workbook.VbaProject.Modules.AddModule("CheckboxCode");
+        _ = _pck.Workbook.VbaProject.Modules.AddModule("CheckboxCode");
         _codeModule.Code += "Sub Checkbox_Click()\r\n  MsgBox \"Clicked Checkbox!!\"\r\nEnd Sub\r\n";
     }
 
@@ -162,7 +162,7 @@ public class ControlTests : TestBase
         ctrl6.SetPosition(860, 100);
         ctrl6.SetSize(200, 30);
 
-        ExcelVBAModule? codeModule = _pck.Workbook.VbaProject.Modules.AddModule("RadioButtonCode");
+        _ = _pck.Workbook.VbaProject.Modules.AddModule("RadioButtonCode");
         _codeModule.Code += "Sub RadioButton_Click()\r\n  MsgBox \"Clicked RadioButton!!\"\r\nEnd Sub\r\n";
     }
 
@@ -172,7 +172,7 @@ public class ControlTests : TestBase
         _ws = _pck.Workbook.Worksheets.Add("CheckboxWithImageFill");
         ExcelControlCheckBox? ctrl = _ws.Drawings.AddCheckBoxControl("Checkbox 2");
         ctrl.Fill.Style = eVmlFillType.Frame;
-        ctrl.Fill.PatternPictureSettings.Image.SetImage(Properties.Resources.Test1JpgByteArray, ePictureType.Jpg);
+        _ = ctrl.Fill.PatternPictureSettings.Image.SetImage(Properties.Resources.Test1JpgByteArray, ePictureType.Jpg);
         ctrl.Fill.PatternPictureSettings.AspectRatio = eVmlAspectRatio.AtLeast;
         ctrl.Fill.PatternPictureSettings.Size = "0,0";
         ctrl.SetPosition(100, 100);
@@ -185,7 +185,7 @@ public class ControlTests : TestBase
         _ws = _pck.Workbook.Worksheets.Add("CheckboxWithTileFill");
         ExcelControlCheckBox? ctrl = _ws.Drawings.AddCheckBoxControl("Checkbox 2");
         ctrl.Fill.Style = eVmlFillType.Tile;
-        ctrl.Fill.PatternPictureSettings.Image.SetImage(Properties.Resources.CodeTif, ePictureType.Tif);
+        _ = ctrl.Fill.PatternPictureSettings.Image.SetImage(Properties.Resources.CodeTif, ePictureType.Tif);
         ctrl.Fill.Color.SetColor(Color.Black);
         ctrl.Fill.Recolor = true;
         ctrl.SetPosition(100, 100);
@@ -198,7 +198,7 @@ public class ControlTests : TestBase
         _ws = _pck.Workbook.Worksheets.Add("CheckboxWithPatternFill");
         ExcelControlCheckBox? ctrl = _ws.Drawings.AddCheckBoxControl("Checkbox 2");
         ctrl.Fill.Style = eVmlFillType.Pattern;
-        ctrl.Fill.PatternPictureSettings.Image.SetImage(Properties.Resources.VmlPatternImage, ePictureType.Png);
+        _ = ctrl.Fill.PatternPictureSettings.Image.SetImage(Properties.Resources.VmlPatternImage, ePictureType.Png);
         ctrl.Fill.Color.SetColor(Color.Red);
         ctrl.Fill.SecondColor.SetColor(Color.Yellow);
         ctrl.Fill.Recolor = true;
@@ -338,7 +338,7 @@ public class ControlTests : TestBase
         Assert.AreEqual(r3.To.Column, r3._control.To.Column);
         Assert.AreEqual(r3.To.ColumnOff, r3._control.To.ColumnOff);
 
-        ctrl.Group(r1, r2, r3);
+        _ = ctrl.Group(r1, r2, r3);
 
         _codeModule.Code += "Sub GroupBox_Click()\r\n  MsgBox \"Clicked GroupBox!!\"\r\nEnd Sub\r\n";
     }
@@ -351,7 +351,7 @@ public class ControlTests : TestBase
         ExcelVmlDrawingPicture? img = ws.HeaderFooter.OddHeader.InsertPicture(Properties.Resources.Test1, PictureAlignment.Centered);
         img.Title = "Renamed Image";
 
-        ws.Comments.Add(ws.Cells["A1"], "Comment in cell A1", "JK");
+        _ = ws.Comments.Add(ws.Cells["A1"], "Comment in cell A1", "JK");
         ExcelControlButton? btn = ws.Drawings.AddButtonControl("Button 1");
         btn.SetPosition(100, 100);
     }
@@ -371,7 +371,7 @@ public class ControlTests : TestBase
     public void RemoveControlTest()
     {
         _ws = _pck.Workbook.Worksheets.Add("RemoveControl");
-        ExcelControlGroupBox? ctrl = _ws.Drawings.AddGroupBoxControl("GroupBox 1");
+        _ = _ws.Drawings.AddGroupBoxControl("GroupBox 1");
         Assert.AreEqual(1, _ws.Drawings.Count);
     }
 

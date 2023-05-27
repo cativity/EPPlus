@@ -70,7 +70,7 @@ internal partial class ZipPackage : ZipPackagePartBase, IDisposable
         else
         {
             Dictionary<string, string>? rels = new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase);
-            stream.Seek(0, SeekOrigin.Begin);
+            _ = stream.Seek(0, SeekOrigin.Begin);
 
             //using (ZipInputStream zip = new ZipInputStream(stream))
             //{
@@ -160,7 +160,7 @@ internal partial class ZipPackage : ZipPackagePartBase, IDisposable
     private static byte[] GetZipEntryAsByteArray(ZipInputStream zip, ZipEntry e)
     {
         byte[]? b = new byte[e.UncompressedSize];
-        int size = zip.Read(b, 0, (int)e.UncompressedSize);
+        _ = zip.Read(b, 0, (int)e.UncompressedSize);
 
         return b;
     }
@@ -347,10 +347,10 @@ internal partial class ZipPackage : ZipPackagePartBase, IDisposable
         }
 
         rels = null;
-        this._contentTypes.Remove(GetUriKey(Uri.OriginalString));
+        _ = this._contentTypes.Remove(GetUriKey(Uri.OriginalString));
 
         //remove all relations
-        this.Parts.Remove(GetUriKey(Uri.OriginalString));
+        _ = this.Parts.Remove(GetUriKey(Uri.OriginalString));
     }
 
     internal void Save(Stream stream)
@@ -361,7 +361,7 @@ internal partial class ZipPackage : ZipPackagePartBase, IDisposable
         os.CompressionLevel = (OfficeOpenXml.Packaging.Ionic.Zlib.CompressionLevel)this._compression;
 
         /**** ContentType****/
-        ZipEntry? entry = os.PutNextEntry("[Content_Types].xml");
+        _ = os.PutNextEntry("[Content_Types].xml");
         byte[] b = enc.GetBytes(this.GetContentTypeXml());
         os.Write(b, 0, b.Length);
         /**** Top Rels ****/
@@ -404,15 +404,15 @@ internal partial class ZipPackage : ZipPackagePartBase, IDisposable
         {
             if (ct.IsExtension)
             {
-                xml.AppendFormat("<Default ContentType=\"{0}\" Extension=\"{1}\"/>", ct.Name, ct.Match);
+                _ = xml.AppendFormat("<Default ContentType=\"{0}\" Extension=\"{1}\"/>", ct.Name, ct.Match);
             }
             else
             {
-                xml.AppendFormat("<Override ContentType=\"{0}\" PartName=\"{1}\" />", ct.Name, GetUriKey(ct.Match));
+                _ = xml.AppendFormat("<Override ContentType=\"{0}\" PartName=\"{1}\" />", ct.Name, GetUriKey(ct.Match));
             }
         }
 
-        xml.Append("</Types>");
+        _ = xml.Append("</Types>");
 
         return xml.ToString();
     }

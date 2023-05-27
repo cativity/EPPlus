@@ -78,11 +78,11 @@ internal static class MoveSheetXmlNode
 
         if (before)
         {
-            worksheets.TopNode.InsertBefore(sourceNode, targetNode);
+            _ = worksheets.TopNode.InsertBefore(sourceNode, targetNode);
         }
         else
         {
-            worksheets.TopNode.InsertAfter(sourceNode, targetNode);
+            _ = worksheets.TopNode.InsertAfter(sourceNode, targetNode);
         }
     }
 }

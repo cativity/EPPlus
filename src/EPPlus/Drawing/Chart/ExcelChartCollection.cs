@@ -58,7 +58,6 @@ public class ExcelChartCollection : IEnumerable<ExcelChart>
             throw new InvalidOperationException("3D charts cannot be combined with other chart types");
         }
 
-        XmlNode? prependingChartNode = this._list[this._list.Count - 1].TopNode;
         ExcelChart? chart = ExcelChart.GetNewChart(this._topChart.WorkSheet.Drawings, this._topChart.TopNode, chartType, this._topChart, null);
 
         this._list.Add((ExcelChart)chart);

@@ -60,7 +60,7 @@ public class ExcelHistogramChartSeries : ExcelChartSeries<ExcelHistogramChartSer
             if (this._chart.Axis.Length == 3)
             {
                 //Remove percentage axis
-                this._chart.Axis[2].TopNode.ParentNode.RemoveChild(this._chart.Axis[2].TopNode);
+                _ = this._chart.Axis[2].TopNode.ParentNode.RemoveChild(this._chart.Axis[2].TopNode);
                 ((ExcelChartEx)this._chart)._exAxis = null;
                 this._chart._axis = new ExcelChartAxis[] { this._chart._axis[0], this._chart._axis[1] };
             }

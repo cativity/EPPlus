@@ -53,7 +53,7 @@ public class ExcelCustomFilterColumn : ExcelFilterColumn
                         filterOperator = eFilterOperator.Equal;
                     }
 
-                    this.Filters.Add(new ExcelFilterCustomItem(node.Attributes["val"].Value, filterOperator));
+                    _ = this.Filters.Add(new ExcelFilterCustomItem(node.Attributes["val"].Value, filterOperator));
 
                     break;
             }
@@ -208,7 +208,7 @@ public class ExcelCustomFilterColumn : ExcelFilterColumn
                 e.SetAttribute("operator", f.Operator.Value.ToEnumString());
             }
 
-            node.AppendChild(e);
+            _ = node.AppendChild(e);
         }
     }
 }

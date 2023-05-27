@@ -22,7 +22,7 @@ public class FloorTests
     public void Initialize()
     {
         this._parsingContext = ParsingContext.Create();
-        this._parsingContext.Scopes.NewScope(RangeAddress.Empty);
+        _ = this._parsingContext.Scopes.NewScope(RangeAddress.Empty);
     }
 
     [TestMethod]

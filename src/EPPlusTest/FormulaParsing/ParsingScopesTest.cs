@@ -79,7 +79,7 @@ public class ParsingScopesTest
     [TestMethod]
     public void CurrentScopeShouldBeNullWhenScopeHasTerminated()
     {
-        using (ParsingScope? scope = this._parsingScopes.NewScope(RangeAddress.Empty))
+        using (this._parsingScopes.NewScope(RangeAddress.Empty))
         {
         }
 
@@ -97,10 +97,10 @@ public class ParsingScopesTest
     [TestMethod]
     public void LifetimeEventHandlerShouldBeCalled()
     {
-        using (ParsingScope? scope = this._parsingScopes.NewScope(RangeAddress.Empty))
+        using (this._parsingScopes.NewScope(RangeAddress.Empty))
         {
         }
 
-        A.CallTo(() => this._lifeTimeEventHandler.ParsingCompleted()).MustHaveHappened();
+        _ = A.CallTo(() => this._lifeTimeEventHandler.ParsingCompleted()).MustHaveHappened();
     }
 }

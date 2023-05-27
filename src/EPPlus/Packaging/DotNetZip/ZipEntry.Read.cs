@@ -39,27 +39,27 @@ internal partial class ZipEntry
 
         // workitem 8098: ok (restore)
         long posn = this.ArchiveStream.Position;
-        this.ArchiveStream.Seek(this._RelativeOffsetOfLocalHeader, SeekOrigin.Begin);
+        _ = this.ArchiveStream.Seek(this._RelativeOffsetOfLocalHeader, SeekOrigin.Begin);
 
         // workitem 10178
         SharedUtilities.Workaround_Ladybug318918(this.ArchiveStream);
 
         byte[] block = new byte[30];
-        this.ArchiveStream.Read(block, 0, block.Length);
+        _ = this.ArchiveStream.Read(block, 0, block.Length);
         int i = 26;
         Int16 filenameLength = (short)(block[i++] + (block[i++] * 256));
         Int16 extraFieldLength = (short)(block[i++] + (block[i++] * 256));
 
         // workitem 8098: ok (relative)
-        this.ArchiveStream.Seek(filenameLength, SeekOrigin.Current);
+        _ = this.ArchiveStream.Seek(filenameLength, SeekOrigin.Current);
 
         // workitem 10178
         SharedUtilities.Workaround_Ladybug318918(this.ArchiveStream);
 
-        this.ProcessExtraField(this.ArchiveStream, extraFieldLength);
+        _ = this.ProcessExtraField(this.ArchiveStream, extraFieldLength);
 
         // workitem 8098: ok (restore)
-        this.ArchiveStream.Seek(posn, SeekOrigin.Begin);
+        _ = this.ArchiveStream.Seek(posn, SeekOrigin.Begin);
 
         // workitem 10178
         SharedUtilities.Workaround_Ladybug318918(this.ArchiveStream);
@@ -411,7 +411,7 @@ internal partial class ZipEntry
         entry.__FileDataPosition = entry.ArchiveStream.Position;
 
         // seek past the data without reading it. We will read on Extract()
-        s.Seek(entry._CompressedFileDataSize + entry._LengthOfTrailer, SeekOrigin.Current);
+        _ = s.Seek(entry._CompressedFileDataSize + entry._LengthOfTrailer, SeekOrigin.Current);
 
         // workitem 10178
         SharedUtilities.Workaround_Ladybug318918(s);
@@ -445,7 +445,7 @@ internal partial class ZipEntry
 
         if (datum != ZipConstants.PackedToRemovableMedia)
         {
-            s.Seek(-4, SeekOrigin.Current); // unread the block
+            _ = s.Seek(-4, SeekOrigin.Current); // unread the block
 
             // workitem 10178
             SharedUtilities.Workaround_Ladybug318918(s);
@@ -477,7 +477,7 @@ internal partial class ZipEntry
                 }
                 else
                 {
-                    s.Seek(-12, SeekOrigin.Current); // unread the three blocks
+                    _ = s.Seek(-12, SeekOrigin.Current); // unread the three blocks
 
                     // workitem 10178
                     SharedUtilities.Workaround_Ladybug318918(s);
@@ -485,7 +485,7 @@ internal partial class ZipEntry
             }
             else
             {
-                s.Seek(-8, SeekOrigin.Current); // unread the two blocks
+                _ = s.Seek(-8, SeekOrigin.Current); // unread the two blocks
 
                 // workitem 10178
                 SharedUtilities.Workaround_Ladybug318918(s);
@@ -493,7 +493,7 @@ internal partial class ZipEntry
         }
         else
         {
-            s.Seek(-4, SeekOrigin.Current); // unread the block
+            _ = s.Seek(-4, SeekOrigin.Current); // unread the block
 
             // workitem 10178
             SharedUtilities.Workaround_Ladybug318918(s);

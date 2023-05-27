@@ -38,7 +38,7 @@ internal class Clean : ExcelFunction
             {
                 if (c > 31)
                 {
-                    sb.Append((char)c);
+                    _ = sb.Append((char)c);
                 }
             }
 

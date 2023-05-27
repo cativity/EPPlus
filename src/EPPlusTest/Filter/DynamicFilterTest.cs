@@ -848,7 +848,7 @@ public class DynamicFilterTest : TestBase
         DateTime startDate = new DateTime(DateTime.Today.Year + 1, 1, 1);
         DateTime endDate = new DateTime(DateTime.Today.Year + 1, 12, 31);
         int startRow = GetRowFromDate(startDate);
-        int endRow = GetRowFromDate(endDate);
+        _ = GetRowFromDate(endDate);
         Assert.AreEqual(true, ws.Row(startRow - 1).Hidden);
         Assert.AreEqual(false, ws.Row(startRow).Hidden);
         Assert.AreEqual(false, ws.Row(500).Hidden);

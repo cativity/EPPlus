@@ -77,7 +77,7 @@ public class ExcelDataValidationCollection : IEnumerable<IExcelDataValidation>
         {
             if (xr.LocalName != "dataValidation")
             {
-                xr.Read();
+                _ = xr.Read();
 
                 break;
             }
@@ -355,7 +355,7 @@ public class ExcelDataValidationCollection : IEnumerable<IExcelDataValidation>
     {
         this._validations.Add(validation);
 
-        ExcelAddress? internalAddress = new ExcelAddress(address.Replace(" ", ","));
+        //_ = new ExcelAddress(address.Replace(" ", ","));
 
         this.AddItemToRangeDictionaryMultipleAddresses(address, validation);
 
@@ -488,7 +488,7 @@ public class ExcelDataValidationCollection : IEnumerable<IExcelDataValidation>
             }
         }
 
-        this._validations.RemoveAll(match);
+        _ = this._validations.RemoveAll(match);
     }
 
     IEnumerator<IExcelDataValidation> IEnumerable<IExcelDataValidation>.GetEnumerator()

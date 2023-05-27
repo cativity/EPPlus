@@ -129,8 +129,8 @@ public class ExcelChartDataTable : XmlHelper, IDrawingStyle
             {
                 if (this.TopNode.SelectSingleNode("c:txPr", this.NameSpaceManager) == null)
                 {
-                    this.CreateNode("c:txPr/a:bodyPr");
-                    this.CreateNode("c:txPr/a:lstStyle");
+                    _ = this.CreateNode("c:txPr/a:bodyPr");
+                    _ = this.CreateNode("c:txPr/a:lstStyle");
                 }
 
                 this._font = new ExcelTextFont(this._chart, this.NameSpaceManager, this.TopNode, "c:txPr/a:p/a:pPr/a:defRPr", this.SchemaNodeOrder);

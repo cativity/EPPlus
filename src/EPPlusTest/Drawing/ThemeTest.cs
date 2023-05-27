@@ -138,13 +138,8 @@ public class ThemeTest : TestBase
         theme.CurrentTheme.ColorScheme.Accent6.SetRgbColor(Color.FromArgb(34, 34, 34));
         theme.CurrentTheme.ColorScheme.Accent1.Transforms.AddAlpha(50);
 
-        ExcelDrawingFill? f1 = theme.CurrentTheme.FormatScheme.FillStyle[0];
         ExcelDrawingFill? f2 = theme.CurrentTheme.FormatScheme.FillStyle[1];
         ExcelDrawingFill? f3 = theme.CurrentTheme.FormatScheme.FillStyle[2];
-
-        ExcelDrawingFill? b1 = theme.CurrentTheme.FormatScheme.BackgroundFillStyle[0];
-        ExcelDrawingFill? b2 = theme.CurrentTheme.FormatScheme.BackgroundFillStyle[1];
-        ExcelDrawingFill? b3 = theme.CurrentTheme.FormatScheme.BackgroundFillStyle[2];
 
         Assert.AreEqual(eFillStyle.GradientFill, f2.Style);
 
@@ -427,8 +422,8 @@ public class ThemeTest : TestBase
         LoadTestdata(ws);
         ExcelBarChart? chart = ws.Drawings.AddBarChart("ThisChart", eBarChartType.BarClustered3D);
 
-        chart.Series.Add("D2:D8", "A2:A8");
-        chart.Series.Add("B2:B8", "A2:A8");
+        _ = chart.Series.Add("D2:D8", "A2:A8");
+        _ = chart.Series.Add("B2:B8", "A2:A8");
         chart.StyleManager.SetChartStyle(ePresetChartStyle.Bar3dChartStyle1);
         SaveWorkbook("ThemeSavonBlipFill.xlsx", _pck);
     }

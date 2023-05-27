@@ -235,12 +235,8 @@ internal class RangeCopyHelper
     private void GetCopiedValues()
     {
         ExcelWorksheet? worksheet = this._sourceRange._worksheet;
-        int toRow = this._sourceRange._toRow;
-        int toCol = this._sourceRange._toCol;
-        int fromRow = this._sourceRange._fromRow;
-        int fromCol = this._sourceRange._fromCol;
 
-        bool includeValues = EnumUtil.HasNotFlag(this._copyOptions, ExcelRangeCopyOptionFlags.ExcludeValues);
+        _ = EnumUtil.HasNotFlag(this._copyOptions, ExcelRangeCopyOptionFlags.ExcludeValues);
         bool includeStyles = EnumUtil.HasNotFlag(this._copyOptions, ExcelRangeCopyOptionFlags.ExcludeStyles);
         bool includeComments = EnumUtil.HasNotFlag(this._copyOptions, ExcelRangeCopyOptionFlags.ExcludeComments);
         bool includeThreadedComments = EnumUtil.HasNotFlag(this._copyOptions, ExcelRangeCopyOptionFlags.ExcludeThreadedComments);
@@ -483,7 +479,7 @@ internal class RangeCopyHelper
                     if (differentPackages && this._destination._workbook.ThreadedCommentPersons[c.PersonId] == null)
                     {
                         ExcelThreadedCommentPerson? p = this._sourceRange._workbook.ThreadedCommentPersons[c.PersonId];
-                        this._destination._workbook.ThreadedCommentPersons.Add(p.DisplayName, p.UserId, p.ProviderId, p.Id);
+                        _ = this._destination._workbook.ThreadedCommentPersons.Add(p.DisplayName, p.UserId, p.ProviderId, p.Id);
                     }
 
                     tc.AddCommentFromXml((XmlElement)c.TopNode);
@@ -542,7 +538,7 @@ internal class RangeCopyHelper
 
             if (img.ImageBytes != null)
             {
-                c.Fill.PatternPictureSettings.Image.SetImage(img.ImageBytes, img.Type ?? ePictureType.Jpg);
+                _ = c.Fill.PatternPictureSettings.Image.SetImage(img.ImageBytes, img.Type ?? ePictureType.Jpg);
             }
         }
     }

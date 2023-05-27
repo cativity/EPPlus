@@ -48,7 +48,7 @@ internal class FormulaDataTableValidation
                     }
                 }
 
-                hs.Add(si);
+                _ = hs.Add(si);
             }
         }
     }

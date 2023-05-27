@@ -458,7 +458,7 @@ public class ExcelRangeColumn : IExcelColumn, IEnumerable<ExcelRangeColumn>, IEn
 
             if (this._worksheet._values.PrevCell(ref r, ref cPrev))
             {
-                ExcelColumn? pc = this._worksheet.GetValueInner(0, cPrev) as ExcelColumn;
+                _ = this._worksheet.GetValueInner(0, cPrev) as ExcelColumn;
 
                 if (cPrev > 0)
                 {
@@ -520,7 +520,7 @@ public class ExcelRangeColumn : IExcelColumn, IEnumerable<ExcelRangeColumn>, IEn
         {
             int maxCol = currentCol.ColumnMax;
             currentCol.ColumnMax = newColMax;
-            ExcelColumn copy = this._worksheet.CopyColumn(currentCol, newColMax + 1, maxCol);
+            _ = this._worksheet.CopyColumn(currentCol, newColMax + 1, maxCol);
         }
     }
 

@@ -74,7 +74,7 @@ namespace OfficeOpenXml.Drawing
         /// <param name="pictureType">The type of image loaded in the stream</param>
         public ExcelImage(Stream imageStream, ePictureType pictureType)
         {
-            this.SetImage(imageStream, pictureType);
+            _ = this.SetImage(imageStream, pictureType);
         }
 
         /// <summary>
@@ -84,7 +84,7 @@ namespace OfficeOpenXml.Drawing
         /// <param name="pictureType">The type of image loaded in the stream</param>
         public ExcelImage(byte[] imageBytes, ePictureType pictureType)
         {
-            this.SetImage(imageBytes, pictureType);
+            _ = this.SetImage(imageBytes, pictureType);
         }
 
         /// <summary>
@@ -129,7 +129,7 @@ namespace OfficeOpenXml.Drawing
             }
 
             ePictureType type = PictureStore.GetPictureType(fi.Extension);
-            this.SetImage(File.ReadAllBytes(imagePath), type, true);
+            _ = this.SetImage(File.ReadAllBytes(imagePath), type, true);
         }
 
         /// <summary>
@@ -149,7 +149,7 @@ namespace OfficeOpenXml.Drawing
             }
 
             ePictureType type = PictureStore.GetPictureType(imageFile.Extension);
-            this.SetImage(File.ReadAllBytes(imageFile.FullName), type, true);
+            _ = this.SetImage(File.ReadAllBytes(imageFile.FullName), type, true);
         }
 
         /// <summary>
@@ -196,8 +196,8 @@ namespace OfficeOpenXml.Drawing
                 }
 
                 byte[]? byRet = new byte[imageStream.Length];
-                imageStream.Seek(0, SeekOrigin.Begin);
-                imageStream.Read(byRet, 0, (int)imageStream.Length);
+                _ = imageStream.Seek(0, SeekOrigin.Begin);
+                _ = imageStream.Read(byRet, 0, (int)imageStream.Length);
 
                 return this.SetImage(byRet, pictureType);
             }
@@ -222,8 +222,8 @@ namespace OfficeOpenXml.Drawing
                 }
 
                 byte[]? byRet = new byte[imageStream.Length];
-                imageStream.Seek(0, SeekOrigin.Begin);
-                await imageStream.ReadAsync(byRet, 0, (int)imageStream.Length);
+                _ = imageStream.Seek(0, SeekOrigin.Begin);
+                _ = await imageStream.ReadAsync(byRet, 0, (int)imageStream.Length);
 
                 return this.SetImage(byRet, pictureType);
             }
@@ -264,7 +264,7 @@ namespace OfficeOpenXml.Drawing
             ePictureType type = PictureStore.GetPictureType(imageFile.Extension);
             FileStream? fs = imageFile.OpenRead();
             byte[]? b = new byte[fs.Length];
-            await fs.ReadAsync(b, 0, b.Length);
+            _ = await fs.ReadAsync(b, 0, b.Length);
 
             return this.SetImage(b, type, true);
         }
@@ -362,7 +362,7 @@ namespace OfficeOpenXml.Drawing
                 this.ImageBytes = image;
             }
 
-            PictureStore.SavePicture(image, this._container, pictureType);
+            _ = PictureStore.SavePicture(image, this._container, pictureType);
             MemoryStream? ms = RecyclableMemory.GetStream(image);
 
             if (this._container.RelationDocument.Package.Settings.ImageSettings.GetImageBounds(ms,

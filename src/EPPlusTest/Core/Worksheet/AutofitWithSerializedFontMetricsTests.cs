@@ -78,7 +78,7 @@ public class AutofitWithSerializedFontMetricsTests : TestBase
                             n = rnd.Next(97, 122);
                         }
 
-                        sb.Append((char)n);
+                        _ = sb.Append((char)n);
                     }
 
                     sheet.Cells[row, col].Value = sb.ToString();
@@ -89,7 +89,6 @@ public class AutofitWithSerializedFontMetricsTests : TestBase
             sw.Start();
             sheet.Columns[1, 9].AutoFit();
             sw.Stop();
-            long ms = sw.ElapsedMilliseconds;
         }
 
         SaveWorkbook($"Autofit_SerializedFont_{fontFamily.Replace(" ", string.Empty)}.xlsx", package);
@@ -163,7 +162,7 @@ public class AutofitWithSerializedFontMetricsTests : TestBase
             range.Style.Font.Size = 9f;
             range.Style.Font.Italic = style == FontSubFamilies.Italic || style == FontSubFamilies.BoldItalic;
             range.Style.Font.Bold = style == FontSubFamilies.Bold || style == FontSubFamilies.BoldItalic;
-            Random? rnd = new Random();
+            //_ = new Random();
 
             for (int col = 1; col < lists.Count + 1; col++)
             {
@@ -256,7 +255,7 @@ public class AutofitWithSerializedFontMetricsTests : TestBase
             range.Style.Font.Size = 24f;
             range.Style.Font.Italic = style == FontSubFamilies.Italic || style == FontSubFamilies.BoldItalic;
             range.Style.Font.Bold = style == FontSubFamilies.Bold || style == FontSubFamilies.BoldItalic;
-            Random? rnd = new Random();
+            //_ = new Random();
 
             for (int col = 1; col < lists.Count + 1; col++)
             {
@@ -419,7 +418,7 @@ public class AutofitWithSerializedFontMetricsTests : TestBase
             range.Style.Font.Size = 24f;
             range.Style.Font.Italic = style == FontSubFamilies.Italic || style == FontSubFamilies.BoldItalic;
             range.Style.Font.Bold = style == FontSubFamilies.Bold || style == FontSubFamilies.BoldItalic;
-            Random? rnd = new Random();
+            //_ = new Random();
 
             for (int col = 1; col < lists.Count + 1; col++)
             {

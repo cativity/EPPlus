@@ -141,7 +141,7 @@ public class CellStoreInWorksheetTest : TestBase
 
         LoadData(ws, 5000);
 
-        CellStoreEnumerator<ExcelValue>? o = new CellStoreEnumerator<ExcelValue>(ws._values, 2, 1, 5, 3);
+        //_ = new CellStoreEnumerator<ExcelValue>(ws._values, 2, 1, 5, 3);
 
         for (int i = 1; i < 5000; i++)
         {

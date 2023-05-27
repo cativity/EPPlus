@@ -32,7 +32,6 @@ public class ExcelTableCollection : IEnumerable<ExcelTable>
 
     internal ExcelTableCollection(ExcelWorksheet ws)
     {
-        ZipPackage? pck = ws._package.ZipPackage;
         this._ws = ws;
 
         foreach (XmlElement node in ws.WorksheetXml.SelectNodes("//d:tableParts/d:tablePart", ws.NameSpaceManager))
@@ -168,8 +167,8 @@ public class ExcelTableCollection : IEnumerable<ExcelTable>
         lock (this)
         {
             int tIx = this._tableNames[Table.Name];
-            this._tableNames.Remove(Table.Name);
-            this._tables.Remove(Table);
+            _ = this._tableNames.Remove(Table.Name);
+            _ = this._tables.Remove(Table);
 
             foreach (ExcelWorksheet? sheet in Table.WorkSheet.Workbook.Worksheets)
             {

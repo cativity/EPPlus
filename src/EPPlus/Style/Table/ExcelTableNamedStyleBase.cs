@@ -236,7 +236,6 @@ public abstract class ExcelTableNamedStyleBase : XmlHelper
                 foreach (XmlElement elem in xml.DocumentElement.ChildNodes)
                 {
                     eTableStyleElement type = elem.GetAttribute("name").ToEnum(eTableStyleElement.WholeTable);
-                    string? dxfXml = elem.InnerXml;
                     ExcelDxfStyleLimitedFont? dxf = new ExcelDxfStyleLimitedFont(this.NameSpaceManager, elem.FirstChild, this._styles, null);
 
                     ExcelTableStyleElement? te = this.GetTableStyleElement(type);

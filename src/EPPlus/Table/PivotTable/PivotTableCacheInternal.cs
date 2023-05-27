@@ -237,7 +237,7 @@ internal class PivotTableCacheInternal : XmlHelper
 
                     foreach (ExcelPivotTable? pt in this._pivotTables)
                     {
-                        pt.Fields.AddField(ix);
+                        _ = pt.Fields.AddField(ix);
                     }
 
                     cacheUpdated = true;
@@ -335,7 +335,6 @@ internal class PivotTableCacheInternal : XmlHelper
             }
         }
 
-        int removedFields = this._fields.Count;
         int calcFields = 0;
 
         while (r.Columns + calcFields < this._fields.Count)
@@ -344,8 +343,8 @@ internal class PivotTableCacheInternal : XmlHelper
 
             if (f.DatabaseField)
             {
-                f.TopNode.ParentNode.RemoveChild(f.TopNode);
-                this._fields.Remove(f);
+                _ = f.TopNode.ParentNode.RemoveChild(f.TopNode);
+                _ = this._fields.Remove(f);
             }
             else
             {
@@ -753,7 +752,7 @@ internal class PivotTableCacheInternal : XmlHelper
     internal ExcelPivotTableCacheField AddDateGroupField(ExcelPivotTableField field, eDateGroupBy groupBy, DateTime startDate, DateTime endDate, int interval)
     {
         ExcelPivotTableCacheField cacheField = this.CreateField(groupBy.ToString(), field.Index, false);
-        cacheField.SetDateGroup(field, groupBy, startDate, endDate, interval);
+        _ = cacheField.SetDateGroup(field, groupBy, startDate, endDate, interval);
 
         this.Fields.Add(cacheField);
 
@@ -782,7 +781,7 @@ internal class PivotTableCacheInternal : XmlHelper
             cacheFieldNode.SetAttribute("databaseField", "0");
         }
 
-        cacheTopNode.AppendChild(cacheFieldNode);
+        _ = cacheTopNode.AppendChild(cacheFieldNode);
 
         return new ExcelPivotTableCacheField(this.NameSpaceManager, cacheFieldNode, this, index);
     }

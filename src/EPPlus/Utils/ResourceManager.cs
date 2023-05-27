@@ -44,7 +44,7 @@ internal class StyleResourceManager
                 {
                     //Extract and set
                     byte[]? content = new byte[entry.UncompressedSize];
-                    int size = zipStream.Read(content, 0, (int)entry.UncompressedSize);
+                    _ = zipStream.Read(content, 0, (int)entry.UncompressedSize);
 
                     return Encoding.UTF8.GetString(content);
                 }

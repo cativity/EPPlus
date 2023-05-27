@@ -222,7 +222,7 @@ public class ExcelChartStandardSerie : ExcelChartSerie
             {
                 this.NumberLiteralsX = null;
                 this.StringLiteralsX = null;
-                this.CreateNode(this._xSeriesPath, true);
+                _ = this.CreateNode(this._xSeriesPath, true);
 
                 if (ExcelCellBase.IsValidAddress(this._xSeries))
                 {
@@ -279,7 +279,7 @@ public class ExcelChartStandardSerie : ExcelChartSerie
                 }
                 else
                 {
-                    sb.Append(value[i]);
+                    _ = sb.Append(value[i]);
                 }
             }
             else
@@ -290,7 +290,7 @@ public class ExcelChartStandardSerie : ExcelChartSerie
 
                     if (sb.Length > 0)
                     {
-                        sb.Append(value[i]);
+                        _ = sb.Append(value[i]);
                     }
                 }
                 else if (value[i] == ',')
@@ -315,8 +315,8 @@ public class ExcelChartStandardSerie : ExcelChartSerie
 
     private void SetSerieFunction(string value)
     {
-        this.CreateNode(this._seriesPath, true);
-        this.CreateNode(this._numCachePath, true);
+        _ = this.CreateNode(this._seriesPath, true);
+        _ = this.CreateNode(this._numCachePath, true);
 
         this.SetXmlNodeString(this._seriesPath, this.ToFullAddress(value));
 
@@ -326,7 +326,7 @@ public class ExcelChartStandardSerie : ExcelChartSerie
 
             if (cache != null)
             {
-                cache.ParentNode.RemoveChild(cache);
+                _ = cache.ParentNode.RemoveChild(cache);
             }
 
             this.SetXmlNodeString(string.Format("{0}/c:numRef/c:numCache", this._seriesTopPath), "General");
@@ -336,7 +336,7 @@ public class ExcelChartStandardSerie : ExcelChartSerie
 
         if (lit != null)
         {
-            lit.ParentNode.RemoveChild(lit);
+            _ = lit.ParentNode.RemoveChild(lit);
         }
     }
 
@@ -348,14 +348,14 @@ public class ExcelChartStandardSerie : ExcelChartSerie
 
             if (cache != null)
             {
-                cache.ParentNode.RemoveChild(cache);
+                _ = cache.ParentNode.RemoveChild(cache);
             }
 
             XmlNode lit = this.TopNode.SelectSingleNode(this._xSeriesNumLitPath, this.NameSpaceManager);
 
             if (lit != null)
             {
-                lit.ParentNode.RemoveChild(lit);
+                _ = lit.ParentNode.RemoveChild(lit);
             }
         }
         else
@@ -364,14 +364,14 @@ public class ExcelChartStandardSerie : ExcelChartSerie
 
             if (cache != null)
             {
-                cache.ParentNode.RemoveChild(cache);
+                _ = cache.ParentNode.RemoveChild(cache);
             }
 
             XmlNode lit = this.TopNode.SelectSingleNode(this._xSeriesStrLitPath, this.NameSpaceManager);
 
             if (lit != null)
             {
-                lit.ParentNode.RemoveChild(lit);
+                _ = lit.ParentNode.RemoveChild(lit);
             }
         }
     }
@@ -403,7 +403,7 @@ public class ExcelChartStandardSerie : ExcelChartSerie
         {
             XmlElement? pt = lit.OwnerDocument.CreateElement("c", "pt", ExcelPackage.schemaChart);
             pt.SetAttribute("idx", i.ToString(CultureInfo.InvariantCulture));
-            lit.AppendChild(pt);
+            _ = lit.AppendChild(pt);
             pt.InnerXml = $"<c:v>{((double)numLit[i]).ToString("R15", ci)}</c:v>";
         }
 
@@ -416,7 +416,7 @@ public class ExcelChartStandardSerie : ExcelChartSerie
         {
             XmlElement? pt = lit.OwnerDocument.CreateElement("c", "pt", ExcelPackage.schemaChart);
             pt.SetAttribute("idx", i.ToString(CultureInfo.InvariantCulture));
-            lit.AppendChild(pt);
+            _ = lit.AppendChild(pt);
             pt.InnerXml = $"<c:v>{strLit[i]}</c:v>";
         }
 
@@ -427,7 +427,7 @@ public class ExcelChartStandardSerie : ExcelChartSerie
     {
         XmlElement? ct = lit.OwnerDocument.CreateElement("c", "ptCount", ExcelPackage.schemaChart);
         ct.SetAttribute("val", count.ToString(CultureInfo.InvariantCulture));
-        lit.InsertBefore(ct, lit.FirstChild);
+        _ = lit.InsertBefore(ct, lit.FirstChild);
     }
 
     ExcelChartTrendlineCollection _trendLines = null;
@@ -561,7 +561,7 @@ public class ExcelChartStandardSerie : ExcelChartSerie
             {
                 double d = Utils.ConvertUtil.GetValueDouble(v);
                 XmlElement? ptNode = node.OwnerDocument.CreateElement("c", "pt", ExcelPackage.schemaChart);
-                node.AppendChild(ptNode);
+                _ = node.AppendChild(ptNode);
                 ptNode.SetAttribute("idx", (cse.Row - startRow).ToString(CultureInfo.InvariantCulture));
                 ptNode.InnerXml = $"<c:v>{Utils.ConvertUtil.GetValueForXml(d, range.Worksheet.Workbook.Date1904)}</c:v>";
                 items++;
@@ -597,7 +597,7 @@ public class ExcelChartStandardSerie : ExcelChartSerie
             {
                 double d = Utils.ConvertUtil.GetValueDouble(v);
                 XmlElement? ptNode = node.OwnerDocument.CreateElement("c", "pt", ExcelPackage.schemaChart);
-                node.AppendChild(ptNode);
+                _ = node.AppendChild(ptNode);
                 ptNode.SetAttribute("idx", (cse.Row - startRow).ToString(CultureInfo.InvariantCulture));
                 ptNode.InnerXml = $"<c:v>{Utils.ConvertUtil.GetValueForXml(d, er._wb.Date1904)}</c:v>";
                 items++;
@@ -713,7 +713,7 @@ public class ExcelChartStandardSerie : ExcelChartSerie
                 }
             }
 
-            this.CreateNode($"{cachePath}/c:ptCount");
+            _ = this.CreateNode($"{cachePath}/c:ptCount");
 
             return node;
         }

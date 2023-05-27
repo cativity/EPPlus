@@ -79,7 +79,7 @@ public class ExcelAddressCacheTests
         int id = cache.GetNewId();
         Assert.AreEqual(1, id);
         string? address = "A1";
-        bool result = cache.Add(id, address);
+        _ = cache.Add(id, address);
         Assert.AreEqual(1, cache.Count);
         int id2 = cache.GetNewId();
         Assert.AreEqual(2, id2);

@@ -38,7 +38,7 @@ internal class Product : HiddenValuesHandlingFunction
             return this.CreateResult(arguments.First(x => x.ValueIsExcelError).ValueAsExcelErrorValue.Type);
         }
 
-        args.RemoveAll(x => this.ShouldIgnore(x, context));
+        _ = args.RemoveAll(x => this.ShouldIgnore(x, context));
         double result = 1d;
         IEnumerable<object>? values = this.ArgsToObjectEnumerable(true, args, context);
 

@@ -136,7 +136,7 @@ public class SortRangeTests
     public void ShouldConfigureSortOptionsForSingleColumn()
     {
         RangeSortOptions? options = new RangeSortOptions();
-        options.SortBy.Column(0);
+        _ = options.SortBy.Column(0);
         Assert.AreEqual(1, options.ColumnIndexes.Count);
         Assert.AreEqual(1, options.Descending.Count);
         Assert.AreEqual(0, options.ColumnIndexes.First());
@@ -147,7 +147,7 @@ public class SortRangeTests
     public void ShouldConfigureSortOptionsForMultiColumns()
     {
         RangeSortOptions? options = new RangeSortOptions();
-        options.SortBy.Column(0).ThenSortBy.Column(3, eSortOrder.Descending).ThenSortBy.Column(2);
+        _ = options.SortBy.Column(0).ThenSortBy.Column(3, eSortOrder.Descending).ThenSortBy.Column(2);
         Assert.AreEqual(3, options.ColumnIndexes.Count);
         Assert.AreEqual(3, options.Descending.Count);
         Assert.AreEqual(0, options.ColumnIndexes.First());
@@ -407,7 +407,7 @@ public class SortRangeTests
         sheet.Cells[2, 5].Value = 5;
         RangeSortOptions? options = RangeSortOptions.Create();
         RangeLeftToRightSortLayerBuilder? builder = options.SortLeftToRightBy.Row(0).UsingCustomList("S", "M", "L");
-        builder.ThenSortBy.Row(1);
+        _ = builder.ThenSortBy.Row(1);
         sheet.Cells["A1:E2"].Sort(options);
 
         Assert.AreEqual("S", sheet.Cells[1, 1].Value);
@@ -438,7 +438,7 @@ public class SortRangeTests
              .Sort(x =>
              {
                  x.CompareOptions = CompareOptions.IgnoreCase;
-                 x.SortLeftToRightBy.Row(0).UsingCustomList("S", "M", "L").ThenSortBy.Row(1);
+                 _ = x.SortLeftToRightBy.Row(0).UsingCustomList("S", "M", "L").ThenSortBy.Row(1);
              });
 
         Assert.AreEqual("s", sheet.Cells[1, 1].Value);
@@ -478,7 +478,6 @@ public class SortRangeTests
         sheet.Cells[3, 1].Value = null;
         sheet.Cells[4, 1].Value = 2;
         sheet.Cells[5, 1].Value = 5;
-        object? a5 = sheet.Cells["A5"].Value;
         sheet.Cells["A1:A5"].Sort(x => x.SortBy.Column(0, eSortOrder.Descending));
 
         Assert.AreEqual(5, sheet.Cells[1, 1].Value);

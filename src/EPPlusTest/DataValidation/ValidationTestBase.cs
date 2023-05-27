@@ -73,9 +73,9 @@ public abstract class ValidationTestBase : TestBase
         this._namespaceManager.AddNamespace("d", "urn:a");
         this._namespaceManager.AddNamespace("xr", "urn:b");
         StringBuilder? sb = new StringBuilder();
-        sb.AppendFormat("<dataValidation xmlns:d=\"urn:a\" type=\"{0}\" sqref=\"{1}\">", validationType, address);
-        sb.AppendFormat("<d:formula1>{0}</d:formula1>", formula1Value);
-        sb.Append("</dataValidation>");
+        _ = sb.AppendFormat("<dataValidation xmlns:d=\"urn:a\" type=\"{0}\" sqref=\"{1}\">", validationType, address);
+        _ = sb.AppendFormat("<d:formula1>{0}</d:formula1>", formula1Value);
+        _ = sb.Append("</dataValidation>");
         xmlDoc.LoadXml(sb.ToString());
         this._dataValidationNode = xmlDoc.DocumentElement;
     }

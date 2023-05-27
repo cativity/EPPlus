@@ -17,10 +17,10 @@ public class PivotTableCaptionFilterTests : TestBase
         _pck = OpenPackage("PivotTableFilters.xlsx", true);
         ExcelWorksheet? ws = _pck.Workbook.Worksheets.Add("Data1");
         ExcelRangeBase? r = LoadItemData(ws);
-        ws.Tables.Add(r, "Table1");
+        _ = ws.Tables.Add(r, "Table1");
         ws = _pck.Workbook.Worksheets.Add("Data2");
         r = LoadItemData(ws);
-        ws.Tables.Add(r, "Table2");
+        _ = ws.Tables.Add(r, "Table2");
     }
 
     [ClassCleanup]
@@ -36,10 +36,10 @@ public class PivotTableCaptionFilterTests : TestBase
         ExcelWorksheet? ws = _pck.Workbook.Worksheets.Add("CaptionEqual");
 
         ExcelPivotTable? pt = ws.PivotTables.Add(ws.Cells["A1"], wsData.Cells["K1:N11"], "Pivottable3");
-        pt.RowFields.Add(pt.Fields[1]);
-        pt.DataFields.Add(pt.Fields[3]);
+        _ = pt.RowFields.Add(pt.Fields[1]);
+        _ = pt.DataFields.Add(pt.Fields[3]);
 
-        pt.Fields[1].Filters.AddCaptionFilter(ePivotTableCaptionFilterType.CaptionEqual, "Hardware");
+        _ = pt.Fields[1].Filters.AddCaptionFilter(ePivotTableCaptionFilterType.CaptionEqual, "Hardware");
     }
 
     [TestMethod]
@@ -49,10 +49,10 @@ public class PivotTableCaptionFilterTests : TestBase
         ExcelWorksheet? ws = _pck.Workbook.Worksheets.Add("CaptionNotEqual");
 
         ExcelPivotTable? pt = ws.PivotTables.Add(ws.Cells["A1"], wsData.Cells["K1:N11"], "Pivottable3");
-        pt.RowFields.Add(pt.Fields[1]);
-        pt.DataFields.Add(pt.Fields[3]);
+        _ = pt.RowFields.Add(pt.Fields[1]);
+        _ = pt.DataFields.Add(pt.Fields[3]);
 
-        pt.Fields[1].Filters.AddCaptionFilter(ePivotTableCaptionFilterType.CaptionNotEqual, "Hardware");
+        _ = pt.Fields[1].Filters.AddCaptionFilter(ePivotTableCaptionFilterType.CaptionNotEqual, "Hardware");
     }
 
     [TestMethod]
@@ -62,10 +62,10 @@ public class PivotTableCaptionFilterTests : TestBase
         ExcelWorksheet? ws = _pck.Workbook.Worksheets.Add("CaptionBeginsWith");
 
         ExcelPivotTable? pt = ws.PivotTables.Add(ws.Cells["A1"], wsData.Cells["K1:N11"], "Pivottable3");
-        pt.RowFields.Add(pt.Fields[1]);
-        pt.DataFields.Add(pt.Fields[3]);
+        _ = pt.RowFields.Add(pt.Fields[1]);
+        _ = pt.DataFields.Add(pt.Fields[3]);
 
-        pt.Fields[1].Filters.AddCaptionFilter(ePivotTableCaptionFilterType.CaptionBeginsWith, "H");
+        _ = pt.Fields[1].Filters.AddCaptionFilter(ePivotTableCaptionFilterType.CaptionBeginsWith, "H");
     }
 
     [TestMethod]
@@ -75,10 +75,10 @@ public class PivotTableCaptionFilterTests : TestBase
         ExcelWorksheet? ws = _pck.Workbook.Worksheets.Add("CaptionNotBeginsWith");
 
         ExcelPivotTable? pt = ws.PivotTables.Add(ws.Cells["A1"], wsData.Cells["K1:N11"], "Pivottable3");
-        pt.RowFields.Add(pt.Fields[1]);
-        pt.DataFields.Add(pt.Fields[3]);
+        _ = pt.RowFields.Add(pt.Fields[1]);
+        _ = pt.DataFields.Add(pt.Fields[3]);
 
-        pt.Fields[1].Filters.AddCaptionFilter(ePivotTableCaptionFilterType.CaptionNotBeginsWith, "H");
+        _ = pt.Fields[1].Filters.AddCaptionFilter(ePivotTableCaptionFilterType.CaptionNotBeginsWith, "H");
     }
 
     [TestMethod]
@@ -88,10 +88,10 @@ public class PivotTableCaptionFilterTests : TestBase
         ExcelWorksheet? ws = _pck.Workbook.Worksheets.Add("CaptionEndsWith");
 
         ExcelPivotTable? pt = ws.PivotTables.Add(ws.Cells["A1"], wsData.Cells["K1:N11"], "Pivottable3");
-        pt.RowFields.Add(pt.Fields[1]);
-        pt.DataFields.Add(pt.Fields[3]);
+        _ = pt.RowFields.Add(pt.Fields[1]);
+        _ = pt.DataFields.Add(pt.Fields[3]);
 
-        pt.Fields[1].Filters.AddCaptionFilter(ePivotTableCaptionFilterType.CaptionEndsWith, "ware");
+        _ = pt.Fields[1].Filters.AddCaptionFilter(ePivotTableCaptionFilterType.CaptionEndsWith, "ware");
     }
 
     [TestMethod]
@@ -101,10 +101,10 @@ public class PivotTableCaptionFilterTests : TestBase
         ExcelWorksheet? ws = _pck.Workbook.Worksheets.Add("CaptionNotEndsWith");
 
         ExcelPivotTable? pt = ws.PivotTables.Add(ws.Cells["A1"], wsData.Cells["K1:N11"], "Pivottable3");
-        pt.RowFields.Add(pt.Fields[1]);
-        pt.DataFields.Add(pt.Fields[3]);
+        _ = pt.RowFields.Add(pt.Fields[1]);
+        _ = pt.DataFields.Add(pt.Fields[3]);
 
-        pt.Fields[1].Filters.AddCaptionFilter(ePivotTableCaptionFilterType.CaptionNotEndsWith, "ware");
+        _ = pt.Fields[1].Filters.AddCaptionFilter(ePivotTableCaptionFilterType.CaptionNotEndsWith, "ware");
     }
 
     [TestMethod]
@@ -114,10 +114,10 @@ public class PivotTableCaptionFilterTests : TestBase
         ExcelWorksheet? ws = _pck.Workbook.Worksheets.Add("CaptionContains");
 
         ExcelPivotTable? pt = ws.PivotTables.Add(ws.Cells["A1"], wsData.Cells["K1:N11"], "Pivottable3");
-        pt.RowFields.Add(pt.Fields[1]);
-        pt.DataFields.Add(pt.Fields[3]);
+        _ = pt.RowFields.Add(pt.Fields[1]);
+        _ = pt.DataFields.Add(pt.Fields[3]);
 
-        pt.Fields[1].Filters.AddCaptionFilter(ePivotTableCaptionFilterType.CaptionContains, "roc");
+        _ = pt.Fields[1].Filters.AddCaptionFilter(ePivotTableCaptionFilterType.CaptionContains, "roc");
     }
 
     [TestMethod]
@@ -127,10 +127,10 @@ public class PivotTableCaptionFilterTests : TestBase
         ExcelWorksheet? ws = _pck.Workbook.Worksheets.Add("CaptionNotContains");
 
         ExcelPivotTable? pt = ws.PivotTables.Add(ws.Cells["A1"], wsData.Cells["K1:N11"], "Pivottable3");
-        pt.RowFields.Add(pt.Fields[1]);
-        pt.DataFields.Add(pt.Fields[3]);
+        _ = pt.RowFields.Add(pt.Fields[1]);
+        _ = pt.DataFields.Add(pt.Fields[3]);
 
-        pt.Fields[1].Filters.AddCaptionFilter(ePivotTableCaptionFilterType.CaptionNotContains, "roc");
+        _ = pt.Fields[1].Filters.AddCaptionFilter(ePivotTableCaptionFilterType.CaptionNotContains, "roc");
     }
 
     [TestMethod]
@@ -140,10 +140,10 @@ public class PivotTableCaptionFilterTests : TestBase
         ExcelWorksheet? ws = _pck.Workbook.Worksheets.Add("CaptionGreaterThan");
 
         ExcelPivotTable? pt = ws.PivotTables.Add(ws.Cells["A1"], wsData.Cells["K1:N11"], "Pivottable3");
-        pt.RowFields.Add(pt.Fields[1]);
-        pt.DataFields.Add(pt.Fields[3]);
+        _ = pt.RowFields.Add(pt.Fields[1]);
+        _ = pt.DataFields.Add(pt.Fields[3]);
 
-        pt.Fields[1].Filters.AddCaptionFilter(ePivotTableCaptionFilterType.CaptionGreaterThan, "H");
+        _ = pt.Fields[1].Filters.AddCaptionFilter(ePivotTableCaptionFilterType.CaptionGreaterThan, "H");
     }
 
     [TestMethod]
@@ -153,10 +153,10 @@ public class PivotTableCaptionFilterTests : TestBase
         ExcelWorksheet? ws = _pck.Workbook.Worksheets.Add("CaptionGreaterThanOrEqual");
 
         ExcelPivotTable? pt = ws.PivotTables.Add(ws.Cells["A1"], wsData.Cells["K1:N11"], "Pivottable3");
-        pt.RowFields.Add(pt.Fields[1]);
-        pt.DataFields.Add(pt.Fields[3]);
+        _ = pt.RowFields.Add(pt.Fields[1]);
+        _ = pt.DataFields.Add(pt.Fields[3]);
 
-        pt.Fields[1].Filters.AddCaptionFilter(ePivotTableCaptionFilterType.CaptionGreaterThanOrEqual, "H");
+        _ = pt.Fields[1].Filters.AddCaptionFilter(ePivotTableCaptionFilterType.CaptionGreaterThanOrEqual, "H");
     }
 
     [TestMethod]
@@ -166,10 +166,10 @@ public class PivotTableCaptionFilterTests : TestBase
         ExcelWorksheet? ws = _pck.Workbook.Worksheets.Add("CaptionLessThan");
 
         ExcelPivotTable? pt = ws.PivotTables.Add(ws.Cells["A1"], wsData.Cells["K1:N11"], "Pivottable3");
-        pt.RowFields.Add(pt.Fields[1]);
-        pt.DataFields.Add(pt.Fields[3]);
+        _ = pt.RowFields.Add(pt.Fields[1]);
+        _ = pt.DataFields.Add(pt.Fields[3]);
 
-        pt.Fields[1].Filters.AddCaptionFilter(ePivotTableCaptionFilterType.CaptionLessThan, "H");
+        _ = pt.Fields[1].Filters.AddCaptionFilter(ePivotTableCaptionFilterType.CaptionLessThan, "H");
     }
 
     [TestMethod]
@@ -179,10 +179,10 @@ public class PivotTableCaptionFilterTests : TestBase
         ExcelWorksheet? ws = _pck.Workbook.Worksheets.Add("CaptionLessThanOrEqual");
 
         ExcelPivotTable? pt = ws.PivotTables.Add(ws.Cells["A1"], wsData.Cells["K1:N11"], "Pivottable3");
-        pt.RowFields.Add(pt.Fields[1]);
-        pt.DataFields.Add(pt.Fields[3]);
+        _ = pt.RowFields.Add(pt.Fields[1]);
+        _ = pt.DataFields.Add(pt.Fields[3]);
 
-        pt.Fields[1].Filters.AddCaptionFilter(ePivotTableCaptionFilterType.CaptionLessThanOrEqual, "H");
+        _ = pt.Fields[1].Filters.AddCaptionFilter(ePivotTableCaptionFilterType.CaptionLessThanOrEqual, "H");
     }
 
     [TestMethod]
@@ -192,10 +192,10 @@ public class PivotTableCaptionFilterTests : TestBase
         ExcelWorksheet? ws = _pck.Workbook.Worksheets.Add("CaptionBetween");
 
         ExcelPivotTable? pt = ws.PivotTables.Add(ws.Cells["A1"], wsData.Cells["K1:N11"], "Pivottable3");
-        pt.RowFields.Add(pt.Fields[1]);
-        pt.DataFields.Add(pt.Fields[3]);
+        _ = pt.RowFields.Add(pt.Fields[1]);
+        _ = pt.DataFields.Add(pt.Fields[3]);
 
-        pt.Fields[1].Filters.AddCaptionFilter(ePivotTableCaptionFilterType.CaptionBetween, "H", "I");
+        _ = pt.Fields[1].Filters.AddCaptionFilter(ePivotTableCaptionFilterType.CaptionBetween, "H", "I");
 
         Assert.AreEqual("H", pt.Fields[1].Filters[0].StringValue1);
         Assert.AreEqual("I", pt.Fields[1].Filters[0].StringValue2);
@@ -209,10 +209,10 @@ public class PivotTableCaptionFilterTests : TestBase
         ExcelWorksheet? ws = _pck.Workbook.Worksheets.Add("CaptionNotBetween");
 
         ExcelPivotTable? pt = ws.PivotTables.Add(ws.Cells["A1"], wsData.Cells["K1:N11"], "Pivottable3");
-        pt.RowFields.Add(pt.Fields[1]);
-        pt.DataFields.Add(pt.Fields[3]);
+        _ = pt.RowFields.Add(pt.Fields[1]);
+        _ = pt.DataFields.Add(pt.Fields[3]);
 
-        pt.Fields[1].Filters.AddCaptionFilter(ePivotTableCaptionFilterType.CaptionNotBetween, "H", "I");
+        _ = pt.Fields[1].Filters.AddCaptionFilter(ePivotTableCaptionFilterType.CaptionNotBetween, "H", "I");
         Assert.AreEqual("H", pt.Fields[1].Filters[0].StringValue1);
         Assert.AreEqual("I", pt.Fields[1].Filters[0].StringValue2);
         Assert.AreEqual(2, ((ExcelCustomFilterColumn)pt.Fields[1].Filters[0].Filter).Filters.Count);

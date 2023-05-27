@@ -17,7 +17,7 @@ internal static class XmlReaderHelper
         {
             do
             {
-                xr.Read();
+                _ = xr.Read();
 
                 if (xr.EOF)
                 {
@@ -50,7 +50,7 @@ internal static class XmlReaderHelper
                 return false;
             }
 
-            xr.Read();
+            _ = xr.Read();
         } while (Array.Exists(tagName, tag => ConvertUtil._invariantCompareInfo.IsSuffix(xr.LocalName, tag)) == false);
 
         return xr.NodeType == XmlNodeType.Element && ConvertUtil._invariantCompareInfo.IsSuffix(xr.LocalName, tagName[0]);
@@ -66,7 +66,7 @@ internal static class XmlReaderHelper
                 {
                     do
                     {
-                        xr.Read();
+                        _ = xr.Read();
 
                         if (xr.EOF)
                         {

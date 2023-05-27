@@ -57,7 +57,7 @@ public sealed class ExcelStyle : StyleBase
             if (this._styles.CellStyleXfs.Count == 0) //CellStyleXfs.Count should never be 0, but for some custom build sheets this can happend.
             {
                 ExcelXfs? item = this._styles.CellXfs[0].Copy();
-                this._styles.CellStyleXfs.Add(item.Id, item);
+                _ = this._styles.CellStyleXfs.Add(item.Id, item);
             }
 
             this._xfs = this._styles.CellStyleXfs[xfsId];
@@ -95,7 +95,7 @@ public sealed class ExcelStyle : StyleBase
     public ExcelHorizontalAlignment HorizontalAlignment
     {
         get { return this._xfs.HorizontalAlignment; }
-        set { this._ChangedEvent(this, new StyleChangeEventArgs(eStyleClass.Style, eStyleProperty.HorizontalAlign, value, this._positionID, this._address)); }
+        set { _ = this._ChangedEvent(this, new StyleChangeEventArgs(eStyleClass.Style, eStyleProperty.HorizontalAlign, value, this._positionID, this._address)); }
     }
 
     /// <summary>
@@ -108,7 +108,7 @@ public sealed class ExcelStyle : StyleBase
             //return _styles.CellXfs[Index].VerticalAlignment;
             return this._xfs.VerticalAlignment;
         }
-        set { this._ChangedEvent(this, new StyleChangeEventArgs(eStyleClass.Style, eStyleProperty.VerticalAlign, value, this._positionID, this._address)); }
+        set { _ = this._ChangedEvent(this, new StyleChangeEventArgs(eStyleClass.Style, eStyleProperty.VerticalAlign, value, this._positionID, this._address)); }
     }
 
     /// <summary>
@@ -117,7 +117,7 @@ public sealed class ExcelStyle : StyleBase
     public bool JustifyLastLine
     {
         get { return this._xfs.JustifyLastLine; }
-        set { this._ChangedEvent(this, new StyleChangeEventArgs(eStyleClass.Style, eStyleProperty.JustifyLastLine, value, this._positionID, this._address)); }
+        set { _ = this._ChangedEvent(this, new StyleChangeEventArgs(eStyleClass.Style, eStyleProperty.JustifyLastLine, value, this._positionID, this._address)); }
     }
 
     /// <summary>
@@ -126,7 +126,7 @@ public sealed class ExcelStyle : StyleBase
     public bool WrapText
     {
         get { return this._xfs.WrapText; }
-        set { this._ChangedEvent(this, new StyleChangeEventArgs(eStyleClass.Style, eStyleProperty.WrapText, value, this._positionID, this._address)); }
+        set { _ = this._ChangedEvent(this, new StyleChangeEventArgs(eStyleClass.Style, eStyleProperty.WrapText, value, this._positionID, this._address)); }
     }
 
     /// <summary>
@@ -135,7 +135,7 @@ public sealed class ExcelStyle : StyleBase
     public ExcelReadingOrder ReadingOrder
     {
         get { return this._xfs.ReadingOrder; }
-        set { this._ChangedEvent(this, new StyleChangeEventArgs(eStyleClass.Style, eStyleProperty.ReadingOrder, value, this._positionID, this._address)); }
+        set { _ = this._ChangedEvent(this, new StyleChangeEventArgs(eStyleClass.Style, eStyleProperty.ReadingOrder, value, this._positionID, this._address)); }
     }
 
     /// <summary>
@@ -152,7 +152,7 @@ public sealed class ExcelStyle : StyleBase
     public bool ShrinkToFit
     {
         get { return this._xfs.ShrinkToFit; }
-        set { this._ChangedEvent(this, new StyleChangeEventArgs(eStyleClass.Style, eStyleProperty.ShrinkToFit, value, this._positionID, this._address)); }
+        set { _ = this._ChangedEvent(this, new StyleChangeEventArgs(eStyleClass.Style, eStyleProperty.ShrinkToFit, value, this._positionID, this._address)); }
     }
 
     /// <summary>
@@ -168,7 +168,7 @@ public sealed class ExcelStyle : StyleBase
                 throw new ArgumentOutOfRangeException("Indent must be between 0 and 250");
             }
 
-            this._ChangedEvent(this, new StyleChangeEventArgs(eStyleClass.Style, eStyleProperty.Indent, value, this._positionID, this._address));
+            _ = this._ChangedEvent(this, new StyleChangeEventArgs(eStyleClass.Style, eStyleProperty.Indent, value, this._positionID, this._address));
         }
     }
 
@@ -186,7 +186,7 @@ public sealed class ExcelStyle : StyleBase
                 throw new ArgumentOutOfRangeException("TextRotation out of range.");
             }
 
-            this._ChangedEvent(this, new StyleChangeEventArgs(eStyleClass.Style, eStyleProperty.TextRotation, value, this._positionID, this._address));
+            _ = this._ChangedEvent(this, new StyleChangeEventArgs(eStyleClass.Style, eStyleProperty.TextRotation, value, this._positionID, this._address));
         }
     }
 
@@ -197,7 +197,7 @@ public sealed class ExcelStyle : StyleBase
     public bool Locked
     {
         get { return this._xfs.Locked; }
-        set { this._ChangedEvent(this, new StyleChangeEventArgs(eStyleClass.Style, eStyleProperty.Locked, value, this._positionID, this._address)); }
+        set { _ = this._ChangedEvent(this, new StyleChangeEventArgs(eStyleClass.Style, eStyleProperty.Locked, value, this._positionID, this._address)); }
     }
 
     /// <summary>
@@ -207,7 +207,7 @@ public sealed class ExcelStyle : StyleBase
     public bool Hidden
     {
         get { return this._xfs.Hidden; }
-        set { this._ChangedEvent(this, new StyleChangeEventArgs(eStyleClass.Style, eStyleProperty.Hidden, value, this._positionID, this._address)); }
+        set { _ = this._ChangedEvent(this, new StyleChangeEventArgs(eStyleClass.Style, eStyleProperty.Hidden, value, this._positionID, this._address)); }
     }
 
     /// <summary>
@@ -216,7 +216,7 @@ public sealed class ExcelStyle : StyleBase
     public bool QuotePrefix
     {
         get { return this._xfs.QuotePrefix; }
-        set { this._ChangedEvent(this, new StyleChangeEventArgs(eStyleClass.Style, eStyleProperty.QuotePrefix, value, this._positionID, this._address)); }
+        set { _ = this._ChangedEvent(this, new StyleChangeEventArgs(eStyleClass.Style, eStyleProperty.QuotePrefix, value, this._positionID, this._address)); }
     }
 
     const string xfIdPath = "@xfId";
@@ -227,7 +227,7 @@ public sealed class ExcelStyle : StyleBase
     public int XfId
     {
         get { return this._xfs.XfId; }
-        set { this._ChangedEvent(this, new StyleChangeEventArgs(eStyleClass.Style, eStyleProperty.XfId, value, this._positionID, this._address)); }
+        set { _ = this._ChangedEvent(this, new StyleChangeEventArgs(eStyleClass.Style, eStyleProperty.XfId, value, this._positionID, this._address)); }
     }
 
     internal int PositionID { get; set; }

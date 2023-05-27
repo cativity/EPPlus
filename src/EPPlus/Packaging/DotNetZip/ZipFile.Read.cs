@@ -700,15 +700,15 @@ internal partial class ZipFile
 
         // seek back to find the ZIP64 EoCD.
         // I think this might not work for .NET CF ?
-        s.Seek(-40, SeekOrigin.Current);
-        s.Read(block, 0, 16);
+        _ = s.Seek(-40, SeekOrigin.Current);
+        _ = s.Read(block, 0, 16);
 
         Int64 offset64 = BitConverter.ToInt64(block, 8);
         zf._OffsetOfCentralDirectory = 0xFFFFFFFF;
         zf._OffsetOfCentralDirectory64 = offset64;
 
         // change for workitem 8098
-        s.Seek(offset64, SeekOrigin.Begin);
+        _ = s.Seek(offset64, SeekOrigin.Begin);
 
         //zf.SeekFromOrigin(Offset64);
 
@@ -719,16 +719,16 @@ internal partial class ZipFile
             throw new BadReadException(String.Format("  Bad signature (0x{0:X8}) looking for ZIP64 EoCD Record at position 0x{1:X8}", datum, s.Position));
         }
 
-        s.Read(block, 0, 8);
+        _ = s.Read(block, 0, 8);
         Int64 Size = BitConverter.ToInt64(block, 0);
 
         block = new byte[Size];
-        s.Read(block, 0, block.Length);
+        _ = s.Read(block, 0, block.Length);
 
         offset64 = BitConverter.ToInt64(block, 36);
 
         // change for workitem 8098
-        s.Seek(offset64, SeekOrigin.Begin);
+        _ = s.Seek(offset64, SeekOrigin.Begin);
 
         //zf.SeekFromOrigin(Offset64);
     }
@@ -786,7 +786,7 @@ internal partial class ZipFile
         // workitem 8299
         if (zf._locEndOfCDS > 0)
         {
-            zf.ReadStream.Seek(zf._locEndOfCDS, SeekOrigin.Begin);
+            _ = zf.ReadStream.Seek(zf._locEndOfCDS, SeekOrigin.Begin);
         }
 
         ReadCentralDirectoryFooter(zf);
@@ -878,7 +878,7 @@ internal partial class ZipFile
             // workitem 8299
             if (zf._locEndOfCDS > 0)
             {
-                zf.ReadStream.Seek(zf._locEndOfCDS, SeekOrigin.Begin);
+                _ = zf.ReadStream.Seek(zf._locEndOfCDS, SeekOrigin.Begin);
             }
 
             ReadCentralDirectoryFooter(zf);
@@ -924,7 +924,7 @@ internal partial class ZipFile
             // 52 bytes
 
             block = new byte[8 + 44];
-            s.Read(block, 0, block.Length);
+            _ = s.Read(block, 0, block.Length);
 
             Int64 DataSize = BitConverter.ToInt64(block, 0); // == 44 + the variable length
 
@@ -944,7 +944,7 @@ internal partial class ZipFile
 
             // read the extended block
             block = new byte[DataSize - 44];
-            s.Read(block, 0, block.Length);
+            _ = s.Read(block, 0, block.Length);
 
             // discard the result
 
@@ -956,7 +956,7 @@ internal partial class ZipFile
             }
 
             block = new byte[16];
-            s.Read(block, 0, block.Length);
+            _ = s.Read(block, 0, block.Length);
 
             // discard the result
 
@@ -967,14 +967,14 @@ internal partial class ZipFile
         // This is a sanity check.
         if (signature != ZipConstants.EndOfCentralDirectorySignature)
         {
-            s.Seek(-4, SeekOrigin.Current);
+            _ = s.Seek(-4, SeekOrigin.Current);
 
             throw new BadReadException(String.Format("Bad signature ({0:X8}) at position 0x{1:X8}", signature, s.Position));
         }
 
         // read the End-of-Central-Directory-Record
         block = new byte[16];
-        zf.ReadStream.Read(block, 0, block.Length);
+        _ = zf.ReadStream.Read(block, 0, block.Length);
 
         // off sz  data
         // -------------------------------------------------------
@@ -1003,14 +1003,14 @@ internal partial class ZipFile
     {
         // read the comment here
         byte[] block = new byte[2];
-        zf.ReadStream.Read(block, 0, block.Length);
+        _ = zf.ReadStream.Read(block, 0, block.Length);
 
         Int16 commentLength = (short)(block[0] + (block[1] * 256));
 
         if (commentLength > 0)
         {
             block = new byte[commentLength];
-            zf.ReadStream.Read(block, 0, block.Length);
+            _ = zf.ReadStream.Read(block, 0, block.Length);
 
             // workitem 10392 - prefer ProvisionalAlternateEncoding,
             // first.  The fix for workitem 6513 tried to use UTF8

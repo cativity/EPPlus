@@ -332,7 +332,7 @@ public abstract class ExcelCellBase
                 }
                 else
                 {
-                    GetRowCol(cells[1], out ToRow, out ToColumn, false, out fixedToRow, out fixedToColumn);
+                    _ = GetRowCol(cells[1], out ToRow, out ToColumn, false, out fixedToRow, out fixedToColumn);
                 }
 
                 if (FromColumn <= 0)
@@ -454,7 +454,7 @@ public abstract class ExcelCellBase
     /// <returns></returns>
     internal static bool GetRowCol(string address, out int row, out int col, bool throwException)
     {
-        return GetRowCol(address, out row, out col, throwException, out bool fixedRow, out bool fixedCol);
+        return GetRowCol(address, out row, out col, throwException, out bool _, out bool _);
     }
 
     const int numberOfCharacters = 'Z' - 'A' + 1;
@@ -497,7 +497,7 @@ public abstract class ExcelCellBase
 
                 if (col > ExcelPackage.MaxColumns || row > 0)
                 {
-                    ThrowAddressException(address, out row, out col, throwException);
+                    _ = ThrowAddressException(address, out row, out col, throwException);
 
                     break;
                 }
@@ -509,7 +509,7 @@ public abstract class ExcelCellBase
 
                 if (row > ExcelPackage.MaxRows)
                 {
-                    ThrowAddressExceptionOutOfRange(address, row, throwException);
+                    _ = ThrowAddressExceptionOutOfRange(address, row, throwException);
 
                     //ThrowAddressException(address, out row, out col, throwException);
                     break;

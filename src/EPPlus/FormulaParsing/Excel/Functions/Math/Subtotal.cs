@@ -76,7 +76,7 @@ internal class Subtotal : ExcelFunction
 
         if (!context.SubtotalAddresses.Contains(cellId))
         {
-            context.SubtotalAddresses.Add(cellId);
+            _ = context.SubtotalAddresses.Add(cellId);
         }
     }
 

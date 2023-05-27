@@ -71,7 +71,7 @@ public class ExcelThemeEffectStyles : XmlHelper, IEnumerable<ExcelThemeEffectSty
     public ExcelThemeEffectStyle Add()
     {
         XmlElement? node = this.TopNode.OwnerDocument.CreateElement("a", "effectStyle", ExcelPackage.schemaMain);
-        this.TopNode.AppendChild(node);
+        _ = this.TopNode.AppendChild(node);
 
         return new ExcelThemeEffectStyle(this.NameSpaceManager, this.TopNode, "", null, this._theme);
     }
@@ -89,8 +89,8 @@ public class ExcelThemeEffectStyles : XmlHelper, IEnumerable<ExcelThemeEffectSty
 
         if (this._list.Contains(item))
         {
-            this._list.Remove(item);
-            item.TopNode.ParentNode.RemoveChild(item.TopNode);
+            _ = this._list.Remove(item);
+            _ = item.TopNode.ParentNode.RemoveChild(item.TopNode);
         }
     }
 
@@ -110,7 +110,7 @@ public class ExcelThemeEffectStyles : XmlHelper, IEnumerable<ExcelThemeEffectSty
             throw new ArgumentException("Index", "Index out of range");
         }
 
-        this._list.Remove(this._list[Index]);
+        _ = this._list.Remove(this._list[Index]);
     }
 
     /// <summary>

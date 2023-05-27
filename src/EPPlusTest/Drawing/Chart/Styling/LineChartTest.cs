@@ -76,8 +76,8 @@ public class LineChartTest : TestBase
         LoadTestdata(ws);
 
         ExcelLineChart? chart = AddLine(ws, eLineChartType.Line, "line1", 0, 0);
-        chart.Series.Add("B2:B50", "D2:D50");
-        chart.Series.Add("C2:C50", "D2:D50");
+        _ = chart.Series.Add("B2:B50", "D2:D50");
+        _ = chart.Series.Add("C2:C50", "D2:D50");
         chart.AddUpDownBars();
         chart.UpDownBarGapWidth = 4;
         chart.DownBar.Border.Fill.Style = eFillStyle.SolidFill;
@@ -99,9 +99,9 @@ public class LineChartTest : TestBase
         LoadTestdata(ws);
 
         ExcelLineChart? chart = AddLine(ws, eLineChartType.Line, "line1", 0, 0);
-        chart.Series.Add("B2:B50", "D2:D50");
-        chart.Series.Add("C2:C50", "D2:D50");
-        chart.AddHighLowLines();
+        _ = chart.Series.Add("B2:B50", "D2:D50");
+        _ = chart.Series.Add("C2:C50", "D2:D50");
+        _ = chart.AddHighLowLines();
         chart.HighLowLine.Border.Fill.Style = eFillStyle.SolidFill;
         chart.HighLowLine.Border.Fill.SolidFill.Color.SetPresetColor(ePresetColor.Red);
     }
@@ -114,7 +114,7 @@ public class LineChartTest : TestBase
         chart.To.ColumnOff = 0;
         chart.To.Row = row + 18;
         chart.To.RowOff = 0;
-        chart.Series.Add("D2:D50", "A2:A50");
+        _ = chart.Series.Add("D2:D50", "A2:A50");
 
         return chart;
     }

@@ -44,8 +44,6 @@ public class ExcelPivotCacheDefinition
 
         if (c == null)
         {
-            ZipPackage? pck = pivotTable.WorkSheet._package.ZipPackage;
-
             if (this._wb._pivotTableIds.ContainsKey(cacheDefinitionUri))
             {
                 int cid = this._wb._pivotTableIds[cacheDefinitionUri];
@@ -93,10 +91,9 @@ public class ExcelPivotCacheDefinition
         this._cacheReference = cache;
         this._cacheReference._pivotTables.Add(pivotTable);
 
-        ZipPackageRelationship? rel =
-            pivotTable.Part.CreateRelationship(UriHelper.ResolvePartUri(pivotTable.PivotTableUri, this._cacheReference.CacheDefinitionUri),
-                                               TargetMode.Internal,
-                                               ExcelPackage.schemaRelationships + "/pivotCacheDefinition");
+        _ = pivotTable.Part.CreateRelationship(UriHelper.ResolvePartUri(pivotTable.PivotTableUri, this._cacheReference.CacheDefinitionUri),
+                                           TargetMode.Internal,
+                                           ExcelPackage.schemaRelationships + "/pivotCacheDefinition");
     }
 
     internal void Refresh()
@@ -163,7 +160,7 @@ public class ExcelPivotCacheDefinition
 
             if (this._wb.GetPivotCacheFromAddress(value.FullAddress, out PivotTableCacheInternal cache))
             {
-                this._cacheReference._pivotTables.Remove(this.PivotTable);
+                _ = this._cacheReference._pivotTables.Remove(this.PivotTable);
                 cache._pivotTables.Add(this.PivotTable);
                 this._cacheReference = cache;
                 this.PivotTable.CacheId = this._cacheReference.CacheId;
@@ -187,7 +184,7 @@ public class ExcelPivotCacheDefinition
             }
             else
             {
-                this._cacheReference._pivotTables.Remove(this.PivotTable);
+                _ = this._cacheReference._pivotTables.Remove(this.PivotTable);
                 XmlDocument? xml = this._cacheReference.CacheDefinitionXml;
                 this._cacheReference = new PivotTableCacheInternal(this._nsm, this._wb);
                 this._cacheReference.InitNew(this.PivotTable, value, xml.InnerXml);

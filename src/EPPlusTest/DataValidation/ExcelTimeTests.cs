@@ -64,13 +64,13 @@ public class ExcelTimeTests
     [TestMethod, ExpectedException(typeof(ArgumentException))]
     public void ExcelTimeTests_ConstructorWithValue_ShouldThrowIfValueIsLessThan0()
     {
-        new ExcelTime(-1);
+        _ = new ExcelTime(-1);
     }
 
     [TestMethod, ExpectedException(typeof(ArgumentException))]
     public void ExcelTimeTests_ConstructorWithValue_ShouldThrowIfValueIsEqualToOrGreaterThan1()
     {
-        new ExcelTime(1);
+        _ = new ExcelTime(1);
     }
 
     [TestMethod, ExpectedException(typeof(InvalidOperationException))]

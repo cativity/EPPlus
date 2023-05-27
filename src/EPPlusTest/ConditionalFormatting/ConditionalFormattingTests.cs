@@ -103,7 +103,7 @@ public class ConditionalFormattingTests : TestBase
     public void Databar()
     {
         ExcelWorksheet ws = _pck.Workbook.Worksheets.Add("Databar");
-        IExcelConditionalFormattingDataBarGroup cf = ws.ConditionalFormatting.AddDatabar(ws.Cells["A1:A5"], Color.BlueViolet);
+        _ = ws.ConditionalFormatting.AddDatabar(ws.Cells["A1:A5"], Color.BlueViolet);
         ws.SetValue(1, 1, 1);
         ws.SetValue(2, 1, 2);
         ws.SetValue(3, 1, 3);
@@ -131,8 +131,7 @@ public class ConditionalFormattingTests : TestBase
     {
         ExcelWorksheet ws = _pck.Workbook.Worksheets.Add("IconSet");
 
-        IExcelConditionalFormattingThreeIconSet<eExcelconditionalFormatting3IconsSetType> cf =
-            ws.ConditionalFormatting.AddThreeIconSet(ws.Cells["A1:A3"], eExcelconditionalFormatting3IconsSetType.Symbols);
+        _ = ws.ConditionalFormatting.AddThreeIconSet(ws.Cells["A1:A3"], eExcelconditionalFormatting3IconsSetType.Symbols);
 
         ws.SetValue(1, 1, 1);
         ws.SetValue(2, 1, 2);

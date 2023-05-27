@@ -259,7 +259,6 @@ namespace OfficeOpenXml.Export.HtmlExport.Exporters
 
             await writer.RenderBeginTagAsync(HtmlElements.TableRow);
             await writer.ApplyFormatIncreaseIndentAsync(this.Settings.Minify);
-            ExcelAddressBase? address = this._table.Address;
             HtmlImage image = null;
 
             foreach (int col in this._columns)

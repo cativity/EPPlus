@@ -397,20 +397,20 @@ public class ToCollectionTests : TestBase
         ExcelWorksheet? sheet = LoadTestData(p, "LoadFromCollectionName", true);
         sheet.Cells["C2"].Value = "str";
 
-        List<TestDto>? list = sheet.Tables[0]
-                                   .ToCollection(x =>
-                                   {
-                                       TestDto? dto = new TestDto();
-                                       dto.Id = x.GetValue<int>("id");
-                                       dto.Name = x.GetValue<string>("Name");
-                                       dto.Ratio = x.GetValue<double>("Ratio");
-                                       dto.TimeStamp = x.GetValue<DateTime>("TimeStamp");
-                                       dto.Category = new Category() { CatId = x.GetValue<int>("CategoryId") };
-                                       dto.FormattedRatio = x.GetText("Ratio");
-                                       dto.FormattedTimeStamp = x.GetText("TimeStamp");
+        _ = sheet.Tables[0]
+             .ToCollection(x =>
+             {
+                 TestDto? dto = new TestDto();
+                 dto.Id = x.GetValue<int>("id");
+                 dto.Name = x.GetValue<string>("Name");
+                 dto.Ratio = x.GetValue<double>("Ratio");
+                 dto.TimeStamp = x.GetValue<DateTime>("TimeStamp");
+                 dto.Category = new Category() { CatId = x.GetValue<int>("CategoryId") };
+                 dto.FormattedRatio = x.GetText("Ratio");
+                 dto.FormattedTimeStamp = x.GetText("TimeStamp");
 
-                                       return dto;
-                                   });
+                 return dto;
+             });
     }
 
     [TestMethod]

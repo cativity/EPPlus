@@ -66,7 +66,7 @@ public class ExcelThemeFontCollection : XmlHelper, IEnumerable<ExcelDrawingFontB
     public ExcelDrawingFont Add(string typeface, string script)
     {
         XmlNode e = this.TopNode.OwnerDocument.CreateElement("a", "font", ExcelPackage.schemaDrawings);
-        this.TopNode.AppendChild(e);
+        _ = this.TopNode.AppendChild(e);
         ExcelDrawingFont? f = new ExcelDrawingFont(this.NameSpaceManager, e) { Typeface = typeface, Script = script };
         this._lst.Add(f);
 
@@ -93,13 +93,13 @@ public class ExcelThemeFontCollection : XmlHelper, IEnumerable<ExcelDrawingFontB
     /// <param name="item">The item to remove</param>
     public void Remove(ExcelDrawingFontBase item)
     {
-        if (item is ExcelDrawingFontSpecial sf)
+        if (item is ExcelDrawingFontSpecial)
         {
             throw new InvalidOperationException("Cant remove this type of font.");
         }
 
-        item.TopNode.ParentNode.RemoveChild(item.TopNode);
-        this._lst.Remove(item);
+        _ = item.TopNode.ParentNode.RemoveChild(item.TopNode);
+        _ = this._lst.Remove(item);
     }
 
     /// <summary>
@@ -112,7 +112,7 @@ public class ExcelThemeFontCollection : XmlHelper, IEnumerable<ExcelDrawingFontB
         {
             string? id = this._pck.Workbook.Styles.Fonts[0].Id;
             this._pck.Workbook.Styles.Fonts[0].Name = typeface;
-            this._pck.Workbook.Styles.Fonts._dic.Remove(id);
+            _ = this._pck.Workbook.Styles.Fonts._dic.Remove(id);
             this._pck.Workbook.Styles.Fonts._dic.Add(this._pck.Workbook.Styles.Fonts[0].Id, 0);
         }
 
@@ -182,7 +182,7 @@ public class ExcelThemeFontCollection : XmlHelper, IEnumerable<ExcelDrawingFontB
         }
 
         XmlNode e = this.TopNode.OwnerDocument.CreateElement("a", typeName, ExcelPackage.schemaDrawings);
-        this.TopNode.AppendChild(e);
+        _ = this.TopNode.AppendChild(e);
         ExcelDrawingFontSpecial? f = new ExcelDrawingFontSpecial(this.NameSpaceManager, e) { Typeface = typeface };
         this._lst.Add(f);
 

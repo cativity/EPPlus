@@ -115,7 +115,7 @@ public class ExcelFilterColumnCollection : XmlHelper, IEnumerable<ExcelFilterCol
         XmlElement node = this.TopNode.OwnerDocument.CreateElement("filterColumn", ExcelPackage.schemaMain);
         node.SetAttribute("colId", position.ToString());
         XmlElement? subNode = this.TopNode.OwnerDocument.CreateElement(topNodeName, ExcelPackage.schemaMain);
-        node.AppendChild(subNode);
+        _ = node.AppendChild(subNode);
 
         return node;
     }
@@ -265,7 +265,7 @@ public class ExcelFilterColumnCollection : XmlHelper, IEnumerable<ExcelFilterCol
     public void Remove(ExcelFilterColumn column)
     {
         XmlNode? node = column.TopNode;
-        node.ParentNode.RemoveChild(node);
-        this._columns.Remove(column.Position);
+        _ = node.ParentNode.RemoveChild(node);
+        _ = this._columns.Remove(column.Position);
     }
 }

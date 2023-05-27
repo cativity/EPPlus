@@ -13,7 +13,7 @@ internal static class ZipHelper
     internal static string UncompressEntry(ZipInputStream zipStream, ZipEntry entry)
     {
         byte[]? content = new byte[entry.UncompressedSize];
-        int size = zipStream.Read(content, 0, (int)entry.UncompressedSize);
+        _ = zipStream.Read(content, 0, (int)entry.UncompressedSize);
 
         return Encoding.UTF8.GetString(content);
     }

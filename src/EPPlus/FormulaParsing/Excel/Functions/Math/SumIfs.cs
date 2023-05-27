@@ -30,7 +30,7 @@ internal class SumIfs : MultipleRangeCriteriasFunction
     {
         FunctionArgument[]? functionArguments = arguments as FunctionArgument[] ?? arguments.ToArray();
         ValidateArguments(functionArguments, 3);
-        List<int>? rows = new List<int>();
+        //_ = new List<int>();
         IRangeInfo? valueRange = functionArguments[0].ValueAsRangeInfo;
         List<double> sumRange;
 

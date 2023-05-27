@@ -135,7 +135,7 @@ namespace OfficeOpenXml.Drawing
             else if (IsGZip(br))
             {
                 ms.Position = 0;
-                byte[]? img = ExtractImage(ms.ToArray(), out ePictureType? pt);
+                _ = ExtractImage(ms.ToArray(), out ePictureType? pt);
 
                 return pt;
             }
@@ -169,7 +169,7 @@ namespace OfficeOpenXml.Drawing
 
             try
             {
-                ms.Seek(0, SeekOrigin.Begin);
+                _ = ms.Seek(0, SeekOrigin.Begin);
 
                 if (pictureType == ePictureType.Bmp && IsBmp(ms, ref width, ref height, ref horizontalResolution, ref verticalResolution))
                 {
@@ -296,7 +296,7 @@ namespace OfficeOpenXml.Drawing
                     {
                         case 0xFFE0:
                             byte[]? identifier = br.ReadBytes(5); //JFIF\0
-                            byte[]? version = br.ReadBytes(2);
+                            _ = br.ReadBytes(2);
                             byte unit = br.ReadByte();
                             float xDensity = (int)GetInt16BigEndian(br);
                             float yDensity = (int)GetInt16BigEndian(br);
@@ -323,7 +323,7 @@ namespace OfficeOpenXml.Drawing
                             double w = 0,
                                    h = 0;
 
-                            ReadTiffHeader(br, ref w, ref h, ref horizontalResolution, ref verticalResolution);
+                            _ = ReadTiffHeader(br, ref w, ref h, ref horizontalResolution, ref verticalResolution);
                             ms.Position = pos + length - 2;
 
                             break;
@@ -331,7 +331,7 @@ namespace OfficeOpenXml.Drawing
                         case 0xFFC0:
                         case 0xFFC1:
                         case 0xFFC2:
-                            byte precision = br.ReadByte(); //Bits
+                            _ = br.ReadByte();
                             height = GetUInt16BigEndian(br);
                             width = GetUInt16BigEndian(br);
                             br.Close();
@@ -378,7 +378,7 @@ namespace OfficeOpenXml.Drawing
 
         private static bool IsGif(BinaryReader br)
         {
-            br.BaseStream.Seek(0, SeekOrigin.Begin);
+            _ = br.BaseStream.Seek(0, SeekOrigin.Begin);
             byte[]? b = br.ReadBytes(6);
 
             return b[0] == 0x47 && b[1] == 0x49 && b[2] == 0x46; //byte 4-6 contains the version, but we don't check them here.
@@ -390,18 +390,18 @@ namespace OfficeOpenXml.Drawing
 
             if (IsBmp(br, out string sign))
             {
-                int size = br.ReadInt32();
-                byte[]? reserved = br.ReadBytes(4);
-                int offsetData = br.ReadInt32();
+                _ = br.ReadInt32();
+                _ = br.ReadBytes(4);
+                _ = br.ReadInt32();
 
                 //Info Header
-                int ihSize = br.ReadInt32(); //Should be 40
+                _ = br.ReadInt32();
                 width = br.ReadInt32();
                 height = br.ReadInt32();
 
                 if (sign == "BM")
                 {
-                    br.ReadBytes(12);
+                    _ = br.ReadBytes(12);
                     horizontalResolution = br.ReadInt32() / M_TO_INCH;
                     verticalResolution = br.ReadInt32() / M_TO_INCH;
                 }
@@ -420,7 +420,7 @@ namespace OfficeOpenXml.Drawing
         {
             try
             {
-                br.BaseStream.Seek(0, SeekOrigin.Begin);
+                _ = br.BaseStream.Seek(0, SeekOrigin.Begin);
                 sign = Encoding.ASCII.GetString(br.ReadBytes(2)); //BM for a Windows bitmap
 
                 return sign == "BM" || sign == "BA" || sign == "CI" || sign == "CP" || sign == "IC" || sign == "PT";
@@ -441,7 +441,7 @@ namespace OfficeOpenXml.Drawing
 
             if (IsIco(br))
             {
-                short imageCount = br.ReadInt16();
+                _ = br.ReadInt16();
                 width = br.ReadByte();
 
                 if (width == 0)
@@ -479,7 +479,7 @@ namespace OfficeOpenXml.Drawing
 
         internal static bool IsIco(BinaryReader br)
         {
-            br.BaseStream.Seek(0, SeekOrigin.Begin);
+            _ = br.BaseStream.Seek(0, SeekOrigin.Begin);
             short type0 = br.ReadInt16();
             short type1 = br.ReadInt16();
 
@@ -515,7 +515,7 @@ namespace OfficeOpenXml.Drawing
                             break;
 
                         case "VP8X":
-                            br.ReadBytes(8);
+                            _ = br.ReadBytes(8);
                             b = br.ReadBytes(6);
                             width = BitConverter.ToInt32(new byte[] { b[0], b[1], b[2], 0 }, 0) + 1;
                             height = BitConverter.ToInt32(new byte[] { b[3], b[4], b[5], 0 }, 0) + 1;
@@ -523,7 +523,7 @@ namespace OfficeOpenXml.Drawing
                             break;
 
                         case "VP8L":
-                            br.ReadBytes(5);
+                            _ = br.ReadBytes(5);
                             b = br.ReadBytes(4);
                             width = (b[0] | ((b[1] & 0x3F) << 8)) + 1;
                             height = ((b[1] >> 6) | (b[2] << 2) | ((b[3] & 0x0F) << 10)) + 1;
@@ -540,9 +540,9 @@ namespace OfficeOpenXml.Drawing
         {
             try
             {
-                br.BaseStream.Seek(0, SeekOrigin.Begin);
+                _ = br.BaseStream.Seek(0, SeekOrigin.Begin);
                 string? riff = Encoding.ASCII.GetString(br.ReadBytes(4));
-                int length = GetInt32BigEndian(br);
+                _ = GetInt32BigEndian(br);
                 string? webP = Encoding.ASCII.GetString(br.ReadBytes(4));
 
                 return riff == "RIFF" && webP == "WEBP";
@@ -586,12 +586,12 @@ namespace OfficeOpenXml.Drawing
                     if (ifd.Type == 1 || ifd.Type == 2 || ifd.Type == 6 || ifd.Type == 7)
                     {
                         ifd.ValueOffset = br.ReadByte();
-                        br.ReadBytes(3);
+                        _ = br.ReadBytes(3);
                     }
                     else if (ifd.Type == 3 || ifd.Type == 8)
                     {
                         ifd.ValueOffset = GetTifInt16(br, isBigEndian);
-                        br.ReadBytes(2);
+                        _ = br.ReadBytes(2);
                     }
                     else
                     {
@@ -712,7 +712,7 @@ namespace OfficeOpenXml.Drawing
 
             if (IsEmf(br))
             {
-                int length = br.ReadInt32();
+                _ = br.ReadInt32();
                 int[]? bounds = new int[4];
                 bounds[0] = br.ReadInt32();
                 bounds[1] = br.ReadInt32();
@@ -729,15 +729,15 @@ namespace OfficeOpenXml.Drawing
 
                 if (signature.Trim() == "EMF")
                 {
-                    uint version = br.ReadUInt32();
-                    uint size = br.ReadUInt32();
-                    uint records = br.ReadUInt32();
-                    ushort handles = br.ReadUInt16();
-                    ushort reserved = br.ReadUInt16();
+                    _ = br.ReadUInt32();
+                    _ = br.ReadUInt32();
+                    _ = br.ReadUInt32();
+                    _ = br.ReadUInt16();
+                    _ = br.ReadUInt16();
 
-                    uint nDescription = br.ReadUInt32();
-                    uint offDescription = br.ReadUInt32();
-                    uint nPalEntries = br.ReadUInt32();
+                    _ = br.ReadUInt32();
+                    _ = br.ReadUInt32();
+                    _ = br.ReadUInt32();
                     uint[]? device = new uint[2];
                     device[0] = br.ReadUInt32();
                     device[1] = br.ReadUInt32();
@@ -747,16 +747,16 @@ namespace OfficeOpenXml.Drawing
                     mm[1] = br.ReadUInt32();
 
                     //Extension 1
-                    uint cbPixelFormat = br.ReadUInt32();
-                    uint offPixelFormat = br.ReadUInt32();
-                    uint bOpenGL = br.ReadUInt32();
+                    _ = br.ReadUInt32();
+                    _ = br.ReadUInt32();
+                    _ = br.ReadUInt32();
 
                     //Extension 2
-                    uint hr = br.ReadUInt32();
-                    uint vr = br.ReadUInt32();
+                    _ = br.ReadUInt32();
+                    _ = br.ReadUInt32();
 
-                    int id = br.ReadInt32();
-                    int size2 = br.ReadInt32();
+                    _ = br.ReadInt32();
+                    _ = br.ReadInt32();
 
                     width = bounds[2] - bounds[0] + 1;
                     height = bounds[3] - bounds[1] + 1;
@@ -792,7 +792,7 @@ namespace OfficeOpenXml.Drawing
 
             if (IsWmf(br))
             {
-                short HWmf = br.ReadInt16();
+                _ = br.ReadInt16();
                 ushort[]? bounds = new ushort[4];
                 bounds[0] = br.ReadUInt16();
                 bounds[1] = br.ReadUInt16();
@@ -857,7 +857,7 @@ namespace OfficeOpenXml.Drawing
                         case "IHDR":
                             width = GetInt32BigEndian(br);
                             height = GetInt32BigEndian(br);
-                            br.ReadBytes(5); //Ignored bytes, Depth compression etc.
+                            _ = br.ReadBytes(5); //Ignored bytes, Depth compression etc.
 
                             break;
 
@@ -882,12 +882,12 @@ namespace OfficeOpenXml.Drawing
                             return width != 0 && height != 0;
 
                         default:
-                            br.ReadBytes(length);
+                            _ = br.ReadBytes(length);
 
                             break;
                     }
 
-                    int crc = br.ReadInt32();
+                    _ = br.ReadInt32();
                 }
             }
 

@@ -123,7 +123,7 @@ public class ExcelPivotTableDataField : XmlHelper
             if (!styles.NumberFormats.FindById(value, ref nf))
             {
                 nf = new ExcelNumberFormatXml(this.NameSpaceManager) { Format = value, NumFmtId = styles.NumberFormats.NextId++ };
-                styles.NumberFormats.Add(value, nf);
+                _ = styles.NumberFormats.Add(value, nf);
             }
 
             this.NumFmtId = nf.NumFmtId;

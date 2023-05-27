@@ -23,10 +23,10 @@ public class PivotTableCacheTests : TestBase
         _pck = OpenPackage("PivotCacheTable.xlsx", true);
         ExcelWorksheet? ws = _pck.Workbook.Worksheets.Add("Data1");
         ExcelRangeBase? r = LoadItemData(ws);
-        ws.Tables.Add(r, "Table1");
+        _ = ws.Tables.Add(r, "Table1");
         ws = _pck.Workbook.Worksheets.Add("Data2");
         r = LoadItemData(ws);
-        ws.Tables.Add(r, "Table2");
+        _ = ws.Tables.Add(r, "Table2");
     }
 
     [ClassCleanup]
@@ -40,11 +40,11 @@ public class PivotTableCacheTests : TestBase
     {
         ExcelWorksheet? ws = _pck.Workbook.Worksheets.Add("PivotSameCache");
         ExcelPivotTable? p1 = ws.PivotTables.Add(ws.Cells["A1"], _pck.Workbook.Worksheets[0].Tables[0].Range, "Pivot1");
-        p1.RowFields.Add(p1.Fields[0]);
-        p1.DataFields.Add(p1.Fields[3]);
+        _ = p1.RowFields.Add(p1.Fields[0]);
+        _ = p1.DataFields.Add(p1.Fields[3]);
         ExcelPivotTable? p2 = ws.PivotTables.Add(ws.Cells["K1"], p1.CacheDefinition, "Pivot2");
-        p2.ColumnFields.Add(p2.Fields[1]);
-        p2.DataFields.Add(p2.Fields[4]);
+        _ = p2.ColumnFields.Add(p2.Fields[1]);
+        _ = p2.DataFields.Add(p2.Fields[4]);
 
         Assert.AreEqual(5, p1.CacheDefinition._cacheReference.Fields.Count);
         Assert.AreEqual(p1.CacheDefinition._cacheReference, p2.CacheDefinition._cacheReference);
@@ -55,11 +55,11 @@ public class PivotTableCacheTests : TestBase
     {
         ExcelWorksheet? ws = _pck.Workbook.Worksheets.Add("PivotChangeCache");
         ExcelPivotTable? p1 = ws.PivotTables.Add(ws.Cells["A1"], _pck.Workbook.Worksheets[0].Tables[0].Range, "Pivot3");
-        p1.RowFields.Add(p1.Fields[0]);
-        p1.DataFields.Add(p1.Fields[3]);
+        _ = p1.RowFields.Add(p1.Fields[0]);
+        _ = p1.DataFields.Add(p1.Fields[3]);
         ExcelPivotTable? p2 = ws.PivotTables.Add(ws.Cells["K1"], _pck.Workbook.Worksheets[1].Tables[0].Range, "Pivot4");
-        p2.ColumnFields.Add(p2.Fields[1]);
-        p2.DataFields.Add(p2.Fields[4]);
+        _ = p2.ColumnFields.Add(p2.Fields[1]);
+        _ = p2.DataFields.Add(p2.Fields[4]);
 
         Assert.AreEqual(5, p1.CacheDefinition._cacheReference.Fields.Count);
 
@@ -73,11 +73,11 @@ public class PivotTableCacheTests : TestBase
     {
         ExcelWorksheet? ws = _pck.Workbook.Worksheets.Add("PivotSameThenNewCache");
         ExcelPivotTable? p1 = ws.PivotTables.Add(ws.Cells["A1"], _pck.Workbook.Worksheets[0].Tables[0].Range, "Pivot5");
-        p1.RowFields.Add(p1.Fields[0]);
-        p1.DataFields.Add(p1.Fields[3]);
+        _ = p1.RowFields.Add(p1.Fields[0]);
+        _ = p1.DataFields.Add(p1.Fields[3]);
         ExcelPivotTable? p2 = ws.PivotTables.Add(ws.Cells["K1"], _pck.Workbook.Worksheets[0].Tables[0].Range, "Pivot6");
-        p2.ColumnFields.Add(p2.Fields[1]);
-        p2.DataFields.Add(p2.Fields[4]);
+        _ = p2.ColumnFields.Add(p2.Fields[1]);
+        _ = p2.DataFields.Add(p2.Fields[4]);
 
         Assert.AreEqual(5, p1.CacheDefinition._cacheReference.Fields.Count);
 
@@ -89,11 +89,11 @@ public class PivotTableCacheTests : TestBase
     {
         ExcelWorksheet? ws = _pck.Workbook.Worksheets.Add("PivotSameCacheDateGroup");
         ExcelPivotTable? p1 = ws.PivotTables.Add(ws.Cells["A1"], _pck.Workbook.Worksheets[0].Tables[0].Range, "Pivot1");
-        p1.RowFields.Add(p1.Fields[0]);
-        p1.DataFields.Add(p1.Fields[3]);
+        _ = p1.RowFields.Add(p1.Fields[0]);
+        _ = p1.DataFields.Add(p1.Fields[3]);
         ExcelPivotTable? p2 = ws.PivotTables.Add(ws.Cells["K1"], p1.CacheDefinition, "Pivot2");
-        p2.DataFields.Add(p2.Fields[3]);
-        p2.RowFields.Add(p2.Fields[4]);
+        _ = p2.DataFields.Add(p2.Fields[3]);
+        _ = p2.RowFields.Add(p2.Fields[4]);
         p2.Fields[4].AddDateGrouping(eDateGroupBy.Years | eDateGroupBy.Months | eDateGroupBy.Days);
 
         Assert.AreEqual(7, p1.CacheDefinition._cacheReference.Fields.Count);
@@ -142,17 +142,17 @@ public class PivotTableCacheTests : TestBase
         pivotTable.RowHeaderCaption = "Date";
 
         ExcelPivotTableField? dateField = pivotTable.Fields["Date"];
-        pivotTable.RowFields.Add(dateField);
+        _ = pivotTable.RowFields.Add(dateField);
 
         ExcelPivotTableField? timeField = pivotTable.Fields["Time"];
-        pivotTable.RowFields.Add(timeField);
+        _ = pivotTable.RowFields.Add(timeField);
         timeField.Cache.Refresh();
         Assert.AreEqual(2, timeField.Cache.SharedItems.Count);
         Assert.AreEqual(new DateTime(0), timeField.Cache.SharedItems[0]);
         Assert.AreEqual(new DateTime(TimeSpan.TicksPerSecond), timeField.Cache.SharedItems[1]);
 
         ExcelPivotTableField? countField = pivotTable.Fields["Text"];
-        pivotTable.ColumnFields.Add(countField);
+        _ = pivotTable.ColumnFields.Add(countField);
     }
 
     [TestMethod]
@@ -163,7 +163,7 @@ public class PivotTableCacheTests : TestBase
         ExcelWorksheet wsPivot = p1.Workbook.Worksheets.Add("PivotDeleted");
         LoadTestdata(wsData);
         ExcelRange? dataRange = wsData.Cells[wsData.Dimension.Address.ToString()];
-        ExcelPivotTable? pivotTable = wsPivot.PivotTables.Add(wsPivot.Cells["A3"], dataRange, "PivotDeleted");
+        _ = wsPivot.PivotTables.Add(wsPivot.Cells["A3"], dataRange, "PivotDeleted");
         p1.Save();
         using ExcelPackage? p2 = new ExcelPackage(p1.Stream);
         p2.Workbook.Worksheets.Delete("DataDeleted");
@@ -183,7 +183,7 @@ public class PivotTableCacheTests : TestBase
         wsData.Cells["C101"].Value = "A really Long Text" + new string('.', 255);
         ExcelRange? dataRange = wsData.Cells[wsData.Dimension.Address.ToString()];
         ExcelPivotTable? pivotTable = wsPivot.PivotTables.Add(wsPivot.Cells["A3"], dataRange, "PivotWithLongText");
-        pivotTable.ColumnFields.Add(pivotTable.Fields[2]);
+        _ = pivotTable.ColumnFields.Add(pivotTable.Fields[2]);
         p.Save();
 
         Assert.AreEqual("1",

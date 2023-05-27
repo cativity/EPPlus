@@ -47,7 +47,7 @@ public class NamedValueExpression : AtomicExpression
             if (table != null)
             {
                 RangeInfo? ri = new RangeInfo(table.WorkSheet, table.Address);
-                cache.Add(cacheId, ri.Address.FullAddress);
+                _ = cache.Add(cacheId, ri.Address.FullAddress);
 
                 return new CompileResult(ri, DataType.Enumerable, cacheId);
             }
@@ -63,7 +63,7 @@ public class NamedValueExpression : AtomicExpression
         if (name.Value is IRangeInfo)
         {
             IRangeInfo? range = (IRangeInfo)name.Value;
-            cache.Add(cacheId, range.Address.FullAddress);
+            _ = cache.Add(cacheId, range.Address.FullAddress);
 
             if (range.IsMulti)
             {

@@ -49,7 +49,7 @@ public class TokenFactoryTests
     public void Setup()
     {
         ParsingContext? context = ParsingContext.Create();
-        ExcelDataProvider? excelDataProvider = A.Fake<ExcelDataProvider>();
+        _ = A.Fake<ExcelDataProvider>();
         this._nameValueProvider = A.Fake<INameValueProvider>();
         this._tokenFactory = new TokenFactory(context.Configuration.FunctionRepository, this._nameValueProvider);
     }
@@ -189,8 +189,8 @@ public class TokenFactoryTests
     public void CreateShouldCreateNamedValueAsExcelAddressToken()
     {
         string? input = "NamedValue";
-        A.CallTo(() => this._nameValueProvider.IsNamedValue("NamedValue", "")).Returns(true);
-        A.CallTo(() => this._nameValueProvider.IsNamedValue("NamedValue", null)).Returns(true);
+        _ = A.CallTo(() => this._nameValueProvider.IsNamedValue("NamedValue", "")).Returns(true);
+        _ = A.CallTo(() => this._nameValueProvider.IsNamedValue("NamedValue", null)).Returns(true);
         Token token = this._tokenFactory.Create(Enumerable.Empty<Token>(), input);
         Assert.IsTrue(token.TokenTypeIsSet(TokenType.NameValue));
         Assert.AreEqual("NamedValue", token.Value);

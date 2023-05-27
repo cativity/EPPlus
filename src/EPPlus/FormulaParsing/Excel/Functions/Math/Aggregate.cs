@@ -36,7 +36,7 @@ internal class Aggregate : ExcelFunction
 
         if (!context.SubtotalAddresses.Contains(cellId))
         {
-            context.SubtotalAddresses.Add(cellId);
+            _ = context.SubtotalAddresses.Add(cellId);
         }
     }
 
@@ -62,7 +62,7 @@ internal class Aggregate : ExcelFunction
 
             if (!context.SubtotalAddresses.Contains(cellId))
             {
-                context.SubtotalAddresses.Add(cellId);
+                _ = context.SubtotalAddresses.Add(cellId);
             }
         }
 

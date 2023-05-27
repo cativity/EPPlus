@@ -192,7 +192,6 @@ public class ToDataTableTests
     public void ToDataTableShouldHandleIntAndBool()
     {
         using ExcelPackage? package = new ExcelPackage();
-        DateTime date = DateTime.UtcNow;
         ExcelWorksheet? sheet = package.Workbook.Worksheets.Add("test");
         sheet.Cells["A1"].Value = "Id";
         sheet.Cells["B1"].Value = "IsBool";
@@ -226,7 +225,6 @@ public class ToDataTableTests
     public void ToDataTableShouldHandleExcelErrors()
     {
         using ExcelPackage? package = new ExcelPackage();
-        DateTime date = DateTime.UtcNow;
         ExcelWorksheet? sheet = package.Workbook.Worksheets.Add("test");
         sheet.Cells["A1"].Value = "Id";
         sheet.Cells["B1"].Value = "Name";
@@ -250,7 +248,6 @@ public class ToDataTableTests
     public void ToDataTableShouldSkipLinesStart()
     {
         using ExcelPackage? package = new ExcelPackage();
-        DateTime date = DateTime.UtcNow;
         ExcelWorksheet? sheet = package.Workbook.Worksheets.Add("test");
         sheet.Cells["A1"].Value = "Id";
         sheet.Cells["B1"].Value = "Name";
@@ -270,7 +267,6 @@ public class ToDataTableTests
     public void ToDataTableShouldSkipEmptyRows()
     {
         using ExcelPackage? package = new ExcelPackage();
-        DateTime date = DateTime.UtcNow;
         ExcelWorksheet? sheet = package.Workbook.Worksheets.Add("test");
         sheet.Cells["A1"].Value = "Id";
         sheet.Cells["B1"].Value = "Name";
@@ -302,7 +298,6 @@ public class ToDataTableTests
     public void ToDataTableShouldSkipLinesEnd()
     {
         using ExcelPackage? package = new ExcelPackage();
-        DateTime date = DateTime.UtcNow;
         ExcelWorksheet? sheet = package.Workbook.Worksheets.Add("test");
         sheet.Cells["A1"].Value = "Id";
         sheet.Cells["B1"].Value = "Name";
@@ -322,7 +317,6 @@ public class ToDataTableTests
     public void ToDataTableShouldHandleAllowNulls()
     {
         using ExcelPackage? package = new ExcelPackage();
-        DateTime date = DateTime.UtcNow;
         ExcelWorksheet? sheet = package.Workbook.Worksheets.Add("test");
         sheet.Cells["A1"].Value = "Id";
         sheet.Cells["B1"].Value = "Name";
@@ -331,14 +325,13 @@ public class ToDataTableTests
         sheet.Cells["A3"].Value = 3;
         sheet.Cells["B3"].Value = null;
 
-        DataTable? dt = sheet.Cells["A1:B3"].ToDataTable(o => { o.Mappings.Add(1, "Name", typeof(string), false); });
+        _ = sheet.Cells["A1:B3"].ToDataTable(o => { o.Mappings.Add(1, "Name", typeof(string), false); });
     }
 
     [TestMethod]
     public void ToDataTableWithExistingTable_UseOnlyDefinedCols()
     {
         using ExcelPackage? package = new ExcelPackage();
-        DateTime date = DateTime.UtcNow;
         ExcelWorksheet? sheet = package.Workbook.Worksheets.Add("test");
         sheet.Cells["A1"].Value = "Id";
         sheet.Cells["B1"].Value = "Name";
@@ -351,10 +344,10 @@ public class ToDataTableTests
         sheet.Cells["C3"].Value = "Robs email";
 
         DataTable? table = new DataTable("dt1", "ns1");
-        table.Columns.Add("Id", typeof(int));
-        table.Columns.Add("Email", typeof(string));
+        _ = table.Columns.Add("Id", typeof(int));
+        _ = table.Columns.Add("Email", typeof(string));
 
-        sheet.Cells["A1:C3"].ToDataTable(table);
+        _ = sheet.Cells["A1:C3"].ToDataTable(table);
         Assert.AreEqual("Bobs email", table.Rows[0]["Email"]);
     }
 }

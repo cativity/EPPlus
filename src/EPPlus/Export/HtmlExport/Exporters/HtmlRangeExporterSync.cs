@@ -259,9 +259,7 @@ internal class HtmlRangeExporterSync : HtmlRangeExporterSyncBase
                     continue;
                 }
 
-                int colIx = col - range._fromCol;
                 ExcelRange? cell = ws.Cells[row, col];
-                object? cv = cell.Value;
                 string? dataType = HtmlRawDataProvider.GetHtmlDataTypeFromValue(cell.Value);
 
                 this.SetColRowSpan(range, writer, cell);

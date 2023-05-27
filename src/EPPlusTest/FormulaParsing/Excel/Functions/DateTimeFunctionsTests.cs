@@ -122,7 +122,7 @@ public class DateTimeFunctionsTests
     [TestMethod]
     public void DayShouldReturnMonthOfYearWithStringParam()
     {
-        DateTime date = new DateTime(2012, 3, 12);
+        //_ = new DateTime(2012, 3, 12);
         Day? func = new Day();
         CompileResult? result = func.Execute(FunctionsHelper.CreateArgs("2012-03-12"), this._parsingContext);
         Assert.AreEqual(12, result.Result);
@@ -160,7 +160,7 @@ public class DateTimeFunctionsTests
     [TestMethod]
     public void MonthShouldReturnMonthOfYearWithStringParam()
     {
-        DateTime date = new DateTime(2012, 3, 12);
+        //_ = new DateTime(2012, 3, 12);
         Month? func = new Month();
         CompileResult? result = func.Execute(FunctionsHelper.CreateArgs("2012-03-12"), this._parsingContext);
         Assert.AreEqual(3, result.Result);
@@ -178,7 +178,7 @@ public class DateTimeFunctionsTests
     [TestMethod]
     public void YearShouldReturnCorrectYearWithStringParam()
     {
-        DateTime date = new DateTime(2012, 3, 12);
+        //_ = new DateTime(2012, 3, 12);
         Year? func = new Year();
         CompileResult? result = func.Execute(FunctionsHelper.CreateArgs("2012-03-12"), this._parsingContext);
         Assert.AreEqual(2012, result.Result);

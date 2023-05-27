@@ -122,7 +122,7 @@ public class ExcelTableSlicerCache : ExcelSlicerCache
                 XmlNode? node = this.CreateNode("x14:extLst/d:ext", false, true);
                 ((XmlElement)node).SetAttribute("uri", "{470722E0-AACD-4C17-9CDC-17EF765DBC7E}");
                 XmlHelper? helper = XmlHelperFactory.Create(this.NameSpaceManager, node);
-                helper.CreateNode(_hideItemsWithNoDataPath, false, true);
+                _ = helper.CreateNode(_hideItemsWithNoDataPath, false, true);
             }
             else
             {
@@ -130,7 +130,7 @@ public class ExcelTableSlicerCache : ExcelSlicerCache
 
                 if (hideNode != null)
                 {
-                    hideNode.ParentNode.ParentNode.RemoveChild(hideNode.ParentNode);
+                    _ = hideNode.ParentNode.ParentNode.RemoveChild(hideNode.ParentNode);
                 }
             }
         }

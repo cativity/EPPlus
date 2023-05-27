@@ -22,14 +22,14 @@ public class FormulaParserTests : FormulaParserTestBase
         sheetA.SetValue("A1", 1);
         sheetA.SetFormula(1, 2, "A1");
         sheetA.SetFormula(1, 3, "B!A1");
-        sheetA.Names.AddFormula("sheetANameToA", "A!A1");
-        sheetA.Names.AddFormula("sheetANameToB", "B!A1");
+        _ = sheetA.Names.AddFormula("sheetANameToA", "A!A1");
+        _ = sheetA.Names.AddFormula("sheetANameToB", "B!A1");
 
         sheetB.SetValue("A1", 2);
         sheetB.SetFormula(1, 2, "A1");
         sheetB.SetFormula(1, 3, "A!A1");
-        sheetB.Names.AddFormula("sheetBNameToA", "A!A1");
-        sheetB.Names.AddFormula("sheetBNameToB", "B!A1");
+        _ = sheetB.Names.AddFormula("sheetBNameToA", "A!A1");
+        _ = sheetB.Names.AddFormula("sheetBNameToB", "B!A1");
 
         wb.Calculate();
 

@@ -586,7 +586,7 @@ internal partial class ZipEntry
 
         Stream input = this.ArchiveStream;
 
-        this.ArchiveStream.Seek(this.FileDataPosition, SeekOrigin.Begin);
+        _ = this.ArchiveStream.Seek(this.FileDataPosition, SeekOrigin.Begin);
 
         // workitem 10178
         SharedUtilities.Workaround_Ladybug318918(this.ArchiveStream);
@@ -628,7 +628,7 @@ internal partial class ZipEntry
         {
             if (!this._container.ZipFile._inExtractAll)
             {
-                this._container.ZipFile.OnSingleEntryExtract(this, path, false);
+                _ = this._container.ZipFile.OnSingleEntryExtract(this, path, false);
             }
         }
     }
@@ -1522,7 +1522,7 @@ internal partial class ZipEntry
             {
                 if (!Directory.Exists(outFileName))
                 {
-                    Directory.CreateDirectory(outFileName);
+                    _ = Directory.CreateDirectory(outFileName);
                     this._SetTimes(outFileName, false);
                 }
                 else

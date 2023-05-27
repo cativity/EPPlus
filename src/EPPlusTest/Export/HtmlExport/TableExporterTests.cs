@@ -38,7 +38,7 @@ public class TableExporterTests : TestBase
         exporter.RenderHtmlAsync(ms).Wait();
         StreamReader? sr = new StreamReader(ms);
         ms.Position = 0;
-        string? result = sr.ReadToEnd();
+        _ = sr.ReadToEnd();
     }
 #endif
 
@@ -63,7 +63,7 @@ public class TableExporterTests : TestBase
             x.Accessibility.TableSettings.AddAccessibilityAttributes = false;
         });
 
-        string? html = exporter.GetHtmlString();
+        _ = exporter.GetHtmlString();
         using MemoryStream? ms = new MemoryStream();
         exporter.RenderHtml(ms);
         StreamReader? sr = new StreamReader(ms);
@@ -421,8 +421,8 @@ public class TableExporterTests : TestBase
         tbl.TableStyle = TableStyles.Dark5;
 
         IExcelHtmlTableExporter? exporter = tbl.CreateHtmlExporter();
-        string? html = exporter.GetHtmlString();
-        string? htmlCss = exporter.GetSinglePage();
+        _ = exporter.GetHtmlString();
+        _ = exporter.GetSinglePage();
     }
 
     [TestMethod]

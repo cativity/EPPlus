@@ -256,13 +256,13 @@ public class ExcelChartStandard : ExcelChart
         {
             XmlElement graphFrame = this.TopNode.OwnerDocument.CreateElement("graphicFrame", ExcelPackage.schemaSheetDrawings);
             graphFrame.SetAttribute("macro", "");
-            this.TopNode.AppendChild(graphFrame);
+            _ = this.TopNode.AppendChild(graphFrame);
 
             graphFrame.InnerXml =
                 string.Format("<xdr:nvGraphicFramePr><xdr:cNvPr id=\"{0}\" name=\"Chart 1\" /><xdr:cNvGraphicFramePr /></xdr:nvGraphicFramePr><xdr:xfrm><a:off x=\"0\" y=\"0\" /> <a:ext cx=\"0\" cy=\"0\" /></xdr:xfrm><a:graphic><a:graphicData uri=\"http://schemas.openxmlformats.org/drawingml/2006/chart\"><c:chart xmlns:c=\"http://schemas.openxmlformats.org/drawingml/2006/chart\" xmlns:r=\"http://schemas.openxmlformats.org/officeDocument/2006/relationships\" r:id=\"rId1\" />   </a:graphicData>  </a:graphic>",
                               this._id);
 
-            this.TopNode.AppendChild(this.TopNode.OwnerDocument.CreateElement("clientData", ExcelPackage.schemaSheetDrawings));
+            _ = this.TopNode.AppendChild(this.TopNode.OwnerDocument.CreateElement("clientData", ExcelPackage.schemaSheetDrawings));
 
             ZipPackage? package = drawings.Worksheet._package.ZipPackage;
             this.UriChart = GetNewUri(package, "/xl/charts/chart{0}.xml");
@@ -305,7 +305,7 @@ public class ExcelChartStandard : ExcelChart
 
             XmlNode preNode = this._plotArea.ChartTypes[this._plotArea.ChartTypes.Count - 1].ChartNode;
             this._chartNode = ((XmlDocument)this.ChartXml).CreateElement(this.GetChartNodeText(), ExcelPackage.schemaChart);
-            preNode.ParentNode.InsertAfter(this._chartNode, preNode);
+            _ = preNode.ParentNode.InsertAfter(this._chartNode, preNode);
 
             if (topChart.Axis.Length == 0)
             {
@@ -434,15 +434,15 @@ public class ExcelChartStandard : ExcelChart
         int xAxID = 2;
         int serAxID = this.HasThirdAxis() ? 3 : -1;
 
-        xml.Append("<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"yes\"?>");
+        _ = xml.Append("<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"yes\"?>");
 
-        xml.AppendFormat("<c:chartSpace xmlns:c=\"{0}\" xmlns:a=\"{1}\" xmlns:r=\"{2}\">",
+        _ = xml.AppendFormat("<c:chartSpace xmlns:c=\"{0}\" xmlns:a=\"{1}\" xmlns:r=\"{2}\">",
                          ExcelPackage.schemaChart,
                          ExcelPackage.schemaDrawings,
                          ExcelPackage.schemaRelationships);
 
-        xml.Append("<c:chart>");
-        xml.AppendFormat("{0}{1}<c:plotArea><c:layout/>", this.AddPerspectiveXml(type), this.Add3DXml(type));
+        _ = xml.Append("<c:chart>");
+        _ = xml.AppendFormat("{0}{1}<c:plotArea><c:layout/>", this.AddPerspectiveXml(type), this.Add3DXml(type));
 
         string chartNodeText = this.GetChartNodeText();
 
@@ -452,9 +452,9 @@ public class ExcelChartStandard : ExcelChart
         }
         else
         {
-            xml.AppendFormat("<{0}>", chartNodeText);
-            xml.Append(this.GetChartSerieStartXml(type, axID, xAxID, serAxID));
-            xml.AppendFormat("</{0}>", chartNodeText);
+            _ = xml.AppendFormat("<{0}>", chartNodeText);
+            _ = xml.Append(this.GetChartSerieStartXml(type, axID, xAxID, serAxID));
+            _ = xml.AppendFormat("</{0}>", chartNodeText);
         }
 
         //Axis
@@ -462,20 +462,20 @@ public class ExcelChartStandard : ExcelChart
         {
             if (this.IsTypeScatter() || this.IsTypeBubble())
             {
-                xml.AppendFormat("<c:valAx><c:axId val=\"{0}\"/><c:scaling><c:orientation val=\"minMax\"/></c:scaling><c:delete val=\"0\"/><c:axPos val=\"b\"/><c:tickLblPos val=\"nextTo\"/>{2}<c:crossAx val=\"{1}\"/><c:crosses val=\"autoZero\"/></c:valAx>",
+                _ = xml.AppendFormat("<c:valAx><c:axId val=\"{0}\"/><c:scaling><c:orientation val=\"minMax\"/></c:scaling><c:delete val=\"0\"/><c:axPos val=\"b\"/><c:tickLblPos val=\"nextTo\"/>{2}<c:crossAx val=\"{1}\"/><c:crosses val=\"autoZero\"/></c:valAx>",
                                  axID,
                                  xAxID,
                                  GetAxisShapeProperties());
             }
             else
             {
-                xml.AppendFormat("<c:catAx><c:axId val=\"{0}\"/><c:scaling><c:orientation val=\"minMax\"/></c:scaling><c:delete val=\"0\"/><c:axPos val=\"b\"/><c:tickLblPos val=\"nextTo\"/>{2}<c:crossAx val=\"{1}\"/><c:crosses val=\"autoZero\"/><c:auto val=\"1\"/><c:lblAlgn val=\"ctr\"/><c:lblOffset val=\"100\"/></c:catAx>",
+                _ = xml.AppendFormat("<c:catAx><c:axId val=\"{0}\"/><c:scaling><c:orientation val=\"minMax\"/></c:scaling><c:delete val=\"0\"/><c:axPos val=\"b\"/><c:tickLblPos val=\"nextTo\"/>{2}<c:crossAx val=\"{1}\"/><c:crosses val=\"autoZero\"/><c:auto val=\"1\"/><c:lblAlgn val=\"ctr\"/><c:lblOffset val=\"100\"/></c:catAx>",
                                  axID,
                                  xAxID,
                                  GetAxisShapeProperties());
             }
 
-            xml.AppendFormat("<c:valAx><c:axId val=\"{1}\"/><c:scaling><c:orientation val=\"minMax\"/></c:scaling><c:delete val=\"0\"/><c:axPos val=\"l\"/><c:majorGridlines/><c:tickLblPos val=\"nextTo\"/>{2}<c:crossAx val=\"{0}\"/><c:crosses val=\"autoZero\"/><c:crossBetween val=\"between\"/></c:valAx>",
+            _ = xml.AppendFormat("<c:valAx><c:axId val=\"{1}\"/><c:scaling><c:orientation val=\"minMax\"/></c:scaling><c:delete val=\"0\"/><c:axPos val=\"l\"/><c:majorGridlines/><c:tickLblPos val=\"nextTo\"/>{2}<c:crossAx val=\"{0}\"/><c:crosses val=\"autoZero\"/><c:crossBetween val=\"between\"/></c:valAx>",
                              axID,
                              xAxID,
                              GetAxisShapeProperties());
@@ -484,14 +484,14 @@ public class ExcelChartStandard : ExcelChart
             {
                 if (this.IsTypeSurface() || this.ChartType == eChartType.Line3D)
                 {
-                    xml.AppendFormat("<c:serAx><c:axId val=\"{0}\"/><c:scaling><c:orientation val=\"minMax\"/></c:scaling><c:delete val=\"0\"/><c:axPos val=\"b\"/><c:tickLblPos val=\"nextTo\"/>{2}<c:crossAx val=\"{1}\"/><c:crosses val=\"autoZero\"/></c:serAx>",
+                    _ = xml.AppendFormat("<c:serAx><c:axId val=\"{0}\"/><c:scaling><c:orientation val=\"minMax\"/></c:scaling><c:delete val=\"0\"/><c:axPos val=\"b\"/><c:tickLblPos val=\"nextTo\"/>{2}<c:crossAx val=\"{1}\"/><c:crosses val=\"autoZero\"/></c:serAx>",
                                      serAxID,
                                      xAxID,
                                      GetAxisShapeProperties());
                 }
                 else
                 {
-                    xml.AppendFormat("<c:valAx><c:axId val=\"{0}\"/><c:scaling><c:orientation val=\"minMax\"/></c:scaling><c:delete val=\"0\"/><c:axPos val=\"r\"/><c:majorGridlines/><c:majorTickMark val=\"none\"/><c:minorTickMark val=\"none\"/><c:tickLblPos val=\"nextTo\"/>{2}<c:crossAx val=\"{1}\"/><c:crosses val=\"max\"/><c:crossBetween val=\"between\"/></c:valAx>",
+                    _ = xml.AppendFormat("<c:valAx><c:axId val=\"{0}\"/><c:scaling><c:orientation val=\"minMax\"/></c:scaling><c:delete val=\"0\"/><c:axPos val=\"r\"/><c:majorGridlines/><c:majorTickMark val=\"none\"/><c:minorTickMark val=\"none\"/><c:tickLblPos val=\"nextTo\"/>{2}<c:crossAx val=\"{1}\"/><c:crosses val=\"max\"/><c:crossBetween val=\"between\"/></c:valAx>",
                                      serAxID,
                                      axID,
                                      GetAxisShapeProperties());
@@ -499,26 +499,26 @@ public class ExcelChartStandard : ExcelChart
             }
         }
 
-        xml.AppendFormat("</c:plotArea>"
+        _ = xml.AppendFormat("</c:plotArea>"
                          + //<c:spPr><a:noFill/><a:ln><a:noFill/></a:ln><a:effectLst/></c:spPr>
                          AddLegend()
                          + "<c:plotVisOnly val=\"1\"/></c:chart>",
                          axID,
                          xAxID);
 
-        xml.Append("<c:printSettings><c:headerFooter/><c:pageMargins b=\"0.75\" l=\"0.7\" r=\"0.7\" t=\"0.75\" header=\"0.3\" footer=\"0.3\"/><c:pageSetup/></c:printSettings></c:chartSpace>");
+        _ = xml.Append("<c:printSettings><c:headerFooter/><c:pageMargins b=\"0.75\" l=\"0.7\" r=\"0.7\" t=\"0.75\" header=\"0.3\" footer=\"0.3\"/><c:pageSetup/></c:printSettings></c:chartSpace>");
 
         return xml.ToString();
     }
 
     private void AppendStockChartXml(eChartType type, StringBuilder xml, string chartNodeText)
     {
-        xml.Append("<c:barChart>");
-        xml.Append(this.AddAxisId(1, 2, -1));
-        xml.Append("</c:barChart>");
-        xml.AppendFormat("<{0}>", chartNodeText);
-        xml.Append(this.GetChartSerieStartXml(type, 1, 3, -1));
-        xml.AppendFormat("</{0}>", chartNodeText);
+        _ = xml.Append("<c:barChart>");
+        _ = xml.Append(this.AddAxisId(1, 2, -1));
+        _ = xml.Append("</c:barChart>");
+        _ = xml.AppendFormat("<{0}>", chartNodeText);
+        _ = xml.Append(this.GetChartSerieStartXml(type, 1, 3, -1));
+        _ = xml.AppendFormat("</{0}>", chartNodeText);
     }
 
     private static object GetAxisShapeProperties()
@@ -545,30 +545,30 @@ public class ExcelChartStandard : ExcelChart
     {
         StringBuilder xml = new StringBuilder();
 
-        xml.Append(AddScatterType(type));
-        xml.Append(AddRadarType(type));
-        xml.Append(this.AddBarDir(type));
-        xml.Append(this.AddGrouping());
-        xml.Append(this.AddVaryColors());
-        xml.Append(AddHasMarker(type));
-        xml.Append(this.AddShape(type));
-        xml.Append(AddFirstSliceAng(type));
-        xml.Append(AddHoleSize(type));
+        _ = xml.Append(AddScatterType(type));
+        _ = xml.Append(AddRadarType(type));
+        _ = xml.Append(this.AddBarDir(type));
+        _ = xml.Append(this.AddGrouping());
+        _ = xml.Append(this.AddVaryColors());
+        _ = xml.Append(AddHasMarker(type));
+        _ = xml.Append(this.AddShape(type));
+        _ = xml.Append(AddFirstSliceAng(type));
+        _ = xml.Append(AddHoleSize(type));
 
         if (this.ChartType == eChartType.BarStacked100
             || this.ChartType == eChartType.BarStacked
             || this.ChartType == eChartType.ColumnStacked
             || this.ChartType == eChartType.ColumnStacked100)
         {
-            xml.Append("<c:overlap val=\"100\"/>");
+            _ = xml.Append("<c:overlap val=\"100\"/>");
         }
 
         if (this.IsTypeSurface())
         {
-            xml.Append("<c:bandFmts/>");
+            _ = xml.Append("<c:bandFmts/>");
         }
 
-        xml.Append(this.AddAxisId(axID, xAxID, serAxID));
+        _ = xml.Append(this.AddAxisId(axID, xAxID, serAxID));
 
         return xml.ToString();
     }
@@ -894,17 +894,17 @@ public class ExcelChartStandard : ExcelChart
 
         if (this._axis.Length == 0)
         {
-            this._plotArea.TopNode.AppendChild(catAx);
+            _ = this._plotArea.TopNode.AppendChild(catAx);
             axID = 1;
         }
         else
         {
-            this._axis[0].TopNode.ParentNode.InsertAfter(catAx, this._axis[this._axis.Length - 1].TopNode);
+            _ = this._axis[0].TopNode.ParentNode.InsertAfter(catAx, this._axis[this._axis.Length - 1].TopNode);
             axID = int.Parse(this._axis[0].Id) < int.Parse(this._axis[1].Id) ? int.Parse(this._axis[1].Id) + 1 : int.Parse(this._axis[0].Id) + 1;
         }
 
         XmlElement valAx = this.ChartXml.CreateElement("c:valAx", ExcelPackage.schemaChart);
-        catAx.ParentNode.InsertAfter(valAx, catAx);
+        _ = catAx.ParentNode.InsertAfter(valAx, catAx);
 
         if (this._axis.Length == 0)
         {
@@ -1032,7 +1032,7 @@ public class ExcelChartStandard : ExcelChart
 
                 if (element != null)
                 {
-                    element.ParentNode.RemoveChild(element);
+                    _ = element.ParentNode.RemoveChild(element);
                 }
             }
             else
@@ -1042,7 +1042,7 @@ public class ExcelChartStandard : ExcelChart
                     XmlElement element = this.ChartXml.CreateElement("c:style", ExcelPackage.schemaChart);
                     element.SetAttribute("val", ((int)value).ToString());
                     XmlElement parent = this.ChartXml.SelectSingleNode("c:chartSpace", this.NameSpaceManager) as XmlElement;
-                    parent.InsertBefore(element, parent.SelectSingleNode("c:chart", this.NameSpaceManager));
+                    _ = parent.InsertBefore(element, parent.SelectSingleNode("c:chart", this.NameSpaceManager));
                 }
                 else
                 {
@@ -1387,11 +1387,11 @@ public class ExcelChartStandard : ExcelChart
         XmlElement chart = this.ChartXml.SelectSingleNode("c:chartSpace/c:chart", this.NameSpaceManager) as XmlElement;
 
         XmlElement? pivotSource = this.ChartXml.CreateElement("pivotSource", ExcelPackage.schemaChart);
-        chart.ParentNode.InsertBefore(pivotSource, chart);
+        _ = chart.ParentNode.InsertBefore(pivotSource, chart);
         pivotSource.InnerXml = string.Format("<c:name>[]{0}!{1}</c:name><c:fmtId val=\"0\"/>", this.PivotTableSource.WorkSheet.Name, pivotTableSource.Name);
 
         XmlElement? fmts = this.ChartXml.CreateElement("pivotFmts", ExcelPackage.schemaChart);
-        chart.PrependChild(fmts);
+        _ = chart.PrependChild(fmts);
         fmts.InnerXml = "<c:pivotFmt><c:idx val=\"0\"/><c:marker><c:symbol val=\"none\"/></c:marker></c:pivotFmt>";
 
         this.Series.AddPivotSerie(pivotTableSource);

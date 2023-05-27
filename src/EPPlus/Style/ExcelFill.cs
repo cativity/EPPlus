@@ -56,7 +56,7 @@ public class ExcelFill : StyleBase
                 this._gradient = null;
             }
 
-            this._ChangedEvent(this, new StyleChangeEventArgs(eStyleClass.Fill, eStyleProperty.PatternType, value, this._positionID, this._address));
+            _ = this._ChangedEvent(this, new StyleChangeEventArgs(eStyleClass.Fill, eStyleProperty.PatternType, value, this._positionID, this._address));
         }
     }
 

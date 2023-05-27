@@ -36,7 +36,7 @@ namespace EPPlusTest.Drawing
             public void AddThreeParagraphsAndValidate()
             {
                 ExcelShape? shape = _ws.Drawings.AddShape("shape1", eShapeStyle.Rect);
-                shape.RichText.Add("Line1");
+                _ = shape.RichText.Add("Line1");
                 ExcelParagraph? r2 = shape.RichText.Add("L", true);
                 r2.Fill.Style = eFillStyle.SolidFill;
                 r2.Fill.SolidFill.Color.SetSchemeColor(eSchemeColor.Accent2);
@@ -110,8 +110,8 @@ namespace EPPlusTest.Drawing
             {
                 ExcelShape? shape = _ws.Drawings.AddShape("shape2", eShapeStyle.Rect);
                 shape.SetPosition(20, 0, 0, 0);
-                shape.RichText.Add("", true);
-                shape.RichText.Add("SecondLine", true);
+                _ = shape.RichText.Add("", true);
+                _ = shape.RichText.Add("SecondLine", true);
                 ExcelParagraph? r2 = shape.RichText.Add("    ", true);
                 r2.UnderLine = eUnderLineType.Single;
                 Assert.AreEqual(3, shape.RichText.Count);

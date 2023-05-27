@@ -120,7 +120,7 @@ public class ExcelStockChart : ExcelStandardChartWithLines
                                              string OpenSerie,
                                              string VolumeSerie)
     {
-        chart.AddHighLowLines();
+        _ = chart.AddHighLowLines();
 
         if (chartType == eChartType.StockOHLC || chartType == eChartType.StockVOHLC)
         {
@@ -129,17 +129,17 @@ public class ExcelStockChart : ExcelStandardChartWithLines
 
         if (chartType == eChartType.StockVHLC || chartType == eChartType.StockVOHLC)
         {
-            chart.PlotArea.ChartTypes[0].Series.Add(VolumeSerie, CategorySerie);
+            _ = chart.PlotArea.ChartTypes[0].Series.Add(VolumeSerie, CategorySerie);
         }
 
         if (chartType == eChartType.StockOHLC || chartType == eChartType.StockVOHLC)
         {
-            chart.Series.Add(OpenSerie, CategorySerie);
+            _ = chart.Series.Add(OpenSerie, CategorySerie);
         }
 
-        chart.Series.Add(HighSerie, CategorySerie);
-        chart.Series.Add(LowSerie, CategorySerie);
-        chart.Series.Add(CloseSerie, CategorySerie);
+        _ = chart.Series.Add(HighSerie, CategorySerie);
+        _ = chart.Series.Add(LowSerie, CategorySerie);
+        _ = chart.Series.Add(CloseSerie, CategorySerie);
         chart.StyleManager.SetChartStyle(ePresetChartStyle.StockChartStyle1);
     }
 }

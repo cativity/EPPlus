@@ -75,6 +75,6 @@ public class ParsingScopeTests
     {
         ParsingScope? scope = new ParsingScope(this._parsingScopes, this._factory.Create("A1"));
         ((IDisposable)scope).Dispose();
-        A.CallTo(() => this._parsingScopes.KillScope(scope)).MustHaveHappened();
+        _ = A.CallTo(() => this._parsingScopes.KillScope(scope)).MustHaveHappened();
     }
 }

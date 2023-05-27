@@ -43,7 +43,7 @@ public class ChartSeriesTest : TestBase
         serie.DataLabel.Position = eLabelPosition.Center;
         serie.DataLabel.ShowCategory = true;
         serie.DataLabel.ShowValue = true;
-        ExcelChartExDataPoint? dp = serie.DataPoints.Add(2);
+        _ = serie.DataPoints.Add(2);
 
         Assert.AreEqual(eDrawingType.Chart, chart.DrawingType);
         Assert.IsInstanceOfType(chart, typeof(ExcelSunburstChart));
@@ -64,7 +64,7 @@ public class ChartSeriesTest : TestBase
         serie.DataLabel.Position = eLabelPosition.Center;
         serie.DataLabel.ShowCategory = true;
         serie.DataLabel.ShowValue = true;
-        ExcelChartDataPoint? dp = serie.DataPoints.Add(2);
+        _ = serie.DataPoints.Add(2);
 
         Assert.AreEqual(eDrawingType.Chart, chart.DrawingType);
         Assert.IsInstanceOfType(chart, typeof(ExcelPieChart));
@@ -111,8 +111,8 @@ public class ChartSeriesTest : TestBase
 
         //make series only have range of 1 so that the serie2(index=1) is the same as the number of cells in the range
         //which causes System.ArgumentException: Negative percentage not allowed
-        ExcelBarChartSerie? serie1 = chart.Series.Add(ws.Cells["D2"]);
-        ExcelBarChartSerie? serie2 = chart.Series.Add(ws.Cells["D2"], ws.Cells["C2"]);
+        _ = chart.Series.Add(ws.Cells["D2"]);
+        _ = chart.Series.Add(ws.Cells["D2"], ws.Cells["C2"]);
     }
 
     [TestMethod]

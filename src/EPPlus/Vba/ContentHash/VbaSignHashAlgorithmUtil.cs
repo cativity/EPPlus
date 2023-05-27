@@ -33,7 +33,6 @@ internal static class VbaSignHashAlgorithmUtil
             ContentHashInputProvider.GetContentNormalizedDataHashInput(proj, ms);
             byte[]? buffer = ms.ToArray();
             byte[]? hash = ComputeHash(buffer, ctx);
-            byte[]? existingHash = ctx.SourceHash;
 
             return hash;
         }
@@ -44,7 +43,6 @@ internal static class VbaSignHashAlgorithmUtil
             ContentHashInputProvider.GetFormsNormalizedDataHashInput(proj, ms);
             byte[]? buffer = ms.ToArray();
             byte[]? hash = ComputeHash(buffer, ctx);
-            byte[]? existingHash = ctx.SourceHash;
 
             return hash;
         }
@@ -54,7 +52,6 @@ internal static class VbaSignHashAlgorithmUtil
             ContentHashInputProvider.GetV3ContentNormalizedDataHashInput(proj, ms);
             byte[]? buffer = ms.ToArray();
             byte[]? hash = ComputeHash(buffer, ctx);
-            byte[]? existingHash = ctx.SourceHash;
 
             return hash;
         }

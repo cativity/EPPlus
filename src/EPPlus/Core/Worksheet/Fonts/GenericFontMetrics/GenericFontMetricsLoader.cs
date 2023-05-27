@@ -45,7 +45,7 @@ internal static class GenericFontMetricsLoader
                 if (!entry.IsDirectory && Path.GetExtension(entry.FileName) == ".fmtr")
                 {
                     byte[]? bytes = new byte[entry.UncompressedSize];
-                    int size = zipStream.Read(bytes, 0, (int)entry.UncompressedSize);
+                    _ = zipStream.Read(bytes, 0, (int)entry.UncompressedSize);
                     using MemoryStream? ms = RecyclableMemory.GetStream(bytes);
                     SerializedFontMetrics? fnt = GenericFontMetricsSerializer.Deserialize(ms);
                     fonts.Add(fnt.GetKey(), fnt);

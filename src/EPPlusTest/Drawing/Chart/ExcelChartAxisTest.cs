@@ -54,7 +54,7 @@ public class ExcelChartAxisTest
         xmlNsm.AddNamespace("c", ExcelPackage.schemaChart);
         xmlNsm.AddNamespace("a", ExcelPackage.schemaDrawings);
         XmlElement? node = xmlDoc.CreateElement("axis");
-        xmlDoc.DocumentElement.AppendChild(node);
+        _ = xmlDoc.DocumentElement.AppendChild(node);
         this.axis = new ExcelChartAxisStandard(null, xmlNsm, node, "c");
     }
 

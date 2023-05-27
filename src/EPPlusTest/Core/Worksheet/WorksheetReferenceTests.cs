@@ -210,8 +210,8 @@ public class WorksheetReferenceTests : TestBase
         Assert.AreEqual(sheetName, sheet1.Name);
         Assert.AreEqual(sheet1, package.Workbook.Worksheets[sheetName]);
 
-        package.Workbook.Names.Add("WorkbookDefinedName1", sheet1.Cells["A1"]);
-        sheet1.Names.Add("DefinedName1", sheet1.Cells["A1"]);
+        _ = package.Workbook.Names.Add("WorkbookDefinedName1", sheet1.Cells["A1"]);
+        _ = sheet1.Names.Add("DefinedName1", sheet1.Cells["A1"]);
 
         package.Save();
         using ExcelPackage? p2 = new ExcelPackage(package.Stream);

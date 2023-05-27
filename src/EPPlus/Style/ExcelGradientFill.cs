@@ -48,7 +48,7 @@ public class ExcelGradientFill : StyleBase
         }
         set
         {
-            this._ChangedEvent(this, new StyleChangeEventArgs(eStyleClass.GradientFill, eStyleProperty.GradientDegree, value, this._positionID, this._address));
+            _ = this._ChangedEvent(this, new StyleChangeEventArgs(eStyleClass.GradientFill, eStyleProperty.GradientDegree, value, this._positionID, this._address));
         }
     }
 
@@ -68,7 +68,7 @@ public class ExcelGradientFill : StyleBase
         }
         set
         {
-            this._ChangedEvent(this, new StyleChangeEventArgs(eStyleClass.GradientFill, eStyleProperty.GradientType, value, this._positionID, this._address));
+            _ = this._ChangedEvent(this, new StyleChangeEventArgs(eStyleClass.GradientFill, eStyleProperty.GradientType, value, this._positionID, this._address));
         }
     }
 
@@ -94,7 +94,7 @@ public class ExcelGradientFill : StyleBase
                 throw new ArgumentOutOfRangeException("Value must be between 0 and 1");
             }
 
-            this._ChangedEvent(this, new StyleChangeEventArgs(eStyleClass.GradientFill, eStyleProperty.GradientTop, value, this._positionID, this._address));
+            _ = this._ChangedEvent(this, new StyleChangeEventArgs(eStyleClass.GradientFill, eStyleProperty.GradientTop, value, this._positionID, this._address));
         }
     }
 
@@ -120,7 +120,7 @@ public class ExcelGradientFill : StyleBase
                 throw new ArgumentOutOfRangeException("Value must be between 0 and 1");
             }
 
-            this._ChangedEvent(this, new StyleChangeEventArgs(eStyleClass.GradientFill, eStyleProperty.GradientBottom, value, this._positionID, this._address));
+            _ = this._ChangedEvent(this, new StyleChangeEventArgs(eStyleClass.GradientFill, eStyleProperty.GradientBottom, value, this._positionID, this._address));
         }
     }
 
@@ -146,7 +146,7 @@ public class ExcelGradientFill : StyleBase
                 throw new ArgumentOutOfRangeException("Value must be between 0 and 1");
             }
 
-            this._ChangedEvent(this, new StyleChangeEventArgs(eStyleClass.GradientFill, eStyleProperty.GradientLeft, value, this._positionID, this._address));
+            _ = this._ChangedEvent(this, new StyleChangeEventArgs(eStyleClass.GradientFill, eStyleProperty.GradientLeft, value, this._positionID, this._address));
         }
     }
 
@@ -172,7 +172,7 @@ public class ExcelGradientFill : StyleBase
                 throw new ArgumentOutOfRangeException("Value must be between 0 and 1");
             }
 
-            this._ChangedEvent(this, new StyleChangeEventArgs(eStyleClass.GradientFill, eStyleProperty.GradientRight, value, this._positionID, this._address));
+            _ = this._ChangedEvent(this, new StyleChangeEventArgs(eStyleClass.GradientFill, eStyleProperty.GradientRight, value, this._positionID, this._address));
         }
     }
 

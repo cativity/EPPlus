@@ -138,7 +138,7 @@ public class LoadFromCollectionTests : TestBase
 
         using ExcelPackage? pck = new ExcelPackage(new MemoryStream());
         ExcelWorksheet? sheet = pck.Workbook.Worksheets.Add("sheet");
-        sheet.Cells["C1"].LoadFromCollection(items);
+        _ = sheet.Cells["C1"].LoadFromCollection(items);
 
         Assert.AreEqual("123", sheet.Cells["C1"].Value);
         Assert.AreEqual(6, sheet.Cells["E2"].Value);
@@ -158,7 +158,7 @@ public class LoadFromCollectionTests : TestBase
 
         using ExcelPackage? pck = new ExcelPackage(new MemoryStream());
         ExcelWorksheet? sheet = pck.Workbook.Worksheets.Add("sheet");
-        sheet.Cells["C1"].LoadFromCollection(items, true);
+        _ = sheet.Cells["C1"].LoadFromCollection(items, true);
         Assert.AreEqual("Id", sheet.Cells["C1"].Value);
     }
 
@@ -172,7 +172,7 @@ public class LoadFromCollectionTests : TestBase
 
         using ExcelPackage? pck = new ExcelPackage(new MemoryStream());
         ExcelWorksheet? sheet = pck.Workbook.Worksheets.Add("sheet");
-        sheet.Cells["C1"].LoadFromCollection(items, true, TableStyles.Dark1);
+        _ = sheet.Cells["C1"].LoadFromCollection(items, true, TableStyles.Dark1);
         Assert.AreEqual("Id", sheet.Cells["C1"].Value);
     }
 
@@ -182,7 +182,7 @@ public class LoadFromCollectionTests : TestBase
         List<Aclass>? items = new List<Aclass>() { new Aclass() { Id = "123", Name = "Item 1", Number = 3 } };
         using ExcelPackage? pck = new ExcelPackage(new MemoryStream());
         ExcelWorksheet? sheet = pck.Workbook.Worksheets.Add("sheet");
-        sheet.Cells["C1"].LoadFromCollection(items, true, TableStyles.Dark1);
+        _ = sheet.Cells["C1"].LoadFromCollection(items, true, TableStyles.Dark1);
 
         Assert.AreEqual("Id", sheet.Cells["C1"].Value);
         Assert.AreEqual("123", sheet.Cells["C2"].Value);
@@ -194,7 +194,7 @@ public class LoadFromCollectionTests : TestBase
         List<BClass>? items = new List<BClass>() { new BClass() { Id = "123", Name = "Item 1", Number = 3 } };
         using ExcelPackage? pck = new ExcelPackage(new MemoryStream());
         ExcelWorksheet? sheet = pck.Workbook.Worksheets.Add("sheet");
-        sheet.Cells["C1"].LoadFromCollection(items, true, TableStyles.Dark1);
+        _ = sheet.Cells["C1"].LoadFromCollection(items, true, TableStyles.Dark1);
 
         Assert.AreEqual("MyId", sheet.Cells["C1"].Value);
     }
@@ -207,7 +207,7 @@ public class LoadFromCollectionTests : TestBase
         ExcelWorksheet? sheet = pck.Workbook.Worksheets.Add("sheet");
         Type? t = typeof(Implementation);
 
-        sheet.Cells["C1"]
+        _ = sheet.Cells["C1"]
              .LoadFromCollection(items,
                                  true,
                                  TableStyles.Dark1,
@@ -231,7 +231,7 @@ public class LoadFromCollectionTests : TestBase
         ExcelWorksheet? sheet = pck.Workbook.Worksheets.Add("sheet");
         Type? t = typeof(Implementation);
 
-        sheet.Cells["C1"]
+        _ = sheet.Cells["C1"]
              .LoadFromCollection(items, true, TableStyles.Dark1, LoadFromCollectionParams.DefaultBindingFlags, new MemberInfo[] { t.GetProperty("Id"), });
 
         Assert.AreEqual("Id", sheet.Cells["C1"].Value);
@@ -244,7 +244,7 @@ public class LoadFromCollectionTests : TestBase
         List<BClass>? items = new List<BClass>() { new BClass() { Id = "123", Name = "Item 1", Number = 3 } };
         using ExcelPackage? pck = new ExcelPackage(new MemoryStream());
         ExcelWorksheet? sheet = pck.Workbook.Worksheets.Add("sheet");
-        sheet.Cells["C1"].LoadFromCollection(items, true, TableStyles.Dark1);
+        _ = sheet.Cells["C1"].LoadFromCollection(items, true, TableStyles.Dark1);
 
         Assert.AreEqual("MyName", sheet.Cells["D1"].Value);
     }
@@ -255,7 +255,7 @@ public class LoadFromCollectionTests : TestBase
         List<BaseClass>? items = new List<BaseClass>() { new Implementation() { Id = "123", Name = "Item 1", Number = 3 } };
         using ExcelPackage? pck = new ExcelPackage(new MemoryStream());
         ExcelWorksheet? sheet = pck.Workbook.Worksheets.Add("sheet");
-        sheet.Cells["C1"].LoadFromCollection(items, true, TableStyles.Dark1);
+        _ = sheet.Cells["C1"].LoadFromCollection(items, true, TableStyles.Dark1);
 
         Assert.AreEqual("Id", sheet.Cells["C1"].Value);
     }
@@ -267,7 +267,7 @@ public class LoadFromCollectionTests : TestBase
         var items = objs.Select(x => new { Id = x.Id, Name = x.Name }).ToList();
         using ExcelPackage? pck = new ExcelPackage(new MemoryStream());
         ExcelWorksheet? sheet = pck.Workbook.Worksheets.Add("sheet");
-        sheet.Cells["C1"].LoadFromCollection(items, true, TableStyles.Dark1);
+        _ = sheet.Cells["C1"].LoadFromCollection(items, true, TableStyles.Dark1);
 
         Assert.AreEqual("Id", sheet.Cells["C1"].Value);
     }
@@ -280,7 +280,7 @@ public class LoadFromCollectionTests : TestBase
         var items = objs.Select(x => new { Id = x.Id, Name = x.Name }).ToList();
         using ExcelPackage? pck = new ExcelPackage(new MemoryStream());
         ExcelWorksheet? sheet = pck.Workbook.Worksheets.Add("sheet");
-        sheet.Cells["C1"].LoadFromCollection(items, true, TableStyles.Dark1, BindingFlags.Public | BindingFlags.Instance, typeof(string).GetMembers());
+        _ = sheet.Cells["C1"].LoadFromCollection(items, true, TableStyles.Dark1, BindingFlags.Public | BindingFlags.Instance, typeof(string).GetMembers());
 
         Assert.AreEqual("Id", sheet.Cells["C1"].Value);
     }
@@ -292,7 +292,7 @@ public class LoadFromCollectionTests : TestBase
         using ExcelPackage? pck = new ExcelPackage(new MemoryStream());
         ExcelWorksheet? sheet = pck.Workbook.Worksheets.Add("sheet");
 
-        sheet.Cells["C1"]
+        _ = sheet.Cells["C1"]
              .LoadFromCollection(items,
                                  c =>
                                  {
@@ -313,7 +313,7 @@ public class LoadFromCollectionTests : TestBase
         using ExcelPackage? pck = new ExcelPackage(new MemoryStream());
         ExcelWorksheet? sheet = pck.Workbook.Worksheets.Add("sheet");
 
-        sheet.Cells["C1"]
+        _ = sheet.Cells["C1"]
              .LoadFromCollection(items,
                                  c =>
                                  {
@@ -331,7 +331,7 @@ public class LoadFromCollectionTests : TestBase
         using ExcelPackage? pck = new ExcelPackage(new MemoryStream());
         ExcelWorksheet? sheet = pck.Workbook.Worksheets.Add("sheet");
 
-        sheet.Cells["C1"]
+        _ = sheet.Cells["C1"]
              .LoadFromCollection(items,
                                  c =>
                                  {
@@ -354,7 +354,7 @@ public class LoadFromCollectionTests : TestBase
         List<ExpandoObject>? items = new List<ExpandoObject>() { o1, o2 };
         using ExcelPackage? package = new ExcelPackage();
         ExcelWorksheet? sheet = package.Workbook.Worksheets.Add("test");
-        ExcelRangeBase? r = sheet.Cells["A1"].LoadFromCollection(items, true, TableStyles.None);
+        _ = sheet.Cells["A1"].LoadFromCollection(items, true, TableStyles.None);
 
         Assert.AreEqual("Id", sheet.Cells["A1"].Value);
         Assert.AreEqual(1, sheet.Cells["A2"].Value);
@@ -373,7 +373,7 @@ public class LoadFromCollectionTests : TestBase
 
         using ExcelPackage? package = OpenPackage("LoadFromCollectionUrls.xlsx", true);
         ExcelWorksheet? sheet = package.Workbook.Worksheets.Add("test");
-        ExcelRangeBase? r = sheet.Cells["A1"].LoadFromCollection(items, true, TableStyles.Medium1);
+        _ = sheet.Cells["A1"].LoadFromCollection(items, true, TableStyles.Medium1);
 
         Assert.AreEqual("MyId", sheet.Cells["A1"].Value);
         Assert.AreEqual("MyName", sheet.Cells["B1"].Value);
@@ -396,7 +396,7 @@ public class LoadFromCollectionTests : TestBase
 
         using ExcelPackage? package = OpenPackage("LoadFromCollectionEnumDescrAtt.xlsx", true);
         ExcelWorksheet? sheet = package.Workbook.Worksheets.Add("EnumList");
-        ExcelRangeBase? r = sheet.Cells["A1"].LoadFromCollection(items, true, TableStyles.Medium1);
+        _ = sheet.Cells["A1"].LoadFromCollection(items, true, TableStyles.Medium1);
         Assert.AreEqual("The color Red", sheet.Cells["A1"].Value);
         Assert.AreEqual("Green", sheet.Cells["A2"].Value);
         Assert.AreEqual("The color Blue", sheet.Cells["A3"].Value);
@@ -410,7 +410,7 @@ public class LoadFromCollectionTests : TestBase
 
         using ExcelPackage? package = OpenPackage("LoadFromCollectionNullableEnumDescrAtt.xlsx", true);
         ExcelWorksheet? sheet = package.Workbook.Worksheets.Add("NullableEnumList");
-        ExcelRangeBase? r = sheet.Cells["A1"].LoadFromCollection(items, true, TableStyles.Medium1);
+        _ = sheet.Cells["A1"].LoadFromCollection(items, true, TableStyles.Medium1);
         Assert.AreEqual("The color Red", sheet.Cells["A1"].Value);
         Assert.AreEqual("Green", sheet.Cells["A2"].Value);
         Assert.AreEqual("The color Blue", sheet.Cells["A3"].Value);
@@ -429,7 +429,7 @@ public class LoadFromCollectionTests : TestBase
 
         using ExcelPackage? package = OpenPackage("LoadFromCollectionClassWithEnumDescrAtt.xlsx", true);
         ExcelWorksheet? sheet = package.Workbook.Worksheets.Add("test");
-        ExcelRangeBase? r = sheet.Cells["A1"].LoadFromCollection(items, true, TableStyles.Medium1);
+        _ = sheet.Cells["A1"].LoadFromCollection(items, true, TableStyles.Medium1);
         Assert.AreEqual("Id", sheet.Cells["A1"].Value);
         Assert.AreEqual("Enum", sheet.Cells["B1"].Value);
         Assert.AreEqual("Nullable Enum", sheet.Cells["C1"].Value);

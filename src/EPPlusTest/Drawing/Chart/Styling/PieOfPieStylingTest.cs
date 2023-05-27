@@ -73,28 +73,28 @@ public class OfPieChartStylingTest : TestBase
     private static void OfPieStyles(ExcelWorksheet ws, eOfPieChartType chartType)
     {
         //Style 1
-        AddOfPie(ws, chartType, "OfPieChartStyle1", 0, 5, ePresetChartStyle.OfPieChartStyle1, c => { c.Legend.Position = eLegendPosition.Bottom; });
+        _ = AddOfPie(ws, chartType, "OfPieChartStyle1", 0, 5, ePresetChartStyle.OfPieChartStyle1, c => { c.Legend.Position = eLegendPosition.Bottom; });
 
         //Style 2
-        AddOfPie(ws, chartType, "OfPieChartStyle2", 0, 18, ePresetChartStyle.OfPieChartStyle2, c => { c.Legend.Position = eLegendPosition.Top; });
+        _ = AddOfPie(ws, chartType, "OfPieChartStyle2", 0, 18, ePresetChartStyle.OfPieChartStyle2, c => { c.Legend.Position = eLegendPosition.Top; });
 
         //Style 3
-        AddOfPie(ws, chartType, "OfPieChartStyle3", 0, 31, ePresetChartStyle.OfPieChartStyle3, c => { c.DataLabel.ShowPercent = true; });
+        _ = AddOfPie(ws, chartType, "OfPieChartStyle3", 0, 31, ePresetChartStyle.OfPieChartStyle3, c => { c.DataLabel.ShowPercent = true; });
 
         //Style 4
-        AddOfPie(ws, chartType, "OfPieChartStyle4", 22, 5, ePresetChartStyle.OfPieChartStyle4, c => { c.Legend.Position = eLegendPosition.Bottom; });
+        _ = AddOfPie(ws, chartType, "OfPieChartStyle4", 22, 5, ePresetChartStyle.OfPieChartStyle4, c => { c.Legend.Position = eLegendPosition.Bottom; });
 
         //Style 5
-        AddOfPie(ws, chartType, "OfPieChartStyle5", 22, 18, ePresetChartStyle.OfPieChartStyle5, c => { c.Legend.Position = eLegendPosition.Bottom; });
+        _ = AddOfPie(ws, chartType, "OfPieChartStyle5", 22, 18, ePresetChartStyle.OfPieChartStyle5, c => { c.Legend.Position = eLegendPosition.Bottom; });
 
         //Style 6
-        AddOfPie(ws, chartType, "OfPieChartStyle6", 22, 31, ePresetChartStyle.OfPieChartStyle6, c => { });
+        _ = AddOfPie(ws, chartType, "OfPieChartStyle6", 22, 31, ePresetChartStyle.OfPieChartStyle6, c => { });
 
         //Style 7
-        AddOfPie(ws, chartType, "OfPieChartStyle7", 44, 5, ePresetChartStyle.OfPieChartStyle7, c => { c.Legend.Position = eLegendPosition.Bottom; });
+        _ = AddOfPie(ws, chartType, "OfPieChartStyle7", 44, 5, ePresetChartStyle.OfPieChartStyle7, c => { c.Legend.Position = eLegendPosition.Bottom; });
 
         //Style 8
-        AddOfPie(ws,
+        _ = AddOfPie(ws,
                  chartType,
                  "OfPieChartStyle8",
                  44,
@@ -107,7 +107,7 @@ public class OfPieChartStylingTest : TestBase
                  });
 
         //Style 9
-        AddOfPie(ws,
+        _ = AddOfPie(ws,
                  chartType,
                  "OfPieChartStyle9",
                  44,
@@ -122,7 +122,7 @@ public class OfPieChartStylingTest : TestBase
                  });
 
         //Style 10
-        AddOfPie(ws,
+        _ = AddOfPie(ws,
                  chartType,
                  "OfPieChartStyle10",
                  66,
@@ -135,10 +135,10 @@ public class OfPieChartStylingTest : TestBase
                  });
 
         //Style 11
-        AddOfPie(ws, chartType, "OfPieChartStyle11", 66, 18, ePresetChartStyle.OfPieChartStyle11, c => { });
+        _ = AddOfPie(ws, chartType, "OfPieChartStyle11", 66, 18, ePresetChartStyle.OfPieChartStyle11, c => { });
 
         //Style 12
-        AddOfPie(ws, chartType, "OfPieChartStyle12", 66, 31, ePresetChartStyle.OfPieChartStyle12, c => { });
+        _ = AddOfPie(ws, chartType, "OfPieChartStyle12", 66, 31, ePresetChartStyle.OfPieChartStyle12, c => { });
     }
 
     private static ExcelOfPieChart AddOfPie(ExcelWorksheet ws,
@@ -156,14 +156,14 @@ public class OfPieChartStylingTest : TestBase
         chart.To.Row = row + 18;
         chart.To.RowOff = 0;
         ExcelPieChartSerie? serie = chart.Series.Add("D2:D8", "A2:A8");
-        serie.DataPoints.Add(0);
-        serie.DataPoints.Add(1);
-        serie.DataPoints.Add(2);
-        serie.DataPoints.Add(3);
-        serie.DataPoints.Add(4);
-        serie.DataPoints.Add(5);
-        serie.DataPoints.Add(6);
-        serie.DataPoints.Add(7);
+        _ = serie.DataPoints.Add(0);
+        _ = serie.DataPoints.Add(1);
+        _ = serie.DataPoints.Add(2);
+        _ = serie.DataPoints.Add(3);
+        _ = serie.DataPoints.Add(4);
+        _ = serie.DataPoints.Add(5);
+        _ = serie.DataPoints.Add(6);
+        _ = serie.DataPoints.Add(7);
 
         SetProperties(chart);
 

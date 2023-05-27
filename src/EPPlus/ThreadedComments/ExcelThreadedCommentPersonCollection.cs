@@ -143,7 +143,7 @@ public class ExcelThreadedCommentPersonCollection : IEnumerable<ExcelThreadedCom
     public ExcelThreadedCommentPerson Add(string displayName, string userId, IdentityProvider identityProvider, string id)
     {
         XmlElement? personsNode = this.PersonsXml.CreateElement("person", ExcelPackage.schemaThreadedComments);
-        this.PersonsXml.DocumentElement.AppendChild(personsNode);
+        _ = this.PersonsXml.DocumentElement.AppendChild(personsNode);
         ExcelThreadedCommentPerson? p = new ExcelThreadedCommentPerson(this._workbook.NameSpaceManager, personsNode);
         p.DisplayName = displayName;
         p.Id = id;
@@ -187,10 +187,10 @@ public class ExcelThreadedCommentPersonCollection : IEnumerable<ExcelThreadedCom
 
         if (node != null)
         {
-            this.PersonsXml.DocumentElement.RemoveChild(node);
+            _ = this.PersonsXml.DocumentElement.RemoveChild(node);
         }
 
-        this._personList.Remove(person);
+        _ = this._personList.Remove(person);
     }
 
     /// <summary>
@@ -224,8 +224,8 @@ public class ExcelThreadedCommentPersonCollection : IEnumerable<ExcelThreadedCom
         {
             if (!package.ZipPackage.PartExists(personsUri))
             {
-                ZipPackagePart? p = package.ZipPackage.CreatePart(personsUri, "application/vnd.ms-excel.person+xml");
-                WorkbookPart.CreateRelationship(personsUri, TargetMode.Internal, ExcelPackage.schemaPersonsRelationShips);
+                _ = package.ZipPackage.CreatePart(personsUri, "application/vnd.ms-excel.person+xml");
+                _ = WorkbookPart.CreateRelationship(personsUri, TargetMode.Internal, ExcelPackage.schemaPersonsRelationShips);
             }
 
             package.SavePart(personsUri, this.PersonsXml);

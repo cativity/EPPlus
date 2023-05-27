@@ -71,7 +71,7 @@ public class TreemapChartStylingTest : TestBase
         //Treemap Chart styles
 
         //Treemap chart Style 1
-        AddChart(ws,
+        _ = AddChart(ws,
                  ePresetChartStyle.TreemapChartStyle1,
                  "TreemapChartStyle1",
                  0,
@@ -85,28 +85,28 @@ public class TreemapChartStylingTest : TestBase
                  });
 
         //Treemap chart Style 2
-        AddChart(ws, ePresetChartStyle.TreemapChartStyle2, "TreemapChartStyle2", 0, 18, c => { c.Legend.Position = eLegendPosition.Bottom; });
+        _ = AddChart(ws, ePresetChartStyle.TreemapChartStyle2, "TreemapChartStyle2", 0, 18, c => { c.Legend.Position = eLegendPosition.Bottom; });
 
         //Treemap chart Style 3
-        AddChart(ws, ePresetChartStyle.TreemapChartStyle3, "TreemapChartStyle3", 0, 31, c => { c.Legend.Position = eLegendPosition.Bottom; });
+        _ = AddChart(ws, ePresetChartStyle.TreemapChartStyle3, "TreemapChartStyle3", 0, 31, c => { c.Legend.Position = eLegendPosition.Bottom; });
 
         //Treemap chart Style 4
-        AddChart(ws, ePresetChartStyle.TreemapChartStyle4, "TreemapChartStyle4", 20, 5, c => { c.Legend.Position = eLegendPosition.Bottom; });
+        _ = AddChart(ws, ePresetChartStyle.TreemapChartStyle4, "TreemapChartStyle4", 20, 5, c => { c.Legend.Position = eLegendPosition.Bottom; });
 
         //Treemap chart Style 5
-        AddChart(ws, ePresetChartStyle.TreemapChartStyle5, "TreemapChartStyle5", 20, 18, c => { c.Legend.Position = eLegendPosition.Bottom; });
+        _ = AddChart(ws, ePresetChartStyle.TreemapChartStyle5, "TreemapChartStyle5", 20, 18, c => { c.Legend.Position = eLegendPosition.Bottom; });
 
         //Treemap chart Style 6
-        AddChart(ws, ePresetChartStyle.TreemapChartStyle6, "TreemapChartStyle6", 20, 31, c => { c.Legend.Position = eLegendPosition.Bottom; });
+        _ = AddChart(ws, ePresetChartStyle.TreemapChartStyle6, "TreemapChartStyle6", 20, 31, c => { c.Legend.Position = eLegendPosition.Bottom; });
 
         //Treemap chart Style 7
-        AddChart(ws, ePresetChartStyle.TreemapChartStyle7, "TreemapChartStyle7", 40, 5, c => { c.Legend.Position = eLegendPosition.Bottom; });
+        _ = AddChart(ws, ePresetChartStyle.TreemapChartStyle7, "TreemapChartStyle7", 40, 5, c => { c.Legend.Position = eLegendPosition.Bottom; });
 
         //Treemap chart Style 8
-        AddChart(ws, ePresetChartStyle.TreemapChartStyle8, "TreemapChartStyle8", 40, 18, c => { c.Legend.Position = eLegendPosition.Bottom; });
+        _ = AddChart(ws, ePresetChartStyle.TreemapChartStyle8, "TreemapChartStyle8", 40, 18, c => { c.Legend.Position = eLegendPosition.Bottom; });
 
         //Treemap chart Style 9
-        AddChart(ws, ePresetChartStyle.TreemapChartStyle9, "TreemapChartStyle9", 40, 31, c => { c.Legend.Position = eLegendPosition.Bottom; });
+        _ = AddChart(ws, ePresetChartStyle.TreemapChartStyle9, "TreemapChartStyle9", 40, 31, c => { c.Legend.Position = eLegendPosition.Bottom; });
     }
 
     private static ExcelTreemapChart AddChart(ExcelWorksheet ws,
@@ -122,7 +122,7 @@ public class TreemapChartStylingTest : TestBase
         chart.To.ColumnOff = 0;
         chart.To.Row = row + 18;
         chart.To.RowOff = 0;
-        chart.Series.Add("D1:D17", "A1:C17");
+        _ = chart.Series.Add("D1:D17", "A1:C17");
 
         SetProperties(chart);
 

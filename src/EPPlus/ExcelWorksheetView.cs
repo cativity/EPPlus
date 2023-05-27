@@ -157,7 +157,7 @@ public class ExcelWorksheetView : XmlHelper
             if (node == null)
             {
                 node = topNode.OwnerDocument.CreateElement("pane", ExcelPackage.schemaMain);
-                topNode.PrependChild(node);
+                _ = topNode.PrependChild(node);
             }
 
             return node;
@@ -200,15 +200,12 @@ public class ExcelWorksheetView : XmlHelper
             }
             set
             {
-                int toCol,
-                    toRow;
-
                 if (this._selectionNode == null)
                 {
                     this.CreateSelectionElement();
                 }
 
-                ExcelCellBase.GetRowColFromAddress(value, out int fromRow, out int fromCol, out toRow, out toCol);
+                ExcelCellBase.GetRowColFromAddress(value, out int fromRow, out int fromCol, out int _, out int _);
                 this.SetXmlNodeString(_activeCellPath, value);
 
                 if (((XmlElement)this.TopNode).GetAttribute("sqref") == "")
@@ -238,7 +235,7 @@ public class ExcelWorksheetView : XmlHelper
         private void CreateSelectionElement()
         {
             this._selectionNode = this.TopNode.OwnerDocument.CreateElement("selection", ExcelPackage.schemaMain);
-            this.TopNode.AppendChild(this._selectionNode);
+            _ = this.TopNode.AppendChild(this._selectionNode);
             this.TopNode = this._selectionNode;
         }
 
@@ -262,15 +259,12 @@ public class ExcelWorksheetView : XmlHelper
             }
             set
             {
-                int toCol,
-                    toRow;
-
                 if (this._selectionNode == null)
                 {
                     this.CreateSelectionElement();
                 }
 
-                ExcelCellBase.GetRowColFromAddress(value, out int fromRow, out int fromCol, out toRow, out toCol);
+                ExcelCellBase.GetRowColFromAddress(value, out int fromRow, out int fromCol, out int _, out int _);
                 this.SetXmlNodeString(_selectionRangePath, value);
 
                 if (((XmlElement)this.TopNode).GetAttribute("activeCell") == "")
@@ -716,7 +710,7 @@ public class ExcelWorksheetView : XmlHelper
         {
             //Top left node, default pane
             afterNode = this.TopNode.OwnerDocument.CreateElement("selection", ExcelPackage.schemaMain);
-            this.PaneSettings.TopNode.ParentNode.InsertAfter(afterNode, this.PaneSettings.TopNode);
+            _ = this.PaneSettings.TopNode.ParentNode.InsertAfter(afterNode, this.PaneSettings.TopNode);
         }
         else
         {
@@ -739,7 +733,7 @@ public class ExcelWorksheetView : XmlHelper
                 sel.SetAttribute("sqref", sqRef);
             }
 
-            this.TopNode.InsertAfter(sel, afterNode);
+            _ = this.TopNode.InsertAfter(sel, afterNode);
         }
         else if (Column > 0 && Row == 0)
         {
@@ -757,7 +751,7 @@ public class ExcelWorksheetView : XmlHelper
                 sel.SetAttribute("sqref", sqRef);
             }
 
-            this.TopNode.InsertAfter(sel, afterNode);
+            _ = this.TopNode.InsertAfter(sel, afterNode);
         }
         else
         {
@@ -766,14 +760,14 @@ public class ExcelWorksheetView : XmlHelper
             string cell = ExcelCellBase.GetAddress(1, Column + 1);
             selTR.SetAttribute("activeCell", cell);
             selTR.SetAttribute("sqref", cell);
-            afterNode.ParentNode.InsertAfter(selTR, afterNode);
+            _ = afterNode.ParentNode.InsertAfter(selTR, afterNode);
 
             XmlElement selBL = this.TopNode.OwnerDocument.CreateElement("selection", ExcelPackage.schemaMain);
             cell = ExcelCellBase.GetAddress(Row + 1, 1);
             selBL.SetAttribute("pane", "bottomLeft");
             selBL.SetAttribute("activeCell", cell);
             selBL.SetAttribute("sqref", cell);
-            selTR.ParentNode.InsertAfter(selBL, selTR);
+            _ = selTR.ParentNode.InsertAfter(selBL, selTR);
 
             XmlElement selBR = this.TopNode.OwnerDocument.CreateElement("selection", ExcelPackage.schemaMain);
             selBR.SetAttribute("pane", "bottomRight");
@@ -788,7 +782,7 @@ public class ExcelWorksheetView : XmlHelper
                 selBR.SetAttribute("sqref", sqRef);
             }
 
-            selBL.ParentNode.InsertAfter(selBR, selBL);
+            _ = selBL.ParentNode.InsertAfter(selBR, selBL);
         }
     }
 
@@ -958,7 +952,7 @@ public class ExcelWorksheetView : XmlHelper
 
         foreach (XmlNode sel in selections)
         {
-            sel.ParentNode.RemoveChild(sel);
+            _ = sel.ParentNode.RemoveChild(sel);
         }
     }
 
@@ -974,7 +968,7 @@ public class ExcelWorksheetView : XmlHelper
 
         if (paneNode != null)
         {
-            paneNode.ParentNode.RemoveChild(paneNode);
+            _ = paneNode.ParentNode.RemoveChild(paneNode);
         }
 
         this.RemoveSelection();

@@ -48,7 +48,7 @@ public class InformationFunctionsTests : FormulaParserTestBase
     public void Setup()
     {
         this._package = new ExcelPackage();
-        this._package.Workbook.Worksheets.Add("test");
+        _ = this._package.Workbook.Worksheets.Add("test");
         this._parser = new FormulaParser(this._package);
     }
 

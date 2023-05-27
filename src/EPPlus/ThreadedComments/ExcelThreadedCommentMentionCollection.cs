@@ -71,7 +71,7 @@ public sealed class ExcelThreadedCommentMentionCollection : XmlHelper, IEnumerab
     internal void AddMention(ExcelThreadedCommentPerson person, int textPosition)
     {
         XmlElement? elem = this.TopNode.OwnerDocument.CreateElement("mention", ExcelPackage.schemaThreadedComments);
-        this.TopNode.AppendChild(elem);
+        _ = this.TopNode.AppendChild(elem);
         ExcelThreadedCommentMention? mention = new ExcelThreadedCommentMention(this.NameSpaceManager, elem);
         mention.MentionId = ExcelThreadedCommentMention.NewId();
         mention.StartIndex = textPosition;

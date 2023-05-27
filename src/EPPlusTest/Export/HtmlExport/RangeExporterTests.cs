@@ -192,7 +192,6 @@ public class RangeExporterTests : TestBase
     public void ExportMultipleRanges()
     {
         using ExcelPackage? p = OpenTemplatePackage("20-CreateAFileSystemReport.xlsx");
-        ExcelWorksheet? sheet1 = p.Workbook.Worksheets[0];
         ExcelWorksheet? sheet2 = p.Workbook.Worksheets[1];
 
         IExcelHtmlRangeExporter? exporter = p.Workbook.CreateHtmlExporter(sheet2.Cells["A1:B13"], sheet2.Cells["A16:B26"], sheet2.Cells["A29:B42"]);
@@ -218,7 +217,7 @@ public class RangeExporterTests : TestBase
     public void ExportMultipleRangesOverrides_TableId()
     {
         using ExcelPackage? p = new ExcelPackage();
-        ExcelWorksheet? sheet1 = p.Workbook.Worksheets.Add("test");
+        _ = p.Workbook.Worksheets.Add("test");
         ExcelWorksheet? sheet2 = p.Workbook.Worksheets.Add("test2");
 
         IExcelHtmlRangeExporter? exporter = p.Workbook.CreateHtmlExporter(sheet2.Cells["A1:B2"], sheet2.Cells["A16:B18"], sheet2.Cells["A29:B31"]);
@@ -263,7 +262,7 @@ public class RangeExporterTests : TestBase
     public void ExportMultipleRangesOverrides_AdditionalTableClasses()
     {
         using ExcelPackage? p = new ExcelPackage();
-        ExcelWorksheet? sheet1 = p.Workbook.Worksheets.Add("test");
+        _ = p.Workbook.Worksheets.Add("test");
         ExcelWorksheet? sheet2 = p.Workbook.Worksheets.Add("test2");
 
         IExcelHtmlRangeExporter? exporter = p.Workbook.CreateHtmlExporter(sheet2.Cells["A1:B2"], sheet2.Cells["A16:B18"], sheet2.Cells["A29:B31"]);
@@ -305,7 +304,7 @@ public class RangeExporterTests : TestBase
     public void ExportMultipleRangesOverrides_Accessibility()
     {
         using ExcelPackage? p = new ExcelPackage();
-        ExcelWorksheet? sheet1 = p.Workbook.Worksheets.Add("test");
+        _ = p.Workbook.Worksheets.Add("test");
         ExcelWorksheet? sheet2 = p.Workbook.Worksheets.Add("test2");
 
         IExcelHtmlRangeExporter? exporter = p.Workbook.CreateHtmlExporter(sheet2.Cells["A1:B2"], sheet2.Cells["A16:B18"], sheet2.Cells["A29:B31"]);
@@ -333,7 +332,7 @@ public class RangeExporterTests : TestBase
     public void ExportMultipleRangesOverridesAsync_TableId()
     {
         using ExcelPackage? p = new ExcelPackage();
-        ExcelWorksheet? sheet1 = p.Workbook.Worksheets.Add("test");
+        _ = p.Workbook.Worksheets.Add("test");
         ExcelWorksheet? sheet2 = p.Workbook.Worksheets.Add("test2");
 
         IExcelHtmlRangeExporter? exporter = p.Workbook.CreateHtmlExporter(sheet2.Cells["A1:B2"], sheet2.Cells["A16:B18"], sheet2.Cells["A29:B31"]);
@@ -377,7 +376,7 @@ public class RangeExporterTests : TestBase
     public void ExportMultipleRangesOverridesAsync_AdditionalTableClasses()
     {
         using ExcelPackage? p = new ExcelPackage();
-        ExcelWorksheet? sheet1 = p.Workbook.Worksheets.Add("test");
+        _ = p.Workbook.Worksheets.Add("test");
         ExcelWorksheet? sheet2 = p.Workbook.Worksheets.Add("test2");
 
         IExcelHtmlRangeExporter? exporter = p.Workbook.CreateHtmlExporter(sheet2.Cells["A1:B2"], sheet2.Cells["A16:B18"], sheet2.Cells["A29:B31"]);
@@ -419,7 +418,7 @@ public class RangeExporterTests : TestBase
     public void ExportMultipleRangesOverridesAsync_Accessibility()
     {
         using ExcelPackage? p = new ExcelPackage();
-        ExcelWorksheet? sheet1 = p.Workbook.Worksheets.Add("test");
+        _ = p.Workbook.Worksheets.Add("test");
         ExcelWorksheet? sheet2 = p.Workbook.Worksheets.Add("test2");
 
         IExcelHtmlRangeExporter? exporter = p.Workbook.CreateHtmlExporter(sheet2.Cells["A1:B2"], sheet2.Cells["A16:B18"], sheet2.Cells["A29:B31"]);
@@ -454,8 +453,8 @@ public class RangeExporterTests : TestBase
         IExcelHtmlRangeExporter? exporter = package.Workbook.CreateHtmlExporter(sheet1.Cells["B1:E115"], sheet2.Cells["B1:E147"], sheet3.Cells["B1:E105"]);
         exporter.Settings.HyperlinkTarget = "_blank";
         string? html1 = exporter.GetHtmlString(0, x => { x.TableId = "americas-toll-free"; });
-        string? html2 = exporter.GetHtmlString(1, x => { x.TableId = "emea-toll-free"; });
-        string? html3 = exporter.GetHtmlString(2, x => { x.TableId = "asia-toll-free"; });
+        _ = exporter.GetHtmlString(1, x => { x.TableId = "emea-toll-free"; });
+        _ = exporter.GetHtmlString(2, x => { x.TableId = "asia-toll-free"; });
         string? css = exporter.GetCssString();
         File.WriteAllText("c:\\temp\\html.html", $"<html><head><style type=\"text/css\">{css}</style></head><body>{html1}</body></html>");
     }

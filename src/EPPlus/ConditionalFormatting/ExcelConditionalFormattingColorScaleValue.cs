@@ -340,7 +340,7 @@ public class ExcelConditionalFormattingColorScaleValue : XmlHelper
                 int nodeOrder = this.GetNodeOrder();
 
                 // Remove the attribute (removed when the value = '')
-                this.CreateComplexNode(this.TopNode,
+                _ = this.CreateComplexNode(this.TopNode,
                                        string.Format("{0}[position()={1}]/{2}=''",
 
                                                      // {0}

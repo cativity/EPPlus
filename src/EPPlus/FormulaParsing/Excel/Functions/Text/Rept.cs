@@ -34,7 +34,7 @@ internal class Rept : ExcelFunction
 
         for (int x = 0; x < n; x++)
         {
-            sb.Append(str);
+            _ = sb.Append(str);
         }
 
         return this.CreateResult(sb.ToString(), DataType.String);

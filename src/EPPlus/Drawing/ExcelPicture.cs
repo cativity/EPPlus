@@ -110,8 +110,8 @@ namespace OfficeOpenXml.Drawing
         internal async Task LoadImageAsync(Stream stream, ePictureType type)
         {
             byte[]? img = new byte[stream.Length];
-            stream.Seek(0, SeekOrigin.Begin);
-            await stream.ReadAsync(img, 0, (int)stream.Length).ConfigureAwait(false);
+            _ = stream.Seek(0, SeekOrigin.Begin);
+            _ = await stream.ReadAsync(img, 0, (int)stream.Length).ConfigureAwait(false);
 
             this.SaveImageToPackage(type, img);
         }
@@ -119,8 +119,8 @@ namespace OfficeOpenXml.Drawing
         internal void LoadImage(Stream stream, ePictureType type)
         {
             byte[]? img = new byte[stream.Length];
-            stream.Seek(0, SeekOrigin.Begin);
-            stream.Read(img, 0, (int)stream.Length);
+            _ = stream.Seek(0, SeekOrigin.Begin);
+            _ = stream.Read(img, 0, (int)stream.Length);
 
             this.SaveImageToPackage(type, img);
         }
@@ -172,7 +172,7 @@ namespace OfficeOpenXml.Drawing
 
             container.ImageHash = ii.Hash;
 
-            using (MemoryStream? ms = RecyclableMemory.GetStream(img))
+            using (RecyclableMemory.GetStream(img))
             {
                 this.Image.Bounds = PictureStore.GetImageBounds(img, type, this._drawings._package);
                 this.Image.ImageBytes = img;
@@ -194,7 +194,7 @@ namespace OfficeOpenXml.Drawing
             XmlNode? picNode = this.CreateNode("xdr:pic");
             picNode.InnerXml = this.PicStartXml(type);
 
-            node.InsertAfter(node.OwnerDocument.CreateElement("xdr", "clientData", ExcelPackage.schemaSheetDrawings), picNode);
+            _ = node.InsertAfter(node.OwnerDocument.CreateElement("xdr", "clientData", ExcelPackage.schemaSheetDrawings), picNode);
         }
 
         private static void AddNewPicture(byte[] img, string relID)
@@ -221,20 +221,20 @@ namespace OfficeOpenXml.Drawing
         {
             StringBuilder xml = new StringBuilder();
 
-            xml.Append("<xdr:nvPicPr>");
-            xml.AppendFormat("<xdr:cNvPr id=\"{0}\" descr=\"\" />", this._id);
-            xml.Append("<xdr:cNvPicPr><a:picLocks noChangeAspect=\"1\" /></xdr:cNvPicPr></xdr:nvPicPr><xdr:blipFill>");
+            _ = xml.Append("<xdr:nvPicPr>");
+            _ = xml.AppendFormat("<xdr:cNvPr id=\"{0}\" descr=\"\" />", this._id);
+            _ = xml.Append("<xdr:cNvPicPr><a:picLocks noChangeAspect=\"1\" /></xdr:cNvPicPr></xdr:nvPicPr><xdr:blipFill>");
 
             if (type == ePictureType.Svg)
             {
-                xml.Append("<a:blip xmlns:r=\"http://schemas.openxmlformats.org/officeDocument/2006/relationships\" r:embed=\"\" cstate=\"print\"><a:extLst><a:ext uri=\"{28A0092B-C50C-407E-A947-70E740481C1C}\"><a14:useLocalDpi xmlns:a14=\"http://schemas.microsoft.com/office/drawing/2010/main\" val=\"0\"/></a:ext><a:ext uri=\"{96DAC541-7B7A-43D3-8B79-37D633B846F1}\"><asvg:svgBlip xmlns:asvg=\"http://schemas.microsoft.com/office/drawing/2016/SVG/main\" r:embed=\"\"/></a:ext></a:extLst></a:blip>");
+                _ = xml.Append("<a:blip xmlns:r=\"http://schemas.openxmlformats.org/officeDocument/2006/relationships\" r:embed=\"\" cstate=\"print\"><a:extLst><a:ext uri=\"{28A0092B-C50C-407E-A947-70E740481C1C}\"><a14:useLocalDpi xmlns:a14=\"http://schemas.microsoft.com/office/drawing/2010/main\" val=\"0\"/></a:ext><a:ext uri=\"{96DAC541-7B7A-43D3-8B79-37D633B846F1}\"><asvg:svgBlip xmlns:asvg=\"http://schemas.microsoft.com/office/drawing/2016/SVG/main\" r:embed=\"\"/></a:ext></a:extLst></a:blip>");
             }
             else
             {
-                xml.Append("<a:blip xmlns:r=\"http://schemas.openxmlformats.org/officeDocument/2006/relationships\" r:embed=\"\" cstate=\"print\" />");
+                _ = xml.Append("<a:blip xmlns:r=\"http://schemas.openxmlformats.org/officeDocument/2006/relationships\" r:embed=\"\" cstate=\"print\" />");
             }
 
-            xml.Append("<a:stretch><a:fillRect /> </a:stretch> </xdr:blipFill> <xdr:spPr> <a:xfrm> <a:off x=\"0\" y=\"0\" />  <a:ext cx=\"0\" cy=\"0\" /> </a:xfrm> <a:prstGeom prst=\"rect\"> <a:avLst /> </a:prstGeom> </xdr:spPr>");
+            _ = xml.Append("<a:stretch><a:fillRect /> </a:stretch> </xdr:blipFill> <xdr:spPr> <a:xfrm> <a:off x=\"0\" y=\"0\" />  <a:ext cx=\"0\" cy=\"0\" /> </a:xfrm> <a:prstGeom prst=\"rect\"> <a:avLst /> </a:prstGeom> </xdr:spPr>");
 
             return xml.ToString();
         }
@@ -394,7 +394,7 @@ namespace OfficeOpenXml.Drawing
                 {
                     relDoc.Package.PictureStore.RemoveImage(container.ImageHash, this);
                     relDoc.RelatedPart.DeleteRelationship(container.RelPic.Id);
-                    relDoc.Hashes.Remove(container.ImageHash);
+                    _ = relDoc.Hashes.Remove(container.ImageHash);
                 }
                 else
                 {

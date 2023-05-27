@@ -17,7 +17,7 @@ public class PersonsIntegrationTests : TestBase
     {
         using ExcelPackage? package = OpenTemplatePackage("comments.xlsx");
         ExcelThreadedCommentPersonCollection? persons = package.Workbook.ThreadedCommentPersons;
-        ExcelThreadedCommentPerson? p = persons.Add("Jan Källman", "Jan Källman", IdentityProvider.NoProvider);
+        _ = persons.Add("Jan Källman", "Jan Källman", IdentityProvider.NoProvider);
         SaveWorkbook("commentsResult.xlsx", package);
     }
 
@@ -25,9 +25,9 @@ public class PersonsIntegrationTests : TestBase
     public void AddPersonToWorkbook()
     {
         using ExcelPackage? package = OpenPackage("commentsWithNewPerson.xlsx", true);
-        package.Workbook.Worksheets.Add("test");
+        _ = package.Workbook.Worksheets.Add("test");
         ExcelThreadedCommentPersonCollection? persons = package.Workbook.ThreadedCommentPersons;
-        ExcelThreadedCommentPerson? p = persons.Add("Jan Källman", "Jan Källman", IdentityProvider.NoProvider);
+        _ = persons.Add("Jan Källman", "Jan Källman", IdentityProvider.NoProvider);
         package.Save();
     }
 }

@@ -42,7 +42,7 @@ public class SortState : XmlHelper
             this.TopNode = this.CreateNode(worksheet.WorksheetXml.DocumentElement, this._sortStatePath);
             XmlAttribute? attr = worksheet.WorksheetXml.CreateAttribute("xmlns:xlrd2");
             attr.Value = ExcelPackage.schemaRichData2;
-            this.TopNode.Attributes.Append(attr);
+            _ = this.TopNode.Attributes.Append(attr);
         }
         else
         {
@@ -63,7 +63,7 @@ public class SortState : XmlHelper
             this.TopNode = this.CreateNode(table.TableXml.DocumentElement, this._sortStatePath);
             XmlAttribute? attr = table.TableXml.CreateAttribute("xmlns:xlrd2");
             attr.Value = ExcelPackage.schemaRichData2;
-            this.TopNode.Attributes.Append(attr);
+            _ = this.TopNode.Attributes.Append(attr);
         }
 
         this._sortConditions = new SortConditionCollection(nameSpaceManager, this.TopNode);

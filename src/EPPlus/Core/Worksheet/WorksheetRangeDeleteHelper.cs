@@ -153,7 +153,7 @@ internal static class WorksheetRangeDeleteHelper
                 {
                     if (node.ChildNodes.Count > ix)
                     {
-                        node.RemoveChild(node.ChildNodes[ix]);
+                        _ = node.RemoveChild(node.ChildNodes[ix]);
                     }
                 }
 
@@ -377,7 +377,7 @@ internal static class WorksheetRangeDeleteHelper
 
         foreach (int ix in delSF)
         {
-            ws._sharedFormulas.Remove(ix);
+            _ = ws._sharedFormulas.Remove(ix);
         }
 
         CellStoreEnumerator<object>? cse = new CellStoreEnumerator<object>(ws._formulas, 1, 1, ExcelPackage.MaxRows, ExcelPackage.MaxColumns);
@@ -428,7 +428,7 @@ internal static class WorksheetRangeDeleteHelper
 
         foreach (int ix in delSF)
         {
-            ws._sharedFormulas.Remove(ix);
+            _ = ws._sharedFormulas.Remove(ix);
         }
 
         CellStoreEnumerator<object>? cse = new CellStoreEnumerator<object>(ws._formulas, 1, 1, ExcelPackage.MaxRows, ExcelPackage.MaxColumns);
@@ -954,7 +954,7 @@ internal static class WorksheetRangeDeleteHelper
 
             foreach (int ix in delSF)
             {
-                ws._sharedFormulas.Remove(ix);
+                _ = ws._sharedFormulas.Remove(ix);
             }
 
             CellStoreEnumerator<object>? cse = new CellStoreEnumerator<object>(ws._formulas, 1, 1, ExcelPackage.MaxRows, ExcelPackage.MaxColumns);

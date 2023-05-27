@@ -144,7 +144,7 @@ public class DrawingTest : TestBase
 #endif
         }
 
-        ExcelWorksheet? wsCopy = _pck.Workbook.Worksheets.Add("Picture3", ws2);
+        _pck.Workbook.Worksheets.Add("Picture3", ws2);
     }
 
     [TestMethod]
@@ -168,7 +168,7 @@ public class DrawingTest : TestBase
         ExcelHyperLink hl = new ExcelHyperLink("https://epplussoftware.com");
         hl.ToolTip = "Screen Tip";
 
-        ws.Drawings.AddPicture("Pic URI", Resources.Test1, hl);
+        _ = ws.Drawings.AddPicture("Pic URI", Resources.Test1, hl);
     }
 
     [TestMethod]
@@ -234,7 +234,7 @@ public class DrawingTest : TestBase
     private static void AddTestSerie(ExcelWorksheet ws, ExcelChart chrt)
     {
         AddTestData(ws);
-        chrt.Series.Add("'" + ws.Name + "'!V19:V24", "'" + ws.Name + "'!U19:U24");
+        _ = chrt.Series.Add("'" + ws.Name + "'!V19:V24", "'" + ws.Name + "'!U19:U24");
     }
 
     private static void AddTestData(ExcelWorksheet ws)
@@ -328,7 +328,7 @@ public class DrawingTest : TestBase
         chrt.Legend.Position = eLegendPosition.Left;
         chrt.ShowHiddenData = false;
         chrt.DisplayBlanksAs = eDisplayBlanksAs.Gap;
-        chrt.Title.RichText.Add("Pie RT Title add");
+        _ = chrt.Title.RichText.Add("Pie RT Title add");
         Assert.IsTrue(chrt.ChartType == eChartType.Pie3D, "Invalid Charttype");
         Assert.IsTrue(chrt.VaryColors);
     }
@@ -365,7 +365,7 @@ public class DrawingTest : TestBase
         Assert.IsTrue(chrt.ChartType == eChartType.XYScatterSmoothNoMarkers, "Invalid Charttype");
         chrt.Series[0].Header = "Test serie";
         chrt = ws.Drawings.AddChart("ScatterChart2", eChartType.XYScatterSmooth) as ExcelScatterChart;
-        chrt.Series.Add("U19:U24", "V19:V24");
+        _ = chrt.Series.Add("U19:U24", "V19:V24");
 
         chrt.From.Column = 0;
         chrt.From.Row = 25;
@@ -384,7 +384,7 @@ public class DrawingTest : TestBase
         ExcelBubbleChart? chrt = ws.Drawings.AddChart("Bubble", eChartType.Bubble) as ExcelBubbleChart;
         AddTestData(ws);
 
-        chrt.Series.Add("V19:V24", "U19:U24");
+        _ = chrt.Series.Add("V19:V24", "U19:U24");
 
         chrt = ws.Drawings.AddChart("Bubble3d", eChartType.Bubble3DEffect) as ExcelBubbleChart;
         ws.Cells["W19"].Value = 1;
@@ -394,7 +394,7 @@ public class DrawingTest : TestBase
         ws.Cells["W23"].Value = 3;
         ws.Cells["W24"].Value = 4;
 
-        chrt.Series.Add("V19:V24", "U19:U24", "W19:W24");
+        _ = chrt.Series.Add("V19:V24", "U19:U24", "W19:W24");
         chrt.Style = eChartStyle.Style25;
 
         // chrt.Series[0].Marker = eMarkerStyle.Diamond;
@@ -455,7 +455,7 @@ public class DrawingTest : TestBase
 
         ExcelSurfaceChart? chrt = ws.Drawings.AddChart("Surface1", eChartType.Surface) as ExcelSurfaceChart;
         ExcelSurfaceChartSerie? s = chrt.Series.Add("V19:V24", "U19:U24");
-        ExcelSurfaceChartSerie? s2 = chrt.Series.Add("W19:W24", "U19:U24");
+        _ = chrt.Series.Add("W19:W24", "U19:U24");
         s.Header = "serie1";
 
         // chrt.Series[0].Marker = eMarkerStyle.Diamond;
@@ -774,7 +774,7 @@ public class DrawingTest : TestBase
             Assert.Inconclusive("Picture worksheet is missing");
         }
 
-        ExcelWorksheet? wsPicture = pck.Workbook.Worksheets.Add("Copy Picture", ws);
+        _ = pck.Workbook.Worksheets.Add("Copy Picture", ws);
 
         pck.SaveAs(new FileInfo(_worksheetPath + "DrawingCopied.xlsx"));
     }
@@ -800,9 +800,8 @@ public class DrawingTest : TestBase
         worksheet.Cells["B5"].Value = 10250;
         worksheet.Cells["B6"].Value = 10200;
 
-        chart.Series.Add(ExcelCellBase.GetAddress(1, 2, worksheet.Dimension.End.Row, 2), ExcelCellBase.GetAddress(1, 1, worksheet.Dimension.End.Row, 1));
+        _ = chart.Series.Add(ExcelCellBase.GetAddress(1, 2, worksheet.Dimension.End.Row, 2), ExcelCellBase.GetAddress(1, 1, worksheet.Dimension.End.Row, 1));
 
-        ExcelChartSerie? Series = chart.Series[0];
         chart.Axis[0].MinorGridlines.Fill.Color = Color.Red;
         chart.Axis[0].MinorGridlines.LineStyle = eLineStyle.LongDashDot;
 
@@ -882,7 +881,7 @@ public class DrawingTest : TestBase
 
         if (element != null)
         {
-            element.ParentNode.RemoveChild(element);
+            _ = element.ParentNode.RemoveChild(element);
         }
     }
 
@@ -930,7 +929,7 @@ public class DrawingTest : TestBase
         {
             foreach (ExcelDrawing d in ws.Drawings)
             {
-                if (d is ExcelChart c)
+                if (d is ExcelChart)
                 {
 #if (!Core)
                         TestContext.WriteLine(c.ChartType.ToString());
@@ -1030,7 +1029,7 @@ public class DrawingTest : TestBase
         ws.Cells["A1"].Style.Font.Size = 39;
         ws.Workbook.Styles.NamedStyles[0].Style.Font.Name = "Symbol";
         ws.Workbook.Styles.NamedStyles[0].Style.Font.Size = 16;
-        ExcelPicture? pic = ws.Drawings.AddPicture("Pic1", Resources.Test1);
+        _ = ws.Drawings.AddPicture("Pic1", Resources.Test1);
     }
 
     [TestMethod]
@@ -1212,7 +1211,7 @@ public class DrawingTest : TestBase
         shape.Font.SetFromFont("Arial", 20);
         shape.Text = "Font";
         shape.RichText[0].SetFromFont("Calibri", 8); //works
-        shape.RichText.Add("New Line", true);
+        _ = shape.RichText.Add("New Line", true);
 
         Assert.AreEqual("Arial", shape.Font.LatinFont);
         Assert.AreEqual("Arial", shape.Font.ComplexFont);

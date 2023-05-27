@@ -38,7 +38,7 @@ internal abstract class Coupbase
 
     protected FinancialDay GetCouponPeriodBySettlement()
     {
-        IFinanicalDays? financialDays = FinancialDaysFactory.Create(this.Basis);
+        _ = FinancialDaysFactory.Create(this.Basis);
 
         throw new NotImplementedException();
     }

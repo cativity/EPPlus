@@ -86,7 +86,7 @@ public sealed class Border : StyleBase
                 return false;
             }
         }
-        set { this._ChangedEvent(this, new StyleChangeEventArgs(eStyleClass.Border, eStyleProperty.BorderDiagonalUp, value, this._positionID, this._address)); }
+        set { _ = this._ChangedEvent(this, new StyleChangeEventArgs(eStyleClass.Border, eStyleProperty.BorderDiagonalUp, value, this._positionID, this._address)); }
     }
 
     /// <summary>
@@ -107,7 +107,7 @@ public sealed class Border : StyleBase
         }
         set
         {
-            this._ChangedEvent(this, new StyleChangeEventArgs(eStyleClass.Border, eStyleProperty.BorderDiagonalDown, value, this._positionID, this._address));
+            _ = this._ChangedEvent(this, new StyleChangeEventArgs(eStyleClass.Border, eStyleProperty.BorderDiagonalDown, value, this._positionID, this._address));
         }
     }
 
@@ -159,28 +159,28 @@ public sealed class Border : StyleBase
 
     private void SetBorderColor(Color Color, ExcelAddressBase addr)
     {
-        this._ChangedEvent(this,
+        _ = this._ChangedEvent(this,
                            new StyleChangeEventArgs(eStyleClass.BorderTop,
                                                     eStyleProperty.Color,
                                                     Color.ToArgb().ToString("X"),
                                                     this._positionID,
                                                     new ExcelAddress(addr._fromRow, addr._fromCol, addr._fromRow, addr._toCol).Address));
 
-        this._ChangedEvent(this,
+        _ = this._ChangedEvent(this,
                            new StyleChangeEventArgs(eStyleClass.BorderBottom,
                                                     eStyleProperty.Color,
                                                     Color.ToArgb().ToString("X"),
                                                     this._positionID,
                                                     new ExcelAddress(addr._toRow, addr._fromCol, addr._toRow, addr._toCol).Address));
 
-        this._ChangedEvent(this,
+        _ = this._ChangedEvent(this,
                            new StyleChangeEventArgs(eStyleClass.BorderLeft,
                                                     eStyleProperty.Color,
                                                     Color.ToArgb().ToString("X"),
                                                     this._positionID,
                                                     new ExcelAddress(addr._fromRow, addr._fromCol, addr._toRow, addr._fromCol).Address));
 
-        this._ChangedEvent(this,
+        _ = this._ChangedEvent(this,
                            new StyleChangeEventArgs(eStyleClass.BorderRight,
                                                     eStyleProperty.Color,
                                                     Color.ToArgb().ToString("X"),
@@ -190,28 +190,28 @@ public sealed class Border : StyleBase
 
     private void SetBorderAroundStyle(ExcelBorderStyle Style, ExcelAddressBase addr)
     {
-        this._ChangedEvent(this,
+        _ = this._ChangedEvent(this,
                            new StyleChangeEventArgs(eStyleClass.BorderTop,
                                                     eStyleProperty.Style,
                                                     Style,
                                                     this._positionID,
                                                     new ExcelAddress(addr._fromRow, addr._fromCol, addr._fromRow, addr._toCol).Address));
 
-        this._ChangedEvent(this,
+        _ = this._ChangedEvent(this,
                            new StyleChangeEventArgs(eStyleClass.BorderBottom,
                                                     eStyleProperty.Style,
                                                     Style,
                                                     this._positionID,
                                                     new ExcelAddress(addr._toRow, addr._fromCol, addr._toRow, addr._toCol).Address));
 
-        this._ChangedEvent(this,
+        _ = this._ChangedEvent(this,
                            new StyleChangeEventArgs(eStyleClass.BorderLeft,
                                                     eStyleProperty.Style,
                                                     Style,
                                                     this._positionID,
                                                     new ExcelAddress(addr._fromRow, addr._fromCol, addr._toRow, addr._fromCol).Address));
 
-        this._ChangedEvent(this,
+        _ = this._ChangedEvent(this,
                            new StyleChangeEventArgs(eStyleClass.BorderRight,
                                                     eStyleProperty.Style,
                                                     Style,

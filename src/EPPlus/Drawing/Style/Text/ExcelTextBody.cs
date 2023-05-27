@@ -251,21 +251,21 @@ public class ExcelTextBody : XmlHelper
 
                     this.DeleteNode($"{this._path}/a:spAutoFit");
                     this.DeleteNode($"{this._path}/a:noAutofit");
-                    this.CreateNode($"{this._path}/a:normAutofit");
+                    _ = this.CreateNode($"{this._path}/a:normAutofit");
 
                     break;
 
                 case eTextAutofit.ShapeAutofit:
                     this.DeleteNode($"{this._path}/a:noAutofit");
                     this.DeleteNode($"{this._path}/a:normAutofit");
-                    this.CreateNode($"{this._path}/a:spAutofit");
+                    _ = this.CreateNode($"{this._path}/a:spAutofit");
 
                     break;
 
                 case eTextAutofit.NoAutofit:
                     this.DeleteNode($"{this._path}/a:spAutoFit");
                     this.DeleteNode($"{this._path}/a:normAutofit");
-                    this.CreateNode($"{this._path}/a:noAutofit");
+                    _ = this.CreateNode($"{this._path}/a:noAutofit");
 
                     break;
             }
@@ -331,7 +331,7 @@ public class ExcelTextBody : XmlHelper
 
         foreach (XmlAttribute a in copyFromElement.Attributes)
         {
-            element.SetAttribute(a.Name, a.NamespaceURI, a.Value);
+            _ = element.SetAttribute(a.Name, a.NamespaceURI, a.Value);
         }
     }
 }

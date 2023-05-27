@@ -99,7 +99,7 @@ public class ExcelThemeLine : XmlHelper
                 }
                 else
                 {
-                    XmlNode? node = this.CreateNode("a:solidFill");
+                    _ = this.CreateNode("a:solidFill");
                     this._fill = new ExcelDrawingFill(null, this.NameSpaceManager, this.TopNode.ChildNodes[0], "", this.SchemaNodeOrder);
                     this.Fill.SolidFill.Color.SetSchemeColor(eSchemeColor.Style);
                 }
@@ -152,19 +152,19 @@ public class ExcelThemeLine : XmlHelper
         {
             if (value == eLineJoin.Bevel)
             {
-                this.CreateNode(BevelPath);
+                _ = this.CreateNode(BevelPath);
                 this.DeleteNode(RoundPath);
                 this.DeleteNode(MiterPath);
             }
             else if (value == eLineJoin.Round)
             {
-                this.CreateNode(RoundPath);
+                _ = this.CreateNode(RoundPath);
                 this.DeleteNode(BevelPath);
                 this.DeleteNode(MiterPath);
             }
             else
             {
-                this.CreateNode(MiterPath);
+                _ = this.CreateNode(MiterPath);
                 this.DeleteNode(RoundPath);
                 this.DeleteNode(BevelPath);
             }

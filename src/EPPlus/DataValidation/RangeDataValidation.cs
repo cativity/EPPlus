@@ -67,7 +67,7 @@ internal class RangeDataValidation : IRangeDataValidation
             {
                 if (deleteIfEmpty)
                 {
-                    this._worksheet.DataValidations.Remove(validation);
+                    _ = this._worksheet.DataValidations.Remove(validation);
                 }
                 else
                 {

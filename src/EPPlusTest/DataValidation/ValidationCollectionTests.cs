@@ -57,48 +57,48 @@ public class ValidationCollectionTests : ValidationTestBase
     public void ExcelDataValidationCollection_AddDecimal_ShouldThrowWhenAddressIsNullOrEmpty()
     {
         // Act
-        this._sheet.DataValidations.AddDecimalValidation(string.Empty);
+        _ = this._sheet.DataValidations.AddDecimalValidation(string.Empty);
     }
 
     [TestMethod, ExpectedException(typeof(InvalidOperationException))]
     public void ExcelDataValidationCollection_AddDecimal_ShouldThrowWhenNewValidationCollidesWithExisting()
     {
         // Act
-        this._sheet.DataValidations.AddDecimalValidation("A1");
-        this._sheet.DataValidations.AddDecimalValidation("A1");
+        _ = this._sheet.DataValidations.AddDecimalValidation("A1");
+        _ = this._sheet.DataValidations.AddDecimalValidation("A1");
     }
 
     [TestMethod, ExpectedException(typeof(InvalidOperationException))]
     public void ExcelDataValidationCollection_AddInteger_ShouldThrowWhenNewValidationCollidesWithExisting()
     {
         // Act
-        this._sheet.DataValidations.AddIntegerValidation("A1");
-        this._sheet.DataValidations.AddIntegerValidation("A1");
+        _ = this._sheet.DataValidations.AddIntegerValidation("A1");
+        _ = this._sheet.DataValidations.AddIntegerValidation("A1");
     }
 
     [TestMethod, ExpectedException(typeof(InvalidOperationException))]
     public void ExcelDataValidationCollection_AddTextLength_ShouldThrowWhenNewValidationCollidesWithExisting()
     {
         // Act
-        this._sheet.DataValidations.AddTextLengthValidation("A1");
-        this._sheet.DataValidations.AddTextLengthValidation("A1");
+        _ = this._sheet.DataValidations.AddTextLengthValidation("A1");
+        _ = this._sheet.DataValidations.AddTextLengthValidation("A1");
     }
 
     [TestMethod, ExpectedException(typeof(InvalidOperationException))]
     public void ExcelDataValidationCollection_AddDateTime_ShouldThrowWhenNewValidationCollidesWithExisting()
     {
         // Act
-        this._sheet.DataValidations.AddDateTimeValidation("A1");
-        this._sheet.DataValidations.AddDateTimeValidation("A1");
+        _ = this._sheet.DataValidations.AddDateTimeValidation("A1");
+        _ = this._sheet.DataValidations.AddDateTimeValidation("A1");
     }
 
     [TestMethod]
     public void ExcelDataValidationCollection_Index_ShouldReturnItemAtIndex()
     {
         // Arrange
-        this._sheet.DataValidations.AddDateTimeValidation("A1");
-        this._sheet.DataValidations.AddDateTimeValidation("A2");
-        this._sheet.DataValidations.AddDateTimeValidation("B1");
+        _ = this._sheet.DataValidations.AddDateTimeValidation("A1");
+        _ = this._sheet.DataValidations.AddDateTimeValidation("A2");
+        _ = this._sheet.DataValidations.AddDateTimeValidation("B1");
 
         // Act
         ExcelDataValidation? result = this._sheet.DataValidations[1];
@@ -111,9 +111,9 @@ public class ValidationCollectionTests : ValidationTestBase
     public void ExcelDataValidationCollection_FindAll_ShouldReturnValidationInColumnAonly()
     {
         // Arrange
-        this._sheet.DataValidations.AddDateTimeValidation("A1");
-        this._sheet.DataValidations.AddDateTimeValidation("A2");
-        this._sheet.DataValidations.AddDateTimeValidation("B1");
+        _ = this._sheet.DataValidations.AddDateTimeValidation("A1");
+        _ = this._sheet.DataValidations.AddDateTimeValidation("A2");
+        _ = this._sheet.DataValidations.AddDateTimeValidation("B1");
 
         // Act
         IEnumerable<ExcelDataValidation>? result = this._sheet.DataValidations.FindAll(x => x.Address.Address.StartsWith("A"));
@@ -126,8 +126,8 @@ public class ValidationCollectionTests : ValidationTestBase
     public void ExcelDataValidationCollection_Find_ShouldReturnFirstMatchOnly()
     {
         // Arrange
-        this._sheet.DataValidations.AddDateTimeValidation("A1");
-        this._sheet.DataValidations.AddDateTimeValidation("A2");
+        _ = this._sheet.DataValidations.AddDateTimeValidation("A1");
+        _ = this._sheet.DataValidations.AddDateTimeValidation("A2");
 
         // Act
         ExcelDataValidation? result = this._sheet.DataValidations.Find(x => x.Address.Address.StartsWith("A"));
@@ -140,7 +140,7 @@ public class ValidationCollectionTests : ValidationTestBase
     public void ExcelDataValidationCollection_Clear_ShouldBeEmpty()
     {
         // Arrange
-        IExcelDataValidationDateTime? v = this._sheet.DataValidations.AddDateTimeValidation("A1");
+        _ = this._sheet.DataValidations.AddDateTimeValidation("A1");
 
         // Act
         this._sheet.DataValidations.Clear();
@@ -153,7 +153,7 @@ public class ValidationCollectionTests : ValidationTestBase
     public void ExcelDataValidationCollection_ExtLst_Clear_ShouldBeEmpty()
     {
         // Arrange
-        ExcelWorksheet? sheet2 = this._package.Workbook.Worksheets.Add("Sheet2");
+        _ = this._package.Workbook.Worksheets.Add("Sheet2");
         IExcelDataValidationList? v = this._sheet.DataValidations.AddListValidation("A1");
         v.Formula.ExcelFormula = "Sheet2!A1:A2";
 
@@ -168,9 +168,9 @@ public class ValidationCollectionTests : ValidationTestBase
     public void ExcelDataValidationCollection_RemoveAll_ShouldRemoveMatchingEntries()
     {
         // Arrange
-        this._sheet.DataValidations.AddIntegerValidation("A1");
-        this._sheet.DataValidations.AddIntegerValidation("A2");
-        this._sheet.DataValidations.AddIntegerValidation("B1");
+        _ = this._sheet.DataValidations.AddIntegerValidation("A1");
+        _ = this._sheet.DataValidations.AddIntegerValidation("A2");
+        _ = this._sheet.DataValidations.AddIntegerValidation("B1");
 
         // Act
         this._sheet.DataValidations.RemoveAll(x => x.Address.Address.StartsWith("B"));

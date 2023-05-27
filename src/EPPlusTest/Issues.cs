@@ -147,7 +147,7 @@ public class Issues : TestBase
         sheet.Cells.Style.Fill.BackgroundColor.SetColor(Color.White);
         sheet.Cells[1, 1, 1, 3].Style.Border.BorderAround(ExcelBorderStyle.Thin);
         sheet.Cells[1, 5, 2, 5].Style.Border.BorderAround(ExcelBorderStyle.Thin);
-        ExcelColumn column = sheet.Column(3); // fails with exception
+        _ = sheet.Column(3);
     }
 
     [TestMethod]
@@ -156,11 +156,11 @@ public class Issues : TestBase
         ExcelPackage? p = new ExcelPackage();
         ExcelWorksheet? ws = p.Workbook.Worksheets.Add("t");
         using DataTable? dt = new DataTable();
-        dt.Columns.Add("String", typeof(string));
-        dt.Columns.Add("Int", typeof(int));
-        dt.Columns.Add("Bool", typeof(bool));
-        dt.Columns.Add("Double", typeof(double));
-        dt.Columns.Add("Date", typeof(DateTime));
+        _ = dt.Columns.Add("String", typeof(string));
+        _ = dt.Columns.Add("Int", typeof(int));
+        _ = dt.Columns.Add("Bool", typeof(bool));
+        _ = dt.Columns.Add("Double", typeof(double));
+        _ = dt.Columns.Add("Date", typeof(DateTime));
 
         DataRow? dr = dt.NewRow();
         dr[0] = "Row1";
@@ -178,7 +178,7 @@ public class Issues : TestBase
         dr[4] = new DateTime(2014, 12, 31);
         dt.Rows.Add(dr);
 
-        ws.Cells["A1"].LoadFromDataTable(dt, true);
+        _ = ws.Cells["A1"].LoadFromDataTable(dt, true);
         ws.Cells["D2:D3"].Style.Numberformat.Format = "(* #,##0.00);_(* (#,##0.00);_(* \"-\"??_);(@)";
 
         ws.Cells["E2:E3"].Style.Numberformat.Format = "mm/dd/yyyy";
@@ -233,7 +233,7 @@ public class Issues : TestBase
         ExcelPackage? p = new ExcelPackage();
         ExcelWorksheet? ws = p.Workbook.Worksheets.Add("Test");
 
-        ws.Cells["A1"]
+        _ = ws.Cells["A1"]
           .LoadFromCollection(l,
                               true,
                               TableStyles.Light16,
@@ -262,7 +262,6 @@ public class Issues : TestBase
         ws.Cells["E3:F3"].Merge = false;
         ws.DeleteRow(2, 6);
         ws.Cells["A1"].Value = 0;
-        string? s = ws.Cells["A1"].Value.ToString();
     }
 
     [TestMethod]
@@ -273,7 +272,6 @@ public class Issues : TestBase
         ExcelWorksheet? ws = p.Workbook.Worksheets.Add("StyleBug");
         ws.Cells["A1"].Value = 5698633.64;
         ws.Cells["A1"].Style.Numberformat.Format = s;
-        string? t = ws.Cells["A1"].Text;
     }
 
     [TestMethod]
@@ -367,7 +365,7 @@ public class Issues : TestBase
         ExcelPivotTableField? yearField = pivotTable1.Fields.GetDateGroupField(eDateGroupBy.Years);
         yearField.Name = "Year";
 
-        ExcelPivotTableField? rowField2 = pivotTable1.RowFields.Add(pivotTable1.Fields["AUDIT_LINE_STATUS"]);
+        _ = pivotTable1.RowFields.Add(pivotTable1.Fields["AUDIT_LINE_STATUS"]);
 
         ExcelPivotTableDataField? TotalSpend = pivotTable1.DataFields.Add(pivotTable1.Fields["TOTAL_INVOICE_PRICE"]);
         TotalSpend.Name = "Total Spend";
@@ -396,7 +394,7 @@ public class Issues : TestBase
         ExcelPivotTableField? yearField = pivotTable1.Fields.GetDateGroupField(eDateGroupBy.Years);
         yearField.Name = "Year";
 
-        ExcelPivotTableField? rowField2 = pivotTable1.RowFields.Add(pivotTable1.Fields["AUDIT_LINE_STATUS"]);
+        _ = pivotTable1.RowFields.Add(pivotTable1.Fields["AUDIT_LINE_STATUS"]);
 
         ExcelPivotTableDataField? TotalSpend = pivotTable1.DataFields.Add(pivotTable1.Fields["TOTAL_INVOICE_PRICE"]);
         TotalSpend.Name = "Total Spend";
@@ -415,7 +413,7 @@ public class Issues : TestBase
         using ExcelPackage? p = new ExcelPackage();
         ExcelWorksheet? ws = p.Workbook.Worksheets.Add("ws1");
         ws.Cells["A1"].Value = (double?)1;
-        double? v = ws.GetValue<double?>(1, 1);
+        _ = ws.GetValue<double?>(1, 1);
     }
 
     [TestMethod]
@@ -425,7 +423,7 @@ public class Issues : TestBase
         ExcelWorksheet? ws = p.Workbook.Worksheets.Add("RT");
         ExcelRange? r = ws.Cells["A1"];
         r.RichText.Text = "Cell 1";
-        r["A2"].RichText.Add("Cell 2");
+        _ = r["A2"].RichText.Add("Cell 2");
         SaveWorkbook(@"rt.xlsx", p);
     }
 
@@ -473,10 +471,10 @@ public class Issues : TestBase
         using ExcelPackage? p = new ExcelPackage();
         ExcelWorksheet? workSheet = p.Workbook.Worksheets.Add("rterror");
         ExcelRange? cell = workSheet.Cells["A1"];
-        cell.RichText.Add("toto: ");
+        _ = cell.RichText.Add("toto: ");
         cell.RichText[0].PreserveSpace = true;
         cell.RichText[0].Bold = true;
-        cell.RichText.Add("tata");
+        _ = cell.RichText.Add("tata");
         cell.RichText[1].Bold = false;
         cell.RichText[1].Color = Color.Green;
         SaveWorkbook(@"rtpreserve.xlsx", p);
@@ -486,7 +484,7 @@ public class Issues : TestBase
     public void Issuer15445()
     {
         using ExcelPackage? p = new ExcelPackage();
-        ExcelWorksheet? ws1 = p.Workbook.Worksheets.Add("ws1");
+        _ = p.Workbook.Worksheets.Add("ws1");
         ExcelWorksheet? ws2 = p.Workbook.Worksheets.Add("ws2");
         ws2.View.SelectedRange = "A1:B3 D12:D15";
         ws2.View.ActiveCell = "D15";
@@ -614,11 +612,11 @@ public class Issues : TestBase
     public void Issue61()
     {
         DataTable table1 = new DataTable("TestTable");
-        table1.Columns.Add("name");
-        table1.Columns.Add("id");
+        _ = table1.Columns.Add("name");
+        _ = table1.Columns.Add("id");
         using ExcelPackage? p = new ExcelPackage();
         ExcelWorksheet? ws = p.Workbook.Worksheets.Add("i61");
-        ws.Cells["A1"].LoadFromDataTable(table1, true);
+        _ = ws.Cells["A1"].LoadFromDataTable(table1, true);
     }
 
     [TestMethod]
@@ -626,7 +624,7 @@ public class Issues : TestBase
     {
         ExcelPackage pck = new ExcelPackage();
         ExcelWorksheet ws = pck.Workbook.Worksheets.Add("test");
-        ws.Cells["A1"].LoadFromArrays(Enumerable.Empty<object[]>());
+        _ = ws.Cells["A1"].LoadFromArrays(Enumerable.Empty<object[]>());
     }
 
     [TestMethod]
@@ -637,8 +635,8 @@ public class Issues : TestBase
         ws.Cells["A1"].Value = 1;
         ws.Cells["B1"].Formula = "A1";
         ExcelWorkbook? wb = pck.Workbook;
-        wb.Names.Add("Name1", ws.Cells["A1:A2"]);
-        ws.Names.Add("Name2", ws.Cells["A1"]);
+        _ = wb.Names.Add("Name1", ws.Cells["A1:A2"]);
+        _ = ws.Names.Add("Name2", ws.Cells["A1"]);
         pck.Save();
         using ExcelPackage? pck2 = new ExcelPackage(pck.Stream);
         ws = pck2.Workbook.Worksheets["Test!"];
@@ -739,7 +737,7 @@ public class Issues : TestBase
         using MemoryStream? s = new MemoryStream();
         byte[]? data = Encoding.UTF8.GetBytes("Bad data").ToArray();
         s.Write(data, 0, data.Length);
-        ExcelPackage? package = new ExcelPackage(s);
+        _ = new ExcelPackage(s);
     }
 
     [TestMethod]
@@ -749,8 +747,7 @@ public class Issues : TestBase
         ExcelWorksheet? ws = pck.Workbook.Worksheets.Add("Deal's History");
         ExcelRange? a = ws.Cells["A:B"];
         ws.AutoFilterAddress = ws.Cells["A1:C3"];
-        pck.Workbook.Names.Add("Test", ws.Cells["B1:D2"]);
-        string? name = a.WorkSheetName;
+        _ = pck.Workbook.Names.Add("Test", ws.Cells["B1:D2"]);
 
         ExcelAddress? a2 = new ExcelAddress("'Deal''s History'!a1:a3");
         Assert.AreEqual(a2.WorkSheetName, "Deal's History");
@@ -826,7 +823,7 @@ public class Issues : TestBase
     public void Issue236()
     {
         using ExcelPackage? p = OpenTemplatePackage("Issue236.xlsx");
-        p.Workbook.Worksheets["Sheet1"].Cells[7, 10].AddComment("test", "Author");
+        _ = p.Workbook.Worksheets["Sheet1"].Cells[7, 10].AddComment("test", "Author");
         SaveWorkbook("Issue236-Saved.xlsx", p);
     }
 
@@ -835,7 +832,7 @@ public class Issues : TestBase
     {
         using ExcelPackage? p = OpenTemplatePackage("Font55.xlsx");
         ExcelWorksheet? ws = p.Workbook.Worksheets["Sheet1"];
-        ExcelShape? d = ws.Drawings.AddShape("Shape1", eShapeStyle.Diamond);
+        _ = ws.Drawings.AddShape("Shape1", eShapeStyle.Diamond);
         ws.Cells["A1"].Value = "tasetraser";
         ws.Cells.AutoFitColumns();
         SaveWorkbook("Font55-Saved.xlsx", p);
@@ -855,7 +852,7 @@ public class Issues : TestBase
     public void Issue195()
     {
         using ExcelPackage? pkg = new ExcelPackage();
-        ExcelWorksheet? sheet = pkg.Workbook.Worksheets.Add("Sheet1");
+        _ = pkg.Workbook.Worksheets.Add("Sheet1");
         ExcelNamedStyleXml? defaultStyle = pkg.Workbook.Styles.CreateNamedStyle("Default");
         defaultStyle.Style.Font.Name = "Arial";
         defaultStyle.Style.Font.Size = 18;
@@ -909,9 +906,7 @@ public class Issues : TestBase
         ExcelWorksheet ws = pck.Workbook.Worksheets.Add("S1");
         string formula = "VLOOKUP(C2,A:B,1,0)";
         ws.Cells[2, 4].Formula = formula;
-        string? t1 = ws.Cells[2, 4].FormulaR1C1; // VLOOKUP(C2,C[-3]:C[-2],1,0)
         ws.Cells[2, 5].FormulaR1C1 = ws.Cells[2, 4].FormulaR1C1;
-        string? t2 = ws.Cells[2, 5].FormulaR1C1; // VLOOKUP(C2,C[-3]**:B:C:C**,1,0)   //unexpected value here
     }
 
     [TestMethod]
@@ -950,8 +945,8 @@ public class Issues : TestBase
         worksheet.Cells[1, 3].Value = "Hello";
         ExcelRange? cells = worksheet.Cells["A3"];
 
-        worksheet.Names.Add("R0", cells);
-        workbook.Names.Add("Q0", cells);
+        _ = worksheet.Names.Add("R0", cells);
+        _ = workbook.Names.Add("Q0", cells);
     }
 
     [TestMethod]
@@ -996,7 +991,6 @@ public class Issues : TestBase
     public void Issue551()
     {
         using ExcelPackage? p = OpenTemplatePackage("Submittal.Extract.5.ton.xlsx");
-        ExcelWorksheet? ws = p.Workbook.Worksheets[0];
         SaveWorkbook("Submittal.Extract.5.ton_Saved.xlsx", p);
     }
 
@@ -1005,7 +999,7 @@ public class Issues : TestBase
     {
         using ExcelPackage? p = OpenTemplatePackage("GoogleSpreadsheet.xlsx");
         ExcelWorksheet ws = p.Workbook.Worksheets[0];
-        p.Workbook.Worksheets.Copy(ws.Name, "NewName");
+        _ = p.Workbook.Worksheets.Copy(ws.Name, "NewName");
         SaveWorkbook("GoogleSpreadsheet-Saved.xlsx", p);
     }
 
@@ -1015,7 +1009,7 @@ public class Issues : TestBase
         using ExcelPackage? p = OpenTemplatePackage("template_slim.xlsx");
 
         ExcelWorksheet? workSheet = p.Workbook.Worksheets[0];
-        workSheet.Cells["B5"].LoadFromArrays(new List<object[]> { new object[] { "xx", "Name", 1, 2, 3, 5, 6, 7 } });
+        _ = workSheet.Cells["B5"].LoadFromArrays(new List<object[]> { new object[] { "xx", "Name", 1, 2, 3, 5, 6, 7 } });
 
         SaveWorkbook("ErrorStyle0.xlsx", p);
     }
@@ -1024,8 +1018,6 @@ public class Issues : TestBase
     public void Issue510()
     {
         using ExcelPackage? p = OpenTemplatePackage("Error.Opening.with.EPPLus.xlsx");
-
-        ExcelWorksheet? workSheet = p.Workbook.Worksheets[0];
 
         SaveWorkbook("Issue510.xlsx", p);
     }
@@ -1059,8 +1051,8 @@ public class Issues : TestBase
         using ExcelPackage? p1 = OpenTemplatePackage("issue425.xlsm");
         ExcelWorksheet? ws = p1.Workbook.Worksheets[1];
 
-        p1.Workbook.Worksheets.Add("NewNotCopied");
-        p1.Workbook.Worksheets.Add("NewCopied", ws);
+        _ = p1.Workbook.Worksheets.Add("NewNotCopied");
+        _ = p1.Workbook.Worksheets.Add("NewCopied", ws);
 
         SaveWorkbook("issue425.xlsm", p1);
     }
@@ -1077,8 +1069,6 @@ public class Issues : TestBase
     {
         using ExcelPackage? p = OpenTemplatePackage("multiple_print_areas.xlsx");
 
-        ExcelWorksheet? workSheet = p.Workbook.Worksheets[0];
-
         SaveWorkbook("Issue625.xlsx", p);
     }
 
@@ -1086,7 +1076,6 @@ public class Issues : TestBase
     public void Issue403()
     {
         using ExcelPackage? p = OpenTemplatePackage("issue403.xlsx");
-        ExcelWorksheet? ws = p.Workbook.Worksheets[0];
         SaveWorkbook("Issue403.xlsx", p);
     }
 
@@ -1135,7 +1124,7 @@ public class Issues : TestBase
         using ExcelPackage? p = new ExcelPackage();
         ExcelWorksheet? worksheet = p.Workbook.Worksheets.Add("DV test");
         string? rangeToSet = ExcelCellBase.GetAddress(1, 3, ExcelPackage.MaxRows, 3);
-        worksheet.Names.Add("ListName", worksheet.Cells["D1:D3"]);
+        _ = worksheet.Names.Add("ListName", worksheet.Cells["D1:D3"]);
         worksheet.Cells["D1"].Value = "A";
         worksheet.Cells["D2"].Value = "B";
         worksheet.Cells["D3"].Value = "C";
@@ -1148,7 +1137,6 @@ public class Issues : TestBase
     public void Issue73()
     {
         using ExcelPackage? p = OpenTemplatePackage("Issue73.xlsx");
-        ExcelWorksheet? workSheet = p.Workbook.Worksheets[0];
 
         SaveWorkbook("Issue73Saved.xlsx", p);
     }
@@ -1157,7 +1145,6 @@ public class Issues : TestBase
     public void Issue74()
     {
         using ExcelPackage? p = OpenTemplatePackage("Issue74.xlsx");
-        ExcelWorksheet? workSheet = p.Workbook.Worksheets[0];
 
         SaveWorkbook("Issue74Saved.xlsx", p);
     }
@@ -1166,7 +1153,6 @@ public class Issues : TestBase
     public void Issue76()
     {
         using ExcelPackage? p = OpenTemplatePackage("Issue76.xlsx");
-        ExcelWorksheet? workSheet = p.Workbook.Worksheets[0];
 
         SaveWorkbook("Issue76Saved.xlsx", p);
     }
@@ -1176,7 +1162,7 @@ public class Issues : TestBase
     {
         using ExcelPackage? p = OpenTemplatePackage("Issue88.xlsm");
         ExcelWorksheet? ws1 = p.Workbook.Worksheets[0];
-        ExcelWorksheet? ws2 = p.Workbook.Worksheets.Add("test", ws1);
+        _ = p.Workbook.Worksheets.Add("test", ws1);
         SaveWorkbook("Issue88Saved.xlsm", p);
     }
 
@@ -1215,7 +1201,7 @@ public class Issues : TestBase
     {
         using ExcelPackage? p = OpenPackage("Issue115.xlsx", true);
         ExcelWorksheet? ws = p.Workbook.Worksheets.Add("DefinedNamesIssue");
-        p.Workbook.Names.Add("Name", ws.Cells["B6:D8,B10:D11"]);
+        _ = p.Workbook.Names.Add("Name", ws.Cells["B6:D8,B10:D11"]);
         SaveAndCleanup(p);
     }
 
@@ -1223,7 +1209,6 @@ public class Issues : TestBase
     public void Issue121()
     {
         using ExcelPackage? p = OpenTemplatePackage("Deployment aftaler.xlsx");
-        ExcelWorksheet? sheet = p.Workbook.Worksheets[0];
     }
 
     [TestMethod, Ignore]
@@ -1273,7 +1258,7 @@ public class Issues : TestBase
     {
         ExcelPackage? p1 = OpenTemplatePackage("Issue180-1.xlsm");
         ExcelPackage? p2 = OpenTemplatePackage("Issue180-2.xlsm");
-        p2.Workbook.Worksheets.Add(p1.Workbook.Worksheets[0].Name, p1.Workbook.Worksheets[0]);
+        _ = p2.Workbook.Worksheets.Add(p1.Workbook.Worksheets[0].Name, p1.Workbook.Worksheets[0]);
         p2.SaveAs(new FileInfo("c:\\epplustest\\t.xlsm"));
     }
 
@@ -1296,10 +1281,10 @@ public class Issues : TestBase
         s1.SetPosition(0, 500);
         ExcelPivotTableSlicer? s2 = pt.Fields["OpenDate"].AddSlicer();
         pt.Fields["Distance"].Format = "#,##0.00";
-        pt.Fields["Distance"].AddSlicer();
+        _ = pt.Fields["Distance"].AddSlicer();
         s2.SetPosition(0, 500 + (int)s1._width);
-        tbl.Columns["IsUser"].AddSlicer();
-        pt.Fields["IsUser"].AddSlicer();
+        _ = tbl.Columns["IsUser"].AddSlicer();
+        _ = pt.Fields["IsUser"].AddSlicer();
 
         SaveWorkbook("pivotTable2.xlsx", p);
     }
@@ -1308,7 +1293,6 @@ public class Issues : TestBase
     public void Issue195_PivotTable()
     {
         using ExcelPackage? p = OpenTemplatePackage("Issue195.xlsx");
-        ExcelWorksheet? ws = p.Workbook.Worksheets[1];
         SaveAndCleanup(p);
     }
 
@@ -1326,7 +1310,6 @@ public class Issues : TestBase
     public void EmfIssue()
     {
         using ExcelPackage? p = OpenTemplatePackage("emfIssue.xlsm");
-        ExcelWorksheet? ws = p.Workbook.Worksheets[0];
         SaveAndCleanup(p);
     }
 
@@ -1365,7 +1348,6 @@ public class Issues : TestBase
     public void Issue220()
     {
         using ExcelPackage? p = OpenTemplatePackage("Generated.with.EPPlus.xlsx");
-        ExcelWorksheet? ws = p.Workbook.Worksheets[0];
     }
 
     [TestMethod]
@@ -1375,8 +1357,7 @@ public class Issues : TestBase
         ExcelWorksheet? overviewSheet = p.Workbook.Worksheets["Overblik"];
         ExcelWorksheet? serverSheet = p.Workbook.Worksheets["Servers"];
 
-        ExcelPivotTable? serverPivot =
-            overviewSheet.PivotTables.Add(overviewSheet.Cells["A4"], serverSheet.Cells[serverSheet.Dimension.Address], "ServerPivot");
+        _ = overviewSheet.PivotTables.Add(overviewSheet.Cells["A4"], serverSheet.Cells[serverSheet.Dimension.Address], "ServerPivot");
 
         p.Save();
     }
@@ -1448,9 +1429,9 @@ public class Issues : TestBase
             overviewSheet.PivotTables.Add(overviewSheet.Cells["A4"], serverSheet.Cells[serverSheet.Dimension.Address], "ServerPivot");
 
         ExcelPivotTableField? serverNameField = serverPivot.Fields["Name"];
-        serverPivot.RowFields.Add(serverNameField);
+        _ = serverPivot.RowFields.Add(serverNameField);
         ExcelPivotTableField? standardBackupField = serverPivot.Fields["StandardBackup"];
-        serverPivot.PageFields.Add(standardBackupField);
+        _ = serverPivot.PageFields.Add(standardBackupField);
         standardBackupField.Items.Refresh();
         ExcelPivotTableFieldItemsCollection? items = standardBackupField.Items;
         items.SelectSingleItem(1); // <===== this one is to select only the "false" condition
@@ -1467,7 +1448,7 @@ public class Issues : TestBase
         ws.Cells["A3"].Value = 2;
         ws.Cells["A4"].Value = 3;
 
-        ExcelTable? tbl = ws.Tables.Add(ws.Cells["A1:A4"], "Table1");
+        _ = ws.Tables.Add(ws.Cells["A1:A4"], "Table1");
 
         ws.Cells["B1"].Formula = "TEXTJOIN(\" | \", false, INDIRECT(\"Table1[#data]\"))";
         ws.Calculate();
@@ -1483,7 +1464,7 @@ public class Issues : TestBase
     {
         using ExcelPackage? p = OpenPackage("CommentInsert.xlsx", true);
         ExcelWorksheet? ws = p.Workbook.Worksheets.Add("CommentInsert");
-        ws.Cells["A2"].AddComment("na", "test");
+        _ = ws.Cells["A2"].AddComment("na", "test");
         Assert.AreEqual(1, ws.Comments.Count);
 
         ws.InsertRow(2, 1);
@@ -1517,7 +1498,7 @@ public class Issues : TestBase
         r1.Text = "Single Room";
         r1.LinkedCell = formSheet.Cells["G7"];
         r1.SetPosition(5, 0, 1, 0);
-        ExcelWorksheet? tableSheet = p.Workbook.Worksheets.Add("Table");
+        _ = p.Workbook.Worksheets.Add("Table");
         ExcelRange tableRange = formSheet.Cells[10, 20, 30, 22];
         ExcelTable faultsTable = formSheet.Tables.Add(tableRange, "FaultsTable");
         faultsTable.StyleName = "None";
@@ -1575,9 +1556,8 @@ public class Issues : TestBase
     public void IssueS80()
     {
         using ExcelPackage? p = OpenTemplatePackage("Example - CANNOT OPEN EPPLUS.xlsx");
-        ExcelWorkbook? workbook = p.Workbook;
         SaveAndCleanup(p);
-        new ExcelAddress("f");
+        //_ = new ExcelAddress("f");
     }
 
     [TestMethod]
@@ -1597,7 +1577,7 @@ public class Issues : TestBase
         string? r1c1Formula = OfficeOpenXml.Core.R1C1Translator.ToR1C1Formula(formula, dv.Address.Start.Row, dv.Address.Start.Column);
 
         //Add one row to the formula
-        string? formulaRowPlus1 = OfficeOpenXml.Core.R1C1Translator.FromR1C1Formula(r1c1Formula, dv.Address.Start.Row + 1, dv.Address.Start.Column);
+        _ = OfficeOpenXml.Core.R1C1Translator.FromR1C1Formula(r1c1Formula, dv.Address.Start.Row + 1, dv.Address.Start.Column);
 
         SaveAndCleanup(p);
     }
@@ -1638,7 +1618,6 @@ public class Issues : TestBase
             new Test { Value1 = 3, Value2 = 3, Value3 = 3 }
         };
 
-        string workingDirectory = AppDomain.CurrentDomain.BaseDirectory;
         using ExcelPackage? excelFile = OpenTemplatePackage("issue284.xlsx");
 
         //Data1
@@ -1650,11 +1629,11 @@ public class Issues : TestBase
         //Data2
         worksheet = excelFile.Workbook.Worksheets["Test2"];
         location = worksheet.Cells["A1"].LoadFromCollection(Collection: report2, PrintHeaders: true);
-        worksheet.Tables.Add(location, "mytestsureTbl");
+        _ = worksheet.Tables.Add(location, "mytestsureTbl");
 
         //Data3
         location = worksheet.Cells["K1"].LoadFromCollection(Collection: report3, PrintHeaders: true);
-        worksheet.Tables.Add(location, "Test3");
+        _ = worksheet.Tables.Add(location, "Test3");
 
         ExcelWorksheet? wsFirst = excelFile.Workbook.Worksheets["Test1"];
 
@@ -1671,8 +1650,7 @@ public class Issues : TestBase
         p.Workbook.FormulaParserManager.AttachLogger(fi);
         sheet.Calculate(x => x.PrecisionAndRoundingStrategy = OfficeOpenXml.FormulaParsing.PrecisionAndRoundingStrategy.Excel);
         p.Workbook.FormulaParserManager.DetachLogger();
-        object? result = sheet.Cells["R5"].Value;
-        ExcelAddress a = new ExcelAddress();
+        //_ = new ExcelAddress();
 
         SaveAndCleanup(p);
     }
@@ -1817,9 +1795,9 @@ public class Issues : TestBase
         table.ShowFilter = true;
         ExcelWorksheet? wsPivot = p.Workbook.Worksheets.Add("Employee-Job");
         ExcelPivotTable? pivotTable = wsPivot.PivotTables.Add(wsPivot.Cells["A3"], dataRange, "ByEmployee");
-        pivotTable.RowFields.Add(pivotTable.Fields["Employee"]);
+        _ = pivotTable.RowFields.Add(pivotTable.Fields["Employee"]);
         ExcelPivotTableField? rowField1 = pivotTable.RowFields.Add(pivotTable.Fields["HomeOffice"]);
-        ExcelPivotTableField? rowField2 = pivotTable.RowFields.Add(pivotTable.Fields["JobNo"]);
+        _ = pivotTable.RowFields.Add(pivotTable.Fields["JobNo"]);
         ExcelPivotTableField? calcField1 = pivotTable.Fields.AddCalculatedField("Productive", "'ProductiveHrs'/('ProductiveHrs'+'NonProductiveHrs')*100");
         calcField1.Format = "#,##0";
         ExcelPivotTableDataField dataField = pivotTable.DataFields.Add(pivotTable.Fields["Productive"]);
@@ -1865,8 +1843,8 @@ public class Issues : TestBase
     {
         using ExcelPackage? p = OpenTemplatePackage("CommentDelete.xlsx");
         ExcelWorksheet? ws = p.Workbook.Worksheets["S3"];
-        ws.Comments[0].RichText.Add("T");
-        ws.Comments[0].RichText.Add("x");
+        _ = ws.Comments[0].RichText.Add("T");
+        _ = ws.Comments[0].RichText.Add("x");
         ExcelWorksheet? ws2 = p.Workbook.Worksheets.Add("Copied S3", ws);
         ws.InsertRow(2, 1);
         ws.DeleteRow(2);
@@ -1897,8 +1875,6 @@ public class Issues : TestBase
     public void Issue294()
     {
         using ExcelPackage? p = OpenTemplatePackage("test_excel_workbook_before2-xl.xlsx");
-        int s = p.Workbook.Styles.NamedStyles.Count;
-        ExcelWorksheet? ws = p.Workbook.Worksheets["Summary"];
         p.Save();
     }
 
@@ -1955,7 +1931,7 @@ public class Issues : TestBase
     {
         using ExcelPackage? p = OpenPackage("defnames.xlsx");
         ExcelWorksheet? ws1 = p.Workbook.Worksheets.Add("Sheet1");
-        ExcelWorksheet? ws2 = p.Workbook.Worksheets.Add("Sheet2");
+        _ = p.Workbook.Worksheets.Add("Sheet2");
 
         ExcelNamedRange? name = ws1.Names.Add("Name2", ws1.Cells["B1:C5"]);
         Assert.AreEqual("Sheet1", name.Worksheet.Name);
@@ -2006,8 +1982,8 @@ public class Issues : TestBase
         ExcelPivotTable? pt = ws1.PivotTables.Add(ws1.Cells["A2"], ws2.Cells["A1:E3005"], "pt");
         ws2.Cells["B2"].Value = eDateGroupBy.Years;
         ws2.Cells["B3"].Value = eDateGroupBy.Months;
-        pt.ColumnFields.Add(pt.Fields[1]);
-        pt.RowFields.Add(pt.Fields[4]);
+        _ = pt.ColumnFields.Add(pt.Fields[1]);
+        _ = pt.RowFields.Add(pt.Fields[4]);
         pt.Fields[4].AddDateGrouping(eDateGroupBy.Years | eDateGroupBy.Months);
         SaveAndCleanup(p);
     }
@@ -2092,7 +2068,6 @@ public class Issues : TestBase
     public void ReadIssue()
     {
         using ExcelPackage? p = OpenTemplatePackage("cf.xlsx");
-        ExcelWorksheet? ws = p.Workbook.Worksheets[0];
     }
 
     [TestMethod]
@@ -2100,7 +2075,7 @@ public class Issues : TestBase
     {
         using ExcelPackage? p = OpenTemplatePackage("TestStyles_MoreCellStyleXfsThanCellXfs.xlsx");
         ExcelPackage? p2 = new ExcelPackage();
-        ExcelWorksheet? ws = p2.Workbook.Worksheets.Add("Copied Style", p.Workbook.Worksheets["StylesTestSheet"]);
+        _ = p2.Workbook.Worksheets.Add("Copied Style", p.Workbook.Worksheets["StylesTestSheet"]);
 
         SaveWorkbook("Issue407_1.xlsx", p2);
     }
@@ -2174,8 +2149,8 @@ public class Issues : TestBase
         ExcelWorksheet? worksheet = wb.Worksheets.Add("Pivot Tables");
         ExcelTable? table = wb.Worksheets[0].Tables["Table1"];
         ExcelPivotTable pt = worksheet.PivotTables.Add(worksheet.Cells["A1"], table, "PT1");
-        pt.RowFields.Add(pt.Fields["ColC"]);
-        pt.DataFields.Add(pt.Fields["ColB"]);
+        _ = pt.RowFields.Add(pt.Fields["ColC"]);
+        _ = pt.DataFields.Add(pt.Fields["ColB"]);
         SaveWorkbook("test-out.xlsx", package);
     }
 
@@ -2183,7 +2158,6 @@ public class Issues : TestBase
     public void Issue415()
     {
         using ExcelPackage? package = OpenTemplatePackage("Issue415.xlsm");
-        ExcelWorkbook? wb = package.Workbook;
         SaveAndCleanup(package);
     }
 
@@ -2200,7 +2174,6 @@ public class Issues : TestBase
     public void Issue395()
     {
         using ExcelPackage? package = OpenTemplatePackage("Issue395.xlsx");
-        ExcelWorksheet? ws = package.Workbook.Worksheets[0];
         SaveAndCleanup(package);
     }
 
@@ -2241,7 +2214,6 @@ public class Issues : TestBase
     public void Issue430()
     {
         using ExcelPackage? p = OpenTemplatePackage("issue430.xlsx");
-        ExcelWorkbook? workbook = p.Workbook;
         SaveAndCleanup(p);
     }
 
@@ -2249,7 +2221,6 @@ public class Issues : TestBase
     public void Issue435()
     {
         using ExcelPackage? p = OpenTemplatePackage("issue435.xlsx");
-        ExcelWorkbook? workbook = p.Workbook;
         SaveAndCleanup(p);
     }
 
@@ -2257,8 +2228,6 @@ public class Issues : TestBase
     public void VbaIssueLoad()
     {
         using ExcelPackage? p = OpenTemplatePackage("PlantillaDefectivo-NotWorking.xlsm");
-        ExcelWorkbook? workbook = p.Workbook;
-        ExcelVbaProject? vba = p.Workbook.VbaProject;
         SaveAndCleanup(p);
     }
 
@@ -2270,8 +2239,8 @@ public class Issues : TestBase
         ExcelWorksheet? worksheet = wb.Worksheets.Add("Pivot Tables");
         ExcelTable? table = wb.Worksheets[0].Tables["Table1"];
         ExcelPivotTable pt = worksheet.PivotTables.Add(worksheet.Cells["A1"], table, "PT1");
-        pt.RowFields.Add(pt.Fields["ColC"]);
-        pt.DataFields.Add(pt.Fields["ColB"]);
+        _ = pt.RowFields.Add(pt.Fields["ColC"]);
+        _ = pt.DataFields.Add(pt.Fields["ColB"]);
         SaveAndCleanup(p);
     }
 
@@ -2281,7 +2250,7 @@ public class Issues : TestBase
         using ExcelPackage? pck = OpenPackage("issue441.xlsx", true);
         ExcelWorksheet? wks = pck.Workbook.Worksheets.Add("Sheet1");
         string? commentAddress = "B2";
-        wks.Comments.Add(wks.Cells[commentAddress], "This is a comment.", "author");
+        _ = wks.Comments.Add(wks.Cells[commentAddress], "This is a comment.", "author");
         wks.Cells[commentAddress].Value = "This cell contains a comment.";
 
         wks.Cells["B1:B3"].Insert(eShiftTypeInsert.Right);
@@ -2335,12 +2304,12 @@ public class Issues : TestBase
 
         // Create a comment in cell B2
         string? commentAddress = "B2";
-        wks.Comments.Add(wks.Cells[commentAddress], "This is a comment.", "author");
+        _ = wks.Comments.Add(wks.Cells[commentAddress], "This is a comment.", "author");
         wks.Cells[commentAddress].Value = "This cell contains a comment.";
 
         // Create another comment in cell B10
         string? commentAddress2 = "B10";
-        wks.Comments.Add(wks.Cells[commentAddress2], "This is another comment.", "author");
+        _ = wks.Comments.Add(wks.Cells[commentAddress2], "This is another comment.", "author");
         wks.Cells[commentAddress2].Value = "This cell contains another comment.";
 
         // Insert cells so the first comment is now in C2
@@ -2367,7 +2336,7 @@ public class Issues : TestBase
         // Add a sheet, and a table with headers and a single row of data
         ExcelWorksheet? wks = pck.Workbook.Worksheets.Add("Sheet1");
         wks.Cells["B2:D3"].Value = new object[,] { { "Col1", "Col2", "Col3" }, { 1, 2, 3 } };
-        wks.Tables.Add(wks.Cells["B2:D3"], "Table1");
+        _ = wks.Tables.Add(wks.Cells["B2:D3"], "Table1");
 
         // Add a SUM formula on the worksheet with a reference to a table column
         wks.Cells["C10"].Formula = "SUM(Table1[Col2])";
@@ -2390,7 +2359,7 @@ public class Issues : TestBase
         using (ExcelPackage? p1 = OpenTemplatePackage("TestDynamicArrayFormula.xlsx"))
         {
             using ExcelPackage? p2 = new ExcelPackage();
-            p2.Workbook.Worksheets.Add("Sheet1", p1.Workbook.Worksheets["Sheet1"]);
+            _ = p2.Workbook.Worksheets.Add("Sheet1", p1.Workbook.Worksheets["Sheet1"]);
             SaveWorkbook("DontCopyMetadataToNewWorkbook.xlsx", p2);
         }
 
@@ -2401,7 +2370,7 @@ public class Issues : TestBase
     public void VbaIssue()
     {
         using ExcelPackage? p = OpenTemplatePackage("Issue479.xlsm");
-        p.Workbook.Worksheets.Add("New Sheet");
+        _ = p.Workbook.Worksheets.Add("New Sheet");
         SaveAndCleanup(p);
     }
 
@@ -2515,7 +2484,6 @@ public class Issues : TestBase
         using (ExcelPackage? excelPackage = OpenTemplatePackage("issue478.xlsx"))
         {
             ExcelWorksheet? worksheet = excelPackage.Workbook.Worksheets["Avances"];
-            ExcelCellAddress? start = worksheet.Dimension.Start;
             ExcelCellAddress? end = worksheet.Dimension.End;
 
             // Add column of errors and warnings
@@ -2792,7 +2760,6 @@ public class Issues : TestBase
 
         worksheet.Cells[1, 1].Value = -1234;
         worksheet.Cells[1, 1].Style.Numberformat.Format = "#.##0\"*\";(#.##0)\"*\"";
-        string? s = worksheet.Cells[1, 1].Text;
 
         SaveAndCleanup(package);
     }
@@ -2806,7 +2773,6 @@ public class Issues : TestBase
 
         worksheet.Cells[1, 1].Value = -1234;
         worksheet.Cells[1, 1].Style.Numberformat.Format = "#.##0\"*\";(#.##0)\"*\"";
-        string? s = worksheet.Cells[1, 1].Text;
 
         SaveAndCleanup(package);
     }
@@ -2847,7 +2813,7 @@ public class Issues : TestBase
     {
         using ExcelPackage? package = new ExcelPackage();
         ExcelWorksheet? sheet = package.Workbook.Worksheets.Add("Sheet1");
-        ExcelWorksheet? sheet2 = package.Workbook.Worksheets.Add("Sheet2");
+        _ = package.Workbook.Worksheets.Add("Sheet2");
         IExcelDataValidationList? validation = sheet.DataValidations.AddListValidation("A1 B1");
         validation.Formula.ExcelFormula = "Sheet2!$A$7:$A$12"; // throws exception "Multiple addresses may not be commaseparated, use space instead"
     }
@@ -2891,13 +2857,12 @@ public class Issues : TestBase
         using ExcelPackage? excelPackage = OpenTemplatePackage("b.xlsx");
         ExcelWorksheet? ws = excelPackage.Workbook.Worksheets[0];
         ExcelRange? cell = ws.Cells["A2"];
-        string? formula = cell.Formula;
         object? value1 = cell.Value;
         Console.WriteLine($"value1: {value1}");
 
         ExcelExternalLinksCollection? externalLinks = excelPackage.Workbook.ExternalLinks;
         ExcelExternalWorkbook? externalWorkbook = externalLinks[0].As.ExternalWorkbook;
-        externalWorkbook.Load();
+        _ = externalWorkbook.Load();
 
         ws.ClearFormulaValues();
         ws.Calculate(); // "Circular reference occurred at A2" exception is thrown here
@@ -2956,7 +2921,7 @@ public class Issues : TestBase
     public void i566()
     {
         using ExcelPackage? package = OpenPackage("i566.xlsx", true);
-        ExcelWorksheet? worksheet = package.Workbook.Worksheets.Add("Sheet 1");
+        _ = package.Workbook.Worksheets.Add("Sheet 1");
         ExcelWorksheet? ws = package.Workbook.Worksheets["Sheet 1"];
         ws.SetValue(3, 3, "Test");
         SaveAndCleanup(package);
@@ -2986,7 +2951,7 @@ public class Issues : TestBase
         wsSource.Cells["A1"].Value = null;
 
         //code to load a collection to the spreadsheet. very nice
-        wsSource.Cells["A2"].LoadFromArrays(dataCollection);
+        _ = wsSource.Cells["A2"].LoadFromArrays(dataCollection);
 
         foreach (ExcelWorksheet? ws in package.Workbook.Worksheets)
         {
@@ -3003,7 +2968,6 @@ public class Issues : TestBase
     public void i574()
     {
         using ExcelPackage? package = OpenTemplatePackage("i574.xlsx");
-        ExcelWorksheet? wsSource = package.Workbook.Worksheets[0];
 
         SaveAndCleanup(package);
     }
@@ -3028,7 +2992,7 @@ public class Issues : TestBase
 
         ExcelPieChart? chart = ws.Drawings.AddPieChart("Pie1", ePieChartType.Pie);
         chart.VaryColors = true;
-        chart.Series.Add("B1:B3", "A1:A3");
+        _ = chart.Series.Add("B1:B3", "A1:A3");
         chart.StyleManager.SetChartStyle(ePresetChartStyle.PieChartStyle1);
 
         SaveAndCleanup(p);
@@ -3048,7 +3012,7 @@ public class Issues : TestBase
 
         ExcelPieChart? chart = ws.Drawings.AddPieChart("Pie1", ePieChartType.Pie);
         chart.VaryColors = true;
-        chart.Series.Add("A2:C2", "A1:C1");
+        _ = chart.Series.Add("A2:C2", "A1:C1");
         chart.StyleManager.SetChartStyle(ePresetChartStyle.PieChartStyle1);
 
         SaveAndCleanup(p);
@@ -3057,14 +3021,13 @@ public class Issues : TestBase
     [TestMethod]
     public void CheckEnvironment()
     {
-        Graphics.FromHwnd(IntPtr.Zero);
+        _ = Graphics.FromHwnd(IntPtr.Zero);
     }
 
     [TestMethod]
     public void Issue592()
     {
         using ExcelPackage? p = OpenTemplatePackage("I592.xlsx");
-        ExcelWorksheet? ws = p.Workbook.Worksheets[0];
         SaveAndCleanup(p);
     }
 
@@ -3074,7 +3037,7 @@ public class Issues : TestBase
         using ExcelPackage? p = OpenTemplatePackage("i594.xlsx");
         ExcelWorksheet? ws = p.Workbook.Worksheets[1];
         ExcelTable? tbl = ws.Tables[0];
-        tbl.AddRow(2);
+        _ = tbl.AddRow(2);
         SaveAndCleanup(p);
     }
 
@@ -3099,7 +3062,7 @@ public class Issues : TestBase
 
         eventS1Serie.Header = "STATISTIQUES COMPARATIVES";
 
-        ExcelBarChartSerie eventS2Serie = chart.Series.Add("H9:H12", "B9:B12");
+        _ = chart.Series.Add("H9:H12", "B9:B12");
 
         chart.StyleManager.SetChartStyle(ePresetChartStyle.BarChartStyle5, ePresetChartColors.MonochromaticPalette5);
 
@@ -3110,7 +3073,6 @@ public class Issues : TestBase
     public void I596()
     {
         using ExcelPackage? p = OpenTemplatePackage("I596.xlsx");
-        ExcelWorksheet? ws = p.Workbook.Worksheets[0];
         SaveAndCleanup(p);
     }
 
@@ -3118,7 +3080,6 @@ public class Issues : TestBase
     public void I606()
     {
         using ExcelPackage? p = OpenTemplatePackage("i606.xlsx");
-        ExcelWorksheet? ws = p.Workbook.Worksheets[0];
         SaveAndCleanup(p);
     }
 
@@ -3130,7 +3091,7 @@ public class Issues : TestBase
         Type? t = ws.Cells["C2"].RichText.GetType();
         ;
         PropertyInfo? prop = t.GetProperty("TopNode", BindingFlags.GetProperty | BindingFlags.NonPublic | BindingFlags.Instance);
-        object? topNode = prop.GetValue(ws.Cells["C2"].RichText);
+        _ = prop.GetValue(ws.Cells["C2"].RichText);
         SaveAndCleanup(p);
     }
 
@@ -3141,8 +3102,8 @@ public class Issues : TestBase
         package.Compatibility.IsWorksheets1Based = false;
 
         ExcelWorkbook? wb = package.Workbook;
-        wb.Worksheets.Add("A");
-        wb.Worksheets.Add("B");
+        _ = wb.Worksheets.Add("A");
+        _ = wb.Worksheets.Add("B");
 
         ExcelWorksheet sheetA = wb.Worksheets["A"];
         ExcelWorksheet sheetB = wb.Worksheets["B"];
@@ -3189,7 +3150,7 @@ public class Issues : TestBase
         wsTable.Cells["E9"].Value = "New Value";
         wsTable.Cells["E9"].Value = "Stockholm";
         wsTable.Cells["F11"].Value = "Test";
-        tbl.AddRow(11);
+        _ = tbl.AddRow(11);
         tbl.Range.Offset(1, 0, tbl.Range.Rows - 1, tbl.Range.Columns).Copy(tbl.Range.Offset(11, 0));
         Assert.IsNotNull(pt.Fields[2].Items.Count);
         Assert.IsNotNull(pt.Fields[10].Items.Count);
@@ -3222,7 +3183,6 @@ public class Issues : TestBase
     public void i609()
     {
         using ExcelPackage? p = OpenTemplatePackage("i609.xlsx");
-        ExcelWorksheet? ws = p.Workbook.Worksheets[0];
         SaveAndCleanup(p);
     }
 
@@ -3244,7 +3204,7 @@ public class Issues : TestBase
         using ExcelPackage? p = OpenTemplatePackage("Input Sheet.xlsx");
         ExcelWorksheet? ws = p.Workbook.Worksheets[0];
         using ExcelPackage? p2 = OpenPackage("CopyDxfs.xlsx", true);
-        p2.Workbook.Worksheets.Add("Sheet1", ws);
+        _ = p2.Workbook.Worksheets.Add("Sheet1", ws);
         SaveAndCleanup(p2);
     }
 
@@ -3286,7 +3246,7 @@ public class Issues : TestBase
         using ExcelPackage? p1 = OpenTemplatePackage("Source.xlsx");
         ExcelWorksheet sheet = p1.Workbook.Worksheets[0];
         using ExcelPackage? p2 = OpenTemplatePackage("VbaCopy.xlsm");
-        p2.Workbook.Worksheets.Add("sheet2", sheet);
+        _ = p2.Workbook.Worksheets.Add("sheet2", sheet);
         SaveWorkbook("i665.xlsm", p2);
     }
 
@@ -3319,7 +3279,7 @@ public class Issues : TestBase
     public void I673()
     {
         using ExcelPackage? p = OpenTemplatePackage("I673.xlsm");
-        p.Workbook.Worksheets.Copy(p.Workbook.Worksheets.First().Name, "copied sheet");
+        _ = p.Workbook.Worksheets.Copy(p.Workbook.Worksheets.First().Name, "copied sheet");
         SaveAndCleanup(p);
     }
 
@@ -3468,7 +3428,7 @@ public class Issues : TestBase
         r6c1.LinkedCell = ws.Cells["J31"];
 
         //*********************************************************
-        ExcelGroupShape? grp = grpBox.Group(r1c1, r1c2, r1c3, r2c1, r2c2, r2c3, r3c1, r3c2, r3c3, r4c1, r4c2, r4c3, r5c1, r5c2, r5c3, r6c1);
+        _ = grpBox.Group(r1c1, r1c2, r1c3, r2c1, r2c2, r2c3, r3c1, r3c2, r3c3, r4c1, r4c2, r4c3, r5c1, r5c2, r5c3, r6c1);
 
         ws.Row(32).Height = 30; //Add extra space between Strategy section
         SaveAndCleanup(p);
@@ -3530,7 +3490,7 @@ public class Issues : TestBase
     {
         using ExcelPackage? pck = new ExcelPackage();
         ExcelWorksheet? sheet1 = pck.Workbook.Worksheets.Add("Sheet1");
-        pck.Workbook.Names.Add("ColumnRange", new ExcelRangeBase(sheet1, "Sheet1!$C:$C"));
+        _ = pck.Workbook.Names.Add("ColumnRange", new ExcelRangeBase(sheet1, "Sheet1!$C:$C"));
 
         string? rangeAddress = pck.Workbook.Names["ColumnRange"].Address;
 
@@ -3544,7 +3504,7 @@ public class Issues : TestBase
     {
         using ExcelPackage? pck = new ExcelPackage();
         ExcelWorksheet? sheet1 = pck.Workbook.Worksheets.Add("Sheet1");
-        pck.Workbook.Names.Add("RowRange", new ExcelRangeBase(sheet1, "Sheet1!$7:$7"));
+        _ = pck.Workbook.Names.Add("RowRange", new ExcelRangeBase(sheet1, "Sheet1!$7:$7"));
 
         string? rangeAddress = pck.Workbook.Names["RowRange"].Address;
 
@@ -3558,9 +3518,7 @@ public class Issues : TestBase
     {
         using ExcelPackage? pck = new ExcelPackage();
         ExcelWorksheet? sheet1 = pck.Workbook.Worksheets.Add("Sheet1");
-        pck.Workbook.Names.Add("ColumnRange", new ExcelRangeBase(sheet1, $"Sheet1!$C2:$C{ExcelPackage.MaxRows}"));
-
-        string? rangeAddress = pck.Workbook.Names["ColumnRange"].Address;
+        _ = pck.Workbook.Names.Add("ColumnRange", new ExcelRangeBase(sheet1, $"Sheet1!$C2:$C{ExcelPackage.MaxRows}"));
 
         sheet1.DeleteRow(1, 1);
 
@@ -3572,9 +3530,7 @@ public class Issues : TestBase
     {
         using ExcelPackage? pck = new ExcelPackage();
         ExcelWorksheet? sheet1 = pck.Workbook.Worksheets.Add("Sheet1");
-        pck.Workbook.Names.Add("RowRange", new ExcelRangeBase(sheet1, $"Sheet1!$B$7:$XFD$7"));
-
-        string? rangeAddress = pck.Workbook.Names["RowRange"].Address;
+        _ = pck.Workbook.Names.Add("RowRange", new ExcelRangeBase(sheet1, $"Sheet1!$B$7:$XFD$7"));
 
         sheet1.DeleteColumn(1, 1);
 
@@ -3615,8 +3571,7 @@ public class Issues : TestBase
 
         if (!partsTable.Columns.Any(x => x.Name == "TEST"))
         {
-            partsTable.Columns.Add();
-            ExcelTableColumn? newCol = partsTable.Columns.Last();
+            _ = partsTable.Columns.Add();
         }
 
         SaveAndCleanup(p);
@@ -3627,7 +3582,7 @@ public class Issues : TestBase
     {
         using ExcelPackage? p = OpenTemplatePackage(@"extref_relative.xlsx");
         p.Workbook.ExternalLinks[0].As.ExternalWorkbook.IsPathRelative = true;
-        p.Workbook.ExternalLinks[0].As.ExternalWorkbook.Load();
+        _ = p.Workbook.ExternalLinks[0].As.ExternalWorkbook.Load();
         SaveAndCleanup(p);
     }
 
@@ -3638,7 +3593,7 @@ public class Issues : TestBase
         {
             ExcelTable? t = p.Workbook.Worksheets["Data"].Tables[0];
             int columnPosition = t.Columns.First(c => c.Name == "Extra").Position;
-            t.Columns.Delete(columnPosition, 1);
+            _ = t.Columns.Delete(columnPosition, 1);
             SaveAndCleanup(p);
         }
 
@@ -3646,11 +3601,11 @@ public class Issues : TestBase
         {
             ExcelTable? t = p.Workbook.Worksheets["Data"].Tables[0];
             int columnPosition = t.Columns.First(c => c.Name == "Extra").Position;
-            t.Columns.Delete(columnPosition, 1);
+            _ = t.Columns.Delete(columnPosition, 1);
 
             // delete one more column
             columnPosition = t.Columns.First(c => c.Name == "Col X").Position;
-            t.Columns.Delete(columnPosition, 1);
+            _ = t.Columns.Delete(columnPosition, 1);
             SaveAndCleanup(p);
         }
 
@@ -3660,7 +3615,7 @@ public class Issues : TestBase
 
             // if I delete even one column it produces corrupted xlsx
             int columnPosition = t.Columns.First(c => c.Name == "Total Time").Position;
-            t.Columns.Delete(columnPosition, 1);
+            _ = t.Columns.Delete(columnPosition, 1);
 
             SaveAndCleanup(p);
         }
@@ -3675,7 +3630,7 @@ public class Issues : TestBase
 
     public static void i720()
     {
-        MemoryStream? stream = new MemoryStream();
+        //_ = new MemoryStream();
         using ExcelPackage? p = OpenPackage("i720.xlsx");
         p.Settings.TextSettings.DefaultTextMeasurer = new OfficeOpenXml.Core.Worksheet.Fonts.GenericFontMetrics.DefaultTextMeasurer();
         ExcelWorksheet? worksheet = p.Workbook.Worksheets.Add("Sheet1");
@@ -3695,9 +3650,8 @@ public class Issues : TestBase
             Directory.Delete(path, true);
         }
 
-        Directory.CreateDirectory(path);
+        _ = Directory.CreateDirectory(path);
 
-        string? code = p.Workbook.VbaProject.Modules[0].Code;
         StringWriter? sb = new StringWriter();
         WriteStorage(p.Workbook.VbaProject.Document.Storage, sb, path, "");
 
@@ -3725,7 +3679,7 @@ public class Issues : TestBase
     {
         foreach (string? key in storage.SubStorage.Keys)
         {
-            Directory.CreateDirectory($"{path}{dir}{key}\\");
+            _ = Directory.CreateDirectory($"{path}{dir}{key}\\");
             WriteStorage(storage.SubStorage[key], sb, path, dir + $"{key}\\");
         }
 
@@ -3745,11 +3699,11 @@ public class Issues : TestBase
         {
             if (ic.Contains(c))
             {
-                sb.Append($"0x{(int)c}");
+                _ = sb.Append($"0x{(int)c}");
             }
             else
             {
-                sb.Append(c);
+                _ = sb.Append(c);
             }
         }
 
@@ -3958,7 +3912,7 @@ public class Issues : TestBase
     {
         using ExcelPackage? p = OpenTemplatePackage(@"s407.xlsx");
         ExcelWorksheet? sheet1 = p.Workbook.Worksheets.First();
-        ExcelWorksheet? sheet2 = p.Workbook.Worksheets.Add("copy", sheet1);
+        _ = p.Workbook.Worksheets.Add("copy", sheet1);
         p.Save();
     }
 
@@ -4017,7 +3971,7 @@ public class Issues : TestBase
     public void ExcelRangeBase_Counts_Periods_Twice_763_1()
     {
         using ExcelPackage? p = new ExcelPackage();
-        p.Workbook.Worksheets.Add("first");
+        _ = p.Workbook.Worksheets.Add("first");
 
         ExcelWorksheet? sheet = p.Workbook.Worksheets.First();
 
@@ -4306,9 +4260,9 @@ public class Issues : TestBase
 
         ExcelPicture? pic = pics.First(p => p.Name == "Image_ExistingInventoryImg");
         byte[]? image = File.ReadAllBytes("c:\\temp\\img1.png");
-        pic.Image.SetImage(image, ePictureType.Png);
+        _ = pic.Image.SetImage(image, ePictureType.Png);
         image = File.ReadAllBytes("c:\\temp\\img2.png");
-        pics[1].Image.SetImage(image, ePictureType.Png);
+        _ = pics[1].Image.SetImage(image, ePictureType.Png);
 
         SaveAndCleanup(package);
     }
@@ -4321,7 +4275,7 @@ public class Issues : TestBase
         ExcelWorksheet? InSheet = package.Workbook.Worksheets[SheetName];
 
         using ExcelPackage? outPackage = OpenPackage("s430_out.xlsx", true);
-        ExcelWorksheet? xlSheet = outPackage.Workbook.Worksheets.Add(SheetName, InSheet);
+        _ = outPackage.Workbook.Worksheets.Add(SheetName, InSheet);
 
         SaveAndCleanup(outPackage);
     }
@@ -4393,19 +4347,19 @@ public class Issues : TestBase
     private static DataTable Data()
     {
         DataTable? toReturn = new DataTable();
-        toReturn.Columns.Add("Month");
-        toReturn.Columns.Add("Serie1", typeof(decimal));
-        toReturn.Columns.Add("Serie2", typeof(decimal));
-        toReturn.Columns.Add("Serie3", typeof(decimal));
+        _ = toReturn.Columns.Add("Month");
+        _ = toReturn.Columns.Add("Serie1", typeof(decimal));
+        _ = toReturn.Columns.Add("Serie2", typeof(decimal));
+        _ = toReturn.Columns.Add("Serie3", typeof(decimal));
 
-        toReturn.Rows.Add("01/2022", 1.4, 2.4, 3.4);
-        toReturn.Rows.Add("02/2022", 1.4, 2.4, 3.4);
-        toReturn.Rows.Add("03/2022", 1.4, 2.4, 3.4);
-        toReturn.Rows.Add("04/2022", 1.7, 2.7, 3.7);
-        toReturn.Rows.Add("05/2022", 1.7, 2.7, 3.7);
-        toReturn.Rows.Add("06/2022", 1.7, 2.7, 3.7);
-        toReturn.Rows.Add("07/2022", 1.9, 2.9, 3.9);
-        toReturn.Rows.Add("08/2022", 1.9, 2.9, 3.9);
+        _ = toReturn.Rows.Add("01/2022", 1.4, 2.4, 3.4);
+        _ = toReturn.Rows.Add("02/2022", 1.4, 2.4, 3.4);
+        _ = toReturn.Rows.Add("03/2022", 1.4, 2.4, 3.4);
+        _ = toReturn.Rows.Add("04/2022", 1.7, 2.7, 3.7);
+        _ = toReturn.Rows.Add("05/2022", 1.7, 2.7, 3.7);
+        _ = toReturn.Rows.Add("06/2022", 1.7, 2.7, 3.7);
+        _ = toReturn.Rows.Add("07/2022", 1.9, 2.9, 3.9);
+        _ = toReturn.Rows.Add("08/2022", 1.9, 2.9, 3.9);
 
         return toReturn;
     }
@@ -4450,7 +4404,7 @@ public class Issues : TestBase
         ws.Cells["A1"].Style.Fill.PatternType = ExcelFillStyle.Solid;
         ws.Cells["A1"].Style.Fill.BackgroundColor.SetColor(Color.Red);
 
-        ws.Cells["A1"].RichText.Add("Test");
+        _ = ws.Cells["A1"].RichText.Add("Test");
         ws.Cells["A1"].RichText.Clear();
 
         SaveAndCleanup(package);
@@ -4484,7 +4438,7 @@ public class Issues : TestBase
         ExcelTable table = ws.Tables.Add(range, "TestTable");
         table.StyleName = "None";
 
-        ExcelTableSlicer slicer = ws.Drawings.AddTableSlicer(table.Columns[0]);
+        _ = ws.Drawings.AddTableSlicer(table.Columns[0]);
 
         SaveAndCleanup(package);
     }
@@ -4496,7 +4450,7 @@ public class Issues : TestBase
         using ExcelPackage? p2 = OpenPackage("s449-saved.xlsx", true);
         string? SheetName = "Error_Sheet";
         ExcelWorksheet? InSheet = xlPackage.Workbook.Worksheets[SheetName];
-        ExcelWorksheet? xlSheet = p2.Workbook.Worksheets.Add(SheetName, InSheet);
+        _ = p2.Workbook.Worksheets.Add(SheetName, InSheet);
         SaveAndCleanup(p2);
     }
 
@@ -4571,7 +4525,7 @@ public class Issues : TestBase
         //using (var p = OpenTemplatePackage("i854.xlsx"))
         using ExcelPackage? p = OpenTemplatePackage("i854.xlsx");
         ExcelWorksheet? ws = p.Workbook.Worksheets["Component Failure Rates"];
-        ws.Tables[0].DeleteRow(0, 1);
+        _ = ws.Tables[0].DeleteRow(0, 1);
         SaveAndCleanup(p);
     }
 
@@ -4581,7 +4535,7 @@ public class Issues : TestBase
         using ExcelPackage? p = OpenTemplatePackage("i854-2.xlsx");
         ExcelWorksheet? ws = p.Workbook.Worksheets["Components"];
         ExcelTable? table = ws.Tables[0];
-        table.Columns.Insert(1, 2);
+        _ = table.Columns.Insert(1, 2);
         SaveWorkbook("i854-2-Insert.xlsx", p);
     }
 
@@ -4591,7 +4545,7 @@ public class Issues : TestBase
         using ExcelPackage? p = OpenTemplatePackage("i854-2.xlsx");
         ExcelWorksheet? ws = p.Workbook.Worksheets["Components"];
         ExcelTable? table = ws.Tables[0];
-        table.Columns.Delete(1, 2);
+        _ = table.Columns.Delete(1, 2);
         SaveWorkbook("i854-2-Delete.xlsx", p);
     }
 
@@ -4615,7 +4569,7 @@ public class Issues : TestBase
         // Finding the row in the sheet
         int nextSheetRow = GetSheetRowIndex(table, insertBeforeRow);
 
-        table.InsertRow(insertBeforeRow, data.Count, true);
+        _ = table.InsertRow(insertBeforeRow, data.Count, true);
 
         // Applying the formulas to the new rows
         if (insertBeforeRow > 0)
@@ -4642,7 +4596,7 @@ public class Issues : TestBase
             // Deleting the rows before the newly inserted ones
             if (insertBeforeRow > 0)
             {
-                table.DeleteRow(0, insertBeforeRow);
+                _ = table.DeleteRow(0, insertBeforeRow);
             }
 
             // NB: The new rows are now at the start of the sequence, so only the ones after
@@ -4651,7 +4605,7 @@ public class Issues : TestBase
 
             if (endRowsToRemove > 0)
             {
-                table.DeleteRow(data.Count, endRowsToRemove);
+                _ = table.DeleteRow(data.Count, endRowsToRemove);
             }
         }
     }
@@ -4739,10 +4693,10 @@ public class Issues : TestBase
             sheet.Cells[1, i].Style.WrapText = true;
             sheet.Cells[1, i].Style.HorizontalAlignment = ExcelHorizontalAlignment.Left;
             sheet.Cells[1, i].Style.VerticalAlignment = ExcelVerticalAlignment.Top;
-            sheet.Cells[1, i].RichText.Add($"Hello world {i}");
+            _ = sheet.Cells[1, i].RichText.Add($"Hello world {i}");
         }
 
-        byte[]? bytearray = p.GetAsByteArray();
+        _ = p.GetAsByteArray();
     }
 
     [TestMethod]
@@ -4823,7 +4777,6 @@ public class Issues : TestBase
     public void s461()
     {
         using ExcelPackage? p = OpenTemplatePackage("s461.xlsx");
-        ExcelWorksheet? ws = p.Workbook.Worksheets[0];
         SaveAndCleanup(p);
     }
 
@@ -4848,7 +4801,7 @@ public class Issues : TestBase
     {
         using ExcelPackage? p = OpenTemplatePackage("i871.xlsx");
         ExcelTable? table = p.Workbook.Worksheets.SelectMany(x => x.Tables).Single(x => x.Name == "TblComponentTypes");
-        table.AddRow(2);
+        _ = table.AddRow(2);
         table.WorkSheet.Cells[8, 1].Value = "TST";
         table.WorkSheet.Cells[9, 1].Value = "TST 2";
 
@@ -4860,15 +4813,14 @@ public class Issues : TestBase
     {
         using ExcelPackage? package = OpenTemplatePackage("s466.xlsx");
         ExcelTable? table = package.Workbook.Worksheets.SelectMany(x => x.Tables).Single(x => x.Name == "TblEffects");
-        table.AddRow(2);
+        _ = table.AddRow(2);
         table.WorkSheet.Cells[8, 1].Value = "TST";
         table.WorkSheet.Cells[8, 2].Value = "Safe";
         table.WorkSheet.Cells[9, 1].Value = "TST 2";
         table.WorkSheet.Cells[9, 2].Value = "Dangerous";
 
-        ExcelRange? cell = table.WorkSheet.Cells[8, 1];
-        table.InsertRow(0, 5);
-        table.DeleteRow(0, 5);
+        _ = table.InsertRow(0, 5);
+        _ = table.DeleteRow(0, 5);
         SaveAndCleanup(package);
     }
 }

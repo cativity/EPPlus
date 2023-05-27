@@ -45,13 +45,13 @@ public class ExcelPivotTableDataFieldCollection : ExcelPivotTableFieldCollection
 
         if (dataFieldsNode == null)
         {
-            this._table.CreateNode("d:dataFields");
+            _ = this._table.CreateNode("d:dataFields");
             dataFieldsNode = field.TopNode.SelectSingleNode("../../d:dataFields", field.NameSpaceManager);
         }
 
         XmlElement node = this._table.PivotTableXml.CreateElement("dataField", ExcelPackage.schemaMain);
         node.SetAttribute("fld", field.Index.ToString());
-        dataFieldsNode.AppendChild(node);
+        _ = dataFieldsNode.AppendChild(node);
 
         //XmlElement node = field.AppendField(dataFieldsNode, field.Index, "dataField", "fld");
         field.SetXmlNodeBool("@dataField", true, false);
@@ -107,9 +107,9 @@ public class ExcelPivotTableDataFieldCollection : ExcelPivotTableFieldCollection
 
         if (node != null)
         {
-            node.ParentNode.RemoveChild(node);
+            _ = node.ParentNode.RemoveChild(node);
         }
 
-        this._list.Remove(dataField);
+        _ = this._list.Remove(dataField);
     }
 }

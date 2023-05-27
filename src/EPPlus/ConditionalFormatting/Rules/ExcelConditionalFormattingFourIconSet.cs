@@ -71,7 +71,7 @@ public class ExcelConditionalFormattingFourIconSet : ExcelConditionalFormattingI
         {
             XmlNode iconSetNode = this.TopNode.SelectSingleNode("d:iconSet", this.NameSpaceManager);
             XmlElement? iconNode4 = iconSetNode.OwnerDocument.CreateElement(ExcelConditionalFormattingConstants.Paths.Cfvo, ExcelPackage.schemaMain);
-            iconSetNode.AppendChild(iconNode4);
+            _ = iconSetNode.AppendChild(iconNode4);
 
             this.Icon4 = new ExcelConditionalFormattingIconDataBarValue(eExcelConditionalFormattingValueObjectType.Percent,
                                                                         75,

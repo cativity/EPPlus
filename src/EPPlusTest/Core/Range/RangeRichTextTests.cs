@@ -53,21 +53,21 @@ public class RangeRichTextTests : TestBase
     [ExpectedException(typeof(ArgumentException))]
     public void AddEmptyStringShouldThrowArgumentException()
     {
-        _ws.Cells["D1"].RichText.Add(null);
+        _ = _ws.Cells["D1"].RichText.Add(null);
     }
 
     [TestMethod]
     [ExpectedException(typeof(ArgumentException))]
     public void AddNullShouldThrowArgumentException()
     {
-        _ws.Cells["D1"].RichText.Add(null);
+        _ = _ws.Cells["D1"].RichText.Add(null);
     }
 
     [TestMethod]
     [ExpectedException(typeof(InvalidOperationException))]
     public void SettingNameToEmptyStringShouldThrowInvalidOperationException()
     {
-        _ws.Cells["D1"].RichText.Add(" ");
+        _ = _ws.Cells["D1"].RichText.Add(" ");
         _ws.Cells["D1"].RichText[0].Text = null;
     }
 
@@ -75,14 +75,14 @@ public class RangeRichTextTests : TestBase
     [ExpectedException(typeof(InvalidOperationException))]
     public void SettingTextToNullShouldThrowInvalidOperationException()
     {
-        _ws.Cells["D1"].RichText.Add(" ");
+        _ = _ws.Cells["D1"].RichText.Add(" ");
         _ws.Cells["D1"].RichText[0].Text = null;
     }
 
     [TestMethod]
     public void SettingRichTextTextToNullShouldClearRichText()
     {
-        _ws.Cells["D1"].RichText.Add(" ");
+        _ = _ws.Cells["D1"].RichText.Add(" ");
         Assert.IsTrue(_ws.Cells["D1"].IsRichText);
         _ws.Cells["D1"].RichText.Text = null;
         Assert.AreEqual(0, _ws.Cells["D1"].RichText.Count);
@@ -92,7 +92,7 @@ public class RangeRichTextTests : TestBase
     [TestMethod]
     public void SettingRichTextTextToEmptyStringShouldClearRichText()
     {
-        _ws.Cells["D1"].RichText.Add(" ");
+        _ = _ws.Cells["D1"].RichText.Add(" ");
         Assert.IsTrue(_ws.Cells["D1"].IsRichText);
         _ws.Cells["D1"].RichText.Text = null;
         Assert.AreEqual(0, _ws.Cells["D1"].RichText.Count);
@@ -197,7 +197,7 @@ public class RangeRichTextTests : TestBase
     public void ValidateRichText_TextIsReflectedOnRemove()
     {
         ExcelPackage? package = new ExcelPackage();
-        package.Workbook.Worksheets.Add("Test");
+        _ = package.Workbook.Worksheets.Add("Test");
         ExcelRange? range = package.Workbook.Worksheets[0].Cells[1, 1];
         ExcelRichText? first = range.RichText.Add("1");
         ExcelRichText? second = range.RichText.Add("2");

@@ -88,7 +88,7 @@ internal class ZipPackagePart : ZipPackagePartBase, IDisposable
         }
         else
         {
-            this._stream.Seek(0, SeekOrigin.Begin);
+            _ = this._stream.Seek(0, SeekOrigin.Begin);
         }
 
         return this._stream;
@@ -105,7 +105,7 @@ internal class ZipPackagePart : ZipPackagePartBase, IDisposable
             {
                 if (this.Package._contentTypes.ContainsKey(ZipPackage.GetUriKey(this.Uri.OriginalString)))
                 {
-                    this.Package._contentTypes.Remove(ZipPackage.GetUriKey(this.Uri.OriginalString));
+                    _ = this.Package._contentTypes.Remove(ZipPackage.GetUriKey(this.Uri.OriginalString));
 
                     this.Package._contentTypes.Add(ZipPackage.GetUriKey(this.Uri.OriginalString),
                                                    new ZipPackage.ContentType(value, false, this.Uri.OriginalString));
@@ -142,7 +142,7 @@ internal class ZipPackagePart : ZipPackagePartBase, IDisposable
             }
 
             os.CompressionLevel = (OfficeOpenXml.Packaging.Ionic.Zlib.CompressionLevel)this.CompressionLevel;
-            os.PutNextEntry(this.Uri.OriginalString);
+            _ = os.PutNextEntry(this.Uri.OriginalString);
             os.Write(b, 0, b.Length);
         }
         else

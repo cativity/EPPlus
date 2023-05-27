@@ -51,7 +51,7 @@ public class ColorTest
         {
             if (pi.Name.Equals("transparant", StringComparison.InvariantCultureIgnoreCase))
             {
-                if (!Enum.TryParse(pi.Name, out ePresetColor v))
+                if (!Enum.TryParse(pi.Name, out ePresetColor _))
                 {
                     Assert.Fail($"Convert to ePresetColorFailed for {pi.Name}");
                 }

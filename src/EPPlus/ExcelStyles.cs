@@ -92,7 +92,7 @@ public sealed class ExcelStyles : XmlHelper
             foreach (XmlNode n in numNode)
             {
                 ExcelNumberFormatXml nf = new ExcelNumberFormatXml(this._nameSpaceManager, n);
-                this.NumberFormats.Add(nf.Id, nf);
+                _ = this.NumberFormats.Add(nf.Id, nf);
 
                 if (nf.NumFmtId >= this.NumberFormats.NextId)
                 {
@@ -107,7 +107,7 @@ public sealed class ExcelStyles : XmlHelper
         foreach (XmlNode n in fontNode)
         {
             ExcelFontXml f = new ExcelFontXml(this._nameSpaceManager, n);
-            this.Fonts.Add(f.Id, f);
+            _ = this.Fonts.Add(f.Id, f);
         }
 
         //Fills
@@ -126,7 +126,7 @@ public sealed class ExcelStyles : XmlHelper
                 f = new ExcelFillXml(this._nameSpaceManager, n);
             }
 
-            this.Fills.Add(f.Id, f);
+            _ = this.Fills.Add(f.Id, f);
         }
 
         //Borders
@@ -135,7 +135,7 @@ public sealed class ExcelStyles : XmlHelper
         foreach (XmlNode n in borderNode)
         {
             ExcelBorderXml b = new ExcelBorderXml(this._nameSpaceManager, n);
-            this.Borders.Add(b.Id, b);
+            _ = this.Borders.Add(b.Id, b);
         }
 
         //cellStyleXfs
@@ -146,7 +146,7 @@ public sealed class ExcelStyles : XmlHelper
             foreach (XmlNode n in styleXfsNode)
             {
                 ExcelXfs item = new ExcelXfs(this._nameSpaceManager, n, this);
-                this.CellStyleXfs.Add(item.Id, item);
+                _ = this.CellStyleXfs.Add(item.Id, item);
             }
         }
 
@@ -156,7 +156,7 @@ public sealed class ExcelStyles : XmlHelper
         {
             XmlNode n = styleNode.ChildNodes[i];
             ExcelXfs item = new ExcelXfs(this._nameSpaceManager, n, this);
-            this.CellXfs.Add(item.Id, item);
+            _ = this.CellXfs.Add(item.Id, item);
         }
 
         //cellStyle
@@ -173,7 +173,7 @@ public sealed class ExcelStyles : XmlHelper
                     this._normalStyle = item;
                 }
 
-                this.NamedStyles.Add(item.Name, item);
+                _ = this.NamedStyles.Add(item.Name, item);
             }
         }
 
@@ -210,7 +210,7 @@ public sealed class ExcelStyles : XmlHelper
                 }
 
                 ExcelSlicerNamedStyle? item = new ExcelSlicerNamedStyle(this._nameSpaceManager, n, tableStyleNode, this);
-                this.SlicerStyles.Add(item.Name, item);
+                _ = this.SlicerStyles.Add(item.Name, item);
             }
         }
     }
@@ -244,7 +244,7 @@ public sealed class ExcelStyles : XmlHelper
                         item = new ExcelTableAndPivotTableNamedStyle(this._nameSpaceManager, n, this);
                     }
 
-                    this.TableStyles.Add(item.Name, item);
+                    _ = this.TableStyles.Add(item.Name, item);
                 }
                 else
                 {
@@ -651,7 +651,7 @@ public sealed class ExcelStyles : XmlHelper
 
             if (column.ColumnMax > address.End.Column)
             {
-                ExcelColumn? newCol = ws.CopyColumn(column, address.End.Column + 1, column.ColumnMax);
+                _ = ws.CopyColumn(column, address.End.Column + 1, column.ColumnMax);
                 column.ColumnMax = address.End.Column;
             }
 
@@ -1028,7 +1028,7 @@ public sealed class ExcelStyles : XmlHelper
         node.SetAttribute("table", "0");
         ExcelPivotTableNamedStyle? s = new ExcelPivotTableNamedStyle(this.NameSpaceManager, node, this) { Name = name };
 
-        this.TableStyles.Add(name, s);
+        _ = this.TableStyles.Add(name, s);
 
         return s;
     }
@@ -1073,7 +1073,7 @@ public sealed class ExcelStyles : XmlHelper
         node.SetAttribute("pivot", "0");
         ExcelTableNamedStyle? s = new ExcelTableNamedStyle(this.NameSpaceManager, node, this) { Name = name };
 
-        this.TableStyles.Add(name, s);
+        _ = this.TableStyles.Add(name, s);
 
         return s;
     }
@@ -1117,7 +1117,7 @@ public sealed class ExcelStyles : XmlHelper
         XmlElement? node = (XmlElement)this.CreateNode("d:tableStyles/d:tableStyle", false, true);
         ExcelTableAndPivotTableNamedStyle? s = new ExcelTableAndPivotTableNamedStyle(this.NameSpaceManager, node, this) { Name = name };
 
-        this.TableStyles.Add(name, s);
+        _ = this.TableStyles.Add(name, s);
 
         return s;
     }
@@ -1194,7 +1194,7 @@ public sealed class ExcelStyles : XmlHelper
         this._slicerTableStyleNodes.Add(name, tableStyleNode);
 
         //The dxfs collection must be created before the slicer styles collection
-        this.GetOrCreateExtLstSubNode(ExtLstUris.SlicerStylesDxfCollectionUri, "x14");
+        _ = this.GetOrCreateExtLstSubNode(ExtLstUris.SlicerStylesDxfCollectionUri, "x14");
 
         XmlNode? extNode = this.GetOrCreateExtLstSubNode(ExtLstUris.SlicerStylesUri, "x14");
         XmlHelper? extHelper = XmlHelperFactory.Create(this.NameSpaceManager, extNode);
@@ -1214,7 +1214,7 @@ public sealed class ExcelStyles : XmlHelper
 
         ExcelSlicerNamedStyle? s = new ExcelSlicerNamedStyle(this.NameSpaceManager, node, tableStyleNode, this) { Name = name };
 
-        this.SlicerStyles.Add(name, s);
+        _ = this.SlicerStyles.Add(name, s);
 
         return s;
     }
@@ -1246,9 +1246,9 @@ public sealed class ExcelStyles : XmlHelper
     {
         if (this.tableStyleNames.Count == 0)
         {
-            Enum.GetNames(typeof(TableStyles)).Select(x => this.tableStyleNames.Add("TableStyle" + x));
-            Enum.GetNames(typeof(PivotTableStyles)).Select(x => this.tableStyleNames.Add("PivotTableStyle" + x));
-            Enum.GetNames(typeof(eSlicerStyle)).Select(x => this.tableStyleNames.Add("SlicerStyle" + x));
+            _ = Enum.GetNames(typeof(TableStyles)).Select(x => this.tableStyleNames.Add("TableStyle" + x));
+            _ = Enum.GetNames(typeof(PivotTableStyles)).Select(x => this.tableStyleNames.Add("PivotTableStyle" + x));
+            _ = Enum.GetNames(typeof(eSlicerStyle)).Select(x => this.tableStyleNames.Add("SlicerStyle" + x));
         }
 
         if (this.tableStyleNames.Contains(name) || this.TableStyles.ExistsKey(name) || this.SlicerStyles.ExistsKey(name))
@@ -1283,7 +1283,7 @@ public sealed class ExcelStyles : XmlHelper
 
         this.UpdateNumberFormatXml(normalIx);
         this.UpdateFontXml(normalIx);
-        this.UpdateFillXml();
+        _ = this.UpdateFillXml();
         this.UpdateBorderXml();
         this.UpdateNamedStylesAndXfs(normalIx);
 
@@ -1335,14 +1335,14 @@ public sealed class ExcelStyles : XmlHelper
                 this.NamedStyles[normalIx].newID = 0;
                 this.AddNamedStyle(0, styleXfsNode, cellXfsNode, this.NamedStyles[normalIx]);
 
-                cellXfsNode.AppendChild(this.CellStyleXfs[this.NamedStyles[normalIx].StyleXfId]
+                _ = cellXfsNode.AppendChild(this.CellStyleXfs[this.NamedStyles[normalIx].StyleXfId]
                                             .CreateXmlNode(this._styleXml.CreateElement("xf", ExcelPackage.schemaMain)));
             }
             else
             {
-                styleXfsNode.AppendChild(this.CellStyleXfs[0].CreateXmlNode(this._styleXml.CreateElement("xf", ExcelPackage.schemaMain), true));
+                _ = styleXfsNode.AppendChild(this.CellStyleXfs[0].CreateXmlNode(this._styleXml.CreateElement("xf", ExcelPackage.schemaMain), true));
                 this.CellStyleXfs[0].newID = 0;
-                cellXfsNode.AppendChild(this.CellStyleXfs[0].CreateXmlNode(this._styleXml.CreateElement("xf", ExcelPackage.schemaMain)));
+                _ = cellXfsNode.AppendChild(this.CellStyleXfs[0].CreateXmlNode(this._styleXml.CreateElement("xf", ExcelPackage.schemaMain)));
             }
 
             xfsCount++;
@@ -1359,7 +1359,7 @@ public sealed class ExcelStyles : XmlHelper
                 style.newID = 0;
             }
 
-            cellStyleNode.AppendChild(style.CreateXmlNode(this._styleXml.CreateElement("cellStyle", ExcelPackage.schemaMain)));
+            _ = cellStyleNode.AppendChild(style.CreateXmlNode(this._styleXml.CreateElement("cellStyle", ExcelPackage.schemaMain)));
         }
 
         if (cellStyleNode != null)
@@ -1381,7 +1381,7 @@ public sealed class ExcelStyles : XmlHelper
         {
             if (xf.useCnt > 0 && !(xfix == 0 && normalIx >= 0))
             {
-                cellXfsNode.AppendChild(xf.CreateXmlNode(this._styleXml.CreateElement("xf", ExcelPackage.schemaMain)));
+                _ = cellXfsNode.AppendChild(xf.CreateXmlNode(this._styleXml.CreateElement("xf", ExcelPackage.schemaMain)));
                 xf.newID = xfsCount;
                 xfsCount++;
             }
@@ -1404,7 +1404,7 @@ public sealed class ExcelStyles : XmlHelper
         {
             if (border.useCnt > 0)
             {
-                bordersNode.AppendChild(border.CreateXmlNode(this._styleXml.CreateElement("border", ExcelPackage.schemaMain)));
+                _ = bordersNode.AppendChild(border.CreateXmlNode(this._styleXml.CreateElement("border", ExcelPackage.schemaMain)));
                 border.newID = count;
                 count++;
             }
@@ -1426,7 +1426,7 @@ public sealed class ExcelStyles : XmlHelper
         {
             if (fill.useCnt > 0)
             {
-                fillsNode.AppendChild(fill.CreateXmlNode(this._styleXml.CreateElement("fill", ExcelPackage.schemaMain)));
+                _ = fillsNode.AppendChild(fill.CreateXmlNode(this._styleXml.CreateElement("fill", ExcelPackage.schemaMain)));
                 fill.newID = count;
                 count++;
             }
@@ -1462,7 +1462,7 @@ public sealed class ExcelStyles : XmlHelper
         {
             nfIx = this.NamedStyles[normalIx].Style.Font.Index;
             ExcelFontXml fnt = this.Fonts[nfIx];
-            fntNode.AppendChild(fnt.CreateXmlNode(this._styleXml.CreateElement("font", ExcelPackage.schemaMain)));
+            _ = fntNode.AppendChild(fnt.CreateXmlNode(this._styleXml.CreateElement("font", ExcelPackage.schemaMain)));
             fnt.newID = count++;
         }
 
@@ -1472,7 +1472,7 @@ public sealed class ExcelStyles : XmlHelper
         {
             if (fnt.useCnt > 0 && ix != nfIx)
             {
-                fntNode.AppendChild(fnt.CreateXmlNode(this._styleXml.CreateElement("font", ExcelPackage.schemaMain)));
+                _ = fntNode.AppendChild(fnt.CreateXmlNode(this._styleXml.CreateElement("font", ExcelPackage.schemaMain)));
                 fnt.newID = count;
                 count++;
             }
@@ -1502,7 +1502,7 @@ public sealed class ExcelStyles : XmlHelper
         if (this.NamedStyles.Count > 0 && normalIx >= 0 && this.NamedStyles[normalIx].Style.Numberformat.NumFmtID >= 164)
         {
             ExcelNumberFormatXml nf = this.NumberFormats[this.NumberFormats.FindIndexById(this.NamedStyles[normalIx].Style.Numberformat.Id)];
-            nfNode.AppendChild(nf.CreateXmlNode(this._styleXml.CreateElement("numFmt", ExcelPackage.schemaMain)));
+            _ = nfNode.AppendChild(nf.CreateXmlNode(this._styleXml.CreateElement("numFmt", ExcelPackage.schemaMain)));
             nf.newID = count++;
         }
 
@@ -1534,7 +1534,7 @@ public sealed class ExcelStyles : XmlHelper
         {
             if (!nf.BuildIn /*&& nf.newID<0*/) //Buildin formats are not updated.
             {
-                nfNode.AppendChild(nf.CreateXmlNode(this._styleXml.CreateElement("numFmt", ExcelPackage.schemaMain)));
+                _ = nfNode.AppendChild(nf.CreateXmlNode(this._styleXml.CreateElement("numFmt", ExcelPackage.schemaMain)));
                 nf.newID = count;
                 count++;
             }
@@ -1562,7 +1562,7 @@ public sealed class ExcelStyles : XmlHelper
                 int id = this.NumberFormats.NextId++;
                 ExcelNumberFormatXml? item = new ExcelNumberFormatXml(this.NameSpaceManager, false) { Format = format, NumFmtId = id };
 
-                this.NumberFormats.Add(format, item);
+                _ = this.NumberFormats.Add(format, item);
 
                 return id;
             }
@@ -1572,7 +1572,7 @@ public sealed class ExcelStyles : XmlHelper
     private void AddNamedStyle(int id, XmlNode styleXfsNode, XmlNode cellXfsNode, ExcelNamedStyleXml style)
     {
         ExcelXfs? styleXfs = this.CellStyleXfs[style.StyleXfId];
-        styleXfsNode.AppendChild(styleXfs.CreateXmlNode(this._styleXml.CreateElement("xf", ExcelPackage.schemaMain), true));
+        _ = styleXfsNode.AppendChild(styleXfs.CreateXmlNode(this._styleXml.CreateElement("xf", ExcelPackage.schemaMain), true));
         styleXfs.newID = id;
         styleXfs.XfId = style.StyleXfId;
 
@@ -1781,7 +1781,7 @@ public sealed class ExcelStyles : XmlHelper
                         ExcelNumberFormatXml? item =
                             new ExcelNumberFormatXml(this.NameSpaceManager) { Format = format, NumFmtId = this.NumberFormats.NextId++ };
 
-                        this.NumberFormats.Add(format, item);
+                        _ = this.NumberFormats.Add(format, item);
 
                         //rake36: Use the just added format id
                         newXfs.NumberFormatId = item.NumFmtId;
@@ -1853,7 +1853,7 @@ public sealed class ExcelStyles : XmlHelper
                         }
                         else
                         {
-                            ExcelNamedStyleXml? ns = this.CreateNamedStyle(st.Name, st.Style);
+                            _ = this.CreateNamedStyle(st.Name, st.Style);
                             newXfs.XfId = this.NamedStyles.Count - 1;
                         }
                     }

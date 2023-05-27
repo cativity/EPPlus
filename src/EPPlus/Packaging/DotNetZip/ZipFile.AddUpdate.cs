@@ -682,11 +682,11 @@ internal partial class ZipFile
                 {
                     //string s = SharedUtilities.NormalizePath(Path.Combine(directoryPathInArchive, Path.GetDirectoryName(f)));
                     string s = Path.GetFullPath(Path.Combine(directoryPathInArchive, Path.GetDirectoryName(f)));
-                    this.AddFile(f, s);
+                    _ = this.AddFile(f, s);
                 }
                 else
                 {
-                    this.AddFile(f, null);
+                    _ = this.AddFile(f, null);
                 }
             }
         }
@@ -699,7 +699,7 @@ internal partial class ZipFile
                     break;
                 }
 
-                this.AddFile(f, directoryPathInArchive);
+                _ = this.AddFile(f, directoryPathInArchive);
             }
         }
 
@@ -759,7 +759,7 @@ internal partial class ZipFile
 
         foreach (string? f in fileNames)
         {
-            this.UpdateFile(f, directoryPathInArchive);
+            _ = this.UpdateFile(f, directoryPathInArchive);
         }
 
         this.OnAddCompleted();
@@ -1080,12 +1080,12 @@ internal partial class ZipFile
     {
         if (File.Exists(itemName))
         {
-            this.UpdateFile(itemName, directoryPathInArchive);
+            _ = this.UpdateFile(itemName, directoryPathInArchive);
         }
 
         else if (Directory.Exists(itemName))
         {
-            this.UpdateDirectory(itemName, directoryPathInArchive);
+            _ = this.UpdateDirectory(itemName, directoryPathInArchive);
         }
 
         else
@@ -1218,7 +1218,7 @@ internal partial class ZipFile
         sw.Flush();
 
         // reset to allow reading later
-        ms.Seek(0, SeekOrigin.Begin);
+        _ = ms.Seek(0, SeekOrigin.Begin);
 
         return this.AddEntry(entryName, ms);
 

@@ -137,7 +137,7 @@ public class ExcelDxfGradientFillColorCollection : DxfStyleBase, IEnumerable<Exc
 
         if (item != null)
         {
-            this._lst.Remove(item);
+            _ = this._lst.Remove(item);
         }
     }
 
@@ -147,7 +147,7 @@ public class ExcelDxfGradientFillColorCollection : DxfStyleBase, IEnumerable<Exc
     /// <param name="item"></param>
     public void Remove(ExcelDxfGradientFillColor item)
     {
-        this._lst.Remove(item);
+        _ = this._lst.Remove(item);
     }
 
     /// <summary>

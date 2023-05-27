@@ -94,7 +94,7 @@ public class ExcelChartExDataCollection : XmlHelper, IEnumerable<ExcelChartExDat
         {
             XmlNode? node = data.TopNode;
             string? innerXml = data.TopNode.InnerXml;
-            node.ParentNode.RemoveChild(node);
+            _ = node.ParentNode.RemoveChild(node);
 
             XmlNode? newNode = this.CreateNode("cx:numDim", false, true);
             newNode.InnerXml = innerXml;
@@ -119,7 +119,7 @@ public class ExcelChartExDataCollection : XmlHelper, IEnumerable<ExcelChartExDat
         {
             XmlNode? node = data.TopNode;
             string? innerXml = data.TopNode.InnerXml;
-            node.ParentNode.RemoveChild(node);
+            _ = node.ParentNode.RemoveChild(node);
 
             XmlNode? newNode = this.CreateNode("cx:strDim", false, true);
             newNode.InnerXml = innerXml;

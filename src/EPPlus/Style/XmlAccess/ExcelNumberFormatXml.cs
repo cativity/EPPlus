@@ -124,34 +124,34 @@ public sealed class ExcelNumberFormatXml : StyleXmlHelper
 
     internal static void AddBuildIn(XmlNamespaceManager NameSpaceManager, ExcelStyleCollection<ExcelNumberFormatXml> NumberFormats)
     {
-        NumberFormats.Add("General", new ExcelNumberFormatXml(NameSpaceManager, true) { NumFmtId = 0, Format = "General" });
-        NumberFormats.Add("0", new ExcelNumberFormatXml(NameSpaceManager, true) { NumFmtId = 1, Format = "0" });
-        NumberFormats.Add("0.00", new ExcelNumberFormatXml(NameSpaceManager, true) { NumFmtId = 2, Format = "0.00" });
-        NumberFormats.Add("#,##0", new ExcelNumberFormatXml(NameSpaceManager, true) { NumFmtId = 3, Format = "#,##0" });
-        NumberFormats.Add("#,##0.00", new ExcelNumberFormatXml(NameSpaceManager, true) { NumFmtId = 4, Format = "#,##0.00" });
-        NumberFormats.Add("0%", new ExcelNumberFormatXml(NameSpaceManager, true) { NumFmtId = 9, Format = "0%" });
-        NumberFormats.Add("0.00%", new ExcelNumberFormatXml(NameSpaceManager, true) { NumFmtId = 10, Format = "0.00%" });
-        NumberFormats.Add("0.00E+00", new ExcelNumberFormatXml(NameSpaceManager, true) { NumFmtId = 11, Format = "0.00E+00" });
-        NumberFormats.Add("# ?/?", new ExcelNumberFormatXml(NameSpaceManager, true) { NumFmtId = 12, Format = "# ?/?" });
-        NumberFormats.Add("# ??/??", new ExcelNumberFormatXml(NameSpaceManager, true) { NumFmtId = 13, Format = "# ??/??" });
-        NumberFormats.Add("mm-dd-yy", new ExcelNumberFormatXml(NameSpaceManager, true) { NumFmtId = 14, Format = "mm-dd-yy" });
-        NumberFormats.Add("d-mmm-yy", new ExcelNumberFormatXml(NameSpaceManager, true) { NumFmtId = 15, Format = "d-mmm-yy" });
-        NumberFormats.Add("d-mmm", new ExcelNumberFormatXml(NameSpaceManager, true) { NumFmtId = 16, Format = "d-mmm" });
-        NumberFormats.Add("mmm-yy", new ExcelNumberFormatXml(NameSpaceManager, true) { NumFmtId = 17, Format = "mmm-yy" });
-        NumberFormats.Add("h:mm AM/PM", new ExcelNumberFormatXml(NameSpaceManager, true) { NumFmtId = 18, Format = "h:mm AM/PM" });
-        NumberFormats.Add("h:mm:ss AM/PM", new ExcelNumberFormatXml(NameSpaceManager, true) { NumFmtId = 19, Format = "h:mm:ss AM/PM" });
-        NumberFormats.Add("h:mm", new ExcelNumberFormatXml(NameSpaceManager, true) { NumFmtId = 20, Format = "h:mm" });
-        NumberFormats.Add("h:mm:ss", new ExcelNumberFormatXml(NameSpaceManager, true) { NumFmtId = 21, Format = "h:mm:ss" });
-        NumberFormats.Add("m/d/yy h:mm", new ExcelNumberFormatXml(NameSpaceManager, true) { NumFmtId = 22, Format = "m/d/yy h:mm" });
-        NumberFormats.Add("#,##0 ;(#,##0)", new ExcelNumberFormatXml(NameSpaceManager, true) { NumFmtId = 37, Format = "#,##0 ;(#,##0)" });
-        NumberFormats.Add("#,##0 ;[Red](#,##0)", new ExcelNumberFormatXml(NameSpaceManager, true) { NumFmtId = 38, Format = "#,##0 ;[Red](#,##0)" });
-        NumberFormats.Add("#,##0.00;(#,##0.00)", new ExcelNumberFormatXml(NameSpaceManager, true) { NumFmtId = 39, Format = "#,##0.00;(#,##0.00)" });
-        NumberFormats.Add("#,##0.00;[Red](#,##0.00)", new ExcelNumberFormatXml(NameSpaceManager, true) { NumFmtId = 40, Format = "#,##0.00;[Red](#,##0.00)" });
-        NumberFormats.Add("mm:ss", new ExcelNumberFormatXml(NameSpaceManager, true) { NumFmtId = 45, Format = "mm:ss" });
-        NumberFormats.Add("[h]:mm:ss", new ExcelNumberFormatXml(NameSpaceManager, true) { NumFmtId = 46, Format = "[h]:mm:ss" });
-        NumberFormats.Add("mmss.0", new ExcelNumberFormatXml(NameSpaceManager, true) { NumFmtId = 47, Format = "mmss.0" });
-        NumberFormats.Add("##0.0", new ExcelNumberFormatXml(NameSpaceManager, true) { NumFmtId = 48, Format = "##0.0" });
-        NumberFormats.Add("@", new ExcelNumberFormatXml(NameSpaceManager, true) { NumFmtId = 49, Format = "@" });
+        _ = NumberFormats.Add("General", new ExcelNumberFormatXml(NameSpaceManager, true) { NumFmtId = 0, Format = "General" });
+        _ = NumberFormats.Add("0", new ExcelNumberFormatXml(NameSpaceManager, true) { NumFmtId = 1, Format = "0" });
+        _ = NumberFormats.Add("0.00", new ExcelNumberFormatXml(NameSpaceManager, true) { NumFmtId = 2, Format = "0.00" });
+        _ = NumberFormats.Add("#,##0", new ExcelNumberFormatXml(NameSpaceManager, true) { NumFmtId = 3, Format = "#,##0" });
+        _ = NumberFormats.Add("#,##0.00", new ExcelNumberFormatXml(NameSpaceManager, true) { NumFmtId = 4, Format = "#,##0.00" });
+        _ = NumberFormats.Add("0%", new ExcelNumberFormatXml(NameSpaceManager, true) { NumFmtId = 9, Format = "0%" });
+        _ = NumberFormats.Add("0.00%", new ExcelNumberFormatXml(NameSpaceManager, true) { NumFmtId = 10, Format = "0.00%" });
+        _ = NumberFormats.Add("0.00E+00", new ExcelNumberFormatXml(NameSpaceManager, true) { NumFmtId = 11, Format = "0.00E+00" });
+        _ = NumberFormats.Add("# ?/?", new ExcelNumberFormatXml(NameSpaceManager, true) { NumFmtId = 12, Format = "# ?/?" });
+        _ = NumberFormats.Add("# ??/??", new ExcelNumberFormatXml(NameSpaceManager, true) { NumFmtId = 13, Format = "# ??/??" });
+        _ = NumberFormats.Add("mm-dd-yy", new ExcelNumberFormatXml(NameSpaceManager, true) { NumFmtId = 14, Format = "mm-dd-yy" });
+        _ = NumberFormats.Add("d-mmm-yy", new ExcelNumberFormatXml(NameSpaceManager, true) { NumFmtId = 15, Format = "d-mmm-yy" });
+        _ = NumberFormats.Add("d-mmm", new ExcelNumberFormatXml(NameSpaceManager, true) { NumFmtId = 16, Format = "d-mmm" });
+        _ = NumberFormats.Add("mmm-yy", new ExcelNumberFormatXml(NameSpaceManager, true) { NumFmtId = 17, Format = "mmm-yy" });
+        _ = NumberFormats.Add("h:mm AM/PM", new ExcelNumberFormatXml(NameSpaceManager, true) { NumFmtId = 18, Format = "h:mm AM/PM" });
+        _ = NumberFormats.Add("h:mm:ss AM/PM", new ExcelNumberFormatXml(NameSpaceManager, true) { NumFmtId = 19, Format = "h:mm:ss AM/PM" });
+        _ = NumberFormats.Add("h:mm", new ExcelNumberFormatXml(NameSpaceManager, true) { NumFmtId = 20, Format = "h:mm" });
+        _ = NumberFormats.Add("h:mm:ss", new ExcelNumberFormatXml(NameSpaceManager, true) { NumFmtId = 21, Format = "h:mm:ss" });
+        _ = NumberFormats.Add("m/d/yy h:mm", new ExcelNumberFormatXml(NameSpaceManager, true) { NumFmtId = 22, Format = "m/d/yy h:mm" });
+        _ = NumberFormats.Add("#,##0 ;(#,##0)", new ExcelNumberFormatXml(NameSpaceManager, true) { NumFmtId = 37, Format = "#,##0 ;(#,##0)" });
+        _ = NumberFormats.Add("#,##0 ;[Red](#,##0)", new ExcelNumberFormatXml(NameSpaceManager, true) { NumFmtId = 38, Format = "#,##0 ;[Red](#,##0)" });
+        _ = NumberFormats.Add("#,##0.00;(#,##0.00)", new ExcelNumberFormatXml(NameSpaceManager, true) { NumFmtId = 39, Format = "#,##0.00;(#,##0.00)" });
+        _ = NumberFormats.Add("#,##0.00;[Red](#,##0.00)", new ExcelNumberFormatXml(NameSpaceManager, true) { NumFmtId = 40, Format = "#,##0.00;[Red](#,##0.00)" });
+        _ = NumberFormats.Add("mm:ss", new ExcelNumberFormatXml(NameSpaceManager, true) { NumFmtId = 45, Format = "mm:ss" });
+        _ = NumberFormats.Add("[h]:mm:ss", new ExcelNumberFormatXml(NameSpaceManager, true) { NumFmtId = 46, Format = "[h]:mm:ss" });
+        _ = NumberFormats.Add("mmss.0", new ExcelNumberFormatXml(NameSpaceManager, true) { NumFmtId = 47, Format = "mmss.0" });
+        _ = NumberFormats.Add("##0.0", new ExcelNumberFormatXml(NameSpaceManager, true) { NumFmtId = 48, Format = "##0.0" });
+        _ = NumberFormats.Add("@", new ExcelNumberFormatXml(NameSpaceManager, true) { NumFmtId = 49, Format = "@" });
 
         NumberFormats.NextId = 164; //Start for custom formats.
     }
@@ -292,7 +292,7 @@ public sealed class ExcelNumberFormatXml : StyleXmlHelper
                 if (c == '"')
                 {
                     isText = !isText;
-                    sb.Append(c);
+                    _ = sb.Append(c);
                 }
                 else
                 {
@@ -304,7 +304,7 @@ public sealed class ExcelNumberFormatXml : StyleXmlHelper
                     }
                     else if (isText && !isBracket)
                     {
-                        sb.Append(c);
+                        _ = sb.Append(c);
                     }
                     else if (isBracket)
                     {
@@ -318,7 +318,7 @@ public sealed class ExcelNumberFormatXml : StyleXmlHelper
 
                                 if (li[0].Length > 1)
                                 {
-                                    sb.Append("\"" + li[0].Substring(1, li[0].Length - 1) + "\""); //Currency symbol
+                                    _ = sb.Append("\"" + li[0].Substring(1, li[0].Length - 1) + "\""); //Currency symbol
                                 }
 
                                 if (li.Length > 1)
@@ -361,7 +361,7 @@ public sealed class ExcelNumberFormatXml : StyleXmlHelper
                             }
                             else
                             {
-                                sb.Append(bracketText);
+                                _ = sb.Append(bracketText);
                                 f.SpecialDateFormat = eSystemDateFormat.Conditional;
                             }
                         }
@@ -374,7 +374,7 @@ public sealed class ExcelNumberFormatXml : StyleXmlHelper
                     {
                         if (forColWidth)
                         {
-                            sb.AppendFormat("\"{0}\"", c);
+                            _ = sb.AppendFormat("\"{0}\"", c);
                         }
 
                         prevUnderScore = false;
@@ -419,10 +419,10 @@ public sealed class ExcelNumberFormatXml : StyleXmlHelper
                             {
                                 if (c == '.' || c == ',')
                                 {
-                                    sb.Append('\\');
+                                    _ = sb.Append('\\');
                                 }
 
-                                sb.Append(c);
+                                _ = sb.Append(c);
                                 prevBslsh = false;
                             }
                             else if (c == '[')
@@ -436,7 +436,7 @@ public sealed class ExcelNumberFormatXml : StyleXmlHelper
                             }
                             else if (c == '0' || c == '#' || c == '.' || c == ',' || c == '%' || clc == 'd' || clc == 's')
                             {
-                                sb.Append(c);
+                                _ = sb.Append(c);
 
                                 if (c == '.')
                                 {
@@ -447,11 +447,11 @@ public sealed class ExcelNumberFormatXml : StyleXmlHelper
                             {
                                 if (containsAmPm)
                                 {
-                                    sb.Append('h');
+                                    _ = sb.Append('h');
                                 }
                                 else
                                 {
-                                    sb.Append('H');
+                                    _ = sb.Append('H');
                                 }
 
                                 useMinute = true;
@@ -460,11 +460,11 @@ public sealed class ExcelNumberFormatXml : StyleXmlHelper
                             {
                                 if (useMinute)
                                 {
-                                    sb.Append('m');
+                                    _ = sb.Append('m');
                                 }
                                 else
                                 {
-                                    sb.Append('M');
+                                    _ = sb.Append('M');
                                 }
                             }
                             else if (c == '_') //Skip next but use for alignment
@@ -473,7 +473,7 @@ public sealed class ExcelNumberFormatXml : StyleXmlHelper
                             }
                             else if (c == '?')
                             {
-                                sb.Append(' ');
+                                _ = sb.Append(' ');
                             }
                             else if (c == '/')
                             {
@@ -488,7 +488,7 @@ public sealed class ExcelNumberFormatXml : StyleXmlHelper
 
                                     if (startPos > 0) //RemovePart
                                     {
-                                        sb.Remove(sb.Length - (pos - startPos - 1), pos - startPos - 1);
+                                        _ = sb.Remove(sb.Length - (pos - startPos - 1), pos - startPos - 1);
                                     }
 
                                     int endPos = pos + 1;
@@ -508,11 +508,11 @@ public sealed class ExcelNumberFormatXml : StyleXmlHelper
                                         f.FractionFormat = ExcelFormat.Substring(startPos + 1, endPos - startPos - 1);
                                     }
 
-                                    sb.Append('?'); //Will be replaced later on by the fraction
+                                    _ = sb.Append('?'); //Will be replaced later on by the fraction
                                 }
                                 else
                                 {
-                                    sb.Append('/');
+                                    _ = sb.Append('/');
                                 }
                             }
                             else if (c == '*')
@@ -522,12 +522,12 @@ public sealed class ExcelNumberFormatXml : StyleXmlHelper
                             }
                             else if (c == '@')
                             {
-                                sb.Append("{0}");
+                                _ = sb.Append("{0}");
                                 f.ContainsTextPlaceholder = true;
                             }
                             else
                             {
-                                sb.Append(c);
+                                _ = sb.Append(c);
                             }
                         }
                     }
@@ -555,8 +555,8 @@ public sealed class ExcelNumberFormatXml : StyleXmlHelper
             {
                 for (int i = lstDec.Count - 1; i >= 0; i--)
                 {
-                    sb.Insert(lstDec[i] + 1, '\'');
-                    sb.Insert(lstDec[i], '\'');
+                    _ = sb.Insert(lstDec[i] + 1, '\'');
+                    _ = sb.Insert(lstDec[i], '\'');
                 }
             }
         }

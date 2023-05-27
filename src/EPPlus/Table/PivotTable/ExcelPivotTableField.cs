@@ -320,7 +320,7 @@ public class ExcelPivotTableField : XmlHelper
                 foreach (XmlAttribute item in nl)
                 {
                     this.DeleteNode("@" + item.Value + "Subtotal");
-                    item.OwnerElement.ParentNode.RemoveChild(item.OwnerElement);
+                    _ = item.OwnerElement.ParentNode.RemoveChild(item.OwnerElement);
                 }
             }
 
@@ -429,12 +429,12 @@ public class ExcelPivotTableField : XmlHelper
 
                 if (rowsNode == null)
                 {
-                    this._pivotTable.CreateNode("d:rowFields");
+                    _ = this._pivotTable.CreateNode("d:rowFields");
                 }
 
                 rowsNode = this.TopNode.SelectSingleNode("../../d:rowFields", this.NameSpaceManager);
 
-                AppendField(rowsNode, this.Index, "field", "x");
+                _ = AppendField(rowsNode, this.Index, "field", "x");
 
                 if (this.Grouping == null)
                 {
@@ -455,7 +455,7 @@ public class ExcelPivotTableField : XmlHelper
 
                 if (node != null)
                 {
-                    node.ParentNode.RemoveChild(node);
+                    _ = node.ParentNode.RemoveChild(node);
                 }
             }
         }
@@ -475,12 +475,12 @@ public class ExcelPivotTableField : XmlHelper
 
                 if (columnsNode == null)
                 {
-                    this._pivotTable.CreateNode("d:colFields");
+                    _ = this._pivotTable.CreateNode("d:colFields");
                 }
 
                 columnsNode = this.TopNode.SelectSingleNode("../../d:colFields", this.NameSpaceManager);
 
-                AppendField(columnsNode, this.Index, "field", "x");
+                _ = AppendField(columnsNode, this.Index, "field", "x");
 
                 if (this.BaseIndex == this.Index)
                 {
@@ -498,7 +498,7 @@ public class ExcelPivotTableField : XmlHelper
 
                 if (node != null)
                 {
-                    node.ParentNode.RemoveChild(node);
+                    _ = node.ParentNode.RemoveChild(node);
                 }
             }
         }
@@ -527,7 +527,7 @@ public class ExcelPivotTableField : XmlHelper
 
                 if (dataFieldsNode == null)
                 {
-                    this._pivotTable.CreateNode("d:pageFields");
+                    _ = this._pivotTable.CreateNode("d:pageFields");
                     dataFieldsNode = this.TopNode.SelectSingleNode("../../d:pageFields", this.NameSpaceManager);
                 }
 
@@ -545,7 +545,7 @@ public class ExcelPivotTableField : XmlHelper
 
                 if (node != null)
                 {
-                    node.ParentNode.RemoveChild(node);
+                    _ = node.ParentNode.RemoveChild(node);
                 }
             }
         }
@@ -610,7 +610,7 @@ public class ExcelPivotTableField : XmlHelper
 
         XmlElement newElement = rowsNode.OwnerDocument.CreateElement(fieldNodeText, ExcelPackage.schemaMain);
         newElement.SetAttribute(indexAttrText, index.ToString());
-        rowsNode.InsertAfter(newElement, prevField);
+        _ = rowsNode.InsertAfter(newElement, prevField);
 
         return newElement;
     }
@@ -685,7 +685,7 @@ public class ExcelPivotTableField : XmlHelper
     public void AddNumericGrouping(double Start, double End, double Interval)
     {
         this.ValidateGrouping();
-        this._cacheField.SetNumericGroup(this.BaseIndex, Start, End, Interval);
+        _ = this._cacheField.SetNumericGroup(this.BaseIndex, Start, End, Interval);
         this.UpdateGroupItems(this._cacheField, true);
         UpdatePivotTableGroupItems(this, this._pivotTable.CacheDefinition._cacheReference, true);
     }
@@ -803,7 +803,7 @@ public class ExcelPivotTableField : XmlHelper
                     {
                         XmlElement? newElement = rowColFields.OwnerDocument.CreateElement("field", ExcelPackage.schemaMain);
                         newElement.SetAttribute("x", field.Index.ToString());
-                        rowColFields.InsertBefore(newElement, rowfield);
+                        _ = rowColFields.InsertBefore(newElement, rowfield);
 
                         break;
                     }
@@ -818,11 +818,11 @@ public class ExcelPivotTableField : XmlHelper
 
             if (this.IsRowField)
             {
-                this._pivotTable.RowFields.Insert(field, index);
+                _ = this._pivotTable.RowFields.Insert(field, index);
             }
             else
             {
-                this._pivotTable.ColumnFields.Insert(field, index);
+                _ = this._pivotTable.ColumnFields.Insert(field, index);
             }
 
             return field;
@@ -831,7 +831,7 @@ public class ExcelPivotTableField : XmlHelper
         {
             firstField = false;
             this.Compact = false;
-            this._cacheField.SetDateGroup(this, groupBy, startDate, endDate, interval);
+            _ = this._cacheField.SetDateGroup(this, groupBy, startDate, endDate, interval);
             UpdatePivotTableGroupItems(this, this._pivotTable.CacheDefinition._cacheReference, true);
 
             return this;
@@ -905,43 +905,43 @@ public class ExcelPivotTableField : XmlHelper
         //Seconds
         if ((groupBy & eDateGroupBy.Seconds) == eDateGroupBy.Seconds)
         {
-            this.AddField(eDateGroupBy.Seconds, startDate, endDate, ref firstField);
+            _ = this.AddField(eDateGroupBy.Seconds, startDate, endDate, ref firstField);
         }
 
         //Minutes
         if ((groupBy & eDateGroupBy.Minutes) == eDateGroupBy.Minutes)
         {
-            this.AddField(eDateGroupBy.Minutes, startDate, endDate, ref firstField);
+            _ = this.AddField(eDateGroupBy.Minutes, startDate, endDate, ref firstField);
         }
 
         //Hours
         if ((groupBy & eDateGroupBy.Hours) == eDateGroupBy.Hours)
         {
-            this.AddField(eDateGroupBy.Hours, startDate, endDate, ref firstField);
+            _ = this.AddField(eDateGroupBy.Hours, startDate, endDate, ref firstField);
         }
 
         //Days
         if ((groupBy & eDateGroupBy.Days) == eDateGroupBy.Days)
         {
-            this.AddField(eDateGroupBy.Days, startDate, endDate, ref firstField, groupInterval);
+            _ = this.AddField(eDateGroupBy.Days, startDate, endDate, ref firstField, groupInterval);
         }
 
         //Month
         if ((groupBy & eDateGroupBy.Months) == eDateGroupBy.Months)
         {
-            this.AddField(eDateGroupBy.Months, startDate, endDate, ref firstField);
+            _ = this.AddField(eDateGroupBy.Months, startDate, endDate, ref firstField);
         }
 
         //Quarters
         if ((groupBy & eDateGroupBy.Quarters) == eDateGroupBy.Quarters)
         {
-            this.AddField(eDateGroupBy.Quarters, startDate, endDate, ref firstField);
+            _ = this.AddField(eDateGroupBy.Quarters, startDate, endDate, ref firstField);
         }
 
         //Years
         if ((groupBy & eDateGroupBy.Years) == eDateGroupBy.Years)
         {
-            this.AddField(eDateGroupBy.Years, startDate, endDate, ref firstField);
+            _ = this.AddField(eDateGroupBy.Years, startDate, endDate, ref firstField);
         }
 
         if (fields > this._pivotTable.Fields.Count)
@@ -1007,7 +1007,7 @@ public class ExcelPivotTableField : XmlHelper
             {
                 object? v = item.Value ?? ExcelPivotTable.PivotNullValue;
 
-                if (item.Type == eItemType.Data && cacheLookup.TryGetValue(v, out int x))
+                if (item.Type == eItemType.Data && cacheLookup.TryGetValue(v, out int _))
                 {
                     item.X = cacheLookup[v];
                 }

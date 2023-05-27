@@ -168,12 +168,12 @@ public class TableStyleTests : TestBase
     public void AddPivotTableStyleFromTemplate()
     {
         ExcelWorksheet? ws = _pck.Workbook.Worksheets.Add("PivotTableStyleFromTempl");
-        ExcelPivotTableNamedStyle? s = _pck.Workbook.Styles.CreatePivotTableStyle("CustomPivotTableStyleFromTempl1", PivotTableStyles.Dark2);
+        _ = _pck.Workbook.Styles.CreatePivotTableStyle("CustomPivotTableStyleFromTempl1", PivotTableStyles.Dark2);
 
         LoadTestdata(ws);
         ExcelPivotTable? pt = ws.PivotTables.Add(ws.Cells["G2"], ws.Cells["A1:D101"], "PivotTable2");
-        pt.ColumnFields.Add(pt.Fields[0]);
-        pt.DataFields.Add(pt.Fields[3]);
+        _ = pt.ColumnFields.Add(pt.Fields[0]);
+        _ = pt.DataFields.Add(pt.Fields[3]);
         pt.StyleName = "CustomPivotTableStyleFromTempl1";
     }
 
@@ -230,8 +230,8 @@ public class TableStyleTests : TestBase
         tbl.StyleName = "CustomTableAndPivotTableStyle1";
 
         ExcelPivotTable? pt = ws.PivotTables.Add(ws.Cells["G2"], tbl, "PivotTable3");
-        pt.RowFields.Add(pt.Fields[0]);
-        pt.DataFields.Add(pt.Fields[3]);
+        _ = pt.RowFields.Add(pt.Fields[0]);
+        _ = pt.DataFields.Add(pt.Fields[3]);
         pt.ShowRowStripes = true;
         pt.StyleName = "CustomTableAndPivotTableStyle1";
     }
@@ -296,7 +296,7 @@ public class TableStyleTests : TestBase
 
         //tbl.Columns[1].TotalsRowStyle.NumberFormat.Format = "#,##0.00";
 
-        ExcelWorksheet? wsCopy = _pck.Workbook.Worksheets.Add("CopyTableRowStyleCopy", ws);
+        _ = _pck.Workbook.Worksheets.Add("CopyTableRowStyleCopy", ws);
 
         Assert.AreEqual(ExcelBorderStyle.Dashed, tbl.HeaderRowStyle.Border.Bottom.Style);
         Assert.AreEqual(Color.Black.ToArgb(), tbl.HeaderRowStyle.Border.Bottom.Color.Color.Value.ToArgb());
@@ -348,7 +348,7 @@ public class TableStyleTests : TestBase
         ExcelTable? tbl = ws.Tables.Add(ws.Cells["A1:D100"], "Table7");
 
         tbl.DataStyle.Font.Italic = true;
-        tbl.AddRow(2);
+        _ = tbl.AddRow(2);
 
         Assert.IsTrue(ws.Cells["A101"].Style.Font.Italic);
         Assert.IsTrue(ws.Cells["D102"].Style.Font.Italic);
@@ -364,7 +364,7 @@ public class TableStyleTests : TestBase
 
         tbl.ShowHeader = false;
         tbl.DataStyle.Font.Strike = true;
-        tbl.InsertRow(0, 3);
+        _ = tbl.InsertRow(0, 3);
 
         Assert.IsTrue(ws.Cells["A2"].Style.Font.Strike);
         Assert.IsTrue(ws.Cells["D3"].Style.Font.Strike);
@@ -385,7 +385,7 @@ public class TableStyleTests : TestBase
         tbl.DataStyle.Font.Italic = true;
         tbl.TotalsRowStyle.Border.Top.Style = ExcelBorderStyle.Dashed;
         tbl.TotalsRowStyle.Border.Top.Color.Theme = eThemeSchemeColor.Accent6;
-        tbl.Columns.Insert(2, 3);
+        _ = tbl.Columns.Insert(2, 3);
 
         Assert.IsTrue(ws.Cells["C1"].Style.Border.Bottom.Color.Auto);
         Assert.AreEqual(ExcelBorderStyle.DashDotDot, ws.Cells["D1"].Style.Border.Bottom.Style);
@@ -404,7 +404,7 @@ public class TableStyleTests : TestBase
         ExcelTable? tbl = ws.Tables.Add(ws.Cells["A1:D100"], "Table10");
 
         tbl.DataStyle.Font.Strike = true;
-        tbl.InsertRow(0, 3);
+        _ = tbl.InsertRow(0, 3);
 
         Assert.IsTrue(ws.Cells["A2"].Style.Font.Strike);
         Assert.IsTrue(ws.Cells["D3"].Style.Font.Strike);
@@ -420,7 +420,7 @@ public class TableStyleTests : TestBase
 
         tbl.DataStyle.Font.Strike = true;
         tbl.ShowHeader = false;
-        tbl.InsertRow(0, 3);
+        _ = tbl.InsertRow(0, 3);
         Assert.IsTrue(ws.Cells["A1"].Style.Font.Strike);
         Assert.IsTrue(ws.Cells["D3"].Style.Font.Strike);
     }

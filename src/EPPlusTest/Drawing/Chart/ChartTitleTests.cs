@@ -21,7 +21,7 @@ public class ChartTitleTests : TestBase
     {
         _pck = OpenPackage("ChartTitle.xlsx", true);
         _wsData = _pck.Workbook.Worksheets.Add("Data");
-        LoadItemData(_wsData);
+        _ = LoadItemData(_wsData);
     }
 
     [ClassCleanup]
@@ -43,7 +43,7 @@ public class ChartTitleTests : TestBase
         ExcelWorksheet? ws = _pck.Workbook.Worksheets.Add("LineChartTextTitle");
         ExcelLineChart? chart = ws.Drawings.AddLineChart("lineChart1", eLineChartType.Line);
         chart.Title.Text = "LineChart - Text";
-        chart.Series.Add("Data!N1:N10", "Data!K1:K10");
+        _ = chart.Series.Add("Data!N1:N10", "Data!K1:K10");
     }
 
     [TestMethod]
@@ -53,7 +53,7 @@ public class ChartTitleTests : TestBase
         ExcelLineChart? chart = ws.Drawings.AddLineChart("lineChart2", eLineChartType.Line);
         ws.Cells["A1"].Value = "Linked Cell Title";
         chart.Title.LinkedCell = ws.Cells["A1"];
-        chart.Series.Add("Data!N1:N10", "Data!K1:K10");
+        _ = chart.Series.Add("Data!N1:N10", "Data!K1:K10");
         Assert.AreEqual("Linked Cell Title", chart.Title.Text);
     }
 
@@ -65,7 +65,7 @@ public class ChartTitleTests : TestBase
         chart.Title.Text = "Line Chart - Text";
         _wsData.Cells["A1"].Value = "Linked Cell Title-DataSheet";
         chart.Title.LinkedCell = _wsData.Cells["A1"];
-        chart.Series.Add("Data!N1:N10", "Data!K1:K10");
+        _ = chart.Series.Add("Data!N1:N10", "Data!K1:K10");
         Assert.AreEqual("Linked Cell Title-DataSheet", chart.Title.Text);
     }
 
@@ -77,7 +77,7 @@ public class ChartTitleTests : TestBase
         ws.Cells["A1"].Value = "Linked Cell Title";
         chart.Title.LinkedCell = ws.Cells["A1"];
         chart.Title.Text = "Line Chart - Text";
-        chart.Series.Add("Data!N1:N10", "Data!K1:K10");
+        _ = chart.Series.Add("Data!N1:N10", "Data!K1:K10");
         Assert.AreEqual("Line Chart - Text", chart.Title.Text);
     }
 
@@ -86,7 +86,7 @@ public class ChartTitleTests : TestBase
     {
         ExcelWorksheet? ws = _pck.Workbook.Worksheets.Add("BarChartTextTitle");
         ExcelBarChart? chart = ws.Drawings.AddBarChart("barChart1", eBarChartType.BarClustered);
-        chart.Series.Add("Data!N1:N10", "Data!K1:K10");
+        _ = chart.Series.Add("Data!N1:N10", "Data!K1:K10");
         chart.XAxis.AddTitle("Linked Cell Title");
     }
 
@@ -96,7 +96,7 @@ public class ChartTitleTests : TestBase
         ExcelWorksheet? ws = _pck.Workbook.Worksheets.Add("BarChartLinkedCellTitle");
         ExcelBarChart? chart = ws.Drawings.AddBarChart("barChart1", eBarChartType.BarClustered);
         ws.Cells["A1"].Value = "Linked Cell Title";
-        chart.Series.Add("Data!N1:N10", "Data!K1:K10");
+        _ = chart.Series.Add("Data!N1:N10", "Data!K1:K10");
         chart.XAxis.AddTitle(ws.Cells["A1"]);
     }
 }

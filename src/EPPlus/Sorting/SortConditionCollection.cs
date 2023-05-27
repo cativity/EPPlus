@@ -82,7 +82,7 @@ public class SortConditionCollection : XmlHelper, IEnumerable<SortCondition>
             condition.Descending = decending.Value;
         }
 
-        this.TopNode.AppendChild(condition.TopNode);
+        _ = this.TopNode.AppendChild(condition.TopNode);
         this._sortConditions.Add(condition);
     }
 
@@ -109,7 +109,7 @@ public class SortConditionCollection : XmlHelper, IEnumerable<SortCondition>
         }
 
         condition.CustomList = customList;
-        this.TopNode.AppendChild(condition.TopNode);
+        _ = this.TopNode.AppendChild(condition.TopNode);
         this._sortConditions.Add(condition);
     }
 

@@ -77,28 +77,28 @@ public class DoughnutChartStylingTest : TestBase
     private static void DoughnutStyles(ExcelWorksheet ws, eDoughnutChartType chartType)
     {
         //Style 1
-        AddDoughnut(ws, chartType, "DoughnutChartStyle1", 0, 5, ePresetChartStyle.DoughnutChartStyle1, c => { c.Legend.Position = eLegendPosition.Bottom; });
+        _ = AddDoughnut(ws, chartType, "DoughnutChartStyle1", 0, 5, ePresetChartStyle.DoughnutChartStyle1, c => { c.Legend.Position = eLegendPosition.Bottom; });
 
         //Style 2
-        AddDoughnut(ws, chartType, "DoughnutChartStyle2", 0, 18, ePresetChartStyle.DoughnutChartStyle2, c => { c.Legend.Position = eLegendPosition.Top; });
+        _ = AddDoughnut(ws, chartType, "DoughnutChartStyle2", 0, 18, ePresetChartStyle.DoughnutChartStyle2, c => { c.Legend.Position = eLegendPosition.Top; });
 
         //Style 3
-        AddDoughnut(ws, chartType, "DoughnutChartStyle3", 0, 31, ePresetChartStyle.DoughnutChartStyle3, c => { c.DataLabel.ShowPercent = true; });
+        _ = AddDoughnut(ws, chartType, "DoughnutChartStyle3", 0, 31, ePresetChartStyle.DoughnutChartStyle3, c => { c.DataLabel.ShowPercent = true; });
 
         //Style 4
-        AddDoughnut(ws, chartType, "DoughnutChartStyle4", 22, 5, ePresetChartStyle.DoughnutChartStyle4, c => { c.Legend.Position = eLegendPosition.Bottom; });
+        _ = AddDoughnut(ws, chartType, "DoughnutChartStyle4", 22, 5, ePresetChartStyle.DoughnutChartStyle4, c => { c.Legend.Position = eLegendPosition.Bottom; });
 
         //Style 5
-        AddDoughnut(ws, chartType, "DoughnutChartStyle5", 22, 18, ePresetChartStyle.DoughnutChartStyle5, c => { c.Legend.Position = eLegendPosition.Bottom; });
+        _ = AddDoughnut(ws, chartType, "DoughnutChartStyle5", 22, 18, ePresetChartStyle.DoughnutChartStyle5, c => { c.Legend.Position = eLegendPosition.Bottom; });
 
         //Style 6
-        AddDoughnut(ws, chartType, "DoughnutChartStyle6", 22, 31, ePresetChartStyle.DoughnutChartStyle6, c => { });
+        _ = AddDoughnut(ws, chartType, "DoughnutChartStyle6", 22, 31, ePresetChartStyle.DoughnutChartStyle6, c => { });
 
         //Style 7
-        AddDoughnut(ws, chartType, "DoughnutChartStyle7", 44, 5, ePresetChartStyle.DoughnutChartStyle7, c => { c.Legend.Position = eLegendPosition.Bottom; });
+        _ = AddDoughnut(ws, chartType, "DoughnutChartStyle7", 44, 5, ePresetChartStyle.DoughnutChartStyle7, c => { c.Legend.Position = eLegendPosition.Bottom; });
 
         //Style 8
-        AddDoughnut(ws,
+        _ = AddDoughnut(ws,
                     chartType,
                     "DoughnutChartStyle8",
                     44,
@@ -111,7 +111,7 @@ public class DoughnutChartStylingTest : TestBase
                     });
 
         //Style 9
-        AddDoughnut(ws,
+        _ = AddDoughnut(ws,
                     chartType,
                     "DoughnutChartStyle9",
                     44,
@@ -126,7 +126,7 @@ public class DoughnutChartStylingTest : TestBase
                     });
 
         //Style 10
-        AddDoughnut(ws,
+        _ = AddDoughnut(ws,
                     chartType,
                     "DoughnutChartStyle10",
                     66,
@@ -154,13 +154,13 @@ public class DoughnutChartStylingTest : TestBase
         chart.To.Row = row + 18;
         chart.To.RowOff = 0;
         ExcelPieChartSerie? serie = chart.Series.Add("D2:D8", "A2:A8");
-        serie.DataPoints.Add(0);
-        serie.DataPoints.Add(1);
-        serie.DataPoints.Add(2);
-        serie.DataPoints.Add(3);
-        serie.DataPoints.Add(4);
-        serie.DataPoints.Add(5);
-        serie.DataPoints.Add(6);
+        _ = serie.DataPoints.Add(0);
+        _ = serie.DataPoints.Add(1);
+        _ = serie.DataPoints.Add(2);
+        _ = serie.DataPoints.Add(3);
+        _ = serie.DataPoints.Add(4);
+        _ = serie.DataPoints.Add(5);
+        _ = serie.DataPoints.Add(6);
 
         SetProperties(chart);
 

@@ -186,7 +186,7 @@ public class ExcelChartExDataPoint : XmlHelper, IDrawingStyleBase
             else
             {
                 pointElement = this.TopNode.OwnerDocument.CreateElement(dataPtPath, ExcelPackage.schemaChartExMain);
-                prepend.ParentNode.InsertBefore(pointElement, prepend);
+                _ = prepend.ParentNode.InsertBefore(pointElement, prepend);
             }
 
             pointElement.SetAttribute("idx", this.Index.ToString(CultureInfo.InvariantCulture));

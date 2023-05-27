@@ -42,7 +42,7 @@ public class ExcelAddressInfoTests
     [TestMethod, ExpectedException(typeof(ArgumentException))]
     public void ParseShouldThrowIfAddressIsNull()
     {
-        ExcelAddressInfo.Parse(null);
+        _ = ExcelAddressInfo.Parse(null);
     }
 
     [TestMethod]

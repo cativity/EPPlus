@@ -26,7 +26,7 @@ public class ExcelVbaModuleAttributesCollection : ExcelVBACollectionBase<ExcelVb
 
         foreach (ExcelVbaModuleAttribute? attr in this)
         {
-            sb.AppendFormat("Attribute {0} = {1}\r\n", attr.Name, attr.DataType == eAttributeDataType.String ? "\"" + attr.Value + "\"" : attr.Value);
+            _ = sb.AppendFormat("Attribute {0} = {1}\r\n", attr.Name, attr.DataType == eAttributeDataType.String ? "\"" + attr.Value + "\"" : attr.Value);
         }
 
         return sb.ToString();

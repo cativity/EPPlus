@@ -104,31 +104,31 @@ public class RangeAddressTests
     {
         ExcelAddressBase? addr = new ExcelAddressBase("C3:F8");
 
-        addr.Insert(new ExcelAddressBase("G9"), eShiftTypeInsert.Right);
-        addr.Insert(new ExcelAddressBase("G3"), eShiftTypeInsert.Right);
-        addr.Insert(new ExcelAddressBase("C9"), eShiftTypeInsert.Right);
-        addr.Insert(new ExcelAddressBase("B2"), eShiftTypeInsert.Right);
-        addr.Insert(new ExcelAddressBase("B3"), eShiftTypeInsert.Right);
-        addr.Insert(new ExcelAddressBase("D:D"), eShiftTypeInsert.Right);
-        addr.Insert(new ExcelAddressBase("5:5"), eShiftTypeInsert.Down);
+        _ = addr.Insert(new ExcelAddressBase("G9"), eShiftTypeInsert.Right);
+        _ = addr.Insert(new ExcelAddressBase("G3"), eShiftTypeInsert.Right);
+        _ = addr.Insert(new ExcelAddressBase("C9"), eShiftTypeInsert.Right);
+        _ = addr.Insert(new ExcelAddressBase("B2"), eShiftTypeInsert.Right);
+        _ = addr.Insert(new ExcelAddressBase("B3"), eShiftTypeInsert.Right);
+        _ = addr.Insert(new ExcelAddressBase("D:D"), eShiftTypeInsert.Right);
+        _ = addr.Insert(new ExcelAddressBase("5:5"), eShiftTypeInsert.Down);
     }
 
     [TestMethod]
     public void Addresses()
     {
-        ExcelAddress? a1 = new ExcelAddress("SalesData!$K$445");
-        ExcelAddress? a2 = new ExcelAddress("SalesData!$K$445:$M$449,SalesData!$N$448:$Q$454,SalesData!$L$458:$O$464");
-        ExcelAddress? a3 = new ExcelAddress("SalesData!$K$445:$L$448");
-        ExcelAddress? a5 = new ExcelAddress("Table1[[#All],[Title]]");
-        ExcelAddress? a6 = new ExcelAddress("Table1[#All]");
-        ExcelAddress? a7 = new ExcelAddress("Table1[[#Headers],[FirstName]:[LastName]]");
-        ExcelAddress? a8 = new ExcelAddress("Table1[#Headers]");
-        ExcelAddress? a9 = new ExcelAddress("Table2[[#All],[SubTotal]]");
-        ExcelAddress? a10 = new ExcelAddress("Table2[#All]");
-        ExcelAddress? a11 = new ExcelAddress("Table1[[#All],[Freight]]");
-        ExcelAddress? a12 = new ExcelAddress("[1]!Table1[[LastName]:[Name]]");
-        ExcelAddress? a13 = new ExcelAddress("Table1[[#All],[Freight]]");
-        ExcelAddress? a14 = new ExcelAddress("SalesData!$N$5+'test''1'!$J$33");
+        _ = new ExcelAddress("SalesData!$K$445");
+        _ = new ExcelAddress("SalesData!$K$445:$M$449,SalesData!$N$448:$Q$454,SalesData!$L$458:$O$464");
+        _ = new ExcelAddress("SalesData!$K$445:$L$448");
+        _ = new ExcelAddress("Table1[[#All],[Title]]");
+        _ = new ExcelAddress("Table1[#All]");
+        _ = new ExcelAddress("Table1[[#Headers],[FirstName]:[LastName]]");
+        _ = new ExcelAddress("Table1[#Headers]");
+        _ = new ExcelAddress("Table2[[#All],[SubTotal]]");
+        _ = new ExcelAddress("Table2[#All]");
+        _ = new ExcelAddress("Table1[[#All],[Freight]]");
+        _ = new ExcelAddress("[1]!Table1[[LastName]:[Name]]");
+        _ = new ExcelAddress("Table1[[#All],[Freight]]");
+        _ = new ExcelAddress("SalesData!$N$5+'test''1'!$J$33");
     }
 
     [TestMethod]
@@ -175,9 +175,8 @@ public class RangeAddressTests
     public void AddressWithFullColumnInEndAndCellIsNotValid()
     {
         using ExcelPackage? package = new ExcelPackage();
-        ExcelWorkbook? workbook = package.Workbook;
         ExcelWorksheet? sheet1 = package.Workbook.Worksheets.Add("NEW");
-        ExcelRange? v = sheet1.Cells["A1:B"]; //Invalid address
+        _ = sheet1.Cells["A1:B"]; //Invalid address
     }
 
     [TestMethod]
@@ -185,9 +184,8 @@ public class RangeAddressTests
     public void AddressWithFullColumnAtStartAndCellIsNotValid()
     {
         using ExcelPackage? package = new ExcelPackage();
-        ExcelWorkbook? workbook = package.Workbook;
         ExcelWorksheet? sheet1 = package.Workbook.Worksheets.Add("NEW");
-        ExcelRange? v = sheet1.Cells["A:B1"]; //Invalid address
+        _ = sheet1.Cells["A:B1"]; //Invalid address
     }
 
     [TestMethod]
@@ -195,9 +193,8 @@ public class RangeAddressTests
     public void AddressWithFullRowInEndAndCellIsNotValid()
     {
         using ExcelPackage? package = new ExcelPackage();
-        ExcelWorkbook? workbook = package.Workbook;
         ExcelWorksheet? sheet1 = package.Workbook.Worksheets.Add("NEW");
-        ExcelRange? v = sheet1.Cells["A1:2"]; //Invalid address
+        _ = sheet1.Cells["A1:2"]; //Invalid address
     }
 
     [TestMethod]
@@ -205,9 +202,8 @@ public class RangeAddressTests
     public void AddressWithFullRowAtStartAndCellIsNotValid()
     {
         using ExcelPackage? package = new ExcelPackage();
-        ExcelWorkbook? workbook = package.Workbook;
         ExcelWorksheet? sheet1 = package.Workbook.Worksheets.Add("NEW");
-        ExcelRange? v = sheet1.Cells["1:B1"]; //Invalid address
+        _ = sheet1.Cells["1:B1"]; //Invalid address
     }
 
     [TestMethod]
@@ -424,12 +420,12 @@ public class RangeAddressTests
     public void ValidateGetWorksheetPart()
     {
         int ix = 0;
-        ExcelAddressBase.GetWorksheetPart("A1:A2", "Sheet1", ref ix);
+        _ = ExcelAddressBase.GetWorksheetPart("A1:A2", "Sheet1", ref ix);
         Assert.AreEqual(0, ix);
 
-        ExcelAddressBase.GetWorksheetPart("sheet1!A1:A2", "Sheet1", ref ix);
+        _ = ExcelAddressBase.GetWorksheetPart("sheet1!A1:A2", "Sheet1", ref ix);
         Assert.AreEqual(7, ix);
-        ExcelAddressBase.GetWorksheetPart("'sheet 1'!A1:A2", "Sheet1", ref ix);
+        _ = ExcelAddressBase.GetWorksheetPart("'sheet 1'!A1:A2", "Sheet1", ref ix);
         Assert.AreEqual(10, ix);
     }
 

@@ -122,7 +122,7 @@ public class ExcelDxfFill : DxfStyleBase
     /// <param name="path">The X Path</param>
     internal override void CreateNodes(XmlHelper helper, string path)
     {
-        helper.CreateNode(path);
+        _ = helper.CreateNode(path);
 
         if (this.Style == eDxfFillStyle.PatternFill)
         {

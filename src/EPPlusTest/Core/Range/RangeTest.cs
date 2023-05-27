@@ -226,7 +226,7 @@ public class RangeTest : TestBase
     {
         using ExcelPackage? p = new ExcelPackage();
         ExcelWorksheet? ws = p.Workbook.Worksheets.Add("Merge");
-        ws.Tables.Add(ws.Cells["D4:E5"], "Table1");
+        _ = ws.Tables.Add(ws.Cells["D4:E5"], "Table1");
 
         ws.Cells["A1:A2"].Merge = true;
         ws.Cells["A3:E3"].Merge = true;
@@ -240,7 +240,7 @@ public class RangeTest : TestBase
     {
         using ExcelPackage? p = new ExcelPackage();
         ExcelWorksheet? ws = p.Workbook.Worksheets.Add("Merge");
-        ws.Tables.Add(ws.Cells["D4:E5"], "Table1");
+        _ = ws.Tables.Add(ws.Cells["D4:E5"], "Table1");
 
         ws.Cells["D4:D5"].Merge = true;
     }
@@ -251,7 +251,7 @@ public class RangeTest : TestBase
     {
         using ExcelPackage? p = new ExcelPackage();
         ExcelWorksheet? ws = p.Workbook.Worksheets.Add("Merge");
-        ws.Tables.Add(ws.Cells["D4:E5"], "Table1");
+        _ = ws.Tables.Add(ws.Cells["D4:E5"], "Table1");
 
         ws.Cells["D3:D4"].Merge = true;
     }
@@ -262,7 +262,7 @@ public class RangeTest : TestBase
     {
         using ExcelPackage? p = new ExcelPackage();
         ExcelWorksheet? ws = p.Workbook.Worksheets.Add("Merge");
-        ws.Tables.Add(ws.Cells["D4:E5"], "Table1");
+        _ = ws.Tables.Add(ws.Cells["D4:E5"], "Table1");
 
         ws.Cells["D4:E5"].Merge = true;
     }
@@ -274,7 +274,7 @@ public class RangeTest : TestBase
         using ExcelPackage? p = new ExcelPackage();
         ExcelWorksheet? ws = p.Workbook.Worksheets.Add("Merge");
         ws.Cells["D4:E5"].Merge = true;
-        ws.Tables.Add(ws.Cells["D4:E5"], "Table1");
+        _ = ws.Tables.Add(ws.Cells["D4:E5"], "Table1");
     }
 
     [TestMethod]
@@ -284,7 +284,7 @@ public class RangeTest : TestBase
         using ExcelPackage? p = new ExcelPackage();
         ExcelWorksheet? ws = p.Workbook.Worksheets.Add("Merge");
         ws.Cells["D4:D5"].Merge = true;
-        ws.Tables.Add(ws.Cells["D4:E5"], "Table1");
+        _ = ws.Tables.Add(ws.Cells["D4:E5"], "Table1");
     }
 
     [TestMethod]
@@ -294,7 +294,7 @@ public class RangeTest : TestBase
         using ExcelPackage? p = new ExcelPackage();
         ExcelWorksheet? ws = p.Workbook.Worksheets.Add("Merge");
         ws.Cells["D3:D4"].Merge = true;
-        ws.Tables.Add(ws.Cells["D4:E5"], "Table1");
+        _ = ws.Tables.Add(ws.Cells["D4:E5"], "Table1");
     }
 
     public static void ValidateDeleted()
@@ -302,6 +302,6 @@ public class RangeTest : TestBase
         using ExcelPackage? p = new ExcelPackage();
         ExcelWorksheet? ws = p.Workbook.Worksheets.Add("Merge");
         ws.Cells["D3:D4"].Merge = true;
-        ws.Tables.Add(ws.Cells["D4:E5"], "Table1");
+        _ = ws.Tables.Add(ws.Cells["D4:E5"], "Table1");
     }
 }

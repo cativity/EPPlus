@@ -38,7 +38,7 @@ public class ExcelChartsheet : ExcelWorksheet
         : base(ns, pck, relID, uriWorksheet, sheetName, sheetID, positionID, hidden)
     {
         this.IsChartSheet = true;
-        this.Drawings.AddAllChartTypes("Chart 1", chartType, pivotTableSource, eEditAs.Absolute);
+        _ = this.Drawings.AddAllChartTypes("Chart 1", chartType, pivotTableSource, eEditAs.Absolute);
     }
 
     internal ExcelChartsheet(XmlNamespaceManager ns,

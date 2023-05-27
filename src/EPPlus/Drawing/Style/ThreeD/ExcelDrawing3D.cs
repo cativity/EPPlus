@@ -180,7 +180,7 @@ public class ExcelDrawing3D : XmlHelper
             {
                 if (!this.ExistsNode(this._sp3dPath))
                 {
-                    this.CreateNode(this._sp3dPath);
+                    _ = this.CreateNode(this._sp3dPath);
                     this.Scene.InitXml(false);
                 }
             }
@@ -231,7 +231,7 @@ public class ExcelDrawing3D : XmlHelper
     {
         foreach (XmlAttribute a in copyFrom.Attributes)
         {
-            to.SetAttribute(a.Name, a.NamespaceURI, a.Value);
+            _ = to.SetAttribute(a.Name, a.NamespaceURI, a.Value);
         }
 
         to.InnerXml = copyFrom.InnerXml;

@@ -69,7 +69,7 @@ public class ExcelProtectedRangeCollection : XmlHelper, IEnumerable<ExcelProtect
         else
         {
             node = this._collectionNode.OwnerDocument.CreateElement(_itemNodePath, ExcelPackage.schemaMain);
-            this._collectionNode.AppendChild(node);
+            _ = this._collectionNode.AppendChild(node);
         }
 
         if (this._list.Any(x => x.Name.Equals(name, StringComparison.CurrentCultureIgnoreCase)))
@@ -128,12 +128,12 @@ public class ExcelProtectedRangeCollection : XmlHelper, IEnumerable<ExcelProtect
     /// <returns></returns>
     public bool Remove(ExcelProtectedRange item)
     {
-        item.TopNode.ParentNode.RemoveChild(item.TopNode);
+        _ = item.TopNode.ParentNode.RemoveChild(item.TopNode);
         bool ret = this._list.Remove(item);
 
         if (this._list.Count == 0)
         {
-            this._collectionNode.ParentNode.RemoveChild(this._collectionNode);
+            _ = this._collectionNode.ParentNode.RemoveChild(this._collectionNode);
         }
 
         return ret;
@@ -160,7 +160,7 @@ public class ExcelProtectedRangeCollection : XmlHelper, IEnumerable<ExcelProtect
             throw new IndexOutOfRangeException();
         }
 
-        this.Remove(this._list[index]);
+        _ = this.Remove(this._list[index]);
     }
 
     /// <summary>

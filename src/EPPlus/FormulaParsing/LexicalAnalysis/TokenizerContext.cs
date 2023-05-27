@@ -209,7 +209,7 @@ internal class TokenizerContext
 
     public void AppendToCurrentToken(char c)
     {
-        this._currentToken.Append(c.ToString());
+        _ = this._currentToken.Append(c.ToString());
     }
 
     public void AppendToLastToken(string stringToAppend)

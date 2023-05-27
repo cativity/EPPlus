@@ -123,7 +123,7 @@ sealed class InflateBlocks
         this.end = w;
         this.checkfn = checkfn;
         this.mode = InflateBlockMode.TYPE;
-        this.Reset();
+        _ = this.Reset();
     }
 
     internal uint Reset()
@@ -205,7 +205,7 @@ sealed class InflateBlocks
                             int[] bd = new int[1];
                             int[][] tl = new int[1][];
                             int[][] td = new int[1][];
-                            InfTree.inflate_trees_fixed(bl, bd, tl, td, this._codec);
+                            _ = InfTree.inflate_trees_fixed(bl, bd, tl, td, this._codec);
                             this.codes.Init(bl[0], bd[0], tl[0], 0, td[0], 0);
                             b >>= 3;
                             k -= 3;
@@ -741,7 +741,7 @@ sealed class InflateBlocks
 
     internal void Free()
     {
-        this.Reset();
+        _ = this.Reset();
         this.window = null;
         this.hufts = null;
     }
@@ -1703,7 +1703,7 @@ internal sealed class InflateManager
         this._codec.TotalBytesIn = this._codec.TotalBytesOut = 0;
         this._codec.Message = null;
         this.mode = this.HandleRfc1950HeaderBytes ? InflateManagerMode.METHOD : InflateManagerMode.BLOCKS;
-        this.blocks.Reset();
+        _ = this.blocks.Reset();
 
         return ZlibConstants.Z_OK;
     }
@@ -1737,7 +1737,7 @@ internal sealed class InflateManager
         // set window size
         if (w < 8 || w > 15)
         {
-            this.End();
+            _ = this.End();
 
             throw new ZlibException("Bad window size.");
 
@@ -1749,7 +1749,7 @@ internal sealed class InflateManager
         this.blocks = new InflateBlocks(codec, this.HandleRfc1950HeaderBytes ? this : null, 1 << w);
 
         // reset state
-        this.Reset();
+        _ = this.Reset();
 
         return ZlibConstants.Z_OK;
     }
@@ -2091,7 +2091,7 @@ internal sealed class InflateManager
 
         long r = this._codec.TotalBytesIn; // temporaries to save total_in and total_out
         long w = this._codec.TotalBytesOut;
-        this.Reset();
+        _ = this.Reset();
         this._codec.TotalBytesIn = r;
         this._codec.TotalBytesOut = w;
         this.mode = InflateManagerMode.BLOCKS;

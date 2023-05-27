@@ -62,13 +62,13 @@ public class ValueFilter : TestBase
 
         ws.AutoFilterAddress = ws.Cells["A1:D100"];
         ExcelValueFilterColumn? col = ws.AutoFilter.Columns.AddValueFilterColumn(1);
-        col.Filters.Add("7");
-        col.Filters.Add("14");
-        col.Filters.Add("88");
-        col.Filters.Add("sss");
+        _ = col.Filters.Add("7");
+        _ = col.Filters.Add("14");
+        _ = col.Filters.Add("88");
+        _ = col.Filters.Add("sss");
         col.Filters.Blank = true;
-        col.Filters.Add(new ExcelFilterDateGroupItem(2018, 12));
-        col.Filters.Add(new ExcelFilterDateGroupItem(2019, 1, 15));
+        _ = col.Filters.Add(new ExcelFilterDateGroupItem(2018, 12));
+        _ = col.Filters.Add(new ExcelFilterDateGroupItem(2019, 1, 15));
 
         ws.AutoFilter.ApplyFilter();
 
@@ -90,7 +90,7 @@ public class ValueFilter : TestBase
         ws.AutoFilterAddress = ws.Cells["A1:D200"];
         ExcelValueFilterColumn? col = ws.AutoFilter.Columns.AddValueFilterColumn(0);
         int year = DateTime.Today.Year - 1;
-        col.Filters.Add(new ExcelFilterDateGroupItem(year));
+        _ = col.Filters.Add(new ExcelFilterDateGroupItem(year));
         ws.AutoFilter.ApplyFilter();
 
         int row = GetRowFromDate(new DateTime(year, 12, 15));
@@ -110,7 +110,7 @@ public class ValueFilter : TestBase
         ws.AutoFilterAddress = ws.Cells["A1:D200"];
         ExcelValueFilterColumn? col = ws.AutoFilter.Columns.AddValueFilterColumn(0);
         int year = DateTime.Today.Year;
-        col.Filters.Add(new ExcelFilterDateGroupItem(year, 1));
+        _ = col.Filters.Add(new ExcelFilterDateGroupItem(year, 1));
         ws.AutoFilter.ApplyFilter();
 
         int row = GetRowFromDate(new DateTime(year - 1, 12, 31));
@@ -132,7 +132,7 @@ public class ValueFilter : TestBase
         ws.AutoFilterAddress = ws.Cells["A1:D200"];
         ExcelValueFilterColumn? col = ws.AutoFilter.Columns.AddValueFilterColumn(0);
         int year = DateTime.Today.Year;
-        col.Filters.Add(new ExcelFilterDateGroupItem(year, 1, 12));
+        _ = col.Filters.Add(new ExcelFilterDateGroupItem(year, 1, 12));
         ws.AutoFilter.ApplyFilter();
 
         int row = GetRowFromDate(new DateTime(year, 1, 11));
@@ -153,7 +153,7 @@ public class ValueFilter : TestBase
         ws.SetValue("A83", new DateTime(year, 1, 20, 13, 11, 33));
         ws.AutoFilterAddress = ws.Cells["A1:D200"];
         ExcelValueFilterColumn? col = ws.AutoFilter.Columns.AddValueFilterColumn(0);
-        col.Filters.Add(new ExcelFilterDateGroupItem(year, 1, 20, 12));
+        _ = col.Filters.Add(new ExcelFilterDateGroupItem(year, 1, 20, 12));
         ws.AutoFilter.ApplyFilter();
 
         int row = GetRowFromDate(new DateTime(year, 1, 19));
@@ -174,7 +174,7 @@ public class ValueFilter : TestBase
         ws.SetValue("A83", new DateTime(year, 1, 20, 12, 12, 33));
         ws.AutoFilterAddress = ws.Cells["A1:D200"];
         ExcelValueFilterColumn? col = ws.AutoFilter.Columns.AddValueFilterColumn(0);
-        col.Filters.Add(new ExcelFilterDateGroupItem(year, 1, 20, 12, 11));
+        _ = col.Filters.Add(new ExcelFilterDateGroupItem(year, 1, 20, 12, 11));
         ws.AutoFilter.ApplyFilter();
 
         int row = GetRowFromDate(new DateTime(year, 1, 19));
@@ -195,7 +195,7 @@ public class ValueFilter : TestBase
         ws.SetValue("A83", new DateTime(year, 1, 20, 12, 11, 35));
         ws.AutoFilterAddress = ws.Cells["A1:D200"];
         ExcelValueFilterColumn? col = ws.AutoFilter.Columns.AddValueFilterColumn(0);
-        col.Filters.Add(new ExcelFilterDateGroupItem(year, 1, 20, 12, 11, 33));
+        _ = col.Filters.Add(new ExcelFilterDateGroupItem(year, 1, 20, 12, 11, 33));
         ws.AutoFilter.ApplyFilter();
 
         int row = GetRowFromDate(new DateTime(year, 1, 19));
@@ -215,12 +215,12 @@ public class ValueFilter : TestBase
 
         ws.AutoFilterAddress = ws.Cells["A1:D102"];
         ExcelValueFilterColumn? col = ws.AutoFilter.Columns.AddValueFilterColumn(2);
-        col.Filters.Add("Value 8");
-        col.Filters.Add("Value 55");
-        col.Filters.Add("Value 33");
+        _ = col.Filters.Add("Value 8");
+        _ = col.Filters.Add("Value 55");
+        _ = col.Filters.Add("Value 33");
         col.Filters.Blank = true;
-        col.Filters.Add(new ExcelFilterDateGroupItem(2018, 12));
-        col.Filters.Add(new ExcelFilterDateGroupItem(2019, 1, 15));
+        _ = col.Filters.Add(new ExcelFilterDateGroupItem(2018, 12));
+        _ = col.Filters.Add(new ExcelFilterDateGroupItem(2019, 1, 15));
 
         ws.AutoFilter.ApplyFilter();
 
@@ -246,13 +246,13 @@ public class ValueFilter : TestBase
 
         ws.AutoFilterAddress = ws.Cells["A1:D102"];
         ExcelValueFilterColumn? col = ws.AutoFilter.Columns.AddValueFilterColumn(3);
-        col.Filters.Add("66,00");
-        col.Filters.Add("3 003,00");
-        col.Filters.Add("3 036,00");
-        col.Filters.Add("3 069,00");
-        col.Filters.Add("3 102,00");
-        col.Filters.Add("3 135,00");
-        col.Filters.Add("3 168,00");
+        _ = col.Filters.Add("66,00");
+        _ = col.Filters.Add("3 003,00");
+        _ = col.Filters.Add("3 036,00");
+        _ = col.Filters.Add("3 069,00");
+        _ = col.Filters.Add("3 102,00");
+        _ = col.Filters.Add("3 135,00");
+        _ = col.Filters.Add("3 168,00");
         col.Filters.Blank = true;
 
         ws.AutoFilter.ApplyFilter();

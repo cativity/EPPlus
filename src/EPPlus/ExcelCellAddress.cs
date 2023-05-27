@@ -130,7 +130,7 @@ public class ExcelCellAddress
         internal set
         {
             this._address = value;
-            ExcelCellBase.GetRowColFromAddress(this._address, out this._row, out this._column, out this._isRowFixed, out this._isColumnFixed);
+            _ = ExcelCellBase.GetRowColFromAddress(this._address, out this._row, out this._column, out this._isRowFixed, out this._isColumnFixed);
         }
     }
 

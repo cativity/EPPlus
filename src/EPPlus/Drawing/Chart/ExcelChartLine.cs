@@ -94,7 +94,7 @@ public class ExcelChartStyleItem : XmlHelper, IDrawingStyleBase
     /// </summary>
     public void Remove()
     {
-        this.TopNode.ParentNode.RemoveChild(this.TopNode);
+        _ = this.TopNode.ParentNode.RemoveChild(this.TopNode);
         this._removeMe();
     }
 }

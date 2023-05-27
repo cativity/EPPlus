@@ -79,7 +79,7 @@ public class HistogramChartStylingTest : TestBase
         //Histogram Chart styles
 
         //Histogram chart Style 1
-        AddChartEx(ws,
+        _ = AddChartEx(ws,
                    ePresetChartStyle.HistogramChartStyle1,
                    "HistogramChartStyle1",
                    0,
@@ -92,7 +92,7 @@ public class HistogramChartStylingTest : TestBase
                    });
 
         //Histogram chart Style 2
-        AddChartEx(ws,
+        _ = AddChartEx(ws,
                    ePresetChartStyle.HistogramChartStyle2,
                    "HistogramChartStyle2",
                    0,
@@ -106,7 +106,7 @@ public class HistogramChartStylingTest : TestBase
                    });
 
         //Histogram chart Style 3
-        AddChartEx(ws,
+        _ = AddChartEx(ws,
                    ePresetChartStyle.HistogramChartStyle3,
                    "HistogramChartStyle3",
                    0,
@@ -119,7 +119,7 @@ public class HistogramChartStylingTest : TestBase
                    });
 
         //Histogram chart Style 4
-        AddChartEx(ws,
+        _ = AddChartEx(ws,
                    ePresetChartStyle.HistogramChartStyle4,
                    "HistogramChartStyle4",
                    20,
@@ -132,10 +132,10 @@ public class HistogramChartStylingTest : TestBase
                    });
 
         //Histogram chart Style 5
-        AddChartEx(ws, ePresetChartStyle.HistogramChartStyle5, "HistogramChartStyle5", 20, 18, type, c => { c.Legend.Position = eLegendPosition.Bottom; });
+        _ = AddChartEx(ws, ePresetChartStyle.HistogramChartStyle5, "HistogramChartStyle5", 20, 18, type, c => { c.Legend.Position = eLegendPosition.Bottom; });
 
         //Histogram chart Style 6
-        AddChartEx(ws, ePresetChartStyle.HistogramChartStyle6, "HistogramChartStyle6", 20, 31, type, c => { c.Legend.Position = eLegendPosition.Bottom; });
+        _ = AddChartEx(ws, ePresetChartStyle.HistogramChartStyle6, "HistogramChartStyle6", 20, 31, type, c => { c.Legend.Position = eLegendPosition.Bottom; });
     }
 
     private static ExcelHistogramChart AddChartEx(ExcelWorksheet ws,
@@ -152,7 +152,7 @@ public class HistogramChartStylingTest : TestBase
         chart.To.ColumnOff = 0;
         chart.To.Row = row + 18;
         chart.To.RowOff = 0;
-        chart.Series.Add("D2:D8", "A2:A8");
+        _ = chart.Series.Add("D2:D8", "A2:A8");
 
         SetProperties(chart);
 

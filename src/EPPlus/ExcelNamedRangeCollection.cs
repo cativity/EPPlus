@@ -217,12 +217,12 @@ public class ExcelNamedRangeCollection : IEnumerable<ExcelNamedRange>
 
             for (int i = ix + 1; i < this._list.Count; i++)
             {
-                this._dic.Remove(this._list[i].Name);
+                _ = this._dic.Remove(this._list[i].Name);
                 this._list[i].Index--;
                 this._dic.Add(this._list[i].Name, this._list[i].Index);
             }
 
-            this._dic.Remove(Name);
+            _ = this._dic.Remove(Name);
             this._list.RemoveAt(ix);
         }
     }

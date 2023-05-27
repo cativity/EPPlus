@@ -94,7 +94,7 @@ public class ExcelChartStyleManager : XmlHelper
 
     private void CreateColorXml(ZipPackage p)
     {
-        this.CreateColorPart(p);
+        _ = this.CreateColorPart(p);
         this.ColorsXml = new XmlDocument();
         this.ColorsXml.LoadXml(GetStartColorXml());
         this.ColorsXml.Save(this.ColorsPart.GetStream());
@@ -249,7 +249,7 @@ public class ExcelChartStyleManager : XmlHelper
     private static string UncompressEntry(ZipInputStream zipStream, ZipEntry entry)
     {
         byte[]? content = new byte[entry.UncompressedSize];
-        int size = zipStream.Read(content, 0, (int)entry.UncompressedSize);
+        _ = zipStream.Read(content, 0, (int)entry.UncompressedSize);
 
         return Encoding.UTF8.GetString(content);
     }
@@ -326,13 +326,13 @@ public class ExcelChartStyleManager : XmlHelper
 
     private void LoadTemplateStyles(Stream crtxStream, string name)
     {
-        CrtxTemplateHelper.LoadCrtx(crtxStream, out XmlDocument chartXml, out XmlDocument styleXml, out XmlDocument colorsXml, out _, name);
+        CrtxTemplateHelper.LoadCrtx(crtxStream, out XmlDocument _, out XmlDocument styleXml, out XmlDocument colorsXml, out _, name);
 
         if (!(styleXml == null && colorsXml == null))
         {
             //TODO:Add theme override rel to chart.
             //TODO:Add all settings for chart.xml.
-            this.LoadStyleXml(styleXml, eChartStyle.Style2, colorsXml);
+            _ = this.LoadStyleXml(styleXml, eChartStyle.Style2, colorsXml);
             this.ApplyStyles();
         }
         else
@@ -386,7 +386,7 @@ public class ExcelChartStyleManager : XmlHelper
 
         if (this.StylePart == null)
         {
-            this.CreateStylePart(this._chart.WorkSheet.Workbook._package.ZipPackage);
+            _ = this.CreateStylePart(this._chart.WorkSheet.Workbook._package.ZipPackage);
         }
 
         this.StyleXml = styleXml;
@@ -508,11 +508,11 @@ public class ExcelChartStyleManager : XmlHelper
 
         if (colors.HasValue)
         {
-            this.LoadStyleXml(StyleLibrary[style].XmlDocument, eChartStyle.Style2, ColorsLibrary[colors.Value].XmlDocument);
+            _ = this.LoadStyleXml(StyleLibrary[style].XmlDocument, eChartStyle.Style2, ColorsLibrary[colors.Value].XmlDocument);
         }
         else
         {
-            this.LoadStyleXml(StyleLibrary[style].XmlDocument, eChartStyle.Style2);
+            _ = this.LoadStyleXml(StyleLibrary[style].XmlDocument, eChartStyle.Style2);
         }
     }
 
@@ -532,7 +532,7 @@ public class ExcelChartStyleManager : XmlHelper
 
         if (this.ColorsPart == null)
         {
-            this.CreateColorPart(this._chart.WorkSheet.Workbook._package.ZipPackage);
+            _ = this.CreateColorPart(this._chart.WorkSheet.Workbook._package.ZipPackage);
         }
 
         this.ColorsXml = colorXml;
@@ -700,7 +700,7 @@ public class ExcelChartStyleManager : XmlHelper
             {
                 if (!dtpSerie.DataPoints.ContainsKey(i))
                 {
-                    dtpSerie.DataPoints.AddDp(i, "0000000D-5D51-4ADD-AFBE-74A932E24C89");
+                    _ = dtpSerie.DataPoints.AddDp(i, "0000000D-5D51-4ADD-AFBE-74A932E24C89");
                 }
             }
         }
@@ -1140,7 +1140,7 @@ public class ExcelChartStyleManager : XmlHelper
     {
         int id = GetIxFromChartUri(this._chart.UriChart.OriginalString);
         this.StyleUri = GetNewUri(p, "/xl/charts/style{0}.xml", ref id);
-        this._chart.Part.CreateRelationship(this.StyleUri, TargetMode.Internal, ExcelPackage.schemaChartStyleRelationships);
+        _ = this._chart.Part.CreateRelationship(this.StyleUri, TargetMode.Internal, ExcelPackage.schemaChartStyleRelationships);
         this.StylePart = p.CreatePart(this.StyleUri, ContentTypes.contentTypeChartStyle);
 
         return id;
@@ -1150,7 +1150,7 @@ public class ExcelChartStyleManager : XmlHelper
     {
         int id = GetIxFromChartUri(this._chart.UriChart.OriginalString);
         this.ColorsUri = GetNewUri(p, "/xl/charts/colors{0}.xml", ref id);
-        this._chart.Part.CreateRelationship(this.ColorsUri, TargetMode.Internal, ExcelPackage.schemaChartColorStyleRelationships);
+        _ = this._chart.Part.CreateRelationship(this.ColorsUri, TargetMode.Internal, ExcelPackage.schemaChartColorStyleRelationships);
         this.ColorsPart = p.CreatePart(this.ColorsUri, ContentTypes.contentTypeChartColorStyle);
 
         return id;
@@ -1205,7 +1205,7 @@ public class ExcelChartStyleManager : XmlHelper
     private static string GetStartStyleXml(int id)
     {
         StringBuilder? sb = new StringBuilder();
-        sb.Append($"<cs:chartStyle xmlns:cs=\"http://schemas.microsoft.com/office/drawing/2012/chartStyle\" xmlns:a=\"http://schemas.openxmlformats.org/drawingml/2006/main\" id=\"{id}\">");
+        _ = sb.Append($"<cs:chartStyle xmlns:cs=\"http://schemas.microsoft.com/office/drawing/2012/chartStyle\" xmlns:a=\"http://schemas.openxmlformats.org/drawingml/2006/main\" id=\"{id}\">");
         AppendDefaultStyleSection(sb, "axisTitle");
         AppendDefaultStyleSection(sb, "categoryAxis");
         AppendDefaultStyleSection(sb, "chartArea");
@@ -1215,7 +1215,7 @@ public class ExcelChartStyleManager : XmlHelper
         AppendDefaultStyleSection(sb, "dataPoint3D");
         AppendDefaultStyleSection(sb, "dataPointLine");
         AppendDefaultStyleSection(sb, "dataPointMarker");
-        sb.Append("<cs:dataPointMarkerLayout size=\"17\" symbol=\"circle\"/>");
+        _ = sb.Append("<cs:dataPointMarkerLayout size=\"17\" symbol=\"circle\"/>");
         AppendDefaultStyleSection(sb, "dataPointWireframe");
         AppendDefaultStyleSection(sb, "dataTable");
         AppendDefaultStyleSection(sb, "downBar");
@@ -1237,14 +1237,14 @@ public class ExcelChartStyleManager : XmlHelper
         AppendDefaultStyleSection(sb, "upBar");
         AppendDefaultStyleSection(sb, "valueAxis");
         AppendDefaultStyleSection(sb, "wall");
-        sb.Append($"</cs:chartStyle>");
+        _ = sb.Append($"</cs:chartStyle>");
 
         return sb.ToString();
     }
 
     private static void AppendDefaultStyleSection(StringBuilder sb, string section)
     {
-        sb.Append($"<cs:{section}><cs:lnRef idx=\"0\"/><cs:fillRef idx=\"0\"/><cs:effectRef idx=\"0\"/><cs:fontRef idx=\"minor\"></cs:fontRef></cs:{section}>");
+        _ = sb.Append($"<cs:{section}><cs:lnRef idx=\"0\"/><cs:fillRef idx=\"0\"/><cs:effectRef idx=\"0\"/><cs:fontRef idx=\"minor\"></cs:fontRef></cs:{section}>");
     }
 
     private static string GetStartColorXml()

@@ -109,7 +109,7 @@ public class ExcelVmlDrawingPictureFill : XmlHelper, IPictureContainer
 
                 if (!string.IsNullOrEmpty(relId))
                 {
-                    this._image.ImageBytes = PictureStore.GetPicture(relId, this, out string contentType, out ePictureType pictureType);
+                    this._image.ImageBytes = PictureStore.GetPicture(relId, this, out string _, out ePictureType pictureType);
                     this._image.Type = pictureType;
                 }
             }
@@ -140,7 +140,7 @@ public class ExcelVmlDrawingPictureFill : XmlHelper, IPictureContainer
         IPictureRelationDocument? pictureRelationDocument = (IPictureRelationDocument)this._fill._drawings;
         pictureRelationDocument.Package.PictureStore.RemoveImage(container.ImageHash, this);
         pictureRelationDocument.RelatedPart.DeleteRelationship(container.RelPic.Id);
-        pictureRelationDocument.Hashes.Remove(container.ImageHash);
+        _ = pictureRelationDocument.Hashes.Remove(container.ImageHash);
     }
 
     internal string RelId

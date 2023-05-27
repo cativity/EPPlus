@@ -126,7 +126,7 @@ public class StockChartStylingTest : StockChartTestBase
         //Surface charts don't use chart styling in Excel, but styles can be applied anyway. 
 
         //Stock chart Style 1
-        AddStockChartStyleManager(ws,
+        _ = AddStockChartStyleManager(ws,
                                   chartType,
                                   ePresetChartStyle.StockChartStyle1,
                                   "StockChartStyle1",
@@ -136,7 +136,7 @@ public class StockChartStylingTest : StockChartTestBase
                                   c => { c.Legend.Position = eLegendPosition.Bottom; });
 
         //Stock chart Style 2
-        AddStockChartStyleManager(ws,
+        _ = AddStockChartStyleManager(ws,
                                   chartType,
                                   ePresetChartStyle.StockChartStyle2,
                                   "StockChartStyle2",
@@ -146,7 +146,7 @@ public class StockChartStylingTest : StockChartTestBase
                                   c => { c.Legend.Position = eLegendPosition.Bottom; });
 
         //Stock chart Style 3
-        AddStockChartStyleManager(ws,
+        _ = AddStockChartStyleManager(ws,
                                   chartType,
                                   ePresetChartStyle.StockChartStyle3,
                                   "StockChartStyle3",
@@ -156,7 +156,7 @@ public class StockChartStylingTest : StockChartTestBase
                                   c => { c.Legend.Position = eLegendPosition.Bottom; });
 
         //Stock chart Style 4
-        AddStockChartStyleManager(ws,
+        _ = AddStockChartStyleManager(ws,
                                   chartType,
                                   ePresetChartStyle.StockChartStyle4,
                                   "StockChartStyle4",
@@ -166,7 +166,7 @@ public class StockChartStylingTest : StockChartTestBase
                                   c => { c.Legend.Position = eLegendPosition.Bottom; });
 
         //Stock chart Style 5
-        AddStockChartStyleManager(ws,
+        _ = AddStockChartStyleManager(ws,
                                   chartType,
                                   ePresetChartStyle.StockChartStyle5,
                                   "StockChartStyle5",
@@ -176,7 +176,7 @@ public class StockChartStylingTest : StockChartTestBase
                                   c => { c.Legend.Position = eLegendPosition.Bottom; });
 
         //Stock chart Style 6
-        AddStockChartStyleManager(ws,
+        _ = AddStockChartStyleManager(ws,
                                   chartType,
                                   ePresetChartStyle.StockChartStyle6,
                                   "StockChartStyle6",
@@ -186,7 +186,7 @@ public class StockChartStylingTest : StockChartTestBase
                                   c => { c.Legend.Position = eLegendPosition.Bottom; });
 
         //Stock chart Style 7
-        AddStockChartStyleManager(ws,
+        _ = AddStockChartStyleManager(ws,
                                   chartType,
                                   ePresetChartStyle.StockChartStyle7,
                                   "StockChartStyle7",
@@ -196,7 +196,7 @@ public class StockChartStylingTest : StockChartTestBase
                                   c => { c.Legend.Position = eLegendPosition.Bottom; });
 
         //Stock chart Style 8
-        AddStockChartStyleManager(ws,
+        _ = AddStockChartStyleManager(ws,
                                   chartType,
                                   ePresetChartStyle.StockChartStyle8,
                                   "StockChartStyle8",
@@ -206,7 +206,7 @@ public class StockChartStylingTest : StockChartTestBase
                                   c => { c.Legend.Position = eLegendPosition.Bottom; });
 
         //Stock chart Style 9
-        AddStockChartStyleManager(ws,
+        _ = AddStockChartStyleManager(ws,
                                   chartType,
                                   ePresetChartStyle.StockChartStyle9,
                                   "StockChartStyle9",
@@ -216,7 +216,7 @@ public class StockChartStylingTest : StockChartTestBase
                                   c => { c.Legend.Position = eLegendPosition.Bottom; });
 
         //Stock chart Style 10
-        AddStockChartStyleManager(ws,
+        _ = AddStockChartStyleManager(ws,
                                   chartType,
                                   ePresetChartStyle.StockChartStyle10,
                                   "StockChartStyle10",
@@ -226,7 +226,7 @@ public class StockChartStylingTest : StockChartTestBase
                                   c => { c.Legend.Position = eLegendPosition.Bottom; });
 
         //Stock chart Style 11
-        AddStockChartStyleManager(ws,
+        _ = AddStockChartStyleManager(ws,
                                   chartType,
                                   ePresetChartStyle.StockChartStyle11,
                                   "StockChartStyle11",
@@ -236,13 +236,13 @@ public class StockChartStylingTest : StockChartTestBase
                                   c => { c.Legend.Position = eLegendPosition.Bottom; });
 
         //Stock buildin chart 15
-        AddStockChartStyle(ws, chartType, eChartStyle.Style15, "StockChartStyle15", 80, 5, Range, c => { c.Legend.Position = eLegendPosition.Bottom; });
+        _ = AddStockChartStyle(ws, chartType, eChartStyle.Style15, "StockChartStyle15", 80, 5, Range, c => { c.Legend.Position = eLegendPosition.Bottom; });
 
         //Stock buildin chart 33
-        AddStockChartStyle(ws, chartType, eChartStyle.Style33, "StockChartStyle33", 80, 18, Range, c => { c.Legend.Position = eLegendPosition.Bottom; });
+        _ = AddStockChartStyle(ws, chartType, eChartStyle.Style33, "StockChartStyle33", 80, 18, Range, c => { c.Legend.Position = eLegendPosition.Bottom; });
 
         //Stock buildin chart 48
-        AddStockChartStyle(ws, chartType, eChartStyle.Style48, "StockChartStyle48", 80, 31, Range, c => { c.Legend.Position = eLegendPosition.Bottom; });
+        _ = AddStockChartStyle(ws, chartType, eChartStyle.Style48, "StockChartStyle48", 80, 31, Range, c => { c.Legend.Position = eLegendPosition.Bottom; });
     }
 
     private static ExcelStockChart AddStockChartStyleManager(ExcelWorksheet ws,

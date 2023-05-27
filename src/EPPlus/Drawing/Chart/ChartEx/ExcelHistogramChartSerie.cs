@@ -69,7 +69,7 @@ public class ExcelHistogramChartSerie : ExcelChartExSerie
             if (value)
             {
                 this.DeleteNode(_binningPath);
-                this.CreateNode(_aggregationPath);
+                _ = this.CreateNode(_aggregationPath);
             }
             else
             {

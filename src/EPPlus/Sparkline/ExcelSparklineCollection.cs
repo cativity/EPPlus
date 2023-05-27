@@ -84,8 +84,8 @@ public class ExcelSparklineCollection : IEnumerable<ExcelSparkline>
         XmlElement? sparkline = this._slg.TopNode.OwnerDocument.CreateElement("x14", "sparkline", ExcelPackage.schemaMainX14);
         XmlNode? sls = this._slg.TopNode.SelectSingleNode("x14:sparklines", this._slg.NameSpaceManager);
 
-        sls.AppendChild(sparkline);
-        this._slg.TopNode.AppendChild(sls);
+        _ = sls.AppendChild(sparkline);
+        _ = this._slg.TopNode.AppendChild(sls);
         ExcelSparkline? sl = new ExcelSparkline(this._slg.NameSpaceManager, sparkline);
         sl.Cell = cell;
         sl.RangeAddress = sqref;
@@ -94,7 +94,7 @@ public class ExcelSparklineCollection : IEnumerable<ExcelSparkline>
 
     internal void Remove(ExcelSparkline sparkline)
     {
-        sparkline.TopNode.ParentNode.RemoveChild(sparkline.TopNode);
-        this._lst.Remove(sparkline);
+        _ = sparkline.TopNode.ParentNode.RemoveChild(sparkline.TopNode);
+        _ = this._lst.Remove(sparkline);
     }
 }

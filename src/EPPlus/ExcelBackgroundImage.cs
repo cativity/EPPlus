@@ -59,7 +59,7 @@ public class ExcelBackgroundImage : XmlHelper, IPictureContainer
 
                 if (!string.IsNullOrEmpty(relId))
                 {
-                    this._imageNew.ImageBytes = PictureStore.GetPicture(relId, this, out string contentType, out ePictureType pictureType);
+                    this._imageNew.ImageBytes = PictureStore.GetPicture(relId, this, out string _, out ePictureType pictureType);
                     this._imageNew.Type = pictureType;
                 }
             }
@@ -81,7 +81,7 @@ public class ExcelBackgroundImage : XmlHelper, IPictureContainer
 
         ePictureType type = PictureStore.GetPictureType(PictureFile.Extension);
         byte[]? imgBytes = File.ReadAllBytes(PictureFile.FullName);
-        this.Image.SetImage(imgBytes, type);
+        _ = this.Image.SetImage(imgBytes, type);
     }
 
     /// <summary>

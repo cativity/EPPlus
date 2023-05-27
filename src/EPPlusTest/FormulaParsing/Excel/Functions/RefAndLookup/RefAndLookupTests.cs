@@ -96,14 +96,14 @@ public class RefAndLookupTests
         VLookup? func = new VLookup();
         IEnumerable<FunctionArgument>? args = FunctionsHelper.CreateArgs(2, "A1:B2", 2);
         ParsingContext? parsingContext = ParsingContext.Create();
-        parsingContext.Scopes.NewScope(RangeAddress.Empty);
+        _ = parsingContext.Scopes.NewScope(RangeAddress.Empty);
 
         ExcelDataProvider? provider = A.Fake<ExcelDataProvider>();
-        A.CallTo(() => provider.GetCellValue(WorksheetName, 1, 1)).Returns(1);
-        A.CallTo(() => provider.GetCellValue(WorksheetName, 1, 2)).Returns(1);
-        A.CallTo(() => provider.GetCellValue(WorksheetName, 2, 1)).Returns(2);
-        A.CallTo(() => provider.GetCellValue(WorksheetName, 2, 2)).Returns(5);
-        A.CallTo(() => provider.GetDimensionEnd(A<string>.Ignored)).Returns(new ExcelCellAddress(100, 10));
+        _ = A.CallTo(() => provider.GetCellValue(WorksheetName, 1, 1)).Returns(1);
+        _ = A.CallTo(() => provider.GetCellValue(WorksheetName, 1, 2)).Returns(1);
+        _ = A.CallTo(() => provider.GetCellValue(WorksheetName, 2, 1)).Returns(2);
+        _ = A.CallTo(() => provider.GetCellValue(WorksheetName, 2, 2)).Returns(5);
+        _ = A.CallTo(() => provider.GetDimensionEnd(A<string>.Ignored)).Returns(new ExcelCellAddress(100, 10));
 
         parsingContext.ExcelDataProvider = provider;
         CompileResult? result = func.Execute(args, parsingContext);
@@ -116,13 +116,13 @@ public class RefAndLookupTests
         VLookup? func = new VLookup();
         IEnumerable<FunctionArgument>? args = FunctionsHelper.CreateArgs(4, "A1:B2", 2, true);
         ParsingContext? parsingContext = ParsingContext.Create();
-        parsingContext.Scopes.NewScope(RangeAddress.Empty);
+        _ = parsingContext.Scopes.NewScope(RangeAddress.Empty);
 
         ExcelDataProvider? provider = A.Fake<ExcelDataProvider>();
-        A.CallTo(() => provider.GetCellValue(WorksheetName, 1, 1)).Returns(3);
-        A.CallTo(() => provider.GetCellValue(WorksheetName, 1, 2)).Returns(1);
-        A.CallTo(() => provider.GetCellValue(WorksheetName, 2, 1)).Returns(5);
-        A.CallTo(() => provider.GetCellValue(WorksheetName, 2, 2)).Returns(4);
+        _ = A.CallTo(() => provider.GetCellValue(WorksheetName, 1, 1)).Returns(3);
+        _ = A.CallTo(() => provider.GetCellValue(WorksheetName, 1, 2)).Returns(1);
+        _ = A.CallTo(() => provider.GetCellValue(WorksheetName, 2, 1)).Returns(5);
+        _ = A.CallTo(() => provider.GetCellValue(WorksheetName, 2, 2)).Returns(4);
 
         parsingContext.ExcelDataProvider = provider;
         CompileResult? result = func.Execute(args, parsingContext);
@@ -135,15 +135,15 @@ public class RefAndLookupTests
         VLookup? func = new VLookup();
         IEnumerable<FunctionArgument>? args = FunctionsHelper.CreateArgs("B", "A1:B2", 2, true);
         ParsingContext? parsingContext = ParsingContext.Create();
-        parsingContext.Scopes.NewScope(RangeAddress.Empty);
+        _ = parsingContext.Scopes.NewScope(RangeAddress.Empty);
 
         ExcelDataProvider? provider = A.Fake<ExcelDataProvider>();
         ;
 
-        A.CallTo(() => provider.GetCellValue(WorksheetName, 1, 1)).Returns("A");
-        A.CallTo(() => provider.GetCellValue(WorksheetName, 1, 2)).Returns(1);
-        A.CallTo(() => provider.GetCellValue(WorksheetName, 2, 1)).Returns("C");
-        A.CallTo(() => provider.GetCellValue(WorksheetName, 2, 2)).Returns(4);
+        _ = A.CallTo(() => provider.GetCellValue(WorksheetName, 1, 1)).Returns("A");
+        _ = A.CallTo(() => provider.GetCellValue(WorksheetName, 1, 2)).Returns(1);
+        _ = A.CallTo(() => provider.GetCellValue(WorksheetName, 2, 1)).Returns("C");
+        _ = A.CallTo(() => provider.GetCellValue(WorksheetName, 2, 2)).Returns(4);
 
         parsingContext.ExcelDataProvider = provider;
         CompileResult? result = func.Execute(args, parsingContext);
@@ -156,14 +156,14 @@ public class RefAndLookupTests
         HLookup? func = new HLookup();
         IEnumerable<FunctionArgument>? args = FunctionsHelper.CreateArgs(2, "A1:B2", 2);
         ParsingContext? parsingContext = ParsingContext.Create();
-        parsingContext.Scopes.NewScope(RangeAddress.Empty);
+        _ = parsingContext.Scopes.NewScope(RangeAddress.Empty);
 
         ExcelDataProvider? provider = A.Fake<ExcelDataProvider>();
 
-        A.CallTo(() => provider.GetCellValue(WorksheetName, 1, 1)).Returns(1);
-        A.CallTo(() => provider.GetCellValue(WorksheetName, 1, 2)).Returns(1);
-        A.CallTo(() => provider.GetCellValue(WorksheetName, 2, 1)).Returns(2);
-        A.CallTo(() => provider.GetCellValue(WorksheetName, 2, 2)).Returns(5);
+        _ = A.CallTo(() => provider.GetCellValue(WorksheetName, 1, 1)).Returns(1);
+        _ = A.CallTo(() => provider.GetCellValue(WorksheetName, 1, 2)).Returns(1);
+        _ = A.CallTo(() => provider.GetCellValue(WorksheetName, 2, 1)).Returns(2);
+        _ = A.CallTo(() => provider.GetCellValue(WorksheetName, 2, 2)).Returns(5);
 
         parsingContext.ExcelDataProvider = provider;
         CompileResult? result = func.Execute(args, parsingContext);
@@ -176,14 +176,14 @@ public class RefAndLookupTests
         HLookup? func = new HLookup();
         IEnumerable<FunctionArgument>? args = FunctionsHelper.CreateArgs(2, "A1:B2", 2, false);
         ParsingContext? parsingContext = ParsingContext.Create();
-        parsingContext.Scopes.NewScope(RangeAddress.Empty);
+        _ = parsingContext.Scopes.NewScope(RangeAddress.Empty);
 
         ExcelDataProvider? provider = A.Fake<ExcelDataProvider>();
 
-        A.CallTo(() => provider.GetCellValue(WorksheetName, 1, 1)).Returns(3);
-        A.CallTo(() => provider.GetCellValue(WorksheetName, 1, 2)).Returns(1);
-        A.CallTo(() => provider.GetCellValue(WorksheetName, 2, 1)).Returns(2);
-        A.CallTo(() => provider.GetCellValue(WorksheetName, 2, 2)).Returns(5);
+        _ = A.CallTo(() => provider.GetCellValue(WorksheetName, 1, 1)).Returns(3);
+        _ = A.CallTo(() => provider.GetCellValue(WorksheetName, 1, 2)).Returns(1);
+        _ = A.CallTo(() => provider.GetCellValue(WorksheetName, 2, 1)).Returns(2);
+        _ = A.CallTo(() => provider.GetCellValue(WorksheetName, 2, 2)).Returns(5);
 
         parsingContext.ExcelDataProvider = provider;
         CompileResult? result = func.Execute(args, parsingContext);
@@ -197,14 +197,14 @@ public class RefAndLookupTests
         HLookup? func = new HLookup();
         IEnumerable<FunctionArgument>? args = FunctionsHelper.CreateArgs(1, "A1:B2", 2, true);
         ParsingContext? parsingContext = ParsingContext.Create();
-        parsingContext.Scopes.NewScope(RangeAddress.Empty);
+        _ = parsingContext.Scopes.NewScope(RangeAddress.Empty);
 
         ExcelDataProvider? provider = A.Fake<ExcelDataProvider>();
 
-        A.CallTo(() => provider.GetCellValue(WorksheetName, 1, 1)).Returns(2);
-        A.CallTo(() => provider.GetCellValue(WorksheetName, 1, 2)).Returns(3);
-        A.CallTo(() => provider.GetCellValue(WorksheetName, 2, 1)).Returns(3);
-        A.CallTo(() => provider.GetCellValue(WorksheetName, 2, 2)).Returns(5);
+        _ = A.CallTo(() => provider.GetCellValue(WorksheetName, 1, 1)).Returns(2);
+        _ = A.CallTo(() => provider.GetCellValue(WorksheetName, 1, 2)).Returns(3);
+        _ = A.CallTo(() => provider.GetCellValue(WorksheetName, 2, 1)).Returns(3);
+        _ = A.CallTo(() => provider.GetCellValue(WorksheetName, 2, 2)).Returns(5);
 
         parsingContext.ExcelDataProvider = provider;
         CompileResult? result = func.Execute(args, parsingContext);
@@ -217,16 +217,16 @@ public class RefAndLookupTests
         Lookup? func = new Lookup();
         IEnumerable<FunctionArgument>? args = FunctionsHelper.CreateArgs(4, "A1:B3", 2);
         ParsingContext? parsingContext = ParsingContext.Create();
-        parsingContext.Scopes.NewScope(RangeAddress.Empty);
+        _ = parsingContext.Scopes.NewScope(RangeAddress.Empty);
 
         ExcelDataProvider? provider = A.Fake<ExcelDataProvider>();
-        A.CallTo(() => provider.GetCellValue(WorksheetName, 1, 1)).Returns(1);
-        A.CallTo(() => provider.GetCellValue(WorksheetName, 1, 2)).Returns("A");
-        A.CallTo(() => provider.GetCellValue(WorksheetName, 2, 1)).Returns(3);
-        A.CallTo(() => provider.GetCellValue(WorksheetName, 2, 2)).Returns("B");
-        A.CallTo(() => provider.GetCellValue(WorksheetName, 3, 1)).Returns(5);
-        A.CallTo(() => provider.GetCellValue(WorksheetName, 3, 2)).Returns("C");
-        A.CallTo(() => provider.GetDimensionEnd(A<string>.Ignored)).Returns(new ExcelCellAddress(100, 10));
+        _ = A.CallTo(() => provider.GetCellValue(WorksheetName, 1, 1)).Returns(1);
+        _ = A.CallTo(() => provider.GetCellValue(WorksheetName, 1, 2)).Returns("A");
+        _ = A.CallTo(() => provider.GetCellValue(WorksheetName, 2, 1)).Returns(3);
+        _ = A.CallTo(() => provider.GetCellValue(WorksheetName, 2, 2)).Returns("B");
+        _ = A.CallTo(() => provider.GetCellValue(WorksheetName, 3, 1)).Returns(5);
+        _ = A.CallTo(() => provider.GetCellValue(WorksheetName, 3, 2)).Returns("C");
+        _ = A.CallTo(() => provider.GetDimensionEnd(A<string>.Ignored)).Returns(new ExcelCellAddress(100, 10));
 
         parsingContext.ExcelDataProvider = provider;
         CompileResult? result = func.Execute(args, parsingContext);
@@ -239,15 +239,15 @@ public class RefAndLookupTests
         Lookup? func = new Lookup();
         IEnumerable<FunctionArgument>? args = FunctionsHelper.CreateArgs(4, "A1:C2", 2);
         ParsingContext? parsingContext = ParsingContext.Create();
-        parsingContext.Scopes.NewScope(RangeAddress.Empty);
+        _ = parsingContext.Scopes.NewScope(RangeAddress.Empty);
 
         ExcelDataProvider? provider = A.Fake<ExcelDataProvider>();
-        A.CallTo(() => provider.GetCellValue(WorksheetName, 1, 1)).Returns(1);
-        A.CallTo(() => provider.GetCellValue(WorksheetName, 1, 2)).Returns(3);
-        A.CallTo(() => provider.GetCellValue(WorksheetName, 1, 3)).Returns(5);
-        A.CallTo(() => provider.GetCellValue(WorksheetName, 2, 1)).Returns("A");
-        A.CallTo(() => provider.GetCellValue(WorksheetName, 2, 2)).Returns("B");
-        A.CallTo(() => provider.GetCellValue(WorksheetName, 2, 3)).Returns("C");
+        _ = A.CallTo(() => provider.GetCellValue(WorksheetName, 1, 1)).Returns(1);
+        _ = A.CallTo(() => provider.GetCellValue(WorksheetName, 1, 2)).Returns(3);
+        _ = A.CallTo(() => provider.GetCellValue(WorksheetName, 1, 3)).Returns(5);
+        _ = A.CallTo(() => provider.GetCellValue(WorksheetName, 2, 1)).Returns("A");
+        _ = A.CallTo(() => provider.GetCellValue(WorksheetName, 2, 2)).Returns("B");
+        _ = A.CallTo(() => provider.GetCellValue(WorksheetName, 2, 3)).Returns("C");
 
         parsingContext.ExcelDataProvider = provider;
         CompileResult? result = func.Execute(args, parsingContext);
@@ -296,12 +296,12 @@ public class RefAndLookupTests
         Match? func = new Match();
         IEnumerable<FunctionArgument>? args = FunctionsHelper.CreateArgs(3, "A1:C1", 0);
         ParsingContext? parsingContext = ParsingContext.Create();
-        parsingContext.Scopes.NewScope(RangeAddress.Empty);
+        _ = parsingContext.Scopes.NewScope(RangeAddress.Empty);
 
         ExcelDataProvider? provider = A.Fake<ExcelDataProvider>();
-        A.CallTo(() => provider.GetCellValue(WorksheetName, 1, 1)).Returns(1);
-        A.CallTo(() => provider.GetCellValue(WorksheetName, 1, 2)).Returns(3);
-        A.CallTo(() => provider.GetCellValue(WorksheetName, 1, 3)).Returns(5);
+        _ = A.CallTo(() => provider.GetCellValue(WorksheetName, 1, 1)).Returns(1);
+        _ = A.CallTo(() => provider.GetCellValue(WorksheetName, 1, 2)).Returns(3);
+        _ = A.CallTo(() => provider.GetCellValue(WorksheetName, 1, 3)).Returns(5);
         parsingContext.ExcelDataProvider = provider;
         CompileResult? result = func.Execute(args, parsingContext);
         Assert.AreEqual(2, result.Result);
@@ -313,13 +313,13 @@ public class RefAndLookupTests
         Match? func = new Match();
         IEnumerable<FunctionArgument>? args = FunctionsHelper.CreateArgs(3, "A1:A3", 0);
         ParsingContext? parsingContext = ParsingContext.Create();
-        parsingContext.Scopes.NewScope(RangeAddress.Empty);
+        _ = parsingContext.Scopes.NewScope(RangeAddress.Empty);
 
         ExcelDataProvider? provider = A.Fake<ExcelDataProvider>();
-        A.CallTo(() => provider.GetCellValue(WorksheetName, 1, 1)).Returns(1);
-        A.CallTo(() => provider.GetCellValue(WorksheetName, 2, 1)).Returns(3);
-        A.CallTo(() => provider.GetCellValue(WorksheetName, 3, 1)).Returns(5);
-        A.CallTo(() => provider.GetDimensionEnd(A<string>.Ignored)).Returns(new ExcelCellAddress(100, 10));
+        _ = A.CallTo(() => provider.GetCellValue(WorksheetName, 1, 1)).Returns(1);
+        _ = A.CallTo(() => provider.GetCellValue(WorksheetName, 2, 1)).Returns(3);
+        _ = A.CallTo(() => provider.GetCellValue(WorksheetName, 3, 1)).Returns(5);
+        _ = A.CallTo(() => provider.GetDimensionEnd(A<string>.Ignored)).Returns(new ExcelCellAddress(100, 10));
         parsingContext.ExcelDataProvider = provider;
         CompileResult? result = func.Execute(args, parsingContext);
         Assert.AreEqual(2, result.Result);
@@ -331,12 +331,12 @@ public class RefAndLookupTests
         Match? func = new Match();
         IEnumerable<FunctionArgument>? args = FunctionsHelper.CreateArgs(4, "A1:C1", 1);
         ParsingContext? parsingContext = ParsingContext.Create();
-        parsingContext.Scopes.NewScope(RangeAddress.Empty);
+        _ = parsingContext.Scopes.NewScope(RangeAddress.Empty);
 
         ExcelDataProvider? provider = A.Fake<ExcelDataProvider>();
-        A.CallTo(() => provider.GetCellValue(WorksheetName, 1, 1)).Returns(1);
-        A.CallTo(() => provider.GetCellValue(WorksheetName, 1, 2)).Returns(3);
-        A.CallTo(() => provider.GetCellValue(WorksheetName, 1, 3)).Returns(5);
+        _ = A.CallTo(() => provider.GetCellValue(WorksheetName, 1, 1)).Returns(1);
+        _ = A.CallTo(() => provider.GetCellValue(WorksheetName, 1, 2)).Returns(3);
+        _ = A.CallTo(() => provider.GetCellValue(WorksheetName, 1, 3)).Returns(5);
         parsingContext.ExcelDataProvider = provider;
         CompileResult? result = func.Execute(args, parsingContext);
         Assert.AreEqual(2, result.Result);
@@ -348,12 +348,12 @@ public class RefAndLookupTests
         Match? func = new Match();
         IEnumerable<FunctionArgument>? args = FunctionsHelper.CreateArgs(6, "A1:C1", -1);
         ParsingContext? parsingContext = ParsingContext.Create();
-        parsingContext.Scopes.NewScope(RangeAddress.Empty);
+        _ = parsingContext.Scopes.NewScope(RangeAddress.Empty);
 
         ExcelDataProvider? provider = A.Fake<ExcelDataProvider>();
-        A.CallTo(() => provider.GetCellValue(WorksheetName, 1, 1)).Returns(10);
-        A.CallTo(() => provider.GetCellValue(WorksheetName, 1, 2)).Returns(8);
-        A.CallTo(() => provider.GetCellValue(WorksheetName, 1, 3)).Returns(5);
+        _ = A.CallTo(() => provider.GetCellValue(WorksheetName, 1, 1)).Returns(10);
+        _ = A.CallTo(() => provider.GetCellValue(WorksheetName, 1, 2)).Returns(8);
+        _ = A.CallTo(() => provider.GetCellValue(WorksheetName, 1, 3)).Returns(5);
         parsingContext.ExcelDataProvider = provider;
         CompileResult? result = func.Execute(args, parsingContext);
         Assert.AreEqual(2, result.Result);
@@ -365,12 +365,12 @@ public class RefAndLookupTests
         Match? func = new Match();
         IEnumerable<FunctionArgument>? args = FunctionsHelper.CreateArgs(10, "A1:C1", -1);
         ParsingContext? parsingContext = ParsingContext.Create();
-        parsingContext.Scopes.NewScope(RangeAddress.Empty);
+        _ = parsingContext.Scopes.NewScope(RangeAddress.Empty);
 
         ExcelDataProvider? provider = A.Fake<ExcelDataProvider>();
-        A.CallTo(() => provider.GetCellValue(WorksheetName, 1, 1)).Returns(10);
-        A.CallTo(() => provider.GetCellValue(WorksheetName, 1, 2)).Returns(8);
-        A.CallTo(() => provider.GetCellValue(WorksheetName, 1, 3)).Returns(5);
+        _ = A.CallTo(() => provider.GetCellValue(WorksheetName, 1, 1)).Returns(10);
+        _ = A.CallTo(() => provider.GetCellValue(WorksheetName, 1, 2)).Returns(8);
+        _ = A.CallTo(() => provider.GetCellValue(WorksheetName, 1, 3)).Returns(5);
         parsingContext.ExcelDataProvider = provider;
         CompileResult? result = func.Execute(args, parsingContext);
         Assert.AreEqual(1, result.Result);
@@ -396,7 +396,7 @@ public class RefAndLookupTests
         Row? func = new Row();
         ParsingContext? parsingContext = ParsingContext.Create();
         RangeAddressFactory? rangeAddressFactory = new RangeAddressFactory(A.Fake<ExcelDataProvider>());
-        parsingContext.Scopes.NewScope(rangeAddressFactory.Create("A2"));
+        _ = parsingContext.Scopes.NewScope(rangeAddressFactory.Create("A2"));
         CompileResult? result = func.Execute(Enumerable.Empty<FunctionArgument>(), parsingContext);
         Assert.AreEqual(2, result.Result);
     }
@@ -417,7 +417,7 @@ public class RefAndLookupTests
         Column? func = new Column();
         ParsingContext? parsingContext = ParsingContext.Create();
         RangeAddressFactory? rangeAddressFactory = new RangeAddressFactory(A.Fake<ExcelDataProvider>());
-        parsingContext.Scopes.NewScope(rangeAddressFactory.Create("B2"));
+        _ = parsingContext.Scopes.NewScope(rangeAddressFactory.Create("B2"));
         CompileResult? result = func.Execute(Enumerable.Empty<FunctionArgument>(), parsingContext);
         Assert.AreEqual(2, result.Result);
     }
@@ -477,7 +477,7 @@ public class RefAndLookupTests
         Address? func = new AddressFunction();
         ParsingContext? parsingContext = ParsingContext.Create();
         parsingContext.ExcelDataProvider = A.Fake<ExcelDataProvider>();
-        A.CallTo(() => parsingContext.ExcelDataProvider.ExcelMaxRows).Returns(10);
+        _ = A.CallTo(() => parsingContext.ExcelDataProvider.ExcelMaxRows).Returns(10);
         CompileResult? result = func.Execute(FunctionsHelper.CreateArgs(1, 2), parsingContext);
         Assert.AreEqual("$B$1", result.Result);
     }
@@ -488,7 +488,7 @@ public class RefAndLookupTests
         Address? func = new AddressFunction();
         ParsingContext? parsingContext = ParsingContext.Create();
         parsingContext.ExcelDataProvider = A.Fake<ExcelDataProvider>();
-        A.CallTo(() => parsingContext.ExcelDataProvider.ExcelMaxRows).Returns(10);
+        _ = A.CallTo(() => parsingContext.ExcelDataProvider.ExcelMaxRows).Returns(10);
         CompileResult? result = func.Execute(FunctionsHelper.CreateArgs(1, 2, (int)ExcelReferenceType.RelativeRowAndColumn), parsingContext);
         Assert.AreEqual("B1", result.Result);
     }
@@ -499,7 +499,7 @@ public class RefAndLookupTests
         Address? func = new AddressFunction();
         ParsingContext? parsingContext = ParsingContext.Create();
         parsingContext.ExcelDataProvider = A.Fake<ExcelDataProvider>();
-        A.CallTo(() => parsingContext.ExcelDataProvider.ExcelMaxRows).Returns(10);
+        _ = A.CallTo(() => parsingContext.ExcelDataProvider.ExcelMaxRows).Returns(10);
 
         CompileResult? result =
             func.Execute(FunctionsHelper.CreateArgs(1, 2, (int)ExcelReferenceType.RelativeRowAndColumn, true, "Worksheet1"), parsingContext);
@@ -513,7 +513,7 @@ public class RefAndLookupTests
         Address? func = new AddressFunction();
         ParsingContext? parsingContext = ParsingContext.Create();
         parsingContext.ExcelDataProvider = A.Fake<ExcelDataProvider>();
-        A.CallTo(() => parsingContext.ExcelDataProvider.ExcelMaxRows).Returns(10);
-        CompileResult? result = func.Execute(FunctionsHelper.CreateArgs(1, 2, (int)ExcelReferenceType.RelativeRowAndColumn, false), parsingContext);
+        _ = A.CallTo(() => parsingContext.ExcelDataProvider.ExcelMaxRows).Returns(10);
+        _ = func.Execute(FunctionsHelper.CreateArgs(1, 2, (int)ExcelReferenceType.RelativeRowAndColumn, false), parsingContext);
     }
 }

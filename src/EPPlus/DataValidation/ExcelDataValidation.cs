@@ -365,7 +365,7 @@ public abstract class ExcelDataValidation : IExcelDataValidation
 
     internal void SetAddress(string address)
     {
-        string? dvAddress = AddressUtility.ParseEntireColumnSelections(address);
+        _ = AddressUtility.ParseEntireColumnSelections(address);
         this._address = new ExcelDatavalidationAddress(address, this);
         this._ws.DataValidations.UpdateRangeDictionary(this);
     }

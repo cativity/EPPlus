@@ -49,7 +49,7 @@ public class ExcelChartLegend : XmlHelper, IDrawingStyle, IStyleMandatoryPropert
         }
 
         this.AddSchemaNodeOrder(new string[] { "legendPos", "legendEntry", "layout", "overlay", "spPr", "txPr" }, ExcelDrawing._schemaNodeOrderSpPr);
-        this.LoadLegendEntries();
+        _ = this.LoadLegendEntries();
     }
 
     internal void LoadEntries()
@@ -329,7 +329,7 @@ public class ExcelChartLegend : XmlHelper, IDrawingStyle, IStyleMandatoryPropert
             return;
         }
 
-        this.TopNode.ParentNode.RemoveChild(this.TopNode);
+        _ = this.TopNode.ParentNode.RemoveChild(this.TopNode);
         this.TopNode = null;
     }
 
@@ -347,7 +347,7 @@ public class ExcelChartLegend : XmlHelper, IDrawingStyle, IStyleMandatoryPropert
         XmlHelper xml = XmlHelperFactory.Create(this.NameSpaceManager, this._chart.ChartXml);
         xml.SchemaNodeOrder = this._chart.SchemaNodeOrder;
 
-        xml.CreateNode("c:chartSpace/c:chart/c:legend");
+        _ = xml.CreateNode("c:chartSpace/c:chart/c:legend");
         this.TopNode = this._chart.ChartXml.SelectSingleNode("c:chartSpace/c:chart/c:legend", this.NameSpaceManager);
         this.TopNode.InnerXml = "<c:legendPos val=\"r\" /><c:layout /><c:spPr><a:noFill/><a:ln><a:noFill/></a:ln><a:effectLst/></c:spPr>";
     }

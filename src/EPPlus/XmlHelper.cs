@@ -69,7 +69,7 @@ public abstract class XmlHelper
     {
         if (value)
         {
-            this.CreateNode(path);
+            _ = this.CreateNode(path);
         }
         else
         {
@@ -120,7 +120,7 @@ public abstract class XmlHelper
                 }
                 else
                 {
-                    toElement.SetAttribute(a.LocalName, a.NamespaceURI, a.Value);
+                    _ = toElement.SetAttribute(a.LocalName, a.NamespaceURI, a.Value);
                 }
             }
         }
@@ -233,7 +233,7 @@ public abstract class XmlHelper
                 if (subPath.StartsWith("@", StringComparison.OrdinalIgnoreCase))
                 {
                     XmlAttribute addedAtt = node.OwnerDocument.CreateAttribute(subPath.Substring(1, subPath.Length - 1), nameSpaceURI); //nameSpaceURI
-                    node.Attributes.Append(addedAtt);
+                    _ = node.Attributes.Append(addedAtt);
                 }
                 else
                 {
@@ -261,24 +261,24 @@ public abstract class XmlHelper
                     {
                         XmlElement? altNode = node.OwnerDocument.CreateElement("AlternateContent", ExcelPackage.schemaMarkupCompatibility);
                         XmlElement? choiceNode = node.OwnerDocument.CreateElement("Choice", ExcelPackage.schemaMarkupCompatibility);
-                        altNode.AppendChild(choiceNode);
+                        _ = altNode.AppendChild(choiceNode);
                         choiceNode.SetAttribute("Requires", alternateContentRequires);
-                        choiceNode.AppendChild(subNode);
+                        _ = choiceNode.AppendChild(subNode);
                         subNode = altNode;
                     }
 
                     if (prependNode != null)
                     {
-                        node.InsertBefore(subNode, prependNode);
+                        _ = node.InsertBefore(subNode, prependNode);
                         prependNode = null;
                     }
                     else if (insertFirst || (this.SchemaNodeOrder?.Length > 0 && subNode.LocalName == this.SchemaNodeOrder[0]))
                     {
-                        node.PrependChild(subNode);
+                        _ = node.PrependChild(subNode);
                     }
                     else
                     {
-                        node.AppendChild(subNode);
+                        _ = node.AppendChild(subNode);
                     }
                 }
 
@@ -320,7 +320,6 @@ public abstract class XmlHelper
         if (newNodeName.Length > 1)
         {
             string? prefix = newNameSplit[0];
-            string? name = newNameSplit[1];
 
             string? ns = this.NameSpaceManager.LookupNamespace(prefix);
             newElement = oldChild.OwnerDocument.CreateElement(newNodeName, ns);
@@ -330,7 +329,7 @@ public abstract class XmlHelper
             newElement = oldChild.OwnerDocument.CreateElement(newNodeName, this.NameSpaceManager.DefaultNamespace);
         }
 
-        oldChild.ParentNode.ReplaceChild(newElement, oldChild);
+        _ = oldChild.ParentNode.ReplaceChild(newElement, oldChild);
 
         return newElement;
     }
@@ -480,7 +479,7 @@ public abstract class XmlHelper
                         // Only if the attribute exists
                         if (attribute != null)
                         {
-                            node.Attributes.Remove(attribute);
+                            _ = node.Attributes.Remove(attribute);
                         }
                     }
                     else
@@ -492,7 +491,7 @@ public abstract class XmlHelper
                             attribute = node.OwnerDocument.CreateAttribute(attributeName);
 
                             // Add it to the current node
-                            node.Attributes.Append(attribute);
+                            _ = node.Attributes.Append(attribute);
                         }
 
                         // Update the attribute value
@@ -588,24 +587,24 @@ public abstract class XmlHelper
                         switch (nodeInsertOrder)
                         {
                             case eNodeInsertOrder.After:
-                                node.InsertAfter(subNode, referenceNode);
+                                _ = node.InsertAfter(subNode, referenceNode);
                                 referenceNode = null;
 
                                 break;
 
                             case eNodeInsertOrder.Before:
-                                node.InsertBefore(subNode, referenceNode);
+                                _ = node.InsertBefore(subNode, referenceNode);
                                 referenceNode = null;
 
                                 break;
 
                             case eNodeInsertOrder.First:
-                                node.PrependChild(subNode);
+                                _ = node.PrependChild(subNode);
 
                                 break;
 
                             case eNodeInsertOrder.Last:
-                                node.AppendChild(subNode);
+                                _ = node.AppendChild(subNode);
 
                                 break;
                         }
@@ -742,11 +741,11 @@ public abstract class XmlHelper
             {
                 if (node is XmlAttribute)
                 {
-                    (node as XmlAttribute).OwnerElement.Attributes.Remove(node as XmlAttribute);
+                    _ = (node as XmlAttribute).OwnerElement.Attributes.Remove(node as XmlAttribute);
                 }
                 else
                 {
-                    node.ParentNode.RemoveChild(node);
+                    _ = node.ParentNode.RemoveChild(node);
                 }
             }
             else
@@ -773,23 +772,23 @@ public abstract class XmlHelper
 
                 if (deleteElement)
                 {
-                    att.OwnerElement.ParentNode.RemoveChild(att.OwnerElement);
+                    _ = att.OwnerElement.ParentNode.RemoveChild(att.OwnerElement);
                 }
                 else
                 {
-                    att.OwnerElement.Attributes.Remove(att);
+                    _ = att.OwnerElement.Attributes.Remove(att);
                 }
             }
             else
             {
-                node.ParentNode.RemoveChild(node);
+                _ = node.ParentNode.RemoveChild(node);
             }
         }
     }
 
     internal void DeleteTopNode()
     {
-        this.TopNode.ParentNode.RemoveChild(this.TopNode);
+        _ = this.TopNode.ParentNode.RemoveChild(this.TopNode);
     }
 
     internal void SetXmlNodeDouble(string path, double? d, bool allowNegative)
@@ -910,7 +909,7 @@ public abstract class XmlHelper
 
             if (nameNode == null)
             {
-                this.CreateNode(path, insertFirst);
+                _ = this.CreateNode(path, insertFirst);
                 nameNode = node.SelectSingleNode(path, this.NameSpaceManager);
             }
 
@@ -944,7 +943,7 @@ public abstract class XmlHelper
                 }
                 else
                 {
-                    node.ParentNode.RemoveChild(node);
+                    _ = node.ParentNode.RemoveChild(node);
                 }
             }
         }
@@ -1388,15 +1387,15 @@ public abstract class XmlHelper
         {
             if (allowedChildren == null || allowedChildren.Contains(this.TopNode.ChildNodes[0].LocalName))
             {
-                newNode.AppendChild(this.TopNode.ChildNodes[0]);
+                _ = newNode.AppendChild(this.TopNode.ChildNodes[0]);
             }
             else
             {
-                this.TopNode.RemoveChild(this.TopNode.ChildNodes[0]);
+                _ = this.TopNode.RemoveChild(this.TopNode.ChildNodes[0]);
             }
         }
 
-        this.TopNode.ParentNode.ReplaceChild(newNode, this.TopNode);
+        _ = this.TopNode.ParentNode.ReplaceChild(newNode, this.TopNode);
         this.TopNode = newNode;
     }
 
@@ -1422,11 +1421,11 @@ public abstract class XmlHelper
 
         if (insertAfter == null)
         {
-            parentNode.AppendChild(newNode);
+            _ = parentNode.AppendChild(newNode);
         }
         else
         {
-            parentNode.InsertAfter(newNode, insertAfter);
+            _ = parentNode.InsertAfter(newNode, insertAfter);
         }
     }
 
@@ -1508,11 +1507,11 @@ public abstract class XmlHelper
 
         if (prependChild == null)
         {
-            extLst.AppendChild(newExt);
+            _ = extLst.AppendChild(newExt);
         }
         else
         {
-            extLst.InsertBefore(newExt, prependChild);
+            _ = extLst.InsertBefore(newExt, prependChild);
         }
 
         return newExt;

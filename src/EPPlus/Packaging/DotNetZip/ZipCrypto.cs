@@ -92,7 +92,7 @@ internal class ZipCrypto
 
         z.InitCipher(password);
 
-        ZipEntry.ReadWeakEncryptionHeader(s, eh);
+        _ = ZipEntry.ReadWeakEncryptionHeader(s, eh);
 
         // Decrypt the header.  This has a side effect of "further initializing the
         // encryption keys" in the traditional zip encryption.

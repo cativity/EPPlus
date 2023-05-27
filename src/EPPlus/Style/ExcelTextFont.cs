@@ -114,15 +114,15 @@ public class ExcelTextFont : XmlHelper
         if (this._path != "" && this.TopNode == this._rootNode)
         {
             this._initXml?.Invoke();
-            this.CreateNode(this._path);
+            _ = this.CreateNode(this._path);
             this.TopNode = this._rootNode.SelectSingleNode(this._path, this.NameSpaceManager);
-            this.CreateNode("../../../a:bodyPr");
-            this.CreateNode("../../../a:lstStyle");
+            _ = this.CreateNode("../../../a:bodyPr");
+            _ = this.CreateNode("../../../a:lstStyle");
         }
         else if (this.TopNode.ParentNode?.ParentNode?.ParentNode?.LocalName == "rich")
         {
-            this.CreateNode("../../../a:bodyPr");
-            this.CreateNode("../../../a:lstStyle");
+            _ = this.CreateNode("../../../a:bodyPr");
+            _ = this.CreateNode("../../../a:lstStyle");
         }
     }
 
@@ -162,7 +162,7 @@ public class ExcelTextFont : XmlHelper
 
         foreach (XmlAttribute a in copyFromElement.Attributes)
         {
-            ((XmlElement)this.TopNode).SetAttribute(a.Name, a.NamespaceURI, a.Value);
+            _ = ((XmlElement)this.TopNode).SetAttribute(a.Name, a.NamespaceURI, a.Value);
         }
 
         if (copyFromElement.HasChildNodes && !this.TopNode.HasChildNodes)

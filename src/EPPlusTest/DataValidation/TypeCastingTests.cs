@@ -17,7 +17,7 @@ public class TypeCastingTests
     {
         using ExcelPackage? package = new ExcelPackage();
         ExcelWorksheet? sheet = package.Workbook.Worksheets.Add("test");
-        sheet.DataValidations.AddListValidation("A1");
+        _ = sheet.DataValidations.AddListValidation("A1");
         IExcelDataValidationList? dv = sheet.DataValidations.First().As.ListValidation;
         Assert.IsNotNull(dv);
     }
@@ -27,7 +27,7 @@ public class TypeCastingTests
     {
         using ExcelPackage? package = new ExcelPackage();
         ExcelWorksheet? sheet = package.Workbook.Worksheets.Add("test");
-        sheet.DataValidations.AddIntegerValidation("A1");
+        _ = sheet.DataValidations.AddIntegerValidation("A1");
         IExcelDataValidationInt? dv = sheet.DataValidations.First().As.IntegerValidation;
         Assert.IsNotNull(dv);
     }
@@ -37,7 +37,7 @@ public class TypeCastingTests
     {
         using ExcelPackage? package = new ExcelPackage();
         ExcelWorksheet? sheet = package.Workbook.Worksheets.Add("test");
-        sheet.DataValidations.AddDecimalValidation("A1");
+        _ = sheet.DataValidations.AddDecimalValidation("A1");
         IExcelDataValidationDecimal? dv = sheet.DataValidations.First().As.DecimalValidation;
         Assert.IsNotNull(dv);
     }
@@ -47,7 +47,7 @@ public class TypeCastingTests
     {
         using ExcelPackage? package = new ExcelPackage();
         ExcelWorksheet? sheet = package.Workbook.Worksheets.Add("test");
-        sheet.DataValidations.AddDateTimeValidation("A1");
+        _ = sheet.DataValidations.AddDateTimeValidation("A1");
         IExcelDataValidationDateTime? dv = sheet.DataValidations.First().As.DateTimeValidation;
         Assert.IsNotNull(dv);
     }
@@ -57,7 +57,7 @@ public class TypeCastingTests
     {
         using ExcelPackage? package = new ExcelPackage();
         ExcelWorksheet? sheet = package.Workbook.Worksheets.Add("test");
-        sheet.DataValidations.AddTimeValidation("A1");
+        _ = sheet.DataValidations.AddTimeValidation("A1");
         IExcelDataValidationTime? dv = sheet.DataValidations.First().As.TimeValidation;
         Assert.IsNotNull(dv);
     }
@@ -67,7 +67,7 @@ public class TypeCastingTests
     {
         using ExcelPackage? package = new ExcelPackage();
         ExcelWorksheet? sheet = package.Workbook.Worksheets.Add("test");
-        sheet.DataValidations.AddCustomValidation("A1");
+        _ = sheet.DataValidations.AddCustomValidation("A1");
         IExcelDataValidationCustom? dv = sheet.DataValidations.First().As.CustomValidation;
         Assert.IsNotNull(dv);
     }
@@ -77,7 +77,7 @@ public class TypeCastingTests
     {
         using ExcelPackage? package = new ExcelPackage();
         ExcelWorksheet? sheet = package.Workbook.Worksheets.Add("test");
-        sheet.DataValidations.AddAnyValidation("A1");
+        _ = sheet.DataValidations.AddAnyValidation("A1");
         IExcelDataValidationAny? dv = sheet.DataValidations.First().As.AnyValidation;
         Assert.IsNotNull(dv);
     }

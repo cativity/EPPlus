@@ -47,7 +47,7 @@ internal class ColumnIndex<T> : IndexBase, IDisposable
 
         if (pagePos >= 0)
         {
-            this.GetPage(Row, ref pagePos);
+            _ = this.GetPage(Row, ref pagePos);
 
             return pagePos;
         }

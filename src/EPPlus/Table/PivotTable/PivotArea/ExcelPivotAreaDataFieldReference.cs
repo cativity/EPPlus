@@ -111,7 +111,7 @@ public class ExcelPivotAreaDataFieldReference : ExcelPivotAreaReferenceBase, IEn
         {
             while (this.TopNode.ChildNodes.Count > 0)
             {
-                this.TopNode.RemoveChild(this.TopNode.ChildNodes[0]);
+                _ = this.TopNode.RemoveChild(this.TopNode.ChildNodes[0]);
             }
         }
 
@@ -119,7 +119,7 @@ public class ExcelPivotAreaDataFieldReference : ExcelPivotAreaReferenceBase, IEn
         {
             if (this.TopNode.LocalName == "reference")
             {
-                this.TopNode.ParentNode.ParentNode.RemoveChild(this.TopNode.ParentNode);
+                _ = this.TopNode.ParentNode.ParentNode.RemoveChild(this.TopNode.ParentNode);
             }
 
             return;

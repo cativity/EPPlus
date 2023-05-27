@@ -125,11 +125,11 @@ public class ExcelRichTextCollection : XmlHelper, IEnumerable<ExcelRichText>
 
         if (index < this._list.Count)
         {
-            this.TopNode.InsertBefore(node, this.TopNode.ChildNodes[index]);
+            _ = this.TopNode.InsertBefore(node, this.TopNode.ChildNodes[index]);
         }
         else
         {
-            this.TopNode.AppendChild(node);
+            _ = this.TopNode.AppendChild(node);
         }
 
         ExcelRichText? rt = new ExcelRichText(this.NameSpaceManager, node, this);
@@ -242,7 +242,7 @@ public class ExcelRichTextCollection : XmlHelper, IEnumerable<ExcelRichText>
     /// <param name="Index"></param>
     public void RemoveAt(int Index)
     {
-        this.TopNode.RemoveChild(this._list[Index].TopNode);
+        _ = this.TopNode.RemoveChild(this._list[Index].TopNode);
         this._list.RemoveAt(Index);
 
         if (this._cells != null && this._list.Count == 0)
@@ -257,8 +257,8 @@ public class ExcelRichTextCollection : XmlHelper, IEnumerable<ExcelRichText>
     /// <param name="Item"></param>
     public void Remove(ExcelRichText Item)
     {
-        this.TopNode.RemoveChild(Item.TopNode);
-        this._list.Remove(Item);
+        _ = this.TopNode.RemoveChild(Item.TopNode);
+        _ = this._list.Remove(Item);
         this.UpdateCells();
 
         if (this._cells != null && this._list.Count == 0)
@@ -278,7 +278,7 @@ public class ExcelRichTextCollection : XmlHelper, IEnumerable<ExcelRichText>
 
             foreach (ExcelRichText? item in this._list)
             {
-                sb.Append(item.Text);
+                _ = sb.Append(item.Text);
             }
 
             return sb.ToString();
@@ -291,7 +291,7 @@ public class ExcelRichTextCollection : XmlHelper, IEnumerable<ExcelRichText>
             }
             else if (this.Count == 0)
             {
-                this.Add(value);
+                _ = this.Add(value);
             }
             else
             {

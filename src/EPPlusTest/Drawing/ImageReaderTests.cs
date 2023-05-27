@@ -47,7 +47,7 @@ public class ImageReaderTests : TestBase
         ExcelWorksheet? ws = _pck.Workbook.Worksheets.Add("InternalJpg");
 
         using MemoryStream? ms = new MemoryStream(Properties.Resources.Test1JpgByteArray);
-        ExcelPicture? image = ws.Drawings.AddPicture("jpg", ms, ePictureType.Jpg);
+        _ = ws.Drawings.AddPicture("jpg", ms, ePictureType.Jpg);
     }
 
     [TestMethod]
@@ -56,7 +56,7 @@ public class ImageReaderTests : TestBase
         ExcelWorksheet? ws = _pck.Workbook.Worksheets.Add("InternalPng");
 
         using MemoryStream? ms = new MemoryStream(Properties.Resources.VmlPatternImagePngByteArray);
-        ExcelPicture? image = ws.Drawings.AddPicture("png1", ms, ePictureType.Png);
+        _ = ws.Drawings.AddPicture("png1", ms, ePictureType.Png);
     }
 
     [TestMethod]
@@ -78,7 +78,7 @@ public class ImageReaderTests : TestBase
 
         using (MemoryStream? ms1 = new MemoryStream(Properties.Resources.Test1JpgByteArray))
         {
-            ExcelPicture? image1 = ws.Drawings.AddPicture("jpg1", ms1, ePictureType.Jpg);
+            _ = ws.Drawings.AddPicture("jpg1", ms1, ePictureType.Jpg);
         }
 
         using (MemoryStream? ms2 = new MemoryStream(Properties.Resources.VmlPatternImagePngByteArray))
@@ -460,18 +460,18 @@ public class ImageReaderTests : TestBase
 
         ExcelImage? ei1 = new ExcelImage(Properties.Resources.Test1.FullName);
         Assert.IsNotNull(ei1);
-        ws.BackgroundImage.Image.SetImage(ei1);
+        _ = ws.BackgroundImage.Image.SetImage(ei1);
 
         ExcelImage? ei2 = new ExcelImage(Properties.Resources.Png2ByteArray, ePictureType.Png);
         Assert.IsNotNull(ei2);
-        ws.BackgroundImage.Image.SetImage(ei2);
+        _ = ws.BackgroundImage.Image.SetImage(ei2);
 
         ExcelImage? ei3 = new ExcelImage(new MemoryStream(Properties.Resources.BitmapImageGif), ePictureType.Gif);
         Assert.IsNotNull(ei3);
 
-        ws.BackgroundImage.Image.SetImage(ei3);
-        ws.BackgroundImage.Image.SetImage(new MemoryStream(Properties.Resources.BitmapImageGif), ePictureType.Gif);
-        await ws.BackgroundImage.Image.SetImageAsync(new MemoryStream(Properties.Resources.BitmapImageGif), ePictureType.Gif);
+        _ = ws.BackgroundImage.Image.SetImage(ei3);
+        _ = ws.BackgroundImage.Image.SetImage(new MemoryStream(Properties.Resources.BitmapImageGif), ePictureType.Gif);
+        _ = await ws.BackgroundImage.Image.SetImageAsync(new MemoryStream(Properties.Resources.BitmapImageGif), ePictureType.Gif);
     }
 
     private static void AddFilesToWorksheet(string fileType, ePictureType? type, string worksheetName = null)

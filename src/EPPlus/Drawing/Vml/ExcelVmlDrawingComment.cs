@@ -145,7 +145,7 @@ public class ExcelVmlDrawingComment : ExcelVmlDrawingBase, IRangeID
         {
             if (value)
             {
-                this.CreateNode(VISIBLE_PATH);
+                _ = this.CreateNode(VISIBLE_PATH);
                 this.Style = SetStyle(this.Style, "visibility", "visible");
             }
             else
@@ -337,7 +337,7 @@ public class ExcelVmlDrawingComment : ExcelVmlDrawingBase, IRangeID
     {
         get
         {
-            GetStyle(this.GetXmlNodeString(TEXTBOX_STYLE_PATH), "mso-fit-shape-to-text", out string value);
+            _ = GetStyle(this.GetXmlNodeString(TEXTBOX_STYLE_PATH), "mso-fit-shape-to-text", out string value);
 
             return value == "t";
         }

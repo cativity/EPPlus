@@ -154,7 +154,7 @@ public class ExcelDrawingFillBasic : XmlHelper, IDisposable
 
         foreach (XmlAttribute a in copyFromFillElement.Attributes)
         {
-            ((XmlElement)this._fillTypeNode).SetAttribute(a.Name, a.NamespaceURI, a.Value);
+            _ = ((XmlElement)this._fillTypeNode).SetAttribute(a.Name, a.NamespaceURI, a.Value);
         }
 
         this._fillTypeNode.InnerXml = copyFromFillElement.InnerXml;
@@ -165,7 +165,7 @@ public class ExcelDrawingFillBasic : XmlHelper, IDisposable
 
             if (relAttr?.Value != null)
             {
-                relAttr.OwnerElement.Attributes.Remove(relAttr);
+                _ = relAttr.OwnerElement.Attributes.Remove(relAttr);
             }
         }
 
@@ -173,13 +173,12 @@ public class ExcelDrawingFillBasic : XmlHelper, IDisposable
 
         if (this.Style == eFillStyle.BlipFill && fill.BlipFill.Image.ImageBytes != null)
         {
-            ((ExcelDrawingFill)this).BlipFill.Image.SetImage(fill.BlipFill.Image.ImageBytes, fill.BlipFill.Image.Type ?? ePictureType.Jpg);
+            _ = ((ExcelDrawingFill)this).BlipFill.Image.SetImage(fill.BlipFill.Image.ImageBytes, fill.BlipFill.Image.Type ?? ePictureType.Jpg);
         }
     }
 
     private static void CreateImageRelation(ExcelDrawingFill fill, XmlElement copyFromFillElement)
     {
-        IPictureContainer pic = fill.BlipFill;
     }
 
     internal string GetFromXml()
@@ -402,8 +401,8 @@ public class ExcelDrawingFillBasic : XmlHelper, IDisposable
             if (this._fillNode == this._fillTypeNode)
             {
                 XmlElement? node = this._fillTypeNode.OwnerDocument.CreateElement("a", GetStyleText(value), ExcelPackage.schemaDrawings);
-                this._fillTypeNode.ParentNode.InsertBefore(node, this._fillTypeNode);
-                this._fillTypeNode.ParentNode.RemoveChild(this._fillTypeNode);
+                _ = this._fillTypeNode.ParentNode.InsertBefore(node, this._fillTypeNode);
+                _ = this._fillTypeNode.ParentNode.RemoveChild(this._fillTypeNode);
                 this._fillTypeNode = node;
                 this._fillNode = node;
                 this.TopNode = node;
@@ -417,7 +416,7 @@ public class ExcelDrawingFillBasic : XmlHelper, IDisposable
         {
             if (this._fillTypeNode != null)
             {
-                this._fillTypeNode.ParentNode.RemoveChild(this._fillTypeNode);
+                _ = this._fillTypeNode.ParentNode.RemoveChild(this._fillTypeNode);
             }
 
             this._fillTypeNode = this.CreateNode(this._fillPath + "/a:" + GetStyleText(value), false);

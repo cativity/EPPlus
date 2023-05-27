@@ -105,7 +105,7 @@ public class LoadFromCollectionAttributesComplexTypeTests
     {
         using ExcelPackage? package = new ExcelPackage();
         ExcelWorksheet? ws = package.Workbook.Worksheets.Add("test");
-        ws.Cells["A1"].LoadFromCollection(this._collection);
+        _ = ws.Cells["A1"].LoadFromCollection(this._collection);
         Assert.AreEqual("ABC", ws.Cells["B1"].Value);
     }
 
@@ -114,7 +114,7 @@ public class LoadFromCollectionAttributesComplexTypeTests
     {
         using ExcelPackage? package = new ExcelPackage();
         ExcelWorksheet? ws = package.Workbook.Worksheets.Add("test");
-        ws.Cells["A1"].LoadFromCollection(this._collectionReversed);
+        _ = ws.Cells["A1"].LoadFromCollection(this._collectionReversed);
         Assert.IsTrue((bool)ws.Cells["A1"].Value);
         Assert.AreEqual("GHI", ws.Cells["B1"].Value);
         Assert.AreEqual(new DateTime(2021, 7, 1), ws.Cells["E1"].Value);
@@ -128,7 +128,7 @@ public class LoadFromCollectionAttributesComplexTypeTests
         this._collection[0] = obj;
         using ExcelPackage? package = new ExcelPackage();
         ExcelWorksheet? ws = package.Workbook.Worksheets.Add("test");
-        ws.Cells["A1"].LoadFromCollection(this._collection);
+        _ = ws.Cells["A1"].LoadFromCollection(this._collection);
         Assert.IsNull(ws.Cells["B1"].Value);
     }
 
@@ -140,7 +140,7 @@ public class LoadFromCollectionAttributesComplexTypeTests
         this._collectionHeaders[0] = obj;
         using ExcelPackage? package = new ExcelPackage();
         ExcelWorksheet? ws = package.Workbook.Worksheets.Add("test");
-        ws.Cells["A1"].LoadFromCollection(this._collectionHeaders);
+        _ = ws.Cells["A1"].LoadFromCollection(this._collectionHeaders);
         Assert.AreEqual("Org Level 3", ws.Cells["B1"].Value);
         Assert.IsNull(ws.Cells["B2"].Value);
     }
@@ -151,7 +151,7 @@ public class LoadFromCollectionAttributesComplexTypeTests
         IEnumerable<IntegratedPlatformExcelRow>? items = ExcelItems.GetItems1();
         using ExcelPackage? package = new ExcelPackage();
         ExcelWorksheet? ws = package.Workbook.Worksheets.Add("test");
-        ws.Cells["A1"].LoadFromCollection(items);
+        _ = ws.Cells["A1"].LoadFromCollection(items);
         object? cv = ws.Cells["F1"].Value;
         Assert.AreEqual("Collateral Owner Email", cv);
     }
@@ -162,7 +162,7 @@ public class LoadFromCollectionAttributesComplexTypeTests
         IEnumerable<IntegratedPlatformExcelRow>? items = ExcelItems.GetItems1();
         using ExcelPackage? package = new ExcelPackage();
         ExcelWorksheet? ws = package.Workbook.Worksheets.Add("test");
-        ws.Cells["A1"].LoadFromCollection(items);
+        _ = ws.Cells["A1"].LoadFromCollection(items);
         object? cv = ws.Cells["G1"].Value;
         Assert.AreEqual("Collateral Owner Name", cv);
     }
@@ -172,7 +172,7 @@ public class LoadFromCollectionAttributesComplexTypeTests
     {
         using ExcelPackage? package = new ExcelPackage();
         ExcelWorksheet? ws = package.Workbook.Worksheets.Add("test");
-        ws.Cells["A1"].LoadFromCollection(this._collectionInheritence);
+        _ = ws.Cells["A1"].LoadFromCollection(this._collectionInheritence);
         Assert.AreEqual("ABC", ws.Cells["B1"].Value);
     }
 
@@ -182,7 +182,7 @@ public class LoadFromCollectionAttributesComplexTypeTests
         using ExcelPackage? package = new ExcelPackage();
         IEnumerable<IntegratedPlatformExcelRow>? items = ExcelItems.GetItems1();
         ExcelWorksheet? sheet = package.Workbook.Worksheets.Add("test");
-        sheet.Cells["A1"].LoadFromCollection(items);
+        _ = sheet.Cells["A1"].LoadFromCollection(items);
         Assert.AreEqual("Product Family", sheet.Cells["A1"].Value);
         Assert.AreEqual("PCH Die Name", sheet.Cells["B1"].Value);
         Assert.AreEqual("Collateral Owner Email", sheet.Cells["F1"].Value);

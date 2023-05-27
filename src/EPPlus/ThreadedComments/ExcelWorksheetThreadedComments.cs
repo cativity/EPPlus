@@ -268,12 +268,12 @@ public class ExcelWorksheetThreadedComments
 
             foreach (XmlNode? node in nodes)
             {
-                node.ParentNode.RemoveChild(node); //Remove xml node
+                _ = node.ParentNode.RemoveChild(node); //Remove xml node
             }
 
             this._worksheet._threadedCommentsStore.Delete(threadedComment.CellAddress.Row, threadedComment.CellAddress.Column, 1, 1, false);
             this._threads[i] = null;
-            this._threadsIndex.Remove(i);
+            _ = this._threadsIndex.Remove(i);
         }
         else
         {
@@ -322,11 +322,11 @@ public class ExcelWorksheetThreadedComments
         {
             foreach (ExcelThreadedComment? c in comment.Comments)
             {
-                c.TopNode.ParentNode.RemoveChild(c.TopNode);
+                _ = c.TopNode.ParentNode.RemoveChild(c.TopNode);
             }
 
             int ix = this._threads.IndexOf(comment);
-            this._threadsIndex.Remove(ix);
+            _ = this._threadsIndex.Remove(ix);
             this._threads[ix] = null;
         }
     }

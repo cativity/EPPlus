@@ -235,10 +235,10 @@ public class CalculationTests
     {
         ExcelPackage? pck = new ExcelPackage();
         ExcelWorksheet? ws = pck.Workbook.Worksheets.Add("CalcTest");
-        ws.Names.AddValue("PRICE", 10);
-        ws.Names.AddValue("QUANTITY", 11);
+        _ = ws.Names.AddValue("PRICE", 10);
+        _ = ws.Names.AddValue("QUANTITY", 11);
         ws.Cells["A1"].Formula = "PRICE*QUANTITY";
-        ws.Names.AddFormula("AMOUNT", "PRICE*QUANTITY");
+        _ = ws.Names.AddFormula("AMOUNT", "PRICE*QUANTITY");
 
         ws.Names["PRICE"].Value = 30;
         ws.Names["QUANTITY"].Value = 10;
@@ -345,7 +345,7 @@ public class CalculationTests
 
         foreach (string? file in Directory.GetFiles(path, "*.xls*"))
         {
-            sb.Append(GetOutput(file));
+            _ = sb.Append(GetOutput(file));
         }
 
         if (sb.Length > 0)
@@ -449,7 +449,7 @@ public class CalculationTests
 
         pck.Workbook.Calculate();
         int nErrors = 0;
-        List<Tuple<string, object, object>>? errors = new List<Tuple<string, object, object>>();
+        //_ = new List<Tuple<string, object, object>>();
         ExcelWorksheet sheet = null;
         string adr = "";
         StreamWriter? fileErr = new StreamWriter(new FileStream("c:\\temp\\err.txt", FileMode.Append));

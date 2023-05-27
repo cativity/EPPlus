@@ -159,7 +159,7 @@ public class SlicerStyleTests : TestBase
         s.WholeTable.Style.Font.Name = "Arial";
 
         using ExcelPackage? p = new ExcelPackage();
-        ExcelSlicerNamedStyle? sc = p.Workbook.Styles.CreateSlicerStyle("CustomSlicerStyleCopyPck", s);
+        _ = p.Workbook.Styles.CreateSlicerStyle("CustomSlicerStyleCopyPck", s);
         ws = p.Workbook.Worksheets.Add("CopiedSlicerStyle");
         LoadTestdata(ws);
         ExcelTable? tbl = ws.Tables.Add(ws.Cells["A1:D100"], "Table3");

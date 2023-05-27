@@ -45,7 +45,7 @@ internal class Concat : ExcelFunction
             {
                 foreach (ICellInfo? cell in arg.ValueAsRangeInfo)
                 {
-                    sb.Append(cell.Value);
+                    _ = sb.Append(cell.Value);
                 }
             }
             else
@@ -54,7 +54,7 @@ internal class Concat : ExcelFunction
 
                 if (v != null)
                 {
-                    sb.Append(v);
+                    _ = sb.Append(v);
                 }
             }
         }

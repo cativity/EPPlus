@@ -23,10 +23,10 @@ public class PivotTableAutoSortTests : TestBase
         _pck = OpenPackage("PivotTableAutoSort.xlsx", true);
         ExcelWorksheet? ws = _pck.Workbook.Worksheets.Add("Data1");
         ExcelRangeBase? r = LoadItemData(ws);
-        ws.Tables.Add(r, "Table1");
+        _ = ws.Tables.Add(r, "Table1");
         ws = _pck.Workbook.Worksheets.Add("Data2");
         r = LoadItemData(ws);
-        ws.Tables.Add(r, "Table2");
+        _ = ws.Tables.Add(r, "Table2");
     }
 
     [ClassCleanup]
@@ -66,7 +66,7 @@ public class PivotTableAutoSortTests : TestBase
         rf.SetAutoSort(df, eSortType.Descending);
         ExcelPivotAreaReference? reference = rf.AutoSort.Conditions.Fields.Add(cf);
         cf.Items.Refresh();
-        reference.Items.AddByValue("Hardware");
+        _ = reference.Items.AddByValue("Hardware");
     }
 
     [TestMethod]
@@ -117,7 +117,7 @@ public class PivotTableAutoSortTests : TestBase
         using ExcelPackage? p1 = new ExcelPackage();
         ExcelWorksheet? ws = p1.Workbook.Worksheets.Add("PivotSameAutoClear");
         ExcelRangeBase? r = LoadItemData(ws);
-        ws.Tables.Add(r, "Table1");
+        _ = ws.Tables.Add(r, "Table1");
 
         ExcelPivotTable? pivot1 = ws.PivotTables.Add(ws.Cells["A1"], p1.Workbook.Worksheets[0].Tables[0].Range, "Pivot2");
         ExcelPivotTableField? rf = pivot1.RowFields.Add(pivot1.Fields[0]);
@@ -133,7 +133,6 @@ public class PivotTableAutoSortTests : TestBase
         p1.Save();
 
         using ExcelPackage? p2 = new ExcelPackage(p1.Stream);
-        ExcelWorksheet? ws1 = p1.Workbook.Worksheets[0];
         ExcelPivotTable? pivot2 = ws.PivotTables[0];
 
         Assert.AreEqual(1, pivot2.ColumnFields.Count);
@@ -150,7 +149,7 @@ public class PivotTableAutoSortTests : TestBase
         using ExcelPackage? p1 = new ExcelPackage();
         ExcelWorksheet? ws = p1.Workbook.Worksheets.Add("PivotSameAutoClear");
         ExcelRangeBase? r = LoadItemData(ws);
-        ws.Tables.Add(r, "Table1");
+        _ = ws.Tables.Add(r, "Table1");
 
         ExcelPivotTable? pivot1 = ws.PivotTables.Add(ws.Cells["A1"], p1.Workbook.Worksheets[0].Tables[0].Range, "Pivot2");
         ExcelPivotTableField? rf = pivot1.RowFields.Add(pivot1.Fields[0]);
@@ -166,7 +165,6 @@ public class PivotTableAutoSortTests : TestBase
         p1.Save();
 
         using ExcelPackage? p2 = new ExcelPackage(p1.Stream);
-        ExcelWorksheet? ws1 = p1.Workbook.Worksheets[0];
         ExcelPivotTable? pivot2 = ws.PivotTables[0];
 
         Assert.AreEqual(1, pivot2.ColumnFields.Count);

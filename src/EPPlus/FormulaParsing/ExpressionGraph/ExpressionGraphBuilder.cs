@@ -89,10 +89,10 @@ internal class ExpressionGraphBuilder : IExpressionGraphBuilder
             else if (token.TokenTypeIsSet(TokenType.WorksheetName))
             {
                 StringBuilder? sb = new StringBuilder();
-                sb.Append(tokens[this._tokenIndex++].Value);
-                sb.Append(tokens[this._tokenIndex++].Value);
-                sb.Append(tokens[this._tokenIndex++].Value);
-                sb.Append(tokens[this._tokenIndex].Value);
+                _ = sb.Append(tokens[this._tokenIndex++].Value);
+                _ = sb.Append(tokens[this._tokenIndex++].Value);
+                _ = sb.Append(tokens[this._tokenIndex++].Value);
+                _ = sb.Append(tokens[this._tokenIndex].Value);
                 Token t = new Token(sb.ToString(), TokenType.ExcelAddress);
                 this.CreateAndAppendExpression(ref parent, ref t);
             }
@@ -106,11 +106,11 @@ internal class ExpressionGraphBuilder : IExpressionGraphBuilder
 
                 if (parent == null)
                 {
-                    this._graph.Add(ConstantExpressions.Percent);
+                    _ = this._graph.Add(ConstantExpressions.Percent);
                 }
                 else
                 {
-                    parent.AddChild(ConstantExpressions.Percent);
+                    _ = parent.AddChild(ConstantExpressions.Percent);
                 }
             }
             else
@@ -126,13 +126,13 @@ internal class ExpressionGraphBuilder : IExpressionGraphBuilder
     {
         if (parent == null)
         {
-            this._graph.Add(new EnumerableExpression());
+            _ = this._graph.Add(new EnumerableExpression());
             this.BuildUp(tokens, this._graph.Current);
         }
         else
         {
             EnumerableExpression? enumerableExpression = new EnumerableExpression();
-            parent.AddChild(enumerableExpression);
+            _ = parent.AddChild(enumerableExpression);
             this.BuildUp(tokens, enumerableExpression);
         }
     }
@@ -161,11 +161,11 @@ internal class ExpressionGraphBuilder : IExpressionGraphBuilder
 
         if (parent == null)
         {
-            this._graph.Add(expression);
+            _ = this._graph.Add(expression);
         }
         else
         {
-            parent.AddChild(expression);
+            _ = parent.AddChild(expression);
         }
     }
 
@@ -199,11 +199,11 @@ internal class ExpressionGraphBuilder : IExpressionGraphBuilder
         {
             if (parent == null)
             {
-                this._graph.Add(this._rangeOffsetExpression);
+                _ = this._graph.Add(this._rangeOffsetExpression);
             }
             else
             {
-                parent.AddChild(this._rangeOffsetExpression);
+                _ = parent.AddChild(this._rangeOffsetExpression);
             }
 
             if (token.TokenTypeIsSet(TokenType.Function) && token.Value.ToLower() == "offset")
@@ -222,7 +222,7 @@ internal class ExpressionGraphBuilder : IExpressionGraphBuilder
     {
         if (parent == null)
         {
-            this._graph.Add(new FunctionExpression(funcName, this._parsingContext, this._negateNextExpression));
+            _ = this._graph.Add(new FunctionExpression(funcName, this._parsingContext, this._negateNextExpression));
             this._negateNextExpression = false;
             this.HandleFunctionArguments(tokens, this._graph.Current);
         }
@@ -230,7 +230,7 @@ internal class ExpressionGraphBuilder : IExpressionGraphBuilder
         {
             FunctionExpression? func = new FunctionExpression(funcName, this._parsingContext, this._negateNextExpression);
             this._negateNextExpression = false;
-            parent.AddChild(func);
+            _ = parent.AddChild(func);
             this.HandleFunctionArguments(tokens, func);
         }
     }
@@ -253,7 +253,7 @@ internal class ExpressionGraphBuilder : IExpressionGraphBuilder
     {
         if (parent == null)
         {
-            this._graph.Add(new GroupExpression(this._negateNextExpression));
+            _ = this._graph.Add(new GroupExpression(this._negateNextExpression));
             this._negateNextExpression = false;
             this.BuildUp(tokens, this._graph.Current);
         }
@@ -263,7 +263,7 @@ internal class ExpressionGraphBuilder : IExpressionGraphBuilder
             {
                 GroupExpression? newGroupExpression = new GroupExpression(this._negateNextExpression);
                 this._negateNextExpression = false;
-                parent.AddChild(newGroupExpression);
+                _ = parent.AddChild(newGroupExpression);
                 this.BuildUp(tokens, newGroupExpression);
             }
 

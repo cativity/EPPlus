@@ -504,7 +504,7 @@ public class ExcelPivotTableCacheField : XmlHelper
             e.SetAttribute("v", value);
         }
 
-        shNode.AppendChild(e);
+        _ = shNode.AppendChild(e);
     }
 
     internal void SetCacheFieldNode()
@@ -609,7 +609,7 @@ public class ExcelPivotTableCacheField : XmlHelper
 
                 if (this._cacheLookup.ContainsKey(key))
                 {
-                    items._list.Remove(key);
+                    _ = items._list.Remove(key);
                 }
                 else
                 {
@@ -652,7 +652,7 @@ public class ExcelPivotTableCacheField : XmlHelper
             this.SetXmlNodeString("d:fieldGroup/d:rangePr/@autoEnd", "0");
         }
 
-        int items = this.AddDateGroupItems(group, groupBy, StartDate, EndDate, interval);
+        _ = this.AddDateGroupItems(group, groupBy, StartDate, EndDate, interval);
 
         this.Grouping = group;
         this.DateGrouping = groupBy;
@@ -675,7 +675,7 @@ public class ExcelPivotTableCacheField : XmlHelper
                           end.ToString(CultureInfo.InvariantCulture),
                           interval.ToString(CultureInfo.InvariantCulture));
 
-        int items = this.AddNumericGroupItems(group, start, end, interval);
+        _ = this.AddNumericGroupItems(group, start, end, interval);
         this.Grouping = group;
 
         return group;
@@ -849,7 +849,7 @@ public class ExcelPivotTableCacheField : XmlHelper
     {
         XmlElement? s = groupItems.OwnerDocument.CreateElement("s", ExcelPackage.schemaMain);
         s.SetAttribute("v", value);
-        groupItems.AppendChild(s);
+        _ = groupItems.AppendChild(s);
         this.GroupItems.Add(value);
     }
 
@@ -911,7 +911,7 @@ public class ExcelPivotTableCacheField : XmlHelper
         //Get unique values.
         for (int row = range._fromRow + 1; row <= toRow; row++)
         {
-            AddSharedItemToHashSet(hs, ws.GetValue(row, column));
+            _ = AddSharedItemToHashSet(hs, ws.GetValue(row, column));
         }
 
         //A pivot table cache can reference multiple Pivot tables, so we need to update them all
@@ -931,7 +931,7 @@ public class ExcelPivotTableCacheField : XmlHelper
                 }
                 else
                 {
-                    existingItems.Add(v);
+                    _ = existingItems.Add(v);
                 }
             }
 
@@ -990,7 +990,7 @@ public class ExcelPivotTableCacheField : XmlHelper
 
         if (!hs.Contains(o))
         {
-            hs.Add(o);
+            _ = hs.Add(o);
         }
 
         return o;

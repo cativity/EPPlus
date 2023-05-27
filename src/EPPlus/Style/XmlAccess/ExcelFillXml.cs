@@ -127,17 +127,17 @@ public class ExcelFillXml : StyleXmlHelper
 
         if (this.PatternType != ExcelFillStyle.None)
         {
-            XmlNode pattern = topNode.SelectSingleNode(fillPatternTypePath, this.NameSpaceManager);
+            _ = topNode.SelectSingleNode(fillPatternTypePath, this.NameSpaceManager);
 
             if (this.BackgroundColor.Exists)
             {
-                this.CreateNode(_backgroundColorPath);
-                this.BackgroundColor.CreateXmlNode(topNode.SelectSingleNode(_backgroundColorPath, this.NameSpaceManager));
+                _ = this.CreateNode(_backgroundColorPath);
+                _ = this.BackgroundColor.CreateXmlNode(topNode.SelectSingleNode(_backgroundColorPath, this.NameSpaceManager));
 
                 if (this.PatternColor.Exists)
                 {
-                    this.CreateNode(_patternColorPath);
-                    this.PatternColor.CreateXmlNode(topNode.SelectSingleNode(_patternColorPath, this.NameSpaceManager));
+                    _ = this.CreateNode(_patternColorPath);
+                    _ = this.PatternColor.CreateXmlNode(topNode.SelectSingleNode(_patternColorPath, this.NameSpaceManager));
                 }
             }
         }

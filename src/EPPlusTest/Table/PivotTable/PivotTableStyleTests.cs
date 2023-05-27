@@ -24,7 +24,7 @@ public class PivotTableStyleTests : TestBase
         InitBase();
         _pck = OpenPackage("PivotTableStyle.xlsx", true);
         _ws = _pck.Workbook.Worksheets.Add("Data1");
-        LoadItemData(_ws);
+        _ = LoadItemData(_ws);
     }
 
     [ClassCleanup]
@@ -39,11 +39,11 @@ public class PivotTableStyleTests : TestBase
     internal static ExcelPivotTable CreatePivotTable(ExcelWorksheet ws)
     {
         ExcelPivotTable? pt = ws.PivotTables.Add(ws.Cells["A3"], _ws.Cells[_ws.Dimension.Address], "PivotTable1");
-        pt.RowFields.Add(pt.Fields[0]);
-        pt.ColumnFields.Add(pt.Fields[1]);
-        pt.DataFields.Add(pt.Fields[3]);
-        pt.DataFields.Add(pt.Fields[2]);
-        pt.PageFields.Add(pt.Fields[4]);
+        _ = pt.RowFields.Add(pt.Fields[0]);
+        _ = pt.ColumnFields.Add(pt.Fields[1]);
+        _ = pt.DataFields.Add(pt.Fields[3]);
+        _ = pt.DataFields.Add(pt.Fields[2]);
+        _ = pt.PageFields.Add(pt.Fields[4]);
 
         return pt;
     }
@@ -229,7 +229,7 @@ public class PivotTableStyleTests : TestBase
         pt.CacheDefinition.Refresh();
         ExcelPivotTableAreaStyle? s = pt.Styles.AddLabel(pt.RowFields[0]);
         s.Conditions.DataFields.Add(1);
-        s.Conditions.Fields[0].Items.AddByValue("Screwdriver");
+        _ = s.Conditions.Fields[0].Items.AddByValue("Screwdriver");
         s.Style.Font.Italic = true;
         s.Style.Font.Strike = true;
         s.Style.Font.Name = "Times New Roman";
@@ -263,8 +263,8 @@ public class PivotTableStyleTests : TestBase
         pt.CacheDefinition.Refresh();
         ExcelPivotTableAreaStyle? s = pt.Styles.AddData(pt.Fields[0], pt.Fields[1]);
         s.Conditions.DataFields.Add(pt.DataFields[1]);
-        s.Conditions.Fields[0].Items.AddByValue("Apple");
-        s.Conditions.Fields[1].Items.AddByValue("Groceries");
+        _ = s.Conditions.Fields[0].Items.AddByValue("Apple");
+        _ = s.Conditions.Fields[1].Items.AddByValue("Groceries");
         s.Style.Fill.Style = eDxfFillStyle.PatternFill;
         s.Style.Fill.BackgroundColor.SetColor(Color.Red);
         s.Outline = true;

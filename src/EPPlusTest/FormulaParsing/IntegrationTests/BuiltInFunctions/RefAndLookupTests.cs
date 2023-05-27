@@ -53,8 +53,8 @@ public class RefAndLookupTests : FormulaParserTestBase
         this._package = new ExcelPackage();
         this._worksheet = this._package.Workbook.Worksheets.Add("Test");
         this._excelDataProvider = A.Fake<ExcelDataProvider>();
-        A.CallTo(() => this._excelDataProvider.GetDimensionEnd(A<string>.Ignored)).Returns(new ExcelCellAddress(10, 1));
-        A.CallTo(() => this._excelDataProvider.GetWorkbookNameValues()).Returns(new ExcelNamedRangeCollection(this._package.Workbook));
+        _ = A.CallTo(() => this._excelDataProvider.GetDimensionEnd(A<string>.Ignored)).Returns(new ExcelCellAddress(10, 1));
+        _ = A.CallTo(() => this._excelDataProvider.GetWorkbookNameValues()).Returns(new ExcelNamedRangeCollection(this._package.Workbook));
         this._parser = new FormulaParser(this._excelDataProvider);
     }
 
@@ -162,7 +162,7 @@ public class RefAndLookupTests : FormulaParserTestBase
     [TestMethod]
     public void RowShouldReturnRowNumber()
     {
-        A.CallTo(() => this._excelDataProvider.GetRangeFormula("", 4, 1)).Returns("Row()");
+        _ = A.CallTo(() => this._excelDataProvider.GetRangeFormula("", 4, 1)).Returns("Row()");
         object? result = this._parser.ParseAt("A4");
         Assert.AreEqual(4, result);
     }
@@ -180,7 +180,7 @@ public class RefAndLookupTests : FormulaParserTestBase
     [TestMethod]
     public void ColumnShouldReturnRowNumber()
     {
-        A.CallTo(() => this._excelDataProvider.GetRangeFormula("", 4, 2)).Returns("Column()");
+        _ = A.CallTo(() => this._excelDataProvider.GetRangeFormula("", 4, 2)).Returns("Column()");
         object? result = this._parser.ParseAt("B4");
         Assert.AreEqual(2, result);
     }
@@ -198,8 +198,8 @@ public class RefAndLookupTests : FormulaParserTestBase
     [TestMethod]
     public void RowsShouldReturnNbrOfRows()
     {
-        A.CallTo(() => this._excelDataProvider.GetRangeFormula("", 4, 1)).Returns("Rows(A5:B7)");
-        A.CallTo(() => this._excelDataProvider.GetRange("", 4, 1, "A5:B7")).Returns(new EpplusExcelDataProvider.RangeInfo(this._worksheet, 1, 2, 3, 3));
+        _ = A.CallTo(() => this._excelDataProvider.GetRangeFormula("", 4, 1)).Returns("Rows(A5:B7)");
+        _ = A.CallTo(() => this._excelDataProvider.GetRange("", 4, 1, "A5:B7")).Returns(new EpplusExcelDataProvider.RangeInfo(this._worksheet, 1, 2, 3, 3));
         object? result = this._parser.ParseAt("A4");
         Assert.AreEqual(3, result);
     }
@@ -207,8 +207,8 @@ public class RefAndLookupTests : FormulaParserTestBase
     [TestMethod]
     public void ColumnsShouldReturnNbrOfCols()
     {
-        A.CallTo(() => this._excelDataProvider.GetRangeFormula("", 4, 1)).Returns("Columns(A5:B7)");
-        A.CallTo(() => this._excelDataProvider.GetRange("", 4, 1, "A5:B7")).Returns(new EpplusExcelDataProvider.RangeInfo(this._worksheet, 1, 2, 1, 3));
+        _ = A.CallTo(() => this._excelDataProvider.GetRangeFormula("", 4, 1)).Returns("Columns(A5:B7)");
+        _ = A.CallTo(() => this._excelDataProvider.GetRange("", 4, 1, "A5:B7")).Returns(new EpplusExcelDataProvider.RangeInfo(this._worksheet, 1, 2, 1, 3));
         object? result = this._parser.ParseAt("A4");
         Assert.AreEqual(2, result);
     }
@@ -223,7 +223,7 @@ public class RefAndLookupTests : FormulaParserTestBase
     [TestMethod]
     public void AddressShouldReturnCorrectResult()
     {
-        A.CallTo(() => this._excelDataProvider.ExcelMaxRows).Returns(12345);
+        _ = A.CallTo(() => this._excelDataProvider.ExcelMaxRows).Returns(12345);
         object? result = this._parser.Parse("Address(1, 1)");
         Assert.AreEqual("$A$1", result);
     }

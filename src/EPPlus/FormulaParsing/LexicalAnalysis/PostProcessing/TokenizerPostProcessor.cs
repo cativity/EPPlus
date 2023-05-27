@@ -254,7 +254,7 @@ internal class TokenizerPostProcessor
         {
             for (int ix = 0; ix < 3; ix++)
             {
-                sb.Append(this._navigator.GetTokenAtRelativePosition(ix).Value);
+                _ = sb.Append(this._navigator.GetTokenAtRelativePosition(ix).Value);
             }
 
             this.ChangeTokenTypeOnCurrentToken(TokenType.ExcelAddress);
@@ -272,7 +272,7 @@ internal class TokenizerPostProcessor
         {
             for (int ix = 0; ix < 4; ix++)
             {
-                sb.Append(this._navigator.GetTokenAtRelativePosition(ix).Value);
+                _ = sb.Append(this._navigator.GetTokenAtRelativePosition(ix).Value);
             }
         }
 

@@ -183,11 +183,11 @@ public class ExcelDrawingGradientFillColorList : IEnumerable<ExcelDrawingGradien
 
         if (node == null)
         {
-            this._gsLst.AppendChild(gs);
+            _ = this._gsLst.AppendChild(gs);
         }
         else
         {
-            this._gsLst.InsertBefore(gs, node);
+            _ = this._gsLst.InsertBefore(gs, node);
         }
 
         gs.SetAttribute("pos", (position * 1000).ToString());

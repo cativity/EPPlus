@@ -120,7 +120,7 @@ internal class ExcelSlicerXmlSources : XmlHelper
 
     internal void Remove(ExcelSlicerXmlSource source)
     {
-        this._list.Remove(source);
+        _ = this._list.Remove(source);
         this._part.Package.DeletePart(source.Uri);
     }
 }

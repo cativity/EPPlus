@@ -23,7 +23,7 @@ internal abstract class FinancialDaysBase
     [System.Diagnostics.CodeAnalysis.SuppressMessage("Performance", "CA1822:Mark members as static", Justification = "<Pending>")]
     public FinancialPeriod GetCouponPeriod(FinancialDay settlementDay, FinancialDay maturityDay, int frequency)
     {
-        List<FinancialPeriod>? periods = new List<FinancialPeriod>();
+        //_ = new List<FinancialPeriod>();
         System.DateTime settlementDate = settlementDay.ToDateTime();
         FinancialDay? tmpDay = maturityDay;
         FinancialDay? lastDay = tmpDay;
@@ -213,7 +213,6 @@ internal abstract class FinancialDaysBase
     {
         System.DateTime settlementDate = settlementDay.ToDateTime();
         FinancialDay? tmpDay = maturityDay;
-        FinancialDay? lastDay = tmpDay;
         int nPeriods = 0;
 
         while (tmpDay.ToDateTime() > settlementDate)

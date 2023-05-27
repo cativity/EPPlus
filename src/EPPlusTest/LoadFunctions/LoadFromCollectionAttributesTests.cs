@@ -76,7 +76,7 @@ public class LoadFromCollectionAttributesTests
     {
         using ExcelPackage? package = new ExcelPackage();
         ExcelWorksheet? sheet = package.Workbook.Worksheets.Add("test");
-        ExcelRangeBase? r = sheet.Cells["A1"].LoadFromCollection(this._actors);
+        _ = sheet.Cells["A1"].LoadFromCollection(this._actors);
 
         Assert.AreEqual("Birthdate", sheet.Cells["A1"].Value);
         Assert.AreEqual("First name", sheet.Cells["B1"].Value);
@@ -93,7 +93,7 @@ public class LoadFromCollectionAttributesTests
     {
         using ExcelPackage? package = new ExcelPackage();
         ExcelWorksheet? sheet = package.Workbook.Worksheets.Add("test");
-        ExcelRangeBase? r = sheet.Cells["A1"].LoadFromCollection(this._actors);
+        _ = sheet.Cells["A1"].LoadFromCollection(this._actors);
         ExcelTable? table = sheet.Tables[0];
         Assert.AreEqual(TableStyles.Dark1, table.TableStyle);
     }
@@ -102,7 +102,7 @@ public class LoadFromCollectionAttributesTests
     {
         using ExcelPackage? package = new ExcelPackage();
         ExcelWorksheet? sheet = package.Workbook.Worksheets.Add("test");
-        ExcelRangeBase? r = sheet.Cells["A1"].LoadFromCollection(this._actors);
+        _ = sheet.Cells["A1"].LoadFromCollection(this._actors);
         Assert.IsNull(sheet.Cells["H3"].Value);
     }
 
@@ -127,7 +127,7 @@ public class LoadFromCollectionAttributesTests
 
         using ExcelPackage? package = new ExcelPackage();
         ExcelWorksheet? sheet = package.Workbook.Worksheets.Add("test");
-        ExcelRangeBase? r = sheet.Cells["A1"].LoadFromCollection(actors);
+        _ = sheet.Cells["A1"].LoadFromCollection(actors);
         ExcelTable? table = sheet.Tables[0];
         Assert.AreEqual(TableStyles.Medium1, table.TableStyle);
         Assert.IsNotNull(sheet.Cells["H3"].Value);
@@ -154,7 +154,7 @@ public class LoadFromCollectionAttributesTests
 
         using ExcelPackage? package = new ExcelPackage();
         ExcelWorksheet? sheet = package.Workbook.Worksheets.Add("test");
-        ExcelRangeBase? r = sheet.Cells["A1"].LoadFromCollection(actors);
+        _ = sheet.Cells["A1"].LoadFromCollection(actors);
         ExcelTable? table = sheet.Tables[0];
         Assert.AreEqual(TableStyles.None, table.TableStyle);
         Assert.IsNotNull(sheet.Cells["H3"].Value);
@@ -165,7 +165,7 @@ public class LoadFromCollectionAttributesTests
     {
         using ExcelPackage? package = new ExcelPackage();
         ExcelWorksheet? sheet = package.Workbook.Worksheets.Add("test");
-        ExcelRangeBase? r = sheet.Cells["A1"].LoadFromCollection(this._actors, false);
+        _ = sheet.Cells["A1"].LoadFromCollection(this._actors, false);
 
         Assert.AreEqual("John", sheet.Cells["B1"].Value);
         Assert.AreEqual("Svensson", sheet.Cells["D2"].Value);
@@ -177,7 +177,7 @@ public class LoadFromCollectionAttributesTests
     {
         using ExcelPackage? package = new ExcelPackage();
         ExcelWorksheet? sheet = package.Workbook.Worksheets.Add("test");
-        ExcelRangeBase? r = sheet.Cells["A1"].LoadFromCollection(this._actors, true, TableStyles.Dark4);
+        _ = sheet.Cells["A1"].LoadFromCollection(this._actors, true, TableStyles.Dark4);
         ExcelTable? table = sheet.Tables[0];
         Assert.AreEqual(TableStyles.Dark4, table.TableStyle);
     }
@@ -193,8 +193,7 @@ public class LoadFromCollectionAttributesTests
 
         using ExcelPackage? package = new ExcelPackage();
         ExcelWorksheet? sheet = package.Workbook.Worksheets.Add("test");
-        ExcelRangeBase? r = sheet.Cells["A1"].LoadFromCollection(objects, true, TableStyles.Dark4);
-        ExcelTable? table = sheet.Tables[0];
+        _ = sheet.Cells["A1"].LoadFromCollection(objects, true, TableStyles.Dark4);
         Assert.AreEqual("Acknowledged...", sheet.Cells["A1"].Value);
         Assert.AreEqual("Org Level 4", sheet.Cells["B1"].Value);
         Assert.AreEqual("ApprovedUtc", sheet.Cells["C1"].Value);

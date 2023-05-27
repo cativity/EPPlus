@@ -62,7 +62,7 @@ public class CustomFilter : TestBase
 
         ws.AutoFilterAddress = ws.Cells["A1:D100"];
         ExcelCustomFilterColumn? col = ws.AutoFilter.Columns.AddCustomFilterColumn(2);
-        col.Filters.Add(new ExcelFilterCustomItem("*3"));
+        _ = col.Filters.Add(new ExcelFilterCustomItem("*3"));
         ws.AutoFilter.ApplyFilter();
 
         Assert.AreEqual(true, ws.Row(2).Hidden);
@@ -77,8 +77,8 @@ public class CustomFilter : TestBase
 
         ws.AutoFilterAddress = ws.Cells["A1:D100"];
         ExcelCustomFilterColumn? col = ws.AutoFilter.Columns.AddCustomFilterColumn(2);
-        col.Filters.Add(new ExcelFilterCustomItem("*3"));
-        col.Filters.Add(new ExcelFilterCustomItem("*ue ?2"));
+        _ = col.Filters.Add(new ExcelFilterCustomItem("*3"));
+        _ = col.Filters.Add(new ExcelFilterCustomItem("*ue ?2"));
         col.And = false;
         ws.AutoFilter.ApplyFilter();
 
@@ -104,7 +104,7 @@ public class CustomFilter : TestBase
 
         ws.AutoFilterAddress = ws.Cells["A1:D100"];
         ExcelCustomFilterColumn? col = ws.AutoFilter.Columns.AddCustomFilterColumn(2);
-        col.Filters.Add(new ExcelFilterCustomItem("*value*"));
+        _ = col.Filters.Add(new ExcelFilterCustomItem("*value*"));
         col.And = false;
         ws.AutoFilter.ApplyFilter();
 
@@ -122,8 +122,8 @@ public class CustomFilter : TestBase
 
         ws.AutoFilterAddress = ws.Cells["A1:D100"];
         ExcelCustomFilterColumn? col = ws.AutoFilter.Columns.AddCustomFilterColumn(1);
-        col.Filters.Add(new ExcelFilterCustomItem("14"));
-        col.Filters.Add(new ExcelFilterCustomItem("95", eFilterOperator.GreaterThanOrEqual));
+        _ = col.Filters.Add(new ExcelFilterCustomItem("14"));
+        _ = col.Filters.Add(new ExcelFilterCustomItem("95", eFilterOperator.GreaterThanOrEqual));
         col.And = false;
         ws.AutoFilter.ApplyFilter();
 
@@ -142,8 +142,8 @@ public class CustomFilter : TestBase
 
         ws.AutoFilterAddress = ws.Cells["A1:D100"];
         ExcelCustomFilterColumn? col = ws.AutoFilter.Columns.AddCustomFilterColumn(1);
-        col.Filters.Add(new ExcelFilterCustomItem("14"));
-        col.Filters.Add(new ExcelFilterCustomItem("12.3", eFilterOperator.LessThanOrEqual));
+        _ = col.Filters.Add(new ExcelFilterCustomItem("14"));
+        _ = col.Filters.Add(new ExcelFilterCustomItem("12.3", eFilterOperator.LessThanOrEqual));
         col.And = false;
         ws.AutoFilter.ApplyFilter();
 
@@ -161,8 +161,8 @@ public class CustomFilter : TestBase
 
         ws.AutoFilterAddress = ws.Cells["A1:D100"];
         ExcelCustomFilterColumn? col = ws.AutoFilter.Columns.AddCustomFilterColumn(1);
-        col.Filters.Add(new ExcelFilterCustomItem("13"));
-        col.Filters.Add(new ExcelFilterCustomItem("12", eFilterOperator.LessThan));
+        _ = col.Filters.Add(new ExcelFilterCustomItem("13"));
+        _ = col.Filters.Add(new ExcelFilterCustomItem("12", eFilterOperator.LessThan));
         col.And = true;
         ws.AutoFilter.ApplyFilter();
 
@@ -180,8 +180,8 @@ public class CustomFilter : TestBase
 
         ws.AutoFilterAddress = ws.Cells["A1:D100"];
         ExcelCustomFilterColumn? col = ws.AutoFilter.Columns.AddCustomFilterColumn(1);
-        col.Filters.Add(new ExcelFilterCustomItem("94", eFilterOperator.GreaterThan));
-        col.Filters.Add(new ExcelFilterCustomItem("98", eFilterOperator.NotEqual));
+        _ = col.Filters.Add(new ExcelFilterCustomItem("94", eFilterOperator.GreaterThan));
+        _ = col.Filters.Add(new ExcelFilterCustomItem("98", eFilterOperator.NotEqual));
         col.And = true;
         ws.AutoFilter.ApplyFilter();
 

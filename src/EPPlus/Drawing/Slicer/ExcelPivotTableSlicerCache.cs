@@ -50,7 +50,7 @@ public class ExcelPivotTableSlicerCache : ExcelSlicerCache
         this.Name = "Slicer_" + ExcelAddressUtil.GetValidName(name);
         this._field = field;
         this.SourceName = this._field.Cache.Name;
-        wb.Names.AddFormula(this.Name, "#N/A");
+        _ = wb.Names.AddFormula(this.Name, "#N/A");
         this.PivotTables.Add(this._field._pivotTable);
         this.CreateWorkbookReference(wb, ExtLstUris.WorkbookSlicerPivotTableUri);
         this.SlicerCacheXml.Save(this.Part.GetStream());
@@ -118,7 +118,7 @@ public class ExcelPivotTableSlicerCache : ExcelSlicerCache
 
         foreach (ExcelPivotTable? pt in this.PivotTables)
         {
-            sb.Append($"<pivotTable name=\"{pt.Name}\" tabId=\"{pt.WorkSheet.SheetId}\"/>");
+            _ = sb.Append($"<pivotTable name=\"{pt.Name}\" tabId=\"{pt.WorkSheet.SheetId}\"/>");
         }
 
         XmlNode? ptNode = this.CreateNode("x14:pivotTables");

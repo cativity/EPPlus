@@ -66,21 +66,21 @@ public class ExcelThreadedCommentThread
         int tcIndex = 0;
         StringBuilder? commentText = new StringBuilder();
         string? authorId = "tc=" + tc.First().Id;
-        commentText.AppendLine("This comment reflects a threaded comment in this cell, a feature that might be supported by newer versions of your spreadsheet program (for example later versions of Excel). Any edits will be overwritten if opened in a spreadsheet program that supports threaded comments.");
-        commentText.AppendLine();
+        _ = commentText.AppendLine("This comment reflects a threaded comment in this cell, a feature that might be supported by newer versions of your spreadsheet program (for example later versions of Excel). Any edits will be overwritten if opened in a spreadsheet program that supports threaded comments.");
+        _ = commentText.AppendLine();
 
         foreach (ExcelThreadedComment? threadedComment in tc)
         {
             if (tcIndex == 0)
             {
-                commentText.AppendLine("Comment:");
+                _ = commentText.AppendLine("Comment:");
             }
             else
             {
-                commentText.AppendLine("Reply:");
+                _ = commentText.AppendLine("Reply:");
             }
 
-            commentText.AppendLine(threadedComment.Text);
+            _ = commentText.AppendLine(threadedComment.Text);
             tcIndex++;
         }
 
@@ -88,7 +88,7 @@ public class ExcelThreadedCommentThread
 
         if (comment == null)
         {
-            this.Worksheet.Comments.Add(this.Worksheet.Cells[this.CellAddress.Address], commentText.ToString(), authorId);
+            _ = this.Worksheet.Comments.Add(this.Worksheet.Cells[this.CellAddress.Address], commentText.ToString(), authorId);
         }
         else
         {
@@ -127,7 +127,7 @@ public class ExcelThreadedCommentThread
         }
 
         XmlElement? xmlNode = this.ThreadedCommentsXml.CreateElement("threadedComment", ExcelPackage.schemaThreadedComments);
-        this.ThreadedCommentsXml.SelectSingleNode("tc:ThreadedComments", this.Worksheet.NameSpaceManager).AppendChild(xmlNode);
+        _ = this.ThreadedCommentsXml.SelectSingleNode("tc:ThreadedComments", this.Worksheet.NameSpaceManager).AppendChild(xmlNode);
         ExcelThreadedComment? newComment = new ExcelThreadedComment(xmlNode, this.Worksheet.NameSpaceManager, this.Worksheet.Workbook, this);
         newComment.Id = ExcelThreadedComment.NewId();
         newComment.CellAddress = new ExcelCellAddress(this.CellAddress.Address);
@@ -247,7 +247,7 @@ public class ExcelThreadedCommentThread
     internal void AddCommentFromXml(XmlElement copyFromElement)
     {
         XmlElement? xmlNode = this.ThreadedCommentsXml.CreateElement("threadedComment", ExcelPackage.schemaThreadedComments);
-        this.ThreadedCommentsXml.SelectSingleNode("tc:ThreadedComments", this.Worksheet.NameSpaceManager).AppendChild(xmlNode);
+        _ = this.ThreadedCommentsXml.SelectSingleNode("tc:ThreadedComments", this.Worksheet.NameSpaceManager).AppendChild(xmlNode);
 
         foreach (XmlAttribute attr in copyFromElement.Attributes)
         {

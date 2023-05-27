@@ -38,7 +38,7 @@ internal class Concatenate : ExcelFunction
 
             if (v != null)
             {
-                sb.Append(v);
+                _ = sb.Append(v);
             }
         }
 

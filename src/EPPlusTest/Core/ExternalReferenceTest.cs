@@ -22,7 +22,7 @@ public class ExternalLinksTest : TestBase
 
         if (!Directory.Exists(outDir))
         {
-            Directory.CreateDirectory(outDir);
+            _ = Directory.CreateDirectory(outDir);
         }
 
         foreach (string? f in Directory.GetFiles(_testInputPath + "ExternalReferences"))
@@ -98,7 +98,7 @@ public class ExternalLinksTest : TestBase
         ExcelPackage? p = OpenTemplatePackage("ExternalReferences\\ExtRef.xlsx");
 
         p.Workbook.ExternalLinks.Directories.Add(new DirectoryInfo(_testInputPathOptional));
-        p.Workbook.ExternalLinks.LoadWorkbooks();
+        _ = p.Workbook.ExternalLinks.LoadWorkbooks();
         p.Workbook.ExternalLinks[0].As.ExternalWorkbook.Package.Workbook.Calculate();
         p.Workbook.ClearFormulaValues();
         p.Workbook.Calculate();
@@ -281,7 +281,7 @@ public class ExternalLinksTest : TestBase
         Assert.AreEqual(6, p.Workbook.ExternalLinks.Count);
 
         Assert.AreEqual(eExternalLinkType.DdeLink, p.Workbook.ExternalLinks[0].ExternalLinkType);
-        p.Workbook.ExternalLinks.LoadWorkbooks();
+        _ = p.Workbook.ExternalLinks.LoadWorkbooks();
 
         ExcelExternalWorkbook? book3 = p.Workbook.ExternalLinks[3].As.ExternalWorkbook;
         Assert.AreEqual(p.File.DirectoryName + "\\fromwb1.xlsx", book3.File.FullName, true);
@@ -300,7 +300,7 @@ public class ExternalLinksTest : TestBase
         ExcelExternalWorkbook? er = p.Workbook.ExternalLinks[0].As.ExternalWorkbook;
         Dictionary<string, object>? excelCache = GetExternalCache(er);
 
-        p.Workbook.ExternalLinks[0].As.ExternalWorkbook.UpdateCache();
+        _ = p.Workbook.ExternalLinks[0].As.ExternalWorkbook.UpdateCache();
         Dictionary<string, object>? epplusCache = GetExternalCache(er);
 
         foreach (string? key in excelCache.Keys)
@@ -336,7 +336,7 @@ public class ExternalLinksTest : TestBase
         ExcelWorksheet? ws2 = p.Workbook.Worksheets.Add("Sheet2");
 
         ws2.Cells["A1"].Value = 3;
-        ws2.Names.Add("SheetDefinedName", ws2.Cells["A1"]);
+        _ = ws2.Names.Add("SheetDefinedName", ws2.Cells["A1"]);
 
         ws1.Cells["D2"].Formula = "Sheet2!SheetDefinedName";
         ws1.Cells["E2"].Formula = "Table1[[#This Row],[a]]+[1]Sheet1!$A2";
@@ -350,9 +350,9 @@ public class ExternalLinksTest : TestBase
 
         ws1.Cells["G5"].Formula = $"[{er.Index}]Sheet1!FromF2*[{er.Index}]!CellH5";
 
-        er.UpdateCache();
+        _ = er.UpdateCache();
         ws1.Calculate();
-        p.Workbook.ExternalLinks.UpdateCaches();
+        _ = p.Workbook.ExternalLinks.UpdateCaches();
 
         Assert.IsInstanceOfType(ws1.Cells["G4"].Value, typeof(ExcelErrorValue));
         Assert.AreEqual(2220D, ws1.Cells["G5"].Value);
@@ -367,7 +367,7 @@ public class ExternalLinksTest : TestBase
         ExcelWorksheet? ws2 = p.Workbook.Worksheets.Add("Sheet2");
 
         ws2.Cells["A1"].Value = 3;
-        ws2.Names.Add("SheetDefinedName", ws2.Cells["A1"]);
+        _ = ws2.Names.Add("SheetDefinedName", ws2.Cells["A1"]);
 
         ws1.Cells["D2"].Formula = "Sheet2!SheetDefinedName";
         ws1.Cells["E2"].Formula = "Table1[[#This Row],[a]]+[1]Sheet1!$A2";
@@ -394,7 +394,7 @@ public class ExternalLinksTest : TestBase
         ExcelExternalWorkbook? er = p.Workbook.ExternalLinks.AddExternalWorkbook(new FileInfo(_testInputPath + "externalreferences\\FromWB1.xlsx"));
         ExcelLineChart? chart = ws.Drawings.AddLineChart("line1", eLineChartType.Line);
         ExcelLineChartSerie? serie = chart.Series.Add("[1]Sheet1!A2:A3", "[1]Sheet1!B2:B3");
-        er.UpdateCache();
+        _ = er.UpdateCache();
         serie.CreateCache();
 
         SaveAndCleanup(p);

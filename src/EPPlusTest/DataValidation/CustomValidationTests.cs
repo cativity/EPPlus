@@ -67,7 +67,7 @@ public class CustomValidationTests : ValidationTestBase
 
         for (int x = 0; x < 257; x++)
         {
-            sb.Append("x");
+            _ = sb.Append("x");
         }
 
         // Act

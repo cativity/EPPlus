@@ -121,7 +121,7 @@ public class ExcelThreadedCommentCollection : XmlHelper, IEnumerable<ExcelThread
 
         if (this.TopNode.SelectSingleNode("tc:threadedComment[@id='" + comment.Id + "']", this.NameSpaceManager) == null)
         {
-            this.TopNode.AppendChild(comment.TopNode);
+            _ = this.TopNode.AppendChild(comment.TopNode);
         }
 
         this.RebuildIndex();
@@ -130,12 +130,12 @@ public class ExcelThreadedCommentCollection : XmlHelper, IEnumerable<ExcelThread
     internal bool Remove(ExcelThreadedComment comment)
     {
         int index = this._commentList.IndexOf(comment);
-        this._commentList.Remove(comment);
+        _ = this._commentList.Remove(comment);
         XmlNode? commentNode = this.TopNode.SelectSingleNode("tc:threadedComment[@id='" + comment.Id + "']", this.NameSpaceManager);
 
         if (commentNode != null)
         {
-            this.TopNode.RemoveChild(commentNode);
+            _ = this.TopNode.RemoveChild(commentNode);
 
             //Reset the parentid to the first item in the list if we remove the first comment
             if (index == 0 && this._commentList.Count > 0)
@@ -163,7 +163,7 @@ public class ExcelThreadedCommentCollection : XmlHelper, IEnumerable<ExcelThread
     {
         foreach (XmlNode? node in this._commentList.Select(x => x.TopNode))
         {
-            this.TopNode.RemoveChild(node);
+            _ = this.TopNode.RemoveChild(node);
         }
 
         this._commentList.Clear();

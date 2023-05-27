@@ -64,7 +64,7 @@ public class ExcelDatabaseTests
     {
         using ExcelPackage? package = new ExcelPackage();
         ExcelDatabase? database = GetDatabase(package);
-        database.Read();
+        _ = database.Read();
 
         Assert.IsFalse(database.HasMoreRows);
     }

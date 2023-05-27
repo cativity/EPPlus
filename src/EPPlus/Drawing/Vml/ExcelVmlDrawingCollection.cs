@@ -184,11 +184,11 @@ internal class ExcelVmlDrawingCollection : ExcelVmlDrawingBaseCollection, IEnume
         if (prev)
         {
             ExcelVmlDrawingBase? prevDraw = this._drawings[this._drawingsCellStore.GetValue(r, c)];
-            prevDraw.TopNode.ParentNode.InsertBefore(node, prevDraw.TopNode);
+            _ = prevDraw.TopNode.ParentNode.InsertBefore(node, prevDraw.TopNode);
         }
         else
         {
-            this.VmlDrawingXml.DocumentElement.AppendChild(node);
+            _ = this.VmlDrawingXml.DocumentElement.AppendChild(node);
         }
 
         node.SetAttribute("id", this.GetNewId());
@@ -197,7 +197,7 @@ internal class ExcelVmlDrawingCollection : ExcelVmlDrawingBaseCollection, IEnume
 
         //node.SetAttribute("style", "position:absolute; margin-left:59.25pt;margin-top:1.5pt;width:108pt;height:59.25pt;z-index:1; visibility:hidden"); 
         node.SetAttribute("fillcolor", "#ffffe1");
-        node.SetAttribute("insetmode", ExcelPackage.schemaMicrosoftOffice, "auto");
+        _ = node.SetAttribute("insetmode", ExcelPackage.schemaMicrosoftOffice, "auto");
 
         string vml = "<v:fill color2=\"#ffffe1\" />";
         vml += "<v:shadow on=\"t\" color=\"black\" obscured=\"t\" />";
@@ -238,40 +238,40 @@ internal class ExcelVmlDrawingCollection : ExcelVmlDrawingBaseCollection, IEnume
         this.CreateVmlPart(); //Create the vml part to be able to create related parts (like blip fill images).
         XmlElement? shapeElement = this.VmlDrawingXml.CreateElement("v", "shape", ExcelPackage.schemaMicrosoftVml);
 
-        this.VmlDrawingXml.DocumentElement.AppendChild(shapeElement);
+        _ = this.VmlDrawingXml.DocumentElement.AppendChild(shapeElement);
 
-        shapeElement.SetAttribute("spid", ExcelPackage.schemaMicrosoftOffice, "_x0000_s" + ctrl.Id);
+        _ = shapeElement.SetAttribute("spid", ExcelPackage.schemaMicrosoftOffice, "_x0000_s" + ctrl.Id);
         shapeElement.SetAttribute("id", name);
 
         //shapeElement.SetAttribute("id", $"{ctrl.ControlTypeString}_x{ctrl.Id}_1");
         shapeElement.SetAttribute("type", "#_x0000_t201");
         shapeElement.SetAttribute("style", "position:absolute;z-index:1;");
-        shapeElement.SetAttribute("insetmode", ExcelPackage.schemaMicrosoftOffice, "auto");
+        _ = shapeElement.SetAttribute("insetmode", ExcelPackage.schemaMicrosoftOffice, "auto");
         SetShapeAttributes(ctrl, shapeElement);
 
         StringBuilder? vml = new StringBuilder();
-        vml.Append(GetVml(ctrl, shapeElement));
-        vml.Append("<o:lock v:ext=\"edit\" rotation=\"t\"/>");
-        vml.Append("<v:textbox style=\"mso-direction-alt:auto\" o:singleclick=\"f\">");
+        _ = vml.Append(GetVml(ctrl, shapeElement));
+        _ = vml.Append("<o:lock v:ext=\"edit\" rotation=\"t\"/>");
+        _ = vml.Append("<v:textbox style=\"mso-direction-alt:auto\" o:singleclick=\"f\">");
 
         if (ctrl is ExcelControlWithText textControl)
         {
-            vml.Append($"<div style=\"text-align:center\"><font color=\"#000000\" size=\"{GetFontSize(ctrl)}\" face=\"{GetFontName(ctrl)}\">{textControl.Text}</font></div>");
+            _ = vml.Append($"<div style=\"text-align:center\"><font color=\"#000000\" size=\"{GetFontSize(ctrl)}\" face=\"{GetFontName(ctrl)}\">{textControl.Text}</font></div>");
         }
 
-        vml.Append("</v:textbox>");
-        vml.Append($"<x:ClientData ObjectType=\"{ctrl.ControlTypeString}\">");
-        vml.Append(string.Format("<x:Anchor>{0}</x:Anchor>", ctrl.GetVmlAnchorValue()));
-        vml.Append(GetVmlClientData(ctrl, shapeElement));
-        vml.Append("<x:PrintObject>False</x:PrintObject>");
-        vml.Append("<x:AutoFill>False</x:AutoFill>");
+        _ = vml.Append("</v:textbox>");
+        _ = vml.Append($"<x:ClientData ObjectType=\"{ctrl.ControlTypeString}\">");
+        _ = vml.Append(string.Format("<x:Anchor>{0}</x:Anchor>", ctrl.GetVmlAnchorValue()));
+        _ = vml.Append(GetVmlClientData(ctrl, shapeElement));
+        _ = vml.Append("<x:PrintObject>False</x:PrintObject>");
+        _ = vml.Append("<x:AutoFill>False</x:AutoFill>");
 
         if (ctrl.ControlType != eControlType.GroupBox)
         {
-            vml.Append("<x:TextVAlign>Center</x:TextVAlign>");
+            _ = vml.Append("<x:TextVAlign>Center</x:TextVAlign>");
         }
 
-        vml.Append("</x:ClientData>");
+        _ = vml.Append("</x:ClientData>");
 
         shapeElement.InnerXml = vml.ToString();
 
@@ -360,7 +360,7 @@ internal class ExcelVmlDrawingCollection : ExcelVmlDrawingBaseCollection, IEnume
             case eControlType.Button:
                 shapeElement.SetAttribute("fillcolor", "buttonFace [67]");
                 shapeElement.SetAttribute("strokecolor", "windowText [64]");
-                shapeElement.SetAttribute("button", ExcelPackage.schemaMicrosoftOffice, "t");
+                _ = shapeElement.SetAttribute("button", ExcelPackage.schemaMicrosoftOffice, "t");
 
                 break;
 

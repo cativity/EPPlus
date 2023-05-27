@@ -230,11 +230,11 @@ internal class TokenFactory : ITokenFactory
         }
         else if (allowDecimal && nExp == 1 && nDot == 1 && (nMinus == 1 || nPlus == 1))
         {
-            return double.TryParse(value, NumberStyles.AllowDecimalPoint | NumberStyles.AllowExponent, CultureInfo.InvariantCulture, out double r);
+            return double.TryParse(value, NumberStyles.AllowDecimalPoint | NumberStyles.AllowExponent, CultureInfo.InvariantCulture, out double _);
         }
         else if (!allowDecimal && nExp == 1 && (nMinus == 1 || nPlus == 1))
         {
-            return double.TryParse(value, NumberStyles.AllowExponent, CultureInfo.InvariantCulture, out double r);
+            return double.TryParse(value, NumberStyles.AllowExponent, CultureInfo.InvariantCulture, out double _);
         }
 
         return false;

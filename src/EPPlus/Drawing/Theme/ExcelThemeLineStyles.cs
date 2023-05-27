@@ -69,7 +69,7 @@ public class ExcelThemeLineStyles : XmlHelper, IEnumerable<ExcelThemeLine>
     public ExcelThemeLine Add()
     {
         XmlElement? node = this.TopNode.OwnerDocument.CreateElement("a", "ln", ExcelPackage.schemaMain);
-        this.TopNode.AppendChild(node);
+        _ = this.TopNode.AppendChild(node);
 
         return new ExcelThemeLine(this.NameSpaceManager, this.TopNode);
     }
@@ -87,8 +87,8 @@ public class ExcelThemeLineStyles : XmlHelper, IEnumerable<ExcelThemeLine>
 
         if (this._list.Contains(item))
         {
-            this._list.Remove(item);
-            item.TopNode.ParentNode.RemoveChild(item.TopNode);
+            _ = this._list.Remove(item);
+            _ = item.TopNode.ParentNode.RemoveChild(item.TopNode);
         }
     }
 
@@ -108,7 +108,7 @@ public class ExcelThemeLineStyles : XmlHelper, IEnumerable<ExcelThemeLine>
             throw new ArgumentException("Index", "Index out of range");
         }
 
-        this._list.Remove(this._list[Index]);
+        _ = this._list.Remove(this._list[Index]);
     }
 
     /// <summary>

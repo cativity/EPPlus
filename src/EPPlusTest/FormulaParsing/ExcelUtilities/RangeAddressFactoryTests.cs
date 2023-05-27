@@ -48,14 +48,14 @@ public class RangeAddressFactoryTests
     public void Setup()
     {
         ExcelDataProvider? provider = A.Fake<ExcelDataProvider>();
-        A.CallTo(() => provider.ExcelMaxRows).Returns(ExcelMaxRows);
+        _ = A.CallTo(() => provider.ExcelMaxRows).Returns(ExcelMaxRows);
         this._factory = new RangeAddressFactory(provider);
     }
 
     [TestMethod, ExpectedException(typeof(ArgumentException))]
     public void CreateShouldThrowIfSuppliedAddressIsNull()
     {
-        this._factory.Create(null);
+        _ = this._factory.Create(null);
     }
 
     [TestMethod]

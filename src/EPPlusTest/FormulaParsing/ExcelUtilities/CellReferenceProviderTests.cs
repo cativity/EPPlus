@@ -48,15 +48,15 @@ public class CellReferenceProviderTests
     public void Setup()
     {
         this._provider = A.Fake<ExcelDataProvider>();
-        A.CallTo(() => this._provider.ExcelMaxRows).Returns(5000);
+        _ = A.CallTo(() => this._provider.ExcelMaxRows).Returns(5000);
     }
 
     [TestMethod]
     public void ShouldReturnReferencedSingleAddress()
     {
         ParsingContext? parsingContext = ParsingContext.Create();
-        parsingContext.Scopes.NewScope(RangeAddress.Empty);
-        parsingContext.Configuration.SetLexer(new Lexer(parsingContext.Configuration.FunctionRepository, parsingContext.NameValueProvider));
+        _ = parsingContext.Scopes.NewScope(RangeAddress.Empty);
+        _ = parsingContext.Configuration.SetLexer(new Lexer(parsingContext.Configuration.FunctionRepository, parsingContext.NameValueProvider));
         parsingContext.RangeAddressFactory = new RangeAddressFactory(this._provider);
         CellReferenceProvider? provider = new CellReferenceProvider();
         IEnumerable<string>? result = provider.GetReferencedAddresses("A1", parsingContext);
@@ -67,8 +67,8 @@ public class CellReferenceProviderTests
     public void ShouldReturnReferencedMultipleAddresses()
     {
         ParsingContext? parsingContext = ParsingContext.Create();
-        parsingContext.Scopes.NewScope(RangeAddress.Empty);
-        parsingContext.Configuration.SetLexer(new Lexer(parsingContext.Configuration.FunctionRepository, parsingContext.NameValueProvider));
+        _ = parsingContext.Scopes.NewScope(RangeAddress.Empty);
+        _ = parsingContext.Configuration.SetLexer(new Lexer(parsingContext.Configuration.FunctionRepository, parsingContext.NameValueProvider));
         parsingContext.RangeAddressFactory = new RangeAddressFactory(this._provider);
         CellReferenceProvider? provider = new CellReferenceProvider();
         IEnumerable<string>? result = provider.GetReferencedAddresses("A1:A2", parsingContext);

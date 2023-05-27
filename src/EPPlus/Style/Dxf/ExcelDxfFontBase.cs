@@ -125,7 +125,7 @@ public class ExcelDxfFontBase : DxfStyleBase
     /// <param name="path">The X Path</param>
     internal override void CreateNodes(XmlHelper helper, string path)
     {
-        helper.CreateNode(path);
+        _ = helper.CreateNode(path);
         SetValueBool(helper, path + "/d:b/@val", this.Bold);
         SetValueBool(helper, path + "/d:i/@val", this.Italic);
         SetValueBool(helper, path + "/d:strike/@val", this.Strike);

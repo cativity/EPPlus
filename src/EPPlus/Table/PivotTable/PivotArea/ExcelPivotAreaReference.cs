@@ -81,7 +81,7 @@ public class ExcelPivotAreaReference : ExcelPivotAreaReferenceBase
         {
             while (this.TopNode.ChildNodes.Count > 0)
             {
-                this.TopNode.RemoveChild(this.TopNode.ChildNodes[0]);
+                _ = this.TopNode.RemoveChild(this.TopNode.ChildNodes[0]);
             }
         }
 

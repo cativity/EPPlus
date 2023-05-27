@@ -45,7 +45,7 @@ internal class FilterInfo
 
             if (worksheet.AutoFilter != null && worksheet.AutoFilter.Columns != null && worksheet.AutoFilter.Columns.Count > 0)
             {
-                this._worksheetFilters.Add(worksheet.Name);
+                _ = this._worksheetFilters.Add(worksheet.Name);
 
                 continue;
             }
@@ -56,7 +56,7 @@ internal class FilterInfo
                 {
                     if (!this._worksheetFilters.Contains(worksheet.Name))
                     {
-                        this._worksheetFilters.Add(worksheet.Name);
+                        _ = this._worksheetFilters.Add(worksheet.Name);
 
                         continue;
                     }

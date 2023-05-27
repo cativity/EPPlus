@@ -66,7 +66,7 @@ public class ExcelChartDataLabelCollection : XmlHelper, IEnumerable<ExcelChartDa
 
     private ExcelChartDataLabelItem CreateDataLabel(int idx)
     {
-        int pos = this.GetItemAfter(idx);
+        _ = this.GetItemAfter(idx);
         XmlElement element = this.CreateElement(idx);
         ExcelChartDataLabelItem? dl = new ExcelChartDataLabelItem(this._chart, this.NameSpaceManager, element, "dLbl", this.SchemaNodeOrder) { Index = idx };
 
@@ -89,7 +89,7 @@ public class ExcelChartDataLabelCollection : XmlHelper, IEnumerable<ExcelChartDa
         if (idx < this._list.Count)
         {
             pointNode = this.TopNode.OwnerDocument.CreateElement("c", "dLbl", ExcelPackage.schemaMain);
-            this._list[idx].TopNode.InsertBefore(pointNode, this._list[idx].TopNode);
+            _ = this._list[idx].TopNode.InsertBefore(pointNode, this._list[idx].TopNode);
         }
         else
         {

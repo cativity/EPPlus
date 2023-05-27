@@ -83,7 +83,7 @@ public class TableTests : TestBase
     {
         using ExcelPackage? pck = new ExcelPackage();
         ExcelWorksheet? ws = pck.Workbook.Worksheets.Add("Table");
-        ExcelTable? tbl = ws.Tables.Add(ws.Cells["A1"], "5TestTable");
+        _ = ws.Tables.Add(ws.Cells["A1"], "5TestTable");
     }
 
     [TestMethod]
@@ -92,21 +92,21 @@ public class TableTests : TestBase
     {
         using ExcelPackage? pck = new ExcelPackage();
         ExcelWorksheet? ws = pck.Workbook.Worksheets.Add("TableNoWhiteSpace");
-        ExcelTable? tbl = ws.Tables.Add(ws.Cells["A1"], "Test Table");
+        _ = ws.Tables.Add(ws.Cells["A1"], "Test Table");
     }
 
     [TestMethod]
     public void TestTableNameCanStartsWithBackSlash()
     {
         ExcelWorksheet? ws = _pck.Workbook.Worksheets.Add("NameStartWithBackSlash");
-        ExcelTable? tbl = ws.Tables.Add(ws.Cells["A1"], "\\TestTable");
+        _ = ws.Tables.Add(ws.Cells["A1"], "\\TestTable");
     }
 
     [TestMethod]
     public void TestTableNameCanStartsWithUnderscore()
     {
         ExcelWorksheet? ws = _pck.Workbook.Worksheets.Add("NameStartWithUnderscore");
-        ExcelTable? tbl = ws.Tables.Add(ws.Cells["A1"], "_TestTable");
+        _ = ws.Tables.Add(ws.Cells["A1"], "_TestTable");
     }
 
     [TestMethod]
@@ -263,8 +263,8 @@ public class TableTests : TestBase
     {
         using ExcelPackage? p = new ExcelPackage();
         ExcelWorksheet? ws = p.Workbook.Worksheets.Add("Tablews1");
-        ws.Tables.Add(new ExcelAddressBase("A1:C3"), "Table1");
-        ws.Tables.Add(new ExcelAddressBase("D1:G7"), "Table2");
+        _ = ws.Tables.Add(new ExcelAddressBase("A1:C3"), "Table1");
+        _ = ws.Tables.Add(new ExcelAddressBase("D1:G7"), "Table2");
 
         Assert.AreEqual(2, ws.Tables.Count);
         p.Save();
@@ -445,7 +445,7 @@ public class TableTests : TestBase
         Assert.AreEqual(formula, sheet.Cells["G3"].Formula);
         Assert.AreEqual(formula, sheet.Cells["G11"].Formula);
 
-        table.AddRow(3);
+        _ = table.AddRow(3);
         Assert.AreEqual(formula, sheet.Cells["G13"].Formula);
 
         SaveAndCleanup(package);
@@ -469,7 +469,7 @@ public class TableTests : TestBase
 
         ws2.SetFormula(1, 1, "Table1[[#This Row],[Column1]]");
         ws2.Cells["B1:B2"].Formula = "Table1[[#This Row],[Column3]]";
-        p.Workbook.Names.AddFormula("TableRef", "Table1[[#This Row],[Column1]]");
+        _ = p.Workbook.Names.AddFormula("TableRef", "Table1[[#This Row],[Column1]]");
         Assert.AreEqual("Table1[Column1]+Table1[Column2]", tbl1.Columns[2].CalculatedColumnFormula);
         Assert.AreEqual("Table1[[#This Row],[Column1]]+Table2[[#This Row],[Column2]]", tbl2.Columns["Column3"].CalculatedColumnFormula);
 
@@ -501,7 +501,7 @@ public class TableTests : TestBase
         // Create some references outside of the table
         ws2.SetFormula(1, 1, "Table1[[#This Row],[Column1]]");
         ws2.Cells["B1:B2"].Formula = "Table1[[#This Row],[Column3]]";
-        p.Workbook.Names.AddFormula("TableRef", "Table1[[#This Row],[Column1]]");
+        _ = p.Workbook.Names.AddFormula("TableRef", "Table1[[#This Row],[Column1]]");
         Assert.AreEqual("Table1[Column1]+Table1[Column2]", tbl1.Columns[2].CalculatedColumnFormula);
         Assert.AreEqual("Table1[[#This Row],[Column1]]+Table12[[#This Row],[Column2]]", tbl2.Columns["Column3"].CalculatedColumnFormula);
         Assert.AreEqual("Table1[Column1]+Table1[Column2]", ws1.Cells["C2"].Formula);
@@ -606,7 +606,7 @@ public class TableTests : TestBase
         Assert.IsTrue(string.IsNullOrEmpty(ws.Cells["C2"].Formula));
 
         // Add a row to the table
-        table1.InsertRow(1);
+        _ = table1.InsertRow(1);
 
         // Check the formula has not been reinserted
         Assert.IsTrue(string.IsNullOrEmpty(ws.Cells["C2"].Formula));
@@ -647,7 +647,7 @@ public class TableTests : TestBase
         Assert.AreEqual(differentFormula, ws.Cells["C3"].Formula);
 
         // Add a new row to the bottom of the table
-        table1.AddRow();
+        _ = table1.AddRow();
 
         // Check that the new row has the formula
         Assert.AreEqual(formula, ws.Cells["C5"].Formula);
@@ -679,6 +679,6 @@ public class TableTests : TestBase
 
         // Create a table
         ExcelRange? tableCells = worksheet.Cells["A1:B2"];
-        ExcelTable? table = worksheet.Tables.Add(tableCells, "table"); // --> This triggers a NullReferenceException
+        _ = worksheet.Tables.Add(tableCells, "table");
     }
 }

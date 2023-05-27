@@ -90,7 +90,7 @@ public class ExcelVmlDrawingPictureCollection : ExcelVmlDrawingBaseCollection, I
     private XmlNode AddImage(string id, Uri targeUri, string Name, double width, double height)
     {
         XmlElement? node = this.VmlDrawingXml.CreateElement("v", "shape", ExcelPackage.schemaMicrosoftVml);
-        this.VmlDrawingXml.DocumentElement.AppendChild(node);
+        _ = this.VmlDrawingXml.DocumentElement.AppendChild(node);
         node.SetAttribute("id", id);
         node.SetAttribute("o:type", "#_x0000_t75");
 

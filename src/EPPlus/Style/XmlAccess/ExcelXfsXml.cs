@@ -789,7 +789,7 @@ public sealed class ExcelXfs : StyleXmlHelper
             if (!this._styles.NumberFormats.FindById(value.ToString(), ref item))
             {
                 item = new ExcelNumberFormatXml(this.NameSpaceManager) { Format = value.ToString(), NumFmtId = this._styles.NumberFormats.NextId++ };
-                this._styles.NumberFormats.Add(value.ToString(), item);
+                _ = this._styles.NumberFormats.Add(value.ToString(), item);
             }
 
             return item.NumFmtId;

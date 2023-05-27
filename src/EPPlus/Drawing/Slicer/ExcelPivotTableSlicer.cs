@@ -100,7 +100,7 @@ public class ExcelPivotTableSlicer : ExcelSlicer<ExcelPivotTableSlicerCache>
         XmlElement graphFrame = this.TopNode.OwnerDocument.CreateElement("mc", "AlternateContent", ExcelPackage.schemaMarkupCompatibility);
         graphFrame.SetAttribute("xmlns:mc", ExcelPackage.schemaMarkupCompatibility);
         graphFrame.SetAttribute("xmlns:a14", ExcelPackage.schemaDrawings2010);
-        this.TopNode.AppendChild(graphFrame);
+        _ = this.TopNode.AppendChild(graphFrame);
 
         graphFrame.InnerXml =
             string.Format(
@@ -109,11 +109,11 @@ public class ExcelPivotTableSlicer : ExcelSlicer<ExcelPivotTableSlicerCache>
                           "{" + Guid.NewGuid().ToString() + "}",
                           name);
 
-        this.TopNode.AppendChild(this.TopNode.OwnerDocument.CreateElement("clientData", ExcelPackage.schemaSheetDrawings));
+        _ = this.TopNode.AppendChild(this.TopNode.OwnerDocument.CreateElement("clientData", ExcelPackage.schemaSheetDrawings));
 
         this._xmlSource = this._ws.SlicerXmlSources.GetOrCreateSource(eSlicerSourceType.Table);
         XmlElement? node = this._xmlSource.XmlDocument.CreateElement("slicer", ExcelPackage.schemaMainX14);
-        this._xmlSource.XmlDocument.DocumentElement.AppendChild(node);
+        _ = this._xmlSource.XmlDocument.DocumentElement.AppendChild(node);
         this._slicerXmlHelper = XmlHelperFactory.Create(this.NameSpaceManager, node);
 
         XmlNode? extNode = this._ws.GetOrCreateExtLstSubNode(ExtLstUris.WorksheetSlicerPivotTableUri, "x14");
@@ -125,7 +125,7 @@ public class ExcelPivotTableSlicer : ExcelSlicer<ExcelPivotTableSlicerCache>
 
             XmlHelper? xh = XmlHelperFactory.Create(this.NameSpaceManager, slNode);
             XmlElement? element = (XmlElement)xh.CreateNode("x14:slicer", false, true);
-            element.SetAttribute("id", ExcelPackage.schemaRelationships, this._xmlSource.Rel.Id);
+            _ = element.SetAttribute("id", ExcelPackage.schemaRelationships, this._xmlSource.Rel.Id);
         }
 
         this.GetPositionSize();

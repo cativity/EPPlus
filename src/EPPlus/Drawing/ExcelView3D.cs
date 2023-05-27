@@ -51,7 +51,7 @@ public sealed class ExcelView3D : XmlHelper
         get { return this.GetXmlNodeDecimal(rotXPath); }
         set
         {
-            this.CreateNode(rotXPath);
+            _ = this.CreateNode(rotXPath);
             this.SetXmlNodeString(rotXPath, value.ToString(CultureInfo.InvariantCulture));
         }
     }
@@ -66,7 +66,7 @@ public sealed class ExcelView3D : XmlHelper
         get { return this.GetXmlNodeDecimal(rotYPath); }
         set
         {
-            this.CreateNode(rotYPath);
+            _ = this.CreateNode(rotYPath);
             this.SetXmlNodeString(rotYPath, value.ToString(CultureInfo.InvariantCulture));
         }
     }

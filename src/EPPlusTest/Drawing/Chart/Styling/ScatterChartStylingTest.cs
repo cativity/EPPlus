@@ -104,28 +104,28 @@ public class ScatterChartStylingTest : TestBase
     private static void ScatterLineStyle(ExcelWorksheet ws, eScatterChartType chartType)
     {
         //Style 1
-        AddScatter(ws, chartType, "ScatterChartStyle1", 0, 5, ePresetChartStyle.ScatterChartStyle1, c => { c.Legend.Position = eLegendPosition.Bottom; });
+        _ = AddScatter(ws, chartType, "ScatterChartStyle1", 0, 5, ePresetChartStyle.ScatterChartStyle1, c => { c.Legend.Position = eLegendPosition.Bottom; });
 
         //Style 2
-        AddScatter(ws, chartType, "ScatterChartStyle2", 0, 18, ePresetChartStyle.ScatterChartStyle2, c => { c.Legend.Position = eLegendPosition.Top; });
+        _ = AddScatter(ws, chartType, "ScatterChartStyle2", 0, 18, ePresetChartStyle.ScatterChartStyle2, c => { c.Legend.Position = eLegendPosition.Top; });
 
         //Style 3
-        AddScatter(ws, chartType, "ScatterChartStyle3", 0, 31, ePresetChartStyle.ScatterChartStyle3, c => { c.DataLabel.ShowPercent = true; });
+        _ = AddScatter(ws, chartType, "ScatterChartStyle3", 0, 31, ePresetChartStyle.ScatterChartStyle3, c => { c.DataLabel.ShowPercent = true; });
 
         //Style 4
-        AddScatter(ws, chartType, "ScatterChartStyle4", 22, 5, ePresetChartStyle.ScatterChartStyle4, c => { c.Legend.Position = eLegendPosition.Bottom; });
+        _ = AddScatter(ws, chartType, "ScatterChartStyle4", 22, 5, ePresetChartStyle.ScatterChartStyle4, c => { c.Legend.Position = eLegendPosition.Bottom; });
 
         //Style 5
-        AddScatter(ws, chartType, "ScatterChartStyle5", 22, 18, ePresetChartStyle.ScatterChartStyle5, c => { c.Legend.Position = eLegendPosition.Bottom; });
+        _ = AddScatter(ws, chartType, "ScatterChartStyle5", 22, 18, ePresetChartStyle.ScatterChartStyle5, c => { c.Legend.Position = eLegendPosition.Bottom; });
 
         //Style 6
-        AddScatter(ws, chartType, "ScatterChartStyle6", 22, 31, ePresetChartStyle.ScatterChartStyle6, c => { });
+        _ = AddScatter(ws, chartType, "ScatterChartStyle6", 22, 31, ePresetChartStyle.ScatterChartStyle6, c => { });
 
         //Style 7
-        AddScatter(ws, chartType, "ScatterChartStyle7", 44, 5, ePresetChartStyle.ScatterChartStyle7, c => { c.Legend.Position = eLegendPosition.Bottom; });
+        _ = AddScatter(ws, chartType, "ScatterChartStyle7", 44, 5, ePresetChartStyle.ScatterChartStyle7, c => { c.Legend.Position = eLegendPosition.Bottom; });
 
         //Style 8
-        AddScatter(ws,
+        _ = AddScatter(ws,
                    chartType,
                    "ScatterChartStyle8",
                    44,
@@ -138,7 +138,7 @@ public class ScatterChartStylingTest : TestBase
                    });
 
         //Style 9
-        AddScatter(ws,
+        _ = AddScatter(ws,
                    chartType,
                    "ScatterChartStyle9",
                    44,
@@ -153,7 +153,7 @@ public class ScatterChartStylingTest : TestBase
                    });
 
         //Style 10
-        AddScatter(ws,
+        _ = AddScatter(ws,
                    chartType,
                    "ScatterChartStyle10",
                    66,
@@ -166,10 +166,10 @@ public class ScatterChartStylingTest : TestBase
                    });
 
         //Style 11
-        AddScatter(ws, chartType, "ScatterChartStyle11", 66, 18, ePresetChartStyle.ScatterChartStyle11, c => { });
+        _ = AddScatter(ws, chartType, "ScatterChartStyle11", 66, 18, ePresetChartStyle.ScatterChartStyle11, c => { });
 
         //Style 12
-        AddScatter(ws, chartType, "ScatterChartStyle12", 66, 31, ePresetChartStyle.ScatterChartStyle12, c => { });
+        _ = AddScatter(ws, chartType, "ScatterChartStyle12", 66, 31, ePresetChartStyle.ScatterChartStyle12, c => { });
     }
 
     private static ExcelScatterChart AddScatter(ExcelWorksheet ws,
@@ -186,7 +186,7 @@ public class ScatterChartStylingTest : TestBase
         chart.To.ColumnOff = 0;
         chart.To.Row = row + 18;
         chart.To.RowOff = 0;
-        ExcelScatterChartSerie? serie = chart.Series.Add("D2:D8", "A2:A8");
+        _ = chart.Series.Add("D2:D8", "A2:A8");
 
         SetProperties(chart);
 

@@ -154,7 +154,7 @@ public sealed class ExcelChartAxisStandard : ExcelChartAxis
     {
         if (this._title == null)
         {
-            this.AddTitleNode();
+            _ = this.AddTitleNode();
             this._title = new ExcelChartTitleStandard(this._chart, this.NameSpaceManager, this.TopNode, "c");
         }
 

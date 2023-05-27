@@ -23,7 +23,7 @@ internal static class ExternalLinksHandler
 
                 if (HasFormulaExternalReference(sh.Tokens))
                 {
-                    ExcelCellBase.GetRowColFromAddress(sh.Address, out int fromRow, out int fromCol, out int toRow, out int toCol);
+                    _ = ExcelCellBase.GetRowColFromAddress(sh.Address, out int fromRow, out int fromCol, out int toRow, out int toCol);
                     ws._formulas.Clear(fromRow, fromCol, toRow - fromRow + 1, toCol - fromCol + 1);
                     ws._formulaTokens?.Clear(fromRow, fromCol, toRow - fromRow + 1, toCol - fromCol + 1);
                     _deletedFormulas.Add(sh.Index);
@@ -67,7 +67,7 @@ internal static class ExternalLinksHandler
 
                 if (HasFormulaExternalReference(wb, ix, sh.Tokens, out string newFormula, false))
                 {
-                    ExcelCellBase.GetRowColFromAddress(sh.Address, out int fromRow, out int fromCol, out int toRow, out int toCol);
+                    _ = ExcelCellBase.GetRowColFromAddress(sh.Address, out int fromRow, out int fromCol, out int toRow, out int toCol);
                     ws._formulas.Clear(fromRow, fromCol, toRow - fromRow + 1, toCol - fromCol + 1);
                     ws._formulaTokens?.Clear(fromRow, fromCol, toRow - fromRow + 1, toCol - fromCol + 1);
                     _deletedFormulas.Add(sh.Index);
@@ -75,7 +75,7 @@ internal static class ExternalLinksHandler
                 else if (newFormula != sh.Formula)
                 {
                     sh.Tokens = null;
-                    ExcelCellBase.GetRowColFromAddress(sh.Address, out int fromRow, out int fromCol, out int toRow, out int toCol);
+                    _ = ExcelCellBase.GetRowColFromAddress(sh.Address, out int fromRow, out int fromCol, out int toRow, out int toCol);
                     ws._formulaTokens?.Clear(fromRow, fromCol, toRow - fromRow + 1, toCol - fromCol + 1);
                 }
             }
@@ -111,7 +111,7 @@ internal static class ExternalLinksHandler
 
     private static void HandleNames(ExcelWorkbook wb, string wsName, ExcelNamedRangeCollection names, int ix)
     {
-        List<ExcelNamedRange>? deletedNames = new List<ExcelNamedRange>();
+        //_ = new List<ExcelNamedRange>();
 
         foreach (ExcelNamedRange? n in names)
         {

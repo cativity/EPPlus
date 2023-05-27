@@ -125,6 +125,6 @@ public class SeriesTest : TestBase
         using ExcelPackage? p = new ExcelPackage();
         ExcelWorksheet? ws = p.Workbook.Worksheets.Add("InvalidStrLit");
         ExcelLineChart? lineChart = ws.Drawings.AddLineChart("LineChart1", eLineChartType.Line);
-        ExcelLineChartSerie? serie = lineChart.Series.Add("{\"Label1\",\"Label 2\",\"Something else\"}", "{120.3,14,5000.0005}");
+        _ = lineChart.Series.Add("{\"Label1\",\"Label 2\",\"Something else\"}", "{120.3,14,5000.0005}");
     }
 }

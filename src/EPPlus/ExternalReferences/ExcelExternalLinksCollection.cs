@@ -175,14 +175,14 @@ public class ExcelExternalLinksCollection : IEnumerable<ExcelExternalLink>
         }
 
         XmlNode? extRefs = externalLink.WorkbookElement.ParentNode;
-        extRefs?.RemoveChild(externalLink.WorkbookElement);
+        _ = (extRefs?.RemoveChild(externalLink.WorkbookElement));
 
         if (extRefs?.ChildNodes.Count == 0)
         {
-            extRefs.ParentNode?.RemoveChild(extRefs);
+            _ = (extRefs.ParentNode?.RemoveChild(extRefs));
         }
 
-        this._list.Remove(externalLink);
+        _ = this._list.Remove(externalLink);
     }
 
     /// <summary>
@@ -205,7 +205,7 @@ public class ExcelExternalLinksCollection : IEnumerable<ExcelExternalLink>
             this._list.RemoveAt(0);
         }
 
-        extRefs?.ParentNode?.RemoveChild(extRefs);
+        _ = (extRefs?.ParentNode?.RemoveChild(extRefs));
     }
 
     /// <summary>

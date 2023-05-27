@@ -34,7 +34,7 @@ public class ExcelFilterValueItem : ExcelFilterItem
     public ExcelFilterValueItem(string value)
     {
         this.Value = value;
-        Utils.ConvertUtil.TryParseNumericString(value, out this._valueDouble, CultureInfo.InvariantCulture);
+        _ = Utils.ConvertUtil.TryParseNumericString(value, out this._valueDouble, CultureInfo.InvariantCulture);
     }
 
     /// <summary>

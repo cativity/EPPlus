@@ -114,12 +114,12 @@ internal class ChangeableDictionary<T> : IEnumerable<T>
         if (insertPos > fromPosition)
         {
             this.InsertAndShift(insertPos, 1);
-            this.RemoveAndShift(fromPosition, false);
+            _ = this.RemoveAndShift(fromPosition, false);
             insertPos--;
         }
         else
         {
-            this.RemoveAndShift(fromPosition, false);
+            _ = this.RemoveAndShift(fromPosition, false);
             this.InsertAndShift(insertPos, 1);
         }
 

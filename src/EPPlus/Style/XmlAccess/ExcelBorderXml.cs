@@ -149,16 +149,16 @@ public sealed class ExcelBorderXml : StyleXmlHelper
     internal override XmlNode CreateXmlNode(XmlNode topNode)
     {
         this.TopNode = topNode;
-        this.CreateNode(leftPath);
-        topNode.AppendChild(this._left.CreateXmlNode(this.TopNode.SelectSingleNode(leftPath, this.NameSpaceManager)));
-        this.CreateNode(rightPath);
-        topNode.AppendChild(this._right.CreateXmlNode(this.TopNode.SelectSingleNode(rightPath, this.NameSpaceManager)));
-        this.CreateNode(topPath);
-        topNode.AppendChild(this._top.CreateXmlNode(this.TopNode.SelectSingleNode(topPath, this.NameSpaceManager)));
-        this.CreateNode(bottomPath);
-        topNode.AppendChild(this._bottom.CreateXmlNode(this.TopNode.SelectSingleNode(bottomPath, this.NameSpaceManager)));
-        this.CreateNode(diagonalPath);
-        topNode.AppendChild(this._diagonal.CreateXmlNode(this.TopNode.SelectSingleNode(diagonalPath, this.NameSpaceManager)));
+        _ = this.CreateNode(leftPath);
+        _ = topNode.AppendChild(this._left.CreateXmlNode(this.TopNode.SelectSingleNode(leftPath, this.NameSpaceManager)));
+        _ = this.CreateNode(rightPath);
+        _ = topNode.AppendChild(this._right.CreateXmlNode(this.TopNode.SelectSingleNode(rightPath, this.NameSpaceManager)));
+        _ = this.CreateNode(topPath);
+        _ = topNode.AppendChild(this._top.CreateXmlNode(this.TopNode.SelectSingleNode(topPath, this.NameSpaceManager)));
+        _ = this.CreateNode(bottomPath);
+        _ = topNode.AppendChild(this._bottom.CreateXmlNode(this.TopNode.SelectSingleNode(bottomPath, this.NameSpaceManager)));
+        _ = this.CreateNode(diagonalPath);
+        _ = topNode.AppendChild(this._diagonal.CreateXmlNode(this.TopNode.SelectSingleNode(diagonalPath, this.NameSpaceManager)));
 
         if (this._diagonalUp)
         {

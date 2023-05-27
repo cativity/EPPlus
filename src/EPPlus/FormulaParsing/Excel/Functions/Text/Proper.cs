@@ -38,11 +38,11 @@ internal class Proper : ExcelFunction
         {
             if (!char.IsLetter(previousChar))
             {
-                sb.Append(Utils.ConvertUtil._invariantTextInfo.ToUpper(ch.ToString()));
+                _ = sb.Append(Utils.ConvertUtil._invariantTextInfo.ToUpper(ch.ToString()));
             }
             else
             {
-                sb.Append(ch);
+                _ = sb.Append(ch);
             }
 
             previousChar = ch;

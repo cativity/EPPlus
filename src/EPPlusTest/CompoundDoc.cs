@@ -148,7 +148,7 @@ public class CompoundDoc
 
         foreach (string? sheet in sheets)
         {
-            package.Workbook.Worksheets.Add(sheet);
+            _ = package.Workbook.Worksheets.Add(sheet);
         }
 
         package.Workbook.CreateVBAProject();
@@ -200,7 +200,7 @@ public class CompoundDoc
 
         foreach (string? sheet in sheets)
         {
-            package.Workbook.Worksheets.Add(sheet);
+            _ = package.Workbook.Worksheets.Add(sheet);
         }
 
         package.Workbook.CreateVBAProject();

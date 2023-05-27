@@ -70,7 +70,7 @@ public class ExcelThemeFillStyles : XmlHelper, IEnumerable<ExcelDrawingFill>
     public ExcelDrawingFill Add(eFillStyle style)
     {
         XmlElement? node = this.TopNode.OwnerDocument.CreateElement("a", ExcelDrawingFillBasic.GetStyleText(style), ExcelPackage.schemaMain);
-        this.TopNode.AppendChild(node);
+        _ = this.TopNode.AppendChild(node);
 
         return new ExcelDrawingFill(null, this.NameSpaceManager, this.TopNode, "", this.SchemaNodeOrder);
     }
@@ -88,8 +88,8 @@ public class ExcelThemeFillStyles : XmlHelper, IEnumerable<ExcelDrawingFill>
 
         if (this._list.Contains(item))
         {
-            this._list.Remove(item);
-            item.TopNode.ParentNode.RemoveChild(item.TopNode);
+            _ = this._list.Remove(item);
+            _ = item.TopNode.ParentNode.RemoveChild(item.TopNode);
         }
     }
 
@@ -104,7 +104,7 @@ public class ExcelThemeFillStyles : XmlHelper, IEnumerable<ExcelDrawingFill>
             throw new ArgumentException("Index", "Index out of range");
         }
 
-        this._list.Remove(this._list[Index]);
+        _ = this._list.Remove(this._list[Index]);
     }
 
     /// <summary>

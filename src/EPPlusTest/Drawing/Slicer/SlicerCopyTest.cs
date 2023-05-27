@@ -26,9 +26,6 @@ public class SlicerCopyTest : TestBase
     [ClassCleanup]
     public static void Cleanup()
     {
-        string? dirName = _pck.File.DirectoryName;
-        string? fileName = _pck.File.FullName;
-
         SaveAndCleanup(_pck);
     }
 
@@ -44,7 +41,7 @@ public class SlicerCopyTest : TestBase
 
         slicer.SetSize(200, 600);
 
-        ExcelWorksheet? copy = _pck.Workbook.Worksheets.Add("TableSlicerCopy", ws);
+        _ = _pck.Workbook.Worksheets.Add("TableSlicerCopy", ws);
     }
 
     [TestMethod]
@@ -54,13 +51,13 @@ public class SlicerCopyTest : TestBase
 
         LoadTestdata(ws);
         ExcelPivotTable? pt = ws.PivotTables.Add(ws.Cells["F1"], ws.Cells["A1:D100"], "Table3");
-        pt.RowFields.Add(pt.Fields[1]);
-        pt.DataFields.Add(pt.Fields[3]);
+        _ = pt.RowFields.Add(pt.Fields[1]);
+        _ = pt.DataFields.Add(pt.Fields[3]);
         ExcelPivotTableSlicer? slicer = ws.Drawings.AddPivotTableSlicer(pt.Fields[3]);
         slicer.SetPosition(1, 0, 8, 0);
 
         slicer.SetSize(200, 600);
 
-        ExcelWorksheet? copy = _pck.Workbook.Worksheets.Add("PivotTableSlicerCopy", ws);
+        _ = _pck.Workbook.Worksheets.Add("PivotTableSlicerCopy", ws);
     }
 }

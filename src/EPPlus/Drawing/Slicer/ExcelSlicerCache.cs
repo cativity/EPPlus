@@ -90,7 +90,7 @@ public abstract class ExcelSlicerCache : XmlHelper
 
     internal void CreateWorkbookReference(ExcelWorkbook wb, string uriGuid)
     {
-        wb.Names.AddFormula(this.Name, "#N/A");
+        _ = wb.Names.AddFormula(this.Name, "#N/A");
 
         if (!wb.SlicerCaches.ContainsKey(this.Name))
         {
@@ -119,6 +119,6 @@ public abstract class ExcelSlicerCache : XmlHelper
         XmlNode? slNode = extNode.FirstChild;
         XmlHelper? xh = XmlHelperFactory.Create(this.NameSpaceManager, slNode);
         XmlElement? element = (XmlElement)xh.CreateNode("x14:slicerCache", false, true);
-        element.SetAttribute("id", ExcelPackage.schemaRelationships, this.CacheRel.Id);
+        _ = element.SetAttribute("id", ExcelPackage.schemaRelationships, this.CacheRel.Id);
     }
 }

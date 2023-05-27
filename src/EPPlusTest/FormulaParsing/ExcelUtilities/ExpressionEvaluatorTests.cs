@@ -91,7 +91,7 @@ public class ExpressionEvaluatorTests
     [TestMethod, ExpectedException(typeof(ArgumentException))]
     public void EvaluateShouldThrowIfOperatorIsNotBoolean()
     {
-        bool result = this._evaluator.Evaluate(1d, "+1");
+        _ = this._evaluator.Evaluate(1d, "+1");
     }
 
     [TestMethod]

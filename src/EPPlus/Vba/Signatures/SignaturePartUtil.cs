@@ -43,7 +43,7 @@ internal static class SignaturePartUtil
 
         if (rel == null)
         {
-            proj.Part.CreateRelationship(UriHelper.ResolvePartUri(proj.Uri, uri), TargetMode.Internal, signature.SchemaRelation);
+            _ = proj.Part.CreateRelationship(UriHelper.ResolvePartUri(proj.Uri, uri), TargetMode.Internal, signature.SchemaRelation);
         }
 
         return part;

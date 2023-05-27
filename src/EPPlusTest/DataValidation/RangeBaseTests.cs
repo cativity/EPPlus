@@ -54,7 +54,7 @@ public class RangeBaseTests : ValidationTestBase
     public void RangeBase_AddIntegerValidation_ValidationIsAdded()
     {
         // Act
-        this._sheet.Cells["A1:A2"].DataValidation.AddIntegerDataValidation();
+        _ = this._sheet.Cells["A1:A2"].DataValidation.AddIntegerDataValidation();
 
         // Assert
         Assert.AreEqual(1, this._sheet.DataValidations.Count);
@@ -64,7 +64,7 @@ public class RangeBaseTests : ValidationTestBase
     public void RangeBase_AddIntegerValidation_AddressIsCorrect()
     {
         // Act
-        this._sheet.Cells["A1:A2"].DataValidation.AddIntegerDataValidation();
+        _ = this._sheet.Cells["A1:A2"].DataValidation.AddIntegerDataValidation();
 
         // Assert
         Assert.AreEqual("A1:A2", this._sheet.DataValidations[0].Address.Address);
@@ -74,7 +74,7 @@ public class RangeBaseTests : ValidationTestBase
     public void RangeBase_AddDecimalValidation_ValidationIsAdded()
     {
         // Act
-        this._sheet.Cells["A1:A2"].DataValidation.AddDecimalDataValidation();
+        _ = this._sheet.Cells["A1:A2"].DataValidation.AddDecimalDataValidation();
 
         // Assert
         Assert.AreEqual(1, this._sheet.DataValidations.Count);
@@ -84,7 +84,7 @@ public class RangeBaseTests : ValidationTestBase
     public void RangeBase_AddDecimalValidation_AddressIsCorrect()
     {
         // Act
-        this._sheet.Cells["A1:A2"].DataValidation.AddDecimalDataValidation();
+        _ = this._sheet.Cells["A1:A2"].DataValidation.AddDecimalDataValidation();
 
         // Assert
         Assert.AreEqual("A1:A2", this._sheet.DataValidations[0].Address.Address);
@@ -94,7 +94,7 @@ public class RangeBaseTests : ValidationTestBase
     public void RangeBase_AddTextLengthValidation_ValidationIsAdded()
     {
         // Act
-        this._sheet.Cells["A1:A2"].DataValidation.AddTextLengthDataValidation();
+        _ = this._sheet.Cells["A1:A2"].DataValidation.AddTextLengthDataValidation();
 
         // Assert
         Assert.AreEqual(1, this._sheet.DataValidations.Count);
@@ -104,7 +104,7 @@ public class RangeBaseTests : ValidationTestBase
     public void RangeBase_AddTextLengthValidation_AddressIsCorrect()
     {
         // Act
-        this._sheet.Cells["A1:A2"].DataValidation.AddTextLengthDataValidation();
+        _ = this._sheet.Cells["A1:A2"].DataValidation.AddTextLengthDataValidation();
 
         // Assert
         Assert.AreEqual("A1:A2", this._sheet.DataValidations[0].Address.Address);
@@ -114,7 +114,7 @@ public class RangeBaseTests : ValidationTestBase
     public void RangeBase_AddDateTimeValidation_ValidationIsAdded()
     {
         // Act
-        this._sheet.Cells["A1:A2"].DataValidation.AddDateTimeDataValidation();
+        _ = this._sheet.Cells["A1:A2"].DataValidation.AddDateTimeDataValidation();
 
         // Assert
         Assert.AreEqual(1, this._sheet.DataValidations.Count);
@@ -124,7 +124,7 @@ public class RangeBaseTests : ValidationTestBase
     public void RangeBase_AddDateTimeValidation_AddressIsCorrect()
     {
         // Act
-        this._sheet.Cells["A1:A2"].DataValidation.AddDateTimeDataValidation();
+        _ = this._sheet.Cells["A1:A2"].DataValidation.AddDateTimeDataValidation();
 
         // Assert
         Assert.AreEqual("A1:A2", this._sheet.DataValidations[0].Address.Address);
@@ -134,7 +134,7 @@ public class RangeBaseTests : ValidationTestBase
     public void RangeBase_AddListValidation_ValidationIsAdded()
     {
         // Act
-        this._sheet.Cells["A1:A2"].DataValidation.AddListDataValidation();
+        _ = this._sheet.Cells["A1:A2"].DataValidation.AddListDataValidation();
 
         // Assert
         Assert.AreEqual(1, this._sheet.DataValidations.Count);
@@ -144,7 +144,7 @@ public class RangeBaseTests : ValidationTestBase
     public void RangeBase_AddListValidation_AddressIsCorrect()
     {
         // Act
-        this._sheet.Cells["A1:A2"].DataValidation.AddListDataValidation();
+        _ = this._sheet.Cells["A1:A2"].DataValidation.AddListDataValidation();
 
         // Assert
         Assert.AreEqual("A1:A2", this._sheet.DataValidations[0].Address.Address);
@@ -154,7 +154,7 @@ public class RangeBaseTests : ValidationTestBase
     public void RangeBase_AdTimeValidation_ValidationIsAdded()
     {
         // Act
-        this._sheet.Cells["A1:A2"].DataValidation.AddTimeDataValidation();
+        _ = this._sheet.Cells["A1:A2"].DataValidation.AddTimeDataValidation();
 
         // Assert
         Assert.AreEqual(1, this._sheet.DataValidations.Count);
@@ -164,7 +164,7 @@ public class RangeBaseTests : ValidationTestBase
     public void RangeBase_AddTimeValidation_AddressIsCorrect()
     {
         // Act
-        this._sheet.Cells["A1:A2"].DataValidation.AddTimeDataValidation();
+        _ = this._sheet.Cells["A1:A2"].DataValidation.AddTimeDataValidation();
 
         // Assert
         Assert.AreEqual("A1:A2", this._sheet.DataValidations[0].Address.Address);

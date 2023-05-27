@@ -90,8 +90,6 @@ internal static class PivotTableEnumExtentions
 
     internal static string FromShowDataAs(this eShowDataAs value)
     {
-        string text = value.ToString();
-
         switch (value)
         {
             case eShowDataAs.PercentDifference:

@@ -39,8 +39,6 @@ public class ChartExTests : TestBase
     {
         using ExcelPackage? p = OpenTemplatePackage("Chartex.xlsx");
         ExcelChartEx? chart1 = (ExcelChartEx)p.Workbook.Worksheets[0].Drawings[0];
-        ExcelChartEx? chart2 = (ExcelChartEx)p.Workbook.Worksheets[0].Drawings[1];
-        ExcelChartEx? chart3 = (ExcelChartEx)p.Workbook.Worksheets[0].Drawings[2];
 
         Assert.IsNotNull(chart1.Fill);
         Assert.IsNotNull(chart1.PlotArea);
@@ -232,7 +230,7 @@ public class ChartExTests : TestBase
         ExcelWorksheet? ws = _pck.Workbook.Worksheets.Add("Funnel");
         LoadHierarkiTestData(ws);
         ExcelFunnelChart? chart = ws.Drawings.AddFunnelChart("Funnel");
-        ExcelChartExSerie? serie = chart.Series.Add("Funnel!$D$2:$D$17", "Funnel!$A$2:$C$17");
+        _ = chart.Series.Add("Funnel!$D$2:$D$17", "Funnel!$A$2:$C$17");
         chart.SetPosition(2, 0, 15, 0);
         chart.SetSize(1600, 900);
     }
@@ -284,7 +282,7 @@ public class ChartExTests : TestBase
         ExcelPackage? package2 = new ExcelPackage();
         ExcelWorksheet? worksheet1 = package2.Workbook.Worksheets.Add("Test_BoxWhiskers");
         ExcelChart chart3 = worksheet1.Drawings.AddBoxWhiskerChart("Status");
-        ExcelChartSerie? bwSerie1 = chart3.Series.Add(worksheet1.Cells[1, 1, 2, 1], null);
+        _ = chart3.Series.Add(worksheet1.Cells[1, 1, 2, 1], null);
         chart3.SetPosition(10, 10);
         chart3.SetSize(750, 470);
         chart3.Title.Text = "Test BoxWhiskers";

@@ -61,12 +61,12 @@ public class FormulaParserTests
     public void ParserShouldCallLexer()
     {
         ILexer? lexer = A.Fake<ILexer>();
-        A.CallTo(() => lexer.Tokenize("ABC")).Returns(Enumerable.Empty<Token>());
+        _ = A.CallTo(() => lexer.Tokenize("ABC")).Returns(Enumerable.Empty<Token>());
         this._parser.Configure(x => x.SetLexer(lexer));
 
-        this._parser.Parse("ABC");
+        _ = this._parser.Parse("ABC");
 
-        A.CallTo(() => lexer.Tokenize("ABC")).MustHaveHappened();
+        _ = A.CallTo(() => lexer.Tokenize("ABC")).MustHaveHappened();
     }
 
     [TestMethod]
@@ -74,15 +74,15 @@ public class FormulaParserTests
     {
         ILexer? lexer = A.Fake<ILexer>();
         List<Token>? tokens = new List<Token>();
-        A.CallTo(() => lexer.Tokenize("ABC")).Returns(tokens);
+        _ = A.CallTo(() => lexer.Tokenize("ABC")).Returns(tokens);
         IExpressionGraphBuilder? graphBuilder = A.Fake<IExpressionGraphBuilder>();
-        A.CallTo(() => graphBuilder.Build(tokens)).Returns(new ExGraph());
+        _ = A.CallTo(() => graphBuilder.Build(tokens)).Returns(new ExGraph());
 
-        this._parser.Configure(config => { config.SetLexer(lexer).SetGraphBuilder(graphBuilder); });
+        this._parser.Configure(config => { _ = config.SetLexer(lexer).SetGraphBuilder(graphBuilder); });
 
-        this._parser.Parse("ABC");
+        _ = this._parser.Parse("ABC");
 
-        A.CallTo(() => graphBuilder.Build(tokens)).MustHaveHappened();
+        _ = A.CallTo(() => graphBuilder.Build(tokens)).MustHaveHappened();
     }
 
     [TestMethod]
@@ -90,26 +90,26 @@ public class FormulaParserTests
     {
         ILexer? lexer = A.Fake<ILexer>();
         List<Token>? tokens = new List<Token>();
-        A.CallTo(() => lexer.Tokenize("ABC")).Returns(tokens);
+        _ = A.CallTo(() => lexer.Tokenize("ABC")).Returns(tokens);
         ExGraph? expectedGraph = new ExGraph();
-        expectedGraph.Add(new StringExpression("asdf"));
+        _ = expectedGraph.Add(new StringExpression("asdf"));
         IExpressionGraphBuilder? graphBuilder = A.Fake<IExpressionGraphBuilder>();
-        A.CallTo(() => graphBuilder.Build(tokens)).Returns(expectedGraph);
+        _ = A.CallTo(() => graphBuilder.Build(tokens)).Returns(expectedGraph);
         IExpressionCompiler? compiler = A.Fake<IExpressionCompiler>();
-        A.CallTo(() => compiler.Compile(expectedGraph.Expressions)).Returns(new CompileResult(0, DataType.Integer));
+        _ = A.CallTo(() => compiler.Compile(expectedGraph.Expressions)).Returns(new CompileResult(0, DataType.Integer));
 
-        this._parser.Configure(config => { config.SetLexer(lexer).SetGraphBuilder(graphBuilder).SetExpresionCompiler(compiler); });
+        this._parser.Configure(config => { _ = config.SetLexer(lexer).SetGraphBuilder(graphBuilder).SetExpresionCompiler(compiler); });
 
-        this._parser.Parse("ABC");
+        _ = this._parser.Parse("ABC");
 
-        A.CallTo(() => compiler.Compile(expectedGraph.Expressions)).MustHaveHappened();
+        _ = A.CallTo(() => compiler.Compile(expectedGraph.Expressions)).MustHaveHappened();
     }
 
     [TestMethod]
     public void ParseAtShouldCallExcelDataProvider()
     {
         ExcelDataProvider? excelDataProvider = A.Fake<ExcelDataProvider>();
-        A.CallTo(() => excelDataProvider.GetRangeFormula(string.Empty, 1, 1)).Returns("Sum(1,2)");
+        _ = A.CallTo(() => excelDataProvider.GetRangeFormula(string.Empty, 1, 1)).Returns("Sum(1,2)");
         FormulaParser? parser = new FormulaParser(excelDataProvider);
         object? result = parser.ParseAt("A1");
         Assert.AreEqual(3d, result);
@@ -118,6 +118,6 @@ public class FormulaParserTests
     [TestMethod, ExpectedException(typeof(ArgumentException))]
     public void ParseAtShouldThrowIfAddressIsNull()
     {
-        this._parser.ParseAt(null);
+        _ = this._parser.ParseAt(null);
     }
 }

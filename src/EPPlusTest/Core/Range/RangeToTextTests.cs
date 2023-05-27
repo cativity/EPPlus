@@ -468,12 +468,12 @@ public class RangeToTextTests : TestBase
         ExcelWorksheet? ws = p.Workbook.Worksheets.Add("RichText");
 
         //Setup
-        ws.Cells["A1"].RichText.Add("RichText 1");
+        _ = ws.Cells["A1"].RichText.Add("RichText 1");
         ExcelRichTextCollection? rt = ws.Cells["A2"].RichText;
-        rt.Add("Rich");
+        _ = rt.Add("Rich");
         ExcelRichText? rtPart = rt.Add("Text");
         rtPart.Color = Color.Red;
-        rt.Add(" 2");
+        _ = rt.Add(" 2");
         string? text = ws.Cells["A1:A2"].ToText();
 
         //Assert

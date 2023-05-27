@@ -413,13 +413,13 @@ public abstract class ExcelChartAxis : XmlHelper, IDrawingStyle, IStyleMandatory
     {
         if (addMajor)
         {
-            this.CreateNode(this._majorGridlinesPath);
+            _ = this.CreateNode(this._majorGridlinesPath);
             this._chart.ApplyStyleOnPart(this, this._chart._styleManager?.Style?.GridlineMajor);
         }
 
         if (addMinor)
         {
-            this.CreateNode(this._minorGridlinesPath);
+            _ = this.CreateNode(this._minorGridlinesPath);
             this._chart.ApplyStyleOnPart(this, this._chart._styleManager?.Style?.GridlineMinor);
         }
     }

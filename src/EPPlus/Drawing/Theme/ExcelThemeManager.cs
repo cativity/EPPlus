@@ -173,7 +173,7 @@ public class ExcelThemeManager
                     byte[]? b = ((MemoryStream)partToCopy.GetStream()).ToArray();
                     stream.Write(b, 0, b.Length);
                     stream.Flush();
-                    this._theme.Part.CreateRelationship(uri, TargetMode.Internal, rel.RelationshipType);
+                    _ = this._theme.Part.CreateRelationship(uri, TargetMode.Internal, rel.RelationshipType);
                 }
 
                 this.SetNormalStyle();

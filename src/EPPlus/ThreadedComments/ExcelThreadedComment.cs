@@ -234,7 +234,7 @@ public class ExcelThreadedComment : XmlHelper
                 if (mentionsNode == null)
                 {
                     mentionsNode = this.TopNode.OwnerDocument.CreateElement("mentions", ExcelPackage.schemaThreadedComments);
-                    this.TopNode.AppendChild(mentionsNode);
+                    _ = this.TopNode.AppendChild(mentionsNode);
                 }
 
                 this._mentions = new ExcelThreadedCommentMentionCollection(this.NameSpaceManager, mentionsNode);

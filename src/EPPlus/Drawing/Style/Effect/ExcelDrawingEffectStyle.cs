@@ -241,7 +241,7 @@ public class ExcelDrawingEffectStyle : XmlHelper
 
         foreach (XmlAttribute a in copyFromEffectElement.Attributes)
         {
-            effectElement.SetAttribute(a.Name, a.NamespaceURI, a.Value);
+            _ = effectElement.SetAttribute(a.Name, a.NamespaceURI, a.Value);
         }
 
         effectElement.InnerXml = copyFromEffectElement.InnerXml;

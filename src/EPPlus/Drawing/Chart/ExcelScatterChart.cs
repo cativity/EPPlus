@@ -113,7 +113,7 @@ public sealed class ExcelScatterChart : ExcelChartStandard, IDrawingDataLabel
         get { return GetScatterEnum(this._chartXmlHelper.GetXmlNodeString(this._scatterTypePath)); }
         internal set
         {
-            this._chartXmlHelper.CreateNode(this._scatterTypePath, true);
+            _ = this._chartXmlHelper.CreateNode(this._scatterTypePath, true);
             this._chartXmlHelper.SetXmlNodeString(this._scatterTypePath, GetScatterText(value));
         }
     }

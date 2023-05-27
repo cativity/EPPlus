@@ -48,10 +48,10 @@ public class LookupNavigatorFactoryTests
     public void Initialize()
     {
         this._excelPackage = new ExcelPackage(new MemoryStream());
-        this._excelPackage.Workbook.Worksheets.Add("Test");
+        _ = this._excelPackage.Workbook.Worksheets.Add("Test");
         this._context = ParsingContext.Create();
         this._context.ExcelDataProvider = new EpplusExcelDataProvider(this._excelPackage);
-        this._context.Scopes.NewScope(RangeAddress.Empty);
+        _ = this._context.Scopes.NewScope(RangeAddress.Empty);
     }
 
     [TestCleanup]

@@ -116,11 +116,11 @@ public class ExcelPivotTableSlicerCacheTabularData : XmlHelper
             {
                 if (item.Hidden)
                 {
-                    sb.Append($"<i x=\"{x++}\" />");
+                    _ = sb.Append($"<i x=\"{x++}\" />");
                 }
                 else
                 {
-                    sb.Append($"<i x=\"{x++}\" s=\"1\"/>");
+                    _ = sb.Append($"<i x=\"{x++}\" s=\"1\"/>");
                 }
             }
         }

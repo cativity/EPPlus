@@ -47,7 +47,7 @@ public class DateHandlingTest
     {
         CultureInfo? currentCulture = CultureInfo.CurrentCulture;
 #if Core
-        CultureInfo? us = CultureInfo.DefaultThreadCurrentCulture = new CultureInfo("en-US");
+        CultureInfo.DefaultThreadCurrentCulture = new CultureInfo("en-US");
 #else
             var us = CultureInfo.CreateSpecificCulture("en-US");
             Thread.CurrentThread.CurrentCulture = us;

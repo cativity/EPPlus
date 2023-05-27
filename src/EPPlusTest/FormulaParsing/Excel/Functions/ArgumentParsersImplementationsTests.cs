@@ -43,7 +43,7 @@ public class ArgumentParsersImplementationsTests
     public void IntParserShouldThrowIfArgumentIsNull()
     {
         IntArgumentParser? parser = new IntArgumentParser();
-        parser.Parse(null);
+        _ = parser.Parse(null);
     }
 
     [TestMethod]
@@ -122,7 +122,7 @@ public class ArgumentParsersImplementationsTests
     public void DoubleParserShouldThrowIfArgumentIsNull()
     {
         DoubleArgumentParser? parser = new DoubleArgumentParser();
-        parser.Parse(null);
+        _ = parser.Parse(null);
     }
 
     [TestMethod]

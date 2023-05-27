@@ -18,10 +18,10 @@ public class PivotTableDateFilterTests : TestBase
         _pck = OpenPackage("PivotTableDateFilters.xlsx", true);
         ExcelWorksheet? ws = _pck.Workbook.Worksheets.Add("Data1");
         ExcelRangeBase? r = LoadItemData(ws);
-        ws.Tables.Add(r, "Table1");
+        _ = ws.Tables.Add(r, "Table1");
         ws = _pck.Workbook.Worksheets.Add("Data2");
         r = LoadItemData(ws);
-        ws.Tables.Add(r, "Table2");
+        _ = ws.Tables.Add(r, "Table2");
     }
 
     [ClassCleanup]
@@ -37,10 +37,10 @@ public class PivotTableDateFilterTests : TestBase
         ExcelWorksheet? ws = _pck.Workbook.Worksheets.Add("DateEqual");
 
         ExcelPivotTable? pt = ws.PivotTables.Add(ws.Cells["A1"], wsData.Cells["K1:O11"], "Pivottable1");
-        pt.RowFields.Add(pt.Fields[4]);
-        pt.DataFields.Add(pt.Fields[3]);
+        _ = pt.RowFields.Add(pt.Fields[4]);
+        _ = pt.DataFields.Add(pt.Fields[3]);
 
-        pt.Fields[4].Filters.AddDateValueFilter(ePivotTableDateValueFilterType.DateEqual, new DateTime(2010, 3, 31));
+        _ = pt.Fields[4].Filters.AddDateValueFilter(ePivotTableDateValueFilterType.DateEqual, new DateTime(2010, 3, 31));
     }
 
     [TestMethod]
@@ -50,10 +50,10 @@ public class PivotTableDateFilterTests : TestBase
         ExcelWorksheet? ws = _pck.Workbook.Worksheets.Add("DateNotEqual");
 
         ExcelPivotTable? pt = ws.PivotTables.Add(ws.Cells["A1"], wsData.Cells["K1:O11"], "Pivottable2");
-        pt.RowFields.Add(pt.Fields[4]);
-        pt.DataFields.Add(pt.Fields[3]);
+        _ = pt.RowFields.Add(pt.Fields[4]);
+        _ = pt.DataFields.Add(pt.Fields[3]);
 
-        pt.Fields[4].Filters.AddDateValueFilter(ePivotTableDateValueFilterType.DateNotEqual, new DateTime(2010, 3, 31));
+        _ = pt.Fields[4].Filters.AddDateValueFilter(ePivotTableDateValueFilterType.DateNotEqual, new DateTime(2010, 3, 31));
     }
 
     [TestMethod]
@@ -63,10 +63,10 @@ public class PivotTableDateFilterTests : TestBase
         ExcelWorksheet? ws = _pck.Workbook.Worksheets.Add("DateBefore");
 
         ExcelPivotTable? pt = ws.PivotTables.Add(ws.Cells["A1"], wsData.Cells["K1:O11"], "Pivottable2");
-        pt.RowFields.Add(pt.Fields[4]);
-        pt.DataFields.Add(pt.Fields[3]);
+        _ = pt.RowFields.Add(pt.Fields[4]);
+        _ = pt.DataFields.Add(pt.Fields[3]);
 
-        pt.Fields[4].Filters.AddDateValueFilter(ePivotTableDateValueFilterType.DateOlderThan, new DateTime(2010, 3, 31));
+        _ = pt.Fields[4].Filters.AddDateValueFilter(ePivotTableDateValueFilterType.DateOlderThan, new DateTime(2010, 3, 31));
     }
 
     [TestMethod]
@@ -76,10 +76,10 @@ public class PivotTableDateFilterTests : TestBase
         ExcelWorksheet? ws = _pck.Workbook.Worksheets.Add("DateBeforeOrEqual");
 
         ExcelPivotTable? pt = ws.PivotTables.Add(ws.Cells["A1"], wsData.Cells["K1:O11"], "Pivottable2");
-        pt.RowFields.Add(pt.Fields[4]);
-        pt.DataFields.Add(pt.Fields[3]);
+        _ = pt.RowFields.Add(pt.Fields[4]);
+        _ = pt.DataFields.Add(pt.Fields[3]);
 
-        pt.Fields[4].Filters.AddDateValueFilter(ePivotTableDateValueFilterType.DateOlderThanOrEqual, new DateTime(2010, 3, 31));
+        _ = pt.Fields[4].Filters.AddDateValueFilter(ePivotTableDateValueFilterType.DateOlderThanOrEqual, new DateTime(2010, 3, 31));
     }
 
     [TestMethod]
@@ -89,10 +89,10 @@ public class PivotTableDateFilterTests : TestBase
         ExcelWorksheet? ws = _pck.Workbook.Worksheets.Add("DateNewer");
 
         ExcelPivotTable? pt = ws.PivotTables.Add(ws.Cells["A1"], wsData.Cells["K1:O11"], "Pivottable2");
-        pt.RowFields.Add(pt.Fields[4]);
-        pt.DataFields.Add(pt.Fields[3]);
+        _ = pt.RowFields.Add(pt.Fields[4]);
+        _ = pt.DataFields.Add(pt.Fields[3]);
 
-        pt.Fields[4].Filters.AddDateValueFilter(ePivotTableDateValueFilterType.DateNewerThan, new DateTime(2010, 3, 31));
+        _ = pt.Fields[4].Filters.AddDateValueFilter(ePivotTableDateValueFilterType.DateNewerThan, new DateTime(2010, 3, 31));
     }
 
     [TestMethod]
@@ -102,10 +102,10 @@ public class PivotTableDateFilterTests : TestBase
         ExcelWorksheet? ws = _pck.Workbook.Worksheets.Add("DateNewerOrEqual");
 
         ExcelPivotTable? pt = ws.PivotTables.Add(ws.Cells["A1"], wsData.Cells["K1:O11"], "Pivottable2");
-        pt.RowFields.Add(pt.Fields[4]);
-        pt.DataFields.Add(pt.Fields[3]);
+        _ = pt.RowFields.Add(pt.Fields[4]);
+        _ = pt.DataFields.Add(pt.Fields[3]);
 
-        pt.Fields[4].Filters.AddDateValueFilter(ePivotTableDateValueFilterType.DateNewerThanOrEqual, new DateTime(2010, 3, 31));
+        _ = pt.Fields[4].Filters.AddDateValueFilter(ePivotTableDateValueFilterType.DateNewerThanOrEqual, new DateTime(2010, 3, 31));
     }
 
     [TestMethod]
@@ -115,10 +115,10 @@ public class PivotTableDateFilterTests : TestBase
         ExcelWorksheet? ws = _pck.Workbook.Worksheets.Add("DateBetween");
 
         ExcelPivotTable? pt = ws.PivotTables.Add(ws.Cells["A1"], wsData.Cells["K1:O11"], "Pivottable2");
-        pt.RowFields.Add(pt.Fields[4]);
-        pt.DataFields.Add(pt.Fields[3]);
+        _ = pt.RowFields.Add(pt.Fields[4]);
+        _ = pt.DataFields.Add(pt.Fields[3]);
 
-        pt.Fields[4].Filters.AddDateValueFilter(ePivotTableDateValueFilterType.DateBetween, new DateTime(2010, 3, 31), new DateTime(2010, 6, 30));
+        _ = pt.Fields[4].Filters.AddDateValueFilter(ePivotTableDateValueFilterType.DateBetween, new DateTime(2010, 3, 31), new DateTime(2010, 6, 30));
     }
 
     [TestMethod]
@@ -128,10 +128,10 @@ public class PivotTableDateFilterTests : TestBase
         ExcelWorksheet? ws = _pck.Workbook.Worksheets.Add("DateNotBetween");
 
         ExcelPivotTable? pt = ws.PivotTables.Add(ws.Cells["A1"], wsData.Cells["K1:O11"], "Pivottable2");
-        pt.RowFields.Add(pt.Fields[4]);
-        pt.DataFields.Add(pt.Fields[3]);
+        _ = pt.RowFields.Add(pt.Fields[4]);
+        _ = pt.DataFields.Add(pt.Fields[3]);
 
-        pt.Fields[4].Filters.AddDateValueFilter(ePivotTableDateValueFilterType.DateNotBetween, new DateTime(2010, 3, 31), new DateTime(2010, 6, 30));
+        _ = pt.Fields[4].Filters.AddDateValueFilter(ePivotTableDateValueFilterType.DateNotBetween, new DateTime(2010, 3, 31), new DateTime(2010, 6, 30));
     }
 
     [TestMethod]
@@ -141,10 +141,10 @@ public class PivotTableDateFilterTests : TestBase
         ExcelWorksheet? ws = _pck.Workbook.Worksheets.Add("LastMonth");
 
         ExcelPivotTable? pt = ws.PivotTables.Add(ws.Cells["A1"], wsData.Cells["K1:O11"], "Pivottable2");
-        pt.RowFields.Add(pt.Fields[4]);
-        pt.DataFields.Add(pt.Fields[3]);
+        _ = pt.RowFields.Add(pt.Fields[4]);
+        _ = pt.DataFields.Add(pt.Fields[3]);
 
-        pt.Fields[4].Filters.AddDatePeriodFilter(ePivotTableDatePeriodFilterType.LastMonth);
+        _ = pt.Fields[4].Filters.AddDatePeriodFilter(ePivotTableDatePeriodFilterType.LastMonth);
     }
 
     [TestMethod]
@@ -154,10 +154,10 @@ public class PivotTableDateFilterTests : TestBase
         ExcelWorksheet? ws = _pck.Workbook.Worksheets.Add("LastQuarter");
 
         ExcelPivotTable? pt = ws.PivotTables.Add(ws.Cells["A1"], wsData.Cells["K1:O11"], "Pivottable2");
-        pt.RowFields.Add(pt.Fields[4]);
-        pt.DataFields.Add(pt.Fields[3]);
+        _ = pt.RowFields.Add(pt.Fields[4]);
+        _ = pt.DataFields.Add(pt.Fields[3]);
 
-        pt.Fields[4].Filters.AddDatePeriodFilter(ePivotTableDatePeriodFilterType.LastQuarter);
+        _ = pt.Fields[4].Filters.AddDatePeriodFilter(ePivotTableDatePeriodFilterType.LastQuarter);
     }
 
     [TestMethod]
@@ -167,10 +167,10 @@ public class PivotTableDateFilterTests : TestBase
         ExcelWorksheet? ws = _pck.Workbook.Worksheets.Add("LastWeek");
 
         ExcelPivotTable? pt = ws.PivotTables.Add(ws.Cells["A1"], wsData.Cells["K1:O11"], "Pivottable2");
-        pt.RowFields.Add(pt.Fields[4]);
-        pt.DataFields.Add(pt.Fields[3]);
+        _ = pt.RowFields.Add(pt.Fields[4]);
+        _ = pt.DataFields.Add(pt.Fields[3]);
 
-        pt.Fields[4].Filters.AddDatePeriodFilter(ePivotTableDatePeriodFilterType.LastWeek);
+        _ = pt.Fields[4].Filters.AddDatePeriodFilter(ePivotTableDatePeriodFilterType.LastWeek);
     }
 
     [TestMethod]
@@ -180,10 +180,10 @@ public class PivotTableDateFilterTests : TestBase
         ExcelWorksheet? ws = _pck.Workbook.Worksheets.Add("LastYear");
 
         ExcelPivotTable? pt = ws.PivotTables.Add(ws.Cells["A1"], wsData.Cells["K1:O11"], "Pivottable2");
-        pt.RowFields.Add(pt.Fields[4]);
-        pt.DataFields.Add(pt.Fields[3]);
+        _ = pt.RowFields.Add(pt.Fields[4]);
+        _ = pt.DataFields.Add(pt.Fields[3]);
 
-        pt.Fields[4].Filters.AddDatePeriodFilter(ePivotTableDatePeriodFilterType.LastYear);
+        _ = pt.Fields[4].Filters.AddDatePeriodFilter(ePivotTableDatePeriodFilterType.LastYear);
     }
 
     [TestMethod]
@@ -193,10 +193,10 @@ public class PivotTableDateFilterTests : TestBase
         ExcelWorksheet? ws = _pck.Workbook.Worksheets.Add("M1");
 
         ExcelPivotTable? pt = ws.PivotTables.Add(ws.Cells["A1"], wsData.Cells["K1:O11"], "Pivottable2");
-        pt.RowFields.Add(pt.Fields[4]);
-        pt.DataFields.Add(pt.Fields[3]);
+        _ = pt.RowFields.Add(pt.Fields[4]);
+        _ = pt.DataFields.Add(pt.Fields[3]);
 
-        pt.Fields[4].Filters.AddDatePeriodFilter(ePivotTableDatePeriodFilterType.M1);
+        _ = pt.Fields[4].Filters.AddDatePeriodFilter(ePivotTableDatePeriodFilterType.M1);
     }
 
     [TestMethod]
@@ -206,10 +206,10 @@ public class PivotTableDateFilterTests : TestBase
         ExcelWorksheet? ws = _pck.Workbook.Worksheets.Add("M2");
 
         ExcelPivotTable? pt = ws.PivotTables.Add(ws.Cells["A1"], wsData.Cells["K1:O11"], "Pivottable2");
-        pt.RowFields.Add(pt.Fields[4]);
-        pt.DataFields.Add(pt.Fields[3]);
+        _ = pt.RowFields.Add(pt.Fields[4]);
+        _ = pt.DataFields.Add(pt.Fields[3]);
 
-        pt.Fields[4].Filters.AddDatePeriodFilter(ePivotTableDatePeriodFilterType.M2);
+        _ = pt.Fields[4].Filters.AddDatePeriodFilter(ePivotTableDatePeriodFilterType.M2);
     }
 
     [TestMethod]
@@ -219,10 +219,10 @@ public class PivotTableDateFilterTests : TestBase
         ExcelWorksheet? ws = _pck.Workbook.Worksheets.Add("M3");
 
         ExcelPivotTable? pt = ws.PivotTables.Add(ws.Cells["A1"], wsData.Cells["K1:O11"], "Pivottable2");
-        pt.RowFields.Add(pt.Fields[4]);
-        pt.DataFields.Add(pt.Fields[3]);
+        _ = pt.RowFields.Add(pt.Fields[4]);
+        _ = pt.DataFields.Add(pt.Fields[3]);
 
-        pt.Fields[4].Filters.AddDatePeriodFilter(ePivotTableDatePeriodFilterType.M3);
+        _ = pt.Fields[4].Filters.AddDatePeriodFilter(ePivotTableDatePeriodFilterType.M3);
     }
 
     [TestMethod]
@@ -232,10 +232,10 @@ public class PivotTableDateFilterTests : TestBase
         ExcelWorksheet? ws = _pck.Workbook.Worksheets.Add("M4");
 
         ExcelPivotTable? pt = ws.PivotTables.Add(ws.Cells["A1"], wsData.Cells["K1:O11"], "Pivottable2");
-        pt.RowFields.Add(pt.Fields[4]);
-        pt.DataFields.Add(pt.Fields[3]);
+        _ = pt.RowFields.Add(pt.Fields[4]);
+        _ = pt.DataFields.Add(pt.Fields[3]);
 
-        pt.Fields[4].Filters.AddDatePeriodFilter(ePivotTableDatePeriodFilterType.M4);
+        _ = pt.Fields[4].Filters.AddDatePeriodFilter(ePivotTableDatePeriodFilterType.M4);
     }
 
     [TestMethod]
@@ -245,10 +245,10 @@ public class PivotTableDateFilterTests : TestBase
         ExcelWorksheet? ws = _pck.Workbook.Worksheets.Add("M5");
 
         ExcelPivotTable? pt = ws.PivotTables.Add(ws.Cells["A1"], wsData.Cells["K1:O11"], "Pivottable2");
-        pt.RowFields.Add(pt.Fields[4]);
-        pt.DataFields.Add(pt.Fields[3]);
+        _ = pt.RowFields.Add(pt.Fields[4]);
+        _ = pt.DataFields.Add(pt.Fields[3]);
 
-        pt.Fields[4].Filters.AddDatePeriodFilter(ePivotTableDatePeriodFilterType.M5);
+        _ = pt.Fields[4].Filters.AddDatePeriodFilter(ePivotTableDatePeriodFilterType.M5);
     }
 
     [TestMethod]
@@ -258,10 +258,10 @@ public class PivotTableDateFilterTests : TestBase
         ExcelWorksheet? ws = _pck.Workbook.Worksheets.Add("M6");
 
         ExcelPivotTable? pt = ws.PivotTables.Add(ws.Cells["A1"], wsData.Cells["K1:O11"], "Pivottable2");
-        pt.RowFields.Add(pt.Fields[4]);
-        pt.DataFields.Add(pt.Fields[3]);
+        _ = pt.RowFields.Add(pt.Fields[4]);
+        _ = pt.DataFields.Add(pt.Fields[3]);
 
-        pt.Fields[4].Filters.AddDatePeriodFilter(ePivotTableDatePeriodFilterType.M6);
+        _ = pt.Fields[4].Filters.AddDatePeriodFilter(ePivotTableDatePeriodFilterType.M6);
     }
 
     [TestMethod]
@@ -271,10 +271,10 @@ public class PivotTableDateFilterTests : TestBase
         ExcelWorksheet? ws = _pck.Workbook.Worksheets.Add("M7");
 
         ExcelPivotTable? pt = ws.PivotTables.Add(ws.Cells["A1"], wsData.Cells["K1:O11"], "Pivottable2");
-        pt.RowFields.Add(pt.Fields[4]);
-        pt.DataFields.Add(pt.Fields[3]);
+        _ = pt.RowFields.Add(pt.Fields[4]);
+        _ = pt.DataFields.Add(pt.Fields[3]);
 
-        pt.Fields[4].Filters.AddDatePeriodFilter(ePivotTableDatePeriodFilterType.M7);
+        _ = pt.Fields[4].Filters.AddDatePeriodFilter(ePivotTableDatePeriodFilterType.M7);
     }
 
     [TestMethod]
@@ -284,10 +284,10 @@ public class PivotTableDateFilterTests : TestBase
         ExcelWorksheet? ws = _pck.Workbook.Worksheets.Add("M8");
 
         ExcelPivotTable? pt = ws.PivotTables.Add(ws.Cells["A1"], wsData.Cells["K1:O11"], "Pivottable2");
-        pt.RowFields.Add(pt.Fields[4]);
-        pt.DataFields.Add(pt.Fields[3]);
+        _ = pt.RowFields.Add(pt.Fields[4]);
+        _ = pt.DataFields.Add(pt.Fields[3]);
 
-        pt.Fields[4].Filters.AddDatePeriodFilter(ePivotTableDatePeriodFilterType.M8);
+        _ = pt.Fields[4].Filters.AddDatePeriodFilter(ePivotTableDatePeriodFilterType.M8);
     }
 
     [TestMethod]
@@ -297,10 +297,10 @@ public class PivotTableDateFilterTests : TestBase
         ExcelWorksheet? ws = _pck.Workbook.Worksheets.Add("M9");
 
         ExcelPivotTable? pt = ws.PivotTables.Add(ws.Cells["A1"], wsData.Cells["K1:O11"], "Pivottable2");
-        pt.RowFields.Add(pt.Fields[4]);
-        pt.DataFields.Add(pt.Fields[3]);
+        _ = pt.RowFields.Add(pt.Fields[4]);
+        _ = pt.DataFields.Add(pt.Fields[3]);
 
-        pt.Fields[4].Filters.AddDatePeriodFilter(ePivotTableDatePeriodFilterType.M9);
+        _ = pt.Fields[4].Filters.AddDatePeriodFilter(ePivotTableDatePeriodFilterType.M9);
     }
 
     [TestMethod]
@@ -310,10 +310,10 @@ public class PivotTableDateFilterTests : TestBase
         ExcelWorksheet? ws = _pck.Workbook.Worksheets.Add("M10");
 
         ExcelPivotTable? pt = ws.PivotTables.Add(ws.Cells["A1"], wsData.Cells["K1:O11"], "Pivottable2");
-        pt.RowFields.Add(pt.Fields[4]);
-        pt.DataFields.Add(pt.Fields[3]);
+        _ = pt.RowFields.Add(pt.Fields[4]);
+        _ = pt.DataFields.Add(pt.Fields[3]);
 
-        pt.Fields[4].Filters.AddDatePeriodFilter(ePivotTableDatePeriodFilterType.M10);
+        _ = pt.Fields[4].Filters.AddDatePeriodFilter(ePivotTableDatePeriodFilterType.M10);
     }
 
     [TestMethod]
@@ -323,10 +323,10 @@ public class PivotTableDateFilterTests : TestBase
         ExcelWorksheet? ws = _pck.Workbook.Worksheets.Add("M11");
 
         ExcelPivotTable? pt = ws.PivotTables.Add(ws.Cells["A1"], wsData.Cells["K1:O11"], "Pivottable2");
-        pt.RowFields.Add(pt.Fields[4]);
-        pt.DataFields.Add(pt.Fields[3]);
+        _ = pt.RowFields.Add(pt.Fields[4]);
+        _ = pt.DataFields.Add(pt.Fields[3]);
 
-        pt.Fields[4].Filters.AddDatePeriodFilter(ePivotTableDatePeriodFilterType.M11);
+        _ = pt.Fields[4].Filters.AddDatePeriodFilter(ePivotTableDatePeriodFilterType.M11);
     }
 
     [TestMethod]
@@ -336,10 +336,10 @@ public class PivotTableDateFilterTests : TestBase
         ExcelWorksheet? ws = _pck.Workbook.Worksheets.Add("M12");
 
         ExcelPivotTable? pt = ws.PivotTables.Add(ws.Cells["A1"], wsData.Cells["K1:O11"], "Pivottable2");
-        pt.RowFields.Add(pt.Fields[4]);
-        pt.DataFields.Add(pt.Fields[3]);
+        _ = pt.RowFields.Add(pt.Fields[4]);
+        _ = pt.DataFields.Add(pt.Fields[3]);
 
-        pt.Fields[4].Filters.AddDatePeriodFilter(ePivotTableDatePeriodFilterType.M12);
+        _ = pt.Fields[4].Filters.AddDatePeriodFilter(ePivotTableDatePeriodFilterType.M12);
     }
 
     [TestMethod]
@@ -349,10 +349,10 @@ public class PivotTableDateFilterTests : TestBase
         ExcelWorksheet? ws = _pck.Workbook.Worksheets.Add("Q1");
 
         ExcelPivotTable? pt = ws.PivotTables.Add(ws.Cells["A1"], wsData.Cells["K1:O11"], "Pivottable2");
-        pt.RowFields.Add(pt.Fields[4]);
-        pt.DataFields.Add(pt.Fields[3]);
+        _ = pt.RowFields.Add(pt.Fields[4]);
+        _ = pt.DataFields.Add(pt.Fields[3]);
 
-        pt.Fields[4].Filters.AddDatePeriodFilter(ePivotTableDatePeriodFilterType.Q1);
+        _ = pt.Fields[4].Filters.AddDatePeriodFilter(ePivotTableDatePeriodFilterType.Q1);
     }
 
     [TestMethod]
@@ -362,10 +362,10 @@ public class PivotTableDateFilterTests : TestBase
         ExcelWorksheet? ws = _pck.Workbook.Worksheets.Add("Q2");
 
         ExcelPivotTable? pt = ws.PivotTables.Add(ws.Cells["A1"], wsData.Cells["K1:O11"], "Pivottable2");
-        pt.RowFields.Add(pt.Fields[4]);
-        pt.DataFields.Add(pt.Fields[3]);
+        _ = pt.RowFields.Add(pt.Fields[4]);
+        _ = pt.DataFields.Add(pt.Fields[3]);
 
-        pt.Fields[4].Filters.AddDatePeriodFilter(ePivotTableDatePeriodFilterType.Q2);
+        _ = pt.Fields[4].Filters.AddDatePeriodFilter(ePivotTableDatePeriodFilterType.Q2);
     }
 
     [TestMethod]
@@ -375,10 +375,10 @@ public class PivotTableDateFilterTests : TestBase
         ExcelWorksheet? ws = _pck.Workbook.Worksheets.Add("Q3");
 
         ExcelPivotTable? pt = ws.PivotTables.Add(ws.Cells["A1"], wsData.Cells["K1:O11"], "Pivottable2");
-        pt.RowFields.Add(pt.Fields[4]);
-        pt.DataFields.Add(pt.Fields[3]);
+        _ = pt.RowFields.Add(pt.Fields[4]);
+        _ = pt.DataFields.Add(pt.Fields[3]);
 
-        pt.Fields[4].Filters.AddDatePeriodFilter(ePivotTableDatePeriodFilterType.Q3);
+        _ = pt.Fields[4].Filters.AddDatePeriodFilter(ePivotTableDatePeriodFilterType.Q3);
     }
 
     [TestMethod]
@@ -388,10 +388,10 @@ public class PivotTableDateFilterTests : TestBase
         ExcelWorksheet? ws = _pck.Workbook.Worksheets.Add("Q4");
 
         ExcelPivotTable? pt = ws.PivotTables.Add(ws.Cells["A1"], wsData.Cells["K1:O11"], "Pivottable2");
-        pt.RowFields.Add(pt.Fields[4]);
-        pt.DataFields.Add(pt.Fields[3]);
+        _ = pt.RowFields.Add(pt.Fields[4]);
+        _ = pt.DataFields.Add(pt.Fields[3]);
 
-        pt.Fields[4].Filters.AddDatePeriodFilter(ePivotTableDatePeriodFilterType.Q4);
+        _ = pt.Fields[4].Filters.AddDatePeriodFilter(ePivotTableDatePeriodFilterType.Q4);
     }
 
     [TestMethod]
@@ -401,10 +401,10 @@ public class PivotTableDateFilterTests : TestBase
         ExcelWorksheet? ws = _pck.Workbook.Worksheets.Add("Yesterday");
 
         ExcelPivotTable? pt = ws.PivotTables.Add(ws.Cells["A1"], wsData.Cells["K1:O11"], "Pivottable2");
-        pt.RowFields.Add(pt.Fields[4]);
-        pt.DataFields.Add(pt.Fields[3]);
+        _ = pt.RowFields.Add(pt.Fields[4]);
+        _ = pt.DataFields.Add(pt.Fields[3]);
 
-        pt.Fields[4].Filters.AddDatePeriodFilter(ePivotTableDatePeriodFilterType.Yesterday);
+        _ = pt.Fields[4].Filters.AddDatePeriodFilter(ePivotTableDatePeriodFilterType.Yesterday);
     }
 
     [TestMethod]
@@ -414,10 +414,10 @@ public class PivotTableDateFilterTests : TestBase
         ExcelWorksheet? ws = _pck.Workbook.Worksheets.Add("Today");
 
         ExcelPivotTable? pt = ws.PivotTables.Add(ws.Cells["A1"], wsData.Cells["K1:O11"], "Pivottable2");
-        pt.RowFields.Add(pt.Fields[4]);
-        pt.DataFields.Add(pt.Fields[3]);
+        _ = pt.RowFields.Add(pt.Fields[4]);
+        _ = pt.DataFields.Add(pt.Fields[3]);
 
-        pt.Fields[4].Filters.AddDatePeriodFilter(ePivotTableDatePeriodFilterType.Today);
+        _ = pt.Fields[4].Filters.AddDatePeriodFilter(ePivotTableDatePeriodFilterType.Today);
     }
 
     [TestMethod]
@@ -427,10 +427,10 @@ public class PivotTableDateFilterTests : TestBase
         ExcelWorksheet? ws = _pck.Workbook.Worksheets.Add("Tomorrow");
 
         ExcelPivotTable? pt = ws.PivotTables.Add(ws.Cells["A1"], wsData.Cells["K1:O11"], "Pivottable2");
-        pt.RowFields.Add(pt.Fields[4]);
-        pt.DataFields.Add(pt.Fields[3]);
+        _ = pt.RowFields.Add(pt.Fields[4]);
+        _ = pt.DataFields.Add(pt.Fields[3]);
 
-        pt.Fields[4].Filters.AddDatePeriodFilter(ePivotTableDatePeriodFilterType.Tomorrow);
+        _ = pt.Fields[4].Filters.AddDatePeriodFilter(ePivotTableDatePeriodFilterType.Tomorrow);
     }
 
     [TestMethod]
@@ -440,10 +440,10 @@ public class PivotTableDateFilterTests : TestBase
         ExcelWorksheet? ws = _pck.Workbook.Worksheets.Add("YTD");
 
         ExcelPivotTable? pt = ws.PivotTables.Add(ws.Cells["A1"], wsData.Cells["K1:O11"], "Pivottable2");
-        pt.RowFields.Add(pt.Fields[4]);
-        pt.DataFields.Add(pt.Fields[3]);
+        _ = pt.RowFields.Add(pt.Fields[4]);
+        _ = pt.DataFields.Add(pt.Fields[3]);
 
-        pt.Fields[4].Filters.AddDatePeriodFilter(ePivotTableDatePeriodFilterType.YearToDate);
+        _ = pt.Fields[4].Filters.AddDatePeriodFilter(ePivotTableDatePeriodFilterType.YearToDate);
     }
 
     [TestMethod]
@@ -453,10 +453,10 @@ public class PivotTableDateFilterTests : TestBase
         ExcelWorksheet? ws = _pck.Workbook.Worksheets.Add("ThisMonth");
 
         ExcelPivotTable? pt = ws.PivotTables.Add(ws.Cells["A1"], wsData.Cells["K1:O11"], "Pivottable2");
-        pt.RowFields.Add(pt.Fields[4]);
-        pt.DataFields.Add(pt.Fields[3]);
+        _ = pt.RowFields.Add(pt.Fields[4]);
+        _ = pt.DataFields.Add(pt.Fields[3]);
 
-        pt.Fields[4].Filters.AddDatePeriodFilter(ePivotTableDatePeriodFilterType.ThisMonth);
+        _ = pt.Fields[4].Filters.AddDatePeriodFilter(ePivotTableDatePeriodFilterType.ThisMonth);
     }
 
     [TestMethod]
@@ -466,10 +466,10 @@ public class PivotTableDateFilterTests : TestBase
         ExcelWorksheet? ws = _pck.Workbook.Worksheets.Add("ThisQuarter");
 
         ExcelPivotTable? pt = ws.PivotTables.Add(ws.Cells["A1"], wsData.Cells["K1:O11"], "Pivottable2");
-        pt.RowFields.Add(pt.Fields[4]);
-        pt.DataFields.Add(pt.Fields[3]);
+        _ = pt.RowFields.Add(pt.Fields[4]);
+        _ = pt.DataFields.Add(pt.Fields[3]);
 
-        pt.Fields[4].Filters.AddDatePeriodFilter(ePivotTableDatePeriodFilterType.ThisQuarter);
+        _ = pt.Fields[4].Filters.AddDatePeriodFilter(ePivotTableDatePeriodFilterType.ThisQuarter);
     }
 
     [TestMethod]
@@ -479,10 +479,10 @@ public class PivotTableDateFilterTests : TestBase
         ExcelWorksheet? ws = _pck.Workbook.Worksheets.Add("ThisWeek");
 
         ExcelPivotTable? pt = ws.PivotTables.Add(ws.Cells["A1"], wsData.Cells["K1:O11"], "Pivottable2");
-        pt.RowFields.Add(pt.Fields[4]);
-        pt.DataFields.Add(pt.Fields[3]);
+        _ = pt.RowFields.Add(pt.Fields[4]);
+        _ = pt.DataFields.Add(pt.Fields[3]);
 
-        pt.Fields[4].Filters.AddDatePeriodFilter(ePivotTableDatePeriodFilterType.ThisWeek);
+        _ = pt.Fields[4].Filters.AddDatePeriodFilter(ePivotTableDatePeriodFilterType.ThisWeek);
     }
 
     [TestMethod]
@@ -492,10 +492,10 @@ public class PivotTableDateFilterTests : TestBase
         ExcelWorksheet? ws = _pck.Workbook.Worksheets.Add("ThisYear");
 
         ExcelPivotTable? pt = ws.PivotTables.Add(ws.Cells["A1"], wsData.Cells["K1:O11"], "Pivottable2");
-        pt.RowFields.Add(pt.Fields[4]);
-        pt.DataFields.Add(pt.Fields[3]);
+        _ = pt.RowFields.Add(pt.Fields[4]);
+        _ = pt.DataFields.Add(pt.Fields[3]);
 
-        pt.Fields[4].Filters.AddDatePeriodFilter(ePivotTableDatePeriodFilterType.ThisYear);
+        _ = pt.Fields[4].Filters.AddDatePeriodFilter(ePivotTableDatePeriodFilterType.ThisYear);
     }
 
     [TestMethod]
@@ -505,10 +505,10 @@ public class PivotTableDateFilterTests : TestBase
         ExcelWorksheet? ws = _pck.Workbook.Worksheets.Add("NextMonth");
 
         ExcelPivotTable? pt = ws.PivotTables.Add(ws.Cells["A1"], wsData.Cells["K1:O11"], "Pivottable2");
-        pt.RowFields.Add(pt.Fields[4]);
-        pt.DataFields.Add(pt.Fields[3]);
+        _ = pt.RowFields.Add(pt.Fields[4]);
+        _ = pt.DataFields.Add(pt.Fields[3]);
 
-        pt.Fields[4].Filters.AddDatePeriodFilter(ePivotTableDatePeriodFilterType.NextMonth);
+        _ = pt.Fields[4].Filters.AddDatePeriodFilter(ePivotTableDatePeriodFilterType.NextMonth);
     }
 
     [TestMethod]
@@ -518,10 +518,10 @@ public class PivotTableDateFilterTests : TestBase
         ExcelWorksheet? ws = _pck.Workbook.Worksheets.Add("NextQuarter");
 
         ExcelPivotTable? pt = ws.PivotTables.Add(ws.Cells["A1"], wsData.Cells["K1:O11"], "Pivottable2");
-        pt.RowFields.Add(pt.Fields[4]);
-        pt.DataFields.Add(pt.Fields[3]);
+        _ = pt.RowFields.Add(pt.Fields[4]);
+        _ = pt.DataFields.Add(pt.Fields[3]);
 
-        pt.Fields[4].Filters.AddDatePeriodFilter(ePivotTableDatePeriodFilterType.NextQuarter);
+        _ = pt.Fields[4].Filters.AddDatePeriodFilter(ePivotTableDatePeriodFilterType.NextQuarter);
     }
 
     [TestMethod]
@@ -531,10 +531,10 @@ public class PivotTableDateFilterTests : TestBase
         ExcelWorksheet? ws = _pck.Workbook.Worksheets.Add("NextWeek");
 
         ExcelPivotTable? pt = ws.PivotTables.Add(ws.Cells["A1"], wsData.Cells["K1:O11"], "Pivottable2");
-        pt.RowFields.Add(pt.Fields[4]);
-        pt.DataFields.Add(pt.Fields[3]);
+        _ = pt.RowFields.Add(pt.Fields[4]);
+        _ = pt.DataFields.Add(pt.Fields[3]);
 
-        pt.Fields[4].Filters.AddDatePeriodFilter(ePivotTableDatePeriodFilterType.NextWeek);
+        _ = pt.Fields[4].Filters.AddDatePeriodFilter(ePivotTableDatePeriodFilterType.NextWeek);
     }
 
     [TestMethod]
@@ -544,9 +544,9 @@ public class PivotTableDateFilterTests : TestBase
         ExcelWorksheet? ws = _pck.Workbook.Worksheets.Add("NextYear");
 
         ExcelPivotTable? pt = ws.PivotTables.Add(ws.Cells["A1"], wsData.Cells["K1:O11"], "Pivottable2");
-        pt.RowFields.Add(pt.Fields[4]);
-        pt.DataFields.Add(pt.Fields[3]);
+        _ = pt.RowFields.Add(pt.Fields[4]);
+        _ = pt.DataFields.Add(pt.Fields[3]);
 
-        pt.Fields[4].Filters.AddDatePeriodFilter(ePivotTableDatePeriodFilterType.NextYear);
+        _ = pt.Fields[4].Filters.AddDatePeriodFilter(ePivotTableDatePeriodFilterType.NextYear);
     }
 }

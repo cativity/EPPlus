@@ -141,10 +141,10 @@ public class BesselYImpl : BesselBase
             k += 1;
         } while (!bHasFound && k < fMaxIteration);
 
-        if (!bHasFound)
-        {
-            new FinanceCalcResult<double>(eErrorType.Num);
-        }
+        //if (!bHasFound)
+        //{
+        //    _ = new FinanceCalcResult<double>(eErrorType.Num);
+        //}
 
         return new FinanceCalcResult<double>(-u * 2.0 / f_PI);
     }

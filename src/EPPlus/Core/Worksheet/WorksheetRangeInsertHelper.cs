@@ -295,7 +295,7 @@ internal static class WorksheetRangeInsertHelper
 
         foreach (ExcelDataValidation? dv in delDV)
         {
-            ws.DataValidations.Remove(dv);
+            _ = ws.DataValidations.Remove(dv);
         }
     }
 
@@ -723,7 +723,7 @@ internal static class WorksheetRangeInsertHelper
             {
                 int cc = c._columnMax - columnFrom;
                 c._columnMax = columnFrom - 1;
-                ws.CopyColumn(c, columnFrom + columns, columnFrom + columns + cc);
+                _ = ws.CopyColumn(c, columnFrom + columns, columnFrom + columns + cc);
             }
         }
     }
@@ -829,7 +829,7 @@ internal static class WorksheetRangeInsertHelper
 
     private static void FixFormulasInsertRow(ExcelWorksheet ws, int rowFrom, int rows, int columnFrom = 0, int columnTo = ExcelPackage.MaxColumns)
     {
-        SourceCodeTokenizer? sct = new SourceCodeTokenizer(FunctionNameProvider.Empty, NameValueProvider.Empty);
+        //_ = new SourceCodeTokenizer(FunctionNameProvider.Empty, NameValueProvider.Empty);
 
         //Adjust formulas
         foreach (ExcelWorksheet? wsToUpdate in ws.Workbook.Worksheets)

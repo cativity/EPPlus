@@ -637,10 +637,8 @@ namespace OfficeOpenXml
 
         private void CreateBlankWb()
         {
-            XmlDocument workbook = this.Workbook.WorkbookXml; // this will create the workbook xml in the package
-
             // create the relationship to the main part
-            this._zipPackage.CreateRelationship(UriHelper.GetRelativeUri(new Uri("/xl", UriKind.Relative), this.Workbook.WorkbookUri),
+            _ = this._zipPackage.CreateRelationship(UriHelper.GetRelativeUri(new Uri("/xl", UriKind.Relative), this.Workbook.WorkbookUri),
                                                 TargetMode.Internal,
                                                 schemaRelationships + "/officeDocument");
         }
@@ -907,7 +905,7 @@ namespace OfficeOpenXml
                     foreach (ZipPackageRelationship rel in rels)
                     {
                         this.ZipPackage.DeleteRelationship(rel.Id);
-                        part.CreateRelationship(rel.TargetUri, rel.TargetMode, rel.RelationshipType);
+                        _ = part.CreateRelationship(rel.TargetUri, rel.TargetMode, rel.RelationshipType);
                     }
                 }
             }
@@ -1300,8 +1298,8 @@ namespace OfficeOpenXml
 
             Byte[] byRet = new byte[this.Stream.Length];
             long pos = this.Stream.Position;
-            this.Stream.Seek(0, SeekOrigin.Begin);
-            this.Stream.Read(byRet, 0, (int)this.Stream.Length);
+            _ = this.Stream.Seek(0, SeekOrigin.Begin);
+            _ = this.Stream.Read(byRet, 0, (int)this.Stream.Length);
 
             //Encrypt Workbook?
             if (this.Encryption.IsEncrypted)
@@ -1311,7 +1309,7 @@ namespace OfficeOpenXml
                 byRet = ms.ToArray();
             }
 
-            this.Stream.Seek(pos, SeekOrigin.Begin);
+            _ = this.Stream.Seek(pos, SeekOrigin.Begin);
             this.CloseStream();
 
             return byRet;
@@ -1388,8 +1386,6 @@ namespace OfficeOpenXml
                 }
                 catch (Exception ex)
                 {
-                    EncryptedPackageHandler eph = new EncryptedPackageHandler();
-
                     if (Password == null && CompoundDocument.IsCompoundDocument((MemoryStream)this._stream))
                     {
                         throw new

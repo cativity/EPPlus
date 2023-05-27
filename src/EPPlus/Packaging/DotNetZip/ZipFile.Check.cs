@@ -344,41 +344,41 @@ internal partial class ZipFile
         get
         {
             StringBuilder? builder = new StringBuilder();
-            builder.Append(string.Format("          ZipFile: {0}\n", this.Name));
+            _ = builder.Append(string.Format("          ZipFile: {0}\n", this.Name));
 
             if (!string.IsNullOrEmpty(this._Comment))
             {
-                builder.Append(string.Format("          Comment: {0}\n", this._Comment));
+                _ = builder.Append(string.Format("          Comment: {0}\n", this._Comment));
             }
 
             if (this._versionMadeBy != 0)
             {
-                builder.Append(string.Format("  version made by: 0x{0:X4}\n", this._versionMadeBy));
+                _ = builder.Append(string.Format("  version made by: 0x{0:X4}\n", this._versionMadeBy));
             }
 
             if (this._versionNeededToExtract != 0)
             {
-                builder.Append(string.Format("needed to extract: 0x{0:X4}\n", this._versionNeededToExtract));
+                _ = builder.Append(string.Format("needed to extract: 0x{0:X4}\n", this._versionNeededToExtract));
             }
 
-            builder.Append(string.Format("       uses ZIP64: {0}\n", this.InputUsesZip64));
+            _ = builder.Append(string.Format("       uses ZIP64: {0}\n", this.InputUsesZip64));
 
-            builder.Append(string.Format("     disk with CD: {0}\n", this._diskNumberWithCd));
+            _ = builder.Append(string.Format("     disk with CD: {0}\n", this._diskNumberWithCd));
 
             if (this._OffsetOfCentralDirectory == 0xFFFFFFFF)
             {
-                builder.Append(string.Format("      CD64 offset: 0x{0:X16}\n", this._OffsetOfCentralDirectory64));
+                _ = builder.Append(string.Format("      CD64 offset: 0x{0:X16}\n", this._OffsetOfCentralDirectory64));
             }
             else
             {
-                builder.Append(string.Format("        CD offset: 0x{0:X8}\n", this._OffsetOfCentralDirectory));
+                _ = builder.Append(string.Format("        CD offset: 0x{0:X8}\n", this._OffsetOfCentralDirectory));
             }
 
-            builder.Append("\n");
+            _ = builder.Append("\n");
 
             foreach (ZipEntry entry in this._entries.Values)
             {
-                builder.Append(entry.Info);
+                _ = builder.Append(entry.Info);
             }
 
             return builder.ToString();

@@ -38,7 +38,7 @@ public class ExcelTableSlicer : ExcelSlicer<ExcelTableSlicerCache>
         XmlNode? slicerNode = this._ws.SlicerXmlSources.GetSource(this.Name, eSlicerSourceType.Table, out this._xmlSource);
         this._slicerXmlHelper = XmlHelperFactory.Create(this.NameSpaceManager, slicerNode);
 
-        this._ws.Workbook.SlicerCaches.TryGetValue(this.CacheName, out ExcelSlicerCache cache);
+        _ = this._ws.Workbook.SlicerCaches.TryGetValue(this.CacheName, out ExcelSlicerCache cache);
         this._cache = (ExcelTableSlicerCache)cache;
 
         this.TableColumn = this.GetTableColumn();
@@ -98,7 +98,7 @@ public class ExcelTableSlicer : ExcelSlicer<ExcelTableSlicerCache>
         XmlElement graphFrame = this.TopNode.OwnerDocument.CreateElement("mc", "AlternateContent", ExcelPackage.schemaMarkupCompatibility);
         graphFrame.SetAttribute("xmlns:mc", ExcelPackage.schemaMarkupCompatibility);
         graphFrame.SetAttribute("xmlns:sle15", ExcelPackage.schemaSlicer);
-        this.TopNode.AppendChild(graphFrame);
+        _ = this.TopNode.AppendChild(graphFrame);
 
         graphFrame.InnerXml =
             string.Format(
@@ -107,11 +107,11 @@ public class ExcelTableSlicer : ExcelSlicer<ExcelTableSlicerCache>
                           "{" + Guid.NewGuid().ToString() + "}",
                           name);
 
-        this.TopNode.AppendChild(this.TopNode.OwnerDocument.CreateElement("clientData", ExcelPackage.schemaSheetDrawings));
+        _ = this.TopNode.AppendChild(this.TopNode.OwnerDocument.CreateElement("clientData", ExcelPackage.schemaSheetDrawings));
 
         this._xmlSource = this._ws.SlicerXmlSources.GetOrCreateSource(eSlicerSourceType.Table);
         XmlElement? node = this._xmlSource.XmlDocument.CreateElement("slicer", ExcelPackage.schemaMainX14);
-        this._xmlSource.XmlDocument.DocumentElement.AppendChild(node);
+        _ = this._xmlSource.XmlDocument.DocumentElement.AppendChild(node);
         this._slicerXmlHelper = XmlHelperFactory.Create(this.NameSpaceManager, node);
 
         XmlNode? extNode = this._ws.GetOrCreateExtLstSubNode(ExtLstUris.WorksheetSlicerTableUri, "x14");
@@ -121,7 +121,7 @@ public class ExcelTableSlicer : ExcelSlicer<ExcelTableSlicerCache>
             extNode.InnerXml = "<x14:slicerList/>";
             XmlHelper? xh = XmlHelperFactory.Create(this.NameSpaceManager, extNode.FirstChild);
             XmlElement? element = (XmlElement)xh.CreateNode("x14:slicer", false, true);
-            element.SetAttribute("id", ExcelPackage.schemaRelationships, this._xmlSource.Rel.Id);
+            _ = element.SetAttribute("id", ExcelPackage.schemaRelationships, this._xmlSource.Rel.Id);
         }
 
         this.GetPositionSize();
@@ -160,7 +160,6 @@ public class ExcelTableSlicer : ExcelSlicer<ExcelTableSlicerCache>
 
     internal void CreateNewCache()
     {
-        string? cacheXml = this.Cache.SlicerCacheXml.OuterXml;
         ExcelTableSlicerCache? cache = new ExcelTableSlicerCache(this._slicerXmlHelper.NameSpaceManager);
         cache.Init(this.Cache.TableColumn, "Slicer_" + this.SlicerName);
         this._cache = cache;

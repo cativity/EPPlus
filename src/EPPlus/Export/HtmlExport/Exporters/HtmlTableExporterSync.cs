@@ -259,7 +259,6 @@ internal class HtmlTableExporterSync : HtmlRangeExporterSyncBase
 
         writer.RenderBeginTag(HtmlElements.TableRow);
         writer.ApplyFormatIncreaseIndent(this.Settings.Minify);
-        ExcelAddressBase? address = this._table.Address;
         HtmlImage image = null;
 
         foreach (int col in this._columns)

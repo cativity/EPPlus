@@ -151,7 +151,7 @@ internal static class WorksheetCopyHelper
                 relID = attr.Value;
 
                 // first delete the attribute from the XML
-                pageSetup.Attributes.Remove(attr);
+                _ = pageSetup.Attributes.Remove(attr);
             }
         }
 
@@ -276,7 +276,7 @@ internal static class WorksheetCopyHelper
                                                                              ExcelPackage.schemaRelationships + "/drawing");
 
         XmlElement e = added.WorksheetXml.SelectSingleNode("//d:drawing", nsm) as XmlElement;
-        e.SetAttribute("id", ExcelPackage.schemaRelationships, drawRelation.Id);
+        _ = e.SetAttribute("id", ExcelPackage.schemaRelationships, drawRelation.Id);
 
         for (int i = 0; i < copy.Drawings.Count; i++)
         {
@@ -343,7 +343,6 @@ internal static class WorksheetCopyHelper
             else if (draw is ExcelPicture pic)
             {
                 IPictureContainer container = pic;
-                Uri? uri = container.UriPic;
                 ImageInfo? ii = added.Workbook._package.PictureStore.AddImage(pic.Image.ImageBytes, null, pic.Image.Type);
 
                 ZipPackageRelationship? rel = partDraw.CreateRelationship(UriHelper.GetRelativeUri(added.WorksheetUri, ii.Uri),
@@ -491,12 +490,12 @@ internal static class WorksheetCopyHelper
                 if (relCopy.RelationshipType == ExcelPackage.schemaChartStyleRelationships)
                 {
                     uri = XmlHelper.GetNewUri(added._package.ZipPackage, "/xl/charts/style{0}.xml");
-                    chartPart.Package.CreatePart(uri, ContentTypes.contentTypeChartStyle, chart.StyleManager.StyleXml.OuterXml);
+                    _ = chartPart.Package.CreatePart(uri, ContentTypes.contentTypeChartStyle, chart.StyleManager.StyleXml.OuterXml);
                 }
                 else if (relCopy.RelationshipType == ExcelPackage.schemaChartColorStyleRelationships)
                 {
                     uri = XmlHelper.GetNewUri(added._package.ZipPackage, "/xl/charts/colors{0}.xml");
-                    chartPart.Package.CreatePart(uri, ContentTypes.contentTypeChartColorStyle, chart.StyleManager.ColorsXml.OuterXml);
+                    _ = chartPart.Package.CreatePart(uri, ContentTypes.contentTypeChartColorStyle, chart.StyleManager.ColorsXml.OuterXml);
                 }
                 else if (added.Workbook != copy.Workbook)
                 {
@@ -505,7 +504,7 @@ internal static class WorksheetCopyHelper
                         if (added._package.ZipPackage.PartExists(uri) == false)
                         {
                             ZipPackagePart? destImgUri = copy._package.ZipPackage.GetPart(uri);
-                            ZipPackagePart? v = added._package.ZipPackage.CreatePart(uri, destImgUri);
+                            _ = added._package.ZipPackage.CreatePart(uri, destImgUri);
                         }
                     }
                 }
@@ -567,7 +566,7 @@ internal static class WorksheetCopyHelper
 
         if (e != null)
         {
-            e.SetAttribute("id", ExcelPackage.schemaRelationships, vmlRelation.Id);
+            _ = e.SetAttribute("id", ExcelPackage.schemaRelationships, vmlRelation.Id);
         }
 
         CopyVmlRelations(origSheet, newSheet);
@@ -593,9 +592,9 @@ internal static class WorksheetCopyHelper
         streamDrawing.Flush();
 
         //Add the relationship ID to the worksheet xml.
-        ZipPackageRelationship? commentRelation = added.Part.CreateRelationship(UriHelper.GetRelativeUri(added.WorksheetUri, uriComment),
-                                                                                TargetMode.Internal,
-                                                                                ExcelPackage.schemaRelationships + "/comments");
+        _ = added.Part.CreateRelationship(UriHelper.GetRelativeUri(added.WorksheetUri, uriComment),
+                                      TargetMode.Internal,
+                                      ExcelPackage.schemaRelationships + "/comments");
 
         xml = Copy.VmlDrawings.VmlDrawingXml.InnerXml;
 
@@ -622,11 +621,11 @@ internal static class WorksheetCopyHelper
 
         if (e == null)
         {
-            added.CreateNode("d:legacyDrawing");
+            _ = added.CreateNode("d:legacyDrawing");
             e = added.WorksheetXml.SelectSingleNode("//d:legacyDrawing", added.NameSpaceManager) as XmlElement;
         }
 
-        e.SetAttribute("id", ExcelPackage.schemaRelationships, newVmlRel.Id);
+        _ = e.SetAttribute("id", ExcelPackage.schemaRelationships, newVmlRel.Id);
         added.LoadComments();
 
         CopyVmlRelations(Copy, added);
@@ -655,7 +654,7 @@ internal static class WorksheetCopyHelper
                 if (!added.Part.Package.PartExists(uri))
                 {
                     ZipPackagePart? sourcePart = Copy._package.ZipPackage.GetPart(uri);
-                    added._package.ZipPackage.CreatePart(uri, sourcePart);
+                    _ = added._package.ZipPackage.CreatePart(uri, sourcePart);
                 }
             }
         }
@@ -765,13 +764,13 @@ internal static class WorksheetCopyHelper
 
                 if (topNode == null)
                 {
-                    added.CreateNode("d:tableParts");
+                    _ = added.CreateNode("d:tableParts");
                     topNode = added.WorksheetXml.SelectSingleNode("//d:tableParts", tbl.NameSpaceManager);
                 }
 
                 XmlElement elem = added.WorksheetXml.CreateElement("tablePart", ExcelPackage.schemaMain);
-                topNode.AppendChild(elem);
-                elem.SetAttribute("id", ExcelPackage.schemaRelationships, rel.Id);
+                _ = topNode.AppendChild(elem);
+                _ = elem.SetAttribute("id", ExcelPackage.schemaRelationships, rel.Id);
             }
             else
             {
@@ -811,7 +810,7 @@ internal static class WorksheetCopyHelper
     {
         Copy._package.Workbook.ReadAllPivotTables();
         string prevName = "";
-        Dictionary<string, string>? worksheetMap = new Dictionary<string, string>();
+        //_ = new Dictionary<string, string>();
         Dictionary<string, string>? nameMap = new Dictionary<string, string>();
         ExcelWorkbook? wbAdded = added._package.Workbook;
 
@@ -865,13 +864,13 @@ internal static class WorksheetCopyHelper
             streamTbl.Flush();
 
             //create the relationship and add the ID to the worksheet xml.
-            added.Part.CreateRelationship(UriHelper.ResolvePartUri(added.WorksheetUri, uriTbl),
+            _ = added.Part.CreateRelationship(UriHelper.ResolvePartUri(added.WorksheetUri, uriTbl),
                                           TargetMode.Internal,
                                           ExcelPackage.schemaRelationships + "/pivotTable");
 
             if (Copy.Workbook == added.Workbook)
             {
-                partTbl.CreateRelationship(tbl.CacheDefinition.CacheDefinitionUri,
+                _ = partTbl.CreateRelationship(tbl.CacheDefinition.CacheDefinitionUri,
                                            tbl.CacheDefinition.Relationship.TargetMode,
                                            tbl.CacheDefinition.Relationship.RelationshipType);
             }
@@ -915,7 +914,7 @@ internal static class WorksheetCopyHelper
         StreamWriter streamCache = new StreamWriter(partCache.GetStream(FileMode.Create, FileAccess.Write));
         streamCache.Write(xmlCache);
         streamCache.Flush();
-        partTbl.CreateRelationship(uriCache, tbl.CacheDefinition.Relationship.TargetMode, tbl.CacheDefinition.Relationship.RelationshipType);
+        _ = partTbl.CreateRelationship(uriCache, tbl.CacheDefinition.Relationship.TargetMode, tbl.CacheDefinition.Relationship.RelationshipType);
 
         ExcelWorkbook.PivotTableCacheRangeInfo? rangeInfo = new ExcelWorkbook.PivotTableCacheRangeInfo();
         PivotTableCacheInternal? newCache = new PivotTableCacheInternal(wbAdded, uriCache, cacheId);
@@ -1140,7 +1139,7 @@ internal static class WorksheetCopyHelper
         streamDrawing.Flush();
 
         //Add the relationship ID to the worksheet xml.
-        added.Part.CreateRelationship(tcUri, TargetMode.Internal, ExcelPackage.schemaThreadedComment);
+        _ = added.Part.CreateRelationship(tcUri, TargetMode.Internal, ExcelPackage.schemaThreadedComment);
 
         added.LoadThreadedComments();
 
@@ -1167,7 +1166,7 @@ internal static class WorksheetCopyHelper
 
             foreach (ExcelThreadedCommentPerson? p in copy.Workbook.ThreadedCommentPersons)
             {
-                wbDest.ThreadedCommentPersons.Add(p.DisplayName, p.UserId, p.ProviderId, p.Id);
+                _ = wbDest.ThreadedCommentPersons.Add(p.DisplayName, p.UserId, p.ProviderId, p.Id);
             }
         }
     }
@@ -1213,8 +1212,7 @@ internal static class WorksheetCopyHelper
         //Copy any images;
         if (Copy.HeaderFooter.Pictures.Count > 0)
         {
-            Uri source = Copy.HeaderFooter.Pictures.Uri;
-            Uri dest = XmlHelper.GetNewUri(added._package.ZipPackage, @"/xl/drawings/vmlDrawing{0}.vml");
+            _ = XmlHelper.GetNewUri(added._package.ZipPackage, @"/xl/drawings/vmlDrawing{0}.vml");
             added.DeleteNode("d:legacyDrawingHF");
 
             //var part = _pck.Package.CreatePart(dest, "application/vnd.openxmlformats-officedocument.vmlDrawing", _pck.Compression);

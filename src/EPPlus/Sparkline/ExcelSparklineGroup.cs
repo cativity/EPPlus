@@ -112,8 +112,6 @@ public class ExcelSparklineGroup : XmlHelper
             }
             else
             {
-                ExcelWorksheet? ws = this._ws.Workbook.Worksheets[this.Sparklines[0].RangeAddress.WorkSheetName];
-
                 return this._ws.Cells[this.Sparklines[0].RangeAddress._fromRow,
                                       this.Sparklines[0].RangeAddress._fromCol,
                                       this.Sparklines[this.Sparklines.Count - 1].RangeAddress._toRow,
@@ -317,7 +315,7 @@ public class ExcelSparklineGroup : XmlHelper
     {
         get
         {
-            this.CreateNode(_colorSeriesPath);
+            _ = this.CreateNode(_colorSeriesPath);
 
             return new ExcelSparklineColor(this.NameSpaceManager, this.TopNode.SelectSingleNode(_colorSeriesPath, this.NameSpaceManager));
         }
@@ -332,7 +330,7 @@ public class ExcelSparklineGroup : XmlHelper
     {
         get
         {
-            this.CreateNode(_colorNegativePath);
+            _ = this.CreateNode(_colorNegativePath);
 
             return new ExcelSparklineColor(this.NameSpaceManager, this.TopNode.SelectSingleNode(_colorNegativePath, this.NameSpaceManager));
         }
@@ -347,7 +345,7 @@ public class ExcelSparklineGroup : XmlHelper
     {
         get
         {
-            this.CreateNode(_colorAxisPath);
+            _ = this.CreateNode(_colorAxisPath);
 
             return new ExcelSparklineColor(this.NameSpaceManager, this.TopNode.SelectSingleNode(_colorAxisPath, this.NameSpaceManager));
         }
@@ -362,7 +360,7 @@ public class ExcelSparklineGroup : XmlHelper
     {
         get
         {
-            this.CreateNode(_colorMarkersPath);
+            _ = this.CreateNode(_colorMarkersPath);
 
             return new ExcelSparklineColor(this.NameSpaceManager, this.TopNode.SelectSingleNode(_colorMarkersPath, this.NameSpaceManager));
         }
@@ -377,7 +375,7 @@ public class ExcelSparklineGroup : XmlHelper
     {
         get
         {
-            this.CreateNode(_colorFirstPath);
+            _ = this.CreateNode(_colorFirstPath);
 
             return new ExcelSparklineColor(this.NameSpaceManager, this.TopNode.SelectSingleNode(_colorFirstPath, this.NameSpaceManager));
         }
@@ -392,7 +390,7 @@ public class ExcelSparklineGroup : XmlHelper
     {
         get
         {
-            this.CreateNode(_colorLastPath);
+            _ = this.CreateNode(_colorLastPath);
 
             return new ExcelSparklineColor(this.NameSpaceManager, this.TopNode.SelectSingleNode(_colorLastPath, this.NameSpaceManager));
         }
@@ -407,7 +405,7 @@ public class ExcelSparklineGroup : XmlHelper
     {
         get
         {
-            this.CreateNode(_colorHighPath);
+            _ = this.CreateNode(_colorHighPath);
 
             return new ExcelSparklineColor(this.NameSpaceManager, this.TopNode.SelectSingleNode(_colorHighPath, this.NameSpaceManager));
         }
@@ -422,7 +420,7 @@ public class ExcelSparklineGroup : XmlHelper
     {
         get
         {
-            this.CreateNode(_colorLowPath);
+            _ = this.CreateNode(_colorLowPath);
 
             return new ExcelSparklineColor(this.NameSpaceManager, this.TopNode.SelectSingleNode(_colorLowPath, this.NameSpaceManager));
         }

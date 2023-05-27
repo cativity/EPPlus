@@ -22,7 +22,7 @@ public abstract class StockChartTestBase : TestBase
             new PeriodData { Date = new DateTime(2020, 01, 05), OpeningPrice = 106, HighPrice = 106, LowPrice = 103, ClosePrice = 104, Volume = 7 },
         };
 
-        ws.Cells["A1"].LoadFromCollection(l, true, OfficeOpenXml.Table.TableStyles.Medium11, BindingFlags.Public | BindingFlags.Instance, members);
+        _ = ws.Cells["A1"].LoadFromCollection(l, true, OfficeOpenXml.Table.TableStyles.Medium11, BindingFlags.Public | BindingFlags.Instance, members);
         ws.Cells["A1:A10"].Style.Numberformat.Format = "yyyy-MM-dd";
         ws.Cells["B1:D10"].Style.Numberformat.Format = "#,##0";
     }
@@ -39,7 +39,7 @@ public abstract class StockChartTestBase : TestBase
             new EquityData { EquityName = "Company F", OpeningPrice = 106, HighPrice = 106, LowPrice = 103, ClosePrice = 104, Volume = 7 }
         };
 
-        ws.Cells["A1"].LoadFromCollection(l, true, OfficeOpenXml.Table.TableStyles.Medium11);
+        _ = ws.Cells["A1"].LoadFromCollection(l, true, OfficeOpenXml.Table.TableStyles.Medium11);
         ws.Cells["A1:A10"].Style.Numberformat.Format = "yyyy-MM-dd";
         ws.Cells["B1:D10"].Style.Numberformat.Format = "#,##0";
     }

@@ -216,7 +216,7 @@ internal partial class EpplusCssWriter : HtmlWriterBase
             }
 
             this.WriteClassEnd(this._settings.Minify);
-            this._images.Add(pc.ImageHash);
+            _ = this._images.Add(pc.ImageHash);
         }
 
         this.AddPicturePropertiesToCss(p);
@@ -320,7 +320,7 @@ internal partial class EpplusCssWriter : HtmlWriterBase
         {
             if (this.IsAddedToCache(xfs, out int id) == false || this._addedToCss.Contains(id) == false)
             {
-                this._addedToCss.Add(id);
+                _ = this._addedToCss.Add(id);
                 this.WriteClass($".{styleClassPrefix}{cellStyleClassName}{id}{{", this._settings.Minify);
 
                 if (xfs.FillId > 0)
@@ -355,7 +355,7 @@ internal partial class EpplusCssWriter : HtmlWriterBase
         {
             if (this.IsAddedToCache(xfs, out int id, bottomStyleId, rightStyleId) == false || this._addedToCss.Contains(id) == false)
             {
-                this._addedToCss.Add(id);
+                _ = this._addedToCss.Add(id);
                 this.WriteClass($".{styleClassPrefix}{cellStyleClassName}{id}{{", this._settings.Minify);
 
                 if (xfs.FillId > 0)
@@ -488,14 +488,14 @@ internal partial class EpplusCssWriter : HtmlWriterBase
         if (bi.Style != ExcelBorderStyle.None)
         {
             StringBuilder? sb = new StringBuilder();
-            sb.Append(GetBorderItemLine(bi.Style, suffix));
+            _ = sb.Append(GetBorderItemLine(bi.Style, suffix));
 
             if (bi.Color != null && bi.Color.Exists)
             {
-                sb.Append($" {this.GetColor(bi.Color)}");
+                _ = sb.Append($" {this.GetColor(bi.Color)}");
             }
 
-            sb.Append(";");
+            _ = sb.Append(";");
 
             this.WriteCssItem(sb.ToString(), this._settings.Minify);
         }

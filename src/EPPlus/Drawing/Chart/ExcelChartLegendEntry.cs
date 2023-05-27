@@ -86,7 +86,7 @@ public class ExcelChartLegendEntry : XmlHelper, IDrawingStyle
             {
                 legendEntryNode = this._chart.ChartXml.CreateElement("c", "legendEntry", ExcelPackage.schemaChart);
                 XmlNode? refNode = legend.Entries[preIx].TopNode;
-                refNode.ParentNode.InsertBefore(legendEntryNode, refNode);
+                _ = refNode.ParentNode.InsertBefore(legendEntryNode, refNode);
             }
 
             this.TopNode = legendEntryNode;
@@ -203,7 +203,7 @@ public class ExcelChartLegendEntry : XmlHelper, IDrawingStyle
             }
             else
             {
-                this.TopNode.ParentNode.RemoveChild(this.TopNode);
+                _ = this.TopNode.ParentNode.RemoveChild(this.TopNode);
             }
         }
     }

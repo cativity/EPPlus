@@ -34,7 +34,6 @@ public class ExcelPivotTableCollection : IEnumerable<ExcelPivotTable>
 
     internal ExcelPivotTableCollection(ExcelWorksheet ws)
     {
-        ZipPackage? pck = ws._package.ZipPackage;
         this._ws = ws;
 
         foreach (ZipPackageRelationship? rel in ws.Part.GetRelationships())
@@ -266,10 +265,10 @@ public class ExcelPivotTableCollection : IEnumerable<ExcelPivotTable>
 
         ZipPackage? pck = this._ws._package.ZipPackage;
 
-        PivotTable.CacheDefinition._cacheReference._pivotTables.Remove(PivotTable);
+        _ = PivotTable.CacheDefinition._cacheReference._pivotTables.Remove(PivotTable);
         pck.DeletePart(PivotTable.Part.Uri);
 
-        this._pivotTables.Remove(PivotTable);
-        this._pivotTableNames.Remove(PivotTable.Name);
+        _ = this._pivotTables.Remove(PivotTable);
+        _ = this._pivotTableNames.Remove(PivotTable.Name);
     }
 }

@@ -204,7 +204,7 @@ public class IntegrationTests : TestBase
     public void ShouldMoveListValidationToExtListAndBack()
     {
         ExcelWorksheet? sheet1 = this._unitTestPackage.Workbook.Worksheets.Add("extlist_sheet1");
-        ExcelWorksheet? sheet2 = this._unitTestPackage.Workbook.Worksheets.Add("extlist_sheet2");
+        _ = this._unitTestPackage.Workbook.Worksheets.Add("extlist_sheet2");
 
         IExcelDataValidationList? v = sheet1.Cells["A1"].DataValidation.AddListDataValidation();
         v.ShowErrorMessage = true;
@@ -234,7 +234,7 @@ public class IntegrationTests : TestBase
         using ExcelPackage? p2 = new ExcelPackage(p1.Stream);
         sheet = p2.Workbook.Worksheets.First();
         IExcelDataValidation? dv = sheet.DataValidations.First();
-        sheet.DataValidations.Remove(dv);
+        _ = sheet.DataValidations.Remove(dv);
         SaveWorkbook("RemoveDataValidation.xlsx", p2);
     }
 }

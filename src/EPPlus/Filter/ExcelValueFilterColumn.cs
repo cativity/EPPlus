@@ -37,7 +37,7 @@ public class ExcelValueFilterColumn : ExcelFilterColumn
             switch (node.LocalName)
             {
                 case "filter":
-                    this.Filters.Add(new ExcelFilterValueItem(node.Attributes["val"].Value));
+                    _ = this.Filters.Add(new ExcelFilterValueItem(node.Attributes["val"].Value));
 
                     break;
 
@@ -46,7 +46,7 @@ public class ExcelValueFilterColumn : ExcelFilterColumn
 
                     if (item != null)
                     {
-                        this.Filters.Add(item);
+                        _ = this.Filters.Add(item);
                     }
 
                     break;
@@ -162,7 +162,7 @@ public class ExcelValueFilterColumn : ExcelFilterColumn
             {
                 XmlElement? e = this.TopNode.OwnerDocument.CreateElement("filter", ExcelPackage.schemaMain);
                 e.SetAttribute("val", ((ExcelFilterValueItem)f).Value);
-                node.AppendChild(e);
+                _ = node.AppendChild(e);
             }
         }
     }

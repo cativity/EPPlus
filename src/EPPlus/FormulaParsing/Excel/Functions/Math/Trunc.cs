@@ -36,7 +36,7 @@ internal class Trunc : ExcelFunction
             return this.CreateResult(System.Math.Truncate(number), DataType.Decimal);
         }
 
-        int nDigits = this.ArgToInt(arguments, 1);
+        _ = this.ArgToInt(arguments, 1);
         ExcelFunction? func = context.Configuration.FunctionRepository.GetFunction("rounddown");
 
         return func.Execute(arguments, context);

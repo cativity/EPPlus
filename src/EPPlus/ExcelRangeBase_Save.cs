@@ -583,24 +583,24 @@ namespace OfficeOpenXml
 
                 if (hasTextQ)
                 {
-                    sb.Append(Format.TextQualifier);
-                    sb.Append(s.Replace(Format.TextQualifier.ToString(), new string(Format.TextQualifier, 2)));
-                    sb.Append(Format.TextQualifier);
+                    _ = sb.Append(Format.TextQualifier);
+                    _ = sb.Append(s.Replace(Format.TextQualifier.ToString(), new string(Format.TextQualifier, 2)));
+                    _ = sb.Append(Format.TextQualifier);
                 }
                 else
                 {
-                    sb.Append(s);
+                    _ = sb.Append(s);
                 }
 
                 if (col < this._toCol)
                 {
-                    sb.Append(Format.Delimiter);
+                    _ = sb.Append(Format.Delimiter);
                 }
             }
 
             if (row != this._toRow)
             {
-                sb.Append(Format.EOL);
+                _ = sb.Append(Format.EOL);
             }
 
             return sb.ToString();

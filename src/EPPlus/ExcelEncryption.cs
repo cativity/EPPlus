@@ -177,11 +177,11 @@ public class ExcelEncryption
 
         if (stream.CanSeek)
         {
-            stream.Seek(0, SeekOrigin.Begin);
+            _ = stream.Seek(0, SeekOrigin.Begin);
         }
 
         byte[]? b = new byte[stream.Length];
-        stream.Read(b, 0, (int)stream.Length);
+        _ = stream.Read(b, 0, (int)stream.Length);
 
         return e.EncryptPackage(b, new ExcelEncryption { Password = password, Algorithm = algorithm, Version = encryptionVersion });
     }

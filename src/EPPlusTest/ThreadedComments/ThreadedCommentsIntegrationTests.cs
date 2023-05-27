@@ -56,7 +56,7 @@ public class ThreadedCommentsIntegrationTests : TestBase
         ExcelThreadedCommentPerson? matsAlm = sheet.ThreadedComments.Persons[1];
         ExcelThreadedCommentPerson? janKallman = sheet.ThreadedComments.Persons[2];
 
-        sheet.ThreadedComments.Add("A2").AddComment(author.Id, "Some mentions: {0} and {1}. And {0} again.", matsAlm, janKallman);
+        _ = sheet.ThreadedComments.Add("A2").AddComment(author.Id, "Some mentions: {0} and {1}. And {0} again.", matsAlm, janKallman);
 
         SaveWorkbook("NewCommentMentions.xlsx", package);
     }
@@ -70,15 +70,15 @@ public class ThreadedCommentsIntegrationTests : TestBase
         ExcelWorksheet? sheet1 = package.Workbook.Worksheets.Add("test 1");
         ExcelWorksheet? sheet2 = package.Workbook.Worksheets.Add("test 2");
 
-        sheet1.ThreadedComments.Add("A1").AddComment(person1.Id, "Hello");
-        sheet1.ThreadedComments["A1"].AddComment(person2.Id, "Hello there");
+        _ = sheet1.ThreadedComments.Add("A1").AddComment(person1.Id, "Hello");
+        _ = sheet1.ThreadedComments["A1"].AddComment(person2.Id, "Hello there");
         sheet1.ThreadedComments["A1"].Comments.Last().EditText("Hello there {0}", person1);
         sheet1.ThreadedComments["A1"].ResolveThread();
         sheet1.ThreadedComments["A1"].ReopenThread();
-        sheet2.ThreadedComments.Add("B1").AddComment(person1.Id, "Hello again");
-        sheet2.ThreadedComments[new ExcelCellAddress("B1")].AddComment(person2.Id, "Hello {0}!", person1);
-        sheet2.ThreadedComments["B1"].Remove(sheet2.ThreadedComments["B1"].Comments[0]);
-        sheet2.ThreadedComments["B1"].Remove(sheet2.ThreadedComments["B1"].Comments[0]);
+        _ = sheet2.ThreadedComments.Add("B1").AddComment(person1.Id, "Hello again");
+        _ = sheet2.ThreadedComments[new ExcelCellAddress("B1")].AddComment(person2.Id, "Hello {0}!", person1);
+        _ = sheet2.ThreadedComments["B1"].Remove(sheet2.ThreadedComments["B1"].Comments[0]);
+        _ = sheet2.ThreadedComments["B1"].Remove(sheet2.ThreadedComments["B1"].Comments[0]);
 
         package.Save();
     }

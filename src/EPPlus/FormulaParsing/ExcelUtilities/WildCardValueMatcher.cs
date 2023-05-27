@@ -58,31 +58,31 @@ public class WildCardValueMatcher : ValueMatcher
             {
                 if (lastIsTilde)
                 {
-                    result.Append("\\*");
+                    _ = result.Append("\\*");
                 }
                 else
                 {
-                    result.Append(".*");
+                    _ = result.Append(".*");
                 }
             }
             else if (ch == '?')
             {
                 if (lastIsTilde)
                 {
-                    result.Append("\\?");
+                    _ = result.Append("\\?");
                 }
                 else
                 {
-                    result.Append('.');
+                    _ = result.Append('.');
                 }
             }
             else if (lastIsTilde)
             {
-                result.Append("~" + ch);
+                _ = result.Append("~" + ch);
             }
             else
             {
-                result.Append(ch);
+                _ = result.Append(ch);
             }
 
             lastIsTilde = false;

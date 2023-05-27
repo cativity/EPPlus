@@ -185,19 +185,19 @@ internal partial class EpplusTableCssWriter : HtmlWriterBase
 
         if (gradient.GradientType == eDxfGradientFillType.Linear)
         {
-            sb.Append($"background: linear-gradient({(gradient.Degree + 90) % 360}deg");
+            _ = sb.Append($"background: linear-gradient({(gradient.Degree + 90) % 360}deg");
         }
         else
         {
-            sb.Append($"background:radial-gradient(ellipse {(gradient.Right ?? 0) * 100}% {(gradient.Bottom ?? 0) * 100}%");
+            _ = sb.Append($"background:radial-gradient(ellipse {(gradient.Right ?? 0) * 100}% {(gradient.Bottom ?? 0) * 100}%");
         }
 
         foreach (ExcelDxfGradientFillColor? color in gradient.Colors)
         {
-            sb.Append($",{this.GetDxfColor(color.Color)} {color.Position.ToString("F", CultureInfo.InvariantCulture)}%");
+            _ = sb.Append($",{this.GetDxfColor(color.Color)} {color.Position.ToString("F", CultureInfo.InvariantCulture)}%");
         }
 
-        sb.Append(")");
+        _ = sb.Append(")");
 
         this.WriteCssItem(sb.ToString(), this._settings.Minify);
     }
@@ -307,14 +307,14 @@ internal partial class EpplusTableCssWriter : HtmlWriterBase
         if (bi.HasValue && bi.Style != ExcelBorderStyle.None)
         {
             StringBuilder? sb = new StringBuilder();
-            sb.Append(GetBorderItemLine(bi.Style.Value, suffix));
+            _ = sb.Append(GetBorderItemLine(bi.Style.Value, suffix));
 
             if (bi.Color.HasValue)
             {
-                sb.Append($" {this.GetDxfColor(bi.Color)}");
+                _ = sb.Append($" {this.GetDxfColor(bi.Color)}");
             }
 
-            sb.Append(";");
+            _ = sb.Append(";");
 
             this.WriteCssItem(sb.ToString(), this._settings.Minify);
         }

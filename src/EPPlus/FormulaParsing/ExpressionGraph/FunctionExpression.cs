@@ -42,7 +42,7 @@ internal class FunctionExpression : AtomicExpression
         this._parsingContext = parsingContext;
         this._functionCompilerFactory = new FunctionCompilerFactory(parsingContext.Configuration.FunctionRepository, parsingContext);
         this._isNegated = isNegated;
-        base.AddChild(new FunctionArgumentExpression(this));
+        _ = base.AddChild(new FunctionArgumentExpression(this));
     }
 
     private readonly ParsingContext _parsingContext;
@@ -147,7 +147,7 @@ internal class FunctionExpression : AtomicExpression
     /// <returns></returns>
     public override Expression AddChild(Expression child)
     {
-        this.Children.Last().AddChild(child);
+        _ = this.Children.Last().AddChild(child);
 
         return child;
     }

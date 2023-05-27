@@ -2564,7 +2564,7 @@ internal partial class ZipEntry
 
         try
         {
-            this.ArchiveStream.Seek(this._RelativeOffsetOfLocalHeader, SeekOrigin.Begin);
+            _ = this.ArchiveStream.Seek(this._RelativeOffsetOfLocalHeader, SeekOrigin.Begin);
 
             // workitem 10178
             SharedUtilities.Workaround_Ladybug318918(this.ArchiveStream);
@@ -2580,7 +2580,7 @@ internal partial class ZipEntry
         }
 
         byte[] block = new byte[30];
-        this.ArchiveStream.Read(block, 0, block.Length);
+        _ = this.ArchiveStream.Read(block, 0, block.Length);
 
         // At this point we could verify the contents read from the local header
         // with the contents read from the central header.  We could, but don't need to.
@@ -2592,7 +2592,7 @@ internal partial class ZipEntry
         // Console.WriteLine("  pos  0x{0:X8} ({0})", this.ArchiveStream.Position);
         // Console.WriteLine("  seek 0x{0:X8} ({0})", filenameLength + extraFieldLength);
 
-        this.ArchiveStream.Seek(filenameLength + extraFieldLength, SeekOrigin.Current);
+        _ = this.ArchiveStream.Seek(filenameLength + extraFieldLength, SeekOrigin.Current);
 
         // workitem 10178
         SharedUtilities.Workaround_Ladybug318918(this.ArchiveStream);
@@ -2608,7 +2608,7 @@ internal partial class ZipEntry
 
         // restore file position:
         // workitem 8098: ok (restore)
-        this.ArchiveStream.Seek(origPosition, SeekOrigin.Begin);
+        _ = this.ArchiveStream.Seek(origPosition, SeekOrigin.Begin);
 
         // workitem 10178
         SharedUtilities.Workaround_Ladybug318918(this.ArchiveStream);

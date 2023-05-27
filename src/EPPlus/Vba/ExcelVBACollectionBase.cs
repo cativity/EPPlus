@@ -86,7 +86,7 @@ public class ExcelVBACollectionBase<T> : IEnumerable<T>
     /// <param name="Item"></param>
     public void Remove(T Item)
     {
-        this._list.Remove(Item);
+        _ = this._list.Remove(Item);
     }
 
     /// <summary>

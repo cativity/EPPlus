@@ -54,7 +54,7 @@ public class SubtotalTests
     public void Setup()
     {
         this._context = ParsingContext.Create();
-        this._context.Scopes.NewScope(RangeAddress.Empty);
+        _ = this._context.Scopes.NewScope(RangeAddress.Empty);
     }
 
     [TestMethod, ExpectedException(typeof(ExcelErrorValueException))]
@@ -62,7 +62,7 @@ public class SubtotalTests
     {
         Subtotal? func = new Subtotal();
         IEnumerable<FunctionArgument>? args = FunctionsHelper.CreateArgs(139, 1);
-        func.Execute(args, this._context);
+        _ = func.Execute(args, this._context);
     }
 
     [TestMethod]
@@ -315,9 +315,9 @@ public class SubtotalTests
         sheet.Cells["B7"].Formula = "SUBTOTAL(9,B2:B6)";
         sheet.Cells["A1:B6"].AutoFilter = true;
         ExcelValueFilterColumn? col = sheet.AutoFilter.Columns.AddValueFilterColumn(0);
-        col.Filters.Add(new ExcelFilterValueItem("data 1"));
-        col.Filters.Add(new ExcelFilterValueItem("data 3"));
-        col.Filters.Add(new ExcelFilterValueItem("data 4"));
+        _ = col.Filters.Add(new ExcelFilterValueItem("data 1"));
+        _ = col.Filters.Add(new ExcelFilterValueItem("data 3"));
+        _ = col.Filters.Add(new ExcelFilterValueItem("data 4"));
         sheet.AutoFilter.ApplyFilter();
 
         Assert.IsFalse(sheet.Row(2).Hidden);

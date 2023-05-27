@@ -121,7 +121,7 @@ public class FunctionRepository : IFunctionNameProvider
 
         if (this._functions.ContainsKey(fName))
         {
-            this._functions.Remove(fName);
+            _ = this._functions.Remove(fName);
         }
 
         this._functions[fName] = functionImpl;

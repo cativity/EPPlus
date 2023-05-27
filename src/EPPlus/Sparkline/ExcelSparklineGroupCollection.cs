@@ -174,9 +174,9 @@ public class ExcelSparklineGroupCollection : IEnumerable<ExcelSparklineGroup>
 
         XmlElement? topNode = this._ws.WorksheetXml.CreateElement("x14", "sparklineGroup", ExcelPackage.schemaMainX14);
         topNode.SetAttribute("xmlns:xm", ExcelPackage.schemaMainXm);
-        topNode.SetAttribute("uid", ExcelPackage.schemaXr2, $"{{{Guid.NewGuid().ToString()}}}");
-        parent.AppendChild(topNode);
-        topNode.AppendChild(topNode.OwnerDocument.CreateElement("x14", "sparklines", ExcelPackage.schemaMainX14));
+        _ = topNode.SetAttribute("uid", ExcelPackage.schemaXr2, $"{{{Guid.NewGuid().ToString()}}}");
+        _ = parent.AppendChild(topNode);
+        _ = topNode.AppendChild(topNode.OwnerDocument.CreateElement("x14", "sparklines", ExcelPackage.schemaMainX14));
 
         return new ExcelSparklineGroup(this._ws.NameSpaceManager, topNode, this._ws);
     }
@@ -230,7 +230,7 @@ public class ExcelSparklineGroupCollection : IEnumerable<ExcelSparklineGroup>
     /// <param name="sparklineGroup">The sparklinegroup to be removed</param>
     public void Remove(ExcelSparklineGroup sparklineGroup)
     {
-        sparklineGroup.TopNode.ParentNode.RemoveChild(sparklineGroup.TopNode);
-        this._lst.Remove(sparklineGroup);
+        _ = sparklineGroup.TopNode.ParentNode.RemoveChild(sparklineGroup.TopNode);
+        _ = this._lst.Remove(sparklineGroup);
     }
 }

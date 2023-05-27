@@ -150,7 +150,7 @@ public class NamedRangeTests
         using ExcelPackage? p1 = new ExcelPackage();
         using ExcelPackage? p2 = new ExcelPackage();
         ExcelWorksheet? ws1 = p1.Workbook.Worksheets.Add("sheet1");
-        ExcelWorksheet? ws2 = p1.Workbook.Worksheets.Add("sheet2");
+        _ = p1.Workbook.Worksheets.Add("sheet2");
 
         ExcelWorksheet? ws1_p2 = p2.Workbook.Worksheets.Add("sheet1");
 
@@ -177,7 +177,7 @@ public class NamedRangeTests
         using (ExcelPackage? package = new ExcelPackage(ms))
         {
             ExcelWorksheet? sheet = package.Workbook.Worksheets.Add("test");
-            package.Workbook.Names.Add("MyName", sheet.Cells["$A$1:$A$3"]);
+            _ = package.Workbook.Names.Add("MyName", sheet.Cells["$A$1:$A$3"]);
             package.Save();
         }
 
@@ -195,7 +195,7 @@ public class NamedRangeTests
         using (ExcelPackage? package = new ExcelPackage(ms))
         {
             ExcelWorksheet? sheet = package.Workbook.Worksheets.Add("test");
-            sheet.Names.Add("MyName", sheet.Cells["$A$1:$A$3"]);
+            _ = sheet.Names.Add("MyName", sheet.Cells["$A$1:$A$3"]);
             package.Save();
         }
 
@@ -213,7 +213,7 @@ public class NamedRangeTests
         using (ExcelPackage? package = new ExcelPackage(ms))
         {
             ExcelWorksheet? sheet = package.Workbook.Worksheets.Add("test");
-            package.Workbook.Names.Add("MyName", sheet.Cells["A1:A3"], true);
+            _ = package.Workbook.Names.Add("MyName", sheet.Cells["A1:A3"], true);
             package.Save();
         }
 
@@ -231,7 +231,7 @@ public class NamedRangeTests
         using (ExcelPackage? package = new ExcelPackage(ms))
         {
             ExcelWorksheet? sheet = package.Workbook.Worksheets.Add("test");
-            sheet.Names.Add("MyName", sheet.Cells["A1:A3"], true);
+            _ = sheet.Names.Add("MyName", sheet.Cells["A1:A3"], true);
             package.Save();
         }
 
@@ -249,7 +249,7 @@ public class NamedRangeTests
         using (ExcelPackage? package = new ExcelPackage(ms))
         {
             ExcelWorksheet? sheet = package.Workbook.Worksheets.Add("test");
-            package.Workbook.Names.Add("MyName", sheet.Cells["A1:A3"], false);
+            _ = package.Workbook.Names.Add("MyName", sheet.Cells["A1:A3"], false);
             package.Save();
         }
 
@@ -267,7 +267,7 @@ public class NamedRangeTests
         using (ExcelPackage? package = new ExcelPackage(ms))
         {
             ExcelWorksheet? sheet = package.Workbook.Worksheets.Add("test");
-            sheet.Names.Add("MyName", sheet.Cells["A1:A3"], false);
+            _ = sheet.Names.Add("MyName", sheet.Cells["A1:A3"], false);
             package.Save();
         }
 
@@ -285,7 +285,7 @@ public class NamedRangeTests
         using (ExcelPackage? package = new ExcelPackage(ms))
         {
             ExcelWorksheet? sheet = package.Workbook.Worksheets.Add("test");
-            package.Workbook.Names.Add("MyName", sheet.Cells["A1:A3"]);
+            _ = package.Workbook.Names.Add("MyName", sheet.Cells["A1:A3"]);
             package.Save();
         }
 
@@ -303,7 +303,7 @@ public class NamedRangeTests
         using (ExcelPackage? package = new ExcelPackage(ms))
         {
             ExcelWorksheet? sheet = package.Workbook.Worksheets.Add("test");
-            sheet.Names.Add("MyName", sheet.Cells["A1:A3"]);
+            _ = sheet.Names.Add("MyName", sheet.Cells["A1:A3"]);
             package.Save();
         }
 

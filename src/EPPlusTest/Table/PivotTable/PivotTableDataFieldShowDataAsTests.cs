@@ -48,7 +48,7 @@ public class PivotTableDataFieldShowDataAsTests : TestBase
         InitBase();
         _pck = OpenPackage("PivotTableShowDataAs.xlsx", true);
         ExcelWorksheet? ws = _pck.Workbook.Worksheets.Add("Data");
-        LoadItemData(ws);
+        _ = LoadItemData(ws);
     }
 
     [ClassCleanup]
@@ -64,7 +64,7 @@ public class PivotTableDataFieldShowDataAsTests : TestBase
 
         LoadTestdata(ws);
         ExcelPivotTable? tbl = ws.PivotTables.Add(ws.Cells["F1"], ws.Cells["A1:D100"], "PivotTablePercTot");
-        ExcelPivotTableField? rf = tbl.RowFields.Add(tbl.Fields[1]);
+        _ = tbl.RowFields.Add(tbl.Fields[1]);
         ExcelPivotTableDataField? df = tbl.DataFields.Add(tbl.Fields[3]);
         df.Function = DataFieldFunctions.Sum;
         df.ShowDataAs.SetPercentOfTotal();
@@ -81,7 +81,7 @@ public class PivotTableDataFieldShowDataAsTests : TestBase
 
         LoadTestdata(ws);
         ExcelPivotTable? tbl = ws.PivotTables.Add(ws.Cells["F1"], ws.Cells["A1:D100"], "PivotTablePercRow");
-        ExcelPivotTableField? rf = tbl.RowFields.Add(tbl.Fields[1]);
+        _ = tbl.RowFields.Add(tbl.Fields[1]);
         ExcelPivotTableDataField? df = tbl.DataFields.Add(tbl.Fields[3]);
         df.Function = DataFieldFunctions.Sum;
         df.ShowDataAs.SetPercentOfRow();
@@ -98,7 +98,7 @@ public class PivotTableDataFieldShowDataAsTests : TestBase
 
         LoadTestdata(ws);
         ExcelPivotTable? tbl = ws.PivotTables.Add(ws.Cells["F1"], ws.Cells["A1:D100"], "PivotTablePercCol");
-        ExcelPivotTableField? rf = tbl.RowFields.Add(tbl.Fields[1]);
+        _ = tbl.RowFields.Add(tbl.Fields[1]);
         ExcelPivotTableDataField? df = tbl.DataFields.Add(tbl.Fields[3]);
         df.Function = DataFieldFunctions.Sum;
         df.ShowDataAs.SetPercentOfColumn();
@@ -228,7 +228,7 @@ public class PivotTableDataFieldShowDataAsTests : TestBase
 
         LoadTestdata(ws);
         ExcelPivotTable? tbl = ws.PivotTables.Add(ws.Cells["F1"], ws.Cells["A1:D100"], "PivotTablePercentOfParentRow");
-        ExcelPivotTableField? rf = tbl.RowFields.Add(tbl.Fields[1]);
+        _ = tbl.RowFields.Add(tbl.Fields[1]);
         ExcelPivotTableDataField? df = tbl.DataFields.Add(tbl.Fields[3]);
         df.Function = DataFieldFunctions.Sum;
         df.ShowDataAs.SetPercentParentRow();
@@ -245,7 +245,7 @@ public class PivotTableDataFieldShowDataAsTests : TestBase
 
         LoadTestdata(ws);
         ExcelPivotTable? tbl = ws.PivotTables.Add(ws.Cells["F1"], ws.Cells["A1:D100"], "PivotTablePercentOfParentRow");
-        ExcelPivotTableField? rf = tbl.RowFields.Add(tbl.Fields[1]);
+        _ = tbl.RowFields.Add(tbl.Fields[1]);
         ExcelPivotTableDataField? df = tbl.DataFields.Add(tbl.Fields[3]);
         df.Function = DataFieldFunctions.Sum;
         df.ShowDataAs.SetPercentParentColumn();

@@ -228,7 +228,7 @@ public class ExcelChartSeries<T> : IEnumerable<T>
     public void Delete(int PositionID)
     {
         ExcelChartSerie ser = this._list[PositionID];
-        ser.TopNode.ParentNode.RemoveChild(ser.TopNode);
+        _ = ser.TopNode.ParentNode.RemoveChild(ser.TopNode);
         this._list.RemoveAt(PositionID);
     }
 
@@ -532,7 +532,7 @@ public class ExcelChartSeries<T> : IEnumerable<T>
     {
         ExcelRange? r = pivotTableSource.WorkSheet.Cells[pivotTableSource.Address.Address];
         this._isPivot = true;
-        this.AddSeries(r.Offset(0, 1, r._toRow - r._fromRow + 1, 1).FullAddressAbsolute, r.Offset(0, 0, r._toRow - r._fromRow + 1, 1).FullAddressAbsolute, "");
+        _ = this.AddSeries(r.Offset(0, 1, r._toRow - r._fromRow + 1, 1).FullAddressAbsolute, r.Offset(0, 0, r._toRow - r._fromRow + 1, 1).FullAddressAbsolute, "");
     }
 
     #endregion

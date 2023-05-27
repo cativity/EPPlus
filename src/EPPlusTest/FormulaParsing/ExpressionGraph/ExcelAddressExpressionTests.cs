@@ -66,13 +66,13 @@ public class ExcelAddressExpressionTests
     [TestMethod, ExpectedException(typeof(ArgumentNullException))]
     public void ConstructorShouldThrowIfExcelDataProviderIsNull()
     {
-        new ExcelAddressExpression("A1", null, this._parsingContext);
+        _ = new ExcelAddressExpression("A1", null, this._parsingContext);
     }
 
     [TestMethod, ExpectedException(typeof(ArgumentNullException))]
     public void ConstructorShouldThrowIfParsingContextIsNull()
     {
-        new ExcelAddressExpression("A1", A.Fake<ExcelDataProvider>(), null);
+        _ = new ExcelAddressExpression("A1", A.Fake<ExcelDataProvider>(), null);
     }
 
     //TODO:Fix Test /Janne

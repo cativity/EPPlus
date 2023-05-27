@@ -142,7 +142,7 @@ public class ExcelPivotTableRowColumnFieldCollection : ExcelPivotTableFieldColle
         }
 
         this.SetFlag(Field, false);
-        this._list.Remove(Field);
+        _ = this._list.Remove(Field);
     }
 
     /// <summary>

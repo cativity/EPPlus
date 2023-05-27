@@ -57,6 +57,6 @@ public class ExpressionGraph
             this.Current = item.Prev ?? item.Next;
         }
 
-        this._expressions.Remove(item);
+        _ = this._expressions.Remove(item);
     }
 }

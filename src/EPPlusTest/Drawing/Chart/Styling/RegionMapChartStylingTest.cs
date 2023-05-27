@@ -71,7 +71,7 @@ public class RegionMapChartStylingTest : TestBase
         //RegionMap Chart styles
 
         //RegionMap chart Style 1
-        AddChart(ws,
+        _ = AddChart(ws,
                  ePresetChartStyle.RegionMapChartStyle1,
                  "RegionMapChartStyle1",
                  0,
@@ -85,13 +85,13 @@ public class RegionMapChartStylingTest : TestBase
                  });
 
         //RegionMap chart Style 2
-        AddChart(ws, ePresetChartStyle.RegionMapChartStyle2, "RegionMapChartStyle2", 0, 18, c => { c.Legend.Position = eLegendPosition.Bottom; });
+        _ = AddChart(ws, ePresetChartStyle.RegionMapChartStyle2, "RegionMapChartStyle2", 0, 18, c => { c.Legend.Position = eLegendPosition.Bottom; });
 
         //RegionMap chart Style 3
-        AddChart(ws, ePresetChartStyle.RegionMapChartStyle3, "RegionMapChartStyle3", 0, 31, c => { c.Legend.Position = eLegendPosition.Bottom; });
+        _ = AddChart(ws, ePresetChartStyle.RegionMapChartStyle3, "RegionMapChartStyle3", 0, 31, c => { c.Legend.Position = eLegendPosition.Bottom; });
 
         //RegionMap chart Style 4
-        AddChart(ws, ePresetChartStyle.RegionMapChartStyle4, "RegionMapChartStyle4", 20, 5, c => { c.Legend.Position = eLegendPosition.Bottom; });
+        _ = AddChart(ws, ePresetChartStyle.RegionMapChartStyle4, "RegionMapChartStyle4", 20, 5, c => { c.Legend.Position = eLegendPosition.Bottom; });
     }
 
     private static ExcelRegionMapChart AddChart(ExcelWorksheet ws,
@@ -107,7 +107,7 @@ public class RegionMapChartStylingTest : TestBase
         chart.To.ColumnOff = 0;
         chart.To.Row = row + 18;
         chart.To.RowOff = 0;
-        chart.Series.Add("C1:C11", "A1:B11");
+        _ = chart.Series.Add("C1:C11", "A1:B11");
 
         SetProperties(chart);
 

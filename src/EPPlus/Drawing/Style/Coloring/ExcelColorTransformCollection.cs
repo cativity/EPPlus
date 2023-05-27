@@ -66,7 +66,7 @@ public class ExcelColorTransformCollection : IEnumerable<IColorTransformItem>
         {
             if (item is ExcelColorTransformItem colorItem)
             {
-                colorItem.TopNode.ParentNode.RemoveChild(colorItem.TopNode);
+                _ = colorItem.TopNode.ParentNode.RemoveChild(colorItem.TopNode);
             }
         }
 
@@ -90,10 +90,10 @@ public class ExcelColorTransformCollection : IEnumerable<IColorTransformItem>
     {
         if (item is ExcelColorTransformItem colorItem)
         {
-            colorItem.TopNode.ParentNode.RemoveChild(colorItem.TopNode);
+            _ = colorItem.TopNode.ParentNode.RemoveChild(colorItem.TopNode);
         }
 
-        this._list.Remove(item);
+        _ = this._list.Remove(item);
     }
 
     /// <summary>
@@ -431,7 +431,7 @@ public class ExcelColorTransformCollection : IEnumerable<IColorTransformItem>
     private XmlElement AddNode(string name)
     {
         XmlElement? node = this._topNode.OwnerDocument.CreateElement("a", name, ExcelPackage.schemaDrawings);
-        this._topNode.AppendChild(node);
+        _ = this._topNode.AppendChild(node);
 
         return node;
     }

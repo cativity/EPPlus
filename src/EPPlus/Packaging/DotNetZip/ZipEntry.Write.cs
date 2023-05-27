@@ -2290,13 +2290,13 @@ internal partial class ZipEntry
                         {
                             // Console.WriteLine("***_diskNumber/first: {0}", _diskNumber);
                             // Console.WriteLine("***_diskNumber/current: {0}", zss.CurrentSegment);
-                            zss1.TruncateBackward(this._diskNumber, this._RelativeOffsetOfLocalHeader);
+                            _ = zss1.TruncateBackward(this._diskNumber, this._RelativeOffsetOfLocalHeader);
                         }
                         else
 
                             // workitem 8098: ok (output).
                         {
-                            s.Seek(this._RelativeOffsetOfLocalHeader, SeekOrigin.Begin);
+                            _ = s.Seek(this._RelativeOffsetOfLocalHeader, SeekOrigin.Begin);
                         }
 
                         // If the last entry expands, we read again; but here, we must
@@ -2338,7 +2338,7 @@ internal partial class ZipEntry
 
                         if (delta > 0)
                         {
-                            s.Seek(delta, SeekOrigin.Current); // may throw
+                            _ = s.Seek(delta, SeekOrigin.Current); // may throw
                             long p2 = s.Position;
                             s.SetLength(s.Position); // to prevent garbage if this is the last entry
 
@@ -2582,7 +2582,7 @@ internal partial class ZipEntry
             pos -= len; // want to keep the crypto header
             this._LengthOfHeader += len;
 
-            input.Seek(pos, SeekOrigin.Begin);
+            _ = input.Seek(pos, SeekOrigin.Begin);
 
             // copy through everything after the header to the output stream
             long remaining = this._CompressedSize;
@@ -2617,7 +2617,7 @@ internal partial class ZipEntry
                 }
 
                 byte[] Descriptor = new byte[size];
-                input.Read(Descriptor, 0, size);
+                _ = input.Read(Descriptor, 0, size);
 
                 if (this._InputUsesZip64 && this._container.UseZip64WhenSaving == Zip64Option.Never)
                 {
@@ -2678,7 +2678,7 @@ internal partial class ZipEntry
         CountingStream? input = new CountingStream(this.ArchiveStream);
 
         // seek to the beginning of the entry data in the input stream
-        input.Seek(this._RelativeOffsetOfLocalHeader, SeekOrigin.Begin);
+        _ = input.Seek(this._RelativeOffsetOfLocalHeader, SeekOrigin.Begin);
 
         if (this._TotalEntrySize == 0)
         {

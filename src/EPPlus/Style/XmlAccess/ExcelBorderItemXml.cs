@@ -127,8 +127,8 @@ public sealed class ExcelBorderItemXml : StyleXmlHelper
 
             if (this.Color.Exists)
             {
-                this.CreateNode(_colorPath);
-                topNode.AppendChild(this.Color.CreateXmlNode(this.TopNode.SelectSingleNode(_colorPath, this.NameSpaceManager)));
+                _ = this.CreateNode(_colorPath);
+                _ = topNode.AppendChild(this.Color.CreateXmlNode(this.TopNode.SelectSingleNode(_colorPath, this.NameSpaceManager)));
             }
         }
 

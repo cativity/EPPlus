@@ -92,6 +92,6 @@ public class PrecedenceTests : FormulaParserTestBase
     [TestMethod]
     public void Bugfixtest()
     {
-        object? result = this._parser.Parse("(1+2)+3^2");
+        _ = this._parser.Parse("(1+2)+3^2");
     }
 }

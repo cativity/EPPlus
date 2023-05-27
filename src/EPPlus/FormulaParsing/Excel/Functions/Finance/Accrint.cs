@@ -75,7 +75,7 @@ internal class Accrint : ExcelFunction
 
         // calculation
         DayCountBasis dayCountBasis = (DayCountBasis)basis;
-        IFinanicalDays? financialDays = FinancialDaysFactory.Create(dayCountBasis);
+        _ = FinancialDaysFactory.Create(dayCountBasis);
         FinancialDay? issue = FinancialDayFactory.Create(issueDate, dayCountBasis);
         FinancialDay? settlement = FinancialDayFactory.Create(settlementDate, dayCountBasis);
         FinancialDay? firstInterest = FinancialDayFactory.Create(firstInterestDate.AddDays((firstInterestDate.Day * -1) + 1), dayCountBasis);
@@ -111,7 +111,7 @@ internal class Accrint : ExcelFunction
         if (firstInterest <= settlement)
         {
             IEnumerable<FinancialPeriod>? p = fds.GetCalendarYearPeriodsBackwards(settlement, firstInterest, frequency, nAdditionalPeriods);
-            IEnumerable<FinancialPeriod>? p2 = fds.GetCalendarYearPeriodsBackwards(firstInterest, settlement, frequency, nAdditionalPeriods);
+            _ = fds.GetCalendarYearPeriodsBackwards(firstInterest, settlement, frequency, nAdditionalPeriods);
             FinancialPeriod? firstPeriod = settlement >= firstInterest ? p.Last() : p.First();
             double yearFrac2 = yearFrac.GetYearFrac(firstPeriod.Start.ToDateTime(), settlement.ToDateTime(), basis);
 

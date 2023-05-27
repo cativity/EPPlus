@@ -91,11 +91,11 @@ public class ExcelRichText : XmlHelper
 
     internal void WriteHtmlText(StringBuilder sb)
     {
-        sb.Append("<span style=\"");
+        _ = sb.Append("<span style=\"");
         HtmlRichText.GetRichTextStyle(this, sb);
-        sb.Append("\">");
-        sb.Append(this.Text);
-        sb.Append("</span>");
+        _ = sb.Append("\">");
+        _ = sb.Append(this.Text);
+        _ = sb.Append("</span>");
     }
 
     /// <summary>
@@ -152,7 +152,7 @@ public class ExcelRichText : XmlHelper
 
             if (value)
             {
-                this.CreateNode(BOLD_PATH);
+                _ = this.CreateNode(BOLD_PATH);
             }
             else
             {
@@ -184,7 +184,7 @@ public class ExcelRichText : XmlHelper
 
             if (value)
             {
-                this.CreateNode(ITALIC_PATH);
+                _ = this.CreateNode(ITALIC_PATH);
             }
             else
             {
@@ -212,7 +212,7 @@ public class ExcelRichText : XmlHelper
 
             if (value)
             {
-                this.CreateNode(STRIKE_PATH);
+                _ = this.CreateNode(STRIKE_PATH);
             }
             else
             {
@@ -240,7 +240,7 @@ public class ExcelRichText : XmlHelper
 
             if (value)
             {
-                this.CreateNode(UNDERLINE_PATH);
+                _ = this.CreateNode(UNDERLINE_PATH);
             }
             else
             {

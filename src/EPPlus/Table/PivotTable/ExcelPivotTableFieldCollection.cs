@@ -121,7 +121,7 @@ public class ExcelPivotTableFieldCollection : ExcelPivotTableFieldCollectionBase
         fieldNode.SetAttribute("outline", "0");
         fieldNode.SetAttribute("showAll", "0");
         fieldNode.SetAttribute("defaultSubtotal", "0");
-        topNode.AppendChild(fieldNode);
+        _ = topNode.AppendChild(fieldNode);
 
         return fieldNode;
     }
@@ -165,7 +165,7 @@ public class ExcelPivotTableFieldCollection : ExcelPivotTableFieldCollectionBase
 
     internal void Remove(ExcelPivotTableField item)
     {
-        item.TopNode.ParentNode.RemoveChild(item.TopNode);
-        this._list.Remove(item);
+        _ = item.TopNode.ParentNode.RemoveChild(item.TopNode);
+        _ = this._list.Remove(item);
     }
 }

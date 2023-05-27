@@ -47,7 +47,7 @@ public class PivotTableTests : TestBase
         InitBase();
         _pck = OpenPackage("PivotTable.xlsx", true);
         ExcelWorksheet? ws = _pck.Workbook.Worksheets.Add("Data");
-        LoadItemData(ws);
+        _ = LoadItemData(ws);
     }
 
     [ClassCleanup]
@@ -71,9 +71,9 @@ public class PivotTableTests : TestBase
         ExcelTable? Table1 = wsData.Tables.Add(wsData.Cells[tblAddress], tblName);
         ExcelPivotTable? pivotTable1 = wsPivot.PivotTables.Add(wsPivot.Cells["A1"], wsData.Cells[Table1.Address.Address], "PivotTable1");
 
-        pivotTable1.RowFields.Add(pivotTable1.Fields[0]);
-        pivotTable1.DataFields.Add(pivotTable1.Fields[1]);
-        pivotTable1.ColumnFields.Add(pivotTable1.Fields[2]);
+        _ = pivotTable1.RowFields.Add(pivotTable1.Fields[0]);
+        _ = pivotTable1.DataFields.Add(pivotTable1.Fields[1]);
+        _ = pivotTable1.ColumnFields.Add(pivotTable1.Fields[2]);
 
         Assert.AreEqual(tblAddress, wsPivot.PivotTables[0].CacheDefinition.SourceRange.Address);
         Assert.AreEqual(Table1.Columns.Count, pivotTable1.Fields.Count);
@@ -107,9 +107,9 @@ public class PivotTableTests : TestBase
         wsData.Cells["D1"].Value = "Column4";
         ExcelWorksheet? wsPivot = p1.Workbook.Worksheets.Add("PivotSimple");
         ExcelPivotTable? pivotTable1 = wsPivot.PivotTables.Add(wsPivot.Cells["A1"], wsData.Cells[address], "PivotTable1");
-        pivotTable1.RowFields.Add(pivotTable1.Fields[0]);
-        pivotTable1.DataFields.Add(pivotTable1.Fields[1]);
-        pivotTable1.ColumnFields.Add(pivotTable1.Fields[2]);
+        _ = pivotTable1.RowFields.Add(pivotTable1.Fields[0]);
+        _ = pivotTable1.DataFields.Add(pivotTable1.Fields[1]);
+        _ = pivotTable1.ColumnFields.Add(pivotTable1.Fields[2]);
 
         Assert.AreEqual(address, wsPivot.PivotTables[0].CacheDefinition.SourceRange.Address);
         Assert.AreEqual(4, pivotTable1.Fields.Count);
@@ -139,10 +139,10 @@ public class PivotTableTests : TestBase
 
         ExcelPivotTable? pivotTable1 = ws.PivotTables.Add(ws.Cells["G1"], ws.Cells["A1:D100"], "PivotTable1");
 
-        pivotTable1.RowFields.Add(pivotTable1.Fields[0]);
-        pivotTable1.RowFields.Add(pivotTable1.Fields[2]);
-        pivotTable1.DataFields.Add(pivotTable1.Fields[1]);
-        pivotTable1.DataFields.Add(pivotTable1.Fields[3]);
+        _ = pivotTable1.RowFields.Add(pivotTable1.Fields[0]);
+        _ = pivotTable1.RowFields.Add(pivotTable1.Fields[2]);
+        _ = pivotTable1.DataFields.Add(pivotTable1.Fields[1]);
+        _ = pivotTable1.DataFields.Add(pivotTable1.Fields[3]);
     }
 
     [TestMethod]
@@ -153,10 +153,10 @@ public class PivotTableTests : TestBase
         ExcelTable? table = ws.Tables.Add(ws.Cells["A1:D100"], "table1");
         ExcelPivotTable? pivotTable1 = ws.PivotTables.Add(ws.Cells["G1"], table, "PivotTable1");
 
-        pivotTable1.RowFields.Add(pivotTable1.Fields[0]);
-        pivotTable1.RowFields.Add(pivotTable1.Fields[2]);
-        pivotTable1.DataFields.Add(pivotTable1.Fields[1]);
-        pivotTable1.DataFields.Add(pivotTable1.Fields[3]);
+        _ = pivotTable1.RowFields.Add(pivotTable1.Fields[0]);
+        _ = pivotTable1.RowFields.Add(pivotTable1.Fields[2]);
+        _ = pivotTable1.DataFields.Add(pivotTable1.Fields[1]);
+        _ = pivotTable1.DataFields.Add(pivotTable1.Fields[3]);
     }
 
     [TestMethod]
@@ -167,10 +167,10 @@ public class PivotTableTests : TestBase
 
         ExcelPivotTable? pt = ws.PivotTables.Add(ws.Cells["A1"], wsData.Cells["K1:N11"], "Pivottable1");
         pt.GrandTotalCaption = "Total amount";
-        pt.RowFields.Add(pt.Fields[1]);
-        pt.RowFields.Add(pt.Fields[0]);
-        pt.DataFields.Add(pt.Fields[3]);
-        pt.DataFields.Add(pt.Fields[2]);
+        _ = pt.RowFields.Add(pt.Fields[1]);
+        _ = pt.RowFields.Add(pt.Fields[0]);
+        _ = pt.DataFields.Add(pt.Fields[3]);
+        _ = pt.DataFields.Add(pt.Fields[2]);
         pt.DataFields[0].Function = DataFieldFunctions.Product;
         pt.DataOnRows = false;
     }
@@ -181,10 +181,10 @@ public class PivotTableTests : TestBase
         ExcelWorksheet? wsData = _pck.Workbook.Worksheets["Data"];
         ExcelWorksheet? ws = _pck.Workbook.Worksheets.Add("Rows-Data on rows");
         ExcelPivotTable? pt = ws.PivotTables.Add(ws.Cells["A1"], wsData.Cells["K1:N11"], "Pivottable2");
-        pt.RowFields.Add(pt.Fields[1]);
-        pt.RowFields.Add(pt.Fields[0]);
-        pt.DataFields.Add(pt.Fields[3]);
-        pt.DataFields.Add(pt.Fields[2]);
+        _ = pt.RowFields.Add(pt.Fields[1]);
+        _ = pt.RowFields.Add(pt.Fields[0]);
+        _ = pt.DataFields.Add(pt.Fields[3]);
+        _ = pt.DataFields.Add(pt.Fields[2]);
         pt.DataFields[0].Function = DataFieldFunctions.Average;
         pt.DataOnRows = true;
     }
@@ -195,10 +195,10 @@ public class PivotTableTests : TestBase
         ExcelWorksheet? wsData = _pck.Workbook.Worksheets["Data"];
         ExcelWorksheet? ws = _pck.Workbook.Worksheets.Add("Columns-Data on columns");
         ExcelPivotTable? pt = ws.PivotTables.Add(ws.Cells["A1"], wsData.Cells["K1:N11"], "Pivottable3");
-        pt.ColumnFields.Add(pt.Fields[1]);
-        pt.ColumnFields.Add(pt.Fields[0]);
-        pt.DataFields.Add(pt.Fields[3]);
-        pt.DataFields.Add(pt.Fields[2]);
+        _ = pt.ColumnFields.Add(pt.Fields[1]);
+        _ = pt.ColumnFields.Add(pt.Fields[0]);
+        _ = pt.DataFields.Add(pt.Fields[3]);
+        _ = pt.DataFields.Add(pt.Fields[2]);
         pt.DataOnRows = false;
     }
 
@@ -209,10 +209,10 @@ public class PivotTableTests : TestBase
         ExcelWorksheet? ws = _pck.Workbook.Worksheets.Add("Columns-Data on rows");
 
         ExcelPivotTable? pt = ws.PivotTables.Add(ws.Cells["A1"], wsData.Cells["K1:N11"], "Pivottable4");
-        pt.ColumnFields.Add(pt.Fields[1]);
-        pt.ColumnFields.Add(pt.Fields[0]);
-        pt.DataFields.Add(pt.Fields[3]);
-        pt.DataFields.Add(pt.Fields[2]);
+        _ = pt.ColumnFields.Add(pt.Fields[1]);
+        _ = pt.ColumnFields.Add(pt.Fields[0]);
+        _ = pt.DataFields.Add(pt.Fields[3]);
+        _ = pt.DataFields.Add(pt.Fields[2]);
         pt.DataOnRows = true;
     }
 
@@ -222,10 +222,10 @@ public class PivotTableTests : TestBase
         ExcelWorksheet? wsData = _pck.Workbook.Worksheets["Data"];
         ExcelWorksheet? ws = _pck.Workbook.Worksheets.Add("Columns/Rows-Data on columns");
         ExcelPivotTable? pt = ws.PivotTables.Add(ws.Cells["A1"], wsData.Cells["K1:N11"], "Pivottable5");
-        pt.ColumnFields.Add(pt.Fields[1]);
-        pt.RowFields.Add(pt.Fields[0]);
-        pt.DataFields.Add(pt.Fields[3]);
-        pt.DataFields.Add(pt.Fields[2]);
+        _ = pt.ColumnFields.Add(pt.Fields[1]);
+        _ = pt.RowFields.Add(pt.Fields[0]);
+        _ = pt.DataFields.Add(pt.Fields[3]);
+        _ = pt.DataFields.Add(pt.Fields[2]);
         pt.DataOnRows = false;
     }
 
@@ -235,12 +235,12 @@ public class PivotTableTests : TestBase
         ExcelWorksheet? wsData = _pck.Workbook.Worksheets["Data"];
         ExcelWorksheet? ws = _pck.Workbook.Worksheets.Add("Columns/Rows-Data on rows");
         ExcelPivotTable? pt = ws.PivotTables.Add(ws.Cells["A1"], wsData.Cells["K1:N11"], "Pivottable6");
-        pt.ColumnFields.Add(pt.Fields[1]);
-        pt.RowFields.Add(pt.Fields[0]);
-        pt.DataFields.Add(pt.Fields[3]);
-        pt.DataFields.Add(pt.Fields[2]);
+        _ = pt.ColumnFields.Add(pt.Fields[1]);
+        _ = pt.RowFields.Add(pt.Fields[0]);
+        _ = pt.DataFields.Add(pt.Fields[3]);
+        _ = pt.DataFields.Add(pt.Fields[2]);
         pt.DataOnRows = true;
-        ws.Drawings.AddChart("Pivotchart6", OfficeOpenXml.Drawing.Chart.eChartType.BarStacked3D, pt);
+        _ = ws.Drawings.AddChart("Pivotchart6", OfficeOpenXml.Drawing.Chart.eChartType.BarStacked3D, pt);
     }
 
     [TestMethod]
@@ -250,10 +250,10 @@ public class PivotTableTests : TestBase
         ExcelWorksheet? ws = _pck.Workbook.Worksheets.Add("Rows/Page-Data on Columns");
 
         ExcelPivotTable? pt = ws.PivotTables.Add(ws.Cells["A3"], wsData.Cells["K1:N11"], "Pivottable7");
-        pt.PageFields.Add(pt.Fields[1]);
-        pt.RowFields.Add(pt.Fields[0]);
-        pt.DataFields.Add(pt.Fields[3]);
-        pt.DataFields.Add(pt.Fields[2]);
+        _ = pt.PageFields.Add(pt.Fields[1]);
+        _ = pt.RowFields.Add(pt.Fields[0]);
+        _ = pt.DataFields.Add(pt.Fields[3]);
+        _ = pt.DataFields.Add(pt.Fields[2]);
         pt.DataOnRows = false;
 
         pt.Fields[0].SubTotalFunctions = eSubTotalFunctions.Sum | eSubTotalFunctions.Max;
@@ -279,8 +279,8 @@ public class PivotTableTests : TestBase
         ExcelWorksheet? ws = _pck.Workbook.Worksheets.Add("Pivot-Group Date");
 
         ExcelPivotTable? pt = ws.PivotTables.Add(ws.Cells["A3"], wsData.Cells["K1:O11"], "Pivottable8");
-        pt.RowFields.Add(pt.Fields[1]);
-        pt.RowFields.Add(pt.Fields[4]);
+        _ = pt.RowFields.Add(pt.Fields[1]);
+        _ = pt.RowFields.Add(pt.Fields[4]);
 
         pt.Fields[4]
           .AddDateGrouping(eDateGroupBy.Years | eDateGroupBy.Months | eDateGroupBy.Days | eDateGroupBy.Quarters,
@@ -296,24 +296,24 @@ public class PivotTableTests : TestBase
         pt.Fields[6].Items[0].Hidden = true;
         pt.GrandTotalCaption = "Totalt";
 
-        pt.DataFields.Add(pt.Fields[3]);
-        pt.DataFields.Add(pt.Fields[2]);
+        _ = pt.DataFields.Add(pt.Fields[3]);
+        _ = pt.DataFields.Add(pt.Fields[2]);
         pt.DataOnRows = true;
 
         pt = ws.PivotTables.Add(ws.Cells["H3"], wsData.Cells["K1:O11"], "Pivottable10");
-        pt.RowFields.Add(pt.Fields[1]);
-        pt.RowFields.Add(pt.Fields[4]);
+        _ = pt.RowFields.Add(pt.Fields[1]);
+        _ = pt.RowFields.Add(pt.Fields[4]);
         pt.Fields[4].AddDateGrouping(7, new DateTime(2010, 01, 31), new DateTime(2010, 11, 30));
         pt.RowHeaderCaption = "Veckor";
         pt.GrandTotalCaption = "Totalt";
 
         pt = ws.PivotTables.Add(ws.Cells["A60"], wsData.Cells["K1:O11"], "Pivottable11");
-        pt.RowFields.Add(pt.Fields["Category"]);
-        pt.RowFields.Add(pt.Fields["Item"]);
-        pt.RowFields.Add(pt.Fields[4]);
+        _ = pt.RowFields.Add(pt.Fields["Category"]);
+        _ = pt.RowFields.Add(pt.Fields["Item"]);
+        _ = pt.RowFields.Add(pt.Fields[4]);
 
-        pt.DataFields.Add(pt.Fields[3]);
-        pt.DataFields.Add(pt.Fields[2]);
+        _ = pt.DataFields.Add(pt.Fields[3]);
+        _ = pt.DataFields.Add(pt.Fields[2]);
 
         pt.DataOnRows = true;
     }
@@ -324,10 +324,10 @@ public class PivotTableTests : TestBase
         ExcelWorksheet? wsData = _pck.Workbook.Worksheets["Data"];
         ExcelWorksheet? ws = _pck.Workbook.Worksheets.Add("Pivot-Group Number");
         ExcelPivotTable? pt = ws.PivotTables.Add(ws.Cells["A3"], wsData.Cells["K1:N11"], "Pivottable9");
-        pt.PageFields.Add(pt.Fields[1]);
-        pt.RowFields.Add(pt.Fields[3]);
+        _ = pt.PageFields.Add(pt.Fields[1]);
+        _ = pt.RowFields.Add(pt.Fields[3]);
         pt.RowFields[0].AddNumericGrouping(-3.3, 5.5, 4.0);
-        pt.DataFields.Add(pt.Fields[2]);
+        _ = pt.DataFields.Add(pt.Fields[2]);
         pt.RowFields[0].Items[0].Hidden = true;
         pt.RowFields[0].Items[1].Hidden = true;
         pt.RowFields[0].Items[2].Hidden = true;
@@ -343,11 +343,11 @@ public class PivotTableTests : TestBase
         ExcelWorksheet? ws = _pck.Workbook.Worksheets.Add("Pivot-Many RowFields");
 
         ExcelPivotTable? pt = ws.PivotTables.Add(ws.Cells["A1"], wsData.Cells["K1:O11"], "Pivottable10");
-        pt.ColumnFields.Add(pt.Fields[1]);
-        pt.RowFields.Add(pt.Fields[0]);
-        pt.RowFields.Add(pt.Fields[3]);
-        pt.RowFields.Add(pt.Fields[2]);
-        pt.RowFields.Add(pt.Fields[4]);
+        _ = pt.ColumnFields.Add(pt.Fields[1]);
+        _ = pt.RowFields.Add(pt.Fields[0]);
+        _ = pt.RowFields.Add(pt.Fields[3]);
+        _ = pt.RowFields.Add(pt.Fields[2]);
+        _ = pt.RowFields.Add(pt.Fields[4]);
         pt.DataOnRows = true;
         pt.ColumnHeaderCaption = "Column Caption";
         pt.RowHeaderCaption = "Row Caption";
@@ -362,7 +362,7 @@ public class PivotTableTests : TestBase
         wsData.Cells["A1"].Value = "Column1";
         wsData.Cells["B1"].Value = "Column2";
         ExcelPivotTable? pt = ws.PivotTables.Add(ws.Cells["A1"], wsData.Cells["A1:B2"], "Pivottable11");
-        pt.ColumnFields.Add(pt.Fields[1]);
+        _ = pt.ColumnFields.Add(pt.Fields[1]);
         ExcelPivotTableField? rf = pt.RowFields.Add(pt.Fields[0]);
         rf.SubTotalFunctions = eSubTotalFunctions.None;
         pt.DataOnRows = true;
@@ -377,7 +377,7 @@ public class PivotTableTests : TestBase
         wsData.Cells["A1"].Value = "Column1";
         wsData.Cells["B1"].Value = "Column2";
         ExcelPivotTable? pt = ws.PivotTables.Add(ws.Cells["A1"], wsData.Cells["A1:B2"], "Pivottable11");
-        pt.ColumnFields.Add(pt.Fields[1]);
+        _ = pt.ColumnFields.Add(pt.Fields[1]);
         ExcelPivotTableField? rf = pt.RowFields.Add(pt.Fields[0]);
         rf.SubTotalFunctions = eSubTotalFunctions.None;
         pt.DataOnRows = true;
@@ -393,7 +393,7 @@ public class PivotTableTests : TestBase
         wsData.Cells["A1"].Value = "Column1";
         wsData.Cells["B1"].Value = "Column2";
         ExcelPivotTable? pt = ws.PivotTables.Add(ws.Cells["A1"], wsData.Cells["A1:B2"], "Pivottable11");
-        pt.ColumnFields.Add(pt.Fields[1]);
+        _ = pt.ColumnFields.Add(pt.Fields[1]);
         ExcelPivotTableField? rf = pt.RowFields.Add(pt.Fields[0]);
         rf.SubTotalFunctions = eSubTotalFunctions.None;
         pt.DataOnRows = true;
@@ -408,8 +408,8 @@ public class PivotTableTests : TestBase
         ExcelWorksheet? ws = _pck.Workbook.Worksheets.Add("Pivot-Many PageFields");
 
         ExcelPivotTable? pt = ws.PivotTables.Add(ws.Cells["A3"], wsData.Cells["K1:O11"], "Pivottable12");
-        pt.ColumnFields.Add(pt.Fields[1]);
-        pt.RowFields.Add(pt.Fields[0]);
+        _ = pt.ColumnFields.Add(pt.Fields[1]);
+        _ = pt.RowFields.Add(pt.Fields[0]);
         ExcelPivotTableField? pf1 = pt.PageFields.Add(pt.Fields[2]);
         pf1.Items.Refresh();
         pf1.Items[1].Hidden = true;
@@ -420,7 +420,7 @@ public class PivotTableTests : TestBase
         pf2.Items[1].Hidden = true;
         pf1.MultipleItemSelectionAllowed = true;
         pf2.MultipleItemSelectionAllowed = true;
-        pt.DataFields.Add(pt.Fields[3]);
+        _ = pt.DataFields.Add(pt.Fields[3]);
         pt.DataOnRows = true;
         pt.ColumnHeaderCaption = "Column Caption";
         pt.RowHeaderCaption = "Row Caption";
@@ -439,9 +439,9 @@ public class PivotTableTests : TestBase
         ExcelWorksheet? ws = _pck.Workbook.Worksheets.Add("Pivot-StylingFieldsFalse");
 
         ExcelPivotTable? pt = ws.PivotTables.Add(ws.Cells["A3"], wsData.Cells["K1:O11"], "Pivottable12");
-        pt.ColumnFields.Add(pt.Fields[1]);
-        pt.RowFields.Add(pt.Fields[0]);
-        ExcelPivotTableDataField? df = pt.DataFields.Add(pt.Fields[3]);
+        _ = pt.ColumnFields.Add(pt.Fields[1]);
+        _ = pt.RowFields.Add(pt.Fields[0]);
+        _ = pt.DataFields.Add(pt.Fields[3]);
         pt.DataOnRows = true;
         pt.ColumnHeaderCaption = "Column Caption";
         pt.RowHeaderCaption = "Row Caption";
@@ -475,10 +475,10 @@ public class PivotTableTests : TestBase
         ExcelWorksheet? wsData = _pck.Workbook.Worksheets["Data"];
         ExcelWorksheet? ws = _pck.Workbook.Worksheets.Add("PivotTable with numberformat");
         ExcelPivotTable? pt = ws.PivotTables.Add(ws.Cells["A1"], wsData.Cells["K1:N11"], "Pivottable2");
-        pt.RowFields.Add(pt.Fields[1]);
-        pt.RowFields.Add(pt.Fields[0]);
-        pt.DataFields.Add(pt.Fields[3]);
-        pt.DataFields.Add(pt.Fields[2]);
+        _ = pt.RowFields.Add(pt.Fields[1]);
+        _ = pt.RowFields.Add(pt.Fields[0]);
+        _ = pt.DataFields.Add(pt.Fields[3]);
+        _ = pt.DataFields.Add(pt.Fields[2]);
 
         pt.Fields[3].Format = "#,##0";
         pt.Fields[3].Cache.Format = "#,##0.000";
@@ -498,7 +498,7 @@ public class PivotTableTests : TestBase
         ExcelPivotTable? tbl = ws.PivotTables.Add(ws.Cells["F1"], ws.Cells["A1:D100"], "PivotTable1");
         ExcelPivotTableField? f = tbl.Fields.AddCalculatedField("NumValueX2", formula);
         f.Format = "#,##0";
-        ExcelPivotTableField? rf = tbl.RowFields.Add(tbl.Fields[1]);
+        _ = tbl.RowFields.Add(tbl.Fields[1]);
         ExcelPivotTableDataField? df1 = tbl.DataFields.Add(tbl.Fields[3]);
         ExcelPivotTableDataField? df2 = tbl.DataFields.Add(tbl.Fields["NumValueX2"]);
         df1.Function = DataFieldFunctions.Sum;
@@ -516,8 +516,8 @@ public class PivotTableTests : TestBase
         LoadTestdata(ws);
         string? formula = "NumValue*2";
         ExcelPivotTable? tbl = ws.PivotTables.Add(ws.Cells["F1"], ws.Cells["A1:D100"], "PivotTable1");
-        tbl.Fields.AddCalculatedField("NumValueX2", formula);
-        ExcelPivotTableField? rf = tbl.ColumnFields.Add(tbl.Fields[4]);
+        _ = tbl.Fields.AddCalculatedField("NumValueX2", formula);
+        _ = tbl.ColumnFields.Add(tbl.Fields[4]);
     }
 
     [TestMethod]
@@ -529,8 +529,8 @@ public class PivotTableTests : TestBase
         LoadTestdata(ws);
         string? formula = "NumValue*2";
         ExcelPivotTable? tbl = ws.PivotTables.Add(ws.Cells["F1"], ws.Cells["A1:D100"], "PivotTable1");
-        tbl.Fields.AddCalculatedField("NumValueX2", formula);
-        ExcelPivotTableField? rf = tbl.RowFields.Add(tbl.Fields[4]);
+        _ = tbl.Fields.AddCalculatedField("NumValueX2", formula);
+        _ = tbl.RowFields.Add(tbl.Fields[4]);
     }
 
     [TestMethod]
@@ -542,8 +542,8 @@ public class PivotTableTests : TestBase
         LoadTestdata(ws);
         string? formula = "NumValue*2";
         ExcelPivotTable? tbl = ws.PivotTables.Add(ws.Cells["F1"], ws.Cells["A1:D100"], "PivotTable1");
-        tbl.Fields.AddCalculatedField("NumValueX2", formula);
-        ExcelPivotTableField? rf = tbl.PageFields.Add(tbl.Fields[4]);
+        _ = tbl.Fields.AddCalculatedField("NumValueX2", formula);
+        _ = tbl.PageFields.Add(tbl.Fields[4]);
     }
 
     [TestMethod]
@@ -554,7 +554,7 @@ public class PivotTableTests : TestBase
         ExcelWorksheet? ws = p.Workbook.Worksheets.Add("RowArgExcep");
         LoadTestdata(ws);
         ExcelPivotTable? tbl = ws.PivotTables.Add(ws.Cells["F1"], ws.Cells["A1:D100"], "PivotTable1");
-        tbl.Fields.AddCalculatedField("NumValueX2", "");
+        _ = tbl.Fields.AddCalculatedField("NumValueX2", "");
     }
 
     [TestMethod]
@@ -595,7 +595,7 @@ public class PivotTableTests : TestBase
 
         LoadTestdata(ws);
         ExcelPivotTable? tbl = ws.PivotTables.Add(ws.Cells["F1"], ws.Cells["A1:D100"], "PivotTable1");
-        ExcelPivotTableField? rf = tbl.RowFields.Add(tbl.Fields[1]);
+        _ = tbl.RowFields.Add(tbl.Fields[1]);
         ExcelPivotTableDataField? df = tbl.DataFields.Add(tbl.Fields[3]);
         df.Function = DataFieldFunctions.Sum;
         tbl.DataOnRows = false;
@@ -621,7 +621,7 @@ public class PivotTableTests : TestBase
         ws.Cells["B3"].Value = 2;
         ExcelPivotTable? tbl = ws.PivotTables.Add(ws.Cells["F1"], ws.Cells["A1:B3"], "CIPivotTable");
         ExcelPivotTableField? rf = tbl.RowFields.Add(tbl.Fields[0]);
-        ExcelPivotTableDataField? df = tbl.DataFields.Add(tbl.Fields[1]);
+        _ = tbl.DataFields.Add(tbl.Fields[1]);
         rf.Cache.Refresh();
         Assert.AreEqual(1, rf.Cache.SharedItems.Count);
         Assert.AreEqual("Value1", rf.Cache.SharedItems[0]);
@@ -748,14 +748,14 @@ public class PivotTableTests : TestBase
         LoadTestdata(ws);
 
         ExcelPivotTable? pivotTable1 = ws.PivotTables.Add(ws.Cells["G1"], ws.Cells["A1:D100"], "PivotTable1");
-        pivotTable1.RowFields.Add(pivotTable1.Fields[0]);
-        pivotTable1.RowFields.Add(pivotTable1.Fields[2]);
-        pivotTable1.DataFields.Add(pivotTable1.Fields[1]);
-        pivotTable1.DataFields.Add(pivotTable1.Fields[3]);
+        _ = pivotTable1.RowFields.Add(pivotTable1.Fields[0]);
+        _ = pivotTable1.RowFields.Add(pivotTable1.Fields[2]);
+        _ = pivotTable1.DataFields.Add(pivotTable1.Fields[1]);
+        _ = pivotTable1.DataFields.Add(pivotTable1.Fields[3]);
 
         using (ExcelPackage? p2 = new ExcelPackage())
         {
-            ExcelWorksheet? wsNew = p2.Workbook.Worksheets.Add("PivotCopy", ws);
+            _ = p2.Workbook.Worksheets.Add("PivotCopy", ws);
             SaveWorkbook("copiedPivot.xlsx", p2);
         }
 

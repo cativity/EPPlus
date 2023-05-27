@@ -39,7 +39,7 @@ internal class TimeValue : ExcelFunction
 
     internal CompileResult Execute(string dateString)
     {
-        System.DateTime.TryParse(dateString, out System.DateTime result);
+        _ = System.DateTime.TryParse(dateString, out System.DateTime result);
 
         return result != System.DateTime.MinValue
                    ? this.CreateResult(GetTimeValue(result), DataType.Date)

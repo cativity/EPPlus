@@ -43,10 +43,10 @@ public class SlicerTest : TestBase
         ExcelTable? tbl = ws.Tables.Add(ws.Cells["A1:D100"], "Table1");
         ExcelTableSlicer? slicer = ws.Drawings.AddTableSlicer(tbl.Columns[0]);
 
-        slicer.FilterValues.Add(new ExcelFilterDateGroupItem(2019, 11, 4));
-        slicer.FilterValues.Add(new ExcelFilterDateGroupItem(2019, 11, 5));
-        slicer.FilterValues.Add(new ExcelFilterDateGroupItem(2019, 11, 7));
-        slicer.FilterValues.Add(new ExcelFilterDateGroupItem(2019, 12));
+        _ = slicer.FilterValues.Add(new ExcelFilterDateGroupItem(2019, 11, 4));
+        _ = slicer.FilterValues.Add(new ExcelFilterDateGroupItem(2019, 11, 5));
+        _ = slicer.FilterValues.Add(new ExcelFilterDateGroupItem(2019, 11, 7));
+        _ = slicer.FilterValues.Add(new ExcelFilterDateGroupItem(2019, 12));
         slicer.Cache.HideItemsWithNoData = true;
         slicer.SetPosition(1, 0, 5, 0);
         slicer.SetSize(200, 600);
@@ -88,10 +88,10 @@ public class SlicerTest : TestBase
         ExcelTableSlicer? slicer = ws.Drawings.AddTableSlicer(tbl.Columns[1]);
 
         slicer.Style = eSlicerStyle.Dark1;
-        slicer.FilterValues.Add("52");
-        slicer.FilterValues.Add("53");
-        slicer.FilterValues.Add("61");
-        slicer.FilterValues.Add("102");
+        _ = slicer.FilterValues.Add("52");
+        _ = slicer.FilterValues.Add("53");
+        _ = slicer.FilterValues.Add("61");
+        _ = slicer.FilterValues.Add("102");
         slicer.StartItem = 50;
         slicer.ShowCaption = false;
         slicer.SetPosition(1, 0, 5, 0);
@@ -130,12 +130,12 @@ public class SlicerTest : TestBase
         ExcelWorksheet? ws = _pck.Workbook.Worksheets.Add("SlicerPivotSameCache");
         LoadTestdata(ws);
         ExcelPivotTable? p1 = ws.PivotTables.Add(ws.Cells["F1"], ws.Cells["A1:D100"], "Pivot1");
-        p1.RowFields.Add(p1.Fields[0]);
+        _ = p1.RowFields.Add(p1.Fields[0]);
 
-        p1.DataFields.Add(p1.Fields[3]);
+        _ = p1.DataFields.Add(p1.Fields[3]);
         ExcelPivotTable? p2 = ws.PivotTables.Add(ws.Cells["K1"], p1.CacheDefinition, "Pivot2");
-        p2.DataFields.Add(p2.Fields[1]);
-        p2.RowFields.Add(p2.Fields[3]);
+        _ = p2.DataFields.Add(p2.Fields[1]);
+        _ = p2.RowFields.Add(p2.Fields[3]);
 
         //p2.Fields[4].AddDateGrouping(eDateGroupBy.Years | eDateGroupBy.Months | eDateGroupBy.Days);
 
@@ -169,12 +169,12 @@ public class SlicerTest : TestBase
         ExcelWorksheet? ws = _pck.Workbook.Worksheets.Add("SlicerPivotSameCacheDateGroup");
         LoadTestdata(ws);
         ExcelPivotTable? p1 = ws.PivotTables.Add(ws.Cells["F1"], ws.Cells["A1:D100"], "Pivot1");
-        p1.RowFields.Add(p1.Fields[0]);
+        _ = p1.RowFields.Add(p1.Fields[0]);
 
-        p1.DataFields.Add(p1.Fields[3]);
+        _ = p1.DataFields.Add(p1.Fields[3]);
         ExcelPivotTable? p2 = ws.PivotTables.Add(ws.Cells["K1"], p1.CacheDefinition, "Pivot2");
-        p2.DataFields.Add(p2.Fields[1]);
-        p2.RowFields.Add(p2.Fields[3]);
+        _ = p2.DataFields.Add(p2.Fields[1]);
+        _ = p2.RowFields.Add(p2.Fields[3]);
 
         p1.Fields[0].AddDateGrouping(eDateGroupBy.Years | eDateGroupBy.Months | eDateGroupBy.Days);
         p1.Fields[0].Name = "Days";
@@ -208,12 +208,12 @@ public class SlicerTest : TestBase
         ExcelWorksheet? ws = _pck.Workbook.Worksheets.Add("SlicerPivotSameCacheNumberGroup");
         LoadTestdata(ws);
         ExcelPivotTable? p1 = ws.PivotTables.Add(ws.Cells["F1"], ws.Cells["A1:D100"], "Pivot1");
-        p1.RowFields.Add(p1.Fields[1]);
+        _ = p1.RowFields.Add(p1.Fields[1]);
 
-        p1.DataFields.Add(p1.Fields[3]);
+        _ = p1.DataFields.Add(p1.Fields[3]);
         ExcelPivotTable? p2 = ws.PivotTables.Add(ws.Cells["K1"], p1.CacheDefinition, "Pivot2");
-        p2.DataFields.Add(p2.Fields[1]);
-        p2.RowFields.Add(p2.Fields[3]);
+        _ = p2.DataFields.Add(p2.Fields[1]);
+        _ = p2.RowFields.Add(p2.Fields[3]);
 
         p1.Fields[1].AddNumericGrouping(0, 100, 5);
         ExcelPivotTableSlicer? slicer = ws.Drawings.AddPivotTableSlicer(p1.Fields[1]);
@@ -291,7 +291,7 @@ public class SlicerTest : TestBase
         LoadTestdata(ws);
         ExcelTable? tbl = ws.Tables.Add(ws.Cells["A1:D100"], "Table4");
         ExcelTableSlicer? slicer1 = ws.Drawings.AddTableSlicer(tbl.Columns[1]);
-        ExcelTableSlicer? slicer2 = ws.Drawings.AddTableSlicer(tbl.Columns[2]);
+        _ = ws.Drawings.AddTableSlicer(tbl.Columns[2]);
 
         ws.Drawings.Remove(slicer1);
         Assert.IsNull(tbl.Columns[1].Slicer);
@@ -309,9 +309,9 @@ public class SlicerTest : TestBase
         ExcelTableSlicer? slicer2 = ws.Drawings.AddTableSlicer(tbl.Columns[2]);
         slicer1.SetPosition(0, 0, 5, 0);
         slicer2.SetPosition(11, 0, 5, 0);
-        slicer1.FilterValues.Add("Value 12");
-        slicer1.FilterValues.Add("value 10");
-        slicer2.FilterValues.Add("value 15");
+        _ = slicer1.FilterValues.Add("Value 12");
+        _ = slicer1.FilterValues.Add("value 10");
+        _ = slicer2.FilterValues.Add("value 15");
         slicer2.StartItem = 2;
         Assert.AreEqual(2, ws.Drawings.Count);
         Assert.IsNull(tbl.Columns[1].Slicer);

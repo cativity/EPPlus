@@ -101,8 +101,6 @@ public class ExcelRange : ExcelRangeBase
 
             if ((ixStart >= 0) & (ixEnd >= 0))
             {
-                string? external = address.Substring(ixStart + 1, ixEnd - 1);
-
                 //if (Worksheet.Workbook._externalReferences.Count < external)
                 //{
                 //foreach(var 

@@ -77,8 +77,8 @@ public class LoadSaveTests : TestBase
     {
         using ExcelPackage? p = new ExcelPackage();
         ExcelWorksheet? s1 = p.Workbook.Worksheets.Add("Table1");
-        ExcelChartsheet? s2 = p.Workbook.Worksheets.AddChart("Chart1", OfficeOpenXml.Drawing.Chart.eChartType.Area);
-        ExcelWorksheet? s3 = p.Workbook.Worksheets.Add("Table2");
+        _ = p.Workbook.Worksheets.AddChart("Chart1", OfficeOpenXml.Drawing.Chart.eChartType.Area);
+        _ = p.Workbook.Worksheets.Add("Table2");
 
         DataTable dt = new DataTable();
 
@@ -97,7 +97,7 @@ public class LoadSaveTests : TestBase
         dt.Rows.Add(r2);
         dt.Rows.Add(r3);
 
-        s1.Cells[1, 1, 3, 2].LoadFromDataTable(dt, true, null);
+        _ = s1.Cells[1, 1, 3, 2].LoadFromDataTable(dt, true, null);
     }
 
     [TestMethod]
@@ -125,7 +125,7 @@ public class LoadSaveTests : TestBase
 
         ExcelPackage? excelPackage = new ExcelPackage();
         ExcelWorksheet? ws = excelPackage.Workbook.Worksheets.Add("LoadFromText");
-        ws.Cells["B2"].LoadFromText(textToLoad, new ExcelTextFormat() { TextQualifier = '\"' });
+        _ = ws.Cells["B2"].LoadFromText(textToLoad, new ExcelTextFormat() { TextQualifier = '\"' });
 
         //Assert
         Assert.AreEqual("dog 1\"\"\"", ws.GetValue(2, 2));
@@ -184,7 +184,7 @@ public class LoadSaveTests : TestBase
     {
         ExcelPackage? excelPackage = new ExcelPackage();
         ExcelWorksheet? sheet = excelPackage.Workbook.Worksheets.Add("bugs");
-        sheet.Cells.LoadFromText(file, format);
+        _ = sheet.Cells.LoadFromText(file, format);
 
         return excelPackage;
     }

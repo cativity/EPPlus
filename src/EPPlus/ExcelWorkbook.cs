@@ -146,7 +146,7 @@ public sealed class ExcelWorkbook : XmlHelper, IDisposable
             return false;
         }
 
-        this._slicerNames.Add(name);
+        _ = this._slicerNames.Add(name);
 
         return true;
     }
@@ -161,7 +161,7 @@ public sealed class ExcelWorkbook : XmlHelper, IDisposable
             {
                 if (d is ExcelTableSlicer || d is ExcelPivotTableSlicer)
                 {
-                    this._slicerNames.Add(d.Name);
+                    _ = this._slicerNames.Add(d.Name);
                 }
             }
         }
@@ -524,11 +524,11 @@ public sealed class ExcelWorkbook : XmlHelper, IDisposable
         {
             if (node.ParentNode.ChildNodes.Count > 1)
             {
-                node.ParentNode.RemoveChild(node);
+                _ = node.ParentNode.RemoveChild(node);
             }
             else
             {
-                node.ParentNode.ParentNode.ParentNode.RemoveChild(node.ParentNode.ParentNode);
+                _ = node.ParentNode.ParentNode.ParentNode.RemoveChild(node.ParentNode.ParentNode);
             }
         }
     }
@@ -1054,13 +1054,13 @@ public sealed class ExcelWorkbook : XmlHelper, IDisposable
             // Add the relationships namespace
             wbElem.SetAttribute("xmlns:r", ExcelPackage.schemaRelationships);
 
-            this._workbookXml.AppendChild(wbElem);
+            _ = this._workbookXml.AppendChild(wbElem);
 
             // create the bookViews and workbooks element
             XmlElement bookViews = this._workbookXml.CreateElement("bookViews", ExcelPackage.schemaMain);
-            wbElem.AppendChild(bookViews);
+            _ = wbElem.AppendChild(bookViews);
             XmlElement workbookView = this._workbookXml.CreateElement("workbookView", ExcelPackage.schemaMain);
-            bookViews.AppendChild(workbookView);
+            _ = bookViews.AppendChild(workbookView);
 
             // save it to the package
             StreamWriter stream = new StreamWriter(partWorkbook.GetStream(FileMode.Create, FileAccess.Write));
@@ -1100,15 +1100,15 @@ public sealed class ExcelWorkbook : XmlHelper, IDisposable
                     // create the style sheet
 
                     StringBuilder xml = new StringBuilder("<styleSheet xmlns=\"http://schemas.openxmlformats.org/spreadsheetml/2006/main\">");
-                    xml.Append("<numFmts />");
-                    xml.Append("<fonts count=\"1\"><font><sz val=\"11\" /><name val=\"Calibri\" /></font></fonts>");
-                    xml.Append("<fills><fill><patternFill patternType=\"none\" /></fill><fill><patternFill patternType=\"gray125\" /></fill></fills>");
-                    xml.Append("<borders><border><left /><right /><top /><bottom /><diagonal /></border></borders>");
-                    xml.Append("<cellStyleXfs count=\"1\"><xf numFmtId=\"0\" fontId=\"0\" /></cellStyleXfs>");
-                    xml.Append("<cellXfs count=\"1\"><xf numFmtId=\"0\" fontId=\"0\" xfId=\"0\" /></cellXfs>");
-                    xml.Append("<cellStyles><cellStyle name=\"Normal\" xfId=\"0\" builtinId=\"0\" /></cellStyles>");
-                    xml.Append("<dxfs count=\"0\" />");
-                    xml.Append("</styleSheet>");
+                    _ = xml.Append("<numFmts />");
+                    _ = xml.Append("<fonts count=\"1\"><font><sz val=\"11\" /><name val=\"Calibri\" /></font></fonts>");
+                    _ = xml.Append("<fills><fill><patternFill patternType=\"none\" /></fill><fill><patternFill patternType=\"gray125\" /></fill></fills>");
+                    _ = xml.Append("<borders><border><left /><right /><top /><bottom /><diagonal /></border></borders>");
+                    _ = xml.Append("<cellStyleXfs count=\"1\"><xf numFmtId=\"0\" fontId=\"0\" /></cellStyleXfs>");
+                    _ = xml.Append("<cellXfs count=\"1\"><xf numFmtId=\"0\" fontId=\"0\" xfId=\"0\" /></cellXfs>");
+                    _ = xml.Append("<cellStyles><cellStyle name=\"Normal\" xfId=\"0\" builtinId=\"0\" /></cellStyles>");
+                    _ = xml.Append("<dxfs count=\"0\" />");
+                    _ = xml.Append("</styleSheet>");
 
                     this._stylesXml = new XmlDocument();
                     this._stylesXml.LoadXml(xml.ToString());
@@ -1122,7 +1122,7 @@ public sealed class ExcelWorkbook : XmlHelper, IDisposable
                     ZipPackage.Flush();
 
                     // create the relationship between the workbook and the new shared strings part
-                    this._package.Workbook.Part.CreateRelationship(UriHelper.GetRelativeUri(this.WorkbookUri, this.StylesUri),
+                    _ = this._package.Workbook.Part.CreateRelationship(UriHelper.GetRelativeUri(this.WorkbookUri, this.StylesUri),
                                                                    TargetMode.Internal,
                                                                    ExcelPackage.schemaRelationships + "/styles");
 
@@ -1359,7 +1359,7 @@ public sealed class ExcelWorkbook : XmlHelper, IDisposable
                                                        @"application/vnd.openxmlformats-officedocument.spreadsheetml.sharedStrings+xml",
                                                        this._package.Compression);
 
-            this.Part.CreateRelationship(UriHelper.GetRelativeUri(this.WorkbookUri, this.SharedStringsUri),
+            _ = this.Part.CreateRelationship(UriHelper.GetRelativeUri(this.WorkbookUri, this.SharedStringsUri),
                                          TargetMode.Internal,
                                          ExcelPackage.schemaRelationships + "/sharedStrings");
         }
@@ -1390,7 +1390,7 @@ public sealed class ExcelWorkbook : XmlHelper, IDisposable
 
                 ZipPackageRelationship wbRel = this.Part.CreateRelationship(uri, TargetMode.Internal, ExcelPackage.schemaRelationships + "/externalLink");
                 XmlElement wbExtRefElement = (XmlElement)this.CreateNode("d:externalReferences/d:externalReference", false, true);
-                wbExtRefElement.SetAttribute("id", ExcelPackage.schemaRelationships, wbRel.Id);
+                _ = wbExtRefElement.SetAttribute("id", ExcelPackage.schemaRelationships, wbRel.Id);
             }
 
             StreamWriter sw = new StreamWriter(er.Part.GetStream(FileMode.CreateNew));
@@ -1463,7 +1463,7 @@ public sealed class ExcelWorkbook : XmlHelper, IDisposable
                 fldName = GetNewName(flds, fldName);
             }
 
-            flds.Add(fldName);
+            _ = flds.Add(fldName);
             node.SetAttribute("name", fldName);
 
             if (cache.Fields[ix].Grouping == null)
@@ -1526,13 +1526,13 @@ public sealed class ExcelWorkbook : XmlHelper, IDisposable
     {
         //Init Zip
         stream.CompressionLevel = (OfficeOpenXml.Packaging.Ionic.Zlib.CompressionLevel)compressionLevel;
-        stream.PutNextEntry(fileName);
+        _ = stream.PutNextEntry(fileName);
 
         StringBuilder cache = new StringBuilder();
         Encoding utf8Encoder = Encoding.GetEncoding("UTF-8", new EncoderReplacementFallback(string.Empty), new DecoderReplacementFallback(string.Empty));
         StreamWriter sw = new StreamWriter(stream, utf8Encoder);
 
-        cache.AppendFormat("<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"yes\" ?><sst xmlns=\"http://schemas.openxmlformats.org/spreadsheetml/2006/main\" count=\"{0}\" uniqueCount=\"{0}\">",
+        _ = cache.AppendFormat("<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"yes\" ?><sst xmlns=\"http://schemas.openxmlformats.org/spreadsheetml/2006/main\" count=\"{0}\" uniqueCount=\"{0}\">",
                            this._sharedStrings.Count);
 
         foreach (string t in this._sharedStrings.Keys)
@@ -1541,9 +1541,9 @@ public sealed class ExcelWorkbook : XmlHelper, IDisposable
 
             if (ssi.isRichText)
             {
-                cache.Append("<si>");
+                _ = cache.Append("<si>");
                 ConvertUtil.ExcelEncodeString(cache, t);
-                cache.Append("</si>");
+                _ = cache.Append("</si>");
             }
             else
             {
@@ -1555,15 +1555,15 @@ public sealed class ExcelWorkbook : XmlHelper, IDisposable
                         || t.Contains("\t")
                         || t.Contains("\n"))) //Fixes issue 14849
                 {
-                    cache.Append("<si><t xml:space=\"preserve\">");
+                    _ = cache.Append("<si><t xml:space=\"preserve\">");
                 }
                 else
                 {
-                    cache.Append("<si><t>");
+                    _ = cache.Append("<si><t>");
                 }
 
                 ConvertUtil.ExcelEncodeString(cache, ConvertUtil.ExcelEscapeString(t));
-                cache.Append("</t></si>");
+                _ = cache.Append("</t></si>");
             }
 
             if (cache.Length > 0x600000)
@@ -1573,7 +1573,7 @@ public sealed class ExcelWorkbook : XmlHelper, IDisposable
             }
         }
 
-        cache.Append("</sst>");
+        _ = cache.Append("</sst>");
         sw.Write(cache.ToString());
         sw.Flush();
 
@@ -1591,7 +1591,7 @@ public sealed class ExcelWorkbook : XmlHelper, IDisposable
             {
                 if (top != null)
                 {
-                    this.TopNode.RemoveChild(top);
+                    _ = this.TopNode.RemoveChild(top);
                 }
 
                 return;
@@ -1600,7 +1600,7 @@ public sealed class ExcelWorkbook : XmlHelper, IDisposable
             {
                 if (top == null)
                 {
-                    this.CreateNode("d:definedNames");
+                    _ = this.CreateNode("d:definedNames");
                     top = this.WorkbookXml.SelectSingleNode("//d:definedNames", this.NameSpaceManager);
                 }
                 else
@@ -1611,7 +1611,7 @@ public sealed class ExcelWorkbook : XmlHelper, IDisposable
                 foreach (ExcelNamedRange name in this._names)
                 {
                     XmlElement elem = this.WorkbookXml.CreateElement("definedName", ExcelPackage.schemaMain);
-                    top.AppendChild(elem);
+                    _ = top.AppendChild(elem);
                     elem.SetAttribute("name", name.Name);
 
                     if (name.IsNameHidden)
@@ -1635,7 +1635,7 @@ public sealed class ExcelWorkbook : XmlHelper, IDisposable
                     foreach (ExcelNamedRange name in ws.Names)
                     {
                         XmlElement elem = this.WorkbookXml.CreateElement("definedName", ExcelPackage.schemaMain);
-                        top.AppendChild(elem);
+                        _ = top.AppendChild(elem);
                         elem.SetAttribute("name", name.Name);
                         elem.SetAttribute("localSheetId", name.LocalSheetId.ToString());
 
@@ -1806,7 +1806,7 @@ public sealed class ExcelWorkbook : XmlHelper, IDisposable
     {
         if (createWorkbookElement)
         {
-            this.CreateNode("d:pivotCaches");
+            _ = this.CreateNode("d:pivotCaches");
 
             XmlElement item = this.WorkbookXml.CreateElement("pivotCache", ExcelPackage.schemaMain);
             item.SetAttribute("cacheId", cacheReference.CacheId.ToString());
@@ -1815,10 +1815,10 @@ public sealed class ExcelWorkbook : XmlHelper, IDisposable
                                                                       TargetMode.Internal,
                                                                       ExcelPackage.schemaRelationships + "/pivotCacheDefinition");
 
-            item.SetAttribute("id", ExcelPackage.schemaRelationships, rel.Id);
+            _ = item.SetAttribute("id", ExcelPackage.schemaRelationships, rel.Id);
 
             XmlNode? pivotCaches = this.WorkbookXml.SelectSingleNode("//d:pivotCaches", this.NameSpaceManager);
-            pivotCaches.AppendChild(item);
+            _ = pivotCaches.AppendChild(item);
         }
 
         if (cacheReference.CacheSource == eSourceType.Worksheet && cacheReference.SourceRange != null)

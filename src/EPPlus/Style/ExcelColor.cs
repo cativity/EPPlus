@@ -79,7 +79,7 @@ public sealed class ExcelColor : StyleBase, IColor
 
             return this.GetSource().Theme;
         }
-        internal set { this._ChangedEvent(this, new StyleChangeEventArgs(this._cls, eStyleProperty.Theme, value, this._positionID, this._address)); }
+        internal set { _ = this._ChangedEvent(this, new StyleChangeEventArgs(this._cls, eStyleProperty.Theme, value, this._positionID, this._address)); }
     }
 
     /// <summary>
@@ -103,7 +103,7 @@ public sealed class ExcelColor : StyleBase, IColor
                 throw new ArgumentOutOfRangeException("Value must be between -1 and 1");
             }
 
-            this._ChangedEvent(this, new StyleChangeEventArgs(this._cls, eStyleProperty.Tint, value, this._positionID, this._address));
+            _ = this._ChangedEvent(this, new StyleChangeEventArgs(this._cls, eStyleProperty.Tint, value, this._positionID, this._address));
         }
     }
 
@@ -121,7 +121,7 @@ public sealed class ExcelColor : StyleBase, IColor
 
             return this.GetSource().Rgb;
         }
-        internal set { this._ChangedEvent(this, new StyleChangeEventArgs(this._cls, eStyleProperty.Color, value, this._positionID, this._address)); }
+        internal set { _ = this._ChangedEvent(this, new StyleChangeEventArgs(this._cls, eStyleProperty.Color, value, this._positionID, this._address)); }
     }
 
     /// <summary>
@@ -146,7 +146,7 @@ public sealed class ExcelColor : StyleBase, IColor
                 throw new ArgumentOutOfRangeException("Indexed", "Cannot be negative");
             }
 
-            this._ChangedEvent(this, new StyleChangeEventArgs(this._cls, eStyleProperty.IndexedColor, value, this._positionID, this._address));
+            _ = this._ChangedEvent(this, new StyleChangeEventArgs(this._cls, eStyleProperty.IndexedColor, value, this._positionID, this._address));
         }
     }
 
@@ -164,7 +164,7 @@ public sealed class ExcelColor : StyleBase, IColor
 
             return this.GetSource().Auto;
         }
-        private set { this._ChangedEvent(this, new StyleChangeEventArgs(this._cls, eStyleProperty.AutoColor, value, this._positionID, this._address)); }
+        private set { _ = this._ChangedEvent(this, new StyleChangeEventArgs(this._cls, eStyleProperty.AutoColor, value, this._positionID, this._address)); }
     }
 
     /// <summary>

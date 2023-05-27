@@ -53,7 +53,7 @@ internal static class SignatureReader
 
         while (id != 0)
         {
-            uint encodingType = br.ReadUInt32();
+            _ = br.ReadUInt32();
             uint length = br.ReadUInt32();
 
             if (length > 0)
@@ -92,35 +92,35 @@ internal static class SignatureReader
     {
         MemoryStream? ms = RecyclableMemory.GetStream(data);
         BinaryReader? br = new BinaryReader(ms);
-        int totallength = ReadSequence(br);
-        int lengthSpcIndirectDataContent = ReadSequence(br);
+        _ = ReadSequence(br);
+        _ = ReadSequence(br);
         string? indirectDataContentOid = ReadOId(br);
         byte[]? digestValue = ReadOctStringBytes(br);
 
-        int lengthDigestInfo = ReadSequence(br);
-        int lengthAlgorithmIdentifier = ReadSequence(br);
+        _ = ReadSequence(br);
+        _ = ReadSequence(br);
         ctx.AlgorithmIdentifierOId = ReadOId(br);
 
         //Parameter is null
-        byte nullTypeIdentifyer = br.ReadByte(); //Null type identifier
-        byte nullLength = br.ReadByte(); //Null length
+        _ = br.ReadByte();
+        _ = br.ReadByte();
 
         if (indirectDataContentOid == IndirectDataContentOidV2) //V2
         {
             //Read
-            int SigFormatDescriptorV1_size = BitConverter.ToInt32(digestValue, 0); //12
-            int SigFormatDescriptorV1_version = BitConverter.ToInt32(digestValue, 4); //1
-            int SigFormatDescriptorV1_format = BitConverter.ToInt32(digestValue, 8); //1
+            _ = BitConverter.ToInt32(digestValue, 0);
+            _ = BitConverter.ToInt32(digestValue, 4);
+            _ = BitConverter.ToInt32(digestValue, 8);
 
             //var sigDataV1Serialized = ReadOctStringBytes(br); //SigDataV1Serialized
-            byte id = br.ReadByte(); //4
-            byte octstringSize = br.ReadByte();
+            _ = br.ReadByte();
+            _ = br.ReadByte();
             int sigDataV1Serialized_algorithmIdSize = br.ReadInt32();
             int sigDataV1Serialized_compiledHashSize = br.ReadInt32();
             int sigDataV1Serialized_sourceHashSize = br.ReadInt32();
-            int sigDataV1Serialized_algorithmIdOffset = br.ReadInt32();
-            int sigDataV1Serialized_compiledHashOffset = br.ReadInt32();
-            int sigDataV1Serialized_sourceHashOffset = br.ReadInt32();
+            _ = br.ReadInt32();
+            _ = br.ReadInt32();
+            _ = br.ReadInt32();
 
             byte[]? sigDataV1Serialized_algorithmId =
                 br.ReadBytes(sigDataV1Serialized_algorithmIdSize); //As a string here apparently. Should match the AlgorithmIdentifierOId above.
@@ -200,10 +200,10 @@ internal static class SignatureReader
         {
             byte num = content[offset];
             byte num2 = (byte)(num / 40);
-            builder.Append(num2.ToString(null, null));
-            builder.Append(".");
+            _ = builder.Append(num2.ToString(null, null));
+            _ = builder.Append(".");
             num2 = (byte)(num % 40);
-            builder.Append(num2.ToString(null, null));
+            _ = builder.Append(num2.ToString(null, null));
             ulong num3 = 0L;
 
             for (int i = offset + 1; i < content.Length; i++)
@@ -213,8 +213,8 @@ internal static class SignatureReader
 
                 if ((num2 & 0x80) == 0)
                 {
-                    builder.Append(".");
-                    builder.Append(num3.ToString(null, null));
+                    _ = builder.Append(".");
+                    _ = builder.Append(num3.ToString(null, null));
                     num3 = 0L;
                 }
 

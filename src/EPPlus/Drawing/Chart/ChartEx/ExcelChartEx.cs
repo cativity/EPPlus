@@ -111,7 +111,7 @@ public abstract class ExcelChartEx : ExcelChart
     {
         XmlElement graphFrame = this.TopNode.OwnerDocument.CreateElement("mc", "AlternateContent", ExcelPackage.schemaMarkupCompatibility);
         graphFrame.SetAttribute("xmlns:mc", ExcelPackage.schemaMarkupCompatibility);
-        this.TopNode.AppendChild(graphFrame);
+        _ = this.TopNode.AppendChild(graphFrame);
 
         graphFrame.InnerXml =
             string.Format(
@@ -119,7 +119,7 @@ public abstract class ExcelChartEx : ExcelChart
                           this._id,
                           GetChartExNameSpace(type ?? eChartType.Sunburst));
 
-        this.TopNode.AppendChild(this.TopNode.OwnerDocument.CreateElement("clientData", ExcelPackage.schemaSheetDrawings));
+        _ = this.TopNode.AppendChild(this.TopNode.OwnerDocument.CreateElement("clientData", ExcelPackage.schemaSheetDrawings));
 
         ZipPackage? package = drawings.Worksheet._package.ZipPackage;
         this.UriChart = GetNewUri(package, "/xl/charts/chartex{0}.xml");
@@ -174,17 +174,17 @@ public abstract class ExcelChartEx : ExcelChart
     {
         StringBuilder xml = new StringBuilder();
 
-        xml.Append("<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"yes\"?>");
-        xml.Append("<cx:chartSpace xmlns:a=\"http://schemas.openxmlformats.org/drawingml/2006/main\" xmlns:r=\"http://schemas.openxmlformats.org/officeDocument/2006/relationships\" xmlns:cx=\"http://schemas.microsoft.com/office/drawing/2014/chartex\" >");
-        xml.Append("<cx:chart><cx:title overlay=\"0\" align=\"ctr\" pos=\"t\"/><cx:plotArea><cx:plotAreaRegion></cx:plotAreaRegion></cx:plotArea></cx:chart>");
-        xml.Append("</cx:chartSpace>");
+        _ = xml.Append("<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"yes\"?>");
+        _ = xml.Append("<cx:chartSpace xmlns:a=\"http://schemas.openxmlformats.org/drawingml/2006/main\" xmlns:r=\"http://schemas.openxmlformats.org/officeDocument/2006/relationships\" xmlns:cx=\"http://schemas.microsoft.com/office/drawing/2014/chartex\" >");
+        _ = xml.Append("<cx:chart><cx:title overlay=\"0\" align=\"ctr\" pos=\"t\"/><cx:plotArea><cx:plotAreaRegion></cx:plotAreaRegion></cx:plotArea></cx:chart>");
+        _ = xml.Append("</cx:chartSpace>");
 
         return xml.ToString();
     }
 
     private static void AddData(StringBuilder xml)
     {
-        xml.Append("<cx:chartData><cx:data id=\"0\"><cx:strDim type=\"cat\"><cx:f dir=\"row\">_xlchart.v1.31</cx:f></cx:strDim><cx:numDim type=\"size\"><cx:f dir=\"row\">_xlchart.v1.32</cx:f></cx:numDim></cx:data><cx:data id=\"1\"><cx:strDim type=\"cat\"><cx:f dir=\"row\">_xlchart.v1.31</cx:f></cx:strDim><cx:numDim type=\"size\"><cx:f dir=\"row\">_xlchart.v1.33</cx:f></cx:numDim></cx:data></cx:chartData>");
+        _ = xml.Append("<cx:chartData><cx:data id=\"0\"><cx:strDim type=\"cat\"><cx:f dir=\"row\">_xlchart.v1.31</cx:f></cx:strDim><cx:numDim type=\"size\"><cx:f dir=\"row\">_xlchart.v1.32</cx:f></cx:numDim></cx:data><cx:data id=\"1\"><cx:strDim type=\"cat\"><cx:f dir=\"row\">_xlchart.v1.31</cx:f></cx:strDim><cx:numDim type=\"size\"><cx:f dir=\"row\">_xlchart.v1.33</cx:f></cx:numDim></cx:data></cx:chartData>");
     }
 
     internal override void AddAxis()

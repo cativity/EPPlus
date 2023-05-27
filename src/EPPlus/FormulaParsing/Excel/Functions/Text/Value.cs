@@ -67,7 +67,7 @@ internal class Value : ExcelFunction
         {
             string? numCandidate = val.Substring(1, val.Length - 2);
 
-            if (double.TryParse(numCandidate, NumberStyles.Any, this._cultureInfo, out double tmp))
+            if (double.TryParse(numCandidate, NumberStyles.Any, this._cultureInfo, out double _))
             {
                 val = "-" + numCandidate;
             }

@@ -142,7 +142,7 @@ public class ExcelRow : IRangeID
             if (this._worksheet._package.DoAdjustDrawings)
             {
                 double[,]? pos = this._worksheet.Drawings.GetDrawingHeight(); //Fixes issue 14846
-                this._worksheet.RowHeightCache.Remove(this.Row - 1);
+                _ = this._worksheet.RowHeightCache.Remove(this.Row - 1);
                 r.Height = value;
                 this._worksheet.Drawings.AdjustHeight(pos);
             }

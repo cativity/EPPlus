@@ -160,8 +160,8 @@ public class ExcelHeaderFooterText
         string id = this.ValidateImage(Alignment);
 
         byte[]? imgBytes = new byte[PictureStream.Length];
-        PictureStream.Seek(0, SeekOrigin.Begin);
-        PictureStream.Read(imgBytes, 0, imgBytes.Length);
+        _ = PictureStream.Seek(0, SeekOrigin.Begin);
+        _ = PictureStream.Read(imgBytes, 0, imgBytes.Length);
         ImageInfo? ii = this._ws.Workbook._package.PictureStore.AddImage(imgBytes, null, pictureType);
 
         return this.AddImage(id, ii);

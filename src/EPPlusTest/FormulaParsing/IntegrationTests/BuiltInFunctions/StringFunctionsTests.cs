@@ -59,8 +59,8 @@ public class StringFunctionsTests : FormulaParserTestBase
     {
         ExcelPackage? package = new ExcelPackage();
         ExcelDataProvider? provider = A.Fake<ExcelDataProvider>();
-        A.CallTo(() => provider.GetFormat(23.5, "$0.00")).Returns("$23.50");
-        A.CallTo(() => provider.GetWorkbookNameValues()).Returns(new ExcelNamedRangeCollection(package.Workbook));
+        _ = A.CallTo(() => provider.GetFormat(23.5, "$0.00")).Returns("$23.50");
+        _ = A.CallTo(() => provider.GetWorkbookNameValues()).Returns(new ExcelNamedRangeCollection(package.Workbook));
         FormulaParser? parser = new FormulaParser(provider);
 
         object? result = parser.Parse("TEXT(23.5,\"$0.00\") & \" per hour\"");

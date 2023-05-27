@@ -69,7 +69,7 @@ public class SurfaceChartStylingTest : TestBase
         //Surface charts don't use chart styling in Excel, but styles can be applied anyway. 
 
         //Style 1-From a pie chart.
-        AddSurface(ws,
+        _ = AddSurface(ws,
                    chartType,
                    "SurfaceChartStyle1",
                    0,
@@ -92,14 +92,14 @@ public class SurfaceChartStylingTest : TestBase
         chart.To.ColumnOff = 0;
         chart.To.Row = row + 18;
         chart.To.RowOff = 0;
-        ExcelSurfaceChartSerie? serie = chart.Series.Add("D2:D8", "A2:A8");
-        ExcelSurfaceChartSerie? serie2 = chart.Series.Add("C2:C8", "A2:A8");
+        _ = chart.Series.Add("D2:D8", "A2:A8");
+        _ = chart.Series.Add("C2:C8", "A2:A8");
 
         SetProperties(chart);
 
         XmlDocument? xmlDoc = new XmlDocument();
         xmlDoc.LoadXml(xml);
-        chart.StyleManager.LoadStyleXml(xmlDoc, eChartStyle.Style2);
+        _ = chart.StyleManager.LoadStyleXml(xmlDoc, eChartStyle.Style2);
 
         return chart;
     }

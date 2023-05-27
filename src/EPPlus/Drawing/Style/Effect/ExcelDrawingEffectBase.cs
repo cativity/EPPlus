@@ -42,7 +42,7 @@ public abstract class ExcelDrawingEffectBase : XmlHelper
 
         if (node != null)
         {
-            this.TopNode.RemoveChild(node);
+            _ = this.TopNode.RemoveChild(node);
         }
     }
 }

@@ -91,7 +91,7 @@ public class SystemDrawingImageHandler : IImageHandler
         {
             try
             {
-                Graphics? g = Graphics.FromHwnd(IntPtr.Zero); //Fails if no gdi.
+                _ = Graphics.FromHwnd(IntPtr.Zero);
                 this._validForEnvironment = true;
             }
             catch

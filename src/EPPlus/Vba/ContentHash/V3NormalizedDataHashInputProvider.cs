@@ -475,7 +475,7 @@ internal class V3NormalizedDataHashInputProvider : ContentHashInputProvider
         CompoundDocument.StoragePart? vbaStorage = p.Document.Storage.SubStorage["VBA"];
         byte[]? stream = vbaStorage.DataStreams[module.Name];
         byte[]? text = VBACompression.DecompressPart(stream, (int)module.ModuleOffset);
-        string? totalText = Encoding.GetEncoding(p.CodePage).GetString(text);
+        _ = Encoding.GetEncoding(p.CodePage).GetString(text);
 
         List<byte[]>? lines = new List<byte[]>();
         List<byte>? textBuffer = new List<byte>();

@@ -26,7 +26,7 @@ public class ExternalExtTests : TestBase
 
         if (!Directory.Exists(outDir))
         {
-            Directory.CreateDirectory(outDir);
+            _ = Directory.CreateDirectory(outDir);
         }
     }
 
@@ -83,9 +83,9 @@ public class ExternalExtTests : TestBase
     {
         using ExcelPackage? pck = OpenPackage("ExternalDataValidations\\LocalDVExternalCF.xlsx", true);
         ExcelWorksheet? ws = pck.Workbook.Worksheets.Add("conditionalFormattingsTest");
-        ExcelWorksheet? extSheet = pck.Workbook.Worksheets.Add("extAddressSheet");
+        _ = pck.Workbook.Worksheets.Add("extAddressSheet");
 
-        ws.ConditionalFormatting.AddDatabar(new ExcelAddress(1, 1, 2, 1), Color.Blue);
+        _ = ws.ConditionalFormatting.AddDatabar(new ExcelAddress(1, 1, 2, 1), Color.Blue);
 
         AddDataValidations(ref ws, false);
         SaveAndLoadAndSave(pck);
@@ -96,10 +96,10 @@ public class ExternalExtTests : TestBase
     {
         using ExcelPackage? pck = OpenPackage("ExternalDataValidations\\LocalDVManyExternalCF.xlsx", true);
         ExcelWorksheet? ws = pck.Workbook.Worksheets.Add("conditionalFormattingsTest");
-        ExcelWorksheet? extSheet = pck.Workbook.Worksheets.Add("extAddressSheet");
+        _ = pck.Workbook.Worksheets.Add("extAddressSheet");
 
-        ws.ConditionalFormatting.AddDatabar(new ExcelAddress(1, 1, 2, 1), Color.Blue);
-        ws.ConditionalFormatting.AddDatabar(new ExcelAddress(1, 2, 2, 2), Color.Red);
+        _ = ws.ConditionalFormatting.AddDatabar(new ExcelAddress(1, 1, 2, 1), Color.Blue);
+        _ = ws.ConditionalFormatting.AddDatabar(new ExcelAddress(1, 2, 2, 2), Color.Red);
 
         AddDataValidations(ref ws, false);
         SaveAndLoadAndSave(pck);
@@ -110,10 +110,10 @@ public class ExternalExtTests : TestBase
     {
         using ExcelPackage? pck = OpenPackage("ExternalDataValidations\\ManyLocalDVExternalCF.xlsx", true);
         ExcelWorksheet? ws = pck.Workbook.Worksheets.Add("conditionalFormattingsTest");
-        ExcelWorksheet? extSheet = pck.Workbook.Worksheets.Add("extAddressSheet");
+        _ = pck.Workbook.Worksheets.Add("extAddressSheet");
 
-        ws.ConditionalFormatting.AddDatabar(new ExcelAddress(1, 1, 2, 1), Color.Blue);
-        ws.ConditionalFormatting.AddDatabar(new ExcelAddress(1, 2, 2, 2), Color.Red);
+        _ = ws.ConditionalFormatting.AddDatabar(new ExcelAddress(1, 1, 2, 1), Color.Blue);
+        _ = ws.ConditionalFormatting.AddDatabar(new ExcelAddress(1, 2, 2, 2), Color.Red);
 
         AddDataValidations(ref ws, false, "", true);
         SaveAndLoadAndSave(pck);
@@ -124,10 +124,10 @@ public class ExternalExtTests : TestBase
     {
         using ExcelPackage? pck = OpenPackage("ExternalDataValidations\\ManyLocalDVManyExternalCF.xlsx", true);
         ExcelWorksheet? ws = pck.Workbook.Worksheets.Add("conditionalFormattingsTest");
-        ExcelWorksheet? extSheet = pck.Workbook.Worksheets.Add("extAddressSheet");
+        _ = pck.Workbook.Worksheets.Add("extAddressSheet");
 
-        ws.ConditionalFormatting.AddDatabar(new ExcelAddress(1, 1, 2, 1), Color.Blue);
-        ws.ConditionalFormatting.AddDatabar(new ExcelAddress(1, 1, 2, 1), Color.Blue);
+        _ = ws.ConditionalFormatting.AddDatabar(new ExcelAddress(1, 1, 2, 1), Color.Blue);
+        _ = ws.ConditionalFormatting.AddDatabar(new ExcelAddress(1, 1, 2, 1), Color.Blue);
 
         AddDataValidations(ref ws, false, "", true);
         SaveAndLoadAndSave(pck);
@@ -138,10 +138,10 @@ public class ExternalExtTests : TestBase
     {
         using ExcelPackage? pck = new ExcelPackage();
         ExcelWorksheet? ws = pck.Workbook.Worksheets.Add("conditionalFormattingsTest");
-        ExcelWorksheet? extSheet = pck.Workbook.Worksheets.Add("extAddressSheet");
+        _ = pck.Workbook.Worksheets.Add("extAddressSheet");
 
-        ws.SparklineGroups.Add(eSparklineType.Line, new ExcelAddress(1, 1, 5, 1), new ExcelAddress(1, 2, 5, 2));
-        ws.SparklineGroups.Add(eSparklineType.Line, new ExcelAddress(1, 3, 5, 3), new ExcelAddress(1, 4, 5, 4));
+        _ = ws.SparklineGroups.Add(eSparklineType.Line, new ExcelAddress(1, 1, 5, 1), new ExcelAddress(1, 2, 5, 2));
+        _ = ws.SparklineGroups.Add(eSparklineType.Line, new ExcelAddress(1, 3, 5, 3), new ExcelAddress(1, 4, 5, 4));
 
         AddDataValidations(ref ws, false);
         SaveAndLoadAndSave(pck);
@@ -154,7 +154,7 @@ public class ExternalExtTests : TestBase
         ExcelWorksheet? ws = pck.Workbook.Worksheets.Add("conditionalFormattingsTest");
         ExcelWorksheet? extSheet = pck.Workbook.Worksheets.Add("extAddressSheet");
 
-        ws.ConditionalFormatting.AddDatabar(new ExcelAddress(1, 1, 2, 1), Color.Blue);
+        _ = ws.ConditionalFormatting.AddDatabar(new ExcelAddress(1, 1, 2, 1), Color.Blue);
 
         AddDataValidations(ref ws, true, extSheet.Name);
         SaveAndLoadAndSave(pck);
@@ -167,7 +167,7 @@ public class ExternalExtTests : TestBase
         ExcelWorksheet? ws = pck.Workbook.Worksheets.Add("conditionalFormattingsTest");
         ExcelWorksheet? extSheet = pck.Workbook.Worksheets.Add("extAddressSheet");
 
-        ws.ConditionalFormatting.AddDatabar(new ExcelAddress(1, 1, 2, 1), Color.Blue);
+        _ = ws.ConditionalFormatting.AddDatabar(new ExcelAddress(1, 1, 2, 1), Color.Blue);
 
         AddDataValidations(ref ws, true, extSheet.Name, true);
         SaveAndLoadAndSave(pck);
@@ -180,8 +180,8 @@ public class ExternalExtTests : TestBase
         ExcelWorksheet? ws = pck.Workbook.Worksheets.Add("conditionalFormattingsTest");
         ExcelWorksheet? extSheet = pck.Workbook.Worksheets.Add("extAddressSheet");
 
-        ws.ConditionalFormatting.AddDatabar(new ExcelAddress(1, 1, 2, 1), Color.Blue);
-        ws.ConditionalFormatting.AddDatabar(new ExcelAddress(1, 2, 2, 2), Color.Red);
+        _ = ws.ConditionalFormatting.AddDatabar(new ExcelAddress(1, 1, 2, 1), Color.Blue);
+        _ = ws.ConditionalFormatting.AddDatabar(new ExcelAddress(1, 2, 2, 2), Color.Red);
 
         AddDataValidations(ref ws, true, extSheet.Name, true);
         SaveAndLoadAndSave(pck);
@@ -194,14 +194,14 @@ public class ExternalExtTests : TestBase
         ExcelWorksheet? ws = pck.Workbook.Worksheets.Add("conditionalFormattingsTest");
         ExcelWorksheet? extSheet = pck.Workbook.Worksheets.Add("extAddressSheet");
 
-        ws.SparklineGroups.Add(eSparklineType.Line, ws.Cells["A1:A5"], ws.Cells["B1:B5"]);
-        ws.ConditionalFormatting.AddDatabar(new ExcelAddress(1, 1, 2, 1), Color.Blue);
+        _ = ws.SparklineGroups.Add(eSparklineType.Line, ws.Cells["A1:A5"], ws.Cells["B1:B5"]);
+        _ = ws.ConditionalFormatting.AddDatabar(new ExcelAddress(1, 1, 2, 1), Color.Blue);
 
         ExcelRange range = ws.Cells[1, 1, 4, 1];
         ExcelTable table = ws.Tables.Add(range, "TestTable");
         table.StyleName = "None";
 
-        ExcelTableSlicer slicer = ws.Drawings.AddTableSlicer(table.Columns[0]);
+        _ = ws.Drawings.AddTableSlicer(table.Columns[0]);
 
         AddDataValidations(ref ws, true, extSheet.Name, true);
         SaveAndLoadAndSave(pck);
@@ -212,16 +212,16 @@ public class ExternalExtTests : TestBase
     {
         using ExcelPackage? pck = OpenPackage("ExternalDataValidations\\LocalDVAllOtherExts.xlsx", true);
         ExcelWorksheet? ws = pck.Workbook.Worksheets.Add("conditionalFormattingsTest");
-        ExcelWorksheet? extSheet = pck.Workbook.Worksheets.Add("extAddressSheet");
+        _ = pck.Workbook.Worksheets.Add("extAddressSheet");
 
-        ws.SparklineGroups.Add(eSparklineType.Line, ws.Cells["A1:A5"], ws.Cells["B1:B5"]);
-        ws.ConditionalFormatting.AddDatabar(new ExcelAddress(1, 1, 2, 1), Color.Blue);
+        _ = ws.SparklineGroups.Add(eSparklineType.Line, ws.Cells["A1:A5"], ws.Cells["B1:B5"]);
+        _ = ws.ConditionalFormatting.AddDatabar(new ExcelAddress(1, 1, 2, 1), Color.Blue);
 
         ExcelRange range = ws.Cells[1, 1, 4, 1];
         ExcelTable table = ws.Tables.Add(range, "TestTable");
         table.StyleName = "None";
 
-        ExcelTableSlicer slicer = ws.Drawings.AddTableSlicer(table.Columns[0]);
+        _ = ws.Drawings.AddTableSlicer(table.Columns[0]);
 
         AddDataValidations(ref ws, false);
         SaveAndLoadAndSave(pck);

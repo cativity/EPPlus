@@ -54,7 +54,7 @@ public class AverageIfTests
         this._package = new ExcelPackage();
         this._provider = new EpplusExcelDataProvider(this._package);
         this._parsingContext = ParsingContext.Create();
-        this._parsingContext.Scopes.NewScope(RangeAddress.Empty);
+        _ = this._parsingContext.Scopes.NewScope(RangeAddress.Empty);
         this._worksheet = this._package.Workbook.Worksheets.Add("testsheet");
     }
 

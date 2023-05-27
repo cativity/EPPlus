@@ -51,9 +51,7 @@ internal class TimeStringParser
 
     public virtual bool CanParse(string input)
     {
-        System.DateTime dt;
-
-        return Regex.IsMatch(input, RegEx24) || Regex.IsMatch(input, RegEx12) || System.DateTime.TryParse(input, out dt);
+        return Regex.IsMatch(input, RegEx24) || Regex.IsMatch(input, RegEx12) || System.DateTime.TryParse(input, out System.DateTime _);
     }
 
     private static double InternalParse(string input)

@@ -120,7 +120,7 @@ public class ExcelConditionalFormattingIconSetBase<T> : ExcelConditionalFormatti
             }
 
             XmlElement? iconNode1 = iconSetNode.OwnerDocument.CreateElement(ExcelConditionalFormattingConstants.Paths.Cfvo, ExcelPackage.schemaMain);
-            iconSetNode.AppendChild(iconNode1);
+            _ = iconSetNode.AppendChild(iconNode1);
 
             this.Icon1 = new ExcelConditionalFormattingIconDataBarValue(eExcelConditionalFormattingValueObjectType.Percent,
                                                                         0,
@@ -133,7 +133,7 @@ public class ExcelConditionalFormattingIconSetBase<T> : ExcelConditionalFormatti
                                                                         namespaceManager);
 
             XmlElement? iconNode2 = iconSetNode.OwnerDocument.CreateElement(ExcelConditionalFormattingConstants.Paths.Cfvo, ExcelPackage.schemaMain);
-            iconSetNode.AppendChild(iconNode2);
+            _ = iconSetNode.AppendChild(iconNode2);
 
             this.Icon2 = new ExcelConditionalFormattingIconDataBarValue(eExcelConditionalFormattingValueObjectType.Percent,
                                                                         Math.Round(100D / spann, 0),
@@ -146,7 +146,7 @@ public class ExcelConditionalFormattingIconSetBase<T> : ExcelConditionalFormatti
                                                                         namespaceManager);
 
             XmlElement? iconNode3 = iconSetNode.OwnerDocument.CreateElement(ExcelConditionalFormattingConstants.Paths.Cfvo, ExcelPackage.schemaMain);
-            iconSetNode.AppendChild(iconNode3);
+            _ = iconSetNode.AppendChild(iconNode3);
 
             this.Icon3 = new ExcelConditionalFormattingIconDataBarValue(eExcelConditionalFormattingValueObjectType.Percent,
                                                                         Math.Round(100D * (2D / spann), 0),

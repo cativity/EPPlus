@@ -68,7 +68,7 @@ public abstract class ExcelDataValidationWithFormula<T> : ExcelDataValidation
 
     internal T ReadFormula(XmlReader xr, string formulaIdentifier)
     {
-        xr.ReadUntil(formulaIdentifier, "dataValidation", "extLst");
+        _ = xr.ReadUntil(formulaIdentifier, "dataValidation", "extLst");
 
         if (xr.LocalName != formulaIdentifier && formulaIdentifier != "formula2")
         {
@@ -79,7 +79,7 @@ public abstract class ExcelDataValidationWithFormula<T> : ExcelDataValidation
 
         if (this.InternalValidationType == InternalValidationType.ExtLst || isExt)
         {
-            xr.Read();
+            _ = xr.Read();
         }
 
         return this.DefineFormulaClassType(xr.ReadString(), this._workSheetName);

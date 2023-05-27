@@ -174,7 +174,7 @@ internal class LoadFromCollection<T> : LoadFunctionBase
 
     private void SetValuesAndFormulas(object[,] values, Dictionary<int, FormulaCell> formulaCells, ref int col, ref int row)
     {
-        int nMembers = this.GetNumberOfColumns();
+        this.GetNumberOfColumns();
 
         foreach (T? item in this._items)
         {

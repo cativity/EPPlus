@@ -79,7 +79,7 @@ public class ExcelChartExValueColor : XmlHelper
                 switch (value)
                 {
                     case eColorValuePositionType.Extreme:
-                        this.CreateNode($"{this._positionPath}/cx:extremeValue");
+                        _ = this.CreateNode($"{this._positionPath}/cx:extremeValue");
 
                         break;
 

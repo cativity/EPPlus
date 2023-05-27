@@ -208,7 +208,7 @@ public class ExcelPivotTableAreaStyleCollection : EPPlusReadOnlyList<ExcelPivotT
 
         foreach (ExcelPivotTableField? field in fields)
         {
-            s.Conditions.Fields.Add(field);
+            _ = s.Conditions.Fields.Add(field);
         }
 
         return s;
@@ -234,7 +234,7 @@ public class ExcelPivotTableAreaStyleCollection : EPPlusReadOnlyList<ExcelPivotT
 
         foreach (ExcelPivotTableField? field in fields)
         {
-            ExcelPivotAreaReference? r = s.Conditions.Fields.Add(this._pt, field.Index);
+            _ = s.Conditions.Fields.Add(this._pt, field.Index);
         }
 
         return s;

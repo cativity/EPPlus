@@ -153,9 +153,9 @@ public class ExcelParagraphCollection : XmlHelper, IEnumerable<ExcelParagraph>
         }
 
         XmlElement? node = doc.CreateElement("a", "r", ExcelPackage.schemaDrawings);
-        parentNode.AppendChild(node);
+        _ = parentNode.AppendChild(node);
         XmlElement? childNode = doc.CreateElement("a", "rPr", ExcelPackage.schemaDrawings);
-        node.AppendChild(childNode);
+        _ = node.AppendChild(childNode);
         ExcelParagraph? rt = new ExcelParagraph(this._drawing._drawings, this.NameSpaceManager, node, "", this.SchemaNodeOrder);
 
         //var normalStyle = _drawing._drawings.Worksheet.Workbook.Styles.GetNormalStyle();
@@ -184,7 +184,7 @@ public class ExcelParagraphCollection : XmlHelper, IEnumerable<ExcelParagraph>
     {
         for (int ix = 0; ix < this._paragraphs.Count; ix++)
         {
-            this._paragraphs[ix].ParentNode?.RemoveChild(this._paragraphs[ix]);
+            _ = (this._paragraphs[ix].ParentNode?.RemoveChild(this._paragraphs[ix]));
         }
 
         this._list.Clear();
@@ -204,7 +204,7 @@ public class ExcelParagraphCollection : XmlHelper, IEnumerable<ExcelParagraph>
             node = node.ParentNode;
         }
 
-        node.ParentNode.RemoveChild(node);
+        _ = node.ParentNode.RemoveChild(node);
         this._list.RemoveAt(Index);
     }
 
@@ -214,7 +214,7 @@ public class ExcelParagraphCollection : XmlHelper, IEnumerable<ExcelParagraph>
     /// <param name="Item">The item</param>
     public void Remove(ExcelRichText Item)
     {
-        this.TopNode.RemoveChild(Item.TopNode);
+        _ = this.TopNode.RemoveChild(Item.TopNode);
     }
 
     /// <summary>
@@ -230,17 +230,17 @@ public class ExcelParagraphCollection : XmlHelper, IEnumerable<ExcelParagraph>
             {
                 if (item.IsLastInParagraph)
                 {
-                    sb.AppendLine(item.Text);
+                    _ = sb.AppendLine(item.Text);
                 }
                 else
                 {
-                    sb.Append(item.Text);
+                    _ = sb.Append(item.Text);
                 }
             }
 
             if (sb.Length > 2)
             {
-                sb.Remove(sb.Length - 2, 2); //Remove last crlf
+                _ = sb.Remove(sb.Length - 2, 2); //Remove last crlf
             }
 
             return sb.ToString();
@@ -249,7 +249,7 @@ public class ExcelParagraphCollection : XmlHelper, IEnumerable<ExcelParagraph>
         {
             if (this.Count == 0)
             {
-                this.Add(value);
+                _ = this.Add(value);
             }
             else
             {

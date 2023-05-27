@@ -88,7 +88,7 @@ internal class DataTableBuilder
                 throw new InvalidOperationException($"Duplicate column name : {name}");
             }
 
-            columnNames.Add(name);
+            _ = columnNames.Add(name);
 
             // find type
             while (this._sheet.GetValue(++row, col) == null && row <= this._range.End.Row)

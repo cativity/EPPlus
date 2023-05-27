@@ -74,28 +74,28 @@ public class GetTypedCellValueTests
     [ExpectedException(typeof(FormatException))]
     public void EmptyStringToDecimal()
     {
-        ConvertUtil.GetTypedCellValue<decimal>("");
+        _ = ConvertUtil.GetTypedCellValue<decimal>("");
     }
 
     [TestMethod]
     [ExpectedException(typeof(FormatException))]
     public void FloatingPointStringToInt()
     {
-        ConvertUtil.GetTypedCellValue<int>("1.4");
+        _ = ConvertUtil.GetTypedCellValue<int>("1.4");
     }
 
     [TestMethod]
     [ExpectedException(typeof(InvalidCastException))]
     public void IntToDateTime()
     {
-        ConvertUtil.GetTypedCellValue<DateTime>(122);
+        _ = ConvertUtil.GetTypedCellValue<DateTime>(122);
     }
 
     [TestMethod]
     [ExpectedException(typeof(InvalidCastException))]
     public void IntToTimeSpan()
     {
-        ConvertUtil.GetTypedCellValue<TimeSpan>(122);
+        _ = ConvertUtil.GetTypedCellValue<TimeSpan>(122);
     }
 
     [TestMethod]
@@ -129,7 +129,7 @@ public class GetTypedCellValueTests
     [ExpectedException(typeof(FormatException))]
     public void BadTextToInt()
     {
-        ConvertUtil.GetTypedCellValue<int>("text1");
+        _ = ConvertUtil.GetTypedCellValue<int>("text1");
     }
 
     [TestMethod]

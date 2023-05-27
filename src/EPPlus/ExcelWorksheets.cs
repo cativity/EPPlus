@@ -340,10 +340,10 @@ public class ExcelWorksheets : XmlHelper, IEnumerable<ExcelWorksheet>, IDisposab
             sheetElement = this._pck.Workbook.WorkbookXml.CreateElement("sheet", ExcelPackage.schemaMain);
             sheetElement.SetAttribute("name", Name);
             sheetElement.SetAttribute("sheetId", sheetID.ToString());
-            this.TopNode.AppendChild(sheetElement);
+            _ = this.TopNode.AppendChild(sheetElement);
         }
 
-        sheetElement.SetAttribute("id", ExcelPackage.schemaRelationships, rel.Id);
+        _ = sheetElement.SetAttribute("id", ExcelPackage.schemaRelationships, rel.Id);
 
         return rel.Id;
     }
@@ -443,37 +443,37 @@ public class ExcelWorksheets : XmlHelper, IEnumerable<ExcelWorksheet>, IDisposab
         XmlDocument xmlDoc = new XmlDocument();
         XmlElement elemWs = xmlDoc.CreateElement(isChart ? "chartsheet" : "worksheet", ExcelPackage.schemaMain);
         elemWs.SetAttribute("xmlns:r", ExcelPackage.schemaRelationships);
-        xmlDoc.AppendChild(elemWs);
+        _ = xmlDoc.AppendChild(elemWs);
 
         if (isChart)
         {
             XmlElement elemSheetPr = xmlDoc.CreateElement("sheetPr", ExcelPackage.schemaMain);
-            elemWs.AppendChild(elemSheetPr);
+            _ = elemWs.AppendChild(elemSheetPr);
 
             XmlElement elemSheetViews = xmlDoc.CreateElement("sheetViews", ExcelPackage.schemaMain);
-            elemWs.AppendChild(elemSheetViews);
+            _ = elemWs.AppendChild(elemSheetViews);
 
             XmlElement elemSheetView = xmlDoc.CreateElement("sheetView", ExcelPackage.schemaMain);
             elemSheetView.SetAttribute("workbookViewId", "0");
             elemSheetView.SetAttribute("zoomToFit", "1");
 
-            elemSheetViews.AppendChild(elemSheetView);
+            _ = elemSheetViews.AppendChild(elemSheetView);
         }
         else
         {
             XmlElement elemSheetViews = xmlDoc.CreateElement("sheetViews", ExcelPackage.schemaMain);
-            elemWs.AppendChild(elemSheetViews);
+            _ = elemWs.AppendChild(elemSheetViews);
 
             XmlElement elemSheetView = xmlDoc.CreateElement("sheetView", ExcelPackage.schemaMain);
             elemSheetView.SetAttribute("workbookViewId", "0");
-            elemSheetViews.AppendChild(elemSheetView);
+            _ = elemSheetViews.AppendChild(elemSheetView);
 
             XmlElement elemSheetFormatPr = xmlDoc.CreateElement("sheetFormatPr", ExcelPackage.schemaMain);
             elemSheetFormatPr.SetAttribute("defaultRowHeight", "15");
-            elemWs.AppendChild(elemSheetFormatPr);
+            _ = elemWs.AppendChild(elemSheetFormatPr);
 
             XmlElement elemSheetData = xmlDoc.CreateElement("sheetData", ExcelPackage.schemaMain);
-            elemWs.AppendChild(elemSheetData);
+            _ = elemWs.AppendChild(elemSheetData);
         }
 
         return xmlDoc;
@@ -497,7 +497,6 @@ public class ExcelWorksheets : XmlHelper, IEnumerable<ExcelWorksheet>, IDisposab
         */
         foreach (ExcelWorksheet? ws in this._worksheets)
         {
-            ExcelDrawings? drawings = ws.Drawings;
         }
 
         ExcelWorksheet worksheet = this._worksheets[Index - this._pck._worksheetAdd];
@@ -533,7 +532,7 @@ public class ExcelWorksheets : XmlHelper, IEnumerable<ExcelWorksheet>, IDisposab
 
             if (sheetNode != null)
             {
-                sheetsNode.RemoveChild(sheetNode);
+                _ = sheetsNode.RemoveChild(sheetNode);
             }
         }
 
@@ -542,7 +541,7 @@ public class ExcelWorksheets : XmlHelper, IEnumerable<ExcelWorksheet>, IDisposab
             this._pck.Workbook.VbaProject.Modules.Remove(worksheet.CodeModule);
         }
 
-        this._worksheets.RemoveAndShift(Index - this._pck._worksheetAdd);
+        _ = this._worksheets.RemoveAndShift(Index - this._pck._worksheetAdd);
         this.ReindexWorksheetDictionary();
 
         //If the active sheet is deleted, set the first tab as active.

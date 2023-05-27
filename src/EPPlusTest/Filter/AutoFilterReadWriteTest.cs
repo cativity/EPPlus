@@ -48,14 +48,14 @@ public class AutoFilterReadWriteTest : TestBase
 
         ws.AutoFilterAddress = ws.Cells["A1:D100"];
         ExcelValueFilterColumn? col = ws.AutoFilter.Columns.AddValueFilterColumn(1);
-        col.Filters.Add("3");
-        col.Filters.Add("6");
-        col.Filters.Add("19");
+        _ = col.Filters.Add("3");
+        _ = col.Filters.Add("6");
+        _ = col.Filters.Add("19");
         col.Filters.Blank = true;
-        col.Filters.Add(new ExcelFilterDateGroupItem(2018, 12));
+        _ = col.Filters.Add(new ExcelFilterDateGroupItem(2018, 12));
 
         ExcelValueFilterColumn? col2 = ws.AutoFilter.Columns.AddValueFilterColumn(2);
-        col2.Filters.Add("Value 6");
+        _ = col2.Filters.Add("Value 6");
         ws.AutoFilter.ApplyFilter();
 
         Assert.AreEqual(true, ws.Row(2).Hidden);
@@ -87,14 +87,14 @@ public class AutoFilterReadWriteTest : TestBase
 
         tbl.ShowFilter = true;
         ExcelValueFilterColumn? col = tbl.AutoFilter.Columns.AddValueFilterColumn(1);
-        col.Filters.Add("3");
-        col.Filters.Add("6");
-        col.Filters.Add("19");
+        _ = col.Filters.Add("3");
+        _ = col.Filters.Add("6");
+        _ = col.Filters.Add("19");
         col.Filters.Blank = true;
-        col.Filters.Add(new ExcelFilterDateGroupItem(2018, 12));
+        _ = col.Filters.Add(new ExcelFilterDateGroupItem(2018, 12));
 
         ExcelValueFilterColumn? col2 = tbl.AutoFilter.Columns.AddValueFilterColumn(2);
-        col2.Filters.Add("Value 6");
+        _ = col2.Filters.Add("Value 6");
         tbl.AutoFilter.ApplyFilter();
 
         Assert.AreEqual(true, ws.Row(2).Hidden);
@@ -124,8 +124,8 @@ public class AutoFilterReadWriteTest : TestBase
         ws.AutoFilterAddress = ws.Cells["A1:D100"];
         ExcelCustomFilterColumn? col = ws.AutoFilter.Columns.AddCustomFilterColumn(2);
         col.And = true;
-        col.Filters.Add(new ExcelFilterCustomItem("Val*"));
-        col.Filters.Add(new ExcelFilterCustomItem("*3"));
+        _ = col.Filters.Add(new ExcelFilterCustomItem("Val*"));
+        _ = col.Filters.Add(new ExcelFilterCustomItem("*3"));
         ws.AutoFilter.Save();
         Assert.AreEqual(true, ws.Row(2).Hidden);
         Assert.AreEqual(false, ws.Row(3).Hidden);
@@ -346,7 +346,7 @@ public class AutoFilterReadWriteTest : TestBase
         ExcelWorksheet? ws = pck.Workbook.Worksheets.Add("ColorFilter");
         LoadTestdata(ws, 100);
         ws.AutoFilterAddress = ws.Cells["A1:D733"];
-        ExcelColorFilterColumn? col = ws.AutoFilter.Columns.AddColorFilterColumn(1);
+        _ = ws.AutoFilter.Columns.AddColorFilterColumn(1);
     }
 
     [TestMethod]

@@ -223,7 +223,7 @@ public class ExcelChartExSerie : ExcelChartSerie
                 if (create)
                 {
                     XmlElement? node = this._dataNode.OwnerDocument.CreateElement("cx", "strDim", ExcelPackage.schemaChartExMain);
-                    this._dataNode.InsertBefore(node, this._dataNode.FirstChild);
+                    _ = this._dataNode.InsertBefore(node, this._dataNode.FirstChild);
                     this._catSerieHelper = XmlHelperFactory.Create(this.NameSpaceManager, node);
                 }
                 else
@@ -298,7 +298,7 @@ public class ExcelChartExSerie : ExcelChartSerie
         ser.InnerXml = $"<cx:dataId val=\"{chart.Series.Count}\"/><cx:layoutPr/>{AddAxisReferense(chart)}";
         SetLayoutProperties(chart, ser);
 
-        chart._chartXmlHelper.CreateNode("../cx:chartData", true);
+        _ = chart._chartXmlHelper.CreateNode("../cx:chartData", true);
         XmlElement? dataElement = (XmlElement)chart._chartXmlHelper.CreateNode("../cx:chartData/cx:data", false, true);
         dataElement.SetAttribute("id", chart.Series.Count.ToString());
         string? innerXml = "";
@@ -322,11 +322,11 @@ public class ExcelChartExSerie : ExcelChartSerie
 
         if (node.Count > 0)
         {
-            plotareaNode.InsertAfter(ser, referenceNode ?? node[node.Count - 1]);
+            _ = plotareaNode.InsertAfter(ser, referenceNode ?? node[node.Count - 1]);
         }
         else
         {
-            XmlHelper? f = XmlHelperFactory.Create(chart.NameSpaceManager, plotareaNode);
+            _ = XmlHelperFactory.Create(chart.NameSpaceManager, plotareaNode);
             InserAfter(plotareaNode, "cx:plotSurface", ser);
         }
 

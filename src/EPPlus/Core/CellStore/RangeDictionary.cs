@@ -208,7 +208,7 @@ internal class RangeDictionary<T>
                     {
                         if (!hs.Contains(ri.Value))
                         {
-                            hs.Add(ri.Value);
+                            _ = hs.Add(ri.Value);
                         }
 
                         ix++;
@@ -326,8 +326,6 @@ internal class RangeDictionary<T>
                         rowStartIndex--;
                     }
                 }
-
-                int delete = (noRows << 20) | noRows;
 
                 for (int i = rowStartIndex; i < rows.Count; i++)
                 {
@@ -524,7 +522,6 @@ internal class RangeDictionary<T>
 
             if (fr >= fromRow && tr <= toRow)
             {
-                int rows = tr - fr + 1;
                 this.DeleteRow(fromRow, tr, colNo, colNo);
                 i--;
             }
@@ -561,7 +558,6 @@ internal class RangeDictionary<T>
 
                     if (fr >= fromRow && tr <= toRow)
                     {
-                        int rows = tr - fr + 1;
                         this.DeleteRow(fromRow, tr, colNo, colNo);
                         this.Add(fr, colNo + noCols, tr, colNo + noCols, ri.Value);
                         i--;
@@ -595,12 +591,12 @@ internal class RangeDictionary<T>
             {
                 if (key < fromCol + noCols)
                 {
-                    this._addresses.Remove(key);
+                    _ = this._addresses.Remove(key);
                 }
                 else
                 {
                     List<RangeItem>? col = this._addresses[key];
-                    this._addresses.Remove(key);
+                    _ = this._addresses.Remove(key);
                     this._addresses.Add(key - noCols, col);
                 }
             }
@@ -616,7 +612,7 @@ internal class RangeDictionary<T>
             if (key >= fromCol)
             {
                 List<RangeItem>? col = this._addresses[key];
-                this._addresses.Remove(key);
+                _ = this._addresses.Remove(key);
                 this._addresses.Add(key + noCols, col);
             }
         }

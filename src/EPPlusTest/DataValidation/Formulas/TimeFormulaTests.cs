@@ -146,7 +146,7 @@ public class TimeFormulaTests : ValidationTestBase
         MemoryStream stream = new MemoryStream();
         package.SaveAs(stream);
 
-        ExcelPackage? loadedpkg = new ExcelPackage(stream);
+        //_ = new ExcelPackage(stream);
 
         ExcelTime? time = new ExcelTime();
 

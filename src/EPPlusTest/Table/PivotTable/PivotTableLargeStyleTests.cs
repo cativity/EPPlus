@@ -47,26 +47,26 @@ public class PivotTableLargeStyleTests : TestBase
 
         ExcelPivotTableAreaStyle? s4 = pt.Styles.AddLabel(pt.Fields["SiteId"]);
         s4.Style.Font.Color.SetColor(Color.Cyan);
-        s4.Conditions.Fields[0].Items.AddByValue(5D);
-        s4.Conditions.Fields[0].Items.AddByValue(8D);
-        s4.Conditions.Fields[0].Items.AddByValue(9D);
+        _ = s4.Conditions.Fields[0].Items.AddByValue(5D);
+        _ = s4.Conditions.Fields[0].Items.AddByValue(8D);
+        _ = s4.Conditions.Fields[0].Items.AddByValue(9D);
 
         ExcelPivotTableAreaStyle? s5 = pt.Styles.AddData(pt.Fields["SiteId"], pt.Fields["ZipCode"], pt.Fields["Id"]);
         s5.Style.Fill.PatternType = ExcelFillStyle.DarkTrellis;
         s5.Style.Fill.BackgroundColor.SetColor(Color.Red);
         s5.Conditions.DataFields.Add(1);
-        s5.Conditions.Fields[0].Items.AddByValue(1D);
-        s5.Conditions.Fields[0].Items.AddByValue(2D);
-        s5.Conditions.Fields[0].Items.AddByValue(3D);
-        s5.Conditions.Fields[1].Items.AddByValue("02201");
-        s5.Conditions.Fields[2].Items.AddByValue("1100");
+        _ = s5.Conditions.Fields[0].Items.AddByValue(1D);
+        _ = s5.Conditions.Fields[0].Items.AddByValue(2D);
+        _ = s5.Conditions.Fields[0].Items.AddByValue(3D);
+        _ = s5.Conditions.Fields[1].Items.AddByValue("02201");
+        _ = s5.Conditions.Fields[2].Items.AddByValue("1100");
 
         ExcelPivotTableAreaStyle? s6 = pt.Styles.AddLabel(pt.Fields["ZipCode"], pt.Fields["Id"]);
         s6.Style.Fill.PatternType = ExcelFillStyle.LightUp;
         s6.Style.Fill.BackgroundColor.SetColor(Color.Green);
 
         //s6.Conditions.DataFields.Add(1);
-        s6.Conditions.Fields[0].Items.AddByValue("02201");
+        _ = s6.Conditions.Fields[0].Items.AddByValue("02201");
         s6.Offset = "B1:C1";
         SaveWorkbook("PivotStyleLargeSaved.xlsx", p);
     }

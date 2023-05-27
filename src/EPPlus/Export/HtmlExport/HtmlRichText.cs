@@ -13,37 +13,37 @@ internal static class HtmlRichText
     {
         if (rt.Bold)
         {
-            sb.Append("font-weight:bolder;");
+            _ = sb.Append("font-weight:bolder;");
         }
 
         if (rt.Italic)
         {
-            sb.Append("font-style:italic;");
+            _ = sb.Append("font-style:italic;");
         }
 
         if (rt.UnderLine)
         {
-            sb.Append("text-decoration:underline solid;");
+            _ = sb.Append("text-decoration:underline solid;");
         }
 
         if (rt.Strike)
         {
-            sb.Append("text-decoration:line-through solid;");
+            _ = sb.Append("text-decoration:line-through solid;");
         }
 
         if (rt.Size > 0)
         {
-            sb.Append($"font-size:{rt.Size.ToString("g", CultureInfo.InvariantCulture)}pt;");
+            _ = sb.Append($"font-size:{rt.Size.ToString("g", CultureInfo.InvariantCulture)}pt;");
         }
 
         if (string.IsNullOrEmpty(rt.FontName) == false)
         {
-            sb.Append($"font-family:{rt.FontName};");
+            _ = sb.Append($"font-family:{rt.FontName};");
         }
 
         if (rt.Color.IsEmpty == false)
         {
-            sb.Append("color:#" + rt.Color.ToArgb().ToString("x8").Substring(2));
+            _ = sb.Append("color:#" + rt.Color.ToArgb().ToString("x8").Substring(2));
         }
     }
 }

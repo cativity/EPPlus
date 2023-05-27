@@ -43,8 +43,8 @@ public class EnumerableExpressionTests
     public void CompileShouldReturnEnumerableOfCompiledChildExpressions()
     {
         EnumerableExpression? expression = new EnumerableExpression();
-        expression.AddChild(new IntegerExpression("2"));
-        expression.AddChild(new IntegerExpression("3"));
+        _ = expression.AddChild(new IntegerExpression("2"));
+        _ = expression.AddChild(new IntegerExpression("3"));
         CompileResult? result = expression.Compile();
 
         Assert.IsInstanceOfType(result.Result, typeof(IEnumerable<object>));

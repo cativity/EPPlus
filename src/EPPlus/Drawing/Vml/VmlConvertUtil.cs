@@ -15,19 +15,19 @@ internal static class VmlConvertUtil
 
         if (v.EndsWith("f", StringComparison.OrdinalIgnoreCase))
         {
-            ConvertUtil.TryParseNumericString(v.Substring(0, v.Length - 1), out double d);
+            _ = ConvertUtil.TryParseNumericString(v.Substring(0, v.Length - 1), out double d);
 
             return d / 0x10000 * 100;
         }
         else if (v.EndsWith("%"))
         {
-            ConvertUtil.TryParseNumericString(v.Substring(0, v.Length - 1), out double d);
+            _ = ConvertUtil.TryParseNumericString(v.Substring(0, v.Length - 1), out double d);
 
             return d;
         }
         else
         {
-            ConvertUtil.TryParseNumericString(v.Substring(0, v.Length - 1), out double d);
+            _ = ConvertUtil.TryParseNumericString(v.Substring(0, v.Length - 1), out double d);
 
             return d * 100;
         }

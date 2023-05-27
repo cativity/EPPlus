@@ -94,12 +94,12 @@ public class ExcelChartDataPointCollection : XmlHelper, IEnumerable<ExcelChartDa
 
             if (this._dic.ContainsKey(idx))
             {
-                this._dic[idx].TopNode.ParentNode.InsertAfter(pointElement, this._dic[idx].TopNode);
+                _ = this._dic[idx].TopNode.ParentNode.InsertAfter(pointElement, this._dic[idx].TopNode);
             }
             else
             {
                 XmlNode? first = this._dic.Values.First().TopNode;
-                first.ParentNode.InsertBefore(pointElement, first);
+                _ = first.ParentNode.InsertBefore(pointElement, first);
             }
         }
 

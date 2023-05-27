@@ -106,8 +106,6 @@ public sealed class ExcelStockChartSerie : ExcelChartSerieWithErrorBars, IDrawin
 
     private bool IsMarkersAllowed()
     {
-        eChartType type = this._chart.ChartType;
-
         //if (type == eChartType.XYScatterLinesNoMarkers || type == eChartType.XYScatterSmoothNoMarkers)
         //{
         //    return false;

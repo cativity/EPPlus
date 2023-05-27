@@ -418,7 +418,7 @@ public class RangeAddressCopyTests : TestBase
     {
         using ExcelPackage? p = new ExcelPackage();
         ExcelWorksheet ws = SetupCopyRange(p);
-        ws.Cells["A1"].AddComment("Comment");
+        _ = ws.Cells["A1"].AddComment("Comment");
         ws.Cells["A1:A2"].Copy(ws.Cells["B5:B6"], ExcelRangeCopyOptionFlags.ExcludeValues, ExcelRangeCopyOptionFlags.ExcludeStyles);
 
         Assert.AreEqual("Comment", ws.Cells["B5"].Comment.Text);
@@ -441,8 +441,8 @@ public class RangeAddressCopyTests : TestBase
     {
         using ExcelPackage? p = new ExcelPackage();
         ExcelWorksheet ws = SetupCopyRange(p);
-        ws.Cells["A2"].AddThreadedComment();
-        ws.Cells["A2"].ThreadedComment.AddComment("1", "Threaded Comment");
+        _ = ws.Cells["A2"].AddThreadedComment();
+        _ = ws.Cells["A2"].ThreadedComment.AddComment("1", "Threaded Comment");
         ws.Cells["A1:A2"].Copy(ws.Cells["B5:B6"], ExcelRangeCopyOptionFlags.ExcludeValues, ExcelRangeCopyOptionFlags.ExcludeStyles);
 
         Assert.AreEqual("Threaded Comment", ws.Cells["B6"].ThreadedComment.Comments[0].Text);
@@ -465,7 +465,7 @@ public class RangeAddressCopyTests : TestBase
     {
         using ExcelPackage? p = new ExcelPackage();
         ExcelWorksheet ws = SetupCopyRange(p);
-        ws.Cells["A1"].AddComment("Comment");
+        _ = ws.Cells["A1"].AddComment("Comment");
         ws.Cells["A1:A2"].Merge = true;
 
         ws.Cells["A1:A2"].Copy(ws.Cells["B5:B6"], ExcelRangeCopyOptionFlags.ExcludeValues, ExcelRangeCopyOptionFlags.ExcludeStyles);
@@ -490,7 +490,7 @@ public class RangeAddressCopyTests : TestBase
     {
         using ExcelPackage? p = new ExcelPackage();
         ExcelWorksheet ws = SetupCopyRange(p);
-        ws.Cells["A1"].AddComment("Comment");
+        _ = ws.Cells["A1"].AddComment("Comment");
         ws.Cells["A2"].SetHyperlink(ws.Cells["C3"], "Link to C3");
 
         ws.Cells["A1:A2"].Copy(ws.Cells["B5:B6"], ExcelRangeCopyOptionFlags.ExcludeValues, ExcelRangeCopyOptionFlags.ExcludeStyles);

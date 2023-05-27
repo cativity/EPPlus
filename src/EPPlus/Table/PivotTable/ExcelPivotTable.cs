@@ -82,7 +82,7 @@ public class ExcelPivotTable : XmlHelper
                     this.ValuesFieldPosition = pos;
                 }
 
-                rowElem.ParentNode.RemoveChild(rowElem);
+                _ = rowElem.ParentNode.RemoveChild(rowElem);
             }
 
             pos++;
@@ -104,7 +104,7 @@ public class ExcelPivotTable : XmlHelper
                     this.ValuesFieldPosition = pos;
                 }
 
-                colElem.ParentNode.RemoveChild(colElem);
+                _ = colElem.ParentNode.RemoveChild(colElem);
             }
 
             pos++;
@@ -292,7 +292,7 @@ public class ExcelPivotTable : XmlHelper
             if (this.WorkSheet.Tables._tableNames.ContainsKey(prevName))
             {
                 int ix = this.WorkSheet.Tables._tableNames[prevName];
-                this.WorkSheet.Tables._tableNames.Remove(prevName);
+                _ = this.WorkSheet.Tables._tableNames.Remove(prevName);
                 this.WorkSheet.Tables._tableNames.Add(value, ix);
             }
 
@@ -968,7 +968,7 @@ public class ExcelPivotTable : XmlHelper
 
                 if (parentNode == null)
                 {
-                    this.CreateNode("d:rowFields");
+                    _ = this.CreateNode("d:rowFields");
                     parentNode = this.PivotTableXml.SelectSingleNode("//d:rowFields", this.NameSpaceManager) as XmlElement;
                 }
 
@@ -980,7 +980,7 @@ public class ExcelPivotTable : XmlHelper
 
                 if (parentNode == null)
                 {
-                    this.CreateNode("d:colFields");
+                    _ = this.CreateNode("d:colFields");
                     parentNode = this.PivotTableXml.SelectSingleNode("//d:colFields", this.NameSpaceManager) as XmlElement;
                 }
 
@@ -994,11 +994,11 @@ public class ExcelPivotTable : XmlHelper
 
                 if (this.ValuesFieldPosition >= 0 && this.ValuesFieldPosition < fields)
                 {
-                    parentNode.InsertBefore(fieldNode, parentNode.ChildNodes[this.ValuesFieldPosition]);
+                    _ = parentNode.InsertBefore(fieldNode, parentNode.ChildNodes[this.ValuesFieldPosition]);
                 }
                 else
                 {
-                    parentNode.AppendChild(fieldNode);
+                    _ = parentNode.AppendChild(fieldNode);
                 }
             }
         }
@@ -1007,7 +1007,7 @@ public class ExcelPivotTable : XmlHelper
 
         foreach (ExcelPivotTableField? field in this.Fields)
         {
-            field.SaveToXml();
+            _ = field.SaveToXml();
         }
 
         foreach (ExcelPivotTableDataField? df in this.DataFields)

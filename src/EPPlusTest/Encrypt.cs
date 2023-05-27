@@ -169,7 +169,7 @@ public class Encrypt : TestBase
     public void ValidateStaticEnryptionMethods()
     {
         using ExcelPackage? p = new ExcelPackage();
-        p.Workbook.Worksheets.Add("Sheet1");
+        _ = p.Workbook.Worksheets.Add("Sheet1");
         p.Save();
 
         MemoryStream? ep = ExcelEncryption.EncryptPackage(p.Stream, "EPPlus");

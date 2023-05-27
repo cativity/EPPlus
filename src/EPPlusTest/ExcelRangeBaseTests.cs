@@ -43,7 +43,7 @@ public class ExcelRangeBaseTests : TestBase
         ExcelWorksheet? ws1 = pck.Workbook.Worksheets.Add("CommentCopying");
         ExcelRange? sourceExcelRange = ws1.Cells[3, 3];
         Assert.IsNull(sourceExcelRange.Comment);
-        sourceExcelRange.AddComment("Testing comment 1", "test1");
+        _ = sourceExcelRange.AddComment("Testing comment 1", "test1");
         Assert.AreEqual("test1", sourceExcelRange.Comment.Author);
         Assert.AreEqual("Testing comment 1", sourceExcelRange.Comment.Text);
         ExcelRange? destinationExcelRange = ws1.Cells[5, 5];
@@ -71,9 +71,9 @@ public class ExcelRangeBaseTests : TestBase
         Assert.IsNull(sourceExcelRangeC3.Comment);
         Assert.IsNull(sourceExcelRangeD3.Comment);
         Assert.IsNull(sourceExcelRangeE3.Comment);
-        sourceExcelRangeC3.AddComment("Testing comment 1", "test1");
-        sourceExcelRangeD3.AddComment("Testing comment 2", "test1");
-        sourceExcelRangeE3.AddComment("Testing comment 3", "test1");
+        _ = sourceExcelRangeC3.AddComment("Testing comment 1", "test1");
+        _ = sourceExcelRangeD3.AddComment("Testing comment 2", "test1");
+        _ = sourceExcelRangeE3.AddComment("Testing comment 3", "test1");
         Assert.AreEqual("test1", sourceExcelRangeC3.Comment.Author);
         Assert.AreEqual("Testing comment 1", sourceExcelRangeC3.Comment.Text);
         Assert.AreEqual("test1", sourceExcelRangeD3.Comment.Author);

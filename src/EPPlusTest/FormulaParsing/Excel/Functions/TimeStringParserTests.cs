@@ -78,14 +78,14 @@ public class TimeStringParserTests
     public void ParseShouldThrowExceptionIfSecondIsOutOfRange()
     {
         TimeStringParser? parser = new TimeStringParser();
-        double result = parser.Parse("10:12:60");
+        _ = parser.Parse("10:12:60");
     }
 
     [TestMethod, ExpectedException(typeof(FormatException))]
     public void ParseShouldThrowExceptionIfMinuteIsOutOfRange()
     {
         TimeStringParser? parser = new TimeStringParser();
-        double result = parser.Parse("10:60:55");
+        _ = parser.Parse("10:60:55");
     }
 
     [TestMethod]

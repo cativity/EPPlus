@@ -69,47 +69,47 @@ partial class ZipEntry
         {
             StringBuilder? builder = new StringBuilder();
 
-            builder.Append(string.Format("          ZipEntry: {0}\n", this.FileName))
+            _ = builder.Append(string.Format("          ZipEntry: {0}\n", this.FileName))
                    .Append(string.Format("   Version Made By: {0}\n", this._VersionMadeBy))
                    .Append(string.Format(" Needed to extract: {0}\n", this.VersionNeeded));
 
             if (this._IsDirectory)
             {
-                builder.Append("        Entry type: directory\n");
+                _ = builder.Append("        Entry type: directory\n");
             }
             else
             {
-                builder.Append(string.Format("         File type: {0}\n", this._IsText ? "text" : "binary"))
+                _ = builder.Append(string.Format("         File type: {0}\n", this._IsText ? "text" : "binary"))
                        .Append(string.Format("       Compression: {0}\n", this.CompressionMethod))
                        .Append(string.Format("        Compressed: 0x{0:X}\n", this.CompressedSize))
                        .Append(string.Format("      Uncompressed: 0x{0:X}\n", this.UncompressedSize))
                        .Append(string.Format("             CRC32: 0x{0:X8}\n", this._Crc32));
             }
 
-            builder.Append(string.Format("       Disk Number: {0}\n", this._diskNumber));
+            _ = builder.Append(string.Format("       Disk Number: {0}\n", this._diskNumber));
 
             if (this._RelativeOffsetOfLocalHeader > 0xFFFFFFFF)
             {
-                builder.Append(string.Format("   Relative Offset: 0x{0:X16}\n", this._RelativeOffsetOfLocalHeader));
+                _ = builder.Append(string.Format("   Relative Offset: 0x{0:X16}\n", this._RelativeOffsetOfLocalHeader));
             }
             else
             {
-                builder.Append(string.Format("   Relative Offset: 0x{0:X8}\n", this._RelativeOffsetOfLocalHeader));
+                _ = builder.Append(string.Format("   Relative Offset: 0x{0:X8}\n", this._RelativeOffsetOfLocalHeader));
             }
 
-            builder.Append(string.Format("         Bit Field: 0x{0:X4}\n", this._BitField))
+            _ = builder.Append(string.Format("         Bit Field: 0x{0:X4}\n", this._BitField))
                    .Append(string.Format("        Encrypted?: {0}\n", this._sourceIsEncrypted))
                    .Append(string.Format("          Timeblob: 0x{0:X8}\n", this._TimeBlob))
                    .Append(string.Format("              Time: {0}\n", SharedUtilities.PackedToDateTime(this._TimeBlob)));
 
-            builder.Append(string.Format("         Is Zip64?: {0}\n", this._InputUsesZip64));
+            _ = builder.Append(string.Format("         Is Zip64?: {0}\n", this._InputUsesZip64));
 
             if (!string.IsNullOrEmpty(this._Comment))
             {
-                builder.Append(string.Format("           Comment: {0}\n", this._Comment));
+                _ = builder.Append(string.Format("           Comment: {0}\n", this._Comment));
             }
 
-            builder.Append("\n");
+            _ = builder.Append("\n");
 
             return builder.ToString();
         }

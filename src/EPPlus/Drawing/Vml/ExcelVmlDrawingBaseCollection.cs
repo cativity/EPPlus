@@ -47,7 +47,6 @@ public class ExcelVmlDrawingBaseCollection
 
         if (uri == null)
         {
-            int id = this._ws.SheetId;
         }
         else
         {

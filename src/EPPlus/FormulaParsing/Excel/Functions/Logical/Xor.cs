@@ -41,7 +41,7 @@ internal class Xor : ExcelFunction
     public override CompileResult Execute(IEnumerable<FunctionArgument> arguments, ParsingContext context)
     {
         ValidateArguments(arguments, 1);
-        List<bool>? results = new List<bool>();
+        //_ = new List<bool>();
         IEnumerable<ExcelDoubleCellValue>? values = this._converter.ConvertArgsIncludingOtherTypes(arguments, false);
         int nTrue = 0;
 

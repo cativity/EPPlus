@@ -107,7 +107,7 @@ public class ExcelDxfNumberFormat : DxfStyleBase
             this.NumFmtID = this._styles._nextDfxNumFmtID++;
         }
 
-        helper.CreateNode(path);
+        _ = helper.CreateNode(path);
         SetValue(helper, path + "/@numFmtId", this.NumFmtID);
         SetValue(helper, path + "/@formatCode", this.Format);
     }

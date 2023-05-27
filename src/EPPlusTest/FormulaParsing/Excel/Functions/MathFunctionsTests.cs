@@ -54,7 +54,7 @@ public class MathFunctionsTests
     public void Initialize()
     {
         this._parsingContext = ParsingContext.Create();
-        this._parsingContext.Scopes.NewScope(RangeAddress.Empty);
+        _ = this._parsingContext.Scopes.NewScope(RangeAddress.Empty);
     }
 
     [TestMethod]
@@ -458,7 +458,7 @@ public class MathFunctionsTests
     {
         // This unit test was supplied via Github issue 
         using ExcelPackage? p = new ExcelPackage();
-        p.Workbook.Worksheets.Add("first");
+        _ = p.Workbook.Worksheets.Add("first");
 
         ExcelWorksheet? sheet = p.Workbook.Worksheets.First();
 
@@ -772,7 +772,7 @@ public class MathFunctionsTests
 
         try
         {
-            func.Execute(args, this._parsingContext);
+            _ = func.Execute(args, this._parsingContext);
         }
         catch (ExcelErrorValueException e)
         {
@@ -807,7 +807,7 @@ public class MathFunctionsTests
     {
         AverageA? func = new AverageA();
         IEnumerable<FunctionArgument>? args = FunctionsHelper.CreateArgs(4d, 2d, 5d, 2d, "ABC");
-        CompileResult? result = func.Execute(args, this._parsingContext);
+        _ = func.Execute(args, this._parsingContext);
     }
 
     [TestMethod]

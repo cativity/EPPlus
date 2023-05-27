@@ -83,7 +83,7 @@ public class DataValidationTests : ValidationTestBase
 
         ExcelDataValidationCollection? validations = pck.Workbook.Worksheets[0].DataValidations;
 
-        validations.AddIntegerValidation("C8");
+        _ = validations.AddIntegerValidation("C8");
     }
 
     [TestMethod]
@@ -93,7 +93,7 @@ public class DataValidationTests : ValidationTestBase
 
         ExcelDataValidationCollection? validations = pck.Workbook.Worksheets[0].DataValidations;
 
-        validations.AddIntegerValidation("Z8");
+        _ = validations.AddIntegerValidation("Z8");
     }
 
     [TestMethod]
@@ -116,7 +116,7 @@ public class DataValidationTests : ValidationTestBase
                 {
                     if (!validations._validationsRD.Exists(addresses[j]._fromRow, addresses[j]._fromCol, addresses[j]._toRow, addresses[j]._toCol))
                     {
-                        sb.Append(addresses[j] + ",");
+                        _ = sb.Append(addresses[j] + ",");
                     }
                 }
             }
@@ -127,7 +127,7 @@ public class DataValidationTests : ValidationTestBase
                                                        validations[i].Address._toRow,
                                                        validations[i].Address._toCol))
                 {
-                    sb.Append(validations[i].Address + ",");
+                    _ = sb.Append(validations[i].Address + ",");
                 }
             }
         }
@@ -158,7 +158,7 @@ public class DataValidationTests : ValidationTestBase
                 {
                     if (!validations._validationsRD.Exists(addresses[j]._fromRow, addresses[j]._fromCol, addresses[j]._toRow, addresses[j]._toCol))
                     {
-                        sb.Append(addresses[i]);
+                        _ = sb.Append(addresses[i]);
                     }
                 }
             }
@@ -169,7 +169,7 @@ public class DataValidationTests : ValidationTestBase
                                                        validations[i].Address._toRow,
                                                        validations[i].Address._toCol))
                 {
-                    sb.Append(validations[i].Address);
+                    _ = sb.Append(validations[i].Address);
                 }
             }
         }
@@ -183,7 +183,7 @@ public class DataValidationTests : ValidationTestBase
         ExcelPackage? P = new ExcelPackage(new MemoryStream());
         ExcelWorksheet? sheet = P.Workbook.Worksheets.Add("NewSheet");
 
-        sheet.DataValidations.AddAnyValidation("A1");
+        _ = sheet.DataValidations.AddAnyValidation("A1");
         IExcelDataValidationInt? intDV = sheet.DataValidations.AddIntegerValidation("A2");
         intDV.Formula.Value = 1;
         intDV.Formula2.Value = 1;
@@ -289,7 +289,7 @@ public class DataValidationTests : ValidationTestBase
     public void DataValidations_ShouldWriteReadError()
     {
         ExcelPackage? package = new ExcelPackage(new MemoryStream());
-        string? validation = CreateSheetWithIntegerValidation(package).Error = "Error";
+        CreateSheetWithIntegerValidation(package).Error = "Error";
 
         Assert.AreEqual("Error", ReadIntValidation(package).Error);
     }
@@ -771,7 +771,7 @@ public class DataValidationTests : ValidationTestBase
     {
         using ExcelPackage? pck = OpenPackage("DataValidationsUserClearTest.xlsx", true);
         ExcelWorksheet? myWS = pck.Workbook.Worksheets.Add("MyWorksheet");
-        ExcelWorksheet? yourWS = pck.Workbook.Worksheets.Add("YourWorksheet");
+        _ = pck.Workbook.Worksheets.Add("YourWorksheet");
 
         IExcelDataValidationInt? validation = myWS.DataValidations.AddTextLengthValidation("A1:C5");
 
@@ -795,7 +795,7 @@ public class DataValidationTests : ValidationTestBase
     {
         using ExcelPackage? pck = OpenPackage("DataValidationsUserClearTest.xlsx", true);
         ExcelWorksheet? myWS = pck.Workbook.Worksheets.Add("MyWorksheet");
-        ExcelWorksheet? yourWS = pck.Workbook.Worksheets.Add("YourWorksheet");
+        _ = pck.Workbook.Worksheets.Add("YourWorksheet");
 
         IExcelDataValidationInt? validation = myWS.DataValidations.AddTextLengthValidation("A1:E30");
 

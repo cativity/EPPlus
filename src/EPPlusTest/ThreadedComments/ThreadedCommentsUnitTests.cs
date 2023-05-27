@@ -18,7 +18,7 @@ public class ThreadedCommentsUnitTests
     {
         using ExcelPackage? package = new ExcelPackage();
         ExcelWorksheet? sheet = package.Workbook.Worksheets.Add("test");
-        ExcelThreadedCommentPerson? person = sheet.ThreadedComments.Persons.Add("John Doe");
+        _ = sheet.ThreadedComments.Persons.Add("John Doe");
         ExcelThreadedCommentPerson? person2 = sheet.ThreadedComments.Persons.Add("John Does brother");
         Assert.AreEqual(2, package.Workbook.ThreadedCommentPersons.Count);
         package.Workbook.ThreadedCommentPersons.Remove(person2);
@@ -32,7 +32,7 @@ public class ThreadedCommentsUnitTests
         using ExcelPackage? package = new ExcelPackage();
         ExcelWorksheet? sheet = package.Workbook.Worksheets.Add("test");
         ExcelThreadedCommentPerson? person = sheet.ThreadedComments.Persons.Add("John Doe");
-        sheet.Cells["A1"].AddThreadedComment().AddComment(person.Id, "Hello");
+        _ = sheet.Cells["A1"].AddThreadedComment().AddComment(person.Id, "Hello");
 
         Assert.AreEqual(1, sheet.ThreadedComments.Count);
         Assert.AreEqual(1, sheet.Cells["A1"].ThreadedComment.Comments.Count);
@@ -45,7 +45,7 @@ public class ThreadedCommentsUnitTests
         ExcelWorksheet? sheet = package.Workbook.Worksheets.Add("test");
         ExcelThreadedCommentPerson? person = sheet.ThreadedComments.Persons.Add("John Doe");
         ExcelThreadedCommentThread? thread = sheet.Cells["A1"].AddThreadedComment();
-        thread.AddComment(person.Id, "Hello");
+        _ = thread.AddComment(person.Id, "Hello");
 
         Assert.AreEqual(1, sheet.ThreadedComments.Count);
         Assert.AreEqual(1, sheet.Cells["A1"].ThreadedComment.Comments.Count);
@@ -69,7 +69,7 @@ public class ThreadedCommentsUnitTests
         ExcelWorksheet? sheet = package.Workbook.Worksheets.Add("test");
         ExcelThreadedCommentPerson? person = sheet.ThreadedComments.Persons.Add("John Doe");
         ExcelThreadedCommentThread? thread = sheet.Cells["A1"].AddThreadedComment();
-        ExcelThreadedComment? c1 = thread.AddComment(person.Id, "Hello");
+        _ = thread.AddComment(person.Id, "Hello");
         ExcelThreadedComment? c2 = thread.AddComment(person.Id, "Hello again");
         Assert.AreEqual(2, thread.Comments.Count);
 
@@ -86,7 +86,7 @@ public class ThreadedCommentsUnitTests
         ExcelThreadedCommentPerson? person = sheet.ThreadedComments.Persons.Add("John Doe");
         ExcelThreadedCommentPerson? person2 = sheet.ThreadedComments.Persons.Add("Jane Doe");
         ExcelThreadedCommentThread? thread = sheet.Cells["A1"].AddThreadedComment();
-        ExcelThreadedComment? c1 = thread.AddComment(person2.Id, "Hello");
+        _ = thread.AddComment(person2.Id, "Hello");
         ExcelThreadedComment? c2 = thread.AddComment(person.Id, "Hello {0}", person2);
 
         Assert.AreEqual(2, thread.Comments.Count);
@@ -102,7 +102,7 @@ public class ThreadedCommentsUnitTests
         ExcelThreadedCommentPerson? person = sheet.ThreadedComments.Persons.Add("John Doe");
         ExcelThreadedCommentPerson? person2 = sheet.ThreadedComments.Persons.Add("Jane Doe");
         ExcelThreadedCommentThread? thread = sheet.Cells["A1"].AddThreadedComment();
-        ExcelThreadedComment? c1 = thread.AddComment(person2.Id, "Hello");
+        _ = thread.AddComment(person2.Id, "Hello");
         ExcelThreadedComment? c2 = thread.AddComment(person.Id, "Hello {0}, how are you?", person2);
 
         Assert.AreEqual(2, thread.Comments.Count);

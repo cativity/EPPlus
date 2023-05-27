@@ -50,7 +50,7 @@ internal class WorkItem
         int n = size + (((size / 32768) + 1) * 5 * 2);
         this.compressed = new byte[n];
         this.compressor = new ZlibCodec();
-        this.compressor.InitializeDeflate(compressLevel, false);
+        _ = this.compressor.InitializeDeflate(compressLevel, false);
         this.compressor.OutputBuffer = this.compressed;
         this.compressor.InputBuffer = this.buffer;
         this.index = ix;
@@ -667,7 +667,7 @@ public class ParallelDeflateOutputStream : Stream
             this.TraceOutput(TraceBits.EmitDone, "Emit     done     flush");
         }
 
-        compressor.EndDeflate();
+        _ = compressor.EndDeflate();
 
         this._Crc32 = this._runningCrc.Crc32Result;
     }
@@ -886,7 +886,7 @@ public class ParallelDeflateOutputStream : Stream
 
         if (doAll || mustWait)
         {
-            this._newlyCompressedBlob.WaitOne();
+            _ = this._newlyCompressedBlob.WaitOne();
         }
 
         do
@@ -943,7 +943,7 @@ public class ParallelDeflateOutputStream : Stream
                                 // We went around the list once.
                                 // None of the items in the list is the one we want.
                                 // Now wait for a compressor to signal again.
-                                this._newlyCompressedBlob.WaitOne();
+                                _ = this._newlyCompressedBlob.WaitOne();
                                 firstSkip = -1;
                             }
                             else if (firstSkip == -1)
@@ -1173,14 +1173,13 @@ public class ParallelDeflateOutputStream : Stream
 
         try
         {
-            int myItem = workitem.index;
             Crc.CRC32 crc = new Crc.CRC32();
 
             // calc CRC on the buffer
             crc.SlurpBlock(workitem.buffer, 0, workitem.inputBytesAvailable);
 
             // deflate it
-            DeflateOneSegment(workitem);
+            _ = DeflateOneSegment(workitem);
 
             // update status
             workitem.crc = crc.Crc32Result;
@@ -1204,7 +1203,7 @@ public class ParallelDeflateOutputStream : Stream
                 this._toWrite.Enqueue(workitem.index);
             }
 
-            this._newlyCompressedBlob.Set();
+            _ = this._newlyCompressedBlob.Set();
         }
         catch (Exception exc1)
         {
@@ -1233,11 +1232,11 @@ public class ParallelDeflateOutputStream : Stream
 
         do
         {
-            compressor.Deflate(FlushType.None);
+            _ = compressor.Deflate(FlushType.None);
         } while (compressor.AvailableBytesIn > 0 || compressor.AvailableBytesOut == 0);
 
         // step 2: flush (sync)
-        int rc = compressor.Deflate(FlushType.Sync);
+        _ = compressor.Deflate(FlushType.Sync);
 
         workitem.compressedBytesAvailable = (int)compressor.TotalBytesOut;
 

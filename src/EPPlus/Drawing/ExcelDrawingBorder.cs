@@ -98,7 +98,7 @@ public class ExcelDrawingBorder : XmlHelper
         set
         {
             this.InitSpPr();
-            this.CreateNode(this._linePath, false);
+            _ = this.CreateNode(this._linePath, false);
 
             if (value.HasValue)
             {
@@ -218,19 +218,19 @@ public class ExcelDrawingBorder : XmlHelper
 
             if (value == eLineJoin.Bevel)
             {
-                this.CreateNode(this._bevelPath);
+                _ = this.CreateNode(this._bevelPath);
                 this.DeleteNode(this._roundPath);
                 this.DeleteNode(this._miterPath);
             }
             else if (value == eLineJoin.Round)
             {
-                this.CreateNode(this._roundPath);
+                _ = this.CreateNode(this._roundPath);
                 this.DeleteNode(this._bevelPath);
                 this.DeleteNode(this._miterPath);
             }
             else
             {
-                this.CreateNode(this._miterPath);
+                _ = this.CreateNode(this._miterPath);
                 this.DeleteNode(this._roundPath);
                 this.DeleteNode(this._bevelPath);
             }
@@ -305,12 +305,12 @@ public class ExcelDrawingBorder : XmlHelper
 
         if (lineElement == null)
         {
-            this.CreateNode(this._linePath);
+            _ = this.CreateNode(this._linePath);
         }
 
         foreach (XmlAttribute a in copyFromLineElement.Attributes)
         {
-            lineElement.SetAttribute(a.Name, a.NamespaceURI, a.Value);
+            _ = lineElement.SetAttribute(a.Name, a.NamespaceURI, a.Value);
         }
 
         lineElement.InnerXml = copyFromLineElement.InnerXml;

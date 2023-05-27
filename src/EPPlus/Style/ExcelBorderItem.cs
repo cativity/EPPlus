@@ -39,7 +39,7 @@ public sealed class ExcelBorderItem : StyleBase
     public ExcelBorderStyle Style
     {
         get { return this.GetSource().Style; }
-        set { this._ChangedEvent(this, new StyleChangeEventArgs(this._cls, eStyleProperty.Style, value, this._positionID, this._address)); }
+        set { _ = this._ChangedEvent(this, new StyleChangeEventArgs(this._cls, eStyleProperty.Style, value, this._positionID, this._address)); }
     }
 
     ExcelColor _color = null;

@@ -101,7 +101,7 @@ public class WorkSheetTest : TestBase
     [TestMethod]
     public void AddChartSheet()
     {
-        ExcelChartsheet? chart = _pck.Workbook.Worksheets.AddChart("ChartSheet", eChartType.ColumnClustered);
+        _ = _pck.Workbook.Worksheets.AddChart("ChartSheet", eChartType.ColumnClustered);
 
         foreach (ExcelNamedRange? _n in _pck.Workbook.Names)
         {
@@ -462,7 +462,7 @@ public class WorkSheetTest : TestBase
         ws.Cells["D30"].Style.Font.Bold = true;
         ws.Cells["D30"].Style.HorizontalAlignment = ExcelHorizontalAlignment.Right;
 
-        ws.Workbook.Names.Add("TestName", ws.Cells["B30:E30"]);
+        _ = ws.Workbook.Names.Add("TestName", ws.Cells["B30:E30"]);
         ws.Workbook.Names["TestName"].Style.Font.Color.SetColor(Color.Red);
 
         ws.Workbook.Names["TestName"].Offset(1, 0).Value = "Offset test 1";
@@ -504,7 +504,7 @@ public class WorkSheetTest : TestBase
         ws.Cells["E24"].Value = 0;
         Assert.AreEqual(ws.Cells["E24"].Text, "0");
         ws.Cells["F7"].Style.Font.UnderLine = false;
-        ws.Names.Add("SheetName", ws.Cells["A1:A2"]);
+        _ = ws.Names.Add("SheetName", ws.Cells["A1:A2"]);
         ws.View.FreezePanes(3, 5);
 
         foreach (ExcelRangeBase cell in ws.Cells["A1"])
@@ -688,8 +688,6 @@ public class WorkSheetTest : TestBase
         ws.Protection.IsProtected = true;
         ws.Protection.SetPassword("Password");
 
-        ExcelRange? range = ws.Cells["X2:Z100"];
-
         ws.PrinterSettings.PrintArea = null;
         ws.PrinterSettings.PrintArea = ws.Cells["X2:Z99"];
         ws.PrinterSettings.PrintArea = null;
@@ -763,7 +761,7 @@ public class WorkSheetTest : TestBase
         r2 = rs.Add("Red");
         r2.Color = Color.Red;
 
-        ws.Cells["G1"].RichText.Add("Room 02 & 03");
+        _ = ws.Cells["G1"].RichText.Add("Room 02 & 03");
         ws.Cells["G2"].RichText.Text = "Room 02 & 03";
 
         ws = _pck.Workbook.Worksheets.Add("RichText2");
@@ -772,10 +770,10 @@ public class WorkSheetTest : TestBase
 
         r1 = ws.Cells["G3"].RichText.Add("Test");
         r1.Bold = true;
-        ws.Cells["G3"].RichText.Add(" a new t");
+        _ = ws.Cells["G3"].RichText.Add(" a new t");
         ws.Cells["G3"].RichText[1].Bold = false;
 
-        ws.Cells["G3"].RichText.Add("");
+        _ = ws.Cells["G3"].RichText.Add("");
 
         //Set printersettings
         ws.PrinterSettings.RepeatColumns = ws.Cells["A:B"];
@@ -795,7 +793,7 @@ public class WorkSheetTest : TestBase
         ExcelComment? comment = ws.Comments.Add(ws.Cells["C3"], "Jan Källman\r\nAuthor\r\n", "JK");
         comment.RichText[0].Bold = true;
         comment.RichText[0].PreserveSpace = true;
-        ExcelRichText? rt = comment.RichText.Add("Test comment");
+        _ = comment.RichText.Add("Test comment");
         comment.VerticalAlignment = eTextAlignVerticalVml.Center;
         comment = ws.Comments.Add(ws.Cells["A2"], "Jan Källman\r\nAuthor\r\n1", "JK");
 
@@ -817,9 +815,9 @@ public class WorkSheetTest : TestBase
         //comment.LineWidth = (Single)2.5;
         //rt.Color = Color.Red;
 
-        ExcelComment? rt2 = ws.Cells["B2"]
-                              .AddComment("Range Added Comment test test test test test test test test test test testtesttesttesttesttesttesttesttesttesttest",
-                                          "Jan Källman");
+        _ = ws.Cells["B2"]
+          .AddComment("Range Added Comment test test test test test test test test test test testtesttesttesttesttesttesttesttesttesttest",
+                      "Jan Källman");
 
         ws.Cells["c3"].Comment.AutoFit = true;
     }
@@ -874,13 +872,13 @@ public class WorkSheetTest : TestBase
     {
         using ExcelPackage? pck = OpenPackage("WorksheetRead.xlsx");
         ExcelWorksheet? ws = TryGetWorksheet(pck, "Address");
-        ExcelWorksheet? wsCopy = pck.Workbook.Worksheets.Add("Copied Address", ws);
+        _ = pck.Workbook.Worksheets.Add("Copied Address", ws);
 
         ws = TryGetWorksheet(pck, "Comment");
         ws = pck.Workbook.Worksheets.Add("Copied Comment", ws);
 
         ExcelPackage pck2 = new ExcelPackage();
-        pck2.Workbook.Worksheets.Add("Copy From other pck", pck.Workbook.Worksheets["Address"]);
+        _ = pck2.Workbook.Worksheets.Add("Copy From other pck", pck.Workbook.Worksheets["Address"]);
         pck2.SaveAs(new FileInfo(_worksheetPath + "copy.xlsx"));
         pck2.Dispose();
         pck2 = null;
@@ -902,17 +900,17 @@ public class WorkSheetTest : TestBase
         list.Add(new TestDTO() { Id = 8, Name = "Item8", Boolean = true, Date = new DateTime(2018, 12, 31), dto = null, NameVar = "Field 8" });
         list.Add(new TestDTO() { Id = 9, Name = "Item9", Boolean = false, Date = new DateTime(2010, 2, 1), dto = null, NameVar = "Field 9" });
 
-        ws.Cells["A1"].LoadFromCollection(list, true);
-        ws.Cells["A30"].LoadFromCollection(list, true, TableStyles.Medium9, BindingFlags.Instance | BindingFlags.Instance, typeof(TestDTO).GetFields());
+        _ = ws.Cells["A1"].LoadFromCollection(list, true);
+        _ = ws.Cells["A30"].LoadFromCollection(list, true, TableStyles.Medium9, BindingFlags.Instance | BindingFlags.Instance, typeof(TestDTO).GetFields());
 
-        ws.Cells["A45"]
+        _ = ws.Cells["A45"]
           .LoadFromCollection(list,
                               true,
                               TableStyles.Light1,
                               BindingFlags.Instance | BindingFlags.Instance,
                               new MemberInfo[] { typeof(TestDTO).GetMethod("GetNameID"), typeof(TestDTO).GetField("NameVar") });
 
-        ws.Cells["J1"]
+        _ = ws.Cells["J1"]
           .LoadFromCollection(from l in list where l.Boolean orderby l.Date select new { Name = l.Name, Id = l.Id, Date = l.Date, NameVariable = l.NameVar },
                               true,
                               TableStyles.Dark4);
@@ -945,10 +943,10 @@ public class WorkSheetTest : TestBase
             InheritedProp = "Inherited 2"
         });
 
-        ws.Cells["A1"].LoadFromCollection(inhList, true);
+        _ = ws.Cells["A1"].LoadFromCollection(inhList, true);
         Assert.AreEqual("Inherited 2", ws.Cells[3, 1].Value);
 
-        ws.Cells["A5"]
+        _ = ws.Cells["A5"]
           .LoadFromCollection(inhList,
                               true,
                               TableStyles.None,
@@ -966,22 +964,22 @@ public class WorkSheetTest : TestBase
 
         //List<int> list = new List<int>(0);
 
-        ws.Cells["A1"].LoadFromCollection(listDTO, true);
-        ws.Cells["A5"].LoadFromCollection(listDTO, true, TableStyles.Medium9, BindingFlags.Instance | BindingFlags.Instance, typeof(TestDTO).GetFields());
+        _ = ws.Cells["A1"].LoadFromCollection(listDTO, true);
+        _ = ws.Cells["A5"].LoadFromCollection(listDTO, true, TableStyles.Medium9, BindingFlags.Instance | BindingFlags.Instance, typeof(TestDTO).GetFields());
 
-        ws.Cells["A10"]
+        _ = ws.Cells["A10"]
           .LoadFromCollection(listDTO,
                               true,
                               TableStyles.Light1,
                               BindingFlags.Instance | BindingFlags.Instance,
                               new MemberInfo[] { typeof(TestDTO).GetMethod("GetNameID"), typeof(TestDTO).GetField("NameVar") });
 
-        ws.Cells["A15"]
+        _ = ws.Cells["A15"]
           .LoadFromCollection(from l in listDTO where l.Boolean orderby l.Date select new { Name = l.Name, Id = l.Id, Date = l.Date, NameVariable = l.NameVar },
                               true,
                               TableStyles.Dark4);
 
-        ws.Cells["A20"].LoadFromCollection(listDTO, false);
+        _ = ws.Cells["A20"].LoadFromCollection(listDTO, false);
     }
 
     [TestMethod]
@@ -1132,22 +1130,22 @@ public class WorkSheetTest : TestBase
     public void PivotTableTest()
     {
         ExcelWorksheet? ws = _pck.Workbook.Worksheets.Add("PivotTable");
-        ws.Cells["A1"].LoadFromArrays(new object[][] { new[] { "A&B", "B\"", "C'", "<D>" } });
+        _ = ws.Cells["A1"].LoadFromArrays(new object[][] { new[] { "A&B", "B\"", "C'", "<D>" } });
 
-        ws.Cells["A2"]
+        _ = ws.Cells["A2"]
           .LoadFromArrays(new object[][]
           {
               new object[] { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9 }, new object[] { 9, 8, 7, 6, 5, 4, 3, 2, 1, 0 },
               new object[] { 1, 1, 2, 3, 5, 8, 13, 21, 34, 55 }
           });
 
-        ExcelTable? table = ws.Tables.Add(ws.Cells["A1:D4"], "PivotData");
+        _ = ws.Tables.Add(ws.Cells["A1:D4"], "PivotData");
         ExcelPivotTable? pt = ws.PivotTables.Add(ws.Cells["G20"], ws.Cells["A1:D4"], "PivotTable1");
-        pt.ColumnFields.Add(pt.Fields[1]);
-        pt.DataFields.Add(pt.Fields[3]);
+        _ = pt.ColumnFields.Add(pt.Fields[1]);
+        _ = pt.DataFields.Add(pt.Fields[3]);
         Assert.AreEqual("PivotStyleMedium9", ws.PivotTables["PivotTable1"].StyleName);
 
-        _pck.Workbook.Worksheets.AddChart("PivotChartWorksheet", eChartType.Line, pt);
+        _ = _pck.Workbook.Worksheets.AddChart("PivotChartWorksheet", eChartType.Line, pt);
     }
 
     [TestMethod]
@@ -1212,8 +1210,8 @@ public class WorkSheetTest : TestBase
     public void CopyTable()
     {
         using ExcelPackage? pck = OpenPackage("WorksheetRead.xlsx");
-        TryGetWorksheet(pck, "File4");
-        pck.Workbook.Worksheets.Copy("File4", "Copied table");
+        _ = TryGetWorksheet(pck, "File4");
+        _ = pck.Workbook.Worksheets.Copy("File4", "Copied table");
     }
 
     [TestMethod]
@@ -1256,9 +1254,9 @@ public class WorkSheetTest : TestBase
     {
         using ExcelPackage? pck = OpenPackage("worksheetRead.xlsx");
         ExcelWorksheet? ws = TryGetWorksheet(pck, "Pivot-Group Date");
-        pck.Workbook.Worksheets.Copy("Pivot-Group Date", "Copied Pivottable 1");
+        _ = pck.Workbook.Worksheets.Copy("Pivot-Group Date", "Copied Pivottable 1");
         ws = TryGetWorksheet(pck, "Pivot-Group Number");
-        pck.Workbook.Worksheets.Copy("Pivot-Group Number", "Copied Pivottable 2");
+        _ = pck.Workbook.Worksheets.Copy("Pivot-Group Number", "Copied Pivottable 2");
 
         SaveWorkbook("WorksheetCopyPivot.xlsx", pck);
     }
@@ -1283,7 +1281,7 @@ public class WorkSheetTest : TestBase
         ws.Cells["A50:A59"].CreateArrayFormula("C50+D50");
         ws.Cells["A1"].Value = "test";
         ws.Cells["A15"].Value = "Värde";
-        ws.Cells["C12"].AddComment("Test", "JJOD");
+        _ = ws.Cells["C12"].AddComment("Test", "JJOD");
         ws.Cells["D12:I12"].Merge = true;
         ws.Cells["D12:I12"].Style.HorizontalAlignment = ExcelHorizontalAlignment.Left;
         ws.Cells["D12:I12"].Style.VerticalAlignment = ExcelVerticalAlignment.Top;
@@ -1298,18 +1296,18 @@ public class WorkSheetTest : TestBase
     public void DefinedName()
     {
         ExcelWorksheet? ws = _pck.Workbook.Worksheets.Add("Names");
-        ws.Names.Add("RefError", ws.Cells["#REF!"]);
+        _ = ws.Names.Add("RefError", ws.Cells["#REF!"]);
 
         ws.Cells["A1"].Value = "Test";
         ws.Cells["A1"].Style.Font.Size = 8.5F;
 
-        ws.Names.Add("Address", ws.Cells["A2:A3"]);
+        _ = ws.Names.Add("Address", ws.Cells["A2:A3"]);
         ws.Cells["Address"].Value = 1;
-        ws.Names.AddValue("Value", 5);
-        ws.Names.Add("FullRow", ws.Cells["2:2"]);
-        ws.Names.Add("FullCol", ws.Cells["A:A"]);
+        _ = ws.Names.AddValue("Value", 5);
+        _ = ws.Names.Add("FullRow", ws.Cells["2:2"]);
+        _ = ws.Names.Add("FullCol", ws.Cells["A:A"]);
 
-        ws.Names.AddFormula("Formula", "Names!A2+Names!A3+Names!Value");
+        _ = ws.Names.AddFormula("Formula", "Names!A2+Names!A3+Names!Value");
     }
 
     [TestMethod]
@@ -1379,10 +1377,10 @@ public class WorkSheetTest : TestBase
     private static DataTable GetDataTable()
     {
         DataTable? dt = new DataTable();
-        dt.Columns.Add("String", typeof(string));
-        dt.Columns.Add("Int", typeof(int));
-        dt.Columns.Add("Bool", typeof(bool));
-        dt.Columns.Add("Double", typeof(double));
+        _ = dt.Columns.Add("String", typeof(string));
+        _ = dt.Columns.Add("Int", typeof(int));
+        _ = dt.Columns.Add("Bool", typeof(bool));
+        _ = dt.Columns.Add("Double", typeof(double));
 
         DataRow? dr = dt.NewRow();
         dr[0] = "Row1";
@@ -1412,10 +1410,10 @@ public class WorkSheetTest : TestBase
 
         ExcelWorksheet? ws = _pck.Workbook.Worksheets.Add("Loaded DataTable");
         DataTable? dt = new DataTable();
-        dt.Columns.Add("String", typeof(string));
-        dt.Columns.Add("Int", typeof(int));
-        dt.Columns.Add("Bool", typeof(bool));
-        dt.Columns.Add("Double", typeof(double));
+        _ = dt.Columns.Add("String", typeof(string));
+        _ = dt.Columns.Add("Int", typeof(int));
+        _ = dt.Columns.Add("Bool", typeof(bool));
+        _ = dt.Columns.Add("Double", typeof(double));
 
         DataRow? dr = dt.NewRow();
         dr[0] = "Row1";
@@ -1472,7 +1470,7 @@ public class WorkSheetTest : TestBase
         ExcelPackage? package = new ExcelPackage();
         ExcelWorksheet? ws = package.Workbook.Worksheets.Add("Loaded Text");
 
-        ws.Cells["A1"]
+        _ = ws.Cells["A1"]
           .LoadFromText("\"text with eol,\r\n in a cell\",\"other value\"", new ExcelTextFormat { TextQualifier = '"', EOL = ",\r\n", Delimiter = ',' });
     }
 
@@ -1485,7 +1483,7 @@ public class WorkSheetTest : TestBase
 
         try
         {
-            ws.Cells["A1"].LoadFromText("\"text with eol,\r\n", new ExcelTextFormat { TextQualifier = '"', EOL = ",\r\n", Delimiter = ',' });
+            _ = ws.Cells["A1"].LoadFromText("\"text with eol,\r\n", new ExcelTextFormat { TextQualifier = '"', EOL = ",\r\n", Delimiter = ',' });
         }
         catch //(Exception e)
         {
@@ -1501,16 +1499,16 @@ public class WorkSheetTest : TestBase
     {
         ExcelWorksheet? ws = _pck.Workbook.Worksheets.Add("Loaded Text");
 
-        ws.Cells["A1"].LoadFromText("1.2");
-        ws.Cells["A2"].LoadFromText("1,\"Test av data\",\"12,2\",\"\"Test\"\"");
-        ws.Cells["A3"].LoadFromText("\"1,3\",\"Test av \"\"data\",\"12,2\",\"Test\"\"\"", new ExcelTextFormat() { TextQualifier = '"' });
-        ws.Cells["A4"].LoadFromText("\"1,3\",\"\",\"12,2\",\"Test\"\"\"", new ExcelTextFormat() { TextQualifier = '"' });
+        _ = ws.Cells["A1"].LoadFromText("1.2");
+        _ = ws.Cells["A2"].LoadFromText("1,\"Test av data\",\"12,2\",\"\"Test\"\"");
+        _ = ws.Cells["A3"].LoadFromText("\"1,3\",\"Test av \"\"data\",\"12,2\",\"Test\"\"\"", new ExcelTextFormat() { TextQualifier = '"' });
+        _ = ws.Cells["A4"].LoadFromText("\"1,3\",\"\",\"12,2\",\"Test\"\"\"", new ExcelTextFormat() { TextQualifier = '"' });
 
         ws = _pck.Workbook.Worksheets.Add("File1");
 
         if (File.Exists(@"c:\temp\csv\et1c1004.csv"))
         {
-            ws.Cells["A1"]
+            _ = ws.Cells["A1"]
               .LoadFromText(new FileInfo(@"c:\temp\csv\et1c1004.csv"), new ExcelTextFormat() { SkipLinesBeginning = 3, SkipLinesEnd = 1, EOL = "\n" });
         }
 
@@ -1518,7 +1516,7 @@ public class WorkSheetTest : TestBase
 
         if (File.Exists(@"c:\temp\csv\etiv2812.csv"))
         {
-            ws.Cells["A1"]
+            _ = ws.Cells["A1"]
               .LoadFromText(new FileInfo(@"c:\temp\csv\etiv2812.csv"), new ExcelTextFormat() { SkipLinesBeginning = 3, SkipLinesEnd = 1, EOL = "\n" });
         }
 
@@ -1526,12 +1524,12 @@ public class WorkSheetTest : TestBase
 
         if (File.Exists(@"c:\temp\csv\last_gics.txt"))
         {
-            ws.Cells["A1"].LoadFromText(new FileInfo(@"c:\temp\csv\last_gics.txt"), new ExcelTextFormat() { SkipLinesBeginning = 1, Delimiter = '|' });
+            _ = ws.Cells["A1"].LoadFromText(new FileInfo(@"c:\temp\csv\last_gics.txt"), new ExcelTextFormat() { SkipLinesBeginning = 1, Delimiter = '|' });
         }
 
         ws = _pck.Workbook.Worksheets.Add("File4");
 
-        ws.Cells["A1"].LoadFromText("1,\"Test\",\"\",\"\"\"\",3\r\n", new ExcelTextFormat() { TextQualifier = '\"' });
+        _ = ws.Cells["A1"].LoadFromText("1,\"Test\",\"\",\"\"\"\",3\r\n", new ExcelTextFormat() { TextQualifier = '\"' });
 
         ExcelNamedStyleXml? style = _pck.Workbook.Styles.CreateNamedStyle("RedStyle");
         style.Style.Fill.PatternType = ExcelFillStyle.Solid;
@@ -1587,9 +1585,9 @@ public class WorkSheetTest : TestBase
     {
         ExcelWorksheet? ws = _pck.Workbook.Worksheets.Add("backimg");
 
-        ws.BackgroundImage.Image.SetImage(Properties.Resources.Test1JpgByteArray, ePictureType.Jpg);
+        _ = ws.BackgroundImage.Image.SetImage(Properties.Resources.Test1JpgByteArray, ePictureType.Jpg);
         ws = _pck.Workbook.Worksheets.Add("backimg2");
-        ws.BackgroundImage.Image.SetImage(new MemoryStream(Properties.Resources.CodeEmfByteArray), ePictureType.Emf);
+        _ = ws.BackgroundImage.Image.SetImage(new MemoryStream(Properties.Resources.CodeEmfByteArray), ePictureType.Emf);
     }
 
     [TestMethod]
@@ -1597,7 +1595,7 @@ public class WorkSheetTest : TestBase
     {
         ExcelWorksheet? ws = _pck.Workbook.Worksheets.Add("Remove_BackImg");
 
-        ws.BackgroundImage.Image.SetImage(new MemoryStream(Properties.Resources.Png2ByteArray), ePictureType.Png);
+        _ = ws.BackgroundImage.Image.SetImage(new MemoryStream(Properties.Resources.Png2ByteArray), ePictureType.Png);
         Assert.AreEqual(ePictureType.Png, ws.BackgroundImage.Image.Type);
         Assert.IsNotNull(ws.BackgroundImage.Image.ImageBytes);
 
@@ -1615,7 +1613,7 @@ public class WorkSheetTest : TestBase
         ExcelImage? image = ws.BackgroundImage.Image.SetImage(new MemoryStream(Properties.Resources.Png3ByteArray), ePictureType.Png);
         Assert.AreEqual(ePictureType.Png, ws.BackgroundImage.Image.Type);
         Assert.IsNotNull(ws.BackgroundImage.Image.ImageBytes);
-        wsCopy.BackgroundImage.Image.SetImage(image);
+        _ = wsCopy.BackgroundImage.Image.SetImage(image);
 
         Assert.AreEqual(wsCopy.BackgroundImage.Image.Type, ws.BackgroundImage.Image.Type);
         Assert.AreEqual(wsCopy.BackgroundImage.Image.ImageBytes, ws.BackgroundImage.Image.ImageBytes);
@@ -1649,7 +1647,7 @@ public class WorkSheetTest : TestBase
         //img.Title = "DiskFile2";
         ws.Cells["A1:A400"].Value = 1;
 
-        _pck.Workbook.Worksheets.Copy(ws.Name, "Copied HeaderImage");
+        _ = _pck.Workbook.Worksheets.Copy(ws.Name, "Copied HeaderImage");
     }
 
     [TestMethod]
@@ -1740,7 +1738,7 @@ public class WorkSheetTest : TestBase
         ws = _pck.Workbook.Worksheets.Add("FullFills");
         ws.Cells.Style.Fill.Gradient.Left = 0.25;
         ws.Cells["A1"].Value = "test";
-        ws.Cells["A1"].RichText.Add("Test rt");
+        _ = ws.Cells["A1"].RichText.Add("Test rt");
         ws.Cells.AutoFilter = true;
         Assert.AreNotEqual(ws.Cells["A1:D5"].Value, null);
     }
@@ -1858,7 +1856,7 @@ public class WorkSheetTest : TestBase
         ws.Cells["I7"].Value = "12";
         ws.Cells["I8"].Value = "Test";
         ws.Cells["I9"].Value = "aa";
-        ws.Cells["I7"].AddComment("Comment", "Jan");
+        _ = ws.Cells["I7"].AddComment("Comment", "Jan");
 
         ws.Cells["I:I"].Sort(0, true);
         package.Save();

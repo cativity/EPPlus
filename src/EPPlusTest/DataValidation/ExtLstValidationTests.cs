@@ -53,7 +53,7 @@ public class ExtLstValidationTests : TestBase
     {
         using ExcelPackage package = new ExcelPackage(new MemoryStream());
         ExcelWorksheet? ws1 = package.Workbook.Worksheets.Add("ExtTest");
-        ExcelWorksheet? ws2 = package.Workbook.Worksheets.Add("ExternalAdresses");
+        _ = package.Workbook.Worksheets.Add("ExternalAdresses");
 
         IExcelDataValidationInt? validation = ws1.DataValidations.AddIntegerValidation("A1");
         validation.Operator = ExcelDataValidationOperator.equal;
@@ -88,8 +88,8 @@ public class ExtLstValidationTests : TestBase
     {
         ExcelPackage? package = new ExcelPackage(new MemoryStream());
 
-        package.Workbook.Worksheets.Add("extValidations");
-        package.Workbook.Worksheets.Add("extValidationTargets");
+        _ = package.Workbook.Worksheets.Add("extValidations");
+        _ = package.Workbook.Worksheets.Add("extValidationTargets");
 
         IExcelDataValidationInt? validation = package.Workbook.Worksheets[0].DataValidations.AddIntegerValidation("A1");
         validation.Operator = ExcelDataValidationOperator.equal;
@@ -225,7 +225,7 @@ public class ExtLstValidationTests : TestBase
     {
         using ExcelPackage? pck = OpenPackage("DataValidationLocalExtLst.xlsx", true);
         ExcelWorksheet? ws = pck.Workbook.Worksheets.Add("extLstTest");
-        ExcelWorksheet? extSheet = pck.Workbook.Worksheets.Add("extAddressSheet");
+        _ = pck.Workbook.Worksheets.Add("extAddressSheet");
 
         AddDataValidations(ref ws, false);
         AddDataValidations(ref ws, true, "extAddressSheet");
@@ -238,7 +238,7 @@ public class ExtLstValidationTests : TestBase
     {
         using ExcelPackage? pck = OpenPackage("DataValidationLocalExtLstMany.xlsx", true);
         ExcelWorksheet? ws = pck.Workbook.Worksheets.Add("extLstTest");
-        ExcelWorksheet? extSheet = pck.Workbook.Worksheets.Add("extAddressSheet");
+        _ = pck.Workbook.Worksheets.Add("extAddressSheet");
 
         AddDataValidations(ref ws, false);
         AddDataValidations(ref ws, true, "extAddressSheet", true);
@@ -251,7 +251,7 @@ public class ExtLstValidationTests : TestBase
     {
         using ExcelPackage? pck = OpenPackage("DataValidationLocalManyExtLst.xlsx", true);
         ExcelWorksheet? ws = pck.Workbook.Worksheets.Add("extLstTest");
-        ExcelWorksheet? extSheet = pck.Workbook.Worksheets.Add("extAddressSheet");
+        _ = pck.Workbook.Worksheets.Add("extAddressSheet");
 
         AddDataValidations(ref ws, false, "", true);
         AddDataValidations(ref ws, true, "extAddressSheet");
@@ -264,7 +264,7 @@ public class ExtLstValidationTests : TestBase
     {
         using ExcelPackage? pck = OpenPackage("DataValidationLocalManyExtLstMany.xlsx", true);
         ExcelWorksheet? ws = pck.Workbook.Worksheets.Add("extLstTest");
-        ExcelWorksheet? extSheet = pck.Workbook.Worksheets.Add("extAddressSheet");
+        _ = pck.Workbook.Worksheets.Add("extAddressSheet");
 
         AddDataValidations(ref ws, false, "", true);
         AddDataValidations(ref ws, true, "extAddressSheet", true);
@@ -291,7 +291,7 @@ public class ExtLstValidationTests : TestBase
     {
         using ExcelPackage? pck = OpenPackage("DataValidationExtLstSeperatedAddress.xlsx", true);
         ExcelWorksheet? ws = pck.Workbook.Worksheets.Add("extLstAddressTest");
-        ExcelWorksheet? ws2 = pck.Workbook.Worksheets.Add("external");
+        _ = pck.Workbook.Worksheets.Add("external");
 
         IExcelDataValidationDecimal? validation = ws.DataValidations.AddDecimalValidation("A1:A5 C5:C15 D13");
 
@@ -306,7 +306,7 @@ public class ExtLstValidationTests : TestBase
     {
         using ExcelPackage? pck = OpenPackage("DataValidationLocalExtSeperatedAddress.xlsx", true);
         ExcelWorksheet? ws = pck.Workbook.Worksheets.Add("extLstAddressTest");
-        ExcelWorksheet? ws2 = pck.Workbook.Worksheets.Add("external");
+        _ = pck.Workbook.Worksheets.Add("external");
 
         IExcelDataValidationDecimal? extValidation = ws.DataValidations.AddDecimalValidation("A1:A5 C5:C15 D13");
 
@@ -326,7 +326,7 @@ public class ExtLstValidationTests : TestBase
     {
         ExcelPackage? creationPackage = MakePackageWithExtLstIntValidation();
 
-        creationPackage.Workbook.Worksheets[0].ConditionalFormatting.AddDatabar(new ExcelAddress("A1:A5"), Color.DarkBlue);
+        _ = creationPackage.Workbook.Worksheets[0].ConditionalFormatting.AddDatabar(new ExcelAddress("A1:A5"), Color.DarkBlue);
 
         MemoryStream? stream = new MemoryStream();
         creationPackage.SaveAs(stream);
@@ -353,8 +353,8 @@ public class ExtLstValidationTests : TestBase
         decimalValidation.Formula.ExcelFormula = "sheet2!B1";
         decimalValidation.Formula2.ExcelFormula = "1.5";
 
-        creationPackage.Workbook.Worksheets[0].ConditionalFormatting.AddDatabar(new ExcelAddress("A1:A5"), Color.DarkBlue);
-        creationPackage.Workbook.Worksheets[0].ConditionalFormatting.AddDatabar(new ExcelAddress("A1:A5"), Color.Red);
+        _ = creationPackage.Workbook.Worksheets[0].ConditionalFormatting.AddDatabar(new ExcelAddress("A1:A5"), Color.DarkBlue);
+        _ = creationPackage.Workbook.Worksheets[0].ConditionalFormatting.AddDatabar(new ExcelAddress("A1:A5"), Color.Red);
 
         MemoryStream? stream = new MemoryStream();
         creationPackage.SaveAs(stream);
@@ -381,7 +381,7 @@ public class ExtLstValidationTests : TestBase
     {
         ExcelPackage? creationPackage = MakePackageWithExtLstIntValidation();
 
-        creationPackage.Workbook.Worksheets[0]
+        _ = creationPackage.Workbook.Worksheets[0]
                        .SparklineGroups.Add(OfficeOpenXml.Sparkline.eSparklineType.Line, new ExcelAddress("A1:A5"), new ExcelAddress("B1:B5"));
 
         MemoryStream? stream = new MemoryStream();
@@ -409,10 +409,10 @@ public class ExtLstValidationTests : TestBase
         decimalValidation.Formula.ExcelFormula = "sheet2!B1";
         decimalValidation.Formula2.ExcelFormula = "1.5";
 
-        creationPackage.Workbook.Worksheets[0]
+        _ = creationPackage.Workbook.Worksheets[0]
                        .SparklineGroups.Add(OfficeOpenXml.Sparkline.eSparklineType.Line, new ExcelAddress("A1:A5"), new ExcelAddress("B1:B5"));
 
-        creationPackage.Workbook.Worksheets[0]
+        _ = creationPackage.Workbook.Worksheets[0]
                        .SparklineGroups.Add(OfficeOpenXml.Sparkline.eSparklineType.Column, new ExcelAddress("C1:C5"), new ExcelAddress("D1:D5"));
 
         MemoryStream? stream = new MemoryStream();
@@ -440,10 +440,10 @@ public class ExtLstValidationTests : TestBase
     {
         ExcelPackage? creationPackage = MakePackageWithExtLstIntValidation();
 
-        creationPackage.Workbook.Worksheets[0]
+        _ = creationPackage.Workbook.Worksheets[0]
                        .SparklineGroups.Add(OfficeOpenXml.Sparkline.eSparklineType.Line, new ExcelAddress("A1:A5"), new ExcelAddress("B1:B5"));
 
-        creationPackage.Workbook.Worksheets[0].ConditionalFormatting.AddDatabar(new ExcelAddress("A1:A5"), Color.DarkBlue);
+        _ = creationPackage.Workbook.Worksheets[0].ConditionalFormatting.AddDatabar(new ExcelAddress("A1:A5"), Color.DarkBlue);
 
         MemoryStream? stream = new MemoryStream();
         creationPackage.SaveAs(stream);
@@ -465,14 +465,14 @@ public class ExtLstValidationTests : TestBase
     {
         ExcelPackage? creationPackage = MakePackageWithExtLstIntValidation();
 
-        creationPackage.Workbook.Worksheets[0]
+        _ = creationPackage.Workbook.Worksheets[0]
                        .SparklineGroups.Add(OfficeOpenXml.Sparkline.eSparklineType.Line, new ExcelAddress("A1:A5"), new ExcelAddress("B1:B5"));
 
-        creationPackage.Workbook.Worksheets[0]
+        _ = creationPackage.Workbook.Worksheets[0]
                        .SparklineGroups.Add(OfficeOpenXml.Sparkline.eSparklineType.Column, new ExcelAddress("C1:C5"), new ExcelAddress("D1:D5"));
 
-        creationPackage.Workbook.Worksheets[0].ConditionalFormatting.AddDatabar(new ExcelAddress("A1:A5"), Color.DarkBlue);
-        creationPackage.Workbook.Worksheets[0].ConditionalFormatting.AddDatabar(new ExcelAddress("A1:A5"), Color.Red);
+        _ = creationPackage.Workbook.Worksheets[0].ConditionalFormatting.AddDatabar(new ExcelAddress("A1:A5"), Color.DarkBlue);
+        _ = creationPackage.Workbook.Worksheets[0].ConditionalFormatting.AddDatabar(new ExcelAddress("A1:A5"), Color.Red);
 
         IExcelDataValidationDecimal? decimalValidation = creationPackage.Workbook.Worksheets[0].DataValidations.AddDecimalValidation("B1");
         decimalValidation.Operator = ExcelDataValidationOperator.between;

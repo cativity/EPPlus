@@ -166,7 +166,7 @@ public class PictureTests : TestBase
         ExcelWorkbook? wb = _pck.Workbook;
         wb.Styles.NamedStyles[0].Style.Font.Size = 6;
         ExcelWorksheet? ws = wb.Worksheets.Add("jpgCalibri6");
-        ExcelPicture? pic = ws.Drawings.AddPicture("jpgFile3", GetResourceFile("Test1.jpg"));
+        _ = ws.Drawings.AddPicture("jpgFile3", GetResourceFile("Test1.jpg"));
     }
 
     [TestMethod]
@@ -176,7 +176,7 @@ public class PictureTests : TestBase
         wb.Styles.NamedStyles[0].Style.Font.Name = "Broadway";
         wb.Styles.NamedStyles[0].Style.Font.Size = 8;
         ExcelWorksheet? ws = wb.Worksheets.Add("jpgBroadway8");
-        ExcelPicture? pic = ws.Drawings.AddPicture("jpgFile3", GetResourceFile("Test1.jpg"));
+        _ = ws.Drawings.AddPicture("jpgFile3", GetResourceFile("Test1.jpg"));
     }
 
     [TestMethod]
@@ -186,7 +186,7 @@ public class PictureTests : TestBase
         wb.Styles.NamedStyles[0].Style.Font.Name = "Broadway";
         wb.Styles.NamedStyles[0].Style.Font.Size = 16;
         ExcelWorksheet? ws = wb.Worksheets.Add("jpgBroadway16");
-        ExcelPicture? pic = ws.Drawings.AddPicture("jpgFile3", GetResourceFile("Test1.jpg"));
+        _ = ws.Drawings.AddPicture("jpgFile3", GetResourceFile("Test1.jpg"));
     }
 
     [TestMethod]
@@ -195,7 +195,7 @@ public class PictureTests : TestBase
         ExcelWorkbook? wb = _pck.Workbook;
         wb.Styles.NamedStyles[0].Style.Font.Size = 18;
         ExcelWorksheet? ws = wb.Worksheets.Add("jpgCalibri18");
-        ExcelPicture? pic = ws.Drawings.AddPicture("jpgFile2", GetResourceFile("Test1.jpg"));
+        _ = ws.Drawings.AddPicture("jpgFile2", GetResourceFile("Test1.jpg"));
     }
 
     #endregion

@@ -26,7 +26,7 @@ public class FinanceFunctionsTests
         this._package = new ExcelPackage();
         this._provider = new EpplusExcelDataProvider(this._package);
         this._parsingContext = ParsingContext.Create();
-        this._parsingContext.Scopes.NewScope(RangeAddress.Empty);
+        _ = this._parsingContext.Scopes.NewScope(RangeAddress.Empty);
         this._worksheet = this._package.Workbook.Worksheets.Add("testsheet");
     }
 
@@ -315,11 +315,11 @@ public class FinanceFunctionsTests
     public void TestWorksheet()
     {
         using ExcelPackage? package = new ExcelPackage();
-        package.Workbook.Worksheets.Add("$Unit");
+        _ = package.Workbook.Worksheets.Add("$Unit");
         ExcelWorksheet? sheet = package.Workbook.Worksheets["$Unit"];
         Assert.IsNotNull(sheet);
 
-        package.Workbook.Worksheets.Add("Unit1$");
+        _ = package.Workbook.Worksheets.Add("Unit1$");
         ExcelWorksheet? sheet2 = package.Workbook.Worksheets["Unit1$"];
         Assert.IsNotNull(sheet2);
     }

@@ -212,7 +212,7 @@ public abstract class ExcelSlicer<T> : ExcelDrawing
             this._xmlSource = null;
         }
 
-        this._slicerXmlHelper.TopNode.ParentNode.RemoveChild(this._slicerXmlHelper.TopNode);
+        _ = this._slicerXmlHelper.TopNode.ParentNode.RemoveChild(this._slicerXmlHelper.TopNode);
 
         this._ws.Workbook.RemoveSlicerCacheReference(this.Cache.CacheRel.Id, this.Cache.SourceType);
         this._ws.Workbook.Names.Remove(this.Name);

@@ -83,7 +83,7 @@ public class ExcelConditionalFormattingDataBar : ExcelConditionalFormattingRule,
             XmlNode? iconSetNode = this.CreateComplexNode(this.Node, ExcelConditionalFormattingConstants.Paths.DataBar);
 
             XmlElement? lowNode = iconSetNode.OwnerDocument.CreateElement(ExcelConditionalFormattingConstants.Paths.Cfvo, ExcelPackage.schemaMain);
-            iconSetNode.AppendChild(lowNode);
+            _ = iconSetNode.AppendChild(lowNode);
 
             this.LowValue = new ExcelConditionalFormattingIconDataBarValue(eExcelConditionalFormattingValueObjectType.Min,
                                                                            0,
@@ -96,7 +96,7 @@ public class ExcelConditionalFormattingDataBar : ExcelConditionalFormattingRule,
                                                                            namespaceManager);
 
             XmlElement? highNode = iconSetNode.OwnerDocument.CreateElement(ExcelConditionalFormattingConstants.Paths.Cfvo, ExcelPackage.schemaMain);
-            iconSetNode.AppendChild(highNode);
+            _ = iconSetNode.AppendChild(highNode);
 
             this.HighValue = new ExcelConditionalFormattingIconDataBarValue(eExcelConditionalFormattingValueObjectType.Max,
                                                                             0,

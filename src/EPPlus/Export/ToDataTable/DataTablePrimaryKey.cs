@@ -67,7 +67,7 @@ internal class DataTablePrimaryKey
             throw new InvalidOperationException("Invalid primary key name, no corresponding DataColumn: " + name);
         }
 
-        this._keyNames.Add(name);
+        _ = this._keyNames.Add(name);
     }
 
     internal IEnumerable<string> KeyNames => this._keyNames;

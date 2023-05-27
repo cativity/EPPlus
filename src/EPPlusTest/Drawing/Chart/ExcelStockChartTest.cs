@@ -64,7 +64,6 @@ public class ExcelStockChartTest : StockChartTestBase
     public void ReadStockVHLC()
     {
         using ExcelPackage? p = OpenTemplatePackage("StockVHLC.xlsx");
-        ExcelDrawing? c = p.Workbook.Worksheets[0].Drawings[0];
         SaveWorkbook("StockVHLCSaved.xlsx", p);
     }
 
@@ -220,7 +219,7 @@ public class ExcelStockChartTest : StockChartTestBase
 
         chart.SetPosition(2, 0, 15, 0);
         chart.SetSize(1600, 900);
-        chart.PlotArea.CreateDataTable();
+        _ = chart.PlotArea.CreateDataTable();
         Assert.AreEqual(eChartType.StockVOHLC, chart.ChartType);
         Assert.IsNotNull(chart.PlotArea.DataTable);
     }
@@ -242,7 +241,7 @@ public class ExcelStockChartTest : StockChartTestBase
         chart.StyleManager.SetChartStyle(OfficeOpenXml.Drawing.Chart.Style.ePresetChartStyle.StockChartStyle9);
         chart.SetPosition(2, 0, 15, 0);
         chart.SetSize(1600, 900);
-        chart.Series[1].TrendLines.Add(eTrendLine.Linear);
+        _ = chart.Series[1].TrendLines.Add(eTrendLine.Linear);
         Assert.AreEqual(eChartType.StockVOHLC, chart.ChartType);
         Assert.AreEqual(1, chart.Series[1].TrendLines.Count);
     }
@@ -377,6 +376,6 @@ public class ExcelStockChartTest : StockChartTestBase
     {
         using ExcelPackage? p = new ExcelPackage();
         ExcelWorksheet? ws = p.Workbook.Worksheets.Add("stock");
-        ExcelChart? chart = ws.Drawings.AddChart("StockTextHLCDatalabels", eChartType.StockHLC);
+        _ = ws.Drawings.AddChart("StockTextHLCDatalabels", eChartType.StockHLC);
     }
 }

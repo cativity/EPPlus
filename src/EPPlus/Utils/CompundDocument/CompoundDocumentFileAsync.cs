@@ -39,7 +39,7 @@ namespace OfficeOpenXml.Utils.CompundDocument
             {
                 FileStream? fs = fi.OpenRead();
                 byte[]? b = new byte[8];
-                await fs.ReadAsync(b, 0, 8, cancellationToken).ConfigureAwait(false);
+                _ = await fs.ReadAsync(b, 0, 8, cancellationToken).ConfigureAwait(false);
 
                 return IsCompoundDocument(b);
             }
@@ -60,7 +60,7 @@ namespace OfficeOpenXml.Utils.CompundDocument
             long pos = ms.Position;
             ms.Position = 0;
             byte[]? b = new byte[8];
-            await ms.ReadAsync(b, 0, 8, cancellationToken).ConfigureAwait(false);
+            _ = await ms.ReadAsync(b, 0, 8, cancellationToken).ConfigureAwait(false);
             ms.Position = pos;
 
             return IsCompoundDocument(b);

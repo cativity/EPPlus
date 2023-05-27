@@ -55,7 +55,7 @@ public class ExcelControlScrollBar : ExcelControl
 
             if (value)
             {
-                this._vmlProp.CreateNode("x:Horiz");
+                _ = this._vmlProp.CreateNode("x:Horiz");
             }
             else
             {

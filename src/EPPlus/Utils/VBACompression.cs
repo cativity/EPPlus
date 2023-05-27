@@ -121,7 +121,6 @@ internal static class VBACompression
                     {
                         tokenFlags |= (byte)(1 << i);
 
-                        UInt16 offsetMask = (ushort)~lengthMask;
                         ushort token = (ushort)(((ushort)(dPos - (bestCandidate + 1)) << bitCount) | (ushort)(bestLength - 3));
                         Array.Copy(BitConverter.GetBytes(token), 0, comprBuffer, cPos, 2);
                         dPos += bestLength;
@@ -194,7 +193,6 @@ internal static class VBACompression
         byte[] buffer = new byte[4198]; //Add an extra 100 byte. Some workbooks have overflowing worksheets.
         int size = (int)(header & 0xFFF) + 3;
         int endPos = pos + size;
-        int a = (int)(header & 0x7000) >> 12;
         int b = (int)(header & 0x8000) >> 15;
         pos += 2;
 

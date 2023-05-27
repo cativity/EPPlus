@@ -86,7 +86,7 @@ public abstract class ExcelPivotTableFilterBaseCollection : IEnumerable<ExcelPiv
     {
         XmlNode? topNode = this.GetOrCreateFiltersNode();
         XmlElement? filterNode = topNode.OwnerDocument.CreateElement("filter", ExcelPackage.schemaMain);
-        topNode.AppendChild(filterNode);
+        _ = topNode.AppendChild(filterNode);
 
         ExcelPivotTableFilter? filter = new ExcelPivotTableFilter(this._field.NameSpaceManager, filterNode, this._table.WorkSheet.Workbook.Date1904)
         {

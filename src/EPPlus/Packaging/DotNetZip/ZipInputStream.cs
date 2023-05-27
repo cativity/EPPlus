@@ -512,7 +512,7 @@ internal class ZipInputStream : Stream
         {
             int CrcResult = this._crcStream.Crc;
             this._currentEntry.VerifyCrcAfterExtract(CrcResult);
-            this._inputStream.Seek(this._endOfEntry, SeekOrigin.Begin);
+            _ = this._inputStream.Seek(this._endOfEntry, SeekOrigin.Begin);
 
             // workitem 10178
             SharedUtilities.Workaround_Ladybug318918(this._inputStream);
@@ -568,7 +568,7 @@ internal class ZipInputStream : Stream
             }
 
             // back up 4 bytes: ReadEntry assumes the file pointer is positioned before the entry signature
-            this._inputStream.Seek(-4, SeekOrigin.Current);
+            _ = this._inputStream.Seek(-4, SeekOrigin.Current);
 
             // workitem 10178
             SharedUtilities.Workaround_Ladybug318918(this._inputStream);
@@ -579,7 +579,7 @@ internal class ZipInputStream : Stream
         {
             // we've already read one entry.
             // Seek to the end of it.
-            this._inputStream.Seek(this._endOfEntry, SeekOrigin.Begin);
+            _ = this._inputStream.Seek(this._endOfEntry, SeekOrigin.Begin);
             SharedUtilities.Workaround_Ladybug318918(this._inputStream);
         }
 
@@ -699,7 +699,7 @@ internal class ZipInputStream : Stream
     public override long Position
     {
         get { return this._inputStream.Position; }
-        set { this.Seek(value, SeekOrigin.Begin); }
+        set { _ = this.Seek(value, SeekOrigin.Begin); }
     }
 
     /// <summary>

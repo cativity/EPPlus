@@ -336,7 +336,7 @@ public sealed class ExcelFontXml : StyleXmlHelper
 
         if (this._bold)
         {
-            this.CreateNode(boldPath);
+            _ = this.CreateNode(boldPath);
         }
         else
         {
@@ -345,7 +345,7 @@ public sealed class ExcelFontXml : StyleXmlHelper
 
         if (this._italic)
         {
-            this.CreateNode(italicPath);
+            _ = this.CreateNode(italicPath);
         }
         else
         {
@@ -354,7 +354,7 @@ public sealed class ExcelFontXml : StyleXmlHelper
 
         if (this._strike)
         {
-            this.CreateNode(strikePath);
+            _ = this.CreateNode(strikePath);
         }
         else
         {
@@ -367,7 +367,7 @@ public sealed class ExcelFontXml : StyleXmlHelper
         }
         else if (this._underlineType == ExcelUnderLineType.Single)
         {
-            this.CreateNode(underLinedPath);
+            _ = this.CreateNode(underLinedPath);
         }
         else
         {
@@ -387,8 +387,8 @@ public sealed class ExcelFontXml : StyleXmlHelper
 
         if (this._color.Exists)
         {
-            this.CreateNode(_colorPath);
-            this.TopNode.AppendChild(this._color.CreateXmlNode(this.TopNode.SelectSingleNode(_colorPath, this.NameSpaceManager)));
+            _ = this.CreateNode(_colorPath);
+            _ = this.TopNode.AppendChild(this._color.CreateXmlNode(this.TopNode.SelectSingleNode(_colorPath, this.NameSpaceManager)));
         }
 
         if (!string.IsNullOrEmpty(this._name))

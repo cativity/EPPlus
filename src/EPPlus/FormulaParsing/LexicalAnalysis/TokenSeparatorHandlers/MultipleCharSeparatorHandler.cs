@@ -51,7 +51,7 @@ internal class MultipleCharSeparatorHandler : SeparatorHandler
 
         if (c == ':')
         {
-            this.HandleAddressSeparatorToken(c, tokenSeparator, context);
+            _ = this.HandleAddressSeparatorToken(c, tokenSeparator, context);
 
             return true;
         }

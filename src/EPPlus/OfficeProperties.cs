@@ -138,7 +138,7 @@ public sealed class OfficeProperties : XmlHelper
             Packaging.ZipPackage.Flush();
 
             // create the relationship between the workbook and the new shared strings part
-            this._package.ZipPackage.CreateRelationship(UriHelper.GetRelativeUri(new Uri("/xl", UriKind.Relative), uri),
+            _ = this._package.ZipPackage.CreateRelationship(UriHelper.GetRelativeUri(new Uri("/xl", UriKind.Relative), uri),
                                                         Packaging.TargetMode.Internal,
                                                         relationship);
 
@@ -570,7 +570,7 @@ public sealed class OfficeProperties : XmlHelper
             node.SetAttribute("name", propertyName);
 
             this._customProperties.Add(propertyName, node);
-            allProps.AppendChild(node);
+            _ = allProps.AppendChild(node);
         }
 
         XmlElement valueElem;
@@ -617,7 +617,7 @@ public sealed class OfficeProperties : XmlHelper
             valueElem.InnerText = value.ToString();
         }
 
-        node.AppendChild(valueElem);
+        _ = node.AppendChild(valueElem);
     }
 
     #endregion

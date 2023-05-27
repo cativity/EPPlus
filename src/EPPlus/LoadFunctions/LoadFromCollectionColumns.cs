@@ -132,7 +132,7 @@ internal class LoadFromCollectionColumns<T>
                         }
                     }
 
-                    this.SetupInternal(member.PropertyType, result, sortOrderList, memberPath, hPrefix);
+                    _ = this.SetupInternal(member.PropertyType, result, sortOrderList, memberPath, hPrefix);
                     sortOrderList.RemoveAt(sortOrderList.Count - 1);
 
                     continue;

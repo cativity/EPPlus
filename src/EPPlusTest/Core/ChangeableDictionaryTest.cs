@@ -73,7 +73,7 @@ public class ChangeableDictionaryTest
     {
         ChangeableDictionary<int> d = Setup();
 
-        d.RemoveAndShift(5);
+        _ = d.RemoveAndShift(5);
         Assert.AreEqual(20, d[2]);
         Assert.AreEqual(40, d[4]);
         Assert.AreEqual(60, d[5]);

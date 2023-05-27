@@ -889,7 +889,7 @@ public class FillTest : TestBase
 
         //Act
         shape.Fill.Style = eFillStyle.BlipFill;
-        shape.Fill.BlipFill.Image.SetImage(Resources.CodeTif, ePictureType.Tif);
+        _ = shape.Fill.BlipFill.Image.SetImage(Resources.CodeTif, ePictureType.Tif);
 
         shape.Fill.BlipFill.Stretch = false;
         shape.Fill.BlipFill.Tile.Alignment = eRectangleAlignment.Center;
@@ -920,13 +920,13 @@ public class FillTest : TestBase
         LoadTestdata(ws);
 
         ExcelPieChart? chart = ws.Drawings.AddPieChart("PieChart1", ePieChartType.Pie);
-        ExcelPieChartSerie? serie = chart.Series.Add("D2:D6", "A2:A6");
+        _ = chart.Series.Add("D2:D6", "A2:A6");
         chart.Fill.Style = eFillStyle.BlipFill;
-        chart.Fill.BlipFill.Image.SetImage(Resources.CodeTif, ePictureType.Tif);
+        _ = chart.Fill.BlipFill.Image.SetImage(Resources.CodeTif, ePictureType.Tif);
 
         ExcelChartDataPoint? pt = chart.Series[0].DataPoints.Add(0);
         pt.Fill.Style = eFillStyle.BlipFill;
-        pt.Fill.BlipFill.Image.SetImage(Resources.CodeTif, ePictureType.Tif);
+        _ = pt.Fill.BlipFill.Image.SetImage(Resources.CodeTif, ePictureType.Tif);
 
         chart.SetPosition(1, 0, 5, 0);
     }
@@ -941,7 +941,7 @@ public class FillTest : TestBase
 
         //Act
         shape.Fill.Style = eFillStyle.BlipFill;
-        shape.Fill.BlipFill.Image.SetImage(Resources.CodeTif, ePictureType.Tif);
+        _ = shape.Fill.BlipFill.Image.SetImage(Resources.CodeTif, ePictureType.Tif);
 
         //Assert
         Assert.AreEqual(eFillStyle.BlipFill, shape.Fill.Style);
@@ -957,7 +957,7 @@ public class FillTest : TestBase
 
         //Act
         shape.Fill.Style = eFillStyle.BlipFill;
-        shape.Fill.BlipFill.Image.SetImage(Resources.Test1JpgByteArray, ePictureType.Jpg);
+        _ = shape.Fill.BlipFill.Image.SetImage(Resources.Test1JpgByteArray, ePictureType.Jpg);
         shape.Fill.BlipFill.Stretch = stretch;
 
         if (stretch)

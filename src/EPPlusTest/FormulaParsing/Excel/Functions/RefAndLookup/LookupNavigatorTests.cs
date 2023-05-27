@@ -57,7 +57,7 @@ public class LookupNavigatorTests
     private static ParsingContext GetContext(ExcelDataProvider provider)
     {
         ParsingContext? ctx = ParsingContext.Create();
-        ctx.Scopes.NewScope(new RangeAddress() { Worksheet = WorksheetName, FromCol = 1, FromRow = 1 });
+        _ = ctx.Scopes.NewScope(new RangeAddress() { Worksheet = WorksheetName, FromCol = 1, FromRow = 1 });
         ctx.ExcelDataProvider = provider;
 
         return ctx;
@@ -82,8 +82,8 @@ public class LookupNavigatorTests
     public void CurrentValueShouldBeFirstCell()
     {
         ExcelDataProvider? provider = A.Fake<ExcelDataProvider>();
-        A.CallTo(() => provider.GetCellValue(WorksheetName, 1, 1)).Returns(3);
-        A.CallTo(() => provider.GetCellValue(WorksheetName, 2, 1)).Returns(4);
+        _ = A.CallTo(() => provider.GetCellValue(WorksheetName, 1, 1)).Returns(3);
+        _ = A.CallTo(() => provider.GetCellValue(WorksheetName, 2, 1)).Returns(4);
         LookupArguments? args = GetArgs(3, "A1:B2", 1);
         LookupNavigator? navigator = LookupNavigatorFactory.Create(LookupDirection.Vertical, args, GetContext(provider));
         Assert.AreEqual(3, navigator.CurrentValue);
@@ -93,8 +93,8 @@ public class LookupNavigatorTests
     public void MoveNextShouldReturnFalseIfLastCell()
     {
         ExcelDataProvider? provider = A.Fake<ExcelDataProvider>();
-        A.CallTo(() => provider.GetCellValue(WorksheetName, 1, 1)).Returns(3);
-        A.CallTo(() => provider.GetCellValue(WorksheetName, 2, 1)).Returns(4);
+        _ = A.CallTo(() => provider.GetCellValue(WorksheetName, 1, 1)).Returns(3);
+        _ = A.CallTo(() => provider.GetCellValue(WorksheetName, 2, 1)).Returns(4);
         LookupArguments? args = GetArgs(3, "A1:B1", 1);
         LookupNavigator? navigator = LookupNavigatorFactory.Create(LookupDirection.Vertical, args, GetContext(provider));
         Assert.IsFalse(navigator.MoveNext());
@@ -104,9 +104,9 @@ public class LookupNavigatorTests
     public void HasNextShouldBeTrueIfNotLastCell()
     {
         ExcelDataProvider? provider = A.Fake<ExcelDataProvider>();
-        A.CallTo(() => provider.GetDimensionEnd(A<string>.Ignored)).Returns(new ExcelCellAddress(5, 5));
-        A.CallTo(() => provider.GetCellValue(WorksheetName, 1, 1)).Returns(3);
-        A.CallTo(() => provider.GetCellValue(WorksheetName, 2, 1)).Returns(4);
+        _ = A.CallTo(() => provider.GetDimensionEnd(A<string>.Ignored)).Returns(new ExcelCellAddress(5, 5));
+        _ = A.CallTo(() => provider.GetCellValue(WorksheetName, 1, 1)).Returns(3);
+        _ = A.CallTo(() => provider.GetCellValue(WorksheetName, 2, 1)).Returns(4);
         LookupArguments? args = GetArgs(3, "A1:B2", 1);
         LookupNavigator? navigator = LookupNavigatorFactory.Create(LookupDirection.Vertical, args, GetContext(provider));
         Assert.IsTrue(navigator.MoveNext());
@@ -116,12 +116,12 @@ public class LookupNavigatorTests
     public void MoveNextShouldNavigateVertically()
     {
         ExcelDataProvider? provider = A.Fake<ExcelDataProvider>();
-        A.CallTo(() => provider.GetCellValue(WorksheetName, 1, 1)).Returns(3);
-        A.CallTo(() => provider.GetCellValue(WorksheetName, 2, 1)).Returns(4);
-        A.CallTo(() => provider.GetDimensionEnd(A<string>.Ignored)).Returns(new ExcelCellAddress(100, 10));
+        _ = A.CallTo(() => provider.GetCellValue(WorksheetName, 1, 1)).Returns(3);
+        _ = A.CallTo(() => provider.GetCellValue(WorksheetName, 2, 1)).Returns(4);
+        _ = A.CallTo(() => provider.GetDimensionEnd(A<string>.Ignored)).Returns(new ExcelCellAddress(100, 10));
         LookupArguments? args = GetArgs(6, "A1:B2", 1);
         LookupNavigator? navigator = LookupNavigatorFactory.Create(LookupDirection.Vertical, args, GetContext(provider));
-        navigator.MoveNext();
+        _ = navigator.MoveNext();
         Assert.AreEqual(4, navigator.CurrentValue);
     }
 
@@ -129,13 +129,13 @@ public class LookupNavigatorTests
     public void MoveNextShouldIncreaseIndex()
     {
         ExcelDataProvider? provider = A.Fake<ExcelDataProvider>();
-        A.CallTo(() => provider.GetDimensionEnd(A<string>.Ignored)).Returns(new ExcelCellAddress(5, 5));
-        A.CallTo(() => provider.GetCellValue(WorksheetName, 1, 1)).Returns(3);
-        A.CallTo(() => provider.GetCellValue(WorksheetName, 1, 2)).Returns(4);
+        _ = A.CallTo(() => provider.GetDimensionEnd(A<string>.Ignored)).Returns(new ExcelCellAddress(5, 5));
+        _ = A.CallTo(() => provider.GetCellValue(WorksheetName, 1, 1)).Returns(3);
+        _ = A.CallTo(() => provider.GetCellValue(WorksheetName, 1, 2)).Returns(4);
         LookupArguments? args = GetArgs(6, "A1:B2", 1);
         LookupNavigator? navigator = LookupNavigatorFactory.Create(LookupDirection.Vertical, args, GetContext(provider));
         Assert.AreEqual(0, navigator.Index);
-        navigator.MoveNext();
+        _ = navigator.MoveNext();
         Assert.AreEqual(1, navigator.Index);
     }
 
@@ -143,9 +143,9 @@ public class LookupNavigatorTests
     public void GetLookupValueShouldReturnCorrespondingValue()
     {
         ExcelDataProvider? provider = A.Fake<ExcelDataProvider>();
-        A.CallTo(() => provider.GetDimensionEnd(A<string>.Ignored)).Returns(new ExcelCellAddress(5, 5));
-        A.CallTo(() => provider.GetCellValue(WorksheetName, 1, 1)).Returns(3);
-        A.CallTo(() => provider.GetCellValue(WorksheetName, 1, 2)).Returns(4);
+        _ = A.CallTo(() => provider.GetDimensionEnd(A<string>.Ignored)).Returns(new ExcelCellAddress(5, 5));
+        _ = A.CallTo(() => provider.GetCellValue(WorksheetName, 1, 1)).Returns(3);
+        _ = A.CallTo(() => provider.GetCellValue(WorksheetName, 1, 2)).Returns(4);
         LookupArguments? args = GetArgs(6, "A1:B2", 2);
         LookupNavigator? navigator = LookupNavigatorFactory.Create(LookupDirection.Vertical, args, GetContext(provider));
         Assert.AreEqual(4, navigator.GetLookupValue());
@@ -155,9 +155,9 @@ public class LookupNavigatorTests
     public void GetLookupValueShouldReturnCorrespondingValueWithOffset()
     {
         ExcelDataProvider? provider = A.Fake<ExcelDataProvider>();
-        A.CallTo(() => provider.GetDimensionEnd(A<string>.Ignored)).Returns(new ExcelCellAddress(5, 5));
-        A.CallTo(() => provider.GetCellValue(WorksheetName, 1, 1)).Returns(3);
-        A.CallTo(() => provider.GetCellValue(WorksheetName, 3, 3)).Returns(4);
+        _ = A.CallTo(() => provider.GetDimensionEnd(A<string>.Ignored)).Returns(new ExcelCellAddress(5, 5));
+        _ = A.CallTo(() => provider.GetCellValue(WorksheetName, 1, 1)).Returns(3);
+        _ = A.CallTo(() => provider.GetCellValue(WorksheetName, 3, 3)).Returns(4);
         LookupArguments? args = new LookupArguments(3, "A1:A4", 3, 2, false, null);
         LookupNavigator? navigator = LookupNavigatorFactory.Create(LookupDirection.Vertical, args, GetContext(provider));
         Assert.AreEqual(4, navigator.GetLookupValue());

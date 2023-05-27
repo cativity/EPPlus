@@ -118,7 +118,7 @@ public class ExcelConditionalFormattingCollection : XmlHelper, IEnumerable<IExce
                         throw new Exception(ExcelConditionalFormattingConstants.Errors.MissingPriorityAttribute);
                     }
 
-                    this.AddNewCf(address, cfRuleNode);
+                    _ = this.AddNewCf(address, cfRuleNode);
                 }
             }
         }
@@ -280,7 +280,7 @@ public class ExcelConditionalFormattingCollection : XmlHelper, IEnumerable<IExce
         // Remove all the <conditionalFormatting> nodes one by one
         foreach (XmlNode conditionalFormattingNode in conditionalFormattingNodes)
         {
-            conditionalFormattingNode.ParentNode.RemoveChild(conditionalFormattingNode);
+            _ = conditionalFormattingNode.ParentNode.RemoveChild(conditionalFormattingNode);
         }
 
         // Clear the <cfRule> item list
@@ -301,16 +301,16 @@ public class ExcelConditionalFormattingCollection : XmlHelper, IEnumerable<IExce
             XmlNode? oldParentNode = item.Node.ParentNode;
 
             // Remove the <cfRule> from the old <conditionalFormatting> parent node
-            oldParentNode.RemoveChild(item.Node);
+            _ = oldParentNode.RemoveChild(item.Node);
 
             // Check if the old <conditionalFormatting> parent node has <cfRule> node inside it
             if (!oldParentNode.HasChildNodes)
             {
                 // Remove the old parent node
-                oldParentNode.ParentNode.RemoveChild(oldParentNode);
+                _ = oldParentNode.ParentNode.RemoveChild(oldParentNode);
             }
 
-            this._rules.Remove(item);
+            _ = this._rules.Remove(item);
         }
         catch
         {

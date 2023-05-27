@@ -33,7 +33,6 @@ internal class Workday : ExcelFunction
         ValidateArguments(functionArguments, 2);
         System.DateTime startDate = System.DateTime.FromOADate(this.ArgToInt(functionArguments, 0));
         int nWorkDays = this.ArgToInt(functionArguments, 1);
-        System.DateTime resultDate = System.DateTime.MinValue;
 
         WorkdayCalculator? calculator = new WorkdayCalculator();
         WorkdayCalculatorResult? result = calculator.CalculateWorkday(startDate, nWorkDays);

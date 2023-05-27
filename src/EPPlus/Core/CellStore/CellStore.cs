@@ -848,7 +848,7 @@ internal class CellStore<T> : IDisposable
                     pagePos = ~pagePos;
                 }
 
-                DeleteRowsInsidePage(column, pagePos, delFromRow, shift ? delFromRow + rowsLeft - 1 : toRow, shift);
+                _ = DeleteRowsInsidePage(column, pagePos, delFromRow, shift ? delFromRow + rowsLeft - 1 : toRow, shift);
             }
         }
 
@@ -915,7 +915,6 @@ internal class CellStore<T> : IDisposable
             int delSize = page.MaxIndex - pageStartRow + 1;
             int prevMaxIndex = page.MaxIndex;
             rows -= delSize;
-            int prevOffset = page.Offset;
             Array.Copy(column._pages, pagePos + 1, column._pages, pagePos, column.PageCount - pagePos - 1);
             column.PageCount--;
 
@@ -1095,7 +1094,7 @@ internal class CellStore<T> : IDisposable
             if (rows >= CellStoreSettings._pageSize)
             {
                 SplitPageAtPosition(column, pagePos, page, rowPos);
-                UpdatePageOffsetSinglePage(column, ++pagePos, rows);
+                _ = UpdatePageOffsetSinglePage(column, ++pagePos, rows);
             }
             else
             {

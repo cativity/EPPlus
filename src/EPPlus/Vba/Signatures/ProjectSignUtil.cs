@@ -172,7 +172,6 @@ internal static class ProjectSignUtil
             bw.Write(headerSizeOffset); // algorithm id offset
             bw.Write(headerSizeOffset + ctx.AlgorithmIdentifierOId.Length + 1); // compiled hash offset (always empty)
             bw.Write(headerSizeOffset + ctx.AlgorithmIdentifierOId.Length + 1); // source hash offset
-            int algorithmIdOffset = ctx.AlgorithmIdentifierOId.Length + 1 + hash.Length;
             bw.Write(Encoding.ASCII.GetBytes(ctx.AlgorithmIdentifierOId));
             bw.Write((byte)0); // string terminator
             bw.Write(hash);

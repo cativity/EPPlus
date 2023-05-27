@@ -104,7 +104,7 @@ public class ExcelVmlDrawingPicture : ExcelVmlDrawingBase, IPictureContainer
                 if (pck.PartExists(this.ImageUri))
                 {
                     ZipPackagePart? part = pck.GetPart(this.ImageUri);
-                    this._image.SetImage(((MemoryStream)part.GetStream()).ToArray(), PictureStore.GetPictureType(this.ImageUri));
+                    _ = this._image.SetImage(((MemoryStream)part.GetStream()).ToArray(), PictureStore.GetPictureType(this.ImageUri));
                 }
                 else
                 {

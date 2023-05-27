@@ -110,7 +110,7 @@ public sealed class ExcelBubbleChartSerie : ExcelChartSerieWithHorizontalErrorBa
 
                 if (cache != null)
                 {
-                    cache.ParentNode.RemoveChild(cache);
+                    _ = cache.ParentNode.RemoveChild(cache);
                 }
 
                 this.DeleteNode(string.Format("{0}/c:numLit", BUBBLESIZE_TOPPATH));
@@ -128,11 +128,11 @@ public sealed class ExcelBubbleChartSerie : ExcelChartSerieWithHorizontalErrorBa
         {
             for (int c = s._fromCol; c <= s._toCol; c++)
             {
-                sb.AppendFormat("<c:pt idx=\"{0}\"><c:v>1</c:v></c:pt>", ix++);
+                _ = sb.AppendFormat("<c:pt idx=\"{0}\"><c:v>1</c:v></c:pt>", ix++);
             }
         }
 
-        this.CreateNode(BUBBLESIZE_TOPPATH + "/c:numLit", true);
+        _ = this.CreateNode(BUBBLESIZE_TOPPATH + "/c:numLit", true);
         XmlNode lit = this.TopNode.SelectSingleNode(string.Format("{0}/c:numLit", BUBBLESIZE_TOPPATH), this.NameSpaceManager);
         lit.InnerXml = string.Format("<c:formatCode>General</c:formatCode><c:ptCount val=\"{0}\"/>{1}", ix, sb.ToString());
     }

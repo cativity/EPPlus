@@ -42,7 +42,7 @@ public class SqRefUtilityTests
     [TestMethod, ExpectedException(typeof(ArgumentNullException))]
     public void SqRefUtility_ToSqRefAddress_ShouldThrowIfAddressIsNullOrEmpty()
     {
-        SqRefUtility.ToSqRefAddress(null);
+        _ = SqRefUtility.ToSqRefAddress(null);
     }
 
     [TestMethod]

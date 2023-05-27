@@ -210,7 +210,7 @@ internal class WorksheetZipStream : Stream
         {
             int sizeToEnd = (int)(this._stream.Length - this._stream.Position);
             byte[] buffer = new byte[sizeToEnd];
-            int r = this._stream.Read(buffer, 0, sizeToEnd);
+            _ = this._stream.Read(buffer, 0, sizeToEnd);
             this.Buffer.Write(buffer);
         }
     }

@@ -19,8 +19,8 @@ public class NamedRangeCalcTests
         wks.Cells["C3"].Value = 7;
         wks.Cells["C4"].Value = 1;
         wks.Cells["C5"].Value = 2;
-        wks.Names.Add("MyName1", wks.Cells["C3"]);
-        wks.Names.Add("MyName2", wks.Cells["C5"]);
+        _ = wks.Names.Add("MyName1", wks.Cells["C3"]);
+        _ = wks.Names.Add("MyName2", wks.Cells["C5"]);
         wks.Cells["F6"].Formula = "SUM(C3:C5)";
         wks.Cells["F7"].Formula = "SUM(MyName1:MyName2)";
 
@@ -45,12 +45,12 @@ public class NamedRangeCalcTests
         sheet1.Cells["C2"].Value = 0.5;
         sheet1.Cells["C3"].Value = 0.5;
 
-        sheet1.Names.Add("MyName1", sheet1.Cells["A1"]);
-        sheet1.Names.Add("MyName2", sheet1.Cells["A3"]);
-        sheet1.Names.Add("MyName3", sheet1.Cells["B1"]);
-        sheet1.Names.Add("MyName4", sheet1.Cells["B3"]);
-        sheet1.Names.Add("MyName5", sheet1.Cells["C1"]);
-        sheet1.Names.Add("MyName6", sheet1.Cells["C3"]);
+        _ = sheet1.Names.Add("MyName1", sheet1.Cells["A1"]);
+        _ = sheet1.Names.Add("MyName2", sheet1.Cells["A3"]);
+        _ = sheet1.Names.Add("MyName3", sheet1.Cells["B1"]);
+        _ = sheet1.Names.Add("MyName4", sheet1.Cells["B3"]);
+        _ = sheet1.Names.Add("MyName5", sheet1.Cells["C1"]);
+        _ = sheet1.Names.Add("MyName6", sheet1.Cells["C3"]);
 
         sheet1.Cells["C6"].Formula = "SUMPRODUCT(MyName1:MyName2,MyName3:MyName4,MyName5:MyName6)";
 

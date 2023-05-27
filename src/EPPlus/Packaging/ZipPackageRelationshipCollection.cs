@@ -53,7 +53,7 @@ public class ZipPackageRelationshipCollection : IEnumerable<ZipPackageRelationsh
 
     internal void Remove(string id)
     {
-        this._rels.Remove(id);
+        _ = this._rels.Remove(id);
     }
 
     internal bool ContainsKey(string id)
@@ -91,7 +91,7 @@ public class ZipPackageRelationshipCollection : IEnumerable<ZipPackageRelationsh
         {
             if (rel.TargetUri == null || rel.TargetUri.OriginalString.StartsWith("Invalid:URI", StringComparison.OrdinalIgnoreCase))
             {
-                xml.AppendFormat("<Relationship Id=\"{0}\" Type=\"{1}\" Target=\"{2}\"{3}/>",
+                _ = xml.AppendFormat("<Relationship Id=\"{0}\" Type=\"{1}\" Target=\"{2}\"{3}/>",
                                  SecurityElement.Escape(rel.Id),
                                  rel.RelationshipType,
                                  ConvertUtil.CropString(SecurityElement.Escape(rel.Target), 2079),
@@ -99,7 +99,7 @@ public class ZipPackageRelationshipCollection : IEnumerable<ZipPackageRelationsh
             }
             else
             {
-                xml.AppendFormat("<Relationship Id=\"{0}\" Type=\"{1}\" Target=\"{2}\"{3}/>",
+                _ = xml.AppendFormat("<Relationship Id=\"{0}\" Type=\"{1}\" Target=\"{2}\"{3}/>",
                                  SecurityElement.Escape(rel.Id),
                                  rel.RelationshipType,
                                  ConvertUtil.CropString(SecurityElement.Escape(rel.TargetUri.OriginalString), 2079),
@@ -107,9 +107,9 @@ public class ZipPackageRelationshipCollection : IEnumerable<ZipPackageRelationsh
             }
         }
 
-        xml.Append("</Relationships>");
+        _ = xml.Append("</Relationships>");
 
-        os.PutNextEntry(fileName);
+        _ = os.PutNextEntry(fileName);
         byte[] b = Encoding.UTF8.GetBytes(xml.ToString());
         os.Write(b, 0, b.Length);
     }

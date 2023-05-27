@@ -186,7 +186,7 @@ public class ListDataValidationTests : ValidationTestBase
         ExcelPackage? excel = new ExcelPackage();
         ExcelWorksheet? sheet = excel.Workbook.Worksheets.Add("Sheet1");
         sheet.Cells[1, 1].Value = "Column1";
-        sheet.Cells["A2:A1048576"].DataValidation.AddListDataValidation();
+        _ = sheet.Cells["A2:A1048576"].DataValidation.AddListDataValidation();
 
         excel.Save();
     }
@@ -215,7 +215,7 @@ public class ListDataValidationTests : ValidationTestBase
     {
         using ExcelPackage? package = OpenPackage("DataValidationExtLocalList.xlsx", true);
         ExcelWorksheet? ws1 = package.Workbook.Worksheets.Add("Worksheet1");
-        package.Workbook.Worksheets.Add("Worksheet2");
+        _ = package.Workbook.Worksheets.Add("Worksheet2");
 
         IExcelDataValidationDecimal? localVal = ws1.DataValidations.AddDecimalValidation("A1:A5");
 

@@ -235,7 +235,6 @@ public class ExcelSlicerNamedStyle : XmlHelper
 
                 foreach (XmlElement elem in xml.DocumentElement.ChildNodes)
                 {
-                    string? dxfXml = elem.InnerXml;
                     eTableStyleElement? tblType = elem.GetAttribute("name").ToEnum<eTableStyleElement>();
 
                     if (tblType == null)

@@ -56,7 +56,7 @@ public class ProtectedRangesTests : TestBase
     {
         ExcelWorksheet? ws = _pck.Workbook.Worksheets.Add("SingleProtectedRange");
         LoadTestdata(ws);
-        ws.ProtectedRanges.Add("ProtectedRange", ws.Cells["A1:B2"]);
+        _ = ws.ProtectedRanges.Add("ProtectedRange", ws.Cells["A1:B2"]);
 
         //Assert
         Assert.AreEqual(1, ws.ProtectedRanges.Count);
@@ -92,9 +92,9 @@ public class ProtectedRangesTests : TestBase
     {
         using ExcelPackage? pck = new ExcelPackage();
         ExcelWorksheet? ws = pck.Workbook.Worksheets.Add("RemoveProtectedRange");
-        ws.ProtectedRanges.Add("ProtectedRange", ws.Cells["A1:B2"]);
+        _ = ws.ProtectedRanges.Add("ProtectedRange", ws.Cells["A1:B2"]);
         Assert.AreEqual(1, ws.ProtectedRanges.Count);
-        ws.ProtectedRanges.Remove(ws.ProtectedRanges[0]);
+        _ = ws.ProtectedRanges.Remove(ws.ProtectedRanges[0]);
 
         //Assert
         Assert.AreEqual(0, ws.ProtectedRanges.Count);
@@ -106,7 +106,7 @@ public class ProtectedRangesTests : TestBase
     {
         using ExcelPackage? pck = new ExcelPackage();
         ExcelWorksheet? ws = pck.Workbook.Worksheets.Add("RemoveAtProtectedRange");
-        ws.ProtectedRanges.Add("ProtectedRange", ws.Cells["A1:B2"]);
+        _ = ws.ProtectedRanges.Add("ProtectedRange", ws.Cells["A1:B2"]);
         Assert.AreEqual(1, ws.ProtectedRanges.Count);
         ws.ProtectedRanges.RemoveAt(0);
 
@@ -120,9 +120,9 @@ public class ProtectedRangesTests : TestBase
     {
         using ExcelPackage? pck = new ExcelPackage();
         ExcelWorksheet? ws = pck.Workbook.Worksheets.Add("ClearProtectedRange");
-        ws.ProtectedRanges.Add("ProtectedRange1", ws.Cells["A1:B2"]);
-        ws.ProtectedRanges.Add("ProtectedRange2", ws.Cells["A2:B3"]);
-        ws.ProtectedRanges.Add("ProtectedRange3", ws.Cells["A3:B4"]);
+        _ = ws.ProtectedRanges.Add("ProtectedRange1", ws.Cells["A1:B2"]);
+        _ = ws.ProtectedRanges.Add("ProtectedRange2", ws.Cells["A2:B3"]);
+        _ = ws.ProtectedRanges.Add("ProtectedRange3", ws.Cells["A3:B4"]);
         Assert.AreEqual(3, ws.ProtectedRanges.Count);
         ws.ProtectedRanges.Clear();
 
@@ -137,7 +137,7 @@ public class ProtectedRangesTests : TestBase
     {
         using ExcelPackage? pck = new ExcelPackage();
         ExcelWorksheet? ws = pck.Workbook.Worksheets.Add("ThreeProtectedRanges");
-        ws.ProtectedRanges.Add("Range", ws.Cells["A1:B2"]);
-        ws.ProtectedRanges.Add("range", ws.Cells["A4:B5"]);
+        _ = ws.ProtectedRanges.Add("Range", ws.Cells["A1:B2"]);
+        _ = ws.ProtectedRanges.Add("range", ws.Cells["A4:B5"]);
     }
 }

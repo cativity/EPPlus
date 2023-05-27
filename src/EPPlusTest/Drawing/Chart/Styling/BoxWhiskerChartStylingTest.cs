@@ -71,7 +71,7 @@ public class BoxWhiskerChartStylingTest : TestBase
         //Box & Whisker Chart styles
 
         //Box & Whisker chart Style 1
-        AddChartEx(ws,
+        _ = AddChartEx(ws,
                    ePresetChartStyle.BoxWhiskerChartStyle1,
                    "BoxWhiskerChartStyle1",
                    0,
@@ -83,7 +83,7 @@ public class BoxWhiskerChartStylingTest : TestBase
                    });
 
         //Box & Whisker chart Style 2
-        AddChartEx(ws,
+        _ = AddChartEx(ws,
                    ePresetChartStyle.BoxWhiskerChartStyle2,
                    "BoxWhiskerStyle2",
                    0,
@@ -98,7 +98,7 @@ public class BoxWhiskerChartStylingTest : TestBase
                    });
 
         //Box & Whisker chart Style 3
-        AddChartEx(ws,
+        _ = AddChartEx(ws,
                    ePresetChartStyle.BoxWhiskerChartStyle3,
                    "BoxWhiskerChartStyle3",
                    0,
@@ -113,13 +113,13 @@ public class BoxWhiskerChartStylingTest : TestBase
                    });
 
         //Box & Whisker chart Style 4
-        AddChartEx(ws, ePresetChartStyle.BoxWhiskerChartStyle4, "BoxWhiskerChartStyle4", 20, 5, c => { c.Legend.Position = eLegendPosition.Bottom; });
+        _ = AddChartEx(ws, ePresetChartStyle.BoxWhiskerChartStyle4, "BoxWhiskerChartStyle4", 20, 5, c => { c.Legend.Position = eLegendPosition.Bottom; });
 
         //Box & Whisker chart Style 5
-        AddChartEx(ws, ePresetChartStyle.BoxWhiskerChartStyle5, "BoxWhiskerChartStyle5", 20, 18, c => { c.Legend.Position = eLegendPosition.Bottom; });
+        _ = AddChartEx(ws, ePresetChartStyle.BoxWhiskerChartStyle5, "BoxWhiskerChartStyle5", 20, 18, c => { c.Legend.Position = eLegendPosition.Bottom; });
 
         //Box & Whisker chart Style 6
-        AddChartEx(ws, ePresetChartStyle.BoxWhiskerChartStyle6, "BoxWhiskerChartStyle6", 20, 31, c => { c.Legend.Position = eLegendPosition.Bottom; });
+        _ = AddChartEx(ws, ePresetChartStyle.BoxWhiskerChartStyle6, "BoxWhiskerChartStyle6", 20, 31, c => { c.Legend.Position = eLegendPosition.Bottom; });
     }
 
     private static ExcelBoxWhiskerChart AddChartEx(ExcelWorksheet ws,
@@ -135,7 +135,7 @@ public class BoxWhiskerChartStylingTest : TestBase
         chart.To.ColumnOff = 0;
         chart.To.Row = row + 18;
         chart.To.RowOff = 0;
-        chart.Series.Add("D2:D8", "A2:A8");
+        _ = chart.Series.Add("D2:D8", "A2:A8");
 
         SetProperties(chart);
 

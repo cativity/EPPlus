@@ -141,8 +141,6 @@ internal class AutofitHelper
             fs |= MeasurementFontStyles.Strikeout;
         }
 
-        MeasurementFont? nfont = new MeasurementFont { FontFamily = nf.Name, Style = fs, Size = nf.Size };
-
         float normalSize = Convert.ToSingle(FontSize.GetWidthPixels(nf.Name, nf.Size));
         ExcelTextSettings? textSettings = this._range._workbook._package.Settings.TextSettings;
 

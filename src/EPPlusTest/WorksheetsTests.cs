@@ -48,7 +48,7 @@ public class WorksheetsTests
     {
         this.package = new ExcelPackage();
         this.workbook = this.package.Workbook;
-        this.workbook.Worksheets.Add("NEW1");
+        _ = this.workbook.Worksheets.Add("NEW1");
     }
 
     [TestMethod]
@@ -61,32 +61,32 @@ public class WorksheetsTests
     [TestMethod]
     public void ShouldBeAbleToDeleteAndThenAdd()
     {
-        this.workbook.Worksheets.Add("NEW2");
+        _ = this.workbook.Worksheets.Add("NEW2");
         this.workbook.Worksheets.Delete(1);
-        this.workbook.Worksheets.Add("NEW3");
+        _ = this.workbook.Worksheets.Add("NEW3");
     }
 
     [TestMethod]
     public void DeleteByNameWhereWorkSheetExists()
     {
-        this.workbook.Worksheets.Add("NEW2");
+        _ = this.workbook.Worksheets.Add("NEW2");
         this.workbook.Worksheets.Delete("NEW2");
     }
 
     [TestMethod, ExpectedException(typeof(ArgumentException))]
     public void DeleteByNameWhereWorkSheetDoesNotExist()
     {
-        this.workbook.Worksheets.Add("NEW2");
+        _ = this.workbook.Worksheets.Add("NEW2");
         this.workbook.Worksheets.Delete("NEW3");
     }
 
     [TestMethod]
     public void MoveBeforeByNameWhereWorkSheetExists()
     {
-        this.workbook.Worksheets.Add("NEW2");
-        this.workbook.Worksheets.Add("NEW3");
-        this.workbook.Worksheets.Add("NEW4");
-        this.workbook.Worksheets.Add("NEW5");
+        _ = this.workbook.Worksheets.Add("NEW2");
+        _ = this.workbook.Worksheets.Add("NEW3");
+        _ = this.workbook.Worksheets.Add("NEW4");
+        _ = this.workbook.Worksheets.Add("NEW5");
 
         this.workbook.Worksheets.MoveBefore("NEW4", "NEW2");
 
@@ -96,10 +96,10 @@ public class WorksheetsTests
     [TestMethod]
     public void MoveAfterByNameWhereWorkSheetExists()
     {
-        this.workbook.Worksheets.Add("NEW2");
-        this.workbook.Worksheets.Add("NEW3");
-        this.workbook.Worksheets.Add("NEW4");
-        this.workbook.Worksheets.Add("NEW5");
+        _ = this.workbook.Worksheets.Add("NEW2");
+        _ = this.workbook.Worksheets.Add("NEW3");
+        _ = this.workbook.Worksheets.Add("NEW4");
+        _ = this.workbook.Worksheets.Add("NEW5");
 
         this.workbook.Worksheets.MoveAfter("NEW4", "NEW2");
 
@@ -109,10 +109,10 @@ public class WorksheetsTests
     [TestMethod]
     public void MoveBeforeByPositionWhereWorkSheetExists()
     {
-        this.workbook.Worksheets.Add("NEW2");
-        this.workbook.Worksheets.Add("NEW3");
-        this.workbook.Worksheets.Add("NEW4");
-        this.workbook.Worksheets.Add("NEW5");
+        _ = this.workbook.Worksheets.Add("NEW2");
+        _ = this.workbook.Worksheets.Add("NEW3");
+        _ = this.workbook.Worksheets.Add("NEW4");
+        _ = this.workbook.Worksheets.Add("NEW5");
 
         this.workbook.Worksheets.MoveBefore(4, 2);
 
@@ -122,10 +122,10 @@ public class WorksheetsTests
     [TestMethod]
     public void MoveAfterByPositionWhereWorkSheetExists()
     {
-        this.workbook.Worksheets.Add("NEW2");
-        this.workbook.Worksheets.Add("NEW3");
-        this.workbook.Worksheets.Add("NEW4");
-        this.workbook.Worksheets.Add("NEW5");
+        _ = this.workbook.Worksheets.Add("NEW2");
+        _ = this.workbook.Worksheets.Add("NEW3");
+        _ = this.workbook.Worksheets.Add("NEW4");
+        _ = this.workbook.Worksheets.Add("NEW5");
 
         this.workbook.Worksheets.MoveAfter(4, 2);
 
@@ -135,7 +135,7 @@ public class WorksheetsTests
     [TestMethod]
     public void MoveToStartByNameWhereWorkSheetExists()
     {
-        this.workbook.Worksheets.Add("NEW2");
+        _ = this.workbook.Worksheets.Add("NEW2");
 
         this.workbook.Worksheets.MoveToStart("NEW2");
 
@@ -145,7 +145,7 @@ public class WorksheetsTests
     [TestMethod]
     public void MoveToEndByNameWhereWorkSheetExists()
     {
-        this.workbook.Worksheets.Add("NEW2");
+        _ = this.workbook.Worksheets.Add("NEW2");
 
         this.workbook.Worksheets.MoveToEnd("NEW1");
 
@@ -168,13 +168,13 @@ public class WorksheetsTests
     [TestMethod]
     public void MoveBeforeByName8Worksheets()
     {
-        this.workbook.Worksheets.Add("NEW2");
-        this.workbook.Worksheets.Add("NEW3");
-        this.workbook.Worksheets.Add("NEW4");
-        this.workbook.Worksheets.Add("NEW5");
-        this.workbook.Worksheets.Add("NEW6");
-        this.workbook.Worksheets.Add("NEW7");
-        this.workbook.Worksheets.Add("NEW8");
+        _ = this.workbook.Worksheets.Add("NEW2");
+        _ = this.workbook.Worksheets.Add("NEW3");
+        _ = this.workbook.Worksheets.Add("NEW4");
+        _ = this.workbook.Worksheets.Add("NEW5");
+        _ = this.workbook.Worksheets.Add("NEW6");
+        _ = this.workbook.Worksheets.Add("NEW7");
+        _ = this.workbook.Worksheets.Add("NEW8");
 
         this.workbook.Worksheets.MoveBefore("NEW8", "NEW1");
         Assert.AreEqual("NEW7", this.workbook.Worksheets.Last().Name);
@@ -202,7 +202,7 @@ public class WorksheetsTests
     {
         if (this.workbook.Worksheets["[NEW2]"] == null)
         {
-            this.workbook.Worksheets.Add("[NEW2]");
+            _ = this.workbook.Worksheets.Add("[NEW2]");
         }
 
         Assert.IsNotNull(this.workbook.Worksheets["[NEW2]"]);

@@ -318,7 +318,7 @@ public class ExcelDrawingThemeColorManager
         if (this._topNode == this._colorNode)
         {
             XmlHelper? xh = XmlHelperFactory.Create(this._nameSpaceManager, this._topNode);
-            xh.ReplaceElement(this._colorNode, type);
+            _ = xh.ReplaceElement(this._colorNode, type);
         }
         else
         {

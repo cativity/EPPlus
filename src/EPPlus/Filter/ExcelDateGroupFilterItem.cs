@@ -207,7 +207,7 @@ public class ExcelFilterDateGroupItem : ExcelFilterItem
             }
         }
 
-        node.AppendChild(e);
+        _ = node.AppendChild(e);
     }
 
     internal bool Match(DateTime value)

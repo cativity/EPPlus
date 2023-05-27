@@ -298,11 +298,11 @@ internal class ExcelXmlWriter
     {
         if (prevRow != -1)
         {
-            cache.Append($"</{prefix}row>");
+            _ = cache.Append($"</{prefix}row>");
         }
 
         //ulong rowID = ExcelRow.GetRowID(SheetID, row);
-        cache.Append($"<{prefix}row r=\"{row}\"");
+        _ = cache.Append($"<{prefix}row r=\"{row}\"");
         RowInternal currRow = this._ws.GetValueInner(row, 0) as RowInternal;
 
         if (currRow != null)
@@ -310,32 +310,32 @@ internal class ExcelXmlWriter
             // if hidden, add hidden attribute and preserve ht/customHeight (Excel compatible)
             if (currRow.Hidden == true)
             {
-                cache.Append(" hidden=\"1\"");
+                _ = cache.Append(" hidden=\"1\"");
             }
 
             if (currRow.Height >= 0)
             {
-                cache.AppendFormat(string.Format(CultureInfo.InvariantCulture, " ht=\"{0}\"", currRow.Height));
+                _ = cache.AppendFormat(string.Format(CultureInfo.InvariantCulture, " ht=\"{0}\"", currRow.Height));
 
                 if (currRow.CustomHeight)
                 {
-                    cache.Append(" customHeight=\"1\"");
+                    _ = cache.Append(" customHeight=\"1\"");
                 }
             }
 
             if (currRow.OutlineLevel > 0)
             {
-                cache.AppendFormat(" outlineLevel =\"{0}\"", currRow.OutlineLevel);
+                _ = cache.AppendFormat(" outlineLevel =\"{0}\"", currRow.OutlineLevel);
 
                 if (currRow.Collapsed)
                 {
-                    cache.Append(" collapsed=\"1\"");
+                    _ = cache.Append(" collapsed=\"1\"");
                 }
             }
 
             if (currRow.Phonetic)
             {
-                cache.Append(" ph=\"1\"");
+                _ = cache.Append(" ph=\"1\"");
             }
         }
 
@@ -343,10 +343,10 @@ internal class ExcelXmlWriter
 
         if (s > 0)
         {
-            cache.AppendFormat(" s=\"{0}\" customFormat=\"1\"", cellXfs[s].newID < 0 ? 0 : cellXfs[s].newID);
+            _ = cache.AppendFormat(" s=\"{0}\" customFormat=\"1\"", cellXfs[s].newID < 0 ? 0 : cellXfs[s].newID);
         }
 
-        cache.Append(">");
+        _ = cache.Append(">");
     }
 
     private static string GetDataTableAttributes(Formulas f)
@@ -401,10 +401,10 @@ internal class ExcelXmlWriter
         string? fTag = prefix + "f";
         string? vTag = prefix + "v";
 
-        StringBuilder sbXml = new StringBuilder();
+        //_ = new StringBuilder();
         Dictionary<string, ExcelWorkbook.SharedStringItem>? ss = this._package.Workbook._sharedStrings;
         StringBuilder? cache = new StringBuilder();
-        cache.Append($"<{sheetDataTag}>");
+        _ = cache.Append($"<{sheetDataTag}>");
 
         this.FixSharedFormulas(); //Fixes Issue #32
 
@@ -487,16 +487,16 @@ internal class ExcelXmlWriter
                         {
                             if (f.FormulaType == FormulaType.Array)
                             {
-                                cache.Append($"<{cTag} r=\"{cse.CellAddress}\" s=\"{styleID}\"{ConvertUtil.GetCellType(v, true)}{mdAttr}><{fTag} ref=\"{f.Address}\" t=\"array\" {mdAttrForFTag}>{ConvertUtil.ExcelEscapeAndEncodeString(f.Formula)}</{fTag}>{this.GetFormulaValue(v, prefix)}</{cTag}>");
+                                _ = cache.Append($"<{cTag} r=\"{cse.CellAddress}\" s=\"{styleID}\"{ConvertUtil.GetCellType(v, true)}{mdAttr}><{fTag} ref=\"{f.Address}\" t=\"array\" {mdAttrForFTag}>{ConvertUtil.ExcelEscapeAndEncodeString(f.Formula)}</{fTag}>{this.GetFormulaValue(v, prefix)}</{cTag}>");
                             }
                             else if (f.FormulaType == FormulaType.DataTable)
                             {
                                 string? dataTableAttributes = GetDataTableAttributes(f);
-                                cache.Append($"<{cTag} r=\"{cse.CellAddress}\" s=\"{styleID}\"{ConvertUtil.GetCellType(v, true)}{mdAttr}><{fTag} ref=\"{f.Address}\" t=\"dataTable\"{dataTableAttributes} {mdAttrForFTag}>{ConvertUtil.ExcelEscapeAndEncodeString(f.Formula)}</{fTag}></{cTag}>");
+                                _ = cache.Append($"<{cTag} r=\"{cse.CellAddress}\" s=\"{styleID}\"{ConvertUtil.GetCellType(v, true)}{mdAttr}><{fTag} ref=\"{f.Address}\" t=\"dataTable\"{dataTableAttributes} {mdAttrForFTag}>{ConvertUtil.ExcelEscapeAndEncodeString(f.Formula)}</{fTag}></{cTag}>");
                             }
                             else
                             {
-                                cache.Append($"<{cTag} r=\"{cse.CellAddress}\" s=\"{styleID}\"{ConvertUtil.GetCellType(v, true)}{mdAttr}><{fTag} ref=\"{f.Address}\" t=\"shared\" si=\"{sfId}\" {mdAttrForFTag}>{ConvertUtil.ExcelEscapeAndEncodeString(f.Formula)}</{fTag}>{this.GetFormulaValue(v, prefix)}</{cTag}>");
+                                _ = cache.Append($"<{cTag} r=\"{cse.CellAddress}\" s=\"{styleID}\"{ConvertUtil.GetCellType(v, true)}{mdAttr}><{fTag} ref=\"{f.Address}\" t=\"shared\" si=\"{sfId}\" {mdAttrForFTag}>{ConvertUtil.ExcelEscapeAndEncodeString(f.Formula)}</{fTag}>{this.GetFormulaValue(v, prefix)}</{cTag}>");
                             }
                         }
                         else if (f.FormulaType == FormulaType.Array)
@@ -512,15 +512,15 @@ internal class ExcelXmlWriter
                                 fElement = $"";
                             }
 
-                            cache.Append($"<{cTag} r=\"{cse.CellAddress}\" s=\"{styleID}\"{ConvertUtil.GetCellType(v, true)}{mdAttr}>{fElement}{this.GetFormulaValue(v, prefix)}</{cTag}>");
+                            _ = cache.Append($"<{cTag} r=\"{cse.CellAddress}\" s=\"{styleID}\"{ConvertUtil.GetCellType(v, true)}{mdAttr}>{fElement}{this.GetFormulaValue(v, prefix)}</{cTag}>");
                         }
                         else if (f.FormulaType == FormulaType.DataTable)
                         {
-                            cache.Append($"<{cTag} r=\"{cse.CellAddress}\" s=\"{styleID}\"{ConvertUtil.GetCellType(v, true)}{mdAttr}>{this.GetFormulaValue(v, prefix)}</{cTag}>");
+                            _ = cache.Append($"<{cTag} r=\"{cse.CellAddress}\" s=\"{styleID}\"{ConvertUtil.GetCellType(v, true)}{mdAttr}>{this.GetFormulaValue(v, prefix)}</{cTag}>");
                         }
                         else
                         {
-                            cache.Append($"<{cTag} r=\"{cse.CellAddress}\" s=\"{styleID}\"{ConvertUtil.GetCellType(v, true)}{mdAttr}><f t=\"shared\" si=\"{sfId}\" {mdAttrForFTag}/>{this.GetFormulaValue(v, prefix)}</{cTag}>");
+                            _ = cache.Append($"<{cTag} r=\"{cse.CellAddress}\" s=\"{styleID}\"{ConvertUtil.GetCellType(v, true)}{mdAttr}><f t=\"shared\" si=\"{sfId}\" {mdAttrForFTag}/>{this.GetFormulaValue(v, prefix)}</{cTag}>");
                         }
                     }
                     else
@@ -528,25 +528,25 @@ internal class ExcelXmlWriter
                         // We can also have a single cell array formula
                         if (f.FormulaType == FormulaType.Array)
                         {
-                            cache.Append($"<{cTag} r=\"{cse.CellAddress}\" s=\"{styleID}\"{ConvertUtil.GetCellType(v, true)}{mdAttr}><{fTag} ref=\"{string.Format("{0}:{1}", f.Address, f.Address)}\" t=\"array\"{mdAttrForFTag}>{ConvertUtil.ExcelEscapeAndEncodeString(f.Formula)}</{fTag}>{this.GetFormulaValue(v, prefix)}</{cTag}>");
+                            _ = cache.Append($"<{cTag} r=\"{cse.CellAddress}\" s=\"{styleID}\"{ConvertUtil.GetCellType(v, true)}{mdAttr}><{fTag} ref=\"{string.Format("{0}:{1}", f.Address, f.Address)}\" t=\"array\"{mdAttrForFTag}>{ConvertUtil.ExcelEscapeAndEncodeString(f.Formula)}</{fTag}>{this.GetFormulaValue(v, prefix)}</{cTag}>");
                         }
                         else
                         {
-                            cache.Append($"<{cTag} r=\"{f.Address}\" s=\"{styleID}\"{ConvertUtil.GetCellType(v, true)}{mdAttr}>");
-                            cache.Append($"<{fTag}{mdAttrForFTag}>{ConvertUtil.ExcelEscapeAndEncodeString(f.Formula)}</{fTag}>{this.GetFormulaValue(v, prefix)}</{cTag}>");
+                            _ = cache.Append($"<{cTag} r=\"{f.Address}\" s=\"{styleID}\"{ConvertUtil.GetCellType(v, true)}{mdAttr}>");
+                            _ = cache.Append($"<{fTag}{mdAttrForFTag}>{ConvertUtil.ExcelEscapeAndEncodeString(f.Formula)}</{fTag}>{this.GetFormulaValue(v, prefix)}</{cTag}>");
                         }
                     }
                 }
                 else if (formula != null && formula.ToString() != "")
                 {
-                    cache.Append($"<{cTag} r=\"{cse.CellAddress}\" s=\"{styleID}\"{ConvertUtil.GetCellType(v, true)}{mdAttr}>");
-                    cache.Append($"<{fTag}>{ConvertUtil.ExcelEscapeAndEncodeString(formula.ToString())}</{fTag}>{this.GetFormulaValue(v, prefix)}</{cTag}>");
+                    _ = cache.Append($"<{cTag} r=\"{cse.CellAddress}\" s=\"{styleID}\"{ConvertUtil.GetCellType(v, true)}{mdAttr}>");
+                    _ = cache.Append($"<{fTag}>{ConvertUtil.ExcelEscapeAndEncodeString(formula.ToString())}</{fTag}>{this.GetFormulaValue(v, prefix)}</{cTag}>");
                 }
                 else
                 {
                     if (v == null && styleID > 0)
                     {
-                        cache.Append($"<{cTag} r=\"{cse.CellAddress}\" s=\"{styleID}\"{mdAttr}/>");
+                        _ = cache.Append($"<{cTag} r=\"{cse.CellAddress}\" s=\"{styleID}\"{mdAttr}/>");
                     }
                     else if (v != null)
                     {
@@ -567,8 +567,8 @@ internal class ExcelXmlWriter
                         if ((TypeCompat.IsPrimitive(v) || v is double || v is decimal || v is DateTime || v is TimeSpan) && !(v is char))
                         {
                             //string sv = GetValueForXml(v);
-                            cache.Append($"<{cTag} r=\"{cse.CellAddress}\" s=\"{styleID}\"{ConvertUtil.GetCellType(v)}{mdAttr}>");
-                            cache.Append($"{this.GetFormulaValue(v, prefix)}</{cTag}>");
+                            _ = cache.Append($"<{cTag} r=\"{cse.CellAddress}\" s=\"{styleID}\"{ConvertUtil.GetCellType(v)}{mdAttr}>");
+                            _ = cache.Append($"{this.GetFormulaValue(v, prefix)}</{cTag}>");
                         }
                         else
                         {
@@ -592,8 +592,8 @@ internal class ExcelXmlWriter
                                 ix = ss[s].pos;
                             }
 
-                            cache.Append($"<{cTag} r=\"{cse.CellAddress}\" s=\"{styleID}\" t=\"s\"{mdAttr}>");
-                            cache.Append($"<{vTag}>{ix}</{vTag}></{cTag}>");
+                            _ = cache.Append($"<{cTag} r=\"{cse.CellAddress}\" s=\"{styleID}\" t=\"s\"{mdAttr}>");
+                            _ = cache.Append($"<{vTag}>{ix}</{vTag}></{cTag}>");
                         }
                     }
                 }
@@ -616,10 +616,10 @@ internal class ExcelXmlWriter
 
         if (row != -1)
         {
-            cache.Append($"</{prefix}row>");
+            _ = cache.Append($"</{prefix}row>");
         }
 
-        cache.Append($"</{prefix}sheetData>");
+        _ = cache.Append($"</{prefix}sheetData>");
         sw.Write(cache.ToString());
         sw.Flush();
     }
@@ -645,81 +645,81 @@ internal class ExcelXmlWriter
     {
         if (this._ws.DataValidations[i].ValidationType != null && this._ws.DataValidations[i].ValidationType.Type != eDataValidationType.Any)
         {
-            cache.Append($"type=\"{this._ws.DataValidations[i].ValidationType.TypeToXmlString()}\" ");
+            _ = cache.Append($"type=\"{this._ws.DataValidations[i].ValidationType.TypeToXmlString()}\" ");
         }
 
         if (this._ws.DataValidations[i].ErrorStyle != ExcelDataValidationWarningStyle.undefined)
         {
-            cache.Append($"errorStyle=\"{this._ws.DataValidations[i].ErrorStyle.ToEnumString()}\" ");
+            _ = cache.Append($"errorStyle=\"{this._ws.DataValidations[i].ErrorStyle.ToEnumString()}\" ");
         }
 
         if (this._ws.DataValidations[i].ImeMode != ExcelDataValidationImeMode.NoControl)
         {
-            cache.Append($"imeMode=\"{this._ws.DataValidations[i].ImeMode.ToEnumString()}\" ");
+            _ = cache.Append($"imeMode=\"{this._ws.DataValidations[i].ImeMode.ToEnumString()}\" ");
         }
 
         if (this._ws.DataValidations[i].Operator != 0)
         {
-            cache.Append($"operator=\"{this._ws.DataValidations[i].Operator.ToEnumString()}\" ");
+            _ = cache.Append($"operator=\"{this._ws.DataValidations[i].Operator.ToEnumString()}\" ");
         }
 
         //Note that if false excel does not write these properties out so we don't either.
         if (this._ws.DataValidations[i].AllowBlank == true)
         {
-            cache.Append($"allowBlank=\"1\" ");
+            _ = cache.Append($"allowBlank=\"1\" ");
         }
 
         if (this._ws.DataValidations[i] is ExcelDataValidationList)
         {
             if ((this._ws.DataValidations[i] as ExcelDataValidationList).HideDropDown == true)
             {
-                cache.Append($"showDropDown=\"1\" ");
+                _ = cache.Append($"showDropDown=\"1\" ");
             }
         }
 
         if (this._ws.DataValidations[i].ShowInputMessage == true)
         {
-            cache.Append($"showInputMessage=\"1\" ");
+            _ = cache.Append($"showInputMessage=\"1\" ");
         }
 
         if (this._ws.DataValidations[i].ShowErrorMessage == true)
         {
-            cache.Append($"showErrorMessage=\"1\" ");
+            _ = cache.Append($"showErrorMessage=\"1\" ");
         }
 
         if (string.IsNullOrEmpty(this._ws.DataValidations[i].ErrorTitle) == false)
         {
-            cache.Append($"errorTitle=\"{this._ws.DataValidations[i].ErrorTitle.EncodeXMLAttribute()}\" ");
+            _ = cache.Append($"errorTitle=\"{this._ws.DataValidations[i].ErrorTitle.EncodeXMLAttribute()}\" ");
         }
 
         if (string.IsNullOrEmpty(this._ws.DataValidations[i].Error) == false)
         {
-            cache.Append($"error=\"{this._ws.DataValidations[i].Error.EncodeXMLAttribute()}\" ");
+            _ = cache.Append($"error=\"{this._ws.DataValidations[i].Error.EncodeXMLAttribute()}\" ");
         }
 
         if (string.IsNullOrEmpty(this._ws.DataValidations[i].PromptTitle) == false)
         {
-            cache.Append($"promptTitle=\"{this._ws.DataValidations[i].PromptTitle.EncodeXMLAttribute()}\" ");
+            _ = cache.Append($"promptTitle=\"{this._ws.DataValidations[i].PromptTitle.EncodeXMLAttribute()}\" ");
         }
 
         if (string.IsNullOrEmpty(this._ws.DataValidations[i].Prompt) == false)
         {
-            cache.Append($"prompt=\"{this._ws.DataValidations[i].Prompt.EncodeXMLAttribute()}\" ");
+            _ = cache.Append($"prompt=\"{this._ws.DataValidations[i].Prompt.EncodeXMLAttribute()}\" ");
         }
 
         if (this._ws.DataValidations[i].InternalValidationType == InternalValidationType.DataValidation)
         {
-            cache.Append($"sqref=\"{this._ws.DataValidations[i].Address.ToString().Replace(",", " ")}\" ");
+            _ = cache.Append($"sqref=\"{this._ws.DataValidations[i].Address.ToString().Replace(",", " ")}\" ");
         }
 
-        cache.Append($"xr:uid=\"{this._ws.DataValidations[i].Uid}\"");
+        _ = cache.Append($"xr:uid=\"{this._ws.DataValidations[i].Uid}\"");
 
-        cache.Append(">");
+        _ = cache.Append(">");
     }
 
     private void WriteDataValidation(StringBuilder cache, string prefix, int i, string extNode = "")
     {
-        cache.Append($"<{prefix}dataValidation ");
+        _ = cache.Append($"<{prefix}dataValidation ");
         this.WriteDataValidationAttributes(cache, i);
 
         if (this._ws.DataValidations[i].ValidationType.Type != eDataValidationType.Any)
@@ -802,11 +802,11 @@ internal class ExcelXmlWriter
             if (extNode != "")
             {
                 //write adress if extLst
-                cache.Append($"<xm:sqref>{this._ws.DataValidations[i].Address.ToString().Replace(",", " ")}</xm:sqref>");
+                _ = cache.Append($"<xm:sqref>{this._ws.DataValidations[i].Address.ToString().Replace(",", " ")}</xm:sqref>");
             }
         }
 
-        cache.Append($"</{prefix}dataValidation>");
+        _ = cache.Append($"</{prefix}dataValidation>");
     }
 
     static void WriteDataValidationFormulaSingle(IExcelDataValidationFormula formula, StringBuilder cache, string prefix, string extNode, string endExtNode)
@@ -814,7 +814,7 @@ internal class ExcelXmlWriter
         string string1 = ((ExcelDataValidationFormula)formula).GetXmlValue();
         string1 = ConvertUtil.ExcelEscapeAndEncodeString(string1);
 
-        cache.Append($"<{prefix}formula1>{extNode}{string1}{endExtNode}</{prefix}formula1>");
+        _ = cache.Append($"<{prefix}formula1>{extNode}{string1}{endExtNode}</{prefix}formula1>");
     }
 
     static void WriteDataValidationFormulas(IExcelDataValidationFormula formula1,
@@ -830,12 +830,12 @@ internal class ExcelXmlWriter
 
         //Note that formula1 must be written even when string1 is empty
         string1 = ConvertUtil.ExcelEscapeAndEncodeString(string1);
-        cache.Append($"<{prefix}formula1>{extNode}{string1}{endExtNode}</{prefix}formula1>");
+        _ = cache.Append($"<{prefix}formula1>{extNode}{string1}{endExtNode}</{prefix}formula1>");
 
         if (!string.IsNullOrEmpty(string2) && (dvOperator == ExcelDataValidationOperator.between || dvOperator == ExcelDataValidationOperator.notBetween))
         {
             string2 = ConvertUtil.ExcelEscapeAndEncodeString(string2);
-            cache.Append($"<{prefix}formula2>{extNode}{string2}{endExtNode}</{prefix}formula2>");
+            _ = cache.Append($"<{prefix}formula2>{extNode}{string2}{endExtNode}</{prefix}formula2>");
         }
     }
 
@@ -847,12 +847,12 @@ internal class ExcelXmlWriter
 
         if (extraAttribute == "")
         {
-            cache.Append($"<{prefix}dataValidations count=\"{this._ws.DataValidations.GetNonExtLstCount()}\">");
+            _ = cache.Append($"<{prefix}dataValidations count=\"{this._ws.DataValidations.GetNonExtLstCount()}\">");
             type = InternalValidationType.DataValidation;
         }
         else
         {
-            cache.Append($"<{prefix}dataValidations {extraAttribute} count=\"{this._ws.DataValidations.GetExtLstCount()}\">");
+            _ = cache.Append($"<{prefix}dataValidations {extraAttribute} count=\"{this._ws.DataValidations.GetExtLstCount()}\">");
             type = InternalValidationType.ExtLst;
             extNode = "xm:f";
         }
@@ -865,7 +865,7 @@ internal class ExcelXmlWriter
             }
         }
 
-        cache.Append($"</{prefix}dataValidations>");
+        _ = cache.Append($"</{prefix}dataValidations>");
 
         return cache;
     }
@@ -923,7 +923,6 @@ internal class ExcelXmlWriter
 
                 if (hyps.ContainsKey(hyp.OriginalString) && string.IsNullOrEmpty(target))
                 {
-                    string id = hyps[hyp.OriginalString];
                 }
                 else
                 {
@@ -970,7 +969,7 @@ internal class ExcelXmlWriter
 
             if (row != null && row.PageBreak)
             {
-                breaks.AppendFormat($"<{prefix}brk id=\"{cse.Row}\" max=\"1048575\" man=\"1\"/>");
+                _ = breaks.AppendFormat($"<{prefix}brk id=\"{cse.Row}\" max=\"1048575\" man=\"1\"/>");
                 count++;
             }
         }
@@ -993,7 +992,7 @@ internal class ExcelXmlWriter
 
             if (col != null && col.PageBreak)
             {
-                breaks.Append($"<{prefix}brk id=\"{cse.Column}\" max=\"16383\" man=\"1\"/>");
+                _ = breaks.Append($"<{prefix}brk id=\"{cse.Column}\" max=\"16383\" man=\"1\"/>");
                 count++;
             }
         }
@@ -1013,11 +1012,11 @@ internal class ExcelXmlWriter
     {
         StringBuilder? cache = new StringBuilder();
 
-        cache.Append($"<ext xmlns:x14=\"{ExcelPackage.schemaMainX14}\" uri=\"{ExtLstUris.DataValidationsUri}\">");
+        _ = cache.Append($"<ext xmlns:x14=\"{ExcelPackage.schemaMainX14}\" uri=\"{ExtLstUris.DataValidationsUri}\">");
 
         prefix = "x14:";
-        cache.Append(this.UpdateDataValidation(prefix, $"xmlns:xm=\"{ExcelPackage.schemaMainXm}\""));
-        cache.Append("</ext>");
+        _ = cache.Append(this.UpdateDataValidation(prefix, $"xmlns:xm=\"{ExcelPackage.schemaMainXm}\""));
+        _ = cache.Append("</ext>");
 
         return cache.ToString();
     }

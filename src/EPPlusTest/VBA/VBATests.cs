@@ -54,7 +54,7 @@ public class VBATests : TestBase
     [TestMethod]
     public void WriteVBA()
     {
-        _pck.Workbook.Worksheets.Add("WriteVBA");
+        _ = _pck.Workbook.Worksheets.Add("WriteVBA");
 
         _pck.Workbook.VbaProject.Modules["WriteVBA"].Code +=
             "\r\nPrivate Sub Worksheet_SelectionChange(ByVal Target As Range)\r\nMsgBox(\"Test of the VBA Feature!\")\r\nEnd Sub\r\n";
@@ -81,7 +81,7 @@ public class VBATests : TestBase
     [TestMethod]
     public void WriteLongVBAModule()
     {
-        _pck.Workbook.Worksheets.Add("VBASetData");
+        _ = _pck.Workbook.Worksheets.Add("VBASetData");
         _pck.Workbook.CodeModule.Code = "Private Sub Workbook_Open()\r\nCreateData\r\nEnd Sub";
         ExcelVBAModule? module = _pck.Workbook.VbaProject.Modules.AddModule("Code");
 
@@ -91,11 +91,11 @@ public class VBATests : TestBase
         {
             for (int col = 1; col < 30; col++)
             {
-                code.AppendLine(string.Format("VBASetData.Cells({0},{1}).Value=\"Cell {2}\"", row, col, new ExcelAddressBase(row, col, row, col).Address));
+                _ = code.AppendLine(string.Format("VBASetData.Cells({0},{1}).Value=\"Cell {2}\"", row, col, new ExcelAddressBase(row, col, row, col).Address));
             }
         }
 
-        code.AppendLine("End Sub");
+        _ = code.AppendLine("End Sub");
         module.Code = code.ToString();
 
         //X509Store store = new X509Store(StoreLocation.CurrentUser);
@@ -109,15 +109,15 @@ public class VBATests : TestBase
         ExcelWorksheet worksheet = _pck.Workbook.Worksheets.Add("测试");
 
         StringBuilder? sb = new StringBuilder();
-        sb.AppendLine("Sub GetData()");
-        sb.AppendLine("MsgBox (\"Hello,World\")");
-        sb.AppendLine("End Sub");
+        _ = sb.AppendLine("Sub GetData()");
+        _ = sb.AppendLine("MsgBox (\"Hello,World\")");
+        _ = sb.AppendLine("End Sub");
 
-        ExcelWorksheet worksheet2 = _pck.Workbook.Worksheets.Add("Sheet1");
+        _ = _pck.Workbook.Worksheets.Add("Sheet1");
         StringBuilder? stringBuilder = new StringBuilder();
-        stringBuilder.AppendLine("Private Sub Worksheet_Change(ByVal Target As Range)");
-        stringBuilder.AppendLine("GetData");
-        stringBuilder.AppendLine("End Sub");
+        _ = stringBuilder.AppendLine("Private Sub Worksheet_Change(ByVal Target As Range)");
+        _ = stringBuilder.AppendLine("GetData");
+        _ = stringBuilder.AppendLine("End Sub");
         worksheet.CodeModule.Code = stringBuilder.ToString();
     }
 
@@ -126,11 +126,11 @@ public class VBATests : TestBase
     {
         using ExcelPackage? p = new ExcelPackage();
         p.Workbook.CreateVBAProject();
-        p.Workbook.Worksheets.Add("Work!Sheet");
-        p.Workbook.Worksheets.Add("Mod=ule1");
-        p.Workbook.Worksheets.Add("_module1");
-        p.Workbook.Worksheets.Add("1module1");
-        p.Workbook.Worksheets.Add("Module_1");
+        _ = p.Workbook.Worksheets.Add("Work!Sheet");
+        _ = p.Workbook.Worksheets.Add("Mod=ule1");
+        _ = p.Workbook.Worksheets.Add("_module1");
+        _ = p.Workbook.Worksheets.Add("1module1");
+        _ = p.Workbook.Worksheets.Add("Module_1");
 
         Assert.AreEqual("ThisWorkbook", p.Workbook.VbaProject.Modules[0].Name);
         Assert.AreEqual("Sheet0", p.Workbook.VbaProject.Modules[1].Name);
@@ -145,9 +145,9 @@ public class VBATests : TestBase
     public void ModuleNameContainsInvalidCharacters()
     {
         using ExcelPackage? p = new ExcelPackage();
-        p.Workbook.Worksheets.Add("InvalidName");
+        _ = p.Workbook.Worksheets.Add("InvalidName");
         p.Workbook.CreateVBAProject();
-        p.Workbook.VbaProject.Modules.AddModule("Mod%ule2");
+        _ = p.Workbook.VbaProject.Modules.AddModule("Mod%ule2");
     }
 
     [TestMethod]
@@ -159,9 +159,9 @@ public class VBATests : TestBase
         p.Workbook.CreateVBAProject();
         ws.CodeModule.Code = "Sub VBA_Code\r\n\r\nEnd Sub";
 
-        ExcelWorksheet? newWS1 = p.Workbook.Worksheets.Add("1newworksheet", ws);
-        ExcelWorksheet? newWS2 = p.Workbook.Worksheets.Add("Sheet3", ws);
-        ExcelWorksheet? newWS3 = p.Workbook.Worksheets.Add("newworksheet+1", ws);
+        _ = p.Workbook.Worksheets.Add("1newworksheet", ws);
+        _ = p.Workbook.Worksheets.Add("Sheet3", ws);
+        _ = p.Workbook.Worksheets.Add("newworksheet+1", ws);
 
         Assert.AreEqual(5, p.Workbook.VbaProject.Modules.Count);
         Assert.AreEqual("ThisWorkbook", p.Workbook.VbaProject.Modules[0].Name);
@@ -224,7 +224,6 @@ public class VBATests : TestBase
     {
         using ExcelPackage? package = OpenTemplatePackage(@"SignedWorkbook1.xlsm");
         ExcelVbaProject? proj = package.Workbook.VbaProject;
-        ExcelVbaSignature? s = proj.Signature;
         package.Workbook.VbaProject.Signature.LegacySignature.CreateSignatureOnSave = false;
         package.Workbook.VbaProject.Signature.V3Signature.CreateSignatureOnSave = false;
         SaveAndCleanup(package);

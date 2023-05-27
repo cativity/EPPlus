@@ -464,7 +464,7 @@ public partial class ExcelRangeBase : ExcelAddress, IExcelCell, IDisposable, IEn
     private static void Set_Comment(ExcelRangeBase range, object value, int row, int col)
     {
         string[] v = (string[])value;
-        range._worksheet.Comments.Add(new ExcelRangeBase(range._worksheet, GetAddress(row, col)), v[0], v[1]);
+        _ = range._worksheet.Comments.Add(new ExcelRangeBase(range._worksheet, GetAddress(row, col)), v[0], v[1]);
     }
 
     private static void Exists_ThreadedComment(ExcelRangeBase range, object value, int row, int col)
@@ -477,7 +477,7 @@ public partial class ExcelRangeBase : ExcelAddress, IExcelCell, IDisposable, IEn
 
     private static void Set_ThreadedComment(ExcelRangeBase range, object value, int row, int col)
     {
-        range._worksheet.ThreadedComments.Add(GetAddress(row, col));
+        _ = range._worksheet.ThreadedComments.Add(GetAddress(row, col));
     }
 
     #endregion
@@ -638,7 +638,7 @@ public partial class ExcelRangeBase : ExcelAddress, IExcelCell, IDisposable, IEn
                     {
                         if (column.ColumnMax > this._toCol)
                         {
-                            ExcelColumn? newCol = this._worksheet.CopyColumn(column, this._toCol + 1, column.ColumnMax);
+                            _ = this._worksheet.CopyColumn(column, this._toCol + 1, column.ColumnMax);
                             column.ColumnMax = this._toCol;
                         }
 
@@ -659,7 +659,7 @@ public partial class ExcelRangeBase : ExcelAddress, IExcelCell, IDisposable, IEn
                             }
 
                             column = nextCol;
-                            cols.Next();
+                            _ = cols.Next();
                         }
                     }
                 }
@@ -672,7 +672,7 @@ public partial class ExcelRangeBase : ExcelAddress, IExcelCell, IDisposable, IEn
                 if (this._fromCol == 1 && this._toCol == ExcelPackage.MaxColumns) //FullRow
                 {
                     CellStoreEnumerator<ExcelValue>? rows = new CellStoreEnumerator<ExcelValue>(this._worksheet._values, 1, 0, ExcelPackage.MaxRows, 0);
-                    rows.Next();
+                    _ = rows.Next();
 
                     while (rows.Value._value != null)
                     {
@@ -1766,7 +1766,7 @@ public partial class ExcelRangeBase : ExcelAddress, IExcelCell, IDisposable, IEn
         //The formula is inside the currenct range, remove it
         if (collide == eAddressCollition.Equal || collide == eAddressCollition.Inside)
         {
-            this._worksheet._sharedFormulas.Remove(ix);
+            _ = this._worksheet._sharedFormulas.Remove(ix);
 
             return;
 

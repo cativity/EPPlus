@@ -32,7 +32,7 @@ internal static class ExcelConditionalFormattingRuleFactory
                                                         ExcelWorksheet worksheet,
                                                         XmlNode itemElementNode)
     {
-        Require.Argument(type);
+        _ = Require.Argument(type);
         Require.Argument(address).IsNotNull("address");
         Require.Argument(worksheet).IsNotNull("worksheet");
 

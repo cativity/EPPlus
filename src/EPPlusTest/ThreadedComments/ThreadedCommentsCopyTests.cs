@@ -34,7 +34,7 @@ public class ThreadedCommentsCopyTests : TestBase
         ExcelThreadedCommentPerson? person = sheet.ThreadedComments.Persons.Add("John Doe");
         ExcelThreadedCommentPerson? person2 = sheet.ThreadedComments.Persons.Add("Jane Doe");
         ExcelThreadedCommentThread? thread = sheet.Cells["A1"].AddThreadedComment();
-        ExcelThreadedComment? c1 = thread.AddComment(person2.Id, "Hello");
+        _ = thread.AddComment(person2.Id, "Hello");
         ExcelThreadedComment? c2 = thread.AddComment(person.Id, "Hello {0}, how are you?", person2);
 
         sheet.Cells[1, 1].Copy(sheet.Cells["A3"]);
@@ -54,7 +54,7 @@ public class ThreadedCommentsCopyTests : TestBase
         ExcelThreadedCommentPerson? person = sheet.ThreadedComments.Persons.Add("John Doe");
         ExcelThreadedCommentPerson? person2 = sheet.ThreadedComments.Persons.Add("Jane Doe");
         ExcelThreadedCommentThread? thread = sheet.Cells["A1"].AddThreadedComment();
-        ExcelThreadedComment? c1 = thread.AddComment(person2.Id, "Hello");
+        _ = thread.AddComment(person2.Id, "Hello");
         ExcelThreadedComment? c2 = thread.AddComment(person.Id, "Hello {0}, how are you?", person2);
 
         ExcelWorksheet? sheet2 = _pck.Workbook.Worksheets.Add("NewSheet_Dest");
@@ -76,7 +76,7 @@ public class ThreadedCommentsCopyTests : TestBase
         ExcelThreadedCommentPerson? person = sheet.ThreadedComments.Persons.Add("John Doe");
         ExcelThreadedCommentPerson? person2 = sheet.ThreadedComments.Persons.Add("Jane Doe");
         ExcelThreadedCommentThread? thread = sheet.Cells["A1"].AddThreadedComment();
-        ExcelThreadedComment? c1 = thread.AddComment(person2.Id, "Hello");
+        _ = thread.AddComment(person2.Id, "Hello");
         ExcelThreadedComment? c2 = thread.AddComment(person.Id, "Hello {0}, how are you?", person2);
         using ExcelPackage? pck2 = new ExcelPackage();
         ExcelWorksheet? sheet2 = pck2.Workbook.Worksheets.Add("test2");
@@ -98,7 +98,7 @@ public class ThreadedCommentsCopyTests : TestBase
         ExcelThreadedCommentPerson? person = sheetToCopy.ThreadedComments.Persons.Add("John Doe");
         ExcelThreadedCommentPerson? person2 = sheetToCopy.ThreadedComments.Persons.Add("Jane Doe");
         ExcelThreadedCommentThread? thread = sheetToCopy.Cells["A1"].AddThreadedComment();
-        ExcelThreadedComment? c1 = thread.AddComment(person2.Id, "Hello");
+        _ = thread.AddComment(person2.Id, "Hello");
         ExcelThreadedComment? c2 = thread.AddComment(person.Id, "Hello {0}, how are you?", person2);
 
         ExcelWorksheet? copy = _pck.Workbook.Worksheets.Add("WorksheetCopy_Dest", sheetToCopy);
@@ -119,7 +119,7 @@ public class ThreadedCommentsCopyTests : TestBase
         ExcelThreadedCommentPerson? person = sheetToCopy.ThreadedComments.Persons.Add("John Doe");
         ExcelThreadedCommentPerson? person2 = sheetToCopy.ThreadedComments.Persons.Add("Jane Doe");
         ExcelThreadedCommentThread? thread = sheetToCopy.Cells["A1"].AddThreadedComment();
-        ExcelThreadedComment? c1 = thread.AddComment(person2.Id, "Hello");
+        _ = thread.AddComment(person2.Id, "Hello");
         ExcelThreadedComment? c2 = thread.AddComment(person.Id, "Hello {0}, how are you?", person2);
 
         using ExcelPackage? pck2 = new ExcelPackage();

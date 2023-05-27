@@ -193,21 +193,21 @@ public class ExcelPivotTableFieldItem
             return;
         }
 
-        sb.Append("<item");
+        _ = sb.Append("<item");
 
         if (this.X > -1)
         {
-            sb.AppendFormat(" x=\"{0}\"", this.X);
+            _ = sb.AppendFormat(" x=\"{0}\"", this.X);
         }
 
         if (this.Type != eItemType.Data)
         {
-            sb.AppendFormat(" t=\"{0}\"", this.Type.ToEnumString());
+            _ = sb.AppendFormat(" t=\"{0}\"", this.Type.ToEnumString());
         }
 
         if (!string.IsNullOrEmpty(this.Text))
         {
-            sb.AppendFormat(" n=\"{0}\"", Utils.ConvertUtil.ExcelEscapeString(this.Text));
+            _ = sb.AppendFormat(" n=\"{0}\"", Utils.ConvertUtil.ExcelEscapeString(this.Text));
         }
 
         AddBool(sb, "h", this.Hidden);
@@ -218,14 +218,14 @@ public class ExcelPivotTableFieldItem
         AddBool(sb, "f", this.F);
         AddBool(sb, "m", this.M);
         AddBool(sb, "s", this.S);
-        sb.Append("/>");
+        _ = sb.Append("/>");
     }
 
     private static void AddBool(StringBuilder sb, string attrName, bool b, bool defaultValue = false)
     {
         if (b != defaultValue)
         {
-            sb.AppendFormat(" {0}=\"{1}\"", attrName, b ? "1" : "0");
+            _ = sb.AppendFormat(" {0}=\"{1}\"", attrName, b ? "1" : "0");
         }
     }
 

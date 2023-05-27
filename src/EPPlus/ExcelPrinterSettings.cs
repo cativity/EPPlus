@@ -626,7 +626,7 @@ public sealed class ExcelPrinterSettings : XmlHelper
             }
             else
             {
-                this._ws.Names.AddName("_xlnm.Print_Titles", new ExcelRangeBase(this._ws, addr));
+                _ = this._ws.Names.AddName("_xlnm.Print_Titles", new ExcelRangeBase(this._ws, addr));
             }
         }
     }
@@ -688,7 +688,7 @@ public sealed class ExcelPrinterSettings : XmlHelper
             }
             else
             {
-                this._ws.Names.AddName("_xlnm.Print_Titles", new ExcelRangeBase(this._ws, addr));
+                _ = this._ws.Names.AddName("_xlnm.Print_Titles", new ExcelRangeBase(this._ws, addr));
             }
         }
     }
@@ -722,7 +722,7 @@ public sealed class ExcelPrinterSettings : XmlHelper
             }
             else
             {
-                this._ws.Names.AddName("_xlnm.Print_Area", value);
+                _ = this._ws.Names.AddName("_xlnm.Print_Area", value);
             }
         }
     }

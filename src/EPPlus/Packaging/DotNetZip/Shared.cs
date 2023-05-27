@@ -241,7 +241,7 @@ internal static class SharedUtilities
             if (x == ZipConstants.ZipEntryDataDescriptorSignature)
             {
                 // advance past data descriptor - 12 bytes if not zip64
-                s.Seek(12, SeekOrigin.Current);
+                _ = s.Seek(12, SeekOrigin.Current);
 
                 // workitem 10178
                 Workaround_Ladybug318918(s);
@@ -251,7 +251,7 @@ internal static class SharedUtilities
                 {
                     // Maybe zip64 was in use for the prior entry.
                     // Therefore, skip another 8 bytes.
-                    s.Seek(8, SeekOrigin.Current);
+                    _ = s.Seek(8, SeekOrigin.Current);
 
                     // workitem 10178
                     Workaround_Ladybug318918(s);
@@ -260,7 +260,7 @@ internal static class SharedUtilities
                     if (x != ZipConstants.ZipEntrySignature)
                     {
                         // seek back to the first spot
-                        s.Seek(-24, SeekOrigin.Current);
+                        _ = s.Seek(-24, SeekOrigin.Current);
 
                         // workitem 10178
                         Workaround_Ladybug318918(s);
@@ -363,7 +363,7 @@ internal static class SharedUtilities
                     {
                         if (i >= BATCH_SIZE - 4)
                         {
-                            stream.Seek(stream.Position - 4, SeekOrigin.Begin);
+                            _ = stream.Seek(stream.Position - 4, SeekOrigin.Begin);
 
                             // workitem 10178
                             Workaround_Ladybug318918(stream);
@@ -372,7 +372,7 @@ internal static class SharedUtilities
                         }
                         else if (batch[i + 1] == targetBytes[2] && batch[i + 2] == targetBytes[1] && batch[i + 3] == targetBytes[0])
                         {
-                            stream.Seek(i - n + 4, SeekOrigin.Current);
+                            _ = stream.Seek(i - n + 4, SeekOrigin.Current);
                             Workaround_Ladybug318918(stream);
                             success = true;
 
@@ -398,7 +398,7 @@ internal static class SharedUtilities
 
         if (!success)
         {
-            stream.Seek(startingPosition, SeekOrigin.Begin);
+            _ = stream.Seek(startingPosition, SeekOrigin.Begin);
 
             // workitem 10178
             Workaround_Ladybug318918(stream);
@@ -997,7 +997,7 @@ internal class CountingStream : Stream
         get { return this._s.Position; }
         set
         {
-            this._s.Seek(value, SeekOrigin.Begin);
+            _ = this._s.Seek(value, SeekOrigin.Begin);
 
             // workitem 10178
             SharedUtilities.Workaround_Ladybug318918(this._s);

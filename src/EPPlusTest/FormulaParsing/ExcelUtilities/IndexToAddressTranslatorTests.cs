@@ -53,14 +53,14 @@ public class IndexToAddressTranslatorTests
     private void SetupTranslator(int maxRows, ExcelReferenceType refType)
     {
         this._excelDataProvider = A.Fake<ExcelDataProvider>();
-        A.CallTo(() => this._excelDataProvider.ExcelMaxRows).Returns(maxRows);
+        _ = A.CallTo(() => this._excelDataProvider.ExcelMaxRows).Returns(maxRows);
         this._indexToAddressTranslator = new IndexToAddressTranslator(this._excelDataProvider, refType);
     }
 
     [TestMethod, ExpectedException(typeof(ArgumentNullException))]
     public void ShouldThrowIfExcelDataProviderIsNull()
     {
-        new IndexToAddressTranslator(null);
+        _ = new IndexToAddressTranslator(null);
     }
 
     [TestMethod]
@@ -101,7 +101,7 @@ public class IndexToAddressTranslatorTests
     [TestMethod]
     public void ShouldTranslateToEntireColumnWhenRowIsEqualToMaxRows()
     {
-        A.CallTo(() => this._excelDataProvider.ExcelMaxRows).Returns(123456);
+        _ = A.CallTo(() => this._excelDataProvider.ExcelMaxRows).Returns(123456);
         string? result = this._indexToAddressTranslator.ToAddress(1, 123456);
         Assert.AreEqual("A", result);
     }

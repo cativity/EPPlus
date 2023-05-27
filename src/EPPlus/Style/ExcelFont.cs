@@ -39,7 +39,7 @@ public sealed class ExcelFont : StyleBase
         set
         {
             this.CheckNormalStyleChange();
-            this._ChangedEvent(this, new StyleChangeEventArgs(eStyleClass.Font, eStyleProperty.Name, value, this._positionID, this._address));
+            _ = this._ChangedEvent(this, new StyleChangeEventArgs(eStyleClass.Font, eStyleProperty.Name, value, this._positionID, this._address));
         }
     }
 
@@ -65,7 +65,7 @@ public sealed class ExcelFont : StyleBase
         set
         {
             this.CheckNormalStyleChange();
-            this._ChangedEvent(this, new StyleChangeEventArgs(eStyleClass.Font, eStyleProperty.Size, value, this._positionID, this._address));
+            _ = this._ChangedEvent(this, new StyleChangeEventArgs(eStyleClass.Font, eStyleProperty.Size, value, this._positionID, this._address));
         }
     }
 
@@ -75,7 +75,7 @@ public sealed class ExcelFont : StyleBase
     public int Family
     {
         get { return this._styles.Fonts[this.Index].Family; }
-        set { this._ChangedEvent(this, new StyleChangeEventArgs(eStyleClass.Font, eStyleProperty.Family, value, this._positionID, this._address)); }
+        set { _ = this._ChangedEvent(this, new StyleChangeEventArgs(eStyleClass.Font, eStyleProperty.Family, value, this._positionID, this._address)); }
     }
 
     /// <summary>
@@ -92,7 +92,7 @@ public sealed class ExcelFont : StyleBase
     public string Scheme
     {
         get { return this._styles.Fonts[this.Index].Scheme; }
-        set { this._ChangedEvent(this, new StyleChangeEventArgs(eStyleClass.Font, eStyleProperty.Scheme, value, this._positionID, this._address)); }
+        set { _ = this._ChangedEvent(this, new StyleChangeEventArgs(eStyleClass.Font, eStyleProperty.Scheme, value, this._positionID, this._address)); }
     }
 
     /// <summary>
@@ -104,7 +104,7 @@ public sealed class ExcelFont : StyleBase
         set
         {
             this.CheckNormalStyleChange();
-            this._ChangedEvent(this, new StyleChangeEventArgs(eStyleClass.Font, eStyleProperty.Bold, value, this._positionID, this._address));
+            _ = this._ChangedEvent(this, new StyleChangeEventArgs(eStyleClass.Font, eStyleProperty.Bold, value, this._positionID, this._address));
         }
     }
 
@@ -117,7 +117,7 @@ public sealed class ExcelFont : StyleBase
         set
         {
             this.CheckNormalStyleChange();
-            this._ChangedEvent(this, new StyleChangeEventArgs(eStyleClass.Font, eStyleProperty.Italic, value, this._positionID, this._address));
+            _ = this._ChangedEvent(this, new StyleChangeEventArgs(eStyleClass.Font, eStyleProperty.Italic, value, this._positionID, this._address));
         }
     }
 
@@ -127,7 +127,7 @@ public sealed class ExcelFont : StyleBase
     public bool Strike
     {
         get { return this._styles.Fonts[this.Index].Strike; }
-        set { this._ChangedEvent(this, new StyleChangeEventArgs(eStyleClass.Font, eStyleProperty.Strike, value, this._positionID, this._address)); }
+        set { _ = this._ChangedEvent(this, new StyleChangeEventArgs(eStyleClass.Font, eStyleProperty.Strike, value, this._positionID, this._address)); }
     }
 
     /// <summary>
@@ -157,7 +157,7 @@ public sealed class ExcelFont : StyleBase
     public ExcelUnderLineType UnderLineType
     {
         get { return this._styles.Fonts[this.Index].UnderLineType; }
-        set { this._ChangedEvent(this, new StyleChangeEventArgs(eStyleClass.Font, eStyleProperty.UnderlineType, value, this._positionID, this._address)); }
+        set { _ = this._ChangedEvent(this, new StyleChangeEventArgs(eStyleClass.Font, eStyleProperty.UnderlineType, value, this._positionID, this._address)); }
     }
 
     /// <summary>
@@ -176,7 +176,7 @@ public sealed class ExcelFont : StyleBase
                 return (ExcelVerticalAlignmentFont)Enum.Parse(typeof(ExcelVerticalAlignmentFont), this._styles.Fonts[this.Index].VerticalAlign, true);
             }
         }
-        set { this._ChangedEvent(this, new StyleChangeEventArgs(eStyleClass.Font, eStyleProperty.VerticalAlign, value, this._positionID, this._address)); }
+        set { _ = this._ChangedEvent(this, new StyleChangeEventArgs(eStyleClass.Font, eStyleProperty.VerticalAlign, value, this._positionID, this._address)); }
     }
 
     /// <summary>
@@ -211,7 +211,7 @@ public sealed class ExcelFont : StyleBase
     public int? Charset
     {
         get { return this._styles.Fonts[this.Index].Charset; }
-        set { this._ChangedEvent(this, new StyleChangeEventArgs(eStyleClass.Font, eStyleProperty.Charset, value, this._positionID, this._address)); }
+        set { _ = this._ChangedEvent(this, new StyleChangeEventArgs(eStyleClass.Font, eStyleProperty.Charset, value, this._positionID, this._address)); }
     }
 
     /// <summary>

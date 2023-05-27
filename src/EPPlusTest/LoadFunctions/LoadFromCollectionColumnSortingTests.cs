@@ -102,7 +102,7 @@ public class LoadFromCollectionColumnSortingTests
                                             .ToArray();
 
         ExcelWorksheet? sheet = excel.Workbook.Worksheets.Add("16Columns");
-        sheet.Cells["A1"].LoadFromCollection(tableData1);
+        _ = sheet.Cells["A1"].LoadFromCollection(tableData1);
 
         for (int i = 1; i < 18; i++)
         {

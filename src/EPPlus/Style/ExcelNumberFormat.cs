@@ -57,7 +57,7 @@ public sealed class ExcelNumberFormat : StyleBase
         }
         set
         {
-            this._ChangedEvent(this,
+            _ = this._ChangedEvent(this,
                                new StyleChangeEventArgs(eStyleClass.Numberformat,
                                                         eStyleProperty.Format,
                                                         string.IsNullOrEmpty(value) ? "General" : value,

@@ -65,12 +65,12 @@ public class TableDeleteTests : TestBase
 
         ExcelTable? tbl = ws.Tables.Add(ws.Cells["A1:D100"], "TableDeleteTop");
         ws.Cells["A102"].Value = "Shift Me Up";
-        tbl.DeleteRow(0);
+        _ = tbl.DeleteRow(0);
 
         Assert.AreEqual("A1:D99", tbl.Address.Address);
         Assert.AreEqual(3, ws.Cells["B2"].Value);
         Assert.AreEqual("Shift Me Up", ws.Cells["A101"].Value);
-        tbl.DeleteRow(0, 3);
+        _ = tbl.DeleteRow(0, 3);
         Assert.AreEqual("Shift Me Up", ws.Cells["A98"].Value);
     }
 
@@ -82,11 +82,11 @@ public class TableDeleteTests : TestBase
         LoadTestdata(ws, 100);
         ws.Cells["A102"].Value = "Shift Me Up";
         ExcelTable? tbl = ws.Tables.Add(ws.Cells["A1:D100"], "TableDeleteBottom");
-        tbl.DeleteRow(98, 1);
+        _ = tbl.DeleteRow(98, 1);
         Assert.AreEqual("A1:D99", tbl.Address.Address);
         Assert.AreEqual(99, ws.Cells["B99"].Value);
         Assert.AreEqual("Shift Me Up", ws.Cells["A101"].Value);
-        tbl.DeleteRow(95, 3);
+        _ = tbl.DeleteRow(95, 3);
         Assert.AreEqual("A1:D96", tbl.Address.Address);
         Assert.AreEqual("Shift Me Up", ws.Cells["A98"].Value);
     }
@@ -106,10 +106,10 @@ public class TableDeleteTests : TestBase
         tbl.Columns[1].TotalsRowFunction = RowFunctions.Count;
         tbl.Columns[2].TotalsRowFunction = RowFunctions.Average;
         tbl.Columns[3].TotalsRowFunction = RowFunctions.CountNums;
-        tbl.DeleteRow(99, 1);
+        _ = tbl.DeleteRow(99, 1);
         Assert.AreEqual("B1:E100", tbl.Address.Address);
         Assert.AreEqual("Shift Me Up", ws.Cells["B101"].Value);
-        tbl.DeleteRow(96, 3);
+        _ = tbl.DeleteRow(96, 3);
         Assert.AreEqual("B1:E97", tbl.Address.Address);
         Assert.AreEqual("Don't Shift Me", ws.Cells["F5"].Value);
         Assert.AreEqual("Shift Me Up", ws.Cells["B98"].Value);
@@ -123,10 +123,10 @@ public class TableDeleteTests : TestBase
         LoadTestdata(ws, 100);
         ws.Cells["A102"].Value = "Shift Me Up";
         ExcelTable? tbl = ws.Tables.Add(ws.Cells["A1:D100"], "TableDeleteColumnInside");
-        tbl.DeleteRow(50, 1);
+        _ = tbl.DeleteRow(50, 1);
         Assert.AreEqual("A1:D99", tbl.Address.Address);
         Assert.AreEqual("Shift Me Up", ws.Cells["A101"].Value);
-        tbl.DeleteRow(75, 3);
+        _ = tbl.DeleteRow(75, 3);
         Assert.AreEqual("A1:D96", tbl.Address.Address);
         Assert.AreEqual("Shift Me Up", ws.Cells["A98"].Value);
     }
@@ -139,7 +139,7 @@ public class TableDeleteTests : TestBase
         using ExcelPackage? p = new ExcelPackage();
         ExcelWorksheet? ws = p.Workbook.Worksheets.Add("Table1");
         ExcelTable? tbl = ws.Tables.Add(ws.Cells["A1:D100"], "Table1");
-        tbl.DeleteRow(-1);
+        _ = tbl.DeleteRow(-1);
     }
 
     [TestMethod]
@@ -150,7 +150,7 @@ public class TableDeleteTests : TestBase
         using ExcelPackage? p = new ExcelPackage();
         ExcelWorksheet? ws = p.Workbook.Worksheets.Add("Table1");
         ExcelTable? tbl = ws.Tables.Add(ws.Cells["A1:D100"], "Table1");
-        tbl.DeleteRow(0, -1);
+        _ = tbl.DeleteRow(0, -1);
     }
 
     [TestMethod]
@@ -161,7 +161,7 @@ public class TableDeleteTests : TestBase
         using ExcelPackage? p = new ExcelPackage();
         ExcelWorksheet? ws = p.Workbook.Worksheets.Add("Table1");
         ExcelTable? tbl = ws.Tables.Add(ws.Cells["A1:D100"], "Table1");
-        tbl.DeleteRow(99, 1);
+        _ = tbl.DeleteRow(99, 1);
     }
 
     [TestMethod]
@@ -172,7 +172,7 @@ public class TableDeleteTests : TestBase
         using ExcelPackage? p = new ExcelPackage();
         ExcelWorksheet? ws = p.Workbook.Worksheets.Add("Table1");
         ExcelTable? tbl = ws.Tables.Add(ws.Cells["A1:D100"], "Table1");
-        tbl.DeleteRow(95, 5);
+        _ = tbl.DeleteRow(95, 5);
     }
 
     [TestMethod]
@@ -182,7 +182,7 @@ public class TableDeleteTests : TestBase
         ExcelWorksheet? ws = _pck.Workbook.Worksheets.Add("TableLeaveOneRow");
         LoadTestdata(ws, 100);
         ExcelTable? tbl = ws.Tables.Add(ws.Cells["A1:D100"], "TableLeaveOneRow");
-        tbl.DeleteRow(0, 98);
+        _ = tbl.DeleteRow(0, 98);
         Assert.AreEqual("A1:D2", tbl.Address.Address);
     }
 
@@ -194,7 +194,7 @@ public class TableDeleteTests : TestBase
         using ExcelPackage? p = new ExcelPackage();
         ExcelWorksheet? ws = p.Workbook.Worksheets.Add("Table1");
         ExcelTable? tbl = ws.Tables.Add(ws.Cells["A1:D100"], "Table1");
-        tbl.DeleteRow(0, 99);
+        _ = tbl.DeleteRow(0, 99);
     }
 
     #endregion
@@ -210,11 +210,11 @@ public class TableDeleteTests : TestBase
 
         ExcelTable? tbl = ws.Tables.Add(ws.Cells["A1:D100"], "TableDeleteColFirst");
         ws.Cells["E10"].Value = "Shift Me Left";
-        tbl.Columns.Delete(0);
+        _ = tbl.Columns.Delete(0);
 
         Assert.AreEqual("A1:C100", tbl.Address.Address);
         Assert.AreEqual("Shift Me Left", ws.Cells["D10"].Value);
-        tbl.Columns.Delete(0, 2);
+        _ = tbl.Columns.Delete(0, 2);
         Assert.AreEqual("A1:A100", tbl.Address.Address);
         Assert.AreEqual("Shift Me Left", ws.Cells["B10"].Value);
         Assert.IsNull(ws.Cells["C10"].Value);
@@ -228,7 +228,7 @@ public class TableDeleteTests : TestBase
         LoadTestdata(ws, 100, 2);
         ws.Cells["F99"].Value = "Shift Me Right";
         ExcelTable? tbl = ws.Tables.Add(ws.Cells["B1:E100"], "TableAddColumn");
-        tbl.Columns.Delete(0, 4);
+        _ = tbl.Columns.Delete(0, 4);
         Assert.IsNull(tbl.Address);
         Assert.AreEqual("Shift Me Right", ws.Cells["B99"].Value);
     }
@@ -248,12 +248,12 @@ public class TableDeleteTests : TestBase
         tbl.Columns[1].TotalsRowFunction = RowFunctions.Count;
         tbl.Columns[2].TotalsRowFunction = RowFunctions.Average;
         tbl.Columns[3].TotalsRowFunction = RowFunctions.CountNums;
-        tbl.Columns.Delete(0, 1);
+        _ = tbl.Columns.Delete(0, 1);
         Assert.AreEqual("B1:D101", tbl.Address.Address);
         Assert.AreEqual(RowFunctions.Count, tbl.Columns[0].TotalsRowFunction);
         Assert.AreEqual(RowFunctions.CountNums, tbl.Columns[2].TotalsRowFunction);
         Assert.AreEqual("Shift Me Left", ws.Cells["E100"].Value);
-        tbl.Columns.Delete(1, 2);
+        _ = tbl.Columns.Delete(1, 2);
         Assert.AreEqual("B1:B101", tbl.Address.Address);
         Assert.AreEqual(RowFunctions.Count, tbl.Columns[0].TotalsRowFunction);
         Assert.AreEqual("Don't Shift Me", ws.Cells["A50"].Value);
@@ -269,7 +269,7 @@ public class TableDeleteTests : TestBase
         ws.Cells["A1,C50,D102,XE102,GGG1"].Value = "Don't Shift Me";
         ws.Cells["XG2,Y101"].Value = "Shift Me";
         ExcelTable? tbl = ws.Tables.Add(ws.Cells["E2:H101"], "TableInsertColInside");
-        tbl.Columns.Delete(1, 2);
+        _ = tbl.Columns.Delete(1, 2);
         Assert.AreEqual("E2:F101", tbl.Address.Address);
         Assert.AreEqual("Don't Shift Me", ws.Cells["A1"].Value);
         Assert.AreEqual("Don't Shift Me", ws.Cells["C50"].Value);
@@ -289,7 +289,7 @@ public class TableDeleteTests : TestBase
         using ExcelPackage? p = new ExcelPackage();
         ExcelWorksheet? ws = p.Workbook.Worksheets.Add("Table1");
         ExcelTable? tbl = ws.Tables.Add(ws.Cells["A1:D100"], "Table1");
-        tbl.Columns.Delete(-1);
+        _ = tbl.Columns.Delete(-1);
     }
 
     [TestMethod]
@@ -300,7 +300,7 @@ public class TableDeleteTests : TestBase
         using ExcelPackage? p = new ExcelPackage();
         ExcelWorksheet? ws = p.Workbook.Worksheets.Add("Table1");
         ExcelTable? tbl = ws.Tables.Add(ws.Cells["A1:D100"], "Table1");
-        tbl.Columns.Delete(0, -1);
+        _ = tbl.Columns.Delete(0, -1);
     }
 
     #endregion
@@ -333,7 +333,7 @@ public class TableDeleteTests : TestBase
         ExcelTable? table = ws.Tables["myTable"];
         Assert.AreEqual(2, table.Range.Rows);
         Assert.AreEqual(2, ws.Cells["A4"].Value);
-        table.DeleteRow(1, 1);
+        _ = table.DeleteRow(1, 1);
         Assert.IsNull(ws.Cells["A4"].Value);
         Assert.AreEqual(1, table.Range.Rows);
     }
@@ -346,7 +346,7 @@ public class TableDeleteTests : TestBase
         ExcelTable? table = ws.Tables["myTable"];
         Assert.AreEqual(3, table.Range.Rows);
         Assert.AreEqual(2, ws.Cells["A4"].Value);
-        table.DeleteRow(1, 1);
+        _ = table.DeleteRow(1, 1);
         Assert.IsNull(ws.Cells["A4"].Value);
         Assert.AreEqual(2, table.Range.Rows);
     }

@@ -95,7 +95,7 @@ public class ExcelAddressBase : ExcelCellBase
 
     internal static bool IsTableAddress(string address)
     {
-        SplitAddress(address, out string wb, out string ws, out string intAddress);
+        _ = SplitAddress(address, out string _, out string _, out string intAddress);
         int lPos = intAddress.IndexOf('[');
 
         if (lPos >= 0)
@@ -464,12 +464,12 @@ public class ExcelAddressBase : ExcelCellBase
             this._firstAddress = null;
 
             //Advanced address. Including Sheet or multi or table.
-            this.ExtractAddress(this._address);
+            _ = this.ExtractAddress(this._address);
         }
         else
         {
             //Simple address
-            GetRowColFromAddress(this._address,
+            _ = GetRowColFromAddress(this._address,
                                  out this._fromRow,
                                  out this._fromCol,
                                  out this._toRow,
@@ -1468,8 +1468,6 @@ public class ExcelAddressBase : ExcelCellBase
             return this;
         }
 
-        int rows = address.Rows;
-        int cols = address.Columns;
         string retAddress = "";
 
         if (Shift == eShiftTypeInsert.Right)
@@ -1544,7 +1542,7 @@ public class ExcelAddressBase : ExcelCellBase
 
             this._firstAddress = address;
 
-            GetRowColFromAddress(address,
+            _ = GetRowColFromAddress(address,
                                  out this._fromRow,
                                  out this._fromCol,
                                  out this._toRow,
@@ -1577,13 +1575,11 @@ public class ExcelAddressBase : ExcelCellBase
 
     internal static AddressType IsValid(string Address, bool r1c1 = false)
     {
-        double d;
-
         if (Address == "#REF!")
         {
             return AddressType.Invalid;
         }
-        else if (double.TryParse(Address, NumberStyles.Any, CultureInfo.InvariantCulture, out d)) //A double, no valid address
+        else if (double.TryParse(Address, NumberStyles.Any, CultureInfo.InvariantCulture, out double _)) //A double, no valid address
         {
             return AddressType.Invalid;
         }
@@ -1599,9 +1595,7 @@ public class ExcelAddressBase : ExcelCellBase
             }
             else
             {
-                string ws;
-
-                if (SplitAddress(Address, out string wb, out ws, out string intAddress))
+                if (SplitAddress(Address, out string wb, out string _, out string intAddress))
                 {
                     if (intAddress.Contains("[")) //Table reference
                     {
@@ -1954,14 +1948,14 @@ public class ExcelAddressBase : ExcelCellBase
                 {
                     if (a._table == null)
                     {
-                        sb.Append(GetAddress(a._fromRow, a._fromCol, a._toRow, a._toCol, a._fromRowFixed, a._fromColFixed, a._toRowFixed, a._toColFixed));
+                        _ = sb.Append(GetAddress(a._fromRow, a._fromCol, a._toRow, a._toCol, a._fromRowFixed, a._fromColFixed, a._toRowFixed, a._toColFixed));
                     }
                     else
                     {
-                        sb.Append(RemoveSheetName(a.Address));
+                        _ = sb.Append(RemoveSheetName(a.Address));
                     }
 
-                    sb.Append(",");
+                    _ = sb.Append(",");
                 }
 
                 return sb.ToString(0, sb.Length - 1);
@@ -2085,7 +2079,7 @@ public class ExcelAddressBase : ExcelCellBase
     internal static string GetAddressPart(string address)
     {
         int ix = 0;
-        GetWorksheetPart(address, "", ref ix);
+        _ = GetWorksheetPart(address, "", ref ix);
 
         if (ix < address.Length)
         {

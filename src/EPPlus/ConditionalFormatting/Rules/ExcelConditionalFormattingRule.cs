@@ -185,7 +185,7 @@ public abstract class ExcelConditionalFormattingRule : XmlHelper, IExcelConditio
                 if (!oldParentNode.HasChildNodes)
                 {
                     // Remove the old parent node
-                    oldParentNode.ParentNode.RemoveChild(oldParentNode);
+                    _ = oldParentNode.ParentNode.RemoveChild(oldParentNode);
                 }
             }
         }
@@ -504,11 +504,11 @@ public abstract class ExcelConditionalFormattingRule : XmlHelper, IExcelConditio
         set
         {
             // Create/Get the first <formula> node (ensure that it exists)
-            XmlNode? firstNode = this.CreateComplexNode(this.TopNode,
-                                                        string.Format("{0}[position()=1]",
+            _ = this.CreateComplexNode(this.TopNode,
+                                   string.Format("{0}[position()=1]",
 
-                                                                      // {0}
-                                                                      ExcelConditionalFormattingConstants.Paths.Formula));
+                                                 // {0}
+                                                 ExcelConditionalFormattingConstants.Paths.Formula));
 
             // Create/Get the seconde <formula> node (ensure that it exists)
             XmlNode? secondNode = this.CreateComplexNode(this.TopNode,

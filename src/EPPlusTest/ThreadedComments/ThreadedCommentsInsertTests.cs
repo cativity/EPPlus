@@ -33,7 +33,7 @@ public class ThreadedCommentsInsertTests : TestBase
         ExcelWorksheet? ws = _pck.Workbook.Worksheets.Add("OneRowA1");
         ExcelThreadedCommentThread? th = ws.ThreadedComments.Add("A1");
         ExcelThreadedCommentPerson? p = ws.ThreadedComments.Persons.Add("Jan Källman");
-        th.AddComment(p.Id, "Shift down from A1");
+        _ = th.AddComment(p.Id, "Shift down from A1");
 
         Assert.IsNotNull(ws.Cells["A1"].ThreadedComment);
         ws.InsertRow(1, 1);
@@ -47,7 +47,7 @@ public class ThreadedCommentsInsertTests : TestBase
         ExcelWorksheet? ws = _pck.Workbook.Worksheets.Add("OneColumnA1");
         ExcelThreadedCommentThread? th = ws.ThreadedComments.Add("A1");
         ExcelThreadedCommentPerson? p = ws.ThreadedComments.Persons.Add("Jan Källman");
-        th.AddComment(p.Id, "Shift right from A1");
+        _ = th.AddComment(p.Id, "Shift right from A1");
 
         Assert.IsNotNull(ws.Cells["A1"].ThreadedComment);
         ws.InsertColumn(1, 1);
@@ -61,7 +61,7 @@ public class ThreadedCommentsInsertTests : TestBase
         ExcelWorksheet? ws = _pck.Workbook.Worksheets.Add("A1_A2RowA1");
         ExcelThreadedCommentThread? th = ws.Cells["A1"].AddThreadedComment();
         ExcelThreadedCommentPerson? p = ws.ThreadedComments.Persons.Add("Jan Källman");
-        th.AddComment(p.Id, "Shift down from A1");
+        _ = th.AddComment(p.Id, "Shift down from A1");
 
         Assert.IsNotNull(ws.Cells["A1"].ThreadedComment);
         ws.Cells["A1:A2"].Insert(eShiftTypeInsert.Down);
@@ -75,7 +75,7 @@ public class ThreadedCommentsInsertTests : TestBase
         ExcelWorksheet? ws = _pck.Workbook.Worksheets.Add("A1_B1ColumnA1");
         ExcelThreadedCommentThread? th = ws.Cells["A1"].AddThreadedComment();
         ExcelThreadedCommentPerson? p = ws.ThreadedComments.Persons.Add("Jan Källman");
-        th.AddComment(p.Id, "Shift right from A1");
+        _ = th.AddComment(p.Id, "Shift right from A1");
 
         Assert.IsNotNull(ws.Cells["A1"].ThreadedComment);
         ws.Cells["A1:B1"].Insert(eShiftTypeInsert.Right);
@@ -89,9 +89,9 @@ public class ThreadedCommentsInsertTests : TestBase
         ExcelWorksheet? ws = _pck.Workbook.Worksheets.Add("ColumnInRange");
         ExcelThreadedCommentThread? th = ws.Cells["B2:B4"].AddThreadedComment();
         ExcelThreadedCommentPerson? p = ws.ThreadedComments.Persons.Add("Jan Källman");
-        th.AddComment(p.Id, "Shift right from B2");
-        ws.ThreadedComments["B3"].AddComment(p.Id, "No shift from B3");
-        ws.Cells["B4"].ThreadedComment.AddComment(p.Id, "No shift from B4");
+        _ = th.AddComment(p.Id, "Shift right from B2");
+        _ = ws.ThreadedComments["B3"].AddComment(p.Id, "No shift from B3");
+        _ = ws.Cells["B4"].ThreadedComment.AddComment(p.Id, "No shift from B4");
 
         Assert.IsNotNull(ws.Cells["B2"].ThreadedComment);
         Assert.IsNotNull(ws.Cells["B3"].ThreadedComment);
@@ -110,9 +110,9 @@ public class ThreadedCommentsInsertTests : TestBase
         ExcelWorksheet? ws = _pck.Workbook.Worksheets.Add("RowInRange");
         ExcelThreadedCommentThread? th = ws.Cells["B2:D2"].AddThreadedComment();
         ExcelThreadedCommentPerson? p = ws.ThreadedComments.Persons.Add("Jan Källman");
-        th.AddComment(p.Id, "Shift down from B2");
-        ws.ThreadedComments["C2"].AddComment(p.Id, "No shift from C2");
-        ws.Cells["D2"].ThreadedComment.AddComment(p.Id, "No shift from D2");
+        _ = th.AddComment(p.Id, "Shift down from B2");
+        _ = ws.ThreadedComments["C2"].AddComment(p.Id, "No shift from C2");
+        _ = ws.Cells["D2"].ThreadedComment.AddComment(p.Id, "No shift from D2");
 
         Assert.IsNotNull(ws.Cells["B2"].ThreadedComment);
         Assert.IsNotNull(ws.Cells["C2"].ThreadedComment);

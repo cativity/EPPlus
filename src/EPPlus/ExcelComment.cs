@@ -40,12 +40,12 @@ public class ExcelComment : ExcelVmlDrawingComment
         if (textElem == null)
         {
             textElem = commentTopNode.OwnerDocument.CreateElement("text", ExcelPackage.schemaMain);
-            commentTopNode.AppendChild(textElem);
+            _ = commentTopNode.AppendChild(textElem);
         }
 
         if (!cell.Worksheet._vmlDrawings.ContainsKey(cell.Start.Row, cell.Start.Column))
         {
-            cell.Worksheet._vmlDrawings.AddComment(cell);
+            _ = cell.Worksheet._vmlDrawings.AddComment(cell);
         }
 
         this.TopNode = cell.Worksheet.VmlDrawings[cell.Start.Row, cell.Start.Column].TopNode;
@@ -101,7 +101,7 @@ public class ExcelComment : ExcelVmlDrawingComment
         if (!found)
         {
             XmlElement? elem = this._commentHelper.TopNode.OwnerDocument.CreateElement("d", "author", ExcelPackage.schemaMain);
-            this._commentHelper.TopNode.OwnerDocument.SelectSingleNode(AUTHORS_PATH, this._commentHelper.NameSpaceManager).AppendChild(elem);
+            _ = this._commentHelper.TopNode.OwnerDocument.SelectSingleNode(AUTHORS_PATH, this._commentHelper.NameSpaceManager).AppendChild(elem);
             elem.InnerText = value;
         }
 

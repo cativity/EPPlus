@@ -21,10 +21,10 @@ public class PivotTableValueFilterTests : TestBase
         _pck = OpenPackage("PivotTableValueFilters.xlsx", true);
         ExcelWorksheet? ws = _pck.Workbook.Worksheets.Add("Data1");
         ExcelRangeBase? r = LoadItemData(ws);
-        ws.Tables.Add(r, "Table1");
+        _ = ws.Tables.Add(r, "Table1");
         ws = _pck.Workbook.Worksheets.Add("Data2");
         r = LoadItemData(ws);
-        ws.Tables.Add(r, "Table2");
+        _ = ws.Tables.Add(r, "Table2");
     }
 
     [ClassCleanup]
@@ -40,10 +40,10 @@ public class PivotTableValueFilterTests : TestBase
         ExcelWorksheet? ws = _pck.Workbook.Worksheets.Add("ValueEqual");
 
         ExcelPivotTable? pt = ws.PivotTables.Add(ws.Cells["A1"], wsData.Cells["K1:O11"], "Pivottable1");
-        pt.RowFields.Add(pt.Fields[4]);
-        pt.DataFields.Add(pt.Fields[3]);
+        _ = pt.RowFields.Add(pt.Fields[4]);
+        _ = pt.DataFields.Add(pt.Fields[3]);
 
-        pt.Fields[4].Filters.AddValueFilter(ePivotTableValueFilterType.ValueEqual, 0, 5);
+        _ = pt.Fields[4].Filters.AddValueFilter(ePivotTableValueFilterType.ValueEqual, 0, 5);
     }
 
     [TestMethod]
@@ -53,9 +53,9 @@ public class PivotTableValueFilterTests : TestBase
         ExcelWorksheet? ws = _pck.Workbook.Worksheets.Add("ValueNotEqual");
 
         ExcelPivotTable? pt = ws.PivotTables.Add(ws.Cells["A1"], wsData.Cells["K1:O11"], "Pivottable1");
-        pt.RowFields.Add(pt.Fields[4]);
-        ExcelPivotTableDataField? df = pt.DataFields.Add(pt.Fields[3]);
-        pt.Fields[4].Filters.AddValueFilter(ePivotTableValueFilterType.ValueNotEqual, 0, 12.2);
+        _ = pt.RowFields.Add(pt.Fields[4]);
+        _ = pt.DataFields.Add(pt.Fields[3]);
+        _ = pt.Fields[4].Filters.AddValueFilter(ePivotTableValueFilterType.ValueNotEqual, 0, 12.2);
 
         //pt.Fields[4].Filters.AddValueFilter(ePivotTableValueFilterType.ValueNotEqual, 0, 85.2);
     }
@@ -67,11 +67,11 @@ public class PivotTableValueFilterTests : TestBase
         ExcelWorksheet? ws = _pck.Workbook.Worksheets.Add("ValueGreaterThan");
 
         ExcelPivotTable? pt = ws.PivotTables.Add(ws.Cells["A1"], wsData.Cells["K1:O11"], "Pivottable1");
-        pt.RowFields.Add(pt.Fields[4]);
-        pt.DataFields.Add(pt.Fields[3]);
+        _ = pt.RowFields.Add(pt.Fields[4]);
+        _ = pt.DataFields.Add(pt.Fields[3]);
 
-        pt.Fields[3].Filters.AddValueFilter(ePivotTableValueFilterType.ValueGreaterThan, 0, 12.2);
-        pt.Fields[4].Filters.AddValueFilter(ePivotTableValueFilterType.ValueLessThan, 0, 500);
+        _ = pt.Fields[3].Filters.AddValueFilter(ePivotTableValueFilterType.ValueGreaterThan, 0, 12.2);
+        _ = pt.Fields[4].Filters.AddValueFilter(ePivotTableValueFilterType.ValueLessThan, 0, 500);
     }
 
     [TestMethod]
@@ -81,10 +81,10 @@ public class PivotTableValueFilterTests : TestBase
         ExcelWorksheet? ws = _pck.Workbook.Worksheets.Add("ValueGreaterThanOrEqual");
 
         ExcelPivotTable? pt = ws.PivotTables.Add(ws.Cells["A1"], wsData.Cells["K1:O11"], "Pivottable1");
-        pt.RowFields.Add(pt.Fields[4]);
-        pt.DataFields.Add(pt.Fields[3]);
+        _ = pt.RowFields.Add(pt.Fields[4]);
+        _ = pt.DataFields.Add(pt.Fields[3]);
 
-        pt.Fields[4].Filters.AddValueFilter(ePivotTableValueFilterType.ValueGreaterThanOrEqual, 0, 12.2);
+        _ = pt.Fields[4].Filters.AddValueFilter(ePivotTableValueFilterType.ValueGreaterThanOrEqual, 0, 12.2);
     }
 
     [TestMethod]
@@ -94,10 +94,10 @@ public class PivotTableValueFilterTests : TestBase
         ExcelWorksheet? ws = _pck.Workbook.Worksheets.Add("ValueLessThan");
 
         ExcelPivotTable? pt = ws.PivotTables.Add(ws.Cells["A1"], wsData.Cells["K1:O11"], "Pivottable1");
-        pt.RowFields.Add(pt.Fields[4]);
-        pt.DataFields.Add(pt.Fields[3]);
+        _ = pt.RowFields.Add(pt.Fields[4]);
+        _ = pt.DataFields.Add(pt.Fields[3]);
 
-        pt.Fields[4].Filters.AddValueFilter(ePivotTableValueFilterType.ValueLessThan, 0, 12.2);
+        _ = pt.Fields[4].Filters.AddValueFilter(ePivotTableValueFilterType.ValueLessThan, 0, 12.2);
     }
 
     [TestMethod]
@@ -107,10 +107,10 @@ public class PivotTableValueFilterTests : TestBase
         ExcelWorksheet? ws = _pck.Workbook.Worksheets.Add("ValueLessThanOrEqual");
 
         ExcelPivotTable? pt = ws.PivotTables.Add(ws.Cells["A1"], wsData.Cells["K1:O11"], "Pivottable1");
-        pt.RowFields.Add(pt.Fields[4]);
-        pt.DataFields.Add(pt.Fields[3]);
+        _ = pt.RowFields.Add(pt.Fields[4]);
+        _ = pt.DataFields.Add(pt.Fields[3]);
 
-        pt.Fields[4].Filters.AddValueFilter(ePivotTableValueFilterType.ValueLessThanOrEqual, 0, 12.2);
+        _ = pt.Fields[4].Filters.AddValueFilter(ePivotTableValueFilterType.ValueLessThanOrEqual, 0, 12.2);
     }
 
     [TestMethod]
@@ -120,10 +120,10 @@ public class PivotTableValueFilterTests : TestBase
         ExcelWorksheet? ws = _pck.Workbook.Worksheets.Add("ValueBetweeen");
 
         ExcelPivotTable? pt = ws.PivotTables.Add(ws.Cells["A1"], wsData.Cells["K1:O11"], "Pivottable1");
-        pt.RowFields.Add(pt.Fields[4]);
-        pt.DataFields.Add(pt.Fields[3]);
+        _ = pt.RowFields.Add(pt.Fields[4]);
+        _ = pt.DataFields.Add(pt.Fields[3]);
 
-        pt.Fields[4].Filters.AddValueFilter(ePivotTableValueFilterType.ValueBetween, 0, 4, 10);
+        _ = pt.Fields[4].Filters.AddValueFilter(ePivotTableValueFilterType.ValueBetween, 0, 4, 10);
     }
 
     [TestMethod]
@@ -133,10 +133,10 @@ public class PivotTableValueFilterTests : TestBase
         ExcelWorksheet? ws = _pck.Workbook.Worksheets.Add("ValueNotBetweeen");
 
         ExcelPivotTable? pt = ws.PivotTables.Add(ws.Cells["A1"], wsData.Cells["K1:O11"], "Pivottable1");
-        pt.RowFields.Add(pt.Fields[4]);
+        _ = pt.RowFields.Add(pt.Fields[4]);
         ExcelPivotTableDataField? df = pt.DataFields.Add(pt.Fields[3]);
 
-        pt.Fields[4].Filters.AddValueFilter(ePivotTableValueFilterType.ValueNotBetween, df, 4, 10);
+        _ = pt.Fields[4].Filters.AddValueFilter(ePivotTableValueFilterType.ValueNotBetween, df, 4, 10);
     }
 
     [TestMethod]
@@ -146,10 +146,10 @@ public class PivotTableValueFilterTests : TestBase
         ExcelWorksheet? ws = _pck.Workbook.Worksheets.Add("ValueTop15Count");
 
         ExcelPivotTable? pt = ws.PivotTables.Add(ws.Cells["A1"], wsData.Cells["K1:O11"], "Pivottable1");
-        pt.RowFields.Add(pt.Fields[4]);
+        _ = pt.RowFields.Add(pt.Fields[4]);
         ExcelPivotTableDataField? df = pt.DataFields.Add(pt.Fields[3]);
 
-        pt.Fields[4].Filters.AddTop10Filter(ePivotTableTop10FilterType.Count, df, 15);
+        _ = pt.Fields[4].Filters.AddTop10Filter(ePivotTableTop10FilterType.Count, df, 15);
     }
 
     [TestMethod]
@@ -159,10 +159,10 @@ public class PivotTableValueFilterTests : TestBase
         ExcelWorksheet? ws = _pck.Workbook.Worksheets.Add("ValueTop20Percent");
 
         ExcelPivotTable? pt = ws.PivotTables.Add(ws.Cells["A1"], wsData.Cells["K1:O11"], "Pivottable1");
-        pt.RowFields.Add(pt.Fields[4]);
+        _ = pt.RowFields.Add(pt.Fields[4]);
         ExcelPivotTableDataField? df = pt.DataFields.Add(pt.Fields[3]);
 
-        pt.Fields[4].Filters.AddTop10Filter(ePivotTableTop10FilterType.Percent, df, 20);
+        _ = pt.Fields[4].Filters.AddTop10Filter(ePivotTableTop10FilterType.Percent, df, 20);
     }
 
     [TestMethod]
@@ -172,10 +172,10 @@ public class PivotTableValueFilterTests : TestBase
         ExcelWorksheet? ws = _pck.Workbook.Worksheets.Add("ValueTop25Sum");
 
         ExcelPivotTable? pt = ws.PivotTables.Add(ws.Cells["A1"], wsData.Cells["K1:O11"], "Pivottable1");
-        pt.RowFields.Add(pt.Fields[4]);
+        _ = pt.RowFields.Add(pt.Fields[4]);
         ExcelPivotTableDataField? df = pt.DataFields.Add(pt.Fields[3]);
 
-        pt.Fields[4].Filters.AddTop10Filter(ePivotTableTop10FilterType.Sum, df, 25);
+        _ = pt.Fields[4].Filters.AddTop10Filter(ePivotTableTop10FilterType.Sum, df, 25);
     }
 
     [TestMethod]
@@ -185,10 +185,10 @@ public class PivotTableValueFilterTests : TestBase
         ExcelWorksheet? ws = _pck.Workbook.Worksheets.Add("ValueBottom15Count");
 
         ExcelPivotTable? pt = ws.PivotTables.Add(ws.Cells["A1"], wsData.Cells["K1:O11"], "Pivottable1");
-        pt.RowFields.Add(pt.Fields[4]);
+        _ = pt.RowFields.Add(pt.Fields[4]);
         ExcelPivotTableDataField? df = pt.DataFields.Add(pt.Fields[3]);
 
-        pt.Fields[4].Filters.AddTop10Filter(ePivotTableTop10FilterType.Count, df, 15, false);
+        _ = pt.Fields[4].Filters.AddTop10Filter(ePivotTableTop10FilterType.Count, df, 15, false);
     }
 
     [TestMethod]
@@ -198,10 +198,10 @@ public class PivotTableValueFilterTests : TestBase
         ExcelWorksheet? ws = _pck.Workbook.Worksheets.Add("ValueBottom20Percent");
 
         ExcelPivotTable? pt = ws.PivotTables.Add(ws.Cells["A1"], wsData.Cells["K1:O11"], "Pivottable1");
-        pt.RowFields.Add(pt.Fields[4]);
+        _ = pt.RowFields.Add(pt.Fields[4]);
         ExcelPivotTableDataField? df = pt.DataFields.Add(pt.Fields[3]);
 
-        pt.Fields[4].Filters.AddTop10Filter(ePivotTableTop10FilterType.Percent, df, 20, false);
+        _ = pt.Fields[4].Filters.AddTop10Filter(ePivotTableTop10FilterType.Percent, df, 20, false);
     }
 
     [TestMethod]
@@ -211,10 +211,10 @@ public class PivotTableValueFilterTests : TestBase
         ExcelWorksheet? ws = _pck.Workbook.Worksheets.Add("ValueBottom25Sum");
 
         ExcelPivotTable? pt = ws.PivotTables.Add(ws.Cells["A1"], wsData.Cells["K1:O11"], "Pivottable1");
-        pt.RowFields.Add(pt.Fields[4]);
+        _ = pt.RowFields.Add(pt.Fields[4]);
         ExcelPivotTableDataField? df = pt.DataFields.Add(pt.Fields[3]);
 
-        pt.Fields[4].Filters.AddTop10Filter(ePivotTableTop10FilterType.Sum, df, 25, false);
+        _ = pt.Fields[4].Filters.AddTop10Filter(ePivotTableTop10FilterType.Sum, df, 25, false);
         ws.Cells["B4:D4"].Merge = true;
     }
 }

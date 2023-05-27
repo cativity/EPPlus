@@ -274,7 +274,7 @@ public class InformationFunctionsTests
         sheet.Calculate();
         Assert.AreEqual(1, sheet.Cells["A1"].Value);
 
-        package.Workbook.Worksheets.Add("Sheet2");
+        _ = package.Workbook.Worksheets.Add("Sheet2");
         sheet.Cells["A1"].Formula = "SHEET(\"Sheet2\")";
         sheet.Calculate();
         Assert.AreEqual(2, sheet.Cells["A1"].Value);
@@ -285,7 +285,7 @@ public class InformationFunctionsTests
     {
         using ExcelPackage? package = new ExcelPackage();
         ExcelWorksheet? sheet = package.Workbook.Worksheets.Add("test");
-        ExcelWorksheet? sheet2 = package.Workbook.Worksheets.Add("Sheet2");
+        _ = package.Workbook.Worksheets.Add("Sheet2");
 
         sheet.Cells["A1"].Formula = "SHEET(Sheet2!A1)";
         sheet.Calculate();
@@ -299,7 +299,7 @@ public class InformationFunctionsTests
         ExcelWorksheet? sheet = package.Workbook.Worksheets.Add("test");
         ExcelWorksheet? sheet2 = package.Workbook.Worksheets.Add("Sheet2");
 
-        sheet.Names.Add("aName", sheet2.Cells["B1:C3"]);
+        _ = sheet.Names.Add("aName", sheet2.Cells["B1:C3"]);
         sheet.Cells["A1"].Formula = "SHEET(aName)";
         sheet.Calculate();
         Assert.AreEqual(2, sheet.Cells["A1"].Value);
@@ -312,7 +312,7 @@ public class InformationFunctionsTests
         ExcelWorksheet? sheet = package.Workbook.Worksheets.Add("test");
         ExcelWorksheet? sheet2 = package.Workbook.Worksheets.Add("Sheet2");
 
-        package.Workbook.Names.Add("aName", sheet2.Cells["B1:C3"]);
+        _ = package.Workbook.Names.Add("aName", sheet2.Cells["B1:C3"]);
         sheet.Cells["A1"].Formula = "SHEET(aName)";
         sheet.Calculate();
         Assert.AreEqual(2, sheet.Cells["A1"].Value);
@@ -326,7 +326,7 @@ public class InformationFunctionsTests
         ExcelWorksheet? sheet = package.Workbook.Worksheets.Add("test");
         ExcelWorksheet? sheet2 = package.Workbook.Worksheets.Add("Sheet2");
 
-        sheet2.Tables.Add(sheet2.Cells["D1:G5"], "myTable");
+        _ = sheet2.Tables.Add(sheet2.Cells["D1:G5"], "myTable");
         sheet.Cells["A1"].Formula = "SHEET(myTable)";
         sheet.Calculate();
         Assert.AreEqual(2, sheet.Cells["A1"].Value);

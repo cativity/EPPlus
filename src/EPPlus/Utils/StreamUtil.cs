@@ -42,7 +42,7 @@ namespace OfficeOpenXml.Utils
 
             if (inputStream.CanSeek)
             {
-                inputStream.Seek(0, SeekOrigin.Begin);
+                _ = inputStream.Seek(0, SeekOrigin.Begin);
             }
 
             const int bufferLength = 8096;
@@ -83,7 +83,7 @@ namespace OfficeOpenXml.Utils
 
             if (inputStream.CanSeek)
             {
-                inputStream.Seek(0, SeekOrigin.Begin);
+                _ = inputStream.Seek(0, SeekOrigin.Begin);
             }
 
             const int bufferLength = 8096;

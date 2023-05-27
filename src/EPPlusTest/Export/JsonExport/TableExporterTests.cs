@@ -22,10 +22,10 @@ public class TableExporterTests : TestBase
         using ExcelPackage? p = new ExcelPackage();
         ExcelWorksheet? ws = p.Workbook.Worksheets.Add($"Sheet1");
         LoadTestdata(ws, 100, 1, 1, true, true);
-        ws.Cells["A2"].AddComment("Comment in A2");
+        _ = ws.Cells["A2"].AddComment("Comment in A2");
         ExcelTable? tbl = ws.Tables.Add(ws.Cells["A1:F100"], $"tblGradient");
 
-        string? s = tbl.ToJson();
+        _ = tbl.ToJson();
     }
 
     [TestMethod]

@@ -49,11 +49,11 @@ public class ExcelVBAModule
         {
             if (value.Any(c => c > 255))
             {
-                throw (new InvalidOperationException("Vba module names can't contain unicode characters"));
+                throw new InvalidOperationException("Vba module names can't contain unicode characters");
             }
             if (!IsValidModuleName(value))
             {
-                throw (new InvalidOperationException("Name contains invalid characters"));
+                throw new InvalidOperationException("Name contains invalid characters");
             }
             if (value != this._name)
             {
@@ -103,7 +103,7 @@ public class ExcelVBAModule
         {
             if (value.StartsWith("Attribute", StringComparison.OrdinalIgnoreCase) || value.StartsWith("VERSION", StringComparison.OrdinalIgnoreCase))
             {
-                throw (new InvalidOperationException("Code can't start with an Attribute or VERSION keyword. Attributes can be accessed through the Attributes collection."));
+                throw new InvalidOperationException("Code can't start with an Attribute or VERSION keyword. Attributes can be accessed through the Attributes collection.");
             }
 
             this._code = value;

@@ -30,11 +30,11 @@ namespace OfficeOpenXml.Utils
         {
             if (!inputStream.CanRead)
             {
-                throw (new Exception("Cannot read from the input stream"));
+                throw new Exception("Cannot read from the input stream");
             }
             if (!outputStream.CanWrite)
             {
-                throw (new Exception("Cannot write to the output stream"));
+                throw new Exception("Cannot write to the output stream");
             }
             if (inputStream.CanSeek)
             {

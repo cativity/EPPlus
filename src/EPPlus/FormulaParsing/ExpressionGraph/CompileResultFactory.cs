@@ -27,7 +27,7 @@ public class CompileResultFactory
 
     public virtual CompileResult Create(object obj, int excelAddressReferenceId)
     {
-        if ((obj is INameInfo))
+        if (obj is INameInfo)
         {
             obj = ((INameInfo)obj).Value;
         }

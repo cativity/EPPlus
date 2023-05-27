@@ -37,7 +37,7 @@ public class ExcelConditionalFormattingThreeIconSet : ExcelConditionalFormatting
                priority,
                worksheet,
                itemElementNode,
-               (namespaceManager == null) ? worksheet.NameSpaceManager : namespaceManager)
+               namespaceManager == null ? worksheet.NameSpaceManager : namespaceManager)
     {
     }
 }
@@ -79,7 +79,7 @@ public class ExcelConditionalFormattingIconSetBase<T>
                priority,
                worksheet,
                itemElementNode,
-               (namespaceManager == null) ? worksheet.NameSpaceManager : namespaceManager)
+               namespaceManager == null ? worksheet.NameSpaceManager : namespaceManager)
     {
         if (itemElementNode != null && itemElementNode.HasChildNodes)
         {
@@ -320,7 +320,7 @@ public class ExcelConditionalFormattingIconSetBase<T>
                 case "TrafficLights":
                     return "4TrafficLights";
                 default:
-                    throw (new ArgumentException("Invalid type"));
+                    throw new ArgumentException("Invalid type");
             }
         }
         else if (this.Type == eExcelConditionalFormattingRuleType.FiveIconSet)
@@ -336,7 +336,7 @@ public class ExcelConditionalFormattingIconSetBase<T>
                 case "Rating":
                     return "5Rating";
                 default:
-                    throw (new ArgumentException("Invalid type"));
+                    throw new ArgumentException("Invalid type");
             }
         }
         else
@@ -360,7 +360,7 @@ public class ExcelConditionalFormattingIconSetBase<T>
                 case "TrafficLights2":
                     return "3TrafficLights2";
                 default:
-                    throw (new ArgumentException("Invalid type"));
+                    throw new ArgumentException("Invalid type");
             }
         }
     }

@@ -40,7 +40,7 @@ internal class PercentileInc : HiddenValuesHandlingFunction
         double dIx = percentile * (nElements - 1);
         int ix = (int)dIx;
         double rest = dIx - ix;
-        double result = ix < (nElements - 1) ? arr[ix] + (arr[ix + 1] - arr[ix]) * rest : arr.Last();
+        double result = ix < nElements - 1 ? arr[ix] + ((arr[ix + 1] - arr[ix]) * rest) : arr.Last();
         return this.CreateResult(result, DataType.Decimal);
     }
 }

@@ -87,7 +87,7 @@ internal class EpplusExcelDataProvider : ExcelDataProvider
         /// <returns></returns>
         public int GetNCells()
         {
-            return ((this._toRow - this._fromRow) + 1) * ((this._toCol - this._fromCol) + 1);
+            return (this._toRow - this._fromRow + 1) * (this._toCol - this._fromCol + 1);
         }
 
         /// <summary>
@@ -728,7 +728,7 @@ internal class EpplusExcelDataProvider : ExcelDataProvider
             {
                 Id = id,
                 Name = name,
-                Worksheet = string.IsNullOrEmpty(worksheet) ? (nameItem.Worksheet == null ? nameItem._ws : nameItem.Worksheet.Name) : worksheet,
+                Worksheet = string.IsNullOrEmpty(worksheet) ? nameItem.Worksheet == null ? nameItem._ws : nameItem.Worksheet.Name : worksheet,
                 Formula = nameItem.Formula
             };
             if (nameItem._fromRow > 0)
@@ -751,7 +751,7 @@ internal class EpplusExcelDataProvider : ExcelDataProvider
         ExcelAddress? addr = new ExcelAddress(address);
         string? wsName = string.IsNullOrEmpty(addr.WorkSheetName) ? this._currentWorksheet.Name : addr.WorkSheetName;
         ExcelWorksheet? ws = this._package.Workbook.Worksheets[wsName];
-        return (IEnumerable<object>)(new CellStoreEnumerator<ExcelValue>(ws._values, addr._fromRow, addr._fromCol, addr._toRow, addr._toCol));
+        return (IEnumerable<object>)new CellStoreEnumerator<ExcelValue>(ws._values, addr._fromRow, addr._fromCol, addr._toRow, addr._toCol);
     }
 
 

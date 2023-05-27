@@ -58,7 +58,7 @@ public class ExcelTutorialsTest : TestBase
         Assert.AreEqual(27, p.Workbook.Worksheets.Count);
         Assert.AreEqual(2, p.Workbook.Worksheets[0 + p._worksheetAdd].Drawings.Count);
         Assert.AreEqual(3, p.Workbook.Worksheets[1 + p._worksheetAdd].Drawings.Count);
-        ExcelGroupShape? grpShp = ((ExcelGroupShape)p.Workbook.Worksheets[1 + p._worksheetAdd].Drawings[0]);
+        ExcelGroupShape? grpShp = (ExcelGroupShape)p.Workbook.Worksheets[1 + p._worksheetAdd].Drawings[0];
         Assert.AreEqual(4, grpShp.Drawings.Count);
         Assert.AreEqual(eShapeStyle.Rect, ((ExcelShape)grpShp.Drawings[0]).Style);
         Assert.AreEqual(6, p.Workbook.Worksheets[1 + p._worksheetAdd].Drawings[1].As.Chart.PieChart.StyleManager.ColorsManager.Colors.Count);

@@ -226,7 +226,7 @@ internal static class WorksheetRangeInsertHelper
             }
             else
             {
-                ExcelConditionalFormattingRule? cfr = ((ExcelConditionalFormattingRule)cf);
+                ExcelConditionalFormattingRule? cfr = (ExcelConditionalFormattingRule)cf;
                 if (cfr.Address.Address != newAddress.Address)
                 {
                     if (cfr.Address.FirstCellAddressRelative != newAddress.FirstCellAddressRelative)
@@ -698,7 +698,7 @@ internal static class WorksheetRangeInsertHelper
                     }
                     if (f.StartCol >= columnFrom && c != ExcelAddressBase.eAddressCollition.No )
                     {
-                        if((shift == eShiftTypeInsert.Down || shift == eShiftTypeInsert.EntireRow))
+                        if(shift == eShiftTypeInsert.Down || shift == eShiftTypeInsert.EntireRow)
                         {
                             int rows = range.Rows;
                             if (f.StartRow >= rowFrom)
@@ -895,13 +895,13 @@ internal static class WorksheetRangeInsertHelper
 
         if (columnFrom < 1)
         {
-            throw (new ArgumentOutOfRangeException("columnFrom can't be lesser that 1"));
+            throw new ArgumentOutOfRangeException("columnFrom can't be lesser that 1");
         }
             
         //Check that cells aren't shifted outside the boundries.
         if (d != null && d.End.Column > columnFrom && d.End.Column + columns > ExcelPackage.MaxColumns)
         {
-            throw (new ArgumentOutOfRangeException("Can't insert. Columns will be shifted outside the boundries of the worksheet."));
+            throw new ArgumentOutOfRangeException("Can't insert. Columns will be shifted outside the boundries of the worksheet.");
         }
 
         ExcelAddressBase? insertRange = new ExcelAddressBase(rowFrom, columnFrom, rowFrom + rows - 1, columnFrom + columns - 1);
@@ -915,13 +915,13 @@ internal static class WorksheetRangeInsertHelper
 
         if (rowFrom < 1)
         {
-            throw (new ArgumentOutOfRangeException("rowFrom can't be lesser that 1"));
+            throw new ArgumentOutOfRangeException("rowFrom can't be lesser that 1");
         }
 
         //Check that cells aren't shifted outside the boundries
         if (d != null && d.End.Row > rowFrom && d.End.Row + rows > ExcelPackage.MaxRows)
         {
-            throw (new ArgumentOutOfRangeException("Can't insert. Rows will be shifted outside the boundries of the worksheet."));
+            throw new ArgumentOutOfRangeException("Can't insert. Rows will be shifted outside the boundries of the worksheet.");
         }
 
         ExcelAddressBase? insertRange = new ExcelAddressBase(rowFrom, columnFrom, rowFrom + rows - 1, columnFrom + columns - 1);

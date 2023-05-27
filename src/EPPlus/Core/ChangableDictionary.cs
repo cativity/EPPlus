@@ -68,7 +68,7 @@ internal class ChangeableDictionary<T> : IEnumerable<T>
         int pos = Array.BinarySearch(this._index[0], 0, this._count, key);
         if (pos >= 0)
         {
-            throw (new ArgumentException("Key already exists"));
+            throw new ArgumentException("Key already exists");
         }
         pos = ~pos;
         if (pos >= this._index[0].Length - 1)

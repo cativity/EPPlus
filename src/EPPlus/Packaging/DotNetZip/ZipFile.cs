@@ -789,7 +789,7 @@ internal partial class ZipFile :
     /// </remarks>
     internal bool Verbose
     {
-        get { return (this._StatusMessageTextWriter != null); }
+        get { return this._StatusMessageTextWriter != null; }
     }
 
 
@@ -960,8 +960,8 @@ internal partial class ZipFile :
     {
         get
         {
-            return (this._alternateEncoding == System.Text.Encoding.GetEncoding("UTF-8")) &&
-                   (this._alternateEncodingUsage == ZipOption.AsNecessary);
+            return this._alternateEncoding == System.Text.Encoding.GetEncoding("UTF-8") &&
+                   this._alternateEncodingUsage == ZipOption.AsNecessary;
         }
         set
         {
@@ -2229,7 +2229,7 @@ internal partial class ZipFile :
     {
         set
         {
-            if ((value != 0) && (value != -1) && (value < 64 * 1024))
+            if (value != 0 && value != -1 && value < 64 * 1024)
             {
                 throw new ArgumentOutOfRangeException("ParallelDeflateThreshold should be -1, 0, or > 65536");
             }
@@ -2402,7 +2402,7 @@ internal partial class ZipFile :
             {
                 // workitem 10735
                 x._readName = x._name = whileSaving
-                                            ? (this._readName ?? this._name)
+                                            ? this._readName ?? this._name
                                             : this._name;
                 x.AlternateEncoding = this.AlternateEncoding;
                 x.AlternateEncodingUsage = this.AlternateEncodingUsage;
@@ -2869,9 +2869,9 @@ internal partial class ZipFile :
     private void _initEntriesDictionary()
     {
         // workitem 9868
-        StringComparer sc = (this.CaseSensitiveRetrieval) ? StringComparer.Ordinal : StringComparer.OrdinalIgnoreCase;
+        StringComparer sc = this.CaseSensitiveRetrieval ? StringComparer.Ordinal : StringComparer.OrdinalIgnoreCase;
 
-        this._entries = (this._entries == null)
+        this._entries = this._entries == null
                             ? new Dictionary<String, ZipEntry>(sc)
                             : new Dictionary<String, ZipEntry>(this._entries, sc);
     }
@@ -3258,7 +3258,7 @@ internal partial class ZipFile :
             {
                 coll.Add(e);
             }
-            StringComparison sc = (this.CaseSensitiveRetrieval) ? StringComparison.Ordinal : StringComparison.OrdinalIgnoreCase;
+            StringComparison sc = this.CaseSensitiveRetrieval ? StringComparison.Ordinal : StringComparison.OrdinalIgnoreCase;
 
             coll.Sort((x, y) => { return String.Compare(x.FileName, y.FileName, sc); });
             return coll.AsReadOnly();
@@ -3569,7 +3569,7 @@ internal partial class ZipFile :
                     }
                 }
                 // only dispose the writestream if there is a backing file
-                if ((this._temporaryFileName != null) && (this._name != null))
+                if (this._temporaryFileName != null && this._name != null)
                 {
                     if (this._writestream != null)
                     {

@@ -58,7 +58,7 @@ public class ExcelConditionalFormattingDataBar
                priority,
                worksheet,
                itemElementNode,
-               (namespaceManager == null) ? worksheet.NameSpaceManager : namespaceManager)
+               namespaceManager == null ? worksheet.NameSpaceManager : namespaceManager)
     {
         string[]? s = this.SchemaNodeOrder;
         Array.Resize(ref s, s.Length+2);    //Fixes issue 15429. Append node order instead om overwriting it.

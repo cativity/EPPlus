@@ -36,7 +36,7 @@ internal static class CumipmtImpl
       
         for(int i = startPeriod; i <= endPeriod; i++ )
         {
-            FinanceCalcResult<double>? res = FvImpl.Fv(rate, (i - 1 - (int)type), pmtResult, pv, type);
+            FinanceCalcResult<double>? res = FvImpl.Fv(rate, i - 1 - (int)type, pmtResult, pv, type);
             if (res.HasError)
             {
                 return new FinanceCalcResult<double>(res.ExcelErrorType);

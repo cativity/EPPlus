@@ -116,7 +116,7 @@ public class ExcelFilterDateGroupItem : ExcelFilterItem
     {
         if (this.Year < 0 && this.Year > 9999)
         {
-            throw (new ArgumentException("Year out of range(0-9999)"));
+            throw new ArgumentException("Year out of range(0-9999)");
         }
 
         if (this.Grouping == eDateTimeGrouping.Year)
@@ -126,7 +126,7 @@ public class ExcelFilterDateGroupItem : ExcelFilterItem
 
         if (this.Month < 1 && this.Month > 12)
         {
-            throw (new ArgumentException("Month out of range(1-12)"));
+            throw new ArgumentException("Month out of range(1-12)");
         }
         if (this.Grouping == eDateTimeGrouping.Month)
         {
@@ -135,7 +135,7 @@ public class ExcelFilterDateGroupItem : ExcelFilterItem
 
         if (this.Day < 1 && this.Day > 31)
         {
-            throw (new ArgumentException("Month out of range(1-31)"));
+            throw new ArgumentException("Month out of range(1-31)");
         }
         if (this.Grouping == eDateTimeGrouping.Day)
         {
@@ -144,7 +144,7 @@ public class ExcelFilterDateGroupItem : ExcelFilterItem
 
         if (this.Hour < 0 && this.Hour > 23)
         {
-            throw (new ArgumentException("Hour out of range(0-23)"));
+            throw new ArgumentException("Hour out of range(0-23)");
         }
         if (this.Grouping == eDateTimeGrouping.Hour)
         {
@@ -153,7 +153,7 @@ public class ExcelFilterDateGroupItem : ExcelFilterItem
 
         if (this.Minute < 0 && this.Minute > 59)
         {
-            throw (new ArgumentException("Minute out of range(0-59)"));
+            throw new ArgumentException("Minute out of range(0-59)");
         }
         if (this.Grouping == eDateTimeGrouping.Minute)
         {
@@ -162,7 +162,7 @@ public class ExcelFilterDateGroupItem : ExcelFilterItem
 
         if (this.Second < 0 && this.Second > 59)
         {
-            throw (new ArgumentException("Second out of range(0-59)"));
+            throw new ArgumentException("Second out of range(0-59)");
         }
     }
 

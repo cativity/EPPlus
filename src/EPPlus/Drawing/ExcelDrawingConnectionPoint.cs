@@ -45,11 +45,11 @@ public class ExcelDrawingConnectionPoint : XmlHelper
         {
             if (value <= 0)
             {
-                throw (new ArgumentOutOfRangeException("Index", "Index can't be negative."));
+                throw new ArgumentOutOfRangeException("Index", "Index can't be negative.");
             }
             if (this._shape == null)
             {
-                throw (new InvalidOperationException("Can't set Index when Shape is null"));
+                throw new InvalidOperationException("Can't set Index when Shape is null");
             }
 
             this.SetIndex(value);

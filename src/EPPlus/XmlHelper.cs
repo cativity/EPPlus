@@ -411,7 +411,7 @@ public abstract class XmlHelper
         XmlNode referenceNode)
     {
         // Path is obrigatory
-        if ((path == null) || (path == string.Empty))
+        if (path == null || path == string.Empty)
         {
             return topNode;
         }
@@ -453,7 +453,7 @@ public abstract class XmlHelper
                     }
 
                     // Get the attribute (if exists)
-                    XmlAttribute attribute = (XmlAttribute)(node.Attributes.GetNamedItem(attributeName));
+                    XmlAttribute attribute = (XmlAttribute)node.Attributes.GetNamedItem(attributeName);
 
                     // Remove the attribute if value is empty (not null)
                     if (attributeValue == string.Empty)
@@ -551,7 +551,7 @@ public abstract class XmlHelper
                         if (nodeInsertOrder == eNodeInsertOrder.SchemaOrder)
                         {
                             // Check if the Schema Order List is empty
-                            if ((this.SchemaNodeOrder == null) || (this.SchemaNodeOrder.Length == 0))
+                            if (this.SchemaNodeOrder == null || this.SchemaNodeOrder.Length == 0)
                             {
                                 // Use the "Insert Last" option when Schema Order List is empty
                                 nodeInsertOrder = eNodeInsertOrder.Last;
@@ -900,12 +900,12 @@ public abstract class XmlHelper
         {
             if (allowNegative == false && value < 0)
             {
-                throw (new ArgumentException("Negative percentage not allowed"));
+                throw new ArgumentException("Negative percentage not allowed");
             }
 
             if (value < -minMaxValue || value > minMaxValue)
             {
-                throw (new ArgumentOutOfRangeException("value", $"Percentage out of range. Ranges from {(allowNegative ? 0 : -minMaxValue)}% to {minMaxValue}%"));
+                throw new ArgumentOutOfRangeException("value", $"Percentage out of range. Ranges from {(allowNegative ? 0 : -minMaxValue)}% to {minMaxValue}%");
             }
 
             this.SetXmlNodeString(path, ((int)(value.Value * 1000)).ToString(CultureInfo.InvariantCulture));
@@ -921,7 +921,7 @@ public abstract class XmlHelper
         {
             if (!string.IsNullOrEmpty(parameter) && (value < minValue || value > maxValue))
             {
-                throw (new ArgumentOutOfRangeException(parameter, $"Value must be between {minValue} and {maxValue}"));
+                throw new ArgumentOutOfRangeException(parameter, $"Value must be between {minValue} and {maxValue}");
             }
             int v = (int)(value * 60000);
             this.SetXmlNodeString(path, v.ToString(CultureInfo.InvariantCulture));
@@ -951,14 +951,14 @@ public abstract class XmlHelper
             {
                 if (value < 0 || value > 4000)
                 {
-                    throw (new ArgumentOutOfRangeException(propertyName, "Fontsize must be between 0 and 4000"));
+                    throw new ArgumentOutOfRangeException(propertyName, "Fontsize must be between 0 and 4000");
                 }
             }
             else
             {
                 if (value < -4000 || value > 4000)
                 {
-                    throw (new ArgumentOutOfRangeException(propertyName, "Fontsize must be between -4000 and 4000"));
+                    throw new ArgumentOutOfRangeException(propertyName, "Fontsize must be between -4000 and 4000");
                 }
             }
 

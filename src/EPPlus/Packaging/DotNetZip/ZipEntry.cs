@@ -211,7 +211,7 @@ internal partial class ZipEntry
         get { return this._LastModified.ToLocalTime(); }
         set
         {
-            this._LastModified = (value.Kind == DateTimeKind.Unspecified)
+            this._LastModified = value.Kind == DateTimeKind.Unspecified
                                      ? DateTime.SpecifyKind(value, DateTimeKind.Local)
                                      : value.ToLocalTime();
 
@@ -1603,7 +1603,7 @@ internal partial class ZipEntry
                 return 0;
             }
 
-            return 100 * (1.0 - (1.0 * this.CompressedSize) / (1.0 * this.UncompressedSize));
+            return 100 * (1.0 - (1.0 * this.CompressedSize / (1.0 * this.UncompressedSize)));
         }
     }
 
@@ -1655,7 +1655,7 @@ internal partial class ZipEntry
     /// </remarks>
     public bool UsesEncryption
     {
-        get { return (this._Encryption_FromZipFile != EncryptionAlgorithm.None); }
+        get { return this._Encryption_FromZipFile != EncryptionAlgorithm.None; }
     }
 
 
@@ -2200,8 +2200,8 @@ internal partial class ZipEntry
     {
         get
         {
-            return (this.AlternateEncoding == System.Text.Encoding.GetEncoding("UTF-8")) &&
-                   (this.AlternateEncodingUsage == ZipOption.AsNecessary);
+            return this.AlternateEncoding == System.Text.Encoding.GetEncoding("UTF-8") &&
+                   this.AlternateEncodingUsage == ZipOption.AsNecessary;
         }
         set
         {
@@ -2421,16 +2421,16 @@ internal partial class ZipEntry
 
         if (source == ZipEntrySource.Stream)
         {
-            entry._sourceStream = (arg1 as Stream);         // may  or may not be null
+            entry._sourceStream = arg1 as Stream;         // may  or may not be null
         }
         else if (source == ZipEntrySource.WriteDelegate)
         {
-            entry._WriteDelegate = (arg1 as WriteDelegate); // may  or may not be null
+            entry._WriteDelegate = arg1 as WriteDelegate; // may  or may not be null
         }
         else if (source == ZipEntrySource.JitStream)
         {
-            entry._OpenDelegate = (arg1 as OpenDelegate);   // may  or may not be null
-            entry._CloseDelegate = (arg2 as CloseDelegate); // may  or may not be null
+            entry._OpenDelegate = arg1 as OpenDelegate;   // may  or may not be null
+            entry._CloseDelegate = arg2 as CloseDelegate; // may  or may not be null
         }
         else if (source == ZipEntrySource.ZipOutputStream)
         {
@@ -2443,7 +2443,7 @@ internal partial class ZipEntry
         }
         else
         {
-            String filename = (arg1 as String);   // must not be null
+            String filename = arg1 as String;   // must not be null
 
             if (String.IsNullOrEmpty(filename))
             {
@@ -2677,8 +2677,8 @@ internal partial class ZipEntry
         // with the contents read from the central header.  We could, but don't need to.
         // So we won't.
 
-        Int16 filenameLength = (short)(block[26] + block[27] * 256);
-        Int16 extraFieldLength = (short)(block[28] + block[29] * 256);
+        Int16 filenameLength = (short)(block[26] + (block[27] * 256));
+        Int16 extraFieldLength = (short)(block[28] + (block[29] * 256));
 
         // Console.WriteLine("  pos  0x{0:X8} ({0})", this.ArchiveStream.Position);
         // Console.WriteLine("  seek 0x{0:X8} ({0})", filenameLength + extraFieldLength);

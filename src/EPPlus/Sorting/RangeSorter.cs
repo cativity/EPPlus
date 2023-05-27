@@ -38,7 +38,7 @@ internal class RangeSorter
         {
             if (c > cols - 1 || c < 0)
             {
-                throw (new ArgumentException("Cannot reference columns outside the boundries of the range. Note that column references are zero-based within the range"));
+                throw new ArgumentException("Cannot reference columns outside the boundries of the range. Note that column references are zero-based within the range");
             }
         }
     }
@@ -50,7 +50,7 @@ internal class RangeSorter
         {
             if (r > nRows - 1 || r < 0)
             {
-                throw (new ArgumentException("Cannot reference rows outside the boundries of the range. Note that row references are zero-based within the range"));
+                throw new ArgumentException("Cannot reference rows outside the boundries of the range. Note that row references are zero-based within the range");
             }
         }
     }
@@ -240,7 +240,7 @@ internal class RangeSorter
         SortState? sortState = new SortState(this._worksheet.NameSpaceManager, this._worksheet);
         sortState.Ref = range.Address;
         sortState.ColumnSort = leftToRight;
-        sortState.CaseSensitive = (compareOptions == CompareOptions.IgnoreCase || compareOptions == CompareOptions.OrdinalIgnoreCase);
+        sortState.CaseSensitive = compareOptions == CompareOptions.IgnoreCase || compareOptions == CompareOptions.OrdinalIgnoreCase;
         for (int ix = 0; ix < columnsOrRows.Length; ix++)
         {
             bool? desc = null;

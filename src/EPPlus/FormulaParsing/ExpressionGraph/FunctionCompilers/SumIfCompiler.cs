@@ -45,8 +45,8 @@ internal class SumIfCompiler : FunctionCompiler
                 object? candidateArg = children.ElementAt(1)?.Children.FirstOrDefault()?.Compile().Result;
                 if(children.ElementAt(0).HasChildren)
                 {
-                    int functionRowIndex = (currentAdr.FromRow - sumRangeAdr._fromRow);
-                    int functionColIndex = (currentAdr.FromCol - sumRangeAdr._fromCol);
+                    int functionRowIndex = currentAdr.FromRow - sumRangeAdr._fromRow;
+                    int functionColIndex = currentAdr.FromCol - sumRangeAdr._fromCol;
                     IRangeInfo? firstRangeResult = children.ElementAt(0).Children.First().Compile().Result as IRangeInfo;
                     if(firstRangeResult != null)
                     {

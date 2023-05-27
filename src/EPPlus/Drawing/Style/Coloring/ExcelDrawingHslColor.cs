@@ -126,9 +126,9 @@ public class ExcelDrawingHslColor : XmlHelper
         }
         else
         {
-            double c = (1 - Math.Abs(2 * l - 1)) * s;
-            double x = c * (1 - Math.Abs((h / 60) % 2 - 1));
-            double m = l - c / 2;
+            double c = (1 - Math.Abs((2 * l) - 1)) * s;
+            double x = c * (1 - Math.Abs((h / 60 % 2) - 1));
+            double m = l - (c / 2);
 
             double r;
             double g;

@@ -34,7 +34,7 @@ internal class Dec2Bin : ExcelFunction
         if (arguments.Count() > 1)
         {
             padding = this.ArgToInt(arguments, 1);
-            if (padding.Value < 0 ^ padding.Value > 10)
+            if ((padding.Value < 0) ^ (padding.Value > 10))
             {
                 return this.CreateResult(eErrorType.Num);
             }

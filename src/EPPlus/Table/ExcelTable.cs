@@ -181,7 +181,7 @@ namespace OfficeOpenXml.Table
             {
                 if(this.Name.Equals(value, StringComparison.CurrentCultureIgnoreCase)==false && this.WorkSheet.Workbook.ExistsTableName(value))
                 {
-                    throw (new ArgumentException("Tablename is not unique"));
+                    throw new ArgumentException("Tablename is not unique");
                 }
                 string prevName = this.Name;
                 if (this.WorkSheet.Tables._tableNames.ContainsKey(prevName))
@@ -637,9 +637,9 @@ namespace OfficeOpenXml.Table
             }
             set
             {
-                if (this.Address._toRow - this.Address._fromRow < 0 && value || this.Address._toRow - this.Address._fromRow == 1 && value && this.ShowTotal)
+                if ((this.Address._toRow - this.Address._fromRow < 0 && value) || (this.Address._toRow - this.Address._fromRow == 1 && value && this.ShowTotal))
                 {
-                    throw (new Exception("Cant set ShowHeader-property. Table has too few rows"));
+                    throw new Exception("Cant set ShowHeader-property. Table has too few rows");
                 }
 
                 if(value)
@@ -762,7 +762,7 @@ namespace OfficeOpenXml.Table
                 }
                 else if(value)
                 {
-                    throw(new InvalidOperationException("Filter can only be applied when ShowHeader is set to true"));
+                    throw new InvalidOperationException("Filter can only be applied when ShowHeader is set to true");
                 }
             }
         }
@@ -933,7 +933,7 @@ namespace OfficeOpenXml.Table
             {
                 if (this.WorkSheet.Workbook.Styles.NamedStyles.FindIndexById(value) < 0)
                 {
-                    throw (new Exception(string.Format("Named style {0} does not exist.", value)));
+                    throw new Exception(string.Format("Named style {0} does not exist.", value));
                 }
 
                 this.SetXmlNodeString(this.TopNode, TOTALSROWCELLSTYLE_PATH, value, true);
@@ -958,7 +958,7 @@ namespace OfficeOpenXml.Table
             {
                 if (this.WorkSheet.Workbook.Styles.NamedStyles.FindIndexById(value) < 0)
                 {
-                    throw (new Exception(string.Format("Named style {0} does not exist.", value)));
+                    throw new Exception(string.Format("Named style {0} does not exist.", value));
                 }
 
                 this.SetXmlNodeString(this.TopNode, DATACELLSTYLE_PATH, value, true);
@@ -986,7 +986,7 @@ namespace OfficeOpenXml.Table
             {
                 if (this.WorkSheet.Workbook.Styles.NamedStyles.FindIndexById(value) < 0)
                 {
-                    throw (new Exception(string.Format("Named style {0} does not exist.", value)));
+                    throw new Exception(string.Format("Named style {0} does not exist.", value));
                 }
 
                 this.SetXmlNodeString(this.TopNode, HEADERROWCELLSTYLE_PATH, value, true);
@@ -1303,7 +1303,7 @@ namespace OfficeOpenXml.Table
             sortState.Clear();
             ExcelRangeBase? dataRange = this.DataRange;
             sortState.Ref = dataRange.Address;
-            sortState.CaseSensitive = (compareOptions == CompareOptions.IgnoreCase || compareOptions == CompareOptions.OrdinalIgnoreCase);
+            sortState.CaseSensitive = compareOptions == CompareOptions.IgnoreCase || compareOptions == CompareOptions.OrdinalIgnoreCase;
             for (int ix = 0; ix < columns.Length; ix++)
             {
                 bool? desc = null;

@@ -36,8 +36,8 @@ public abstract class ExcelCellBase
     static internal void SplitCellId(ulong cellId, out int sheet, out int row, out int col)
     {
         sheet = (int)(cellId % 0x8000);
-        col = ((int)(cellId >> 15) & 0x3FF);
-        row = ((int)(cellId >> 29));
+        col = (int)(cellId >> 15) & 0x3FF;
+        row = (int)(cellId >> 29);
     }
     /// <summary>
     /// Get the cellID for the cell. 
@@ -48,7 +48,7 @@ public abstract class ExcelCellBase
     /// <returns></returns>
     internal static ulong GetCellId(int sheetId, int row, int col)
     {
-        return ((ulong)sheetId) + (((ulong)col) << 15) + (((ulong)row) << 29);
+        return (ulong)sheetId + ((ulong)col << 15) + ((ulong)row << 29);
     }
     #endregion
     #region "Formula Functions"
@@ -401,7 +401,7 @@ public abstract class ExcelCellBase
     {
         return GetRowCol(address, out row, out col, throwException, out bool fixedRow, out bool fixedCol);
     }
-    const int numberOfCharacters = ('Z' - 'A') + 1;
+    const int numberOfCharacters = 'Z' - 'A' + 1;
     const int startChar = 'A' - 1;
     const int startNum = '0';
     internal static bool GetRowCol(string address, out int row, out int col, bool throwException, out bool fixedRow, out bool fixedCol)
@@ -474,7 +474,7 @@ public abstract class ExcelCellBase
         col = 0;
         if (throwException)
         {
-            throw (new ArgumentException(string.Format("Invalid Address format {0}", address)));
+            throw new ArgumentException(string.Format("Invalid Address format {0}", address));
         }
         else
         {
@@ -486,8 +486,8 @@ public abstract class ExcelCellBase
     {
         if (throwException)
         {
-            throw (new ArgumentException(string.Format(
-                                                       "Invalid Address format {0}. Row: {1} is out of range. Maxvalue for row is {2}", address, row, ExcelPackage.MaxRows)));
+            throw new ArgumentException(string.Format(
+                                                      "Invalid Address format {0}. Row: {1} is out of range. Maxvalue for row is {2}", address, row, ExcelPackage.MaxRows));
         }
         else
         {
@@ -502,7 +502,7 @@ public abstract class ExcelCellBase
         int len = sCol.Length - 1;
         for (int i = len; i >= 0; i--)
         {
-            col += (((int)sCol[i]) - 64) * (int)(Math.Pow(26, len - i));
+            col += ((int)sCol[i] - 64) * (int)Math.Pow(26, len - i);
         }
         return col;
     }
@@ -580,11 +580,11 @@ public abstract class ExcelCellBase
         }
         if (Absolute)
         {
-            return ("$" + GetColumnLetter(Column) + "$" + Row.ToString());
+            return "$" + GetColumnLetter(Column) + "$" + Row.ToString();
         }
         else
         {
-            return (GetColumnLetter(Column) + Row.ToString());
+            return GetColumnLetter(Column) + Row.ToString();
         }
     }
     /// <summary>
@@ -854,8 +854,8 @@ public abstract class ExcelCellBase
                 else if (a[i] == '$')
                 {
                     if (i == a.Length - 1 || a[i + 1] == ':' ||
-                        (i > 1 && (IsCol(a[i - 1]) && (IsCol(a[i + 1])))) ||
-                        (i > 1 && (IsRow(a[i - 1]) && (IsRow(a[i + 1])))))
+                        (i > 1 && IsCol(a[i - 1]) && IsCol(a[i + 1])) ||
+                        (i > 1 && IsRow(a[i - 1]) && IsRow(a[i + 1])))
                     {
                         return false;
                     }
@@ -870,7 +870,7 @@ public abstract class ExcelCellBase
             {
                 int column = GetColumn(c1);
                 int row = int.Parse(r1);
-                ret = (column >= 1 && column <= ExcelPackage.MaxColumns && row >= 1 && row <= ExcelPackage.MaxRows);
+                ret = column >= 1 && column <= ExcelPackage.MaxColumns && row >= 1 && row <= ExcelPackage.MaxRows;
             }
             else if (r1 != "" && r2 != "" && c1 != "" && c2 != "") //Range
             {
@@ -1008,7 +1008,7 @@ public abstract class ExcelCellBase
                         }
                         else if (rowIncrement < 0)
                         {
-                            if (address._fromRowFixed == false && (address._fromRow >= afterRow && address._toRow < afterRow - rowIncrement))
+                            if (address._fromRowFixed == false && address._fromRow >= afterRow && address._toRow < afterRow - rowIncrement)
                             {
                                 address = null;
                             }
@@ -1021,7 +1021,7 @@ public abstract class ExcelCellBase
 
                     if (address != null && !address.IsFullRow)
                     {
-                        if (copy && (address._fromColFixed && address._toColFixed && address.IsFullColumn))
+                        if (copy && address._fromColFixed && address._toColFixed && address.IsFullColumn)
                         {
                             f += address.LocalAddress;
                             continue;
@@ -1033,7 +1033,7 @@ public abstract class ExcelCellBase
                         }
                         else if (colIncrement < 0)
                         {
-                            if (address._fromColFixed == false && (address._fromCol >= afterColumn && address._toCol < afterColumn - colIncrement))
+                            if (address._fromColFixed == false && address._fromCol >= afterColumn && address._toCol < afterColumn - colIncrement)
                             {
                                 address = null;
                             }
@@ -1162,7 +1162,7 @@ public abstract class ExcelCellBase
                         }
                         else if (rowIncrement < 0)
                         {
-                            if (address._fromRowFixed == false && (address._fromRow >= afterRow && address._toRow < afterRow - rowIncrement))
+                            if (address._fromRowFixed == false && address._fromRow >= afterRow && address._toRow < afterRow - rowIncrement)
                             {
                                 address = null;
                             }
@@ -1180,7 +1180,7 @@ public abstract class ExcelCellBase
                         }
                         else if (colIncrement < 0)
                         {
-                            if (address._fromColFixed == false && (address._fromCol >= afterColumn && address._toCol < afterColumn - colIncrement))
+                            if (address._fromColFixed == false && address._fromCol >= afterColumn && address._toCol < afterColumn - colIncrement)
                             {
                                 address = null;
                             }

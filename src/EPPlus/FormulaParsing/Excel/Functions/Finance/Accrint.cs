@@ -74,7 +74,7 @@ internal class Accrint : ExcelFunction
         IFinanicalDays? financialDays = FinancialDaysFactory.Create(dayCountBasis);
         FinancialDay? issue = FinancialDayFactory.Create(issueDate, dayCountBasis);
         FinancialDay? settlement = FinancialDayFactory.Create(settlementDate, dayCountBasis);
-        FinancialDay? firstInterest = FinancialDayFactory.Create(firstInterestDate.AddDays(firstInterestDate.Day * -1 + 1), dayCountBasis);
+        FinancialDay? firstInterest = FinancialDayFactory.Create(firstInterestDate.AddDays((firstInterestDate.Day * -1) + 1), dayCountBasis);
             
         if(issueToSettlement)
         {

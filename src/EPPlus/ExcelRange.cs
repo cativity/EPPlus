@@ -74,7 +74,7 @@ public class ExcelRange : ExcelRangeBase
             }
             if((this._fromRow < 1 || this._fromCol < 1) && Address.Equals("#REF!", StringComparison.InvariantCultureIgnoreCase)==false)
             {
-                throw (new InvalidOperationException("Address is not valid."));
+                throw new InvalidOperationException("Address is not valid.");
             }
 
             this._rtc = null;
@@ -88,7 +88,7 @@ public class ExcelRange : ExcelRangeBase
         if (ixStart == 0) //External Address
         {
             int ixEnd = address.IndexOf(']',ixStart+1);
-            if (ixStart >= 0 & ixEnd >= 0)
+            if ((ixStart >= 0) & (ixEnd >= 0))
             {
                 string? external = address.Substring(ixStart + 1, ixEnd - 1);
                 //if (Worksheet.Workbook._externalReferences.Count < external)
@@ -161,11 +161,11 @@ public class ExcelRange : ExcelRangeBase
     {
         if (Row < 1 || Row > ExcelPackage.MaxRows)
         {
-            throw (new ArgumentException("Row out of range"));
+            throw new ArgumentException("Row out of range");
         }
         if (Col < 1 || Col > ExcelPackage.MaxColumns)
         {
-            throw (new ArgumentException("Column out of range"));
+            throw new ArgumentException("Column out of range");
         }
     }
 

@@ -112,7 +112,7 @@ public class ExcelChartExValueColor : XmlHelper
             eColorValuePositionType t = this.ValueType;
             if (t==eColorValuePositionType.Extreme)
             {
-                throw (new InvalidOperationException("Can't set PositionValue when ValueType is Extreme"));
+                throw new InvalidOperationException("Can't set PositionValue when ValueType is Extreme");
             }
             else if (t==eColorValuePositionType.Number)
             {

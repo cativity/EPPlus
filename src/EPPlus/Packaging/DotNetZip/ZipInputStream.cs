@@ -511,7 +511,7 @@ internal class ZipInputStream : Stream
             return 0;
         }
 
-        int len = (this._LeftToRead > count) ? count : (int)this._LeftToRead;
+        int len = this._LeftToRead > count ? count : (int)this._LeftToRead;
         int n = this._crcStream.Read(buffer, offset, len);
 
         this._LeftToRead -= n;

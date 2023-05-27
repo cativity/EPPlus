@@ -690,7 +690,7 @@ public class ExcelExternalWorkbook : ExcelExternalLink
     }
     private void UpdateCacheForAddress(ExcelAddressBase formulaAddress, string sfAddress)
     {
-        if (formulaAddress==null && formulaAddress._fromRow < 0 || formulaAddress._fromCol < 0)
+        if ((formulaAddress==null && formulaAddress._fromRow < 0) || formulaAddress._fromCol < 0)
         {
             return;
         }
@@ -777,7 +777,7 @@ public class ExcelExternalWorkbook : ExcelExternalLink
         {
             if(this.UpdateCache()==false || this._sheetNames.Count == 0)
             {
-                throw (new InvalidDataException($"External reference {this.File.FullName} can't be updated saved. Make sure it contains at least one worksheet. For any errors please check the ErrorLog property of the object after UpdateCache has been called."));
+                throw new InvalidDataException($"External reference {this.File.FullName} can't be updated saved. Make sure it contains at least one worksheet. For any errors please check the ErrorLog property of the object after UpdateCache has been called.");
             }
         }
 

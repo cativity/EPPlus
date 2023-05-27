@@ -56,19 +56,19 @@ internal static class BetaHelper
 
         if (a >= 1 && b >= 1)
         {
-            double pp = (p < 0.5) ? p : 1 - p;
+            double pp = p < 0.5 ? p : 1 - p;
             t = System.Math.Sqrt(-2 * System.Math.Log(pp));
-            x = (2.30753 + t * 0.27061) / (1 + t * (0.99229 + t * 0.04481)) - t;
+            x = ((2.30753 + (t * 0.27061)) / (1 + (t * (0.99229 + (t * 0.04481))))) - t;
             if (p < 0.5)
             {
                 x = -x;
             }
 
-            double al = (x * x - 3) / 6;
-            double h = 2 / (1 / (2 * a - 1) + 1 / (2 * b - 1));
-            w = (x * System.Math.Sqrt(al + h) / h) - (1 / (2 * b - 1) - 1 / (2 * a - 1)) *
-                (al + 5 / 6 - 2 / (3 * h));
-            x = a / (a + b * System.Math.Exp(2 * w));
+            double al = ((x * x) - 3) / 6;
+            double h = 2 / ((1 / ((2 * a) - 1)) + (1 / ((2 * b) - 1)));
+            w = (x * System.Math.Sqrt(al + h) / h) - (((1 / ((2 * b) - 1)) - (1 / ((2 * a) - 1))) *
+                                                      (al + (5 / 6) - (2 / (3 * h))));
+            x = a / (a + (b * System.Math.Exp(2 * w)));
         }
         else
         {
@@ -97,9 +97,9 @@ internal static class BetaHelper
             }
 
             double err = IBeta(x, a, b) - p;
-            t = System.Math.Exp(a1 * System.Math.Log(x) + b1 * System.Math.Log(1 - x) + afac);
+            t = System.Math.Exp((a1 * System.Math.Log(x)) + (b1 * System.Math.Log(1 - x)) + afac);
             u = err / t;
-            x -= (t = u / (1 - 0.5 * System.Math.Min(1, u * (a1 / x - b1 / (1 - x)))));
+            x -= t = u / (1 - (0.5 * System.Math.Min(1, u * ((a1 / x) - (b1 / (1 - x))))));
             if (x <= 0)
             {
                 x = 0.5 * (x + t);
@@ -128,10 +128,10 @@ internal static class BetaHelper
     internal static double IBeta(double x, double a, double b)
     {
         // Factors in front of the continued fraction.
-        double bt = (x == 0 || x == 1) ? 0 :
+        double bt = x == 0 || x == 1 ? 0 :
                         System.Math.Exp(GammaHelper.logGamma(a + b) - GammaHelper.logGamma(a) -
-                                        GammaHelper.logGamma(b) + a * System.Math.Log(x) + b *
-                                        System.Math.Log(1 - x));
+                                        GammaHelper.logGamma(b) + (a * System.Math.Log(x)) + (b *
+                                                                                              System.Math.Log(1 - x)));
         if (x < 0 || x > 1)
         {
             return 0d; // previously return false
@@ -144,7 +144,7 @@ internal static class BetaHelper
         }
 
         // else use continued fraction after making the symmetry transformation.
-        return 1 - bt * BetaCf(1 - x, b, a) / b;
+        return 1 - (bt * BetaCf(1 - x, b, a) / b);
     }
 
     internal static double Beta(double x, double y)
@@ -156,7 +156,7 @@ internal static class BetaHelper
         }
 
         // make sure x + y doesn't exceed the upper limit of usable values
-        return (x + y > 170)
+        return x + y > 170
                    ? System.Math.Exp(Betaln(x, y))
                    : GammaHelper.gamma(x) * GammaHelper.gamma(y) / GammaHelper.gamma(x + y);
     }
@@ -190,14 +190,14 @@ internal static class BetaHelper
 
         if (a < 512 && b < 512)
         {
-            double result = (System.Math.Pow(x, a - 1) * System.Math.Pow(1 - x, b - 1)) /
+            double result = System.Math.Pow(x, a - 1) * System.Math.Pow(1 - x, b - 1) /
                             Beta(a, b);
             return result / 2d;
         }
         else
         {
-            double result = System.Math.Exp((a - 1) * System.Math.Log(x) +
-                                            (b - 1) * System.Math.Log(1 - x) -
+            double result = System.Math.Exp(((a - 1) * System.Math.Log(x)) +
+                                            ((b - 1) * System.Math.Log(1 - x)) -
                                             Betaln(a, b));
             return result / 2d;
         }
@@ -218,7 +218,7 @@ internal static class BetaHelper
         double qap = a + 1;
         double qam = a - 1;
         double c = 1d;
-        double d = 1 - qab * x / qap;
+        double d = 1 - (qab * x / qap);
 
         // These q's will be used in factors that occur in the coefficients
         if (System.Math.Abs(d) < fpmin)
@@ -235,13 +235,13 @@ internal static class BetaHelper
             double aa = m * (b - m) * x / ((qam + m2) * (a + m2));
 
             // One step (the even one) of the recurrence
-            d = 1 + aa * d;
+            d = 1 + (aa * d);
             if (System.Math.Abs(d) < fpmin)
             {
                 d = fpmin;
             }
 
-            c = 1d + aa / c;
+            c = 1d + (aa / c);
             if (System.Math.Abs(c) < fpmin)
             {
                 c = fpmin;
@@ -251,13 +251,13 @@ internal static class BetaHelper
             h *= d * c;
             aa = -(a + m) * (qab + m) * x / ((a + m2) * (qap + m2));
             // Next step of the recurrence (the odd one)
-            d = 1 + aa * d;
+            d = 1 + (aa * d);
             if (System.Math.Abs(d) < fpmin)
             {
                 d = fpmin;
             }
 
-            c = 1 + aa / c;
+            c = 1 + (aa / c);
             if (System.Math.Abs(c) < fpmin)
             {
                 c = fpmin;

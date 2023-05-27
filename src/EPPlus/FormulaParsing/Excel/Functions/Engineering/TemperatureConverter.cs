@@ -8,7 +8,7 @@ internal static class TemperatureConverter
 {
     private static double Cel2Fah(double c)
     {
-        return (c * 9) / 5 + 32;
+        return (c * 9 / 5) + 32;
     }
 
     private static double Fah2Cel(double f)

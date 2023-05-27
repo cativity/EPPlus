@@ -137,7 +137,7 @@ public class ExcelCustomFilterColumn : ExcelFilterColumn
                 case eFilterOperator.LessThanOrEqual:
                     return Utils.ConvertUtil.GetValueDouble(value) <= filter._valueDouble;
                 default:
-                    throw (new ArgumentException($"Unhandled filter operator {filter.Operator}"));
+                    throw new ArgumentException($"Unhandled filter operator {filter.Operator}");
             }
         }
     }
@@ -164,7 +164,7 @@ public class ExcelCustomFilterColumn : ExcelFilterColumn
                 case eFilterOperator.LessThanOrEqual:
                     return string.Compare(value.ToString(), filter.Value, StringComparison.CurrentCultureIgnoreCase) <= 0;
                 default:
-                    throw (new ArgumentException($"Unhandled filter operator {filter.Operator}"));
+                    throw new ArgumentException($"Unhandled filter operator {filter.Operator}");
             }
         }
     }

@@ -50,7 +50,7 @@ internal class WorkItem
     {
         this.buffer= new byte[size];
         // alloc 5 bytes overhead for every block (margin of safety= 2)
-        int n = size + ((size / 32768)+1) * 5 * 2;
+        int n = size + (((size / 32768)+1) * 5 * 2);
         this.compressed = new byte[n];
         this.compressor = new ZlibCodec();
         this.compressor.InitializeDeflate(compressLevel, false);
@@ -604,9 +604,9 @@ public class ParallelDeflateOutputStream : Stream
 
             WorkItem workitem = this._pool[ix];
 
-            int limit = ((workitem.buffer.Length - workitem.inputBytesAvailable) > count)
+            int limit = workitem.buffer.Length - workitem.inputBytesAvailable > count
                             ? count
-                            : (workitem.buffer.Length - workitem.inputBytesAvailable);
+                            : workitem.buffer.Length - workitem.inputBytesAvailable;
 
             workitem.ordinal = this._lastFilled;
 
@@ -930,7 +930,7 @@ public class ParallelDeflateOutputStream : Stream
         do
         {
             int firstSkip = -1;
-            int millisecondsToWait = doAll ? 200 : (mustWait ? -1 : 0);
+            int millisecondsToWait = doAll ? 200 : mustWait ? -1 : 0;
             int nextToWrite = -1;
 
             do
@@ -1290,7 +1290,7 @@ public class ParallelDeflateOutputStream : Stream
             {
                 int tid = Thread.CurrentThread.GetHashCode();
 #if !SILVERLIGHT
-                Console.ForegroundColor = (ConsoleColor) (tid % 8 + 8);
+                Console.ForegroundColor = (ConsoleColor) ((tid % 8) + 8);
 #endif
                 Console.Write("{0:000} PDOS ", tid);
                 Console.WriteLine(format, varParams);

@@ -365,7 +365,7 @@ internal static class DependencyChainFactory
                             {
                                 if (options.AllowCircularReferences == false)
                                 {
-                                    throw (new CircularReferenceException(string.Format("Circular Reference in cell {0}!{1}", par.ws.Name, ExcelCellBase.GetAddress(f.Row, f.Column))));
+                                    throw new CircularReferenceException(string.Format("Circular Reference in cell {0}!{1}", par.ws.Name, ExcelCellBase.GetAddress(f.Row, f.Column)));
                                 }
                                 else
                                 {

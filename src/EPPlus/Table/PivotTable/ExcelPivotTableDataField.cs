@@ -72,7 +72,7 @@ public class ExcelPivotTableDataField : XmlHelper
         {
             if (this.Field._pivotTable.DataFields.ExistsDfName(value, this))
             {
-                throw (new InvalidOperationException("Duplicate datafield name"));
+                throw new InvalidOperationException("Duplicate datafield name");
             }
 
             this.SetXmlNodeString("@name", value);

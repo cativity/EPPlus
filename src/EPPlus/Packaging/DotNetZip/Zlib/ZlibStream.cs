@@ -329,7 +329,7 @@ public class ZlibStream : Stream
     /// </summary>
     virtual public FlushType FlushMode
     {
-        get { return (this._baseStream._flushMode); }
+        get { return this._baseStream._flushMode; }
         set
         {
             if (this._disposed)
@@ -430,7 +430,7 @@ public class ZlibStream : Stream
         {
             if (!this._disposed)
             {
-                if (disposing && (this._baseStream != null))
+                if (disposing && this._baseStream != null)
                 {
                     this._baseStream.Close();
                 }

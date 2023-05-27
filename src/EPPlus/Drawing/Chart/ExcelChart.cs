@@ -115,15 +115,15 @@ public abstract class ExcelChart : ExcelDrawing, IDrawingStyle, IStyleMandatoryP
                 {
                     if (this.IsTypePieDoughnut())
                     {
-                        throw (new Exception("Pie charts do not support axis"));
+                        throw new Exception("Pie charts do not support axis");
                     }
                     else if(this._isChartEx)
                     {
-                        throw (new InvalidOperationException("Extentions charts don't support secondary axis"));
+                        throw new InvalidOperationException("Extentions charts don't support secondary axis");
                     }
                     else if (this.HasPrimaryAxis() == false)
                     {
-                        throw (new Exception("Can't set to secondary axis when no serie uses the primary axis"));
+                        throw new Exception("Can't set to secondary axis when no serie uses the primary axis");
                     }
                     if (this.Axis.Length == 2)
                     {
@@ -585,7 +585,7 @@ public abstract class ExcelChart : ExcelDrawing, IDrawingStyle, IStyleMandatoryP
         }
         catch (Exception ex)
         {
-            throw (new InvalidDataException("EPPlus internal error when deleting chart.", ex));
+            throw new InvalidDataException("EPPlus internal error when deleting chart.", ex);
         }
         base.DeleteMe();
     }

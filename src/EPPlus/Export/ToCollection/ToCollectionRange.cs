@@ -56,7 +56,7 @@ internal class ToCollectionRange
 
         List<ExcelValue>? values = new List<ExcelValue>();
         ToCollectionRow? row = new ToCollectionRow(headers, range._workbook, options.ConversionFailureStrategy);
-        int startRow = options.DataStartRow ?? ((options.HeaderRow ?? -1) + 1);
+        int startRow = options.DataStartRow ?? (options.HeaderRow ?? -1) + 1;
         for (int r = range._fromRow + startRow; r <= range._toRow; r++)
         {
             for (int c = range._fromCol; c <= range._toCol; c++)
@@ -87,7 +87,7 @@ internal class ToCollectionRange
         List<MappedProperty>? mappings = ToCollectionAutomap.GetAutomapList<T>(h);
         List<T>? l = new List<T>();
         List<ExcelValue>? values = new List<ExcelValue>();
-        int startRow = options.DataStartRow ?? ((options.HeaderRow ?? -1) + 1);
+        int startRow = options.DataStartRow ?? (options.HeaderRow ?? -1) + 1;
         for (int r = range._fromRow + startRow; r <= range._toRow; r++)
         {
             T? item = (T)Activator.CreateInstance(t);

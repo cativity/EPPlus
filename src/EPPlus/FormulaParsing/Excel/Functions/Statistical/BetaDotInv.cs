@@ -53,7 +53,7 @@ internal class BetaDotInv : ExcelFunction
             return this.CreateResult(eErrorType.Num);
         }
 
-        double result = BetaHelper.IBetaInv(probability, alpha, beta) * (B - A) + A;
+        double result = (BetaHelper.IBetaInv(probability, alpha, beta) * (B - A)) + A;
         return this.CreateResult(result, DataType.Decimal);
     }
 }

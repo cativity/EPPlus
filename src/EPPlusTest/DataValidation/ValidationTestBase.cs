@@ -107,6 +107,6 @@ public abstract class ValidationTestBase : TestBase
         ExcelDataValidation? validation = ReadPackageAsNewPackage(package).
                                           Workbook.Worksheets[0].DataValidations[0];
 
-        return (T)((Object)validation);
+        return (T)(Object)validation;
     }
 }

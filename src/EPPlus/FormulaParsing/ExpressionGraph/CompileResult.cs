@@ -200,7 +200,7 @@ public class CompileResult
     {
         get
         {
-            if (this.DataType == DataType.String && ConvertUtil.TryParseDateString((this.Result as string), out DateTime result))
+            if (this.DataType == DataType.String && ConvertUtil.TryParseDateString(this.Result as string, out DateTime result))
             {
                 this._resultNumeric = result.ToOADate();
                 return true;

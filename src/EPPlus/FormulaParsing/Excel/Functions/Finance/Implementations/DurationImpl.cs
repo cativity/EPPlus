@@ -35,7 +35,7 @@ internal class DurationImpl
         yield /= nFreq;
         yield += 1.0;
 
-        double nDiff = fYearfrac * nFreq - fNumOfCoups;
+        double nDiff = (fYearfrac * nFreq) - fNumOfCoups;
 
         double t;
 

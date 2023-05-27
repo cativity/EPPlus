@@ -94,7 +94,7 @@ public class ExcelVmlDrawingPosition : XmlHelper
         }
         else
         {
-            throw (new Exception("Anchor element is invalid in vmlDrawing"));
+            throw new Exception("Anchor element is invalid in vmlDrawing");
         }
 
         this.SetXmlNodeString("x:Anchor", string.Join(",",numbers));
@@ -111,6 +111,6 @@ public class ExcelVmlDrawingPosition : XmlHelper
                 return ret;
             }
         }
-        throw(new Exception("Anchor element is invalid in vmlDrawing"));
+        throw new Exception("Anchor element is invalid in vmlDrawing");
     }
 }

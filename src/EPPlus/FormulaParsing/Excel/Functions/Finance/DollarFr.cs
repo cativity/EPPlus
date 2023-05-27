@@ -42,7 +42,7 @@ internal class DollarFr : ExcelFunction
         }
 
         double result = System.Math.Floor(decimalDollar);
-        result += (decimalDollar % 1) * System.Math.Pow(10, -System.Math.Ceiling(System.Math.Log(fraction) / System.Math.Log(10))) * fraction;
+        result += decimalDollar % 1 * System.Math.Pow(10, -System.Math.Ceiling(System.Math.Log(fraction) / System.Math.Log(10))) * fraction;
         return this.CreateResult(result, DataType.Decimal);
     }
 }

@@ -114,7 +114,7 @@ public class ExcelEncryption
         set
         {
             this._password = value;
-            this._isEncrypted = (value != null);
+            this._isEncrypted = value != null;
         }
     }
     /// <summary>

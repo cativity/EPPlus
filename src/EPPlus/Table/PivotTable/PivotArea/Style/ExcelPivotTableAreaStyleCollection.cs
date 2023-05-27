@@ -107,7 +107,7 @@ public class ExcelPivotTableAreaStyleCollection : EPPlusReadOnlyList<ExcelPivotT
     {
         if (field==null)
         {
-            throw (new ArgumentException("Field can't be null"));
+            throw new ArgumentException("Field can't be null");
         }
 
         XmlNode? formatNode = this.GetTopNode();
@@ -187,7 +187,7 @@ public class ExcelPivotTableAreaStyleCollection : EPPlusReadOnlyList<ExcelPivotT
     {
         if (fields.Any(x => x == null))
         {
-            throw (new ArgumentException("Field in array can't be null"));
+            throw new ArgumentException("Field in array can't be null");
         }
 
         ExcelPivotTableAreaStyle? s = this.Add();
@@ -209,7 +209,7 @@ public class ExcelPivotTableAreaStyleCollection : EPPlusReadOnlyList<ExcelPivotT
     {
         if (fields.Any(x => x == null))
         {
-            throw (new ArgumentException("Field in array can't be null"));
+            throw new ArgumentException("Field in array can't be null");
         }
 
         ExcelPivotTableAreaStyle? s = this.Add();

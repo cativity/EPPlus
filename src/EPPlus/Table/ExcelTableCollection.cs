@@ -72,7 +72,7 @@ public class ExcelTableCollection : IEnumerable<ExcelTable>
         {
             if (this._ws.Workbook.ExistsTableName(Name))
             {
-                throw (new ArgumentException("Tablename is not unique"));
+                throw new ArgumentException("Tablename is not unique");
             }
         }
 
@@ -82,7 +82,7 @@ public class ExcelTableCollection : IEnumerable<ExcelTable>
         {
             if (t.Address.Collide(Range) != ExcelAddressBase.eAddressCollition.No)
             {
-                throw (new ArgumentException(string.Format("Table range collides with table {0}", t.Name)));
+                throw new ArgumentException(string.Format("Table range collides with table {0}", t.Name));
             }
         }
         foreach (string? mc in this._ws.MergedCells)
@@ -94,7 +94,7 @@ public class ExcelTableCollection : IEnumerable<ExcelTable>
 
             if (new ExcelAddressBase(mc).Collide(Range) != ExcelAddressBase.eAddressCollition.No)
             {
-                throw (new ArgumentException($"Table range collides with merged range {mc}"));
+                throw new ArgumentException($"Table range collides with merged range {mc}");
             }
         }
 
@@ -116,7 +116,7 @@ public class ExcelTableCollection : IEnumerable<ExcelTable>
 
         if (!ExcelAddressUtil.IsValidName(name))
         {
-            throw (new ArgumentException("Tablename is not valid", "Name"));
+            throw new ArgumentException("Tablename is not valid", "Name");
         }
     }
     /// <summary>
@@ -241,7 +241,7 @@ public class ExcelTableCollection : IEnumerable<ExcelTable>
         {
             if (Index < 0 || Index >= this._tables.Count)
             {
-                throw (new ArgumentOutOfRangeException("Table index out of range"));
+                throw new ArgumentOutOfRangeException("Table index out of range");
             }
             return this._tables[Index];
         }

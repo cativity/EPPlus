@@ -115,7 +115,7 @@ public class ExcelHeaderFooterText
 
         if (!PictureFile.Exists)
         {
-            throw (new FileNotFoundException(string.Format("{0} is missing", PictureFile.FullName)));
+            throw new FileNotFoundException(string.Format("{0} is missing", PictureFile.FullName));
         }
 
         Uri? uriPic = XmlHelper.GetNewUri(this._ws._package.ZipPackage, "/xl/media/" + PictureFile.Name.Substring(0, PictureFile.Name.Length-PictureFile.Extension.Length) + "{0}" + PictureFile.Extension);
@@ -172,7 +172,7 @@ public class ExcelHeaderFooterText
         {
             if (image.Id == id)
             {
-                throw (new InvalidOperationException("A picture already exists in this section"));
+                throw new InvalidOperationException("A picture already exists in this section");
             }
         }
         //Add the image placeholder to the end of the text

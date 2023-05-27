@@ -40,11 +40,11 @@ internal static class WorksheetCopyHelper
     {
         if (copy is ExcelChartsheet)
         {
-            throw (new ArgumentException("Cannot copy a chartsheet"));
+            throw new ArgumentException("Cannot copy a chartsheet");
         }
         if (worksheets.GetByName(name) != null)
         {
-            throw (new InvalidOperationException(ExcelWorksheets.ERR_DUP_WORKSHEET));
+            throw new InvalidOperationException(ExcelWorksheets.ERR_DUP_WORKSHEET);
         }
         ExcelPackage? pck = worksheets._pck;
         XmlNamespaceManager? nsm = worksheets.NameSpaceManager;
@@ -165,7 +165,7 @@ internal static class WorksheetCopyHelper
 
     private static void CloneCellsAndStyles(ExcelWorksheet Copy, ExcelWorksheet added)
     {
-        bool sameWorkbook = (Copy.Workbook == added.Workbook);
+        bool sameWorkbook = Copy.Workbook == added.Workbook;
 
         bool doAdjust = added._package.DoAdjustDrawings;
         added._package.DoAdjustDrawings = false;
@@ -926,7 +926,7 @@ internal static class WorksheetCopyHelper
         for (int i = 0; i < copy.ConditionalFormatting.Count; i++)
         {
             IExcelConditionalFormattingRule? cfSource = copy.ConditionalFormatting[i];
-            XmlElement? dxfElement = ((XmlElement)cfSource.Node);
+            XmlElement? dxfElement = (XmlElement)cfSource.Node;
             string? dxfId = dxfElement.GetAttribute("dxfId");
             if (ConvertUtil.TryParseIntString(dxfId, out int dxfIdInt))
             {
@@ -1114,7 +1114,7 @@ internal static class WorksheetCopyHelper
             xml.Save(stream);
 
             //Now create the new relationship between the worksheet and the slicer.
-            XmlElement? relNode = (XmlElement)(added.WorksheetXml.DocumentElement.SelectSingleNode($"d:extLst/d:ext/x14:slicerList/x14:slicer[@r:id='{source.Rel.Id}']", added.NameSpaceManager));
+            XmlElement? relNode = (XmlElement)added.WorksheetXml.DocumentElement.SelectSingleNode($"d:extLst/d:ext/x14:slicerList/x14:slicer[@r:id='{source.Rel.Id}']", added.NameSpaceManager);
             relNode.Attributes["r:id"].Value = rel.Id;
         }
     }

@@ -72,7 +72,7 @@ internal class TokenFactory : ITokenFactory
                 }
                 else
                 {
-                    throw (new ArgumentException(string.Format("Invalid formula token sequence near {0}", token)));
+                    throw new ArgumentException(string.Format("Invalid formula token sequence near {0}", token));
                 }
                 //Remove the string tokens and content
                 tokenList.RemoveAt(tokenList.Count - 1);
@@ -83,7 +83,7 @@ internal class TokenFactory : ITokenFactory
             }
             else
             {
-                throw (new ArgumentException(string.Format("Invalid formula token sequence near {0}", token)));
+                throw new ArgumentException(string.Format("Invalid formula token sequence near {0}", token));
             }
 
         }
@@ -171,7 +171,7 @@ internal class TokenFactory : ITokenFactory
         int nPlus = 0;
         foreach(char c in value)
         {
-            if ((c < '0' || c > '9') && (allowDecimal == false || c != '.') && c != 'E' && (c != '-' && c != '+'))
+            if ((c < '0' || c > '9') && (allowDecimal == false || c != '.') && c != 'E' && c != '-' && c != '+')
             {
                 return false;
             }

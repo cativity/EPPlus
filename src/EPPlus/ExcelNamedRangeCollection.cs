@@ -49,11 +49,11 @@ public class ExcelNamedRangeCollection : IEnumerable<ExcelNamedRange>
     {
         if (!ExcelAddressUtil.IsValidName(Name))
         {
-            throw (new ArgumentException("Name contains invalid characters or is not valid."));
+            throw new ArgumentException("Name contains invalid characters or is not valid.");
         }
         if(this._wb!=Range._workbook)
         {
-            throw (new InvalidOperationException("The range must be in the same package. "));
+            throw new InvalidOperationException("The range must be in the same package. ");
         }
         return this.AddName(Name, Range, allowRelativeAddress);
     }

@@ -91,7 +91,7 @@ internal class TextFileLogger : IFormulaParserLogger
                 this._sw.Write(func + "  - " + this._funcs[func]);
                 if (this._funcPerformance.ContainsKey(func))
                 {
-                    this._sw.Write(" - avg: " + this._funcPerformance[func]/ this._funcs[func] + " milliseconds");
+                    this._sw.Write(" - avg: " + (this._funcPerformance[func]/ this._funcs[func]) + " milliseconds");
                 }
 
                 this._sw.WriteLine();

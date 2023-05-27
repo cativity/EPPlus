@@ -366,7 +366,7 @@ namespace OfficeOpenXml.Drawing
             {
                 br.BaseStream.Seek(0, SeekOrigin.Begin);
                 sign = Encoding.ASCII.GetString(br.ReadBytes(2));    //BM for a Windows bitmap
-                return (sign == "BM" || sign == "BA" || sign == "CI" || sign == "CP" || sign == "IC" || sign == "PT");
+                return sign == "BM" || sign == "BA" || sign == "CI" || sign == "CP" || sign == "IC" || sign == "PT";
             }
             catch
             {
@@ -423,7 +423,7 @@ namespace OfficeOpenXml.Drawing
         private static bool IsWebP(MemoryStream ms, ref double width, ref double height, ref double horizontalResolution, ref double verticalResolution)
         {
             width = height = 0;
-            horizontalResolution = verticalResolution = ExcelDrawing.STANDARD_DPI * (1+1/3); //Excel seems to render webp at 1 1/3 size.
+            horizontalResolution = verticalResolution = ExcelDrawing.STANDARD_DPI * (1+(1/3)); //Excel seems to render webp at 1 1/3 size.
             using (BinaryReader? br = new BinaryReader(ms))
             {
                 if(IsWebP(br))
@@ -449,8 +449,8 @@ namespace OfficeOpenXml.Drawing
                         case "VP8L":
                             br.ReadBytes(5);
                             b=br.ReadBytes(4);
-                            width = (b[0] | (b[1] & 0x3F) << 8) + 1;
-                            height = (b[1] >> 6 | b[2] << 2 | (b[3] & 0x0F) << 10) + 1;
+                            width = (b[0] | ((b[1] & 0x3F) << 8)) + 1;
+                            height = ((b[1] >> 6) | (b[2] << 2) | ((b[3] & 0x0F) << 10)) + 1;
                             break;
                     }
                 }
@@ -652,8 +652,8 @@ namespace OfficeOpenXml.Drawing
                     int id = br.ReadInt32();
                     int size2 = br.ReadInt32();
 
-                    width = (bounds[2] - bounds[0] + 1);
-                    height = (bounds[3] - bounds[1] + 1);
+                    width = bounds[2] - bounds[0] + 1;
+                    height = bounds[3] - bounds[1] + 1;
 
                     horizontalResolution = width / ((frame[2] - frame[0]) * HUNDREDTH_TH_MM_TO_INCH * ExcelDrawing.STANDARD_DPI) * ExcelDrawing.STANDARD_DPI;
                     verticalResolution = height / ((frame[3] - frame[1]) * HUNDREDTH_TH_MM_TO_INCH * ExcelDrawing.STANDARD_DPI) * ExcelDrawing.STANDARD_DPI;
@@ -692,8 +692,8 @@ namespace OfficeOpenXml.Drawing
                 height = bounds[3] - bounds[1];
                 if (inch != 0)
                 {
-                    width *= (DEFAULT_TWIPS / inch) * PIXELS_PER_TWIPS;
-                    height *= (DEFAULT_TWIPS / inch) * PIXELS_PER_TWIPS;
+                    width *= DEFAULT_TWIPS / inch * PIXELS_PER_TWIPS;
+                    height *= DEFAULT_TWIPS / inch * PIXELS_PER_TWIPS;
                 }
                 return width != 0 && height != 0;
             }

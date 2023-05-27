@@ -35,8 +35,8 @@ internal class CeilingMath : ExcelFunction
         }
 
         double number = this.ArgToDecimal(arguments, 0, context.Configuration.PrecisionAndRoundingStrategy);
-        double significance = (arguments.Count() > 1) ? this.ArgToDecimal(arguments, 1) : 1;
-        double mode = (arguments.Count() > 2) ? this.ArgToDecimal(arguments, 2) : 0d;
+        double significance = arguments.Count() > 1 ? this.ArgToDecimal(arguments, 1) : 1;
+        double mode = arguments.Count() > 2 ? this.ArgToDecimal(arguments, 2) : 0d;
         if (RoundingHelper.IsInvalidNumberAndSign(number, significance))
         {
             return this.CreateResult(eErrorType.Num);

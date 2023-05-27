@@ -41,7 +41,7 @@ internal class LoadFromDataTable
     {
         if (this._dataTable == null)
         {
-            throw (new ArgumentNullException("Table can't be null"));
+            throw new ArgumentNullException("Table can't be null");
         }
 
         if (this._dataTable.Rows.Count == 0 && this._printHeaders == false)

@@ -48,18 +48,18 @@ internal class Tbilleq : ExcelFunction
         }
         else if(nDaysInPeriod > 182)
         {
-            double price = (100d - discount * 100d * nDaysInPeriod / 360d) / 100d;
+            double price = (100d - (discount * 100d * nDaysInPeriod / 360d)) / 100d;
             int fullYearDays = nDaysInPeriod <= 365 ? 365 : 366;
             double fullYearFactor = nDaysInPeriod / fullYearDays;
-            double tmp = System.Math.Pow(fullYearFactor, 2) - (2d * fullYearFactor - 1d) * (1d - 1d / price);
+            double tmp = System.Math.Pow(fullYearFactor, 2) - (((2d * fullYearFactor) - 1d) * (1d - (1d / price)));
             double term2 = System.Math.Sqrt(tmp);
-            double term3 = 2d * fullYearFactor - 1d;
+            double term3 = (2d * fullYearFactor) - 1d;
             double result = 2d * (term2 - fullYearFactor) / term3;
             return this.CreateResult(result, DataType.Decimal);
         }
         else
         {
-            double result = (365d * discount) / (360d - (discount * nDaysInPeriod));
+            double result = 365d * discount / (360d - (discount * nDaysInPeriod));
             return this.CreateResult(result, DataType.Decimal);
         }
     }

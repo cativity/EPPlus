@@ -77,7 +77,7 @@ public class ExcelThemeFillStyles : XmlHelper, IEnumerable<ExcelDrawingFill>
     {
         if(this._list.Count==3)
         {
-            throw (new InvalidOperationException("Collection must contain at least 3 items"));
+            throw new InvalidOperationException("Collection must contain at least 3 items");
         }
 
         if (this._list.Contains(item))

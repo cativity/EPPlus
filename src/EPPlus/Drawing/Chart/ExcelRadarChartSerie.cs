@@ -121,7 +121,7 @@ public sealed class ExcelRadarChartSerie : ExcelChartStandardSerie, IDrawingSeri
         {
             if (value < 2 && value > 72)
             {
-                throw (new ArgumentOutOfRangeException("MarkerSize out of range. Range from 2-72 allowed."));
+                throw new ArgumentOutOfRangeException("MarkerSize out of range. Range from 2-72 allowed.");
             }
 
             this.SetXmlNodeString(MARKERSIZE_PATH, value.ToString(CultureInfo.InvariantCulture));

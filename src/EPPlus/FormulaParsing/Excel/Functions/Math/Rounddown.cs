@@ -47,7 +47,7 @@ internal class Rounddown : ExcelFunction
         else
         {
             result = (int)System.Math.Floor(number);
-            result -= (result % System.Math.Pow(10, (nDecimals*-1)));
+            result -= result % System.Math.Pow(10, nDecimals*-1);
         }
         return this.CreateResult(result * nFactor, DataType.Decimal);
     }

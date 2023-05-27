@@ -104,7 +104,7 @@ public sealed class ExcelView3D : XmlHelper
         {
             if (value < 0 || value > 2000)
             {
-                throw(new ArgumentOutOfRangeException("Value must be between 0 and 2000"));
+                throw new ArgumentOutOfRangeException("Value must be between 0 and 2000");
             }
 
             this.SetXmlNodeString(depthPercentPath, value.ToString());
@@ -124,7 +124,7 @@ public sealed class ExcelView3D : XmlHelper
         {
             if (value < 5 || value > 500)
             {
-                throw (new ArgumentOutOfRangeException("Value must be between 5 and 500"));
+                throw new ArgumentOutOfRangeException("Value must be between 5 and 500");
             }
 
             this.SetXmlNodeString(heightPercentPath, value.ToString());

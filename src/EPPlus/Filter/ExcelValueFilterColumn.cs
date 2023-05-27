@@ -114,12 +114,12 @@ public class ExcelValueFilterColumn : ExcelFilterColumn
         node.RemoveAll();
         if (this.Filters.Blank)
         {
-            (node).SetAttribute("blank", "1");
+            node.SetAttribute("blank", "1");
         }
 
         if (this.Filters.CalendarTyp.HasValue)
         {
-            (node).SetAttribute("calendarType", this.Filters.CalendarTyp.Value.ToEnumString());
+            node.SetAttribute("calendarType", this.Filters.CalendarTyp.Value.ToEnumString());
         }
 
         foreach(ExcelFilterItem? f in this.Filters)

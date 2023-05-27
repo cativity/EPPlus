@@ -45,7 +45,7 @@ internal static class CsvExtensions
         }
         else
         {
-            throw(new InvalidOperationException("CSV Position out our range"));
+            throw new InvalidOperationException("CSV Position out our range");
         }
         return string.Join(",", items);
     }

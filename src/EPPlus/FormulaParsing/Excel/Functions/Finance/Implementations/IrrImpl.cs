@@ -29,7 +29,7 @@ internal static class IrrImpl
         double dTotal = 0.0;
         double divRate = 1.0 + Guess;
 
-        while ((lLower <= lUpper) && ValueArray[lLower] == 0.0)
+        while (lLower <= lUpper && ValueArray[lLower] == 0.0)
         {
             lLower += 1;
         }
@@ -148,7 +148,7 @@ internal static class IrrImpl
                 return new FinanceCalcResult<double>(eErrorType.Value);
             }
 
-            dRate0 = dRate1 - (dRate1 - dRate0) * dNpv1 / (dNpv1 - dNPv0);
+            dRate0 = dRate1 - ((dRate1 - dRate0) * dNpv1 / (dNpv1 - dNPv0));
 
             //Secant method of generating next approximation
             if (dRate0 <= -1.0)

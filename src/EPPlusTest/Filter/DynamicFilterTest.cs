@@ -849,7 +849,7 @@ public class DynamicFilterTest : TestBase
     #region Private methods
     private static DateTime GetStartOfQuarter(DateTime dt)
     {
-        int quarter = ((dt.Month - (dt.Month - 1) % 3) + 1) / 3;
+        int quarter = (dt.Month - ((dt.Month - 1) % 3) + 1) / 3;
                       
         return new DateTime(dt.Year, (quarter * 3) + 1, 1);
     }

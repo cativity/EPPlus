@@ -302,11 +302,11 @@ public class ExcelColumn : IRangeID
     /// <returns></returns>
     internal static ulong GetColumnID(int sheetID, int column)
     {
-        return ((ulong)sheetID) + (((ulong)column) << 15);
+        return (ulong)sheetID + ((ulong)column << 15);
     }
     internal static int ColumnWidthToPixels(decimal columnWidth, decimal mdw)
     {
-        return (int)decimal.Truncate(((256 * columnWidth + decimal.Truncate(128 / mdw)) / 256) * mdw);
+        return (int)decimal.Truncate(((256 * columnWidth) + decimal.Truncate(128 / mdw)) / 256 * mdw);
     }
 
     #region IRangeID Members
@@ -320,7 +320,7 @@ public class ExcelColumn : IRangeID
         set
         {
             int prevColMin = this._columnMin;
-            this._columnMin = ((int)(value >> 15) & 0x3FF);
+            this._columnMin = (int)(value >> 15) & 0x3FF;
             this._columnMax += prevColMin - this.ColumnMin;
             //Todo:More Validation
             if (this._columnMax > ExcelPackage.MaxColumns)

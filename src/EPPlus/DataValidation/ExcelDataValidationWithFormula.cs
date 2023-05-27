@@ -123,7 +123,7 @@ public abstract class ExcelDataValidationWithFormula<T> : ExcelDataValidation
             return;
         }
 
-        if ((formula.HasValue == false) 
+        if (formula.HasValue == false 
             && string.IsNullOrEmpty(formula.ExcelFormula) 
             && !(this.AllowBlank ?? false))
         {

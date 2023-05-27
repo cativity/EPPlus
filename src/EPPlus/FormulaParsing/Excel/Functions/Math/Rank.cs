@@ -49,7 +49,7 @@ internal class Rank : RankFunctionBase
         if(this._isAvg)
         {
             int lastRank = numbers.LastIndexOf(number) + 1;
-            rank += ((lastRank - rank) / 2d);
+            rank += (lastRank - rank) / 2d;
         }
             
         if (rank <= 0 || rank > numbers.Count)

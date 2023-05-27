@@ -50,7 +50,7 @@ public class ChartExReadTests : TestBase
         Assert.AreEqual(eFillPatternStyle.DashDnDiag, dp.Fill.PatternFill.PatternType);
         Assert.AreEqual(Color.Red.ToArgb(), dp.Fill.PatternFill.BackgroundColor.RgbColor.Color.ToArgb());
         Assert.AreEqual(Color.DarkGray.ToArgb(), dp.Fill.PatternFill.ForegroundColor.RgbColor.Color.ToArgb());
-        Assert.AreEqual(((int)ePresetChartStyle.SunburstChartStyle7), chart.StyleManager.Style.Id);
+        Assert.AreEqual((int)ePresetChartStyle.SunburstChartStyle7, chart.StyleManager.Style.Id);
 
         Assert.IsInstanceOfType(chart, typeof(ExcelSunburstChart));
         Assert.AreEqual(0, chart.Axis.Length);
@@ -72,7 +72,7 @@ public class ChartExReadTests : TestBase
         Assert.IsTrue(serie.DataLabel.ShowCategory);
         Assert.IsTrue(serie.DataLabel.ShowValue);
         Assert.IsTrue(serie.DataLabel.ShowSeriesName);
-        Assert.AreEqual(((int)ePresetChartStyle.TreemapChartStyle9), chart.StyleManager.Style.Id);
+        Assert.AreEqual((int)ePresetChartStyle.TreemapChartStyle9, chart.StyleManager.Style.Id);
         chart.StyleManager.SetChartStyle(ePresetChartStyle.TreemapChartStyle9);
         Assert.IsInstanceOfType(chart, typeof(ExcelTreemapChart));
     }
@@ -87,7 +87,7 @@ public class ChartExReadTests : TestBase
         Assert.AreEqual("BoxWhisker!$D$2:$D$17", serie.Series);
         Assert.AreEqual("BoxWhisker!$A$2:$C$17", serie.XSeries);
 
-        Assert.AreEqual(((int)ePresetChartStyle.BoxWhiskerChartStyle3), chart.StyleManager.Style.Id);
+        Assert.AreEqual((int)ePresetChartStyle.BoxWhiskerChartStyle3, chart.StyleManager.Style.Id);
 
         Assert.IsInstanceOfType(chart, typeof(ExcelBoxWhiskerChart));
         Assert.AreEqual(2, chart.Axis.Length);
@@ -114,7 +114,7 @@ public class ChartExReadTests : TestBase
         Assert.AreEqual(1, serie.Binning.Underflow);
         Assert.IsTrue(serie.Binning.OverflowAutomatic);
         Assert.AreEqual(3, serie.Binning.Count);
-        Assert.AreEqual(((int)ePresetChartStyle.HistogramChartStyle2), chart.StyleManager.Style.Id);
+        Assert.AreEqual((int)ePresetChartStyle.HistogramChartStyle2, chart.StyleManager.Style.Id);
 
         Assert.IsInstanceOfType(chart, typeof(ExcelHistogramChart));
     }
@@ -139,7 +139,7 @@ public class ChartExReadTests : TestBase
         Assert.AreEqual(45, serie.ParetoLine.Effect.OuterShadow.Direction);
         Assert.AreEqual(eRectangleAlignment.TopLeft, serie.ParetoLine.Effect.OuterShadow.Alignment);
         Assert.AreEqual(eChartType.Pareto, chart.ChartType);
-        Assert.AreEqual(((int)ePresetChartStyle.HistogramChartStyle4), chart.StyleManager.Style.Id);
+        Assert.AreEqual((int)ePresetChartStyle.HistogramChartStyle4, chart.StyleManager.Style.Id);
     }
     [TestMethod]
     public void ReadWaterfallChart()
@@ -174,7 +174,7 @@ public class ChartExReadTests : TestBase
         Assert.AreEqual(eFillStyle.SolidFill, dt.Fill.Style);
         Assert.AreEqual(eSchemeColor.Accent4, dt.Fill.SolidFill.Color.SchemeColor.Color);
 
-        Assert.AreEqual(((int)ePresetChartStyle.WaterfallChartStyle4), chart.StyleManager.Style.Id);
+        Assert.AreEqual((int)ePresetChartStyle.WaterfallChartStyle4, chart.StyleManager.Style.Id);
 
         Assert.IsInstanceOfType(chart, typeof(ExcelWaterfallChart));
     }
@@ -189,7 +189,7 @@ public class ChartExReadTests : TestBase
         Assert.AreEqual("Funnel!$D$2:$D$17", serie.Series);
         Assert.AreEqual("Funnel!$A$2:$C$17", serie.XSeries);
             
-        Assert.AreEqual(((int)ePresetChartStyle.FunnelChartStyle1), chart.StyleManager.Style.Id);
+        Assert.AreEqual((int)ePresetChartStyle.FunnelChartStyle1, chart.StyleManager.Style.Id);
         Assert.IsInstanceOfType(chart, typeof(ExcelFunnelChart));
     }
     [TestMethod]

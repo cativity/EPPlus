@@ -97,7 +97,7 @@ public sealed class OfficeProperties : XmlHelper
 
                 this._xmlPropertiesCore = this.GetXmlDocument(xml, this._uriPropertiesCore, @"application/vnd.openxmlformats-package.core-properties+xml", @"http://schemas.openxmlformats.org/package/2006/relationships/metadata/core-properties");
             }
-            return (this._xmlPropertiesCore);
+            return this._xmlPropertiesCore;
         }
     }
 
@@ -293,7 +293,7 @@ public sealed class OfficeProperties : XmlHelper
             string[]? versions = value.Split('.');
             if(versions.Length!=2 || versions.Any(x=>!x.IsInt()))
             {
-                throw (new ArgumentException("AppVersion should be in the format XX.YYYY. X and Y are numeric values"));
+                throw new ArgumentException("AppVersion should be in the format XX.YYYY. X and Y are numeric values");
             }
 
             this._extendedHelper.SetXmlNodeString(AppVersionPath, value); 

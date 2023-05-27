@@ -44,7 +44,7 @@ public class ExcelChartSurface : XmlHelper, IDrawingStyleBase
         {
             if(value < 0 && value > 9)
             {
-                throw (new ArgumentOutOfRangeException("Thickness out of range. (0-9)"));
+                throw new ArgumentOutOfRangeException("Thickness out of range. (0-9)");
             }
 
             this.SetXmlNodeString(THICKNESS_PATH, value.ToString());

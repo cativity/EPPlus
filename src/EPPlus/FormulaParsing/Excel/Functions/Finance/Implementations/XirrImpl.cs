@@ -47,7 +47,7 @@ public static class XirrImpl
         {
             if (nIterScan >= 1)
             {
-                fResultRate = -0.99 + (nIterScan - 1) * 0.01;
+                fResultRate = -0.99 + ((nIterScan - 1) * 0.01);
             }
 
             double fResultValue;
@@ -55,12 +55,12 @@ public static class XirrImpl
             do
             {
                 fResultValue = lcl_sca_XirrResult(aValues, aDates, fResultRate);
-                double fNewRate = fResultRate - fResultValue / lcl_sca_XirrResult_Deriv1(aValues, aDates, fResultRate);
+                double fNewRate = fResultRate - (fResultValue / lcl_sca_XirrResult_Deriv1(aValues, aDates, fResultRate));
                 double fRateEps = System.Math.Abs(fNewRate - fResultRate);
                 fResultRate = fNewRate;
-                bContLoop = (fRateEps > fMaxEps) && (System.Math.Abs(fResultValue) > fMaxEps);
+                bContLoop = fRateEps > fMaxEps && System.Math.Abs(fResultValue) > fMaxEps;
             }
-            while (bContLoop && (++nIter < nMaxIter));
+            while (bContLoop && ++nIter < nMaxIter);
             nIter = 0;
             if (double.IsNaN(fResultRate) || double.IsInfinity(fResultRate)
                                           || double.IsNaN(fResultValue) || double.IsInfinity(fResultValue))
@@ -69,7 +69,7 @@ public static class XirrImpl
             }
 
             ++nIterScan;
-            bResultRateScanEnd = (nIterScan >= 200);
+            bResultRateScanEnd = nIterScan >= 200;
         }
         while (bContLoop && !bResultRateScanEnd);
 
@@ -103,7 +103,7 @@ public static class XirrImpl
         double fResult = 0.0;
         for (int i = 1, nCount = rValues.Count(); i < nCount; ++i)
         {
-            double E_i = (rDates.ElementAt(i).Subtract(D_0).TotalDays / 365d);
+            double E_i = rDates.ElementAt(i).Subtract(D_0).TotalDays / 365d;
             fResult -= E_i * rValues.ElementAt(i) / System.Math.Pow(r, E_i + 1.0);
         }
         return fResult;
@@ -127,7 +127,7 @@ public static class XirrImpl
         double fResult = rValues.ElementAt(0);
         for (int i = 1, nCount = rValues.Count(); i < nCount; ++i)
         {
-            fResult += rValues.ElementAt(i) / System.Math.Pow(r, ((rDates.ElementAt(i).Subtract(D_0).TotalDays) / 365.0));
+            fResult += rValues.ElementAt(i) / System.Math.Pow(r, rDates.ElementAt(i).Subtract(D_0).TotalDays / 365.0);
         }
 
         return fResult;

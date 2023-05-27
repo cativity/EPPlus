@@ -35,11 +35,11 @@ public static class RateImpl
         double dY0 = LEvalRate(dRate0, NPer, Pmt, PV, FV, Due);
         if (dY0 > 0)
         {
-            dRate1 = (dRate0 / 2);
+            dRate1 = dRate0 / 2;
         }
         else
         {
-            dRate1 = (dRate0 * 2);
+            dRate1 = dRate0 * 2;
         }
 
         double dY1 = LEvalRate(dRate1, NPer, Pmt, PV, FV, Due);
@@ -54,7 +54,7 @@ public static class RateImpl
                 }
                 else
                 {
-                    dRate0 -= cnL_IT_STEP * (-1);
+                    dRate0 -= cnL_IT_STEP * -1;
                 }
 
                 dY0 = LEvalRate(dRate0, NPer, Pmt, PV, FV, Due);
@@ -64,7 +64,7 @@ public static class RateImpl
                 }
             }
 
-            dRate0 = dRate1 - (dRate1 - dRate0) * dY1 / (dY1 - dY0);
+            dRate0 = dRate1 - ((dRate1 - dRate0) * dY1 / (dY1 - dY0));
 
             // Secant method of generating next approximation
             dY0 = LEvalRate(dRate0, NPer, Pmt, PV, FV, Due);
@@ -88,7 +88,7 @@ public static class RateImpl
     {
         if (Rate == 0.0)
         {
-            return (PV + Pmt * NPer + dFv);
+            return PV + (Pmt * NPer) + dFv;
         }
         else
         {
@@ -109,7 +109,7 @@ public static class RateImpl
                 dTemp2 = 1.0;
             }
 
-            return (PV * dTemp1 + Pmt * dTemp2 * (dTemp1 - 1) / Rate + dFv);
+            return (PV * dTemp1) + (Pmt * dTemp2 * (dTemp1 - 1) / Rate) + dFv;
         }
     }
 }

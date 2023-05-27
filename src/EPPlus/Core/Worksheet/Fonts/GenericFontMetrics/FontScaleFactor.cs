@@ -40,13 +40,13 @@ internal class FontScaleFactor
 
     internal float Calculate(float width)
     {
-        if (width < (100 * this._sizeFactor))
+        if (width < 100 * this._sizeFactor)
         {
-            return Adjustment(width, (25 * this._sizeFactor), (100 * this._sizeFactor), this._small, this._medium);
+            return Adjustment(width, 25 * this._sizeFactor, 100 * this._sizeFactor, this._small, this._medium);
         }
-        else if (width < (200 * this._sizeFactor))
+        else if (width < 200 * this._sizeFactor)
         {
-            return Adjustment(width, (100 * this._sizeFactor), (200 * this._sizeFactor), this._medium, this._large);
+            return Adjustment(width, 100 * this._sizeFactor, 200 * this._sizeFactor, this._medium, this._large);
         }
         else
         {

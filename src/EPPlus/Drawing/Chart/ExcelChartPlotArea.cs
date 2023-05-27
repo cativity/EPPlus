@@ -79,7 +79,7 @@ public class ExcelChartPlotArea :  XmlHelper, IDrawingStyleBase
     {
         if(this.DataTable!=null)
         {
-            throw (new InvalidOperationException("Data table already exists"));
+            throw new InvalidOperationException("Data table already exists");
         }
 
         this.DataTable = new ExcelChartDataTable(this._firstChart, this.NameSpaceManager, this.TopNode);

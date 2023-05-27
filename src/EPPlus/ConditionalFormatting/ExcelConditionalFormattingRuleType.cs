@@ -220,16 +220,16 @@ internal static class ExcelConditionalFormattingRuleType
 
         // We determine if it is "TwoColorScale" or "ThreeColorScale" by the
         // number of <cfvo> and <color> inside the <colorScale> node
-        if ((cfvoNodes == null) || (cfvoNodes.Count < 2) || (cfvoNodes.Count > 3)
-            || (colorNodes == null) || (colorNodes.Count < 2) || (colorNodes.Count > 3)
-            || (cfvoNodes.Count != colorNodes.Count))
+        if (cfvoNodes == null || cfvoNodes.Count < 2 || cfvoNodes.Count > 3
+            || colorNodes == null || colorNodes.Count < 2 || colorNodes.Count > 3
+            || cfvoNodes.Count != colorNodes.Count)
         {
             throw new Exception(
                                 ExcelConditionalFormattingConstants.Errors.WrongNumberCfvoColorNodes);
         }
 
         // Return the corresponding rule type (TwoColorScale or ThreeColorScale)
-        return (cfvoNodes.Count == 2)
+        return cfvoNodes.Count == 2
                    ? eExcelConditionalFormattingRuleType.TwoColorScale
                    : eExcelConditionalFormattingRuleType.ThreeColorScale;
     }
@@ -277,7 +277,7 @@ internal static class ExcelConditionalFormattingRuleType
                                                                                          topNode,
                                                                                          ExcelConditionalFormattingConstants.Attributes.EqualAverage);
 
-        if ((isAboveAverage == null) || (isAboveAverage == true))
+        if (isAboveAverage == null || isAboveAverage == true)
         {
             if (isEqualAverage == true)
             {

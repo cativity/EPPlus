@@ -80,8 +80,8 @@ public class ExcelConditionalFormattingCollection
                                                                            this._worksheet.NameSpaceManager);
 
         // Check if we found at least 1 node
-        if ((conditionalFormattingNodes != null)
-            && (conditionalFormattingNodes.Count > 0))
+        if (conditionalFormattingNodes != null
+            && conditionalFormattingNodes.Count > 0)
         {
             // Foreach <conditionalFormatting>
             foreach (XmlNode conditionalFormattingNode in conditionalFormattingNodes)

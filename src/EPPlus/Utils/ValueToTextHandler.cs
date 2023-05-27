@@ -120,7 +120,7 @@ internal static class ValueToTextHandler
             }
             else
             {
-                double d = (dt).ToOADate();
+                double d = dt.ToOADate();
                 if (string.IsNullOrEmpty(f.FractionFormat))
                 {
                     return d.ToString(format, nf.Culture);
@@ -174,7 +174,7 @@ internal static class ValueToTextHandler
     {
         string? s = FormatNumberExcel(d, format, cultureInfo);
         if (string.IsNullOrEmpty(s) == false && (
-                                                    s.StartsWith("--") && format.StartsWith("-") ||
+                                                    (s.StartsWith("--") && format.StartsWith("-")) ||
                                                     (s.StartsWith("-(", StringComparison.OrdinalIgnoreCase) && format.StartsWith("(", StringComparison.OrdinalIgnoreCase) && format.IndexOf(")", StringComparison.OrdinalIgnoreCase)>0)))
         {
             return s.Substring(1);

@@ -82,7 +82,7 @@ internal class ColorConverter
             ExcelDrawingRgbColor.GetHslColor(ret, out double h, out double s, out double l);
             if (tint < 0)
             {
-                l *= (1.0 + tint);
+                l *= 1.0 + tint;
             }
             else if (tint > 0)
             {

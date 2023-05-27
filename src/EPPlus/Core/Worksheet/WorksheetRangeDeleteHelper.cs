@@ -227,7 +227,7 @@ internal static class WorksheetRangeDeleteHelper
     {
         if (rowFrom < 1 || rowFrom + rows > ExcelPackage.MaxRows + 1)
         {
-            throw (new ArgumentException("rowFrom", "Row out of range. Spans from 1 to " + ExcelPackage.MaxRows.ToString(CultureInfo.InvariantCulture)));
+            throw new ArgumentException("rowFrom", "Row out of range. Spans from 1 to " + ExcelPackage.MaxRows.ToString(CultureInfo.InvariantCulture));
         }
 
         ExcelAddressBase? deleteRange = new ExcelAddressBase(rowFrom, columnFrom, rowFrom + rows - 1, columnFrom + columns - 1);
@@ -237,7 +237,7 @@ internal static class WorksheetRangeDeleteHelper
     {
         if (columnFrom < 1 || columnFrom + columns > ExcelPackage.MaxColumns)
         {
-            throw (new ArgumentException("columnFrom", "Column out of range. Spans from 1 to " + ExcelPackage.MaxColumns.ToString(CultureInfo.InvariantCulture)));
+            throw new ArgumentException("columnFrom", "Column out of range. Spans from 1 to " + ExcelPackage.MaxColumns.ToString(CultureInfo.InvariantCulture));
         }
 
         ExcelAddressBase? deleteRange = new ExcelAddressBase(rowFrom, columnFrom, rowFrom + rows - 1, columnFrom + columns - 1);
@@ -571,7 +571,7 @@ internal static class WorksheetRangeDeleteHelper
                 {
                     if (cf.Address.FirstCellAddressRelative != newAddress.FirstCellAddressRelative)
                     {
-                        ExcelConditionalFormattingRule? cfr = ((ExcelConditionalFormattingRule)cf);
+                        ExcelConditionalFormattingRule? cfr = (ExcelConditionalFormattingRule)cf;
                         cfr.Formula = WorksheetRangeHelper.AdjustStartCellForFormula(cfr.Formula, cf.Address, newAddress);
                         cfr.Formula2 = WorksheetRangeHelper.AdjustStartCellForFormula(cfr.Formula2, cf.Address, newAddress);
                     }

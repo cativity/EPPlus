@@ -367,7 +367,7 @@ public class ExcelWorksheetView : XmlHelper
             ExcelAddressBase? ac = new ExcelAddressBase(value);
             if (ac.IsSingleCell == false)
             {
-                throw (new InvalidOperationException("ActiveCell must be a single cell."));
+                throw new InvalidOperationException("ActiveCell must be a single cell.");
             }
 
             /*** Active cell must be inside SelectedRange ***/
@@ -400,12 +400,12 @@ public class ExcelWorksheetView : XmlHelper
             {
                 if (!ExcelCellBase.IsValidCellAddress(value))
                 {
-                    throw (new InvalidOperationException("Must be a valid cell address."));
+                    throw new InvalidOperationException("Must be a valid cell address.");
                 }
                 ExcelAddressBase? ac = new ExcelAddressBase(value);
                 if (ac.IsSingleCell == false)
                 {
-                    throw (new InvalidOperationException("ActiveCell must be a single cell."));
+                    throw new InvalidOperationException("ActiveCell must be a single cell.");
                 }
 
                 this.SetXmlNodeString("@topLeftCell", value);
@@ -523,7 +523,7 @@ public class ExcelWorksheetView : XmlHelper
             XmlElement bookView = this._worksheet.Workbook.WorkbookXml.SelectSingleNode("//d:workbookView", this._worksheet.NameSpaceManager) as XmlElement;
             if (bookView != null)
             {
-                bookView.SetAttribute("activeTab", (this._worksheet.PositionId).ToString());
+                bookView.SetAttribute("activeTab", this._worksheet.PositionId.ToString());
             }
         }
         else
@@ -868,7 +868,7 @@ public class ExcelWorksheetView : XmlHelper
         }
         if (pixelsY > 0)
         {
-            this.PaneSettings.YSplit = (pixelsY + this._worksheet.DefaultRowHeight / 0.75) * 15D;
+            this.PaneSettings.YSplit = (pixelsY + (this._worksheet.DefaultRowHeight / 0.75)) * 15D;
         }
 
         this.CreateSelectionXml(pixelsY == 0 ? 0 : 1, pixelsX == 0 ? 0 : 1, true);
@@ -906,11 +906,11 @@ public class ExcelWorksheetView : XmlHelper
             decimal defaultWidth = FontSize.GetWidthPixels(nf.Name, nf.Size);
             int widthCharRH = c.Row < 1000 ? 3 : c.Row.ToString(CultureInfo.InvariantCulture).Length;
             int margin = 5;
-            this.PaneSettings.XSplit = (Convert.ToDouble(this.GetVisibleColumnWidth(c.Column-1, columnsLeft) + (defaultWidth * widthCharRH) + margin)) * 15D;
+            this.PaneSettings.XSplit = Convert.ToDouble(this.GetVisibleColumnWidth(c.Column-1, columnsLeft) + (defaultWidth * widthCharRH) + margin) * 15D;
         }
         if (rowsTop > 0)
         {
-            this.PaneSettings.YSplit = (Convert.ToDouble(this.GetVisibleRowWidth(c.Row, rowsTop)) + this._worksheet.DefaultRowHeight / 0.75) * 15D;
+            this.PaneSettings.YSplit = (Convert.ToDouble(this.GetVisibleRowWidth(c.Row, rowsTop)) + (this._worksheet.DefaultRowHeight / 0.75)) * 15D;
         }
 
         this.CreateSelectionXml(rowsTop, columnsLeft, true);

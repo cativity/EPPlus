@@ -29,12 +29,12 @@ internal class Disc : ExcelFunction
         {
             basis = this.ArgToInt(arguments, 4);
         }
-        if(maturity <= settlement || pr <= 0 || redemption <= 0 || (basis < 0 || basis > 4))
+        if(maturity <= settlement || pr <= 0 || redemption <= 0 || basis < 0 || basis > 4)
         {
             return this.CreateResult(eErrorType.Num);
         }
         YearFracProvider? yearFrac = new YearFracProvider(context);
-        double result = (1d - pr / redemption) / yearFrac.GetYearFrac(settlement, maturity, (DayCountBasis)basis);
+        double result = (1d - (pr / redemption)) / yearFrac.GetYearFrac(settlement, maturity, (DayCountBasis)basis);
         return this.CreateResult(result, DataType.Decimal);
     }
 }

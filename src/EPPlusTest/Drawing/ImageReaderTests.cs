@@ -470,7 +470,7 @@ public class ImageReaderTests : TestBase
         {
             using MemoryStream? ms = new MemoryStream(File.ReadAllBytes(f.FullName));
             ExcelPicture? picture = ws.Drawings.AddPicture($"{fileType}{ix}", ms, type);
-            picture.SetPosition((ix / 5) * 10, 0, (ix % 5) * 10, 0);
+            picture.SetPosition(ix / 5 * 10, 0, ix % 5 * 10, 0);
             ix++;
         }
     }

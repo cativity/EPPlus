@@ -110,7 +110,7 @@ public class ExcelTop10FilterColumn : ExcelFilterColumn
         {
             if (this.Percent)
             {
-                index = (items.Count - (int)((address._toRow-address._fromRow) * (valueInt / 100D)));
+                index = items.Count - (int)((address._toRow-address._fromRow) * (valueInt / 100D));
 
             }
             else

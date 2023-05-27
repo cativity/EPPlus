@@ -117,7 +117,7 @@ internal class CompoundDocument
         }
         foreach (KeyValuePair<string, byte[]> item in storage.DataStreams)
         {
-            CompoundDocumentItem? c = new CompoundDocumentItem() { Name = item.Key, ObjectType = 2, Stream = item.Value, StreamSize = (item.Value == null ? 0 : item.Value.Length), Parent = parent };
+            CompoundDocumentItem? c = new CompoundDocumentItem() { Name = item.Key, ObjectType = 2, Stream = item.Value, StreamSize = item.Value == null ? 0 : item.Value.Length, Parent = parent };
             parent.Children.Add(c);
         }
             

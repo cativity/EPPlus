@@ -244,11 +244,11 @@ public class ExcelDrawing : XmlHelper, IDisposable
         if (this.CellAnchor == eEditAs.OneCell)
         {
             this.GetToColumnFromPixels(this._width, out int col, out _);
-            return ((this.From.Column > colFrom - 1 || (this.From.Column == colFrom - 1 && this.From.ColumnOff == 0)) && (col <= colTo));
+            return (this.From.Column > colFrom - 1 || (this.From.Column == colFrom - 1 && this.From.ColumnOff == 0)) && col <= colTo;
         }
         else if (this.CellAnchor == eEditAs.TwoCell)
         {
-            return ((this.From.Column > colFrom - 1 || (this.From.Column == colFrom - 1 && this.From.ColumnOff == 0)) && (this.To.Column <= colTo));
+            return (this.From.Column > colFrom - 1 || (this.From.Column == colFrom - 1 && this.From.ColumnOff == 0)) && this.To.Column <= colTo;
         }
         else
         {
@@ -260,11 +260,11 @@ public class ExcelDrawing : XmlHelper, IDisposable
         if (this.CellAnchor == eEditAs.OneCell)
         {
             this.GetToRowFromPixels(this._height, out int row, out int pixOff);
-            return ((this.From.Row > rowFrom - 1 || (this.From.Row == rowFrom - 1 && this.From.RowOff == 0)) && (row <= rowTo));
+            return (this.From.Row > rowFrom - 1 || (this.From.Row == rowFrom - 1 && this.From.RowOff == 0)) && row <= rowTo;
         }
         else if (this.CellAnchor == eEditAs.TwoCell)
         {
-            return ((this.From.Row > rowFrom - 1 || (this.From.Row == rowFrom - 1 && this.From.RowOff == 0)) && (this.To.Row <= rowTo));
+            return (this.From.Row > rowFrom - 1 || (this.From.Row == rowFrom - 1 && this.From.RowOff == 0)) && this.To.Row <= rowTo;
         }
         else
         {
@@ -427,7 +427,7 @@ public class ExcelDrawing : XmlHelper, IDisposable
                 }
                 else
                 {
-                    throw (new InvalidOperationException("EditAs can't be set when a drawing is a part of a group."));
+                    throw new InvalidOperationException("EditAs can't be set when a drawing is a part of a group.");
                 }
             }
             else if (this.CellAnchor == eEditAs.TwoCell)
@@ -437,7 +437,7 @@ public class ExcelDrawing : XmlHelper, IDisposable
             }
             else if(this.CellAnchor!=value)
             {
-                throw (new InvalidOperationException("EditAs can only be set when CellAnchor is set to TwoCellAnchor"));
+                throw new InvalidOperationException("EditAs can only be set when CellAnchor is set to TwoCellAnchor");
             }
         }
     }
@@ -671,7 +671,7 @@ public class ExcelDrawing : XmlHelper, IDisposable
         if (this.CellAnchor == eEditAs.Absolute)
         {
             this.GetToRowFromPixels((this.Position.Y + this.Size.Height) / EMU_PER_PIXEL, out toRow, out toRowOff);
-            this.GetToColumnFromPixels(this.Position.X + this.Size.Width / EMU_PER_PIXEL, out toCol, out toColOff);
+            this.GetToColumnFromPixels(this.Position.X + (this.Size.Width / EMU_PER_PIXEL), out toCol, out toColOff);
         }
         else
         {
@@ -748,10 +748,10 @@ public class ExcelDrawing : XmlHelper, IDisposable
             pix = -this.From.ColumnOff / (double)EMU_PER_PIXEL;
             for (int col = this.From.Column + 1; col <= this.To.Column; col++)
             {
-                pix += (double)decimal.Truncate(((256 * ws.GetColumnWidth(col) + decimal.Truncate(128 / (decimal)mdw)) / 256) * mdw);
+                pix += (double)decimal.Truncate(((256 * ws.GetColumnWidth(col)) + decimal.Truncate(128 / (decimal)mdw)) / 256 * mdw);
             }
 
-            double w = (double)decimal.Truncate(((256 * ws.GetColumnWidth(this.To.Column + 1) + decimal.Truncate(128 / (decimal)mdw)) / 256) * mdw);
+            double w = (double)decimal.Truncate(((256 * ws.GetColumnWidth(this.To.Column + 1)) + decimal.Truncate(128 / (decimal)mdw)) / 256 * mdw);
             pix += Math.Min(w, Convert.ToDouble(this.To.ColumnOff) / EMU_PER_PIXEL);
         }
         else
@@ -849,13 +849,13 @@ public class ExcelDrawing : XmlHelper, IDisposable
         ExcelWorksheet ws = this._drawings.Worksheet;
         decimal mdw = ws.Workbook.MaxFontWidth;
         double prevPix = 0;
-        double pix = (int)decimal.Truncate(((256 * ws.GetColumnWidth(1) + decimal.Truncate(128 / (decimal)mdw)) / 256) * mdw);
+        double pix = (int)decimal.Truncate(((256 * ws.GetColumnWidth(1)) + decimal.Truncate(128 / (decimal)mdw)) / 256 * mdw);
         int col = 2;
 
         while (pix < pixels)
         {
             prevPix = pix;
-            pix += (int)decimal.Truncate(((256 * ws.GetColumnWidth(col++) + decimal.Truncate(128 / (decimal)mdw)) / 256) * mdw);
+            pix += (int)decimal.Truncate(((256 * ws.GetColumnWidth(col++)) + decimal.Truncate(128 / (decimal)mdw)) / 256 * mdw);
         }
         if (pix == pixels)
         {
@@ -899,12 +899,12 @@ public class ExcelDrawing : XmlHelper, IDisposable
         while (pixOff >= 0)
         {
             prevPixOff = pixOff;
-            pixOff -= (ws.GetRowHeight(++row) / 0.75);
+            pixOff -= ws.GetRowHeight(++row) / 0.75;
         }
         toRow = row - 1;
         if (fromRow == toRow)
         {
-            rowOff = (int)(fromRowOff + (pixels) * EMU_PER_PIXEL);
+            rowOff = (int)(fromRowOff + (pixels * EMU_PER_PIXEL));
         }
         else
         {
@@ -938,13 +938,13 @@ public class ExcelDrawing : XmlHelper, IDisposable
             fromColumn = this.From.Column;
             fromColumnOff = this.From.ColumnOff;
         }
-        double pixOff = pixels - (double)(decimal.Truncate(((256 * ws.GetColumnWidth(fromColumn + 1) + decimal.Truncate(128 / (decimal)mdw)) / 256) * mdw) - fromColumnOff / EMU_PER_PIXEL);
-        double offset = (double)fromColumnOff / EMU_PER_PIXEL + pixels;
+        double pixOff = pixels - (double)(decimal.Truncate(((256 * ws.GetColumnWidth(fromColumn + 1)) + decimal.Truncate(128 / (decimal)mdw)) / 256 * mdw) - (fromColumnOff / EMU_PER_PIXEL));
+        double offset = ((double)fromColumnOff / EMU_PER_PIXEL) + pixels;
         col = fromColumn + 2;
         while (pixOff >= 0)
         {
             offset = pixOff;
-            pixOff -= (double)decimal.Truncate(((256 * ws.GetColumnWidth(col++) + decimal.Truncate(128 / (decimal)mdw)) / 256) * mdw);
+            pixOff -= (double)decimal.Truncate(((256 * ws.GetColumnWidth(col++)) + decimal.Truncate(128 / (decimal)mdw)) / 256 * mdw);
         }
         colOff = (int)offset;
     }
@@ -1130,8 +1130,8 @@ public class ExcelDrawing : XmlHelper, IDisposable
             this._height = this.GetPixelHeight();
         }
 
-        this._width *= ((double)Percent / 100);
-        this._height *= ((double)Percent / 100);
+        this._width *= (double)Percent / 100;
+        this._height *= (double)Percent / 100;
 
         this.SetPixelWidth(this._width);
         this.SetPixelHeight(this._height);

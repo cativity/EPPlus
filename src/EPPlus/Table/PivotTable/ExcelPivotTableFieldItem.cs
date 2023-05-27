@@ -105,7 +105,7 @@ public class ExcelPivotTableFieldItem
         {
             if (this.Type != eItemType.Data)
             {
-                throw (new InvalidOperationException("Hidden can only be set for items of type Data"));
+                throw new InvalidOperationException("Hidden can only be set for items of type Data");
             }
 
             this.SetFlag(eBoolFlags.Hidden, value);

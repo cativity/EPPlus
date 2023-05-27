@@ -40,7 +40,7 @@ public class ExcelPivotTableFieldDateGroup : ExcelPivotTableFieldGroup
             }
             else
             {
-                throw (new Exception("Invalid date Groupby"));
+                throw new Exception("Invalid date Groupby");
             }
         }
         private set

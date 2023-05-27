@@ -164,7 +164,7 @@ sealed class InflateBlocks
             {
                 case InflateBlockMode.TYPE:
 
-                    while (k < (3))
+                    while (k < 3)
                     {
                         if (n != 0)
                         {
@@ -191,7 +191,7 @@ sealed class InflateBlocks
                     switch ((uint)t >> 1)
                     {
                         case 0:  // stored
-                            b >>= 3; k -= (3);
+                            b >>= 3; k -= 3;
                             t = k & 7; // go to byte boundary
                             b >>= t; k -= t;
                             this.mode = InflateBlockMode.LENS; // get length of stored block
@@ -230,7 +230,7 @@ sealed class InflateBlocks
 
                 case InflateBlockMode.LENS:
 
-                    while (k < (32))
+                    while (k < 32)
                     {
                         if (n != 0)
                         {
@@ -252,7 +252,7 @@ sealed class InflateBlocks
                         k += 8;
                     }
 
-                    if ( ( ((~b)>>16) & 0xffff) != (b & 0xffff))
+                    if ( ( (~b>>16) & 0xffff) != (b & 0xffff))
                     {
                         this.mode = InflateBlockMode.BAD;
                         this._codec.Message = "invalid stored block lengths";
@@ -267,9 +267,9 @@ sealed class InflateBlocks
                         return this.Flush(r);
                     }
 
-                    this.left = (b & 0xffff);
+                    this.left = b & 0xffff;
                     b = k = 0; // dump bits
-                    this.mode = this.left != 0 ? InflateBlockMode.STORED : (this.last != 0 ? InflateBlockMode.DRY : InflateBlockMode.TYPE);
+                    this.mode = this.left != 0 ? InflateBlockMode.STORED : this.last != 0 ? InflateBlockMode.DRY : InflateBlockMode.TYPE;
                     break;
 
                 case InflateBlockMode.STORED:
@@ -337,7 +337,7 @@ sealed class InflateBlocks
 
                 case InflateBlockMode.TABLE:
 
-                    while (k < (14))
+                    while (k < 14)
                     {
                         if (n != 0)
                         {
@@ -359,7 +359,7 @@ sealed class InflateBlocks
                         k += 8;
                     }
 
-                    this.table = t = (b & 0x3fff);
+                    this.table = t = b & 0x3fff;
                     if ((t & 0x1f) > 29 || ((t >> 5) & 0x1f) > 29)
                     {
                         this.mode = InflateBlockMode.BAD;
@@ -398,7 +398,7 @@ sealed class InflateBlocks
                 case InflateBlockMode.BTREE:
                     while (this.index < 4 + (this.table >> 10))
                     {
-                        while (k < (3))
+                        while (k < 3)
                         {
                             if (n != 0)
                             {
@@ -487,8 +487,8 @@ sealed class InflateBlocks
                             k += 8;
                         }
 
-                        t = this.hufts[(this.tb[0] + (b & InternalInflateConstants.InflateMask[t])) * 3 + 1];
-                        int c = this.hufts[(this.tb[0] + (b & InternalInflateConstants.InflateMask[t])) * 3 + 2];
+                        t = this.hufts[((this.tb[0] + (b & InternalInflateConstants.InflateMask[t])) * 3) + 1];
+                        int c = this.hufts[((this.tb[0] + (b & InternalInflateConstants.InflateMask[t])) * 3) + 2];
 
                         if (c < 16)
                         {
@@ -501,7 +501,7 @@ sealed class InflateBlocks
                             int i = c == 18 ? 7 : c - 14;
                             int j = c == 18 ? 11 : 3;
 
-                            while (k < (t + i))
+                            while (k < t + i)
                             {
                                 if (n != 0)
                                 {
@@ -525,7 +525,7 @@ sealed class InflateBlocks
 
                             b >>= t; k -= t;
 
-                            j += (b & InternalInflateConstants.InflateMask[i]);
+                            j += b & InternalInflateConstants.InflateMask[i];
 
                             b >>= i; k -= i;
 
@@ -547,7 +547,7 @@ sealed class InflateBlocks
                                 return this.Flush(r);
                             }
 
-                            c = (c == 16) ? this.blens[i-1] : 0;
+                            c = c == 16 ? this.blens[i-1] : 0;
                             do
                             {
                                 this.blens[i++] = c;
@@ -879,7 +879,7 @@ sealed class InflateCodes
 
                         if (r != ZlibConstants.Z_OK)
                         {
-                            this.mode = (r == ZlibConstants.Z_STREAM_END) ? WASH : BADCODE;
+                            this.mode = r == ZlibConstants.Z_STREAM_END ? WASH : BADCODE;
                             break;
                         }
                     }
@@ -916,8 +916,8 @@ sealed class InflateCodes
 
                     tindex = (this.tree_index + (b & InternalInflateConstants.InflateMask[j])) * 3;
 
-                    b >>= (this.tree[tindex + 1]);
-                    k -= (this.tree[tindex + 1]);
+                    b >>= this.tree[tindex + 1];
+                    k -= this.tree[tindex + 1];
 
                     e = this.tree[tindex];
 
@@ -940,7 +940,7 @@ sealed class InflateCodes
                     {
                         // next table
                         this.need = e;
-                        this.tree_index = tindex / 3 + this.tree[tindex + 2];
+                        this.tree_index = (tindex / 3) + this.tree[tindex + 2];
                         break;
                     }
                     if ((e & 32) != 0)
@@ -982,7 +982,7 @@ sealed class InflateCodes
                         k += 8;
                     }
 
-                    this.len += (b & InternalInflateConstants.InflateMask[j]);
+                    this.len += b & InternalInflateConstants.InflateMask[j];
 
                     b >>= j;
                     k -= j;
@@ -1018,7 +1018,7 @@ sealed class InflateCodes
                     b >>= this.tree[tindex + 1];
                     k -= this.tree[tindex + 1];
 
-                    e = (this.tree[tindex]);
+                    e = this.tree[tindex];
                     if ((e & 0x10) != 0)
                     {
                         // distance
@@ -1031,7 +1031,7 @@ sealed class InflateCodes
                     {
                         // next table
                         this.need = e;
-                        this.tree_index = tindex / 3 + this.tree[tindex + 2];
+                        this.tree_index = (tindex / 3) + this.tree[tindex + 2];
                         break;
                     }
 
@@ -1065,7 +1065,7 @@ sealed class InflateCodes
                         k += 8;
                     }
 
-                    this.dist += (b & InternalInflateConstants.InflateMask[j]);
+                    this.dist += b & InternalInflateConstants.InflateMask[j];
 
                     b >>= j;
                     k -= j;
@@ -1232,7 +1232,7 @@ sealed class InflateCodes
         {
             // assume called with m >= 258 && n >= 10
             // get literal/length code
-            while (k < (20))
+            while (k < 20)
             {
                 // max bits for literal/length code
                 n--;
@@ -1248,7 +1248,7 @@ sealed class InflateCodes
 
             if ((e = tp[tp_index_t_3]) == 0)
             {
-                b >>= (tp[tp_index_t_3 + 1]); k -= (tp[tp_index_t_3 + 1]);
+                b >>= tp[tp_index_t_3 + 1]; k -= tp[tp_index_t_3 + 1];
 
                 s.window[q++] = (byte)tp[tp_index_t_3 + 2];
                 m--;
@@ -1257,7 +1257,7 @@ sealed class InflateCodes
             do
             {
 
-                b >>= (tp[tp_index_t_3 + 1]); k -= (tp[tp_index_t_3 + 1]);
+                b >>= tp[tp_index_t_3 + 1]; k -= tp[tp_index_t_3 + 1];
 
                 if ((e & 16) != 0)
                 {
@@ -1283,7 +1283,7 @@ sealed class InflateCodes
                     do
                     {
 
-                        b >>= (tp[tp_index_t_3 + 1]); k -= (tp[tp_index_t_3 + 1]);
+                        b >>= tp[tp_index_t_3 + 1]; k -= tp[tp_index_t_3 + 1];
 
                         if ((e & 16) != 0)
                         {
@@ -1309,7 +1309,7 @@ sealed class InflateCodes
                                 // offset before dest
                                 //  just copy
                                 r = q - d;
-                                if (q - r > 0 && 2 > (q - r))
+                                if (q - r > 0 && 2 > q - r)
                                 {
                                     s.window[q++] = s.window[r++]; // minimum count is three,
                                     s.window[q++] = s.window[r++]; // so unroll loop a little
@@ -1335,7 +1335,7 @@ sealed class InflateCodes
                                 {
                                     // if source crosses,
                                     c -= e; // wrapped copy
-                                    if (q - r > 0 && e > (q - r))
+                                    if (q - r > 0 && e > q - r)
                                     {
                                         do
                                         {
@@ -1353,7 +1353,7 @@ sealed class InflateCodes
                             }
 
                             // copy all or what's left
-                            if (q - r > 0 && c > (q - r))
+                            if (q - r > 0 && c > q - r)
                             {
                                 do
                                 {
@@ -1371,7 +1371,7 @@ sealed class InflateCodes
                         else if ((e & 64) == 0)
                         {
                             t += tp[tp_index_t_3 + 2];
-                            t += (b & InternalInflateConstants.InflateMask[e]);
+                            t += b & InternalInflateConstants.InflateMask[e];
                             tp_index_t_3 = (tp_index + t) * 3;
                             e = tp[tp_index_t_3];
                         }
@@ -1379,7 +1379,7 @@ sealed class InflateCodes
                         {
                             z.Message = "invalid distance code";
 
-                            c = z.AvailableBytesIn - n; c = (k >> 3) < c ? k >> 3 : c; n += c; p -= c; k -= (c << 3);
+                            c = z.AvailableBytesIn - n; c = k >> 3 < c ? k >> 3 : c; n += c; p -= c; k -= c << 3;
 
                             s.bitb = b; s.bitk = k;
                             z.AvailableBytesIn = n; z.TotalBytesIn += p - z.NextIn; z.NextIn = p;
@@ -1395,11 +1395,11 @@ sealed class InflateCodes
                 if ((e & 64) == 0)
                 {
                     t += tp[tp_index_t_3 + 2];
-                    t += (b & InternalInflateConstants.InflateMask[e]);
+                    t += b & InternalInflateConstants.InflateMask[e];
                     tp_index_t_3 = (tp_index + t) * 3;
                     if ((e = tp[tp_index_t_3]) == 0)
                     {
-                        b >>= (tp[tp_index_t_3 + 1]); k -= (tp[tp_index_t_3 + 1]);
+                        b >>= tp[tp_index_t_3 + 1]; k -= tp[tp_index_t_3 + 1];
                         s.window[q++] = (byte)tp[tp_index_t_3 + 2];
                         m--;
                         break;
@@ -1407,7 +1407,7 @@ sealed class InflateCodes
                 }
                 else if ((e & 32) != 0)
                 {
-                    c = z.AvailableBytesIn - n; c = (k >> 3) < c ? k >> 3 : c; n += c; p -= c; k -= (c << 3);
+                    c = z.AvailableBytesIn - n; c = k >> 3 < c ? k >> 3 : c; n += c; p -= c; k -= c << 3;
 
                     s.bitb = b; s.bitk = k;
                     z.AvailableBytesIn = n; z.TotalBytesIn += p - z.NextIn; z.NextIn = p;
@@ -1419,7 +1419,7 @@ sealed class InflateCodes
                 {
                     z.Message = "invalid literal/length code";
 
-                    c = z.AvailableBytesIn - n; c = (k >> 3) < c ? k >> 3 : c; n += c; p -= c; k -= (c << 3);
+                    c = z.AvailableBytesIn - n; c = k >> 3 < c ? k >> 3 : c; n += c; p -= c; k -= c << 3;
 
                     s.bitb = b; s.bitk = k;
                     z.AvailableBytesIn = n; z.TotalBytesIn += p - z.NextIn; z.NextIn = p;
@@ -1433,7 +1433,7 @@ sealed class InflateCodes
         while (m >= 258 && n >= 10);
 
         // not enough input or output--restore pointers and return
-        c = z.AvailableBytesIn - n; c = (k >> 3) < c ? k >> 3 : c; n += c; p -= c; k -= (c << 3);
+        c = z.AvailableBytesIn - n; c = k >> 3 < c ? k >> 3 : c; n += c; p -= c; k -= c << 3;
 
         s.bitb = b; s.bitk = k;
         z.AvailableBytesIn = n; z.TotalBytesIn += p - z.NextIn; z.NextIn = p;
@@ -1612,9 +1612,9 @@ internal sealed class InflateManager
                     r = f;
                     this._codec.AvailableBytesIn--;
                     this._codec.TotalBytesIn++;
-                    int b = (this._codec.InputBuffer[this._codec.NextIn++]) & 0xff;
+                    int b = this._codec.InputBuffer[this._codec.NextIn++] & 0xff;
 
-                    if ((((this.method << 8) + b) % 31) != 0)
+                    if (((this.method << 8) + b) % 31 != 0)
                     {
                         this.mode = InflateManagerMode.BAD;
                         this._codec.Message = "incorrect header check";
@@ -1622,7 +1622,7 @@ internal sealed class InflateManager
                         break;
                     }
 
-                    this.mode = ((b & PRESET_DICT) == 0)
+                    this.mode = (b & PRESET_DICT) == 0
                                     ? InflateManagerMode.BLOCKS
                                     : InflateManagerMode.DICT4;
                     break;
@@ -1811,7 +1811,7 @@ internal sealed class InflateManager
 
         this._codec._Adler32 = Adler.Adler32(0, null, 0, 0);
 
-        if (length >= (1 << this.wbits))
+        if (length >= 1 << this.wbits)
         {
             length = (1 << this.wbits) - 1;
             index = dictionary.Length - length;

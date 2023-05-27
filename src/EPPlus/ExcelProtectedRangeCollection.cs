@@ -69,7 +69,7 @@ public class ExcelProtectedRangeCollection : XmlHelper, IEnumerable<ExcelProtect
         }
         if(this._list.Any(x=>x.Name.Equals(name, StringComparison.CurrentCultureIgnoreCase)))
         {
-            throw (new InvalidOperationException($"An item with name {name} already exists"));
+            throw new InvalidOperationException($"An item with name {name} already exists");
         }
         ExcelProtectedRange? pr = new ExcelProtectedRange(this._ws.NameSpaceManager, node) { Name=name, Address=address };
         this._list.Add(pr);
@@ -144,7 +144,7 @@ public class ExcelProtectedRangeCollection : XmlHelper, IEnumerable<ExcelProtect
     {
         if(index<0 || index >= this._list.Count)
         {
-            throw (new IndexOutOfRangeException());
+            throw new IndexOutOfRangeException();
         }
 
         this.Remove(this._list[index]);

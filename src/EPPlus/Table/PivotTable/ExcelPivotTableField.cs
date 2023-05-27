@@ -268,7 +268,7 @@ public class ExcelPivotTableField : XmlHelper
     {
         if(dataField.Field._pivotTable!= this._pivotTable)
         {
-            throw (new ArgumentException("The dataField is from another pivot table"));
+            throw new ArgumentException("The dataField is from another pivot table");
         }
 
         this.Sort = sortType;
@@ -351,13 +351,13 @@ public class ExcelPivotTableField : XmlHelper
         }
         set
         {
-            if ((value & eSubTotalFunctions.None) == eSubTotalFunctions.None && (value != eSubTotalFunctions.None))
+            if ((value & eSubTotalFunctions.None) == eSubTotalFunctions.None && value != eSubTotalFunctions.None)
             {
-                throw (new ArgumentException("Value None cannot be combined with other values."));
+                throw new ArgumentException("Value None cannot be combined with other values.");
             }
-            if ((value & eSubTotalFunctions.Default) == eSubTotalFunctions.Default && (value != eSubTotalFunctions.Default))
+            if ((value & eSubTotalFunctions.Default) == eSubTotalFunctions.Default && value != eSubTotalFunctions.Default)
             {
-                throw (new ArgumentException("Value Default cannot be combined with other values."));
+                throw new ArgumentException("Value Default cannot be combined with other values.");
             }
 
 
@@ -453,7 +453,7 @@ public class ExcelPivotTableField : XmlHelper
     {
         get
         {
-            return (this.TopNode.SelectSingleNode(string.Format("../../d:rowFields/d:field[@x={0}]", this.Index), this.NameSpaceManager) != null);
+            return this.TopNode.SelectSingleNode(string.Format("../../d:rowFields/d:field[@x={0}]", this.Index), this.NameSpaceManager) != null;
         }
         internal set
         {
@@ -496,7 +496,7 @@ public class ExcelPivotTableField : XmlHelper
     {
         get
         {
-            return (this.TopNode.SelectSingleNode(string.Format("../../d:colFields/d:field[@x={0}]", this.Index), this.NameSpaceManager) != null);
+            return this.TopNode.SelectSingleNode(string.Format("../../d:colFields/d:field[@x={0}]", this.Index), this.NameSpaceManager) != null;
         }
         internal set
         {
@@ -550,7 +550,7 @@ public class ExcelPivotTableField : XmlHelper
     {
         get
         {
-            return (this.Axis == ePivotFieldAxis.Page);
+            return this.Axis == ePivotFieldAxis.Page;
         }
         internal set
         {
@@ -662,7 +662,7 @@ public class ExcelPivotTableField : XmlHelper
     internal void LoadItems()
     {
         this._items = new ExcelPivotTableFieldItemsCollection(this);
-        if (this.Cache.DatabaseField == false && (this.IsColumnField == false && this.IsRowField == false && this.IsRowField == false))
+        if (this.Cache.DatabaseField == false && this.IsColumnField == false && this.IsRowField == false && this.IsRowField == false)
         {
             return;
         }
@@ -883,11 +883,11 @@ public class ExcelPivotTableField : XmlHelper
     {
         if (groupInterval < 1 || groupInterval >= Int16.MaxValue)
         {
-            throw (new ArgumentOutOfRangeException("Group interval is out of range"));
+            throw new ArgumentOutOfRangeException("Group interval is out of range");
         }
         if (groupInterval > 1 && groupBy != eDateGroupBy.Days)
         {
-            throw (new ArgumentException("Group interval is can only be used when groupBy is Days"));
+            throw new ArgumentException("Group interval is can only be used when groupBy is Days");
         }
         if(this.Cache.DatabaseField==false)
         {
@@ -960,13 +960,13 @@ public class ExcelPivotTableField : XmlHelper
 
         if (!(this.IsColumnField || this.IsRowField))
         {
-            throw (new Exception("Field must be a row or column field"));
+            throw new Exception("Field must be a row or column field");
         }
         foreach (ExcelPivotTableField? field in this._pivotTable.Fields)
         {
             if (field.Grouping != null)
             {
-                throw (new Exception("Grouping already exists"));
+                throw new Exception("Grouping already exists");
             }
         }
     }

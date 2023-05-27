@@ -206,7 +206,7 @@ internal abstract class FinancialDaysBase
 
     protected virtual double GetDaysBetweenDates(FinancialDay start, FinancialDay end, int basis)
     {
-        return (basis * (end.Year - start.Year) + 30 * (end.Month - start.Month) + ((end.Day > 30 ? 30 : end.Day) - (start.Day > 30 ? 30 : start.Day)));
+        return (basis * (end.Year - start.Year)) + (30 * (end.Month - start.Month)) + ((end.Day > 30 ? 30 : end.Day) - (start.Day > 30 ? 30 : start.Day));
     }
 
     [System.Diagnostics.CodeAnalysis.SuppressMessage("Performance", "CA1822:Mark members as static", Justification = "<Pending>")]

@@ -370,7 +370,7 @@ internal static class InternalConstants
     internal static readonly int D_CODES      = 30;
     internal static readonly int LITERALS     = 256;
     internal static readonly int LENGTH_CODES = 29;
-    internal static readonly int L_CODES      = (LITERALS + 1 + LENGTH_CODES);
+    internal static readonly int L_CODES      = LITERALS + 1 + LENGTH_CODES;
 
     // Bit length codes must not exceed MAX_BL_BITS bits
     internal static readonly int MAX_BL_BITS  = 7;

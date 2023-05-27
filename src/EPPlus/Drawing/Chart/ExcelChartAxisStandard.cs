@@ -582,10 +582,10 @@ public sealed class ExcelChartAxisStandard : ExcelChartAxis
             }
             else
             {
-                double v = ((double)value);
+                double v = (double)value;
                 if (v < 2 || v > 1000)
                 {
-                    throw (new ArgumentOutOfRangeException("Value must be between 2 and 1000"));
+                    throw new ArgumentOutOfRangeException("Value must be between 2 and 1000");
                 }
 
                 this.SetXmlNodeString(_logbasePath, v.ToString("0.0", CultureInfo.InvariantCulture));

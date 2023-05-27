@@ -57,7 +57,7 @@ internal class LoadFromCollection<T> : LoadFunctionBase
             this._columns = parameters.Members.Select(x => new ColumnInfo { MemberInfo = x }).ToArray();
             if (this._columns.Length == 0)   //Fixes issue 15555
             {
-                throw (new ArgumentException("Parameter Members must have at least one property. Length is zero"));
+                throw new ArgumentException("Parameter Members must have at least one property. Length is zero");
             }
             foreach (ColumnInfo? columnInfo in this._columns)
             {

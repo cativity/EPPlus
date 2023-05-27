@@ -168,7 +168,7 @@ internal static class GammaHelper
     public static double regularizedGammaP(double a, double x, double epsilon, int maxIterations)
     {
         double ret;
-        if (double.IsNaN(a) || double.IsNaN(x) || (a <= 0.0) || (x < 0.0))
+        if (double.IsNaN(a) || double.IsNaN(x) || a <= 0.0 || x < 0.0)
         {
             ret = double.NaN;
         }
@@ -223,7 +223,7 @@ internal static class GammaHelper
     {
         double ret;
 
-        if (double.IsNaN(a) || double.IsNaN(x) || (a <= 0.0) || (x < 0.0))
+        if (double.IsNaN(a) || double.IsNaN(x) || a <= 0.0 || x < 0.0)
         {
             ret = Double.NaN;
         }
@@ -241,7 +241,7 @@ internal static class GammaHelper
         {
             // create continued fraction
             ContinuedFraction cf = new ContinuedFraction();
-            cf.GetA = (n, _x) => ((2d * n) + 1.0) - a + _x;
+            cf.GetA = (n, _x) => (2d * n) + 1.0 - a + _x;
             cf.GetB = (n, _x) => n * (a - n);
 
             ret = 1.0 / cf.Evaluate(x, epsilon, maxIterations);
@@ -255,7 +255,7 @@ internal static class GammaHelper
     {
         double ret;
 
-        if (double.IsNaN(x) || (x <= 0.0))
+        if (double.IsNaN(x) || x <= 0.0)
         {
             ret = double.NaN;
         }
@@ -265,7 +265,7 @@ internal static class GammaHelper
         }
         else if (x <= 2.5)
         {
-            return logGamma1p((x - 0.5) - 0.5);
+            return logGamma1p(x - 0.5 - 0.5);
         }
         else if (x <= 8.0)
         {
@@ -326,77 +326,77 @@ internal static class GammaHelper
         }
 
         double ret;
-        double t = x <= 0.5 ? x : (x - 0.5) - 0.5;
+        double t = x <= 0.5 ? x : x - 0.5 - 0.5;
         if (t < 0.0)
         {
-            double a = INV_GAMMA1P_M1_A0 + t * INV_GAMMA1P_M1_A1;
+            double a = INV_GAMMA1P_M1_A0 + (t * INV_GAMMA1P_M1_A1);
             double b = INV_GAMMA1P_M1_B8;
-            b = INV_GAMMA1P_M1_B7 + t * b;
-            b = INV_GAMMA1P_M1_B6 + t * b;
-            b = INV_GAMMA1P_M1_B5 + t * b;
-            b = INV_GAMMA1P_M1_B4 + t * b;
-            b = INV_GAMMA1P_M1_B3 + t * b;
-            b = INV_GAMMA1P_M1_B2 + t * b;
-            b = INV_GAMMA1P_M1_B1 + t * b;
-            b = 1.0 + t * b;
+            b = INV_GAMMA1P_M1_B7 + (t * b);
+            b = INV_GAMMA1P_M1_B6 + (t * b);
+            b = INV_GAMMA1P_M1_B5 + (t * b);
+            b = INV_GAMMA1P_M1_B4 + (t * b);
+            b = INV_GAMMA1P_M1_B3 + (t * b);
+            b = INV_GAMMA1P_M1_B2 + (t * b);
+            b = INV_GAMMA1P_M1_B1 + (t * b);
+            b = 1.0 + (t * b);
 
-            double c = INV_GAMMA1P_M1_C13 + t * (a / b);
-            c = INV_GAMMA1P_M1_C12 + t * c;
-            c = INV_GAMMA1P_M1_C11 + t * c;
-            c = INV_GAMMA1P_M1_C10 + t * c;
-            c = INV_GAMMA1P_M1_C9 + t * c;
-            c = INV_GAMMA1P_M1_C8 + t * c;
-            c = INV_GAMMA1P_M1_C7 + t * c;
-            c = INV_GAMMA1P_M1_C6 + t * c;
-            c = INV_GAMMA1P_M1_C5 + t * c;
-            c = INV_GAMMA1P_M1_C4 + t * c;
-            c = INV_GAMMA1P_M1_C3 + t * c;
-            c = INV_GAMMA1P_M1_C2 + t * c;
-            c = INV_GAMMA1P_M1_C1 + t * c;
-            c = INV_GAMMA1P_M1_C + t * c;
+            double c = INV_GAMMA1P_M1_C13 + (t * (a / b));
+            c = INV_GAMMA1P_M1_C12 + (t * c);
+            c = INV_GAMMA1P_M1_C11 + (t * c);
+            c = INV_GAMMA1P_M1_C10 + (t * c);
+            c = INV_GAMMA1P_M1_C9 + (t * c);
+            c = INV_GAMMA1P_M1_C8 + (t * c);
+            c = INV_GAMMA1P_M1_C7 + (t * c);
+            c = INV_GAMMA1P_M1_C6 + (t * c);
+            c = INV_GAMMA1P_M1_C5 + (t * c);
+            c = INV_GAMMA1P_M1_C4 + (t * c);
+            c = INV_GAMMA1P_M1_C3 + (t * c);
+            c = INV_GAMMA1P_M1_C2 + (t * c);
+            c = INV_GAMMA1P_M1_C1 + (t * c);
+            c = INV_GAMMA1P_M1_C + (t * c);
             if (x > 0.5)
             {
                 ret = t * c / x;
             }
             else
             {
-                ret = x * ((c + 0.5) + 0.5);
+                ret = x * (c + 0.5 + 0.5);
             }
         }
         else
         {
             double p = INV_GAMMA1P_M1_P6;
-            p = INV_GAMMA1P_M1_P5 + t * p;
-            p = INV_GAMMA1P_M1_P4 + t * p;
-            p = INV_GAMMA1P_M1_P3 + t * p;
-            p = INV_GAMMA1P_M1_P2 + t * p;
-            p = INV_GAMMA1P_M1_P1 + t * p;
-            p = INV_GAMMA1P_M1_P0 + t * p;
+            p = INV_GAMMA1P_M1_P5 + (t * p);
+            p = INV_GAMMA1P_M1_P4 + (t * p);
+            p = INV_GAMMA1P_M1_P3 + (t * p);
+            p = INV_GAMMA1P_M1_P2 + (t * p);
+            p = INV_GAMMA1P_M1_P1 + (t * p);
+            p = INV_GAMMA1P_M1_P0 + (t * p);
 
             double q = INV_GAMMA1P_M1_Q4;
-            q = INV_GAMMA1P_M1_Q3 + t * q;
-            q = INV_GAMMA1P_M1_Q2 + t * q;
-            q = INV_GAMMA1P_M1_Q1 + t * q;
-            q = 1.0 + t * q;
+            q = INV_GAMMA1P_M1_Q3 + (t * q);
+            q = INV_GAMMA1P_M1_Q2 + (t * q);
+            q = INV_GAMMA1P_M1_Q1 + (t * q);
+            q = 1.0 + (t * q);
 
-            double c = INV_GAMMA1P_M1_C13 + (p / q) * t;
-            c = INV_GAMMA1P_M1_C12 + t * c;
-            c = INV_GAMMA1P_M1_C11 + t * c;
-            c = INV_GAMMA1P_M1_C10 + t * c;
-            c = INV_GAMMA1P_M1_C9 + t * c;
-            c = INV_GAMMA1P_M1_C8 + t * c;
-            c = INV_GAMMA1P_M1_C7 + t * c;
-            c = INV_GAMMA1P_M1_C6 + t * c;
-            c = INV_GAMMA1P_M1_C5 + t * c;
-            c = INV_GAMMA1P_M1_C4 + t * c;
-            c = INV_GAMMA1P_M1_C3 + t * c;
-            c = INV_GAMMA1P_M1_C2 + t * c;
-            c = INV_GAMMA1P_M1_C1 + t * c;
-            c = INV_GAMMA1P_M1_C0 + t * c;
+            double c = INV_GAMMA1P_M1_C13 + (p / q * t);
+            c = INV_GAMMA1P_M1_C12 + (t * c);
+            c = INV_GAMMA1P_M1_C11 + (t * c);
+            c = INV_GAMMA1P_M1_C10 + (t * c);
+            c = INV_GAMMA1P_M1_C9 + (t * c);
+            c = INV_GAMMA1P_M1_C8 + (t * c);
+            c = INV_GAMMA1P_M1_C7 + (t * c);
+            c = INV_GAMMA1P_M1_C6 + (t * c);
+            c = INV_GAMMA1P_M1_C5 + (t * c);
+            c = INV_GAMMA1P_M1_C4 + (t * c);
+            c = INV_GAMMA1P_M1_C3 + (t * c);
+            c = INV_GAMMA1P_M1_C2 + (t * c);
+            c = INV_GAMMA1P_M1_C1 + (t * c);
+            c = INV_GAMMA1P_M1_C0 + (t * c);
 
             if (x > 0.5)
             {
-                ret = (t / x) * ((c - 0.5) - 0.5);
+                ret = t / x * (c - 0.5 - 0.5);
             }
             else
             {
@@ -407,7 +407,7 @@ internal static class GammaHelper
         return ret;
     }
 
-    static double log1p(double x) => System.Math.Abs(x) > 1e-4 ? System.Math.Log(1.0 + x) : (-0.5 * x + 1.0) * x;
+    static double log1p(double x) => System.Math.Abs(x) > 1e-4 ? System.Math.Log(1.0 + x) : ((-0.5 * x) + 1.0) * x;
 
     /**
      * Returns the value of Γ(x). Based on the <em>NSWC Library of
@@ -421,7 +421,7 @@ internal static class GammaHelper
     public static double gamma(double x)
     {
 
-        if ((x == System.Math.Round(x)) && (x <= 0.0))
+        if (x == System.Math.Round(x) && x <= 0.0)
         {
             return Double.NaN;
         }

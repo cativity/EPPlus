@@ -131,7 +131,7 @@ internal class FunctionExpression : AtomicExpression
     {
         get
         {
-            return (this.Children.Any() && this.Children.First().Children.Any());
+            return this.Children.Any() && this.Children.First().Children.Any();
         }
     }
 

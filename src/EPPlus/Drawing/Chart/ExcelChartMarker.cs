@@ -46,7 +46,7 @@ public class ExcelChartMarker : XmlHelper, IDrawingStyleBase
         {
             if(this._allowMarkers)
             {
-                throw (new ArgumentException("Style", "Can't set markers on a 3d chart serie"));
+                throw new ArgumentException("Style", "Can't set markers on a 3d chart serie");
             }
 
             this.SetXmlNodeString("c:marker/c:symbol/@val", value.ToEnumString());
@@ -71,12 +71,12 @@ public class ExcelChartMarker : XmlHelper, IDrawingStyleBase
         {
             if (this._allowMarkers)
             {
-                throw (new ArgumentException("Size", "Can't set markers on a 3d chart serie"));
+                throw new ArgumentException("Size", "Can't set markers on a 3d chart serie");
             }
 
             if (value<2 || value>72)
             {
-                throw (new ArgumentOutOfRangeException("Marker size must be between 2 and 72"));
+                throw new ArgumentOutOfRangeException("Marker size must be between 2 and 72");
             }
 
             this.SetXmlNodeString("c:marker/c:size/@val", value.ToString(CultureInfo.InvariantCulture));
@@ -92,7 +92,7 @@ public class ExcelChartMarker : XmlHelper, IDrawingStyleBase
         {
             if (this._allowMarkers)
             {
-                throw (new ArgumentException("Fill", "Can't set markers on a 3d chart serie"));
+                throw new ArgumentException("Fill", "Can't set markers on a 3d chart serie");
             }
 
             return this._fill ??= new ExcelDrawingFill(this._chart, this.NameSpaceManager, this.TopNode, "c:marker/c:spPr", this.SchemaNodeOrder);
@@ -108,7 +108,7 @@ public class ExcelChartMarker : XmlHelper, IDrawingStyleBase
         {
             if (this._allowMarkers)
             {
-                throw (new ArgumentException("Border", "Can't set markers on a 3d chart serie"));
+                throw new ArgumentException("Border", "Can't set markers on a 3d chart serie");
             }
 
             return this._border ??= new ExcelDrawingBorder(this._chart,
@@ -128,7 +128,7 @@ public class ExcelChartMarker : XmlHelper, IDrawingStyleBase
         {
             if (this._allowMarkers)
             {
-                throw (new ArgumentException("Effect", "Can't set markers on a 3d chart serie"));
+                throw new ArgumentException("Effect", "Can't set markers on a 3d chart serie");
             }
 
             return this._effect ??= new ExcelDrawingEffectStyle(this._chart,
@@ -148,7 +148,7 @@ public class ExcelChartMarker : XmlHelper, IDrawingStyleBase
         {
             if (this._allowMarkers)
             {
-                throw (new ArgumentException("ThreeD", "Can't set markers on a 3d chart serie"));
+                throw new ArgumentException("ThreeD", "Can't set markers on a 3d chart serie");
             }
 
             return this._threeD ??= new ExcelDrawing3D(this.NameSpaceManager, this.TopNode, "c:marker/c:spPr", this.SchemaNodeOrder);

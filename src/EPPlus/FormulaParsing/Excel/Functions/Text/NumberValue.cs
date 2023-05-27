@@ -114,7 +114,7 @@ internal class NumberValue : ExcelFunction
     {
         return !string.IsNullOrEmpty(groupSeparator)
                &&
-               (groupSeparator != decimalSeparator)
+               groupSeparator != decimalSeparator
                &&
                (groupSeparator == " " || groupSeparator == "," || groupSeparator == ".");
     }

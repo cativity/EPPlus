@@ -333,7 +333,7 @@ public class CalculationTests
         if (sb.Length > 0)
         {
             File.WriteAllText(string.Format("TestAllWorkooks{0}.txt", DateTime.Now.ToString("d") + " " + DateTime.Now.ToString("t")), sb.ToString());
-            throw(new Exception("Test failed with\r\n\r\n" + sb.ToString()));
+            throw new Exception("Test failed with\r\n\r\n" + sb.ToString());
 
         }
     }

@@ -42,7 +42,7 @@ internal class Price : ExcelFunction
             basis = this.ArgToInt(arguments, 6);
         }
         // validate input
-        if ((settlementDate > maturityDate) || rate < 0 || yield < 0 || redemption <= 0 || (frequency != 1 && frequency != 2 && frequency != 4) || (basis < 0 || basis > 4))
+        if (settlementDate > maturityDate || rate < 0 || yield < 0 || redemption <= 0 || (frequency != 1 && frequency != 2 && frequency != 4) || basis < 0 || basis > 4)
         {
             return this.CreateResult(eErrorType.Num);
         }

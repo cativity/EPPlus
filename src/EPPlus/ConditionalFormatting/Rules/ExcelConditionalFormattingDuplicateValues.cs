@@ -50,7 +50,7 @@ public class ExcelConditionalFormattingDuplicateValues
                priority,
                worksheet,
                itemElementNode,
-               (namespaceManager == null) ? worksheet.NameSpaceManager : namespaceManager)
+               namespaceManager == null ? worksheet.NameSpaceManager : namespaceManager)
     {
     }
 

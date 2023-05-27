@@ -114,7 +114,7 @@ public class ExcelCommentCollection : IEnumerable, IDisposable
         {
             if (Index < 0 || Index >= this._listIndex.Count)
             {
-                throw(new ArgumentOutOfRangeException("Comment index out of range"));
+                throw new ArgumentOutOfRangeException("Comment index out of range");
             }
             return this._list[this._listIndex[Index]];
         }
@@ -237,7 +237,7 @@ public class ExcelCommentCollection : IEnumerable, IDisposable
         }
         else
         {
-            throw (new ArgumentException("Comment does not exist in the worksheet"));
+            throw new ArgumentException("Comment does not exist in the worksheet");
         }
     }
 

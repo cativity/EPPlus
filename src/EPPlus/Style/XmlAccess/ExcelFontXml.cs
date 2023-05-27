@@ -120,7 +120,7 @@ public sealed class ExcelFontXml : StyleXmlHelper
     {
         get
         {
-            return (this._family == int.MinValue ? 0 : this._family);
+            return this._family == int.MinValue ? 0 : this._family;
         }
         set
         {

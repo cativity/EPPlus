@@ -40,7 +40,7 @@ public class ExcelIconFilterColumn : ExcelFilterColumn
         {
             if (value < 0)
             {
-                throw (new ArgumentOutOfRangeException("iconId must not be negative"));
+                throw new ArgumentOutOfRangeException("iconId must not be negative");
             }
 
             this.SetXmlNodeString("d:iconId", value.ToString(CultureInfo.InvariantCulture));
@@ -62,7 +62,7 @@ public class ExcelIconFilterColumn : ExcelFilterColumn
             }
             catch
             {
-                throw (new ArgumentException($"Unknown Iconset {v}"));
+                throw new ArgumentException($"Unknown Iconset {v}");
             }
         }
         set

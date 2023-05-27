@@ -56,7 +56,7 @@ internal class SerializedFontMetrics
     {
         ushort k1 = (ushort)family;
         ushort k2 = (ushort)subFamily;
-        return (uint)((k1 << 16) | ((k2) & 0xffff));
+        return (uint)((k1 << 16) | (k2 & 0xffff));
     }
 
 }

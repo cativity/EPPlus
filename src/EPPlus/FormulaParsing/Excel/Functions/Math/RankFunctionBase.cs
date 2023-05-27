@@ -77,7 +77,7 @@ internal abstract class RankFunctionBase : ExcelFunction
 
         double percentrankLow = PercentRankIncImpl(array, largestBelow);
         double percentrankHigh = PercentRankIncImpl(array, smallestAbove);
-        return percentrankLow + (percentrankHigh - percentrankLow) * ((number - largestBelow) / (smallestAbove - largestBelow));
+        return percentrankLow + ((percentrankHigh - percentrankLow) * ((number - largestBelow) / (smallestAbove - largestBelow)));
     }
 
     protected static double PercentRankExcImpl(double[] array, double number)
@@ -107,7 +107,7 @@ internal abstract class RankFunctionBase : ExcelFunction
 
         double percentrankLow = PercentRankExcImpl(array, largestBelow);
         double percentrankHigh = PercentRankExcImpl(array, smallestAbove);
-        return percentrankLow + (percentrankHigh - percentrankLow) * ((number - largestBelow) / (smallestAbove - largestBelow));
+        return percentrankLow + ((percentrankHigh - percentrankLow) * ((number - largestBelow) / (smallestAbove - largestBelow)));
     }
 
     /// <summary>

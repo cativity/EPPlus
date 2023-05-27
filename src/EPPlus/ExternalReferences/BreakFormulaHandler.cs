@@ -120,7 +120,7 @@ internal static class ExternalLinksHandler
                             }
                             else if (extRefIx > ix)
                             {
-                                a._address = a.Address.Substring(0, startIx+1) + (extRefIx.ToString(CultureInfo.InvariantCulture)) + a.Address.Substring(endIx);
+                                a._address = a.Address.Substring(0, startIx+1) + extRefIx.ToString(CultureInfo.InvariantCulture) + a.Address.Substring(endIx);
                             }
                         }
                     }
@@ -204,7 +204,7 @@ internal static class ExternalLinksHandler
                         }
                         else if (extRefIx > ix)
                         {
-                            newFormula += address.Substring(0, startIx + 1) + (extRefIx.ToString(CultureInfo.InvariantCulture)) + address.Substring(endIx);
+                            newFormula += address.Substring(0, startIx + 1) + extRefIx.ToString(CultureInfo.InvariantCulture) + address.Substring(endIx);
                         }
                         else
                         {

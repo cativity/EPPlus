@@ -479,7 +479,7 @@ internal partial class CompoundDocumentFile : IDisposable
                 }
                 else
                 {
-                    throw (new InvalidOperationException("Invalid sibling handling in Document"));
+                    throw new InvalidOperationException("Invalid sibling handling in Document");
                 }
             }
         }
@@ -653,7 +653,7 @@ internal partial class CompoundDocumentFile : IDisposable
         }
 
         bw.Seek(0, SeekOrigin.End);
-        int start = (int)bw.BaseStream.Position / this._sectorSize - 1;
+        int start = ((int)bw.BaseStream.Position / this._sectorSize) - 1;
         int pos = this._sectorSize + 4;
         this.WritePosition(bw, start, ref pos, false);
         int streamLength = 0;
@@ -696,7 +696,7 @@ internal partial class CompoundDocumentFile : IDisposable
     private int WriteStream(BinaryWriter bw, byte[] stream)
     {
         bw.Seek(0, SeekOrigin.End);
-        int start = (int)bw.BaseStream.Position / this._sectorSize-1;
+        int start = ((int)bw.BaseStream.Position / this._sectorSize)-1;
         bw.Write(stream);
         WriteStreamFullSector(bw, this._sectorSize);
         this.WriteFAT(bw, start, stream.Length);
@@ -726,12 +726,12 @@ internal partial class CompoundDocumentFile : IDisposable
             {
                 bw.Seek(512, SeekOrigin.Current);
             }
-            else if (bw.BaseStream.Position == (this._sectorSize * 2))
+            else if (bw.BaseStream.Position == this._sectorSize * 2)
             {
                 bw.Seek(4 * this._sectorSize,SeekOrigin.Begin);    //FAT continues after initial dir och minifat sectors.
             }
             //Add to DIFAT
-            int FATSector = (int)(bw.BaseStream.Position / this._sectorSize - 1);
+            int FATSector = (int)((bw.BaseStream.Position / this._sectorSize) - 1);
             this.WritePosition(bw, FATSector, ref this._currentDIFATSectorPos, false);
             this._numberOfFATSectors++;
             if (this._currentDIFATSectorPos == this._sectorSize || ((this._currentDIFATSectorPos+4)  % this._sectorSize == 0 && this._currentDIFATSectorPos > this._sectorSize))
@@ -766,7 +766,7 @@ internal partial class CompoundDocumentFile : IDisposable
         {
             if (entity.ObjectType == 5 || entity.StreamSize > this._miniStreamCutoffSize)
             {
-                long rest = this._sectorSize - entity.StreamSize % this._sectorSize;
+                long rest = this._sectorSize - (entity.StreamSize % this._sectorSize);
                 fullStreamSize += entity.StreamSize;
                 if (rest > 0 && rest < this._sectorSize)
                 {
@@ -842,7 +842,7 @@ internal partial class CompoundDocumentFile : IDisposable
     {
         if (FATSectors > 109)
         {
-            return GetSectors((FATSectors - 109), this._sectorSizeInt-1);
+            return GetSectors(FATSectors - 109, this._sectorSizeInt-1);
         }
         else
         {
@@ -865,7 +865,7 @@ internal partial class CompoundDocumentFile : IDisposable
         }
         else
         {
-            return v / size + 1;
+            return (v / size) + 1;
         }
     }
 

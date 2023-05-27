@@ -85,9 +85,9 @@ public class ExcelGradientFill : StyleBase
         }
         set
         {
-            if (value < 0 | value > 1)
+            if ((value < 0) | (value > 1))
             {
-                throw (new ArgumentOutOfRangeException("Value must be between 0 and 1"));
+                throw new ArgumentOutOfRangeException("Value must be between 0 and 1");
             }
 
             this._ChangedEvent(this, new StyleChangeEventArgs(eStyleClass.GradientFill, eStyleProperty.GradientTop, value, this._positionID, this._address));
@@ -110,9 +110,9 @@ public class ExcelGradientFill : StyleBase
         }
         set
         {
-            if (value < 0 | value > 1)
+            if ((value < 0) | (value > 1))
             {
-                throw (new ArgumentOutOfRangeException("Value must be between 0 and 1"));
+                throw new ArgumentOutOfRangeException("Value must be between 0 and 1");
             }
 
             this._ChangedEvent(this, new StyleChangeEventArgs(eStyleClass.GradientFill, eStyleProperty.GradientBottom, value, this._positionID, this._address));
@@ -135,9 +135,9 @@ public class ExcelGradientFill : StyleBase
         }
         set
         {
-            if (value < 0 | value > 1)
+            if ((value < 0) | (value > 1))
             {
-                throw (new ArgumentOutOfRangeException("Value must be between 0 and 1"));
+                throw new ArgumentOutOfRangeException("Value must be between 0 and 1");
             }
 
             this._ChangedEvent(this, new StyleChangeEventArgs(eStyleClass.GradientFill, eStyleProperty.GradientLeft, value, this._positionID, this._address));
@@ -160,9 +160,9 @@ public class ExcelGradientFill : StyleBase
         }
         set
         {
-            if (value < 0 | value > 1)
+            if ((value < 0) | (value > 1))
             {
-                throw (new ArgumentOutOfRangeException("Value must be between 0 and 1"));
+                throw new ArgumentOutOfRangeException("Value must be between 0 and 1");
             }
 
             this._ChangedEvent(this, new StyleChangeEventArgs(eStyleClass.GradientFill, eStyleProperty.GradientRight, value, this._positionID, this._address));

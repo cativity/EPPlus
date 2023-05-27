@@ -67,7 +67,7 @@ internal static class Days360Impl
                 startDay = 30;
             }
         }
-        int result = (endYear * 12 * 30 + endMonth * 30 + endDay) - (startYear * 12 * 30 + startMonth * 30 + startDay);
+        int result = (endYear * 12 * 30) + (endMonth * 30) + endDay - ((startYear * 12 * 30) + (startMonth * 30) + startDay);
         return result;
     }
 }

@@ -42,14 +42,14 @@ public class ExcelVmlDrawingGradientFill : XmlHelper
     {
         if(colors==null || colors.Length==0)
         {
-            throw (new ArgumentException("Please supply a list of colors"));
+            throw new ArgumentException("Please supply a list of colors");
         }
         double p = -1;
         foreach(VmlGradiantColor? c in colors)
         {
             if(c.Percent<=p)
             {
-                throw (new ArgumentException("Percent values in the color list must be sorted and must be unique."));
+                throw new ArgumentException("Percent values in the color list must be sorted and must be unique.");
             }
             p = c.Percent;
         }
@@ -63,7 +63,7 @@ public class ExcelVmlDrawingGradientFill : XmlHelper
         foreach(VmlGradiantColor? c in colors)
         {
             double v = c.Percent == 0 ? 0 : c.Percent / 100;
-            colorsString += $"{(v * 0x10000):F0}f #{c.Color.ToColorString()};";
+            colorsString += $"{v * 0x10000:F0}f #{c.Color.ToColorString()};";
         }
         if(colors[0].Percent==0)
         {

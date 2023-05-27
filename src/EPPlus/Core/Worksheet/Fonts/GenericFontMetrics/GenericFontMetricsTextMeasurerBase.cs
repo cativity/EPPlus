@@ -92,7 +92,7 @@ internal abstract class GenericFontMetricsTextMeasurerBase
     {
         ushort k1 = (ushort)family;
         ushort k2 = (ushort)subFamily;
-        return (uint)((k1 << 16) | ((k2) & 0xffff));
+        return (uint)((k1 << 16) | (k2 & 0xffff));
     }
 
     internal static uint GetKey(string fontFamily, MeasurementFontStyles fontStyle)
@@ -134,7 +134,7 @@ internal abstract class GenericFontMetricsTextMeasurerBase
 
     private static float GetEastAsianCharWidth(int cc, MeasurementFontStyles style)
     {
-        float emWidth = (cc >= 65377 && cc <= 65439) ? 0.5f : 1f;
+        float emWidth = cc >= 65377 && cc <= 65439 ? 0.5f : 1f;
         if ((style & MeasurementFontStyles.Bold) != 0)
         {
             emWidth *= 1.05f;

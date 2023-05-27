@@ -91,7 +91,7 @@ public class ExcelFilterCollection<T> : ExcelFilterCollectionBase<T>
     {
         if (this._maxTwoItems && this._list.Count >= 2)
         {
-            throw (new InvalidOperationException("You can only have two filters on an ExcelCustomFilterColumn collection"));
+            throw new InvalidOperationException("You can only have two filters on an ExcelCustomFilterColumn collection");
         }
 
         this._list.Add(value);

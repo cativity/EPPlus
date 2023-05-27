@@ -148,7 +148,7 @@ internal static class WorksheetRangeHelper
 
             if(drawing.CellAnchor == eEditAs.TwoCell && 
                rows < 0 && drawing.From.Row>=rowFrom-1 && 
-               ((drawing.To.Row<=(rowFrom-rows-1) && drawing.To.RowOff==0) || drawing.To.Row <= (rowFrom - rows - 2))) //If delete and the entire drawing is withing the deleted range, remove it.
+               ((drawing.To.Row<=rowFrom-rows-1 && drawing.To.RowOff==0) || drawing.To.Row <= rowFrom - rows - 2)) //If delete and the entire drawing is withing the deleted range, remove it.
             {
                 deletedDrawings.Add(drawing);
                 continue;
@@ -213,7 +213,7 @@ internal static class WorksheetRangeHelper
 
             if (drawing.CellAnchor==eEditAs.TwoCell && 
                 columns < 0 && drawing.From.Column >= columnFrom - 1 &&
-                ((drawing.To.Column <= (columnFrom - columns - 1) && drawing.To.ColumnOff == 0) || drawing.To.Column <= (columnFrom - columns - 2))) //If delete and the entire drawing is withing the deleted range, remove it.
+                ((drawing.To.Column <= columnFrom - columns - 1 && drawing.To.ColumnOff == 0) || drawing.To.Column <= columnFrom - columns - 2)) //If delete and the entire drawing is withing the deleted range, remove it.
             {
                 deletedDrawings.Add(drawing);
                 continue;
@@ -299,12 +299,12 @@ internal static class WorksheetRangeHelper
                 {
                     if (tokenAddress._toRowFixed == false)
                     {
-                        tokenAddress._toRow += (sfAddress.Rows - 1);
+                        tokenAddress._toRow += sfAddress.Rows - 1;
                     }
 
                     if (tokenAddress._toColFixed == false)
                     {
-                        tokenAddress._toCol += (sfAddress.Columns - 1);
+                        tokenAddress._toCol += sfAddress.Columns - 1;
                     }
 
                     if (tokenAddress.Collide(delRange, true) != eAddressCollition.No)  //Shared Formula address is effected.

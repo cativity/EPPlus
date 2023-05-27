@@ -57,7 +57,7 @@ internal static class PriceImpl
             double sum = 0d;
             for (int k = 1; k <= N; k++)
             {
-                sum += (100 * (rate / frequency)) / System.Math.Pow(1 + yield / frequency, k - 1 + DSC / E);
+                sum += 100 * (rate / frequency) / System.Math.Pow(1 + (yield / frequency), k - 1 + (DSC / E));
             }
 
             retVal = part1 + sum - (100 * (rate / frequency) * (A / E));
@@ -65,11 +65,11 @@ internal static class PriceImpl
         else
         {
             double DSR = E - A;
-            double T1 = 100 * (rate / frequency) + redemption;
-            double T2 = (yield / frequency) * (DSR / E) + 1;
+            double T1 = (100 * (rate / frequency)) + redemption;
+            double T2 = (yield / frequency * (DSR / E)) + 1;
             double T3 = 100 * (rate / frequency) * (A / E);
 
-            retVal = T1 / T2 - T3;
+            retVal = (T1 / T2) - T3;
         }
 
         return new FinanceCalcResult<double>(retVal);

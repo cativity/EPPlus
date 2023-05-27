@@ -214,7 +214,7 @@ public class ExcelWorksheetThreadedComments
         {
             if (index < 0 || index >= this._threadsIndex.Count)
             {
-                throw (new ArgumentOutOfRangeException("Threaded comment index out of range"));
+                throw new ArgumentOutOfRangeException("Threaded comment index out of range");
             }
             return this._threads[this._threadsIndex[index]];
         }
@@ -260,7 +260,7 @@ public class ExcelWorksheetThreadedComments
         }
         else
         {
-            throw (new ArgumentException("Comment does not exist in the worksheet"));
+            throw new ArgumentException("Comment does not exist in the worksheet");
         }
     }
     /// <summary>

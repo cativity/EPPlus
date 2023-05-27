@@ -66,7 +66,7 @@ public class BesselIimpl : BesselBase
                 fResult += fTerm;
                 nK++;
             }
-            while ((System.Math.Abs(fTerm) > System.Math.Abs(fResult) * fEpsilon) && (nK < nMaxIteration));
+            while (System.Math.Abs(fTerm) > System.Math.Abs(fResult) * fEpsilon && nK < nMaxIteration);
 
         }
         return new FinanceCalcResult<double>(fResult);

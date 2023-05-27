@@ -68,7 +68,7 @@ public class ExcelColorScheme : XmlHelper
             case eThemeSchemeColor.FollowedHyperlink:
                 return this.FollowedHyperlink;                
         }
-        throw(new ArgumentOutOfRangeException($"Type {color} is unhandled."));
+        throw new ArgumentOutOfRangeException($"Type {color} is unhandled.");
     }
 
     const string Dk2Path = "a:dk2";

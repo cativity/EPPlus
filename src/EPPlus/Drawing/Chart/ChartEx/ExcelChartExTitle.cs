@@ -32,7 +32,7 @@ public class ExcelChartExTitle : ExcelChartTitle
         }
         set
         {
-            bool applyStyle = (this.RichText.Count == 0);
+            bool applyStyle = this.RichText.Count == 0;
             this.RichText.Text = value;
             if (applyStyle)
             {

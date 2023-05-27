@@ -53,7 +53,7 @@ public class ExcelDxfGradientFillColorCollection : DxfStyleBase, IEnumerable<Exc
     {
         get
         {
-            return (this._lst[index]);
+            return this._lst[index];
         }
     }
     /// <summary>
@@ -65,7 +65,7 @@ public class ExcelDxfGradientFillColorCollection : DxfStyleBase, IEnumerable<Exc
     {
         get
         {
-            return (this._lst.Find(i => i.Position == position));
+            return this._lst.Find(i => i.Position == position);
         }
     }
     /// <summary>

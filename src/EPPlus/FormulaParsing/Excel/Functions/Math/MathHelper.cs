@@ -44,32 +44,32 @@ internal static class MathHelper
     // Inverse Sine 
     public static double Arcsin(double x)
     {
-        return MathObj.Atan(x / MathObj.Sqrt(-x * x + 1));
+        return MathObj.Atan(x / MathObj.Sqrt((-x * x) + 1));
     }
 
     // Inverse Cosine 
     public static double Arccos(double x)
     {
-        return MathObj.Atan(-x / MathObj.Sqrt(-x * x + 1)) + 2 * MathObj.Atan(1);
+        return MathObj.Atan(-x / MathObj.Sqrt((-x * x) + 1)) + (2 * MathObj.Atan(1));
     }
 
 
     // Inverse Secant 
     public static double Arcsec(double x)
     {
-        return 2 * MathObj.Atan(1) - MathObj.Atan(MathObj.Sign(x) / MathObj.Sqrt(x * x - 1));
+        return (2 * MathObj.Atan(1)) - MathObj.Atan(MathObj.Sign(x) / MathObj.Sqrt((x * x) - 1));
     }
 
     // Inverse Cosecant 
     public static double Arccosec(double x)
     {
-        return MathObj.Atan(MathObj.Sign(x) / MathObj.Sqrt(x * x - 1));
+        return MathObj.Atan(MathObj.Sign(x) / MathObj.Sqrt((x * x) - 1));
     }
 
     // Inverse Cotangent 
     public static double Arccotan(double x)
     {
-        return 2 * MathObj.Atan(1) - MathObj.Atan(x);
+        return (2 * MathObj.Atan(1)) - MathObj.Atan(x);
     }
 
     // Hyperbolic Sine 
@@ -111,13 +111,13 @@ internal static class MathHelper
     // Inverse Hyperbolic Sine 
     public static double HArcsin(double x)
     {
-        return MathObj.Log(x + MathObj.Sqrt(x * x + 1));
+        return MathObj.Log(x + MathObj.Sqrt((x * x) + 1));
     }
 
     // Inverse Hyperbolic Cosine 
     public static double HArccos(double x)
     {
-        return MathObj.Log(x + MathObj.Sqrt(x * x - 1));
+        return MathObj.Log(x + MathObj.Sqrt((x * x) - 1));
     }
 
     // Inverse Hyperbolic Tangent 
@@ -129,13 +129,13 @@ internal static class MathHelper
     // Inverse Hyperbolic Secant 
     public static double HArcsec(double x)
     {
-        return MathObj.Log((MathObj.Sqrt(-x * x + 1) + 1) / x);
+        return MathObj.Log((MathObj.Sqrt((-x * x) + 1) + 1) / x);
     }
 
     // Inverse Hyperbolic Cosecant 
     public static double HArccosec(double x)
     {
-        return MathObj.Log((MathObj.Sign(x) * MathObj.Sqrt(x * x + 1) + 1) / x);
+        return MathObj.Log(((MathObj.Sign(x) * MathObj.Sqrt((x * x) + 1)) + 1) / x);
     }
 
     // Inverse Hyperbolic Cotangent 
@@ -167,7 +167,7 @@ internal static class MathHelper
 
     public static double Radians(double angle)
     {
-        return (angle / 180) * MathObj.PI;
+        return angle / 180 * MathObj.PI;
     }
 
     public static int GreatestCommonDevisor(int[] numbers)

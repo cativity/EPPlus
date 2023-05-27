@@ -127,7 +127,7 @@ namespace OfficeOpenXml.Drawing
                 img = ImageReader.ExtractImage(img, out ePictureType? pt);
                 if(pt==null)
                 {
-                    throw (new InvalidDataException($"Invalid image of type {type}"));
+                    throw new InvalidDataException($"Invalid image of type {type}");
                 }
                 type = pt.Value;
             }

@@ -344,7 +344,7 @@ public class ExcelRichText : XmlHelper
                 }
                 else
                 {
-                    if (this._collection._cells == null || (this.ExistsNode(RPR_PATH))) //If the rPn element exist but no color element, automatic should be used.
+                    if (this._collection._cells == null || this.ExistsNode(RPR_PATH)) //If the rPn element exist but no color element, automatic should be used.
                     {
                         ret = Utils.ColorConverter.GetThemeColor(this._collection._ws.Workbook.ThemeManager.GetOrCreateTheme().ColorScheme.Dark1);
                     }

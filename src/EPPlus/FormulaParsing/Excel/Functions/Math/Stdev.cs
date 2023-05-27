@@ -51,7 +51,7 @@ internal class Stdev : HiddenValuesHandlingFunction
 
             double avg = values.Average();    
             double sum = values.Sum(d => MathObj.Pow(d - avg, 2));    
-            ret = MathObj.Sqrt(Divide(sum, (values.Count() - 1)));
+            ret = MathObj.Sqrt(Divide(sum, values.Count() - 1));
         }
         return ret;
     } 

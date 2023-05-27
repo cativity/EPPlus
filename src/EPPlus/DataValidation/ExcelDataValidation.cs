@@ -127,7 +127,7 @@ public abstract class ExcelDataValidation : IExcelDataValidation
         {
             if (string.IsNullOrEmpty(this.imeModeString))
             {
-                return (ExcelDataValidationImeMode.NoControl);
+                return ExcelDataValidationImeMode.NoControl;
             }
 
             return (ExcelDataValidationImeMode)this.imeModeString.ToEnum<ExcelDataValidationImeMode>();
@@ -226,7 +226,7 @@ public abstract class ExcelDataValidation : IExcelDataValidation
         }
         set
         {
-            if ((this.ValidationType.Type == eDataValidationType.Any) || this.ValidationType.Type == eDataValidationType.List)
+            if (this.ValidationType.Type == eDataValidationType.Any || this.ValidationType.Type == eDataValidationType.List)
             {
                 throw new InvalidOperationException("The current validation type does not allow operator to be set");
             }
@@ -255,7 +255,7 @@ public abstract class ExcelDataValidation : IExcelDataValidation
         bool hasColon = false;
         foreach (char c in address)
         {
-            if (((c >= 'A') && (c <= 'Z')) || c == ':')
+            if ((c >= 'A' && c <= 'Z') || c == ':')
             {
                 if (c == ':')
                 {

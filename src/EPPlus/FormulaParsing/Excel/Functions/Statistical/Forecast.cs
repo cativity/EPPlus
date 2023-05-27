@@ -60,7 +60,7 @@ internal class Forecast : ExcelFunction
             lowerEquationPart += System.Math.Pow(arrayX[ix] - avgX, 2);
         }
         double b = upperEquationPart / lowerEquationPart;
-        double a = avgY - b * avgX;
-        return a + b * x;
+        double a = avgY - (b * avgX);
+        return a + (b * x);
     }
 }

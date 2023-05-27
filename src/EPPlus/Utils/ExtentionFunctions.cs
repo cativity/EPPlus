@@ -72,7 +72,7 @@ internal static class EnumExtensions
     }
     internal static bool IsInt(this string s)
     {
-        return (!s.Any(x => x < '0' && x > '9'));
+        return !s.Any(x => x < '0' && x > '9');
     }
     internal static string ToColorString(this Color color)
     {

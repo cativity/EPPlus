@@ -60,7 +60,7 @@ internal class Time : TimeBaseFunction
             return this.CreateResult(eErrorType.Value);
         }
 
-        double secondsOfThisTime = (double)(hour * 60 * 60 + min * 60 + sec);
+        double secondsOfThisTime = (double)((hour * 60 * 60) + (min * 60) + sec);
         return this.CreateResult(GetTimeSerialNumber(secondsOfThisTime), DataType.Time);
     }
 }

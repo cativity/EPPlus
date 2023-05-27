@@ -285,42 +285,42 @@ public class Issues : TestBase
         //Add some items...
         wsData.Cells["A2"].Value = Convert.ToDateTime("04/2/2012");
         wsData.Cells["B2"].Value = 33.63;
-        wsData.Cells["C2"].Value = (-.87);
+        wsData.Cells["C2"].Value = -.87;
         wsData.Cells["D2"].Value = "Unfavorable Price Variance";
         wsData.Cells["E2"].Value = "Pending";
         wsData.Cells["F2"].Value = 1;
 
         wsData.Cells["A3"].Value = Convert.ToDateTime("04/2/2012");
         wsData.Cells["B3"].Value = 43.14;
-        wsData.Cells["C3"].Value = (-1.29);
+        wsData.Cells["C3"].Value = -1.29;
         wsData.Cells["D3"].Value = "Unfavorable Price Variance";
         wsData.Cells["E3"].Value = "Pending";
         wsData.Cells["F3"].Value = 1;
 
         wsData.Cells["A4"].Value = Convert.ToDateTime("11/8/2011");
         wsData.Cells["B4"].Value = 55;
-        wsData.Cells["C4"].Value = (-2.87);
+        wsData.Cells["C4"].Value = -2.87;
         wsData.Cells["D4"].Value = "Unfavorable Price Variance";
         wsData.Cells["E4"].Value = "Pending";
         wsData.Cells["F4"].Value = 1;
 
         wsData.Cells["A5"].Value = Convert.ToDateTime("11/8/2011");
         wsData.Cells["B5"].Value = 38.72;
-        wsData.Cells["C5"].Value = (-5.00);
+        wsData.Cells["C5"].Value = -5.00;
         wsData.Cells["D5"].Value = "Unfavorable Price Variance";
         wsData.Cells["E5"].Value = "Pending";
         wsData.Cells["F5"].Value = 1;
 
         wsData.Cells["A6"].Value = Convert.ToDateTime("3/4/2011");
         wsData.Cells["B6"].Value = 77.44;
-        wsData.Cells["C6"].Value = (-1.55);
+        wsData.Cells["C6"].Value = -1.55;
         wsData.Cells["D6"].Value = "Unfavorable Price Variance";
         wsData.Cells["E6"].Value = "Pending";
         wsData.Cells["F6"].Value = 1;
 
         wsData.Cells["A7"].Value = Convert.ToDateTime("3/4/2011");
         wsData.Cells["B7"].Value = 127.55;
-        wsData.Cells["C7"].Value = (-10.50);
+        wsData.Cells["C7"].Value = -10.50;
         wsData.Cells["D7"].Value = "Unfavorable Price Variance";
         wsData.Cells["E7"].Value = "Pending";
         wsData.Cells["F7"].Value = 1;
@@ -1897,7 +1897,7 @@ public class Issues : TestBase
             {
                 for (int i = 1; i < 9; ++i)
                 {
-                    ws.Cells[row, i].Value = row % 2 == 0 ? (8 * (row - 2) + i).ToString() : $"Test {8 * (row - 2) + i}";
+                    ws.Cells[row, i].Value = row % 2 == 0 ? ((8 * (row - 2)) + i).ToString() : $"Test {(8 * (row - 2)) + i}";
                 }
 
                 if (!onColumns)
@@ -2244,8 +2244,8 @@ public class Issues : TestBase
             int startMessagesColumn = end.Column + 1;
             worksheet.InsertColumn(startMessagesColumn, 2);
             int warningColumn = startMessagesColumn + 1;
-            worksheet.Cells[(dataStartRow) - 1, startMessagesColumn].Value = "Errors";
-            worksheet.Cells[(dataStartRow) - 1, warningColumn].Value = "Warnings";
+            worksheet.Cells[dataStartRow - 1, startMessagesColumn].Value = "Errors";
+            worksheet.Cells[dataStartRow - 1, warningColumn].Value = "Warnings";
             foreach (Error? error in errors)
             {
                 if (error.TypeOfError == "ERROR")
@@ -2276,7 +2276,7 @@ public class Issues : TestBase
             int deletedRows = 0;
             for (int i = 1; i <= end.Row; i++)
             {
-                if (i < (dataStartRow - 1) || (i >= dataStartRow && !errors.Any(w => (w.Row - 1) == i)))
+                if (i < dataStartRow - 1 || (i >= dataStartRow && !errors.Any(w => w.Row - 1 == i)))
                 {
                     worksheet.DeleteRow(i - deletedRows);
                     deletedRows++;
@@ -4219,7 +4219,7 @@ public class Issues : TestBase
             }
             // NB: The new rows are now at the start of the sequence, so only the ones after
             // them should be removed
-            int endRowsToRemove = (table.Address.End.Row - table.Address.Start.Row) - data.Count;
+            int endRowsToRemove = table.Address.End.Row - table.Address.Start.Row - data.Count;
             if (endRowsToRemove > 0)
             {
                 table.DeleteRow(data.Count, endRowsToRemove);

@@ -35,7 +35,7 @@ public class ExcelHistogramChartSerie : ExcelChartExSerie
     {
         int ix = this._chart.Series.Count * 2;
         XmlElement? serElement = CreateSeriesElement((ExcelChartEx)this._chart, eChartType.Pareto, ix+1, this.TopNode, true);
-        serElement.SetAttribute("ownerIdx", (ix).ToString());
+        serElement.SetAttribute("ownerIdx", ix.ToString());
         serElement.InnerXml = "<cx:axisId val=\"2\"/>";
         this.AddParetoLineFromSerie(serElement);
     }

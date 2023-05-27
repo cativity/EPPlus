@@ -41,7 +41,7 @@ public class ExcelSparklineColor : XmlHelper, IColor
         {
             if (value < 0 || value > 65)
             {
-                throw (new ArgumentOutOfRangeException("Index out of range"));
+                throw new ArgumentOutOfRangeException("Index out of range");
             }
 
             this.ClearValues();
@@ -104,7 +104,7 @@ public class ExcelSparklineColor : XmlHelper, IColor
         {
             if (value > 1 || value < -1)
             {
-                throw (new ArgumentOutOfRangeException("Value must be between -1 and 1"));
+                throw new ArgumentOutOfRangeException("Value must be between -1 and 1");
             }
 
             this.SetXmlNodeString("@tint", value.ToString(CultureInfo.InvariantCulture));

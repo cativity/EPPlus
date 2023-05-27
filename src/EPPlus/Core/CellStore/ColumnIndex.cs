@@ -30,7 +30,7 @@ internal class ColumnIndex<T> : IndexBase, IDisposable
     }
     internal int GetPagePosition(int Row)
     {
-        int page = (Row >> CellStoreSettings._pageBits);
+        int page = Row >> CellStoreSettings._pageBits;
         int pagePos;
         if (page >= 0 && page < this.PageCount && this._pages[page].Index == page)
         {
@@ -69,7 +69,7 @@ internal class ColumnIndex<T> : IndexBase, IDisposable
         }
         else
         {
-            if (pagePos + 1 < this.PageCount && (this._pages[pagePos + 1].MinIndex <= Row))
+            if (pagePos + 1 < this.PageCount && this._pages[pagePos + 1].MinIndex <= Row)
             {
                 do
                 {

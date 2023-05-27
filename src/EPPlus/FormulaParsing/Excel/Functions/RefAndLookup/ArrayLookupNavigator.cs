@@ -59,7 +59,7 @@ internal class ArrayLookupNavigator : LookupNavigator
     {
         if (this.Direction == LookupDirection.Vertical)
         {
-            return this._index < (this._arrayData.Length - 1);
+            return this._index < this._arrayData.Length - 1;
         }
         else
         {

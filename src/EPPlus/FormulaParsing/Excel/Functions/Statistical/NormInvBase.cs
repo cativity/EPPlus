@@ -107,8 +107,8 @@ internal abstract class NormInvBase : ExcelFunction
         if (System.Math.Abs(q) <= S1)
         {
             r = C1 - System.Math.Pow(q, 2);
-            val = q * (((((((A[7] * r + A[6]) * r + A[5]) * r + A[4]) * r + A[3]) * r + A[2]) * r + A[1]) * r + A[0])
-                  / (((((((B[7] * r + B[6]) * r + B[5]) * r + B[4]) * r + B[3]) * r + B[2]) * r + B[1]) * r + 1);
+            val = q * ((((((((((((((A[7] * r) + A[6]) * r) + A[5]) * r) + A[4]) * r) + A[3]) * r) + A[2]) * r) + A[1]) * r) + A[0])
+                  / ((((((((((((((B[7] * r) + B[6]) * r) + B[5]) * r) + B[4]) * r) + B[3]) * r) + B[2]) * r) + B[1]) * r) + 1);
         }
         else
         {
@@ -126,14 +126,14 @@ internal abstract class NormInvBase : ExcelFunction
             if (r <= S2)
             {
                 r += -C2;
-                val = (((((((C[7] * r + C[6]) * r + C[5]) * r + C[4]) * r + C[3]) * r + C[2]) * r + C[1]) * r + C[0])
-                      / (((((((D[7] * r + D[6]) * r + D[5]) * r + D[4]) * r + D[3]) * r + D[2]) * r + D[1]) * r + 1);
+                val = ((((((((((((((C[7] * r) + C[6]) * r) + C[5]) * r) + C[4]) * r) + C[3]) * r) + C[2]) * r) + C[1]) * r) + C[0])
+                      / ((((((((((((((D[7] * r) + D[6]) * r) + D[5]) * r) + D[4]) * r) + D[3]) * r) + D[2]) * r) + D[1]) * r) + 1);
             }
             else
             {
                 r += -5;
-                val = (((((((E[7] * r + E[6]) * r + E[5]) * r + E[4]) * r + E[3]) * r + E[2]) * r + E[1]) * r + E[0])
-                      / (((((((F[7] * r + F[6]) * r + F[5]) * r + F[4]) * r + F[3]) * r + F[2]) * r + F[1]) * r + 1);
+                val = ((((((((((((((E[7] * r) + E[6]) * r) + E[5]) * r) + E[4]) * r) + E[3]) * r) + E[2]) * r) + E[1]) * r) + E[0])
+                      / ((((((((((((((F[7] * r) + F[6]) * r) + F[5]) * r) + F[4]) * r) + F[3]) * r) + F[2]) * r) + F[1]) * r) + 1);
             }
 
             if (q < 0.0)
@@ -142,6 +142,6 @@ internal abstract class NormInvBase : ExcelFunction
             }
         }
 
-        return mean + stdev * val;
+        return mean + (stdev * val);
     }
 }

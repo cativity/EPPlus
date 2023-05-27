@@ -56,7 +56,7 @@ public class ExcelRegionMapChartSerie : ExcelChartExSerie
         {
             if(value==null || value.TwoLetterISOLanguageName.Length!=2)
             {
-                throw (new InvalidOperationException("Region must have a two letter ISO code"));
+                throw new InvalidOperationException("Region must have a two letter ISO code");
             }
 
             this.SetXmlNodeString(_regionPath, value.TwoLetterISOLanguageName);
@@ -78,7 +78,7 @@ public class ExcelRegionMapChartSerie : ExcelChartExSerie
         {
             if (value == null)
             {
-                throw (new InvalidOperationException("Language must not be null."));
+                throw new InvalidOperationException("Language must not be null.");
             }
 
             this.SetXmlNodeString(_languagePath, value.Name);

@@ -31,17 +31,17 @@ public class BesselKImpl : BesselBase
                 return iResult;
             }
 
-            fRet = -System.Math.Log(fNum2) * iResult.Result +
-                   (-0.57721566 + y * (0.42278420 + y * (0.23069756 + y * (0.3488590e-1 +
-                                                                           y * (0.262698e-2 + y * (0.10750e-3 + y * 0.74e-5))))));
+            fRet = (-System.Math.Log(fNum2) * iResult.Result) +
+                   (-0.57721566 + (y * (0.42278420 + (y * (0.23069756 + (y * (0.3488590e-1 +
+                                                                              (y * (0.262698e-2 + (y * (0.10750e-3 + (y * 0.74e-5))))))))))));
         }
         else
         {
             double y = 2.0 / fNum;
 
-            fRet = System.Math.Exp(-fNum) / System.Math.Sqrt(fNum) * (1.25331414 + y * (-0.7832358e-1 +
-                                                                                        y * (0.2189568e-1 + y * (-0.1062446e-1 + y * (0.587872e-2 +
-                                                                                                                     y * (-0.251540e-2 + y * 0.53208e-3))))));
+            fRet = System.Math.Exp(-fNum) / System.Math.Sqrt(fNum) * (1.25331414 + (y * (-0.7832358e-1 +
+                                                                                         (y * (0.2189568e-1 + (y * (-0.1062446e-1 + (y * (0.587872e-2 +
+                                                                                                                                               (y * (-0.251540e-2 + (y * 0.53208e-3))))))))))));
         }
 
         return new FinanceCalcResult<double>(fRet);
@@ -64,18 +64,18 @@ public class BesselKImpl : BesselBase
                 return iResult;
             }
 
-            fRet = System.Math.Log(fNum2) * iResult.Result +
-                   (1.0 + y * (0.15443144 + y * (-0.67278579 + y * (-0.18156897 + y * (-0.1919402e-1 +
-                                                                                       y * (-0.110404e-2 + y * -0.4686e-4))))))
-                   / fNum;
+            fRet = (System.Math.Log(fNum2) * iResult.Result) +
+                   ((1.0 + (y * (0.15443144 + (y * (-0.67278579 + (y * (-0.18156897 + (y * (-0.1919402e-1 +
+                                                                                            (y * (-0.110404e-2 + (y * -0.4686e-4))))))))))))
+                    / fNum);
         }
         else
         {
             double y = 2.0 / fNum;
 
-            fRet = System.Math.Exp(-fNum) / System.Math.Sqrt(fNum) * (1.25331414 + y * (0.23498619 +
-                                                                                        y * (-0.3655620e-1 + y * (0.1504268e-1 + y * (-0.780353e-2 +
-                                                                                                                     y * (0.325614e-2 + y * -0.68245e-3))))));
+            fRet = System.Math.Exp(-fNum) / System.Math.Sqrt(fNum) * (1.25331414 + (y * (0.23498619 +
+                                                                                         (y * (-0.3655620e-1 + (y * (0.1504268e-1 + (y * (-0.780353e-2 +
+                                                                                                                                               (y * (0.325614e-2 + (y * -0.68245e-3))))))))))));
         }
 
         return new FinanceCalcResult<double>(fRet);
@@ -107,7 +107,7 @@ public class BesselKImpl : BesselBase
 
                 for (int n = 1; n < nOrder; n++)
                 {
-                    double fBkp = fBkm + n * fTox * fBk;
+                    double fBkp = fBkm + (n * fTox * fBk);
                     fBkm = fBk;
                     fBk = fBkp;
                 }

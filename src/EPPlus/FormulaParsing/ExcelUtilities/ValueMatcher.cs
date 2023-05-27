@@ -54,7 +54,7 @@ public class ValueMatcher
         }
         else if (candidate is DateTime && searchedValue is DateTime)
         {
-            return ((DateTime)candidate).CompareTo(((DateTime)searchedValue));
+            return ((DateTime)candidate).CompareTo((DateTime)searchedValue);
         }
         else if (candidate is DateTime)
         {
@@ -71,7 +71,7 @@ public class ValueMatcher
     {
         if (v is IRangeInfo)
         {
-            IRangeInfo? r = ((IRangeInfo)v);
+            IRangeInfo? r = (IRangeInfo)v;
             if (r.GetNCells() > 1)
             {
                 v = ExcelErrorValue.Create(eErrorType.NA);
@@ -80,7 +80,7 @@ public class ValueMatcher
         }
         else if (v is INameInfo)
         {
-            INameInfo? n = ((INameInfo)v);
+            INameInfo? n = (INameInfo)v;
             v = CheckGetRange(n);
         }
         return v;

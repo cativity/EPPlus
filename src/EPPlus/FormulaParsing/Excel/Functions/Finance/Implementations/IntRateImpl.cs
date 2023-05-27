@@ -31,7 +31,7 @@ internal class IntRateImpl
             nDays++;
         }
 
-        double result = ((redemption - investment) / investment) * fd.DaysPerYear / nDays;
+        double result = (redemption - investment) / investment * fd.DaysPerYear / nDays;
         return new FinanceCalcResult<double>(result);
     }
 }

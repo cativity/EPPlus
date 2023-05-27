@@ -66,8 +66,8 @@ internal class Yieldmat : ExcelFunction
         double yf2 = yearFracProvider.GetYearFrac(issueDate, settlementDate, (DayCountBasis)basis);
         double yf3 = yearFracProvider.GetYearFrac(settlementDate, maturityDate, (DayCountBasis)basis);
 
-        double result = 1d + yf1 * rate;
-        result /= price / 100d + yf2 * rate;
+        double result = 1d + (yf1 * rate);
+        result /= (price / 100d) + (yf2 * rate);
         result = --result / yf3;
         return this.CreateResult(result, DataType.Decimal);
     }

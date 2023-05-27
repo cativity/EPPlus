@@ -30,7 +30,7 @@ internal class Ifs : ExcelFunction
     {
         ValidateArguments(arguments, 2);
         CompileResultFactory? crf = new CompileResultFactory();
-        int maxArgs = arguments.Count() < (127 * 2) ? arguments.Count() : 127 * 2; 
+        int maxArgs = arguments.Count() < 127 * 2 ? arguments.Count() : 127 * 2; 
         for(int x = 0; x < maxArgs; x += 2)
         {
             if (System.Math.Round(this.ArgToDecimal(arguments, x), 15) != 0d)

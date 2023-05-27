@@ -112,7 +112,7 @@ public class ExcelChartTrendline : XmlHelper, IDrawingStyleBase
         {
             if (this.Type == eTrendLine.MovingAvgerage)
             {
-                throw (new ArgumentException("Can't set period for trendline type MovingAvgerage"));
+                throw new ArgumentException("Can't set period for trendline type MovingAvgerage");
             }
 
             this.DeleteAllNode(PERIODPATH);
@@ -133,7 +133,7 @@ public class ExcelChartTrendline : XmlHelper, IDrawingStyleBase
         {
             if (this.Type == eTrendLine.Polynomial)
             {
-                throw (new ArgumentException("Can't set period for trendline type Polynomial"));
+                throw new ArgumentException("Can't set period for trendline type Polynomial");
             }
 
             this.DeleteAllNode(ORDERPATH);

@@ -37,7 +37,7 @@ public class ExcelVbaModuleCollection : ExcelVBACollectionBase<ExcelVBAModule>
     {
         if (this[Name] != null)
         {
-            throw(new ArgumentException("Vba modulename already exist."));
+            throw new ArgumentException("Vba modulename already exist.");
         }
         ExcelVBAModule? m = new ExcelVBAModule();
         m.Name = Name;

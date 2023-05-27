@@ -860,8 +860,8 @@ internal class ZipOutputStream : Stream
     {
         get
         {
-            return (this._alternateEncoding == System.Text.Encoding.UTF8) &&
-                   (this.AlternateEncodingUsage == ZipOption.AsNecessary);
+            return this._alternateEncoding == System.Text.Encoding.UTF8 &&
+                   this.AlternateEncodingUsage == ZipOption.AsNecessary;
         }
         set
         {
@@ -1100,7 +1100,7 @@ internal class ZipOutputStream : Stream
     {
         set
         {
-            if ((value != 0) && (value != -1) && (value < 64 * 1024))
+            if (value != 0 && value != -1 && value < 64 * 1024)
             {
                 throw new ArgumentOutOfRangeException("value must be greater than 64k, or 0, or -1");
             }
@@ -1417,8 +1417,8 @@ internal class ZipOutputStream : Stream
             this._currentEntry.MarkAsDirectory();
         }
 
-        this._currentEntry.EmitTimesInWindowsFormatWhenSaving = ((this._timestamp & ZipEntryTimestamp.Windows) != 0);
-        this._currentEntry.EmitTimesInUnixFormatWhenSaving = ((this._timestamp & ZipEntryTimestamp.Unix) != 0);
+        this._currentEntry.EmitTimesInWindowsFormatWhenSaving = (this._timestamp & ZipEntryTimestamp.Windows) != 0;
+        this._currentEntry.EmitTimesInUnixFormatWhenSaving = (this._timestamp & ZipEntryTimestamp.Unix) != 0;
         this.InsureUniqueEntry(this._currentEntry);
         this._needToWriteEntryHeader = true;
 
@@ -1702,9 +1702,9 @@ internal class ZipContainer
 
     public ZipContainer(Object o)
     {
-        this._zf = (o as ZipFile);
-        this._zos = (o as ZipOutputStream);
-        this._zis = (o as ZipInputStream);
+        this._zf = o as ZipFile;
+        this._zos = o as ZipOutputStream;
+        this._zis = o as ZipInputStream;
     }
 
     public ZipFile ZipFile

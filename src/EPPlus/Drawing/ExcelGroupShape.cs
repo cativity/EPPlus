@@ -66,7 +66,7 @@ public class ExcelDrawingsGroup : IEnumerable<ExcelDrawing>, IDisposable
     {
         if (this._topNode == null)
         {
-            throw (new ObjectDisposedException("This group drawing has been disposed."));
+            throw new ObjectDisposedException("This group drawing has been disposed.");
         }
     }
 
@@ -206,7 +206,7 @@ public class ExcelDrawingsGroup : IEnumerable<ExcelDrawing>, IDisposable
     {
         get
         {
-            return (this._groupDrawings[PositionID]);
+            return this._groupDrawings[PositionID];
         }
     }
     /// <summary>

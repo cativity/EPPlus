@@ -44,7 +44,7 @@ internal class Db : ExcelFunction
             return this.CreateResult(eErrorType.Num);
         }
 
-        if (period > life && month == 12 || period > (life + 1))
+        if ((period > life && month == 12) || period > life + 1)
         {
             return this.CreateResult(eErrorType.Num);
         }
@@ -52,7 +52,7 @@ internal class Db : ExcelFunction
         // calculations below as described at https://support.microsoft.com/en-us/office/db-function-354e7d28-5f93-4ff1-8a52-eb4ee549d9d7?ui=en-us&rs=en-us&ad=us
 
         // rate should be rounded to three decimals
-        double rate = (1 - System.Math.Pow(salvage / cost, 1 / life));
+        double rate = 1 - System.Math.Pow(salvage / cost, 1 / life);
         rate = System.Math.Round(rate, 3);
 
         // calculate first period
@@ -66,7 +66,7 @@ internal class Db : ExcelFunction
         // remaining periods
         double total = firstDepr;
         double currentPeriodDepr = 0d;
-        double toPeriod = (period == life) ? life - 1 : period;
+        double toPeriod = period == life ? life - 1 : period;
         for (int i = 2; i <= toPeriod; i++)
         {
             currentPeriodDepr = (cost - total) * rate;

@@ -69,7 +69,7 @@ public class ExcelVbaSignature
         }
         set 
         {
-            if(this._certificate == null && value!=null && (this.LegacySignature.CreateSignatureOnSave==false && this.AgileSignature.CreateSignatureOnSave == false && this.V3Signature.CreateSignatureOnSave == false))
+            if(this._certificate == null && value!=null && this.LegacySignature.CreateSignatureOnSave==false && this.AgileSignature.CreateSignatureOnSave == false && this.V3Signature.CreateSignatureOnSave == false)
             {
                 //If we set a new certificate, make sure all signatures are written by default.
                 this.LegacySignature.CreateSignatureOnSave = true;

@@ -65,7 +65,7 @@ internal class PageIndex : IndexBase, IDisposable
     {
         get
         {
-            return (this.Index << CellStoreSettings._pageBits);
+            return this.Index << CellStoreSettings._pageBits;
         }
     }
     internal IndexItem[] Rows { get; set; }

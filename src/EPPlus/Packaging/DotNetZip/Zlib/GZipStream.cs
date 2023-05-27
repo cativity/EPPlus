@@ -563,7 +563,7 @@ public class GZipStream : Stream
     /// </summary>
     virtual public FlushType FlushMode
     {
-        get { return (this._baseStream._flushMode); }
+        get { return this._baseStream._flushMode; }
         set {
             if (this._disposed)
             {
@@ -670,7 +670,7 @@ public class GZipStream : Stream
         {
             if (!this._disposed)
             {
-                if (disposing && (this._baseStream != null))
+                if (disposing && this._baseStream != null)
                 {
                     this._baseStream.Close();
                     this._Crc32 = this._baseStream.Crc32;
@@ -920,11 +920,11 @@ public class GZipStream : Stream
 
     private int EmitHeader()
     {
-        byte[] commentBytes = (this.Comment == null) ? null : iso8859dash1.GetBytes(this.Comment);
-        byte[] filenameBytes = (this.FileName == null) ? null : iso8859dash1.GetBytes(this.FileName);
+        byte[] commentBytes = this.Comment == null ? null : iso8859dash1.GetBytes(this.Comment);
+        byte[] filenameBytes = this.FileName == null ? null : iso8859dash1.GetBytes(this.FileName);
 
-        int cbLength = (this.Comment == null) ? 0 : commentBytes.Length + 1;
-        int fnLength = (this.FileName == null) ? 0 : filenameBytes.Length + 1;
+        int cbLength = this.Comment == null ? 0 : commentBytes.Length + 1;
+        int fnLength = this.FileName == null ? 0 : filenameBytes.Length + 1;
 
         int bufferLength = 10 + cbLength + fnLength;
         byte[] header = new byte[bufferLength];

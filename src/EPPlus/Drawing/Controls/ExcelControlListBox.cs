@@ -93,6 +93,6 @@ public class ExcelControlListBox : ExcelControlList
     internal override void UpdateXml()
     {
         base.UpdateXml();
-        ((ExcelControlList)this).Page = (int)Math.Round((this._height / 14));
+        ((ExcelControlList)this).Page = (int)Math.Round(this._height / 14);
     }
 }

@@ -51,7 +51,7 @@ public class ExcelThemeFontCollection : XmlHelper, IEnumerable<ExcelDrawingFontB
     {
         get
         {
-            return (this._lst[index]);
+            return this._lst[index];
         }
     }
     /// <summary>
@@ -130,7 +130,7 @@ public class ExcelThemeFontCollection : XmlHelper, IEnumerable<ExcelDrawingFontB
 
     private void SetSpecialFont(string typeface, eFontType fontType)
     {
-        ExcelDrawingFontBase? f = this._lst.Where((x => x is ExcelDrawingFontSpecial sf && sf.Type == fontType)).FirstOrDefault() ?? this.AddSpecialFont(fontType, typeface);
+        ExcelDrawingFontBase? f = this._lst.Where(x => x is ExcelDrawingFontSpecial sf && sf.Type == fontType).FirstOrDefault() ?? this.AddSpecialFont(fontType, typeface);
 
         f.Typeface = typeface;
     }
@@ -159,7 +159,7 @@ public class ExcelThemeFontCollection : XmlHelper, IEnumerable<ExcelDrawingFontB
                 typeName = "sym";
                 break;
             default:
-                throw (new ArgumentException("Please use the Add method to add normal fonts"));
+                throw new ArgumentException("Please use the Add method to add normal fonts");
         }
         XmlNode e = this.TopNode.OwnerDocument.CreateElement("a", typeName, ExcelPackage.schemaDrawings);
         this.TopNode.AppendChild(e);

@@ -461,7 +461,7 @@ public abstract class ExcelControl : ExcelDrawing
                 this._ctrlProp.SetXmlNodeBool("@noThreeD", value == false);
             }
 
-            string? xmlAttr = (this.ControlType == eControlType.DropDown || this.ControlType == eControlType.ListBox) ? "x:NoThreeD2" : "x:NoThreeD";
+            string? xmlAttr = this.ControlType == eControlType.DropDown || this.ControlType == eControlType.ListBox ? "x:NoThreeD2" : "x:NoThreeD";
             if (value)
             {
                 this._vmlProp.CreateNode(xmlAttr);

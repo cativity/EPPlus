@@ -94,15 +94,15 @@ public class ExcelDrawingRgbColor : XmlHelper
         }
         else if (cMax == r)
         {
-            hue = 60 * (((g - b) / delta) % 6);
+            hue = 60 * ((g - b) / delta % 6);
         }
         else if (cMax == g)
         {
-            hue = 60 * ((b - r) / delta + 2);
+            hue = 60 * (((b - r) / delta) + 2);
         }
         else
         {
-            hue = 60 * ((r - g) / delta + 4);
+            hue = 60 * (((r - g) / delta) + 4);
         }
            
         if (hue < 0)
@@ -111,6 +111,6 @@ public class ExcelDrawingRgbColor : XmlHelper
         }
 
         luminance = (cMax + cMin) / 2;
-        saturation = delta == 0 ? 0 : delta / (1 - Math.Abs(2 * luminance - 1));
+        saturation = delta == 0 ? 0 : delta / (1 - Math.Abs((2 * luminance) - 1));
     }
 }

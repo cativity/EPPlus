@@ -62,7 +62,7 @@ public class ExcelThemeManager
     {
         if (this.CurrentTheme != null)
         {
-            throw (new InvalidOperationException("Can't create theme. Theme already exists"));
+            throw new InvalidOperationException("Can't create theme. Theme already exists");
         }
 
         if(string.IsNullOrEmpty(_defaultTheme))
@@ -103,7 +103,7 @@ public class ExcelThemeManager
     {
         if(!thmxFile.Exists)
         {
-            throw (new FileNotFoundException($"{thmxFile.FullName} does not exist"));
+            throw new FileNotFoundException($"{thmxFile.FullName} does not exist");
         }
 
         using MemoryStream? ms = RecyclableMemory.GetStream(File.ReadAllBytes(thmxFile.FullName));

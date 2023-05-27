@@ -129,7 +129,7 @@ public class ExcelTableColumn : ExcelTableDxfBase
         {
             if (value == RowFunctions.Custom)
             {
-                throw(new Exception("Use the TotalsRowFormula-property to set a custom table formula"));
+                throw new Exception("Use the TotalsRowFormula-property to set a custom table formula");
             }
             string s = value.ToString();
             s = s.Substring(0, 1).ToLower(CultureInfo.InvariantCulture) + s.Substring(1, s.Length - 1);
@@ -180,7 +180,7 @@ public class ExcelTableColumn : ExcelTableDxfBase
         {
             if(this._tbl.WorkSheet.Workbook.Styles.NamedStyles.FindIndexById(value)<0)
             {
-                throw(new Exception(string.Format("Named style {0} does not exist.",value)));
+                throw new Exception(string.Format("Named style {0} does not exist.",value));
             }
 
             this.SetXmlNodeString(this.TopNode, DATACELLSTYLE_PATH, value,true);

@@ -46,7 +46,7 @@ internal class BitLshift : ExcelFunction
             return this.CreateResult(eErrorType.Num);
         }
 
-        if (number > (System.Math.Pow(2, 48) - 1))
+        if (number > System.Math.Pow(2, 48) - 1)
         {
             return this.CreateResult(eErrorType.Num);
         }

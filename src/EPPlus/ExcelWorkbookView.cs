@@ -196,7 +196,7 @@ public class ExcelWorkbookView : XmlHelper
         {
             if(value < 0 || value >= this._wb.Worksheets.Count)
             {
-                throw (new InvalidOperationException("Value out of range"));
+                throw new InvalidOperationException("Value out of range");
             }
 
             this.SetXmlNodeString(ACTIVETAB_PATH, value.ToString(CultureInfo.InvariantCulture));

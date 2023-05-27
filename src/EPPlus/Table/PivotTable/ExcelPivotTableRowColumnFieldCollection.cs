@@ -42,21 +42,21 @@ public class ExcelPivotTableRowColumnFieldCollection : ExcelPivotTableFieldColle
     {
         if(Field==null)
         {
-            throw (new ArgumentNullException("Field","Pivot Table Field can't be null"));
+            throw new ArgumentNullException("Field","Pivot Table Field can't be null");
         }
-        if((this._topNode=="colFields" && Field.DragToCol==false))
+        if(this._topNode=="colFields" && Field.DragToCol==false)
         {
-            throw (new ArgumentException("Field", "This field is not allowed as a column field."));
-        }
-
-        if ((this._topNode == "rowFields" && Field.DragToRow == false))
-        {
-            throw (new ArgumentException("Field", "This field is not allowed as a row field."));
+            throw new ArgumentException("Field", "This field is not allowed as a column field.");
         }
 
-        if ((this._topNode == "pageFields" && Field.DragToPage == false))
+        if (this._topNode == "rowFields" && Field.DragToRow == false)
         {
-            throw (new ArgumentException("Field", "This field is not allowed as a Page field."));
+            throw new ArgumentException("Field", "This field is not allowed as a row field.");
+        }
+
+        if (this._topNode == "pageFields" && Field.DragToPage == false)
+        {
+            throw new ArgumentException("Field", "This field is not allowed as a Page field.");
         }
 
         this.SetFlag(Field, true);
@@ -82,7 +82,7 @@ public class ExcelPivotTableRowColumnFieldCollection : ExcelPivotTableFieldColle
             case "rowFields":
                 if (field.IsColumnField || field.IsPageField)
                 {
-                    throw(new Exception("This field is a column or page field. Can't add it to the RowFields collection"));
+                    throw new Exception("This field is a column or page field. Can't add it to the RowFields collection");
                 }
                 field.IsRowField = value;
                 field.Axis = ePivotFieldAxis.Row;
@@ -90,7 +90,7 @@ public class ExcelPivotTableRowColumnFieldCollection : ExcelPivotTableFieldColle
             case "colFields":
                 if (field.IsRowField || field.IsPageField)
                 {
-                    throw (new Exception("This field is a row or page field. Can't add it to the ColumnFields collection"));
+                    throw new Exception("This field is a row or page field. Can't add it to the ColumnFields collection");
                 }
                 field.IsColumnField = value;
                 field.Axis = ePivotFieldAxis.Column;
@@ -98,11 +98,11 @@ public class ExcelPivotTableRowColumnFieldCollection : ExcelPivotTableFieldColle
             case "pageFields":
                 if (field.IsColumnField || field.IsRowField)
                 {
-                    throw (new Exception("Field is a column or row field. Can't add it to the PageFields collection"));
+                    throw new Exception("Field is a column or row field. Can't add it to the PageFields collection");
                 }
                 if (this._table.Address._fromRow < 3)
                 {
-                    throw(new Exception(string.Format("A pivot table with page fields must be located above row 3. Currenct location is {0}", this._table.Address.Address)));
+                    throw new Exception(string.Format("A pivot table with page fields must be located above row 3. Currenct location is {0}", this._table.Address.Address));
                 }
                 field.IsPageField = value;
                 field.Axis = ePivotFieldAxis.Page;
@@ -134,7 +134,7 @@ public class ExcelPivotTableRowColumnFieldCollection : ExcelPivotTableFieldColle
     {
         if (Index > -1 && Index < this._list.Count)
         {
-            throw(new IndexOutOfRangeException());
+            throw new IndexOutOfRangeException();
         }
 
         this.SetFlag(this._list[Index], false);

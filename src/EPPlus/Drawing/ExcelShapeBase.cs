@@ -93,7 +93,7 @@ public class ExcelShapeBase : ExcelDrawing
             }
             catch
             {
-                throw (new Exception(string.Format("Invalid shapetype {0}", v)));
+                throw new Exception(string.Format("Invalid shapetype {0}", v));
             }
         }
         set
@@ -344,7 +344,7 @@ public class ExcelShapeBase : ExcelDrawing
         {
             if (value < 0 || value > 8)
             {
-                throw (new ArgumentOutOfRangeException("Indent level must be between 0 and 8"));
+                throw new ArgumentOutOfRangeException("Indent level must be between 0 and 8");
             }
 
             this.SetXmlNodeString(this._indentAlignPath, value.ToString());

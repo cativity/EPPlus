@@ -179,7 +179,7 @@ public abstract class ExcelPivotTableFieldCollectionBase<T> : IEnumerable<T>
         {
             if (Index < 0 || Index >= this._list.Count)
             {
-                throw (new ArgumentOutOfRangeException("Index out of range"));
+                throw new ArgumentOutOfRangeException("Index out of range");
             }
             return this._list[Index];
         }

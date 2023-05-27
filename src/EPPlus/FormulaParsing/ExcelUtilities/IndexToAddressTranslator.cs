@@ -49,7 +49,7 @@ internal class IndexToAddressTranslator
         string sCol = "";
         do
         {
-            sCol = ((char)('A' + ((iColumnNumber - 1) % 26))) + sCol;
+            sCol = (char)('A' + ((iColumnNumber - 1) % 26)) + sCol;
             iColumnNumber = (iColumnNumber - ((iColumnNumber - 1) % 26)) / 26;
         }
         while (iColumnNumber > 0);
@@ -65,7 +65,7 @@ internal class IndexToAddressTranslator
 
     private string GetRowNumber(int rowNo)
     {
-        string? retVal = rowNo < (this._excelDataProvider.ExcelMaxRows) ? rowNo.ToString() : string.Empty;
+        string? retVal = rowNo < this._excelDataProvider.ExcelMaxRows ? rowNo.ToString() : string.Empty;
         if (!string.IsNullOrEmpty(retVal))
         {
             switch (this._excelReferenceType)

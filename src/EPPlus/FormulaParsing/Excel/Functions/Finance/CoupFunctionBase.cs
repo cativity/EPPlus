@@ -34,7 +34,7 @@ internal abstract class CoupFunctionBase<T> : ExcelFunction
             basis = this.ArgToInt(arguments, 3);
         }
         // validate input
-        if((settlementDate > maturityDate) || (frequency != 1 && frequency != 2 && frequency != 4) || (basis < 0 || basis > 4))
+        if(settlementDate > maturityDate || (frequency != 1 && frequency != 2 && frequency != 4) || basis < 0 || basis > 4)
         {
             return this.CreateResult(eErrorType.Num);
         }

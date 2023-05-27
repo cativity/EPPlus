@@ -74,7 +74,7 @@ public class ExcelPivotCacheDefinition
         this._nsm = nsm;
         if(cache._wb != this._wb)
         {
-            throw (new InvalidOperationException("The pivot table and the cache must be in the same workbook."));
+            throw new InvalidOperationException("The pivot table and the cache must be in the same workbook.");
         }
 
         this._cacheReference = cache;
@@ -146,13 +146,13 @@ public class ExcelPivotCacheDefinition
         {
             if (this.PivotTable.WorkSheet.Workbook != value.Worksheet.Workbook)
             {
-                throw (new ArgumentException("Range must be in the same package as the pivottable"));
+                throw new ArgumentException("Range must be in the same package as the pivottable");
             }
 
             ExcelRangeBase? sr = this.SourceRange;
             if (value.End.Column - value.Start.Column != sr.End.Column - sr.Start.Column)
             {
-                throw (new ArgumentException("Cannot change the number of columns(fields) in the SourceRange"));
+                throw new ArgumentException("Cannot change the number of columns(fields) in the SourceRange");
             }
 
             if (value.FullAddress == this.SourceRange.FullAddress)

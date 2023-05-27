@@ -47,7 +47,7 @@ internal class CovarianceS : ExcelFunction
         {
             result += (array1[x] - avg1) * (array2[x] - avg2);
         }
-        result /= (array1.Length - 1);
+        result /= array1.Length - 1;
         return this.CreateResult(result, DataType.Decimal);
     }
 }

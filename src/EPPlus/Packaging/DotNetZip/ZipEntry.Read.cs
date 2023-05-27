@@ -45,8 +45,8 @@ internal partial class ZipEntry
         byte[] block = new byte[30];
         this.ArchiveStream.Read(block, 0, block.Length);
         int i = 26;
-        Int16 filenameLength = (short)(block[i++] + block[i++] * 256);
-        Int16 extraFieldLength = (short)(block[i++] + block[i++] * 256);
+        Int16 filenameLength = (short)(block[i++] + (block[i++] * 256));
+        Int16 extraFieldLength = (short)(block[i++] + (block[i++] * 256));
 
         // workitem 8098: ok (relative)
         this.ArchiveStream.Seek(filenameLength, SeekOrigin.Current);
@@ -87,7 +87,7 @@ internal partial class ZipEntry
             ze.ArchiveStream.Seek(-4, SeekOrigin.Current); // unread the signature
             // workitem 10178
             SharedUtilities.Workaround_Ladybug318918(ze.ArchiveStream);
-            if (IsNotValidZipDirEntrySig(signature) && (signature != ZipConstants.EndOfCentralDirectorySignature))
+            if (IsNotValidZipDirEntrySig(signature) && signature != ZipConstants.EndOfCentralDirectorySignature)
             {
                 throw new BadReadException(String.Format("  Bad signature (0x{0:X8}) at position  0x{1:X8}", signature, ze.ArchiveStream.Position));
             }
@@ -104,10 +104,10 @@ internal partial class ZipEntry
         bytesRead += n;
 
         int i = 0;
-        ze._VersionNeeded = (Int16)(block[i++] + block[i++] * 256);
-        ze._BitField = (Int16)(block[i++] + block[i++] * 256);
-        ze._CompressionMethod_FromZipFile = ze._CompressionMethod = (Int16)(block[i++] + block[i++] * 256);
-        ze._TimeBlob = block[i++] + block[i++] * 256 + block[i++] * 256 * 256 + block[i++] * 256 * 256 * 256;
+        ze._VersionNeeded = (Int16)(block[i++] + (block[i++] * 256));
+        ze._BitField = (Int16)(block[i++] + (block[i++] * 256));
+        ze._CompressionMethod_FromZipFile = ze._CompressionMethod = (Int16)(block[i++] + (block[i++] * 256));
+        ze._TimeBlob = block[i++] + (block[i++] * 256) + (block[i++] * 256 * 256) + (block[i++] * 256 * 256 * 256);
         // transform the time data into something usable (a DateTime)
         ze._LastModified = SharedUtilities.PackedToDateTime(ze._TimeBlob);
         ze._timestamp |= ZipEntryTimestamp.DOS;
@@ -123,9 +123,9 @@ internal partial class ZipEntry
         // But, regardless of the status of bit 3 in the bitfield, the slots for
         // the three amigos may contain marker values for ZIP64.  So we must read them.
         {
-            ze._Crc32 = (Int32)(block[i++] + block[i++] * 256 + block[i++] * 256 * 256 + block[i++] * 256 * 256 * 256);
-            ze._CompressedSize = (uint)(block[i++] + block[i++] * 256 + block[i++] * 256 * 256 + block[i++] * 256 * 256 * 256);
-            ze._UncompressedSize = (uint)(block[i++] + block[i++] * 256 + block[i++] * 256 * 256 + block[i++] * 256 * 256 * 256);
+            ze._Crc32 = (Int32)(block[i++] + (block[i++] * 256) + (block[i++] * 256 * 256) + (block[i++] * 256 * 256 * 256));
+            ze._CompressedSize = (uint)(block[i++] + (block[i++] * 256) + (block[i++] * 256 * 256) + (block[i++] * 256 * 256 * 256));
+            ze._UncompressedSize = (uint)(block[i++] + (block[i++] * 256) + (block[i++] * 256 * 256) + (block[i++] * 256 * 256 * 256));
 
             if ((uint)ze._CompressedSize == 0xFFFFFFFF ||
                 (uint)ze._UncompressedSize == 0xFFFFFFFF ||
@@ -136,8 +136,8 @@ internal partial class ZipEntry
             }
         }
 
-        Int16 filenameLength = (short)(block[i++] + block[i++] * 256);
-        Int16 extraFieldLength = (short)(block[i++] + block[i++] * 256);
+        Int16 filenameLength = (short)(block[i++] + (block[i++] * 256));
+        Int16 extraFieldLength = (short)(block[i++] + (block[i++] * 256));
 
         block = new byte[filenameLength];
         n = ze.ArchiveStream.Read(block, 0, block.Length);
@@ -229,7 +229,7 @@ internal partial class ZipEntry
                     //bytesRead += n;
 
                     i = 0;
-                    ze._Crc32 = (Int32)(block[i++] + block[i++] * 256 + block[i++] * 256 * 256 + block[i++] * 256 * 256 * 256);
+                    ze._Crc32 = (Int32)(block[i++] + (block[i++] * 256) + (block[i++] * 256 * 256) + (block[i++] * 256 * 256 * 256));
                     ze._CompressedSize = BitConverter.ToInt64(block, i);
                     i += 8;
                     ze._UncompressedSize = BitConverter.ToInt64(block, i);
@@ -252,15 +252,15 @@ internal partial class ZipEntry
                     //bytesRead += n;
 
                     i = 0;
-                    ze._Crc32 = (Int32)(block[i++] + block[i++] * 256 + block[i++] * 256 * 256 + block[i++] * 256 * 256 * 256);
-                    ze._CompressedSize = (uint)(block[i++] + block[i++] * 256 + block[i++] * 256 * 256 + block[i++] * 256 * 256 * 256);
-                    ze._UncompressedSize = (uint)(block[i++] + block[i++] * 256 + block[i++] * 256 * 256 + block[i++] * 256 * 256 * 256);
+                    ze._Crc32 = (Int32)(block[i++] + (block[i++] * 256) + (block[i++] * 256 * 256) + (block[i++] * 256 * 256 * 256));
+                    ze._CompressedSize = (uint)(block[i++] + (block[i++] * 256) + (block[i++] * 256 * 256) + (block[i++] * 256 * 256 * 256));
+                    ze._UncompressedSize = (uint)(block[i++] + (block[i++] * 256) + (block[i++] * 256 * 256) + (block[i++] * 256 * 256 * 256));
 
                     ze._LengthOfTrailer += 16;  // bytes including sig, CRC, Comp and Uncomp sizes
 
                 }
 
-                wantMore = (SizeOfDataRead != ze._CompressedSize);
+                wantMore = SizeOfDataRead != ze._CompressedSize;
 
                 if (wantMore)
                 {
@@ -359,7 +359,7 @@ internal partial class ZipEntry
 
     private static bool IsNotValidSig(int signature)
     {
-        return (signature != ZipConstants.ZipEntrySignature);
+        return signature != ZipConstants.ZipEntrySignature;
     }
 
 
@@ -501,14 +501,14 @@ internal partial class ZipEntry
         int j = offx;
         while (j + 3 < extra.Length)
         {
-            UInt16 headerId = (UInt16)(extra[j++] + extra[j++] * 256);
+            UInt16 headerId = (UInt16)(extra[j++] + (extra[j++] * 256));
             if (headerId == targetHeaderId)
             {
                 return j-2;
             }
 
             // else advance to next segment
-            Int16 dataSize = (short)(extra[j++] + extra[j++] * 256);
+            Int16 dataSize = (short)(extra[j++] + (extra[j++] * 256));
             j+= dataSize;
         }
 
@@ -535,8 +535,8 @@ internal partial class ZipEntry
             while (j + 3 < buffer.Length)
             {
                 int start = j;
-                UInt16 headerId = (UInt16)(buffer[j++] + buffer[j++] * 256);
-                Int16 dataSize = (short)(buffer[j++] + buffer[j++] * 256);
+                UInt16 headerId = (UInt16)(buffer[j++] + (buffer[j++] * 256));
+                Int16 dataSize = (short)(buffer[j++] + (buffer[j++] * 256));
 
                 switch (headerId)
                 {
@@ -602,7 +602,7 @@ internal partial class ZipEntry
         //                               the Strong Encryption Specification)
 
         j += 2;
-        this._UnsupportedAlgorithmId = (UInt16)(Buffer[j++] + Buffer[j++] * 256);
+        this._UnsupportedAlgorithmId = (UInt16)(Buffer[j++] + (Buffer[j++] * 256));
         this._Encryption_FromZipFile = this._Encryption = EncryptionAlgorithm.Unsupported;
 
         // DotNetZip doesn't support this algorithm, but we don't need to throw
@@ -767,11 +767,11 @@ internal partial class ZipEntry
                 this._Mtime = slurp();
             }
 
-            this._Atime = ((flag & 0x0002) != 0 && remainingData >= 4)
+            this._Atime = (flag & 0x0002) != 0 && remainingData >= 4
                               ? slurp()
                               : DateTime.UtcNow;
 
-            this._Ctime =  ((flag & 0x0004) != 0 && remainingData >= 4)
+            this._Ctime =  (flag & 0x0004) != 0 && remainingData >= 4
                                ? slurp()
                                :DateTime.UtcNow;
 
@@ -810,8 +810,8 @@ internal partial class ZipEntry
         }
 
         j += 4;  // reserved
-        Int16 timetag = (Int16)(buffer[j] + buffer[j + 1] * 256);
-        Int16 addlsize = (Int16)(buffer[j + 2] + buffer[j + 3] * 256);
+        Int16 timetag = (Int16)(buffer[j] + (buffer[j + 1] * 256));
+        Int16 addlsize = (Int16)(buffer[j + 2] + (buffer[j + 3] * 256));
         j += 4;  // tag and size
 
         if (timetag == 0x0001 && addlsize >= 24)

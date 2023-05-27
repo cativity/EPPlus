@@ -33,7 +33,7 @@ internal class Mid : ExcelFunction
         int length = this.ArgToInt(arguments, 2);
         if(startIx<=0)
         {
-            throw(new ArgumentException("Argument start can't be less than 1"));
+            throw new ArgumentException("Argument start can't be less than 1");
         }
         //Allow overflowing start and length
         if (startIx > text.Length)

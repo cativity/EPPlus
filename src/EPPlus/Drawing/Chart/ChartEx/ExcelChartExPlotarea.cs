@@ -41,6 +41,6 @@ public sealed class ExcelChartExPlotarea : ExcelChartPlotArea
     /// <exception cref="InvalidOperationException">Will always be thrown</exception>
     public override void RemoveDataTable()
     {
-        throw (new InvalidOperationException("Extensions charts cannot have a data tables"));
+        throw new InvalidOperationException("Extensions charts cannot have a data tables");
     }
 }

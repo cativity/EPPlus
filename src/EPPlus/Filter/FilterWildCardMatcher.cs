@@ -86,7 +86,7 @@ internal  static class FilterWildCardMatcher
             tokenPos++;
             if (tokenPos == tokens.Count)
             {
-                return (value.Length-stringPos)>anyChars;
+                return value.Length-stringPos>anyChars;
             }
         }
         stringPos += anyChars;

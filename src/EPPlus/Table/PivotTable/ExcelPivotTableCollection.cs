@@ -77,28 +77,28 @@ public class ExcelPivotTableCollection : IEnumerable<ExcelPivotTable>
     {
         if (Source.Rows < 2)
         {
-            throw (new ArgumentException("The Range must contain at least 2 rows", "Source"));
+            throw new ArgumentException("The Range must contain at least 2 rows", "Source");
         }
         if (Range.WorkSheetName != this._ws.Name)
         {
-            throw (new Exception("The Range must be in the current worksheet"));
+            throw new Exception("The Range must be in the current worksheet");
         }
         else if (this._ws.Workbook.ExistsTableName(Name))
         {
-            throw (new ArgumentException("Tablename is not unique"));
+            throw new ArgumentException("Tablename is not unique");
         }
         foreach (ExcelPivotTable? t in this._pivotTables)
         {
             if (t.Address.Collide(Range) != ExcelAddressBase.eAddressCollition.No)
             {
-                throw (new ArgumentException(string.Format("Table range collides with table {0}", t.Name)));
+                throw new ArgumentException(string.Format("Table range collides with table {0}", t.Name));
             }
         }
         for (int i = 0; i < Source.Columns; i++)
         {
             if (Source.Offset(0, i, 1, 1).Value == null)
             {
-                throw (new ArgumentException("First row of source range should contain the field headers and can't have blank cells.", "Source"));
+                throw new ArgumentException("First row of source range should contain the field headers and can't have blank cells.", "Source");
             }
         }
     }
@@ -166,7 +166,7 @@ public class ExcelPivotTableCollection : IEnumerable<ExcelPivotTable>
         {
             if (Index < 0 || Index >= this._pivotTables.Count)
             {
-                throw (new ArgumentOutOfRangeException("PivotTable index out of range"));
+                throw new ArgumentOutOfRangeException("PivotTable index out of range");
             }
             return this._pivotTables[Index];
         }

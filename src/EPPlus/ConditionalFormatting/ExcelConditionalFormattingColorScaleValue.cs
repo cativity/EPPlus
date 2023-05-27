@@ -432,9 +432,9 @@ public class ExcelConditionalFormattingColorScaleValue
             string valueToStore = string.Empty;
 
             // Only some types use the @val attribute
-            if ((this.Type == eExcelConditionalFormattingValueObjectType.Num)
-                || (this.Type == eExcelConditionalFormattingValueObjectType.Percent)
-                || (this.Type == eExcelConditionalFormattingValueObjectType.Percentile))
+            if (this.Type == eExcelConditionalFormattingValueObjectType.Num
+                || this.Type == eExcelConditionalFormattingValueObjectType.Percent
+                || this.Type == eExcelConditionalFormattingValueObjectType.Percentile)
             {
                 valueToStore = value.ToString(CultureInfo.InvariantCulture);
             }
@@ -478,7 +478,7 @@ public class ExcelConditionalFormattingColorScaleValue
                 this.CreateNodeByOrdem(
                                        eExcelConditionalFormattingValueObjectNodeType.Cfvo,
                                        ExcelConditionalFormattingConstants.Paths.ValAttribute,
-                                       (value == null) ? string.Empty : value.ToString());
+                                       value == null ? string.Empty : value.ToString());
             }
         }
     }

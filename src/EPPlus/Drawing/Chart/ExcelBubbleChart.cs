@@ -65,7 +65,7 @@ public sealed class ExcelBubbleChart : ExcelChartStandard, IDrawingDataLabel
         {
             if(value < 0 && value > 300)
             {
-                throw(new ArgumentOutOfRangeException("Bubblescale out of range. 0-300 allowed"));
+                throw new ArgumentOutOfRangeException("Bubblescale out of range. 0-300 allowed");
             }
 
             this._chartXmlHelper.SetXmlNodeString(this.BUBBLESCALE_PATH, value.ToString());

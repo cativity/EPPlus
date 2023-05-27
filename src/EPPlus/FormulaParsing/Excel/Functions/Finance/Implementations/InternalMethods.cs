@@ -48,7 +48,7 @@ internal class InternalMethods
             //       WARSI Using the exponent operator for pow(..) in C code of PMT. Still got
             //       to make sure that they (pow and ^) are same for all conditions
             double dTemp2 = System.Math.Pow(dTemp3, NPer);
-            double result = ((-FV - PV * dTemp2) / (dTemp * (dTemp2 - 1.0)) * Rate);
+            double result = (-FV - (PV * dTemp2)) / (dTemp * (dTemp2 - 1.0)) * Rate;
             return new FinanceCalcResult<double>(result);
         }
     }
@@ -60,7 +60,7 @@ internal class InternalMethods
         //Performing calculation
         if (Rate == 0)
         {
-            return (-PV - Pmt * NPer);
+            return -PV - (Pmt * NPer);
         }
 
         if (Due != PmtDue.EndOfPeriod)
@@ -76,6 +76,6 @@ internal class InternalMethods
         double dTemp2 = System.Math.Pow(dTemp3, NPer);
 
         //Do divides before multiplies to avoid OverflowExceptions
-        return ((-PV) * dTemp2) - ((Pmt / Rate) * dTemp * (dTemp2 - 1.0));
+        return (-PV * dTemp2) - (Pmt / Rate * dTemp * (dTemp2 - 1.0));
     }
 }

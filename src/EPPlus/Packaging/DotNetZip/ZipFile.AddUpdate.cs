@@ -2152,7 +2152,7 @@ internal partial class ZipFile
         if (this.Verbose)
         {
             this.StatusMessageTextWriter.WriteLine("{0} {1}...",
-                                                   (action == AddOrUpdateAction.AddOnly) ? "adding" : "Adding or updating",
+                                                   action == AddOrUpdateAction.AddOnly ? "adding" : "Adding or updating",
                                                    directoryName);
         }
 
@@ -2244,7 +2244,7 @@ internal partial class ZipFile
 #endif
                         if (this.AddDirectoryWillTraverseReparsePoints
 #if !SILVERLIGHT
-                            || ((fileAttrs & FileAttributes.ReparsePoint) == 0)
+                            || (fileAttrs & FileAttributes.ReparsePoint) == 0
 #endif
                            )
                         {

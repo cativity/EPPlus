@@ -63,7 +63,7 @@ internal class ConfidenceNorm : ExcelFunction
 
     private static double NormalInv(double p, double mean, double std)
     {
-        double n = -1.41421356237309505 * std * ErfHelper.Erfcinv(2 * p) + mean;
+        double n = (-1.41421356237309505 * std * ErfHelper.Erfcinv(2 * p)) + mean;
         return n;
     }
 

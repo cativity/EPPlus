@@ -44,7 +44,7 @@ internal static class EnumTransl
             case eLineStyle.SystemDot:
                 return "sys" + text.Substring(6, text.Length - 6);
             default:
-                throw (new Exception("Invalid Linestyle"));
+                throw new Exception("Invalid Linestyle");
         }
     }
     internal static eLineStyle ToLineStyle(string text)
@@ -66,7 +66,7 @@ internal static class EnumTransl
             case "sysDot":
                 return (eLineStyle)Enum.Parse(typeof(eLineStyle), "System" + text.Substring(3, text.Length - 3));
             default:
-                throw (new Exception("Invalid Linestyle"));
+                throw new Exception("Invalid Linestyle");
         }
     }
     internal static string FromLineCap(eLineCap value)

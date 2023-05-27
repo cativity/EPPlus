@@ -48,7 +48,7 @@ public class BesselYImpl : BesselBase
         do
         {
             double km1mod2 = (k - 1.0) % 2.0;
-            double m_bar = (2.0 * km1mod2) * f_bar;
+            double m_bar = 2.0 * km1mod2 * f_bar;
             if (km1mod2 == 0.0)
             {
                 alpha = 0.0;
@@ -58,13 +58,13 @@ public class BesselYImpl : BesselBase
                 alpha = sign_alpha * (4.0 / k);
                 sign_alpha = -sign_alpha;
             }
-            g_bar_delta_u = f_bar * alpha - g * delta_u - m_bar * u;
-            g_bar = m_bar - (2.0 * k) / fX + g;
+            g_bar_delta_u = (f_bar * alpha) - (g * delta_u) - (m_bar * u);
+            g_bar = m_bar - (2.0 * k / fX) + g;
             delta_u = g_bar_delta_u / g_bar;
             u += delta_u;
             g = -1.0 / g_bar;
             f_bar *= g;
-            bHasFound = (System.Math.Abs(delta_u) <= System.Math.Abs(u) * epsilon);
+            bHasFound = System.Math.Abs(delta_u) <= System.Math.Abs(u) * epsilon;
             k += 1;
         }
         while (!bHasFound && k < fMaxIteration);
@@ -113,11 +113,11 @@ public class BesselYImpl : BesselBase
         do
         {
             double km1mod2 = (k - 1.0) % 2.0;
-            double m_bar = (2.0 * km1mod2) * f_bar;
+            double m_bar = 2.0 * km1mod2 * f_bar;
             double q = (k - 1.0) / 2.0;
             if (km1mod2 == 0.0) // k is odd
             {
-                alpha = sign_alpha * (1.0 / q + 1.0 / (q + 1.0));
+                alpha = sign_alpha * ((1.0 / q) + (1.0 / (q + 1.0)));
                 sign_alpha = -sign_alpha;
             }
             else
@@ -125,13 +125,13 @@ public class BesselYImpl : BesselBase
                 alpha = 0.0;
             }
 
-            g_bar_delta_u = f_bar * alpha - g * delta_u - m_bar * u;
-            g_bar = m_bar - (2.0 * k) / fX + g;
+            g_bar_delta_u = (f_bar * alpha) - (g * delta_u) - (m_bar * u);
+            g_bar = m_bar - (2.0 * k / fX) + g;
             delta_u = g_bar_delta_u / g_bar;
             u += delta_u;
             g = -1.0 / g_bar;
             f_bar *= g;
-            bHasFound = (System.Math.Abs(delta_u) <= System.Math.Abs(u) * epsilon);
+            bHasFound = System.Math.Abs(delta_u) <= System.Math.Abs(u) * epsilon;
             k += 1;
         }
         while (!bHasFound && k < fMaxIteration);
@@ -170,7 +170,7 @@ public class BesselYImpl : BesselBase
 
                 for (int n = 1; n < nOrder; n++)
                 {
-                    double fByp = n * fTox * fBy - fBym;
+                    double fByp = (n * fTox * fBy) - fBym;
                     fBym = fBy;
                     fBy = fByp;
                 }

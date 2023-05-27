@@ -713,7 +713,7 @@ sealed public class ZlibCodec
             return;
         }
 
-        if (this.dstate.pending.Length <= this.dstate.nextPending || this.OutputBuffer.Length <= this.NextOut || this.dstate.pending.Length < (this.dstate.nextPending + len) || this.OutputBuffer.Length < (this.NextOut + len))
+        if (this.dstate.pending.Length <= this.dstate.nextPending || this.OutputBuffer.Length <= this.NextOut || this.dstate.pending.Length < this.dstate.nextPending + len || this.OutputBuffer.Length < this.NextOut + len)
         {
             throw new ZlibException(String.Format("Invalid State. (pending.Length={0}, pendingCount={1})", this.dstate.pending.Length, this.dstate.pendingCount));
         }

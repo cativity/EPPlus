@@ -101,7 +101,7 @@ public abstract class Expression
         }
         else
         {
-            throw (new FormatException("Invalid formula syntax. Operator missing expression."));
+            throw new FormatException("Invalid formula syntax. Operator missing expression.");
         }
         if (this.Prev != null)
         {

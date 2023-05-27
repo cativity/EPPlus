@@ -50,7 +50,7 @@ public class DateTimeFunctionsTests
     private static double GetTime(int hour, int minute, int second)
     {
         double secInADay = DateTime.Today.AddDays(1).Subtract(DateTime.Today).TotalSeconds;
-        double secondsOfExample = (double)(hour * 60 * 60 + minute * 60 + second);
+        double secondsOfExample = (double)((hour * 60 * 60) + (minute * 60) + second);
         return secondsOfExample / secInADay;
     }
     [TestMethod]

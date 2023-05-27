@@ -151,7 +151,7 @@ public class ExcelFormulaAddress : ExcelAddressBase
     internal string GetOffset(int row, int column, bool withWbWs=false)
     {
         int fromRow = this._fromRow, fromCol = this._fromCol, toRow = this._toRow, tocol = this._toCol;
-        bool isMulti = (fromRow != toRow || fromCol != tocol);
+        bool isMulti = fromRow != toRow || fromCol != tocol;
         if (!this._fromRowFixed)
         {
             fromRow += row;

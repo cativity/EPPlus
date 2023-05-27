@@ -63,7 +63,7 @@ public class ExcelChartExDataPointCollection : XmlHelper, IEnumerable<ExcelChart
     {
         if (this._dic.ContainsKey(idx))
         {
-            throw (new ArgumentException($"Data point with index {idx} already exists"));
+            throw new ArgumentException($"Data point with index {idx} already exists");
         }
             
         ExcelChartExDataPoint? dp = new ExcelChartExDataPoint(this._serie, this.NameSpaceManager, this.TopNode, idx, this.SchemaNodeOrder);
@@ -91,7 +91,7 @@ public class ExcelChartExDataPointCollection : XmlHelper, IEnumerable<ExcelChart
     {
         get
         {
-            return (this._dic[index]);
+            return this._dic[index];
         }
     }
     /// <summary>

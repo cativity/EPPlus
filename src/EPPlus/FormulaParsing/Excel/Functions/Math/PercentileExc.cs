@@ -37,15 +37,15 @@ internal class PercentileExc : HiddenValuesHandlingFunction
         }
 
         int n = arr.Count;
-        if (k < 1d / (n + 1d) || k > 1 - 1d / (n + 1d))
+        if (k < 1d / (n + 1d) || k > 1 - (1d / (n + 1d)))
         {
             return this.CreateResult(eErrorType.Num);
         }
 
         arr.Sort();
-        double l = k * (n + 1d) - 1;
+        double l = (k * (n + 1d)) - 1;
         int fl = (int)System.Math.Floor(l);
-        double result = ((l - fl) < double.Epsilon) ? arr[fl] : arr[fl] + (l - fl) * (arr[fl + 1] - arr[fl]);
+        double result = l - fl < double.Epsilon ? arr[fl] : arr[fl] + ((l - fl) * (arr[fl + 1] - arr[fl]));
         return this.CreateResult(result, DataType.Decimal);
     }
 }

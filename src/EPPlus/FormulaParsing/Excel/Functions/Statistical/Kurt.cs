@@ -41,15 +41,15 @@ internal class Kurt : ExcelFunction
         {
             return this.CreateResult(eErrorType.Div0);
         }
-        double part1 = (n * (n + 1)) / ((n - 1) * (n - 2) * (n - 3));
+        double part1 = n * (n + 1) / ((n - 1) * (n - 2) * (n - 3));
         double avg = numbers.Select(x => x.Value).Average();
         double part2 = 0d;
         for(int x = 0; x < n; x++)
         {
-            part2 += System.Math.Pow((numbers.ElementAt(x) - avg), 4);
+            part2 += System.Math.Pow(numbers.ElementAt(x) - avg, 4);
         }
         part2 /= System.Math.Pow(stdev, 4);
-        double result = part1 * part2 - (3 * System.Math.Pow(n - 1, 2)) / ((n - 2) * (n - 3));
+        double result = (part1 * part2) - (3 * System.Math.Pow(n - 1, 2) / ((n - 2) * (n - 3)));
         return this.CreateResult(result, DataType.Decimal);
     }
 }

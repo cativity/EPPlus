@@ -27,17 +27,17 @@ public class BesselJImpl : BesselBase
 
         if (x == 0.0)
         {
-            return new FinanceCalcResult<double>((N == 0) ? 1.0 : 0.0);
+            return new FinanceCalcResult<double>(N == 0 ? 1.0 : 0.0);
         }
 
         /*  The algorithm works only for x>0, therefore remember sign. BesselJ
             with integer order N is an even function for even N (means J(-x)=J(x))
             and an odd function for odd N (means J(-x)=-J(x)).*/
-        double fSign = (N % 2 == 1 && x < 0) ? -1.0 : 1.0;
+        double fSign = N % 2 == 1 && x < 0 ? -1.0 : 1.0;
         double fX = System.Math.Abs(x);
 
         const double fMaxIteration = 9000000.0; //experimental, for to return in < 3 seconds
-        double fEstimateIteration = fX * 1.5 + N;
+        double fEstimateIteration = (fX * 1.5) + N;
         bool bAsymptoticPossible = System.Math.Pow(fX, 0.4) > N;
         if (fEstimateIteration > fMaxIteration)
         {
@@ -46,7 +46,7 @@ public class BesselJImpl : BesselBase
                 return new FinanceCalcResult<double>(eErrorType.Num);
             }
 
-            double res = fSign * System.Math.Sqrt(f_2_DIV_PI / fX) * System.Math.Cos(fX - N * f_PI_DIV_2 - f_PI_DIV_4);
+            double res = fSign * System.Math.Sqrt(f_2_DIV_PI / fX) * System.Math.Cos(fX - (N * f_PI_DIV_2) - f_PI_DIV_4);
             return new FinanceCalcResult<double>(res);
         }
 
@@ -87,8 +87,8 @@ public class BesselJImpl : BesselBase
             for (k = 1.0; k <= N - 1; k += 1.0)
             {
                 m_bar = 2.0 * ((k - 1.0) % 2.0) * f_bar;
-                g_bar_delta_u = -g * delta_u - m_bar * u; // alpha_k = 0.0
-                g_bar = m_bar - 2.0 * k / fX + g;
+                g_bar_delta_u = (-g * delta_u) - (m_bar * u); // alpha_k = 0.0
+                g_bar = m_bar - (2.0 * k / fX) + g;
                 delta_u = g_bar_delta_u / g_bar;
                 u += delta_u;
                 g = -1.0 / g_bar;
@@ -96,8 +96,8 @@ public class BesselJImpl : BesselBase
             }
             // Step alpha_N = 1.0
             m_bar = 2.0 * ((k - 1.0) % 2.0) * f_bar;
-            g_bar_delta_u = f_bar - g * delta_u - m_bar * u; // alpha_k = 1.0
-            g_bar = m_bar - 2.0 * k / fX + g;
+            g_bar_delta_u = f_bar - (g * delta_u) - (m_bar * u); // alpha_k = 1.0
+            g_bar = m_bar - (2.0 * k / fX) + g;
             delta_u = g_bar_delta_u / g_bar;
             u += delta_u;
             g = -1.0 / g_bar;
@@ -108,13 +108,13 @@ public class BesselJImpl : BesselBase
         do
         {
             m_bar = 2.0 * ((k - 1.0) % 2.0) * f_bar;
-            g_bar_delta_u = -g * delta_u - m_bar * u;
-            g_bar = m_bar - 2.0 * k / fX + g;
+            g_bar_delta_u = (-g * delta_u) - (m_bar * u);
+            g_bar = m_bar - (2.0 * k / fX) + g;
             delta_u = g_bar_delta_u / g_bar;
             u += delta_u;
             g = -1.0 / g_bar;
             f_bar *= g;
-            bHasfound = (System.Math.Abs(delta_u) <= System.Math.Abs(u) * epsilon);
+            bHasfound = System.Math.Abs(delta_u) <= System.Math.Abs(u) * epsilon;
             k += 1.0;
         }
         while (!bHasfound && k <= fMaxIteration);

@@ -168,7 +168,7 @@ public class ExcelChartSeries<T> : IEnumerable<T> where T : ExcelChartSerie
     {
         get
         {
-            return (T)(this._list[PositionID]);
+            return (T)this._list[PositionID];
         }
     }
     /// <summary>
@@ -211,7 +211,7 @@ public class ExcelChartSeries<T> : IEnumerable<T> where T : ExcelChartSerie
     {
         if (this._chart.PivotTableSource != null)
         {
-            throw (new InvalidOperationException("Can't add a serie to a pivotchart"));
+            throw new InvalidOperationException("Can't add a serie to a pivotchart");
         }
         return this.AddSeries(Serie.FullAddressAbsolute, null, "");
     }
@@ -224,7 +224,7 @@ public class ExcelChartSeries<T> : IEnumerable<T> where T : ExcelChartSerie
     {
         if (this._chart.PivotTableSource != null)
         {
-            throw (new InvalidOperationException("Can't add a serie to a pivotchart"));
+            throw new InvalidOperationException("Can't add a serie to a pivotchart");
         }
         return this.AddSeries(Serie, null, "");
     }
@@ -239,7 +239,7 @@ public class ExcelChartSeries<T> : IEnumerable<T> where T : ExcelChartSerie
     {
         if (this._chart.PivotTableSource != null)
         {
-            throw (new InvalidOperationException("Can't add a serie to a pivotchart"));
+            throw new InvalidOperationException("Can't add a serie to a pivotchart");
         }
         return this.AddSeries(Serie.FullAddressAbsolute, XSerie?.FullAddressAbsolute, "");
     }
@@ -253,7 +253,7 @@ public class ExcelChartSeries<T> : IEnumerable<T> where T : ExcelChartSerie
     {
         if (this._chart.PivotTableSource != null)
         {
-            throw (new InvalidOperationException("Can't add a serie to a pivotchart"));
+            throw new InvalidOperationException("Can't add a serie to a pivotchart");
         }
         return this.AddSeries(SerieAddress, XSerieAddress, "");
     }
@@ -268,7 +268,7 @@ public class ExcelChartSeries<T> : IEnumerable<T> where T : ExcelChartSerie
     {
         if (this._list.Count == 256)
         {
-            throw (new InvalidOperationException("Charts have a maximum of 256 series."));
+            throw new InvalidOperationException("Charts have a maximum of 256 series.");
         }
         XmlElement serElement;
         if (this._chart._isChartEx)

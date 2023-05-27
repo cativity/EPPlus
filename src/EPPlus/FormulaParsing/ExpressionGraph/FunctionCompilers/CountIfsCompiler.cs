@@ -33,8 +33,8 @@ internal class CountIfsCompiler : FunctionCompiler
                 object? candidateArg = children.ElementAt(rangeIx + 1)?.Children.FirstOrDefault()?.Compile().Result;
                 if (children.ElementAt(rangeIx).HasChildren)
                 {
-                    int functionRowIndex = (currentAdr.FromRow - rangeAdr._fromRow);
-                    int functionColIndex = (currentAdr.FromCol - rangeAdr._fromCol);
+                    int functionRowIndex = currentAdr.FromRow - rangeAdr._fromRow;
+                    int functionColIndex = currentAdr.FromCol - rangeAdr._fromCol;
                     IRangeInfo? firstRangeResult = children.ElementAt(rangeIx).Children.First().Compile().Result as IRangeInfo;
                     if (firstRangeResult != null)
                     {

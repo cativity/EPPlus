@@ -128,7 +128,7 @@ internal class PictureStore : IDisposable
 
         if(s.GetImageBounds(ms, type, out double width, out double height, out double horizontalResolution, out double verticalResolution)==false)
         {
-            throw (new InvalidOperationException($"No image handler for image type {type}"));
+            throw new InvalidOperationException($"No image handler for image type {type}");
         }
         ret.Width = width;
         ret.Height = height;
@@ -285,7 +285,7 @@ internal class PictureStore : IDisposable
             case "svg":
                 return ePictureType.Svg;
             default:
-                throw (new InvalidOperationException($"Image with extension {extension} is not supported."));
+                throw new InvalidOperationException($"Image with extension {extension} is not supported.");
         }
     }
     internal static string GetExtension(ePictureType type)

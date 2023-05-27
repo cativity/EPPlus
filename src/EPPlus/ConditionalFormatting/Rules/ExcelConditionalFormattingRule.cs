@@ -318,7 +318,7 @@ public abstract class ExcelConditionalFormattingRule
         {
             this.SetXmlNodeString(
                                   ExcelConditionalFormattingConstants.Paths.StopIfTrueAttribute,
-                                  (value == true) ? "1" : string.Empty,
+                                  value == true ? "1" : string.Empty,
                                   true);
         }
     }
@@ -337,7 +337,7 @@ public abstract class ExcelConditionalFormattingRule
         {
             this.SetXmlNodeString(
                                   ExcelConditionalFormattingConstants.Paths.DxfIdAttribute,
-                                  (value == int.MinValue) ? string.Empty : value.ToString(),
+                                  value == int.MinValue ? string.Empty : value.ToString(),
                                   true);
         }
     }
@@ -366,7 +366,7 @@ public abstract class ExcelConditionalFormattingRule
         {
             this.SetXmlNodeString(
                                   ExcelConditionalFormattingConstants.Paths.StdDevAttribute,
-                                  (value == 0) ? "1" : value.ToString(),
+                                  value == 0 ? "1" : value.ToString(),
                                   true);
         }
     }
@@ -385,7 +385,7 @@ public abstract class ExcelConditionalFormattingRule
         {
             this.SetXmlNodeString(
                                   ExcelConditionalFormattingConstants.Paths.RankAttribute,
-                                  (value == 0) ? "1" : value.ToString(),
+                                  value == 0 ? "1" : value.ToString(),
                                   true);
         }
     }
@@ -405,16 +405,16 @@ public abstract class ExcelConditionalFormattingRule
                                                              ExcelConditionalFormattingConstants.Paths.AboveAverageAttribute);
 
             // Above Avarege if TRUE or if attribute does not exists
-            return (aboveAverage == true) || (aboveAverage == null);
+            return aboveAverage == true || aboveAverage == null;
         }
         set
         {
             string aboveAverageValue = string.Empty;
 
             // Only the types that needs the @AboveAverage
-            if ((this._type == eExcelConditionalFormattingRuleType.BelowAverage)
-                || (this._type == eExcelConditionalFormattingRuleType.BelowOrEqualAverage)
-                || (this._type == eExcelConditionalFormattingRuleType.BelowStdDev))
+            if (this._type == eExcelConditionalFormattingRuleType.BelowAverage
+                || this._type == eExcelConditionalFormattingRuleType.BelowOrEqualAverage
+                || this._type == eExcelConditionalFormattingRuleType.BelowStdDev)
             {
                 aboveAverageValue = "0";
             }
@@ -437,15 +437,15 @@ public abstract class ExcelConditionalFormattingRule
                                                              ExcelConditionalFormattingConstants.Paths.EqualAverageAttribute);
 
             // Equal Avarege only if TRUE
-            return (equalAverage == true);
+            return equalAverage == true;
         }
         set
         {
             string equalAverageValue = string.Empty;
 
             // Only the types that needs the @EqualAverage
-            if ((this._type == eExcelConditionalFormattingRuleType.AboveOrEqualAverage)
-                || (this._type == eExcelConditionalFormattingRuleType.BelowOrEqualAverage))
+            if (this._type == eExcelConditionalFormattingRuleType.AboveOrEqualAverage
+                || this._type == eExcelConditionalFormattingRuleType.BelowOrEqualAverage)
             {
                 equalAverageValue = "1";
             }
@@ -468,15 +468,15 @@ public abstract class ExcelConditionalFormattingRule
                                                        ExcelConditionalFormattingConstants.Paths.BottomAttribute);
 
             // Bottom if TRUE
-            return (bottom == true);
+            return bottom == true;
         }
         set
         {
             string bottomValue = string.Empty;
 
             // Only the types that needs the @Bottom
-            if ((this._type == eExcelConditionalFormattingRuleType.Bottom)
-                || (this._type == eExcelConditionalFormattingRuleType.BottomPercent))
+            if (this._type == eExcelConditionalFormattingRuleType.Bottom
+                || this._type == eExcelConditionalFormattingRuleType.BottomPercent)
             {
                 bottomValue = "1";
             }
@@ -499,15 +499,15 @@ public abstract class ExcelConditionalFormattingRule
                                                         ExcelConditionalFormattingConstants.Paths.PercentAttribute);
 
             // Bottom if TRUE
-            return (percent == true);
+            return percent == true;
         }
         set
         {
             string percentValue = string.Empty;
 
             // Only the types that needs the @Bottom
-            if ((this._type == eExcelConditionalFormattingRuleType.BottomPercent)
-                || (this._type == eExcelConditionalFormattingRuleType.TopPercent))
+            if (this._type == eExcelConditionalFormattingRuleType.BottomPercent
+                || this._type == eExcelConditionalFormattingRuleType.TopPercent)
             {
                 percentValue = "1";
             }

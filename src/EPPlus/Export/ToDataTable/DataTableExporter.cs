@@ -45,7 +45,7 @@ internal class DataTableExporter
         this.Validate();
         row += this._options.SkipNumberOfRowsStart;
             
-        while (row <= (this._range.End.Row - this._options.SkipNumberOfRowsEnd))
+        while (row <= this._range.End.Row - this._options.SkipNumberOfRowsEnd)
         {
             DataRow? dataRow = this._dataTable.NewRow();
             bool ignoreRow = false;
@@ -113,15 +113,15 @@ internal class DataTableExporter
     private void Validate()
     {
         int startRow = this._options.FirstRowIsColumnNames ? this._range.Start.Row + 1 : this._range.Start.Row;
-        if (this._options.SkipNumberOfRowsStart < 0 || this._options.SkipNumberOfRowsStart > (this._range.End.Row - startRow))
+        if (this._options.SkipNumberOfRowsStart < 0 || this._options.SkipNumberOfRowsStart > this._range.End.Row - startRow)
         {
             throw new IndexOutOfRangeException("SkipNumberOfRowsStart was out of range: " + this._options.SkipNumberOfRowsStart);
         }
-        if (this._options.SkipNumberOfRowsEnd < 0 || this._options.SkipNumberOfRowsEnd > (this._range.End.Row - startRow))
+        if (this._options.SkipNumberOfRowsEnd < 0 || this._options.SkipNumberOfRowsEnd > this._range.End.Row - startRow)
         {
             throw new IndexOutOfRangeException("SkipNumberOfRowsEnd was out of range: " + this._options.SkipNumberOfRowsEnd);
         }
-        if((this._options.SkipNumberOfRowsEnd + this._options.SkipNumberOfRowsStart) > (this._range.End.Row - startRow))
+        if(this._options.SkipNumberOfRowsEnd + this._options.SkipNumberOfRowsStart > this._range.End.Row - startRow)
         {
             throw new ArgumentException("Total number of skipped rows was larger than number of rows in range");
         }

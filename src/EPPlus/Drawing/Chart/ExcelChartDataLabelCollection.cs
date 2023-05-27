@@ -51,7 +51,7 @@ public class ExcelChartDataLabelCollection : XmlHelper, IEnumerable<ExcelChartDa
             int ix = this.GetItemAfter(index);
             if (this._list[ix].Index == index)
             {
-                throw (new ArgumentException($"Data label with index {index} already exists"));
+                throw new ArgumentException($"Data label with index {index} already exists");
             }
             return this.CreateDataLabel(ix);
         }
@@ -110,7 +110,7 @@ public class ExcelChartDataLabelCollection : XmlHelper, IEnumerable<ExcelChartDa
     {
         get
         {
-            return (this._list[index]);
+            return this._list[index];
         }
     }
     /// <summary>

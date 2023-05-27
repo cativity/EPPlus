@@ -151,7 +151,7 @@ public sealed class ExcelColorXml : StyleXmlHelper
         {
             if (value < 0 || value > 65)
             {
-                throw (new ArgumentOutOfRangeException("Index out of range"));
+                throw new ArgumentOutOfRangeException("Index out of range");
             }
 
             this.Clear();

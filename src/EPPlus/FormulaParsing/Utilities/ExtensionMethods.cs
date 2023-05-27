@@ -40,6 +40,6 @@ internal static class ExtensionMethods
             return false;
         }
 
-        return (TypeCompat.IsPrimitive(obj) || obj is double || obj is decimal || obj is DateTime || obj is TimeSpan);
+        return TypeCompat.IsPrimitive(obj) || obj is double || obj is decimal || obj is DateTime || obj is TimeSpan;
     }
 }

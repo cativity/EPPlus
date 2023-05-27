@@ -30,7 +30,7 @@ internal class SumX2pY2 : SumxBase
         {
             double a = set1[x];
             double b = set2[x];
-            result += a * a + b * b;
+            result += (a * a) + (b * b);
         }
         return result;
     }

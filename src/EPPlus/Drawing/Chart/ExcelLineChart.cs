@@ -115,7 +115,7 @@ public abstract class ExcelStandardChartWithLines : ExcelChartStandard, IDrawing
             }
             if (value < 0 || value > 500)
             {
-                throw (new ArgumentOutOfRangeException("GapWidth ranges between 0 and 500"));
+                throw new ArgumentOutOfRangeException("GapWidth ranges between 0 and 500");
             }
 
             this._chartXmlHelper.SetXmlNodeString(_gapWidthPath, value.Value.ToString(CultureInfo.InvariantCulture));

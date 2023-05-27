@@ -398,7 +398,7 @@ namespace OfficeOpenXml
         {
             if (newStream.CanSeek && newStream.Length > 0)
             {
-                throw(new Exception("The output stream must be empty. Length > 0"));
+                throw new Exception("The output stream must be empty. Length > 0");
             }
             else if (!(newStream.CanRead && newStream.CanWrite))
             {
@@ -418,7 +418,7 @@ namespace OfficeOpenXml
         {
             if (newStream.Length > 0)
             {
-                throw (new Exception("The output stream must be empty. Length > 0"));
+                throw new Exception("The output stream must be empty. Length > 0");
             }
             else if (!(newStream.CanRead && newStream.CanWrite))
             {
@@ -595,7 +595,7 @@ namespace OfficeOpenXml
         /// <summary>
         /// Returns a reference to the package
         /// </summary>
-        internal ZipPackage ZipPackage { get { return (this._zipPackage); } }
+        internal ZipPackage ZipPackage { get { return this._zipPackage; } }
         ExcelEncryption _encryption=null;
         /// <summary>
         /// Information how and if the package is encrypted
@@ -707,7 +707,7 @@ namespace OfficeOpenXml
                 {
                     if(IsLicenseSet(this._initErrors)==false)
                     {
-                        throw (new LicenseException("Please set the ExcelPackage.LicenseContext property. See https://epplussoftware.com/developers/licenseexception"));
+                        throw new LicenseException("Please set the ExcelPackage.LicenseContext property. See https://epplussoftware.com/developers/licenseexception");
                     }
                     XmlNamespaceManager? nsm = CreateDefaultNSM();
 
@@ -717,7 +717,7 @@ namespace OfficeOpenXml
                     this._workbook.LoadPivotTableCaches();
 
                 }
-                return (this._workbook);
+                return this._workbook;
 			}
 		}
 
@@ -928,7 +928,7 @@ namespace OfficeOpenXml
                         }
                         catch (Exception ex)
                         {
-                            throw (new Exception(string.Format("Error overwriting file {0}", this.File.FullName), ex));
+                            throw new Exception(string.Format("Error overwriting file {0}", this.File.FullName), ex);
                         }
                     }
 
@@ -966,7 +966,7 @@ namespace OfficeOpenXml
                 }
                 else
                 {
-                    throw (new InvalidOperationException(string.Format("Error saving file {0}", this.File.FullName), ex));
+                    throw new InvalidOperationException(string.Format("Error saving file {0}", this.File.FullName), ex);
                 }
             }
         }
@@ -1124,7 +1124,7 @@ namespace OfficeOpenXml
 			XmlDocument xml = new XmlDocument();
 			ZipPackagePart part = this._zipPackage.GetPart(uri);
             XmlHelper.LoadXmlSafe(xml, part.GetStream()); 
-			return (xml);
+			return xml;
 		}
         #endregion
         #region GetAsByteArray
@@ -1210,7 +1210,7 @@ namespace OfficeOpenXml
         {
             if(this._isDisposed)
             {
-                throw (new ObjectDisposedException("ExcelPackage", "Package has been disposed"));
+                throw new ObjectDisposedException("ExcelPackage", "Package has been disposed");
             }
         }
         #endregion

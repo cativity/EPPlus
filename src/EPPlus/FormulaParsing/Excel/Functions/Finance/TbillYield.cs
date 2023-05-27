@@ -47,7 +47,7 @@ internal class TbillYield : ExcelFunction
 
         IFinanicalDays? finDays = FinancialDaysFactory.Create(DayCountBasis.Actual_360);
         double nDaysInPeriod = finDays.GetDaysBetweenDates(settlementDate, maturityDate);
-        double result = ((100d - pr)/pr) * (360d/nDaysInPeriod);
+        double result = (100d - pr)/pr * (360d/nDaysInPeriod);
         return this.CreateResult(result, DataType.Decimal);
     }
 }

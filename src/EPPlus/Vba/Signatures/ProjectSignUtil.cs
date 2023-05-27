@@ -125,7 +125,7 @@ internal static class ProjectSignUtil
 
     private static int GetByteSize(int length)
     {
-        return length < 0xFF ? 1 : (length < 0xFFFF ? 2 : (length < 0xFFFFFF ? 3 : 4));
+        return length < 0xFF ? 1 : length < 0xFFFF ? 2 : length < 0xFFFFFF ? 3 : 4;
     }
 
     private static byte[] GetHashContent(EPPlusSignatureContext ctx, byte[] hash)

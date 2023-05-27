@@ -115,7 +115,7 @@ public class DateAndTimeFunctionsTests : FormulaParserTestBase
     [TestMethod]
     public void TimeShouldReturnCorrectResult()
     {
-        double expectedResult = ((double)(12 * 60 * 60 + 13 * 60 + 14))/((double)(24 * 60 * 60));
+        double expectedResult = (double)((12 * 60 * 60) + (13 * 60) + 14)/(double)(24 * 60 * 60);
         object? result = this._parser.Parse("Time(12, 13, 14)");
         Assert.AreEqual(expectedResult, result);
     }

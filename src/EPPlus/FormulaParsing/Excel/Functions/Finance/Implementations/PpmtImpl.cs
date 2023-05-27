@@ -21,7 +21,7 @@ internal static class PpmtImpl
     internal static FinanceCalcResult<double> Ppmt(double Rate, double Per, double NPer, double PV, double FV = 0, PmtDue Due = PmtDue.EndOfPeriod)
     {
         //   Checking for error conditions
-        if ((Per <= 0.0) || (Per >= (NPer + 1)))
+        if (Per <= 0.0 || Per >= NPer + 1)
         {
             return new FinanceCalcResult<double>(eErrorType.Num);
         }

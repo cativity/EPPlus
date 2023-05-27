@@ -483,8 +483,8 @@ internal class ZipSegmentedStream : Stream
     {
         get
         {
-            return (this.rwMode == RwMode.ReadOnly &&
-                    (this._innerStream != null) && this._innerStream.CanRead);
+            return this.rwMode == RwMode.ReadOnly &&
+                   this._innerStream != null && this._innerStream.CanRead;
         }
     }
 
@@ -493,7 +493,7 @@ internal class ZipSegmentedStream : Stream
     {
         get
         {
-            return (this._innerStream != null) && this._innerStream.CanSeek;
+            return this._innerStream != null && this._innerStream.CanSeek;
         }
     }
 
@@ -502,8 +502,8 @@ internal class ZipSegmentedStream : Stream
     {
         get
         {
-            return (this.rwMode == RwMode.Write) &&
-                   (this._innerStream != null) && this._innerStream.CanWrite;
+            return this.rwMode == RwMode.Write &&
+                   this._innerStream != null && this._innerStream.CanWrite;
         }
     }
 

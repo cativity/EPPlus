@@ -186,12 +186,12 @@ public class ExcelChartStyleManager : XmlHelper
                         }
                         else
                         {
-                            throw (new InvalidDataException($"{filename} contains a the file {entry.FileName}, with an invalid filename. Please make sure files in the library are named Colors[id].xml or style[id].xml, where [id] is replaced by the id to access the style in the library"));
+                            throw new InvalidDataException($"{filename} contains a the file {entry.FileName}, with an invalid filename. Please make sure files in the library are named Colors[id].xml or style[id].xml, where [id] is replaced by the id to access the style in the library");
                         }
                     }
                     catch
                     {
-                        throw (new InvalidDataException($"{filename} contains a the file {entry.FileName}, with an invalid filename. Please make sure files in the library are named Colors[id].xml or style[id].xml, where [id] is replaced by the id to access the style in the library"));
+                        throw new InvalidDataException($"{filename} contains a the file {entry.FileName}, with an invalid filename. Please make sure files in the library are named Colors[id].xml or style[id].xml, where [id] is replaced by the id to access the style in the library");
                     }
 
 
@@ -217,7 +217,7 @@ public class ExcelChartStyleManager : XmlHelper
             }
             else
             {
-                throw (new InvalidDataException($"{filename} has an invalid format.", ex));
+                throw new InvalidDataException($"{filename} has an invalid format.", ex);
             }
         }
     }
@@ -260,7 +260,7 @@ public class ExcelChartStyleManager : XmlHelper
     {
         if (!crtxFile.Exists)
         {
-            throw (new FileNotFoundException($"{crtxFile.FullName} cannot be found."));
+            throw new FileNotFoundException($"{crtxFile.FullName} cannot be found.");
         }
         FileStream fs = null;
         try
@@ -437,11 +437,11 @@ public class ExcelChartStyleManager : XmlHelper
         {
             if(Enum.IsDefined(typeof(ePresetChartColors), style))
             {
-                throw (new KeyNotFoundException($"Style {(ePresetChartStyle)style} ({style}) cannot be found in the StyleLibrary. Please load it into the StyleLibrary."));
+                throw new KeyNotFoundException($"Style {(ePresetChartStyle)style} ({style}) cannot be found in the StyleLibrary. Please load it into the StyleLibrary.");
             }
             else
             {
-                throw (new KeyNotFoundException($"Style {style} cannot be found in the StyleLibrary. Please load it into the StyleLibrary."));
+                throw new KeyNotFoundException($"Style {style} cannot be found in the StyleLibrary. Please load it into the StyleLibrary.");
             }
         }
 
@@ -449,11 +449,11 @@ public class ExcelChartStyleManager : XmlHelper
         {
             if (Enum.IsDefined(typeof(ePresetChartColors), colors.Value))
             {
-                throw (new KeyNotFoundException($"Colors scheme {(ePresetChartColors)colors} ({colors}) cannot be found in the ColorsLibrary. Please load it into the ColorsLibrary."));
+                throw new KeyNotFoundException($"Colors scheme {(ePresetChartColors)colors} ({colors}) cannot be found in the ColorsLibrary. Please load it into the ColorsLibrary.");
             }
             else
             {
-                throw (new KeyNotFoundException($"Colors scheme {colors} cannot be found in the ColorsLibrary. Please load it into the ColorsLibrary."));
+                throw new KeyNotFoundException($"Colors scheme {colors} cannot be found in the ColorsLibrary. Please load it into the ColorsLibrary.");
             }
         }
 
@@ -504,7 +504,7 @@ public class ExcelChartStyleManager : XmlHelper
 
         if (this._chart._topChart!=null)
         {
-            throw (new InvalidOperationException("Please style the parent chart only"));
+            throw new InvalidOperationException("Please style the parent chart only");
         }
         if (this._chart.VaryColors)
         {
@@ -717,7 +717,7 @@ public class ExcelChartStyleManager : XmlHelper
         foreach (ExcelChart? chart in this._chart.PlotArea.ChartTypes)
         {
             ExcelChartStyleEntry? dataPoint = this.GetDataPointStyle(chart);
-            bool applyFill = (!chart.IsTypeLine() || chart.ChartType == eChartType.Line3D || chart.ChartType == eChartType.XYScatter);   //Lines have no fill, except Line3D
+            bool applyFill = !chart.IsTypeLine() || chart.ChartType == eChartType.Line3D || chart.ChartType == eChartType.XYScatter;   //Lines have no fill, except Line3D
             int serieNo = 0;
             foreach (ExcelChartSerie serie in chart.Series)
             {
@@ -893,7 +893,7 @@ public class ExcelChartStyleManager : XmlHelper
             {
                 ExcelThemeEffectStyle? effect = theme.FormatScheme.EffectStyle[section.EffectReference.Index - 1];
                 chartThreeD.ThreeD.SetFromXml(effect.ThreeD.Scene3DElement, effect.ThreeD.Sp3DElement);
-                tranformColor = (effect.ThreeD.Sp3DElement != null);
+                tranformColor = effect.ThreeD.Sp3DElement != null;
             }
         }
         if (tranformColor)

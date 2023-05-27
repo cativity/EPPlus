@@ -21,7 +21,7 @@ internal static class CellStateHelper
 {
     private static bool IsSubTotal(ICellInfo c, ParsingContext context)
     {
-        return (context.Scopes.Current.IsSubtotal && context.SubtotalAddresses.Contains(c.Id));
+        return context.Scopes.Current.IsSubtotal && context.SubtotalAddresses.Contains(c.Id);
     }
 
     internal static bool ShouldIgnore(bool ignoreHiddenValues, ICellInfo c, ParsingContext context)

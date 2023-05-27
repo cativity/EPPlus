@@ -76,7 +76,7 @@ public struct Token
     /// <returns></returns>
     public static bool operator != (Token t1, Token t2)
     {
-        return !(t1.AreEqualTo(t2));
+        return !t1.AreEqualTo(t2);
     }
 
     /// <summary>
@@ -110,7 +110,7 @@ public struct Token
 
     public bool AreEqualTo(Token otherToken)
     {
-        return (this.GetTokenTypeFlags() == otherToken.GetTokenTypeFlags() && this.Value == otherToken.Value);
+        return this.GetTokenTypeFlags() == otherToken.GetTokenTypeFlags() && this.Value == otherToken.Value;
     }
 
     internal TokenType GetTokenTypeFlags()

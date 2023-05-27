@@ -460,7 +460,7 @@ internal class CellStore<T> : IDisposable
 
     private static bool IsWithinPage(int row, ColumnIndex<T> column, int pagePos)
     {
-        return (row >= column._pages[pagePos].MinIndex && row <= column._pages[pagePos].MaxIndex);
+        return row >= column._pages[pagePos].MinIndex && row <= column._pages[pagePos].MaxIndex;
     }
 
     internal void Clear(int fromRow, int fromCol, int rows, int columns)
@@ -875,7 +875,7 @@ internal class CellStore<T> : IDisposable
             {
                 if (fromRow == page.MinIndex) //Delete entire page, TODO: Remove when tests a good,
                 {
-                    throw (new Exception("Invalid cell delete: DeleteCells"));
+                    throw new Exception("Invalid cell delete: DeleteCells");
                 }
                 page.RowCount -= page.RowCount - fromPos;
                 deletedRows = maxRow - fromRow + 1;
@@ -908,7 +908,7 @@ internal class CellStore<T> : IDisposable
             }
             UpdatePageOffset(column, pagePos, -deletedRows);
         }
-        return (toRow - fromRow + 1) - deletedRows;
+        return toRow - fromRow + 1 - deletedRows;
     }
 
     private static void UpdateRowIndex(PageIndex page, int toPos, int rows)
@@ -948,7 +948,7 @@ internal class CellStore<T> : IDisposable
                 Array.Copy(this._columnIndex, tPos, this._columnIndex, fPos, this.ColumnCount - tPos);
             }
 
-            this.ColumnCount -= (tPos - fPos);
+            this.ColumnCount -= tPos - fPos;
         }
         if (shift)
         {
@@ -1023,7 +1023,7 @@ internal class CellStore<T> : IDisposable
         column._pages[pagePos] = newPage;
         column.PageCount--;
 
-        if (column.PageCount > (pagePos + 1))
+        if (column.PageCount > pagePos + 1)
         {
             Array.Copy(column._pages, pagePos + 2, column._pages, pagePos + 1, column.PageCount - (pagePos + 1));
         }
@@ -1187,7 +1187,7 @@ internal class CellStore<T> : IDisposable
             Array.Copy(this._columnIndex, pos, this._columnIndex, pos + 1, this.ColumnCount - pos);
         }
 
-        this._columnIndex[pos] = new ColumnIndex<T>() { Index = (short)(Column) };
+        this._columnIndex[pos] = new ColumnIndex<T>() { Index = (short)Column };
         this.ColumnCount++;
     }
 

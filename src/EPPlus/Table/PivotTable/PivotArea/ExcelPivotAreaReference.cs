@@ -88,7 +88,7 @@ public class ExcelPivotAreaReference : ExcelPivotAreaReferenceBase
                 }
                 else
                 {
-                    int ix = items._list.FindIndex(x => (x.Value != null && (x.Value.Equals(r.Value)) || (x.Text != null && x.Text.Equals(r.Value))));
+                    int ix = items._list.FindIndex(x => (x.Value != null && x.Value.Equals(r.Value)) || (x.Text != null && x.Text.Equals(r.Value)));
                     if (ix >= 0)
                     {
                         XmlElement? n = (XmlElement)this.CreateNode("d:x", false, true);

@@ -155,7 +155,7 @@ public sealed class ExcelColor :  StyleBase, IColor
         {
             if (value > 1 || value < -1)
             {
-                throw (new ArgumentOutOfRangeException("Value must be between -1 and 1"));
+                throw new ArgumentOutOfRangeException("Value must be between -1 and 1");
             }
 
             this._ChangedEvent(this, new StyleChangeEventArgs(this._cls, eStyleProperty.Tint, value, this._positionID, this._address));
@@ -199,7 +199,7 @@ public sealed class ExcelColor :  StyleBase, IColor
         {
             if(value<0)
             {
-                throw (new ArgumentOutOfRangeException("Indexed", "Cannot be negative"));
+                throw new ArgumentOutOfRangeException("Indexed", "Cannot be negative");
             }
 
             this._ChangedEvent(this, new StyleChangeEventArgs(this._cls, eStyleProperty.IndexedColor, value, this._positionID, this._address));
@@ -268,7 +268,7 @@ public sealed class ExcelColor :  StyleBase, IColor
         if(alpha < 0 || red < 0 || green < 0 ||blue < 0 ||
            alpha > 255 || red > 255 || green > 255 || blue > 255)
         {
-            throw (new ArgumentException("Argument range must be from 0 to 255"));
+            throw new ArgumentException("Argument range must be from 0 to 255");
         }
 
         this.Rgb = alpha.ToString("X2") + red.ToString("X2") + green.ToString("X2") + blue.ToString("X2");
@@ -303,11 +303,11 @@ public sealed class ExcelColor :  StyleBase, IColor
             case eStyleClass.BorderDiagonal:
                 return this._styles.Borders[this.Index].Diagonal.Color;
             case eStyleClass.FillGradientColor1:
-                return ((ExcelGradientFillXml)(this._styles.Fills[this.Index])).GradientColor1;
+                return ((ExcelGradientFillXml)this._styles.Fills[this.Index]).GradientColor1;
             case eStyleClass.FillGradientColor2:
-                return ((ExcelGradientFillXml)(this._styles.Fills[this.Index])).GradientColor2;
+                return ((ExcelGradientFillXml)this._styles.Fills[this.Index]).GradientColor2;
             default:
-                throw(new Exception("Invalid style-class for Color"));
+                throw new Exception("Invalid style-class for Color");
         }
     }
     internal override void SetIndex(int index)
@@ -347,7 +347,7 @@ public sealed class ExcelColor :  StyleBase, IColor
         }
         else
         {
-            string? c = ((int)(Math.Round((theColor.Tint+1) * 128))).ToString("X");
+            string? c = ((int)Math.Round((theColor.Tint+1) * 128)).ToString("X");
             return "#FF" + c + c + c;
         }
     }

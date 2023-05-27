@@ -46,7 +46,7 @@ internal class Median : HiddenValuesHandlingFunction
         }
         else
         {
-            int startIndex = arr.Length/2 - 1;
+            int startIndex = (arr.Length/2) - 1;
             result = (arr[startIndex] + arr[startIndex + 1])/2d;
         }
         return this.CreateResult(result, DataType.Decimal);

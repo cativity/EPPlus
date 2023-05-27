@@ -51,7 +51,7 @@ public class ExcelPivotAreaReferenceItems : EPPlusReadOnlyList<PivotItemReferenc
     /// <returns>true if the value has been added, otherwise false</returns>
     public bool AddByValue(object value)
     {
-        int index = this._reference.Field.Items._list.FindIndex(x => (x.Value!=null && (x.Value.Equals(value)) || (x.Text!=null && x.Text.Equals(value))));
+        int index = this._reference.Field.Items._list.FindIndex(x => (x.Value!=null && x.Value.Equals(value)) || (x.Text!=null && x.Text.Equals(value)));
         if (index >= 0)
         {
             this.Add(new PivotItemReference() { Index = index, Value = value });

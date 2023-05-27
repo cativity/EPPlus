@@ -26,7 +26,7 @@ public class BoolArgumentParser : ArgumentParser
         if (obj is IRangeInfo)
         {
             ICellInfo? r = ((IRangeInfo)obj).FirstOrDefault();
-            obj = (r == null ? null : r.Value);
+            obj = r == null ? null : r.Value;
         }
         if (obj == null)
         {

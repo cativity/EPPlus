@@ -58,6 +58,6 @@ internal class Intercept : ExcelFunction
             upperEquationPart += (arrayX[ix] - avgX) * (arrayY[ix] - avgY);
             lowerEquationPart += System.Math.Pow(arrayX[ix] - avgX, 2);
         }
-        return avgY - (upperEquationPart / lowerEquationPart) * avgX;
+        return avgY - (upperEquationPart / lowerEquationPart * avgX);
     }
 }

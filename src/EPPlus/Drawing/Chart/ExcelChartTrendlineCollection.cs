@@ -43,7 +43,7 @@ public class ExcelChartTrendlineCollection : IEnumerable<ExcelChartTrendline>
     {
         if (this._serie==null || this._serie._chart.IsType3D() || this._serie._chart.IsTypePercentStacked() || this._serie._chart.IsTypeStacked() || this._serie._chart.IsTypePieDoughnut())
         {
-            throw(new ArgumentException("Type","Trendlines don't apply to 3d-charts, stacked charts, pie charts, doughnut charts or Excel 2016 chart types"));
+            throw new ArgumentException("Type","Trendlines don't apply to 3d-charts, stacked charts, pie charts, doughnut charts or Excel 2016 chart types");
         }
 
         XmlNode insertAfter;

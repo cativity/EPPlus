@@ -122,7 +122,7 @@ public class ConvertUtilTest
         Type fromType = v.GetType();
         Type toType = typeof(T);
             
-        Type toType2 = (TypeCompat.IsGenericType(toType) && toType.GetGenericTypeDefinition().Equals(typeof(Nullable<>)))
+        Type toType2 = TypeCompat.IsGenericType(toType) && toType.GetGenericTypeDefinition().Equals(typeof(Nullable<>))
                            ? Nullable.GetUnderlyingType(toType)
                            : null;
         if (fromType == toType || fromType == toType2)
@@ -134,13 +134,13 @@ public class ConvertUtilTest
         {
             if (fromType == typeof(TimeSpan))
             {
-                return ((T)(object)(new DateTime(((TimeSpan)v).Ticks)));
+                return (T)(object)new DateTime(((TimeSpan)v).Ticks);
             }
             else if (fromType == typeof(string))
             {
                 if (DateTime.TryParse(v.ToString(), out DateTime dt))
                 {
-                    return (T)(object)(dt);
+                    return (T)(object)dt;
                 }
                 else
                 {
@@ -152,7 +152,7 @@ public class ConvertUtilTest
             {
                 if (cnv.CanConvertTo(typeof(double)))
                 {
-                    return (T)(object)(DateTime.FromOADate((double)cnv.ConvertTo(v, typeof(double))));
+                    return (T)(object)DateTime.FromOADate((double)cnv.ConvertTo(v, typeof(double)));
                 }
                 else
                 {
@@ -164,13 +164,13 @@ public class ConvertUtilTest
         {
             if (fromType == typeof(DateTime))
             {
-                return ((T)(object)(new TimeSpan(((DateTime)v).Ticks)));
+                return (T)(object)new TimeSpan(((DateTime)v).Ticks);
             }
             else if (fromType == typeof(string))
             {
                 if (TimeSpan.TryParse(v.ToString(), out TimeSpan ts))
                 {
-                    return (T)(object)(ts);
+                    return (T)(object)ts;
                 }
                 else
                 {
@@ -182,7 +182,7 @@ public class ConvertUtilTest
                 if (cnv.CanConvertTo(typeof(double)))
                 {
 
-                    return (T)(object)(new TimeSpan(DateTime.FromOADate((double)cnv.ConvertTo(v, typeof(double))).Ticks));
+                    return (T)(object)new TimeSpan(DateTime.FromOADate((double)cnv.ConvertTo(v, typeof(double))).Ticks);
                 }
                 else
                 {

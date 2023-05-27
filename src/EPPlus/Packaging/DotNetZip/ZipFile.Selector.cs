@@ -655,7 +655,7 @@ namespace OfficeOpenXml.Packaging.Ionic.Zip
                                                bool recurseDirectories,
                                                bool wantUpdate)
         {
-            if (directoryOnDisk == null && (Directory.Exists(selectionCriteria)))
+            if (directoryOnDisk == null && Directory.Exists(selectionCriteria))
             {
                 directoryOnDisk = selectionCriteria;
                 selectionCriteria = "*.*";
@@ -687,11 +687,11 @@ namespace OfficeOpenXml.Packaging.Ionic.Zip
 
             this.OnAddStarted();
 
-            AddOrUpdateAction action = (wantUpdate) ? AddOrUpdateAction.AddOrUpdate : AddOrUpdateAction.AddOnly;
+            AddOrUpdateAction action = wantUpdate ? AddOrUpdateAction.AddOrUpdate : AddOrUpdateAction.AddOnly;
             foreach (string? item in itemsToAdd)
             {
                 // workitem 10153
-                string dirInArchive = (directoryPathInArchive == null)
+                string dirInArchive = directoryPathInArchive == null
                     ? null
                     // workitem 12260
                     : ReplaceLeadingDirectory(Path.GetDirectoryName(item),
@@ -1321,7 +1321,7 @@ namespace OfficeOpenXml.Packaging.Ionic
     {
         internal override bool Evaluate(ZipEntry entry)
         {
-            bool result = (this.ObjectType == 'D')
+            bool result = this.ObjectType == 'D'
                 ? entry.IsDirectory
                 : !entry.IsDirectory;
 
@@ -1480,7 +1480,7 @@ namespace OfficeOpenXml.Packaging.Ionic
 
             List<ZipEntry>? list = new List<ZipEntry>();
             // workitem 8559
-            string slashSwapped = (directoryPathInArchive == null) ? null : directoryPathInArchive.Replace("/", "\\");
+            string slashSwapped = directoryPathInArchive == null ? null : directoryPathInArchive.Replace("/", "\\");
             // workitem 9174
             if (slashSwapped != null)
             {
@@ -1491,8 +1491,8 @@ namespace OfficeOpenXml.Packaging.Ionic
             }
             foreach (ZipEntry e in zip)
             {
-                if (directoryPathInArchive == null || (Path.GetDirectoryName(e.FileName) == directoryPathInArchive)
-                    || (Path.GetDirectoryName(e.FileName) == slashSwapped)) // workitem 8559
+                if (directoryPathInArchive == null || Path.GetDirectoryName(e.FileName) == directoryPathInArchive
+                    || Path.GetDirectoryName(e.FileName) == slashSwapped) // workitem 8559
                 {
                     if (this.Evaluate(e))
                     {

@@ -190,9 +190,9 @@ internal sealed class DeflateManager
     private static readonly int MIN_MATCH = 3;
     private static readonly int MAX_MATCH = 258;
 
-    private static readonly int MIN_LOOKAHEAD = (MAX_MATCH + MIN_MATCH + 1);
+    private static readonly int MIN_LOOKAHEAD = MAX_MATCH + MIN_MATCH + 1;
 
-    private static readonly int HEAP_SIZE = (2 * InternalConstants.L_CODES + 1);
+    private static readonly int HEAP_SIZE = (2 * InternalConstants.L_CODES) + 1;
 
     private static readonly int END_BLOCK = 256;
 
@@ -279,7 +279,7 @@ internal sealed class DeflateManager
     internal short[] bl_count = new short[InternalConstants.MAX_BITS + 1];
 
     // heap used to build the Huffman trees
-    internal int[] heap = new int[2 * InternalConstants.L_CODES + 1];
+    internal int[] heap = new int[(2 * InternalConstants.L_CODES) + 1];
 
     internal int heap_len;              // number of elements in the heap
     internal int heap_max;              // element of largest frequency
@@ -288,7 +288,7 @@ internal sealed class DeflateManager
     // The same heap array is used to build all trees.
 
     // Depth of each subtree used as tie breaker for trees of equal frequency
-    internal sbyte[] depth = new sbyte[2 * InternalConstants.L_CODES + 1];
+    internal sbyte[] depth = new sbyte[(2 * InternalConstants.L_CODES) + 1];
 
     internal int _lengthOffset;                 // index for literals or lengths
 
@@ -337,8 +337,8 @@ internal sealed class DeflateManager
     internal DeflateManager()
     {
         this.dyn_ltree = new short[HEAP_SIZE * 2];
-        this.dyn_dtree = new short[(2 * InternalConstants.D_CODES + 1) * 2]; // distance tree
-        this.bl_tree = new short[(2 * InternalConstants.BL_CODES + 1) * 2]; // Huffman tree for bit lengths
+        this.dyn_dtree = new short[((2 * InternalConstants.D_CODES) + 1) * 2]; // distance tree
+        this.bl_tree = new short[((2 * InternalConstants.BL_CODES) + 1) * 2]; // Huffman tree for bit lengths
     }
 
 
@@ -439,7 +439,7 @@ internal sealed class DeflateManager
     {
         short tn2 = tree[n * 2];
         short tm2 = tree[m * 2];
-        return (tn2 < tm2 || (tn2 == tm2 && depth[n] <= depth[m]));
+        return tn2 < tm2 || (tn2 == tm2 && depth[n] <= depth[m]);
     }
 
 
@@ -448,7 +448,7 @@ internal sealed class DeflateManager
     internal void scan_tree(short[] tree, int max_code)
     {
         int prevlen = -1; // last emitted length
-        int nextlen = (int)tree[0 * 2 + 1]; // length of next code
+        int nextlen = (int)tree[(0 * 2) + 1]; // length of next code
         int count = 0; // repeat count of the current code
         int max_count = 7; // max repeat count
         int min_count = 4; // min repeat count
@@ -457,11 +457,11 @@ internal sealed class DeflateManager
         {
             max_count = 138; min_count = 3;
         }
-        tree[(max_code + 1) * 2 + 1] = (short)0x7fff; // guard //??
+        tree[((max_code + 1) * 2) + 1] = (short)0x7fff; // guard //??
 
         for (int n = 0; n <= max_code; n++) // iterates over all tree elements
         {
-            int curlen = nextlen; nextlen = (int)tree[(n + 1) * 2 + 1]; // length of current code
+            int curlen = nextlen; nextlen = (int)tree[((n + 1) * 2) + 1]; // length of current code
 
             if (++count < max_count && curlen == nextlen)
             {
@@ -524,13 +524,13 @@ internal sealed class DeflateManager
         // 3 but the actual value used is 4.)
         for (max_blindex = InternalConstants.BL_CODES - 1; max_blindex >= 3; max_blindex--)
         {
-            if (this.bl_tree[Tree.bl_order[max_blindex] * 2 + 1] != 0)
+            if (this.bl_tree[(Tree.bl_order[max_blindex] * 2) + 1] != 0)
             {
                 break;
             }
         }
         // Update opt_len to include the bit length tree and counts
-        this.opt_len += 3 * (max_blindex + 1) + 5 + 5 + 4;
+        this.opt_len += (3 * (max_blindex + 1)) + 5 + 5 + 4;
 
         return max_blindex;
     }
@@ -546,7 +546,7 @@ internal sealed class DeflateManager
         this.send_bits(blcodes - 4, 4); // not -3 as stated in appnote.txt
         for (int rank = 0; rank < blcodes; rank++) // index in bl_order
         {
-            this.send_bits(this.bl_tree[Tree.bl_order[rank] * 2 + 1], 3);
+            this.send_bits(this.bl_tree[(Tree.bl_order[rank] * 2) + 1], 3);
         }
 
         this.send_tree(this.dyn_ltree, lcodes - 1); // literal tree
@@ -558,7 +558,7 @@ internal sealed class DeflateManager
     internal void send_tree(short[] tree, int max_code)
     {
         int prevlen   = -1;              // last emitted length
-        int nextlen   = tree[0 * 2 + 1]; // length of next code
+        int nextlen   = tree[(0 * 2) + 1]; // length of next code
         int count     = 0;               // repeat count of the current code
         int max_count = 7;               // max repeat count
         int min_count = 4;               // min repeat count
@@ -570,7 +570,7 @@ internal sealed class DeflateManager
 
         for (int n = 0; n <= max_code; n++) // iterates over all tree elements
         {
-            int curlen = nextlen; nextlen = tree[(n + 1) * 2 + 1]; // length of current code
+            int curlen = nextlen; nextlen = tree[((n + 1) * 2) + 1]; // length of current code
 
             if (++count < max_count && curlen == nextlen)
             {
@@ -654,7 +654,7 @@ internal sealed class DeflateManager
     internal void send_code(int c, short[] tree)
     {
         int c2 = c * 2;
-        this.send_bits((tree[c2] & 0xffff), (tree[c2 + 1] & 0xffff));
+        this.send_bits(tree[c2] & 0xffff, tree[c2 + 1] & 0xffff);
     }
 
     internal void send_bits(int value, int length)
@@ -718,8 +718,8 @@ internal sealed class DeflateManager
     // the current block must be flushed.
     internal bool _tr_tally(int dist, int lc)
     {
-        this.pending[this._distanceOffset + this.last_lit * 2] = unchecked((byte) ( (uint)dist >> 8 ) );
-        this.pending[this._distanceOffset + this.last_lit * 2 + 1] = unchecked((byte)dist);
+        this.pending[this._distanceOffset + (this.last_lit * 2)] = unchecked((byte) ( (uint)dist >> 8 ) );
+        this.pending[this._distanceOffset + (this.last_lit * 2) + 1] = unchecked((byte)dist);
         this.pending[this._lengthOffset + this.last_lit] = unchecked((byte)lc);
         this.last_lit++;
 
@@ -745,16 +745,16 @@ internal sealed class DeflateManager
 
             for (int dcode = 0; dcode < InternalConstants.D_CODES; dcode++)
             {
-                out_length = (int)(out_length + (int)this.dyn_dtree[dcode * 2] * (5L + Tree.ExtraDistanceBits[dcode]));
+                out_length = (int)(out_length + ((int)this.dyn_dtree[dcode * 2] * (5L + Tree.ExtraDistanceBits[dcode])));
             }
             out_length >>= 3;
-            if ((this.matches < (this.last_lit / 2)) && out_length < in_length / 2)
+            if (this.matches < this.last_lit / 2 && out_length < in_length / 2)
             {
                 return true;
             }
         }
 
-        return (this.last_lit == this.lit_bufsize - 1) || (this.last_lit == this.lit_bufsize);
+        return this.last_lit == this.lit_bufsize - 1 || this.last_lit == this.lit_bufsize;
         // dinoch - wraparound?
         // We avoid equality with lit_bufsize because of wraparound at 64K
         // on 16 bit machines and because stored blocks are restricted to
@@ -772,10 +772,10 @@ internal sealed class DeflateManager
         {
             do
             {
-                int ix = this._distanceOffset + lx * 2;
+                int ix = this._distanceOffset + (lx * 2);
                 int distance = ((this.pending[ix] << 8) & 0xff00) | // distance of matched string
                                (this.pending[ix + 1] & 0xff);
-                int lc = (this.pending[this._lengthOffset + lx]) & 0xff; // match length or unmatched char (if dist == 0)
+                int lc = this.pending[this._lengthOffset + lx] & 0xff; // match length or unmatched char (if dist == 0)
                 lx++;
 
                 if (distance == 0)
@@ -819,7 +819,7 @@ internal sealed class DeflateManager
         }
 
         this.send_code(END_BLOCK, ltree);
-        this.last_eob_len = ltree[END_BLOCK * 2 + 1];
+        this.last_eob_len = ltree[(END_BLOCK * 2) + 1];
     }
 
 
@@ -846,7 +846,7 @@ internal sealed class DeflateManager
             bin_freq += this.dyn_ltree[n * 2]; n++;
         }
 
-        this.data_type = (sbyte)(bin_freq > (ascii_freq >> 2) ? Z_BINARY : Z_ASCII);
+        this.data_type = (sbyte)(bin_freq > ascii_freq >> 2 ? Z_BINARY : Z_ASCII);
     }
 
 
@@ -988,7 +988,7 @@ internal sealed class DeflateManager
         this.flush_block_only(flush == FlushType.Finish);
         if (this._codec.AvailableBytesOut == 0)
         {
-            return (flush == FlushType.Finish) ? BlockState.FinishStarted : BlockState.NeedMore;
+            return flush == FlushType.Finish ? BlockState.FinishStarted : BlockState.NeedMore;
         }
 
         return flush == FlushType.Finish ? BlockState.FinishDone : BlockState.BlockDone;
@@ -1089,7 +1089,7 @@ internal sealed class DeflateManager
     {
         do
         {
-            int more = (this.window_size - this.lookahead - this.strstart); // Amount of free space at the end of the window.
+            int more = this.window_size - this.lookahead - this.strstart; // Amount of free space at the end of the window.
 
             // Deal with !@#$% 64K limit:
             int n;
@@ -1126,8 +1126,8 @@ internal sealed class DeflateManager
 
                 do
                 {
-                    m = (this.head[--p] & 0xffff);
-                    this.head[p] = (short)((m >= this.w_size) ? (m - this.w_size) : 0);
+                    m = this.head[--p] & 0xffff;
+                    this.head[p] = (short)(m >= this.w_size ? m - this.w_size : 0);
                 }
                 while (--n != 0);
 
@@ -1135,8 +1135,8 @@ internal sealed class DeflateManager
                 p = n;
                 do
                 {
-                    m = (this.prev[--p] & 0xffff);
-                    this.prev[p] = (short)((m >= this.w_size) ? (m - this.w_size) : 0);
+                    m = this.prev[--p] & 0xffff;
+                    this.prev[p] = (short)(m >= this.w_size ? m - this.w_size : 0);
                     // If n is not on any hash chain, prev[n] is garbage but
                     // its value will never be used.
                 }
@@ -1167,7 +1167,7 @@ internal sealed class DeflateManager
             if (this.lookahead >= MIN_MATCH)
             {
                 this.ins_h = this.window[this.strstart] & 0xff;
-                this.ins_h = (((this.ins_h) << this.hash_shift) ^ (this.window[this.strstart + 1] & 0xff)) & this.hash_mask;
+                this.ins_h = ((this.ins_h << this.hash_shift) ^ (this.window[this.strstart + 1] & 0xff)) & this.hash_mask;
             }
             // If the whole input has less than MIN_MATCH bytes, ins_h is garbage,
             // but this is not important since only literal bytes will be emitted.
@@ -1208,10 +1208,10 @@ internal sealed class DeflateManager
             // dictionary, and set hash_head to the head of the hash chain:
             if (this.lookahead >= MIN_MATCH)
             {
-                this.ins_h = (((this.ins_h) << this.hash_shift) ^ (this.window[(this.strstart) + (MIN_MATCH - 1)] & 0xff)) & this.hash_mask;
+                this.ins_h = ((this.ins_h << this.hash_shift) ^ (this.window[this.strstart + (MIN_MATCH - 1)] & 0xff)) & this.hash_mask;
 
                 //  prev[strstart&w_mask]=hash_head=head[ins_h];
-                hash_head = (this.head[this.ins_h] & 0xffff);
+                hash_head = this.head[this.ins_h] & 0xffff;
                 this.prev[this.strstart & this.w_mask] = this.head[this.ins_h];
                 this.head[this.ins_h] = unchecked((short)this.strstart);
             }
@@ -1250,9 +1250,9 @@ internal sealed class DeflateManager
                     {
                         this.strstart++;
 
-                        this.ins_h = ((this.ins_h << this.hash_shift) ^ (this.window[(this.strstart) + (MIN_MATCH - 1)] & 0xff)) & this.hash_mask;
+                        this.ins_h = ((this.ins_h << this.hash_shift) ^ (this.window[this.strstart + (MIN_MATCH - 1)] & 0xff)) & this.hash_mask;
                         //      prev[strstart&w_mask]=hash_head=head[ins_h];
-                        hash_head = (this.head[this.ins_h] & 0xffff);
+                        hash_head = this.head[this.ins_h] & 0xffff;
                         this.prev[this.strstart & this.w_mask] = this.head[this.ins_h];
                         this.head[this.ins_h] = unchecked((short)this.strstart);
 
@@ -1269,7 +1269,7 @@ internal sealed class DeflateManager
                     this.match_length = 0;
                     this.ins_h = this.window[this.strstart] & 0xff;
 
-                    this.ins_h = (((this.ins_h) << this.hash_shift) ^ (this.window[this.strstart + 1] & 0xff)) & this.hash_mask;
+                    this.ins_h = ((this.ins_h << this.hash_shift) ^ (this.window[this.strstart + 1] & 0xff)) & this.hash_mask;
                     // If lookahead < MIN_MATCH, ins_h is garbage, but it does not
                     // matter since it will be recomputed at next deflate call.
                 }
@@ -1343,9 +1343,9 @@ internal sealed class DeflateManager
 
             if (this.lookahead >= MIN_MATCH)
             {
-                this.ins_h = (((this.ins_h) << this.hash_shift) ^ (this.window[(this.strstart) + (MIN_MATCH - 1)] & 0xff)) & this.hash_mask;
+                this.ins_h = ((this.ins_h << this.hash_shift) ^ (this.window[this.strstart + (MIN_MATCH - 1)] & 0xff)) & this.hash_mask;
                 //  prev[strstart&w_mask]=hash_head=head[ins_h];
-                hash_head = (this.head[this.ins_h] & 0xffff);
+                hash_head = this.head[this.ins_h] & 0xffff;
                 this.prev[this.strstart & this.w_mask] = this.head[this.ins_h];
                 this.head[this.ins_h] = unchecked((short)this.strstart);
             }
@@ -1393,15 +1393,15 @@ internal sealed class DeflateManager
                 // strstart-1 and strstart are already inserted. If there is not
                 // enough lookahead, the last two strings are not inserted in
                 // the hash table.
-                this.lookahead -= (this.prev_length - 1);
+                this.lookahead -= this.prev_length - 1;
                 this.prev_length -= 2;
                 do
                 {
                     if (++this.strstart <= max_insert)
                     {
-                        this.ins_h = (((this.ins_h) << this.hash_shift) ^ (this.window[(this.strstart) + (MIN_MATCH - 1)] & 0xff)) & this.hash_mask;
+                        this.ins_h = ((this.ins_h << this.hash_shift) ^ (this.window[this.strstart + (MIN_MATCH - 1)] & 0xff)) & this.hash_mask;
                         //prev[strstart&w_mask]=hash_head=head[ins_h];
-                        hash_head = (this.head[this.ins_h] & 0xffff);
+                        hash_head = this.head[this.ins_h] & 0xffff;
                         this.prev[this.strstart & this.w_mask] = this.head[this.ins_h];
                         this.head[this.ins_h] = unchecked((short)this.strstart);
                     }
@@ -1482,7 +1482,7 @@ internal sealed class DeflateManager
         int chain_length = this.config.MaxChainLength; // max hash chain length
         int scan         = this.strstart;              // current string
         int best_len     = this.prev_length;           // best match length so far
-        int limit        = this.strstart > (this.w_size - MIN_LOOKAHEAD) ? this.strstart - (this.w_size - MIN_LOOKAHEAD) : 0;
+        int limit        = this.strstart > this.w_size - MIN_LOOKAHEAD ? this.strstart - (this.w_size - MIN_LOOKAHEAD) : 0;
 
         int niceLength = this.config.NiceLength;
 
@@ -1552,7 +1552,7 @@ internal sealed class DeflateManager
                 scan_end = this.window[scan + best_len];
             }
         }
-        while ((cur_match = (this.prev[cur_match & wmask] & 0xffff)) > limit && --chain_length != 0);
+        while ((cur_match = this.prev[cur_match & wmask] & 0xffff) > limit && --chain_length != 0);
 
         if (best_len <= this.lookahead)
         {
@@ -1612,7 +1612,7 @@ internal sealed class DeflateManager
         this.hash_bits = memLevel + 7;
         this.hash_size = 1 << this.hash_bits;
         this.hash_mask = this.hash_size - 1;
-        this.hash_shift = ((this.hash_bits + MIN_MATCH - 1) / MIN_MATCH);
+        this.hash_shift = (this.hash_bits + MIN_MATCH - 1) / MIN_MATCH;
 
         this.window = new byte[this.w_size * 2];
         this.prev = new short[this.w_size];
@@ -1653,7 +1653,7 @@ internal sealed class DeflateManager
 
         this.Rfc1950BytesEmitted = false;
 
-        this.status = (this.WantRfc1950HeaderBytes) ? INIT_STATE : BUSY_STATE;
+        this.status = this.WantRfc1950HeaderBytes ? INIT_STATE : BUSY_STATE;
         this._codec._Adler32 = Adler.Adler32(0, null, 0, 0);
 
         this.last_flush = (int)FlushType.None;
@@ -1755,11 +1755,11 @@ internal sealed class DeflateManager
         // call of fill_window.
 
         this.ins_h = this.window[0] & 0xff;
-        this.ins_h = (((this.ins_h) << this.hash_shift) ^ (this.window[1] & 0xff)) & this.hash_mask;
+        this.ins_h = ((this.ins_h << this.hash_shift) ^ (this.window[1] & 0xff)) & this.hash_mask;
 
         for (int n = 0; n <= length - MIN_MATCH; n++)
         {
-            this.ins_h = (((this.ins_h) << this.hash_shift) ^ (this.window[(n) + (MIN_MATCH - 1)] & 0xff)) & this.hash_mask;
+            this.ins_h = ((this.ins_h << this.hash_shift) ^ (this.window[n + (MIN_MATCH - 1)] & 0xff)) & this.hash_mask;
             this.prev[n & this.w_mask] = this.head[this.ins_h];
             this.head[this.ins_h] = (short)n;
         }
@@ -1774,12 +1774,12 @@ internal sealed class DeflateManager
             (this._codec.InputBuffer == null && this._codec.AvailableBytesIn != 0) ||
             (this.status == FINISH_STATE && flush != FlushType.Finish))
         {
-            this._codec.Message = _ErrorMessage[ZlibConstants.Z_NEED_DICT - (ZlibConstants.Z_STREAM_ERROR)];
+            this._codec.Message = _ErrorMessage[ZlibConstants.Z_NEED_DICT - ZlibConstants.Z_STREAM_ERROR];
             throw new ZlibException(String.Format("Something is fishy. [{0}]", this._codec.Message));
         }
         if (this._codec.AvailableBytesOut == 0)
         {
-            this._codec.Message = _ErrorMessage[ZlibConstants.Z_NEED_DICT - (ZlibConstants.Z_BUF_ERROR)];
+            this._codec.Message = _ErrorMessage[ZlibConstants.Z_NEED_DICT - ZlibConstants.Z_BUF_ERROR];
             throw new ZlibException("OutputBuffer is full (AvailableBytesOut == 0)");
         }
 
@@ -1797,7 +1797,7 @@ internal sealed class DeflateManager
                 level_flags = 3;
             }
 
-            header |= (level_flags << 6);
+            header |= level_flags << 6;
             if (this.strstart != 0)
             {
                 header |= PRESET_DICT;
@@ -1864,7 +1864,7 @@ internal sealed class DeflateManager
         // User must not provide more input after the first FINISH:
         if (this.status == FINISH_STATE && this._codec.AvailableBytesIn != 0)
         {
-            this._codec.Message = _ErrorMessage[ZlibConstants.Z_NEED_DICT - (ZlibConstants.Z_BUF_ERROR)];
+            this._codec.Message = _ErrorMessage[ZlibConstants.Z_NEED_DICT - ZlibConstants.Z_BUF_ERROR];
             throw new ZlibException("status == FINISH_STATE && _codec.AvailableBytesIn != 0");
         }
 

@@ -79,7 +79,7 @@ public class ExcelExternalLinksCollection : IEnumerable<ExcelExternalLink>
     {
         if(file == null || file.Exists==false)
         {
-            throw (new FileNotFoundException("The file does not exist."));
+            throw new FileNotFoundException("The file does not exist.");
         }
         ExcelPackage? p = new ExcelPackage(file);
         ExcelExternalWorkbook? ewb = new ExcelExternalWorkbook(this._wb, p);
@@ -132,7 +132,7 @@ public class ExcelExternalLinksCollection : IEnumerable<ExcelExternalLink>
     {
         if(index < 0 || index>= this._list.Count)
         {
-            throw (new ArgumentOutOfRangeException(nameof(index)));
+            throw new ArgumentOutOfRangeException(nameof(index));
         }
 
         this.Remove(this._list[index]);

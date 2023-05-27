@@ -479,7 +479,7 @@ internal class SaveProgressEventArgs : ZipProgressEventArgs
     /// <param name="entriesSaved">Number of entries that have been saved.</param>
     /// <param name="entry">The entry involved in the event.</param>
     internal SaveProgressEventArgs(string archiveName, bool before, int entriesTotal, int entriesSaved, ZipEntry entry)
-        : base(archiveName, (before) ? ZipProgressEventType.Saving_BeforeWriteEntry : ZipProgressEventType.Saving_AfterWriteEntry)
+        : base(archiveName, before ? ZipProgressEventType.Saving_BeforeWriteEntry : ZipProgressEventType.Saving_AfterWriteEntry)
     {
         this.EntriesTotal = entriesTotal;
         this.CurrentEntry = entry;
@@ -543,7 +543,7 @@ internal class ExtractProgressEventArgs : ZipProgressEventArgs
     /// <param name="entry">The entry involved in the event.</param>
     /// <param name="extractLocation">The location to which entries are extracted.</param>
     internal ExtractProgressEventArgs(string archiveName, bool before, int entriesTotal, int entriesExtracted, ZipEntry entry, string extractLocation)
-        : base(archiveName, (before) ? ZipProgressEventType.Extracting_BeforeExtractEntry : ZipProgressEventType.Extracting_AfterExtractEntry)
+        : base(archiveName, before ? ZipProgressEventType.Extracting_BeforeExtractEntry : ZipProgressEventType.Extracting_AfterExtractEntry)
     {
         this.EntriesTotal = entriesTotal;
         this.CurrentEntry = entry;

@@ -112,8 +112,8 @@ public class ThemeTest : TestBase
         ExcelThemeManager? theme = _pck.Workbook.ThemeManager;
         Assert.AreNotEqual(theme.CurrentTheme, null);
         Assert.AreEqual(theme.CurrentTheme.ColorScheme.Accent1.ColorType, eDrawingColorType.Rgb);
-        Assert.AreEqual((uint)(theme.CurrentTheme.ColorScheme.Accent1.RgbColor.Color.ToArgb()), (uint)0xFF4472C4);
-        Assert.AreEqual((uint)(theme.CurrentTheme.ColorScheme.Light1.SystemColor.LastColor.ToArgb()), (uint)0xFFFFFFFF);
+        Assert.AreEqual((uint)theme.CurrentTheme.ColorScheme.Accent1.RgbColor.Color.ToArgb(), (uint)0xFF4472C4);
+        Assert.AreEqual((uint)theme.CurrentTheme.ColorScheme.Light1.SystemColor.LastColor.ToArgb(), (uint)0xFFFFFFFF);
         Assert.AreEqual(theme.CurrentTheme.ColorScheme.Light1.SystemColor.Color, eSystemColor.Window);
 
         Assert.AreEqual(theme.CurrentTheme.FontScheme.MajorFont.Count, 50);

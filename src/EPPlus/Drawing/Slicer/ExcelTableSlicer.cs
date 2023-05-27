@@ -84,7 +84,7 @@ public class ExcelTableSlicer : ExcelSlicer<ExcelTableSlicerCache>
         }
         catch (Exception ex)
         {
-            throw (new InvalidDataException("EPPlus internal error when deleting the slicer.", ex));
+            throw new InvalidDataException("EPPlus internal error when deleting the slicer.", ex);
         }
 
         base.DeleteMe();

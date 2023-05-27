@@ -104,15 +104,15 @@ public class SumIfsTests
     public void ShouldHandleTimeValuesCorrectly()
     {
         this._sheet.Cells["A1"].Value = null;
-        this._sheet.Cells["A2"].Value = (7d * 3600d + 33d * 60d)/(24d * 3600d);// 07:33
-        this._sheet.Cells["A3"].Value = (11d * 3600d + 18d * 60d) / (24d * 3600d);// 11:18
-        this._sheet.Cells["A4"].Value = (7d * 3600d + 18d * 60d) / (24d * 3600d);// 07:18
-        this._sheet.Cells["A5"].Value = (10d * 3600d + 30d * 60d) / (24d * 3600d);// 10:30
-        this._sheet.Cells["A6"].Value = (10d * 3600d + 33d * 60d) / (24d * 3600d);// 10:33
-        this._sheet.Cells["A7"].Value = (10d * 3600d + 24d * 60d) / (24d * 3600d);// 10:24
-        this._sheet.Cells["A8"].Value = (11d * 3600d + 00d * 60d) / (24d * 3600d);// 11:00
-        this._sheet.Cells["A9"].Value = (6d * 3600d + 54d * 60d) / (24d * 3600d);// 06:54
-        this._sheet.Cells["A10"].Value = (12d * 3600d + 00d * 60d) / (24d * 3600d);// 12:00
+        this._sheet.Cells["A2"].Value = ((7d * 3600d) + (33d * 60d))/(24d * 3600d);// 07:33
+        this._sheet.Cells["A3"].Value = ((11d * 3600d) + (18d * 60d)) / (24d * 3600d);// 11:18
+        this._sheet.Cells["A4"].Value = ((7d * 3600d) + (18d * 60d)) / (24d * 3600d);// 07:18
+        this._sheet.Cells["A5"].Value = ((10d * 3600d) + (30d * 60d)) / (24d * 3600d);// 10:30
+        this._sheet.Cells["A6"].Value = ((10d * 3600d) + (33d * 60d)) / (24d * 3600d);// 10:33
+        this._sheet.Cells["A7"].Value = ((10d * 3600d) + (24d * 60d)) / (24d * 3600d);// 10:24
+        this._sheet.Cells["A8"].Value = ((11d * 3600d) + (00d * 60d)) / (24d * 3600d);// 11:00
+        this._sheet.Cells["A9"].Value = ((6d * 3600d) + (54d * 60d)) / (24d * 3600d);// 06:54
+        this._sheet.Cells["A10"].Value = ((12d * 3600d) + (00d * 60d)) / (24d * 3600d);// 12:00
         this._sheet.Cells["A2:A10"].Calculate();
 
         for(int row = 2; row < 11; row++)

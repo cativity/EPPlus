@@ -77,7 +77,7 @@ public class ExcelRow : IRangeID
     /// <summary>
     /// Provides access to the node representing the row.
     /// </summary>
-    internal XmlNode Node { get { return (this._rowElement); } }
+    internal XmlNode Node { get { return this._rowElement; } }
 
     #region ExcelRow Hidden
     /// <summary>
@@ -343,7 +343,7 @@ public class ExcelRow : IRangeID
     }
     internal static ulong GetRowID(int sheetID, int row)
     {
-        return ((ulong)sheetID) + (((ulong)row) << 29);
+        return (ulong)sheetID + ((ulong)row << 29);
 
     }
         
@@ -358,7 +358,7 @@ public class ExcelRow : IRangeID
         }
         set
         {
-            this.Row = ((int)(value >> 29));
+            this.Row = (int)(value >> 29);
         }
     }
 

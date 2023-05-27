@@ -43,7 +43,7 @@ internal class GammaPinvHelper
 
         if (p >= 1)
         {
-            return System.Math.Max(100, a + 100 * System.Math.Sqrt(a));
+            return System.Math.Max(100, a + (100 * System.Math.Sqrt(a)));
         }
 
         if (p <= 0)
@@ -54,28 +54,28 @@ internal class GammaPinvHelper
         if (a > 1)
         {
             lna1 = System.Math.Log(a1);
-            afac = System.Math.Exp(a1 * (lna1 - 1) - gln);
-            double pp = (p < 0.5) ? p : 1 - p;
+            afac = System.Math.Exp((a1 * (lna1 - 1)) - gln);
+            double pp = p < 0.5 ? p : 1 - p;
             t = System.Math.Sqrt(-2 * System.Math.Log(pp));
-            x = (2.30753 + t * 0.27061) / (1 + t * (0.99229 + t * 0.04481)) - t;
+            x = ((2.30753 + (t * 0.27061)) / (1 + (t * (0.99229 + (t * 0.04481))))) - t;
             if (p < 0.5)
             {
                 x = -x;
             }
 
             x = System.Math.Max(1e-3,
-                                a * System.Math.Pow(1 - 1 / (9 * a) - x / (3 * System.Math.Sqrt(a)), 3));
+                                a * System.Math.Pow(1 - (1 / (9 * a)) - (x / (3 * System.Math.Sqrt(a))), 3));
         }
         else
         {
-            t = 1 - a * (0.253 + a * 0.12);
+            t = 1 - (a * (0.253 + (a * 0.12)));
             if (p < t)
             {
                 x = System.Math.Pow(p / t, 1 / a);
             }
             else
             {
-                x = 1 - System.Math.Log(1 - (p - t) / (1 - t));
+                x = 1 - System.Math.Log(1 - ((p - t) / (1 - t)));
             }
         }
 
@@ -91,15 +91,15 @@ internal class GammaPinvHelper
             //err = jStat.lowRegGamma(a, x) - p;
             if (a > 1)
             {
-                t = afac * System.Math.Exp(-(x - a1) + a1 * (System.Math.Log(x) - lna1));
+                t = afac * System.Math.Exp(-(x - a1) + (a1 * (System.Math.Log(x) - lna1)));
             }
             else
             {
-                t = System.Math.Exp(-x + a1 * System.Math.Log(x) - gln);
+                t = System.Math.Exp(-x + (a1 * System.Math.Log(x)) - gln);
             }
 
             double u = err / t;
-            x -= (t = u / (1 - 0.5 * System.Math.Min(1, u * ((a - 1) / x - 1))));
+            x -= t = u / (1 - (0.5 * System.Math.Min(1, u * (((a - 1) / x) - 1))));
             if (x <= 0)
             {
                 x = 0.5 * (x + t);

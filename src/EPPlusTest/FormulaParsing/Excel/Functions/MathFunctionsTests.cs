@@ -846,10 +846,10 @@ public class MathFunctionsTests
         Rand? func = new Rand();
         FunctionArgument[]? args = new FunctionArgument[0];
         CompileResult? result1 = func.Execute(args, this._parsingContext);
-        Assert.IsTrue(((double)result1.Result) > 0 && ((double)result1.Result) < 1);
+        Assert.IsTrue((double)result1.Result > 0 && (double)result1.Result < 1);
         CompileResult? result2 = func.Execute(args, this._parsingContext);
         Assert.AreNotEqual(result1.Result, result2.Result, "The two numbers were the same");
-        Assert.IsTrue(((double)result2.Result) > 0 && ((double)result2.Result) < 1);
+        Assert.IsTrue((double)result2.Result > 0 && (double)result2.Result < 1);
     }
 
     [TestMethod]

@@ -60,7 +60,7 @@ public class ExcelChartStyleMarkerLayout : XmlHelper
         {
             if (value < 2 || value > 72)
             {
-                throw (new ArgumentOutOfRangeException("Marker size must be between 2 and 72"));
+                throw new ArgumentOutOfRangeException("Marker size must be between 2 and 72");
             }
 
             this.SetXmlNodeString("@size", value.ToString(CultureInfo.InvariantCulture));

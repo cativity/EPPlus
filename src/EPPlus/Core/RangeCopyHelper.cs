@@ -179,7 +179,7 @@ internal class RangeCopyHelper
                     this._destination._worksheet.ConditionalFormatting.AddFromXml(new ExcelAddress(newAddress), cf.PivotTable, cf.Node.OuterXml);
                     if (cf.Style.HasValue)
                     {
-                        ExcelConditionalFormattingRule? destRule = ((ExcelConditionalFormattingRule)this._destination._worksheet.ConditionalFormatting[this._destination._worksheet.ConditionalFormatting.Count - 1]);
+                        ExcelConditionalFormattingRule? destRule = (ExcelConditionalFormattingRule)this._destination._worksheet.ConditionalFormatting[this._destination._worksheet.ConditionalFormatting.Count - 1];
                         destRule.SetStyle((ExcelDxfStyleConditionalFormatting)cf.Style.Clone());
                     }
                 }
@@ -392,7 +392,7 @@ internal class RangeCopyHelper
                 this._destination._worksheet.SetValueStyleIdInner(cell.Row, cell.Column, cell.Value, cell.StyleID ?? 0);
             }
 
-            if ((EnumUtil.HasNotFlag(this._copyOptions, ExcelRangeCopyOptionFlags.ExcludeFormulas) && EnumUtil.HasNotFlag(this._copyOptions, ExcelRangeCopyOptionFlags.ExcludeValues)) &&
+            if (EnumUtil.HasNotFlag(this._copyOptions, ExcelRangeCopyOptionFlags.ExcludeFormulas) && EnumUtil.HasNotFlag(this._copyOptions, ExcelRangeCopyOptionFlags.ExcludeValues) &&
                 cell.Formula != null)
             {
                 cell.Formula = ExcelCellBase.UpdateFormulaReferences(cell.Formula.ToString(), this._destination._fromRow - fromRow, this._destination._fromCol - fromCol, 0, 0, this._destination.WorkSheetName, this._destination.WorkSheetName, true, true);
@@ -431,8 +431,8 @@ internal class RangeCopyHelper
                 this._destination._worksheet._flags.SetValue(cell.Row, cell.Column, cell.Flag);
             }
 
-            if(EnumUtil.HasNotFlag(this._copyOptions, ExcelRangeCopyOptionFlags.ExcludeFormulas | ExcelRangeCopyOptionFlags.ExcludeValues) &&
-               cell.MetaData.cm > 0 || cell.MetaData.vm > 0)
+            if((EnumUtil.HasNotFlag(this._copyOptions, ExcelRangeCopyOptionFlags.ExcludeFormulas | ExcelRangeCopyOptionFlags.ExcludeValues) &&
+                cell.MetaData.cm > 0) || cell.MetaData.vm > 0)
             {
                 this._destination._worksheet._metadataStore.SetValue(cell.Row, cell.Column, cell.MetaData);
             }

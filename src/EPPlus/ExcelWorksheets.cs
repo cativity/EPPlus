@@ -110,7 +110,7 @@ public class ExcelWorksheets : XmlHelper, IEnumerable<ExcelWorksheet>, IDisposab
     /// </summary>
     public int Count
     {
-        get { return (this._worksheets.Count); }
+        get { return this._worksheets.Count; }
     }
     #endregion
     internal const string ERR_DUP_WORKSHEET = "A worksheet with this name already exists in the workbook";
@@ -123,13 +123,13 @@ public class ExcelWorksheets : XmlHelper, IEnumerable<ExcelWorksheet>, IDisposab
     /// <returns>An enumerator</returns>
     public IEnumerator<ExcelWorksheet> GetEnumerator()
     {
-        return (this._worksheets.GetEnumerator());
+        return this._worksheets.GetEnumerator();
     }
     #region IEnumerable Members
 
     IEnumerator IEnumerable.GetEnumerator()
     {
-        return (this._worksheets.GetEnumerator());
+        return this._worksheets.GetEnumerator();
     }
 
     #endregion
@@ -150,7 +150,7 @@ public class ExcelWorksheets : XmlHelper, IEnumerable<ExcelWorksheet>, IDisposab
             Name = ValidateFixSheetName(Name);
             if (this.GetByName(Name) != null)
             {
-                throw (new InvalidOperationException(ERR_DUP_WORKSHEET + " : " + Name));
+                throw new InvalidOperationException(ERR_DUP_WORKSHEET + " : " + Name);
             }
 
             this.GetSheetURI(ref Name, out int sheetID, out Uri uriWorksheet, isChart);
@@ -208,7 +208,7 @@ public class ExcelWorksheets : XmlHelper, IEnumerable<ExcelWorksheet>, IDisposab
     {
         if (ExcelChart.IsTypeStock(chartType))
         {
-            throw (new InvalidOperationException("Please use method AddStockChart for Stock Charts"));
+            throw new InvalidOperationException("Please use method AddStockChart for Stock Charts");
         }
         return (ExcelChartsheet)this.AddSheet(Name, true, chartType, null);
     }
@@ -523,7 +523,7 @@ public class ExcelWorksheets : XmlHelper, IEnumerable<ExcelWorksheet>, IDisposab
         }
         else
         {
-            throw (new ArgumentException("Worksheet is not in the collection."));
+            throw new ArgumentException("Worksheet is not in the collection.");
         }
     }
     #endregion
@@ -566,7 +566,7 @@ public class ExcelWorksheets : XmlHelper, IEnumerable<ExcelWorksheet>, IDisposab
             }
             else
             {
-                throw (new IndexOutOfRangeException("Worksheet position out of range."));
+                throw new IndexOutOfRangeException("Worksheet position out of range.");
             }
         }
     }
@@ -628,7 +628,7 @@ public class ExcelWorksheets : XmlHelper, IEnumerable<ExcelWorksheet>, IDisposab
                 ws = worksheet;
             }
         }
-        return (ws);
+        return ws;
     }
 
     /// <summary>

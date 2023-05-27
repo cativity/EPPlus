@@ -79,16 +79,16 @@ internal static class ErfHelper
             return 100;
         }
 
-        double pp = (p < 1) ? p : 2 - p;
+        double pp = p < 1 ? p : 2 - p;
         double t = System.Math.Sqrt(-2 * System.Math.Log(pp / 2));
-        double x = -0.70711 * ((2.30753 + t * 0.27061) /
-                               (1 + t * (0.99229 + t * 0.04481)) - t);
+        double x = -0.70711 * (((2.30753 + (t * 0.27061)) /
+                                (1 + (t * (0.99229 + (t * 0.04481))))) - t);
 
         for (int j = 0; j < 2; j++)
         {
             double err = Erfc(x) - pp;
-            x += err / (1.12837916709551257 * System.Math.Exp(-x * x) - x * err);
+            x += err / ((1.12837916709551257 * System.Math.Exp(-x * x)) - (x * err));
         }
-        return (p < 1) ? x : -x;
+        return p < 1 ? x : -x;
     }
 }

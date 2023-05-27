@@ -76,7 +76,7 @@ public class ExcelDrawingBlipEffects : XmlHelper
     {
         if(this.Duotone!=null)
         {
-            throw (new InvalidOperationException("Duotone property is already added"));
+            throw new InvalidOperationException("Duotone property is already added");
         }
         XmlNode? node = this.CreateNode(_duoTonePath);
         node.InnerXml = "<a:schemeClr val=\"accent1\"><a:shade val=\"36000\"/><a:satMod val=\"120000\" /></a:schemeClr><a:schemeClr val=\"accent1\"><a:tint val=\"40000\"/></a:schemeClr>";
@@ -107,7 +107,7 @@ public class ExcelDrawingBlipEffects : XmlHelper
     {
         if (this.ColorChange != null)
         {
-            throw (new InvalidOperationException("ColorChange property is already added"));
+            throw new InvalidOperationException("ColorChange property is already added");
         }
         XmlNode? node = this.CreateNode(_clrChangePath);
         node.InnerXml = "<a:schemeClr val=\"accent1\"><a:shade val=\"36000\"/><a:satMod val=\"120000\" /></a:schemeClr><a:schemeClr val=\"accent1\"><a:tint val=\"40000\"/></a:schemeClr>";
@@ -138,7 +138,7 @@ public class ExcelDrawingBlipEffects : XmlHelper
     {
         if (this.ColorReplace != null)
         {
-            throw (new InvalidOperationException("ColorChange property is already added"));
+            throw new InvalidOperationException("ColorChange property is already added");
         }
         XmlNode? node = this.CreateNode(_clrReplPath);
         node.InnerXml = "<a:schemeClr val=\"accent1\" />";

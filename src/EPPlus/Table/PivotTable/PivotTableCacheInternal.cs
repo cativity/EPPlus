@@ -105,7 +105,7 @@ internal class PivotTableCacheInternal : XmlHelper
             }
             else
             {
-                throw (new ArgumentException("The cache source is not a worksheet"));
+                throw new ArgumentException("The cache source is not a worksheet");
             }
             return sourceRange;
         }

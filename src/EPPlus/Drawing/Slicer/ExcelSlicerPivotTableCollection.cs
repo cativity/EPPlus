@@ -69,7 +69,7 @@ public class ExcelSlicerPivotTableCollection : IEnumerable<ExcelPivotTable>
     {
         if(this._list.Count > 0 && this._list[0].CacheId != pivotTable.CacheId)
         {
-            throw (new InvalidOperationException("Multiple Pivot tables added to a slicer must refer to the same cache."));
+            throw new InvalidOperationException("Multiple Pivot tables added to a slicer must refer to the same cache.");
         }
 
         this._list.Add(pivotTable);

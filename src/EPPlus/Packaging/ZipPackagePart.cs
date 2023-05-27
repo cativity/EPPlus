@@ -145,7 +145,7 @@ internal class ZipPackagePart : ZipPackagePartBase, IDisposable
         {
             string f = this.Uri.OriginalString;
             string? name = Path.GetFileName(f);
-            this._rels.WriteZip(os, (string.Format("{0}_rels/{1}.rels", f.Substring(0, f.Length - name.Length), name)));
+            this._rels.WriteZip(os, string.Format("{0}_rels/{1}.rels", f.Substring(0, f.Length - name.Length), name));
         }
         b = null;
     }

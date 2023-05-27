@@ -241,7 +241,7 @@ internal class ExcelXmlWriter
                     if (this._ws._values.PrevCell(ref r, ref c))
                     {
                         ExcelValue val = this._ws._values.GetValue(0, c);
-                        ExcelColumn? column = (ExcelColumn)(val._value);
+                        ExcelColumn? column = (ExcelColumn)val._value;
                         if (column != null && column.ColumnMax >= col) //Fixes issue 15174
                         {
                             this.columnStyles.Add(col, val._styleId);
@@ -381,7 +381,7 @@ internal class ExcelXmlWriter
             if (cse.Column > 0)
             {
                 ExcelValue val = cse.Value;
-                int styleID = cellXfs[(val._styleId == 0 ? this.GetStyleIdDefaultWithMemo(cse.Row, cse.Column) : val._styleId)].newID;
+                int styleID = cellXfs[val._styleId == 0 ? this.GetStyleIdDefaultWithMemo(cse.Row, cse.Column) : val._styleId].newID;
                 styleID = styleID < 0 ? 0 : styleID;
                 //Add the row element if it's a new row
                 if (cse.Row != row)
@@ -411,7 +411,7 @@ internal class ExcelXmlWriter
                 {
                     if (!this._ws._sharedFormulas.ContainsKey(sfId))
                     {
-                        throw (new InvalidDataException($"SharedFormulaId {sfId} not found on Worksheet {this._ws.Name} cell {cse.CellAddress}, SharedFormulas Count {this._ws._sharedFormulas.Count}"));
+                        throw new InvalidDataException($"SharedFormulaId {sfId} not found on Worksheet {this._ws.Name} cell {cse.CellAddress}, SharedFormulas Count {this._ws._sharedFormulas.Count}");
                     }
                     Formulas? f = this._ws._sharedFormulas[sfId];
 

@@ -82,7 +82,7 @@ internal class LoadFromText
                             }
                             else
                             {
-                                throw (new Exception(string.Format("Invalid Text Qualifier in line : {0}", line)));
+                                throw new Exception(string.Format("Invalid Text Qualifier in line : {0}", line));
                             }
                         }
                         isQualifier = !isQualifier;
@@ -118,7 +118,7 @@ internal class LoadFromText
                             {
                                 if (QCount % 2 == 1)
                                 {
-                                    throw (new Exception(string.Format("Text delimiter is not closed in line : {0}", line)));
+                                    throw new Exception(string.Format("Text delimiter is not closed in line : {0}", line));
                                 }
                                 v += c;
                             }
@@ -132,11 +132,11 @@ internal class LoadFromText
                     {
                         QCount--;
                     }
-                    v += new string(this._format.TextQualifier, (QCount) / 2);
+                    v += new string(this._format.TextQualifier, QCount / 2);
                 }
                 if (lineQCount % 2 == 1)
                 {
-                    throw (new Exception(string.Format("Text delimiter is not closed in line : {0}", line)));
+                    throw new Exception(string.Format("Text delimiter is not closed in line : {0}", line));
                 }
 
                 items.Add(ConvertData(this._format, v, col, isText));
@@ -219,7 +219,7 @@ internal class LoadFromText
 
         if (inTQ)
         {
-            throw (new ArgumentException(string.Format("Text delimiter is not closed in line : {0}", list.Count)));
+            throw new ArgumentException(string.Format("Text delimiter is not closed in line : {0}", list.Count));
         }
 
         //if (text.Length >= Format.EOL.Length && IsEOL(text, text.Length-2, Format.EOL))

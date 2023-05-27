@@ -56,7 +56,7 @@ public class ExcelPivotTableFieldCollection : ExcelPivotTableFieldCollectionBase
     {
         foreach (ExcelPivotTableField? fld in this._list)
         {
-            if (fld.Grouping is ExcelPivotTableFieldDateGroup && (((ExcelPivotTableFieldDateGroup)fld.Grouping).GroupBy) == GroupBy)
+            if (fld.Grouping is ExcelPivotTableFieldDateGroup && ((ExcelPivotTableFieldDateGroup)fld.Grouping).GroupBy == GroupBy)
             {
                 return fld;
             }
@@ -126,7 +126,7 @@ public class ExcelPivotTableFieldCollection : ExcelPivotTableFieldCollectionBase
     {            
         if(this._list.Exists(x=>x.Name.Equals(name,StringComparison.OrdinalIgnoreCase)))
         {
-            throw (new InvalidOperationException($"Field with name {name} already exists in the collection"));
+            throw new InvalidOperationException($"Field with name {name} already exists in the collection");
         }
         PivotTableCacheInternal? cache = this._table.CacheDefinition._cacheReference;
         ExcelPivotTableCacheField? cacheField = cache.AddFormula(name, formula);

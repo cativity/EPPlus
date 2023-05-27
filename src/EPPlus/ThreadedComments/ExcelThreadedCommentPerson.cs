@@ -131,7 +131,7 @@ public class ExcelThreadedCommentPerson : XmlHelper, IEqualityComparer<ExcelThre
             return true;
         }
 
-        if (x == null ^ y == null)
+        if ((x == null) ^ (y == null))
         {
             return false;
         }

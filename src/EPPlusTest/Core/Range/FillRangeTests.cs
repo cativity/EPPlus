@@ -177,12 +177,12 @@ public class RangeFillTests : TestBase
         //Assert
         Assert.AreEqual(startDate.Ticks, ((DateTime)_wsNum.Cells["A1"].Value).Ticks);
         Assert.AreEqual(startDate.Ticks + TimeSpan.TicksPerDay, ((DateTime)_wsNum.Cells["A2"].Value).Ticks);
-        Assert.AreEqual(startDate.Ticks + TimeSpan.TicksPerDay*2, ((DateTime)_wsNum.Cells["A3"].Value).Ticks);
-        Assert.AreEqual(startDate.Ticks + TimeSpan.TicksPerDay*3, ((DateTime)_wsNum.Cells["A4"].Value).Ticks);
-        Assert.AreEqual(startDate.Ticks + TimeSpan.TicksPerDay*4, ((DateTime)_wsNum.Cells["A5"].Value).Ticks);
+        Assert.AreEqual(startDate.Ticks + (TimeSpan.TicksPerDay*2), ((DateTime)_wsNum.Cells["A3"].Value).Ticks);
+        Assert.AreEqual(startDate.Ticks + (TimeSpan.TicksPerDay*3), ((DateTime)_wsNum.Cells["A4"].Value).Ticks);
+        Assert.AreEqual(startDate.Ticks + (TimeSpan.TicksPerDay*4), ((DateTime)_wsNum.Cells["A5"].Value).Ticks);
 
         Assert.AreEqual(startDate.Ticks + TimeSpan.TicksPerDay, ((DateTime)_wsNum.Cells["B2"].Value).Ticks);
-        Assert.AreEqual(startDate.Ticks + TimeSpan.TicksPerDay * 4, ((DateTime)_wsNum.Cells["B5"].Value).Ticks);
+        Assert.AreEqual(startDate.Ticks + (TimeSpan.TicksPerDay * 4), ((DateTime)_wsNum.Cells["B5"].Value).Ticks);
     }
     [TestMethod]
     public void FillDateDown()
@@ -194,9 +194,9 @@ public class RangeFillTests : TestBase
         //Assert
         Assert.AreEqual(startDate.Ticks, ((DateTime)_wsDate.Cells["C1"].Value).Ticks);
         Assert.AreEqual(startDate.Ticks + TimeSpan.TicksPerDay, ((DateTime)_wsDate.Cells["C2"].Value).Ticks);
-        Assert.AreEqual(startDate.Ticks + TimeSpan.TicksPerDay * 2, ((DateTime)_wsDate.Cells["C3"].Value).Ticks);
-        Assert.AreEqual(startDate.Ticks + TimeSpan.TicksPerDay * 3, ((DateTime)_wsDate.Cells["C4"].Value).Ticks);
-        Assert.AreEqual(startDate.Ticks + TimeSpan.TicksPerDay * 4, ((DateTime)_wsDate.Cells["C5"].Value).Ticks);
+        Assert.AreEqual(startDate.Ticks + (TimeSpan.TicksPerDay * 2), ((DateTime)_wsDate.Cells["C3"].Value).Ticks);
+        Assert.AreEqual(startDate.Ticks + (TimeSpan.TicksPerDay * 3), ((DateTime)_wsDate.Cells["C4"].Value).Ticks);
+        Assert.AreEqual(startDate.Ticks + (TimeSpan.TicksPerDay * 4), ((DateTime)_wsDate.Cells["C5"].Value).Ticks);
 
         Assert.AreEqual("D1", _wsDate.Cells["D1"].Value);
         Assert.IsNull(_wsDate.Cells["D2"].Value);
@@ -211,9 +211,9 @@ public class RangeFillTests : TestBase
         //Assert
         Assert.AreEqual(startDate.Ticks, ((DateTime)_wsDate.Cells["C1"].Value).Ticks);
         Assert.AreEqual(startDate.Ticks + TimeSpan.TicksPerDay, ((DateTime)_wsDate.Cells["D1"].Value).Ticks);
-        Assert.AreEqual(startDate.Ticks + TimeSpan.TicksPerDay * 2, ((DateTime)_wsDate.Cells["E1"].Value).Ticks);
-        Assert.AreEqual(startDate.Ticks + TimeSpan.TicksPerDay * 3, ((DateTime)_wsDate.Cells["F1"].Value).Ticks);
-        Assert.AreEqual(startDate.Ticks + TimeSpan.TicksPerDay * 4, ((DateTime)_wsDate.Cells["G1"].Value).Ticks);
+        Assert.AreEqual(startDate.Ticks + (TimeSpan.TicksPerDay * 2), ((DateTime)_wsDate.Cells["E1"].Value).Ticks);
+        Assert.AreEqual(startDate.Ticks + (TimeSpan.TicksPerDay * 3), ((DateTime)_wsDate.Cells["F1"].Value).Ticks);
+        Assert.AreEqual(startDate.Ticks + (TimeSpan.TicksPerDay * 4), ((DateTime)_wsDate.Cells["G1"].Value).Ticks);
 
         Assert.AreEqual("C2", _wsDate.Cells["C2"].Value);
         Assert.IsNull(_wsDate.Cells["D2"].Value);
@@ -234,12 +234,12 @@ public class RangeFillTests : TestBase
         //Assert
         Assert.AreEqual(startDate.Ticks, ((DateTime)_wsDate.Cells["G1"].Value).Ticks);
         Assert.AreEqual(startDate.Ticks + TimeSpan.TicksPerDay, ((DateTime)_wsDate.Cells["F1"].Value).Ticks);
-        Assert.AreEqual(startDate.Ticks + TimeSpan.TicksPerDay * 2, ((DateTime)_wsDate.Cells["E1"].Value).Ticks);
-        Assert.AreEqual(startDate.Ticks + TimeSpan.TicksPerDay * 3, ((DateTime)_wsDate.Cells["D1"].Value).Ticks);
-        Assert.AreEqual(startDate.Ticks + TimeSpan.TicksPerDay * 4, ((DateTime)_wsDate.Cells["C1"].Value).Ticks);
+        Assert.AreEqual(startDate.Ticks + (TimeSpan.TicksPerDay * 2), ((DateTime)_wsDate.Cells["E1"].Value).Ticks);
+        Assert.AreEqual(startDate.Ticks + (TimeSpan.TicksPerDay * 3), ((DateTime)_wsDate.Cells["D1"].Value).Ticks);
+        Assert.AreEqual(startDate.Ticks + (TimeSpan.TicksPerDay * 4), ((DateTime)_wsDate.Cells["C1"].Value).Ticks);
 
         Assert.AreEqual(startDate.Ticks, ((DateTime)_wsDate.Cells["G2"].Value).Ticks);
-        Assert.AreEqual(startDate.Ticks + TimeSpan.TicksPerDay * 4, ((DateTime)_wsDate.Cells["C2"].Value).Ticks);
+        Assert.AreEqual(startDate.Ticks + (TimeSpan.TicksPerDay * 4), ((DateTime)_wsDate.Cells["C2"].Value).Ticks);
     }
 
     [TestMethod]
@@ -251,9 +251,9 @@ public class RangeFillTests : TestBase
         _wsDate.Cells["C1:D5"].FillDateTime(x=>x.StartPosition=eFillStartPosition.BottomRight);
 
         //Assert
-        Assert.AreEqual(startDate.Ticks + TimeSpan.TicksPerDay * 4, ((DateTime)_wsDate.Cells["C1"].Value).Ticks);
-        Assert.AreEqual(startDate.Ticks + TimeSpan.TicksPerDay * 3, ((DateTime)_wsDate.Cells["C2"].Value).Ticks);
-        Assert.AreEqual(startDate.Ticks + TimeSpan.TicksPerDay * 2, ((DateTime)_wsDate.Cells["C3"].Value).Ticks);
+        Assert.AreEqual(startDate.Ticks + (TimeSpan.TicksPerDay * 4), ((DateTime)_wsDate.Cells["C1"].Value).Ticks);
+        Assert.AreEqual(startDate.Ticks + (TimeSpan.TicksPerDay * 3), ((DateTime)_wsDate.Cells["C2"].Value).Ticks);
+        Assert.AreEqual(startDate.Ticks + (TimeSpan.TicksPerDay * 2), ((DateTime)_wsDate.Cells["C3"].Value).Ticks);
         Assert.AreEqual(startDate.Ticks + TimeSpan.TicksPerDay, ((DateTime)_wsDate.Cells["C4"].Value).Ticks);
         Assert.AreEqual(startDate.Ticks, ((DateTime)_wsDate.Cells["C5"].Value).Ticks);
 
@@ -270,12 +270,12 @@ public class RangeFillTests : TestBase
         //Assert
         Assert.AreEqual(startDate.Ticks, ((DateTime)_wsDate.Cells["E1"].Value).Ticks);
         Assert.AreEqual(startDate.Ticks + TimeSpan.TicksPerDay, ((DateTime)_wsDate.Cells["E2"].Value).Ticks);
-        Assert.AreEqual(startDate.Ticks + TimeSpan.TicksPerDay * 2, ((DateTime)_wsDate.Cells["E3"].Value).Ticks);
-        Assert.AreEqual(startDate.Ticks + TimeSpan.TicksPerDay * 3, ((DateTime)_wsDate.Cells["E4"].Value).Ticks);
-        Assert.AreEqual(startDate.Ticks + TimeSpan.TicksPerDay * 4, ((DateTime)_wsDate.Cells["E5"].Value).Ticks);
+        Assert.AreEqual(startDate.Ticks + (TimeSpan.TicksPerDay * 2), ((DateTime)_wsDate.Cells["E3"].Value).Ticks);
+        Assert.AreEqual(startDate.Ticks + (TimeSpan.TicksPerDay * 3), ((DateTime)_wsDate.Cells["E4"].Value).Ticks);
+        Assert.AreEqual(startDate.Ticks + (TimeSpan.TicksPerDay * 4), ((DateTime)_wsDate.Cells["E5"].Value).Ticks);
 
         Assert.AreEqual(startDate.Ticks, ((DateTime)_wsDate.Cells["F1"].Value).Ticks);
-        Assert.AreEqual(startDate.Ticks + TimeSpan.TicksPerDay * 4, ((DateTime)_wsDate.Cells["F5"].Value).Ticks);
+        Assert.AreEqual(startDate.Ticks + (TimeSpan.TicksPerDay * 4), ((DateTime)_wsDate.Cells["F5"].Value).Ticks);
     }
     [TestMethod]
     public void FillDate_Week_WithNumberFormat()
@@ -289,13 +289,13 @@ public class RangeFillTests : TestBase
             
         //Assert
         Assert.AreEqual(startDate.Ticks, ((DateTime)_wsDate.Cells["G1"].Value).Ticks);
-        Assert.AreEqual(startDate.Ticks + TimeSpan.TicksPerDay * 7, ((DateTime)_wsDate.Cells["G2"].Value).Ticks);
-        Assert.AreEqual(startDate.Ticks + TimeSpan.TicksPerDay * 14, ((DateTime)_wsDate.Cells["G3"].Value).Ticks);
-        Assert.AreEqual(startDate.Ticks + TimeSpan.TicksPerDay * 21, ((DateTime)_wsDate.Cells["G4"].Value).Ticks);
-        Assert.AreEqual(startDate.Ticks + TimeSpan.TicksPerDay * 28, ((DateTime)_wsDate.Cells["G5"].Value).Ticks);
+        Assert.AreEqual(startDate.Ticks + (TimeSpan.TicksPerDay * 7), ((DateTime)_wsDate.Cells["G2"].Value).Ticks);
+        Assert.AreEqual(startDate.Ticks + (TimeSpan.TicksPerDay * 14), ((DateTime)_wsDate.Cells["G3"].Value).Ticks);
+        Assert.AreEqual(startDate.Ticks + (TimeSpan.TicksPerDay * 21), ((DateTime)_wsDate.Cells["G4"].Value).Ticks);
+        Assert.AreEqual(startDate.Ticks + (TimeSpan.TicksPerDay * 28), ((DateTime)_wsDate.Cells["G5"].Value).Ticks);
 
         Assert.AreEqual(startDate.Ticks, ((DateTime)_wsDate.Cells["H1"].Value).Ticks);
-        Assert.AreEqual(startDate.Ticks + TimeSpan.TicksPerDay * 28, ((DateTime)_wsDate.Cells["H5"].Value).Ticks);
+        Assert.AreEqual(startDate.Ticks + (TimeSpan.TicksPerDay * 28), ((DateTime)_wsDate.Cells["H5"].Value).Ticks);
 
         Assert.AreEqual("2021-02-22", _wsDate.Cells["G2"].Text);
 
@@ -396,12 +396,12 @@ public class RangeFillTests : TestBase
         //Assert
         Assert.AreEqual(startTime.Ticks, ((DateTime)_wsDate.Cells["A20"].Value).Ticks);
         Assert.AreEqual(startTime.Ticks + TimeSpan.TicksPerHour, ((DateTime)_wsDate.Cells["A21"].Value).Ticks);
-        Assert.AreEqual(startTime.Ticks + TimeSpan.TicksPerHour * 2, ((DateTime)_wsDate.Cells["A22"].Value).Ticks);
-        Assert.AreEqual(startTime.Ticks + TimeSpan.TicksPerHour * 3, ((DateTime)_wsDate.Cells["A23"].Value).Ticks);
-        Assert.AreEqual(startTime.Ticks + TimeSpan.TicksPerHour * 4, ((DateTime)_wsDate.Cells["A24"].Value).Ticks);
+        Assert.AreEqual(startTime.Ticks + (TimeSpan.TicksPerHour * 2), ((DateTime)_wsDate.Cells["A22"].Value).Ticks);
+        Assert.AreEqual(startTime.Ticks + (TimeSpan.TicksPerHour * 3), ((DateTime)_wsDate.Cells["A23"].Value).Ticks);
+        Assert.AreEqual(startTime.Ticks + (TimeSpan.TicksPerHour * 4), ((DateTime)_wsDate.Cells["A24"].Value).Ticks);
 
         Assert.AreEqual(startTime.Ticks, ((DateTime)_wsDate.Cells["B20"].Value).Ticks);
-        Assert.AreEqual(startTime.Ticks + TimeSpan.TicksPerHour * 4, ((DateTime)_wsDate.Cells["B24"].Value).Ticks);
+        Assert.AreEqual(startTime.Ticks + (TimeSpan.TicksPerHour * 4), ((DateTime)_wsDate.Cells["B24"].Value).Ticks);
     }
     [TestMethod]
     public void FillTime_Minutes()
@@ -413,12 +413,12 @@ public class RangeFillTests : TestBase
         //Assert
         Assert.AreEqual(startTime.Ticks, ((DateTime)_wsDate.Cells["C20"].Value).Ticks);
         Assert.AreEqual(startTime.Ticks + TimeSpan.TicksPerMinute, ((DateTime)_wsDate.Cells["C21"].Value).Ticks);
-        Assert.AreEqual(startTime.Ticks + TimeSpan.TicksPerMinute * 2, ((DateTime)_wsDate.Cells["C22"].Value).Ticks);
-        Assert.AreEqual(startTime.Ticks + TimeSpan.TicksPerMinute * 3, ((DateTime)_wsDate.Cells["C23"].Value).Ticks);
-        Assert.AreEqual(startTime.Ticks + TimeSpan.TicksPerMinute * 4, ((DateTime)_wsDate.Cells["C24"].Value).Ticks);
+        Assert.AreEqual(startTime.Ticks + (TimeSpan.TicksPerMinute * 2), ((DateTime)_wsDate.Cells["C22"].Value).Ticks);
+        Assert.AreEqual(startTime.Ticks + (TimeSpan.TicksPerMinute * 3), ((DateTime)_wsDate.Cells["C23"].Value).Ticks);
+        Assert.AreEqual(startTime.Ticks + (TimeSpan.TicksPerMinute * 4), ((DateTime)_wsDate.Cells["C24"].Value).Ticks);
 
         Assert.AreEqual(startTime.Ticks, ((DateTime)_wsDate.Cells["D20"].Value).Ticks);
-        Assert.AreEqual(startTime.Ticks + TimeSpan.TicksPerMinute * 4, ((DateTime)_wsDate.Cells["D24"].Value).Ticks);
+        Assert.AreEqual(startTime.Ticks + (TimeSpan.TicksPerMinute * 4), ((DateTime)_wsDate.Cells["D24"].Value).Ticks);
     }
     [TestMethod]
     public void FillTime_Seconds()
@@ -430,12 +430,12 @@ public class RangeFillTests : TestBase
         //Assert
         Assert.AreEqual(startTime.Ticks, ((DateTime)_wsDate.Cells["E20"].Value).Ticks);
         Assert.AreEqual(startTime.Ticks + TimeSpan.TicksPerSecond, ((DateTime)_wsDate.Cells["E21"].Value).Ticks);
-        Assert.AreEqual(startTime.Ticks + TimeSpan.TicksPerSecond * 2, ((DateTime)_wsDate.Cells["E22"].Value).Ticks);
-        Assert.AreEqual(startTime.Ticks + TimeSpan.TicksPerSecond * 3, ((DateTime)_wsDate.Cells["E23"].Value).Ticks);
-        Assert.AreEqual(startTime.Ticks + TimeSpan.TicksPerSecond * 4, ((DateTime)_wsDate.Cells["E24"].Value).Ticks);
+        Assert.AreEqual(startTime.Ticks + (TimeSpan.TicksPerSecond * 2), ((DateTime)_wsDate.Cells["E22"].Value).Ticks);
+        Assert.AreEqual(startTime.Ticks + (TimeSpan.TicksPerSecond * 3), ((DateTime)_wsDate.Cells["E23"].Value).Ticks);
+        Assert.AreEqual(startTime.Ticks + (TimeSpan.TicksPerSecond * 4), ((DateTime)_wsDate.Cells["E24"].Value).Ticks);
 
         Assert.AreEqual(startTime.Ticks, ((DateTime)_wsDate.Cells["F20"].Value).Ticks);
-        Assert.AreEqual(startTime.Ticks + TimeSpan.TicksPerSecond * 4, ((DateTime)_wsDate.Cells["F24"].Value).Ticks);
+        Assert.AreEqual(startTime.Ticks + (TimeSpan.TicksPerSecond * 4), ((DateTime)_wsDate.Cells["F24"].Value).Ticks);
     }
     [TestMethod]
     public void FillListDown()

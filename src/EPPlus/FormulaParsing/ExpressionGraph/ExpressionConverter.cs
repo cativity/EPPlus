@@ -51,7 +51,7 @@ public class ExpressionConverter : IExpressionConverter
             case DataType.Decimal:
                 return compileResult.Result is string
                            ? new DecimalExpression(compileResult.Result.ToString())
-                           : new DecimalExpression(((double) compileResult.Result));
+                           : new DecimalExpression((double) compileResult.Result);
             case DataType.Boolean:
                 return compileResult.Result is string
                            ? new BooleanExpression(compileResult.Result.ToString())

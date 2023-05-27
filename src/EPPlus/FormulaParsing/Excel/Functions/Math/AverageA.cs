@@ -107,7 +107,7 @@ internal class AverageA : HiddenValuesHandlingFunction
 
     private static double? GetNumericValue(object obj, bool isInArray)
     {
-        if (IsNumeric(obj) && !(IsBool(obj)))
+        if (IsNumeric(obj) && !IsBool(obj))
         {
             return ConvertUtil.GetValueDouble(obj);
         }

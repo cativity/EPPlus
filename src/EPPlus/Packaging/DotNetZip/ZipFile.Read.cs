@@ -549,7 +549,7 @@ internal partial class ZipFile
             zf.ReadProgress += readProgress;
         }
 
-        zf._readstream = (zipStream.Position == 0L)
+        zf._readstream = zipStream.Position == 0L
                              ? zipStream
                              : new OffsetStream(zipStream);
         zf._ReadStreamIsOurs = false;
@@ -625,7 +625,7 @@ internal partial class ZipFile
                     // Weird: with NETCF, negative offsets from SeekOrigin.End DO
                     // NOT WORK. So rather than seek a negative offset, we seek
                     // from SeekOrigin.Begin using a smaller number.
-                    posn -= (32 * (nTries + 1) * nTries);
+                    posn -= 32 * (nTries + 1) * nTries;
                 }
             }
             while (!success && posn > maxSeekback);
@@ -996,7 +996,7 @@ internal partial class ZipFile
         byte[] block = new byte[2];
         zf.ReadStream.Read(block, 0, block.Length);
 
-        Int16 commentLength = (short)(block[0] + block[1] * 256);
+        Int16 commentLength = (short)(block[0] + (block[1] * 256));
         if (commentLength > 0)
         {
             block = new byte[commentLength];

@@ -106,9 +106,9 @@ internal static class RoundingHelper
         }
         else if (direction == Direction.Nearest)
         {
-            if ((n % m >= (m / 2d)))
+            if (n % m >= m / 2d)
             {
-                result = System.Math.Round(n + (m - n % m));
+                result = System.Math.Round(n + (m - (n % m)));
             }
             else
             {
@@ -137,7 +137,7 @@ internal static class RoundingHelper
         double result = double.NaN;
         if (direction == Direction.Nearest)
         {
-            if ((upperRound - number) > (number - lowerRound))
+            if (upperRound - number > number - lowerRound)
             {
                 result = lowerRound;
             }
@@ -168,7 +168,7 @@ internal static class RoundingHelper
 
     internal static bool IsInvalidNumberAndSign(double number, double sign)
     {
-        return (number > 0d && sign < 0);
+        return number > 0d && sign < 0;
     }
 
     internal static double RoundToSignificantFig(double number, double nSignificantFigures)

@@ -93,7 +93,7 @@ internal class ZlibBaseStream : Stream
     {
         get
         {
-            return (this._compressionMode == CompressionMode.Compress);
+            return this._compressionMode == CompressionMode.Compress;
         }
     }
 
@@ -103,7 +103,7 @@ internal class ZlibBaseStream : Stream
         {
             if (this._z == null)
             {
-                bool wantRfc1950Header = (this._flavor == ZlibStreamFlavor.ZLIB);
+                bool wantRfc1950Header = this._flavor == ZlibStreamFlavor.ZLIB;
                 this._z = new ZlibCodec();
                 if (this._compressionMode == CompressionMode.Decompress)
                 {
@@ -161,7 +161,7 @@ internal class ZlibBaseStream : Stream
             this._z.OutputBuffer = this.workingBuffer;
             this._z.NextOut = 0;
             this._z.AvailableBytesOut = this._workingBuffer.Length;
-            int rc = (this._wantCompress)
+            int rc = this._wantCompress
                          ? this._z.Deflate(this._flushMode)
                          : this._z.Inflate(this._flushMode);
             if (rc != ZlibConstants.Z_OK && rc != ZlibConstants.Z_STREAM_END)
@@ -177,7 +177,7 @@ internal class ZlibBaseStream : Stream
             // If GZIP and de-compress, we're done when 8 bytes remain.
             if (this._flavor == ZlibStreamFlavor.GZIP && !this._wantCompress)
             {
-                done = (this._z.AvailableBytesIn == 8 && this._z.AvailableBytesOut != 0);
+                done = this._z.AvailableBytesIn == 8 && this._z.AvailableBytesOut != 0;
             }
         }
         while (!done);
@@ -200,7 +200,7 @@ internal class ZlibBaseStream : Stream
                 this._z.OutputBuffer = this.workingBuffer;
                 this._z.NextOut = 0;
                 this._z.AvailableBytesOut = this._workingBuffer.Length;
-                int rc = (this._wantCompress)
+                int rc = this._wantCompress
                              ? this._z.Deflate(FlushType.Finish)
                              : this._z.Inflate(FlushType.Finish);
 
@@ -226,7 +226,7 @@ internal class ZlibBaseStream : Stream
                 // If GZIP and de-compress, we're done when 8 bytes remain.
                 if (this._flavor == ZlibStreamFlavor.GZIP && !this._wantCompress)
                 {
-                    done = (this._z.AvailableBytesIn == 8 && this._z.AvailableBytesOut != 0);
+                    done = this._z.AvailableBytesIn == 8 && this._z.AvailableBytesOut != 0;
                 }
             }
             while (!done);
@@ -446,7 +446,7 @@ internal class ZlibBaseStream : Stream
             n = this._stream.Read(header, 0, 2); // 2-byte length field
             totalBytesRead += n;
 
-            Int16 extraLength = (Int16)(header[0] + header[1] * 256);
+            Int16 extraLength = (Int16)(header[0] + (header[1] * 256));
             byte[] extra = new byte[extraLength];
             n = this._stream.Read(extra, 0, extra.Length);
             if (n != extraLength)
@@ -537,7 +537,7 @@ internal class ZlibBaseStream : Stream
             throw new ArgumentOutOfRangeException("offset");
         }
 
-        if ((offset + count) > buffer.GetLength(0))
+        if (offset + count > buffer.GetLength(0))
         {
             throw new ArgumentOutOfRangeException("count");
         }
@@ -557,7 +557,7 @@ internal class ZlibBaseStream : Stream
         do
         {
             // need data in _workingBuffer in order to deflate/inflate.  Here, we check if we have any.
-            if ((this._z.AvailableBytesIn == 0) && (!this.nomoreinput))
+            if (this._z.AvailableBytesIn == 0 && !this.nomoreinput)
             {
                 // No data available, so try to Read data from the captive stream.
                 this._z.NextIn = 0;
@@ -568,21 +568,21 @@ internal class ZlibBaseStream : Stream
                 }
             }
             // we have data in InputBuffer; now compress or decompress as appropriate
-            rc = (this._wantCompress)
+            rc = this._wantCompress
                      ? this._z.Deflate(this._flushMode)
                      : this._z.Inflate(this._flushMode);
 
-            if (this.nomoreinput && (rc == ZlibConstants.Z_BUF_ERROR))
+            if (this.nomoreinput && rc == ZlibConstants.Z_BUF_ERROR)
             {
                 return 0;
             }
 
             if (rc != ZlibConstants.Z_OK && rc != ZlibConstants.Z_STREAM_END)
             {
-                throw new ZlibException(String.Format("{0}flating:  rc={1}  msg={2}", (this._wantCompress ? "de" : "in"), rc, this._z.Message));
+                throw new ZlibException(String.Format("{0}flating:  rc={1}  msg={2}", this._wantCompress ? "de" : "in", rc, this._z.Message));
             }
 
-            if ((this.nomoreinput || rc == ZlibConstants.Z_STREAM_END) && (this._z.AvailableBytesOut == count))
+            if ((this.nomoreinput || rc == ZlibConstants.Z_STREAM_END) && this._z.AvailableBytesOut == count)
             {
                 break; // nothing more to read
             }
@@ -619,7 +619,7 @@ internal class ZlibBaseStream : Stream
         }
 
 
-        rc = (count - this._z.AvailableBytesOut);
+        rc = count - this._z.AvailableBytesOut;
 
         // calculate CRC after reading
         if (this.crc != null)

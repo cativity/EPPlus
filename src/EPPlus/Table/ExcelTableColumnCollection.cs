@@ -72,7 +72,7 @@ public class ExcelTableColumnCollection : IEnumerable<ExcelTableColumn>
         {
             if (Index < 0 || Index >= this._cols.Count)
             {
-                throw (new ArgumentOutOfRangeException("Column index out of range"));
+                throw new ArgumentOutOfRangeException("Column index out of range");
             }
             return this._cols[Index] as ExcelTableColumn;
         }

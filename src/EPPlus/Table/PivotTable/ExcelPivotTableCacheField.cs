@@ -206,7 +206,7 @@ public class ExcelPivotTableCacheField : XmlHelper
             }
             if (string.IsNullOrEmpty(value) || value.Trim() == "")
             {
-                throw (new ArgumentException("The formula can't be blank", "formula"));
+                throw new ArgumentException("The formula can't be blank", "formula");
             }
 
             this.SetXmlNodeString("@formula", value);
@@ -328,7 +328,7 @@ public class ExcelPivotTableCacheField : XmlHelper
                         }
                         break;
                     case TypeCode.DateTime:
-                        DateTime d = ((DateTime)si);
+                        DateTime d = (DateTime)si;
                         if (d.Year > 1899)
                         {
                             AppendItem(shNode, "d", d.ToString("s"));
@@ -412,18 +412,18 @@ public class ExcelPivotTableCacheField : XmlHelper
                         }
                         else
                         {
-                            flags |= (DataTypeFlags.Number | DataTypeFlags.Int);
+                            flags |= DataTypeFlags.Number | DataTypeFlags.Int;
                         }
                         break;
                     case TypeCode.Decimal:
                     case TypeCode.Double:
                     case TypeCode.Single:
-                        flags |= (DataTypeFlags.Number);
-                        if ((flags & DataTypeFlags.Int) != DataTypeFlags.Int && (Convert.ToDouble(si) % 1 == 0))
+                        flags |= DataTypeFlags.Number;
+                        if ((flags & DataTypeFlags.Int) != DataTypeFlags.Int && Convert.ToDouble(si) % 1 == 0)
                         {
                             flags |= DataTypeFlags.Int;
                         }
-                        else if ((flags & DataTypeFlags.Float) != DataTypeFlags.Float && (Convert.ToDouble(si) % 1 != 0))
+                        else if ((flags & DataTypeFlags.Float) != DataTypeFlags.Float && Convert.ToDouble(si) % 1 != 0)
                         {
                             flags |= DataTypeFlags.Float;
                         }
@@ -626,11 +626,11 @@ public class ExcelPivotTableCacheField : XmlHelper
     {
         if (interval < 0)
         {
-            throw (new Exception("The interval must be a positiv"));
+            throw new Exception("The interval must be a positiv");
         }
         if (start > end)
         {
-            throw (new Exception("Then End number must be larger than the Start number"));
+            throw new Exception("Then End number must be larger than the Start number");
         }
 
         XmlElement groupItemsNode = group.TopNode.SelectSingleNode("d:fieldGroup/d:groupItems", group.NameSpaceManager) as XmlElement;
@@ -729,7 +729,7 @@ public class ExcelPivotTableCacheField : XmlHelper
                 }
                 break;
             default:
-                throw (new Exception("unsupported grouping"));
+                throw new Exception("unsupported grouping");
         }
 
         //Lastdate
@@ -792,9 +792,9 @@ public class ExcelPivotTableCacheField : XmlHelper
     {
         foreach (ExcelPivotTable? pt in this._cache._pivotTables)
         {                
-            if ((pt.Fields[this.Index].IsRowField ||
-                 pt.Fields[this.Index].IsColumnField ||
-                 pt.Fields[this.Index].IsPageField || pt.Fields[this.Index].Cache.HasSlicer) )
+            if (pt.Fields[this.Index].IsRowField ||
+                pt.Fields[this.Index].IsColumnField ||
+                pt.Fields[this.Index].IsPageField || pt.Fields[this.Index].Cache.HasSlicer )
             {
                 if (pt.Fields[this.Index].Items.Count == 0)
                 {
@@ -879,13 +879,13 @@ public class ExcelPivotTableCacheField : XmlHelper
             Type? t = o.GetType();
             if (t == typeof(TimeSpan))
             {
-                long ticks = ((TimeSpan)o).Ticks + (TimeSpan.TicksPerSecond) / 2;
+                long ticks = ((TimeSpan)o).Ticks + (TimeSpan.TicksPerSecond / 2);
                 o = new DateTime(ticks - (ticks % TimeSpan.TicksPerSecond));
             }
             if (t == typeof(DateTime))
             {
                 long ticks = ((DateTime)o).Ticks;
-                if ((ticks % TimeSpan.TicksPerSecond) != 0)
+                if (ticks % TimeSpan.TicksPerSecond != 0)
                 {
                     ticks += TimeSpan.TicksPerSecond / 2;
                     o = new DateTime(ticks - (ticks % TimeSpan.TicksPerSecond));

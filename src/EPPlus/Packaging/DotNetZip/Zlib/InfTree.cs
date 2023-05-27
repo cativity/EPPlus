@@ -198,7 +198,7 @@ sealed class InfTree
         while (--i != 0)
         {
             // note that i == g from above
-            this.x[xp] = (j += this.c[p]);
+            this.x[xp] = j += this.c[p];
             xp++;
             p++;
         }
@@ -246,12 +246,12 @@ sealed class InfTree
                     w += l; // previous table always l bits
                     // compute minimum size table less than or equal to l bits
                     z = g - w;
-                    z = (z > l)?l:z; // table size upper limit
+                    z = z > l?l:z; // table size upper limit
                     if ((f = 1 << (j = k - w)) > a + 1)
                     {
                         // try a k-w bit table
                         // too few codes for k-w bit table
-                        f -= (a + 1); // deduct codes from patterns left
+                        f -= a + 1; // deduct codes from patterns left
                         xp = k;
                         if (j < z)
                         {
@@ -285,7 +285,7 @@ sealed class InfTree
                         this.x[h] = i; // save pattern for backing up
                         this.r[0] = (sbyte) j; // bits in this table
                         this.r[1] = (sbyte) l; // bits to dump before this table
-                        j = SharedUtils.URShift(i, (w - l));
+                        j = SharedUtils.URShift(i, w - l);
                         this.r[2] = (int) (q - this.u[h - 1] - j); // offset to this table
                         Array.Copy(this.r, 0, hp, (this.u[h - 1] + j) * 3, 3); // connect to last table
                     }

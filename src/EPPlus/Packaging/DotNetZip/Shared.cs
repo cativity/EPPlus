@@ -154,7 +154,7 @@ internal static class SharedUtilities
         }
 
         // trim volume if necessary
-        if ((pathName.Length >= 2)  && ((pathName[1] == ':') && (pathName[2] == '\\')))
+        if (pathName.Length >= 2 && pathName[1] == ':' && pathName[2] == '\\')
         {
             pathName =  pathName.Substring(3);
         }
@@ -296,7 +296,7 @@ internal static class SharedUtilities
             throw new BadReadException(String.Format(message, s.Position));
         }
 
-        int data = unchecked((((block[3] * 256 + block[2]) * 256) + block[1]) * 256 + block[0]);
+        int data = unchecked((((((block[3] * 256) + block[2]) * 256) + block[1]) * 256) + block[0]);
         return data;
     }
 
@@ -386,7 +386,7 @@ internal static class SharedUtilities
         }
 
         // subtract 4 for the signature.
-        long bytesRead = (stream.Position - startingPosition) - 4;
+        long bytesRead = stream.Position - startingPosition - 4;
 
         return bytesRead;
     }
@@ -575,9 +575,9 @@ internal static class SharedUtilities
 
         // see http://www.vsft.com/hal/dostime.htm for the format
         UInt16 packedDate = (UInt16)((time.Day & 0x0000001F) | ((time.Month << 5) & 0x000001E0) | (((time.Year - 1980) << 9) & 0x0000FE00));
-        UInt16 packedTime = (UInt16)((time.Second / 2 & 0x0000001F) | ((time.Minute << 5) & 0x000007E0) | ((time.Hour << 11) & 0x0000F800));
+        UInt16 packedTime = (UInt16)(((time.Second / 2) & 0x0000001F) | ((time.Minute << 5) & 0x000007E0) | ((time.Hour << 11) & 0x0000F800));
 
-        Int32 result = (Int32)(((UInt32)(packedDate << 16)) | packedTime);
+        Int32 result = (Int32)((UInt32)(packedDate << 16) | packedTime);
         return result;
     }
 

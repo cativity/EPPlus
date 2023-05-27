@@ -49,7 +49,7 @@ internal static class XmlReaderHelper
             }
 
             xr.Read();
-        } while ((Array.Exists(tagName, tag => ConvertUtil._invariantCompareInfo.IsSuffix(xr.LocalName, tag))) == false);
+        } while (Array.Exists(tagName, tag => ConvertUtil._invariantCompareInfo.IsSuffix(xr.LocalName, tag)) == false);
 
         return xr.NodeType == XmlNodeType.Element && ConvertUtil._invariantCompareInfo.IsSuffix(xr.LocalName, tagName[0]);
     }
@@ -59,7 +59,7 @@ internal static class XmlReaderHelper
         {
             if (nodeOrder.TryGetValue(xr.LocalName, out int currentNodeIx))
             {
-                while ((xr.Depth == depth && currentNodeIx < tagIx))
+                while (xr.Depth == depth && currentNodeIx < tagIx)
                 {
                     do
                     {

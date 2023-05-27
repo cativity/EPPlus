@@ -71,7 +71,7 @@ public class ExcelDrawingSchemeColor : XmlHelper
                 }
                 catch
                 {
-                    throw (new ArgumentException($"Invalid scheme color value {v}"));
+                    throw new ArgumentException($"Invalid scheme color value {v}");
                 }
         }
     }

@@ -58,6 +58,6 @@ internal class ConfidenceT : ExcelFunction
     {
         double x = BetaHelper.IBetaInv(2 * System.Math.Min(p, 1 - p), 0.5 * dof, 0.5);
         x = System.Math.Sqrt(dof * (1 - x) / x);
-        return (p > 0.5) ? x : -x;
+        return p > 0.5 ? x : -x;
     }
 }

@@ -319,7 +319,7 @@ internal class ZipCrypto
     {
         this._Keys[0] = (UInt32)this.crc32.ComputeCrc32((int)this._Keys[0], byteValue);
         this._Keys[1] += (byte)this._Keys[0];
-        this._Keys[1] = this._Keys[1] * 0x08088405 + 1;
+        this._Keys[1] = (this._Keys[1] * 0x08088405) + 1;
         this._Keys[2] = (UInt32)this.crc32.ComputeCrc32((int)this._Keys[2], (byte)(this._Keys[1] >> 24));
     }
 
@@ -444,7 +444,7 @@ internal class ZipCipherStream : System.IO.Stream
 
     public override bool CanRead
     {
-        get { return (this._mode == CryptoMode.Decrypt); }
+        get { return this._mode == CryptoMode.Decrypt; }
     }
     public override bool CanSeek
     {
@@ -453,7 +453,7 @@ internal class ZipCipherStream : System.IO.Stream
 
     public override bool CanWrite
     {
-        get { return (this._mode == CryptoMode.Encrypt); }
+        get { return this._mode == CryptoMode.Encrypt; }
     }
 
     public override void Flush()

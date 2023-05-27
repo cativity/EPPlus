@@ -41,7 +41,7 @@ internal class EncryptedPackageHandler
         }
         else
         {
-            throw (new InvalidDataException(string.Format("File {0} is not an encrypted package", fi.FullName)));
+            throw new InvalidDataException(string.Format("File {0} is not an encrypted package", fi.FullName));
         }
     }
     //Helpmethod to output the streams in the storage
@@ -75,7 +75,7 @@ internal class EncryptedPackageHandler
             }
             else
             {
-                throw (new InvalidDataException("The stream is not a valid/supported encrypted document."));
+                throw new InvalidDataException("The stream is not a valid/supported encrypted document.");
             }
         }
         catch// (Exception ex)
@@ -100,7 +100,7 @@ internal class EncryptedPackageHandler
         {
             return this.EncryptPackageAgile(package, encryption);
         }
-        throw(new ArgumentException("Unsupported encryption version."));
+        throw new ArgumentException("Unsupported encryption version.");
     }
     private MemoryStream EncryptPackageAgile(byte[] package, ExcelEncryption encryption)
     {
@@ -266,7 +266,7 @@ internal class EncryptedPackageHandler
             case eHashAlgorithm.SHA512:
                 return new HMACSHA512(salt);
             default:
-                throw(new NotSupportedException(string.Format("Hash method {0} not supported.",ei.HashAlgorithm)));
+                throw new NotSupportedException(string.Format("Hash method {0} not supported.",ei.HashAlgorithm));
         }
     }
 
@@ -365,7 +365,7 @@ internal class EncryptedPackageHandler
         bw.Write((int)1);       //EntryCount
         string s1 = "EncryptedPackage";
         string s2 = "StrongEncryptionDataSpace";
-        bw.Write((int)(s1.Length + s2.Length) * 2 + 0x16);
+        bw.Write(((int)(s1.Length + s2.Length) * 2) + 0x16);
         bw.Write((int)1);       //ReferenceComponentCount
         bw.Write((int)0);       //Stream=0
         bw.Write((int)s1.Length * 2); //Length s1
@@ -382,7 +382,7 @@ internal class EncryptedPackageHandler
         BinaryWriter bw = new BinaryWriter(ms);
         string TransformID = "{FF9A3F03-56EF-4613-BDD5-5A41C1D07246}";
         string TransformName = "Microsoft.Container.EncryptionTransform";
-        bw.Write(TransformID.Length * 2 + 12);
+        bw.Write((TransformID.Length * 2) + 12);
         bw.Write((int)1);
         bw.Write(TransformID.Length * 2);
         bw.Write(Encoding.Unicode.GetBytes(TransformID));
@@ -412,7 +412,7 @@ internal class EncryptedPackageHandler
     {
         if (algID == AlgorithmID.Flags || algID == AlgorithmID.RC4)
         {
-            throw (new ArgumentException("algID must be AES128, AES192 or AES256"));
+            throw new ArgumentException("algID must be AES128, AES192 or AES256");
         }
         EncryptionInfoBinary? encryptionInfo = new EncryptionInfoBinary();
         encryptionInfo.MajorVersion = 4;
@@ -425,7 +425,7 @@ internal class EncryptedPackageHandler
         encryptionInfo.Header.AlgIDHash = AlgorithmHashID.SHA1;
         encryptionInfo.Header.Flags = encryptionInfo.Flags;
         encryptionInfo.Header.KeySize =
-            (algID == AlgorithmID.AES128 ? 0x80 : algID == AlgorithmID.AES192 ? 0xC0 : 0x100);
+            algID == AlgorithmID.AES128 ? 0x80 : algID == AlgorithmID.AES192 ? 0xC0 : 0x100;
         encryptionInfo.Header.ProviderType = ProviderType.AES;
         encryptionInfo.Header.CSPName = "Microsoft Enhanced RSA and AES Cryptographic Provider\0";
         encryptionInfo.Header.Reserved1 = 0;
@@ -501,7 +501,7 @@ internal class EncryptedPackageHandler
         }
         else
         {
-            throw (new InvalidDataException("Invalid document. EncryptionInfo or EncryptedPackage stream is missing"));
+            throw new InvalidDataException("Invalid document. EncryptionInfo or EncryptedPackage stream is missing");
         }
     }
 
@@ -571,7 +571,7 @@ internal class EncryptedPackageHandler
                 {
                     if (value[i] != v2[i])
                     {
-                        throw (new Exception("Dataintegrity key mismatch"));
+                        throw new Exception("Dataintegrity key mismatch");
                     }
                 }
 
@@ -600,7 +600,7 @@ internal class EncryptedPackageHandler
             }
             else
             {
-                throw (new SecurityException("Invalid password"));
+                throw new SecurityException("Invalid password");
             }
         }
         return null;
@@ -652,7 +652,7 @@ internal class EncryptedPackageHandler
     {
         MemoryStream? doc = RecyclableMemory.GetStream();
 
-        if (encryptionInfo.Header.AlgID == AlgorithmID.AES128 || (encryptionInfo.Header.AlgID == AlgorithmID.Flags && ((encryptionInfo.Flags & (Flags.fAES | Flags.fExternal | Flags.fCryptoAPI)) == (Flags.fAES | Flags.fCryptoAPI)))
+        if (encryptionInfo.Header.AlgID == AlgorithmID.AES128 || (encryptionInfo.Header.AlgID == AlgorithmID.Flags && (encryptionInfo.Flags & (Flags.fAES | Flags.fExternal | Flags.fCryptoAPI)) == (Flags.fAES | Flags.fCryptoAPI))
                                                               ||
                                                               encryptionInfo.Header.AlgID == AlgorithmID.AES192
                                                               ||
@@ -687,7 +687,7 @@ internal class EncryptedPackageHandler
             }
             else
             {
-                throw (new UnauthorizedAccessException("Invalid password"));
+                throw new UnauthorizedAccessException("Invalid password");
             }
         }
         return doc;
@@ -818,7 +818,7 @@ internal class EncryptedPackageHandler
             //case eCipherAlgorithm.RC2:
             //    return new RC2CryptoServiceProvider();                    
             default:
-                throw(new NotSupportedException(string.Format("Unsupported Cipher Algorithm: {0}", encr.CipherAlgorithm.ToString())));
+                throw new NotSupportedException(string.Format("Unsupported Cipher Algorithm: {0}", encr.CipherAlgorithm.ToString()));
         }
     }
 #else
@@ -861,7 +861,7 @@ internal class EncryptedPackageHandler
                                                      encryptor,
                                                      CryptoStreamMode.Write);
             
-        long cryptoSize = size % encr.BlockSize == 0 ? size : (size + (encr.BlockSize - (size % encr.BlockSize)));
+        long cryptoSize = size % encr.BlockSize == 0 ? size : size + (encr.BlockSize - (size % encr.BlockSize));
         byte[]? buffer = new byte[size];
         Array.Copy(data, (int)pos, buffer, 0, (int)size);
         cryptoStream.Write(buffer, 0, (int)size);
@@ -885,7 +885,7 @@ internal class EncryptedPackageHandler
         try
         {
             HashAlgorithm hashProvider;
-            if (encryptionInfo.Header.AlgIDHash == AlgorithmHashID.SHA1 || encryptionInfo.Header.AlgIDHash == AlgorithmHashID.App && (encryptionInfo.Flags & Flags.fExternal) == 0)
+            if (encryptionInfo.Header.AlgIDHash == AlgorithmHashID.SHA1 || (encryptionInfo.Header.AlgIDHash == AlgorithmHashID.App && (encryptionInfo.Flags & Flags.fExternal) == 0))
             {
 #if (Core)
                 hashProvider = SHA1.Create();
@@ -946,7 +946,7 @@ internal class EncryptedPackageHandler
         }
         catch (Exception ex)
         {
-            throw (new Exception("An error occured when the encryptionkey was created", ex));
+            throw new Exception("An error occured when the encryptionkey was created", ex);
         }
     }
 
@@ -970,7 +970,7 @@ internal class EncryptedPackageHandler
         }
         catch (Exception ex)
         {
-            throw (new Exception("An error occured when the encryptionkey was created", ex));
+            throw new Exception("An error occured when the encryptionkey was created", ex);
         }
     }
     private static byte[] GetFinalHash(HashAlgorithm hashProvider, byte[] blockKey, byte[] hash)
@@ -1059,12 +1059,12 @@ internal class EncryptedPackageHandler
         for (int i = Password.Length - 1; i >= 0; i--)
         {
             hash ^= Password[i];
-            hash = (ushort)(((ushort)((hash >> 14) & 0x01))
+            hash = (ushort)((ushort)((hash >> 14) & 0x01)
                             |
-                            ((ushort)((hash << 1) & 0x7FFF)));  //Shift 1 to the left. Overflowing bit 15 goes into bit 0
+                            (ushort)((hash << 1) & 0x7FFF));  //Shift 1 to the left. Overflowing bit 15 goes into bit 0
         }
 
-        hash ^= (0x8000 | ('N' << 8) | 'K'); //Xor NK with high bit set(0xCE4B)
+        hash ^= 0x8000 | ('N' << 8) | 'K'; //Xor NK with high bit set(0xCE4B)
         hash ^= (ushort)Password.Length;
 
         return hash;

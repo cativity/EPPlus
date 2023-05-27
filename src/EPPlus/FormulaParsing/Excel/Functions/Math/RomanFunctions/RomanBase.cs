@@ -79,7 +79,7 @@ internal abstract class RomanBase
             result.Append(roman.Letter);
             number -= roman.Number;
             int limit = number / lowerRoman.Number;
-            for (int x = 0; x < (number / lowerRoman.Number); x++)
+            for (int x = 0; x < number / lowerRoman.Number; x++)
             {
                 result.Append(lowerRoman.Letter);
                 number -= lowerRoman.Number;

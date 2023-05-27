@@ -48,7 +48,7 @@ internal static class VBACompression
             }
             else
             {
-                header = (ushort)(((chunk.Length - 1) & 0xFFF));
+                header = (ushort)((chunk.Length - 1) & 0xFFF);
                 header |= 0xB000;   //B=011 A=1
                 br.Write(header);
                 br.Write(chunk);
@@ -78,8 +78,8 @@ internal static class VBACompression
                     int bestLength = 0;
                     int candidate = dPos - 1;
                     int bitCount = GetLengthBits(dPos - startPos);
-                    int bits = (16 - bitCount);
-                    ushort lengthMask = (ushort)((0xFFFF) >> bits);
+                    int bits = 16 - bitCount;
+                    ushort lengthMask = (ushort)(0xFFFF >> bits);
 
                     while (candidate >= startPos)
                     {
@@ -108,7 +108,7 @@ internal static class VBACompression
                         tokenFlags |= (byte)(1 << i);
 
                         UInt16 offsetMask = (ushort)~lengthMask;
-                        ushort token = (ushort)(((ushort)(dPos - (bestCandidate + 1))) << (bitCount) | (ushort)(bestLength - 3));
+                        ushort token = (ushort)(((ushort)(dPos - (bestCandidate + 1)) << bitCount) | (ushort)(bestLength - 3));
                         Array.Copy(BitConverter.GetBytes(token), 0, comprBuffer, cPos, 2);
                         dPos += bestLength;
                         cPos += 2;
@@ -196,11 +196,11 @@ internal static class VBACompression
                     {
                         ushort t = BitConverter.ToUInt16(compBuffer, pos);
                         int bitCount = GetLengthBits(decomprPos);
-                        int bits = (16 - bitCount);
-                        ushort lengthMask = (ushort)((0xFFFF) >> bits);
+                        int bits = 16 - bitCount;
+                        ushort lengthMask = (ushort)(0xFFFF >> bits);
                         UInt16 offsetMask = (ushort)~lengthMask;
                         int length = (lengthMask & t) + 3;
-                        int offset = (offsetMask & t) >> (bitCount);
+                        int offset = (offsetMask & t) >> bitCount;
                         int source = decomprPos - offset - 1;
                         if (decomprPos + length >= buffer.Length)
                         {
@@ -282,7 +282,7 @@ internal static class VBACompression
         else
         {
             //We should never end up here, but if so this is the formula to calculate the bits...
-            return 12 - (int)Math.Truncate(Math.Log(decompPos - 1 >> 4, 2) + 1);
+            return 12 - (int)Math.Truncate(Math.Log((decompPos - 1) >> 4, 2) + 1);
         }
     }
     #endregion

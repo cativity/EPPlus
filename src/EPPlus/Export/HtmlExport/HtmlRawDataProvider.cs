@@ -78,7 +78,7 @@ internal static class HtmlRawDataProvider
         switch(jsDataType)
         {
             case ColumnDataTypeManager.HtmlDataTypes.Boolean:
-                return (ConvertUtil.GetTypedCellValueInner<bool?>(value, true)??false) ? "1" : "0";
+                return ConvertUtil.GetTypedCellValueInner<bool?>(value, true)??false ? "1" : "0";
             case ColumnDataTypeManager.HtmlDataTypes.Number:
                 string? v = ConvertUtil.GetTypedCellValueInner<double?>(value, true)?.ToString(CultureInfo.InvariantCulture);
                 return v;

@@ -218,17 +218,17 @@ internal class CRC32
             {
                 uint temp = (this._register >> 24) ^ b;
 
-                this._register = (this._register << 8) ^ this.crc32Table[(temp >= 0)
+                this._register = (this._register << 8) ^ this.crc32Table[temp >= 0
                                                                              ? temp
-                                                                             : (temp + 256)];
+                                                                             : temp + 256];
             }
             else
             {
                 UInt32 temp = (this._register & 0x000000FF) ^ b;
 
-                this._register = (this._register >> 8) ^ this.crc32Table[(temp >= 0)
+                this._register = (this._register >> 8) ^ this.crc32Table[temp >= 0
                                                                              ? temp
-                                                                             : (temp + 256)];
+                                                                             : temp + 256];
 
             }
         }
@@ -241,9 +241,9 @@ internal class CRC32
         unchecked
         {
             uint ret = data;
-            ret = (ret & 0x55555555) << 1 | (ret >> 1) & 0x55555555;
-            ret = (ret & 0x33333333) << 2 | (ret >> 2) & 0x33333333;
-            ret = (ret & 0x0F0F0F0F) << 4 | (ret >> 4) & 0x0F0F0F0F;
+            ret = ((ret & 0x55555555) << 1) | ((ret >> 1) & 0x55555555);
+            ret = ((ret & 0x33333333) << 2) | ((ret >> 2) & 0x33333333);
+            ret = ((ret & 0x0F0F0F0F) << 4) | ((ret >> 4) & 0x0F0F0F0F);
             ret = (ret << 24) | ((ret & 0xFF00) << 8) | ((ret >> 8) & 0xFF00) | (ret >> 24);
             return ret;
         }

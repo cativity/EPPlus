@@ -37,7 +37,7 @@ public class ExcelVmlDrawingPictureFill : XmlHelper, IPictureContainer
         {
             if (value < 0 || value > 100)
             {
-                throw (new ArgumentOutOfRangeException("Opacity ranges from 0 to 100%"));
+                throw new ArgumentOutOfRangeException("Opacity ranges from 0 to 100%");
             }
 
             this.SetXmlNodeDouble("v:fill/@o:opacity2", value, null, "%");

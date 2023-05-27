@@ -42,7 +42,7 @@ public class ExcelPivotTableSlicerItem
         {
             if (this._index >= this._cache._field.Items.Count)
             {
-                throw(new IndexOutOfRangeException());
+                throw new IndexOutOfRangeException();
             }
             return this._cache._field.Items[this._index].Hidden;
         }
@@ -50,7 +50,7 @@ public class ExcelPivotTableSlicerItem
         {
             if (this._index >= this._cache.Data.Items.Count)
             {
-                throw (new IndexOutOfRangeException());
+                throw new IndexOutOfRangeException();
             }
             foreach (ExcelPivotTable? pt in this._cache.PivotTables)
             {

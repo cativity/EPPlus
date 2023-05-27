@@ -57,7 +57,7 @@ public class ToCollectionRow
         {
             if (index < 0 || index >= this._cellValues.Count)
             {
-                throw (new ArgumentOutOfRangeException("index"));
+                throw new ArgumentOutOfRangeException("index");
             }
             return this._cellValues[index];
         }
@@ -73,11 +73,11 @@ public class ToCollectionRow
         {
             if (this._headers.Count == 0)
             {
-                throw (new ArgumentException($"This range has no headers. Please specify headers or use GetValue<T>(int)."));
+                throw new ArgumentException($"This range has no headers. Please specify headers or use GetValue<T>(int).");
             }
             if (this._headers.ContainsKey(columnName) == false)
             {
-                throw (new ArgumentException($"Column name {columnName} does not exist in the range."));
+                throw new ArgumentException($"Column name {columnName} does not exist in the range.");
             }
             return this[this._headers[columnName]];
         }
@@ -93,7 +93,7 @@ public class ToCollectionRow
     {
         if(index < 0 || index >= this._cellValues.Count)
         {
-            throw(new ArgumentOutOfRangeException("index"));
+            throw new ArgumentOutOfRangeException("index");
         }
         try
         {
@@ -119,11 +119,11 @@ public class ToCollectionRow
     {
         if(this._headers.Count==0)
         {
-            throw (new ArgumentException($"This range has no headers. Please specify headers or use GetValue<T>(int)."));
+            throw new ArgumentException($"This range has no headers. Please specify headers or use GetValue<T>(int).");
         }
         if (this._headers.ContainsKey(columnName)==false)
         {
-            throw (new ArgumentException($"Column name {columnName} does not exist in the range."));
+            throw new ArgumentException($"Column name {columnName} does not exist in the range.");
         }
         return this.GetValue<T>(this._headers[columnName]);
     }
@@ -136,7 +136,7 @@ public class ToCollectionRow
     {
         if (index < 0 || index >= this._cellValues.Count)
         {
-            throw (new ArgumentOutOfRangeException("index"));
+            throw new ArgumentOutOfRangeException("index");
         }
 
         return ValueToTextHandler.GetFormattedText(this._cellValues[index]._value, this._workbook, this._cellValues[index]._styleId, false);
@@ -150,11 +150,11 @@ public class ToCollectionRow
     {
         if (this._headers.Count == 0)
         {
-            throw (new ArgumentException($"This range has no headers. Please specify headers or use GetValue<T>(int)."));
+            throw new ArgumentException($"This range has no headers. Please specify headers or use GetValue<T>(int).");
         }
         if (this._headers.ContainsKey(columnName) == false)
         {
-            throw (new ArgumentException($"Column name {columnName} does not exist in the range."));
+            throw new ArgumentException($"Column name {columnName} does not exist in the range.");
         }
             
         return this.GetText(this._headers[columnName]);

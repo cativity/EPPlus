@@ -144,7 +144,7 @@ internal static class DynamicDateFilterMatcher
 
     private static void SetFullQuarter(ExcelDynamicFilterColumn column, DateTime dt)
     {
-        int quarter = ((dt.Month - (dt.Month - 1) % 3) + 1) / 3;
+        int quarter = (dt.Month - ((dt.Month - 1) % 3) + 1) / 3;
         DateTime minDate = new DateTime(dt.Year, (quarter * 3) + 1, 1);
         column.Value = minDate.ToOADate();
         column.MaxValue = minDate.AddMonths(3).AddDays(-1).ToOADate();

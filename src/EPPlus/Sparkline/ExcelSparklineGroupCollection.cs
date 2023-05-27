@@ -68,7 +68,7 @@ public class ExcelSparklineGroupCollection : IEnumerable<ExcelSparklineGroup>
             }
             else
             {
-                throw (new ArgumentException("dataRange is not valid. dataRange columns or rows must match number of rows in locationRange"));
+                throw new ArgumentException("dataRange is not valid. dataRange columns or rows must match number of rows in locationRange");
             }
         }
         else if(locationRange.Columns==1)
@@ -83,12 +83,12 @@ public class ExcelSparklineGroupCollection : IEnumerable<ExcelSparklineGroup>
             }
             else
             {
-                throw (new ArgumentException("dataRange is not valid. dataRange columns or rows must match number of columns in locationRange"));
+                throw new ArgumentException("dataRange is not valid. dataRange columns or rows must match number of columns in locationRange");
             }
         }
         else
         {
-            throw (new ArgumentException("locationRange is not valid. Range must be one Column or Row only"));
+            throw new ArgumentException("locationRange is not valid. Range must be one Column or Row only");
         }
     }
 
@@ -183,7 +183,7 @@ public class ExcelSparklineGroupCollection : IEnumerable<ExcelSparklineGroup>
     {
         get
         {
-            return (this._lst[index]);
+            return this._lst[index];
         }
     }
     /// <summary>

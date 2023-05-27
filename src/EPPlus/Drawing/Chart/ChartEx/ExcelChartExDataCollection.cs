@@ -80,7 +80,7 @@ public class ExcelChartExDataCollection : XmlHelper, IEnumerable<ExcelChartExDat
     {
         if(index < 0 || index >= this._list.Count)
         {
-            throw (new IndexOutOfRangeException("index is out of range"));
+            throw new IndexOutOfRangeException("index is out of range");
         }
 
         if (this._list[index] is ExcelChartExStringData data)
@@ -104,7 +104,7 @@ public class ExcelChartExDataCollection : XmlHelper, IEnumerable<ExcelChartExDat
     {
         if (index < 0 || index >= this._list.Count)
         {
-            throw (new IndexOutOfRangeException("index is out of range"));
+            throw new IndexOutOfRangeException("index is out of range");
         }
 
         if (this._list[index] is ExcelChartExNumericData data)

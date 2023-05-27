@@ -266,7 +266,7 @@ public class ExcelConditionalFormattingIconDataBarValue
             if ((this._ruleType==eExcelConditionalFormattingRuleType.ThreeIconSet || this._ruleType==eExcelConditionalFormattingRuleType.FourIconSet || this._ruleType==eExcelConditionalFormattingRuleType.FiveIconSet) &&
                 (value == eExcelConditionalFormattingValueObjectType.Min || value == eExcelConditionalFormattingValueObjectType.Max))
             {
-                throw(new ArgumentException("Value type can't be Min or Max for icon sets"));
+                throw new ArgumentException("Value type can't be Min or Max for icon sets");
             }
 
             this.SetXmlNodeString(ExcelConditionalFormattingConstants.Paths.TypeAttribute, value.ToString().ToLower(CultureInfo.InvariantCulture));                
@@ -287,7 +287,7 @@ public class ExcelConditionalFormattingIconDataBarValue
         {
             this.SetXmlNodeString(  
                                   ExcelConditionalFormattingConstants.Paths.GteAttribute,
-                                  (value == false) ? "0" : string.Empty,
+                                  value == false ? "0" : string.Empty,
                                   true);
         }
     }
@@ -301,9 +301,9 @@ public class ExcelConditionalFormattingIconDataBarValue
     {
         get
         {
-            if ((this.Type == eExcelConditionalFormattingValueObjectType.Num)
-                || (this.Type == eExcelConditionalFormattingValueObjectType.Percent)
-                || (this.Type == eExcelConditionalFormattingValueObjectType.Percentile))
+            if (this.Type == eExcelConditionalFormattingValueObjectType.Num
+                || this.Type == eExcelConditionalFormattingValueObjectType.Percent
+                || this.Type == eExcelConditionalFormattingValueObjectType.Percentile)
             {
                 return this.GetXmlNodeDouble(ExcelConditionalFormattingConstants.Paths.ValAttribute);
             }
@@ -317,9 +317,9 @@ public class ExcelConditionalFormattingIconDataBarValue
             string valueToStore = string.Empty;
 
             // Only some types use the @val attribute
-            if ((this.Type == eExcelConditionalFormattingValueObjectType.Num)
-                || (this.Type == eExcelConditionalFormattingValueObjectType.Percent)
-                || (this.Type == eExcelConditionalFormattingValueObjectType.Percentile))
+            if (this.Type == eExcelConditionalFormattingValueObjectType.Num
+                || this.Type == eExcelConditionalFormattingValueObjectType.Percent
+                || this.Type == eExcelConditionalFormattingValueObjectType.Percentile)
             {
                 valueToStore = value.ToString(CultureInfo.InvariantCulture);
             }

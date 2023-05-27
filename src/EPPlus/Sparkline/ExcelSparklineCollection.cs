@@ -61,7 +61,7 @@ public class ExcelSparklineCollection : IEnumerable<ExcelSparkline>
     {
         get
         {
-            return (this._lst[index]);
+            return this._lst[index];
         }
     }
     /// <summary>

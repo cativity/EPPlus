@@ -211,8 +211,8 @@ internal class AutofitHelper
             }
             else
             {
-                r = (r <= 90 ? r : r - 90);
-                width = (((size.Width - size.Height) * Math.Abs(Math.Cos(Math.PI * r / 180.0)) + size.Height) + 5) / normalSize;
+                r = r <= 90 ? r : r - 90;
+                width = (((size.Width - size.Height) * Math.Abs(Math.Cos(Math.PI * r / 180.0))) + size.Height + 5) / normalSize;
             }
 
             foreach (ExcelAddressBase? a in afAddr)
@@ -235,7 +235,7 @@ internal class AutofitHelper
     private TextMeasurement MeasureString(string t, int fntID, ExcelTextSettings ts)
     {
         Dictionary<ulong, TextMeasurement>? measureCache = new Dictionary<ulong, TextMeasurement>();
-        ulong key = ((ulong)((uint)t.GetHashCode()) << 32) | (uint)fntID;
+        ulong key = ((ulong)(uint)t.GetHashCode() << 32) | (uint)fntID;
         if (!measureCache.TryGetValue(key, out TextMeasurement measurement))
         {
             ITextMeasurer? measurer = ts.PrimaryTextMeasurer;

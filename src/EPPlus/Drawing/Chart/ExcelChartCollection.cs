@@ -42,15 +42,15 @@ public class ExcelChartCollection : IEnumerable<ExcelChart>
     {
         if (this._topChart.PivotTableSource != null)
         {
-            throw (new InvalidOperationException("Cannot add other chart types to a pivot chart"));
+            throw new InvalidOperationException("Cannot add other chart types to a pivot chart");
         }
         else if(this._topChart._isChartEx)
         {
-            throw (new InvalidOperationException("Extended charts cannot be combined with other chart types"));
+            throw new InvalidOperationException("Extended charts cannot be combined with other chart types");
         }
         else if (ExcelChart.IsType3D(chartType) || this._list[0].IsType3D())
         {
-            throw(new InvalidOperationException("3D charts cannot be combined with other chart types"));
+            throw new InvalidOperationException("3D charts cannot be combined with other chart types");
         }
 
         XmlNode? prependingChartNode = this._list[this._list.Count - 1].TopNode;
@@ -159,7 +159,7 @@ public class ExcelChartCollection : IEnumerable<ExcelChart>
     {
         get
         {
-            return (this._list[PositionID]);
+            return this._list[PositionID];
         }
     }
 }

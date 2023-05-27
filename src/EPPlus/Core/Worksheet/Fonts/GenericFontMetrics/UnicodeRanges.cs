@@ -31,7 +31,7 @@ internal class UniCodeRange
 
     public bool IsInRange(int c)
     {
-        return (c >= this.Start && c <= this.End);
+        return c >= this.Start && c <= this.End;
     }
 
     public IEnumerable<char> ToCharList()

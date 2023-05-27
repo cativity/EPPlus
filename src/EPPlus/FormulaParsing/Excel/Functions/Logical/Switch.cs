@@ -42,8 +42,8 @@ internal class Switch : ExcelFunction
     {
         ValidateArguments(arguments, 3);
         object? expression = arguments.ElementAt(0).ValueFirst;
-        int maxLength = 1 + 126 * 2;
-        for(int x = 1; x < (arguments.Count() - 1) || x >= maxLength; x += 2)
+        int maxLength = 1 + (126 * 2);
+        for(int x = 1; x < arguments.Count() - 1 || x >= maxLength; x += 2)
         {
             object? candidate = arguments.ElementAt(x).Value;
             if(IsMatch(expression, candidate))

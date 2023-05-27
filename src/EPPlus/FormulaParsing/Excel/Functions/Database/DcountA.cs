@@ -91,6 +91,6 @@ internal class DcountA : DatabaseFunction
             return false;
         }
 
-        return (!string.IsNullOrEmpty(value.ToString()));
+        return !string.IsNullOrEmpty(value.ToString());
     }
 }

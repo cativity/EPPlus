@@ -35,7 +35,7 @@ internal partial class ZipFile
     {
         get
         {
-            return (this._name != null) ? this._name : "(stream)";
+            return this._name != null ? this._name : "(stream)";
         }
     }
 
@@ -685,7 +685,7 @@ internal partial class ZipFile
         EventHandler<ReadProgressEventArgs> rp = this.ReadProgress;
         if (rp != null)
         {
-            ReadProgressEventArgs e = (before)
+            ReadProgressEventArgs e = before
                                           ? ReadProgressEventArgs.Before(this.ArchiveNameForEvent, this._entries.Count)
                                           : ReadProgressEventArgs.After(this.ArchiveNameForEvent, entry, this._entries.Count);
             rp(this, e);
@@ -699,7 +699,7 @@ internal partial class ZipFile
         {
             if (this._lengthOfReadStream == -99)
             {
-                this._lengthOfReadStream = (this._ReadStreamIsOurs)
+                this._lengthOfReadStream = this._ReadStreamIsOurs
                                                ? SharedUtilities.GetFileLength(this._name)
                                                : -1L;
             }
@@ -902,7 +902,7 @@ internal partial class ZipFile
         EventHandler<ExtractProgressEventArgs> ep = this.ExtractProgress;
         if (ep != null)
         {
-            ExtractProgressEventArgs? e = (before)
+            ExtractProgressEventArgs? e = before
                                               ? ExtractProgressEventArgs.BeforeExtractEntry(this.ArchiveNameForEvent, entry, path)
                                               : ExtractProgressEventArgs.AfterExtractEntry(this.ArchiveNameForEvent, entry, path);
             ep(this, e);

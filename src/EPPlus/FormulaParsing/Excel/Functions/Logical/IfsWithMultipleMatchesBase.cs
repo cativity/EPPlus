@@ -16,7 +16,7 @@ public abstract class IfsWithMultipleMatchesBase : ExcelFunction
         ValidateArguments(arguments, 3);
         errorResult = null;
         IRangeInfo? maxRange = arguments.ElementAt(0).ValueAsRangeInfo;
-        int maxArgs = arguments.Count() < (126 * 2 + 1) ? arguments.Count() : 126 * 2 + 1;
+        int maxArgs = arguments.Count() < (126 * 2) + 1 ? arguments.Count() : (126 * 2) + 1;
         List<double>? matches = new List<double>();
         bool rangeSizeEvaluated = false;
         for (int valueIx = 0; valueIx < maxRange.Count(); valueIx++)

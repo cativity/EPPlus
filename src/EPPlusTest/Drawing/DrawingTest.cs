@@ -953,7 +953,7 @@ public class DrawingTest : TestBase
         //Setup
         string? wsName = "ChartWorksheet";
         ExcelPackage? pck = OpenPackage("DrawingRead.xlsx");
-        ExcelChartsheet? ws = ((ExcelChartsheet)pck.Workbook.Worksheets[wsName]);
+        ExcelChartsheet? ws = (ExcelChartsheet)pck.Workbook.Worksheets[wsName];
         if (ws == null)
         {
             Assert.Inconclusive($"{wsName} worksheet is missing");

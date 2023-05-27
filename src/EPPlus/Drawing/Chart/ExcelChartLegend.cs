@@ -84,7 +84,7 @@ public class ExcelChartLegend : XmlHelper, IDrawingStyle, IStyleMandatoryPropert
             return;
         }
 
-        int seriesCount = (a.Rows == 1 ? a.Rows : a.Columns);
+        int seriesCount = a.Rows == 1 ? a.Rows : a.Columns;
         for (int i = 0; i < seriesCount; i++)
         {
             ExcelChartLegendEntry? entry = new ExcelChartLegendEntry(this.NameSpaceManager, this.TopNode, (ExcelChartStandard)this._chart, this._entries.Count);
@@ -167,7 +167,7 @@ public class ExcelChartLegend : XmlHelper, IDrawingStyle, IStyleMandatoryPropert
         {
             if (this.TopNode == null)
             {
-                throw(new Exception("Can't set position. Chart has no legend"));
+                throw new Exception("Can't set position. Chart has no legend");
             }
 
             switch (value)
@@ -203,7 +203,7 @@ public class ExcelChartLegend : XmlHelper, IDrawingStyle, IStyleMandatoryPropert
         {
             if (this.TopNode == null)
             {
-                throw (new Exception("Can't set overlay. Chart has no legend"));
+                throw new Exception("Can't set overlay. Chart has no legend");
             }
 
             this.SetXmlNodeBool(this.OVERLAY_PATH, value);

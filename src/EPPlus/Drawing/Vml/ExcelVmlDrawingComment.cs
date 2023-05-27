@@ -119,7 +119,7 @@ public class ExcelVmlDrawingComment : ExcelVmlDrawingBase, IRangeID
     { 
         get
         {
-            return (this.TopNode.SelectSingleNode(VISIBLE_PATH, this.NameSpaceManager)!=null);
+            return this.TopNode.SelectSingleNode(VISIBLE_PATH, this.NameSpaceManager)!=null;
         }
         set
         {

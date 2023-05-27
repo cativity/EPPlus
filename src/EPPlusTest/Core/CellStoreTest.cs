@@ -123,7 +123,7 @@ public class CellStoreTest : TestBase
         for(int i=1;i<500;i++)
         {
             cellStore.Delete(1, 1, 3, ExcelPackage.MaxColumns); //Delete three rows each time.
-            int row100 = 100 - i * 3;
+            int row100 = 100 - (i * 3);
             if(row100>0)
             {
                 Assert.AreEqual(100, cellStore.GetValue(row100, 1));
@@ -142,7 +142,7 @@ public class CellStoreTest : TestBase
         for (int i = 1; i < 500; i+=1)
         {
             cellStore.Delete(1, 1, 3, ExcelPackage.MaxColumns); //Delete three rows each time.
-            int row100 = 100 - i * 3;
+            int row100 = 100 - (i * 3);
             if (row100 > 0)
             {
                 Assert.AreEqual(100, cellStore.GetValue(row100, 1));
@@ -169,7 +169,7 @@ public class CellStoreTest : TestBase
         for (int i = 1; i < 500; i += 1)
         {
             cellStore.Delete(1, 1, 3, ExcelPackage.MaxColumns); //Delete three rows each time.
-            int row100 = 100 - i * 3;
+            int row100 = 100 - (i * 3);
             if (row100 > 0)
             {
                 Assert.AreEqual(100, cellStore.GetValue(row100, 1));
@@ -177,7 +177,7 @@ public class CellStoreTest : TestBase
             else
             {
                 int r = 100 - row100 + 1;
-                if (r % 3 - 1 == 0)
+                if ((r % 3) - 1 == 0)
                 {
                     Assert.AreEqual(r, cellStore.GetValue(1, 1));
                 }
@@ -197,7 +197,7 @@ public class CellStoreTest : TestBase
         for (int i = 1; i < 500; i++)
         {
             cellStore.Delete(2, 1, 3, ExcelPackage.MaxColumns); //Delete three rows each time.
-            int row100 = 100 - i * 3;
+            int row100 = 100 - (i * 3);
             if (row100 > 1)
             {
                 Assert.AreEqual(100, cellStore.GetValue(row100, 1));
@@ -218,7 +218,7 @@ public class CellStoreTest : TestBase
 
         int row1 = pageSize + 1;
         cellStore.SetValue(row1, 1, row1);
-        int row2 = pageSize * 2 + 1;
+        int row2 = (pageSize * 2) + 1;
         cellStore.SetValue(row2, 1, row2);
 
         //Act
@@ -322,7 +322,7 @@ public class CellStoreTest : TestBase
 
         for(int r=1;r<1000;r++)
         {
-            int row = (r - 1) * 2 + 1;
+            int row = ((r - 1) * 2) + 1;
             cellStore.Insert(row+1, 1, 1, 0);
             Assert.AreEqual(r, cellStore.GetValue(row, 1));
         }
@@ -336,7 +336,7 @@ public class CellStoreTest : TestBase
 
         for (int r = 1; r < 1000; r++)
         {   
-            int row = (r - 1) * 3 + 1;
+            int row = ((r - 1) * 3) + 1;
             cellStore.Insert(row + 1, 1, 2, 0);
             Assert.AreEqual(r, cellStore.GetValue(row, 1));
         }
@@ -350,7 +350,7 @@ public class CellStoreTest : TestBase
 
         for (int r = 1; r < 5000; r++)
         {
-            int row = (r - 1) * 4 + 1;
+            int row = ((r - 1) * 4) + 1;
             cellStore.Insert(row + 1, 1, 3, 0);
             Assert.AreEqual(r, cellStore.GetValue(row, 1));
         }
@@ -364,7 +364,7 @@ public class CellStoreTest : TestBase
 
         for (int r = 1; r < 5000; r++)
         {
-            int row = (r - 1) * 5 + 1;
+            int row = ((r - 1) * 5) + 1;
             cellStore.Insert(row + 1, 1, 4, 0);
             Assert.AreEqual(r, cellStore.GetValue(row, 1));
         }
@@ -446,7 +446,7 @@ public class CellStoreTest : TestBase
         {
             for (int col = 1; col <= cols; col++)
             {
-                cellStore.SetValue(row, col, (row * col));
+                cellStore.SetValue(row, col, row * col);
             }   
         }
     }

@@ -40,11 +40,11 @@ internal class RandBetween : ExcelFunction
     {
         if (high > 0 && low < 0)
         {
-            return high + low * - 1;
+            return high + (low * - 1);
         }
         else if (high < 0 && low < 0)
         {
-            return high * -1 - low * -1;
+            return (high * -1) - (low * -1);
         }
         return high - low;
     }

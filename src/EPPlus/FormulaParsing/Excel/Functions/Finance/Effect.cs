@@ -34,7 +34,7 @@ internal class Effect : ExcelFunction
             return this.CreateResult(eErrorType.Num);
         }
 
-        double result = (System.Math.Pow(nominalRate/npery + 1d, npery) - 1d);
+        double result = System.Math.Pow((nominalRate/npery) + 1d, npery) - 1d;
         return this.CreateResult(result, DataType.Decimal);
     }
 }

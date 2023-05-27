@@ -29,7 +29,7 @@ internal class Degrees : ExcelFunction
     {
         ValidateArguments(arguments, 1);
         double angle = this.ArgToDecimal(arguments, 0);
-        double result = (angle*180)/System.Math.PI;
+        double result = angle*180/System.Math.PI;
         return this.CreateResult(result, DataType.Decimal);
     }
 }

@@ -269,7 +269,7 @@ public class ExcelPivotTable : XmlHelper
         {
             if (this.WorkSheet.Workbook.ExistsTableName(value))
             {
-                throw (new ArgumentException("PivotTable name is not unique"));
+                throw new ArgumentException("PivotTable name is not unique");
             }
             string prevName = this.Name;
             if (this.WorkSheet.Tables._tableNames.ContainsKey(prevName))

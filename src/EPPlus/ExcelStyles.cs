@@ -302,7 +302,7 @@ public sealed class ExcelStyles : XmlHelper
     {
         if (address.Start.Column == 0 || address.Start.Row == 0)
         {
-            throw (new Exception("error address"));
+            throw new Exception("error address");
         }
         //Columns
         else if (address.Start.Row == 1 && address.End.Row == ExcelPackage.MaxRows)
@@ -445,7 +445,7 @@ public sealed class ExcelStyles : XmlHelper
                 return false;
             }
         }
-        ExcelColumn? colObj = (ExcelColumn)(colCache[c]._value);
+        ExcelColumn? colObj = (ExcelColumn)colCache[c]._value;
         if (colObj != null && colObj.ColumnMax >= col) //Fixes issue 15174
         {
             s = colCache[c]._styleId;
@@ -614,7 +614,7 @@ public sealed class ExcelStyles : XmlHelper
             }
             else
             {
-                column = (ws.GetValueInner(0, col) as ExcelColumn);
+                column = ws.GetValueInner(0, col) as ExcelColumn;
             }
         }
 
@@ -733,7 +733,7 @@ public sealed class ExcelStyles : XmlHelper
                     {
                         //var column=ws.GetValueInner(0,c) as ExcelColumn;
                         ExcelValue val = ws._values.GetValue(0, c);
-                        ExcelColumn? column = (ExcelColumn)(val._value);
+                        ExcelColumn? column = (ExcelColumn)val._value;
                         if (column != null && column.ColumnMax >= col) //Fixes issue 15174
                         {
                             //return ws.GetStyleInner(0, c);
@@ -1131,7 +1131,7 @@ public sealed class ExcelStyles : XmlHelper
         }
         if(this.tableStyleNames.Contains(name) || this.TableStyles.ExistsKey(name) || this.SlicerStyles.ExistsKey(name))
         {
-            throw (new ArgumentException($"Table style name is not unique : {name}", "name"));
+            throw new ArgumentException($"Table style name is not unique : {name}", "name");
         }
     }
     /// <summary>
@@ -1231,12 +1231,12 @@ public sealed class ExcelStyles : XmlHelper
 
         if (cellStyleNode != null)
         {
-            XmlElement? cellStyleElement = (cellStyleNode as XmlElement);
+            XmlElement? cellStyleElement = cellStyleNode as XmlElement;
             cellStyleElement.SetAttribute("count", cellStyleElement.ChildNodes.Count.ToString(CultureInfo.InvariantCulture));
         }
         if (styleXfsNode != null)
         {
-            XmlElement? styleXfsElement = (styleXfsNode as XmlElement);
+            XmlElement? styleXfsElement = styleXfsNode as XmlElement;
             styleXfsElement.SetAttribute("count", styleXfsElement.ChildNodes.Count.ToString(CultureInfo.InvariantCulture));
         }
 
@@ -1663,7 +1663,7 @@ public sealed class ExcelStyles : XmlHelper
             {
                 if(style._wb!= this._wb && allwaysAddCellXfs==false) //Not the same workbook, copy the namedstyle to the workbook or match the id
                 {
-                    Dictionary<int, ExcelNamedStyleXml>? nsFind = style.NamedStyles.ToDictionary(d => (d.StyleXfId));
+                    Dictionary<int, ExcelNamedStyleXml>? nsFind = style.NamedStyles.ToDictionary(d => d.StyleXfId);
                     if (nsFind.ContainsKey(xfs.XfId))
                     {
                         ExcelNamedStyleXml? st = nsFind[xfs.XfId];

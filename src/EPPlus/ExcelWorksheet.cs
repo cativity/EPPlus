@@ -111,7 +111,7 @@ public class ExcelWorksheet : XmlHelper, IEqualityComparer<ExcelWorksheet>, IDis
         }
         internal string GetFormula(int row, int column, string worksheet)
         {
-            if ((this.StartRow == row && this.StartCol == column))
+            if (this.StartRow == row && this.StartCol == column)
             {
                 return this.Formula;
             }
@@ -274,7 +274,7 @@ public class ExcelWorksheet : XmlHelper, IEqualityComparer<ExcelWorksheet>, IDis
             //Validate
             if (doValidate && this.Validate(address) == false)
             {
-                throw (new ArgumentException("Can't merge and already merged range"));
+                throw new ArgumentException("Can't merge and already merged range");
             }
             lock (this)
             {
@@ -390,7 +390,7 @@ public class ExcelWorksheet : XmlHelper, IEqualityComparer<ExcelWorksheet>, IDis
                     ExcelAddressBase? adr = new ExcelAddressBase(this._list[v]);
                     if (!(Destination.Collide(adr) == ExcelAddressBase.eAddressCollition.Inside || Destination.Collide(adr) == ExcelAddressBase.eAddressCollition.Equal))
                     {
-                        throw (new InvalidOperationException(string.Format("Can't delete/overwrite merged cells. A range is partly merged with the another merged range. {0}", adr._address)));
+                        throw new InvalidOperationException(string.Format("Can't delete/overwrite merged cells. A range is partly merged with the another merged range. {0}", adr._address));
                     }
                     used.Add(v);
                 }
@@ -476,7 +476,7 @@ public class ExcelWorksheet : XmlHelper, IEqualityComparer<ExcelWorksheet>, IDis
         this._formulaTokens = new CellStore<List<Token>>();
         this._hyperLinks = new CellStore<Uri>();
         this._dataValidationsStore = new CellStore<int?>();
-        this._nextControlId = (this.PositionId + 1) * 1024 + 1;
+        this._nextControlId = ((this.PositionId + 1) * 1024) + 1;
         this._names = new ExcelNamedRangeCollection(this.Workbook, this);
 
         this._rangeSorter = new RangeSorter(this);
@@ -500,19 +500,19 @@ public class ExcelWorksheet : XmlHelper, IEqualityComparer<ExcelWorksheet>, IDis
     /// <summary>
     /// The Uri to the worksheet within the package
     /// </summary>
-    internal Uri WorksheetUri { get { return (this._worksheetUri); } }
+    internal Uri WorksheetUri { get { return this._worksheetUri; } }
     /// <summary>
     /// The Zip.ZipPackagePart for the worksheet within the package
     /// </summary>
-    internal ZipPackagePart Part { get { return (this._package.ZipPackage.GetPart(this.WorksheetUri)); } }
+    internal ZipPackagePart Part { get { return this._package.ZipPackage.GetPart(this.WorksheetUri); } }
     /// <summary>
     /// The ID for the worksheet's relationship with the workbook in the package
     /// </summary>
-    internal string RelationshipId { get { return (this._relationshipID); } }
+    internal string RelationshipId { get { return this._relationshipID; } }
     /// <summary>
     /// The unique identifier for the worksheet.
     /// </summary>
-    internal int SheetId { get { return (this._sheetID); } set { this._sheetID = value; } }
+    internal int SheetId { get { return this._sheetID; } set { this._sheetID = value; } }
     internal bool IsChartSheet { get; set; } = false;
     internal static bool NameNeedsApostrophes(string ws)
     {
@@ -544,7 +544,7 @@ public class ExcelWorksheet : XmlHelper, IEqualityComparer<ExcelWorksheet>, IDis
                 ix = 2;
             }
 
-            if (ws.Length > ix && (ws[ix] >= '0' && ws[ix] <= '9'))
+            if (ws.Length > ix && ws[ix] >= '0' && ws[ix] <= '9')
             {
                 if (ws[ix] == '0')
                 {
@@ -571,7 +571,7 @@ public class ExcelWorksheet : XmlHelper, IEqualityComparer<ExcelWorksheet>, IDis
     /// <summary>
     /// The position of the worksheet.
     /// </summary>
-    internal int PositionId { get { return (this._positionId); } set { this._positionId = value; } }
+    internal int PositionId { get { return this._positionId; } set { this._positionId = value; } }
     internal int IndexInList
     {
         get
@@ -581,14 +581,14 @@ public class ExcelWorksheet : XmlHelper, IEqualityComparer<ExcelWorksheet>, IDis
                 return -1;
             }
 
-            return (this._positionId - this._package._worksheetAdd);
+            return this._positionId - this._package._worksheetAdd;
         }
     }
     #region Worksheet Public Properties
     /// <summary>
     /// The index in the worksheets collection
     /// </summary>
-    public int Index { get { return (this._positionId); } }
+    public int Index { get { return this._positionId; } }
     const string AutoFilterPath = "d:autoFilter";
     /// <summary>
     /// Address for autofilter
@@ -679,7 +679,7 @@ public class ExcelWorksheet : XmlHelper, IEqualityComparer<ExcelWorksheet>, IDis
     {
         if (this is ExcelChartsheet)
         {
-            throw (new NotSupportedException("This property or method is not supported for a Chartsheet"));
+            throw new NotSupportedException("This property or method is not supported for a Chartsheet");
         }
         if (this._positionId == -1 && this._values == null)
         {
@@ -705,7 +705,7 @@ public class ExcelWorksheet : XmlHelper, IEqualityComparer<ExcelWorksheet>, IDis
 
                 this._sheetView = new ExcelWorksheetView(this.NameSpaceManager, node, this);
             }
-            return (this._sheetView);
+            return this._sheetView;
         }
     }
 
@@ -714,7 +714,7 @@ public class ExcelWorksheet : XmlHelper, IEqualityComparer<ExcelWorksheet>, IDis
     /// </summary>
     public string Name
     {
-        get { return (this._name); }
+        get { return this._name; }
         set
         {
             if (value == this._name)
@@ -727,7 +727,7 @@ public class ExcelWorksheet : XmlHelper, IEqualityComparer<ExcelWorksheet>, IDis
             {
                 if (ws.PositionId != this.PositionId && ws.Name.Equals(value, StringComparison.OrdinalIgnoreCase))
                 {
-                    throw (new ArgumentException("Worksheet name must be unique"));
+                    throw new ArgumentException("Worksheet name must be unique");
                 }
             }
 
@@ -1026,8 +1026,8 @@ public class ExcelWorksheet : XmlHelper, IEqualityComparer<ExcelWorksheet>, IDis
             {
                 double mfw = Convert.ToDouble(this.Workbook.MaxFontWidth);
                 double margin = 5d;
-                double width = Math.Truncate((8 * mfw + margin) / mfw * 256d) / 256d;
-                double widthPx = Math.Truncate(((256d * width + Math.Truncate(128d / mfw)) / 256d) * mfw);
+                double width = Math.Truncate(((8 * mfw) + margin) / mfw * 256d) / 256d;
+                double widthPx = Math.Truncate(((256d * width) + Math.Truncate(128d / mfw)) / 256d * mfw);
                 double widthPxAdj = widthPx + (8 - (widthPx % 8));
 
                 ExcelStyles? styles = this._package.Workbook.Styles;
@@ -1165,7 +1165,7 @@ public class ExcelWorksheet : XmlHelper, IEqualityComparer<ExcelWorksheet>, IDis
     {
         get
         {
-            return (this._worksheetXml);
+            return this._worksheetXml;
         }
     }
     internal ExcelVmlDrawingCollection _vmlDrawings = null;
@@ -1232,7 +1232,7 @@ public class ExcelWorksheet : XmlHelper, IEqualityComparer<ExcelWorksheet>, IDis
         uri = UriHelper.ResolvePartUri(this.Workbook.WorkbookUri, uri);
         while (this.Part.Package.PartExists(uri))
         {
-            uri = new Uri("/xl/threadedComments/threadedComment" + (++index) + ".xml", UriKind.Relative);
+            uri = new Uri("/xl/threadedComments/threadedComment" + ++index + ".xml", UriKind.Relative);
             uri = UriHelper.ResolvePartUri(this.Workbook.WorkbookUri, uri);
         }
 
@@ -1758,7 +1758,7 @@ public class ExcelWorksheet : XmlHelper, IEqualityComparer<ExcelWorksheet>, IDis
                     if (xr.GetAttribute("s") != null)
                     {
                         int styleId = int.Parse(xr.GetAttribute("s"), CultureInfo.InvariantCulture);
-                        this.SetStyleInner(row, 0, (styleId < 0 ? 0 : styleId));
+                        this.SetStyleInner(row, 0, styleId < 0 ? 0 : styleId);
                     }
                 }
                 xr.Read();
@@ -2000,8 +2000,8 @@ public class ExcelWorksheet : XmlHelper, IEqualityComparer<ExcelWorksheet>, IDis
         return new RowInternal()
         {
             Collapsed = GetBoolFromString(xr.GetAttribute("collapsed")),
-            OutlineLevel = (xr.GetAttribute("outlineLevel") == null ? (short)0 : short.Parse(xr.GetAttribute("outlineLevel"), CultureInfo.InvariantCulture)),
-            Height = (xr.GetAttribute("ht") == null ? -1 : double.Parse(xr.GetAttribute("ht"), CultureInfo.InvariantCulture)),
+            OutlineLevel = xr.GetAttribute("outlineLevel") == null ? (short)0 : short.Parse(xr.GetAttribute("outlineLevel"), CultureInfo.InvariantCulture),
+            Height = xr.GetAttribute("ht") == null ? -1 : double.Parse(xr.GetAttribute("ht"), CultureInfo.InvariantCulture),
             Hidden = GetBoolFromString(xr.GetAttribute("hidden")),
             Phonetic = GetBoolFromString(xr.GetAttribute("ph")),
             CustomHeight = GetBoolFromString(xr.GetAttribute("customHeight"))
@@ -2062,7 +2062,7 @@ public class ExcelWorksheet : XmlHelper, IEqualityComparer<ExcelWorksheet>, IDis
 
                 this._headerFooter = new ExcelHeaderFooter(this.NameSpaceManager, headerFooterNode, this);
             }
-            return (this._headerFooter);
+            return this._headerFooter;
         }
     }
     #endregion
@@ -2145,7 +2145,7 @@ public class ExcelWorksheet : XmlHelper, IEqualityComparer<ExcelWorksheet>, IDis
         this.CheckSheetTypeAndNotDisposed();
         if (row < 1 || row > ExcelPackage.MaxRows)
         {
-            throw (new ArgumentException("Row number out of bounds"));
+            throw new ArgumentException("Row number out of bounds");
         }
         return new ExcelRow(this, row);
         //return r;
@@ -2160,7 +2160,7 @@ public class ExcelWorksheet : XmlHelper, IEqualityComparer<ExcelWorksheet>, IDis
         this.CheckSheetTypeAndNotDisposed();
         if (col < 1 || col > ExcelPackage.MaxColumns)
         {
-            throw (new ArgumentException("Column number out of bounds"));
+            throw new ArgumentException("Column number out of bounds");
         }
         ExcelColumn? column = this.GetValueInner(0, col) as ExcelColumn;
         if (column != null)
@@ -2454,7 +2454,7 @@ public class ExcelWorksheet : XmlHelper, IEqualityComparer<ExcelWorksheet>, IDis
     public void SetValue(int Row, int Column, object Value)
     {
         this.CheckSheetTypeAndNotDisposed();
-        if (Row < 1 || Column < 1 || Row > ExcelPackage.MaxRows && Column > ExcelPackage.MaxColumns)
+        if (Row < 1 || Column < 1 || (Row > ExcelPackage.MaxRows && Column > ExcelPackage.MaxColumns))
         {
             throw new ArgumentOutOfRangeException("Row or Column out of range");
         }
@@ -2470,7 +2470,7 @@ public class ExcelWorksheet : XmlHelper, IEqualityComparer<ExcelWorksheet>, IDis
     {
         this.CheckSheetTypeAndNotDisposed();
         ExcelCellBase.GetRowCol(Address, out int row, out int col, true);
-        if (row < 1 || col < 1 || row > ExcelPackage.MaxRows && col > ExcelPackage.MaxColumns)
+        if (row < 1 || col < 1 || (row > ExcelPackage.MaxRows && col > ExcelPackage.MaxColumns))
         {
             throw new ArgumentOutOfRangeException("Address is invalid or out of range");
         }
@@ -2840,7 +2840,7 @@ public class ExcelWorksheet : XmlHelper, IEqualityComparer<ExcelWorksheet>, IDis
 
                     if (colVal.Contains(n))
                     {
-                        throw (new InvalidDataException(string.Format("Table {0} Column {1} does not have a unique name.", tbl.Name, col.Name)));
+                        throw new InvalidDataException(string.Format("Table {0} Column {1} does not have a unique name.", tbl.Name, col.Name));
                     }
                     colVal.Add(n);
                     colNum++;
@@ -2932,7 +2932,7 @@ public class ExcelWorksheet : XmlHelper, IEqualityComparer<ExcelWorksheet>, IDis
                     this.SetFormula(tbl.Address._toRow, colNum, GetTotalFunction(col, "109"));
                     break;
                 default:
-                    throw (new Exception("Unknown RowFunction enum"));
+                    throw new Exception("Unknown RowFunction enum");
             }
         }
         else
@@ -3600,7 +3600,7 @@ public class ExcelWorksheet : XmlHelper, IEqualityComparer<ExcelWorksheet>, IDis
     /// <returns>is exists</returns>
     internal bool ExistsValueInner(int row, int col)
     {
-        return (this._values.GetValue(row, col)._value != null);
+        return this._values.GetValue(row, col)._value != null;
     }
     /// <summary>
     /// Existance check of sheet styleId
@@ -3610,7 +3610,7 @@ public class ExcelWorksheet : XmlHelper, IEqualityComparer<ExcelWorksheet>, IDis
     /// <returns>is exists</returns>
     internal bool ExistsStyleInner(int row, int col)
     {
-        return (this._values.GetValue(row, col)._styleId > 0);
+        return this._values.GetValue(row, col)._styleId > 0;
     }
     /// <summary>
     /// Existence check of sheet value
@@ -3622,7 +3622,7 @@ public class ExcelWorksheet : XmlHelper, IEqualityComparer<ExcelWorksheet>, IDis
     internal bool ExistsValueInner(int row, int col, ref object value)
     {
         value = this._values.GetValue(row, col)._value;
-        return (value != null);
+        return value != null;
     }
     /// <summary>
     /// Existence check of sheet styleId
@@ -3634,7 +3634,7 @@ public class ExcelWorksheet : XmlHelper, IEqualityComparer<ExcelWorksheet>, IDis
     internal bool ExistsStyleInner(int row, int col, ref int styleId)
     {
         styleId = this._values.GetValue(row, col)._styleId;
-        return (styleId > 0);
+        return styleId > 0;
     }
     internal void RemoveSlicerReference(ExcelSlicerXmlSource xmlSource)
     {

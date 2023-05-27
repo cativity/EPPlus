@@ -26,7 +26,7 @@ internal class TimeStringParser
     private static double GetSerialNumber(int hour, int minute, int second)
     {
         double secondsInADay = 24d * 60d * 60d;
-        return ((double)hour * 60 * 60 + (double)minute * 60 + (double)second) / secondsInADay;
+        return (((double)hour * 60 * 60) + ((double)minute * 60) + (double)second) / secondsInADay;
     }
 
     private static void ValidateValues(int hour, int minute, int second)

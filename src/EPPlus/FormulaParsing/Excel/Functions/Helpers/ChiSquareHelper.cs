@@ -17,7 +17,7 @@ internal static class ChiSquareHelper
         {
             return 0.5d;
         }
-        return System.Math.Exp(degreeOfFreedom / 2 - 1) * System.Math.Log(n) - degreeOfFreedom / 2d * System.Math.Log(2d) - GammaHelper.logGamma(degreeOfFreedom / 2);
+        return (System.Math.Exp((degreeOfFreedom / 2) - 1) * System.Math.Log(n)) - (degreeOfFreedom / 2d * System.Math.Log(2d)) - GammaHelper.logGamma(degreeOfFreedom / 2);
 
     }
 

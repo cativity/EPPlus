@@ -67,7 +67,7 @@ namespace OfficeOpenXml
         {
             if (Reader == null)
             {
-                throw (new ArgumentNullException("Reader", "Reader can't be null"));
+                throw new ArgumentNullException("Reader", "Reader can't be null");
             }
             int fieldCount = Reader.FieldCount;
 
@@ -143,7 +143,7 @@ namespace OfficeOpenXml
         {
             if (Reader == null)
             {
-                throw (new ArgumentNullException("Reader", "Reader can't be null"));
+                throw new ArgumentNullException("Reader", "Reader can't be null");
             }
             int fieldCount = Reader.FieldCount;
 
@@ -460,7 +460,7 @@ namespace OfficeOpenXml
         {
             if (TextFile.Exists == false)
             {
-                throw (new ArgumentException($"File does not exist {TextFile.FullName}"));
+                throw new ArgumentException($"File does not exist {TextFile.FullName}");
             }
 
             return this.LoadFromText(File.ReadAllText(TextFile.FullName, Format.Encoding), Format);
@@ -477,7 +477,7 @@ namespace OfficeOpenXml
         {
             if (TextFile.Exists == false)
             {
-                throw (new ArgumentException($"File does not exist {TextFile.FullName}"));
+                throw new ArgumentException($"File does not exist {TextFile.FullName}");
             }
 
             return this.LoadFromText(File.ReadAllText(TextFile.FullName, Format.Encoding), Format, TableStyle, FirstRowIsHeader);
@@ -493,7 +493,7 @@ namespace OfficeOpenXml
         {
             if (TextFile.Exists == false)
             {
-                throw (new ArgumentException($"File does not exist {TextFile.FullName}"));
+                throw new ArgumentException($"File does not exist {TextFile.FullName}");
             }
 
             FileStream? fs = new FileStream(TextFile.FullName, FileMode.Open, FileAccess.Read);
@@ -510,7 +510,7 @@ namespace OfficeOpenXml
         {
             if (TextFile.Exists == false)
             {
-                throw (new ArgumentException($"File does not exist {TextFile.FullName}"));
+                throw new ArgumentException($"File does not exist {TextFile.FullName}");
             }
 
             FileStream? fs = new FileStream(TextFile.FullName, FileMode.Open, FileAccess.Read);
@@ -529,7 +529,7 @@ namespace OfficeOpenXml
         {
             if (TextFile.Exists == false)
             {
-                throw (new ArgumentException($"File does not exist {TextFile.FullName}"));
+                throw new ArgumentException($"File does not exist {TextFile.FullName}");
             }
 
             FileStream? fs = new FileStream(TextFile.FullName, FileMode.Open, FileAccess.Read);

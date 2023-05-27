@@ -57,7 +57,7 @@ public class ExcelChartDataLabelStandard : ExcelChartDataLabel
         {
             if (ForbiddDataLabelPosition(this._chart))
             {
-                throw (new InvalidOperationException("Can't set data label position on a 3D-chart"));
+                throw new InvalidOperationException("Can't set data label position on a 3D-chart");
             }
 
             this.SetXmlNodeString(positionPath, GetPosText(value));

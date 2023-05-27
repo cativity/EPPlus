@@ -42,8 +42,8 @@ public class AutofitWithSerializedFontMetricsTests : TestBase
             ExcelRange? range = sheet.Cells[1, 1, 5, 10];
             range.Style.Font.Name = fontFamily;
             range.Style.Font.Size = 9f;
-            range.Style.Font.Italic = (style == FontSubFamilies.Italic || style == FontSubFamilies.BoldItalic);
-            range.Style.Font.Bold = (style == FontSubFamilies.Bold || style == FontSubFamilies.BoldItalic);
+            range.Style.Font.Italic = style == FontSubFamilies.Italic || style == FontSubFamilies.BoldItalic;
+            range.Style.Font.Bold = style == FontSubFamilies.Bold || style == FontSubFamilies.BoldItalic;
             Random? rnd = new Random();
             for (int col = 1; col < 10; col++)
             {
@@ -119,7 +119,7 @@ public class AutofitWithSerializedFontMetricsTests : TestBase
         ExcelPackage? report = new ExcelPackage(@"c:\Temp\fontreport2.xlsx");
         ExcelWorksheet? reportSheet = !report.Workbook.Worksheets.Any() ? report.Workbook.Worksheets.Add("Report") : report.Workbook.Worksheets["Report"];
         int reportColOffset = 3;
-        int reportRow = (run - 1) * 5 + 2;
+        int reportRow = ((run - 1) * 5) + 2;
         List<string>? shortList = new List<string>
         {
             "One",
@@ -167,8 +167,8 @@ public class AutofitWithSerializedFontMetricsTests : TestBase
             ExcelRange? range = sheet.Cells[1, 1, 5, 10];
             range.Style.Font.Name = fontFamily;
             range.Style.Font.Size = 9f;
-            range.Style.Font.Italic = (style == FontSubFamilies.Italic || style == FontSubFamilies.BoldItalic);
-            range.Style.Font.Bold = (style == FontSubFamilies.Bold || style == FontSubFamilies.BoldItalic);
+            range.Style.Font.Italic = style == FontSubFamilies.Italic || style == FontSubFamilies.BoldItalic;
+            range.Style.Font.Bold = style == FontSubFamilies.Bold || style == FontSubFamilies.BoldItalic;
             Random? rnd = new Random();
             for (int col = 1; col < lists.Count + 1; col++)
             {
@@ -224,7 +224,7 @@ public class AutofitWithSerializedFontMetricsTests : TestBase
         ExcelPackage? report = new ExcelPackage(@"c:\Temp\fontreport_jp.xlsx");
         ExcelWorksheet? reportSheet = !report.Workbook.Worksheets.Any() ? report.Workbook.Worksheets.Add("Report") : report.Workbook.Worksheets["Report"];
         int reportColOffset = 3;
-        int reportRow = (run - 1) * 5 + 2;
+        int reportRow = ((run - 1) * 5) + 2;
         List<string>? shortList = new List<string>
         {
             "新しい最新スタイルです",
@@ -272,8 +272,8 @@ public class AutofitWithSerializedFontMetricsTests : TestBase
             ExcelRange? range = sheet.Cells[1, 1, 5, 10];
             range.Style.Font.Name = fontFamily;
             range.Style.Font.Size = 24f;
-            range.Style.Font.Italic = (style == FontSubFamilies.Italic || style == FontSubFamilies.BoldItalic);
-            range.Style.Font.Bold = (style == FontSubFamilies.Bold || style == FontSubFamilies.BoldItalic);
+            range.Style.Font.Italic = style == FontSubFamilies.Italic || style == FontSubFamilies.BoldItalic;
+            range.Style.Font.Bold = style == FontSubFamilies.Bold || style == FontSubFamilies.BoldItalic;
             Random? rnd = new Random();
             for (int col = 1; col < lists.Count + 1; col++)
             {
@@ -389,7 +389,7 @@ public class AutofitWithSerializedFontMetricsTests : TestBase
         ExcelPackage? report = new ExcelPackage(@"c:\Temp\fontreport_jp.xlsx");
         ExcelWorksheet? reportSheet = !report.Workbook.Worksheets.Any() ? report.Workbook.Worksheets.Add("Report") : report.Workbook.Worksheets["Report"];
         int reportColOffset = 3;
-        int reportRow = (run - 1) * 5 + 2;
+        int reportRow = ((run - 1) * 5) + 2;
         List<string>? shortList = new List<string>
         {
             "新しい最新スタイルです",
@@ -437,8 +437,8 @@ public class AutofitWithSerializedFontMetricsTests : TestBase
             ExcelRange? range = sheet.Cells[1, 1, 5, 10];
             range.Style.Font.Name = fontFamily;
             range.Style.Font.Size = 24f;
-            range.Style.Font.Italic = (style == FontSubFamilies.Italic || style == FontSubFamilies.BoldItalic);
-            range.Style.Font.Bold = (style == FontSubFamilies.Bold || style == FontSubFamilies.BoldItalic);
+            range.Style.Font.Italic = style == FontSubFamilies.Italic || style == FontSubFamilies.BoldItalic;
+            range.Style.Font.Bold = style == FontSubFamilies.Bold || style == FontSubFamilies.BoldItalic;
             Random? rnd = new Random();
             for (int col = 1; col < lists.Count + 1; col++)
             {

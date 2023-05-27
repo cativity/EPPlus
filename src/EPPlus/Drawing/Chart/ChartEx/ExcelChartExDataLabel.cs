@@ -113,7 +113,7 @@ public class ExcelChartExDataLabel : ExcelChartDataLabel
         }
         set
         {
-            throw (new NotSupportedException("ShowPercent do not apply to Extension Charts"));
+            throw new NotSupportedException("ShowPercent do not apply to Extension Charts");
         }
     }
     /// <summary>
@@ -127,7 +127,7 @@ public class ExcelChartExDataLabel : ExcelChartDataLabel
         }
         set
         {
-            throw (new NotSupportedException("ShowLeaderLines do not apply to Extension Charts"));
+            throw new NotSupportedException("ShowLeaderLines do not apply to Extension Charts");
         }
     }
     /// <summary>
@@ -141,7 +141,7 @@ public class ExcelChartExDataLabel : ExcelChartDataLabel
         }
         set
         {
-            throw (new NotSupportedException("ShowBubbleSize do not apply to Extension Charts"));
+            throw new NotSupportedException("ShowBubbleSize do not apply to Extension Charts");
         }
     }
     /// <summary>
@@ -155,7 +155,7 @@ public class ExcelChartExDataLabel : ExcelChartDataLabel
         }
         set
         {
-            throw (new InvalidOperationException("ShowLegendKey do not apply to Extension Charts"));
+            throw new InvalidOperationException("ShowLegendKey do not apply to Extension Charts");
         }
     }
     /// <summary>

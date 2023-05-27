@@ -21,12 +21,12 @@ internal static class CashFlowHelper
 {
     private static double GetAnnuityFactor(double rate, double nper, PmtDue type)
     {
-        return rate == 0.0 ? nper : (1 + rate * (int)type) * (1 - 1d / System.Math.Pow(1.0 + rate, nper)) / rate;
+        return rate == 0.0 ? nper : (1 + (rate * (int)type)) * (1 - (1d / System.Math.Pow(1.0 + rate, nper))) / rate;
     }
 
     private static double FvCalc(double rate, double nper, double pmt, double pv, PmtDue type)
     {
-        return -1 * (pv * System.Math.Pow(1.0 + rate, nper) + pmt * (GetAnnuityFactor(rate, nper, type) * System.Math.Pow(1.0 + rate, nper)));
+        return -1 * ((pv * System.Math.Pow(1.0 + rate, nper)) + (pmt * (GetAnnuityFactor(rate, nper, type) * System.Math.Pow(1.0 + rate, nper))));
     }
 
     /// <summary>
@@ -40,14 +40,14 @@ internal static class CashFlowHelper
     /// <returns></returns>
     public static double Fv(double rate, double nper, double pmt = 0d, double pv = 0d, PmtDue type = 0)
     {
-        if((type == PmtDue.EndOfPeriod && rate == -1d))
+        if(type == PmtDue.EndOfPeriod && rate == -1d)
         {
             return -(pv * System.Math.Pow(1d + rate, nper));
         }
 
         if (rate == -1d && type == PmtDue.EndOfPeriod)
         {
-            return -(pv * System.Math.Pow(1d + rate, nper) + pmt);
+            return -((pv * System.Math.Pow(1d + rate, nper)) + pmt);
         }
 
         return FvCalc(rate, nper, pmt, pv, type);
@@ -64,7 +64,7 @@ internal static class CashFlowHelper
     /// <returns></returns>
     public static double Pv(double rate, double nper, double pmt = 0d, double fv = 0d, PmtDue type = 0)
     {
-        return -1 * (fv * (1d / System.Math.Pow(1.0 + rate, nper)) + pmt * GetAnnuityFactor(rate, nper, type));
+        return -1 * ((fv * (1d / System.Math.Pow(1.0 + rate, nper))) + (pmt * GetAnnuityFactor(rate, nper, type)));
     }
 
     /// <summary>

@@ -46,7 +46,7 @@ internal class Lookup : LookupFunction
             return false;
         }
 
-        return (arguments.ElementAt(2).Value is RangeInfo);
+        return arguments.ElementAt(2).Value is RangeInfo;
     }
 
     private CompileResult HandleSingleRange(IEnumerable<FunctionArgument> arguments, ParsingContext context)
@@ -80,12 +80,12 @@ internal class Lookup : LookupFunction
         RangeAddressFactory? rangeAddressFactory = new RangeAddressFactory(context.ExcelDataProvider);
         RangeAddress? address1 = rangeAddressFactory.Create(firstAddress);
         RangeAddress? address2 = rangeAddressFactory.Create(secondAddress);
-        int lookupIndex = (address2.FromCol - address1.FromCol) + 1;
+        int lookupIndex = address2.FromCol - address1.FromCol + 1;
         int lookupOffset = address2.FromRow - address1.FromRow;
         LookupDirection lookupDirection = GetLookupDirection(address1);
         if (lookupDirection == LookupDirection.Horizontal)
         {
-            lookupIndex = (address2.FromRow - address1.FromRow) + 1;
+            lookupIndex = address2.FromRow - address1.FromRow + 1;
             lookupOffset = address2.FromCol - address1.FromCol;
         }
         LookupArguments? lookupArgs = new LookupArguments(searchedValue, firstAddress, lookupIndex, lookupOffset,  true, arguments.ElementAt(1).ValueAsRangeInfo);

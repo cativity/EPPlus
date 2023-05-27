@@ -44,7 +44,7 @@ internal class CumprincImpl
         {
             if (type == PmtDue.EndOfPeriod)
             {
-                fPpmt = fPmt + pv * rate;
+                fPpmt = fPmt + (pv * rate);
             }
             else
             {
@@ -58,11 +58,11 @@ internal class CumprincImpl
         {
             if (type == PmtDue.BeginningOfPeriod)
             {
-                fPpmt += fPmt - (this._fvProvider.GetFv(rate, i - 2, fPmt, pv, type) - fPmt) * rate;
+                fPpmt += fPmt - ((this._fvProvider.GetFv(rate, i - 2, fPmt, pv, type) - fPmt) * rate);
             }
             else
             {
-                fPpmt += fPmt - this._fvProvider.GetFv(rate, i - 1, fPmt, pv, type) * rate;
+                fPpmt += fPmt - (this._fvProvider.GetFv(rate, i - 1, fPmt, pv, type) * rate);
             }
         }
 

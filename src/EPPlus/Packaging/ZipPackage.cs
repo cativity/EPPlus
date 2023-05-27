@@ -70,7 +70,7 @@ internal partial class ZipPackage : ZipPackagePartBase, IDisposable
             ZipEntry? e = this._zip.GetNextEntry();
             if (e == null)
             {
-                throw (new InvalidDataException("The file is not a valid Package file. If the file is encrypted, please supply the password in the constructor."));
+                throw new InvalidDataException("The file is not a valid Package file. If the file is encrypted, please supply the password in the constructor.");
             }
 
             while (e != null)
@@ -126,11 +126,11 @@ internal partial class ZipPackage : ZipPackagePartBase, IDisposable
             }
             if (!hasContentTypeXml)
             {
-                throw (new InvalidDataException("The file is not a valid Package file. If the file is encrypted, please supply the password in the constructor."));
+                throw new InvalidDataException("The file is not a valid Package file. If the file is encrypted, please supply the password in the constructor.");
             }
             if (!hasContentTypeXml)
             {
-                throw (new InvalidDataException("The file is not a valid Package file. If the file is encrypted, please supply the password in the constructor."));
+                throw new InvalidDataException("The file is not a valid Package file. If the file is encrypted, please supply the password in the constructor.");
             }
             //zip.Close();
             //zip.Dispose();
@@ -217,7 +217,7 @@ internal partial class ZipPackage : ZipPackagePartBase, IDisposable
     {
         if (this.PartExists(partUri))
         {
-            throw (new InvalidOperationException("Part already exist"));
+            throw new InvalidOperationException("Part already exist");
         }
 
         ZipPackagePart? part = new ZipPackagePart(this, partUri, contentType, compressionLevel);
@@ -263,7 +263,7 @@ internal partial class ZipPackage : ZipPackagePartBase, IDisposable
         }
         else
         {
-            throw (new InvalidOperationException("Part does not exist."));
+            throw new InvalidOperationException("Part does not exist.");
         }
     }
 

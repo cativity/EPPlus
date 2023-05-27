@@ -51,7 +51,7 @@ public abstract class SortLayerBase
     {
         this._column = column;
         this._options.ColumnIndexes.Add(column);
-        this._options.Descending.Add((sortOrder == eSortOrder.Descending));
+        this._options.Descending.Add(sortOrder == eSortOrder.Descending);
     }
 
     /// <summary>
@@ -74,7 +74,7 @@ public abstract class SortLayerBase
     {
         this._row = row;
         this._options.RowIndexes.Add(row);
-        this._options.Descending.Add((sortOrder == eSortOrder.Descending));
+        this._options.Descending.Add(sortOrder == eSortOrder.Descending);
     }
 
     internal void SetCustomList(params string[] values)

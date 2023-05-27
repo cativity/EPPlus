@@ -48,7 +48,7 @@ public class ExcelControlSpinButton : ExcelControl
         {
             if (value < 0 || value > 30000)
             {
-                throw (new ArgumentOutOfRangeException("Increment must be between 0 and 3000"));
+                throw new ArgumentOutOfRangeException("Increment must be between 0 and 3000");
             }
 
             this._ctrlProp.SetXmlNodeInt("@inc", value);
@@ -68,7 +68,7 @@ public class ExcelControlSpinButton : ExcelControl
         {
             if (value < 0 || value > 30000)
             {
-                throw (new ArgumentOutOfRangeException("MinValue must be between 0 and 3000"));
+                throw new ArgumentOutOfRangeException("MinValue must be between 0 and 3000");
             }
 
             this._ctrlProp.SetXmlNodeInt("@min", value);
@@ -88,7 +88,7 @@ public class ExcelControlSpinButton : ExcelControl
         {
             if (value < 0 || value > 30000)
             {
-                throw (new ArgumentOutOfRangeException("MaxValue must be between 0 and 30000"));
+                throw new ArgumentOutOfRangeException("MaxValue must be between 0 and 30000");
             }
 
             this._ctrlProp.SetXmlNodeInt("@max", value);
@@ -108,7 +108,7 @@ public class ExcelControlSpinButton : ExcelControl
         {
             if (value < 0 || value > 30000)
             {
-                throw (new ArgumentOutOfRangeException("Value must be between 0 and 30000"));
+                throw new ArgumentOutOfRangeException("Value must be between 0 and 30000");
             }
 
             this._ctrlProp.SetXmlNodeInt("@val", value);

@@ -61,10 +61,10 @@ public class IfFunctionCompiler : FunctionCompiler
 
         if (v is IRangeInfo)
         {
-            IRangeInfo? r = ((IRangeInfo)v);
+            IRangeInfo? r = (IRangeInfo)v;
             if (r.GetNCells() > 1)
             {
-                throw (new ArgumentException("Logical can't be more than one cell"));
+                throw new ArgumentException("Logical can't be more than one cell");
             }
             v = r.GetOffset(0, 0);
         }
@@ -85,7 +85,7 @@ public class IfFunctionCompiler : FunctionCompiler
             }
             else
             {
-                throw (new ArgumentException("Invalid logical test"));
+                throw new ArgumentException("Invalid logical test");
             }
         }
         /****  End Handle names and ranges ****/
@@ -109,7 +109,7 @@ public class IfFunctionCompiler : FunctionCompiler
             else
             {
                 CompileResult? result = child.Compile();
-                val = (result == CompileResult.Empty) ? 0d : result.Result;
+                val = result == CompileResult.Empty ? 0d : result.Result;
             }
             args.Add(new FunctionArgument(null));
             args.Add(new FunctionArgument(val));

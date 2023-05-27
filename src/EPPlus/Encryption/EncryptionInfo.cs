@@ -42,7 +42,7 @@ internal abstract class EncryptionInfo
         }
         else
         {
-            throw (new NotSupportedException("Unsupported encryption format"));
+            throw new NotSupportedException("Unsupported encryption format");
         }
         ret.MajorVersion = majorVersion;
         ret.MinorVersion = minorVersion;
@@ -202,7 +202,7 @@ internal class EncryptionInfoAgile : EncryptionInfo
                     }
                     catch
                     {
-                        throw (new InvalidDataException("Invalid Hash algorithm"));
+                        throw new InvalidDataException("Invalid Hash algorithm");
                     }
             }
         }
@@ -232,7 +232,7 @@ internal class EncryptionInfoAgile : EncryptionInfo
                 }
                 catch
                 {
-                    throw (new InvalidDataException("Invalid chaining mode"));
+                    throw new InvalidDataException("Invalid chaining mode");
                 }
             }
             set
@@ -267,7 +267,7 @@ internal class EncryptionInfoAgile : EncryptionInfo
                     }
                     catch
                     {
-                        throw (new InvalidDataException("Invalid Hash algorithm"));
+                        throw new InvalidDataException("Invalid Hash algorithm");
                     }
             }
         }

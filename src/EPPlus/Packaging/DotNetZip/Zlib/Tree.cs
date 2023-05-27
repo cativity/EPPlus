@@ -67,7 +67,7 @@ namespace OfficeOpenXml.Packaging.Ionic.Zlib;
 
 sealed class Tree
 {
-    private static readonly int HEAP_SIZE = (2 * InternalConstants.L_CODES + 1);
+    private static readonly int HEAP_SIZE = (2 * InternalConstants.L_CODES) + 1;
                 
     // extra bits for each length code
     internal static readonly int[] ExtraLengthBits = new int[]
@@ -177,7 +177,7 @@ sealed class Tree
     /// </remarks>
     internal static int DistanceCode(int dist)
     {
-        return (dist < 256)
+        return dist < 256
                    ? _dist_code[dist]
                    : _dist_code[256 + SharedUtils.URShift(dist, 7)];
     }
@@ -213,17 +213,17 @@ sealed class Tree
 
         // In a first pass, compute the optimal bit lengths (which may
         // overflow in the case of the bit length tree).
-        tree[s.heap[s.heap_max] * 2 + 1] = 0; // root of the heap
+        tree[(s.heap[s.heap_max] * 2) + 1] = 0; // root of the heap
                         
         for (h = s.heap_max + 1; h < HEAP_SIZE; h++)
         {
             n = s.heap[h];
-            bits = tree[tree[n * 2 + 1] * 2 + 1] + 1;
+            bits = tree[(tree[(n * 2) + 1] * 2) + 1] + 1;
             if (bits > max_length)
             {
                 bits = max_length; overflow++;
             }
-            tree[n * 2 + 1] = (short) bits;
+            tree[(n * 2) + 1] = (short) bits;
             // We overwrite tree[n*2+1] which is no longer needed
                                 
             if (n > this.max_code)
@@ -243,7 +243,7 @@ sealed class Tree
             s.opt_len += f * (bits + xbits);
             if (stree != null)
             {
-                s.static_len += f * (stree[n * 2 + 1] + xbits);
+                s.static_len += f * (stree[(n * 2) + 1] + xbits);
             }
         }
         if (overflow == 0)
@@ -281,10 +281,10 @@ sealed class Tree
                     continue;
                 }
 
-                if (tree[m * 2 + 1] != bits)
+                if (tree[(m * 2) + 1] != bits)
                 {
-                    s.opt_len = (int) (s.opt_len + ((long) bits - (long) tree[m * 2 + 1]) * (long) tree[m * 2]);
-                    tree[m * 2 + 1] = (short) bits;
+                    s.opt_len = (int) (s.opt_len + (((long) bits - (long) tree[(m * 2) + 1]) * (long) tree[m * 2]));
+                    tree[(m * 2) + 1] = (short) bits;
                 }
                 n--;
             }
@@ -321,7 +321,7 @@ sealed class Tree
             }
             else
             {
-                tree[n * 2 + 1] = 0;
+                tree[(n * 2) + 1] = 0;
             }
         }
                         
@@ -331,13 +331,13 @@ sealed class Tree
         // two codes of non zero frequency.
         while (s.heap_len < 2)
         {
-            node = s.heap[++s.heap_len] = (max_code < 2?++max_code:0);
+            node = s.heap[++s.heap_len] = max_code < 2?++max_code:0;
             tree[node * 2] = 1;
             s.depth[node] = 0;
             s.opt_len--;
             if (stree != null)
             {
-                s.static_len -= stree[node * 2 + 1];
+                s.static_len -= stree[(node * 2) + 1];
             }
 
             // node is 0 or 1 so it does not have extra bits
@@ -370,7 +370,7 @@ sealed class Tree
             // Create a new node father of n and m
             tree[node * 2] = unchecked((short) (tree[n * 2] + tree[m * 2]));
             s.depth[node] = (sbyte) (Math.Max((byte) s.depth[n], (byte) s.depth[m]) + 1);
-            tree[n * 2 + 1] = tree[m * 2 + 1] = (short) node;
+            tree[(n * 2) + 1] = tree[(m * 2) + 1] = (short) node;
                                 
             // and insert the new node in the heap
             s.heap[1] = node++;
@@ -416,14 +416,14 @@ sealed class Tree
         //Tracev((stderr,"\ngen_codes: max_code %d ", max_code));
         for (int n = 0; n <= max_code; n++) // code index
         {
-            int len = tree[n * 2 + 1];
+            int len = tree[(n * 2) + 1];
             if (len == 0)
             {
                 continue;
             }
 
             // Now reverse the bits
-            tree[n * 2] =  unchecked((short) (bi_reverse(next_code[len]++, len)));
+            tree[n * 2] =  unchecked((short) bi_reverse(next_code[len]++, len));
         }
     }
                 

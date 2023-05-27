@@ -71,7 +71,7 @@ internal class AddressTranslator
         {
             int pos = alphaPart.Length - x - 1;
             int currentNumericValue = GetNumericAlphaValue(alphaPart[x]);
-            col += (nLettersInAlphabet * pos * currentNumericValue);
+            col += nLettersInAlphabet * pos * currentNumericValue;
             if (pos == 0)
             {
                 col += currentNumericValue;

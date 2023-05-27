@@ -55,7 +55,7 @@ public class ExcelColorFilterColumn : ExcelFilterColumn
         {
             if(value<0)
             {
-                throw (new ArgumentOutOfRangeException("DfxId must not be negative"));
+                throw new ArgumentOutOfRangeException("DfxId must not be negative");
             }
 
             this.SetXmlNodeString("d:dxfId", value.ToString(CultureInfo.InvariantCulture));

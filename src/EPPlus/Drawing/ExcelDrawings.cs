@@ -173,13 +173,13 @@ public class ExcelDrawings : IEnumerable<ExcelDrawing>, IDisposable, IPictureRel
     /// <returns>The enumerator</returns>
     IEnumerator IEnumerable.GetEnumerator()
     {
-        return (this._drawingsList.GetEnumerator());
+        return this._drawingsList.GetEnumerator();
     }
     #region IEnumerable<ExcelDrawing> Members
 
     IEnumerator<ExcelDrawing> IEnumerable<ExcelDrawing>.GetEnumerator()
     {
-        return (this._drawingsList.GetEnumerator());
+        return this._drawingsList.GetEnumerator();
     }
 
     #endregion
@@ -193,7 +193,7 @@ public class ExcelDrawings : IEnumerable<ExcelDrawing>, IDisposable, IPictureRel
     {
         get
         {
-            return (this._drawingsList[PositionID]);
+            return this._drawingsList[PositionID];
         }
     }
 
@@ -421,7 +421,7 @@ public class ExcelDrawings : IEnumerable<ExcelDrawing>, IDisposable, IPictureRel
             case eStockChartType.StockHLC:
                 if (Range.Columns != 4)
                 {
-                    throw (new InvalidOperationException("Range must contain 4 columns with the Category serie to the left and the High Price, Low Price and Close Price series"));
+                    throw new InvalidOperationException("Range must contain 4 columns with the Category serie to the left and the High Price, Low Price and Close Price series");
                 }
                 return this.AddStockChart(Name,
                                           ws.Cells[startRow, startCol, endRow, startCol],
@@ -431,7 +431,7 @@ public class ExcelDrawings : IEnumerable<ExcelDrawing>, IDisposable, IPictureRel
             case eStockChartType.StockOHLC:
                 if (Range.Columns != 5)
                 {
-                    throw (new InvalidOperationException("Range must contain 5 columns with the Category serie to the left and the Opening Price, High Price, Low Price and Close Price series"));
+                    throw new InvalidOperationException("Range must contain 5 columns with the Category serie to the left and the Opening Price, High Price, Low Price and Close Price series");
                 }
                 return this.AddStockChart(Name,
                                           ws.Cells[startRow, startCol, endRow, startCol],
@@ -442,7 +442,7 @@ public class ExcelDrawings : IEnumerable<ExcelDrawing>, IDisposable, IPictureRel
             case eStockChartType.StockVHLC:
                 if (Range.Columns != 5)
                 {
-                    throw (new InvalidOperationException("Range must contain 5 columns with the Category serie to the left and the Volume, High Price, Low Price and Close Price series"));
+                    throw new InvalidOperationException("Range must contain 5 columns with the Category serie to the left and the Volume, High Price, Low Price and Close Price series");
                 }
                 return this.AddStockChart(Name,
                                           ws.Cells[startRow, startCol, endRow, startCol],
@@ -454,7 +454,7 @@ public class ExcelDrawings : IEnumerable<ExcelDrawing>, IDisposable, IPictureRel
             case eStockChartType.StockVOHLC:
                 if (Range.Columns != 6)
                 {
-                    throw (new InvalidOperationException("Range must contain 6 columns with the Category serie to the left and the Volume, Opening Price, High Price, Low Price and Close Price series"));
+                    throw new InvalidOperationException("Range must contain 6 columns with the Category serie to the left and the Volume, Opening Price, High Price, Low Price and Close Price series");
                 }
                 return this.AddStockChart(Name,
                                           ws.Cells[startRow, startCol, endRow, startCol],
@@ -842,11 +842,11 @@ public class ExcelDrawings : IEnumerable<ExcelDrawing>, IDisposable, IPictureRel
     {
         if (pictureStream == null)
         {
-            throw (new ArgumentNullException("Stream cannot be null"));
+            throw new ArgumentNullException("Stream cannot be null");
         }
         if (!pictureStream.CanRead || !pictureStream.CanSeek)
         {
-            throw (new IOException("Stream must be readable and seekable"));
+            throw new IOException("Stream must be readable and seekable");
         }
 
         pictureType ??= ImageReader.GetPictureType(pictureStream, true);
@@ -967,11 +967,11 @@ public class ExcelDrawings : IEnumerable<ExcelDrawing>, IDisposable, IPictureRel
     {
         if (pictureStream == null)
         {
-            throw (new ArgumentNullException("Stream cannot be null"));
+            throw new ArgumentNullException("Stream cannot be null");
         }
         if (!pictureStream.CanRead || !pictureStream.CanSeek)
         {
-            throw (new IOException("Stream must be readable and seekable"));
+            throw new IOException("Stream must be readable and seekable");
         }
 
         XmlElement drawNode = this.CreateDrawingXml(eEditAs.OneCell);
@@ -1003,7 +1003,7 @@ public class ExcelDrawings : IEnumerable<ExcelDrawing>, IDisposable, IPictureRel
         {
             return this.AddPicture(Name, new FileInfo(ImagePath), null);
         }
-        throw (new Exception("AddPicture: Image path can't be null"));
+        throw new Exception("AddPicture: Image path can't be null");
     }
     /// <summary>
     /// Adds a picture to the worksheet
@@ -1018,7 +1018,7 @@ public class ExcelDrawings : IEnumerable<ExcelDrawing>, IDisposable, IPictureRel
         {
             return this.AddPicture(Name, new FileInfo(ImagePath), Hyperlink);
         }
-        throw (new Exception("AddPicture: Image path can't be null"));
+        throw new Exception("AddPicture: Image path can't be null");
     }
     private void ValidatePictureFile(string Name, FileInfo ImageFile)
     {
@@ -1028,7 +1028,7 @@ public class ExcelDrawings : IEnumerable<ExcelDrawing>, IDisposable, IPictureRel
         }
         if (ImageFile == null)
         {
-            throw (new Exception("AddPicture: ImageFile can't be null"));
+            throw new Exception("AddPicture: ImageFile can't be null");
         }
         if (!ImageFile.Exists)
         {
@@ -1062,7 +1062,7 @@ public class ExcelDrawings : IEnumerable<ExcelDrawing>, IDisposable, IPictureRel
     {
         if (!crtxFile.Exists)
         {
-            throw (new FileNotFoundException($"{crtxFile.FullName} cannot be found."));
+            throw new FileNotFoundException($"{crtxFile.FullName} cannot be found.");
         }
         FileStream fs = null;
         try

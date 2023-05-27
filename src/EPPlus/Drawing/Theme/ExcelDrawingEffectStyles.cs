@@ -57,7 +57,7 @@ public class ExcelThemeEffectStyles : XmlHelper, IEnumerable<ExcelThemeEffectSty
     {
         get
         {
-            return (this._list[index]);
+            return this._list[index];
         }
     }
     /// <summary>
@@ -78,7 +78,7 @@ public class ExcelThemeEffectStyles : XmlHelper, IEnumerable<ExcelThemeEffectSty
     {
         if (this._list.Count == 3)
         {
-            throw (new InvalidOperationException("Collection must contain at least 3 items"));
+            throw new InvalidOperationException("Collection must contain at least 3 items");
         }
 
         if (this._list.Contains(item))
@@ -95,7 +95,7 @@ public class ExcelThemeEffectStyles : XmlHelper, IEnumerable<ExcelThemeEffectSty
     {
         if (this._list.Count == 3)
         {
-            throw (new InvalidOperationException("Collection must contain at least 3 items"));
+            throw new InvalidOperationException("Collection must contain at least 3 items");
         }
 
         if (Index >= this._list.Count)

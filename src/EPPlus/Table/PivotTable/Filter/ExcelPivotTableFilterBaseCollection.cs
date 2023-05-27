@@ -110,7 +110,7 @@ public abstract class ExcelPivotTableFilterBaseCollection : IEnumerable<ExcelPiv
         {
             if (index < 0 || index >= this._filters.Count)
             {
-                throw (new ArgumentOutOfRangeException());
+                throw new ArgumentOutOfRangeException();
             }
 
             return this._filters[index];

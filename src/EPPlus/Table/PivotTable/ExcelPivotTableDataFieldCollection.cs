@@ -77,8 +77,8 @@ public class ExcelPivotTableDataFieldCollection : ExcelPivotTableFieldCollection
     {
         foreach (ExcelPivotTableDataField? df in this._list)
         {
-            if (((!string.IsNullOrEmpty(df.Name) && df.Name.Equals(name, StringComparison.OrdinalIgnoreCase) ||
-                  (string.IsNullOrEmpty(df.Name) && df.Field.Name.Equals(name, StringComparison.OrdinalIgnoreCase)))) && datafield != df)
+            if (((!string.IsNullOrEmpty(df.Name) && df.Name.Equals(name, StringComparison.OrdinalIgnoreCase)) ||
+                 (string.IsNullOrEmpty(df.Name) && df.Field.Name.Equals(name, StringComparison.OrdinalIgnoreCase))) && datafield != df)
             {
                 return true;
             }

@@ -637,7 +637,7 @@ public class ExcelRangeColumn : IExcelColumn, IEnumerable<ExcelRangeColumn>, IEn
                 {
                     if (r == 0 && c < this.enumColPos)
                     {
-                        this._currentCol = ((ExcelColumn)this._cs.GetValue(r, c)._value);
+                        this._currentCol = (ExcelColumn)this._cs.GetValue(r, c)._value;
                         if (this._currentCol.ColumnMax >= this._fromCol)
                         {
                             this.enumColPos = c;

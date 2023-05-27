@@ -204,7 +204,7 @@ internal class RangeDictionary<T>
     {
         if (this.Exists(fromRow, fromCol, toRow, toCol))
         {
-            throw (new InvalidOperationException($"Range already starting from range {ExcelCellBase.GetAddress(fromRow, fromCol, toRow, toCol)}"));
+            throw new InvalidOperationException($"Range already starting from range {ExcelCellBase.GetAddress(fromRow, fromCol, toRow, toCol)}");
         }
         for (int c = fromCol; c <= toCol; c++)
         {
@@ -215,7 +215,7 @@ internal class RangeDictionary<T>
     {
         if (this.Exists(row, col))
         {
-            throw (new InvalidOperationException($"Range already starting from cell {ExcelCellBase.GetAddress(row, col)}"));
+            throw new InvalidOperationException($"Range already starting from cell {ExcelCellBase.GetAddress(row, col)}");
         }
 
         this.AddRowSpan(col, row,row, value);
@@ -255,7 +255,7 @@ internal class RangeDictionary<T>
                     }
                     rows[ix] = ri;
                 }
-                int add = (noRows << 20) | (noRows);
+                int add = (noRows << 20) | noRows;
                 for (int i=ix+1;i<rows.Count;i++)
                 {
                     rows[i]= new RangeItem(rows[i].RowSpan+add, rows[i].Value);
@@ -282,7 +282,7 @@ internal class RangeDictionary<T>
                     }
                 }
 
-                int delete = (noRows << 20) | (noRows);
+                int delete = (noRows << 20) | noRows;
                 for (int i = rowStartIndex; i < rows.Count; i++)
                 {
                     ri = rows[i];
@@ -660,7 +660,7 @@ internal class RangeDictionary<T>
                 if(tr < toRow)
                 {
                     tr = tr > fromRow - 1 ? tr : fromRow - 1;
-                    rowSpan = ((long)(tr) << 20) | (long)(toRow - 1);
+                    rowSpan = ((long)tr << 20) | (long)(toRow - 1);
                     rows.Insert(ix, new RangeItem(rowSpan, value));
                 }
             }

@@ -125,7 +125,7 @@ public class ExcelChartStandardSerie : ExcelChartSerie
         {
             if ((value._fromCol != value._toCol && value._fromRow != value._toRow) || value.Addresses != null) //Single cell removed, allow row & column --> issue 15102. 
             {
-                throw (new ArgumentException("Address must be a row, column or single cell"));
+                throw new ArgumentException("Address must be a row, column or single cell");
             }
 
             this.Cleartx();
@@ -159,7 +159,7 @@ public class ExcelChartStandardSerie : ExcelChartSerie
                 GetLitValues(value, out double[] numLit, out string[] strLit);
                 if(strLit!=null)
                 {
-                    throw (new ArgumentException("Value series can't contain strings"));
+                    throw new ArgumentException("Value series can't contain strings");
                 }
 
                 this.NumberLiteralsY = numLit;
@@ -281,7 +281,7 @@ public class ExcelChartStandardSerie : ExcelChartSerie
                 }
                 else
                 {
-                    throw (new InvalidOperationException($"String array has an invalid format at position {i}"));
+                    throw new InvalidOperationException($"String array has an invalid format at position {i}");
                 }
             }
         }
@@ -433,14 +433,14 @@ public class ExcelChartStandardSerie : ExcelChartSerie
     {
         if (this._isPivot)
         {
-            throw(new NotImplementedException("Cache for pivotcharts has not been implemented yet."));
+            throw new NotImplementedException("Cache for pivotcharts has not been implemented yet.");
         }
 
         if (!string.IsNullOrEmpty(this.Series))
         {
             if(new ExcelRangeBase(this._chart.WorkSheet, this.Series).Columns > 1)
             {
-                throw (new InvalidOperationException("A serie cannot be multiple columns. Please add one serie per column to create a cache"));
+                throw new InvalidOperationException("A serie cannot be multiple columns. Please add one serie per column to create a cache");
             }
             XmlNode? node = this.GetTopNode(this.Series, this._seriesTopPath);
 
@@ -451,7 +451,7 @@ public class ExcelChartStandardSerie : ExcelChartSerie
         {
             if (new ExcelRangeBase(this._chart.WorkSheet, this.XSeries).Columns > 1)
             {
-                throw (new InvalidOperationException("A serie cannot be multiple columns (XSerie). Please add one serie per column to create a cache"));
+                throw new InvalidOperationException("A serie cannot be multiple columns (XSerie). Please add one serie per column to create a cache");
             }
 
             XmlNode? node = this.GetTopNode(this.XSeries, this._xSeriesTopPath);
@@ -657,7 +657,7 @@ public class ExcelChartStandardSerie : ExcelChartSerie
         }
         else
         {
-            throw (new NotImplementedException("Litteral cache has not been implemented yet."));
+            throw new NotImplementedException("Litteral cache has not been implemented yet.");
         }
     }
     internal static XmlElement CreateSerieElement(ExcelChart chart)

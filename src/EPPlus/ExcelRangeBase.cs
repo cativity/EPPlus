@@ -92,7 +92,7 @@ public partial class ExcelRangeBase : ExcelAddress, IExcelCell, IDisposable, IEn
         this._workbook = wb;
         if (string.IsNullOrEmpty(this._ws))
         {
-            this._ws = (xlWorksheet == null ? null : xlWorksheet.Name);
+            this._ws = xlWorksheet == null ? null : xlWorksheet.Name;
         }
 
         this.SetDelegate();
@@ -207,7 +207,7 @@ public partial class ExcelRangeBase : ExcelAddress, IExcelCell, IDisposable, IEn
         this.IsRangeValid("");
         if (this._fromRow == 1 && this._fromCol == 1 && this._toRow == ExcelPackage.MaxRows && this._toCol == ExcelPackage.MaxColumns)  //Full sheet (ex ws.Cells.Value=0). Set value for A1 only to avoid hanging 
         {
-            throw (new ArgumentException("Can't reference all cells. Please use the indexer to set the range"));
+            throw new ArgumentException("Can't reference all cells. Please use the indexer to set the range");
         }
         else
         {
@@ -276,7 +276,7 @@ public partial class ExcelRangeBase : ExcelAddress, IExcelCell, IDisposable, IEn
             range.SplitFormulas(range._worksheet.Cells[row, col]);
         }
 
-        string formula = (value == null ? string.Empty : value.ToString());
+        string formula = value == null ? string.Empty : value.ToString();
         if (formula == string.Empty)
         {
             range._worksheet._formulas.SetValue(row, col, string.Empty);
@@ -303,7 +303,7 @@ public partial class ExcelRangeBase : ExcelAddress, IExcelCell, IDisposable, IEn
     {
         if (range._fromRow == 1 && range._fromCol == 1 && range._toRow == ExcelPackage.MaxRows && range._toCol == ExcelPackage.MaxColumns)  //Full sheet (ex ws.Cells.Value=0). Set value for A1 only to avoid hanging 
         {
-            throw (new InvalidOperationException("Can't set a formula for the entire worksheet"));
+            throw new InvalidOperationException("Can't set a formula for the entire worksheet");
         }
         else if (address.Start.Row == address.End.Row && address.Start.Column == address.End.Column && !IsArray)             //is it really a shared formula? Arrayformulas can be one cell only
         {
@@ -395,7 +395,7 @@ public partial class ExcelRangeBase : ExcelAddress, IExcelCell, IDisposable, IEn
         Exists_ThreadedComment(range, value, row, col);
         if (range._worksheet._commentsStore.Exists(row, col))
         {
-            throw (new InvalidOperationException(string.Format("Cell {0} already contain a comment.", new ExcelCellAddress(row, col).Address)));
+            throw new InvalidOperationException(string.Format("Cell {0} already contain a comment.", new ExcelCellAddress(row, col).Address));
         }
 
     }
@@ -408,7 +408,7 @@ public partial class ExcelRangeBase : ExcelAddress, IExcelCell, IDisposable, IEn
     {
         if (range._worksheet._threadedCommentsStore.Exists(row, col))
         {
-            throw (new InvalidOperationException(string.Format("Cell {0} already contain a threaded comment.", new ExcelCellAddress(row, col).Address)));
+            throw new InvalidOperationException(string.Format("Cell {0} already contain a threaded comment.", new ExcelCellAddress(row, col).Address));
         }
 
     }
@@ -441,11 +441,11 @@ public partial class ExcelRangeBase : ExcelAddress, IExcelCell, IDisposable, IEn
             {
                 if (type == "")
                 {
-                    throw (new InvalidOperationException(string.Format("Range is not valid for this operation: {0}", this._address)));
+                    throw new InvalidOperationException(string.Format("Range is not valid for this operation: {0}", this._address));
                 }
                 else
                 {
-                    throw (new InvalidOperationException(string.Format("Range is not valid for {0} : {1}", type, this._address)));
+                    throw new InvalidOperationException(string.Format("Range is not valid for {0} : {1}", type, this._address));
                 }
             }
         }
@@ -1134,11 +1134,11 @@ public partial class ExcelRangeBase : ExcelAddress, IExcelCell, IDisposable, IEn
     {
         if (range == null)
         {
-            throw (new ArgumentNullException("The range must not be null.", nameof(range)));
+            throw new ArgumentNullException("The range must not be null.", nameof(range));
         }
         if (range.Worksheet.Workbook != this.Worksheet.Workbook)
         {
-            throw (new ArgumentException("The range must be within this package.", nameof(range)));
+            throw new ArgumentException("The range must be within this package.", nameof(range));
         }
         if (string.IsNullOrEmpty(range.WorkSheetName) || range.WorkSheetName.Equals(this.WorkSheetName ?? "", StringComparison.OrdinalIgnoreCase))
         {
@@ -1206,7 +1206,7 @@ public partial class ExcelRangeBase : ExcelAddress, IExcelCell, IDisposable, IEn
         {
             if (this.Collide(t.Address) != eAddressCollition.No)
             {
-                throw (new InvalidOperationException($"Cant merge range. The merge is within table {t.Name}"));
+                throw new InvalidOperationException($"Cant merge range. The merge is within table {t.Name}");
             }
         }
     }
@@ -1242,7 +1242,7 @@ public partial class ExcelRangeBase : ExcelAddress, IExcelCell, IDisposable, IEn
                 eAddressCollition c = this.Collide(this._worksheet.AutoFilterAddress);
                 if (value == false && (c == eAddressCollition.Partly || c == eAddressCollition.No))
                 {
-                    throw (new InvalidOperationException("Can't remove Autofilter. The current autofilter does not match selected range."));
+                    throw new InvalidOperationException("Can't remove Autofilter. The current autofilter does not match selected range.");
                 }
             }
             if (this._worksheet.Names.ContainsKey("_xlnm._FilterDatabase"))
@@ -1578,7 +1578,7 @@ public partial class ExcelRangeBase : ExcelAddress, IExcelCell, IDisposable, IEn
                     {
                         if (this._worksheet._sharedFormulas[id].FormulaType==ExcelWorksheet.FormulaType.Array && this.Collide(this._worksheet.Cells[this._worksheet._sharedFormulas[id].Address]) == eAddressCollition.Partly) // If the formula is an array formula and its on the inside the overwriting range throw an exception
                         {
-                            throw (new InvalidOperationException("Cannot overwrite a part of an array-formula"));
+                            throw new InvalidOperationException("Cannot overwrite a part of an array-formula");
                         }
                         formulas.Add(id);
                     }
@@ -1922,7 +1922,7 @@ public partial class ExcelRangeBase : ExcelAddress, IExcelCell, IDisposable, IEn
     {
         if (this._fromRow + RowOffset < 1 || this._fromCol + ColumnOffset < 1 || this._fromRow + RowOffset > ExcelPackage.MaxRows || this._fromCol + ColumnOffset > ExcelPackage.MaxColumns)
         {
-            throw (new ArgumentOutOfRangeException("Offset value out of range"));
+            throw new ArgumentOutOfRangeException("Offset value out of range");
         }
         string address = GetAddress(this._fromRow + RowOffset, this._fromCol + ColumnOffset, this._toRow + RowOffset, this._toCol + ColumnOffset);
         return new ExcelRangeBase(this._worksheet, address);
@@ -1939,13 +1939,13 @@ public partial class ExcelRangeBase : ExcelAddress, IExcelCell, IDisposable, IEn
     {
         if (NumberOfRows < 1 || NumberOfColumns < 1)
         {
-            throw (new Exception("Number of rows/columns must be greater than 0"));
+            throw new Exception("Number of rows/columns must be greater than 0");
         }
         NumberOfRows--;
         NumberOfColumns--;
         if (this._fromRow + RowOffset < 1 || this._fromCol + ColumnOffset < 1 || this._fromRow + RowOffset > ExcelPackage.MaxRows || this._fromCol + ColumnOffset > ExcelPackage.MaxColumns || this._fromRow + RowOffset + NumberOfRows < 1 || this._fromCol + ColumnOffset + NumberOfColumns < 1 || this._fromRow + RowOffset + NumberOfRows > ExcelPackage.MaxRows || this._fromCol + ColumnOffset + NumberOfColumns > ExcelPackage.MaxColumns)
         {
-            throw (new ArgumentOutOfRangeException("Offset value out of range"));
+            throw new ArgumentOutOfRangeException("Offset value out of range");
         }
         string address = GetAddress(this._fromRow + RowOffset, this._fromCol + ColumnOffset, this._fromRow + RowOffset + NumberOfRows, this._fromCol + ColumnOffset + NumberOfColumns);
         return new ExcelRangeBase(this._worksheet, address);
@@ -2041,7 +2041,7 @@ public partial class ExcelRangeBase : ExcelAddress, IExcelCell, IDisposable, IEn
     {
         if (this.Addresses != null)
         {
-            throw (new Exception("An array formula cannot have more than one address"));
+            throw new Exception("An array formula cannot have more than one address");
         }
         Set_SharedFormula(this, ArrayFormula, this, true);
     }
@@ -2237,7 +2237,7 @@ public partial class ExcelRangeBase : ExcelAddress, IExcelCell, IDisposable, IEn
             {
                 return null;
             }
-            return ((object)(new ExcelRangeBase(this._worksheet, GetAddress(this.cellEnum.Row, this.cellEnum.Column))));
+            return (object)new ExcelRangeBase(this._worksheet, GetAddress(this.cellEnum.Row, this.cellEnum.Column));
         }
     }
 

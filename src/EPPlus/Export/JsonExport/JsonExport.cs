@@ -123,7 +123,7 @@ internal abstract partial class JsonExport
                 default:
                     if (c < 0x20)
                     {
-                        sb.Append($"\\u{((short)c):X4}");
+                        sb.Append($"\\u{(short)c:X4}");
                     }
                     else
                     {

@@ -40,7 +40,7 @@ partial class ZipEntry
     /// </summary>
     internal bool AttributesIndicateDirectory
     {
-        get { return ((this._InternalFileAttrs == 0) && ((this._ExternalFileAttrs & 0x0010) == 0x0010)); }
+        get { return this._InternalFileAttrs == 0 && (this._ExternalFileAttrs & 0x0010) == 0x0010; }
     }
 
 
@@ -195,7 +195,7 @@ partial class ZipEntry
                                           Dictionary<String,Object> previouslySeen)
     {
         System.IO.Stream s = zf.ReadStream;
-        Encoding expectedEncoding = (zf.AlternateEncodingUsage == ZipOption.Always)
+        Encoding expectedEncoding = zf.AlternateEncodingUsage == ZipOption.Always
                                         ? zf.AlternateEncoding
                                         : ZipFile.DefaultEncoding;
 
@@ -238,34 +238,34 @@ partial class ZipEntry
 
         unchecked
         {
-            zde._VersionMadeBy = (short)(block[i++] + block[i++] * 256);
-            zde._VersionNeeded = (short)(block[i++] + block[i++] * 256);
-            zde._BitField = (short)(block[i++] + block[i++] * 256);
-            zde._CompressionMethod = (Int16)(block[i++] + block[i++] * 256);
-            zde._TimeBlob = block[i++] + block[i++] * 256 + block[i++] * 256 * 256 + block[i++] * 256 * 256 * 256;
+            zde._VersionMadeBy = (short)(block[i++] + (block[i++] * 256));
+            zde._VersionNeeded = (short)(block[i++] + (block[i++] * 256));
+            zde._BitField = (short)(block[i++] + (block[i++] * 256));
+            zde._CompressionMethod = (Int16)(block[i++] + (block[i++] * 256));
+            zde._TimeBlob = block[i++] + (block[i++] * 256) + (block[i++] * 256 * 256) + (block[i++] * 256 * 256 * 256);
             zde._LastModified = SharedUtilities.PackedToDateTime(zde._TimeBlob);
             zde._timestamp |= ZipEntryTimestamp.DOS;
 
-            zde._Crc32 = block[i++] + block[i++] * 256 + block[i++] * 256 * 256 + block[i++] * 256 * 256 * 256;
-            zde._CompressedSize = (uint)(block[i++] + block[i++] * 256 + block[i++] * 256 * 256 + block[i++] * 256 * 256 * 256);
-            zde._UncompressedSize = (uint)(block[i++] + block[i++] * 256 + block[i++] * 256 * 256 + block[i++] * 256 * 256 * 256);
+            zde._Crc32 = block[i++] + (block[i++] * 256) + (block[i++] * 256 * 256) + (block[i++] * 256 * 256 * 256);
+            zde._CompressedSize = (uint)(block[i++] + (block[i++] * 256) + (block[i++] * 256 * 256) + (block[i++] * 256 * 256 * 256));
+            zde._UncompressedSize = (uint)(block[i++] + (block[i++] * 256) + (block[i++] * 256 * 256) + (block[i++] * 256 * 256 * 256));
         }
 
         // preserve
         zde._CompressionMethod_FromZipFile = zde._CompressionMethod;
 
-        zde._filenameLength = (short)(block[i++] + block[i++] * 256);
-        zde._extraFieldLength = (short)(block[i++] + block[i++] * 256);
-        zde._commentLength = (short)(block[i++] + block[i++] * 256);
-        zde._diskNumber = (UInt32)(block[i++] + block[i++] * 256);
+        zde._filenameLength = (short)(block[i++] + (block[i++] * 256));
+        zde._extraFieldLength = (short)(block[i++] + (block[i++] * 256));
+        zde._commentLength = (short)(block[i++] + (block[i++] * 256));
+        zde._diskNumber = (UInt32)(block[i++] + (block[i++] * 256));
 
-        zde._InternalFileAttrs = (short)(block[i++] + block[i++] * 256);
-        zde._ExternalFileAttrs = block[i++] + block[i++] * 256 + block[i++] * 256 * 256 + block[i++] * 256 * 256 * 256;
+        zde._InternalFileAttrs = (short)(block[i++] + (block[i++] * 256));
+        zde._ExternalFileAttrs = block[i++] + (block[i++] * 256) + (block[i++] * 256 * 256) + (block[i++] * 256 * 256 * 256);
 
-        zde._RelativeOffsetOfLocalHeader = (uint)(block[i++] + block[i++] * 256 + block[i++] * 256 * 256 + block[i++] * 256 * 256 * 256);
+        zde._RelativeOffsetOfLocalHeader = (uint)(block[i++] + (block[i++] * 256) + (block[i++] * 256 * 256) + (block[i++] * 256 * 256 * 256));
 
         // workitem 7801
-        zde.IsText = ((zde._InternalFileAttrs & 0x01) == 0x01);
+        zde.IsText = (zde._InternalFileAttrs & 0x01) == 0x01;
 
         block = new byte[zde._filenameLength];
         n = s.Read(block, 0, block.Length);
@@ -310,9 +310,9 @@ partial class ZipEntry
 
         if (zde._extraFieldLength > 0)
         {
-            zde._InputUsesZip64 = (zde._CompressedSize == 0xFFFFFFFF ||
-                                   zde._UncompressedSize == 0xFFFFFFFF ||
-                                   zde._RelativeOffsetOfLocalHeader == 0xFFFFFFFF);
+            zde._InputUsesZip64 = zde._CompressedSize == 0xFFFFFFFF ||
+                                  zde._UncompressedSize == 0xFFFFFFFF ||
+                                  zde._RelativeOffsetOfLocalHeader == 0xFFFFFFFF;
 
             // Console.WriteLine("  Input uses Z64?:      {0}", zde._InputUsesZip64);
 
@@ -351,7 +351,7 @@ partial class ZipEntry
         }
 
         // workitem 12744
-        zde.AlternateEncoding = ((zde._BitField & 0x0800) == 0x0800)
+        zde.AlternateEncoding = (zde._BitField & 0x0800) == 0x0800
                                     ? Encoding.UTF8
                                     :expectedEncoding;
 
@@ -384,7 +384,7 @@ partial class ZipEntry
     /// <returns>true, if the signature is valid according to the PKWare spec.</returns>
     internal static bool IsNotValidZipDirEntrySig(int signature)
     {
-        return (signature != ZipConstants.ZipDirEntrySignature);
+        return signature != ZipConstants.ZipDirEntrySignature;
     }
 
 

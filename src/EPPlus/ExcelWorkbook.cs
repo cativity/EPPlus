@@ -551,7 +551,7 @@ public sealed class ExcelWorkbook : XmlHelper, IDisposable
 
                 this._worksheets = new ExcelWorksheets(this._package, this._namespaceManager, sheetsNode);
             }
-            return (this._worksheets);
+            return this._worksheets;
         }
     }
     #endregion
@@ -768,7 +768,7 @@ public sealed class ExcelWorkbook : XmlHelper, IDisposable
     {
         if (this._vba != null || this._package.ZipPackage.PartExists(new Uri(ExcelVbaProject.PartUri, UriKind.Relative)))
         {
-            throw (new InvalidOperationException("VBA project already exists."));
+            throw new InvalidOperationException("VBA project already exists.");
         }
 
         this.Part.ContentType = ContentTypes.contentTypeWorkbookMacroEnabled;
@@ -795,7 +795,7 @@ public sealed class ExcelWorkbook : XmlHelper, IDisposable
     /// <summary>
     /// Returns a reference to the workbook's part within the package
     /// </summary>
-    internal ZipPackagePart Part { get { return (this._package.ZipPackage.GetPart(this.WorkbookUri)); } }
+    internal ZipPackagePart Part { get { return this._package.ZipPackage.GetPart(this.WorkbookUri); } }
 
     #region WorkbookXml
     private XmlDocument _workbookXml;
@@ -810,7 +810,7 @@ public sealed class ExcelWorkbook : XmlHelper, IDisposable
             {
                 this.CreateWorkbookXml(this._namespaceManager);
             }
-            return (this._workbookXml);
+            return this._workbookXml;
         }
     }
     const string codeModuleNamePath = "d:workbookPr/@codeName";
@@ -1005,7 +1005,7 @@ public sealed class ExcelWorkbook : XmlHelper, IDisposable
                     ZipPackage.Flush();
                 }
             }
-            return (this._stylesXml);
+            return this._stylesXml;
         }
         set
         {
@@ -1307,9 +1307,9 @@ public sealed class ExcelWorkbook : XmlHelper, IDisposable
             string? fldName = node.GetAttribute("name");                        //Fixes issue 15295 dup name error
             if (string.IsNullOrEmpty(fldName))
             {
-                fldName = (t == null
-                               ? sourceRange.Offset(0, ix, 1, 1).Value.ToString()
-                               : t.Columns[ix].Name);
+                fldName = t == null
+                              ? sourceRange.Offset(0, ix, 1, 1).Value.ToString()
+                              : t.Columns[ix].Name;
             }
             if (flds.Contains(fldName))
             {
@@ -1492,7 +1492,7 @@ public sealed class ExcelWorkbook : XmlHelper, IDisposable
         {
             if (string.IsNullOrEmpty(name.NameFormula))
             {
-                if ((TypeCompat.IsPrimitive(name.NameValue) || name.NameValue is double || name.NameValue is decimal))
+                if (TypeCompat.IsPrimitive(name.NameValue) || name.NameValue is double || name.NameValue is decimal)
                 {
                     elem.InnerText = Convert.ToDouble(name.NameValue, CultureInfo.InvariantCulture).ToString("R15", CultureInfo.InvariantCulture);
                 }

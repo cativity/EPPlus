@@ -38,7 +38,7 @@ internal class Rri : ExcelFunction
             return this.CreateResult(eErrorType.Num);
         }
 
-        double retVal = (System.Math.Pow(fv / pv, 1 / nper)) - 1;
+        double retVal = System.Math.Pow(fv / pv, 1 / nper) - 1;
         return this.CreateResult(retVal, DataType.Decimal);
     }
 }

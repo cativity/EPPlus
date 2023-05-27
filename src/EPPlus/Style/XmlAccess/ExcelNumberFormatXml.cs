@@ -477,7 +477,7 @@ public sealed class ExcelNumberFormatXml : StyleXmlHelper
 
                                     if (startPos > 0)  //RemovePart
                                     {
-                                        sb.Remove(sb.Length-(pos-startPos-1),(pos-startPos-1)) ;
+                                        sb.Remove(sb.Length-(pos-startPos-1),pos-startPos-1) ;
                                     }
 
                                     int endPos = pos + 1;
@@ -580,13 +580,13 @@ public sealed class ExcelNumberFormatXml : StyleXmlHelper
 
                 if (maxDigits < 1 && maxDigits > 12)
                 {
-                    throw (new ArgumentException("Number of digits out of range (1-12)"));
+                    throw new ArgumentException("Number of digits out of range (1-12)");
                 }
 
                 int maxNum = 0;
                 for (int i = 0; i < maxDigits; i++)
                 {
-                    maxNum += 9 * (int)(Math.Pow((double)10, (double)i));
+                    maxNum += 9 * (int)Math.Pow((double)10, (double)i);
                 }
 
                 double divRes = 1 / ((double)Math.Abs(d) - intPart);
@@ -596,13 +596,13 @@ public sealed class ExcelNumberFormatXml : StyleXmlHelper
                 {
                     index++;
                     double intDivRes = Math.Floor(divRes);
-                    numerators.Add((intDivRes * numerators[index - 1] + numerators[index - 2]));
+                    numerators.Add((intDivRes * numerators[index - 1]) + numerators[index - 2]);
                     if (numerators[index] > maxNum)
                     {
                         break;
                     }
 
-                    denominators.Add((intDivRes * denominators[index - 1] + denominators[index - 2]));
+                    denominators.Add((intDivRes * denominators[index - 1]) + denominators[index - 2]);
 
                     double result = numerators[index] / denominators[index];
                     if (denominators[index] > maxNum)

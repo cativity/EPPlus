@@ -31,7 +31,7 @@ public class ExcelFilterColumnCollection : XmlHelper, IEnumerable<ExcelFilterCol
         {
             if(!int.TryParse(node.Attributes["colId"].Value, out int position))
             {
-                throw (new Exception("Invalid filter. Missing colId on filterColumn"));
+                throw new Exception("Invalid filter. Missing colId on filterColumn");
             }
             switch (node.FirstChild?.Name)
             {
@@ -71,11 +71,11 @@ public class ExcelFilterColumnCollection : XmlHelper, IEnumerable<ExcelFilterCol
         XmlElement node;
         if (position >= this._autoFilter.Address.Columns)
         {
-            throw (new ArgumentOutOfRangeException("Position is outside of the range"));
+            throw new ArgumentOutOfRangeException("Position is outside of the range");
         }
         if (this._columns.ContainsKey(position))
         {
-            throw (new ArgumentOutOfRangeException("Position already exists"));
+            throw new ArgumentOutOfRangeException("Position already exists");
         }
         foreach (ExcelFilterColumn? c in this._columns.Values)
         {

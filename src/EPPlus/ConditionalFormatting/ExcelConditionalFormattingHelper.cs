@@ -82,7 +82,7 @@ internal static class ExcelConditionalFormattingHelper
         try
         {
             string? value = node.Attributes[attribute].Value;
-            return (value == null) ? string.Empty : value;
+            return value == null ? string.Empty : value;
         }
         catch
         {
@@ -152,7 +152,7 @@ internal static class ExcelConditionalFormattingHelper
         try
         {
             string? value = node.Attributes[attribute].Value;
-            return (value == "1" || value == "-1" || value.Equals("TRUE", StringComparison.OrdinalIgnoreCase));
+            return value == "1" || value == "-1" || value.Equals("TRUE", StringComparison.OrdinalIgnoreCase);
         }
         catch
         {
@@ -179,7 +179,7 @@ internal static class ExcelConditionalFormattingHelper
             else
             {
                 string? value = node.Attributes[attribute].Value;
-                return (value == "1" || value == "-1" || value.Equals("TRUE",StringComparison.OrdinalIgnoreCase));
+                return value == "1" || value == "-1" || value.Equals("TRUE",StringComparison.OrdinalIgnoreCase);
             }
         }
         catch

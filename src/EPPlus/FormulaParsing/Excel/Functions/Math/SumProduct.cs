@@ -92,7 +92,7 @@ internal class SumProduct : ExcelFunction
         }
         else if (convertVal is ExcelErrorValue)
         {
-            throw (new ExcelErrorValueException((ExcelErrorValue)convertVal));
+            throw new ExcelErrorValueException((ExcelErrorValue)convertVal);
         }
         else
         {

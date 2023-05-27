@@ -398,9 +398,9 @@ internal class RangeConditionalFormatting
     ///  <returns></returns>
     public IExcelConditionalFormattingThreeColorScale AddThreeColorScale()
     {
-        return (IExcelConditionalFormattingThreeColorScale)(this._worksheet.ConditionalFormatting.AddRule(
-                                                                                                          eExcelConditionalFormattingRuleType.ThreeColorScale,
-                                                                                                          this._address));
+        return (IExcelConditionalFormattingThreeColorScale)this._worksheet.ConditionalFormatting.AddRule(
+                                                                                                         eExcelConditionalFormattingRuleType.ThreeColorScale,
+                                                                                                         this._address);
     }
 
     /// <summary>
@@ -409,9 +409,9 @@ internal class RangeConditionalFormatting
     ///  <returns></returns>
     public IExcelConditionalFormattingTwoColorScale AddTwoColorScale()
     {
-        return (IExcelConditionalFormattingTwoColorScale)(this._worksheet.ConditionalFormatting.AddRule(
-                                                                                                        eExcelConditionalFormattingRuleType.TwoColorScale,
-                                                                                                        this._address));
+        return (IExcelConditionalFormattingTwoColorScale)this._worksheet.ConditionalFormatting.AddRule(
+                                                                                                       eExcelConditionalFormattingRuleType.TwoColorScale,
+                                                                                                       this._address);
     }
 
     /// <summary>
@@ -421,9 +421,9 @@ internal class RangeConditionalFormatting
     /// <returns></returns>
     public IExcelConditionalFormattingThreeIconSet<eExcelconditionalFormatting3IconsSetType> AddThreeIconSet(eExcelconditionalFormatting3IconsSetType IconSet)
     {
-        IExcelConditionalFormattingThreeIconSet<eExcelconditionalFormatting3IconsSetType>? rule = (IExcelConditionalFormattingThreeIconSet<eExcelconditionalFormatting3IconsSetType>)(this._worksheet.ConditionalFormatting.AddRule(
-                     eExcelConditionalFormattingRuleType.ThreeIconSet,
-                     this._address));
+        IExcelConditionalFormattingThreeIconSet<eExcelconditionalFormatting3IconsSetType>? rule = (IExcelConditionalFormattingThreeIconSet<eExcelconditionalFormatting3IconsSetType>)this._worksheet.ConditionalFormatting.AddRule(
+         eExcelConditionalFormattingRuleType.ThreeIconSet,
+         this._address);
         rule.IconSet = IconSet;
         return rule;
     }
@@ -435,9 +435,9 @@ internal class RangeConditionalFormatting
     /// <returns></returns>
     public IExcelConditionalFormattingFourIconSet<eExcelconditionalFormatting4IconsSetType> AddFourIconSet(eExcelconditionalFormatting4IconsSetType IconSet)
     {
-        IExcelConditionalFormattingFourIconSet<eExcelconditionalFormatting4IconsSetType>? rule = (IExcelConditionalFormattingFourIconSet<eExcelconditionalFormatting4IconsSetType>)(this._worksheet.ConditionalFormatting.AddRule(
-                     eExcelConditionalFormattingRuleType.FourIconSet,
-                     this._address));
+        IExcelConditionalFormattingFourIconSet<eExcelconditionalFormatting4IconsSetType>? rule = (IExcelConditionalFormattingFourIconSet<eExcelconditionalFormatting4IconsSetType>)this._worksheet.ConditionalFormatting.AddRule(
+         eExcelConditionalFormattingRuleType.FourIconSet,
+         this._address);
         rule.IconSet = IconSet;
         return rule;
     }
@@ -449,9 +449,9 @@ internal class RangeConditionalFormatting
     /// <returns></returns>
     public IExcelConditionalFormattingFiveIconSet AddFiveIconSet(eExcelconditionalFormatting5IconsSetType IconSet)
     {
-        IExcelConditionalFormattingFiveIconSet? rule = (IExcelConditionalFormattingFiveIconSet)(this._worksheet.ConditionalFormatting.AddRule(
-                                                                                                    eExcelConditionalFormattingRuleType.FiveIconSet,
-                                                                                                    this._address));
+        IExcelConditionalFormattingFiveIconSet? rule = (IExcelConditionalFormattingFiveIconSet)this._worksheet.ConditionalFormatting.AddRule(
+         eExcelConditionalFormattingRuleType.FiveIconSet,
+         this._address);
         rule.IconSet = IconSet;
         return rule;
     }
@@ -463,9 +463,9 @@ internal class RangeConditionalFormatting
     /// <returns></returns>
     public IExcelConditionalFormattingDataBarGroup AddDatabar(System.Drawing.Color Color)
     {
-        IExcelConditionalFormattingDataBarGroup? rule = (IExcelConditionalFormattingDataBarGroup)(this._worksheet.ConditionalFormatting.AddRule(
-                                                                                                      eExcelConditionalFormattingRuleType.DataBar,
-                                                                                                      this._address));
+        IExcelConditionalFormattingDataBarGroup? rule = (IExcelConditionalFormattingDataBarGroup)this._worksheet.ConditionalFormatting.AddRule(
+         eExcelConditionalFormattingRuleType.DataBar,
+         this._address);
         rule.Color = Color;
         return rule;
     }

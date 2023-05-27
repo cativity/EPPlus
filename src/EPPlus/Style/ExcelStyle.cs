@@ -186,7 +186,7 @@ public sealed class ExcelStyle : StyleBase
         {
             if (value <0 || value > 250)
             {
-                throw(new ArgumentOutOfRangeException("Indent must be between 0 and 250"));
+                throw new ArgumentOutOfRangeException("Indent must be between 0 and 250");
             }
 
             this._ChangedEvent(this, new StyleChangeEventArgs(eStyleClass.Style, eStyleProperty.Indent, value, this._positionID, this._address));

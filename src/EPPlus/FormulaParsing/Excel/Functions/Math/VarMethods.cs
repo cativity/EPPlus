@@ -38,7 +38,7 @@ internal static class VarMethods
     {
         double avg = args.Select(x => (double)x).Average();
         double d = args.Aggregate(0.0, (total, next) => total += System.Math.Pow(next - avg, 2));
-        return Divide(d, (args.Count() - 1));
+        return Divide(d, args.Count() - 1);
     }
 
     public static double VarP(IEnumerable<ExcelDoubleCellValue> args)

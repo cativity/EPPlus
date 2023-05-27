@@ -31,9 +31,9 @@ internal class YieldImpl
         if (N <= -1)
         { 
             double DSR = E - A;
-            double part1 = (redemption / 100 + rate / frequency) - (pr / 100d + (A / E * rate / frequency));
-            double part2 = pr / 100d + (A / E) * rate / frequency;
-            double retVal = part1 / part2 * ((frequency * E) / DSR);
+            double part1 = (redemption / 100) + (rate / frequency) - ((pr / 100d) + (A / E * rate / frequency));
+            double part2 = (pr / 100d) + (A / E * rate / frequency);
+            double retVal = part1 / part2 * (frequency * E / DSR);
 
             return retVal;
         }
@@ -83,7 +83,7 @@ internal class YieldImpl
                         fPrice2 = fPriceN;
                     }
 
-                    fYieldN = fYield2 - (fYield2 - fYield1) * ((pr - fPrice2) / (fPrice1 - fPrice2));
+                    fYieldN = fYield2 - ((fYield2 - fYield1) * ((pr - fPrice2) / (fPrice1 - fPrice2)));
                 }
             }
             if (System.Math.Abs(pr - fPriceN) > pr / 100d)

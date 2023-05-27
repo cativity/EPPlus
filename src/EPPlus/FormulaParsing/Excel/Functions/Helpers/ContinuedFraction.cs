@@ -81,12 +81,12 @@ internal class ContinuedFraction
             double a = this.GetA.Invoke(n, x);
             double b = this.GetB.Invoke(n, x);
 
-            double dN = a + b * dPrev;
+            double dN = a + (b * dPrev);
             if (PrecisionEquals(dN, 0.0, small))
             {
                 dN = small;
             }
-            double cN = a + b / cPrev;
+            double cN = a + (b / cPrev);
             if (PrecisionEquals(cN, 0.0, small))
             {
                 cN = small;

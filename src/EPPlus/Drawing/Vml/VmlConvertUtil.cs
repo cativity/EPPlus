@@ -15,7 +15,7 @@ internal static class VmlConvertUtil
         if (v.EndsWith("f", StringComparison.OrdinalIgnoreCase))
         {
             ConvertUtil.TryParseNumericString(v.Substring(0, v.Length - 1), out double d);
-            return (d / 0x10000) * 100;
+            return d / 0x10000 * 100;
         }
         else if (v.EndsWith("%"))
         {

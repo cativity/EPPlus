@@ -32,12 +32,12 @@ internal static class IPmtImpl
         }
 
         // Type = 0 or non-zero only. Offset to calculate FV
-        if((Per <= 0) || (Per >= NPer + 1))
+        if(Per <= 0 || Per >= NPer + 1)
         {
             return new FinanceCalcResult<double>(eErrorType.Value);
         }
 
-        if(Due != PmtDue.EndOfPeriod && (Per == 1.0))
+        if(Due != PmtDue.EndOfPeriod && Per == 1.0)
         {
             return new FinanceCalcResult<double>(0d);
         }
@@ -56,7 +56,7 @@ internal static class IPmtImpl
             PV += Pmt;
         }
 
-        double dTFv = InternalMethods.FV_Internal(Rate, (Per - dTemp), Pmt, PV, PmtDue.EndOfPeriod);
+        double dTFv = InternalMethods.FV_Internal(Rate, Per - dTemp, Pmt, PV, PmtDue.EndOfPeriod);
 
         return new FinanceCalcResult<double>(dTFv * Rate);
     }

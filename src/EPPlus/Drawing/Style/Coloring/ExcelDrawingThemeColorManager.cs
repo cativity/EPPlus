@@ -179,7 +179,7 @@ public class ExcelDrawingThemeColorManager
         if(setAlpha && color.A != 0xFF)
         {
             this.Transforms.RemoveOfType(eColorTransformType.Alpha);
-            this.Transforms.AddAlpha((((double)color.A)+1)/256*100);
+            this.Transforms.AddAlpha(((double)color.A+1)/256*100);
         }
 
         this.RgbColor = new ExcelDrawingRgbColor(this._nameSpaceManager, this._colorNode) { Color = color };

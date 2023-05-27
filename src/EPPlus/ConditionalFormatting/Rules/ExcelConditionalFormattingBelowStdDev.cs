@@ -50,7 +50,7 @@ public class ExcelConditionalFormattingBelowStdDev
                priority,
                worksheet,
                itemElementNode,
-               (namespaceManager == null) ? worksheet.NameSpaceManager : namespaceManager)
+               namespaceManager == null ? worksheet.NameSpaceManager : namespaceManager)
     {
         if (itemElementNode==null) //Set default values and create attributes if needed
         {

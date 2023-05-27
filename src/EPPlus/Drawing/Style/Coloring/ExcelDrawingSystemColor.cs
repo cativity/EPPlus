@@ -74,7 +74,7 @@ public class ExcelDrawingSystemColor : XmlHelper
                 }
                 catch
                 {
-                    throw (new ArgumentException($"Invalid system color value {v}"));
+                    throw new ArgumentException($"Invalid system color value {v}");
                 }                    
         }
     }

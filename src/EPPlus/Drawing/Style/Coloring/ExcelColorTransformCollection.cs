@@ -51,7 +51,7 @@ public class ExcelColorTransformCollection : IEnumerable<IColorTransformItem>
     {
         get
         {
-            return (this._list[index]);
+            return this._list[index];
         }
     }
     /// <summary>

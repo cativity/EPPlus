@@ -64,7 +64,7 @@ internal partial class ZipFile
             catch (UnauthorizedAccessException)
             {
                 Console.WriteLine("************************************************** Retry delete.");
-                System.Threading.Thread.Sleep(200+i*200);
+                System.Threading.Thread.Sleep(200+(i*200));
             }
         }
     }
@@ -174,7 +174,7 @@ internal partial class ZipFile
             // write an entry in the zip for each file
             int n = 0;
             // workitem 9831
-            ICollection<ZipEntry> c = (this.SortEntriesBeforeSaving) ? this.EntriesSorted : this.Entries;
+            ICollection<ZipEntry> c = this.SortEntriesBeforeSaving ? this.EntriesSorted : this.Entries;
             foreach (ZipEntry e in c) // _entries.Values
             {
                 this.OnSaveEntry(n, e, true);
@@ -318,7 +318,7 @@ internal partial class ZipFile
                 }
 
                 this.OnSaveEvent(ZipProgressEventType.Saving_BeforeRenameTempArchive);
-                File.Move((zss != null) ? zss.CurrentTempName : this._temporaryFileName, this._name);
+                File.Move(zss != null ? zss.CurrentTempName : this._temporaryFileName, this._name);
 
                 this.OnSaveEvent(ZipProgressEventType.Saving_AfterRenameTempArchive);
 
@@ -820,7 +820,7 @@ internal static class ZipOutput
         int bufferLength = 22;
         byte[] block = null;
         Int16 commentLength = 0;
-        if ((comment != null) && (comment.Length != 0))
+        if (comment != null && comment.Length != 0)
         {
             block = encoding.GetBytes(comment);
             commentLength = (Int16)block.Length;
@@ -893,7 +893,7 @@ internal static class ZipOutput
 
 
         // zip archive comment
-        if ((comment == null) || (comment.Length == 0))
+        if (comment == null || comment.Length == 0)
         {
             // no comment!
             bytes[i++] = (byte)0;
@@ -913,7 +913,7 @@ internal static class ZipOutput
             if (commentLength != 0)
             {
                 // now actually write the comment itself into the byte buffer
-                for (j = 0; (j < commentLength) && (i + j < bytes.Length); j++)
+                for (j = 0; j < commentLength && i + j < bytes.Length; j++)
                 {
                     bytes[i + j] = block[j];
                 }
@@ -991,7 +991,7 @@ internal static class ZipOutput
         // offset 60
         // number of the disk with the start of the zip64 eocd
         // (this will change later)  (it will?)
-        uint x2 = (numSegments==0)?0:(uint)(numSegments-1);
+        uint x2 = numSegments==0?0:(uint)(numSegments-1);
         Array.Copy(BitConverter.GetBytes(x2), 0, bytes, i, 4);
         i+=4;
 

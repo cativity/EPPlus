@@ -115,7 +115,7 @@ public class ExcelDrawingGradientFill : ExcelDrawingFillBase
             case eShadePath.Shape:
                 return "shape";
             default:
-                throw (new ArgumentException("Unhandled ShadePath"));
+                throw new ArgumentException("Unhandled ShadePath");
         }
     }
 

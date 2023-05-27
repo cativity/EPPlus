@@ -289,7 +289,7 @@ public class ExcelVbaProject
                             //Handle 0x00 bitwise 2.4.4.3 
                             for (int i = 0; i < 24; i++)
                             {
-                                int bit = 128 >> (int)((i % 8));
+                                int bit = 128 >> (int)(i % 8);
                                 if (i < 4)
                                 {
                                     if ((int)(flags[0] & bit) == 0)
@@ -303,7 +303,7 @@ public class ExcelVbaProject
                                 }
                                 else
                                 {
-                                    int flagIndex = (i - i % 8) / 8;
+                                    int flagIndex = (i - (i % 8)) / 8;
                                     if ((int)(flags[flagIndex] & bit) == 0)
                                     {
                                         this._protection.PasswordHash[i - 4] = 0;
@@ -333,7 +333,7 @@ public class ExcelVbaProject
     private static byte[] Decrypt(string value)
     {
         byte[] enc = GetByte(value);
-        byte[] dec = new byte[(value.Length - 1)];
+        byte[] dec = new byte[value.Length - 1];
         byte seed = enc[0];
         dec[0] = (byte)(enc[1] ^ seed);
         dec[1] = (byte)(enc[2] ^ seed);
@@ -1028,7 +1028,7 @@ public class ExcelVbaProject
             //Set Null bits
             for (int i = 0; i < 24; i++)
             {
-                byte bit = (byte)(128 >> (int)((i % 8)));
+                byte bit = (byte)(128 >> (int)(i % 8));
                 if (i < 4)
                 {
                     if (nullKey[i] == 0)
@@ -1048,7 +1048,7 @@ public class ExcelVbaProject
                     }
                     else
                     {
-                        int byteIndex = (i - i % 8) / 8;
+                        int byteIndex = (i - (i % 8)) / 8;
                         nullBits[byteIndex] |= bit;
                     }
                 }
@@ -1106,7 +1106,7 @@ public class ExcelVbaProject
     {
         if(this.Lcid>0)
         {
-            throw (new InvalidOperationException("Package already contains a VBAProject"));
+            throw new InvalidOperationException("Package already contains a VBAProject");
         }
 
         this.ProjectID = "{5DD90D76-4904-47A2-AF0D-D69B4673604E}";

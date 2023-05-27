@@ -64,7 +64,7 @@ public class ExcelConditionalFormattingTwoColorScale
                priority,
                worksheet,
                itemElementNode,
-               (namespaceManager == null) ? worksheet.NameSpaceManager : namespaceManager)
+               namespaceManager == null ? worksheet.NameSpaceManager : namespaceManager)
     {
         // If the node is not null, parse values out of it instead of clobbering it.
         if (itemElementNode == null)

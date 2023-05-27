@@ -118,7 +118,7 @@ internal class DataTableBuilder
 
             if (!this._options.Mappings.ContainsMapping(columnIndex))
             {
-                bool allowNull = !type.IsValueType || (Nullable.GetUnderlyingType(type) != null);
+                bool allowNull = !type.IsValueType || Nullable.GetUnderlyingType(type) != null;
                 this._options.Mappings.Add(columnOrder - 1, name, type, allowNull);
             }
             else if(this._options.Mappings.GetByRangeIndex(columnIndex).ColumnDataType == null)

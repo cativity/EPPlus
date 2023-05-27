@@ -725,7 +725,7 @@ public class ExcelChartStandard : ExcelChart
             case eChartType.StockVOHLC:
                 return "c:stockChart";
             default:
-                throw (new NotImplementedException("Chart type not implemented"));
+                throw new NotImplementedException("Chart type not implemented");
         }
     }
     /// <summary>
@@ -781,7 +781,7 @@ public class ExcelChartStandard : ExcelChart
     }
     internal void RemoveSecondaryAxis()
     {
-        throw (new NotImplementedException("Not yet implemented"));
+        throw new NotImplementedException("Not yet implemented");
     }
     /// <summary>
     /// Title of the chart
@@ -1118,7 +1118,7 @@ public class ExcelChartStandard : ExcelChart
             }
             else
             {
-                throw (new Exception("Charttype does not support 3D"));
+                throw new Exception("Charttype does not support 3D");
             }
 
         }

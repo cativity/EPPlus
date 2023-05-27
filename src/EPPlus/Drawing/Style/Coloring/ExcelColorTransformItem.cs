@@ -94,7 +94,7 @@ public class ExcelColorTransformItem : XmlHelper, IColorTransformItem, ISource
         {
             if(this.DataType==eColorTransformDataType.Boolean)
             {
-                throw (new ArgumentException("Value", "Value property don't apply to transformations with datatype Boolean. Please add(true)/remove(false) this item to change it's state"));
+                throw new ArgumentException("Value", "Value property don't apply to transformations with datatype Boolean. Please add(true)/remove(false) this item to change it's state");
             }
 
             if (this.DataType==eColorTransformDataType.Percentage)

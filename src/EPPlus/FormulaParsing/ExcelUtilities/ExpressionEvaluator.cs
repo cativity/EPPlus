@@ -169,7 +169,7 @@ internal class ExpressionEvaluator
                     {
                         return op.Operator == Operators.Equals;
                     }
-                    if (left == null ^ string.IsNullOrEmpty(right))
+                    if ((left == null) ^ string.IsNullOrEmpty(right))
                     {
                         return op.Operator == Operators.NotEqualTo;
                     }

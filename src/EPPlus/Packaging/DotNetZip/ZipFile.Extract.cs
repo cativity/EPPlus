@@ -280,9 +280,9 @@ internal partial class ZipFile
                 foreach (ZipEntry e in this._entries.Values)
                 {
                     // check if it is a directory
-                    if ((e.IsDirectory) || (e.FileName.EndsWith("/")))
+                    if (e.IsDirectory || e.FileName.EndsWith("/"))
                     {
-                        string outputFile = (e.FileName.StartsWith("/"))
+                        string outputFile = e.FileName.StartsWith("/")
                                                 ? Path.Combine(path, e.FileName.Substring(1))
                                                 : Path.Combine(path, e.FileName);
 

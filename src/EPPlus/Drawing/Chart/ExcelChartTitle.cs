@@ -299,7 +299,7 @@ public abstract class ExcelChartTitle : XmlHelper, IDrawingStyle, IStyleMandator
             }
             else
             {
-                return (i / 60000);
+                return i / 60000;
             }
         }
         set
@@ -307,7 +307,7 @@ public abstract class ExcelChartTitle : XmlHelper, IDrawingStyle, IStyleMandator
             int v;
             if(value <0 || value > 360)
             {
-                throw(new ArgumentOutOfRangeException("Rotation must be between 0 and 360"));
+                throw new ArgumentOutOfRangeException("Rotation must be between 0 and 360");
             }
 
             if (value > 180)
@@ -364,7 +364,7 @@ public class ExcelChartTitleStandard : ExcelChartTitle
         }
         set
         {
-            bool applyStyle = (this.RichText.Count == 0);
+            bool applyStyle = this.RichText.Count == 0;
             this.LinkedCell = null;
             this.RichText.Text = value;
             if (applyStyle)

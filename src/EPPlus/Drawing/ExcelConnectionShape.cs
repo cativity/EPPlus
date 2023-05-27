@@ -101,7 +101,7 @@ public sealed class ExcelConnectionShape : ExcelShapeBase
             }
             catch
             {
-                throw (new Exception(string.Format("Invalid shapetype {0}", v)));
+                throw new Exception(string.Format("Invalid shapetype {0}", v));
             }
         }
         set

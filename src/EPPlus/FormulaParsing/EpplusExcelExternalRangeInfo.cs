@@ -70,7 +70,7 @@ public class EpplusExcelExternalRangeInfo : IRangeInfo
     /// <returns></returns>
     public int GetNCells()
     {
-        return ((this._toRow - this._fromRow) + 1) * ((this._toCol - this._fromCol) + 1);
+        return (this._toRow - this._fromRow + 1) * (this._toCol - this._fromCol + 1);
     }
     /// <summary>
     /// If the range is invalid (#REF!)

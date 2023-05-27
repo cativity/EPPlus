@@ -68,11 +68,11 @@ public class ExcelSparklineGroup : XmlHelper
             }
             if (value.Worksheet.Workbook != this._ws.Workbook)
             {
-                throw (new ArgumentException("Range must be in the same package"));
+                throw new ArgumentException("Range must be in the same package");
             }
             else if (value.Rows != 1 && value.Columns != 1)
             {
-                throw (new ArgumentException("Range must only be 1 row or column"));
+                throw new ArgumentException("Range must only be 1 row or column");
             }
 
             this.DateAxis = true;

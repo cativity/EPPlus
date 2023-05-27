@@ -75,7 +75,7 @@ public class ExcelPieChart : ExcelChartStandard, IDrawingDataLabel
     {
         if (name == "pieChart")
         {
-            if (this.Series.Count > 0 && (this.Series[0]).Explosion>0)
+            if (this.Series.Count > 0 && this.Series[0].Explosion>0)
             {
                 return eChartType.PieExploded;
             }
@@ -86,7 +86,7 @@ public class ExcelPieChart : ExcelChartStandard, IDrawingDataLabel
         }
         else if (name == "pie3DChart")
         {
-            if (this.Series.Count > 0 && (this.Series[0]).Explosion > 0)
+            if (this.Series.Count > 0 && this.Series[0].Explosion > 0)
             {
                 return eChartType.PieExploded3D;
             }

@@ -34,7 +34,7 @@ internal class Bin2Hex : ExcelFunction
         if(arguments.Count() > 1)
         {
             int padding = this.ArgToInt(arguments, 1);
-            if (padding < 0 ^ padding > 10)
+            if ((padding < 0) ^ (padding > 10))
             {
                 return this.CreateResult(eErrorType.Num);
             }

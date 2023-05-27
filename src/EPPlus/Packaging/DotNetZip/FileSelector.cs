@@ -209,22 +209,22 @@ namespace OfficeOpenXml.Packaging.Ionic
             switch (this.Operator)
             {
                 case ComparisonOperator.GreaterThanOrEqualTo:
-                    result = (x >= this.Time);
+                    result = x >= this.Time;
                     break;
                 case ComparisonOperator.GreaterThan:
-                    result = (x > this.Time);
+                    result = x > this.Time;
                     break;
                 case ComparisonOperator.LesserThanOrEqualTo:
-                    result = (x <= this.Time);
+                    result = x <= this.Time;
                     break;
                 case ComparisonOperator.LesserThan:
-                    result = (x < this.Time);
+                    result = x < this.Time;
                     break;
                 case ComparisonOperator.EqualTo:
-                    result = (x == this.Time);
+                    result = x == this.Time;
                     break;
                 case ComparisonOperator.NotEqualTo:
-                    result = (x != this.Time);
+                    result = x != this.Time;
                     break;
                 default:
                     throw new ArgumentException("Operator");
@@ -297,7 +297,7 @@ namespace OfficeOpenXml.Packaging.Ionic
             CriterionTrace("NameCriterion::Evaluate({0})", fullpath);
             // No slash in the pattern implicitly means recurse, which means compare to
             // filename only, not full path.
-            String f = (this._MatchingFileSpec.IndexOf('\\') == -1)
+            String f = this._MatchingFileSpec.IndexOf('\\') == -1
                 ? Path.GetFileName(fullpath)
                 : fullpath; // compare to fullpath
 
@@ -346,7 +346,7 @@ namespace OfficeOpenXml.Packaging.Ionic
         {
             CriterionTrace("TypeCriterion::Evaluate({0})", filename);
 
-            bool result = (this.ObjectType == 'D')
+            bool result = this.ObjectType == 'D'
                 ? Directory.Exists(filename)
                 : File.Exists(filename);
 
@@ -484,7 +484,7 @@ namespace OfficeOpenXml.Packaging.Ionic
             bool result = false;
             if ((this._Attributes & criterionAttrs) == criterionAttrs)
             {
-                result = ((fileAttrs & criterionAttrs) == criterionAttrs);
+                result = (fileAttrs & criterionAttrs) == criterionAttrs;
             }
             else
             {
@@ -504,7 +504,7 @@ namespace OfficeOpenXml.Packaging.Ionic
                 // Directories don't have file attributes, so the result
                 // of an evaluation is always NO. This gets negated if
                 // the operator is NotEqualTo.
-                return (this.Operator != ComparisonOperator.EqualTo);
+                return this.Operator != ComparisonOperator.EqualTo;
             }
 #if NETCF
             FileAttributes fileAttrs = NetCfFile.GetAttributes(filename);
@@ -611,11 +611,11 @@ namespace OfficeOpenXml.Packaging.Ionic
         {
             StringBuilder sb = new StringBuilder();
             sb.Append("(")
-            .Append((this.Left != null) ? this.Left.ToString() : "null")
+            .Append(this.Left != null ? this.Left.ToString() : "null")
             .Append(" ")
             .Append(this.Conjunction.ToString())
             .Append(" ")
-            .Append((this.Right != null) ? this.Right.ToString() : "null")
+            .Append(this.Right != null ? this.Right.ToString() : "null")
             .Append(")");
             return sb.ToString();
         }
@@ -1334,7 +1334,7 @@ namespace OfficeOpenXml.Packaging.Ionic
                                         Operator = c
                                     };
 #else
-                            current = (tok1 == "type")
+                            current = tok1 == "type"
                                 ? (SelectionCriterion) new TypeCriterion
                                     {
                                         AttributeString = tokens[i + 2],
@@ -1508,7 +1508,7 @@ namespace OfficeOpenXml.Packaging.Ionic
                         {
                             if (this.TraverseReparsePoints
 #if !SILVERLIGHT
-                                || ((File.GetAttributes(dir) & FileAttributes.ReparsePoint) == 0)
+                                || (File.GetAttributes(dir) & FileAttributes.ReparsePoint) == 0
 #endif
                                 )
                             {

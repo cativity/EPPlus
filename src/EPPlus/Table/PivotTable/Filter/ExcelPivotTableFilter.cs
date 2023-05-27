@@ -242,7 +242,7 @@ public class ExcelPivotTableFilter : XmlHelper
         this._filterColumnNode.InnerXml = "<top10 />";
         ExcelTop10FilterColumn? tf = new ExcelTop10FilterColumn(this.NameSpaceManager, this._filterColumnNode);
 
-        tf.Percent = (type == ePivotTableTop10FilterType.Percent);
+        tf.Percent = type == ePivotTableTop10FilterType.Percent;
         tf.Top = isTop;
         tf.Value = value;
         tf.FilterValue = value;

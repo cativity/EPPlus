@@ -112,7 +112,7 @@ internal class AverageIf : HiddenValuesHandlingFunction
                     object? val = sumRange.GetOffset(rowOffset, columnOffset);
                     if (val is ExcelErrorValue)
                     {
-                        ThrowExcelErrorValueException(((ExcelErrorValue)val));
+                        ThrowExcelErrorValueException((ExcelErrorValue)val);
                     }
                     nMatches++;
                     returnValue += ConvertUtil.GetValueDouble(val, true);
@@ -133,7 +133,7 @@ internal class AverageIf : HiddenValuesHandlingFunction
                     
                 if (candidate.IsExcelError)
                 {
-                    ThrowExcelErrorValueException(((ExcelErrorValue)candidate.Value));
+                    ThrowExcelErrorValueException((ExcelErrorValue)candidate.Value);
                 }
                 returnValue += candidate.ValueDouble;
                 nMatches++;

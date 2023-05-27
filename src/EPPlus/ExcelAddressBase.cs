@@ -744,7 +744,7 @@ public class ExcelAddressBase : ExcelCellBase
     /// </summary>
     protected void Validate()
     {
-        if ((this._fromRow > this._toRow || this._fromCol > this._toCol) && (this._toRow!=0)) //_toRow==0 is #REF!
+        if ((this._fromRow > this._toRow || this._fromCol > this._toCol) && this._toRow!=0) //_toRow==0 is #REF!
         {
             throw new ArgumentOutOfRangeException("Start cell Address must be less or equal to End cell address");
         }
@@ -1122,8 +1122,8 @@ public class ExcelAddressBase : ExcelCellBase
         }
         else if (row+rows < this._fromRow || (this._fromRowFixed && row < this._fromRow)) //Before
         {
-            int toRow = ((setFixed && this._toRowFixed) || (adjustMaxRow==false && this._toRow==ExcelPackage.MaxRows)) ? this._toRow : this._toRow - rows;
-            return new ExcelAddressBase((setFixed && this._fromRowFixed ? this._fromRow : this._fromRow - rows), this._fromCol, toRow, this._toCol, this._fromRowFixed, this._fromColFixed, this._toRowFixed, this._toColFixed, this.WorkSheetName, this._address);
+            int toRow = (setFixed && this._toRowFixed) || (adjustMaxRow==false && this._toRow==ExcelPackage.MaxRows) ? this._toRow : this._toRow - rows;
+            return new ExcelAddressBase(setFixed && this._fromRowFixed ? this._fromRow : this._fromRow - rows, this._fromCol, toRow, this._toCol, this._fromRowFixed, this._fromColFixed, this._toRowFixed, this._toColFixed, this.WorkSheetName, this._address);
         }
         else  //Partly
         {
@@ -1146,10 +1146,10 @@ public class ExcelAddressBase : ExcelCellBase
         {
             return this;
         }
-        int toCol = GetColumn((setFixed && this._toColFixed ? this._toCol : this._toCol + cols), setRefOnMinMax);
+        int toCol = GetColumn(setFixed && this._toColFixed ? this._toCol : this._toCol + cols, setRefOnMinMax);
         if (col <= this._fromCol)
         {
-            int fromCol = GetColumn((setFixed && this._fromColFixed ? this._fromCol : this._fromCol + cols), setRefOnMinMax);
+            int fromCol = GetColumn(setFixed && this._fromColFixed ? this._fromCol : this._fromCol + cols, setRefOnMinMax);
             return new ExcelAddressBase(this._fromRow, fromCol, this._toRow, toCol, this._fromRowFixed, this._fromColFixed, this._toRowFixed, this._toColFixed, this.WorkSheetName, this._address);
         }
         else
@@ -1167,21 +1167,21 @@ public class ExcelAddressBase : ExcelCellBase
         {
             return null;
         }
-        else if (col + cols < this._fromCol || this._fromColFixed && col < this._fromCol) //Before
+        else if (col + cols < this._fromCol || (this._fromColFixed && col < this._fromCol)) //Before
         {
-            int toCol = ((setFixed && this._toColFixed) ||(adjustMaxCol==false && this._toCol==ExcelPackage.MaxColumns)) ? this._toCol : this._toCol - cols;
-            return new ExcelAddressBase(this._fromRow, (setFixed && this._fromColFixed ? this._fromCol : this._fromCol - cols), this._toRow, toCol, this._fromRowFixed, this._fromColFixed, this._toRowFixed, this._toColFixed, this.WorkSheetName, this._address);
+            int toCol = (setFixed && this._toColFixed) ||(adjustMaxCol==false && this._toCol==ExcelPackage.MaxColumns) ? this._toCol : this._toCol - cols;
+            return new ExcelAddressBase(this._fromRow, setFixed && this._fromColFixed ? this._fromCol : this._fromCol - cols, this._toRow, toCol, this._fromRowFixed, this._fromColFixed, this._toRowFixed, this._toColFixed, this.WorkSheetName, this._address);
         }
         else  //Partly
         {
             if (col <= this._fromCol)
             {
-                int toCol = ((setFixed && this._toColFixed) || (adjustMaxCol == false && this._toCol == ExcelPackage.MaxColumns)) ? this._toCol : this._toCol - cols;
+                int toCol = (setFixed && this._toColFixed) || (adjustMaxCol == false && this._toCol == ExcelPackage.MaxColumns) ? this._toCol : this._toCol - cols;
                 return new ExcelAddressBase(this._fromRow, col, this._toRow, toCol, this._fromRowFixed, this._fromColFixed, this._toRowFixed, this._toColFixed, this._ws, this._address);
             }
             else
             {
-                int toCol = ((setFixed && this._toColFixed) || (adjustMaxCol == false && this._toCol == ExcelPackage.MaxColumns)) ? this._toCol : this._toCol - cols < col ? col - 1 : this._toCol - cols;
+                int toCol = (setFixed && this._toColFixed) || (adjustMaxCol == false && this._toCol == ExcelPackage.MaxColumns) ? this._toCol : this._toCol - cols < col ? col - 1 : this._toCol - cols;
                 return new ExcelAddressBase(this._fromRow, this._fromCol, this._toRow, toCol, this._fromRowFixed, this._fromColFixed, this._toRowFixed, this._toColFixed, this._ws, this._address);
             }
         }
@@ -1589,7 +1589,7 @@ public class ExcelAddressBase : ExcelCellBase
     {
         get
         {
-            return (this._fromRow == this._toRow && this._fromCol == this._toCol);
+            return this._fromRow == this._toRow && this._fromCol == this._toCol;
         }
     }
 
@@ -1847,7 +1847,7 @@ public class ExcelAddressBase : ExcelCellBase
 
         if(isInWorkbook || isInWorksheet)
         {
-            throw (new ArgumentException($"Invalid address {fullAddress}"));
+            throw new ArgumentException($"Invalid address {fullAddress}");
         }
         currentAddress[2] = fullAddress.Substring(prevPos, fullAddress.Length - prevPos);
         addresses.Add(currentAddress);

@@ -104,7 +104,7 @@ public class ExcelChartColorsManager : XmlHelper
                 return GetLinearVariation(colorIndex, numberOfItems, true);
             //eChartColorStyleMethod.Cycle
             default:
-                int div = (colorIndex - (colorIndex % this.Colors.Count));
+                int div = colorIndex - (colorIndex % this.Colors.Count);
                 if (div == 0)
                 {
                     return this.Variations[0];
@@ -139,12 +139,12 @@ public class ExcelChartColorsManager : XmlHelper
             int v;
             if (colorIndex > split)
             {
-                v = (int)(100 - diff * -(split - colorIndex));
+                v = (int)(100 - (diff * -(split - colorIndex)));
                 isTint = !isReversed;
             }
             else
             {
-                v = (int)(100 - diff * (split - colorIndex));
+                v = (int)(100 - (diff * (split - colorIndex)));
                 isTint = isReversed;
             }
 

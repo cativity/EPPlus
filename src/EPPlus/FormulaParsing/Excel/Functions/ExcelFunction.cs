@@ -452,7 +452,7 @@ public abstract class ExcelFunction
             return false;
         }
 
-        return (TypeCompat.IsPrimitive(val) || val is double || val is decimal  || val is System.DateTime || val is TimeSpan);
+        return TypeCompat.IsPrimitive(val) || val is double || val is decimal  || val is System.DateTime || val is TimeSpan;
     }
 
     protected static bool IsBool(object val)
@@ -464,7 +464,7 @@ public abstract class ExcelFunction
     {
         if (!allowNullOrEmpty)
         {
-            return (val is string) && !string.IsNullOrEmpty(val as string);
+            return val is string && !string.IsNullOrEmpty(val as string);
         }
 
         return val is string;
@@ -558,7 +558,7 @@ public abstract class ExcelFunction
         int endRow = rangeInfo.Address.End.Row > rangeInfo.Worksheet.Dimension._toRow ? rangeInfo.Worksheet.Dimension._toRow : rangeInfo.Address.End.Row;
         int startCol = rangeInfo.Address.Start.Column;
         int endCol = rangeInfo.Address.End.Column > rangeInfo.Worksheet.Dimension._toCol ? rangeInfo.Worksheet.Dimension._toCol : rangeInfo.Address.End.Column;
-        bool horizontal = (startRow == endRow && rangeInfo.Address._fromCol < rangeInfo.Address._toCol);
+        bool horizontal = startRow == endRow && rangeInfo.Address._fromCol < rangeInfo.Address._toCol;
         FunctionArgument? funcArg = new FunctionArgument(rangeInfo);
         IEnumerable<ExcelDoubleCellValue>? result = this.ArgsToDoubleEnumerable(ignoreHiddenCells, new List<FunctionArgument> { funcArg }, context);
         Dictionary<int, double>? dict = new Dictionary<int, double>();
@@ -634,7 +634,7 @@ public abstract class ExcelFunction
     {
         if (arg.ValueIsExcelError)
         {
-            throw (new ExcelErrorValueException(arg.ValueAsExcelErrorValue));
+            throw new ExcelErrorValueException(arg.ValueAsExcelErrorValue);
         }
     }
 
@@ -647,7 +647,7 @@ public abstract class ExcelFunction
     {
         if (cell.IsExcelError)
         {
-            throw (new ExcelErrorValueException(ExcelErrorValue.Parse(cell.Value.ToString())));
+            throw new ExcelErrorValueException(ExcelErrorValue.Parse(cell.Value.ToString()));
         }
     }
 

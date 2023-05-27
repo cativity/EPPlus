@@ -128,7 +128,7 @@ public class ExcelPivotArea : XmlHelper
         {
             if (value && (this.PivotAreaType == ePivotAreaType.Data || this.PivotAreaType == ePivotAreaType.Normal || this.PivotAreaType == ePivotAreaType.Origin || this.PivotAreaType == ePivotAreaType.TopEnd))
             {
-                throw (new InvalidOperationException("Can't set LabelOnly to True for the PivotAreaType"));
+                throw new InvalidOperationException("Can't set LabelOnly to True for the PivotAreaType");
             }
             if (value && this.LabelOnly)
             {

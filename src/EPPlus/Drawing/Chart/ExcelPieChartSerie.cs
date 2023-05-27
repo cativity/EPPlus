@@ -49,7 +49,7 @@ public sealed class ExcelPieChartSerie : ExcelChartStandardSerie, IDrawingSerieD
         {
             if (value < 0 || value > 400)
             {
-                throw(new ArgumentOutOfRangeException("Explosion range is 0-400"));
+                throw new ArgumentOutOfRangeException("Explosion range is 0-400");
             }
 
             this.SetXmlNodeString(explosionPath, value.ToString());

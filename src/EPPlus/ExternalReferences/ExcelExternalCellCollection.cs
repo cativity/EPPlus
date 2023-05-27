@@ -45,7 +45,7 @@ public class ExcelExternalCellCollection
             {
                 return this[row, column];
             }
-            throw (new ArgumentException("Address is not valid"));
+            throw new ArgumentException("Address is not valid");
         }
     }
     /// <summary>
@@ -60,7 +60,7 @@ public class ExcelExternalCellCollection
         {
             if(row < 1 || column < 1 || row > ExcelPackage.MaxRows || column > ExcelPackage.MaxColumns)
             {
-                throw (new ArgumentOutOfRangeException());
+                throw new ArgumentOutOfRangeException();
             }
 
             return new ExcelExternalCellValue()

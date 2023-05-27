@@ -46,7 +46,7 @@ public class ExcelDrawingGradientFillColorList : IEnumerable<ExcelDrawingGradien
     {
         get
         {
-            return (this._lst[index]);
+            return this._lst[index];
         }
     }
     /// <summary>
@@ -68,7 +68,7 @@ public class ExcelDrawingGradientFillColorList : IEnumerable<ExcelDrawingGradien
     {
         get
         {
-            return (this._lst.Find(i => i.Position == position));
+            return this._lst.Find(i => i.Position == position);
         }
     }
     /// <summary>
@@ -146,7 +146,7 @@ public class ExcelDrawingGradientFillColorList : IEnumerable<ExcelDrawingGradien
     {
         if (position < 0 || position > 100)
         {
-            throw (new ArgumentOutOfRangeException("Position must be between 0 and 100"));
+            throw new ArgumentOutOfRangeException("Position must be between 0 and 100");
         }
         XmlNode node = null;
         for (int i = 0; i < this._lst.Count; i++)

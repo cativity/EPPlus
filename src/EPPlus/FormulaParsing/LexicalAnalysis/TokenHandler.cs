@@ -41,7 +41,7 @@ internal class TokenHandler : ITokenIndexProvider
 
     public bool HasMore()
     {
-        return this._tokenIndex < (this._context.FormulaChars.Length - 1);
+        return this._tokenIndex < this._context.FormulaChars.Length - 1;
     }
 
     public void Next()

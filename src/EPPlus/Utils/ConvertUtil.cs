@@ -45,7 +45,7 @@ internal static class ConvertUtil
         }
 
         Type? t = candidate.GetType();
-        return (t == typeof(double) || t == typeof(decimal) || t == typeof(long) || t == typeof(DateTime) || t == typeof(TimeSpan));
+        return t == typeof(double) || t == typeof(decimal) || t == typeof(long) || t == typeof(DateTime) || t == typeof(TimeSpan);
     }
     internal static bool IsNumeric(object candidate)
     {
@@ -60,7 +60,7 @@ internal static class ConvertUtil
         }
 
         Type? t = candidate.GetType();
-        return (t == typeof(double) || t == typeof(decimal) || t == typeof(long));
+        return t == typeof(double) || t == typeof(decimal) || t == typeof(long);
     }
 
     internal static bool IsPercentageString(string s)

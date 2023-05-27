@@ -118,7 +118,7 @@ public class ExcelErrorValue
             }
 
             string? candidateString = candidate.ToString();
-            return (!string.IsNullOrEmpty(candidateString) && _values.ContainsKey(candidateString));
+            return !string.IsNullOrEmpty(candidateString) && _values.ContainsKey(candidateString);
         }
 
         /// <summary>
@@ -128,7 +128,7 @@ public class ExcelErrorValue
         /// <returns></returns>
         public static bool StringIsErrorValue(string candidate)
         {
-            return (!string.IsNullOrEmpty(candidate) && _values.ContainsKey(candidate));
+            return !string.IsNullOrEmpty(candidate) && _values.ContainsKey(candidate);
         }
 
         /// <summary>
@@ -211,7 +211,7 @@ public class ExcelErrorValue
             case eErrorType.Value:
                 return Values.Value;
             default:
-                throw(new ArgumentException("Invalid errortype"));
+                throw new ArgumentException("Invalid errortype");
         }
     }
     /// <summary>

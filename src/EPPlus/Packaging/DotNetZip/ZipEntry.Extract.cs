@@ -597,7 +597,7 @@ internal partial class ZipEntry
         // from the stream AFTER decompression and decryption.
         // It is the uncompressed size, unless ... there is no compression in which
         // case ...?  :< I'm not sure why it's not always UncompressedSize
-        Int64 LeftToRead = (this._CompressionMethod_FromZipFile == (short)CompressionMethod.None)
+        Int64 LeftToRead = this._CompressionMethod_FromZipFile == (short)CompressionMethod.None
                                ? this._CompressedFileDataSize
                                : this.UncompressedSize;
 
@@ -1084,7 +1084,7 @@ internal partial class ZipEntry
             // both the encryption flag and the compression flag, and take
             // the proper action in all cases.
 
-            Int64 LeftToRead = (this._CompressionMethod_FromZipFile != (short)CompressionMethod.None)
+            Int64 LeftToRead = this._CompressionMethod_FromZipFile != (short)CompressionMethod.None
                                    ? this.UncompressedSize
                                    : this._CompressedFileDataSize;
 
@@ -1103,7 +1103,7 @@ internal partial class ZipEntry
                 // Casting LeftToRead down to an int is ok here in the else clause,
                 // because that only happens when it is less than bytes.Length,
                 // which is much less than MAX_INT.
-                int len = (LeftToRead > bytes.Length) ? bytes.Length : (int)LeftToRead;
+                int len = LeftToRead > bytes.Length ? bytes.Length : (int)LeftToRead;
                 int n = s1.Read(bytes, 0, len);
 
                 // must check data read - essential for detecting corrupt zip files
@@ -1392,8 +1392,8 @@ internal partial class ZipEntry
 
     private void ValidateCompression()
     {
-        if ((this._CompressionMethod_FromZipFile != (short)CompressionMethod.None) &&
-            (this._CompressionMethod_FromZipFile != (short)CompressionMethod.Deflate)
+        if (this._CompressionMethod_FromZipFile != (short)CompressionMethod.None &&
+            this._CompressionMethod_FromZipFile != (short)CompressionMethod.Deflate
 #if BZIP
                 && (_CompressionMethod_FromZipFile != (short)CompressionMethod.BZip2)
 #endif
@@ -1486,7 +1486,7 @@ internal partial class ZipEntry
             if (this._container.ZipFile.FlattenFoldersOnExtract)
             {
                 outFileName = Path.Combine(basedir,
-                                           (f.IndexOf('/') != -1) ? Path.GetFileName(f) : f);
+                                           f.IndexOf('/') != -1 ? Path.GetFileName(f) : f);
             }
             else
             {
@@ -1497,7 +1497,7 @@ internal partial class ZipEntry
             outFileName = outFileName.Replace("/","\\");
 
             // check if it is a directory
-            if ((this.IsDirectory) || (this.FileName.EndsWith("/")))
+            if (this.IsDirectory || this.FileName.EndsWith("/"))
             {
                 if (!Directory.Exists(outFileName))
                 {
@@ -1520,7 +1520,7 @@ internal partial class ZipEntry
         if (outstream != null)
         {
             outFileName = null;
-            if ((this.IsDirectory) || (this.FileName.EndsWith("/")))
+            if (this.IsDirectory || this.FileName.EndsWith("/"))
             {
                 // extract a directory to streamwriter?  nothing to do!
                 return true;  // true == all done!  caller can return

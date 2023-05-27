@@ -173,7 +173,7 @@ public class ExcelDrawingBlipFill : ExcelDrawingFillBase, IPictureContainer
     {
         if (!file.Exists)
         {
-            throw (new ArgumentException($"File {file.FullName} does not exist."));
+            throw new ArgumentException($"File {file.FullName} does not exist.");
         }
         byte[]? img = File.ReadAllBytes(file.FullName);
         string? extension = file.Extension;

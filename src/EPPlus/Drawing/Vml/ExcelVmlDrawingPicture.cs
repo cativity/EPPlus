@@ -209,7 +209,7 @@ public class ExcelVmlDrawingPicture : ExcelVmlDrawingBase, IPictureContainer
         {
             if (value < 0)
             {
-                throw (new ArgumentOutOfRangeException("Value must be positive"));
+                throw new ArgumentOutOfRangeException("Value must be positive");
             }
             if (value == 1)
             {

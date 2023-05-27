@@ -187,7 +187,7 @@ namespace OfficeOpenXml.Drawing
             {
                 if(imageStream.CanRead ==false || imageStream.CanSeek == false)
                 {
-                    throw (new ArgumentException("Stream must be readable and seekble", nameof(imageStream)));
+                    throw new ArgumentException("Stream must be readable and seekble", nameof(imageStream));
                 }
                 byte[]? byRet = new byte[imageStream.Length];
                 imageStream.Seek(0, SeekOrigin.Begin);
@@ -212,7 +212,7 @@ namespace OfficeOpenXml.Drawing
             {
                 if (imageStream.CanRead == false || imageStream.CanSeek == false)
                 {
-                    throw (new ArgumentException("Stream must be readable and seekble", nameof(imageStream)));
+                    throw new ArgumentException("Stream must be readable and seekble", nameof(imageStream));
                 }
                 byte[]? byRet = new byte[imageStream.Length];
                 imageStream.Seek(0, SeekOrigin.Begin);
@@ -289,7 +289,7 @@ namespace OfficeOpenXml.Drawing
             }
             else
             {
-                throw (new InvalidOperationException($"The image format is not supported: {pictureType} or the image is corrupt "));
+                throw new InvalidOperationException($"The image format is not supported: {pictureType} or the image is corrupt ");
             }
 
             return this;
@@ -350,7 +350,7 @@ namespace OfficeOpenXml.Drawing
             }
             else
             {
-                throw (new InvalidOperationException($"Image format not supported or: {pictureType} or corrupt image"));
+                throw new InvalidOperationException($"Image format not supported or: {pictureType} or corrupt image");
             }
 
             this._container.SetNewImage();

@@ -35,7 +35,7 @@ internal class Roundup : ExcelFunction
 
         double number = this.ArgToDecimal(arguments, 0, context.Configuration.PrecisionAndRoundingStrategy);
         int nDigits = this.ArgToInt(arguments, 1);
-        double result = (number >= 0) 
+        double result = number >= 0 
                             ? System.Math.Ceiling(number * System.Math.Pow(10, nDigits)) / System.Math.Pow(10, nDigits)
                             : System.Math.Floor(number * System.Math.Pow(10, nDigits)) / System.Math.Pow(10, nDigits);
         return this.CreateResult(result, DataType.Decimal);

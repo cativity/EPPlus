@@ -219,23 +219,23 @@ public class TextFunctionsTests
         Assert.AreEqual(1000.15d, sheet.Cells["A2"].Value);
     }
 
-    [TestMethod, Ignore]
-    public void Logtest1()
-    {
-        Stopwatch? sw = new Stopwatch();
-        sw.Start();
+    //[TestMethod, Ignore]
+    //public void Logtest1()
+    //{
+    //    Stopwatch? sw = new Stopwatch();
+    //    sw.Start();
 
-        using (ExcelPackage? pck = new ExcelPackage(new FileInfo(@"c:\temp\denis.xlsx")))
-        {
-            IFormulaParserLogger? logger = LoggerFactory.CreateTextFileLogger(new FileInfo(@"c:\temp\log1.txt"));
-            pck.Workbook.FormulaParser.Configure(x => x.AttachLogger(logger));
-            pck.Workbook.Calculate();
+    //    using (ExcelPackage? pck = new ExcelPackage(new FileInfo(@"c:\temp\denis.xlsx")))
+    //    {
+    //        IFormulaParserLogger? logger = LoggerFactory.CreateTextFileLogger(new FileInfo(@"c:\temp\log1.txt"));
+    //        pck.Workbook.FormulaParser.Configure(x => x.AttachLogger(logger));
+    //        pck.Workbook.Calculate();
 
-            //
-        }
+    //        //
+    //    }
 
-        sw.Stop();
-        TimeSpan elapsed = sw.Elapsed;
-        Console.WriteLine(string.Format("{0} seconds", elapsed.TotalSeconds));
-    }
+    //    sw.Stop();
+    //    TimeSpan elapsed = sw.Elapsed;
+    //    Console.WriteLine(string.Format("{0} seconds", elapsed.TotalSeconds));
+    //}
 }

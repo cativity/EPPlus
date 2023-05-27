@@ -941,41 +941,41 @@ public class DrawingTest : TestBase
         pck.Dispose();
     }
 
-    [TestMethod]
-    [Ignore]
-    public void ReadMultiChartSeries()
-    {
-        ExcelPackage pck = new ExcelPackage(new FileInfo("c:\\temp\\chartseries.xlsx"), true);
+    //[TestMethod]
+    //[Ignore]
+    //public void ReadMultiChartSeries()
+    //{
+    //    ExcelPackage pck = new ExcelPackage(new FileInfo("c:\\temp\\chartseries.xlsx"), true);
 
-        ExcelWorksheet? ws = pck.Workbook.Worksheets[1];
-        ExcelChart c = ws.Drawings[0] as ExcelChart;
+    //    ExcelWorksheet? ws = pck.Workbook.Worksheets[1];
+    //    ExcelChart c = ws.Drawings[0] as ExcelChart;
 
-        ExcelChartPlotArea? p = c.PlotArea;
-        p.ChartTypes[1].Series[0].Series = "S7:S15";
+    //    ExcelChartPlotArea? p = c.PlotArea;
+    //    p.ChartTypes[1].Series[0].Series = "S7:S15";
 
-        ExcelChart? c2 = ws.Drawings.AddChart("NewChart", eChartType.ColumnClustered);
-        ExcelChartSerie? serie1 = c2.Series.Add("R7:R15", "Q7:Q15");
-        c2.SetSize(800, 800);
-        serie1.Header = "Column Clustered";
+    //    ExcelChart? c2 = ws.Drawings.AddChart("NewChart", eChartType.ColumnClustered);
+    //    ExcelChartSerie? serie1 = c2.Series.Add("R7:R15", "Q7:Q15");
+    //    c2.SetSize(800, 800);
+    //    serie1.Header = "Column Clustered";
 
-        ExcelChart? subChart = c2.PlotArea.ChartTypes.Add(eChartType.LineMarkers);
-        ExcelChartSerie? serie2 = subChart.Series.Add("S7:S15", "Q7:Q15");
-        serie2.Header = "Line";
+    //    ExcelChart? subChart = c2.PlotArea.ChartTypes.Add(eChartType.LineMarkers);
+    //    ExcelChartSerie? serie2 = subChart.Series.Add("S7:S15", "Q7:Q15");
+    //    serie2.Header = "Line";
 
-        //var subChart2 = c2.PlotArea.ChartTypes.Add(eChartType.DoughnutExploded);
-        //var serie3 = subChart2.Series.Add("S7:S15", "Q7:Q15");
-        //serie3.Header = "Doughnut";
+    //    //var subChart2 = c2.PlotArea.ChartTypes.Add(eChartType.DoughnutExploded);
+    //    //var serie3 = subChart2.Series.Add("S7:S15", "Q7:Q15");
+    //    //serie3.Header = "Doughnut";
 
-        ExcelChart? subChart3 = c2.PlotArea.ChartTypes.Add(eChartType.Area);
-        ExcelChartSerie? serie4 = subChart3.Series.Add("R7:R15", "Q7:Q15");
-        serie4.Header = "Area";
-        subChart3.UseSecondaryAxis = true;
+    //    ExcelChart? subChart3 = c2.PlotArea.ChartTypes.Add(eChartType.Area);
+    //    ExcelChartSerie? serie4 = subChart3.Series.Add("R7:R15", "Q7:Q15");
+    //    serie4.Header = "Area";
+    //    subChart3.UseSecondaryAxis = true;
 
-        ExcelChartSerie? serie5 = subChart.Series.Add("R7:R15", "Q7:Q15");
-        serie5.Header = "Line 2";
+    //    ExcelChartSerie? serie5 = subChart.Series.Add("R7:R15", "Q7:Q15");
+    //    serie5.Header = "Line 2";
 
-        pck.SaveAs(new FileInfo("c:\\temp\\chartseriesnew.xlsx"));
-    }
+    //    pck.SaveAs(new FileInfo("c:\\temp\\chartseriesnew.xlsx"));
+    //}
 
     [TestMethod]
     public void ChartWorksheet()

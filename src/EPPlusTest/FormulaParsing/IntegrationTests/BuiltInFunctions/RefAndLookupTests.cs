@@ -339,16 +339,16 @@ public class RefAndLookupTests : FormulaParserTestBase
         Assert.AreEqual(9d, s1.Cells["A5"].Value);
     }
 
-    [TestMethod, Ignore]
-    public void VLookupShouldHandleNames()
-    {
-        using ExcelPackage? package = new ExcelPackage(new FileInfo(@"c:\temp\Book3.xlsx"));
-        ExcelWorksheet? s1 = package.Workbook.Worksheets.First();
-        string? v = s1.Cells["X10"].Formula;
+    //[TestMethod, Ignore]
+    //public void VLookupShouldHandleNames()
+    //{
+    //    using ExcelPackage? package = new ExcelPackage(new FileInfo(@"c:\temp\Book3.xlsx"));
+    //    ExcelWorksheet? s1 = package.Workbook.Worksheets.First();
+    //    string? v = s1.Cells["X10"].Formula;
 
-        //s1.Calculate();
-        v = s1.Cells["X10"].Formula;
-    }
+    //    //s1.Calculate();
+    //    v = s1.Cells["X10"].Formula;
+    //}
 
     [TestMethod]
     public void LookupShouldReturnFromResultVector()

@@ -693,18 +693,18 @@ public class Issues : TestBase
         Assert.AreEqual(formula.ToUpper(), cell.FormulaR1C1.ToUpper());
     }
 
-    [TestMethod, Ignore]
-    public void Issue170()
-    {
-        using ExcelPackage? p = OpenTemplatePackage("print_titles_170.xlsx");
-        p.Compatibility.IsWorksheets1Based = false;
-        ExcelWorksheet sheet = p.Workbook.Worksheets[0];
+    //[TestMethod, Ignore]
+    //public void Issue170()
+    //{
+    //    using ExcelPackage? p = OpenTemplatePackage("print_titles_170.xlsx");
+    //    p.Compatibility.IsWorksheets1Based = false;
+    //    ExcelWorksheet sheet = p.Workbook.Worksheets[0];
 
-        sheet.PrinterSettings.RepeatColumns = new ExcelAddress("$A:$C");
-        sheet.PrinterSettings.RepeatRows = new ExcelAddress("$1:$3");
+    //    sheet.PrinterSettings.RepeatColumns = new ExcelAddress("$A:$C");
+    //    sheet.PrinterSettings.RepeatRows = new ExcelAddress("$1:$3");
 
-        SaveWorkbook("print_titles_170-Saved.xlsx", p);
-    }
+    //    SaveWorkbook("print_titles_170-Saved.xlsx", p);
+    //}
 
     [TestMethod]
     public void Issue172()
@@ -1211,23 +1211,23 @@ public class Issues : TestBase
         using ExcelPackage? p = OpenTemplatePackage("Deployment aftaler.xlsx");
     }
 
-    [TestMethod, Ignore]
-    public void SupportCase17()
-    {
-        using ExcelPackage? p = new ExcelPackage(new FileInfo(@"c:\temp\Issue17\BreakLinks3.xlsx"));
-        Stopwatch? stopwatch = Stopwatch.StartNew();
-        p.Workbook.FormulaParserManager.AttachLogger(new FileInfo("c:\\temp\\formulalog.txt"));
-        p.Workbook.Calculate();
-        stopwatch.Stop();
-        double ms = stopwatch.Elapsed.TotalSeconds;
-    }
+    //[TestMethod, Ignore]
+    //public void SupportCase17()
+    //{
+    //    using ExcelPackage? p = new ExcelPackage(new FileInfo(@"c:\temp\Issue17\BreakLinks3.xlsx"));
+    //    Stopwatch? stopwatch = Stopwatch.StartNew();
+    //    p.Workbook.FormulaParserManager.AttachLogger(new FileInfo("c:\\temp\\formulalog.txt"));
+    //    p.Workbook.Calculate();
+    //    stopwatch.Stop();
+    //    double ms = stopwatch.Elapsed.TotalSeconds;
+    //}
 
-    [TestMethod, Ignore]
-    public void Issue17()
-    {
-        using ExcelPackage? p = OpenTemplatePackage("Excel Sample Circular Ref break links.xlsx");
-        p.Workbook.Calculate();
-    }
+    //[TestMethod, Ignore]
+    //public void Issue17()
+    //{
+    //    using ExcelPackage? p = OpenTemplatePackage("Excel Sample Circular Ref break links.xlsx");
+    //    p.Workbook.Calculate();
+    //}
 
     [TestMethod]
     public void Issue18()

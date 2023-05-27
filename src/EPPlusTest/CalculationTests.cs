@@ -119,116 +119,116 @@ public class CalculationTests
         ws.Calculate();
     }
 
-    [TestMethod, Ignore]
-    public void Calulation4()
-    {
-#if Core
-        string? dir = AppContext.BaseDirectory;
-        dir = Directory.GetParent(dir).Parent.Parent.Parent.FullName;
-#else
-            var dir = AppDomain.CurrentDomain.BaseDirectory;
-#endif
-        ExcelPackage? pck = new ExcelPackage(new FileInfo(Path.Combine(dir, "Workbooks", "FormulaTest.xlsx")));
-        pck.Workbook.Calculate();
-        Assert.AreEqual(490D, pck.Workbook.Worksheets[1].Cells["D5"].Value);
-    }
+//    [TestMethod, Ignore]
+//    public void Calulation4()
+//    {
+//#if Core
+//        string? dir = AppContext.BaseDirectory;
+//        dir = Directory.GetParent(dir).Parent.Parent.Parent.FullName;
+//#else
+//            var dir = AppDomain.CurrentDomain.BaseDirectory;
+//#endif
+//        ExcelPackage? pck = new ExcelPackage(new FileInfo(Path.Combine(dir, "Workbooks", "FormulaTest.xlsx")));
+//        pck.Workbook.Calculate();
+//        Assert.AreEqual(490D, pck.Workbook.Worksheets[1].Cells["D5"].Value);
+//    }
 
-    [TestMethod, Ignore]
-    public void CalulationValidationExcel()
-    {
-#if Core
-        string? dir = AppContext.BaseDirectory;
-        dir = Directory.GetParent(dir).Parent.Parent.Parent.FullName;
-#else
-            var dir = AppDomain.CurrentDomain.BaseDirectory;
-#endif
-        ExcelPackage? pck = new ExcelPackage(new FileInfo(Path.Combine(dir, "Workbooks", "FormulaTest.xlsx")));
+//    [TestMethod, Ignore]
+//    public void CalulationValidationExcel()
+//    {
+//#if Core
+//        string? dir = AppContext.BaseDirectory;
+//        dir = Directory.GetParent(dir).Parent.Parent.Parent.FullName;
+//#else
+//            var dir = AppDomain.CurrentDomain.BaseDirectory;
+//#endif
+//        ExcelPackage? pck = new ExcelPackage(new FileInfo(Path.Combine(dir, "Workbooks", "FormulaTest.xlsx")));
 
-        ExcelWorksheet? ws = pck.Workbook.Worksheets["ValidateFormulas"];
-        Dictionary<string, object>? fr = new Dictionary<string, object>();
+//        ExcelWorksheet? ws = pck.Workbook.Worksheets["ValidateFormulas"];
+//        Dictionary<string, object>? fr = new Dictionary<string, object>();
 
-        foreach (ExcelRangeBase? cell in ws.Cells)
-        {
-            if (!string.IsNullOrEmpty(cell.Formula))
-            {
-                fr.Add(cell.Address, cell.Value);
-            }
-        }
+//        foreach (ExcelRangeBase? cell in ws.Cells)
+//        {
+//            if (!string.IsNullOrEmpty(cell.Formula))
+//            {
+//                fr.Add(cell.Address, cell.Value);
+//            }
+//        }
 
-        pck.Workbook.Calculate();
-        int nErrors = 0;
-        List<Tuple<string, object, object>>? errors = new List<Tuple<string, object, object>>();
+//        pck.Workbook.Calculate();
+//        int nErrors = 0;
+//        List<Tuple<string, object, object>>? errors = new List<Tuple<string, object, object>>();
 
-        foreach (string? adr in fr.Keys)
-        {
-            try
-            {
-                if (fr[adr] is double && ws.Cells[adr].Value is double)
-                {
-                    double d1 = Convert.ToDouble(fr[adr]);
-                    double d2 = Convert.ToDouble(ws.Cells[adr].Value);
+//        foreach (string? adr in fr.Keys)
+//        {
+//            try
+//            {
+//                if (fr[adr] is double && ws.Cells[adr].Value is double)
+//                {
+//                    double d1 = Convert.ToDouble(fr[adr]);
+//                    double d2 = Convert.ToDouble(ws.Cells[adr].Value);
 
-                    if (Math.Abs(d1 - d2) < 0.0001)
-                    {
-                        continue;
-                    }
-                    else
-                    {
-                        Assert.AreEqual(fr[adr], ws.Cells[adr].Value);
-                    }
-                }
-                else
-                {
-                    Assert.AreEqual(fr[adr], ws.Cells[adr].Value);
-                }
-            }
-            catch
-            {
-                errors.Add(new Tuple<string, object, object>(adr, fr[adr], ws.Cells[adr].Value));
-                nErrors++;
-            }
-        }
-    }
+//                    if (Math.Abs(d1 - d2) < 0.0001)
+//                    {
+//                        continue;
+//                    }
+//                    else
+//                    {
+//                        Assert.AreEqual(fr[adr], ws.Cells[adr].Value);
+//                    }
+//                }
+//                else
+//                {
+//                    Assert.AreEqual(fr[adr], ws.Cells[adr].Value);
+//                }
+//            }
+//            catch
+//            {
+//                errors.Add(new Tuple<string, object, object>(adr, fr[adr], ws.Cells[adr].Value));
+//                nErrors++;
+//            }
+//        }
+//    }
 
-    [Ignore]
-    [TestMethod]
-    public void TestOneCell()
-    {
-        ExcelPackage? pck = new ExcelPackage(new FileInfo(@"C:\temp\EPPlusTestark\Test4.xlsm"));
-        ExcelWorksheet? ws = pck.Workbook.Worksheets.First();
-        pck.Workbook.Worksheets["Räntebärande formaterat utland"].Cells["M13"].Calculate();
-        Assert.AreEqual(0d, pck.Workbook.Worksheets["Räntebärande formaterat utland"].Cells["M13"].Value);
-    }
+    //[Ignore]
+    //[TestMethod]
+    //public void TestOneCell()
+    //{
+    //    ExcelPackage? pck = new ExcelPackage(new FileInfo(@"C:\temp\EPPlusTestark\Test4.xlsm"));
+    //    ExcelWorksheet? ws = pck.Workbook.Worksheets.First();
+    //    pck.Workbook.Worksheets["Räntebärande formaterat utland"].Cells["M13"].Calculate();
+    //    Assert.AreEqual(0d, pck.Workbook.Worksheets["Räntebärande formaterat utland"].Cells["M13"].Value);
+    //}
 
-    [Ignore]
-    [TestMethod]
-    public void TestPrecedence()
-    {
-        ExcelPackage? pck = new ExcelPackage(new FileInfo(@"C:\temp\EPPlusTestark\Precedence.xlsx"));
-        ExcelWorksheet? ws = pck.Workbook.Worksheets.Last();
-        pck.Workbook.Calculate();
-        Assert.AreEqual(150d, ws.Cells["A1"].Value);
-    }
+    //[Ignore]
+    //[TestMethod]
+    //public void TestPrecedence()
+    //{
+    //    ExcelPackage? pck = new ExcelPackage(new FileInfo(@"C:\temp\EPPlusTestark\Precedence.xlsx"));
+    //    ExcelWorksheet? ws = pck.Workbook.Worksheets.Last();
+    //    pck.Workbook.Calculate();
+    //    Assert.AreEqual(150d, ws.Cells["A1"].Value);
+    //}
 
-    [Ignore]
-    [TestMethod]
-    public void TestDataType()
-    {
-        ExcelPackage? pck = new ExcelPackage(new FileInfo(@"c:\temp\EPPlusTestark\calc_amount.xlsx"));
-        ExcelWorksheet? ws = pck.Workbook.Worksheets.First();
+    //[Ignore]
+    //[TestMethod]
+    //public void TestDataType()
+    //{
+    //    ExcelPackage? pck = new ExcelPackage(new FileInfo(@"c:\temp\EPPlusTestark\calc_amount.xlsx"));
+    //    ExcelWorksheet? ws = pck.Workbook.Worksheets.First();
 
-        //ws.Names.Add("Name1",ws.Cells["A1"]);
-        //ws.Names.Add("Name2", ws.Cells["A2"]);
-        ws.Names["PRICE"].Value = 30;
-        ws.Names["QUANTITY"].Value = 10;
+    //    //ws.Names.Add("Name1",ws.Cells["A1"]);
+    //    //ws.Names.Add("Name2", ws.Cells["A2"]);
+    //    ws.Names["PRICE"].Value = 30;
+    //    ws.Names["QUANTITY"].Value = 10;
 
-        ws.Calculate();
+    //    ws.Calculate();
 
-        ws.Names["PRICE"].Value = 40;
-        ws.Names["QUANTITY"].Value = 20;
+    //    ws.Names["PRICE"].Value = 40;
+    //    ws.Names["QUANTITY"].Value = 20;
 
-        ws.Calculate();
-    }
+    //    ws.Calculate();
+    //}
 
     [TestMethod]
     public void CalcTwiceError()

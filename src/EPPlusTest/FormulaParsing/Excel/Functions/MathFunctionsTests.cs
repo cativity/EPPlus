@@ -903,16 +903,16 @@ public class MathFunctionsTests
         Assert.AreEqual(3d, result.Result);
     }
 
-    [TestMethod, Ignore]
-    public void CountShouldIgnoreHiddenValuesIfIgnoreHiddenValuesIsTrue()
-    {
-        Count? func = new Count();
-        func.IgnoreHiddenValues = true;
-        IEnumerable<FunctionArgument>? args = FunctionsHelper.CreateArgs(1d, FunctionsHelper.CreateArgs(12, 13));
-        args.ElementAt(0).SetExcelStateFlag(ExcelCellState.HiddenCell);
-        CompileResult? result = func.Execute(args, this._parsingContext);
-        Assert.AreEqual(2d, result.Result);
-    }
+    //[TestMethod, Ignore]
+    //public void CountShouldIgnoreHiddenValuesIfIgnoreHiddenValuesIsTrue()
+    //{
+    //    Count? func = new Count();
+    //    func.IgnoreHiddenValues = true;
+    //    IEnumerable<FunctionArgument>? args = FunctionsHelper.CreateArgs(1d, FunctionsHelper.CreateArgs(12, 13));
+    //    args.ElementAt(0).SetExcelStateFlag(ExcelCellState.HiddenCell);
+    //    CompileResult? result = func.Execute(args, this._parsingContext);
+    //    Assert.AreEqual(2d, result.Result);
+    //}
 
     [TestMethod]
     public void CountAShouldCountEmptyString()

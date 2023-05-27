@@ -56,13 +56,13 @@ public class LogicalFunctionsTests
         Assert.AreEqual("A", result.Result);
     }
 
-    [TestMethod, Ignore]
-    public void IfShouldIgnoreCase()
-    {
-        using ExcelPackage? pck = new ExcelPackage(new FileInfo(@"c:\temp\book1.xlsx"));
-        pck.Workbook.Calculate();
-        Assert.AreEqual("Sant", pck.Workbook.Worksheets.First().Cells["C3"].Value);
-    }
+    //[TestMethod, Ignore]
+    //public void IfShouldIgnoreCase()
+    //{
+    //    using ExcelPackage? pck = new ExcelPackage(new FileInfo(@"c:\temp\book1.xlsx"));
+    //    pck.Workbook.Calculate();
+    //    Assert.AreEqual("Sant", pck.Workbook.Worksheets.First().Cells["C3"].Value);
+    //}
 
     [TestMethod]
     public void NotShouldReturnFalseIfArgumentIsTrue()

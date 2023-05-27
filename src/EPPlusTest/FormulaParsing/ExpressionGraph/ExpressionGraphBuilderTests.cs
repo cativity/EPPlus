@@ -284,32 +284,32 @@ public class ExpressionGraphBuilderTests
         Assert.AreEqual(3, exp1.Children.Count());
     }
 
-    [TestMethod, Ignore]
-    public void RemoveDuplicateOperators1()
-    {
-        ParsingContext? ctx = ParsingContext.Create();
-        const string formula = "++1--2++-3+-1----3-+2";
+    //[TestMethod, Ignore]
+    //public void RemoveDuplicateOperators1()
+    //{
+    //    ParsingContext? ctx = ParsingContext.Create();
+    //    const string formula = "++1--2++-3+-1----3-+2";
 
-        // the formula above equals 1+2-3-1+3+2
-        SourceCodeTokenizer? tokenizer = new SourceCodeTokenizer(ctx.Configuration.FunctionRepository, ctx.NameValueProvider);
-        List<Token>? tokens = tokenizer.Tokenize(formula).ToList();
-        OfficeOpenXml.FormulaParsing.ExpressionGraph.ExpressionGraph? expression = this._graphBuilder.Build(tokens);
-        Assert.AreEqual(11, tokens.Count);
-        Assert.AreEqual("+", tokens[1].Value);
-        Assert.AreEqual("-", tokens[3].Value);
-        Assert.AreEqual("-", tokens[5].Value);
-        Assert.AreEqual("+", tokens[7].Value);
-        Assert.AreEqual("-", tokens[9].Value);
-    }
+    //    // the formula above equals 1+2-3-1+3+2
+    //    SourceCodeTokenizer? tokenizer = new SourceCodeTokenizer(ctx.Configuration.FunctionRepository, ctx.NameValueProvider);
+    //    List<Token>? tokens = tokenizer.Tokenize(formula).ToList();
+    //    OfficeOpenXml.FormulaParsing.ExpressionGraph.ExpressionGraph? expression = this._graphBuilder.Build(tokens);
+    //    Assert.AreEqual(11, tokens.Count);
+    //    Assert.AreEqual("+", tokens[1].Value);
+    //    Assert.AreEqual("-", tokens[3].Value);
+    //    Assert.AreEqual("-", tokens[5].Value);
+    //    Assert.AreEqual("+", tokens[7].Value);
+    //    Assert.AreEqual("-", tokens[9].Value);
+    //}
 
-    [TestMethod, Ignore]
-    public void RemoveDuplicateOperators2()
-    {
-        ParsingContext? ctx = ParsingContext.Create();
-        const string formula = "++-1--(---2)++-3+-1----3-+2";
-        SourceCodeTokenizer? tokenizer = new SourceCodeTokenizer(ctx.Configuration.FunctionRepository, ctx.NameValueProvider);
-        List<Token>? tokens = tokenizer.Tokenize(formula).ToList();
-    }
+    //[TestMethod, Ignore]
+    //public void RemoveDuplicateOperators2()
+    //{
+    //    ParsingContext? ctx = ParsingContext.Create();
+    //    const string formula = "++-1--(---2)++-3+-1----3-+2";
+    //    SourceCodeTokenizer? tokenizer = new SourceCodeTokenizer(ctx.Configuration.FunctionRepository, ctx.NameValueProvider);
+    //    List<Token>? tokens = tokenizer.Tokenize(formula).ToList();
+    //}
 
     [TestMethod]
     public void BuildExcelAddressExpressionSimple()

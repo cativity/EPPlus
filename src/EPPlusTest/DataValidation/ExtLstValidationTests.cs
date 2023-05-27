@@ -11,16 +11,16 @@ namespace EPPlusTest.DataValidation;
 [TestClass]
 public class ExtLstValidationTests : TestBase
 {
-    [TestMethod, Ignore]
-    public void AddValidationWithFormulaOnOtherWorksheetShouldReturnExt()
-    {
-        using ExcelPackage? package = new ExcelPackage();
-        ExcelWorksheet? sheet1 = package.Workbook.Worksheets.Add("test");
-        ExcelWorksheet? sheet2 = package.Workbook.Worksheets.Add("test2");
-        IExcelDataValidationList? val = sheet1.DataValidations.AddListValidation("A1");
-        val.Formula.ExcelFormula = "test2!A1:A2";
-        Assert.IsInstanceOfType(val, typeof(ExcelDataValidationList));
-    }
+    //[TestMethod, Ignore]
+    //public void AddValidationWithFormulaOnOtherWorksheetShouldReturnExt()
+    //{
+    //    using ExcelPackage? package = new ExcelPackage();
+    //    ExcelWorksheet? sheet1 = package.Workbook.Worksheets.Add("test");
+    //    ExcelWorksheet? sheet2 = package.Workbook.Worksheets.Add("test2");
+    //    IExcelDataValidationList? val = sheet1.DataValidations.AddListValidation("A1");
+    //    val.Formula.ExcelFormula = "test2!A1:A2";
+    //    Assert.IsInstanceOfType(val, typeof(ExcelDataValidationList));
+    //}
 
     [TestMethod]
     public void CanReadWriteSimpleExtLst()

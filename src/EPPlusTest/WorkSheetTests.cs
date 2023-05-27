@@ -1743,29 +1743,29 @@ public class WorkSheetTest : TestBase
         Assert.AreNotEqual(ws.Cells["A1:D5"].Value, null);
     }
 
-    [TestMethod, Ignore]
-    public void BuildInStyles()
-    {
-        ExcelWorksheet? ws = _pck.Workbook.Worksheets.Add("Default");
-        ws.Cells.Style.Font.Name = "Arial";
-        ws.Cells.Style.Font.Size = 15;
-        ws.Cells.Style.Border.Bottom.Style = ExcelBorderStyle.MediumDashed;
-        ExcelNamedStyleXml? n = _pck.Workbook.Styles.NamedStyles[0];
-        n.Style.Numberformat.Format = "yyyy";
-        n.Style.Font.Name = "Arial";
-        n.Style.Font.Size = 15;
-        n.Style.Border.Bottom.Style = ExcelBorderStyle.Dotted;
-        n.Style.Border.Bottom.Color.SetColor(Color.Red);
-        n.Style.Fill.PatternType = ExcelFillStyle.Solid;
-        n.Style.Fill.BackgroundColor.SetColor(Color.Blue);
-        n.Style.Border.Bottom.Color.SetColor(Color.Red);
-        n.Style.HorizontalAlignment = ExcelHorizontalAlignment.Center;
-        n.Style.VerticalAlignment = ExcelVerticalAlignment.Center;
-        n.Style.TextRotation = 90;
-        ws.Cells["a1:c3"].StyleName = "Normal";
+    //[TestMethod, Ignore]
+    //public void BuildInStyles()
+    //{
+    //    ExcelWorksheet? ws = _pck.Workbook.Worksheets.Add("Default");
+    //    ws.Cells.Style.Font.Name = "Arial";
+    //    ws.Cells.Style.Font.Size = 15;
+    //    ws.Cells.Style.Border.Bottom.Style = ExcelBorderStyle.MediumDashed;
+    //    ExcelNamedStyleXml? n = _pck.Workbook.Styles.NamedStyles[0];
+    //    n.Style.Numberformat.Format = "yyyy";
+    //    n.Style.Font.Name = "Arial";
+    //    n.Style.Font.Size = 15;
+    //    n.Style.Border.Bottom.Style = ExcelBorderStyle.Dotted;
+    //    n.Style.Border.Bottom.Color.SetColor(Color.Red);
+    //    n.Style.Fill.PatternType = ExcelFillStyle.Solid;
+    //    n.Style.Fill.BackgroundColor.SetColor(Color.Blue);
+    //    n.Style.Border.Bottom.Color.SetColor(Color.Red);
+    //    n.Style.HorizontalAlignment = ExcelHorizontalAlignment.Center;
+    //    n.Style.VerticalAlignment = ExcelVerticalAlignment.Center;
+    //    n.Style.TextRotation = 90;
+    //    ws.Cells["a1:c3"].StyleName = "Normal";
 
-        //  n.CustomBuildin = true;
-    }
+    //    //  n.CustomBuildin = true;
+    //}
 
     [TestMethod]
     public void AutoFitColumns()

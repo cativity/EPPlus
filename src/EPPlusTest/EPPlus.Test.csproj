@@ -41,11 +41,16 @@
 
 	<ItemGroup>
 		<PackageReference Include="FakeItEasy" Version="7.4.0" />
+		<PackageReference Include="Microsoft.CodeAnalysis.CSharp.Workspaces" Version="4.6.0" />
 		<PackageReference Include="Microsoft.CSharp" Version="4.7.0" />
 		<PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.6.0" />
 		<PackageReference Include="MSTest.TestFramework" Version="3.0.3" />
 		<PackageReference Include="MSTest.TestAdapter" Version="3.0.3" />
 		<PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
+		<PackageReference Include="Roslynator.Analyzers" Version="4.3.0">
+		  <PrivateAssets>all</PrivateAssets>
+		  <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+		</PackageReference>
 		<!--<PackageReference Include="System.Data.Common" Version="4.3.0" />
     <PackageReference Include="System.Xml.XPath.XmlDocument" Version="4.3.0" />-->
 	</ItemGroup>

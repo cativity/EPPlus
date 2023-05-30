@@ -25,11 +25,9 @@ public static class ExcelAddressUtil
 
     public static bool IsValidAddress(string token)
     {
-        int ix;
-
         if (token[0] == '\'')
         {
-            ix = token.LastIndexOf('\'');
+            int ix = token.LastIndexOf('\'');
 
             if (ix > 0 && ix < token.Length - 1 && token[ix + 1] == '!')
             {

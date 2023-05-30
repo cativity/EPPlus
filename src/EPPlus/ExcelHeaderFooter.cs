@@ -395,8 +395,7 @@ public sealed class ExcelHeaderFooter : XmlHelper
     {
         get
         {
-            return this._oddHeader
-                   ?? (this._oddHeader = new ExcelHeaderFooterText(this.TopNode.SelectSingleNode("d:oddHeader", this.NameSpaceManager), this._ws, "H"));
+            return this._oddHeader ??= new ExcelHeaderFooterText(this.TopNode.SelectSingleNode("d:oddHeader", this.NameSpaceManager), this._ws, "H");
         }
     }
 
@@ -408,8 +407,7 @@ public sealed class ExcelHeaderFooter : XmlHelper
     {
         get
         {
-            return this._oddFooter
-                   ?? (this._oddFooter = new ExcelHeaderFooterText(this.TopNode.SelectSingleNode("d:oddFooter", this.NameSpaceManager), this._ws, "F"));
+            return this._oddFooter ??= new ExcelHeaderFooterText(this.TopNode.SelectSingleNode("d:oddFooter", this.NameSpaceManager), this._ws, "F");
         }
     }
 

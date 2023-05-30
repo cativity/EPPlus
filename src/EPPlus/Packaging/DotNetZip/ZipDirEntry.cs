@@ -268,7 +268,7 @@ partial class ZipEntry
         zde.IsText = (zde._InternalFileAttrs & 0x01) == 0x01;
 
         block = new byte[zde._filenameLength];
-        n = s.Read(block, 0, block.Length);
+        _ = s.Read(block, 0, block.Length);
         //bytesRead += n;
 
         if ((zde._BitField & 0x0800) == 0x0800)

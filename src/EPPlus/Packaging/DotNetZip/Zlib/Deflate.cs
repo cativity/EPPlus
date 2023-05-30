@@ -1343,7 +1343,6 @@ internal sealed class DeflateManager
     {
         //    short hash_head = 0;    // head of hash chain
         int hash_head = 0; // head of hash chain
-        bool bflush; // set if current block must be flushed
 
         // Process the input block.
         while (true)
@@ -1411,6 +1410,8 @@ internal sealed class DeflateManager
 
             // If there was a match at the previous step and the current
             // match is not better, output the previous match:
+            bool bflush; // set if current block must be flushed
+
             if (this.prev_length >= MIN_MATCH && this.match_length <= this.prev_length)
             {
                 int max_insert = this.strstart + this.lookahead - MIN_MATCH;

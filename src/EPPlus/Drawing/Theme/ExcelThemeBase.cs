@@ -72,9 +72,8 @@ public class ExcelThemeBase : XmlHelper, IPictureRelationDocument
     {
         get
         {
-            return this._colorScheme
-                   ?? (this._colorScheme =
-                           new ExcelColorScheme(this.NameSpaceManager, this.TopNode.SelectSingleNode(this._colorSchemePath, this.NameSpaceManager)));
+            return this._colorScheme ??=
+                           new ExcelColorScheme(this.NameSpaceManager, this.TopNode.SelectSingleNode(this._colorSchemePath, this.NameSpaceManager));
         }
     }
 
@@ -87,10 +86,9 @@ public class ExcelThemeBase : XmlHelper, IPictureRelationDocument
     {
         get
         {
-            return this._fontScheme
-                   ?? (this._fontScheme = new ExcelFontScheme(this._pck,
+            return this._fontScheme ??= new ExcelFontScheme(this._pck,
                                                               this.NameSpaceManager,
-                                                              this.TopNode.SelectSingleNode(this._fontSchemePath, this.NameSpaceManager)));
+                                                              this.TopNode.SelectSingleNode(this._fontSchemePath, this.NameSpaceManager));
         }
     }
 
@@ -103,10 +101,9 @@ public class ExcelThemeBase : XmlHelper, IPictureRelationDocument
     {
         get
         {
-            return this._formatScheme
-                   ?? (this._formatScheme = new ExcelFormatScheme(this.NameSpaceManager,
+            return this._formatScheme ??= new ExcelFormatScheme(this.NameSpaceManager,
                                                                   this.TopNode.SelectSingleNode(this._fmtSchemePath, this.NameSpaceManager),
-                                                                  this));
+                                                                  this);
         }
     }
 

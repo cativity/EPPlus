@@ -43,7 +43,6 @@ internal static class VBACompression
         while (decompStart < decompEnd && compStart < compEnd)
         {
             byte[] chunk = CompressChunk(part, ref decompStart);
-            ushort header;
 
             if (chunk == null || chunk.Length == 0)
             {
@@ -51,7 +50,7 @@ internal static class VBACompression
             }
             else
             {
-                header = (ushort)((chunk.Length - 1) & 0xFFF);
+                ushort header = (ushort)((chunk.Length - 1) & 0xFFF);
                 header |= 0xB000; //B=011 A=1
                 br.Write(header);
                 br.Write(chunk);

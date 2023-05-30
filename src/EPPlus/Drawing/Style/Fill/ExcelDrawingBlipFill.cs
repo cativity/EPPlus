@@ -85,7 +85,7 @@ public class ExcelDrawingBlipFill : ExcelDrawingFillBase, IPictureContainer
     /// </summary>
     public ExcelDrawingBlipEffects Effects
     {
-        get { return this._effects ?? (this._effects = new ExcelDrawingBlipEffects(this._nsm, this._topNode.SelectSingleNode("a:blip", this._nsm))); }
+        get { return this._effects ??= new ExcelDrawingBlipEffects(this._nsm, this._topNode.SelectSingleNode("a:blip", this._nsm)); }
     }
 
     internal override string NodeName

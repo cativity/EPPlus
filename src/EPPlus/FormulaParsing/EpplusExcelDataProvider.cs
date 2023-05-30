@@ -858,10 +858,7 @@ internal class EpplusExcelDataProvider : ExcelDataProvider
         {
             this._currentWorksheet = this._package.Workbook.Worksheets[addressInfo.Worksheet];
         }
-        else if (this._currentWorksheet == null)
-        {
-            this._currentWorksheet = this._package.Workbook.Worksheets.First();
-        }
+        else this._currentWorksheet ??= this._package.Workbook.Worksheets.First();
     }
 
     private void SetCurrentWorksheet(string worksheetName)

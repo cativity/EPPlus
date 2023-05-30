@@ -136,14 +136,14 @@ internal class ControlInternal : XmlHelper
 
     public ExcelPosition From
     {
-        get { return this._from ?? (this._from = new ExcelPosition(this.NameSpaceManager, this.GetNode("d:controlPr/d:anchor/d:from"), null)); }
+        get { return this._from ??= new ExcelPosition(this.NameSpaceManager, this.GetNode("d:controlPr/d:anchor/d:from"), null); }
     }
 
     ExcelPosition _to;
 
     public ExcelPosition To
     {
-        get { return this._to ?? (this._to = new ExcelPosition(this.NameSpaceManager, this.GetNode("d:controlPr/d:anchor/d:to"), null)); }
+        get { return this._to ??= new ExcelPosition(this.NameSpaceManager, this.GetNode("d:controlPr/d:anchor/d:to"), null); }
     }
 
     public bool MoveWithCells

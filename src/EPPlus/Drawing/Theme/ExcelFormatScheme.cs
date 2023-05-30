@@ -70,8 +70,7 @@ public class ExcelFormatScheme : XmlHelper
     {
         get
         {
-            return this._lineStyle
-                   ?? (this._lineStyle = new ExcelThemeLineStyles(this.NameSpaceManager, this.TopNode.SelectSingleNode(lineStylePath, this.NameSpaceManager)));
+            return this._lineStyle ??= new ExcelThemeLineStyles(this.NameSpaceManager, this.TopNode.SelectSingleNode(lineStylePath, this.NameSpaceManager));
         }
     }
 
@@ -85,10 +84,9 @@ public class ExcelFormatScheme : XmlHelper
     {
         get
         {
-            return this._effectStyle
-                   ?? (this._effectStyle = new ExcelThemeEffectStyles(this.NameSpaceManager,
+            return this._effectStyle ??= new ExcelThemeEffectStyles(this.NameSpaceManager,
                                                                       this.TopNode.SelectSingleNode(effectStylePath, this.NameSpaceManager),
-                                                                      this._theme));
+                                                                      this._theme);
         }
     }
 
@@ -102,10 +100,9 @@ public class ExcelFormatScheme : XmlHelper
     {
         get
         {
-            return this._backgroundFillStyle
-                   ?? (this._backgroundFillStyle = new ExcelThemeFillStyles(this.NameSpaceManager,
+            return this._backgroundFillStyle ??= new ExcelThemeFillStyles(this.NameSpaceManager,
                                                                             this.TopNode.SelectSingleNode(backgroundFillStylePath, this.NameSpaceManager),
-                                                                            this._theme));
+                                                                            this._theme);
         }
     }
 }

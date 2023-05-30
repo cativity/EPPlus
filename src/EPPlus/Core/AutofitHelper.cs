@@ -158,7 +158,6 @@ internal class AutofitHelper
             }
 
             int fntID = styles.CellXfs[cell.StyleID].FontId;
-            MeasurementFont f;
 
             if (this._fontCache.ContainsKey(fntID))
             {
@@ -189,7 +188,7 @@ internal class AutofitHelper
                     fs |= MeasurementFontStyles.Strikeout;
                 }
 
-                f = new MeasurementFont { FontFamily = fnt.Name, Style = fs, Size = fnt.Size };
+                MeasurementFont f = new MeasurementFont { FontFamily = fnt.Name, Style = fs, Size = fnt.Size };
 
                 this._fontCache.Add(fntID, f);
             }

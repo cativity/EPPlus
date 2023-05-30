@@ -57,7 +57,7 @@ public class ExcelPivotCacheDefinition
         }
         else
         {
-            this._cacheReference = c.PivotCaches.FirstOrDefault(x => x.CacheDefinitionUri.OriginalString == cacheDefinitionUri.OriginalString);
+            this._cacheReference = c.PivotCaches.Find(x => x.CacheDefinitionUri.OriginalString == cacheDefinitionUri.OriginalString);
         }
 
         this._cacheReference._pivotTables.Add(pivotTable);

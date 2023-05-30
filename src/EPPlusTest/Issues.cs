@@ -2523,7 +2523,7 @@ public class Issues : TestBase
 
             for (int i = 1; i <= end.Row; i++)
             {
-                if (i < dataStartRow - 1 || (i >= dataStartRow && !errors.Any(w => w.Row - 1 == i)))
+                if (i < dataStartRow - 1 || (i >= dataStartRow && errors.All(w => w.Row - 1 != i)))
                 {
                     worksheet.DeleteRow(i - deletedRows);
                     deletedRows++;
@@ -4296,7 +4296,7 @@ public class Issues : TestBase
         }
 
         int end = start - 1;
-        ExcelChart? metroChart = (ExcelChart)worksheet.Drawings.Where(p => p is ExcelChart).First();
+        ExcelChart metroChart = worksheet.Drawings.OfType<ExcelChart>().First();
 
         if (metroChart != null)
         {
@@ -4362,7 +4362,7 @@ public class Issues : TestBase
         using ExcelPackage? package = OpenTemplatePackage("s437.xlsx");
         ExcelWorksheet? worksheet = package.Workbook.Worksheets[0];
 
-        ExcelChart? metroChart = (ExcelChart)worksheet.Drawings.Where(p => p is ExcelChart).First();
+        ExcelChart metroChart = worksheet.Drawings.OfType<ExcelChart>().First();
 
         if (metroChart != null)
         {

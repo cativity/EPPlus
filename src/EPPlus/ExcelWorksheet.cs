@@ -2897,7 +2897,7 @@ public class ExcelWorksheet : XmlHelper, IEqualityComparer<ExcelWorksheet>, IDis
             {
                 this._package.ZipPackage.DeletePart(this.ThreadedCommentsUri);
             }
-            else if (this.ThreadedComments.Threads.Count() > 0)
+            else if (this.ThreadedComments.Threads.Any())
             {
                 if (!this._package.ZipPackage.PartExists(this.ThreadedCommentsUri))
                 {
@@ -3267,7 +3267,7 @@ public class ExcelWorksheet : XmlHelper, IEqualityComparer<ExcelWorksheet>, IDis
                 {
                     string[]? namespaces = ignorables.Split(' ');
 
-                    if (!namespaces.Any(x => x == "xr"))
+                    if (namespaces.All(x => x != "xr"))
                     {
                         _ = this.WorksheetXml.DocumentElement.SetAttribute("Ignorable", ExcelPackage.schemaMarkupCompatibility, ignorables + " xr");
                     }

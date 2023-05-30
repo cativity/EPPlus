@@ -44,7 +44,7 @@ public class ParsingScopes
     {
         ParsingScope scope;
 
-        if (this._scopes.Count() > 0)
+        if (this._scopes.Any())
         {
             scope = new ParsingScope(this, this._scopes.Peek(), address);
         }
@@ -61,7 +61,7 @@ public class ParsingScopes
     /// <summary>
     /// The current parsing scope.
     /// </summary>
-    public virtual ParsingScope Current => this._scopes.Count() > 0 ? this._scopes.Peek() : null;
+    public virtual ParsingScope Current => this._scopes.Any() ? this._scopes.Peek() : null;
 
     /// <summary>
     /// Removes the current scope, setting the calling scope to current.

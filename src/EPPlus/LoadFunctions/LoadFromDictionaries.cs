@@ -117,7 +117,7 @@ internal class LoadFromDictionaries : LoadFunctionBase
         int col = 0,
             row = 0;
 
-        if (this.PrintHeaders && this._keys.Count() > 0)
+        if (this.PrintHeaders && this._keys.Any())
         {
             foreach (string? key in this._keys)
             {

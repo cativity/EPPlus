@@ -29,7 +29,7 @@ public class ConfigurePackageTests
                 });
 
                 using ExcelPackage? package = new ExcelPackage();
-                Assert.IsTrue(package.InitializationErrors.Count() > 0);
+                Assert.IsTrue(package.InitializationErrors.Any());
                 Assert.AreEqual(1, package.InitializationErrors.Count());
             }
             finally
@@ -56,7 +56,7 @@ public class ConfigurePackageTests
             try
             {
                 using ExcelPackage? package = new ExcelPackage();
-                Assert.IsTrue(package.InitializationErrors.Count() > 0);
+                Assert.IsTrue(package.InitializationErrors.Any());
                 Assert.AreEqual(1, package.InitializationErrors.Count());
             }
             finally

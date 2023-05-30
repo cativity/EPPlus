@@ -36,7 +36,7 @@ internal class DataTableMapper
                 continue;
             }
 
-            if (!this._options.Mappings.Any(x => string.Compare(column.ColumnName, x.DataColumnName, StringComparison.OrdinalIgnoreCase) == 0))
+            if (this._options.Mappings.All(x => string.Compare(column.ColumnName, x.DataColumnName, StringComparison.OrdinalIgnoreCase) != 0))
             {
                 if (this._options.FirstRowIsColumnNames)
                 {

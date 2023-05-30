@@ -264,7 +264,7 @@ public class LoadFromCollectionTests : TestBase
     public void ShouldUseAnonymousProperties()
     {
         List<BaseClass>? objs = new List<BaseClass>() { new Implementation() { Id = "123", Name = "Item 1", Number = 3 } };
-        var items = objs.Select(x => new { Id = x.Id, Name = x.Name }).ToList();
+        var items = objs.ConvertAll(x => new { Id = x.Id, Name = x.Name });
         using ExcelPackage? pck = new ExcelPackage(new MemoryStream());
         ExcelWorksheet? sheet = pck.Workbook.Worksheets.Add("sheet");
         _ = sheet.Cells["C1"].LoadFromCollection(items, true, TableStyles.Dark1);
@@ -277,7 +277,7 @@ public class LoadFromCollectionTests : TestBase
     public void ShouldThrowInvalidCastExceptionIf()
     {
         List<BaseClass>? objs = new List<BaseClass>() { new Implementation() { Id = "123", Name = "Item 1", Number = 3 } };
-        var items = objs.Select(x => new { Id = x.Id, Name = x.Name }).ToList();
+        var items = objs.ConvertAll(x => new { Id = x.Id, Name = x.Name });
         using ExcelPackage? pck = new ExcelPackage(new MemoryStream());
         ExcelWorksheet? sheet = pck.Workbook.Worksheets.Add("sheet");
         _ = sheet.Cells["C1"].LoadFromCollection(items, true, TableStyles.Dark1, BindingFlags.Public | BindingFlags.Instance, typeof(string).GetMembers());
